@@ -498,7 +498,7 @@ namespace StoneRing {
 			enum eFlags { SPRITE = 1, BLK_NORTH = 2, BLK_SOUTH = 4, BLK_EAST = 8, BLK_WEST = 16, TILEMAP = 32 };
 
 			std::string mName;
-			CL_Sprite *mpSprite;
+			std::list<CL_Sprite *>mSprites;
 			SpriteRefOrTilemap mGraphic;
 			std::list<Event*> mEvents;
       
