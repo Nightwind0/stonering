@@ -5,7 +5,7 @@
 
 #include "Item.h"
 #include <string>
-
+#include "IParty.h"
 
 typedef unsigned int uint;
 
@@ -14,25 +14,23 @@ namespace StoneRing{
 
 class ItemRef;	
 
-class Party
+ class Party : public IParty
 {
  public:
+    Party();
+    ~Party();
 
+    virtual bool getGold() const;
+    virtual bool hasItem(Item::eItemType type, const std::string &item) const;
+    virtual bool hasItem(ItemRef *pItemRef )const;
+    virtual bool didEvent(const std::string &event) const;
+    virtual uint getLevelX() const;
+    virtual uint getLevelY() const;
 
-  bool getGold() const;
-  bool hasItem(Item::eItemType type, const std::string &item) const;
-  bool hasItem(ItemRef *pItemRef );
-  bool didEvent(const std::string &event) const;
-  uint getLevelX() const;
-  uint getLevelY() const;
-
-  static Party * getInstance();
 
  private:
 
-  static Party * mInstance;
-  Party();
-  ~Party();
+
 };
 
 

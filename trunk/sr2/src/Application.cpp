@@ -5,6 +5,7 @@
 
 #include "Application.h"
 #include "Level.h"
+#include "Party.h"
 
 
 using StoneRing::Application;
@@ -15,25 +16,42 @@ using namespace StoneRing;
 using std::min;
 using std::max;
 
-const int Application::WINDOW_HEIGHT  ;
-const int Application::WINDOW_WIDTH ;
-
-#else 
-	// Windowsy stuff
-
 #endif
+
+const int WINDOW_HEIGHT = 600 ;
+const int WINDOW_WIDTH = 800 ;
+
+
 
 
 Application sr_app;
 
-Application * Application::getApplication()
+
+int Application::getScreenWidth()const
+{
+    return WINDOW_WIDTH;
+}
+
+int Application::getScreenHeight()const
+{
+    return WINDOW_HEIGHT;
+}
+
+
+IApplication * IApplication::getInstance()
 {
     return &sr_app;
 }
 
 
+IParty * Application::getParty() const
+{
+   
+    return mpParty;
+}
 
-CL_ResourceManager * Application::getResources()
+
+CL_ResourceManager * Application::getResources() const
 {
     return mpResources;
 }
@@ -44,8 +62,9 @@ bool Application::canMove(const CL_Rect &currently, const CL_Rect &destination, 
     return mpLevel->canMove(currently,destination,noHot);
 }
 
-Application::Application():mCurX(0),mCurY(0),mbDone(false),mSpeed(1)
+Application::Application():mpParty(0),mCurX(0),mCurY(0),mbDone(false),mSpeed(1)
 {
+    mpParty = new Party();
 }
 
 Application::~Application()

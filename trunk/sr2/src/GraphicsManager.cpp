@@ -20,7 +20,7 @@ GraphicsManager * GraphicsManager::getInstance()
 
 CL_Sprite * GraphicsManager::createSprite ( const std::string & name )
 {
-	CL_ResourceManager *pResources  = Application::getApplication()->getResources();
+	CL_ResourceManager *pResources  = IApplication::getInstance()->getResources();
 
 	CL_Sprite * pSprite = new CL_Sprite("Sprites/" +  name, pResources);
 
@@ -47,7 +47,7 @@ std::string GraphicsManager::lookUpMapWithSurface (CL_Surface * surface)
 
 CL_Surface * GraphicsManager::getTileMap ( const std::string & name )
 {
-	CL_ResourceManager *pResources  = Application::getApplication()->getResources();
+	CL_ResourceManager *pResources  = IApplication::getInstance()->getResources();
 	CL_Surface *pSurface;
 
 

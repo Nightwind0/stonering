@@ -4,7 +4,7 @@
 
 using StoneRing::Party;
 
-Party * Party::mInstance;
+
 
 
 Party::Party()
@@ -26,7 +26,7 @@ bool Party::hasItem(Item::eItemType type, const std::string &item) const
 	return false;
 }
 
-bool Party::hasItem(ItemRef *pItemRef)
+bool Party::hasItem(ItemRef *pItemRef) const
 {
 	return hasItem ( pItemRef->getItemType(), pItemRef->getItemName() );
 }
@@ -47,13 +47,3 @@ uint Party::getLevelY() const
 }
 
 
-Party * Party::getInstance()
-{
-
-	if( mInstance == NULL)
-		mInstance = new Party();
-	
-
-	return mInstance;
-
-}

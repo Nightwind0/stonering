@@ -5,7 +5,7 @@
 #include <string>
 #include <map>
 #include <list>
-#include "Application.h"
+#include "IApplication.h"
 
 using std::string;
 
@@ -659,7 +659,7 @@ struct std::greater<MappableObject*>  : public binary_function<MappableObject* ,
 {
     bool operator()(const MappableObject* &n1, const  MappableObject * &n2) const
 	{
-	    Application * pApp = Application::getApplication();
+	    IApplication * pApp = IApplication::getInstance();
 
 	    uint pX = pApp->getLevelRect().get_width() / 2;
 	    uint pY = pApp->getLevelRect().get_height() / 2;

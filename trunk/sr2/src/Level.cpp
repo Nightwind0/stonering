@@ -2,7 +2,7 @@
 #include <string>
 #include <map>
 #include <list>
-#include "Application.h"
+#include "IApplication.h"
 #include "Level.h"
 #include <algorithm>
 #include <stdlib.h>
@@ -50,8 +50,8 @@ std::string BoolToString( const bool &b)
 // For the multimap of points
 bool operator < (const CL_Point &p1, const CL_Point &p2)
 {
-    uint p1value = p1.y  *  Application::WINDOW_HEIGHT + p1.x;
-    uint p2value = p2.y  * Application::WINDOW_HEIGHT + p2.x;
+    uint p1value = p1.y  *  IApplication::getInstance()->getScreenHeight() + p1.x;
+    uint p2value = p2.y  * IApplication::getInstance()->getScreenHeight() + p2.x;
 	
     return p1value < p2value;
 }
@@ -388,7 +388,7 @@ void AttributeModifier::invoke()
 	Condition * condition = *i;
 	if( ! condition->evaluate() ) return;
     }
-    // Party->modifyAttribute( blah blah blah ) ;
+    // IApplication::getInstance()->getParty()->modifyAttribute( blah blah blah ) ;
 }
 
 
@@ -489,7 +489,7 @@ HasGold::~HasGold()
 
 bool HasGold::evaluate()
 {
-    Party * party = Party::getInstance();
+    IParty * party = IApplication::getInstance()->getParty();
     int gold = party->getGold();
 
     if(!mbNot)
@@ -591,8 +591,8 @@ HasItem::~HasItem()
 
 bool HasItem::evaluate()
 {
-    if(mbNot) return ! (Party::getInstance()->hasItem(mpItemRef )) ;
-    else	return Party::getInstance()->hasItem ( mpItemRef );
+    if(mbNot) return ! (IApplication::getInstance()->getParty()->hasItem(mpItemRef )) ;
+    else	return (IApplication::getInstance()->getParty()->hasItem(mpItemRef )) ;
 }
 
 
@@ -655,8 +655,8 @@ DidEvent::~DidEvent()
 
 bool DidEvent::evaluate()
 {
-    if(mbNot) return ! Party::getInstance()->didEvent ( mEvent );
-    else  return Party::getInstance()->didEvent ( mEvent );
+    if(mbNot) return ! IApplication::getInstance()->getParty()->didEvent ( mEvent );
+    else  return  IApplication::getInstance()->getParty()->didEvent ( mEvent );
 }
 
 
@@ -1182,7 +1182,7 @@ bool Event::invoke()
 
     if(! mpCondition->evaluate() ) return false;
 
-    // Party->doEvent ( mName );
+    // IApplication::getInstance()->getParty()->doEvent ( mName );
 
     for(std::list<Action*>::iterator i = mActions.begin();
 	i != mActions.end();
@@ -1229,7 +1229,7 @@ PlayAnimation::~PlayAnimation()
 
 void PlayAnimation::invoke()
 {
-    // Application->playAnimation ( mAnimation );
+    // IApplication::getInstance()->playAnimation ( mAnimation );
 }
  
 
@@ -1261,7 +1261,8 @@ PlaySound::~PlaySound()
 
 void PlaySound::invoke()
 {
-    // Application->playSound ( mSound );
+    // IApplication::getInstance()->playSound ( mSound );
+
 }
 
 LoadLevel::LoadLevel()
@@ -1418,7 +1419,7 @@ Movement::eMovementSpeed Movement::getMovementSpeed() const
 
 void LoadLevel::invoke()
 {
-    // Application->loadLevel ( mName, startX, startY );
+    // IApplication::getInstance()->loadLevel ( mName, startX, startY );
 }
 
 StartBattle::StartBattle()
@@ -1485,7 +1486,7 @@ StartBattle::~StartBattle()
 
 void StartBattle::invoke()
 {
-    // Application->startBattle ( mMonster, mCount, mbIsBoss ) ;
+    // IApplication::getInstance()->startBattle ( mMonster, mCount, mbIsBoss ) ;
 }
 
 
@@ -1523,7 +1524,7 @@ InvokeShop::~InvokeShop()
 
 void InvokeShop::invoke()
 {
-    // Application->invokeShop ( mShopType );
+    // IApplication::getInstance()->invokeShop ( mShopType );
 }
 
 
@@ -1554,7 +1555,7 @@ Pause::~Pause()
 
 void Pause::invoke()
 {
-    // Application->pause ( mMs ) ;
+    // IApplication::getInstance()->pause ( mMs ) ;
 }
  
 Say::Say()
@@ -1596,7 +1597,7 @@ Say::~Say()
 
 void Say::invoke()
 {
-    // Application -> say ( mText, mSpeaker );
+    // IApplication::getInstance()->say ( mText, mSpeaker );
 }
 
 Give::Give()
@@ -1651,7 +1652,7 @@ Give::~Give()
 
 void Give::invoke()
 {
-    // Party->giveItem ( mpItemRef );
+    // IApplication::getInstance()->getParty()->giveItem ( mpItemRef );
 }
 
 Take::Take()
@@ -1708,7 +1709,7 @@ Take::~Take()
 
 void Take::invoke()
 {
-    // Party->takeItem ( mpItemRef );
+    // IApplication::getInstance()->getParty()->takeItem ( mpItemRef );
 }
 
 
@@ -1754,7 +1755,7 @@ GiveGold::~GiveGold()
 
 void GiveGold::invoke()
 {
-    // Party->giveGold ( mCount );
+    // IApplication::getInstance()->getParty()->giveGold ( mCount );
 }
 
 
@@ -2492,7 +2493,7 @@ bool MappableObject::moveInCurrentDirection()
 		
 	}
 
-	if(!Application::getApplication()->canMove ( getRect(), newRect, true))
+	if(!IApplication::getInstance()->canMove ( getRect(), newRect, true))
 	{
 	    return false;
 	}
@@ -2590,7 +2591,7 @@ bool MappableObject::isTile() const
 
 void MappableObject::provokeEvents ( Event::eTriggerType trigger )
 {
-    Party *party = Party::getInstance();
+    IParty *party = IApplication::getInstance()->getParty();
 
     for(std::list<Event*>::iterator i = mEvents.begin();
 	i != mEvents.end();
@@ -2948,7 +2949,7 @@ bool Level::canMove(const CL_Rect &currently, const CL_Rect & destination, bool 
 	// And then, like in the draw, stop iterating once we hit something outside the rect
 	// but, we should already be sorted........
 
-	if(! Application::getApplication()->getLevelRect().is_overlapped ( moRect ) )
+	if(! IApplication::getInstance()->getLevelRect().is_overlapped ( moRect ) )
 	{
 	    // This MO is too far away, doesn't need to be tested, nor do any more
 	    break;
@@ -3194,7 +3195,7 @@ bool Level::moSortCriterion( const MappableObject *p1, const MappableObject * p2
 //	uint pY = pParty->getLevelY();
 // Get the center point of the screen instead of the party.
 
-    Application * pApp = Application::getApplication();
+    IApplication * pApp = IApplication::getInstance();
 
     uint pX = pApp->getLevelRect().get_width() / 2;
     uint pY = pApp->getLevelRect().get_height() / 2;
