@@ -1180,7 +1180,7 @@ void Tile::draw(int targetX, int targetY, CL_GraphicContext *pGC)
 	// Get our tilemap or sprite
 	// Blit it
 
-	std::cout << "Blitting At " << targetX << ',' << targetY << std::endl;
+
 
 	GraphicsManager * GM = GraphicsManager::getInstance();
 
@@ -1192,12 +1192,11 @@ void Tile::draw(int targetX, int targetY, CL_GraphicContext *pGC)
 
 		CL_Rect srcRect(mGraphic.asTilemap->getMapX() * 32, mGraphic.asTilemap->getMapY() * 32,
 				(mGraphic.asTilemap->getMapX() * 32) + 32, (mGraphic.asTilemap->getMapY() * 32) + 32);
-		std::cout << "From " << srcRect.left << ',' << srcRect.top << std::endl;
-		
 
+		
 		CL_Rect dstRect(targetX, targetY, targetX + 32, targetY + 32);
 
-		std::cout << "To " << dstRect.left << ',' << dstRect.top << std::endl;
+
 
 		tilemap->draw(srcRect, dstRect, pGC);
 		
@@ -1464,23 +1463,23 @@ void Level::draw(uint levelX, uint levelY, CL_GraphicContext * pGC, uint windowX
 		for(int y= windowY; y < windowHeight; y+=32)
 		{
 			CL_Point p;
-			p.x = (levelX / 32) + x;
-			p.y = (levelY / 32) + y;
+			p.x = ((levelX / 32) * 32) + x;
+			p.y = ((levelY / 32) * 32) + y;
 
-			if(p.x >= mLevelWidth ) continue;
-			if(p.y >= mLevelHeight ) continue;
+			if(p.x / 32 >= mLevelWidth ) continue;
+			if(p.y / 32 >= mLevelHeight ) continue;
 
+			
 
 			for(std::multimap<CL_Point,Tile*>::iterator i = mTileMap.lower_bound ( p );
 			    i != mTileMap.upper_bound ( p );
 			    i++)
 			{
-				int blitx = (int)((float)(levelX / 32) - p.x) * p.x;
-				int blity = (int)((float)(levelY / 32) - p.y) * p.y;
+			
 
 
 				if(i->second->evaluateCondition())
-				i->second->draw(blitx, blity, pGC );
+				i->second->draw(x, y, pGC );
 			}
 		}
 }
