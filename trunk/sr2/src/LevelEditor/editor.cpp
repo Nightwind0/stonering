@@ -39,9 +39,8 @@ int EditorMain::main(int argc, char **argv)
 			// Create a display window
 			CL_DisplayWindow window("SR2 - Editor", 700, 600, false);
 
-			
 			CL_ResourceManager gui_resources("gui.xml",new CL_Zip_Archive("guistylesilver.gui"),true);
-			
+
 			CL_StyleManager_Silver style(&gui_resources);
 			CL_GUIManager gui(&style);
 			gui_manager = &gui;
@@ -59,10 +58,33 @@ int EditorMain::main(int argc, char **argv)
 			menu.create_item("File/Save As...");
 			menu.create_item("File/Quit");
 
-			menu.create_item("TileSet/Load");
+			list<string> tilesets;
+			list<string> tempsets;
+
+			tilesets.push_back("Walls");
+			tilesets.push_back("Grass");
+			
+			string menutileset;
+
+			while(!tilesets.empty())
+			{
+				menutileset = "TileSet/" + tilesets.front();
+				menu.create_item(menutileset);
+//				CL_Slot slot_menu_change = .connect(this, &EditorMain::on_change);
+				
+				slots.connect(menu.get_node(menutileset)->sig_clicked(), this, &EditorMain::on_tileset_change, tilesets.front());
+
+				tempsets.push_back(tilesets.front());
+				tilesets.pop_front();
+			}
+			tilesets = tempsets;
+
 
 			// menu item signal connects
 			CL_Slot slot_menu_quit = menu.get_node("File/Quit")->sig_clicked().connect(this, &EditorMain::on_quit);
+
+
+		//	CL_Slot slot_menu_change = menu.get_node("TileSet/)->sig_clicked().connect(this, &EditorMain::on_change);
 
 			
 			TileSelector tiles(CL_Rect(510, 30, 690, 400), &gui);
@@ -115,7 +137,11 @@ int EditorMain::main(int argc, char **argv)
 		CL_Display::clear(CL_Color::lightgrey);
 	}
 
-
+	void EditorMain::on_tileset_change(string userdata)
+	{
+	
+		CL_Label * titlelabel = new CL_Label(CL_Point(100, 100), userdata, gui_manager);
+	}
 
 
 
