@@ -38,6 +38,52 @@ int Application::getScreenHeight()const
 }
 
 
+void Application::playAnimation(const std::string &animation)const
+{
+#ifndef NDEBUG
+    std::cout << "Playing animation " << animation << std::endl;
+#endif
+}
+
+void Application::playSound(const std::string &sound)const
+{
+#ifndef NDEBUG
+    std::cout << "Playing sound " << sound << std::endl;
+#endif
+}
+
+void Application::loadLevel(const std::string &level, uint startX, uint startY)
+{
+#ifndef NDEBUG
+    std::cout << "Load level " << level << std::endl;
+#endif
+}
+
+void Application::startBattle(const std::string &monster, uint count, bool isBoss)
+{
+#ifndef NDEBUG
+    std::cout << "Start battle " << monster << std::endl;
+#endif
+}
+
+void Application::say(const std::string &speaker, const std::string &text)
+{
+#ifndef NDEBUG
+    std::cout << "Say: " << speaker << ":" << text << std::endl;
+#endif
+}
+
+void Application::pause(uint time)
+{
+}
+
+void Application::invokeShop(const std::string &shoptype)
+{
+}
+
+
+
+
 IApplication * IApplication::getInstance()
 {
     return &sr_app;
@@ -63,12 +109,12 @@ CL_ResourceManager * Application::getResources() const
 }
 
 
-bool Application::canMove(const CL_Rect &currently, const CL_Rect &destination, bool noHot)
+bool Application::canMove(const CL_Rect &currently, const CL_Rect &destination, bool noHot, bool isPlayer)
 {
-    return mpLevel->canMove(currently,destination,noHot);
+    return mpLevel->canMove(currently,destination,noHot,isPlayer);
 }
 
-Application::Application():mpParty(0),mpLevelFactory(0),mCurX(0),mCurY(0),mbDone(false),mSpeed(1)
+Application::Application():mpParty(0),mpLevelFactory(0),mCurX(0),mCurY(0),mLevelX(0),mLevelY(0),mbDone(false),mSpeed(1)
 {
     mpParty = new Party();
 
@@ -83,14 +129,14 @@ Application::~Application()
 
 CL_Rect Application::getLevelRect() const
 {
-    // TODO: Make this real
-    return CL_Rect(0,0,mpLevel->getWidth() * 32, mpLevel->getHeight() * 32);
+
+    return CL_Rect(mLevelX,mLevelY, mLevelX + getScreenWidth(), mLevelY + getScreenHeight());
 
 }
 
 CL_Rect Application::getDisplayRect() const
 {
-    return CL_Rect(40,40,mpLevel->getWidth() * 32, mpLevel->getHeight() * 32);
+    return CL_Rect(0,0,getScreenWidth(), getScreenHeight());
 
 }
 
@@ -110,13 +156,98 @@ void Application::teardownClanLib()
 }
 
 
+
+void Application::recalculatePlayerPosition(eDir dir)
+{
+    int X = mpParty->getLevelX();
+    int Y = mpParty->getLevelY();
+
+    if(dir == EAST)
+    {
+	if( X - mLevelX > (WINDOW_WIDTH / 2))
+	{
+	    // Try to scroll right, otherwise, move guy east
+	    
+	    if(mLevelX + 1 + WINDOW_WIDTH < mpLevel->getWidth() * 32)
+	    {
+		mLevelX++;
+	    }
+	    else
+	    {
+		mCurX = X - mLevelX;
+	    }
+	}
+	else
+	{
+	    mCurX = X - mLevelX;
+	}
+    }
+    else if(dir == WEST)
+    {
+	if(X - mLevelX <= (WINDOW_WIDTH / 2))
+	{
+	    if(mLevelX -1 >0)
+	    {
+		mLevelX--;
+	    }
+	    else
+	    {
+		mCurX = X - mLevelX;
+	    }
+	}
+	else
+	{
+	    mCurX = X - mLevelX;
+	}
+	
+    }
+    else if (dir == SOUTH)
+    {
+	if(Y - mLevelY > (WINDOW_HEIGHT /2))
+	{
+	    
+	    if(mLevelY + 1 + WINDOW_HEIGHT < mpLevel->getHeight() * 32)
+	    {
+		mLevelY++;
+	    }
+	    else
+	    {
+		mCurY = Y - mLevelY;
+	    }
+	}
+	else
+	{
+	    mCurY = Y - mLevelY;
+	}
+    }   
+    else if (dir == NORTH)
+    {
+	if(Y - mLevelY <= (WINDOW_HEIGHT / 2))
+	{
+	    if(mLevelY -1 >0)
+	    {
+		mLevelY--;
+	    }
+	    else
+	    {
+		mCurY = Y - mLevelY;
+	    }
+	}
+	else
+	{
+	    mCurY = Y - mLevelY;
+	}
+    }
+    
+
+}
 bool Application::move(eDir dir, int times)
 {
     for(int i=0;i<times;i++)
     {
     
-	int nX = mCurX;
-	int nY = mCurY;
+	int nX = mpParty->getLevelX();
+	int nY = mpParty->getLevelY();
 
 	switch(dir)
 	{
@@ -133,17 +264,26 @@ bool Application::move(eDir dir, int times)
 	    nX--;
 	    break;
 	}
-
-	if(canMove ( CL_Rect(mCurX,mCurY,mCurX+32,mCurY+32), CL_Rect(nX,nY,nX+32,nY+32), true))
+	
+	if(canMove ( CL_Rect(mpParty->getLevelX(),mpParty->getLevelY(),
+			     mpParty->getLevelX()+64,mpParty->getLevelY()+64),
+		     CL_Rect(nX,nY,nX+64,nY+64),false, true))
 	{
-	    mCurX = nX;
-	    mCurY = nY;
+	    mpParty->setLevelX( nX );
+	    mpParty->setLevelY( nY );
+
+	    recalculatePlayerPosition(dir);
+
+	    mPlayerDir = dir;
+
+	    mpLevel->step(nX,nY);
+
 	}
 	else return false;
 	
     }
 
-	return true;
+    return true;
 
 
 }
@@ -181,29 +321,9 @@ void Application::onSignalKeyDown(const CL_InputEvent &key)
 	mSpeed++;
 	break;
 
-    case CL_KEY_T:
-
-	document.append_child ( mpLevel->createDomElement(document) );
-
-	delete mpLevel;
-
-	mpLevel = new Level();
-	mpLevel->load (document );
-
-
-	break;
-
-
-    case CL_KEY_W:
-
-	document.append_child ( mpLevel->createDomElement(document) );
-
-	document.save( new CL_OutputSource_File( "foo.xml"),true,false);
-
-	break;
-
     case CL_KEY_D:
 	std::cout << "AT " << '(' << mCurX / 32 << ',' << mCurY / 32 << ')' << std::endl;
+	break;
     default:
 	break;
     }
@@ -272,7 +392,7 @@ int Application::main(int argc, char ** argv)
 
 
 	
-	    CL_Rect src(mCurX,mCurY,mCurX + dst.get_width(), mCurY +dst.get_height());
+	    CL_Rect src = getLevelRect();
 
 
 
@@ -281,7 +401,7 @@ int Application::main(int argc, char ** argv)
 
 	    mpLevel->draw(src,dst, mpWindow->get_gc(), false,false,true);
 
-//	    mpWindow->get_gc()->draw_rect( CL_Rect(mCurX,mCurY,mCurX+32,mCurY+32), CL_Color::aqua ) ;
+	    mpWindow->get_gc()->draw_rect( CL_Rect(mCurX,mCurY,mCurX+64,mCurY+64), CL_Color::aqua ) ;
 	    mpLevel->drawMappableObjects( src,dst, mpWindow->get_gc());
 	    mpLevel->drawFloaters(src,dst, mpWindow->get_gc());
 

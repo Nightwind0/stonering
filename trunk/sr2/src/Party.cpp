@@ -65,3 +65,24 @@ void Party::setLevelY(uint y)
 {
     mY = y;
 }
+
+void Party::doEvent(const std::string &name)
+{
+}
+
+
+void Party::giveItem(ItemRef *pItemRef)
+{
+}
+
+void Party::takeItem(ItemRef *pItemRef)
+{
+}
+
+void Party::giveGold(int amount)
+{
+}
+
+void Party::modifyAttribute(const std::string &attribute, int add, const std::string &target)
+{
+}

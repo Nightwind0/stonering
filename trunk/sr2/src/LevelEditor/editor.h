@@ -27,7 +27,7 @@ class StoneRing::ItemRef; // Forward decl
 class EditorParty : public StoneRing::IParty
 {
 public:
-	virtual bool getGold() const { return true;}
+    virtual bool getGold() const { return true;}
     virtual bool hasItem(StoneRing::Item::eItemType type, const std::string &item) const{ return true; }
     virtual bool hasItem(StoneRing::ItemRef *pItemRef )const{return true;}
     virtual bool didEvent(const std::string &event) const{return true;}
@@ -35,6 +35,11 @@ public:
     virtual uint getLevelY() const{return 0; }
     virtual uint getWidth() const { return 64; }
     virtual uint getHeight() const { return 64; }
+    virtual void doEvent(const std::string &name){}
+    virtual void giveItem(ItemRef * pItemRef){}
+    virtual void takeItem(ItemRef * pItemRef){}
+    virtual void giveGold(int amount){}
+    virtual void modifyAttribute(const std::string &attribute, int add, const std::string &target){}
 };
 
 
@@ -62,7 +67,16 @@ public:
       virtual CL_Rect getDisplayRect() const;
 
 
-      virtual bool canMove(const CL_Rect &currently, const CL_Rect &destination, bool noHot);
+      virtual bool canMove(const CL_Rect &currently, const CL_Rect &destination, bool noHot, bool isPlayer);
+
+
+      virtual void playAnimation(const std::string &animation)const{}
+      virtual void playSound(const std::string &sound)const{}
+      virtual void loadLevel(const std::string &level, uint startX, uint startY){}
+      virtual void startBattle(const std::string &monster, uint count, bool isBoss){}
+      virtual void say(const std::string &speaker, const std::string &text){}
+      virtual void pause(uint time){}
+      virtual void invokeShop(const std::string &shoptype){}
 
 
 

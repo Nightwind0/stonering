@@ -29,6 +29,11 @@ class IParty
     virtual uint getLevelY() const=0;
     virtual uint getWidth() const=0;
     virtual uint getHeight() const =0;
+    virtual void doEvent(const std::string &name)=0;
+    virtual void giveItem(ItemRef * pItemRef)=0;
+    virtual void takeItem(ItemRef * pItemRef)=0;
+    virtual void giveGold(int amount)=0;
+    virtual void modifyAttribute(const std::string &attribute, int add, const std::string &target)=0;
 
 
  private:

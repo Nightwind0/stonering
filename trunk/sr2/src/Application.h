@@ -4,7 +4,7 @@
 #include <ClanLib/application.h>
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
-#include "IParty.h"
+#include "Party.h"
 #include "IApplication.h"
 
 
@@ -32,16 +32,34 @@ class Level;
       virtual CL_Rect getDisplayRect() const;
 
 
-      virtual bool canMove(const CL_Rect &currently, const CL_Rect &destination, bool noHot);
+      virtual bool canMove(const CL_Rect &currently, const CL_Rect &destination, bool noHot, bool isPlayer);
+
+
+      virtual void playAnimation(const std::string &animation)const;
+      virtual void playSound(const std::string &sound)const;
+      virtual void loadLevel(const std::string &level, uint startX, uint startY);
+      virtual void startBattle(const std::string &monster, uint count, bool isBoss);
+      virtual void say(const std::string &speaker, const std::string &text);
+      virtual void pause(uint time);
+      virtual void invokeShop(const std::string &shoptype);
+
+
 
     private:
 
-      IParty *mpParty;
+      enum eDir{NORTH,SOUTH,EAST,WEST};
+
+      Party *mpParty;
       LevelFactory * mpLevelFactory;
 
 
       int mCurX;
       int mCurY;
+
+      int mLevelX;
+      int mLevelY;
+
+      eDir mPlayerDir;
 
       bool mbDone;
 
@@ -53,7 +71,12 @@ class Level;
       void showIntro();
 
 
-      enum eDir{NORTH,SOUTH,EAST,WEST};
+
+
+
+
+
+      void recalculatePlayerPosition(eDir dir);
 
       bool move(eDir dir, int times=1);
 

@@ -390,7 +390,7 @@ void AttributeModifier::invoke()
 	Condition * condition = *i;
 	if( ! condition->evaluate() ) return;
     }
-    // IApplication::getInstance()->getParty()->modifyAttribute( blah blah blah ) ;
+    IApplication::getInstance()->getParty()->modifyAttribute(mAttribute, mAdd, mTarget ) ;
 }
 
 
@@ -1187,7 +1187,7 @@ bool Event::invoke()
 
     if(! mpCondition->evaluate() ) return false;
 
-    // IApplication::getInstance()->getParty()->doEvent ( mName );
+    IApplication::getInstance()->getParty()->doEvent ( mName );
 
     for(std::list<Action*>::iterator i = mActions.begin();
 	i != mActions.end();
@@ -1234,7 +1234,7 @@ PlayAnimation::~PlayAnimation()
 
 void PlayAnimation::invoke()
 {
-    // IApplication::getInstance()->playAnimation ( mAnimation );
+    IApplication::getInstance()->playAnimation ( mAnimation );
 }
  
 
@@ -1266,7 +1266,7 @@ PlaySound::~PlaySound()
 
 void PlaySound::invoke()
 {
-    // IApplication::getInstance()->playSound ( mSound );
+    IApplication::getInstance()->playSound ( mSound );
 
 }
 
@@ -1424,7 +1424,7 @@ Movement::eMovementSpeed Movement::getMovementSpeed() const
 
 void LoadLevel::invoke()
 {
-    // IApplication::getInstance()->loadLevel ( mName, startX, startY );
+    IApplication::getInstance()->loadLevel ( mName, mStartX, mStartY );
 }
 
 StartBattle::StartBattle()
@@ -1491,7 +1491,7 @@ StartBattle::~StartBattle()
 
 void StartBattle::invoke()
 {
-    // IApplication::getInstance()->startBattle ( mMonster, mCount, mbIsBoss ) ;
+    IApplication::getInstance()->startBattle ( mMonster, mCount, mbIsBoss ) ;
 }
 
 
@@ -1529,7 +1529,7 @@ InvokeShop::~InvokeShop()
 
 void InvokeShop::invoke()
 {
-    // IApplication::getInstance()->invokeShop ( mShopType );
+    IApplication::getInstance()->invokeShop ( mShopType );
 }
 
 
@@ -1560,7 +1560,7 @@ Pause::~Pause()
 
 void Pause::invoke()
 {
-    // IApplication::getInstance()->pause ( mMs ) ;
+    IApplication::getInstance()->pause ( mMs ) ;
 }
  
 Say::Say()
@@ -1602,7 +1602,7 @@ Say::~Say()
 
 void Say::invoke()
 {
-    // IApplication::getInstance()->say ( mText, mSpeaker );
+    IApplication::getInstance()->say ( mText, mSpeaker );
 }
 
 Give::Give()
@@ -1657,7 +1657,7 @@ Give::~Give()
 
 void Give::invoke()
 {
-    // IApplication::getInstance()->getParty()->giveItem ( mpItemRef );
+    IApplication::getInstance()->getParty()->giveItem ( mpItemRef );
 }
 
 Take::Take()
@@ -1714,7 +1714,7 @@ Take::~Take()
 
 void Take::invoke()
 {
-    // IApplication::getInstance()->getParty()->takeItem ( mpItemRef );
+    IApplication::getInstance()->getParty()->takeItem ( mpItemRef );
 }
 
 
@@ -1760,7 +1760,7 @@ GiveGold::~GiveGold()
 
 void GiveGold::invoke()
 {
-    // IApplication::getInstance()->getParty()->giveGold ( mCount );
+    IApplication::getInstance()->getParty()->giveGold ( mCount );
 }
 
 
@@ -2516,7 +2516,7 @@ bool MappableObject::moveInCurrentDirection()
 		
 	}
 
-	if(!IApplication::getInstance()->canMove ( getRect(), newRect, true))
+	if(!IApplication::getInstance()->canMove ( getRect(), newRect, true,false))
 	{
 	    return false;
 	}

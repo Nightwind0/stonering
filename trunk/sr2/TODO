@@ -1,8 +1,7 @@
 Danny TODOs
-DONE 1) Order the tiles on load by zOrder
-DONE 1.5) Create some sprites, get those loading and working
 2) Wire up events
-DONE 2.5) Get MOs drawing, updating, etc
 3) Wire up stepping / talking
 4) New "choices" element, with "choice" children. They have the application present to the user choices, the user selects one, and then the app returns an index to indicate which choice was made, the choices object uses that to invoke one of the choices. Each "choice" has a choiceText attribute, and a list of actions. "choices" should live under event, and essentially be an action. That way, it can have conditions.
-5) Get canMove working
+
+5) How will monsters work? How will you know what monsters to load? How will you know where you can even have monsters? 
+	It seems like it would be per-level. The level header could contain a boolean for whether monsters existed, and perhaps at what rate they were encountered.

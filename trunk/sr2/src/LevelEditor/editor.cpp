@@ -71,7 +71,7 @@ CL_Rect EditorMain::getDisplayRect() const
 }
 
 
-bool EditorMain::canMove(const CL_Rect &currently, const CL_Rect &destination, bool noHot)
+bool EditorMain::canMove(const CL_Rect &currently, const CL_Rect &destination, bool noHot, bool isPlayer)
 {
 	// return mpLevel->canMove
 	return true;
