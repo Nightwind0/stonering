@@ -11,7 +11,7 @@
 #include <ClanLib/gui.h>
 #include <ClanLib/guistylesilver.h>
 
-
+#include "EditableLevel.h"
 #include "TileSelector.h"
 #include "MapGrid.h"
 #include "GridPoint.h"
@@ -82,6 +82,9 @@ private:
 
 	TileSelector* tiles;
 	CL_GraphicContext *gc;
+
+	EditableLevel mLevel;
+
 };
 
 

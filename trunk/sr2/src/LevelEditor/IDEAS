@@ -5,3 +5,11 @@
 4)In fact, rubber-band selections of tiles in general would be handy. Something to think about. 
 
 5) Similarly, there should be a way to quickly mark tiles as "hot", as well as check it on or off in the properties window per each tile
+
+
+==== DESIGN ====
+
+
+Really, level should create things using a factory, using Interfaces, that way we could swap in editable versions of all objects.
+The IApplication could double as the factory, adding a series of create() methods, or the IApplication could provide the factory,
+and the factory would have the create methods...otherwise, by default it's going to create uneditable versions of things

@@ -25,6 +25,14 @@ class EditableTilemap : public StoneRing::Tilemap
     
 };
 
+class EditableSpriteRef : public StoneRing::SpriteRef
+{
+ public:
+    EditableSpriteRef( const std::string &ref, StoneRing::SpriteRef::eDirection dir );
+    EditableSpriteRef(CL_DomElement * pElement );
+    virtual ~EditableSpriteRef();
+};
+
 
 class EditableTile : public StoneRing::Tile
 {
@@ -55,6 +63,7 @@ class EditableTile : public StoneRing::Tile
 class EditableLevel : public StoneRing::Level
 {
  public:
+    EditableLevel(){}
     EditableLevel(const std::string &name,CL_ResourceManager * pResources);
     virtual ~EditableLevel();
 			
@@ -71,6 +80,8 @@ class EditableLevel : public StoneRing::Level
 
           
  protected:
+
+    virtual void loadTile ( CL_DomElement * tileElement);
 
 };
 
