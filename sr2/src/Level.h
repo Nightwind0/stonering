@@ -101,9 +101,13 @@ namespace StoneRing {
 			SpriteRef( CL_DomElement *pElement);
 			~SpriteRef();
 
+			enum eDirection {SPR_NONE, SPR_STILL, SPR_NORTH, SPR_SOUTH, SPR_EAST, SPR_WEST };
+
+			eDirection getDirection() const;
 			std::string getRef() const;
 
 		private:
+			eDirection meDirection;
 			std::string mRef;
 		};
 
@@ -498,10 +502,11 @@ namespace StoneRing {
 			enum eFlags { SPRITE = 1, BLK_NORTH = 2, BLK_SOUTH = 4, BLK_EAST = 8, BLK_WEST = 16, TILEMAP = 32 };
 
 			std::string mName;
-			std::list<CL_Sprite *>mSprites;
+			std::map<SpriteRef::eDirection, CL_Sprite* > mSprites;
 			SpriteRefOrTilemap mGraphic;
 			std::list<Event*> mEvents;
       
+			SpriteRef::eDirection meDirection;
 			ushort mStartX;
 			ushort mStartY;
 			uint mX;
