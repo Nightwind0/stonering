@@ -3359,8 +3359,22 @@ void Level::loadTile ( CL_DomElement * tileElement)
 
     Tile * tile = factory->createTile ( tileElement );
 
+    if(tile->getX() >= mLevelWidth)
+    {
+	delete tile;
+	throw CL_Error("Tile found beyond range of indicated level width.");
+    }
+    else if (tile->getY() >= mLevelHeight)
+    {
+	delete tile;
+	throw CL_Error("Tile found beyond range of indicated level height.");
+    }
+
     point.x = tile->getX();
     point.y = tile->getY();
+
+   
+
 	
     if( tile->isFloater() )
     {
