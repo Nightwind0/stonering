@@ -1,11 +1,60 @@
 <!DOCTYPE Level [
 <!ELEMENT resources (section)>
-<!ELEMENT section (tile*,string*,integer*,mo*)>
+<!ELEMENT section ((tile|string|integer|mo)*)>
 <!ELEMENT string EMPTY>
 <!ELEMENT integer EMPTY>
-<!ELEMENT tile (condition?)>
+<!ELEMENT tile ((tilemap | spriteRef),condition?, attributeModifier?)>
+<!ELEMENT tilemap EMPTY>
+<!ELEMENT spriteRef (#PCDATA)>
 <!ELEMENT condition (operator*)>
-<!ELEMENT operator(and*,or*)>
-<!ELEMENT and(hasGold*,hasItem*,didEvent*,operator*)>
-<!ELEMENT or(hasGold*,hasItem*,didEvent*,operator*)>
+<!ELEMENT attributeModifier (condition*)>
+<!ELEMENT operator ((and | or)*)>
+<!ELEMENT and ((hasGold|hasItem|didEvent|operator)*)>
+<!ELEMENT or ((hasGold|hasItem|didEvent|operator)*)>
+<!ELEMENT hasGold (#PCDATA)>
+<!ELEMENT hasItem (itemRef)>
+<!ELEMENT didEvent (#PCDATA)>
+<!ELEMENT mo ((tilemap|spriteRef)?,event*)>
+<!ELEMENT event (condition?,(attributeModifier | say | give | take | playAnimation | playSound | loadLevel | startBattle | pause | invokeShop)*)>
+<!ELEMENT say (#PCDATA)>
+<!ELEMENT give (#PCDATA)>
+<!ELEMENT take (#PCDATA)>
+<!ELEMENT itemRef (#PCDATA)>
+<!ELEMENT playAnimation (#PCDATA)>
+<!ELEMENT playSound (#PCDATA)>
+<!ELEMENT loadLevel (#PCDATA)>
+<!ELEMENT startBattle EMPTY>
+<!ELEMENT invokeShop EMPTY>
+<!ELEMENT pause (#PCDATA)>
+<!ATTLIST section name CDATA #REQUIRED>
+<!ATTLIST string name CDATA #REQUIRED>
+<!ATTLIST string value CDATA #REQUIRED>
+<!ATTLIST integer name CDATA #REQUIRED>
+<!ATTLIST integer value CDATA #REQUIRED>
+<!ATTLIST tile name CDATA #REQUIRED>
+<!ATTLIST tile xpos CDATA #REQUIRED>
+<!ATTLIST tile ypos CDATA #REQUIRED>
+<!ATTLIST tile zorder CDATA #IMPLIED>
+<!ATTLIST mo name CDATA #REQUIRED>
+<!ATTLIST mo type CDATA #REQUIRED>
+<!ATTLIST mo xpos CDATA #REQUIRED>
+<!ATTLIST mo ypos CDATA #REQUIRED>
+<!ATTLIST event name CDATA #REQUIRED>
+<!ATTLIST event triggerType CDATA #REQUIRED>
+<!ATTLIST say speaker CDATA #REQUIRED>
+<!ATTLIST give count CDATA #IMPLIED>
+<!ATTLIST take count CDATA #IMPLIED>
+<!ATTLIST itemRef itemType CDATA #REQUIRED>
+<!ATTLIST loadLevel name CDATA #REQUIRED>
+<!ATTLIST loadLevel startx CDATA #REQUIRED>
+<!ATTLIST loadLevel starty CDATA #REQUIRED>
+<!ATTLIST startBattle monster CDATA #REQUIRED>
+<!ATTLIST startBattle count CDATA #IMPLIED>
+<!ATTLIST startBattle isBoss CDATA #IMPLIED>
+<!ATTLIST invokeShop shopType CDATA #REQUIRED>
+<!ATTLIST hasGold operator (lt|gt|lte|gte|eq) #REQUIRED>
+<!ATTLIST attributeModifier attribute CDATA #REQUIRED>
+<!ATTLIST attributeModifier add CDATA #REQUIRED>
+<!ATTLIST attributeModifier target CDATA #IMPLIED>
+
 ]>
