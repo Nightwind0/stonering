@@ -32,6 +32,7 @@ MapGrid::MapGrid(CL_Rect setrect, CL_Component *parent, EditableLevel *mpLevel, 
 
 
 	slots.connect(sig_paint(), this, &MapGrid::on_paint);
+	slots.connect(sig_mouse_up(), this, &MapGrid::on_placeTile);
 
 }
 
@@ -60,5 +61,25 @@ void MapGrid::on_paint()
 
 	mgLevel->draw(src, dst, mgGC, false);
 
+	//when dan fixes the mappables to work in the editor just uncomment this line.
+	//mgLevel->drawMappableObjects(src,dst,mgGC);
+
 }
 
+void MapGrid::on_placeTile(const CL_InputEvent &event)
+{
+	int clickX, clickY;
+
+	clickX = event.mouse_pos.x;
+	clickY = event.mouse_pos.y;
+
+	if(clickX <get_width()-20 && clickY<get_height()-20)
+	{
+		mgX = (clickX/32) + mgScrollHorz->get_value();
+		mgY = (clickY/32) + mgScrollVert->get_value();
+
+		cout << "(" << mgX << "," << mgY << ")" << endl;
+
+
+	}
+}
