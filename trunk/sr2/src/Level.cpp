@@ -11,6 +11,32 @@
 
 using std::string;
 
+#ifdef _MSC_VER
+template <class T> inline T max(const T& a, const T& b)
+{
+
+	return (a > b) ? a : b;
+
+}
+
+template <class T> inline T min(const T& a, const T& b)
+{
+	
+	return (a < b) ? a : b;
+
+} 
+
+template <class T> inline T abs( const T& a)
+{
+	if( a < 0) return -a;
+	else return a;
+}
+
+#else
+using std::max;
+using std::min;
+using std::abs;
+#endif
 
 
 using namespace StoneRing;
@@ -866,6 +892,35 @@ LoadLevel::~LoadLevel()
 {
 }
 
+
+
+
+
+
+
+Movement::Movement ( CL_DomElement * pElement )
+{
+}
+
+Movement::~Movement()
+{
+}
+
+
+Movement::eMovementType Movement::getMovementType() const
+{
+	return meType;
+}
+
+Movement::eMovementSpeed Movement::getMovementSpeed() const
+{
+	return meSpeed;
+}
+
+
+
+
+
 void LoadLevel::invoke()
 {
 	// Application->loadLevel ( mName, startX, startY );
@@ -1117,6 +1172,11 @@ eDirectionBlock DirectionBlock::getDirectionBlock() const
 	return meDirectionBlock;
 }
 
+bool Tile::isHot() const
+{
+	return cFlags & HOT;
+}
+
 Tile::Tile(CL_DomElement *pElement):mpSprite(NULL),mpCondition(NULL), mpAM(NULL), mZOrder(0), cFlags(0)
 {
 
@@ -1144,6 +1204,16 @@ Tile::Tile(CL_DomElement *pElement):mpSprite(NULL),mpCondition(NULL), mpAM(NULL)
 		if(floater == "true")
 		{
 			cFlags |= FLOATER;
+		}
+	}
+
+	if(!attributes.get_named_item("hot").is_null())
+	{
+		std::string hot = attributes.get_named_item("hot").get_node_value();
+
+		if(hot == "true")
+		{
+			cFlags |= HOT;
 		}
 	}
 
@@ -1185,7 +1255,7 @@ Tile::Tile(CL_DomElement *pElement):mpSprite(NULL),mpCondition(NULL), mpAM(NULL)
 			eDirectionBlock db = block.getDirectionBlock();
 
 			// This is all done to make tile's take up less space in memory
-
+			
 			if(db & DIR_NORTH)
 				cFlags |= BLK_NORTH;
 			if(db & DIR_SOUTH)
@@ -1314,7 +1384,7 @@ bool Tile::isTile() const
 
  
  
-MappableObject::MappableObject(CL_DomElement *pElement):meMovementType(MOVEMENT_NONE)
+MappableObject::MappableObject(CL_DomElement *pElement):mpMovement(0)
 {
 
 	cFlags = 0;
@@ -1343,17 +1413,6 @@ MappableObject::MappableObject(CL_DomElement *pElement):meMovementType(MOVEMENT_
 	mX = mStartX * 32;
 	mY = mStartY * 32;
 	
-	if(!attributes.get_named_item("movementType").is_null())
-	{
-		std::string movetype = attributes.get_named_item("movementType").get_node_value();
-
-		if(movetype == "wander") meMovementType = MOVEMENT_WANDER;
-		else meMovementType = MOVEMENT_NONE;
-		
-	}
-
-
-
 	CL_DomElement child = pElement->get_first_child().to_element();
 
 	while( !child.is_null() )
@@ -1400,6 +1459,7 @@ MappableObject::MappableObject(CL_DomElement *pElement):meMovementType(MOVEMENT_
 				cFlags |= BLK_WEST;
 			
 		}
+		// TODO Movement
 
 		child = child.get_next_sibling().to_element();
 	}
@@ -1430,9 +1490,9 @@ ushort MappableObject::getStartY() const
 
 
 
-MappableObject::eMovementType MappableObject::getMovementType() const
+Movement* MappableObject::getMovement() const
 {
-	return meMovementType;
+	return mpMovement;
 }
 
 
@@ -1488,14 +1548,93 @@ void MappableObject::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicCont
 
 }
 
+void MappableObject::moveInCurrentDirection()
+{
+
+	static long timeOfLastRun = 0;
+	
+
+	if(CL_System::get_time() > timeOfLastRun + 500)
+	{
+
+		timeOfLastRun = CL_System::get_time();
+
+		switch ( meDirection )
+		{
+		case SpriteRef::SPR_SOUTH:
+			mY+=3;
+			break;
+		case SpriteRef::SPR_NORTH:
+			mY-=3;
+			break;
+		case SpriteRef::SPR_EAST:
+			mX+=3;
+			break;
+		case SpriteRef::SPR_WEST:
+			mX-=3;
+			break;
+		default:
+			break;
+		
+		}
+		randomNewDirection();
+
+	}
+
+
+	
+
+}
+
+void MappableObject::randomNewDirection()
+{
+	int r= rand() % 20;
+	
+	switch( r)
+	{
+	case 0:
+		if(mSprites.count(SpriteRef::SPR_NORTH))
+				meDirection = SpriteRef::SPR_NORTH;
+		break;
+	case 1:
+		if(mSprites.count(SpriteRef::SPR_SOUTH))
+			meDirection = SpriteRef::SPR_SOUTH;
+		break;
+	case 2:
+		if(mSprites.count(SpriteRef::SPR_EAST))
+			meDirection = SpriteRef::SPR_EAST;
+			break;
+	case 3:
+		if(mSprites.count(SpriteRef::SPR_WEST))
+			meDirection = SpriteRef::SPR_WEST;
+		break;
+	case 4:
+		if(mSprites.count(SpriteRef::SPR_STILL))
+			meDirection = SpriteRef::SPR_STILL;
+		break;
+	default:
+		break;
+			
+	}
+	
+	
+	
+	
+}
+
 void MappableObject::update()
 {
 	if(isSprite())
 		mSprites[meDirection]->update();
 
-	switch(meMovementType)
+	if(!mpMovement) return;
+
+	switch(mpMovement->getMovementType())
 	{
-	case MOVEMENT_WANDER:
+	case Movement::MOVEMENT_WANDER:
+		moveInCurrentDirection();
+		break;
+	case Movement::MOVEMENT_NONE:
 		break;
 	}
 }
@@ -1552,6 +1691,7 @@ void MappableObject::provokeEvents ( Event::eTriggerType trigger )
 
 Level::Level(const std::string &name,CL_ResourceManager * pResources): mpDocument(NULL)
 {
+	srand(time(0));
 	// Get the level file name from resources
 
 	std::string path = CL_String::load("Game/LevelPath", pResources);
@@ -1589,9 +1729,9 @@ void Level::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC,
 	int heightInPx = heightInTiles * 32;
 
 	if(src.left % 32)
-		widthInTiles = std::max(widthInTiles, (src.get_width() / 32 + 1));
+		widthInTiles = max(widthInTiles, (src.get_width() / 32 + 1));
 	if(src.top % 32)
-		heightInTiles = std::max(heightInTiles, (src.get_height() /32 + 1));
+		heightInTiles = max(heightInTiles, (src.get_height() /32 + 1));
 
 
 	CL_Rect exDst = dst; // expanded Dest
@@ -1692,9 +1832,150 @@ void Level::drawFloaters(const CL_Rect &src, const CL_Rect &dst, CL_GraphicConte
 
       
 // Checks relevant tile and MO direction block information
-bool Level::canMove(const CL_Rect &currently, const CL_Rect & destination) const
+bool Level::canMove(const CL_Rect &currently, const CL_Rect & destination, bool noHot) const
 {
-	return false;
+/*
+
+	// TODO: Enforce rule that all objects must call this for every pixel movement?
+	// if they move faster than a pixel at once, then they have to call this for each one.
+	// That simplifies life.
+	eDirectionBlock movementDir;
+
+	if ( currently.left < destination.left) movementDir = DIR_WEST;
+	if ( currently.left > destination.left) movementDir = DIR_EAST;
+	if ( currently.top < destination.top) movementDir = DIR_SOUTH;
+	if ( currently.top > destination.top) movementDir = DIR_NORTH;
+
+
+
+
+	//  Check MOs for overlap, return true if any
+	for(std::list<MappableObject*>::iterator iter = mMappableObjects.begin();
+	    iter != mMappableObjects.end();
+	    iter++)
+	{
+		MappableObject *pMO = *iter;
+		// TODO: Check for overlap, if none, continue
+		// TODO : Check direction block, compare to direction. 
+	}
+
+	// TODO Optimize this... there are too many map lookups
+	CL_Point top_left(destination.left / 32, destination.top / 32);
+	CL_Point top_right ( destination.right / 32, destination.top / 32);
+	CL_Point bottom_left ( destination.left /32 , destination.bottom / 32);
+	CL_Point bottom_right ( destination.right /32, destination.right / 32);
+
+	CL_Point cur_top_left ( currently.left / 32, currently.top / 32);
+	CL_Point cur_top_right (currently.right / 32, currently.top / 32);
+	CL_Point cur_bottom_left ( currently.left / 32, currently.bottom / 32);
+	CL_Point cur_bottom_right ( currently.right /32, currently.bottom / 32);
+
+
+	// Calculate the direction they are coming from
+
+	bool breaching_north = (movementDir = DIR_NORTH && top_left != cur_top_left);
+	bool breaching_south = (movementDir = DIR_SOUTH && bottom_left != cur_bottom_left);
+	bool breaching_west = (movementDir = DIR_WEST && top_left != cur_top_left);
+	bool breaching_east = (movementDir = DIR_EAST && top_right != cur_top_right);
+
+	if(!breaching_north && !breaching_south && !breaching_west && !breaching_east) return true;
+
+	if( ! mTilemap.count( top_left ) ) return false;
+	if( ! mTilemap.count ( top_right ) ) return false;
+	if( ! mTilemap.count ( bottom_left) ) return false;
+	if( ! mTilemap.count ( bottom_right) ) return false;
+
+	
+	std::list<Tile*> top_left_tiles = mTilemap [ top_left ];
+	std::list<Tile*> top_right_tiles = mTilemap [ top_right ];
+	std::list<Tile*> bottom_left_tiles = mTilemap [ bottom_left ];
+	std::list<Tile*> bottom_right_tiles = mTilemap [ bottom_right ];
+
+
+	bool top_left_hot = false;
+	bool top_right_hot = false;
+	bool bottom_left_hot = false;
+	bool bottom_right_hot = false;
+
+	int top_left_blk  = 0;
+	int top_right_blk = 0;
+	int bottom_left_blk =0;
+	int bottom_right_blk =0;
+
+	// Just iterate through all 4 tilestacks once, ORing together their direction block values,
+	// and set hot to true if any are hot
+	for( std::list<Tile*>::iterator i = top_left_tiles.begin();
+	     i != top_left_tiles.end();
+	     i++)
+	{
+		Tile * pTile = *i;
+		
+		if( pTile->isHot ) top_left_hot = true;
+		
+		top_left_blk |= pTile->getDirectionBlock();
+	}
+
+	for( std::list<Tile*>::iterator j = top_right_tiles.begin();
+	     j != top_right_tiles.end();
+	     j++)
+	{
+		Tile * pTile = *j;
+		
+		if( pTile->isHot ) top_right_hot = true;
+		
+		top_right_blk |= pTile->getDirectionBlock();
+	}
+	    
+
+	for( std::list<Tile*>::iterator k = bottom_left_tiles.begin();
+	     k != bottom_left_tiles.end();
+	     k++)
+	{
+		Tile * pTile = *k;
+		
+		if( pTile->isHot ) bottom_left_hot = true;
+		
+		bottom_left_blk |= pTile->getDirectionBlock();
+	}
+
+	for( std::list<Tile*>::iterator l = bottom_right_tiles.begin();
+	     l != bottom_right_tiles.end();
+	     l++)
+	{
+		Tile * pTile = *l;
+		
+		if( pTile->isHot ) bottom_right_hot = true;
+		
+		bottom_right_blk |= pTile->getDirectionBlock();
+	}
+
+
+	// TODO: This assumes you can't move 32 or more pixels at once.
+
+	switch ( movementDir )
+	{
+	case DIR_SOUTH:
+		// You are 
+		if(top_left_blk & DIR_SOUTH) return false;
+		if(top_right_blk & DIR_SOUTH) return false;
+		if(bottom_left_blk & DIR_NORTH) return false;
+		if(bottom_right_blk & DIR_NORTH) return false;
+		break;
+	case DIR_NORTH:
+		if(top_left_blk & DIR_NORTH) return false;
+		if(top_right_blk & DIR_NORTH) return false;
+		if(bottom_left_blk & DIR_SOUTH) return false;
+		if(bottom_right_blk & DIR_SOUTH) return false;
+		break;
+	case DIR_WEST:
+		if(top_left_blk & DIR_EAST) return false;
+		if(top_right_blk & DIR_EAST) return false;
+//		if(top_right_blk & 
+	}
+
+*/
+		   
+	
 }
 
 // All AM's from tiles fire, as do any step events
@@ -1724,8 +2005,8 @@ bool Level::moSortCriterion( const MappableObject *p1, const MappableObject * p2
 	uint p1Distance, p2Distance;
 
 	
-	p1Distance = std::max(std::abs( (long)pX - p1->getX()) , std::abs((long)pY - p1->getY()));
-	p2Distance = std::max(std::abs( (long)pX - p2->getX()) , std::abs((long)pY - p2->getY()));
+	p1Distance = std::max(abs( (long)pX - p1->getX()) , abs((long)pY - p1->getY()));
+	p2Distance = std::max(abs( (long)pX - p2->getX()) , abs((long)pY - p2->getY()));
 
 	return p1Distance < p2Distance;
 

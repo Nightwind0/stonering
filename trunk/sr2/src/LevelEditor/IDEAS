@@ -1,0 +1,7 @@
+1) In the properties window for a tile, you should be able to set the 4 direction block flags (N,S,E,W). This could be as simple as 4 checkboxes, I dont care.
+2) You should be able to hold down a key to show the direction blocks on the level so far. Wherever there is a direction block, a colored line should be drawn above where the block conceptually is. Otherwise, blocking off regions would be hard.
+3) As extra super bonus credit, if you could select entire regions of tiles and hit a button to set them as blocked on all sides, that would be neat. 
+
+4)In fact, rubber-band selections of tiles in general would be handy. Something to think about. 
+
+5) Similarly, there should be a way to quickly mark tiles as "hot", as well as check it on or off in the properties window per each tile

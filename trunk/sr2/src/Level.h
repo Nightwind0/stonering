@@ -111,6 +111,23 @@ namespace StoneRing {
 			std::string mRef;
 		};
 
+	class Movement
+	  {
+	  public:
+	    Movement ( CL_DomElement * pElement );
+	    ~Movement();
+
+	    enum eMovementType { MOVEMENT_NONE, MOVEMENT_WANDER, MOVEMENT_PACE_NS, MOVEMENT_PACE_EW };
+	    enum eMovementSpeed { SLOW, FAST };
+
+	    eMovementType getMovementType() const;
+	    eMovementSpeed getMovementSpeed() const;
+	    
+	  private:
+	    eMovementType meType;
+	    eMovementSpeed meSpeed;
+	  };
+
 	class Condition;
 
 	class AttributeModifier : public Action
@@ -438,6 +455,8 @@ namespace StoneRing {
 
 			virtual bool isSprite() const;
 
+			bool isHot() const;
+
 			virtual void draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
 
 
@@ -450,7 +469,7 @@ namespace StoneRing {
 
 		private:
 
-			enum eFlags { SPRITE = 1, FLOATER = 2, HAS_COND = 4, BLK_NORTH = 8, BLK_SOUTH = 16, BLK_EAST = 32, BLK_WEST = 64 };
+			enum eFlags { SPRITE = 1, FLOATER = 2, HAS_COND = 4, BLK_NORTH = 8, BLK_SOUTH = 16, BLK_EAST = 32, BLK_WEST = 64, HOT = 128 };
 
 			CL_Sprite *mpSprite;
 			SpriteRefOrTilemap mGraphic;
@@ -473,10 +492,10 @@ namespace StoneRing {
 			ushort getStartX() const;
 			ushort getStartY() const;
 
-			enum eMovementType { MOVEMENT_NONE, MOVEMENT_WANDER };
+
 			enum eMappableObjectType { NPC, SQUARE, CONTAINER, DOOR, WARP };
 
-			eMovementType getMovementType() const;
+			Movement * getMovement() const;
 
 			std::string getName() const;
 			virtual uint getX() const;
@@ -498,7 +517,8 @@ namespace StoneRing {
 			void provokeEvents ( Event::eTriggerType trigger );
 
 		private:
-
+			void moveInCurrentDirection();
+			void randomNewDirection();
 			enum eFlags { SPRITE = 1, BLK_NORTH = 2, BLK_SOUTH = 4, BLK_EAST = 8, BLK_WEST = 16, TILEMAP = 32 };
 
 			std::string mName;
@@ -511,7 +531,7 @@ namespace StoneRing {
 			ushort mStartY;
 			uint mX;
 			uint mY;
-			eMovementType meMovementType;
+			Movement *mpMovement;
 			eMappableObjectType meType;
 
 			char cFlags;
@@ -534,7 +554,7 @@ namespace StoneRing {
       
       
 			// Checks relevant tile and MO direction block information
-			bool canMove(const CL_Rect &currently, const CL_Rect & destination) const; 
+			bool canMove(const CL_Rect &currently, const CL_Rect & destination, bool noHot = false) const; 
 
 			// All AM's from tiles fire, as do any step events
 			void step(uint levelX, uint levelY);
