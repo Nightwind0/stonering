@@ -1099,11 +1099,13 @@ Tile::Tile(CL_DomElement *pElement):mpSprite(NULL),mpCondition(NULL), mpAM(NULL)
 		}
 		else if (child.get_node_name() == "spriteRef" )
 		{
+			GraphicsManager * GM = GraphicsManager::getInstance();
 			mGraphic.asSpriteRef = new SpriteRef ( &child );
 			cFlags |= SPRITE;
 
 		        // Actually create the ref'd sprite here.
 			// And assign to mpSprite
+			mpSprite = GM->createSprite( mGraphic.asSpriteRef->getRef() );
 
 		}
 		else if (child.get_node_name() == "condition" )
@@ -1212,12 +1214,17 @@ void Tile::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC)
 		tilemap->draw(srcRect, dst, pGC);
 		
 	}
+	else
+	{
+		update();
+		mpSprite->draw( dst, pGC );
+	}
 
 }
 
 void Tile::update()
 {
-//	if(mpSprite) mpSprite->update();
+	if(isSprite()) mpSprite->update();
 }
 
 int Tile::getDirectionBlock() const
@@ -1291,8 +1298,12 @@ MappableObject::MappableObject(CL_DomElement *pElement):meMovementType(MOVEMENT_
 		}
 		else if (child.get_node_name() == "spriteRef" )
 		{
+			GraphicsManager *GM = GraphicsManager::getInstance();
+
 			mGraphic.asSpriteRef = new SpriteRef ( &child );
 			cFlags |= SPRITE;
+
+			mpSprite = GM->createSprite ( mGraphic.asSpriteRef->getRef() );
 
 		        // Actually create the ref'd sprite here.
 			// And assign to mpSprite
@@ -1391,7 +1402,13 @@ void MappableObject::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicCont
 void MappableObject::update()
 {
 	if(mpSprite)
-	mpSprite->update();
+		mpSprite->update();
+
+	switch(meMovementType)
+	{
+	case MOVEMENT_WANDER:
+		break;
+	}
 }
 
 int MappableObject::getDirectionBlock() const
