@@ -1,0 +1,14 @@
+Input should be configurable. Both the joypad and keyboard inputs should
+be configurable. We can implement this using STL maps which map key definitions to the saved configured versions. For example
+
+
+if(key == saved_key[LEFT])
+	player.moveLeft();
+
+
+
+etc...
+
+Except that ClanLib has hooks so that you can define a key on the keyboard and a key on the joypad as one signal, and receive that signal. Either way, it needs to be configurable, BUT have a default configuration for starting a new game.
+
+
