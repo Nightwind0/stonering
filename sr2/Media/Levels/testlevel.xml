@@ -1481,7 +1481,44 @@
 			</event>
 			<movement movementType="wander" speed="fast"/>
 		</mo>
-	
+			
+		<mo name="Cat2" type="npc" xpos="14" ypos="7" size="small" solid="true">
+			<spriteRef direction="still">Animals/Cat1s</spriteRef>
+			<spriteRef direction="east">Animals/Cat1e</spriteRef>
+			<spriteRef direction="north">Animals/Cat1n</spriteRef>
+			<spriteRef direction="south">Animals/Cat1s</spriteRef>
+			<spriteRef direction="west">Animals/Cat1w</spriteRef>
+			<event name="CatMeow" triggerType="talk">
+				<playSound>Meow</playSound>
+				<say speaker="Cat">Mowwwww</say>
+			</event>
+			<movement movementType="wander" speed="fast"/>
+		</mo>
+		<mo name="Cat3" type="npc" xpos="1" ypos="3" size="small" solid="true">
+			<spriteRef direction="still">Animals/Cat1s</spriteRef>
+			<spriteRef direction="east">Animals/Cat1e</spriteRef>
+			
+			<spriteRef direction="south">Animals/Cat1s</spriteRef>
+			<spriteRef direction="west">Animals/Cat1w</spriteRef>
+			<spriteRef direction="north">Animals/Cat1n</spriteRef>
+			<event name="CatMeow" triggerType="talk">
+				<playSound>Meow</playSound>
+				<say speaker="Cat">Mow Mow!</say>
+			</event>
+			<movement movementType="wander" speed="fast"/>
+		</mo>
+		<mo name="Cat4" type="npc" xpos="5" ypos="6" size="small" solid="true">
+			<spriteRef direction="still">Animals/Cat1s</spriteRef>
+			<spriteRef direction="north">Animals/Cat1n</spriteRef>
+			<spriteRef direction="south">Animals/Cat1s</spriteRef>
+			<spriteRef direction="west">Animals/Cat1w</spriteRef>
+			<spriteRef direction="east">Animals/Cat1e</spriteRef>
+			<event name="CatMeow" triggerType="talk">
+				<playSound>Meow</playSound>
+				<say speaker="Cat">Mow Mow!</say>
+			</event>
+			<movement movementType="wander" speed="fast"/>
+		</mo>
 		
 		<mo name="Door" type="door" xpos="2" ypos="2" size="small">
 			<event name="enterOctaviaInn" triggerType="step">

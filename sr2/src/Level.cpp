@@ -1624,24 +1624,11 @@ bool MappableObject::isSprite() const
 void MappableObject::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC)
 {
 
-#ifdef MO_EXPERIMENT
-//    update();
-    if(isSprite())
-    {
-	mSprites[meDirection]->update();
-	if(!moveInCurrentDirection())
-	{
-	    std::cout << "Had to pick another way" << std::endl;
-	    pickOppositeDirection();
-	}
-	mSprites[meDirection]->draw(dst, pGC );
-    }
-#else
+
     if(isSprite())
     {
 	update();
-	if(!mSprites.count(meDirection))throw CL_Error("MO was going to access a non-existant direction sprite.");
-	mSprites[meDirection]->draw( dst, pGC );
+	mSprites[meDirection]->draw(dst, pGC );
     }
     else if( cFlags & TILEMAP )
     {
@@ -1655,7 +1642,7 @@ void MappableObject::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicCont
 		
     }
 	
-#endif
+
 }
 
 void MappableObject::pickOppositeDirection()
@@ -1804,25 +1791,12 @@ void MappableObject::randomNewDirection()
 
 void MappableObject::update()
 {
-    if(isSprite())
-    {
-	
-	if(!mSprites.count(meDirection)) throw CL_Error("MO was going to use a sprite it didnt have.");
 	mSprites[meDirection]->update();
-    }
-
-    if(!mpMovement) return;
-
-    switch(mpMovement->getMovementType())
-    {
-    case Movement::MOVEMENT_PACE_NS:
-    case Movement::MOVEMENT_PACE_EW:
-    case Movement::MOVEMENT_WANDER:
-	moveInCurrentDirection();
-	break;
-    case Movement::MOVEMENT_NONE:
-	break;
-    }
+	if(!moveInCurrentDirection())
+	{
+	 
+	    pickOppositeDirection();
+	}
 }
 
 
