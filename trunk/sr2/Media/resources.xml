@@ -12,7 +12,16 @@
 	<string name="StartLevel" value="examplelevel" />
  </section>
  <section name="Levels">
- 	<string name="examplelevel" value="examplelevel.xml" />
+ 	<string name="examplelevel" value="testlevel.xml" />
 </section>
+ <section name="Tilemaps">
+ 	<surface name = "wall1" file="Tiles/walls1.png"/>
+	<surface name = "grass" file="Tiles/grass.png"/>
+</surface>
+
+<!-- Can be moved off to a separate resource xml -->
+<!--section name = "Sprites">
+	<section name = "Animals">
+		<sprite name = "Dog1"-->
   
 </resources>
