@@ -1,6 +1,8 @@
 bin_PROGRAMS = stonering
 
-stonering_SOURCES = Application.cpp
+stonering_SOURCES = Application.cpp \
+			Level.cpp \
+			Party.cpp
 
 stonering_LDADD = $(CLANLIB_LIBS)
 

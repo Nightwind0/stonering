@@ -3,9 +3,15 @@
 
 #include <ClanLib/application.h>
 #include <ClanLib/core.h>
+#include <ClanLib/display.h>
+#include "Party.h"
+
+
+
 
 namespace StoneRing 
 {
+class Level;
   
   class Application : public CL_ClanApplication
     {
@@ -17,8 +23,12 @@ namespace StoneRing
   
       static const int WINDOW_HEIGHT = 600;
       static const int WINDOW_WIDTH = 800;
-      
+
     private:
+
+
+
+
       void setupClanLib();
       void teardownClanLib();
       void showRechargeableOnionSplash();
@@ -27,6 +37,9 @@ namespace StoneRing
       CL_ResourceManager * mpResources;
 
       CL_DisplayWindow *mpWindow;
+
+
+      Level * mpLevel;
       
     };
   
