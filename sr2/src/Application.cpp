@@ -18,6 +18,8 @@ Application * Application::getApplication()
   return &sr_app;
 }
 
+
+
 CL_ResourceManager * Application::getResources()
 {
   return mpResources;
@@ -29,6 +31,20 @@ Application::Application():mCurX(0),mCurY(0),mbDone(false)
 
 Application::~Application()
 {
+}
+
+
+CL_Rect Application::getLevelRect() const
+{
+	// TODO: Make this real
+	return CL_Rect(0,0,mpLevel->getWidth() * 32, mpLevel->getHeight() * 32);
+
+}
+
+CL_Rect Application::getDisplayRect() const
+{
+	return CL_Rect(0,0,mpLevel->getWidth() * 32, mpLevel->getHeight() * 32);
+
 }
 
 void Application::setupClanLib()

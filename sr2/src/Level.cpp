@@ -12,21 +12,24 @@
 using std::string;
 
 #ifdef _MSC_VER
-template <class T> inline T max(const T& a, const T& b)
+template <class T> 
+inline T max(const T& a, const T& b)
 {
 
 	return (a > b) ? a : b;
 
 }
 
-template <class T> inline T min(const T& a, const T& b)
+template <class T> 
+inline T min(const T& a, const T& b)
 {
 	
 	return (a < b) ? a : b;
 
 } 
 
-template <class T> inline T abs( const T& a)
+template <class T>
+ inline T abs( const T& a)
 {
 	if( a < 0) return -a;
 	else return a;
@@ -55,7 +58,10 @@ bool operator < (const CL_Point &p1, const CL_Point &p2)
 	return p1value < p2value;
 }
 
-
+bool operator < (const SpriteRef::eDirection dir1, const SpriteRef::eDirection dir2)
+{
+	return (int)dir1 < (int)dir2;
+}
 
 ItemRef::ItemRef(CL_DomElement *pElement )
 {
@@ -160,9 +166,9 @@ SpriteRef::SpriteRef( CL_DomElement *pElement)
 		
 		if(direction == "still") meDirection = SPR_STILL;
 		if(direction == "north") meDirection = SPR_NORTH;
-		if(direction == "west") meDirection = SPR_WEST;
+		if(direction == "west")  meDirection = SPR_WEST;
 		if(direction == "south") meDirection = SPR_SOUTH;
-		if(direction == "east") meDirection = SPR_EAST;
+		if(direction == "east")  meDirection = SPR_EAST;
 		
 	}
 
@@ -898,8 +904,50 @@ LoadLevel::~LoadLevel()
 
 
 
-Movement::Movement ( CL_DomElement * pElement )
+Movement::Movement ( CL_DomElement * pElement ):meType(MOVEMENT_NONE),meSpeed(SLOW)
 {
+	CL_DomNamedNodeMap attributes = pElement->get_attributes();
+
+	if(attributes.get_length() < 1) throw CL_Error("Error reading movement attributes");
+
+
+	std::string type  = attributes.get_named_item("movementType").get_node_value();
+
+	if(!attributes.get_named_item("speed").is_null())
+	{
+		std::string speed = attributes.get_named_item("speed").get_node_value();
+		if(speed == "slow")
+		{
+			meSpeed = SLOW;
+		}
+		else if(speed == "fast")
+		{
+			meSpeed = FAST;
+		}
+		else throw CL_Error("Error, movement speed must be fast or slow.");
+	}
+	
+	if(type == "wander")
+	{
+		meType = MOVEMENT_WANDER;
+
+	}
+	else if(type == "paceNS")
+	{
+		meType = MOVEMENT_PACE_NS;
+	}
+	else if(type == "paceEW")
+	{
+		meType = MOVEMENT_PACE_EW;
+	}
+	else if(type == "none")
+	{
+		// Why would they ever....
+		meType - MOVEMENT_NONE;
+	}
+
+
+  
 }
 
 Movement::~Movement()
@@ -1382,9 +1430,12 @@ bool Tile::isTile() const
 }
 
 
+MappableObject::eSize MappableObject::getSize() const
+{
+	return meSize;
+} 
  
- 
-MappableObject::MappableObject(CL_DomElement *pElement):mpMovement(0)
+MappableObject::MappableObject(CL_DomElement *pElement):mpMovement(0),mTimeOfLastUpdate(0),mCountInCurDirection(0)
 {
 
 	cFlags = 0;
@@ -1393,17 +1444,33 @@ MappableObject::MappableObject(CL_DomElement *pElement):mpMovement(0)
 
 	CL_DomNamedNodeMap attributes = pElement->get_attributes();
 
-	if(attributes.get_length() < 4) throw CL_Error("Error reading attributes in MO");
+	if(attributes.get_length() < 5) throw CL_Error("Error reading attributes in MO");
 
 	mName = attributes.get_named_item("name").get_node_value();
 	
 	std::string motype = attributes.get_named_item("type").get_node_value();
+
+	std::string size = attributes.get_named_item("size").get_node_value();
+
+	if(size == "small") meSize = MO_SMALL;
+	else if(size == "medium") meSize = MO_MEDIUM;
+	else if(size == "large") meSize = MO_LARGE;
+	else throw CL_Error("MO size wasnt small, medium, or large.");
 
 	if(motype == "npc") meType = NPC;
 	else if (motype == "square") meType = SQUARE;
 	else if (motype == "container") meType = CONTAINER;
 	else if (motype == "door") meType = DOOR;
 	else if (motype == "warp") meType = WARP;
+
+
+	if(!attributes.get_named_item("solid").is_null())
+	{
+		if(attributes.get_named_item("solid").get_node_value() == "true")
+		{
+			cFlags |= SOLID;
+		}
+	}
 
 	meDirection = SpriteRef::SPR_NONE;
 
@@ -1419,6 +1486,7 @@ MappableObject::MappableObject(CL_DomElement *pElement):mpMovement(0)
 	{
 		if( child.get_node_name() == "tilemap" )
 		{
+			if( meSize != MO_SMALL) throw CL_Error("Mappable objects using tilemaps MUST be size small.");
 			cFlags |= TILEMAP;
 			mGraphic.asTilemap = new Tilemap( &child );
 			
@@ -1432,6 +1500,24 @@ MappableObject::MappableObject(CL_DomElement *pElement):mpMovement(0)
 
 			mSprites[ pRef->getDirection() ]  = GM->createSprite ( pRef->getRef() );
 
+
+			int swidth = mSprites [ pRef->getDirection() ]->get_width();
+			int sheight = mSprites [ pRef->getDirection()]->get_height();
+
+			switch( meSize )
+			{
+			case MO_SMALL:
+				if( swidth != 32 && sheight !=32) throw CL_Error("Sprite size doesn't match MO size (SMALL)");
+				break;
+			case MO_MEDIUM:
+				if( swidth != 64 && sheight != 64) throw CL_Error("Sprite size doesn't match MO size (MEDIUM).");
+				break;
+			case MO_LARGE:
+				if( swidth != 128 && sheight != 128) throw CL_Error("Sprite size doesnt match MO size (LARGE)");
+				break;
+			}
+
+
 		        // Actually create the ref'd sprite here.
 			// And assign to mpSprite
 			meDirection = pRef->getDirection();
@@ -1441,23 +1527,30 @@ MappableObject::MappableObject(CL_DomElement *pElement):mpMovement(0)
 		{
 			mEvents.push_back ( new Event ( &child ) );
 		}
-		else if ( child.get_node_name() == "directionBlock" )
+		else if( child.get_node_name() == "movement")
 		{
-			DirectionBlock block(&child);
+			mpMovement = new Movement ( &child );
 
-			eDirectionBlock db = block.getDirectionBlock();
-
-			// This is all done to make tile's take up less space in memory
-
-			if(db & DIR_NORTH)
-				cFlags |= BLK_NORTH;
-			if(db & DIR_SOUTH)
-				cFlags |= BLK_SOUTH;
-			if(db & DIR_EAST)
-				cFlags |= BLK_EAST;
-			if(db & DIR_WEST)
-				cFlags |= BLK_WEST;
-			
+			// Make sure the proper sprites are around for the movement type
+			switch(mpMovement->getMovementType())
+			{
+			case Movement::MOVEMENT_WANDER:
+				if(!mSprites.count( SpriteRef::SPR_NORTH )) throw CL_Error("Wandering MO with no north sprite.");
+				if(!mSprites.count( SpriteRef::SPR_SOUTH )) throw CL_Error("Wandering MO with no south sprite.");
+				if(!mSprites.count( SpriteRef::SPR_EAST )) throw CL_Error("Wandering MO with no east sprite.");
+				if(!mSprites.count( SpriteRef::SPR_WEST )) throw CL_Error("Wandering MO with no west sprite.");
+				break;
+			case Movement::MOVEMENT_PACE_NS:
+				if(!mSprites.count( SpriteRef::SPR_NORTH )) throw CL_Error("Pacing MO with no north sprite.");
+				if(!mSprites.count( SpriteRef::SPR_SOUTH )) throw CL_Error("Pacing MO with no south sprite.");
+				break;
+			case Movement::MOVEMENT_PACE_EW:
+				if(!mSprites.count( SpriteRef::SPR_EAST )) throw CL_Error("Pacing MO with no east sprite.");
+				if(!mSprites.count( SpriteRef::SPR_WEST )) throw CL_Error("Pacing MO with no west sprite.");
+				break;
+			default:
+				break;
+			}
 		}
 		// TODO Movement
 
@@ -1551,33 +1644,49 @@ void MappableObject::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicCont
 void MappableObject::moveInCurrentDirection()
 {
 
-	static long timeOfLastRun = 0;
-	
 
-	if(CL_System::get_time() > timeOfLastRun + 500)
+	int delay = 0;
+
+	
+	switch( mpMovement->getMovementSpeed() )
+	{
+	case Movement::SLOW:
+		delay = 500;
+		break;
+	case Movement::FAST:
+		delay = 250;
+		break;
+	}
+
+
+	if(CL_System::get_time() > mTimeOfLastUpdate + delay)
 	{
 
-		timeOfLastRun = CL_System::get_time();
+		mTimeOfLastUpdate = CL_System::get_time();
 
 		switch ( meDirection )
 		{
 		case SpriteRef::SPR_SOUTH:
-			mY+=3;
+			mY+=1;
 			break;
 		case SpriteRef::SPR_NORTH:
-			mY-=3;
+			mY-=1;
 			break;
 		case SpriteRef::SPR_EAST:
-			mX+=3;
+			mX+=1;
 			break;
 		case SpriteRef::SPR_WEST:
-			mX-=3;
+			mX-=1;
 			break;
 		default:
 			break;
 		
 		}
-		randomNewDirection();
+
+		mCountInCurDirection++;
+
+		if(mCountInCurDirection > rand() %128 + 32)
+			randomNewDirection();
 
 	}
 
@@ -1588,6 +1697,8 @@ void MappableObject::moveInCurrentDirection()
 
 void MappableObject::randomNewDirection()
 {
+	mCountInCurDirection = 0;
+
 	int r= rand() % 20;
 	
 	switch( r)
@@ -1631,6 +1742,8 @@ void MappableObject::update()
 
 	switch(mpMovement->getMovementType())
 	{
+	case Movement::MOVEMENT_PACE_NS:
+	case Movement::MOVEMENT_PACE_EW:
 	case Movement::MOVEMENT_WANDER:
 		moveInCurrentDirection();
 		break;
@@ -1639,21 +1752,16 @@ void MappableObject::update()
 	}
 }
 
+
+bool MappableObject::isSolid() const
+{
+	return cFlags & MappableObject::SOLID;
+}
+
 int MappableObject::getDirectionBlock() const
 {
-	int block = 0;
-
-	if( cFlags & BLK_NORTH)
-		block |= DIR_NORTH;
-	if( cFlags & BLK_SOUTH)
-		block |= DIR_SOUTH;
-	if( cFlags & BLK_EAST)
-		block |= DIR_EAST;
-	if( cFlags & BLK_WEST)
-		block |= DIR_WEST;
-
-	return block;
-
+	if (isSolid()) return  (DIR_NORTH | DIR_SOUTH | DIR_EAST | DIR_WEST);
+	else return 0;
 }
 
 bool MappableObject::isTile() const
@@ -1805,13 +1913,15 @@ void Level::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_Graph
 	mMappableObjects.sort( moSortCriterion );
 
 
+
+
 	for(std::list<MappableObject*>::iterator i = mMappableObjects.begin();
 	    i != mMappableObjects.end();
 	    i++)
 	{
-		CL_Rect moRect( (*i)->getX(), (*i)->getY(), (*i)->getX() + 32, (*i)->getY() + 32);
+		CL_Rect moRect = (*i)->getRect();
 		CL_Rect dstRect( moRect.left + dst.left, moRect.top + dst.top,
-				 moRect.left + dst.left + 32, moRect.top + dst.top + 32);
+				 moRect.left + dst.left + moRect.get_width(), moRect.top + dst.top + moRect.get_height());
 		if( ! src.is_overlapped ( moRect ) )
 		{
 			// This MO was outside our field of vision, so we stop iterating.
@@ -1834,49 +1944,100 @@ void Level::drawFloaters(const CL_Rect &src, const CL_Rect &dst, CL_GraphicConte
 // Checks relevant tile and MO direction block information
 bool Level::canMove(const CL_Rect &currently, const CL_Rect & destination, bool noHot) const
 {
-/*
+
 
 	// TODO: Enforce rule that all objects must call this for every pixel movement?
 	// if they move faster than a pixel at once, then they have to call this for each one.
 	// That simplifies life.
-	eDirectionBlock movementDir;
 
+	eDirectionBlock movementDir;
+	
 	if ( currently.left < destination.left) movementDir = DIR_WEST;
 	if ( currently.left > destination.left) movementDir = DIR_EAST;
 	if ( currently.top < destination.top) movementDir = DIR_SOUTH;
 	if ( currently.top > destination.top) movementDir = DIR_NORTH;
-
-
+	
+	
 
 
 	//  Check MOs for overlap, return true if any
-	for(std::list<MappableObject*>::iterator iter = mMappableObjects.begin();
+	for(std::list<MappableObject*>::const_iterator iter = mMappableObjects.begin();
 	    iter != mMappableObjects.end();
 	    iter++)
 	{
+		
 		MappableObject *pMO = *iter;
-		// TODO: Check for overlap, if none, continue
-		// TODO : Check direction block, compare to direction. 
+
+		CL_Rect moRect = pMO->getRect();
+
+		//TODO: Possible optimization. we ought to be able to sort the map here
+		// And then, like in the draw, stop iterating once we hit something outside the rect
+		// but, we should already be sorted........
+
+		if(! Application::getApplication()->getLevelRect().is_overlapped ( moRect ) )
+		{
+			// This MO is too far away, doesn't need to be tested, nor do any more
+			break;
+		}
+
+
+		//  Check for overlap, if none, continue
+		//  Check direction block, compare to direction. 
+		//  If they match, you get a non-zero number
+		// That means they moved in the direction in which there is a block
+		if( moRect.is_overlapped(destination) && (pMO->isSolid() ))
+		{
+			return false;
+		}
+
 	}
 
+
+	// Okay, we're not touching any mappable objects. Now for tiles
+
+
+	CL_Point edgeStart;
+	CL_Point edgeEnd;
+
+	// Based on the movement direction, calculate the edgeStart and edgeEnd for the current rectangle.
+
+	CL_Point newEdgeStart;
+	CL_Point newEdgeEnd;
+
+	// Based on the movement direction, calculate the newEdgeStart and newEdgeEnd for the new rectangle.
+
+	// If the new edge start equals the edge start, then no breach has occured and we can return true.
+
+	// Otherwise, calculate the number of tiles crossed by subtracting the edgeStart.x (or .y for north and south) from
+	// the edgeEnd.x (or .y)
+
+	// If you are dealing with a vertical edge,
+	// Loop from edgeStart.y to edgeEnd.y; y++ 
+	// If you are dealing with a horizonal edge,
+	// Loop from edgeStart.x to edgeEnd.x; x++
+
+
+	// In the loop, construct points with the variable dimension and the fixed one
+	// (So, in the case of a verticle edge, use the for loop counter for the y, and the .x from either
+	// edgeStart or edgeEnd since they are the same
+	
+	// Use that point to look up a tilestack. Iterate the tilestack and if you find one that has a directionblock
+	// That ANDs with your direction, you can return false.  Or, if you care about hot, and any tile is hot, return false.
+
+	// Now, same thing again, only with the newEdgeStart and newEdgeEnd. 
+
+	// If we've come this far, theres nothing in the way. return true.
+
+
+
+
+
+
+
+/*
+
 	// TODO Optimize this... there are too many map lookups
-	CL_Point top_left(destination.left / 32, destination.top / 32);
-	CL_Point top_right ( destination.right / 32, destination.top / 32);
-	CL_Point bottom_left ( destination.left /32 , destination.bottom / 32);
-	CL_Point bottom_right ( destination.right /32, destination.right / 32);
 
-	CL_Point cur_top_left ( currently.left / 32, currently.top / 32);
-	CL_Point cur_top_right (currently.right / 32, currently.top / 32);
-	CL_Point cur_bottom_left ( currently.left / 32, currently.bottom / 32);
-	CL_Point cur_bottom_right ( currently.right /32, currently.bottom / 32);
-
-
-	// Calculate the direction they are coming from
-
-	bool breaching_north = (movementDir = DIR_NORTH && top_left != cur_top_left);
-	bool breaching_south = (movementDir = DIR_SOUTH && bottom_left != cur_bottom_left);
-	bool breaching_west = (movementDir = DIR_WEST && top_left != cur_top_left);
-	bool breaching_east = (movementDir = DIR_EAST && top_right != cur_top_right);
 
 	if(!breaching_north && !breaching_south && !breaching_west && !breaching_east) return true;
 
@@ -1998,9 +2159,16 @@ void Level::update(const CL_Rect & updateRect)
 // Sort MO's in order to bring close ones to the top
 bool Level::moSortCriterion( const MappableObject *p1, const MappableObject * p2)
 {
-	Party * pParty = Party::getInstance();
-	uint pX = pParty->getLevelX();
-	uint pY = pParty->getLevelY();
+//	Party * pParty = Party::getInstance();
+//	uint pX = pParty->getLevelX();
+//	uint pY = pParty->getLevelY();
+// Get the center point of the screen instead of the party.
+
+	Application * pApp = Application::getApplication();
+
+	uint pX = pApp->getLevelRect().get_width() / 2;
+	uint pY = pApp->getLevelRect().get_height() / 2;
+
 	
 	uint p1Distance, p2Distance;
 
