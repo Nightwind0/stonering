@@ -1,5 +1,7 @@
-<!ELEMENT level (levelHeader, tile+, mo+)>
+<!ELEMENT level (levelHeader, tiles, mappableObjects?)>
 <!ELEMENT levelHeader EMPTY>
+<!ELEMENT tiles (tile+)>
+<!ELEMENT mappableObjects (mo+)>
 <!ELEMENT tile ((tilemap | spriteRef),condition?, attributeModifier?, directionBlock?)>
 <!ELEMENT tilemap EMPTY>
 <!ELEMENT directionBlock EMPTY>
@@ -41,6 +43,7 @@
 <!ATTLIST mo ypos CDATA #REQUIRED>
 <!ATTLIST mo movementType CDATA #IMPLIED>
 <!ATTLIST event name CDATA #REQUIRED>
+<!ATTLIST event repeatable (true|false) #REQUIRED> 
 <!ATTLIST event triggerType (talk|step|act) #REQUIRED>
 <!ATTLIST say speaker CDATA #REQUIRED>
 <!ATTLIST give count CDATA #IMPLIED>
