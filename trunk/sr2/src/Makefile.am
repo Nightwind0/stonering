@@ -1,3 +1,6 @@
+
+SUBDIRS = LevelEditor
+
 bin_PROGRAMS = stonering
 
 stonering_SOURCES = Application.cpp \
@@ -6,7 +9,7 @@ stonering_SOURCES = Application.cpp \
 			GraphicsManager.cpp
 
 
-stonering_CPPFLAGS = -00
+stonering_CPPFLAGS = -O0
 
 stonering_LDADD = $(CLANLIB_LIBS)
 

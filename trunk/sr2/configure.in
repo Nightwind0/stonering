@@ -15,7 +15,7 @@ AM_MAINTAINER_MODE
 # Checks for libraries.
 
 
-PKG_CHECK_MODULES(CLANLIB, clanCore-0.7 clanApp-0.7 clanDisplay-0.7 clanGL-0.7 clanSound-0.7)
+PKG_CHECK_MODULES(CLANLIB, clanCore-0.7 clanApp-0.7 clanDisplay-0.7 clanGL-0.7 clanSound-0.7 clanGUI-0.7 clanGUIStyleSilver-0.7)
 
 AC_SUBST(CLANLIB_LIBS) 
 AC_SUBST(CLANLIB_CFLAGS)
@@ -27,5 +27,6 @@ AC_C_CONST
 
 # Checks for library functions.
 AC_OUTPUT(Makefile \
-		   src/Makefile
+		   src/Makefile \
+		   src/LevelEditor/Makefile
 )
