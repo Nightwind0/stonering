@@ -15,10 +15,11 @@
 <!ELEMENT hasItem (itemRef)>
 <!ELEMENT didEvent (#PCDATA)>
 <!ELEMENT mo ((tilemap|spriteRef)?,event*, directionBlock?)>
-<!ELEMENT event (condition?,(attributeModifier | say | give | take | playAnimation | playSound | loadLevel | startBattle | pause | invokeShop)*)>
+<!ELEMENT event (condition?,(attributeModifier | say | give | take | playAnimation | playSound | loadLevel | startBattle | pause | invokeShop | giveGold)*)>
 <!ELEMENT say (#PCDATA)>
-<!ELEMENT give (#PCDATA)>
-<!ELEMENT take (#PCDATA)>
+<!ELEMENT give (itemRef)>
+<!ELEMENT take (itemRef)>
+<!ELEMENT giveGold EMPTY>
 <!ELEMENT itemRef (#PCDATA)>
 <!ELEMENT playAnimation (#PCDATA)>
 <!ELEMENT playSound (#PCDATA)>
@@ -48,6 +49,7 @@
 <!ATTLIST say speaker CDATA #REQUIRED>
 <!ATTLIST give count CDATA #IMPLIED>
 <!ATTLIST take count CDATA #IMPLIED>
+<!ATTLIST giveGold count CDATA #REQUIRED>
 <!ATTLIST itemRef itemType CDATA #REQUIRED>
 <!ATTLIST loadLevel name CDATA #REQUIRED>
 <!ATTLIST loadLevel startx CDATA #REQUIRED>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!-- DOCTYPE level SYSTEM "level.dtd" -->
+<!--DOCTYPE level SYSTEM "level.dtd"-->
 <level name="TestLevel">
 <!-- comments -->
 	<levelHeader music="Main" width="3" height="3"/>
