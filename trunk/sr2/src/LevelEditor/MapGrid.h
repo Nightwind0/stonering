@@ -8,6 +8,7 @@
 #include <ClanLib/display.h>
 
 #include "EditableLevel.h"
+#include "TileSelector.h"
 
 using namespace std;
 
@@ -16,7 +17,7 @@ using namespace std;
 class MapGrid : CL_Component
 {
 public:
-		MapGrid(CL_Rect setrect, CL_Component *parent, EditableLevel *mpLevel, CL_GraphicContext *mgGC);
+		MapGrid(CL_Rect setrect, CL_Component *parent, EditableLevel *mpLevel, CL_GraphicContext *mgGC, TileSelector *TS);
 
 		~MapGrid();
 
@@ -37,6 +38,7 @@ private:
 		CL_ScrollBar *mgScrollHorz;
 
 		int mgX, mgY;
+		TileSelector *TS;
 
 };
 

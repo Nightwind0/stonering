@@ -4,8 +4,8 @@
 #include "MapGrid.h"
 
 
-MapGrid::MapGrid(CL_Rect setrect, CL_Component *parent, EditableLevel *mpLevel, CL_GraphicContext *mgGC)
-:	rect(setrect), CL_Component(parent), mgLevel(mpLevel), mgGC(mgGC)
+MapGrid::MapGrid(CL_Rect setrect, CL_Component *parent, EditableLevel *mpLevel, CL_GraphicContext *mgGC, TileSelector *TS)
+:	rect(setrect), CL_Component(parent), mgLevel(mpLevel), mgGC(mgGC), TS(TS)
 {
 
 	set_position(rect.left, rect.top);
@@ -80,6 +80,8 @@ void MapGrid::on_placeTile(const CL_InputEvent &event)
 
 		cout << "(" << mgX << "," << mgY << ")" << endl;
 
-
+		//EditableTile pTile;
+		cout << TS->get_tsMapName() << endl;
+		//pTile.setTilemap(TS->get_tsMapName(), TS->get_tsX(), TS->get_tsY());
 	}
 }

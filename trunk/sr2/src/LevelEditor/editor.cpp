@@ -174,7 +174,7 @@ int EditorMain::main(int argc, char **argv)
 
 			tiles = new TileSelector(CL_Rect(510, 30, 691, 403), &gui, tsResources);
 			
-			MapGrid map(CL_Rect(5, 30, 505, 594), &gui, mpLevel, window.get_gc());
+			MapGrid map(CL_Rect(5, 30, 505, 594), &gui, mpLevel, window.get_gc(), tiles);
 
 			GridPoint gp(CL_Rect(510, 410, 691, 590), &gui);
 
