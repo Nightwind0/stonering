@@ -165,6 +165,8 @@ int EditorMain::main(int argc, char **argv)
 
 			// menu item slot connects
 			slots.connect(menu.get_node("File/Quit")->sig_clicked(), this, &EditorMain::on_quit);
+			slots.connect(menu.get_node("File/Save")->sig_clicked(), this, &EditorMain::on_save);
+			slots.connect(menu.get_node("File/Load")->sig_clicked(), this, &EditorMain::on_load);
 
 
 			//other random slot connects
@@ -187,13 +189,6 @@ int EditorMain::main(int argc, char **argv)
 			while (!CL_Keyboard::get_keycode(CL_KEY_ESCAPE) && !quit)
 			{
 				gui.show();
-
-//				CL_Rect dst(10,30,min((unsigned int)500,mpLevel->getWidth()*32), min((unsigned int)590,mpLevel->getWidth()*32));
-//				CL_Rect src(0,0,dst.get_width(),dst.get_height());
-
-//				window.get_gc()->push_cliprect( dst );
-//				mpLevel->draw(src,dst, window.get_gc(),false);
-//				window.get_gc()->pop_cliprect();
 
 				CL_System::keep_alive();
 				CL_Display::flip();
@@ -232,6 +227,17 @@ int EditorMain::main(int argc, char **argv)
 	void EditorMain::on_tileset_change(string userdata)
 	{
 		tiles->changeTS(userdata);
+	}
+
+
+	void EditorMain::on_save()
+	{
+		
+	}
+
+		void EditorMain::on_load()
+	{
+		
 	}
 
 
