@@ -90,8 +90,8 @@ void TileSelector::draw()
 {
 	int tsetWidth, tsetHeight, scrollX, scrollY;
 
-	tsetWidth = 5;//cur_tileset->get_width();
-	tsetHeight = 11;//cur_tileset->get_height();
+	tsetWidth = min(5,cur_tileset->get_width()/32);//cur_tileset->get_width();
+	tsetHeight = min(11,cur_tileset->get_height()/32);//cur_tileset->get_height();
 
 	scrollX = scrollHorz->get_value()*32;
 	scrollY = scrollVert->get_value()*32;

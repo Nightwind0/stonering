@@ -6,6 +6,9 @@
 
 #include <ClanLib/gui.h>
 #include <ClanLib/display.h>
+
+#include "EditableLevel.h"
+
 using namespace std;
 
 
@@ -13,7 +16,7 @@ using namespace std;
 class MapGrid : CL_Component
 {
 public:
-		MapGrid(CL_Rect setrect, CL_Component *parent);
+		MapGrid(CL_Rect setrect, CL_Component *parent, EditableLevel *mpLevel, CL_GraphicContext *mgGC);
 
 		~MapGrid();
 
@@ -25,6 +28,13 @@ private:
 
 		CL_Rect rect;
 		CL_SlotContainer slots;
+
+		EditableLevel *mgLevel;
+
+		CL_GraphicContext *mgGC;
+
+		CL_ScrollBar *mgScrollVert;
+		CL_ScrollBar *mgScrollHorz;
 
 };
 
