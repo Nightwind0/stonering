@@ -1,0 +1,22 @@
+Rounding Brick Walls on Edges:
+==============================
+Use Pencil. Opacity around 50.
+Mode : Darken Only
+Color: Black
+Brush: Circle (1)
+
+At the desired edge, use shift to draw three straight lines, vertically (or horizontally if for some reason you create a horizontal edge), starting from they very outmost column an in two deep from there. The idea is to make the edge fade to dark. Color the middle line over twice, to make it darker than the inner line. Color the outermost line over three times, to make it the darkest.
+
+===============================
+
+
+Creating smooth rounded tiles for paths and other reasons:
+1. Create a single 32x32 tile of the desired texture/surface.
+2. Copy it into a 3x3 of that tile, so that you have 9 of them.
+3. Create a 3x3 (96 pixel by 96 pixel) transparent region in your work area.
+4. Use rectangle select. Use feather edges. For a good curve, use radius 35 (Don't go higher, or you risk getting really wavy sides). For a mild curve, 20, or even 10 work. 10 is a very mild curve.
+  Use "fixed size" of 64 by 64. 
+5. Start the rectangle selection exactly 15 pixels in and 15 pixels down into the 3x3 texture. You should get a rounded selection which scoops out the middle of the 3x3 texture. Ctrl+X to move it. 
+6. Move it exactly 15 in and 15 down into the transparent region that you created in step 3. It has to line up exactly so that if you superimposed it over the region you just cropped it from, it would be whole again. It HAS to line up!
+
+(It helps to have Snap to grid on, with your grid set to 32x32, and you probably want to Show Grid)
