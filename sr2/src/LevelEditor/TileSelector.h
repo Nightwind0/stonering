@@ -22,18 +22,25 @@ public:
 		void setCurLable(string text);
 
 		void on_paint();
+		void draw();
 
 private:
 
-		CL_Rect rect;
+		CL_Rect TSrect;
+		CL_Rect* SRCrect;
+		CL_Rect* DSTrect;
+		
+
 		CL_SlotContainer slots;
 		CL_ResourceManager* tsResources;
 		string cur_tileset;
 		list<CL_Surface*> tilemaps;
 
-		CL_Label * cur_tileset_lable;
+		CL_Label *cur_tileset_lable;
+		CL_Surface* cur_tileset;
 
 };
 
 
 #endif
+

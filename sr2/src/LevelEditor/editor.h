@@ -41,6 +41,8 @@ private:
 	CL_SlotContainer slots;
 
 	TileSelector* tiles;
+	CL_GraphicContext *gc;
 };
 
 #endif
+
