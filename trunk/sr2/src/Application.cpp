@@ -170,7 +170,7 @@ void Application::onSignalKeyDown(const CL_InputEvent &key)
 
 	document.append_child ( mpLevel->createDomElement(document) );
 
-	document.save( new CL_OutputSource_File( "foo.xml") , true, true );
+	document.save( new CL_OutputSource_File( "foo.xml"),true,false);
 
 	break;
 

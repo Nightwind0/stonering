@@ -610,6 +610,8 @@ CL_DomElement  DidEvent::createDomElement(CL_DomDocument &doc) const
     CL_DomText text ( doc, mEvent );
     text.set_node_value ( mEvent );
 
+    element.append_child ( text);
+
     return element;
 }
 
@@ -1836,7 +1838,7 @@ CL_DomElement  Tile::createDomElement(CL_DomDocument &doc) const
 
     element.set_attribute("xpos", IntToString ( mX ) );
     element.set_attribute("ypos", IntToString ( mY ) );
-    element.set_attribute("zorder", IntToString (mZOrder ) );
+    if(mZOrder >0 ) element.set_attribute("zorder", IntToString (mZOrder ) );
     if(isFloater()) element.set_attribute("floater", "true");
     if(isHot())     element.set_attribute("hot", "true");
 
@@ -2619,6 +2621,7 @@ CL_DomElement  Level::createDomElement(CL_DomDocument &doc) const
 
     CL_DomElement element(doc, "level");
 
+    element.set_attribute("name",mName);
 
     CL_DomElement levelHeader(doc, "levelHeader");
     CL_DomElement tiles(doc, "tiles");
@@ -2724,8 +2727,8 @@ void Level::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC,
 //	int maxSrcX = max( ceil(dst.get_width() / 32.0), mLevelWidth );
 //	int maxSrcY = max( ceil(dst.get_height() / 32.0), mLevelHeight);
 	
-    int widthInTiles = ceil((float)src.get_width() / 32.0 );
-    int heightInTiles = ceil((float)src.get_height() / 32.0 );
+    int widthInTiles = (int)ceil((float)src.get_width() / 32.0 );
+    int heightInTiles = (int)ceil((float)src.get_height() / 32.0 );
 
     int widthInPx = widthInTiles * 32;
     int heightInPx = heightInTiles * 32;
@@ -3228,6 +3231,7 @@ void Level::LoadLevel (CL_DomDocument &document )
 
     CL_DomNamedNodeMap levelAttributes = levelNode.get_attributes();
 
+    mName = levelAttributes.get_named_item("name").get_node_value();
     std::cout << "LEVEL NAME = " << levelAttributes.get_named_item("name").get_node_value() << std::endl;
 
     CL_DomElement headerNode = levelNode.named_item("levelHeader").to_element();
