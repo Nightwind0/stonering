@@ -374,7 +374,7 @@ namespace StoneRing {
       virtual void invoke();
 
     private:
-      uint mAmount;
+      uint mCount;
     };
 
 

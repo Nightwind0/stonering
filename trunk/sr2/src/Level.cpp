@@ -232,6 +232,8 @@ HasItem::HasItem(CL_DomElement *pElement ):mpItemRef(NULL)
 
 	mpItemRef = new ItemRef ( &itemRefElement );
 
+	if(mbNot) std::cout << "(NOT)";
+
 	std::cout << "HAS ITEM: " << mpItemRef->getItemName() <<  std::endl;
 
 }
@@ -249,6 +251,35 @@ bool HasItem::evaluate()
  
 DidEvent::DidEvent(CL_DomElement *pElement)
 {
+
+	CL_DomNamedNodeMap attributes = pElement->get_attributes();
+
+
+	CL_DomNode isnot = attributes.get_named_item("not");
+
+	std::string notstring;
+
+
+	if(! isnot.is_null() )
+	{
+		notstring = isnot.get_node_value();
+
+		if(notstring == "true")
+		{
+			mbNot = true;
+		}
+	}
+	else
+	{
+		mbNot = false;
+	}
+
+	mEvent = pElement->get_text();
+
+
+	std::cout << "DID EVENT: " << mEvent <<  std::endl;
+
+
 }
 
 DidEvent::~DidEvent()
@@ -257,50 +288,192 @@ DidEvent::~DidEvent()
 
 bool DidEvent::evaluate()
 {
+	// return Party->didEvent ( mEvent );
 }
 
 
 And::And(CL_DomElement * pElement)
 {
+//	<!ELEMENT and ((hasGold|hasItem|didEvent|operator)*)>
+
+
+	CL_DomElement child = pElement->get_first_child().to_element();
+
+	if(child.is_null()) throw CL_Error("\'And\' with no operands.");
+
+
+	while(!child.is_null())
+	{
+		std::string name = child.get_node_name();
+
+		if(name == "operator")
+		{
+			mOperands.push_back( new Operator ( &child ) );
+		}
+		else if(name == "hasItem")
+		{
+			mOperands.push_back( new HasItem ( &child ) );
+		}
+		else if(name == "hasGold")
+		{
+			mOperands.push_back(new HasGold ( &child ) );
+		}
+		else if(name == "didEvent")
+		{
+			mOperands.push_back(new DidEvent ( &child ) );
+		}
+		else throw CL_Error("Bad operand in \'and\'.");
+
+		child = child.get_next_sibling().to_element();
+	}
+
 }
 And::~And()
 {
+	for(std::list<Check*>::iterator i = mOperands.begin();
+	    i != mOperands.end();
+	    i++)
+	{
+		delete *i;
+	}
 }
 
 bool And::evaluate()
 {
+	for(std::list<Check*>::const_iterator i = mOperands.begin();
+	    i != mOperands.end();
+	    i++)
+	{
+		Check * check = *i;
+		if(! check->evaluate() )
+			return false;
+	}
+
+	return true;
 }
 
 ushort And::order()
 {
+	return 0;
 }
 
  
 Or::Or(CL_DomElement * pElement)
 {
+
+	CL_DomElement child = pElement->get_first_child().to_element();
+
+	if(child.is_null()) throw CL_Error("\'or\' with no operands.");
+
+
+	while(!child.is_null())
+	{
+		std::string name = child.get_node_name();
+
+		if(name == "operator")
+		{
+			mOperands.push_back( new Operator ( &child ) );
+		}
+		else if(name == "hasItem")
+		{
+			mOperands.push_back( new HasItem ( &child ) );
+		}
+		else if(name == "hasGold")
+		{
+			mOperands.push_back(new HasGold ( &child ) );
+		}
+		else if(name == "didEvent")
+		{
+			mOperands.push_back(new DidEvent ( &child ) );
+		}
+		else throw CL_Error("Bad operand in \'or\'.");
+
+		child = child.get_next_sibling().to_element();
+	}
+
+
 }
 Or::~Or()
 {
+	for(std::list<Check*>::iterator i = mOperands.begin();
+	    i != mOperands.end();
+	    i++)
+	{
+		delete *i;
+	}
 }
 
 bool Or::evaluate()
 {
+	for(std::list<Check*>::const_iterator i = mOperands.begin();
+	    i != mOperands.end();
+	    i++)
+	{
+		Check * check = *i;
+		if( check->evaluate() )
+			return true;
+	}
+
+	return false;
 }
 
 ushort Or::order()
 {
+	return 0;
 }
 
  
 Operator::Operator(CL_DomElement *pElement)
 {
+	
+
+	CL_DomElement child = pElement->get_first_child().to_element();
+
+	if(child.is_null()) throw CL_Error("\'operator\' with no operands.");
+
+
+	while(!child.is_null())
+	{
+		std::string name = child.get_node_name();
+
+		if(name == "or")
+		{
+			mOperands.push_back( new Or( &child ));
+		}
+		else if(name == "and")
+		{
+			mOperands.push_back(new And ( &child ) );
+		}
+		else throw CL_Error("Bad operand in \'operator\'.");
+
+		child = child.get_next_sibling().to_element();
+	}
+
+
 }
 Operator::~Operator()
 {
+	for(std::list<Check*>::iterator i = mOperands.begin();
+	    i != mOperands.end();
+	    i++)
+	{
+		delete *i;
+	}
+	
 }
 
 bool Operator::evaluate()
 {
+	for(std::list<Check*>::const_iterator i = mOperands.begin();
+	    i != mOperands.end();
+	    i++)
+	{
+		Check * check = *i;
+		if(! check->evaluate() )
+			return false;
+	}
+
+	return true;
 }
 
 ushort Operator::order()
@@ -394,6 +567,8 @@ bool Event::invoke()
 
 PlayAnimation::PlayAnimation(CL_DomElement * pElement )
 {
+
+	mAnimation = pElement->get_text();
 }
  
 PlayAnimation::~PlayAnimation()
@@ -402,12 +577,14 @@ PlayAnimation::~PlayAnimation()
 
 void PlayAnimation::invoke()
 {
+	// Application->playAnimation ( mAnimation );
 }
  
 
 
 PlaySound::PlaySound(CL_DomElement *pElement )
 {
+	mSound = pElement->get_text();
 }
 
 PlaySound::~PlaySound()
@@ -416,10 +593,23 @@ PlaySound::~PlaySound()
 
 void PlaySound::invoke()
 {
+	// Application->playSound ( mSound );
 }
  
 LoadLevel::LoadLevel(CL_DomElement *pElement)
 {
+
+	CL_DomNamedNodeMap attributes = pElement->get_attributes();
+
+	if(attributes.get_length() < 3) throw CL_Error("Error reading loadLevel attributes");
+
+
+	mStartX = atoi(attributes.get_named_item("startx").get_node_value().c_str());
+	mStartY = atoi(attributes.get_named_item("starty").get_node_value().c_str());
+
+	mName = attributes.get_named_item("name").get_node_value();
+	
+
 }
 LoadLevel::~LoadLevel()
 {
@@ -427,12 +617,51 @@ LoadLevel::~LoadLevel()
 
 void LoadLevel::invoke()
 {
+	// Application->loadLevel ( mName, startX, startY );
 }
 
 
 
-StartBattle::StartBattle(CL_DomElement *pElement)
+StartBattle::StartBattle(CL_DomElement *pElement):mbIsBoss(false),mCount(1)
 {
+	CL_DomNamedNodeMap attributes = pElement->get_attributes();
+
+	if(attributes.get_length() < 1) throw CL_Error("Error reading loadLevel attributes");
+
+
+
+	CL_DomNode isnot = attributes.get_named_item("isBoss");
+
+	std::string notstring;
+
+
+	if(! isnot.is_null() )
+	{
+		notstring = isnot.get_node_value();
+
+		if(notstring == "true")
+		{
+			mbIsBoss = true;
+		}
+	}
+	else
+	{
+		mbIsBoss = false;
+	}
+
+
+
+	CL_DomNode countNode = attributes.get_named_item("count");
+
+	if(!countNode.is_null())
+		mCount = atoi(countNode.get_node_value().c_str());
+
+
+	mMonster = attributes.get_named_item("name").get_node_value();
+	
+
+
+
 }
  
 StartBattle::~StartBattle()
@@ -441,11 +670,22 @@ StartBattle::~StartBattle()
 
 void StartBattle::invoke()
 {
+	// Application->startBattle ( mMonster, mCount, mbIsBoss ) ;
 }
 
  
 InvokeShop::InvokeShop(CL_DomElement *pElement)
 {
+
+
+	CL_DomNamedNodeMap attributes = pElement->get_attributes();
+
+	if(attributes.get_length() < 1) throw CL_Error("Error reading invokeshop attributes");
+
+
+	mShopType = attributes.get_named_item("shopType").get_node_value();
+
+	
 }
  
 InvokeShop::~InvokeShop()
@@ -454,11 +694,13 @@ InvokeShop::~InvokeShop()
 
 void InvokeShop::invoke()
 {
+	// Application->invokeShop ( mShopType );
 }
 
  
 Pause::Pause(CL_DomElement *pElement )
 {
+	mMs = atoi ( pElement->get_text().c_str() );
 }
 Pause::~Pause()
 {
@@ -466,10 +708,20 @@ Pause::~Pause()
 
 void Pause::invoke()
 {
+	// Application->pause ( mMs ) ;
 }
  
 Say::Say (CL_DomElement *pElement )
 {
+	CL_DomNamedNodeMap attributes = pElement->get_attributes();
+
+	if(attributes.get_length() < 1) throw CL_Error("Error reading say attributes");
+
+
+	mSpeaker = attributes.get_named_item("speaker").get_node_value();	
+
+
+	mText = pElement->get_text();
 }
 
 Say::~Say()
@@ -478,28 +730,82 @@ Say::~Say()
 
 void Say::invoke()
 {
+	// Application -> say ( mText, mSpeaker );
 }
  
-Give::Give(CL_DomElement *pElement )
+Give::Give(CL_DomElement *pElement ):mpItemRef(NULL)
 {
+
+
+	CL_DomNamedNodeMap attributes = pElement->get_attributes();
+
+
+	CL_DomNode countNode = attributes.get_named_item("count");
+
+	mCount=1;
+
+
+	if(! countNode.is_null() )
+	{
+		mCount = atoi(countNode.get_node_value().c_str());
+
+	}
+
+	CL_DomElement itemRefElement = pElement->get_first_child().to_element();
+
+	if(itemRefElement.is_null()) throw CL_Error("\'give\' missing itemRef");
+
+
+	mpItemRef = new ItemRef ( &itemRefElement );
+
+
 }
 Give::~Give()
 {
+	delete mpItemRef;
 }
 
 void Give::invoke()
 {
+	// Party->giveItem ( mpItemRef );
 }
  
-Take::Take(CL_DomElement *pElement )
+Take::Take(CL_DomElement *pElement ):mpItemRef(NULL)
 {
+
+	CL_DomNamedNodeMap attributes = pElement->get_attributes();
+
+
+	CL_DomNode count = attributes.get_named_item("count");
+
+	mCount=1;
+
+
+	if(! count.is_null() )
+	{
+		mCount = atoi(count.get_node_value().c_str());
+
+	}
+
+	CL_DomElement itemRefElement = pElement->get_first_child().to_element();
+
+	if(itemRefElement.is_null()) throw CL_Error("\'take\' missing itemRef");
+
+
+	mpItemRef = new ItemRef ( &itemRefElement );
+
+
 }
+
+
 Take::~Take()
 {
+	delete mpItemRef;
 }
 
 void Take::invoke()
 {
+	// Party->takeItem ( mpItemRef );
 }
 
  
@@ -507,6 +813,23 @@ void Take::invoke()
  
 GiveGold::GiveGold( CL_DomElement *pElement )
 {
+	CL_DomNamedNodeMap attributes = pElement->get_attributes();
+
+
+	CL_DomNode count = attributes.get_named_item("count");
+
+	mCount=1;
+
+
+	if(count.is_null() )
+	{
+		throw CL_Error("Give gold missing count");
+
+	}
+
+	mCount = atoi(count.get_node_value().c_str());
+
+
 }
 GiveGold::~GiveGold()
 {
@@ -514,6 +837,7 @@ GiveGold::~GiveGold()
 
 void GiveGold::invoke()
 {
+	// Party->giveGold ( mCount );
 }
 
 
