@@ -200,7 +200,13 @@ void EditableLevel::addRows(int rows)
 
 void EditableLevel::addColumns(int columns)
 {
-    mTileMap.resize( mTileMap.size() + columns );
+    int orig_size = mTileMap.size();
+    mTileMap.resize( orig_size + columns );
+
+    for(int x = orig_size-1; x < mTileMap.size(); x++)
+    {
+	mTileMap[x].resize ( mLevelHeight );
+    }
 
     mLevelWidth+=columns;
 }
