@@ -23,6 +23,7 @@ public:
 
 		void on_paint();
 		void draw();
+		void on_select(const CL_InputEvent &event);
 
 private:
 
@@ -40,6 +41,8 @@ private:
 
 		CL_Label *cur_tileset_lable;
 		CL_Surface* cur_tileset;
+
+		int tsX, tsY;
 
 };
 
