@@ -4,8 +4,8 @@
 #include <ClanLib/application.h>
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
-#include "Party.h"
-
+#include "IParty.h"
+#include "IApplication.h"
 
 
 
@@ -13,7 +13,7 @@ namespace StoneRing
 {
 class Level;
   
-  class Application : public CL_ClanApplication
+ class Application : public CL_ClanApplication, public IApplication
     {
     public:
       Application() ;
@@ -21,25 +21,22 @@ class Level;
       
       virtual int main(int argc, char** argv);
 
-      CL_ResourceManager * getResources();
+      virtual CL_ResourceManager * getResources()const;
   
-#ifdef _MSC_VER
-      enum { WINDOW_HEIGHT=600};
-      enum { WINDOW_WIDTH=800};
-#else
-      static const int WINDOW_HEIGHT = 600 ;
-      static const int WINDOW_WIDTH = 800;
-#endif
+      virtual int getScreenWidth()const;
+      virtual int getScreenHeight()const;
 
-      static Application * getApplication();
+      virtual IParty * getParty() const;
 
-      CL_Rect getLevelRect() const;
-      CL_Rect getDisplayRect() const;
+      virtual CL_Rect getLevelRect() const;
+      virtual CL_Rect getDisplayRect() const;
 
 
-      bool canMove(const CL_Rect &currently, const CL_Rect &destination, bool noHot);
+      virtual bool canMove(const CL_Rect &currently, const CL_Rect &destination, bool noHot);
 
     private:
+
+      IParty *mpParty;
 
       int mCurX;
       int mCurY;

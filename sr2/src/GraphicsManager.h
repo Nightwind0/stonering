@@ -2,7 +2,7 @@
 #define SR_GRAPHICS_MANAGER
 
 
-#include "Application.h"
+
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
 #include <string>
