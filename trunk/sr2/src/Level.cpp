@@ -380,12 +380,27 @@ eDirectionBlock DirectionBlock::getDirectionBlock() const
 Tile::Tile(CL_DomElement *pElement):mpTilemap(NULL),mpSprite(NULL),mpCondition(NULL), mpAM(NULL)
 {
 
+#if 1
 
 	CL_DomNamedNodeMap attributes = pElement->get_attributes();
 
-	mX = atoi ( attributes.get_named_item( "xpos" ).get_node_value().c_str() );
-	mY = atoi ( attributes.get_named_item( "ypos" ).get_node_value().c_str() );
-	mZOrder = atoi ( attributes.get_named_item( "zorder").get_node_value().c_str() );
+	if(attributes.get_length() == 0) throw CL_Error("Error reading attributes in tile");
+
+	CL_DomAttr xpos = attributes.get_named_item ( "xpos" ).to_attr();
+
+	if(xpos.is_null() || !xpos.get_specified()) throw CL_Error("Error reading xpos in tile");
+
+	CL_DomAttr ypos = attributes.get_named_item ( "ypos" ).to_attr();
+
+	if(ypos.is_null() || !ypos.get_specified()) throw CL_Error("Error reading ypos in tile");
+	mX = atoi ( xpos.get_value().c_str() );
+	mY = atoi ( ypos.get_value().c_str() );
+
+	CL_DomAttr zorder = attributes.get_named_item("zorder").to_attr();
+
+	if(zorder.get_specified())
+	  mZOrder = atoi ( attributes.get_named_item( "zorder").to_attr().get_node_value().c_str() );
+	else mZOrder = 0;
 
 	CL_DomElement child = pElement->get_first_child().to_element();
 
@@ -414,6 +429,8 @@ Tile::Tile(CL_DomElement *pElement):mpTilemap(NULL),mpSprite(NULL),mpCondition(N
 			meDirectionBlock = block.getDirectionBlock();
 		}
 	}
+
+#endif
 
 }
 
