@@ -98,7 +98,6 @@ int EditorMain::main(int argc, char **argv)
 			CL_DisplayWindow window("SR2 - Editor", getScreenWidth(), getScreenHeight(), false);
 
 			CL_ResourceManager gui_resources("gui.xml",new CL_Zip_Archive("guistylesilver.gui"),true);
-			//CL_ResourceManager gui_resources((const std::string)"GUIStyleSilver/gui.xml");
 			CL_StyleManager_Silver style(&gui_resources);
 			CL_GUIManager gui(&style);
 			gui_manager = &gui;
@@ -175,7 +174,7 @@ int EditorMain::main(int argc, char **argv)
 
 			tiles = new TileSelector(CL_Rect(510, 30, 691, 403), &gui, tsResources);
 			
-			MapGrid map(CL_Rect(10, 30, 500, 590), &gui);
+			MapGrid map(CL_Rect(5, 30, 505, 594), &gui, mpLevel, window.get_gc());
 
 			GridPoint gp(CL_Rect(510, 410, 691, 590), &gui);
 
@@ -189,14 +188,12 @@ int EditorMain::main(int argc, char **argv)
 			{
 				gui.show();
 
-				CL_Rect dst(10,30,min((unsigned int)500,mpLevel->getWidth()*32), min((unsigned int)590,mpLevel->getWidth()*32));
-				CL_Rect src(0,0,dst.get_width(),dst.get_height());
+//				CL_Rect dst(10,30,min((unsigned int)500,mpLevel->getWidth()*32), min((unsigned int)590,mpLevel->getWidth()*32));
+//				CL_Rect src(0,0,dst.get_width(),dst.get_height());
 
-				window.get_gc()->push_cliprect( dst );
-
-				mpLevel->draw(src,dst, window.get_gc(),false);
-
-				window.get_gc()->pop_cliprect();
+//				window.get_gc()->push_cliprect( dst );
+//				mpLevel->draw(src,dst, window.get_gc(),false);
+//				window.get_gc()->pop_cliprect();
 
 				CL_System::keep_alive();
 				CL_Display::flip();
