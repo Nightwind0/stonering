@@ -34,9 +34,9 @@ namespace StoneRing {
 			DirectionBlock(CL_DomElement *pElement );
 			~DirectionBlock();
 
-			eDirectionBlock getDirectionBlock() const;
+			int getDirectionBlock() const;
 		private:
-			eDirectionBlock meDirectionBlock;
+			int meDirectionBlock;
 		};
 
 
