@@ -1,12 +1,14 @@
-<!DOCTYPE Level [
-<!ELEMENT resources (section)>
-<!ELEMENT section ((tile|string|integer|mo)*)>
+<!ELEMENT resources (section+)>
+<!ELEMENT section (level)>
+<!ELEMENT level (levelHeader, tile+, mo+)>
+<!ELEMENT levelHeader EMPTY>
 <!ELEMENT string EMPTY>
 <!ELEMENT integer EMPTY>
-<!ELEMENT tile ((tilemap | spriteRef),condition?, attributeModifier?)>
+<!ELEMENT tile ((tilemap | spriteRef),condition?, attributeModifier?, directionBlock?)>
 <!ELEMENT tilemap EMPTY>
+<!ELEMENT directionBlock EMPTY>
 <!ELEMENT spriteRef (#PCDATA)>
-<!ELEMENT condition (operator*)>
+<!ELEMENT condition ((operator|hasGold|hasItem|didEvent)*)>
 <!ELEMENT attributeModifier (condition*)>
 <!ELEMENT operator ((and | or)*)>
 <!ELEMENT and ((hasGold|hasItem|didEvent|operator)*)>
@@ -14,7 +16,7 @@
 <!ELEMENT hasGold (#PCDATA)>
 <!ELEMENT hasItem (itemRef)>
 <!ELEMENT didEvent (#PCDATA)>
-<!ELEMENT mo ((tilemap|spriteRef)?,event*)>
+<!ELEMENT mo ((tilemap|spriteRef)?,event*, directionBlock?)>
 <!ELEMENT event (condition?,(attributeModifier | say | give | take | playAnimation | playSound | loadLevel | startBattle | pause | invokeShop)*)>
 <!ELEMENT say (#PCDATA)>
 <!ELEMENT give (#PCDATA)>
@@ -26,7 +28,12 @@
 <!ELEMENT startBattle EMPTY>
 <!ELEMENT invokeShop EMPTY>
 <!ELEMENT pause (#PCDATA)>
+<!ATTLIST level name CDATA #REQUIRED>
 <!ATTLIST section name CDATA #REQUIRED>
+<!ATTLIST levelHeader name CDATA #REQUIRED>
+<!ATTLIST levelHeader music CDATA #REQUIRED>
+<!ATTLIST levelHeader width CDATA #REQUIRED>
+<!ATTLIST levelHeader height CDATA #REQUIRED>
 <!ATTLIST string name CDATA #REQUIRED>
 <!ATTLIST string value CDATA #REQUIRED>
 <!ATTLIST integer name CDATA #REQUIRED>
@@ -35,12 +42,15 @@
 <!ATTLIST tile xpos CDATA #REQUIRED>
 <!ATTLIST tile ypos CDATA #REQUIRED>
 <!ATTLIST tile zorder CDATA #IMPLIED>
+<!ATTLIST tilemap mapname CDATA #REQUIRED>
+<!ATTLIST tilemap mapx CDATA #REQUIRED>
+<!ATTLIST tilemap mapy CDATA #REQUIRED>
 <!ATTLIST mo name CDATA #REQUIRED>
 <!ATTLIST mo type CDATA #REQUIRED>
 <!ATTLIST mo xpos CDATA #REQUIRED>
 <!ATTLIST mo ypos CDATA #REQUIRED>
 <!ATTLIST event name CDATA #REQUIRED>
-<!ATTLIST event triggerType CDATA #REQUIRED>
+<!ATTLIST event triggerType (talk|step|act) #REQUIRED>
 <!ATTLIST say speaker CDATA #REQUIRED>
 <!ATTLIST give count CDATA #IMPLIED>
 <!ATTLIST take count CDATA #IMPLIED>
@@ -53,8 +63,13 @@
 <!ATTLIST startBattle isBoss CDATA #IMPLIED>
 <!ATTLIST invokeShop shopType CDATA #REQUIRED>
 <!ATTLIST hasGold operator (lt|gt|lte|gte|eq) #REQUIRED>
+<!ATTLIST hasGold not (true) #IMPLIED>
+<!ATTLIST hasItem not (true) #IMPLIED>
+<!ATTLIST didEvent not (true) #IMPLIED>
 <!ATTLIST attributeModifier attribute CDATA #REQUIRED>
 <!ATTLIST attributeModifier add CDATA #REQUIRED>
 <!ATTLIST attributeModifier target CDATA #IMPLIED>
-
-]>
+<!ATTLIST directionBlock north (true|false) #REQUIRED>
+<!ATTLIST directionBlock south (true|false) #REQUIRED>
+<!ATTLIST directionBlock east (true|false) #REQUIRED>
+<!ATTLIST directionBlock west (true|false) #REQUIRED>
