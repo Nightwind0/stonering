@@ -579,9 +579,9 @@ namespace StoneRing {
 			uint getHeight() const { return mLevelHeight; }
       
 		private:
-//			std::multimap<CL_Point, Tile *> mTileMap;
-//			std::multimap<CL_Point, Tile *> mFloaterMap;
-			std::map<CL_Point, std::list<Tile*> > mTileMap;
+
+//			std::map<CL_Point, std::list<Tile*> > mTileMap;
+			std::list<Tile*> ** mTileMap;
 			std::map<CL_Point, std::list<Tile*> > mFloaterMap;
       
 			// Sort MO's in order to bring close ones to the top
