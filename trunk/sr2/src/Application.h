@@ -33,6 +33,9 @@ class Level;
 
       static Application * getApplication();
 
+      CL_Rect getLevelRect() const;
+      CL_Rect getDisplayRect() const;
+
     private:
 
       int mCurX;

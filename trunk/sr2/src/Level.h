@@ -493,7 +493,12 @@ namespace StoneRing {
 			ushort getStartY() const;
 
 
+			bool isSolid() const;
+
 			enum eMappableObjectType { NPC, SQUARE, CONTAINER, DOOR, WARP };
+			enum eSize { MO_SMALL, MO_MEDIUM, MO_LARGE };
+
+			eSize getSize() const;
 
 			Movement * getMovement() const;
 
@@ -505,12 +510,13 @@ namespace StoneRing {
 
 			virtual bool isSprite() const;
 
+			virtual int getDirectionBlock() const;
+
 
 			virtual void draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
 
 			virtual void update();
 
-			virtual int getDirectionBlock() const;
 
 			virtual bool isTile() const;
 
@@ -519,18 +525,22 @@ namespace StoneRing {
 		private:
 			void moveInCurrentDirection();
 			void randomNewDirection();
-			enum eFlags { SPRITE = 1, BLK_NORTH = 2, BLK_SOUTH = 4, BLK_EAST = 8, BLK_WEST = 16, TILEMAP = 32 };
+			enum eFlags { SPRITE = 1, TILEMAP = 2, SOLID = 4 };
 
 			std::string mName;
 			std::map<SpriteRef::eDirection, CL_Sprite* > mSprites;
 			SpriteRefOrTilemap mGraphic;
 			std::list<Event*> mEvents;
+			
+			eSize meSize;
       
 			SpriteRef::eDirection meDirection;
 			ushort mStartX;
 			ushort mStartY;
 			uint mX;
 			uint mY;
+			long mTimeOfLastUpdate;
+			ushort mCountInCurDirection;
 			Movement *mpMovement;
 			eMappableObjectType meType;
 
