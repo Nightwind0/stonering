@@ -377,7 +377,7 @@ eDirectionBlock DirectionBlock::getDirectionBlock() const
 	return meDirectionBlock;
 }
 
-Tile::Tile(CL_DomElement *pElement):mpTilemap(NULL),mpSprite(NULL),mpCondition(NULL), mpAM(NULL), mZOrder(0)
+Tile::Tile(CL_DomElement *pElement):mpSprite(NULL),mpCondition(NULL), mpAM(NULL), mZOrder(0), cFlags(0)
 {
 
 	std::cout << "READING A TILE." << std::endl;
@@ -404,11 +404,17 @@ Tile::Tile(CL_DomElement *pElement):mpTilemap(NULL),mpSprite(NULL),mpCondition(N
 	{
 		if( child.get_node_name() == "tilemap" )
 		{
-			mpTilemap = new Tilemap( &child );
+			mGraphic.asTilemap = new Tilemap( &child );
+			
 		}
 		else if (child.get_node_name() == "spriteRef" )
 		{
-			mpSprite = new SpriteRef ( &child );
+			mGraphic.asSpriteRef = new SpriteRef ( &child );
+			cFlags |= SPRITE;
+
+		        // Actually create the ref'd sprite here.
+			// And assign to mpSprite
+
 		}
 		else if (child.get_node_name() == "condition" )
 		{
@@ -422,7 +428,19 @@ Tile::Tile(CL_DomElement *pElement):mpTilemap(NULL),mpSprite(NULL),mpCondition(N
 		{
 			DirectionBlock block(&child);
 
-			meDirectionBlock = block.getDirectionBlock();
+			eDirectionBlock db = block.getDirectionBlock();
+
+			// This is all done to make tile's take up less space in memory
+
+			if(db & DIR_NORTH)
+				cFlags |= BLK_NORTH;
+			if(db & DIR_SOUTH)
+				cFlags |= BLK_SOUTH;
+			if(db & DIR_EAST)
+				cFlags |= BLK_EAST;
+			if(db & DIR_WEST)
+				cFlags |= BLK_WEST;
+			
 		}
 
 		child = child.get_next_sibling().to_element();
@@ -437,7 +455,10 @@ Tile::~Tile()
 	delete mpAM;
 	delete mpCondition;
 	delete mpSprite;
-	delete mpTilemap;
+
+	if( isSprite() )
+		delete mGraphic.asSpriteRef;
+	else delete mGraphic.asTilemap;
 }
 
 ushort Tile::getZOrder() const
@@ -471,12 +492,14 @@ CL_Rect Tile::getRect()
 
 bool Tile::isSprite() const
 {
-	return mpSprite != NULL;
+	return cFlags & SPRITE;
 }
 
 void Tile::draw(uint targetX, uint targetY, CL_GraphicContext *pGC)
 {
-	
+	// Get the graphic guy
+	// Get our tilemap or sprite
+	// Blit it
 }
 
 void Tile::update()
@@ -484,9 +507,21 @@ void Tile::update()
 //	if(mpSprite) mpSprite->update();
 }
 
-eDirectionBlock Tile::getDirectionBlock() const
+int Tile::getDirectionBlock() const
 {
-	return meDirectionBlock;
+
+	int block = 0;
+
+	if( cFlags & BLK_NORTH)
+		block |= DIR_NORTH;
+	if( cFlags & BLK_SOUTH)
+		block |= DIR_SOUTH;
+	if( cFlags & BLK_EAST)
+		block |= DIR_EAST;
+	if( cFlags & BLK_WEST)
+		block |= DIR_WEST;
+
+	return block;
 }
 
 bool Tile::isTile() const
@@ -553,7 +588,7 @@ void MappableObject::update()
 {
 }
 
-eDirectionBlock MappableObject::getDirectionBlock() const
+int MappableObject::getDirectionBlock() const
 {
 }
 
