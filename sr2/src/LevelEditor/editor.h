@@ -33,8 +33,12 @@ private:
 	void on_quit();
 	
 	void on_paint();
+	void on_tileset_change(string userdata);
 
 	bool quit;
+	string menuitem;
+
+	CL_SlotContainer slots;
 };
 
 #endif
