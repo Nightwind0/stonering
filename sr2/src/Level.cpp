@@ -3355,9 +3355,13 @@ void Level::loadMo ( CL_DomElement * moElement )
 void Level::loadTile ( CL_DomElement * tileElement)
 {
     LevelFactory * factory = IApplication::getInstance()->getLevelFactory();
+
+    if(factory == NULL) throw CL_Error("Factory was null. My life is a lie!");
     CL_Point point;
 
     Tile * tile = factory->createTile ( tileElement );
+
+    if(tile == NULL) throw CL_Error("Tile was null, it was all for naught!");
 
     if(tile->getX() >= mLevelWidth)
     {
