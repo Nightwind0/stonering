@@ -15,6 +15,8 @@ typedef unsigned short ushort;
 
 using namespace StoneRing;
 
+
+
 EditableTilemap::EditableTilemap(const std::string &mapname, uint x, uint y)
 {
     mpSurface = GraphicsManager::getInstance()->getTileMap( mapname );
@@ -199,6 +201,18 @@ void EditableLevel::removeTile ( Tile * pTile )
  
 std::list<Tile*> EditableLevel::getTilesAt(uint levelX, uint levelY) const
 {
+
+	std::list<Tile *> tiles = mTileMap[ levelX][levelY];
+
+	if(mFloaterMap.count( CL_Point(levelX, levelY )))
+	{
+		
+			
+	
+	}
+
+	return tiles;
+
 }
     
 
