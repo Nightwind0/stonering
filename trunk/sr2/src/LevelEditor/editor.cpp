@@ -2,9 +2,13 @@
 
 
 #include "editor.h"
+#include "IApplication.h"
+
+using namespace StoneRing;
 
 EditorMain::EditorMain()
 {
+	mpParty = new EditorParty();
 	instance = this;
 }
 
@@ -18,6 +22,54 @@ EditorMain *EditorMain::instance = 0;
 
 
 EditorMain app;
+
+IApplication * IApplication::getInstance() 
+{
+	return &app;
+}
+
+
+CL_ResourceManager * EditorMain::getResources()const
+{
+	return mpResources;
+}
+
+
+StoneRing::IParty * EditorMain::getParty() const
+{
+	return mpParty;
+}
+      
+		
+int EditorMain::getScreenWidth()const
+{
+	return 700;
+}
+
+int EditorMain::getScreenHeight()const
+{
+	return 600;
+}
+
+
+CL_Rect EditorMain::getLevelRect() const
+{
+	// Allow for scrolling
+	return CL_Rect(10, 30, 500, 590);
+}
+
+CL_Rect EditorMain::getDisplayRect() const
+{
+	return CL_Rect(10, 30, 500, 590);
+}
+
+
+bool EditorMain::canMove(const CL_Rect &currently, const CL_Rect &destination, bool noHot)
+{
+	// return mpLevel->canMove
+	return true;
+}
+
 
 
 int EditorMain::main(int argc, char **argv)
@@ -37,7 +89,7 @@ int EditorMain::main(int argc, char **argv)
 			
 
 			// Create a display window
-			CL_DisplayWindow window("SR2 - Editor", 700, 600, false);
+			CL_DisplayWindow window("SR2 - Editor", getScreenWidth(), getScreenHeight(), false);
 
 			CL_ResourceManager gui_resources("gui.xml",new CL_Zip_Archive("guistylesilver.gui"),true);
 			//CL_ResourceManager gui_resources((const std::string)"GUIStyleSilver/gui.xml");
@@ -64,6 +116,7 @@ int EditorMain::main(int argc, char **argv)
 
 			//get the tileset info from xml
 			CL_ResourceManager* tsResources = new CL_ResourceManager ( "../../Media/resources.xml" );
+			mpResources = tsResources;
 
 			list<string> tilemapnames = tsResources->get_all_resources("Tilemaps");
 
