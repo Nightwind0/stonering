@@ -19,7 +19,9 @@ namespace StoneRing
       
       CL_Sprite * createSprite ( const std::string & name );
       CL_Surface * getTileMap ( const std::string & name );
-      
+
+      // Returns the name associated with this surface
+      std::string lookUpMapWithSurface( CL_Surface * );
       
     private:
       std::map<std::string,CL_Surface *> mTileMap;
