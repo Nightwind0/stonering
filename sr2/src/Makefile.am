@@ -2,7 +2,11 @@ bin_PROGRAMS = stonering
 
 stonering_SOURCES = Application.cpp \
 			Level.cpp \
-			Party.cpp
+			Party.cpp \
+			GraphicsManager.cpp
+
+
+stonering_CPPFLAGS = -00
 
 stonering_LDADD = $(CLANLIB_LIBS)
 

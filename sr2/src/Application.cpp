@@ -10,6 +10,19 @@
 using StoneRing::Application;
 using namespace StoneRing;
 
+
+Application sr_app;
+
+Application * Application::getApplication()
+{
+  return &sr_app;
+}
+
+CL_ResourceManager * Application::getResources()
+{
+  return mpResources;
+}
+
 Application::Application()
 {
 }
@@ -62,6 +75,23 @@ int Application::main(int argc, char ** argv)
 
 		mpLevel = new Level(startinglevel, mpResources);
 
+		CL_System::sleep( 200 );
+
+		while(!CL_Keyboard::get_keycode(CL_KEY_ESCAPE) && !CL_Keyboard::get_keycode(CL_KEY_ENTER) && !CL_Keyboard::get_keycode( CL_KEY_SPACE))
+		  {
+		    
+		    CL_Display::clear();
+		    mpLevel->draw(0,0, mpWindow->get_gc());
+
+		    CL_System::sleep( 50 );
+		    
+		    CL_Display::flip();
+		    CL_System::keep_alive();
+		  }
+		
+
+		
+
 		
 		teardownClanLib();
 	}
@@ -104,4 +134,4 @@ void Application::showIntro()
 
 }
 
-Application app;
+

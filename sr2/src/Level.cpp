@@ -6,6 +6,7 @@
 #include "Level.h"
 #include <algorithm>
 #include <stdlib.h>
+#include "GraphicsManager.h"
 
 
 using std::string;
@@ -1081,6 +1082,7 @@ Tile::Tile(CL_DomElement *pElement):mpSprite(NULL),mpCondition(NULL), mpAM(NULL)
 	{
 		if( child.get_node_name() == "tilemap" )
 		{
+			
 			mGraphic.asTilemap = new Tilemap( &child );
 			
 		}
@@ -1172,11 +1174,35 @@ bool Tile::isSprite() const
 	return cFlags & SPRITE;
 }
 
-void Tile::draw(uint targetX, uint targetY, CL_GraphicContext *pGC)
+void Tile::draw(int targetX, int targetY, CL_GraphicContext *pGC)
 {
 	// Get the graphic guy
 	// Get our tilemap or sprite
 	// Blit it
+
+	std::cout << "Blitting At " << targetX << ',' << targetY << std::endl;
+
+	GraphicsManager * GM = GraphicsManager::getInstance();
+
+	if( !isSprite() )
+	{
+		CL_Surface * tilemap = GM->getTileMap ( mGraphic.asTilemap->getMapName() );
+
+		//		void draw(	const CL_Rect& src, const CL_Rect& dest, CL_GraphicContext* context = 0);
+
+		CL_Rect srcRect(mGraphic.asTilemap->getMapX() * 32, mGraphic.asTilemap->getMapY() * 32,
+				(mGraphic.asTilemap->getMapX() * 32) + 32, (mGraphic.asTilemap->getMapY() * 32) + 32);
+		std::cout << "From " << srcRect.left << ',' << srcRect.top << std::endl;
+		
+
+		CL_Rect dstRect(targetX, targetY, targetX + 32, targetY + 32);
+
+		std::cout << "To " << dstRect.left << ',' << dstRect.top << std::endl;
+
+		tilemap->draw(srcRect, dstRect, pGC);
+		
+	}
+
 }
 
 void Tile::update()
@@ -1347,7 +1373,7 @@ bool MappableObject::isSprite() const
 	return cFlags & SPRITE;
 }
 
-void MappableObject::draw(uint targetX, uint targetY, CL_GraphicContext *pGC)
+void MappableObject::draw(int targetX, int targetY, CL_GraphicContext *pGC)
 {
 	
 }
@@ -1433,6 +1459,30 @@ void Level::draw(uint levelX, uint levelY, CL_GraphicContext * pGC, uint windowX
 		uint windowHeight)
 {
 
+
+	for(int x = windowX; x < windowWidth; x+=32)
+		for(int y= windowY; y < windowHeight; y+=32)
+		{
+			CL_Point p;
+			p.x = (levelX / 32) + x;
+			p.y = (levelY / 32) + y;
+
+			if(p.x >= mLevelWidth ) continue;
+			if(p.y >= mLevelHeight ) continue;
+
+
+			for(std::multimap<CL_Point,Tile*>::iterator i = mTileMap.lower_bound ( p );
+			    i != mTileMap.upper_bound ( p );
+			    i++)
+			{
+				int blitx = (int)((float)(levelX / 32) - p.x) * p.x;
+				int blity = (int)((float)(levelY / 32) - p.y) * p.y;
+
+
+				if(i->second->evaluateCondition())
+				i->second->draw(blitx, blity, pGC );
+			}
+		}
 }
       
       
@@ -1584,6 +1634,8 @@ void Level::loadTile ( CL_DomElement * tileElement)
 
 	point.x = tile->getX();
 	point.y = tile->getY();
+	
+	std::cout << "Placing tile at : " << point.x << ',' << point.y << std::endl;
 
 	mTileMap.insert(std::make_pair(point, tile));
 }

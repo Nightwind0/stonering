@@ -391,7 +391,7 @@ namespace StoneRing {
 
       virtual bool isSprite() const=0;
 
-      virtual void draw(uint targetX, uint targetY, CL_GraphicContext *pGC)=0;
+      virtual void draw(int targetX, int targetY, CL_GraphicContext *pGC)=0;
 
       virtual void update()=0;
 
@@ -432,7 +432,7 @@ namespace StoneRing {
 
       virtual bool isSprite() const;
 
-      virtual void draw(uint targetX, uint targetY, CL_GraphicContext *pGC);
+      virtual void draw(int targetX, int targetY, CL_GraphicContext *pGC);
 
       virtual void update();
 
@@ -479,7 +479,7 @@ namespace StoneRing {
 
       virtual bool isSprite() const;
 
-      virtual void draw(uint targetX, uint targetY, CL_GraphicContext *pGC);
+      virtual void draw(int targetX, int targetY, CL_GraphicContext *pGC);
 
       virtual void update();
 

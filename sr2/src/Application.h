@@ -20,9 +20,13 @@ class Level;
       ~Application();
       
       virtual int main(int argc, char** argv);
+
+      CL_ResourceManager * getResources();
   
       static const int WINDOW_HEIGHT = 600;
       static const int WINDOW_WIDTH = 800;
+
+      static Application * getApplication();
 
     private:
 
