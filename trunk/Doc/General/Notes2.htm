@@ -1,0 +1,931 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./Notes2_files/filelist.xml">
+<title> Weapons, Armor, Items, Rings, Runes, and Key Items should all be loaded
+from resource files</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Michael</o:Author>
+  <o:LastAuthor>Daniel Palm</o:LastAuthor>
+  <o:Revision>2</o:Revision>
+  <o:TotalTime>22</o:TotalTime>
+  <o:LastPrinted>2113-01-01T08:00:00Z</o:LastPrinted>
+  <o:Created>2003-02-25T03:58:00Z</o:Created>
+  <o:LastSaved>2003-02-25T03:58:00Z</o:LastSaved>
+  <o:Pages>6</o:Pages>
+  <o:Words>1682</o:Words>
+  <o:Characters>9590</o:Characters>
+  <o:Company> </o:Company>
+  <o:Version>9.3821</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:DoNotHyphenateCaps/>
+  <w:PunctuationKerning/>
+  <w:DrawingGridHorizontalSpacing>6 pt</w:DrawingGridHorizontalSpacing>
+  <w:DrawingGridVerticalSpacing>6 pt</w:DrawingGridVerticalSpacing>
+  <w:DisplayHorizontalDrawingGridEvery>0</w:DisplayHorizontalDrawingGridEvery>
+  <w:DisplayVerticalDrawingGridEvery>3</w:DisplayVerticalDrawingGridEvery>
+  <w:UseMarginsForDrawingGridOrigin/>
+  <w:DoNotShadeFormData/>
+  <w:Compatibility>
+   <w:FootnoteLayoutLikeWW8/>
+   <w:ShapeLayoutLikeWW8/>
+   <w:AlignTablesRowByRow/>
+   <w:ForgetLastTabAlignment/>
+   <w:LayoutRawTableWidth/>
+   <w:LayoutTableRowsApart/>
+  </w:Compatibility>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+@font-face
+	{font-family:"Nimbus Roman No9 L";
+	panose-1:0 0 0 0 0 0 0 0 0 0;
+	mso-font-charset:0;
+	mso-generic-font-family:roman;
+	mso-font-format:other;
+	mso-font-pitch:variable;
+	mso-font-signature:3 0 0 0 1 0;}
+@font-face
+	{font-family:StarSymbol;
+	panose-1:0 0 0 0 0 0 0 0 0 0;
+	mso-font-charset:2;
+	mso-generic-font-family:auto;
+	mso-font-format:other;
+	mso-font-pitch:variable;
+	mso-font-signature:0 0 0 0 0 0;}
+@font-face
+	{font-family:"Arial Unicode MS";
+	panose-1:0 0 0 0 0 0 0 0 0 0;
+	mso-font-charset:0;
+	mso-generic-font-family:auto;
+	mso-font-format:other;
+	mso-font-pitch:variable;
+	mso-font-signature:3 0 0 0 1 0;}
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.Default, li.Default, div.Default
+	{mso-style-name:Default;
+	mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:none;
+	mso-layout-grid-align:none;
+	text-autospace:ideograph-other;
+	font-size:12.0pt;
+	font-family:"Nimbus Roman No9 L";
+	mso-fareast-font-family:"Times New Roman";
+	mso-hansi-font-family:"Arial Unicode MS";
+	mso-bidi-font-family:"Times New Roman";
+	color:black;}
+span.BulletSymbols
+	{mso-style-name:"Bullet Symbols";
+	mso-style-parent:"";
+	mso-ansi-font-size:9.0pt;
+	mso-bidi-font-size:9.0pt;
+	mso-ascii-font-family:StarSymbol;
+	mso-hansi-font-family:StarSymbol;
+	color:black;
+	mso-ansi-language:X-NONE;}
+ /* Page Definitions */
+@page
+	{mso-page-border-surround-header:no;
+	mso-page-border-surround-footer:no;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:1;
+	mso-list-template-ids:1;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-suffix:none;
+	mso-level-text:•;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:14.15pt;
+	text-indent:-14.15pt;
+	mso-ansi-font-size:9.0pt;
+	mso-bidi-font-size:9.0pt;
+	mso-ascii-font-family:StarSymbol;
+	mso-hansi-font-family:StarSymbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l0:level2
+	{mso-level-number-format:bullet;
+	mso-level-suffix:none;
+	mso-level-text:•;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:28.3pt;
+	text-indent:-14.15pt;
+	mso-ansi-font-size:9.0pt;
+	mso-bidi-font-size:9.0pt;
+	mso-ascii-font-family:StarSymbol;
+	mso-hansi-font-family:StarSymbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l0:level3
+	{mso-level-number-format:bullet;
+	mso-level-suffix:none;
+	mso-level-text:•;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:42.45pt;
+	text-indent:-14.15pt;
+	mso-ansi-font-size:9.0pt;
+	mso-bidi-font-size:9.0pt;
+	mso-ascii-font-family:StarSymbol;
+	mso-hansi-font-family:StarSymbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l0:level4
+	{mso-level-number-format:bullet;
+	mso-level-suffix:none;
+	mso-level-text:•;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:56.6pt;
+	text-indent:-14.15pt;
+	mso-ansi-font-size:9.0pt;
+	mso-bidi-font-size:9.0pt;
+	mso-ascii-font-family:StarSymbol;
+	mso-hansi-font-family:StarSymbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l0:level5
+	{mso-level-number-format:bullet;
+	mso-level-suffix:none;
+	mso-level-text:•;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:70.75pt;
+	text-indent:-14.15pt;
+	mso-ansi-font-size:9.0pt;
+	mso-bidi-font-size:9.0pt;
+	mso-ascii-font-family:StarSymbol;
+	mso-hansi-font-family:StarSymbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l0:level6
+	{mso-level-number-format:bullet;
+	mso-level-suffix:none;
+	mso-level-text:•;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:84.9pt;
+	text-indent:-14.15pt;
+	mso-ansi-font-size:9.0pt;
+	mso-bidi-font-size:9.0pt;
+	mso-ascii-font-family:StarSymbol;
+	mso-hansi-font-family:StarSymbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l0:level7
+	{mso-level-number-format:bullet;
+	mso-level-suffix:none;
+	mso-level-text:•;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:99.05pt;
+	text-indent:-14.15pt;
+	mso-ansi-font-size:9.0pt;
+	mso-bidi-font-size:9.0pt;
+	mso-ascii-font-family:StarSymbol;
+	mso-hansi-font-family:StarSymbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l0:level8
+	{mso-level-number-format:bullet;
+	mso-level-suffix:none;
+	mso-level-text:•;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:113.2pt;
+	text-indent:-14.15pt;
+	mso-ansi-font-size:9.0pt;
+	mso-bidi-font-size:9.0pt;
+	mso-ascii-font-family:StarSymbol;
+	mso-hansi-font-family:StarSymbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l0:level9
+	{mso-level-number-format:bullet;
+	mso-level-suffix:none;
+	mso-level-text:•;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:127.35pt;
+	text-indent:-14.15pt;
+	mso-ansi-font-size:9.0pt;
+	mso-bidi-font-size:9.0pt;
+	mso-ascii-font-family:StarSymbol;
+	mso-hansi-font-family:StarSymbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l1
+	{mso-list-id:2;
+	mso-list-template-ids:2;}
+@list l1:level1
+	{mso-level-number-format:bullet;
+	mso-level-suffix:none;
+	mso-level-text:•;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:14.15pt;
+	text-indent:-14.15pt;
+	mso-ansi-font-size:9.0pt;
+	mso-bidi-font-size:9.0pt;
+	mso-ascii-font-family:StarSymbol;
+	mso-hansi-font-family:StarSymbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l1:level2
+	{mso-level-number-format:bullet;
+	mso-level-suffix:none;
+	mso-level-text:•;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:28.3pt;
+	text-indent:-14.15pt;
+	mso-ansi-font-size:9.0pt;
+	mso-bidi-font-size:9.0pt;
+	mso-ascii-font-family:StarSymbol;
+	mso-hansi-font-family:StarSymbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l1:level3
+	{mso-level-number-format:bullet;
+	mso-level-suffix:none;
+	mso-level-text:•;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:42.45pt;
+	text-indent:-14.15pt;
+	mso-ansi-font-size:9.0pt;
+	mso-bidi-font-size:9.0pt;
+	mso-ascii-font-family:StarSymbol;
+	mso-hansi-font-family:StarSymbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l1:level4
+	{mso-level-number-format:bullet;
+	mso-level-suffix:none;
+	mso-level-text:•;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:56.6pt;
+	text-indent:-14.15pt;
+	mso-ansi-font-size:9.0pt;
+	mso-bidi-font-size:9.0pt;
+	mso-ascii-font-family:StarSymbol;
+	mso-hansi-font-family:StarSymbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l1:level5
+	{mso-level-number-format:bullet;
+	mso-level-suffix:none;
+	mso-level-text:•;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:70.75pt;
+	text-indent:-14.15pt;
+	mso-ansi-font-size:9.0pt;
+	mso-bidi-font-size:9.0pt;
+	mso-ascii-font-family:StarSymbol;
+	mso-hansi-font-family:StarSymbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l1:level6
+	{mso-level-number-format:bullet;
+	mso-level-suffix:none;
+	mso-level-text:•;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:84.9pt;
+	text-indent:-14.15pt;
+	mso-ansi-font-size:9.0pt;
+	mso-bidi-font-size:9.0pt;
+	mso-ascii-font-family:StarSymbol;
+	mso-hansi-font-family:StarSymbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l1:level7
+	{mso-level-number-format:bullet;
+	mso-level-suffix:none;
+	mso-level-text:•;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:99.05pt;
+	text-indent:-14.15pt;
+	mso-ansi-font-size:9.0pt;
+	mso-bidi-font-size:9.0pt;
+	mso-ascii-font-family:StarSymbol;
+	mso-hansi-font-family:StarSymbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l1:level8
+	{mso-level-number-format:bullet;
+	mso-level-suffix:none;
+	mso-level-text:•;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:113.2pt;
+	text-indent:-14.15pt;
+	mso-ansi-font-size:9.0pt;
+	mso-bidi-font-size:9.0pt;
+	mso-ascii-font-family:StarSymbol;
+	mso-hansi-font-family:StarSymbol;
+	mso-bidi-font-family:"Times New Roman";}
+@list l1:level9
+	{mso-level-number-format:bullet;
+	mso-level-suffix:none;
+	mso-level-text:•;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:127.35pt;
+	text-indent:-14.15pt;
+	mso-ansi-font-size:9.0pt;
+	mso-bidi-font-size:9.0pt;
+	mso-ascii-font-family:StarSymbol;
+	mso-hansi-font-family:StarSymbol;
+	mso-bidi-font-family:"Times New Roman";}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+</head>
+
+<body lang=EN-US style='tab-interval:62.5pt;text-justify-trim:punctuation'>
+
+<div class=Section1>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default>Weapons, Armor, Items, Rings, Runes, and Key Items should all
+be loaded from resource files. </p>
+
+<p class=Default>Weapons will include the image associated with them, their
+type, color class, modifiers (such as rune, black, etc), and stats such as
+power, price, etc. The game engine will take care of all the rules, including
+damage upon enemies and casting the appropriate spells, etc. </p>
+
+<p class=Default>Armor is similarly done. As are Rings.</p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default>Items contain the image associated with it, the name, and a
+collection of attribute modifiers that decribe what the item does. They would
+also have a price, and an indicator as to whether they can be used in battle,
+or in the menu, or both.<span style="mso-spacerun: yes">  </span>They would
+also have an english description of the use.</p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default>Runes have a name, an image, and the spell # the rune ties to.
+They would also have a high price.</p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default>Key Items include a name and an optional image. They also have
+an optional<span style="mso-spacerun: yes">  </span>script which runs when the
+item is used from the menu. </p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default>Ams: Attribute Modifiers: these are simple structures which
+describe changes to HP, MP, and status effects. They can be used to describe an
+attack, a cure, and a change of status. Items use these to describe what effect
+they have. Thus we could create a cure potion just as well as a bomb to be used
+on the enemy.</p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default><span style='font-family:"Arial Unicode MS";mso-ascii-font-family:
+"Nimbus Roman No9 L"'>“</span>Dead<span style='font-family:"Arial Unicode MS";
+mso-ascii-font-family:"Nimbus Roman No9 L"'>”</span> should be a long-term
+status effect. </p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default>Displaying:</p>
+
+<p class=Default>All objects which can be displayed should display themselves. </p>
+
+<p class=Default>The Battle should be an object which knows how to display
+itself and can do so at any screen co-ordinate, so that battle screens can
+scroll on and off screen. </p>
+
+<p class=Default>The same is true for the WorldMap. </p>
+
+<p class=Default style='margin-left:14.15pt;text-indent:-14.15pt;mso-list:l1 level1 lfo2'><![if !supportLists]><span
+style='font-size:9.0pt;font-family:StarSymbol'>•</span><![endif]>When going
+from one place to another via a transport script, (such as from the worldmap
+into a town or vice versa) the new map should slide in from one of the 4 (or
+even 8) directions and cover up the old. This would be a neat transition.</p>
+
+<p class=Default>* The text which comes from scripts in the WorldMap (as well
+as in battle) should be handled by a TextHandler object and know how to draw
+itself. It should slide down from the top, and display 3 to 5 lines at a line,
+and when the button is pressed, it should scroll one? Line at a time.<span
+style="mso-spacerun: yes">  </span>It should also know how to draw any menu
+that the script should request. The engine should pass key presses to the text
+bar when it is being shown, so that<span style="mso-spacerun: yes"> 
+</span>scrolling, menu choosing, and ending of the text bar can occur</p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default>Also, there should be <span style='font-family:"Arial Unicode MS";
+mso-ascii-font-family:"Nimbus Roman No9 L"'>“</span>Display<span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>”</span>
+objects, which represent things that are displayed for a period of time and
+then dissapear, such as the points resulting from an attack in a Battle (the
+white/ green HP numbers besides the target of the attack/spell/item usage).
+These are created, given an X,Y to start at (I say that because certain
+displays might move around), and left to display until such time that they
+destroy themselves (or somehow request to be destroyed). That way, the numbers
+will float in the air until they fade away all by themselves, etc. <span
+style='color:purple'>The same goes for the animation of a spell, or an attack
+or what have you. It's just an object that floats over the target and displays
+itself, possibly many different<span style="mso-spacerun: yes">  </span>frames.
+OR the game may go into a separate function to display these animations and be
+basically </span><span style='font-family:"Arial Unicode MS";mso-ascii-font-family:
+"Nimbus Roman No9 L";color:purple'>“</span><span style='color:purple'>modal</span><span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L";
+color:purple'>”</span><span style='color:purple'> and then return to the
+regular loop. </span></p>
+
+<p class=Default><span style='color:purple'><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></span></p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default>Walking in forests should cover up the lower half of your body</p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default>Tiles should be able to support multiple objects, so that new
+things may take the place of old. For example, you might descend into a dungeon
+and find a boss, but later find the boss gone, but a treasure chest in its
+place.</p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default>*Therefore, objects should state where they are, as opposed to
+tiles knowing or caring where anythign is</p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default>Displaying Levels:</p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span>We
+give the LevelMap object an x and a y as to where in the level to display. Note
+that we DO NOT choose co-ordinates by tiles. Tiles are used only in building
+the level to be displayed. Remember, we want smooth scrolling.. and smooth
+movement (walking). So the LevelMap object will calculate which tiles to show,
+and request them to be drawn at a certain point. ALSO, LevelMap's draw should
+also be able to accept an optional point of origin (top-left) so that levels
+can slide in from different directions as a cool effect. </p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default>NPC Movement:</p>
+
+<p class=Default>Basically just implement a few basic NPC<span
+style="mso-spacerun: yes">  </span>walk algorithms and choose which one to use
+when designing an NPC in the level design program.<span style="mso-spacerun:
+yes">  </span>(Basically you write into the load script a command to change movement
+algorithm)</p>
+
+<p class=Default>*** Scripts should be able to change the movement algorithm,
+such that an NPC might get freaked out and change to Crazed, or might already
+be panicked and when you return with good news they change to Calm. Or a stuck
+person (None) could become unstuck (Calm) or what have you. </p>
+
+<p class=Default style='margin-left:14.15pt;text-indent:-14.15pt;mso-list:l0 level1 lfo1'><![if !supportLists]><span
+style='font-size:9.0pt;font-family:StarSymbol'>•</span><![endif]>Only on-screen
+objects should be animated.</p>
+
+<p class=Default style='margin-left:14.15pt;text-indent:-14.15pt;mso-list:l0 level1 lfo1'><![if !supportLists]><span
+style='font-size:9.0pt;font-family:StarSymbol'>•</span><![endif]>Ideas for NPC
+alogorithm choices</p>
+
+<p class=Default style='margin-left:42.45pt;text-indent:-14.15pt;mso-list:l0 level3 lfo1'><![if !supportLists]><span
+style='font-size:9.0pt;font-family:StarSymbol'>•</span><![endif]> 80's Robot <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Walks one direction until hits an obstacle, then turns 90 degrees and walks
+that way... rinse &amp; repeat. Useful for someone just on a casual stroll.
+Good alternative to <span style='font-family:"Arial Unicode MS";mso-ascii-font-family:
+"Nimbus Roman No9 L"'>“</span>Calm<span style='font-family:"Arial Unicode MS";
+mso-ascii-font-family:"Nimbus Roman No9 L"'>”</span> for people who you don't
+mind if they wander a lot.</p>
+
+<p class=Default style='margin-left:42.45pt;text-indent:-14.15pt;mso-list:l0 level3 lfo1'><![if !supportLists]><span
+style='font-size:9.0pt;font-family:StarSymbol'>•</span><![endif]> Speedy <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Runs one direction <span style='font-family:"Arial Unicode MS";mso-ascii-font-family:
+"Nimbus Roman No9 L"'>–</span> hits a wall, turns around and runs back. Hyper
+dog?? Stupid kid?? Panicked person?</p>
+
+<p class=Default style='margin-left:42.45pt;text-indent:-14.15pt;mso-list:l0 level3 lfo1'><![if !supportLists]><span
+style='font-size:9.0pt;font-family:StarSymbol'>•</span><![endif]> Sporadic <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Only goes in one direction for maybe 4 tiles max, then picks another way and
+goes. At an obstacle, picks a random direction of the remaining 3. Could be
+used for animals....</p>
+
+<p class=Default style='margin-left:42.45pt;text-indent:-14.15pt;mso-list:l0 level3 lfo1'><![if !supportLists]><span
+style='font-size:9.0pt;font-family:StarSymbol'>•</span><![endif]> None <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+doesn't move. Second most common probably.</p>
+
+<p class=Default style='margin-left:42.45pt;text-indent:-14.15pt;mso-list:l0 level3 lfo1'><![if !supportLists]><span
+style='font-size:9.0pt;font-family:StarSymbol'>•</span><![endif]> Calm <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Most should use this. Occasionally takes a couple steps in one direction or
+another. At most 3 tiles. Then waits around for a while before walking again in
+some random direction. </p>
+
+<p class=Default style='margin-left:42.45pt;text-indent:-14.15pt;mso-list:l0 level3 lfo1'><![if !supportLists]><span
+style='font-size:9.0pt;font-family:StarSymbol'>•</span><![endif]>Crazed <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Sporadic, only running instead of walking.</p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default>There should only be two speeds <span style='font-family:"Arial Unicode MS";
+mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span> walk and run. </p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default>Items</p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span>Seeds/Beans</p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span>Moon Seeds <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Replenish MP</p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span>Holy Moon Seesd <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Replenish lots of MP</p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span>Star Seeds <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Replenish HP (like Potion)</p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span>Holy Star Seeds <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Replenish lots of HP</p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span>Diamond Seeds <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Equiv of <span style='font-family:"Arial Unicode MS";mso-ascii-font-family:
+"Nimbus Roman No9 L"'>“</span>elixer<span style='font-family:"Arial Unicode MS";
+mso-ascii-font-family:"Nimbus Roman No9 L"'>”</span> in FF. Rare.</p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span>Fantasy Seeds <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Life (phoenix down)</p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span>Coffee Bean <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Cures <span style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>“</span>Slow<span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>”</span></p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span>Dismal Seed - <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>“</span>Slow<span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>”</span>
+(use on enemies typically). Uncommon</p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span>Purity Seed <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Cures poison</p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span>Hemlock Seed <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Poison enemies. (or yourself if you want)</p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span>Warm Seed <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Cures Stone / Frozen</p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span>Clarity Seed <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Cures blind</p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span>Calming Seed <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Cures Bewilderment (confusion) or Rage</p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span>Rage Seed <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Like <span style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>“</span>berserk<span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>”</span>
+</p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span>Cocoa Bean <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Cures <span style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>“</span>Halt<span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>”</span>
+and <span style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>“</span>Mute<span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>”</span></p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span>Neko Seeds <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Turns them into a<span style="mso-spacerun: yes">  </span>cat (half strength)
+or back to <span style='mso-tab-count:1'>        </span><span style='mso-tab-count:
+1'>                     </span>normal if already a cat</p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span>Magical Bean <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Removes all status effects. </p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span>God Bean <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Life + Full HP and MP. VERY RARE</p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span></p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span></p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default>Names for Monsters</p>
+
+<p class=Default>Dybbuk<span style="mso-spacerun: yes">  </span>-- a ghost that
+enters peoples souls.</p>
+
+<p class=Default>Banshee</p>
+
+<p class=Default>Hellion</p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span></p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span></p>
+
+<p class=Default>Anything that can be a still image (tiles, monsters, etc)
+should also be able to be an animation. They should be interchangeable, and
+there needs to be * A WAY TO DEFINE SIMPLE ANIMATIONS (FOR TILES, MONSTERS,
+ETC)<span style="mso-spacerun: yes">  </span>IN THE RESOURCE FILES</p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default>*** A good way to implement animations, would be to have
+quantums of time, and for each quantum of time you select an image to be
+displayed. </p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span>Time 1 - - Image 1</p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span>Time 2 <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span><span
+style="mso-spacerun: yes">  </span>Image 1</p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span>Time 3 <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Image 1</p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span>Time 4 <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Image 2</p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span>Thus,
+it stays usually image 1, but blinks to image 2. This is similar to musical
+beats. You can also leave a time slot blank to show nothing at all, thus you
+could have something flashing....<span style="mso-spacerun: yes">  </span>And
+if you just want one solid image the whole time (as is usually the case) then
+you simply put</p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span>Time 1 <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Image 1</p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span>and
+it will just cycle that one over and over, appearing as a solid image on
+screen. </p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default>** We need to be able to have animations with cycles at least
+4 seconds long. For example, waves on the beach which come in and out in 2
+second intervals. </p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span>Time 1 <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Wave Out</p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span>Time 2 -<span
+style="mso-spacerun: yes">  </span>Inbetween (Closer to Out)</p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span>Time 3 <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Inbetween (Closer to in)</p>
+
+<p class=Default><span style='mso-tab-count:1'>                     </span><span
+style='mso-tab-count:1'>                     </span>Time 4 <span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>–</span>
+Wave In </p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default>---- Level Editor</p>
+
+<p class=Default>You move either a selection rectangle, or a simple one-tile
+cursor around what I will refer to as the <span style='font-family:"Arial Unicode MS";
+mso-ascii-font-family:"Nimbus Roman No9 L"'>“</span>map<span style='font-family:
+"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>”</span></p>
+
+<p class=Default>you can move around the map using the arrow keys.</p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default><span style="mso-spacerun: yes"> </span>There should be a
+placement mode, in which you move around the map and hit space on the tiles
+where you want to place your selected tile AND</p>
+
+<p class=Default>There shoul d be a selection mode, where you click and drag a
+selection rectangle over the tiles you want to select, and you can then set
+them to all one tile, or delete them, or whatever. </p>
+
+<p class=Default>Hitting insert should toggle between placement and selection. </p>
+
+<p class=Default>* You change a tile just by placing a different tile over it.
+It simply replaces it.</p>
+
+<p class=Default>Hitting ENTER rather than space over a square opens up the
+object edit/create screen, showing a list of all objects (if any) that
+currently have the X and Y values matching where you hit enter. If none in the
+list, it opens up in create mode, and sets the default X and Y values to the
+tile where you hit enter. </p>
+
+<p class=Default>Pressing F1 shows you a list of all the objects in the level,
+and you can select one to display/edit by hitting enter on it. That opens up
+the edit screen for that particular object. Escape leaves the screen. 'S' saves
+the object. </p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default>*Editing Objects:</p>
+
+<p class=Default>There will be a selection of pre-made objects, where you only
+need fill out certain fields.</p>
+
+<p class=Default>For example,<span style="mso-spacerun: yes">  </span>a
+treasure box pre-made would use the treasure-box icon, and automatically
+generate an action-button script which calls GiveItem() provided that the first
+memory word doesn't indicate that it's already been opened. Furtheremore, it
+generates a display script which chooses either the opened or closed chest icon
+for display. You only need tell it which item it should give.</p>
+
+<p class=Default>Also, door<span style="mso-spacerun: yes">  </span>pre-mades
+can be done, as well as transportation tiles, standard NPCs, etc.</p>
+
+<p class=Default>Of course, custom objects can be made</p>
+
+<p class=Default>Afterwards you press S to save the object and it leaves the
+object-edit screen.</p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default>***TODO:<span style="mso-spacerun: yes">  </span>Way to create
+and edit scripts from within level-editor.</p>
+
+<p class=Default>Proposal 1: An edit box, which, when the object is saved,
+automatically names the scripts as files and adds<span style="mso-spacerun:
+yes">  </span>references to the script files in the level's resource file. </p>
+
+<p class=Default>Scripts could be automatically named after the level, the
+object number, and which type of script (action-button, display, etc). </p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default><b>Tile Selection: </b><span style="mso-spacerun:
+yes"> </span>at the bottom of the screen is a row of tiles, one of which is
+highlighted with a cursor of some sort.</p>
+
+<p class=Default>You move the cursor left and right over the row, and whichever
+you leave it on is the selected tile. This basically is the method for
+selecting a column in a matrix of tiles. The divide<span style="mso-spacerun:
+yes">  </span>and multiply keys on the num-pad<span style="mso-spacerun: yes"> 
+</span>will be responsible for this.</p>
+
+<p class=Default>You can access another row from the matrix by hitting minus
+(up) and plus (down) on the numpad. This basically is the method for selecting
+a row in a matrix of tiles.</p>
+
+<p class=Default>You change matrices by hitting Page Up/Page Down. </p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default>ALL DEALINGS WITH HP SHOULD BE IN TERMS OF A SUBTRACTION.</p>
+
+<p class=Default><b>CURING SHOULD JUST BE AN ATTACK OF NEGATIVE VALUE. <o:p></o:p></b></p>
+
+<p class=Default>This way, the difference between display of a damage and
+display of a heal will be, you look to see if it's negative, and if it is,
+display in the healing color/font/thingy.</p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default>There should be a dysfunctional world Easter egg that includes
+all kinds of groovy stuff from our humor and such.</p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default>There should be a wumpkin village in which the wumpkins are
+benevolent creatures, which you interact with. This is not in the dysfunctional
+world, but part of the main quest. There will be specialized wumpkin weaponry
+that is difficult to get but very powerful.</p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default>Possibly enhanced attacks through the use of items, that are
+specific to each character class, or a generic item that anyone could use.
+There should be a certain number like 45 for 15 bosses, but you can save them
+up, like using more on later bosses. </p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default>You should be able to equip a spell <span style='font-family:
+"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>“</span>clamp<span
+style='font-family:"Arial Unicode MS";mso-ascii-font-family:"Nimbus Roman No9 L"'>”</span>
+to remove magical capabilities from weapons when fighting an enemy that it
+would benefit. I.e. you can turn off the spell, and continue to use the weapon.</p>
+
+<p class=Default><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></p>
+
+<p class=Default>Paradox effect, when you have fire and ice equipped at the
+same time it gives an added affect to your attack, possibly healing yourself,
+added damage, replenish magic.</p>
+
+</div>
+
+</body>
+
+</html>
