@@ -23,7 +23,7 @@ CL_ResourceManager * Application::getResources()
   return mpResources;
 }
 
-Application::Application()
+Application::Application():mCurX(0),mCurY(0)
 {
 }
 
@@ -83,7 +83,7 @@ int Application::main(int argc, char ** argv)
 		    CL_Display::clear();
 		    mpLevel->draw(0,0, mpWindow->get_gc());
 
-		    CL_System::sleep( 50 );
+
 		    
 		    CL_Display::flip();
 		    CL_System::keep_alive();

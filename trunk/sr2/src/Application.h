@@ -30,7 +30,8 @@ class Level;
 
     private:
 
-
+      int mCurX;
+      int mCurY;
 
 
       void setupClanLib();
