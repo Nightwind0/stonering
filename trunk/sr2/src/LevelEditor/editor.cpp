@@ -93,11 +93,11 @@ int EditorMain::main(int argc, char **argv)
 
 
 
-			tiles = new TileSelector(CL_Rect(510, 30, 690, 400), &gui, tsResources);
+			tiles = new TileSelector(CL_Rect(510, 30, 691, 403), &gui, tsResources);
 			
 			MapGrid map(CL_Rect(10, 30, 500, 590), &gui);
 
-			GridPoint gp(CL_Rect(510, 410, 690, 590), &gui);
+			GridPoint gp(CL_Rect(510, 410, 691, 590), &gui);
 
 		
 			
@@ -145,7 +145,7 @@ int EditorMain::main(int argc, char **argv)
 
 	void EditorMain::on_tileset_change(string userdata)
 	{
-		tiles->setCurLable(userdata);
+		tiles->changeTS(userdata);
 	}
 
 

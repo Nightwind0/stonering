@@ -19,7 +19,7 @@ public:
 //, TileSet tileset
 		~TileSelector();
 
-		void setCurLable(string text);
+		void changeTS(string text);
 
 		void on_paint();
 		void draw();
@@ -29,6 +29,9 @@ private:
 		CL_Rect TSrect;
 		CL_Rect* SRCrect;
 		CL_Rect* DSTrect;
+
+		CL_ScrollBar *scrollVert;
+		CL_ScrollBar *scrollHorz;
 		
 
 		CL_SlotContainer slots;
