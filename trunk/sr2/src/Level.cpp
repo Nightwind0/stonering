@@ -2734,7 +2734,8 @@ Level::~Level()
 }
     
 
-void Level::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC, bool floaters)
+void Level::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC, bool floaters,
+		 bool highlightHot, bool indicateBlocks)
 {
 //	int maxSrcX = max( ceil(dst.get_width() / 32.0), mLevelWidth );
 //	int maxSrcY = max( ceil(dst.get_height() / 32.0), mLevelHeight);
@@ -2796,9 +2797,10 @@ void Level::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC,
 					
 		    Tile * pTile = *i;
 		    if(pTile->evaluateCondition())
+		    {
 			pTile->draw(tileSrc, tileDst , pGC );
-		    
-		    
+
+		    }
 		    
 		    
 		}
@@ -2832,9 +2834,42 @@ void Level::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC,
  					
  					Tile * pTile = *i;
  					if(pTile->evaluateCondition())
+					{
  						pTile->draw(tileSrc, tileDst , pGC );
  				
+
+
+						// Extra code for level editing
+						if(highlightHot && pTile->isHot())
+						{
+						    pGC->fill_rect(tileDst, CL_Color(255,0,0,160));
+						}
+						if(indicateBlocks)
+						{
+						    int block = pTile->getDirectionBlock();
+						    
+						    if(block & DIR_WEST)
+						    {
+							pGC->fill_rect(CL_Rect(tileDst.left,tileDst.top,tileDst.left + 8, tileDst.bottom), CL_Color(0,255,255,120));
+						    }
+						    if(block & DIR_EAST)
+						    {
+							pGC->fill_rect(CL_Rect(tileDst.right - 8, tileDst.top, tileDst.right,tileDst.bottom),CL_Color(0,255,255,120));
+						    }
+						    if(block & DIR_NORTH)
+						    {
+							pGC->fill_rect(CL_Rect(tileDst.left, tileDst.top, tileDst.right, tileDst.top +8), CL_Color(0,255,255,120));
+						    }
+						    if(block & DIR_SOUTH)
+						    {
+							pGC->fill_rect(CL_Rect(tileDst.left,tileDst.bottom -8, tileDst.right, tileDst.bottom), CL_Color(0,255,255,120));
+						    }
+						}
+					}
+					
+
   					
+
  					
  					
  				}

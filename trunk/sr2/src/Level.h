@@ -701,7 +701,9 @@ namespace StoneRing{
 
 	    virtual CL_DomElement createDomElement(CL_DomDocument&) const;
 
-	    virtual void draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext * pGC , bool floaters = false);
+	    virtual void draw(const CL_Rect &src, const CL_Rect &dst,
+			      CL_GraphicContext * pGC , bool floaters = false,
+			      bool highlightHot=false,bool indicateBlocks = false);
 	    virtual void drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
 	    virtual void drawFloaters(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext * pGC);
 		
