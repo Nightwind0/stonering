@@ -2728,7 +2728,7 @@ Level::~Level()
 	    
 	}
 
-	delete mTileMap[x];
+
     
     }
 }
@@ -3270,11 +3270,11 @@ void Level::LoadLevel (CL_DomDocument &document )
 
     // Create tilemap
 
-    mTileMap = new std::list<Tile*> * [mLevelWidth];
+    mTileMap.resize( mLevelWidth );
 
     for(int x=0;x< mLevelWidth; x++)
     {
-	mTileMap[x] = new std::list<Tile*> [mLevelHeight];
+	mTileMap[x].resize ( mLevelHeight );
     }
 
 

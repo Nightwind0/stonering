@@ -186,9 +186,28 @@ void EditableLevel::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, 
 }
  
 
+void EditableLevel::addRows(int rows)
+{
+    for(std::vector<std::vector<std::list<Tile*> > >::iterator iter= mTileMap.begin();
+	    iter != mTileMap.end();
+	iter++)
+    {
+	iter->resize ( iter->size() + rows );
+    }
+}
+
+void EditableLevel::addColumns(int columns)
+{
+    mTileMap.resize( mTileMap.size() + columns );
+}
+
 		
 void EditableLevel::addTile ( Tile * pTile )
 {
+
+    if(pTile->getX() >= mLevelWidth || pTile->getY() >= mLevelHeight )
+	return;
+
     if( pTile->isFloater())
     {
 	mFloaterMap[ CL_Point(pTile->getX(),pTile->getY()) ].push_back(pTile);
@@ -219,12 +238,20 @@ std::list<Tile*> EditableLevel::getTilesAt(uint levelX, uint levelY) const
 
 	std::list<Tile *> tiles = mTileMap[ levelX][levelY];
 
-	if(mFloaterMap.count( CL_Point(levelX, levelY )))
-	{
-		
-			
 	
+	std::map<CL_Point,std::list<Tile*> >::const_iterator iter = mFloaterMap.find ( CL_Point(levelX,levelY));
+
+	if(iter != mFloaterMap.end())
+	{
+	    for(std::list<Tile*>::const_iterator i = iter->second.begin();
+		i != iter->second.end();
+		i++)
+	    {
+		tiles.push_back ( *i );
+	    }
 	}
+	
+
 
 	return tiles;
 
