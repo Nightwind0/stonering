@@ -11,8 +11,19 @@ using std::string;
 
 typedef unsigned int uint;
 typedef unsigned short ushort;
+#ifdef _MSC_VER
 
 
+
+
+template <class T>
+T abs( const T& a)
+{
+    if( a < 0) return -a;
+    else return a;
+}
+
+#endif
 
 
 // For the multimap of points
@@ -547,9 +558,44 @@ namespace StoneRing {
 			char cFlags;
       
 		};
+}
+#ifdef _MSC_VER
+using namespace StoneRing;
+	template<>
+	struct std::greater<MappableObject*>  : public binary_function<MappableObject* ,MappableObject*, bool>
+	{
+			bool operator()(const MappableObject* &n1, const  MappableObject * &n2) const
+			{
+				Application * pApp = Application::getApplication();
+
+				uint pX = pApp->getLevelRect().get_width() / 2;
+				uint pY = pApp->getLevelRect().get_height() / 2;
+
+	
+				uint p1Distance, p2Distance;
+
+	
+				p1Distance = max(abs( (long)pX - n1->getX()) , abs((long)pY - n1->getY()));
+				p2Distance = max(abs( (long)pX - n2->getX()) , abs((long)pY - n2->getY()));
+
+				return p1Distance < p2Distance;
+			};
+	};
 
 
+template<>
+struct std::greater<Tile*>
+{
+	bool operator()(const Tile* n1, const Tile *n2) const
+	{
+		return n1->getZOrder() < n2->getZOrder();
+	}
+};
 
+
+#endif
+
+namespace StoneRing{
 	class Level
 		{
 		public:
