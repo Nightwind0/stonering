@@ -43,7 +43,7 @@
 <!ATTLIST mo ypos CDATA #REQUIRED>
 <!ATTLIST mo movementType CDATA #IMPLIED>
 <!ATTLIST event name CDATA #REQUIRED>
-<!ATTLIST event repeatable (true|false) #REQUIRED> 
+<!ATTLIST event repeatable (true|false) #IMPLIED> 
 <!ATTLIST event triggerType (talk|step|act) #REQUIRED>
 <!ATTLIST say speaker CDATA #REQUIRED>
 <!ATTLIST give count CDATA #IMPLIED>

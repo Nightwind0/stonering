@@ -3,6 +3,7 @@
  <section name="Configuration">
   <string name="name" value="Stone Ring: Reign of Mordus" />
   <surface name="splash" file="Images/Screens/splash.png"  />
+  <surface name="splashbg" file="Images/Screens/splash_bg.png" />
   <!-- integer name="width" value="640" / -->
   <!-- integer name="height" value="480" / -->
  </section>
