@@ -96,11 +96,11 @@ namespace StoneRing {
 			ushort getMapX() const;
 			ushort getMapY() const;
 
-			std::string getMapName() const;
+			CL_Surface * getTileMap() const;
 
 
 		private:
-			std::string mMapName;
+			CL_Surface *mpSurface;
 			ushort mX;
 			ushort mY;
 		};
