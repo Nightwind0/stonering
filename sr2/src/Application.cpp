@@ -10,9 +10,18 @@
 using StoneRing::Application;
 using namespace StoneRing;
 
+#ifndef _MSC_VER
+
+using std::min;
+using std::max;
 
 const int Application::WINDOW_HEIGHT  ;
 const int Application::WINDOW_WIDTH ;
+
+#else 
+	// Windowsy stuff
+
+#endif
 
 
 Application sr_app;
@@ -102,8 +111,13 @@ bool Application::move(eDir dir, int times)
 	    mCurX = nX;
 	    mCurY = nY;
 	}
+	else return false;
 	
     }
+
+	return true;
+
+
 }
 
 void Application::onSignalKeyDown(const CL_InputEvent &key)
@@ -196,7 +210,7 @@ int Application::main(int argc, char ** argv)
 
 
 	    //CL_Rect dst(mCurX, mCurY, mCurX + mpLevel->getWidth() * 32, mCurY + mpLevel->getHeight()*32);
-	    CL_Rect dst(0,0, std::min(WINDOW_WIDTH, (const int)mpLevel->getWidth()*32),std::min(WINDOW_HEIGHT, (const int)mpLevel->getHeight() * 32));
+	    CL_Rect dst(0,0, min(WINDOW_WIDTH, (const int)mpLevel->getWidth()*32),min(WINDOW_HEIGHT, (const int)mpLevel->getHeight() * 32));
 	    // CL_Rect src(0,0,mpLevel->getWidth() * 32, mpLevel->getHeight() * 32);
 	    CL_Rect src = dst;
 
@@ -229,6 +243,9 @@ int Application::main(int argc, char ** argv)
 	std::cerr << error.message.c_str() << std::endl;
     }
 	
+
+	return 0;
+
 }
 
 void Application::showRechargeableOnionSplash()

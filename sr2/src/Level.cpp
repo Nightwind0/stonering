@@ -6,33 +6,25 @@
 #include "Level.h"
 #include <algorithm>
 #include <stdlib.h>
+#include <time.h>
 #include "GraphicsManager.h"
+
+
+using namespace StoneRing;
+
+typedef unsigned int uint;
 
 
 using std::string;
 
-#ifdef _MSC_VER
 
-#define min _cpp_min
-#define max _cpp_max
-
-template <class T>
-T abs( const T& a)
-{
-    if( a < 0) return -a;
-    else return a;
-}
-
-#else
+#ifndef _MSC_VER
 using std::max;
 using std::min;
 using std::abs;
 #endif
 
 
-using namespace StoneRing;
-
-typedef unsigned int uint;
 
 
 // For the multimap of points
@@ -50,16 +42,6 @@ bool operator < (const SpriteRef::eDirection dir1, const SpriteRef::eDirection d
 }
 
 
-#ifdef _MSC_VER
-template <>
-struct std::greater<MappableObject*>
-{
-    bool operator()(const MappableObject *n1, const MappableObject *n2) const
-	{
-	    return moSortCriterion(n1,n2);
-	}
-};
-#endif
 
 
 ItemRef::ItemRef(CL_DomElement *pElement )
@@ -942,7 +924,7 @@ Movement::Movement ( CL_DomElement * pElement ):meType(MOVEMENT_NONE),meSpeed(SL
     else if(type == "none")
     {
 	// Why would they ever....
-	meType - MOVEMENT_NONE;
+	meType = MOVEMENT_NONE;
     }
 
 
@@ -1998,7 +1980,11 @@ void Level::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_Graph
 {
     // This brings the close MOs to the top
     // moSortCriterion queries the party to see where they are at.
+#ifndef _MSC_VER
     mMappableObjects.sort( moSortCriterion );
+#else
+	mMappableObjects.sort(std::greater<MappableObject*>());
+#endif
 
 
 
@@ -2344,8 +2330,8 @@ bool Level::moSortCriterion( const MappableObject *p1, const MappableObject * p2
     uint p1Distance, p2Distance;
 
 	
-    p1Distance = std::max(abs( (long)pX - p1->getX()) , abs((long)pY - p1->getY()));
-    p2Distance = std::max(abs( (long)pX - p2->getX()) , abs((long)pY - p2->getY()));
+    p1Distance = max(abs( (long)pX - p1->getX()) , abs((long)pY - p1->getY()));
+    p2Distance = max(abs( (long)pX - p2->getX()) , abs((long)pY - p2->getY()));
 
     return p1Distance < p2Distance;
 
@@ -2475,8 +2461,12 @@ void Level::loadTile ( CL_DomElement * tileElement)
 	std::cout << "Placing floater at: " << point.x << ',' << point.y << std::endl;
 
 	mFloaterMap[ point ].push_back ( tile );
-		
+
+#ifndef _MSC_VER
 	mFloaterMap[ point ].sort( &tileSortCriterion );
+#else
+	mFloaterMap[ point ].sort( std::greater<Tile*>() );
+#endif
     }
     else
     {
@@ -2486,6 +2476,10 @@ void Level::loadTile ( CL_DomElement * tileElement)
 	mTileMap[ point.x ][point.y].push_back ( tile );
 
 	// Sort by ZOrder, so that they display correctly
+#ifndef _MSC_VER
 	mTileMap[ point.x ][point.y].sort( &tileSortCriterion );
+#else
+	mTileMap[ point.x ][point.y].sort(std::greater<Tile*>() );
+#endif
     }
 }

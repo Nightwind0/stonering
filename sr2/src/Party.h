@@ -5,12 +5,14 @@
 
 #include "Item.h"
 #include <string>
-#include "Level.h"
+
 
 typedef unsigned int uint;
 
 
 namespace StoneRing{
+
+class ItemRef;	
 
 class Party
 {
