@@ -27,7 +27,8 @@ class IParty
     virtual bool didEvent(const std::string &event) const=0;
     virtual uint getLevelX() const=0;
     virtual uint getLevelY() const=0;
-    
+    virtual uint getWidth() const=0;
+    virtual uint getHeight() const =0;
 
 
  private:

@@ -26,9 +26,17 @@ class ItemRef;
     virtual bool didEvent(const std::string &event) const;
     virtual uint getLevelX() const;
     virtual uint getLevelY() const;
+    virtual uint getWidth() const;
+    virtual uint getHeight() const;
 
+    void setLevelX(uint x);
+    void setLevelY(uint y);
+    
 
  private:
+
+    uint mX;
+    uint mY;
 
 
 };
