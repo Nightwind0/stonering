@@ -31,8 +31,7 @@ MapGrid::MapGrid(CL_Rect setrect, CL_Component *parent, CL_GraphicContext *mgGC,
 	mgScrollVert->set_min_value(0);
 	mgScrollHorz->set_min_value(0);
 
-//	mgScrollVert->set_max_value((mgLevel->getHeight())-17);
-//	mgScrollHorz->set_max_value((mgLevel->getWidth())-15);
+
 	mgScrollVert->set_max_value(0);
 	mgScrollHorz->set_max_value(0);
 
@@ -138,24 +137,22 @@ void MapGrid::on_placeTile(const CL_InputEvent &event)
 }
 
 
-void MapGrid::set_Level()//EditableLevel *mpLevel)
+void MapGrid::set_Level(EditableLevel *mpLevel)
 {
-	openLevel = new CL_FileDialog("Load Level", "", "*.xml", this);
+	mgLevel = mpLevel;
 
-	CL_Slot slot_dialog = openLevel->sig_dir_entered().connect(this, &MapGrid::on_dir_change);
-	
-	//openLevel.set_dir("../");
-
-	//openLevel.
-		
-		//::open("", "*.xml", this);
-
-//	mgLevel = mpLevel;
+	mgScrollVert->set_max_value((mgLevel->getHeight())-17);
+	mgScrollHorz->set_max_value((mgLevel->getWidth())-15);
 }
 
 
-void MapGrid::on_dir_change(const string &new_dir)
+void MapGrid::save_Level(string filename)
 {
+	CL_DomDocument newdoc;
 
-	openLevel->set_dir(new_dir);
+	mgLevel->createDomElement( newdoc );
+	newdoc.save( new CL_OutputSource_File( filename ) );
+
 }
+
+
