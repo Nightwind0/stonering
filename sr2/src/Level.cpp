@@ -254,7 +254,42 @@ HasGold::~HasGold()
 
 bool HasGold::evaluate()
 {
-	// return Party->hasGold( mAmount ) ;
+	Party * party = Party::getInstance();
+	int gold = party->getGold();
+
+	if(!mbNot)
+	{
+		switch ( meOperator )
+		{
+		case LT:
+			return gold < mAmount;
+		case GT:
+			return gold > mAmount;
+		case GTE:
+			return gold >= mAmount;
+		case LTE:
+			return gold <= mAmount;
+		case EQ:
+			return gold == mAmount;
+		}
+	}
+	else
+	{
+		// Opposites (Why not just specify these in the level xml? cause whoever made it felt like using a not)
+		switch ( meOperator )
+		{
+		case LT:
+			return gold >= mAmount;
+		case GT:
+			return gold <= mAmount;
+		case GTE:
+			return gold < mAmount;
+		case LTE:
+			return gold > mAmount;
+		case EQ:
+			return gold != mAmount;
+		}
+	}
 }
 
  
@@ -304,7 +339,8 @@ HasItem::~HasItem()
 
 bool HasItem::evaluate()
 {
-	// return Party->hasItem ( mpItemRef );
+	if(mbNot) return ! (Party::getInstance()->hasItem(mpItemRef )) ;
+	else	return Party::getInstance()->hasItem ( mpItemRef );
 }
 
  
@@ -347,7 +383,8 @@ DidEvent::~DidEvent()
 
 bool DidEvent::evaluate()
 {
-	// return Party->didEvent ( mEvent );
+	if(mbNot) return ! Party::getInstance()->didEvent ( mEvent );
+	else  return Party::getInstance()->didEvent ( mEvent );
 }
 
 

@@ -1,5 +1,6 @@
 
 #include "Party.h"
+#include "Level.h"
 
 using StoneRing::Party;
 
@@ -23,6 +24,11 @@ bool Party::getGold() const
 bool Party::hasItem(Item::eItemType type, const std::string &item) const
 {
 	return false;
+}
+
+bool Party::hasItem(ItemRef *pItemRef)
+{
+	return hasItem ( pIemRef->getItemType(), pItemRef()->getItemName() );
 }
 
 bool Party::didEvent(const std::string &event) const
