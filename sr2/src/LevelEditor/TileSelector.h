@@ -25,6 +25,10 @@ public:
 		void draw();
 		void on_select(const CL_InputEvent &event);
 
+		int get_tsX() {return tsX;}
+		int get_tsY() {return tsY;}
+		string get_tsMapName() {return tsMapName;}
+
 private:
 
 		CL_Rect TSrect;
@@ -43,6 +47,7 @@ private:
 		CL_Surface* cur_tileset;
 
 		int tsX, tsY;
+		string tsMapName;
 
 };
 
