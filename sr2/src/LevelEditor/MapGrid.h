@@ -17,13 +17,16 @@ using namespace std;
 class MapGrid : CL_Component
 {
 public:
-		MapGrid(CL_Rect setrect, CL_Component *parent, EditableLevel *mpLevel, CL_GraphicContext *mgGC, TileSelector *TS);
+		MapGrid(CL_Rect setrect, CL_Component *parent, CL_GraphicContext *mgGC, TileSelector *TS);
 
 		~MapGrid();
 
+	//	void set_Level(EditableLevel *mpLevel);
+		void set_Level();
 
 		void on_placeTile(const CL_InputEvent &event);
 		void on_paint();
+		void on_dir_change(const string &new_dir);
 
 private:
 
@@ -39,6 +42,8 @@ private:
 
 		int mgX, mgY;
 		TileSelector *TS;
+
+		CL_FileDialog *openLevel;
 
 };
 
