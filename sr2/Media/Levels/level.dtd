@@ -39,6 +39,7 @@
 <!ATTLIST mo type CDATA #REQUIRED>
 <!ATTLIST mo xpos CDATA #REQUIRED>
 <!ATTLIST mo ypos CDATA #REQUIRED>
+<!ATTLIST mo movementType CDATA #IMPLIED>
 <!ATTLIST event name CDATA #REQUIRED>
 <!ATTLIST event triggerType (talk|step|act) #REQUIRED>
 <!ATTLIST say speaker CDATA #REQUIRED>
