@@ -158,4 +158,27 @@ void MapGrid::save_Level(string filename)
 
 }
 
+void MapGrid::more_rows(int r)
+{
+	if(mgLevel != NULL)
+	{
+		mgLevel->addRows(r);
+
+		mgScrollVert->set_max_value((mgLevel->getHeight())-17);
+	}
+
+}
+
+void MapGrid::more_columns(int c)
+{
+	if(mgLevel != NULL)
+	{
+		mgLevel->addColumns(c);
+
+		mgScrollHorz->set_max_value((mgLevel->getWidth())-15);
+	}
+}
+
+
+
 
