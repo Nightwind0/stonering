@@ -1834,19 +1834,25 @@ Level::Level(const std::string &name,CL_ResourceManager * pResources): mpDocumen
 
 Level::~Level()
 {
-    for(std::map<CL_Point,std::list<Tile*> >::iterator i= mTileMap.begin(); i != mTileMap.end(); i++)
+    for(int x=0;x<mLevelWidth;x++)
     {
-	std::list<Tile*> alist = i->second;
-		
-	for(std::list<Tile*>::iterator i = alist.begin();
-	    i != alist.end();
-	    i++)
+	for(int y=0;y<mLevelHeight;y++)
 	{
-	    delete *i;
+	    for(std::list<Tile*>::iterator i = mTileMap[x][y].begin();
+		i != mTileMap[x][y].end();
+		i++)
+	    {
+		delete *i;
+	    }
+
+	    
 	}
+
+	delete mTileMap[x];
+    
     }
 }
-      
+    
 
 void Level::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC, bool floaters)
 {
@@ -1882,49 +1888,90 @@ void Level::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC,
     exDst.bottom -= newtopDelta;
 	
 
-    std::map<CL_Point,std::list<Tile*> > *pMap;
 
-    if( floaters ) pMap = &mFloaterMap;
-    else pMap = &mTileMap;
-
-	
-	
-    for(int tileX = 0; tileX < widthInTiles; tileX++)
+    if(floaters)
     {
-	for(int tileY =0; tileY < heightInTiles; tileY++)
+	
+	for(std::map<CL_Point,std::list<Tile*> >::iterator f = mFloaterMap.begin();
+	    f != mFloaterMap.end();
+	    f++)
 	{
-			
-	    CL_Point p( src.left / 32 + tileX, src.top /32 + tileY);
-			
-	    if(pMap->count( p))
-	    {
-			
-		for(std::list<Tile*>::iterator i = pMap->find( p )->second.begin();
-		    i != pMap->find(p)->second.end();
+	
+	    // Possible optimization... instead of using is_overlapped, do a couple quick comparisons
+	    CL_Rect floaterRect(f->first.x,f->first.y,f->first.x + 32, f->first.y + 32);
+	    
+
+	    // Is this floater even on screen
+	    if(src.is_overlapped( floaterRect))
+	    
+		for(std::list<Tile*>::iterator i = f->second.begin();
+		    i != f->second.end();
 		    i++)
 		{
 		    CL_Rect tileSrc(0,0,32,32);
-		    CL_Rect tileDst ( exDst.left  + tileX * 32,
-				      exDst.top + tileY * 32,
-				      exDst.left + tileX * 32 + 32,
-				      exDst.top + tileY * 32 + 32);
+		    CL_Rect tileDst ( exDst.left  + f->first.x * 32,
+				      exDst.top + f->first.y * 32,
+				      exDst.left + f->first.x * 32 + 32,
+				      exDst.top + f->first.y * 32 + 32);
 					
 		    Tile * pTile = *i;
 		    if(pTile->evaluateCondition())
 			pTile->draw(tileSrc, tileDst , pGC );
-				
-					
-					
-					
+		    
+		    
+		    
+		    
 		}
-	    }
-			   
-			
-			
-			
-			
 	}
+	
+    }		
+    else
+    {
+	// Regular tiles, not floaters
+	
+	for(int tileX = 0; tileX < widthInTiles; tileX++)
+  	{
+ 		for(int tileY =0; tileY < heightInTiles; tileY++)
+  		{
+ 			
+ 			CL_Point p( src.left / 32 + tileX, src.top /32 + tileY);
+ 			
+ 			
+			if(p.x >=0 && p.y >=0 && p.x < mLevelWidth && p.y < mLevelHeight)
+			{
+ 			
+ 				for(std::list<Tile*>::iterator i = mTileMap[p.x][p.y].begin();
+ 				    i != mTileMap[p.x][p.y].end();
+ 				    i++)
+ 				{
+ 					CL_Rect tileSrc(0,0,32,32);
+ 					CL_Rect tileDst ( exDst.left  + tileX * 32,
+ 							  exDst.top + tileY * 32,
+ 							  exDst.left + tileX * 32 + 32,
+ 							  exDst.top + tileY * 32 + 32);
+ 					
+ 					Tile * pTile = *i;
+ 					if(pTile->evaluateCondition())
+ 						pTile->draw(tileSrc, tileDst , pGC );
+ 				
+  					
+ 					
+ 					
+ 				}
+ 			}
+			
+ 			
+ 			
+ 			
+ 			
+  		}
+  	}
+	
     }
+    
+    
+
+
 	
 
 }	    
@@ -2134,30 +2181,26 @@ bool Level::canMove(const CL_Rect &currently, const CL_Rect & destination, bool 
 	    CL_Point np(x, newEdgeStart.y );
 	    
 
-	    // Check for blocks in our current location
-	    if(mTileMap.count( p ))
-	    {
-		// TODO : optimization if we find once rather than each time
 
 
-	       for(std::list<Tile*>::const_iterator iter = mTileMap.find(p)->second.begin();
-		   iter != mTileMap.find(p)->second.end();
-		   iter++)
-	       {
-		   // Blocked
-		   if( oppositeDir & (*iter)->getDirectionBlock()) return false;
-	       }
-	    }
-	    else
+
+	    // TODO : optimization if we find once rather than each time
+	    
+	    
+	    for(std::list<Tile*>::const_iterator iter = mTileMap[p.x][p.y].begin();
+		iter != mTileMap[p.x][p.y].end();
+		iter++)
 	    {
-		return false; // No tiles here (should be impossible!)
+		// Blocked
+		if( oppositeDir & (*iter)->getDirectionBlock()) return false;
 	    }
+
 
 	    // Check for blocks in our destination
-	    if(mTileMap.count(np))
+	    if(np.x < mLevelWidth && np.y < mLevelHeight)
 	    {
-		for(std::list<Tile*>::const_iterator iter = mTileMap.find(np)->second.begin();
-		    iter != mTileMap.find(np)->second.end();
+		for(std::list<Tile*>::const_iterator iter = mTileMap[np.x][np.y].begin();
+		    iter != mTileMap[np.x][np.y].end();
 		    iter++)
 		{
 		    
@@ -2192,30 +2235,26 @@ bool Level::canMove(const CL_Rect &currently, const CL_Rect & destination, bool 
 	    
 
 	    // Check for blocks in our current location
-	    if(mTileMap.count( p ))
-	    {
+
 		// TODO : optimization if we dont actually copy the list each time
-		for(std::list<Tile*>::const_iterator iter = mTileMap.find(p)->second.begin();
-		    iter != mTileMap.find(p)->second.end();
+		for(std::list<Tile*>::const_iterator iter = mTileMap[p.x][p.y].begin();
+		    iter != mTileMap[p.x][p.y].end();
 		    iter++)
 		{
 
 		   // Blocked
-		   if( oppositeDir & (*iter)->getDirectionBlock()) return false;
-	       }
-	    }
-	    else
-	    {
-		return false; // No tiles here (should be impossible!)
-	    }
+		    if( oppositeDir & (*iter)->getDirectionBlock()) return false;
+		}
+		
+
 
 	    // Check for blocks in our destination
-	    if(mTileMap.count(np))
+	    if(np.x < mLevelWidth && np.y < mLevelHeight)
 	    {
 
 
-		for(std::list<Tile*>::const_iterator iter = mTileMap.find(np)->second.begin();
-		    iter != mTileMap.find(np)->second.end();
+		for(std::list<Tile*>::const_iterator iter = mTileMap[np.x][np.y].begin();
+		    iter != mTileMap[np.x][np.y].end();
 		    iter++)
 		{
 		    
@@ -2341,6 +2380,16 @@ void Level::LoadLevel( const std::string & filename  )
 
     std::cout << "DIMENSIONS: " << mLevelWidth << " by " << mLevelHeight << std::endl;
 
+    // Create tilemap
+
+    mTileMap = new std::list<Tile*> * [mLevelWidth];
+
+    for(int x=0;x< mLevelWidth; x++)
+    {
+	mTileMap[x] = new std::list<Tile*> [mLevelHeight];
+    }
+
+
     // Process tiles
 	
     CL_DomElement moNode = tilesNode.get_next_sibling().to_element();
@@ -2417,9 +2466,9 @@ void Level::loadTile ( CL_DomElement * tileElement)
 
 	std::cout << "Placing tile at : " << point.x << ',' << point.y << std::endl;
 		
-	mTileMap[ point ].push_back ( tile );
+	mTileMap[ point.x ][point.y].push_back ( tile );
 
 	// Sort by ZOrder, so that they display correctly
-	mTileMap[ point ].sort( &tileSortCriterion );
+	mTileMap[ point.x ][point.y].sort( &tileSortCriterion );
     }
 }
