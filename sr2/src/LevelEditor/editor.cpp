@@ -80,7 +80,7 @@ bool EditorMain::canMove(const CL_Rect &currently, const CL_Rect &destination, b
 
 
 int EditorMain::main(int argc, char **argv)
-	{
+{
 		// Create a console window for text-output if not available
 		// Use printf or cout to display some text in your program
 		CL_ConsoleWindow console("Console");
@@ -119,22 +119,36 @@ int EditorMain::main(int argc, char **argv)
 			menu.create_item("File/Save As...");
 			menu.create_item("File/Quit");
 
+			//tools menu stuff
+			menu.create_item("Tools/Add Row");
+			menu.create_item("Tools/Add Column");
+			menu.create_item("Tools/Set Hot");
+			menu.create_item("Tools/Direction Blocks -/North");
+			menu.create_item("Tools/Direction Blocks -/South");
+			menu.create_item("Tools/Direction Blocks -/East");
+			menu.create_item("Tools/Direction Blocks -/West");
 
-			//get the tileset info from xml
+
+			//various options 
+			menu.create_toggle_item("Options/Show Hot Tiles");
+			menu.create_toggle_item("Options/Show Direction Blocks");
+			menu.create_toggle_item("Options/Show Mappable Objects");
+			menu.create_toggle_item("Options/Hide Floaters");
+
+
+			////get the tileset info from xml
 			CL_ResourceManager* tsResources = new CL_ResourceManager ( "../../Media/resources.xml" );
-
 			mpResources = tsResources;
 
 		
 			mpLevel = NULL;
 			list<string> tilemapnames = tsResources->get_all_resources("Tilemaps");
 
-
-
 			list<string> tempsets;
 
 			string menutileset;
 
+			////create menu from tileset info
 			for(list<string>::iterator iter = tilemapnames.begin(); iter != tilemapnames.end(); iter++)
 			{
 				menutileset = "TileSet/" + *iter;
@@ -153,6 +167,7 @@ int EditorMain::main(int argc, char **argv)
 			slots.connect(menu.get_node("File/Save")->sig_clicked(), this, &EditorMain::on_save);
 			slots.connect(menu.get_node("File/Save As...")->sig_clicked(), this, &EditorMain::on_save);
 			slots.connect(menu.get_node("File/Open")->sig_clicked(), this, &EditorMain::on_load);
+			slots.connect(menu.get_node("File/New")->sig_clicked(), this, &EditorMain::on_new);
 
 
 			//other random slot connects
@@ -200,57 +215,68 @@ cout << "all the creation stuff completed. about to run it." << endl;
 		console.display_close_message();
 
 		return 0;
-	}
+}
 
 
-	void EditorMain::on_quit()
-	{
-		quit = true;
-	}
+void EditorMain::on_quit()
+{
+	quit = true;
+}
 
-	void EditorMain::on_paint()
-	{
-		CL_Display::clear(CL_Color::lightgrey);
-	}
+void EditorMain::on_paint()
+{
+	CL_Display::clear(CL_Color::lightgrey);
+}
 
-	void EditorMain::on_tileset_change(string userdata)
-	{
-		tiles->changeTS(userdata);
-	}
+void EditorMain::on_tileset_change(string userdata)
+{
+	tiles->changeTS(userdata);
+}
 
 
-	void EditorMain::on_save()
-	{
-	    string filename = SR_FileDialog::open("", "*.xml", gui_manager);;  //= SR_FileDialog::save("", "*.xml", gui_manager);
-//	    SR_FileDialog filedialog("Save File", "", "*.xml", map);
-//	    filedialog.run();
+void EditorMain::on_save()
+{
+    string filename = SR_FileDialog::open("", "*.xml", gui_manager);;  //= SR_FileDialog::save("", "*.xml", gui_manager);
 
-	    //    filename = filedialog.get_path() + filedialog.get_file();
-	    cout << filename << endl;
-	    map->save_Level(filename);
-	}
+//	    cout << filename << endl;
+    map->save_Level(filename);
+}
 
-	void EditorMain::on_load()
-	{
-		string filename = SR_FileDialog::open("", "*.xml", gui_manager);
+void EditorMain::on_load()
+{
+	string filename = SR_FileDialog::open("", "*.xml", gui_manager);
 
-		cout << filename << endl;
+//	cout << filename << endl;
 /**/
-		CL_InputSource_File file(filename);
+	CL_InputSource_File file(filename);
 
-		CL_DomDocument doc;
-		doc.load(&file);
+	CL_DomDocument doc;
+	doc.load(&file);
 
-		delete mpLevel;
+	delete mpLevel;
 
-		mpLevel = new EditableLevel();
+	mpLevel = new EditableLevel();
 
-		mpLevel->load(doc);
+	mpLevel->load(doc);
 
-		map->set_Level(mpLevel);
+	map->set_Level(mpLevel);
+
+}
 
 
-	}
+void EditorMain::on_new()
+{
+	CL_InputDialog new_dlg("Create New Level", "Ok", "Cancel", "", gui_manager);
+	new_dlg.add_input_box("Level Name:", "", 150);
+	new_dlg.add_input_box("Music:", "", 150);
+	new_dlg.add_input_box("Width (in tiles):", "10", 150);
+	new_dlg.add_input_box("Height (in tiles):", "10", 150);
+	new_dlg.run();
 
 
+
+
+//	delete mpLevel;
+
+}
 

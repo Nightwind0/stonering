@@ -73,6 +73,7 @@ private:
 	void on_quit();
 	void on_save();
 	void on_load();
+	void on_new();
 	
 	void on_paint();
 	void on_tileset_change(string userdata);
