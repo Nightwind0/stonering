@@ -150,8 +150,11 @@ void MapGrid::save_Level(string filename)
 {
 	CL_DomDocument newdoc;
 
-	mgLevel->createDomElement( newdoc );
-	newdoc.save( new CL_OutputSource_File( filename ) );
+
+	newdoc.append_child ( mgLevel->createDomElement(newdoc) );
+
+
+	newdoc.save( new CL_OutputSource_File( filename ), true,false );
 
 }
 
