@@ -69,6 +69,8 @@ private:
 	CL_ComponentManager *component_manager;
 
 	void on_quit();
+	void on_save();
+	void on_load();
 	
 	void on_paint();
 	void on_tileset_change(string userdata);
