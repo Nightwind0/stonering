@@ -534,7 +534,8 @@ namespace StoneRing {
 			void provokeEvents ( Event::eTriggerType trigger );
 
 		private:
-			void moveInCurrentDirection();
+			void pickOppositeDirection();
+			bool moveInCurrentDirection();
 			void randomNewDirection();
 			enum eFlags { SPRITE = 1, TILEMAP = 2, SOLID = 4 };
 
