@@ -164,9 +164,9 @@ int EditorMain::main(int argc, char **argv)
 
 
 			// menu item slot connects
-			slots.connect(menu.get_node("File/Quit")->sig_clicked(), this, &EditorMain::on_quit);
-			slots.connect(menu.get_node("File/Save")->sig_clicked(), this, &EditorMain::on_save);
-			slots.connect(menu.get_node("File/Load")->sig_clicked(), this, &EditorMain::on_load);
+//			slots.connect(menu.get_node("File/Quit")->sig_clicked(), this, &EditorMain::on_quit);
+//			slots.connect(menu.get_node("File/Save")->sig_clicked(), this, &EditorMain::on_save);
+//			slots.connect(menu.get_node("File/Load")->sig_clicked(), this, &EditorMain::on_load);
 
 
 			//other random slot connects

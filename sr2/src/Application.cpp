@@ -266,12 +266,15 @@ int Application::main(int argc, char ** argv)
 
 
 
-	    CL_Rect dst(40,40, min(WINDOW_WIDTH, (const int)mpLevel->getWidth()*32),min(WINDOW_HEIGHT, (const int)mpLevel->getHeight() * 32));
+	    CL_Rect dst(0,0, min(WINDOW_WIDTH, (const int)mpLevel->getWidth()*32),min(WINDOW_HEIGHT, (const int)mpLevel->getHeight() * 32));
 
 
 
-	    // CL_Rect src(0,0,mpLevel->getWidth() * 32, mpLevel->getHeight() * 32);
+
+	
 	    CL_Rect src(mCurX,mCurY,mCurX + dst.get_width(), mCurY +dst.get_height());
+
+
 
 //	    CL_Rect src = dst;
 	    mpWindow->get_gc()->push_cliprect( dst);

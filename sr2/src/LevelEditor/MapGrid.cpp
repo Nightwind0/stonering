@@ -80,26 +80,45 @@ void MapGrid::on_placeTile(const CL_InputEvent &event)
 
 		cout << "(" << mgX << "," << mgY << ")" << endl;
 
-		EditableTile *pTile = new EditableTile();
-		cout << TS->get_tsMapName() << endl;
-		pTile->setTilemap(TS->get_tsMapName(), TS->get_tsX(), TS->get_tsY());
 
-		int ZOrder = -1;
-		std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
-		for( std::list<Tile*>::iterator iter = TileList.begin(); iter != TileList.end(); iter++)
+		if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ))
 		{
+		    // Zap mode, delete the topmost tile
+		    std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
 
-			 if( (*iter)->getZOrder() > ZOrder) 
-				 ZOrder = (*iter)->getZOrder();
+		    std::list<Tile*>::iterator lastGuy = TileList.end();
+
+		    // Since it's currently actually one PAST the lastguy.
+		    lastGuy--;
+
+		    mgLevel->removeTile( *lastGuy );
+		    
 
 		}
-		ZOrder++;
-
-		pTile->setZOrder( ZOrder );
-		pTile->setLevelX ( mgX );
-		pTile->setLevelY ( mgY );
-
-		mgLevel->addTile( pTile );
+		else
+		{
+		    // Default mode is add mode
+		    EditableTile *pTile = new EditableTile();
+		    cout << TS->get_tsMapName() << endl;
+		    pTile->setTilemap(TS->get_tsMapName(), TS->get_tsX(), TS->get_tsY());
+		    
+		    int ZOrder = -1;
+		    std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
+		    for( std::list<Tile*>::iterator iter = TileList.begin(); iter != TileList.end(); iter++)
+		    {
+			
+			if( (*iter)->getZOrder() > ZOrder) 
+			    ZOrder = (*iter)->getZOrder();
+			
+		    }
+		    ZOrder++;
+		    
+		    pTile->setZOrder( ZOrder );
+		    pTile->setLevelX ( mgX );
+		    pTile->setLevelY ( mgY );
+		    
+		    mgLevel->addTile( pTile );
+		}
 
 	}
 }
