@@ -125,7 +125,6 @@ void TileSelector::on_select(const CL_InputEvent &event)
 		//cout << tsX << endl;
 
 
-
 	}
 }
 

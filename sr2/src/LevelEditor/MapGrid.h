@@ -21,7 +21,7 @@ public:
 		~MapGrid();
 
 
-
+		void on_placeTile(const CL_InputEvent &event);
 		void on_paint();
 
 private:
@@ -35,6 +35,8 @@ private:
 
 		CL_ScrollBar *mgScrollVert;
 		CL_ScrollBar *mgScrollHorz;
+
+		int mgX, mgY;
 
 };
 
