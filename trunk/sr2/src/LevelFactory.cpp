@@ -171,14 +171,14 @@ PlayAnimation * LevelFactory::createPlayAnimation(CL_DomElement* pElement)const
 
 }
 
-PlaySound * LevelFactory::createPlaySound()const
+StoneRing::PlaySound * LevelFactory::createPlaySound()const
 {
-    return new PlaySound();
+    return new StoneRing::PlaySound();
 }
 
-PlaySound * LevelFactory::createPlaySound(CL_DomElement* pElement)const
+StoneRing::PlaySound * LevelFactory::createPlaySound(CL_DomElement* pElement)const
 {
-    return new PlaySound(pElement);
+    return new StoneRing::PlaySound(pElement);
 
 }
 
