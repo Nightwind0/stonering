@@ -1,0 +1,11 @@
+<!DOCTYPE Level [
+<!ELEMENT resources (section)>
+<!ELEMENT section (tile*,string*,integer*,mo*)>
+<!ELEMENT string EMPTY>
+<!ELEMENT integer EMPTY>
+<!ELEMENT tile (condition?)>
+<!ELEMENT condition (operator*)>
+<!ELEMENT operator(and*,or*)>
+<!ELEMENT and(hasGold*,hasItem*,didEvent*,operator*)>
+<!ELEMENT or(hasGold*,hasItem*,didEvent*,operator*)>
+]>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<resources>
+ <section name = "LevelHeader">
+  <string name="name" value = "Test Level" />
+  <string name="music" value = "Main" />
+  <integer name="width" value="3" />
+  <integer name="height" value="3" />
+ </section>
+ <section name = "TileMap">
+   <tile name="0" map="grass" xpos = "0" ypos = "0" imageCol="1" imageRow = "6" hurtType = "fire" hurtValue = "10">
+   <tile name="1" map="brick" xpos="4" ypos = "12" ZOrder = "1">
+   <tile name="2" map="grass" xpos="7" ypos = "2">
+   <tile name="3" map="grass" xpos="7" ypos = "5">
+   <tile name="4" map="grass" xpos="2" ypos = "9">
+   <tile name="5" map="grass" xpos="3" ypos = "2">
+   <tile name="6" map="grass" xpos="2" ypos = "3">
+   <tile name="7" map="grass" xpos="4" ypos = "5">
+   <tile name="8" map="grass" xpos="1" ypos = "8">
+ </section>
+ <section name = "MappableObjects">
+   <mo name="Dog" type="npc" sprite = "NPC/Dog1" locationX = "0" locationY ="0">
+     <event name = "DogBark" triggerType = "talk">
+       <say speaker = "Dog" text = "Woof!"/>
+     </event>
+   </mo>
+   <mo name="Door" type="door" sprite = "Door/Door1" locationX = "1" locationY = "1">
+     <event name = "enterOctaviaInn" triggerType = "step">
+      <loadLevel name = "OctaviaInn" startX = "3" startY = "3"> <!-- reference to another level xml -->
+     </event>
+   </mo>
+   <mo name="Action" type="event" locationX = "3" locationY = "3">
+     <event name = "mordusDances" preConditionEvent = "sawMordus" preConditionItem = "pendant" triggerType = "step">
+       <song name ="danceMusic"/>
+       <playAnimation name = "mordusDance1"/> <!-- reference to an animation xml -->
+     </event>
+   </mo>
+         
+ </section>
+</resources>
+
