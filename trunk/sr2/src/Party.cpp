@@ -7,7 +7,7 @@ using StoneRing::Party;
 
 
 
-Party::Party()
+Party::Party():mX(0),mY(0)
 {
 }
 
@@ -38,12 +38,30 @@ bool Party::didEvent(const std::string &event) const
 
 uint Party::getLevelX() const
 {
-	return 0;
+	return mX;
 }
 
 uint Party::getLevelY() const
 {
-	return 0;
+	return mY;
 }
 
+uint Party::getWidth() const
+{
+    return 64;
+}
 
+uint Party::getHeight() const
+{
+    return 64;
+}
+
+void Party::setLevelX(uint x)
+{
+    mX = x;
+}
+
+void Party::setLevelY(uint y)
+{
+    mY = y;
+}

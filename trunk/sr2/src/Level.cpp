@@ -2388,8 +2388,25 @@ uint MappableObject::getY() const
 
 CL_Rect MappableObject::getRect()
 {
-    // HACKAROONIE! Needs to be width , height 
-    return CL_Rect(mX, mY, mX+ 32, mY + 32);
+
+    int width;
+    int height;
+
+    switch ( meSize )
+    {
+    case MO_SMALL:
+	width = height = 32;
+	break;
+    case MO_MEDIUM:
+	width = height = 64;
+	break;
+    case MO_LARGE:
+	width = height = 128;
+	break;
+    }
+
+
+    return CL_Rect(mX, mY, mX+ width, mY + height);
 }
 
 bool MappableObject::isSprite() const
@@ -2567,12 +2584,12 @@ void MappableObject::randomNewDirection()
 
 void MappableObject::update()
 {
-	mSprites[meDirection]->update();
-	if(!moveInCurrentDirection())
-	{
+    mSprites[meDirection]->update();
+    if(!moveInCurrentDirection())
+    {
 	 
-	    pickOppositeDirection();
-	}
+	pickOppositeDirection();
+    }
 }
 
 
@@ -2813,73 +2830,74 @@ void Level::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC,
 	
 	for(int tileX = 0; tileX < widthInTiles; tileX++)
   	{
- 		for(int tileY =0; tileY < heightInTiles; tileY++)
-  		{
- 			
- 			CL_Point p( src.left / 32 + tileX, src.top /32 + tileY);
- 			
- 			
-			if(p.x >=0 && p.y >=0 && p.x < mLevelWidth && p.y < mLevelHeight)
+	    for(int tileY =0; tileY < heightInTiles; tileY++)
+	    {
+		
+		CL_Point p( src.left / 32 + tileX, src.top /32 + tileY);
+		
+		
+		if(p.x >=0 && p.y >=0 && p.x < mLevelWidth && p.y < mLevelHeight)
+		{
+		    
+		    
+		    for(std::list<Tile*>::iterator i = mTileMap[p.x][p.y].begin();
+			i != mTileMap[p.x][p.y].end();
+			i++)
+		    {
+			CL_Rect tileSrc(0,0,32,32);
+			CL_Rect tileDst ( exDst.left  + tileX * 32,
+					  exDst.top + tileY * 32,
+					  exDst.left + tileX * 32 + 32,
+					  exDst.top + tileY * 32 + 32);
+			
+			Tile * pTile = *i;
+			if(pTile->evaluateCondition())
 			{
- 			
- 				for(std::list<Tile*>::iterator i = mTileMap[p.x][p.y].begin();
- 				    i != mTileMap[p.x][p.y].end();
- 				    i++)
- 				{
- 					CL_Rect tileSrc(0,0,32,32);
- 					CL_Rect tileDst ( exDst.left  + tileX * 32,
- 							  exDst.top + tileY * 32,
- 							  exDst.left + tileX * 32 + 32,
- 							  exDst.top + tileY * 32 + 32);
- 					
- 					Tile * pTile = *i;
- 					if(pTile->evaluateCondition())
-					{
- 						pTile->draw(tileSrc, tileDst , pGC );
- 				
+			    pTile->draw(tileSrc, tileDst , pGC );
+			    
+			    
 
-
-						// Extra code for level editing
-						if(highlightHot && pTile->isHot())
-						{
-						    pGC->fill_rect(tileDst, CL_Color(255,0,0,160));
-						}
-						if(indicateBlocks)
-						{
-						    int block = pTile->getDirectionBlock();
+			    // Extra code for level editing
+			    if(highlightHot && pTile->isHot())
+			    {
+				pGC->fill_rect(tileDst, CL_Color(255,0,0,160));
+			    }
+			    if(indicateBlocks)
+			    {
+				int block = pTile->getDirectionBlock();
 						    
-						    if(block & DIR_WEST)
-						    {
-							pGC->fill_rect(CL_Rect(tileDst.left,tileDst.top,tileDst.left + 8, tileDst.bottom), CL_Color(0,255,255,120));
-						    }
-						    if(block & DIR_EAST)
-						    {
-							pGC->fill_rect(CL_Rect(tileDst.right - 8, tileDst.top, tileDst.right,tileDst.bottom),CL_Color(0,255,255,120));
-						    }
-						    if(block & DIR_NORTH)
-						    {
-							pGC->fill_rect(CL_Rect(tileDst.left, tileDst.top, tileDst.right, tileDst.top +8), CL_Color(0,255,255,120));
-						    }
-						    if(block & DIR_SOUTH)
-						    {
-							pGC->fill_rect(CL_Rect(tileDst.left,tileDst.bottom -8, tileDst.right, tileDst.bottom), CL_Color(0,255,255,120));
-						    }
-						}
-					}
+				if(block & DIR_WEST)
+				{
+				    pGC->fill_rect(CL_Rect(tileDst.left,tileDst.top,tileDst.left + 8, tileDst.bottom), CL_Color(0,255,255,120));
+				}
+				if(block & DIR_EAST)
+				{
+				    pGC->fill_rect(CL_Rect(tileDst.right - 8, tileDst.top, tileDst.right,tileDst.bottom),CL_Color(0,255,255,120));
+				}
+				if(block & DIR_NORTH)
+				{
+				    pGC->fill_rect(CL_Rect(tileDst.left, tileDst.top, tileDst.right, tileDst.top +8), CL_Color(0,255,255,120));
+				}
+				if(block & DIR_SOUTH)
+				{
+				    pGC->fill_rect(CL_Rect(tileDst.left,tileDst.bottom -8, tileDst.right, tileDst.bottom), CL_Color(0,255,255,120));
+				}
+			    }
+			}
 					
 
   					
 
  					
  					
- 				}
- 			}
+		    }
+		}
 			
  			
  			
  			
  			
-  		}
+	    }
   	}
 	
     }
@@ -2899,7 +2917,7 @@ void Level::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_Graph
 #ifndef _MSC_VER
     mMappableObjects.sort( moSortCriterion );
 #else
-	mMappableObjects.sort(std::greater<MappableObject*>());
+    mMappableObjects.sort(std::greater<MappableObject*>());
 #endif
 
 
@@ -2932,7 +2950,7 @@ void Level::drawFloaters(const CL_Rect &src, const CL_Rect &dst, CL_GraphicConte
 
       
 // Checks relevant tile and MO direction block information
-bool Level::canMove(const CL_Rect &currently, const CL_Rect & destination, bool noHot) const
+bool Level::canMove(const CL_Rect &currently, const CL_Rect & destination, bool noHot, bool isPlayer) const
 {
 
 
@@ -2972,6 +2990,19 @@ bool Level::canMove(const CL_Rect &currently, const CL_Rect & destination, bool 
     }
 	
 	
+    // Check if we bump into the player (unless we are the player..)
+    
+    if(!isPlayer)
+    {
+	IParty *party = IApplication::getInstance()->getParty();
+	CL_Rect playerRect(party->getLevelX(), party->getLevelY(), 
+			   party->getLevelX() + party->getWidth(),
+			   party->getLevelY() + party->getHeight());
+	
+	if (playerRect.is_overlapped( destination)) return false;
+    }
+
+
 
 
     //  Check MOs for overlap, return true if any
@@ -3128,10 +3159,10 @@ bool Level::canMove(const CL_Rect &currently, const CL_Rect & destination, bool 
 
 
 		    // Blocked
-		   if( oppositeDir & (*iter)->getDirectionBlock()) return false;
+		    if( oppositeDir & (*iter)->getDirectionBlock()) return false;
 
-		   if( noHot && (*iter)->isHot()) return false;
-	       }
+		    if( noHot && (*iter)->isHot()) return false;
+		}
 	    }
 	    else
 	    {
@@ -3159,15 +3190,15 @@ bool Level::canMove(const CL_Rect &currently, const CL_Rect & destination, bool 
 
 	    // Check for blocks in our current location
 
-		// TODO : optimization if we dont actually copy the list each time
-		for(std::list<Tile*>::const_iterator iter = mTileMap[p.x][p.y].begin();
-		    iter != mTileMap[p.x][p.y].end();
-		    iter++)
-		{
+	    // TODO : optimization if we dont actually copy the list each time
+	    for(std::list<Tile*>::const_iterator iter = mTileMap[p.x][p.y].begin();
+		iter != mTileMap[p.x][p.y].end();
+		iter++)
+	    {
 
-		   // Blocked
-		    if( movementDir & (*iter)->getDirectionBlock()) return false;
-		}
+		// Blocked
+		if( movementDir & (*iter)->getDirectionBlock()) return false;
+	    }
 		
 
 

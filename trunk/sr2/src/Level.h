@@ -710,7 +710,7 @@ namespace StoneRing{
       
       
 	    // Checks relevant tile and MO direction block information
-	    bool canMove(const CL_Rect &currently, const CL_Rect & destination, bool noHot = false) const; 
+	    bool canMove(const CL_Rect &currently, const CL_Rect & destination, bool noHot = false, bool isPlayer = false) const; 
 
 	    // All AM's from tiles fire, as do any step events
 	    virtual void step(uint levelX, uint levelY);
