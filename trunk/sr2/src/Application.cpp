@@ -25,6 +25,12 @@ CL_ResourceManager * Application::getResources()
   return mpResources;
 }
 
+
+bool Application::canMove(const CL_Rect &currently, const CL_Rect &destination, bool noHot)
+{
+    return mpLevel->canMove(currently,destination,noHot);
+}
+
 Application::Application():mCurX(0),mCurY(0),mbDone(false)
 {
 }
@@ -66,28 +72,40 @@ void Application::teardownClanLib()
 void Application::onSignalKeyDown(const CL_InputEvent &key)
 {
 
-	switch(key.id)
-	{
-	case CL_KEY_ESCAPE:
-		mbDone = true;
-		break;
-	case CL_KEY_DOWN:
-		mCurY+=3;
-		break;
-	case CL_KEY_UP:
-		mCurY-=3;
-		break;
-	case CL_KEY_LEFT:
-		mCurX-=3;
-		break;
-	case CL_KEY_RIGHT:
-		mCurX+=3;
-		break;
-	default:
-		break;
-	}
-  
-
+    int nX =mCurX;
+    int nY =mCurY;
+    
+    switch(key.id)
+    {
+    case CL_KEY_ESCAPE:
+	mbDone = true;
+	break;
+    case CL_KEY_DOWN:
+	nY+=1;
+	break;
+    case CL_KEY_UP:
+	nY-=1;
+	break;
+    case CL_KEY_LEFT:
+	nX-=1;
+	break;
+    case CL_KEY_RIGHT:
+	nX+=1;
+	break;
+    case CL_KEY_D:
+	std::cout << "AT " << '(' << mCurX / 32 << ',' << mCurY / 32 << ')' << std::endl;
+    default:
+	break;
+    }
+    
+    
+    if(canMove ( CL_Rect(mCurX,mCurY,mCurX+32,mCurY+32), CL_Rect(nX,nY,nX+32,nY+32), true))
+    {
+	mCurX = nX;
+	mCurY = nY;
+    }
+    
+    
 
 }
 

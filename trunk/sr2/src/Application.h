@@ -36,6 +36,9 @@ class Level;
       CL_Rect getLevelRect() const;
       CL_Rect getDisplayRect() const;
 
+
+      bool canMove(const CL_Rect &currently, const CL_Rect &destination, bool noHot);
+
     private:
 
       int mCurX;
