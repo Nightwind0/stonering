@@ -60,7 +60,7 @@
 	</mo>
 		
 		
-	<mo name="Door" type="door" xpos="2" ypos="2">
+	<mo name="Door" type="door" xpos="2" ypos="2" movementType = "wander">
 		<event name="enterOctaviaInn" triggerType="step">
 			<loadLevel name="ocataviaInn" startx="4" starty="3"/>
 		</event>
