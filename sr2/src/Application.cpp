@@ -124,14 +124,15 @@ int Application::main(int argc, char ** argv)
 			
 		    CL_Display::clear();
 
-		    CL_Rect dst(mCurX, mCurY, mCurX + mpLevel->getWidth() * 32, mCurY + mpLevel->getHeight()*32);
+		    //CL_Rect dst(mCurX, mCurY, mCurX + mpLevel->getWidth() * 32, mCurY + mpLevel->getHeight()*32);
+		    CL_Rect dst(0,0,mpLevel->getWidth() * 32, mpLevel->getHeight() * 32);
 		    CL_Rect src(0,0,mpLevel->getWidth() * 32, mpLevel->getHeight() * 32);
 
 		    mpWindow->get_gc()->push_cliprect( dst);
 
 		    mpLevel->draw(src,dst, mpWindow->get_gc(), false);
 		    //  CL_System::sleep( 300 );
-		    mpWindow->get_gc()->draw_rect( CL_Rect(96,96,128,128), CL_Color::aqua ) ;
+		    mpWindow->get_gc()->draw_rect( CL_Rect(mCurX,mCurY,mCurX+32,mCurY+32), CL_Color::aqua ) ;
 		    mpLevel->drawFloaters(src,dst, mpWindow->get_gc());
 
 
