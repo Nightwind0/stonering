@@ -1,0 +1,6 @@
+Danny TODOs
+DONE 1) Order the tiles on load by zOrder
+1.5) Create some sprites, get those loading and working
+2) Wire up events
+2.5) Get MOs drawing, updating, etc
+3) Wire up stepping / talking
