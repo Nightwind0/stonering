@@ -14,7 +14,7 @@
 <!ELEMENT hasGold (#PCDATA)>
 <!ELEMENT hasItem (itemRef)>
 <!ELEMENT didEvent (#PCDATA)>
-<!ELEMENT mo ((tilemap|spriteRef)?,event*, directionBlock?)>
+<!ELEMENT mo ((tilemap|spriteRef*)?,event*, directionBlock?)>
 <!ELEMENT event (condition?,(attributeModifier | say | give | take | playAnimation | playSound | loadLevel | startBattle | pause | invokeShop | giveGold)*)>
 <!ELEMENT say (#PCDATA)>
 <!ELEMENT give (itemRef)>
