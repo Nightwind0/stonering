@@ -725,7 +725,8 @@ namespace StoneRing{
 	protected:
 
 //			std::map<CL_Point, std::list<Tile*> > mTileMap;
-	    std::list<Tile*> ** mTileMap;
+//	    std::list<Tile*> ** mTileMap;
+	    std::vector<std::vector<std::list<Tile*> > > mTileMap;
 	    std::map<CL_Point, std::list<Tile*> > mFloaterMap;
       
 	    // Sort MO's in order to bring close ones to the top
