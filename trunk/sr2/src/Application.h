@@ -14,13 +14,19 @@ namespace StoneRing
       ~Application();
       
       virtual int main(int argc, char** argv);
-      
-      void setupClanLib();
-      void teardownClanLib();
-      
-      
+  
       static const int WINDOW_HEIGHT = 600;
       static const int WINDOW_WIDTH = 800;
+      
+    private:
+      void setupClanLib();
+      void teardownClanLib();
+      void showRechargeableOnionSplash();
+      void showIntro();
+      
+      CL_ResourceManager * mpResources;
+
+      CL_DisplayWindow *mpWindow;
       
     };
   
