@@ -71,18 +71,17 @@ int EditorMain::main(int argc, char **argv)
 
 			string menutileset;
 
-			//while(!tilemapnames.empty())
-			for(list<string>::iterator i = tilemapnames.begin();i != tilemapnames.end(); i++)
+			while(!tilemapnames.empty())
 			{
 				menutileset = "TileSet/" + tilemapnames.front();
 				menu.create_item(menutileset);
 				
 				slots.connect(menu.get_node(menutileset)->sig_clicked(), this, &EditorMain::on_tileset_change, tilemapnames.front());
 
-//				tempsets.push_back(tilemapnames.front());
-//				tilemapnames.pop_front();
+				tempsets.push_back(tilemapnames.front());
+				tilemapnames.pop_front();
 			}
-//			tilemapnames = tempsets;
+			tilemapnames = tempsets;
 
 
 			// menu item slot connects

@@ -33,7 +33,6 @@ private:
 
 		CL_SlotContainer slots;
 		CL_ResourceManager* tsResources;
-		string cur_tileset;
 		list<CL_Surface*> tilemaps;
 
 		CL_Label *cur_tileset_lable;
