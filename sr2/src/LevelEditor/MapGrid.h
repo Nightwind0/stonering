@@ -28,6 +28,9 @@ public:
 		void on_paint();
 		void on_dir_change(const string &new_dir);
 
+		void more_rows(int r = 1);
+		void more_columns(int c = 1);
+
 private:
 
 		CL_Rect rect;

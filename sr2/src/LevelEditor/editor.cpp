@@ -136,6 +136,8 @@ int EditorMain::main(int argc, char **argv)
 			menu.create_toggle_item("Options/Hide Floaters");
 
 
+
+
 			////get the tileset info from xml
 			CL_ResourceManager* tsResources = new CL_ResourceManager ( "../../Media/resources.xml" );
 			mpResources = tsResources;
@@ -161,6 +163,8 @@ int EditorMain::main(int argc, char **argv)
 			}
 			tilemapnames = tempsets;
 
+			menu.create_item("About/Info");
+
 
 			// menu item slot connects
 			slots.connect(menu.get_node("File/Quit")->sig_clicked(), this, &EditorMain::on_quit);
@@ -168,6 +172,9 @@ int EditorMain::main(int argc, char **argv)
 			slots.connect(menu.get_node("File/Save As...")->sig_clicked(), this, &EditorMain::on_save);
 			slots.connect(menu.get_node("File/Open")->sig_clicked(), this, &EditorMain::on_load);
 			slots.connect(menu.get_node("File/New")->sig_clicked(), this, &EditorMain::on_new);
+
+			slots.connect(menu.get_node("Tools/Add Row")->sig_clicked(), this, &EditorMain::on_add_row);
+			slots.connect(menu.get_node("Tools/Add Column")->sig_clicked(), this, &EditorMain::on_add_column);
 
 
 			//other random slot connects
@@ -220,7 +227,23 @@ cout << "all the creation stuff completed. about to run it." << endl;
 
 void EditorMain::on_quit()
 {
-	quit = true;
+	int bttn;
+
+	if(mpLevel != NULL)
+	{
+		bttn = CL_MessageBox::info("Warning", "Would you like to save the current level before quiting?", "Yes", "No", "Cancel", gui_manager);
+		
+		if(bttn == 0)
+		{
+			on_save();
+		}
+
+	}
+
+	if(bttn != 2)
+	{
+		quit = true;
+	}
 }
 
 void EditorMain::on_paint()
@@ -239,44 +262,89 @@ void EditorMain::on_save()
     string filename = SR_FileDialog::open("", "*.xml", gui_manager);;  //= SR_FileDialog::save("", "*.xml", gui_manager);
 
 //	    cout << filename << endl;
-    map->save_Level(filename);
+	if(filename != "")
+		map->save_Level(filename);
 }
 
 void EditorMain::on_load()
 {
-	string filename = SR_FileDialog::open("", "*.xml", gui_manager);
+	int bttn;
 
-//	cout << filename << endl;
-/**/
-	CL_InputSource_File file(filename);
+	if(mpLevel != NULL)
+	{
+		bttn = CL_MessageBox::info("Warning", "Would you like to save the current level before opening a new one?", "Yes", "No", "Cancel", gui_manager);
+		
+		if(bttn == 0)
+		{
+			on_save();
+		}
 
-	CL_DomDocument doc;
-	doc.load(&file);
+	}
 
-	delete mpLevel;
+	if(bttn != 2)
+	{
+		string filename = SR_FileDialog::open("", "*.xml", gui_manager);
 
-	mpLevel = new EditableLevel();
+		if(filename != "")
+		{
+			CL_InputSource_File file(filename);
 
-	mpLevel->load(doc);
+			CL_DomDocument doc;
+			doc.load(&file);
 
-	map->set_Level(mpLevel);
+			delete mpLevel;
+
+			mpLevel = new EditableLevel();
+
+			mpLevel->load(doc);
+
+			map->set_Level(mpLevel);
+		}
+	}
 
 }
 
 
 void EditorMain::on_new()
 {
-	CL_InputDialog new_dlg("Create New Level", "Ok", "Cancel", "", gui_manager);
-	new_dlg.add_input_box("Level Name:", "", 150);
-	new_dlg.add_input_box("Music:", "", 150);
-	new_dlg.add_input_box("Width (in tiles):", "10", 150);
-	new_dlg.add_input_box("Height (in tiles):", "10", 150);
-	new_dlg.run();
+	
+	int bttn;
 
+	if(mpLevel != NULL)
+	{
+		bttn = CL_MessageBox::info("Warning", "Would you like to save the current level before creating a new one?", "Yes", "No", "Cancel", gui_manager);
+		
+		if(bttn == 0)
+		{
+			on_save();
+		}
 
+	}
 
+	if(bttn != 2)
+	{
+		CL_InputDialog new_dlg("Create New Level", "Ok", "Cancel", "", gui_manager);
+		new_dlg.add_input_box("Level Name:", "", 150);
+		new_dlg.add_input_box("Music:", "", 150);
+		new_dlg.add_input_box("Width (in tiles):", "10", 150);
+		new_dlg.add_input_box("Height (in tiles):", "10", 150);
+		new_dlg.run();
+	
 
-//	delete mpLevel;
+//	delete mpLevel;	
+	
+	}
 
 }
+
+void EditorMain::on_add_row()
+{
+	map->more_rows(1);
+}
+
+void EditorMain::on_add_column()
+{
+	map->more_columns(1);
+}
+
 

@@ -74,6 +74,9 @@ private:
 	void on_save();
 	void on_load();
 	void on_new();
+
+	void on_add_row();
+	void on_add_column();
 	
 	void on_paint();
 	void on_tileset_change(string userdata);
