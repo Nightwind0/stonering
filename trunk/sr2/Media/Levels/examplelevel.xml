@@ -26,6 +26,8 @@
 					<hasItem not="true">
 						<itemRef itemType="Special">AsbestosFeet</itemRef>
 					</hasItem>
+					<hasGold operator = "gte">3</hasGold>
+						
 				</condition>
 			</attributeModifier>
 	

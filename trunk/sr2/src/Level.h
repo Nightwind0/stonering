@@ -153,6 +153,7 @@ namespace StoneRing {
 
       
     private:
+      ItemRef * mpItemRef;
       bool mbNot;
       std::string mItem;
       Item::eItemType mItemType;

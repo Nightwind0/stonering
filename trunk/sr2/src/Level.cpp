@@ -40,6 +40,7 @@ ItemRef::~ItemRef()
 
 std::string ItemRef::getItemName()
 {
+	return "FUZZBALL";
 }
  
 Item::eItemType ItemRef::getItemType()
@@ -83,44 +84,166 @@ std::string SpriteRef::getRef() const
  
 AttributeModifier::AttributeModifier (CL_DomElement *pElement)
 {
+	std::cout << "READING AN A.M." << std::endl;
+	
+	CL_DomNamedNodeMap attributes = pElement->get_attributes();
+
+	if(attributes.get_length() < 2) throw CL_Error("Error reading attributes in A.M.");
+
+
+	mAttribute = attributes.get_named_item("attribute").get_node_value();
+	mAdd = atoi(attributes.get_named_item("add").get_node_value().c_str());
+
+	
+	if(!attributes.get_named_item("target").is_null())
+	{
+		mTarget = attributes.get_named_item("target").get_node_value();
+	}
+
+
+
+	CL_DomElement child = pElement->get_first_child().to_element();
+
+	while( !child.is_null() )
+	{
+		if( child.get_node_name() == "condition" )
+		{
+			mConditions.push_back(new Condition( &child ));
+			
+		}
+		else throw CL_Error( "Bad element in an A.M." );
+
+		
+		child = child.get_next_sibling().to_element();
+
+
+	}
+	
+
 }
 
 AttributeModifier::~AttributeModifier()
 {
+	for(std::list<Condition*>::iterator i = mConditions.begin();
+	    i != mConditions.end();
+	    i++)
+	{
+		delete *i;
+	}
 }
 
 
 
 void AttributeModifier::invoke()
 {
+	// Party->modifyAttribute( blah blah blah ) ;
 }
 
 
 
 HasGold::HasGold( CL_DomElement *pElement)
 {
+
+	CL_DomNamedNodeMap attributes = pElement->get_attributes();
+
+	if(attributes.get_length() < 1) throw CL_Error("Error reading attributes in hasGold");
+
+
+	std::string op = attributes.get_named_item("operator").get_node_value();
+
+	
+	if(op == "lt") meOperator = LT;
+	else if(op == "gt") meOperator = GT;
+	else if(op == "gte") meOperator = GTE;
+	else if(op == "lte") meOperator = LTE;
+	else if(op == "eq") meOperator = EQ;
+	else throw CL_Error("Bad operator type in hasGold");
+
+	CL_DomNode isnot = attributes.get_named_item("not");
+
+	std::string notstring;
+
+
+	if(! isnot.is_null() )
+	{
+		notstring = isnot.get_node_value();
+
+		if(notstring == "true")
+		{
+			mbNot = true;
+		}
+	}
+	else
+	{
+		mbNot = false;
+	}
+
+
+	mAmount = atoi( pElement->get_text().c_str() );
+
+	if(mbNot) std::cout << "(NOT) ";
+
+	std::cout << "HAS GOLD: " << op << ' ' << mAmount << std::endl;
+
+
 }
 
 HasGold::~HasGold()
 {
+
 }
 
 bool HasGold::evaluate()
 {
+	// return Party->hasGold( mAmount ) ;
 }
 
  
  
-HasItem::HasItem(CL_DomElement *pElement )
+HasItem::HasItem(CL_DomElement *pElement ):mpItemRef(NULL)
 {
+
+	CL_DomNamedNodeMap attributes = pElement->get_attributes();
+
+
+	CL_DomNode isnot = attributes.get_named_item("not");
+
+	std::string notstring;
+
+
+	if(! isnot.is_null() )
+	{
+		notstring = isnot.get_node_value();
+
+		if(notstring == "true")
+		{
+			mbNot = true;
+		}
+	}
+	else
+	{
+		mbNot = false;
+	}
+
+	CL_DomElement itemRefElement = pElement->get_first_child().to_element();
+
+	if(itemRefElement.is_null()) throw CL_Error("hasItem missing itemRef");
+
+
+	mpItemRef = new ItemRef ( &itemRefElement );
+
+	std::cout << "HAS ITEM: " << mpItemRef->getItemName() <<  std::endl;
+
 }
 
 HasItem::~HasItem()
 {
+	delete mpItemRef;
 }
 
 bool HasItem::evaluate()
 {
+	// return Party->hasItem ( mpItemRef );
 }
 
  
@@ -189,14 +312,56 @@ ushort Operator::order()
 
 Condition::Condition(CL_DomElement *pElement)
 {
+	
+	std::cout << "READING CONDITION" << std::endl;
+	CL_DomElement child = pElement->get_first_child().to_element();
+
+	while(!child.is_null())
+	{
+
+		std::string name = child.get_node_name();
+
+		if(name == "operator")
+		{
+			mChecks.push_back ( new Operator( &child ));
+		}
+		else if ( name == "hasItem")
+		{
+			mChecks.push_back ( new HasItem ( &child ));
+		}
+		else if ( name == "hasGold")
+		{
+			mChecks.push_back ( new HasGold ( &child ));
+		}
+		else if (name == "didEvent")
+		{
+			mChecks.push_back ( new DidEvent ( &child ));
+		}
+		else throw CL_Error("Bad child in conditon: " + name );
+
+		child = child.get_next_sibling().to_element();
+	}
 }
 
 Condition::~Condition()
 {
+	for(std::list<Check*>::iterator i = mChecks.begin();
+	    i != mChecks.end(); i++)
+	{
+		delete *i;
+	}
 }
 
 bool Condition::evaluate() const
 {
+	for(std::list<Check*>::const_iterator i = mChecks.begin();
+	    i != mChecks.end(); i++)
+	{
+		Check * check = *i;
+		// If anybody returns false, the whole condition is false
+		if(! check->evaluate() ) return false;
+	}
+
 	return true;
 }
 
@@ -384,7 +549,7 @@ Tile::Tile(CL_DomElement *pElement):mpSprite(NULL),mpCondition(NULL), mpAM(NULL)
 
 	CL_DomNamedNodeMap attributes = pElement->get_attributes();
 
-	if(attributes.get_length() == 0) throw CL_Error("Error reading attributes in tile");
+	if(attributes.get_length() < 2) throw CL_Error("Error reading attributes in tile");
 
 
 	mX = atoi(attributes.get_named_item("xpos").get_node_value().c_str());
