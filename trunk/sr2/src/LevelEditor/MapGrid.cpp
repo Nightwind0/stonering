@@ -4,9 +4,13 @@
 #include "MapGrid.h"
 
 
-MapGrid::MapGrid(CL_Rect setrect, CL_Component *parent, EditableLevel *mpLevel, CL_GraphicContext *mgGC, TileSelector *TS)
-:	rect(setrect), CL_Component(parent), mgLevel(mpLevel), mgGC(mgGC), TS(TS)
+MapGrid::MapGrid(CL_Rect setrect, CL_Component *parent, CL_GraphicContext *mgGC, TileSelector *TS)
+:	rect(setrect), CL_Component(parent), mgGC(mgGC), TS(TS)
 {
+//EditableLevel *mpLevel,
+//, mgLevel(null)
+
+	mgLevel = NULL;
 
 	set_position(rect.left, rect.top);
 	set_size(rect.get_width(), rect.get_height());
@@ -27,8 +31,10 @@ MapGrid::MapGrid(CL_Rect setrect, CL_Component *parent, EditableLevel *mpLevel, 
 	mgScrollVert->set_min_value(0);
 	mgScrollHorz->set_min_value(0);
 
-	mgScrollVert->set_max_value((mgLevel->getHeight())-17);
-	mgScrollHorz->set_max_value((mgLevel->getWidth())-15);
+//	mgScrollVert->set_max_value((mgLevel->getHeight())-17);
+//	mgScrollHorz->set_max_value((mgLevel->getWidth())-15);
+	mgScrollVert->set_max_value(0);
+	mgScrollHorz->set_max_value(0);
 
 
 	slots.connect(sig_paint(), this, &MapGrid::on_paint);
@@ -56,69 +62,100 @@ void MapGrid::on_paint()
 	//component border color
 	CL_Display::draw_rect(CL_Rect(0, 0, get_width(), get_height()), CL_Color::grey);
 
-	CL_Rect dst(0,0,min((unsigned int)15,mgLevel->getWidth())*32-20, min((unsigned int)17,mgLevel->getHeight())*32-20);
-	CL_Rect src(mgScrollX,mgScrollY, mgScrollX+dst.get_width(), mgScrollY+dst.get_height());
 
-	mgLevel->draw(src, dst, mgGC, false);
+	if(mgLevel)  //we dont want to try drawing an empty level
+	{
+		CL_Rect dst(0,0,min((unsigned int)15,mgLevel->getWidth())*32-20, min((unsigned int)17,mgLevel->getHeight())*32-20);
+		CL_Rect src(mgScrollX,mgScrollY, mgScrollX+dst.get_width(), mgScrollY+dst.get_height());
 
-	//when dan fixes the mappables to work in the editor just uncomment this line.
-	//mgLevel->drawMappableObjects(src,dst,mgGC);
+		mgLevel->draw(src, dst, mgGC, false);
+	
+		//when dan fixes the mappables to work in the editor just uncomment this line.
+		//mgLevel->drawMappableObjects(src,dst,mgGC);
+	}
+
 
 }
 
 void MapGrid::on_placeTile(const CL_InputEvent &event)
 {
-	int clickX, clickY;
-
-	clickX = event.mouse_pos.x;
-	clickY = event.mouse_pos.y;
-
-	if(clickX <get_width()-20 && clickY<get_height()-20)
+	if(mgLevel)  //nasty things might happen if we tried adding tiles to nonexistant levels
 	{
-		mgX = (clickX/32) + mgScrollHorz->get_value();
-		mgY = (clickY/32) + mgScrollVert->get_value();
+		int clickX, clickY;
 
-		cout << "(" << mgX << "," << mgY << ")" << endl;
+		clickX = event.mouse_pos.x;
+		clickY = event.mouse_pos.y;
 
-
-		if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ))
+		if(clickX <get_width()-20 && clickY<get_height()-20)
 		{
-		    // Zap mode, delete the topmost tile
-		    std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
+			mgX = (clickX/32) + mgScrollHorz->get_value();
+			mgY = (clickY/32) + mgScrollVert->get_value();
 
-		    std::list<Tile*>::iterator lastGuy = TileList.end();
+			cout << "(" << mgX << "," << mgY << ")" << endl;
 
-		    // Since it's currently actually one PAST the lastguy.
-		    lastGuy--;
 
-		    mgLevel->removeTile( *lastGuy );
-		    
+			if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ))
+			{
+				// Zap mode, delete the topmost tile
+				std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
+
+				std::list<Tile*>::iterator lastGuy = TileList.end();
+
+				// Since it's currently actually one PAST the lastguy.
+				lastGuy--;
+
+				mgLevel->removeTile( *lastGuy );
+				
+
+			}
+			else
+			{
+				// Default mode is add mode
+				EditableTile *pTile = new EditableTile();
+				cout << TS->get_tsMapName() << endl;
+				pTile->setTilemap(TS->get_tsMapName(), TS->get_tsX(), TS->get_tsY());
+				
+				int ZOrder = -1;
+				std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
+				for( std::list<Tile*>::iterator iter = TileList.begin(); iter != TileList.end(); iter++)
+				{
+				
+				if( (*iter)->getZOrder() > ZOrder) 
+					ZOrder = (*iter)->getZOrder();
+				
+				}
+				ZOrder++;
+				
+				pTile->setZOrder( ZOrder );
+				pTile->setLevelX ( mgX );
+				pTile->setLevelY ( mgY );
+				
+				mgLevel->addTile( pTile );
+			}
 
 		}
-		else
-		{
-		    // Default mode is add mode
-		    EditableTile *pTile = new EditableTile();
-		    cout << TS->get_tsMapName() << endl;
-		    pTile->setTilemap(TS->get_tsMapName(), TS->get_tsX(), TS->get_tsY());
-		    
-		    int ZOrder = -1;
-		    std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
-		    for( std::list<Tile*>::iterator iter = TileList.begin(); iter != TileList.end(); iter++)
-		    {
-			
-			if( (*iter)->getZOrder() > ZOrder) 
-			    ZOrder = (*iter)->getZOrder();
-			
-		    }
-		    ZOrder++;
-		    
-		    pTile->setZOrder( ZOrder );
-		    pTile->setLevelX ( mgX );
-		    pTile->setLevelY ( mgY );
-		    
-		    mgLevel->addTile( pTile );
-		}
-
 	}
+}
+
+
+void MapGrid::set_Level()//EditableLevel *mpLevel)
+{
+	openLevel = new CL_FileDialog("Load Level", "", "*.xml", this);
+
+	CL_Slot slot_dialog = openLevel->sig_dir_entered().connect(this, &MapGrid::on_dir_change);
+	
+	//openLevel.set_dir("../");
+
+	//openLevel.
+		
+		//::open("", "*.xml", this);
+
+//	mgLevel = mpLevel;
+}
+
+
+void MapGrid::on_dir_change(const string &new_dir)
+{
+
+	openLevel->set_dir(new_dir);
 }

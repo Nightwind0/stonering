@@ -85,6 +85,8 @@ private:
 	CL_SlotContainer slots;
 
 	TileSelector* tiles;
+	MapGrid* map;
+
 	CL_GraphicContext *gc;
 
 	EditableLevel *mpLevel;

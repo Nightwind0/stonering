@@ -143,7 +143,6 @@ int EditorMain::main(int argc, char **argv)
 			mpLevel->load(doc);
 			
 
-
 			list<string> tilemapnames = tsResources->get_all_resources("Tilemaps");
 
 			list<string> tempsets;
@@ -164,24 +163,27 @@ int EditorMain::main(int argc, char **argv)
 
 
 			// menu item slot connects
-//			slots.connect(menu.get_node("File/Quit")->sig_clicked(), this, &EditorMain::on_quit);
+			slots.connect(menu.get_node("File/Quit")->sig_clicked(), this, &EditorMain::on_quit);
 //			slots.connect(menu.get_node("File/Save")->sig_clicked(), this, &EditorMain::on_save);
-//			slots.connect(menu.get_node("File/Load")->sig_clicked(), this, &EditorMain::on_load);
+			slots.connect(menu.get_node("File/Open")->sig_clicked(), this, &EditorMain::on_load);
 
 
 			//other random slot connects
 			slots.connect(window.sig_window_close(), this, &EditorMain::on_quit);
 
 
-
+//			cout<< "creating tileselector" << endl;
 			tiles = new TileSelector(CL_Rect(510, 30, 691, 403), &gui, tsResources);
-			
-			MapGrid map(CL_Rect(5, 30, 505, 594), &gui, mpLevel, window.get_gc(), tiles);
 
+//			cout << "creating mapgrid" << endl;			
+			map = new MapGrid(CL_Rect(5, 30, 505, 594), &gui, window.get_gc(), tiles);
+
+
+//			cout << "creating gridpoint" << endl;
 			GridPoint gp(CL_Rect(510, 410, 691, 590), &gui);
 
 		
-			
+cout << "all the creation stuff completed. about to run it." << endl;			
 
 
 
@@ -235,9 +237,23 @@ int EditorMain::main(int argc, char **argv)
 		
 	}
 
-		void EditorMain::on_load()
+	void EditorMain::on_load()
 	{
-		
+/*		CL_FileDialog::open(gc);
+
+		CL_InputSource_File file(leveldocfilename);
+
+		CL_DomDocument doc;
+		doc.load(&file);
+
+		mpLevel = new EditableLevel();
+
+		mpLevel->load(doc);
+
+		map->set_Level(mpLevel);
+*/
+		map->set_Level();
+
 	}
 
 
