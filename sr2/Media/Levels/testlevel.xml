@@ -81,6 +81,12 @@
 		<tile name="" xpos="3" ypos="3">
 			<tilemap mapname="grass" mapx="2" mapy="2" />
 		</tile>
+		<tile name="" xpos="1" ypos="1">
+			<tilemap mapname="grass" mapx="2" mapy="2" />
+		</tile>
+		<tile name="" xpos="2" ypos="2">
+			<tilemap mapname="grass" mapx="1" mapy="1" />
+		</tile>
 		
 		<!-- This tile only appears after the player made the bridge -->
 		<!-- It replaces the previously specified water tile -->

@@ -469,7 +469,7 @@ namespace StoneRing {
 
 		private:
 
-			enum eFlags { SPRITE = 1, FLOATER = 2, HAS_COND = 4, BLK_NORTH = 8, BLK_SOUTH = 16, BLK_EAST = 32, BLK_WEST = 64, HOT = 128 };
+			enum eFlags { SPRITE = 1, FLOATER = 2, HOT = 4, BLK_NORTH = 8, BLK_SOUTH = 16, BLK_EAST = 32, BLK_WEST = 64 };
 
 			CL_Sprite *mpSprite;
 			SpriteRefOrTilemap mGraphic;
@@ -479,7 +479,7 @@ namespace StoneRing {
 			ushort mX;
 			ushort mY;
 
-			char cFlags;
+		        unsigned char cFlags;
 
 		};
 
