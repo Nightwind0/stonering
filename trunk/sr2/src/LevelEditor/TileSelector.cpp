@@ -73,8 +73,9 @@ void TileSelector::changeTS(string text)
 
 	cur_tileset = new CL_Surface(text , tsResources);
 		
-	scrollVert->set_max_value(cur_tileset->get_width());
-	scrollHorz->set_max_value(cur_tileset->get_width());
+	scrollVert->set_max_value((cur_tileset->get_height()/32)-12);
+	scrollHorz->set_max_value((cur_tileset->get_width()/32)-6);
+
 
 }
 
