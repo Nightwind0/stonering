@@ -1,9 +1,5 @@
-<!ELEMENT resources (section+)>
-<!ELEMENT section (level)>
 <!ELEMENT level (levelHeader, tile+, mo+)>
 <!ELEMENT levelHeader EMPTY>
-<!ELEMENT string EMPTY>
-<!ELEMENT integer EMPTY>
 <!ELEMENT tile ((tilemap | spriteRef),condition?, attributeModifier?, directionBlock?)>
 <!ELEMENT tilemap EMPTY>
 <!ELEMENT directionBlock EMPTY>
@@ -29,15 +25,9 @@
 <!ELEMENT invokeShop EMPTY>
 <!ELEMENT pause (#PCDATA)>
 <!ATTLIST level name CDATA #REQUIRED>
-<!ATTLIST section name CDATA #REQUIRED>
-<!ATTLIST levelHeader name CDATA #REQUIRED>
 <!ATTLIST levelHeader music CDATA #REQUIRED>
 <!ATTLIST levelHeader width CDATA #REQUIRED>
 <!ATTLIST levelHeader height CDATA #REQUIRED>
-<!ATTLIST string name CDATA #REQUIRED>
-<!ATTLIST string value CDATA #REQUIRED>
-<!ATTLIST integer name CDATA #REQUIRED>
-<!ATTLIST integer value CDATA #REQUIRED>
 <!ATTLIST tile name CDATA #REQUIRED>
 <!ATTLIST tile xpos CDATA #REQUIRED>
 <!ATTLIST tile ypos CDATA #REQUIRED>
