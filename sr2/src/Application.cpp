@@ -123,6 +123,8 @@ bool Application::move(eDir dir, int times)
 void Application::onSignalKeyDown(const CL_InputEvent &key)
 {
 
+    CL_DomDocument document;
+    CL_OutputSource_File file("foo.xml");
 	
     int nX =mCurX;
     int nY =mCurY;
@@ -150,6 +152,32 @@ void Application::onSignalKeyDown(const CL_InputEvent &key)
     case CL_KEY_F:
 	mSpeed++;
 	break;
+
+    case CL_KEY_T:
+
+	document.append_child ( *mpLevel->createDomElement(document) );
+
+	delete mpLevel;
+
+	mpLevel = new Level();
+	mpLevel->load (document );
+
+
+	break;
+
+
+    case CL_KEY_W:
+
+	document.append_child ( *mpLevel->createDomElement(document) );
+
+	file.open();
+
+	document.save( &file, false, true );
+
+	file.close();
+
+	break;
+
     case CL_KEY_D:
 	std::cout << "AT " << '(' << mCurX / 32 << ',' << mCurY / 32 << ')' << std::endl;
     default:

@@ -27,6 +27,24 @@ CL_Sprite * GraphicsManager::createSprite ( const std::string & name )
 	return pSprite;
 }
 
+std::string GraphicsManager::lookUpMapWithSurface (CL_Surface * surface)
+{
+    for( std::map<std::string,CL_Surface*>::iterator i = mTileMap.begin();
+	 i != mTileMap.end();
+	 i++)
+    {
+	if ( i->second == surface)
+	{
+	    return i->first;
+	}
+    }
+
+    throw CL_Error ( "BAD! TILEMAP NOT FOUND IN lookupMapWithSurface" );
+
+    return "die";
+
+}
+
 CL_Surface * GraphicsManager::getTileMap ( const std::string & name )
 {
 	CL_ResourceManager *pResources  = Application::getApplication()->getResources();

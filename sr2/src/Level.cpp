@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <stdlib.h>
 #include <time.h>
+#include <sstream>
 #include "GraphicsManager.h"
 
 
@@ -28,6 +29,23 @@ using std::abs;
 
 
 
+std::string IntToString(const int &i)
+{
+    std::ostringstream os;
+
+    os << i;
+
+    return os.str();
+    
+}
+
+std::string BoolToString( const bool &b)
+{
+    if(b) return "true";
+    else return "false";
+}
+
+
 
 // For the multimap of points
 bool operator < (const CL_Point &p1, const CL_Point &p2)
@@ -45,6 +63,9 @@ bool operator < (const SpriteRef::eDirection dir1, const SpriteRef::eDirection d
 
 
 
+ItemRef::ItemRef()
+{
+}
 
 ItemRef::ItemRef(CL_DomElement *pElement )
 {
@@ -83,6 +104,43 @@ ItemRef::ItemRef(CL_DomElement *pElement )
 	
 }
 
+CL_DomElement *ItemRef::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement *element = new CL_DomElement(doc, std::string("itemRef"));
+
+    std::string type;
+
+    switch(meType)
+    {
+    case Item::ITEM:
+	type = "item";
+	break;
+    case Item::WEAPON:
+	type = "weapon";
+	break;
+    case Item::ARMOR:
+	type = "armor";
+	break;
+    case Item::RUNE:
+	type = "rune";
+	break;
+    case Item::SPECIAL:
+	type = "special";
+	break;
+    default:
+	throw CL_Error (" Bad item ref type " );
+    };
+
+    element->set_attribute( "itemType", type);
+
+    CL_DomText text(doc,mItem);
+    text.set_node_value( mItem );
+
+    element->append_child ( text );
+
+    return element;
+}
+
 ItemRef::~ItemRef()
 {
 }
@@ -98,7 +156,23 @@ Item::eItemType ItemRef::getItemType()
 }
 
  
-Tilemap::Tilemap(CL_DomElement *pElement)
+Tilemap::Tilemap()
+{
+}
+
+CL_DomElement * Tilemap::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement * element = new CL_DomElement(doc,"tilemap");
+
+    element->set_attribute( "mapname" , GraphicsManager::getInstance()->lookUpMapWithSurface ( mpSurface ) );
+    element->set_attribute( "mapx", IntToString ( mX ) );
+    element->set_attribute( "mapy", IntToString ( mY ) );
+
+    return element;
+}
+
+
+Tilemap::Tilemap(CL_DomElement *pElement):mpSurface(NULL)
 {
 	
 	
@@ -106,10 +180,10 @@ Tilemap::Tilemap(CL_DomElement *pElement)
 	
     if(attributes.get_length() < 3) throw CL_Error("Error reading attributes in tilemap");
 	
-
-	std::string name = attributes.get_named_item("mapname").get_node_value();
-	
-	mpSurface = GraphicsManager::getInstance()->getTileMap(name);
+    
+    std::string name = attributes.get_named_item("mapname").get_node_value();
+    
+    mpSurface = GraphicsManager::getInstance()->getTileMap(name);
 
     mX = atoi ( attributes.get_named_item("mapx").get_node_value().c_str());
     mY = atoi ( attributes.get_named_item("mapy").get_node_value().c_str());
@@ -134,6 +208,52 @@ ushort Tilemap::getMapY() const
 CL_Surface* Tilemap::getTileMap() const
 {
     return mpSurface;
+}
+
+
+SpriteRef::SpriteRef()
+{
+}
+
+CL_DomElement * SpriteRef::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement * element = new CL_DomElement(doc,"spriteRef");
+
+    std::string dir;
+
+    switch(meDirection)
+    {
+    case SPR_STILL:
+	dir = "still";
+	break;
+    case SPR_NORTH:
+	dir = "north";
+	break;
+    case SPR_WEST:
+	dir = "west";
+	break;
+    case SPR_EAST:
+	dir = "east";
+	break;
+    case SPR_SOUTH:
+	dir = "south";
+	break;
+    case SPR_NONE:
+	break;
+    }
+
+    if(dir.length())
+    {
+	element->set_attribute("direction", dir);
+    }
+
+    CL_DomText text(doc,mRef);
+    text.set_node_value( mRef );
+
+    element->append_child ( text );
+
+    return element;
+
 }
 
 
@@ -175,6 +295,37 @@ SpriteRef::eDirection SpriteRef::getDirection() const
     return meDirection;
 }
 
+
+AttributeModifier::AttributeModifier()
+{
+}
+
+CL_DomElement * AttributeModifier::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement * element = new CL_DomElement(doc,"attributeModifier");
+
+    element->set_attribute("attribute",mAttribute );
+    element->set_attribute("add", IntToString ( mAdd )  );
+
+    if(mTarget.length())
+    {
+	element->set_attribute("target", mTarget);
+    }
+
+
+    for(std::list<Condition*>::const_iterator i = mConditions.begin();
+	i != mConditions.end();
+	i++)
+    {
+	CL_DomElement * e = (*i)->createDomElement(doc);
+	element->append_child(*e );
+
+	delete e;
+    }
+
+    return element;
+
+}
 
  
 AttributeModifier::AttributeModifier (CL_DomElement *pElement)
@@ -241,6 +392,48 @@ void AttributeModifier::invoke()
     // Party->modifyAttribute( blah blah blah ) ;
 }
 
+
+HasGold::HasGold()
+{
+}
+
+CL_DomElement * HasGold::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement * element = new CL_DomElement(doc, "hasGold");
+
+    std::string oper;
+
+    switch(meOperator)
+    {
+    case LT:
+	oper = "lt";
+	break;
+    case GT:
+	oper = "gt";
+	break;
+    case GTE:
+	oper = "gte";
+	break;
+    case LTE:
+	oper = "lte";
+	break;
+    case EQ:
+	oper = "eq";
+	break;
+    }
+
+    element->set_attribute("operator",oper);
+
+    if(mbNot) element->set_attribute("not","true");
+
+    CL_DomText text (doc, IntToString(mAmount ) );
+
+    text.set_node_value( IntToString(mAmount ) );
+
+    element->append_child( text );
+
+    return element;
+}
 
 
 HasGold::HasGold( CL_DomElement *pElement)
@@ -335,7 +528,25 @@ bool HasGold::evaluate()
     }
 }
 
- 
+HasItem::HasItem():mpItemRef(NULL)
+{
+    
+}
+
+
+CL_DomElement * HasItem::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement * element = new CL_DomElement(doc,"hasItem");
+
+    if(mbNot) element->set_attribute("not","true");
+
+    CL_DomElement *e = mpItemRef->createDomElement(doc);
+    element->append_child (*e );
+
+    delete e;
+
+    return element;
+}
  
 HasItem::HasItem(CL_DomElement *pElement ):mpItemRef(NULL)
 {
@@ -386,6 +597,24 @@ bool HasItem::evaluate()
     else	return Party::getInstance()->hasItem ( mpItemRef );
 }
 
+
+
+DidEvent::DidEvent()
+{
+}
+
+CL_DomElement * DidEvent::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement * element = new CL_DomElement(doc,"didEvent");
+
+    if(mbNot) element->set_attribute("not","true");
+
+    CL_DomText text ( doc, mEvent );
+    text.set_node_value ( mEvent );
+
+    return element;
+}
+
  
 DidEvent::DidEvent(CL_DomElement *pElement)
 {
@@ -430,6 +659,28 @@ bool DidEvent::evaluate()
     else  return Party::getInstance()->didEvent ( mEvent );
 }
 
+
+And::And()
+{
+}
+
+CL_DomElement * And::createDomElement(CL_DomDocument &doc) const
+{
+
+    CL_DomElement * element = new CL_DomElement (doc,"and");
+
+    for(std::list<Check*>::const_iterator i = mOperands.begin();
+	i != mOperands.end();
+	i++)
+    {
+	CL_DomElement *e = (*i)->createDomElement(doc);
+	element->append_child ( *e );
+
+	delete e;
+    }
+
+    return element;
+}
 
 And::And(CL_DomElement * pElement)
 {
@@ -494,6 +745,29 @@ bool And::evaluate()
 ushort And::order()
 {
     return 0;
+}
+
+
+Or::Or()
+{
+}
+
+CL_DomElement * Or::createDomElement(CL_DomDocument &doc) const
+{
+
+    CL_DomElement * element = new CL_DomElement (doc,"or");
+
+    for(std::list<Check*>::const_iterator i = mOperands.begin();
+	i != mOperands.end();
+	i++)
+    {
+	CL_DomElement *e = (*i)->createDomElement(doc);
+	element->append_child ( *e );
+
+	delete e;
+    }
+
+    return element;
 }
 
  
@@ -561,6 +835,24 @@ ushort Or::order()
     return 0;
 }
 
+Operator::Operator()
+{
+}
+
+CL_DomElement * Operator::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement * element = new CL_DomElement (doc,"operator");
+
+    for(std::list<Check*>::const_iterator i = mOperands.begin();
+	i != mOperands.end();
+	i++)
+    {
+	element->append_child ( * (*i)->createDomElement(doc) );
+    }
+
+    return element;    
+}
+
  
 Operator::Operator(CL_DomElement *pElement)
 {
@@ -620,6 +912,28 @@ ushort Operator::order()
     return 0;
 }
       
+
+Condition::Condition()
+{
+}
+
+CL_DomElement * Condition::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement * element = new CL_DomElement (doc,"condition");
+
+    for(std::list<Check*>::const_iterator i = mChecks.begin();
+	i != mChecks.end();
+	i++)
+    {
+	CL_DomElement *e= (*i)->createDomElement(doc);
+	element->append_child ( *e );
+
+	delete e;
+    }
+
+    return element;
+}
+
  
 
 Condition::Condition(CL_DomElement *pElement)
@@ -677,9 +991,62 @@ bool Condition::evaluate() const
     return true;
 }
 
+Event::Event():mbRepeatable(true),mpCondition(NULL)
+{
+}
+
+CL_DomElement * Event::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement * element  = new CL_DomElement(doc,"event");
+
+    element->set_attribute("name", mName );
+
+    std::string triggertype;
+
+    switch( meTriggerType )
+    {
+    case STEP:
+	triggertype = "step";
+	break;
+    case TALK:
+	triggertype = "talk";
+	break;
+    case ACT:
+	triggertype = "act";
+	break;
+    }
+
+    element->set_attribute("type", triggertype);
+
+    if(!mbRepeatable) element->set_attribute("repeatable","false");
 
 
-Event::Event(CL_DomElement *pElement):mbRepeatable(true)
+    if(mpCondition )
+    {
+	CL_DomElement *e = mpCondition->createDomElement(doc);
+
+	element->append_child ( *e );
+
+	delete e;
+    }
+
+    for(std::list<Action*>::const_iterator i = mActions.begin();
+	i != mActions.end();
+	i++)
+    {
+	CL_DomElement *e = (*i)->createDomElement(doc);
+	
+	element->append_child ( *e );
+
+	delete e;
+    }
+
+
+    return element;
+
+}
+
+Event::Event(CL_DomElement *pElement):mbRepeatable(true),mpCondition(NULL)
 {
 
 
@@ -834,6 +1201,26 @@ bool Event::invoke()
 }
       
 
+PlayAnimation::PlayAnimation()
+{
+
+}
+
+
+CL_DomElement * PlayAnimation::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement * element = new CL_DomElement(doc,"playAnimation");
+
+    CL_DomText text(doc,mAnimation);
+
+    text.set_node_value( mAnimation );
+
+    element->append_child ( text );
+
+    return element;
+}
+
+
 PlayAnimation::PlayAnimation(CL_DomElement * pElement )
 {
 
@@ -850,6 +1237,22 @@ void PlayAnimation::invoke()
 }
  
 
+PlaySound::PlaySound()
+{
+}
+
+CL_DomElement * PlaySound::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement * element = new CL_DomElement(doc,"playSound");
+
+    CL_DomText text(doc, mSound );
+
+    text.set_node_value ( mSound );
+
+    element->append_child ( text );
+
+    return element;
+}
 
 PlaySound::PlaySound(CL_DomElement *pElement )
 {
@@ -863,6 +1266,22 @@ PlaySound::~PlaySound()
 void PlaySound::invoke()
 {
     // Application->playSound ( mSound );
+}
+
+LoadLevel::LoadLevel()
+{
+}
+
+
+CL_DomElement * LoadLevel::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement * element = new CL_DomElement(doc,"loadLevel");
+
+    element->set_attribute("startx", IntToString (mStartX ) ) ;
+    element->set_attribute("starty", IntToString (mStartY ) );
+    element->set_attribute("name", mName );
+    
+    return element;
 }
  
 LoadLevel::LoadLevel(CL_DomElement *pElement)
@@ -887,8 +1306,54 @@ LoadLevel::~LoadLevel()
 
 
 
+Movement::Movement()
+{
+}
 
 
+CL_DomElement *Movement::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement * element = new CL_DomElement(doc,"movement") ;
+
+    
+    std::string movementType;
+
+    switch( meType )
+    {
+    case MOVEMENT_WANDER:
+	movementType = "wander";
+	break;
+    case MOVEMENT_PACE_NS:
+	movementType = "paceNS";
+	break;
+    case MOVEMENT_PACE_EW:
+	movementType = "paceEW";
+	break;
+    case MOVEMENT_NONE:
+	movementType = "none";
+	break;
+    }
+
+
+    element->set_attribute("movementType", movementType );
+
+    std::string speed;
+
+    switch(meSpeed)
+    {
+    case SLOW:
+	speed = "slow";
+	break;
+    case FAST:
+	speed = "fast";
+	break;
+    }
+
+    element->set_attribute("speed", speed );
+
+    return element;
+
+}
 
 Movement::Movement ( CL_DomElement * pElement ):meType(MOVEMENT_NONE),meSpeed(SLOW)
 {
@@ -960,6 +1425,20 @@ void LoadLevel::invoke()
     // Application->loadLevel ( mName, startX, startY );
 }
 
+StartBattle::StartBattle()
+{
+}
+
+CL_DomElement * StartBattle::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement * element = new CL_DomElement(doc,"startBattle");
+
+    element->set_attribute("isBoss", mbIsBoss? "true":"false");
+    element->set_attribute("count", IntToString (mCount ) );
+    element->set_attribute("monster", mMonster );
+
+    return element;
+}
 
 
 StartBattle::StartBattle(CL_DomElement *pElement):mbIsBoss(false),mCount(1)
@@ -1013,6 +1492,20 @@ void StartBattle::invoke()
     // Application->startBattle ( mMonster, mCount, mbIsBoss ) ;
 }
 
+
+InvokeShop::InvokeShop()
+{
+}
+
+
+CL_DomElement * InvokeShop::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement * element = new CL_DomElement(doc,"invokeShop");
+
+    element->set_attribute("shopType", mShopType );
+
+    return element;
+}
  
 InvokeShop::InvokeShop(CL_DomElement *pElement)
 {
@@ -1037,6 +1530,23 @@ void InvokeShop::invoke()
     // Application->invokeShop ( mShopType );
 }
 
+
+Pause::Pause()
+{
+}
+
+CL_DomElement * Pause::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement * element  = new CL_DomElement(doc,"pause");
+
+    CL_DomText text(doc,IntToString(mMs));
+
+//    text.set_node_value( IntToString (mMs ) );
+
+    element->append_child ( text );
+
+    return element;
+}
  
 Pause::Pause(CL_DomElement *pElement )
 {
@@ -1051,6 +1561,26 @@ void Pause::invoke()
     // Application->pause ( mMs ) ;
 }
  
+Say::Say()
+{
+}
+
+CL_DomElement * Say::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement * element = new CL_DomElement(doc,"say");
+
+    element->set_attribute("speaker", mSpeaker );
+
+    CL_DomText text(doc, mText );
+
+//    text.set_node_value( mText );
+
+    element->append_child( text );
+
+    return element;
+
+}
+
 Say::Say (CL_DomElement *pElement )
 {
     CL_DomNamedNodeMap attributes = pElement->get_attributes();
@@ -1072,7 +1602,29 @@ void Say::invoke()
 {
     // Application -> say ( mText, mSpeaker );
 }
+
+Give::Give()
+{
+}
  
+CL_DomElement * Give::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement * element = new CL_DomElement(doc,"give");
+
+    element->set_attribute("count", IntToString ( mCount ) );
+
+    CL_DomElement * itemRef = mpItemRef->createDomElement(doc);
+
+    element->append_child(*itemRef );
+
+    delete itemRef;
+
+    return element;
+
+    
+
+}
+
 Give::Give(CL_DomElement *pElement ):mpItemRef(NULL)
 {
 
@@ -1108,6 +1660,26 @@ Give::~Give()
 void Give::invoke()
 {
     // Party->giveItem ( mpItemRef );
+}
+
+Take::Take()
+{
+}
+
+CL_DomElement * Take::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement * element = new CL_DomElement(doc,"take");
+
+    element->set_attribute("count", IntToString ( mCount ) );
+
+    CL_DomElement * itemRef = mpItemRef->createDomElement(doc);
+
+    element->append_child(*itemRef );
+
+    delete itemRef;
+
+    return element;
+
 }
  
 Take::Take(CL_DomElement *pElement ):mpItemRef(NULL)
@@ -1148,6 +1720,20 @@ void Take::invoke()
     // Party->takeItem ( mpItemRef );
 }
 
+
+GiveGold::GiveGold()
+{
+}
+
+CL_DomElement * GiveGold::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement * element = new CL_DomElement(doc,"giveGold");
+
+    element->set_attribute("count", IntToString ( mCount ) );
+
+
+    return element;
+}
  
 
  
@@ -1193,6 +1779,27 @@ Graphic::~Graphic()
 }
 
 
+DirectionBlock::DirectionBlock():meDirectionBlock(0)
+{
+}
+
+DirectionBlock::DirectionBlock(int i )
+{
+    meDirectionBlock = i;
+}
+
+CL_DomElement * DirectionBlock::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement * element = new CL_DomElement(doc,"directionBlock");
+
+    element->set_attribute("north", BoolToString (meDirectionBlock & DIR_NORTH ));
+    element->set_attribute("south", BoolToString (meDirectionBlock & DIR_SOUTH));
+    element->set_attribute("east", BoolToString ( meDirectionBlock & DIR_EAST ) );
+    element->set_attribute("west", BoolToString ( meDirectionBlock & DIR_WEST ) );
+
+    return element;
+}
+
 DirectionBlock::DirectionBlock(CL_DomElement *pElement ):meDirectionBlock(0)
 {
     CL_DomNamedNodeMap attributes = pElement->get_attributes();
@@ -1228,6 +1835,74 @@ bool Tile::isHot() const
 
     return cFlags & HOT;
 }
+
+Tile::Tile():mpSprite(NULL),mpCondition(NULL),mpAM(NULL),mZOrder(0),cFlags(0)
+{
+}
+
+CL_DomElement * Tile::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement * element = new CL_DomElement(doc,"tile");
+
+
+    element->set_attribute("xpos", IntToString ( mX ) );
+    element->set_attribute("ypos", IntToString ( mY ) );
+    element->set_attribute("zorder", IntToString (mZOrder ) );
+    if(isFloater()) element->set_attribute("floater", "true");
+    if(isHot())     element->set_attribute("hot", "true");
+
+    if(isSprite())
+    {
+	CL_DomElement * spriteEl = mGraphic.asSpriteRef->createDomElement(doc);
+
+	element->append_child ( *spriteEl );
+
+	delete spriteEl;
+    }
+    else
+    {
+	CL_DomElement * tilemapEl = mGraphic.asTilemap->createDomElement(doc);
+
+	element->append_child ( * tilemapEl );
+
+	delete tilemapEl;
+    }
+
+    if(mpCondition)
+    {
+	CL_DomElement * condEl = mpCondition->createDomElement(doc);
+
+	element->append_child ( *condEl );
+
+	delete condEl;
+    }
+
+    if(mpAM)
+    {
+	CL_DomElement * amEl = mpAM->createDomElement(doc);
+
+	element->append_child ( *amEl );
+
+	delete amEl;
+    }
+
+    if( getDirectionBlock() > 0)
+    {
+	DirectionBlock block( getDirectionBlock() );
+
+	CL_DomElement * dirEl = block.createDomElement(doc);
+
+	element->append_child( *dirEl );
+
+	delete dirEl;
+    }
+    
+
+    return element;
+
+    
+}
+
 
 Tile::Tile(CL_DomElement *pElement):mpSprite(NULL),mpCondition(NULL), mpAM(NULL), mZOrder(0), cFlags(0)
 {
@@ -1435,6 +2110,107 @@ bool Tile::isTile() const
 }
 
 
+MappableObject::MappableObject():mpMovement(0),mTimeOfLastUpdate(0),mCountInCurDirection(0)
+{
+}
+
+CL_DomElement * MappableObject::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement * element = new CL_DomElement(doc,"mo");
+
+    element->set_attribute( "name", mName );
+    
+    std::string motype;
+    std::string size;
+
+    switch( meSize )
+    {
+    case MO_SMALL:
+	size = "small";
+	break;
+    case MO_MEDIUM:
+	size = "medium";
+	break;
+    case MO_LARGE:
+	size = "large";
+	break;
+	
+    }
+
+
+    switch ( meType )
+    {
+    case NPC:
+	motype = "npc";
+	break;
+    case SQUARE:
+	motype = "square";
+	break;
+    case CONTAINER:
+	motype = "container";
+	break;
+    case DOOR:
+	motype = "door";
+	break;
+    case WARP:
+	motype = "warp";
+	break;
+    }
+
+    element->set_attribute("size", size);
+    element->set_attribute("type", motype );
+    element->set_attribute("xpos", IntToString(mStartX) );
+    element->set_attribute("ypos", IntToString(mStartY) );
+
+
+    if(isSolid()) element->set_attribute("solid", "true" );
+
+    if(cFlags & TILEMAP)
+    {
+	CL_DomElement * tilemapEl = mGraphic.asTilemap->createDomElement(doc);
+
+	element->append_child ( * tilemapEl );
+
+	delete tilemapEl;
+    }
+
+
+    for(std::list<SpriteRef*>::const_iterator i = mSpriteRefs.begin();
+	i != mSpriteRefs.end(); i++)
+    {
+	CL_DomElement * spriteRefEl = (*i)->createDomElement(doc);
+
+
+	element->append_child ( *spriteRefEl );
+
+	delete spriteRefEl;
+    }
+
+    for(std::list<Event*>::const_iterator h = mEvents.begin();
+	h != mEvents.end(); h++)
+    {
+	CL_DomElement * evEl= (*h)->createDomElement(doc);
+
+	element->append_child( *evEl );
+
+	delete evEl;
+    }
+
+    if(mpMovement)
+    {
+	CL_DomElement * moveEl = mpMovement->createDomElement(doc);
+
+	element->append_child ( *moveEl );
+
+	delete moveEl;
+    }
+
+
+    return element;
+    
+}
+
+
 MappableObject::eSize MappableObject::getSize() const
 {
     return meSize;
@@ -1501,10 +2277,12 @@ MappableObject::MappableObject(CL_DomElement *pElement):mpMovement(0),mTimeOfLas
 	    GraphicsManager *GM = GraphicsManager::getInstance();
 
 	    SpriteRef * pRef = new SpriteRef ( &child );
+
+	    mSpriteRefs.push_back ( pRef );
 	    cFlags |= SPRITE;
 
 	    mSprites[ pRef->getDirection() ]  = GM->createSprite ( pRef->getRef() );
-
+	    
 
 	    int swidth = mSprites [ pRef->getDirection() ]->get_width();
 	    int sheight = mSprites [ pRef->getDirection()]->get_height();
@@ -1571,6 +2349,13 @@ MappableObject::~MappableObject()
 	 i++)
     {
 	delete *i;
+    }
+
+    for(std::list<SpriteRef*>::iterator h = mSpriteRefs.begin();
+	h != mSpriteRefs.end();
+	h++)
+    {
+	delete *h;
     }
 	     
 }
@@ -1841,6 +2626,81 @@ void MappableObject::provokeEvents ( Event::eTriggerType trigger )
 	}
 
     }
+}
+
+Level::Level()
+{
+}
+
+CL_DomElement * Level::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement * element = new CL_DomElement(doc,"level");
+
+    CL_DomElement levelHeader(doc, "levelHeader");
+    CL_DomElement tiles(doc, "tiles");
+    CL_DomElement mappableObjects(doc,"mappableObjects");
+
+
+    levelHeader.set_attribute("music", mMusic );
+    levelHeader.set_attribute("width", IntToString(mLevelWidth) );
+    levelHeader.set_attribute("height", IntToString(mLevelHeight) );
+
+    element->append_child( levelHeader );
+
+    
+
+    for(int x=0; x< mLevelWidth; x++)
+    {
+	for(int y =0;y< mLevelHeight; y++)
+	{
+	    for( std::list<Tile*>::const_iterator i = mTileMap[x][y].begin();
+		 i != mTileMap[x][y].end();
+		 i++)
+	    {
+		CL_DomElement * tileEl = (*i)->createDomElement(doc);
+
+		tiles.append_child ( *tileEl );
+
+		delete tileEl;
+	    }
+	}
+    }
+
+    for(std::map<CL_Point,std::list<Tile*> >::const_iterator j = mFloaterMap.begin();
+	j != mFloaterMap.end();
+	j++)
+    {
+	for(std::list<Tile*>::const_iterator jj = j->second.begin();
+	    jj != j->second.end();
+	    jj++)
+	{
+	    CL_DomElement *floaterEl = (*jj)->createDomElement(doc);
+
+	    tiles.append_child ( *floaterEl );
+
+	    delete floaterEl;
+	}
+	    
+    }
+
+    element->append_child(tiles);
+
+
+    for(std::list<MappableObject*>::const_iterator mo = mMappableObjects.begin();
+	mo != mMappableObjects.end();
+	mo++)
+    {
+	CL_DomElement * moEl = (*mo)->createDomElement ( doc );
+	mappableObjects.append_child( *moEl );
+
+	delete moEl;
+    }
+
+    element->append_child(mappableObjects);
+    
+
+    return element;
+
 }
 
 
@@ -2373,16 +3233,15 @@ bool Level::tileSortCriterion ( const Tile * p1, const Tile * p2)
     return p1->getZOrder() < p2->getZOrder();
 }
 
-void Level::LoadLevel( const std::string & filename  )
+void Level::load ( CL_DomDocument &document)
 {
-    CL_InputSource_File file(filename);
+    LoadLevel ( document );
+}
 
-    CL_DomDocument document;
 
-	
-    document.load(&file);
-
-    std::cout << "LOADING LEVEL: " << filename << std::endl;
+void Level::LoadLevel (CL_DomDocument &document )
+{
+    std::cout << "LOADING FROM EXISTING DOCUMENT" << std::endl;
 
 
     CL_DomElement levelNode = document.named_item("level").to_element(); 
@@ -2463,6 +3322,21 @@ void Level::LoadLevel( const std::string & filename  )
     }
 
     std:: cout << "FOUND " << mocount << " MAPPABLE OBJECTS" << std::endl;
+}
+
+void Level::LoadLevel( const std::string & filename  )
+{
+    CL_InputSource_File file(filename);
+
+    std::cout << "LOADING LEVEL: " << filename << std::endl;
+
+    CL_DomDocument document;
+
+	
+    document.load(&file);
+
+ 
+    LoadLevel ( document );
 
 
 }
