@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!--DOCTYPE level SYSTEM "level.dtd"-->
+<!--DOCTYPE level SYSTEM "level.dtd" -->
 <level name="TestLevel">
 <!-- comments -->
-	<levelHeader music="Main" width="3" height="3"/>
+	<levelHeader music="Main" width="4" height="4"/>
 	<tiles>
 		<tile name="1" xpos="0" ypos="0" zorder="1">
 			<tilemap mapname="grass" mapx="3" mapy="1"/>
@@ -13,6 +13,9 @@
 		</tile>
 		<tile name="3" xpos="0" ypos="2">
 			<tilemap mapname="grass" mapx="3" mapy="1"/>
+		</tile>
+		<tile name="" xpos="0" ypos="3">
+			<tilemap mapname="grass" mapx="2" mapy="1"/>
 		</tile>
 		<tile name="4" xpos="1" ypos="0">
 			<tilemap mapname="grass" mapx="3" mapy="1"/>
@@ -35,14 +38,32 @@
 		<tile name="6" xpos="1" ypos="2">
 			<tilemap mapname="grass" mapx="3" mapy="1"/>
 		</tile>
+		<tile name="" xpos="1" ypos="3">
+			<tilemap mapname="grass" mapx="3" mapy="1"/>
+		</tile>
 		<tile name="7" xpos="2" ypos="0">
 			<tilemap mapname="grass" mapx="3" mapy="1"/>
 		</tile>
 		<tile name="8" xpos="2" ypos="1">
 			<tilemap mapname="grass" mapx="3" mapy="1"/>
 		</tile>
-		<tile name="9" xpos="2" ypos="2">
-			<tilemap mapname="wall1" mapx="3" mapy="1"/>
+		<tile name="9" xpos="2" ypos="2" floater="true">
+			<tilemap mapname="wall1" mapx="3" mapy="1" />
+		</tile>
+		<tile name="" xpos="2" ypos="3">
+			<tilemap mapname="wall1" mapx="0" mapy="0"/>
+		</tile>
+		<tile name="" xpos="3" ypos="0" >
+			<tilemap mapname="grass" mapx="0" mapy="0" />
+		</tile>
+		<tile name="" xpos="3" ypos="1" >
+			<tilemap mapname="grass" mapx="0" mapy="0" />
+		</tile>	
+		<tile name="" xpos="3" ypos="2" >
+			<tilemap mapname="grass" mapx="0" mapy="0" />
+		</tile>
+		<tile name="" xpos="3" ypos="3">
+			<tilemap mapname="grass" mapx="2" mapy="2" />
 		</tile>
 		
 		<!-- This tile only appears after the player made the bridge -->

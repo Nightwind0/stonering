@@ -1074,6 +1074,17 @@ Tile::Tile(CL_DomElement *pElement):mpSprite(NULL),mpCondition(NULL), mpAM(NULL)
 		mZOrder = atoi ( attributes.get_named_item("zorder").get_node_value().c_str());
 	}
 
+	// Mark this as a floater
+	if(!attributes.get_named_item("floater").is_null())
+	{
+		std::string floater = attributes.get_named_item("floater").get_node_value();
+
+		if(floater == "true")
+		{
+			cFlags |= FLOATER;
+		}
+	}
+
 
 
 	CL_DomElement child = pElement->get_first_child().to_element();
@@ -1155,18 +1166,18 @@ bool Tile::evaluateCondition() const
 
 uint Tile::getX() const
 {
-	return mX * 32;
+	return mX;
 }
 
 uint Tile::getY() const
 {
-	return mY * 32;
+	return mY;
 }
 
 
 CL_Rect Tile::getRect()
 {
-	return CL_Rect(mX * 32, mY * 32, mX * 32 + 32, mY * 32 + 32 );
+	return CL_Rect(mX , mY , mX + 1, mY +1);
 }
 
 bool Tile::isSprite() const
@@ -1174,13 +1185,17 @@ bool Tile::isSprite() const
 	return cFlags & SPRITE;
 }
 
-void Tile::draw(int targetX, int targetY, CL_GraphicContext *pGC)
+bool Tile::isFloater() const
+{
+	return cFlags & FLOATER;
+}
+
+
+void Tile::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC)
 {
 	// Get the graphic guy
 	// Get our tilemap or sprite
 	// Blit it
-
-
 
 	GraphicsManager * GM = GraphicsManager::getInstance();
 
@@ -1190,15 +1205,11 @@ void Tile::draw(int targetX, int targetY, CL_GraphicContext *pGC)
 
 		//		void draw(	const CL_Rect& src, const CL_Rect& dest, CL_GraphicContext* context = 0);
 
-		CL_Rect srcRect(mGraphic.asTilemap->getMapX() * 32, mGraphic.asTilemap->getMapY() * 32,
-				(mGraphic.asTilemap->getMapX() * 32) + 32, (mGraphic.asTilemap->getMapY() * 32) + 32);
+		CL_Rect srcRect(mGraphic.asTilemap->getMapX() * 32 + src.left, mGraphic.asTilemap->getMapY() * 32 + src.top,
+				(mGraphic.asTilemap->getMapX() * 32) + src.right, (mGraphic.asTilemap->getMapY() * 32) + src.bottom);
 
 		
-		CL_Rect dstRect(targetX, targetY, targetX + 32, targetY + 32);
-
-
-
-		tilemap->draw(srcRect, dstRect, pGC);
+		tilemap->draw(srcRect, dst, pGC);
 		
 	}
 
@@ -1372,7 +1383,7 @@ bool MappableObject::isSprite() const
 	return cFlags & SPRITE;
 }
 
-void MappableObject::draw(int targetX, int targetY, CL_GraphicContext *pGC)
+void MappableObject::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC)
 {
 	
 }
@@ -1446,44 +1457,107 @@ Level::Level(const std::string &name,CL_ResourceManager * pResources): mpDocumen
 
 Level::~Level()
 {
-	for(std::multimap<CL_Point,Tile*>::iterator i= mTileMap.begin(); i != mTileMap.end(); i++)
+	for(std::map<CL_Point,std::list<Tile*> >::iterator i= mTileMap.begin(); i != mTileMap.end(); i++)
 	{
-		delete i->second;
+		std::list<Tile*> alist = i->second;
+		
+		for(std::list<Tile*>::iterator i = alist.begin();
+		    i != alist.end();
+		    i++)
+		{
+			delete *i;
+		}
 	}
 }
       
 
-void Level::draw(uint levelX, uint levelY, CL_GraphicContext * pGC, uint windowX , uint windowY,
-		uint windowWidth,
-		uint windowHeight)
+void Level::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC, bool floaters)
 {
+//	int maxSrcX = max( ceil(dst.get_width() / 32.0), mLevelWidth );
+//	int maxSrcY = max( ceil(dst.get_height() / 32.0), mLevelHeight);
+	
+	int widthInTiles = ceil((float)src.get_width() / 32.0 );
+	int heightInTiles = ceil((float)src.get_height() / 32.0 );
+
+	int widthInPx = widthInTiles * 32;
+	int heightInPx = heightInTiles * 32;
+
+	if(src.left % 32)
+		widthInTiles = std::max(widthInTiles, (src.get_width() / 32 + 1));
+	if(src.top % 32)
+		heightInTiles = std::max(heightInTiles, (src.get_height() /32 + 1));
 
 
-	for(int x = windowX; x < windowWidth; x+=32)
-		for(int y= windowY; y < windowHeight; y+=32)
+	CL_Rect exDst = dst; // expanded Dest
+	 
+	// Make it as big as the full source tiles
+	// (It maintains the top/left position when you do this)
+	exDst.set_size(CL_Size( widthInPx, heightInPx ));
+	
+	// Move the top and left position out
+	int newleftDelta = src.left - ((src.left / 32) * 32);
+	int newtopDelta = src.top - ((src.top / 32) * 32);
+
+	exDst.left -= newleftDelta;
+	exDst.right -= newleftDelta;
+	exDst.top -= newtopDelta;
+	exDst.bottom -= newtopDelta;
+	
+
+	std::map<CL_Point,std::list<Tile*> > *pMap;
+
+	if( floaters ) pMap = &mFloaterMap;
+	else pMap = &mTileMap;
+
+	
+	
+	for(int tileX = 0; tileX < widthInTiles; tileX++)
+	{
+		for(int tileY =0; tileY < heightInTiles; tileY++)
 		{
-			CL_Point p;
-			p.x = ((levelX / 32) * 32) + x;
-			p.y = ((levelY / 32) * 32) + y;
-
-			if(p.x / 32 >= mLevelWidth ) continue;
-			if(p.y / 32 >= mLevelHeight ) continue;
-
 			
-
-			for(std::multimap<CL_Point,Tile*>::iterator i = mTileMap.lower_bound ( p );
-			    i != mTileMap.upper_bound ( p );
-			    i++)
+			CL_Point p( src.left / 32 + tileX, src.top /32 + tileY);
+			
+			if(pMap->count( p))
 			{
 			
-
-
-				if(i->second->evaluateCondition())
-				i->second->draw(x, y, pGC );
+				for(std::list<Tile*>::iterator i = pMap->find( p )->second.begin();
+				    i != pMap->find(p)->second.end();
+				    i++)
+				{
+					CL_Rect tileSrc(0,0,32,32);
+					CL_Rect tileDst ( exDst.left  + tileX * 32,
+							  exDst.top + tileY * 32,
+							  exDst.left + tileX * 32 + 32,
+							  exDst.top + tileY * 32 + 32);
+					
+					Tile * pTile = *i;
+					if(pTile->evaluateCondition())
+						pTile->draw(tileSrc, tileDst , pGC );
+				
+					
+					
+					
+				}
 			}
+			   
+			
+			
+			
+			
 		}
+	}
+	
+
+}	    
+
+
+void Level::drawFloaters(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext * pGC)
+{
+	draw(src,dst,pGC, true);
 }
-      
+
+
       
 // Checks relevant tile and MO direction block information
 bool Level::canMove(const CL_Rect &currently, const CL_Rect & destination) const
@@ -1634,7 +1708,22 @@ void Level::loadTile ( CL_DomElement * tileElement)
 	point.x = tile->getX();
 	point.y = tile->getY();
 	
-	std::cout << "Placing tile at : " << point.x << ',' << point.y << std::endl;
+	if( tile->isFloater() )
+	{
+		std::cout << "Placing floater at: " << point.x << ',' << point.y << std::endl;
 
-	mTileMap.insert(std::make_pair(point, tile));
+		mFloaterMap[ point ].push_back ( tile );
+		
+		mFloaterMap[ point ].sort( &tileSortCriterion );
+	}
+	else
+	{
+
+		std::cout << "Placing tile at : " << point.x << ',' << point.y << std::endl;
+		
+		mTileMap[ point ].push_back ( tile );
+
+		// Sort by ZOrder, so that they display correctly
+		mTileMap[ point ].sort( &tileSortCriterion );
+	}
 }

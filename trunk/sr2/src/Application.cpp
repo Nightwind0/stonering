@@ -23,7 +23,7 @@ CL_ResourceManager * Application::getResources()
   return mpResources;
 }
 
-Application::Application():mCurX(0),mCurY(0)
+Application::Application():mCurX(0),mCurY(0),mbDone(false)
 {
 }
 
@@ -47,6 +47,42 @@ void Application::teardownClanLib()
 }
 
 
+void Application::onSignalKeyDown(const CL_InputEvent &key)
+{
+
+	switch(key.id)
+	{
+	case CL_KEY_ESCAPE:
+		mbDone = true;
+		break;
+	case CL_KEY_DOWN:
+		mCurY+=3;
+		break;
+	case CL_KEY_UP:
+		mCurY-=3;
+		break;
+	case CL_KEY_LEFT:
+		mCurX-=3;
+		break;
+	case CL_KEY_RIGHT:
+		mCurX+=3;
+		break;
+	default:
+		break;
+	}
+  
+
+
+}
+
+
+void Application::onSignalQuit()
+{
+	
+}
+
+
+
 
 int Application::main(int argc, char ** argv)
 {
@@ -59,7 +95,8 @@ int Application::main(int argc, char ** argv)
 	
 	try
 	{
-
+		std::cout << sizeof(Tile) << std::endl;
+		std::cout << sizeof(Tilemap) << std::endl;
 		setupClanLib();
 		
 		mpResources = new CL_ResourceManager ( "Media/resources.xml" );
@@ -75,19 +112,35 @@ int Application::main(int argc, char ** argv)
 
 		mpLevel = new Level(startinglevel, mpResources);
 
-		CL_System::sleep( 200 );
+		CL_System::sleep( 50 );
 
-		while(!CL_Keyboard::get_keycode(CL_KEY_ESCAPE) && !CL_Keyboard::get_keycode(CL_KEY_ENTER) && !CL_Keyboard::get_keycode( CL_KEY_SPACE))
-		  {
-		    
+		CL_Slot slot_quit = mpWindow->sig_window_close().connect(this, &Application::onSignalQuit);
+
+		CL_Slot slot_key_down = CL_Keyboard::sig_key_down().connect(this, &Application::onSignalKeyDown);
+		
+
+		while(!mbDone)
+		{
+			
 		    CL_Display::clear();
-		    mpLevel->draw(0,0, mpWindow->get_gc());
 
+		    CL_Rect dst(mCurX, mCurY, mCurX + mpLevel->getWidth() * 32, mCurY + mpLevel->getHeight()*32);
+		    CL_Rect src(0,0,mpLevel->getWidth() * 32, mpLevel->getHeight() * 32);
 
+		    mpWindow->get_gc()->push_cliprect( dst);
+
+		    mpLevel->draw(src,dst, mpWindow->get_gc(), false);
+		    //  CL_System::sleep( 300 );
+		    mpLevel->drawFloaters(src,dst, mpWindow->get_gc());
+		    mpWindow->get_gc()->draw_rect( CL_Rect(96,96,128,128), CL_Color::aqua ) ;
+
+		    mpWindow->get_gc()->pop_cliprect();
+
+		    
 		    
 		    CL_Display::flip();
 		    CL_System::keep_alive();
-		  }
+		}
 		
 
 		
