@@ -1,5 +1,4 @@
 
-
 /* This class modified from the ClanLib Game Programming Library for specific
 ** use within Stone Ring. 
 **

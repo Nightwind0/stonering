@@ -194,11 +194,20 @@ void EditableLevel::addRows(int rows)
     {
 	iter->resize ( iter->size() + rows );
     }
+
+    mLevelHeight+=rows;
 }
 
 void EditableLevel::addColumns(int columns)
 {
     mTileMap.resize( mTileMap.size() + columns );
+
+    mLevelWidth+=columns;
+}
+
+void EditableLevel::setName(const std::string &name)
+{
+    mName = name;
 }
 
 		
@@ -216,6 +225,8 @@ void EditableLevel::addTile ( Tile * pTile )
     {
 	mTileMap[ pTile->getX() ][ pTile->getY()].push_back ( pTile );	
     }
+
+    
 }
 
 void EditableLevel::removeTile ( Tile * pTile )
