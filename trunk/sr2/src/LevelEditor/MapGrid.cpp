@@ -10,6 +10,8 @@ MapGrid::MapGrid(CL_Rect setrect, CL_Component *parent, CL_GraphicContext *mgGC,
 //EditableLevel *mpLevel,
 //, mgLevel(null)
 
+	hotflag = blocksflag = false;
+
 	mgLevel = NULL;
 
 	set_position(rect.left, rect.top);
@@ -67,7 +69,7 @@ void MapGrid::on_paint()
 		CL_Rect dst(0,0,min((unsigned int)15,mgLevel->getWidth())*32-20, min((unsigned int)17,mgLevel->getHeight())*32-20);
 		CL_Rect src(mgScrollX,mgScrollY, mgScrollX+dst.get_width(), mgScrollY+dst.get_height());
 
-		mgLevel->draw(src, dst, mgGC, false);
+		mgLevel->draw(src, dst, mgGC, false, hotflag, blocksflag);
 	
 		//when dan fixes the mappables to work in the editor just uncomment this line.
 		//mgLevel->drawMappableObjects(src,dst,mgGC);
@@ -177,6 +179,24 @@ void MapGrid::more_columns(int c)
 
 		mgScrollHorz->set_max_value((mgLevel->getWidth())-15);
 	}
+}
+
+void MapGrid::toggle_hot()
+{
+	if(hotflag)
+		hotflag = false;
+	else
+		hotflag = true;
+
+}
+
+void MapGrid::toggle_blocks()
+{
+	if(blocksflag)
+		blocksflag = false;
+	else
+		blocksflag = true;
+
 }
 
 
