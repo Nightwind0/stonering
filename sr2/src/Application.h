@@ -33,11 +33,17 @@ class Level;
       int mCurX;
       int mCurY;
 
+      bool mbDone;
 
       void setupClanLib();
       void teardownClanLib();
       void showRechargeableOnionSplash();
       void showIntro();
+
+      /* SIGNALS */
+      void onSignalQuit();
+      void onSignalKeyDown(const CL_InputEvent &key);
+      //      void onSignalKeyUp();
       
       CL_ResourceManager * mpResources;
 
