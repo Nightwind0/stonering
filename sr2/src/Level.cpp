@@ -105,7 +105,10 @@ Tilemap::Tilemap(CL_DomElement *pElement)
     if(attributes.get_length() < 3) throw CL_Error("Error reading attributes in tilemap");
 	
 
-    mMapName = attributes.get_named_item("mapname").get_node_value();
+	std::string name = attributes.get_named_item("mapname").get_node_value();
+	
+	mpSurface = GraphicsManager::getInstance()->getTileMap(name);
+
     mX = atoi ( attributes.get_named_item("mapx").get_node_value().c_str());
     mY = atoi ( attributes.get_named_item("mapy").get_node_value().c_str());
 
@@ -126,9 +129,9 @@ ushort Tilemap::getMapY() const
     return mY;
 }
 
-std::string Tilemap::getMapName() const
+CL_Surface* Tilemap::getTileMap() const
 {
-    return mMapName;
+    return mpSurface;
 }
 
 
@@ -1383,7 +1386,7 @@ void Tile::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC)
 
     if( !isSprite() )
     {
-	CL_Surface * tilemap = GM->getTileMap ( mGraphic.asTilemap->getMapName() );
+	CL_Surface * tilemap = mGraphic.asTilemap->getTileMap();
 
 	//		void draw(	const CL_Rect& src, const CL_Rect& dest, CL_GraphicContext* context = 0);
 
@@ -1626,16 +1629,13 @@ void MappableObject::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicCont
     }
     else if( cFlags & TILEMAP )
     {
-	GraphicsManager * GM = GraphicsManager::getInstance();
-
-	CL_Surface * tilemap = GM->getTileMap ( mGraphic.asTilemap->getMapName() );
-
+	
 
 	CL_Rect srcRect(mGraphic.asTilemap->getMapX() * 32 + src.left, mGraphic.asTilemap->getMapY() * 32 + src.top,
 			(mGraphic.asTilemap->getMapX() * 32) + src.right, (mGraphic.asTilemap->getMapY() * 32) + src.bottom);
 
 		
-	tilemap->draw(srcRect, dst, pGC);
+	mGraphic.asTilemap->getTileMap()->draw(srcRect, dst, pGC);
 		
     }
 	
