@@ -20,7 +20,7 @@
 		<tile name="4" xpos="1" ypos="0">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
-		<tile name="5" xpos="1" ypos="1">
+		<tile name="5" xpos="1" ypos="1" hot="true">
 			<!-- Here's an animated sprite tile instead of a regular tile -->
 			<spriteRef>tiles/Lava</spriteRef>
 			<!-- Your primary character loses 10 hp for stepping here -->
@@ -34,7 +34,7 @@
 			</attributeModifier>
 	
 		</tile>
-		<tile name="5" xpos="1" ypos="0">
+		<tile name="5" xpos="1" ypos="0" hot="true">
 			<!-- Here's an animated sprite tile instead of a regular tile -->
 			<spriteRef>tiles/Lava</spriteRef>
 			<!-- Your primary character loses 10 hp for stepping here -->
@@ -93,12 +93,17 @@
 	</tiles>
 	<mappableObjects>
 	
-		<mo name="Cat" type="npc" xpos="2" ypos="0" movementType = "wander">
-			<spriteRef>Animals/Cat1</spriteRef>
+		<mo name="Cat" type="npc" xpos="2" ypos="0">
+			<spriteRef direction = "south">Animals/Cat1</spriteRef>
+			<spriteRef direction = "north">Animals/Cat1</spriteRef>
+			<spriteRef direction = "east">Animals/Cat1</spriteRef>
+			<spriteRef direction = "west">Animals/Cat1</spriteRef>
+			<spriteRef direction = "still">Animals/Cat1</spriteRef>
 			<event name="CatMeow" triggerType="talk">
 				<say speaker="Cat">Meow</say>
 			</event>
 			<directionBlock east="true" north="true" south="true" west="true"/>
+			<movement movementType = "wander" speed="slow"/>
 		</mo>
 		
 	

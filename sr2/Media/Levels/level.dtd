@@ -14,7 +14,7 @@
 <!ELEMENT hasGold (#PCDATA)>
 <!ELEMENT hasItem (itemRef)>
 <!ELEMENT didEvent (#PCDATA)>
-<!ELEMENT mo ((tilemap|spriteRef*)?,event*, directionBlock?)>
+<!ELEMENT mo ((tilemap|spriteRef*)?,event*, directionBlock?, movement?)>
 <!ELEMENT event (condition?,(attributeModifier | say | give | take | playAnimation | playSound | loadLevel | startBattle | pause | invokeShop | giveGold)*)>
 <!ELEMENT say (#PCDATA)>
 <!ELEMENT give (itemRef)>
@@ -27,6 +27,7 @@
 <!ELEMENT startBattle EMPTY>
 <!ELEMENT invokeShop EMPTY>
 <!ELEMENT pause (#PCDATA)>
+<!ELEMENT movement EMPTY>
 <!ATTLIST level name CDATA #REQUIRED>
 <!ATTLIST levelHeader music CDATA #REQUIRED>
 <!ATTLIST levelHeader width CDATA #REQUIRED>
@@ -35,6 +36,7 @@
 <!ATTLIST tile xpos CDATA #REQUIRED>
 <!ATTLIST tile ypos CDATA #REQUIRED>
 <!ATTLIST tile zorder CDATA #IMPLIED>
+<!ATTLIST tile hot (true|false) #IMPLIED>
 <!ATTLIST tile floater (true|false) #IMPLIED>
 <!ATTLIST tilemap mapname CDATA #REQUIRED>
 <!ATTLIST tilemap mapx CDATA #REQUIRED>
@@ -43,7 +45,8 @@
 <!ATTLIST mo type (npc|square|container|warp|door) #REQUIRED>
 <!ATTLIST mo xpos CDATA #REQUIRED>
 <!ATTLIST mo ypos CDATA #REQUIRED>
-<!ATTLIST mo movementType (none|wander) #IMPLIED>
+<!ATTLIST movement movementType (none|wander|paceNS|paceEW) #REQUIRED>
+<!ATTLIST movement speed (slow|fast) #IMPLIED>
 <!ATTLIST event name CDATA #REQUIRED>
 <!ATTLIST event repeatable (true|false) #IMPLIED> 
 <!ATTLIST event triggerType (talk|step|act) #REQUIRED>

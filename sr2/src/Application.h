@@ -23,8 +23,13 @@ class Level;
 
       CL_ResourceManager * getResources();
   
-      static const int WINDOW_HEIGHT = 600;
+#ifdef _MSC_VER
+      enum { WINDOW_HEIGHT=600};
+      enum { WINDOW_WIDTH=800};
+#else
+      static const int WINDOW_HEIGHT = 600 ;
       static const int WINDOW_WIDTH = 800;
+#endif
 
       static Application * getApplication();
 
