@@ -27,8 +27,8 @@ MapGrid::MapGrid(CL_Rect setrect, CL_Component *parent, EditableLevel *mpLevel, 
 	mgScrollVert->set_min_value(0);
 	mgScrollHorz->set_min_value(0);
 
-	mgScrollVert->set_max_value((mgLevel->getHeight())-12);
-	mgScrollHorz->set_max_value((mgLevel->getWidth())-6);
+	mgScrollVert->set_max_value((mgLevel->getHeight())-17);
+	mgScrollHorz->set_max_value((mgLevel->getWidth())-15);
 
 
 	slots.connect(sig_paint(), this, &MapGrid::on_paint);
@@ -46,8 +46,8 @@ void MapGrid::on_paint()
 {
 	int mgScrollX, mgScrollY;
 
-	mgScrollX = mgScrollHorz->get_value();
-	mgScrollY = mgScrollVert->get_value();
+	mgScrollX = mgScrollHorz->get_value()*32;
+	mgScrollY = mgScrollVert->get_value()*32;
 
 
 	//component background color
