@@ -745,7 +745,7 @@ namespace StoneRing{
 	    CL_DomDocument * mpDocument;
 
 	    std::string mMusic;
-
+	    std::string mName;
 	    uint mLevelWidth;
 	    uint mLevelHeight;
 	};

@@ -12,7 +12,7 @@
 	<string name="StartLevel" value="examplelevel" />
  </section>
  <section name="Levels">
- 	<string name="examplelevel" value="testlevel.xml" />
+ 	<string name="examplelevel" value="foo.xml" />
 </section>
  <section name="Tilemaps">
  	<surface name = "wall1" file="Tiles/walls1.png"/>
