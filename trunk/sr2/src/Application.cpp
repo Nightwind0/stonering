@@ -81,7 +81,7 @@ CL_Rect Application::getLevelRect() const
 
 CL_Rect Application::getDisplayRect() const
 {
-    return CL_Rect(0,0,mpLevel->getWidth() * 32, mpLevel->getHeight() * 32);
+    return CL_Rect(40,40,mpLevel->getWidth() * 32, mpLevel->getHeight() * 32);
 
 }
 
@@ -259,13 +259,14 @@ int Application::main(int argc, char ** argv)
 	    //CL_Rect dst(mCurX, mCurY, mCurX + mpLevel->getWidth() * 32, mCurY + mpLevel->getHeight()*32);
 	    CL_Rect dst(0,0, min(WINDOW_WIDTH, (const int)mpLevel->getWidth()*32),min(WINDOW_HEIGHT, (const int)mpLevel->getHeight() * 32));
 	    // CL_Rect src(0,0,mpLevel->getWidth() * 32, mpLevel->getHeight() * 32);
-	    CL_Rect src = dst;
+	    CL_Rect src(mCurX,mCurY,mCurX + dst.get_width(), mCurY +dst.get_height());
 
+//	    CL_Rect src = dst;
 	    mpWindow->get_gc()->push_cliprect( dst);
 
 	    mpLevel->draw(src,dst, mpWindow->get_gc(), false);
 
-	    mpWindow->get_gc()->draw_rect( CL_Rect(mCurX,mCurY,mCurX+32,mCurY+32), CL_Color::aqua ) ;
+//	    mpWindow->get_gc()->draw_rect( CL_Rect(mCurX,mCurY,mCurX+32,mCurY+32), CL_Color::aqua ) ;
 	    mpLevel->drawMappableObjects( src,dst, mpWindow->get_gc());
 	    mpLevel->drawFloaters(src,dst, mpWindow->get_gc());
 

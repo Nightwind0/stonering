@@ -2864,8 +2864,8 @@ void Level::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_Graph
 	i++)
     {
 	CL_Rect moRect = (*i)->getRect();
-	CL_Rect dstRect( moRect.left + dst.left, moRect.top + dst.top,
-			 moRect.left + dst.left + moRect.get_width(), moRect.top + dst.top + moRect.get_height());
+	CL_Rect dstRect( moRect.left - src.left + dst.left, moRect.top + dst.top - src.top,
+			 moRect.left - src.left + dst.left +moRect.get_width(), moRect.top - src.top + dst.top + moRect.get_height());
 	if( ! src.is_overlapped ( moRect ) )
 	{
 	    // This MO was outside our field of vision, so we stop iterating.
