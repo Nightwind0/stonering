@@ -155,7 +155,7 @@ void Application::onSignalKeyDown(const CL_InputEvent &key)
 
     case CL_KEY_T:
 
-	document.append_child ( *mpLevel->createDomElement(document) );
+	document.append_child ( mpLevel->createDomElement(document) );
 
 	delete mpLevel;
 
@@ -168,7 +168,7 @@ void Application::onSignalKeyDown(const CL_InputEvent &key)
 
     case CL_KEY_W:
 
-	document.append_child ( *mpLevel->createDomElement(document) );
+	document.append_child ( mpLevel->createDomElement(document) );
 
 	document.save( new CL_OutputSource_File( "foo.xml") , true, true );
 
