@@ -38,7 +38,8 @@ int tileY = 1;
 	list<string> tilemapnames = tsResources->get_all_resources("Tilemaps");
 	
 	//cur_tileset_lable = new CL_Label(CL_Point(20, 10), "X", this);
-	cur_tileset = new CL_Surface(*tilemapnames.begin(), tsResources);//*tilemaps.begin();
+	tsMapName = *tilemapnames.begin();
+	cur_tileset = new CL_Surface(tsMapName, tsResources);//*tilemaps.begin();
 
 	scrollVert->set_min_value(0);
 	scrollHorz->set_min_value(0);

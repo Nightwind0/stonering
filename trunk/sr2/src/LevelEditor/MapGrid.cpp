@@ -80,8 +80,26 @@ void MapGrid::on_placeTile(const CL_InputEvent &event)
 
 		cout << "(" << mgX << "," << mgY << ")" << endl;
 
-		//EditableTile pTile;
+		EditableTile *pTile = new EditableTile();
 		cout << TS->get_tsMapName() << endl;
-		//pTile.setTilemap(TS->get_tsMapName(), TS->get_tsX(), TS->get_tsY());
+		pTile->setTilemap(TS->get_tsMapName(), TS->get_tsX(), TS->get_tsY());
+
+		int ZOrder = -1;
+		std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
+		for( std::list<Tile*>::iterator iter = TileList.begin(); iter != TileList.end(); iter++)
+		{
+
+			 if( (*iter)->getZOrder() > ZOrder) 
+				 ZOrder = (*iter)->getZOrder();
+
+		}
+		ZOrder++;
+
+		pTile->setZOrder( ZOrder );
+		pTile->setLevelX ( mgX );
+		pTile->setLevelY ( mgY );
+
+		mgLevel->addTile( pTile );
+
 	}
 }

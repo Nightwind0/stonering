@@ -27,7 +27,7 @@ public:
 
 		int get_tsX() {return tsX;}
 		int get_tsY() {return tsY;}
-		string get_tsMapName() {return tsMapName;}
+		string get_tsMapName() {return tsMapName.substr(tsMapName.rfind('/')+1, tsMapName.length()-1);}
 
 private:
 
