@@ -2220,7 +2220,10 @@ bool Level::canMove(const CL_Rect &currently, const CL_Rect & destination, bool 
 		iter++)
 	    {
 		// Blocked
-		if( oppositeDir & (*iter)->getDirectionBlock()) return false;
+
+
+
+		if( movementDir & (*iter)->getDirectionBlock()) return false;
 	    }
 
 
@@ -2231,9 +2234,10 @@ bool Level::canMove(const CL_Rect &currently, const CL_Rect & destination, bool 
 		    iter != mTileMap[np.x][np.y].end();
 		    iter++)
 		{
-		    
-		   // Blocked
-		   if( movementDir & (*iter)->getDirectionBlock()) return false;
+
+
+		    // Blocked
+		   if( oppositeDir & (*iter)->getDirectionBlock()) return false;
 
 		   if( noHot && (*iter)->isHot()) return false;
 	       }
@@ -2271,7 +2275,7 @@ bool Level::canMove(const CL_Rect &currently, const CL_Rect & destination, bool 
 		{
 
 		   // Blocked
-		    if( oppositeDir & (*iter)->getDirectionBlock()) return false;
+		    if( movementDir & (*iter)->getDirectionBlock()) return false;
 		}
 		
 
@@ -2288,7 +2292,7 @@ bool Level::canMove(const CL_Rect &currently, const CL_Rect & destination, bool 
 		    
 
 		    // Blocked
-		    if( movementDir & (*iter)->getDirectionBlock()) return false;
+		    if( oppositeDir & (*iter)->getDirectionBlock()) return false;
 
 		    if( noHot && (*iter)->isHot()) return false;
 		}

@@ -1426,7 +1426,7 @@
 		</tile>
 		<tile name="2" xpos="5" ypos="5" zorder="1">
 			<tilemap mapname="wall1" mapx="4" mapy="1"/>
-			<directionBlock east="true" north="false" south="true" west="true"/>
+			<directionBlock east="false" north="false" south="true" west="true"/>
 		</tile>
 		<tile name="5" xpos="1" ypos="1" hot="true">
 			<!-- Here's an animated sprite tile instead of a regular tile -->

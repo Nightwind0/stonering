@@ -21,6 +21,22 @@ PKG_CHECK_MODULES(CLANLIB, clanCore-0.7 clanApp-0.7 clanDisplay-0.7 clanGL-0.7 c
 AC_SUBST(CLANLIB_LIBS) 
 AC_SUBST(CLANLIB_CFLAGS)
 
+
+# Check for debug or release
+AC_ARG_WITH(debug,[--with-debug=true enables debug build],
+				     [debugmode=$withval],	
+				     [debugmode=false]
+)
+
+case $debugmode in
+     true)
+     CPPFLAGS="-g -O0 -DDEBUG" ;;
+     false | *)
+     CPPFLAGS="-DNDEBUG -O2" ;;
+esac
+
+
+				     
 # Checks for header files.
 
 # Checks for typedefs, structures, and compiler characteristics.
