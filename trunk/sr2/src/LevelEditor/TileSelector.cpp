@@ -9,6 +9,9 @@ TileSelector::TileSelector(CL_Rect setrect, CL_Component *parent, CL_ResourceMan
 //, TileSet tileset
 // tileset(tileset),
 
+	tsX = 0;
+	tsY = 0;
+
 	set_position(TSrect.left, TSrect.top);
 	set_size(TSrect.get_width(), TSrect.get_height());
 
@@ -34,7 +37,7 @@ int tileY = 1;
 
 	list<string> tilemapnames = tsResources->get_all_resources("Tilemaps");
 	
-//	cur_tileset_lable = new CL_Label(CL_Point(20, 10), tilemapnames.front(), this);
+	//cur_tileset_lable = new CL_Label(CL_Point(20, 10), "X", this);
 	cur_tileset = new CL_Surface(*tilemapnames.begin(), tsResources);//*tilemaps.begin();
 
 	scrollVert->set_min_value(0);
@@ -44,6 +47,7 @@ int tileY = 1;
 	scrollHorz->set_max_value((cur_tileset->get_width()/32)-6);
 
 	slots.connect(sig_paint(), this, &TileSelector::on_paint);
+	slots.connect(sig_mouse_up(), this, &TileSelector::on_select);
 
 }
 
@@ -56,15 +60,18 @@ TileSelector::~TileSelector()
 
 void TileSelector::on_paint()
 {
-
 	
 	//component background color
 	CL_Display::fill_rect(CL_Rect(0, 0, get_width() - scrollVert->get_width(), get_height() - scrollHorz->get_height()), CL_Color::white);
 	//component border color
 	CL_Display::draw_rect(CL_Rect(0, 0, get_width() - scrollVert->get_width()+1, get_height() - scrollHorz->get_height()+1), CL_Color::grey);
 
-	//cur_tileset->draw(*SRCrect, *DSTrect);//20,20);//
+	//this rect shows which tile is selected.
+	CL_Display::draw_rect(CL_Rect((tsX-scrollHorz->get_value())*32,(tsY-scrollVert->get_value())*32,(tsX-scrollHorz->get_value())*32+33,(tsY-scrollVert->get_value())*32+33), CL_Color::blue);
+
 	draw();
+
+  
 }
 
 void TileSelector::changeTS(string text)
@@ -102,4 +109,24 @@ void TileSelector::draw()
 
 
 }
+
+void TileSelector::on_select(const CL_InputEvent &event)
+{
+	int clickX, clickY;
+
+	clickX = event.mouse_pos.x;
+	clickY = event.mouse_pos.y;
+
+	if(clickX <160 && clickY<352)
+	{
+		tsX = (clickX/33) + scrollHorz->get_value();
+		tsY = (clickY/33) + scrollVert->get_value();
+
+		//cout << tsX << endl;
+
+
+
+	}
+}
+
 
