@@ -29,6 +29,12 @@ class ItemRef;
     virtual uint getWidth() const;
     virtual uint getHeight() const;
 
+    virtual void doEvent(const std::string &event);
+    virtual void giveItem(ItemRef * pItemRef);
+    virtual void takeItem(ItemRef * pItemRef);
+    virtual void giveGold(int amount);
+    virtual void modifyAttribute(const std::string &attribute, int add, const std::string &target);
+
     void setLevelX(uint x);
     void setLevelY(uint y);
     
