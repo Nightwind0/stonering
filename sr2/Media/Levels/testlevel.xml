@@ -29,8 +29,21 @@
 					<hasItem not="true">
 						<itemRef itemType="special">AsbestosFeet</itemRef>
 					</hasItem>
-					<hasGold operator = "gte">3</hasGold>
-						
+				
+				</condition>
+			</attributeModifier>
+	
+		</tile>
+		<tile name="5" xpos="1" ypos="0">
+			<!-- Here's an animated sprite tile instead of a regular tile -->
+			<spriteRef>tiles/Lava</spriteRef>
+			<!-- Your primary character loses 10 hp for stepping here -->
+			<attributeModifier add="-10" attribute="HP" target="primary">
+				<condition>
+					<hasItem not="true">
+						<itemRef itemType="special">AsbestosFeet</itemRef>
+					</hasItem>
+				
 				</condition>
 			</attributeModifier>
 	
@@ -80,10 +93,10 @@
 	</tiles>
 	<mappableObjects>
 	
-		<mo name="Dog" type="npc" xpos="2" ypos="0">
-			<!-- spriteRef>animals/Dog1</spriteRef -->
-			<event name="DogBark" triggerType="talk">
-				<say speaker="Dog">Woof!</say>
+		<mo name="Cat" type="npc" xpos="2" ypos="0">
+			<spriteRef>Animals/Cat1</spriteRef>
+			<event name="CatMeow" triggerType="talk">
+				<say speaker="Cat">Meow</say>
 			</event>
 			<directionBlock east="true" north="true" south="true" west="true"/>
 		</mo>
