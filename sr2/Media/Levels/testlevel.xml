@@ -1469,12 +1469,12 @@
 	</tiles>
 	<mappableObjects>
 		
-		<mo name="Cat" type="npc" xpos="24" ypos="0" size="small" solid="true">
-			<spriteRef direction="still">tiles/Lava</spriteRef>
-			<spriteRef direction="east">tiles/Lava</spriteRef>
-			<spriteRef direction="west">tiles/Lava</spriteRef>
-			<spriteRef direction="north">tiles/Lava</spriteRef>
-			<spriteRef direction="south">tiles/Lava</spriteRef>
+		<mo name="Cat" type="npc" xpos="9" ypos="4" size="small" solid="true">
+			<spriteRef direction="still">Animals/Cat1s</spriteRef>
+			<spriteRef direction="east">Animals/Cat1e</spriteRef>
+			<spriteRef direction="west">Animals/Cat1w</spriteRef>
+			<spriteRef direction="north">Animals/Cat1n</spriteRef>
+			<spriteRef direction="south">Animals/Cat1s</spriteRef>
 			<event name="CatMeow" triggerType="talk">
 				<playSound>Meow</playSound>
 				<say speaker="Cat">Meow</say>

@@ -39,21 +39,21 @@
 			<animation speed="500" loop="yes"/>
 		</sprite>
 		<sprite name = "Cat1n" hint="alpha">
-			<image file = "Sprites/cat1.png">
+			<image file = "Sprites/cat1_n.png">
 				<grid pos="0,0" size="32,32" array="2,1">
 				</grid>
 			</image>
 			<animation speed="500" loop="yes"/>
 		</sprite>
 		<sprite name = "Cat1e" hint="alpha">
-			<image file = "Sprites/cat1.png">
+			<image file = "Sprites/cat1_e.png">
 				<grid pos="0,0" size="32,32" array="2,1">
 				</grid>
 			</image>
 			<animation speed="500" loop="yes"/>
 		</sprite>
 		<sprite name = "Cat1w" hint="alpha">
-			<image file = "Sprites/cat1.png">
+			<image file = "Sprites/cat1_w.png">
 				<grid pos="0,0" size="32,32" array="2,1">
 				</grid>
 			</image>
