@@ -32,6 +32,39 @@ bool operator < (const CL_Point &p1, const CL_Point &p2)
 
 ItemRef::ItemRef(CL_DomElement *pElement )
 {
+	CL_DomNamedNodeMap attributes = pElement->get_attributes();
+
+	if(attributes.get_length() < 1) throw CL_Error("Error reading attributes in itemRef.");
+
+
+	std::string itemtype;
+	itemtype = attributes.get_named_item("itemType").get_node_value();
+
+	if(itemtype == "item")
+	{
+		meType = Item::ITEM;
+	}
+	else if(itemtype == "weapon")
+	{
+		meType = Item::WEAPON;
+	}
+	else if(itemtype == "armor")
+	{
+		meType = Item::ARMOR;
+	}
+	else if(itemtype == "rune")
+	{
+		meType = Item::RUNE;
+	}
+	else if(itemtype == "special")
+	{
+		meType = Item::SPECIAL;
+	}
+	else throw CL_Error("Bad item type in itemref");
+
+	mItem = pElement->get_text();
+
+	
 }
 
 ItemRef::~ItemRef()
@@ -40,16 +73,29 @@ ItemRef::~ItemRef()
 
 std::string ItemRef::getItemName()
 {
-	return "FUZZBALL";
+	return mItem;
 }
  
 Item::eItemType ItemRef::getItemType()
 {
+	return meType;
 }
 
  
 Tilemap::Tilemap(CL_DomElement *pElement)
 {
+	
+	
+	CL_DomNamedNodeMap attributes = pElement->get_attributes();
+	
+	if(attributes.get_length() < 3) throw CL_Error("Error reading attributes in tilemap");
+	
+
+	mMapName = attributes.get_named_item("mapname").get_node_value();
+	mX = atoi ( attributes.get_named_item("mapx").get_node_value().c_str());
+	mY = atoi ( attributes.get_named_item("mapy").get_node_value().c_str());
+
+
 }
  
 Tilemap::~Tilemap()
@@ -58,19 +104,23 @@ Tilemap::~Tilemap()
       
 ushort Tilemap::getMapX() const
 {
+	return mX;
 }
 
 ushort Tilemap::getMapY() const
 {
+	return mY;
 }
 
 std::string Tilemap::getMapName() const
 {
+	return mMapName;
 }
 
 
 SpriteRef::SpriteRef( CL_DomElement *pElement)
 {
+	mRef = pElement->get_text();
 }
 
 SpriteRef::~SpriteRef()
@@ -79,6 +129,7 @@ SpriteRef::~SpriteRef()
 
 std::string SpriteRef::getRef() const
 {
+	return mRef;
 }
 
  
@@ -136,6 +187,13 @@ AttributeModifier::~AttributeModifier()
 
 void AttributeModifier::invoke()
 {
+	for( std::list<Condition*>::iterator i = mConditions.begin();
+	     i != mConditions.end();
+	     i++)
+	{
+		Condition * condition = *i;
+		if( ! condition->evaluate() ) return;
+	}
 	// Party->modifyAttribute( blah blah blah ) ;
 }
 
@@ -540,28 +598,158 @@ bool Condition::evaluate() const
 
 
 
-Event::Event(CL_DomElement *pElement)
+Event::Event(CL_DomElement *pElement):mbRepeatable(true)
 {
+
+
+	
+	std::cout << "READING AN EVENT." << std::endl;
+
+	CL_DomNamedNodeMap attributes = pElement->get_attributes();
+
+	if(attributes.get_length() < 2) throw CL_Error("Error reading attributes in event");
+
+
+	mName = attributes.get_named_item("name").get_node_value();
+	std::string triggertype = attributes.get_named_item("triggerType").get_node_value();
+
+
+	if(triggertype == "step")
+		meTriggerType = STEP;
+	else if (triggertype == "talk")
+		meTriggerType = TALK;
+	else if (triggertype == "act")
+		meTriggerType = ACT;
+
+
+	
+	if(!attributes.get_named_item("repeatable").is_null())
+	{
+		mbRepeatable = ( attributes.get_named_item("repeatable").get_node_value() == "true")?true:false;
+	}
+
+
+
+	CL_DomElement child = pElement->get_first_child().to_element();
+
+	while( !child.is_null() )
+	{
+		if( child.get_node_name() == "condition" )
+		{
+			mpCondition = new Condition ( &child );
+			
+		}
+		else if (child.get_node_name() == "attributeModifier" )
+		{
+			mActions.push_back ( new AttributeModifier (&child ));
+
+		}
+		else if (child.get_node_name() == "say" )
+		{
+			mActions.push_back ( new Say (&child ));
+
+		}
+		else if (child.get_node_name() == "give" )
+		{
+			mActions.push_back ( new Give (&child ));
+
+		}
+		else if (child.get_node_name() == "take" )
+		{
+			mActions.push_back ( new Take (&child ));
+
+		}
+		else if (child.get_node_name() == "giveGold" )
+		{
+			mActions.push_back ( new GiveGold (&child ));
+
+		}
+		else if (child.get_node_name() == "playAnimation" )
+		{
+			mActions.push_back ( new PlayAnimation (&child ));
+
+		}
+		else if (child.get_node_name() == "playSound" )
+		{
+			mActions.push_back ( new PlaySound (&child ));
+
+		}
+		else if (child.get_node_name() == "loadLevel" )
+		{
+			mActions.push_back ( new LoadLevel (&child ));
+
+		}
+		else if (child.get_node_name() == "startBattle" )
+		{
+			mActions.push_back ( new StartBattle (&child ));
+
+		}
+		else if (child.get_node_name() == "pause" )
+		{
+			mActions.push_back ( new Pause (&child ));
+
+		}
+		else if (child.get_node_name() == "invokeShop" )
+		{
+			mActions.push_back ( new InvokeShop (&child ));
+
+		}
+
+
+
+		child = child.get_next_sibling().to_element();
+	}
+
+
+
+
+
+
+
 }
 
 Event::~Event()
 {
+	for(std::list<Action*>::iterator i = mActions.begin();
+	    i != mActions.end();
+	    i++)
+	{
+		delete *i;
+	}
 }
 
 std::string Event::getName() const
 {
+	return mName;
 }
 
 Event::eTriggerType Event::getTriggerType()
 {
+	return meTriggerType;
 }
 
 bool Event::repeatable()
 {
+	return mbRepeatable;
 }
  
 bool Event::invoke()
 {
+
+	if(! mpCondition->evaluate() ) return false;
+
+	// Party->doEvent ( mName );
+
+	for(std::list<Action*>::iterator i = mActions.begin();
+	    i != mActions.end();
+	    i++)
+	{
+		Action *action = *i;
+
+		action->invoke();
+	}
+
+	return true;
 }
       
 
@@ -1021,29 +1209,114 @@ bool Tile::isTile() const
 
  
  
-MappableObject::MappableObject(CL_DomElement *pElement)
+MappableObject::MappableObject(CL_DomElement *pElement):meMovementType(MOVEMENT_NONE),mpSprite(NULL)
 {
+
+	std::cout << "READING A MO." << std::endl;
+
+	CL_DomNamedNodeMap attributes = pElement->get_attributes();
+
+	if(attributes.get_length() < 4) throw CL_Error("Error reading attributes in MO");
+
+	mName = attributes.get_named_item("name").get_node_value();
+	
+	std::string motype = attributes.get_named_item("type").get_node_value();
+
+	if(motype == "npc") meType = NPC;
+	else if (motype == "square") meType = SQUARE;
+	else if (motype == "container") meType = CONTAINER;
+	else if (motype == "door") meType = DOOR;
+	else if (motype == "warp") meType = WARP;
+
+
+	mStartX = atoi(attributes.get_named_item("xpos").get_node_value().c_str());
+	mStartY = atoi(attributes.get_named_item("ypos").get_node_value().c_str());
+
+	
+	if(!attributes.get_named_item("movementType").is_null())
+	{
+		std::string movetype = attributes.get_named_item("movementType").get_node_value();
+
+		if(movetype == "wander") meMovementType = MOVEMENT_WANDER;
+		else meMovementType = MOVEMENT_NONE;
+		
+	}
+
+
+
+	CL_DomElement child = pElement->get_first_child().to_element();
+
+	while( !child.is_null() )
+	{
+		if( child.get_node_name() == "tilemap" )
+		{
+			mGraphic.asTilemap = new Tilemap( &child );
+			
+		}
+		else if (child.get_node_name() == "spriteRef" )
+		{
+			mGraphic.asSpriteRef = new SpriteRef ( &child );
+			cFlags |= SPRITE;
+
+		        // Actually create the ref'd sprite here.
+			// And assign to mpSprite
+
+		}
+		else if (child.get_node_name() == "event" )
+		{
+			mEvents.push_back ( new Event ( &child ) );
+		}
+		else if ( child.get_node_name() == "directionBlock" )
+		{
+			DirectionBlock block(&child);
+
+			eDirectionBlock db = block.getDirectionBlock();
+
+			// This is all done to make tile's take up less space in memory
+
+			if(db & DIR_NORTH)
+				cFlags |= BLK_NORTH;
+			if(db & DIR_SOUTH)
+				cFlags |= BLK_SOUTH;
+			if(db & DIR_EAST)
+				cFlags |= BLK_EAST;
+			if(db & DIR_WEST)
+				cFlags |= BLK_WEST;
+			
+		}
+
+		child = child.get_next_sibling().to_element();
+	}
+
+	
 }
 
 MappableObject::~MappableObject()
 {
+	for( std::list<Event*>::iterator i = mEvents.begin();
+	     i != mEvents.end();
+	     i++)
+	{
+		delete *i;
+	}
+	     
 }
 
 ushort MappableObject::getStartX() const
 {
-	return 0;
+	return mStartX;
 }
 
 ushort MappableObject::getStartY() const
 {
-	return 0;
+	return mStartY;
 }
 
 
 
 MappableObject::eMovementType MappableObject::getMovementType() const
 {
-	return MOVEMENT_NONE;
+	return meMovementType;
 }
 
 
@@ -1051,34 +1324,55 @@ MappableObject::eMovementType MappableObject::getMovementType() const
 
 std::string MappableObject::getName() const
 {
+	return mName;
 }
 
 uint MappableObject::getX() const
 {
+	return mX;
 }
 
 uint MappableObject::getY() const
 {
+	return mY;
 }
 
 CL_Rect MappableObject::getRect()
 {
+	return CL_Rect(mX, mY, mX+ 32, mY + 32);
 }
 
 bool MappableObject::isSprite() const
 {
+	return cFlags & SPRITE;
 }
 
 void MappableObject::draw(uint targetX, uint targetY, CL_GraphicContext *pGC)
 {
+	
 }
 
 void MappableObject::update()
 {
+	if(mpSprite)
+	mpSprite->update();
 }
 
 int MappableObject::getDirectionBlock() const
 {
+	int block = 0;
+
+	if( cFlags & BLK_NORTH)
+		block |= DIR_NORTH;
+	if( cFlags & BLK_SOUTH)
+		block |= DIR_SOUTH;
+	if( cFlags & BLK_EAST)
+		block |= DIR_EAST;
+	if( cFlags & BLK_WEST)
+		block |= DIR_WEST;
+
+	return block;
+
 }
 
 bool MappableObject::isTile() const
@@ -1088,6 +1382,30 @@ bool MappableObject::isTile() const
 
 
 
+
+void MappableObject::provokeEvents ( Event::eTriggerType trigger )
+{
+	Party *party = Party::getInstance();
+
+	for(std::list<Event*>::iterator i = mEvents.begin();
+	    i != mEvents.end();
+	    i++)
+	{
+		Event * event = *i;
+		
+		// If this is the correct trigger,
+		// And the event is either repeatable or
+		// Hasn't been done yet, invoke it
+
+		if( event->getTriggerType() == trigger 
+		    && (event->repeatable() || ! party->didEvent ( event->getName() ))
+			)
+		{
+			event->invoke();
+		}
+
+	}
+}
 
 
 Level::Level(const std::string &name,CL_ResourceManager * pResources): mpDocument(NULL)
@@ -1237,7 +1555,7 @@ void Level::LoadLevel( const std::string & filename  )
 	{
 		mocount++;
 
-		// loadMo ( &currentMo );
+		loadMo ( &currentMo );
 
 		currentMo = currentMo.get_next_sibling().to_element();
 
@@ -1246,6 +1564,14 @@ void Level::LoadLevel( const std::string & filename  )
 
 	std:: cout << "FOUND " << mocount << " MAPPABLE OBJECTS" << std::endl;
 
+
+}
+
+void Level::loadMo ( CL_DomElement * moElement )
+{
+	MappableObject * mo = new MappableObject ( moElement );
+
+	mMappableObjects.push_back( mo );
 
 }
 

@@ -89,7 +89,7 @@ namespace StoneRing {
 
 
     private:
-      std::string mMapname;
+      std::string mMapName;
       ushort mX;
       ushort mY;
     };
@@ -487,21 +487,23 @@ namespace StoneRing {
 
       virtual bool isTile() const;
 
-
+      void provokeEvents ( Event::eTriggerType trigger );
 
     private:
 
       enum eFlags { SPRITE = 1, BLK_NORTH = 2, BLK_SOUTH = 4, BLK_EAST = 8, BLK_WEST = 16 };
 
+      std::string mName;
       CL_Sprite *mpSprite;
       SpriteRefOrTilemap mGraphic;
-      Event * mpEvent;
+      std::list<Event*> mEvents;
       
       ushort mStartX;
       ushort mStartY;
       uint mX;
       uint mY;
       eMovementType meMovementType;
+      eMappableObjectType meType;
 
       char cFlags;
       
@@ -550,6 +552,7 @@ namespace StoneRing {
       void LoadLevel( const std::string &filename );
 
       void loadTile ( CL_DomElement * tileElement);
+      void loadMo ( CL_DomElement * moElement );
 
       CL_ResourceManager * mpResources;
       CL_DomDocument * mpDocument;

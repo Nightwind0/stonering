@@ -24,7 +24,7 @@
 			<attributeModifier add="-10" attribute="HP" target="primary">
 				<condition>
 					<hasItem not="true">
-						<itemRef itemType="Special">AsbestosFeet</itemRef>
+						<itemRef itemType="special">AsbestosFeet</itemRef>
 					</hasItem>
 					<hasGold operator = "gte">3</hasGold>
 						
@@ -70,7 +70,7 @@
 				<loadLevel name="ocataviaInn" startx="4" starty="3"/>
 			</event>
 		</mo>
-		<mo name="Action" type="event" xpos="2" ypos="0">
+		<mo name="Action" type="square" xpos="2" ypos="0">
 			<!-- When you step on this square, -->
 			<event name="mordusDances" triggerType="step">
 			
@@ -83,7 +83,7 @@
 								<or>
 									<hasGold operator="gte">50000</hasGold>
 									<hasItem>
-										<itemRef itemType="Weapon">GoldenStaff</itemRef>
+										<itemRef itemType="weapon">GoldenStaff</itemRef>
 									</hasItem>
 								</or>
 							</operator>
