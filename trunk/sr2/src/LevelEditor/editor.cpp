@@ -3,12 +3,14 @@
 
 #include "editor.h"
 #include "IApplication.h"
+#include "EditableLevel.h"
 
 using namespace StoneRing;
 
 EditorMain::EditorMain()
 {
 	mpParty = new EditorParty();
+	mpLevelFactory = new EditableLevelFactory();
 	instance = this;
 }
 
@@ -39,7 +41,11 @@ StoneRing::IParty * EditorMain::getParty() const
 {
 	return mpParty;
 }
-      
+
+LevelFactory * EditorMain::getLevelFactory() const
+{
+    return mpLevelFactory;
+}
 		
 int EditorMain::getScreenWidth()const
 {

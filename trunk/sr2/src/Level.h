@@ -694,6 +694,7 @@ namespace StoneRing{
 	public:
 	    Level();
 	    Level(const std::string &name,CL_ResourceManager * pResources);
+	    Level(CL_DomDocument &document);
 	    virtual ~Level();
       
 	    void load ( CL_DomDocument &document);

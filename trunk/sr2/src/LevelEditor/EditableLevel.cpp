@@ -16,13 +16,45 @@ typedef unsigned short ushort;
 using namespace StoneRing;
 
 
-
-EditableTilemap::EditableTilemap(const std::string &mapname, uint x, uint y)
+Tile * EditableLevelFactory::createTile() const
 {
-    mpSurface = GraphicsManager::getInstance()->getTileMap( mapname );
-    mX = x;
-    mY = y;
+    return new EditableTile();
 }
+
+Tile * EditableLevelFactory::createTile(CL_DomElement *pElement)const
+{
+    return new EditableTile(pElement);
+}
+
+/*MappableObject * EditableLevelFactory::createMappableObject() const
+{
+    return new EditableMappableObject();
+}
+MappableObject * EditableLevelFactory::createMappableObject(CL_DomElement *pElement) const
+{
+    return new EditableMappableObject(pElement);
+}
+*/
+Tilemap * EditableLevelFactory::createTilemap() const
+{
+    return new EditableTilemap();
+}
+Tilemap * EditableLevelFactory::createTilemap(CL_DomElement *pElement) const
+{
+    return new EditableTilemap( pElement );
+}
+SpriteRef * EditableLevelFactory::createSpriteRef() const
+{
+    return new EditableSpriteRef();
+}
+
+SpriteRef * EditableLevelFactory::createSpriteRef(CL_DomElement * pElement) const
+{
+    return new EditableSpriteRef(pElement );
+}
+
+
+
 EditableTilemap::EditableTilemap(CL_DomElement *pElement):Tilemap(pElement)
 {
 }
@@ -32,12 +64,21 @@ EditableTilemap::~EditableTilemap()
     
 }
 
-
-EditableSpriteRef::EditableSpriteRef( const std::string &ref, StoneRing::SpriteRef::eDirection dir )
+void EditableTilemap::setMapName(const std::string & mapname)
 {
-    mRef = ref;
-    meDirection = dir;
+    mpSurface = GraphicsManager::getInstance()->getTileMap(mapname); 
 }
+void EditableTilemap::setMapX(int x)
+{
+    mX = x;
+}
+void EditableTilemap::setMapY(int y)
+{
+    mY = y;
+}
+
+
+
 EditableSpriteRef::EditableSpriteRef(CL_DomElement * pElement ):SpriteRef(pElement)
 {
 }
@@ -46,6 +87,15 @@ EditableSpriteRef::~EditableSpriteRef()
 {
 }
 
+void EditableSpriteRef::setSpriteRef( const std::string &ref)
+{
+    mRef = ref;
+}
+
+void EditableSpriteRef::setDirection( StoneRing::SpriteRef::eDirection dir)
+{
+    meDirection = dir;
+}
 
 
 EditableTile::EditableTile()
@@ -80,13 +130,21 @@ void EditableTile::setZOrder(int z)
 void EditableTile::setTilemap( const std::string &mapname, uint mapX, uint mapY)
 {
     // TODO: Factory method...
-    mGraphic.asTilemap = new EditableTilemap( mapname,mapX,mapY );   
+    mGraphic.asTilemap = new EditableTilemap();   
+
+    ((EditableTilemap*)mGraphic.asTilemap)->setMapName(mapname);
+    ((EditableTilemap*)mGraphic.asTilemap)->setMapX(mapX);
+    ((EditableTilemap*)mGraphic.asTilemap)->setMapY(mapY);
+
 }
 
 void EditableTile::setSpriteRef ( const std::string &spriteRef, StoneRing::SpriteRef::eDirection direction )
 {
     GraphicsManager * GM = GraphicsManager::getInstance();
-    mGraphic.asSpriteRef = new EditableSpriteRef (spriteRef, direction   );
+    mGraphic.asSpriteRef = new EditableSpriteRef ();
+
+    ((EditableSpriteRef*)mGraphic.asSpriteRef)->setSpriteRef ( spriteRef );
+    ((EditableSpriteRef*)mGraphic.asSpriteRef)->setDirection( direction );
 }
 
 
@@ -114,50 +172,7 @@ void EditableTile::setDirectionBlock (int dirBlock )
     
 
 
-void EditableLevel::loadTile ( CL_DomElement * tileElement)
-{
 
-    CL_Point point;
-
-
-
-    // TODO: We need a factory which we get from IApplication,
-    // and then we call pFactory->createTile ( tileElement );
-    // and it could give us back a Tile, or an EditableTile
-    // Then we wouldn't have to overload this method at all
-
-    EditableTile * tile = new EditableTile ( tileElement );
-
-    point.x = tile->getX();
-    point.y = tile->getY();
-	
-    if( tile->isFloater() )
-    {
-	std::cout << "Placing floater at: " << point.x << ',' << point.y << std::endl;
-
-	mFloaterMap[ point ].push_back ( tile );
-
-#ifndef _MSC_VER
-	mFloaterMap[ point ].sort( &tileSortCriterion );
-#else
-	mFloaterMap[ point ].sort( std::greater<Tile*>() );
-#endif
-    }
-    else
-    {
-
-
-		
-	mTileMap[ point.x ][point.y].push_back ( tile );
-
-	// Sort by ZOrder, so that they display correctly
-#ifndef _MSC_VER
-	mTileMap[ point.x ][point.y].sort( &tileSortCriterion );
-#else
-	mTileMap[ point.x ][point.y].sort(std::greater<Tile*>() );
-#endif
-    }
-}
 
 EditableLevel::EditableLevel(const std::string &name,CL_ResourceManager * pResources):Level(name,pResources)
 {
