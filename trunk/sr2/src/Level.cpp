@@ -1595,8 +1595,9 @@ void Level::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC,
 void Level::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC)
 {
 	// This brings the close MOs to the top
+	// moSortCriterion queries the party to see where they are at.
 	mMappableObjects.sort( moSortCriterion );
-	CL_Point center( src.get_width() / 2, src.get_height() /2);
+
 
 	for(std::list<MappableObject*>::iterator i = mMappableObjects.begin();
 	    i != mMappableObjects.end();
