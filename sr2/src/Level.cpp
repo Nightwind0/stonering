@@ -329,6 +329,8 @@ CL_DomElement  AttributeModifier::createDomElement(CL_DomDocument &doc) const
  
 AttributeModifier::AttributeModifier (CL_DomElement *pElement)
 {
+    LevelFactory * factory = IApplication::getInstance()->getLevelFactory();
+
     std::cout << "READING AN A.M." << std::endl;
 	
     CL_DomNamedNodeMap attributes = pElement->get_attributes();
@@ -353,7 +355,7 @@ AttributeModifier::AttributeModifier (CL_DomElement *pElement)
     {
 	if( child.get_node_name() == "condition" )
 	{
-	    mConditions.push_back(new Condition( &child ));
+	    mConditions.push_back(factory->createCondition( &child ));
 			
 	}
 	else throw CL_Error( "Bad element in an A.M." );
@@ -548,6 +550,8 @@ CL_DomElement  HasItem::createDomElement(CL_DomDocument &doc) const
  
 HasItem::HasItem(CL_DomElement *pElement ):mpItemRef(NULL)
 {
+    LevelFactory * factory = IApplication::getInstance()->getLevelFactory();
+
 
     CL_DomNamedNodeMap attributes = pElement->get_attributes();
 
@@ -576,7 +580,7 @@ HasItem::HasItem(CL_DomElement *pElement ):mpItemRef(NULL)
     if(itemRefElement.is_null()) throw CL_Error("hasItem missing itemRef");
 
 
-    mpItemRef = new ItemRef ( &itemRefElement );
+    mpItemRef = factory->createItemRef ( &itemRefElement );
 
     if(mbNot) std::cout << "(NOT)";
 
@@ -684,7 +688,7 @@ CL_DomElement  And::createDomElement(CL_DomDocument &doc) const
 And::And(CL_DomElement * pElement)
 {
 //	<!ELEMENT and ((hasGold|hasItem|didEvent|operator)*)>
-
+    LevelFactory * factory = IApplication::getInstance()->getLevelFactory();
 
     CL_DomElement child = pElement->get_first_child().to_element();
 
@@ -697,19 +701,19 @@ And::And(CL_DomElement * pElement)
 
 	if(name == "operator")
 	{
-	    mOperands.push_back( new Operator ( &child ) );
+	    mOperands.push_back( factory->createOperator ( &child ) );
 	}
 	else if(name == "hasItem")
 	{
-	    mOperands.push_back( new HasItem ( &child ) );
+	    mOperands.push_back( factory->createHasItem ( &child ) );
 	}
 	else if(name == "hasGold")
 	{
-	    mOperands.push_back(new HasGold ( &child ) );
+	    mOperands.push_back(factory->createHasGold ( &child ) );
 	}
 	else if(name == "didEvent")
 	{
-	    mOperands.push_back(new DidEvent ( &child ) );
+	    mOperands.push_back(factory->createDidEvent ( &child ) );
 	}
 	else throw CL_Error("Bad operand in \'and\'.");
 
@@ -772,7 +776,7 @@ CL_DomElement  Or::createDomElement(CL_DomDocument &doc) const
  
 Or::Or(CL_DomElement * pElement)
 {
-
+    LevelFactory * factory = IApplication::getInstance()->getLevelFactory();
     CL_DomElement child = pElement->get_first_child().to_element();
 
     if(child.is_null()) throw CL_Error("\'or\' with no operands.");
@@ -784,19 +788,19 @@ Or::Or(CL_DomElement * pElement)
 
 	if(name == "operator")
 	{
-	    mOperands.push_back( new Operator ( &child ) );
+	    mOperands.push_back( factory->createOperator ( &child ) );
 	}
 	else if(name == "hasItem")
 	{
-	    mOperands.push_back( new HasItem ( &child ) );
+	    mOperands.push_back( factory->createHasItem ( &child ) );
 	}
 	else if(name == "hasGold")
 	{
-	    mOperands.push_back(new HasGold ( &child ) );
+	    mOperands.push_back(factory->createHasGold ( &child ) );
 	}
 	else if(name == "didEvent")
 	{
-	    mOperands.push_back(new DidEvent ( &child ) );
+	    mOperands.push_back(factory->createDidEvent ( &child ) );
 	}
 	else throw CL_Error("Bad operand in \'or\'.");
 
@@ -855,7 +859,7 @@ CL_DomElement  Operator::createDomElement(CL_DomDocument &doc) const
  
 Operator::Operator(CL_DomElement *pElement)
 {
-	
+    LevelFactory * factory = IApplication::getInstance()->getLevelFactory();
 
     CL_DomElement child = pElement->get_first_child().to_element();
 
@@ -868,11 +872,11 @@ Operator::Operator(CL_DomElement *pElement)
 
 	if(name == "or")
 	{
-	    mOperands.push_back( new Or( &child ));
+	    mOperands.push_back( factory->createOr( &child ));
 	}
 	else if(name == "and")
 	{
-	    mOperands.push_back(new And ( &child ) );
+	    mOperands.push_back(factory->createAnd ( &child ) );
 	}
 	else throw CL_Error("Bad operand in \'operator\'.");
 
@@ -937,6 +941,7 @@ CL_DomElement  Condition::createDomElement(CL_DomDocument &doc) const
 Condition::Condition(CL_DomElement *pElement)
 {
 	
+    LevelFactory * factory = IApplication::getInstance()->getLevelFactory();
     std::cout << "READING CONDITION" << std::endl;
     CL_DomElement child = pElement->get_first_child().to_element();
 
@@ -947,19 +952,19 @@ Condition::Condition(CL_DomElement *pElement)
 
 	if(name == "operator")
 	{
-	    mChecks.push_back ( new Operator( &child ));
+	    mChecks.push_back ( factory->createOperator( &child ));
 	}
 	else if ( name == "hasItem")
 	{
-	    mChecks.push_back ( new HasItem ( &child ));
+	    mChecks.push_back ( factory->createHasItem ( &child ));
 	}
 	else if ( name == "hasGold")
 	{
-	    mChecks.push_back ( new HasGold ( &child ));
+	    mChecks.push_back ( factory->createHasGold ( &child ));
 	}
 	else if (name == "didEvent")
 	{
-	    mChecks.push_back ( new DidEvent ( &child ));
+	    mChecks.push_back ( factory->createDidEvent ( &child ));
 	}
 	else throw CL_Error("Bad child in conditon: " + name );
 
@@ -1044,7 +1049,7 @@ CL_DomElement  Event::createDomElement(CL_DomDocument &doc) const
 
 Event::Event(CL_DomElement *pElement):mbRepeatable(true),mpCondition(NULL)
 {
-
+    LevelFactory * factory = IApplication::getInstance()->getLevelFactory();
 
 	
     std::cout << "READING AN EVENT." << std::endl;
@@ -1080,62 +1085,62 @@ Event::Event(CL_DomElement *pElement):mbRepeatable(true),mpCondition(NULL)
     {
 	if( child.get_node_name() == "condition" )
 	{
-	    mpCondition = new Condition ( &child );
+	    mpCondition = factory->createCondition ( &child );
 			
 	}
 	else if (child.get_node_name() == "attributeModifier" )
 	{
-	    mActions.push_back ( new AttributeModifier (&child ));
+	    mActions.push_back ( factory->createAttributeModifier (&child ));
 
 	}
 	else if (child.get_node_name() == "say" )
 	{
-	    mActions.push_back ( new Say (&child ));
+	    mActions.push_back ( factory->createSay (&child ));
 
 	}
 	else if (child.get_node_name() == "give" )
 	{
-	    mActions.push_back ( new Give (&child ));
+	    mActions.push_back ( factory->createGive (&child ));
 
 	}
 	else if (child.get_node_name() == "take" )
 	{
-	    mActions.push_back ( new Take (&child ));
+	    mActions.push_back ( factory->createTake (&child ));
 
 	}
 	else if (child.get_node_name() == "giveGold" )
 	{
-	    mActions.push_back ( new GiveGold (&child ));
+	    mActions.push_back ( factory->createGiveGold (&child ));
 
 	}
 	else if (child.get_node_name() == "playAnimation" )
 	{
-	    mActions.push_back ( new PlayAnimation (&child ));
+	    mActions.push_back ( factory->createPlayAnimation (&child ));
 
 	}
 	else if (child.get_node_name() == "playSound" )
 	{
-	    mActions.push_back ( new PlaySound (&child ));
+	    mActions.push_back ( factory->createPlaySound (&child ));
 
 	}
 	else if (child.get_node_name() == "loadLevel" )
 	{
-	    mActions.push_back ( new LoadLevel (&child ));
+	    mActions.push_back ( factory->createLoadLevel (&child ));
 
 	}
 	else if (child.get_node_name() == "startBattle" )
 	{
-	    mActions.push_back ( new StartBattle (&child ));
+	    mActions.push_back ( factory->createStartBattle (&child ));
 
 	}
 	else if (child.get_node_name() == "pause" )
 	{
-	    mActions.push_back ( new Pause (&child ));
+	    mActions.push_back ( factory->createPause (&child ));
 
 	}
 	else if (child.get_node_name() == "invokeShop" )
 	{
-	    mActions.push_back ( new InvokeShop (&child ));
+	    mActions.push_back ( factory->createInvokeShop (&child ));
 
 	}
 
@@ -1620,7 +1625,7 @@ CL_DomElement  Give::createDomElement(CL_DomDocument &doc) const
 
 Give::Give(CL_DomElement *pElement ):mpItemRef(NULL)
 {
-
+    LevelFactory * factory = IApplication::getInstance()->getLevelFactory();
 
     CL_DomNamedNodeMap attributes = pElement->get_attributes();
 
@@ -1641,7 +1646,7 @@ Give::Give(CL_DomElement *pElement ):mpItemRef(NULL)
     if(itemRefElement.is_null()) throw CL_Error("\'give\' missing itemRef");
 
 
-    mpItemRef = new ItemRef ( &itemRefElement );
+    mpItemRef = factory->createItemRef ( &itemRefElement );
 
 
 }
@@ -1676,7 +1681,7 @@ CL_DomElement  Take::createDomElement(CL_DomDocument &doc) const
  
 Take::Take(CL_DomElement *pElement ):mpItemRef(NULL)
 {
-
+    LevelFactory * factory = IApplication::getInstance()->getLevelFactory();
     CL_DomNamedNodeMap attributes = pElement->get_attributes();
 
 
@@ -1696,7 +1701,7 @@ Take::Take(CL_DomElement *pElement ):mpItemRef(NULL)
     if(itemRefElement.is_null()) throw CL_Error("\'take\' missing itemRef");
 
 
-    mpItemRef = new ItemRef ( &itemRefElement );
+    mpItemRef = factory->createItemRef ( &itemRefElement );
 
 
 }
@@ -1834,6 +1839,7 @@ Tile::Tile():mpSprite(NULL),mpCondition(NULL),mpAM(NULL),mZOrder(0),cFlags(0)
 
 CL_DomElement  Tile::createDomElement(CL_DomDocument &doc) const
 {
+
     CL_DomElement element(doc,"tile");
 
 
@@ -1894,7 +1900,7 @@ CL_DomElement  Tile::createDomElement(CL_DomDocument &doc) const
 Tile::Tile(CL_DomElement *pElement):mpSprite(NULL),mpCondition(NULL), mpAM(NULL), mZOrder(0), cFlags(0)
 {
 
-   
+    LevelFactory * factory = IApplication::getInstance()->getLevelFactory();
     CL_DomNamedNodeMap attributes = pElement->get_attributes();
 
     if(attributes.get_length() < 2) throw CL_Error("Error reading attributes in tile");
@@ -1940,13 +1946,13 @@ Tile::Tile(CL_DomElement *pElement):mpSprite(NULL),mpCondition(NULL), mpAM(NULL)
 	if( child.get_node_name() == "tilemap" )
 	{
 			
-	    mGraphic.asTilemap = new Tilemap( &child );
+	    mGraphic.asTilemap = factory->createTilemap( &child );
 			
 	}
 	else if (child.get_node_name() == "spriteRef" )
 	{
 	    GraphicsManager * GM = GraphicsManager::getInstance();
-	    mGraphic.asSpriteRef = new SpriteRef ( &child );
+	    mGraphic.asSpriteRef = factory->createSpriteRef ( &child );
 	    cFlags |= SPRITE;
 
 	    // Actually create the ref'd sprite here.
@@ -1956,11 +1962,11 @@ Tile::Tile(CL_DomElement *pElement):mpSprite(NULL),mpCondition(NULL), mpAM(NULL)
 	}
 	else if (child.get_node_name() == "condition" )
 	{
-	    mpCondition = new Condition ( &child );
+	    mpCondition = factory->createCondition ( &child );
 	}
 	else if (child.get_node_name() == "attributeModifier" )
 	{
-	    mpAM = new AttributeModifier ( &child );
+	    mpAM = factory->createAttributeModifier ( &child );
 	}
 	else if ( child.get_node_name() == "directionBlock" )
 	{
@@ -2203,7 +2209,7 @@ MappableObject::eSize MappableObject::getSize() const
  
 MappableObject::MappableObject(CL_DomElement *pElement):mpMovement(0),mTimeOfLastUpdate(0),mCountInCurDirection(0)
 {
-
+    LevelFactory * factory = IApplication::getInstance()->getLevelFactory();
     cFlags = 0;
 
     std::cout << "READING A MO." << std::endl;
@@ -2254,14 +2260,14 @@ MappableObject::MappableObject(CL_DomElement *pElement):mpMovement(0),mTimeOfLas
 	{
 	    if( meSize != MO_SMALL) throw CL_Error("Mappable objects using tilemaps MUST be size small.");
 	    cFlags |= TILEMAP;
-	    mGraphic.asTilemap = new Tilemap( &child );
+	    mGraphic.asTilemap = factory->createTilemap( &child );
 			
 	}
 	else if (child.get_node_name() == "spriteRef" )
 	{
 	    GraphicsManager *GM = GraphicsManager::getInstance();
 
-	    SpriteRef * pRef = new SpriteRef ( &child );
+	    SpriteRef * pRef = factory->createSpriteRef ( &child );
 
 	    mSpriteRefs.push_back ( pRef );
 	    cFlags |= SPRITE;
@@ -2292,11 +2298,11 @@ MappableObject::MappableObject(CL_DomElement *pElement):mpMovement(0),mTimeOfLas
 	}
 	else if (child.get_node_name() == "event" )
 	{
-	    mEvents.push_back ( new Event ( &child ) );
+	    mEvents.push_back ( factory->createEvent ( &child ) );
 	}
 	else if( child.get_node_name() == "movement")
 	{
-	    mpMovement = new Movement ( &child );
+	    mpMovement = factory->createMovement ( &child );
 
 	    // Make sure the proper sprites are around for the movement type
 	    switch(mpMovement->getMovementType())
@@ -2699,6 +2705,11 @@ Level::Level(const std::string &name,CL_ResourceManager * pResources): mpDocumen
 
     // Load the level
     LoadLevel ( path + filename );
+}
+
+Level::Level(CL_DomDocument &document)
+{
+    LoadLevel ( document );
 }
 
 Level::~Level()
@@ -3227,6 +3238,8 @@ void Level::load ( CL_DomDocument &document)
 void Level::LoadLevel (CL_DomDocument &document )
 {
 
+    LevelFactory * factory = IApplication::getInstance()->getLevelFactory();
+
     CL_DomElement levelNode = document.named_item("level").to_element(); 
 
 
@@ -3331,7 +3344,8 @@ void Level::LoadLevel( const std::string & filename  )
 
 void Level::loadMo ( CL_DomElement * moElement )
 {
-    MappableObject * mo = new MappableObject ( moElement );
+    LevelFactory * factory = IApplication::getInstance()->getLevelFactory();
+    MappableObject * mo = factory->createMappableObject ( moElement );
 
     mMappableObjects.push_back( mo );
 
@@ -3340,9 +3354,10 @@ void Level::loadMo ( CL_DomElement * moElement )
 
 void Level::loadTile ( CL_DomElement * tileElement)
 {
+    LevelFactory * factory = IApplication::getInstance()->getLevelFactory();
     CL_Point point;
 
-    Tile * tile = new Tile ( tileElement );
+    Tile * tile = factory->createTile ( tileElement );
 
     point.x = tile->getX();
     point.y = tile->getY();

@@ -51,6 +51,12 @@ IParty * Application::getParty() const
 }
 
 
+LevelFactory *Application::getLevelFactory() const
+{
+    return mpLevelFactory;
+}
+
+
 CL_ResourceManager * Application::getResources() const
 {
     return mpResources;
@@ -62,9 +68,12 @@ bool Application::canMove(const CL_Rect &currently, const CL_Rect &destination, 
     return mpLevel->canMove(currently,destination,noHot);
 }
 
-Application::Application():mpParty(0),mCurX(0),mCurY(0),mbDone(false),mSpeed(1)
+Application::Application():mpParty(0),mpLevelFactory(0),mCurX(0),mCurY(0),mbDone(false),mSpeed(1)
 {
     mpParty = new Party();
+
+    // We want the generic level factory.
+    mpLevelFactory = new LevelFactory();
 }
 
 Application::~Application()

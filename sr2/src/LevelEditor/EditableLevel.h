@@ -7,6 +7,7 @@
 #include <list>
 #include "IApplication.h"
 #include "Level.h"
+#include "LevelFactory.h"
 
 using std::string;
 
@@ -16,21 +17,52 @@ typedef unsigned short ushort;
 
 using namespace StoneRing;
 
+class EditableLevelFactory : public LevelFactory
+{
+ public:
+    EditableLevelFactory(){}
+    ~EditableLevelFactory(){}
+
+    virtual Tile * createTile() const;
+    virtual Tile * createTile(CL_DomElement *pElement)const;
+    // virtual MappableObject * createMappableObject() const;
+    //virtual MappableObject * createMappableObject(CL_DomElement *pElement) const;
+    virtual Tilemap * createTilemap() const;
+    virtual Tilemap * createTilemap(CL_DomElement *pElement) const;
+    virtual SpriteRef * createSpriteRef() const;
+    virtual SpriteRef * createSpriteRef(CL_DomElement * pElement) const;
+
+
+
+
+ private:
+};
+
+
 class EditableTilemap : public StoneRing::Tilemap
 {
  public:
-    EditableTilemap(const std::string &mapname, uint x, uint y);
+    EditableTilemap(){}
     EditableTilemap(CL_DomElement *pElement);
     virtual ~EditableTilemap();
+
+    void setMapName(const std::string & mapname);
+    void setMapX(int x);
+    void setMapY(int y);
+
     
 };
 
 class EditableSpriteRef : public StoneRing::SpriteRef
 {
  public:
-    EditableSpriteRef( const std::string &ref, StoneRing::SpriteRef::eDirection dir );
+    EditableSpriteRef(){}
     EditableSpriteRef(CL_DomElement * pElement );
     virtual ~EditableSpriteRef();
+
+    void setSpriteRef( const std::string &ref);
+    void setDirection( StoneRing::SpriteRef::eDirection dir);
+
 };
 
 
@@ -76,12 +108,15 @@ class EditableLevel : public StoneRing::Level
     void addTile ( Tile * pTile );
     void removeTile ( Tile * pTile );
 
+    void addRows(int rows);
+    void addColumns(int columns);
+
     
 
           
  protected:
 
-    virtual void loadTile ( CL_DomElement * tileElement);
+
 
 };
 

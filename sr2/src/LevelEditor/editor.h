@@ -47,6 +47,7 @@ public:
 	
 	  virtual CL_ResourceManager * getResources()const;
 	  virtual StoneRing::IParty * getParty() const;
+	  virtual LevelFactory * getLevelFactory() const;
       
 		
       virtual int getScreenWidth()const;
@@ -76,6 +77,7 @@ private:
 	string menuitem;
 
 	EditorParty * mpParty;
+	EditableLevelFactory * mpLevelFactory;
 	CL_ResourceManager *mpResources;
 
 	CL_SlotContainer slots;
