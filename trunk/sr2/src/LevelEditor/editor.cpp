@@ -164,7 +164,8 @@ int EditorMain::main(int argc, char **argv)
 
 			// menu item slot connects
 			slots.connect(menu.get_node("File/Quit")->sig_clicked(), this, &EditorMain::on_quit);
-//			slots.connect(menu.get_node("File/Save")->sig_clicked(), this, &EditorMain::on_save);
+			slots.connect(menu.get_node("File/Save")->sig_clicked(), this, &EditorMain::on_save);
+			slots.connect(menu.get_node("File/Save As...")->sig_clicked(), this, &EditorMain::on_save);
 			slots.connect(menu.get_node("File/Open")->sig_clicked(), this, &EditorMain::on_load);
 
 
@@ -234,14 +235,18 @@ cout << "all the creation stuff completed. about to run it." << endl;
 
 	void EditorMain::on_save()
 	{
-		
+		string filename = CL_FileDialog::save("", "*.xml", gui_manager);
+		cout << filename << endl;
+		map->save_Level(filename);
 	}
 
 	void EditorMain::on_load()
 	{
-/*		CL_FileDialog::open(gc);
+		string filename = CL_FileDialog::open("", "*.xml", gui_manager);
 
-		CL_InputSource_File file(leveldocfilename);
+		cout << filename << endl;
+/**/
+		CL_InputSource_File file(filename);
 
 		CL_DomDocument doc;
 		doc.load(&file);
@@ -251,8 +256,7 @@ cout << "all the creation stuff completed. about to run it." << endl;
 		mpLevel->load(doc);
 
 		map->set_Level(mpLevel);
-*/
-		map->set_Level();
+
 
 	}
 

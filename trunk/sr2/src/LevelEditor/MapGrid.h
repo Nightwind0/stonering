@@ -21,8 +21,8 @@ public:
 
 		~MapGrid();
 
-	//	void set_Level(EditableLevel *mpLevel);
-		void set_Level();
+		void set_Level(EditableLevel *mpLevel);
+		void save_Level(string filename);
 
 		void on_placeTile(const CL_InputEvent &event);
 		void on_paint();
