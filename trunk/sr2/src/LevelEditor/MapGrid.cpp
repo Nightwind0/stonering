@@ -12,6 +12,8 @@ MapGrid::MapGrid(CL_Rect setrect, CL_Component *parent, CL_GraphicContext *mgGC,
 
 	hotflag = blocksflag = false;
 
+	cur_tool = "tile";  
+
 	mgLevel = NULL;
 
 	set_position(rect.left, rect.top);
@@ -39,7 +41,7 @@ MapGrid::MapGrid(CL_Rect setrect, CL_Component *parent, CL_GraphicContext *mgGC,
 
 
 	slots.connect(sig_paint(), this, &MapGrid::on_paint);
-	slots.connect(sig_mouse_up(), this, &MapGrid::on_placeTile);
+	slots.connect(sig_mouse_up(), this, &MapGrid::on_Tool_Click);//on_placeTile
 
 }
 
@@ -92,7 +94,7 @@ void MapGrid::on_placeTile(const CL_InputEvent &event)
 			mgX = (clickX/32) + mgScrollHorz->get_value();
 			mgY = (clickY/32) + mgScrollVert->get_value();
 
-			cout << "(" << mgX << "," << mgY << ")" << endl;
+			cout << "Tile (" << mgX << "," << mgY << ")" << endl;
 
 
 			if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ))
@@ -113,7 +115,7 @@ void MapGrid::on_placeTile(const CL_InputEvent &event)
 			{
 				// Default mode is add mode
 				EditableTile *pTile = new EditableTile();
-				cout << TS->get_tsMapName() << endl;
+				//cout << TS->get_tsMapName() << endl;
 				pTile->setTilemap(TS->get_tsMapName(), TS->get_tsX(), TS->get_tsY());
 				
 				int ZOrder = -1;
@@ -199,6 +201,219 @@ void MapGrid::toggle_blocks()
 
 }
 
+void MapGrid::on_Tool_Click(const CL_InputEvent &event)
+{
+		
+	if(cur_tool == "hot")
+		on_setHot(event);
+	else if(cur_tool == "north")
+		on_setNorth(event);
+	else if(cur_tool == "south")
+		on_setSouth(event);
+	else if(cur_tool == "east")
+		on_setEast(event);
+	else if(cur_tool == "west")
+		on_setWest(event);
+	else
+		on_placeTile(event);
+}
 
+
+void MapGrid::switchTool(string toolname)
+{
+	if(toolname == "hot")
+		cur_tool = toolname;
+	else if(toolname == "north")
+		cur_tool = toolname;
+	else if(toolname == "south")
+		cur_tool = toolname;
+	else if(toolname == "east")
+		cur_tool = toolname;
+	else if(toolname == "west")
+		cur_tool = toolname;
+	else
+		cur_tool = "tile";
+
+}
+
+void MapGrid::on_setHot(const CL_InputEvent &event)
+{
+	if(mgLevel)  //nasty things might happen if we set stuff on nonexistant levels
+	{
+		int clickX, clickY;
+
+		clickX = event.mouse_pos.x;
+		clickY = event.mouse_pos.y;
+
+		if(clickX <get_width()-20 && clickY<get_height()-20)
+		{
+			mgX = (clickX/32) + mgScrollHorz->get_value();
+			mgY = (clickY/32) + mgScrollVert->get_value();
+
+			cout << "Hot (" << mgX << "," << mgY << ")" << endl;
+
+
+			if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ))
+			{
+				// Anti-Mode.  UNset the value if its set.
+				std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
+
+
+				
+
+			}
+			else
+			{
+				// Default mode is set mode
+				
+			}
+
+		}
+	}
+}
+
+void MapGrid::on_setNorth(const CL_InputEvent &event)
+{
+	if(mgLevel)  //nasty things might happen if we set stuff on nonexistant levels
+	{
+		int clickX, clickY;
+
+		clickX = event.mouse_pos.x;
+		clickY = event.mouse_pos.y;
+
+		if(clickX <get_width()-20 && clickY<get_height()-20)
+		{
+			mgX = (clickX/32) + mgScrollHorz->get_value();
+			mgY = (clickY/32) + mgScrollVert->get_value();
+
+			cout << "North (" << mgX << "," << mgY << ")" << endl;
+
+
+			if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ))
+			{
+				// Anti-Mode.  UNset the value if its set.
+				std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
+
+
+				
+
+			}
+			else
+			{
+				// Default mode is set mode
+				
+			}
+
+		}
+	}
+}
+
+void MapGrid::on_setSouth(const CL_InputEvent &event)
+{
+	if(mgLevel)  //nasty things might happen if we set stuff on nonexistant levels
+	{
+		int clickX, clickY;
+
+		clickX = event.mouse_pos.x;
+		clickY = event.mouse_pos.y;
+
+		if(clickX <get_width()-20 && clickY<get_height()-20)
+		{
+			mgX = (clickX/32) + mgScrollHorz->get_value();
+			mgY = (clickY/32) + mgScrollVert->get_value();
+
+			cout << "South (" << mgX << "," << mgY << ")" << endl;
+
+
+			if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ))
+			{
+				// Anti-Mode.  UNset the value if its set.
+				std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
+
+
+				
+
+			}
+			else
+			{
+				// Default mode is set mode
+				
+			}
+
+		}
+	}
+}
+
+void MapGrid::on_setEast(const CL_InputEvent &event)
+{
+	if(mgLevel)  //nasty things might happen if we set stuff on nonexistant levels
+	{
+		int clickX, clickY;
+
+		clickX = event.mouse_pos.x;
+		clickY = event.mouse_pos.y;
+
+		if(clickX <get_width()-20 && clickY<get_height()-20)
+		{
+			mgX = (clickX/32) + mgScrollHorz->get_value();
+			mgY = (clickY/32) + mgScrollVert->get_value();
+
+			cout << "East (" << mgX << "," << mgY << ")" << endl;
+
+
+			if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ))
+			{
+				// Anti-Mode.  UNset the value if its set.
+				std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
+
+
+				
+
+			}
+			else
+			{
+				// Default mode is set mode
+				
+			}
+
+		}
+	}
+}
+
+void MapGrid::on_setWest(const CL_InputEvent &event)
+{
+	if(mgLevel)  //nasty things might happen if we set stuff on nonexistant levels
+	{
+		int clickX, clickY;
+
+		clickX = event.mouse_pos.x;
+		clickY = event.mouse_pos.y;
+
+		if(clickX <get_width()-20 && clickY<get_height()-20)
+		{
+			mgX = (clickX/32) + mgScrollHorz->get_value();
+			mgY = (clickY/32) + mgScrollVert->get_value();
+
+			cout << "West (" << mgX << "," << mgY << ")" << endl;
+
+
+			if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ))
+			{
+				// Anti-Mode.  UNset the value if its set.
+				std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
+
+
+				
+
+			}
+			else
+			{
+				// Default mode is set mode
+				
+			}
+
+		}
+	}
+}
 
 

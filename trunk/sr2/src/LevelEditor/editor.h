@@ -95,6 +95,7 @@ private:
 	void on_add_column();
 	void on_show_hot();
 	void on_show_blocks();
+	void on_change_tool(string newtool);
 	
 	void on_paint();
 	void on_tileset_change(string userdata);
