@@ -40,7 +40,8 @@ int EditorMain::main(int argc, char **argv)
 			CL_DisplayWindow window("SR2 - Editor", 700, 600, false);
 
 			
-			CL_ResourceManager gui_resources((const std::string)"C:/Documents and Settings/Jon.Layton/My Documents/ClanLib-0.7.8-1/ClanLib-0.7/Resources/GUIStyleSilver/gui.xml");
+			CL_ResourceManager gui_resources("gui.xml",new CL_Zip_Archive("guistylesilver.gui"),true);
+			
 			CL_StyleManager_Silver style(&gui_resources);
 			CL_GUIManager gui(&style);
 			gui_manager = &gui;
