@@ -29,8 +29,10 @@ public:
     virtual bool hasItem(StoneRing::Item::eItemType type, const std::string &item) const{ return true; }
     virtual bool hasItem(StoneRing::ItemRef *pItemRef )const{return true;}
     virtual bool didEvent(const std::string &event) const{return true;}
-    virtual uint getLevelX() const{return true;}
-    virtual uint getLevelY() const{return true; }
+    virtual uint getLevelX() const{return 0;}
+    virtual uint getLevelY() const{return 0; }
+    virtual uint getWidth() const { return 64; }
+    virtual uint getHeight() const { return 64; }
 };
 
 

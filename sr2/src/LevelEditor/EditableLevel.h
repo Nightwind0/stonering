@@ -111,7 +111,7 @@ class EditableLevel : public StoneRing::Level
     void addRows(int rows);
     void addColumns(int columns);
 
-    
+    void setName(const std::string &name);
 
           
  protected:
