@@ -31,7 +31,7 @@ IApplication * IApplication::getInstance()
 	return &app;
 }
 
-
+ 
 CL_ResourceManager * EditorMain::getResources()const
 {
 	return mpResources;
@@ -125,25 +125,8 @@ int EditorMain::main(int argc, char **argv)
 
 			mpResources = tsResources;
 
-			std::string startinglevel =  CL_String::load("Game/StartLevel",mpResources);
 		
-
-			std::string path = CL_String::load("Game/LevelPath", mpResources);
-			std::string filename = CL_String::load("Levels/" + startinglevel, mpResources);
-
-			std::string leveldocfilename = "../../"+ path + filename;
-
-			CL_InputSource_File file(leveldocfilename);
-
-			CL_DomDocument doc;
-
-			doc.load(&file);
-
-			mpLevel = new EditableLevel();
-
-			mpLevel->load(doc);
-			
-
+			mpLevel = NULL;
 			list<string> tilemapnames = tsResources->get_all_resources("Tilemaps");
 
 
@@ -257,6 +240,8 @@ cout << "all the creation stuff completed. about to run it." << endl;
 
 		CL_DomDocument doc;
 		doc.load(&file);
+
+		delete mpLevel;
 
 		mpLevel = new EditableLevel();
 
