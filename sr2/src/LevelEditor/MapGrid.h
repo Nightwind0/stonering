@@ -31,6 +31,9 @@ public:
 		void more_rows(int r = 1);
 		void more_columns(int c = 1);
 
+		void toggle_hot();
+		void toggle_blocks();
+
 private:
 
 		CL_Rect rect;
@@ -47,6 +50,8 @@ private:
 		TileSelector *TS;
 
 		CL_FileDialog *openLevel;
+
+		bool hotflag, blocksflag;
 
 };
 

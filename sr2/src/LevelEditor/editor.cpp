@@ -176,6 +176,8 @@ int EditorMain::main(int argc, char **argv)
 			slots.connect(menu.get_node("Tools/Add Row")->sig_clicked(), this, &EditorMain::on_add_row);
 			slots.connect(menu.get_node("Tools/Add Column")->sig_clicked(), this, &EditorMain::on_add_column);
 
+			slots.connect(menu.get_node("Options/Show Hot Tiles")->sig_clicked(), this, &EditorMain::on_show_hot);
+			slots.connect(menu.get_node("Options/Show Direction Blocks")->sig_clicked(), this, &EditorMain::on_show_blocks);
 
 			//other random slot connects
 			slots.connect(window.sig_window_close(), this, &EditorMain::on_quit);
@@ -363,4 +365,12 @@ void EditorMain::on_add_column()
 	map->more_columns(1);
 }
 
+void EditorMain::on_show_hot()
+{
+	map->toggle_hot();
+}
 
+void EditorMain::on_show_blocks()
+{
+	map->toggle_blocks();
+}
