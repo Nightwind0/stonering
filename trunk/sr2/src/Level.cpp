@@ -1275,6 +1275,8 @@ MappableObject::MappableObject(CL_DomElement *pElement):meMovementType(MOVEMENT_
 	mStartX = atoi(attributes.get_named_item("xpos").get_node_value().c_str());
 	mStartY = atoi(attributes.get_named_item("ypos").get_node_value().c_str());
 
+	mX = mStartX * 32;
+	mY = mStartY *32;
 	
 	if(!attributes.get_named_item("movementType").is_null())
 	{
@@ -1293,6 +1295,7 @@ MappableObject::MappableObject(CL_DomElement *pElement):meMovementType(MOVEMENT_
 	{
 		if( child.get_node_name() == "tilemap" )
 		{
+			cFlags |= TILEMAP;
 			mGraphic.asTilemap = new Tilemap( &child );
 			
 		}
@@ -1396,7 +1399,27 @@ bool MappableObject::isSprite() const
 
 void MappableObject::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC)
 {
+	if(isSprite())
+	{
+		update();
+		mpSprite->draw( dst, pGC );
+	}
+	else if( cFlags & TILEMAP )
+	{
+		GraphicsManager * GM = GraphicsManager::getInstance();
+
+		CL_Surface * tilemap = GM->getTileMap ( mGraphic.asTilemap->getMapName() );
+
+
+		CL_Rect srcRect(mGraphic.asTilemap->getMapX() * 32 + src.left, mGraphic.asTilemap->getMapY() * 32 + src.top,
+				(mGraphic.asTilemap->getMapX() * 32) + src.right, (mGraphic.asTilemap->getMapY() * 32) + src.bottom);
+
+		
+		tilemap->draw(srcRect, dst, pGC);
+		
+	}
 	
+
 }
 
 void MappableObject::update()
@@ -1567,6 +1590,31 @@ void Level::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC,
 	
 
 }	    
+
+
+void Level::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC)
+{
+	// This brings the close MOs to the top
+	mMappableObjects.sort( moSortCriterion );
+	CL_Point center( src.get_width() / 2, src.get_height() /2);
+
+	for(std::list<MappableObject*>::iterator i = mMappableObjects.begin();
+	    i != mMappableObjects.end();
+	    i++)
+	{
+		CL_Rect moRect( (*i)->getX(), (*i)->getY(), (*i)->getX() + 32, (*i)->getY() + 32);
+		CL_Rect dstRect( moRect.left + dst.left, moRect.top + dst.top,
+				 moRect.left + dst.left + 32, moRect.top + dst.top + 32);
+		if( ! src.is_overlapped ( moRect ) )
+		{
+			// This MO was outside our field of vision, so we stop iterating.
+			break;
+		}
+
+		(*i)->draw( moRect, dstRect, pGC );
+	}
+	
+}
 
 
 void Level::drawFloaters(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext * pGC)

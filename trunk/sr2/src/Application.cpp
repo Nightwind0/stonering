@@ -131,8 +131,9 @@ int Application::main(int argc, char ** argv)
 		    mpWindow->get_gc()->push_cliprect( dst);
 
 		    mpLevel->draw(src,dst, mpWindow->get_gc(), false);
-		    //  CL_System::sleep( 300 );
+
 		    mpWindow->get_gc()->draw_rect( CL_Rect(mCurX,mCurY,mCurX+32,mCurY+32), CL_Color::aqua ) ;
+		    mpLevel->drawMappableObjects( src,dst, mpWindow->get_gc());
 		    mpLevel->drawFloaters(src,dst, mpWindow->get_gc());
 
 
