@@ -4,15 +4,18 @@
 
 
 TileSelector::TileSelector(CL_Rect setrect, CL_Component *parent, CL_ResourceManager* tsResources)
-:	rect(setrect), CL_Component(parent), tsResources(tsResources)
+:	TSrect(setrect), CL_Component(parent), tsResources(tsResources)
 {
 //, TileSet tileset
 // tileset(tileset),
 
-	set_position(rect.left, rect.top);
-	set_size(rect.get_width(), rect.get_height());
+	set_position(TSrect.left, TSrect.top);
+	set_size(TSrect.get_width(), TSrect.get_height());
 
-	cur_tileset_lable = new CL_Label(CL_Point(10, 10), "Select a TileSet", this);//gui_manager
+	SRCrect = new CL_Rect(0,0,32,32);
+	DSTrect = new CL_Rect(TSrect);
+
+
 
 ////
 
@@ -22,10 +25,13 @@ TileSelector::TileSelector(CL_Rect setrect, CL_Component *parent, CL_ResourceMan
 
 	for(list<string>::iterator i = tilemapnames.begin();i != tilemapnames.end(); i++)
 	{
-		tilemaps.push_back( new CL_Surface(*i, &tsResources));
+		
+		tilemaps.push_back( new CL_Surface(*i, tsResources));//"Tilemaps/wall1", tsResources));
 	}
 ////
 	
+	cur_tileset_lable = new CL_Label(CL_Point(20, 10), tilemapnames.front(), this);
+	cur_tileset = new CL_Surface(*tilemapnames.begin(), tsResources);//*tilemaps.begin();
 
 
 	slots.connect(sig_paint(), this, &TileSelector::on_paint);
@@ -35,7 +41,7 @@ TileSelector::TileSelector(CL_Rect setrect, CL_Component *parent, CL_ResourceMan
 
 TileSelector::~TileSelector()
 {
-// do nothing
+// does nothing
 }
 
 
@@ -53,6 +59,17 @@ void TileSelector::on_paint()
 
 void TileSelector::setCurLable(string text)
 {							   
-	cur_tileset_label.set_text(text);
+	cur_tileset_lable->set_text(text);
+
+
+
+	tilemaps.front()->draw(*SRCrect, *DSTrect);
 
 }
+
+void TileSelector::draw()
+{
+	
+
+}
+
