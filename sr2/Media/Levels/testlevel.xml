@@ -5,20 +5,20 @@
 	<levelHeader music="Main" width="4" height="4"/>
 	<tiles>
 		<tile name="1" xpos="0" ypos="0" zorder="1">
-			<tilemap mapname="grass" mapx="3" mapy="1"/>
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
 		<tile name="2" xpos="0" ypos="1">
 			<tilemap mapname="wall1" mapx="3" mapy="1"/>
 			<directionBlock east="true" north="true" south="true" west="true"/>
 		</tile>
 		<tile name="3" xpos="0" ypos="2">
-			<tilemap mapname="grass" mapx="3" mapy="1"/>
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
 		<tile name="" xpos="0" ypos="3">
-			<tilemap mapname="grass" mapx="2" mapy="1"/>
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
 		<tile name="4" xpos="1" ypos="0">
-			<tilemap mapname="grass" mapx="3" mapy="1"/>
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
 		<tile name="5" xpos="1" ypos="1">
 			<!-- Here's an animated sprite tile instead of a regular tile -->
@@ -36,31 +36,34 @@
 	
 		</tile>
 		<tile name="6" xpos="1" ypos="2">
-			<tilemap mapname="grass" mapx="3" mapy="1"/>
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
 		<tile name="" xpos="1" ypos="3">
-			<tilemap mapname="grass" mapx="3" mapy="1"/>
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
 		<tile name="7" xpos="2" ypos="0">
-			<tilemap mapname="grass" mapx="3" mapy="1"/>
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
 		<tile name="8" xpos="2" ypos="1">
-			<tilemap mapname="grass" mapx="3" mapy="1"/>
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
 		<tile name="9" xpos="2" ypos="2" floater="true">
-			<tilemap mapname="wall1" mapx="3" mapy="1" />
+			<tilemap mapname="wall1" mapx="2" mapy="1" />
 		</tile>
 		<tile name="" xpos="2" ypos="3">
 			<tilemap mapname="wall1" mapx="0" mapy="0"/>
 		</tile>
 		<tile name="" xpos="3" ypos="0" >
-			<tilemap mapname="grass" mapx="0" mapy="0" />
+			<tilemap mapname="grass" mapx="4" mapy="1" />
 		</tile>
 		<tile name="" xpos="3" ypos="1" >
-			<tilemap mapname="grass" mapx="0" mapy="0" />
+			<tilemap mapname="grass" mapx="4" mapy="1" />
 		</tile>	
 		<tile name="" xpos="3" ypos="2" >
-			<tilemap mapname="grass" mapx="0" mapy="0" />
+			<tilemap mapname="grass" mapx="3" mapy="9" />
+		</tile>
+		<tile name="" xpos="3" ypos="2" zorder="1">
+			<tilemap mapname="grass" mapx="2" mapy="0"/>
 		</tile>
 		<tile name="" xpos="3" ypos="3">
 			<tilemap mapname="grass" mapx="2" mapy="2" />
@@ -68,8 +71,8 @@
 		
 		<!-- This tile only appears after the player made the bridge -->
 		<!-- It replaces the previously specified water tile -->
-		<tile name="bridge" xpos="1" ypos="2">
-			<tilemap mapname="grass" mapx="0" mapy="0"/>
+		<tile name="bridge" xpos="1" ypos="2" zorder="1">
+			<tilemap mapname="wall1" mapx="1" mapy="5"/>
 			<condition>
 				<didEvent>madeBridge</didEvent>
 			</condition>
@@ -78,7 +81,7 @@
 	<mappableObjects>
 	
 		<mo name="Dog" type="npc" xpos="2" ypos="0">
-			<spriteRef>animals/Dog1</spriteRef>
+			<!-- spriteRef>animals/Dog1</spriteRef -->
 			<event name="DogBark" triggerType="talk">
 				<say speaker="Dog">Woof!</say>
 			</event>

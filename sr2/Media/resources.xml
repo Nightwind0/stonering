@@ -20,8 +20,18 @@
 </surface>
 
 <!-- Can be moved off to a separate resource xml -->
-<!--section name = "Sprites">
-	<section name = "Animals">
-		<sprite name = "Dog1"-->
+<section name = "Sprites">
+	<section name = "tiles">
+		<sprite name = "Lava" hint="alpha" >
+			<image file="Sprites/lava.png">
+				<grid pos="0,0"	size="32,32" array="4,1" >
+				</grid>
+			</image>
+			<animation speed="200" pingpong="yes" />
+		</sprite>
+	</section>
+</section>
+		
+	
   
 </resources>
