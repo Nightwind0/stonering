@@ -23,7 +23,7 @@
 <!ELEMENT itemRef (#PCDATA)>
 <!ELEMENT playAnimation (#PCDATA)>
 <!ELEMENT playSound (#PCDATA)>
-<!ELEMENT loadLevel (#PCDATA)>
+<!ELEMENT loadLevel EMPTY>
 <!ELEMENT startBattle EMPTY>
 <!ELEMENT invokeShop EMPTY>
 <!ELEMENT pause (#PCDATA)>
