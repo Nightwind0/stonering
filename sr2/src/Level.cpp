@@ -10,6 +10,8 @@
 #include "GraphicsManager.h"
 
 
+#define MO_EXPERIMENT 
+
 using namespace StoneRing;
 
 typedef unsigned int uint;
@@ -1521,8 +1523,7 @@ MappableObject::MappableObject(CL_DomElement *pElement):mpMovement(0),mTimeOfLas
 	    }
 
 
-	    // Actually create the ref'd sprite here.
-	    // And assign to mpSprite
+	
 	    meDirection = pRef->getDirection();
 
 	}
@@ -1622,9 +1623,24 @@ bool MappableObject::isSprite() const
 
 void MappableObject::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC)
 {
+
+#ifdef MO_EXPERIMENT
+//    update();
+    if(isSprite())
+    {
+	mSprites[meDirection]->update();
+	if(!moveInCurrentDirection())
+	{
+	    std::cout << "Had to pick another way" << std::endl;
+	    pickOppositeDirection();
+	}
+	mSprites[meDirection]->draw(dst, pGC );
+    }
+#else
     if(isSprite())
     {
 	update();
+	if(!mSprites.count(meDirection))throw CL_Error("MO was going to access a non-existant direction sprite.");
 	mSprites[meDirection]->draw( dst, pGC );
     }
     else if( cFlags & TILEMAP )
@@ -1639,12 +1655,34 @@ void MappableObject::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicCont
 		
     }
 	
+#endif
+}
+
+void MappableObject::pickOppositeDirection()
+{
+    switch(meDirection)
+    {
+    case SpriteRef::SPR_WEST:
+	meDirection = SpriteRef::SPR_EAST;
+	break;
+    case SpriteRef::SPR_EAST:
+	meDirection = SpriteRef::SPR_WEST;
+	break;
+    case SpriteRef::SPR_NORTH:
+	meDirection = SpriteRef::SPR_SOUTH;
+	break;
+    case SpriteRef::SPR_SOUTH:
+	meDirection = SpriteRef::SPR_NORTH;
+	break;
+    default:
+	break;
+    }
 
 }
 
-void MappableObject::moveInCurrentDirection()
+bool MappableObject::moveInCurrentDirection()
 {
-
+    if( meDirection == SpriteRef::SPR_NONE) return true;
 
     int delay = 0;
 
@@ -1653,6 +1691,8 @@ void MappableObject::moveInCurrentDirection()
     int nX = mX;
     int nY = mY;
 	
+    if(!mpMovement) throw CL_Error("MO mpMovement was null in moveInCurrentDirection");
+
     switch( mpMovement->getMovementSpeed() )
     {
     case Movement::SLOW:
@@ -1698,59 +1738,66 @@ void MappableObject::moveInCurrentDirection()
 
 	if(!Application::getApplication()->canMove ( getRect(), newRect, true))
 	{
-	    randomNewDirection();
+	    return false;
 	}
 	else
 	{
 	    mX = nX;
 	    mY = nY;
+
+	
+
 	    mCountInCurDirection++;
 
-	    if(mCountInCurDirection > rand() %128 + 32)
+	    if(mCountInCurDirection > 128)
+	    {
+		mCountInCurDirection = 0;
 		randomNewDirection();
+
+	    }
+
 	}
 
     }
 
-
+    return true;
 	
 
 }
 
 void MappableObject::randomNewDirection()
 {
-    mCountInCurDirection = 0;
 
-    int r= rand() % 20;
-	
-    switch( r)
+
+    if(!mpMovement) return;
+
+    int r= rand() % 5;
+
+    switch ( mpMovement->getMovementType())
     {
-    case 0:
-	if(mSprites.count(SpriteRef::SPR_NORTH))
+    case Movement::MOVEMENT_NONE:
+	break;
+    case Movement::MOVEMENT_WANDER:
+	if(r == 0)
 	    meDirection = SpriteRef::SPR_NORTH;
-	break;
-    case 1:
-	if(mSprites.count(SpriteRef::SPR_SOUTH))
+	else if(r == 1)
 	    meDirection = SpriteRef::SPR_SOUTH;
-	break;
-    case 2:
-	if(mSprites.count(SpriteRef::SPR_EAST))
+	else if(r == 2)
 	    meDirection = SpriteRef::SPR_EAST;
-	break;
-    case 3:
-	if(mSprites.count(SpriteRef::SPR_WEST))
+	else if(r == 3)
 	    meDirection = SpriteRef::SPR_WEST;
-	break;
-    case 4:
-	if(mSprites.count(SpriteRef::SPR_STILL))
+	else if(r == 4)
 	    meDirection = SpriteRef::SPR_STILL;
+	break;
+    case Movement::MOVEMENT_PACE_NS:
+    case Movement::MOVEMENT_PACE_EW:
+	if(r > 2)
+	    pickOppositeDirection();
 	break;
     default:
 	break;
-			
+
     }
-	
-	
 	
 	
 }
@@ -1758,7 +1805,11 @@ void MappableObject::randomNewDirection()
 void MappableObject::update()
 {
     if(isSprite())
+    {
+	
+	if(!mSprites.count(meDirection)) throw CL_Error("MO was going to use a sprite it didnt have.");
 	mSprites[meDirection]->update();
+    }
 
     if(!mpMovement) return;
 
