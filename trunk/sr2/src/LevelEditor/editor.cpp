@@ -40,10 +40,13 @@ int EditorMain::main(int argc, char **argv)
 			CL_DisplayWindow window("SR2 - Editor", 700, 600, false);
 
 			CL_ResourceManager gui_resources("gui.xml",new CL_Zip_Archive("guistylesilver.gui"),true);
-
+			//CL_ResourceManager gui_resources((const std::string)"GUIStyleSilver/gui.xml");
 			CL_StyleManager_Silver style(&gui_resources);
 			CL_GUIManager gui(&style);
 			gui_manager = &gui;
+
+
+			
 
 			
 			// Make sure our background is drawn under the GUI
@@ -58,36 +61,39 @@ int EditorMain::main(int argc, char **argv)
 			menu.create_item("File/Save As...");
 			menu.create_item("File/Quit");
 
-			list<string> tilesets;
+
+			//get the tileset info from xml
+			CL_ResourceManager* tsResources = new CL_ResourceManager ( "../../Media/resources.xml" );
+
+			list<string> tilemapnames = tsResources->get_all_resources("Tilemaps");
+
 			list<string> tempsets;
 
-			tilesets.push_back("Walls");
-			tilesets.push_back("Grass");
-			
 			string menutileset;
 
-			while(!tilesets.empty())
+			while(!tilemapnames.empty())
 			{
-				menutileset = "TileSet/" + tilesets.front();
+				menutileset = "TileSet/" + tilemapnames.front();
 				menu.create_item(menutileset);
-//				CL_Slot slot_menu_change = .connect(this, &EditorMain::on_change);
 				
-				slots.connect(menu.get_node(menutileset)->sig_clicked(), this, &EditorMain::on_tileset_change, tilesets.front());
+				slots.connect(menu.get_node(menutileset)->sig_clicked(), this, &EditorMain::on_tileset_change, tilemapnames.front());
 
-				tempsets.push_back(tilesets.front());
-				tilesets.pop_front();
+				tempsets.push_back(tilemapnames.front());
+				tilemapnames.pop_front();
 			}
-			tilesets = tempsets;
+			tilemapnames = tempsets;
 
 
-			// menu item signal connects
-			CL_Slot slot_menu_quit = menu.get_node("File/Quit")->sig_clicked().connect(this, &EditorMain::on_quit);
+			// menu item slot connects
+			slots.connect(menu.get_node("File/Quit")->sig_clicked(), this, &EditorMain::on_quit);
 
 
-		//	CL_Slot slot_menu_change = menu.get_node("TileSet/)->sig_clicked().connect(this, &EditorMain::on_change);
+			//other random slot connects
+			slots.connect(window.sig_window_close(), this, &EditorMain::on_quit);
 
-			
-			TileSelector tiles(CL_Rect(510, 30, 690, 400), &gui);
+
+
+			tiles = new TileSelector(CL_Rect(510, 30, 690, 400), &gui, tsResources);
 			
 			MapGrid map(CL_Rect(10, 30, 500, 590), &gui);
 
@@ -139,8 +145,7 @@ int EditorMain::main(int argc, char **argv)
 
 	void EditorMain::on_tileset_change(string userdata)
 	{
-	
-		CL_Label * titlelabel = new CL_Label(CL_Point(100, 100), userdata, gui_manager);
+		tiles->setCurLable(userdata);
 	}
 
 
