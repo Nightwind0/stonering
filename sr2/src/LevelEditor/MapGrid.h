@@ -24,6 +24,14 @@ public:
 		void set_Level(EditableLevel *mpLevel);
 		void save_Level(string filename);
 
+		void switchTool(string toolname);
+
+		void on_Tool_Click(const CL_InputEvent &event);
+		void on_setHot(const CL_InputEvent &event);
+		void on_setNorth(const CL_InputEvent &event);
+		void on_setSouth(const CL_InputEvent &event);
+		void on_setEast(const CL_InputEvent &event);
+		void on_setWest(const CL_InputEvent &event);
 		void on_placeTile(const CL_InputEvent &event);
 		void on_paint();
 		void on_dir_change(const string &new_dir);
@@ -35,6 +43,9 @@ public:
 		void toggle_blocks();
 
 private:
+
+		//this should probably be an enum.
+		string cur_tool;  //valid values: tile, hot, north, south, east, west
 
 		CL_Rect rect;
 		CL_SlotContainer slots;

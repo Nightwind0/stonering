@@ -122,6 +122,8 @@ int EditorMain::main(int argc, char **argv)
 			//tools menu stuff
 			menu.create_item("Tools/Add Row");
 			menu.create_item("Tools/Add Column");
+			menu.create_item("Tools/-----");
+			menu.create_item("Tools/Add Tile");
 			menu.create_item("Tools/Set Hot");
 			menu.create_item("Tools/Direction Blocks -/North");
 			menu.create_item("Tools/Direction Blocks -/South");
@@ -175,6 +177,22 @@ int EditorMain::main(int argc, char **argv)
 
 			slots.connect(menu.get_node("Tools/Add Row")->sig_clicked(), this, &EditorMain::on_add_row);
 			slots.connect(menu.get_node("Tools/Add Column")->sig_clicked(), this, &EditorMain::on_add_column);
+
+			string tiletemp1 = "north";
+			string tiletemp2 = "south";
+			string tiletemp3 = "east";
+			string tiletemp4 = "west";
+			string tiletemp5 = "hot";
+			string tiletemp6 = "tile";
+
+			slots.connect(menu.get_node("Tools/Direction Blocks -/North")->sig_clicked(), this, &EditorMain::on_change_tool, tiletemp1);
+			slots.connect(menu.get_node("Tools/Direction Blocks -/South")->sig_clicked(), this, &EditorMain::on_change_tool, tiletemp2);
+			slots.connect(menu.get_node("Tools/Direction Blocks -/East")->sig_clicked(), this, &EditorMain::on_change_tool, tiletemp3);
+			slots.connect(menu.get_node("Tools/Direction Blocks -/West")->sig_clicked(), this, &EditorMain::on_change_tool, tiletemp4);
+			slots.connect(menu.get_node("Tools/Set Hot")->sig_clicked(), this, &EditorMain::on_change_tool, tiletemp5);
+			slots.connect(menu.get_node("Tools/Add Tile")->sig_clicked(), this, &EditorMain::on_change_tool, tiletemp6);
+			
+
 
 			slots.connect(menu.get_node("Options/Show Hot Tiles")->sig_clicked(), this, &EditorMain::on_show_hot);
 			slots.connect(menu.get_node("Options/Show Direction Blocks")->sig_clicked(), this, &EditorMain::on_show_blocks);
@@ -373,4 +391,21 @@ void EditorMain::on_show_hot()
 void EditorMain::on_show_blocks()
 {
 	map->toggle_blocks();
+}
+
+void EditorMain::on_change_tool(string newtool)
+{
+	if(newtool == "hot")
+		map->switchTool(newtool);
+	else if(newtool == "north")
+		map->switchTool(newtool);
+	else if(newtool == "south")
+		map->switchTool(newtool);
+	else if(newtool == "east")
+		map->switchTool(newtool);
+	else if(newtool == "west")
+		map->switchTool(newtool);
+	else
+		map->switchTool("tile");
+
 }
