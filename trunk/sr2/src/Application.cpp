@@ -124,7 +124,7 @@ void Application::onSignalKeyDown(const CL_InputEvent &key)
 {
 
     CL_DomDocument document;
-    CL_OutputSource_File file("foo.xml");
+
 	
     int nX =mCurX;
     int nY =mCurY;
@@ -170,11 +170,7 @@ void Application::onSignalKeyDown(const CL_InputEvent &key)
 
 	document.append_child ( *mpLevel->createDomElement(document) );
 
-	file.open();
-
-	document.save( &file, false, true );
-
-	file.close();
+	document.save( new CL_OutputSource_File( "foo.xml") , true, true );
 
 	break;
 
