@@ -216,6 +216,11 @@ void EditableLevel::setName(const std::string &name)
     mName = name;
 }
 
+void EditableLevel::setMusic(const std::string &music)
+{
+    mMusic = music;
+}
+
 		
 void EditableLevel::addTile ( Tile * pTile )
 {

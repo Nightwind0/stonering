@@ -324,14 +324,30 @@ void EditorMain::on_new()
 	if(bttn != 2)
 	{
 		CL_InputDialog new_dlg("Create New Level", "Ok", "Cancel", "", gui_manager);
-		new_dlg.add_input_box("Level Name:", "", 150);
-		new_dlg.add_input_box("Music:", "", 150);
-		new_dlg.add_input_box("Width (in tiles):", "10", 150);
-		new_dlg.add_input_box("Height (in tiles):", "10", 150);
+
+		CL_InputBox *lvlName = new_dlg.add_input_box("Level Name:", "", 150);
+		CL_InputBox *lvlMusic = new_dlg.add_input_box("Music:", "", 150);
+		CL_InputBox *lvlWidth = new_dlg.add_input_box("Width (in tiles):", "10", 150);
+		CL_InputBox *lvlHeight = new_dlg.add_input_box("Height (in tiles):", "10", 150);
+
+		// Connecting signals, to allow only numbers
+//		slots.connect(lvlWidth->sig_validate_character(), this, &App::validator_numbers);
+//		slots.connect(lvlHeight->sig_validate_character(), this, &App::validator_numbers);
+
 		new_dlg.run();
 	
 
-//	delete mpLevel;	
+		if(mpLevel != NULL)
+			delete mpLevel;	
+
+		mpLevel = new EditableLevel();
+
+		mpLevel->setName(lvlName->get_text());
+		mpLevel->setMusic(lvlMusic->get_text());
+		mpLevel->addColumns(atoi(lvlWidth->get_text().c_str()));
+		mpLevel->addRows(atoi(lvlHeight->get_text().c_str()));
+
+		map->set_Level(mpLevel);
 	
 	}
 

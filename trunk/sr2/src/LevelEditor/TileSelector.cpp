@@ -44,8 +44,8 @@ int tileY = 1;
 	scrollVert->set_min_value(0);
 	scrollHorz->set_min_value(0);
 
-	scrollVert->set_max_value((cur_tileset->get_height()/32)-12);
-	scrollHorz->set_max_value((cur_tileset->get_width()/32)-6);
+	scrollVert->set_max_value((cur_tileset->get_height()/32)-11);
+	scrollHorz->set_max_value((cur_tileset->get_width()/32)-5);
 
 	slots.connect(sig_paint(), this, &TileSelector::on_paint);
 	slots.connect(sig_mouse_up(), this, &TileSelector::on_select);
@@ -83,8 +83,8 @@ void TileSelector::changeTS(string text)
 
 	cur_tileset = new CL_Surface(tsMapName , tsResources);
 		
-	scrollVert->set_max_value((cur_tileset->get_height()/32)-12);
-	scrollHorz->set_max_value((cur_tileset->get_width()/32)-6);
+	scrollVert->set_max_value((cur_tileset->get_height()/32)-11);
+	scrollHorz->set_max_value((cur_tileset->get_width()/32)-5);
 
 
 }

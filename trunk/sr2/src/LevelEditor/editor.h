@@ -10,6 +10,7 @@
 #include <ClanLib/gl.h>
 #include <ClanLib/gui.h>
 #include <ClanLib/guistylesilver.h>
+#include <stdlib.h>
 
 #include "EditableLevel.h"
 #include "TileSelector.h"
@@ -18,6 +19,7 @@
 #include "IApplication.h"
 #include "IParty.h"
 #include "Item.h"
+
 
 
 class StoneRing::ItemRef; // Forward decl
