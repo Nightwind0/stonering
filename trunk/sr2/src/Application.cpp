@@ -4,9 +4,11 @@
 #include <iostream>
 
 #include "Application.h"
+#include "Level.h"
 
 
 using StoneRing::Application;
+using namespace StoneRing;
 
 Application::Application()
 {
@@ -50,6 +52,7 @@ int Application::main(int argc, char ** argv)
 		mpResources = new CL_ResourceManager ( "Media/resources.xml" );
 
 		std::string name = CL_String::load("Configuration/name", mpResources);
+		std::string startinglevel = CL_String::load("Game/StartLevel",mpResources);
 		mpWindow  = new CL_DisplayWindow(name, WINDOW_WIDTH, WINDOW_HEIGHT);
 		
 		CL_Display::clear();
@@ -57,7 +60,7 @@ int Application::main(int argc, char ** argv)
 		showRechargeableOnionSplash();
 		showIntro();
 
-		
+		mpLevel = new Level(startinglevel, mpResources);
 
 		
 		teardownClanLib();
