@@ -116,7 +116,28 @@ int EditorMain::main(int argc, char **argv)
 
 			//get the tileset info from xml
 			CL_ResourceManager* tsResources = new CL_ResourceManager ( "../../Media/resources.xml" );
+
 			mpResources = tsResources;
+
+			std::string startinglevel =  CL_String::load("Game/StartLevel",mpResources);
+		
+
+			std::string path = CL_String::load("Game/LevelPath", mpResources);
+			std::string filename = CL_String::load("Levels/" + startinglevel, mpResources);
+
+			std::string leveldocfilename = "../../"+ path + filename;
+
+			CL_InputSource_File file(leveldocfilename);
+
+			CL_DomDocument doc;
+
+			doc.load(&file);
+
+			mpLevel = new EditableLevel();
+
+			mpLevel->load(doc);
+			
+
 
 			list<string> tilemapnames = tsResources->get_all_resources("Tilemaps");
 
@@ -161,6 +182,15 @@ int EditorMain::main(int argc, char **argv)
 			while (!CL_Keyboard::get_keycode(CL_KEY_ESCAPE) && !quit)
 			{
 				gui.show();
+
+				CL_Rect dst(10,30,min((unsigned int)500,mpLevel->getWidth()*32), min((unsigned int)590,mpLevel->getWidth()*32));
+				CL_Rect src = dst;
+
+				window.get_gc()->push_cliprect( dst );
+
+				mpLevel->draw(src,dst, window.get_gc(),false);
+
+				window.get_gc()->pop_cliprect();
 
 				CL_System::keep_alive();
 				CL_Display::flip();

@@ -83,7 +83,7 @@ private:
 	TileSelector* tiles;
 	CL_GraphicContext *gc;
 
-	EditableLevel mLevel;
+	EditableLevel *mpLevel;
 
 };
 
