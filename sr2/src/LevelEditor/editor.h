@@ -39,6 +39,8 @@ private:
 	string menuitem;
 
 	CL_SlotContainer slots;
+
+	TileSelector* tiles;
 };
 
 #endif
