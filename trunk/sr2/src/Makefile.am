@@ -1,5 +1,5 @@
 
-SUBDIRS = LevelEditor
+
 
 bin_PROGRAMS = stonering
 

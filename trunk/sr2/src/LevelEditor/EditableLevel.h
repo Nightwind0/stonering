@@ -58,10 +58,9 @@ class EditableLevel : public StoneRing::Level
     EditableLevel(const std::string &name,CL_ResourceManager * pResources);
     virtual ~EditableLevel();
 			
-			
-    virtual void draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext * pGC , bool floaters = false);
+
     virtual void drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
-    virtual void drawFloaters(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext * pGC);
+
 
     std::list<Tile*> getTilesAt(uint levelX, uint levelY) const;
 		
@@ -69,18 +68,10 @@ class EditableLevel : public StoneRing::Level
     void removeTile ( Tile * pTile );
 
     
-    // All AM's from tiles fire, as do any step events
-    virtual void step(uint levelX, uint levelY);
-      
-    // Any talk events fire (assuming they meet conditions)
-    virtual void talk(uint levelX, uint levelY);
-
-    // Propagate updates to any MO's in view. Provides as a level coordinate based rectangle
-    virtual void update(const CL_Rect & updateRect);
 
           
  protected:
 
-}
+};
 
 #endif
