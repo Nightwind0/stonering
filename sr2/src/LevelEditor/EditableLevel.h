@@ -112,6 +112,7 @@ class EditableLevel : public StoneRing::Level
     void addColumns(int columns);
 
     void setName(const std::string &name);
+	void setMusic(const std::string &music);
 
           
  protected:
