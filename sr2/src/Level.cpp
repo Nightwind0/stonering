@@ -2634,7 +2634,9 @@ Level::Level()
 
 CL_DomElement * Level::createDomElement(CL_DomDocument &doc) const
 {
-    CL_DomElement * element = new CL_DomElement(doc,"level");
+
+    CL_DomElement *element = new CL_DomElement(doc, "level");
+
 
     CL_DomElement levelHeader(doc, "levelHeader");
     CL_DomElement tiles(doc, "tiles");
@@ -3241,8 +3243,6 @@ void Level::load ( CL_DomDocument &document)
 
 void Level::LoadLevel (CL_DomDocument &document )
 {
-    std::cout << "LOADING FROM EXISTING DOCUMENT" << std::endl;
-
 
     CL_DomElement levelNode = document.named_item("level").to_element(); 
 
@@ -3331,9 +3331,13 @@ void Level::LoadLevel( const std::string & filename  )
     std::cout << "LOADING LEVEL: " << filename << std::endl;
 
     CL_DomDocument document;
+    CL_DomDocument otherdoc;
+
+
 
 	
     document.load(&file);
+
 
  
     LoadLevel ( document );
