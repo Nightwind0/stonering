@@ -13,6 +13,8 @@ typedef unsigned int uint;
 typedef unsigned short ushort;
 
 
+
+
 // For the multimap of points
 bool operator < (const CL_Point &p1, const CL_Point &p2);
 
@@ -392,7 +394,7 @@ namespace StoneRing {
 
       virtual void update()=0;
 
-      virtual eDirectionBlock getDirectionBlock() const=0;
+      virtual int getDirectionBlock() const=0;
 
       virtual bool isTile() const=0;
 
@@ -400,11 +402,19 @@ namespace StoneRing {
     };
 
 
+  
+  union SpriteRefOrTilemap
+  {
+	  SpriteRef* asSpriteRef;
+	  Tilemap * asTilemap;
+  };
+
+
   class Tile : public Graphic
     {
     public:
 
-      enum eFlags { SPRITE = 1, HAS_AM = 2, HAS_COND = 4, BLK_NORTH = 8, BLK_SOUTH = 16, BLK_EAST = 32, BLK_WEST = 64 };
+
 
       Tile(CL_DomElement *pElement);
       ~Tile(); 
@@ -425,20 +435,22 @@ namespace StoneRing {
 
       virtual void update();
 
-      virtual eDirectionBlock getDirectionBlock() const;
+      virtual int getDirectionBlock() const;
 
       virtual bool isTile() const;
 
 
     private:
-      SpriteRef * mpSprite;
-      Tilemap * mpTilemap;
+
+      enum eFlags { SPRITE = 1, HAS_AM = 2, HAS_COND = 4, BLK_NORTH = 8, BLK_SOUTH = 16, BLK_EAST = 32, BLK_WEST = 64 };
+
+      CL_Sprite *mpSprite;
+      SpriteRefOrTilemap mGraphic;
       ushort mZOrder;
       Condition *mpCondition;
       AttributeModifier *mpAM;
       ushort mX;
       ushort mY;
-      eDirectionBlock meDirectionBlock;
 
       char cFlags;
 
@@ -470,15 +482,18 @@ namespace StoneRing {
 
       virtual void update();
 
-      virtual eDirectionBlock getDirectionBlock() const;
+      virtual int getDirectionBlock() const;
 
       virtual bool isTile() const;
 
 
 
     private:
-      Tilemap * mpTilemap;
-      SpriteRef * mpSprite;
+
+      enum eFlags { SPRITE = 1, BLK_NORTH = 2, BLK_SOUTH = 4, BLK_EAST = 8, BLK_WEST = 16 };
+
+      CL_Sprite *mpSprite;
+      SpriteRefOrTilemap mGraphic;
       Event * mpEvent;
       
       ushort mStartX;
@@ -487,7 +502,7 @@ namespace StoneRing {
       uint mY;
       eMovementType meMovementType;
 
-      eDirectionBlock meDirectionBlock;
+      char cFlags;
       
     };
 
