@@ -28,7 +28,7 @@ bool Party::hasItem(Item::eItemType type, const std::string &item) const
 
 bool Party::hasItem(ItemRef *pItemRef)
 {
-	return hasItem ( pIemRef->getItemType(), pItemRef()->getItemName() );
+	return hasItem ( pItemRef->getItemType(), pItemRef->getItemName() );
 }
 
 bool Party::didEvent(const std::string &event) const

@@ -93,7 +93,7 @@
 	</tiles>
 	<mappableObjects>
 	
-		<mo name="Cat" type="npc" xpos="2" ypos="0">
+		<mo name="Cat" type="npc" xpos="2" ypos="0" movementType = "wander">
 			<spriteRef>Animals/Cat1</spriteRef>
 			<event name="CatMeow" triggerType="talk">
 				<say speaker="Cat">Meow</say>
@@ -102,7 +102,7 @@
 		</mo>
 		
 	
-		<mo name="Door" type="door" xpos="2" ypos="2" movementType="wander">
+		<mo name="Door" type="door" xpos="2" ypos="2">
 			<event name="enterOctaviaInn" triggerType="step">
 				<loadLevel name="ocataviaInn" startx="4" starty="3"/>
 			</event>

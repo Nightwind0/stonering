@@ -121,6 +121,25 @@ std::string Tilemap::getMapName() const
 
 SpriteRef::SpriteRef( CL_DomElement *pElement)
 {
+	meDirection = SPR_NONE;
+
+
+	CL_DomNamedNodeMap attributes = pElement->get_attributes();
+
+
+	
+	if(!attributes.get_named_item("direction").is_null())
+	{
+		std::string direction = attributes.get_named_item("direction").get_node_value();
+		
+		if(direction == "still") meDirection = SPR_STILL;
+		if(direction == "north") meDirection = SPR_NORTH;
+		if(direction == "west") meDirection = SPR_WEST;
+		if(direction == "south") meDirection = SPR_SOUTH;
+		if(direction == "east") meDirection = SPR_EAST;
+		
+	}
+
 	mRef = pElement->get_text();
 }
 
@@ -132,6 +151,12 @@ std::string SpriteRef::getRef() const
 {
 	return mRef;
 }
+
+SpriteRef::eDirection SpriteRef::getDirection() const
+{
+	return meDirection;
+}
+
 
  
 AttributeModifier::AttributeModifier (CL_DomElement *pElement)
@@ -1289,8 +1314,10 @@ bool Tile::isTile() const
 
  
  
-MappableObject::MappableObject(CL_DomElement *pElement):meMovementType(MOVEMENT_NONE),mpSprite(NULL)
+MappableObject::MappableObject(CL_DomElement *pElement):meMovementType(MOVEMENT_NONE)
 {
+
+	cFlags = 0;
 
 	std::cout << "READING A MO." << std::endl;
 
@@ -1308,12 +1335,13 @@ MappableObject::MappableObject(CL_DomElement *pElement):meMovementType(MOVEMENT_
 	else if (motype == "door") meType = DOOR;
 	else if (motype == "warp") meType = WARP;
 
+	meDirection = SpriteRef::SPR_NONE;
 
 	mStartX = atoi(attributes.get_named_item("xpos").get_node_value().c_str());
 	mStartY = atoi(attributes.get_named_item("ypos").get_node_value().c_str());
 
 	mX = mStartX * 32;
-	mY = mStartY *32;
+	mY = mStartY * 32;
 	
 	if(!attributes.get_named_item("movementType").is_null())
 	{
@@ -1340,13 +1368,14 @@ MappableObject::MappableObject(CL_DomElement *pElement):meMovementType(MOVEMENT_
 		{
 			GraphicsManager *GM = GraphicsManager::getInstance();
 
-			mGraphic.asSpriteRef = new SpriteRef ( &child );
+			SpriteRef * pRef = new SpriteRef ( &child );
 			cFlags |= SPRITE;
 
-			mpSprite = GM->createSprite ( mGraphic.asSpriteRef->getRef() );
+			mSprites[ pRef->getDirection() ]  = GM->createSprite ( pRef->getRef() );
 
 		        // Actually create the ref'd sprite here.
 			// And assign to mpSprite
+			meDirection = pRef->getDirection();
 
 		}
 		else if (child.get_node_name() == "event" )
@@ -1439,7 +1468,7 @@ void MappableObject::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicCont
 	if(isSprite())
 	{
 		update();
-		mpSprite->draw( dst, pGC );
+		mSprites[meDirection]->draw( dst, pGC );
 	}
 	else if( cFlags & TILEMAP )
 	{
@@ -1461,8 +1490,8 @@ void MappableObject::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicCont
 
 void MappableObject::update()
 {
-	if(mpSprite)
-		mpSprite->update();
+	if(isSprite())
+		mSprites[meDirection]->update();
 
 	switch(meMovementType)
 	{
