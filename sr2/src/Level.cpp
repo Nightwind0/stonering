@@ -1206,15 +1206,32 @@ Graphic::~Graphic()
 }
 
 
-DirectionBlock::DirectionBlock(CL_DomElement *pElement )
+DirectionBlock::DirectionBlock(CL_DomElement *pElement ):meDirectionBlock(0)
 {
+    CL_DomNamedNodeMap attributes = pElement->get_attributes();
+    
+    if(attributes.get_length() < 4) throw CL_Error("Error reading attributes in directionBlock");
+    
+    
+    bool north =  attributes.get_named_item("north").get_node_value() == "true";
+    bool south =  attributes.get_named_item("south").get_node_value() == "true";
+    bool east =   attributes.get_named_item("east").get_node_value() == "true";
+    bool west =   attributes.get_named_item("west").get_node_value() == "true";
+
+
+    if(north) meDirectionBlock |= DIR_NORTH;
+    if(south) meDirectionBlock |= DIR_SOUTH;
+    if(east) meDirectionBlock |= DIR_EAST;
+    if(west) meDirectionBlock |= DIR_WEST;
+
+
 }
 
 DirectionBlock::~DirectionBlock()
 {
 }
 
-eDirectionBlock DirectionBlock::getDirectionBlock() const
+int DirectionBlock::getDirectionBlock() const
 {
     return meDirectionBlock;
 }
@@ -1228,8 +1245,7 @@ bool Tile::isHot() const
 Tile::Tile(CL_DomElement *pElement):mpSprite(NULL),mpCondition(NULL), mpAM(NULL), mZOrder(0), cFlags(0)
 {
 
-    std::cout << "READING A TILE." << std::endl;
-
+   
     CL_DomNamedNodeMap attributes = pElement->get_attributes();
 
     if(attributes.get_length() < 2) throw CL_Error("Error reading attributes in tile");
@@ -1301,9 +1317,10 @@ Tile::Tile(CL_DomElement *pElement):mpSprite(NULL),mpCondition(NULL), mpAM(NULL)
 	{
 	    DirectionBlock block(&child);
 
-	    eDirectionBlock db = block.getDirectionBlock();
+	    int db = block.getDirectionBlock();
 
 	    // This is all done to make tile's take up less space in memory
+	    std::cout << "Tile Block = " << db << std::endl;
 			
 	    if(db & DIR_NORTH)
 		cFlags |= BLK_NORTH;
@@ -1609,7 +1626,7 @@ uint MappableObject::getY() const
 
 CL_Rect MappableObject::getRect()
 {
-    // HACKAROONIE! Needs to be width minus 1, height minus 1
+    // HACKAROONIE! Needs to be width , height 
     return CL_Rect(mX, mY, mX+ 32, mY + 32);
 }
 
@@ -1660,7 +1677,7 @@ void MappableObject::moveInCurrentDirection()
 	delay = 500;
 	break;
     case Movement::FAST:
-	delay = 250;
+	delay = 150;
 	break;
     }
 
@@ -2464,7 +2481,7 @@ void Level::loadTile ( CL_DomElement * tileElement)
     else
     {
 
-	std::cout << "Placing tile at : " << point.x << ',' << point.y << std::endl;
+
 		
 	mTileMap[ point.x ][point.y].push_back ( tile );
 

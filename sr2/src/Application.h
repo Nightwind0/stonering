@@ -46,10 +46,17 @@ class Level;
 
       bool mbDone;
 
+      int mSpeed;
+
       void setupClanLib();
       void teardownClanLib();
       void showRechargeableOnionSplash();
       void showIntro();
+
+
+      enum eDir{NORTH,SOUTH,EAST,WEST};
+
+      bool move(eDir dir, int times=1);
 
       /* SIGNALS */
       void onSignalQuit();

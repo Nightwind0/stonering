@@ -2,23 +2,1431 @@
 <!--DOCTYPE level SYSTEM "level.dtd" -->
 <level name="TestLevel">
 <!-- comments -->
-	<levelHeader music="Main" width="4" height="4"/>
+	<levelHeader music="Main" width="25" height="19"/>
 	<tiles>
-		<tile name="1" xpos="0" ypos="0" zorder="1">
+		<tile name="0,0" xpos="0" ypos="0">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
-		<tile name="2" xpos="0" ypos="1">
-			<tilemap mapname="wall1" mapx="3" mapy="1"/>
-			<directionBlock east="true" north="true" south="true" west="true"/>
-		</tile>
-		<tile name="3" xpos="0" ypos="2">
+		
+		<tile name="0,2" xpos="0" ypos="2">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
-		<tile name="" xpos="0" ypos="3">
+		<tile name="0,3" xpos="0" ypos="3">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
-		<tile name="4" xpos="1" ypos="0">
+		<tile name="0,4" xpos="0" ypos="4">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="0,5" xpos="0" ypos="5">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="0,6" xpos="0" ypos="6">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="0,7" xpos="0" ypos="7">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="0,8" xpos="0" ypos="8">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="0,9" xpos="0" ypos="9">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="0,10" xpos="0" ypos="10">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="0,11" xpos="0" ypos="11">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="0,12" xpos="0" ypos="12">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="0,13" xpos="0" ypos="13">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="0,14" xpos="0" ypos="14">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="0,15" xpos="0" ypos="15">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="0,16" xpos="0" ypos="16">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="0,17" xpos="0" ypos="17">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="0,18" xpos="0" ypos="18">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name=",1" xpos="0" ypos="1">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="1,2" xpos="1" ypos="2">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="1,3" xpos="1" ypos="3">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="1,4" xpos="1" ypos="4">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="1,5" xpos="1" ypos="5">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="1,6" xpos="1" ypos="6">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="1,7" xpos="1" ypos="7">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="1,8" xpos="1" ypos="8">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="1,9" xpos="1" ypos="9">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="1,10" xpos="1" ypos="10">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="1,11" xpos="1" ypos="11">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="1,12" xpos="1" ypos="12">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="1,13" xpos="1" ypos="13">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="1,14" xpos="1" ypos="14">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="1,15" xpos="1" ypos="15">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="1,16" xpos="1" ypos="16">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="1,17" xpos="1" ypos="17">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="1,18" xpos="1" ypos="18">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="2,0" xpos="2" ypos="0">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="2,1" xpos="2" ypos="1">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="2,2" xpos="2" ypos="2">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="2,3" xpos="2" ypos="3">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="2,4" xpos="2" ypos="4">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="2,5" xpos="2" ypos="5">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="2,6" xpos="2" ypos="6">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="2,7" xpos="2" ypos="7">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="2,8" xpos="2" ypos="8">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="2,9" xpos="2" ypos="9">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="2,10" xpos="2" ypos="10">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="2,11" xpos="2" ypos="11">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="2,12" xpos="2" ypos="12">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="2,13" xpos="2" ypos="13">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="2,14" xpos="2" ypos="14">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="2,15" xpos="2" ypos="15">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="2,16" xpos="2" ypos="16">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="2,17" xpos="2" ypos="17">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="2,18" xpos="2" ypos="18">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="3,0" xpos="3" ypos="0">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="3,1" xpos="3" ypos="1">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="3,2" xpos="3" ypos="2">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="3,3" xpos="3" ypos="3">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="3,4" xpos="3" ypos="4">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="3,5" xpos="3" ypos="5">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="3,6" xpos="3" ypos="6">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="3,7" xpos="3" ypos="7">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="3,8" xpos="3" ypos="8">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="3,9" xpos="3" ypos="9">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="3,10" xpos="3" ypos="10">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="3,11" xpos="3" ypos="11">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="3,12" xpos="3" ypos="12">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="3,13" xpos="3" ypos="13">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="3,14" xpos="3" ypos="14">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="3,15" xpos="3" ypos="15">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="3,16" xpos="3" ypos="16">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="3,17" xpos="3" ypos="17">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="3,18" xpos="3" ypos="18">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="4,0" xpos="4" ypos="0">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="4,1" xpos="4" ypos="1">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="4,2" xpos="4" ypos="2">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="4,3" xpos="4" ypos="3">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="4,4" xpos="4" ypos="4">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="4,5" xpos="4" ypos="5">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="4,6" xpos="4" ypos="6">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="4,7" xpos="4" ypos="7">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="4,8" xpos="4" ypos="8">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="4,9" xpos="4" ypos="9">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="4,10" xpos="4" ypos="10">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="4,11" xpos="4" ypos="11">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="4,12" xpos="4" ypos="12">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="4,13" xpos="4" ypos="13">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="4,14" xpos="4" ypos="14">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="4,15" xpos="4" ypos="15">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="4,16" xpos="4" ypos="16">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="4,17" xpos="4" ypos="17">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="4,18" xpos="4" ypos="18">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="5,0" xpos="5" ypos="0">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="5,1" xpos="5" ypos="1">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="5,2" xpos="5" ypos="2">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="5,3" xpos="5" ypos="3">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="5,4" xpos="5" ypos="4">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="5,5" xpos="5" ypos="5">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="5,6" xpos="5" ypos="6">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="5,7" xpos="5" ypos="7">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="5,8" xpos="5" ypos="8">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="5,9" xpos="5" ypos="9">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="5,10" xpos="5" ypos="10">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="5,11" xpos="5" ypos="11">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="5,12" xpos="5" ypos="12">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="5,13" xpos="5" ypos="13">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="5,14" xpos="5" ypos="14">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="5,15" xpos="5" ypos="15">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="5,16" xpos="5" ypos="16">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="5,17" xpos="5" ypos="17">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="5,18" xpos="5" ypos="18">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="6,0" xpos="6" ypos="0">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="6,1" xpos="6" ypos="1">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="6,2" xpos="6" ypos="2">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="6,3" xpos="6" ypos="3">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="6,4" xpos="6" ypos="4">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="6,5" xpos="6" ypos="5">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="6,6" xpos="6" ypos="6">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="6,7" xpos="6" ypos="7">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="6,8" xpos="6" ypos="8">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="6,9" xpos="6" ypos="9">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="6,10" xpos="6" ypos="10">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="6,11" xpos="6" ypos="11">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="6,12" xpos="6" ypos="12">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="6,13" xpos="6" ypos="13">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="6,14" xpos="6" ypos="14">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="6,15" xpos="6" ypos="15">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="6,16" xpos="6" ypos="16">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="6,17" xpos="6" ypos="17">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="6,18" xpos="6" ypos="18">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="7,0" xpos="7" ypos="0">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="7,1" xpos="7" ypos="1">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="7,2" xpos="7" ypos="2">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="7,3" xpos="7" ypos="3">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="7,4" xpos="7" ypos="4">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="7,5" xpos="7" ypos="5">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="7,6" xpos="7" ypos="6">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="7,7" xpos="7" ypos="7">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="7,8" xpos="7" ypos="8">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="7,9" xpos="7" ypos="9">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="7,10" xpos="7" ypos="10">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="7,11" xpos="7" ypos="11">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="7,12" xpos="7" ypos="12">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="7,13" xpos="7" ypos="13">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="7,14" xpos="7" ypos="14">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="7,15" xpos="7" ypos="15">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="7,16" xpos="7" ypos="16">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="7,17" xpos="7" ypos="17">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="7,18" xpos="7" ypos="18">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="8,0" xpos="8" ypos="0">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="8,1" xpos="8" ypos="1">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="8,2" xpos="8" ypos="2">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="8,3" xpos="8" ypos="3">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="8,4" xpos="8" ypos="4">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="8,5" xpos="8" ypos="5">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="8,6" xpos="8" ypos="6">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="8,7" xpos="8" ypos="7">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="8,8" xpos="8" ypos="8">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="8,9" xpos="8" ypos="9">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="8,10" xpos="8" ypos="10">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="8,11" xpos="8" ypos="11">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="8,12" xpos="8" ypos="12">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="8,13" xpos="8" ypos="13">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="8,14" xpos="8" ypos="14">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="8,15" xpos="8" ypos="15">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="8,16" xpos="8" ypos="16">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="8,17" xpos="8" ypos="17">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="8,18" xpos="8" ypos="18">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="9,0" xpos="9" ypos="0">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="9,1" xpos="9" ypos="1">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="9,2" xpos="9" ypos="2">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="9,3" xpos="9" ypos="3">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="9,4" xpos="9" ypos="4">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="9,5" xpos="9" ypos="5">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="9,6" xpos="9" ypos="6">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="9,7" xpos="9" ypos="7">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="9,8" xpos="9" ypos="8">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="9,9" xpos="9" ypos="9">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="9,10" xpos="9" ypos="10">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="9,11" xpos="9" ypos="11">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="9,12" xpos="9" ypos="12">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="9,13" xpos="9" ypos="13">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="9,14" xpos="9" ypos="14">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="9,15" xpos="9" ypos="15">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="9,16" xpos="9" ypos="16">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="9,17" xpos="9" ypos="17">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="9,18" xpos="9" ypos="18">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="10,0" xpos="10" ypos="0">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="10,1" xpos="10" ypos="1">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="10,2" xpos="10" ypos="2">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="10,3" xpos="10" ypos="3">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="10,4" xpos="10" ypos="4">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="10,5" xpos="10" ypos="5">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="10,6" xpos="10" ypos="6">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="10,7" xpos="10" ypos="7">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="10,8" xpos="10" ypos="8">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="10,9" xpos="10" ypos="9">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="10,10" xpos="10" ypos="10">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="10,11" xpos="10" ypos="11">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="10,12" xpos="10" ypos="12">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="10,13" xpos="10" ypos="13">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="10,14" xpos="10" ypos="14">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="10,15" xpos="10" ypos="15">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="10,16" xpos="10" ypos="16">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="10,17" xpos="10" ypos="17">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="10,18" xpos="10" ypos="18">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="11,0" xpos="11" ypos="0">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="11,1" xpos="11" ypos="1">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="11,2" xpos="11" ypos="2">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="11,3" xpos="11" ypos="3">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="11,4" xpos="11" ypos="4">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="11,5" xpos="11" ypos="5">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="11,6" xpos="11" ypos="6">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="11,7" xpos="11" ypos="7">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="11,8" xpos="11" ypos="8">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="11,9" xpos="11" ypos="9">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="11,10" xpos="11" ypos="10">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="11,11" xpos="11" ypos="11">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="11,12" xpos="11" ypos="12">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="11,13" xpos="11" ypos="13">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="11,14" xpos="11" ypos="14">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="11,15" xpos="11" ypos="15">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="11,16" xpos="11" ypos="16">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="11,17" xpos="11" ypos="17">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="11,18" xpos="11" ypos="18">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="12,0" xpos="12" ypos="0">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="12,1" xpos="12" ypos="1">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="12,2" xpos="12" ypos="2">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="12,3" xpos="12" ypos="3">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="12,4" xpos="12" ypos="4">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="12,5" xpos="12" ypos="5">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="12,6" xpos="12" ypos="6">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="12,7" xpos="12" ypos="7">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="12,8" xpos="12" ypos="8">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="12,9" xpos="12" ypos="9">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="12,10" xpos="12" ypos="10">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="12,11" xpos="12" ypos="11">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="12,12" xpos="12" ypos="12">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="12,13" xpos="12" ypos="13">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="12,14" xpos="12" ypos="14">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="12,15" xpos="12" ypos="15">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="12,16" xpos="12" ypos="16">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="12,17" xpos="12" ypos="17">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="12,18" xpos="12" ypos="18">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="13,0" xpos="13" ypos="0">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="13,1" xpos="13" ypos="1">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="13,2" xpos="13" ypos="2">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="13,3" xpos="13" ypos="3">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="13,4" xpos="13" ypos="4">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="13,5" xpos="13" ypos="5">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="13,6" xpos="13" ypos="6">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="13,7" xpos="13" ypos="7">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="13,8" xpos="13" ypos="8">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="13,9" xpos="13" ypos="9">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="13,10" xpos="13" ypos="10">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="13,11" xpos="13" ypos="11">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="13,12" xpos="13" ypos="12">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="13,13" xpos="13" ypos="13">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="13,14" xpos="13" ypos="14">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="13,15" xpos="13" ypos="15">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="13,16" xpos="13" ypos="16">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="13,17" xpos="13" ypos="17">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="13,18" xpos="13" ypos="18">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="14,0" xpos="14" ypos="0">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="14,1" xpos="14" ypos="1">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="14,2" xpos="14" ypos="2">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="14,3" xpos="14" ypos="3">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="14,4" xpos="14" ypos="4">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="14,5" xpos="14" ypos="5">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="14,6" xpos="14" ypos="6">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="14,7" xpos="14" ypos="7">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="14,8" xpos="14" ypos="8">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="14,9" xpos="14" ypos="9">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="14,10" xpos="14" ypos="10">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="14,11" xpos="14" ypos="11">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="14,12" xpos="14" ypos="12">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="14,13" xpos="14" ypos="13">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="14,14" xpos="14" ypos="14">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="14,15" xpos="14" ypos="15">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="14,16" xpos="14" ypos="16">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="14,17" xpos="14" ypos="17">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="14,18" xpos="14" ypos="18">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="15,0" xpos="15" ypos="0">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="15,1" xpos="15" ypos="1">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="15,2" xpos="15" ypos="2">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="15,3" xpos="15" ypos="3">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="15,4" xpos="15" ypos="4">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="15,5" xpos="15" ypos="5">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="15,6" xpos="15" ypos="6">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="15,7" xpos="15" ypos="7">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="15,8" xpos="15" ypos="8">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="15,9" xpos="15" ypos="9">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="15,10" xpos="15" ypos="10">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="15,11" xpos="15" ypos="11">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="15,12" xpos="15" ypos="12">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="15,13" xpos="15" ypos="13">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="15,14" xpos="15" ypos="14">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="15,15" xpos="15" ypos="15">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="15,16" xpos="15" ypos="16">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="15,17" xpos="15" ypos="17">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="15,18" xpos="15" ypos="18">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="16,0" xpos="16" ypos="0">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="16,1" xpos="16" ypos="1">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="16,2" xpos="16" ypos="2">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="16,3" xpos="16" ypos="3">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="16,4" xpos="16" ypos="4">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="16,5" xpos="16" ypos="5">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="16,6" xpos="16" ypos="6">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="16,7" xpos="16" ypos="7">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="16,8" xpos="16" ypos="8">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="16,9" xpos="16" ypos="9">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="16,10" xpos="16" ypos="10">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="16,11" xpos="16" ypos="11">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="16,12" xpos="16" ypos="12">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="16,13" xpos="16" ypos="13">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="16,14" xpos="16" ypos="14">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="16,15" xpos="16" ypos="15">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="16,16" xpos="16" ypos="16">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="16,17" xpos="16" ypos="17">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="16,18" xpos="16" ypos="18">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="17,0" xpos="17" ypos="0">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="17,1" xpos="17" ypos="1">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="17,2" xpos="17" ypos="2">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="17,3" xpos="17" ypos="3">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="17,4" xpos="17" ypos="4">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="17,5" xpos="17" ypos="5">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="17,6" xpos="17" ypos="6">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="17,7" xpos="17" ypos="7">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="17,8" xpos="17" ypos="8">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="17,9" xpos="17" ypos="9">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="17,10" xpos="17" ypos="10">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="17,11" xpos="17" ypos="11">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="17,12" xpos="17" ypos="12">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="17,13" xpos="17" ypos="13">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="17,14" xpos="17" ypos="14">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="17,15" xpos="17" ypos="15">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="17,16" xpos="17" ypos="16">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="17,17" xpos="17" ypos="17">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="17,18" xpos="17" ypos="18">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="18,0" xpos="18" ypos="0">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="18,1" xpos="18" ypos="1">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="18,2" xpos="18" ypos="2">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="18,3" xpos="18" ypos="3">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="18,4" xpos="18" ypos="4">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="18,5" xpos="18" ypos="5">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="18,6" xpos="18" ypos="6">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="18,7" xpos="18" ypos="7">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="18,8" xpos="18" ypos="8">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="18,9" xpos="18" ypos="9">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="18,10" xpos="18" ypos="10">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="18,11" xpos="18" ypos="11">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="18,12" xpos="18" ypos="12">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="18,13" xpos="18" ypos="13">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="18,14" xpos="18" ypos="14">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="18,15" xpos="18" ypos="15">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="18,16" xpos="18" ypos="16">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="18,17" xpos="18" ypos="17">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="18,18" xpos="18" ypos="18">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="19,0" xpos="19" ypos="0">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="19,1" xpos="19" ypos="1">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="19,2" xpos="19" ypos="2">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="19,3" xpos="19" ypos="3">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="19,4" xpos="19" ypos="4">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="19,5" xpos="19" ypos="5">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="19,6" xpos="19" ypos="6">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="19,7" xpos="19" ypos="7">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="19,8" xpos="19" ypos="8">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="19,9" xpos="19" ypos="9">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="19,10" xpos="19" ypos="10">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="19,11" xpos="19" ypos="11">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="19,12" xpos="19" ypos="12">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="19,13" xpos="19" ypos="13">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="19,14" xpos="19" ypos="14">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="19,15" xpos="19" ypos="15">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="19,16" xpos="19" ypos="16">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="19,17" xpos="19" ypos="17">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="19,18" xpos="19" ypos="18">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="20,0" xpos="20" ypos="0">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="20,1" xpos="20" ypos="1">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="20,2" xpos="20" ypos="2">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="20,3" xpos="20" ypos="3">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="20,4" xpos="20" ypos="4">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="20,5" xpos="20" ypos="5">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="20,6" xpos="20" ypos="6">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="20,7" xpos="20" ypos="7">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="20,8" xpos="20" ypos="8">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="20,9" xpos="20" ypos="9">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="20,10" xpos="20" ypos="10">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="20,11" xpos="20" ypos="11">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="20,12" xpos="20" ypos="12">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="20,13" xpos="20" ypos="13">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="20,14" xpos="20" ypos="14">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="20,15" xpos="20" ypos="15">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="20,16" xpos="20" ypos="16">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="20,17" xpos="20" ypos="17">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="20,18" xpos="20" ypos="18">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="21,0" xpos="21" ypos="0">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="21,1" xpos="21" ypos="1">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="21,2" xpos="21" ypos="2">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="21,3" xpos="21" ypos="3">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="21,4" xpos="21" ypos="4">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="21,5" xpos="21" ypos="5">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="21,6" xpos="21" ypos="6">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="21,7" xpos="21" ypos="7">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="21,8" xpos="21" ypos="8">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="21,9" xpos="21" ypos="9">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="21,10" xpos="21" ypos="10">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="21,11" xpos="21" ypos="11">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="21,12" xpos="21" ypos="12">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="21,13" xpos="21" ypos="13">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="21,14" xpos="21" ypos="14">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="21,15" xpos="21" ypos="15">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="21,16" xpos="21" ypos="16">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="21,17" xpos="21" ypos="17">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="21,18" xpos="21" ypos="18">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="22,0" xpos="22" ypos="0">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="22,1" xpos="22" ypos="1">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="22,2" xpos="22" ypos="2">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="22,3" xpos="22" ypos="3">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="22,4" xpos="22" ypos="4">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="22,5" xpos="22" ypos="5">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="22,6" xpos="22" ypos="6">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="22,7" xpos="22" ypos="7">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="22,8" xpos="22" ypos="8">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="22,9" xpos="22" ypos="9">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="22,10" xpos="22" ypos="10">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="22,11" xpos="22" ypos="11">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="22,12" xpos="22" ypos="12">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="22,13" xpos="22" ypos="13">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="22,14" xpos="22" ypos="14">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="22,15" xpos="22" ypos="15">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="22,16" xpos="22" ypos="16">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="22,17" xpos="22" ypos="17">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="22,18" xpos="22" ypos="18">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="23,0" xpos="23" ypos="0">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="23,1" xpos="23" ypos="1">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="23,2" xpos="23" ypos="2">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="23,3" xpos="23" ypos="3">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="23,4" xpos="23" ypos="4">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="23,5" xpos="23" ypos="5">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="23,6" xpos="23" ypos="6">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="23,7" xpos="23" ypos="7">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="23,8" xpos="23" ypos="8">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="23,9" xpos="23" ypos="9">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="23,10" xpos="23" ypos="10">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="23,11" xpos="23" ypos="11">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="23,12" xpos="23" ypos="12">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="23,13" xpos="23" ypos="13">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="23,14" xpos="23" ypos="14">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="23,15" xpos="23" ypos="15">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="23,16" xpos="23" ypos="16">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="23,17" xpos="23" ypos="17">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="23,18" xpos="23" ypos="18">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="24,0" xpos="24" ypos="0">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="24,1" xpos="24" ypos="1">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="24,2" xpos="24" ypos="2">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="24,3" xpos="24" ypos="3">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="24,4" xpos="24" ypos="4">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="24,5" xpos="24" ypos="5">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="24,6" xpos="24" ypos="6">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="24,7" xpos="24" ypos="7">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="24,8" xpos="24" ypos="8">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="24,9" xpos="24" ypos="9">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="24,10" xpos="24" ypos="10">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="24,11" xpos="24" ypos="11">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="24,12" xpos="24" ypos="12">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="24,13" xpos="24" ypos="13">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="24,14" xpos="24" ypos="14">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="24,15" xpos="24" ypos="15">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="24,16" xpos="24" ypos="16">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="24,17" xpos="24" ypos="17">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="24,18" xpos="24" ypos="18">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile name="2" xpos="5" ypos="5" zorder="1">
+			<tilemap mapname="wall1" mapx="4" mapy="1"/>
+			<directionBlock east="true" north="false" south="true" west="true"/>
 		</tile>
 		<tile name="5" xpos="1" ypos="1" hot="true">
 			<!-- Here's an animated sprite tile instead of a regular tile -->
@@ -32,7 +1440,7 @@
 				
 				</condition>
 			</attributeModifier>
-	
+		
 		</tile>
 		<tile name="5" xpos="1" ypos="0" hot="true">
 			<!-- Here's an animated sprite tile instead of a regular tile -->
@@ -46,47 +1454,9 @@
 				
 				</condition>
 			</attributeModifier>
-	
+		
 		</tile>
-		<tile name="6" xpos="1" ypos="2">
-			<tilemap mapname="grass" mapx="4" mapy="1"/>
-		</tile>
-		<tile name="" xpos="1" ypos="3">
-			<tilemap mapname="grass" mapx="4" mapy="1"/>
-		</tile>
-		<tile name="7" xpos="2" ypos="0">
-			<tilemap mapname="grass" mapx="4" mapy="1"/>
-		</tile>
-		<tile name="8" xpos="2" ypos="1">
-			<tilemap mapname="grass" mapx="4" mapy="1"/>
-		</tile>
-		<tile name="9" xpos="2" ypos="2" floater="true">
-			<tilemap mapname="wall1" mapx="2" mapy="1" />
-		</tile>
-		<tile name="" xpos="2" ypos="3">
-			<tilemap mapname="wall1" mapx="0" mapy="0"/>
-		</tile>
-		<tile name="" xpos="3" ypos="0" >
-			<tilemap mapname="grass" mapx="4" mapy="1" />
-		</tile>
-		<tile name="" xpos="3" ypos="1" >
-			<tilemap mapname="grass" mapx="4" mapy="1" />
-		</tile>	
-		<tile name="" xpos="3" ypos="2" >
-			<tilemap mapname="grass" mapx="3" mapy="9" />
-		</tile>
-		<tile name="" xpos="3" ypos="2" zorder="1">
-			<tilemap mapname="grass" mapx="2" mapy="0"/>
-		</tile>
-		<tile name="" xpos="3" ypos="3">
-			<tilemap mapname="grass" mapx="2" mapy="2" />
-		</tile>
-		<tile name="" xpos="1" ypos="1">
-			<tilemap mapname="grass" mapx="2" mapy="2" />
-		</tile>
-		<tile name="" xpos="2" ypos="2">
-			<tilemap mapname="grass" mapx="1" mapy="1" />
-		</tile>
+
 		
 		<!-- This tile only appears after the player made the bridge -->
 		<!-- It replaces the previously specified water tile -->
@@ -98,21 +1468,21 @@
 		</tile>
 	</tiles>
 	<mappableObjects>
-	
+		
 		<mo name="Cat" type="npc" xpos="2" ypos="0" size="small" solid="true">
-			<spriteRef direction = "south">Animals/Cat1s</spriteRef>
-			<spriteRef direction = "north">Animals/Cat1n</spriteRef>
-			<spriteRef direction = "east">Animals/Cat1e</spriteRef>
-			<spriteRef direction = "west">Animals/Cat1w</spriteRef>
-			<spriteRef direction = "still">Animals/Cat1s</spriteRef>
+			<spriteRef direction="south">Animals/Cat1s</spriteRef>
+			<spriteRef direction="north">Animals/Cat1n</spriteRef>
+			<spriteRef direction="east">Animals/Cat1e</spriteRef>
+			<spriteRef direction="west">Animals/Cat1w</spriteRef>
+			<spriteRef direction="still">Animals/Cat1s</spriteRef>
 			<event name="CatMeow" triggerType="talk">
-				<playSound>Meow</playSound>	
+				<playSound>Meow</playSound>
 				<say speaker="Cat">Meow</say>
 			</event>
-			<movement movementType = "wander" speed="fast"/>
+			<movement movementType="wander" speed="fast"/>
 		</mo>
-		
 	
+		
 		<mo name="Door" type="door" xpos="2" ypos="2" size="small">
 			<event name="enterOctaviaInn" triggerType="step">
 				<loadLevel name="ocataviaInn" startx="4" starty="3"/>
@@ -135,15 +1505,15 @@
 									</hasItem>
 								</or>
 							</operator>
-					
+						
 						</and>
-					
 				
+					
 					</operator>
 				</condition>
 				<!-- then mordus dances -->
 				<playAnimation>mordusDances</playAnimation>
-		
+			
 			</event>
 		</mo>
 	</mappableObjects>
