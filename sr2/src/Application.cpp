@@ -185,7 +185,11 @@ int Application::main(int argc, char ** argv)
 		
 	mpResources = new CL_ResourceManager ( "Media/resources.xml" );
 
+#ifdef NDEBUG
 	std::string name = CL_String::load("Configuration/name", mpResources);
+#else
+	std::string name = CL_String::load("Configuration/name", mpResources) + " (DEBUG)";
+#endif
 	std::string startinglevel = CL_String::load("Game/StartLevel",mpResources);
 	mpWindow  = new CL_DisplayWindow(name, WINDOW_WIDTH, WINDOW_HEIGHT);
 		
@@ -226,7 +230,7 @@ int Application::main(int argc, char ** argv)
 	    mpWindow->get_gc()->pop_cliprect();
 
 		    
-		    
+	
 	    CL_Display::flip();
 	    CL_System::keep_alive();
 	}
