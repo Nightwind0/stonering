@@ -4,6 +4,7 @@
 #include "editor.h"
 #include "IApplication.h"
 #include "EditableLevel.h"
+#include "filedialog.h"
 
 using namespace StoneRing;
 
@@ -145,19 +146,21 @@ int EditorMain::main(int argc, char **argv)
 
 			list<string> tilemapnames = tsResources->get_all_resources("Tilemaps");
 
+
+
 			list<string> tempsets;
 
 			string menutileset;
 
-			while(!tilemapnames.empty())
+			for(list<string>::iterator iter = tilemapnames.begin(); iter != tilemapnames.end(); iter++)
 			{
-				menutileset = "TileSet/" + tilemapnames.front();
+				menutileset = "TileSet/" + *iter;
 				menu.create_item(menutileset);
 				
-				slots.connect(menu.get_node(menutileset)->sig_clicked(), this, &EditorMain::on_tileset_change, tilemapnames.front());
+				slots.connect(menu.get_node(menutileset)->sig_clicked(), this, &EditorMain::on_tileset_change, *iter);
 
-				tempsets.push_back(tilemapnames.front());
-				tilemapnames.pop_front();
+				tempsets.push_back(*iter);
+				
 			}
 			tilemapnames = tempsets;
 
@@ -235,14 +238,18 @@ cout << "all the creation stuff completed. about to run it." << endl;
 
 	void EditorMain::on_save()
 	{
-		string filename = CL_FileDialog::save("", "*.xml", gui_manager);
-		cout << filename << endl;
-		map->save_Level(filename);
+	    string filename = SR_FileDialog::open("", "*.xml", gui_manager);;  //= SR_FileDialog::save("", "*.xml", gui_manager);
+//	    SR_FileDialog filedialog("Save File", "", "*.xml", map);
+//	    filedialog.run();
+
+	    //    filename = filedialog.get_path() + filedialog.get_file();
+	    cout << filename << endl;
+	    map->save_Level(filename);
 	}
 
 	void EditorMain::on_load()
 	{
-		string filename = CL_FileDialog::open("", "*.xml", gui_manager);
+		string filename = SR_FileDialog::open("", "*.xml", gui_manager);
 
 		cout << filename << endl;
 /**/

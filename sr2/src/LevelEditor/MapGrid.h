@@ -14,7 +14,7 @@ using namespace std;
 
 
 
-class MapGrid : CL_Component
+class MapGrid : public CL_Component
 {
 public:
 		MapGrid(CL_Rect setrect, CL_Component *parent, CL_GraphicContext *mgGC, TileSelector *TS);
