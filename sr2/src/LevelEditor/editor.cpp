@@ -184,7 +184,7 @@ int EditorMain::main(int argc, char **argv)
 				gui.show();
 
 				CL_Rect dst(10,30,min((unsigned int)500,mpLevel->getWidth()*32), min((unsigned int)590,mpLevel->getWidth()*32));
-				CL_Rect src = dst;
+				CL_Rect src(0,0,dst.get_width(),dst.get_height());
 
 				window.get_gc()->push_cliprect( dst );
 
