@@ -256,16 +256,15 @@ void MapGrid::on_setHot(const CL_InputEvent &event)
 			if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ))
 			{
 				// Anti-Mode.  UNset the value if its set.
-				std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
+				//std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
 
-
+				mgLevel->setHotAt(mgX, mgY, false);
 				
-
 			}
 			else
 			{
 				// Default mode is set mode
-				
+				mgLevel->setHotAt(mgX, mgY, true);
 			}
 
 		}
@@ -292,15 +291,15 @@ void MapGrid::on_setNorth(const CL_InputEvent &event)
 			if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ))
 			{
 				// Anti-Mode.  UNset the value if its set.
-				std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
+				//std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
 
-
+				mgLevel->setDirectionBlockAt(mgX, mgY, DIR_NORTH, false);
 				
-
 			}
 			else
 			{
 				// Default mode is set mode
+				mgLevel->setDirectionBlockAt(mgX, mgY, DIR_NORTH, true);
 				
 			}
 
@@ -328,16 +327,15 @@ void MapGrid::on_setSouth(const CL_InputEvent &event)
 			if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ))
 			{
 				// Anti-Mode.  UNset the value if its set.
-				std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
+				//std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
 
-
+				mgLevel->setDirectionBlockAt(mgX, mgY, DIR_SOUTH, false);
 				
-
 			}
 			else
 			{
 				// Default mode is set mode
-				
+				mgLevel->setDirectionBlockAt(mgX, mgY, DIR_SOUTH, true);
 			}
 
 		}
@@ -364,16 +362,15 @@ void MapGrid::on_setEast(const CL_InputEvent &event)
 			if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ))
 			{
 				// Anti-Mode.  UNset the value if its set.
-				std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
+				//std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
 
-
-				
-
+				mgLevel->setDirectionBlockAt(mgX, mgY, DIR_EAST, false);
+		
 			}
 			else
 			{
 				// Default mode is set mode
-				
+				mgLevel->setDirectionBlockAt(mgX, mgY, DIR_EAST, true);
 			}
 
 		}
@@ -400,16 +397,15 @@ void MapGrid::on_setWest(const CL_InputEvent &event)
 			if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ))
 			{
 				// Anti-Mode.  UNset the value if its set.
-				std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
+				//std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
 
-
+				mgLevel->setDirectionBlockAt(mgX, mgY, DIR_WEST, false);
 				
-
 			}
 			else
 			{
 				// Default mode is set mode
-				
+				mgLevel->setDirectionBlockAt(mgX, mgY, DIR_WEST, true);
 			}
 
 		}
