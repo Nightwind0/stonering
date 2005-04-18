@@ -276,7 +276,7 @@ bool Application::move(eDir dir, int times)
 
 	    mPlayerDir = dir;
 
-	    mpLevel->step(nX,nY);
+	    mpLevel->step(CL_Rect(nX,nY,nX+64,nY+64));
 
 	}
 	else return false;

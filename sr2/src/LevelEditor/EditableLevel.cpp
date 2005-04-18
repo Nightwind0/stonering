@@ -171,6 +171,59 @@ void EditableTile::setDirectionBlock (int dirBlock )
 }
     
 
+void EditableTile::setNotHot()
+{
+    cFlags &= ~HOT;
+}
+
+void EditableTile::setNorthBlock(bool bOn)
+{
+    if(bOn)
+    {
+	cFlags |= BLK_NORTH;
+    }
+    else
+    {
+	cFlags &= ~BLK_NORTH;
+    }
+}
+
+void EditableTile::setSouthBlock(bool bOn)
+{
+    if(bOn)
+    {
+	cFlags |= BLK_SOUTH;
+    }
+    else
+    {
+	cFlags &= ~BLK_SOUTH;
+    }
+}
+
+void EditableTile::setEastBlock(bool bOn)
+{
+    if(bOn)
+    {
+	cFlags |= BLK_EAST;
+    }
+    else
+    {
+	cFlags &= ~BLK_EAST;
+    }
+}
+
+void EditableTile::setWestBlock(bool bOn)
+{
+    if(bOn)
+    {
+	cFlags |= BLK_WEST;
+    }
+    else
+    {
+	cFlags &= ~BLK_WEST;
+    }
+}
+
 
 
 
@@ -281,3 +334,47 @@ std::list<Tile*> EditableLevel::getTilesAt(uint levelX, uint levelY) const
     
 
 
+// Operates on ALL tiles at a location. For finer control, one must operate on the tiles individually.
+// bOn of true turns the direction block on for the specified direction,
+// false will turn it off.
+void EditableLevel::setDirectionBlockAt(uint levelX, uint levelY, eDirectionBlock dir, bool bOn)
+{
+    std::list<Tile*> tiles = getTilesAt(levelX,levelY);
+
+    for(std::list<Tile*>::iterator iter = tiles.begin();
+	iter != tiles.end();
+	iter++)
+    {
+	switch(dir)
+	{
+	case DIR_NORTH:
+	    dynamic_cast<EditableTile*>(*iter)->setNorthBlock(bOn);
+	    break;
+	case DIR_SOUTH:
+	    dynamic_cast<EditableTile*>(*iter)->setSouthBlock(bOn);
+	    break;
+	case DIR_EAST:
+	    dynamic_cast<EditableTile*>(*iter)->setEastBlock(bOn);
+	    break;
+	case DIR_WEST:
+	    dynamic_cast<EditableTile*>(*iter)->setWestBlock(bOn);
+
+	    break;
+	    
+	}
+    }
+}
+
+void EditableLevel::setHotAt(uint levelX, uint levelY, bool bHot)
+{
+    std::list<Tile*> tiles = getTilesAt(levelX,levelY);
+
+    for(std::list<Tile*>::iterator iter = tiles.begin();
+	iter != tiles.end();
+	iter++)
+    {
+	if(bHot)
+	    dynamic_cast<EditableTile*>(*iter)->setIsHot();
+	else dynamic_cast<EditableTile*>(*iter)->setNotHot();
+    }
+}

@@ -82,10 +82,17 @@ class EditableTile : public StoneRing::Tile
     void setSpriteRef ( const std::string &spriteRef, StoneRing::SpriteRef::eDirection direction );
 
 
+
+
     void setIsFloater();
     void setIsHot();
     void setDirectionBlock (int dirBlock );
-    
+
+    void setNorthBlock(bool bOn);
+    void setSouthBlock(bool bOn);
+    void setEastBlock(bool bOn);
+    void setWestBlock(bool bOn);
+    void setNotHot();
 
  private:
 };
@@ -104,6 +111,14 @@ class EditableLevel : public StoneRing::Level
 
 
     std::list<Tile*> getTilesAt(uint levelX, uint levelY) const;
+
+
+    // Operates on ALL tiles at a location. For finer control, one must operate on the tiles individually.
+    // bOn of true turns the direction block on for the specified direction,
+    // false will turn it off.
+    void setDirectionBlockAt(uint levelX, uint levelY, eDirectionBlock dir, bool bOn);
+
+    void setHotAt(uint levelX, uint levelY, bool bHot);
 		
     void addTile ( Tile * pTile );
     void removeTile ( Tile * pTile );
@@ -112,7 +127,7 @@ class EditableLevel : public StoneRing::Level
     void addColumns(int columns);
 
     void setName(const std::string &name);
-	void setMusic(const std::string &music);
+    void setMusic(const std::string &music);
 
           
  protected:
