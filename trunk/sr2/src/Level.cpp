@@ -3248,8 +3248,9 @@ bool Level::canMove(const CL_Rect &currently, const CL_Rect & destination, bool 
 }
 
 // All AM's from tiles fire, as do any step events
-void Level::step(uint levelX, uint levelY)
+void Level::step(const CL_Rect &dest)
 {
+    
 }
       
 // Any talk events fire (assuming they meet conditions)
