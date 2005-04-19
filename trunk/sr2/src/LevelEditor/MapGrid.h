@@ -42,6 +42,8 @@ public:
 		void toggle_hot();
 		void toggle_blocks();
 
+		string getCurrentTool(){return cur_tool;}
+
 private:
 
 		//this should probably be an enum.
