@@ -16,6 +16,7 @@
 #include "TileSelector.h"
 #include "MapGrid.h"
 #include "GridPoint.h"
+#include "Infobar.h"
 #include "IApplication.h"
 #include "IParty.h"
 #include "Item.h"
@@ -111,6 +112,9 @@ private:
 
 	TileSelector* tiles;
 	MapGrid* map;
+
+	//CL_InputBox* info;
+	Infobar* info;
 
 	CL_GraphicContext *gc;
 

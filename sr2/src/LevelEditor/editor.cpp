@@ -13,6 +13,7 @@ EditorMain::EditorMain()
 	mpParty = new EditorParty();
 	mpLevelFactory = new EditableLevelFactory();
 	instance = this;
+	
 }
 
 EditorMain::~EditorMain()
@@ -55,7 +56,7 @@ int EditorMain::getScreenWidth()const
 
 int EditorMain::getScreenHeight()const
 {
-	return 600;
+	return 615;
 }
 
 
@@ -132,10 +133,10 @@ int EditorMain::main(int argc, char **argv)
 
 
 			//various options 
-			menu.create_toggle_item("Options/Show Hot Tiles");
-			menu.create_toggle_item("Options/Show Direction Blocks");
-			menu.create_toggle_item("Options/Show Mappable Objects");
-			menu.create_toggle_item("Options/Hide Floaters");
+			menu.create_item("Options/Show Hot Tiles");
+			menu.create_item("Options/Show Direction Blocks");
+			menu.create_item("Options/Show Mappable Objects");
+			menu.create_item("Options/Hide Floaters");
 
 
 
@@ -205,11 +206,16 @@ int EditorMain::main(int argc, char **argv)
 			tiles = new TileSelector(CL_Rect(510, 30, 691, 403), &gui, tsResources);
 
 //			cout << "creating mapgrid" << endl;			
-			map = new MapGrid(CL_Rect(5, 30, 505, 594), &gui, window.get_gc(), tiles);
+			map = new MapGrid(CL_Rect(5, 30, 505, 592), &gui, window.get_gc(), tiles);
 
 
 //			cout << "creating gridpoint" << endl;
-			GridPoint gp(CL_Rect(510, 410, 691, 590), &gui);
+			GridPoint gp(CL_Rect(510, 410, 691, 592), &gui);
+
+			//info box (bottom of screen)
+		//	info = new CL_InputBox(CL_Rect(5, 595, 505, 604), map->getCurrentTool(), &gui);
+		//	info->enable(false);
+			info = new Infobar(CL_Rect(5, 595, 505, 612), &gui);
 
 		
 cout << "all the creation stuff completed. about to run it." << endl;			
@@ -407,5 +413,7 @@ void EditorMain::on_change_tool(string newtool)
 		map->switchTool(newtool);
 	else
 		map->switchTool("tile");
+
+	//info->set_text(map->getCurrentTool());
 
 }
