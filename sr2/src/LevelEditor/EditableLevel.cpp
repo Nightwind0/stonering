@@ -2,6 +2,7 @@
 #include <string>
 #include <map>
 #include <list>
+#include <iostream>
 #include "IApplication.h"
 #include "EditableLevel.h"
 #include "GraphicsManager.h"
@@ -9,9 +10,11 @@
 
 using std::string;
 
+
 typedef unsigned int uint;
 typedef unsigned short ushort;
 
+using namespace std;
 
 using namespace StoneRing;
 
@@ -339,29 +342,28 @@ std::list<Tile*> EditableLevel::getTilesAt(uint levelX, uint levelY) const
 // false will turn it off.
 void EditableLevel::setDirectionBlockAt(uint levelX, uint levelY, eDirectionBlock dir, bool bOn)
 {
+	
     std::list<Tile*> tiles = getTilesAt(levelX,levelY);
 
     for(std::list<Tile*>::iterator iter = tiles.begin();
 	iter != tiles.end();
 	iter++)
     {
-	switch(dir)
-	{
-	case DIR_NORTH:
-	    dynamic_cast<EditableTile*>(*iter)->setNorthBlock(bOn);
-	    break;
-	case DIR_SOUTH:
-	    dynamic_cast<EditableTile*>(*iter)->setSouthBlock(bOn);
-	    break;
-	case DIR_EAST:
-	    dynamic_cast<EditableTile*>(*iter)->setEastBlock(bOn);
-	    break;
-	case DIR_WEST:
-	    dynamic_cast<EditableTile*>(*iter)->setWestBlock(bOn);
-
-	    break;
-	    
-	}
+		switch(dir)
+		{
+		case DIR_NORTH:
+			dynamic_cast<EditableTile*>(*iter)->setNorthBlock(bOn);
+			break;
+		case DIR_SOUTH:
+			dynamic_cast<EditableTile*>(*iter)->setSouthBlock(bOn);
+			break;
+		case DIR_EAST:
+			dynamic_cast<EditableTile*>(*iter)->setEastBlock(bOn);
+			break;
+		case DIR_WEST:
+			dynamic_cast<EditableTile*>(*iter)->setWestBlock(bOn);
+			break;
+		}
     }
 }
 
