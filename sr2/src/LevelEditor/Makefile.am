@@ -13,7 +13,8 @@ editor_SOURCES = editor.cpp\
 		treeitem.cpp \
 		treeitem_generic.cpp \
 		filedialog.cpp \
-		filedialog_generic.cpp
+		filedialog_generic.cpp \
+		Infobar.cpp
 
 editor_LDADD = $(CLANLIB_LIBS) \
 		$(top_srcdir)/src/libstonering.la
