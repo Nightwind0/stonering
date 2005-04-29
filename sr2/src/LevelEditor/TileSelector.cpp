@@ -107,6 +107,9 @@ void TileSelector::draw()
 			DSTrect = new CL_Rect((j * 32) + 1, (i * 32)+ 1, (j * 32) + 32, (i * 32) + 32);
 
 			cur_tileset->draw(*SRCrect, *DSTrect);
+
+			delete SRCrect;
+			delete DSTrect;
 		}
 	}
 

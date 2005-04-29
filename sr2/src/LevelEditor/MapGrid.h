@@ -66,6 +66,7 @@ private:
 
 		bool hotflag, blocksflag;
 
+		
 };
 
 

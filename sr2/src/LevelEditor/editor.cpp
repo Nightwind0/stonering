@@ -216,7 +216,7 @@ int EditorMain::main(int argc, char **argv)
 		//	info = new CL_InputBox(CL_Rect(5, 595, 505, 604), map->getCurrentTool(), &gui);
 		//	info->enable(false);
 			info = new Infobar(CL_Rect(5, 595, 505, 612), &gui);
-
+		
 		
 cout << "all the creation stuff completed. about to run it." << endl;			
 
@@ -402,18 +402,35 @@ void EditorMain::on_show_blocks()
 void EditorMain::on_change_tool(string newtool)
 {
 	if(newtool == "hot")
+	{
+		info->setToolText("Hot");
 		map->switchTool(newtool);
+	}
 	else if(newtool == "north")
+	{
+		info->setToolText("Dir Block N");
 		map->switchTool(newtool);
+	}
 	else if(newtool == "south")
+	{
+		info->setToolText("Dir Block S");
 		map->switchTool(newtool);
+	}
 	else if(newtool == "east")
+	{
+		info->setToolText("Dir Block E");
 		map->switchTool(newtool);
+	}
 	else if(newtool == "west")
+	{
+		info->setToolText("Dir Block W");
 		map->switchTool(newtool);
+	}
 	else
+	{
+		info->setToolText("Tile");
 		map->switchTool("tile");
-
+	}
 	//info->set_text(map->getCurrentTool());
 
 }

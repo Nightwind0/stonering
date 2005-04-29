@@ -55,7 +55,7 @@ MapGrid::~MapGrid()
 void MapGrid::on_paint()
 {
 	int mgScrollX, mgScrollY;
-
+	
 	mgScrollX = mgScrollHorz->get_value()*32;
 	mgScrollY = mgScrollVert->get_value()*32;
 
