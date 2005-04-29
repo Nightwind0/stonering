@@ -352,16 +352,16 @@ void EditableLevel::setDirectionBlockAt(uint levelX, uint levelY, eDirectionBloc
 		switch(dir)
 		{
 		case DIR_NORTH:
-			dynamic_cast<EditableTile*>(*iter)->setNorthBlock(bOn);
+			static_cast<EditableTile*>(*iter)->setNorthBlock(bOn);
 			break;
 		case DIR_SOUTH:
-			dynamic_cast<EditableTile*>(*iter)->setSouthBlock(bOn);
+			static_cast<EditableTile*>(*iter)->setSouthBlock(bOn);
 			break;
 		case DIR_EAST:
-			dynamic_cast<EditableTile*>(*iter)->setEastBlock(bOn);
+			static_cast<EditableTile*>(*iter)->setEastBlock(bOn);
 			break;
 		case DIR_WEST:
-			dynamic_cast<EditableTile*>(*iter)->setWestBlock(bOn);
+			static_cast<EditableTile*>(*iter)->setWestBlock(bOn);
 			break;
 		}
     }
@@ -376,7 +376,7 @@ void EditableLevel::setHotAt(uint levelX, uint levelY, bool bHot)
 	iter++)
     {
 	if(bHot)
-	    dynamic_cast<EditableTile*>(*iter)->setIsHot();
-	else dynamic_cast<EditableTile*>(*iter)->setNotHot();
+	    static_cast<EditableTile*>(*iter)->setIsHot();
+	else static_cast<EditableTile*>(*iter)->setNotHot();
     }
 }
