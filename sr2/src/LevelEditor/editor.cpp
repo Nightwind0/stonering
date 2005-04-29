@@ -405,31 +405,56 @@ void EditorMain::on_change_tool(string newtool)
 	{
 		info->setToolText("Hot");
 		map->switchTool(newtool);
+		if(!map->get_hotflag())
+			map->toggle_hot();
+		if(map->get_blocksflag())
+			map->toggle_blocks();
 	}
 	else if(newtool == "north")
 	{
 		info->setToolText("Dir Block N");
 		map->switchTool(newtool);
+		if(!map->get_blocksflag())
+			map->toggle_blocks();
+		if(map->get_hotflag())
+			map->toggle_hot();
 	}
 	else if(newtool == "south")
 	{
 		info->setToolText("Dir Block S");
 		map->switchTool(newtool);
+		if(!map->get_blocksflag())
+			map->toggle_blocks();
+		if(map->get_hotflag())
+			map->toggle_hot();
 	}
 	else if(newtool == "east")
 	{
 		info->setToolText("Dir Block E");
 		map->switchTool(newtool);
+		if(!map->get_blocksflag())
+			map->toggle_blocks();
+		if(map->get_hotflag())
+			map->toggle_hot();
 	}
 	else if(newtool == "west")
 	{
 		info->setToolText("Dir Block W");
 		map->switchTool(newtool);
+		if(!map->get_blocksflag())
+			map->toggle_blocks();
+		if(map->get_hotflag())
+			map->toggle_hot();
 	}
 	else
 	{
 		info->setToolText("Tile");
 		map->switchTool("tile");
+		if(map->get_hotflag())
+			map->toggle_hot();
+		if(map->get_blocksflag())
+			map->toggle_blocks();
+
 	}
 	//info->set_text(map->getCurrentTool());
 

@@ -44,6 +44,9 @@ public:
 
 		string getCurrentTool(){return cur_tool;}
 
+		bool get_hotflag(){return hotflag;}
+		bool get_blocksflag(){return blocksflag;}
+
 private:
 
 		//this should probably be an enum.
