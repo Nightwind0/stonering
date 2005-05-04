@@ -399,7 +399,7 @@ int Application::main(int argc, char ** argv)
 //	    CL_Rect src = dst;
 	    mpWindow->get_gc()->push_cliprect( dst);
 
-	    mpLevel->draw(src,dst, mpWindow->get_gc(), false,false,true);
+	    mpLevel->draw(src,dst, mpWindow->get_gc(), false,false,false);
 
 	    mpWindow->get_gc()->draw_rect( CL_Rect(mCurX,mCurY,mCurX+64,mCurY+64), CL_Color::aqua ) ;
 	    mpLevel->drawMappableObjects( src,dst, mpWindow->get_gc());
