@@ -2786,19 +2786,19 @@
 	<mappableObjects>
 		<mo name="Cat2" size="small" type="npc" xpos="11" ypos="5" solid="true">
 			<spriteRef type="fourway">Animals/Cat2</spriteRef>
-			<event name="CatMeow" type="talk">
+			<event name="CatMeow" triggerType="talk">
 				<playSound>Meow</playSound>
 				<say speaker="Cat">Mowwwww</say>
 			</event>
 			<movement movementType="wander" speed="fast"/>
 		</mo>
 		<mo name="DoorR" size="medium" type="door" xpos="8" ypos="9">
-			<event name="enterOctaviaInn" type="">
+			<event name="enterOctaviaInn" triggerType="step">
 				<loadLevel startx="4" starty="3" name="octaviaInn"/>
 			</event>
 		</mo>
 		<mo name="Action" size="small" type="square" xpos="2" ypos="0">
-			<event name="mordusDances" type="step">
+			<event name="mordusDances" triggerType="step">
 				<condition>
 					<operator>
 						<and>
