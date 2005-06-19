@@ -3311,11 +3311,28 @@ void Level::step(const CL_Rect &dest, const CL_Rect & old)
     int tile4x = (dest.right - 1) / 32;
     int tile4y = (dest.bottom - 1) / 32;
 
+
+    int tile5x = (dest.left  + 1 + ((dest.get_width() - 2) /2)) / 32;
+    int tile5y = (dest.top + 1) / 32;
+
+    int tile6x = (dest.right - 1 ) / 32;
+    int tile6y = (dest.top +1 + ((dest.get_height() - 2)/ 2)) / 32;
+    
+    int tile7x = (dest.left + 1 + ((dest.get_width() -2 ) / 2)) / 32;
+    int tile7y = (dest.bottom -1)  / 32;
+
+    int tile8x = (dest.left + 1) / 32;
+    int tile8y = (dest.top + 1 + ((dest.get_height() -2)/2)) / 32;
+
     
     activateTilesAt ( tile1x, tile1y );
     activateTilesAt ( tile2x, tile2y );
     activateTilesAt ( tile3x, tile3y );
     activateTilesAt ( tile4x, tile4y );
+    activateTilesAt ( tile5x, tile5y );
+    activateTilesAt ( tile6x, tile6y );
+    activateTilesAt ( tile7x, tile7y );
+    activateTilesAt ( tile8x, tile8y );
 }
 
 
