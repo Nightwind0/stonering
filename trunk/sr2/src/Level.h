@@ -114,10 +114,10 @@ namespace StoneRing {
 	    Tilemap(CL_DomElement *pElement);
 	    virtual ~Tilemap();
       
-	    ushort getMapX() const;
-	    ushort getMapY() const;
+	    inline ushort getMapX() const;
+	    inline ushort getMapY() const;
 
-	    CL_Surface * getTileMap() const;
+	    inline CL_Surface * getTileMap() const;
 
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
@@ -538,27 +538,27 @@ namespace StoneRing {
 	    Tile(CL_DomElement *pElement);
 	    virtual ~Tile(); 
 
-	    ushort getZOrder() const;
+	    ushort inline getZOrder() const;
 
-	    bool isFloater() const;
+	    bool inline isFloater() const;
 
-	    bool evaluateCondition() const;
+	    inline bool evaluateCondition() const;
 
 
-	    virtual uint getX() const;
-	    virtual uint getY() const;
+	    virtual inline  uint getX() const;
+	    virtual inline uint getY() const;
 
-	    virtual CL_Rect getRect();
+	    virtual inline CL_Rect getRect();
 
-	    virtual bool isSprite() const;
+	    virtual inline bool isSprite() const;
 
 	    bool isHot() const;
 
-	    virtual void draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
+	    virtual inline void draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
 
 
 	    virtual void update();
-
+	    
 	    virtual int getDirectionBlock() const;
 
 	    virtual bool isTile() const;
