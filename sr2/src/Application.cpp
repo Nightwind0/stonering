@@ -269,7 +269,10 @@ bool Application::canMove(const CL_Rect &currently, const CL_Rect &destination, 
     return mpLevel->canMove(currently,destination,noHot,isPlayer);
 }
 
-Application::Application():mpParty(0),mpLevelFactory(0),mCurX(0),mCurY(0),mLevelX(0),mLevelY(0),mbDone(false),mSpeed(1),mbPauseMovement(false)
+Application::Application():mpParty(0),mpLevelFactory(0),mCurX(0),mCurY(0),
+			   mLevelX(0),mLevelY(0),mbDone(false),mSpeed(1),mbPauseMovement(false),
+			   mePlayerDirection(SOUTH)
+    
 {
     mpParty = new Party();
 
@@ -402,6 +405,8 @@ bool Application::move(eDir dir, int times)
     CL_Rect oldLocation = CL_Rect(mpParty->getLevelX(), mpParty->getLevelY(), 
 				  mpParty->getLevelX() + mpParty->getWidth(),
 				  mpParty->getLevelY() + mpParty->getHeight());
+
+    mePlayerDirection = dir;
     for(int i=0;i<times;i++)
     {
     
@@ -411,6 +416,7 @@ bool Application::move(eDir dir, int times)
 	switch(dir)
 	{
 	case NORTH:
+
 	    nY--;
 	    break;
 	case SOUTH:
@@ -482,6 +488,7 @@ void Application::onSignalKeyDown(const CL_InputEvent &key)
     case CL_KEY_RIGHT:
 	move(EAST,mSpeed);
 	break;
+#ifndef NDEBUG
     case CL_KEY_S:
 	mSpeed--;
 	break;
@@ -496,6 +503,7 @@ void Application::onSignalKeyDown(const CL_InputEvent &key)
     case CL_KEY_D:
 	std::cout << "AT " << '(' << mCurX / 32 << ',' << mCurY / 32 << ')' << std::endl;
 	break;
+#endif
     default:
 	break;
     }
@@ -535,6 +543,7 @@ int Application::main(int argc, char ** argv)
 	std::string name = CL_String::load("Configuration/name", mpResources) + " (DEBUG)";
 #endif
 	std::string startinglevel = CL_String::load("Game/StartLevel",mpResources);
+	std::string defaultplayersprite = CL_String::load("Game/DefaultPlayerSprite",mpResources );
 	mpWindow  = new CL_DisplayWindow(name, WINDOW_WIDTH, WINDOW_HEIGHT);
 		
 	CL_Display::clear();
@@ -543,6 +552,8 @@ int Application::main(int argc, char ** argv)
 	showIntro();
 
 	mpLevel = new Level(startinglevel, mpResources);
+
+	mpPlayerSprite = new CL_Sprite(defaultplayersprite, mpResources );
 
 	CL_System::sleep( 50 );
 
@@ -564,8 +575,6 @@ int Application::main(int argc, char ** argv)
 	    CL_Rect dst(0,0, min(WINDOW_WIDTH, (const int)mpLevel->getWidth()*32),min(WINDOW_HEIGHT, (const int)mpLevel->getHeight() * 32));
 
 
-
-
 	
 	    CL_Rect src = getLevelRect();
 
@@ -576,7 +585,10 @@ int Application::main(int argc, char ** argv)
 
 	    mpLevel->draw(src,dst, mpWindow->get_gc(), false,false,false);
 
-	    mpWindow->get_gc()->draw_rect( CL_Rect(mCurX,mCurY,mCurX+64,mCurY+64), CL_Color::aqua ) ;
+	    //  mpWindow->get_gc()->draw_rect( CL_Rect(mCurX,mCurY,mCurX+64,mCurY+64), CL_Color::aqua ) ;
+
+	    drawPlayer();
+
 	    mpLevel->drawMappableObjects( src,dst, mpWindow->get_gc(), 
 					  mbPauseMovement ? false:true);
 	    mpLevel->drawFloaters(src,dst, mpWindow->get_gc());
@@ -676,4 +688,39 @@ int Application::calc_fps(int frame_time)
 void Application::processActionQueue()
 {
 
+}
+
+
+void Application::drawPlayer()
+{
+    uint frame = 0;
+    static uint startTime = CL_System::get_time();
+
+    uint now = CL_System::get_time();
+
+    if(now - startTime > 300) //@todo: get from resources at startup
+    {
+	startTime = now;
+	mbStep  = mbStep? false: true;
+    }
+
+    switch(mePlayerDirection)
+    {
+    case NORTH:
+	frame = mbStep? 6:7;
+	break;
+    case SOUTH:
+	frame = mbStep? 4:5;
+	break;
+    case EAST:
+	frame = mbStep? 0:1;
+	break;
+    case WEST:
+	frame = mbStep? 2:3;
+	break;
+    }
+
+    mpPlayerSprite->set_frame ( frame );
+
+    mpPlayerSprite->draw( mCurX, mCurY, mpWindow->get_gc() );
 }
