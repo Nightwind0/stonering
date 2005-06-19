@@ -184,8 +184,8 @@ class Level;
     private:
 
       enum eDir{NORTH,SOUTH,EAST,WEST};
-	  int calc_fps(int);
-
+      int calc_fps(int);
+	  
 
 
       enum eState 
@@ -222,8 +222,7 @@ class Level;
 
       void processActionQueue();
 
-
-
+      void drawPlayer();
 
       void recalculatePlayerPosition(eDir dir);
 
@@ -244,6 +243,12 @@ class Level;
       std::queue<GameAction*> mActionQueue;
 
       bool mbPauseMovement;
+
+      CL_Sprite *mpPlayerSprite;
+
+      eDir mePlayerDirection;
+
+      bool mbStep; // Which sprite frame to use..
       
     };
   

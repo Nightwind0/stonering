@@ -10,6 +10,7 @@
  <section name="Game">
  	<string name="LevelPath" value="Media/Levels/" />
 	<string name="StartLevel" value="examplelevel" />
+	<string name="DefaultPlayerSprite" value="Sprites/Party/Valyn" /> 
  </section>
  <section name="Levels">
  	<string name="examplelevel" value="test.xml" />
@@ -23,6 +24,14 @@
 
 <!-- Can be moved off to a separate resource xml -->
 <section name = "Sprites">
+	<section name = "Party">
+		<sprite name = "Valyn" hint = "alpha">
+			<image file="Sprites/valyn.png">
+				<grid pos="0,0" size="64,64" array="2,4">
+				</grid>
+			</image>
+		</sprite>
+	</section>
 	<section name = "tiles">
 		<sprite name = "Lava" hint="alpha" >
 			<image file="Sprites/lava.png">
