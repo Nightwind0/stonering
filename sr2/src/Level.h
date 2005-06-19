@@ -716,7 +716,12 @@ namespace StoneRing{
 	    virtual void step(const CL_Rect &dest);
       
 	    // Any talk events fire (assuming they meet conditions)
-	    virtual void talk(uint levelX, uint levelY);
+	    // "target" describes the region which the player is talking to.
+	    // In other words, if the player is facing west,the game engine will select a rectangle of a size it finds
+	    // appropriate which is directly west of the player.
+	    // The level will select the FIRST MO in the list an execute the talk on that MO.
+	    // In theory, because of the MO sorting, this will be the closest MO.
+	    virtual void talk(const CL_Rect &target);
 
 	    // Propagate updates to any MO's in view. Provides as a level coordinate based rectangle
 	    virtual void update(const CL_Rect & updateRect);

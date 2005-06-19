@@ -3250,11 +3250,50 @@ bool Level::canMove(const CL_Rect &currently, const CL_Rect & destination, bool 
 // All AM's from tiles fire, as do any step events
 void Level::step(const CL_Rect &dest)
 {
+    // First, process any MO step events you may have triggered
+
+
+    // No need to sort MOs. They will just have been sorted.
+
+    for(std::list<MappableObject*>::iterator i = mMappableObjects.begin();
+	i != mMappableObjects.end();
+	i++)
+    {
+	CL_Rect moRect = (*i)->getRect();
+	
+	
+	if( ! IApplication::getInstance()->getLevelRect().is_overlapped ( moRect ) )
+	{
+	    // This MO was outside our field of vision, so we stop iterating.
+	    break;
+	}
+	else if( dest.is_overlapped(moRect ))
+	{
+	    // This MO needs to be stepped on
+	    (*i)->provokeEvents ( Event::STEP );
+
+	}
+    }
+    
+
+    
+    // Next, process any tile related consequences on applicable (and enabled)
+    // tiles. 
+
+    // First, we calculate the four tiles which are being stepped on.
+    // We do NOT trigger all tiles beneath the rectangle. Instead,
+    // We trigger only the 4 corners. However, to properly calculate the four corners,
+    // We have to adjust slightly, otherwise we would get weird tiles not actually UNDER
+    // the rectangle.
+
+
+
+
     
 }
       
 // Any talk events fire (assuming they meet conditions)
-void Level::talk(uint levelX, uint levelY)
+void Level::talk(const CL_Rect &target)
 {
 }
 
