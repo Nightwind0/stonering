@@ -538,13 +538,16 @@ namespace StoneRing {
 	    Tile(CL_DomElement *pElement);
 	    virtual ~Tile(); 
 
-	    ushort inline getZOrder() const;
+	    ushort getZOrder() const;
 
-	    bool inline isFloater() const;
+	    bool isFloater() const;
 
 	    inline bool evaluateCondition() const;
 
+	    inline bool hasAM() const;
 
+	    inline void activate(); // Call any attributemodifier
+	    
 	    virtual inline  uint getX() const;
 	    virtual inline uint getY() const;
 
@@ -559,10 +562,11 @@ namespace StoneRing {
 
 	    virtual void update();
 	    
-	    virtual int getDirectionBlock() const;
+	    virtual inline int getDirectionBlock() const;
 
-	    virtual bool isTile() const;
+	    virtual inline bool isTile() const;
 
+	    
 
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
@@ -749,6 +753,9 @@ namespace StoneRing{
 
 	    void loadTile ( CL_DomElement * tileElement);
 	    void loadMo ( CL_DomElement * moElement );
+
+	    // Call attribute modifiers on tiles at this location
+	    void activateTilesAt ( uint x, uint y );
 
 	    CL_ResourceManager * mpResources;
 	    CL_DomDocument * mpDocument;

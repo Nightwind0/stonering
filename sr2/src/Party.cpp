@@ -68,6 +68,9 @@ void Party::setLevelY(uint y)
 
 void Party::doEvent(const std::string &name)
 {
+#ifndef NDEBUG
+    std::cout << "Do Event: " << name << std::endl;
+#endif
 }
 
 
@@ -85,4 +88,7 @@ void Party::giveGold(int amount)
 
 void Party::modifyAttribute(const std::string &attribute, int add, const std::string &target)
 {
+#ifndef NDEBUG
+    std::cout << "Modify Attribue: " << attribute << " by " << add << std::endl;
+#endif
 }

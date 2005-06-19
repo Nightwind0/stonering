@@ -200,7 +200,7 @@ void Application::playSound(const std::string &sound)
 void Application::loadLevel(const std::string &level, uint startX, uint startY)
 {
 #ifndef NDEBUG
-    std::cout << "Load level " << level << std::endl;
+    std::cout << "Load level " << level << ':' << startX << ',' << startY << std::endl;
 #endif
 
     mActionQueue.push( new LoadLevelAction ( level, startX, startY ));
@@ -428,13 +428,14 @@ bool Application::move(eDir dir, int times)
 	    mpParty->setLevelY( nY );
 
 	    recalculatePlayerPosition(dir);
+	    
 
 	    mPlayerDir = dir;
 
-	    mpLevel->step(CL_Rect(nX,nY,nX+64,nY+64));
-
 	}
 	else return false;
+
+	mpLevel->step(CL_Rect(nX,nY,nX+64,nY+64));
 	
     }
 
@@ -533,6 +534,7 @@ int Application::main(int argc, char ** argv)
 	CL_Display::clear();
 	
 	static int start_time = CL_System::get_time();
+	static long fpscounter = 0;
 
 	while(!mbDone)
 	{
@@ -567,12 +569,19 @@ int Application::main(int argc, char ** argv)
 	    CL_Display::flip();
 	    CL_System::keep_alive();
 
+#if 1
 
 		int cur_time = CL_System::get_time();
 		int delta_time = cur_time - start_time;	
 		start_time = cur_time;	
+		int fps = calc_fps ( delta_time );
 #ifndef NDEBUG
-		std::cout << "FPS: " << calc_fps ( delta_time ) << ',' << delta_time <<  std::endl;
+
+		if(fpscounter++ % 2000 == 0)
+		    std::cout << "FPS: " << fps << ',' << delta_time <<  std::endl;
+
+		if(fpscounter == 100000) fpscounter == 0;
+#endif
 #endif
 
 
