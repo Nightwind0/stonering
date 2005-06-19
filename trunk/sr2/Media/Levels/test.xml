@@ -2785,12 +2785,8 @@
 	</tiles>
 	<mappableObjects>
 		<mo name="Cat2" size="small" type="npc" xpos="11" ypos="5" solid="true">
-			<spriteRef direction="still">Animals/Cat1s</spriteRef>
-			<spriteRef direction="east">Animals/Cat1e</spriteRef>
-			<spriteRef direction="north">Animals/Cat1n</spriteRef>
-			<spriteRef direction="south">Animals/Cat1s</spriteRef>
-			<spriteRef direction="west">Animals/Cat1w</spriteRef>
-			<event name="CatMeow" type="step">
+			<spriteRef type="fourway">Animals/Cat2</spriteRef>
+			<event name="CatMeow" type="talk">
 				<playSound>Meow</playSound>
 				<say speaker="Cat">Mowwwww</say>
 			</event>
