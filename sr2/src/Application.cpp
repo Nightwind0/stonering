@@ -398,6 +398,10 @@ void Application::recalculatePlayerPosition(eDir dir)
 }
 bool Application::move(eDir dir, int times)
 {
+
+    CL_Rect oldLocation = CL_Rect(mpParty->getLevelX(), mpParty->getLevelY(), 
+				  mpParty->getLevelX() + mpParty->getWidth(),
+				  mpParty->getLevelY() + mpParty->getHeight());
     for(int i=0;i<times;i++)
     {
     
@@ -438,7 +442,7 @@ bool Application::move(eDir dir, int times)
 	    mpLevel->step(CL_Rect(mpParty->getLevelX(),
 				  mpParty->getLevelY(),
 				  mpParty->getLevelX() + 64, 
-				  mpParty->getLevelY() + 64));
+				  mpParty->getLevelY() + 64), oldLocation);
 	    
 	    return false;
 	}
@@ -448,7 +452,7 @@ bool Application::move(eDir dir, int times)
     mpLevel->step(CL_Rect(mpParty->getLevelX(),
 			  mpParty->getLevelY(),
 			  mpParty->getLevelX() + 64, 
-			  mpParty->getLevelY() + 64));
+			  mpParty->getLevelY() + 64), oldLocation);
 
     return true;
 
