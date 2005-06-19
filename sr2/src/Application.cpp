@@ -269,7 +269,7 @@ bool Application::canMove(const CL_Rect &currently, const CL_Rect &destination, 
     return mpLevel->canMove(currently,destination,noHot,isPlayer);
 }
 
-Application::Application():mpParty(0),mpLevelFactory(0),mCurX(0),mCurY(0),mLevelX(0),mLevelY(0),mbDone(false),mSpeed(1)
+Application::Application():mpParty(0),mpLevelFactory(0),mCurX(0),mCurY(0),mLevelX(0),mLevelY(0),mbDone(false),mSpeed(1),mbPauseMovement(false)
 {
     mpParty = new Party();
 
@@ -489,6 +489,10 @@ void Application::onSignalKeyDown(const CL_InputEvent &key)
 	mSpeed++;
 	break;
 
+    case CL_KEY_P:
+	mbPauseMovement = mbPauseMovement?false:true;
+	break;
+
     case CL_KEY_D:
 	std::cout << "AT " << '(' << mCurX / 32 << ',' << mCurY / 32 << ')' << std::endl;
 	break;
@@ -573,7 +577,8 @@ int Application::main(int argc, char ** argv)
 	    mpLevel->draw(src,dst, mpWindow->get_gc(), false,false,false);
 
 	    mpWindow->get_gc()->draw_rect( CL_Rect(mCurX,mCurY,mCurX+64,mCurY+64), CL_Color::aqua ) ;
-	    mpLevel->drawMappableObjects( src,dst, mpWindow->get_gc());
+	    mpLevel->drawMappableObjects( src,dst, mpWindow->get_gc(), 
+					  mbPauseMovement ? false:true);
 	    mpLevel->drawFloaters(src,dst, mpWindow->get_gc());
 
 

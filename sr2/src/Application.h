@@ -242,6 +242,8 @@ class Level;
       Level * mpLevel;
 
       std::queue<GameAction*> mActionQueue;
+
+      bool mbPauseMovement;
       
     };
   
