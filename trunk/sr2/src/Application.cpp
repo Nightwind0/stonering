@@ -433,11 +433,22 @@ bool Application::move(eDir dir, int times)
 	    mPlayerDir = dir;
 
 	}
-	else return false;
-
-	mpLevel->step(CL_Rect(nX,nY,nX+64,nY+64));
+	else 
+	{
+	    mpLevel->step(CL_Rect(mpParty->getLevelX(),
+				  mpParty->getLevelY(),
+				  mpParty->getLevelX() + 64, 
+				  mpParty->getLevelY() + 64));
+	    
+	    return false;
+	}
 	
     }
+
+    mpLevel->step(CL_Rect(mpParty->getLevelX(),
+			  mpParty->getLevelY(),
+			  mpParty->getLevelX() + 64, 
+			  mpParty->getLevelY() + 64));
 
     return true;
 
