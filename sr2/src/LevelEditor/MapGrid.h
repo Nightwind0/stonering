@@ -35,6 +35,7 @@ public:
 		void on_placeTile(const CL_InputEvent &event);
 		void on_paint();
 		void on_dir_change(const string &new_dir);
+		void on_mouse_move(const CL_InputEvent &event);
 
 		void more_rows(int r = 1);
 		void more_columns(int c = 1);

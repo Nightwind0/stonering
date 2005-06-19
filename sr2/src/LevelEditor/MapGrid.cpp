@@ -2,7 +2,8 @@
 
 
 #include "MapGrid.h"
-
+#include "editor.h"
+#include <sstream>
 
 MapGrid::MapGrid(CL_Rect setrect, CL_Component *parent, CL_GraphicContext *mgGC, TileSelector *TS)
 :	rect(setrect), CL_Component(parent), mgGC(mgGC), TS(TS)
@@ -42,13 +43,28 @@ MapGrid::MapGrid(CL_Rect setrect, CL_Component *parent, CL_GraphicContext *mgGC,
 
 	slots.connect(sig_paint(), this, &MapGrid::on_paint);
 	slots.connect(sig_mouse_up(), this, &MapGrid::on_Tool_Click);//on_placeTile
-
+	slots.connect(sig_mouse_move(), this, &MapGrid::on_mouse_move);
 }
 
 
 MapGrid::~MapGrid()
 {
 // do nothing
+}
+
+void MapGrid::on_mouse_move(const CL_InputEvent &event)
+{
+    std::ostringstream xStr;
+    std::ostringstream yStr;
+
+    int X = (event.mouse_pos.x/32) + mgScrollHorz->get_value();
+    int Y = (event.mouse_pos.y/32) + mgScrollVert->get_value();
+
+    xStr << X;
+    yStr << Y;
+
+    if(EditorMain::instance->getInfo())
+	EditorMain::instance->getInfo()->setToolPos( xStr.str(), yStr.str() );
 }
 
 
