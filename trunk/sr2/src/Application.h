@@ -184,6 +184,8 @@ class Level;
     private:
 
       enum eDir{NORTH,SOUTH,EAST,WEST};
+	  int calc_fps(int);
+
 
 
       enum eState 
