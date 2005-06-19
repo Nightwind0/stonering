@@ -511,7 +511,7 @@ namespace StoneRing {
 
 	    virtual void draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC)=0;
 
-	    virtual void update()=0;
+	    virtual void update(bool bMove)=0;
 
 	    virtual int getDirectionBlock() const=0;
 
@@ -560,7 +560,7 @@ namespace StoneRing {
 	    virtual inline void draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
 
 
-	    virtual void update();
+	    virtual void update(bool bMove);
 	    
 	    virtual inline int getDirectionBlock() const;
 
@@ -619,7 +619,7 @@ namespace StoneRing {
 
 	    virtual void draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
 
-	    virtual void update();
+	    virtual void update(bool bMove);
 
 
 	    virtual bool isTile() const;
@@ -708,7 +708,7 @@ namespace StoneRing{
 	    virtual void draw(const CL_Rect &src, const CL_Rect &dst,
 			      CL_GraphicContext * pGC , bool floaters = false,
 			      bool highlightHot=false,bool indicateBlocks = false);
-	    virtual void drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
+	    virtual void drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC, bool bMove = true);
 	    virtual void drawFloaters(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext * pGC);
 		
       

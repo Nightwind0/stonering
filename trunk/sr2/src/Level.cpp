@@ -2082,13 +2082,13 @@ void Tile::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC)
     }
     else
     {
-	update();
+	update(false);
 	mpSprite->draw( dst, pGC );
     }
 
 }
 
-void Tile::update()
+void Tile::update(bool)
 {
     if(isSprite()) mpSprite->update();
 }
@@ -2433,7 +2433,6 @@ void MappableObject::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicCont
 
     if(isSprite())
     {
-	update();
 	mSprites[meDirection]->draw(dst, pGC );
     }
     else if( cFlags & TILEMAP )
@@ -2595,13 +2594,21 @@ void MappableObject::randomNewDirection()
 	
 }
 
-void MappableObject::update()
+void MappableObject::update(bool bMove)
 {
-    mSprites[meDirection]->update();
-    if(!moveInCurrentDirection())
+
+    if(isSprite())
     {
-	 
-	pickOppositeDirection();
+	mSprites[meDirection]->update();
+
+	
+	// If bMove is false, then moveInCurrentDirection won't even get called
+	// and we won't move.
+	if(bMove && !moveInCurrentDirection())
+	{
+	    
+	    pickOppositeDirection();
+	}
     }
 }
 
@@ -2923,7 +2930,7 @@ void Level::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC,
 }	    
 
 
-void Level::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC)
+void Level::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC, bool bMove)
 {
     // This brings the close MOs to the top
     // moSortCriterion queries the party to see where they are at.
@@ -2949,6 +2956,7 @@ void Level::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_Graph
 	    break;
 	}
 
+	(*i)->update(bMove);
 	(*i)->draw( moRect, dstRect, pGC );
     }
 	
