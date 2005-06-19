@@ -717,7 +717,7 @@ namespace StoneRing{
 	    bool canMove(const CL_Rect &currently, const CL_Rect & destination, bool noHot = false, bool isPlayer = false) const; 
 
 	    // All AM's from tiles fire, as do any step events
-	    virtual void step(const CL_Rect &dest);
+	    virtual void step(const CL_Rect &dest, const CL_Rect &old);
       
 	    // Any talk events fire (assuming they meet conditions)
 	    // "target" describes the region which the player is talking to.

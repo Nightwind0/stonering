@@ -3261,7 +3261,7 @@ bool Level::canMove(const CL_Rect &currently, const CL_Rect & destination, bool 
 }
 
 // All AM's from tiles fire, as do any step events
-void Level::step(const CL_Rect &dest)
+void Level::step(const CL_Rect &dest, const CL_Rect & old)
 {
     // First, process any MO step events you may have triggered
 
@@ -3280,7 +3280,7 @@ void Level::step(const CL_Rect &dest)
 	    // This MO was outside our field of vision, so we stop iterating.
 	    break;
 	}
-	else if( dest.is_overlapped(moRect ))
+	else if( dest.is_overlapped(moRect ) && ! old.is_overlapped(moRect)) //only if we aren't already on it...
 	{
 	    // This MO needs to be stepped on
 	    (*i)->provokeEvents ( Event::STEP );
