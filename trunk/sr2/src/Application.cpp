@@ -270,7 +270,7 @@ bool Application::canMove(const CL_Rect &currently, const CL_Rect &destination, 
 }
 
 Application::Application():mpParty(0),mpLevelFactory(0),mCurX(0),mCurY(0),
-			   mLevelX(0),mLevelY(0),mbDone(false),mSpeed(1),mbPauseMovement(false),
+			   mLevelX(0),mLevelY(0),mbDone(false),mSpeed(4),mbPauseMovement(false),
 			   mePlayerDirection(SOUTH)
     
 {
@@ -402,6 +402,15 @@ void Application::recalculatePlayerPosition(eDir dir)
 bool Application::move(eDir dir, int times)
 {
 
+    static uint startTime = CL_System::get_time();
+
+    uint now = CL_System::get_time();
+
+    if(now - startTime > 300) //@todo: get from resources at startup
+    {
+	startTime = now;
+	mbStep  = mbStep? false: true;
+    }
 
 
     mePlayerDirection = dir;
@@ -717,15 +726,8 @@ void Application::processActionQueue()
 void Application::drawPlayer()
 {
     uint frame = 0;
-    static uint startTime = CL_System::get_time();
 
-    uint now = CL_System::get_time();
 
-    if(now - startTime > 300) //@todo: get from resources at startup
-    {
-	startTime = now;
-	mbStep  = mbStep? false: true;
-    }
 
     switch(mePlayerDirection)
     {
