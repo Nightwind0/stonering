@@ -13,6 +13,7 @@ EditorMain::EditorMain()
 	mpParty = new EditorParty();
 	mpLevelFactory = new EditableLevelFactory();
 	instance = this;
+	info = NULL;
 	
 }
 

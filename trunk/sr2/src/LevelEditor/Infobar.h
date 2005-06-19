@@ -5,6 +5,7 @@
 
 #include <ClanLib/gui.h>
 #include <ClanLib/display.h>
+#include <iostream>
 using namespace std;
 
 
@@ -16,7 +17,14 @@ public:
 		~Infobar();
 
 		void setToolText(string txt){ tool_text->set_text(txt);}
-		void setToolPos(string x, string y){ pos = "("+x+","+y+")";}
+		void setToolPos(string x, string y)
+		    {
+			pos = "";
+			pos += "("+x+","+y+")";
+			
+			if(tool_pos)
+			    tool_pos->set_text(pos);
+		    }
 
 		void on_paint();
 

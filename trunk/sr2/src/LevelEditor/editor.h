@@ -80,6 +80,7 @@ public:
       virtual void invokeShop(const std::string &shoptype){}
 
 
+      Infobar * getInfo() const { return info; }
 
 private:
 	int main(int argc, char **argv);

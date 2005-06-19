@@ -4,7 +4,7 @@
 
 
 Infobar::Infobar(CL_Rect setrect, CL_Component *parent)
-:	rect(setrect), CL_Component(parent)
+    :	rect(setrect), CL_Component(parent),tool_pos(NULL)
 {
 
 
@@ -19,7 +19,7 @@ Infobar::Infobar(CL_Rect setrect, CL_Component *parent)
 
 	setToolPos("0","0");
 	text2 = new CL_Label(CL_Point(110,2), "Position:", this);
-	tool_pos = new CL_Label(CL_Point(160,2), pos, this);
+	tool_pos = new CL_Label(CL_Point(160,2), "(0000,0000)", this);
 
 	slots.connect(sig_paint(), this, &Infobar::on_paint);
 
