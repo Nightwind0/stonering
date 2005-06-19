@@ -488,6 +488,14 @@ void Application::onSignalKeyDown(const CL_InputEvent &key)
 
     int nX =mCurX;
     int nY =mCurY;
+
+    bool running = false;
+    int speed = mSpeed;
+
+    if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ))
+    {
+	speed *= 2;
+    }
     
     switch(key.id)
     {
@@ -495,16 +503,16 @@ void Application::onSignalKeyDown(const CL_InputEvent &key)
 	mbDone = true;
 	break;
     case CL_KEY_DOWN:
-	move(SOUTH,mSpeed);
+	move(SOUTH,speed);
 	break;
     case CL_KEY_UP:
-	move(NORTH,mSpeed);
+	move(NORTH,speed);
 	break;
     case CL_KEY_LEFT:
-	move(WEST,mSpeed);
+	move(WEST,speed);
 	break;
     case CL_KEY_RIGHT:
-	move(EAST,mSpeed);
+	move(EAST,speed);
 	break;
 #ifndef NDEBUG
     case CL_KEY_S:
