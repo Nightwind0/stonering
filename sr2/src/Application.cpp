@@ -402,17 +402,24 @@ void Application::recalculatePlayerPosition(eDir dir)
 bool Application::move(eDir dir, int times)
 {
 
-    CL_Rect oldLocation = CL_Rect(mpParty->getLevelX(), mpParty->getLevelY(), 
-				  mpParty->getLevelX() + mpParty->getWidth(),
-				  mpParty->getLevelY() + mpParty->getHeight());
+
 
     mePlayerDirection = dir;
+
+
+    int nX = mpParty->getLevelX();
+    int nY = mpParty->getLevelY();
+    
+    int offX = mpParty->getWidth() / 2;
+    int offY = mpParty->getHeight() / 2;
+
+    CL_Rect oldLocation = CL_Rect(mpParty->getLevelX(), mpParty->getLevelY() + offY, 
+				  mpParty->getLevelX() + mpParty->getWidth(),
+				  mpParty->getLevelY() + offY);
+    
     for(int i=0;i<times;i++)
     {
-    
-	int nX = mpParty->getLevelX();
-	int nY = mpParty->getLevelY();
-
+    	
 	switch(dir)
 	{
 	case NORTH:
@@ -430,9 +437,11 @@ bool Application::move(eDir dir, int times)
 	    break;
 	}
 	
-	if(canMove ( CL_Rect(mpParty->getLevelX(),mpParty->getLevelY(),
-			     mpParty->getLevelX()+64,mpParty->getLevelY()+64),
-		     CL_Rect(nX,nY,nX+64,nY+64),false, true))
+	if(canMove ( CL_Rect(mpParty->getLevelX(),
+			     mpParty->getLevelY() + offY ,
+			     mpParty->getLevelX() + offX + offX,
+			     mpParty->getLevelY() + offY + offY),
+		     CL_Rect(nX,nY + offY,nX + offX + offX,nY+offY + offY),false, true))
 	{
 	    mpParty->setLevelX( nX );
 	    mpParty->setLevelY( nY );
@@ -446,9 +455,9 @@ bool Application::move(eDir dir, int times)
 	else 
 	{
 	    mpLevel->step(CL_Rect(mpParty->getLevelX(),
-				  mpParty->getLevelY(),
-				  mpParty->getLevelX() + 64, 
-				  mpParty->getLevelY() + 64), oldLocation);
+				  mpParty->getLevelY() + offY,
+				  mpParty->getLevelX() + offX + offX, 
+				  mpParty->getLevelY() + offY + offY), oldLocation);
 	    
 	    return false;
 	}
@@ -456,9 +465,9 @@ bool Application::move(eDir dir, int times)
     }
 
     mpLevel->step(CL_Rect(mpParty->getLevelX(),
-			  mpParty->getLevelY(),
-			  mpParty->getLevelX() + 64, 
-			  mpParty->getLevelY() + 64), oldLocation);
+			  mpParty->getLevelY() + offY,
+			  mpParty->getLevelX() + offX + offX, 
+			  mpParty->getLevelY() + offY + offY), oldLocation);
 
     return true;
 
