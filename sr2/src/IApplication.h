@@ -1,5 +1,5 @@
-#ifndef IAPPLICATION_H
-#define IAPPLICATION_H
+#ifndef SR_IAPPLICATION_H
+#define SR_IAPPLICATION_H
 
 
 #include <ClanLib/core.h>

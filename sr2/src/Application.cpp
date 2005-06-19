@@ -530,7 +530,9 @@ int Application::main(int argc, char ** argv)
 
 	CL_Slot slot_key_down = CL_Keyboard::sig_key_down().connect(this, &Application::onSignalKeyDown);
 
-	CL_Display::clear();		
+	CL_Display::clear();
+	
+	static int start_time = CL_System::get_time();
 
 	while(!mbDone)
 	{
@@ -564,6 +566,16 @@ int Application::main(int argc, char ** argv)
 	
 	    CL_Display::flip();
 	    CL_System::keep_alive();
+
+
+		int cur_time = CL_System::get_time();
+		int delta_time = cur_time - start_time;	
+		start_time = cur_time;	
+#ifndef NDEBUG
+		std::cout << "FPS: " << calc_fps ( delta_time ) << ',' << delta_time <<  std::endl;
+#endif
+
+
 	}
 		
 
@@ -612,6 +624,23 @@ void Application::showIntro()
     }
 	
 
+}
+
+int Application::calc_fps(int frame_time)
+{
+	static int fps_result = 0;
+	static int fps_counter = 0;
+	static int total_time = 0;
+	
+	total_time += frame_time;
+	if(total_time >= 1000)	// One second has passed
+	{
+		fps_result = fps_counter + 1;
+		fps_counter = total_time = 0;
+	}
+	fps_counter++;	// Increase fps
+
+	return fps_result;
 }
 
 
