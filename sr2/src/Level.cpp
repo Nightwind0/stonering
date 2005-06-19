@@ -2425,6 +2425,7 @@ void MappableObject::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicCont
 
     if(isSprite())
     {
+	setFrameForDirection();
 	mpSprite->draw(dst, pGC );
     }
     else if( cFlags & TILEMAP )
@@ -2494,7 +2495,14 @@ bool MappableObject::moveInCurrentDirection()
 
 	mTimeOfLastUpdate = CL_System::get_time();
 
-	mbStep = mbStep? false: true;
+	// Don't step if we're still... most FF
+	// games have the characters stepping even if they are chillin...
+	// But lets try it this way
+	if(meDirection != NONE)
+	{
+	    if(mbStep) mbStep = false;
+	    else mbStep = true;
+	}
 
 	switch ( meDirection )
 	{
@@ -2540,8 +2548,6 @@ bool MappableObject::moveInCurrentDirection()
 	    {
 		mCountInCurDirection = 0;
 		randomNewDirection();
-
-		setFrameForDirection();
 	    }
 
 	}
@@ -2559,34 +2565,39 @@ void MappableObject::randomNewDirection()
 
     if(!mpMovement) return;
 
-    int r= rand() % 5;
-
-    switch ( mpMovement->getMovementType())
+    eDirection current = meDirection;
+    
+    while(meDirection == current)
     {
-    case Movement::MOVEMENT_NONE:
-	break;
-    case Movement::MOVEMENT_WANDER:
-	if(r == 0)
-	    meDirection = NORTH;
-	else if(r == 1)
-	    meDirection = SOUTH;
-	else if(r == 2)
-	    meDirection = EAST;
-	else if(r == 3)
-	    meDirection = WEST;
-	else if(r == 4)
-	    meDirection = NONE;
-	break;
-    case Movement::MOVEMENT_PACE_NS:
-    case Movement::MOVEMENT_PACE_EW:
-	if(r > 2)
-	    pickOppositeDirection();
-	break;
-    default:
-	break;
-
-    }
+	int r= rand() % 5;
 	
+	switch ( mpMovement->getMovementType())
+	{
+	case Movement::MOVEMENT_NONE:
+	    break;
+	case Movement::MOVEMENT_WANDER:
+	    if(r == 0)
+		meDirection = NORTH;
+	    else if(r == 1)
+		meDirection = SOUTH;
+	    else if(r == 2)
+		meDirection = EAST;
+	    else if(r == 3)
+		meDirection = WEST;
+	    else if(r == 4)
+		meDirection = NONE;
+	    break;
+	case Movement::MOVEMENT_PACE_NS:
+	case Movement::MOVEMENT_PACE_EW:
+	    if(r > 2)
+		pickOppositeDirection();
+	    break;
+	default:
+	    break;
+	    
+	}
+    }
+    
 	
 }
 
@@ -2621,8 +2632,8 @@ void MappableObject::setFrameForDirection()
 	    mpSprite->set_frame(mbStep? 4 : 5);
 	    break;
 	case NONE:
-	    if(mbStep) mpSprite->set_frame(1);
-	    else mpSprite->set_frame(0);
+	    if(mbStep) mpSprite->set_frame(4);
+	    else mpSprite->set_frame(5);
 	    break;
 	}
 	break;
@@ -2635,6 +2646,7 @@ void MappableObject::setFrameForDirection()
 	    mpSprite->set_frame ( mbStep? 2 : 3);
 	    break;
 	case SOUTH:
+	case NONE:
 	    mpSprite->set_frame ( mbStep? 0 : 1);
 	    break;
 	}
@@ -2645,12 +2657,12 @@ void MappableObject::setFrameForDirection()
 	switch(meDirection)
 	{
 	case EAST:
+	case NONE:
 	    mpSprite->set_frame ( mbStep? 0 : 1 );
 	    break;
 	case WEST:
 	    mpSprite->set_frame ( mbStep? 2 : 3 );
 	    break;
-	    
 	}
 	break;
     }
@@ -2672,7 +2684,7 @@ void MappableObject::update(bool bMove)
 	    
 	    // pickOppositeDirection();
 	    randomNewDirection();
-	    setFrameForDirection();
+	  
 	}
     }
 }
