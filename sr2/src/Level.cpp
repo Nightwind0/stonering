@@ -1011,7 +1011,7 @@ CL_DomElement  Event::createDomElement(CL_DomDocument &doc) const
 	break;
     }
 
-    element.set_attribute("type", triggertype);
+    element.set_attribute("triggerType", triggertype);
 
     if(!mbRepeatable) element.set_attribute("repeatable","false");
 
@@ -1061,6 +1061,7 @@ Event::Event(CL_DomElement *pElement):mbRepeatable(true),mpCondition(NULL)
 	meTriggerType = TALK;
     else if (triggertype == "act")
 	meTriggerType = ACT;
+    else throw CL_Error(" Bad trigger type on event " + mName );
 
 
 	
