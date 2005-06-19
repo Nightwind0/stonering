@@ -135,15 +135,15 @@ namespace StoneRing {
 	    SpriteRef( CL_DomElement *pElement);
 	    virtual ~SpriteRef();
 
-	    enum eDirection {SPR_NONE, SPR_STILL, SPR_NORTH, SPR_SOUTH, SPR_EAST, SPR_WEST };
+	    enum eType {SPR_NONE, SPR_STILL, SPR_TWO_WAY, SPR_FOUR_WAY };
 
-	    eDirection getDirection() const;
+	    eType getType() const;
 	    std::string getRef() const;
 
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	protected:
-	    eDirection meDirection;
+	    eType meType;
 	    std::string mRef;
 	};
 
@@ -628,21 +628,26 @@ namespace StoneRing {
 
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
+	    enum eDirection { NONE, NORTH, SOUTH, EAST, WEST };
+
 	protected:
 	    void pickOppositeDirection();
 	    bool moveInCurrentDirection();
 	    void randomNewDirection();
+	    void setFrameForDirection();
 	    enum eFlags { SPRITE = 1, TILEMAP = 2, SOLID = 4 };
 
 	    std::string mName;
-	    std::map<SpriteRef::eDirection, CL_Sprite* > mSprites;
-	    std::list<SpriteRef*> mSpriteRefs;
+	    CL_Sprite * mpSprite;
 	    SpriteRefOrTilemap mGraphic;
 	    std::list<Event*> mEvents;
 			
 	    eSize meSize;
-      
-	    SpriteRef::eDirection meDirection;
+  
+
+	    eDirection meDirection;
+
+	    bool mbStep; // step frame alternator
 	    ushort mStartX;
 	    ushort mStartY;
 	    uint mX;

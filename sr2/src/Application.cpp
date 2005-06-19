@@ -594,9 +594,9 @@ int Application::main(int argc, char ** argv)
 
 	    mpLevel->draw(src,dst, mpWindow->get_gc(), false,false,false);
 
-	    //  mpWindow->get_gc()->draw_rect( CL_Rect(mCurX,mCurY,mCurX+64,mCurY+64), CL_Color::aqua ) ;
+	    //mpWindow->get_gc()->draw_rect( CL_Rect(mCurX,mCurY,mCurX+64,mCurY+64), CL_Color::aqua ) ;
 
-	    drawPlayer();
+	     drawPlayer();
 
 	    mpLevel->drawMappableObjects( src,dst, mpWindow->get_gc(), 
 					  mbPauseMovement ? false:true);
@@ -608,22 +608,36 @@ int Application::main(int argc, char ** argv)
 		    
 	
 	    CL_Display::flip();
-	    CL_System::keep_alive();
 
-#if 1
 
-		int cur_time = CL_System::get_time();
-		int delta_time = cur_time - start_time;	
-		start_time = cur_time;	
-		int fps = calc_fps ( delta_time );
+
+
+	    int cur_time = CL_System::get_time();
+	    int delta_time = cur_time - start_time;	
+	    start_time = cur_time;	
+	    
+	    
+	    if(delta_time < 16)
+	    {
+		CL_System::keep_alive(16 - delta_time);
+	    }
+	    else
+	    {
+		CL_System::keep_alive();
+	    }
+
+
+
 #ifndef NDEBUG
+		int fps = calc_fps ( delta_time );
+
 
 		if(fpscounter++ % 2000 == 0)
 		    std::cout << "FPS: " << fps << ',' << delta_time <<  std::endl;
 
 		if(fpscounter == 100000) fpscounter == 0;
 #endif
-#endif
+
 
 
 	}

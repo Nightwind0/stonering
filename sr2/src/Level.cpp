@@ -56,7 +56,7 @@ bool operator < (const CL_Point &p1, const CL_Point &p2)
     return p1value < p2value;
 }
 
-bool operator < (const SpriteRef::eDirection dir1, const SpriteRef::eDirection dir2)
+bool operator < (const MappableObject::eDirection dir1, const MappableObject::eDirection dir2)
 {
     return (int)dir1 < (int)dir2;
 }
@@ -221,22 +221,16 @@ CL_DomElement  SpriteRef::createDomElement(CL_DomDocument &doc) const
 
     std::string dir;
 
-    switch(meDirection)
+    switch(meType)
     {
     case SPR_STILL:
 	dir = "still";
 	break;
-    case SPR_NORTH:
-	dir = "north";
+    case SPR_TWO_WAY:
+	dir = "twoway";
 	break;
-    case SPR_WEST:
-	dir = "west";
-	break;
-    case SPR_EAST:
-	dir = "east";
-	break;
-    case SPR_SOUTH:
-	dir = "south";
+    case SPR_FOUR_WAY:
+	dir = "fourway";
 	break;
     case SPR_NONE:
 	break;
@@ -244,7 +238,7 @@ CL_DomElement  SpriteRef::createDomElement(CL_DomDocument &doc) const
 
     if(dir.length())
     {
-	element.set_attribute("direction", dir);
+	element.set_attribute("type", dir);
     }
 
     CL_DomText text(doc,mRef);
@@ -259,23 +253,21 @@ CL_DomElement  SpriteRef::createDomElement(CL_DomDocument &doc) const
 
 SpriteRef::SpriteRef( CL_DomElement *pElement)
 {
-    meDirection = SPR_NONE;
+    meType = SPR_NONE;
 
 
     CL_DomNamedNodeMap attributes = pElement->get_attributes();
 
 
 	
-    if(!attributes.get_named_item("direction").is_null())
+    if(!attributes.get_named_item("type").is_null())
     {
-	std::string direction = attributes.get_named_item("direction").get_node_value();
+	std::string direction = attributes.get_named_item("type").get_node_value();
 		
-	if(direction == "still") meDirection = SPR_STILL;
-	if(direction == "north") meDirection = SPR_NORTH;
-	if(direction == "west")  meDirection = SPR_WEST;
-	if(direction == "south") meDirection = SPR_SOUTH;
-	if(direction == "east")  meDirection = SPR_EAST;
-		
+	if(direction == "still") meType = SPR_STILL;
+	if(direction == "twoway") meType = SPR_TWO_WAY;
+	if(direction == "fourway")  meType = SPR_FOUR_WAY;
+
     }
 
     mRef = pElement->get_text();
@@ -290,9 +282,9 @@ std::string SpriteRef::getRef() const
     return mRef;
 }
 
-SpriteRef::eDirection SpriteRef::getDirection() const
+SpriteRef::eType SpriteRef::getType() const
 {
-    return meDirection;
+    return meType;
 }
 
 
@@ -2180,10 +2172,10 @@ CL_DomElement  MappableObject::createDomElement(CL_DomDocument &doc) const
     }
 
 
-    for(std::list<SpriteRef*>::const_iterator i = mSpriteRefs.begin();
-	i != mSpriteRefs.end(); i++)
+    if(isSprite())
     {
-	CL_DomElement  spriteRefEl = (*i)->createDomElement(doc);
+	
+	CL_DomElement  spriteRefEl = mGraphic.asSpriteRef->createDomElement(doc);
 
 
 	element.append_child ( spriteRefEl );
@@ -2257,7 +2249,9 @@ MappableObject::MappableObject(CL_DomElement *pElement):mpMovement(0),mTimeOfLas
 	}
     }
 
-    meDirection = SpriteRef::SPR_NONE;
+    meDirection = NONE;
+
+    mpSprite = NULL;
 
     mStartX = atoi(attributes.get_named_item("xpos").get_node_value().c_str());
     mStartY = atoi(attributes.get_named_item("ypos").get_node_value().c_str());
@@ -2282,14 +2276,14 @@ MappableObject::MappableObject(CL_DomElement *pElement):mpMovement(0),mTimeOfLas
 
 	    SpriteRef * pRef = factory->createSpriteRef ( &child );
 
-	    mSpriteRefs.push_back ( pRef );
+	    mGraphic.asSpriteRef = pRef;
 	    cFlags |= SPRITE;
 
-	    mSprites[ pRef->getDirection() ]  = GM->createSprite ( pRef->getRef() );
+	    mpSprite = GM->createSprite ( pRef->getRef() );
 	    
 
-	    int swidth = mSprites [ pRef->getDirection() ]->get_width();
-	    int sheight = mSprites [ pRef->getDirection()]->get_height();
+	    int swidth = mpSprite->get_width();
+	    int sheight = mpSprite->get_height();
 
 	    switch( meSize )
 	    {
@@ -2305,9 +2299,6 @@ MappableObject::MappableObject(CL_DomElement *pElement):mpMovement(0),mTimeOfLas
 	    }
 
 
-	
-	    meDirection = pRef->getDirection();
-
 	}
 	else if (child.get_node_name() == "event" )
 	{
@@ -2321,28 +2312,32 @@ MappableObject::MappableObject(CL_DomElement *pElement):mpMovement(0),mTimeOfLas
 	    switch(mpMovement->getMovementType())
 	    {
 	    case Movement::MOVEMENT_WANDER:
-		if(!mSprites.count( SpriteRef::SPR_NORTH )) throw CL_Error("Wandering MO with no north sprite.");
-		if(!mSprites.count( SpriteRef::SPR_SOUTH )) throw CL_Error("Wandering MO with no south sprite.");
-		if(!mSprites.count( SpriteRef::SPR_EAST )) throw CL_Error("Wandering MO with no east sprite.");
-		if(!mSprites.count( SpriteRef::SPR_WEST )) throw CL_Error("Wandering MO with no west sprite.");
+		if(!mGraphic.asSpriteRef->getType() == SpriteRef::SPR_FOUR_WAY)
+		    throw CL_Error("Wandering MO needs a four way sprite ref.");
+
+		meDirection = SOUTH;
 		break;
 	    case Movement::MOVEMENT_PACE_NS:
-		if(!mSprites.count( SpriteRef::SPR_NORTH )) throw CL_Error("Pacing MO with no north sprite.");
-		if(!mSprites.count( SpriteRef::SPR_SOUTH )) throw CL_Error("Pacing MO with no south sprite.");
+		meDirection = SOUTH;
+		if(!mGraphic.asSpriteRef->getType() == SpriteRef::SPR_TWO_WAY)
+		    throw CL_Error("Pacing MO needs a two way sprite ref.");
 		break;
 	    case Movement::MOVEMENT_PACE_EW:
-		if(!mSprites.count( SpriteRef::SPR_EAST )) throw CL_Error("Pacing MO with no east sprite.");
-		if(!mSprites.count( SpriteRef::SPR_WEST )) throw CL_Error("Pacing MO with no west sprite.");
+		if(!mGraphic.asSpriteRef->getType() == SpriteRef::SPR_TWO_WAY)
+		    throw CL_Error("Pacing MO needs a two way sprite ref.");
+
+		meDirection = EAST;
 		break;
 	    default:
 		break;
 	    }
 	}
-	// TODO Movement
+
 
 	child = child.get_next_sibling().to_element();
     }
 
+    setFrameForDirection();
 	
 }
 
@@ -2355,12 +2350,9 @@ MappableObject::~MappableObject()
 	delete *i;
     }
 
-    for(std::list<SpriteRef*>::iterator h = mSpriteRefs.begin();
-	h != mSpriteRefs.end();
-	h++)
-    {
-	delete *h;
-    }
+    delete mpSprite;
+
+    delete mpMovement;
 	     
 }
 
@@ -2433,11 +2425,13 @@ void MappableObject::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicCont
 
     if(isSprite())
     {
-	mSprites[meDirection]->draw(dst, pGC );
+	mpSprite->draw(dst, pGC );
     }
     else if( cFlags & TILEMAP )
     {
-	
+#ifndef NDEBUG
+	std::cout << "Mappable Object is tilemap?" << std::endl;
+#endif
 
 	CL_Rect srcRect(mGraphic.asTilemap->getMapX() * 32 + src.left, mGraphic.asTilemap->getMapY() * 32 + src.top,
 			(mGraphic.asTilemap->getMapX() * 32) + src.right, (mGraphic.asTilemap->getMapY() * 32) + src.bottom);
@@ -2454,17 +2448,17 @@ void MappableObject::pickOppositeDirection()
 {
     switch(meDirection)
     {
-    case SpriteRef::SPR_WEST:
-	meDirection = SpriteRef::SPR_EAST;
+    case WEST:
+	meDirection = EAST;
 	break;
-    case SpriteRef::SPR_EAST:
-	meDirection = SpriteRef::SPR_WEST;
+    case EAST:
+	meDirection = WEST;
 	break;
-    case SpriteRef::SPR_NORTH:
-	meDirection = SpriteRef::SPR_SOUTH;
+    case NORTH:
+	meDirection = SOUTH;
 	break;
-    case SpriteRef::SPR_SOUTH:
-	meDirection = SpriteRef::SPR_NORTH;
+    case SOUTH:
+	meDirection = NORTH;
 	break;
     default:
 	break;
@@ -2474,7 +2468,6 @@ void MappableObject::pickOppositeDirection()
 
 bool MappableObject::moveInCurrentDirection()
 {
-    if( meDirection == SpriteRef::SPR_NONE) return true;
 
     int delay = 0;
 
@@ -2501,24 +2494,26 @@ bool MappableObject::moveInCurrentDirection()
 
 	mTimeOfLastUpdate = CL_System::get_time();
 
+	mbStep = mbStep? false: true;
+
 	switch ( meDirection )
 	{
-	case SpriteRef::SPR_SOUTH:
+	case SOUTH:
 	    newRect.top++;
 	    newRect.bottom++;
 	    nY++;
 	    break;
-	case SpriteRef::SPR_NORTH:
+	case NORTH:
 	    newRect.top--;
 	    newRect.bottom--;
 	    nY--;
 	    break;
-	case SpriteRef::SPR_EAST:
+	case EAST:
 	    newRect.left++;
 	    newRect.right++;
 	    nX++;
 	    break;
-	case SpriteRef::SPR_WEST:
+	case WEST:
 	    newRect.right--;
 	    newRect.left--;
 	    nX--;
@@ -2541,11 +2536,12 @@ bool MappableObject::moveInCurrentDirection()
 
 	    mCountInCurDirection++;
 
-	    if(mCountInCurDirection > 128)
+	    if(mCountInCurDirection > 128) // @todo: come from movement object?
 	    {
 		mCountInCurDirection = 0;
 		randomNewDirection();
 
+		setFrameForDirection();
 	    }
 
 	}
@@ -2571,15 +2567,15 @@ void MappableObject::randomNewDirection()
 	break;
     case Movement::MOVEMENT_WANDER:
 	if(r == 0)
-	    meDirection = SpriteRef::SPR_NORTH;
+	    meDirection = NORTH;
 	else if(r == 1)
-	    meDirection = SpriteRef::SPR_SOUTH;
+	    meDirection = SOUTH;
 	else if(r == 2)
-	    meDirection = SpriteRef::SPR_EAST;
+	    meDirection = EAST;
 	else if(r == 3)
-	    meDirection = SpriteRef::SPR_WEST;
+	    meDirection = WEST;
 	else if(r == 4)
-	    meDirection = SpriteRef::SPR_STILL;
+	    meDirection = NONE;
 	break;
     case Movement::MOVEMENT_PACE_NS:
     case Movement::MOVEMENT_PACE_EW:
@@ -2594,23 +2590,95 @@ void MappableObject::randomNewDirection()
 	
 }
 
+void MappableObject::setFrameForDirection()
+{
+
+    
+    if(!mpMovement && mpSprite) mpSprite->set_frame(0);
+    else if (!mpMovement) return;
+
+    switch(mpMovement->getMovementType())
+    {
+    case Movement::MOVEMENT_NONE:
+	if(mbStep) mpSprite->set_frame(1);
+	else mpSprite->set_frame(0);
+	
+	break;
+    case Movement::MOVEMENT_WANDER:
+    {
+	switch( meDirection )
+	{
+	case NORTH:
+	    mpSprite->set_frame(mbStep? 6 : 7);
+	    break;
+	case EAST:
+	    mpSprite->set_frame(mbStep? 0 : 1);
+	    break;
+	case WEST:
+	    mpSprite->set_frame(mbStep? 2 : 3);
+	    break;
+	case SOUTH:
+	    mpSprite->set_frame(mbStep? 4 : 5);
+	    break;
+	case NONE:
+	    if(mbStep) mpSprite->set_frame(1);
+	    else mpSprite->set_frame(0);
+	    break;
+	}
+	break;
+    }
+    case Movement::MOVEMENT_PACE_NS:
+    {
+	switch(meDirection)
+	{
+	case NORTH:
+	    mpSprite->set_frame ( mbStep? 2 : 3);
+	    break;
+	case SOUTH:
+	    mpSprite->set_frame ( mbStep? 0 : 1);
+	    break;
+	}
+	break;
+    }
+    case Movement::MOVEMENT_PACE_EW:
+    {
+	switch(meDirection)
+	{
+	case EAST:
+	    mpSprite->set_frame ( mbStep? 0 : 1 );
+	    break;
+	case WEST:
+	    mpSprite->set_frame ( mbStep? 2 : 3 );
+	    break;
+	    
+	}
+	break;
+    }
+    }
+}
+
+
 void MappableObject::update(bool bMove)
 {
 
     if(isSprite())
     {
-	mSprites[meDirection]->update();
 
-	
+
 	// If bMove is false, then moveInCurrentDirection won't even get called
 	// and we won't move.
 	if(bMove && !moveInCurrentDirection())
 	{
 	    
-	    pickOppositeDirection();
+	    // pickOppositeDirection();
+	    randomNewDirection();
+	    setFrameForDirection();
 	}
     }
 }
+
+
+
 
 
 bool MappableObject::isSolid() const

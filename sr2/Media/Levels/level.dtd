@@ -75,4 +75,4 @@
 <!ATTLIST directionBlock south (true|false) #REQUIRED>
 <!ATTLIST directionBlock east (true|false) #REQUIRED>
 <!ATTLIST directionBlock west (true|false) #REQUIRED>
-<!ATTLIST spriteRef direction (still|north|south|east|west) #IMPLIED>
+<!ATTLIST spriteRef type (still|twoway|fourway) #IMPLIED>

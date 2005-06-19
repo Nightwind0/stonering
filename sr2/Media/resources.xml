@@ -42,35 +42,12 @@
 		</sprite>
 	</section>
 	<section name ="Animals">
-		<sprite name = "Cat1s" hint="alpha">
-			<image file = "Sprites/cat1.png">
-				<grid pos="0,0" size="32,32" array="2,1">
+		<sprite name = "Cat2" hint="alpha">
+			<image file = "Sprites/cat2.png">
+				<grid pos="0,0" size="32,32" array="2,4">
 				</grid>
 			</image>
-			<animation speed="500" loop="yes"/>
 		</sprite>
-		<sprite name = "Cat1n" hint="alpha">
-			<image file = "Sprites/cat1_n.png">
-				<grid pos="0,0" size="32,32" array="2,1">
-				</grid>
-			</image>
-			<animation speed="500" loop="yes"/>
-		</sprite>
-		<sprite name = "Cat1e" hint="alpha">
-			<image file = "Sprites/cat1_e.png">
-				<grid pos="0,0" size="32,32" array="2,1">
-				</grid>
-			</image>
-			<animation speed="500" loop="yes"/>
-		</sprite>
-		<sprite name = "Cat1w" hint="alpha">
-			<image file = "Sprites/cat1_w.png">
-				<grid pos="0,0" size="32,32" array="2,1">
-				</grid>
-			</image>
-			<animation speed="500" loop="yes"/>
-		</sprite>
-						
 		
 	</section>
 </section>
