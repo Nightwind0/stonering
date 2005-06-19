@@ -2052,16 +2052,18 @@ void Tile::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC)
     // Get our tilemap or sprite
     // Blit it
 
-    GraphicsManager * GM = GraphicsManager::getInstance();
+    static GraphicsManager * GM = GraphicsManager::getInstance();
 
     if( !isSprite() )
     {
 	CL_Surface * tilemap = mGraphic.asTilemap->getTileMap();
 
 	//		void draw(	const CL_Rect& src, const CL_Rect& dest, CL_GraphicContext* context = 0);
-
-	CL_Rect srcRect(mGraphic.asTilemap->getMapX() * 32 + src.left, mGraphic.asTilemap->getMapY() * 32 + src.top,
-			(mGraphic.asTilemap->getMapX() * 32) + src.right, (mGraphic.asTilemap->getMapY() * 32) + src.bottom);
+	int mapx, mapy;
+	mapx = mGraphic.asTilemap->getMapX();
+	mapy = mGraphic.asTilemap->getMapY();
+	CL_Rect srcRect(mapx * 32 + src.left, mapy * 32 + src.top,
+			(mapx * 32) + src.right, (mapy * 32) + src.bottom);
 
 		
 	tilemap->draw(srcRect, dst, pGC);
