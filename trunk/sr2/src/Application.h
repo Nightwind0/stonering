@@ -164,7 +164,7 @@ class Level;
 
       virtual IParty * getParty() const;
       virtual LevelFactory *getLevelFactory() const;
-      virtual CL_Rect getLevelRect() const;
+      virtual inline CL_Rect getLevelRect() const;
       virtual CL_Rect getDisplayRect() const;
 
 

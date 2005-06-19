@@ -1184,8 +1184,8 @@ bool Event::repeatable()
  
 bool Event::invoke()
 {
-
-    if(! mpCondition->evaluate() ) return false;
+    
+    if(mpCondition && !mpCondition->evaluate() ) return false;
 
     IApplication::getInstance()->getParty()->doEvent ( mName );
 
@@ -1993,6 +1993,17 @@ Tile::Tile(CL_DomElement *pElement):mpSprite(NULL),mpCondition(NULL), mpAM(NULL)
 
 
 
+}
+
+
+bool Tile::hasAM() const
+{
+    return mpAM != NULL;
+}
+
+void Tile::activate() // Call any attributemodifier
+{
+    mpAM->invoke();	
 }
 
 Tile::~Tile()
@@ -3288,9 +3299,37 @@ void Level::step(const CL_Rect &dest)
     // We have to adjust slightly, otherwise we would get weird tiles not actually UNDER
     // the rectangle.
 
+    int tile1x = (dest.left + 1) / 32;
+    int tile1y = (dest.top + 1) / 32;
+
+    int tile2x = (dest.left + 1) /32;
+    int tile2y = (dest.bottom - 1) / 32;
+
+    int tile3x = (dest.right - 1) / 32;
+    int tile3y = (dest.top + 1) / 32;
+    
+    int tile4x = (dest.right - 1) / 32;
+    int tile4y = (dest.bottom - 1) / 32;
+
+    
+    activateTilesAt ( tile1x, tile1y );
+    activateTilesAt ( tile2x, tile2y );
+    activateTilesAt ( tile3x, tile3y );
+    activateTilesAt ( tile4x, tile4y );
+}
 
 
-
+void Level::activateTilesAt ( uint x, uint y )
+{
+    for(std::list<Tile*>::const_iterator iter = mTileMap[x][y].begin();
+	iter != mTileMap[x][y].end();
+	iter++)
+    {
+	if ( (*iter)->hasAM() && (*iter)->evaluateCondition() )
+	{
+	    (*iter)->activate();
+	}
+    }
     
 }
       
