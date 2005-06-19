@@ -23,6 +23,147 @@ const int WINDOW_WIDTH = 800 ;
 
 
 
+  
+GameAction::GameAction()
+{
+}
+
+GameAction::~GameAction()
+{
+}
+
+SayAction::SayAction(const std::string & speaker, 
+		     const std::string & text):
+    mSpeaker(speaker),mText(text)
+{
+}
+
+SayAction::~SayAction()
+{
+}
+
+std::string SayAction::getSpeaker() const
+{
+    return mSpeaker;
+}
+
+std::string SayAction::getText() const
+{
+    return mText;
+}
+
+
+LoadLevelAction::LoadLevelAction(const std::string & level,
+				 uint startx, uint starty):
+    mLevel(level),mStartX(startx),mStartY(starty)
+{
+}
+
+LoadLevelAction::~LoadLevelAction()
+{
+}
+
+std::string LoadLevelAction::getLevel() const
+{
+    return mLevel;
+}
+uint LoadLevelAction::getStartX() const
+{
+    return mStartX;
+}
+uint LoadLevelAction::getStartY() const
+{
+    return mStartY;
+}
+
+StartBattleAction::StartBattleAction(const std::string &monster,
+				     uint count, bool boss):
+    mMonster(monster),mCount(count),mbBoss(boss)
+{
+}
+
+StartBattleAction::~StartBattleAction()
+{
+}
+	 
+std::string StartBattleAction::getMonster() const
+{
+    return mMonster;
+}
+uint StartBattleAction::getCount() const
+{
+    return mCount;
+}
+
+bool StartBattleAction::isBoss() const
+{
+    return mbBoss;
+}
+
+
+
+PlayAnimationAction::PlayAnimationAction(const std::string &animation)
+    :mAnimation(animation)
+{
+}
+
+PlayAnimationAction::~PlayAnimationAction()
+{
+}
+
+std::string PlayAnimationAction::getAnimation() const
+{
+    return mAnimation;
+}
+
+
+PlaySoundAction::PlaySoundAction(const std::string &sound):mSound(sound)
+{
+    
+}
+
+PlaySoundAction::~PlaySoundAction()
+{
+}
+
+std::string PlaySoundAction::getSound() const
+{
+    return mSound;
+}
+
+
+
+PauseAction::PauseAction(uint time):mTime(time)
+{
+}
+
+PauseAction::~PauseAction()
+{
+}
+
+uint PauseAction::getTime() const
+{
+    return mTime;
+}
+
+
+
+
+
+InvokeShopAction::InvokeShopAction(const std::string &shop):mShopType(shop)
+{
+}
+
+InvokeShopAction::~InvokeShopAction()
+{
+}
+
+std::string InvokeShopAction::getShopType() const
+{
+    return mShopType;
+}
+
+
 
 Application sr_app;
 
@@ -38,18 +179,22 @@ int Application::getScreenHeight()const
 }
 
 
-void Application::playAnimation(const std::string &animation)const
+void Application::playAnimation(const std::string &animation)
 {
 #ifndef NDEBUG
     std::cout << "Playing animation " << animation << std::endl;
 #endif
+
+    mActionQueue.push ( new PlayAnimationAction ( animation ) );
 }
 
-void Application::playSound(const std::string &sound)const
+void Application::playSound(const std::string &sound)
 {
 #ifndef NDEBUG
     std::cout << "Playing sound " << sound << std::endl;
 #endif
+
+    mActionQueue.push( new PlaySoundAction( sound ) );
 }
 
 void Application::loadLevel(const std::string &level, uint startX, uint startY)
@@ -57,6 +202,8 @@ void Application::loadLevel(const std::string &level, uint startX, uint startY)
 #ifndef NDEBUG
     std::cout << "Load level " << level << std::endl;
 #endif
+
+    mActionQueue.push( new LoadLevelAction ( level, startX, startY ));
 }
 
 void Application::startBattle(const std::string &monster, uint count, bool isBoss)
@@ -64,6 +211,8 @@ void Application::startBattle(const std::string &monster, uint count, bool isBos
 #ifndef NDEBUG
     std::cout << "Start battle " << monster << std::endl;
 #endif
+
+    mActionQueue.push( new StartBattleAction( monster, count, isBoss ) );
 }
 
 void Application::say(const std::string &speaker, const std::string &text)
@@ -71,14 +220,20 @@ void Application::say(const std::string &speaker, const std::string &text)
 #ifndef NDEBUG
     std::cout << "Say: " << speaker << ":" << text << std::endl;
 #endif
+
+    mActionQueue.push ( new SayAction( speaker,text ) );
+
 }
 
 void Application::pause(uint time)
 {
+
+    mActionQueue.push ( new PauseAction ( time ) );
 }
 
 void Application::invokeShop(const std::string &shoptype)
 {
+    mActionQueue.push ( new InvokeShopAction ( shoptype ) );
 }
 
 
@@ -291,9 +446,6 @@ bool Application::move(eDir dir, int times)
 void Application::onSignalKeyDown(const CL_InputEvent &key)
 {
 
-    CL_DomDocument document;
-
-	
     int nX =mCurX;
     int nY =mCurY;
     
@@ -383,7 +535,7 @@ int Application::main(int argc, char ** argv)
 	while(!mbDone)
 	{
 			
-
+	    processActionQueue();
 
 
 	    CL_Rect dst(0,0, min(WINDOW_WIDTH, (const int)mpLevel->getWidth()*32),min(WINDOW_HEIGHT, (const int)mpLevel->getHeight() * 32));
@@ -463,3 +615,7 @@ void Application::showIntro()
 }
 
 
+void Application::processActionQueue()
+{
+
+}

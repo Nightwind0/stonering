@@ -71,8 +71,8 @@ public:
       virtual bool canMove(const CL_Rect &currently, const CL_Rect &destination, bool noHot, bool isPlayer);
 
 
-      virtual void playAnimation(const std::string &animation)const{}
-      virtual void playSound(const std::string &sound)const{}
+      virtual void playAnimation(const std::string &animation){}
+      virtual void playSound(const std::string &sound){}
       virtual void loadLevel(const std::string &level, uint startX, uint startY){}
       virtual void startBattle(const std::string &monster, uint count, bool isBoss){}
       virtual void say(const std::string &speaker, const std::string &text){}

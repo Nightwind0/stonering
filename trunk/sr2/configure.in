@@ -35,7 +35,19 @@ case $debugmode in
      CPPFLAGS="-DNDEBUG -O2" ;;
 esac
 
-
+AC_ARG_ENABLE(gprof,
+[       --enable-gprof          enable profiling with gprof],
+gprof=$enableval,gprof=no)
+if test "$gprof" != no
+then
+    CFLAGS="-pg $CFLAGS"
+    CPPFLAGS="-pg $CPPFLAGS"
+    CXXFLAGS="-pg $CXXFLAGS"
+    AC_CHECK_LIB(gmon, main,[LIBS="$LIBS -lgmon"])
+    AC_MSG_RESULT(enabled)
+else
+    AC_MSG_RESULT(no)
+fi
 				     
 # Checks for header files.
 
