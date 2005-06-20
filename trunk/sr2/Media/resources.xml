@@ -12,6 +12,16 @@
 	<string name="StartLevel" value="examplelevel" />
 	<string name="DefaultPlayerSprite" value="Sprites/Party/Valyn" /> 
  </section>
+<section name="Fonts">
+<!-- 1234567890-=\+/`~!@#$%^&*()[]{};:'",.<>?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw -->
+	<sprite name="Font_sb_black">
+		<image file="Images/Fonts/sb_black.png"><alpha /></image>
+	</sprite>
+
+	<font name="sb_black">
+		<bitmap glyphs="Fonts/Font_sb_black" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw" />
+	</font>
+</section>
  <section name="Levels">
  	<string name="examplelevel" value="test.xml" />
 </section>
