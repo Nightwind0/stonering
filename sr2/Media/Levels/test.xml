@@ -1,6 +1,6 @@
 
 <level name="TestLevel">
-	<levelHeader music="Main" width="27" height="19"/>
+	<levelHeader music="Main" width="27" height="19" allowsRunning="true"/>
 	<tiles>
 		<tile xpos="0" ypos="0">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>

@@ -2825,7 +2825,7 @@ Level::Level(const std::string &name,CL_ResourceManager * pResources): mpDocumen
     LoadLevel ( path + filename );
 }
 
-Level::Level(CL_DomDocument &document)
+Level::Level(CL_DomDocument &document):mbAllowsRunning(false)
 {
     LoadLevel ( document );
 }
@@ -3413,15 +3413,60 @@ void Level::step(const CL_Rect &dest, const CL_Rect & old)
     int tile8x = (dest.left + 1) / 32;
     int tile8y = (dest.top + 1 + ((dest.get_height() -2)/2)) / 32;
 
+
+    // Now calculate old tiles to see if we haven't moved off them yet
+
+    int oldtile1x = (old.left + 1) / 32;
+    int oldtile1y = (old.top + 1) / 32;
+
+    int oldtile2x = (old.left + 1) /32;
+    int oldtile2y = (old.bottom - 1) / 32;
+
+    int oldtile3x = (old.right - 1) / 32;
+    int oldtile3y = (old.top + 1) / 32;
     
-    activateTilesAt ( tile1x, tile1y );
-    activateTilesAt ( tile2x, tile2y );
-    activateTilesAt ( tile3x, tile3y );
-    activateTilesAt ( tile4x, tile4y );
-    activateTilesAt ( tile5x, tile5y );
-    activateTilesAt ( tile6x, tile6y );
+    int oldtile4x = (old.right - 1) / 32;
+    int oldtile4y = (old.bottom - 1) / 32;
+
+
+    int oldtile5x = (old.left  + 1 + ((old.get_width() - 2) /2)) / 32;
+    int oldtile5y = (old.top + 1) / 32;
+
+    int oldtile6x = (old.right - 1 ) / 32;
+    int oldtile6y = (old.top +1 + ((old.get_height() - 2)/ 2)) / 32;
+    
+    int oldtile7x = (old.left + 1 + ((old.get_width() -2 ) / 2)) / 32;
+    int oldtile7y = (old.bottom -1)  / 32;
+
+    int oldtile8x = (old.left + 1) / 32;
+    int oldtile8y = (old.top + 1 + ((old.get_height() -2)/2)) / 32;
+
+
+
+    
+    if(!(tile1x == oldtile1x && tile1y == oldtile1y))
+	activateTilesAt ( tile1x, tile1y );
+
+    if(!(tile2x == oldtile2x && tile2y == oldtile2y))
+	activateTilesAt ( tile2x, tile2y );
+
+    if(!(tile3x == oldtile3x && tile3y == oldtile3y))
+	activateTilesAt ( tile3x, tile3y );
+    
+    if(!(tile4x == oldtile4x && tile4y == oldtile4y))
+	activateTilesAt ( tile4x, tile4y );
+
+    if(!(tile5x == oldtile5x && tile5y == oldtile5y))
+	activateTilesAt ( tile5x, tile5y );
+
+    if(!(tile6x == oldtile6x && tile6y == oldtile6y))
+	activateTilesAt ( tile6x, tile6y );
+
+    if(!(tile7x == oldtile7x && tile7y == oldtile7y))
     activateTilesAt ( tile7x, tile7y );
-    activateTilesAt ( tile8x, tile8y );
+
+    if(!(tile8x == oldtile8x && tile8y == oldtile8y))
+	activateTilesAt ( tile8x, tile8y );
 }
 
 
@@ -3520,6 +3565,13 @@ void Level::LoadLevel (CL_DomDocument &document )
     mLevelHeight = atoi(headerAttributes.get_named_item("height").get_node_value().c_str());
 
     std::cout << "DIMENSIONS: " << mLevelWidth << " by " << mLevelHeight << std::endl;
+
+
+    if(headerAttributes.get_named_item("allowsRunning").get_node_value() == "true")
+    {
+	mbAllowsRunning = true;
+    }
+    
 
     // Create tilemap
 

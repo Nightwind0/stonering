@@ -32,6 +32,7 @@
 <!ATTLIST levelHeader music CDATA #REQUIRED>
 <!ATTLIST levelHeader width CDATA #REQUIRED>
 <!ATTLIST levelHeader height CDATA #REQUIRED>
+<!ATTLIST levelHeader allowsRunning (true|false) #IMPLIED>
 <!ATTLIST tile name CDATA #REQUIRED>
 <!ATTLIST tile xpos CDATA #REQUIRED>
 <!ATTLIST tile ypos CDATA #REQUIRED>
