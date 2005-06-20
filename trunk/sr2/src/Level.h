@@ -737,7 +737,8 @@ namespace StoneRing{
 
 	    uint getWidth() const { return mLevelWidth; }
 	    uint getHeight() const { return mLevelHeight; }
-      
+
+	    bool allowsRunning() const { return mbAllowsRunning; }
 	protected:
 
 //			std::map<CL_Point, std::list<Tile*> > mTileMap;
@@ -769,6 +770,7 @@ namespace StoneRing{
 	    std::string mName;
 	    uint mLevelWidth;
 	    uint mLevelHeight;
+	    bool mbAllowsRunning;
 	};
 }
 

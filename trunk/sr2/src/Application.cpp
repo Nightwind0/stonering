@@ -492,7 +492,7 @@ void Application::onSignalKeyDown(const CL_InputEvent &key)
     bool running = false;
     int speed = mSpeed;
 
-    if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ))
+    if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ) && mpLevel->allowsRunning())
     {
 	speed *= 2;
     }
