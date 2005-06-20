@@ -2,7 +2,7 @@
 #include <ClanLib/core.h>
 #include <ClanLib/gl.h>
 #include <iostream>
-
+#include <sstream>
 #include "Application.h"
 #include "Level.h"
 #include "Party.h"
@@ -21,6 +21,16 @@ using std::max;
 const int WINDOW_HEIGHT = 600 ;
 const int WINDOW_WIDTH = 800 ;
 
+
+
+std::string IntToString (int i)
+{
+    std::ostringstream os;
+
+    os << i;
+
+    return os.str();
+}
 
 
   
@@ -271,7 +281,7 @@ bool Application::canMove(const CL_Rect &currently, const CL_Rect &destination, 
 
 Application::Application():mpParty(0),mpLevelFactory(0),mCurX(0),mCurY(0),
 			   mLevelX(0),mLevelY(0),mbDone(false),mSpeed(4),mbPauseMovement(false),
-			   mePlayerDirection(SOUTH)
+			   mbShowDebug(false),  mePlayerDirection(SOUTH)
     
 {
     mpParty = new Party();
@@ -527,7 +537,7 @@ void Application::onSignalKeyDown(const CL_InputEvent &key)
 	break;
 
     case CL_KEY_D:
-	std::cout << "AT " << '(' << mCurX / 32 << ',' << mCurY / 32 << ')' << std::endl;
+	mbShowDebug = mbShowDebug?false:true;
 	break;
 #endif
     default:
@@ -545,6 +555,18 @@ void Application::onSignalQuit()
 }
 
 
+void Application::loadFonts()
+{
+
+#ifndef NDEBUG
+    std::cout << "Loading fonts." << std::endl;
+#endif
+
+    mpfSBBlack = new CL_Font("Fonts/sb_black", mpResources);
+
+
+    
+}
 
 
 int Application::main(int argc, char ** argv)
@@ -572,8 +594,10 @@ int Application::main(int argc, char ** argv)
 	std::string defaultplayersprite = CL_String::load("Game/DefaultPlayerSprite",mpResources );
 	mpWindow  = new CL_DisplayWindow(name, WINDOW_WIDTH, WINDOW_HEIGHT);
 		
+	
 	CL_Display::clear();
-		
+
+	loadFonts();
 	showRechargeableOnionSplash();
 	showIntro();
 
@@ -613,7 +637,7 @@ int Application::main(int argc, char ** argv)
 
 	    //mpWindow->get_gc()->draw_rect( CL_Rect(mCurX,mCurY,mCurX+64,mCurY+64), CL_Color::aqua ) ;
 
-	     drawPlayer();
+	    drawPlayer();
 
 	    mpLevel->drawMappableObjects( src,dst, mpWindow->get_gc(), 
 					  mbPauseMovement ? false:true);
@@ -622,17 +646,22 @@ int Application::main(int argc, char ** argv)
 
 	    mpWindow->get_gc()->pop_cliprect();
 
-		    
-	
-	    CL_Display::flip();
-
-
-
 
 	    int cur_time = CL_System::get_time();
 	    int delta_time = cur_time - start_time;	
 	    start_time = cur_time;	
+
+
+#ifndef NDEBUG
+	    int fps = calc_fps ( delta_time );
+
+	    if(mbShowDebug)
+	    {
+		mpfSBBlack->draw(0,0, mpLevel->getName());
+		mpfSBBlack->draw(0,  mpfSBBlack->get_height(), std::string("FPS: ") +IntToString(fps) );
+	    }
 	    
+#endif
 	    
 	    if(delta_time < 16)
 	    {
@@ -643,18 +672,7 @@ int Application::main(int argc, char ** argv)
 		CL_System::keep_alive();
 	    }
 
-
-
-#ifndef NDEBUG
-		int fps = calc_fps ( delta_time );
-
-
-		if(fpscounter++ % 2000 == 0)
-		    std::cout << "FPS: " << fps << ',' << delta_time <<  std::endl;
-
-		if(fpscounter == 100000) fpscounter == 0;
-#endif
-
+	    CL_Display::flip();
 
 
 	}

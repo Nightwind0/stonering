@@ -218,7 +218,7 @@ class Level;
       void teardownClanLib();
       void showRechargeableOnionSplash();
       void showIntro();
-
+      void loadFonts();
 
       void processActionQueue();
 
@@ -243,12 +243,16 @@ class Level;
       std::queue<GameAction*> mActionQueue;
 
       bool mbPauseMovement;
+      bool mbShowDebug;
 
       CL_Sprite *mpPlayerSprite;
 
       eDir mePlayerDirection;
 
       bool mbStep; // Which sprite frame to use..
+
+      CL_Font *mpfSBBlack;
+      
       
     };
   
