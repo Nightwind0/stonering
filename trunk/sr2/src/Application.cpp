@@ -242,6 +242,8 @@ void Application::say(const std::string &speaker, const std::string &text)
     mbPauseMovement = true;
     mpfSBBlack->set_scale(2.0,2.0);
 
+    int totalDrawn = 0;
+
     while(!done)
     {
 	int drawCount;
@@ -254,17 +256,18 @@ void Application::say(const std::string &speaker, const std::string &text)
 	    
 	    drawCount = mpfSBBlack->draw(textRect, textIter, text.end(), mpWindow->get_gc() );
 
+
 	    if(CL_Keyboard::get_keycode(CL_KEY_ENTER) || CL_Keyboard::get_keycode(CL_KEY_SPACE))
 	    {
-		textIter += drawCount;
 
-
-		if(drawCount == 0 || textIter + 1 == text.end())
+		if(totalDrawn + drawCount == text.size())
 		{
 		    done = true;
 		}
 
 		doneFrame = true;
+
+		CL_System::sleep(333); // Part hack to prevent enter from being detected twice, partly for effect...
 	    }
 	    else if (CL_Keyboard::get_keycode(CL_KEY_ESCAPE))
 	    {
@@ -272,11 +275,18 @@ void Application::say(const std::string &speaker, const std::string &text)
 		done = true;
 	    }
 
+	    if(totalDrawn + drawCount < text.size())
+	    {
+		mpWindow->get_gc()->fill_rect( CL_Rect(WINDOW_WIDTH - 20, WINDOW_HEIGHT - 20, WINDOW_WIDTH - 10, WINDOW_HEIGHT - 10), CL_Color::black );
+	    }
+
 	    CL_Display::flip();
 
 	    CL_System::keep_alive();
 	}
 
+	totalDrawn += drawCount;
+	textIter += drawCount;
 	
     }
 
