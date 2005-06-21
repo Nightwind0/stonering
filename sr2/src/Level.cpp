@@ -3476,7 +3476,7 @@ int oldtile8y = (old.top + 1 + ((old.get_height() -2)/2)) / 32;
     // Remove any tiles from newTiles which can be found in oldTiles.
 
     std::set_difference( newTiles.begin(), newTiles.end(), mLastSteppedTiles.begin(),mLastSteppedTiles.end(),
-			 inserter( forStepping, forStepping.begin() ) );
+			 std::inserter( forStepping, forStepping.begin() ) );
 
 
     for(std::set<CL_Point>::iterator iter = forStepping.begin();
