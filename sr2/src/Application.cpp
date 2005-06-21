@@ -657,6 +657,7 @@ int Application::main(int argc, char ** argv)
 
 	    if(mbShowDebug)
 	    {
+		mpfSBBlack->set_alpha(0.8);
 		mpfSBBlack->draw(0,0, mpLevel->getName());
 		mpfSBBlack->draw(0,  mpfSBBlack->get_height(), std::string("FPS: ") +IntToString(fps) );
 	    }

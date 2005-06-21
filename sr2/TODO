@@ -1,7 +1,12 @@
 Danny TODOs
-2) Wire up events
-3) Wire up stepping / talking
-4) New "choices" element, with "choice" children. They have the application present to the user choices, the user selects one, and then the app returns an index to indicate which choice was made, the choices object uses that to invoke one of the choices. Each "choice" has a choiceText attribute, and a list of actions. "choices" should live under event, and essentially be an action. That way, it can have conditions.
+3) Wire up talking
+4) New "choices" element, with "choice" children. They have the application present to the user choices, the user selects one, and then the app invokes the actions on that choice. Each "choice" has a choiceText attribute, and a list of actions. "choices" should live under event, and essentially be an action. That way, it can have conditions.
 
 5) How will monsters work? How will you know what monsters to load? How will you know where you can even have monsters? 
-	It seems like it would be per-level. The level header could contain a boolean for whether monsters existed, and perhaps at what rate they were encountered.
+Monster rectangles. Can they overlap? 
+A certain maximum per level. 
+Each with a list of monsters and their encounter rate, and a number of those monsters (as a maximum to choose out of)
+So when you do a battle, you loop through each monster and
+say its encounter rate is 50% and its count is 3. You pick a number
+1 to 100, if its greater than 50, you are going to fight at least one of these.
+Then you roll a number from 1 to 3, thats how many you are fighting. 
