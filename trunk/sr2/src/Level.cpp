@@ -1596,7 +1596,7 @@ Say::~Say()
 
 void Say::invoke()
 {
-    IApplication::getInstance()->say ( mText, mSpeaker );
+    IApplication::getInstance()->say ( mSpeaker, mText );
 }
 
 Give::Give()
