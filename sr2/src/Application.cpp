@@ -231,7 +231,58 @@ void Application::say(const std::string &speaker, const std::string &text)
     std::cout << "Say: " << speaker << ":" << text << std::endl;
 #endif
 
-    mActionQueue.push ( new SayAction( speaker,text ) );
+    meState = TALKING;
+
+    static CL_Rect textRect(0,WINDOW_HEIGHT/2, WINDOW_WIDTH,WINDOW_HEIGHT);
+
+    std::string::const_iterator textIter= text.begin();
+
+    bool done = false;
+
+    mbPauseMovement = true;
+    mpfSBBlack->set_scale(2.0,2.0);
+
+    while(!done)
+    {
+	int drawCount;
+	bool doneFrame = false;
+	while(!doneFrame)
+	{
+	    drawMap();
+
+	    mpWindow->get_gc()->fill_rect( textRect, CL_Color(0,0,200,128) ) ;
+	    
+	    drawCount = mpfSBBlack->draw(textRect, textIter, text.end(), mpWindow->get_gc() );
+
+	    if(CL_Keyboard::get_keycode(CL_KEY_ENTER) || CL_Keyboard::get_keycode(CL_KEY_SPACE))
+	    {
+		textIter += drawCount;
+
+
+		if(drawCount == 0 || textIter + 1 == text.end())
+		{
+		    done = true;
+		}
+
+		doneFrame = true;
+	    }
+	    else if (CL_Keyboard::get_keycode(CL_KEY_ESCAPE))
+	    {
+		doneFrame = true;
+		done = true;
+	    }
+
+	    CL_Display::flip();
+
+	    CL_System::keep_alive();
+	}
+
+	
+    }
+
+    mpfSBBlack->set_scale(1.0,1.0);
+    mbPauseMovement = false;
+    meState = MAIN;
 
 }
 
@@ -434,7 +485,7 @@ bool Application::move(eDir dir, int times)
 
     CL_Rect oldLocation = CL_Rect(mpParty->getLevelX(), mpParty->getLevelY() + offY, 
 				  mpParty->getLevelX() + mpParty->getWidth(),
-				  mpParty->getLevelY() + offY);
+				  mpParty->getLevelY() + offY + offY);
     
     for(int i=0;i<times;i++)
     {
@@ -496,56 +547,64 @@ bool Application::move(eDir dir, int times)
 void Application::onSignalKeyDown(const CL_InputEvent &key)
 {
 
-    int nX =mCurX;
-    int nY =mCurY;
 
-    bool running = false;
-    int speed = mSpeed;
-
-    if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ) && mpLevel->allowsRunning())
+    switch(meState)
     {
-	speed *= 2;
-    }
-    
-    switch(key.id)
+    case MAIN:
     {
-    case CL_KEY_ESCAPE:
-	mbDone = true;
-	break;
-    case CL_KEY_DOWN:
-	move(SOUTH,speed);
-	break;
-    case CL_KEY_UP:
-	move(NORTH,speed);
-	break;
-    case CL_KEY_LEFT:
-	move(WEST,speed);
-	break;
-    case CL_KEY_RIGHT:
-	move(EAST,speed);
-	break;
+	int nX =mCurX;
+	int nY =mCurY;
+	
+	bool running = false;
+	int speed = mSpeed;
+	
+	if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ) && mpLevel->allowsRunning())
+	{
+	    speed *= 2;
+	}
+	
+	switch(key.id)
+	{
+	case CL_KEY_ESCAPE:
+	    mbDone = true;
+	    break;
+	case CL_KEY_DOWN:
+	    move(SOUTH,speed);
+	    break;
+	case CL_KEY_UP:
+	    move(NORTH,speed);
+	    break;
+	case CL_KEY_LEFT:
+	    move(WEST,speed);
+	    break;
+	case CL_KEY_RIGHT:
+	    move(EAST,speed);
+	    break;
 #ifndef NDEBUG
-    case CL_KEY_S:
-	mSpeed--;
-	break;
-    case CL_KEY_F:
-	mSpeed++;
-	break;
-
-    case CL_KEY_P:
+	case CL_KEY_S:
+	    mSpeed--;
+	    break;
+	case CL_KEY_F:
+	    mSpeed++;
+	    break;
+	    
+	case CL_KEY_P:
 	mbPauseMovement = mbPauseMovement?false:true;
 	break;
-
-    case CL_KEY_D:
-	mbShowDebug = mbShowDebug?false:true;
-	break;
+	
+	case CL_KEY_D:
+	    mbShowDebug = mbShowDebug?false:true;
+	    break;
 #endif
-    default:
+	default:
+	    break;
+	}
 	break;
     }
-	
+    case TALKING:
+	break;
+    } // switch(meState)
     
-
 }
 
 
@@ -566,6 +625,29 @@ void Application::loadFonts()
 
 
     
+}
+
+void Application::drawMap()
+{
+    CL_Rect dst(0,0, min(WINDOW_WIDTH, (const int)mpLevel->getWidth()*32),min(WINDOW_HEIGHT, (const int)mpLevel->getHeight() * 32));
+    
+    CL_Rect src = getLevelRect();
+    
+//	    CL_Rect src = dst;
+    mpWindow->get_gc()->push_cliprect( dst);
+    
+    mpLevel->draw(src,dst, mpWindow->get_gc(), false,false,false);
+    
+    //mpWindow->get_gc()->draw_rect( CL_Rect(mCurX,mCurY,mCurX+64,mCurY+64), CL_Color::aqua ) ;
+    
+    drawPlayer();
+    
+    mpLevel->drawMappableObjects( src,dst, mpWindow->get_gc(), 
+				  mbPauseMovement ? false:true);
+    mpLevel->drawFloaters(src,dst, mpWindow->get_gc());
+    
+    
+    mpWindow->get_gc()->pop_cliprect();
 }
 
 
@@ -616,35 +698,15 @@ int Application::main(int argc, char ** argv)
 	static int start_time = CL_System::get_time();
 	static long fpscounter = 0;
 
+	meState = MAIN;
+
 	while(!mbDone)
 	{
 			
 	    processActionQueue();
 
 
-	    CL_Rect dst(0,0, min(WINDOW_WIDTH, (const int)mpLevel->getWidth()*32),min(WINDOW_HEIGHT, (const int)mpLevel->getHeight() * 32));
-
-
-	
-	    CL_Rect src = getLevelRect();
-
-
-
-//	    CL_Rect src = dst;
-	    mpWindow->get_gc()->push_cliprect( dst);
-
-	    mpLevel->draw(src,dst, mpWindow->get_gc(), false,false,false);
-
-	    //mpWindow->get_gc()->draw_rect( CL_Rect(mCurX,mCurY,mCurX+64,mCurY+64), CL_Color::aqua ) ;
-
-	    drawPlayer();
-
-	    mpLevel->drawMappableObjects( src,dst, mpWindow->get_gc(), 
-					  mbPauseMovement ? false:true);
-	    mpLevel->drawFloaters(src,dst, mpWindow->get_gc());
-
-
-	    mpWindow->get_gc()->pop_cliprect();
+	    drawMap();
 
 
 	    int cur_time = CL_System::get_time();
@@ -658,6 +720,7 @@ int Application::main(int argc, char ** argv)
 	    if(mbShowDebug)
 	    {
 		mpfSBBlack->set_alpha(0.8);
+//		mpfSBBlack->set_scale(2.0,2.0);
 		mpfSBBlack->draw(0,0, mpLevel->getName());
 		mpfSBBlack->draw(0,  mpfSBBlack->get_height(), std::string("FPS: ") +IntToString(fps) );
 	    }

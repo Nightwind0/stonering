@@ -2797,6 +2797,11 @@
 				<loadLevel startx="4" starty="3" name="octaviaInn"/>
 			</event>
 		</mo>
+		<mo name="Presence" size="small" type="square" xpos="3" ypos="3">
+			<event name="sensePresence" triggerType = "step">
+				<say speaker="????">You sense a presence. It is as though you can feel the watching eyes of someone. Perhaps someone you once knew. You are frozen in your tracks.</say>
+			</event>
+		</mo>
 		<mo name="Action" size="small" type="square" xpos="2" ypos="0">
 			<event name="mordusDances" triggerType="step">
 				<condition>

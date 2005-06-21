@@ -224,6 +224,8 @@ class Level;
 
       void drawPlayer();
 
+      void drawMap();
+
       void recalculatePlayerPosition(eDir dir);
 
       bool move(eDir dir, int times=1);
@@ -253,6 +255,7 @@ class Level;
 
       CL_Font *mpfSBBlack;
       
+      eState meState;
       
     };
   
