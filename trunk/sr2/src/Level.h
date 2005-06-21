@@ -773,6 +773,8 @@ namespace StoneRing{
 	    uint mLevelWidth;
 	    uint mLevelHeight;
 	    bool mbAllowsRunning;
+
+	    std::set<CL_Point> mLastSteppedTiles;
 	};
 }
 

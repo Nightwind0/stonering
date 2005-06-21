@@ -3382,6 +3382,7 @@ void Level::step(const CL_Rect &dest, const CL_Rect & old)
     // Next, process any tile related consequences on applicable (and enabled)
     // tiles. 
 
+    std::set<CL_Point> newTiles;
     // First, we calculate the four tiles which are being stepped on.
     // We do NOT trigger all tiles beneath the rectangle. Instead,
     // We trigger only the 4 corners. However, to properly calculate the four corners,
@@ -3413,60 +3414,85 @@ void Level::step(const CL_Rect &dest, const CL_Rect & old)
     int tile8x = (dest.left + 1) / 32;
     int tile8y = (dest.top + 1 + ((dest.get_height() -2)/2)) / 32;
 
+    // Add these to a set. Any that are the same will only be added once.
 
-    // Now calculate old tiles to see if we haven't moved off them yet
+    newTiles.insert ( CL_Point(tile1x,tile1y ) );
+    newTiles.insert ( CL_Point(tile2x,tile2y ) );
+    newTiles.insert ( CL_Point(tile3x,tile3y ) );
+    newTiles.insert ( CL_Point(tile4x,tile4y ) );
+    newTiles.insert ( CL_Point(tile5x,tile5y ) );
+    newTiles.insert ( CL_Point(tile6x,tile6y ) );
+    newTiles.insert ( CL_Point(tile7x,tile7y ) );
+    newTiles.insert ( CL_Point(tile8x,tile8y ) );
 
-    int oldtile1x = (old.left + 1) / 32;
-    int oldtile1y = (old.top + 1) / 32;
 
-    int oldtile2x = (old.left + 1) /32;
-    int oldtile2y = (old.bottom - 1) / 32;
 
-    int oldtile3x = (old.right - 1) / 32;
-    int oldtile3y = (old.top + 1) / 32;
+/*
+// Now calculate old tiles to see if we haven't moved off them yet
+
+int oldtile1x = (old.left + 1) / 32;
+int oldtile1y = (old.top + 1) / 32;
+
+int oldtile2x = (old.left + 1) /32;
+int oldtile2y = (old.bottom - 1) / 32;
+
+int oldtile3x = (old.right - 1) / 32;
+int oldtile3y = (old.top + 1) / 32;
+
+int oldtile4x = (old.right - 1) / 32;
+int oldtile4y = (old.bottom - 1) / 32;
+
+
+int oldtile5x = (old.left  + 1 + ((old.get_width() - 2) /2)) / 32;
+int oldtile5y = (old.top + 1) / 32;
+
+int oldtile6x = (old.right - 1 ) / 32;
+int oldtile6y = (old.top +1 + ((old.get_height() - 2)/ 2)) / 32;
+
+int oldtile7x = (old.left + 1 + ((old.get_width() -2 ) / 2)) / 32;
+int oldtile7y = (old.bottom -1)  / 32;
+
+int oldtile8x = (old.left + 1) / 32;
+int oldtile8y = (old.top + 1 + ((old.get_height() -2)/2)) / 32;
+
+
+    // Add these to a set. 
     
-    int oldtile4x = (old.right - 1) / 32;
-    int oldtile4y = (old.bottom - 1) / 32;
-
-
-    int oldtile5x = (old.left  + 1 + ((old.get_width() - 2) /2)) / 32;
-    int oldtile5y = (old.top + 1) / 32;
-
-    int oldtile6x = (old.right - 1 ) / 32;
-    int oldtile6y = (old.top +1 + ((old.get_height() - 2)/ 2)) / 32;
+    oldTiles.insert ( CL_Point(oldtile1x,oldtile1y ) );
+    oldTiles.insert ( CL_Point(oldtile2x,oldtile2y ) );
+    oldTiles.insert ( CL_Point(oldtile3x,oldtile3y ) );
+    oldTiles.insert ( CL_Point(oldtile4x,oldtile4y ) );
+    oldTiles.insert ( CL_Point(oldtile5x,oldtile5y ) );
+    oldTiles.insert ( CL_Point(oldtile6x,oldtile6y ) );
+    oldTiles.insert ( CL_Point(oldtile7x,oldtile7y ) );
+    oldTiles.insert ( CL_Point(oldtile8x,oldtile8y ) );
     
-    int oldtile7x = (old.left + 1 + ((old.get_width() -2 ) / 2)) / 32;
-    int oldtile7y = (old.bottom -1)  / 32;
-
-    int oldtile8x = (old.left + 1) / 32;
-    int oldtile8y = (old.top + 1 + ((old.get_height() -2)/2)) / 32;
-
-
-
+*/
     
-    if(!(tile1x == oldtile1x && tile1y == oldtile1y))
-	activateTilesAt ( tile1x, tile1y );
+    std::set<CL_Point> forStepping;
 
-    if(!(tile2x == oldtile2x && tile2y == oldtile2y))
-	activateTilesAt ( tile2x, tile2y );
 
-    if(!(tile3x == oldtile3x && tile3y == oldtile3y))
-	activateTilesAt ( tile3x, tile3y );
-    
-    if(!(tile4x == oldtile4x && tile4y == oldtile4y))
-	activateTilesAt ( tile4x, tile4y );
+    // Remove any tiles from newTiles which can be found in oldTiles.
 
-    if(!(tile5x == oldtile5x && tile5y == oldtile5y))
-	activateTilesAt ( tile5x, tile5y );
+    std::set_difference( newTiles.begin(), newTiles.end(), mLastSteppedTiles.begin(),mLastSteppedTiles.end(),
+			 inserter( forStepping, forStepping.begin() ) );
 
-    if(!(tile6x == oldtile6x && tile6y == oldtile6y))
-	activateTilesAt ( tile6x, tile6y );
 
-    if(!(tile7x == oldtile7x && tile7y == oldtile7y))
-    activateTilesAt ( tile7x, tile7y );
+    for(std::set<CL_Point>::iterator iter = forStepping.begin();
+	iter != forStepping.end();
+	iter++)
+    {
+	activateTilesAt ( iter->x, iter->y );
+    }
 
-    if(!(tile8x == oldtile8x && tile8y == oldtile8y))
-	activateTilesAt ( tile8x, tile8y );
+#if 0 
+    std::cout << "NewTile Size = " << newTiles.size();
+    std::cout << " OldTile Size = " << mLastSteppedTiles.size();
+    std::cout << " stepping size = " << forStepping.size();
+#endif
+
+    mLastSteppedTiles = newTiles;
+
 }
 
 
