@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <stdlib.h>
 #include <time.h>
+#include <set>
 #include <sstream>
 #include "GraphicsManager.h"
 
