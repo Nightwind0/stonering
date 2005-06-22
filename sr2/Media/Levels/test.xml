@@ -2798,7 +2798,7 @@
 			</event>
 		</mo>
 		<mo name="Presence" size="small" type="square" xpos="3" ypos="3">
-			<event name="sensePresence" triggerType = "step">
+			<event name="sensePresence" triggerType = "talk">
 				<say speaker="????">You sense a presence. It is as though you can feel the watching eyes of someone. 
 				Perhaps someone you once knew. You are frozen in your tracks. You wonder about the sky. What color is it?
 				What does it mean to you? What will you do if it ever goes away? Why? What is it with monkeys, anyway. 
