@@ -92,3 +92,24 @@ void Party::modifyAttribute(const std::string &attribute, int add, const std::st
     std::cout << "Modify Attribue: " << attribute << " by " << add << std::endl;
 #endif
 }
+
+CL_Rect Party::getCollisionRect(uint atX, uint atY) const
+{
+    
+    int offX = getWidth() / 2;
+    int offY = getHeight() / 2;
+
+    int quartX = offX / 2;
+
+    return CL_Rect(atX + quartX, atY + offY, 
+		   atX + offX + quartX,
+		   atY + offY + offY);
+
+
+}
+
+CL_Rect Party::getCollisionRect() const
+{
+
+    return getCollisionRect(getLevelX(), getLevelY());
+}

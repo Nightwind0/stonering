@@ -260,7 +260,13 @@ class Level;
       CL_Font *mpfBPowderBlue;
       CL_Font *mpfBGray;
       CL_Surface *mpSayOverlay;
+
       eState meState;
+
+#ifndef NDEBUG
+      CL_Rect mLastTalkRect;
+#endif
+
       
     };
   

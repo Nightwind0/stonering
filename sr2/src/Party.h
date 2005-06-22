@@ -28,7 +28,8 @@ class ItemRef;
     virtual uint getLevelY() const;
     virtual uint getWidth() const;
     virtual uint getHeight() const;
-
+    virtual CL_Rect getCollisionRect() const;
+    virtual CL_Rect getCollisionRect(uint atX, uint atY) const;
     virtual void doEvent(const std::string &event);
     virtual void giveItem(ItemRef * pItemRef);
     virtual void takeItem(ItemRef * pItemRef);
