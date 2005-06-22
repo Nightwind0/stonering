@@ -230,7 +230,7 @@ class Level;
 
       bool move(eDir dir, int times=1);
 
-      void doTalk();
+      void doTalk(bool prod=false);
 
       /* SIGNALS */
       void onSignalQuit();

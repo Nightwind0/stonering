@@ -616,6 +616,9 @@ void Application::onSignalKeyUp(const CL_InputEvent &key)
 	case CL_KEY_SPACE:
 	    doTalk();
 	    break;
+	case CL_KEY_TAB:
+	    doTalk(true); // Prod!
+	    break;
 	    
 #ifndef NDEBUG
 	case CL_KEY_S:
@@ -884,7 +887,7 @@ void Application::drawPlayer()
 }
 
 
-void Application::doTalk()
+void Application::doTalk(bool prod)
 {
     CL_Rect talkRect;
 
@@ -914,5 +917,5 @@ void Application::doTalk()
 	break;
     }
 
-    mpLevel->talk ( talkRect );
+    mpLevel->talk ( talkRect, prod );
 }

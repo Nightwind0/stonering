@@ -631,10 +631,13 @@ namespace StoneRing {
 
 	    enum eDirection { NONE, NORTH, SOUTH, EAST, WEST };
 
+	    void prod();
+
 	protected:
+
+	    void randomNewDirection();
 	    void pickOppositeDirection();
 	    bool moveInCurrentDirection();
-	    void randomNewDirection();
 	    void setFrameForDirection();
 	    enum eFlags { SPRITE = 1, TILEMAP = 2, SOLID = 4 };
 
@@ -731,7 +734,13 @@ namespace StoneRing{
 	    // appropriate which is directly west of the player.
 	    // The level will select the FIRST MO in the list an execute the talk on that MO.
 	    // In theory, because of the MO sorting, this will be the closest MO.
-	    virtual void talk(const CL_Rect &target);
+
+	    // If prod = true, it makes the MO that you would normally talk to,
+	    // pick a random new direction (if it has movement).
+	    // This is intended as a way to get people that are blocking you
+	    // out of your way. You prod them until they head in some direction which helps you.
+	    // Or.. you know... you could just prod people for fun.
+	    virtual void talk(const CL_Rect &target, bool prod=false);
 
 	    // Propagate updates to any MO's in view. Provides as a level coordinate based rectangle
 	    virtual void update(const CL_Rect & updateRect);
