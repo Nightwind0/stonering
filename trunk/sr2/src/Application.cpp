@@ -233,7 +233,8 @@ void Application::say(const std::string &speaker, const std::string &text)
 
     meState = TALKING;
 
-    static CL_Rect textRect(0,WINDOW_HEIGHT/2, WINDOW_WIDTH,WINDOW_HEIGHT);
+    static const CL_Rect textRect(16,388, 783, 580);
+    static const CL_Rect speakerRect(15,315,783,369);
 
     std::string::const_iterator textIter= text.begin();
 
@@ -252,10 +253,13 @@ void Application::say(const std::string &speaker, const std::string &text)
 	{
 	    drawMap();
 
-	    mpWindow->get_gc()->fill_rect( textRect, CL_Color(0,0,200,128) ) ;
-	    
-	    drawCount = mpfSBBlack->draw(textRect, textIter, text.end(), mpWindow->get_gc() );
+	    mpWindow->get_gc()->fill_rect( speakerRect, CL_Color(255,255,255,200) );
+	    mpWindow->get_gc()->fill_rect( textRect, CL_Color(0,0,0,128) ) ;
 
+	    mpSayOverlay->draw(0,300, mpWindow->get_gc());
+	    
+	    drawCount = mpfBWhite->draw(textRect, textIter, text.end(), mpWindow->get_gc() );
+	    mpfBGray->draw(speakerRect, speaker.begin(),speaker.end(),mpWindow->get_gc() );
 
 	    if(CL_Keyboard::get_keycode(CL_KEY_ENTER) || CL_Keyboard::get_keycode(CL_KEY_SPACE))
 	    {
@@ -383,7 +387,6 @@ void Application::teardownClanLib()
     CL_SetupDisplay::deinit();
     CL_SetupCore::deinit();
 }
-
 
 
 void Application::recalculatePlayerPosition(eDir dir)
@@ -632,9 +635,9 @@ void Application::loadFonts()
 #endif
 
     mpfSBBlack = new CL_Font("Fonts/sb_black", mpResources);
-
-
-    
+    mpfBWhite = new CL_Font("Fonts/bold_white", mpResources);
+    mpfBPowderBlue = new CL_Font("Fonts/bold_powder_blue",mpResources );
+    mpfBGray = new CL_Font("Fonts/bold_gray", mpResources );
 }
 
 void Application::drawMap()
@@ -684,10 +687,16 @@ int Application::main(int argc, char ** argv)
 #endif
 	std::string startinglevel = CL_String::load("Game/StartLevel",mpResources);
 	std::string defaultplayersprite = CL_String::load("Game/DefaultPlayerSprite",mpResources );
+
+	// Load special overlay for say.
+
+
 	mpWindow  = new CL_DisplayWindow(name, WINDOW_WIDTH, WINDOW_HEIGHT);
 		
 	
 	CL_Display::clear();
+
+	mpSayOverlay = new CL_Surface("Overlays/say_overlay", mpResources );
 
 	loadFonts();
 	showRechargeableOnionSplash();
