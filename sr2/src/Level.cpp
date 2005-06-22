@@ -3455,6 +3455,28 @@ void Level::activateTilesAt ( uint x, uint y )
 // Any talk events fire (assuming they meet conditions)
 void Level::talk(const CL_Rect &target)
 {
+ // No need to sort MOs. They will just have been sorted.
+
+    for(std::list<MappableObject*>::iterator i = mMappableObjects.begin();
+	i != mMappableObjects.end();
+	i++)
+    {
+	CL_Rect moRect = (*i)->getRect();
+	
+	
+	if( ! IApplication::getInstance()->getLevelRect().is_overlapped ( moRect ) )
+	{
+	    // This MO was outside our field of vision, so we stop iterating.
+	    break;
+	}
+	else if( target.is_overlapped(moRect ))
+	{
+	    // This MO needs to be stepped on
+	    (*i)->provokeEvents ( Event::TALK );
+	    break; // We only do the first one.
+
+	}
+    }
 }
 
 // Propagate updates to any MO's in view. Provides as a level coordinate based rectangle
