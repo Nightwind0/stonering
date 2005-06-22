@@ -5,7 +5,7 @@
 
 #include "Item.h"
 #include <string>
-
+#include <ClanLib/display.h>
 
 typedef unsigned int uint;
 
@@ -29,6 +29,8 @@ class IParty
     virtual uint getLevelY() const=0;
     virtual uint getWidth() const=0;
     virtual uint getHeight() const =0;
+    virtual CL_Rect getCollisionRect() const=0;
+    virtual CL_Rect getCollisionRect(uint atX, uint atY) const=0;
     virtual void doEvent(const std::string &name)=0;
     virtual void giveItem(ItemRef * pItemRef)=0;
     virtual void takeItem(ItemRef * pItemRef)=0;

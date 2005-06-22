@@ -3101,11 +3101,8 @@ bool Level::canMove(const CL_Rect &currently, const CL_Rect & destination, bool 
     if(!isPlayer)
     {
 	IParty *party = IApplication::getInstance()->getParty();
-	CL_Rect playerRect(party->getLevelX(), party->getLevelY(), 
-			   party->getLevelX() + party->getWidth(),
-			   party->getLevelY() + party->getHeight());
-	
-	if (playerRect.is_overlapped( destination)) return false;
+
+	if (party->getCollisionRect().is_overlapped( destination)) return false;
     }
 
 

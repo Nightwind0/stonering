@@ -493,14 +493,8 @@ bool Application::move(eDir dir, int times)
     int nX = mpParty->getLevelX();
     int nY = mpParty->getLevelY();
     
-    int offX = mpParty->getWidth() / 2;
-    int offY = mpParty->getHeight() / 2;
 
-    int quartX = offX / 2;
-
-    CL_Rect oldLocation = CL_Rect(nX + quartX, nY + offY, 
-				  nX + offX + quartX,
-				  nY + offY + offY);
+    CL_Rect oldLocation = mpParty->getCollisionRect();
     
     for(int i=0;i<times;i++)
     {
@@ -522,34 +516,26 @@ bool Application::move(eDir dir, int times)
 	    break;
 	}
 	
-	if(canMove ( oldLocation,
-		     CL_Rect(nX + quartX,nY + offY, nX + offX + quartX, nY + offY + offY),false, true))
+	if(canMove ( oldLocation,mpParty->getCollisionRect(nX,nY),false, true))
 	{
 	    mpParty->setLevelX( nX );
 	    mpParty->setLevelY( nY );
 
 	    recalculatePlayerPosition(dir);
 	    
-
 	    mPlayerDir = dir;
 
 	}
 	else 
 	{
-	    mpLevel->step(CL_Rect(mpParty->getLevelX() + quartX,
-				  mpParty->getLevelY() + offY,
-				  mpParty->getLevelX() + offX + quartX, 
-				  mpParty->getLevelY() + offY + offY), oldLocation);
+	    mpLevel->step(mpParty->getCollisionRect(), oldLocation);
 	    
 	    return false;
 	}
 	
     }
 
-    mpLevel->step(CL_Rect(mpParty->getLevelX() + quartX,
-			  mpParty->getLevelY() + offY,
-			  mpParty->getLevelX() + offX + quartX, 
-			  mpParty->getLevelY() + offY + offY), oldLocation);
+    mpLevel->step(mpParty->getCollisionRect(), oldLocation);
 
     return true;
 
@@ -673,10 +659,7 @@ void Application::drawMap()
     
     mpLevel->draw(src,dst, mpWindow->get_gc(), false,false,false);
     
-    //mpWindow->get_gc()->draw_rect( CL_Rect(mCurX,mCurY,mCurX+64,mCurY+64), CL_Color::aqua ) ;
-    
    
-    
     mpLevel->drawMappableObjects( src,dst, mpWindow->get_gc(), 
 				  mbPauseMovement ? false:true);
 
@@ -765,10 +748,15 @@ int Application::main(int argc, char ** argv)
 
 	    if(mbShowDebug)
 	    {
-		mpfSBBlack->set_alpha(0.8);
-//		mpfSBBlack->set_scale(2.0,2.0);
+
+
+		mpWindow->get_gc()->draw_rect( mLastTalkRect, CL_Color::aqua ) ;		
+
 		mpfSBBlack->draw(0,0, mpLevel->getName());
 		mpfSBBlack->draw(0,  mpfSBBlack->get_height(), std::string("FPS: ") +IntToString(fps) );
+
+		
+		
 	    }
 	    
 #endif
@@ -906,16 +894,20 @@ void Application::doTalk(bool prod)
 	talkRect.set_size( CL_Size( 32, 32 ) );
 	break;
     case EAST:
-	talkRect.left = min(mpParty->getLevelX() + mpParty->getWidth(), mpLevel->getWidth() * 32);
+	talkRect.left = min(mpParty->getLevelX() + mpParty->getWidth() - quartX, mpLevel->getWidth() * 32);
 	talkRect.top = mpParty->getLevelY() + (mpParty->getHeight() / 2);
 	talkRect.set_size ( CL_Size ( 32, 32 ) );
 	break;
     case WEST:
-	talkRect.left = max(mpParty->getLevelX() - 32, (uint)0);
+	talkRect.left = max(mpParty->getLevelX() - 32 + quartX, (uint)0);
 	talkRect.top = mpParty->getLevelY() + (mpParty->getHeight() / 2);
 	talkRect.set_size( CL_Size ( 32,32 ) );
 	break;
     }
 
     mpLevel->talk ( talkRect, prod );
+
+#ifndef NDEBUG
+    mLastTalkRect = talkRect;
+#endif
 }
