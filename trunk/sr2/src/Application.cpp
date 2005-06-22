@@ -894,7 +894,7 @@ void Application::doTalk()
     {
     case NORTH:
 	talkRect.left = mpParty->getLevelX() + quartX;
-	talkRect.top = max(mpParty->getLevelY() - 32, (uint)0);
+	talkRect.top = max(mpParty->getLevelY(), (uint)0);
 	talkRect.set_size( CL_Size( 32, 32 ) );
 	break;
     case SOUTH:
