@@ -3383,37 +3383,26 @@ void Level::step(const CL_Rect &dest, const CL_Rect & old)
     // Next, process any tile related consequences on applicable (and enabled)
     // tiles. 
 
-    std::set<CL_Point> newTiles;
+    std::multiset<CL_Point> newTiles;
     // First, we calculate the four tiles which are being stepped on.
     // We do NOT trigger all tiles beneath the rectangle. Instead,
     // We trigger only the 4 corners. However, to properly calculate the four corners,
     // We have to adjust slightly, otherwise we would get weird tiles not actually UNDER
     // the rectangle.
 
-    int tile1x = (dest.left + 1) / 32;
+    int fourth = dest.get_width() / 4;
+
+    int tile1x = (dest.left + 1 + fourth) / 32;
     int tile1y = (dest.top + 1) / 32;
 
-    int tile2x = (dest.left + 1) /32;
-    int tile2y = (dest.bottom - 1) / 32;
+    int tile2x = (dest.right - 1 - fourth) /32;
+    int tile2y = (dest.top + 1) / 32;
 
-    int tile3x = (dest.right - 1) / 32;
-    int tile3y = (dest.top + 1) / 32;
+    int tile3x = (dest.left + 1 + fourth) / 32;
+    int tile3y = (dest.bottom - 1) / 32;
     
-    int tile4x = (dest.right - 1) / 32;
+    int tile4x = (dest.right - 1 - fourth) / 32;
     int tile4y = (dest.bottom - 1) / 32;
-
-
-    int tile5x = (dest.left  + 1 + ((dest.get_width() - 2) /2)) / 32;
-    int tile5y = (dest.top + 1) / 32;
-
-    int tile6x = (dest.right - 1 ) / 32;
-    int tile6y = (dest.top +1 + ((dest.get_height() - 2)/ 2)) / 32;
-    
-    int tile7x = (dest.left + 1 + ((dest.get_width() -2 ) / 2)) / 32;
-    int tile7y = (dest.bottom -1)  / 32;
-
-    int tile8x = (dest.left + 1) / 32;
-    int tile8y = (dest.top + 1 + ((dest.get_height() -2)/2)) / 32;
 
     // Add these to a set. Any that are the same will only be added once.
 
@@ -3421,56 +3410,8 @@ void Level::step(const CL_Rect &dest, const CL_Rect & old)
     newTiles.insert ( CL_Point(tile2x,tile2y ) );
     newTiles.insert ( CL_Point(tile3x,tile3y ) );
     newTiles.insert ( CL_Point(tile4x,tile4y ) );
-    newTiles.insert ( CL_Point(tile5x,tile5y ) );
-    newTiles.insert ( CL_Point(tile6x,tile6y ) );
-    newTiles.insert ( CL_Point(tile7x,tile7y ) );
-    newTiles.insert ( CL_Point(tile8x,tile8y ) );
-
-
-
-/*
-// Now calculate old tiles to see if we haven't moved off them yet
-
-int oldtile1x = (old.left + 1) / 32;
-int oldtile1y = (old.top + 1) / 32;
-
-int oldtile2x = (old.left + 1) /32;
-int oldtile2y = (old.bottom - 1) / 32;
-
-int oldtile3x = (old.right - 1) / 32;
-int oldtile3y = (old.top + 1) / 32;
-
-int oldtile4x = (old.right - 1) / 32;
-int oldtile4y = (old.bottom - 1) / 32;
-
-
-int oldtile5x = (old.left  + 1 + ((old.get_width() - 2) /2)) / 32;
-int oldtile5y = (old.top + 1) / 32;
-
-int oldtile6x = (old.right - 1 ) / 32;
-int oldtile6y = (old.top +1 + ((old.get_height() - 2)/ 2)) / 32;
-
-int oldtile7x = (old.left + 1 + ((old.get_width() -2 ) / 2)) / 32;
-int oldtile7y = (old.bottom -1)  / 32;
-
-int oldtile8x = (old.left + 1) / 32;
-int oldtile8y = (old.top + 1 + ((old.get_height() -2)/2)) / 32;
-
-
-    // Add these to a set. 
     
-    oldTiles.insert ( CL_Point(oldtile1x,oldtile1y ) );
-    oldTiles.insert ( CL_Point(oldtile2x,oldtile2y ) );
-    oldTiles.insert ( CL_Point(oldtile3x,oldtile3y ) );
-    oldTiles.insert ( CL_Point(oldtile4x,oldtile4y ) );
-    oldTiles.insert ( CL_Point(oldtile5x,oldtile5y ) );
-    oldTiles.insert ( CL_Point(oldtile6x,oldtile6y ) );
-    oldTiles.insert ( CL_Point(oldtile7x,oldtile7y ) );
-    oldTiles.insert ( CL_Point(oldtile8x,oldtile8y ) );
-    
-*/
-    
-    std::set<CL_Point> forStepping;
+    std::list<CL_Point> forStepping;
 
 
     // Remove any tiles from newTiles which can be found in oldTiles.
@@ -3479,7 +3420,7 @@ int oldtile8y = (old.top + 1 + ((old.get_height() -2)/2)) / 32;
 			 std::inserter( forStepping, forStepping.begin() ) );
 
 
-    for(std::set<CL_Point>::iterator iter = forStepping.begin();
+    for(std::list<CL_Point>::iterator iter = forStepping.begin();
 	iter != forStepping.end();
 	iter++)
     {

@@ -254,7 +254,10 @@ class Level;
       bool mbStep; // Which sprite frame to use..
 
       CL_Font *mpfSBBlack;
-      
+      CL_Font *mpfBWhite;
+      CL_Font *mpfBPowderBlue;
+      CL_Font *mpfBGray;
+      CL_Surface *mpSayOverlay;
       eState meState;
       
     };

@@ -6,6 +6,7 @@
 #include <map>
 #include <list>
 #include "IApplication.h"
+#include <set>
 
 using std::string;
 
@@ -774,7 +775,7 @@ namespace StoneRing{
 	    uint mLevelHeight;
 	    bool mbAllowsRunning;
 
-	    std::set<CL_Point> mLastSteppedTiles;
+	    std::multiset<CL_Point> mLastSteppedTiles;
 	};
 }
 
