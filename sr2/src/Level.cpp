@@ -2711,7 +2711,10 @@ bool MappableObject::isTile() const
     return false;
 }
 
-
+void MappableObject::prod()
+{
+    randomNewDirection();
+}
 
 
 void MappableObject::provokeEvents ( Event::eTriggerType trigger )
@@ -3453,7 +3456,7 @@ void Level::activateTilesAt ( uint x, uint y )
 }
       
 // Any talk events fire (assuming they meet conditions)
-void Level::talk(const CL_Rect &target)
+void Level::talk(const CL_Rect &target, bool prod)
 {
  // No need to sort MOs. They will just have been sorted.
 
@@ -3471,8 +3474,22 @@ void Level::talk(const CL_Rect &target)
 	}
 	else if( target.is_overlapped(moRect ))
 	{
-	    // This MO needs to be stepped on
-	    (*i)->provokeEvents ( Event::TALK );
+	    if(!prod)
+	    {
+		// This MO needs to be talked to
+		(*i)->provokeEvents ( Event::TALK );
+	    }
+	    else
+	    {
+		// Prod!
+		// (Can't prod things that aren't solid. They aren't in your way anyways)
+		// And if it has no movement, prodding it does nothing.
+		if((*i)->isSolid() && (*i)->getMovement() != NULL)
+		{
+		    (*i)->prod();
+		}
+	    }
+
 	    break; // We only do the first one.
 
 	}
