@@ -496,9 +496,11 @@ bool Application::move(eDir dir, int times)
     int offX = mpParty->getWidth() / 2;
     int offY = mpParty->getHeight() / 2;
 
-    CL_Rect oldLocation = CL_Rect(mpParty->getLevelX(), mpParty->getLevelY() + offY, 
-				  mpParty->getLevelX() + mpParty->getWidth(),
-				  mpParty->getLevelY() + offY + offY);
+    int quartX = offX / 2;
+
+    CL_Rect oldLocation = CL_Rect(nX + quartX, nY + offY, 
+				  nX + offX + quartX,
+				  nY + offY + offY);
     
     for(int i=0;i<times;i++)
     {
@@ -520,11 +522,8 @@ bool Application::move(eDir dir, int times)
 	    break;
 	}
 	
-	if(canMove ( CL_Rect(mpParty->getLevelX(),
-			     mpParty->getLevelY() + offY ,
-			     mpParty->getLevelX() + offX + offX,
-			     mpParty->getLevelY() + offY + offY),
-		     CL_Rect(nX,nY + offY,nX + offX + offX,nY+offY + offY),false, true))
+	if(canMove ( oldLocation,
+		     CL_Rect(nX + quartX,nY + offY, nX + offX + quartX, nY + offY + offY),false, true))
 	{
 	    mpParty->setLevelX( nX );
 	    mpParty->setLevelY( nY );
@@ -537,9 +536,9 @@ bool Application::move(eDir dir, int times)
 	}
 	else 
 	{
-	    mpLevel->step(CL_Rect(mpParty->getLevelX(),
+	    mpLevel->step(CL_Rect(mpParty->getLevelX() + quartX,
 				  mpParty->getLevelY() + offY,
-				  mpParty->getLevelX() + offX + offX, 
+				  mpParty->getLevelX() + offX + quartX, 
 				  mpParty->getLevelY() + offY + offY), oldLocation);
 	    
 	    return false;
@@ -547,9 +546,9 @@ bool Application::move(eDir dir, int times)
 	
     }
 
-    mpLevel->step(CL_Rect(mpParty->getLevelX(),
+    mpLevel->step(CL_Rect(mpParty->getLevelX() + quartX,
 			  mpParty->getLevelY() + offY,
-			  mpParty->getLevelX() + offX + offX, 
+			  mpParty->getLevelX() + offX + quartX, 
 			  mpParty->getLevelY() + offY + offY), oldLocation);
 
     return true;
@@ -593,6 +592,31 @@ void Application::onSignalKeyDown(const CL_InputEvent &key)
 	case CL_KEY_RIGHT:
 	    move(EAST,speed);
 	    break;
+
+	default:
+	    break;
+	}
+	break;
+    }
+    case TALKING:
+	break;
+    } // switch(meState)
+    
+}
+
+void Application::onSignalKeyUp(const CL_InputEvent &key)
+{
+
+    switch(meState)
+    {
+    case MAIN:
+    {
+	switch(key.id)
+	{
+	case CL_KEY_SPACE:
+	    doTalk();
+	    break;
+	    
 #ifndef NDEBUG
 	case CL_KEY_S:
 	    mSpeed--;
@@ -609,15 +633,10 @@ void Application::onSignalKeyDown(const CL_InputEvent &key)
 	    mbShowDebug = mbShowDebug?false:true;
 	    break;
 #endif
-	default:
-	    break;
+	    
 	}
-	break;
-    }
-    case TALKING:
-	break;
-    } // switch(meState)
-    
+    } // MAIN
+    }// switch meState
 }
 
 
@@ -653,10 +672,13 @@ void Application::drawMap()
     
     //mpWindow->get_gc()->draw_rect( CL_Rect(mCurX,mCurY,mCurX+64,mCurY+64), CL_Color::aqua ) ;
     
-    drawPlayer();
+   
     
     mpLevel->drawMappableObjects( src,dst, mpWindow->get_gc(), 
 				  mbPauseMovement ? false:true);
+
+    drawPlayer();
+
     mpLevel->drawFloaters(src,dst, mpWindow->get_gc());
     
     
@@ -711,6 +733,8 @@ int Application::main(int argc, char ** argv)
 	CL_Slot slot_quit = mpWindow->sig_window_close().connect(this, &Application::onSignalQuit);
 
 	CL_Slot slot_key_down = CL_Keyboard::sig_key_down().connect(this, &Application::onSignalKeyDown);
+
+	CL_Slot slot_key_up  = CL_Keyboard::sig_key_up().connect(this, &Application::onSignalKeyUp);
 
 	CL_Display::clear();
 	
@@ -857,4 +881,38 @@ void Application::drawPlayer()
     mpPlayerSprite->set_frame ( frame );
 
     mpPlayerSprite->draw( mCurX, mCurY, mpWindow->get_gc() );
+}
+
+
+void Application::doTalk()
+{
+    CL_Rect talkRect;
+
+    int quartX = mpParty->getWidth() / 4;
+
+    switch(mePlayerDirection)
+    {
+    case NORTH:
+	talkRect.left = mpParty->getLevelX() + quartX;
+	talkRect.top = max(mpParty->getLevelY() - 32, (uint)0);
+	talkRect.set_size( CL_Size( 32, 32 ) );
+	break;
+    case SOUTH:
+	talkRect.left = mpParty->getLevelX() + quartX;
+	talkRect.top = min(mpParty->getLevelY() + mpParty->getHeight(), mpLevel->getHeight() * 32);
+	talkRect.set_size( CL_Size( 32, 32 ) );
+	break;
+    case EAST:
+	talkRect.left = min(mpParty->getLevelX() + mpParty->getWidth(), mpLevel->getWidth() * 32);
+	talkRect.top = mpParty->getLevelY() + (mpParty->getHeight() / 2);
+	talkRect.set_size ( CL_Size ( 32, 32 ) );
+	break;
+    case WEST:
+	talkRect.left = max(mpParty->getLevelX() - 32, (uint)0);
+	talkRect.top = mpParty->getLevelY() + (mpParty->getHeight() / 2);
+	talkRect.set_size( CL_Size ( 32,32 ) );
+	break;
+    }
+
+    mpLevel->talk ( talkRect );
 }

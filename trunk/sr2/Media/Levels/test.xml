@@ -2784,11 +2784,11 @@
 		</tile>
 	</tiles>
 	<mappableObjects>
-		<mo name="Cat2" size="small" type="npc" xpos="11" ypos="5" solid="true">
+		<mo name="Cat2" size="small" type="npc" xpos="0" ypos="5" solid="true">
 			<spriteRef type="fourway">Animals/Cat2</spriteRef>
 			<event name="CatMeow" triggerType="talk">
 				<playSound>Meow</playSound>
-				<say speaker="Cat">Mowwwww</say>
+				<say speaker="Cat">Mowwwww!!</say>
 			</event>
 			<movement movementType="wander" speed="fast"/>
 		</mo>

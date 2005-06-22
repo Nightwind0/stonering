@@ -230,10 +230,12 @@ class Level;
 
       bool move(eDir dir, int times=1);
 
+      void doTalk();
+
       /* SIGNALS */
       void onSignalQuit();
       void onSignalKeyDown(const CL_InputEvent &key);
-      //      void onSignalKeyUp();
+      void onSignalKeyUp(const CL_InputEvent &key);
       
       CL_ResourceManager * mpResources;
 
