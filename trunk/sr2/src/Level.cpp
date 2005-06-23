@@ -2760,6 +2760,7 @@ CL_DomElement  Level::createDomElement(CL_DomDocument &doc) const
     levelHeader.set_attribute("music", mMusic );
     levelHeader.set_attribute("width", IntToString(mLevelWidth) );
     levelHeader.set_attribute("height", IntToString(mLevelHeight) );
+    levelHeader.set_attribute("allowsRunning", mbAllowsRunning? "true" : "false");
 
     element.append_child( levelHeader );
 

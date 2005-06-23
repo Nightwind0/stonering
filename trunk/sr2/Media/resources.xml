@@ -42,7 +42,7 @@
 	</font>
 </section>
  <section name="Levels">
- 	<string name="examplelevel" value="test.xml" />
+ 	<string name="examplelevel" value="test2.xml" />
 </section>
  <section name="Tilemaps">
  	<surface name = "roofs" file="Tiles/roofs.png"/>
