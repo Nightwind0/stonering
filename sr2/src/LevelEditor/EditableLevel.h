@@ -61,7 +61,7 @@ class EditableSpriteRef : public StoneRing::SpriteRef
     virtual ~EditableSpriteRef();
 
     void setSpriteRef( const std::string &ref);
-    void setDirection( StoneRing::SpriteRef::eDirection dir);
+    void setType( StoneRing::SpriteRef::eType dir);
 
 };
 
@@ -79,7 +79,7 @@ class EditableTile : public StoneRing::Tile
 
     // Has to have one of these if it's new
     void setTilemap( const std::string &mapname, uint mapX, uint mapY);
-    void setSpriteRef ( const std::string &spriteRef, StoneRing::SpriteRef::eDirection direction );
+    void setSpriteRef ( const std::string &spriteRef, StoneRing::SpriteRef::eType direction );
 
 
 

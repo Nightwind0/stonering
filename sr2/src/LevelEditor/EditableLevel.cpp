@@ -95,9 +95,9 @@ void EditableSpriteRef::setSpriteRef( const std::string &ref)
     mRef = ref;
 }
 
-void EditableSpriteRef::setDirection( StoneRing::SpriteRef::eDirection dir)
+void EditableSpriteRef::setType( StoneRing::SpriteRef::eType dir)
 {
-    meDirection = dir;
+    meType = dir;
 }
 
 
@@ -141,13 +141,13 @@ void EditableTile::setTilemap( const std::string &mapname, uint mapX, uint mapY)
 
 }
 
-void EditableTile::setSpriteRef ( const std::string &spriteRef, StoneRing::SpriteRef::eDirection direction )
+void EditableTile::setSpriteRef ( const std::string &spriteRef, StoneRing::SpriteRef::eType direction )
 {
     GraphicsManager * GM = GraphicsManager::getInstance();
     mGraphic.asSpriteRef = new EditableSpriteRef ();
 
     ((EditableSpriteRef*)mGraphic.asSpriteRef)->setSpriteRef ( spriteRef );
-    ((EditableSpriteRef*)mGraphic.asSpriteRef)->setDirection( direction );
+    ((EditableSpriteRef*)mGraphic.asSpriteRef)->setType( direction );
 }
 
 

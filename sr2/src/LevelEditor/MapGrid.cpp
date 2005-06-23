@@ -112,6 +112,13 @@ void MapGrid::on_placeTile(const CL_InputEvent &event)
 
 			cout << "Tile (" << mgX << "," << mgY << ")" << endl;
 
+			if(mgX >= mgLevel->getWidth() ||
+			   mgY >= mgLevel->getHeight())
+			{
+			    cout << "Not a valid location..." << endl;
+			    return;`
+			}
+
 
 			if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ))
 			{

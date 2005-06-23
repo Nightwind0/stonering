@@ -36,6 +36,8 @@ public:
     virtual uint getLevelY() const{return 0; }
     virtual uint getWidth() const { return 64; }
     virtual uint getHeight() const { return 64; }
+    virtual CL_Rect getCollisionRect() const { return CL_Rect(0,0,0,0); }
+    virtual CL_Rect getCollisionRect(uint, uint) const { return getCollisionRect(); }
     virtual void doEvent(const std::string &name){}
     virtual void giveItem(ItemRef * pItemRef){}
     virtual void takeItem(ItemRef * pItemRef){}
