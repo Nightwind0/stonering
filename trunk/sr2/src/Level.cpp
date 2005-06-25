@@ -47,6 +47,170 @@ std::string BoolToString( const bool &b)
 }
 
 
+Option::Option():mpCondition(NULL)
+{
+}
+
+Option::Option(CL_DomElement * pElement)
+{
+    LevelFactory * factory = IApplication::getInstance()->getLevelFactory();
+
+    CL_DomNamedNodeMap attributes = pElement->get_attributes();
+
+    mText = attributes.get_named_item("text").get_node_value();
+
+    if(attributes.get_length() < 1) throw CL_Error("Error: Option requires text.");
+
+    CL_DomElement child = pElement->get_first_child().to_element();
+
+    while( !child.is_null() )
+    {
+	if( child.get_node_name() == "condition" )
+	{
+	    mpCondition = factory->createCondition( &child );
+			
+	}
+	else 
+	{
+	    mActions.push_back(createAction ( child.get_node_name(), child ));
+	}
+
+		
+	child = child.get_next_sibling().to_element();
+
+
+    }
+
+
+    
+}
+	
+Option::~Option()
+{
+    delete mpCondition;
+
+    for(std::list<Action*>::const_iterator iter = mActions.begin();
+	iter != mActions.end();
+	iter++)
+    {
+	delete *iter;
+    }
+}
+
+CL_DomElement  Option::createDomElement(CL_DomDocument &document) const
+{
+
+    CL_DomElement  element(document,"option");
+
+    element.set_attribute("text",mText );
+
+
+    for(std::list<Action*>::const_iterator i = mActions.begin();
+	i != mActions.end();
+	i++)
+    {
+	CL_DomElement  e = (*i)->createDomElement(document);
+	element.append_child(e );
+
+    }
+
+    return element;
+    
+}
+
+std::string Option::getText() const
+{
+    return mText;
+}
+	
+bool Option::evaluateCondition() const
+{
+    return mpCondition->evaluate();
+}
+
+void Option::choose()
+{
+    if(evaluateCondition())
+	for_each( mActions.begin(), mActions.end(), std::mem_fun(&Action::invoke) );
+}
+
+
+
+Choice::Choice()
+{
+}
+
+Choice::Choice(CL_DomElement * pElement)
+{
+    LevelFactory * factory = IApplication::getInstance()->getLevelFactory();
+    CL_DomNamedNodeMap attributes = pElement->get_attributes();
+
+    mText = attributes.get_named_item("text").get_node_value();
+
+    if(attributes.get_length() < 1) throw CL_Error("Error: Choice requires text.");
+
+    CL_DomElement child = pElement->get_first_child().to_element();
+
+    while( !child.is_null() )
+    {
+	if(child.get_node_value() == "option")
+	{
+	    mOptions.push_back ( factory->createOption ( &child ) );
+	}
+    }
+}
+
+CL_DomElement Choice::createDomElement(CL_DomDocument &doc) const
+{
+
+    CL_DomElement  element(doc,"choice");
+
+    element.set_attribute("text",mText );
+
+
+    for(std::vector<Option*>::const_iterator i = mOptions.begin();
+	i != mOptions.end();
+	i++)
+    {
+	CL_DomElement  e = (*i)->createDomElement(doc);
+	element.append_child(e );
+
+    }
+
+    return element;
+
+}
+
+void Choice::invoke()
+{
+    std::vector<std::string> options;
+
+
+    // fill the "options" vector with the text of each Option object
+    std::transform(mOptions.begin(), mOptions.end(), std::back_inserter(options),
+		   std::mem_fun(&Option::getText));
+
+    IApplication::getInstance()->choice( mText, options, this );
+
+}
+
+std::string Choice::getText() const
+{
+    return mText;
+}
+
+uint Choice::getOptionCount() const
+{
+    return mOptions.size();
+}
+
+Option * Choice::getOption(uint index )
+{
+    return mOptions[index];
+}
+
+
+
 
 // For the multimap of points
 bool operator < (const CL_Point &p1, const CL_Point &p2)
@@ -1040,6 +1204,72 @@ CL_DomElement  Event::createDomElement(CL_DomDocument &doc) const
 
 }
 
+Action * 
+StoneRing::createAction ( const std::string & action,  CL_DomElement & child )
+{
+
+    LevelFactory * factory = IApplication::getInstance()->getLevelFactory();
+
+    if (child.get_node_name() == "attributeModifier" )
+    {
+	return factory->createAttributeModifier (&child );
+	
+    }
+    else if (child.get_node_name() == "say" )
+    {
+	return factory->createSay (&child );
+	
+    }
+    else if (child.get_node_name() == "give" )
+    {
+       return factory->createGive (&child );
+	
+    }
+    else if (child.get_node_name() == "take" )
+    {
+       return factory->createTake (&child );
+	
+    }
+    else if (child.get_node_name() == "giveGold" )
+    {
+       return factory->createGiveGold (&child );
+
+    }
+    else if (child.get_node_name() == "playAnimation" )
+    {
+       return factory->createPlayAnimation (&child );
+	
+    }
+    else if (child.get_node_name() == "playSound" )
+    {
+       return factory->createPlaySound (&child );
+	
+    }
+    else if (child.get_node_name() == "loadLevel" )
+    {
+       return factory->createLoadLevel (&child );
+	
+    }
+    else if (child.get_node_name() == "startBattle" )
+    {
+       return factory->createStartBattle (&child );
+	
+    }
+    else if (child.get_node_name() == "pause" )
+    {
+       return factory->createPause (&child );
+	
+    }
+    else if (child.get_node_name() == "invokeShop" )
+    {
+       return factory->createInvokeShop (&child );
+       
+    }
+
+
+
+}
+
 Event::Event(CL_DomElement *pElement):mbRepeatable(true),mpCondition(NULL)
 {
     LevelFactory * factory = IApplication::getInstance()->getLevelFactory();
@@ -1082,64 +1312,11 @@ Event::Event(CL_DomElement *pElement):mbRepeatable(true),mpCondition(NULL)
 	    mpCondition = factory->createCondition ( &child );
 			
 	}
-	else if (child.get_node_name() == "attributeModifier" )
+	else
 	{
-	    mActions.push_back ( factory->createAttributeModifier (&child ));
-
+	    mActions.push_back ( StoneRing::createAction ( child.get_node_name(), child ) );
 	}
-	else if (child.get_node_name() == "say" )
-	{
-	    mActions.push_back ( factory->createSay (&child ));
-
-	}
-	else if (child.get_node_name() == "give" )
-	{
-	    mActions.push_back ( factory->createGive (&child ));
-
-	}
-	else if (child.get_node_name() == "take" )
-	{
-	    mActions.push_back ( factory->createTake (&child ));
-
-	}
-	else if (child.get_node_name() == "giveGold" )
-	{
-	    mActions.push_back ( factory->createGiveGold (&child ));
-
-	}
-	else if (child.get_node_name() == "playAnimation" )
-	{
-	    mActions.push_back ( factory->createPlayAnimation (&child ));
-
-	}
-	else if (child.get_node_name() == "playSound" )
-	{
-	    mActions.push_back ( factory->createPlaySound (&child ));
-
-	}
-	else if (child.get_node_name() == "loadLevel" )
-	{
-	    mActions.push_back ( factory->createLoadLevel (&child ));
-
-	}
-	else if (child.get_node_name() == "startBattle" )
-	{
-	    mActions.push_back ( factory->createStartBattle (&child ));
-
-	}
-	else if (child.get_node_name() == "pause" )
-	{
-	    mActions.push_back ( factory->createPause (&child ));
-
-	}
-	else if (child.get_node_name() == "invokeShop" )
-	{
-	    mActions.push_back ( factory->createInvokeShop (&child ));
-
-	}
-
-
-
+	
 	child = child.get_next_sibling().to_element();
     }
 

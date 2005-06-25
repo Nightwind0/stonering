@@ -38,6 +38,8 @@ namespace StoneRing
     class Tile;
     class MappableObject;
     class Level;
+    class Option;
+    class Choice;
 
 
 class LevelFactory
@@ -100,6 +102,10 @@ class LevelFactory
     virtual    MappableObject * createMappableObject(CL_DomElement* pElement)const;
     virtual    Level * createLevel()const;
     virtual    Level * createLevel(CL_DomDocument &document)const;
+    virtual    Option * createOption()const;
+    virtual    Option * createOption(CL_DomElement * pElement) const;
+    virtual    Choice * createChoice()const;
+    virtual    Choice * createChoice(CL_DomElement * pElement) const;
 //    virtual    Tiles * createTiles();
 //    virtual    MappableObjects * createMappableObjects();
  private:

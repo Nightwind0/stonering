@@ -32,6 +32,7 @@ bool operator < (const CL_Point &p1, const CL_Point &p2);
 
 namespace StoneRing {
     
+    
     class LevelComponent
 	{
 	public:
@@ -521,6 +522,52 @@ namespace StoneRing {
 	private:
 	};
 
+
+    class Option : public LevelComponent
+    {
+    public:
+	Option();
+	Option(CL_DomElement * pElement);
+	virtual ~Option();
+	virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
+
+	virtual std::string getText() const;
+	
+	virtual bool evaluateCondition() const;
+
+	virtual void choose();
+    private:
+	std::string mText;
+	std::list<Action*> mActions;
+	Condition * mpCondition;
+	
+    };
+
+    class Choice : public Action
+    {
+    public:
+	Choice();
+	Choice(CL_DomElement * pElement);
+	virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
+
+	virtual void invoke();
+
+	virtual std::string getText() const;
+
+	virtual uint getOptionCount() const;
+
+	Option * getOption(uint index );
+
+	// To be called by application when choice is made.
+	void chooseOption( uint index);
+
+    private:
+	std::vector<Option*> mOptions;
+	std::string mText;
+    };
+
+
+    Action * createAction ( const std::string & action, CL_DomElement & pChild );
 
   
     union SpriteRefOrTilemap
