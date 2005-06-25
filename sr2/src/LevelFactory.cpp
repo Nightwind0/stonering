@@ -303,5 +303,25 @@ Level * LevelFactory::createLevel(CL_DomDocument &document)const
 
 }
 
+Option * LevelFactory::createOption()const
+{
+    return new Option();
+}
+
+Option * LevelFactory::createOption(CL_DomElement * pElement) const
+{
+    return new Option(pElement);
+}
+
+Choice * LevelFactory::createChoice()const
+{
+    return new Choice();
+}
+
+Choice * LevelFactory::createChoice(CL_DomElement * pElement) const
+{
+    return new Choice(pElement);
+}
+
 //    Tiles * createTiles();
 //    MappableObjects * createMappableObjects();

@@ -1,15 +1,27 @@
 Danny TODOs
-3) Wire up talking
 4) New "choices" element, with "choice" children. They have the application present to the user choices, the user selects one, and then the app invokes the actions on that choice. Each "choice" has a choiceText attribute, and a list of actions. "choices" should live under event, and essentially be an action. That way, it can have conditions.
 
 5) How will monsters work? How will you know what monsters to load? How will you know where you can even have monsters? 
 Monster region. Can they overlap?  no.
 A certain maximum per level. But each region can have multiple rectangles.
+In other words, if you had blue, red and green regions, you could have as many
+blue red and green rectangles across a level as you wanted, with a resolution of one tile.
 Each contains a table of monster party and incident rate. The rate is a number, 
 and the chance is that number divided by the number total for that region.
 So you might have a party of three Teds with an incident of 20, and several
 other parties adding up to a total of 200, meaning 10% chance of three teds.
-
+For speed reasons, at load time, the region which covers each tile is calculated,
+and that tile gets an mcMonsterRegionIndex set. That index is into an array or vector
+of monster regions. Since we allow only a few (8? 12?) different regions per level,
+this need only be a character, which we shall treat as a very short int. 
+This array lookup by tile gives us FAST lookup. We already know the tiles stepped on in the
+Level::step() method, so we simply grab a monster region index from one of them. 
+That gets translated into a monster region almost for free. Then we can also look at the region's encounter rate to determine if we should have a battle.
 
 6) Need a key queue, populated at onSignalKeyUp. Then, states like say should
 pull from the queue....?
+
+7) HasEquipped ( item type, item name, any | primary )
+
+8) System items.
+

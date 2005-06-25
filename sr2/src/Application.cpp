@@ -225,6 +225,13 @@ void Application::startBattle(const std::string &monster, uint count, bool isBos
     mActionQueue.push( new StartBattleAction( monster, count, isBoss ) );
 }
 
+void Application::choice(const std::string &choiceText,
+			 const std::vector<std::string> &choices, Choice * pChoice)
+{
+
+}
+
+
 void Application::say(const std::string &speaker, const std::string &text)
 {
 #ifndef NDEBUG
@@ -235,8 +242,12 @@ void Application::say(const std::string &speaker, const std::string &text)
 
     static const CL_Rect textRect(16,388, 783, 580);
     static const CL_Rect speakerRect(15,315,783,369);
+   
+    CL_Rect speakerTextRect;
 
-    std::string::const_iterator textIter= text.begin();
+    speakerTextRect.top += ( speakerRect.get_height() - mpfBGray->get_height()) /2;
+
+    std::string::const_iterator textIter = text.begin();
 
     bool done = false;
 
