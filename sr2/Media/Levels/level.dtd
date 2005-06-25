@@ -15,7 +15,7 @@
 <!ELEMENT hasItem (itemRef)>
 <!ELEMENT didEvent (#PCDATA)>
 <!ELEMENT mo ((tilemap|spriteRef*)?,event*, movement?)>
-<!ELEMENT event (condition?,(attributeModifier | say | give | take | playAnimation | playSound | loadLevel | startBattle | pause | invokeShop | giveGold)*)>
+<!ELEMENT event (condition?,(attributeModifier | say | give | take | playAnimation | playSound | loadLevel | startBattle | pause | invokeShop | giveGold | choice)*)>
 <!ELEMENT say (#PCDATA)>
 <!ELEMENT give (itemRef)>
 <!ELEMENT take (itemRef)>
@@ -28,6 +28,8 @@
 <!ELEMENT invokeShop EMPTY>
 <!ELEMENT pause (#PCDATA)>
 <!ELEMENT movement EMPTY>
+<!ELEMENT choice (option+)>
+<!ELEMENT option (condition?, (attributeModifier | say | give | take | playAnimation | playSound | loadLevel | startBattle | pause | invokeShop | giveGold | choice)*))>
 <!ATTLIST level name CDATA #REQUIRED>
 <!ATTLIST levelHeader music CDATA #REQUIRED>
 <!ATTLIST levelHeader width CDATA #REQUIRED>
@@ -77,3 +79,5 @@
 <!ATTLIST directionBlock east (true|false) #REQUIRED>
 <!ATTLIST directionBlock west (true|false) #REQUIRED>
 <!ATTLIST spriteRef type (still|twoway|fourway) #IMPLIED>
+<!ATTLIST choice text CDATA #REQUIRED>
+<!ATTLIST option text CDATA #REQUIRED>
