@@ -130,8 +130,20 @@ bool Option::evaluateCondition() const
 
 void Option::choose()
 {
+#ifndef _MSC_VER
     if(evaluateCondition())
-	for_each( mActions.begin(), mActions.end(), std::mem_fun(&Action::invoke) );
+		std::for_each( mActions.begin(), mActions.end(), std::mem_fun(&Action::invoke) );
+#else
+	if(evaluateCondition())
+	{
+		for(std::list<Action*>::iterator iter = mActions.begin();
+			iter != mActions.end();
+			iter++)
+			{
+				(*iter)->invoke();
+			}
+	}
+#endif
 }
 
 
@@ -187,8 +199,17 @@ void Choice::invoke()
 
 
     // fill the "options" vector with the text of each Option object
+#ifndef _MSC_VER
     std::transform(mOptions.begin(), mOptions.end(), std::back_inserter(options),
 		   std::mem_fun(&Option::getText));
+#else
+	for(std::vector<Option*>::iterator iter = mOptions.begin();
+		iter != mOptions.end();
+		iter++)
+		{	
+			options.push_back ( (*iter)->getText() );
+		}
+#endif
 
     IApplication::getInstance()->choice( mText, options, this );
 
