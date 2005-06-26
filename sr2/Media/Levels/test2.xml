@@ -2906,6 +2906,20 @@
 			</event>
 			<movement movementType="wander" speed="fast"/>
 		</mo>
+		<mo name="Cat3" size="small" type="npc" xpos="2" ypos="8" solid="true">
+			<spriteRef type="fourway">Animals/Cat2</spriteRef>
+			<event name="CatChoice" triggerType="talk">
+				<choice text = "Who is your favorite cat?">
+					<option text= "You">
+						<say speaker="Cat">Thank you!</say>
+					</option>
+					<option text = "The other cat">
+						<say speaker="Cat">Awww...</say>
+					</option>
+				</choice>
+			</event>
+			<movement movementType="wander" speed="fast"/>
+		</mo>
 		<mo name="DoorR" size="medium" type="door" xpos="8" ypos="9">
 			<event name="enterOctaviaInn" triggerType="step">
 				<loadLevel startx="4" starty="3" name="octaviaInn"/>
