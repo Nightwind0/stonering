@@ -240,12 +240,17 @@ void Application::say(const std::string &speaker, const std::string &text)
 
     meState = TALKING;
 
+    // Start queueing up key up signals
+    startKeyUpQueue();
+
     static const CL_Rect textRect(16,388, 783, 580);
-    static const CL_Rect speakerRect(15,315,783,369);
+    static const CL_Rect speakerRect(16,315,783,369);
    
-    CL_Rect speakerTextRect;
+    CL_Rect speakerTextRect = speakerRect;
 
     speakerTextRect.top += ( speakerRect.get_height() - mpfBGray->get_height()) /2;
+    speakerTextRect.bottom += ( speakerRect.get_height() - mpfBGray->get_height()) /2;
+
 
     std::string::const_iterator textIter = text.begin();
 
@@ -270,24 +275,33 @@ void Application::say(const std::string &speaker, const std::string &text)
 	    mpSayOverlay->draw(0,300, mpWindow->get_gc());
 	    
 	    drawCount = mpfBWhite->draw(textRect, textIter, text.end(), mpWindow->get_gc() );
-	    mpfBGray->draw(speakerRect, speaker.begin(),speaker.end(),mpWindow->get_gc() );
+	    mpfBGray->draw(speakerTextRect, speaker.begin(),speaker.end(),mpWindow->get_gc() );
 
-	    if(CL_Keyboard::get_keycode(CL_KEY_ENTER) || CL_Keyboard::get_keycode(CL_KEY_SPACE))
+	    // Process any KeyUps that were received. 
+	    if(mKeyUpQueue.size())
 	    {
+		int key = mKeyUpQueue.front();
+		mKeyUpQueue.pop();
 
-		if(totalDrawn + drawCount == text.size())
+
+		switch(key)
 		{
+		case CL_KEY_ENTER:
+		case CL_KEY_SPACE:
+
+		    if(totalDrawn + drawCount == text.size())
+		    {
+			done = true;
+		    }
+		    
+		    doneFrame = true;
+		    
+		    CL_System::sleep(333); // Part hack to prevent enter from being detected twice, partly for effect...
+		    break;
+		case CL_KEY_ESCAPE:
+		    doneFrame = true;
 		    done = true;
 		}
-
-		doneFrame = true;
-
-		CL_System::sleep(333); // Part hack to prevent enter from being detected twice, partly for effect...
-	    }
-	    else if (CL_Keyboard::get_keycode(CL_KEY_ESCAPE))
-	    {
-		doneFrame = true;
-		done = true;
 	    }
 
 	    if(totalDrawn + drawCount < text.size())
@@ -308,6 +322,8 @@ void Application::say(const std::string &speaker, const std::string &text)
     mpfSBBlack->set_scale(1.0,1.0);
     mbPauseMovement = false;
     meState = MAIN;
+
+    stopKeyUpQueue();
 
 }
 
@@ -357,7 +373,7 @@ bool Application::canMove(const CL_Rect &currently, const CL_Rect &destination, 
 
 Application::Application():mpParty(0),mpLevelFactory(0),mCurX(0),mCurY(0),
 			   mLevelX(0),mLevelY(0),mbDone(false),mSpeed(4),mbPauseMovement(false),
-			   mbShowDebug(false),  mePlayerDirection(SOUTH)
+			   mbShowDebug(false),  mePlayerDirection(SOUTH), mbQueueKeyUps(false)
     
 {
     mpParty = new Party();
@@ -368,6 +384,22 @@ Application::Application():mpParty(0),mpLevelFactory(0),mCurX(0),mCurY(0),
 
 Application::~Application()
 {
+}
+
+
+void Application::startKeyUpQueue()
+{
+    // Clear the queue.
+    while(mKeyUpQueue.size())
+	mKeyUpQueue.pop();
+
+    mbQueueKeyUps = true;
+}
+
+
+void Application::stopKeyUpQueue()
+{
+    mbQueueKeyUps = false;
 }
 
 
@@ -635,7 +667,11 @@ void Application::onSignalKeyUp(const CL_InputEvent &key)
 #endif
 	    
 	}
-    } // MAIN
+    }
+    default:
+	// All other cases
+	if(mbQueueKeyUps)
+	    mKeyUpQueue.push ( key.id );
     }// switch meState
 }
 
