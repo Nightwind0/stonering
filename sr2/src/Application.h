@@ -233,6 +233,9 @@ class Choice;
 
       void doTalk(bool prod=false);
 
+      void startKeyUpQueue();
+      void stopKeyUpQueue();
+
       /* SIGNALS */
       void onSignalQuit();
       void onSignalKeyDown(const CL_InputEvent &key);
@@ -267,7 +270,8 @@ class Choice;
 #ifndef NDEBUG
       CL_Rect mLastTalkRect;
 #endif
-
+      bool mbQueueKeyUps;
+      std::queue<int> mKeyUpQueue;
       
     };
   
