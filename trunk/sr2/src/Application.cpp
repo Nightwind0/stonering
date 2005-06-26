@@ -753,13 +753,15 @@ int Application::main(int argc, char ** argv)
 
 	mpSayOverlay = new CL_Surface("Overlays/say_overlay", mpResources );
 
+	mpPlayerSprite = new CL_Sprite(defaultplayersprite, mpResources );
+
 	loadFonts();
 	showRechargeableOnionSplash();
 	showIntro();
 
 	mpLevel = new Level(startinglevel, mpResources);
 
-	mpPlayerSprite = new CL_Sprite(defaultplayersprite, mpResources );
+
 
 	CL_System::sleep( 50 );
 
@@ -834,6 +836,9 @@ int Application::main(int argc, char ** argv)
 	std::cerr << error.message.c_str() << std::endl;
     }
 	
+	std::string foo;
+	//std::cin >> foo;
+
 
 	return 0;
 
