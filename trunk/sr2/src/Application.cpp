@@ -229,6 +229,110 @@ void Application::choice(const std::string &choiceText,
 			 const std::vector<std::string> &choices, Choice * pChoice)
 {
 
+
+    meState = CHOICE;
+    startKeyUpQueue();
+    mbPauseMovement = true;
+
+
+    static const CL_Rect choiceRect = CL_Rect(0,0, WINDOW_WIDTH, WINDOW_HEIGHT / 2);
+    static const CL_Rect optionsRect = CL_Rect(0,WINDOW_HEIGHT / 2, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+    CL_Rect choiceTextRect = choiceRect;
+    choiceTextRect.top += ( choiceRect.get_height() - mpfBWhite->get_height(choiceText, CL_Size(WINDOW_WIDTH, WINDOW_HEIGHT/2))) /2;
+
+    bool done = false;
+
+    uint optionOffset = 0;
+    uint currentOption = 0;
+
+    uint optionsPerPage = optionsRect.get_height() / (mpfBGray->get_height() + mpfBGray->get_height_offset()) ;
+
+    CL_Font * pLineFont = NULL;
+
+    while(!done)
+    {
+	drawMap();
+
+	mpWindow->get_gc()->fill_rect( choiceRect, CL_Color(0,0,0,128) ) ;
+	mpWindow->get_gc()->fill_rect( optionsRect, CL_Color(0,0,0,128) ) ;
+
+	mpfBWhite->draw(choiceTextRect,choiceText,mpWindow->get_gc() );
+	
+	for(uint i=0;i< optionsPerPage; i++)
+	{
+	    
+	    // Don't paint more options than there are
+	    if(i + optionOffset >= choices.size()) break;
+
+	    if(i + optionOffset == currentOption)
+	    {
+		pLineFont = mpfBPowderBlue;
+
+	    }
+	    else
+	    {
+		pLineFont = mpfBGray;
+	    }
+
+	    pLineFont->draw( 0,  i * (mpfBPowderBlue->get_height() + mpfBPowderBlue->get_height_offset()) + optionsRect.top,
+				      choices[i + optionOffset], mpWindow->get_gc());
+
+	}
+
+	if(mKeyUpQueue.size())
+	{
+	    int key = mKeyUpQueue.front();
+	    mKeyUpQueue.pop();
+
+	    switch(key)
+	    {
+	    case CL_KEY_ENTER:
+	    case CL_KEY_SPACE:
+		done = true;
+		break;
+	    case CL_KEY_DOWN:
+		if(currentOption + 1< choices.size())
+		{
+		    currentOption++;
+		    
+		    if(currentOption > optionOffset + 4)
+		    {
+			optionOffset++;
+		    }
+		}
+		    
+		break;
+	    case CL_KEY_UP:
+		if(currentOption > 0 )
+		{
+		    currentOption--;
+
+		    if(currentOption < optionOffset)
+		    {
+			optionOffset--;
+		    }
+		}
+		break;
+	    default:
+		break;
+		
+	    }
+	}
+
+	CL_Display::flip();
+	
+	CL_System::keep_alive();
+    }
+
+    pChoice->chooseOption ( currentOption );
+
+    stopKeyUpQueue();
+
+    mbPauseMovement = false;
+
+    meState = MAIN;
+
 }
 
 
@@ -238,7 +342,7 @@ void Application::say(const std::string &speaker, const std::string &text)
     std::cout << "Say: " << speaker << ":" << text << std::endl;
 #endif
 
-    meState = TALKING;
+
 
     // Start queueing up key up signals
     startKeyUpQueue();
@@ -255,9 +359,6 @@ void Application::say(const std::string &speaker, const std::string &text)
     std::string::const_iterator textIter = text.begin();
 
     bool done = false;
-
-    mbPauseMovement = true;
-    mpfSBBlack->set_scale(2.0,2.0);
 
     int totalDrawn = 0;
 

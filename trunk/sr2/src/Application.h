@@ -196,7 +196,8 @@ class Choice;
 	      TALKING,
 	      MENU,
 	      CHOOSING_MO,
-	      BATTLE
+	      BATTLE,
+	      CHOICE
 	  };
 
       Party *mpParty;

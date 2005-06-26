@@ -51,7 +51,7 @@ Option::Option():mpCondition(NULL)
 {
 }
 
-Option::Option(CL_DomElement * pElement)
+Option::Option(CL_DomElement * pElement):mpCondition(NULL)
 {
     LevelFactory * factory = IApplication::getInstance()->getLevelFactory();
 
@@ -125,6 +125,8 @@ std::string Option::getText() const
 	
 bool Option::evaluateCondition() const
 {
+    if(!mpCondition) return true;
+
     return mpCondition->evaluate();
 }
 
@@ -165,11 +167,17 @@ Choice::Choice(CL_DomElement * pElement)
 
     while( !child.is_null() )
     {
-	if(child.get_node_value() == "option")
+	if(child.get_node_name() == "option")
 	{
 	    mOptions.push_back ( factory->createOption ( &child ) );
 	}
+
+	child = child.get_next_sibling().to_element();
     }
+
+    if(!mOptions.size())
+	throw CL_Error("Choice missing options!!!");
+
 }
 
 CL_DomElement Choice::createDomElement(CL_DomDocument &doc) const
@@ -230,6 +238,10 @@ Option * Choice::getOption(uint index )
     return mOptions[index];
 }
 
+void Choice::chooseOption( uint index)
+{
+    mOptions[index]->choose();
+}
 
 
 
@@ -1285,6 +1297,14 @@ StoneRing::createAction ( const std::string & action,  CL_DomElement & child )
     {
        return factory->createInvokeShop (&child );
        
+    }
+    else if (child.get_node_name() == "choice")
+    {
+	return factory->createChoice ( &child );
+    }
+    else
+    {
+	throw CL_Error("Action was not recognized: " + child.get_node_name());
     }
 
 
