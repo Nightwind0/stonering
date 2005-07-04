@@ -1,6 +1,6 @@
 
 <level name="TestLevel">
-	<levelHeader music="Main" width="29" height="19" allowsRunning = "true"/>
+	<levelHeader music="Main" width="29" height="19" allowsRunning="true"/>
 	<tiles>
 		<tile xpos="0" ypos="0">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -123,7 +123,6 @@
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
 		<tile xpos="2" ypos="2" hot="true">
-			<!--tilemap mapname="grass" mapx="4" mapy="1"/-->	
 			<spriteRef>tiles/Lava</spriteRef>
 			<attributeModifier attribute="HP" add="-1" target="primary"/>
 		</tile>
@@ -2789,6 +2788,12 @@
 			<tilemap mapname="wall1" mapx="0" mapy="2"/>
 			<directionBlock north="false" south="true" east="false" west="false"/>
 		</tile>
+		<tile xpos="27" ypos="0">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile xpos="27" ypos="1">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
 		<tile xpos="27" ypos="2">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
@@ -2841,6 +2846,12 @@
 		<tile xpos="27" ypos="18">
 			<tilemap mapname="wall1" mapx="2" mapy="2"/>
 			<directionBlock north="false" south="true" east="true" west="false"/>
+		</tile>
+		<tile xpos="28" ypos="0">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile xpos="28" ypos="1">
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
 		<tile xpos="28" ypos="2">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -2909,16 +2920,30 @@
 		<mo name="Cat3" size="small" type="npc" xpos="2" ypos="8" solid="true">
 			<spriteRef type="fourway">Animals/Cat2</spriteRef>
 			<event name="CatChoice" triggerType="talk">
-				<choice text = "Who is your favorite cat?">
-					<option text= "You">
-						<say speaker="Cat">Thank you!</say>
+				<choice text="Who is your favorite cat?">
+					<option text="You">
+						<say speaker="Cat">Thank you! Take this key.</say>
+						<give>
+							<itemRef itemType="special">Octavia Key</itemRef>
+						</give>
 					</option>
-					<option text = "The other cat">
+					<option text="The other cat">
 						<say speaker="Cat">Awww...</say>
 					</option>
 				</choice>
 			</event>
 			<movement movementType="wander" speed="fast"/>
+		</mo>
+		<mo name="DoorRLock" size="medium" type="square" xpos="8" ypos="9" solid="true">
+			<condition>
+				<hasItem not = "true">
+					<itemRef itemType="special">Octavia Key</itemRef>
+				</hasItem>
+			</condition>
+			<event name="octaviaLock" triggerType="talk">
+				<say speaker="Notice">You need the Octavia Key.</say>
+			</event>
+			
 		</mo>
 		<mo name="DoorR" size="medium" type="door" xpos="8" ypos="9">
 			<event name="enterOctaviaInn" triggerType="step">

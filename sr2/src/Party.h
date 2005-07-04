@@ -5,7 +5,7 @@
 
 #include "Item.h"
 #include <string>
-#include <list>
+#include <set>
 #include <map>
 #include "IParty.h"
 
@@ -44,11 +44,11 @@ class ItemRef;
 
  private:
 
-    std::list<std::string> mEvents;
+    std::set<std::string> mEvents;
     std::map<Item, int> mItems;
     uint mX;
     uint mY;
-
+    uint mnGold;
 
 };
 
