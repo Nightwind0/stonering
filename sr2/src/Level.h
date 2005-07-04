@@ -226,6 +226,7 @@ namespace StoneRing {
 	    bool mbNot;
 	    std::string mItem;
 	    Item::eItemType mItemType;
+	    uint mCount;
 	};
 
     class DidEvent : public Check

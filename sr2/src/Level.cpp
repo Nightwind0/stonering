@@ -295,6 +295,10 @@ ItemRef::ItemRef(CL_DomElement *pElement )
     {
 	meType = Item::SPECIAL;
     }
+    else if(itemtype == "system")
+    {
+	meType = Item::SYSTEM;
+    }
     else throw CL_Error("Bad item type in itemref");
 
     mItem = pElement->get_text();
@@ -324,6 +328,9 @@ CL_DomElement ItemRef::createDomElement(CL_DomDocument &doc) const
 	break;
     case Item::SPECIAL:
 	type = "special";
+	break;
+    case Item::SYSTEM:
+	type = "system";
 	break;
     default:
 	throw CL_Error (" Bad item ref type " );
@@ -731,6 +738,9 @@ CL_DomElement  HasItem::createDomElement(CL_DomDocument &doc) const
 
     if(mbNot) element.set_attribute("not","true");
 
+    if(mCount != 1)
+	element.set_attribute("count", IntToString(mCount));
+
     CL_DomElement e = mpItemRef->createDomElement(doc);
     element.append_child (e );
 
@@ -750,6 +760,16 @@ HasItem::HasItem(CL_DomElement *pElement ):mpItemRef(NULL)
 
     std::string notstring;
 
+    CL_DomNode countNode = attributes.get_named_item("count");
+
+    mCount=1;
+
+
+    if(! countNode.is_null() )
+    {
+	mCount = atoi(countNode.get_node_value().c_str());
+
+    }
 
     if(! isnot.is_null() )
     {
@@ -785,8 +805,8 @@ HasItem::~HasItem()
 
 bool HasItem::evaluate()
 {
-    if(mbNot) return ! (IApplication::getInstance()->getParty()->hasItem(mpItemRef )) ;
-    else	return (IApplication::getInstance()->getParty()->hasItem(mpItemRef )) ;
+    if(mbNot) return ! (IApplication::getInstance()->getParty()->hasItem(mpItemRef, mCount )) ;
+    else	return (IApplication::getInstance()->getParty()->hasItem(mpItemRef, mCount )) ;
 }
 
 
@@ -1836,6 +1856,7 @@ CL_DomElement  Give::createDomElement(CL_DomDocument &doc) const
 {
     CL_DomElement element(doc,"give");
 
+    if(mCount != 1)
     element.set_attribute("count", IntToString ( mCount ) );
 
     CL_DomElement  itemRef = mpItemRef->createDomElement(doc);
@@ -1880,7 +1901,7 @@ Give::~Give()
 
 void Give::invoke()
 {
-    IApplication::getInstance()->getParty()->giveItem ( mpItemRef );
+    IApplication::getInstance()->getParty()->giveItem ( mpItemRef, mCount );
 }
 
 Take::Take()
@@ -1891,7 +1912,8 @@ CL_DomElement  Take::createDomElement(CL_DomDocument &doc) const
 {
     CL_DomElement element(doc,"take");
 
-    element.set_attribute("count", IntToString ( mCount ) );
+    if(mCount != 1)
+	element.set_attribute("count", IntToString ( mCount ) );
 
     CL_DomElement  itemRef = mpItemRef->createDomElement(doc);
 
@@ -1937,7 +1959,7 @@ Take::~Take()
 
 void Take::invoke()
 {
-    IApplication::getInstance()->getParty()->takeItem ( mpItemRef );
+    IApplication::getInstance()->getParty()->takeItem ( mpItemRef, mCount );
 }
 
 
