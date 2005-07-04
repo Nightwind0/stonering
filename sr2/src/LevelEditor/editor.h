@@ -38,7 +38,7 @@ public:
     virtual uint getHeight() const { return 64; }
     virtual CL_Rect getCollisionRect() const { return CL_Rect(0,0,0,0); }
     virtual CL_Rect getCollisionRect(uint, uint) const { return getCollisionRect(); }
-    virtual void doEvent(const std::string &name){}
+    virtual void doEvent(const std::string &name, bool bRemember){}
     virtual void giveItem(ItemRef * pItemRef){}
     virtual void takeItem(ItemRef * pItemRef){}
     virtual void giveGold(int amount){}

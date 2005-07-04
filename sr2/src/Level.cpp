@@ -1184,7 +1184,7 @@ bool Condition::evaluate() const
     return true;
 }
 
-Event::Event():mbRepeatable(true),mpCondition(NULL)
+Event::Event():mbRepeatable(true),mbRemember(false),mpCondition(NULL)
 {
 }
 
@@ -1213,6 +1213,7 @@ CL_DomElement  Event::createDomElement(CL_DomDocument &doc) const
 
     if(!mbRepeatable) element.set_attribute("repeatable","false");
 
+    if(mbRemember) element.set_attribute("remember","true");
 
     if(mpCondition )
     {
@@ -1342,6 +1343,11 @@ Event::Event(CL_DomElement *pElement):mbRepeatable(true),mpCondition(NULL)
 	mbRepeatable = ( attributes.get_named_item("repeatable").get_node_value() == "true")?true:false;
     }
 
+    if(!attributes.get_named_item("remember").is_null())
+    {
+	mbRemember = ( attributes.get_named_item("remember").get_node_value() == "true")?true:false;
+    }
+
 
 
     CL_DomElement child = pElement->get_first_child().to_element();
@@ -1393,13 +1399,18 @@ bool Event::repeatable()
 {
     return mbRepeatable;
 }
+
+bool Event::remember()
+{
+    return mbRemember;
+}
  
 bool Event::invoke()
 {
     
     if(mpCondition && !mpCondition->evaluate() ) return false;
 
-    IApplication::getInstance()->getParty()->doEvent ( mName );
+    IApplication::getInstance()->getParty()->doEvent ( mName, mbRemember );
 
     for(std::list<Action*>::iterator i = mActions.begin();
 	i != mActions.end();
@@ -2352,6 +2363,12 @@ CL_DomElement  MappableObject::createDomElement(CL_DomDocument &doc) const
     case MO_LARGE:
 	size = "large";
 	break;
+    case MO_TALL:
+	size = "tall";
+	break;
+    case MO_WIDE:
+	size = "wide";
+	break;
 	
     }
 
@@ -2402,6 +2419,13 @@ CL_DomElement  MappableObject::createDomElement(CL_DomDocument &doc) const
 
     }
 
+    if(mpCondition)
+    {
+	CL_DomElement condition = mpCondition->createDomElement(doc);
+
+	element.append_child( condition );
+    }
+
     for(std::list<Event*>::const_iterator h = mEvents.begin();
 	h != mEvents.end(); h++)
     {
@@ -2426,13 +2450,22 @@ CL_DomElement  MappableObject::createDomElement(CL_DomDocument &doc) const
     
 }
 
+bool MappableObject::evaluateCondition() const
+{
+    if(mpCondition)
+    {
+	return mpCondition->evaluate();
+    }
+
+    return true;
+}
 
 MappableObject::eSize MappableObject::getSize() const
 {
     return meSize;
 } 
  
-MappableObject::MappableObject(CL_DomElement *pElement):mpMovement(0),mTimeOfLastUpdate(0),mCountInCurDirection(0)
+MappableObject::MappableObject(CL_DomElement *pElement):mpMovement(0),mpCondition(0),mTimeOfLastUpdate(0),mCountInCurDirection(0)
 {
     LevelFactory * factory = IApplication::getInstance()->getLevelFactory();
     cFlags = 0;
@@ -2452,6 +2485,8 @@ MappableObject::MappableObject(CL_DomElement *pElement):mpMovement(0),mTimeOfLas
     if(size == "small") meSize = MO_SMALL;
     else if(size == "medium") meSize = MO_MEDIUM;
     else if(size == "large") meSize = MO_LARGE;
+    else if(size == "wide") meSize = MO_WIDE;
+    else if(size == "tall") meSize = MO_TALL;
     else throw CL_Error("MO size wasnt small, medium, or large.");
 
     if(motype == "npc") meType = NPC;
@@ -2516,9 +2551,20 @@ MappableObject::MappableObject(CL_DomElement *pElement):mpMovement(0),mTimeOfLas
 	    case MO_LARGE:
 		if( swidth != 128 && sheight != 128) throw CL_Error("Sprite size doesnt match MO size (LARGE)");
 		break;
+	    case MO_TALL:
+		if( swidth != 32 && sheight != 64) throw CL_Error("Sprite size does not match MO size(TALL)");
+		break;
+	    case MO_WIDE:
+		
+		if( swidth != 64 && sheight != 32) throw CL_Error("Sprite size does not match MO size(TALL)");
+		break;
 	    }
 
 
+	}
+	else if ( child.get_node_name() == "condition")
+	{
+	    mpCondition = factory->createCondition ( &child ) ;
 	}
 	else if (child.get_node_name() == "event" )
 	{
@@ -2627,6 +2673,14 @@ CL_Rect MappableObject::getRect()
 	break;
     case MO_LARGE:
 	width = height = 128;
+	break;
+    case MO_TALL:
+	width = 32;
+	height = 64;
+	break;
+    case MO_WIDE:
+	width = 64;
+	height = 32;
 	break;
     }
 
@@ -2892,6 +2946,9 @@ void MappableObject::setFrameForDirection()
 
 void MappableObject::update(bool bMove)
 {
+
+    // Don't bother with disabled MOs
+    if(!evaluateCondition()) return;
 
     if(isSprite())
     {
@@ -3251,17 +3308,24 @@ void Level::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_Graph
 	i != mMappableObjects.end();
 	i++)
     {
-	CL_Rect moRect = (*i)->getRect();
-	CL_Rect dstRect( moRect.left - src.left + dst.left, moRect.top + dst.top - src.top,
-			 moRect.left - src.left + dst.left +moRect.get_width(), moRect.top - src.top + dst.top + moRect.get_height());
-	if( ! src.is_overlapped ( moRect ) )
+	
+	if( (*i)->evaluateCondition())
 	{
-	    // This MO was outside our field of vision, so we stop iterating.
-	    break;
-	}
 
-	(*i)->update(bMove);
-	(*i)->draw( moRect, dstRect, pGC );
+
+	    CL_Rect moRect = (*i)->getRect();
+	    CL_Rect dstRect( moRect.left - src.left + dst.left, moRect.top + dst.top - src.top,
+			     moRect.left - src.left + dst.left +moRect.get_width(), moRect.top - src.top + dst.top + moRect.get_height());
+	    if( ! src.is_overlapped ( moRect ) )
+	    {
+		// This MO was outside our field of vision, so we stop iterating.
+		break;
+	    }
+	    
+	    (*i)->update(bMove);
+	    (*i)->draw( moRect, dstRect, pGC );
+	    
+	}
     }
 	
 }
@@ -3336,37 +3400,41 @@ bool Level::canMove(const CL_Rect &currently, const CL_Rect & destination, bool 
 
 	MappableObject *pMO = *iter;
 
-	CL_Rect moRect = pMO->getRect();
-
-	if(pMO->getRect() == currently) 
-	{
-	    // HACK: This is us, therefore we dont care
-	    break;
-	}
-
-	//TODO: Possible optimization. we ought to be able to sort the map here
-	// And then, like in the draw, stop iterating once we hit something outside the rect
-	// but, we should already be sorted........
-
-	if(! IApplication::getInstance()->getLevelRect().is_overlapped ( moRect ) )
-	{
-	    // This MO is too far away, doesn't need to be tested, nor do any more
-	    break;
-	}
-
-
-	//  Check for overlap, if none, continue
-	//  Check direction block, compare to direction. 
-	//  If they match, you get a non-zero number
-	// That means they moved in the direction in which there is a block
-	if( moRect.is_overlapped(destination) && (pMO->isSolid() ))
+	if(pMO->evaluateCondition())
 	{
 
-	    return false;
+	    CL_Rect moRect = pMO->getRect();
+	    
+	    if(pMO->getRect() == currently) 
+	    {
+		// HACK: This is us, therefore we dont care
+		break;
+	    }
+	    
+	    //TODO: Possible optimization. we ought to be able to sort the map here
+	    // And then, like in the draw, stop iterating once we hit something outside the rect
+	    // but, we should already be sorted........
+	    
+	    if(! IApplication::getInstance()->getLevelRect().is_overlapped ( moRect ) )
+	    {
+		// This MO is too far away, doesn't need to be tested, nor do any more
+		break;
+	    }
+	    
+	    
+	    //  Check for overlap, if none, continue
+	    //  Check direction block, compare to direction. 
+	    //  If they match, you get a non-zero number
+	    // That means they moved in the direction in which there is a block
+	    if( moRect.is_overlapped(destination) && (pMO->isSolid() ))
+	    {
+		
+		return false;
+	    }
 	}
-
+	
     }
-
+    
 
     // Okay, we're not touching any mappable objects. Now for tiles
 
@@ -3581,19 +3649,23 @@ void Level::step(const CL_Rect &dest, const CL_Rect & old)
 	i != mMappableObjects.end();
 	i++)
     {
-	CL_Rect moRect = (*i)->getRect();
-	
-	
-	if( ! IApplication::getInstance()->getLevelRect().is_overlapped ( moRect ) )
-	{
-	    // This MO was outside our field of vision, so we stop iterating.
-	    break;
-	}
-	else if( dest.is_overlapped(moRect ) && ! old.is_overlapped(moRect)) //only if we aren't already on it...
-	{
-	    // This MO needs to be stepped on
-	    (*i)->provokeEvents ( Event::STEP );
 
+	if((*i)->evaluateCondition())
+	{
+	    CL_Rect moRect = (*i)->getRect();
+	    
+	    
+	    if( ! IApplication::getInstance()->getLevelRect().is_overlapped ( moRect ) )
+	    {
+		// This MO was outside our field of vision, so we stop iterating.
+		break;
+	    }
+	    else if( dest.is_overlapped(moRect ) && ! old.is_overlapped(moRect)) //only if we aren't already on it...
+	    {
+		// This MO needs to be stepped on
+		(*i)->provokeEvents ( Event::STEP );
+		
+	    }
 	}
     }
     
@@ -3680,34 +3752,38 @@ void Level::talk(const CL_Rect &target, bool prod)
 	i != mMappableObjects.end();
 	i++)
     {
-	CL_Rect moRect = (*i)->getRect();
-	
-	
-	if( ! IApplication::getInstance()->getLevelRect().is_overlapped ( moRect ) )
+
+	if((*i)->evaluateCondition())
 	{
-	    // This MO was outside our field of vision, so we stop iterating.
-	    break;
-	}
-	else if( target.is_overlapped(moRect ))
-	{
-	    if(!prod)
+	    CL_Rect moRect = (*i)->getRect();
+	    
+	    
+	    if( ! IApplication::getInstance()->getLevelRect().is_overlapped ( moRect ) )
 	    {
-		// This MO needs to be talked to
-		(*i)->provokeEvents ( Event::TALK );
+		// This MO was outside our field of vision, so we stop iterating.
+		break;
 	    }
-	    else
+	    else if( target.is_overlapped(moRect ))
 	    {
-		// Prod!
-		// (Can't prod things that aren't solid. They aren't in your way anyways)
-		// And if it has no movement, prodding it does nothing.
-		if((*i)->isSolid() && (*i)->getMovement() != NULL)
+		if(!prod)
 		{
-		    (*i)->prod();
+		    // This MO needs to be talked to
+		    (*i)->provokeEvents ( Event::TALK );
 		}
+		else
+		{
+		    // Prod!
+		    // (Can't prod things that aren't solid. They aren't in your way anyways)
+		    // And if it has no movement, prodding it does nothing.
+		    if((*i)->isSolid() && (*i)->getMovement() != NULL)
+		    {
+			(*i)->prod();
+		    }
+		}
+		
+		break; // We only do the first one.
+		
 	    }
-
-	    break; // We only do the first one.
-
 	}
     }
 }

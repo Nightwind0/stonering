@@ -326,6 +326,7 @@ namespace StoneRing {
 	    std::string getName() const;
 	    eTriggerType getTriggerType();
 	    bool repeatable();
+	    inline bool remember();
 	    bool invoke();
 
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
@@ -334,6 +335,7 @@ namespace StoneRing {
 	protected:
 	    std::string mName;
 	    bool mbRepeatable;
+	    bool mbRemember;
 	    eTriggerType meTriggerType;
 	    Condition *mpCondition;
 	    std::list<Action*> mActions;
@@ -648,7 +650,7 @@ namespace StoneRing {
 	    bool isSolid() const;
 
 	    enum eMappableObjectType { NPC, SQUARE, CONTAINER, DOOR, WARP };
-	    enum eSize { MO_SMALL, MO_MEDIUM, MO_LARGE };
+	    enum eSize { MO_SMALL, MO_MEDIUM, MO_LARGE, MO_TALL, MO_WIDE };
 
 	    eSize getSize() const;
 
@@ -675,6 +677,8 @@ namespace StoneRing {
 	    void provokeEvents ( Event::eTriggerType trigger );
 
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
+
+	    inline bool evaluateCondition() const;
 
 	    enum eDirection { NONE, NORTH, SOUTH, EAST, WEST };
 
@@ -706,6 +710,7 @@ namespace StoneRing {
 	    long mTimeOfLastUpdate;
 	    ushort mCountInCurDirection;
 	    Movement *mpMovement;
+	    Condition *mpCondition;
 	    eMappableObjectType meType;
 
 	    char cFlags;

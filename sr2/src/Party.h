@@ -30,7 +30,7 @@ class ItemRef;
     virtual uint getHeight() const;
     virtual CL_Rect getCollisionRect() const;
     virtual CL_Rect getCollisionRect(uint atX, uint atY) const;
-    virtual void doEvent(const std::string &event);
+    virtual void doEvent(const std::string &event, bool bRemember);
     virtual void giveItem(ItemRef * pItemRef);
     virtual void takeItem(ItemRef * pItemRef);
     virtual void giveGold(int amount);
