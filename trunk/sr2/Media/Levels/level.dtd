@@ -60,7 +60,7 @@
 <!ATTLIST give count CDATA #IMPLIED>
 <!ATTLIST take count CDATA #IMPLIED>
 <!ATTLIST giveGold count CDATA #REQUIRED>
-<!ATTLIST itemRef itemType (item|weapon|armor|rune|special)  #REQUIRED>
+<!ATTLIST itemRef itemType (item|weapon|armor|rune|special|system)  #REQUIRED>
 <!ATTLIST loadLevel name CDATA #REQUIRED>
 <!ATTLIST loadLevel startx CDATA #REQUIRED>
 <!ATTLIST loadLevel starty CDATA #REQUIRED>
@@ -71,6 +71,7 @@
 <!ATTLIST hasGold operator (lt|gt|lte|gte|eq) #REQUIRED>
 <!ATTLIST hasGold not (true) #IMPLIED>
 <!ATTLIST hasItem not (true) #IMPLIED>
+<!ATTLIST hasItem count CDATA #IMPLIED>
 <!ATTLIST didEvent not (true) #IMPLIED>
 <!ATTLIST attributeModifier attribute CDATA #REQUIRED>
 <!ATTLIST attributeModifier add CDATA #REQUIRED>

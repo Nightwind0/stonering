@@ -21,14 +21,14 @@ bool Party::getGold() const
 	return 0;
 }
 
-bool Party::hasItem(Item::eItemType type, const std::string &item) const
+bool Party::hasItem(Item::eItemType type, const std::string &item, uint count) const
 {
 	return false;
 }
 
-bool Party::hasItem(ItemRef *pItemRef) const
+bool Party::hasItem(ItemRef *pItemRef, uint count) const
 {
-	return hasItem ( pItemRef->getItemType(), pItemRef->getItemName() );
+    return hasItem ( pItemRef->getItemType(), pItemRef->getItemName(), count );
 }
 
 bool Party::didEvent(const std::string &event) const
@@ -74,12 +74,51 @@ void Party::doEvent(const std::string &name, bool bRemember)
 }
 
 
-void Party::giveItem(ItemRef *pItemRef)
+void Party::giveItem(ItemRef *pItemRef, uint count)
 {
+    Item item;
+
+    item.setName ( pItemRef->getItemName() );
+    item.setItemType ( pItemRef->getItemType() );
+
+    if(mItems.count(item ))
+    {
+	mItems[ item ]+=count;
+    }
+    else
+    {
+	mItems[ item ] = count;
+    }
+
+
 }
 
-void Party::takeItem(ItemRef *pItemRef)
+void Party::takeItem(ItemRef *pItemRef, uint count)
 {
+    Item item;
+
+    item.setName ( pItemRef->getItemName() );
+    item.setItemType ( pItemRef->getItemType() );
+
+    if(mItems.count(item ))
+    {
+	mItems[ item ]-=count;
+
+	if(mItems[item] == 0 )
+	{
+	    // We have none left. Take it out of the map entirely.
+	    mItems.erase ( item );
+	}
+	else if ( mItems[item] < 0)
+	{
+	    throw CL_Error("Bogus! Tried to take more of item " + item.getName() + " than we had.");
+	}
+    }
+    else
+    {
+	throw CL_Error("Bogus! Someone tried to take an item we didn't have. Name = " + item.getName());
+    }
+
 }
 
 void Party::giveGold(int amount)

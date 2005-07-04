@@ -5,6 +5,8 @@
 
 #include "Item.h"
 #include <string>
+#include <list>
+#include <map>
 #include "IParty.h"
 
 typedef unsigned int uint;
@@ -21,8 +23,8 @@ class ItemRef;
     ~Party();
 
     virtual bool getGold() const;
-    virtual bool hasItem(Item::eItemType type, const std::string &item) const;
-    virtual bool hasItem(ItemRef *pItemRef )const;
+    virtual bool hasItem(Item::eItemType type, const std::string &item, uint count = 1) const;
+    virtual bool hasItem(ItemRef *pItemRef, uint count = 1 )const;
     virtual bool didEvent(const std::string &event) const;
     virtual uint getLevelX() const;
     virtual uint getLevelY() const;
@@ -31,8 +33,8 @@ class ItemRef;
     virtual CL_Rect getCollisionRect() const;
     virtual CL_Rect getCollisionRect(uint atX, uint atY) const;
     virtual void doEvent(const std::string &event, bool bRemember);
-    virtual void giveItem(ItemRef * pItemRef);
-    virtual void takeItem(ItemRef * pItemRef);
+    virtual void giveItem(ItemRef * pItemRef, uint count =1);
+    virtual void takeItem(ItemRef * pItemRef, uint count =1);
     virtual void giveGold(int amount);
     virtual void modifyAttribute(const std::string &attribute, int add, const std::string &target);
 
@@ -42,6 +44,8 @@ class ItemRef;
 
  private:
 
+    std::list<std::string> mEvents;
+    std::map<Item, int> mItems;
     uint mX;
     uint mY;
 
