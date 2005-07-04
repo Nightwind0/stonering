@@ -7,7 +7,7 @@ using StoneRing::Party;
 
 
 
-Party::Party():mX(0),mY(0)
+Party::Party():mX(0),mY(0),mnGold(0)
 {
 }
 
@@ -18,12 +18,19 @@ Party::~Party()
 
 bool Party::getGold() const
 {
-	return 0;
+	return mnGold;
 }
 
 bool Party::hasItem(Item::eItemType type, const std::string &item, uint count) const
 {
-	return false;
+
+    Item theitem;
+    
+    theitem.setName ( item );
+    theitem.setItemType ( type );
+    
+    
+    return mItems.count(theitem) && mItems.find(theitem)->second >= count;
 }
 
 bool Party::hasItem(ItemRef *pItemRef, uint count) const
@@ -33,7 +40,7 @@ bool Party::hasItem(ItemRef *pItemRef, uint count) const
 
 bool Party::didEvent(const std::string &event) const
 {
-	return false;
+    return mEvents.count(event) != 0;
 }
 
 uint Party::getLevelX() const
@@ -68,9 +75,9 @@ void Party::setLevelY(uint y)
 
 void Party::doEvent(const std::string &name, bool bRemember)
 {
-#ifndef NDEBUG
-    std::cout << "Do Event: " << name << std::endl;
-#endif
+
+    if(bRemember)
+	mEvents.insert ( name );
 }
 
 
@@ -89,6 +96,10 @@ void Party::giveItem(ItemRef *pItemRef, uint count)
     {
 	mItems[ item ] = count;
     }
+
+    IApplication * pApplication = IApplication::getInstance();
+
+    pApplication->say("Item received!", item.getName());
 
 
 }
@@ -123,6 +134,17 @@ void Party::takeItem(ItemRef *pItemRef, uint count)
 
 void Party::giveGold(int amount)
 {
+
+    if(amount <0 )
+    {
+	// They are taking..
+
+	if(mnGold < amount)
+	    throw CL_Error("Attempt to take more gold than we had.");
+    }
+
+    mnGold += amount;
+    
 }
 
 void Party::modifyAttribute(const std::string &attribute, int add, const std::string &target)

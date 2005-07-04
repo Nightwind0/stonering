@@ -342,8 +342,10 @@ void Application::say(const std::string &speaker, const std::string &text)
     std::cout << "Say: " << speaker << ":" << text << std::endl;
 #endif
 
+    meState = TALKING;
 
-
+    mbPauseMovement = true;
+    
     // Start queueing up key up signals
     startKeyUpQueue();
 
