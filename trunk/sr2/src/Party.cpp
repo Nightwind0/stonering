@@ -66,7 +66,7 @@ void Party::setLevelY(uint y)
     mY = y;
 }
 
-void Party::doEvent(const std::string &name)
+void Party::doEvent(const std::string &name, bool bRemember)
 {
 #ifndef NDEBUG
     std::cout << "Do Event: " << name << std::endl;

@@ -254,8 +254,8 @@ void Application::choice(const std::string &choiceText,
     {
 	drawMap();
 
-	mpWindow->get_gc()->fill_rect( choiceRect, CL_Color(0,0,0,128) ) ;
-	mpWindow->get_gc()->fill_rect( optionsRect, CL_Color(0,0,0,128) ) ;
+//	mpWindow->get_gc()->fill_rect( choiceRect, CL_Color(0,0,0,128) ) ;
+	mpWindow->get_gc()->fill_rect( optionsRect, CL_Color(255,255,255,128) ) ;
 
 	mpfBWhite->draw(choiceTextRect,choiceText,mpWindow->get_gc() );
 	
