@@ -29,8 +29,8 @@ class EditorParty : public StoneRing::IParty
 {
 public:
     virtual bool getGold() const { return true;}
-    virtual bool hasItem(StoneRing::Item::eItemType type, const std::string &item) const{ return true; }
-    virtual bool hasItem(StoneRing::ItemRef *pItemRef )const{return true;}
+    virtual bool hasItem(StoneRing::Item::eItemType type, const std::string &item, uint count) const{ return true; }
+    virtual bool hasItem(StoneRing::ItemRef *pItemRef, uint count )const{return true;}
     virtual bool didEvent(const std::string &event) const{return true;}
     virtual uint getLevelX() const{return 0;}
     virtual uint getLevelY() const{return 0; }
@@ -39,8 +39,8 @@ public:
     virtual CL_Rect getCollisionRect() const { return CL_Rect(0,0,0,0); }
     virtual CL_Rect getCollisionRect(uint, uint) const { return getCollisionRect(); }
     virtual void doEvent(const std::string &name, bool bRemember){}
-    virtual void giveItem(ItemRef * pItemRef){}
-    virtual void takeItem(ItemRef * pItemRef){}
+    virtual void giveItem(ItemRef * pItemRef, uint){}
+    virtual void takeItem(ItemRef * pItemRef, uint){}
     virtual void giveGold(int amount){}
     virtual void modifyAttribute(const std::string &attribute, int add, const std::string &target){}
 };
@@ -80,7 +80,7 @@ public:
       virtual void say(const std::string &speaker, const std::string &text){}
       virtual void pause(uint time){}
       virtual void invokeShop(const std::string &shoptype){}
-
+      virtual void choice(const std::string &, const std::vector<std::string> &, Choice*){}
 
       Infobar * getInfo() const { return info; }
 

@@ -116,7 +116,7 @@ void MapGrid::on_placeTile(const CL_InputEvent &event)
 			   mgY >= mgLevel->getHeight())
 			{
 			    cout << "Not a valid location..." << endl;
-			    return;`
+			    return;
 			}
 
 
