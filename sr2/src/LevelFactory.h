@@ -40,7 +40,7 @@ namespace StoneRing
     class Level;
     class Option;
     class Choice;
-
+    class NamedItemRef;
 
 class LevelFactory
 {
@@ -106,6 +106,8 @@ class LevelFactory
     virtual    Option * createOption(CL_DomElement * pElement) const;
     virtual    Choice * createChoice()const;
     virtual    Choice * createChoice(CL_DomElement * pElement) const;
+    virtual    NamedItemRef * createNamedItemRef()const;
+    virtual    NamedItemRef * createNamedItemRef(CL_DomElement * pElement ) const;
 //    virtual    Tiles * createTiles();
 //    virtual    MappableObjects * createMappableObjects();
  private:

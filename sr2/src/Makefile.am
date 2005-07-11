@@ -11,7 +11,9 @@ noinst_LTLIBRARIES = libstonering.la
 libstonering_la_SOURCES = Level.cpp \
 			GraphicsManager.cpp \
 			LevelFactory.cpp \
-			Item.cpp
+			Item.cpp \
+			ItemManager.cpp \
+			ItemFactory.cpp
 
 
 libstonering_la_CPPFLAGS = $(CLANLIB_CFLAGS) \

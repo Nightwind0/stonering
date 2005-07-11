@@ -323,5 +323,15 @@ Choice * LevelFactory::createChoice(CL_DomElement * pElement) const
     return new Choice(pElement);
 }
 
+NamedItemRef * LevelFactory::createNamedItemRef()const
+{
+    return new NamedItemRef();
+}
+
+NamedItemRef * LevelFactory::createNamedItemRef(CL_DomElement * pElement ) const
+{
+    return new NamedItemRef ( pElement );
+}
+
 //    Tiles * createTiles();
 //    MappableObjects * createMappableObjects();
