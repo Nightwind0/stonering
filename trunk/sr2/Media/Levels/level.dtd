@@ -13,14 +13,15 @@
 <!ELEMENT or ((hasGold|hasItem|didEvent|operator)*)>
 <!ELEMENT hasGold (#PCDATA)>
 <!ELEMENT hasItem (itemRef)>
+<!ELEMENT itemRef (namedItemRef|weaponRef|armorRef)>
+<!ELEMENT namedItemRef (#PCDATA)>
 <!ELEMENT didEvent (#PCDATA)>
 <!ELEMENT mo ((tilemap|spriteRef*)?,condition?, event*, movement?)>
 <!ELEMENT event (condition?,(attributeModifier | say | give | take | playAnimation | playSound | loadLevel | startBattle | pause | invokeShop | giveGold | choice)*)>
 <!ELEMENT say (#PCDATA)>
-<!ELEMENT give (itemRef)>
-<!ELEMENT take (itemRef)>
+<!ELEMENT give (itemRef)> <!-- Note: This CHANGED! -->
+<!ELEMENT take (itemRef)> <!-- Note: This CHANGED! -->
 <!ELEMENT giveGold EMPTY>
-<!ELEMENT itemRef (#PCDATA)>
 <!ELEMENT playAnimation (#PCDATA)>
 <!ELEMENT playSound (#PCDATA)>
 <!ELEMENT loadLevel EMPTY>
@@ -29,7 +30,47 @@
 <!ELEMENT pause (#PCDATA)>
 <!ELEMENT movement EMPTY>
 <!ELEMENT choice (option+)>
-<!ELEMENT option (condition?, (attributeModifier | say | give | take | playAnimation | playSound | loadLevel | startBattle | pause | invokeShop | giveGold | choice)*))>
+<!ELEMENT option (condition?, (attributeModifier | say | give | take | playAnimation | playSound | loadLevel | startBattle | pause | invokeShop | giveGold | choice)*)>
+
+
+<!-- Item DTD -->
+<!ELEMENT iconRef (#PCDATA)>
+<!ELEMENT weaponClasses (weaponClass+)>
+<!ELEMENT weaponTypes   (weaponType+)>
+<!ELEMENT armorClasses  (armorClass+)>
+<!ELEMENT armorTypes    (armorType+)>
+<!ELEMENT items (weaponClasses,weaponTypes, armorClasses, armorTypes,itemList)>
+<!ELEMENT itemList (namedItem+)>
+<!ELEMENT weaponRef (weaponTypeRef, weaponClassRef, (spellRef|runeType)?)>
+<!ELEMENT armorRef (armorTypeRef, armorClassRef, (spellRef|runeType)?)>
+<!ELEMENT namedItem (iconRef,(regularItem | uniqueWeapon | uniqueArmor | rune | specialItem | systemItem))>
+<!ELEMENT regularItem ((attributeModifier | say | give | take | playAnimation | playSound | loadLevel | startBattle | pause | invokeShop | giveGold | choice)*)>
+<!ELEMENT uniqueWeapon (weaponTypeRef, weaponEnhancer*, attributeEnhancer*,  (spellRef|runeType)?)>
+<!ELEMENT uniqueArmor   (armorTypeRef, armorEnhancer*, attributeEnhancer*, (spellRef|runeType)?)>
+<!ELEMENT rune (spellRef)>
+<!ELEMENT specialItem EMPTY>
+<!ELEMENT systemItem EMPTY>
+<!ELEMENT runeType EMPTY>
+<!ELEMENT weaponTypeRef (#PCDATA)>
+<!ELEMENT armorTypeRef (#PCDATA)>
+<!ELEMENT weaponClassRef (#PCDATA)>
+<!ELEMENT armorClassRef (#PCDATA)>
+<!ELEMENT weaponClass (attributeEnhancer*, weaponEnhancer*, weaponTypeExclusionList?)>
+<!ELEMENT armorClass  (attributeEnhancer*, armorEnhancer*, armorTypeExclusionList?)>
+<!ELEMENT armorType (iconRef)>
+<!ELEMENT weaponType (iconRef)>
+<!ELEMENT weaponEnhancer EMPTY>
+<!ELEMENT armorEnhancer EMPTY>
+<!ELEMENT attributeEnhancer EMPTY> <!-- Similar to attributeModifier, but a temporary bonus when item is equipped. -->
+<!ELEMENT weaponTypeExclusionList (weaponTypeRef*)>
+<!ELEMENT armorTypeExclusionList (armorTypeRef*)>
+
+<!-- Spell DTD -->
+<!ELEMENT spellRef (#PCDATA)>
+
+
+<!-- Attributes -->
+
 <!ATTLIST level name CDATA #REQUIRED>
 <!ATTLIST levelHeader music CDATA #REQUIRED>
 <!ATTLIST levelHeader width CDATA #REQUIRED>
@@ -60,7 +101,7 @@
 <!ATTLIST give count CDATA #IMPLIED>
 <!ATTLIST take count CDATA #IMPLIED>
 <!ATTLIST giveGold count CDATA #REQUIRED>
-<!ATTLIST itemRef itemType (item|weapon|armor|rune|special|system)  #REQUIRED>
+<!ATTLIST namedItemRef itemType (item|weapon|armor|rune|special|system)  #REQUIRED>
 <!ATTLIST loadLevel name CDATA #REQUIRED>
 <!ATTLIST loadLevel startx CDATA #REQUIRED>
 <!ATTLIST loadLevel starty CDATA #REQUIRED>
@@ -74,8 +115,9 @@
 <!ATTLIST hasItem count CDATA #IMPLIED>
 <!ATTLIST didEvent not (true) #IMPLIED>
 <!ATTLIST attributeModifier attribute CDATA #REQUIRED>
-<!ATTLIST attributeModifier add CDATA #REQUIRED>
-<!ATTLIST attributeModifier target CDATA #IMPLIED>
+<!ATTLIST attributeModifier add CDATA #IMPLIED>
+<!ATTLIST attributeModifier changeTo (max|min|add) #REQUIRED>
+<!ATTLIST attributeModifier target (primary|current|all) #IMPLIED>
 <!ATTLIST directionBlock north (true|false) #REQUIRED>
 <!ATTLIST directionBlock south (true|false) #REQUIRED>
 <!ATTLIST directionBlock east (true|false) #REQUIRED>
@@ -83,3 +125,42 @@
 <!ATTLIST spriteRef type (still|twoway|fourway) #IMPLIED>
 <!ATTLIST choice text CDATA #REQUIRED>
 <!ATTLIST option text CDATA #REQUIRED>
+<!ATTLIST namedItem name CDATA #REQUIRED>
+<!ATTLIST namedItem maxInventory CDATA #IMPLIED>
+<!ATTLIST namedItem dropRarity (never|rare|uncommon|common) #REQUIRED>
+<!ATTLIST regularItem value CDATA #REQUIRED>
+<!ATTLIST regularItem sellValueMultiplier CDATA #IMPLIED>
+<!ATTLIST regularItem reusable (true|false) #REQUIRED>
+<!ATTLIST regularItem targetable (all|single|either|self-only) #REQUIRED>
+<!ATTLIST regularItem use (battle|world|both) #REQUIRED>
+<!ATTLIST regularItem defaultTarget (party|monsters) #IMPLIED>
+<!ATTLIST uniqueArmor valueMultiplier CDATA #REQUIRED>
+<!ATTLIST uniqueWeapon valueMultiplier CDATA #REQUIRED>
+<!ATTLIST weaponClass name CDATA #REQUIRED>
+<!ATTLIST weaponClass valueMultiplier CDATA #REQUIRED>
+<!ATTLIST weaponClass valueAdd  CDATA #IMPLIED>
+<!ATTLIST weaponType name CDATA #REQUIRED>
+<!ATTLIST weaponType basePrice CDATA #REQUIRED>
+<!ATTLIST weaponType baseAttack CDATA #REQUIRED> 
+<!ATTLIST weaponType baseHit CDATA #REQUIRED> <!-- In percent -->
+<!ATTLIST weaponType ranged (true|false) #IMPLIED>
+<!ATTLIST armorClass name CDATA #REQUIRED>
+<!ATTLIST armorClass valueMultiplier CDATA #REQUIRED>
+<!ATTLIST armorClass valueAdd  CDATA #IMPLIED>
+<!ATTLIST armorType name CDATA #REQUIRED>
+<!ATTLIST armorType basePrice CDATA #REQUIRED>
+<!ATTLIST armorType baseArmorClass CDATA #REQUIRED> 
+<!ATTLIST armorType slot (head|body|shield|feet) #REQUIRED>
+<!ATTLIST attributeEnhancer attribute CDATA #REQUIRED>
+<!ATTLIST attributeEnhancer add  CDATA #REQUIRED>
+<!ATTLIST attributeEnhancer multiplier CDATA #IMPLIED>
+<!ATTLIST runeType type (none|rune|ultraRune) #REQUIRED>
+<!ATTLIST weaponEnhancer attribute CDATA #REQUIRED>
+<!ATTLIST weaponEnhancer add CDATA #IMPLIED>
+<!ATTLIST weaponEnhancer multiplier CDATA #IMPLIED>
+<!ATTLIST armorEnhancer  attribute CDATA #REQUIRED>
+<!ATTLIST armorEnhancer add CDATA #IMPLIED>
+<!ATTLIST armorEnhancer multiplier CDATA #IMPLIED>
+<!ATTLIST spellRef class (elemental|white|status|other) #REQUIRED>
+
+

@@ -20,6 +20,7 @@ class IParty
 {
  public:
 
+    enum eTarget { PRIMARY, CURRENT, ALL };
 
     virtual bool getGold() const=0;
     virtual bool hasItem(Item::eItemType type, const std::string &item, uint count = 1) const=0;
@@ -35,8 +36,10 @@ class IParty
     virtual void giveItem(ItemRef * pItemRef, uint count = 1)=0;
     virtual void takeItem(ItemRef * pItemRef, uint count = 1)=0;
     virtual void giveGold(int amount)=0;
-    virtual void modifyAttribute(const std::string &attribute, int add, const std::string &target)=0;
-
+    virtual void modifyAttribute(const std::string &attribute, int add, float multiplier, eTarget target)=0;
+    virtual int getMaxAttribute(const std::string &attribute, eTarget target) const = 0;
+    virtual int getMinAttribute(const std::string &attribute, eTarget target) const = 0;
+    virtual int getAttribute(const std::string &attribute, eTarget target) const = 0;
 
  private:
 

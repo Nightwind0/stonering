@@ -10,7 +10,8 @@
 #include <set>
 #include <sstream>
 #include "GraphicsManager.h"
-
+#include "LevelFactory.h"
+#include "ItemFactory.h"
 
 #define MO_EXPERIMENT 
 
@@ -265,100 +266,143 @@ ItemRef::ItemRef()
 {
 }
 
-ItemRef::ItemRef(CL_DomElement *pElement )
+ItemRef::ItemRef(CL_DomElement *pElement ):
+    mpNamedItemRef(NULL),mpWeaponRef(NULL),mpArmorRef(NULL)
 {
-    CL_DomNamedNodeMap attributes = pElement->get_attributes();
+ 
+    CL_DomElement child = pElement->get_first_child().to_element();
+    LevelFactory * levelFactory = IApplication::getInstance()->getLevelFactory();
+    ItemFactory * itemFactory = IApplication::getInstance()->getItemFactory();
 
-    if(attributes.get_length() < 1) throw CL_Error("Error reading attributes in itemRef.");
+    if(child.is_null()) throw CL_Error("Item ref with no child!");
 
 
-    std::string itemtype;
-    itemtype = attributes.get_named_item("itemType").get_node_value();
-
-    if(itemtype == "item")
+    if(child.get_node_name() == "namedItemRef")
     {
-	meType = Item::ITEM;
+	meType = NAMED_ITEM;
+	levelFactory->createNamedItemRef( &child );
     }
-    else if(itemtype == "weapon")
+    else if (child.get_node_name() == "weaponRef")
     {
-	meType = Item::WEAPON;
+	meType = WEAPON_REF;
+	itemFactory->createWeaponRef ( &child );
     }
-    else if(itemtype == "armor")
+    else if ( child.get_node_name() == "armorRef")
     {
-	meType = Item::ARMOR;
+	meType = ARMOR_REF;
+	itemFactory->createArmorRef ( &child );
     }
-    else if(itemtype == "rune")
-    {
-	meType = Item::RUNE;
-    }
-    else if(itemtype == "special")
-    {
-	meType = Item::SPECIAL;
-    }
-    else if(itemtype == "system")
-    {
-	meType = Item::SYSTEM;
-    }
-    else throw CL_Error("Bad item type in itemref");
-
-    mItem = pElement->get_text();
-
+    else throw CL_Error("Item ref had weirdo child " + child.get_node_name());
+    
 	
 }
+
 
 CL_DomElement ItemRef::createDomElement(CL_DomDocument &doc) const
 {
     CL_DomElement element(doc, std::string("itemRef"));
 
-    std::string type;
 
     switch(meType)
     {
-    case Item::ITEM:
-	type = "item";
+    case NAMED_ITEM:
+	element.append_child ( mpNamedItemRef->createDomElement(doc) );
 	break;
-    case Item::WEAPON:
-	type = "weapon";
+    case WEAPON_REF:
+	element.append_child ( mpWeaponRef->createDomElement(doc) );
 	break;
-    case Item::ARMOR:
-	type = "armor";
+    case ARMOR_REF:
+	element.append_child ( mpArmorRef->createDomElement(doc) );
 	break;
-    case Item::RUNE:
-	type = "rune";
-	break;
-    case Item::SPECIAL:
-	type = "special";
-	break;
-    case Item::SYSTEM:
-	type = "system";
-	break;
-    default:
-	throw CL_Error (" Bad item ref type " );
-    };
+    }
 
-    element.set_attribute( "itemType", type);
+}
 
-    CL_DomText text(doc,mItem);
-    text.set_node_value( mItem );
+ItemRef::~ItemRef()
+{
+    delete mpNamedItemRef;
+    delete mpWeaponRef;
+    delete mpArmorRef;
+
+}
+
+ #if 0
+std::string ItemRef::getItemName() const
+{
+    switch ( meType )
+    {
+    case NAMED_ITEM:
+	return mpNamedItemRef->getItemName();
+	break;
+    case WEAPON_REF:
+	// Need a standard way to generate names from these suckers
+	break;
+    case ARMOR_REF:
+	break;
+    }
+}
+#endif
+
+ItemRef::eRefType ItemRef::getType() const
+{
+    return meType;
+}
+
+NamedItemRef * ItemRef::getNamedItemRef() const
+{
+    return mpNamedItemRef;
+}
+
+WeaponRef * ItemRef::getWeaponRef() const
+{
+    return mpWeaponRef;
+}
+
+ArmorRef * ItemRef::getArmorRef() const
+{
+    return mpArmorRef;
+}
+
+
+
+NamedItemRef::NamedItemRef()
+{
+}
+
+NamedItemRef::NamedItemRef(CL_DomElement *pElement )
+{
+    mName = pElement->get_text();
+}
+
+NamedItemRef:: ~NamedItemRef()
+{
+}
+
+
+std::string NamedItemRef::getItemName()
+{
+    return mName;
+}
+
+
+
+CL_DomElement  NamedItemRef::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement element(doc,"namedItemRef");
+
+    CL_DomText text(doc, mName );
+
+    text.set_node_value ( mName );
 
     element.append_child ( text );
 
     return element;
 }
 
-ItemRef::~ItemRef()
-{
-}
 
-std::string ItemRef::getItemName()
-{
-    return mItem;
-}
- 
-Item::eItemType ItemRef::getItemType()
-{
-    return meType;
-}
+
+
+
 
  
 Tilemap::Tilemap()
@@ -502,11 +546,34 @@ CL_DomElement  AttributeModifier::createDomElement(CL_DomDocument &doc) const
     CL_DomElement  element(doc,"attributeModifier");
 
     element.set_attribute("attribute",mAttribute );
-    element.set_attribute("add", IntToString ( mAdd )  );
 
-    if(mTarget.length())
+    if(mAdd)
+	element.set_attribute("add", IntToString ( mAdd )  );
+
+    switch ( meTarget )
     {
-	element.set_attribute("target", mTarget);
+    case PRIMARY:
+	element.set_attribute("target","primary");
+	break;
+    case CURRENT:
+	element.set_attribute("target","current");
+	break;
+    case ALL:
+	element.set_attribute("target","all");
+	break;
+    }
+
+    switch ( meChangeTo )
+    {
+    case ADD:
+	element.set_attribute("changeTo","add");
+	break;
+    case TO_MIN:
+	element.set_attribute("changeTo", "min");
+	break;
+    case TO_MAX:
+	element.set_attribute("changeTo", "max");
+	break;
     }
 
 
@@ -524,7 +591,7 @@ CL_DomElement  AttributeModifier::createDomElement(CL_DomDocument &doc) const
 }
 
  
-AttributeModifier::AttributeModifier (CL_DomElement *pElement)
+    AttributeModifier::AttributeModifier (CL_DomElement *pElement):mAdd(0),meTarget(PRIMARY)
 {
     LevelFactory * factory = IApplication::getInstance()->getLevelFactory();
 
@@ -541,7 +608,21 @@ AttributeModifier::AttributeModifier (CL_DomElement *pElement)
 	
     if(!attributes.get_named_item("target").is_null())
     {
-	mTarget = attributes.get_named_item("target").get_node_value();
+	std::string target = attributes.get_named_item("target").get_node_value();
+
+	if(target == "current")
+	{
+	    meTarget = CURRENT;
+	}
+	else if (target == "all")
+	{
+	    meTarget = ALL;
+	}
+	else if (target == "primary")
+	{
+	    meTarget = PRIMARY;
+	}
+
     }
 
 
@@ -577,6 +658,72 @@ AttributeModifier::~AttributeModifier()
 }
 
 
+bool AttributeModifier::applicable() const
+{
+    for( std::list<Condition*>::const_iterator i = mConditions.begin();
+	 i != mConditions.end();
+	 i++)
+    {
+	Condition * condition = *i;
+	if( ! condition->evaluate() ) return false;
+    }
+
+
+    IParty * pParty = IApplication::getInstance()->getParty();
+
+    IParty::eTarget target;
+
+    switch(meTarget)
+    {
+    case CURRENT:
+	target = IParty::CURRENT;
+	break;
+    case PRIMARY:
+	target = IParty::PRIMARY;
+	break;
+    case ALL:
+	target = IParty::ALL;
+	break;
+    }
+
+
+    switch(meChangeTo)
+    {
+    case TO_MAX:
+	if( pParty->getAttribute(mAttribute, target) < pParty->getMaxAttribute(mAttribute, target))
+	{
+	    return true;
+	}
+	else return false;
+    case TO_MIN:
+	if( pParty->getAttribute(mAttribute,target) > pParty->getMinAttribute(mAttribute, target))
+	{
+	    return true;
+	}
+	else return false;
+    case ADD:
+	if(mAdd > 0 )
+	{
+	    if ( pParty->getAttribute(mAttribute,target ) < pParty->getMaxAttribute(mAttribute,target))
+	    {
+		return true;
+	    }
+	    else return false;
+	}
+	else // counts 0, but... that does nothing anyway
+	{
+	    if ( pParty->getAttribute(mAttribute, target) > pParty->getMinAttribute(mAttribute, target))
+	    {
+		return true;
+	    }
+	    else return false;
+	}
+    }
+
+    
+
+}
+
 
 void AttributeModifier::invoke()
 {
@@ -587,7 +734,44 @@ void AttributeModifier::invoke()
 	Condition * condition = *i;
 	if( ! condition->evaluate() ) return;
     }
-    IApplication::getInstance()->getParty()->modifyAttribute(mAttribute, mAdd, mTarget ) ;
+
+    IParty * pParty = IApplication::getInstance()->getParty();
+
+    IParty::eTarget target;
+
+    int add = 0;
+
+    switch(meTarget)
+    {
+    case CURRENT:
+	target = IParty::CURRENT;
+	break;
+    case PRIMARY:
+	target = IParty::PRIMARY;
+	break;
+    case ALL:
+	target = IParty::ALL;
+	break;
+    }
+
+
+    switch(meChangeTo)
+    {
+    case TO_MAX:
+	add = pParty->getMaxAttribute(mAttribute, target) - 
+	    pParty->getAttribute(mAttribute, target);
+	break;
+    case TO_MIN:
+	add = 0 - (pParty->getAttribute(mAttribute,target ) -
+		   pParty->getMinAttribute(mAttribute, target ));
+	break;
+    case ADD:
+	add = mAdd;
+	break;
+    }
+
+
+    pParty->modifyAttribute(mAttribute, add, 1 , target ) ;
 }
 
 
@@ -794,7 +978,7 @@ HasItem::HasItem(CL_DomElement *pElement ):mpItemRef(NULL)
 
     if(mbNot) std::cout << "(NOT)";
 
-    std::cout << "HAS ITEM: " << mpItemRef->getItemName() <<  std::endl;
+    std::cout << "HAS ITEM " << std::endl;
 
 }
 

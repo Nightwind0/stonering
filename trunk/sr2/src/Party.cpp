@@ -24,18 +24,12 @@ bool Party::getGold() const
 bool Party::hasItem(Item::eItemType type, const std::string &item, uint count) const
 {
 
-    Item theitem;
-    
-    theitem.setName ( item );
-    theitem.setItemType ( type );
-    
-    
-    return mItems.count(theitem) && mItems.find(theitem)->second >= count;
+    return true;
 }
 
 bool Party::hasItem(ItemRef *pItemRef, uint count) const
 {
-    return hasItem ( pItemRef->getItemType(), pItemRef->getItemName(), count );
+    return true;
 }
 
 bool Party::didEvent(const std::string &event) const
@@ -83,52 +77,19 @@ void Party::doEvent(const std::string &name, bool bRemember)
 
 void Party::giveItem(ItemRef *pItemRef, uint count)
 {
-    Item item;
-
-    item.setName ( pItemRef->getItemName() );
-    item.setItemType ( pItemRef->getItemType() );
-
-    if(mItems.count(item ))
-    {
-	mItems[ item ]+=count;
-    }
-    else
-    {
-	mItems[ item ] = count;
-    }
-
+#if 0
     IApplication * pApplication = IApplication::getInstance();
 
     pApplication->say("Item received!", item.getName());
-
+#endif
 
 }
 
 void Party::takeItem(ItemRef *pItemRef, uint count)
 {
-    Item item;
 
-    item.setName ( pItemRef->getItemName() );
-    item.setItemType ( pItemRef->getItemType() );
 
-    if(mItems.count(item ))
-    {
-	mItems[ item ]-=count;
 
-	if(mItems[item] == 0 )
-	{
-	    // We have none left. Take it out of the map entirely.
-	    mItems.erase ( item );
-	}
-	else if ( mItems[item] < 0)
-	{
-	    throw CL_Error("Bogus! Tried to take more of item " + item.getName() + " than we had.");
-	}
-    }
-    else
-    {
-	throw CL_Error("Bogus! Someone tried to take an item we didn't have. Name = " + item.getName());
-    }
 
 }
 
@@ -147,12 +108,25 @@ void Party::giveGold(int amount)
     
 }
 
-void Party::modifyAttribute(const std::string &attribute, int add, const std::string &target)
+void Party::modifyAttribute(const std::string &attribute, int add, float multiplier, IParty::eTarget target)
 {
 #ifndef NDEBUG
-    std::cout << "Modify Attribue: " << attribute << " by " << add << std::endl;
+    std::cout << "Modify Attribue: " << attribute << " times " << multiplier << " plus " <<  add << std::endl;
 #endif
 }
+
+int Party::getMaxAttribute(const std::string &attribute, IParty::eTarget target) const
+{
+}
+
+int Party::getMinAttribute(const std::string &attribute, IParty::eTarget target) const
+{
+}
+
+int Party::getAttribute(const std::string &attribute, IParty::eTarget target) const
+{
+}
+
 
 CL_Rect Party::getCollisionRect(uint atX, uint atY) const
 {

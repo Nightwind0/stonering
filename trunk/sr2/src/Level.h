@@ -7,6 +7,7 @@
 #include <list>
 #include "IApplication.h"
 #include <set>
+#include "Item.h"
 
 using std::string;
 
@@ -32,18 +33,9 @@ bool operator < (const CL_Point &p1, const CL_Point &p2);
 
 namespace StoneRing {
     
-    
-    class LevelComponent
-	{
-	public:
-	    LevelComponent(){}
-	    ~LevelComponent(){}
-	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const=0;
-
-	private:
-	};
-    
-
+    class WeaponRef;
+    class ArmorRef;
+    class NamedItemRef;
 
     enum eDirectionBlock
 	{
@@ -53,7 +45,7 @@ namespace StoneRing {
 	    DIR_EAST = 8
 	};
 
-    class DirectionBlock : public LevelComponent
+    class DirectionBlock : public Element
 	{
 	public:
 	    DirectionBlock();
@@ -71,7 +63,7 @@ namespace StoneRing {
 
 
     // Things which take actions on the party
-    class Action : public LevelComponent
+    class Action : public Element
 	{
 	public:
 	    Action(){}
@@ -82,7 +74,7 @@ namespace StoneRing {
 
 
     // Things that evaluate by examining the party
-    class Check : public LevelComponent
+    class Check : public Element
 	{
 	public:
 	    Check(){}
@@ -92,24 +84,52 @@ namespace StoneRing {
 	};
 
 
-    class ItemRef : public LevelComponent
+
+    class ItemRef : public Element
+    {
+    public:
+	ItemRef();
+	ItemRef(CL_DomElement *pElement );
+	virtual ~ItemRef();
+
+	enum eRefType { NAMED_ITEM, WEAPON_REF, ARMOR_REF };
+
+//	std::string getItemName() const;
+
+	eRefType getType() const;
+
+	NamedItemRef * getNamedItemRef() const;
+	WeaponRef * getWeaponRef() const;
+	ArmorRef * getArmorRef() const;
+
+	virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
+	
+    protected:
+	NamedItemRef * mpNamedItemRef;
+	WeaponRef * mpWeaponRef;
+	ArmorRef * mpArmorRef;
+	eRefType meType;
+
+    };
+
+
+
+    class NamedItemRef : public Element
 	{
 	public:
-	    ItemRef();
-	    ItemRef(CL_DomElement *pElement );
-	    virtual ~ItemRef();
+	    NamedItemRef();
+	    NamedItemRef(CL_DomElement *pElement );
+	    virtual ~NamedItemRef();
 
 	    std::string getItemName();
-	    Item::eItemType getItemType();
 
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	protected:
-	    std::string mItem;
-	    Item::eItemType meType;
+	    std::string mName;
 	};
 
-    class Tilemap : public LevelComponent
+    class Tilemap : public Element
 	{
 	public:
 	    Tilemap();
@@ -130,7 +150,7 @@ namespace StoneRing {
 	};
 
 
-    class SpriteRef : public LevelComponent
+    class SpriteRef : public Element
 	{
 	public:
 	    SpriteRef();
@@ -149,7 +169,7 @@ namespace StoneRing {
 	    std::string mRef;
 	};
 
-    class Movement : public LevelComponent
+    class Movement : public Element
 	{
 	public:
 	    Movement();
@@ -178,8 +198,12 @@ namespace StoneRing {
 	    AttributeModifier (CL_DomElement *pElement);
 	    virtual ~AttributeModifier();
 
+	    enum eTarget { PRIMARY, CURRENT, ALL };
+	    enum eChangeTo { ADD, TO_MIN, TO_MAX };
 
 	    virtual void invoke();
+
+	    bool applicable() const;
 
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
@@ -188,7 +212,8 @@ namespace StoneRing {
 	    std::list<Condition*> mConditions;
 	    int mAdd;
 	    std::string mAttribute;
-	    std::string mTarget;
+	    eTarget  meTarget;
+	    eChangeTo meChangeTo;
 	};
 
     class HasGold : public Check
@@ -300,7 +325,7 @@ namespace StoneRing {
 	};
 
 
-    class Condition : public LevelComponent
+    class Condition : public Element
 	{
 	public:
 	    Condition();
@@ -315,7 +340,7 @@ namespace StoneRing {
 	    std::list<Check*> mChecks;
 	};
 
-    class Event : public LevelComponent
+    class Event : public Element
 	{
 	public:
 	    Event();
@@ -501,7 +526,7 @@ namespace StoneRing {
 	};
 
 
-    class Graphic : public LevelComponent
+    class Graphic : public Element
 	{
 	public:
 	    Graphic();
@@ -526,7 +551,7 @@ namespace StoneRing {
 	};
 
 
-    class Option : public LevelComponent
+    class Option : public Element
     {
     public:
 	Option();

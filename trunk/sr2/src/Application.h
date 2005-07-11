@@ -6,6 +6,7 @@
 #include <ClanLib/display.h>
 #include "Party.h"
 #include "IApplication.h"
+#include "ItemManager.h"
 #include <queue>
 
 
@@ -165,6 +166,8 @@ class Choice;
 
       virtual IParty * getParty() const;
       virtual LevelFactory *getLevelFactory() const;
+      virtual ItemFactory * getItemFactory() const ;
+      virtual const ItemManager * getItemManager() const;
       virtual inline CL_Rect getLevelRect() const;
       virtual CL_Rect getDisplayRect() const;
 
@@ -202,8 +205,8 @@ class Choice;
 
       Party *mpParty;
       LevelFactory * mpLevelFactory;
-
-
+      ItemFactory * mpItemFactory;
+      ItemManager mItemManager;
       int mCurX;
       int mCurY;
 

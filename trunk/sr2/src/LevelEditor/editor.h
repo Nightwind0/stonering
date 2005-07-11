@@ -42,7 +42,7 @@ public:
     virtual void giveItem(ItemRef * pItemRef, uint){}
     virtual void takeItem(ItemRef * pItemRef, uint){}
     virtual void giveGold(int amount){}
-    virtual void modifyAttribute(const std::string &attribute, int add, const std::string &target){}
+    virtual void modifyAttribute(const std::string &attribute, int add, float multiplier, IParty::eTarget){}
 };
 
 

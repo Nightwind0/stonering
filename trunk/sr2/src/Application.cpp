@@ -6,7 +6,8 @@
 #include "Application.h"
 #include "Level.h"
 #include "Party.h"
-
+#include "LevelFactory.h"
+#include "ItemFactory.h"
 
 using StoneRing::Application;
 using namespace StoneRing;
@@ -456,12 +457,21 @@ IParty * Application::getParty() const
     return mpParty;
 }
 
+const ItemManager * Application::getItemManager() const
+{
+    return &mItemManager;
+}
 
 LevelFactory *Application::getLevelFactory() const
 {
     return mpLevelFactory;
 }
 
+
+ItemFactory * Application::getItemFactory() const
+{
+    return mpItemFactory;
+}
 
 CL_ResourceManager * Application::getResources() const
 {
@@ -483,6 +493,8 @@ Application::Application():mpParty(0),mpLevelFactory(0),mCurX(0),mCurY(0),
 
     // We want the generic level factory.
     mpLevelFactory = new LevelFactory();
+
+    mpItemFactory = new ItemFactory();
 }
 
 Application::~Application()

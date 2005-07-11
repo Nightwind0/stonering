@@ -5,10 +5,20 @@
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
 #include "IParty.h"
-#include "LevelFactory.h"
+
+
+
+
+
+
 
 namespace StoneRing
 {
+
+    class LevelFactory;
+    class ItemFactory;
+    class ItemManager;
+    class Choice;
 
 class IApplication 
 {
@@ -18,6 +28,8 @@ class IApplication
       virtual CL_ResourceManager * getResources()const=0;
       virtual IParty * getParty() const=0;
       virtual LevelFactory *getLevelFactory() const =0;
+      virtual ItemFactory * getItemFactory() const = 0;
+      virtual const ItemManager * getItemManager() const = 0;
       static IApplication * getInstance();
 
       virtual int getScreenWidth()const=0;

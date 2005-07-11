@@ -36,7 +36,11 @@ class ItemRef;
     virtual void giveItem(ItemRef * pItemRef, uint count =1);
     virtual void takeItem(ItemRef * pItemRef, uint count =1);
     virtual void giveGold(int amount);
-    virtual void modifyAttribute(const std::string &attribute, int add, const std::string &target);
+    virtual void modifyAttribute(const std::string &attribute, int add, float multiplier, IParty::eTarget target);
+    virtual int getMaxAttribute(const std::string &attribute, eTarget target) const ;
+    virtual int getMinAttribute(const std::string &attribute, eTarget target) const ;
+    virtual int getAttribute(const std::string &attribute, eTarget target) const ;
+
 
     void setLevelX(uint x);
     void setLevelY(uint y);
@@ -45,7 +49,7 @@ class ItemRef;
  private:
 
     std::set<std::string> mEvents;
-    std::map<Item, int> mItems;
+
     uint mX;
     uint mY;
     uint mnGold;
