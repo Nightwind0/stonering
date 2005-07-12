@@ -30,11 +30,13 @@ public:
     
 
 private:
+    void generateWeapons();
+    void generateArmor();
 
-    std::list<WeaponClass> mWeaponClasses;
-    std::list<ArmorClass> mArmorClasses;
-    std::list<WeaponType> mWeaponTypes;
-    std::list<ArmorType> mArmorTypes;
+    std::list<WeaponClass*> mWeaponClasses;
+    std::list<ArmorClass*> mArmorClasses;
+    std::list<WeaponType*> mWeaponTypes;
+    std::list<ArmorType*> mArmorTypes;
     std::list<Item*> mItems;
 
 };

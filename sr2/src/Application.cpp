@@ -457,6 +457,12 @@ IParty * Application::getParty() const
     return mpParty;
 }
 
+ICharacterGroup * Application::getSelectedCharacterGroup() const
+{
+    return mpParty;
+}
+
+
 const ItemManager * Application::getItemManager() const
 {
     return &mItemManager;

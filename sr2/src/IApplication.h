@@ -27,6 +27,7 @@ class IApplication
 
       virtual CL_ResourceManager * getResources()const=0;
       virtual IParty * getParty() const=0;
+      virtual ICharacterGroup * getSelectedCharacterGroup() const = 0;
       virtual LevelFactory *getLevelFactory() const =0;
       virtual ItemFactory * getItemFactory() const = 0;
       virtual const ItemManager * getItemManager() const = 0;
@@ -47,8 +48,6 @@ class IApplication
       virtual void pause(uint time)=0;
       virtual void invokeShop(const std::string &shoptype)=0;
       virtual void choice(const std::string &, const std::vector<std::string> &, Choice*)=0;
-      
-
 
       virtual bool canMove(const CL_Rect &currently, const CL_Rect &destination, bool noHot, bool isPlayer)=0;
 

@@ -165,6 +165,7 @@ class Choice;
       virtual int getScreenHeight()const;
 
       virtual IParty * getParty() const;
+      virtual ICharacterGroup * getSelectedCharacterGroup() const;
       virtual LevelFactory *getLevelFactory() const;
       virtual ItemFactory * getItemFactory() const ;
       virtual const ItemManager * getItemManager() const;

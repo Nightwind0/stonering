@@ -1,9 +1,10 @@
 
 #include "Party.h"
 #include "Level.h"
+#include "Character.h"
 
 using StoneRing::Party;
-
+using StoneRing::ICharacter;
 
 
 
@@ -108,23 +109,25 @@ void Party::giveGold(int amount)
     
 }
 
-void Party::modifyAttribute(const std::string &attribute, int add, float multiplier, IParty::eTarget target)
+
+uint Party::getCharacterCount() const 
 {
-#ifndef NDEBUG
-    std::cout << "Modify Attribue: " << attribute << " times " << multiplier << " plus " <<  add << std::endl;
-#endif
+    return 1;
 }
 
-int Party::getMaxAttribute(const std::string &attribute, IParty::eTarget target) const
+uint Party::getSelectedCharacterIndex() const
 {
+    return 0;
 }
 
-int Party::getMinAttribute(const std::string &attribute, IParty::eTarget target) const
+ICharacter * Party::getCharacter(uint index) const 
 {
+    return NULL;
 }
 
-int Party::getAttribute(const std::string &attribute, IParty::eTarget target) const
+ICharacter * Party::getSelectedCharacter() const 
 {
+    return NULL;
 }
 
 

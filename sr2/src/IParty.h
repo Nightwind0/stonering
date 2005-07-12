@@ -4,6 +4,7 @@
 #define SR_IPARTY_H
 
 #include "Item.h"
+#include "Character.h"
 #include <string>
 #include <ClanLib/display.h>
 
@@ -16,11 +17,16 @@ namespace StoneRing{
 class ItemRef;	
 
 
-class IParty
+
+
+
+// A Party interface defines the interface
+// to the player party. It is  a specialization of charactergroup
+// which includes monster parties.
+class IParty : public ICharacterGroup
 {
  public:
 
-    enum eTarget { PRIMARY, CURRENT, ALL };
 
     virtual bool getGold() const=0;
     virtual bool hasItem(Item::eItemType type, const std::string &item, uint count = 1) const=0;
@@ -36,10 +42,12 @@ class IParty
     virtual void giveItem(ItemRef * pItemRef, uint count = 1)=0;
     virtual void takeItem(ItemRef * pItemRef, uint count = 1)=0;
     virtual void giveGold(int amount)=0;
-    virtual void modifyAttribute(const std::string &attribute, int add, float multiplier, eTarget target)=0;
-    virtual int getMaxAttribute(const std::string &attribute, eTarget target) const = 0;
-    virtual int getMinAttribute(const std::string &attribute, eTarget target) const = 0;
-    virtual int getAttribute(const std::string &attribute, eTarget target) const = 0;
+
+    // ICharacterGroup interface
+    virtual uint getCharacterCount() const = 0;
+    virtual uint getSelectedCharacterIndex() const = 0;
+    virtual ICharacter * getCharacter(uint index) const = 0;
+    virtual ICharacter * getSelectedCharacter() const = 0;
 
  private:
 

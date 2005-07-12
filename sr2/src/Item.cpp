@@ -287,6 +287,56 @@ void Armor::addArmorEnhancer (ArmorEnhancer * pEnhancer)
 {
     mArmorEnhancers.push_back ( pEnhancer );
 }
+
+
+
+NamedItemElement::NamedItemElement()
+{
+}
+
+NamedItemElement::NamedItemElement (CL_DomElement * pElement)
+{
+}
+
+NamedItemElement::~NamedItemElement()
+{
+}
+
+
+
+CL_DomElement  NamedItemElement::createDomElement(CL_DomDocument&) const
+{
+}
+
+NamedItem * 
+NamedItemElement::getNamedItem() const
+{
+    return NULL;
+}
+
+std::string NamedItemElement::getIconRef() const
+{
+    return mIconRef;
+}
+
+uint NamedItemElement::getMaxInventory() const
+{
+    return mnMaxInventory;
+}
+
+Item::eDropRarity 
+NamedItemElement::getDropRarity() const
+{
+    return meDropRarity;
+}
+
+
+std::string 
+NamedItemElement::getName() const
+{
+    return mName;
+}
+
  
 
 
@@ -1121,11 +1171,13 @@ float AttributeEnhancer::getMultiplier() const
 // when invoking. (By calling equip on the armor/weapon...)
 void AttributeEnhancer::invoke()
 {
-    IParty * pParty = IApplication::getInstance()->getParty();
+    ICharacter * pCharacter = IApplication::getInstance()
+	->getSelectedCharacterGroup()
+	->getSelectedCharacter();
 
-    mnOriginalAttribute = pParty->getAttribute(mAttribute, IParty::CURRENT);
+    mnOriginalAttribute = pCharacter->getAttribute(mAttribute);
 
-    pParty->modifyAttribute( mAttribute, mnAdd, mfMultiplier, IParty::CURRENT );
+    pCharacter->modifyAttribute( mAttribute, mnAdd, mfMultiplier);
 }
 
 // Uses IParty::modifyAttribute to modify the CURRENT player,
@@ -1133,11 +1185,15 @@ void AttributeEnhancer::invoke()
 // when revoking. (By calling unequip on the armor/weapon...)
 void AttributeEnhancer::revoke()
 {
-    IParty * pParty = IApplication::getInstance()->getParty();
 
-    int add =  mnOriginalAttribute - pParty->getAttribute(mAttribute, IParty::CURRENT ) ;
+    ICharacter * pCharacter = IApplication::getInstance()
+	->getSelectedCharacterGroup()
+	->getSelectedCharacter();
 
-    pParty->modifyAttribute( mAttribute, add, 1 , IParty::CURRENT );
+
+    int add =  mnOriginalAttribute - pCharacter->getAttribute(mAttribute) ;
+
+    pCharacter->modifyAttribute( mAttribute, add, 1 );
 
 }
 
