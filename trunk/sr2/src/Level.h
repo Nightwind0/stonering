@@ -198,7 +198,7 @@ namespace StoneRing {
 	    AttributeModifier (CL_DomElement *pElement);
 	    virtual ~AttributeModifier();
 
-	    enum eTarget { PRIMARY, CURRENT, ALL };
+	    enum eTarget { CURRENT, ALL };
 	    enum eChangeTo { ADD, TO_MIN, TO_MAX };
 
 	    virtual void invoke();

@@ -36,11 +36,12 @@ class ItemRef;
     virtual void giveItem(ItemRef * pItemRef, uint count =1);
     virtual void takeItem(ItemRef * pItemRef, uint count =1);
     virtual void giveGold(int amount);
-    virtual void modifyAttribute(const std::string &attribute, int add, float multiplier, IParty::eTarget target);
-    virtual int getMaxAttribute(const std::string &attribute, eTarget target) const ;
-    virtual int getMinAttribute(const std::string &attribute, eTarget target) const ;
-    virtual int getAttribute(const std::string &attribute, eTarget target) const ;
 
+    // ICharacterGroup interface
+    virtual uint getCharacterCount() const ;
+    virtual uint getSelectedCharacterIndex() const;
+    virtual ICharacter * getCharacter(uint index) const ;
+    virtual ICharacter * getSelectedCharacter() const ;
 
     void setLevelX(uint x);
     void setLevelY(uint y);

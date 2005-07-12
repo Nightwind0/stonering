@@ -30,7 +30,7 @@ namespace StoneRing
     class WeaponType;
     class ArmorClass;
     class ArmorType;
-    
+    class NamedItemElement;
 
 
 class ItemFactory
@@ -39,7 +39,8 @@ class ItemFactory
     ItemFactory(){}
     ~ItemFactory();
 
-    
+    virtual NamedItemElement * createNamedItemElement() const;
+    virtual NamedItemElement * createNamedItemElement(CL_DomElement *pElement) const;
     virtual RegularItem * createRegularItem()const;  
     virtual RegularItem * createRegularItem(CL_DomElement * pElement) const;
     virtual SpecialItem * createSpecialItem()const; 

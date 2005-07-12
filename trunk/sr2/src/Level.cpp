@@ -552,9 +552,6 @@ CL_DomElement  AttributeModifier::createDomElement(CL_DomDocument &doc) const
 
     switch ( meTarget )
     {
-    case PRIMARY:
-	element.set_attribute("target","primary");
-	break;
     case CURRENT:
 	element.set_attribute("target","current");
 	break;
@@ -591,7 +588,7 @@ CL_DomElement  AttributeModifier::createDomElement(CL_DomDocument &doc) const
 }
 
  
-    AttributeModifier::AttributeModifier (CL_DomElement *pElement):mAdd(0),meTarget(PRIMARY)
+AttributeModifier::AttributeModifier (CL_DomElement *pElement):mAdd(0),meTarget(CURRENT)
 {
     LevelFactory * factory = IApplication::getInstance()->getLevelFactory();
 
@@ -617,10 +614,6 @@ CL_DomElement  AttributeModifier::createDomElement(CL_DomDocument &doc) const
 	else if (target == "all")
 	{
 	    meTarget = ALL;
-	}
-	else if (target == "primary")
-	{
-	    meTarget = PRIMARY;
 	}
 
     }
@@ -669,34 +662,22 @@ bool AttributeModifier::applicable() const
     }
 
 
-    IParty * pParty = IApplication::getInstance()->getParty();
+    ICharacterGroup * pParty = IApplication::getInstance()->getSelectedCharacterGroup();
+    ICharacter * pCharacter = pParty->getSelectedCharacter();
 
-    IParty::eTarget target;
 
-    switch(meTarget)
-    {
-    case CURRENT:
-	target = IParty::CURRENT;
-	break;
-    case PRIMARY:
-	target = IParty::PRIMARY;
-	break;
-    case ALL:
-	target = IParty::ALL;
-	break;
-    }
-
+    //@todo: Act on ALL or CURRENT
 
     switch(meChangeTo)
     {
     case TO_MAX:
-	if( pParty->getAttribute(mAttribute, target) < pParty->getMaxAttribute(mAttribute, target))
+	if( pCharacter->getAttribute(mAttribute) < pCharacter->getMaxAttribute(mAttribute))
 	{
 	    return true;
 	}
 	else return false;
     case TO_MIN:
-	if( pParty->getAttribute(mAttribute,target) > pParty->getMinAttribute(mAttribute, target))
+	if( pCharacter->getAttribute(mAttribute) > pCharacter->getMinAttribute(mAttribute))
 	{
 	    return true;
 	}
@@ -704,7 +685,7 @@ bool AttributeModifier::applicable() const
     case ADD:
 	if(mAdd > 0 )
 	{
-	    if ( pParty->getAttribute(mAttribute,target ) < pParty->getMaxAttribute(mAttribute,target))
+	    if ( pCharacter->getAttribute(mAttribute) < pCharacter->getMaxAttribute(mAttribute))
 	    {
 		return true;
 	    }
@@ -712,7 +693,7 @@ bool AttributeModifier::applicable() const
 	}
 	else // counts 0, but... that does nothing anyway
 	{
-	    if ( pParty->getAttribute(mAttribute, target) > pParty->getMinAttribute(mAttribute, target))
+	    if ( pCharacter->getAttribute(mAttribute) > pCharacter->getMinAttribute(mAttribute))
 	    {
 		return true;
 	    }
@@ -735,35 +716,24 @@ void AttributeModifier::invoke()
 	if( ! condition->evaluate() ) return;
     }
 
-    IParty * pParty = IApplication::getInstance()->getParty();
 
-    IParty::eTarget target;
+    ICharacterGroup * pParty = IApplication::getInstance()->getSelectedCharacterGroup();
+    ICharacter * pCharacter = pParty->getSelectedCharacter();
 
     int add = 0;
 
-    switch(meTarget)
-    {
-    case CURRENT:
-	target = IParty::CURRENT;
-	break;
-    case PRIMARY:
-	target = IParty::PRIMARY;
-	break;
-    case ALL:
-	target = IParty::ALL;
-	break;
-    }
+    //@todo: ALL or CURRENT
 
 
     switch(meChangeTo)
     {
     case TO_MAX:
-	add = pParty->getMaxAttribute(mAttribute, target) - 
-	    pParty->getAttribute(mAttribute, target);
+	add = pCharacter->getMaxAttribute(mAttribute) - 
+	    pCharacter->getAttribute(mAttribute);
 	break;
     case TO_MIN:
-	add = 0 - (pParty->getAttribute(mAttribute,target ) -
-		   pParty->getMinAttribute(mAttribute, target ));
+	add = 0 - (pCharacter->getAttribute(mAttribute ) -
+		   pCharacter->getMinAttribute(mAttribute ));
 	break;
     case ADD:
 	add = mAdd;
@@ -771,7 +741,7 @@ void AttributeModifier::invoke()
     }
 
 
-    pParty->modifyAttribute(mAttribute, add, 1 , target ) ;
+    pCharacter->modifyAttribute(mAttribute, add, 1) ;
 }
 
 

@@ -22,6 +22,7 @@ namespace StoneRing{
     class ArmorType;
     class WeaponClass;
     class ArmorClass;
+    class NamedItem;
 
     class Item
     {
@@ -187,6 +188,31 @@ namespace StoneRing{
 	std::list<ArmorEnhancer*> mArmorEnhancers;
     };
 
+    class NamedItemElement : public Element
+    {
+    public:
+	NamedItemElement();
+	NamedItemElement (CL_DomElement * pElement);
+	~NamedItemElement();
+
+	virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
+
+	NamedItem * getNamedItem() const;
+
+	std::string getIconRef() const;
+
+	uint getMaxInventory() const;
+	Item::eDropRarity getDropRarity() const;
+	std::string getName() const;
+
+    private:
+	NamedItem * mpNamedItem;
+	std::string mName;
+	std::string mIconRef;
+	Item::eDropRarity meDropRarity;
+	uint mnMaxInventory;
+    };
+
 
     class NamedItem : public Item, public Element
     {
@@ -204,8 +230,6 @@ namespace StoneRing{
 
 	virtual CL_DomElement  createDomElement(CL_DomDocument&) const=0;
 	
-
-    protected:
 	void setIconRef(const std::string &ref);
 	void setName ( const std::string &name );
 	void setMaxInventory ( uint max );

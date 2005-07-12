@@ -9,6 +9,16 @@ ItemFactory::~ItemFactory(){}
 
 
 
+NamedItemElement * ItemFactory::createNamedItemElement() const
+{
+    return new NamedItemElement();
+}
+
+NamedItemElement * ItemFactory::createNamedItemElement(CL_DomElement *pElement) const
+{
+    return new NamedItemElement(pElement);
+}
+
 
 RegularItem * ItemFactory::createRegularItem()const
 {
