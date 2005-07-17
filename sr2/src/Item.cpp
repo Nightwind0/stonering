@@ -2,12 +2,15 @@
 #include <sstream>
 #include "Item.h"
 #include "ItemManager.h"
+#include "ItemFactory.h"
+
 
 
 
 using namespace StoneRing;
 
-
+// Defined in Level.cpp. No need to include the entire header.
+StoneRing::Action * StoneRing::createAction ( const std::string & action, CL_DomElement & pChild );
 
 bool   StoneRing::operator < ( const StoneRing::Item &lhs, const StoneRing::Item &rhs )
 {
@@ -42,6 +45,18 @@ std::string StoneRing::Item::ItemTypeAsString ( StoneRing::Item::eItemType type 
 }
 
 
+Item::eDropRarity 
+Item::DropRarityFromString(const std::string &str)
+{
+    eDropRarity eRarity = NEVER;
+
+    if(str == "NEVER") eRarity = NEVER;
+    else if (str == "COMMON") eRarity = COMMON;
+    else if (str == "UNCOMMON") eRarity = UNCOMMON;
+    else if (str == "RARE") eRarity = RARE;
+
+    return eRarity;
+}
 
 
 Item::Item()
@@ -157,10 +172,44 @@ Weapon::~Weapon()
 	 
 int Weapon::modifyWeaponAttribute( eAttribute attr, int current )
 {
+
+    int value = current;
+
+    for(std::list<WeaponEnhancer*>::iterator iter = mWeaponEnhancers.begin();
+	iter != mWeaponEnhancers.end();
+	iter++)
+    {
+	WeaponEnhancer * pEnhancer = *iter;
+
+	if( pEnhancer->getAttribute() == attr )
+	{
+	    value= (int)(pEnhancer->getMultiplier() * (float)value);
+	    value += pEnhancer->getAdd();
+	}
+    }
+
+    return value;
 }
 
 float Weapon::modifyWeaponAttribute ( eAttribute attr, float current )
 {
+
+    float value = current;
+
+    for(std::list<WeaponEnhancer*>::iterator iter = mWeaponEnhancers.begin();
+	iter != mWeaponEnhancers.end();
+	iter++)
+    {
+	WeaponEnhancer * pEnhancer = *iter;
+
+	if( pEnhancer->getAttribute() == attr )
+	{
+	    value *= pEnhancer->getMultiplier() ;
+	    value += pEnhancer->getAdd();
+	}
+    }
+
+    return value;
 }
 
 
@@ -229,23 +278,8 @@ Weapon::attributeForString(const std::string str)
 
 }
 	
-
-
-
-Armor::Armor()
-{
-}
-
-
-Armor::~Armor()
-{
-}
-	
-
-
-/*	enum eAttribute
-	{
-	    AC,
+/*
+  AC,
 	    POISON,
 	    STONE,
 	    DEATH,
@@ -262,18 +296,90 @@ Armor::~Armor()
 	    DROPSTR,
 	    DROPDEX,
 	    DROPMAG,
-	    ELEMENTAL_MAGIC,
-	    ALL_MAGIC
-	}
+	    ELEMENTAL_RESIST,
+	    RESIST, // All magic
+	    STATUS // Resistance against ANY status affect
 */
+
+
+Armor::eAttribute 
+Armor::attributeForString ( const std::string str )
+{
+    if(str == "AC") return AC;
+    else if (str == "Poison%") return POISON;
+    else if (str == "Stone%") return STONE;
+    else if (str == "Death%") return DEATH;
+    else if (str == "Confuse%") return CONFUSE;
+    else if (str == "Berserk%") return BERSERK;
+    else if (str == "Slow%") return SLOW;
+    else if (str == "Weak%") return WEAK;
+    else if (str == "Break%") return BREAK;
+    else if (str == "Silence%") return SILENCE;
+    else if (str == "Sleep%") return SLEEP;
+    else if (str == "Blind%") return BLIND;
+    else if (str == "Steal_MP%") return STEAL_MP;
+    else if (str == "Steal_HP%") return STEAL_HP;
+    else if (str == "DropSTR") return DROPSTR;
+    else if (str == "DropDEX") return DROPDEX;
+    else if (str == "DropMAG") return DROPMAG;
+    else if (str == "ELEMENTAL_RST") return ELEMENTAL_RESIST;
+    else if (str == "RST") return RESIST;
+    else if (str == "Status%") return STATUS;
+    else throw CL_Error("Bad Armor enhancer attribute.");
+}
+
+
+Armor::Armor()
+{
+}
+
+
+Armor::~Armor()
+{
+}
 	
-	 
+
+
 int Armor::modifyArmorAttribute( eAttribute attr, int current )
 {
+    int value = current;
+
+    for(std::list<ArmorEnhancer*>::iterator iter = mArmorEnhancers.begin();
+	iter != mArmorEnhancers.end();
+	iter++)
+    {
+	ArmorEnhancer * pEnhancer = *iter;
+
+	if( pEnhancer->getAttribute() == attr )
+	{
+	    value= (int)(pEnhancer->getMultiplier() * (float)value);
+	    value += pEnhancer->getAdd();
+	}
+    }
+
+    return value;
 }
 
 float Armor::modifyArmorAttribute ( eAttribute attr, float current )
 {
+
+    float  value = current;
+
+    for(std::list<ArmorEnhancer*>::iterator iter = mArmorEnhancers.begin();
+	iter != mArmorEnhancers.end();
+	iter++)
+    {
+	ArmorEnhancer * pEnhancer = *iter;
+
+	if( pEnhancer->getAttribute() == attr )
+	{
+	    value *= pEnhancer->getMultiplier();
+	    value += pEnhancer->getAdd();
+	}
+    }
+
+    return value;
+
 }
 
 	
@@ -294,12 +400,84 @@ NamedItemElement::NamedItemElement()
 {
 }
 
-NamedItemElement::NamedItemElement (CL_DomElement * pElement)
+NamedItemElement::NamedItemElement (CL_DomElement * pElement):mpNamedItem(NULL),meDropRarity(Item::NEVER),mnMaxInventory(0)
 {
+    ItemFactory * itemFactory = IApplication::getInstance()->getItemFactory();
+    
+
+    CL_DomNamedNodeMap attributes = pElement->get_attributes();
+
+    if(attributes.get_length() < 2) throw CL_Error("Error reading attributes in named item element.");
+
+    if(!attributes.get_named_item("name").is_null())
+	mName = attributes.get_named_item("name").get_node_value();
+    else throw CL_Error("Name attribute is required on named items.");
+    
+    std::string dropRarity = attributes.get_named_item("dropRarity").get_node_value();
+
+    meDropRarity = Item::DropRarityFromString ( dropRarity );
+
+    if(!attributes.get_named_item("maxInventory").is_null())
+	mnMaxInventory = atoi( attributes.get_named_item("maxInventory").get_node_value().c_str());
+    else
+    {
+	//@todo look up default
+	mnMaxInventory = 99;
+    }
+
+
+    CL_DomElement child = pElement->get_first_child().to_element();
+
+
+    while(!child.is_null())
+    {
+	std::string name = child.get_node_name();
+
+	if(name == "iconRef")
+	{
+	    mIconRef = child.get_text();
+	}
+	else if (name == "regularItem")
+	{
+	    mpNamedItem = itemFactory->createRegularItem ( &child );
+	}
+	else if (name == "uniqueWeapon")
+	{
+	    mpNamedItem = itemFactory->createUniqueWeapon ( &child );
+	}
+	else if (name == "uniqueArmor")
+	{
+	    mpNamedItem = itemFactory->createUniqueArmor ( &child );
+	}
+	else if (name == "rune")
+	{
+	    mpNamedItem = itemFactory->createRune ( &child );
+	}
+	else if (name == "specialItem")
+	{
+	    mpNamedItem = itemFactory->createSpecialItem ( &child );
+	}
+	else if (name == "systemItem")
+	{
+	    mpNamedItem = itemFactory->createSystemItem ( &child );
+	}
+
+	child = child.get_next_sibling().to_element();
+    }
+
+    if(mpNamedItem == NULL) throw CL_Error("No named item within a named item element.");
+
+    mpNamedItem->setIconRef( mIconRef );
+    mpNamedItem->setName ( mName );
+    mpNamedItem->setMaxInventory ( mnMaxInventory );
+    mpNamedItem->setDropRarity( meDropRarity );
+
+
 }
 
 NamedItemElement::~NamedItemElement()
 {
+    delete mpNamedItem;
 }
 
 
@@ -311,7 +489,7 @@ CL_DomElement  NamedItemElement::createDomElement(CL_DomDocument&) const
 NamedItem * 
 NamedItemElement::getNamedItem() const
 {
-    return NULL;
+    return mpNamedItem;
 }
 
 std::string NamedItemElement::getIconRef() const
@@ -399,6 +577,12 @@ RegularItem::RegularItem()
 
 RegularItem::~RegularItem()
 {
+    for( std::list<Action*>::iterator iter = mActions.begin();
+	 iter != mActions.end();
+	 iter++)
+    {
+	delete *iter;
+    }
 }
 
 // Execute all actions.
@@ -443,9 +627,108 @@ uint RegularItem::getSellValue() const
     return mnSellValue;
 }
 
+RegularItem::eUseType 
+RegularItem::UseTypeFromString ( const std::string &str )
+{
+
+    eUseType type = WORLD;
+
+    if(str == "battle") type = BATTLE;
+    else if (str == "world") type = WORLD;
+    else if (str == "both") type = BOTH;
+    else throw CL_Error("Bad targetable on regular item. " + str);
+
+    return type;
+
+}
+
+
+RegularItem::eTargetable 
+RegularItem::TargetableFromString ( const std::string &str )
+{
+
+    eTargetable targetable = SINGLE;
+
+    if(str == "all") targetable = ALL;
+    else if (str == "single") targetable = SINGLE;
+    else if (str == "either") targetable = EITHER;
+    else if (str == "self_only") targetable = SELF_ONLY;
+    else throw CL_Error("Bad targetable on regular item. " + str);
+
+
+    return targetable;
+}
+
 void RegularItem::loadItem ( CL_DomElement * pElement )
 {
+    ItemFactory * itemFactory = IApplication::getInstance()->getItemFactory();
     
+    CL_DomNamedNodeMap attributes = pElement->get_attributes();
+
+    if(attributes.get_length() < 4) throw CL_Error("Error reading attributes in regular item.");
+
+    if(!attributes.get_named_item("value").is_null())
+    {
+	mnValue = atoi(attributes.get_named_item("value").get_node_value().c_str());
+	mnSellValue = mnValue / 2;
+    }
+    else throw CL_Error("Value attribute is required on regular items.");
+    
+
+    std::string useType;
+
+    if(!attributes.get_named_item("useType").is_null())
+	useType = attributes.get_named_item("useType").get_node_value();
+    else throw CL_Error("UseType attribute is required on regular items.");
+
+    meUseType = UseTypeFromString ( useType );    
+
+    std::string targetable; 
+    if(!attributes.get_named_item("targetable").is_null())
+	targetable = attributes.get_named_item("targetable").get_node_value();
+    else throw CL_Error("targetable attribute is required on regular items.");
+
+    meTargetable = TargetableFromString ( targetable );    
+
+    if(!attributes.get_named_item("sellValueMultiplier").is_null())
+    {
+	float multiplier = atof( attributes.get_named_item("sellValueMultiplier").get_node_value().c_str());
+
+	mnSellValue = (int)(mnValue * multiplier);
+    }
+
+    if(!attributes.get_named_item("reusable").is_null())
+	mbReusable = (attributes.get_named_item("reusable").get_node_value() == "true");
+    else throw CL_Error("Reusable attribute is required on regular items.");
+
+    if(!attributes.get_named_item("defaultTarget").is_null())
+    {
+	std::string str = attributes.get_named_item("defaultTarget").get_node_value();
+
+	if( str == "party" )
+	    meDefaultTarget = PARTY;
+	else if (str == "monsters")
+	    meDefaultTarget = MONSTERS;
+	else throw CL_Error("Bogus default target on regular item.");
+
+    }
+    else
+    {
+	meDefaultTarget = PARTY;
+    }
+
+
+    CL_DomElement child = pElement->get_first_child().to_element();
+
+
+    while(!child.is_null())
+    {
+	mActions.push_back ( createAction ( child.get_node_name(), child ));
+
+	child = child.get_next_sibling().to_element();
+    }
+    
+
 }
 
 CL_DomElement  RegularItem::createDomElement(CL_DomDocument&) const
@@ -485,6 +768,7 @@ SystemItem::~SystemItem()
 	
 void SystemItem::loadItem ( CL_DomElement * pElement )
 {
+    // Nothing to do, it turns out.
 }
 	
 CL_DomElement  
@@ -493,24 +777,25 @@ SystemItem::createDomElement(CL_DomDocument&) const
 }
 
 
-Rune::Rune()
+Rune::Rune():mpSpellRef(NULL)
 {
 }
 
 Rune::~Rune()
 {
+    delete mpSpellRef;
 }
 
 
 uint Rune::getValue() const 
 {
-    // When we have spells implemented, we will have to look up their value here.
+    //@todo: When we have spells implemented, we will have to look up their value here.
     return 0;
 }
 
 uint Rune::getSellValue() const 
 {
-    // When we have spells implemented, we will have to look up their value here.
+    //@todo: When we have spells implemented, we will have to look up their value here.
     return 0;
 }
 
@@ -521,6 +806,14 @@ SpellRef * Rune::getSpellRef() const
 
 void Rune::loadItem ( CL_DomElement * pElement )
 {
+    CL_DomElement child = pElement->get_first_child().to_element();
+    ItemFactory * pItemFactory = IApplication::getInstance()->getItemFactory();
+
+    if(child.get_node_name() == "spellRef")
+    {
+	mpSpellRef = pItemFactory->createSpellRef ( &child );
+    }
+    else throw CL_Error("Rune without spellref.");
 }
 
 CL_DomElement  
@@ -536,6 +829,7 @@ UniqueWeapon::UniqueWeapon():mpWeaponType(NULL)
 
 UniqueWeapon::~UniqueWeapon()
 {
+    delete mpWeaponType;
 }
 
 
@@ -553,7 +847,7 @@ uint UniqueWeapon::getSellValue() const
 CL_DomElement  
 UniqueWeapon::createDomElement(CL_DomDocument&) const
 {
-
+  
 }
 
 
@@ -570,6 +864,52 @@ bool UniqueWeapon::isRanged() const
 
 void UniqueWeapon::loadItem(CL_DomElement * pElement) 
 {
+    CL_DomElement child = pElement->get_first_child().to_element();
+    ItemFactory * pItemFactory = IApplication::getInstance()->getItemFactory();
+    const ItemManager * pItemManager = IApplication::getInstance()->getItemManager();
+
+    CL_DomNamedNodeMap attributes = pElement->get_attributes();
+
+    float valueMultiplier = 1;
+
+    if(!attributes.get_named_item("valueMultiplier").is_null())
+    {
+	valueMultiplier = atof ( attributes.get_named_item("valueMultiplier").get_node_value().c_str());
+    }    
+    else throw CL_Error("Value multiplier is required on unique weapons.");
+
+    
+    while(!child.is_null())
+    {
+
+	std::string str = child.get_node_name();
+
+	if(str == "weaponTypeRef")
+	{
+	    WeaponTypeRef * pType = pItemFactory->createWeaponTypeRef ( &child );
+
+	    mpWeaponType = pItemManager->getWeaponType ( *pType );
+	}
+	else if ( str == "weaponEnhancer" )
+	{
+	    addWeaponEnhancer ( pItemFactory->createWeaponEnhancer ( &child ) );
+	}
+	else if ( str == "attributeEnhancer" )
+	{
+	    addAttributeEnhancer ( pItemFactory->createAttributeEnhancer ( &child ));
+	}
+	else if ( str == "spellRef" )
+	{
+	    setSpellRef ( pItemFactory->createSpellRef ( &child ) );
+	}
+	else if ( str == "runeType" )
+	{
+	    setRuneType ( pItemFactory->createRuneType ( &child ) );
+	}
+
+	child = child.get_next_sibling().to_element();
+    }
+
 }
 
 
@@ -579,6 +919,7 @@ UniqueArmor::UniqueArmor():mpArmorType(NULL)
 }
 UniqueArmor::~UniqueArmor()
 {
+    delete mpArmorType;
 }
 
 
@@ -604,6 +945,52 @@ UniqueArmor::createDomElement(CL_DomDocument&) const
 
 void UniqueArmor::loadItem(CL_DomElement * pElement) 
 {
+
+    CL_DomElement child = pElement->get_first_child().to_element();
+    ItemFactory * pItemFactory = IApplication::getInstance()->getItemFactory();
+    const ItemManager * pItemManager = IApplication::getInstance()->getItemManager();
+
+    CL_DomNamedNodeMap attributes = pElement->get_attributes();
+
+    float valueMultiplier = 1;
+
+    if(!attributes.get_named_item("valueMultiplier").is_null())
+    {
+	valueMultiplier = atof ( attributes.get_named_item("valueMultiplier").get_node_value().c_str());
+    }    
+    else throw CL_Error("Value multiplier is required on unique armors.");
+
+    
+    while(!child.is_null())
+    {
+
+	std::string str = child.get_node_name();
+
+	if(str == "armorTypeRef")
+	{
+	    ArmorTypeRef * pType = pItemFactory->createArmorTypeRef ( &child );
+
+	    mpArmorType = pItemManager->getArmorType ( *pType );
+	}
+	else if ( str == "armorEnhancer" )
+	{
+	    addArmorEnhancer ( pItemFactory->createArmorEnhancer ( &child ) );
+	}
+	else if ( str == "attributeEnhancer" )
+	{
+	    addAttributeEnhancer ( pItemFactory->createAttributeEnhancer ( &child ));
+	}
+	else if ( str == "spellRef" )
+	{
+	    setSpellRef ( pItemFactory->createSpellRef ( &child ) );
+	}
+	else if ( str == "runeType" )
+	{
+	    setRuneType ( pItemFactory->createRuneType ( &child ) );
+	}
+
+	child = child.get_next_sibling().to_element();
+    }
 }
 
 
@@ -811,6 +1198,7 @@ WeaponTypeRef::WeaponTypeRef()
     
 WeaponTypeRef::WeaponTypeRef(CL_DomElement * pElement )
 {
+    mName = pElement->get_text();
 }
 
 WeaponTypeRef::~WeaponTypeRef()
@@ -818,8 +1206,17 @@ WeaponTypeRef::~WeaponTypeRef()
 }
 
 CL_DomElement  
-WeaponTypeRef::createDomElement(CL_DomDocument&) const
+WeaponTypeRef::createDomElement(CL_DomDocument &doc) const
 {
+    CL_DomElement element(doc,"weaponTypeRef");
+
+    CL_DomText text(doc, mName );
+
+    text.set_node_value ( mName );
+
+    element.append_child ( text );
+
+    return element;
 }
 
 std::string WeaponTypeRef::getName() const
@@ -835,14 +1232,24 @@ WeaponClassRef::WeaponClassRef()
 
 WeaponClassRef::WeaponClassRef(CL_DomElement *pElement)
 {
+    mName = pElement->get_text();
 }
 
 WeaponClassRef::~WeaponClassRef()
 {
 }
 
-CL_DomElement  WeaponClassRef::createDomElement(CL_DomDocument&) const
+CL_DomElement  WeaponClassRef::createDomElement(CL_DomDocument &doc) const
 {
+    CL_DomElement element(doc,"weaponClassRef");
+
+    CL_DomText text(doc, mName );
+
+    text.set_node_value ( mName );
+
+    element.append_child ( text );
+
+    return element;
 }
 
 
@@ -860,6 +1267,7 @@ ArmorTypeRef::ArmorTypeRef()
 
 ArmorTypeRef::ArmorTypeRef(CL_DomElement * pElement )
 {
+    mName = pElement->get_text();
 }
 
 ArmorTypeRef::~ArmorTypeRef()
@@ -868,8 +1276,17 @@ ArmorTypeRef::~ArmorTypeRef()
 
 
 CL_DomElement  
-ArmorTypeRef::createDomElement(CL_DomDocument&) const
+ArmorTypeRef::createDomElement(CL_DomDocument &doc) const
 {
+    CL_DomElement element(doc,"armorTypeRef");
+
+    CL_DomText text(doc, mName );
+
+    text.set_node_value ( mName );
+
+    element.append_child ( text );
+
+    return element;
 }
 
 
@@ -886,6 +1303,7 @@ ArmorClassRef::ArmorClassRef()
 	
 ArmorClassRef::ArmorClassRef(CL_DomElement *pElement)
 {
+    mName = pElement->get_text();
 }
 
 ArmorClassRef::~ArmorClassRef()
@@ -893,8 +1311,17 @@ ArmorClassRef::~ArmorClassRef()
 }
 
 CL_DomElement  
-ArmorClassRef::createDomElement(CL_DomDocument&) const
+ArmorClassRef::createDomElement(CL_DomDocument &doc) const
 {
+    CL_DomElement element(doc,"armorClassRef");
+
+    CL_DomText text(doc, mName );
+
+    text.set_node_value ( mName );
+
+    element.append_child ( text );
+
+    return element;
 }
 
 
@@ -912,6 +1339,38 @@ WeaponRef::WeaponRef():mpWeaponType(NULL), mpWeaponClass(NULL),
 
 WeaponRef::WeaponRef(CL_DomElement * pElement )
 {
+    ItemFactory * pItemFactory = IApplication::getInstance()->getItemFactory();
+    const ItemManager * pItemManager = IApplication::getInstance()->getItemManager();
+
+    CL_DomElement child = pElement->get_first_child().to_element();
+
+    while(!child.is_null())
+    {
+	std::string str = child.get_node_name();
+
+	if(str == "weaponTypeRef")
+	{
+	    WeaponTypeRef * pType = pItemFactory->createWeaponTypeRef ( &child );
+	    mpWeaponType = pItemManager->getWeaponType ( *pType );
+	}
+	else if (str == "weaponClassRef")
+	{
+	    WeaponClassRef * pType = pItemFactory->createWeaponClassRef ( &child );
+	    mpWeaponClass = pItemManager->getWeaponClass ( *pType );
+	}
+	else if ( str == "spellRef")
+	{
+	    mpSpellRef  = pItemFactory->createSpellRef ( &child );
+	}
+	else if ( str == "runeType")
+	{
+	    mpRuneType = pItemFactory->createRuneType ( &child );
+	}
+
+
+	child = child.get_next_sibling().to_element();
+    }
+
 }
 
 WeaponRef::~WeaponRef()
@@ -920,8 +1379,29 @@ WeaponRef::~WeaponRef()
 
 
 CL_DomElement  
-WeaponRef::createDomElement(CL_DomDocument&) const
+WeaponRef::createDomElement(CL_DomDocument &doc) const
 {
+    CL_DomElement element(doc,"weaponRef");
+
+    WeaponTypeRef typeRef;
+    typeRef.setName ( mpWeaponType->getName() );
+    element.append_child ( typeRef.createDomElement(doc ) );
+
+    WeaponClassRef classRef;
+    classRef.setName ( mpWeaponClass->getName() );
+    element.append_child ( classRef.createDomElement(doc ) );
+
+    if(mpSpellRef )
+    {
+	element.append_child ( mpSpellRef->createDomElement(doc ) );
+    }
+    else if (mpRuneType)
+    {
+	element.append_child ( mpRuneType->createDomElement(doc ) );
+    }
+
+    return element;
+    
 }
 
 
@@ -958,6 +1438,40 @@ ArmorRef::ArmorRef(CL_DomElement * pElement ):mpArmorType(NULL),
 					      mpSpellRef(NULL),
 					      mpRuneType(NULL)
 {
+
+    ItemFactory * pItemFactory = IApplication::getInstance()->getItemFactory();
+    const ItemManager * pItemManager = IApplication::getInstance()->getItemManager();
+
+    CL_DomElement child = pElement->get_first_child().to_element();
+
+    while(!child.is_null())
+    {
+	std::string str = child.get_node_name();
+
+	if(str == "armorTypeRef")
+	{
+	    ArmorTypeRef * pType = pItemFactory->createArmorTypeRef ( &child );
+	    mpArmorType = pItemManager->getArmorType ( *pType );
+	}
+	else if (str == "armorClassRef")
+	{
+	    ArmorClassRef * pType = pItemFactory->createArmorClassRef ( &child );
+	    mpArmorClass = pItemManager->getArmorClass ( *pType );
+	}
+	else if ( str == "spellRef")
+	{
+	    mpSpellRef  = pItemFactory->createSpellRef ( &child );
+	}
+	else if ( str == "runeType")
+	{
+	    mpRuneType = pItemFactory->createRuneType ( &child );
+	}
+
+
+	child = child.get_next_sibling().to_element();
+    }
+
+
 }
 
 ArmorRef::~ArmorRef()
@@ -965,8 +1479,29 @@ ArmorRef::~ArmorRef()
 }
 
 CL_DomElement  
-ArmorRef::createDomElement(CL_DomDocument&) const
+ArmorRef::createDomElement(CL_DomDocument &doc) const
 {
+    CL_DomElement element(doc,"armorRef");
+    
+    ArmorTypeRef typeRef;
+    typeRef.setName ( mpArmorType->getName() );
+    element.append_child ( typeRef.createDomElement(doc ) );
+
+    ArmorClassRef classRef;
+    classRef.setName ( mpArmorClass->getName() );
+    element.append_child ( classRef.createDomElement(doc ) );
+
+    if(mpSpellRef )
+    {
+	element.append_child ( mpSpellRef->createDomElement(doc ) );
+    }
+    else if (mpRuneType)
+    {
+	element.append_child ( mpRuneType->createDomElement(doc ) );
+    }
+
+    return element;
+    
 }
 
 
@@ -1001,6 +1536,17 @@ RuneType::RuneType()
 
 RuneType::RuneType(CL_DomElement * pElement )
 {
+    CL_DomNamedNodeMap attributes = pElement->get_attributes();
+
+    std::string runeType = attributes.get_named_item("type").get_node_value();
+
+    if(runeType == "none")
+	meRuneType = NONE;
+    else if (runeType == "rune")
+	meRuneType = RUNE;
+    else if (runeType == "ultraRune")
+	meRuneType = ULTRA_RUNE;
+    else throw CL_Error("Bogus runetype supplied.");
 }
 
 RuneType::~RuneType()
@@ -1013,8 +1559,25 @@ RuneType::eRuneType RuneType::getRuneType() const
 }
 
 CL_DomElement 
-RuneType::createDomElement ( CL_DomDocument &) const
+RuneType::createDomElement ( CL_DomDocument &doc) const
 {
+
+    CL_DomElement element(doc,"runeType");
+
+    switch(meRuneType)
+    {
+    case NONE:
+	element.set_attribute("type", "none");
+	break;
+    case RUNE:
+	element.set_attribute("type","rune");
+	break;
+    case ULTRA_RUNE:
+	element.set_attribute("type","ultraRune");
+	break;
+    }
+
+    return element;
 }
 
 std::string RuneType::getRuneTypeAsString() const
@@ -1041,6 +1604,23 @@ SpellRef::SpellRef()
 
 SpellRef::SpellRef( CL_DomElement * pElement )
 {
+    CL_DomNamedNodeMap attributes = pElement->get_attributes();
+   
+    std::string spellType = attributes.get_named_item("type").get_node_value();
+
+    if(spellType == "elemental")
+	meSpellType = ELEMENTAL;
+    else if (spellType == "white")
+	meSpellType = WHITE;
+    else if (spellType == "status")
+	meSpellType = STATUS;
+    else if (spellType == "other")
+	meSpellType = OTHER;
+    else throw CL_Error("Bad spell type in spell ref.");
+
+    mName = pElement->get_text();
+    
+
 }
 
 SpellRef::~SpellRef()
@@ -1060,8 +1640,39 @@ std::string SpellRef::getName() const
 }
 
 CL_DomElement 
-SpellRef::createDomElement ( CL_DomDocument &) const
+SpellRef::createDomElement ( CL_DomDocument &doc) const
 {
+
+    CL_DomElement element(doc,"spellRef");
+
+    std::string spellType;
+
+    switch(meSpellType)
+    {
+    case ELEMENTAL:
+	spellType = "elemental";
+	break;
+    case WHITE:
+	spellType = "white";
+	break;
+    case STATUS:
+	spellType = "status";
+	break;
+    case OTHER:
+	spellType = "other";
+	break;
+    }
+
+    element.set_attribute("type", spellType );
+
+    CL_DomText text(doc, mName );
+
+    text.set_node_value ( mName );
+
+    element.append_child ( text );
+
+    return element;
+
 }
 
 
@@ -1072,6 +1683,25 @@ WeaponEnhancer::WeaponEnhancer()
 
 WeaponEnhancer::WeaponEnhancer(CL_DomElement * pElement )
 {
+    CL_DomNamedNodeMap attributes = pElement->get_attributes();   
+
+
+    std::string strAttr = attributes.get_named_item("attribute").get_node_value();
+
+    meAttribute = Weapon::attributeForString ( strAttr );
+
+    if(!attributes.get_named_item("multiplier").is_null())
+    {
+	mfMultiplier = atof ( attributes.get_named_item("multiplier").get_node_value().c_str());
+    }
+
+    if(!attributes.get_named_item("add").is_null())
+    {
+	mnAdd = atoi ( attributes.get_named_item("add").get_node_value().c_str() );
+    }
+
+
+    
 }
 
 WeaponEnhancer::~WeaponEnhancer()
@@ -1108,6 +1738,25 @@ ArmorEnhancer::ArmorEnhancer()
 
 ArmorEnhancer::ArmorEnhancer(CL_DomElement * pElement )
 {
+    CL_DomNamedNodeMap attributes = pElement->get_attributes();   
+
+
+    std::string strAttr = attributes.get_named_item("attribute").get_node_value();
+
+    meAttribute = Armor::attributeForString ( strAttr );
+
+    if(!attributes.get_named_item("multiplier").is_null())
+    {
+	mfMultiplier = atof ( attributes.get_named_item("multiplier").get_node_value().c_str());
+    }
+
+    if(!attributes.get_named_item("add").is_null())
+    {
+	mnAdd = atoi ( attributes.get_named_item("add").get_node_value().c_str() );
+    }
+
+
+
 }
 
 ArmorEnhancer::~ArmorEnhancer()
@@ -1117,6 +1766,7 @@ ArmorEnhancer::~ArmorEnhancer()
 CL_DomElement 
 ArmorEnhancer::createDomElement ( CL_DomDocument &) const
 {
+
 }
 
 Armor::eAttribute 
@@ -1144,6 +1794,23 @@ AttributeEnhancer::AttributeEnhancer():mnAdd(0),mfMultiplier(1)
 
 AttributeEnhancer::AttributeEnhancer(CL_DomElement * pElement ):mnAdd(0),mfMultiplier(1)
 {
+    CL_DomNamedNodeMap attributes = pElement->get_attributes();   
+
+
+    mAttribute = attributes.get_named_item("attribute").get_node_value();
+    
+
+    if(!attributes.get_named_item("multiplier").is_null())
+    {
+	mfMultiplier = atof ( attributes.get_named_item("multiplier").get_node_value().c_str());
+    }
+
+    if(!attributes.get_named_item("add").is_null())
+    {
+	mnAdd = atoi ( attributes.get_named_item("add").get_node_value().c_str() );
+    }
+
+
 }
 
 AttributeEnhancer::~AttributeEnhancer()
@@ -1211,6 +1878,63 @@ WeaponClass::WeaponClass()
 
 WeaponClass::WeaponClass(CL_DomElement * pElement)
 {
+    ItemFactory * pItemFactory = IApplication::getInstance()->getItemFactory();
+
+    CL_DomNamedNodeMap attributes = pElement->get_attributes(); 
+
+    if(!attributes.get_named_item("name").is_null())
+    {
+	mName = attributes.get_named_item("name").get_node_value();
+    }
+    else throw CL_Error("Weapon class requires a name.");
+
+    if(!attributes.get_named_item("valueMultiplier").is_null())
+    {
+	mfValueMultiplier = atof ( attributes.get_named_item("valueMultiplier").get_node_value().c_str());
+    }
+    else mfValueMultiplier = 1;
+
+
+    if(!attributes.get_named_item("valueAdd").is_null())
+    {
+	mnValueAdd = atoi ( attributes.get_named_item("valueAdd").get_node_value().c_str());
+    }
+    else mnValueAdd = 0;
+    
+    CL_DomElement child = pElement->get_first_child().to_element();
+ 
+    while(!child.is_null())
+    {
+
+	std::string str = child.get_node_name();
+
+	if(str == "attributeEnhancer")
+	{
+	    mAttributeEnhancers.push_back ( pItemFactory->createAttributeEnhancer ( &child ) );
+	}
+	else if ( str == "weaponEnhancer")
+	{
+	    mWeaponEnhancers.push_back ( pItemFactory->createWeaponEnhancer ( &child ) ) ;
+	}
+	else if (str == "weaponTypeExclusionList")
+	{
+	    CL_DomElement subChild = child.get_first_child().to_element();
+
+	    while(!subChild.is_null())
+	    {
+		if( subChild.get_node_name() == "weaponTypeRef")
+		{
+		    mExcludedTypes.push_back ( pItemFactory->createWeaponTypeRef ( &subChild ) );
+		}
+		else throw CL_Error("What's this crazy " + subChild.get_node_name() + " in a weapon type exclusion list?");
+
+		
+	    }
+	}
+
+	child = child.get_next_sibling().to_element();
+    }
+    
 }
 
 WeaponClass::~WeaponClass()
@@ -1284,6 +2008,64 @@ ArmorClass::ArmorClass()
 
 ArmorClass::ArmorClass(CL_DomElement * pElement)
 {
+
+    ItemFactory * pItemFactory = IApplication::getInstance()->getItemFactory();
+
+    CL_DomNamedNodeMap attributes = pElement->get_attributes(); 
+
+    if(!attributes.get_named_item("name").is_null())
+    {
+	mName = attributes.get_named_item("name").get_node_value();
+    }
+    else throw CL_Error("Armor class requires a name.");
+
+    if(!attributes.get_named_item("valueMultiplier").is_null())
+    {
+	mfValueMultiplier = atof ( attributes.get_named_item("valueMultiplier").get_node_value().c_str());
+    }
+    else mfValueMultiplier = 1;
+
+
+    if(!attributes.get_named_item("valueAdd").is_null())
+    {
+	mnValueAdd = atoi ( attributes.get_named_item("valueAdd").get_node_value().c_str());
+    }
+    else mnValueAdd = 0;
+    
+    CL_DomElement child = pElement->get_first_child().to_element();
+ 
+    while(!child.is_null())
+    {
+
+	std::string str = child.get_node_name();
+
+	if(str == "attributeEnhancer")
+	{
+	    mAttributeEnhancers.push_back ( pItemFactory->createAttributeEnhancer ( &child ) );
+	}
+	else if ( str == "armorEnhancer")
+	{
+	    mArmorEnhancers.push_back ( pItemFactory->createArmorEnhancer ( &child ) ) ;
+	}
+	else if (str == "armorTypeExclusionList")
+	{
+	    CL_DomElement subChild = child.get_first_child().to_element();
+
+	    while(!subChild.is_null())
+	    {
+		if( subChild.get_node_name() == "armorTypeRef")
+		{
+		    mExcludedTypes.push_back ( pItemFactory->createArmorTypeRef ( &subChild ) );
+		}
+		else throw CL_Error("What's this crazy " + subChild.get_node_name() + " in an Armor type exclusion list?");
+
+		
+	    }
+	}
+
+	child = child.get_next_sibling().to_element();
+    }
+    
 }
 
 ArmorClass::~ArmorClass()
@@ -1357,6 +2139,49 @@ WeaponType::WeaponType()
 
 WeaponType::WeaponType(CL_DomElement * pElement )
 {
+
+    ItemFactory * pItemFactory = IApplication::getInstance()->getItemFactory();
+    
+    CL_DomNamedNodeMap attributes = pElement->get_attributes(); 
+
+    if(!attributes.get_named_item("name").is_null())
+    {
+	mName = attributes.get_named_item("name").get_node_value();
+    }
+    else throw CL_Error("Weapon type requires a name attribute.");
+
+    if(!attributes.get_named_item("basePrice").is_null())
+    {
+	mnBasePrice = atoi ( attributes.get_named_item("basePrice").get_node_value().c_str());
+    }
+    else throw CL_Error("base price is required on weapon types.");
+
+    if(!attributes.get_named_item("baseAttack").is_null())
+    {
+	mnBaseAttack = atoi ( attributes.get_named_item("baseAttack").get_node_value().c_str());
+    }
+    else throw CL_Error("base attack is required on weapon types.");
+    
+    if(!attributes.get_named_item("baseHit").is_null())
+    {
+	mfBaseHit = atof ( attributes.get_named_item("baseHit").get_node_value().c_str());
+    }
+    else throw CL_Error("base hit is required on weapon types.");
+
+    if(!attributes.get_named_item("ranged").is_null())
+    {
+	mbRanged = attributes.get_named_item("ranged").get_node_value() == "true";
+    }
+    else mbRanged = false;
+    
+    CL_DomElement child = pElement->get_first_child().to_element();
+
+    if(child.get_node_name() == "iconRef")
+    {
+	mIconRef = child.get_text();
+    }
+    else throw CL_Error("Weapon type missing icon ref.");
+
 }
 
 WeaponType::~WeaponType()
@@ -1407,6 +2232,58 @@ ArmorType::ArmorType()
 
 ArmorType::ArmorType(CL_DomElement * pElement )
 {
+
+    ItemFactory * pItemFactory = IApplication::getInstance()->getItemFactory();
+    
+    CL_DomNamedNodeMap attributes = pElement->get_attributes(); 
+
+    if(!attributes.get_named_item("name").is_null())
+    {
+	mName = attributes.get_named_item("name").get_node_value();
+    }
+    else throw CL_Error("Armor type requires a name attribute.");
+
+    if(!attributes.get_named_item("basePrice").is_null())
+    {
+	mnBasePrice = atoi ( attributes.get_named_item("basePrice").get_node_value().c_str());
+    }
+    else throw CL_Error("base price is required on armor types.");
+
+    if(!attributes.get_named_item("baseArmorClass").is_null())
+    {
+	mnBaseAC = atoi ( attributes.get_named_item("baseArmorClass").get_node_value().c_str());
+    }
+    else throw CL_Error("base armor class  is required on armor types.");
+    
+    if(!attributes.get_named_item("slot").is_null())
+    {
+	std::string slot = attributes.get_named_item("slot").get_node_value();
+
+	if(slot == "head")
+	    meSlot = HEAD;
+	else if (slot == "shield")
+	    meSlot = SHIELD;
+	else if (slot == "body")
+	    meSlot = BODY;
+	else if (slot == "feet")
+	    meSlot = FEET;
+	else if (slot == "left_hand")
+	    meSlot = LEFT_HAND;
+	else if (slot == "right_hand")
+	    meSlot = RIGHT_HAND;
+    }
+    else throw CL_Error("slot is required on weapon types.");
+
+    
+    CL_DomElement child = pElement->get_first_child().to_element();
+
+    if(child.get_node_name() == "iconRef")
+    {
+	mIconRef = child.get_text();
+    }
+    else throw CL_Error("Armor type missing icon ref.");
+
+
 }
 
 ArmorType::~ArmorType()

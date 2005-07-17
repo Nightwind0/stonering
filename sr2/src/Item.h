@@ -44,7 +44,7 @@ namespace StoneRing{
 	virtual uint getValue() const = 0; // Price to buy, and worth when calculating drops.
 	virtual uint getSellValue() const = 0;
 	static std::string ItemTypeAsString ( Item::eItemType type );
-	
+	static eDropRarity DropRarityFromString(const std::string &str);
 
 	
     private:
@@ -129,14 +129,15 @@ namespace StoneRing{
 	    DROPMAG
 	};
 	
-	 
+
+	static eAttribute attributeForString(const std::string str);	 
 	int modifyWeaponAttribute( eAttribute attr, int current );
 	float modifyWeaponAttribute ( eAttribute attr, float current );
 
 	// Getters for weapon enhancers. need 'em.
 
     protected:
-	eAttribute attributeForString(const std::string str);
+	
 	void clearWeaponEnhancers();
 	void addWeaponEnhancer (WeaponEnhancer * pEnhancer);
 
@@ -172,14 +173,15 @@ namespace StoneRing{
 	    DROPSTR,
 	    DROPDEX,
 	    DROPMAG,
-	    ELEMENTAL_MAGIC,
-	    ALL_MAGIC
+	    ELEMENTAL_RESIST,
+	    RESIST, // All magic
+	    STATUS // Resistance against ANY status affect
 	};
 	
 	 
 	int modifyArmorAttribute( eAttribute attr, int current );
 	float modifyArmorAttribute ( eAttribute attr, float current );
-
+	static eAttribute attributeForString ( const std::string str );
 	
     protected:
 	void clearArmorEnhancers();
@@ -204,6 +206,8 @@ namespace StoneRing{
 	uint getMaxInventory() const;
 	Item::eDropRarity getDropRarity() const;
 	std::string getName() const;
+
+	
 
     private:
 	NamedItem * mpNamedItem;
@@ -269,6 +273,9 @@ namespace StoneRing{
 	virtual void loadItem ( CL_DomElement * pElement );
 	
 	virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
+
+	static eUseType UseTypeFromString ( const std::string &str );
+	static eTargetable TargetableFromString ( const std::string &str );
 
     private:
 	std::list<Action*> mActions;
@@ -485,6 +492,8 @@ namespace StoneRing{
 
 	std::string getName() const;
 
+	void setName(const std::string &name) { mName = name; }
+
     private:
 	std::string mName;
     };
@@ -500,6 +509,8 @@ namespace StoneRing{
 	virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	std::string getName() const;
+
+	void setName(const std::string &name){ mName = name; }
     private:
 	std::string mName;
     };
@@ -516,6 +527,8 @@ namespace StoneRing{
 
 	std::string getName() const;
 
+	void setName(const std::string &name){ mName = name; }
+
     private:
 	std::string mName;
     };
@@ -531,6 +544,8 @@ namespace StoneRing{
 	virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	std::string getName() const;
+
+	void setName(const std::string &name){ mName = name; }
     private:
 	std::string mName;
     };
@@ -807,7 +822,7 @@ namespace StoneRing{
 	uint getBasePrice() const;
 	int getBaseAC() const;
 
-	enum eSlot { HEAD, BODY, SHIELD, FEET };
+	enum eSlot { HEAD, BODY, SHIELD, FEET, LEFT_HAND, RIGHT_HAND };
 
 	eSlot getSlot() const;
 	
