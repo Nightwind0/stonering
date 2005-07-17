@@ -150,7 +150,7 @@
 <!ATTLIST armorType name CDATA #REQUIRED>
 <!ATTLIST armorType basePrice CDATA #REQUIRED>
 <!ATTLIST armorType baseArmorClass CDATA #REQUIRED> 
-<!ATTLIST armorType slot (head|body|shield|feet) #REQUIRED>
+<!ATTLIST armorType slot (head|body|shield|feet|left_hand|right_hand) #REQUIRED>
 <!ATTLIST attributeEnhancer attribute CDATA #REQUIRED>
 <!ATTLIST attributeEnhancer add  CDATA #REQUIRED>
 <!ATTLIST attributeEnhancer multiplier CDATA #IMPLIED>
@@ -161,6 +161,6 @@
 <!ATTLIST armorEnhancer  attribute CDATA #REQUIRED>
 <!ATTLIST armorEnhancer add CDATA #IMPLIED>
 <!ATTLIST armorEnhancer multiplier CDATA #IMPLIED>
-<!ATTLIST spellRef class (elemental|white|status|other) #REQUIRED>
+<!ATTLIST spellRef type (elemental|white|status|other) #REQUIRED>
 
 

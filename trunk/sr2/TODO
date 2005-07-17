@@ -21,7 +21,10 @@ That gets translated into a monster region almost for free. Then we can also loo
 6) Need a key queue, populated at onSignalKeyUp. Then, states like say should
 pull from the queue....?
 
-7) HasEquipped ( item type, item name, any | primary )
+7) HasEquipped ( item type, item name, any | current )
 
 8) System items.
 
+AMNIPOGANS
+Shellelagh
+Loaded Shellelagh
