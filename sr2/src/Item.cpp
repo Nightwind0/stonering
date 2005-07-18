@@ -677,8 +677,8 @@ void RegularItem::loadItem ( CL_DomElement * pElement )
 
     std::string useType;
 
-    if(!attributes.get_named_item("useType").is_null())
-	useType = attributes.get_named_item("useType").get_node_value();
+    if(!attributes.get_named_item("use").is_null())
+	useType = attributes.get_named_item("use").get_node_value();
     else throw CL_Error("UseType attribute is required on regular items.");
 
     meUseType = UseTypeFromString ( useType );    
@@ -829,7 +829,7 @@ UniqueWeapon::UniqueWeapon():mpWeaponType(NULL)
 
 UniqueWeapon::~UniqueWeapon()
 {
-    delete mpWeaponType;
+
 }
 
 
@@ -919,7 +919,7 @@ UniqueArmor::UniqueArmor():mpArmorType(NULL)
 }
 UniqueArmor::~UniqueArmor()
 {
-    delete mpArmorType;
+
 }
 
 
@@ -1059,16 +1059,14 @@ bool GeneratedWeapon::isRanged() const
 }
 
 
-void GeneratedWeapon::generate( WeaponTypeRef * pType, WeaponClassRef * pClass, 
+void GeneratedWeapon::generate( WeaponType* pType, WeaponClass * pClass, 
 		       SpellRef *pSpell , RuneType *pRune)
 {
-
-    const ItemManager * pManager = IApplication::getInstance()->getItemManager();
-
+    //@todo : Copy attributes and enhancers from type and class...
     std::ostringstream os;
 
-    mpType = pManager->getWeaponType(*pType);
-    mpClass = pManager->getWeaponClass(*pClass);
+    mpType = pType;
+    mpClass = pClass;
 
     if(pSpell)
     {
@@ -1152,15 +1150,15 @@ ArmorType * GeneratedArmor::getArmorType() const
 
 
 
-void GeneratedArmor::generate( ArmorTypeRef * pType, ArmorClassRef * pClass, 
+void GeneratedArmor::generate( ArmorType * pType, ArmorClass * pClass, 
 		       SpellRef *pSpell , RuneType *pRune)
 {
+
+    //@todo : Copy attributes and enhancers from type and class...
     std::ostringstream os;
 
-    const ItemManager * pManager = IApplication::getInstance()->getItemManager();
-
-    mpType = pManager->getArmorType(*pType);
-    mpClass = pManager->getArmorClass(*pClass);
+    mpType = pType;
+    mpClass = pClass;
 
     if(pSpell)
     {
@@ -1928,7 +1926,7 @@ WeaponClass::WeaponClass(CL_DomElement * pElement)
 		}
 		else throw CL_Error("What's this crazy " + subChild.get_node_name() + " in a weapon type exclusion list?");
 
-		
+		subChild = subChild.get_next_sibling().to_element();
 	    }
 	}
 
@@ -2059,7 +2057,7 @@ ArmorClass::ArmorClass(CL_DomElement * pElement)
 		}
 		else throw CL_Error("What's this crazy " + subChild.get_node_name() + " in an Armor type exclusion list?");
 
-		
+		subChild = subChild.get_next_sibling().to_element();
 	    }
 	}
 
@@ -2253,7 +2251,7 @@ ArmorType::ArmorType(CL_DomElement * pElement )
     {
 	mnBaseAC = atoi ( attributes.get_named_item("baseArmorClass").get_node_value().c_str());
     }
-    else throw CL_Error("base armor class  is required on armor types.");
+    else throw CL_Error("base armor class  is required on armor types. name = " + mName);
     
     if(!attributes.get_named_item("slot").is_null())
     {

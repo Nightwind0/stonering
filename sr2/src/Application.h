@@ -225,7 +225,7 @@ class Choice;
       void showRechargeableOnionSplash();
       void showIntro();
       void loadFonts();
-
+      void loadItems(const std::string &filename);
       void processActionQueue();
 
       void drawPlayer();

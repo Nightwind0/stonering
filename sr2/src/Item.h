@@ -439,7 +439,7 @@ namespace StoneRing{
 	bool isRanged() const ;
 
 
-	void generate( WeaponTypeRef * pType, WeaponClassRef * pClass, 
+	void generate( WeaponType * pType, WeaponClass * pClass, 
 		       SpellRef *pSpell = NULL, RuneType *pRune = NULL);
 
     private:
@@ -469,7 +469,7 @@ namespace StoneRing{
 	ArmorType * getArmorType() const ;
 
 
-	void generate( ArmorTypeRef * pType, ArmorClassRef * pClass, 
+	void generate( ArmorType * pType, ArmorClass * pClass, 
 		       SpellRef *pSpell = NULL, RuneType *pRune = NULL);
 	
     private:
@@ -613,6 +613,8 @@ namespace StoneRing{
 	eRuneType getRuneType() const;
 
 	std::string getRuneTypeAsString() const;
+
+	void setRuneType ( eRuneType type) { meRuneType = type; }
 
     private:
 	eRuneType meRuneType;

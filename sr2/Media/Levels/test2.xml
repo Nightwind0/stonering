@@ -2924,7 +2924,9 @@
 					<option text="You">
 						<say speaker="Cat">Thank you! Take this key.</say>
 						<give>
-							<itemRef itemType="special">Octavia Key</itemRef>
+							<itemRef>
+								<namedItemRef type = "special">Octavia Key</namedItemRef>
+							</itemRef>
 						</give>
 					</option>
 					<option text="The other cat">
@@ -2937,7 +2939,10 @@
 		<mo name="DoorRLock" size="medium" type="square" xpos="8" ypos="9" solid="true">
 			<condition>
 				<hasItem not = "true">
-					<itemRef itemType="special">Octavia Key</itemRef>
+						<itemRef>
+							<namedItemRef type = "special">Octavia Key</namedItemRef>
+						</itemRef>
+					
 				</hasItem>
 			</condition>
 			<event name="octaviaLock" triggerType="talk">
@@ -2968,7 +2973,9 @@
 								<or>
 									<hasGold operator="gte">50000</hasGold>
 									<hasItem>
-										<itemRef itemType="weapon">GoldenStaff</itemRef>
+										<itemRef>
+											<namedItemRef type="weapon">DarkStaff</namedItemRef>
+										</itemRef>
 									</hasItem>
 								</or>
 							</operator>
