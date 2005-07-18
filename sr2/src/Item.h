@@ -464,7 +464,7 @@ namespace StoneRing{
 	virtual uint getValue() const ;
 	virtual uint getSellValue() const ;
 
-	virtual eItemType getItemType() const { return WEAPON ; }
+	virtual eItemType getItemType() const { return ARMOR ; }
 
 	ArmorType * getArmorType() const ;
 
