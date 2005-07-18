@@ -1062,7 +1062,22 @@ bool GeneratedWeapon::isRanged() const
 void GeneratedWeapon::generate( WeaponType* pType, WeaponClass * pClass, 
 		       SpellRef *pSpell , RuneType *pRune)
 {
-    //@todo : Copy attributes and enhancers from type and class...
+
+    for(std::list<AttributeEnhancer*>::const_iterator iter = pClass->getAttributeEnhancersBegin();
+	iter != pClass->getAttributeEnhancersEnd();
+	iter++)
+    {
+	addAttributeEnhancer  ( *iter );
+    }
+    for(std::list<WeaponEnhancer*>::const_iterator iter = pClass->getWeaponEnhancersBegin();
+	iter != pClass->getWeaponEnhancersEnd();
+	iter++)
+    {
+	addWeaponEnhancer ( *iter );
+    }
+	    
+
+
     std::ostringstream os;
 
     mpType = pType;
@@ -1153,8 +1168,20 @@ ArmorType * GeneratedArmor::getArmorType() const
 void GeneratedArmor::generate( ArmorType * pType, ArmorClass * pClass, 
 		       SpellRef *pSpell , RuneType *pRune)
 {
+    
+    for(std::list<AttributeEnhancer*>::const_iterator iter = pClass->getAttributeEnhancersBegin();
+	iter != pClass->getAttributeEnhancersEnd();
+	iter++)
+    {
+	addAttributeEnhancer  ( *iter );
+    }
+    for(std::list<ArmorEnhancer*>::const_iterator iter = pClass->getArmorEnhancersBegin();
+	iter != pClass->getArmorEnhancersEnd();
+	iter++)
+    {
+	addArmorEnhancer ( *iter );
+    }
 
-    //@todo : Copy attributes and enhancers from type and class...
     std::ostringstream os;
 
     mpType = pType;
