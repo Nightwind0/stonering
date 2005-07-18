@@ -777,6 +777,9 @@ void Application::onSignalKeyUp(const CL_InputEvent &key)
 	case CL_KEY_F:
 	    mSpeed++;
 	    break;
+	case CL_KEY_I:
+	    mItemManager.dumpItemList();
+	    break;
 	    
 	case CL_KEY_P:
 	mbPauseMovement = mbPauseMovement?false:true;

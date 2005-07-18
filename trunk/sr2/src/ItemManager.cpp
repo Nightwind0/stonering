@@ -207,7 +207,7 @@ void ItemManager::generateArmor()
 
 		GeneratedArmor * pUltraRuneArmor = new GeneratedArmor();
 		RuneType * ultraRuneType = new RuneType();
-		runeType->setRuneType( RuneType::ULTRA_RUNE );
+		ultraRuneType->setRuneType( RuneType::ULTRA_RUNE );
 
 		pUltraRuneArmor->generate( pType, pClass, NULL, ultraRuneType );
 
@@ -273,3 +273,15 @@ Item * ItemManager:: getItem( const ItemRef & ref ) const
     return NULL;
 }
 
+
+#ifndef NDEBUG
+void ItemManager::dumpItemList()
+{
+    for(std::list<Item*>::iterator iter = mItems.begin();
+	iter != mItems.end();
+	iter++)
+    {
+	std::cout << (*iter)->getName() << std::endl;
+    }
+}
+#endif
