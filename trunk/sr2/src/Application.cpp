@@ -816,6 +816,24 @@ void Application::loadFonts()
     mpfBGray = new CL_Font("Fonts/bold_gray", mpResources );
 }
 
+void Application::loadItems(const std::string &filename)
+{
+#ifndef NDEBUG
+    std::cout << "Loading itesm..." << std::endl;
+#endif    
+
+  
+    CL_InputSource_File file(filename);
+
+    CL_DomDocument document;
+	
+    document.load(&file);
+
+    mItemManager.loadItemFile ( document );
+
+}
+
+
 void Application::drawMap()
 {
     CL_Rect dst(0,0, min(WINDOW_WIDTH, (const int)mpLevel->getWidth()*32),min(WINDOW_HEIGHT, (const int)mpLevel->getHeight() * 32));
@@ -863,7 +881,7 @@ int Application::main(int argc, char ** argv)
 #endif
 	std::string startinglevel = CL_String::load("Game/StartLevel",mpResources);
 	std::string defaultplayersprite = CL_String::load("Game/DefaultPlayerSprite",mpResources );
-
+	std::string itemdefinition = CL_String::load("Game/ItemDefinitions", mpResources );
 	// Load special overlay for say.
 
 
@@ -879,12 +897,9 @@ int Application::main(int argc, char ** argv)
 	loadFonts();
 	showRechargeableOnionSplash();
 	showIntro();
-
+	loadItems(itemdefinition);
 	mpLevel = new Level(startinglevel, mpResources);
 
-
-
-	CL_System::sleep( 50 );
 
 	CL_Slot slot_quit = mpWindow->sig_window_close().connect(this, &Application::onSignalQuit);
 

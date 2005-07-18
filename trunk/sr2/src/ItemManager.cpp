@@ -59,7 +59,7 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
 
     CL_DomElement armorTypesNode = itemsNode.named_item("armorTypes").to_element();
 
-    CL_DomElement armorTypeNode = weaponTypesNode.get_first_child().to_element();
+    CL_DomElement armorTypeNode = armorTypesNode.get_first_child().to_element();
 
     while(!armorTypeNode.is_null())
     {
@@ -75,9 +75,15 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
 
     CL_DomElement namedItemNode = itemListNode.get_first_child().to_element();
     
+#ifndef NDEBUG
+    uint namedItemCount = 0;
+#endif
+
     while(!namedItemNode.is_null())
     {
-	
+#ifndef NDEBUG
+	namedItemCount++;
+#endif
 	NamedItemElement * pElement = pItemFactory->createNamedItemElement ( &namedItemNode );
 	
 	NamedItem * pItem = pElement->getNamedItem();
@@ -98,36 +104,168 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
     generateWeapons();
     generateArmor();
     
+#ifndef NDEBUG
+    std::cout << "Found " << mWeaponTypes.size() << " weapon types." << std::endl;
+    std::cout << "Found " << mWeaponClasses.size() << " weapon classes." << std::endl;
+    std::cout << "Found " << mArmorTypes.size() << " armor types." << std::endl;
+    std::cout << "Found " << mArmorClasses.size() << " armor classes." << std::endl;
+    std::cout << "Found " << namedItemCount << " named items." << std::endl;
+    std::cout << "Found " << mItems.size() << " items total." << std::endl;
+#endif
+
     
 }
     
 void ItemManager::generateWeapons()
 {
+    for(std::list<WeaponType*>::iterator iter = mWeaponTypes.begin();
+	iter != mWeaponTypes.end();
+	iter++)
+    {
+	WeaponType *pType = *iter;
+#ifndef NDEBUG
+	std::cout << "Generating weapons for type: " << pType->getName() << std::endl;
+#endif
+
+	for(std::list<WeaponClass*>::iterator classIter = mWeaponClasses.begin();
+	    classIter != mWeaponClasses.end();
+	    classIter++)
+	{
+	    WeaponClass * pClass = *classIter;
+
+	    WeaponTypeRef typeRef;
+	    typeRef.setName ( pType->getName() );
+
+	    if(!pClass->isExcluded( typeRef ) )
+	    {
+		//@todo: Create all the spell combinations. 
+		
+		// Create the no spell, no rune weapon
+
+		GeneratedWeapon * pPlainWeapon = new GeneratedWeapon();
+		pPlainWeapon->generate( pType, pClass, NULL, NULL );
+
+		mItems.push_back ( pPlainWeapon );
+	       
+
+		// Create the rune version.
+		GeneratedWeapon * pRuneWeapon = new GeneratedWeapon();
+		RuneType * runeType = new RuneType();
+		runeType->setRuneType( RuneType::RUNE );
+		pRuneWeapon->generate( pType, pClass, NULL, runeType );
+		
+		mItems.push_back ( pRuneWeapon );
+
+	    }
+	}
+    }
 }
 
 void ItemManager::generateArmor()
 {
+
+    for(std::list<ArmorType*>::const_iterator iter = mArmorTypes.begin();
+	iter != mArmorTypes.end();
+	iter++)
+    {
+	ArmorType *pType = *iter;
+
+#ifndef NDEBUG
+	std::cout << "Generating armor for type: " << pType->getName() << std::endl;
+#endif
+	
+	for(std::list<ArmorClass*>::const_iterator classIter = mArmorClasses.begin();
+	    classIter != mArmorClasses.end();
+	    classIter++)
+	{
+	    ArmorClass * pClass = *classIter;
+
+	    ArmorTypeRef typeRef;
+	    typeRef.setName ( pType->getName() );
+
+	    if(!pClass->isExcluded( typeRef ) )
+	    {
+		//@todo: Create all the spell combinations. 
+		
+		// Create the no spell, no rune Armor
+
+		GeneratedArmor * pPlainArmor = new GeneratedArmor();
+		pPlainArmor->generate( pType, pClass );
+
+		mItems.push_back ( pPlainArmor );
+	       
+
+		// Create the rune version.
+		GeneratedArmor * pRuneArmor = new GeneratedArmor();
+		RuneType * runeType = new RuneType();
+		runeType->setRuneType( RuneType::RUNE );
+		pRuneArmor->generate( pType, pClass, NULL, runeType );
+		
+		mItems.push_back ( pRuneArmor );
+
+		// Create the ultra rune version
+
+		GeneratedArmor * pUltraRuneArmor = new GeneratedArmor();
+		RuneType * ultraRuneType = new RuneType();
+		runeType->setRuneType( RuneType::ULTRA_RUNE );
+
+		pUltraRuneArmor->generate( pType, pClass, NULL, ultraRuneType );
+
+		mItems.push_back ( pUltraRuneArmor );
+
+
+	    }
+	}
+    }
 }
 
     
-    WeaponType * ItemManager::getWeaponType(const WeaponTypeRef &ref) const
+WeaponType * ItemManager::getWeaponType(const WeaponTypeRef &ref) const
 {
-    return NULL;
+    for(std::list<WeaponType*>::const_iterator iter = mWeaponTypes.begin();
+	iter != mWeaponTypes.end();
+	iter++)
+    {
+	if( ref.getName() == (*iter)->getName())
+	    return *iter;
+    }
 }
 
 ArmorType  * ItemManager::getArmorType ( const ArmorTypeRef &ref) const
 {
-    return NULL;
+    for(std::list<ArmorType*>::const_iterator iter = mArmorTypes.begin();
+	iter != mArmorTypes.end();
+	iter++)
+    {
+	if( ref.getName() == (*iter)->getName())
+	    return *iter;
+    }
 }
 
 WeaponClass * ItemManager::getWeaponClass ( const WeaponClassRef & ref ) const
 {
-    return NULL;
+    for(std::list<WeaponClass*>::const_iterator iter = mWeaponClasses.begin();
+	iter != mWeaponClasses.end();
+	iter++)
+    {
+	if( ref.getName() == (*iter)->getName())
+	    return *iter;
+    }
 }
 
 ArmorClass  * ItemManager::getArmorClass ( const ArmorClassRef & ref ) const
 {
-    return NULL;
+
+
+    for(std::list<ArmorClass*>::const_iterator iter = mArmorClasses.begin();
+	iter != mArmorClasses.end();
+	iter++)
+    {
+	if( ref.getName() == (*iter)->getName())
+	    return *iter;
+    }
+    
+
 }
 
 Item * ItemManager:: getItem( const ItemRef & ref ) const

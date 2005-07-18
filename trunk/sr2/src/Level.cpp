@@ -2374,7 +2374,6 @@ Tile::Tile(CL_DomElement *pElement):mpSprite(NULL),mpCondition(NULL), mpAM(NULL)
 	    int db = block.getDirectionBlock();
 
 	    // This is all done to make tile's take up less space in memory
-	    std::cout << "Tile Block = " << db << std::endl;
 			
 	    if(db & DIR_NORTH)
 		cFlags |= BLK_NORTH;
