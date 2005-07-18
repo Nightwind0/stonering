@@ -50,10 +50,10 @@ Item::DropRarityFromString(const std::string &str)
 {
     eDropRarity eRarity = NEVER;
 
-    if(str == "NEVER") eRarity = NEVER;
-    else if (str == "COMMON") eRarity = COMMON;
-    else if (str == "UNCOMMON") eRarity = UNCOMMON;
-    else if (str == "RARE") eRarity = RARE;
+    if(str == "never") eRarity = NEVER;
+    else if (str == "common") eRarity = COMMON;
+    else if (str == "uncommon") eRarity = UNCOMMON;
+    else if (str == "rare") eRarity = RARE;
 
     return eRarity;
 }
@@ -477,7 +477,7 @@ NamedItemElement::NamedItemElement (CL_DomElement * pElement):mpNamedItem(NULL),
 
 NamedItemElement::~NamedItemElement()
 {
-    delete mpNamedItem;
+
 }
 
 
@@ -910,6 +910,9 @@ void UniqueWeapon::loadItem(CL_DomElement * pElement)
 	child = child.get_next_sibling().to_element();
     }
 
+
+    mnValue = (int)(mpWeaponType->getBasePrice() * valueMultiplier);
+
 }
 
 
@@ -991,6 +994,8 @@ void UniqueArmor::loadItem(CL_DomElement * pElement)
 
 	child = child.get_next_sibling().to_element();
     }
+
+    mnValue = (int)(mpArmorType->getBasePrice() * valueMultiplier);
 }
 
 
@@ -1033,6 +1038,8 @@ GeneratedWeapon::getDropRarity() const
 
 uint GeneratedWeapon::getValue() const 
 {
+
+    // @todo: add rune value or spell value
 
     return (int)((float)mpType->getBasePrice() * 
 		 mpClass->getValueMultiplier()) 
@@ -1147,6 +1154,8 @@ Item::eDropRarity GeneratedArmor::getDropRarity() const
 
 uint GeneratedArmor::getValue() const 
 {
+    // @todo: add rune value or spell value
+
     return (int)((float)mpType->getBasePrice() * mpClass->getValueMultiplier()) 
 	+ mpClass->getValueAdd();
 }

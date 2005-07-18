@@ -270,7 +270,16 @@ ArmorClass  * ItemManager::getArmorClass ( const ArmorClassRef & ref ) const
 
 Item * ItemManager:: getItem( const ItemRef & ref ) const
 {
-    return NULL;
+
+    if(ref.getType() == ItemRef::NAMED_ITEM)
+    {
+	for(std::list<Item*>::const_iterator iter = mItems.begin();
+	    iter != mItems.end();
+	    iter++)
+	{
+	    
+	}
+    }
 }
 
 
@@ -281,7 +290,14 @@ void ItemManager::dumpItemList()
 	iter != mItems.end();
 	iter++)
     {
-	std::cout << (*iter)->getName() << std::endl;
+
+
+	std::cout << '[' << Item::ItemTypeAsString((*iter)->getItemType()) << ']' << ' ';
+	std::cout << (*iter)->getName();
+	std::cout << " (" << (*iter)->getDropRarity() << ')';
+	std::cout << '$' << (*iter)->getValue();
+	std::cout << std::endl;
+	
     }
 }
 #endif
