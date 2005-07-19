@@ -2918,7 +2918,7 @@
 			<movement movementType="wander" speed="fast"/>
 		</mo>
 		<mo name="Cat3" size="small" type="npc" xpos="2" ypos="8" solid="true">
-			<spriteRef type="fourway">Animals/Cat2</spriteRef>
+		 	<spriteRef type="fourway">Animals/Cat2</spriteRef>
 			<event name="CatChoice" triggerType="talk">
 				<choice text="Who is your favorite cat?">
 					<option text="You">

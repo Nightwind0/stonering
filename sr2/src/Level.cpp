@@ -280,17 +280,17 @@ ItemRef::ItemRef(CL_DomElement *pElement ):
     if(child.get_node_name() == "namedItemRef")
     {
 	meType = NAMED_ITEM;
-	levelFactory->createNamedItemRef( &child );
+	mpNamedItemRef = levelFactory->createNamedItemRef( &child );
     }
     else if (child.get_node_name() == "weaponRef")
     {
 	meType = WEAPON_REF;
-	itemFactory->createWeaponRef ( &child );
+	mpWeaponRef = itemFactory->createWeaponRef ( &child );
     }
     else if ( child.get_node_name() == "armorRef")
     {
 	meType = ARMOR_REF;
-	itemFactory->createArmorRef ( &child );
+	mpArmorRef = itemFactory->createArmorRef ( &child );
     }
     else throw CL_Error("Item ref had weirdo child " + child.get_node_name());
     
@@ -315,6 +315,8 @@ CL_DomElement ItemRef::createDomElement(CL_DomDocument &doc) const
 	element.append_child ( mpArmorRef->createDomElement(doc) );
 	break;
     }
+
+    return element;
 
 }
 

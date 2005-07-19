@@ -11,7 +11,8 @@
 #include <ClanLib/gui.h>
 #include <ClanLib/guistylesilver.h>
 #include <stdlib.h>
-
+#include "ItemFactory.h"
+#include "ItemManager.h"
 #include "EditableLevel.h"
 #include "TileSelector.h"
 #include "MapGrid.h"
@@ -42,7 +43,10 @@ public:
     virtual void giveItem(ItemRef * pItemRef, uint){}
     virtual void takeItem(ItemRef * pItemRef, uint){}
     virtual void giveGold(int amount){}
-    virtual void modifyAttribute(const std::string &attribute, int add, float multiplier, IParty::eTarget){}
+    virtual uint getCharacterCount() const{ return 0;}
+    virtual uint getSelectedCharacterIndex() const { return 0;}
+    virtual ICharacter* getCharacter(uint) const { return NULL;}
+    virtual ICharacter* getSelectedCharacter() const {return NULL; }
 };
 
 
@@ -57,12 +61,15 @@ public:
 
 	// IApplication Interface
 	
-	  virtual CL_ResourceManager * getResources()const;
-	  virtual StoneRing::IParty * getParty() const;
-	  virtual LevelFactory * getLevelFactory() const;
-      
-		
-      virtual int getScreenWidth()const;
+	virtual CL_ResourceManager * getResources()const;
+	virtual StoneRing::IParty * getParty() const;
+	virtual LevelFactory * getLevelFactory() const;
+	
+	ICharacterGroup *getSelectedCharacterGroup() const { return NULL; }
+	ItemFactory * getItemFactory() const { static ItemFactory itemFactory; return &itemFactory; }
+	ItemManager * getItemManager() const { static ItemManager itemManager; return &itemManager; }
+	
+	virtual int getScreenWidth()const;
       virtual int getScreenHeight()const;
 
 
