@@ -12,6 +12,7 @@
 #include "GraphicsManager.h"
 #include "LevelFactory.h"
 #include "ItemFactory.h"
+#include "ItemManager.h"
 
 #define MO_EXPERIMENT 
 
@@ -21,6 +22,8 @@ typedef unsigned int uint;
 
 
 using std::string;
+
+
 
 
 #ifndef _MSC_VER
@@ -266,6 +269,7 @@ ItemRef::ItemRef()
 {
 }
 
+
 ItemRef::ItemRef(CL_DomElement *pElement ):
     mpNamedItemRef(NULL),mpWeaponRef(NULL),mpArmorRef(NULL)
 {
@@ -273,6 +277,7 @@ ItemRef::ItemRef(CL_DomElement *pElement ):
     CL_DomElement child = pElement->get_first_child().to_element();
     LevelFactory * levelFactory = IApplication::getInstance()->getLevelFactory();
     ItemFactory * itemFactory = IApplication::getInstance()->getItemFactory();
+    const ItemManager * itemManager = IApplication::getInstance()->getItemManager();
 
     if(child.is_null()) throw CL_Error("Item ref with no child!");
 
@@ -294,6 +299,8 @@ ItemRef::ItemRef(CL_DomElement *pElement ):
     }
     else throw CL_Error("Item ref had weirdo child " + child.get_node_name());
     
+
+    mpItem = itemManager->getItem ( *this ); 
 	
 }
 

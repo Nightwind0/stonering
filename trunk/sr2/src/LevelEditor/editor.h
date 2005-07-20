@@ -30,7 +30,6 @@ class EditorParty : public StoneRing::IParty
 {
 public:
     virtual bool getGold() const { return true;}
-    virtual bool hasItem(StoneRing::Item::eItemType type, const std::string &item, uint count) const{ return true; }
     virtual bool hasItem(StoneRing::ItemRef *pItemRef, uint count )const{return true;}
     virtual bool didEvent(const std::string &event) const{return true;}
     virtual uint getLevelX() const{return 0;}

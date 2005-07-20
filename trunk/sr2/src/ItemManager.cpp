@@ -271,15 +271,19 @@ ArmorClass  * ItemManager::getArmorClass ( const ArmorClassRef & ref ) const
 Item * ItemManager:: getItem( const ItemRef & ref ) const
 {
 
-    if(ref.getType() == ItemRef::NAMED_ITEM)
-    {
+
 	for(std::list<Item*>::const_iterator iter = mItems.begin();
 	    iter != mItems.end();
 	    iter++)
 	{
-	    
+	    if( *(*iter) == ref ) 
+		return *iter;
 	}
-    }
+
+	throw CL_Error("Couldn't find item based on ref.");
+
+	return NULL;
+
 }
 
 
