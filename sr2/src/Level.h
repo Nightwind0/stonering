@@ -8,7 +8,7 @@
 #include "IApplication.h"
 #include <set>
 #include "Item.h"
-
+#include "ItemRef.h"
 using std::string;
 
 typedef unsigned int uint;
@@ -85,49 +85,7 @@ namespace StoneRing {
 
 
 
-    class ItemRef : public Element
-    {
-    public:
-	ItemRef();
-	ItemRef(CL_DomElement *pElement );
-	virtual ~ItemRef();
-
-	enum eRefType { NAMED_ITEM, WEAPON_REF, ARMOR_REF };
-
-//	std::string getItemName() const;
-
-	eRefType getType() const;
-
-	NamedItemRef * getNamedItemRef() const;
-	WeaponRef * getWeaponRef() const;
-	ArmorRef * getArmorRef() const;
-
-	virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
-	
-    protected:
-	NamedItemRef * mpNamedItemRef;
-	WeaponRef * mpWeaponRef;
-	ArmorRef * mpArmorRef;
-	eRefType meType;
-
-    };
-
-
-
-    class NamedItemRef : public Element
-	{
-	public:
-	    NamedItemRef();
-	    NamedItemRef(CL_DomElement *pElement );
-	    virtual ~NamedItemRef();
-
-	    std::string getItemName();
-
-	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
-
-	protected:
-	    std::string mName;
-	};
+    
 
     class Tilemap : public Element
 	{

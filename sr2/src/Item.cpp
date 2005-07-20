@@ -59,6 +59,7 @@ Item::DropRarityFromString(const std::string &str)
 }
 
 
+
 Item::Item()
 {
 }
@@ -525,6 +526,17 @@ NamedItem::NamedItem()
 NamedItem::~NamedItem()
 {
 }
+
+bool NamedItem::operator== ( const ItemRef &ref )
+{
+    if( ref.getType() == ItemRef::NAMED_ITEM
+	&& ref.getNamedItemRef()->getItemName() == mName)
+	return true;
+    else return false;
+}
+
+
+
 
 std::string NamedItem::getIconRef() const
 {
@@ -1007,6 +1019,46 @@ GeneratedWeapon::~GeneratedWeapon()
 {
 }
 
+bool GeneratedWeapon::operator== ( const ItemRef &ref )
+{
+    if( ref.getType() == ItemRef::WEAPON_REF
+	&& *ref.getWeaponRef()->getWeaponClass() == *mpClass &&
+	*ref.getWeaponRef()->getWeaponType() == *mpType)
+    {
+	if(hasSpell() && ref.getWeaponRef()->getSpellRef())
+	{
+	    if(*getSpellRef() == *ref.getWeaponRef()->getSpellRef())
+	    {
+		return true;
+	    } 
+	    else return false;
+	}
+	else if ( hasSpell() || ref.getWeaponRef()->getSpellRef())
+	{
+	    // One had a spell ref and one didn't.
+	    return false;
+	}
+	
+	if(hasRuneType() && ref.getWeaponRef()->getRuneType())
+	{
+	    if(*getRuneType() == *ref.getWeaponRef()->getRuneType())
+	    {
+		return true;
+	    }
+	    else return false;
+	}
+	else if ( hasRuneType() || ref.getWeaponRef()->getRuneType())
+	{
+	    return false;
+	
+	}
+	return true;
+    }
+
+    return false;
+}
+
+
 
 
 // Item interface 
@@ -1065,6 +1117,11 @@ bool GeneratedWeapon::isRanged() const
     return mpType->isRanged();
 }
 
+
+WeaponRef GeneratedWeapon::generateWeaponRef() const
+{
+    return WeaponRef( getWeaponType(), getWeaponClass(), getSpellRef(), getRuneType() );
+}
 
 void GeneratedWeapon::generate( WeaponType* pType, WeaponClass * pClass, 
 		       SpellRef *pSpell , RuneType *pRune)
@@ -1142,6 +1199,47 @@ uint GeneratedArmor::getMaxInventory() const
     return 99;
 }
 
+
+bool GeneratedArmor::operator== ( const ItemRef &ref )
+{
+    if( ref.getType() == ItemRef::ARMOR_REF
+	&& *ref.getArmorRef()->getArmorClass() == *mpClass &&
+	*ref.getArmorRef()->getArmorType() == *mpType)
+    {
+	if(hasSpell() && ref.getArmorRef()->getSpellRef())
+	{
+	    if(*getSpellRef() == *ref.getArmorRef()->getSpellRef())
+	    {
+		return true;
+	    } 
+	    else return false;
+	}
+	else if ( hasSpell() || ref.getArmorRef()->getSpellRef())
+	{
+	    // One had a spell ref and one didn't.
+	    return false;
+	}
+	
+	if(hasRuneType() && ref.getArmorRef()->getRuneType())
+	{
+	    if(*getRuneType() == *ref.getArmorRef()->getRuneType())
+	    {
+		return true;
+	    }
+	    else return false;
+	}
+	else if ( hasRuneType() || ref.getArmorRef()->getRuneType())
+	{
+	    return false;
+	}
+
+	return true;
+    }
+
+    return false;
+}
+
+
 Item::eDropRarity GeneratedArmor::getDropRarity() const
 {
     if( hasSpell() || hasRuneType() )
@@ -1172,7 +1270,11 @@ ArmorType * GeneratedArmor::getArmorType() const
     return mpType;
 }
 
-
+ArmorRef GeneratedArmor::generateArmorRef() const
+{
+    
+    return ArmorRef ( getArmorType(), getArmorClass(), getSpellRef(), getRuneType() );
+}
 
 void GeneratedArmor::generate( ArmorType * pType, ArmorClass * pClass, 
 		       SpellRef *pSpell , RuneType *pRune)
@@ -1239,6 +1341,12 @@ WeaponTypeRef::~WeaponTypeRef()
 {
 }
 
+bool WeaponTypeRef::operator==(const WeaponTypeRef &lhs)
+{
+    if( mName == lhs.mName) return true;
+    else return false;
+}
+
 CL_DomElement  
 WeaponTypeRef::createDomElement(CL_DomDocument &doc) const
 {
@@ -1271,6 +1379,12 @@ WeaponClassRef::WeaponClassRef(CL_DomElement *pElement)
 
 WeaponClassRef::~WeaponClassRef()
 {
+}
+
+bool WeaponClassRef::operator==(const WeaponClassRef &lhs)
+{
+    if(mName == lhs.mName) return true;
+    else return false;
 }
 
 CL_DomElement  WeaponClassRef::createDomElement(CL_DomDocument &doc) const
@@ -1306,6 +1420,12 @@ ArmorTypeRef::ArmorTypeRef(CL_DomElement * pElement )
 
 ArmorTypeRef::~ArmorTypeRef()
 {
+}
+
+bool ArmorTypeRef::operator==(const ArmorTypeRef &lhs)
+{
+    if( mName == lhs.mName) return true;
+    else return false;
 }
 
 
@@ -1344,6 +1464,12 @@ ArmorClassRef::~ArmorClassRef()
 {
 }
 
+bool ArmorClassRef::operator==(const ArmorClassRef &lhs)
+{
+    if( mName == lhs.mName) return true;
+    else return false;
+}
+
 CL_DomElement  
 ArmorClassRef::createDomElement(CL_DomDocument &doc) const
 {
@@ -1371,7 +1497,8 @@ WeaponRef::WeaponRef():mpWeaponType(NULL), mpWeaponClass(NULL),
 {
 }
 
-WeaponRef::WeaponRef(CL_DomElement * pElement )
+WeaponRef::WeaponRef(CL_DomElement * pElement ):mpWeaponType(NULL),mpWeaponClass(NULL),
+						mpSpellRef(NULL),mpRuneType(NULL)
 {
     ItemFactory * pItemFactory = IApplication::getInstance()->getItemFactory();
     const ItemManager * pItemManager = IApplication::getInstance()->getItemManager();
@@ -1409,6 +1536,51 @@ WeaponRef::WeaponRef(CL_DomElement * pElement )
 
 WeaponRef::~WeaponRef()
 {
+}
+
+
+WeaponRef::WeaponRef ( WeaponType *pType, WeaponClass *pClass, 
+		       SpellRef * pSpell, RuneType *pRune ):mpWeaponType(pType), mpWeaponClass(pClass),
+							    mpSpellRef(pSpell), mpRuneType(pRune)
+
+{
+
+}
+
+bool WeaponRef::operator==(const WeaponRef &lhs)
+{
+    if( *mpWeaponType == *lhs.mpWeaponType &&
+	*mpWeaponClass == *lhs.mpWeaponClass)
+    {
+	if( mpSpellRef && lhs.mpSpellRef )
+	{
+	    if(!(*mpSpellRef == *lhs.mpSpellRef))
+	    {
+		return false;
+	    }
+	}
+	else if ( mpSpellRef || lhs.mpSpellRef )
+	{
+	    // One, but not both, had a spell ref
+	    return false;
+	}
+
+
+	if( mpRuneType && lhs.mpRuneType )
+	{
+	    if(!(*mpRuneType == *lhs.mpRuneType))
+	    {
+		return false;
+	    }
+	}
+	else if ( mpRuneType || lhs.mpRuneType)
+	{
+	    return false;
+	}
+    }
+
+    return true;
+	
 }
 
 
@@ -1466,6 +1638,51 @@ ArmorRef::ArmorRef()
 {
 }
 
+ArmorRef::ArmorRef ( ArmorType *pType, ArmorClass *pClass, 
+		     SpellRef * pSpell, RuneType *pRune ):mpArmorType(pType), mpArmorClass(pClass),
+							  mpSpellRef(pSpell), mpRuneType(pRune)
+
+{
+
+}
+
+
+
+bool ArmorRef::operator==(const ArmorRef &lhs)
+{
+    if( *mpArmorType == *lhs.mpArmorType &&
+	*mpArmorClass == *lhs.mpArmorClass)
+    {
+	if( mpSpellRef && lhs.mpSpellRef )
+	{
+	    if(!(*mpSpellRef == *lhs.mpSpellRef))
+	    {
+		return false;
+	    }
+	}
+	else if ( mpSpellRef || lhs.mpSpellRef )
+	{
+	    // One, but not both, had a spell ref
+	    return false;
+	}
+
+
+	if( mpRuneType && lhs.mpRuneType )
+	{
+	    if(!(*mpRuneType == *lhs.mpRuneType))
+	    {
+		return false;
+	    }
+	}
+	else if ( mpRuneType || lhs.mpRuneType)
+	{
+	    return false;
+	}
+    }
+
+    return true;
+	
+}
 
 ArmorRef::ArmorRef(CL_DomElement * pElement ):mpArmorType(NULL),
 					      mpArmorClass(NULL),
@@ -1583,6 +1800,14 @@ RuneType::RuneType(CL_DomElement * pElement )
     else throw CL_Error("Bogus runetype supplied.");
 }
 
+
+bool RuneType::operator==(const RuneType &lhs )
+{
+    if ( meRuneType == lhs.meRuneType )
+	return true;
+    else return false;
+}
+
 RuneType::~RuneType()
 {
 }
@@ -1661,6 +1886,16 @@ SpellRef::~SpellRef()
 {
 }
 
+
+bool SpellRef::operator==(const SpellRef &lhs )
+{
+    if ( meSpellType == lhs.meSpellType &&
+	 mName == lhs.mName )
+    {
+	return true;
+    }
+    else return false;
+}
 
 
 SpellRef::eSpellType SpellRef::getSpellType() const
@@ -1980,6 +2215,11 @@ CL_DomElement WeaponClass::createDomElement ( CL_DomDocument &) const
 {
 }
 
+bool WeaponClass::operator==(const WeaponClass &lhs)
+{
+    return mName == lhs.mName;
+}
+
 std::string WeaponClass::getName() const
 {
     return mName;
@@ -2038,6 +2278,12 @@ bool WeaponClass::isExcluded ( const WeaponTypeRef &weaponType )
 
 ArmorClass::ArmorClass()
 {
+}
+
+
+bool ArmorClass::operator==( const ArmorClass &lhs )
+{
+    return mName == lhs.mName;
 }
 
 ArmorClass::ArmorClass(CL_DomElement * pElement)
@@ -2171,6 +2417,11 @@ WeaponType::WeaponType()
 }
 
 
+bool WeaponType::operator==(const WeaponType &type )
+{
+    return mName == type.mName;
+}
+
 WeaponType::WeaponType(CL_DomElement * pElement )
 {
 
@@ -2262,6 +2513,12 @@ bool WeaponType::isRanged() const
 
 ArmorType::ArmorType()
 {
+}
+
+
+bool ArmorType::operator==(const ArmorType &lhs )
+{
+    return mName == lhs.mName;
 }
 
 ArmorType::ArmorType(CL_DomElement * pElement )

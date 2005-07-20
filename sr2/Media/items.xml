@@ -179,6 +179,10 @@
 				<attributeModifier attribute="MP" changeTo="add" add="25" target="current"/>
 			</regularItem>
 		</namedItem>
+		<namedItem name="Octavia Key" dropRarity="never">
+			<iconRef></iconRef>
+			<specialItem/>
+		</namedItem>
 	</itemList>
 		
 </items>

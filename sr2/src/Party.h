@@ -23,7 +23,6 @@ class ItemRef;
     ~Party();
 
     virtual bool getGold() const;
-    virtual bool hasItem(Item::eItemType type, const std::string &item, uint count = 1) const;
     virtual bool hasItem(ItemRef *pItemRef, uint count = 1 )const;
     virtual bool didEvent(const std::string &event) const;
     virtual uint getLevelX() const;
@@ -50,6 +49,8 @@ class ItemRef;
  private:
 
     std::set<std::string> mEvents;
+
+    std::map<Item*,int> mItems;
 
     uint mX;
     uint mY;

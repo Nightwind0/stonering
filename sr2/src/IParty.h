@@ -29,7 +29,6 @@ class IParty : public ICharacterGroup
 
 
     virtual bool getGold() const=0;
-    virtual bool hasItem(Item::eItemType type, const std::string &item, uint count = 1) const=0;
     virtual bool hasItem(ItemRef *pItemRef, uint count =1 )const=0;
     virtual bool didEvent(const std::string &event) const=0;
     virtual uint getLevelX() const=0;

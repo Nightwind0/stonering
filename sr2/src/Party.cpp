@@ -2,6 +2,8 @@
 #include "Party.h"
 #include "Level.h"
 #include "Character.h"
+#include "ItemManager.h"
+#include <sstream>
 
 using StoneRing::Party;
 using StoneRing::ICharacter;
@@ -22,15 +24,15 @@ bool Party::getGold() const
 	return mnGold;
 }
 
-bool Party::hasItem(Item::eItemType type, const std::string &item, uint count) const
-{
-
-    return true;
-}
 
 bool Party::hasItem(ItemRef *pItemRef, uint count) const
 {
-    return true;
+
+    Item * pItem = pItemRef->getItem();
+
+    if( mItems.count ( pItem ) && mItems.find( pItem )->second >= count)
+	return true;
+    else return false;
 }
 
 bool Party::didEvent(const std::string &event) const
@@ -78,19 +80,75 @@ void Party::doEvent(const std::string &name, bool bRemember)
 
 void Party::giveItem(ItemRef *pItemRef, uint count)
 {
-#if 0
+    std::ostringstream os;
+    std::string speaker = "Item received!"; 
     IApplication * pApplication = IApplication::getInstance();
+    Item * pItem = pItemRef->getItem();
 
-    pApplication->say("Item received!", item.getName());
-#endif
+    os << pItem->getName();
+    
+    if( !mItems.count(pItem) )
+    {
+	mItems [ pItem ] = 0;
+    }
+    
+    
+    if( mItems [ pItem ] + count <= pItem->getMaxInventory())
+    {
+	mItems [ pItem ] += count;
+	
+	if(count > 1)
+	    os << " x" << count;
+    }
+    else 
+    {
+	count = pItem->getMaxInventory() - mItems[ pItem ];
+	
+	if( count < 1 )
+	{
+	    speaker = "**Item Lost** Inventory Full";
+	}
+	else 
+	{
+	    mItems [ pItem ] += count;
+
+	    os << " x" << count;
+	}
+    }
+    
+
+
+    pApplication->say(speaker, os.str());
 
 }
 
 void Party::takeItem(ItemRef *pItemRef, uint count)
 {
+    std::ostringstream os;
+    IApplication * pApplication = IApplication::getInstance();
+    Item * pItem = pItemRef->getItem();
+    
+    os << pItem->getName();
+    if( mItems.count(pItem ))
+    {
+	if ( mItems [ pItem ] < count )
+	{
+	    count = mItems [ pItem ];
+	}
 
+	mItems[ pItem ] -= count;
 
+	if ( count > 1 )
+	    os << " x" << count;
+    }
+#ifndef NDEBUG
+    else
+    {
+	std::cerr <<  " An attempt was made to take an item you didn't have.";
+    }
+#endif
 
+    pApplication->say("Item Taken", os.str());
 
 }
 

@@ -3,9 +3,11 @@
 
 #include <string>
 #include "Element.h"
-
+#include "ItemRef.h"
 
 namespace StoneRing{
+
+
 
 
     class SpellRef;
@@ -46,6 +48,7 @@ namespace StoneRing{
 	static std::string ItemTypeAsString ( Item::eItemType type );
 	static eDropRarity DropRarityFromString(const std::string &str);
 
+	virtual bool operator== ( const ItemRef &ref )=0;
 	
     private:
 
@@ -238,6 +241,9 @@ namespace StoneRing{
 	void setName ( const std::string &name );
 	void setMaxInventory ( uint max );
 	void setDropRarity( Item::eDropRarity rarity );
+
+	virtual bool operator== ( const ItemRef &ref );
+
     private:
 	std::string mName;
 	std::string mIconRef;
@@ -420,6 +426,8 @@ namespace StoneRing{
 	virtual ~GeneratedWeapon();
 
 
+	WeaponRef generateWeaponRef() const;
+
 	// Item interface 
 	virtual std::string getIconRef() const;
 
@@ -436,8 +444,12 @@ namespace StoneRing{
 	// Weapon interface
 
 	WeaponType * getWeaponType() const;
+
+	
+	WeaponClass * getWeaponClass() const { return mpClass; }
 	bool isRanged() const ;
 
+	virtual bool operator== ( const ItemRef &ref );
 
 	void generate( WeaponType * pType, WeaponClass * pClass, 
 		       SpellRef *pSpell = NULL, RuneType *pRune = NULL);
@@ -455,6 +467,8 @@ namespace StoneRing{
 	GeneratedArmor();
 	virtual ~GeneratedArmor();
 
+	ArmorRef generateArmorRef() const;
+
 	virtual std::string getIconRef() const;
 
 	virtual std::string getName() const;
@@ -468,6 +482,9 @@ namespace StoneRing{
 
 	ArmorType * getArmorType() const ;
 
+	ArmorClass * getArmorClass() const { return mpClass; }
+
+	virtual bool operator== ( const ItemRef &ref );
 
 	void generate( ArmorType * pType, ArmorClass * pClass, 
 		       SpellRef *pSpell = NULL, RuneType *pRune = NULL);
@@ -494,6 +511,7 @@ namespace StoneRing{
 
 	void setName(const std::string &name) { mName = name; }
 
+	bool operator== ( const WeaponTypeRef &lhs );
     private:
 	std::string mName;
     };
@@ -511,6 +529,7 @@ namespace StoneRing{
 	std::string getName() const;
 
 	void setName(const std::string &name){ mName = name; }
+	bool operator== (const WeaponClassRef &lhs );
     private:
 	std::string mName;
     };
@@ -528,7 +547,7 @@ namespace StoneRing{
 	std::string getName() const;
 
 	void setName(const std::string &name){ mName = name; }
-
+	bool operator==(const ArmorTypeRef &lhs );
     private:
 	std::string mName;
     };
@@ -546,6 +565,7 @@ namespace StoneRing{
 	std::string getName() const;
 
 	void setName(const std::string &name){ mName = name; }
+	bool operator==(const ArmorClassRef &lhs );
     private:
 	std::string mName;
     };
@@ -555,6 +575,8 @@ namespace StoneRing{
     {
     public:
 	WeaponRef();
+	WeaponRef ( WeaponType *pType, WeaponClass *pClass, 
+		   SpellRef * pSpell, RuneType *pRune );
 	WeaponRef(CL_DomElement * pElement );
 	~WeaponRef();
 
@@ -564,6 +586,8 @@ namespace StoneRing{
 	WeaponClass  * getWeaponClass() const;
 	SpellRef * getSpellRef() const;
 	RuneType * getRuneType() const;
+
+	bool operator==(const WeaponRef &lhs);
 
     private:
 
@@ -579,6 +603,9 @@ namespace StoneRing{
     {
     public:
 	ArmorRef();
+	ArmorRef ( ArmorType *pType, ArmorClass *pClass, 
+		   SpellRef * pSpell, RuneType *pRune );
+
 	ArmorRef(CL_DomElement * pElement );
 	~ArmorRef();
 
@@ -588,6 +615,8 @@ namespace StoneRing{
 	ArmorClass * getArmorClass() const;
 	SpellRef * getSpellRef() const;
 	RuneType * getRuneType() const;
+
+	bool operator==(const ArmorRef &lhs );
 
     private:
 
@@ -616,6 +645,8 @@ namespace StoneRing{
 
 	void setRuneType ( eRuneType type) { meRuneType = type; }
 
+	bool operator==(const RuneType &lhs);
+
     private:
 	eRuneType meRuneType;
     };
@@ -634,6 +665,8 @@ namespace StoneRing{
 	std::string getName() const;
 
 	virtual CL_DomElement createDomElement ( CL_DomDocument &) const;
+	
+	bool operator==(const SpellRef &lhs);
 
     private:
 	eSpellType meSpellType;
@@ -738,6 +771,8 @@ namespace StoneRing{
 
 	bool isExcluded ( const WeaponTypeRef &weaponType );
 
+	bool operator==(const WeaponClass &lhs);
+
     private:
 	std::string mName;
 	int mnValueAdd;
@@ -769,6 +804,8 @@ namespace StoneRing{
 
 	bool isExcluded ( const ArmorTypeRef &weaponType );
 
+	bool operator==(const ArmorClass &lhs );
+
     private:
 	std::string mName;
 	int mnValueAdd;
@@ -799,6 +836,8 @@ namespace StoneRing{
 	
 	bool isRanged() const;
 
+	bool operator==(const WeaponType &lhs);
+
     private:
 	std::string mName;
 	std::string mIconRef;
@@ -827,6 +866,8 @@ namespace StoneRing{
 	enum eSlot { HEAD, BODY, SHIELD, FEET, LEFT_HAND, RIGHT_HAND };
 
 	eSlot getSlot() const;
+
+	bool operator==(const ArmorType &lhs );
 	
     private:
 	std::string mName;
