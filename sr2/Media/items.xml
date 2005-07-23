@@ -18,6 +18,10 @@
 			<weaponEnhancer attribute="ATK" multiplier="4"/>
 			<weaponEnhancer attribute="HIT" add="0.10" />
 		</weaponClass>
+		<weaponClass name="Royal" valueMultiplier="5">
+			<weaponEnhancer attribute="ATK" multiplier="4"/>
+			<weaponEnhancer attribute="Critical%" add="0.10" />
+		</weaponClass>
 		<weaponClass name="Knight" valueMultiplier="1.75">
 			<weaponEnhancer attribute="ATK" multiplier="1.5"/>
 		</weaponClass>
@@ -56,6 +60,10 @@
 		<weaponClass name="Medusa" valueMultiplier="4" valueAdd="12000">
 			<weaponEnhancer attribute="ATK" multiplier="2"/>
 			<weaponEnhancer attribute="Stone%" add="0.20"/>
+		</weaponClass>
+		<weaponClass name="Devestating" valueMultiplier="4" valueAdd="1000">
+			<weaponEnhancer attribute="ATK" multiplier="3"/>
+			<weaponEnhancer attribute="Critical%" add = "0.10"/>
 		</weaponClass>
 	</weaponClasses>
 	<weaponTypes>

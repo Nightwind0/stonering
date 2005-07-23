@@ -167,6 +167,7 @@ Weapon::Weapon()
 
 Weapon::~Weapon()
 {
+    clearWeaponEnhancers();
 }
 
 	
@@ -219,6 +220,12 @@ float Weapon::modifyWeaponAttribute ( eAttribute attr, float current )
 
 void Weapon::clearWeaponEnhancers()
 {
+    for(std::list<WeaponEnhancer*>::iterator iter = mWeaponEnhancers.begin();
+	iter != mWeaponEnhancers.end();
+	iter++)
+    {
+	delete *iter;
+    }
     mWeaponEnhancers.clear();
 }
 
@@ -274,6 +281,7 @@ Weapon::attributeForString(const std::string str)
     else if (str == "DropSTR") return DROPSTR;
     else if (str == "DropDEX") return DROPDEX;
     else if (str == "DropMAG") return DROPMAG;
+    else if (str == "Critical%") return CRITICAL;
     else throw CL_Error("Bad Weapon Enhancer Attribute : " + str );
 
 
@@ -337,6 +345,7 @@ Armor::Armor()
 
 Armor::~Armor()
 {
+    clearArmorEnhancers();
 }
 	
 
@@ -387,6 +396,12 @@ float Armor::modifyArmorAttribute ( eAttribute attr, float current )
 
 void Armor::clearArmorEnhancers()
 {
+    for(std::list<ArmorEnhancer*>::iterator iter = mArmorEnhancers.begin();
+	iter != mArmorEnhancers.end();
+	iter++)
+    {
+	delete *iter;
+    }
     mArmorEnhancers.clear();
 }
 
@@ -483,8 +498,9 @@ NamedItemElement::~NamedItemElement()
 
 
 
-CL_DomElement  NamedItemElement::createDomElement(CL_DomDocument&) const
+CL_DomElement  NamedItemElement::createDomElement(CL_DomDocument &doc) const
 {
+    return CL_DomElement(doc,"namedItem");
 }
 
 NamedItem * 
@@ -743,8 +759,9 @@ void RegularItem::loadItem ( CL_DomElement * pElement )
 
 }
 
-CL_DomElement  RegularItem::createDomElement(CL_DomDocument&) const
+CL_DomElement  RegularItem::createDomElement(CL_DomDocument &doc) const
 {
+    return CL_DomElement (doc,"regularItem");
 }
 
 
@@ -763,8 +780,9 @@ void SpecialItem::loadItem ( CL_DomElement * pElement )
 }
 
 CL_DomElement  
-SpecialItem::createDomElement(CL_DomDocument&) const
+SpecialItem::createDomElement(CL_DomDocument &doc) const
 {
+    return CL_DomElement(doc,"specialItem");
 }
 
 
@@ -784,8 +802,9 @@ void SystemItem::loadItem ( CL_DomElement * pElement )
 }
 	
 CL_DomElement  
-SystemItem::createDomElement(CL_DomDocument&) const
+SystemItem::createDomElement(CL_DomDocument &doc) const
 {
+    return CL_DomElement(doc,"systemItem");
 }
 
 
@@ -829,8 +848,9 @@ void Rune::loadItem ( CL_DomElement * pElement )
 }
 
 CL_DomElement  
-Rune::createDomElement(CL_DomDocument&) const
+Rune::createDomElement(CL_DomDocument &doc) const
 {
+    return CL_DomElement(doc,"rune");
 }
 
  
@@ -857,9 +877,9 @@ uint UniqueWeapon::getSellValue() const
 }
 
 CL_DomElement  
-UniqueWeapon::createDomElement(CL_DomDocument&) const
+UniqueWeapon::createDomElement(CL_DomDocument &doc ) const
 {
-  
+    return CL_DomElement(doc,"uniqueWeapon");
 }
 
 
@@ -954,8 +974,9 @@ ArmorType *UniqueArmor::getArmorType() const
 }
 	
 CL_DomElement  
-UniqueArmor::createDomElement(CL_DomDocument&) const
+UniqueArmor::createDomElement(CL_DomDocument &doc) const
 {
+    return CL_DomElement(doc,"uniqueArmor");
 }
 
 void UniqueArmor::loadItem(CL_DomElement * pElement) 
@@ -1511,13 +1532,13 @@ WeaponRef::WeaponRef(CL_DomElement * pElement ):mpWeaponType(NULL),mpWeaponClass
 
 	if(str == "weaponTypeRef")
 	{
-	    WeaponTypeRef * pType = pItemFactory->createWeaponTypeRef ( &child );
-	    mpWeaponType = pItemManager->getWeaponType ( *pType );
+	    mType = *pItemFactory->createWeaponTypeRef ( &child );
+	    mpWeaponType = pItemManager->getWeaponType ( mType );
 	}
 	else if (str == "weaponClassRef")
 	{
-	    WeaponClassRef * pType = pItemFactory->createWeaponClassRef ( &child );
-	    mpWeaponClass = pItemManager->getWeaponClass ( *pType );
+	    mClass = *pItemFactory->createWeaponClassRef ( &child );
+	    mpWeaponClass = pItemManager->getWeaponClass ( mClass );
 	}
 	else if ( str == "spellRef")
 	{
@@ -1589,13 +1610,11 @@ WeaponRef::createDomElement(CL_DomDocument &doc) const
 {
     CL_DomElement element(doc,"weaponRef");
 
-    WeaponTypeRef typeRef;
-    typeRef.setName ( mpWeaponType->getName() );
-    element.append_child ( typeRef.createDomElement(doc ) );
 
-    WeaponClassRef classRef;
-    classRef.setName ( mpWeaponClass->getName() );
-    element.append_child ( classRef.createDomElement(doc ) );
+
+    element.append_child ( mType.createDomElement(doc ) );
+
+    element.append_child ( mClass.createDomElement(doc ) );
 
     if(mpSpellRef )
     {
@@ -1701,13 +1720,13 @@ ArmorRef::ArmorRef(CL_DomElement * pElement ):mpArmorType(NULL),
 
 	if(str == "armorTypeRef")
 	{
-	    ArmorTypeRef * pType = pItemFactory->createArmorTypeRef ( &child );
-	    mpArmorType = pItemManager->getArmorType ( *pType );
+	    mType = *pItemFactory->createArmorTypeRef ( &child );
+	    mpArmorType = pItemManager->getArmorType ( mType );
 	}
 	else if (str == "armorClassRef")
 	{
-	    ArmorClassRef * pType = pItemFactory->createArmorClassRef ( &child );
-	    mpArmorClass = pItemManager->getArmorClass ( *pType );
+	    mClass = *pItemFactory->createArmorClassRef ( &child );
+	    mpArmorClass = pItemManager->getArmorClass ( mClass );
 	}
 	else if ( str == "spellRef")
 	{
@@ -1734,13 +1753,9 @@ ArmorRef::createDomElement(CL_DomDocument &doc) const
 {
     CL_DomElement element(doc,"armorRef");
     
-    ArmorTypeRef typeRef;
-    typeRef.setName ( mpArmorType->getName() );
-    element.append_child ( typeRef.createDomElement(doc ) );
+    element.append_child ( mType.createDomElement(doc ) );
 
-    ArmorClassRef classRef;
-    classRef.setName ( mpArmorClass->getName() );
-    element.append_child ( classRef.createDomElement(doc ) );
+    element.append_child ( mClass.createDomElement(doc ) );
 
     if(mpSpellRef )
     {
@@ -1977,9 +1992,9 @@ WeaponEnhancer::~WeaponEnhancer()
 {
 }
 	
-CL_DomElement WeaponEnhancer::createDomElement ( CL_DomDocument &) const
+CL_DomElement WeaponEnhancer::createDomElement ( CL_DomDocument &doc) const
 {
-    
+    return CL_DomElement(doc, "weaponEnhancer");
 }
 
 Weapon::eAttribute WeaponEnhancer::getAttribute() const
@@ -2033,9 +2048,9 @@ ArmorEnhancer::~ArmorEnhancer()
 }
 	
 CL_DomElement 
-ArmorEnhancer::createDomElement ( CL_DomDocument &) const
+ArmorEnhancer::createDomElement ( CL_DomDocument &doc) const
 {
-
+    return CL_DomElement(doc, "armorEnhancer");
 }
 
 Armor::eAttribute 
@@ -2134,8 +2149,9 @@ void AttributeEnhancer::revoke()
 }
 
 CL_DomElement 
-AttributeEnhancer::createDomElement ( CL_DomDocument &) const
+AttributeEnhancer::createDomElement ( CL_DomDocument &doc) const
 {
+    return CL_DomElement(doc, "attributeEnhancer");
 }
 
 
@@ -2211,8 +2227,9 @@ WeaponClass::~WeaponClass()
 }
 
 
-CL_DomElement WeaponClass::createDomElement ( CL_DomDocument &) const
+CL_DomElement WeaponClass::createDomElement ( CL_DomDocument &doc) const
 {
+    return CL_DomElement(doc,"weaponClass");
 }
 
 bool WeaponClass::operator==(const WeaponClass &lhs)
@@ -2353,8 +2370,9 @@ ArmorClass::~ArmorClass()
 }
 
 
-CL_DomElement ArmorClass::createDomElement ( CL_DomDocument &) const
+CL_DomElement ArmorClass::createDomElement ( CL_DomDocument &doc) const
 {
+    return CL_DomElement(doc, "armorClass");
 }
 
 std::string ArmorClass::getName() const
@@ -2458,6 +2476,12 @@ WeaponType::WeaponType(CL_DomElement * pElement )
 	mbRanged = attributes.get_named_item("ranged").get_node_value() == "true";
     }
     else mbRanged = false;
+
+    if(!attributes.get_named_item("twoHanded").is_null())
+    {
+	mbTwoHanded = attributes.get_named_item("twoHanded").get_node_value() == "true";
+    }
+    else mbTwoHanded = false;
     
     CL_DomElement child = pElement->get_first_child().to_element();
 
@@ -2473,8 +2497,9 @@ WeaponType::~WeaponType()
 {
 }
 
-CL_DomElement WeaponType::createDomElement ( CL_DomDocument &) const
+CL_DomElement WeaponType::createDomElement ( CL_DomDocument &doc) const
 {
+    return CL_DomElement(doc,"weaponType");
 }
 
 std::string WeaponType::getName() const
@@ -2583,8 +2608,9 @@ ArmorType::~ArmorType()
 
 
 CL_DomElement 
-ArmorType::createDomElement ( CL_DomDocument &) const
+ArmorType::createDomElement ( CL_DomDocument &doc) const
 {
+    return CL_DomElement(doc,"armorType");
 }
 
 
