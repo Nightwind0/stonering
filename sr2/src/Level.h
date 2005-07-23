@@ -9,13 +9,10 @@
 #include <set>
 #include "Item.h"
 #include "ItemRef.h"
+#include "sr_defines.h"
+
 using std::string;
 
-#ifndef SR_UINT
-#define SR_UINT
-typedef unsigned int uint;
-#endif
-typedef unsigned short ushort;
 
 
 #ifdef _MSC_VER

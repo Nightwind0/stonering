@@ -14,15 +14,16 @@
 #include "ItemFactory.h"
 #include "ItemManager.h"
 
-#define MO_EXPERIMENT 
+
+typedef unsigned int uint;
+
 
 using namespace StoneRing;
 
 
-#ifndef UINT
-#define UINT
-typedef unsigned int uint
-#endif
+
+
+
 
 using std::string;
 

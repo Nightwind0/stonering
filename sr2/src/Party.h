@@ -8,11 +8,8 @@
 #include <set>
 #include <map>
 #include "IParty.h"
+#include "sr_defines.h"
 
-#ifndef SR_UINT
-#define SR_UINT
-typedef unsigned int uint;
-#endif
 
 namespace StoneRing{
 

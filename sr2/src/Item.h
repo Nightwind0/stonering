@@ -2,16 +2,11 @@
 #define SR_ITEM_H
 
 #include <string>
+#include "sr_defines.h"
 #include "Element.h"
 #include "ItemRef.h"
 
 namespace StoneRing{
-
-#ifndef SR_UINT
-#define SR_UINT
-typedef unsigned int uint;
-#endif
-
 
     class SpellRef;
     class RuneType;
