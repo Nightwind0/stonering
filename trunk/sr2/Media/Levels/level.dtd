@@ -144,6 +144,7 @@
 <!ATTLIST weaponType baseAttack CDATA #REQUIRED> 
 <!ATTLIST weaponType baseHit CDATA #REQUIRED> <!-- In percent -->
 <!ATTLIST weaponType ranged (true|false) #IMPLIED>
+<!ATTLIST weaponType twoHanded (true|false) #IMPLIED>
 <!ATTLIST armorClass name CDATA #REQUIRED>
 <!ATTLIST armorClass valueMultiplier CDATA #REQUIRED>
 <!ATTLIST armorClass valueAdd  CDATA #IMPLIED>

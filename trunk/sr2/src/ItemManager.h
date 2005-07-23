@@ -25,7 +25,7 @@ public:
     WeaponClass *getWeaponClass ( const WeaponClassRef & ref ) const;
     ArmorClass  *getArmorClass ( const ArmorClassRef & ref ) const;
 
-    Item * getItem( const ItemRef & ref ) const;
+    virtual Item * getItem( const ItemRef & ref ) const;
 #ifndef NDEBUG
     void dumpItemList();
 #endif

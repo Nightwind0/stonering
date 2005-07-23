@@ -49,6 +49,16 @@ public:
 };
 
 
+class EditorItemManager : public ItemManager
+{
+public:
+    EditorItemManager(){}
+    virtual ~EditorItemManager(){}
+
+    virtual Item * getItem ( const ItemRef & ref) const { return NULL; }
+private:
+};
+
 class EditorMain : public CL_ClanApplication, public StoneRing::IApplication
 {
 public:
@@ -66,7 +76,7 @@ public:
 	
 	ICharacterGroup *getSelectedCharacterGroup() const { return NULL; }
 	ItemFactory * getItemFactory() const { static ItemFactory itemFactory; return &itemFactory; }
-	ItemManager * getItemManager() const { static ItemManager itemManager; return &itemManager; }
+	ItemManager * getItemManager() const { static EditorItemManager itemManager; return &itemManager; }
 	
 	virtual int getScreenWidth()const;
       virtual int getScreenHeight()const;

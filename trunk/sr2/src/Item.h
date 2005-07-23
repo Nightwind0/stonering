@@ -129,7 +129,8 @@ namespace StoneRing{
 	    STEAL_MP,
 	    DROPSTR,
 	    DROPDEX,
-	    DROPMAG
+	    DROPMAG,
+	    CRITICAL
 	};
 	
 
@@ -593,6 +594,8 @@ namespace StoneRing{
 
 	WeaponType *mpWeaponType;
 	WeaponClass *mpWeaponClass;
+	WeaponTypeRef mType;
+	WeaponClassRef mClass;
 	SpellRef * mpSpellRef;
 	RuneType * mpRuneType;
 
@@ -622,6 +625,8 @@ namespace StoneRing{
 
 	ArmorType * mpArmorType;
 	ArmorClass * mpArmorClass;
+	ArmorTypeRef mType;
+	ArmorClassRef mClass;
 	SpellRef * mpSpellRef;
 	RuneType * mpRuneType;
 
@@ -836,6 +841,8 @@ namespace StoneRing{
 	
 	bool isRanged() const;
 
+	bool isTwoHanded() const;
+
 	bool operator==(const WeaponType &lhs);
 
     private:
@@ -845,6 +852,7 @@ namespace StoneRing{
 	uint mnBaseAttack;
 	float mfBaseHit;
 	bool mbRanged;
+	bool mbTwoHanded;
 	
     };
 
