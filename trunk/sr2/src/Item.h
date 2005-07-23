@@ -7,8 +7,8 @@
 
 namespace StoneRing{
 
-#ifndef UINT
-#define UINT
+#ifndef SR_UINT
+#define SR_UINT
 typedef unsigned int uint;
 #endif
 
