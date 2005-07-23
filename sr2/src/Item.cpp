@@ -106,22 +106,30 @@ bool Equipment::hasRuneType() const
 void Equipment::equip()
 {
 
+#ifndef _MSC_VER
     std::for_each( mAttributeEnhancers.begin(), mAttributeEnhancers.end(), std::mem_fun ( &AttributeEnhancer::invoke ) );
+#else
 
-/*    for(std::list<AttributeEnhancer*>::const_iterator iter = mAttributeEnhancers.begin();
+    for	(std::list<AttributeEnhancer*>::const_iterator iter = mAttributeEnhancers.begin();
 	iter != mAttributeEnhancers.end(); iter++)
     {
         (*iter)->invoke();
     }
-*/
-
+#endif
 }
 
 // Remove any attribute enhancements
 void Equipment::unequip()
 {
-
+#ifndef _MSC_VER
     std::for_each( mAttributeEnhancers.begin(), mAttributeEnhancers.end(), std::mem_fun ( &AttributeEnhancer::revoke ) );
+#else
+    for(std::list<AttributeEnhancer*>::const_iterator iter = mAttributeEnhancers.begin();
+	iter != mAttributeEnhancers.end(); iter++)
+    {
+        (*iter)->revoke();
+    }
+#endif
 
 }
 
@@ -1154,11 +1162,11 @@ void GeneratedWeapon::generate( WeaponType* pType, WeaponClass * pClass,
     {
 	addAttributeEnhancer  ( *iter );
     }
-    for(std::list<WeaponEnhancer*>::const_iterator iter = pClass->getWeaponEnhancersBegin();
-	iter != pClass->getWeaponEnhancersEnd();
-	iter++)
+    for(std::list<WeaponEnhancer*>::const_iterator iter2 = pClass->getWeaponEnhancersBegin();
+	iter2 != pClass->getWeaponEnhancersEnd();
+	iter2++)
     {
-	addWeaponEnhancer ( *iter );
+	addWeaponEnhancer ( *iter2 );
     }
 	    
 
@@ -1307,11 +1315,11 @@ void GeneratedArmor::generate( ArmorType * pType, ArmorClass * pClass,
     {
 	addAttributeEnhancer  ( *iter );
     }
-    for(std::list<ArmorEnhancer*>::const_iterator iter = pClass->getArmorEnhancersBegin();
-	iter != pClass->getArmorEnhancersEnd();
-	iter++)
+    for(std::list<ArmorEnhancer*>::const_iterator iter2 = pClass->getArmorEnhancersBegin();
+	iter2 != pClass->getArmorEnhancersEnd();
+	iter2++)
     {
-	addArmorEnhancer ( *iter );
+	addArmorEnhancer ( *iter2 );
     }
 
     std::ostringstream os;
@@ -1509,6 +1517,7 @@ ArmorClassRef::createDomElement(CL_DomDocument &doc) const
 std::string 
 ArmorClassRef::getName() const
 {
+	return mName;
 }
 
 
@@ -1868,6 +1877,8 @@ std::string RuneType::getRuneTypeAsString() const
 	return "Ultra Rune";
 	break;
     }
+
+	return "";
 }
 
 

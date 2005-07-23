@@ -975,8 +975,12 @@ int Application::main(int argc, char ** argv)
 	std::cerr << error.message.c_str() << std::endl;
     }
 	
+#ifndef NDEBUG
+#ifdef _MSC_VER 
 	std::string foo;
-	//std::cin >> foo;
+	std::cin >> foo;
+#endif
+#endif
 
 
 	return 0;

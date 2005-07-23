@@ -8,8 +8,6 @@
 #include <string>
 #include <ClanLib/display.h>
 
-typedef unsigned int uint;
-
 
 namespace StoneRing{
 

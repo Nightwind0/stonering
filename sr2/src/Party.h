@@ -9,8 +9,10 @@
 #include <map>
 #include "IParty.h"
 
+#ifndef UINT
+#define UINT
 typedef unsigned int uint;
-
+#endif
 
 namespace StoneRing{
 

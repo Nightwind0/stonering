@@ -18,8 +18,11 @@
 
 using namespace StoneRing;
 
-typedef unsigned int uint;
 
+#ifndef UINT
+#define UINT
+typedef unsigned int uint
+#endif
 
 using std::string;
 

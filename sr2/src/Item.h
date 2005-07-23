@@ -7,7 +7,10 @@
 
 namespace StoneRing{
 
-
+#ifndef UINT
+#define UINT
+typedef unsigned int uint;
+#endif
 
 
     class SpellRef;
