@@ -11,16 +11,14 @@
 #include "ItemRef.h"
 using std::string;
 
-#ifndef UINT
-#define UINT
+#ifndef SR_UINT
+#define SR_UINT
 typedef unsigned int uint;
 #endif
 typedef unsigned short ushort;
+
+
 #ifdef _MSC_VER
-
-
-
-
 template <class T>
 T abs( const T& a)
 {
