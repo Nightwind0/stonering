@@ -11,7 +11,10 @@
 #include "ItemRef.h"
 using std::string;
 
+#ifndef UINT
+#define UINT
 typedef unsigned int uint;
+#endif
 typedef unsigned short ushort;
 #ifdef _MSC_VER
 
