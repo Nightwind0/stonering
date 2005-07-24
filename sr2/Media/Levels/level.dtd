@@ -68,6 +68,11 @@
 <!-- Spell DTD -->
 <!ELEMENT spellRef (#PCDATA)>
 
+<!-- Animation DTD -->
+<!ELEMENT animation (par+)>
+<!ELEMENT par(playSound?,animationSpriteRef*)> <!-- If there are no animationSprites then its treated like a pause -->
+<!ELEMENT animationSpriteRef (#PCDATA)>
+
 
 <!-- Attributes -->
 
@@ -163,5 +168,13 @@
 <!ATTLIST armorEnhancer add CDATA #IMPLIED>
 <!ATTLIST armorEnhancer multiplier CDATA #IMPLIED>
 <!ATTLIST spellRef type (elemental|white|status|other) #REQUIRED>
-
+<!ATTLIST animation name CDATA #REQUIRED>
+<!ATTLIST animation type(battle|world) #REQUIRED>
+<!ATTLIST par duration CDATA #REQUIRED>
+<!ATTLIST par hide (none|caster|caster_group|target|target_group|all) #IMPLIED> <!-- Defaults to none --> 
+<!ATTLIST animationSpriteRef initialFocus (screen|caster|target) #REQUIRED>
+<!ATTLIST animationSpriteRef initialFocusType (center|above|below|left|right|below_right|below_left|above_right|above_left) #IMPLIED> <!-- Center is default -->
+<!ATTLIST animationSpriteRef movementDirection (still|n|e|s|w|ne|nw|se|sw|toTarget|toCaster) #IMPLIED>
+<!-- Note: movement speed will be determined by the amount of pixels that need to be covered and the duration of the par -->
+<!-- So that if the par duration is three seconds, the sprite will move to its destination in three seconds -->
 

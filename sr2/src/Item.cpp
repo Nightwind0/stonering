@@ -487,6 +487,7 @@ NamedItemElement::NamedItemElement (CL_DomElement * pElement):mpNamedItem(NULL),
 	}
 
 	child = child.get_next_sibling().to_element();
+
     }
 
     if(mpNamedItem == NULL) throw CL_Error("No named item within a named item element.");

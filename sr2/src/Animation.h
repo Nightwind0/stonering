@@ -1,0 +1,108 @@
+#ifndef SR_ANIMATION_H
+#define SR_ANIMATION_H
+
+
+#include "Element.h"
+#include <ClanLib/core.h>
+#include <list>
+#include "sr_defines.h"
+
+namespace StoneRing{
+
+    class PlaySound;
+
+ 
+    class AnimationSpriteRef : public Element
+    {
+    public:
+	AnimationSpriteRef();
+	AnimationSpriteRef(CL_DomElement *pElement, const std::string &animation_name );
+	virtual ~AnimationSpriteRef();
+
+	std::string getRef() const;
+
+	enum eInitialFocus { SCREEN, CASTER, TARGET };
+	enum eInitialFocusType {CENTER, ABOVE, BELOW, LEFT, RIGHT, BELOW_RIGHT, BELOW_LEFT, ABOVE_RIGHT, ABOVE_LEFT };
+	enum eMovementDirection { STILL, N, E, S, W, NE, NW, SE, SW, TO_TARGET, TO_CASTER };
+
+
+	eInitialFocus getInitialFocus() const;
+	eInitialFocusType getInitialFocusType() const;
+	eMovementDirection getMovementDirection() const;
+
+	CL_DomElement createDomElement(CL_DomDocument &doc) const;
+
+    private:
+
+	eInitialFocus initialFocusFromString(const std::string &str);
+	eInitialFocusType initialFocusTypeFromString ( const std::string &str );
+	eMovementDirection movementDirectionFromString ( const std::string &str );
+	std::string mAnimationName;
+	std::string mRef;
+	eInitialFocus meInitialFocus;
+	eInitialFocusType meInitialFocusType;
+	eMovementDirection meMovementDirection;
+    };
+
+    class Par : public Element
+    {
+    public:
+	Par();
+	Par(CL_DomElement * pElement, const std::string &animation_name );
+
+	virtual ~Par();
+	
+	CL_DomElement createDomElement(CL_DomDocument &) const;
+	
+	uint getDurationMs() const;
+
+	enum eHide {NONE, CASTER, CASTER_GROUP, TARGET, TARGET_GROUP, ALL };
+
+	eHide getHide() const;
+	
+	PlaySound * getPlaySound() const;
+
+	std::list<AnimationSpriteRef*>::const_iterator getAnimationSpriteRefsBegin() const ;
+	std::list<AnimationSpriteRef*>::const_iterator getAnimationSpriteRefsEnd() const;
+
+    private:
+	eHide hideFromString(const std::string &str);
+	uint mnDuration;
+	eHide meHide;
+	PlaySound * mpPlaySound;
+	std::list<AnimationSpriteRef*> mAnimationSpriteRefs;
+    };
+
+    
+    class Animation : public Element
+    {
+    public:
+	Animation();
+	Animation( CL_DomElement * pElement);
+	virtual ~Animation();
+	
+	CL_DomElement createDomElement(CL_DomDocument &) const;
+	
+	std::string getName() const;
+	
+	enum eType { BATTLE, WORLD };
+
+	eType getType() const;
+
+
+	std::list<Par*>::const_iterator getParsBegin() const;
+	std::list<Par*>::const_iterator getParsEnd() const;
+
+    private:
+	std::list<Par*> mPars;
+	eType meType;
+	std::string mName;
+    };
+    
+
+
+
+
+};
+
+#endif
