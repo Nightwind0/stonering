@@ -178,6 +178,11 @@ uint Party::getSelectedCharacterIndex() const
     return 0;
 }
 
+uint Party::getCasterCharacterIndex() const
+{
+    return 0;
+}
+
 ICharacter * Party::getCharacter(uint index) const 
 {
     return NULL;
@@ -187,6 +192,15 @@ ICharacter * Party::getSelectedCharacter() const
 {
     return NULL;
 }
+
+ICharacter * Party::getCasterCharacter() const 
+{
+    return NULL;
+}
+
+
+
+
 
 
 CL_Rect Party::getCollisionRect(uint atX, uint atY) const

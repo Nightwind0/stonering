@@ -23,6 +23,9 @@ namespace StoneRing{
     class WeaponClass;
     class ArmorClass;
     class NamedItem;
+    class DamageCategory;
+    class WeaponDamageCategory;
+    class MagicDamageCategory;
 
     class Item
     {
@@ -123,11 +126,10 @@ namespace StoneRing{
 	    SILENCE,
 	    SLEEP,
 	    BLIND,
+	    ADDLE, // Drop magic effectiveness (MAG)
+	    ENFEEBLE, // Drop RST
 	    STEAL_HP,
 	    STEAL_MP,
-	    DROPSTR,
-	    DROPDEX,
-	    DROPMAG,
 	    CRITICAL
 	};
 	
@@ -172,12 +174,15 @@ namespace StoneRing{
 	    BLIND,
 	    STEAL_MP,
 	    STEAL_HP,
-	    DROPSTR,
-	    DROPDEX,
-	    DROPMAG,
-	    ELEMENTAL_RESIST,
-	    RESIST, // All magic
-	    STATUS // Resistance against ANY status affect
+	    ADDLE, // Drop magic effectiveness (MAG)
+	    ENFEEBLE, // Drop RST
+	    ELEMENTAL_RESIST, // Your AC for elemental magic
+	    SLASH_AC, // Extra AC against slash attacks
+	    JAB_AC, // Extra AC against jab attacks
+	    BASH_AC, // Extra AC against bash attacks
+	    RESIST, // Resist is your AC for magic attacks
+	    WHITE_RESIST, // Your AC against white magic. (hey, its a valid type!)
+	    STATUS, // Chance of failure for a particular status effect
 	};
 	
 	 
@@ -834,6 +839,7 @@ namespace StoneRing{
 
 	uint getBaseAttack() const;
 	float getBaseHit() const;
+	float getBaseCritical() const;
 
 	uint getBasePrice() const;
 	
@@ -841,14 +847,18 @@ namespace StoneRing{
 
 	bool isTwoHanded() const;
 
+	DamageCategory *getDamageCategory () const { return mpDamageCategory; }
+
 	bool operator==(const WeaponType &lhs);
 
     private:
+	DamageCategory * mpDamageCategory;
 	std::string mName;
 	std::string mIconRef;
 	uint mnBasePrice;
 	uint mnBaseAttack;
 	float mfBaseHit;
+	float mfBaseCritical;
 	bool mbRanged;
 	bool mbTwoHanded;
 	
@@ -868,6 +878,7 @@ namespace StoneRing{
 
 	uint getBasePrice() const;
 	int getBaseAC() const;
+	int getBaseRST() const;
 
 	enum eSlot { HEAD, BODY, SHIELD, FEET, LEFT_HAND, RIGHT_HAND };
 
@@ -880,10 +891,62 @@ namespace StoneRing{
 	std::string mIconRef;
 	uint mnBasePrice;
 	int mnBaseAC;
-
+	int mnBaseRST;
 	eSlot meSlot;
 
     };
+
+    class DamageCategory
+    {
+    public:
+	DamageCategory(){}
+	virtual ~DamageCategory(){}
+
+	enum eClass { WEAPON, MAGIC };
+
+	virtual eClass getClass() const=0;
+    private:
+    };
+
+    class WeaponDamageCategory : public Element, public DamageCategory
+    {
+    public:
+	WeaponDamageCategory();
+	WeaponDamageCategory(CL_DomElement *pElement);
+	virtual ~WeaponDamageCategory();
+
+	virtual eClass getClass() const { return WEAPON; }
+
+	enum eType { SLASH, BASH, JAB };
+
+	eType getType() const;
+
+	CL_DomElement createDomElement(CL_DomDocument&) const;
+    private:
+	eType TypeFromString( const std::string &str );
+	eType meType;
+    };
+
+    class MagicDamageCategory : public Element, public DamageCategory
+    {
+    public:
+	MagicDamageCategory();
+	MagicDamageCategory(CL_DomElement *pElement);
+	virtual ~MagicDamageCategory();
+
+	virtual eClass getClass() const { return MAGIC; }
+
+	enum eType { FIRE, EARTH, WIND, WATER, HOLY, OTHER };
+
+	eType getType() const;
+
+	CL_DomElement createDomElement(CL_DomDocument&) const;
+    private:
+	eType TypeFromString( const std::string &str );
+	eType meType;
+    };
+
+
 
 };
 

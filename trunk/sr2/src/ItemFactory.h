@@ -31,6 +31,8 @@ namespace StoneRing
     class ArmorClass;
     class ArmorType;
     class NamedItemElement;
+    class WeaponDamageCategory;
+    class MagicDamageCategory;
 
 
 class ItemFactory
@@ -83,7 +85,10 @@ class ItemFactory
     virtual ArmorClass * createArmorClass(CL_DomElement * pElement) const; 
     virtual ArmorType * createArmorType()const; 
     virtual ArmorType * createArmorType(CL_DomElement * pElement) const; 
-
+    virtual WeaponDamageCategory *createWeaponDamageCategory() const;
+    virtual WeaponDamageCategory *createWeaponDamageCategory(CL_DomElement *pElement) const;
+    virtual MagicDamageCategory *createMagicDamageCategory() const;
+    virtual MagicDamageCategory *createMagicDamageCategory(CL_DomElement *pElement) const;
 
 
  private:
