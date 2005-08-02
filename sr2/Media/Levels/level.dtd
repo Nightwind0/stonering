@@ -58,15 +58,23 @@
 <!ELEMENT weaponClass (attributeEnhancer*, weaponEnhancer*, weaponTypeExclusionList?)>
 <!ELEMENT armorClass  (attributeEnhancer*, armorEnhancer*, armorTypeExclusionList?)>
 <!ELEMENT armorType (iconRef)>
-<!ELEMENT weaponType (iconRef)>
+<!ELEMENT weaponType ((weaponDamageCategory|magicDamageCategory),iconRef)>
 <!ELEMENT weaponEnhancer EMPTY>
 <!ELEMENT armorEnhancer EMPTY>
 <!ELEMENT attributeEnhancer EMPTY> <!-- Similar to attributeModifier, but a temporary bonus when item is equipped. -->
-<!ELEMENT weaponTypeExclusionList (weaponTypeRef*)>
+<!ELEMENT weaponTypeExclusionList (weaponTypeRef*)>1
 <!ELEMENT armorTypeExclusionList (armorTypeRef*)>
 
 <!-- Spell DTD -->
 <!ELEMENT spellRef (#PCDATA)>
+<!ELEMENT spellList (spell+)>
+<!ELEMENT doWeaponDamage (weaponDamageCategory)>
+<!ELEMENT doMagicDamage  (magicDamageCategory)>
+<!ELEMENT doStatusEffect EMPTY>
+<!ELEMENT spell ((animation|doWeaponDamage|doMagicDamage|doStatusEffect)*)> 
+<!ELEMENT weaponDamageCategory (EMPTY)>
+<!ELEMENT magicDamageCategory (EMPTY)>
+
 
 <!-- Animation DTD -->
 <!ELEMENT animation (par+)>
@@ -122,7 +130,7 @@
 <!ATTLIST attributeModifier attribute CDATA #REQUIRED>
 <!ATTLIST attributeModifier add CDATA #IMPLIED>
 <!ATTLIST attributeModifier changeTo (max|min|add) #REQUIRED>
-<!ATTLIST attributeModifier target (current|all) #IMPLIED>
+<!ATTLIST attributeModifier target (current|all|caster) #IMPLIED>
 <!ATTLIST directionBlock north (true|false) #REQUIRED>
 <!ATTLIST directionBlock south (true|false) #REQUIRED>
 <!ATTLIST directionBlock east (true|false) #REQUIRED>
@@ -147,7 +155,8 @@
 <!ATTLIST weaponType name CDATA #REQUIRED>
 <!ATTLIST weaponType basePrice CDATA #REQUIRED>
 <!ATTLIST weaponType baseAttack CDATA #REQUIRED> 
-<!ATTLIST weaponType baseHit CDATA #REQUIRED> <!-- In percent -->
+<!ATTLIST weaponType baseHit CDATA #REQUIRED> <!-- In percent 0-1 float-->
+<!ATTLIST weaponType baseCritical CDATA #IMPLIED> <!-- In percent. Default = "0.05" -->
 <!ATTLIST weaponType ranged (true|false) #IMPLIED>
 <!ATTLIST weaponType twoHanded (true|false) #IMPLIED>
 <!ATTLIST armorClass name CDATA #REQUIRED>
@@ -156,6 +165,7 @@
 <!ATTLIST armorType name CDATA #REQUIRED>
 <!ATTLIST armorType basePrice CDATA #REQUIRED>
 <!ATTLIST armorType baseArmorClass CDATA #REQUIRED> 
+<!ATTLIST armorType baseResist CDATA #REQUIRED>
 <!ATTLIST armorType slot (head|body|shield|feet|left_hand|right_hand) #REQUIRED>
 <!ATTLIST attributeEnhancer attribute CDATA #REQUIRED>
 <!ATTLIST attributeEnhancer add  CDATA #REQUIRED>
@@ -177,4 +187,26 @@
 <!ATTLIST animationSpriteRef movementDirection (still|n|e|s|w|ne|nw|se|sw|toTarget|toCaster) #IMPLIED>
 <!-- Note: movement speed will be determined by the amount of pixels that need to be covered and the duration of the par -->
 <!-- So that if the par duration is three seconds, the sprite will move to its destination in three seconds -->
+<!ATTLIST spell name CDATA #REQUIRED>
+<!ATTLIST spell type (elemental|white|status|other) #REQUIRED>
+<!ATTLIST spell use (battle|world|both) #REQUIRED>
+<!ATTLIST spell targetable (all|single|either|self-only) #REQUIRED>
+<!ATTLIST spell mp CDATA #REQUIRED>
+<!ATTLIST weaponDamageCategory type (slash|bash|jab) #REQUIRED>
+<!ATTLIST magicDamageCategory type (fire|water|earth|wind|holy|other) #REQUIRED>
+<!ATTLIST doWeaponDamage baseAttack CDATA #REQUIRED>
+<!ATTLIST doWeaponDamage baseCritical CDATA #REQUIRED>
+<!ATTLIST doWeaponDamage baseHit  CDATA #REQUIRED> <!-- 0 to 1 floating point-->
+<!ATTLIST doWeaponDamage ranged (true|false) #IMPLIED> <!-- Defaults to false -->
+<!ATTLIST doMagicDamage  baseDamage CDATA #REQUIRED>
+<!ATTLIST doMagicDamage  baseHit    CDATA #REQUIRED>
+<!ATTLIST doMagicDamage  drain    (true|false) #IMPLIED> <!-- Defaults to false. Causes any target damage to be added to the caster -->
+<!ATTLIST doMagicDamage  piercing (true|false) #IMPLIED> <!-- Ignore hit chance. Definitely hits -->
+<!ATTLIST doMagicDamage  damageAttribute (hp|mp) #IMPLIED> <!-- Default is hp -->
+<!ATTLIST doStatusEffect statusRef CDATA #REQUIRED>
+<!ATTLIST doStatusEffect chance CDATA #REQUIRED> <!-- 0 to 1 floating point. -->
+<!-- Note that, while removeStatus does obey the 'chance' parameter, it ignores any status effect resistances of the target. -->
+<!-- Therefore, a removeStatus for poison with 80% really does remove poison 80% of the time. Whereas, when inflicting the status (con'td) -->
+<!-- You have the chance as well as the target's resistances to account for -->
+<!ATTLIST doStatusEffect removeStatus (true|false) #IMPLIED> <!-- Default is false. In order to have a spell/skill that removes a status, set this to true -->
 

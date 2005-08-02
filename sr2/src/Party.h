@@ -38,8 +38,10 @@ class ItemRef;
     // ICharacterGroup interface
     virtual uint getCharacterCount() const ;
     virtual uint getSelectedCharacterIndex() const;
+    virtual uint getCasterCharacterIndex() const;
     virtual ICharacter * getCharacter(uint index) const ;
     virtual ICharacter * getSelectedCharacter() const ;
+    virtual ICharacter * getCasterCharacter() const ;
 
     void setLevelX(uint x);
     void setLevelY(uint y);

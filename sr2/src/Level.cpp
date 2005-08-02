@@ -571,6 +571,9 @@ CL_DomElement  AttributeModifier::createDomElement(CL_DomDocument &doc) const
     case ALL:
 	element.set_attribute("target","all");
 	break;
+    case CASTER:
+	element.set_attribute("target","caster");
+	break;
     }
 
     switch ( meChangeTo )
@@ -628,6 +631,11 @@ AttributeModifier::AttributeModifier (CL_DomElement *pElement):mAdd(0),meTarget(
 	{
 	    meTarget = ALL;
 	}
+	else if (target == "caster")
+	{
+	    meTarget = CASTER;
+	}
+	else throw CL_Error("Unrecognized target type in attribute modifier: " + target);
 
     }
 
@@ -676,7 +684,18 @@ bool AttributeModifier::applicable() const
 
 
     ICharacterGroup * pParty = IApplication::getInstance()->getSelectedCharacterGroup();
-    ICharacter * pCharacter = pParty->getSelectedCharacter();
+    ICharacter * pCharacter = NULL;
+
+
+    switch(meTarget)
+    {
+    case CURRENT:
+	pCharacter = pParty->getSelectedCharacter();
+	break;
+    case CASTER:
+	pCharacter = pParty->getCasterCharacter();
+	break;
+    }
 
 
     //@todo: Act on ALL or CURRENT
@@ -731,7 +750,18 @@ void AttributeModifier::invoke()
 
 
     ICharacterGroup * pParty = IApplication::getInstance()->getSelectedCharacterGroup();
-    ICharacter * pCharacter = pParty->getSelectedCharacter();
+    ICharacter * pCharacter = NULL;
+
+
+    switch(meTarget)
+    {
+    case CURRENT:
+	pCharacter = pParty->getSelectedCharacter();
+	break;
+    case CASTER:
+	pCharacter = pParty->getCasterCharacter();
+	break;
+    }
 
     int add = 0;
 
@@ -3481,15 +3511,6 @@ void Level::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC,
 
 void Level::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC, bool bMove)
 {
-    // This brings the close MOs to the top
-    // moSortCriterion queries the party to see where they are at.
-#ifndef _MSC_VER
-    mMappableObjects.sort( moSortCriterion );
-#else
-    mMappableObjects.sort(std::greater<MappableObject*>());
-#endif
-
-
 
 
     for(std::list<MappableObject*>::iterator i = mMappableObjects.begin();
@@ -3828,6 +3849,19 @@ bool Level::canMove(const CL_Rect &currently, const CL_Rect & destination, bool 
 // All AM's from tiles fire, as do any step events
 void Level::step(const CL_Rect &dest, const CL_Rect & old)
 {
+
+    // This brings the close MOs to the top
+    // moSortCriterion queries the party to see where they are at.
+    // NOTE: This was moved from drawMappableObjects because it really only needs to be called
+    // when the player moves. Remember that MOs can't move on screen from offscreen because they don't get run time.
+    // Otherwise, this WOULD have to be called from drawMappableObjects
+#ifndef _MSC_VER
+    mMappableObjects.sort( moSortCriterion );
+#else
+    mMappableObjects.sort(std::greater<MappableObject*>());
+#endif
+    
+
     // First, process any MO step events you may have triggered
 
 

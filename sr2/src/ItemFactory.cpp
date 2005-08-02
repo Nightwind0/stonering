@@ -246,5 +246,26 @@ ArmorType * ItemFactory::createArmorType(CL_DomElement * pElement) const
     return new ArmorType(pElement);
 }
 
+WeaponDamageCategory * ItemFactory::createWeaponDamageCategory() const
+{
+    return new WeaponDamageCategory();
+}
+
+
+WeaponDamageCategory * ItemFactory::createWeaponDamageCategory(CL_DomElement * pElement) const
+{
+    return new WeaponDamageCategory(pElement);
+}
+
+MagicDamageCategory * ItemFactory::createMagicDamageCategory() const
+{
+    return new MagicDamageCategory();
+}
+
+
+MagicDamageCategory * ItemFactory::createMagicDamageCategory(CL_DomElement * pElement) const
+{
+    return new MagicDamageCategory(pElement);
+}
 
 

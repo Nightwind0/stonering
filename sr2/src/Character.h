@@ -19,8 +19,10 @@ class ICharacterGroup
 public:
     virtual uint getCharacterCount() const = 0;
     virtual uint getSelectedCharacterIndex() const = 0;
+    virtual uint getCasterCharacterIndex() const = 0;
     virtual ICharacter * getCharacter(uint index) const = 0;
     virtual ICharacter * getSelectedCharacter() const = 0;
+    virtual ICharacter * getCasterCharacter() const = 0;
 private:
 };
 

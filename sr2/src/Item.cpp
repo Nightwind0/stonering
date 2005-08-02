@@ -286,9 +286,8 @@ Weapon::attributeForString(const std::string str)
     else if (str == "Blind%") return BLIND;
     else if (str == "Steal_HP%") return STEAL_HP;
     else if (str == "Steal_MP%") return STEAL_MP;
-    else if (str == "DropSTR") return DROPSTR;
-    else if (str == "DropDEX") return DROPDEX;
-    else if (str == "DropMAG") return DROPMAG;
+    else if (str == "Enfeeble%") return ENFEEBLE;
+    else if (str == "Addle%") return ADDLE;
     else if (str == "Critical%") return CRITICAL;
     else throw CL_Error("Bad Weapon Enhancer Attribute : " + str );
 
@@ -336,12 +335,15 @@ Armor::attributeForString ( const std::string str )
     else if (str == "Blind%") return BLIND;
     else if (str == "Steal_MP%") return STEAL_MP;
     else if (str == "Steal_HP%") return STEAL_HP;
-    else if (str == "DropSTR") return DROPSTR;
-    else if (str == "DropDEX") return DROPDEX;
-    else if (str == "DropMAG") return DROPMAG;
-    else if (str == "ELEMENTAL_RST") return ELEMENTAL_RESIST;
-    else if (str == "RST") return RESIST;
+    else if (str == "Enfeeble%") return ENFEEBLE;
+    else if (str == "Addle%") return ADDLE;
+    else if (str == "ElementalRST") return ELEMENTAL_RESIST;
+    else if (str == "RST") return RESIST; // Resist is basically Magic AC
     else if (str == "Status%") return STATUS;
+    else if (str == "SlashAC") return SLASH_AC; // Extra AC against slash attacks
+    else if (str == "JabAC") return JAB_AC;
+    else if (str == "BashAC") return BASH_AC;
+    else if (str == "WhiteRST") return WHITE_RESIST;
     else throw CL_Error("Bad Armor enhancer attribute.");
 }
 
@@ -2483,6 +2485,12 @@ WeaponType::WeaponType(CL_DomElement * pElement )
     }
     else throw CL_Error("base hit is required on weapon types.");
 
+    if(!attributes.get_named_item("baseCritical").is_null())
+    {
+	mfBaseCritical = atof ( attributes.get_named_item("baseCritical").get_node_value().c_str());
+    }
+    else mfBaseCritical = 0.05; // @todo get from settings
+
     if(!attributes.get_named_item("ranged").is_null())
     {
 	mbRanged = attributes.get_named_item("ranged").get_node_value() == "true";
@@ -2497,11 +2505,26 @@ WeaponType::WeaponType(CL_DomElement * pElement )
     
     CL_DomElement child = pElement->get_first_child().to_element();
 
-    if(child.get_node_name() == "iconRef")
+    while(!child.is_null())
     {
-	mIconRef = child.get_text();
+	std::string name = child.get_node_name();
+
+	if(name == "iconRef")
+	{
+	    mIconRef = child.get_text();
+	}
+	else if ( name == "weaponDamageCategory" )
+	{
+	    mpDamageCategory = pItemFactory->createWeaponDamageCategory ( &child );
+	}
+	else if ( name == "magicDamageCategory" )
+	{
+	    mpDamageCategory = pItemFactory->createMagicDamageCategory ( &child );
+	}
+
+	child = child.get_next_sibling().to_element();
     }
-    else throw CL_Error("Weapon type missing icon ref.");
+
 
 }
 
@@ -2524,6 +2547,11 @@ std::string WeaponType::getIconRef() const
     return mIconRef;
 }
 
+
+float WeaponType::getBaseCritical() const
+{
+    return mfBaseCritical;
+}
 
 uint WeaponType::getBaseAttack() const
 {
@@ -2582,6 +2610,12 @@ ArmorType::ArmorType(CL_DomElement * pElement )
 	mnBaseAC = atoi ( attributes.get_named_item("baseArmorClass").get_node_value().c_str());
     }
     else throw CL_Error("base armor class  is required on armor types. name = " + mName);
+
+    if(!attributes.get_named_item("baseResist").is_null())
+    {
+	mnBaseRST = atoi ( attributes.get_named_item("baseResist").get_node_value().c_str());
+    }
+    else throw CL_Error("base Resist  is required on armor types. name = " + mName);
     
     if(!attributes.get_named_item("slot").is_null())
     {
@@ -2647,10 +2681,103 @@ int ArmorType::getBaseAC() const
     return mnBaseAC;
 }
 
+int ArmorType::getBaseRST() const
+{
+    return mnBaseRST;
+}
+
 
 ArmorType::eSlot ArmorType::getSlot() const
 {
     return meSlot;
 }
 
+
+
+
+WeaponDamageCategory::WeaponDamageCategory()
+{
+}
+
+WeaponDamageCategory::WeaponDamageCategory(CL_DomElement *pElement)
+{
+    CL_DomNamedNodeMap attributes = pElement->get_attributes(); 
+
+    if(!attributes.get_named_item("type").is_null())
+    {
+	meType = TypeFromString(attributes.get_named_item("type").get_node_value());
+    }
+    else throw CL_Error("weaponDamageCategory requires a type");
+    
+}
+
+WeaponDamageCategory::eType
+WeaponDamageCategory::TypeFromString ( const std::string &str )
+{
+    if(str == "slash") return SLASH;
+    else if (str == "bash") return BASH;
+    else if (str == "jab") return JAB;
+    else throw CL_Error("Unknown type " + str + " On weapon damage category");
+}
+
+
+WeaponDamageCategory::~WeaponDamageCategory()
+{
+}
+
+	
+WeaponDamageCategory::eType WeaponDamageCategory::getType() const
+{
+    return meType;
+}
+
+CL_DomElement WeaponDamageCategory::createDomElement(CL_DomDocument &doc) const
+{
+    return CL_DomElement(doc, "weaponDamageCategory");
+}
+
+
+
+
+MagicDamageCategory::MagicDamageCategory()
+{
+}
+
+MagicDamageCategory::MagicDamageCategory(CL_DomElement *pElement)
+{
+
+    CL_DomNamedNodeMap attributes = pElement->get_attributes(); 
+
+    if(!attributes.get_named_item("type").is_null())
+    {
+	meType = TypeFromString(attributes.get_named_item("type").get_node_value());
+    }
+    else throw CL_Error("magicDamageCategory requires a type");
+}
+MagicDamageCategory::~MagicDamageCategory()
+{
+}
+
+
+MagicDamageCategory::eType
+MagicDamageCategory::TypeFromString ( const std::string &str )
+{
+    if(str == "fire") return FIRE;
+    else if (str == "wind") return WIND;
+    else if (str == "water") return WATER;
+    else if (str == "earth") return EARTH;
+    else if (str == "holy") return HOLY;
+    else if (str == "other") return OTHER;
+    else throw CL_Error("Unknown type " + str + " On magic damage category");
+}
+
+MagicDamageCategory::eType MagicDamageCategory::getType() const
+{
+    return meType;
+}
+
+CL_DomElement MagicDamageCategory::createDomElement(CL_DomDocument &doc) const
+{
+    return CL_DomElement(doc, "magicDamageCategory");
+}
 
