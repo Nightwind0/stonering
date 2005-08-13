@@ -1,0 +1,30 @@
+<!--DOCTYPE spellList SYSTEM "Levels/level.dtd" -->
+<spellList>
+	<spell mp="2" name="Torch" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true">
+		<doMagicDamage baseDamage="25" baseHit="75">
+			<magicDamageCategory type="fire"/>
+		</doMagicDamage>
+	</spell>
+	<spell mp="2" name="Stonepelt" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true">
+		<doMagicDamage baseDamage="25" baseHit="75">
+			<magicDamageCategory type="earth"/>
+		</doMagicDamage>
+	</spell>
+	<spell mp="2" name="Ice" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true">
+		<doMagicDamage baseDamage="25" baseHit="75">
+			<magicDamageCategory type="water"/>
+		</doMagicDamage>
+	</spell>
+	<spell mp="2" name="Breeze" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true">
+		<doMagicDamage baseDamage="25" baseHit="75">
+			<magicDamageCategory type="wind"/>
+		</doMagicDamage>
+	</spell>
+	<spell mp="2" name="Anoint" targetable="either" type="white" use="both" appliesToArmor="true" appliesToWeapons="true">
+		<doMagicDamage baseDamage="25" baseHit="75">
+			<magicDamageCategory type="holy"/>
+		</doMagicDamage>
+	</spell>
+	
+
+</spellList>

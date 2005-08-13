@@ -6,6 +6,7 @@
 #include <ClanLib/core.h>
 #include <list>
 #include "sr_defines.h"
+#include "Effect.h"
 
 namespace StoneRing{
 
@@ -74,7 +75,7 @@ namespace StoneRing{
     };
 
     
-    class Animation : public Element
+    class Animation : public Element, public Effect
     {
     public:
 	Animation();
@@ -88,6 +89,8 @@ namespace StoneRing{
 	enum eType { BATTLE, WORLD };
 
 	eType getType() const;
+
+	Effect::eType getEffectType() const { return Effect::ANIMATION; }
 
 
 	std::list<Par*>::const_iterator getParsBegin() const;

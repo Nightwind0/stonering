@@ -5,8 +5,8 @@
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
 #include "IParty.h"
-
-
+#include "AbilityFactory.h"
+#include "AbilityManager.h"
 
 
 
@@ -30,6 +30,8 @@ class IApplication
       virtual ICharacterGroup * getSelectedCharacterGroup() const = 0;
       virtual LevelFactory *getLevelFactory() const =0;
       virtual ItemFactory * getItemFactory() const = 0;
+      virtual AbilityFactory * getAbilityFactory() const = 0;
+      virtual const AbilityManager * getAbilityManager() const = 0;
       virtual const ItemManager * getItemManager() const = 0;
       static IApplication * getInstance();
 
