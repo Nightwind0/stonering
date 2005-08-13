@@ -62,7 +62,7 @@
 <!ELEMENT weaponEnhancer EMPTY>
 <!ELEMENT armorEnhancer EMPTY>
 <!ELEMENT attributeEnhancer EMPTY> <!-- Similar to attributeModifier, but a temporary bonus when item is equipped. -->
-<!ELEMENT weaponTypeExclusionList (weaponTypeRef*)>1
+<!ELEMENT weaponTypeExclusionList (weaponTypeRef*)>
 <!ELEMENT armorTypeExclusionList (armorTypeRef*)>
 
 <!-- Spell DTD -->
@@ -72,13 +72,13 @@
 <!ELEMENT doMagicDamage  (magicDamageCategory)>
 <!ELEMENT doStatusEffect EMPTY>
 <!ELEMENT spell ((animation|doWeaponDamage|doMagicDamage|doStatusEffect)*)> 
-<!ELEMENT weaponDamageCategory (EMPTY)>
-<!ELEMENT magicDamageCategory (EMPTY)>
+<!ELEMENT weaponDamageCategory EMPTY>
+<!ELEMENT magicDamageCategory EMPTY>
 
 
 <!-- Animation DTD -->
 <!ELEMENT animation (par+)>
-<!ELEMENT par(playSound?,animationSpriteRef*)> <!-- If there are no animationSprites then its treated like a pause -->
+<!ELEMENT par (playSound?,animationSpriteRef*)> <!-- If there are no animationSprites then its treated like a pause -->
 <!ELEMENT animationSpriteRef (#PCDATA)>
 
 
@@ -179,7 +179,7 @@
 <!ATTLIST armorEnhancer multiplier CDATA #IMPLIED>
 <!ATTLIST spellRef type (elemental|white|status|other) #REQUIRED>
 <!ATTLIST animation name CDATA #REQUIRED>
-<!ATTLIST animation type(battle|world) #REQUIRED>
+<!ATTLIST animation type (battle|world) #REQUIRED>
 <!ATTLIST par duration CDATA #REQUIRED>
 <!ATTLIST par hide (none|caster|caster_group|target|target_group|all) #IMPLIED> <!-- Defaults to none --> 
 <!ATTLIST animationSpriteRef initialFocus (screen|caster|target) #REQUIRED>
@@ -191,6 +191,8 @@
 <!ATTLIST spell type (elemental|white|status|other) #REQUIRED>
 <!ATTLIST spell use (battle|world|both) #REQUIRED>
 <!ATTLIST spell targetable (all|single|either|self-only) #REQUIRED>
+<!ATTLIST spell appliesToWeapons (true|false) #IMPLIED> <!-- Used in generation of random weapons? Defaults to false -->
+<!ATTLIST spell appliesToArmor   (true|false) #IMPLIED> <!-- Used in generation of random armor? Defaults to false -->
 <!ATTLIST spell mp CDATA #REQUIRED>
 <!ATTLIST weaponDamageCategory type (slash|bash|jab) #REQUIRED>
 <!ATTLIST magicDamageCategory type (fire|water|earth|wind|holy|other) #REQUIRED>

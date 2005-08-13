@@ -168,6 +168,8 @@ class Choice;
       virtual ICharacterGroup * getSelectedCharacterGroup() const;
       virtual LevelFactory *getLevelFactory() const;
       virtual ItemFactory * getItemFactory() const ;
+      virtual AbilityFactory * getAbilityFactory() const ;
+      virtual const AbilityManager * getAbilityManager() const;
       virtual const ItemManager * getItemManager() const;
       virtual inline CL_Rect getLevelRect() const;
       virtual CL_Rect getDisplayRect() const;
@@ -208,6 +210,8 @@ class Choice;
       LevelFactory * mpLevelFactory;
       ItemFactory * mpItemFactory;
       ItemManager mItemManager;
+      AbilityManager mAbilityManager;
+      AbilityFactory * mpAbilityFactory;
       int mCurX;
       int mCurY;
 
@@ -226,6 +230,7 @@ class Choice;
       void showIntro();
       void loadFonts();
       void loadItems(const std::string &filename);
+      void loadSpells(const std::string &filename);
       void processActionQueue();
 
       void drawPlayer();

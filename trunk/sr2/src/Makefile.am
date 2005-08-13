@@ -14,7 +14,11 @@ libstonering_la_SOURCES = Level.cpp \
 			Item.cpp \
 			ItemManager.cpp \
 			ItemFactory.cpp \
-			Animation.cpp
+			Animation.cpp \
+			Element.cpp \
+			AbilityFactory.cpp \
+			Spell.cpp \
+			AbilityManager.cpp
 
 
 libstonering_la_CPPFLAGS = $(CLANLIB_CFLAGS) \

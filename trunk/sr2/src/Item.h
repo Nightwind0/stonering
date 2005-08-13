@@ -8,6 +8,7 @@
 
 namespace StoneRing{
 
+    class Spell;
     class SpellRef;
     class RuneType;
     class AttributeEnhancer;
@@ -675,6 +676,9 @@ namespace StoneRing{
 	virtual CL_DomElement createDomElement ( CL_DomDocument &) const;
 	
 	bool operator==(const SpellRef &lhs);
+
+	void setType(eSpellType type){ meSpellType = type; }
+	void setName(const std::string &name){ mName = name; }
 
     private:
 	eSpellType meSpellType;

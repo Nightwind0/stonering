@@ -138,7 +138,21 @@ void ItemManager::generateWeapons()
 
 	    if(!pClass->isExcluded( typeRef ) )
 	    {
-		//@todo: Create all the spell combinations. 
+		// Create all the spell combinations. 
+		const AbilityManager * pAbilityManager = IApplication::getInstance()->getAbilityManager();
+		for(std::list<Spell*>::const_iterator spellIter = pAbilityManager->getSpellsBegin();
+		    spellIter != pAbilityManager->getSpellsEnd();
+		    spellIter++)
+		{
+		    Spell * pSpell = *spellIter;
+
+		    if(pSpell->appliesToWeapons())
+		    {
+			GeneratedWeapon * pWeapon = new GeneratedWeapon();
+			pWeapon->generate(pType, pClass, pSpell->createSpellRef(), NULL);
+			mItems.push_back ( pWeapon );
+		    }
+		}
 		
 		// Create the no spell, no rune weapon
 
@@ -185,7 +199,24 @@ void ItemManager::generateArmor()
 
 	    if(!pClass->isExcluded( typeRef ) )
 	    {
-		//@todo: Create all the spell combinations. 
+		// Create all the spell combinations. 
+		const AbilityManager * pAbilityManager = IApplication::getInstance()->getAbilityManager();
+		for(std::list<Spell*>::const_iterator spellIter = pAbilityManager->getSpellsBegin();
+		    spellIter != pAbilityManager->getSpellsEnd();
+		    spellIter++)
+		{
+		    Spell * pSpell = *spellIter;
+
+		    if(pSpell->appliesToArmor())
+		    {
+			GeneratedArmor * pArmor = new GeneratedArmor();
+			pArmor->generate(pType, pClass, pSpell->createSpellRef(), NULL);
+			mItems.push_back ( pArmor );
+		    }
+		}
+		
+
+
 		
 		// Create the no spell, no rune Armor
 

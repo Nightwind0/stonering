@@ -1029,7 +1029,8 @@ void UniqueArmor::loadItem(CL_DomElement * pElement)
 	}
 	else if ( str == "spellRef" )
 	{
-	    setSpellRef ( pItemFactory->createSpellRef ( &child ) );
+	    setSpellRef ( pItemFactory->createSpellRef ( &child )) ;
+
 	}
 	else if ( str == "runeType" )
 	{
