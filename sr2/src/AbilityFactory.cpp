@@ -43,3 +43,8 @@ Animation            * AbilityFactory::createAnimation(CL_DomElement * pElement)
 {
     return new Animation( pElement );
 }
+
+MagicResistance      * AbilityFactory::createMagicResistance ( CL_DomElement * pElement) const
+{
+    return new MagicResistance ( pElement );
+}

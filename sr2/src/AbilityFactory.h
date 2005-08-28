@@ -15,6 +15,7 @@ namespace StoneRing
     class WeaponDamageCategory;
     class MagicDamageCategory;
     class Animation;
+    class MagicResistance;
  
 class AbilityFactory
 {
@@ -30,6 +31,7 @@ class AbilityFactory
     WeaponDamageCategory * createWeaponDamageCategory(CL_DomElement * pElement) const;
     MagicDamageCategory  * createMagicDamageCategory(CL_DomElement * pElement) const;
     Animation            * createAnimation(CL_DomElement * pElement) const;
+    MagicResistance      * createMagicResistance ( CL_DomElement * pElement) const;
 
  private:
 };

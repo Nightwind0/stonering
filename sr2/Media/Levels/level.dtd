@@ -71,9 +71,10 @@
 <!ELEMENT doWeaponDamage (weaponDamageCategory)>
 <!ELEMENT doMagicDamage  (magicDamageCategory)>
 <!ELEMENT doStatusEffect EMPTY>
-<!ELEMENT spell ((animation|doWeaponDamage|doMagicDamage|doStatusEffect)*)> 
+<!ELEMENT spell (magicAbsorb?,(animation|doWeaponDamage|doMagicDamage|doStatusEffect)*)> 
 <!ELEMENT weaponDamageCategory EMPTY>
 <!ELEMENT magicDamageCategory EMPTY>
+<!ELEMENT magicResistance EMPTY>
 
 
 <!-- Animation DTD -->
@@ -194,6 +195,7 @@
 <!ATTLIST spell appliesToWeapons (true|false) #IMPLIED> <!-- Used in generation of random weapons? Defaults to false -->
 <!ATTLIST spell appliesToArmor   (true|false) #IMPLIED> <!-- Used in generation of random armor? Defaults to false -->
 <!ATTLIST spell mp CDATA #REQUIRED>
+<!ATTLIST spell value CDATA #REQUIRED>
 <!ATTLIST weaponDamageCategory type (slash|bash|jab) #REQUIRED>
 <!ATTLIST magicDamageCategory type (fire|water|earth|wind|holy|other) #REQUIRED>
 <!ATTLIST doWeaponDamage baseAttack CDATA #REQUIRED>
@@ -211,4 +213,5 @@
 <!-- Therefore, a removeStatus for poison with 80% really does remove poison 80% of the time. Whereas, when inflicting the status (con'td) -->
 <!-- You have the chance as well as the target's resistances to account for -->
 <!ATTLIST doStatusEffect removeStatus (true|false) #IMPLIED> <!-- Default is false. In order to have a spell/skill that removes a status, set this to true -->
-
+<!ATTLIST magicResistance resist CDATA #REQUIRED>
+<!ATTLIST magicResistance type (fire|water|earth|wind|holy|elemental|all) #REQUIRED>

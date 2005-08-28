@@ -178,9 +178,9 @@ namespace StoneRing{
 	    ADDLE, // Drop magic effectiveness (MAG)
 	    ENFEEBLE, // Drop RST
 	    ELEMENTAL_RESIST, // Your AC for elemental magic
-	    SLASH_AC, // Extra AC against slash attacks
-	    JAB_AC, // Extra AC against jab attacks
-	    BASH_AC, // Extra AC against bash attacks
+	    SLASH_AC, // Extra AC against slash attacks (Multiplier)
+	    JAB_AC, // Extra AC against jab attacks (Multiplier)
+	    BASH_AC, // Extra AC against bash attacks (Multiplier)
 	    RESIST, // Resist is your AC for magic attacks
 	    WHITE_RESIST, // Your AC against white magic. (hey, its a valid type!)
 	    STATUS, // Chance of failure for a particular status effect
