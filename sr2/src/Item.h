@@ -111,6 +111,7 @@ namespace StoneRing{
 
 	virtual WeaponType * getWeaponType() const = 0;
 	virtual bool isRanged() const = 0;
+	virtual bool isTwoHanded() const = 0;
 
 	enum eAttribute
 	{
@@ -381,6 +382,7 @@ namespace StoneRing{
 
 	WeaponType *getWeaponType() const ;
 	bool isRanged() const ;
+	bool isTwoHanded() const;
 	
 	virtual eItemType getItemType() const { return WEAPON ; }
 	
@@ -392,7 +394,6 @@ namespace StoneRing{
 	
 	WeaponType * mpWeaponType;
 
-	bool mbRanged;
 	uint mnValue;
 	
 	
@@ -453,7 +454,7 @@ namespace StoneRing{
 	
 	WeaponClass * getWeaponClass() const { return mpClass; }
 	bool isRanged() const ;
-
+	bool isTwoHanded() const;
 	virtual bool operator== ( const ItemRef &ref );
 
 	void generate( WeaponType * pType, WeaponClass * pClass, 

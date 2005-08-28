@@ -887,8 +887,14 @@ WeaponType * UniqueWeapon::getWeaponType() const
 
 bool UniqueWeapon::isRanged() const 
 {
-    return mbRanged;
+    return mpWeaponType->isRanged();
 }
+
+bool UniqueWeapon::isTwoHanded() const
+{
+    return mpWeaponType->isTwoHanded();
+}
+
 
 void UniqueWeapon::loadItem(CL_DomElement * pElement) 
 {
@@ -1149,6 +1155,11 @@ WeaponType * GeneratedWeapon::getWeaponType() const
 bool GeneratedWeapon::isRanged() const 
 {
     return mpType->isRanged();
+}
+
+bool GeneratedWeapon::isTwoHanded() const
+{
+    return mpType->isTwoHanded();
 }
 
 
@@ -2029,11 +2040,13 @@ WeaponEnhancer::WeaponEnhancer(CL_DomElement * pElement )
     {
 	mfMultiplier = atof ( attributes.get_named_item("multiplier").get_node_value().c_str());
     }
+    else mfMultiplier = 1;
 
     if(!attributes.get_named_item("add").is_null())
     {
 	mnAdd = atoi ( attributes.get_named_item("add").get_node_value().c_str() );
     }
+    else mnAdd = 0;
 
 
     
@@ -2139,11 +2152,13 @@ AttributeEnhancer::AttributeEnhancer(CL_DomElement * pElement ):mnAdd(0),mfMulti
     {
 	mfMultiplier = atof ( attributes.get_named_item("multiplier").get_node_value().c_str());
     }
+    else mfMultiplier = 1;
 
     if(!attributes.get_named_item("add").is_null())
     {
 	mnAdd = atoi ( attributes.get_named_item("add").get_node_value().c_str() );
     }
+    else mnAdd = 0;
 
 
 }
@@ -2608,6 +2623,11 @@ uint WeaponType::getBasePrice() const
 bool WeaponType::isRanged() const
 {
     return mbRanged;
+}
+
+bool WeaponType::isTwoHanded() const
+{
+    return mbTwoHanded;
 }
 	
 
