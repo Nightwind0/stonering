@@ -40,7 +40,7 @@
 			<weaponEnhancer attribute="ATK" multiplier="4.5"/>
 		</weaponClass>
 		<weaponClass name="Giant's" valueMultiplier="5.25">
-			<attributeEnhancer attribute="HP" multiplier="1.15"/>
+			<attributeEnhancer attribute="MAX_HP" multiplier="1.15"/>
 			<weaponEnhancer attribute="ATK" multiplier="4"/>
 		</weaponClass>
 		<weaponClass name="Bear's" valueMultiplier="4">

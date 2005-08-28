@@ -2,6 +2,11 @@
 #include "ItemManager.h"
 #include "IApplication.h"
 #include "ItemFactory.h"
+#ifndef NDEBUG
+#include <iomanip>
+#endif
+
+
 
 using namespace StoneRing;
 
@@ -325,13 +330,84 @@ void ItemManager::dumpItemList()
 	iter != mItems.end();
 	iter++)
     {
-
-
-	std::cout << '[' << Item::ItemTypeAsString((*iter)->getItemType()) << ']' << ' ';
-	std::cout << (*iter)->getName();
-	std::cout << " (" << (*iter)->getDropRarity() << ')';
-	std::cout << '$' << (*iter)->getValue();
+	Item * pItem = *iter;
+	
+	std::cout << '[' << Item::ItemTypeAsString(pItem->getItemType()) << ']' << ' ';
+	std::cout << pItem->getName();
+	std::cout << " (" << pItem->getDropRarity() << ") ";
+	std::cout << '$' << pItem->getValue();
 	std::cout << std::endl;
+
+
+	switch(pItem->getItemType())
+	{
+	case Item::WEAPON:
+	{
+	    Weapon * pWeapon = dynamic_cast<Weapon*>(pItem);
+	    WeaponType * pType = pWeapon->getWeaponType();
+	    std::cout << '\t' << "ATK: " << std::setw(5) <<  pWeapon->modifyWeaponAttribute(Weapon::ATTACK, (int)pType->getBaseAttack());
+	    std::cout << ' ' << "Hit% " << std::setw(4) << pWeapon->modifyWeaponAttribute(Weapon::HIT, pType->getBaseHit()) * 100;
+	    std::cout << ' ' << "Critical% " << std::setw(4) << pWeapon->modifyWeaponAttribute(Weapon::CRITICAL, pType->getBaseCritical()) * 100 << std::endl;
+	    DamageCategory * pDamageCategory = pType->getDamageCategory();
+
+	    if(pDamageCategory->getClass() != DamageCategory::WEAPON) throw CL_Error("What? This weapon has a magic damage category.");
+
+	    WeaponDamageCategory * pWDC = dynamic_cast<WeaponDamageCategory*>(pDamageCategory);
+	    
+
+	    switch ( pWDC->getType() )
+	    {
+	    case WeaponDamageCategory::JAB:
+		std::cout << "\t[JAB]";
+		break;
+	    case WeaponDamageCategory::BASH:
+		std::cout << "\t[BASH]";
+		break;
+	    case WeaponDamageCategory::SLASH:
+		std::cout << "\t[SLASH]";
+		break;
+		
+	    }
+	    
+
+	    if(pWeapon->isTwoHanded()) std::cout << "(Two Handed)";
+
+	    if(pWeapon->isRanged()) std::cout << "(Ranged)" ;
+	       
+	    std::cout << std::endl;
+
+	    // If there are attribute enhancers, lets list them.
+	    if( pWeapon->getAttributeEnhancersBegin() != pWeapon->getAttributeEnhancersEnd() )
+	    {
+		std::cout << "\tAttribute Enhancers:"  << std::endl;
+
+		for(std::list<AttributeEnhancer*>::const_iterator iter = pWeapon->getAttributeEnhancersBegin();
+		    iter != pWeapon->getAttributeEnhancersEnd();
+		    iter++)
+		{
+		    AttributeEnhancer * pEnhancer = *iter;
+		    std::cout << "\t\t" << pEnhancer->getAttribute() << ' ';
+		    if(pEnhancer->getMultiplier() != 1)
+		    {
+			if ( pEnhancer->getMultiplier() > 1)
+			    std::cout << (pEnhancer->getMultiplier() - 1) * 100 << "% BONUS";
+			else std::cout << std::abs(pEnhancer->getMultiplier() - 1) * 100 << "% PENALTY";
+		    }
+		    if(pEnhancer->getAdd() != 0)
+			std::cout << " +" << pEnhancer->getAdd();
+		    std::cout << std::endl;
+		}
+	    }
+
+	    break;
+	}
+	case Item::ARMOR:
+	{
+	    Armor * pArmor = dynamic_cast<Armor*>(pItem);
+	    break;
+	}
+	    
+	}
 	
     }
 }
