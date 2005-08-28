@@ -91,6 +91,30 @@ namespace StoneRing
 	float mfChance;
 	bool mbRemove;
     };
+    
+
+    class MagicResistance : public Element
+    {
+    public:
+	MagicResistance();
+	MagicResistance(CL_DomElement * pElement);
+	virtual ~MagicResistance();
+
+	float getResistance() const;
+	enum eType
+	{
+	    FIRE, WATER, WIND, EARTH, HOLY, ELEMENTAL, ALL
+	};
+
+	eType getType() const;
+
+	CL_DomElement  createDomElement(CL_DomDocument &doc) const { return CL_DomElement(doc,"magicResistance"); }
+
+    private:
+	eType meType;
+	float mfResistance;
+    };
+
 
     class Spell : public Element
     {
@@ -117,10 +141,14 @@ namespace StoneRing
 
 	SpellRef * createSpellRef() const;
 
+	uint getValue() const;
+
 	std::list<Effect*>::const_iterator getEffectsBegin() const;
 	std::list<Effect*>::const_iterator getEffectsEnd() const;
 
 	CL_DomElement createDomElement( CL_DomDocument &doc ) const;
+
+	MagicResistance * getMagicResistance() const;
 
 	
     private:
@@ -136,7 +164,8 @@ namespace StoneRing
 	bool mbAppliesToWeapons;
 	bool mbAppliesToArmor;
 	uint mnMP;
-
+	uint mnValue;
+	MagicResistance * mpMagicResistance;
 	std::list<Effect*> mEffects;
     };
 

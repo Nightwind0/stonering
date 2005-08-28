@@ -228,7 +228,7 @@ Spell::Spell()
 {
 }
 
-Spell::Spell(CL_DomElement *pElement)
+Spell::Spell(CL_DomElement *pElement):mpMagicResistance(NULL)
 {
     AbilityFactory * pFactory = IApplication::getInstance()->getAbilityFactory();
     
@@ -242,7 +242,8 @@ Spell::Spell(CL_DomElement *pElement)
 
     mbAppliesToWeapons = getImpliedBool ("appliesToWeapons",&attributes, false);
     mbAppliesToArmor = getImpliedBool ("appliesToArmor",&attributes, false);
-
+    
+    mnValue = getRequiredUint("value",&attributes);
 
     mnMP = getRequiredUint("mp", &attributes);
 
@@ -271,7 +272,12 @@ Spell::Spell(CL_DomElement *pElement)
 	{
 	    mEffects.push_back ( pFactory->createAnimation( &child ) );
 	}
+	else if (name == "magicResistance")
+	{
+	    mpMagicResistance = pFactory->createMagicResistance( &child ) ;
+	}
 		
+
 
 	
 	child = child.get_next_sibling().to_element();
@@ -311,9 +317,19 @@ Spell::~Spell()
 }
 
 
+MagicResistance * Spell::getMagicResistance() const
+{
+    return mpMagicResistance;
+}
+
 std::string Spell::getName() const
 {
     return mName;
+}
+
+uint Spell::getValue() const
+{
+    return mnValue;
 }
 
 
@@ -390,6 +406,55 @@ SpellRef * Spell::createSpellRef() const
 
     return ref;
 }
+
+
+
+
+
+MagicResistance::MagicResistance()
+{
+}
+
+MagicResistance::MagicResistance(CL_DomElement * pElement)
+{
+    AbilityFactory * pFactory = IApplication::getInstance()->getAbilityFactory();
+    
+    CL_DomNamedNodeMap attributes = pElement->get_attributes();
+
+    std::string type = getRequiredString("type",&attributes);
+    
+    if(type == "fire") meType = FIRE;
+    else if (type == "water") meType = WATER;
+    else if (type == "earth") meType = EARTH;
+    else if (type == "wind") meType = WIND;
+    else if (type == "holy") meType = HOLY;
+    else if (type == "elemental") meType = ELEMENTAL;
+    else if (type == "all") meType = ALL;
+    else throw CL_Error("Bad magic resistance type of " + type);
+
+    mfResistance = getRequiredFloat("resist", &attributes);
+
+}
+
+
+MagicResistance::~MagicResistance()
+{
+}
+
+
+
+float MagicResistance::getResistance() const
+{
+    return mfResistance;
+}
+
+
+
+MagicResistance::eType MagicResistance::getType() const
+{
+    return meType;
+}
+
 
 
 /*

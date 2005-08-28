@@ -1,26 +1,31 @@
 <!--DOCTYPE spellList SYSTEM "Levels/level.dtd" -->
 <spellList>
-	<spell mp="2" name="Torch" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true">
+	<spell mp="2" name="Torch" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="5000">
+		<magicResistance type="fire" resist="0.25"/>
 		<doMagicDamage baseDamage="25" baseHit="75">
 			<magicDamageCategory type="fire"/>
 		</doMagicDamage>
 	</spell>
-	<spell mp="2" name="Stonepelt" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true">
+	<spell mp="2" name="Stonepelt" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="5000">
+		<magicResistance type="earth" resist="0.25"/>
 		<doMagicDamage baseDamage="25" baseHit="75">
 			<magicDamageCategory type="earth"/>
 		</doMagicDamage>
 	</spell>
-	<spell mp="2" name="Ice" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true">
+	<spell mp="2" name="Ice" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="5000">
+		<magicResistance type="water" resist="0.25"/>
 		<doMagicDamage baseDamage="25" baseHit="75">
 			<magicDamageCategory type="water"/>
 		</doMagicDamage>
 	</spell>
-	<spell mp="2" name="Breeze" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true">
+	<spell mp="2" name="Breeze" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="5000">
+		<magicResistance type="wind" resist="0.25"/>
 		<doMagicDamage baseDamage="25" baseHit="75">
 			<magicDamageCategory type="wind"/>
 		</doMagicDamage>
 	</spell>
-	<spell mp="2" name="Anoint" targetable="either" type="white" use="both" appliesToArmor="true" appliesToWeapons="true">
+	<spell mp="2" name="Anoint" targetable="either" type="white" use="both" appliesToArmor="true" appliesToWeapons="true" value="5000">
+		<magicResistance type="holy" resist="0.25"/>
 		<doMagicDamage baseDamage="25" baseHit="75">
 			<magicDamageCategory type="holy"/>
 		</doMagicDamage>

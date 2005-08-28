@@ -435,11 +435,9 @@ NamedItemElement::NamedItemElement (CL_DomElement * pElement):mpNamedItem(NULL),
 
     if(attributes.get_length() < 2) throw CL_Error("Error reading attributes in named item element.");
 
-    if(!attributes.get_named_item("name").is_null())
-	mName = attributes.get_named_item("name").get_node_value();
-    else throw CL_Error("Name attribute is required on named items.");
-    
-    std::string dropRarity = attributes.get_named_item("dropRarity").get_node_value();
+    mName = getRequiredString("name",&attributes);
+
+    std::string dropRarity = getRequiredString("dropRarity",&attributes);
 
     meDropRarity = Item::DropRarityFromString ( dropRarity );
 
@@ -706,39 +704,26 @@ void RegularItem::loadItem ( CL_DomElement * pElement )
 
     if(attributes.get_length() < 4) throw CL_Error("Error reading attributes in regular item.");
 
-    if(!attributes.get_named_item("value").is_null())
-    {
-	mnValue = atoi(attributes.get_named_item("value").get_node_value().c_str());
-	mnSellValue = mnValue / 2;
-    }
-    else throw CL_Error("Value attribute is required on regular items.");
-    
+    mnValue = getRequiredInt("value",&attributes);
 
-    std::string useType;
+    mnSellValue = mnValue / 2;
+      
 
-    if(!attributes.get_named_item("use").is_null())
-	useType = attributes.get_named_item("use").get_node_value();
-    else throw CL_Error("UseType attribute is required on regular items.");
-
+    std::string useType = getRequiredString("use",&attributes);
     meUseType = UseTypeFromString ( useType );    
 
-    std::string targetable; 
-    if(!attributes.get_named_item("targetable").is_null())
-	targetable = attributes.get_named_item("targetable").get_node_value();
-    else throw CL_Error("targetable attribute is required on regular items.");
-
+    std::string targetable = getRequiredString("targetable",&attributes); 
     meTargetable = TargetableFromString ( targetable );    
 
-    if(!attributes.get_named_item("sellValueMultiplier").is_null())
+    if(hasAttr("sellValueMultiplier", &attributes))
     {
-	float multiplier = atof( attributes.get_named_item("sellValueMultiplier").get_node_value().c_str());
+	float multiplier = getFloat("sellValueMultiplier",&attributes);
 
 	mnSellValue = (int)(mnValue * multiplier);
     }
 
-    if(!attributes.get_named_item("reusable").is_null())
-	mbReusable = (attributes.get_named_item("reusable").get_node_value() == "true");
-    else throw CL_Error("Reusable attribute is required on regular items.");
+    mbReusable = getRequiredBool("reusable",&attributes);
+    
 
     if(!attributes.get_named_item("defaultTarget").is_null())
     {
@@ -1123,12 +1108,28 @@ GeneratedWeapon::getDropRarity() const
 
 uint GeneratedWeapon::getValue() const 
 {
+    const AbilityManager * pManager = IApplication::getInstance()->getAbilityManager();
 
-    // @todo: add rune value or spell value
-
-    return (int)((float)mpType->getBasePrice() * 
+    uint value= (int)((float)mpType->getBasePrice() * 
 		 mpClass->getValueMultiplier()) 
 	+ mpClass->getValueAdd();
+
+    if(hasSpell())
+    {
+	SpellRef * pSpellRef = getSpellRef();
+
+	Spell * pSpell = pManager->getSpell ( *pSpellRef );
+
+	value += pSpell->getValue();
+    }
+
+    if(hasRuneType())
+    {
+	value *= 2; //@todo : get multiplier from game settings
+    }
+
+    return value;
+
 }
 
 uint GeneratedWeapon::getSellValue() const 
@@ -1193,12 +1194,15 @@ void GeneratedWeapon::generate( WeaponType* pType, WeaponClass * pClass,
 
     os << pClass->getName() << ' ';
 
+    os << pType->getName();
+
     if(pSpell)
     {
-	os << pSpell->getName() << ' ';
+	os << " of " << pSpell->getName();
     }
 
-    os << pType->getName();
+
+
 
     mName = os.str();
 
@@ -1285,10 +1289,39 @@ Item::eDropRarity GeneratedArmor::getDropRarity() const
 
 uint GeneratedArmor::getValue() const 
 {
-    // @todo: add rune value or spell value
+    // @todo: add rune value
+    const AbilityManager * pManager = IApplication::getInstance()->getAbilityManager();
 
-    return (int)((float)mpType->getBasePrice() * mpClass->getValueMultiplier()) 
+    uint value =  (int)((float)mpType->getBasePrice() * mpClass->getValueMultiplier()) 
 	+ mpClass->getValueAdd();
+
+    if(hasSpell())
+    {
+	SpellRef * pSpellRef = getSpellRef();
+
+	Spell * pSpell = pManager->getSpell ( *pSpellRef );
+
+	value += pSpell->getValue();
+    }
+
+    if(hasRuneType())
+    {
+	switch( getRuneType()->getRuneType() )
+	{
+	case RuneType::RUNE:
+	    value *= 2; //@todo : get value from game settings
+	    break;
+	case RuneType::ULTRA_RUNE:
+	{
+	    double dValue = value;
+	    dValue *= 2.75; //@todo: get value from game settings
+	    value = (int)dValue;
+	    break;
+	}
+	}
+    }
+
+    return value;
 }
 
 uint GeneratedArmor::getSellValue() const 
@@ -1344,12 +1377,15 @@ void GeneratedArmor::generate( ArmorType * pType, ArmorClass * pClass,
 
     os << pClass->getName() << ' ';
 
+    os << pType->getName();
+
     if(pSpell)
     {
-	os << pSpell->getName() << ' ';
+	os << " of " <<  pSpell->getName();
     }
 
-    os << pType->getName();
+
+
 
     mName = os.str();
 }
