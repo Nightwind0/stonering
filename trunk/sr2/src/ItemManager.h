@@ -28,6 +28,7 @@ public:
     virtual Item * getItem( const ItemRef & ref ) const;
 #ifndef NDEBUG
     void dumpItemList();
+    void printAttributeEnhancers(Equipment * pItem );
 #endif
     
 
