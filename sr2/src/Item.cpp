@@ -2686,10 +2686,8 @@ ArmorType::ArmorType(CL_DomElement * pElement )
 	    meSlot = BODY;
 	else if (slot == "feet")
 	    meSlot = FEET;
-	else if (slot == "left_hand")
-	    meSlot = LEFT_HAND;
-	else if (slot == "right_hand")
-	    meSlot = RIGHT_HAND;
+	else if (slot == "hands")
+	    meSlot = HANDS;
     }
     else throw CL_Error("slot is required on weapon types.");
 

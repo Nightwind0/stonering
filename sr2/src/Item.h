@@ -885,7 +885,7 @@ namespace StoneRing{
 	int getBaseAC() const;
 	int getBaseRST() const;
 
-	enum eSlot { HEAD, BODY, SHIELD, FEET, LEFT_HAND, RIGHT_HAND };
+	enum eSlot { HEAD, BODY, SHIELD, FEET, HANDS };
 
 	eSlot getSlot() const;
 

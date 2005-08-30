@@ -377,33 +377,41 @@ void ItemManager::dumpItemList()
 	    std::cout << std::endl;
 
 	    // If there are attribute enhancers, lets list them.
-	    if( pWeapon->getAttributeEnhancersBegin() != pWeapon->getAttributeEnhancersEnd() )
-	    {
-		std::cout << "\tAttribute Enhancers:"  << std::endl;
-
-		for(std::list<AttributeEnhancer*>::const_iterator iter = pWeapon->getAttributeEnhancersBegin();
-		    iter != pWeapon->getAttributeEnhancersEnd();
-		    iter++)
-		{
-		    AttributeEnhancer * pEnhancer = *iter;
-		    std::cout << "\t\t" << pEnhancer->getAttribute() << ' ';
-		    if(pEnhancer->getMultiplier() != 1)
-		    {
-			if ( pEnhancer->getMultiplier() > 1)
-			    std::cout << (pEnhancer->getMultiplier() - 1) * 100 << "% BONUS";
-			else std::cout << std::abs(pEnhancer->getMultiplier() - 1) * 100 << "% PENALTY";
-		    }
-		    if(pEnhancer->getAdd() != 0)
-			std::cout << " +" << pEnhancer->getAdd();
-		    std::cout << std::endl;
-		}
-	    }
+	    printAttributeEnhancers(pWeapon);
 
 	    break;
 	}
 	case Item::ARMOR:
 	{
 	    Armor * pArmor = dynamic_cast<Armor*>(pItem);
+
+	    ArmorType * pType = pArmor->getArmorType();
+	    std::cout << '\t' << "AC: " << std::setw(5) <<  pArmor->modifyArmorAttribute(Armor::AC, (int)pType->getBaseAC());
+	    std::cout << ' ' << "RST " << std::setw(4) << pArmor->modifyArmorAttribute(Armor::RESIST, pType->getBaseRST()) << std::endl;
+	    
+	    switch( pType->getSlot())
+	    {
+	    case ArmorType::HEAD:
+		std::cout << "\t[HEAD]";
+		break;
+	    case ArmorType::BODY:
+		std::cout << "\t[BODY]";
+		break;
+	    case ArmorType::SHIELD:
+		std::cout << "\t[SHIELD]";
+		break;
+	    case ArmorType::FEET:
+		std::cout << "\t[FEET]";
+		break;
+	    case ArmorType::HANDS:
+		std::cout << "\t[HANDS]";
+		break;
+	    }
+
+	    std::cout << std::endl;
+
+	    printAttributeEnhancers(pArmor);
+
 	    break;
 	}
 	    
@@ -411,4 +419,32 @@ void ItemManager::dumpItemList()
 	
     }
 }
+void ItemManager::printAttributeEnhancers(Equipment * pItem )
+{
+    if( pItem->getAttributeEnhancersBegin() != pItem->getAttributeEnhancersEnd() )
+    {
+	std::cout << "\tAttribute Enhancers:"  << std::endl;
+	
+	for(std::list<AttributeEnhancer*>::const_iterator iter = pItem->getAttributeEnhancersBegin();
+	    iter != pItem->getAttributeEnhancersEnd();
+	    iter++)
+	{
+	    AttributeEnhancer * pEnhancer = *iter;
+	    std::cout << "\t\t" << pEnhancer->getAttribute() << ' ';
+	    if(pEnhancer->getMultiplier() != 1)
+	    {
+		if ( pEnhancer->getMultiplier() > 1)
+		    std::cout << (pEnhancer->getMultiplier() - 1) * 100 << "% BONUS";
+		else std::cout << std::abs(pEnhancer->getMultiplier() - 1) * 100 << "% PENALTY";
+	    }
+	    if(pEnhancer->getAdd() != 0)
+		std::cout << " +" << pEnhancer->getAdd();
+	    std::cout << std::endl;
+	}
+    }
+    
+}
+
+
+
 #endif

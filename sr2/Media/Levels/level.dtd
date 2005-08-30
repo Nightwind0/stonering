@@ -167,7 +167,7 @@
 <!ATTLIST armorType basePrice CDATA #REQUIRED>
 <!ATTLIST armorType baseArmorClass CDATA #REQUIRED> 
 <!ATTLIST armorType baseResist CDATA #REQUIRED>
-<!ATTLIST armorType slot (head|body|shield|feet|left_hand|right_hand) #REQUIRED>
+<!ATTLIST armorType slot (head|body|shield|feet|hands) #REQUIRED>
 <!ATTLIST attributeEnhancer attribute CDATA #REQUIRED>
 <!ATTLIST attributeEnhancer add  CDATA #REQUIRED>
 <!ATTLIST attributeEnhancer multiplier CDATA #IMPLIED>

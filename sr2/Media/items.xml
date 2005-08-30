@@ -268,7 +268,7 @@
 		<armorType baseArmorClass="10" baseResist="10" basePrice="200" name="Buckler" slot="shield">
 			<iconRef>Armor/buckler</iconRef>
 		</armorType>
-		<armorType baseArmorClass="5" baseResist="5" basePrice="200" name="Boots" slot="shield">
+		<armorType baseArmorClass="5" baseResist="5" basePrice="200" name="Boots" slot="feet">
 			<iconRef>Armor/boot</iconRef>
 		</armorType>	
 		<armorType baseArmorClass="10" baseResist="50" basePrice="250" name="Hat" slot="head">
