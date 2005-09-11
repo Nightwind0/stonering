@@ -166,6 +166,11 @@
 			<weaponDamageCategory type="bash"/>
 			<iconRef>Weapons/flail</iconRef>
 		</weaponType>
+		<weaponType basePrice="1200" name="Morning Star" baseAttack = "100" baseHit = "0.80" baseCritical = "0.03" twoHanded="true">
+			<weaponDamageCategory type="bash"/>
+			<iconRef>Weapons/morning_star</iconRef>
+		</weaponType>
+		
 		
 		<weaponType basePrice="400" name="Halberd" baseAttack="35" baseHit = "0.60"  >
 			<weaponDamageCategory type="slash"/>

@@ -46,6 +46,8 @@ public:
     virtual uint getSelectedCharacterIndex() const { return 0;}
     virtual ICharacter* getCharacter(uint) const { return NULL;}
     virtual ICharacter* getSelectedCharacter() const {return NULL; }
+    virtual uint getCasterCharacterIndex() const { return 0; }
+    virtual ICharacter * getCasterCharacter() const{ return NULL; }
 };
 
 
@@ -77,6 +79,8 @@ public:
 	ICharacterGroup *getSelectedCharacterGroup() const { return NULL; }
 	ItemFactory * getItemFactory() const { static ItemFactory itemFactory; return &itemFactory; }
 	ItemManager * getItemManager() const { static EditorItemManager itemManager; return &itemManager; }
+	virtual AbilityFactory * getAbilityFactory() const { static AbilityFactory abilityFactory; return &abilityFactory; }
+	virtual const AbilityManager * getAbilityManager() const { static AbilityManager abilityManager; return &abilityManager; }
 	
 	virtual int getScreenWidth()const;
       virtual int getScreenHeight()const;

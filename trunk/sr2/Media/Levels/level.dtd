@@ -83,6 +83,13 @@
 <!ELEMENT animationSpriteRef (#PCDATA)>
 
 
+<!-- Character Class DTD -->
+<!ELEMENT characterClass (weaponTypeRef*, armorTypeRef*,startingStat*,statIncrease*,skill*)>
+<!ELEMENT statIncrease EMPTY>
+<!ELEMENT initialStat EMPTY>
+<!ELEMENT skill (prereqSkillRef*,(animation|doWeaponDamage|doMagicDamage|doStatusEffect)*)>
+<!ELEMENT prereqSkillRef EMPTY>
+
 <!-- Attributes -->
 
 <!ATTLIST level name CDATA #REQUIRED>
@@ -214,4 +221,17 @@
 <!-- You have the chance as well as the target's resistances to account for -->
 <!ATTLIST doStatusEffect removeStatus (true|false) #IMPLIED> <!-- Default is false. In order to have a spell/skill that removes a status, set this to true -->
 <!ATTLIST magicResistance resist CDATA #REQUIRED>
-<!ATTLIST magicResistance type (fire|water|earth|wind|holy|elemental|all) #REQUIRED>
+<!ATTLIST magicResistance type (fire|water|earth|wind|holy|elemental|all) #REQUIRED
+
+
+<!ATTLIST characterClass name CDATA #REQUIRED>
+<!ATTLIST characterClass gender (male|female|either) #IMPLIED> <!-- Defaults to either -->
+<!ATTLIST statIncrease stat (HP_MAX,MP_MAX, STR, DEX, EVD, MAG, RST , SPR) #REQUIRED>
+<!ATTLIST statIncrease period CDATA #REQUIRED> <!-- Numeric integer. 1,2,3,4,5.... Or 0 -->
+<!ATTLIST statIncrease increment CDATA #REQUIRED> <!-- Numeric integer -->
+<!ATTLIST initialStat stat (HP_MAX, MP_MAX, STR, DEX, EVD, MAG, RST, SPR) #REQUIRED>
+<!ATTLIST initialStat value CDATA #REQUIRED> <!-- Numeric integer -->
+<!ATTLIST skill name CDATA #REQUIRED>
+<!ATTLIST skill sp CDATA #REQUIRED> <!-- Skill points to earn skill -->
+<!ATTLIST skill bp CDATA #REQUIRED> <!-- Percentage of 'Break' to use skill --> 
+<!ATTLIST prereqSkillRef skillName CDATA #REQUIRED>
