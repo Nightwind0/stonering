@@ -892,7 +892,7 @@ void Application::drawMap()
 int Application::main(int argc, char ** argv)
 {
   
-#ifdef _DEBUG
+#ifndef NDEBUG
 
     CL_ConsoleWindow console("Stone Ring Debug",80,1000);
     console.redirect_stdio();

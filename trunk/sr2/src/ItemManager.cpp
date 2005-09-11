@@ -2,7 +2,9 @@
 #include "ItemManager.h"
 #include "IApplication.h"
 #include "ItemFactory.h"
+
 #ifndef NDEBUG
+#include <algorithm>
 #include <iomanip>
 #endif
 
@@ -435,7 +437,7 @@ void ItemManager::printAttributeEnhancers(Equipment * pItem )
 	    {
 		if ( pEnhancer->getMultiplier() > 1)
 		    std::cout << (pEnhancer->getMultiplier() - 1) * 100 << "% BONUS";
-		else std::cout << std::abs(pEnhancer->getMultiplier() - 1) * 100 << "% PENALTY";
+		else std::cout << abs(pEnhancer->getMultiplier() - 1) * 100 << "% PENALTY";
 	    }
 	    if(pEnhancer->getAdd() != 0)
 		std::cout << " +" << pEnhancer->getAdd();
