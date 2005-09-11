@@ -1,7 +1,7 @@
 #ifndef ELEMENT_H
 #define ELEMENT_H
 
-
+#include "sr_defines.h"
 
 #include <ClanLib/core.h>
 

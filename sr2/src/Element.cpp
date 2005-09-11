@@ -67,7 +67,7 @@ bool Element::getRequiredBool (const std::string &attrname, CL_DomNamedNodeMap *
 	throw CL_Error("Missing attribute " + attrname );
     }
 
-    return "";
+    return false;
 }
 
 bool Element::getBool ( const std::string &attrname, CL_DomNamedNodeMap * pAttributes)

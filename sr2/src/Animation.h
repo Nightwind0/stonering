@@ -8,6 +8,12 @@
 #include "sr_defines.h"
 #include "Effect.h"
 
+
+// MS has a "PlaySound" so I nuke it
+#ifdef _MSC_VER
+#undef PlaySound
+#endif
+
 namespace StoneRing{
 
     class PlaySound;
