@@ -1,5 +1,10 @@
 Danny TODOs
 
+1) Re-work status effects. Need a smaller unit to define status effects including duration. Then, attributes need to be able to be identified as a reference to a status effect, perhaps by using % at the start of the token. 
+
+2) Skills need to be based off either Break, MP, or always on, or have a setting in the menu to turn them on or off.
+
+
 5) How will monsters work? How will you know what monsters to load? How will you know where you can even have monsters? 
 Monster region. Can they overlap?  no.
 A certain maximum per level. But each region can have multiple rectangles.

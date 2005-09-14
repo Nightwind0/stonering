@@ -1,0 +1,8 @@
+Skill system - some skills use Break, some use MP, some are switch on/off,
+some are always on.
+
+SKILLS:
+Bartering: 10% off sales
+Scouting: Increased encounters
+Stealth: Decreased encounters
+Treasure Hunter: Sense when hidden treasure is near
