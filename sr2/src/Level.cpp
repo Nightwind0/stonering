@@ -784,7 +784,7 @@ void AttributeModifier::invoke()
     }
 
 
-    pCharacter->modifyAttribute(mAttribute, add, 1) ;
+//    pCharacter->modifyAttribute(mAttribute, add, 1) ;
 }
 
 
@@ -3858,7 +3858,8 @@ void Level::step(const CL_Rect &dest, const CL_Rect & old)
 #ifndef _MSC_VER
     mMappableObjects.sort( moSortCriterion );
 #else
-    mMappableObjects.sort(std::greater<MappableObject*>());
+
+	mMappableObjects.sort(std::greater<MappableObject*>());
 #endif
     
 
@@ -4041,6 +4042,49 @@ bool Level::moSortCriterion( const MappableObject *p1, const MappableObject * p2
 
 
 }
+
+#ifndef NDEBUG
+void Level::dumpMappableObjects() const
+{
+
+	IApplication * pApp = IApplication::getInstance();
+
+	CL_Rect levelRect = pApp->getLevelRect();
+	int pX = pApp->getLevelRect().get_width() / 2;
+    int pY = pApp->getLevelRect().get_height() / 2;
+
+
+	std::cout << "=== Mappable Objects ===" << std::endl;
+
+	for(std::list<MappableObject *>::const_iterator i = mMappableObjects.begin();
+		i != mMappableObjects.end();
+		i++)
+		{
+			MappableObject * pMO = *i;
+
+
+			std::cout << pMO->getName();
+
+			int dx1 = pX - pMO->getX();
+		    int dy1 = pY - pMO->getY();
+
+			int distance = sqrt( dx1 * dx1 + dy1 * dy1 );
+
+			std::cout << " Dst: " << distance;
+
+			if( levelRect.is_overlapped(pMO->getRect()) )
+			{
+				std::cout << " is Onscreen ";
+			}
+
+			std::cout << pMO->getX() << ',' << pMO->getY();
+			std::cout << std::endl;
+			
+		}
+
+
+}
+#endif
 
 // Sort tiles on zOrder
 bool Level::tileSortCriterion ( const Tile * p1, const Tile * p2)

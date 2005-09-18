@@ -279,6 +279,7 @@ class Choice;
 
 #ifndef NDEBUG
       CL_Rect mLastTalkRect;
+	  bool mbShowLevelCenter;
 #endif
       bool mbQueueKeyUps;
       std::queue<int> mKeyUpQueue;
