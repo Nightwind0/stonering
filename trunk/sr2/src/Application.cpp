@@ -800,6 +800,12 @@ void Application::onSignalKeyUp(const CL_InputEvent &key)
 	case CL_KEY_D:
 	    mbShowDebug = mbShowDebug?false:true;
 	    break;
+	case CL_KEY_M:
+		std::cout << getLevelRect().left + getLevelRect().get_width() / 2;
+		std::cout << ',' << getLevelRect().top + getLevelRect().get_height() / 2;
+		std::cout << std::endl;
+		mpLevel->dumpMappableObjects();
+		break;
 #endif
 	    
 	}
@@ -974,9 +980,9 @@ int Application::main(int argc, char ** argv)
 		mpfSBBlack->draw(0,  mpfSBBlack->get_height(), std::string("FPS: ") +IntToString(fps) );
 
 		
-		
 	    }
-	    
+
+		
 #endif
 	    
 	    if(delta_time < 16)
@@ -1005,13 +1011,6 @@ int Application::main(int argc, char ** argv)
 	std::cerr << error.message.c_str() << std::endl;
     }
 	
-#ifndef NDEBUG
-#ifdef _MSC_VER 
-	std::string foo;
-	std::cin >> foo;
-#endif
-#endif
-
 
 	return 0;
 

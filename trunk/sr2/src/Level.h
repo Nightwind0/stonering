@@ -701,24 +701,41 @@ namespace StoneRing {
 }
 #ifdef _MSC_VER
 using namespace StoneRing;
-template<>
-struct std::greater<MappableObject*>  : public binary_function<MappableObject* ,MappableObject*, bool>
+
+template <>
+struct std::greater<MappableObject*>
+
 {
-    bool operator()(const MappableObject* &n1, const  MappableObject * &n2) const
+    const bool operator()(const MappableObject* n1, const  MappableObject * n2) const
 	{
 	    IApplication * pApp = IApplication::getInstance();
 
-	    uint pX = pApp->getLevelRect().get_width() / 2;
-	    uint pY = pApp->getLevelRect().get_height() / 2;
+	    int pX = pApp->getLevelRect().left + pApp->getLevelRect().get_width() / 2;
+	    int pY = pApp->getLevelRect().top + pApp->getLevelRect().get_height() / 2;
 
 	
-	    uint p1Distance, p2Distance;
+	    
+	
+		uint p1Distance, p2Distance;
 
 	
-	    p1Distance = max(abs( (long)pX - n1->getX()) , abs((long)pY - n1->getY()));
-	    p2Distance = max(abs( (long)pX - n2->getX()) , abs((long)pY - n2->getY()));
+		p1Distance = max(abs( (long)pX - n1->getX()) , abs((long)pY - n1->getY()));
+		p2Distance = max(abs( (long)pX - n2->getX()) , abs((long)pY - n2->getY()));
 
-	    return p1Distance < p2Distance;
+	/*	int dx1 = pX - n1->getX();
+		int dy1 = pY - n1->getY();
+		int dx2 = pX - n2->getX();
+		int dy2 = pY - n2->getY();
+	
+
+	
+		p1Distance = sqrt ( (dx1 * dx1) + (dy1 * dy1));
+		p2Distance = sqrt ( (dx2 * dx2) + (dy2 * dy2));
+		*/
+
+		return p1Distance < p2Distance;
+
+
 	};
 };
 
@@ -785,6 +802,13 @@ namespace StoneRing{
 	    bool allowsRunning() const { return mbAllowsRunning; }
 
 	    std::string getName() const { return mName; }
+
+#ifndef NDEBUG
+		void dumpMappableObjects() const;
+#endif
+
+
+
 	protected:
 
 //			std::map<CL_Point, std::list<Tile*> > mTileMap;

@@ -78,7 +78,7 @@ public:
 	
 	ICharacterGroup *getSelectedCharacterGroup() const { return NULL; }
 	ItemFactory * getItemFactory() const { static ItemFactory itemFactory; return &itemFactory; }
-	ItemManager * getItemManager() const { static EditorItemManager itemManager; return &itemManager; }
+	const ItemManager * getItemManager() const { static EditorItemManager itemManager; return &itemManager; }
 	virtual AbilityFactory * getAbilityFactory() const { static AbilityFactory abilityFactory; return &abilityFactory; }
 	virtual const AbilityManager * getAbilityManager() const { static AbilityManager abilityManager; return &abilityManager; }
 	
