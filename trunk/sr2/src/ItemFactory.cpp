@@ -268,4 +268,13 @@ MagicDamageCategory * ItemFactory::createMagicDamageCategory(CL_DomElement * pEl
     return new MagicDamageCategory(pElement);
 }
 
+StatusEffectModifier *ItemFactory::createStatusEffectModifier() const
+{
+    return new StatusEffectModifier();
+}
 
+
+StatusEffectModifier *ItemFactory::createStatusEffectModifier(CL_DomElement *pElement) const
+{
+    return new StatusEffectModifier(pElement);
+}

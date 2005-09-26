@@ -10,6 +10,7 @@
 #include "Item.h"
 #include "ItemRef.h"
 #include "sr_defines.h"
+#include "Effect.h"
 
 using std::string;
 

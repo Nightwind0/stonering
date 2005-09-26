@@ -45,8 +45,8 @@
 <!ELEMENT armorRef (armorTypeRef, armorClassRef, (spellRef|runeType)?)>
 <!ELEMENT namedItem (iconRef,(regularItem | uniqueWeapon | uniqueArmor | rune | specialItem | systemItem))>
 <!ELEMENT regularItem ((attributeModifier | say | give | take | playAnimation | playSound | loadLevel | startBattle | pause | invokeShop | giveGold | choice)*)>
-<!ELEMENT uniqueWeapon (weaponTypeRef, weaponEnhancer*, attributeEnhancer*,  (spellRef|runeType)?)>
-<!ELEMENT uniqueArmor   (armorTypeRef, armorEnhancer*, attributeEnhancer*, (spellRef|runeType)?)>
+<!ELEMENT uniqueWeapon (weaponTypeRef, weaponEnhancer*, statusEffectModifier*,attributeEnhancer*,  (spellRef|runeType)?)>
+<!ELEMENT uniqueArmor   (armorTypeRef, armorEnhancer*, statusEffectModifier*, attributeEnhancer*, (spellRef|runeType)?)>
 <!ELEMENT rune (spellRef)>
 <!ELEMENT specialItem EMPTY>
 <!ELEMENT systemItem EMPTY>
@@ -55,12 +55,13 @@
 <!ELEMENT armorTypeRef (#PCDATA)>
 <!ELEMENT weaponClassRef (#PCDATA)>
 <!ELEMENT armorClassRef (#PCDATA)>
-<!ELEMENT weaponClass (attributeEnhancer*, weaponEnhancer*, weaponTypeExclusionList?)>
-<!ELEMENT armorClass  (attributeEnhancer*, armorEnhancer*, armorTypeExclusionList?)>
+<!ELEMENT weaponClass (attributeEnhancer*, weaponEnhancer*,statusEffectModifier*, weaponTypeExclusionList?)>
+<!ELEMENT armorClass  (attributeEnhancer*, armorEnhancer*, statusEffectModifier*, armorTypeExclusionList?)>
 <!ELEMENT armorType (iconRef)>
 <!ELEMENT weaponType ((weaponDamageCategory|magicDamageCategory),iconRef)>
 <!ELEMENT weaponEnhancer EMPTY>
 <!ELEMENT armorEnhancer EMPTY>
+<!ELEMENT statusEffectModifier EMPTY>
 <!ELEMENT attributeEnhancer EMPTY> <!-- Similar to attributeModifier, but a temporary bonus when item is equipped. -->
 <!ELEMENT weaponTypeExclusionList (weaponTypeRef*)>
 <!ELEMENT armorTypeExclusionList (armorTypeRef*)>
@@ -82,6 +83,15 @@
 <!ELEMENT par (playSound?,animationSpriteRef*)> <!-- If there are no animationSprites then its treated like a pause -->
 <!ELEMENT animationSpriteRef (#PCDATA)>
 
+<!-- Status Effect DTD -->
+<!ELEMENT statusEffect (onInvoke?,onRound?,onCountdown?,onRemove?)>
+<!ELEMENT attributeEffect EMPTY> <!-- Like a simplified attributeModifier. Only works on the current user. -->
+<!-- These guys are all Effect type. -->
+<!-- Notice that you can have a status effect that causes other status effects! -->
+<!ELEMENT onInvoke (attributeEffect|doMagicDamage|doWeaponDamage|doStatusEffect|animation)*> 
+<!ELEMENT onRound (attributeEffect|doMagicDamage|doWeaponDamage|doStatusEffect|animation)*>
+<!ELEMENT onCountdown (attributeEffect|doMagicDamage|doWeaponDamage|doStatusEffect|animation)*>
+<!ELEMENT onRemove (attributeEffect|doMagicDamage|doWeaponDamage|doStatusEffect|animation)*>
 
 <!-- Character Class DTD -->
 <!ELEMENT characterClass (weaponTypeRef*, armorTypeRef*,startingStat*,statIncrease*,skill*)>
@@ -185,6 +195,10 @@
 <!ATTLIST armorEnhancer  attribute CDATA #REQUIRED>
 <!ATTLIST armorEnhancer add CDATA #IMPLIED>
 <!ATTLIST armorEnhancer multiplier CDATA #IMPLIED>
+<!ATTLIST statusEffectModifier statusRef CDATA #REQUIRED>
+<!-- For a weapon, this is a chance of inflicting the status from 0 to 1. -->
+<!-- For armor it is the percentage chance of blocking the status referenced -->
+<!ATTLIST statusEffectModifier modifier CDATA #REQUIRED>  
 <!ATTLIST spellRef type (elemental|white|status|other) #REQUIRED>
 <!ATTLIST animation name CDATA #REQUIRED>
 <!ATTLIST animation type (battle|world) #REQUIRED>
