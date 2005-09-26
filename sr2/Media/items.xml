@@ -102,15 +102,15 @@
 			<weaponEnhancer add="0.20" attribute="HIT"/>
 		</weaponClass>
 		<weaponClass name="Poison" valueMultiplier="1.5" valueAdd="5000">
-			<weaponEnhancer add="0.33" attribute="Poison%"/>
+			<statusEffectModifier statusRef="Poison" modifier="0.33"/>
 		</weaponClass>
 		<weaponClass name="Deadly" valueMultiplier="2.2" valueAdd="7000">
 			<weaponEnhancer multiplier="2" attribute="ATK"/>
-			<weaponEnhancer add="0.40" attribute="Poison%"/>
+
 		</weaponClass>
 		<weaponClass name="Medusa" valueMultiplier="4" valueAdd="12000">
 			<weaponEnhancer attribute="ATK" multiplier="2"/>
-			<weaponEnhancer attribute="Stone%" add="0.20"/>
+			<statusEffectModifier statusRef="Stone" modifier="0.30"/>
 		</weaponClass>
 		<weaponClass name="Erebus" valueMultiplier="4" valueAdd="1000">
 			<weaponEnhancer attribute="ATK" multiplier="3"/>
@@ -288,7 +288,7 @@
 			<uniqueArmor valueMultiplier = "2.75">
 				<armorTypeRef>Shield</armorTypeRef>
 				<armorEnhancer add="5" attribute="AC"/>
-				<armorEnhancer add="0.5" attribute="Poison%"/>
+				<statusEffectModifier statusRef="Poison" modifier="0.20"/>
 				<armorEnhancer multiplier="1.5" attribute="RST"/>
 				<attributeEnhancer add="40" attribute="MAX_HP"/>
 				<spellRef type="elemental">Ice</spellRef>

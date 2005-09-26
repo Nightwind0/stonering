@@ -33,7 +33,7 @@ namespace StoneRing
     class NamedItemElement;
     class WeaponDamageCategory;
     class MagicDamageCategory;
-
+    class StatusEffectModifier;
 
 class ItemFactory
 {
@@ -89,7 +89,8 @@ class ItemFactory
     virtual WeaponDamageCategory *createWeaponDamageCategory(CL_DomElement *pElement) const;
     virtual MagicDamageCategory *createMagicDamageCategory() const;
     virtual MagicDamageCategory *createMagicDamageCategory(CL_DomElement *pElement) const;
-
+    virtual StatusEffectModifier *createStatusEffectModifier() const;
+    virtual StatusEffectModifier *createStatusEffectModifier(CL_DomElement *pElement) const;
 
  private:
 };

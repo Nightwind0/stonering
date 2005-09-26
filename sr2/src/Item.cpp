@@ -273,21 +273,8 @@ Weapon::attributeForString(const std::string str)
 {
     if(str == "ATK") return ATTACK;
     else if (str == "HIT") return HIT;
-    else if (str == "Poison%") return POISON;
-    else if (str == "Stone%")  return STONE;
-    else if (str == "Death%") return DEATH;
-    else if (str == "Confuse%") return CONFUSE;
-    else if (str == "Berserk%") return BERSERK;
-    else if (str == "Slow%")  return SLOW;
-    else if (str == "Weak%") return WEAK;
-    else if (str == "Break%") return BREAK;
-    else if (str == "Silence%") return SILENCE;
-    else if (str == "Sleep%")  return SLEEP;
-    else if (str == "Blind%") return BLIND;
     else if (str == "Steal_HP%") return STEAL_HP;
     else if (str == "Steal_MP%") return STEAL_MP;
-    else if (str == "Enfeeble%") return ENFEEBLE;
-    else if (str == "Addle%") return ADDLE;
     else if (str == "Critical%") return CRITICAL;
     else throw CL_Error("Bad Weapon Enhancer Attribute : " + str );
 
@@ -322,21 +309,10 @@ Armor::eAttribute
 Armor::attributeForString ( const std::string str )
 {
     if(str == "AC") return AC;
-    else if (str == "Poison%") return POISON;
-    else if (str == "Stone%") return STONE;
-    else if (str == "Death%") return DEATH;
-    else if (str == "Confuse%") return CONFUSE;
-    else if (str == "Berserk%") return BERSERK;
-    else if (str == "Slow%") return SLOW;
-    else if (str == "Weak%") return WEAK;
-    else if (str == "Break%") return BREAK;
-    else if (str == "Silence%") return SILENCE;
-    else if (str == "Sleep%") return SLEEP;
-    else if (str == "Blind%") return BLIND;
+   
     else if (str == "Steal_MP%") return STEAL_MP;
     else if (str == "Steal_HP%") return STEAL_HP;
-    else if (str == "Enfeeble%") return ENFEEBLE;
-    else if (str == "Addle%") return ADDLE;
+   
     else if (str == "ElementalRST") return ELEMENTAL_RESIST;
     else if (str == "RST") return RESIST; // Resist is basically Magic AC
     else if (str == "Status%") return STATUS;
@@ -940,6 +916,11 @@ void UniqueWeapon::loadItem(CL_DomElement * pElement)
 	{
 	    setRuneType ( pItemFactory->createRuneType ( &child ) );
 	}
+	else if (str == "statusEffectModifier" )
+	{
+	    addStatusEffectModifier ( pItemFactory->createStatusEffectModifier( &child ));
+	}
+
 
 	child = child.get_next_sibling().to_element();
     }
@@ -1026,6 +1007,10 @@ void UniqueArmor::loadItem(CL_DomElement * pElement)
 	else if ( str == "runeType" )
 	{
 	    setRuneType ( pItemFactory->createRuneType ( &child ) );
+	}
+	else if (str == "statusEffectModifier" )
+	{
+	    addStatusEffectModifier ( pItemFactory->createStatusEffectModifier( &child ));
 	}
 
 	child = child.get_next_sibling().to_element();
@@ -2282,6 +2267,10 @@ WeaponClass::WeaponClass(CL_DomElement * pElement)
 		subChild = subChild.get_next_sibling().to_element();
 	    }
 	}
+	else if (str == "statusEffectModifier" )
+	{
+	    addStatusEffectModifier ( pItemFactory->createStatusEffectModifier( &child ));
+	}
 
 	child = child.get_next_sibling().to_element();
     }
@@ -2424,6 +2413,10 @@ ArmorClass::ArmorClass(CL_DomElement * pElement)
 
 		subChild = subChild.get_next_sibling().to_element();
 	    }
+	}
+	else if (str == "statusEffectModifier" )
+	{
+	    addStatusEffectModifier ( pItemFactory->createStatusEffectModifier( &child ));
 	}
 
 	child = child.get_next_sibling().to_element();
@@ -2836,3 +2829,38 @@ CL_DomElement MagicDamageCategory::createDomElement(CL_DomDocument &doc) const
     return CL_DomElement(doc, "magicDamageCategory");
 }
 
+StatusEffectModifier::StatusEffectModifier()
+{
+}
+
+
+StatusEffectModifier::StatusEffectModifier(CL_DomElement *pElement)
+{
+    CL_DomNamedNodeMap attributes = pElement->get_attributes();
+ 
+    std::string statusRef = getRequiredString("statusRef", &attributes);
+
+    mfModifier = getRequiredFloat("modifier", &attributes );
+}
+
+StatusEffectModifier::~StatusEffectModifier()
+{
+}
+
+
+StatusEffect * StatusEffectModifier::getStatusEffect() const
+{
+    return mpStatusEffect;
+}
+
+float StatusEffectModifier::getModifier() const
+{
+    return mfModifier;
+}
+
+
+
+CL_DomElement StatusEffectModifier::createDomElement(CL_DomDocument &doc) const
+{
+    return CL_DomElement(doc,"statusEffectModifier");
+}
