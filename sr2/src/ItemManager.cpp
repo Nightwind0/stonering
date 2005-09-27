@@ -378,7 +378,8 @@ void ItemManager::dumpItemList()
 	{
 	case Item::WEAPON:
 	{
-	    Weapon * pWeapon = dynamic_cast<Weapon*>(pItem);
+	   // Weapon * pWeapon = dynamic_cast<Weapon*>(pItem);
+		Weapon * pWeapon = (Weapon*)pItem;
 		WeaponType * pType = pWeapon->getWeaponType();
 	    std::cout << '\t' << "ATK: " << std::setw(5) <<  pWeapon->modifyWeaponAttribute(Weapon::ATTACK, (int)pType->getBaseAttack());
 	    std::cout << ' ' << "Hit% " << std::setw(4) << pWeapon->modifyWeaponAttribute(Weapon::HIT, pType->getBaseHit()) * 100;
@@ -387,7 +388,8 @@ void ItemManager::dumpItemList()
 
 	    if(pDamageCategory->getClass() != DamageCategory::WEAPON) throw CL_Error("What? This weapon has a magic damage category.");
 
-	    WeaponDamageCategory * pWDC = dynamic_cast<WeaponDamageCategory*>(pDamageCategory);
+	   // WeaponDamageCategory * pWDC = dynamic_cast<WeaponDamageCategory*>(pDamageCategory);
+		WeaponDamageCategory  * pWDC = (WeaponDamageCategory*)pDamageCategory;
 	    
 
 	    switch ( pWDC->getType() )
@@ -418,7 +420,8 @@ void ItemManager::dumpItemList()
 	}
 	case Item::ARMOR:
 	{
-	    Armor * pArmor = dynamic_cast<Armor*>(pItem);
+	    //Armor * pArmor = dynamic_cast<Armor*>(pItem);
+		Armor * pArmor = (Armor*)pItem;
 	    ArmorType * pType = pArmor->getArmorType();
 	    std::cout << '\t' << "AC: " << std::setw(5) <<  pArmor->modifyArmorAttribute(Armor::AC, (int)pType->getBaseAC());
 	    std::cout << ' ' << "RST " << std::setw(4) << pArmor->modifyArmorAttribute(Armor::RESIST, pType->getBaseRST()) << std::endl;

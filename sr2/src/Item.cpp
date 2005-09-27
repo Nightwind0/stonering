@@ -447,11 +447,21 @@ NamedItemElement::NamedItemElement (CL_DomElement * pElement):mpNamedItem(NULL),
 	{
 		meType = UNIQUE_WEAPON;
 	    mpUniqueWeapon = itemFactory->createUniqueWeapon ( &child );
+				
+		mpUniqueWeapon->setIconRef( mIconRef );
+		mpUniqueWeapon->setName ( mName );
+		mpUniqueWeapon->setMaxInventory ( mnMaxInventory );
+		mpUniqueWeapon->setDropRarity( meDropRarity );
 	}
 	else if (name == "uniqueArmor")
 	{
 		meType = UNIQUE_ARMOR;
 	    mpUniqueArmor = itemFactory->createUniqueArmor ( &child );
+		
+		mpUniqueArmor->setIconRef( mIconRef );
+		mpUniqueArmor->setName ( mName );
+		mpUniqueArmor->setMaxInventory ( mnMaxInventory );
+		mpUniqueArmor->setDropRarity( meDropRarity );
 	}
 	else if (name == "rune")
 	{
@@ -470,13 +480,16 @@ NamedItemElement::NamedItemElement (CL_DomElement * pElement):mpNamedItem(NULL),
 
     }
 
-    if(mpNamedItem == NULL) throw CL_Error("No named item within a named item element.");
+    if(mpNamedItem == NULL && meType == NAMED_ITEM) throw CL_Error("No named item within a named item element.");
 
-    mpNamedItem->setIconRef( mIconRef );
-    mpNamedItem->setName ( mName );
-    mpNamedItem->setMaxInventory ( mnMaxInventory );
-    mpNamedItem->setDropRarity( meDropRarity );
-
+	
+	if(meType == NAMED_ITEM && mpNamedItem)
+	{
+		mpNamedItem->setIconRef( mIconRef );
+		mpNamedItem->setName ( mName );
+		mpNamedItem->setMaxInventory ( mnMaxInventory );
+		mpNamedItem->setDropRarity( meDropRarity );
+	}
 
 }
 
