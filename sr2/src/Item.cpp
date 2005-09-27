@@ -429,6 +429,8 @@ NamedItemElement::NamedItemElement (CL_DomElement * pElement):mpNamedItem(NULL),
     CL_DomElement child = pElement->get_first_child().to_element();
 
 
+	meType = NAMED_ITEM;
+
     while(!child.is_null())
     {
 	std::string name = child.get_node_name();
@@ -443,11 +445,13 @@ NamedItemElement::NamedItemElement (CL_DomElement * pElement):mpNamedItem(NULL),
 	}
 	else if (name == "uniqueWeapon")
 	{
-	    mpNamedItem = itemFactory->createUniqueWeapon ( &child );
+		meType = UNIQUE_WEAPON;
+	    mpUniqueWeapon = itemFactory->createUniqueWeapon ( &child );
 	}
 	else if (name == "uniqueArmor")
 	{
-	    mpNamedItem = itemFactory->createUniqueArmor ( &child );
+		meType = UNIQUE_ARMOR;
+	    mpUniqueArmor = itemFactory->createUniqueArmor ( &child );
 	}
 	else if (name == "rune")
 	{
@@ -871,6 +875,13 @@ bool UniqueWeapon::isTwoHanded() const
     return mpWeaponType->isTwoHanded();
 }
 
+bool UniqueWeapon::operator== ( const ItemRef &ref )
+{
+	if ( ref.getType() == ItemRef::NAMED_ITEM && mName == ref.getNamedItemRef()->getItemName() )
+		return true;
+	else return false;
+}
+
 
 void UniqueWeapon::loadItem(CL_DomElement * pElement) 
 {
@@ -1018,6 +1029,14 @@ void UniqueArmor::loadItem(CL_DomElement * pElement)
 
     mnValue = (int)(mpArmorType->getBasePrice() * valueMultiplier);
 }
+
+bool UniqueArmor::operator== ( const ItemRef &ref )
+{
+	if ( ref.getType() == ItemRef::NAMED_ITEM && mName == ref.getNamedItemRef()->getItemName() )
+		return true;
+	else return false;
+}
+
 
 
 GeneratedWeapon::GeneratedWeapon():mpClass(NULL),mpType(NULL)
