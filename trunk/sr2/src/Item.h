@@ -29,6 +29,8 @@ namespace StoneRing{
     class MagicDamageCategory;
     class StatusEffect;
     class StatusEffectModifier;
+	class UniqueWeapon;
+	class UniqueArmor;
 
     class Item
     {
@@ -66,7 +68,7 @@ namespace StoneRing{
         RuneType * mpRuneType;
     };
 
-    class Equipment
+    class Equipment : public Item
     {
     public:
         Equipment();
@@ -188,8 +190,14 @@ namespace StoneRing{
 
         virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
-        NamedItem * getNamedItem() const;
+		enum eType { NAMED_ITEM, UNIQUE_WEAPON, UNIQUE_ARMOR };
 
+		eType getType() const { return meType ; }
+
+		UniqueWeapon * getUniqueWeapon() const { return mpUniqueWeapon; }
+        NamedItem * getNamedItem() const;
+		UniqueArmor * getUniqueArmor() const {	return mpUniqueArmor; }	 
+				
         std::string getIconRef() const;
 
         uint getMaxInventory() const;
@@ -199,14 +207,16 @@ namespace StoneRing{
         
 
     private:
+		eType meType;
         NamedItem * mpNamedItem;
+		UniqueWeapon * mpUniqueWeapon;
+		UniqueArmor * mpUniqueArmor;
         std::string mName;
         std::string mIconRef;
         Item::eDropRarity meDropRarity;
         uint mnMaxInventory;
     };
-
-
+	
     class NamedItem : public Item, public Element
     {
     public:
@@ -350,7 +360,7 @@ namespace StoneRing{
     };
 
 
-    class UniqueWeapon : public NamedItem, public Weapon
+    class UniqueWeapon : public Weapon
     {
     public:
         UniqueWeapon();
@@ -359,6 +369,12 @@ namespace StoneRing{
         virtual uint getValue() const ;
         virtual uint getSellValue() const ;
 
+
+		virtual std::string getIconRef() const { return mIconRef; }
+
+        virtual std::string getName() const { return mName; }
+        virtual uint getMaxInventory() const  { return mnMaxInventory; }
+        virtual eDropRarity getDropRarity() const { return meDropRarity; }
 
         WeaponType *getWeaponType() const ;
         bool isRanged() const ;
@@ -370,16 +386,28 @@ namespace StoneRing{
 
         virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
+
+		void setIconRef(const std::string &ref) { mIconRef = ref; }
+		void setName ( const std::string &name ) { mName = name; }
+		void setMaxInventory ( uint max ) { mnMaxInventory = max; }
+        void setDropRarity( Item::eDropRarity rarity ){ meDropRarity = rarity; }
+
+        virtual bool operator== ( const ItemRef &ref );
+
     private:
         
         WeaponType * mpWeaponType;
 
         uint mnValue;
+		std::string mName;
+        std::string mIconRef;
+        Item::eDropRarity meDropRarity;
+        uint mnMaxInventory;
         
         
     };
 
-    class UniqueArmor : public NamedItem, public Armor
+    class UniqueArmor : public Armor
     {
     public:
         UniqueArmor();
@@ -393,19 +421,39 @@ namespace StoneRing{
         
         virtual eItemType getItemType() const { return ARMOR ; }
 
-        virtual void loadItem ( CL_DomElement * pElement );
+		
+		virtual std::string getIconRef() const { return mIconRef; }
+
+        virtual std::string getName() const { return mName; }
+        virtual uint getMaxInventory() const  { return mnMaxInventory; }
+        virtual eDropRarity getDropRarity() const { return meDropRarity; }
+
+
+		virtual void loadItem ( CL_DomElement * pElement );
 
         virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
+
+		
+		void setIconRef(const std::string &ref) { mIconRef = ref; }
+		void setName ( const std::string &name ) { mName = name; }
+		void setMaxInventory ( uint max ) { mnMaxInventory = max; }
+        void setDropRarity( Item::eDropRarity rarity ){ meDropRarity = rarity; }
+
+		virtual bool operator== ( const ItemRef &ref );
         
     private:
         ArmorType *mpArmorType;
-
+		std::string mName;
+        std::string mIconRef;
+        Item::eDropRarity meDropRarity;
+        uint mnMaxInventory;
+        
         uint mnValue;
 
     };
 
 
-    class GeneratedWeapon : public Item, public Weapon
+    class GeneratedWeapon : public Weapon
     {
     public:
         GeneratedWeapon();
@@ -447,7 +495,7 @@ namespace StoneRing{
     };
 
 
-    class GeneratedArmor : public Item, public Armor
+    class GeneratedArmor : public Armor
     {
     public:
         GeneratedArmor();
