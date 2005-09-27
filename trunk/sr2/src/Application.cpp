@@ -900,8 +900,8 @@ int Application::main(int argc, char ** argv)
   
 #ifndef NDEBUG
 
-  //  CL_ConsoleWindow console("Stone Ring Debug",80,1000);
-   // console.redirect_stdio();
+    CL_ConsoleWindow console("Stone Ring Debug",80,1000);
+	console.redirect_stdio();
 #endif
 	
     try
@@ -1001,10 +1001,6 @@ int Application::main(int argc, char ** argv)
 		
 
 		
-#ifndef NDEBUG
-	std::string foo;
-	std::cin >> foo;
-#endif
 
 		
 	teardownClanLib();
@@ -1013,6 +1009,12 @@ int Application::main(int argc, char ** argv)
     {
 	std::cerr << "Exception Caught!!" << std::endl;
 	std::cerr << error.message.c_str() << std::endl;
+
+#ifndef NDEBUG
+	std::string foo;
+	std::cin >> foo;
+#endif
+	
     }
 	
 
