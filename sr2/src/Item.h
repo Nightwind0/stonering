@@ -213,11 +213,11 @@ namespace StoneRing{
         NamedItem();
         virtual ~NamedItem();
 
-        virtual std::string getIconRef() const;
+         std::string getIconRef() const;
 
-        virtual std::string getName() const;
-        virtual uint getMaxInventory() const ;
-        virtual eDropRarity getDropRarity() const;
+		 virtual std::string getName() const;
+         virtual uint getMaxInventory() const ;
+		 virtual eDropRarity getDropRarity() const;
 
         virtual void loadItem ( CL_DomElement * pElement ) = 0;
 
