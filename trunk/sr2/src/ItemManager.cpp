@@ -93,47 +93,14 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
 #endif
 	NamedItemElement * pElement = pItemFactory->createNamedItemElement ( &namedItemNode );
 	
-	switch ( pElement->getType() )
-	{
-	case NamedItemElement::NAMED_ITEM:
-		{
-		NamedItem * pItem = pElement->getNamedItem();
+	NamedItem * pItem = pElement->getNamedItem();
 	
-		pItem->setIconRef ( pElement->getIconRef() );
-		pItem->setMaxInventory ( pElement->getMaxInventory() );
-		pItem->setName ( pElement->getName() );
-		pItem->setDropRarity ( pElement->getDropRarity() );
+	pItem->setIconRef ( pElement->getIconRef() );
+	pItem->setMaxInventory ( pElement->getMaxInventory() );
+	pItem->setName ( pElement->getName() );
+	pItem->setDropRarity ( pElement->getDropRarity() );
 	
-		mItems.push_back ( pItem );
-		break;
-		}
-	case NamedItemElement::UNIQUE_WEAPON:
-		{
-		UniqueWeapon * pItem = pElement->getUniqueWeapon();
-	
-		pItem->setIconRef ( pElement->getIconRef() );	
-		pItem->setMaxInventory ( pElement->getMaxInventory() );
-		pItem->setName ( pElement->getName() );
-		pItem->setDropRarity ( pElement->getDropRarity() );
-	
-		mItems.push_back ( pItem );
-		break;
-		}
-	case NamedItemElement::UNIQUE_ARMOR:
-		{
-		UniqueArmor * pItem = pElement->getUniqueArmor();
-	
-		pItem->setIconRef ( pElement->getIconRef() );	
-		pItem->setMaxInventory ( pElement->getMaxInventory() );
-		pItem->setName ( pElement->getName() );
-		pItem->setDropRarity ( pElement->getDropRarity() );
-	
-		mItems.push_back ( pItem );
-		}
-		break;
-	}
-
-
+	mItems.push_back ( pItem );
 	
 	delete pElement;
 	
@@ -378,9 +345,8 @@ void ItemManager::dumpItemList()
 	{
 	case Item::WEAPON:
 	{
-	   // Weapon * pWeapon = dynamic_cast<Weapon*>(pItem);
-		Weapon * pWeapon = (Weapon*)pItem;
-		WeaponType * pType = pWeapon->getWeaponType();
+	    Weapon * pWeapon = dynamic_cast<Weapon*>(pItem);
+	    WeaponType * pType = pWeapon->getWeaponType();
 	    std::cout << '\t' << "ATK: " << std::setw(5) <<  pWeapon->modifyWeaponAttribute(Weapon::ATTACK, (int)pType->getBaseAttack());
 	    std::cout << ' ' << "Hit% " << std::setw(4) << pWeapon->modifyWeaponAttribute(Weapon::HIT, pType->getBaseHit()) * 100;
 	    std::cout << ' ' << "Critical% " << std::setw(4) << pWeapon->modifyWeaponAttribute(Weapon::CRITICAL, pType->getBaseCritical()) * 100 << std::endl;
@@ -388,8 +354,7 @@ void ItemManager::dumpItemList()
 
 	    if(pDamageCategory->getClass() != DamageCategory::WEAPON) throw CL_Error("What? This weapon has a magic damage category.");
 
-	   // WeaponDamageCategory * pWDC = dynamic_cast<WeaponDamageCategory*>(pDamageCategory);
-		WeaponDamageCategory  * pWDC = (WeaponDamageCategory*)pDamageCategory;
+	    WeaponDamageCategory * pWDC = dynamic_cast<WeaponDamageCategory*>(pDamageCategory);
 	    
 
 	    switch ( pWDC->getType() )
@@ -420,8 +385,8 @@ void ItemManager::dumpItemList()
 	}
 	case Item::ARMOR:
 	{
-	    //Armor * pArmor = dynamic_cast<Armor*>(pItem);
-		Armor * pArmor = (Armor*)pItem;
+	    Armor * pArmor = dynamic_cast<Armor*>(pItem);
+
 	    ArmorType * pType = pArmor->getArmorType();
 	    std::cout << '\t' << "AC: " << std::setw(5) <<  pArmor->modifyArmorAttribute(Armor::AC, (int)pType->getBaseAC());
 	    std::cout << ' ' << "RST " << std::setw(4) << pArmor->modifyArmorAttribute(Armor::RESIST, pType->getBaseRST()) << std::endl;
