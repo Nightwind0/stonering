@@ -429,8 +429,6 @@ NamedItemElement::NamedItemElement (CL_DomElement * pElement):mpNamedItem(NULL),
     CL_DomElement child = pElement->get_first_child().to_element();
 
 
-	meType = NAMED_ITEM;
-
     while(!child.is_null())
     {
 	std::string name = child.get_node_name();
@@ -445,23 +443,11 @@ NamedItemElement::NamedItemElement (CL_DomElement * pElement):mpNamedItem(NULL),
 	}
 	else if (name == "uniqueWeapon")
 	{
-		meType = UNIQUE_WEAPON;
-	    mpUniqueWeapon = itemFactory->createUniqueWeapon ( &child );
-				
-		mpUniqueWeapon->setIconRef( mIconRef );
-		mpUniqueWeapon->setName ( mName );
-		mpUniqueWeapon->setMaxInventory ( mnMaxInventory );
-		mpUniqueWeapon->setDropRarity( meDropRarity );
+	    mpNamedItem = itemFactory->createUniqueWeapon ( &child );
 	}
 	else if (name == "uniqueArmor")
 	{
-		meType = UNIQUE_ARMOR;
-	    mpUniqueArmor = itemFactory->createUniqueArmor ( &child );
-		
-		mpUniqueArmor->setIconRef( mIconRef );
-		mpUniqueArmor->setName ( mName );
-		mpUniqueArmor->setMaxInventory ( mnMaxInventory );
-		mpUniqueArmor->setDropRarity( meDropRarity );
+	    mpNamedItem = itemFactory->createUniqueArmor ( &child );
 	}
 	else if (name == "rune")
 	{
@@ -480,16 +466,13 @@ NamedItemElement::NamedItemElement (CL_DomElement * pElement):mpNamedItem(NULL),
 
     }
 
-    if(mpNamedItem == NULL && meType == NAMED_ITEM) throw CL_Error("No named item within a named item element.");
+    if(mpNamedItem == NULL) throw CL_Error("No named item within a named item element.");
 
-	
-	if(meType == NAMED_ITEM && mpNamedItem)
-	{
-		mpNamedItem->setIconRef( mIconRef );
-		mpNamedItem->setName ( mName );
-		mpNamedItem->setMaxInventory ( mnMaxInventory );
-		mpNamedItem->setDropRarity( meDropRarity );
-	}
+    mpNamedItem->setIconRef( mIconRef );
+    mpNamedItem->setName ( mName );
+    mpNamedItem->setMaxInventory ( mnMaxInventory );
+    mpNamedItem->setDropRarity( meDropRarity );
+
 
 }
 
@@ -671,6 +654,7 @@ RegularItem::UseTypeFromString ( const std::string &str )
     return type;
 
 }
+
 
 
 RegularItem::eTargetable 
@@ -888,13 +872,6 @@ bool UniqueWeapon::isTwoHanded() const
     return mpWeaponType->isTwoHanded();
 }
 
-bool UniqueWeapon::operator== ( const ItemRef &ref )
-{
-	if ( ref.getType() == ItemRef::NAMED_ITEM && mName == ref.getNamedItemRef()->getItemName() )
-		return true;
-	else return false;
-}
-
 
 void UniqueWeapon::loadItem(CL_DomElement * pElement) 
 {
@@ -1042,14 +1019,6 @@ void UniqueArmor::loadItem(CL_DomElement * pElement)
 
     mnValue = (int)(mpArmorType->getBasePrice() * valueMultiplier);
 }
-
-bool UniqueArmor::operator== ( const ItemRef &ref )
-{
-	if ( ref.getType() == ItemRef::NAMED_ITEM && mName == ref.getNamedItemRef()->getItemName() )
-		return true;
-	else return false;
-}
-
 
 
 GeneratedWeapon::GeneratedWeapon():mpClass(NULL),mpType(NULL)
