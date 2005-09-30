@@ -2830,7 +2830,7 @@ CL_DomElement MagicDamageCategory::createDomElement(CL_DomDocument &doc) const
     return CL_DomElement(doc, "magicDamageCategory");
 }
 
-StatusEffectModifier::StatusEffectModifier()
+StatusEffectModifier::StatusEffectModifier():mpStatusEffect(NULL)
 {
 }
 

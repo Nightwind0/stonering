@@ -29,6 +29,7 @@ public:
 #ifndef NDEBUG
     void dumpItemList();
     void printAttributeEnhancers(Equipment * pItem );
+	void printStatusModifiers(Equipment * pItem);
 #endif
     
 
