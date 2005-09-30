@@ -447,6 +447,24 @@ void ItemManager::printAttributeEnhancers(Equipment * pItem )
     
 }
 
+void ItemManager::printStatusModifiers(Equipment *pItem)
+{
+		if ( pItem->getStatusEffectModifiersBegin() != pItem->getStatusEffectModifiersEnd() )
+		{
+			std::cout << "\tStatus Modifiers:" << std::endl;
+
+			for(std::list<StatusEffectModifier*>::const_iterator iter = pItem->getStatusEffectModifiersBegin();
+				iter != pItem->getStatusEffectModifiersEnd();
+				iter++)
+				{
+					StatusEffectModifier * pModifier = *iter;
+					std::cout << "\t\tMystery Status: " << pModifier->getModifier() * 100 << "%" ;
+					std::cout << std::endl;
+				}
+
+		}
+
+}
 
 
 #endif
