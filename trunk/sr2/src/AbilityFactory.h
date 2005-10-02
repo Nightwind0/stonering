@@ -16,7 +16,9 @@ namespace StoneRing
     class MagicDamageCategory;
     class Animation;
     class MagicResistance;
- 
+	class AttributeEffect;
+	class StatusEffectActions;
+
 class AbilityFactory
 {
  public:
@@ -32,6 +34,8 @@ class AbilityFactory
     MagicDamageCategory  * createMagicDamageCategory(CL_DomElement * pElement) const;
     Animation            * createAnimation(CL_DomElement * pElement) const;
     MagicResistance      * createMagicResistance ( CL_DomElement * pElement) const;
+	AttributeEffect* createAttributeEffect(CL_DomElement *pElement) const;
+	StatusEffectActions  *createStatusEffectActions(CL_DomElement * pElement) const;
 
  private:
 };

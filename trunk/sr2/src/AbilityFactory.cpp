@@ -3,6 +3,7 @@
 #include "Spell.h"
 #include "Animation.h"
 #include "Item.h"
+#include "StatusEffect.h"
 
 using namespace StoneRing;
 
@@ -47,4 +48,14 @@ Animation            * AbilityFactory::createAnimation(CL_DomElement * pElement)
 MagicResistance      * AbilityFactory::createMagicResistance ( CL_DomElement * pElement) const
 {
     return new MagicResistance ( pElement );
+}
+
+AttributeEffect* AbilityFactory::createAttributeEffect(CL_DomElement *pElement) const
+{
+	return new AttributeEffect ( pElement );
+}
+
+StatusEffectActions  *AbilityFactory::createStatusEffectActions(CL_DomElement * pElement) const
+{
+	return new StatusEffectActions( pElement );
 }

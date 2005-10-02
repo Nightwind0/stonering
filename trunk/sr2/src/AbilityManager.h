@@ -21,6 +21,8 @@ public:
     std::list<Spell*>::const_iterator  getSpellsEnd() const;
 
     virtual Spell * getSpell( const SpellRef & ref ) const;
+	
+
 #ifndef NDEBUG
     void dumpSpellList();
 #endif
