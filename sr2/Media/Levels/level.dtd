@@ -230,13 +230,22 @@
 <!ATTLIST doMagicDamage  damageAttribute (hp|mp) #IMPLIED> <!-- Default is hp -->
 <!ATTLIST doStatusEffect statusRef CDATA #REQUIRED>
 <!ATTLIST doStatusEffect chance CDATA #REQUIRED> <!-- 0 to 1 floating point. -->
+
+<!ATTLIST attributeEffect attribute CDATA #REQUIRED>
+<!ATTLIST attributeEffect add CDATA #IMPLIED> <!-- Implied as 0 -->
+<!ATTLIST attributeEffect changeTo (max|min|add|multiplier|multiplier_add) #REQUIRED>
+<!ATTLIST attributeEffect multiplier CDATA #IMPLIED <!-- Implied as 1 -->
 <!-- Note that, while removeStatus does obey the 'chance' parameter, it ignores any status effect resistances of the target. -->
 <!-- Therefore, a removeStatus for poison with 80% really does remove poison 80% of the time. Whereas, when inflicting the status (con'td) -->
 <!-- You have the chance as well as the target's resistances to account for -->
 <!ATTLIST doStatusEffect removeStatus (true|false) #IMPLIED> <!-- Default is false. In order to have a spell/skill that removes a status, set this to true -->
 <!ATTLIST magicResistance resist CDATA #REQUIRED>
-<!ATTLIST magicResistance type (fire|water|earth|wind|holy|elemental|all) #REQUIRED
+<!ATTLIST magicResistance type (fire|water|earth|wind|holy|elemental|all) #REQUIRED>
 
+<!ATTLIST statusEffect name CDATA #REQUIRED>
+<!ATTLIST statusEffect last(battle|round_count|permanent) #REQUIRED>
+<!ATTLIST statusEffect lengthMultiplier CDATA #IMPLIED>
+<!ATTLIST statusEffect roundCount CDATA #IMPLIED> 
 
 <!ATTLIST characterClass name CDATA #REQUIRED>
 <!ATTLIST characterClass gender (male|female|either) #IMPLIED> <!-- Defaults to either -->

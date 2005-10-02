@@ -11,6 +11,7 @@ namespace StoneRing
     class WeaponDamageCategory;
     class MagicDamageCategory;
     class SpellRef;
+	class StatusEffect;
 
 
     class DoWeaponDamage : public Element, public Effect
@@ -168,6 +169,9 @@ namespace StoneRing
 	MagicResistance * mpMagicResistance;
 	std::list<Effect*> mEffects;
     };
+
+
+
 
 /*
     class WeaponDamageCategory : public Element
