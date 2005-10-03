@@ -18,6 +18,7 @@ namespace StoneRing
     class MagicResistance;
 	class AttributeEffect;
 	class StatusEffectActions;
+	class StatusEffect;
 
 class AbilityFactory
 {
@@ -36,6 +37,7 @@ class AbilityFactory
     MagicResistance      * createMagicResistance ( CL_DomElement * pElement) const;
 	AttributeEffect* createAttributeEffect(CL_DomElement *pElement) const;
 	StatusEffectActions  *createStatusEffectActions(CL_DomElement * pElement) const;
+	StatusEffect         *createStatusEffect(CL_DomElement * pElement) const;
 
  private:
 };

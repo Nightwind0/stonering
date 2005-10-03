@@ -59,3 +59,8 @@ StatusEffectActions  *AbilityFactory::createStatusEffectActions(CL_DomElement * 
 {
 	return new StatusEffectActions( pElement );
 }
+
+StatusEffect * AbilityFactory::createStatusEffect(CL_DomElement * pElement) const
+{
+	return new StatusEffect( pElement );
+}

@@ -712,6 +712,21 @@ void Application::loadSpells(const std::string &filename)
 
 }
 
+void Application::loadStatusEffects(const std::string &filename)
+{
+#ifndef NDEBUG
+	std::cout << "Loading status effects...." << std::endl;
+#endif
+
+	CL_InputSource_File file(filename);
+
+	CL_DomDocument document;
+
+	document.load(&file);
+
+	mAbilityManager.loadStatusEffectFile( document );
+}
+
 void Application::loadItems(const std::string &filename)
 {
 #ifndef NDEBUG
@@ -778,6 +793,7 @@ int Application::main(int argc, char ** argv)
 	std::string startinglevel = CL_String::load("Game/StartLevel",mpResources);
 	std::string defaultplayersprite = CL_String::load("Game/DefaultPlayerSprite",mpResources );
 	std::string itemdefinition = CL_String::load("Game/ItemDefinitions", mpResources );
+	std::string statusEffectDefinition = CL_String::load("Game/StatusEffectDefinitions",mpResources);
 	std::string spelldefinition = CL_String::load("Game/SpellDefinitions", mpResources);
 	// Load special overlay for say.
 
@@ -794,6 +810,7 @@ int Application::main(int argc, char ** argv)
 	loadFonts();
 	showRechargeableOnionSplash();
 	showIntro();
+	loadStatusEffects(statusEffectDefinition);
 	loadSpells(spelldefinition);
 	loadItems(itemdefinition);
 	mpLevel = new Level(startinglevel, mpResources);
