@@ -2841,6 +2841,10 @@ StatusEffectModifier::StatusEffectModifier(CL_DomElement *pElement)
  
     std::string statusRef = getRequiredString("statusRef", &attributes);
 
+	const AbilityManager * pManager = IApplication::getInstance()->getAbilityManager();
+
+	mpStatusEffect = pManager->getStatusEffect( statusRef );
+
     mfModifier = getRequiredFloat("modifier", &attributes );
 }
 

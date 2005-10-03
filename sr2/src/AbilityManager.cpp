@@ -3,6 +3,7 @@
 #include <ClanLib/core.h>
 #include "AbilityFactory.h"
 #include "IApplication.h"
+#include "StatusEffect.h"
 
 using namespace StoneRing;
 
@@ -25,6 +26,25 @@ void AbilityManager::loadSpellFile ( CL_DomDocument &doc )
     
 
 }
+
+void AbilityManager::loadStatusEffectFile ( CL_DomDocument &doc )
+{
+    AbilityFactory * pAbilityFactory = IApplication::getInstance()->getAbilityFactory();
+
+    CL_DomElement statusEffectsNode = doc.named_item("statusEffectList").to_element();
+
+
+    CL_DomElement statusEffectNode = statusEffectsNode.get_first_child().to_element();
+
+    while(!statusEffectNode.is_null())
+    {
+		mStatusEffects.push_back ( pAbilityFactory->createStatusEffect ( &statusEffectNode) );
+		statusEffectNode = statusEffectNode.get_next_sibling().to_element();
+    }
+    
+
+}
+
 
 std::list<Spell*>::const_iterator AbilityManager::getSpellsBegin() const
 {
@@ -64,6 +84,21 @@ Spell * AbilityManager::getSpell( const SpellRef & ref ) const
     return NULL;
 }
 
+
+
+StatusEffect * AbilityManager::getStatusEffect ( const std::string &ref ) const
+{
+	for(std::list<StatusEffect*>::const_iterator iter = mStatusEffects.begin();
+	iter != mStatusEffects.end();
+	iter++)
+	{
+		if((*iter)->getName() == ref)
+			return *iter;
+	}
+
+	throw CL_Error("Couldn't find a status ref called: " + ref );
+	return NULL;
+}
 
 #ifndef NDEBUG
 void AbilityManager::dumpSpellList()

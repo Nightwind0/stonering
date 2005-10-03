@@ -2,7 +2,7 @@
 #include "ItemManager.h"
 #include "IApplication.h"
 #include "ItemFactory.h"
-
+#include "StatusEffect.h"
 #ifndef NDEBUG
 #include <algorithm>
 #include <iomanip>
@@ -380,6 +380,7 @@ void ItemManager::dumpItemList()
 
 	    // If there are attribute enhancers, lets list them.
 	    printAttributeEnhancers(pWeapon);
+		printStatusModifiers(pWeapon);
 
 	    break;
 	}
@@ -413,6 +414,7 @@ void ItemManager::dumpItemList()
 	    std::cout << std::endl;
 
 	    printAttributeEnhancers(pArmor);
+		printStatusModifiers(pArmor);
 
 	    break;
 	}
@@ -458,7 +460,7 @@ void ItemManager::printStatusModifiers(Equipment *pItem)
 				iter++)
 				{
 					StatusEffectModifier * pModifier = *iter;
-					std::cout << "\t\tMystery Status: " << pModifier->getModifier() * 100 << "%" ;
+					std::cout << "\t\t" << pModifier->getStatusEffect()->getName() << ": " << pModifier->getModifier() * 100 << "%" ;
 					std::cout << std::endl;
 				}
 
