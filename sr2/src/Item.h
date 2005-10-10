@@ -735,7 +735,7 @@ namespace StoneRing{
     private:
         // Used to make sure that when we multiply the value to get it
         // back to what it was, we end up with the right values.
-        int mnOriginalAttribute;
+	int mnDelta;
         int mnAdd;
         float mfMultiplier;
         std::string mAttribute;

@@ -65,9 +65,7 @@ Option::Option(CL_DomElement * pElement):mpCondition(NULL)
 
     CL_DomNamedNodeMap attributes = pElement->get_attributes();
 
-    mText = attributes.get_named_item("text").get_node_value();
-
-    if(attributes.get_length() < 1) throw CL_Error("Error: Option requires text.");
+    mText = getRequiredString("text",&attributes);
 
     CL_DomElement child = pElement->get_first_child().to_element();
 

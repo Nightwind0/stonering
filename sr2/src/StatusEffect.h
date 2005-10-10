@@ -24,12 +24,13 @@ namespace StoneRing{
 
 		eChangeTo getChangeTo() const;
 		
-
+		int getDelta() const { return mnDelta; }
 	private:
 		std::string mAttribute;
 		int mnAdd; 
 		eChangeTo meChangeTo;
 		float mfMultiplier;
+		int mnDelta;
 	};
 
 	class StatusEffectActions: public Element
