@@ -2178,9 +2178,14 @@ void AttributeEnhancer::invoke()
 	->getSelectedCharacterGroup()
 	->getSelectedCharacter();
 
-    mnOriginalAttribute = pCharacter->getAttribute(mAttribute);
+    int original = pCharacter->getAttribute(mAttribute);
 
     pCharacter->modifyAttribute( mAttribute, mnAdd, mfMultiplier);
+
+    int now = pCharacter->getAttribute(mAttribute);
+
+    // So we can get back to how we were.
+    mnDelta =  original - now;
 }
 
 // Uses IParty::modifyAttribute to modify the CURRENT player,
@@ -2194,7 +2199,7 @@ void AttributeEnhancer::revoke()
 	->getSelectedCharacter();
 
 
-    int add =  mnOriginalAttribute - pCharacter->getAttribute(mAttribute) ;
+    int add =  mnDelta;
 
     pCharacter->modifyAttribute( mAttribute, add, 1 );
 
