@@ -19,6 +19,8 @@ namespace StoneRing
 	class AttributeEffect;
 	class StatusEffectActions;
 	class StatusEffect;
+	class StartingStat;
+	class StatIncrease;
 
 class AbilityFactory
 {
@@ -38,6 +40,8 @@ class AbilityFactory
 	AttributeEffect* createAttributeEffect(CL_DomElement *pElement) const;
 	StatusEffectActions  *createStatusEffectActions(CL_DomElement * pElement) const;
 	StatusEffect         *createStatusEffect(CL_DomElement * pElement) const;
+	StartingStat         *createStartingStat(CL_DomElement * pElement) const;
+	StatIncrease         *createStatIncrease(CL_DomElement * pElement) const;
 
  private:
 };

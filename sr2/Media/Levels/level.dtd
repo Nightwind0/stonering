@@ -84,6 +84,7 @@
 <!ELEMENT animationSpriteRef (#PCDATA)>
 
 <!-- Status Effect DTD -->
+<!ELEMENT statusEffectList (statusEffect*)>
 <!ELEMENT statusEffect (onInvoke?,onRound?,onCountdown?,onRemove?)>
 <!ELEMENT attributeEffect EMPTY> <!-- Like a simplified attributeModifier. Only works on the current user. -->
 <!-- These guys are all Effect type. -->
@@ -94,11 +95,12 @@
 <!ELEMENT onRemove (attributeEffect|doMagicDamage|doWeaponDamage|doStatusEffect|animation)*>
 
 <!-- Character Class DTD -->
-<!ELEMENT characterClass (weaponTypeRef*, armorTypeRef*,startingStat*,statIncrease*,skill*)>
+<!ELEMENT characterClass (weaponTypeRef*, armorTypeRef*,startingStat*,statIncrease*,skillRef*)>
 <!ELEMENT statIncrease EMPTY>
 <!ELEMENT initialStat EMPTY>
 <!ELEMENT skill (prereqSkillRef*,(animation|doWeaponDamage|doMagicDamage|doStatusEffect)*)>
 <!ELEMENT prereqSkillRef EMPTY>
+<!ELEMENT skillRef EMPTY>
 
 <!-- Attributes -->
 
@@ -234,7 +236,7 @@
 <!ATTLIST attributeEffect attribute CDATA #REQUIRED>
 <!ATTLIST attributeEffect add CDATA #IMPLIED> <!-- Implied as 0 -->
 <!ATTLIST attributeEffect changeTo (max|min|add|multiplier|multiplier_add) #REQUIRED>
-<!ATTLIST attributeEffect multiplier CDATA #IMPLIED <!-- Implied as 1 -->
+<!ATTLIST attributeEffect multiplier CDATA #IMPLIED> <!-- Implied as 1 -->
 <!-- Note that, while removeStatus does obey the 'chance' parameter, it ignores any status effect resistances of the target. -->
 <!-- Therefore, a removeStatus for poison with 80% really does remove poison 80% of the time. Whereas, when inflicting the status (con'td) -->
 <!-- You have the chance as well as the target's resistances to account for -->
@@ -243,18 +245,19 @@
 <!ATTLIST magicResistance type (fire|water|earth|wind|holy|elemental|all) #REQUIRED>
 
 <!ATTLIST statusEffect name CDATA #REQUIRED>
-<!ATTLIST statusEffect last(battle|round_count|permanent) #REQUIRED>
+<!ATTLIST statusEffect last (battle|round_count|permanent) #REQUIRED>
 <!ATTLIST statusEffect lengthMultiplier CDATA #IMPLIED>
 <!ATTLIST statusEffect roundCount CDATA #IMPLIED> 
 
 <!ATTLIST characterClass name CDATA #REQUIRED>
 <!ATTLIST characterClass gender (male|female|either) #IMPLIED> <!-- Defaults to either -->
-<!ATTLIST statIncrease stat (HP_MAX,MP_MAX, STR, DEX, EVD, MAG, RST , SPR) #REQUIRED>
+<!ATTLIST statIncrease stat (hp_max|mp_max|str|dex|evd|mag|rst|spr) #REQUIRED>
 <!ATTLIST statIncrease period CDATA #REQUIRED> <!-- Numeric integer. 1,2,3,4,5.... Or 0 -->
 <!ATTLIST statIncrease increment CDATA #REQUIRED> <!-- Numeric integer -->
-<!ATTLIST initialStat stat (HP_MAX, MP_MAX, STR, DEX, EVD, MAG, RST, SPR) #REQUIRED>
+<!ATTLIST initialStat stat (hp_max|mp_max|str|dex|evd|mag|rst|spr) #REQUIRED>
 <!ATTLIST initialStat value CDATA #REQUIRED> <!-- Numeric integer -->
 <!ATTLIST skill name CDATA #REQUIRED>
 <!ATTLIST skill sp CDATA #REQUIRED> <!-- Skill points to earn skill -->
 <!ATTLIST skill bp CDATA #REQUIRED> <!-- Percentage of 'Break' to use skill --> 
 <!ATTLIST prereqSkillRef skillName CDATA #REQUIRED>
+<!ATTLIST skillRef skillName CDATA #REQUIRED>
