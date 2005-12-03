@@ -6,6 +6,8 @@
 #include <ClanLib/core.h>
 
 
+#define GET_CHILD pElement->get_first_child().to_element();
+
 class Element
 {
 public:

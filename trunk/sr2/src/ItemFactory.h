@@ -2,7 +2,6 @@
 #define SR_ITEM_FACTORY_H
 
 
-
 #include <ClanLib/core.h>
 
 namespace StoneRing

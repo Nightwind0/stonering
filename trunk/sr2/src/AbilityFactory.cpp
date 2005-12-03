@@ -4,6 +4,7 @@
 #include "Animation.h"
 #include "Item.h"
 #include "StatusEffect.h"
+#include "Skill.h"
 
 using namespace StoneRing;
 
@@ -64,3 +65,13 @@ StatusEffect * AbilityFactory::createStatusEffect(CL_DomElement * pElement) cons
 {
 	return new StatusEffect( pElement );
 }
+
+StartingStat  *AbilityFactory::createStartingStat(CL_DomElement * pElement) const
+{
+	return new StartingStat( pElement );
+}
+StatIncrease * AbilityFactory::createStatIncrease(CL_DomElement * pElement) const
+{
+	return new StatIncrease( pElement );
+}
+

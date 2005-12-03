@@ -1,0 +1,22 @@
+<!--DOCTYPE spellList SYSTEM "Levels/level.dtd" -->
+<statusEffectList>
+	<statusEffect last="permanent" name="Poison">
+		<onRound>
+			<doMagicDamage baseDamage="10" baseHit="1">
+				<magicDamageCategory type="other"/>
+			</doMagicDamage>
+		</onRound>
+	</statusEffect>
+	<statusEffect last="permanent" name="Stone">
+		<onInvoke>
+			<attributeEffect attribute="can_act" changeTo="min"/>
+		</onInvoke>
+	</statusEffect>
+	<statusEffect last="battle" name="Enraged">
+		<onInvoke>
+			<attributeEffect attribute="ATK" changeTo="multiplier" multiplier="1.2"/>
+			<attributeEffect attribute="AVD" changeTo="multiplier" multiplier="0.75"/>
+		</onInvoke>
+	</statusEffect>	
+		
+</statusEffectList>

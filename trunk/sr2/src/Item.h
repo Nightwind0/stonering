@@ -6,6 +6,7 @@
 #include "Element.h"
 #include "ItemRef.h"
 
+
 namespace StoneRing{
 
     class Spell;
