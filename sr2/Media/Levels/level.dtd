@@ -96,9 +96,11 @@
 
 <!-- Character Class DTD -->
 <!ELEMENT characterClass (weaponTypeRef*, armorTypeRef*,startingStat*,statIncrease*,skillRef*)>
+<!ELEMENT characterClasses (characterClass+)>
 <!ELEMENT statIncrease EMPTY>
-<!ELEMENT initialStat EMPTY>
+<!ELEMENT startingStat EMPTY>
 <!ELEMENT skill (prereqSkillRef*,(animation|doWeaponDamage|doMagicDamage|doStatusEffect)*)>
+<!ELEMENT skillList (skill)+>
 <!ELEMENT prereqSkillRef EMPTY>
 <!ELEMENT skillRef EMPTY>
 
@@ -254,8 +256,8 @@
 <!ATTLIST statIncrease stat (hp_max|mp_max|str|dex|evd|mag|rst|spr) #REQUIRED>
 <!ATTLIST statIncrease period CDATA #REQUIRED> <!-- Numeric integer. 1,2,3,4,5.... Or 0 -->
 <!ATTLIST statIncrease increment CDATA #REQUIRED> <!-- Numeric integer -->
-<!ATTLIST initialStat stat (hp_max|mp_max|str|dex|evd|mag|rst|spr) #REQUIRED>
-<!ATTLIST initialStat value CDATA #REQUIRED> <!-- Numeric integer -->
+<!ATTLIST startingStat stat (hp_max|mp_max|str|dex|evd|mag|rst|spr) #REQUIRED>
+<!ATTLIST startingStat value CDATA #REQUIRED> <!-- Numeric integer -->
 <!ATTLIST skill name CDATA #REQUIRED>
 <!ATTLIST skill sp CDATA #REQUIRED> <!-- Skill points to earn skill -->
 <!ATTLIST skill bp CDATA #REQUIRED> <!-- Percentage of 'Break' to use skill --> 

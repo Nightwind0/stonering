@@ -1,0 +1,140 @@
+<!DOCTYPE skillList SYSTEM "Levels/level.dtd" >
+<skillList>
+	<skill bp="0" name="Focus" sp="5">
+		<doStatusEffect chance="1" statusRef="Focused"/>
+	</skill>
+	<skill bp="1.0" name="Wind Slash" sp="0"	>
+		<animation name="WindSlash" type="battle">
+			<par duration="3">
+				<playSound>WindSlash</playSound>
+				<animationSpriteRef initialFocus="caster" movementDirection="toTarget">WindSlash</animationSpriteRef>
+			</par>		
+		</animation>
+		<doWeaponDamage baseAttack="40" baseCritical="1" baseHit="1">
+			<weaponDamageCategory type="slash"/>
+		</doWeaponDamage>
+		
+	</skill>
+	<!--
+	<spell mp="2" name="Torch" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="2200">
+		<magicResistance type="fire" resist="0.25"/>
+		<doMagicDamage baseDamage="25" baseHit="75">
+			<magicDamageCategory type="fire"/>
+		</doMagicDamage>
+	</spell>
+	<spell mp="2" name="Stonepelt" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="2200">
+		<magicResistance type="earth" resist="0.25"/>
+		<doMagicDamage baseDamage="25" baseHit="75">
+			<magicDamageCategory type="earth"/>
+		</doMagicDamage>
+	</spell>
+	<spell mp="2" name="Ice" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="2200">
+		<magicResistance type="water" resist="0.25"/>
+		<doMagicDamage baseDamage="25" baseHit="75">
+			<magicDamageCategory type="water"/>
+		</doMagicDamage>
+	</spell>
+	<spell mp="2" name="Wind" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="2200">
+		<magicResistance type="wind" resist="0.25"/>
+		<doMagicDamage baseDamage="25" baseHit="75">
+			<magicDamageCategory type="wind"/>
+		</doMagicDamage>
+	</spell>
+	<spell mp="2" name="Anoint" targetable="either" type="white" use="both" appliesToArmor="true" appliesToWeapons="true" value="2200">
+		<magicResistance type="holy" resist="0.25"/>
+		<doMagicDamage baseDamage="25" baseHit="75">
+			<magicDamageCategory type="holy"/>
+		</doMagicDamage>
+	</spell>
+	<spell mp="8" name="Flame" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="7000">
+		<magicResistance type="fire" resist="0.40"/>
+		<doMagicDamage baseDamage="100" baseHit="75">
+			<magicDamageCategory type="fire"/>
+		</doMagicDamage>
+	</spell>
+	<spell mp="8" name="Crush" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="7000">
+		<magicResistance type="earth" resist="0.40"/>
+		<doMagicDamage baseDamage="100" baseHit="75">
+			<magicDamageCategory type="earth"/>
+		</doMagicDamage>
+	</spell>
+	<spell mp="8" name="Frost" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="7000">
+		<magicResistance type="water" resist="0.40"/>
+		<doMagicDamage baseDamage="100" baseHit="75">
+			<magicDamageCategory type="water"/>
+		</doMagicDamage>
+	</spell>
+	<spell mp="8" name="Storm" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="7000">
+		<magicResistance type="wind" resist="0.40"/>
+		<doMagicDamage baseDamage="100" baseHit="75">
+			<magicDamageCategory type="wind"/>
+		</doMagicDamage>
+	</spell>
+	<spell mp="8" name="Holy Anoint" targetable="either" type="white" use="both" appliesToArmor="true" appliesToWeapons="true" value="7000">
+		<magicResistance type="holy" resist="0.40"/>
+		<doMagicDamage baseDamage="100" baseHit="75">
+			<magicDamageCategory type="holy"/>
+		</doMagicDamage>
+	</spell>
+	<spell mp="20" name="Blaze" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="12000">
+		<magicResistance type="fire" resist="0.50"/>
+		<doMagicDamage baseDamage="250" baseHit="80">
+			<magicDamageCategory type="fire"/>
+		</doMagicDamage>
+	</spell>
+	<spell mp="20" name="Avalanche" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="12000">
+		<magicResistance type="earth" resist="0.50"/>
+		<doMagicDamage baseDamage="250" baseHit="80">
+			<magicDamageCategory type="earth"/>
+		</doMagicDamage>
+	</spell>
+	<spell mp="20" name="Blizzard" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="12000">
+		<magicResistance type="water" resist="0.50"/>
+		<doMagicDamage baseDamage="250" baseHit="80">
+			<magicDamageCategory type="water"/>
+		</doMagicDamage>
+	</spell>
+	<spell mp="20" name="Hurricane" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="12000">
+		<magicResistance type="wind" resist="0.50"/>
+		<doMagicDamage baseDamage="250" baseHit="80">
+			<magicDamageCategory type="wind"/>
+		</doMagicDamage>
+	</spell>
+	<spell mp="20" name="Blessed Anoint" targetable="either" type="white" use="both" appliesToArmor="true" appliesToWeapons="true" value="12000">
+		<magicResistance type="holy" resist="0.50"/>
+		<doMagicDamage baseDamage="250" baseHit="80">
+			<magicDamageCategory type="holy"/>
+		</doMagicDamage>
+	</spell>
+	<spell mp="50" name="Firestorm" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="25000">
+		<magicResistance type="fire" resist="0.75"/>
+		<doMagicDamage baseDamage="600" baseHit="90">
+			<magicDamageCategory type="fire"/>
+		</doMagicDamage>
+	</spell>
+	<spell mp="50" name="Meteor" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="25000">
+		<magicResistance type="earth" resist="0.75"/>
+		<doMagicDamage baseDamage="600" baseHit="90">
+			<magicDamageCategory type="earth"/>
+		</doMagicDamage>
+	</spell>
+	<spell mp="50" name="Absolute Zero" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="25000">
+		<magicResistance type="water" resist="0.75"/>
+		<doMagicDamage baseDamage="600" baseHit="90">
+			<magicDamageCategory type="water"/>
+		</doMagicDamage>
+	</spell>
+	<spell mp="50" name="Zephyr" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="25000">
+		<magicResistance type="wind" resist="0.75"/>
+		<doMagicDamage baseDamage="600" baseHit="90">
+			<magicDamageCategory type="wind"/>
+		</doMagicDamage>
+	</spell>
+	<spell mp="50" name="Blessed Anoint" targetable="either" type="white" use="both" appliesToArmor="true" appliesToWeapons="true" value="25000">
+		<magicResistance type="holy" resist="0.75"/>
+		<doMagicDamage baseDamage="600" baseHit="90">
+			<magicDamageCategory type="holy"/>
+		</doMagicDamage>
+	</spell> --> 
+
+</skillList>

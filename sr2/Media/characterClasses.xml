@@ -1,0 +1,66 @@
+<!DOCTYPE characterClasses SYSTEM "Levels/level.dtd" >
+<characterClasses>
+	<characterClass name = "Warrior" gender="either">
+		<weaponTypeRef>Sword</weaponTypeRef>
+		<weaponTypeRef>Broadsword</weaponTypeRef>
+		<weaponTypeRef>Greatsword</weaponTypeRef>
+		<weaponTypeRef>Dagger</weaponTypeRef>
+		<weaponTypeRef>Longsword</weaponTypeRef>
+		<weaponTypeRef>Mace</weaponTypeRef>
+		
+		<armorTypeRef>Shield</armorTypeRef>
+		<armorTypeRef>Plate</armorTypeRef>
+		<armorTypeRef>Buckler</armorTypeRef>
+		<armorTypeRef>Boots</armorTypeRef>
+		<armorTypeRef>Hats</armorTypeRef>
+		
+		<startingStat stat = "hp_max" value="10"/>
+		<startingStat stat = "mp_max" value="0"/>
+		<startingStat stat = "str" value="15"/>
+		<startingStat stat = "dex" value="15"/>
+		<startingStat stat = "evd" value="12"/>
+		<startingStat stat = "mag" value="0"/>
+		<startingStat stat = "rst" value="5"/>
+		<startingStat stat = "spr" value="5"/>
+		
+		<statIncrease increment="7" period="1" stat="hp_max"/>
+		<statIncrease increment="3" period="1" stat="str"/>
+		<statIncrease increment="2" period="1" stat="dex"/>
+		<statIncrease increment="2" period="5" stat="evd" />
+		<statIncrease increment="3" period="5" stat="rst" />
+		<statIncrease increment="2" period="5" stat="spr" />
+		
+	</characterClass>
+	<characterClass name = "Ranger" gender="either">
+		
+		<weaponTypeRef>Bow</weaponTypeRef>
+		<weaponTypeRef>Precise Bow</weaponTypeRef>
+		<weaponTypeRef>Great Bow</weaponTypeRef>
+		<weaponTypeRef>Long Bow</weaponTypeRef>
+		<weaponTypeRef>Master Bow</weaponTypeRef>
+		<weaponTypeRef>Dagger</weaponTypeRef>
+		
+		<armorTypeRef>Vest</armorTypeRef>
+		<armorTypeRef>Buckler</armorTypeRef>
+		<armorTypeRef>Boots</armorTypeRef>
+		<armorTypeRef>Hats</armorTypeRef>
+		
+		<startingStat stat = "hp_max" value="10"/>
+		<startingStat stat = "mp_max" value="0"/>
+		<startingStat stat = "str" value="12"/>
+		<startingStat stat = "dex" value="18"/>
+		<startingStat stat = "evd" value="18"/>
+		<startingStat stat = "mag" value="0"/>
+		<startingStat stat = "rst" value="5"/>
+		<startingStat stat = "spr" value="5"/>
+		
+		<statIncrease increment="5" period="1" stat="hp_max"/>
+		<statIncrease increment="2" period="1" stat="str"/>
+		<statIncrease increment="3" period="1" stat="dex"/>
+		<statIncrease increment="3" period="2" stat="evd" />
+		<statIncrease increment="3" period="5" stat="rst" />
+		<statIncrease increment="2" period="5" stat="spr" />
+		
+	</characterClass>
+</characterClasses>
+
