@@ -193,7 +193,7 @@ StartingStat::~StartingStat()
 CL_DomElement 
 StartingStat::createDomElement(CL_DomDocument &doc ) const
 {
-	return CL_DomElement(doc,"initialStat");
+	return CL_DomElement(doc,"startingStat");
 }
 
 eCharacterStat StartingStat::getCharacterStat() const

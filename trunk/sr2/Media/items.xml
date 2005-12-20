@@ -212,6 +212,7 @@
 			<armorTypeExclusionList>
 				<armorTypeRef>Robe</armorTypeRef>
 				<armorTypeRef>Boots</armorTypeRef>
+				<armorTypeRef>Vest</armorTypeRef>
 			</armorTypeExclusionList>
 		</armorClass>
 		<armorClass name="Old" valueMultiplier = "0.75">
@@ -235,12 +236,14 @@
 		<armorClass name="Iron" valueMultiplier = "1">
 			<armorTypeExclusionList>
 				<armorTypeRef>Robe</armorTypeRef>
+				<armorTypeRef>Vest</armorTypeRef>
 			</armorTypeExclusionList>
 		</armorClass>
 		<armorClass name="Steel" valueMultiplier="1.5">
 			<armorEnhancer multiplier="1.5" attribute="AC"/>
 			<armorTypeExclusionList>
 				<armorTypeRef>Robe</armorTypeRef>
+				<armorTypeRef>Vest</armorTypeRef>
 			</armorTypeExclusionList>
 		</armorClass>
 		<armorClass name="Mage's" valueMultiplier = "2.5">
@@ -263,6 +266,9 @@
 	<armorTypes>
 		<armorType baseArmorClass="20" baseResist="10" basePrice="300" name="Shield" slot="shield">
 			<iconRef>Armor/shield</iconRef>
+		</armorType>
+		<armorType baseArmorClass="15" baseResist="10" basePrice="150" name="Vest" slot="body">
+			<iconRef>Armor/vest</iconRef>
 		</armorType>
 		<armorType baseArmorClass="35" baseResist="15" basePrice="400" name="Plate" slot="body">
 			<iconRef>Armor/plate</iconRef>

@@ -15,8 +15,13 @@
 	<statusEffect last="battle" name="Enraged">
 		<onInvoke>
 			<attributeEffect attribute="ATK" changeTo="multiplier" multiplier="1.2"/>
-			<attributeEffect attribute="AVD" changeTo="multiplier" multiplier="0.75"/>
+			<attributeEffect attribute="EVD" changeTo="multiplier" multiplier="0.75"/>
 		</onInvoke>
-	</statusEffect>	
+	</statusEffect>
+	<statusEffect last="battle" name="Focused">
+		<onInvoke>
+			<attributeEffect attribute="ATK" changeTo="multiplier" multiplier="1.2"/>
+		</onInvoke>
+	</statusEffect>
 		
 </statusEffectList>

@@ -13,6 +13,7 @@ class Element
 public:
     Element(){}
     ~Element(){}
+//	virtual void load(CL_DomElement * pElement) const = 0;
     virtual CL_DomElement  createDomElement(CL_DomDocument&) const=0;
     
 protected:
@@ -32,7 +33,16 @@ protected:
 private:
 };
 
+/*
 
+struct ElementCreationEntry
+{
+	IFactory * (IApplication::*pGetFactory)();
+	Element * (IFactory::*createElement)();
+};
+
+
+*/
 
 
 #endif
