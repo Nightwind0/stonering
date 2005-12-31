@@ -34,8 +34,8 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
 
     while(!weaponClassNode.is_null())
     {
-		WeaponClass * pWeaponClass = dynamic_cast<WeaponClass*>( pItemFactory->createElement(Element::EWEAPONCLASS) );
-			pWeaponClass->load(&weaponClassNode);
+	WeaponClass * pWeaponClass = dynamic_cast<WeaponClass*>( pItemFactory->createElement(Element::EWEAPONCLASS) );
+	pWeaponClass->load(&weaponClassNode);
 	mWeaponClasses.push_back ( pWeaponClass );
 	weaponClassNode = weaponClassNode.get_next_sibling().to_element();
     }
@@ -46,8 +46,8 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
     
     while(!weaponTypeNode.is_null())
     {
-		WeaponType * pWeaponType = dynamic_cast<WeaponType*>( pItemFactory->createElement(Element::EWEAPONTYPE) );
-		pWeaponType->load(&weaponTypeNode);
+	WeaponType * pWeaponType = dynamic_cast<WeaponType*>( pItemFactory->createElement(Element::EWEAPONTYPE) );
+	pWeaponType->load(&weaponTypeNode);
 	mWeaponTypes.push_back ( pWeaponType );
 
 	weaponTypeNode = weaponTypeNode.get_next_sibling().to_element();
@@ -59,8 +59,8 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
 
     while(!armorClassNode.is_null())
     {
-		ArmorClass * pArmorClass = dynamic_cast<ArmorClass*>( pItemFactory->createElement(Element::EARMORCLASS) );
-		pArmorClass->load(&armorClassNode);
+	ArmorClass * pArmorClass = dynamic_cast<ArmorClass*>( pItemFactory->createElement(Element::EARMORCLASS) );
+	pArmorClass->load(&armorClassNode);
 	mArmorClasses.push_back ( pArmorClass);
 
 	armorClassNode = armorClassNode.get_next_sibling().to_element();
@@ -73,8 +73,8 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
 
     while(!armorTypeNode.is_null())
     {
-		ArmorType * pArmorType = dynamic_cast<ArmorType*>( pItemFactory->createElement(Element::EARMORTYPE) );
-		pArmorType->load(&armorTypeNode);
+	ArmorType * pArmorType = dynamic_cast<ArmorType*>( pItemFactory->createElement(Element::EARMORTYPE) );
+	pArmorType->load(&armorTypeNode);
 	mArmorTypes.push_back ( pArmorType);
 
 	armorTypeNode = armorTypeNode.get_next_sibling().to_element();
@@ -315,17 +315,17 @@ Item * ItemManager:: getItem( const ItemRef & ref ) const
 {
 
 
-	for(std::list<Item*>::const_iterator iter = mItems.begin();
-	    iter != mItems.end();
-	    iter++)
-	{
-	    if( *(*iter) == ref ) 
-		return *iter;
-	}
+    for(std::list<Item*>::const_iterator iter = mItems.begin();
+	iter != mItems.end();
+	iter++)
+    {
+	if( *(*iter) == ref ) 
+	    return *iter;
+    }
 
-	throw CL_Error("Couldn't find item based on ref.");
+    throw CL_Error("Couldn't find item based on ref.");
 
-	return NULL;
+    return NULL;
 
 }
 
@@ -385,7 +385,7 @@ void ItemManager::dumpItemList()
 
 	    // If there are attribute enhancers, lets list them.
 	    printAttributeEnhancers(pWeapon);
-		printStatusModifiers(pWeapon);
+	    printStatusModifiers(pWeapon);
 
 	    break;
 	}
@@ -419,7 +419,7 @@ void ItemManager::dumpItemList()
 	    std::cout << std::endl;
 
 	    printAttributeEnhancers(pArmor);
-		printStatusModifiers(pArmor);
+	    printStatusModifiers(pArmor);
 
 	    break;
 	}
@@ -456,20 +456,20 @@ void ItemManager::printAttributeEnhancers(Equipment * pItem )
 
 void ItemManager::printStatusModifiers(Equipment *pItem)
 {
-		if ( pItem->getStatusEffectModifiersBegin() != pItem->getStatusEffectModifiersEnd() )
-		{
-			std::cout << "\tStatus Modifiers:" << std::endl;
+    if ( pItem->getStatusEffectModifiersBegin() != pItem->getStatusEffectModifiersEnd() )
+    {
+	std::cout << "\tStatus Modifiers:" << std::endl;
 
-			for(std::list<StatusEffectModifier*>::const_iterator iter = pItem->getStatusEffectModifiersBegin();
-				iter != pItem->getStatusEffectModifiersEnd();
-				iter++)
-				{
-					StatusEffectModifier * pModifier = *iter;
-					std::cout << "\t\t" << pModifier->getStatusEffect()->getName() << ": " << pModifier->getModifier() * 100 << "%" ;
-					std::cout << std::endl;
-				}
+	for(std::list<StatusEffectModifier*>::const_iterator iter = pItem->getStatusEffectModifiersBegin();
+	    iter != pItem->getStatusEffectModifiersEnd();
+	    iter++)
+	{
+	    StatusEffectModifier * pModifier = *iter;
+	    std::cout << "\t\t" << pModifier->getStatusEffect()->getName() << ": " << pModifier->getModifier() * 100 << "%" ;
+	    std::cout << std::endl;
+	}
 
-		}
+    }
 
 }
 

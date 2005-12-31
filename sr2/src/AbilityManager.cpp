@@ -19,11 +19,11 @@ void AbilityManager::loadSpellFile ( CL_DomDocument &doc )
 
     while(!spellNode.is_null())
     {
-		Spell * pSpell = dynamic_cast<Spell*>(pAbilityFactory->createElement(Element::ESPELL));
+	Spell * pSpell = dynamic_cast<Spell*>(pAbilityFactory->createElement(Element::ESPELL));
 	
-		pSpell->load(&spellNode);
-		mSpells.push_back ( pSpell );
-		spellNode = spellNode.get_next_sibling().to_element();
+	pSpell->load(&spellNode);
+	mSpells.push_back ( pSpell );
+	spellNode = spellNode.get_next_sibling().to_element();
     }
     
 
@@ -40,10 +40,10 @@ void AbilityManager::loadStatusEffectFile ( CL_DomDocument &doc )
 
     while(!statusEffectNode.is_null())
     {
-		StatusEffect * pStatusEffect = dynamic_cast<StatusEffect*>(pAbilityFactory->createElement(Element::ESTATUSEFFECT));
-		pStatusEffect->load(&statusEffectNode);
-		mStatusEffects.push_back ( pStatusEffect );
-		statusEffectNode = statusEffectNode.get_next_sibling().to_element();
+	StatusEffect * pStatusEffect = dynamic_cast<StatusEffect*>(pAbilityFactory->createElement(Element::ESTATUSEFFECT));
+	pStatusEffect->load(&statusEffectNode);
+	mStatusEffects.push_back ( pStatusEffect );
+	statusEffectNode = statusEffectNode.get_next_sibling().to_element();
     }
     
 
@@ -92,16 +92,16 @@ Spell * AbilityManager::getSpell( const SpellRef & ref ) const
 
 StatusEffect * AbilityManager::getStatusEffect ( const std::string &ref ) const
 {
-	for(std::list<StatusEffect*>::const_iterator iter = mStatusEffects.begin();
+    for(std::list<StatusEffect*>::const_iterator iter = mStatusEffects.begin();
 	iter != mStatusEffects.end();
 	iter++)
-	{
-		if((*iter)->getName() == ref)
-			return *iter;
-	}
+    {
+	if((*iter)->getName() == ref)
+	    return *iter;
+    }
 
-	throw CL_Error("Couldn't find a status ref called: " + ref );
-	return NULL;
+    throw CL_Error("Couldn't find a status ref called: " + ref );
+    return NULL;
 }
 
 #ifndef NDEBUG

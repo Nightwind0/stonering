@@ -19,7 +19,9 @@ libstonering_la_SOURCES = Level.cpp \
 			AbilityFactory.cpp \
 			Spell.cpp \
 			AbilityManager.cpp \
-			StatusEffect.cpp
+			StatusEffect.cpp \
+			Skill.cpp \
+			CharacterClass.cpp
 
 
 libstonering_la_CPPFLAGS = $(CLANLIB_CFLAGS) \

@@ -30,11 +30,13 @@ using std::abs;
 
 
 
+
 std::string IntToString(const int &i)
 {
     std::ostringstream os;
 
     os << i;
+
 
     return os.str();
     
@@ -54,34 +56,34 @@ Option::Option():mpCondition(NULL)
 
 void Option::handleElement(eElement element, Element * pElement )
 {
-	switch(element)
-	{
-	case ECONDITION:
-		mpCondition = dynamic_cast<Condition *>(pElement);
-		break;
-	case EATTRIBUTEMODIFIER:
-	case ESAY:
-	case EGIVE:
-	case ETAKE:
-	case EPLAYANIMATION:
-	case EPLAYSOUND:
-	case ELOADLEVEL:
-	case ESTARTBATTLE:
-	case EPAUSE:
-	case EINVOKESHOP:
-	case EGIVEGOLD:
-	case ECHOICE:
+    switch(element)
+    {
+    case ECONDITION:
+	mpCondition = dynamic_cast<Condition *>(pElement);
+	break;
+    case EATTRIBUTEMODIFIER:
+    case ESAY:
+    case EGIVE:
+    case ETAKE:
+    case EPLAYANIMATION:
+    case EPLAYSOUND:
+    case ELOADLEVEL:
+    case ESTARTBATTLE:
+    case EPAUSE:
+    case EINVOKESHOP:
+    case EGIVEGOLD:
+    case ECHOICE:
 
-		mActions.push_back ( dynamic_cast<Action*>(pElement) );
-		break;
-	default:
-		throw CL_Error("Found wacky element in option");
-	}
+	mActions.push_back ( dynamic_cast<Action*>(pElement) );
+	break;
+    default:
+	throw CL_Error("Found wacky element in option");
+    }
 }
 
 void Option::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-	mText = getRequiredString("text",pAttributes);
+    mText = getRequiredString("text",pAttributes);
 }
 
 	
@@ -134,17 +136,17 @@ void Option::choose()
 {
 #ifndef _MSC_VER
     if(evaluateCondition())
-		std::for_each( mActions.begin(), mActions.end(), std::mem_fun(&Action::invoke) );
+	std::for_each( mActions.begin(), mActions.end(), std::mem_fun(&Action::invoke) );
 #else
-	if(evaluateCondition())
+    if(evaluateCondition())
+    {
+	for(std::list<Action*>::iterator iter = mActions.begin();
+	    iter != mActions.end();
+	    iter++)
 	{
-		for(std::list<Action*>::iterator iter = mActions.begin();
-			iter != mActions.end();
-			iter++)
-			{
-				(*iter)->invoke();
-			}
+	    (*iter)->invoke();
 	}
+    }
 #endif
 }
 
@@ -157,15 +159,15 @@ Choice::Choice()
 
 void Choice::handleElement(eElement element, Element * pElement )
 {
-	switch(element)
-	{
-	case EOPTION:
-		mOptions.push_back ( dynamic_cast<Option*>(pElement) );
-		break;
-	default:
+    switch(element)
+    {
+    case EOPTION:
+	mOptions.push_back ( dynamic_cast<Option*>(pElement) );
+	break;
+    default:
 		
-		break;
-	}
+	break;
+    }
 }
 
 void Choice::loadAttributes(CL_DomNamedNodeMap *pAttributes)
@@ -211,12 +213,12 @@ void Choice::invoke()
     std::transform(mOptions.begin(), mOptions.end(), std::back_inserter(options),
 		   std::mem_fun(&Option::getText));
 #else
-	for(std::vector<Option*>::iterator iter = mOptions.begin();
-		iter != mOptions.end();
-		iter++)
-		{	
-			options.push_back ( (*iter)->getText() );
-		}
+    for(std::vector<Option*>::iterator iter = mOptions.begin();
+	iter != mOptions.end();
+	iter++)
+    {	
+	options.push_back ( (*iter)->getText() );
+    }
 #endif
 
     IApplication::getInstance()->choice( mText, options, this );
@@ -263,24 +265,24 @@ bool operator < (const MappableObject::eDirection dir1, const MappableObject::eD
 
 void ItemRef::handleElement(eElement element, Element * pElement )
 {
-	switch(element)
-	{
-	case ENAMEDITEMREF:
-		meType = NAMED_ITEM;
-		mpNamedItemRef = dynamic_cast<NamedItemRef*>(pElement);
-		break;
-	case EWEAPONREF:
-		meType = WEAPON_REF;
-		mpWeaponRef = dynamic_cast<WeaponRef*>(pElement);
-		break;
-	case EARMORREF:
-		meType = ARMOR_REF;
-		mpArmorRef = dynamic_cast<ArmorRef*>(pElement);
-		break;
-	default:
+    switch(element)
+    {
+    case ENAMEDITEMREF:
+	meType = NAMED_ITEM;
+	mpNamedItemRef = dynamic_cast<NamedItemRef*>(pElement);
+	break;
+    case EWEAPONREF:
+	meType = WEAPON_REF;
+	mpWeaponRef = dynamic_cast<WeaponRef*>(pElement);
+	break;
+    case EARMORREF:
+	meType = ARMOR_REF;
+	mpArmorRef = dynamic_cast<ArmorRef*>(pElement);
+	break;
+    default:
 		
-		break;
-	}
+	break;
+    }
 }
 
 void ItemRef::loadAttributes(CL_DomNamedNodeMap *pAttributes)
@@ -290,6 +292,7 @@ void ItemRef::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 
 void ItemRef::loadFinished()
 {
+
 	const ItemManager * pItemManager = IApplication::getInstance()->getItemManager();
 
 	if(!mpNamedItemRef && !mpWeaponRef && !mpArmorRef)
@@ -298,6 +301,7 @@ void ItemRef::loadFinished()
 	}
 	
 	mpItem = pItemManager->getItem ( *this ); 
+
 }
 
 
@@ -339,7 +343,7 @@ ItemRef::~ItemRef()
 
 }
 
- #if 0
+#if 0
 std::string ItemRef::getItemName() const
 {
     switch ( meType )
@@ -394,7 +398,7 @@ std::string NamedItemRef::getItemName()
 
 void NamedItemRef::handleText(const std::string &text)
 {
-	mName = text;
+    mName = text;
 }
 
 CL_DomElement  NamedItemRef::createDomElement(CL_DomDocument &doc) const
@@ -429,10 +433,10 @@ void Tilemap::handleElement(eElement element, Element * pElement)
 
 void Tilemap::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-	std::string name = getRequiredString("mapname",pAttributes);
-	mpSurface = GraphicsManager::getInstance()->getTileMap(name);
-	mX = getRequiredInt("mapx",pAttributes);
-	mY = getRequiredInt("mapy",pAttributes);
+    std::string name = getRequiredString("mapname",pAttributes);
+    mpSurface = GraphicsManager::getInstance()->getTileMap(name);
+    mX = getRequiredInt("mapx",pAttributes);
+    mY = getRequiredInt("mapy",pAttributes);
 }
 
 
@@ -504,21 +508,21 @@ void SpriteRef::handleElement(eElement element, Element * pElement)
 
 void SpriteRef::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-	if(hasAttr("type",pAttributes))
-	{
-		std::string direction = getString("type",pAttributes);
+    if(hasAttr("type",pAttributes))
+    {
+	std::string direction = getString("type",pAttributes);
 		
-		if(direction == "still") meType = SPR_STILL;
-		if(direction == "twoway") meType = SPR_TWO_WAY;
-		if(direction == "fourway")  meType = SPR_FOUR_WAY;
+	if(direction == "still") meType = SPR_STILL;
+	if(direction == "twoway") meType = SPR_TWO_WAY;
+	if(direction == "fourway")  meType = SPR_FOUR_WAY;
 
-	}
+    }
 
 }
 
 void SpriteRef::handleText(const std::string &text)
 {
-	mRef = text;
+    mRef = text;
 }
 
 
@@ -592,43 +596,43 @@ CL_DomElement  AttributeModifier::createDomElement(CL_DomDocument &doc) const
 
 void AttributeModifier::handleElement(eElement element, Element *pElement)
 {
-	switch(element)
-	{
-	case ECONDITION:
-		{
-		Condition * pCondition = dynamic_cast<Condition*>(pElement);
-		mConditions.push_back ( pCondition );
-		break;
-		}
-	default:
-		throw CL_Error("Bad element in AM");
-	}
+    switch(element)
+    {
+    case ECONDITION:
+    {
+	Condition * pCondition = dynamic_cast<Condition*>(pElement);
+	mConditions.push_back ( pCondition );
+	break;
+    }
+    default:
+	throw CL_Error("Bad element in AM");
+    }
 }
 
 void AttributeModifier::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-	mAttribute = getRequiredString("attribute",pAttributes);
-	mAdd = getRequiredInt("add",pAttributes);
+    mAttribute = getRequiredString("attribute",pAttributes);
+    mAdd = getRequiredInt("add",pAttributes);
 
-	if(hasAttr("target",pAttributes))
+    if(hasAttr("target",pAttributes))
+    {
+	std::string target = getString("target",pAttributes);
+
+	if(target == "current")
 	{
-		std::string target = getString("target",pAttributes);
-
-		if(target == "current")
-		{
-			meTarget = CURRENT;
-		}
-		else if (target == "all")
-		{
-			meTarget = ALL;
-		}
-		else if (target == "caster")
-		{
-			meTarget = CASTER;
-		}
-		else throw CL_Error("Unrecognized target type in attribute modifier: " + target);
-
+	    meTarget = CURRENT;
 	}
+	else if (target == "all")
+	{
+	    meTarget = ALL;
+	}
+	else if (target == "caster")
+	{
+	    meTarget = CASTER;
+	}
+	else throw CL_Error("Unrecognized target type in attribute modifier: " + target);
+
+    }
 }
 
  
@@ -812,22 +816,22 @@ void HasGold::handleElement(eElement element, Element * pElement)
 
 void HasGold::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-		std::string op = getRequiredString("operator",pAttributes);	
+    std::string op = getRequiredString("operator",pAttributes);	
 
-		if(op == "lt") meOperator = LT;
-		else if(op == "gt") meOperator = GT;
-		else if(op == "gte") meOperator = GTE;
-		else if(op == "lte") meOperator = LTE;
-		else if(op == "eq") meOperator = EQ;
-		else throw CL_Error("Bad operator type in hasGold");
+    if(op == "lt") meOperator = LT;
+    else if(op == "gt") meOperator = GT;
+    else if(op == "gte") meOperator = GTE;
+    else if(op == "lte") meOperator = LTE;
+    else if(op == "eq") meOperator = EQ;
+    else throw CL_Error("Bad operator type in hasGold");
 
-		mbNot = getImpliedBool("not",pAttributes,false);
+    mbNot = getImpliedBool("not",pAttributes,false);
 
 }
 
 void HasGold::handleText(const std::string &text)
 {
-	mAmount = atoi(text.c_str());
+    mAmount = atoi(text.c_str());
 }
 
 
@@ -894,18 +898,18 @@ CL_DomElement  HasItem::createDomElement(CL_DomDocument &doc) const
 
 void HasItem::handleElement(eElement element, Element *pElement)
 {
-	if(element == EITEMREF)
-	{
-		mpItemRef = dynamic_cast<ItemRef*>(pElement);
-	}
-	else throw CL_Error("Bad element found within hasItem");
+    if(element == EITEMREF)
+    {
+	mpItemRef = dynamic_cast<ItemRef*>(pElement);
+    }
+    else throw CL_Error("Bad element found within hasItem");
 }
  
 void HasItem::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-		mbNot = getImpliedBool("not",pAttributes,false);
+    mbNot = getImpliedBool("not",pAttributes,false);
 
-		mCount = getImpliedInt("count",pAttributes,1);
+    mCount = getImpliedInt("count",pAttributes,1);
 }
 
 HasItem::HasItem( ):mpItemRef(NULL)
@@ -946,12 +950,12 @@ CL_DomElement  DidEvent::createDomElement(CL_DomDocument &doc) const
 
 void DidEvent::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-	mbNot = getImpliedBool("not",pAttributes,false);
+    mbNot = getImpliedBool("not",pAttributes,false);
 }
 
 void DidEvent::handleText(const std::string &text)
 {
-	mEvent = text;
+    mEvent = text;
 }
 
 void DidEvent::handleElement(eElement element, Element *pElement)
@@ -992,16 +996,16 @@ CL_DomElement  And::createDomElement(CL_DomDocument &doc) const
 
 void And::handleElement(eElement element, Element * pElement)
 {
-	switch(element)
-	{
-	case EOPERATOR:
-	case EHASITEM:
-	case EHASGOLD:
-	case EDIDEVENT:
+    switch(element)
+    {
+    case EOPERATOR:
+    case EHASITEM:
+    case EHASGOLD:
+    case EDIDEVENT:
 	
-		mOperands.push_back(dynamic_cast<Check*>(pElement));
-		break;
-	}
+	mOperands.push_back(dynamic_cast<Check*>(pElement));
+	break;
+    }
 }
 
 And::~And()
@@ -1059,15 +1063,15 @@ CL_DomElement  Or::createDomElement(CL_DomDocument &doc) const
 
 void Or::handleElement(eElement element, Element *pElement)
 {
-	switch(element)
-	{
-	case EOPERATOR:
-	case EHASITEM:
-	case EHASGOLD:
-	case EDIDEVENT:
-		mOperands.push_back(dynamic_cast<Check*>(pElement));
-		break;
-	}
+    switch(element)
+    {
+    case EOPERATOR:
+    case EHASITEM:
+    case EHASGOLD:
+    case EDIDEVENT:
+	mOperands.push_back(dynamic_cast<Check*>(pElement));
+	break;
+    }
 }
  
 Or::~Or()
@@ -1120,16 +1124,16 @@ CL_DomElement  Operator::createDomElement(CL_DomDocument &doc) const
 
 void Operator::handleElement(eElement element, Element * pElement)
 {
-	switch(element)
-	{
-	case EOR:
-	case EAND:
-		mOperands.push_back(dynamic_cast<Check*>(pElement));
-		break;
-	}	
+    switch(element)
+    {
+    case EOR:
+    case EAND:
+	mOperands.push_back(dynamic_cast<Check*>(pElement));
+	break;
+    }	
 }
 
- Operator::~Operator()
+Operator::~Operator()
 {
     for(std::list<Check*>::iterator i = mOperands.begin();
 	i != mOperands.end();
@@ -1183,15 +1187,15 @@ CL_DomElement  Condition::createDomElement(CL_DomDocument &doc) const
 
 void Condition::handleElement(eElement element, Element * pElement)
 {
-	switch(element)
-	{
-	case EOPERATOR:
-	case EHASITEM:
-	case EHASGOLD:
-	case EDIDEVENT:
-		mChecks.push_back(dynamic_cast<Check*>(pElement));
-		break;
-	}
+    switch(element)
+    {
+    case EOPERATOR:
+    case EHASITEM:
+    case EHASGOLD:
+    case EDIDEVENT:
+	mChecks.push_back(dynamic_cast<Check*>(pElement));
+	break;
+    }
 }
  
 
@@ -1273,32 +1277,32 @@ CL_DomElement  Event::createDomElement(CL_DomDocument &doc) const
 
 void Event::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
-	mName = getRequiredString("name",pAttributes);
+    mName = getRequiredString("name",pAttributes);
 
-	std::string triggertype = getString("triggerType",pAttributes);
+    std::string triggertype = getString("triggerType",pAttributes);
 
-	if(triggertype == "step")
-		meTriggerType = STEP;
+    if(triggertype == "step")
+	meTriggerType = STEP;
     else if (triggertype == "talk")
-		meTriggerType = TALK;
+	meTriggerType = TALK;
     else if (triggertype == "act")
-		meTriggerType = ACT;
+	meTriggerType = ACT;
     else throw CL_Error(" Bad trigger type on event " + mName );
 
-	mbRepeatable = getImpliedBool("repeatable",pAttributes,false);
-	mbRemember = getImpliedBool("remember",pAttributes,false);
+    mbRepeatable = getImpliedBool("repeatable",pAttributes,false);
+    mbRemember = getImpliedBool("remember",pAttributes,false);
 }
 
 void Event::handleElement(eElement element, Element *pElement)
 {
-	if(isAction(element))
-	{
-		mActions.push_back( dynamic_cast<Action*>(pElement));
-	}
-	else if(element == ECONDITION)
-	{
-		mpCondition = dynamic_cast<Condition*>(pElement);
-	}
+    if(isAction(element))
+    {
+	mActions.push_back( dynamic_cast<Action*>(pElement));
+    }
+    else if(element == ECONDITION)
+    {
+	mpCondition = dynamic_cast<Condition*>(pElement);
+    }
 }
 
 
@@ -1373,7 +1377,7 @@ CL_DomElement  PlayAnimation::createDomElement(CL_DomDocument &doc) const
 
 void PlayAnimation::handleText(const std::string &text)
 {
-	mAnimation = text;
+    mAnimation = text;
 }
 
 
@@ -1407,7 +1411,7 @@ CL_DomElement  PlaySound::createDomElement(CL_DomDocument &doc) const
 
 void PlaySound::handleText(const std::string &text)
 {
-	mSound = text;
+    mSound = text;
 }
 
 PlaySound::~PlaySound()
@@ -1438,10 +1442,10 @@ CL_DomElement  LoadLevel::createDomElement(CL_DomDocument &doc) const
 
 void LoadLevel::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-	mStartX = getRequiredInt("startx",pAttributes);
-	mStartY = getRequiredInt("starty",pAttributes);
+    mStartX = getRequiredInt("startx",pAttributes);
+    mStartY = getRequiredInt("starty",pAttributes);
 
-	mName = getRequiredString("name",pAttributes);
+    mName = getRequiredString("name",pAttributes);
 }
  
 LoadLevel::~LoadLevel()
@@ -1494,41 +1498,41 @@ CL_DomElement Movement::createDomElement(CL_DomDocument &doc) const
 
 void Movement::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-		if(hasAttr("speed",pAttributes))
-		{
-			std::string speed = getString("speed",pAttributes);
+    if(hasAttr("speed",pAttributes))
+    {
+	std::string speed = getString("speed",pAttributes);
 
-			if(speed == "slow")
-			{
-				meSpeed = SLOW;
-			}
-			else if(speed == "fast")
-			{
-				meSpeed = FAST;
-			}
-			else throw CL_Error("Error, movement speed must be fast or slow.");
+	if(speed == "slow")
+	{
+	    meSpeed = SLOW;
+	}
+	else if(speed == "fast")
+	{
+	    meSpeed = FAST;
+	}
+	else throw CL_Error("Error, movement speed must be fast or slow.");
 			
-		}
+    }
 
-		std::string type = getRequiredString("movementType",pAttributes);
+    std::string type = getRequiredString("movementType",pAttributes);
 
-		if(type == "wander")
-		{	
-			meType = MOVEMENT_WANDER;
-		}
-		else if(type == "paceNS")
-		{
-			meType = MOVEMENT_PACE_NS;
-		}
-		else if(type == "paceEW")
-		{
-			meType = MOVEMENT_PACE_EW;
-		}
-		else if(type == "none")
-		{
-			// Why would they ever....
-			meType = MOVEMENT_NONE;
-		}
+    if(type == "wander")
+    {	
+	meType = MOVEMENT_WANDER;
+    }
+    else if(type == "paceNS")
+    {
+	meType = MOVEMENT_PACE_NS;
+    }
+    else if(type == "paceEW")
+    {
+	meType = MOVEMENT_PACE_EW;
+    }
+    else if(type == "none")
+    {
+	// Why would they ever....
+	meType = MOVEMENT_NONE;
+    }
 
 }
 
@@ -1577,11 +1581,11 @@ void StartBattle::handleElement(eElement element, Element *pElement)
 
 void StartBattle::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-	mbIsBoss = getImpliedBool("isBoss",pAttributes,false);
+    mbIsBoss = getImpliedBool("isBoss",pAttributes,false);
 
-	mCount = getImpliedInt("count",pAttributes,1);
+    mCount = getImpliedInt("count",pAttributes,1);
 
-	mMonster = getRequiredString("monster",pAttributes);
+    mMonster = getRequiredString("monster",pAttributes);
 }
 
 StartBattle::StartBattle():mbIsBoss(false),mCount(1)
@@ -1615,7 +1619,7 @@ CL_DomElement  InvokeShop::createDomElement(CL_DomDocument &doc) const
 
 void InvokeShop::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
-	mShopType = getRequiredString("shopType",pAttributes);
+    mShopType = getRequiredString("shopType",pAttributes);
 }
  
 
@@ -1649,7 +1653,7 @@ CL_DomElement  Pause::createDomElement(CL_DomDocument &doc) const
 
 void Pause::handleText(const std::string &text)
 {
-	mMs = atoi ( text.c_str() );
+    mMs = atoi ( text.c_str() );
 }
 
 Pause::~Pause()
@@ -1683,12 +1687,12 @@ CL_DomElement  Say::createDomElement(CL_DomDocument &doc) const
 
 void Say::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-	mSpeaker = getRequiredString("speaker",pAttributes);
+    mSpeaker = getRequiredString("speaker",pAttributes);
 }
 
 void Say::handleText(const std::string &text)
 {
-	mText = text;
+    mText = text;
 }
 
 
@@ -1706,7 +1710,7 @@ CL_DomElement  Give::createDomElement(CL_DomDocument &doc) const
     CL_DomElement element(doc,"give");
 
     if(mCount != 1)
-    element.set_attribute("count", IntToString ( mCount ) );
+	element.set_attribute("count", IntToString ( mCount ) );
 
     CL_DomElement  itemRef = mpItemRef->createDomElement(doc);
 
@@ -1719,17 +1723,17 @@ CL_DomElement  Give::createDomElement(CL_DomDocument &doc) const
 void Give::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
 		
-	mCount = getImpliedInt("count",pAttributes,1);
+    mCount = getImpliedInt("count",pAttributes,1);
 }
 
 void Give::handleElement(eElement element, Element * pElement)
 {
-	switch(element)
-	{
-	case EITEMREF:
-		mpItemRef = dynamic_cast<ItemRef*>(pElement);
-		break;
-	}
+    switch(element)
+    {
+    case EITEMREF:
+	mpItemRef = dynamic_cast<ItemRef*>(pElement);
+	break;
+    }
 }
 
 Give::Give( ):mpItemRef(NULL),mCount(1)
@@ -1765,17 +1769,17 @@ CL_DomElement  Take::createDomElement(CL_DomDocument &doc) const
 void Take::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
 		
-		mCount = getImpliedInt("count",pAttributes,1);
+    mCount = getImpliedInt("count",pAttributes,1);
 }
 
 void Take::handleElement(eElement element, Element * pElement)
 {
-	switch(element)
-	{
-	case EITEMREF:
-		mpItemRef = dynamic_cast<ItemRef*>(pElement);
-		break;
-	}
+    switch(element)
+    {
+    case EITEMREF:
+	mpItemRef = dynamic_cast<ItemRef*>(pElement);
+	break;
+    }
 }
  
 Take::Take( ):mpItemRef(NULL)
@@ -1812,7 +1816,7 @@ CL_DomElement  GiveGold::createDomElement(CL_DomDocument &doc) const
 
 void GiveGold::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-		mCount = getImpliedInt("count",pAttributes,1);
+    mCount = getImpliedInt("count",pAttributes,1);
 }
 
  
@@ -1858,12 +1862,12 @@ CL_DomElement  DirectionBlock::createDomElement(CL_DomDocument &doc) const
 
 void DirectionBlock::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
-	bool north = getRequiredBool("north",pAttributes);
-	bool south = getRequiredBool("south",pAttributes);
-	bool east =  getRequiredBool("east",pAttributes);
-	bool west =  getRequiredBool("west",pAttributes);
+    bool north = getRequiredBool("north",pAttributes);
+    bool south = getRequiredBool("south",pAttributes);
+    bool east =  getRequiredBool("east",pAttributes);
+    bool west =  getRequiredBool("west",pAttributes);
 
-	if(north) meDirectionBlock |= DIR_NORTH;
+    if(north) meDirectionBlock |= DIR_NORTH;
     if(south) meDirectionBlock |= DIR_SOUTH;
     if(east) meDirectionBlock |= DIR_EAST;
     if(west) meDirectionBlock |= DIR_WEST;
@@ -1950,66 +1954,66 @@ CL_DomElement  Tile::createDomElement(CL_DomDocument &doc) const
 
 void Tile::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-	mX = getRequiredInt("xpos",pAttributes);
-	mY = getRequiredInt("ypos",pAttributes);
+    mX = getRequiredInt("xpos",pAttributes);
+    mY = getRequiredInt("ypos",pAttributes);
 
-	mZOrder = getImpliedInt("zorder",pAttributes,0);
+    mZOrder = getImpliedInt("zorder",pAttributes,0);
 
-	bool floater = getImpliedBool("floater",pAttributes,false);
-	bool hot = getImpliedBool("hot",pAttributes,false);
+    bool floater = getImpliedBool("floater",pAttributes,false);
+    bool hot = getImpliedBool("hot",pAttributes,false);
 
-	if(floater) cFlags |= FLOATER;
-	if(hot) cFlags |= HOT;
+    if(floater) cFlags |= FLOATER;
+    if(hot) cFlags |= HOT;
 
 }
 
 
 void Tile::handleElement(eElement element, Element * pElement)
 {
-	switch(element)
-	{
-	case ETILEMAP:
-		mGraphic.asTilemap = dynamic_cast<Tilemap*>(pElement);
-		break;
-	case ESPRITEREF:
-		{
-			GraphicsManager * GM = GraphicsManager::getInstance();
-			mGraphic.asSpriteRef = dynamic_cast<SpriteRef*>(pElement);
-			cFlags |= SPRITE;
+    switch(element)
+    {
+    case ETILEMAP:
+	mGraphic.asTilemap = dynamic_cast<Tilemap*>(pElement);
+	break;
+    case ESPRITEREF:
+    {
+	GraphicsManager * GM = GraphicsManager::getInstance();
+	mGraphic.asSpriteRef = dynamic_cast<SpriteRef*>(pElement);
+	cFlags |= SPRITE;
 
-			// Actually create the ref'd sprite here.
-			// And assign to mpSprite
-			mpSprite = GM->createSprite( mGraphic.asSpriteRef->getRef() );
-			break;
-		}//ESPRITEREF
-	case ECONDITION:
-		mpCondition = dynamic_cast<Condition*>(pElement);
-		break;
-	case EATTRIBUTEMODIFIER:
-		mpAM = dynamic_cast<AttributeModifier*>(pElement);
-		break;
-	case EDIRECTIONBLOCK:
-		{
-		DirectionBlock *block = dynamic_cast<DirectionBlock*>(pElement);
+	// Actually create the ref'd sprite here.
+	// And assign to mpSprite
+	mpSprite = GM->createSprite( mGraphic.asSpriteRef->getRef() );
+	break;
+    }//ESPRITEREF
+    case ECONDITION:
+	mpCondition = dynamic_cast<Condition*>(pElement);
+	break;
+    case EATTRIBUTEMODIFIER:
+	mpAM = dynamic_cast<AttributeModifier*>(pElement);
+	break;
+    case EDIRECTIONBLOCK:
+    {
+	DirectionBlock *block = dynamic_cast<DirectionBlock*>(pElement);
 
-		int db = block->getDirectionBlock();
+	int db = block->getDirectionBlock();
 
-	    // This is all done to make tile's take up less space in memory
+	// This is all done to make tile's take up less space in memory
 			
-	    if(db & DIR_NORTH)
-		cFlags |= BLK_NORTH;
-	    if(db & DIR_SOUTH)
-		cFlags |= BLK_SOUTH;
-	    if(db & DIR_EAST)
-		cFlags |= BLK_EAST;
-	    if(db & DIR_WEST)
-		cFlags |= BLK_WEST;
+	if(db & DIR_NORTH)
+	    cFlags |= BLK_NORTH;
+	if(db & DIR_SOUTH)
+	    cFlags |= BLK_SOUTH;
+	if(db & DIR_EAST)
+	    cFlags |= BLK_EAST;
+	if(db & DIR_WEST)
+	    cFlags |= BLK_WEST;
 
-		delete block;
+	delete block;
 		
-		break;
-		}
-	}
+	break;
+    }
+    }
 }
 
 bool Tile::hasAM() const
@@ -2256,17 +2260,17 @@ MappableObject::eSize MappableObject::getSize() const
 
 void MappableObject::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-	mName = getRequiredString("name",pAttributes);
-	std::string motype = getRequiredString("type",pAttributes);
-	std::string size = getRequiredString("size",pAttributes);
+    mName = getRequiredString("name",pAttributes);
+    std::string motype = getRequiredString("type",pAttributes);
+    std::string size = getRequiredString("size",pAttributes);
 
-	mStartX= getRequiredInt("xpos",pAttributes);
-	mStartY = getRequiredInt("ypos",pAttributes);
+    mStartX= getRequiredInt("xpos",pAttributes);
+    mStartY = getRequiredInt("ypos",pAttributes);
 
-	mX = mStartX * 32;
-	mY = mStartY * 32;
+    mX = mStartX * 32;
+    mY = mStartY * 32;
 
-	if(size == "small") meSize = MO_SMALL;
+    if(size == "small") meSize = MO_SMALL;
     else if(size == "medium") meSize = MO_MEDIUM;
     else if(size == "large") meSize = MO_LARGE;
     else if(size == "wide") meSize = MO_WIDE;
@@ -2279,100 +2283,100 @@ void MappableObject::loadAttributes(CL_DomNamedNodeMap * pAttributes)
     else if (motype == "door") meType = DOOR;
     else if (motype == "warp") meType = WARP;
 
-	bool solid = getImpliedBool("solid",pAttributes,false);
+    bool solid = getImpliedBool("solid",pAttributes,false);
 
-	if(solid) cFlags |= SOLID;
+    if(solid) cFlags |= SOLID;
 
 }
 
 void MappableObject::handleElement(eElement element, Element * pElement)
 {
-	switch(element)
-	{
-	case ETILEMAP:
-		{
-			if( meSize != MO_SMALL) throw CL_Error("Mappable objects using tilemaps MUST be size small.");
-			cFlags |= TILEMAP;
-			mGraphic.asTilemap = dynamic_cast<Tilemap*>(pElement);
-			break;
-		}
-	case ESPRITEREF:
-		{
-			GraphicsManager *GM = GraphicsManager::getInstance();
+    switch(element)
+    {
+    case ETILEMAP:
+    {
+	if( meSize != MO_SMALL) throw CL_Error("Mappable objects using tilemaps MUST be size small.");
+	cFlags |= TILEMAP;
+	mGraphic.asTilemap = dynamic_cast<Tilemap*>(pElement);
+	break;
+    }
+    case ESPRITEREF:
+    {
+	GraphicsManager *GM = GraphicsManager::getInstance();
 
-			SpriteRef * pRef = dynamic_cast<SpriteRef*>(pElement);
+	SpriteRef * pRef = dynamic_cast<SpriteRef*>(pElement);
 
-			mGraphic.asSpriteRef = pRef;
-			cFlags |= SPRITE;
+	mGraphic.asSpriteRef = pRef;
+	cFlags |= SPRITE;
 
-			mpSprite = GM->createSprite ( pRef->getRef() );
+	mpSprite = GM->createSprite ( pRef->getRef() );
 	    
 
-			int swidth = mpSprite->get_width();
-			int sheight = mpSprite->get_height();
+	int swidth = mpSprite->get_width();
+	int sheight = mpSprite->get_height();
 
-			switch( meSize )
-			{
-			case MO_SMALL:
-				if( swidth != 32 && sheight !=32) throw CL_Error("Sprite size doesn't match MO size (SMALL)");
-				break;
-			case MO_MEDIUM:
-				if( swidth != 64 && sheight != 64) throw CL_Error("Sprite size doesn't match MO size (MEDIUM).");
-				break;
-			case MO_LARGE:
-				if( swidth != 128 && sheight != 128) throw CL_Error("Sprite size doesnt match MO size (LARGE)");
-				break;
-			case MO_TALL:
-				if( swidth != 32 && sheight != 64) throw CL_Error("Sprite size does not match MO size(TALL)");
-				break;
-			case MO_WIDE:
-				if( swidth != 64 && sheight != 32) throw CL_Error("Sprite size does not match MO size(TALL)");
-				break;
-			}
-			
-			break;
-		}
-	case ECONDITION:
-		mpCondition = dynamic_cast<Condition*>(pElement);
-		break;
-	case EEVENT:
-		mEvents.push_back ( dynamic_cast<Event*>(pElement));
-		break;
-	case EMOVEMENT:
-		{
-			mpMovement = dynamic_cast<Movement*>(pElement);
-
-			// Make sure the proper sprites are around for the movement type
-			switch(mpMovement->getMovementType())
-			{
-			case Movement::MOVEMENT_WANDER:
-				if(!mGraphic.asSpriteRef->getType() == SpriteRef::SPR_FOUR_WAY)
-					throw CL_Error("Wandering MO needs a four way sprite ref.");
-
-				meDirection = SOUTH;
-				break;
-			case Movement::MOVEMENT_PACE_NS:
-				meDirection = SOUTH;
-				if(!mGraphic.asSpriteRef->getType() == SpriteRef::SPR_TWO_WAY)
-					throw CL_Error("Pacing MO needs a two way sprite ref.");
-				break;
-			case Movement::MOVEMENT_PACE_EW:
-				if(!mGraphic.asSpriteRef->getType() == SpriteRef::SPR_TWO_WAY)
-					throw CL_Error("Pacing MO needs a two way sprite ref.");
-				meDirection = EAST;
-				break;	
-			default:
-				break;
-			}
-
-		break;
-		}
+	switch( meSize )
+	{
+	case MO_SMALL:
+	    if( swidth != 32 && sheight !=32) throw CL_Error("Sprite size doesn't match MO size (SMALL)");
+	    break;
+	case MO_MEDIUM:
+	    if( swidth != 64 && sheight != 64) throw CL_Error("Sprite size doesn't match MO size (MEDIUM).");
+	    break;
+	case MO_LARGE:
+	    if( swidth != 128 && sheight != 128) throw CL_Error("Sprite size doesnt match MO size (LARGE)");
+	    break;
+	case MO_TALL:
+	    if( swidth != 32 && sheight != 64) throw CL_Error("Sprite size does not match MO size(TALL)");
+	    break;
+	case MO_WIDE:
+	    if( swidth != 64 && sheight != 32) throw CL_Error("Sprite size does not match MO size(TALL)");
+	    break;
 	}
+			
+	break;
+    }
+    case ECONDITION:
+	mpCondition = dynamic_cast<Condition*>(pElement);
+	break;
+    case EEVENT:
+	mEvents.push_back ( dynamic_cast<Event*>(pElement));
+	break;
+    case EMOVEMENT:
+    {
+	mpMovement = dynamic_cast<Movement*>(pElement);
+
+	// Make sure the proper sprites are around for the movement type
+	switch(mpMovement->getMovementType())
+	{
+	case Movement::MOVEMENT_WANDER:
+	    if(!mGraphic.asSpriteRef->getType() == SpriteRef::SPR_FOUR_WAY)
+		throw CL_Error("Wandering MO needs a four way sprite ref.");
+
+	    meDirection = SOUTH;
+	    break;
+	case Movement::MOVEMENT_PACE_NS:
+	    meDirection = SOUTH;
+	    if(!mGraphic.asSpriteRef->getType() == SpriteRef::SPR_TWO_WAY)
+		throw CL_Error("Pacing MO needs a two way sprite ref.");
+	    break;
+	case Movement::MOVEMENT_PACE_EW:
+	    if(!mGraphic.asSpriteRef->getType() == SpriteRef::SPR_TWO_WAY)
+		throw CL_Error("Pacing MO needs a two way sprite ref.");
+	    meDirection = EAST;
+	    break;	
+	default:
+	    break;
+	}
+
+	break;
+    }
+    }
 }
 
 void MappableObject::loadFinished()
 {
-	setFrameForDirection();
+    setFrameForDirection();
 }
  
 MappableObject::MappableObject():meDirection(NONE),mpSprite(NULL),mpMovement(0),mpCondition(0),mTimeOfLastUpdate(0),mCountInCurDirection(0),cFlags(0)
@@ -3414,7 +3418,7 @@ void Level::step(const CL_Rect &dest, const CL_Rect & old)
     mMappableObjects.sort( moSortCriterion );
 #else
 
-	mMappableObjects.sort(std::greater<MappableObject*>());
+    mMappableObjects.sort(std::greater<MappableObject*>());
 #endif
     
 
@@ -3524,7 +3528,7 @@ void Level::activateTilesAt ( uint x, uint y )
 // Any talk events fire (assuming they meet conditions)
 void Level::talk(const CL_Rect &target, bool prod)
 {
- // No need to sort MOs. They will just have been sorted.
+    // No need to sort MOs. They will just have been sorted.
 
     for(std::list<MappableObject*>::iterator i = mMappableObjects.begin();
 	i != mMappableObjects.end();
@@ -3590,7 +3594,7 @@ bool Level::moSortCriterion( const MappableObject *p1, const MappableObject * p2
 
 	
 /*    p1Distance = max(abs( (long)pX - p1->getX()) , abs((long)pY - p1->getY()));
-    p2Distance = max(abs( (long)pX - p2->getX()) , abs((long)pY - p2->getY()));
+      p2Distance = max(abs( (long)pX - p2->getX()) , abs((long)pY - p2->getY()));
 */
     int dx1 = abs((long)pX - p1->getX());
     int dy1 = abs((long)pY - p1->getY());
@@ -3609,40 +3613,40 @@ bool Level::moSortCriterion( const MappableObject *p1, const MappableObject * p2
 void Level::dumpMappableObjects() const
 {
 
-	IApplication * pApp = IApplication::getInstance();
+    IApplication * pApp = IApplication::getInstance();
 
-	CL_Rect levelRect = pApp->getLevelRect();
-	int pX = pApp->getLevelRect().get_width() / 2;
+    CL_Rect levelRect = pApp->getLevelRect();
+    int pX = pApp->getLevelRect().get_width() / 2;
     int pY = pApp->getLevelRect().get_height() / 2;
 
 
-	std::cout << "=== Mappable Objects ===" << std::endl;
+    std::cout << "=== Mappable Objects ===" << std::endl;
 
-	for(std::list<MappableObject *>::const_iterator i = mMappableObjects.begin();
-		i != mMappableObjects.end();
-		i++)
-		{
-			MappableObject * pMO = *i;
+    for(std::list<MappableObject *>::const_iterator i = mMappableObjects.begin();
+	i != mMappableObjects.end();
+	i++)
+    {
+	MappableObject * pMO = *i;
 
 
-			std::cout << pMO->getName();
+	std::cout << pMO->getName();
 
-			int dx1 = pX - pMO->getX();
-		    int dy1 = pY - pMO->getY();
+	int dx1 = pX - pMO->getX();
+	int dy1 = pY - pMO->getY();
 
-			int distance = (int)sqrt((float)( dx1 * dx1 + dy1 * dy1 ));
+	int distance = (int)sqrt((float)( dx1 * dx1 + dy1 * dy1 ));
 
-			std::cout << " Dst: " << distance;
+	std::cout << " Dst: " << distance;
 
-			if( levelRect.is_overlapped(pMO->getRect()) )
-			{
-				std::cout << " is Onscreen ";
-			}
+	if( levelRect.is_overlapped(pMO->getRect()) )
+	{
+	    std::cout << " is Onscreen ";
+	}
 
-			std::cout << pMO->getX() << ',' << pMO->getY();
-			std::cout << std::endl;
+	std::cout << pMO->getX() << ',' << pMO->getY();
+	std::cout << std::endl;
 			
-		}
+    }
 
 
 }
@@ -3779,7 +3783,7 @@ void Level::loadMo ( CL_DomElement * moElement )
     LevelFactory * factory = IApplication::getInstance()->getLevelFactory();
     MappableObject * mo = dynamic_cast<MappableObject*>(factory->createElement(Element::EMAPPABLEOBJECT));
 
-	mo->load(moElement);
+    mo->load(moElement);
 
     mMappableObjects.push_back( mo );
 
@@ -3794,7 +3798,7 @@ void Level::loadTile ( CL_DomElement * tileElement)
     CL_Point point;
 
     Tile * tile = dynamic_cast<Tile*>(factory->createElement ( Element::ETILE ));
-	tile->load(tileElement);
+    tile->load(tileElement);
 
     if(tile == NULL) throw CL_Error("Tile was null, it was all for naught!");
 
