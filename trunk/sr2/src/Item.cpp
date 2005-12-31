@@ -413,7 +413,7 @@ void NamedItemElement::handleElement(eElement element, Element * pElement)
     switch(element)
     {
     case EICONREF:
-	///@todo
+		mIconRef = dynamic_cast<IconRef*>(pElement)->getIcon();
 	break;
     case EREGULARITEM:
     case EUNIQUEWEAPON:

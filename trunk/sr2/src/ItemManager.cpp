@@ -96,6 +96,7 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
 	namedItemCount++;
 #endif
 	NamedItemElement * pElement = dynamic_cast<NamedItemElement*>(pItemFactory->createElement ( Element::ENAMEDITEMELEMENT ));
+
 	pElement->load(&namedItemNode);
 	NamedItem * pItem = pElement->getNamedItem();
 	
