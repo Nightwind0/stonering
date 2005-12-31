@@ -666,6 +666,8 @@ namespace StoneRing {
 
 	virtual CL_Rect getRect();
 
+	virtual bool onScreen();
+
 	virtual bool isSprite() const;
 
 	virtual int getDirectionBlock() const;
@@ -866,6 +868,8 @@ namespace StoneRing{
 	bool mbAllowsRunning;
 
 	std::multiset<CL_Point> mLastSteppedTiles;
+
+	std::list<MappableObject *>::iterator mMOPartition;
     };
 }
 

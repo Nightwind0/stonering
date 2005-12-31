@@ -861,6 +861,7 @@ int Application::main(int argc, char ** argv)
 		
 #endif
 	    
+#if 1
 	    if(delta_time < 16)
 	    {
 		CL_System::keep_alive(16 - delta_time);
@@ -869,6 +870,9 @@ int Application::main(int argc, char ** argv)
 	    {
 		CL_System::keep_alive();
 	    }
+#else
+		CL_System::keep_alive();
+#endif
 
 	    CL_Display::flip();
 

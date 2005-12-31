@@ -8,14 +8,11 @@
 //#include "IApplication.h"
 
 
-#define GET_CHILD pElement->get_first_child().to_element();
-
 
 
 namespace StoneRing
 {
 
-    class IFactory;
     class IApplication;
 
 

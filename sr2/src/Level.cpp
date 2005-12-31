@@ -2768,6 +2768,13 @@ void MappableObject::prod()
     randomNewDirection();
 }
 
+bool MappableObject::onScreen()
+{
+	CL_Rect screen = IApplication::getInstance()->getLevelRect();
+	
+	return screen.is_overlapped(getRect());
+}
+
 
 void MappableObject::provokeEvents ( Event::eTriggerType trigger )
 {
@@ -3073,7 +3080,7 @@ void Level::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_Graph
 
 
     for(std::list<MappableObject*>::iterator i = mMappableObjects.begin();
-	i != mMappableObjects.end();
+	i != mMOPartition;
 	i++)
     {
 	
@@ -3084,12 +3091,7 @@ void Level::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_Graph
 	    CL_Rect moRect = (*i)->getRect();
 	    CL_Rect dstRect( moRect.left - src.left + dst.left, moRect.top + dst.top - src.top,
 			     moRect.left - src.left + dst.left +moRect.get_width(), moRect.top - src.top + dst.top + moRect.get_height());
-	    if( ! src.is_overlapped ( moRect ) )
-	    {
-		// This MO was outside our field of vision, so we stop iterating.
-		break;
-	    }
-	    
+
 	    (*i)->update(bMove);
 	    (*i)->draw( moRect, dstRect, pGC );
 	    
@@ -3109,9 +3111,6 @@ void Level::drawFloaters(const CL_Rect &src, const CL_Rect &dst, CL_GraphicConte
 // Checks relevant tile and MO direction block information
 bool Level::canMove(const CL_Rect &currently, const CL_Rect & destination, bool noHot, bool isPlayer) const
 {
-
-
-
     if(currently == destination) return true;
 
 
@@ -3161,7 +3160,7 @@ bool Level::canMove(const CL_Rect &currently, const CL_Rect & destination, bool 
 
     //  Check MOs for overlap, return true if any
     for(std::list<MappableObject*>::const_iterator iter = mMappableObjects.begin();
-	iter != mMappableObjects.end();
+	iter != mMOPartition;
 	iter++)
     {
 
@@ -3414,13 +3413,11 @@ void Level::step(const CL_Rect &dest, const CL_Rect & old)
     // NOTE: This was moved from drawMappableObjects because it really only needs to be called
     // when the player moves. Remember that MOs can't move on screen from offscreen because they don't get run time.
     // Otherwise, this WOULD have to be called from drawMappableObjects
-#ifndef _MSC_VER
-    mMappableObjects.sort( moSortCriterion );
-#else
 
-    mMappableObjects.sort(std::greater<MappableObject*>());
-#endif
     
+	mMOPartition = std::partition(mMappableObjects.begin(),
+							mMappableObjects.end(),
+							std::mem_fun(&MappableObject::onScreen));
 
     // First, process any MO step events you may have triggered
 
@@ -3428,7 +3425,7 @@ void Level::step(const CL_Rect &dest, const CL_Rect & old)
     // No need to sort MOs. They will just have been sorted.
 
     for(std::list<MappableObject*>::iterator i = mMappableObjects.begin();
-	i != mMappableObjects.end();
+	i != mMOPartition;
 	i++)
     {
 
@@ -3437,12 +3434,7 @@ void Level::step(const CL_Rect &dest, const CL_Rect & old)
 	    CL_Rect moRect = (*i)->getRect();
 	    
 	    
-	    if( ! IApplication::getInstance()->getLevelRect().is_overlapped ( moRect ) )
-	    {
-		// This MO was outside our field of vision, so we stop iterating.
-		break;
-	    }
-	    else if( dest.is_overlapped(moRect ) && ! old.is_overlapped(moRect)) //only if we aren't already on it...
+		if( dest.is_overlapped(moRect ) && ! old.is_overlapped(moRect)) //only if we aren't already on it...
 	    {
 		// This MO needs to be stepped on
 		(*i)->provokeEvents ( Event::STEP );
@@ -3531,7 +3523,7 @@ void Level::talk(const CL_Rect &target, bool prod)
     // No need to sort MOs. They will just have been sorted.
 
     for(std::list<MappableObject*>::iterator i = mMappableObjects.begin();
-	i != mMappableObjects.end();
+	i != mMOPartition;
 	i++)
     {
 
@@ -3539,21 +3531,15 @@ void Level::talk(const CL_Rect &target, bool prod)
 	{
 	    CL_Rect moRect = (*i)->getRect();
 	    
-	    
-	    if( ! IApplication::getInstance()->getLevelRect().is_overlapped ( moRect ) )
-	    {
-		// This MO was outside our field of vision, so we stop iterating.
-		break;
-	    }
-	    else if( target.is_overlapped(moRect ))
-	    {
-		if(!prod)
+		if( target.is_overlapped(moRect ))
 		{
+			if(!prod)
+			{
 		    // This MO needs to be talked to
 		    (*i)->provokeEvents ( Event::TALK );
-		}
-		else
-		{
+			}
+			else
+			{
 		    // Prod!
 		    // (Can't prod things that aren't solid. They aren't in your way anyways)
 		    // And if it has no movement, prodding it does nothing.
@@ -3753,6 +3739,8 @@ void Level::LoadLevel (CL_DomDocument &document )
 
 		
     }
+
+	mMOPartition = mMappableObjects.end();
 
     std:: cout << "FOUND " << mocount << " MAPPABLE OBJECTS" << std::endl;
 }
