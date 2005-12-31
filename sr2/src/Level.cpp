@@ -290,10 +290,14 @@ void ItemRef::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 
 void ItemRef::loadFinished()
 {
-		if(!mpNamedItemRef && !mpWeaponRef && !mpArmorRef)
-		{
-			throw CL_Error("Item Ref with no child");
-		}
+	const ItemManager * pItemManager = IApplication::getInstance()->getItemManager();
+
+	if(!mpNamedItemRef && !mpWeaponRef && !mpArmorRef)
+	{
+		throw CL_Error("Item Ref with no child");
+	}
+	
+	mpItem = pItemManager->getItem ( *this ); 
 }
 
 
