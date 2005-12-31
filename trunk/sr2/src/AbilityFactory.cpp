@@ -11,67 +11,147 @@ using namespace StoneRing;
 
 
 
-DoWeaponDamage * AbilityFactory::createDoWeaponDamage(CL_DomElement * pElement) const
+Element * AbilityFactory::createDoWeaponDamage() const
 {
-    return new DoWeaponDamage( pElement );
+    return new DoWeaponDamage();
 }
 
-DoMagicDamage  * AbilityFactory::createDoMagicDamage(CL_DomElement * pElement) const
+Element  * AbilityFactory::createDoMagicDamage() const
 {
-    return new DoMagicDamage ( pElement );
+    return new DoMagicDamage ();
 }
 
-DoStatusEffect * AbilityFactory::createDoStatusEffect(CL_DomElement * pElement)const
+Element * AbilityFactory::createDoStatusEffect()const
 {
-    return new DoStatusEffect ( pElement );
+    return new DoStatusEffect ();
 }
 
-Spell          * AbilityFactory::createSpell(CL_DomElement * pElement) const
+Element          * AbilityFactory::createSpell() const
 {
-    return new Spell ( pElement );
+    return new Spell ();
 }
 
-WeaponDamageCategory * AbilityFactory::createWeaponDamageCategory(CL_DomElement * pElement) const
+Element * AbilityFactory::createWeaponDamageCategory() const
 {
-    return new WeaponDamageCategory ( pElement );
+    return new WeaponDamageCategory ();
 }
 
-MagicDamageCategory  * AbilityFactory::createMagicDamageCategory(CL_DomElement * pElement) const
+Element  * AbilityFactory::createMagicDamageCategory() const
 {
-    return new MagicDamageCategory ( pElement );
+    return new MagicDamageCategory ();
 }
 
-Animation            * AbilityFactory::createAnimation(CL_DomElement * pElement) const
+Element            * AbilityFactory::createAnimation() const
 {
-    return new Animation( pElement );
+    return new Animation();
 }
 
-MagicResistance      * AbilityFactory::createMagicResistance ( CL_DomElement * pElement) const
+Element      * AbilityFactory::createMagicResistance ( ) const
 {
-    return new MagicResistance ( pElement );
+    return new MagicResistance ();
 }
 
-AttributeEffect* AbilityFactory::createAttributeEffect(CL_DomElement *pElement) const
+Element* AbilityFactory::createAttributeEffect() const
 {
-	return new AttributeEffect ( pElement );
+    return new AttributeEffect ();
 }
 
-StatusEffectActions  *AbilityFactory::createStatusEffectActions(CL_DomElement * pElement) const
+Element  *AbilityFactory::createStatusEffectActions() const
 {
-	return new StatusEffectActions( pElement );
+    return new StatusEffectActions();
 }
 
-StatusEffect * AbilityFactory::createStatusEffect(CL_DomElement * pElement) const
+Element * AbilityFactory::createStatusEffect() const
 {
-	return new StatusEffect( pElement );
+    return new StatusEffect();
 }
 
-StartingStat  *AbilityFactory::createStartingStat(CL_DomElement * pElement) const
+Element  *AbilityFactory::createStartingStat() const
 {
-	return new StartingStat( pElement );
+    return new StartingStat();
 }
-StatIncrease * AbilityFactory::createStatIncrease(CL_DomElement * pElement) const
+Element * AbilityFactory::createStatIncrease() const
 {
-	return new StatIncrease( pElement );
+    return new StatIncrease();
 }
 
+
+Element * AbilityFactory::createAnimationSpriteRef() const
+{
+	return new AnimationSpriteRef();
+}
+
+Element * AbilityFactory::createPar() const
+{
+	return new Par;
+}
+
+Element * AbilityFactory::createSkillRef() const
+{
+	return new SkillRef();
+}
+
+
+
+bool AbilityFactory::canCreate( Element::eElement element )
+{
+    factoryMethod method = getMethod(element);
+
+    if(method == NULL) return false;
+    else return true;
+		
+}
+
+Element * AbilityFactory::createElement( Element::eElement element )
+{
+    factoryMethod method = getMethod(element);
+
+	Element * pElement = (this->*method)();
+
+    return pElement;
+}
+
+
+
+AbilityFactory::factoryMethod 
+AbilityFactory::getMethod(Element::eElement element) const
+{
+    switch(element)
+    {
+    case Element::EDOWEAPONDAMAGE:
+	return &AbilityFactory::createDoWeaponDamage;
+    case Element::EDOMAGICDAMAGE:
+	return &AbilityFactory::createDoMagicDamage;
+    case Element::EDOSTATUSEFFECT:
+	return &AbilityFactory::createDoStatusEffect;
+    case Element::ESPELL:
+	return &AbilityFactory::createSpell;
+    case Element::EWEAPONDAMAGECATEGORY:
+	return &AbilityFactory::createWeaponDamageCategory;
+    case Element::EMAGICDAMAGECATEGORY:
+	return &AbilityFactory::createMagicDamageCategory;
+    case Element::EANIMATION:
+	return &AbilityFactory::createAnimation;
+    case Element::EMAGICRESISTANCE:
+	return &AbilityFactory::createMagicResistance;
+    case Element::EATTRIBUTEEFFECT:
+	return &AbilityFactory::createAttributeEffect;
+    case Element::ESTATUSEFFECTACTIONS:
+	return &AbilityFactory::createStatusEffectActions;
+    case Element::ESTATUSEFFECT:
+	return &AbilityFactory::createStatusEffect;
+    case Element::ESTARTINGSTAT:
+	return &AbilityFactory::createStartingStat;
+    case Element::ESTATINCREASE:
+	return &AbilityFactory::createStatIncrease;
+    case Element::EANIMATIONSPRITEREF:
+	return &AbilityFactory::createAnimationSpriteRef;
+	case Element::EONROUND:
+	case Element::EONREMOVE:
+	case Element::EONCOUNTDOWN:
+	case Element::EONINVOKE:
+		return &AbilityFactory::createStatusEffectActions;
+    default:
+	return NULL;
+    }
+}

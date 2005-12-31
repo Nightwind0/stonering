@@ -34,8 +34,9 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
 
     while(!weaponClassNode.is_null())
     {
-	
-	mWeaponClasses.push_back ( pItemFactory->createWeaponClass ( &weaponClassNode ) );
+		WeaponClass * pWeaponClass = dynamic_cast<WeaponClass*>( pItemFactory->createElement(Element::EWEAPONCLASS) );
+			pWeaponClass->load(&weaponClassNode);
+	mWeaponClasses.push_back ( pWeaponClass );
 	weaponClassNode = weaponClassNode.get_next_sibling().to_element();
     }
     
@@ -45,8 +46,9 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
     
     while(!weaponTypeNode.is_null())
     {
-	
-	mWeaponTypes.push_back ( pItemFactory->createWeaponType ( &weaponTypeNode ) );
+		WeaponType * pWeaponType = dynamic_cast<WeaponType*>( pItemFactory->createElement(Element::EWEAPONTYPE) );
+		pWeaponType->load(&weaponTypeNode);
+	mWeaponTypes.push_back ( pWeaponType );
 
 	weaponTypeNode = weaponTypeNode.get_next_sibling().to_element();
     }
@@ -57,8 +59,9 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
 
     while(!armorClassNode.is_null())
     {
-
-	mArmorClasses.push_back ( pItemFactory->createArmorClass ( &armorClassNode  ));
+		ArmorClass * pArmorClass = dynamic_cast<ArmorClass*>( pItemFactory->createElement(Element::EARMORCLASS) );
+		pArmorClass->load(&armorClassNode);
+	mArmorClasses.push_back ( pArmorClass);
 
 	armorClassNode = armorClassNode.get_next_sibling().to_element();
     }
@@ -70,8 +73,9 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
 
     while(!armorTypeNode.is_null())
     {
-	
-	mArmorTypes.push_back ( pItemFactory->createArmorType ( &armorTypeNode ) );
+		ArmorType * pArmorType = dynamic_cast<ArmorType*>( pItemFactory->createElement(Element::EARMORTYPE) );
+		pArmorType->load(&armorTypeNode);
+	mArmorTypes.push_back ( pArmorType);
 
 	armorTypeNode = armorTypeNode.get_next_sibling().to_element();
     }
@@ -91,8 +95,8 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
 #ifndef NDEBUG
 	namedItemCount++;
 #endif
-	NamedItemElement * pElement = pItemFactory->createNamedItemElement ( &namedItemNode );
-	
+	NamedItemElement * pElement = dynamic_cast<NamedItemElement*>(pItemFactory->createElement ( Element::ENAMEDITEMELEMENT ));
+	pElement->load(&namedItemNode);
 	NamedItem * pItem = pElement->getNamedItem();
 	
 	pItem->setIconRef ( pElement->getIconRef() );

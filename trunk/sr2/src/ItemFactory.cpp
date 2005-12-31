@@ -8,273 +8,248 @@ using namespace StoneRing;
 ItemFactory::~ItemFactory(){}
 
 
+Element * ItemFactory::createIconRef() const
+{
+	return new IconRef();
+}
 
-NamedItemElement * ItemFactory::createNamedItemElement() const
+
+Element * ItemFactory::createNamedItemElement() const
 {
     return new NamedItemElement();
 }
 
-NamedItemElement * ItemFactory::createNamedItemElement(CL_DomElement *pElement) const
+
+Element * ItemFactory::createRegularItem()const
 {
-    return new NamedItemElement(pElement);
-}
-
-
-RegularItem * ItemFactory::createRegularItem()const
-{
-
     return new RegularItem();
 }
 
-RegularItem * ItemFactory::createRegularItem(CL_DomElement * pElement) const
+Element * ItemFactory::createWeaponTypeExclusionList() const
 {
-    RegularItem * pItem = ItemFactory::createRegularItem();
-    pItem->loadItem ( pElement );
-    return pItem;
-
+	return new WeaponTypeExclusionList;
+}
+Element * ItemFactory::createArmorTypeExclusionList() const
+{
+	return new ArmorTypeExclusionList;
 }
 
-SpecialItem * ItemFactory::createSpecialItem()const
+Element * ItemFactory::createSpecialItem()const
 {
     return new SpecialItem();
 }
 
-SpecialItem * ItemFactory::createSpecialItem(CL_DomElement * pElement) const
-{
-    SpecialItem * pItem = ItemFactory::createSpecialItem();
-    pItem->loadItem ( pElement );
-    return pItem;
-}
 
-SystemItem * ItemFactory::createSystemItem()const
+Element * ItemFactory::createSystemItem()const
 {
     return new SystemItem();
 }
 
-SystemItem * ItemFactory::createSystemItem(CL_DomElement * pElement) const
-{
-    SystemItem * pItem = ItemFactory::createSystemItem();
-    pItem->loadItem ( pElement );
-    return pItem;
-}
 
-Rune * ItemFactory::createRune()const
+Element * ItemFactory::createRune()const
 {
     return new Rune();
 }
 
-Rune * ItemFactory::createRune(CL_DomElement * pElement) const
-{
 
-    Rune * pItem = ItemFactory::createRune();
-    pItem->loadItem ( pElement );
-    return pItem;
-}
-
-UniqueWeapon * ItemFactory::createUniqueWeapon()const
+Element * ItemFactory::createUniqueWeapon()const
 {
     return new UniqueWeapon();
 }
 
-UniqueWeapon * ItemFactory::createUniqueWeapon(CL_DomElement * pElement) const
-{
-    UniqueWeapon * pItem = ItemFactory::createUniqueWeapon();
-    pItem->loadItem ( pElement );
-    return pItem;
 
-}
-
-UniqueArmor * ItemFactory::createUniqueArmor()const
+Element * ItemFactory::createUniqueArmor()const
 {
     return new UniqueArmor();
 }
 
-UniqueArmor * ItemFactory::createUniqueArmor(CL_DomElement * pElement) const
-{
-    UniqueArmor * pItem = ItemFactory::createUniqueArmor();
-    pItem->loadItem ( pElement );
-    return pItem;
-}
 
-WeaponTypeRef * ItemFactory::createWeaponTypeRef()const
+Element * ItemFactory::createWeaponTypeRef()const
 {
     return new WeaponTypeRef();
 }
 
-WeaponTypeRef * ItemFactory::createWeaponTypeRef(CL_DomElement * pElement) const
-{
-    return new WeaponTypeRef(pElement);
-}
 
-WeaponClassRef * ItemFactory::createWeaponClassRef()const
+Element * ItemFactory::createWeaponClassRef()const
 {
     return new WeaponClassRef();
 }
 
-WeaponClassRef * ItemFactory::createWeaponClassRef(CL_DomElement * pElement) const
-{
-    return new WeaponClassRef(pElement);
-}
 
-ArmorTypeRef * ItemFactory::createArmorTypeRef()const
+Element * ItemFactory::createArmorTypeRef()const
 {
     return new ArmorTypeRef();
 }
 
-ArmorTypeRef * ItemFactory::createArmorTypeRef(CL_DomElement * pElement) const
-{
-    return new ArmorTypeRef(pElement);
-}
 
-ArmorClassRef * ItemFactory::createArmorClassRef()const
+Element * ItemFactory::createArmorClassRef()const
 {
     return new ArmorClassRef();
 }
 
-ArmorClassRef * ItemFactory::createArmorClassRef(CL_DomElement * pElement) const
-{
-    return new ArmorClassRef(pElement);
-}
 
-WeaponRef * ItemFactory::createWeaponRef()const
+Element * ItemFactory::createWeaponRef()const
 {
     return new WeaponRef();
 }
 
-WeaponRef * ItemFactory::createWeaponRef(CL_DomElement * pElement) const
-{
-    return new WeaponRef(pElement);
-}
-
-ArmorRef * ItemFactory::createArmorRef()const
+Element * ItemFactory::createArmorRef()const
 {
     return new ArmorRef();
 }
 
-ArmorRef * ItemFactory::createArmorRef(CL_DomElement * pElement) const
-{
-    return new ArmorRef(pElement);
-}
 
-RuneType * ItemFactory::createRuneType()const
+Element * ItemFactory::createRuneType()const
 {
     return new RuneType();
 }
 
-RuneType * ItemFactory::createRuneType(CL_DomElement * pElement) const
-{
-    return new RuneType(pElement);
-}
 
-SpellRef * ItemFactory::createSpellRef()const
+Element * ItemFactory::createSpellRef()const
 {
     return new SpellRef();
 }
 
-SpellRef * ItemFactory::createSpellRef(CL_DomElement * pElement) const
-{
-    return new SpellRef(pElement);
-}
 
-WeaponEnhancer * ItemFactory::createWeaponEnhancer()const
+Element * ItemFactory::createWeaponEnhancer()const
 {
     return new WeaponEnhancer();
 }
 
-WeaponEnhancer * ItemFactory::createWeaponEnhancer(CL_DomElement * pElement) const
-{
-    return new WeaponEnhancer(pElement);
-}
 
-ArmorEnhancer * ItemFactory::createArmorEnhancer()const
+Element * ItemFactory::createArmorEnhancer()const
 {
     return new ArmorEnhancer();
 }
 
-ArmorEnhancer * ItemFactory::createArmorEnhancer(CL_DomElement * pElement) const
-{
-    return new ArmorEnhancer(pElement);
-}
 
-AttributeEnhancer * ItemFactory::createAttributeEnhancer()const
+Element * ItemFactory::createAttributeEnhancer()const
 {
     return new AttributeEnhancer();
 }
 
-AttributeEnhancer * ItemFactory::createAttributeEnhancer(CL_DomElement * pElement) const
-{
-    return new AttributeEnhancer(pElement);
-}
 
-WeaponClass * ItemFactory::createWeaponClass()const
+Element * ItemFactory::createWeaponClass()const
 {
     return new WeaponClass();
 }
 
-WeaponClass * ItemFactory::createWeaponClass(CL_DomElement * pElement) const
-{
-    return new WeaponClass(pElement);
-}
-
-WeaponType * ItemFactory::createWeaponType()const
+Element * ItemFactory::createWeaponType()const
 {
     return new WeaponType();
 }
 
-WeaponType * ItemFactory::createWeaponType(CL_DomElement * pElement) const
-{
-    return new WeaponType(pElement);
-}
-
-ArmorClass * ItemFactory::createArmorClass()const
+Element * ItemFactory::createArmorClass()const
 {
     return new ArmorClass();
 }
 
-ArmorClass * ItemFactory::createArmorClass(CL_DomElement * pElement) const
-{
-    return new ArmorClass(pElement);
-}
-
-ArmorType * ItemFactory::createArmorType()const
+Element * ItemFactory::createArmorType()const
 {
     return new ArmorType();
 }
 
-ArmorType * ItemFactory::createArmorType(CL_DomElement * pElement) const
-{
-    return new ArmorType(pElement);
-}
-
-WeaponDamageCategory * ItemFactory::createWeaponDamageCategory() const
+Element * ItemFactory::createWeaponDamageCategory() const
 {
     return new WeaponDamageCategory();
 }
 
 
-WeaponDamageCategory * ItemFactory::createWeaponDamageCategory(CL_DomElement * pElement) const
-{
-    return new WeaponDamageCategory(pElement);
-}
-
-MagicDamageCategory * ItemFactory::createMagicDamageCategory() const
+Element * ItemFactory::createMagicDamageCategory() const
 {
     return new MagicDamageCategory();
 }
 
 
-MagicDamageCategory * ItemFactory::createMagicDamageCategory(CL_DomElement * pElement) const
-{
-    return new MagicDamageCategory(pElement);
-}
-
-StatusEffectModifier *ItemFactory::createStatusEffectModifier() const
+Element *ItemFactory::createStatusEffectModifier() const
 {
     return new StatusEffectModifier();
 }
 
 
-StatusEffectModifier *ItemFactory::createStatusEffectModifier(CL_DomElement *pElement) const
+bool ItemFactory::canCreate( Element::eElement element )
 {
-    return new StatusEffectModifier(pElement);
+    factoryMethod method = getMethod(element);
+
+    if(method == NULL) return false;
+    else return true;
+		
+}
+
+Element * ItemFactory::createElement( Element::eElement element )
+{
+    factoryMethod method = getMethod(element);
+
+    cl_assert ( method );
+
+    Element * pElement = (this->*method)();
+
+    return pElement;
+}
+
+
+ItemFactory::factoryMethod 
+ItemFactory::getMethod(Element::eElement element) const
+{
+    switch(element)
+    {
+    case Element::EREGULARITEM:
+	return &ItemFactory::createRegularItem;
+    case Element::ESPECIALITEM:
+	return &ItemFactory::createSpecialItem;
+    case Element::ESYSTEMITEM:
+	return &ItemFactory::createSystemItem;
+    case Element::ERUNE:
+	return &ItemFactory::createRune;
+    case Element::EUNIQUEWEAPON:
+	return &ItemFactory::createUniqueWeapon;
+    case Element::EUNIQUEARMOR:
+	return &ItemFactory::createUniqueArmor;
+    case Element::EWEAPONTYPEREF:
+	return &ItemFactory::createWeaponTypeRef;
+    case Element::EWEAPONCLASSREF:
+	return &ItemFactory::createWeaponClassRef;
+    case Element::EARMORTYPEREF:
+	return &ItemFactory::createArmorTypeRef;
+    case Element::EARMORCLASSREF:
+	return &ItemFactory::createArmorClassRef;
+    case Element::EWEAPONREF:
+	return &ItemFactory::createWeaponRef;
+    case Element::EARMORREF:
+	return &ItemFactory::createArmorRef;
+    case Element::ERUNETYPE:
+	return &ItemFactory::createRuneType;
+    case Element::ESPELLREF:
+	return &ItemFactory::createSpellRef;
+    case Element::EWEAPONENHANCER:
+	return &ItemFactory::createWeaponEnhancer;
+    case Element::EARMORENHANCER:
+	return &ItemFactory::createArmorEnhancer;
+    case Element::EATTRIBUTEENHANCER:
+	return &ItemFactory::createAttributeEnhancer;
+    case Element::EWEAPONCLASS:
+	return &ItemFactory::createWeaponClass;
+    case Element::EWEAPONTYPE:
+	return &ItemFactory::createWeaponType;
+    case Element::EARMORCLASS:
+	return &ItemFactory::createArmorClass;
+    case Element::EARMORTYPE:
+	return &ItemFactory::createArmorType;
+    case Element::ENAMEDITEMELEMENT:
+	return &ItemFactory::createNamedItemElement;
+    case Element::EWEAPONDAMAGECATEGORY:
+	return &ItemFactory::createWeaponDamageCategory;
+    case Element::EMAGICDAMAGECATEGORY:
+	return &ItemFactory::createMagicDamageCategory;
+    case Element::ESTATUSEFFECTMODIFIER:
+	return &ItemFactory::createStatusEffectModifier;
+	case Element::EWEAPONTYPEEXCLUSIONLIST:
+		return &ItemFactory::createWeaponTypeExclusionList;
+	case Element::EARMORTYPEEXCLUSIONLIST:
+		return &ItemFactory::createArmorTypeExclusionList;
+	case Element::EICONREF:
+		return &ItemFactory::createIconRef;
+    default:
+	return NULL;
+    }
 }

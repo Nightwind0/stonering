@@ -3,28 +3,18 @@
 #include "IApplication.h"
 #include "Animation.h"
 
-StoneRing::AttributeEffect::AttributeEffect(CL_DomElement * pElement)
+
+StoneRing::AttributeEffect::AttributeEffect()
 {
-	AbilityFactory * pFactory = IApplication::getInstance()->getAbilityFactory();
-    
-    CL_DomNamedNodeMap attributes = pElement->get_attributes();
+}
 
 
-	mAttribute = getRequiredString("attribute", &attributes);
+void StoneRing::AttributeEffect::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+{
+	mnAdd = getImpliedInt("add",pAttributes,0);
+	mfMultiplier = getImpliedFloat("multiplier",pAttributes,1);
 
-	if( hasAttr("add", &attributes))
-	{
-		mnAdd = getInt("add",&attributes);
-	}
-	else mnAdd = 0;
-
-	if (hasAttr("multiplier", &attributes))
-	{
-		mfMultiplier = getFloat("multiplier",&attributes);
-	}
-	else mfMultiplier = 1;
-
-	std::string changeTo = getRequiredString("changeTo",&attributes);
+	std::string changeTo = getRequiredString("changeTo",pAttributes);
 
 	if(changeTo == "min")
 		meChangeTo = MIN;
@@ -37,7 +27,6 @@ StoneRing::AttributeEffect::AttributeEffect(CL_DomElement * pElement)
 	else if(changeTo == "multiplier_add")
 		meChangeTo = MULTIPLIER_ADD;
 	else throw CL_Error("Bad changeto on attribute effect: " + changeTo);
-
 }
 
 StoneRing::AttributeEffect::~AttributeEffect()
@@ -71,48 +60,27 @@ StoneRing::AttributeEffect::getChangeTo() const
 {
 	return meChangeTo;
 }
-	
 
-StoneRing::StatusEffectActions::StatusEffectActions(CL_DomElement * pElement)
+StoneRing::StatusEffectActions::StatusEffectActions()
 {
-	AbilityFactory * pFactory = IApplication::getInstance()->getAbilityFactory();
-    
-    CL_DomNamedNodeMap attributes = pElement->get_attributes();
-
-    CL_DomElement child = pElement->get_first_child().to_element();
-
-	while(!child.is_null())
-    {
-	
-		std::string name = child.get_node_name();
-	
-		if(name == "doWeaponDamage")
-		{
-			mEffects.push_back ( pFactory->createDoWeaponDamage ( &child ) );
-		}
-		else if ( name == "doMagicDamage")
-		{
-			mEffects.push_back ( pFactory->createDoMagicDamage ( &child ) );
-		}
-		else if ( name == "doStatusEffect")
-		{
-			mEffects.push_back ( pFactory->createDoStatusEffect ( &child ) );
-		}
-		else if	( name == "animation")
-		{
-			mEffects.push_back ( pFactory->createAnimation( &child ) );
-		}
-		else if ( name == "attributeEffect") 
-		{
-			mEffects.push_back ( pFactory->createAttributeEffect ( &child ) );
-		}
-		else throw CL_Error("Bad effect in StatusEffectAction: " + name);
-		
-
-		child = child.get_next_sibling().to_element();
-    }
-
 }
+
+
+void StoneRing::StatusEffectActions::handleElement(eElement element,Element * pElement)
+{
+	switch(element)
+	{
+	case EDOWEAPONDAMAGE:
+	case EDOMAGICDAMAGE:
+	case EDOSTATUSEFFECT:
+	case EANIMATION:
+	case EATTRIBUTEEFFECT:
+		mEffects.push_back( dynamic_cast<Effect*>(pElement) );
+		break;
+	}
+}
+	
+
 
 StoneRing::StatusEffectActions::~StatusEffectActions()
 {
@@ -140,15 +108,10 @@ std::list<StoneRing::Effect*>::const_iterator StoneRing::StatusEffectActions::ge
 }
 
 
-StoneRing::StatusEffect::StatusEffect(CL_DomElement * pElement):mpOnInvoke(NULL),mpOnRound(NULL),
-mpOnCountdown(NULL), mpOnRemove(NULL)
+void StoneRing::StatusEffect::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
-	AbilityFactory * pFactory = IApplication::getInstance()->getAbilityFactory();
-    
-    CL_DomNamedNodeMap attributes = pElement->get_attributes();
-
-	mName = getRequiredString("name", &attributes );
-	std::string last = getRequiredString("last",&attributes );
+	mName = getRequiredString("name", pAttributes );
+	std::string last = getRequiredString("last",pAttributes );
 
 	if(last == "battle") meLast = BATTLE;
 	else if (last == "round_count") meLast = ROUND_COUNT;
@@ -156,46 +119,39 @@ mpOnCountdown(NULL), mpOnRemove(NULL)
 
 	if( meLast == BATTLE )
 	{
-		if(hasAttr("lengthMultiplier", &attributes ))
-		{
-			mfLengthMultiplier = getRequiredFloat("lengthMultiplier", &attributes);
-		}
-		else mfLengthMultiplier = 1;
+		mfLengthMultiplier = getImpliedFloat("lengthMultiplier",pAttributes,1);
 	}
 	else if (meLast == ROUND_COUNT )
 	{
-		mnRoundCount = getRequiredInt("roundCount",&attributes);
+		mnRoundCount = getRequiredInt("roundCount",pAttributes);
 	}
 
+}
 
-    CL_DomElement child = pElement->get_first_child().to_element();
-
-	while(!child.is_null())
-	{
-		std::string name = child.get_node_name();
-
-		if(name == "onInvoke")
+void StoneRing::StatusEffect::handleElement(eElement element, Element * pElement)
+{
+		switch(element)
 		{
-			mpOnInvoke = pFactory->createStatusEffectActions(&child);
+		case EONINVOKE:
+			mpOnInvoke = dynamic_cast<StatusEffectActions*>(pElement);
+			break;
+		case EONROUND:
+			mpOnRound = dynamic_cast<StatusEffectActions*>(pElement);
+			break;
+		case EONCOUNTDOWN:
+			mpOnCountdown = dynamic_cast<StatusEffectActions*>(pElement);
+			break;
+		case EONREMOVE:
+			mpOnRemove = dynamic_cast<StatusEffectActions*>(pElement);
+			break;
+		default:
+			throw CL_Error("Bad element in status effect.");
 		}
-		else if (name == "onRound")
-		{
-			mpOnRound = pFactory->createStatusEffectActions(&child);
-		}
-		else if (name == "onCountdown")
-		{
-			mpOnCountdown = pFactory->createStatusEffectActions(&child);
-		}
-		else if (name == "onRemove")
-		{
-			mpOnRemove = pFactory->createStatusEffectActions(&child);
-		}
+}
 
-
-		child = child.get_next_sibling().to_element();
-	}
-
-
+StoneRing::StatusEffect::StatusEffect():mpOnInvoke(NULL),mpOnRound(NULL),
+mpOnCountdown(NULL), mpOnRemove(NULL)
+{
 }
 
 StoneRing::StatusEffect::~StatusEffect()

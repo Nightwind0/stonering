@@ -10,12 +10,11 @@
 using namespace StoneRing;
 
 // Defined in Level.cpp. No need to include the entire header.
-StoneRing::Action * StoneRing::createAction ( const std::string & action, CL_DomElement & pChild );
 
 bool   StoneRing::operator < ( const StoneRing::Item &lhs, const StoneRing::Item &rhs )
 {
     return std::string(Item::ItemTypeAsString(lhs.getItemType()) + lhs.getName())
-					<
+	<
 	std::string(Item::ItemTypeAsString(rhs.getItemType()) + rhs.getName());
 }
 
@@ -111,7 +110,7 @@ void Equipment::equip()
 #else
 
     for	(std::list<AttributeEnhancer*>::const_iterator iter = mAttributeEnhancers.begin();
-	iter != mAttributeEnhancers.end(); iter++)
+	 iter != mAttributeEnhancers.end(); iter++)
     {
         (*iter)->invoke();
     }
@@ -245,26 +244,26 @@ void Weapon::addWeaponEnhancer (WeaponEnhancer * pEnhancer)
 
 
 /* enum eAttribute
-	{
-	    ATTACK,
-	    HIT,
-	    POISON,
-	    STONE,
-	    DEATH,
-	    CONFUSE,
-	    BERSERK,
-	    SLOW,
-	    WEAK,
-	    BREAK, 
-	    SILENCE,
-	    SLEEP,
-	    BLIND,
-	    STEAL_HP,
-	    STEAL_MP,
-	    DROPSTR,
-	    DROPDEX,
-	    DROPMAG
-	    } */
+   {
+   ATTACK,
+   HIT,
+   POISON,
+   STONE,
+   DEATH,
+   CONFUSE,
+   BERSERK,
+   SLOW,
+   WEAK,
+   BREAK, 
+   SILENCE,
+   SLEEP,
+   BLIND,
+   STEAL_HP,
+   STEAL_MP,
+   DROPSTR,
+   DROPDEX,
+   DROPMAG
+   } */
 	
 
 
@@ -283,25 +282,25 @@ Weapon::attributeForString(const std::string str)
 	
 /*
   AC,
-	    POISON,
-	    STONE,
-	    DEATH,
-	    CONFUSE,
-	    BERSERK,
-	    SLOW,
-	    WEAK,
-	    BREAK, 
-	    SILENCE,
-	    SLEEP,
-	    BLIND,
-	    STEAL_MP,
-	    STEAL_HP,
-	    DROPSTR,
-	    DROPDEX,
-	    DROPMAG,
-	    ELEMENTAL_RESIST,
-	    RESIST, // All magic
-	    STATUS // Resistance against ANY status affect
+  POISON,
+  STONE,
+  DEATH,
+  CONFUSE,
+  BERSERK,
+  SLOW,
+  WEAK,
+  BREAK, 
+  SILENCE,
+  SLEEP,
+  BLIND,
+  STEAL_MP,
+  STEAL_HP,
+  DROPSTR,
+  DROPDEX,
+  DROPMAG,
+  ELEMENTAL_RESIST,
+  RESIST, // All magic
+  STATUS // Resistance against ANY status affect
 */
 
 
@@ -398,82 +397,46 @@ void Armor::addArmorEnhancer (ArmorEnhancer * pEnhancer)
 
 
 
-NamedItemElement::NamedItemElement()
+void NamedItemElement::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-}
+    mName = getRequiredString("name",pAttributes);
 
-NamedItemElement::NamedItemElement (CL_DomElement * pElement):mpNamedItem(NULL),meDropRarity(Item::NEVER),mnMaxInventory(0)
-{
-    ItemFactory * itemFactory = IApplication::getInstance()->getItemFactory();
-    
-
-    CL_DomNamedNodeMap attributes = pElement->get_attributes();
-
-    if(attributes.get_length() < 2) throw CL_Error("Error reading attributes in named item element.");
-
-    mName = getRequiredString("name",&attributes);
-
-    std::string dropRarity = getRequiredString("dropRarity",&attributes);
+    std::string dropRarity = getRequiredString("dropRarity",pAttributes);
 
     meDropRarity = Item::DropRarityFromString ( dropRarity );
 
-    if(!attributes.get_named_item("maxInventory").is_null())
-	mnMaxInventory = atoi( attributes.get_named_item("maxInventory").get_node_value().c_str());
-    else
+    mnMaxInventory = getImpliedInt("maxInventory",pAttributes,99);
+}
+
+void NamedItemElement::handleElement(eElement element, Element * pElement)
+{
+    switch(element)
     {
-	//@todo look up default
-	mnMaxInventory = 99;
+    case EICONREF:
+	///@todo
+	break;
+    case EREGULARITEM:
+    case EUNIQUEWEAPON:
+    case EUNIQUEARMOR:
+    case ERUNE:
+    case ESPECIALITEM:
+    case ESYSTEMITEM:
+	mpNamedItem = dynamic_cast<NamedItem*>(pElement);
+	break;
     }
+}
 
-
-    CL_DomElement child = pElement->get_first_child().to_element();
-
-
-    while(!child.is_null())
-    {
-	std::string name = child.get_node_name();
-
-	if(name == "iconRef")
-	{
-	    mIconRef = child.get_text();
-	}
-	else if (name == "regularItem")
-	{
-	    mpNamedItem = itemFactory->createRegularItem ( &child );
-	}
-	else if (name == "uniqueWeapon")
-	{
-	    mpNamedItem = itemFactory->createUniqueWeapon ( &child );
-	}
-	else if (name == "uniqueArmor")
-	{
-	    mpNamedItem = itemFactory->createUniqueArmor ( &child );
-	}
-	else if (name == "rune")
-	{
-	    mpNamedItem = itemFactory->createRune ( &child );
-	}
-	else if (name == "specialItem")
-	{
-	    mpNamedItem = itemFactory->createSpecialItem ( &child );
-	}
-	else if (name == "systemItem")
-	{
-	    mpNamedItem = itemFactory->createSystemItem ( &child );
-	}
-
-	child = child.get_next_sibling().to_element();
-
-    }
-
-    if(mpNamedItem == NULL) throw CL_Error("No named item within a named item element.");
-
+void NamedItemElement::loadFinished()
+{
+    if(mpNamedItem == NULL) throw CL_Error("No named item within a named item element.");	
     mpNamedItem->setIconRef( mIconRef );
     mpNamedItem->setName ( mName );
     mpNamedItem->setMaxInventory ( mnMaxInventory );
     mpNamedItem->setDropRarity( meDropRarity );
+}
 
-
+NamedItemElement::NamedItemElement ():mpNamedItem(NULL),meDropRarity(Item::NEVER),mnMaxInventory(0)
+{
 }
 
 NamedItemElement::~NamedItemElement()
@@ -673,38 +636,30 @@ RegularItem::TargetableFromString ( const std::string &str )
     return targetable;
 }
 
-void RegularItem::loadItem ( CL_DomElement * pElement )
+void RegularItem::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
-    ItemFactory * itemFactory = IApplication::getInstance()->getItemFactory();
-    
-    CL_DomNamedNodeMap attributes = pElement->get_attributes();
-
-    if(attributes.get_length() < 4) throw CL_Error("Error reading attributes in regular item.");
-
-    mnValue = getRequiredInt("value",&attributes);
+    mnValue = getRequiredInt("value",pAttributes);
 
     mnSellValue = mnValue / 2;
       
 
-    std::string useType = getRequiredString("use",&attributes);
+    std::string useType = getRequiredString("use",pAttributes);
     meUseType = UseTypeFromString ( useType );    
 
-    std::string targetable = getRequiredString("targetable",&attributes); 
+    std::string targetable = getRequiredString("targetable",pAttributes); 
     meTargetable = TargetableFromString ( targetable );    
 
-    if(hasAttr("sellValueMultiplier", &attributes))
+    if(hasAttr("sellValueMultiplier", pAttributes))
     {
-	float multiplier = getFloat("sellValueMultiplier",&attributes);
-
+	float multiplier = getFloat("sellValueMultiplier",pAttributes);
 	mnSellValue = (int)(mnValue * multiplier);
     }
 
-    mbReusable = getRequiredBool("reusable",&attributes);
+    mbReusable = getRequiredBool("reusable",pAttributes);
     
-
-    if(!attributes.get_named_item("defaultTarget").is_null())
+    if(hasAttr("defaultTarget",pAttributes))
     {
-	std::string str = attributes.get_named_item("defaultTarget").get_node_value();
+	std::string str = getString("defaultTarget",pAttributes);
 
 	if( str == "party" )
 	    meDefaultTarget = PARTY;
@@ -717,18 +672,19 @@ void RegularItem::loadItem ( CL_DomElement * pElement )
     {
 	meDefaultTarget = PARTY;
     }
+	
+}
 
-
-    CL_DomElement child = pElement->get_first_child().to_element();
-
-
-    while(!child.is_null())
+void RegularItem::handleElement(eElement element, Element * pElement)
+{
+    if(isAction(element))
     {
-	mActions.push_back ( createAction ( child.get_node_name(), child ));
-
-	child = child.get_next_sibling().to_element();
+	mActions.push_back( dynamic_cast<Action*>(pElement) );
     }
-    
+}
+
+void RegularItem::loadItem ( CL_DomElement * pElement )
+{
 
 }
 
@@ -747,11 +703,6 @@ SpecialItem::~SpecialItem()
 {
 }
 	
-
-void SpecialItem::loadItem ( CL_DomElement * pElement )
-{
-}
-
 CL_DomElement  
 SpecialItem::createDomElement(CL_DomDocument &doc) const
 {
@@ -769,10 +720,6 @@ SystemItem::~SystemItem()
 {
 }
 	
-void SystemItem::loadItem ( CL_DomElement * pElement )
-{
-    // Nothing to do, it turns out.
-}
 	
 CL_DomElement  
 SystemItem::createDomElement(CL_DomDocument &doc) const
@@ -808,16 +755,21 @@ SpellRef * Rune::getSpellRef() const
     return mpSpellRef;
 }
 
-void Rune::loadItem ( CL_DomElement * pElement )
+void Rune::loadAttributes(CL_DomNamedNodeMap*)
 {
-    CL_DomElement child = pElement->get_first_child().to_element();
-    ItemFactory * pItemFactory = IApplication::getInstance()->getItemFactory();
+}
 
-    if(child.get_node_name() == "spellRef")
+void Rune::handleElement(eElement element, Element * pElement)
+{
+    if(element == ESPELLREF)
     {
-	mpSpellRef = pItemFactory->createSpellRef ( &child );
+	mpSpellRef = dynamic_cast<SpellRef*>(pElement);
     }
-    else throw CL_Error("Rune without spellref.");
+}
+
+void Rune::loadFinished()
+{
+    if(!mpSpellRef) throw CL_Error("Rune without spellref.");
 }
 
 CL_DomElement  
@@ -872,64 +824,51 @@ bool UniqueWeapon::isTwoHanded() const
     return mpWeaponType->isTwoHanded();
 }
 
-
-void UniqueWeapon::loadItem(CL_DomElement * pElement) 
+void UniqueWeapon::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-    CL_DomElement child = pElement->get_first_child().to_element();
-    ItemFactory * pItemFactory = IApplication::getInstance()->getItemFactory();
-    const ItemManager * pItemManager = IApplication::getInstance()->getItemManager();
-
-    CL_DomNamedNodeMap attributes = pElement->get_attributes();
-
-    float valueMultiplier = 1;
-
-    if(!attributes.get_named_item("valueMultiplier").is_null())
-    {
-	valueMultiplier = atof ( attributes.get_named_item("valueMultiplier").get_node_value().c_str());
-    }    
-    else throw CL_Error("Value multiplier is required on unique weapons.");
-
+    mValueMultiplier = getImpliedFloat("valueMultiplier",pAttributes,1);
     
-    while(!child.is_null())
-    {
-
-	std::string str = child.get_node_name();
-
-	if(str == "weaponTypeRef")
-	{
-	    WeaponTypeRef * pType = pItemFactory->createWeaponTypeRef ( &child );
-
-	    mpWeaponType = pItemManager->getWeaponType ( *pType );
-	}
-	else if ( str == "weaponEnhancer" )
-	{
-	    addWeaponEnhancer ( pItemFactory->createWeaponEnhancer ( &child ) );
-	}
-	else if ( str == "attributeEnhancer" )
-	{
-	    addAttributeEnhancer ( pItemFactory->createAttributeEnhancer ( &child ));
-	}
-	else if ( str == "spellRef" )
-	{
-	    setSpellRef ( pItemFactory->createSpellRef ( &child ) );
-	}
-	else if ( str == "runeType" )
-	{
-	    setRuneType ( pItemFactory->createRuneType ( &child ) );
-	}
-	else if (str == "statusEffectModifier" )
-	{
-	    addStatusEffectModifier ( pItemFactory->createStatusEffectModifier( &child ));
-	}
-
-
-	child = child.get_next_sibling().to_element();
-    }
-
-
-    mnValue = (int)(mpWeaponType->getBasePrice() * valueMultiplier);
-
 }
+
+void UniqueWeapon::loadFinished()
+{
+	cl_assert ( mpWeaponType );
+	mnValue = (int)(mpWeaponType->getBasePrice() * mValueMultiplier);
+}
+void UniqueWeapon::handleElement(eElement element, Element * pElement)
+{
+    switch(element)
+    {
+    case EWEAPONTYPEREF:
+    {
+		const ItemManager * pItemManager = IApplication::getInstance()->getItemManager();
+
+		WeaponTypeRef * pType = dynamic_cast<WeaponTypeRef*>(pElement);
+		mpWeaponType = pItemManager->getWeaponType( *pType );
+	break;
+    }
+    case EWEAPONENHANCER:
+	addWeaponEnhancer( dynamic_cast<WeaponEnhancer*>(pElement) );
+	break;
+    case EATTRIBUTEENHANCER:
+	addAttributeEnhancer( dynamic_cast<AttributeEnhancer*>(pElement) );
+	break;
+    case ESPELLREF:
+	setSpellRef ( dynamic_cast<SpellRef*>(pElement) );
+	break;
+    case ERUNETYPE:
+	setRuneType( dynamic_cast<RuneType*>(pElement) );
+	break;
+    case ESTATUSEFFECTMODIFIER:
+	addStatusEffectModifier( dynamic_cast<StatusEffectModifier*>(pElement) );
+	break;
+
+    default:
+		throw CL_Error("Found bogus element in unique weapon." );
+
+    }
+}
+
 
 
 UniqueArmor::UniqueArmor():mpArmorType(NULL)
@@ -963,61 +902,48 @@ UniqueArmor::createDomElement(CL_DomDocument &doc) const
     return CL_DomElement(doc,"uniqueArmor");
 }
 
-void UniqueArmor::loadItem(CL_DomElement * pElement) 
+void UniqueArmor::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
+    mValueMultiplier = getImpliedFloat("valueMultiplier",pAttributes,1);
 
-    CL_DomElement child = pElement->get_first_child().to_element();
-    ItemFactory * pItemFactory = IApplication::getInstance()->getItemFactory();
-    const ItemManager * pItemManager = IApplication::getInstance()->getItemManager();
+}
 
-    CL_DomNamedNodeMap attributes = pElement->get_attributes();
+void UniqueArmor::loadFinished()
+{
+	cl_assert ( mpArmorType );
+	mnValue = (int)(mpArmorType->getBasePrice() * mValueMultiplier);
+}
 
-    float valueMultiplier = 1;
-
-    if(!attributes.get_named_item("valueMultiplier").is_null())
+void UniqueArmor::handleElement(eElement element, Element * pElement)
+{
+    switch(element)
     {
-	valueMultiplier = atof ( attributes.get_named_item("valueMultiplier").get_node_value().c_str());
-    }    
-    else throw CL_Error("Value multiplier is required on unique armors.");
-
-    
-    while(!child.is_null())
+    case EARMORTYPEREF:
     {
-
-	std::string str = child.get_node_name();
-
-	if(str == "armorTypeRef")
-	{
-	    ArmorTypeRef * pType = pItemFactory->createArmorTypeRef ( &child );
-
-	    mpArmorType = pItemManager->getArmorType ( *pType );
-	}
-	else if ( str == "armorEnhancer" )
-	{
-	    addArmorEnhancer ( pItemFactory->createArmorEnhancer ( &child ) );
-	}
-	else if ( str == "attributeEnhancer" )
-	{
-	    addAttributeEnhancer ( pItemFactory->createAttributeEnhancer ( &child ));
-	}
-	else if ( str == "spellRef" )
-	{
-	    setSpellRef ( pItemFactory->createSpellRef ( &child )) ;
-
-	}
-	else if ( str == "runeType" )
-	{
-	    setRuneType ( pItemFactory->createRuneType ( &child ) );
-	}
-	else if (str == "statusEffectModifier" )
-	{
-	    addStatusEffectModifier ( pItemFactory->createStatusEffectModifier( &child ));
-	}
-
-	child = child.get_next_sibling().to_element();
+		const ItemManager * pItemManager = IApplication::getInstance()->getItemManager();
+	ArmorTypeRef * pType = dynamic_cast<ArmorTypeRef*>(pElement);
+	mpArmorType = pItemManager->getArmorType( *pType );
+	break;
     }
+    case EARMORENHANCER:
+	addArmorEnhancer( dynamic_cast<ArmorEnhancer*>(pElement) );
+	break;
+    case EATTRIBUTEENHANCER:
+	addAttributeEnhancer( dynamic_cast<AttributeEnhancer*>(pElement) );
+	break;
+    case ESPELLREF:
+	setSpellRef ( dynamic_cast<SpellRef*>(pElement) );
+	break;
+    case ERUNETYPE:
+	setRuneType( dynamic_cast<RuneType*>(pElement) );
+	break;
+    case ESTATUSEFFECTMODIFIER:
+	addStatusEffectModifier( dynamic_cast<StatusEffectModifier*>(pElement) );
+	break;
+    default:
+	throw CL_Error("Found bogus element in unique armor.");
 
-    mnValue = (int)(mpArmorType->getBasePrice() * valueMultiplier);
+    }
 }
 
 
@@ -1103,7 +1029,7 @@ uint GeneratedWeapon::getValue() const
     const AbilityManager * pManager = IApplication::getInstance()->getAbilityManager();
 
     uint value= (int)((float)mpType->getBasePrice() * 
-		 mpClass->getValueMultiplier()) 
+		      mpClass->getValueMultiplier()) 
 	+ mpClass->getValueAdd();
 
     if(hasSpell())
@@ -1129,7 +1055,7 @@ uint GeneratedWeapon::getSellValue() const
     return getValue() / 2;
 }
 
-	// Weapon interface
+// Weapon interface
 
 
 
@@ -1155,7 +1081,7 @@ WeaponRef GeneratedWeapon::generateWeaponRef() const
 }
 
 void GeneratedWeapon::generate( WeaponType* pType, WeaponClass * pClass, 
-		       SpellRef *pSpell , RuneType *pRune)
+				SpellRef *pSpell , RuneType *pRune)
 {
 
     for(std::list<AttributeEnhancer*>::const_iterator iter = pClass->getAttributeEnhancersBegin();
@@ -1340,7 +1266,7 @@ ArmorRef GeneratedArmor::generateArmorRef() const
 }
 
 void GeneratedArmor::generate( ArmorType * pType, ArmorClass * pClass, 
-		       SpellRef *pSpell , RuneType *pRune)
+			       SpellRef *pSpell , RuneType *pRune)
 {
     
     for(std::list<AttributeEnhancer*>::const_iterator iter = pClass->getAttributeEnhancersBegin();
@@ -1389,6 +1315,38 @@ void GeneratedArmor::generate( ArmorType * pType, ArmorClass * pClass,
 	
 
 
+IconRef::IconRef()
+{
+}
+
+IconRef::~IconRef()
+{
+}
+
+std::string IconRef::getIcon() const
+{
+    return mIcon;
+}
+
+CL_DomElement  IconRef::createDomElement(CL_DomDocument &doc) const
+{
+    return CL_DomElement(doc,"iconRef");
+}
+
+
+void IconRef::handleElement(eElement element, Element * pElement )
+{
+}
+
+void IconRef::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+{
+
+}
+
+void IconRef::handleText(const std::string &text)
+{
+    mIcon = text;
+}
 
 
 
@@ -1398,13 +1356,13 @@ WeaponTypeRef::WeaponTypeRef()
 }
 
     
-WeaponTypeRef::WeaponTypeRef(CL_DomElement * pElement )
-{
-    mName = pElement->get_text();
-}
-
 WeaponTypeRef::~WeaponTypeRef()
 {
+}
+
+void WeaponTypeRef::handleText(const std::string &text)
+{
+	mName = text;
 }
 
 bool WeaponTypeRef::operator==(const WeaponTypeRef &lhs)
@@ -1438,9 +1396,9 @@ WeaponClassRef::WeaponClassRef()
 {
 }
 
-WeaponClassRef::WeaponClassRef(CL_DomElement *pElement)
+void WeaponClassRef::handleText(const std::string &text)
 {
-    mName = pElement->get_text();
+    mName = text;
 }
 
 WeaponClassRef::~WeaponClassRef()
@@ -1479,13 +1437,15 @@ ArmorTypeRef::ArmorTypeRef()
 {
 }
 
-ArmorTypeRef::ArmorTypeRef(CL_DomElement * pElement )
-{
-    mName = pElement->get_text();
-}
+
 
 ArmorTypeRef::~ArmorTypeRef()
 {
+}
+
+void ArmorTypeRef::handleText(const std::string &text)
+{
+    mName = text;
 }
 
 bool ArmorTypeRef::operator==(const ArmorTypeRef &lhs)
@@ -1521,13 +1481,14 @@ ArmorClassRef::ArmorClassRef()
 {
 }
 	
-ArmorClassRef::ArmorClassRef(CL_DomElement *pElement)
-{
-    mName = pElement->get_text();
-}
 
 ArmorClassRef::~ArmorClassRef()
 {
+}
+
+void ArmorClassRef::handleText(const std::string &text)
+{
+    mName = text;
 }
 
 bool ArmorClassRef::operator==(const ArmorClassRef &lhs)
@@ -1554,51 +1515,40 @@ ArmorClassRef::createDomElement(CL_DomDocument &doc) const
 std::string 
 ArmorClassRef::getName() const
 {
-	return mName;
+    return mName;
 }
 
 
 
 WeaponRef::WeaponRef():mpWeaponType(NULL), mpWeaponClass(NULL),
-				   mpSpellRef(NULL),mpRuneType(NULL)
+		       mpSpellRef(NULL),mpRuneType(NULL)
 {
 }
 
-WeaponRef::WeaponRef(CL_DomElement * pElement ):mpWeaponType(NULL),mpWeaponClass(NULL),
-						mpSpellRef(NULL),mpRuneType(NULL)
+
+void WeaponRef::handleElement(eElement element, Element * pElement)
 {
-    ItemFactory * pItemFactory = IApplication::getInstance()->getItemFactory();
-    const ItemManager * pItemManager = IApplication::getInstance()->getItemManager();
+	const ItemManager * pItemManager = IApplication::getInstance()->getItemManager();
 
-    CL_DomElement child = pElement->get_first_child().to_element();
-
-    while(!child.is_null())
+    switch(element)
     {
-	std::string str = child.get_node_name();
-
-	if(str == "weaponTypeRef")
-	{
-	    mType = *pItemFactory->createWeaponTypeRef ( &child );
-	    mpWeaponType = pItemManager->getWeaponType ( mType );
-	}
-	else if (str == "weaponClassRef")
-	{
-	    mClass = *pItemFactory->createWeaponClassRef ( &child );
-	    mpWeaponClass = pItemManager->getWeaponClass ( mClass );
-	}
-	else if ( str == "spellRef")
-	{
-	    mpSpellRef  = pItemFactory->createSpellRef ( &child );
-	}
-	else if ( str == "runeType")
-	{
-	    mpRuneType = pItemFactory->createRuneType ( &child );
-	}
-
-
-	child = child.get_next_sibling().to_element();
+    case EWEAPONTYPEREF:
+	mType = * (dynamic_cast<WeaponTypeRef*>(pElement));
+	mpWeaponType = pItemManager->getWeaponType(mType);
+	break;
+    case EWEAPONCLASSREF:
+	mClass = * (dynamic_cast<WeaponClassRef*>(pElement));
+	mpWeaponClass = pItemManager->getWeaponClass ( mClass );
+	break;
+    case ESPELLREF:
+	mpSpellRef = dynamic_cast<SpellRef*>(pElement);
+	break;
+    case ERUNETYPE:
+	mpRuneType = dynamic_cast<RuneType*>(pElement);
+	break;
+    default:
+	throw CL_Error("Bad element found in WeaponRef");
     }
-
 }
 
 WeaponRef::~WeaponRef()
@@ -1699,10 +1649,6 @@ RuneType * WeaponRef::getRuneType() const
 
 
 
-ArmorRef::ArmorRef()
-{
-}
-
 ArmorRef::ArmorRef ( ArmorType *pType, ArmorClass *pClass, 
 		     SpellRef * pSpell, RuneType *pRune ):mpArmorType(pType), mpArmorClass(pClass),
 							  mpSpellRef(pSpell), mpRuneType(pRune)
@@ -1749,44 +1695,37 @@ bool ArmorRef::operator==(const ArmorRef &lhs)
 	
 }
 
-ArmorRef::ArmorRef(CL_DomElement * pElement ):mpArmorType(NULL),
-					      mpArmorClass(NULL),
-					      mpSpellRef(NULL),
-					      mpRuneType(NULL)
+void ArmorRef::handleElement(eElement element, Element * pElement)
 {
+	const ItemManager * pItemManager = IApplication::getInstance()->getItemManager();
 
-    ItemFactory * pItemFactory = IApplication::getInstance()->getItemFactory();
-    const ItemManager * pItemManager = IApplication::getInstance()->getItemManager();
-
-    CL_DomElement child = pElement->get_first_child().to_element();
-
-    while(!child.is_null())
+    switch(element)
     {
-	std::string str = child.get_node_name();
-
-	if(str == "armorTypeRef")
-	{
-	    mType = *pItemFactory->createArmorTypeRef ( &child );
-	    mpArmorType = pItemManager->getArmorType ( mType );
-	}
-	else if (str == "armorClassRef")
-	{
-	    mClass = *pItemFactory->createArmorClassRef ( &child );
-	    mpArmorClass = pItemManager->getArmorClass ( mClass );
-	}
-	else if ( str == "spellRef")
-	{
-	    mpSpellRef  = pItemFactory->createSpellRef ( &child );
-	}
-	else if ( str == "runeType")
-	{
-	    mpRuneType = pItemFactory->createRuneType ( &child );
-	}
-
-
-	child = child.get_next_sibling().to_element();
+    case EARMORTYPEREF:
+	mType = * (dynamic_cast<ArmorTypeRef*>(pElement));
+	mpArmorType = pItemManager->getArmorType(mType);
+	break;
+    case EARMORCLASSREF:
+	mClass = * (dynamic_cast<ArmorClassRef*>(pElement));
+	mpArmorClass = pItemManager->getArmorClass ( mClass );
+	break;
+    case ESPELLREF:
+	mpSpellRef = dynamic_cast<SpellRef*>(pElement);
+	break;
+    case ERUNETYPE:
+	mpRuneType = dynamic_cast<RuneType*>(pElement);
+	break;
+    default:
+	throw CL_Error("Bad element found in WeaponRef");
     }
+}
 
+
+ArmorRef::ArmorRef():mpArmorType(NULL),
+		     mpArmorClass(NULL),
+		     mpSpellRef(NULL),
+		     mpRuneType(NULL)
+{
 
 }
 
@@ -1846,11 +1785,9 @@ RuneType::RuneType()
 {
 }
 
-RuneType::RuneType(CL_DomElement * pElement )
+void RuneType::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-    CL_DomNamedNodeMap attributes = pElement->get_attributes();
-
-    std::string runeType = attributes.get_named_item("type").get_node_value();
+    std::string runeType = getRequiredString("runeType",pAttributes);
 
     if(runeType == "none")
 	meRuneType = NONE;
@@ -1859,8 +1796,8 @@ RuneType::RuneType(CL_DomElement * pElement )
     else if (runeType == "ultraRune")
 	meRuneType = ULTRA_RUNE;
     else throw CL_Error("Bogus runetype supplied.");
-}
 
+}
 
 bool RuneType::operator==(const RuneType &lhs )
 {
@@ -1915,20 +1852,14 @@ std::string RuneType::getRuneTypeAsString() const
 	break;
     }
 
-	return "";
+    return "";
 }
 
 
 
-SpellRef::SpellRef()
+void SpellRef::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-}
-
-SpellRef::SpellRef( CL_DomElement * pElement )
-{
-    CL_DomNamedNodeMap attributes = pElement->get_attributes();
-   
-    std::string spellType = attributes.get_named_item("type").get_node_value();
+    std::string spellType = getRequiredString("type",pAttributes);
 
     if(spellType == "elemental")
 	meSpellType = ELEMENTAL;
@@ -1940,9 +1871,15 @@ SpellRef::SpellRef( CL_DomElement * pElement )
 	meSpellType = OTHER;
     else throw CL_Error("Bad spell type in spell ref.");
 
-    mName = pElement->get_text();
-    
+}
 
+void SpellRef::handleText(const std::string &text)
+{
+    mName = text;
+}
+
+SpellRef::SpellRef(  )
+{
 }
 
 SpellRef::~SpellRef()
@@ -2009,33 +1946,19 @@ SpellRef::createDomElement ( CL_DomDocument &doc) const
 
 
 
-WeaponEnhancer::WeaponEnhancer()
+void WeaponEnhancer::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-}
-
-WeaponEnhancer::WeaponEnhancer(CL_DomElement * pElement )
-{
-    CL_DomNamedNodeMap attributes = pElement->get_attributes();   
-
-
-    std::string strAttr = attributes.get_named_item("attribute").get_node_value();
+    std::string strAttr = getRequiredString("attribute", pAttributes);
 
     meAttribute = Weapon::attributeForString ( strAttr );
 
-    if(!attributes.get_named_item("multiplier").is_null())
-    {
-	mfMultiplier = atof ( attributes.get_named_item("multiplier").get_node_value().c_str());
-    }
-    else mfMultiplier = 1;
+    mfMultiplier = getImpliedFloat("multiplier",pAttributes,1);
 
-    if(!attributes.get_named_item("add").is_null())
-    {
-	mnAdd = atoi ( attributes.get_named_item("add").get_node_value().c_str() );
-    }
-    else mnAdd = 0;
+    mnAdd = getImpliedInt("add",pAttributes,0);
+}
 
-
-    
+WeaponEnhancer::WeaponEnhancer():mfMultiplier(1),mnAdd(0)
+{
 }
 
 WeaponEnhancer::~WeaponEnhancer()
@@ -2070,28 +1993,17 @@ ArmorEnhancer::ArmorEnhancer()
 {
 }
 
-ArmorEnhancer::ArmorEnhancer(CL_DomElement * pElement )
+void ArmorEnhancer::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-    CL_DomNamedNodeMap attributes = pElement->get_attributes();   
-
-
-    std::string strAttr = attributes.get_named_item("attribute").get_node_value();
+    std::string strAttr = getRequiredString("attribute", pAttributes);
 
     meAttribute = Armor::attributeForString ( strAttr );
 
-    if(!attributes.get_named_item("multiplier").is_null())
-    {
-	mfMultiplier = atof ( attributes.get_named_item("multiplier").get_node_value().c_str());
-    }
+    mfMultiplier = getImpliedFloat("multiplier",pAttributes,1);
 
-    if(!attributes.get_named_item("add").is_null())
-    {
-	mnAdd = atoi ( attributes.get_named_item("add").get_node_value().c_str() );
-    }
-
-
-
+    mnAdd = getImpliedInt("add",pAttributes,0);
 }
+
 
 ArmorEnhancer::~ArmorEnhancer()
 {
@@ -2126,28 +2038,15 @@ AttributeEnhancer::AttributeEnhancer():mnAdd(0),mfMultiplier(1)
 {
 }
 
-AttributeEnhancer::AttributeEnhancer(CL_DomElement * pElement ):mnAdd(0),mfMultiplier(1)
+void AttributeEnhancer::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-    CL_DomNamedNodeMap attributes = pElement->get_attributes();   
+    mAttribute = getRequiredString("attribute", pAttributes);
 
+    mfMultiplier = getImpliedFloat("multiplier",pAttributes,1);
 
-    mAttribute = attributes.get_named_item("attribute").get_node_value();
-    
-
-    if(!attributes.get_named_item("multiplier").is_null())
-    {
-	mfMultiplier = atof ( attributes.get_named_item("multiplier").get_node_value().c_str());
-    }
-    else mfMultiplier = 1;
-
-    if(!attributes.get_named_item("add").is_null())
-    {
-	mnAdd = atoi ( attributes.get_named_item("add").get_node_value().c_str() );
-    }
-    else mnAdd = 0;
-
-
+    mnAdd = getImpliedInt("add",pAttributes,0);
 }
+
 
 AttributeEnhancer::~AttributeEnhancer()
 {
@@ -2211,80 +2110,114 @@ AttributeEnhancer::createDomElement ( CL_DomDocument &doc) const
     return CL_DomElement(doc, "attributeEnhancer");
 }
 
+WeaponTypeExclusionList::WeaponTypeExclusionList()
+{
+}
 
+WeaponTypeExclusionList::~WeaponTypeExclusionList()
+{
+    // std::for_each(mWeaponTypes.begin(),mWeaponTypes.end(),del_fun<WeaponTypeRef>());
+}
+
+CL_DomElement WeaponTypeExclusionList::createDomElement ( CL_DomDocument &doc) const
+{
+    return CL_DomElement(doc,"weaponTypeExclusionList");
+}
+
+
+std::list<WeaponTypeRef*>::const_iterator WeaponTypeExclusionList::getWeaponTypeRefsBegin()
+{
+    return mWeaponTypes.begin();
+}
+std::list<WeaponTypeRef*>::const_iterator WeaponTypeExclusionList::getWeaponTypeRefsEnd()
+{
+    return mWeaponTypes.end();
+}
+void WeaponTypeExclusionList::handleElement(eElement element, Element * pElement)
+{
+    if(element == EWEAPONTYPEREF)
+    {
+	mWeaponTypes.push_back ( dynamic_cast<WeaponTypeRef*>(pElement) );
+    }
+}
+
+ArmorTypeExclusionList::ArmorTypeExclusionList()
+{
+}
+
+ArmorTypeExclusionList::~ArmorTypeExclusionList()
+{
+	// Dont delete. The armor class does that.
+  //  std::for_each(mArmorTypes.begin(),mArmorTypes.end(),del_fun<ArmorTypeRef>());
+}
+
+CL_DomElement ArmorTypeExclusionList::createDomElement ( CL_DomDocument &doc) const
+{
+    return CL_DomElement(doc,"ArmorTypeExclusionList");
+}
+
+
+std::list<ArmorTypeRef*>::const_iterator ArmorTypeExclusionList::getArmorTypeRefsBegin()
+{
+    return mArmorTypes.begin();
+}
+std::list<ArmorTypeRef*>::const_iterator ArmorTypeExclusionList::getArmorTypeRefsEnd()
+{
+    return mArmorTypes.end();
+}
+void ArmorTypeExclusionList::handleElement(eElement element, Element * pElement)
+{
+    if(element == EARMORTYPEREF)
+    {
+	mArmorTypes.push_back ( dynamic_cast<ArmorTypeRef*>(pElement) );
+    }
+}
 
 
 WeaponClass::WeaponClass()
 {
 }
 
-WeaponClass::WeaponClass(CL_DomElement * pElement)
+void WeaponClass::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-    ItemFactory * pItemFactory = IApplication::getInstance()->getItemFactory();
-
-    CL_DomNamedNodeMap attributes = pElement->get_attributes(); 
-
-    if(!attributes.get_named_item("name").is_null())
-    {
-	mName = attributes.get_named_item("name").get_node_value();
-    }
-    else throw CL_Error("Weapon class requires a name.");
-
-    if(!attributes.get_named_item("valueMultiplier").is_null())
-    {
-	mfValueMultiplier = atof ( attributes.get_named_item("valueMultiplier").get_node_value().c_str());
-    }
-    else mfValueMultiplier = 1;
-
-
-    if(!attributes.get_named_item("valueAdd").is_null())
-    {
-	mnValueAdd = atoi ( attributes.get_named_item("valueAdd").get_node_value().c_str());
-    }
-    else mnValueAdd = 0;
-    
-    CL_DomElement child = pElement->get_first_child().to_element();
- 
-    while(!child.is_null())
-    {
-
-	std::string str = child.get_node_name();
-
-	if(str == "attributeEnhancer")
-	{
-	    mAttributeEnhancers.push_back ( pItemFactory->createAttributeEnhancer ( &child ) );
-	}
-	else if ( str == "weaponEnhancer")
-	{
-	    mWeaponEnhancers.push_back ( pItemFactory->createWeaponEnhancer ( &child ) ) ;
-	}
-	else if (str == "weaponTypeExclusionList")
-	{
-	    CL_DomElement subChild = child.get_first_child().to_element();
-
-	    while(!subChild.is_null())
-	    {
-		if( subChild.get_node_name() == "weaponTypeRef")
-		{
-		    mExcludedTypes.push_back ( pItemFactory->createWeaponTypeRef ( &subChild ) );
-		}
-		else throw CL_Error("What's this crazy " + subChild.get_node_name() + " in a weapon type exclusion list?");
-
-		subChild = subChild.get_next_sibling().to_element();
-	    }
-	}
-	else if (str == "statusEffectModifier" )
-	{
-	    addStatusEffectModifier ( pItemFactory->createStatusEffectModifier( &child ));
-	}
-
-	child = child.get_next_sibling().to_element();
-    }
-    
+    mName = getRequiredString("name",pAttributes );
+    mfValueMultiplier = getImpliedFloat("valueMultiplier",pAttributes,1);
+    mnValueAdd = getImpliedInt("valueAdd",pAttributes,0);
 }
+
+void WeaponClass::handleElement(eElement element, Element * pElement)
+{
+    switch(element)
+    {
+    case EATTRIBUTEENHANCER:
+	mAttributeEnhancers.push_back( dynamic_cast<AttributeEnhancer*>(pElement) );
+	break;
+    case EWEAPONENHANCER:
+	mWeaponEnhancers.push_back( dynamic_cast<WeaponEnhancer*>(pElement) );
+	break;
+    case EWEAPONTYPEEXCLUSIONLIST:
+    {
+	WeaponTypeExclusionList * pList = dynamic_cast<WeaponTypeExclusionList*>(pElement);
+	std::copy(pList->getWeaponTypeRefsBegin(),pList->getWeaponTypeRefsEnd(), 
+		std::back_inserter(mExcludedTypes));
+
+	delete pList;
+	break;
+    }
+    case ESTATUSEFFECTMODIFIER:
+	addStatusEffectModifier (dynamic_cast<StatusEffectModifier*>(pElement));
+	break;
+    default:
+	throw CL_Error("Bad element found in weapon class.");
+    }
+}
+
 
 WeaponClass::~WeaponClass()
 {
+    std::for_each(mAttributeEnhancers.begin(),mAttributeEnhancers.end(),del_fun<AttributeEnhancer>());
+    std::for_each(mWeaponEnhancers.begin(),mWeaponEnhancers.end(),del_fun<WeaponEnhancer>());
+    std::for_each(mExcludedTypes.begin(),mExcludedTypes.end(),del_fun<WeaponTypeRef>());
 }
 
 
@@ -2364,74 +2297,46 @@ bool ArmorClass::operator==( const ArmorClass &lhs )
     return mName == lhs.mName;
 }
 
-ArmorClass::ArmorClass(CL_DomElement * pElement)
+void ArmorClass::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-
-    ItemFactory * pItemFactory = IApplication::getInstance()->getItemFactory();
-
-    CL_DomNamedNodeMap attributes = pElement->get_attributes(); 
-
-    if(!attributes.get_named_item("name").is_null())
-    {
-	mName = attributes.get_named_item("name").get_node_value();
-    }
-    else throw CL_Error("Armor class requires a name.");
-
-    if(!attributes.get_named_item("valueMultiplier").is_null())
-    {
-	mfValueMultiplier = atof ( attributes.get_named_item("valueMultiplier").get_node_value().c_str());
-    }
-    else mfValueMultiplier = 1;
-
-
-    if(!attributes.get_named_item("valueAdd").is_null())
-    {
-	mnValueAdd = atoi ( attributes.get_named_item("valueAdd").get_node_value().c_str());
-    }
-    else mnValueAdd = 0;
-    
-    CL_DomElement child = pElement->get_first_child().to_element();
- 
-    while(!child.is_null())
-    {
-
-	std::string str = child.get_node_name();
-
-	if(str == "attributeEnhancer")
-	{
-	    mAttributeEnhancers.push_back ( pItemFactory->createAttributeEnhancer ( &child ) );
-	}
-	else if ( str == "armorEnhancer")
-	{
-	    mArmorEnhancers.push_back ( pItemFactory->createArmorEnhancer ( &child ) ) ;
-	}
-	else if (str == "armorTypeExclusionList")
-	{
-	    CL_DomElement subChild = child.get_first_child().to_element();
-
-	    while(!subChild.is_null())
-	    {
-		if( subChild.get_node_name() == "armorTypeRef")
-		{
-		    mExcludedTypes.push_back ( pItemFactory->createArmorTypeRef ( &subChild ) );
-		}
-		else throw CL_Error("What's this crazy " + subChild.get_node_name() + " in an Armor type exclusion list?");
-
-		subChild = subChild.get_next_sibling().to_element();
-	    }
-	}
-	else if (str == "statusEffectModifier" )
-	{
-	    addStatusEffectModifier ( pItemFactory->createStatusEffectModifier( &child ));
-	}
-
-	child = child.get_next_sibling().to_element();
-    }
-    
+    mName = getRequiredString("name",pAttributes );
+    mfValueMultiplier = getImpliedFloat("valueMultiplier",pAttributes,1);
+    mnValueAdd = getImpliedInt("valueAdd",pAttributes,0);
 }
+
+void ArmorClass::handleElement(eElement element, Element * pElement)
+{
+    switch(element)
+    {
+    case EATTRIBUTEENHANCER:
+	mAttributeEnhancers.push_back( dynamic_cast<AttributeEnhancer*>(pElement) );
+	break;
+    case EARMORENHANCER:
+	mArmorEnhancers.push_back( dynamic_cast<ArmorEnhancer*>(pElement) );
+	break;
+    case EARMORTYPEEXCLUSIONLIST:
+    {
+	ArmorTypeExclusionList * pList = dynamic_cast<ArmorTypeExclusionList*>(pElement);
+	std::copy(pList->getArmorTypeRefsBegin(),pList->getArmorTypeRefsEnd(), 
+		std::back_inserter(mExcludedTypes));
+
+	delete pList;
+	break;
+    }
+    case ESTATUSEFFECTMODIFIER:
+	addStatusEffectModifier (dynamic_cast<StatusEffectModifier*>(pElement));
+	break;
+    default:
+	throw CL_Error("Bad element found in armor class.");
+    }
+}
+
 
 ArmorClass::~ArmorClass()
 {
+    std::for_each(mAttributeEnhancers.begin(),mAttributeEnhancers.end(),del_fun<AttributeEnhancer>());
+    std::for_each(mArmorEnhancers.begin(),mArmorEnhancers.end(),del_fun<ArmorEnhancer>());
+    std::for_each(mExcludedTypes.begin(),mExcludedTypes.end(),del_fun<ArmorTypeRef>());
 }
 
 
@@ -2505,82 +2410,39 @@ bool WeaponType::operator==(const WeaponType &type )
     return mName == type.mName;
 }
 
-WeaponType::WeaponType(CL_DomElement * pElement )
+void WeaponType::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
+    mName = getRequiredString("name",pAttributes);
+    mnBasePrice = getRequiredInt("basePrice",pAttributes);
+    mnBaseAttack = getRequiredInt("baseAttack",pAttributes);
+    mfBaseHit = getRequiredFloat("baseHit",pAttributes);
+    mfBaseCritical = getImpliedFloat("baseCritical",pAttributes,0.05);
+    mbRanged = getImpliedBool("ranged",pAttributes,false);
+    mbTwoHanded  = getImpliedBool("twoHanded",pAttributes,false);
+}
 
-    ItemFactory * pItemFactory = IApplication::getInstance()->getItemFactory();
-    
-    CL_DomNamedNodeMap attributes = pElement->get_attributes(); 
-
-    if(!attributes.get_named_item("name").is_null())
+void WeaponType::handleElement(eElement element, Element * pElement)
+{
+    switch(element)
     {
-	mName = attributes.get_named_item("name").get_node_value();
+    case EICONREF:
+
+		mIconRef = dynamic_cast<IconRef*>(pElement)->getIcon();
+	break;
+    case EWEAPONDAMAGECATEGORY:
+	mpDamageCategory = dynamic_cast<DamageCategory*>(pElement);
+	break;
+    case EMAGICDAMAGECATEGORY:
+	mpDamageCategory = dynamic_cast<DamageCategory*>(pElement);
+	break;
+    default:
+	throw CL_Error("Strange element on weapon type");
     }
-    else throw CL_Error("Weapon type requires a name attribute.");
-
-    if(!attributes.get_named_item("basePrice").is_null())
-    {
-	mnBasePrice = atoi ( attributes.get_named_item("basePrice").get_node_value().c_str());
-    }
-    else throw CL_Error("base price is required on weapon types.");
-
-    if(!attributes.get_named_item("baseAttack").is_null())
-    {
-	mnBaseAttack = atoi ( attributes.get_named_item("baseAttack").get_node_value().c_str());
-    }
-    else throw CL_Error("base attack is required on weapon types.");
-    
-    if(!attributes.get_named_item("baseHit").is_null())
-    {
-	mfBaseHit = atof ( attributes.get_named_item("baseHit").get_node_value().c_str());
-    }
-    else throw CL_Error("base hit is required on weapon types.");
-
-    if(!attributes.get_named_item("baseCritical").is_null())
-    {
-	mfBaseCritical = atof ( attributes.get_named_item("baseCritical").get_node_value().c_str());
-    }
-    else mfBaseCritical = 0.05; // @todo get from settings
-
-    if(!attributes.get_named_item("ranged").is_null())
-    {
-	mbRanged = attributes.get_named_item("ranged").get_node_value() == "true";
-    }
-    else mbRanged = false;
-
-    if(!attributes.get_named_item("twoHanded").is_null())
-    {
-	mbTwoHanded = attributes.get_named_item("twoHanded").get_node_value() == "true";
-    }
-    else mbTwoHanded = false;
-    
-    CL_DomElement child = pElement->get_first_child().to_element();
-
-    while(!child.is_null())
-    {
-	std::string name = child.get_node_name();
-
-	if(name == "iconRef")
-	{
-	    mIconRef = child.get_text();
-	}
-	else if ( name == "weaponDamageCategory" )
-	{
-	    mpDamageCategory = pItemFactory->createWeaponDamageCategory ( &child );
-	}
-	else if ( name == "magicDamageCategory" )
-	{
-	    mpDamageCategory = pItemFactory->createMagicDamageCategory ( &child );
-	}
-
-	child = child.get_next_sibling().to_element();
-    }
-
-
 }
 
 WeaponType::~WeaponType()
 {
+    delete mpDamageCategory;
 }
 
 CL_DomElement WeaponType::createDomElement ( CL_DomDocument &doc) const
@@ -2642,64 +2504,34 @@ bool ArmorType::operator==(const ArmorType &lhs )
     return mName == lhs.mName;
 }
 
-ArmorType::ArmorType(CL_DomElement * pElement )
+void ArmorType::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
+    mName = getRequiredString("name",pAttributes);
+    mnBasePrice = getRequiredInt("basePrice",pAttributes);
+    mnBaseAC = getRequiredInt("baseArmorClass",pAttributes);
+    mnBaseRST = getRequiredInt("baseResist",pAttributes);
 
-    ItemFactory * pItemFactory = IApplication::getInstance()->getItemFactory();
-    
-    CL_DomNamedNodeMap attributes = pElement->get_attributes(); 
+    std::string slot = getRequiredString("slot",pAttributes);
 
-    if(!attributes.get_named_item("name").is_null())
-    {
-	mName = attributes.get_named_item("name").get_node_value();
-    }
-    else throw CL_Error("Armor type requires a name attribute.");
+    if(slot == "head")
+	meSlot = HEAD;
+    else if (slot == "shield")
+	meSlot = SHIELD;
+    else if (slot == "body")
+	meSlot = BODY;
+    else if (slot == "feet")
+	meSlot = FEET;
+    else if (slot == "hands")
+	meSlot = HANDS;
 
-    if(!attributes.get_named_item("basePrice").is_null())
-    {
-	mnBasePrice = atoi ( attributes.get_named_item("basePrice").get_node_value().c_str());
-    }
-    else throw CL_Error("base price is required on armor types.");
+}
 
-    if(!attributes.get_named_item("baseArmorClass").is_null())
-    {
-	mnBaseAC = atoi ( attributes.get_named_item("baseArmorClass").get_node_value().c_str());
-    }
-    else throw CL_Error("base armor class  is required on armor types. name = " + mName);
-
-    if(!attributes.get_named_item("baseResist").is_null())
-    {
-	mnBaseRST = atoi ( attributes.get_named_item("baseResist").get_node_value().c_str());
-    }
-    else throw CL_Error("base Resist  is required on armor types. name = " + mName);
-    
-    if(!attributes.get_named_item("slot").is_null())
-    {
-	std::string slot = attributes.get_named_item("slot").get_node_value();
-
-	if(slot == "head")
-	    meSlot = HEAD;
-	else if (slot == "shield")
-	    meSlot = SHIELD;
-	else if (slot == "body")
-	    meSlot = BODY;
-	else if (slot == "feet")
-	    meSlot = FEET;
-	else if (slot == "hands")
-	    meSlot = HANDS;
-    }
-    else throw CL_Error("slot is required on weapon types.");
-
-    
-    CL_DomElement child = pElement->get_first_child().to_element();
-
-    if(child.get_node_name() == "iconRef")
-    {
-	mIconRef = child.get_text();
-    }
-    else throw CL_Error("Armor type missing icon ref.");
-
-
+void ArmorType::handleElement(eElement element, Element * pElement)
+{
+if(element == EICONREF)
+{
+    //@todo
+}
 }
 
 ArmorType::~ArmorType()
@@ -2753,16 +2585,9 @@ WeaponDamageCategory::WeaponDamageCategory()
 {
 }
 
-WeaponDamageCategory::WeaponDamageCategory(CL_DomElement *pElement)
+void WeaponDamageCategory::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-    CL_DomNamedNodeMap attributes = pElement->get_attributes(); 
-
-    if(!attributes.get_named_item("type").is_null())
-    {
-	meType = TypeFromString(attributes.get_named_item("type").get_node_value());
-    }
-    else throw CL_Error("weaponDamageCategory requires a type");
-    
+    meType = TypeFromString(getRequiredString("type",pAttributes));
 }
 
 WeaponDamageCategory::eType
@@ -2797,17 +2622,11 @@ MagicDamageCategory::MagicDamageCategory()
 {
 }
 
-MagicDamageCategory::MagicDamageCategory(CL_DomElement *pElement)
+void MagicDamageCategory::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
-
-    CL_DomNamedNodeMap attributes = pElement->get_attributes(); 
-
-    if(!attributes.get_named_item("type").is_null())
-    {
-	meType = TypeFromString(attributes.get_named_item("type").get_node_value());
-    }
-    else throw CL_Error("magicDamageCategory requires a type");
+    meType = TypeFromString(getRequiredString("type",pAttributes));
 }
+
 MagicDamageCategory::~MagicDamageCategory()
 {
 }
@@ -2840,17 +2659,16 @@ StatusEffectModifier::StatusEffectModifier():mpStatusEffect(NULL)
 }
 
 
-StatusEffectModifier::StatusEffectModifier(CL_DomElement *pElement)
+void StatusEffectModifier::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
-    CL_DomNamedNodeMap attributes = pElement->get_attributes();
- 
-    std::string statusRef = getRequiredString("statusRef", &attributes);
 
-	const AbilityManager * pManager = IApplication::getInstance()->getAbilityManager();
+    std::string statusRef = getRequiredString("statusRef", pAttributes);
 
-	mpStatusEffect = pManager->getStatusEffect( statusRef );
+    const AbilityManager * pManager = IApplication::getInstance()->getAbilityManager();
 
-    mfModifier = getRequiredFloat("modifier", &attributes );
+    mpStatusEffect = pManager->getStatusEffect( statusRef );
+
+    mfModifier = getRequiredFloat("modifier", pAttributes );
 }
 
 StatusEffectModifier::~StatusEffectModifier()

@@ -11,199 +11,205 @@ namespace StoneRing
     class WeaponDamageCategory;
     class MagicDamageCategory;
     class SpellRef;
-	class StatusEffect;
+    class StatusEffect;
 
 
     class DoWeaponDamage : public Element, public Effect
-    {
-    public:
-	DoWeaponDamage();
-	DoWeaponDamage(CL_DomElement *pElement);
-	virtual ~DoWeaponDamage();
+	{
+	public:
+	    DoWeaponDamage();
+	    virtual ~DoWeaponDamage();
 
-	WeaponDamageCategory * getDamageCategory();
+	    WeaponDamageCategory * getDamageCategory();
 
-	uint getBaseAttack() const;
-	float getBaseCritical() const;
-	float getBaseHit() const;
-	bool isRanged() const;
+	    uint getBaseAttack() const;
+	    float getBaseCritical() const;
+	    float getBaseHit() const;
+	    bool isRanged() const;
      
-	virtual eType getEffectType() const { return WEAPON_DAMAGE; }
+	    virtual eType getEffectType() const { return WEAPON_DAMAGE; }
 
-	CL_DomElement createDomElement( CL_DomDocument &doc ) const;
+	    CL_DomElement createDomElement( CL_DomDocument &doc ) const;
 
-    private:
-	WeaponDamageCategory * mpDamageCategory;
-	uint mnBaseAttack;
-	float mfBaseCritical;
-	float mfBaseHit;
-	bool mbRanged;
-    };
+	private:
+	    virtual void handleElement(eElement, Element * );
+	    virtual void loadAttributes(CL_DomNamedNodeMap *);
+		virtual void loadFinished();
+	    WeaponDamageCategory * mpDamageCategory;
+	    uint mnBaseAttack;
+	    float mfBaseCritical;
+	    float mfBaseHit;
+	    bool mbRanged;
+	};
 
     class DoMagicDamage : public Element, public Effect
-    {
-    public:
-	DoMagicDamage();
-	DoMagicDamage(CL_DomElement *pElement);
-	virtual ~DoMagicDamage();
+	{
+	public:
+	    DoMagicDamage();
+	    virtual ~DoMagicDamage();
 
 
-	uint getBaseDamage() const;
-	float getBaseHit() const;
-	bool drain() const;
-	bool isPiercing() const;
+	    uint getBaseDamage() const;
+	    float getBaseHit() const;
+	    bool drain() const;
+	    bool isPiercing() const;
 	
-	MagicDamageCategory * getMagicCategory();
+	    MagicDamageCategory * getMagicCategory();
 
-	virtual eType getEffectType() const { return MAGIC_DAMAGE; }
+	    virtual eType getEffectType() const { return MAGIC_DAMAGE; }
 
-	enum eDamageAttr { HP, MP };
+	    enum eDamageAttr { HP, MP };
 
-	eDamageAttr getDamageAttr() const;
+	    eDamageAttr getDamageAttr() const;
 
-	CL_DomElement createDomElement( CL_DomDocument &doc ) const;
-    private:
-	MagicDamageCategory * mpDamageCategory;
-	uint mnBaseDamage;
-	float mfBaseHit;
-	bool mbDrain;
-	bool mbPiercing;
-	eDamageAttr meDamageAttr;
-    };
+	    CL_DomElement createDomElement( CL_DomDocument &doc ) const;
+
+	private:
+	    virtual void handleElement(eElement, Element * );
+	    virtual void loadAttributes(CL_DomNamedNodeMap *);
+		virtual void loadFinished();
+	    MagicDamageCategory * mpDamageCategory;
+	    uint mnBaseDamage;
+	    float mfBaseHit;
+	    bool mbDrain;
+	    bool mbPiercing;
+	    eDamageAttr meDamageAttr;
+	};
 
 
     class DoStatusEffect : public Element, public Effect
-    {
-    public:
-	DoStatusEffect();
-	DoStatusEffect(CL_DomElement *pElement);
-	virtual ~DoStatusEffect();
+	{
+	public:
+	    DoStatusEffect();
+	    virtual ~DoStatusEffect();
 
-	std::string getStatusRef() const;
-	float getChance() const;
+	    std::string getStatusRef() const;
+	    float getChance() const;
 
-	bool removeStatus() const;
+	    bool removeStatus() const;
 
-	CL_DomElement createDomElement( CL_DomDocument &doc ) const;
+	    CL_DomElement createDomElement( CL_DomDocument &doc ) const;
 
-	virtual eType getEffectType() const { return STATUS_EFFECT; }
-    private:
-	std::string mStatusRef;
-	float mfChance;
-	bool mbRemove;
-    };
+	    virtual eType getEffectType() const { return STATUS_EFFECT; }
+	private:
+	    virtual void loadAttributes(CL_DomNamedNodeMap *);
+	    std::string mStatusRef;
+	    float mfChance;
+	    bool mbRemove;
+	};
     
 
     class MagicResistance : public Element
-    {
-    public:
-	MagicResistance();
-	MagicResistance(CL_DomElement * pElement);
-	virtual ~MagicResistance();
-
-	float getResistance() const;
-	enum eType
 	{
-	    FIRE, WATER, WIND, EARTH, HOLY, ELEMENTAL, ALL
+	public:
+	    MagicResistance();
+	    virtual ~MagicResistance();
+
+	    float getResistance() const;
+	    enum eType
+		{
+		    FIRE, WATER, WIND, EARTH, HOLY, ELEMENTAL, ALL
+		};
+
+	    eType getType() const;
+
+	    CL_DomElement  createDomElement(CL_DomDocument &doc) const { return CL_DomElement(doc,"magicResistance"); }
+
+	private:
+	    virtual void loadAttributes(CL_DomNamedNodeMap *);
+	    eType meType;
+	    float mfResistance;
 	};
-
-	eType getType() const;
-
-	CL_DomElement  createDomElement(CL_DomDocument &doc) const { return CL_DomElement(doc,"magicResistance"); }
-
-    private:
-	eType meType;
-	float mfResistance;
-    };
 
 
     class Spell : public Element
-    {
-    public:
-	Spell();
-	Spell(CL_DomElement *pElement);
-	virtual ~Spell();
+	{
+	public:
+	    Spell();
+	    virtual ~Spell();
 
 
-	std::string getName() const;
+	    std::string getName() const;
 
-	enum eType { ELEMENTAL, WHITE, STATUS, OTHER };
-	enum eUse { BATTLE, WORLD, BOTH };
-	enum eTargetable { ALL, SINGLE, EITHER, SELF_ONLY };
-	eType getType() const;
-	eUse getUse() const;
-	eTargetable getTargetable() const;
+	    enum eType { ELEMENTAL, WHITE, STATUS, OTHER };
+	    enum eUse { BATTLE, WORLD, BOTH };
+	    enum eTargetable { ALL, SINGLE, EITHER, SELF_ONLY };
+	    eType getType() const;
+	    eUse getUse() const;
+	    eTargetable getTargetable() const;
 
 
-	bool appliesToWeapons() const;
-	bool appliesToArmor() const;
+	    bool appliesToWeapons() const;
+	    bool appliesToArmor() const;
 	
-	uint getMP() const;
+	    uint getMP() const;
 
-	SpellRef * createSpellRef() const;
+	    SpellRef * createSpellRef() const;
 
-	uint getValue() const;
+	    uint getValue() const;
 
-	std::list<Effect*>::const_iterator getEffectsBegin() const;
-	std::list<Effect*>::const_iterator getEffectsEnd() const;
+	    std::list<Effect*>::const_iterator getEffectsBegin() const;
+	    std::list<Effect*>::const_iterator getEffectsEnd() const;
 
-	CL_DomElement createDomElement( CL_DomDocument &doc ) const;
+	    CL_DomElement createDomElement( CL_DomDocument &doc ) const;
 
-	MagicResistance * getMagicResistance() const;
+	    MagicResistance * getMagicResistance() const;
 
 	
-    private:
+	private:
+		virtual void handleElement(eElement, Element * );
+	    virtual void loadAttributes(CL_DomNamedNodeMap *);
 
-	eType getTypeFromString(const std::string &str);
-	eUse getUseFromString ( const std::string &str);
-	eTargetable getTargetableFromString ( const std::string &str);
+	    eType getTypeFromString(const std::string &str);
+	    eUse getUseFromString ( const std::string &str);
+	    eTargetable getTargetableFromString ( const std::string &str);
 
-	eType meType;
-	eUse meUse;
-	eTargetable meTargetable;
-	std::string mName;
-	bool mbAppliesToWeapons;
-	bool mbAppliesToArmor;
-	uint mnMP;
-	uint mnValue;
-	MagicResistance * mpMagicResistance;
-	std::list<Effect*> mEffects;
-    };
+	    eType meType;
+	    eUse meUse;
+	    eTargetable meTargetable;
+	    std::string mName;
+	    bool mbAppliesToWeapons;
+	    bool mbAppliesToArmor;
+	    uint mnMP;
+	    uint mnValue;
+	    MagicResistance * mpMagicResistance;
+	    std::list<Effect*> mEffects;
+	};
 
 
 
 
 /*
-    class WeaponDamageCategory : public Element
-    {
-    public:
-	WeaponDamageCategory();
-	WeaponDamageCategory(CL_DomElement * pElement);
-	virtual ~WeaponDamageCategory();
+  class WeaponDamageCategory : public Element
+  {
+  public:
+  WeaponDamageCategory();
+  WeaponDamageCategory();
+  virtual ~WeaponDamageCategory();
 	
-	enum eType { SLASH, BASH, JAB };
-	eType getType() const;
+  enum eType { SLASH, BASH, JAB };
+  eType getType() const;
 
-	CL_DomElement createDomElement( CL_DomDocument &doc ) const;
+  CL_DomElement createDomElement( CL_DomDocument &doc ) const;
 	
-    private:
-	eType meType;
-    };
+  private:
+  eType meType;
+  };
 
-    class MagicDamageCategory : public Element
-    {
-    public:
-	MagicDamageCategory();
-	MagicDamageCategory(CL_DomElement * pElement);
-	virtual ~MagicDamageCategory();
+  class MagicDamageCategory : public Element
+  {
+  public:
+  MagicDamageCategory();
+  MagicDamageCategory(CL_DomElement * pElement);
+  virtual ~MagicDamageCategory();
 	
-	enum eType { FIRE, WATER, EARTH, WIND, HOLY, OTHER };
-	eType getType() const;
+  enum eType { FIRE, WATER, EARTH, WIND, HOLY, OTHER };
+  eType getType() const;
 
-	CL_DomElement createDomElement( CL_DomDocument &doc ) const;
-    private:
-	eType meType;
-    };
+  CL_DomElement createDomElement( CL_DomDocument &doc ) const;
+  private:
+  eType meType;
+  };
 
 
 */

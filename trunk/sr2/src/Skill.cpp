@@ -39,54 +39,38 @@ StoneRing::eCharacterStat StoneRing::CharStatFromString(const std::string &str)
 
 }
 
-StoneRing::Skill::Skill(CL_DomElement * pElement):mnBp(0), mnSp(0)
+void StoneRing::Skill::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+{
+	mName = getRequiredString("name",pAttributes);
+	mnSp = getRequiredInt("sp",pAttributes);
+	mnBp = getRequiredInt("bp",pAttributes);
+
+}
+
+void StoneRing::Skill::handleElement(eElement element, Element * pElement)
+{
+	switch(element)
+	{
+	case EANIMATION:
+	case EDOWEAPONDAMAGE:
+	case EDOMAGICDAMAGE:
+	case EDOSTATUSEFFECT:
+			mEffects.push_back(dynamic_cast<Effect*>(pElement));
+			break;
+	default:
+		throw CL_Error("Bad element in skill");
+		//@todo EPREREQSKILLREF:
+	}
+}
+
+StoneRing::Skill::Skill():mnBp(0), mnSp(0)
 {
 
-    CL_DomNamedNodeMap attributes = pElement->get_attributes();
-	AbilityFactory * pFactory = IApplication::getInstance()->getAbilityFactory();
-
-	mName = getRequiredString("name",&attributes);
-
-	mnSp = getRequiredInt("sp",&attributes);
-	mnBp = getRequiredInt("bp",&attributes);
-
-	CL_DomElement child = GET_CHILD;
-
-
-    while(!child.is_null())
-    {
-		std::string name = child.get_node_name();
-
-		if(name == "prereqSkillRef")
-		{
-			CL_DomNamedNodeMap prAttr = child.get_attributes();
-
-			mPreReqs.push_back ( getRequiredString("skillName",&prAttr));
-		}
-		else if (name == "animation")
-		{
-			mEffects.push_back ( static_cast<Effect*>(pFactory->createAnimation(&child)));
-		}
-		else if (name == "doWeaponDamage")
-		{
-			mEffects.push_back ( pFactory->createDoWeaponDamage(&child));
-		}
-		else if (name == "doMagicDamage")
-		{
-			mEffects.push_back ( pFactory->createDoMagicDamage(&child));
-		}
-		else if (name == "doStatusEffect")
-		{
-			mEffects.push_back ( pFactory->createDoStatusEffect(&child));
-		}
-
-		child = child.get_next_sibling().to_element();
-
-	}
 }
 
 Skill::~Skill()
 {
+	std::for_each(mEffects.begin(),mEffects.end(),del_fun<Effect>());
 }
 
 std::list<Effect*>::const_iterator 

@@ -21,7 +21,7 @@ namespace StoneRing
 	class Skill : public Element
 	{
 	public:
-		Skill(CL_DomElement * pElement);
+		Skill();
 		~Skill();
 
 		std::list<Effect*>::const_iterator getEffectsBegin() const;
@@ -36,6 +36,8 @@ namespace StoneRing
 
 		CL_DomElement createDomElement ( CL_DomDocument &doc );
 	private:
+		virtual void handleElement(eElement element, Element * pElement );
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 		std::string mName;
 		std::list<Effect*> mEffects;
 		std::list<std::string> mPreReqs;
@@ -43,10 +45,25 @@ namespace StoneRing
 		uint mnBp;
 	};
 
+	class SkillRef: public Element
+	{
+	public:
+		SkillRef();
+		~SkillRef();
+
+		std::string getRef() const;
+
+		CL_DomElement createDomElement ( CL_DomDocument &doc )const;
+	private:
+		virtual void handleText(const std::string &text);
+	
+		std::string mRef;
+	};
+
 	class CharacterClass : public Element
 	{
 	public:
-		CharacterClass(CL_DomElement *pElement);
+		CharacterClass();
 		~CharacterClass();
 
 		CL_DomElement createDomElement( CL_DomDocument &doc ) const;
@@ -75,6 +92,8 @@ namespace StoneRing
 
 
 	private:
+		virtual void handleElement(eElement element, Element * pElement );
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 		std::string mName;
 		eGender meGender;
 		std::list<WeaponTypeRef*> mWeaponTypes;
@@ -87,7 +106,7 @@ namespace StoneRing
 	class StatIncrease : public Element
 	{
 	public:
-		StatIncrease(CL_DomElement * pElement );
+		StatIncrease( );
 		~StatIncrease();
 
 		CL_DomElement createDomElement( CL_DomDocument &doc ) const;
@@ -97,6 +116,7 @@ namespace StoneRing
 		uint getPeriod() const;	
 		int getIncrement() const;
 	private:
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 		uint mnPeriod;
 		int mnIncrement;
 		eCharacterStat meStat;
@@ -105,7 +125,7 @@ namespace StoneRing
 	class StartingStat : public Element
 	{
 	public:
-		StartingStat(CL_DomElement * pElement );
+		StartingStat( );
 		~StartingStat();
 
 		CL_DomElement createDomElement(CL_DomDocument &doc )const;
@@ -114,6 +134,7 @@ namespace StoneRing
 
 		int getValue() const;
 	private:
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 		int mnValue;
 		eCharacterStat meStat;
 	};

@@ -3,7 +3,7 @@
 #include "Animation.h"
 #include "LevelFactory.h"
 #include "IApplication.h"
-
+#include "Level.h"
 
 using namespace StoneRing;
 
@@ -14,30 +14,25 @@ AnimationSpriteRef::AnimationSpriteRef()
 {
 }
 
-AnimationSpriteRef::AnimationSpriteRef(CL_DomElement *pElement, const std::string &animation_name )
+
+void AnimationSpriteRef::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-    CL_DomNamedNodeMap attributes = pElement->get_attributes();
+		meInitialFocus = initialFocusFromString(getRequiredString("initialFocus",pAttributes));
 
-    if(!attributes.get_named_item("initialFocus").is_null())
-	meInitialFocus = initialFocusFromString(attributes.get_named_item("initialFocus").get_node_value());
-    else throw CL_Error("Initial Focus attribute is required on animation sprite ref.");
+		if(hasAttr("initialFocusType",pAttributes))
+			meInitialFocusType = initialFocusTypeFromString( getString("initialFocusType",pAttributes));
+		 else meInitialFocusType = CENTER;
 
-    if(!attributes.get_named_item("initialFocusType").is_null())
-	meInitialFocusType = initialFocusTypeFromString ( attributes.get_named_item("initialFocusType").get_node_value());
-    else meInitialFocusType = CENTER;
-
-
-    if(!attributes.get_named_item("movementDirection").is_null())
-	meMovementDirection = movementDirectionFromString ( attributes.get_named_item("movementDirection").get_node_value());
-    else meMovementDirection = STILL;
-
-
-    mRef = pElement->get_text();
-
-    
-
-    
+		if(hasAttr("movementDirection",pAttributes))
+			meMovementDirection = movementDirectionFromString( getString("movementDirection",pAttributes));
+		else meMovementDirection = STILL;
 }
+
+void AnimationSpriteRef::handleText( const std::string &text )
+{
+	mRef = text;
+}
+
 
 CL_DomElement 
 AnimationSpriteRef::createDomElement(CL_DomDocument &doc) const
@@ -115,48 +110,33 @@ AnimationSpriteRef::getMovementDirection() const
 }
 
 
-
-
-
-
-Par::Par()
+void Par::handleElement(eElement element, Element * pElement)
 {
+		switch(element)
+		{
+		case EPLAYSOUND:
+			mpPlaySound = dynamic_cast<StoneRing::PlaySound*>(pElement);
+			break;
+		case EANIMATIONSPRITEREF:
+			mAnimationSpriteRefs.push_back( dynamic_cast<AnimationSpriteRef*>(pElement));
+			break;
+		}
 }
 
-Par::Par(CL_DomElement * pElement, const std::string &animation_name ):mpPlaySound(NULL)
+void Par::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-    LevelFactory * pFactory = IApplication::getInstance()->getLevelFactory();
-
-    CL_DomNamedNodeMap attributes = pElement->get_attributes();
-    
-    if(!attributes.get_named_item("duration").is_null())
-	mnDuration = atoi(attributes.get_named_item("duration").get_node_value().c_str());
-    else throw CL_Error("Duration is required on par elements.");
-
-    meHide = NONE;
-
-
-    if(!attributes.get_named_item("hide").is_null())
-	meHide = hideFromString ( attributes.get_named_item("hide").get_node_value());
-    
-    CL_DomElement child = pElement->get_first_child().to_element();
-    
-    while(!child.is_null())
-    {
-	std::string childName = child.get_node_name();
-
-	if(childName == "playSound")
+	mnDuration = getRequiredInt("duration", pAttributes);	
+	
+	if(hasAttr("hide",pAttributes))
 	{
-	    mpPlaySound = pFactory->createPlaySound ( &child );
-	}
-	else if ( childName == "animationSpriteRef")
-	{
-	    mAnimationSpriteRefs.push_back ( new AnimationSpriteRef ( &child, animation_name ) );
-	}
+		meHide = hideFromString(getString("hide",pAttributes));
+	}else meHide = NONE;
 
-	child = child.get_next_sibling().to_element();
-    }
-    
+
+}
+
+Par::Par():mpPlaySound(NULL)
+{
 }
 
 Par::eHide 
@@ -174,6 +154,9 @@ Par::hideFromString ( const std::string &str )
 
 Par::~Par()
 {
+	delete mpPlaySound;
+
+	std::for_each(mAnimationSpriteRefs.begin(),mAnimationSpriteRefs.end(),del_fun<AnimationSpriteRef>());
 }
 
 	
@@ -220,44 +203,31 @@ Animation::Animation()
 {
 }
 
-Animation::Animation( CL_DomElement * pElement)
+
+void Animation::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
-    CL_DomNamedNodeMap attributes = pElement->get_attributes();
+	mName = getRequiredString("name",pAttributes);
 
-    if(!attributes.get_named_item("name").is_null())
-	mName = attributes.get_named_item("duration").get_node_value();
-    else throw CL_Error("Name is required on animation elements.");
-
-    if(!attributes.get_named_item("type").is_null())
-    {
-	std::string type = attributes.get_named_item("type").get_node_value();
+	std::string type = getRequiredString("type",pAttributes);
 
 	if(type == "battle") meType = BATTLE;
 	else if (type == "world") meType = WORLD;
 	else throw CL_Error("Bogus animation type: " + type );
-    }
-    else throw CL_Error("Type is required on animation elements.");
 
-    
-    CL_DomElement child = pElement->get_first_child().to_element();
-
-    while(!child.is_null())
-    {
-	if(child.get_node_name() == "par")
-	{
-	    mPars.push_back ( new Par( &child, mName ) );
-	}
-	else throw CL_Error("Wacky child found in animation : " + child.get_node_name());
-
-	child = child.get_next_sibling().to_element();
-
-    }
-
-	
 }
+
+void Animation::handleElement(eElement element, Element * pElement)
+{
+	if(element == EPAR )
+	{
+		mPars.push_back ( dynamic_cast<Par*>(pElement) );
+	}
+}
+
 
 Animation::~Animation()
 {
+	std::for_each(mPars.begin(),mPars.end(),del_fun<Par>());
 }
 
 CL_DomElement 
