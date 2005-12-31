@@ -4,6 +4,7 @@
 #include "Element.h"
 #include <ClanLib/core.h>
 
+//using StoneRing::Element;
 
 namespace StoneRing
 {
@@ -14,7 +15,7 @@ namespace StoneRing
     class Item;
 
 
-class ItemRef : public Element
+	class ItemRef : public Element
     {
     public:
 	ItemRef();
@@ -37,6 +38,9 @@ class ItemRef : public Element
 	virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 	
     protected:
+		virtual void handleElement(Element::eElement,Element *);	
+		virtual void loadAttributes(CL_DomNamedNodeMap *pAttributes);
+		virtual void loadFinished();
 	NamedItemRef * mpNamedItemRef;
 	WeaponRef * mpWeaponRef;
 	ArmorRef * mpArmorRef;
@@ -58,6 +62,7 @@ class ItemRef : public Element
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	protected:
+		virtual void handleText(const std::string &text);
 	    std::string mName;
 	};
 

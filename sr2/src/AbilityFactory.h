@@ -1,7 +1,7 @@
 #ifndef SR_ABILITY_FACTORY_H
 #define SR_ABILITY_FACTORY_H
 
-
+#include "IFactory.h"
 
 #include <ClanLib/core.h>
 
@@ -15,36 +15,49 @@ namespace StoneRing
     class WeaponDamageCategory;
     class MagicDamageCategory;
     class Animation;
+	class AnimationSpriteRef;
     class MagicResistance;
-	class AttributeEffect;
-	class StatusEffectActions;
-	class StatusEffect;
-	class StartingStat;
-	class StatIncrease;
+    class AttributeEffect;
+    class StatusEffectActions;
+    class StatusEffect;
+    class StartingStat;
+    class StatIncrease;
+	class AnimationSpriteRef;
 
-class AbilityFactory
-{
- public:
-    AbilityFactory(){}
-    ~AbilityFactory(){}
+    class AbilityFactory : public IFactory
+	{
+	public:
+	    AbilityFactory(){}
+	    virtual ~AbilityFactory(){}
+
+	    virtual bool canCreate( Element::eElement element );
+	    virtual Element * createElement( Element::eElement element );
+	protected:
 
 
-    DoWeaponDamage * createDoWeaponDamage(CL_DomElement * pElement) const;
-    DoMagicDamage  * createDoMagicDamage(CL_DomElement * pElement) const;
-    DoStatusEffect * createDoStatusEffect(CL_DomElement * pElement)const;
-    Spell          * createSpell(CL_DomElement * pElement) const;
-    WeaponDamageCategory * createWeaponDamageCategory(CL_DomElement * pElement) const;
-    MagicDamageCategory  * createMagicDamageCategory(CL_DomElement * pElement) const;
-    Animation            * createAnimation(CL_DomElement * pElement) const;
-    MagicResistance      * createMagicResistance ( CL_DomElement * pElement) const;
-	AttributeEffect* createAttributeEffect(CL_DomElement *pElement) const;
-	StatusEffectActions  *createStatusEffectActions(CL_DomElement * pElement) const;
-	StatusEffect         *createStatusEffect(CL_DomElement * pElement) const;
-	StartingStat         *createStartingStat(CL_DomElement * pElement) const;
-	StatIncrease         *createStatIncrease(CL_DomElement * pElement) const;
+	    Element * createDoWeaponDamage() const;
+	    Element * createDoMagicDamage() const;
+	    Element * createDoStatusEffect()const;
+	    Element * createSpell() const;
+	    Element * createWeaponDamageCategory() const;
+	    Element * createMagicDamageCategory() const;
+	    Element * createAnimation() const;
+	    Element * createMagicResistance ( ) const;
+	    Element * createAttributeEffect() const;
+	    Element * createStatusEffectActions() const;
+	    Element * createStatusEffect() const;
+	    Element * createStartingStat() const;
+	    Element * createStatIncrease() const;
+		Element * createAnimationSpriteRef() const;
+		Element * createPar() const;
+		Element * createSkillRef() const;
 
- private:
-};
+	private:
+	    typedef Element * (AbilityFactory::*factoryMethod)() const;
+
+	    factoryMethod getMethod(Element::eElement element) const;
+
+	};
 
 
 };

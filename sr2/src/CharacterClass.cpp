@@ -6,54 +6,72 @@
 
 using namespace StoneRing;
 
-CharacterClass::CharacterClass(CL_DomElement *pElement)
+
+SkillRef::SkillRef()
 {
-	CL_DomNamedNodeMap attributes = pElement->get_attributes();
-	AbilityFactory * pAbilityFactory = IApplication::getInstance()->getAbilityFactory();
-	ItemFactory    * pItemFactory = IApplication::getInstance()->getItemFactory();
+}
+
+SkillRef::~SkillRef()
+{
+}
+
+std::string SkillRef::getRef() const
+{
+	return mRef;
+}
+
+CL_DomElement SkillRef::createDomElement ( CL_DomDocument &doc )const
+{
+	return CL_DomElement(doc,"skillRef");
+}
+
+void SkillRef::handleText(const std::string &text)
+{
+	mRef = text;
+}
+
+void CharacterClass::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+{
+	mName = getRequiredString("name",pAttributes);
 
 
-	mName = getRequiredString("name",&attributes);
+	std::string gender = getImpliedString("gender",pAttributes, "either");
 
-	if(hasAttr("gender",&attributes))
+	if(gender == "male") meGender = MALE;		
+	else if (gender == "female") meGender = FEMALE;	
+	else if (gender == "either") meGender = EITHER;
+}
+
+void CharacterClass::handleElement(eElement element, Element * pElement)
+{
+	switch(element)
 	{
-		std::string gender = getString("gender",&attributes);
-
-		if(gender == "male") meGender = MALE;
-		else if (gender == "female") meGender = FEMALE;
-		else meGender = EITHER;
+	case EWEAPONTYPEREF:
+		mWeaponTypes.push_back ( dynamic_cast<WeaponTypeRef*>(pElement) );
+		break;
+	case EARMORTYPEREF:
+		mArmorTypes.push_back ( dynamic_cast<ArmorTypeRef*>(pElement) );
+		break;
+	case ESTARTINGSTAT:
+		mStartingStats.push_back ( dynamic_cast<StartingStat*>(pElement) );
+		break;
+	case ESTATINCREASE:
+		mStatIncreases.push_back ( dynamic_cast<StatIncrease*>(pElement) );
+		break;
+	case ESKILLREF:
+		mSkillRefs.push_back( dynamic_cast<SkillRef*>(pElement)->getRef() );
+		break;
+	default:
+		break;
 	}
-	else meGender = EITHER;
-	
+}
 
-	CL_DomElement child = GET_CHILD;
-
-	while(!child.is_null())
-	{
-		if(child.get_node_name() == "weaponTypeRef")
-		{
-			mWeaponTypes.push_back ( pItemFactory->createWeaponTypeRef( &child ) );
-		}
-		else if ( child.get_node_name() == "armorTpeRef")
-		{
-			mArmorTypes.push_back ( pItemFactory->createArmorTypeRef( &child ) );
-		}
-		else if ( child.get_node_name() == "startingStat")
-		{
-			mStartingStats.push_back ( pAbilityFactory->createStartingStat ( &child ) );
-		}
-		else if ( child.get_node_name() == "statIncrease")
-		{
-			mStatIncreases.push_back ( pAbilityFactory->createStatIncrease ( &child ) );
-		}
-		else if ( child.get_node_name() == "skillRef")
-		{
-			mSkillRefs.push_back ( child.get_node_value() );
-		}
-			
-		child = child.get_next_sibling().to_element();	
-	}
-
+CharacterClass::CharacterClass()
+{
+	std::for_each(mWeaponTypes.begin(),mWeaponTypes.end(),del_fun<WeaponTypeRef>());
+	std::for_each(mArmorTypes.begin(),mArmorTypes.end(),del_fun<ArmorTypeRef>());
+	std::for_each(mStartingStats.begin(),mStartingStats.end(),del_fun<StartingStat>());
+	std::for_each(mStatIncreases.begin(),mStatIncreases.end(),del_fun<StatIncrease>());
 
 }
 
@@ -131,17 +149,20 @@ CharacterClass::getGender() const
 		
 
 
-
-StatIncrease::StatIncrease(CL_DomElement * pElement )
+void StatIncrease::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
-	CL_DomNamedNodeMap attributes = pElement->get_attributes();	
-
-	std::string stat = getRequiredString("stat",&attributes);
+	std::string stat = getRequiredString("stat",pAttributes);
 	
 	meStat = CharStatFromString ( stat );
 
-	mnPeriod = getRequiredInt("period",&attributes);
-	mnIncrement = getRequiredInt("increment",&attributes );
+	mnPeriod = getRequiredInt("period",pAttributes);
+	mnIncrement = getRequiredInt("increment",pAttributes );
+}
+
+
+StatIncrease::StatIncrease( )
+{
+
 }
 
 StatIncrease::~StatIncrease()
@@ -172,16 +193,16 @@ int StatIncrease::getIncrement() const
 }
 
 
-	
-StartingStat::StartingStat(CL_DomElement * pElement )
+void StartingStat::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-	CL_DomNamedNodeMap attributes = pElement->get_attributes();	
-
-	std::string stat = getRequiredString("stat",&attributes);
-	
+	std::string stat = getRequiredString("stat",pAttributes);
 	meStat = CharStatFromString ( stat );
+	mnValue = getRequiredInt("value",pAttributes);
+}
+	
+StartingStat::StartingStat()
+{
 
-	mnValue = getRequiredInt("value",&attributes);
 }
 
 StartingStat::~StartingStat()

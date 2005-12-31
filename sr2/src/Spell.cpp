@@ -14,44 +14,34 @@ Effect::~Effect()
 {
 }
 
-
-
-
-DoWeaponDamage::DoWeaponDamage()
+void DoWeaponDamage::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
+	
+    mnBaseAttack = getRequiredUint("baseAttack",pAttributes);
+    mfBaseCritical = getRequiredFloat("baseCritical",pAttributes);
+    mfBaseHit = getRequiredFloat("baseHit",pAttributes);
+    mbRanged = getImpliedBool("ranged",pAttributes,false);
+
 }
 
-DoWeaponDamage::DoWeaponDamage(CL_DomElement *pElement):mpDamageCategory(NULL)
+void DoWeaponDamage::handleElement(eElement element,Element *pElement)
 {
-    CL_DomNamedNodeMap attributes = pElement->get_attributes();
-    AbilityFactory * pFactory = IApplication::getInstance()->getAbilityFactory();
+		if(element == EWEAPONDAMAGECATEGORY)
+		{
+			mpDamageCategory = dynamic_cast<WeaponDamageCategory*>(pElement);
+		}
+}
 
-    mnBaseAttack = getRequiredUint("baseAttack",&attributes);
-    mfBaseCritical = getRequiredFloat("baseCritical",&attributes);
-    mfBaseHit = getRequiredFloat("baseHit",&attributes);
+void DoWeaponDamage::loadFinished()
+{
+	if(mpDamageCategory == NULL)
+		throw CL_Error("No weapon damage category was defined for this doWeaponDamage");
+}
+
+DoWeaponDamage::DoWeaponDamage():mpDamageCategory(NULL)
+{
+
     
-
-    mbRanged = getImpliedBool("ranged",&attributes,false);
-    
-
-    CL_DomElement child = pElement->get_first_child().to_element();
-
-
-    while(!child.is_null())
-    {
-	std::string name = child.get_node_name();
-
-	if(name == "weaponDamageCategory")
-	{
-	    mpDamageCategory = pFactory->createWeaponDamageCategory ( &child );
-	}
-
-	
-	child = child.get_next_sibling().to_element();
-    }
-
-    if(mpDamageCategory == NULL)
-	throw CL_Error("No weapon damage category was defined for this doWeaponDamage");
     
 }
 
@@ -100,38 +90,29 @@ DoMagicDamage::DoMagicDamage()
 {
 }
 
-DoMagicDamage::DoMagicDamage(CL_DomElement *pElement)
+
+void DoMagicDamage::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
-    CL_DomNamedNodeMap attributes = pElement->get_attributes();
-    AbilityFactory * pFactory = IApplication::getInstance()->getAbilityFactory();
-
-    mnBaseDamage = getRequiredUint("baseDamage",&attributes);
-    mfBaseHit = getRequiredFloat("baseHit",&attributes);
-       
-    mbDrain = getImpliedBool("drain",&attributes, false);
-    mbPiercing = getImpliedBool("piercing",&attributes,false);
-
-
-
-    CL_DomElement child = pElement->get_first_child().to_element();
-
-
-    while(!child.is_null())
-    {
-	std::string name = child.get_node_name();
-
-	if(name == "magicDamageCategory")
-	{
-	    mpDamageCategory = pFactory->createMagicDamageCategory ( &child );
-	}
-
 	
-	child = child.get_next_sibling().to_element();
-    }
+    mnBaseDamage = getRequiredUint("baseDamage",pAttributes);
+    mfBaseHit = getRequiredFloat("baseHit",pAttributes);
+    mbDrain = getImpliedBool("drain",pAttributes,false);
+	mbPiercing = getImpliedBool("piercing",pAttributes,false);	
 
-    if(mpDamageCategory == NULL)
-	throw CL_Error("No magic damage category was defined for this doMagicDamage");
+}
 
+void DoMagicDamage::handleElement(eElement element,Element *pElement)
+{
+		if(element == EMAGICDAMAGECATEGORY)
+		{
+			mpDamageCategory = dynamic_cast<MagicDamageCategory*>(pElement);
+		}
+}
+
+void DoMagicDamage::loadFinished()
+{
+	if(mpDamageCategory == NULL)
+		throw CL_Error("No magic damage category was defined for this doMagicDamage");
 }
 
 DoMagicDamage::~DoMagicDamage()
@@ -182,20 +163,11 @@ DoStatusEffect::DoStatusEffect()
 {
 }
 
-DoStatusEffect::DoStatusEffect(CL_DomElement *pElement)
+void DoStatusEffect::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
-    CL_DomNamedNodeMap attributes = pElement->get_attributes();
-
-
-    mStatusRef = getRequiredString("statusRef", &attributes);
-    mfChance = getRequiredFloat("chance",&attributes);
-   
-    
-    mbRemove = getImpliedBool("removeStatus",&attributes, false);
-
-
-
-
+    mStatusRef = getRequiredString("statusRef", pAttributes);
+    mfChance = getRequiredFloat("chance",pAttributes);
+    mbRemove = getImpliedBool("removeStatus",pAttributes, false);
 }
 
 DoStatusEffect::~DoStatusEffect()
@@ -228,62 +200,40 @@ Spell::Spell()
 {
 }
 
-Spell::Spell(CL_DomElement *pElement):mpMagicResistance(NULL)
+void Spell::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-    AbilityFactory * pFactory = IApplication::getInstance()->getAbilityFactory();
+	mName = getRequiredString("name", pAttributes);
+    meType = getTypeFromString(getRequiredString("type", pAttributes));
+    meUse = getUseFromString(getRequiredString("use", pAttributes));
+    meTargetable = getTargetableFromString(getRequiredString("targetable", pAttributes));
+
+    mbAppliesToWeapons = getImpliedBool ("appliesToWeapons",pAttributes, false);
+    mbAppliesToArmor = getImpliedBool ("appliesToArmor",pAttributes, false);
     
+    mnValue = getRequiredUint("value",pAttributes);
 
-    CL_DomNamedNodeMap attributes = pElement->get_attributes();
-
-    mName = getRequiredString("name", &attributes);
-    meType = getTypeFromString(getRequiredString("type", &attributes));
-    meUse = getUseFromString(getRequiredString("use", &attributes));
-    meTargetable = getTargetableFromString(getRequiredString("targetable", &attributes));
-
-    mbAppliesToWeapons = getImpliedBool ("appliesToWeapons",&attributes, false);
-    mbAppliesToArmor = getImpliedBool ("appliesToArmor",&attributes, false);
-    
-    mnValue = getRequiredUint("value",&attributes);
-
-    mnMP = getRequiredUint("mp", &attributes);
-
-
-
-    CL_DomElement child = pElement->get_first_child().to_element();
-
-
-    while(!child.is_null())
-    {
-	std::string name = child.get_node_name();
-
-	if(name == "doWeaponDamage")
-	{
-	    mEffects.push_back ( pFactory->createDoWeaponDamage ( &child ) );
-	}
-	else if ( name == "doMagicDamage")
-	{
-	    mEffects.push_back ( pFactory->createDoMagicDamage ( &child ) );
-	}
-	else if ( name == "doStatusEffect")
-	{
-	    mEffects.push_back ( pFactory->createDoStatusEffect ( &child ) );
-	}
-	else if ( name == "animation")
-	{
-	    mEffects.push_back ( pFactory->createAnimation( &child ) );
-	}
-	else if (name == "magicResistance")
-	{
-	    mpMagicResistance = pFactory->createMagicResistance( &child ) ;
-	}
-		
-
-
-	
-	child = child.get_next_sibling().to_element();
-    }
-
+    mnMP = getRequiredUint("mp", pAttributes);
 }
+
+void Spell::handleElement(eElement element, Element * pElement)
+{
+	switch(element)
+	{
+	case EDOWEAPONDAMAGE:
+	case EDOMAGICDAMAGE:
+	case EDOSTATUSEFFECT:
+	case EANIMATION:
+		mEffects.push_back ( dynamic_cast<Effect*>(pElement) );
+		break;
+	case EMAGICRESISTANCE:
+		mpMagicResistance = dynamic_cast<MagicResistance*>(pElement);
+		break;
+	default:
+		throw CL_Error("Bad element in spell.");
+	}
+}
+
+
 
 Spell::eType Spell::getTypeFromString(const std::string &str)
 {
@@ -314,6 +264,8 @@ Spell::eTargetable Spell::getTargetableFromString ( const std::string &str)
 
 Spell::~Spell()
 {
+	std::for_each(mEffects.begin(),mEffects.end(),del_fun<Effect>());
+	delete mpMagicResistance;
 }
 
 
@@ -415,13 +367,9 @@ MagicResistance::MagicResistance()
 {
 }
 
-MagicResistance::MagicResistance(CL_DomElement * pElement)
+void MagicResistance::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
-    AbilityFactory * pFactory = IApplication::getInstance()->getAbilityFactory();
-    
-    CL_DomNamedNodeMap attributes = pElement->get_attributes();
-
-    std::string type = getRequiredString("type",&attributes);
+	std::string type = getRequiredString("type",pAttributes);
     
     if(type == "fire") meType = FIRE;
     else if (type == "water") meType = WATER;
@@ -432,7 +380,7 @@ MagicResistance::MagicResistance(CL_DomElement * pElement)
     else if (type == "all") meType = ALL;
     else throw CL_Error("Bad magic resistance type of " + type);
 
-    mfResistance = getRequiredFloat("resist", &attributes);
+    mfResistance = getRequiredFloat("resist", pAttributes);
 
 }
 
@@ -467,7 +415,7 @@ WeaponDamageCategory::WeaponDamageCategory(CL_DomElement * pElement)
 {
     CL_DomNamedNodeMap attributes = pElement->get_attributes();
 
-    std::string type = getRequiredString("type", &attributes);
+    std::string type = getRequiredString("type", pAttributes);
 
     if(type == "slash") meType = SLASH;
     else if (type == "bash") meType = BASH;
@@ -504,7 +452,7 @@ MagicDamageCategory::MagicDamageCategory(CL_DomElement * pElement)
 
     CL_DomNamedNodeMap attributes = pElement->get_attributes();
 
-    std::string type = getRequiredString("type", &attributes);
+    std::string type = getRequiredString("type", pAttributes);
 
     if(type == "eart") meType = EARTH;
     else if (type == "wind") meType = WIND;

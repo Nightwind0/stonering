@@ -19,9 +19,11 @@ void AbilityManager::loadSpellFile ( CL_DomDocument &doc )
 
     while(!spellNode.is_null())
     {
+		Spell * pSpell = dynamic_cast<Spell*>(pAbilityFactory->createElement(Element::ESPELL));
 	
-	mSpells.push_back ( pAbilityFactory->createSpell ( &spellNode ) );
-	spellNode = spellNode.get_next_sibling().to_element();
+		pSpell->load(&spellNode);
+		mSpells.push_back ( pSpell );
+		spellNode = spellNode.get_next_sibling().to_element();
     }
     
 
@@ -38,7 +40,9 @@ void AbilityManager::loadStatusEffectFile ( CL_DomDocument &doc )
 
     while(!statusEffectNode.is_null())
     {
-		mStatusEffects.push_back ( pAbilityFactory->createStatusEffect ( &statusEffectNode) );
+		StatusEffect * pStatusEffect = dynamic_cast<StatusEffect*>(pAbilityFactory->createElement(Element::ESTATUSEFFECT));
+		pStatusEffect->load(&statusEffectNode);
+		mStatusEffects.push_back ( pStatusEffect );
 		statusEffectNode = statusEffectNode.get_next_sibling().to_element();
     }
     

@@ -23,7 +23,6 @@ namespace StoneRing{
     {
     public:
 	AnimationSpriteRef();
-	AnimationSpriteRef(CL_DomElement *pElement, const std::string &animation_name );
 	virtual ~AnimationSpriteRef();
 
 	std::string getRef() const;
@@ -38,6 +37,11 @@ namespace StoneRing{
 	eMovementDirection getMovementDirection() const;
 
 	CL_DomElement createDomElement(CL_DomDocument &doc) const;
+
+	private:
+	virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+//	virtual void handleElement(eElement element, Element * pElement);
+	virtual void handleText(const std::string &text);
 
     private:
 
@@ -55,7 +59,6 @@ namespace StoneRing{
     {
     public:
 	Par();
-	Par(CL_DomElement * pElement, const std::string &animation_name );
 
 	virtual ~Par();
 	
@@ -73,6 +76,8 @@ namespace StoneRing{
 	std::list<AnimationSpriteRef*>::const_iterator getAnimationSpriteRefsEnd() const;
 
     private:
+	virtual void handleElement(eElement element, Element * pElement );
+	virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 	eHide hideFromString(const std::string &str);
 	uint mnDuration;
 	eHide meHide;
@@ -85,7 +90,6 @@ namespace StoneRing{
     {
     public:
 	Animation();
-	Animation( CL_DomElement * pElement);
 	virtual ~Animation();
 	
 	CL_DomElement createDomElement(CL_DomDocument &) const;
@@ -103,6 +107,8 @@ namespace StoneRing{
 	std::list<Par*>::const_iterator getParsEnd() const;
 
     private:
+	virtual void handleElement(eElement element, Element * pElement );
+	virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 	std::list<Par*> mPars;
 	eType meType;
 	std::string mName;

@@ -3,6 +3,7 @@
 
 #include <ClanLib/core.h>
 #include <string>
+#include <cmath>
 #include <map>
 #include <list>
 #include "IApplication.h"
@@ -49,7 +50,6 @@ namespace StoneRing {
 	public:
 	    DirectionBlock();
 	    explicit DirectionBlock(int );
-	    DirectionBlock(CL_DomElement *pElement );
 	    virtual ~DirectionBlock();
 
 	    int getDirectionBlock() const;
@@ -57,7 +57,11 @@ namespace StoneRing {
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	protected:
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+
 	    int meDirectionBlock;
+	private:
+		
 	};
 
 
@@ -90,7 +94,6 @@ namespace StoneRing {
 	{
 	public:
 	    Tilemap();
-	    Tilemap(CL_DomElement *pElement);
 	    virtual ~Tilemap();
       
 	    inline ushort getMapX() const;
@@ -101,6 +104,8 @@ namespace StoneRing {
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	protected:
+		virtual void handleElement(eElement element, Element * pElement );	
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 	    CL_Surface *mpSurface;
 	    ushort mX;
 	    ushort mY;
@@ -111,7 +116,6 @@ namespace StoneRing {
 	{
 	public:
 	    SpriteRef();
-	    SpriteRef( CL_DomElement *pElement);
 	    virtual ~SpriteRef();
 
 	    enum eType {SPR_NONE, SPR_STILL, SPR_TWO_WAY, SPR_FOUR_WAY };
@@ -122,6 +126,9 @@ namespace StoneRing {
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	protected:
+		virtual void handleElement(eElement element, Element * pElement );	
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+		virtual void handleText(const std::string &text);
 	    eType meType;
 	    std::string mRef;
 	};
@@ -130,7 +137,6 @@ namespace StoneRing {
 	{
 	public:
 	    Movement();
-	    Movement ( CL_DomElement * pElement );
 	    virtual ~Movement();
 
 	    enum eMovementType { MOVEMENT_NONE, MOVEMENT_WANDER, MOVEMENT_PACE_NS, MOVEMENT_PACE_EW };
@@ -142,6 +148,7 @@ namespace StoneRing {
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 	    
 	protected:
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 	    eMovementType meType;
 	    eMovementSpeed meSpeed;
 	};
@@ -152,7 +159,6 @@ namespace StoneRing {
 	{
 	public:
 	    AttributeModifier();
-	    AttributeModifier (CL_DomElement *pElement);
 	    virtual ~AttributeModifier();
 
 	    enum eTarget { CURRENT, ALL, CASTER };
@@ -166,6 +172,8 @@ namespace StoneRing {
 
 
 	protected:
+		virtual void handleElement(eElement element, Element * pElement );	
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 	    std::list<Condition*> mConditions;
 	    int mAdd;
 	    std::string mAttribute;
@@ -180,13 +188,15 @@ namespace StoneRing {
 	    enum eOperator{LT, GT, LTE, GTE, EQ};
 
 	    HasGold();
-	    HasGold( CL_DomElement *pElement);
 	    virtual ~HasGold();
 
 	    virtual bool evaluate();
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	protected:
+		virtual void handleElement(eElement element, Element * pElement );
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+		virtual void handleText(const std::string &);
 	    uint mAmount;
 	    bool mbNot;
 	    eOperator meOperator;
@@ -197,13 +207,14 @@ namespace StoneRing {
 	{
 	public:
 	    HasItem();
-	    HasItem(CL_DomElement *pElement );
 	    virtual ~HasItem();
 
 	    virtual bool evaluate();
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
       
 	protected:
+		virtual void handleElement(eElement element, Element * pElement );
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 	    ItemRef * mpItemRef;
 	    bool mbNot;
 	    std::string mItem;
@@ -215,12 +226,14 @@ namespace StoneRing {
 	{
 	public:
 	    DidEvent();
-	    DidEvent(CL_DomElement *pElement);
 	    virtual ~DidEvent();
 
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 	    virtual bool evaluate();
 	protected:
+		virtual void handleElement(eElement element, Element * pElement );	
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+		virtual void handleText(const std::string &);
 	    bool mbNot;
 	    std::string mEvent;
       
@@ -232,7 +245,6 @@ namespace StoneRing {
 	{
 	public:
 	    And();
-	    And(CL_DomElement * pElement);
 	    virtual ~And();
 
 	    virtual bool evaluate();
@@ -242,6 +254,7 @@ namespace StoneRing {
 	    ushort order();
 
 	protected:
+		virtual void handleElement(eElement element, Element * pElement );
 	    ushort mOrder;
 	    std::list<Check*> mOperands;
 	};
@@ -250,7 +263,6 @@ namespace StoneRing {
 	{
 	public:
 	    Or();
-	    Or(CL_DomElement * pElement);
 	    virtual ~Or();
 
 	    virtual bool evaluate();
@@ -260,6 +272,7 @@ namespace StoneRing {
 	    ushort order();
 
 	protected:
+		virtual void handleElement(eElement element, Element * pElement );
 	    ushort mOrder;
 	    std::list<Check*> mOperands;
 
@@ -269,7 +282,6 @@ namespace StoneRing {
 	{
 	public:
 	    Operator();
-	    Operator(CL_DomElement *pElement);
 	    virtual ~Operator();
 
 	    virtual bool evaluate();
@@ -277,6 +289,7 @@ namespace StoneRing {
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
       
 	protected:
+		virtual void handleElement(eElement element, Element * pElement );
 	    ushort mOrder;
 	    std::list<Check*> mOperands;
 	};
@@ -286,7 +299,6 @@ namespace StoneRing {
 	{
 	public:
 	    Condition();
-	    Condition(CL_DomElement *pElement);
 	    virtual ~Condition();
 
 	    bool evaluate() const;
@@ -294,6 +306,7 @@ namespace StoneRing {
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	protected:
+		virtual void handleElement(eElement element, Element * pElement );
 	    std::list<Check*> mChecks;
 	};
 
@@ -301,7 +314,6 @@ namespace StoneRing {
 	{
 	public:
 	    Event();
-	    Event(CL_DomElement *pElement);
 	    virtual ~Event();
 
 	    enum eTriggerType { STEP, TALK, ACT };
@@ -316,6 +328,8 @@ namespace StoneRing {
 
       
 	protected:
+		virtual void handleElement(eElement element, Element * pElement );
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 	    std::string mName;
 	    bool mbRepeatable;
 	    bool mbRemember;
@@ -330,7 +344,6 @@ namespace StoneRing {
 	{
 	public:
 	    PlayAnimation();
-	    PlayAnimation(CL_DomElement * pElement );
 	    virtual ~PlayAnimation();
 
 	    virtual void invoke();
@@ -338,6 +351,7 @@ namespace StoneRing {
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	protected:
+		virtual void handleText(const std::string &);
 	    std::string mAnimation;
 	};
 
@@ -345,7 +359,6 @@ namespace StoneRing {
 	{
 	public:
 	    PlaySound();
-	    PlaySound(CL_DomElement *pElement );
 	    virtual ~PlaySound();
 
 	    virtual void invoke();
@@ -353,6 +366,7 @@ namespace StoneRing {
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	protected:
+		virtual void handleText(const std::string &);
 	    std::string mSound;
 	};
 
@@ -360,7 +374,6 @@ namespace StoneRing {
 	{
 	public:
 	    LoadLevel();
-	    LoadLevel(CL_DomElement *pElement);
 	    virtual ~LoadLevel();
 
 	    virtual void invoke();
@@ -368,6 +381,7 @@ namespace StoneRing {
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	protected:
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 	    std::string mName;
 	    ushort mStartY;
 	    ushort mStartX;
@@ -377,7 +391,6 @@ namespace StoneRing {
 	{
 	public:
 	    StartBattle();
-	    StartBattle(CL_DomElement *pElement);
 	    virtual ~StartBattle();
 
 	    virtual void invoke();
@@ -385,6 +398,8 @@ namespace StoneRing {
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
       
 	protected:
+		virtual void handleElement(eElement element, Element * pElement );
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 	    std::string mMonster;
 	    ushort mCount;
 	    bool mbIsBoss;
@@ -394,13 +409,13 @@ namespace StoneRing {
 	{
 	public:
 	    InvokeShop();
-	    InvokeShop(CL_DomElement *pElement);
 	    virtual ~InvokeShop();
 
 	    virtual void invoke();
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	protected:
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 	    std::string mShopType;
 	};
 
@@ -409,7 +424,6 @@ namespace StoneRing {
 	{
 	public:
 	    Pause();
-	    Pause(CL_DomElement *pElement );
 	    virtual ~Pause();
 
 	    virtual void invoke();
@@ -417,6 +431,7 @@ namespace StoneRing {
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	protected:
+		virtual void handleText(const std::string &);
 	    uint mMs;
 	};
 
@@ -424,13 +439,14 @@ namespace StoneRing {
 	{
 	public:
 	    Say();
-	    Say (CL_DomElement *pElement );
 	    virtual ~Say();
 
 	    virtual void invoke();
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	protected:
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+		virtual void handleText(const std::string &);
 	    std::string mSpeaker;
 	    std::string mText;
 	};
@@ -439,7 +455,6 @@ namespace StoneRing {
 	{
 	public:
 	    Give();
-	    Give(CL_DomElement *pElement );
 	    virtual ~Give();
 
 	    virtual void invoke();
@@ -447,6 +462,8 @@ namespace StoneRing {
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	protected:
+		virtual void handleElement(eElement,Element*);
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 	    ItemRef *mpItemRef;
 	    uint mCount;
 	};
@@ -455,7 +472,6 @@ namespace StoneRing {
 	{
 	public:
 	    Take();
-	    Take(CL_DomElement *pElement );
 	    virtual ~Take();
 
 	    virtual void invoke();
@@ -463,6 +479,8 @@ namespace StoneRing {
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	protected:
+		virtual void handleElement(eElement element, Element * pElement );
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 	    ItemRef *mpItemRef;
 	    uint mCount;
 	};
@@ -471,7 +489,6 @@ namespace StoneRing {
 	{
 	public:
 	    GiveGold();
-	    GiveGold( CL_DomElement *pElement );
 	    virtual ~GiveGold();
 
 	    virtual void invoke();
@@ -479,6 +496,7 @@ namespace StoneRing {
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	protected:
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 	    uint mCount;
 	};
 
@@ -512,7 +530,6 @@ namespace StoneRing {
     {
     public:
 	Option();
-	Option(CL_DomElement * pElement);
 	virtual ~Option();
 	virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
@@ -521,6 +538,9 @@ namespace StoneRing {
 	virtual bool evaluateCondition() const;
 
 	virtual void choose();
+	protected:
+	virtual void handleElement(eElement element, Element * pElement );	
+	virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
     private:
 	std::string mText;
 	std::list<Action*> mActions;
@@ -532,7 +552,6 @@ namespace StoneRing {
     {
     public:
 	Choice();
-	Choice(CL_DomElement * pElement);
 	virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	virtual void invoke();
@@ -546,13 +565,18 @@ namespace StoneRing {
 	// To be called by application when choice is made.
 	void chooseOption( uint index);
 
+	protected:
+	virtual void handleElement(eElement element, Element * pElement );
+	virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+	virtual void loadFinished();
+
     private:
 	std::vector<Option*> mOptions;
 	std::string mText;
     };
 
 
-    Action * createAction ( const std::string & action, CL_DomElement & pChild );
+    
 
   
     union SpriteRefOrTilemap
@@ -565,10 +589,7 @@ namespace StoneRing {
     class Tile : public Graphic
 	{
 	public:
-
-
 	    Tile();
-	    Tile(CL_DomElement *pElement);
 	    virtual ~Tile(); 
 
 	    ushort getZOrder() const;
@@ -604,7 +625,8 @@ namespace StoneRing {
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	protected:
-
+		virtual void handleElement(eElement element, Element * pElement );
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 	    enum eFlags { SPRITE = 1, FLOATER = 2, HOT = 4, BLK_NORTH = 8, BLK_SOUTH = 16, BLK_EAST = 32, BLK_WEST = 64 };
 
 	    CL_Sprite *mpSprite;
@@ -623,7 +645,6 @@ namespace StoneRing {
 	{
 	public:
 	    MappableObject();
-	    MappableObject(CL_DomElement *pElement);
 	    virtual ~MappableObject();
 
 	    ushort getStartX() const;
@@ -668,7 +689,9 @@ namespace StoneRing {
 	    void prod();
 
 	protected:
-
+		virtual void handleElement(eElement element, Element * pElement );
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+		virtual void loadFinished();
 	    void randomNewDirection();
 	    void pickOppositeDirection();
 	    bool moveInCurrentDirection();
@@ -703,6 +726,8 @@ namespace StoneRing {
 #ifdef _MSC_VER
 using namespace StoneRing;
 
+#undef abs
+
 template <>
 struct std::greater<MappableObject*>
 
@@ -722,10 +747,10 @@ struct std::greater<MappableObject*>
 /*    p1Distance = max(abs( (long)pX - p1->getX()) , abs((long)pY - p1->getY()));
     p2Distance = max(abs( (long)pX - p2->getX()) , abs((long)pY - p2->getY()));
 */
-    int dx1 = abs((long)pX - n1->getX());
-    int dy1 = abs((long)pY - n1->getY());
-    int dx2 = abs((long)pX - n2->getX());
-    int dy2 = abs((long)pY - n2->getY());
+    int dx1 = abs((int)(pX - n1->getX()));
+    int dy1 = abs((int)(pY - n1->getY()));
+    int dx2 = abs((int)(pX - n2->getX()));
+    int dy2 = abs((int)(pY - n2->getY()));
 
     p1Distance = (dx1 * dx1) + (dy1 * dy1);
     p2Distance = (dx2 * dx2) + (dy2 * dy2);

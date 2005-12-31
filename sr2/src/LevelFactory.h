@@ -4,6 +4,7 @@
 
 
 #include <ClanLib/core.h>
+#include "IFactory.h"
 
 namespace StoneRing
 {
@@ -42,76 +43,55 @@ namespace StoneRing
     class Choice;
     class NamedItemRef;
 
-class LevelFactory
-{
- public:
-    LevelFactory(){}
-    ~LevelFactory();
+    class LevelFactory : public IFactory
+	{
+	public:
+	    LevelFactory(){}
+	    virtual ~LevelFactory(){}
 
-    virtual    DirectionBlock * createDirectionBlock()const;
-    virtual    DirectionBlock * createDirectionBlock(CL_DomElement * pElement)const;
-    virtual    Tilemap * createTilemap()const;
-    virtual    Tilemap * createTilemap(CL_DomElement * pElement )const;
-    virtual    SpriteRef * createSpriteRef()const;
-    virtual    SpriteRef * createSpriteRef(CL_DomElement *pElement )const;
-    virtual    Movement * createMovement()const;
-    virtual    Movement * createMovement(CL_DomElement * pElement )const;
-    virtual    ItemRef *  createItemRef()const;
-    virtual    ItemRef *  createItemRef(CL_DomElement * pElement)const;
-    virtual    AttributeModifier * createAttributeModifier()const;
-    virtual    AttributeModifier * createAttributeModifier(CL_DomElement * pElement)const;
-    virtual    HasGold * createHasGold()const;
-    virtual    HasGold * createHasGold(CL_DomElement * pElement)const;
-    virtual    HasItem * createHasItem()const;
-    virtual    HasItem * createHasItem(CL_DomElement * pElement)const;
-    virtual    DidEvent * createDidEvent()const;
-    virtual    DidEvent * createDidEvent(CL_DomElement * pElement)const;
-    virtual    And * createAnd()const;
-    virtual    And * createAnd(CL_DomElement *pElement)const;
-    virtual    Or * createOr()const;
-    virtual    Or * createOr(CL_DomElement *pElement)const;
-    virtual    Operator * createOperator()const;
-    virtual    Operator * createOperator(CL_DomElement* pElement)const;
-    virtual    Condition * createCondition()const;
-    virtual    Condition * createCondition(CL_DomElement* pElement)const;
-    virtual    Event * createEvent()const;
-    virtual    Event * createEvent(CL_DomElement *pElement)const;
-    virtual    PlayAnimation * createPlayAnimation()const;
-    virtual    PlayAnimation * createPlayAnimation(CL_DomElement*)const;
-    virtual    PlaySound * createPlaySound()const;
-    virtual    PlaySound * createPlaySound(CL_DomElement* pElement)const;
-    virtual    LoadLevel * createLoadLevel()const;
-    virtual    LoadLevel * createLoadLevel(CL_DomElement* pElement)const;
-    virtual    StartBattle * createStartBattle()const;
-    virtual    StartBattle * createStartBattle(CL_DomElement* pElement)const;
-    virtual    InvokeShop * createInvokeShop()const;
-    virtual    InvokeShop * createInvokeShop(CL_DomElement* pElement)const;
-    virtual    Pause * createPause()const;
-    virtual    Pause * createPause(CL_DomElement* pElement)const;
-    virtual    Say * createSay()const;
-    virtual    Say * createSay(CL_DomElement* pElement)const;
-    virtual    Give * createGive()const;
-    virtual    Give * createGive(CL_DomElement* pElement)const;
-    virtual    Take * createTake()const;
-    virtual    Take * createTake(CL_DomElement* pElement)const;
-    virtual    GiveGold * createGiveGold()const;
-    virtual    GiveGold * createGiveGold(CL_DomElement* pElement)const;
-    virtual    Tile * createTile()const;
-    virtual    Tile * createTile(CL_DomElement* pElement)const;
-    virtual    MappableObject * createMappableObject()const;
-    virtual    MappableObject * createMappableObject(CL_DomElement* pElement)const;
-    virtual    Level * createLevel()const;
-    virtual    Level * createLevel(CL_DomDocument &document)const;
-    virtual    Option * createOption()const;
-    virtual    Option * createOption(CL_DomElement * pElement) const;
-    virtual    Choice * createChoice()const;
-    virtual    Choice * createChoice(CL_DomElement * pElement) const;
-    virtual    NamedItemRef * createNamedItemRef()const;
-    virtual    NamedItemRef * createNamedItemRef(CL_DomElement * pElement ) const;
-//    virtual    Tiles * createTiles();
-//    virtual    MappableObjects * createMappableObjects();
- private:
-};
+	    virtual bool canCreate( Element::eElement element );
+	    virtual Element * createElement( Element::eElement element );
+
+	protected:
+
+
+	    virtual    Element * createDirectionBlock()const;
+	    virtual    Element * createTilemap()const;
+	    virtual    Element * createSpriteRef()const;
+	    virtual    Element * createMovement()const;
+	    virtual    Element *  createItemRef()const;
+	    virtual    Element * createAttributeModifier()const;
+	    virtual    Element * createHasGold()const;
+	    virtual    Element * createHasItem()const;
+	    virtual    Element * createDidEvent()const;
+	    virtual    Element * createAnd()const;
+	    virtual    Element * createOr()const;
+	    virtual    Element * createOperator()const;
+	    virtual    Element * createCondition()const;
+	    virtual    Element * createEvent()const;
+	    virtual    Element * createPlayAnimation()const;
+	    virtual    Element * createPlaySound()const;
+	    virtual    Element * createLoadLevel()const;
+	    virtual    Element * createStartBattle()const;
+	    virtual    Element * createInvokeShop()const;
+	    virtual    Element * createPause()const;
+	    virtual    Element * createSay()const;
+	    virtual    Element * createGive()const;
+	    virtual    Element * createTake()const;
+	    virtual    Element * createGiveGold()const;
+	    virtual    Element * createTile()const;
+	    virtual    Element * createMappableObject()const;
+	  //  virtual    Element * createLevel()const;
+	    virtual    Element * createOption()const;
+	    virtual    Element * createChoice()const;
+	    virtual    Element * createNamedItemRef()const;
+
+	private:
+	    typedef Element * (LevelFactory::*factoryMethod)() const;
+
+	    factoryMethod getMethod(Element::eElement element) const;
+
+	};
 
 
 };

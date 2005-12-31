@@ -9,7 +9,7 @@ namespace StoneRing{
 	class AttributeEffect : public Effect, public Element
 	{
 	public:
-		AttributeEffect(CL_DomElement * pElement);
+		AttributeEffect();
 		~AttributeEffect();
 
 		Effect::eType getEffectType() const { return ATTRIBUTE_EFFECT; }
@@ -26,6 +26,7 @@ namespace StoneRing{
 		
 		int getDelta() const { return mnDelta; }
 	private:
+		virtual void loadAttributes(CL_DomNamedNodeMap*);
 		std::string mAttribute;
 		int mnAdd; 
 		eChangeTo meChangeTo;
@@ -36,7 +37,7 @@ namespace StoneRing{
 	class StatusEffectActions: public Element
 	{
 	public:
-		StatusEffectActions(CL_DomElement * pElement);
+		StatusEffectActions();
 		~StatusEffectActions();
 
 		CL_DomElement createDomElement(CL_DomDocument &doc) const;
@@ -45,6 +46,7 @@ namespace StoneRing{
 		std::list<Effect*>::const_iterator getEffectsEnd() const;
 
 	private:
+		virtual void handleElement(eElement element, Element * pElement );
 		std::list<Effect*> mEffects;
 
 	};
@@ -52,7 +54,7 @@ namespace StoneRing{
 	class StatusEffect : public Element
 	{
 	public:
-			StatusEffect(CL_DomElement * pElement);
+			StatusEffect();
 			virtual ~StatusEffect();
 
 			CL_DomElement createDomElement(CL_DomDocument &doc) const;
@@ -75,6 +77,8 @@ namespace StoneRing{
 				
 			
 	private:
+		virtual void handleElement(eElement element, Element * pElement );
+	    virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
 		std::string mName;
 		StatusEffectActions * mpOnInvoke;
 		StatusEffectActions * mpOnRound;

@@ -3,6 +3,7 @@
 
 
 #include <ClanLib/core.h>
+#include "IFactory.h"
 
 namespace StoneRing
 {
@@ -34,65 +35,51 @@ namespace StoneRing
     class MagicDamageCategory;
     class StatusEffectModifier;
 
-class ItemFactory
-{
- public:
-    ItemFactory(){}
-    ~ItemFactory();
+    class ItemFactory : public IFactory
+	{
+	public:
+	    ItemFactory(){}
+	    ~ItemFactory();
 
-    virtual NamedItemElement * createNamedItemElement() const;
-    virtual NamedItemElement * createNamedItemElement(CL_DomElement *pElement) const;
-    virtual RegularItem * createRegularItem()const;  
-    virtual RegularItem * createRegularItem(CL_DomElement * pElement) const;
-    virtual SpecialItem * createSpecialItem()const; 
-    virtual SpecialItem * createSpecialItem(CL_DomElement * pElement) const; 
-    virtual SystemItem * createSystemItem()const; 
-    virtual SystemItem * createSystemItem(CL_DomElement * pElement) const; 
-    virtual Rune * createRune()const; 
-    virtual Rune * createRune(CL_DomElement * pElement) const; 
-    virtual UniqueWeapon * createUniqueWeapon()const; 
-    virtual UniqueWeapon * createUniqueWeapon(CL_DomElement * pElement) const; 
-    virtual UniqueArmor * createUniqueArmor()const; 
-    virtual UniqueArmor * createUniqueArmor(CL_DomElement * pElement) const; 
-    virtual WeaponTypeRef * createWeaponTypeRef()const; 
-    virtual WeaponTypeRef * createWeaponTypeRef(CL_DomElement * pElement) const; 
-    virtual WeaponClassRef * createWeaponClassRef()const; 
-    virtual WeaponClassRef * createWeaponClassRef(CL_DomElement * pElement) const; 
-    virtual ArmorTypeRef * createArmorTypeRef()const; 
-    virtual ArmorTypeRef * createArmorTypeRef(CL_DomElement * pElement) const; 
-    virtual ArmorClassRef * createArmorClassRef()const; 
-    virtual ArmorClassRef * createArmorClassRef(CL_DomElement * pElement) const; 
-    virtual WeaponRef * createWeaponRef()const; 
-    virtual WeaponRef * createWeaponRef(CL_DomElement * pElement) const; 
-    virtual ArmorRef * createArmorRef()const; 
-    virtual ArmorRef * createArmorRef(CL_DomElement * pElement) const; 
-    virtual RuneType * createRuneType()const; 
-    virtual RuneType * createRuneType(CL_DomElement * pElement) const; 
-    virtual SpellRef * createSpellRef()const; 
-    virtual SpellRef * createSpellRef(CL_DomElement * pElement) const; 
-    virtual WeaponEnhancer * createWeaponEnhancer()const; 
-    virtual WeaponEnhancer * createWeaponEnhancer(CL_DomElement * pElement) const; 
-    virtual ArmorEnhancer * createArmorEnhancer()const; 
-    virtual ArmorEnhancer * createArmorEnhancer(CL_DomElement * pElement) const; 
-    virtual AttributeEnhancer * createAttributeEnhancer()const; 
-    virtual AttributeEnhancer * createAttributeEnhancer(CL_DomElement * pElement) const; 
-    virtual WeaponClass * createWeaponClass()const; 
-    virtual WeaponClass * createWeaponClass(CL_DomElement * pElement) const; 
-    virtual WeaponType * createWeaponType()const; 
-    virtual WeaponType * createWeaponType(CL_DomElement * pElement) const; 
-    virtual ArmorClass * createArmorClass()const; 
-    virtual ArmorClass * createArmorClass(CL_DomElement * pElement) const; 
-    virtual ArmorType * createArmorType()const; 
-    virtual ArmorType * createArmorType(CL_DomElement * pElement) const; 
-    virtual WeaponDamageCategory *createWeaponDamageCategory() const;
-    virtual WeaponDamageCategory *createWeaponDamageCategory(CL_DomElement *pElement) const;
-    virtual MagicDamageCategory *createMagicDamageCategory() const;
-    virtual MagicDamageCategory *createMagicDamageCategory(CL_DomElement *pElement) const;
-    virtual StatusEffectModifier *createStatusEffectModifier() const;
-    virtual StatusEffectModifier *createStatusEffectModifier(CL_DomElement *pElement) const;
+	    virtual bool canCreate( Element::eElement element );
+	    virtual Element * createElement( Element::eElement element );
 
- private:
-};
+	protected:
+
+	    virtual Element * createNamedItemElement() const;
+	    virtual Element * createRegularItem()const;  
+	    virtual Element * createSpecialItem()const; 
+	    virtual Element * createSystemItem()const; 
+	    virtual Element * createRune()const; 
+	    virtual Element * createUniqueWeapon()const; 
+	    virtual Element * createUniqueArmor()const; 
+	    virtual Element * createWeaponTypeRef()const; 
+	    virtual Element * createWeaponClassRef()const; 
+	    virtual Element * createArmorTypeRef()const; 
+	    virtual Element * createArmorClassRef()const; 
+	    virtual Element * createWeaponRef()const; 
+	    virtual Element * createArmorRef()const; 
+	    virtual Element * createRuneType()const; 
+	    virtual Element * createSpellRef()const; 
+	    virtual Element * createWeaponEnhancer()const; 
+	    virtual Element * createArmorEnhancer()const; 
+	    virtual Element * createAttributeEnhancer()const; 
+	    virtual Element * createWeaponClass()const; 
+	    virtual Element * createWeaponType()const; 
+	    virtual Element * createArmorClass()const; 
+	    virtual Element * createArmorType()const; 
+	    virtual Element * createWeaponDamageCategory() const;
+	    virtual Element * createMagicDamageCategory() const;
+	    virtual Element * createStatusEffectModifier() const;
+		virtual Element * createWeaponTypeExclusionList() const;
+		virtual Element * createArmorTypeExclusionList() const;
+		virtual Element * createIconRef() const;
+
+	private:
+	    typedef Element * (ItemFactory::*factoryMethod)() const;
+
+	    factoryMethod getMethod(Element::eElement element) const;
+	};
 
 
 };
