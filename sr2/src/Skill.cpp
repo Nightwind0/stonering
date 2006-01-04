@@ -7,6 +7,7 @@
 #include "IApplication.h"
 #include "Animation.h"
 
+
 using namespace StoneRing;
 
 const unsigned int STAT_COUNT = 8;
@@ -92,7 +93,6 @@ std::string Skill::getName() const
 {
 		return mName;
 }
-
 
 uint Skill::getSPCost() const
 {

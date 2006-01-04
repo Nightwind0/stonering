@@ -127,7 +127,7 @@
 <!ATTLIST mo size (small|medium|large|tall|wide) #REQUIRED>
 <!ATTLIST mo solid (true|false) #IMPLIED>
 <!ATTLIST movement movementType (none|wander|paceNS|paceEW) #REQUIRED>
-<!ATTLIST movement speed (slow|fast) #IMPLIED>
+<!ATTLIST movement speed (slow|medium|fast) #IMPLIED>
 <!ATTLIST event name CDATA #REQUIRED>
 <!ATTLIST event repeatable (true|false) #IMPLIED> 
 <!ATTLIST event remember (true|false) #IMPLIED>

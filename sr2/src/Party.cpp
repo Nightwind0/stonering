@@ -18,6 +18,47 @@ Party::~Party()
 {
 }
 
+IParty::eDirection Party::getDirection()const
+{
+	return meDirection;
+}
+
+bool Party::isAligned() const
+{
+        return (mX /32 == 0) && (mY /32 == 0);
+}
+
+void Party::move()
+{
+        uint speed  = 1;
+
+		switch(meDirection)
+		{
+		case DNORTH:
+			mY -= speed;
+			break;
+		case DSOUTH:
+			mY += speed;
+			break;
+		case DWEST:
+			mX -= speed;
+			break;
+		case DEAST:
+			mX += speed;
+			break;
+		}
+}
+
+void Party::changeDirection(eDirection direction)
+{
+	meDirection = direction;
+}
+
+void Party::resetPosition(uint levelX, uint levelY)
+{
+	mX = levelX;
+	mY = levelY;
+}
 
 bool Party::getGold() const
 {
@@ -50,14 +91,24 @@ uint Party::getLevelY() const
 	return mY;
 }
 
-uint Party::getWidth() const
+uint Party::getCellWidth() const
 {
-    return 64;
+    return 1;
 }
 
-uint Party::getHeight() const
+uint Party::getCellHeight() const
 {
-    return 64;
+    return 1;
+}
+
+uint Party::getCellX() const
+{
+  return mX / 32;
+}
+
+uint Party::getCellY() const
+{
+  return mY / 32;
 }
 
 void Party::setLevelX(uint x)
@@ -203,23 +254,3 @@ ICharacter * Party::getCasterCharacter() const
 
 
 
-CL_Rect Party::getCollisionRect(uint atX, uint atY) const
-{
-    
-    int offX = getWidth() / 2;
-    int offY = getHeight() / 2;
-
-    int quartX = offX / 2;
-
-    return CL_Rect(atX + quartX, atY + offY, 
-		   atX + offX + quartX,
-		   atY + offY + offY);
-
-
-}
-
-CL_Rect Party::getCollisionRect() const
-{
-
-    return getCollisionRect(getLevelX(), getLevelY());
-}
