@@ -21,15 +21,22 @@ class ItemRef;
     Party();
     ~Party();
 
+
+    virtual eDirection getDirection()const;
+    virtual void move();
+    virtual void changeDirection(eDirection);
+    virtual void resetPosition(uint levelX, uint levelY);
+    
     virtual bool getGold() const;
     virtual bool hasItem(ItemRef *pItemRef, uint count = 1 )const;
     virtual bool didEvent(const std::string &event) const;
     virtual uint getLevelX() const;
     virtual uint getLevelY() const;
-    virtual uint getWidth() const;
-    virtual uint getHeight() const;
-    virtual CL_Rect getCollisionRect() const;
-    virtual CL_Rect getCollisionRect(uint atX, uint atY) const;
+    virtual uint getCellWidth() const;
+    virtual uint getCellHeight() const;
+    virtual uint getCellX() const;
+    virtual uint getCellY() const;
+    virtual bool isAligned() const;
     virtual void doEvent(const std::string &event, bool bRemember);
     virtual void giveItem(ItemRef * pItemRef, uint count =1);
     virtual void takeItem(ItemRef * pItemRef, uint count =1);
@@ -48,6 +55,7 @@ class ItemRef;
     
 
  private:
+	eDirection meDirection;
 
     std::set<std::string> mEvents;
 

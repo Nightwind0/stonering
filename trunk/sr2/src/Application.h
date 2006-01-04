@@ -44,9 +44,6 @@ class Choice;
       virtual CL_Rect getDisplayRect() const;
 
 
-      virtual bool canMove(const CL_Rect &currently, const CL_Rect &destination, bool noHot, bool isPlayer);
-
-
       virtual void playAnimation(const std::string &animation);
       virtual void playSound(const std::string &sound);
       virtual void loadLevel(const std::string &level, uint startX, uint startY);
@@ -59,9 +56,11 @@ class Choice;
 
     private:
 
-      enum eDir{NORTH,SOUTH,EAST,WEST};
+  
       int calc_fps(int);
-	  
+
+
+	
 
 
       enum eState 
@@ -81,17 +80,13 @@ class Choice;
       ItemManager mItemManager;
       AbilityManager mAbilityManager;
       AbilityFactory * mpAbilityFactory;
-      int mCurX;
-      int mCurY;
 
-      int mLevelX;
+      int mLevelX; // Offset into level
       int mLevelY;
 
-      eDir mPlayerDir;
-
       bool mbDone;
-
-      int mSpeed;
+	  bool mbStep;
+      bool mbMoveFast;
 
       void setupClanLib();
       void teardownClanLib();
@@ -101,15 +96,17 @@ class Choice;
       void loadItems(const std::string &filename);
       void loadSpells(const std::string &filename);
 	  void loadStatusEffects(const std::string &filename);
+
+
       void processActionQueue();
 
       void drawPlayer();
 
       void drawMap();
 
-      void recalculatePlayerPosition(eDir dir);
+      void recalculatePlayerPosition(IParty::eDirection dir);
 
-      bool move(eDir dir, int times=1);
+      bool movePlayer();
 
       void doTalk(bool prod=false);
 
@@ -120,30 +117,29 @@ class Choice;
       void onSignalQuit();
       void onSignalKeyDown(const CL_InputEvent &key);
       void onSignalKeyUp(const CL_InputEvent &key);
-      
+      void onSignalMovementTimer();
+
+
       CL_ResourceManager * mpResources;
 
       CL_DisplayWindow *mpWindow;
 
 
       Level * mpLevel;
-
-
-      bool mbPauseMovement;
       bool mbShowDebug;
 
       CL_Sprite *mpPlayerSprite;
 
-      eDir mePlayerDirection;
-
-      bool mbStep; // Which sprite frame to use..
-
-      CL_Font *mpfSBBlack;
+	  CL_Font *mpfSBBlack;
       CL_Font *mpfBWhite;
       CL_Font *mpfBPowderBlue;
       CL_Font *mpfBGray;
+      CL_Timer *mpMovementTimer;
       CL_Surface *mpSayOverlay;
 
+      bool mbHasNextDirection;
+      IParty::eDirection meNextDirection;
+      ushort mnSkippedMoves;
       eState meState;
 
 #ifndef NDEBUG
