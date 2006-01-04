@@ -4,8 +4,11 @@
 #include "Character.h"
 #include "ItemManager.h"
 #include <sstream>
+#include "IParty.h"
+
 
 using StoneRing::Party;
+using StoneRing::IParty;
 using StoneRing::ICharacter;
 
 

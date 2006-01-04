@@ -22,16 +22,13 @@ class EditableLevelFactory : public LevelFactory
  public:
     EditableLevelFactory(){}
     ~EditableLevelFactory(){}
+private:
 
-    virtual Tile * createTile() const;
-    virtual Tile * createTile(CL_DomElement *pElement)const;
+    virtual Element * createTile() const;
     // virtual MappableObject * createMappableObject() const;
     //virtual MappableObject * createMappableObject(CL_DomElement *pElement) const;
-    virtual Tilemap * createTilemap() const;
-    virtual Tilemap * createTilemap(CL_DomElement *pElement) const;
-    virtual SpriteRef * createSpriteRef() const;
-    virtual SpriteRef * createSpriteRef(CL_DomElement * pElement) const;
-
+    virtual Element * createTilemap() const;
+    virtual Element * createSpriteRef() const;
 
 
 
@@ -43,7 +40,6 @@ class EditableTilemap : public StoneRing::Tilemap
 {
  public:
     EditableTilemap(){}
-    EditableTilemap(CL_DomElement *pElement);
     virtual ~EditableTilemap();
 
     void setMapName(const std::string & mapname);
@@ -57,9 +53,7 @@ class EditableSpriteRef : public StoneRing::SpriteRef
 {
  public:
     EditableSpriteRef(){}
-    EditableSpriteRef(CL_DomElement * pElement );
-    virtual ~EditableSpriteRef();
-
+    virtual ~EditableSpriteRef(){}
     void setSpriteRef( const std::string &ref);
     void setType( StoneRing::SpriteRef::eType dir);
 
@@ -70,7 +64,6 @@ class EditableTile : public StoneRing::Tile
 {
  public:
     EditableTile();
-    EditableTile(CL_DomElement *pElement );
     ~EditableTile();
 
     void setLevelX(int x);
