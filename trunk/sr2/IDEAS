@@ -1,3 +1,59 @@
+
+
+Need: onEnterLevel, onExitLevel properties of the level element, which
+	contains actions to fire when you enter or exit a level.
+	also, there should be an exitCondition which is a regular old Condition that evaluates whether or not you can even leave the level.
+
+
+Cool:
+Use CL_Gradient for text/menu backgrounds, battle backgrounds.... etc (CL_Display::fill_rect)
+Use set_alpha and rotate_yaw,etc, on sprites for effects. Open them up to animation
+
+
+Notes from Talking to Victor:
+1) You CAN display MOs by iterating over the tiles from topleft to bottom right, even though some may take up multiple tiles, by giving them a frame count. i.e. you increment the frame count (a long?) each time you draw it and then if the frame count is already high enough then you don't have to draw it again.
+
+2) You can fix the "MO stuck inside another MO that became relevant" problem by either ignoring it and letting the player reload the level, or by "killing" the MO and letting it respawn. It would be cool to gib the object too, just for fun, and seeing an object gib would be rare, unless you designed a level to do it. If you put a solid object in a spawn point, its a stupid idea, but the object would just gib over and over. You could also potentially have things blocked off entirely by being surrounded by tiles or stationary objects, but thats a level design consideration, not an engine consideration.
+
+3) You can easily know which tiles to draw by adding the floor() and ciel() to the X and Y dimensions of tiles to draw around the character
+
+4) The level object will have to take care of "step()" by checking a virtual method on the mappable objects which indicates if they are the player. If so, when he becomes aligned, step() should be called. 
+
+5) The application should be able to query the level to get a pointer to the player. The level should keep a separate pointer latched so it doesnt have to
+ search.
+
+5) "Talk/prod" should be handled by the level, it looks at the players position and direction and determines the next cell over and executes talk on the first active MO there if any. The app just calls talk()
+
+
+
+
+
+struct ElementCreationEntry
+{
+	pointer to IApplication method that returns a factory
+	pointer to IFactory method that returns an element
+};
+
+Then some singleton keeps a map keyed on strings (the xml elements)
+that associates the string with the factory and factory method that
+create the element. 
+
+Then, each element has its own map which associates an IFactory method with
+a private handler method that the element has. This is a little like a vtable, but it prevents us from having handlers in the base class for every element (which is the other option). 
+
+map<factory method, element class handler method>
+
+Then, the base element class has a method which loops through it's children
+and uses the node name to look up the element creation entry for the element.
+It gets a pointer to the right factory, then gets a pointer to the factory creation method. It then uses the derived-class populated map to see if there is an entry in the map for this factory method, there should be. Then, it uses the factory method to create the element, and calls the handler associated with it.
+
+The element class puts code in the handler to drop things in a bucket, or assign them to a pointer, what have you.
+
+
+
+
+
+
 Skill system - some skills use Break, some use MP, some are switch on/off,
 some are always on.
 

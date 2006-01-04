@@ -32,12 +32,19 @@ public:
     virtual bool getGold() const { return true;}
     virtual bool hasItem(StoneRing::ItemRef *pItemRef, uint count )const{return true;}
     virtual bool didEvent(const std::string &event) const{return true;}
+    virtual eDirection getDirection() const { return DNORTH; }
+    virtual void changeDirection(eDirection){}
+    virtual void resetPosition(uint,uint){}
+    virtual void move(){}
+    virtual uint getCellX() const{ return 0; }
+    virtual uint getCellY() const{ return 0; }
+    virtual uint getCellWidth() const{ return 1;}
+    virtual uint getCellHeight() const { return 0; }
+    virtual bool isAligned() const { return true; }
     virtual uint getLevelX() const{return 0;}
     virtual uint getLevelY() const{return 0; }
     virtual uint getWidth() const { return 64; }
     virtual uint getHeight() const { return 64; }
-    virtual CL_Rect getCollisionRect() const { return CL_Rect(0,0,0,0); }
-    virtual CL_Rect getCollisionRect(uint, uint) const { return getCollisionRect(); }
     virtual void doEvent(const std::string &name, bool bRemember){}
     virtual void giveItem(ItemRef * pItemRef, uint){}
     virtual void takeItem(ItemRef * pItemRef, uint){}
@@ -83,7 +90,7 @@ public:
 	virtual const AbilityManager * getAbilityManager() const { static AbilityManager abilityManager; return &abilityManager; }
 	
 	virtual int getScreenWidth()const;
-      virtual int getScreenHeight()const;
+	virtual int getScreenHeight()const;
 
 
       virtual CL_Rect getLevelRect() const;

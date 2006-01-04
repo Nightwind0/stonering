@@ -19,14 +19,9 @@ using namespace std;
 using namespace StoneRing;
 
 
-Tile * EditableLevelFactory::createTile() const
+Element * EditableLevelFactory::createTile() const
 {
     return new EditableTile();
-}
-
-Tile * EditableLevelFactory::createTile(CL_DomElement *pElement)const
-{
-    return new EditableTile(pElement);
 }
 
 /*MappableObject * EditableLevelFactory::createMappableObject() const
@@ -38,29 +33,16 @@ MappableObject * EditableLevelFactory::createMappableObject(CL_DomElement *pElem
     return new EditableMappableObject(pElement);
 }
 */
-Tilemap * EditableLevelFactory::createTilemap() const
+Element * EditableLevelFactory::createTilemap() const
 {
     return new EditableTilemap();
 }
-Tilemap * EditableLevelFactory::createTilemap(CL_DomElement *pElement) const
-{
-    return new EditableTilemap( pElement );
-}
-SpriteRef * EditableLevelFactory::createSpriteRef() const
+
+Element * EditableLevelFactory::createSpriteRef() const
 {
     return new EditableSpriteRef();
 }
 
-SpriteRef * EditableLevelFactory::createSpriteRef(CL_DomElement * pElement) const
-{
-    return new EditableSpriteRef(pElement );
-}
-
-
-
-EditableTilemap::EditableTilemap(CL_DomElement *pElement):Tilemap(pElement)
-{
-}
 
 EditableTilemap::~EditableTilemap()
 {
@@ -82,14 +64,6 @@ void EditableTilemap::setMapY(int y)
 
 
 
-EditableSpriteRef::EditableSpriteRef(CL_DomElement * pElement ):SpriteRef(pElement)
-{
-}
-
-EditableSpriteRef::~EditableSpriteRef()
-{
-}
-
 void EditableSpriteRef::setSpriteRef( const std::string &ref)
 {
     mRef = ref;
@@ -105,10 +79,6 @@ EditableTile::EditableTile()
 {
 }
 
-EditableTile::EditableTile(CL_DomElement *pElement ):Tile(pElement)
-{
-
-}
 
 EditableTile::~EditableTile()
 {
