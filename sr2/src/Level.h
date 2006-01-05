@@ -17,16 +17,6 @@ using std::string;
 
 
 
-#ifdef _MSC_VER
-template <class T>
-T abs( const T& a)
-{
-        if( a < 0) return -a;
-        else return a;
-}
-
-#endif
-
 
 // For the multimap of points
 bool operator < (const CL_Point &p1, const CL_Point &p2);

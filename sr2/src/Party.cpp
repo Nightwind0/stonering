@@ -28,7 +28,7 @@ IParty::eDirection Party::getDirection()const
 
 bool Party::isAligned() const
 {
-        return (mX /32 == 0) && (mY /32 == 0);
+        return (mX % 32 == 0) && (mY %32 == 0);
 }
 
 void Party::move()
