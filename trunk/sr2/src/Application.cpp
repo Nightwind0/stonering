@@ -799,6 +799,7 @@ int Application::main(int argc, char ** argv)
 				mpMovementTimer = new CL_Timer(8);
                 CL_Slot slot_mo_timer = mpMovementTimer->sig_timer().connect(this,&Application::onSignalMovementTimer);
 
+				mpMovementTimer->enable();
                 while(!mbDone)
                 {
 			
