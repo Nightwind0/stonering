@@ -488,39 +488,41 @@ bool Application::movePlayer()
         }
 
 
-        if(mpParty->isAligned())
-        {
-                // We've reached a place
-                if(mbHasNextDirection)
-                {
-                        mbHasNextDirection = false;
-                        mpParty->changeDirection(meNextDirection);
-                }
+		if(mpParty->isAligned())
+		{
+			// We've reached a place
+			if(mbHasNextDirection)
+			{
+				mbHasNextDirection = false;
+				mpParty->changeDirection(meNextDirection);
 
-                CL_Point point(mpParty->getCellX(),mpParty->getCellY());
-                CL_Point newpoint = point;
-                
-                switch(meNextDirection)
-                {
-                case IParty::DNORTH:
-                        newpoint.y--;
-                        break;
-                case IParty::DSOUTH:
-                        newpoint.y++;
-                        break;
-                case IParty::DWEST:
-                        newpoint.x--;
-                        break;
-                case IParty::DEAST:
-                        newpoint.x++;
-                        break;
-                }
-                
-                if(mpLevel->tryMove(point,newpoint))
-                {
-                        mpParty->move();
-                        recalculatePlayerPosition(meNextDirection);
-                }
+
+
+				CL_Point point(mpParty->getCellX(),mpParty->getCellY());
+				CL_Point newpoint = point;
+
+				switch(meNextDirection)
+				{
+				case IParty::DNORTH:
+					newpoint.y--;
+					break;
+				case IParty::DSOUTH:
+					newpoint.y++;
+					break;
+				case IParty::DWEST:
+					newpoint.x--;
+					break;
+				case IParty::DEAST:
+					newpoint.x++;
+					break;
+				}
+
+				if(mpLevel->tryMove(point,newpoint))
+				{
+					mpParty->move();
+					recalculatePlayerPosition(meNextDirection);
+				}
+			}
         }
         else
                 mpParty->move();
