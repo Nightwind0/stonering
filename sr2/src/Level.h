@@ -695,6 +695,10 @@ namespace StoneRing {
                         virtual void randomNewDirection();
 
                         virtual void movedOneCell();
+
+			int getFrameMarks() const{return mnFrameMarks;}
+
+			void markFrame()  { ++mnFrameMarks; }
                 protected:
                         virtual void handleElement(eElement element, Element * pElement );
                         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
@@ -724,6 +728,7 @@ namespace StoneRing {
                         char cFlags;
                         ushort mnCellsMoved;
                         ushort mnMovesSkipped;
+			uint mnFrameMarks;
                 };
 }
 #ifdef _MSC_VER
@@ -797,7 +802,7 @@ namespace StoneRing{
                         virtual void drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
                         virtual void drawFloaters(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext * pGC);
 		
-                        void moveMappableObjects();
+                        void moveMappableObjects(const CL_Rect &src);
       
                         // Checks relevant tile and MO direction block information
                         // And mark occupied and unoccupied if move is successful
@@ -837,9 +842,19 @@ namespace StoneRing{
 
                         //			std::map<CL_Point, std::list<Tile*> > mTileMap;
                         //	    std::list<Tile*> ** mTileMap;
+
+			typedef std::map<CL_Point,std::list<MappableObject*> > MappableObjectMap;
                         std::vector<std::vector<std::list<Tile*> > > mTileMap;
                         std::map<CL_Point, std::list<Tile*> > mFloaterMap;
-                        std::map<CL_Point,bool> mOccupiedTiles;
+                        MappableObjectMap mMOMap;
+
+			// MO related operations
+			bool containsMappableObjects(const CL_Point &point) const;
+			bool containsSolidMappableObject(const CL_Point &point) const;
+			void setMappableObjectAt(const CL_Point &point, MappableObject*  pMO);
+			void removeMappableObjectFrom(const CL_Point &point, MappableObject *pMO);
+			void putMappableObjectAtCurrentPosition(MappableObject *pMO);
+			void removeMappableObjectFromCurrentPosition(MappableObject *pMO);
       
                         // Sort MO's in order to bring close ones to the top
                         static bool moSortCriterion( const MappableObject *p1, const MappableObject * p2);
@@ -848,7 +863,7 @@ namespace StoneRing{
                         static bool tileSortCriterion ( const Tile * p1, const Tile * p2);
 
                         // Sort to bring the close ones near the top, or partition to bring nearby ones up.
-                        std::list<MappableObject *> mMappableObjects; 
+//                        std::list<MappableObject *> mMappableObjects; 
                         void LoadLevel( const std::string &filename );
                         void LoadLevel ( CL_DomDocument &document );
 
@@ -856,12 +871,11 @@ namespace StoneRing{
                         void loadMo ( CL_DomElement * moElement );
 
                         // All AM's from tiles fire, as do any step events
-                        virtual void step(const CL_Point &destination, uint width, uint height);
+                        virtual void step(const CL_Point &destination);
       
-
+			// Tile related operations
                         // Call attribute modifiers on tiles at this location
                         void activateTilesAt ( uint x, uint y );
-
                         int getCumulativeDirectionBlockAtPoint(const CL_Point &point) const;
                         bool getCumulativeHotnessAtPoint(const CL_Point &point) const;
 
@@ -873,8 +887,9 @@ namespace StoneRing{
                         uint mLevelWidth;
                         uint mLevelHeight;
                         bool mbAllowsRunning;
+			mutable uint mnFrameCount;
+			
 
-                        std::list<MappableObject *>::iterator mMOPartition;
                 };
 }
 

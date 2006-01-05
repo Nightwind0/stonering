@@ -612,7 +612,7 @@ void Application::onSignalKeyUp(const CL_InputEvent &key)
                         std::cout << getLevelRect().left + getLevelRect().get_width() / 2;
                         std::cout << ',' << getLevelRect().top + getLevelRect().get_height() / 2;
                         std::cout << std::endl;
-                        mpLevel->dumpMappableObjects();
+//                        mpLevel->dumpMappableObjects();
                         break;
 #endif
 	    
@@ -710,7 +710,7 @@ void Application::onSignalMovementTimer()
 
         }
 
-        mpLevel->moveMappableObjects();
+        mpLevel->moveMappableObjects(getLevelRect());
 }
 
 void Application::drawMap()
