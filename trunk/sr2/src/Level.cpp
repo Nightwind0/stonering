@@ -3483,7 +3483,7 @@ void Level::moveMappableObjects(const CL_Rect &src)
 				std::list<MappableObject*>::iterator iRemove = std::remove_if((*iList).second.begin(),(*iList).second.end(), std::bind2nd(std::equal_to<MappableObject*>(),static_cast<MappableObject*>(NULL)));
 
 				if(iRemove != (*iList).second.end()) 
-					(*iList).second.erase(iRemove);
+				    (*iList).second.erase(iRemove, (*iList).second.end());
 				// If theres nothing left on this list, just get rid of it.
 				if((*iList).second.size() == 0)
 				{
