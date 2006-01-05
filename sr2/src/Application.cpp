@@ -496,8 +496,6 @@ bool Application::movePlayer()
 				mbHasNextDirection = false;
 				mpParty->changeDirection(meNextDirection);
 
-
-
 				CL_Point point(mpParty->getCellX(),mpParty->getCellY());
 				CL_Point newpoint = point;
 
@@ -520,13 +518,15 @@ bool Application::movePlayer()
 				if(mpLevel->tryMove(point,newpoint))
 				{
 					mpParty->move();
-					recalculatePlayerPosition(meNextDirection);
+
 				}
 			}
         }
         else
-                mpParty->move();
+			mpParty->move();
 
+
+		recalculatePlayerPosition(meNextDirection);
 
         return true;
 }
