@@ -148,6 +148,8 @@ class Choice;
 #endif
       bool mbQueueKeyUps;
       std::queue<int> mKeyUpQueue;
+
+	  bool mbDraw;
       
     };
   
