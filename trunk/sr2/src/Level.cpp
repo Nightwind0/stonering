@@ -3425,7 +3425,7 @@ void Level::moveMappableObjects(const CL_Rect &src)
 									iter != intoPoints.end();
 									iter++)
 								{
-									if((*iter).x < 0 || (*iter).y <0 || (*iter).x > mLevelWidth || (*iter).y > mLevelHeight
+									if((*iter).x < 0 || (*iter).y <0 || (*iter).x >= mLevelWidth || (*iter).y >= mLevelHeight
 										||containsSolidMappableObject(*iter)
 										||
 										(getCumulativeDirectionBlockAtPoint(*iter) & MappableObject::ConvertDirectionToDirectionBlock(pMo->getDirection()))
