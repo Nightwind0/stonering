@@ -78,17 +78,17 @@ Element * AbilityFactory::createStatIncrease() const
 
 Element * AbilityFactory::createAnimationSpriteRef() const
 {
-	return new AnimationSpriteRef();
+    return new AnimationSpriteRef();
 }
 
 Element * AbilityFactory::createPar() const
 {
-	return new Par;
+    return new Par;
 }
 
 Element * AbilityFactory::createSkillRef() const
 {
-	return new SkillRef();
+    return new SkillRef();
 }
 
 
@@ -99,14 +99,14 @@ bool AbilityFactory::canCreate( Element::eElement element )
 
     if(method == NULL) return false;
     else return true;
-		
+                
 }
 
 Element * AbilityFactory::createElement( Element::eElement element )
 {
     factoryMethod method = getMethod(element);
 
-	Element * pElement = (this->*method)();
+    Element * pElement = (this->*method)();
 
     return pElement;
 }
@@ -119,39 +119,39 @@ AbilityFactory::getMethod(Element::eElement element) const
     switch(element)
     {
     case Element::EDOWEAPONDAMAGE:
-	return &AbilityFactory::createDoWeaponDamage;
+        return &AbilityFactory::createDoWeaponDamage;
     case Element::EDOMAGICDAMAGE:
-	return &AbilityFactory::createDoMagicDamage;
+        return &AbilityFactory::createDoMagicDamage;
     case Element::EDOSTATUSEFFECT:
-	return &AbilityFactory::createDoStatusEffect;
+        return &AbilityFactory::createDoStatusEffect;
     case Element::ESPELL:
-	return &AbilityFactory::createSpell;
+        return &AbilityFactory::createSpell;
     case Element::EWEAPONDAMAGECATEGORY:
-	return &AbilityFactory::createWeaponDamageCategory;
+        return &AbilityFactory::createWeaponDamageCategory;
     case Element::EMAGICDAMAGECATEGORY:
-	return &AbilityFactory::createMagicDamageCategory;
+        return &AbilityFactory::createMagicDamageCategory;
     case Element::EANIMATION:
-	return &AbilityFactory::createAnimation;
+        return &AbilityFactory::createAnimation;
     case Element::EMAGICRESISTANCE:
-	return &AbilityFactory::createMagicResistance;
+        return &AbilityFactory::createMagicResistance;
     case Element::EATTRIBUTEEFFECT:
-	return &AbilityFactory::createAttributeEffect;
+        return &AbilityFactory::createAttributeEffect;
     case Element::ESTATUSEFFECTACTIONS:
-	return &AbilityFactory::createStatusEffectActions;
+        return &AbilityFactory::createStatusEffectActions;
     case Element::ESTATUSEFFECT:
-	return &AbilityFactory::createStatusEffect;
+        return &AbilityFactory::createStatusEffect;
     case Element::ESTARTINGSTAT:
-	return &AbilityFactory::createStartingStat;
+        return &AbilityFactory::createStartingStat;
     case Element::ESTATINCREASE:
-	return &AbilityFactory::createStatIncrease;
+        return &AbilityFactory::createStatIncrease;
     case Element::EANIMATIONSPRITEREF:
-	return &AbilityFactory::createAnimationSpriteRef;
-	case Element::EONROUND:
-	case Element::EONREMOVE:
-	case Element::EONCOUNTDOWN:
-	case Element::EONINVOKE:
-		return &AbilityFactory::createStatusEffectActions;
+        return &AbilityFactory::createAnimationSpriteRef;
+    case Element::EONROUND:
+    case Element::EONREMOVE:
+    case Element::EONCOUNTDOWN:
+    case Element::EONINVOKE:
+        return &AbilityFactory::createStatusEffectActions;
     default:
-	return NULL;
+        return NULL;
     }
 }
