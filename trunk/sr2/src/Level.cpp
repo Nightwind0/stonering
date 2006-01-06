@@ -613,7 +613,14 @@ void AttributeModifier::handleElement(eElement element, Element *pElement)
 void AttributeModifier::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
 	mAttribute = getRequiredString("attribute",pAttributes);
-	mAdd = getRequiredInt("add",pAttributes);
+	mAdd = getImpliedInt("add",pAttributes,0);
+	
+	std::string changeTo = getRequiredString("changeTo",pAttributes);
+
+	if(changeTo == "max") meChangeTo = TO_MAX;
+	else if (changeTo == "min") meChangeTo = TO_MIN;
+	else if (changeTo == "add") meChangeTo = ADD;
+	else throw CL_Error("Unrecognized changeTo type on AM: " + changeTo);
 
 	if(hasAttr("target",pAttributes))
 	{
@@ -634,6 +641,8 @@ void AttributeModifier::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 		else throw CL_Error("Unrecognized target type in attribute modifier: " + target);
 
 	}
+
+	
 }
 
  
