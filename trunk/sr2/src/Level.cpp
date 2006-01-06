@@ -43,6 +43,31 @@ std::string IntToString(const int &i)
     
 }
 
+
+template<typename MapType,
+typename KeyArgType,
+typename ValueArgType>
+typename MapType::iterator
+efficientAddOrUpdate(MapType &m,
+					 const KeyArgType &k,
+					 const ValueArgType &v)
+{
+	typename MapType::iterator lb = m.lower_bound(k);
+
+	if(lb != m.end() &&
+		!(m.key_comp()(k,lb->first)))
+	{
+		lb->second = v;
+		return lb;
+	}
+	else
+	{
+		typedef typename MapType::value_type MVT;
+		return m.insert(lb,MVT(k,v));
+	}
+}
+
+
 std::string BoolToString( const bool &b)
 {
 	if(b) return "true";
@@ -251,8 +276,8 @@ void Choice::chooseOption( uint index)
 // For the multimap of points
 bool operator < (const CL_Point &p1, const CL_Point &p2)
 {
-	uint p1value = p1.y  *  IApplication::getInstance()->getScreenHeight() + p1.x;
-	uint p2value = p2.y  * IApplication::getInstance()->getScreenHeight() + p2.x;
+	uint p1value = (p1.y  *  IApplication::getInstance()->getScreenWidth()) + p1.x;
+	uint p2value = (p2.y  * IApplication::getInstance()->getScreenWidth()) + p2.x;
     
 	return p1value < p2value;
 }
@@ -2107,8 +2132,8 @@ void Tile::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC)
 		int mapx, mapy;
 		mapx = mGraphic.asTilemap->getMapX();
 		mapy = mGraphic.asTilemap->getMapY();
-		CL_Rect srcRect(mapx * 32 + src.left, mapy * 32 + src.top,
-						(mapx * 32) + src.right, (mapy * 32) + src.bottom);
+		CL_Rect srcRect((mapx << 5) + src.left, (mapy << 5) + src.top,
+						(mapx << 5) + src.right, (mapy << 5) + src.bottom);
 
         
 		tilemap->draw(srcRect, dst, pGC);
@@ -2414,7 +2439,8 @@ void MappableObject::loadFinished()
 }
  
 MappableObject::MappableObject():meDirection(NONE),mpSprite(NULL),mpMovement(0),
-                                 mpCondition(0),cFlags(0),mnCellsMoved(0),mnMovesSkipped(0), mnFrameMarks(0)
+                                 mpCondition(0),cFlags(0),mnCellsMoved(0),
+								 mnFrameMarks(0),mnMoveCount(0)
 {
    
 }
@@ -2849,42 +2875,23 @@ bool MappableObject::isAligned() const
 	return (mX % 32 == 0 )&& (mY  %32 == 0);
 }
 
-bool MappableObject::chanceToMove() 
+uint MappableObject::getMovesPerDraw() const
 {
 	if(mpMovement)
 	{
 		switch( mpMovement->getMovementSpeed() )
 		{
 		case Movement::SLOW:
-			if(mnMovesSkipped > 4)
-			{
-				mnMovesSkipped = 0;
-				return true;
-			}
-			else
-			{
-				++mnMovesSkipped ;
-				return false;
-			}
-			break;
+			return 1;
 		case Movement::MEDIUM:
-			if(mnMovesSkipped)
-			{
-				mnMovesSkipped = 0;
-				return true;
-			}
-			else
-			{
-				mnMovesSkipped = 1;
-				return false;
-			}
-			break;
+			return 2;
 		case Movement::FAST:
-			return true;
-			break;
+			return 3;
+		default:
+			return 0;
 		}
 	}
-	else return false;
+	else return 0;
 }
 
 CL_Point MappableObject::getPositionAfterMove() const
@@ -2925,7 +2932,8 @@ bool Level::containsMappableObjects(const CL_Point &point) const
 
 bool activateSolidMappableObject(const MappableObject *pMO)
 {
-	return pMO->isSolid() && pMO->evaluateCondition();
+	
+	return pMO && pMO->isSolid() && pMO->evaluateCondition();
 }
 
 bool Level::containsSolidMappableObject(const CL_Point &point) const
@@ -2947,6 +2955,23 @@ void Level::setMappableObjectAt(const CL_Point &point, MappableObject*  pMO)
 {
 	// If the list doesn't exist, it will get created
 	mMOMap[point].push_back(pMO);
+
+#ifndef NDEBUG
+	MappableObjectMap::iterator iList = mMOMap.find(point);
+#endif
+	//MappableObjectMap::iterator lb = mMOMap.lower_bound(point);
+
+	//if(lb != mMOMap.end())
+	//{
+	//	lb->second.push_back(pMO);
+	//}
+	//else
+	//{
+	//	typedef std::map<CL_Point,std::list<MappableObject*> >::value_type MVT;
+	//	std::list<MappableObject*> listy(1,pMO);
+	//	mMOMap.insert(lb, MVT(point,listy));
+	//}
+
 }
 
 void Level::removeMappableObjectFrom(const CL_Point &point, MappableObject *pMO)
@@ -3062,7 +3087,7 @@ Level::Level(const std::string &name,CL_ResourceManager * pResources): mpDocumen
 	LoadLevel ( path + filename );
 }
 
-Level::Level(CL_DomDocument &document):mbAllowsRunning(false)
+Level::Level(CL_DomDocument &document):mbAllowsRunning(false),mnFrameCount(0),mnMoveCount(0)
 {
 	LoadLevel ( document );
 }
@@ -3217,10 +3242,10 @@ void Level::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC,
 						i++)
 					{
 						CL_Rect tileSrc(0,0,32,32);
-						CL_Rect tileDst ( exDst.left  + tileX * 32,
-										  exDst.top + tileY * 32,
-										  exDst.left + tileX * 32 + 32,
-										  exDst.top + tileY * 32 + 32);
+						CL_Rect tileDst ( exDst.left  + (tileX << 5),
+										  exDst.top + (tileY << 5),
+										  exDst.left + (tileX << 5) + 32,
+										  exDst.top + (tileY << 5) + 32);
             
 						Tile * pTile = *i;
 						if(pTile->evaluateCondition())
@@ -3292,9 +3317,9 @@ void Level::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_Graph
         
 	++mnFrameCount;
 
-	for(int x = 0;x<width;x++)
+	for(int y = 0;y<height;y++)
 	{
-		for(int y=0;y<height;y++)
+		for(int x=0;x<width;x++)
 		{
 			CL_Point point(cornerx + x, cornery+ y);
 
@@ -3314,7 +3339,7 @@ void Level::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_Graph
 						CL_Rect moRect = pMO->getPixelRect();
 						CL_Rect dstRect( moRect.left - src.left + dst.left, moRect.top + dst.top - src.top,
 										 moRect.left - src.left + dst.left +moRect.get_width(), moRect.top - src.top + dst.top + moRect.get_height());
-						(*iter)->update();
+					
 						(*iter)->draw( moRect, dstRect, pGC );            
 					}
 				}
@@ -3383,6 +3408,8 @@ void Level::moveMappableObjects(const CL_Rect &src)
 	int width = static_cast<int>(ceil((double)src.right/32)) - cornerx;
 	int height = static_cast<int>(ceil((double)src.bottom/32)) - cornery;
         
+    mnMoveCount++;
+// Shit, we need a moveCount just like the markFrame system!!!! No wonder the cats are so fast, they're moving twice
 
 	for(int x = 0;x<width;x++)
 	{
@@ -3400,20 +3427,26 @@ void Level::moveMappableObjects(const CL_Rect &src)
 					MappableObject * pMo = *iMo;
 					if(! pMo->evaluateCondition()) continue; // Skip 'em
 
-					if(pMo->chanceToMove())
+					// They've already gone
+					if(pMo->getMoveCount() >= mnMoveCount) continue;
+
+					pMo->markMove();
+
+					for(uint d=0;d<pMo->getMovesPerDraw();d++)
 					{
 
 						if(pMo->getDirection() != MappableObject::NONE)
 						{
+							CL_Point originalLocation = pMo->getPosition();
 							// Aligned means we're about to become unaligned by moving
 							// So we get a list of points at the location we are moving into,
 							// And we mark those points as occupado.
 
 							bool bWasAligned = pMo->isAligned();
+							std::list<CL_Point> intoPoints ;
             
 							if(bWasAligned)
 							{
-								std::list<CL_Point> intoPoints ;
 								CL_Point topleft = pMo->getPositionAfterMove();
                                         
 								MappableObject::CalculateEdgePoints(topleft, pMo->getDirection(),
@@ -3436,20 +3469,26 @@ void Level::moveMappableObjects(const CL_Rect &src)
 										pMo->randomNewDirection();
 										return;
 									}
-								}                                
+								}// all points                               
                 
 								// Mark current points as occcupied by you
 
+							}// bwasaligned
+                                
+							// Okay. We've made sure that we can move. 
+							pMo->move();
+							pMo->update();
+
+							if(bWasAligned)
+							{
 								for(std::list<CL_Point>::iterator i = intoPoints.begin();
 									i != intoPoints.end();
 									i++)
 								{
 									setMappableObjectAt(*i, pMo);
-								}
+								}//points
 							}
-                                
-							// Okay. We've made sure that we can move. 
-							pMo->move();
+
 
 							// Theres a possability that we've become aligned after moving. In which case, we have to 
 							// mark where we've come from as unoccupied.
@@ -3457,16 +3496,36 @@ void Level::moveMappableObjects(const CL_Rect &src)
 							if(pMo->isAligned())
 							{
 								std::list<CL_Point> fromPoints ;
-								CL_Point topleft = pMo->getPosition();
-                                    
-								MappableObject::CalculateEdgePoints(topleft, MappableObject::OppositeDirection(pMo->getDirection()),
+						                                    
+								MappableObject::CalculateEdgePoints(originalLocation, MappableObject::OppositeDirection(pMo->getDirection()),
 																	pMo->getSize(), &fromPoints);
                     
 								// (*iList).second.erase(std::remove_if((*iList).second.begin(),(*iList).second.end(), std::bind2nd(std::equal_to<MappableObject*>(),pMo)));
-								*iMo = NULL;
-
+//								*iMo = NULL;
+								for(std::list<CL_Point>::iterator i = fromPoints.begin();
+									i != fromPoints.end();
+									i++)
+								{
+									MappableObjectMap::iterator iter= mMOMap.find(point);
+									cl_assert ( iter != mMOMap.end() );
+									std::list<MappableObject*>::iterator booga = std::remove((*iter).second.begin(),
+										(*iter).second.end(),pMo);
+									
+									// If this is the point we're processing, we mark NULL instead of removing
+									if(iter == iList)
+									{
+										if(booga != (*iter).second.end())
+											*booga = NULL;
+									}
+									else
+									{
+										// Eh. Its some other list, so we can nuke this guy from it
+										(*iter).second.erase(booga);
+									}
+									
+									//(*iter).second.erase(booga);
+								}//points
 								//  if((*iList).second.size() == 0) mMOMap.erase(iList);
-                                        
 								pMo->movedOneCell();
                                         
 							}
@@ -3474,37 +3533,38 @@ void Level::moveMappableObjects(const CL_Rect &src)
 						}
 						else
 						{
-							// Unaligned. Therefore, need to move, in order to become aligned
-							pMo->move();
-						}
-					}
-					else
-					{
-						// Direction == NONE
-						// If direction is none, then this method is called less frequently, but occasionally it is called
-						// And to give the object a chance to change direction from NONE, we tell it that it moved
-						// One cell. 
-						pMo->movedOneCell();
-					}
+							// Direction == NONE
+							// If direction is none, then this method is called less frequently, but occasionally it is called
+							// And to give the object a chance to change direction from NONE, we tell it that it moved
+							// One cell. 
+							pMo->movedOneCell();
+						} //if dir
+					} // for d
 				}// for iMo
+				std::list<MappableObject*>::iterator iRemove 
+					= std::remove_if((*iList).second.begin(),(*iList).second.end(), 
+					std::bind2nd(std::equal_to<MappableObject*>(),static_cast<MappableObject*>(NULL)));
 
-				//For this list, remove any that have been set to null
-				std::list<MappableObject*>::iterator iRemove = std::remove_if((*iList).second.begin(),(*iList).second.end(), std::bind2nd(std::equal_to<MappableObject*>(),static_cast<MappableObject*>(NULL)));
-
+				////std::list<MappableObject*>::iterator iRemove =
+				////	std::remove((*iList).second.begin(),(*iList).second.end(),static_cast<MappableObject*>(NULL));
+				//		
 				if(iRemove != (*iList).second.end()) 
-				    (*iList).second.erase(iRemove, (*iList).second.end());
+				{
+					(*iList).second.erase(iRemove, (*iList).second.end());
+				}
+
 				// If theres nothing left on this list, just get rid of it.
 				if((*iList).second.size() == 0)
 				{
 					mMOMap.erase(iList);
 				}
-
-			}// if
-
+			}// if iList
 		
-		}//for y
-	}// for x
+			//For this list, remove any that have been set to null
 
+		} // fory
+		
+	}//for x
         
 }
  

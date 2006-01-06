@@ -713,6 +713,8 @@ void Application::onSignalMovementTimer()
         }
 
         mpLevel->moveMappableObjects(getLevelRect());
+
+		mbDraw = true;
 }
 
 void Application::drawMap()
@@ -798,25 +800,27 @@ int Application::main(int argc, char ** argv)
 
                 meState = MAIN;
 
-				mpMovementTimer = new CL_Timer(8);
+				mpMovementTimer = new CL_Timer(32);
                 CL_Slot slot_mo_timer = mpMovementTimer->sig_timer().connect(this,&Application::onSignalMovementTimer);
-
+				CL_FramerateCounter frameRate;
 				mpMovementTimer->enable();
+
                 while(!mbDone)
                 {
 			
                         processActionQueue();
 
-                        drawMap();
+						if(mbDraw)
+						{
+							drawMap();
+							mbDraw = false;
+						}
 
 
-                        int cur_time = CL_System::get_time();
-                        int delta_time = cur_time - start_time;	
-                        start_time = cur_time;	
 
 
 #ifndef NDEBUG
-                        int fps = calc_fps ( delta_time );
+                        int fps = frameRate.get_fps();
 
                         if(mbShowDebug)
                         {
@@ -833,7 +837,7 @@ int Application::main(int argc, char ** argv)
 		
 #endif
 	    
-#if 1
+#if 0
                         if(delta_time < 16)
                         {
                                 CL_System::keep_alive(16 - delta_time);

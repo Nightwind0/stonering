@@ -658,7 +658,7 @@ namespace StoneRing {
                         virtual bool isSprite() const;
                         virtual uint getCellHeight() const;
                         virtual uint getCellWidth() const;
-                        virtual bool chanceToMove() ; // Depending on the speed, let the object decide to move or not 
+						virtual uint getMovesPerDraw() const; // a factor of speed
                         
                         CL_Point getPositionAfterMove() const;
 
@@ -686,9 +686,11 @@ namespace StoneRing {
 
                         virtual void movedOneCell();
 
-			int getFrameMarks() const{return mnFrameMarks;}
+						uint getFrameMarks() const{return mnFrameMarks;}
+						uint getMoveCount() const { return mnMoveCount;}
 
-			void markFrame()  { ++mnFrameMarks; }
+						void markFrame()  { ++mnFrameMarks; }
+						void markMove() {++mnMoveCount; }
                 protected:
                         virtual void handleElement(eElement element, Element * pElement );
                         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
@@ -714,11 +716,10 @@ namespace StoneRing {
                         Movement *mpMovement;
                         Condition *mpCondition;
                         eMappableObjectType meType;
-                        bool mbAligned;
                         char cFlags;
                         ushort mnCellsMoved;
-                        ushort mnMovesSkipped;
-			uint mnFrameMarks;
+						uint mnFrameMarks;
+						uint mnMoveCount;
                 };
 }
 #ifdef _MSC_VER
@@ -877,7 +878,8 @@ namespace StoneRing{
                         uint mLevelWidth;
                         uint mLevelHeight;
                         bool mbAllowsRunning;
-			mutable uint mnFrameCount;
+						mutable uint mnFrameCount;
+						uint mnMoveCount;
 			
 
                 };
