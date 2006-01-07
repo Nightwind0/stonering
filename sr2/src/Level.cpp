@@ -3435,7 +3435,7 @@ void Level::moveMappableObjects(const CL_Rect &src)
 
                 for(uint d=0;d<pMo->getMovesPerDraw();d++)
                 {
-
+					bool bPathBlocked = false;
                     if(pMo->getDirection() != MappableObject::NONE)
                     {
                         CL_Point originalLocation = pMo->getPosition();
@@ -3468,13 +3468,17 @@ void Level::moveMappableObjects(const CL_Rect &src)
                                 {
                                     // No go. Change direction, so we can try again.
                                     pMo->randomNewDirection();
-                                    return;
+                                    bPathBlocked = true;
+									break;
                                 }
                             }// all points                               
                 
+
                             // Mark current points as occcupied by you
 
                         }// bwasaligned
+
+						if(bPathBlocked) continue;
                                 
                         // Okay. We've made sure that we can move. 
                         pMo->move();
@@ -3508,21 +3512,25 @@ void Level::moveMappableObjects(const CL_Rect &src)
                                 i++)
                             {
                                 MappableObjectMap::iterator iter= mMOMap.find(*i);
-                                cl_assert ( iter != mMOMap.end() );
+                                
+								if(iter == mMOMap.end()) continue;
+
                                 std::list<MappableObject*>::iterator booga = std::remove((*iter).second.begin(),
                                                                                          (*iter).second.end(),pMo);
                                                                         
+
+								if(booga == (*iter).second.end()) continue;
+
                                 // If this is the point we're processing, we mark NULL instead of removing
                                 if(iter == iList)
                                 {
-                                    if(booga != (*iter).second.end())
                                         *booga = NULL;
                                 }
                                 else
                                 {
-                                    // Eh. Its some other list, so we can nuke this guy from it
-                                    (*iter).second.erase(booga);
-                                }
+									// Eh. Its some other list, so we can nuke this guy from it
+									(*iter).second.erase(booga);
+								}
                                                                         
                                 //(*iter).second.erase(booga);
                             }//points
@@ -3729,9 +3737,9 @@ void Level::dumpMappableObjects() const
 
             std::cout << '\t' << pMO->getName();
             
-            std::cout << " @ " << pMO->getX() << 5 << '(' << pMO->getX() << ')'
+            std::cout << " @ " << (pMO->getX() / 32) << '(' << pMO->getX() << ')'
                       <<',' 
-                      << pMO->getY() << 5 << '(' << pMO->getY() << ')';
+                      << (pMO->getY() / 32) << '(' << pMO->getY() << ')';
             std::cout << std::endl;
         }
             
@@ -3846,7 +3854,7 @@ void Level::LoadLevel (CL_DomDocument &document )
 
     std:: cout << "FOUND " << mocount << " MAPPABLE OBJECTS" << std::endl;
 
-    mnFrameCount = 0 ;
+    mnFrameCount = mnMoveCount = 0 ;
 }
 
 void Level::LoadLevel( const std::string & filename  )
