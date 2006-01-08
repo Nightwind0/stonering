@@ -26,17 +26,6 @@ const int WINDOW_WIDTH = 800 ;
 
 
 
-std::string IntToString (int i)
-{
-    std::ostringstream os;
-
-    os << i;
-
-    return os.str();
-}
-
-
- 
 
 
 Application sr_app;
@@ -611,10 +600,8 @@ void Application::onSignalKeyUp(const CL_InputEvent &key)
             mbShowDebug = mbShowDebug?false:true;
 
         case CL_KEY_M:
-            std::cout << getLevelRect().left + getLevelRect().get_width() / 2;
-            std::cout << ',' << getLevelRect().top + getLevelRect().get_height() / 2;
-            std::cout << std::endl;
-//                        mpLevel->dumpMappableObjects();
+     
+			mpLevel->dumpMappableObjects();
             break;
 #endif
             
@@ -718,7 +705,7 @@ void Application::onSignalMovementTimer()
 
 
 #ifndef NDEBUG
-    mpLevel->dumpMappableObjects();
+  //  mpLevel->dumpMappableObjects();
 #endif
 
 }

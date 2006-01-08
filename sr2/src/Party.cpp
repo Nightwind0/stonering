@@ -10,7 +10,7 @@
 using StoneRing::Party;
 using StoneRing::IParty;
 using StoneRing::ICharacter;
-
+using StoneRing::ItemRef;
 
 
 Party::Party():mX(0),mY(0),mnGold(0)

@@ -1,6 +1,9 @@
 #ifndef SR_DEFINES_H
 #define SR_DEFINES_H
 
+#include <sstream>
+#include <string>
+
 typedef unsigned int uint;
 typedef unsigned short ushort;
 
@@ -22,5 +25,9 @@ del_fun_t<T> del_fun()
 {
    return del_fun_t<T>();
 }
+
+
+std::string IntToString(const int &i);
+
 
 #endif
