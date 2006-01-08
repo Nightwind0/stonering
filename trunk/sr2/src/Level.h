@@ -16,8 +16,6 @@
 using std::string;
 
 
-
-
 // For the multimap of points
 bool operator < (const CL_Point &p1, const CL_Point &p2);
 
@@ -586,11 +584,11 @@ namespace StoneRing {
 
         bool isFloater() const;
 
-        inline bool evaluateCondition() const;
+        bool evaluateCondition() const;
 
-        inline bool hasAM() const;
+        bool hasAM() const;
 
-        inline void activate(); // Call any attributemodifier
+        void activate(); // Call any attributemodifier
             
         virtual inline  uint getX() const;
         virtual inline uint getY() const;
@@ -601,15 +599,10 @@ namespace StoneRing {
 
         bool isHot() const;
 
-        virtual inline void draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
-
-
+        virtual void draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
         virtual void update();
-            
-        virtual inline int getDirectionBlock() const;
-
-        virtual inline bool isTile() const;
-
+        virtual int getDirectionBlock() const;
+        virtual bool isTile() const;
         virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
     protected:
@@ -629,7 +622,12 @@ namespace StoneRing {
 
     };
 
-    //class 
+
+class MappableObject;
+
+
+typedef std::multimap<CL_Point,MappableObject*> MOMap;
+typedef MOMap::iterator MOMapIter;
 
     class MappableObject : public Graphic
     {
@@ -721,60 +719,16 @@ namespace StoneRing {
         uint mnFrameMarks;
         uint mnMoveCount;
     };
-}
-#ifdef _MSC_VER
-using namespace StoneRing;
 
-#undef abs
-
-template <>
-struct std::greater<MappableObject*>
-
-{
-    const bool operator()(const MappableObject* n1, const  MappableObject * n2) const
-        {
-           
-                
-            IApplication * pApp = IApplication::getInstance();
-
-            int pX = pApp->getLevelRect().left + pApp->getLevelRect().get_width() / 2;
-            int pY = pApp->getLevelRect().top + pApp->getLevelRect().get_height() / 2;
-
-            uint p1Distance, p2Distance;
-
-        
-            /*    p1Distance = max(abs( (long)pX - p1->getX()) , abs((long)pY - p1->getY()));
-                  p2Distance = max(abs( (long)pX - p2->getX()) , abs((long)pY - p2->getY()));
-            */
-            int dx1 = abs((int)(pX - n1->getX()));
-            int dy1 = abs((int)(pY - n1->getY()));
-            int dx2 = abs((int)(pX - n2->getX()));
-            int dy2 = abs((int)(pY - n2->getY()));
-
-            p1Distance = (dx1 * dx1) + (dy1 * dy1);
-            p2Distance = (dx2 * dx2) + (dy2 * dy2);
-
-            return p1Distance < p2Distance;
-                
-        
-
-        };
-};
+	struct LessMOMapIter : public std::binary_function<const MOMapIter&,const MOMapIter&,bool>
+	{
+		bool operator()(const MOMapIter &i1, const MOMapIter &i2)
+		{
+			return i1->second < i2->second;
+		}
+	};
 
 
-template<>
-struct std::greater<Tile*>
-{
-    bool operator()(const Tile* n1, const Tile *n2) const
-        {
-            return n1->getZOrder() < n2->getZOrder();
-        }
-};
-
-
-#endif
-
-namespace StoneRing{
     class Level
     {
     public:
@@ -831,21 +785,18 @@ namespace StoneRing{
 
     protected:
 
-        //                      std::map<CL_Point, std::list<Tile*> > mTileMap;
-        //          std::list<Tile*> ** mTileMap;
 
-        typedef std::map<CL_Point,std::list<MappableObject*> > MappableObjectMap;
+		typedef MOMap::value_type MOMapValueType;
         std::vector<std::vector<std::list<Tile*> > > mTileMap;
+		// Needs to be a multimap
         std::map<CL_Point, std::list<Tile*> > mFloaterMap;
-        MappableObjectMap mMOMap;
+        MOMap mMOMap;
 
         // MO related operations
         bool containsMappableObjects(const CL_Point &point) const;
         bool containsSolidMappableObject(const CL_Point &point) const;
         void setMappableObjectAt(const CL_Point &point, MappableObject*  pMO);
-        void removeMappableObjectFrom(const CL_Point &point, MappableObject *pMO);
-        void putMappableObjectAtCurrentPosition(MappableObject *pMO);
-        void removeMappableObjectFromCurrentPosition(MappableObject *pMO);
+		void putMappableObjectAtCurrentPosition(MappableObject *pMO);
       
         // Sort MO's in order to bring close ones to the top
         static bool moSortCriterion( const MappableObject *p1, const MappableObject * p2);
@@ -853,8 +804,6 @@ namespace StoneRing{
         // Sort tiles on zOrder
         static bool tileSortCriterion ( const Tile * p1, const Tile * p2);
 
-        // Sort to bring the close ones near the top, or partition to bring nearby ones up.
-//                        std::list<MappableObject *> mMappableObjects; 
         void LoadLevel( const std::string &filename );
         void LoadLevel ( CL_DomDocument &document );
 
@@ -883,6 +832,19 @@ namespace StoneRing{
                         
 
     };
-}
+};
+
+
+
+
+template<>
+struct std::greater<StoneRing::Tile*>
+{
+	bool operator()(const StoneRing::Tile* n1, const StoneRing::Tile *n2) const
+        {
+            return n1->getZOrder() < n2->getZOrder();
+        }
+};
+
 
 #endif
