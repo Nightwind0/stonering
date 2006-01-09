@@ -29,5 +29,9 @@ del_fun_t<T> del_fun()
 
 std::string IntToString(const int &i);
 
+#ifndef NDEBUG
+extern bool gbDebugStop;
+#endif
+
 
 #endif

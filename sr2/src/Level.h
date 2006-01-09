@@ -699,6 +699,7 @@ typedef MOMap::iterator MOMapIter;
         static int ConvertDirectionToDirectionBlock(eDirection dir);
         virtual void randomNewDirection();
         virtual void movedOneCell();
+		virtual void idle(){} // Wait while direction is none.
 
         uint getFrameMarks() const{return mnFrameMarks;}
         void markFrame()  { ++mnFrameMarks; }
@@ -738,7 +739,6 @@ typedef MOMap::iterator MOMapIter;
 	public:
 		MappablePlayer(uint startX, uint startY);
 		virtual ~MappablePlayer();
-		virtual eDirection getDirection() const { return meNextDirection; }
 		virtual bool isSolid() const { return true; }
 		virtual bool isSprite() const { return true; }
 		virtual uint getMovesPerDraw() const;
@@ -747,6 +747,7 @@ typedef MOMap::iterator MOMapIter;
         virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
         virtual void randomNewDirection();
         virtual void movedOneCell();
+		virtual void idle();
 		void setSprite(CL_Sprite *pSprite) { mpSprite = pSprite; }
 		void setRunning(bool running);
 		virtual bool respectsHotness(){ return false; }

@@ -25,7 +25,7 @@ const int WINDOW_HEIGHT = 600 ;
 const int WINDOW_WIDTH = 800 ;
 
 
-
+bool gbDebugStop;
 
 
 Application sr_app;
@@ -488,16 +488,10 @@ void Application::onSignalKeyDown(const CL_InputEvent &key)
     {
     case MAIN:
     {
-        bool running = false;
-        if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ) && mpLevel->allowsRunning())
-        {
+
+		if(CL_Keyboard::get_keycode(CL_KEY_SHIFT) && mpLevel->allowsRunning())
 			mpPlayer->setRunning(true);
-        }
-        else
-        {
-            mpPlayer->setRunning(false);
-        }
-        
+             
         switch(key.id)
         {
         case CL_KEY_ESCAPE:
@@ -559,6 +553,12 @@ void Application::onSignalKeyUp(const CL_InputEvent &key)
      
 			mpLevel->dumpMappableObjects();
             break;
+		case CL_KEY_S:
+			gbDebugStop = true;
+			break;
+		case CL_KEY_SHIFT:
+			mpPlayer->setRunning(false);
+			break;
 #endif
             
         }

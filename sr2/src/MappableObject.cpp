@@ -797,8 +797,8 @@ StoneRing::MappablePlayer::~MappablePlayer()
 
 uint StoneRing::MappablePlayer::getMovesPerDraw() const
 {
-	if(mbRunning) return 3;
-	else return 2;
+	if(mbRunning) return 6;
+	else return 3;
 }
 
 
@@ -817,6 +817,12 @@ CL_DomElement  StoneRing::MappablePlayer::createDomElement(CL_DomDocument &doc) 
 void StoneRing::MappablePlayer::randomNewDirection()
 {
 	meDirection = NONE;
+	mbHasNextDirection = false;
+
+}
+void StoneRing::MappablePlayer::idle()
+{
+	movedOneCell();
 }
 
 void StoneRing::MappablePlayer::movedOneCell()
