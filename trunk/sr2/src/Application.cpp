@@ -414,48 +414,69 @@ void Application::teardownClanLib()
 void Application::recalculatePlayerPosition()
 {
 
-	CL_Rect ourRect = mpPlayer->getPixelRect();
+	int X = mpPlayer->getLevelX();
+    int Y = mpPlayer->getLevelY();
 
-	int X = ourRect.left;
-    int Y = ourRect.top;
-
-	if( X - mLevelX > (WINDOW_WIDTH / 2))
+	if( X  > mLevelX + (WINDOW_WIDTH / 2))
 	{
-		// Try to scroll right, otherwise, move guy east
+		// Try to scroll right
+		int amount = X - (mLevelX  + (WINDOW_WIDTH/2));
             
-		if(mLevelX + 1 + WINDOW_WIDTH < mpLevel->getWidth() * 32)
+		if(mLevelX + amount + WINDOW_WIDTH < mpLevel->getWidth() * 32)
 		{
-			mLevelX++;
+			mLevelX += amount;
+		}
+		else
+		{
+			// Scroll as far over as possible
+			mLevelX = (mpLevel->getWidth() * 32) - WINDOW_WIDTH;
 		}
 
 	}
-
-	if(X - mLevelX <= (WINDOW_WIDTH / 2))
+	if(X  <  mLevelX + (WINDOW_WIDTH / 2))
 	{
-		if(mLevelX -1 >0)
+		int amount = (mLevelX + (WINDOW_WIDTH/2)) - X;
+		if(mLevelX - amount >0)
 		{
-			mLevelX--;
+			mLevelX-= amount;
+		}
+		else
+		{
+			mLevelX = 0;
 		}
 	}
     
     
-	if(Y - mLevelY > (WINDOW_HEIGHT /2))
+	if(Y > mLevelY + (WINDOW_HEIGHT/2))
 	{
+		int amount = Y - (mLevelY + (WINDOW_HEIGHT/2));
             
-		if(mLevelY + 1 + WINDOW_HEIGHT < mpLevel->getHeight() * 32)
+		if(mLevelY + amount + WINDOW_HEIGHT < mpLevel->getHeight() * 32)
 		{
-			mLevelY++;
+			mLevelY+= amount;
+		}
+		else
+		{
+			mLevelY = (mpLevel->getHeight() * 32) - WINDOW_HEIGHT;
 		}
 	}
 
-	if(Y - mLevelY <= (WINDOW_HEIGHT / 2))
+	if(Y  <  mLevelY + (WINDOW_HEIGHT / 2))
 	{
-		if(mLevelY -1 >0)
+		int amount = (mLevelY + (WINDOW_HEIGHT/2)) - Y;
+		if(mLevelY - amount >0)
 		{
-			mLevelY--;
+			mLevelY-= amount;
+		}
+		else
+		{
+			mLevelY = 0;
 		}
 	}
-   
+
+
+
+	
 
 }
 
@@ -638,8 +659,11 @@ void Application::drawMap()
     
     //      CL_Rect src = dst;
     mpWindow->get_gc()->push_cliprect( dst);
-    
+#ifdef NDEBUG
     mpLevel->draw(src,dst, mpWindow->get_gc(), false,false,false);
+#else
+	mpLevel->draw(src,dst,mpWindow->get_gc(), false,mbShowDebug,mbShowDebug);
+#endif
     
    
     mpLevel->drawMappableObjects( src,dst, mpWindow->get_gc());

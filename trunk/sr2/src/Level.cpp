@@ -425,10 +425,18 @@ void Level::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_Graph
     int cornerx = static_cast<int>(src.left / 32);
     int cornery = static_cast<int>(src.top / 32);
 
-    int width = static_cast<int>((int)ceil((double)src.right/32)) - cornerx;
-    int height = static_cast<int>((int)ceil((double)src.bottom/32)) - cornery;
+    int width = static_cast<int>((int)ceil((double)src.right/32.0)) - cornerx;
+    int height = static_cast<int>((int)ceil((double)src.bottom/32.0)) - cornery;
         
     ++mnFrameCount;
+
+#ifndef NDEBUG
+	if(mnFrameCount %200 == 0)
+	{
+		std::cout << "X: " << cornerx <<  " Y: "  << cornery << std::endl;
+		std::cout << "Width = " << width << " Height = " << height << std::endl;
+	}
+#endif
 
     for(int y = 0;y<height;y++)
     {
@@ -445,11 +453,11 @@ void Level::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_Graph
 				cl_assert ( pMO != 0 );
 #if 0
 
-				pGC->draw_rect(CL_Rect(point.x * 32, point.y * 32, point.x * 32 + 32, point.y * 32 + 32),CL_Color::beige);
-
-				pGC->draw_rect(CL_Rect(pMO->getPosition().x * 32, pMO->getPosition().y * 32,
-					pMO->getPosition().x*32 + 32, pMO->getPosition().y * 32 + 32),
-					CL_Color::darkred);
+				pGC->draw_rect(CL_Rect(point.x * 32 - src.left + dst.left,
+					point.y * 32 + dst.top - src.top,
+					point.x * 32 + 32 - src.left + dst.left,
+					point.y * 32 + 32 - src.top + dst.top),CL_Color::beige);
+		
 #endif
 
 				if(mnFrameCount > pMO->getFrameMarks()
@@ -500,11 +508,11 @@ void Level::moveMappableObjects(const CL_Rect &src)
     // Otherwise they can move as much as they want.
     // The timer should go off at the lowest time (the fastest mover)
           
-    int cornerx = static_cast<int>(src.left / 32);
-    int cornery = static_cast<int>(src.top / 32);
+    int cornerx = static_cast<int>(src.left / 32.0);
+    int cornery = static_cast<int>(src.top / 32.0);
 
-    int width = static_cast<int>(ceil((double)src.right/32)) - cornerx;
-    int height = static_cast<int>(ceil((double)src.bottom/32)) - cornery;
+    int width = static_cast<int>(ceil((double)src.right/32.0)) - cornerx;
+    int height = static_cast<int>(ceil((double)src.bottom/32.0)) - cornery;
         
     mnMoveCount++;
 
@@ -560,7 +568,7 @@ void Level::moveMappableObjects(const CL_Rect &src)
 						iter != intoPoints.end();
 						iter++)
 					{
-						if((*iter).x < cornerx || (*iter).y <cornery || (*iter).x > cornerx+width || (*iter).y > cornerx+height
+						if((*iter).x < cornerx || (*iter).y <cornery || (*iter).x >= cornerx+width || (*iter).y >= cornerx+height
 							|| (*iter).x <0 || (*iter).y <0 || (*iter).x >= mLevelWidth || (*iter).y >= mLevelHeight
 							||containsSolidMappableObject(*iter)
 							||
