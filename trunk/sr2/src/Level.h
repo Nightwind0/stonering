@@ -690,10 +690,7 @@ typedef MOMap::iterator MOMapIter;
         virtual void movedOneCell();
 
         uint getFrameMarks() const{return mnFrameMarks;}
-        uint getMoveCount() const { return mnMoveCount;}
-
         void markFrame()  { ++mnFrameMarks; }
-        void markMove() {++mnMoveCount; }
     protected:
         virtual void handleElement(eElement element, Element * pElement );
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
@@ -722,7 +719,7 @@ typedef MOMap::iterator MOMapIter;
         char cFlags;
         ushort mnCellsMoved;
         uint mnFrameMarks;
-        uint mnMoveCount;
+		ushort mnStepsUntilChange;
     };
 
 	struct LessMOMapIter : public std::binary_function<const MOMapIter&,const MOMapIter&,bool>
