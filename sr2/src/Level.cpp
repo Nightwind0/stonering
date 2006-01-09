@@ -545,17 +545,10 @@ void Level::moveMappableObjects(const CL_Rect &src)
 
 		// Clear the MO from the map altogether, to be reinserted later
 
-		std::list<CL_Point> curPoints;
-		pMo->calcOccupiedPoints(curPoints);
-
-		for(std::list<CL_Point>::const_iterator iPoint= curPoints.begin();
-			iPoint != curPoints.end(); iPoint++)
-		{
+			
+		pMo->setOccupiedPoints(this, &Level::removeMappableObjectAt);
 	
-				removeMappableObjectAt(*iPoint, pMo);
-	
-		}
-
+		
 		for(uint d=0;d<pMo->getMovesPerDraw();d++)
 		{
 			if(pMo->getDirection() != MappableObject::NONE)
@@ -610,16 +603,7 @@ void Level::moveMappableObjects(const CL_Rect &src)
 			}
 		}// For d
 
-		curPoints.clear();
-
-		pMo->calcOccupiedPoints(curPoints);
-
-		for(std::list<CL_Point>::const_iterator iPoint= curPoints.begin();
-			iPoint != curPoints.end(); iPoint++)
-		{
-			setMappableObjectAt(*iPoint, pMo);
-		}
-		
+		pMo->setOccupiedPoints(this, &Level::setMappableObjectAt);
 
 		pMo->update();
 	}// for iMo

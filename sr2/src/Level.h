@@ -624,6 +624,7 @@ namespace StoneRing {
 
 
 class MappableObject;
+class Level;
 
 
 typedef std::multimap<CL_Point,MappableObject*> MOMap;
@@ -658,7 +659,9 @@ typedef MOMap::iterator MOMapIter;
         virtual uint getCellWidth() const;
         virtual uint getMovesPerDraw() const; // a factor of speed
 
-		void calcOccupiedPoints(std::list<CL_Point> &points);
+		typedef void (Level::*LevelPointMethod)(const CL_Point&,MappableObject*);
+
+		void setOccupiedPoints(Level * pLevel, LevelPointMethod method);
                         
         CL_Point getPositionAfterMove() const;
 

@@ -586,10 +586,8 @@ bool StoneRing::MappableObject::onScreen()
     return screen.is_overlapped(getPixelRect());
 }
 
-
-void StoneRing::MappableObject::calcOccupiedPoints(std::list<CL_Point> &points)
+void StoneRing::MappableObject::setOccupiedPoints(Level * pLevel,LevelPointMethod method)
 {
-
 	CL_Point dimensions = calcCellDimensions(meSize);
 	CL_Point position = getPosition();
 
@@ -603,7 +601,7 @@ void StoneRing::MappableObject::calcOccupiedPoints(std::list<CL_Point> &points)
 	{
 		for(uint y = position.y; y<position.y + effectiveHeight; y++)
 		{
-			points.push_back ( CL_Point(x,y));
+			(pLevel->*method)(CL_Point(x,y),this);
 		}
 	}
 
