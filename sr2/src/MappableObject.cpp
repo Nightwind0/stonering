@@ -723,6 +723,8 @@ void StoneRing::MappableObject::movedOneCell()
         }
     }
 
+	update();
+
 }
 bool StoneRing::MappableObject::isAligned() const
 {
@@ -829,6 +831,8 @@ void StoneRing::MappablePlayer::movedOneCell()
 		meDirection = NONE;
 		mbRunning = false;
 	}
+
+	update();
 }
 
 void StoneRing::MappablePlayer::setRunning(bool running)

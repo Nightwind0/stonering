@@ -607,8 +607,7 @@ void Level::moveMappableObjects(const CL_Rect &src)
 		}// For d
 
 		pMo->setOccupiedPoints(this, &Level::setMappableObjectAt);
-
-		pMo->update();
+	
 	}// for iMo
 
 
