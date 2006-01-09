@@ -348,7 +348,7 @@ CL_ResourceManager * Application::getResources() const
 
 Application::Application():mpParty(0),mpLevelFactory(0),
                            mLevelX(0),mLevelY(0),mbDone(false),
-                           mbShowDebug(false), mbQueueKeyUps(false),mbHasNextDirection(false),mnSkippedMoves(0)
+                           mbShowDebug(false), mbQueueKeyUps(false)
     
 {
     mpParty = new Party();
@@ -411,113 +411,52 @@ void Application::teardownClanLib()
 }
 
 
-void Application::recalculatePlayerPosition(IParty::eDirection dir)
+void Application::recalculatePlayerPosition()
 {
-    int X = mpParty->getLevelX();
-    int Y = mpParty->getLevelY();
 
-    if(dir == IParty::DEAST)
-    {
-        if( X - mLevelX > (WINDOW_WIDTH / 2))
-        {
-            // Try to scroll right, otherwise, move guy east
-            
-            if(mLevelX + 1 + WINDOW_WIDTH < mpLevel->getWidth() * 32)
-            {
-                mLevelX++;
-            }
+	CL_Rect ourRect = mpPlayer->getPixelRect();
 
-        }
-    }
-    else if(dir == IParty::DWEST)
-    {
-        if(X - mLevelX <= (WINDOW_WIDTH / 2))
-        {
-            if(mLevelX -1 >0)
-            {
-                mLevelX--;
-            }
-        }
-    }
-    else if (dir == IParty::DSOUTH)
-    {
-        if(Y - mLevelY > (WINDOW_HEIGHT /2))
-        {
+	int X = ourRect.left;
+    int Y = ourRect.top;
+
+	if( X - mLevelX > (WINDOW_WIDTH / 2))
+	{
+		// Try to scroll right, otherwise, move guy east
             
-            if(mLevelY + 1 + WINDOW_HEIGHT < mpLevel->getHeight() * 32)
-            {
-                mLevelY++;
-            }
-        }
-    }   
-    else if (dir == IParty::DNORTH)
-    {
-        if(Y - mLevelY <= (WINDOW_HEIGHT / 2))
-        {
-            if(mLevelY -1 >0)
-            {
-                mLevelY--;
-            }
-        }
-    }
+		if(mLevelX + 1 + WINDOW_WIDTH < mpLevel->getWidth() * 32)
+		{
+			mLevelX++;
+		}
+
+	}
+
+	if(X - mLevelX <= (WINDOW_WIDTH / 2))
+	{
+		if(mLevelX -1 >0)
+		{
+			mLevelX--;
+		}
+	}
     
+    
+	if(Y - mLevelY > (WINDOW_HEIGHT /2))
+	{
+            
+		if(mLevelY + 1 + WINDOW_HEIGHT < mpLevel->getHeight() * 32)
+		{
+			mLevelY++;
+		}
+	}
 
-}
-bool Application::movePlayer()
-{
+	if(Y - mLevelY <= (WINDOW_HEIGHT / 2))
+	{
+		if(mLevelY -1 >0)
+		{
+			mLevelY--;
+		}
+	}
+   
 
-    static uint startTime = CL_System::get_time();
-
-    uint now = CL_System::get_time();
-
-    if(now - startTime > 300) //@todo: get from resources at startup
-    {
-        startTime = now;
-        mbStep  = mbStep? false: true;
-    }
-
-
-    if(mpParty->isAligned())
-    {
-        // We've reached a place
-        if(mbHasNextDirection)
-        {
-            mbHasNextDirection = false;
-            mpParty->changeDirection(meNextDirection);
-
-            CL_Point point(mpParty->getCellX(),mpParty->getCellY());
-            CL_Point newpoint = point;
-
-            switch(meNextDirection)
-            {
-            case IParty::DNORTH:
-                newpoint.y--;
-                break;
-            case IParty::DSOUTH:
-                newpoint.y++;
-                break;
-            case IParty::DWEST:
-                newpoint.x--;
-                break;
-            case IParty::DEAST:
-                newpoint.x++;
-                break;
-            }
-
-            if(mpLevel->tryMove(point,newpoint))
-            {
-                mpParty->move();
-
-            }
-        }
-    }
-    else
-        mpParty->move();
-
-
-    recalculatePlayerPosition(meNextDirection);
-
-    return true;
 }
 
 void Application::onSignalKeyDown(const CL_InputEvent &key)
@@ -531,11 +470,11 @@ void Application::onSignalKeyDown(const CL_InputEvent &key)
         bool running = false;
         if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ) && mpLevel->allowsRunning())
         {
-            mbMoveFast = true;
+			mpPlayer->setRunning(true);
         }
         else
         {
-            mbMoveFast = false;
+            mpPlayer->setRunning(false);
         }
         
         switch(key.id)
@@ -544,20 +483,16 @@ void Application::onSignalKeyDown(const CL_InputEvent &key)
             mbDone = true;
             break;
         case CL_KEY_DOWN:
-            mbHasNextDirection = true;
-            meNextDirection = IParty::DSOUTH;
+			mpPlayer->setNextDirection(StoneRing::MappableObject::SOUTH);
             break;
         case CL_KEY_UP:
-            mbHasNextDirection = true;
-            meNextDirection = IParty::DNORTH;
+			mpPlayer->setNextDirection(StoneRing::MappableObject::NORTH);
             break;
         case CL_KEY_LEFT:
-            mbHasNextDirection = true;
-            meNextDirection = IParty::DWEST;
+			mpPlayer->setNextDirection(StoneRing::MappableObject::WEST);
             break;
         case CL_KEY_RIGHT:
-            mbHasNextDirection = true;
-            meNextDirection = IParty::DEAST;
+			mpPlayer->setNextDirection(StoneRing::MappableObject::EAST);
             break;
 
         default:
@@ -683,24 +618,9 @@ void Application::loadItems(const std::string &filename)
 }
 void Application::onSignalMovementTimer()
 {
-
-    if(mbMoveFast)
-    {
-        movePlayer();
-    }
-    else
-    {
-        if(mnSkippedMoves >0)
-        {
-            mnSkippedMoves = 0;
-            movePlayer();
-        }
-        else mnSkippedMoves++;
-
-    }
-
     mpLevel->moveMappableObjects(getLevelRect());
 
+	recalculatePlayerPosition();
     mbDraw = true;
 
 
@@ -723,11 +643,7 @@ void Application::drawMap()
     
    
     mpLevel->drawMappableObjects( src,dst, mpWindow->get_gc());
-
-    drawPlayer();
-
-    mpLevel->drawFloaters(src,dst, mpWindow->get_gc());
-    
+	mpLevel->drawFloaters(src,dst, mpWindow->get_gc());
     
     mpWindow->get_gc()->pop_cliprect();
 }
@@ -769,7 +685,11 @@ int Application::main(int argc, char ** argv)
 
         mpSayOverlay = new CL_Surface("Overlays/say_overlay", mpResources );
 
-        mpPlayerSprite = new CL_Sprite(defaultplayersprite, mpResources );
+        CL_Sprite * pPlayerSprite = new CL_Sprite(defaultplayersprite, mpResources );
+
+		mpPlayer = new StoneRing::MappablePlayer(0,0);
+
+		mpPlayer->setSprite(pPlayerSprite);
 
         loadFonts();
         showRechargeableOnionSplash();
@@ -778,6 +698,8 @@ int Application::main(int argc, char ** argv)
         loadSpells(spelldefinition);
         loadItems(itemdefinition);
         mpLevel = new Level(startinglevel, mpResources);
+
+		mpLevel->addPlayer(mpPlayer);
 
 
         CL_Slot slot_quit = mpWindow->sig_window_close().connect(this, &Application::onSignalQuit);
@@ -926,53 +848,27 @@ void Application::processActionQueue()
 }
 
 
-void Application::drawPlayer()
-{
-    uint frame = 0;
 
-    int CurX, CurY;
 
-    CurX = mpParty->getLevelX() - mLevelX  - ((mpPlayerSprite->get_width() - 32) /2);
-    CurY = mpParty->getLevelY() - mLevelY - (mpPlayerSprite->get_height() - 32);
 
-    switch(mpParty->getDirection())
-    {
-    case IParty::DNORTH:
-        frame = mbStep? 6:7;
-        break;
-    case IParty::DSOUTH:
-        frame = mbStep? 4:5;
-        break;
-    case IParty::DEAST:
-        frame = mbStep? 0:1;
-        break;
-    case IParty::DWEST:
-        frame = mbStep? 2:3;
-        break;
-    }
-
-    mpPlayerSprite->set_frame ( frame );
-
-    mpPlayerSprite->draw(CurX, CurY, mpWindow->get_gc() );
-}
 
 
 void Application::doTalk(bool prod)
 {
-    CL_Point talkPoint(mpParty->getCellX(),mpParty->getCellY());
+    CL_Point talkPoint = mpPlayer->getPosition();
 
-    switch(mpParty->getDirection())
+    switch(mpPlayer->getDirection())
     {
-    case IParty::DNORTH:
+    case MappableObject::NORTH:
         talkPoint.y--;
         break;
-    case IParty::DSOUTH:
+    case MappableObject::SOUTH:
         talkPoint.y++;
         break;
-    case IParty::DWEST:
+	case MappableObject::WEST:
         talkPoint.x--;
         break;
-    case IParty::DEAST:
+    case MappableObject::EAST:
         talkPoint.x++;
         break;
     }

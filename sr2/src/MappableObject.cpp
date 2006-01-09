@@ -505,8 +505,7 @@ void StoneRing::MappableObject::setFrameForDirection()
             mpSprite->set_frame(mbStep? 4 : 5);
             break;
         case NONE:
-            if(mbStep) mpSprite->set_frame(4);
-            else mpSprite->set_frame(5);
+        
             break;
         }
         break;
@@ -519,8 +518,7 @@ void StoneRing::MappableObject::setFrameForDirection()
             mpSprite->set_frame ( mbStep? 2 : 3);
             break;
         case SOUTH:
-        case NONE:
-            mpSprite->set_frame ( mbStep? 0 : 1);
+			mpSprite->set_frame ( mbStep? 0 : 1);
             break;
         }
         break;
@@ -530,8 +528,7 @@ void StoneRing::MappableObject::setFrameForDirection()
         switch(meDirection)
         {
         case EAST:
-        case NONE:
-            mpSprite->set_frame ( mbStep? 0 : 1 );
+			mpSprite->set_frame ( mbStep? 0 : 1 );
             break;
         case WEST:
             mpSprite->set_frame ( mbStep? 2 : 3 );
@@ -609,6 +606,48 @@ void StoneRing::MappableObject::setOccupiedPoints(Level * pLevel,LevelPointMetho
 
 }
 
+void StoneRing::MappableObject::provokeEvents ( Event::eTriggerType trigger )
+{
+    IParty *party = IApplication::getInstance()->getParty();
+
+    for(std::list<Event*>::iterator i = mEvents.begin();
+        i != mEvents.end();
+        i++)
+    {
+        Event * event = *i;
+        
+        // If this is the correct trigger,
+        // And the event is either repeatable or
+        // Hasn't been done yet, invoke it
+
+        if( event->getTriggerType() == trigger 
+            && (event->repeatable() || ! party->didEvent ( event->getName() ))
+            )
+        {
+            event->invoke();
+        }
+
+    }
+}
+
+int StoneRing::MappableObject::ConvertDirectionToDirectionBlock(eDirection dir) 
+{
+    switch(dir)
+    {
+    case NORTH:
+        return DIR_SOUTH;
+    case SOUTH:
+        return DIR_NORTH;
+    case EAST:
+        return DIR_WEST;
+    case WEST:
+        return DIR_EAST;
+    case NONE:
+        return 0;
+                       
+    }
+}
+
 void StoneRing::MappableObject::CalculateEdgePoints(const CL_Point &topleft, eDirection dir, eSize size, std::list<CL_Point> *pList)
 {
     uint points = 0;
@@ -654,48 +693,8 @@ void StoneRing::MappableObject::CalculateEdgePoints(const CL_Point &topleft, eDi
     }
 }
 
-void StoneRing::MappableObject::provokeEvents ( Event::eTriggerType trigger )
-{
-    IParty *party = IApplication::getInstance()->getParty();
 
-    for(std::list<Event*>::iterator i = mEvents.begin();
-        i != mEvents.end();
-        i++)
-    {
-        Event * event = *i;
-        
-        // If this is the correct trigger,
-        // And the event is either repeatable or
-        // Hasn't been done yet, invoke it
-
-        if( event->getTriggerType() == trigger 
-            && (event->repeatable() || ! party->didEvent ( event->getName() ))
-            )
-        {
-            event->invoke();
-        }
-
-    }
-}
-
-int StoneRing::MappableObject::ConvertDirectionToDirectionBlock(eDirection dir) 
-{
-    switch(dir)
-    {
-    case NORTH:
-        return DIR_SOUTH;
-    case SOUTH:
-        return DIR_NORTH;
-    case EAST:
-        return DIR_WEST;
-    case WEST:
-        return DIR_EAST;
-    case NONE:
-        return 0;
-                       
-    }
-}
-
+#if 0
 StoneRing::MappableObject::eDirection StoneRing::MappableObject::OppositeDirection(eDirection current_dir)
 {
     switch( current_dir )
@@ -712,6 +711,7 @@ StoneRing::MappableObject::eDirection StoneRing::MappableObject::OppositeDirecti
         return current_dir;
     }
 }
+#endif
 
 void StoneRing::MappableObject::movedOneCell()
 {
@@ -770,3 +770,71 @@ CL_Point StoneRing::MappableObject::getPositionAfterMove() const
 
     return point;
 }
+
+
+
+
+
+StoneRing::MappablePlayer::MappablePlayer(uint startX, uint startY):mbHasNextDirection(false)
+{
+	meSize = MO_SMALL;
+	mStartX = startX;
+	mStartY = startY;
+	mX=startX * 32;
+	mY=startX * 32;
+	mName = "Player";
+	meType = PLAYER;
+	meDirection = NONE;
+
+	mpMovement = new PlayerMovement;
+}
+
+StoneRing::MappablePlayer::~MappablePlayer()
+{
+}
+
+uint StoneRing::MappablePlayer::getMovesPerDraw() const
+{
+	if(mbRunning) return 3;
+	else return 2;
+}
+
+
+
+
+
+void StoneRing::MappablePlayer::setNextDirection(eDirection newDir)
+{
+	mbHasNextDirection = true;
+	meNextDirection = newDir;
+}
+CL_DomElement  StoneRing::MappablePlayer::createDomElement(CL_DomDocument &doc) const
+{
+	return CL_DomElement(doc,"player");
+}
+void StoneRing::MappablePlayer::randomNewDirection()
+{
+	meDirection = NONE;
+}
+
+void StoneRing::MappablePlayer::movedOneCell()
+{
+	if(mbHasNextDirection)
+	{
+		meDirection = meNextDirection;
+		mbHasNextDirection = false;
+	}
+	else
+	{
+		meDirection = NONE;
+		mbRunning = false;
+	}
+}
+
+void StoneRing::MappablePlayer::setRunning(bool running)
+{
+	mbRunning = running;
+}
+
+
+

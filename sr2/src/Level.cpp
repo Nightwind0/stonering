@@ -444,6 +444,7 @@ void Level::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_Graph
 				MappableObject * pMO = iter->second;
 				cl_assert ( pMO != 0 );
 #if 0
+
 				pGC->draw_rect(CL_Rect(point.x * 32, point.y * 32, point.x * 32 + 32, point.y * 32 + 32),CL_Color::beige);
 
 				pGC->draw_rect(CL_Rect(pMO->getPosition().x * 32, pMO->getPosition().y * 32,
@@ -485,7 +486,10 @@ void Level::putMappableObjectAtCurrentPosition(MappableObject *pMO)
 }
 
 
-
+void Level::addPlayer(StoneRing::MappablePlayer *pPlayer)
+{
+	putMappableObjectAtCurrentPosition(pPlayer);
+}
 
 
 void Level::moveMappableObjects(const CL_Rect &src)
@@ -495,18 +499,7 @@ void Level::moveMappableObjects(const CL_Rect &src)
     // They can't stop unless they are aligned. 
     // Otherwise they can move as much as they want.
     // The timer should go off at the lowest time (the fastest mover)
-    // And slower characters should activate say every other or every third time.
-    // So this should be called periodically, but not every MO will move when it's called.
-        
-    // Step one, check direction of mappable object.
-    // Step two, find the set of points that the object is moving into
-    // And, if the object is aligned (meaning that is about to be unaligned)
-    // If the object is solid, then mark those points as occupied.
-    // Then, tell the object to move.
-    // If the object then becomes aligned, find the points that it previously occupied
-    // (in other words, the points to the east if it's moving west)
-    // And, if the object is solid,  mark them as unoccupied
-
+          
     int cornerx = static_cast<int>(src.left / 32);
     int cornery = static_cast<int>(src.top / 32);
 
@@ -567,11 +560,12 @@ void Level::moveMappableObjects(const CL_Rect &src)
 						iter != intoPoints.end();
 						iter++)
 					{
-						if((*iter).x < cornerx || (*iter).y <cornery || (*iter).x >= width || (*iter).y >= height
+						if((*iter).x < cornerx || (*iter).y <cornery || (*iter).x > cornerx+width || (*iter).y > cornerx+height
+							|| (*iter).x <0 || (*iter).y <0 || (*iter).x >= mLevelWidth || (*iter).y >= mLevelHeight
 							||containsSolidMappableObject(*iter)
 							||
 							(getCumulativeDirectionBlockAtPoint(*iter) & MappableObject::ConvertDirectionToDirectionBlock(pMo->getDirection()))
-							|| getCumulativeHotnessAtPoint(*iter)
+							|| (pMo->respectsHotness() && getCumulativeHotnessAtPoint(*iter))
 							)
 						{
 							// No go. Change direction, so we can try again.
@@ -599,7 +593,8 @@ void Level::moveMappableObjects(const CL_Rect &src)
 			}// if direction != NONE
 			else
 			{
-				pMo->movedOneCell();
+				if(mnMoveCount % 32 == 0)
+					pMo->movedOneCell();
 			}
 		}// For d
 
@@ -609,162 +604,6 @@ void Level::moveMappableObjects(const CL_Rect &src)
 	}// for iMo
 
 
-
-
-
-
-#if 0
-
-                for(uint d=0;d<pMo->getMovesPerDraw();d++)
-                {
-					bool bPathBlocked = false;
-                    if(pMo->getDirection() != MappableObject::NONE)
-                    {
-                        CL_Point originalLocation = pMo->getPosition();
-						CL_Point newLocation;
-                        // Aligned means we're about to become unaligned by moving
-                        // So we get a list of points at the location we are moving into,
-                        // And we mark those points as occupado.
-
-                        bool bWasAligned = pMo->isAligned();
-                        std::list<CL_Point> intoPoints ;
-            
-                        if(bWasAligned)
-                        {
-                            newLocation = pMo->getPositionAfterMove();
-                                        
-                            MappableObject::CalculateEdgePoints(newLocation, pMo->getDirection(),
-                                                                pMo->getSize(), &intoPoints);
-                                        
-                            // Make sure none of these points is occupied.
-                            // Break this into a method so I can if() off it
-                            for(std::list<CL_Point>::iterator iter = intoPoints.begin();
-                                iter != intoPoints.end();
-                                iter++)
-                            {
-                                if((*iter).x < cornerx || (*iter).y <cornery || (*iter).x >= width || (*iter).y >= height
-                                   ||containsSolidMappableObject(*iter)
-                                   ||
-                                   (getCumulativeDirectionBlockAtPoint(*iter) & MappableObject::ConvertDirectionToDirectionBlock(pMo->getDirection()))
-                                   || getCumulativeHotnessAtPoint(*iter)
-                                    )
-                                {
-                                    // No go. Change direction, so we can try again.
-                                    pMo->randomNewDirection();
-
-#ifndef NDEBUG
-									std::cout << "Changing direction with d of " << d << std::endl;
-#endif
-
-                                    bPathBlocked = true;
-									break;
-                                }
-                            }// all points                               
-                
-
-                            // Mark current points as occcupied by you
-
-                        }// bwasaligned
-
-						if(!bPathBlocked)
-						{    
-							// Okay. We've made sure that we can move. 
-							pMo->move();
-						}
-						else
-						{
-							break;
-						}
-
-                        if(bWasAligned)
-                        {
-                            for(std::list<CL_Point>::iterator i = intoPoints.begin();
-                                i != intoPoints.end();
-                                i++)
-                            {
-                                setMappableObjectAt(*i, pMo);
-                            }//points
-                        }
-
-
-                        // Theres a possability that we've become aligned after moving. In which case, we have to 
-                        // mark where we've come from as unoccupied.
-                                
-                        if(pMo->isAligned())
-                        {
-                            std::list<CL_Point> fromPoints ;
-                                                                                    
-                            MappableObject::CalculateEdgePoints(originalLocation, MappableObject::OppositeDirection(pMo->getDirection()),
-                                                                pMo->getSize(), &fromPoints);
-                    
-                            // (*iList).second.erase(std::remove_if((*iList).second.begin(),(*iList).second.end(), std::bind2nd(std::equal_to<MappableObject*>(),pMo)));
-//                                                              *iMo = NULL;
-                            for(std::list<CL_Point>::iterator i = fromPoints.begin();
-                                i != fromPoints.end();
-                                i++)
-                            {
-								MOMapIter lower = mMOMap.lower_bound(*i);
-								MOMapIter upper = mMOMap.upper_bound(*i);
-
-#ifndef NDEBUG
-								if(lower == upper)
-								{
-									// This means it wasnt found
-									std::cout << "We didn't find our guy where we expected." << std::endl;
-								}
-#endif
-
-								for(MOMapIter findit = lower; findit != upper; findit++)
-								{
-									if ( findit->second == pMo)
-									{
-																				
-										itersToRemove.insert( findit);
-										findit->second = NULL;
-										
-										// We mark it null so that it doesnt block movement anymore. 
-										//The containsSolidMO function ignores NULLs
-
-#ifndef NDEBUG
-										std::cout << "Marking a guy for erase.";
-#endif
-									}
-#ifndef NDEBUG
-									std::cout << std::endl;
-#endif
-								}
-                                                                        
-                            }//points
-                            //  if((*iList).second.size() == 0) mMOMap.erase(iList);
-                            pMo->movedOneCell();
-                                        
-                        }
-                                
-                    }
-                    else
-                    {
-                        // Direction == NONE
-                        // If direction is none, then this method is called less frequently, but occasionally it is called
-                        // And to give the object a chance to change direction from NONE, we tell it that it moved
-                        // One cell. 
-                        pMo->movedOneCell();
-                    } //if dir
-                } // for d
-				pMo->update();
-            }// for iMo
-            
-			for(std::set<MOMapIter,LessMOMapIter>::iterator iRem = itersToRemove.begin();
-				iRem != itersToRemove.end(); iRem++)
-			{
-				mMOMap.erase(*iRem);
-			}    
-          
-            //For this list, remove any that have been set to null
-
-        } // fory
-                
-    }//for x
-#endif
         
 }
  

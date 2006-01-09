@@ -13,7 +13,7 @@ using StoneRing::ICharacter;
 using StoneRing::ItemRef;
 
 
-Party::Party():mX(0),mY(0),mnGold(0)
+Party::Party():mnGold(0)
 {
 }
 
@@ -21,47 +21,6 @@ Party::~Party()
 {
 }
 
-IParty::eDirection Party::getDirection()const
-{
-	return meDirection;
-}
-
-bool Party::isAligned() const
-{
-        return (mX % 32 == 0) && (mY %32 == 0);
-}
-
-void Party::move()
-{
-        uint speed  = 1;
-
-		switch(meDirection)
-		{
-		case DNORTH:
-			mY -= speed;
-			break;
-		case DSOUTH:
-			mY += speed;
-			break;
-		case DWEST:
-			mX -= speed;
-			break;
-		case DEAST:
-			mX += speed;
-			break;
-		}
-}
-
-void Party::changeDirection(eDirection direction)
-{
-	meDirection = direction;
-}
-
-void Party::resetPosition(uint levelX, uint levelY)
-{
-	mX = levelX;
-	mY = levelY;
-}
 
 bool Party::getGold() const
 {
@@ -84,45 +43,6 @@ bool Party::didEvent(const std::string &event) const
     return mEvents.count(event) != 0;
 }
 
-uint Party::getLevelX() const
-{
-	return mX;
-}
-
-uint Party::getLevelY() const
-{
-	return mY;
-}
-
-uint Party::getCellWidth() const
-{
-    return 1;
-}
-
-uint Party::getCellHeight() const
-{
-    return 1;
-}
-
-uint Party::getCellX() const
-{
-  return mX / 32;
-}
-
-uint Party::getCellY() const
-{
-  return mY / 32;
-}
-
-void Party::setLevelX(uint x)
-{
-    mX = x;
-}
-
-void Party::setLevelY(uint y)
-{
-    mY = y;
-}
 
 void Party::doEvent(const std::string &name, bool bRemember)
 {
