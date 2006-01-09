@@ -657,6 +657,8 @@ typedef MOMap::iterator MOMapIter;
         virtual uint getCellHeight() const;
         virtual uint getCellWidth() const;
         virtual uint getMovesPerDraw() const; // a factor of speed
+
+		void calcOccupiedPoints(std::list<CL_Point> &points);
                         
         CL_Point getPositionAfterMove() const;
 
@@ -797,6 +799,7 @@ typedef MOMap::iterator MOMapIter;
         bool containsSolidMappableObject(const CL_Point &point) const;
         void setMappableObjectAt(const CL_Point &point, MappableObject*  pMO);
 		void putMappableObjectAtCurrentPosition(MappableObject *pMO);
+		void removeMappableObjectAt(const CL_Point &point, MappableObject * pMO);
       
         // Sort MO's in order to bring close ones to the top
         static bool moSortCriterion( const MappableObject *p1, const MappableObject * p2);

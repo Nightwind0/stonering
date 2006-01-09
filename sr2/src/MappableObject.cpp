@@ -465,6 +465,10 @@ void StoneRing::MappableObject::randomNewDirection()
 
     mnCellsMoved = 0;
     setFrameForDirection();
+
+#ifndef NDEBUG
+	std::cout << "Random new direction" << std::endl;
+#endif
         
 }
 
@@ -582,6 +586,28 @@ bool StoneRing::MappableObject::onScreen()
     return screen.is_overlapped(getPixelRect());
 }
 
+
+void StoneRing::MappableObject::calcOccupiedPoints(std::list<CL_Point> &points)
+{
+
+	CL_Point dimensions = calcCellDimensions(meSize);
+	CL_Point position = getPosition();
+
+	uint effectiveWidth = dimensions.x ;
+	uint effectiveHeight = dimensions.y ;
+
+	if(mX % 32) ++effectiveWidth;
+	if(mY % 32) ++effectiveHeight;
+
+	for(uint x = position.x; x < position.x + effectiveWidth; x++)
+	{
+		for(uint y = position.y; y<position.y + effectiveHeight; y++)
+		{
+			points.push_back ( CL_Point(x,y));
+		}
+	}
+
+}
 
 void StoneRing::MappableObject::CalculateEdgePoints(const CL_Point &topleft, eDirection dir, eSize size, std::list<CL_Point> *pList)
 {
