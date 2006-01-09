@@ -268,7 +268,7 @@ void StoneRing::MappableObject::loadFinished()
  
 StoneRing::MappableObject::MappableObject():meDirection(NONE),mpSprite(NULL),mpMovement(0),
                                  mpCondition(0),cFlags(0),mnCellsMoved(0),
-                                 mnFrameMarks(0),mnMoveCount(0)
+                                 mnFrameMarks(0),mnStepsUntilChange(0)
 {
    
 }
@@ -464,6 +464,8 @@ void StoneRing::MappableObject::randomNewDirection()
     }
 
     mnCellsMoved = 0;
+	mnStepsUntilChange = rand() % 20;
+
     setFrameForDirection();
 
 #ifndef NDEBUG
@@ -715,9 +717,9 @@ void StoneRing::MappableObject::movedOneCell()
 {
     if(++mnCellsMoved) 
     {
-        if(mnCellsMoved == 10) ///@todo: get from somewhere
+        if(mnCellsMoved == mnStepsUntilChange) ///@todo: get from somewhere
         {
-            randomNewDirection();
+			randomNewDirection();
         }
     }
 
