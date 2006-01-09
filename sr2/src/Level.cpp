@@ -990,7 +990,7 @@ void Level::loadTile ( CL_DomElement * tileElement)
 #ifndef _MSC_VER
         mFloaterMap[ point ].sort( &tileSortCriterion );
 #else
-        mFloaterMap[ point ].sort( std::greater<Tile*>() );
+        mFloaterMap[ point ].sort( LessTile );
 #endif
     }
     else
@@ -1004,7 +1004,7 @@ void Level::loadTile ( CL_DomElement * tileElement)
 #ifndef _MSC_VER
         mTileMap[ point.x ][point.y].sort( &tileSortCriterion );
 #else
-        mTileMap[ point.x ][point.y].sort(std::greater<Tile*>() );
+        mTileMap[ point.x ][point.y].sort( LessTile );
 #endif
     }
 }

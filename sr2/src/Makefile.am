@@ -8,21 +8,24 @@ stonering_SOURCES =	 Application.cpp \
 
 noinst_LTLIBRARIES = libstonering.la
 
-libstonering_la_SOURCES = Level.cpp \
-			GraphicsManager.cpp \
-			LevelFactory.cpp \
-			Item.cpp \
-			ItemManager.cpp \
-			ItemFactory.cpp \
-			Animation.cpp \
-			Element.cpp \
+libstonering_la_SOURCES = \
 			AbilityFactory.cpp \
-			Spell.cpp \
 			AbilityManager.cpp \
-			StatusEffect.cpp \
+			Animation.cpp \
+			CharacterClass.cpp \
+			Element.cpp \
+			GraphicsManager.cpp \
+			Item.cpp \
+			ItemFactory.cpp \
+			ItemManager.cpp \
+			Level.cpp \
+			LevelElements.cpp \
+			LevelFactory.cpp \
+			MappableObject.cpp \
 			Skill.cpp \
-			CharacterClass.cpp 
-
+			Spell.cpp \
+			StatusEffect.cpp \
+			Utilities.cpp
 
 
 libstonering_la_CPPFLAGS = $(CLANLIB_CFLAGS) \
