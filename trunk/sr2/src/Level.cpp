@@ -435,6 +435,7 @@ void Level::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_Graph
 	{
 		std::cout << "X: " << cornerx <<  " Y: "  << cornery << std::endl;
 		std::cout << "Width = " << width << " Height = " << height << std::endl;
+		std::cout << "Right = " << cornerx + width << " Bottom = " << cornery + height << std::endl;
 	}
 #endif
 
@@ -532,15 +533,26 @@ void Level::moveMappableObjects(const CL_Rect &src)
             {
                 MappableObject * pMo = iter->second;
                 if(! pMo->evaluateCondition()) continue; // Skip 'em
+
 				MOIters.insert( iter );
 			}
 		}
 	}
 
+#ifndef NDEBUG
+bool playerFound = false;
+
+#endif
+
 	for(std::set<MOMapIter,LessMOMapIter>::iterator iMo = MOIters.begin();
 		iMo != MOIters.end();iMo++)
 	{
 		MappableObject * pMo = (*iMo)->second;
+
+#ifndef NDEBUG
+		if(pMo->getName() == "Player")
+			playerFound = true;
+#endif
 
 		CL_Point curPos = pMo->getPosition();
 
@@ -601,14 +613,21 @@ void Level::moveMappableObjects(const CL_Rect &src)
 			}// if direction != NONE
 			else
 			{
+
+				
 				if(mnMoveCount % 32 == 0)
 					pMo->movedOneCell();
+				else pMo->idle();
 			}
 		}// For d
 
 		pMo->setOccupiedPoints(this, &Level::setMappableObjectAt);
 	
 	}// for iMo
+
+#ifndef NDEBUG
+	if(!playerFound) std::cout << "Didn't iterate over player!" << std::endl;
+#endif
 
 
         
