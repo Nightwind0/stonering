@@ -84,10 +84,10 @@ namespace StoneRing {
         Tilemap();
         virtual ~Tilemap();
       
-        inline ushort getMapX() const;
-        inline ushort getMapY() const;
+        ushort getMapX() const;
+        ushort getMapY() const;
 
-        inline CL_Surface * getTileMap() const;
+        CL_Surface * getTileMap() const;
 
         virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
@@ -601,12 +601,12 @@ namespace StoneRing {
 
         void activate(); // Call any attributemodifier
             
-        virtual inline  uint getX() const;
-        virtual inline uint getY() const;
+        virtual uint getX() const;
+        virtual uint getY() const;
 
-        virtual inline CL_Rect getRect();
+        virtual CL_Rect getRect();
 
-        virtual inline bool isSprite() const;
+        virtual bool isSprite() const;
 
         bool isHot() const;
 
@@ -690,7 +690,7 @@ typedef MOMap::iterator MOMapIter;
         virtual bool isTile() const;
         virtual void provokeEvents ( Event::eTriggerType trigger );
         virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
-        inline bool evaluateCondition() const;
+        bool evaluateCondition() const;
 
         void prod();
                         
@@ -880,13 +880,13 @@ typedef MOMap::iterator MOMapIter;
                         
 
     };
+
+
+
 };
 
-
-
-
-template<>
-struct std::greater<StoneRing::Tile*>
+struct LessTile : public std::binary_function<const StoneRing::Tile*,
+    const StoneRing::Tile*,bool>
 {
 	bool operator()(const StoneRing::Tile* n1, const StoneRing::Tile *n2) const
         {
@@ -895,4 +895,7 @@ struct std::greater<StoneRing::Tile*>
 };
 
 
+
+
 #endif
+
