@@ -85,8 +85,6 @@ class Choice;
       int mLevelY;
 
       bool mbDone;
-	  bool mbStep;
-      bool mbMoveFast;
 
       void setupClanLib();
       void teardownClanLib();
@@ -100,13 +98,9 @@ class Choice;
 
       void processActionQueue();
 
-      void drawPlayer();
+	  void drawMap();
 
-      void drawMap();
-
-      void recalculatePlayerPosition(IParty::eDirection dir);
-
-      bool movePlayer();
+	  void recalculatePlayerPosition();
 
       void doTalk(bool prod=false);
 
@@ -126,21 +120,17 @@ class Choice;
 
 
       Level * mpLevel;
+	  MappablePlayer * mpPlayer;
       bool mbShowDebug;
 
-      CL_Sprite *mpPlayerSprite;
-
-	  CL_Font *mpfSBBlack;
+   	  CL_Font *mpfSBBlack;
       CL_Font *mpfBWhite;
       CL_Font *mpfBPowderBlue;
       CL_Font *mpfBGray;
       CL_Timer *mpMovementTimer;
       CL_Surface *mpSayOverlay;
 
-      bool mbHasNextDirection;
-      IParty::eDirection meNextDirection;
-      ushort mnSkippedMoves;
-      eState meState;
+	  eState meState;
 
 #ifndef NDEBUG
       CL_Rect mLastTalkRect;
