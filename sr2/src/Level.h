@@ -750,6 +750,8 @@ typedef MOMap::iterator MOMapIter;
 		void setSprite(CL_Sprite *pSprite) { mpSprite = pSprite; }
 		void setRunning(bool running);
 		virtual bool respectsHotness(){ return false; }
+		virtual uint getLevelX() const { return mX;}
+		virtual uint getLevelY() const { return mY;}
 	private:
 		virtual void handleElement(eElement element, Element * pElement ){}
 		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes){}
