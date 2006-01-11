@@ -141,16 +141,16 @@ namespace StoneRing {
         eMovementSpeed meSpeed;
     };
 
-	class PlayerMovement : public Movement
-	{
-	public:
-		PlayerMovement(){}
-		~PlayerMovement(){}
+    class PlayerMovement : public Movement
+    {
+    public:
+	PlayerMovement(){}
+	~PlayerMovement(){}
 
-		virtual eMovementType getMovementType() const { return MOVEMENT_WANDER; }
-		virtual eMovementSpeed getMovementSpeed() const { return MEDIUM; }
-	private:
-	};
+	virtual eMovementType getMovementType() const { return MOVEMENT_WANDER; }
+	virtual eMovementSpeed getMovementSpeed() const { return MEDIUM; }
+    private:
+    };
 
     class Condition;
 
@@ -634,12 +634,12 @@ namespace StoneRing {
     };
 
 
-class MappableObject;
-class Level;
+    class MappableObject;
+    class Level;
 
 
-typedef std::multimap<CL_Point,MappableObject*> MOMap;
-typedef MOMap::iterator MOMapIter;
+    typedef std::multimap<CL_Point,MappableObject*> MOMap;
+    typedef MOMap::iterator MOMapIter;
 
     class MappableObject : public Graphic
     {
@@ -664,16 +664,15 @@ typedef MOMap::iterator MOMapIter;
         std::string getName() const;
         bool isAligned() const; // Is aligned on cells (not moving between them)
         virtual CL_Rect getPixelRect() const; // In pixels
-        virtual bool onScreen();
         virtual bool isSprite() const;
         virtual uint getCellHeight() const;
         virtual uint getCellWidth() const;
         virtual uint getMovesPerDraw() const; // a factor of speed
-		virtual bool respectsHotness() const{ return true; }
+	virtual bool respectsHotness() const{ return true; }
 
-		typedef void (Level::*LevelPointMethod)(const CL_Point&,MappableObject*);
+	typedef void (Level::*LevelPointMethod)(const CL_Point&,MappableObject*);
 
-		void setOccupiedPoints(Level * pLevel, LevelPointMethod method);
+	void setOccupiedPoints(Level * pLevel, LevelPointMethod method);
                         
         CL_Point getPositionAfterMove() const;
 
@@ -694,12 +693,12 @@ typedef MOMap::iterator MOMapIter;
 
         void prod();
                         
-		static void CalculateEdgePoints(const CL_Point &topleft, eDirection dir, eSize size, std::list<CL_Point> *pList);
-      //  static eDirection OppositeDirection(eDirection current_dir);
+	static void CalculateEdgePoints(const CL_Point &topleft, eDirection dir, eSize size, std::list<CL_Point> *pList);
+	//  static eDirection OppositeDirection(eDirection current_dir);
         static int ConvertDirectionToDirectionBlock(eDirection dir);
         virtual void randomNewDirection();
         virtual void movedOneCell();
-		virtual void idle(){} // Wait while direction is none.
+	virtual void idle(){} // Wait while direction is none.
 
         uint getFrameMarks() const{return mnFrameMarks;}
         void markFrame()  { ++mnFrameMarks; }
@@ -731,47 +730,47 @@ typedef MOMap::iterator MOMapIter;
         char cFlags;
         ushort mnCellsMoved;
         uint mnFrameMarks;
-		ushort mnStepsUntilChange;
+	ushort mnStepsUntilChange;
     };
 
-	class MappablePlayer : public MappableObject
-	{
-	public:
-		MappablePlayer(uint startX, uint startY);
-		virtual ~MappablePlayer();
-		virtual bool isSolid() const { return true; }
-		virtual bool isSprite() const { return true; }
-		virtual uint getMovesPerDraw() const;
-		virtual bool isTile() const { return false; }
-		virtual void setNextDirection(eDirection newDir);
-        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
-        virtual void randomNewDirection();
-        virtual void movedOneCell();
-		virtual void idle();
-		void setSprite(CL_Sprite *pSprite) { mpSprite = pSprite; }
-		void setRunning(bool running);
-		virtual bool respectsHotness(){ return false; }
-		virtual uint getLevelX() const { return mX;}
-		virtual uint getLevelY() const { return mY;}
-	private:
-		virtual void handleElement(eElement element, Element * pElement ){}
-		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes){}
-		virtual void loadFinished(){}
+    class MappablePlayer : public MappableObject
+    {
+    public:
+	MappablePlayer(uint startX, uint startY);
+	virtual ~MappablePlayer();
+	virtual bool isSolid() const { return true; }
+	virtual bool isSprite() const { return true; }
+	virtual uint getMovesPerDraw() const;
+	virtual bool isTile() const { return false; }
+	virtual void setNextDirection(eDirection newDir);
+	virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
+	virtual void randomNewDirection();
+	virtual void movedOneCell();
+	virtual void idle();
+	void setSprite(CL_Sprite *pSprite) { mpSprite = pSprite; }
+	void setRunning(bool running);
+	virtual bool respectsHotness(){ return false; }
+	virtual uint getLevelX() const { return mX;}
+	virtual uint getLevelY() const { return mY;}
+    private:
+	virtual void handleElement(eElement element, Element * pElement ){}
+	virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes){}
+	virtual void loadFinished(){}
 
-		eDirection meNextDirection;
-		bool mbHasNextDirection;
-		bool mbRunning;
-	};
+	eDirection meNextDirection;
+	bool mbHasNextDirection;
+	bool mbRunning;
+    };
 
 
 
-	struct LessMOMapIter : public std::binary_function<const MOMapIter&,const MOMapIter&,bool>
-	{
-		bool operator()(const MOMapIter &i1, const MOMapIter &i2)
-		{
-			return i1->second < i2->second;
-		}
-	};
+    struct LessMOMapIter : public std::binary_function<const MOMapIter&,const MOMapIter&,bool>
+    {
+	bool operator()(const MOMapIter &i1, const MOMapIter &i2)
+	    {
+		return i1->second < i2->second;
+	    }
+    };
 
 
     class Level
@@ -792,7 +791,7 @@ typedef MOMap::iterator MOMapIter;
         virtual void drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
         virtual void drawFloaters(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext * pGC);
 
-		void addPlayer(MappablePlayer * pPlayer);
+	void addPlayer(MappablePlayer * pPlayer);
                 
         void moveMappableObjects(const CL_Rect &src);
       
@@ -833,9 +832,9 @@ typedef MOMap::iterator MOMapIter;
     protected:
 
 
-		typedef MOMap::value_type MOMapValueType;
+	typedef MOMap::value_type MOMapValueType;
         std::vector<std::vector<std::list<Tile*> > > mTileMap;
-		// Needs to be a multimap
+	// Needs to be a multimap
         std::map<CL_Point, std::list<Tile*> > mFloaterMap;
         MOMap mMOMap;
 
@@ -843,12 +842,9 @@ typedef MOMap::iterator MOMapIter;
         bool containsMappableObjects(const CL_Point &point) const;
         bool containsSolidMappableObject(const CL_Point &point) const;
         void setMappableObjectAt(const CL_Point &point, MappableObject*  pMO);
-		void putMappableObjectAtCurrentPosition(MappableObject *pMO);
-		void removeMappableObjectAt(const CL_Point &point, MappableObject * pMO);
+	void putMappableObjectAtCurrentPosition(MappableObject *pMO);
+	void removeMappableObjectAt(const CL_Point &point, MappableObject * pMO);
       
-        // Sort MO's in order to bring close ones to the top
-        static bool moSortCriterion( const MappableObject *p1, const MappableObject * p2);
-
         // Sort tiles on zOrder
         static bool tileSortCriterion ( const Tile * p1, const Tile * p2);
 
@@ -888,7 +884,7 @@ typedef MOMap::iterator MOMapIter;
 struct LessTile : public std::binary_function<const StoneRing::Tile*,
     const StoneRing::Tile*,bool>
 {
-	bool operator()(const StoneRing::Tile* n1, const StoneRing::Tile *n2) const
+    bool operator()(const StoneRing::Tile* n1, const StoneRing::Tile *n2) const
         {
             return n1->getZOrder() < n2->getZOrder();
         }

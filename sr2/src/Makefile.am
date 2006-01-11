@@ -2,8 +2,9 @@
 
 bin_PROGRAMS = stonering
 
-stonering_SOURCES =	 Application.cpp \
-			 Party.cpp 
+stonering_SOURCES =	Application.cpp \
+			Party.cpp \
+			MapState.cpp	
 
 
 noinst_LTLIBRARIES = libstonering.la

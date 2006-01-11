@@ -578,12 +578,7 @@ void StoneRing::MappableObject::prod()
     randomNewDirection();
 }
 
-bool StoneRing::MappableObject::onScreen()
-{
-    CL_Rect screen = IApplication::getInstance()->getLevelRect();
-  
-    return screen.is_overlapped(getPixelRect());
-}
+
 
 void StoneRing::MappableObject::setOccupiedPoints(Level * pLevel,LevelPointMethod method)
 {
