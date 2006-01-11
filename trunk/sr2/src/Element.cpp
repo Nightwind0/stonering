@@ -258,7 +258,22 @@ void Element::load(CL_DomElement * pDomElement)
                 
     loadAttributes(&pDomElement->get_attributes());
 
-    CL_DomElement child = pDomElement->get_first_child().to_element();  
+    CL_DomNode childNode = pDomElement->get_first_child(); //.to_element();  
+	CL_DomElement child;
+
+#ifndef NDEBUG
+	std::cout << childNode.get_node_type() << std::endl;
+	if(childNode.is_text()) std::cout << "Is Text" << std::endl;
+#endif
+
+	if(childNode.is_text())
+	{
+		CL_DomText text = childNode.to_text();
+		handleText(text.get_node_value());
+	}
+
+	child = childNode.to_element();
+	
 
     while(!child.is_null())
     {
@@ -300,13 +315,31 @@ void Element::load(CL_DomElement * pDomElement)
 
             handleElement(element, pElement );
 
+		
+		
+
         }
 
+		if(child.get_next_sibling().is_text())
+			std::cout << "Found Text" << std::endl;
 
         child = child.get_next_sibling().to_element();
     }
 
-    handleText ( pDomElement->get_text() );
+#if 0
+	if(pDomElement->is_text())
+	{
+		CL_DomCDATASection cdata = pDomElement->to_text();
+#ifndef NDEBUG
+		if(!cdata.is_null())
+		{
+			std::string theText = cdata.substring_data(0,text.get_length());
+			std::cout << '\'' << theText  << '\'' << std::endl;
+		}
+#endif
+		handleText (  cdata.substring_data(0,cdata.length()) );
+	}
+#endif
 
     loadFinished();
 }

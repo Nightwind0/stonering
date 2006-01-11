@@ -549,8 +549,8 @@ bool playerFound = false;
 	{
 		MappableObject * pMo = (*iMo)->second;
 
-#ifndef NDEBUG
-		if(pMo->getName() == "Player")
+#if 0
+		if(pMo->getName() == "Player" && pMo->getDirection() != MappableObject::NONE)
 			playerFound = true;
 #endif
 
@@ -580,7 +580,7 @@ bool playerFound = false;
 						iter != intoPoints.end();
 						iter++)
 					{
-						if((*iter).x < cornerx || (*iter).y <cornery || (*iter).x >= cornerx+width || (*iter).y >= cornerx+height
+						if((*iter).x < cornerx || (*iter).y <cornery || (*iter).x >= cornerx+width || (*iter).y >= cornery+height
 							|| (*iter).x <0 || (*iter).y <0 || (*iter).x >= mLevelWidth || (*iter).y >= mLevelHeight
 							||containsSolidMappableObject(*iter)
 							||
@@ -588,6 +588,12 @@ bool playerFound = false;
 							|| (pMo->respectsHotness() && getCumulativeHotnessAtPoint(*iter))
 							)
 						{
+#ifndef NDEBUG
+if(pMo->getName() == "Player" && gbDebugStop)
+{
+	playerFound = true;
+}
+#endif
 							// No go. Change direction, so we can try again.
 							pMo->randomNewDirection();
 							bPathBlocked = true;
@@ -987,7 +993,7 @@ void Level::loadTile ( CL_DomElement * tileElement)
 
         mFloaterMap[ point ].push_back ( tile );
 
-#ifndef _MSC_VER
+#ifdef _MSC_VER
         mFloaterMap[ point ].sort( &tileSortCriterion );
 #else
         mFloaterMap[ point ].sort( LessTile );
@@ -1001,7 +1007,7 @@ void Level::loadTile ( CL_DomElement * tileElement)
         mTileMap[ point.x ][point.y].push_back ( tile );
 
         // Sort by ZOrder, so that they display correctly
-#ifndef _MSC_VER
+#ifdef _MSC_VER
         mTileMap[ point.x ][point.y].sort( &tileSortCriterion );
 #else
         mTileMap[ point.x ][point.y].sort( LessTile );

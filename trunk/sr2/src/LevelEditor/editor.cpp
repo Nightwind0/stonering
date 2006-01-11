@@ -8,6 +8,8 @@
 
 using namespace StoneRing;
 
+bool gbDebugStop = false;
+
 EditorMain::EditorMain()
 {
 	mpParty = new EditorParty();
@@ -98,21 +100,22 @@ int EditorMain::main(int argc, char **argv)
 			
 
 			// Create a display window
-			CL_DisplayWindow window("SR2 - Editor", getScreenWidth(), getScreenHeight(), false);
+			CL_DisplayWindow display("SR2 - Editor", getScreenWidth(), getScreenHeight(), false);
 
 			CL_ResourceManager gui_resources("gui.xml",new CL_Zip_Archive("guistylesilver.gui"),true);
 			CL_StyleManager_Silver style(&gui_resources);
 			CL_GUIManager gui(&style);
 			gui_manager = &gui;
 
-			gc = window.get_gc();
-			
+			gc = display.get_gc();
+			CL_Window window(CL_Rect(0, 0, getScreenWidth(), getScreenHeight()), "Window with menu", &gui);
 
 			
 			// Make sure our background is drawn under the GUI
-			CL_Slot slot_draw = gui.sig_paint().connect(this, &EditorMain::on_paint);
+			slots.connect(gui.sig_paint(),this, &EditorMain::on_paint);
 
-			CL_Menu menu(CL_Point(0,0), &gui);
+#if 1
+			CL_Menu menu(window.get_client_area());
 
 			// standard menu stuff
 			menu.create_item("File/New");
@@ -120,6 +123,7 @@ int EditorMain::main(int argc, char **argv)
 			menu.create_item("File/Save");
 			menu.create_item("File/Save As...");
 			menu.create_item("File/Quit");
+		
 
 			//tools menu stuff
 			menu.create_item("Tools/Add Row");
@@ -155,12 +159,13 @@ int EditorMain::main(int argc, char **argv)
 			string menutileset;
 
 			////create menu from tileset info
+
 			for(list<string>::iterator iter = tilemapnames.begin(); iter != tilemapnames.end(); iter++)
 			{
 				menutileset = "TileSet/" + *iter;
-				menu.create_item(menutileset);
+				CL_MenuNode * pMenu = menu.create_item(menutileset);
 				
-				slots.connect(menu.get_node(menutileset)->sig_clicked(), this, &EditorMain::on_tileset_change, *iter);
+				slots.connect(pMenu->sig_clicked(), this, &EditorMain::on_tileset_change, *iter);
 
 				tempsets.push_back(*iter);
 				
@@ -171,7 +176,9 @@ int EditorMain::main(int argc, char **argv)
 
 
 			// menu item slot connects
+
 			slots.connect(menu.get_node("File/Quit")->sig_clicked(), this, &EditorMain::on_quit);
+
 			slots.connect(menu.get_node("File/Save")->sig_clicked(), this, &EditorMain::on_save);
 			slots.connect(menu.get_node("File/Save As...")->sig_clicked(), this, &EditorMain::on_save);
 			slots.connect(menu.get_node("File/Open")->sig_clicked(), this, &EditorMain::on_load);
@@ -199,24 +206,25 @@ int EditorMain::main(int argc, char **argv)
 			slots.connect(menu.get_node("Options/Show Hot Tiles")->sig_clicked(), this, &EditorMain::on_show_hot);
 			slots.connect(menu.get_node("Options/Show Direction Blocks")->sig_clicked(), this, &EditorMain::on_show_blocks);
 
+#endif
 			//other random slot connects
-			slots.connect(window.sig_window_close(), this, &EditorMain::on_quit);
+			slots.connect(display.sig_window_close(), this, &EditorMain::on_quit);
 
 
 //			cout<< "creating tileselector" << endl;
-			tiles = new TileSelector(CL_Rect(510, 30, 691, 403), &gui, tsResources);
+	//		tiles = new TileSelector(CL_Rect(510, 30, 691, 403), &gui, tsResources);
 
 //			cout << "creating mapgrid" << endl;			
-			map = new MapGrid(CL_Rect(5, 30, 505, 592), &gui, window.get_gc(), tiles);
+		//	map = new MapGrid(CL_Rect(5, 30, 505, 592), &gui, display.get_gc(), tiles);
 
 
 //			cout << "creating gridpoint" << endl;
-			GridPoint gp(CL_Rect(510, 410, 691, 592), &gui);
+		//	GridPoint gp(CL_Rect(510, 410, 691, 592), &gui);
 
 			//info box (bottom of screen)
 		//	info = new CL_InputBox(CL_Rect(5, 595, 505, 604), map->getCurrentTool(), &gui);
 		//	info->enable(false);
-			info = new Infobar(CL_Rect(5, 595, 505, 612), &gui);
+		//	info = new Infobar(CL_Rect(5, 595, 505, 612), &gui);
 		
 		
 cout << "all the creation stuff completed. about to run it." << endl;			
@@ -295,7 +303,7 @@ void EditorMain::on_save()
 
 void EditorMain::on_load()
 {
-	int bttn;
+	int bttn=0;
 
 	if(mpLevel != NULL)
 	{
@@ -310,7 +318,7 @@ void EditorMain::on_load()
 
 	if(bttn != 2)
 	{
-		string filename = SR_FileDialog::open("", "*.xml", gui_manager);
+		string filename = CL_FileDialog::open("", "*.xml", gui_manager);
 
 		if(filename != "")
 		{

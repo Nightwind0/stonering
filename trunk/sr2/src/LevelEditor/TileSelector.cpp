@@ -35,7 +35,7 @@ int tileY = 1;
 	scrollHorz->set_tracking(true);
 
 
-	list<string> tilemapnames = tsResources->get_all_resources("Tilemaps");
+	std::list<string> tilemapnames = tsResources->get_all_resources("Tilemaps");
 	
 	//cur_tileset_lable = new CL_Label(CL_Point(20, 10), "X", this);
 	tsMapName = *tilemapnames.begin();
