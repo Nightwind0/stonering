@@ -461,6 +461,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\MapState.cpp"
+				>
+			</File>
+			<File
 				RelativePath="src\Party.cpp"
 				>
 				<FileConfiguration
@@ -479,6 +483,10 @@
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\src\SayState.cpp"
+				>
 			</File>
 			<File
 				RelativePath="src\Skill.cpp"
@@ -618,7 +626,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\MapState.h"
+				>
+			</File>
+			<File
 				RelativePath="src\Party.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\SayState.h"
 				>
 			</File>
 			<File
@@ -631,6 +647,10 @@
 			</File>
 			<File
 				RelativePath="src\sr_defines.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\State.h"
 				>
 			</File>
 			<File

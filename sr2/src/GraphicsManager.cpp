@@ -8,6 +8,13 @@
 
 using namespace StoneRing;
 
+
+const char * const gFontName[GraphicsManager::__LAST_FONT__] =
+{
+"SpeakerText", // FONT_SPEAKER
+"SayText" // FONT_SAY_TEXT
+};
+
 GraphicsManager * GraphicsManager::mInstance;
 
 GraphicsManager * GraphicsManager::getInstance()
@@ -51,7 +58,7 @@ CL_Surface * GraphicsManager::getTileMap ( const std::string & name )
 	CL_Surface *pSurface;
 
 
-	if(mTileMap.count( name ) == 0)
+	if(mTileMap.find( name ) == mTileMap.end())
 	{
 		
 		pSurface = new CL_Surface("Tilemaps/" + name, pResources);
@@ -64,6 +71,26 @@ CL_Surface * GraphicsManager::getTileMap ( const std::string & name )
 	pSurface = mTileMap[name];
 
 	return pSurface;
+}
+
+CL_Font * GraphicsManager::getFont(StoneRing::GraphicsManager::eFont font)
+{
+	std::map<eFont,CL_Font*>::iterator foundIt = mFontMap.find( font );
+
+	if(foundIt != mFontMap.end())
+	{
+		return foundIt->second;
+	}
+	else
+	{
+		CL_ResourceManager *pResources  = IApplication::getInstance()->getResources();
+		CL_Font * pFont = NULL;
+		pFont  = new CL_Font( std::string("Fonts/") + gFontName [ font ], pResources );
+
+		mFontMap [ font ] = pFont;
+
+		return pFont;
+	}
 }
 			
 			
@@ -80,8 +107,6 @@ GraphicsManager::~GraphicsManager()
 		delete i->second;
 	}
 
-
-	
 
 }
 	

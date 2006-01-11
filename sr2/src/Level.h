@@ -658,6 +658,7 @@ namespace StoneRing {
                         
         CL_Point getStartPoint() const; // In cells
         CL_Point getPosition() const { return CL_Point(mX / 32, mY / 32); }  // In cells
+	
         virtual bool isSolid() const;
         virtual eSize getSize() const;
         Movement * getMovement() const;
@@ -718,6 +719,8 @@ namespace StoneRing {
                         
         eSize meSize;
         eDirection meDirection;
+		eDirection meFacingDirection;
+
 
         bool mbStep; // step frame alternator
         ushort mStartX;
@@ -741,6 +744,7 @@ namespace StoneRing {
 	virtual bool isSolid() const { return true; }
 	virtual bool isSprite() const { return true; }
 	virtual uint getMovesPerDraw() const;
+	CL_Point getPointInFront() const;
 	virtual bool isTile() const { return false; }
 	virtual void setNextDirection(eDirection newDir);
 	virtual CL_DomElement  createDomElement(CL_DomDocument&) const;

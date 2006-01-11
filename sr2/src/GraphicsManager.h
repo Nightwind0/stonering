@@ -22,9 +22,19 @@ namespace StoneRing
 
       // Returns the name associated with this surface
       std::string lookUpMapWithSurface( CL_Surface * );
+
+	  enum eFont
+	  {
+		  FONT_SPEAKER,
+		  FONT_SAY_TEXT,
+		  __LAST_FONT__
+	  };
+
+	  CL_Font * getFont(eFont font);
       
     private:
       std::map<std::string,CL_Surface *> mTileMap;
+	  std::map<eFont,CL_Font*> mFontMap;
       
       static GraphicsManager *mInstance;
       GraphicsManager();

@@ -9,6 +9,7 @@
 #include "ItemManager.h"
 #include <queue>
 #include "MapState.h"
+#include "SayState.h"
 #include "State.h"
 
 namespace StoneRing 
@@ -59,12 +60,13 @@ namespace StoneRing
 	void teardownClanLib();
 	void showRechargeableOnionSplash();
 	void showIntro();
-	void loadFonts();
+	
 	void loadItems(const std::string &filename);
 	void loadSpells(const std::string &filename);
 	void loadStatusEffects(const std::string &filename);
 
 	void draw();
+	void run();
 
 	void startKeyUpQueue();
 	void stopKeyUpQueue();
@@ -86,16 +88,12 @@ namespace StoneRing
 	bool mbDone;
 	CL_ResourceManager * mpResources;
 	CL_DisplayWindow *mpWindow;
-
-	CL_Font *mpfSBBlack;
-	CL_Font *mpfBWhite;
-	CL_Font *mpfBPowderBlue;
-	CL_Font *mpfBGray;
 	CL_Timer *mpMovementTimer;
-	CL_Surface *mpSayOverlay;
+	
 
 	/* STATES */
 	MapState mMapState;
+	SayState mSayState;
 	std::vector<State*> mStates;
 
       
