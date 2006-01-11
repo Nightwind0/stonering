@@ -33,7 +33,9 @@ void StoneRing::SayState::handleKeyUp(const CL_InputEvent &key)
 		}
 		else
 		{
+			mnTotalDrawn += mnDrawnThisFrame;
 			miText += mnDrawnThisFrame;
+			mnDrawnThisFrame = 0;
 			CL_System::sleep(100);
 		}
 		break;
