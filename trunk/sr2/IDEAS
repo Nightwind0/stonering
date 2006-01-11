@@ -28,29 +28,6 @@ Notes from Talking to Victor:
 
 
 
-struct ElementCreationEntry
-{
-	pointer to IApplication method that returns a factory
-	pointer to IFactory method that returns an element
-};
-
-Then some singleton keeps a map keyed on strings (the xml elements)
-that associates the string with the factory and factory method that
-create the element. 
-
-Then, each element has its own map which associates an IFactory method with
-a private handler method that the element has. This is a little like a vtable, but it prevents us from having handlers in the base class for every element (which is the other option). 
-
-map<factory method, element class handler method>
-
-Then, the base element class has a method which loops through it's children
-and uses the node name to look up the element creation entry for the element.
-It gets a pointer to the right factory, then gets a pointer to the factory creation method. It then uses the derived-class populated map to see if there is an entry in the map for this factory method, there should be. Then, it uses the factory method to create the element, and calls the handler associated with it.
-
-The element class puts code in the handler to drop things in a bucket, or assign them to a pointer, what have you.
-
-
-
 
 
 
@@ -62,3 +39,18 @@ Bartering: 10% off sales
 Scouting: Increased encounters
 Stealth: Decreased encounters
 Treasure Hunter: Sense when hidden treasure is near
+
+
+IDOLS:
+You should be able to obtain idols which shift the awards you get from battle from money to goods or vice versa.
+A money idol shifts you to more money.
+A weapon idol shifts you towards weapons.
+A potion idol " " " " 
+etc.
+
+This can be done by providing a party-wide attribute like Money%, Weapon%, etc... which the idol shifts when equipped and unshifts when
+unequipped. You could have only one idol equipped, and it equips to your whole party, in a special idol slot.... There should also be idols
+which attract/repel monsters.
+
+WORTH POINTS:
+

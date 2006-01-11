@@ -38,8 +38,6 @@ class IApplication
       virtual int getScreenWidth()const=0;
       virtual int getScreenHeight()const=0;
 
-
-      virtual CL_Rect getLevelRect() const=0;
       virtual CL_Rect getDisplayRect() const=0;
 
       virtual void playAnimation(const std::string &animation)=0;

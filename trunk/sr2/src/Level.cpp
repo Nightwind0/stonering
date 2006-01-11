@@ -752,39 +752,6 @@ void Level::update(const CL_Rect & updateRect)
 }
       
  
-       
-// Sort MO's in order to bring close ones to the top
-bool Level::moSortCriterion( const MappableObject *p1, const MappableObject * p2)
-{
-    //    Party * pParty = Party::getInstance();
-    //    uint pX = pParty->getLevelX();
-    //    uint pY = pParty->getLevelY();
-    // Get the center point of the screen instead of the party.
-
-    IApplication * pApp = IApplication::getInstance();
-
-    int pX = pApp->getLevelRect().left + pApp->getLevelRect().get_width() / 2;
-    int pY = pApp->getLevelRect().top + pApp->getLevelRect().get_height() / 2;
-
-    uint p1Distance, p2Distance;
-
-    
-    /*    p1Distance = max(abs( (long)pX - p1->getX()) , abs((long)pY - p1->getY()));
-          p2Distance = max(abs( (long)pX - p2->getX()) , abs((long)pY - p2->getY()));
-    */
-    int dx1 = abs(long(pX - p1->getX()));
-    int dy1 = abs(long(pY - p1->getY()));
-    int dx2 = abs(long(pX - p2->getX()));
-    int dy2 = abs(long(pY - p2->getY()));
-
-    p1Distance = (dx1 * dx1) + (dy1 * dy1);
-    p2Distance = (dx2 * dx2) + (dy2 * dy2);
-
-    return p1Distance < p2Distance;
-
-
-}
-
 
 void Level::dumpMappableObjects() const
 {

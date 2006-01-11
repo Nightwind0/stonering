@@ -8,138 +8,96 @@
 #include "IApplication.h"
 #include "ItemManager.h"
 #include <queue>
-
+#include "MapState.h"
+#include "State.h"
 
 namespace StoneRing 
 {
-class Level;
-class Choice;
+    class Level;
+    class Choice;
 
 
 
 
 
   
- class Application : public CL_ClanApplication, public IApplication
+    class Application : public CL_ClanApplication, public IApplication
     {
     public:
-      Application() ;
-      ~Application();
+	Application() ;
+	~Application();
       
-      virtual int main(int argc, char** argv);
+	virtual int main(int argc, char** argv);
 
-      virtual CL_ResourceManager * getResources()const;
+	virtual CL_ResourceManager * getResources()const;
   
-      virtual int getScreenWidth()const;
-      virtual int getScreenHeight()const;
+	virtual int getScreenWidth()const;
+	virtual int getScreenHeight()const;
 
-      virtual IParty * getParty() const;
-      virtual ICharacterGroup * getSelectedCharacterGroup() const;
-      virtual LevelFactory *getLevelFactory() const;
-      virtual ItemFactory * getItemFactory() const ;
-      virtual AbilityFactory * getAbilityFactory() const ;
-      virtual const AbilityManager * getAbilityManager() const;
-      virtual const ItemManager * getItemManager() const;
-      virtual inline CL_Rect getLevelRect() const;
-      virtual CL_Rect getDisplayRect() const;
+	virtual IParty * getParty() const;
+	virtual ICharacterGroup * getSelectedCharacterGroup() const;
+	virtual LevelFactory *getLevelFactory() const;
+	virtual ItemFactory * getItemFactory() const ;
+	virtual AbilityFactory * getAbilityFactory() const ;
+	virtual const AbilityManager * getAbilityManager() const;
+	virtual const ItemManager * getItemManager() const;
+	virtual CL_Rect getDisplayRect() const;
 
 
-      virtual void playAnimation(const std::string &animation);
-      virtual void playSound(const std::string &sound);
-      virtual void loadLevel(const std::string &level, uint startX, uint startY);
-      virtual void startBattle(const std::string &monster, uint count, bool isBoss);
-      virtual void say(const std::string &speaker, const std::string &text);
-      virtual void pause(uint time);
-      virtual void invokeShop(const std::string &shoptype);
-      virtual void choice(const std::string &choiceText, const std::vector<std::string> &choices, Choice * pChoice);
+	virtual void playAnimation(const std::string &animation);
+	virtual void playSound(const std::string &sound);
+	virtual void loadLevel(const std::string &level, uint startX, uint startY);
+	virtual void startBattle(const std::string &monster, uint count, bool isBoss);
+	virtual void say(const std::string &speaker, const std::string &text);
+	virtual void pause(uint time);
+	virtual void invokeShop(const std::string &shoptype);
+	virtual void choice(const std::string &choiceText, const std::vector<std::string> &choices, Choice * pChoice);
 
 
     private:
+	void setupClanLib();
+	void teardownClanLib();
+	void showRechargeableOnionSplash();
+	void showIntro();
+	void loadFonts();
+	void loadItems(const std::string &filename);
+	void loadSpells(const std::string &filename);
+	void loadStatusEffects(const std::string &filename);
 
+	void draw();
+
+	void startKeyUpQueue();
+	void stopKeyUpQueue();
+
+	/* SIGNALS */
+	void onSignalQuit();
+	void onSignalKeyDown(const CL_InputEvent &key);
+	void onSignalKeyUp(const CL_InputEvent &key);
+	void onSignalMovementTimer();
   
-      int calc_fps(int);
+	int calc_fps(int);
 
+	Party *mpParty;
+	LevelFactory * mpLevelFactory;
+	ItemFactory * mpItemFactory;
+	ItemManager mItemManager;
+	AbilityManager mAbilityManager;
+	AbilityFactory * mpAbilityFactory;
+	bool mbDone;
+	CL_ResourceManager * mpResources;
+	CL_DisplayWindow *mpWindow;
 
-	
+	CL_Font *mpfSBBlack;
+	CL_Font *mpfBWhite;
+	CL_Font *mpfBPowderBlue;
+	CL_Font *mpfBGray;
+	CL_Timer *mpMovementTimer;
+	CL_Surface *mpSayOverlay;
 
+	/* STATES */
+	MapState mMapState;
+	std::vector<State*> mStates;
 
-      enum eState 
-	  {
-	      INTRO,
-	      MAIN,
-	      TALKING,
-	      MENU,
-	      CHOOSING_MO,
-	      BATTLE,
-	      CHOICE
-	  };
-
-      Party *mpParty;
-      LevelFactory * mpLevelFactory;
-      ItemFactory * mpItemFactory;
-      ItemManager mItemManager;
-      AbilityManager mAbilityManager;
-      AbilityFactory * mpAbilityFactory;
-
-      int mLevelX; // Offset into level
-      int mLevelY;
-
-      bool mbDone;
-
-      void setupClanLib();
-      void teardownClanLib();
-      void showRechargeableOnionSplash();
-      void showIntro();
-      void loadFonts();
-      void loadItems(const std::string &filename);
-      void loadSpells(const std::string &filename);
-	  void loadStatusEffects(const std::string &filename);
-
-
-      void processActionQueue();
-
-	  void drawMap();
-
-	  void recalculatePlayerPosition();
-
-      void doTalk(bool prod=false);
-
-      void startKeyUpQueue();
-      void stopKeyUpQueue();
-
-      /* SIGNALS */
-      void onSignalQuit();
-      void onSignalKeyDown(const CL_InputEvent &key);
-      void onSignalKeyUp(const CL_InputEvent &key);
-      void onSignalMovementTimer();
-
-
-      CL_ResourceManager * mpResources;
-
-      CL_DisplayWindow *mpWindow;
-
-
-      Level * mpLevel;
-	  MappablePlayer * mpPlayer;
-      bool mbShowDebug;
-
-   	  CL_Font *mpfSBBlack;
-      CL_Font *mpfBWhite;
-      CL_Font *mpfBPowderBlue;
-      CL_Font *mpfBGray;
-      CL_Timer *mpMovementTimer;
-      CL_Surface *mpSayOverlay;
-
-	  eState meState;
-
-#ifndef NDEBUG
-      CL_Rect mLastTalkRect;
-	  bool mbShowLevelCenter;
-#endif
-      bool mbQueueKeyUps;
-      std::queue<int> mKeyUpQueue;
-
-	  bool mbDraw;
       
     };
   

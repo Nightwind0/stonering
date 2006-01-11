@@ -81,7 +81,7 @@ void Application::startBattle(const std::string &monster, uint count, bool isBos
 void Application::choice(const std::string &choiceText,
                          const std::vector<std::string> &choices, Choice * pChoice)
 {
-
+#if 0
 
     meState = CHOICE;
     startKeyUpQueue();
@@ -185,12 +185,13 @@ void Application::choice(const std::string &choiceText,
     mpMovementTimer->enable();
 
     meState = MAIN;
-
+#endif
 }
 
 
 void Application::say(const std::string &speaker, const std::string &text)
 {
+#if 0
 #ifndef NDEBUG
     std::cout << "Say: " << speaker << ":" << text << std::endl;
 #endif
@@ -280,7 +281,7 @@ void Application::say(const std::string &speaker, const std::string &text)
     meState = MAIN;
 
     stopKeyUpQueue();
-
+#endif
 }
 
 void Application::pause(uint time)
@@ -347,8 +348,7 @@ CL_ResourceManager * Application::getResources() const
 
 
 Application::Application():mpParty(0),mpLevelFactory(0),
-                           mLevelX(0),mLevelY(0),mbDone(false),
-                           mbShowDebug(false), mbQueueKeyUps(false)
+			   mbDone(false)
     
 {
     mpParty = new Party();
@@ -365,29 +365,6 @@ Application::~Application()
 {
 }
 
-
-void Application::startKeyUpQueue()
-{
-    // Clear the queue.
-    while(mKeyUpQueue.size())
-        mKeyUpQueue.pop();
-
-    mbQueueKeyUps = true;
-}
-
-
-void Application::stopKeyUpQueue()
-{
-    mbQueueKeyUps = false;
-}
-
-
-CL_Rect Application::getLevelRect() const
-{
-
-    return CL_Rect(mLevelX,mLevelY, mLevelX + getScreenWidth(), mLevelY + getScreenHeight());
-
-}
 
 CL_Rect Application::getDisplayRect() const
 {
@@ -411,169 +388,21 @@ void Application::teardownClanLib()
 }
 
 
-void Application::recalculatePlayerPosition()
-{
-
-	int X = mpPlayer->getLevelX();
-    int Y = mpPlayer->getLevelY();
-
-	if( X  > mLevelX + (WINDOW_WIDTH / 2))
-	{
-		// Try to scroll right
-		int amount = X - (mLevelX  + (WINDOW_WIDTH/2));
-            
-		if(mLevelX + amount + WINDOW_WIDTH < mpLevel->getWidth() * 32)
-		{
-			mLevelX += amount;
-		}
-		else
-		{
-			// Scroll as far over as possible
-			mLevelX = (mpLevel->getWidth() * 32) - WINDOW_WIDTH;
-		}
-
-	}
-	if(X  <  mLevelX + (WINDOW_WIDTH / 2))
-	{
-		int amount = (mLevelX + (WINDOW_WIDTH/2)) - X;
-		if(mLevelX - amount >0)
-		{
-			mLevelX-= amount;
-		}
-		else
-		{
-			mLevelX = 0;
-		}
-	}
-    
-    
-	if(Y > mLevelY + (WINDOW_HEIGHT/2))
-	{
-		int amount = Y - (mLevelY + (WINDOW_HEIGHT/2));
-            
-		if(mLevelY + amount + WINDOW_HEIGHT < mpLevel->getHeight() * 32)
-		{
-			mLevelY+= amount;
-		}
-		else
-		{
-			mLevelY = (mpLevel->getHeight() * 32) - WINDOW_HEIGHT;
-		}
-	}
-
-	if(Y  <  mLevelY + (WINDOW_HEIGHT / 2))
-	{
-		int amount = (mLevelY + (WINDOW_HEIGHT/2)) - Y;
-		if(mLevelY - amount >0)
-		{
-			mLevelY-= amount;
-		}
-		else
-		{
-			mLevelY = 0;
-		}
-	}
-
-
-
-	
-
-}
-
 void Application::onSignalKeyDown(const CL_InputEvent &key)
 {
 
-
-    switch(meState)
-    {
-    case MAIN:
-    {
-
-		if(CL_Keyboard::get_keycode(CL_KEY_SHIFT) && mpLevel->allowsRunning())
-			mpPlayer->setRunning(true);
-             
-        switch(key.id)
-        {
-        case CL_KEY_ESCAPE:
-            mbDone = true;
-            break;
-        case CL_KEY_DOWN:
-			mpPlayer->setNextDirection(StoneRing::MappableObject::SOUTH);
-            break;
-        case CL_KEY_UP:
-			mpPlayer->setNextDirection(StoneRing::MappableObject::NORTH);
-            break;
-        case CL_KEY_LEFT:
-			mpPlayer->setNextDirection(StoneRing::MappableObject::WEST);
-            break;
-        case CL_KEY_RIGHT:
-			mpPlayer->setNextDirection(StoneRing::MappableObject::EAST);
-            break;
-
-        default:
-            break;
-        }
-        break;
-    }
-    case TALKING:
-        break;
-    } // switch(meState)
-    
+    mStates.back()->handleKeyDown(key);
 }
 
 void Application::onSignalKeyUp(const CL_InputEvent &key)
 {
-
-    switch(meState)
-    {
-    case MAIN:
-    {
-        switch(key.id)
-        {
-        case CL_KEY_SPACE:
-            doTalk();
-            break;
-        case CL_KEY_TAB:
-            doTalk(true); // Prod!
-            break;
-            
-#ifndef NDEBUG
-        case CL_KEY_I:
-            mItemManager.dumpItemList();
-            break;
-            
-        case CL_KEY_P:
-            
-            break;
-        
-        case CL_KEY_D:
-            mbShowDebug = mbShowDebug?false:true;
-
-        case CL_KEY_M:
-     
-			mpLevel->dumpMappableObjects();
-            break;
-		case CL_KEY_S:
-			gbDebugStop = true;
-			break;
-		case CL_KEY_SHIFT:
-			mpPlayer->setRunning(false);
-			break;
-#endif
-            
-        }
-    }
-    default:
-        // All other cases
-        if(mbQueueKeyUps)
-            mKeyUpQueue.push ( key.id );
-    }// switch meState
+    mStates.back()->handleKeyUp(key);
 }
 
 
 void Application::onSignalQuit()
 {
-        
+    
 }
 
 
@@ -639,37 +468,31 @@ void Application::loadItems(const std::string &filename)
 }
 void Application::onSignalMovementTimer()
 {
-    mpLevel->moveMappableObjects(getLevelRect());
 
-	recalculatePlayerPosition();
-    mbDraw = true;
+    mMapState.moveMappableObjects();
 
-
-#ifndef NDEBUG
-  //  mpLevel->dumpMappableObjects();
-#endif
+    mStates.back()->mappableObjectMoveHook();
 
 }
 
-void Application::drawMap()
+void Application::draw()
 {
-    CL_Rect dst(0,0, min(WINDOW_WIDTH, (const int)mpLevel->getWidth()*32),min(WINDOW_HEIGHT, (const int)mpLevel->getHeight() * 32));
-    
-    CL_Rect src = getLevelRect();
-    
-    //      CL_Rect src = dst;
+    CL_Rect dst = getDisplayRect();
+
     mpWindow->get_gc()->push_cliprect( dst);
-#ifdef NDEBUG
-    mpLevel->draw(src,dst, mpWindow->get_gc(), false,false,false);
-#else
-	mpLevel->draw(src,dst,mpWindow->get_gc(), false,mbShowDebug,mbShowDebug);
-#endif
-    
-   
-    mpLevel->drawMappableObjects( src,dst, mpWindow->get_gc());
-	mpLevel->drawFloaters(src,dst, mpWindow->get_gc());
+
+
+    for(std::vector<State*>::reverse_iterator iState = mStates.rbegin();
+	iState != mStates.rend(); iState++)
+    {
+	(*iState)->draw(dst, mpWindow->get_gc());
+	
+	if((*iState)->lastToDraw()) break; // Don't draw any further.
+
+    }
     
     mpWindow->get_gc()->pop_cliprect();
+
 }
 
 
@@ -711,9 +534,11 @@ int Application::main(int argc, char ** argv)
 
         CL_Sprite * pPlayerSprite = new CL_Sprite(defaultplayersprite, mpResources );
 
-		mpPlayer = new StoneRing::MappablePlayer(0,0);
+	MappablePlayer *pPlayer = new StoneRing::MappablePlayer(0,0);
 
-		mpPlayer->setSprite(pPlayerSprite);
+	pPlayer->setSprite(pPlayerSprite);
+
+
 
         loadFonts();
         showRechargeableOnionSplash();
@@ -721,10 +546,13 @@ int Application::main(int argc, char ** argv)
         loadStatusEffects(statusEffectDefinition);
         loadSpells(spelldefinition);
         loadItems(itemdefinition);
-        mpLevel = new Level(startinglevel, mpResources);
+        Level * pLevel = new Level(startinglevel, mpResources);
 
-		mpLevel->addPlayer(mpPlayer);
+	mMapState.setLevel ( pLevel );	
+	mMapState.setPlayer(pPlayer);
+	mMapState.setDimensions(getDisplayRect());
 
+	mStates.push_back( &mMapState );
 
         CL_Slot slot_quit = mpWindow->sig_window_close().connect(this, &Application::onSignalQuit);
 
@@ -737,41 +565,22 @@ int Application::main(int argc, char ** argv)
         static int start_time = CL_System::get_time();
         static long fpscounter = 0;
 
-        meState = MAIN;
-
-        mpMovementTimer = new CL_Timer(32);
-        CL_Slot slot_mo_timer = mpMovementTimer->sig_timer().connect(this,&Application::onSignalMovementTimer);
+	mpMovementTimer = new CL_Timer(32);
+	 CL_Slot slot_mo_timer = mpMovementTimer->sig_timer().connect(this,&Application::onSignalMovementTimer);
         CL_FramerateCounter frameRate;
         mpMovementTimer->enable();
 
         while(!mbDone)
         {
                         
-            processActionQueue();
+        
 
-            if(mbDraw)
-            {
-                drawMap();
-                mbDraw = false;
-            }
-
+	    draw();
 
 
 
 #ifndef NDEBUG
             int fps = frameRate.get_fps();
-
-            if(mbShowDebug)
-            {
-
-
-                mpWindow->get_gc()->draw_rect( mLastTalkRect, CL_Color::aqua ) ;                
-
-                mpfSBBlack->draw(0,0, mpLevel->getName());
-                mpfSBBlack->draw(0,  mpfSBBlack->get_height(), std::string("FPS: ") +IntToString(fps) );
-
-                
-            }
 
                 
 #endif
@@ -866,46 +675,3 @@ int Application::calc_fps(int frame_time)
 }
 
 
-void Application::processActionQueue()
-{
-
-}
-
-
-
-
-
-
-
-void Application::doTalk(bool prod)
-{
-    CL_Point talkPoint = mpPlayer->getPosition();
-
-    switch(mpPlayer->getDirection())
-    {
-    case MappableObject::NORTH:
-        talkPoint.y--;
-        break;
-    case MappableObject::SOUTH:
-        talkPoint.y++;
-        break;
-	case MappableObject::WEST:
-        talkPoint.x--;
-        break;
-    case MappableObject::EAST:
-        talkPoint.x++;
-        break;
-    }
-
-    if(talkPoint.x >0 && talkPoint.x < mpLevel->getWidth() && 
-       talkPoint.y >0 && talkPoint.y < mpLevel->getHeight())
-        mpLevel->talk ( talkPoint, prod );
-
-#if 0
-    mLastTalkRect = talkRect;
-    mLastTalkRect.left -= mLevelX;
-    mLastTalkRect.right -= mLevelX;
-    mLastTalkRect.top -= mLevelY;
-    mLastTalkRect.bottom -= mLevelY;
-#endif
-}
