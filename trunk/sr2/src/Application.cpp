@@ -191,97 +191,11 @@ void Application::choice(const std::string &choiceText,
 
 void Application::say(const std::string &speaker, const std::string &text)
 {
-#if 0
-#ifndef NDEBUG
-    std::cout << "Say: " << speaker << ":" << text << std::endl;
-#endif
+	mSayState.init(speaker,text);
 
-    meState = TALKING;
+	mStates.push_back(&mSayState);
 
-    mpMovementTimer->disable();
-    
-    // Start queueing up key up signals
-    startKeyUpQueue();
-
-    static const CL_Rect textRect(16,388, 783, 580);
-    static const CL_Rect speakerRect(16,315,783,369);
-   
-    CL_Rect speakerTextRect = speakerRect;
-
-    speakerTextRect.top += ( speakerRect.get_height() - mpfBGray->get_height()) /2;
-    speakerTextRect.bottom += ( speakerRect.get_height() - mpfBGray->get_height()) /2;
-
-
-    std::string::const_iterator textIter = text.begin();
-
-    bool done = false;
-
-    int totalDrawn = 0;
-
-    while(!done)
-    {
-        int drawCount;
-        bool doneFrame = false;
-        while(!doneFrame)
-        {
-            drawMap();
-
-            mpWindow->get_gc()->fill_rect( speakerRect, CL_Color(255,255,255,200) );
-            mpWindow->get_gc()->fill_rect( textRect, CL_Color(0,0,0,128) ) ;
-
-            mpSayOverlay->draw(0,300, mpWindow->get_gc());
-            
-            drawCount = mpfBWhite->draw(textRect, textIter, text.end(), mpWindow->get_gc() );
-            mpfBGray->draw(speakerTextRect, speaker.begin(),speaker.end(),mpWindow->get_gc() );
-
-            // Process any KeyUps that were received. 
-            if(mKeyUpQueue.size())
-            {
-                int key = mKeyUpQueue.front();
-                mKeyUpQueue.pop();
-
-
-                switch(key)
-                {
-                case CL_KEY_ENTER:
-                case CL_KEY_SPACE:
-
-                    if(totalDrawn + drawCount == text.size())
-                    {
-                        done = true;
-                    }
-                    
-                    doneFrame = true;
-                    
-                    CL_System::sleep(333); // Part hack to prevent enter from being detected twice, partly for effect...
-                    break;
-                case CL_KEY_ESCAPE:
-                    doneFrame = true;
-                    done = true;
-                }
-            }
-
-            if(totalDrawn + drawCount < text.size())
-            {
-                mpWindow->get_gc()->fill_rect( CL_Rect(WINDOW_WIDTH - 20, WINDOW_HEIGHT - 20, WINDOW_WIDTH - 10, WINDOW_HEIGHT - 10), CL_Color::black );
-            }
-
-            CL_Display::flip();
-
-            CL_System::keep_alive();
-        }
-
-        totalDrawn += drawCount;
-        textIter += drawCount;
-        
-    }
-
-    mpfSBBlack->set_scale(1.0,1.0);
-    mpMovementTimer->enable();
-    meState = MAIN;
-
-    stopKeyUpQueue();
-#endif
+	run();
 }
 
 void Application::pause(uint time)
@@ -406,18 +320,7 @@ void Application::onSignalQuit()
 }
 
 
-void Application::loadFonts()
-{
 
-#ifndef NDEBUG
-    std::cout << "Loading fonts." << std::endl;
-#endif
-
-    mpfSBBlack = new CL_Font("Fonts/sb_black", mpResources);
-    mpfBWhite = new CL_Font("Fonts/bold_white", mpResources);
-    mpfBPowderBlue = new CL_Font("Fonts/bold_powder_blue",mpResources );
-    mpfBGray = new CL_Font("Fonts/bold_gray", mpResources );
-}
 
 void Application::loadSpells(const std::string &filename)
 {
@@ -482,8 +385,8 @@ void Application::draw()
     mpWindow->get_gc()->push_cliprect( dst);
 
 
-    for(std::vector<State*>::reverse_iterator iState = mStates.rbegin();
-	iState != mStates.rend(); iState++)
+    for(std::vector<State*>::iterator iState = mStates.begin();
+	iState != mStates.end(); iState++)
     {
 	(*iState)->draw(dst, mpWindow->get_gc());
 	
@@ -495,6 +398,30 @@ void Application::draw()
 
 }
 
+void Application::run()
+{
+
+	if ( mStates.back()->disableMappableObjects())
+		mpMovementTimer->disable(); 
+
+	mStates.back()->start();
+
+	while(!mStates.back()->isDone())
+	{
+		draw();
+		CL_System::keep_alive();
+		CL_Display::flip();
+	}
+
+
+	mStates.back()->finish();
+	if(mStates.back()->disableMappableObjects())
+		mpMovementTimer->enable(); // It would have been disabled. So re-enable it.
+
+	mStates.pop_back();
+
+
+}
 
 int Application::main(int argc, char ** argv)
 {
@@ -530,17 +457,17 @@ int Application::main(int argc, char ** argv)
         
         CL_Display::clear();
 
-        mpSayOverlay = new CL_Surface("Overlays/say_overlay", mpResources );
+
 
         CL_Sprite * pPlayerSprite = new CL_Sprite(defaultplayersprite, mpResources );
 
-	MappablePlayer *pPlayer = new StoneRing::MappablePlayer(0,0);
+		MappablePlayer *pPlayer = new StoneRing::MappablePlayer(0,0);
 
-	pPlayer->setSprite(pPlayerSprite);
+		pPlayer->setSprite(pPlayerSprite);
 
 
 
-        loadFonts();
+
         showRechargeableOnionSplash();
         showIntro();
         loadStatusEffects(statusEffectDefinition);
@@ -548,11 +475,11 @@ int Application::main(int argc, char ** argv)
         loadItems(itemdefinition);
         Level * pLevel = new Level(startinglevel, mpResources);
 
-	mMapState.setLevel ( pLevel );	
-	mMapState.setPlayer(pPlayer);
-	mMapState.setDimensions(getDisplayRect());
+		mMapState.setLevel ( pLevel );	
+		mMapState.setPlayer(pPlayer);
+		mMapState.setDimensions(getDisplayRect());
 
-	mStates.push_back( &mMapState );
+		mStates.push_back( &mMapState );
 
         CL_Slot slot_quit = mpWindow->sig_window_close().connect(this, &Application::onSignalQuit);
 
@@ -570,36 +497,12 @@ int Application::main(int argc, char ** argv)
         CL_FramerateCounter frameRate;
         mpMovementTimer->enable();
 
-        while(!mbDone)
+        while(mStates.size())
         {
                         
         
-
-	    draw();
-
-
-
-#ifndef NDEBUG
-            int fps = frameRate.get_fps();
-
-                
-#endif
-            
-#if 0
-            if(delta_time < 16)
-            {
-                CL_System::keep_alive(16 - delta_time);
-            }
-            else
-            {
-                CL_System::keep_alive();
-            }
-#else
-            CL_System::keep_alive();
-#endif
-
-            CL_Display::flip();
-
+			run();
+		
 
         }
                 

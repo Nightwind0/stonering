@@ -631,10 +631,6 @@ if(pMo->getName() == "Player" && gbDebugStop)
 	
 	}// for iMo
 
-#ifndef NDEBUG
-	if(!playerFound) std::cout << "Didn't iterate over player!" << std::endl;
-#endif
-
 
         
 }

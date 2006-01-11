@@ -28,7 +28,7 @@
 	<sprite name="Font_bold_white">
 		<image file="Images/Fonts/bold_white.png"><alpha/></image>
 	</sprite>
-	<font name="bold_white">
+	<font name="SayText">
 		<bitmap glyphs="Fonts/Font_bold_white" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw"/>
 	</font>
 	<sprite name="Font_bold_powder_blue">
@@ -40,7 +40,7 @@
 	<sprite name="Font_bold_gray">
 		<image file="Images/Fonts/bold_gray.png"><alpha/></image>
 	</sprite>
-	<font name="bold_gray">
+	<font name="SpeakerText">
 		<bitmap glyphs="Fonts/Font_bold_gray" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw"/>
 	</font>
 </section>

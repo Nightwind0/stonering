@@ -20,7 +20,6 @@ namespace StoneRing
 	virtual void handleKeyDown(const CL_InputEvent &key);
 	virtual void handleKeyUp(const CL_InputEvent &key);
 	virtual void draw(const CL_Rect &screenRect,CL_GraphicContext * pGC);
-	virtual bool drawMap() const; // Should the application draw the map first?
 	virtual bool lastToDraw() const { return false; } // It'll be last anyway.... and if not, thats okay too
 	virtual bool disableMappableObjects() const; // Should the app move the MOs? 
 	virtual bool drawMappableObjects() const; // Should the app draw the MOs, including the player?

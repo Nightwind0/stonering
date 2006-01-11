@@ -100,10 +100,6 @@ void StoneRing::MapState::draw(const CL_Rect &screenRect,CL_GraphicContext * pGC
     mpLevel->drawFloaters(src,screenRect, pGC);
 }
 
-bool StoneRing::MapState::drawMap() const // Should the application draw the map first
-{
-    return false; // Doesn't apply to this guy. He's the guy that does it!
-}
 
 bool StoneRing::MapState::disableMappableObjects() const // Should the app move the MOs?
 {
@@ -131,12 +127,13 @@ void StoneRing::MapState::finish() // Hook to clean up or whatever after being p
 
 void StoneRing::MapState::setLevel(Level * pLevel)
 {
-    mpLevel = mpLevel;
+    mpLevel = pLevel;
 }
 
 void StoneRing::MapState::setPlayer(MappablePlayer * pPlayer)
 {
-    mpLevel->addPlayer(mpPlayer);
+	mpPlayer = pPlayer;
+    mpLevel->addPlayer(pPlayer);
 }
 
 
@@ -215,24 +212,8 @@ void StoneRing::MapState::moveMappableObjects()
 
 void StoneRing::MapState::doTalk(bool prod)
 {
-    CL_Point talkPoint = mpPlayer->getPosition();
+	CL_Point talkPoint = mpPlayer->getPointInFront();
 
-    switch(mpPlayer->getDirection())
-    {
-    case MappableObject::NORTH:
-        talkPoint.y--;
-        break;
-    case MappableObject::SOUTH:
-        talkPoint.y++;
-        break;
-	case MappableObject::WEST:
-        talkPoint.x--;
-        break;
-    case MappableObject::EAST:
-        talkPoint.x++;
-        break;
-    }
-    
     if(talkPoint.x >0 && talkPoint.x < mpLevel->getWidth() && 
        talkPoint.y >0 && talkPoint.y < mpLevel->getHeight())
         mpLevel->talk ( talkPoint, prod );

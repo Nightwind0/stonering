@@ -782,7 +782,7 @@ StoneRing::MappablePlayer::MappablePlayer(uint startX, uint startY):mbHasNextDir
 	mName = "Player";
 	meType = PLAYER;
 	meDirection = NONE;
-
+	meFacingDirection = SOUTH; // Should come in like the startX, startY
 	mpMovement = new PlayerMovement;
 }
 
@@ -825,6 +825,7 @@ void StoneRing::MappablePlayer::movedOneCell()
 	if(mbHasNextDirection)
 	{
 		meDirection = meNextDirection;
+		meFacingDirection = meDirection;
 		mbHasNextDirection = false;
 	}
 	else
@@ -843,3 +844,27 @@ void StoneRing::MappablePlayer::setRunning(bool running)
 
 
 
+CL_Point StoneRing::MappablePlayer::getPointInFront() const
+{
+	CL_Point point = getPosition();
+
+	switch(meFacingDirection)
+	{
+	case NORTH:
+		point.y--;
+		break;
+	case SOUTH:
+		point.y++;
+		break;
+	case EAST:
+		point.x++;
+		break;
+	case WEST:
+		point.x--;
+		break;
+	default: break;
+
+	}
+
+	return point;
+}
