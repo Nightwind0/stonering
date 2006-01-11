@@ -32,8 +32,7 @@ public:
     virtual bool getGold() const { return true;}
     virtual bool hasItem(StoneRing::ItemRef *pItemRef, uint count )const{return true;}
     virtual bool didEvent(const std::string &event) const{return true;}
-    virtual void move(){}
-    virtual bool isAligned() const { return true; }
+
     virtual uint getLevelX() const{return 0;}
     virtual uint getLevelY() const{return 0; }
     virtual uint getWidth() const { return 64; }

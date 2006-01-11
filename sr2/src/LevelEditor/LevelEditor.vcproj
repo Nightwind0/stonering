@@ -310,6 +310,38 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\EditableLevel.h"
+				>
+			</File>
+			<File
+				RelativePath=".\editor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\filedialog.h"
+				>
+			</File>
+			<File
+				RelativePath=".\filedialog_generic.h"
+				>
+			</File>
+			<File
+				RelativePath=".\GridPoint.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Infobar.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MapGrid.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TileSelector.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
