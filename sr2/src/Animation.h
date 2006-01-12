@@ -30,12 +30,12 @@ namespace StoneRing{
 	enum eInitialFocus { SCREEN, CASTER, TARGET };
 	enum eInitialFocusType {CENTER, ABOVE, BELOW, LEFT, RIGHT, BELOW_RIGHT, BELOW_LEFT, ABOVE_RIGHT, ABOVE_LEFT };
 	enum eMovementDirection { STILL, N, E, S, W, NE, NW, SE, SW, TO_TARGET, TO_CASTER };
-
+	enum eMovementStyle {STRAIGHT, ARC_OVER, ARC_UNDER, SINE };
 
 	eInitialFocus getInitialFocus() const;
 	eInitialFocusType getInitialFocusType() const;
 	eMovementDirection getMovementDirection() const;
-
+	eMovementStyle getMovementStyle() const;
 	CL_DomElement createDomElement(CL_DomDocument &doc) const;
 
 	private:
@@ -48,11 +48,13 @@ namespace StoneRing{
 	eInitialFocus initialFocusFromString(const std::string &str);
 	eInitialFocusType initialFocusTypeFromString ( const std::string &str );
 	eMovementDirection movementDirectionFromString ( const std::string &str );
+	eMovementStyle     movementStyleFromString( const std::string &str );
 	std::string mAnimationName;
 	std::string mRef;
 	eInitialFocus meInitialFocus;
 	eInitialFocusType meInitialFocusType;
 	eMovementDirection meMovementDirection;
+	eMovementStyle meMovementStyle;
     };
 
     class Par : public Element

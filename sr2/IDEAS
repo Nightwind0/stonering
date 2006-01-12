@@ -8,6 +8,7 @@ Need: onEnterLevel, onExitLevel properties of the level element, which
 Cool:
 Use CL_Gradient for text/menu backgrounds, battle backgrounds.... etc (CL_Display::fill_rect)
 Use set_alpha and rotate_yaw,etc, on sprites for effects. Open them up to animation
+Provide an "arc" and "sine" option for animation movements, so you can have projectiles move either straight, in an arc, or a crazy sine wave.
 
 
 Notes from Talking to Victor:

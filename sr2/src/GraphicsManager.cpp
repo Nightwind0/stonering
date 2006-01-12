@@ -12,7 +12,10 @@ using namespace StoneRing;
 const char * const gFontName[GraphicsManager::__LAST_FONT__] =
 {
 "SpeakerText", // FONT_SPEAKER
-"SayText" // FONT_SAY_TEXT
+"SayText", // FONT_SAY_TEXT
+"Choice", // FONT_CHOICE
+"Option",
+"CurrentOption"
 };
 
 GraphicsManager * GraphicsManager::mInstance;

@@ -28,13 +28,19 @@
 	<sprite name="Font_bold_white">
 		<image file="Images/Fonts/bold_white.png"><alpha/></image>
 	</sprite>
+        <font name="Choice">
+		<bitmap glyphs="Fonts/Font_bold_white" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw"/>
+        </font>
+        <font name="Option">
+		<bitmap glyphs="Fonts/Font_bold_white" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw"/>
+        </font>
 	<font name="SayText">
 		<bitmap glyphs="Fonts/Font_bold_white" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw"/>
 	</font>
 	<sprite name="Font_bold_powder_blue">
 		<image file="Images/Fonts/bold_powder_blue.png"><alpha/></image>
 	</sprite>
-	<font name="bold_powder_blue">
+	<font name="CurrentOption">
 		<bitmap glyphs="Fonts/Font_bold_powder_blue" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw"/>
 	</font>
 	<sprite name="Font_bold_gray">

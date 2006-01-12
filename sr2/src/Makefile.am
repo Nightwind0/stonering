@@ -14,6 +14,7 @@ libstonering_la_SOURCES = \
 			AbilityManager.cpp \
 			Animation.cpp \
 			CharacterClass.cpp \
+			ChoiceState.cpp \
 			Element.cpp \
 			GraphicsManager.cpp \
 			Item.cpp \
@@ -23,6 +24,7 @@ libstonering_la_SOURCES = \
 			LevelElements.cpp \
 			LevelFactory.cpp \
 			MappableObject.cpp \
+			SayState.cpp \
 			Skill.cpp \
 			Spell.cpp \
 			StatusEffect.cpp \

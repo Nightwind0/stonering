@@ -956,11 +956,8 @@ void Level::loadTile ( CL_DomElement * tileElement)
 
         mFloaterMap[ point ].push_back ( tile );
 
-#ifdef _MSC_VER
         mFloaterMap[ point ].sort( &tileSortCriterion );
-#else
-        mFloaterMap[ point ].sort( LessTile );
-#endif
+
     }
     else
     {
@@ -970,10 +967,7 @@ void Level::loadTile ( CL_DomElement * tileElement)
         mTileMap[ point.x ][point.y].push_back ( tile );
 
         // Sort by ZOrder, so that they display correctly
-#ifdef _MSC_VER
         mTileMap[ point.x ][point.y].sort( &tileSortCriterion );
-#else
-        mTileMap[ point.x ][point.y].sort( LessTile );
-#endif
+
     }
 }
