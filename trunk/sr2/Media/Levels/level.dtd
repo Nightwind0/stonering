@@ -211,6 +211,7 @@
 <!ATTLIST animationSpriteRef initialFocus (screen|caster|target) #REQUIRED>
 <!ATTLIST animationSpriteRef initialFocusType (center|above|below|left|right|below_right|below_left|above_right|above_left) #IMPLIED> <!-- Center is default -->
 <!ATTLIST animationSpriteRef movementDirection (still|n|e|s|w|ne|nw|se|sw|toTarget|toCaster) #IMPLIED>
+<!ATTLIST animationSpriteRef movementStyle (straight|arc_over|arc_under|sine) #IMPLIED> <!-- Defaults to straight -->
 <!-- Note: movement speed will be determined by the amount of pixels that need to be covered and the duration of the par -->
 <!-- So that if the par duration is three seconds, the sprite will move to its destination in three seconds -->
 <!ATTLIST spell name CDATA #REQUIRED>

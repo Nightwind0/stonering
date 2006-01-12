@@ -26,6 +26,10 @@ void AnimationSpriteRef::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 		if(hasAttr("movementDirection",pAttributes))
 			meMovementDirection = movementDirectionFromString( getString("movementDirection",pAttributes));
 		else meMovementDirection = STILL;
+
+		if(hasAttr("movementStyle",pAttributes))
+		    meMovementStyle = movementStyleFromString ( getString("movementStyle",pAttributes ));
+		else meMovementStyle = STRAIGHT;
 }
 
 void AnimationSpriteRef::handleText( const std::string &text )
@@ -78,6 +82,16 @@ AnimationSpriteRef::movementDirectionFromString ( const std::string &str )
     else if (str == "sw") return SW;
     else if (str == "toTarget") return TO_TARGET;
     else if (str == "toCaster") return TO_CASTER;
+}
+
+AnimationSpriteRef::eMovementStyle    
+AnimationSpriteRef::movementStyleFromString( const std::string &str )
+{
+    if(str == "straight") return STRAIGHT;
+    else if (str == "arc_over") return ARC_OVER;
+    else if (str == "arc_under") return ARC_UNDER;
+    else if (str == "sine") return SINE;
+    else throw CL_Error("Bad movementStyle " + str );
 }
 
 AnimationSpriteRef::~AnimationSpriteRef()

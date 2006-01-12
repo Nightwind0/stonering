@@ -27,6 +27,9 @@ namespace StoneRing
 	  {
 		  FONT_SPEAKER,
 		  FONT_SAY_TEXT,
+		  FONT_CHOICE,
+		  FONT_OPTION,
+		  FONT_CURRENT_OPTION,
 		  __LAST_FONT__
 	  };
 
