@@ -693,6 +693,7 @@ namespace StoneRing {
         bool evaluateCondition() const;
 
         void prod();
+		virtual bool step() const { return false; }
                         
 	static void CalculateEdgePoints(const CL_Point &topleft, eDirection dir, eSize size, std::list<CL_Point> *pList);
 	//  static eDirection OppositeDirection(eDirection current_dir);
@@ -753,7 +754,7 @@ namespace StoneRing {
 	virtual void idle();
 	void setSprite(CL_Sprite *pSprite) { mpSprite = pSprite; }
 	void setRunning(bool running);
-	virtual bool respectsHotness(){ return false; }
+	virtual bool respectsHotness()const{ return false; }
 	virtual uint getLevelX() const { return mX;}
 	virtual uint getLevelY() const { return mY;}
     private:
@@ -761,6 +762,8 @@ namespace StoneRing {
 	virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes){}
 	virtual void loadFinished(){}
         virtual void setFrameForDirection();
+
+		virtual bool step() const { return true; }
 
 	eDirection meNextDirection;
 	bool mbHasNextDirection;

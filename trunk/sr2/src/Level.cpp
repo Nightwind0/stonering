@@ -614,6 +614,12 @@ if(pMo->getName() == "Player" && gbDebugStop)
 				if(pMo->isAligned())
 				{
 					pMo->movedOneCell();
+
+					// If we wanted to step on every point that the player was stepping on, we could...
+					// In fact we could use setOccupiedPoints.
+					// But we're assuming that we take up only one square
+					if(pMo->step())
+						step(pMo->getPosition());
 				}
 
 			}// if direction != NONE
