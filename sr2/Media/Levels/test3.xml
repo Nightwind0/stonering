@@ -3408,7 +3408,7 @@
 			<spriteRef type="fourway">Animals/Cat2</spriteRef>
 			<event name="Cat3Go" triggerType="talk" remember="false">
 				<condition>
-					<didEvent>CatChoice</didEvent>
+					<hasItem><itemRef><namedItemRef>Octavia Key</namedItemRef></itemRef></hasItem>
 				</condition>
 				<say speaker="Leroy">I like you</say>
 			</event>

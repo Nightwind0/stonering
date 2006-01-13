@@ -261,9 +261,6 @@ void Element::load(CL_DomElement * pDomElement)
     CL_DomNode childNode = pDomElement->get_first_child(); //.to_element();  
 	CL_DomElement child;
 
-#ifndef NDEBUG
-	if(childNode.is_text()) std::cout << "Is Text" << std::endl;
-#endif
 
 	if(childNode.is_text())
 	{
