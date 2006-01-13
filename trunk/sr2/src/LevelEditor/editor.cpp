@@ -152,15 +152,15 @@ int EditorMain::main(int argc, char **argv)
 
 		
 			mpLevel = NULL;
-			list<string> tilemapnames = tsResources->get_all_resources("Tilemaps");
+			vector<string> tilemapnames = tsResources->get_all_resources("Tilemaps");
 
-			list<string> tempsets;
+			vector<string> tempsets;
 
 			string menutileset;
 
 			////create menu from tileset info
 
-			for(list<string>::iterator iter = tilemapnames.begin(); iter != tilemapnames.end(); iter++)
+			for(vector<string>::iterator iter = tilemapnames.begin(); iter != tilemapnames.end(); iter++)
 			{
 				menutileset = "TileSet/" + *iter;
 				CL_MenuNode * pMenu = menu.create_item(menutileset);
@@ -262,7 +262,7 @@ cout << "all the creation stuff completed. about to run it." << endl;
 
 void EditorMain::on_quit()
 {
-	int bttn;
+	int bttn=0;
 
 	if(mpLevel != NULL)
 	{
@@ -294,7 +294,7 @@ void EditorMain::on_tileset_change(string userdata)
 
 void EditorMain::on_save()
 {
-    string filename = SR_FileDialog::open("", "*.xml", gui_manager);;  //= SR_FileDialog::save("", "*.xml", gui_manager);
+    string filename = CL_FileDialog::open("", "*.xml", gui_manager);;  //= SR_FileDialog::save("", "*.xml", gui_manager);
 
 //	    cout << filename << endl;
 	if(filename != "")

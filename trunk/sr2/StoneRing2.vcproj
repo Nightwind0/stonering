@@ -313,6 +313,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\src\ChoiceState.cpp"
+				>
+			</File>
+			<File
 				RelativePath="src\Element.cpp"
 				>
 				<FileConfiguration
@@ -578,6 +582,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\ChoiceState.h"
+				>
+			</File>
+			<File
 				RelativePath="src\Effect.h"
 				>
 			</File>
@@ -662,6 +670,10 @@
 			Name="Resource Files"
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 			>
+			<File
+				RelativePath=".\Media\resources.xml"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

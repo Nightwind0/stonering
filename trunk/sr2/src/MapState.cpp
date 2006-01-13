@@ -214,7 +214,7 @@ void StoneRing::MapState::doTalk(bool prod)
 {
 	CL_Point talkPoint = mpPlayer->getPointInFront();
 
-    if(talkPoint.x >0 && talkPoint.x < mpLevel->getWidth() && 
-       talkPoint.y >0 && talkPoint.y < mpLevel->getHeight())
+    if(talkPoint.x >=0 && talkPoint.x < mpLevel->getWidth() && 
+       talkPoint.y >=0 && talkPoint.y < mpLevel->getHeight())
         mpLevel->talk ( talkPoint, prod );
 }

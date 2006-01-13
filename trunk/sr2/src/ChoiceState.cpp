@@ -29,6 +29,7 @@ void StoneRing::ChoiceState::handleKeyUp(const CL_InputEvent &key)
 	case CL_KEY_ENTER:
 	case CL_KEY_SPACE:
 	    // Select current option.
+		mbDraw = false;
 	    mpChoice->chooseOption(mnCurrentOption);
 	    mbDone = true;
 	    break;
@@ -64,6 +65,8 @@ void StoneRing::ChoiceState::handleKeyUp(const CL_InputEvent &key)
 
 void StoneRing::ChoiceState::draw(const CL_Rect &screenRect,CL_GraphicContext * pGC)
 {
+	if(!mbDraw) return;
+
     CL_Point choiceDrawPoint(screenRect.left, screenRect.top);
     CL_Size choiceDimensions = mpChoiceFont->get_size(mText,CL_Size( screenRect.get_width(), screenRect.get_height() / 2));
 
@@ -124,6 +127,7 @@ void StoneRing::ChoiceState::start()
 {
 
 	mbDone = false;
+	mbDraw = true;
 
 	if(!mpChoiceFont)
 	    mpChoiceFont = GraphicsManager::getInstance()->getFont( GraphicsManager::FONT_CHOICE );

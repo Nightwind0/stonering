@@ -2,7 +2,8 @@
 #include "IApplication.h"
 #include "GraphicsManager.h"
 
-StoneRing::SayState::SayState():mSpeakerRect(16,315,783,369), mTextRect(16,388,783,580), mbDone(false),mpSayOverlay(NULL)
+StoneRing::SayState::SayState():mSpeakerRect(16,315,783,369), 
+mTextRect(16,388,783,580), mbDone(false),mpSayOverlay(NULL)
 
 {
 
@@ -10,6 +11,7 @@ StoneRing::SayState::SayState():mSpeakerRect(16,315,783,369), mTextRect(16,388,7
 
 StoneRing::SayState::~SayState()
 {
+	delete mpSayOverlay;
 }
 
 bool StoneRing::SayState::isDone() const
