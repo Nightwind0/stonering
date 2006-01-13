@@ -1,2 +1,2 @@
 #!/bin/bash
-aclocal && automake --add-missing && libtoolize --force  && autoheader && autoconf
+aclocal && autoheader && libtoolize --force && automake --add-missing && autoconf
