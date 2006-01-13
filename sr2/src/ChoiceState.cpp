@@ -73,7 +73,7 @@ void StoneRing::ChoiceState::draw(const CL_Rect &screenRect,CL_GraphicContext * 
     if(choiceDimensions.width < screenRect.get_width())
 	choiceDrawPoint.x += (screenRect.get_width() - choiceDimensions.width) /2;
     if(choiceDimensions.height < screenRect.get_height())
-	choiceDrawPoint.y += (screenRect.get_height() - choiceDimensions.height) /2;
+	choiceDrawPoint.y += ((screenRect.get_height() /2) - choiceDimensions.height) /2;
 
     pGC->fill_rect(screenRect,CL_Color(0,0,0,200));
 
