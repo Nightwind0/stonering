@@ -89,7 +89,9 @@ void Application::choice(const std::string &choiceText,
 
     mStates.push_back ( pChoiceState );
 
-    run();
+    run(); // Run pops for us.
+
+	delete pChoiceState;
 }
 
 
@@ -340,6 +342,8 @@ int Application::main(int argc, char ** argv)
     {
 
         setupClanLib();
+
+		//CL_Display::get_buffer()
                 
         mpResources = new CL_ResourceManager ( "Media/resources.xml" );
 
@@ -357,6 +361,9 @@ int Application::main(int argc, char ** argv)
 
 
         mpWindow  = new CL_DisplayWindow(name, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+	//	mpWindow->get_buffer(0).to_format(CL_PixelFormat(24,0,0,0,0,false,0,pixelformat_rgba));
+
                 
         
         CL_Display::clear();

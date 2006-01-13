@@ -817,11 +817,6 @@ void StoneRing::MappablePlayer::randomNewDirection()
 }
 void StoneRing::MappablePlayer::idle()
 {
-	movedOneCell();
-}
-
-void StoneRing::MappablePlayer::movedOneCell()
-{
 	if(mbHasNextDirection)
 	{
 		meDirection = meNextDirection;
@@ -833,7 +828,12 @@ void StoneRing::MappablePlayer::movedOneCell()
 		meDirection = NONE;
 		mbRunning = false;
 	}
+}
 
+void StoneRing::MappablePlayer::movedOneCell()
+{
+
+	idle();
 	update();
 }
 

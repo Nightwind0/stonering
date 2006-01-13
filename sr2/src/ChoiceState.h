@@ -41,6 +41,7 @@ namespace StoneRing
 	CL_Font *mpCurrentOptionFont;
 	uint mnCurrentOption;
 	uint mnOptionOffset;
+	bool mbDraw;
 
     };
 };
