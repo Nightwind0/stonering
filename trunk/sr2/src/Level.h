@@ -760,6 +760,7 @@ namespace StoneRing {
 	virtual void handleElement(eElement element, Element * pElement ){}
 	virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes){}
 	virtual void loadFinished(){}
+        virtual void setFrameForDirection();
 
 	eDirection meNextDirection;
 	bool mbHasNextDirection;

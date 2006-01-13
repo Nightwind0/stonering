@@ -69,7 +69,7 @@
 	<section name = "Party">
 		<sprite name = "Valyn" hint = "alpha">
 			<image file="Sprites/valyn.png">
-				<grid pos="0,0" size="64,64" array="2,4">
+				<grid pos="0,0" size="32,64" array="2,4">
 				</grid>
 			</image>
 		</sprite>

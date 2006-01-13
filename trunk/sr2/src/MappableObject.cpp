@@ -868,3 +868,25 @@ CL_Point StoneRing::MappablePlayer::getPointInFront() const
 
 	return point;
 }
+
+void StoneRing::MappablePlayer::setFrameForDirection()
+{
+       switch( meFacingDirection )
+       {
+       case NORTH:
+	   mpSprite->set_frame(mbStep? 6 : 7);
+	   break;
+       case EAST:
+	   mpSprite->set_frame(mbStep? 0 : 1);
+	   break;
+       case WEST:
+	   mpSprite->set_frame(mbStep? 2 : 3);
+	   break;
+       case SOUTH:
+	   mpSprite->set_frame(mbStep? 4 : 5);
+	   break;
+       case NONE:
+	   
+	   break;
+       }
+}
