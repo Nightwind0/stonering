@@ -101,13 +101,13 @@ public:
       virtual void invokeShop(const std::string &shoptype){}
       virtual void choice(const std::string &, const std::vector<std::string> &, Choice*){}
 
-      Infobar * getInfo() const { return info; }
+      Infobar * getInfo() const { return mInfo; }
 
 private:
 	int main(int argc, char **argv);
 	
-	CL_GUIManager *gui_manager;
-	CL_ComponentManager *component_manager;
+	CL_GUIManager *mGui_manager;
+	CL_ComponentManager *mComponent_manager;
 
 	void on_quit();
 	void on_save();
@@ -123,22 +123,22 @@ private:
 	void on_paint();
 	void on_tileset_change(string userdata);
 
-	bool quit;
-	string menuitem;
+	bool mbQuit;
+	string mMenuitem;
 
 	EditorParty * mpParty;
 	EditableLevelFactory * mpLevelFactory;
 	CL_ResourceManager *mpResources;
 
-	CL_SlotContainer slots;
+	CL_SlotContainer mSlots;
 
-	TileSelector* tiles;
-	MapGrid* map;
+	TileSelector* mTiles;
+	MapGrid* mMap;
 
 	//CL_InputBox* info;
-	Infobar* info;
+	Infobar* mInfo;
 
-	CL_GraphicContext *gc;
+	CL_GraphicContext *mGc;
 
 	EditableLevel *mpLevel;
 

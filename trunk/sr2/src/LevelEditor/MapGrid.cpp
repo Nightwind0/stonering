@@ -5,8 +5,8 @@
 #include "editor.h"
 #include <sstream>
 
-MapGrid::MapGrid(CL_Rect setrect, CL_Component *parent, CL_GraphicContext *mgGC, TileSelector *TS)
-:	rect(setrect), CL_Component(parent), mgGC(mgGC), TS(TS)
+MapGrid::MapGrid(CL_Component *parent, CL_GraphicContext *mgGC, TileSelector *TS)
+:   CL_Component(parent), mgGC(mgGC), TS(TS)
 {
 //EditableLevel *mpLevel,
 //, mgLevel(null)
@@ -17,18 +17,17 @@ MapGrid::MapGrid(CL_Rect setrect, CL_Component *parent, CL_GraphicContext *mgGC,
 
 	mgLevel = NULL;
 
-	set_position(rect.left, rect.top);
-	set_size(rect.get_width(), rect.get_height());
+	set_size(640,480);
 
 
-	mgScrollVert = new CL_ScrollBar(0, 0, false, this);
-	mgScrollVert->set_position(get_width()-20, 0);
+	mgScrollVert = new CL_ScrollBar(0, 0, false, get_parent());
+	mgScrollVert->set_position(get_width(), 40);
 	mgScrollVert->set_width(20);
 	mgScrollVert->set_height(get_height()-20);
 	mgScrollVert->set_tracking(true);
 
-	mgScrollHorz = new CL_ScrollBar(0, 0, true, this);
-	mgScrollHorz->set_position(0, get_height()-20);
+	mgScrollHorz = new CL_ScrollBar(0, 0, true, get_parent());
+	mgScrollHorz->set_position(0, get_height());
 	mgScrollHorz->set_width(get_width()-20);
 	mgScrollHorz->set_height(20);
 	mgScrollHorz->set_tracking(true);
@@ -50,6 +49,8 @@ MapGrid::MapGrid(CL_Rect setrect, CL_Component *parent, CL_GraphicContext *mgGC,
 MapGrid::~MapGrid()
 {
 // do nothing
+	delete mgScrollVert;
+	delete mgScrollHorz;
 }
 
 void MapGrid::on_mouse_move(const CL_InputEvent &event)
@@ -75,19 +76,22 @@ void MapGrid::on_paint()
 	mgScrollX = mgScrollHorz->get_value()*32;
 	mgScrollY = mgScrollVert->get_value()*32;
 
+	int widthInTiles = get_width() / 32  ;
+	int heightInTiles = get_height() / 32 ;
+
 
 	//component background color
-	CL_Display::fill_rect(CL_Rect(0, 0, get_width()-20, get_height()-20), CL_Color::lightgreen);
+	CL_Display::fill_rect(client_to_screen(CL_Rect(0, 0, get_width(), get_height())), CL_Color::lightgreen);
 	//component border color
-	CL_Display::draw_rect(CL_Rect(0, 0, get_width(), get_height()), CL_Color::grey);
+	CL_Display::draw_rect(client_to_screen(CL_Rect(0, 0, get_width(), get_height())), CL_Color::grey);
 
 
 	if(mgLevel)  //we dont want to try drawing an empty level
 	{
-		CL_Rect dst(0,0,min((unsigned int)15,mgLevel->getWidth())*32-20, min((unsigned int)17,mgLevel->getHeight())*32-20);
+		CL_Rect dst(0,0,min((unsigned int)widthInTiles,mgLevel->getWidth())*32, min((unsigned int)heightInTiles,mgLevel->getHeight())*32);
 		CL_Rect src(mgScrollX,mgScrollY, mgScrollX+dst.get_width(), mgScrollY+dst.get_height());
 
-		mgLevel->draw(src, dst, mgGC, false, hotflag, blocksflag);
+		mgLevel->draw(src, client_to_screen(dst), mgGC, false, hotflag, blocksflag);
 	
 		//when dan fixes the mappables to work in the editor just uncomment this line.
 		//mgLevel->drawMappableObjects(src,dst,mgGC);
@@ -105,7 +109,7 @@ void MapGrid::on_placeTile(const CL_InputEvent &event)
 		clickX = event.mouse_pos.x;
 		clickY = event.mouse_pos.y;
 
-		if(clickX <get_width()-20 && clickY<get_height()-20)
+		if(clickX <get_width() && clickY<get_height())
 		{
 			mgX = (clickX/32) + mgScrollHorz->get_value();
 			mgY = (clickY/32) + mgScrollVert->get_value();
@@ -168,8 +172,11 @@ void MapGrid::set_Level(EditableLevel *mpLevel)
 {
 	mgLevel = mpLevel;
 
-	mgScrollVert->set_max_value((mgLevel->getHeight())-17);
-	mgScrollHorz->set_max_value((mgLevel->getWidth())-15);
+	int widthInTiles = get_width() / 32 ;
+	int heightInTiles = get_height() / 32 ;
+
+	mgScrollVert->set_max_value((mgLevel->getHeight())-heightInTiles);
+	mgScrollHorz->set_max_value((mgLevel->getWidth())-widthInTiles);
 }
 
 
@@ -191,7 +198,7 @@ void MapGrid::more_rows(int r)
 	{
 		mgLevel->addRows(r);
 
-		mgScrollVert->set_max_value((mgLevel->getHeight())-17);
+		mgScrollVert->set_max_value((mgLevel->getHeight())- (get_height()/32 ));
 	}
 
 }
@@ -202,7 +209,7 @@ void MapGrid::more_columns(int c)
 	{
 		mgLevel->addColumns(c);
 
-		mgScrollHorz->set_max_value((mgLevel->getWidth())-15);
+		mgScrollHorz->set_max_value((mgLevel->getWidth())- (get_width() / 32 ));
 	}
 }
 
@@ -268,7 +275,7 @@ void MapGrid::on_setHot(const CL_InputEvent &event)
 		clickX = event.mouse_pos.x;
 		clickY = event.mouse_pos.y;
 
-		if(clickX <get_width()-20 && clickY<get_height()-20)
+		if(clickX <get_width() && clickY<get_height())
 		{
 			mgX = (clickX/32) + mgScrollHorz->get_value();
 			mgY = (clickY/32) + mgScrollVert->get_value();
@@ -303,7 +310,7 @@ void MapGrid::on_setNorth(const CL_InputEvent &event)
 		clickX = event.mouse_pos.x;
 		clickY = event.mouse_pos.y;
 
-		if(clickX <get_width()-20 && clickY<get_height()-20)
+		if(clickX <get_width() && clickY<get_height())
 		{
 			mgX = (clickX/32) + mgScrollHorz->get_value();
 			mgY = (clickY/32) + mgScrollVert->get_value();
@@ -339,7 +346,7 @@ void MapGrid::on_setSouth(const CL_InputEvent &event)
 		clickX = event.mouse_pos.x;
 		clickY = event.mouse_pos.y;
 
-		if(clickX <get_width()-20 && clickY<get_height()-20)
+		if(clickX <get_width() && clickY<get_height())
 		{
 			mgX = (clickX/32) + mgScrollHorz->get_value();
 			mgY = (clickY/32) + mgScrollVert->get_value();
@@ -374,7 +381,7 @@ void MapGrid::on_setEast(const CL_InputEvent &event)
 		clickX = event.mouse_pos.x;
 		clickY = event.mouse_pos.y;
 
-		if(clickX <get_width()-20 && clickY<get_height()-20)
+		if(clickX <get_width() && clickY<get_height())
 		{
 			mgX = (clickX/32) + mgScrollHorz->get_value();
 			mgY = (clickY/32) + mgScrollVert->get_value();
@@ -409,7 +416,7 @@ void MapGrid::on_setWest(const CL_InputEvent &event)
 		clickX = event.mouse_pos.x;
 		clickY = event.mouse_pos.y;
 
-		if(clickX <get_width()-20 && clickY<get_height()-20)
+		if(clickX <get_width() && clickY<get_height())
 		{
 			mgX = (clickX/32) + mgScrollHorz->get_value();
 			mgY = (clickY/32) + mgScrollVert->get_value();

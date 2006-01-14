@@ -12,7 +12,7 @@ using namespace std;
 class Infobar : CL_Component
 {
 public:
-		Infobar(CL_Rect setrect, CL_Component *parent);
+		Infobar( CL_Component *parent);
 
 		~Infobar();
 

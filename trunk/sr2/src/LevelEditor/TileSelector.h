@@ -12,10 +12,10 @@ using namespace std;
 
 
 
-class TileSelector : CL_Component
+class TileSelector : public CL_Component
 {
 public:
-		TileSelector(CL_Rect setrect, CL_Component *parent, CL_ResourceManager* tsResources);
+		TileSelector(CL_Component *parent, CL_ResourceManager* tsResources);
 //, TileSet tileset
 		~TileSelector();
 

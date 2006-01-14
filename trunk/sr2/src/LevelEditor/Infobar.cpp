@@ -3,15 +3,14 @@
 #include "Infobar.h"
 
 
-Infobar::Infobar(CL_Rect setrect, CL_Component *parent)
-    :	rect(setrect), CL_Component(parent),tool_pos(NULL)
+Infobar::Infobar( CL_Component *parent)
+    :	 CL_Component(parent),tool_pos(NULL)
 {
 
 
-	set_position(rect.left, rect.top);
-//	set_position(30, 30);
-	set_size(rect.get_width(), rect.get_height());
-//	set_size(50, 50);
+	set_size(parent->get_width(), 20);
+
+	set_position(0,parent->get_client_y() + parent->get_height() - 50);
 
 	text1 = new CL_Label(CL_Point(5,2), "Tool:", this);
 	tool_text = new CL_Label(CL_Rect(35,2,100, 15), "Tile", this);
@@ -28,7 +27,10 @@ Infobar::Infobar(CL_Rect setrect, CL_Component *parent)
 
 Infobar::~Infobar()
 {
-// do nothing
+delete text1;
+delete tool_text;
+delete text2;
+delete tool_pos;
 }
 
 
@@ -38,7 +40,7 @@ void Infobar::on_paint()
 	//component background color
 //	CL_Display::fill_rect(CL_Rect(0, 0, get_width(), get_height()), CL_Color::lightgrey);
 	//component border color
-	CL_Display::draw_rect(CL_Rect(0, 0, get_width(), get_height()), CL_Color::grey);
+	CL_Display::draw_rect(client_to_screen(CL_Rect(0, 0, get_width(), get_height())), CL_Color::grey);
 	
 	
 
