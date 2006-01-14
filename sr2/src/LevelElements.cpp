@@ -636,6 +636,10 @@ void AttributeModifier::loadAttributes(CL_DomNamedNodeMap * pAttributes)
         {
             meTarget = CASTER;
         }
+		else if (target == "common")
+		{
+			meTarget = COMMON;
+		}
         else throw CL_Error("Unrecognized target type in attribute modifier: " + target);
 
     }
