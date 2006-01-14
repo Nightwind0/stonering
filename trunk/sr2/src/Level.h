@@ -160,7 +160,7 @@ namespace StoneRing {
         AttributeModifier();
         virtual ~AttributeModifier();
 
-        enum eTarget { CURRENT, ALL, CASTER };
+        enum eTarget { CURRENT, ALL, CASTER, COMMON };
         enum eChangeTo { ADD, TO_MIN, TO_MAX };
 
         virtual void invoke();

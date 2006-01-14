@@ -152,7 +152,7 @@
 <!ATTLIST attributeModifier attribute CDATA #REQUIRED>
 <!ATTLIST attributeModifier add CDATA #IMPLIED>
 <!ATTLIST attributeModifier changeTo (max|min|add) #REQUIRED>
-<!ATTLIST attributeModifier target (current|all|caster) #IMPLIED>
+<!ATTLIST attributeModifier target (current|all|caster|common) #IMPLIED>
 <!ATTLIST directionBlock north (true|false) #REQUIRED>
 <!ATTLIST directionBlock south (true|false) #REQUIRED>
 <!ATTLIST directionBlock east (true|false) #REQUIRED>

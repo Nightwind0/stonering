@@ -8,7 +8,7 @@
 
 using namespace StoneRing;
 
-
+ 
 
 
 Element * AbilityFactory::createDoWeaponDamage() const

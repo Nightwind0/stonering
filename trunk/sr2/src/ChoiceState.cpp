@@ -78,6 +78,7 @@ void StoneRing::ChoiceState::draw(const CL_Rect &screenRect,CL_GraphicContext * 
     pGC->fill_rect(screenRect,CL_Color(0,0,0,200));
 
 
+
     // Draw the Choice text
     mpChoiceFont->draw(choiceDrawPoint.x,choiceDrawPoint.y, mText, pGC);
     
