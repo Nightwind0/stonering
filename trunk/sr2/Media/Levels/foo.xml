@@ -163,7 +163,7 @@
 		<tile xpos="4" ypos="8">
 			<tilemap mapname="roofs" mapx="0" mapy="2"/>
 		</tile>
-		<tile xpos="4" ypos="9">
+		<tile xpos="4" ypos="9" pops="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
 		<tile xpos="5" ypos="0">
@@ -194,7 +194,7 @@
 		<tile xpos="5" ypos="8">
 			<tilemap mapname="roofs" mapx="0" mapy="2"/>
 		</tile>
-		<tile xpos="5" ypos="9">
+		<tile xpos="5" ypos="9" pops="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
 		<tile xpos="6" ypos="0">
@@ -229,7 +229,7 @@
 			<tilemap mapname="roofs" mapx="9" mapy="9"/>
 			<directionBlock north="true" south="false" east="false" west="true"/>
 		</tile>
-		<tile xpos="7" ypos="0">
+		<tile xpos="7" ypos="0" >
 			<tilemap mapname="roofs" mapx="1" mapy="9"/>
 			<directionBlock north="false" south="true" east="false" west="false"/>
 		</tile>

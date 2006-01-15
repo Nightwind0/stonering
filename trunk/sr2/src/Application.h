@@ -53,7 +53,7 @@ namespace StoneRing
 	virtual void pause(uint time);
 	virtual void invokeShop(const std::string &shoptype);
 	virtual void choice(const std::string &choiceText, const std::vector<std::string> &choices, Choice * pChoice);
-
+	virtual void pop(bool bAll);
 
     private:
 	void setupClanLib();

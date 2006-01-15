@@ -117,7 +117,7 @@ int EditorMain::main(int argc, char **argv)
 			mSlots.connect(gui.sig_paint(),this, &EditorMain::on_paint);
 
 
-			CL_Menu menu(window.get_client_area());
+			CL_Menu menu(&gui);
 			CL_Menu tileMenu(tileWindow.get_client_area());
 
 			// standard menu stuff
@@ -304,7 +304,10 @@ void EditorMain::on_tileset_change(string userdata)
 
 void EditorMain::on_save()
 {
-    string filename = CL_FileDialog::open("", "*.xml", mGui_manager);;  //= SR_FileDialog::save("", "*.xml", gui_manager);
+	//CL_FileDialog dialog("Save","","*.xml",mGui_manager);
+
+
+	string filename = CL_FileDialog::open(mGui_manager);// dialog.get_file();
 
 //	    cout << filename << endl;
 	if(filename != "")
@@ -353,7 +356,7 @@ void EditorMain::on_load()
 void EditorMain::on_new()
 {
 	
-	int bttn;
+	int bttn=0;
 
 	if(mpLevel != NULL)
 	{
