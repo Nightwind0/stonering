@@ -75,6 +75,7 @@ namespace StoneRing
 		    EPAUSE,
 		    EPLAYANIMATION,
 		    EPLAYSOUND,
+			EPOP,
 		    EREGULARITEM,
 		    ERUNE,
 		    ERUNETYPE,

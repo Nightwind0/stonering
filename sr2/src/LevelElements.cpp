@@ -1233,6 +1233,34 @@ bool Condition::evaluate() const
     return true;
 }
 
+
+Pop::Pop():mbAll(false)
+{
+}
+
+Pop::~Pop()
+{
+}
+
+void Pop::invoke()
+{
+	IApplication::getInstance()->pop(mbAll);
+}
+
+CL_DomElement Pop::createDomElement(CL_DomDocument &doc) const
+{
+	CL_DomElement element(doc,"pop");
+
+	element.set_attribute("all", mbAll?"true":"false");
+
+	return element;
+}
+
+void Pop::loadAttributes(CL_DomNamedNodeMap *pAttributes)
+{
+	mbAll = getImpliedBool("all",pAttributes,false);
+}
+
 Event::Event():mbRepeatable(true),mbRemember(false),mpCondition(NULL)
 {
 }
@@ -1905,6 +1933,11 @@ bool Tile::isHot() const
     return cFlags & HOT;
 }
 
+bool Tile::pops() const
+{
+	return cFlags & POPS;
+}
+
 Tile::Tile():mpSprite(NULL),mpCondition(NULL),mpAM(NULL),mZOrder(0),cFlags(0)
 {
 }
@@ -1920,6 +1953,7 @@ CL_DomElement  Tile::createDomElement(CL_DomDocument &doc) const
     if(mZOrder >0 ) element.set_attribute("zorder", IntToString (mZOrder ) );
     if(isFloater()) element.set_attribute("floater", "true");
     if(isHot())     element.set_attribute("hot", "true");
+	if(pops())      element.set_attribute("pops","true");
 
     if(isSprite())
     {
@@ -1977,9 +2011,11 @@ void Tile::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 
     bool floater = getImpliedBool("floater",pAttributes,false);
     bool hot = getImpliedBool("hot",pAttributes,false);
+	bool pops = getImpliedBool("pops",pAttributes,false);
 
     if(floater) cFlags |= FLOATER;
     if(hot) cFlags |= HOT;
+	if(pops) cFlags |= POPS;
 
 }
 

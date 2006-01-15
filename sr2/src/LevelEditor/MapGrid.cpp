@@ -129,12 +129,16 @@ void MapGrid::on_placeTile(const CL_InputEvent &event)
 				// Zap mode, delete the topmost tile
 				std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
 
-				std::list<Tile*>::iterator lastGuy = TileList.end();
+				if(TileList.size() > 0)
+				{
 
-				// Since it's currently actually one PAST the lastguy.
-				lastGuy--;
+					std::list<Tile*>::iterator lastGuy = TileList.end();
 
-				mgLevel->removeTile( *lastGuy );
+					// Since it's currently actually one PAST the lastguy.
+					lastGuy--;
+
+					mgLevel->removeTile( *lastGuy );
+				}
 				
 
 			}
@@ -188,7 +192,7 @@ void MapGrid::save_Level(string filename)
 	newdoc.append_child ( mgLevel->createDomElement(newdoc) );
 
 
-	newdoc.save( new CL_OutputSource_File( filename ), true,false );
+	newdoc.save( new CL_OutputSource_File( filename ), true, true );
 
 }
 

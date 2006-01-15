@@ -71,6 +71,7 @@ const char * StoneRing::Element::pszElementNames[Element::__END_OF_ELEMENTS__] =
     "pause",//      PAUSE,
     "playAnimation",//      PLAYANIMATION,
     "playSound",//          PLAYSOUND,
+	"pop",
     "regularItem",//        REGULARITEM,
     "rune",//       RUNE,
     "runeType",//           RUNETYPE,

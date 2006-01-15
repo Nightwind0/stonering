@@ -17,7 +17,7 @@
 <!ELEMENT namedItemRef (#PCDATA)>
 <!ELEMENT didEvent (#PCDATA)>
 <!ELEMENT mo ((tilemap|spriteRef*)?,condition?, event*, movement?)>
-<!ELEMENT event (condition?,(attributeModifier | say | give | take | playAnimation | playSound | loadLevel | startBattle | pause | invokeShop | giveGold | choice)*)>
+<!ELEMENT event (condition?,(attributeModifier | say | give | take | playAnimation | playSound | loadLevel | startBattle | pause | invokeShop | giveGold | choice | pop)*)>
 <!ELEMENT say (#PCDATA)>
 <!ELEMENT give (itemRef)> <!-- Note: This CHANGED! -->
 <!ELEMENT take (itemRef)> <!-- Note: This CHANGED! -->
@@ -29,8 +29,9 @@
 <!ELEMENT invokeShop EMPTY>
 <!ELEMENT pause (#PCDATA)>
 <!ELEMENT movement EMPTY>
+<!ELEMENT pop EMPTY> <!-- Pop the level stack. aka, leave a place...  -->
 <!ELEMENT choice (option+)>
-<!ELEMENT option (condition?, (attributeModifier | say | give | take | playAnimation | playSound | loadLevel | startBattle | pause | invokeShop | giveGold | choice)*)>
+<!ELEMENT option (condition?, (attributeModifier | say | give | take | playAnimation | playSound | loadLevel | startBattle | pause | invokeShop | giveGold | choice | pop)*)>
 
 
 <!-- Item DTD -->
@@ -44,7 +45,7 @@
 <!ELEMENT weaponRef (weaponTypeRef, weaponClassRef, (spellRef|runeType)?)>
 <!ELEMENT armorRef (armorTypeRef, armorClassRef, (spellRef|runeType)?)>
 <!ELEMENT namedItem (iconRef,(regularItem | uniqueWeapon | uniqueArmor | rune | specialItem | systemItem))>
-<!ELEMENT regularItem ((attributeModifier | say | give | take | playAnimation | playSound | loadLevel | startBattle | pause | invokeShop | giveGold | choice)*)>
+<!ELEMENT regularItem ((attributeModifier | say | give | take | playAnimation | playSound | loadLevel | startBattle | pause | invokeShop | giveGold | choice | pop)*)>
 <!ELEMENT uniqueWeapon (weaponTypeRef, weaponEnhancer*, statusEffectModifier*,attributeEnhancer*,  (spellRef|runeType)?)>
 <!ELEMENT uniqueArmor   (armorTypeRef, armorEnhancer*, statusEffectModifier*, attributeEnhancer*, (spellRef|runeType)?)>
 <!ELEMENT rune (spellRef)>
@@ -117,6 +118,7 @@
 <!ATTLIST tile zorder CDATA #IMPLIED>
 <!ATTLIST tile hot (true|false) #IMPLIED>
 <!ATTLIST tile floater (true|false) #IMPLIED>
+<!ATTLIST tile pops (true|false) #IMPLIED> <!-- Default is false, does not pop the level stack -->
 <!ATTLIST tilemap mapname CDATA #REQUIRED>
 <!ATTLIST tilemap mapx CDATA #REQUIRED>
 <!ATTLIST tilemap mapy CDATA #REQUIRED>
@@ -148,6 +150,7 @@
 <!ATTLIST hasGold not (true) #IMPLIED>
 <!ATTLIST hasItem not (true) #IMPLIED>
 <!ATTLIST hasItem count CDATA #IMPLIED>
+<!ATTLIST pop all (true|false) #IMPLIED> <!-- Default is false. Only pop one level -->
 <!ATTLIST didEvent not (true) #IMPLIED>
 <!ATTLIST attributeModifier attribute CDATA #REQUIRED>
 <!ATTLIST attributeModifier add CDATA #IMPLIED>

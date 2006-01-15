@@ -47,8 +47,8 @@ class IApplication
       virtual void say(const std::string &speaker, const std::string &text)=0;
       virtual void pause(uint time)=0;
       virtual void invokeShop(const std::string &shoptype)=0;
-      virtual void choice(const std::string &, const std::vector<std::string> &, Choice*)=0;
-
+	  virtual void choice(const std::string &, const std::vector<std::string> &, Choice*)=0;
+	  virtual void pop(bool bAll)=0;
 
 };
 

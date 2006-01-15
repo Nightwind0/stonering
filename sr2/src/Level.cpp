@@ -30,7 +30,7 @@ using std::abs;
 #endif
 
 
-Level::Level()
+Level::Level():mLevelWidth(0),mLevelHeight(0)
 {
 }
 
@@ -224,6 +224,8 @@ Level::~Level()
 
     
     }
+
+	delete mpPlayer;
 }
 
 int Level::getCumulativeDirectionBlockAtPoint(const CL_Point &point) const
@@ -497,6 +499,7 @@ void Level::putMappableObjectAtCurrentPosition(MappableObject *pMO)
 
 void Level::addPlayer(StoneRing::MappablePlayer *pPlayer)
 {
+	mpPlayer = pPlayer;
 	putMappableObjectAtCurrentPosition(pPlayer);
 }
 
@@ -637,7 +640,7 @@ if(pMo->getName() == "Player" && gbDebugStop)
 	
 	}// for iMo
 
-
+	if(mbMarkedForDeath) delete this;
         
 }
  
@@ -686,6 +689,7 @@ void Level::step(const CL_Point &target)
     
     activateTilesAt(target.x,target.y);
 
+
 }
 
 
@@ -697,10 +701,17 @@ void Level::activateTilesAt ( uint x, uint y )
         iter != tileList.end();
         iter++)
     {
-        if ( (*iter)->hasAM() && (*iter)->evaluateCondition() )
-        {
-            (*iter)->activate();
-        }
+		if((*iter)->evaluateCondition())
+		{
+			if ( (*iter)->hasAM() )
+			{
+				(*iter)->activate();
+			}
+			else if ((*iter)->pops() )
+			{
+				IApplication::getInstance()->pop(false);
+			}
+		}
     }
     
 }
@@ -744,7 +755,8 @@ void Level::talk(const CL_Point &target, bool prod)
         
 		}
 	}
-    
+
+	if(mbMarkedForDeath ) delete this;
 
 }
 
@@ -892,6 +904,9 @@ void Level::LoadLevel (CL_DomDocument &document )
     std:: cout << "FOUND " << mocount << " MAPPABLE OBJECTS" << std::endl;
 
     mnFrameCount = mnMoveCount = 0 ;
+
+	mbMarkedForDeath = false;
+	mpPlayer = NULL;
 }
 
 void Level::LoadLevel( const std::string & filename  )

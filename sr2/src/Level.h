@@ -369,6 +369,21 @@ namespace StoneRing {
         std::string mSound;
     };
 
+	class Pop: public Action
+	{
+	public:
+		Pop();
+		virtual ~Pop();
+
+		virtual void invoke();
+
+		virtual CL_DomElement createDomElement(CL_DomDocument&) const;
+	protected:
+		virtual void loadAttributes(CL_DomNamedNodeMap*);
+		bool mbAll;
+
+	};
+
     class LoadLevel : public Action
     {
     public:
@@ -610,6 +625,8 @@ namespace StoneRing {
 
         bool isHot() const;
 
+		bool pops() const;
+
         virtual void draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
         virtual void update();
         virtual int getDirectionBlock() const;
@@ -619,7 +636,7 @@ namespace StoneRing {
     protected:
         virtual void handleElement(eElement element, Element * pElement );
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-        enum eFlags { SPRITE = 1, FLOATER = 2, HOT = 4, BLK_NORTH = 8, BLK_SOUTH = 16, BLK_EAST = 32, BLK_WEST = 64};
+		enum eFlags { SPRITE = 1, FLOATER = 2, HOT = 4, BLK_NORTH = 8, BLK_SOUTH = 16, BLK_EAST = 32, BLK_WEST = 64, POPS = 128};
 
         CL_Sprite *mpSprite;
         SpriteRefOrTilemap mGraphic;
@@ -710,6 +727,7 @@ namespace StoneRing {
         virtual void loadFinished();
         void pickOppositeDirection();
         virtual void setFrameForDirection();
+		virtual bool deleteSprite() const { return true; }
         static CL_Point calcCellDimensions(eSize size);
         enum eFlags { SPRITE = 1, TILEMAP = 2, SOLID = 4 };
 
@@ -757,13 +775,18 @@ namespace StoneRing {
 	virtual bool respectsHotness()const{ return false; }
 	virtual uint getLevelX() const { return mX;}
 	virtual uint getLevelY() const { return mY;}
+
+	virtual void resetLevelX(uint x) { mX = x * 32;}
+	virtual void resetLevelY(uint y) { mY = y * 32;}
     private:
 	virtual void handleElement(eElement element, Element * pElement ){}
 	virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes){}
 	virtual void loadFinished(){}
         virtual void setFrameForDirection();
+		virtual bool deleteSprite() const { return false; }
 
 		virtual bool step() const { return true; }
+
 
 	eDirection meNextDirection;
 	bool mbHasNextDirection;
@@ -831,6 +854,11 @@ namespace StoneRing {
 
         std::string getName() const { return mName; }
 
+		MappablePlayer * getPlayer()const { return mpPlayer; }
+
+		void markForDeath() { mbMarkedForDeath = true; }
+
+
 #ifndef NDEBUG
         void dumpMappableObjects() const;
 #endif
@@ -881,7 +909,8 @@ namespace StoneRing {
         bool mbAllowsRunning;
         mutable uint mnFrameCount;
         uint mnMoveCount;
-                        
+		MappablePlayer * mpPlayer;
+		bool mbMarkedForDeath;
 
     };
 

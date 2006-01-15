@@ -100,7 +100,7 @@ public:
       virtual void pause(uint time){}
       virtual void invokeShop(const std::string &shoptype){}
       virtual void choice(const std::string &, const std::vector<std::string> &, Choice*){}
-
+	  virtual void pop(bool){}
       Infobar * getInfo() const { return mInfo; }
 
 private:

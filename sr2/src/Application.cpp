@@ -62,10 +62,12 @@ void Application::playSound(const std::string &sound)
 }
 void Application::loadLevel(const std::string &level, uint startX, uint startY)
 {
-#ifndef NDEBUG
-    std::cout << "Load level " << level << ':' << startX << ',' << startY << std::endl;
-#endif
+	mMapState.pushLevel( new Level(level,mpResources), startX, startY );
+}
 
+void Application::pop(bool bAll)
+{
+	mMapState.pop(bAll);
 }
 
 void Application::startBattle(const std::string &monster, uint count, bool isBoss)
@@ -353,8 +355,7 @@ int Application::main(int argc, char ** argv)
         std::string name = CL_String::load("Configuration/name", mpResources) + " (DEBUG)";
 #endif
         std::string startinglevel = CL_String::load("Game/StartLevel",mpResources);
-        std::string defaultplayersprite = CL_String::load("Game/DefaultPlayerSprite",mpResources );
-        std::string itemdefinition = CL_String::load("Game/ItemDefinitions", mpResources );
+		std::string itemdefinition = CL_String::load("Game/ItemDefinitions", mpResources );
         std::string statusEffectDefinition = CL_String::load("Game/StatusEffectDefinitions",mpResources);
         std::string spelldefinition = CL_String::load("Game/SpellDefinitions", mpResources);
         // Load special overlay for say.
@@ -369,16 +370,6 @@ int Application::main(int argc, char ** argv)
         CL_Display::clear();
 
 
-
-        CL_Sprite * pPlayerSprite = new CL_Sprite(defaultplayersprite, mpResources );
-
-        MappablePlayer *pPlayer = new StoneRing::MappablePlayer(0,0);
-
-        pPlayer->setSprite(pPlayerSprite);
-
-
-
-
         showRechargeableOnionSplash();
         showIntro();
         loadStatusEffects(statusEffectDefinition);
@@ -386,8 +377,7 @@ int Application::main(int argc, char ** argv)
         loadItems(itemdefinition);
         Level * pLevel = new Level(startinglevel, mpResources);
 
-        mMapState.setLevel ( pLevel );  
-        mMapState.setPlayer(pPlayer);
+        mMapState.pushLevel ( pLevel, 1,1 );  
         mMapState.setDimensions(getDisplayRect());
 
         mStates.push_back( &mMapState );

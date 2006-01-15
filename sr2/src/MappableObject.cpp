@@ -292,7 +292,8 @@ StoneRing::MappableObject::~MappableObject()
         delete *i;
     }
 
-    delete mpSprite;
+	if(deleteSprite())
+		delete mpSprite;
 
     delete mpMovement;
          
@@ -788,6 +789,7 @@ StoneRing::MappablePlayer::MappablePlayer(uint startX, uint startY):mbHasNextDir
 
 StoneRing::MappablePlayer::~MappablePlayer()
 {
+	
 }
 
 uint StoneRing::MappablePlayer::getMovesPerDraw() const

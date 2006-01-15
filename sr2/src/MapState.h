@@ -2,6 +2,9 @@
 #define SR2_MAP_STATE_H
 
 #include "State.h"
+#include "Level.h"
+#include "sr_defines.h"
+#include <stack>
 
 
 namespace StoneRing
@@ -28,9 +31,12 @@ namespace StoneRing
 	virtual void finish(); // Hook to clean up or whatever after being popped
 
 	void setDimensions(const CL_Rect &screenRect);
-	void setLevel(Level *pLevel);
-	void setPlayer(MappablePlayer * pPlayer);
+	void pushLevel(Level *pLevel, uint startX, uint startY);
+	void setPlayerSprite(CL_Sprite* pPlayer);
+
 	void moveMappableObjects();
+
+	void pop(bool bAll);
 
     private:
 	void recalculatePlayerPosition();
@@ -41,7 +47,9 @@ namespace StoneRing
 	int mLevelX; // Offset into level. TopLeft corner of our view into level
 	int mLevelY;
 	CL_Rect mScreenRect;
+	std::stack<Level*> mLevels;
 	Level * mpLevel;
+	CL_Sprite * mpPlayerSprite;
 	MappablePlayer  *mpPlayer;
 #ifndef NDEBUG
 	bool mbShowDebug;
