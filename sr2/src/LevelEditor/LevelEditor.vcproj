@@ -209,14 +209,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\LevelEditor\filedialog.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\LevelEditor\filedialog_generic.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\GraphicsManager.cpp"
 				>
 			</File>
@@ -274,30 +266,6 @@
 			</File>
 			<File
 				RelativePath="..\LevelEditor\TileSelector.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\LevelEditor\treeitem.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\LevelEditor\treeitem_generic.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\LevelEditor\treenode.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\LevelEditor\treenode_generic.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\LevelEditor\treeview.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\LevelEditor\treeview_generic.cpp"
 				>
 			</File>
 			<File
