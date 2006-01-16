@@ -110,8 +110,8 @@ int EditorMain::main(int argc, char **argv)
 			mGui_manager = &gui;
 
 			mGc = display.get_gc();
-			CL_Window window(CL_Rect(0, 50, 640, 520), "Window", gui.get_client_area());
-			CL_Window tileWindow(CL_Rect(100,75,380,280),"Tile Set",gui.get_client_area());
+			CL_Window window(CL_Rect(0, 50, 640, 620), "Map", gui.get_client_area());
+			CL_Window tileWindow(CL_Rect(650,75,900,380),"Tile Selector",gui.get_client_area());
 			
 			// Make sure our background is drawn under the GUI
 			mSlots.connect(gui.sig_paint(),this, &EditorMain::on_paint);
