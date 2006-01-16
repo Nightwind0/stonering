@@ -779,7 +779,7 @@ StoneRing::MappablePlayer::MappablePlayer(uint startX, uint startY):mbHasNextDir
 	mStartX = startX;
 	mStartY = startY;
 	mX=startX * 32;
-	mY=startX * 32;
+	mY=startY * 32;
 	mName = "Player";
 	meType = PLAYER;
 	meDirection = NONE;

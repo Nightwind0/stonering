@@ -1,4 +1,3 @@
-
 <level name="TestLevel">
 	<levelHeader music="Main" width="30" height="23" allowsRunning="true"/>
 	<tiles>
@@ -163,7 +162,9 @@
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
 		<tile xpos="2" ypos="2" hot="true">
-			<spriteRef>tiles/Lava</spriteRef>
+			<spriteRef>
+				tiles/Lava
+			</spriteRef>
 			<attributeModifier attribute="HP" add="-1" target="current" changeTo="add"/>
 		</tile>
 		<tile xpos="2" ypos="3">
@@ -792,17 +793,19 @@
 		</tile>
 		<tile xpos="7" ypos="9" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
+			<directionBlock north="false" south="false" east="true" west="false"/>
 		</tile>
 		<tile xpos="7" ypos="9" zorder="1" hot="true">
 			<tilemap mapname="wall1" mapx="0" mapy="11"/>
+			<directionBlock north="false" south="false" east="true" west="false"/>
 		</tile>
 		<tile xpos="7" ypos="10" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<directionBlock north="false" south="true" east="true" west="false"/>
 		</tile>
 		<tile xpos="7" ypos="10" zorder="1" hot="true">
 			<tilemap mapname="wall1" mapx="0" mapy="11"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<directionBlock north="false" south="true" east="true" west="false"/>
 		</tile>
 		<tile xpos="7" ypos="11">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -917,9 +920,11 @@
 		</tile>
 		<tile xpos="8" ypos="8" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
+			<directionBlock north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="8" ypos="8" zorder="1" hot="true">
 			<tilemap mapname="wall1" mapx="0" mapy="11"/>
+			<directionBlock north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="8" ypos="9" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1058,12 +1063,15 @@
 		</tile>
 		<tile xpos="9" ypos="8" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
+			<directionBlock north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="9" ypos="8" zorder="1" hot="true">
 			<tilemap mapname="wall1" mapx="0" mapy="11"/>
+			<directionBlock north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="9" ypos="8" zorder="2" hot="true">
 			<tilemap mapname="wall1" mapx="6" mapy="1"/>
+			<directionBlock north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="9" ypos="9" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1208,17 +1216,19 @@
 		</tile>
 		<tile xpos="10" ypos="9" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
+			<directionBlock north="false" south="false" east="false" west="true"/>
 		</tile>
 		<tile xpos="10" ypos="9" zorder="1" hot="true">
 			<tilemap mapname="wall1" mapx="0" mapy="11"/>
+			<directionBlock north="false" south="false" east="false" west="true"/>
 		</tile>
 		<tile xpos="10" ypos="10" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<directionBlock north="false" south="true" east="false" west="true"/>
 		</tile>
 		<tile xpos="10" ypos="10" zorder="1" hot="true">
 			<tilemap mapname="wall1" mapx="0" mapy="11"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<directionBlock north="false" south="true" east="false" west="true"/>
 		</tile>
 		<tile xpos="10" ypos="11">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -3396,79 +3406,28 @@
 		</tile>
 	</tiles>
 	<mappableObjects>
-		<mo name="Samantha" size="small" type="npc" xpos="0" ypos="5" solid="true">
-			<spriteRef type="fourway">Animals/Cat2</spriteRef>
-			<event name="CatMeow" triggerType="talk" remember="true">
-				<playSound>Meow</playSound>
-				<say speaker="Samantha">Mowwwww!!</say>
-			</event>
-			<movement movementType="wander" speed="fast"/>
-		</mo>
-		<mo name="Leroy" size="small" type="npc" xpos="2" ypos="8" solid="true">
-			<spriteRef type="fourway">Animals/Cat2</spriteRef>
-			<event name="Cat3Go" triggerType="talk" remember="false">
-				<condition>
-					<hasItem><itemRef><namedItemRef>Octavia Key</namedItemRef></itemRef></hasItem>
-				</condition>
-				<say speaker="Leroy">I like you</say>
-			</event>
-			<event name="CatChoice" triggerType="talk" remember="true" repeatable="false">
-				<choice text="Who is your favorite cat?">
-					<option text="You">
-						<say speaker="Leroy">Thank you! Take this key.</say>
-						<give>
-							<itemRef>
-								<namedItemRef>Octavia Key</namedItemRef>
-							</itemRef>
-						</give>
-					</option>
-					<option text="The other cat">
-						<say speaker="Leroy">Awww...</say>
-					</option>
-				</choice>
-			</event>
-
-			<movement movementType="wander" speed="fast"/>
-		</mo>
-		<mo name="DoorRLock" size="medium" type="square" xpos="8" ypos="9" solid="true">
-			<condition>
-				<hasItem not="true">
-					<itemRef>
-						<namedItemRef>Octavia Key</namedItemRef>
-					</itemRef>
-				</hasItem>
-			</condition>
-			<event name="octaviaLock" triggerType="talk" remember="true">
-				<say speaker="Notice">You need the Octavia Key.</say>
-			</event>
-		</mo>
-		<mo name="DoorR" size="medium" type="door" xpos="8" ypos="9">
-			<event name="enterOctaviaInn" triggerType="step" remember="true">
-				<loadLevel startx="4" starty="3" name="octaviaInn"/>
-			</event>
-		</mo>
-		<mo name="Presence" size="small" type="square" xpos="3" ypos="3">
-			<event name="sensePresence" triggerType="talk" remember="true">
-				<say speaker="????">You sense a presence. It is as though you can feel the watching eyes of someone. 
-				Perhaps someone you once knew. You are frozen in your tracks. You wonder about the sky. What color is it?
-				What does it mean to you? What will you do if it ever goes away? Why? What is it with monkeys, anyway. 
-				Do they really come in barrels? What else comes in barrels besides monkeys and pickles?</say>
-			</event>
-		</mo>
 		<mo name="Action" size="small" type="square" xpos="2" ypos="0">
 			<event name="mordusDances" triggerType="step" remember="true">
 				<condition>
 					<operator>
 						<and>
-							<didEvent></didEvent>
+							<didEvent>
+								
+							</didEvent>
 							<operator>
 								<or>
-									<hasGold operator="gte">50000</hasGold>
+									<hasGold operator="gte">
+										50000
+									</hasGold>
 									<hasItem>
 										<itemRef>
 											<weaponRef>
-												<weaponTypeRef>Sword</weaponTypeRef>
-												<weaponClassRef>Shoddy</weaponClassRef>
+												<weaponTypeRef>
+													Sword
+												</weaponTypeRef>
+												<weaponClassRef>
+													Shoddy
+												</weaponClassRef>
 											</weaponRef>
 										</itemRef>
 									</hasItem>
@@ -3477,7 +3436,95 @@
 						</and>
 					</operator>
 				</condition>
-				<playAnimation>mordusDances</playAnimation>
+				<playAnimation>
+					mordusDances
+				</playAnimation>
+			</event>
+		</mo>
+		<mo name="Presence" size="small" type="square" xpos="3" ypos="3">
+			<event name="sensePresence" triggerType="talk" remember="true">
+				<say speaker="????">
+					You sense a presence. It is as though you can feel the watching eyes of someone. 
+				Perhaps someone you once knew. You are frozen in your tracks. You wonder about the sky. What color is it?
+				What does it mean to you? What will you do if it ever goes away? Why? What is it with monkeys, anyway. 
+				Do they really come in barrels? What else comes in barrels besides monkeys and pickles?
+				</say>
+			</event>
+		</mo>
+		<mo name="Samantha" size="small" type="npc" xpos="0" ypos="5" solid="true">
+			<spriteRef type="fourway">
+				Animals/Cat2
+			</spriteRef>
+			<event name="CatMeow" triggerType="talk" remember="true">
+				<playSound>
+					Meow
+				</playSound>
+				<say speaker="Samantha">
+					Mowwwww!!
+				</say>
+			</event>
+			<movement movementType="wander" speed="fast"/>
+		</mo>
+		<mo name="Leroy" size="small" type="npc" xpos="2" ypos="8" solid="true">
+			<spriteRef type="fourway">
+				Animals/Cat2
+			</spriteRef>
+			<event name="Cat3Go" triggerType="talk">
+				<condition>
+					<hasItem>
+						<itemRef>
+							<namedItemRef>
+								Octavia Key
+							</namedItemRef>
+						</itemRef>
+					</hasItem>
+				</condition>
+				<say speaker="Leroy">
+					I like you
+				</say>
+			</event>
+			<event name="CatChoice" triggerType="talk" repeatable="false" remember="true">
+				<choice text="Who is your favorite cat?">
+					<option text="You">
+						<say speaker="Leroy">
+							Thank you! Take this key.
+						</say>
+						<give>
+							<itemRef>
+								<namedItemRef>
+									Octavia Key
+								</namedItemRef>
+							</itemRef>
+						</give>
+					</option>
+					<option text="The other cat">
+						<say speaker="Leroy">
+							Awww...
+						</say>
+					</option>
+				</choice>
+			</event>
+			<movement movementType="wander" speed="fast"/>
+		</mo>
+		<mo name="DoorRLock" size="medium" type="square" xpos="8" ypos="9" solid="true">
+			<condition>
+				<hasItem not="true">
+					<itemRef>
+						<namedItemRef>
+							Octavia Key
+						</namedItemRef>
+					</itemRef>
+				</hasItem>
+			</condition>
+			<event name="octaviaLock" triggerType="talk" remember="true">
+				<say speaker="Notice">
+					You need the Octavia Key.
+				</say>
+			</event>
+		</mo>
+		<mo name="DoorR" size="medium" type="door" xpos="8" ypos="9">
+			<event name="enterOctaviaInn" triggerType="step" remember="true">
+				<loadLevel startx="4" starty="8" name="octaviaInn"/>
 			</event>
 		</mo>
 	</mappableObjects>

@@ -62,7 +62,7 @@ void Application::playSound(const std::string &sound)
 }
 void Application::loadLevel(const std::string &level, uint startX, uint startY)
 {
-	mMapState.pushLevel( new Level(level,mpResources), startX, startY );
+ 	mMapState.pushLevel( new Level(level,mpResources), startX, startY );
 }
 
 void Application::pop(bool bAll)
