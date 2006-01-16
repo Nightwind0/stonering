@@ -10,7 +10,7 @@ Infobar::Infobar( CL_Component *parent)
 
 	set_size(parent->get_width(), 20);
 
-	set_position(0,parent->get_client_y() + parent->get_height() - 50);
+	set_position(0, parent->get_height() - 50);
 
 	text1 = new CL_Label(CL_Point(5,2), "Tool:", this);
 	tool_text = new CL_Label(CL_Rect(35,2,100, 15), "Tile", this);
@@ -44,6 +44,12 @@ void Infobar::on_paint()
 	
 	
 
+}
+
+void Infobar::on_window_resize(int,int)
+{
+	set_size(get_parent()->get_width(),20);
+	set_position(0,get_parent()->get_height() - 20);
 }
 
 

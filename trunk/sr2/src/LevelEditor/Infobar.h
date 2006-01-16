@@ -27,6 +27,7 @@ public:
 		    }
 
 		void on_paint();
+		void on_window_resize(int,int);
 
 private:
 

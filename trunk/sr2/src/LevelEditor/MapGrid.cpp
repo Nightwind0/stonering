@@ -17,18 +17,18 @@ MapGrid::MapGrid(CL_Component *parent, CL_GraphicContext *mgGC, TileSelector *TS
 
 	mgLevel = NULL;
 
-	set_size(640,480);
+	set_size(get_parent()->get_width() - 20, get_parent()->get_height() - 50);
 
 
 	mgScrollVert = new CL_ScrollBar(0, 0, false, get_parent());
-	mgScrollVert->set_position(get_width(), 40);
+	mgScrollVert->set_position(get_parent()->get_width() - 20, 40);
 	mgScrollVert->set_width(20);
-	mgScrollVert->set_height(get_height()-20);
+	mgScrollVert->set_height(get_parent()->get_height()-40);
 	mgScrollVert->set_tracking(true);
 
 	mgScrollHorz = new CL_ScrollBar(0, 0, true, get_parent());
-	mgScrollHorz->set_position(0, get_height());
-	mgScrollHorz->set_width(get_width()-20);
+	mgScrollHorz->set_position(0, get_parent()->get_height() - 20);
+	mgScrollHorz->set_width(get_parent()->get_width()-20);
 	mgScrollHorz->set_height(20);
 	mgScrollHorz->set_tracking(true);
 
@@ -43,6 +43,8 @@ MapGrid::MapGrid(CL_Component *parent, CL_GraphicContext *mgGC, TileSelector *TS
 	slots.connect(sig_paint(), this, &MapGrid::on_paint);
 	slots.connect(sig_mouse_up(), this, &MapGrid::on_Tool_Click);//on_placeTile
 	slots.connect(sig_mouse_move(), this, &MapGrid::on_mouse_move);
+
+
 }
 
 
@@ -51,6 +53,20 @@ MapGrid::~MapGrid()
 // do nothing
 	delete mgScrollVert;
 	delete mgScrollHorz;
+}
+
+void MapGrid::on_window_resize(int,int)
+{
+	set_size(get_parent()->get_width() - 20, get_parent()->get_height() - 50);
+
+	mgScrollVert->set_position(get_parent()->get_width() - 20, 20);
+	mgScrollVert->set_width(20);
+	mgScrollVert->set_height(get_parent()->get_height() - 40);
+	mgScrollVert->set_tracking(true);
+
+	mgScrollHorz->set_position(0, get_parent()->get_height() - 20);
+	mgScrollHorz->set_width(get_parent()->get_width()-20);
+	mgScrollHorz->set_height(20);
 }
 
 void MapGrid::on_mouse_move(const CL_InputEvent &event)
@@ -187,12 +203,18 @@ void MapGrid::set_Level(EditableLevel *mpLevel)
 void MapGrid::save_Level(string filename)
 {
 	CL_DomDocument newdoc;
+	CL_OutputSource_File  os(filename);
+
+	os.open();
 
 
 	newdoc.append_child ( mgLevel->createDomElement(newdoc) );
 
 
-	newdoc.save( new CL_OutputSource_File( filename ), true, true );
+	newdoc.save( &os, false, true );
+
+	os.close();
+
 
 }
 

@@ -24,6 +24,7 @@ public:
 		void on_paint();
 		void draw();
 		void on_select(const CL_InputEvent &event);
+		void on_window_resize(int,int);
 
 		int get_tsX() {return tsX;}
 		int get_tsY() {return tsY;}

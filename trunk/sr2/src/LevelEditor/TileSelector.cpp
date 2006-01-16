@@ -15,8 +15,8 @@ TileSelector::TileSelector( CL_Component *parent, CL_ResourceManager* tsResource
 	CL_Component * pClient = pWindow;
 
 	set_parent(pClient);
-
-	set_size(320,180);
+	//set_position(0,0);
+	set_size(get_parent()->get_width() - 20,get_parent()->get_height() - 20);
 
 	int tileX = 1;
 	int tileY = 1;
@@ -26,14 +26,14 @@ TileSelector::TileSelector( CL_Component *parent, CL_ResourceManager* tsResource
 
 	
 	scrollVert->set_size(20,pWindow->get_height() - 40);	
-	scrollVert->set_position(pWindow->get_client_x() + pWindow->get_width()-20,40);
+	scrollVert->set_position(pWindow->get_width()-20,40);
 
 	//scrollVert->set_width(20);
 	//scrollVert->set_height(get_parent()->get_height());
 	scrollVert->set_tracking(true);
 
 	scrollHorz = new CL_ScrollBar(true, pWindow);
-	scrollHorz->set_position(0, pWindow->get_client_y() + pWindow->get_height()-40);
+	scrollHorz->set_position(0,  pWindow->get_height()-40);
 	scrollHorz->set_width(pWindow->get_width()-20);
 	scrollHorz->set_height(20);
 	scrollHorz->set_tracking(true);
@@ -68,6 +68,18 @@ TileSelector::~TileSelector()
 	delete scrollHorz;
 }
 
+void TileSelector::on_window_resize(int,int)
+{
+	CL_Component * pWindow = get_parent();
+	set_size(get_parent()->get_width() - 20,get_parent()->get_height() - 20);
+
+	scrollHorz->set_position(0, pWindow->get_height()-20);
+	scrollHorz->set_width(pWindow->get_width()-20);
+	scrollHorz->set_height(20);
+
+	scrollVert->set_size(20,pWindow->get_height() - 40);	
+	scrollVert->set_position(pWindow->get_width()-20,40);
+}
 
 void TileSelector::on_paint()
 {
