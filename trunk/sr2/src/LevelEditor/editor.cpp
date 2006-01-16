@@ -56,12 +56,12 @@ LevelFactory * EditorMain::getLevelFactory() const
 		
 int EditorMain::getScreenWidth()const
 {
-	return 700;
+	return 1024;
 }
 
 int EditorMain::getScreenHeight()const
 {
-	return 615;
+	return 768;
 }
 
 
@@ -110,8 +110,8 @@ int EditorMain::main(int argc, char **argv)
 			mGui_manager = &gui;
 
 			mGc = display.get_gc();
-			CL_Window window(CL_Rect(0, 0, getScreenWidth(), getScreenHeight()), "Window", gui.get_client_area());
-			CL_Window tileWindow(CL_Rect(20,20,380,280),"Tile Set",gui.get_client_area());
+			CL_Window window(CL_Rect(0, 50, 640, 520), "Window", gui.get_client_area());
+			CL_Window tileWindow(CL_Rect(100,75,380,280),"Tile Set",gui.get_client_area());
 			
 			// Make sure our background is drawn under the GUI
 			mSlots.connect(gui.sig_paint(),this, &EditorMain::on_paint);
@@ -216,11 +216,11 @@ int EditorMain::main(int argc, char **argv)
 
 			mTiles = new TileSelector(tileWindow.get_client_area(), tsResources);
 
-			mTiles->set_position( tileWindow.get_client_x(), tileWindow.get_client_y() + windowMenu.get_height()); 
+			mTiles->set_position( tileWindow.get_client_area()->get_client_x(), tileWindow.get_client_area()->get_client_y() + windowMenu.get_height()); 
 			mSlots.connect(tileWindow.sig_resize(),mTiles,&TileSelector::on_window_resize);
 
 			mMap = new MapGrid(window.get_client_area(), display.get_gc(), mTiles);
-			mMap->set_position( window.get_client_area()->get_screen_x(), window.get_client_area()->get_screen_y() + windowMenu.get_height());
+			mMap->set_position( window.get_client_area()->get_client_x(), window.get_client_area()->get_client_y() + windowMenu.get_height());
 			mSlots.connect(window.sig_resize(), mMap,&MapGrid::on_window_resize);
 
 			mInfo = new Infobar( gui.get_client_area());
