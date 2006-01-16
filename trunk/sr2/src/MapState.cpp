@@ -152,9 +152,12 @@ void StoneRing::MapState::pushLevel(Level * pLevel, uint x, uint y)
 	mLevels.push( pLevel );
 	mpLevel = mLevels.top();
 
-	if(mpPlayer)switchFromPlayer(mpPlayer);
 
-	mpPlayer = new MappablePlayer(x,y);
+
+	MappablePlayer * pPlayer = new MappablePlayer(x,y);
+	if(mpPlayer)
+		pPlayer->matchFacingDirection(mpPlayer);
+	mpPlayer = pPlayer;
 
 	// gets deleted in the mappableobject destructor, which is called by Level, which deletes itself after a pop
 	CL_Sprite * pPlayerSprite = new CL_Sprite(defaultplayersprite, pResources );
@@ -165,6 +168,8 @@ void StoneRing::MapState::pushLevel(Level * pLevel, uint x, uint y)
 	mpLevel->addPlayer(mpPlayer);
 
 	recalculatePlayerPosition();
+
+	if(mpPlayer)switchFromPlayer(mpPlayer);
 }
 
 void StoneRing::MapState::setPlayerSprite(CL_Sprite * pPlayer)
@@ -196,7 +201,7 @@ void StoneRing::MapState::pop(bool bAll)
 	}
 
 	mpLevel = mLevels.top();
-
+	mpLevel->getPlayer()->matchFacingDirection(mpPlayer);
 	mpPlayer = mpLevel->getPlayer();
 	mpPlayer->setNextDirection( oldDir );
 }
