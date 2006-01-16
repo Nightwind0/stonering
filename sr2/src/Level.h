@@ -776,7 +776,7 @@ namespace StoneRing {
 	virtual bool respectsHotness()const{ return false; }
 	virtual uint getLevelX() const { return mX;}
 	virtual uint getLevelY() const { return mY;}
-
+	virtual void matchFacingDirection(MappablePlayer * pOther) { meFacingDirection = pOther->meFacingDirection; }
 	virtual void resetLevelX(uint x) { mX = x * 32;}
 	virtual void resetLevelY(uint y) { mY = y * 32;}
     private:
