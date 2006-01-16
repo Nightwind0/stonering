@@ -41,7 +41,7 @@ namespace StoneRing
     private:
 	void recalculatePlayerPosition();
 	void doTalk(bool prod=false);
-
+	void switchFromPlayer(MappablePlayer * pPlayer);
 
 	bool mbDone;
 	int mLevelX; // Offset into level. TopLeft corner of our view into level

@@ -175,7 +175,7 @@ CL_DomElement  Level::createDomElement(CL_DomDocument &doc) const
 		MappableObject * pMo = iter->second;
 		if(mnFrameCount > pMo->getFrameMarks())
 		{
-			element.append_child(pMo->createDomElement(doc));
+			mappableObjects.append_child(pMo->createDomElement(doc));
 			pMo->markFrame();
 		}
 	}
@@ -268,17 +268,14 @@ void Level::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC,
 {
     //    int maxSrcX = max( ceil(dst.get_width() / 32.0), mLevelWidth );
     //    int maxSrcY = max( ceil(dst.get_height() / 32.0), mLevelHeight);
-    
-    int widthInTiles = (int)ceil((float)src.get_width() / 32.0 );
-    int heightInTiles = (int)ceil((float)src.get_height() / 32.0 );
+	int cornerx = static_cast<int>(src.left / 32);
+    int cornery = static_cast<int>(src.top / 32);
+
+    int widthInTiles = static_cast<int>((int)ceil((double)src.right/32.0)) - cornerx;
+    int heightInTiles = static_cast<int>((int)ceil((double)src.bottom/32.0)) - cornery;
 
     int widthInPx = widthInTiles * 32;
     int heightInPx = heightInTiles * 32;
-
-    if(src.left % 32)
-        widthInTiles = max(widthInTiles, (src.get_width() / 32 + 1));
-    if(src.top % 32)
-        heightInTiles = max(heightInTiles, (src.get_height() /32 + 1));
 
 
     CL_Rect exDst = dst; // expanded Dest
@@ -602,6 +599,9 @@ if(pMo->getName() == "Player" && gbDebugStop)
 							bPathBlocked = true;
 							break;
 						} // if blocked
+
+						// Not blocked!
+
 					}// all points    
 
 					if(bPathBlocked) continue;
@@ -623,6 +623,7 @@ if(pMo->getName() == "Player" && gbDebugStop)
 					// But we're assuming that we take up only one square
 					if(pMo->step())
 						step(pMo->getPosition());
+
 				}
 
 			}// if direction != NONE
