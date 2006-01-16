@@ -108,6 +108,7 @@ private:
 	
 	CL_GUIManager *mGui_manager;
 	CL_ComponentManager *mComponent_manager;
+	CL_FileDialog * mpDialog;
 
 	void on_quit();
 	void on_save();

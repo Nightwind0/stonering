@@ -110,14 +110,15 @@ int EditorMain::main(int argc, char **argv)
 			mGui_manager = &gui;
 
 			mGc = display.get_gc();
-			CL_Window window(CL_Rect(0, 0, getScreenWidth(), getScreenHeight()), "Window", &gui);
-			CL_Window tileWindow(CL_Rect(20,20,380,280),"Tile Set",&gui);
+			CL_Window window(CL_Rect(0, 0, getScreenWidth(), getScreenHeight()), "Window", gui.get_client_area());
+			CL_Window tileWindow(CL_Rect(20,20,380,280),"Tile Set",gui.get_client_area());
 			
 			// Make sure our background is drawn under the GUI
 			mSlots.connect(gui.sig_paint(),this, &EditorMain::on_paint);
 
 
 			CL_Menu menu(&gui);
+			CL_Menu windowMenu(window.get_client_area());
 			CL_Menu tileMenu(tileWindow.get_client_area());
 
 			// standard menu stuff
@@ -129,22 +130,22 @@ int EditorMain::main(int argc, char **argv)
 		
 
 			//tools menu stuff
-			menu.create_item("Tools/Add Row");
-			menu.create_item("Tools/Add Column");
-			menu.create_item("Tools/-----");
-			menu.create_item("Tools/Add Tile");
-			menu.create_item("Tools/Set Hot");
-			menu.create_item("Tools/Direction Blocks -/North");
-			menu.create_item("Tools/Direction Blocks -/South");
-			menu.create_item("Tools/Direction Blocks -/East");
-			menu.create_item("Tools/Direction Blocks -/West");
+			windowMenu.create_item("Tools/Add Row");
+			windowMenu.create_item("Tools/Add Column");
+			windowMenu.create_item("Tools/-----");
+			windowMenu.create_item("Tools/Add Tile");
+			windowMenu.create_item("Tools/Set Hot");
+			windowMenu.create_item("Tools/Direction Blocks -/North");
+			windowMenu.create_item("Tools/Direction Blocks -/South");
+			windowMenu.create_item("Tools/Direction Blocks -/East");
+			windowMenu.create_item("Tools/Direction Blocks -/West");
 
 
 			//various options 
-			menu.create_item("Options/Show Hot Tiles");
-			menu.create_item("Options/Show Direction Blocks");
-			menu.create_item("Options/Show Mappable Objects");
-			menu.create_item("Options/Hide Floaters");
+			windowMenu.create_item("Options/Show Hot Tiles");
+			windowMenu.create_item("Options/Show Direction Blocks");
+			windowMenu.create_item("Options/Show Mappable Objects");
+			windowMenu.create_item("Options/Hide Floaters");
 
 
 
@@ -187,8 +188,8 @@ int EditorMain::main(int argc, char **argv)
 			mSlots.connect(menu.get_node("File/Open")->sig_clicked(), this, &EditorMain::on_load);
 			mSlots.connect(menu.get_node("File/New")->sig_clicked(), this, &EditorMain::on_new);
 
-			mSlots.connect(menu.get_node("Tools/Add Row")->sig_clicked(), this, &EditorMain::on_add_row);
-			mSlots.connect(menu.get_node("Tools/Add Column")->sig_clicked(), this, &EditorMain::on_add_column);
+			mSlots.connect(windowMenu.get_node("Tools/Add Row")->sig_clicked(), this, &EditorMain::on_add_row);
+			mSlots.connect(windowMenu.get_node("Tools/Add Column")->sig_clicked(), this, &EditorMain::on_add_column);
 
 			string tiletemp1 = "north";
 			string tiletemp2 = "south";
@@ -197,17 +198,17 @@ int EditorMain::main(int argc, char **argv)
 			string tiletemp5 = "hot";
 			string tiletemp6 = "tile";
 
-			mSlots.connect(menu.get_node("Tools/Direction Blocks -/North")->sig_clicked(), this, &EditorMain::on_change_tool, tiletemp1);
-			mSlots.connect(menu.get_node("Tools/Direction Blocks -/South")->sig_clicked(), this, &EditorMain::on_change_tool, tiletemp2);
-			mSlots.connect(menu.get_node("Tools/Direction Blocks -/East")->sig_clicked(), this, &EditorMain::on_change_tool, tiletemp3);
-			mSlots.connect(menu.get_node("Tools/Direction Blocks -/West")->sig_clicked(), this, &EditorMain::on_change_tool, tiletemp4);
-			mSlots.connect(menu.get_node("Tools/Set Hot")->sig_clicked(), this, &EditorMain::on_change_tool, tiletemp5);
-			mSlots.connect(menu.get_node("Tools/Add Tile")->sig_clicked(), this, &EditorMain::on_change_tool, tiletemp6);
+			mSlots.connect(windowMenu.get_node("Tools/Direction Blocks -/North")->sig_clicked(), this, &EditorMain::on_change_tool, tiletemp1);
+			mSlots.connect(windowMenu.get_node("Tools/Direction Blocks -/South")->sig_clicked(), this, &EditorMain::on_change_tool, tiletemp2);
+			mSlots.connect(windowMenu.get_node("Tools/Direction Blocks -/East")->sig_clicked(), this, &EditorMain::on_change_tool, tiletemp3);
+			mSlots.connect(windowMenu.get_node("Tools/Direction Blocks -/West")->sig_clicked(), this, &EditorMain::on_change_tool, tiletemp4);
+			mSlots.connect(windowMenu.get_node("Tools/Set Hot")->sig_clicked(), this, &EditorMain::on_change_tool, tiletemp5);
+			mSlots.connect(windowMenu.get_node("Tools/Add Tile")->sig_clicked(), this, &EditorMain::on_change_tool, tiletemp6);
 			
 
 
-			mSlots.connect(menu.get_node("Options/Show Hot Tiles")->sig_clicked(), this, &EditorMain::on_show_hot);
-			mSlots.connect(menu.get_node("Options/Show Direction Blocks")->sig_clicked(), this, &EditorMain::on_show_blocks);
+			mSlots.connect(windowMenu.get_node("Options/Show Hot Tiles")->sig_clicked(), this, &EditorMain::on_show_hot);
+			mSlots.connect(windowMenu.get_node("Options/Show Direction Blocks")->sig_clicked(), this, &EditorMain::on_show_blocks);
 
 
 			//other random slot connects
@@ -215,11 +216,16 @@ int EditorMain::main(int argc, char **argv)
 
 			mTiles = new TileSelector(tileWindow.get_client_area(), tsResources);
 
-			mTiles->set_position( tileWindow.get_screen_x(), tileWindow.get_screen_y() + tileMenu.get_height());
+			mTiles->set_position( tileWindow.get_client_x(), tileWindow.get_client_y() + windowMenu.get_height()); 
+			mSlots.connect(tileWindow.sig_resize(),mTiles,&TileSelector::on_window_resize);
 
 			mMap = new MapGrid(window.get_client_area(), display.get_gc(), mTiles);
-			mMap->set_position( window.get_screen_x(), window.get_screen_y() + menu.get_height());
-			mInfo = new Infobar( window.get_client_area());
+			mMap->set_position( window.get_client_area()->get_screen_x(), window.get_client_area()->get_screen_y() + windowMenu.get_height());
+			mSlots.connect(window.sig_resize(), mMap,&MapGrid::on_window_resize);
+
+			mInfo = new Infobar( gui.get_client_area());
+
+			mSlots.connect(gui.sig_resize(),mInfo, &Infobar::on_window_resize);
 #if 0
 //			cout<< "creating tileselector" << endl;
 	
@@ -304,14 +310,19 @@ void EditorMain::on_tileset_change(string userdata)
 
 void EditorMain::on_save()
 {
-	//CL_FileDialog dialog("Save","","*.xml",mGui_manager);
+	
+//	mpDialog = new CL_FileDialog("Save","","*.xml",mGui_manager);
 
-
-	string filename = CL_FileDialog::open(mGui_manager);// dialog.get_file();
+	//	string path = dialog.get_path();
+	string filename = CL_FileDialog::save(mGui_manager);
 
 //	    cout << filename << endl;
 	if(filename != "")
 		mMap->save_Level(filename);
+	else
+	{
+		CL_MessageBox::info("You didn't enter a file name. You (sadly) have to hit Enter after typing in the name.",mGui_manager);
+	}
 }
 
 void EditorMain::on_load()
