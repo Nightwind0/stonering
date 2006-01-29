@@ -8,7 +8,7 @@ namespace StoneRing {
 	Effect();
 	virtual ~Effect();
 
-	enum eType { WEAPON_DAMAGE, MAGIC_DAMAGE, STATUS_EFFECT, ANIMATION, ATTRIBUTE_EFFECT };
+	enum eType { WEAPON_DAMAGE, MAGIC_DAMAGE, STATUS_EFFECT, ANIMATION, ATTRIBUTE_EFFECT , ATTACK};
 
 	virtual eType getEffectType() const = 0;
     private:

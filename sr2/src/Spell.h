@@ -19,7 +19,7 @@ namespace StoneRing
 	public:
 	    DoWeaponDamage();
 	    virtual ~DoWeaponDamage();
-
+		virtual eElement whichElement() const{ return EDOWEAPONDAMAGE; }
 	    WeaponDamageCategory * getDamageCategory();
 
 	    uint getBaseAttack() const;
@@ -47,7 +47,7 @@ namespace StoneRing
 	public:
 	    DoMagicDamage();
 	    virtual ~DoMagicDamage();
-
+		virtual eElement whichElement() const{ return EDOMAGICDAMAGE; }
 
 	    uint getBaseDamage() const;
 	    float getBaseHit() const;
@@ -76,13 +76,30 @@ namespace StoneRing
 	    eDamageAttr meDamageAttr;
 	};
 
+	class DoAttack : public Element, public Effect
+	{
+	public:
+		DoAttack();
+		~DoAttack();
+		virtual eElement whichElement() const{ return EDOATTACK; }
+		uint getNumberOfHits() const;
+		float getCriticalChance() const;
+		bool hitAllenemies() const;
+	    virtual eType getEffectType() const { return ATTACK; }
+	private:
+	    virtual void loadAttributes(CL_DomNamedNodeMap *);
+		bool mbHitAllEnemies;
+		float mfCritical;
+		uint mnHits;
+	};
+
 
     class DoStatusEffect : public Element, public Effect
 	{
 	public:
 	    DoStatusEffect();
 	    virtual ~DoStatusEffect();
-
+		virtual eElement whichElement() const{ return EDOSTATUSEFFECT; }
 	    std::string getStatusRef() const;
 	    float getChance() const;
 
@@ -104,7 +121,7 @@ namespace StoneRing
 	public:
 	    MagicResistance();
 	    virtual ~MagicResistance();
-
+		virtual eElement whichElement() const{ return EMAGICRESISTANCE; }
 	    float getResistance() const;
 	    enum eType
 		{
@@ -128,7 +145,7 @@ namespace StoneRing
 	    Spell();
 	    virtual ~Spell();
 
-
+		virtual eElement whichElement() const{ return ESPELL; }
 	    std::string getName() const;
 
 	    enum eType { ELEMENTAL, WHITE, STATUS, OTHER };

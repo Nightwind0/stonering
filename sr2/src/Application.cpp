@@ -246,6 +246,22 @@ void Application::loadSpells(const std::string &filename)
 
 }
 
+void Application::loadSkills(const std::string &filename)
+{
+#ifndef NDEBUG
+    std::cout << "Loading skills..." << std::endl;
+#endif    
+
+    CL_InputSource_File file(filename);
+
+    CL_DomDocument document;
+        
+    document.load(&file);
+
+    mAbilityManager.loadSkillFile ( document );
+
+}
+
 void Application::loadStatusEffects(const std::string &filename)
 {
 #ifndef NDEBUG
@@ -358,6 +374,7 @@ int Application::main(int argc, char ** argv)
 		std::string itemdefinition = CL_String::load("Game/ItemDefinitions", mpResources );
         std::string statusEffectDefinition = CL_String::load("Game/StatusEffectDefinitions",mpResources);
         std::string spelldefinition = CL_String::load("Game/SpellDefinitions", mpResources);
+		std::string skilldefinition = CL_String::load("Game/SkillDefinitions",mpResources);
         // Load special overlay for say.
 
 
@@ -375,6 +392,7 @@ int Application::main(int argc, char ** argv)
         loadStatusEffects(statusEffectDefinition);
         loadSpells(spelldefinition);
         loadItems(itemdefinition);
+		loadSkills(skilldefinition);
         Level * pLevel = new Level(startinglevel, mpResources);
 
         mMapState.pushLevel ( pLevel, 1,1 );  

@@ -37,10 +37,12 @@ const char * StoneRing::Element::pszElementNames[Element::__END_OF_ELEMENTS__] =
     "attributeEffect",//            ATTRIBUTEEFFECT,
     "attributeEnhancer",//          ATTRIBUTEENHANCER,
     "attributeModifier",//          ATTRIBUTEMODIFIER,
+    "characterClass",
     "choice",//             CHOICE,
     "condition",//          CONDITION,
     "didEvent",//           DIDEVENT,
     "directionBlock",//  DIRECTIONBLOCK,
+    "doAttack", // EDOATTACK
     "doMagicDamage",//      DOMAGICDAMAGE,
     "doStatusEffect",//             DOSTATUSEFFECT,
     "doWeaponDamage",//             DOWEAPONDAMAGE,
@@ -71,11 +73,12 @@ const char * StoneRing::Element::pszElementNames[Element::__END_OF_ELEMENTS__] =
     "pause",//      PAUSE,
     "playAnimation",//      PLAYANIMATION,
     "playSound",//          PLAYSOUND,
-	"pop",
+    "pop",
     "regularItem",//        REGULARITEM,
     "rune",//       RUNE,
     "runeType",//           RUNETYPE,
     "say",//        SAY,
+    "skill",
     "skillRef",
     "specialItem",//        SPECIALITEM,
     "spell",//      SPELL,
@@ -112,7 +115,7 @@ uint Element::getRequiredUint(const std::string &attrname, CL_DomNamedNodeMap * 
     }
     else
     {
-        throw CL_Error("Missing attribute " + attrname );
+        throw CL_Error("Missing attribute " + attrname + " on " + getElementName() );
     }
 }
 
@@ -124,7 +127,7 @@ int Element:: getRequiredInt(const std::string &attrname, CL_DomNamedNodeMap * p
     }
     else
     {
-        throw CL_Error("Missing attribute " + attrname );
+        throw CL_Error("Missing attribute " + attrname + " on " + getElementName() );
     }
 
 }
@@ -138,7 +141,7 @@ float Element::getRequiredFloat(const std::string &attrname, CL_DomNamedNodeMap 
     }
     else
     {
-        throw CL_Error("Missing attribute " + attrname );
+        throw CL_Error("Missing attribute " + attrname + " on " + getElementName() );
     }
 
 }
@@ -151,7 +154,8 @@ std::string Element::getRequiredString (const std::string &attrname, CL_DomNamed
     }
     else
     {
-        throw CL_Error("Missing attribute " + attrname );
+
+        throw CL_Error("Missing attribute " + attrname + " on " + getElementName() );
     }
 
     return "";
@@ -165,7 +169,7 @@ bool Element::getRequiredBool (const std::string &attrname, CL_DomNamedNodeMap *
     }
     else
     {
-        throw CL_Error("Missing attribute " + attrname );
+        throw CL_Error("Missing attribute " + attrname + " on " + getElementName() );
     }
 
     return false;
@@ -242,6 +246,11 @@ std::string Element::getString (const std::string &attrname, CL_DomNamedNodeMap 
 {
     return pAttributes->get_named_item(attrname).get_node_value();
 }
+
+std::string Element::getElementName() const
+{
+	return pszElementNames[ whichElement() ];
+}
     
 
 void Element::load(CL_DomElement * pDomElement)
@@ -301,6 +310,8 @@ void Element::load(CL_DomElement * pDomElement)
                 if(pFactory->canCreate(element))
                 {
                     pElement = pFactory->createElement(element);
+
+				//	cl_assert ( pElement->whichElement() == element );
                     break;
                 }
                                         

@@ -6,6 +6,7 @@
 #include "AbilityFactory.h"
 #include "IApplication.h"
 #include "Animation.h"
+#include "Level.h"
 
 
 using namespace StoneRing;
@@ -56,8 +57,12 @@ void StoneRing::Skill::handleElement(eElement element, Element * pElement)
 	case EDOWEAPONDAMAGE:
 	case EDOMAGICDAMAGE:
 	case EDOSTATUSEFFECT:
+	case EDOATTACK:
 			mEffects.push_back(dynamic_cast<Effect*>(pElement));
 			break;
+	case EATTRIBUTEMODIFIER:
+		mAttributeModifiers.push_back(dynamic_cast<AttributeModifier*>(pElement));
+		break;
 	default:
 		throw CL_Error("Bad element in skill");
 		//@todo EPREREQSKILLREF:
@@ -87,7 +92,17 @@ Skill::getEffectsEnd() const
 		return mEffects.end();
 }
 
+std::list<AttributeModifier*>::const_iterator 
+Skill::getAttributeModifiersBegin() const
+{
+	return mAttributeModifiers.begin();
+}
 
+std::list<AttributeModifier*>::const_iterator 
+Skill::getAttributeModifiersEnd() const
+{
+	return mAttributeModifiers.end();
+}
 
 std::string Skill::getName() const
 {
@@ -117,7 +132,7 @@ Skill::getPreReqsEnd() const
 	return mPreReqs.end();
 }
 
-CL_DomElement Skill::createDomElement ( CL_DomDocument &doc )
+CL_DomElement Skill::createDomElement ( CL_DomDocument &doc ) const
 {
 	return CL_DomElement(doc,"skill");
 }

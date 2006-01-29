@@ -73,11 +73,11 @@
 <!ELEMENT doWeaponDamage (weaponDamageCategory)>
 <!ELEMENT doMagicDamage  (magicDamageCategory)>
 <!ELEMENT doStatusEffect EMPTY>
-<!ELEMENT spell (magicAbsorb?,(animation|doWeaponDamage|doMagicDamage|doStatusEffect)*)> 
+<!ELEMENT doAttack EMPTY>
+<!ELEMENT spell (magicResistance?,(animation|doWeaponDamage|doMagicDamage|doStatusEffect)*)> 
 <!ELEMENT weaponDamageCategory EMPTY>
 <!ELEMENT magicDamageCategory EMPTY>
 <!ELEMENT magicResistance EMPTY>
-
 
 <!-- Animation DTD -->
 <!ELEMENT animation (par+)>
@@ -100,7 +100,7 @@
 <!ELEMENT characterClasses (characterClass+)>
 <!ELEMENT statIncrease EMPTY>
 <!ELEMENT startingStat EMPTY>
-<!ELEMENT skill (prereqSkillRef*,(animation|doWeaponDamage|doMagicDamage|doStatusEffect)*)>
+<!ELEMENT skill (prereqSkillRef*,(animation|doWeaponDamage|doMagicDamage|doStatusEffect|doAttack)*, attributeModifier*)>
 <!ELEMENT skillList (skill)+>
 <!ELEMENT prereqSkillRef EMPTY>
 <!ELEMENT skillRef EMPTY>
@@ -154,7 +154,8 @@
 <!ATTLIST didEvent not (true) #IMPLIED>
 <!ATTLIST attributeModifier attribute CDATA #REQUIRED>
 <!ATTLIST attributeModifier add CDATA #IMPLIED>
-<!ATTLIST attributeModifier changeTo (max|min|add) #REQUIRED>
+<!ATTLIST attributeModifier multiplier CDATA #IMPLIED> <!-- Defaults to 1 -->
+<!ATTLIST attributeModifier changeTo (max|min|add|multiplier|multiply_add) #REQUIRED>
 <!ATTLIST attributeModifier target (current|all|caster|common) #IMPLIED>
 <!ATTLIST directionBlock north (true|false) #REQUIRED>
 <!ATTLIST directionBlock south (true|false) #REQUIRED>
@@ -238,7 +239,9 @@
 <!ATTLIST doMagicDamage  damageAttribute (hp|mp) #IMPLIED> <!-- Default is hp -->
 <!ATTLIST doStatusEffect statusRef CDATA #REQUIRED>
 <!ATTLIST doStatusEffect chance CDATA #REQUIRED> <!-- 0 to 1 floating point. -->
-
+<!ATTLIST doAttack critical CDATA #IMPLIED> <!-- Defaults to the critical of your weapon -->
+<!ATTLIST doAttack hits CDATA #IMPLIED> <!-- Defaults to one hit -->
+<!ATTLIST doAttack allEnemies (true|false) #IMPLIED> <!-- Defaults to false -->
 <!ATTLIST attributeEffect attribute CDATA #REQUIRED>
 <!ATTLIST attributeEffect add CDATA #IMPLIED> <!-- Implied as 0 -->
 <!ATTLIST attributeEffect changeTo (max|min|add|multiplier|multiplier_add) #REQUIRED>
@@ -265,5 +268,6 @@
 <!ATTLIST skill name CDATA #REQUIRED>
 <!ATTLIST skill sp CDATA #REQUIRED> <!-- Skill points to earn skill -->
 <!ATTLIST skill bp CDATA #REQUIRED> <!-- Percentage of 'Break' to use skill --> 
+<!ATTLIST skill type (battle|switch) #IMPLIED> <!-- Defaults to battle -->
 <!ATTLIST prereqSkillRef skillName CDATA #REQUIRED>
 <!ATTLIST skillRef skillName CDATA #REQUIRED>

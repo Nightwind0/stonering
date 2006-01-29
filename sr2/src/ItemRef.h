@@ -21,7 +21,7 @@ namespace StoneRing
 	ItemRef();
 	ItemRef(CL_DomElement *pElement );
 	virtual ~ItemRef();
-
+	virtual eElement whichElement() const{ return EITEMREF; }	
 	enum eRefType { NAMED_ITEM, WEAPON_REF, ARMOR_REF };
 
 //	std::string getItemName() const;
@@ -56,7 +56,7 @@ namespace StoneRing
 	    NamedItemRef();
 	    NamedItemRef(CL_DomElement *pElement );
 	    virtual ~NamedItemRef();
-
+		virtual eElement whichElement() const{ return ENAMEDITEMREF; }
 	    std::string getItemName();
 
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;

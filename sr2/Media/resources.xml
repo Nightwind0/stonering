@@ -11,6 +11,7 @@
  	<string name="SpellDefinitions" value="Media/spells.xml"/>
  	<string name="ItemDefinitions" value="Media/items.xml"/>
 	<string name="StatusEffectDefinitions" value="Media/statusEffects.xml"/>
+	<string name="SkillDefinitions" value="Media/skills.xml"/>
  	<string name="LevelPath" value="Media/Levels/" />
 	<string name="StartLevel" value="examplelevel" />
 	<string name="DefaultPlayerSprite" value="Sprites/Party/Valyn" /> 

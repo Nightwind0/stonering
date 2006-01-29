@@ -23,6 +23,7 @@ namespace StoneRing
     class StartingStat;
     class StatIncrease;
 	class AnimationSpriteRef;
+	class Skill;
 
     class AbilityFactory : public IFactory
 	{
@@ -51,6 +52,8 @@ namespace StoneRing
 		Element * createAnimationSpriteRef() const;
 		Element * createPar() const;
 		Element * createSkillRef() const;
+		Element * createSkill() const;
+
 
 	private:
 	    typedef Element * (AbilityFactory::*factoryMethod)() const;

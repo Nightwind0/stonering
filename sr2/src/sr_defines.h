@@ -28,6 +28,7 @@ del_fun_t<T> del_fun()
 
 
 std::string IntToString(const int &i);
+std::string FloatToString(const float &f);
 
 #ifndef NDEBUG
 extern bool gbDebugStop;

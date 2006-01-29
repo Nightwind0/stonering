@@ -13,7 +13,7 @@ namespace StoneRing{
 		~AttributeEffect();
 
 		Effect::eType getEffectType() const { return ATTRIBUTE_EFFECT; }
-
+		virtual eElement whichElement() const{ return EATTRIBUTEEFFECT; }	
 		CL_DomElement createDomElement(CL_DomDocument &doc) const ;
 
 		std::string getAttribute() const;
@@ -39,7 +39,7 @@ namespace StoneRing{
 	public:
 		StatusEffectActions();
 		~StatusEffectActions();
-
+		virtual eElement whichElement() const{ return ESTATUSEFFECTACTIONS; }	
 		CL_DomElement createDomElement(CL_DomDocument &doc) const;
 
 		std::list<Effect*>::const_iterator getEffectsBegin() const;
@@ -56,7 +56,7 @@ namespace StoneRing{
 	public:
 			StatusEffect();
 			virtual ~StatusEffect();
-
+			virtual eElement whichElement() const{ return ESTATUSEFFECT; }	
 			CL_DomElement createDomElement(CL_DomDocument &doc) const;
 
 			StatusEffectActions * getOnInvoke() const;

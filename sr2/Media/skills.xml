@@ -1,9 +1,9 @@
-<!DOCTYPE skillList SYSTEM "Levels/level.dtd" >
+<!--DOCTYPE skillList SYSTEM "Levels/level.dtd" -->
 <skillList>
 	<skill bp="0" name="Focus" sp="5">
 		<doStatusEffect chance="1" statusRef="Focused"/>
 	</skill>
-	<skill bp="1.0" name="Wind Slash" sp="0"	>
+	<skill bp="1.0" name="Wind Slash" sp="50"	>
 		<animation name="WindSlash" type="battle">
 			<par duration="3">
 				<playSound>WindSlash</playSound>
@@ -14,6 +14,12 @@
 			<weaponDamageCategory type="slash"/>
 		</doWeaponDamage>
 		
+	</skill>
+	<skill bp="0" name="Thrift" sp="60" type="switch">
+		<attributeModifier attribute="priceMultiplier" changeTo="multiplier" multiplier="0.9" target="common"/>
+	</skill>
+	<skill bp="0" name="Caution" sp="60" type="switch">
+		<attributeModifier attribute="encounterRate" changeTo="multiplier" multiplier="0.75" target="common"/>
 	</skill>
 	<!--
 	<spell mp="2" name="Torch" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="2200">

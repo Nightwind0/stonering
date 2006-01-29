@@ -24,7 +24,7 @@ namespace StoneRing{
     public:
 	AnimationSpriteRef();
 	virtual ~AnimationSpriteRef();
-
+	virtual eElement whichElement() const{ return EANIMATIONSPRITEREF; }
 	std::string getRef() const;
 
 	enum eInitialFocus { SCREEN, CASTER, TARGET };
@@ -60,10 +60,9 @@ namespace StoneRing{
     class Par : public Element
     {
     public:
-	Par();
-
-	virtual ~Par();
-	
+		Par();
+		virtual ~Par();
+		virtual eElement whichElement() const{ return EPAR; }	
 	CL_DomElement createDomElement(CL_DomDocument &) const;
 	
 	uint getDurationMs() const;
@@ -93,6 +92,7 @@ namespace StoneRing{
     public:
 	Animation();
 	virtual ~Animation();
+	virtual eElement whichElement() const{ return EANIMATION; }	
 	
 	CL_DomElement createDomElement(CL_DomDocument &) const;
 	
