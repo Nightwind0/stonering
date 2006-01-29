@@ -6,9 +6,11 @@
 #include <ClanLib/core.h>
 //#include "Item.h"
 
+
+
 namespace StoneRing
 {
-
+	class AttributeModifier;
 	enum eCharacterStat { HP_MAX, MP_MAX, STR, DEX, EVD, MAG, RST, SPR };
 
 	eCharacterStat CharStatFromString(const std::string &str); 
@@ -24,8 +26,15 @@ namespace StoneRing
 		Skill();
 		~Skill();
 
+		enum eType { BATTLE, SWITCH };
+
+		virtual eElement whichElement() const{ return ESKILL; }
+
 		std::list<Effect*>::const_iterator getEffectsBegin() const;
 		std::list<Effect*>::const_iterator getEffectsEnd() const;
+
+		std::list<AttributeModifier*>::const_iterator getAttributeModifiersBegin() const;
+		std::list<AttributeModifier*>::const_iterator getAttributeModifiersEnd() const;
 
 		std::string getName() const;
 		uint getSPCost() const;
@@ -34,15 +43,19 @@ namespace StoneRing
 		std::list<std::string>::const_iterator getPreReqsBegin() const;
 		std::list<std::string>::const_iterator getPreReqsEnd() const;
 
-		CL_DomElement createDomElement ( CL_DomDocument &doc );
+		CL_DomElement createDomElement ( CL_DomDocument &doc ) const;
+
+		eType getType() const { return meType; }
 	private:
 		virtual void handleElement(eElement element, Element * pElement );
 		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 		std::string mName;
 		std::list<Effect*> mEffects;
+		std::list<AttributeModifier*> mAttributeModifiers;
 		std::list<std::string> mPreReqs;
 		uint mnSp;
 		uint mnBp;
+		eType meType;
 	};
 
 	class SkillRef: public Element
@@ -50,7 +63,7 @@ namespace StoneRing
 	public:
 		SkillRef();
 		~SkillRef();
-
+		virtual eElement whichElement() const{ return ESKILLREF; }
 		std::string getRef() const;
 
 		CL_DomElement createDomElement ( CL_DomDocument &doc )const;
@@ -65,7 +78,7 @@ namespace StoneRing
 	public:
 		CharacterClass();
 		~CharacterClass();
-
+		virtual eElement whichElement() const{ return ECHARACTERCLASS; }
 		CL_DomElement createDomElement( CL_DomDocument &doc ) const;
 
 		std::list<WeaponTypeRef*>::const_iterator getWeaponTypeRefsBegin() const;
@@ -108,7 +121,7 @@ namespace StoneRing
 	public:
 		StatIncrease( );
 		~StatIncrease();
-
+		virtual eElement whichElement() const{ return ESTATINCREASE; }
 		CL_DomElement createDomElement( CL_DomDocument &doc ) const;
 
 		eCharacterStat getCharacterStat() const;
@@ -127,7 +140,7 @@ namespace StoneRing
 	public:
 		StartingStat( );
 		~StartingStat();
-
+		virtual eElement whichElement() const{ return ESTARTINGSTAT; }
 		CL_DomElement createDomElement(CL_DomDocument &doc )const;
 
 		eCharacterStat getCharacterStat() const;

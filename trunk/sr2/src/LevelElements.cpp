@@ -552,6 +552,8 @@ CL_DomElement  AttributeModifier::createDomElement(CL_DomDocument &doc) const
 
     if(mAdd)
         element.set_attribute("add", IntToString ( mAdd )  );
+	if(mfMultiplier != 1)
+		element.set_attribute("multiplier",FloatToString(mfMultiplier ) );
 
     switch ( meTarget )
     {
@@ -564,6 +566,9 @@ CL_DomElement  AttributeModifier::createDomElement(CL_DomDocument &doc) const
     case CASTER:
         element.set_attribute("target","caster");
         break;
+	case COMMON:
+		element.set_attribute("target","common");
+		break;
     }
 
     switch ( meChangeTo )
@@ -571,6 +576,12 @@ CL_DomElement  AttributeModifier::createDomElement(CL_DomDocument &doc) const
     case ADD:
         element.set_attribute("changeTo","add");
         break;
+	case MULTIPLIER:
+		element.set_attribute("changeTo","multiplier");
+		break;
+	case MULTIPLY_ADD:
+		element.set_attribute("changeTo","multiply_add");
+		break;
     case TO_MIN:
         element.set_attribute("changeTo", "min");
         break;
@@ -612,12 +623,15 @@ void AttributeModifier::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
     mAttribute = getRequiredString("attribute",pAttributes);
     mAdd = getImpliedInt("add",pAttributes,0);
+	mfMultiplier = getImpliedFloat("multiplier",pAttributes,1);
         
     std::string changeTo = getRequiredString("changeTo",pAttributes);
 
     if(changeTo == "max") meChangeTo = TO_MAX;
     else if (changeTo == "min") meChangeTo = TO_MIN;
     else if (changeTo == "add") meChangeTo = ADD;
+	else if (changeTo == "multiplier") meChangeTo = MULTIPLIER;
+	else if (changeTo == "multiply_add") meChangeTo = MULTIPLY_ADD;
     else throw CL_Error("Unrecognized changeTo type on AM: " + changeTo);
 
     if(hasAttr("target",pAttributes))

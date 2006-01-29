@@ -4,6 +4,8 @@
 #include "AbilityFactory.h"
 #include "IApplication.h"
 #include "StatusEffect.h"
+#include "Skill.h"
+#include <map>
 
 using namespace StoneRing;
 
@@ -24,6 +26,26 @@ void AbilityManager::loadSpellFile ( CL_DomDocument &doc )
 	pSpell->load(&spellNode);
 	mSpells.push_back ( pSpell );
 	spellNode = spellNode.get_next_sibling().to_element();
+    }
+    
+
+}
+
+
+void AbilityManager::loadSkillFile ( CL_DomDocument &doc )
+{
+    AbilityFactory * pAbilityFactory = IApplication::getInstance()->getAbilityFactory();
+
+    CL_DomElement spellsNode = doc.named_item("skillList").to_element();
+    CL_DomElement spellNode = spellsNode.get_first_child().to_element();
+
+    while(!spellNode.is_null())
+    {
+		Skill * pSkill = dynamic_cast<Skill*>(pAbilityFactory->createElement(Element::ESKILL));
+	
+		pSkill->load(&spellNode);
+		mSkills [ pSkill->getName() ] = pSkill;
+		spellNode = spellNode.get_next_sibling().to_element();
     }
     
 
@@ -60,6 +82,22 @@ std::list<Spell*>::const_iterator AbilityManager::getSpellsEnd() const
 {
     return mSpells.end();
 }
+std::map<std::string,Skill*>::const_iterator AbilityManager::getSkillsBegin() const
+{
+    return mSkills.begin();
+}
+
+
+std::map<std::string,Skill*>::const_iterator AbilityManager::getSkillsEnd() const
+{
+    return mSkills.end();
+}
+
+Skill * AbilityManager::getSkill ( const SkillRef &ref ) const
+{
+	return mSkills.find( ref.getRef() )->second;
+}
+
 
 
 

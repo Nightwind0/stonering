@@ -4,7 +4,7 @@
 #include "editor.h"
 #include "IApplication.h"
 #include "EditableLevel.h"
-#include "filedialog.h"
+
 
 using namespace StoneRing;
 

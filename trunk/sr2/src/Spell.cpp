@@ -159,6 +159,39 @@ CL_DomElement DoMagicDamage::createDomElement( CL_DomDocument &doc ) const
 
 
 
+
+DoAttack::DoAttack()
+{
+}
+
+DoAttack::~DoAttack()
+{
+}
+
+
+uint DoAttack::getNumberOfHits() const
+{
+	return mnHits;
+}
+
+float DoAttack::getCriticalChance() const
+{
+	return mfCritical;
+}
+
+bool DoAttack::hitAllenemies() const
+{
+	return mbHitAllEnemies;
+}
+
+void DoAttack::loadAttributes(CL_DomNamedNodeMap *pAttributes)
+{
+	mbHitAllEnemies = getImpliedBool("allEnemies",pAttributes,false);
+	mfCritical = getImpliedFloat("critical",pAttributes,0.0);
+	mnHits = getImpliedInt("hits",pAttributes,1);
+}
+
+
 DoStatusEffect::DoStatusEffect()
 {
 }

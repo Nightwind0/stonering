@@ -36,7 +36,6 @@ namespace StoneRing{
 	public:
 	    Item();
 	    virtual ~Item();
-        
 	    enum eItemType { REGULAR_ITEM, WEAPON, ARMOR, RUNE, SPECIAL, SYSTEM };
 	    enum eDropRarity { NEVER, COMMON, UNCOMMON, RARE };
         
@@ -186,6 +185,7 @@ namespace StoneRing{
 	    NamedItemElement();
 	    ~NamedItemElement();
 
+		virtual eElement whichElement() const{ return ENAMEDITEMELEMENT; }	        
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	    NamedItem * getNamedItem() const;
@@ -242,6 +242,7 @@ namespace StoneRing{
 	public:
 		IconRef();
 		virtual ~IconRef();
+		virtual eElement whichElement() const{ return EICONREF; }	 
 
 		std::string getIcon() const;
 		virtual CL_DomElement  createDomElement(CL_DomDocument&) const;	
@@ -262,7 +263,7 @@ namespace StoneRing{
 	    RegularItem();
 	    virtual ~RegularItem();
 
-
+		virtual eElement whichElement() const{ return EREGULARITEM; }	 
 	    void invoke(); // Execute all actions.
 
 	    enum eUseType {BATTLE, WORLD, BOTH };
@@ -302,7 +303,7 @@ namespace StoneRing{
 	public:
 	    SpecialItem();
 	    virtual ~SpecialItem();
-        
+   		virtual eElement whichElement() const{ return ESPECIALITEM; }	     
 	    virtual uint getValue() const { return 0;} // No value to special items. cant sell 'em.
 	    virtual uint getSellValue() const { return 0; }
 
@@ -323,7 +324,7 @@ namespace StoneRing{
 	public:
 	    SystemItem();
 	    virtual ~SystemItem();
-        
+		virtual eElement whichElement() const{ return ESYSTEMITEM; }	        
 	    virtual uint getValue() const { return 0;} // No value to system items. cant sell 'em.
 	    virtual uint getSellValue() const { return 0; }
 
@@ -346,7 +347,7 @@ namespace StoneRing{
 	    Rune();
 	    virtual ~Rune();
 
-
+		virtual eElement whichElement() const{ return ERUNE; }	
 	    virtual uint getValue() const ;
 	    virtual uint getSellValue() const ;
 
@@ -372,6 +373,7 @@ namespace StoneRing{
 	    UniqueWeapon();
 	    ~UniqueWeapon();
 
+		virtual eElement whichElement() const{ return EUNIQUEWEAPON; }	
 	    virtual uint getValue() const ;
 	    virtual uint getSellValue() const ;
 
@@ -400,7 +402,7 @@ namespace StoneRing{
 	public:
 	    UniqueArmor();
 	    virtual ~UniqueArmor();
-
+		virtual eElement whichElement() const{ return EUNIQUEARMOR; }	
 	    virtual uint getValue() const ;
 	    virtual uint getSellValue() const ;
 
@@ -506,7 +508,7 @@ namespace StoneRing{
 	public:
 	    WeaponTypeRef();
 	    virtual ~WeaponTypeRef();
-
+		virtual eElement whichElement() const{ return EWEAPONTYPEREF; }	
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	    std::string getName() const;
@@ -525,7 +527,7 @@ namespace StoneRing{
 	public:
 	    WeaponClassRef();
 	    virtual ~WeaponClassRef();
-
+		virtual eElement whichElement() const{ return EWEAPONCLASSREF; }	
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	    std::string getName() const;
@@ -543,7 +545,7 @@ namespace StoneRing{
 	public:
 	    ArmorTypeRef();
 	    virtual ~ArmorTypeRef();
-
+		virtual eElement whichElement() const{ return EARMORTYPEREF; }	
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	    std::string getName() const;
@@ -561,7 +563,7 @@ namespace StoneRing{
 	public:
 	    ArmorClassRef();
 	    virtual ~ArmorClassRef();
-
+		virtual eElement whichElement() const{ return EARMORCLASSREF; }	
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	    std::string getName() const;
@@ -581,7 +583,7 @@ namespace StoneRing{
 	    WeaponRef ( WeaponType *pType, WeaponClass *pClass, 
 			SpellRef * pSpell, RuneType *pRune );
 	    virtual ~WeaponRef();
-
+		virtual eElement whichElement() const{ return EWEAPONREF; }	
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	    WeaponType * getWeaponType() const;
@@ -612,7 +614,7 @@ namespace StoneRing{
 		       SpellRef * pSpell, RuneType *pRune );
 
 	    ~ArmorRef();
-
+		virtual eElement whichElement() const{ return EARMORREF; }	
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	    ArmorType * getArmorType() const;
@@ -640,7 +642,7 @@ namespace StoneRing{
 	public:
 	    RuneType();
 	    virtual ~RuneType();
-
+		virtual eElement whichElement() const{ return ERUNETYPE; }	
 	    virtual CL_DomElement createDomElement ( CL_DomDocument &) const;
 
 	    enum eRuneType { NONE, RUNE, ULTRA_RUNE };
@@ -663,7 +665,7 @@ namespace StoneRing{
 	public:
 	    SpellRef();
 	    virtual ~SpellRef();
-
+		virtual eElement whichElement() const{ return ESPELLREF; }	
 	    enum eSpellType { ELEMENTAL, WHITE, OTHER, STATUS };
 
 	    eSpellType getSpellType() const;
@@ -691,7 +693,7 @@ namespace StoneRing{
 	public:
 	    WeaponEnhancer();
 	    ~WeaponEnhancer();
-        
+  		virtual eElement whichElement() const{ return EWEAPONENHANCER; }	      
 	    virtual CL_DomElement createDomElement ( CL_DomDocument &) const;
 
 	    Weapon::eAttribute getAttribute() const;
@@ -711,7 +713,7 @@ namespace StoneRing{
 	public:
 	    ArmorEnhancer();
 	    ~ArmorEnhancer();
-        
+		virtual eElement whichElement() const{ return EARMORENHANCER; }	        
 	    virtual CL_DomElement createDomElement ( CL_DomDocument &) const;
 
 	    Armor::eAttribute getAttribute() const;
@@ -731,7 +733,7 @@ namespace StoneRing{
 	public:
 	    AttributeEnhancer();
 	    virtual ~AttributeEnhancer();
-
+		virtual eElement whichElement() const{ return EATTRIBUTEENHANCER; }	
 
 	    std::string getAttribute() const;
 	    int getAdd() const;
@@ -767,7 +769,7 @@ namespace StoneRing{
 	    virtual ~WeaponTypeExclusionList();
 	    virtual CL_DomElement createDomElement ( CL_DomDocument &) const;
 
-
+		virtual eElement whichElement() const{ return EWEAPONTYPEEXCLUSIONLIST; }	
 	    std::list<WeaponTypeRef*>::const_iterator getWeaponTypeRefsBegin();
 	    std::list<WeaponTypeRef*>::const_iterator getWeaponTypeRefsEnd();
 
@@ -784,7 +786,7 @@ namespace StoneRing{
 	    WeaponClass();
 	    WeaponClass(CL_DomElement * pElement);
 	    ~WeaponClass();
-
+		virtual eElement whichElement() const{ return EWEAPONCLASS; }	
 	    virtual CL_DomElement createDomElement ( CL_DomDocument &) const;
 
 	    std::string getName() const;
@@ -824,7 +826,7 @@ namespace StoneRing{
 	    ArmorTypeExclusionList();
 	    virtual ~ArmorTypeExclusionList();
 	    virtual CL_DomElement createDomElement ( CL_DomDocument &) const;
-
+		virtual eElement whichElement() const{ return EARMORTYPEEXCLUSIONLIST; }	
 
 	    std::list<ArmorTypeRef*>::const_iterator getArmorTypeRefsBegin();
 	    std::list<ArmorTypeRef*>::const_iterator getArmorTypeRefsEnd();
@@ -842,7 +844,7 @@ namespace StoneRing{
 	    ArmorClass();
 	    ArmorClass(CL_DomElement * pElement);
 	    ~ArmorClass();
-
+		virtual eElement whichElement() const{ return EARMORCLASS; }	
 	    virtual CL_DomElement createDomElement ( CL_DomDocument &) const;       
 
 	    std::string getName() const;
@@ -885,6 +887,7 @@ namespace StoneRing{
 	    WeaponType(CL_DomElement * pElement );
 	    ~WeaponType();
 
+		virtual eElement whichElement() const{ return EWEAPONTYPE; }	
 	    virtual CL_DomElement createDomElement ( CL_DomDocument &) const;       
 
 	    std::string getName() const;
@@ -925,7 +928,7 @@ namespace StoneRing{
 	    ArmorType();
 	    ArmorType(CL_DomElement * pElement );
 	    ~ArmorType();
-
+		virtual eElement whichElement() const{ return EARMORTYPE; }	
 	    virtual CL_DomElement createDomElement ( CL_DomDocument &) const;       
 
 	    std::string getName() const;
@@ -971,7 +974,7 @@ namespace StoneRing{
 	    WeaponDamageCategory();
 	    WeaponDamageCategory(CL_DomElement *pElement);
 	    virtual ~WeaponDamageCategory();
-
+		virtual eElement whichElement() const{ return EWEAPONDAMAGECATEGORY; }	
 	    virtual eClass getClass() const { return WEAPON; }
 
 	    enum eType { SLASH, BASH, JAB };
@@ -990,6 +993,7 @@ namespace StoneRing{
 	public:
 	    MagicDamageCategory();
 	    MagicDamageCategory(CL_DomElement *pElement);
+		virtual eElement whichElement() const{ return EMAGICDAMAGECATEGORY; }	
 	    virtual ~MagicDamageCategory();
 
 	    virtual eClass getClass() const { return MAGIC; }
@@ -1011,7 +1015,7 @@ namespace StoneRing{
 	    StatusEffectModifier();
 	    StatusEffectModifier(CL_DomElement *pElement);
 	    virtual ~StatusEffectModifier();
-
+		virtual eElement whichElement() const{ return ESTATUSEFFECTMODIFIER; }	
 	    StatusEffect * getStatusEffect() const;
 	    float getModifier() const;
 	    
