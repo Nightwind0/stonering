@@ -176,7 +176,7 @@ namespace StoneRing {
 			std::list<Condition*> mConditions;
 			int mAdd;
 			float mfMultiplier;
-			std::string mAttribute;
+			uint mnAttribute;
 			eTarget  meTarget;
 			eChangeTo meChangeTo;
 		};

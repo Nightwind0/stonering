@@ -5,20 +5,20 @@
 #include "Effect.h"
 #include <ClanLib/core.h>
 //#include "Item.h"
+#include "Character.h"
 
 
 
 namespace StoneRing
 {
 	class AttributeModifier;
-	enum eCharacterStat { HP_MAX, MP_MAX, STR, DEX, EVD, MAG, RST, SPR };
-
-	eCharacterStat CharStatFromString(const std::string &str); 
 
 	class StatIncrease;
 	class StartingStat;
 	class ArmorTypeRef;
 	class WeaponTypeRef;
+	class SkillRef;
+	class SpellRef;
 
 	class Skill : public Element
 	{
@@ -39,9 +39,12 @@ namespace StoneRing
 		std::string getName() const;
 		uint getSPCost() const;
 		uint getBPCost() const;
+		uint getMinLevel() const;
 		
-		std::list<std::string>::const_iterator getPreReqsBegin() const;
-		std::list<std::string>::const_iterator getPreReqsEnd() const;
+		std::list<SkillRef*>::const_iterator getPreReqsBegin() const;
+		std::list<SkillRef*>::const_iterator getPreReqsEnd() const;
+
+		SpellRef * getSpellRef() const;
 
 		CL_DomElement createDomElement ( CL_DomDocument &doc ) const;
 
@@ -52,9 +55,11 @@ namespace StoneRing
 		std::string mName;
 		std::list<Effect*> mEffects;
 		std::list<AttributeModifier*> mAttributeModifiers;
-		std::list<std::string> mPreReqs;
+		std::list<SkillRef*> mPreReqs;
+		SpellRef * mpSpellRef;
 		uint mnSp;
 		uint mnBp;
+		uint mnMinLevel;
 		eType meType;
 	};
 
@@ -65,11 +70,16 @@ namespace StoneRing
 		~SkillRef();
 		virtual eElement whichElement() const{ return ESKILLREF; }
 		std::string getRef() const;
+		uint getSPCost() const;
+		uint getBPCost() const;
+		uint getMinLevel() const;
 
 		CL_DomElement createDomElement ( CL_DomDocument &doc )const;
 	private:
-		virtual void handleText(const std::string &text);
-	
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+		uint mnSp;
+		uint mnBp;
+		uint mnMinLevel;
 		std::string mRef;
 	};
 
@@ -93,8 +103,8 @@ namespace StoneRing
 		std::list<StatIncrease*>::const_iterator getStatIncreasesBegin() const;
 		std::list<StatIncrease*>::const_iterator getStatIncreasesEnd() const;
 
-		std::list<std::string>::const_iterator getSkillRefsBegin() const;
-		std::list<std::string>::const_iterator getSkillRefsEnd() const;
+		std::list<SkillRef*>::const_iterator getSkillRefsBegin() const;
+		std::list<SkillRef*>::const_iterator getSkillRefsEnd() const;
 
 		std::string getName() const;
 
@@ -113,7 +123,7 @@ namespace StoneRing
 		std::list<ArmorTypeRef*> mArmorTypes;
 		std::list<StartingStat*> mStartingStats;
 		std::list<StatIncrease*> mStatIncreases;
-		std::list<std::string> mSkillRefs;
+		std::list<SkillRef*> mSkillRefs;
 	};
 
 	class StatIncrease : public Element
@@ -124,7 +134,7 @@ namespace StoneRing
 		virtual eElement whichElement() const{ return ESTATINCREASE; }
 		CL_DomElement createDomElement( CL_DomDocument &doc ) const;
 
-		eCharacterStat getCharacterStat() const;
+		eCharacterAttribute getCharacterStat() const;
 
 		uint getPeriod() const;	
 		int getIncrement() const;
@@ -132,7 +142,7 @@ namespace StoneRing
 		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 		uint mnPeriod;
 		int mnIncrement;
-		eCharacterStat meStat;
+		eCharacterAttribute meStat;
 	};
 
 	class StartingStat : public Element
@@ -143,13 +153,13 @@ namespace StoneRing
 		virtual eElement whichElement() const{ return ESTARTINGSTAT; }
 		CL_DomElement createDomElement(CL_DomDocument &doc )const;
 
-		eCharacterStat getCharacterStat() const;
+		eCharacterAttribute getCharacterStat() const;
 
 		int getValue() const;
 	private:
 		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 		int mnValue;
-		eCharacterStat meStat;
+		eCharacterAttribute meStat;
 	};
 }
 

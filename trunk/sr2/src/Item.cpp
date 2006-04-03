@@ -2040,7 +2040,7 @@ AttributeEnhancer::AttributeEnhancer():mnAdd(0),mfMultiplier(1)
 
 void AttributeEnhancer::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-    mAttribute = getRequiredString("attribute", pAttributes);
+    mnAttribute = CAFromString(getRequiredString("attribute", pAttributes));
 
     mfMultiplier = getImpliedFloat("multiplier",pAttributes,1);
 
@@ -2053,9 +2053,9 @@ AttributeEnhancer::~AttributeEnhancer()
 }
 
 
-std::string AttributeEnhancer::getAttribute() const
+uint AttributeEnhancer::getAttribute() const
 {
-    return mAttribute;
+    return mnAttribute;
 }
 
 int AttributeEnhancer::getAdd() const
@@ -2077,11 +2077,11 @@ void AttributeEnhancer::invoke()
 	->getSelectedCharacterGroup()
 	->getSelectedCharacter();
 
-    int original = pCharacter->getAttribute(mAttribute);
+    int original = pCharacter->getAttribute(static_cast<eCharacterAttribute>(mnAttribute));
 
-    pCharacter->modifyAttribute( mAttribute, mnAdd, mfMultiplier);
+    pCharacter->modifyAttribute( static_cast<eCharacterAttribute>(mnAttribute), mnAdd, mfMultiplier);
 
-    int now = pCharacter->getAttribute(mAttribute);
+    int now = pCharacter->getAttribute(static_cast<eCharacterAttribute>(mnAttribute));
 
     // So we can get back to how we were.
     mnDelta =  original - now;
@@ -2100,7 +2100,7 @@ void AttributeEnhancer::revoke()
 
     int add =  mnDelta;
 
-    pCharacter->modifyAttribute( mAttribute, add, 1 );
+    pCharacter->modifyAttribute( static_cast<eCharacterAttribute>(mnAttribute), add, 1 );
 
 }
 

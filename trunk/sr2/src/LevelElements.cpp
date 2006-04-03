@@ -14,6 +14,7 @@
 #include "LevelFactory.h"
 #include "ItemFactory.h"
 #include "ItemManager.h"
+#include "Character.h"
 
 using namespace StoneRing;
 
@@ -548,7 +549,7 @@ CL_DomElement  AttributeModifier::createDomElement(CL_DomDocument &doc) const
 {
     CL_DomElement  element(doc,"attributeModifier");
 
-    element.set_attribute("attribute",mAttribute );
+    element.set_attribute("attribute",CAToString(mnAttribute) );
 
     if(mAdd)
         element.set_attribute("add", IntToString ( mAdd )  );
@@ -621,7 +622,7 @@ void AttributeModifier::handleElement(eElement element, Element *pElement)
 
 void AttributeModifier::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-    mAttribute = getRequiredString("attribute",pAttributes);
+    mnAttribute = CAFromString(getRequiredString("attribute",pAttributes));
     mAdd = getImpliedInt("add",pAttributes,0);
 	mfMultiplier = getImpliedFloat("multiplier",pAttributes,1);
         
@@ -708,13 +709,15 @@ bool AttributeModifier::applicable() const
     switch(meChangeTo)
     {
     case TO_MAX:
-        if( pCharacter->getAttribute(mAttribute) < pCharacter->getMaxAttribute(mAttribute))
+        if( pCharacter->getAttribute(static_cast<eCharacterAttribute>(mnAttribute)) 
+			< pCharacter->getMaxAttribute(static_cast<eCharacterAttribute>(mnAttribute)))
         {
             return true;
         }
         else return false;
     case TO_MIN:
-        if( pCharacter->getAttribute(mAttribute) > pCharacter->getMinAttribute(mAttribute))
+        if( pCharacter->getAttribute(static_cast<eCharacterAttribute>(mnAttribute)) 
+			> pCharacter->getMinAttribute(static_cast<eCharacterAttribute>(mnAttribute)))
         {
             return true;
         }
@@ -722,7 +725,8 @@ bool AttributeModifier::applicable() const
     case ADD:
         if(mAdd > 0 )
         {
-            if ( pCharacter->getAttribute(mAttribute) < pCharacter->getMaxAttribute(mAttribute))
+            if ( pCharacter->getAttribute(static_cast<eCharacterAttribute>(mnAttribute)) 
+				< pCharacter->getMaxAttribute(static_cast<eCharacterAttribute>(mnAttribute)))
             {
                 return true;
             }
@@ -730,7 +734,8 @@ bool AttributeModifier::applicable() const
         }
         else // counts 0, but... that does nothing anyway
         {
-            if ( pCharacter->getAttribute(mAttribute) > pCharacter->getMinAttribute(mAttribute))
+            if ( pCharacter->getAttribute(static_cast<eCharacterAttribute>(mnAttribute))
+				> pCharacter->getMinAttribute(static_cast<eCharacterAttribute>(mnAttribute)))
             {
                 return true;
             }
@@ -776,12 +781,12 @@ void AttributeModifier::invoke()
     switch(meChangeTo)
     {
     case TO_MAX:
-        add = pCharacter->getMaxAttribute(mAttribute) - 
-            pCharacter->getAttribute(mAttribute);
+        add = pCharacter->getMaxAttribute(static_cast<eCharacterAttribute>(mnAttribute)) - 
+            pCharacter->getAttribute(static_cast<eCharacterAttribute>(mnAttribute));
         break;
     case TO_MIN:
-        add = 0 - (pCharacter->getAttribute(mAttribute ) -
-                   pCharacter->getMinAttribute(mAttribute ));
+        add = 0 - (pCharacter->getAttribute(static_cast<eCharacterAttribute>(mnAttribute)) -
+                   pCharacter->getMinAttribute(static_cast<eCharacterAttribute>(mnAttribute)));
         break;
     case ADD:
         add = mAdd;

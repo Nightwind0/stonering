@@ -79,6 +79,7 @@ namespace StoneRing
                     EPLAYANIMATION,
                     EPLAYSOUND,
                     EPOP,
+					EPREREQSKILLREF,
                     EREGULARITEM,
                     ERUNE,
                     ERUNETYPE,

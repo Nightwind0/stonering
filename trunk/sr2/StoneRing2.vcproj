@@ -293,6 +293,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\src\Character.cpp"
+				>
+			</File>
+			<File
 				RelativePath="src\CharacterClass.cpp"
 				>
 				<FileConfiguration
