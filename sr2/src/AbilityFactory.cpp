@@ -153,6 +153,7 @@ AbilityFactory::getMethod(Element::eElement element) const
         return &AbilityFactory::createAnimationSpriteRef;
 	case Element::EPAR:
 		return &AbilityFactory::createPar;
+	case Element::EPREREQSKILLREF:
 	case Element::ESKILL:
 		return &AbilityFactory::createSkill;
     case Element::EONROUND:

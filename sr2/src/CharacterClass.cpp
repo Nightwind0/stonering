@@ -20,14 +20,33 @@ std::string SkillRef::getRef() const
 	return mRef;
 }
 
+uint SkillRef::getSPCost() const
+{
+	return mnSp;
+}
+
+uint SkillRef::getBPCost() const
+{
+	return mnBp;
+}
+
+uint SkillRef::getMinLevel() const
+{
+	return mnMinLevel;
+}
+
 CL_DomElement SkillRef::createDomElement ( CL_DomDocument &doc )const
 {
 	return CL_DomElement(doc,"skillRef");
 }
 
-void SkillRef::handleText(const std::string &text)
+
+void SkillRef::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-	mRef = text;
+	mRef = getRequiredString("skillName", pAttributes);
+	mnSp = getImpliedInt("overrideSp", pAttributes,0);
+	mnBp = getImpliedInt("overrideBp", pAttributes,0);
+	mnMinLevel = getImpliedInt("overrideMinLevel",pAttributes,0);
 }
 
 void CharacterClass::loadAttributes(CL_DomNamedNodeMap * pAttributes)
@@ -59,7 +78,7 @@ void CharacterClass::handleElement(eElement element, Element * pElement)
 		mStatIncreases.push_back ( dynamic_cast<StatIncrease*>(pElement) );
 		break;
 	case ESKILLREF:
-		mSkillRefs.push_back( dynamic_cast<SkillRef*>(pElement)->getRef() );
+		mSkillRefs.push_back( dynamic_cast<SkillRef*>(pElement));
 		break;
 	default:
 		break;
@@ -72,7 +91,7 @@ CharacterClass::CharacterClass()
 	std::for_each(mArmorTypes.begin(),mArmorTypes.end(),del_fun<ArmorTypeRef>());
 	std::for_each(mStartingStats.begin(),mStartingStats.end(),del_fun<StartingStat>());
 	std::for_each(mStatIncreases.begin(),mStatIncreases.end(),del_fun<StatIncrease>());
-
+	std::for_each(mSkillRefs.begin(),mSkillRefs.end(),del_fun<SkillRef>());
 }
 
 CharacterClass::~CharacterClass()
@@ -124,12 +143,12 @@ std::list<StatIncrease*>::const_iterator CharacterClass::getStatIncreasesEnd() c
 	return mStatIncreases.end();
 }
 
-std::list<std::string>::const_iterator CharacterClass::getSkillRefsBegin() const
+std::list<SkillRef*>::const_iterator CharacterClass::getSkillRefsBegin() const
 {
 	return mSkillRefs.begin();
 }
 
-std::list<std::string>::const_iterator CharacterClass::getSkillRefsEnd() const
+std::list<SkillRef*>::const_iterator CharacterClass::getSkillRefsEnd() const
 {
 	return mSkillRefs.end();
 }
@@ -153,7 +172,7 @@ void StatIncrease::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
 	std::string stat = getRequiredString("stat",pAttributes);
 	
-	meStat = CharStatFromString ( stat );
+	meStat = CharAttributeFromString ( stat );
 
 	mnPeriod = getRequiredInt("period",pAttributes);
 	mnIncrement = getRequiredInt("increment",pAttributes );
@@ -175,7 +194,7 @@ StatIncrease::createDomElement( CL_DomDocument &doc ) const
 	return CL_DomElement(doc,"statIncrease");
 }
 
-eCharacterStat 
+eCharacterAttribute 
 StatIncrease::getCharacterStat() const
 {
 	return meStat;
@@ -196,7 +215,7 @@ int StatIncrease::getIncrement() const
 void StartingStat::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
 	std::string stat = getRequiredString("stat",pAttributes);
-	meStat = CharStatFromString ( stat );
+	meStat = CharAttributeFromString ( stat );
 	mnValue = getRequiredInt("value",pAttributes);
 }
 	
@@ -217,7 +236,7 @@ StartingStat::createDomElement(CL_DomDocument &doc ) const
 	return CL_DomElement(doc,"startingStat");
 }
 
-eCharacterStat StartingStat::getCharacterStat() const
+eCharacterAttribute StartingStat::getCharacterStat() const
 {
 	return meStat;
 }

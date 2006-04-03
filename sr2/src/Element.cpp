@@ -74,6 +74,7 @@ const char * StoneRing::Element::pszElementNames[Element::__END_OF_ELEMENTS__] =
     "playAnimation",//      PLAYANIMATION,
     "playSound",//          PLAYSOUND,
     "pop",
+	"prereqSkillRef", // PREREQSKILLREF
     "regularItem",//        REGULARITEM,
     "rune",//       RUNE,
     "runeType",//           RUNETYPE,

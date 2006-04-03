@@ -24,6 +24,8 @@ namespace StoneRing
     class StatIncrease;
 	class AnimationSpriteRef;
 	class Skill;
+	class SkillRef;
+
 
     class AbilityFactory : public IFactory
 	{

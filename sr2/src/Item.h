@@ -735,7 +735,7 @@ namespace StoneRing{
 	    virtual ~AttributeEnhancer();
 		virtual eElement whichElement() const{ return EATTRIBUTEENHANCER; }	
 
-	    std::string getAttribute() const;
+	    uint getAttribute() const;
 	    int getAdd() const;
 	    float getMultiplier() const;
 
@@ -758,7 +758,7 @@ namespace StoneRing{
 	    int mnDelta;
 	    int mnAdd;
 	    float mfMultiplier;
-	    std::string mAttribute;
+	    uint mnAttribute;
         
 	};
 
