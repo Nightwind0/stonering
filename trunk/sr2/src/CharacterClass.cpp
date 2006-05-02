@@ -1,8 +1,6 @@
+#include "CharacterClass.h"
 #include "Skill.h"
-#include "AbilityFactory.h"
-#include "ItemFactory.h"
-#include "IApplication.h"
-#include "Animation.h"
+#include "Item.h"
 
 using namespace StoneRing;
 
@@ -52,6 +50,10 @@ void SkillRef::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 void CharacterClass::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
 	mName = getRequiredString("name",pAttributes);
+
+#ifndef NDEBUG
+	std::cout << "Loading class: " << mName << std::endl;
+#endif
 
 
 	std::string gender = getImpliedString("gender",pAttributes, "either");

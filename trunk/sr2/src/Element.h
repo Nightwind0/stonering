@@ -42,6 +42,7 @@ namespace StoneRing
                     EATTRIBUTEEFFECT,
                     EATTRIBUTEENHANCER,
                     EATTRIBUTEMODIFIER,
+					ECHARACTER,
                     ECHARACTERCLASS,
                     ECHOICE,
                     ECONDITION,
@@ -117,7 +118,6 @@ namespace StoneRing
             virtual eElement whichElement() const=0;
     
             void load(CL_DomElement * pElement);
-
 
             static const char * pszElementNames[__END_OF_ELEMENTS__];
     

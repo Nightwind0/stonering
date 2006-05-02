@@ -3,8 +3,10 @@
 
 #include "Spell.h"
 #include "Skill.h"
+#include "CharacterClass.h"
 #include <ClanLib/core.h>
 #include "Item.h"
+
 
 namespace StoneRing
 {
@@ -19,6 +21,7 @@ namespace StoneRing
 	void loadSpellFile ( CL_DomDocument &doc );
 	void loadStatusEffectFile ( CL_DomDocument &doc );
 	void loadSkillFile(CL_DomDocument &doc );
+	void loadCharacterClassFile (CL_DomDocument  &doc);
     
 	std::list<Spell*>::const_iterator getSpellsBegin() const;
 	std::list<Spell*>::const_iterator  getSpellsEnd() const;
@@ -32,6 +35,7 @@ namespace StoneRing
 	virtual Spell * getSpell( const SpellRef & ref ) const;
 	virtual StatusEffect * getStatusEffect ( const std::string &ref ) const;
 	virtual Skill * getSkill ( const SkillRef &ref ) const;
+	virtual CharacterClass *getClass (const std::string &className ) const;
 
 #ifndef NDEBUG
 	void dumpSpellList();
@@ -42,6 +46,7 @@ namespace StoneRing
 		std::map<std::string,Skill*> mSkills;
 		std::list<Spell*> mSpells;
 		std::list<StatusEffect*> mStatusEffects;
+		std::map<std::string,CharacterClass*> mCharacterClasses;
 
     };
 

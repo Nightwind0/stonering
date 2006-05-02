@@ -65,6 +65,7 @@ namespace StoneRing
 	void loadSpells(const std::string &filename);
 	void loadSkills(const std::string &filename);
 	void loadStatusEffects(const std::string &filename);
+	void loadCharacterClasses(const std::string &filename);
 
 	void draw();
 	void run();

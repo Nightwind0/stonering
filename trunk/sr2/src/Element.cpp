@@ -37,6 +37,7 @@ const char * StoneRing::Element::pszElementNames[Element::__END_OF_ELEMENTS__] =
     "attributeEffect",//            ATTRIBUTEEFFECT,
     "attributeEnhancer",//          ATTRIBUTEENHANCER,
     "attributeModifier",//          ATTRIBUTEMODIFIER,
+	"character", // CHARACTER
     "characterClass",
     "choice",//             CHOICE,
     "condition",//          CONDITION,

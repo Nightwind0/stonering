@@ -8,6 +8,7 @@
 namespace StoneRing
 {
 
+	class CharacterClass;
     class DoWeaponDamage;
     class DoMagicDamage;
     class DoStatusEffect;
@@ -38,6 +39,7 @@ namespace StoneRing
 	protected:
 
 
+		Element * createCharacterClass() const;
 	    Element * createDoWeaponDamage() const;
 	    Element * createDoMagicDamage() const;
 	    Element * createDoStatusEffect()const;

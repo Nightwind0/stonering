@@ -586,6 +586,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\CharacterClass.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\ChoiceState.h"
 				>
 			</File>
