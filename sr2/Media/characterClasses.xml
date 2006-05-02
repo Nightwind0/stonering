@@ -1,4 +1,4 @@
-<!DOCTYPE characterClasses SYSTEM "Levels/level.dtd" >
+<!--DOCTYPE characterClasses SYSTEM "Levels/level.dtd" -->
 <characterClasses>
 	<characterClass name = "Warrior" gender="either">
 		<weaponTypeRef>Sword</weaponTypeRef>

@@ -5,11 +5,16 @@
 #include "Item.h"
 #include "StatusEffect.h"
 #include "Skill.h"
+#include "CharacterClass.h"
 
 using namespace StoneRing;
 
  
 
+Element * AbilityFactory::createCharacterClass() const
+{
+	return new CharacterClass();
+}
 
 Element * AbilityFactory::createDoWeaponDamage() const
 {
@@ -123,6 +128,8 @@ AbilityFactory::getMethod(Element::eElement element) const
 {
     switch(element)
     {
+	case Element::ECHARACTERCLASS:
+		return &AbilityFactory::createCharacterClass;
     case Element::EDOWEAPONDAMAGE:
         return &AbilityFactory::createDoWeaponDamage;
     case Element::EDOMAGICDAMAGE:

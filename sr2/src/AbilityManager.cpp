@@ -71,6 +71,26 @@ void AbilityManager::loadStatusEffectFile ( CL_DomDocument &doc )
 
 }
 
+void AbilityManager::loadCharacterClassFile ( CL_DomDocument &doc )
+{
+    AbilityFactory * pAbilityFactory = IApplication::getInstance()->getAbilityFactory();
+
+    CL_DomElement classesNode = doc.named_item("characterClasses").to_element();
+    CL_DomElement classNode = classesNode.get_first_child().to_element();
+
+    while(!classNode.is_null())
+    {
+		CharacterClass * pCharacterClass = dynamic_cast<CharacterClass*>
+			(pAbilityFactory->createElement(Element::ECHARACTERCLASS));
+	
+		pCharacterClass->load(&classNode);
+		mCharacterClasses [ pCharacterClass->getName() ] = pCharacterClass;
+		classNode = classNode.get_next_sibling().to_element();
+    }
+    
+
+}
+
 
 std::list<Spell*>::const_iterator AbilityManager::getSpellsBegin() const
 {
@@ -98,6 +118,11 @@ Skill * AbilityManager::getSkill ( const SkillRef &ref ) const
 	return mSkills.find( ref.getRef() )->second;
 }
 
+
+CharacterClass * AbilityManager::getClass ( const std::string &cls ) const
+{
+	return mCharacterClasses.find(cls)->second;
+}
 
 
 

@@ -3,6 +3,7 @@
 
 namespace StoneRing{
 
+	class CharacterClass; //fwd
 	//str|dex|evd|mag|rst|spr
 	enum eCharacterAttribute
 	{
@@ -57,10 +58,28 @@ namespace StoneRing{
 	private:
 	};
 
-	class Character : public ICharacter
+	class Character : public ICharacter, public Element
 	{
 	public:
 		Character();
+
+		virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
+		virtual eElement whichElement() const { return ECHARACTER; }
+		virtual void modifyAttribute(eCharacterAttribute attr, int add, float multiplier);
+		virtual int getMaxAttribute(eCharacterAttribute attr) const ;
+		virtual int getMinAttribute(eCharacterAttribute attr) const ;
+		virtual int getAttribute(eCharacterAttribute attr) const;
+
+
+	private:
+		virtual void handleElement(eElement, Element * );
+		virtual void loadAttributes(CL_DomNamedNodeMap *);
+		virtual void handleText(const std::string &);
+
+		std::string mName;
+		std::string mSpriteRef;
+		CharacterClass * pClass;
+
 	};
 
 };
