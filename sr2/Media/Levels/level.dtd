@@ -17,12 +17,12 @@
 <!ELEMENT namedItemRef (#PCDATA)>
 <!ELEMENT didEvent (#PCDATA)>
 <!ELEMENT mo ((tilemap|spriteRef*)?,condition?, event*, movement?)>
-<!ELEMENT event (condition?,(attributeModifier | say | give | take | playAnimation | playSound | loadLevel | startBattle | pause | invokeShop | giveGold | choice | pop)*)>
+<!ELEMENT event (condition?,(attributeModifier | say | give | take | playScene | playSound | loadLevel | startBattle | pause | invokeShop | giveGold | choice | pop | addCharacter | removeCharacter)*)>
 <!ELEMENT say (#PCDATA)>
 <!ELEMENT give (itemRef)> <!-- Note: This CHANGED! -->
 <!ELEMENT take (itemRef)> <!-- Note: This CHANGED! -->
 <!ELEMENT giveGold EMPTY>
-<!ELEMENT playAnimation (#PCDATA)>
+<!ELEMENT playScene (#PCDATA)>
 <!ELEMENT playSound (#PCDATA)>
 <!ELEMENT loadLevel EMPTY>
 <!ELEMENT startBattle EMPTY>
@@ -31,7 +31,7 @@
 <!ELEMENT movement EMPTY>
 <!ELEMENT pop EMPTY> <!-- Pop the level stack. aka, leave a place...  -->
 <!ELEMENT choice (option+)>
-<!ELEMENT option (condition?, (attributeModifier | say | give | take | playAnimation | playSound | loadLevel | startBattle | pause | invokeShop | giveGold | choice | pop)*)>
+<!ELEMENT option (condition?, (attributeModifier | say | give | take | playScene | playSound | loadLevel | startBattle | pause | invokeShop | giveGold | choice | pop | addCharacter | removeCharacter)*)>
 
 
 <!-- Item DTD -->
@@ -45,7 +45,7 @@
 <!ELEMENT weaponRef (weaponTypeRef, weaponClassRef, (spellRef|runeType)?)>
 <!ELEMENT armorRef (armorTypeRef, armorClassRef, (spellRef|runeType)?)>
 <!ELEMENT namedItem (iconRef,(regularItem | uniqueWeapon | uniqueArmor | rune | specialItem | systemItem))>
-<!ELEMENT regularItem ((attributeModifier | say | give | take | playAnimation | playSound | loadLevel | startBattle | pause | invokeShop | giveGold | choice | pop)*)>
+<!ELEMENT regularItem ((attributeModifier | say | give | take | playScene | playSound | loadLevel | startBattle | pause | invokeShop | giveGold | choice | pop | addCharacter | removeCharacter)*)>
 <!ELEMENT uniqueWeapon (weaponTypeRef, weaponEnhancer*, statusEffectModifier*,attributeEnhancer*,  (spellRef|runeType)?)>
 <!ELEMENT uniqueArmor   (armorTypeRef, armorEnhancer*, statusEffectModifier*, attributeEnhancer*, (spellRef|runeType)?)>
 <!ELEMENT rune (spellRef)>
@@ -107,9 +107,11 @@
 
 <!-- Characters -->
 <!ELEMENT character (animationDefinition*, weaponTypeSprite+)>
-<!ELEMENT addCharacter (equipmentRef*)> <!-- action which adds a character to the party -->
+
+<!-- these next two need to be added as Actions ... and should be under the LevelFactory, in LevelElements, etc-->
+<!ELEMENT addCharacter (startingEquipmentRef*)> <!-- action which adds a character to the party -->
 <!ELEMENT removeCharacter EMPTY>
-<!ELEMENT equipmentRef (itemRef)>
+<!ELEMENT startingEquipmentRef (itemRef)>
 
 <!-- These define what the character should look like in battle with this weapon type equipped  --> 
 <!-- There has to be one for each weapon type, but its okay if they all refer to the same sprite -->

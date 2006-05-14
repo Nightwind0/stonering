@@ -2,6 +2,7 @@
 #include "Spell.h"
 #include <ClanLib/core.h>
 #include "AbilityFactory.h"
+#include "CharacterFactory.h"
 #include "IApplication.h"
 #include "StatusEffect.h"
 #include "Skill.h"
@@ -73,7 +74,7 @@ void AbilityManager::loadStatusEffectFile ( CL_DomDocument &doc )
 
 void AbilityManager::loadCharacterClassFile ( CL_DomDocument &doc )
 {
-    AbilityFactory * pAbilityFactory = IApplication::getInstance()->getAbilityFactory();
+    CharacterFactory * pFactory = IApplication::getInstance()->getCharacterFactory();
 
     CL_DomElement classesNode = doc.named_item("characterClasses").to_element();
     CL_DomElement classNode = classesNode.get_first_child().to_element();
@@ -81,11 +82,15 @@ void AbilityManager::loadCharacterClassFile ( CL_DomDocument &doc )
     while(!classNode.is_null())
     {
 		CharacterClass * pCharacterClass = dynamic_cast<CharacterClass*>
-			(pAbilityFactory->createElement(Element::ECHARACTERCLASS));
+			(pFactory->createElement(Element::ECHARACTERCLASS));
 	
 		pCharacterClass->load(&classNode);
 		mCharacterClasses [ pCharacterClass->getName() ] = pCharacterClass;
 		classNode = classNode.get_next_sibling().to_element();
+
+#ifndef NDEBUG
+		std::cout << "Class: " << pCharacterClass->getName() << std::endl;
+#endif
     }
     
 

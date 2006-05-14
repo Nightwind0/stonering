@@ -92,9 +92,9 @@ Element * LevelFactory::createEvent()const
 
 
 
-Element * LevelFactory::createPlayAnimation()const
+Element * LevelFactory::createPlayScene()const
 {
-    return new PlayAnimation();
+    return new PlayScene();
 }
 
 
@@ -231,8 +231,8 @@ LevelFactory::getMethod(Element::eElement element) const
 	return &LevelFactory::createCondition;
     case Element::EEVENT:
 	return &LevelFactory::createEvent;
-    case Element::EPLAYANIMATION:
-	return &LevelFactory::createPlayAnimation;
+    case Element::EPLAYSCENE:
+	return &LevelFactory::createPlayScene;
     case Element::EPLAYSOUND:
 	return &LevelFactory::createPlaySound;
     case Element::ELOADLEVEL:

@@ -8,6 +8,7 @@
 #include "Party.h"
 #include "LevelFactory.h"
 #include "ItemFactory.h"
+#include "CharacterFactory.h"
 #include "ChoiceState.h"
 //
 //
@@ -43,10 +44,10 @@ int Application::getScreenHeight()const
 }
 
 
-void Application::playAnimation(const std::string &animation)
+void Application::playScene(const std::string &animation)
 {
 #ifndef NDEBUG
-    std::cout << "Playing animation " << animation << std::endl;
+    std::cout << "Playing scene " << animation << std::endl;
 #endif
 
    
@@ -157,6 +158,11 @@ AbilityFactory * Application::getAbilityFactory() const
     return mpAbilityFactory;
 }
 
+CharacterFactory * Application::getCharacterFactory() const
+{
+	return mpCharacterFactory;
+}
+
 
 ItemFactory * Application::getItemFactory() const
 {
@@ -181,10 +187,16 @@ Application::Application():mpParty(0),mpLevelFactory(0),
     mpItemFactory = new ItemFactory();
 
     mpAbilityFactory = new AbilityFactory();
+
+	mpCharacterFactory = new CharacterFactory();
 }
 
 Application::~Application()
 {
+	delete mpLevelFactory;
+	delete mpItemFactory;
+	delete mpAbilityFactory;
+	delete mpCharacterFactory;
 }
 
 

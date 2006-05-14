@@ -5,6 +5,7 @@
 #include "LevelFactory.h"
 #include <algorithm>
 #include "ItemFactory.h"
+#include "CharacterFactory.h"
 
 
 using StoneRing::IApplication;
@@ -23,9 +24,10 @@ using StoneRing::Element;
 // MUST be alphabetized.
 const char * StoneRing::Element::pszElementNames[Element::__END_OF_ELEMENTS__] = 
 {
-
+	"addCharacter",
     "and",//        AND,
     "animation",//          ANIMATION,
+	"animationDefinition",
     "animationSpriteRef",
     "armorClass",//         ARMORCLASS,
     "armorClassRef",//      ARMORCLASSREF,
@@ -72,11 +74,12 @@ const char * StoneRing::Element::pszElementNames[Element::__END_OF_ELEMENTS__] =
     "or",//         OR,
     "par",
     "pause",//      PAUSE,
-    "playAnimation",//      PLAYANIMATION,
+    "playScene",//      PLAYSCENE,
     "playSound",//          PLAYSOUND,
     "pop",
 	"prereqSkillRef", // PREREQSKILLREF
     "regularItem",//        REGULARITEM,
+	"removeCharacter",
     "rune",//       RUNE,
     "runeType",//           RUNETYPE,
     "say",//        SAY,
@@ -106,6 +109,7 @@ const char * StoneRing::Element::pszElementNames[Element::__END_OF_ELEMENTS__] =
     "weaponType",//         WEAPONTYPE,
     "weaponTypeExclusionList",
     "weaponTypeRef",//      WEAPONTYPEREF,
+	"weaponTypeSprite"
 
 };
 
@@ -266,6 +270,7 @@ void Element::load(CL_DomElement * pDomElement)
     factories.push_back(pItemFactory);
     factories.push_back(IApplication::getInstance()->getAbilityFactory());
     factories.push_back(IApplication::getInstance()->getLevelFactory());
+	factories.push_back(IApplication::getInstance()->getCharacterFactory());
 
                 
     loadAttributes(&pDomElement->get_attributes());
@@ -358,7 +363,7 @@ bool Element::isAction(Element::eElement element) const
 {
     switch(element)
     {
-    case EPLAYANIMATION:
+    case EPLAYSCENE:
     case EPLAYSOUND:
     case ELOADLEVEL:
     case ESTARTBATTLE:
