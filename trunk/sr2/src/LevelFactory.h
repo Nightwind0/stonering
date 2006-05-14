@@ -26,7 +26,7 @@ namespace StoneRing
     class Operator;
     class Condition;
     class Event;
-    class PlayAnimation;
+    class PlayScene;
     class PlaySound;
     class LoadLevel;
     class StartBattle;
@@ -69,7 +69,7 @@ namespace StoneRing
 	    virtual    Element * createOperator()const;
 	    virtual    Element * createCondition()const;
 	    virtual    Element * createEvent()const;
-	    virtual    Element * createPlayAnimation()const;
+	    virtual    Element * createPlayScene()const;
 	    virtual    Element * createPlaySound()const;
 	    virtual    Element * createLoadLevel()const;
 	    virtual    Element * createStartBattle()const;

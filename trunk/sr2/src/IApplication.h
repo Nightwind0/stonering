@@ -18,6 +18,7 @@ namespace StoneRing
     class LevelFactory;
     class ItemFactory;
     class ItemManager;
+	class CharacterFactory;
     class Choice;
 
 class IApplication 
@@ -29,6 +30,7 @@ class IApplication
       virtual IParty * getParty() const=0;
       virtual ICharacterGroup * getSelectedCharacterGroup() const = 0;
       virtual LevelFactory *getLevelFactory() const =0;
+	  virtual CharacterFactory * getCharacterFactory() const=0;
       virtual ItemFactory * getItemFactory() const = 0;
       virtual AbilityFactory * getAbilityFactory() const = 0;
       virtual const AbilityManager * getAbilityManager() const = 0;
@@ -40,7 +42,7 @@ class IApplication
 
       virtual CL_Rect getDisplayRect() const=0;
 
-      virtual void playAnimation(const std::string &animation)=0;
+      virtual void playScene(const std::string &animation)=0;
       virtual void playSound(const std::string &sound)=0;
       virtual void loadLevel(const std::string &level, uint startX, uint startY)=0;
       virtual void startBattle(const std::string &monster, uint count, bool isBoss)=0;

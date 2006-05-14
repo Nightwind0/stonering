@@ -317,6 +317,14 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\src\CharacterDefinition.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\CharacterFactory.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\ChoiceState.cpp"
 				>
 			</File>
@@ -587,6 +595,14 @@
 			</File>
 			<File
 				RelativePath=".\src\CharacterClass.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\CharacterDefinition.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\CharacterFactory.h"
 				>
 			</File>
 			<File

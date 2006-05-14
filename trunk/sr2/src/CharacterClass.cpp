@@ -1,6 +1,7 @@
 #include "CharacterClass.h"
 #include "Skill.h"
 #include "Item.h"
+#include "CharacterDefinition.h"
 
 using namespace StoneRing;
 

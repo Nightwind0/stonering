@@ -14,7 +14,7 @@
 #include "LevelFactory.h"
 #include "ItemFactory.h"
 #include "ItemManager.h"
-#include "Character.h"
+#include "CharacterDefinition.h"
 
 using namespace StoneRing;
 
@@ -65,7 +65,7 @@ void Option::handleElement(eElement element, Element * pElement )
     case ESAY:
     case EGIVE:
     case ETAKE:
-    case EPLAYANIMATION:
+    case EPLAYSCENE:
     case EPLAYSOUND:
     case ELOADLEVEL:
     case ESTARTBATTLE:
@@ -1415,15 +1415,15 @@ bool Event::invoke()
 }
       
 
-PlayAnimation::PlayAnimation()
+PlayScene::PlayScene()
 {
 
 }
 
 
-CL_DomElement  PlayAnimation::createDomElement(CL_DomDocument &doc) const
+CL_DomElement  PlayScene::createDomElement(CL_DomDocument &doc) const
 {
-    CL_DomElement element(doc,"playAnimation");
+    CL_DomElement element(doc,"playScene");
 
     CL_DomText text(doc,mAnimation);
 
@@ -1434,19 +1434,19 @@ CL_DomElement  PlayAnimation::createDomElement(CL_DomDocument &doc) const
     return element;
 }
 
-void PlayAnimation::handleText(const std::string &text)
+void PlayScene::handleText(const std::string &text)
 {
     mAnimation = text;
 }
 
 
-PlayAnimation::~PlayAnimation()
+PlayScene::~PlayScene()
 {
 }
 
-void PlayAnimation::invoke()
+void PlayScene::invoke()
 {
-    IApplication::getInstance()->playAnimation ( mAnimation );
+    IApplication::getInstance()->playScene ( mAnimation );
 }
  
 

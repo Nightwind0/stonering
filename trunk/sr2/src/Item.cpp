@@ -3,7 +3,7 @@
 #include "Item.h"
 #include "ItemManager.h"
 #include "ItemFactory.h"
-
+#include "CharacterDefinition.h"
 
 
 

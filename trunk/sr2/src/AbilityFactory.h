@@ -39,7 +39,6 @@ namespace StoneRing
 	protected:
 
 
-		Element * createCharacterClass() const;
 	    Element * createDoWeaponDamage() const;
 	    Element * createDoMagicDamage() const;
 	    Element * createDoStatusEffect()const;

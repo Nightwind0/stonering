@@ -1,9 +1,17 @@
 #ifndef SR_CHARACTER_H
 #define SR_CHARACTER_H
 
+#include "sr_defines.h"
+
 namespace StoneRing{
 
 	class CharacterClass; //fwd
+	class SkillRef;
+	class Animation;
+	class WeaponTypeRef;
+	class AnimationDefinition;
+	class WeaponTypeSprite;
+
 	//str|dex|evd|mag|rst|spr
 	enum eCharacterAttribute
 	{
@@ -29,11 +37,6 @@ namespace StoneRing{
 		_LAST_COMMON_ATTR_
 	};
 
-	eCharacterAttribute CharAttributeFromString(const std::string &str); 
-	eCommonAttribute CommonAttributeFromString(const std::string &str);
-	uint CAFromString(const std::string &str);
-
-	std::string CAToString(uint);
 
 	class ICharacter
 	{
@@ -58,13 +61,10 @@ namespace StoneRing{
 	private:
 	};
 
-	class Character : public ICharacter, public Element
+	class Character : public ICharacter
 	{
 	public:
 		Character();
-
-		virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
-		virtual eElement whichElement() const { return ECHARACTER; }
 		virtual void modifyAttribute(eCharacterAttribute attr, int add, float multiplier);
 		virtual int getMaxAttribute(eCharacterAttribute attr) const ;
 		virtual int getMinAttribute(eCharacterAttribute attr) const ;
@@ -72,14 +72,7 @@ namespace StoneRing{
 
 
 	private:
-		virtual void handleElement(eElement, Element * );
-		virtual void loadAttributes(CL_DomNamedNodeMap *);
-		virtual void handleText(const std::string &);
-
 		std::string mName;
-		std::string mSpriteRef;
-		CharacterClass * pClass;
-
 	};
 
 };

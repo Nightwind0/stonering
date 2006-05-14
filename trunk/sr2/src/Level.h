@@ -24,6 +24,7 @@ namespace StoneRing {
     class WeaponRef;
     class ArmorRef;
     class NamedItemRef;
+	class StartingEquipmentRef;
 
     enum eDirectionBlock
 		{
@@ -340,12 +341,12 @@ namespace StoneRing {
 		};
 
 
-    class PlayAnimation : public Action
+    class PlayScene : public Action
 		{
 		public:
-			PlayAnimation();
-			virtual ~PlayAnimation();
-			virtual eElement whichElement() const{ return EPLAYANIMATION; }	
+			PlayScene();
+			virtual ~PlayScene();
+			virtual eElement whichElement() const{ return EPLAYSCENE; }	
 			virtual void invoke();
 
 			virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
@@ -384,6 +385,42 @@ namespace StoneRing {
 			bool mbAll;
 
 		};
+
+	class AddCharacter : public Action
+	{
+	public:
+		AddCharacter();
+		virtual ~AddCharacter();
+		virtual void invoke();
+		virtual eElement whichElement() const{ return EADDCHARACTER; }	
+		virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
+	private:
+		virtual void handleElement(eElement element, Element * pElement );
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+
+//		std::list<StartingEquiptmentRef*> mStartingEquipment;
+		std::string mName;
+		uint mnLevel;
+
+	};
+
+	class RemoveCharacter : public Action
+	{
+	public:
+		RemoveCharacter();
+		virtual ~RemoveCharacter();
+		virtual void invoke();
+		virtual eElement whichElement() const{ return EREMOVECHARACTER; }
+		virtual CL_DomElement createDomElement(CL_DomDocument&) const;
+
+		std::string getName() const;
+		bool keepStuff() const;
+	private:
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+
+		std::string mName;
+		bool mbKeepStuff;
+	};
 
     class LoadLevel : public Action
 		{

@@ -22,15 +22,14 @@ namespace StoneRing
 			Element(){}
 			virtual ~Element(){}
 
-			virtual CL_DomElement  createDomElement(CL_DomDocument&) const=0;
-
 // These MUST be kept alphabetized
 			enum eElement
 				{	 
 
-
+					EADDCHARACTER,
                     EAND,
                     EANIMATION,
+					EANIMATIONDEFINITION,
                     EANIMATIONSPRITEREF,
                     EARMORCLASS,
                     EARMORCLASSREF,
@@ -77,11 +76,12 @@ namespace StoneRing
                     EOR,
                     EPAR,
                     EPAUSE,
-                    EPLAYANIMATION,
+                    EPLAYSCENE,
                     EPLAYSOUND,
                     EPOP,
 					EPREREQSKILLREF,
                     EREGULARITEM,
+					EREMOVECHARACTER,
                     ERUNE,
                     ERUNETYPE,
                     ESAY,
@@ -111,12 +111,14 @@ namespace StoneRing
                     EWEAPONTYPE,
                     EWEAPONTYPEEXCLUSIONLIST,
                     EWEAPONTYPEREF,
+					EWEAPONTYPESPRITE,
 
                     __END_OF_ELEMENTS__
                 };
 
             virtual eElement whichElement() const=0;
-    
+			virtual CL_DomElement  createDomElement(CL_DomDocument&) const=0;
+   
             void load(CL_DomElement * pElement);
 
             static const char * pszElementNames[__END_OF_ELEMENTS__];

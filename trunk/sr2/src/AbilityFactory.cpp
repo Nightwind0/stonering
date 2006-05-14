@@ -10,12 +10,6 @@
 using namespace StoneRing;
 
  
-
-Element * AbilityFactory::createCharacterClass() const
-{
-	return new CharacterClass();
-}
-
 Element * AbilityFactory::createDoWeaponDamage() const
 {
     return new DoWeaponDamage();
@@ -128,8 +122,6 @@ AbilityFactory::getMethod(Element::eElement element) const
 {
     switch(element)
     {
-	case Element::ECHARACTERCLASS:
-		return &AbilityFactory::createCharacterClass;
     case Element::EDOWEAPONDAMAGE:
         return &AbilityFactory::createDoWeaponDamage;
     case Element::EDOMAGICDAMAGE:
