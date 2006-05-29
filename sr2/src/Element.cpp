@@ -90,7 +90,6 @@ const char * StoneRing::Element::pszElementNames[Element::__END_OF_ELEMENTS__] =
     "spellRef",//           SPELLREF,
     "spriteRef",//          SPRITEREF,
     "startBattle",//        STARTBATTLE,
-    "startingStat",//       STARTINGSTAT,
     "statIncrease",//       STATINCREASE,
     "statusEffect",//       STATUSEFFECT,
     "statusEffectActions",//        STATUSEFFECTACTIONS,

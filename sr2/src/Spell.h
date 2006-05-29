@@ -14,6 +14,8 @@ namespace StoneRing
     class StatusEffect;
 
 
+
+
     class DoWeaponDamage : public Element, public Effect
 	{
 	public:
@@ -83,13 +85,24 @@ namespace StoneRing
 		~DoAttack();
 		virtual eElement whichElement() const{ return EDOATTACK; }
 		uint getNumberOfHits() const;
-		float getCriticalChance() const;
+		
+		float getCritMultiplier() const { return mfMultiplyCritical; }
+		float getCritAdd() const{ return mfAddCritical; }
+		float getAttackMultiplier() const { return mfMultiplyAttack; }
+		int getAttackAdd() const { return mnAddAttack; }
+		float getHitsMultiplier() const { return mfHitsMultiplier; }
+		int getHitsAdd() const { return mnHitsAdd; }
 		bool hitAllenemies() const;
 	    virtual eType getEffectType() const { return ATTACK; }
 	private:
 	    virtual void loadAttributes(CL_DomNamedNodeMap *);
 		bool mbHitAllEnemies;
-		float mfCritical;
+		float mfMultiplyAttack;
+		int mnAddAttack;
+		float mfMultiplyCritical;
+		float mfAddCritical;
+		float mfHitsMultiplier;
+		int mnHitsAdd;
 		uint mnHits;
 	};
 
@@ -123,18 +136,16 @@ namespace StoneRing
 	    virtual ~MagicResistance();
 		virtual eElement whichElement() const{ return EMAGICRESISTANCE; }
 	    float getResistance() const;
-	    enum eType
-		{
-		    FIRE, WATER, WIND, EARTH, HOLY, ELEMENTAL, ALL
-		};
-
-	    eType getType() const;
-
+	    eMagicType getType() const;
+		bool resistAll() const;
+		bool resistElemental() const;
 	    CL_DomElement  createDomElement(CL_DomDocument &doc) const { return CL_DomElement(doc,"magicResistance"); }
 
 	private:
 	    virtual void loadAttributes(CL_DomNamedNodeMap *);
-	    eType meType;
+	    eMagicType meType;
+		bool mbResistAll;
+		bool mbResistElemental;
 	    float mfResistance;
 	};
 

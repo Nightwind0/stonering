@@ -12,7 +12,6 @@ namespace StoneRing
 	class WeaponTypeRef;
 	class ArmorTypeRef;
 	class StatIncrease;
-	class StartingStat;
 	class SkillRef;
 
 class CharacterClass : public Element
@@ -28,9 +27,6 @@ class CharacterClass : public Element
 
 		std::list<ArmorTypeRef*>::const_iterator getArmorTypeRefsBegin() const;
 		std::list<ArmorTypeRef*>::const_iterator getArmorTypeRefsEnd() const;
-
-		std::list<StartingStat*>::const_iterator getStartingStatsBegin() const;
-		std::list<StartingStat*>::const_iterator getStartingStatsEnd() const;
 
 		std::list<StatIncrease*>::const_iterator getStatIncreasesBegin() const;
 		std::list<StatIncrease*>::const_iterator getStatIncreasesEnd() const;
@@ -53,7 +49,6 @@ class CharacterClass : public Element
 		eGender meGender;
 		std::list<WeaponTypeRef*> mWeaponTypes;
 		std::list<ArmorTypeRef*> mArmorTypes;
-		std::list<StartingStat*> mStartingStats;
 		std::list<StatIncrease*> mStatIncreases;
 		std::list<SkillRef*> mSkillRefs;
 	};
@@ -68,31 +63,16 @@ class CharacterClass : public Element
 
 		eCharacterAttribute getCharacterStat() const;
 
-		uint getPeriod() const;	
-		int getIncrement() const;
+		float getMultiplier() const;	
+		float getBase() const;
 	private:
 		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-		uint mnPeriod;
-		int mnIncrement;
+		float mfMultiplier;
+		float mfBase;
 		eCharacterAttribute meStat;
 	};
 
-	class StartingStat : public Element
-	{
-	public:
-		StartingStat( );
-		~StartingStat();
-		virtual eElement whichElement() const{ return ESTARTINGSTAT; }
-		CL_DomElement createDomElement(CL_DomDocument &doc )const;
 
-		eCharacterAttribute getCharacterStat() const;
-
-		int getValue() const;
-	private:
-		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-		int mnValue;
-		eCharacterAttribute meStat;
-	};
 
 };
 

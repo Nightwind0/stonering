@@ -99,7 +99,6 @@
 <!ELEMENT characterClass (weaponTypeRef*, armorTypeRef*,startingStat*,statIncrease*,skillRef*)>
 <!ELEMENT characterClasses (characterClass+)>
 <!ELEMENT statIncrease EMPTY>
-<!ELEMENT startingStat EMPTY>
 <!ELEMENT skill (prereqSkillRef*,(spellRef | (animation|doWeaponDamage|doMagicDamage|doStatusEffect|doAttack)*), attributeModifier*)>
 <!ELEMENT skillList (skill)+>
 <!ELEMENT prereqSkillRef EMPTY>
@@ -243,7 +242,7 @@
 <!ATTLIST spell mp CDATA #REQUIRED>
 <!ATTLIST spell value CDATA #REQUIRED>
 <!ATTLIST weaponDamageCategory type (slash|bash|jab) #REQUIRED>
-<!ATTLIST magicDamageCategory type (fire|water|earth|wind|holy|other) #REQUIRED>
+<!ATTLIST magicDamageCategory type (fire|water|earth|wind|holy|dark|other) #REQUIRED>
 <!ATTLIST doWeaponDamage baseAttack CDATA #REQUIRED>
 <!ATTLIST doWeaponDamage baseCritical CDATA #REQUIRED>
 <!ATTLIST doWeaponDamage baseHit  CDATA #REQUIRED> <!-- 0 to 1 floating point-->
@@ -255,9 +254,14 @@
 <!ATTLIST doMagicDamage  damageAttribute (hp|mp) #IMPLIED> <!-- Default is hp -->
 <!ATTLIST doStatusEffect statusRef CDATA #REQUIRED>
 <!ATTLIST doStatusEffect chance CDATA #REQUIRED> <!-- 0 to 1 floating point. -->
-<!ATTLIST doAttack critical CDATA #IMPLIED> <!-- Defaults to the critical of your weapon -->
+<!ATTLIST doAttack multiplyCritical CDATA #IMPLIED <!-- temporarily multiply weapon's crit by this -->
+<!ATTLIST doAttack addCritical CDATA #IMPLIED <!-- Temporarily add this to weapons critical -->
 <!ATTLIST doAttack hits CDATA #IMPLIED> <!-- Defaults to one hit -->
+<!ATTLIST doAttack multiplyAttack CDATA #IMPLIED> <!-- Amount to multiply equipped weapon's ATK by -->
+<!ATTLIST doAttack addAttack CDATA #IMPLIED> <!-- Amount to add to weapons ATK -->
 <!ATTLIST doAttack allEnemies (true|false) #IMPLIED> <!-- Defaults to false -->
+<!ATTLIST doAttack multiplyHits CDATA #IMPLIED> <!-- Defaults to one -->
+<!ATTLIST doAttack addHits CDATA #IMPLIED> <!-- defaults to zero -->
 <!ATTLIST attributeEffect attribute CDATA #REQUIRED>
 <!ATTLIST attributeEffect add CDATA #IMPLIED> <!-- Implied as 0 -->
 <!ATTLIST attributeEffect changeTo (max|min|add|multiplier|multiplier_add) #REQUIRED>
@@ -267,7 +271,7 @@
 <!-- You have the chance as well as the target's resistances to account for -->
 <!ATTLIST doStatusEffect removeStatus (true|false) #IMPLIED> <!-- Default is false. In order to have a spell/skill that removes a status, set this to true -->
 <!ATTLIST magicResistance resist CDATA #REQUIRED>
-<!ATTLIST magicResistance type (fire|water|earth|wind|holy|elemental|all) #REQUIRED>
+<!ATTLIST magicResistance type (fire|water|earth|wind|holy|dark|elemental|all) #REQUIRED>
 
 <!ATTLIST statusEffect name CDATA #REQUIRED>
 <!ATTLIST statusEffect last (battle|round_count|permanent) #REQUIRED>
@@ -276,10 +280,10 @@
 
 <!ATTLIST characterClass name CDATA #REQUIRED>
 <!ATTLIST characterClass gender (male|female|either) #IMPLIED> <!-- Defaults to either -->
-<!ATTLIST statIncrease stat (hp_max|mp_max|str|dex|evd|mag|rst|spr) #REQUIRED>
-<!ATTLIST statIncrease period CDATA #REQUIRED> <!-- Numeric integer. 1,2,3,4,5.... Or 0 -->
-<!ATTLIST statIncrease increment CDATA #REQUIRED> <!-- Numeric integer -->
-<!ATTLIST startingStat stat (hp_max|mp_max|str|dex|evd|mag|rst|spr) #REQUIRED>
+<!ATTLIST statIncrease stat (hp_max|mp_max|str|dex|evd|mag|rst|spr|lck) #REQUIRED>
+<!ATTLIST statIncrease multiplier CDATA #REQUIRED> <!-- c * b^L -- this is c -->
+<!ATTLIST statIncrease base CDATA #REQUIRED> <!-- c * b^L this is b. Ought to be 1.07 to double every 10 levels -->
+<!ATTLIST startingStat stat (hp_max|mp_max|str|dex|evd|mag|rst|spr|lck) #REQUIRED>
 <!ATTLIST startingStat value CDATA #REQUIRED> <!-- Numeric integer -->
 <!ATTLIST skill name CDATA #REQUIRED>
 <!ATTLIST skill sp CDATA #REQUIRED> <!-- Skill points to earn skill -->

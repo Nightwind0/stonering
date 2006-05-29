@@ -2632,7 +2632,7 @@ MagicDamageCategory::~MagicDamageCategory()
 }
 
 
-MagicDamageCategory::eType
+eMagicType
 MagicDamageCategory::TypeFromString ( const std::string &str )
 {
     if(str == "fire") return FIRE;
@@ -2640,11 +2640,12 @@ MagicDamageCategory::TypeFromString ( const std::string &str )
     else if (str == "water") return WATER;
     else if (str == "earth") return EARTH;
     else if (str == "holy") return HOLY;
+	else if (str == "dark") return DARK;
     else if (str == "other") return OTHER;
     else throw CL_Error("Unknown type " + str + " On magic damage category");
 }
 
-MagicDamageCategory::eType MagicDamageCategory::getType() const
+eMagicType MagicDamageCategory::getType() const
 {
     return meType;
 }

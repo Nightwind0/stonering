@@ -74,9 +74,6 @@ void CharacterClass::handleElement(eElement element, Element * pElement)
 	case EARMORTYPEREF:
 		mArmorTypes.push_back ( dynamic_cast<ArmorTypeRef*>(pElement) );
 		break;
-	case ESTARTINGSTAT:
-		mStartingStats.push_back ( dynamic_cast<StartingStat*>(pElement) );
-		break;
 	case ESTATINCREASE:
 		mStatIncreases.push_back ( dynamic_cast<StatIncrease*>(pElement) );
 		break;
@@ -92,7 +89,6 @@ CharacterClass::CharacterClass()
 {
 	std::for_each(mWeaponTypes.begin(),mWeaponTypes.end(),del_fun<WeaponTypeRef>());
 	std::for_each(mArmorTypes.begin(),mArmorTypes.end(),del_fun<ArmorTypeRef>());
-	std::for_each(mStartingStats.begin(),mStartingStats.end(),del_fun<StartingStat>());
 	std::for_each(mStatIncreases.begin(),mStatIncreases.end(),del_fun<StatIncrease>());
 	std::for_each(mSkillRefs.begin(),mSkillRefs.end(),del_fun<SkillRef>());
 }
@@ -124,16 +120,6 @@ std::list<ArmorTypeRef*>::const_iterator CharacterClass::getArmorTypeRefsBegin()
 std::list<ArmorTypeRef*>::const_iterator CharacterClass::getArmorTypeRefsEnd() const
 {
 	return mArmorTypes.end();
-}
-
-std::list<StartingStat*>::const_iterator CharacterClass::getStartingStatsBegin() const
-{
-	return mStartingStats.begin();
-}
-
-std::list<StartingStat*>::const_iterator CharacterClass::getStartingStatsEnd() const
-{
-	return mStartingStats.end();
 }
 
 std::list<StatIncrease*>::const_iterator CharacterClass::getStatIncreasesBegin() const
@@ -177,8 +163,8 @@ void StatIncrease::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 	
 	meStat = CharAttributeFromString ( stat );
 
-	mnPeriod = getRequiredInt("period",pAttributes);
-	mnIncrement = getRequiredInt("increment",pAttributes );
+	mfMultiplier = getRequiredFloat("multiplier",pAttributes);
+	mfBase = getRequiredFloat("base",pAttributes );
 }
 
 
@@ -204,48 +190,16 @@ StatIncrease::getCharacterStat() const
 }
 
 
-uint StatIncrease::getPeriod() const
+float StatIncrease::getMultiplier() const
 {
-	return mnPeriod;
+	return mfMultiplier;
 }
 
-int StatIncrease::getIncrement() const
+float StatIncrease::getBase() const
 {
-	return mnIncrement;
-}
-
-
-void StartingStat::loadAttributes(CL_DomNamedNodeMap * pAttributes)
-{
-	std::string stat = getRequiredString("stat",pAttributes);
-	meStat = CharAttributeFromString ( stat );
-	mnValue = getRequiredInt("value",pAttributes);
-}
-	
-StartingStat::StartingStat()
-{
-
-}
-
-StartingStat::~StartingStat()
-{
+	return mfBase;
 }
 
 
 
-CL_DomElement 
-StartingStat::createDomElement(CL_DomDocument &doc ) const
-{
-	return CL_DomElement(doc,"startingStat");
-}
 
-eCharacterAttribute StartingStat::getCharacterStat() const
-{
-	return meStat;
-}
-
-
-int StartingStat::getValue() const
-{
-	return mnValue;
-}

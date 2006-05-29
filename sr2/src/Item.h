@@ -7,6 +7,7 @@
 #include "ItemRef.h"
 
 
+
 namespace StoneRing{
 
     class Spell;
@@ -998,15 +999,13 @@ namespace StoneRing{
 
 	    virtual eClass getClass() const { return MAGIC; }
 
-	    enum eType { FIRE, EARTH, WIND, WATER, HOLY, OTHER };
-
-	    eType getType() const;
+	    eMagicType getType() const;
 
 	    CL_DomElement createDomElement(CL_DomDocument&) const;
 	private:
 	    virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
-	    eType TypeFromString( const std::string &str );
-	    eType meType;
+	    eMagicType TypeFromString( const std::string &str );
+	    eMagicType meType;
 	};
 
     class StatusEffectModifier : public Element
