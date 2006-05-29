@@ -19,12 +19,27 @@ namespace StoneRing{
 		CA_HPMAX,
 		CA_MP,
 		CA_MPMAX,
-		CA_STR,
-		CA_DEX,
-		CA_EVD,
-		CA_MAG,
-		CA_RST,
-		CA_SPR,
+		CA_STR,              // Part of determining dmg of physical attack. 
+		CA_DEX,              // Chances of a hit connecting
+		CA_EVD,              // Chances of evading an attack
+		CA_MAG,              // Magic power
+		CA_RST,              // Magic resistance
+		CA_SPR,              // Chances of magic hitting
+		CA_LCK,              // Similar to initiative. Also helps in other aspects of the game...
+		CA_JOY,              // Increases experience gained
+		CA_DRAW_ILL,
+		CA_DRAW_STONE,
+		CA_DRAW_BERSERK,
+		CA_DRAW_WEAK,
+		CA_DRAW_PARALYZED,
+		CA_DRAW_TRANSLUCENT,
+		CA_CAN_ACT,
+		CA_CAN_FIGHT,
+		CA_CAN_CAST,
+		CA_CAN_SKILL,
+		CA_CAN_ITEM,
+		CA_CAN_RUN,
+		CA_ALIVE,
 		_LAST_CHARACTER_ATTR_
 	};
 
@@ -34,6 +49,7 @@ namespace StoneRing{
 		CA_GOLD_DROP_RATE,
 		CA_ITEM_DROP_RATE,
 		CA_PRICE_MULTIPLIER,
+		CA_EXP_MULTIPLIER,
 		_LAST_COMMON_ATTR_
 	};
 

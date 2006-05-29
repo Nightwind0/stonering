@@ -92,7 +92,6 @@ namespace StoneRing
                     ESPELLREF,
                     ESPRITEREF,
                     ESTARTBATTLE,
-                    ESTARTINGSTAT,
                     ESTATINCREASE,
                     ESTATUSEFFECT,
                     ESTATUSEFFECTACTIONS,

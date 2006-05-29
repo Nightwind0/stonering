@@ -15,11 +15,26 @@ const char *statXMLLookup[] =
 	"mag",
 	"rst",
 	"spr",
-	"null",
+	"lck",
+	"joy",
+	"draw_ill",   //	CA_DRAW_ILL,
+	"draw_stone", //	CA_DRAW_STONE,
+	"draw_berserk", //	CA_DRAW_BERSERK,
+	"draw_weak", //	CA_DRAW_WEAK,
+	"draw_paralyzed", //	CA_DRAW_PARALYZED,
+	"draw_translucent", 
+	"can_act", //	CA_CAN_ACT,
+	"can_fight", //	CA_CAN_FIGHT,
+	"can_cast", //	CA_CAN_CAST,
+	"can_skill", //	CA_CAN_SKILL,
+	"can_item", 
+	"can_run", //	CA_CAN_RUN,
+	"alive", 
 	"encounterRate",
 	"goldDropRate",
 	"itemDropRate",
-	"priceMultiplier"
+	"priceMultiplier",
+	"expMultiplier"
 
 };
 
@@ -27,7 +42,7 @@ const char *statXMLLookup[] =
 
 StoneRing::eCharacterAttribute StoneRing::CharAttributeFromString(const std::string &str)
 {
-
+    // Lower
 	uint numberStats = _LAST_CHARACTER_ATTR_;
 	
 	for(uint i =0; i < numberStats; i++)

@@ -21,7 +21,6 @@ namespace StoneRing
     class AttributeEffect;
     class StatusEffectActions;
     class StatusEffect;
-    class StartingStat;
     class StatIncrease;
 	class AnimationSpriteRef;
 	class Skill;
@@ -50,7 +49,6 @@ namespace StoneRing
 	    Element * createAttributeEffect() const;
 	    Element * createStatusEffectActions() const;
 	    Element * createStatusEffect() const;
-	    Element * createStartingStat() const;
 	    Element * createStatIncrease() const;
 		Element * createAnimationSpriteRef() const;
 		Element * createPar() const;

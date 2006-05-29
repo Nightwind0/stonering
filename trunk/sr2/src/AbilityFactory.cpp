@@ -65,10 +65,7 @@ Element * AbilityFactory::createStatusEffect() const
     return new StatusEffect();
 }
 
-Element  *AbilityFactory::createStartingStat() const
-{
-    return new StartingStat();
-}
+
 Element * AbilityFactory::createStatIncrease() const
 {
     return new StatIncrease();
@@ -144,8 +141,6 @@ AbilityFactory::getMethod(Element::eElement element) const
         return &AbilityFactory::createStatusEffectActions;
     case Element::ESTATUSEFFECT:
         return &AbilityFactory::createStatusEffect;
-    case Element::ESTARTINGSTAT:
-        return &AbilityFactory::createStartingStat;
     case Element::ESTATINCREASE:
         return &AbilityFactory::createStatIncrease;
     case Element::EANIMATIONSPRITEREF:

@@ -174,10 +174,6 @@ uint DoAttack::getNumberOfHits() const
 	return mnHits;
 }
 
-float DoAttack::getCriticalChance() const
-{
-	return mfCritical;
-}
 
 bool DoAttack::hitAllenemies() const
 {
@@ -187,8 +183,13 @@ bool DoAttack::hitAllenemies() const
 void DoAttack::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
 	mbHitAllEnemies = getImpliedBool("allEnemies",pAttributes,false);
-	mfCritical = getImpliedFloat("critical",pAttributes,0.0);
+	mfMultiplyCritical = getImpliedFloat("multiplyCritical",pAttributes,1.0);
 	mnHits = getImpliedInt("hits",pAttributes,1);
+	mfAddCritical = getImpliedFloat("addCritical",pAttributes,0);
+	mnAddAttack = getImpliedInt("addAttack",pAttributes,0);
+	mfMultiplyAttack = getImpliedFloat("multiplyAttack",pAttributes,1);
+	mfHitsMultiplier = getImpliedFloat("multiplyHits",pAttributes,1);
+	mnHitsAdd = getImpliedInt("addHits",pAttributes,0);
 }
 
 
@@ -396,7 +397,7 @@ SpellRef * Spell::createSpellRef() const
 
 
 
-MagicResistance::MagicResistance()
+MagicResistance::MagicResistance():mbResistAll(false),mbResistElemental(false)
 {
 }
 
@@ -409,8 +410,9 @@ void MagicResistance::loadAttributes(CL_DomNamedNodeMap *pAttributes)
     else if (type == "earth") meType = EARTH;
     else if (type == "wind") meType = WIND;
     else if (type == "holy") meType = HOLY;
-    else if (type == "elemental") meType = ELEMENTAL;
-    else if (type == "all") meType = ALL;
+	else if (type == "dark") meType = DARK;
+    else if (type == "elemental") mbResistElemental = true;
+    else if (type == "all") mbResistAll = true;
     else throw CL_Error("Bad magic resistance type of " + type);
 
     mfResistance = getRequiredFloat("resist", pAttributes);
@@ -431,7 +433,7 @@ float MagicResistance::getResistance() const
 
 
 
-MagicResistance::eType MagicResistance::getType() const
+eMagicType MagicResistance::getType() const
 {
     return meType;
 }
