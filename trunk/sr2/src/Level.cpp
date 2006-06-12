@@ -767,7 +767,7 @@ void Level::update(const CL_Rect & updateRect)
 }
       
  
-
+#ifndef NDEBUG
 void Level::dumpMappableObjects() const
 {
 
@@ -797,6 +797,7 @@ void Level::dumpMappableObjects() const
 
 
 }
+#endif
 
 
 // Sort tiles on zOrder

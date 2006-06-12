@@ -51,9 +51,9 @@ namespace StoneRing
 	Level * mpLevel;
 	CL_Sprite * mpPlayerSprite;
 	MappablePlayer  *mpPlayer;
-#ifndef NDEBUG
+
 	bool mbShowDebug;
-#endif
+
 
     };
 };

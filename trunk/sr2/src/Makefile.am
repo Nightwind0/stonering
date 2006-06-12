@@ -13,7 +13,10 @@ libstonering_la_SOURCES = \
 			AbilityFactory.cpp \
 			AbilityManager.cpp \
 			Animation.cpp \
+			Character.cpp \
 			CharacterClass.cpp \
+			CharacterDefinition.cpp \
+			CharacterFactory.cpp \
 			ChoiceState.cpp \
 			Element.cpp \
 			GraphicsManager.cpp \
