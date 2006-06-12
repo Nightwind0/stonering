@@ -34,7 +34,7 @@ namespace StoneRing
 	    CL_DomElement createDomElement( CL_DomDocument &doc ) const;
 
 	private:
-	    virtual void handleElement(eElement, Element * );
+	    virtual bool handleElement(eElement, Element * );
 	    virtual void loadAttributes(CL_DomNamedNodeMap *);
 		virtual void loadFinished();
 	    WeaponDamageCategory * mpDamageCategory;
@@ -67,7 +67,7 @@ namespace StoneRing
 	    CL_DomElement createDomElement( CL_DomDocument &doc ) const;
 
 	private:
-	    virtual void handleElement(eElement, Element * );
+	    virtual bool handleElement(eElement, Element * );
 	    virtual void loadAttributes(CL_DomNamedNodeMap *);
 		virtual void loadFinished();
 	    MagicDamageCategory * mpDamageCategory;
@@ -123,7 +123,7 @@ namespace StoneRing
 
 	    virtual eType getEffectType() const { return STATUS_EFFECT; }
 	private:
-		virtual void handleElement(eElement, Element*);
+		virtual bool handleElement(eElement, Element*);
 	    virtual void loadAttributes(CL_DomNamedNodeMap *);
 		virtual void loadFinished();
 	    StatusEffect * mpStatusEffect;
@@ -188,7 +188,7 @@ namespace StoneRing
 
 	
 	private:
-		virtual void handleElement(eElement, Element * );
+		virtual bool handleElement(eElement, Element * );
 	    virtual void loadAttributes(CL_DomNamedNodeMap *);
 
 	    eType getTypeFromString(const std::string &str);

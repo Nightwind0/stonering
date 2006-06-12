@@ -50,7 +50,7 @@ namespace StoneRing
 
 		eType getType() const { return meType; }
 	private:
-		virtual void handleElement(eElement element, Element * pElement );
+		virtual bool handleElement(eElement element, Element * pElement );
 		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 		std::string mName;
 		std::list<Effect*> mEffects;

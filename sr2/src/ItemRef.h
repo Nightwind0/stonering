@@ -38,7 +38,7 @@ namespace StoneRing
 	virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 	
     protected:
-		virtual void handleElement(Element::eElement,Element *);	
+		virtual bool handleElement(Element::eElement,Element *);	
 		virtual void loadAttributes(CL_DomNamedNodeMap *pAttributes);
 		virtual void loadFinished();
 	NamedItemRef * mpNamedItemRef;

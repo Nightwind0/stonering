@@ -54,7 +54,7 @@ Option::Option():mpCondition(NULL)
 }
 
 
-void Option::handleElement(eElement element, Element * pElement )
+bool Option::handleElement(eElement element, Element * pElement )
 {
     switch(element)
     {
@@ -77,8 +77,10 @@ void Option::handleElement(eElement element, Element * pElement )
         mActions.push_back ( dynamic_cast<Action*>(pElement) );
         break;
     default:
-        throw CL_Error("Found wacky element in option");
+        return false;
     }
+
+	return true;
 }
 
 void Option::loadAttributes(CL_DomNamedNodeMap * pAttributes)
@@ -157,7 +159,7 @@ Choice::Choice()
 }
 
 
-void Choice::handleElement(eElement element, Element * pElement )
+bool Choice::handleElement(eElement element, Element * pElement )
 {
     switch(element)
     {
@@ -166,8 +168,10 @@ void Choice::handleElement(eElement element, Element * pElement )
         break;
     default:
         
-        break;
+        return false;
     }
+
+	return true;
 }
 
 void Choice::loadAttributes(CL_DomNamedNodeMap *pAttributes)
@@ -263,7 +267,7 @@ bool operator < (const MappableObject::eDirection dir1, const MappableObject::eD
 
 
 
-void ItemRef::handleElement(eElement element, Element * pElement )
+bool ItemRef::handleElement(eElement element, Element * pElement )
 {
     switch(element)
     {
@@ -281,8 +285,10 @@ void ItemRef::handleElement(eElement element, Element * pElement )
         break;
     default:
         
-        break;
+        return false;
     }
+
+	return true;
 }
 
 void ItemRef::loadAttributes(CL_DomNamedNodeMap *pAttributes)
@@ -426,9 +432,9 @@ CL_DomElement  Tilemap::createDomElement(CL_DomDocument &doc) const
     return element;
 }
 
-void Tilemap::handleElement(eElement element, Element * pElement)
+bool Tilemap::handleElement(eElement element, Element * pElement)
 {
-
+	return false;
 }
 
 void Tilemap::loadAttributes(CL_DomNamedNodeMap * pAttributes)
@@ -500,10 +506,9 @@ CL_DomElement  SpriteRef::createDomElement(CL_DomDocument &doc) const
 
 }
 
-
-void SpriteRef::handleElement(eElement element, Element * pElement)
+bool SpriteRef::handleElement(eElement element, Element * pElement)
 {
-
+	return false;
 }
 
 void SpriteRef::loadAttributes(CL_DomNamedNodeMap * pAttributes)
@@ -605,7 +610,7 @@ CL_DomElement  AttributeModifier::createDomElement(CL_DomDocument &doc) const
 
 }
 
-void AttributeModifier::handleElement(eElement element, Element *pElement)
+bool AttributeModifier::handleElement(eElement element, Element *pElement)
 {
     switch(element)
     {
@@ -616,8 +621,9 @@ void AttributeModifier::handleElement(eElement element, Element *pElement)
         break;
     }
     default:
-        throw CL_Error("Bad element in AM");
+        return false;
     }
+	return true;
 }
 
 void AttributeModifier::loadAttributes(CL_DomNamedNodeMap * pAttributes)
@@ -840,9 +846,9 @@ CL_DomElement  HasGold::createDomElement(CL_DomDocument &doc) const
     return element;
 }
 
-void HasGold::handleElement(eElement element, Element * pElement)
+bool HasGold::handleElement(eElement element, Element * pElement)
 {
-
+	return false;
 }
 
 void HasGold::loadAttributes(CL_DomNamedNodeMap * pAttributes)
@@ -927,13 +933,14 @@ CL_DomElement  HasItem::createDomElement(CL_DomDocument &doc) const
     return element;
 }
 
-void HasItem::handleElement(eElement element, Element *pElement)
+bool HasItem::handleElement(eElement element, Element *pElement)
 {
     if(element == EITEMREF)
     {
         mpItemRef = dynamic_cast<ItemRef*>(pElement);
+		return true;
     }
-    else throw CL_Error("Bad element found within hasItem");
+    else return false;
 }
  
 void HasItem::loadAttributes(CL_DomNamedNodeMap * pAttributes)
@@ -989,8 +996,9 @@ void DidEvent::handleText(const std::string &text)
     mEvent = text;
 }
 
-void DidEvent::handleElement(eElement element, Element *pElement)
+bool DidEvent::handleElement(eElement element, Element *pElement)
 {
+	return false;
 }
 
 DidEvent::~DidEvent()
@@ -1025,7 +1033,7 @@ CL_DomElement  And::createDomElement(CL_DomDocument &doc) const
     return element;
 }
 
-void And::handleElement(eElement element, Element * pElement)
+bool And::handleElement(eElement element, Element * pElement)
 {
     switch(element)
     {
@@ -1036,7 +1044,10 @@ void And::handleElement(eElement element, Element * pElement)
     
         mOperands.push_back(dynamic_cast<Check*>(pElement));
         break;
+	default:
+		return false;
     }
+	return true;
 }
 
 And::~And()
@@ -1092,7 +1103,7 @@ CL_DomElement  Or::createDomElement(CL_DomDocument &doc) const
 }
 
 
-void Or::handleElement(eElement element, Element *pElement)
+bool Or::handleElement(eElement element, Element *pElement)
 {
     switch(element)
     {
@@ -1101,8 +1112,9 @@ void Or::handleElement(eElement element, Element *pElement)
     case EHASGOLD:
     case EDIDEVENT:
         mOperands.push_back(dynamic_cast<Check*>(pElement));
-        break;
+		return false;
     }
+	return true;
 }
  
 Or::~Or()
@@ -1153,7 +1165,7 @@ CL_DomElement  Operator::createDomElement(CL_DomDocument &doc) const
 
 }
 
-void Operator::handleElement(eElement element, Element * pElement)
+bool Operator::handleElement(eElement element, Element * pElement)
 {
     switch(element)
     {
@@ -1161,7 +1173,10 @@ void Operator::handleElement(eElement element, Element * pElement)
     case EAND:
         mOperands.push_back(dynamic_cast<Check*>(pElement));
         break;
+	default:
+		return false;
     }   
+	return true;
 }
 
 Operator::~Operator()
@@ -1216,7 +1231,7 @@ CL_DomElement  Condition::createDomElement(CL_DomDocument &doc) const
 }
 
 
-void Condition::handleElement(eElement element, Element * pElement)
+bool Condition::handleElement(eElement element, Element * pElement)
 {
     switch(element)
     {
@@ -1226,7 +1241,10 @@ void Condition::handleElement(eElement element, Element * pElement)
     case EDIDEVENT:
         mChecks.push_back(dynamic_cast<Check*>(pElement));
         break;
+	default:
+		return false;
     }
+	return true;
 }
  
 
@@ -1352,7 +1370,7 @@ void Event::loadAttributes(CL_DomNamedNodeMap *pAttributes)
     mbRemember = getImpliedBool("remember",pAttributes,false);
 }
 
-void Event::handleElement(eElement element, Element *pElement)
+bool Event::handleElement(eElement element, Element *pElement)
 {
     if(isAction(element))
     {
@@ -1362,6 +1380,12 @@ void Event::handleElement(eElement element, Element *pElement)
     {
         mpCondition = dynamic_cast<Condition*>(pElement);
     }
+	else 
+	{
+		return false;
+	}
+
+	return true;
 }
 
 
@@ -1637,9 +1661,9 @@ CL_DomElement  StartBattle::createDomElement(CL_DomDocument &doc) const
     return element;
 }
 
-void StartBattle::handleElement(eElement element, Element *pElement)
+bool StartBattle::handleElement(eElement element, Element *pElement)
 {
-
+	return false;
 }
 
 void StartBattle::loadAttributes(CL_DomNamedNodeMap * pAttributes)
@@ -1789,14 +1813,18 @@ void Give::loadAttributes(CL_DomNamedNodeMap * pAttributes)
     mCount = getImpliedInt("count",pAttributes,1);
 }
 
-void Give::handleElement(eElement element, Element * pElement)
+bool Give::handleElement(eElement element, Element * pElement)
 {
     switch(element)
     {
     case EITEMREF:
         mpItemRef = dynamic_cast<ItemRef*>(pElement);
         break;
+	default:
+		return false;
     }
+
+	return true;
 }
 
 Give::Give( ):mpItemRef(NULL),mCount(1)
@@ -1835,14 +1863,18 @@ void Take::loadAttributes(CL_DomNamedNodeMap * pAttributes)
     mCount = getImpliedInt("count",pAttributes,1);
 }
 
-void Take::handleElement(eElement element, Element * pElement)
+bool Take::handleElement(eElement element, Element * pElement)
 {
     switch(element)
     {
     case EITEMREF:
         mpItemRef = dynamic_cast<ItemRef*>(pElement);
         break;
+	default:
+		return false;
     }
+
+	return true;
 }
  
 Take::Take( ):mpItemRef(NULL)
@@ -2039,7 +2071,7 @@ void Tile::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 }
 
 
-void Tile::handleElement(eElement element, Element * pElement)
+bool Tile::handleElement(eElement element, Element * pElement)
 {
     switch(element)
     {
@@ -2084,7 +2116,11 @@ void Tile::handleElement(eElement element, Element * pElement)
         
         break;
     }
+	default:
+		return false;
     }
+
+	return true;
 }
 
 bool StoneRing::Tile::hasAM() const

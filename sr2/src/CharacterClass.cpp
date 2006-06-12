@@ -64,7 +64,7 @@ void CharacterClass::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 	else if (gender == "either") meGender = EITHER;
 }
 
-void CharacterClass::handleElement(eElement element, Element * pElement)
+bool CharacterClass::handleElement(eElement element, Element * pElement)
 {
 	switch(element)
 	{
@@ -81,8 +81,9 @@ void CharacterClass::handleElement(eElement element, Element * pElement)
 		mSkillRefs.push_back( dynamic_cast<SkillRef*>(pElement));
 		break;
 	default:
-		break;
+		return false;
 	}
+	return true;
 }
 
 CharacterClass::CharacterClass()

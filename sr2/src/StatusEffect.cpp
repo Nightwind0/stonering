@@ -66,7 +66,7 @@ StoneRing::StatusEffectActions::StatusEffectActions()
 }
 
 
-void StoneRing::StatusEffectActions::handleElement(eElement element,Element * pElement)
+bool StoneRing::StatusEffectActions::handleElement(eElement element,Element * pElement)
 {
 	switch(element)
 	{
@@ -77,7 +77,10 @@ void StoneRing::StatusEffectActions::handleElement(eElement element,Element * pE
 	case EATTRIBUTEEFFECT:
 		mEffects.push_back( dynamic_cast<Effect*>(pElement) );
 		break;
+	default:
+		return false;
 	}
+	return true;
 }
 	
 
@@ -128,7 +131,7 @@ void StoneRing::StatusEffect::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 
 }
 
-void StoneRing::StatusEffect::handleElement(eElement element, Element * pElement)
+bool StoneRing::StatusEffect::handleElement(eElement element, Element * pElement)
 {
 		switch(element)
 		{
@@ -145,8 +148,9 @@ void StoneRing::StatusEffect::handleElement(eElement element, Element * pElement
 			mpOnRemove = dynamic_cast<StatusEffectActions*>(pElement);
 			break;
 		default:
-			throw CL_Error("Bad element in status effect.");
+			return false;
 		}
+		return true;
 }
 
 StoneRing::StatusEffect::StatusEffect():mpOnInvoke(NULL),mpOnRound(NULL),

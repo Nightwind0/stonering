@@ -27,7 +27,7 @@ namespace StoneRing
 		virtual eElement whichElement() const { return ECHARACTER; }
 
 	private:
-		virtual void handleElement(eElement, Element * );
+		virtual bool handleElement(eElement, Element * );
 		virtual void loadAttributes(CL_DomNamedNodeMap *);
 		std::string mSpriteRef;
 		std::string mName;
@@ -51,7 +51,7 @@ namespace StoneRing
 		Animation * getAnimation() const;
 
 	private:
-		virtual void handleElement(eElement, Element * );
+		virtual bool handleElement(eElement, Element * );
 		virtual void loadAttributes(CL_DomNamedNodeMap *);
 
 		SkillRef * mpSkillRef;
@@ -72,7 +72,7 @@ namespace StoneRing
 
 
 	private:
-		virtual void handleElement(eElement, Element * );
+		virtual bool handleElement(eElement, Element * );
 		virtual void loadAttributes(CL_DomNamedNodeMap *);
 
 		WeaponTypeRef * mpWeaponTypeRef;

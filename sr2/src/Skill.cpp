@@ -21,7 +21,7 @@ void StoneRing::Skill::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 
 }
 
-void StoneRing::Skill::handleElement(eElement element, Element * pElement)
+bool StoneRing::Skill::handleElement(eElement element, Element * pElement)
 {
 	switch(element)
 	{
@@ -42,8 +42,10 @@ void StoneRing::Skill::handleElement(eElement element, Element * pElement)
 		mPreReqs.push_back(dynamic_cast<SkillRef*>(pElement));
 		break;
 	default:
-		throw CL_Error("Bad element in skill");
+		return false;
 	}
+
+	return true;
 }
 
 StoneRing::Skill::Skill():mnBp(0), mnSp(0),mnMinLevel(0),mpSpellRef(NULL)
