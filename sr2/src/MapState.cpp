@@ -1,6 +1,7 @@
 #include "MapState.h"
 #include "Level.h"
 
+using std::min;
 
 
 StoneRing::MapState::MapState():mbDone(false),mLevelX(0),
@@ -94,8 +95,8 @@ void StoneRing::MapState::handleKeyUp(const CL_InputEvent &key)
 void StoneRing::MapState::draw(const CL_Rect &screenRect,CL_GraphicContext * pGC)
 {
 	pGC->clear();
-	uint width = min( screenRect.get_width(), mpLevel->getWidth() * 32);
-	uint height = min(screenRect.get_height(), mpLevel->getHeight() * 32);
+	uint width = min( (unsigned int)screenRect.get_width(), mpLevel->getWidth() * 32);
+	uint height = min((unsigned int)screenRect.get_height(), mpLevel->getHeight() * 32);
 
     CL_Rect src = CL_Rect(mLevelX, mLevelY, mLevelX +width,
                           mLevelY + height);
