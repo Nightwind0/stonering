@@ -1,6 +1,7 @@
 #include "Spell.h"
 #include "AbilityFactory.h"
 #include "IApplication.h"
+#include "StatusEffect.h"
 #include "sr_defines.h"
 #include "Animation.h"
 
@@ -197,9 +198,30 @@ DoStatusEffect::DoStatusEffect()
 {
 }
 
+void DoStatusEffect::handleElement(eElement element, Element * pElement)
+{
+	if(element == ESTATUSEFFECT)
+	{
+		mpStatusEffect = dynamic_cast<StatusEffect*>(pElement);
+	}
+}
+
+void DoStatusEffect::loadFinished()
+{
+	if(mpStatusEffect == NULL)
+		throw CL_Error("Error: DoStatusEffect must either define a status effect or include a statusRef");
+}
+
 void DoStatusEffect::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
-    mStatusRef = getRequiredString("statusRef", pAttributes);
+	const AbilityManager * pManager = IApplication::getInstance()->getAbilityManager();
+
+	if(hasAttr("statusRef",pAttributes))
+	{
+		std::string statusRef = getString("statusRef",pAttributes);
+		mpStatusEffect = pManager->getStatusEffect(statusRef);
+	}
+
     mfChance = getRequiredFloat("chance",pAttributes);
     mbRemove = getImpliedBool("removeStatus",pAttributes, false);
 }
@@ -209,9 +231,9 @@ DoStatusEffect::~DoStatusEffect()
 }
 
 
-std::string DoStatusEffect::getStatusRef() const
+StatusEffect* DoStatusEffect::getStatusEffect() const
 {
-    return mStatusRef;
+    return mpStatusEffect;
 }
 
 float DoStatusEffect::getChance() const

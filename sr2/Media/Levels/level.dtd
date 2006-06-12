@@ -72,7 +72,7 @@
 <!ELEMENT spellList (spell+)>
 <!ELEMENT doWeaponDamage (weaponDamageCategory)>
 <!ELEMENT doMagicDamage  (magicDamageCategory)>
-<!ELEMENT doStatusEffect EMPTY>
+<!ELEMENT doStatusEffect (statusEffect?)>
 <!ELEMENT doAttack EMPTY>
 <!ELEMENT spell (magicResistance?,(animation|doWeaponDamage|doMagicDamage|doStatusEffect)*)> 
 <!ELEMENT weaponDamageCategory EMPTY>
@@ -252,7 +252,7 @@
 <!ATTLIST doMagicDamage  drain    (true|false) #IMPLIED> <!-- Defaults to false. Causes any target damage to be added to the caster -->
 <!ATTLIST doMagicDamage  piercing (true|false) #IMPLIED> <!-- Ignore hit chance. Definitely hits -->
 <!ATTLIST doMagicDamage  damageAttribute (hp|mp) #IMPLIED> <!-- Default is hp -->
-<!ATTLIST doStatusEffect statusRef CDATA #REQUIRED>
+<!ATTLIST doStatusEffect statusRef CDATA #IMPLIED> <!-- If you have supply a status effect then you don't use the ref. If it exists, supply ref. -->
 <!ATTLIST doStatusEffect chance CDATA #REQUIRED> <!-- 0 to 1 floating point. -->
 <!ATTLIST doAttack multiplyCritical CDATA #IMPLIED <!-- temporarily multiply weapon's crit by this -->
 <!ATTLIST doAttack addCritical CDATA #IMPLIED <!-- Temporarily add this to weapons critical -->
@@ -280,10 +280,10 @@
 
 <!ATTLIST characterClass name CDATA #REQUIRED>
 <!ATTLIST characterClass gender (male|female|either) #IMPLIED> <!-- Defaults to either -->
-<!ATTLIST statIncrease stat (hp_max|mp_max|str|dex|evd|mag|rst|spr|lck) #REQUIRED>
+<!ATTLIST statIncrease stat (hp_max|mp_max|str|dex|evd|mag|rst|lck|joy) #REQUIRED>
 <!ATTLIST statIncrease multiplier CDATA #REQUIRED> <!-- c * b^L -- this is c -->
 <!ATTLIST statIncrease base CDATA #REQUIRED> <!-- c * b^L this is b. Ought to be 1.07 to double every 10 levels -->
-<!ATTLIST startingStat stat (hp_max|mp_max|str|dex|evd|mag|rst|spr|lck) #REQUIRED>
+<!ATTLIST startingStat stat (hp_max|mp_max|str|dex|evd|mag|rst|lck|joy) #REQUIRED>
 <!ATTLIST startingStat value CDATA #REQUIRED> <!-- Numeric integer -->
 <!ATTLIST skill name CDATA #REQUIRED>
 <!ATTLIST skill sp CDATA #REQUIRED> <!-- Skill points to earn skill -->

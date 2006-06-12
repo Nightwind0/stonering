@@ -20,7 +20,6 @@
 		<statIncrease base="1.06" multiplier="4" stat="evd"/>
 		<statIncrease base="1.06" multiplier="1" stat="mag"/>
 		<statIncrease base="1.06" multiplier="3.5" stat="rst"/>
-		<statIncrease base="1.06" multiplier="2" stat="spr"/>
 
 		
 	</characterClass>
@@ -44,7 +43,6 @@
 		<statIncrease base="1.06" multiplier="6" stat="evd"/>
 		<statIncrease base="1.06" multiplier="1" stat="mag"/>
 		<statIncrease base="1.06" multiplier="4" stat="rst"/>
-		<statIncrease base="1.06" multiplier="2.5" stat="spr"/>
 	
 		
 	</characterClass>
