@@ -327,7 +327,12 @@ void Element::load(CL_DomElement * pDomElement)
 
             pElement->load( &child );
 
-            handleElement(element, pElement );
+            if(!handleElement(element, pElement ))
+			{
+				// They didn't handle it. So lets get rid of it
+				std::cout << "Unhandled element " << element_name << " found" << std::endl;
+				delete pElement;
+			}
 
 		
 		

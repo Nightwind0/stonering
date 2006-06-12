@@ -123,8 +123,7 @@ AnimationSpriteRef::getMovementDirection() const
     return meMovementDirection;
 }
 
-
-void Par::handleElement(eElement element, Element * pElement)
+bool Par::handleElement(eElement element, Element * pElement)
 {
 		switch(element)
 		{
@@ -134,7 +133,11 @@ void Par::handleElement(eElement element, Element * pElement)
 		case EANIMATIONSPRITEREF:
 			mAnimationSpriteRefs.push_back( dynamic_cast<AnimationSpriteRef*>(pElement));
 			break;
+		default:
+			return false;
 		}
+
+		return true;
 }
 
 void Par::loadAttributes(CL_DomNamedNodeMap * pAttributes)
@@ -230,12 +233,14 @@ void Animation::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 
 }
 
-void Animation::handleElement(eElement element, Element * pElement)
+bool Animation::handleElement(eElement element, Element * pElement)
 {
 	if(element == EPAR )
 	{
 		mPars.push_back ( dynamic_cast<Par*>(pElement) );
+		return true;
 	}
+	else return false;
 }
 
 

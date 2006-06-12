@@ -46,7 +46,7 @@ namespace StoneRing{
 		std::list<Effect*>::const_iterator getEffectsEnd() const;
 
 	private:
-		virtual void handleElement(eElement element, Element * pElement );
+		virtual bool handleElement(eElement element, Element * pElement );
 		std::list<Effect*> mEffects;
 
 	};
@@ -77,7 +77,7 @@ namespace StoneRing{
 				
 			
 	private:
-		virtual void handleElement(eElement element, Element * pElement );
+		virtual bool handleElement(eElement element, Element * pElement );
 	    virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
 		std::string mName;
 		StatusEffectActions * mpOnInvoke;

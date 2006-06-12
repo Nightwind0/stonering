@@ -25,11 +25,16 @@ void DoWeaponDamage::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 
 }
 
-void DoWeaponDamage::handleElement(eElement element,Element *pElement)
+bool DoWeaponDamage::handleElement(eElement element,Element *pElement)
 {
 		if(element == EWEAPONDAMAGECATEGORY)
 		{
 			mpDamageCategory = dynamic_cast<WeaponDamageCategory*>(pElement);
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 }
 
@@ -102,12 +107,14 @@ void DoMagicDamage::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 
 }
 
-void DoMagicDamage::handleElement(eElement element,Element *pElement)
+bool DoMagicDamage::handleElement(eElement element,Element *pElement)
 {
 		if(element == EMAGICDAMAGECATEGORY)
 		{
 			mpDamageCategory = dynamic_cast<MagicDamageCategory*>(pElement);
+			return true;
 		}
+		else return false;
 }
 
 void DoMagicDamage::loadFinished()
@@ -198,12 +205,14 @@ DoStatusEffect::DoStatusEffect()
 {
 }
 
-void DoStatusEffect::handleElement(eElement element, Element * pElement)
+bool DoStatusEffect::handleElement(eElement element, Element * pElement)
 {
 	if(element == ESTATUSEFFECT)
 	{
 		mpStatusEffect = dynamic_cast<StatusEffect*>(pElement);
+		return true;
 	}
+	else return false;
 }
 
 void DoStatusEffect::loadFinished()
@@ -271,7 +280,7 @@ void Spell::loadAttributes(CL_DomNamedNodeMap * pAttributes)
     mnMP = getRequiredUint("mp", pAttributes);
 }
 
-void Spell::handleElement(eElement element, Element * pElement)
+bool Spell::handleElement(eElement element, Element * pElement)
 {
 	switch(element)
 	{
@@ -285,8 +294,10 @@ void Spell::handleElement(eElement element, Element * pElement)
 		mpMagicResistance = dynamic_cast<MagicResistance*>(pElement);
 		break;
 	default:
-		throw CL_Error("Bad element in spell.");
+		return false;
 	}
+
+	return true;
 }
 
 

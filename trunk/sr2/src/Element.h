@@ -123,7 +123,7 @@ namespace StoneRing
             static const char * pszElementNames[__END_OF_ELEMENTS__];
     
         protected:
-            virtual void handleElement(eElement, Element * ){}
+            virtual bool handleElement(eElement, Element * ){ return false;}
             virtual void loadAttributes(CL_DomNamedNodeMap *){}
             virtual void handleText(const std::string &){}
             virtual void loadFinished(){} // You can check shit . Make sure you got everything.

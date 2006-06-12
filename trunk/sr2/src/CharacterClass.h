@@ -43,7 +43,7 @@ class CharacterClass : public Element
 
 
 	private:
-		virtual void handleElement(eElement element, Element * pElement );
+		virtual bool handleElement(eElement element, Element * pElement );
 		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 		std::string mName;
 		eGender meGender;

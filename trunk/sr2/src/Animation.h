@@ -40,7 +40,7 @@ namespace StoneRing{
 
 	private:
 	virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-//	virtual void handleElement(eElement element, Element * pElement);
+//	virtual bool handleElement(eElement element, Element * pElement);
 	virtual void handleText(const std::string &text);
 
     private:
@@ -77,7 +77,7 @@ namespace StoneRing{
 	std::list<AnimationSpriteRef*>::const_iterator getAnimationSpriteRefsEnd() const;
 
     private:
-	virtual void handleElement(eElement element, Element * pElement );
+	virtual bool handleElement(eElement element, Element * pElement );
 	virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 	eHide hideFromString(const std::string &str);
 	uint mnDuration;
@@ -109,7 +109,7 @@ namespace StoneRing{
 	std::list<Par*>::const_iterator getParsEnd() const;
 
     private:
-	virtual void handleElement(eElement element, Element * pElement );
+	virtual bool handleElement(eElement element, Element * pElement );
 	virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 	std::list<Par*> mPars;
 	eType meType;

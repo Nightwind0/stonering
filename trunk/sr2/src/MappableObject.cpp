@@ -176,7 +176,7 @@ void StoneRing::MappableObject::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 
 }
 
-void StoneRing::MappableObject::handleElement(eElement element, Element * pElement)
+bool StoneRing::MappableObject::handleElement(eElement element, Element * pElement)
 {
     switch(element)
     {
@@ -258,7 +258,11 @@ void StoneRing::MappableObject::handleElement(eElement element, Element * pEleme
 
         break;
     }
+	default:
+		return false;
     }
+
+	return true;
 }
 
 void StoneRing::MappableObject::loadFinished()

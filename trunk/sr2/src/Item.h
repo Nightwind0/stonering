@@ -200,7 +200,7 @@ namespace StoneRing{
         
 
 	private:
-	    virtual void handleElement(eElement element, Element * pElement );
+	    virtual bool handleElement(eElement element, Element * pElement );
 	    virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
 		virtual void loadFinished();
 	    NamedItem * mpNamedItem;
@@ -249,7 +249,7 @@ namespace StoneRing{
 		virtual CL_DomElement  createDomElement(CL_DomDocument&) const;	
 
 	private:
-	    virtual void handleElement(eElement element, Element * pElement );
+	    virtual bool handleElement(eElement element, Element * pElement );
 	    virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
 		virtual void handleText(const std::string &text);
 		std::string mIcon;
@@ -288,7 +288,7 @@ namespace StoneRing{
 	    static eTargetable TargetableFromString ( const std::string &str );
 
 	private:
-	    virtual void handleElement(eElement element, Element * pElement );
+	    virtual bool handleElement(eElement element, Element * pElement );
 	    virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
 	    std::list<Action*> mActions;
 	    eUseType meUseType;
@@ -361,7 +361,7 @@ namespace StoneRing{
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	private:
-	    virtual void handleElement(eElement element, Element * pElement );
+	    virtual bool handleElement(eElement element, Element * pElement );
 	    virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
 		virtual void loadFinished();
 	    SpellRef *mpSpellRef;
@@ -388,7 +388,7 @@ namespace StoneRing{
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	private:
-	    virtual void handleElement(eElement element, Element * pElement );
+	    virtual bool handleElement(eElement element, Element * pElement );
 	    virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
 		virtual void loadFinished();
 	    WeaponType * mpWeaponType;
@@ -414,7 +414,7 @@ namespace StoneRing{
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
         
 	private:
-	    virtual void handleElement(eElement element, Element * pElement );
+	    virtual bool handleElement(eElement element, Element * pElement );
 	    virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
 		virtual void loadFinished();
 	    ArmorType *mpArmorType;
@@ -595,7 +595,7 @@ namespace StoneRing{
 	    bool operator==(const WeaponRef &lhs);
 
 	private:
-	    virtual void handleElement(eElement element, Element * pElement );
+	    virtual bool handleElement(eElement element, Element * pElement );
 
 	    WeaponType *mpWeaponType;
 	    WeaponClass *mpWeaponClass;
@@ -626,7 +626,7 @@ namespace StoneRing{
 	    bool operator==(const ArmorRef &lhs );
 
 	private:
-	    virtual void handleElement(eElement element, Element * pElement );
+	    virtual bool handleElement(eElement element, Element * pElement );
 
 	    ArmorType * mpArmorType;
 	    ArmorClass * mpArmorClass;
@@ -774,7 +774,7 @@ namespace StoneRing{
 	    std::list<WeaponTypeRef*>::const_iterator getWeaponTypeRefsBegin();
 	    std::list<WeaponTypeRef*>::const_iterator getWeaponTypeRefsEnd();
 
-	    virtual void handleElement(eElement element, Element * pElement);
+	    virtual bool handleElement(eElement element, Element * pElement);
 	private:
 	    std::list<WeaponTypeRef*> mWeaponTypes;
 
@@ -809,7 +809,7 @@ namespace StoneRing{
 	    bool operator==(const WeaponClass &lhs);
 
 	private:
-	    virtual void handleElement(eElement element, Element * pElement );
+	    virtual bool handleElement(eElement element, Element * pElement );
 	    virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
 	    void addStatusEffectModifier(StatusEffectModifier *pModifier ){ mStatusEffectModifiers.push_back ( pModifier ); }
 	    std::string mName;
@@ -832,7 +832,7 @@ namespace StoneRing{
 	    std::list<ArmorTypeRef*>::const_iterator getArmorTypeRefsBegin();
 	    std::list<ArmorTypeRef*>::const_iterator getArmorTypeRefsEnd();
 
-	    virtual void handleElement(eElement element, Element * pElement);
+	    virtual bool handleElement(eElement element, Element * pElement);
 	private:
 	    std::list<ArmorTypeRef*> mArmorTypes;
 
@@ -867,7 +867,7 @@ namespace StoneRing{
 	    bool operator==(const ArmorClass &lhs );
 
 	private:
-	    virtual void handleElement(eElement element, Element * pElement );
+	    virtual bool handleElement(eElement element, Element * pElement );
 	    virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
 	    std::string mName;
 	    int mnValueAdd;
@@ -909,7 +909,7 @@ namespace StoneRing{
 	    bool operator==(const WeaponType &lhs);
 
 	private:
-	    virtual void handleElement(eElement element, Element * pElement );
+	    virtual bool handleElement(eElement element, Element * pElement );
 	    virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
 	    DamageCategory * mpDamageCategory;
 	    std::string mName;
@@ -946,7 +946,7 @@ namespace StoneRing{
 	    bool operator==(const ArmorType &lhs );
         
 	private:
-	    virtual void handleElement(eElement element, Element * pElement );
+	    virtual bool handleElement(eElement element, Element * pElement );
 	    virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
 	    std::string mName;
 	    std::string mIconRef;

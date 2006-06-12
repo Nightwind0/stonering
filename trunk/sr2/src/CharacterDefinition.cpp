@@ -100,7 +100,7 @@ CL_DomElement  StoneRing::CharacterDefinition::createDomElement(CL_DomDocument &
 	return CL_DomElement(doc,"character");
 }
 
-void StoneRing::CharacterDefinition::handleElement(eElement element, StoneRing::Element * pElement )
+bool StoneRing::CharacterDefinition::handleElement(eElement element, StoneRing::Element * pElement )
 {
 	switch(element)
 	{
@@ -110,7 +110,11 @@ void StoneRing::CharacterDefinition::handleElement(eElement element, StoneRing::
 	case EWEAPONTYPESPRITE:
 		mWeaponTypeSprites.push_back(dynamic_cast<WeaponTypeSprite*>(pElement));
 		break;
+	default:
+		return false;
 	}
+
+	return true;
 }
 
 void StoneRing::CharacterDefinition::loadAttributes(CL_DomNamedNodeMap *pAttributes)
@@ -154,7 +158,7 @@ StoneRing::AnimationDefinition::getAnimation() const
 	return mpAnimation;
 }
 
-void StoneRing::AnimationDefinition::handleElement(eElement element, Element * pElement)
+bool StoneRing::AnimationDefinition::handleElement(eElement element, Element * pElement)
 {
 	switch(element)
 	{
@@ -167,8 +171,10 @@ void StoneRing::AnimationDefinition::handleElement(eElement element, Element * p
 		mpAnimation = dynamic_cast<Animation*>(pElement);
 		break;
 	default:
-		throw CL_Error("Unexpected element found in animation definition.");
+		return false;
 	}
+
+	return true;
 }
 
 void StoneRing::AnimationDefinition::loadAttributes(CL_DomNamedNodeMap *pAttributes)
@@ -203,9 +209,17 @@ std::string StoneRing::WeaponTypeSprite::getSpriteRef() const
 }
 
 
-void StoneRing::WeaponTypeSprite::handleElement(eElement element, Element *pElement )
+bool StoneRing::WeaponTypeSprite::handleElement(eElement element, Element *pElement )
 {
-	if(element == EWEAPONTYPEREF) mpWeaponTypeRef = dynamic_cast<WeaponTypeRef*>(pElement);
+	if(element == EWEAPONTYPEREF)
+	{
+		mpWeaponTypeRef = dynamic_cast<WeaponTypeRef*>(pElement);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 void StoneRing::WeaponTypeSprite::loadAttributes(CL_DomNamedNodeMap *pAttributes)
