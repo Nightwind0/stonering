@@ -14,7 +14,6 @@ const char *statXMLLookup[] =
 	"evd",
 	"mag",
 	"rst",
-	"spr",
 	"lck",
 	"joy",
 	"draw_ill",   //	CA_DRAW_ILL,

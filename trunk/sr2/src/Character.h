@@ -24,7 +24,6 @@ namespace StoneRing{
 		CA_EVD,              // Chances of evading an attack
 		CA_MAG,              // Magic power
 		CA_RST,              // Magic resistance
-		CA_SPR,              // Chances of magic hitting
 		CA_LCK,              // Similar to initiative. Also helps in other aspects of the game...
 		CA_JOY,              // Increases experience gained
 		CA_DRAW_ILL,

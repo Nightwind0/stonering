@@ -113,7 +113,8 @@ namespace StoneRing
 	    DoStatusEffect();
 	    virtual ~DoStatusEffect();
 		virtual eElement whichElement() const{ return EDOSTATUSEFFECT; }
-	    std::string getStatusRef() const;
+		StatusEffect * getStatusEffect() const;
+
 	    float getChance() const;
 
 	    bool removeStatus() const;
@@ -122,8 +123,10 @@ namespace StoneRing
 
 	    virtual eType getEffectType() const { return STATUS_EFFECT; }
 	private:
+		virtual void handleElement(eElement, Element*);
 	    virtual void loadAttributes(CL_DomNamedNodeMap *);
-	    std::string mStatusRef;
+		virtual void loadFinished();
+	    StatusEffect * mpStatusEffect;
 	    float mfChance;
 	    bool mbRemove;
 	};
