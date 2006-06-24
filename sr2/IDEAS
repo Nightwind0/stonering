@@ -1,4 +1,80 @@
+Vinegaroon - type of giant scorpion
+EXPONENTIAL STATS-
+c*b^L
+L = Level
 
+C is a constant. Raise this or lower it for classes. For example, if the
+equation is STR = c*b^L
+If you want a warrior's strength to be double that of a mages, then you
+will want the warriors C to be double that of the mages. 
+
+B is the base and it determines growth rate. 
+If B is set to 2, then it will double every level. If you set it to
+1.07 then its more like double every 10 levels.
+
+Note: In this way, you can't just apply attribute modifiers and forget them.
+You have to keep a running tally of multipliers and adds to every stat,
+and apply them when calculating (Don't forget to add in temporary bonuses!). Call the total of all multipliers m, and the total of all adds e (including start stat if any). When you calculate a stat, it looks like this:
+e + mcb^L
+
+In this case, statIncrease should take, instead of increment and period,
+a "c" factor and a "b" factor. Remember, b determines growth speed and should
+be close to 1.05 or so for most stats. Maybe 1.1 for HP/MP....
+Experimentally, 10*1.1^L for a mages HP looks okay,and
+17*1.1^L for a warrior HP looks okay... or at least somewhere around these values.
+For STR and the like a single digit number times a 1.05 or so looks good.
+4*1.06^L for a mage's STR maybe, and 10*1.06^L for war.
+
+
+WE CAN GET RID OF startingStat!!!! 
+
+
+addTemporaryModifier --
+	Permanent attribute modifications will be made as they currently are,
+through modifyAttribute. Basically any type of action context will result in permanent changes. I consider +50 to HP to be "permanent" just as the -37 to HP that you get when you're hit is "permanent". So potions, other items... events, etc... all do "permanent" modifications. The code inside actually modifies the character's numbers directly. Easy cheesy.. just looks up the variable to change and changes. 
+	However, there are many temporary modifiers - status effects & equipment, and idols etc - do not use modifyAttribute. Instead, they use addTemporaryModifier, which returns a ticket that the caller must store away and use later on removeTemporaryModifier. Internally, each character stores a multimap (indexed by attribute enum), of a struct which describes the modification. When a value is queried, there is a loop that loops from lower_bound to upper_bound and does two things. One, it applies all the multiplications to the value. Two, it keeps a tally of all the "add" values, and after the loop, applies that total to the value. Thus, all multiplications happen, then all the adds, without having to loop twice. When "removeTemporaryModifier" is called, the modifier is simply removed from the list. The party has it's own similar list for "Common" attributes (buy rate, sell rate, drop rates, etc)
+Note: Need a method which takes a characterattribute enum and returns a pointer to the member variable that corresponds. Alternatively, eschew storing attributes in member variables and use std::map<eCharacterAttribute,int>...?
+	Question: How does this work for status effects and status effect resistance? What about spell types? Do they have to be hardcoded? Couldn't we define them somehow and refer to them by string.
+
+---
+Refactor? Make doAttack doMagicAttack and doStatus into Actions, that way tiles and MOs and things can use them. Define weapons as just items where the "use" is a doAttack where the attack value, rather than hardcoded, is defined by the weapon, and the target is matched to whatever is the current target. 
+OR - Leave it as it is, don't consider attack as an "use" of your weapon....
+but do open doAttack for skills... with a multiplier and an add and a crit%..
+and it uses your current weapon...
+
+
+AMNIPOGANS
+Shellelagh
+Loaded Shellelagh
+Green Mage
+Caladbolg - Irish Sword the size of a rainbow
+Cashmere Yams
+Chuck Norris
+Sabotender
+REQUIRE OMEN
+ALPHA DELIMITER
+OMEGA DELIMITER
+Need: onVictory and onDefeat as children of startBattle. One or zero of each.
+Need: breakpoint cost on skills/spells
+Need: ability to have non-mp, non-bp skills like ones that make things cheaper, or make encounters higher or lower, and have on/off capability
+
+Need: doSkill, doSpell, doEscape, doSteal, doItem
+Need: Monster strategies. They should be able to select from default strategies or define special ones that should look something like
+	<strategy>
+	<onLowHP>
+		<action probability="0.01">
+		<doEscape/>
+		</action>
+		<action probability="0.10">
+		<doSkill skillRef="heal"/>
+		</action>
+	</onLowHP>
+	<onRegularTurn>
+	....
+	</onRegularTurn>
+	<onTurnNumber number=1>
+	...
+	</onTurnNumber>
 
 Need: onEnterLevel, onExitLevel properties of the level element, which
 	contains actions to fire when you enter or exit a level.
