@@ -17,7 +17,7 @@ AM_INIT_AUTOMAKE( stonering, 0.0.0.0)
 # Checks for libraries.
 
 
-PKG_CHECK_MODULES(CLANLIB, clanCore-0.7 clanApp-0.7 clanDisplay-0.7 clanGL-0.7 clanSound-0.7 clanGUI-0.7 clanGUIStyleSilver-0.7)
+PKG_CHECK_MODULES(CLANLIB, clanCore-0.8 clanApp-0.8 clanDisplay-0.8 clanGL-0.8 clanSound-0.8 clanGUI-0.8 clanGUIStyleSilver-0.8)
 
 AC_SUBST(CLANLIB_LIBS) 
 AC_SUBST(CLANLIB_CFLAGS)
