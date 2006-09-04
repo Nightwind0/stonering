@@ -4,6 +4,8 @@
 #include "LevelFactory.h"
 #include "IApplication.h"
 #include "Level.h"
+#include "Action.h"
+#include "PlaySound.h"
 
 using namespace StoneRing;
 

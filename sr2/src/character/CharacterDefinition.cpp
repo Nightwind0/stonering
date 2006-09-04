@@ -2,6 +2,7 @@
 #include "AbilityManager.h"
 #include "IApplication.h"
 #include "Animation.h"
+#include "WeaponTypeRef.h"
 
 const char *statXMLLookup[] = 
 {

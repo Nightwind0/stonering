@@ -6,6 +6,7 @@
 #include "StatusEffect.h"
 #include "Skill.h"
 #include "CharacterClass.h"
+#include "DamageCategory.h"
 
 using namespace StoneRing;
 

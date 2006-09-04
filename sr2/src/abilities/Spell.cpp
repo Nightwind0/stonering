@@ -4,6 +4,8 @@
 #include "StatusEffect.h"
 #include "sr_defines.h"
 #include "Animation.h"
+#include "DamageCategory.h"
+#include "SpellRef.h"
 
 using namespace StoneRing;
 

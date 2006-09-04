@@ -2,6 +2,8 @@
 #include "Skill.h"
 #include "Item.h"
 #include "CharacterDefinition.h"
+#include "WeaponTypeRef.h"
+#include "ArmorTypeRef.h"
 
 using namespace StoneRing;
 

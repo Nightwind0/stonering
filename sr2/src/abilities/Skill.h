@@ -1,6 +1,6 @@
 #ifndef SR_SKILL_H
 #define SR_SKILL_H
-
+ 
 #include "Element.h"
 #include "Effect.h"
 #include <ClanLib/core.h>

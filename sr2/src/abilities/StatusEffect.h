@@ -23,7 +23,7 @@ namespace StoneRing{
 		enum eChangeTo { MIN, MAX, ADD, MULTIPLIER, MULTIPLIER_ADD } ;
 
 		eChangeTo getChangeTo() const;
-		
+
 		int getDelta() const { return mnDelta; }
 	private:
 		virtual void loadAttributes(CL_DomNamedNodeMap*);
@@ -54,31 +54,31 @@ namespace StoneRing{
 	class StatusEffect : public Element
 	{
 	public:
-			StatusEffect();
-			virtual ~StatusEffect();
-			virtual eElement whichElement() const{ return ESTATUSEFFECT; }	
-			CL_DomElement createDomElement(CL_DomDocument &doc) const;
+		StatusEffect();
+		virtual ~StatusEffect();
+		virtual eElement whichElement() const{ return ESTATUSEFFECT; }	
+		CL_DomElement createDomElement(CL_DomDocument &doc) const;
 
-			StatusEffectActions * getOnInvoke() const;
-			StatusEffectActions * getOnRound() const;
-			StatusEffectActions * getOnCountdown() const;
-			StatusEffectActions * getOnRemove() const;
+		StatusEffectActions * getOnInvoke() const;
+		StatusEffectActions * getOnRound() const;
+		StatusEffectActions * getOnCountdown() const;
+		StatusEffectActions * getOnRemove() const;
 
-			std::string getName() const;
+		std::string getName() const;
 
-			enum eLast { ROUND_COUNT, BATTLE, PERMANENT };
+		enum eLast { ROUND_COUNT, BATTLE, PERMANENT };
 
-			eLast getLast() const;
+		eLast getLast() const;
 
-			uint getRoundCount() const; 
+		uint getRoundCount() const; 
 
-			// Multiply the magic power of the user by this using an algorithm to get length..
-			float getLengthMultiplier() const;
-				
-			
+		// Multiply the magic power of the user by this using an algorithm to get length..
+		float getLengthMultiplier() const;
+
+
 	private:
 		virtual bool handleElement(eElement element, Element * pElement );
-	    virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
 		std::string mName;
 		StatusEffectActions * mpOnInvoke;
 		StatusEffectActions * mpOnRound;

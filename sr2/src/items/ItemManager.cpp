@@ -3,6 +3,22 @@
 #include "IApplication.h"
 #include "ItemFactory.h"
 #include "StatusEffect.h"
+#include "WeaponClass.h"
+#include "WeaponType.h"
+#include "ArmorType.h"
+#include "ArmorClass.h"
+#include "NamedItem.h"
+#include "WeaponTypeRef.h"
+#include "GeneratedWeapon.h"
+#include "RuneType.h"
+#include "ArmorTypeRef.h"
+#include "GeneratedArmor.h"
+#include "WeaponClassRef.h"
+#include "ArmorClassRef.h"
+#include "AttributeEnhancer.h"
+#include "DamageCategory.h"
+#include "StatusEffectModifier.h"
+
 #ifndef NDEBUG
 #include <algorithm>
 #include <iomanip>

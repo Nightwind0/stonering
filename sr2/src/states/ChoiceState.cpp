@@ -2,6 +2,7 @@
 #include "IApplication.h"
 #include "GraphicsManager.h"
 #include "Level.h"
+#include "Choice.h" // For Choice
 
 StoneRing::ChoiceState::ChoiceState():mbDone(false),mpChoiceOverlay(NULL),mpChoice(NULL),
 				      mpChoiceFont(NULL),mpOptionFont(NULL),mpCurrentOptionFont(NULL)

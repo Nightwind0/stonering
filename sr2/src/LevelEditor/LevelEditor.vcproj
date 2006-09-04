@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\"
+				AdditionalIncludeDirectories="&quot;$(SOLUTIONDIR)/src&quot;;&quot;$(SOLUTIONDIR)/src/party&quot;;&quot;$(SOLUTIONDIR)/src/level&quot;;&quot;$(SOLUTIONDIR)/src/factories&quot;;&quot;$(SOLUTIONDIR)/src/items&quot;;&quot;$(SOLUTIONDIR)/src/abilities&quot;;&quot;$(SOLUTIONDIR)/src/states&quot;;&quot;$(SOLUTIONDIR)/src/character&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -181,11 +181,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\AbilityFactory.cpp"
+				RelativePath="..\factories\AbilityFactory.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\AbilityManager.cpp"
+				RelativePath="..\abilities\AbilityManager.cpp"
 				>
 			</File>
 			<File
@@ -193,7 +193,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\CharacterClass.cpp"
+				RelativePath="..\character\Character.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\character\CharacterClass.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\character\CharacterDefinition.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\factories\CharacterFactory.cpp"
 				>
 			</File>
 			<File
@@ -221,27 +233,27 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Item.cpp"
+				RelativePath="..\items\Item.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\ItemFactory.cpp"
+				RelativePath="..\factories\ItemFactory.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\ItemManager.cpp"
+				RelativePath="..\items\ItemManager.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\Level.cpp"
+				RelativePath="..\level\Level.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\LevelElements.cpp"
+				RelativePath="..\level\LevelElements.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\LevelFactory.cpp"
+				RelativePath="..\factories\LevelFactory.cpp"
 				>
 			</File>
 			<File
@@ -249,19 +261,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\MappableObject.cpp"
+				RelativePath="..\level\MappableObject.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\Skill.cpp"
+				RelativePath="..\abilities\Skill.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\Spell.cpp"
+				RelativePath="..\abilities\Spell.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\StatusEffect.cpp"
+				RelativePath="..\abilities\StatusEffect.cpp"
 				>
 			</File>
 			<File
