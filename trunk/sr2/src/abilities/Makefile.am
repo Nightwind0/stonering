@@ -8,6 +8,8 @@ libabilities_la_SOURCES = AbilityManager.cpp \
 			Skill.h \
 			Skill.cpp \
 			Spell.cpp \
+			SpellRef.h \
+			SpellRef.cpp \
 			Spell.h \
 			StatusEffect.h \
 			StatusEffect.cpp
@@ -17,5 +19,7 @@ INCLUDES = 	-I@top_srcdir@/src/ \
 		-I@top_srcdir@/src/party \
 		-I@top_srcdir@/src/items \
 		-I@top_srcdir@/src/level \
+		-I@top_srcdir@/src/level/actions \
+		-I@top_srcdir@/src/level/checks \
 		-I@top_srcdir@/src/factories
 
