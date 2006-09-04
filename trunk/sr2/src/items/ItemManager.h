@@ -3,6 +3,7 @@
 
 #include "Item.h"
 #include "Level.h"
+#include "Equipment.h"
 #include <ClanLib/core.h>
 
 

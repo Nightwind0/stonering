@@ -1,3 +1,5 @@
+#ifndef SR_CHARACTER_FACTORY_H
+#define SR_CHARACTER_FACTORY_H
 
 #include "IFactory.h"
 
@@ -25,3 +27,5 @@ namespace StoneRing
 	    factoryMethod getMethod(Element::eElement element) const;
 	};
 };
+
+#endif

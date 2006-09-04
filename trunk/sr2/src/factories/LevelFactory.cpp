@@ -1,5 +1,9 @@
 #include "Level.h"
+#include "Action.h"
+#include "Check.h"
 #include "LevelFactory.h"
+#include "Checks.h"
+#include "Actions.h"
 #include <ClanLib/core.h>
 
 using namespace StoneRing;

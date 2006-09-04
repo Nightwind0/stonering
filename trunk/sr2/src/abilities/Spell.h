@@ -13,9 +13,6 @@ namespace StoneRing
     class SpellRef;
     class StatusEffect;
 
-
-
-
     class DoWeaponDamage : public Element, public Effect
 	{
 	public:

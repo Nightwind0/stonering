@@ -16,106 +16,106 @@
 
 namespace StoneRing{
 
-    class PlaySound;
+	class PlaySound;
 
- 
-    class AnimationSpriteRef : public Element
-    {
-    public:
-	AnimationSpriteRef();
-	virtual ~AnimationSpriteRef();
-	virtual eElement whichElement() const{ return EANIMATIONSPRITEREF; }
-	std::string getRef() const;
 
-	enum eInitialFocus { SCREEN, CASTER, TARGET };
-	enum eInitialFocusType {CENTER, ABOVE, BELOW, LEFT, RIGHT, BELOW_RIGHT, BELOW_LEFT, ABOVE_RIGHT, ABOVE_LEFT };
-	enum eMovementDirection { STILL, N, E, S, W, NE, NW, SE, SW, TO_TARGET, TO_CASTER };
-	enum eMovementStyle {STRAIGHT, ARC_OVER, ARC_UNDER, SINE };
+	class AnimationSpriteRef : public Element
+	{
+	public:
+		AnimationSpriteRef();
+		virtual ~AnimationSpriteRef();
+		virtual eElement whichElement() const{ return EANIMATIONSPRITEREF; }
+		std::string getRef() const;
 
-	eInitialFocus getInitialFocus() const;
-	eInitialFocusType getInitialFocusType() const;
-	eMovementDirection getMovementDirection() const;
-	eMovementStyle getMovementStyle() const;
-	CL_DomElement createDomElement(CL_DomDocument &doc) const;
+		enum eInitialFocus { SCREEN, CASTER, TARGET };
+		enum eInitialFocusType {CENTER, ABOVE, BELOW, LEFT, RIGHT, BELOW_RIGHT, BELOW_LEFT, ABOVE_RIGHT, ABOVE_LEFT };
+		enum eMovementDirection { STILL, N, E, S, W, NE, NW, SE, SW, TO_TARGET, TO_CASTER };
+		enum eMovementStyle {STRAIGHT, ARC_OVER, ARC_UNDER, SINE };
+
+		eInitialFocus getInitialFocus() const;
+		eInitialFocusType getInitialFocusType() const;
+		eMovementDirection getMovementDirection() const;
+		eMovementStyle getMovementStyle() const;
+		CL_DomElement createDomElement(CL_DomDocument &doc) const;
 
 	private:
-	virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-//	virtual bool handleElement(eElement element, Element * pElement);
-	virtual void handleText(const std::string &text);
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+		//	virtual bool handleElement(eElement element, Element * pElement);
+		virtual void handleText(const std::string &text);
 
-    private:
+	private:
 
-	eInitialFocus initialFocusFromString(const std::string &str);
-	eInitialFocusType initialFocusTypeFromString ( const std::string &str );
-	eMovementDirection movementDirectionFromString ( const std::string &str );
-	eMovementStyle     movementStyleFromString( const std::string &str );
-	std::string mAnimationName;
-	std::string mRef;
-	eInitialFocus meInitialFocus;
-	eInitialFocusType meInitialFocusType;
-	eMovementDirection meMovementDirection;
-	eMovementStyle meMovementStyle;
-    };
+		eInitialFocus initialFocusFromString(const std::string &str);
+		eInitialFocusType initialFocusTypeFromString ( const std::string &str );
+		eMovementDirection movementDirectionFromString ( const std::string &str );
+		eMovementStyle     movementStyleFromString( const std::string &str );
+		std::string mAnimationName;
+		std::string mRef;
+		eInitialFocus meInitialFocus;
+		eInitialFocusType meInitialFocusType;
+		eMovementDirection meMovementDirection;
+		eMovementStyle meMovementStyle;
+	};
 
-    class Par : public Element
-    {
-    public:
+	class Par : public Element
+	{
+	public:
 		Par();
 		virtual ~Par();
 		virtual eElement whichElement() const{ return EPAR; }	
-	CL_DomElement createDomElement(CL_DomDocument &) const;
-	
-	uint getDurationMs() const;
+		CL_DomElement createDomElement(CL_DomDocument &) const;
 
-	enum eHide {NONE, CASTER, CASTER_GROUP, TARGET, TARGET_GROUP, ALL };
+		uint getDurationMs() const;
 
-	eHide getHide() const;
-	
-	PlaySound * getPlaySound() const;
+		enum eHide {NONE, CASTER, CASTER_GROUP, TARGET, TARGET_GROUP, ALL };
 
-	std::list<AnimationSpriteRef*>::const_iterator getAnimationSpriteRefsBegin() const ;
-	std::list<AnimationSpriteRef*>::const_iterator getAnimationSpriteRefsEnd() const;
+		eHide getHide() const;
 
-    private:
-	virtual bool handleElement(eElement element, Element * pElement );
-	virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-	eHide hideFromString(const std::string &str);
-	uint mnDuration;
-	eHide meHide;
-	PlaySound * mpPlaySound;
-	std::list<AnimationSpriteRef*> mAnimationSpriteRefs;
-    };
+		PlaySound * getPlaySound() const;
 
-    
-    class Animation : public Element, public Effect
-    {
-    public:
-	Animation();
-	virtual ~Animation();
-	virtual eElement whichElement() const{ return EANIMATION; }	
-	
-	CL_DomElement createDomElement(CL_DomDocument &) const;
-	
-	std::string getName() const;
-	
-	enum eType { BATTLE, WORLD };
+		std::list<AnimationSpriteRef*>::const_iterator getAnimationSpriteRefsBegin() const ;
+		std::list<AnimationSpriteRef*>::const_iterator getAnimationSpriteRefsEnd() const;
 
-	eType getType() const;
-
-	Effect::eType getEffectType() const { return Effect::ANIMATION; }
+	private:
+		virtual bool handleElement(eElement element, Element * pElement );
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+		eHide hideFromString(const std::string &str);
+		uint mnDuration;
+		eHide meHide;
+		PlaySound * mpPlaySound;
+		std::list<AnimationSpriteRef*> mAnimationSpriteRefs;
+	};
 
 
-	std::list<Par*>::const_iterator getParsBegin() const;
-	std::list<Par*>::const_iterator getParsEnd() const;
+	class Animation : public Element, public Effect
+	{
+	public:
+		Animation();
+		virtual ~Animation();
+		virtual eElement whichElement() const{ return EANIMATION; }	
 
-    private:
-	virtual bool handleElement(eElement element, Element * pElement );
-	virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-	std::list<Par*> mPars;
-	eType meType;
-	std::string mName;
-    };
-    
+		CL_DomElement createDomElement(CL_DomDocument &) const;
+
+		std::string getName() const;
+
+		enum eType { BATTLE, WORLD };
+
+		eType getType() const;
+
+		Effect::eType getEffectType() const { return Effect::ANIMATION; }
+
+
+		std::list<Par*>::const_iterator getParsBegin() const;
+		std::list<Par*>::const_iterator getParsEnd() const;
+
+	private:
+		virtual bool handleElement(eElement element, Element * pElement );
+		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+		std::list<Par*> mPars;
+		eType meType;
+		std::string mName;
+	};
+
 
 
 

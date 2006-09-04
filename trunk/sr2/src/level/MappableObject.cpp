@@ -1,7 +1,9 @@
 
 #include "Level.h"
 #include "GraphicsManager.h"
+#include "Graphic.h"
 
+class StoneRing::Tilemap;
 
 CL_DomElement  StoneRing::MappableObject::createDomElement(CL_DomDocument &doc) const
 {

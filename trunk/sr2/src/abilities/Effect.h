@@ -2,6 +2,7 @@
 #define SR_EFFECT_H
 
 namespace StoneRing {
+
     class Effect
     {
     public:

@@ -3502,9 +3502,7 @@
 				<condition>
 					<operator>
 						<and>
-							<didEvent>
-								
-							</didEvent>
+							<didEvent>Hobo</didEvent>
 							<operator>
 								<or>
 									<hasGold operator="gte">

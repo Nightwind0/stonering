@@ -6,6 +6,7 @@
 #include "IApplication.h"
 #include "StatusEffect.h"
 #include "Skill.h"
+#include "SpellRef.h"
 #include <map>
 
 using namespace StoneRing;

@@ -25,6 +25,7 @@
 
 
 class StoneRing::ItemRef; // Forward decl
+class StoneRing::CharacterFactory;
 
 class EditorParty : public StoneRing::IParty
 {
@@ -76,6 +77,7 @@ public:
 	virtual LevelFactory * getLevelFactory() const;
 	
 	ICharacterGroup *getSelectedCharacterGroup() const { return NULL; }
+	CharacterFactory * getCharacterFactory() const { return NULL; }
 	ItemFactory * getItemFactory() const { static ItemFactory itemFactory; return &itemFactory; }
 	const ItemManager * getItemManager() const { static EditorItemManager itemManager; return &itemManager; }
 	virtual AbilityFactory * getAbilityFactory() const { static AbilityFactory abilityFactory; return &abilityFactory; }
@@ -92,7 +94,7 @@ public:
       virtual bool canMove(const CL_Rect &currently, const CL_Rect &destination, bool noHot, bool isPlayer);
 
 
-      virtual void playAnimation(const std::string &animation){}
+      virtual void playScene(const std::string &animation){}
       virtual void playSound(const std::string &sound){}
       virtual void loadLevel(const std::string &level, uint startX, uint startY){}
       virtual void startBattle(const std::string &monster, uint count, bool isBoss){}
