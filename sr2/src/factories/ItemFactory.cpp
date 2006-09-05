@@ -281,3 +281,5 @@ ItemFactory::getMethod(Element::eElement element) const
 	return NULL;
     }
 }
+
+

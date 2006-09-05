@@ -33,3 +33,5 @@ void GiveGold::invoke()
 	IApplication::getInstance()->getParty()->giveGold ( mCount );
 }
 
+
+

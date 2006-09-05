@@ -58,3 +58,4 @@ CharacterFactory::factoryMethod CharacterFactory::getMethod(Element::eElement el
 		return NULL;
 	}
 }
+

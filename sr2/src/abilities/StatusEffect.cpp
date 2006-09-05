@@ -215,3 +215,4 @@ float StoneRing::StatusEffect::getLengthMultiplier() const
 	return mfLengthMultiplier;
 }
 				
+

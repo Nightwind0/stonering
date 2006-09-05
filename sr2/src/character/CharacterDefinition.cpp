@@ -228,3 +228,5 @@ void StoneRing::WeaponTypeSprite::loadAttributes(CL_DomNamedNodeMap *pAttributes
 	mSpriteRef = getRequiredString("spriteRef",pAttributes);
 }
 
+
+

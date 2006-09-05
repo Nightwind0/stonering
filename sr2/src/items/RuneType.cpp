@@ -75,3 +75,5 @@ std::string RuneType::getRuneTypeAsString() const
 
 	return "";
 }
+
+

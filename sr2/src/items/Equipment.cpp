@@ -100,3 +100,5 @@ void Equipment::setRuneType ( RuneType * pType )
 
 	meMagic = RUNE;
 }
+
+

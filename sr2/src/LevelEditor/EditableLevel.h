@@ -130,3 +130,5 @@ class EditableLevel : public StoneRing::Level
 };
 
 #endif
+
+

@@ -195,3 +195,4 @@ void Choice::chooseOption( uint index)
 {
 	mOptions[index]->choose();
 }
+

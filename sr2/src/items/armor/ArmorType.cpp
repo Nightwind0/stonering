@@ -89,3 +89,5 @@ ArmorType::eSlot ArmorType::getSlot() const
 {
 	return meSlot;
 }
+
+

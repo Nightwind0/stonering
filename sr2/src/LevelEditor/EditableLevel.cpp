@@ -350,3 +350,5 @@ void EditableLevel::setHotAt(uint levelX, uint levelY, bool bHot)
 	else static_cast<EditableTile*>(*iter)->setNotHot();
     }
 }
+
+

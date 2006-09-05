@@ -898,3 +898,5 @@ void StoneRing::MappablePlayer::setFrameForDirection()
 	   break;
        }
 }
+
+

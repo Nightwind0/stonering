@@ -35,3 +35,4 @@ void IconRef::handleText(const std::string &text)
 {
 	mIcon = text;
 }
+

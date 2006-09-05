@@ -40,3 +40,5 @@ float WeaponEnhancer::getMultiplier() const
 {
 	return mfMultiplier;
 }
+
+

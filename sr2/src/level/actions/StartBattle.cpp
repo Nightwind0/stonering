@@ -42,3 +42,5 @@ void StartBattle::invoke()
 {
 	IApplication::getInstance()->startBattle ( mMonster, mCount, mbIsBoss ) ;
 }
+
+

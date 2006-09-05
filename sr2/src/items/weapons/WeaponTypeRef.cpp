@@ -40,3 +40,5 @@ std::string WeaponTypeRef::getName() const
 {
 	return mName;
 }
+
+

@@ -45,3 +45,5 @@ bool DidEvent::evaluate()
     if(mbNot) return ! IApplication::getInstance()->getParty()->didEvent ( mEvent );
     else  return  IApplication::getInstance()->getParty()->didEvent ( mEvent );
 }
+
+

@@ -492,3 +492,5 @@ void EditorMain::on_change_tool(string newtool)
 	//info->set_text(mMap->getCurrentTool());
 
 }
+
+
