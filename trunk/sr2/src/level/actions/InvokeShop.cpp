@@ -32,3 +32,5 @@ void InvokeShop::invoke()
 {
 	IApplication::getInstance()->invokeShop ( mShopType );
 }
+
+

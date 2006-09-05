@@ -55,3 +55,5 @@ void Take::invoke()
 {
 	IApplication::getInstance()->getParty()->takeItem ( mpItemRef, mCount );
 }
+
+

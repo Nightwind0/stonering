@@ -36,3 +36,4 @@ void PlaySound::invoke()
 	IApplication::getInstance()->playSound ( mSound );
 
 }
+

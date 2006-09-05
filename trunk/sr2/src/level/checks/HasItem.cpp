@@ -52,3 +52,5 @@ bool HasItem::evaluate()
     if(mbNot) return ! (IApplication::getInstance()->getParty()->hasItem(mpItemRef, mCount )) ;
     else  return (IApplication::getInstance()->getParty()->hasItem(mpItemRef, mCount )) ;
 }
+
+

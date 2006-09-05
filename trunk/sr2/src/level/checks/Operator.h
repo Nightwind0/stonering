@@ -25,3 +25,4 @@ class Operator : public Check
 };
 
 #endif
+

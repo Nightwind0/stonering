@@ -120,3 +120,4 @@ bool WeaponClass::isExcluded ( const WeaponTypeRef &weaponType )
 	return false;
 
 }
+

@@ -38,3 +38,4 @@ void PlayScene::invoke()
 {
 	IApplication::getInstance()->playScene ( mAnimation );
 }
+

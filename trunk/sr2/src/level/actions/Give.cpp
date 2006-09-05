@@ -52,3 +52,5 @@ void Give::invoke()
 {
 	IApplication::getInstance()->getParty()->giveItem ( mpItemRef, mCount );
 }
+
+

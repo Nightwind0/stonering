@@ -15,3 +15,4 @@ SpecialItem::createDomElement(CL_DomDocument &doc) const
 {
 	return CL_DomElement(doc,"specialItem");
 }
+

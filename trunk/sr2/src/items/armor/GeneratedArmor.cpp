@@ -186,3 +186,5 @@ void GeneratedArmor::generate( ArmorType * pType, ArmorClass * pClass,
 
 	mName = os.str();
 }
+
+

@@ -294,3 +294,5 @@ void StoneRing::MapState::switchFromPlayer(MappablePlayer * pPlayer)
 {
 	pPlayer->clearNextDirection();
 }
+
+

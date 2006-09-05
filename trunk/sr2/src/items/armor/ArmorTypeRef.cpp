@@ -44,3 +44,4 @@ std::string ArmorTypeRef::getName() const
 {
 	return mName;
 }
+

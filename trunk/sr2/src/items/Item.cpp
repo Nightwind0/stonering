@@ -96,3 +96,5 @@ ELEMENTAL_RESIST,
 RESIST, // All magic
 STATUS // Resistance against ANY status affect
 */
+
+

@@ -35,3 +35,4 @@ class SpellRef : public Element
 };
 
 #endif
+

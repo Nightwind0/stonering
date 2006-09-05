@@ -136,3 +136,5 @@ RuneType * WeaponRef::getRuneType() const
 {
 	return mpRuneType;
 }
+
+

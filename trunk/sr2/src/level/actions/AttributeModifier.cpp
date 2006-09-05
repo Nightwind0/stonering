@@ -258,3 +258,5 @@ void AttributeModifier::invoke()
 
 	//    pCharacter->modifyAttribute(mAttribute, add, 1) ;
 }
+
+

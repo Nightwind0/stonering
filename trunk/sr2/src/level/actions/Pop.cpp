@@ -30,3 +30,5 @@ void Pop::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
 	mbAll = getImpliedBool("all",pAttributes,false);
 }
+
+

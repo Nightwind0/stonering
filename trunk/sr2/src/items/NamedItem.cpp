@@ -153,3 +153,5 @@ void NamedItem::setDropRarity( Item::eDropRarity rarity )
 {
 	meDropRarity = rarity;
 }
+
+

@@ -116,3 +116,5 @@ bool HasGold::evaluate()
         }
     }
 }
+
+

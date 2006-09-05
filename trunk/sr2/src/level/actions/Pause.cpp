@@ -34,3 +34,5 @@ void Pause::invoke()
 {
 	IApplication::getInstance()->pause ( mMs ) ;
 }
+
+

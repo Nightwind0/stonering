@@ -96,3 +96,5 @@ bool WeaponType::isTwoHanded() const
 {
 	return mbTwoHanded;
 }
+
+

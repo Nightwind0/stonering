@@ -196,3 +196,5 @@ void GeneratedWeapon::generate( WeaponType* pType, WeaponClass * pClass,
 
 }
 
+
+

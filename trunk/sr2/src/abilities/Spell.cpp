@@ -555,3 +555,5 @@ CL_DomElement MagicDamageCategory::createDomElement( CL_DomDocument &doc ) const
 
 
 */
+
+

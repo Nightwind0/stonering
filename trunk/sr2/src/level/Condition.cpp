@@ -61,3 +61,5 @@ bool Condition::evaluate() const
 
     return true;
 }
+
+

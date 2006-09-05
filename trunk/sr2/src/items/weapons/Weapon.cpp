@@ -115,3 +115,4 @@ Weapon::attributeForString(const std::string str)
 
 
 }
+

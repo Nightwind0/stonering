@@ -42,3 +42,4 @@ void Say::invoke()
 {
 	IApplication::getInstance()->say ( mSpeaker, mText );
 }
+

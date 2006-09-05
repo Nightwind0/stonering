@@ -140,3 +140,5 @@ RuneType * ArmorRef::getRuneType() const
 	return mpRuneType;
 }
 
+
+

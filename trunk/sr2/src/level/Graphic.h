@@ -36,3 +36,4 @@ union SpriteRefOrTilemap
 };
 
 #endif
+
