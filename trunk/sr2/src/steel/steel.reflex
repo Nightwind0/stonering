@@ -79,6 +79,7 @@
 	(")
 	%language.cpp {
 		*token = NULL;
+		std::cout << "String literal [" ;
 		TransitionToState(State::STRING_LITERAL_GUTS);
 	}
 |
@@ -264,17 +265,27 @@
 
 %state STRING_LITERAL_GUTS
 :
-	(") 
-	%language.cpp { 
-	TransitionToState(State::MAIN);
-	// First, add the accepted_text to the string..
-	// (do above)
-	return SteelParser::Token::STRING; 
+
+	([^"\\])
+	%language.cpp{
+		// First, add the accepted_text to the string..
+		// (do above)
+		std::cout << accepted_text;
 	}
+
 |
-	(\\)
+	(\\.)
 	 %language.cpp {
 	 // add accepted_text[1] 
+		std::cout << accepted_text[1];
+	}
+|
+	(") 
+	%language.cpp{ 
+		TransitionToState(State::MAIN);
+
+		std::cout << "]" << std::endl;
+		return SteelParser::Token::STRING; 
 	}
 |
 	(\\?\z)
@@ -282,5 +293,6 @@
 	{
 		//EmitError(GetFileLocation(),"unterminated string literal");
 	}
+
 ;
 

@@ -1,20 +1,22 @@
-( 3 )
-3;
-HELLO;
-TEST ( 9 );
-3;
-0.92;
-1.3939;
-44;
-0xDEADBEEF;
-4 + 9;
-function jerk ( $arg1, $arg2 )
+
+var $test = "Hello";
+var $test_ = 2;
+
+var $meat = $test + $test_;
+
+var $contains_quote = "Hello\"Jerk\"";
+
+if($meat != "Hello2")
 {
-	print ( $arg2 + $arg 1 );
+	print ("There was an error.");
 }
 
-while ( jesus() ) 
+var $count = 0;
+
+while ( $count < 100 )
 {
-	if ( $cow == 1 and $dog == 2)
-		herpes(); 
+	print ( $count );
+	$count = $count + 1;
 }
+
+
