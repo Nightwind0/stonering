@@ -5,7 +5,7 @@
 #ifndef _STEEL_SCANNER_H
 #define _STEEL_SCANNER_H
 #include "SteelParser.h"
-
+class AstBase;
 %}
 
 %language.cpp.bottom_of_header_file %{
@@ -15,49 +15,61 @@
 %language.cpp.top_of_implementation_file %{
 #include <iostream>
 #include "SteelScanner.h"
+#include "Ast.h"
 %}
 
 %language.cpp.end_of_scan_method_actions {
+			
+}
 
-	std::cout << " was found. " << std::endl;
-		
+%language.cpp.top_of_class_methods_and_members {
+	void setBuffer(const char * pBuffer);
 }
 
 %language.cpp.bottom_of_class_methods_and_members {
-	bool m_at_eof;
+
+	unsigned int m_char_cursor;
+	const char * m_pBuffer;
+}
+
+%language.cpp.bottom_of_implementation_file %{
+void SteelScanner::setBuffer(const char * pBuffer)
+{
+	assert ( NULL != pBuffer );
+	m_char_cursor = 0;
+	m_pBuffer = pBuffer;
+}
+%}
+
+%language.cpp.constructor_actions {
+	m_char_cursor = 0;
+	m_pBuffer = "";
 }
 
 %language.cpp.reset_for_new_input_actions {
-	m_at_eof = false;
+	//m_at_eof = false;
 }
 
 %language.cpp.unmatched_input_char_actions {
-	std::cout << "UNMATCHED INPUT!" << std::endl;
+
 }
 
 %language.cpp.return_type "SteelParser::Token::Type"
 
-// %language.cpp.scan_method_parameters "void **token"
-%language.cpp.scan_method_parameters "int **token"
+%language.cpp.scan_method_parameters "AstBase **token"
 
 %language.cpp.return_next_input_char {
 
-
-	if(std::cin.eof())
-	{
-		m_at_eof = true;
-		return EOF;
-	}	
+	if( m_pBuffer[m_char_cursor] == '\0')
+		return '\n';
 	else
-	{ 
-		return (char)std::cin.get();
-	}
+		return m_pBuffer[m_char_cursor++];
 
 }
 
 %language.cpp.return_true_iff_input_is_at_end {
 
-	return m_at_eof;
+	return (m_pBuffer[m_char_cursor] == '\0');
 }
 
 
@@ -72,7 +84,6 @@
 :
 	(\z)
 	%language.cpp {
-		std::cout << "Found EOF" << std::endl;
 		return SteelParser::Token::END_;
 	}
 |
