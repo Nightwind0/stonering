@@ -285,6 +285,11 @@ private:
     int ReductionRuleHandler0052 ();
     int ReductionRuleHandler0053 ();
     int ReductionRuleHandler0054 ();
+    int ReductionRuleHandler0055 ();
+    int ReductionRuleHandler0056 ();
+    int ReductionRuleHandler0057 ();
+    int ReductionRuleHandler0058 ();
+    int ReductionRuleHandler0059 ();
 
 }; // end of class SteelParser
 
@@ -295,4 +300,4 @@ std::ostream &operator << (std::ostream &stream, SteelParser::Token::Type token_
 
 	#endif // STEEL_PARSER_H
 
-#line 299 "SteelParser.h"
+#line 304 "SteelParser.h"
