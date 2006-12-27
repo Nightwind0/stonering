@@ -8,34 +8,35 @@
 #define DEBUG_SPEW_2(x) if (m_debug_spew_level >= 2) std::cerr << x
 
 
-#line 17 "steel.trison"
+#line 21 "steel.trison"
 
 	#include "SteelScanner.h"
+	#include "Ast.h"
 
-#line 16 "SteelParser.cpp"
+#line 17 "SteelParser.cpp"
 
 SteelParser::SteelParser ()
 
 {
 
-#line 31 "steel.trison"
+#line 42 "steel.trison"
 
     m_scanner = new SteelScanner();
 
-#line 26 "SteelParser.cpp"
+#line 27 "SteelParser.cpp"
     m_debug_spew_level = 0;
     DEBUG_SPEW_2("### number of state transitions = " << ms_state_transition_count << std::endl);
-    m_reduction_token = static_cast<int>(0);
+    m_reduction_token = static_cast<AstBase*>(0);
 }
 
 SteelParser::~SteelParser ()
 {
 
-#line 35 "steel.trison"
+#line 46 "steel.trison"
 
     delete m_scanner;
 
-#line 39 "SteelParser.cpp"
+#line 40 "SteelParser.cpp"
 }
 
 void SteelParser::CheckStateConsistency ()
@@ -104,7 +105,7 @@ SteelParser::ParserReturnCode SteelParser::PrivateParse ()
     m_token_stack.clear();
 
     m_lookahead_token_type = Token::INVALID_;
-    m_lookahead_token = static_cast<int>(0);
+    m_lookahead_token = static_cast<AstBase*>(0);
     m_is_new_lookahead_token_required = true;
 
     m_saved_lookahead_token_type = Token::INVALID_;
@@ -385,12 +386,12 @@ void SteelParser::PrintStateTransition (unsigned int const state_transition_numb
 void SteelParser::ScanANewLookaheadToken ()
 {
     assert(!m_is_new_lookahead_token_required);
-    m_lookahead_token = static_cast<int>(0);
+    m_lookahead_token = static_cast<AstBase*>(0);
     m_lookahead_token_type = Scan();
     DEBUG_SPEW_1("*** scanned a new lookahead token -- type " << m_lookahead_token_type << std::endl);
 }
 
-void SteelParser::ThrowAwayToken (int token)
+void SteelParser::ThrowAwayToken (AstBase* token)
 {
 
 }
@@ -479,366 +480,366 @@ std::ostream &operator << (std::ostream &stream, SteelParser::Token::Type token_
 // ///////////////////////////////////////////////////////////////////////////
 
 // rule 0: %start <- root END_    
-int SteelParser::ReductionRuleHandler0000 ()
+AstBase* SteelParser::ReductionRuleHandler0000 ()
 {
     assert(0 < m_reduction_rule_token_count);
     return m_token_stack[m_token_stack.size() - m_reduction_rule_token_count];
 
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 1: root <- statement_list    
-int SteelParser::ReductionRuleHandler0001 ()
+AstBase* SteelParser::ReductionRuleHandler0001 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 2: root <- func_definition_list    
-int SteelParser::ReductionRuleHandler0002 ()
+AstBase* SteelParser::ReductionRuleHandler0002 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 3: func_definition_list <- func_definition    
-int SteelParser::ReductionRuleHandler0003 ()
+AstBase* SteelParser::ReductionRuleHandler0003 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 4: func_definition_list <- func_definition_list func_definition    
-int SteelParser::ReductionRuleHandler0004 ()
+AstBase* SteelParser::ReductionRuleHandler0004 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 5: func_definition <- FUNCTION FUNC_IDENTIFIER '(' param_definition ')' statement    
-int SteelParser::ReductionRuleHandler0005 ()
+AstBase* SteelParser::ReductionRuleHandler0005 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 6: func_definition <- FUNCTION FUNC_IDENTIFIER '(' ')' statement    
-int SteelParser::ReductionRuleHandler0006 ()
+AstBase* SteelParser::ReductionRuleHandler0006 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 7: param_definition <- VAR_IDENTIFIER    
-int SteelParser::ReductionRuleHandler0007 ()
+AstBase* SteelParser::ReductionRuleHandler0007 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 8: param_definition <- param_definition ',' VAR_IDENTIFIER    
-int SteelParser::ReductionRuleHandler0008 ()
+AstBase* SteelParser::ReductionRuleHandler0008 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 9: statement_list <- statement    
-int SteelParser::ReductionRuleHandler0009 ()
+AstBase* SteelParser::ReductionRuleHandler0009 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 10: statement_list <- statement_list statement    
-int SteelParser::ReductionRuleHandler0010 ()
+AstBase* SteelParser::ReductionRuleHandler0010 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 11: statement <- ';'    
-int SteelParser::ReductionRuleHandler0011 ()
+AstBase* SteelParser::ReductionRuleHandler0011 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 12: statement <- exp ';'    
-int SteelParser::ReductionRuleHandler0012 ()
+AstBase* SteelParser::ReductionRuleHandler0012 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 13: statement <- '{' statement_list '}'    
-int SteelParser::ReductionRuleHandler0013 ()
+AstBase* SteelParser::ReductionRuleHandler0013 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 14: statement <- vardecl ';'    
-int SteelParser::ReductionRuleHandler0014 ()
+AstBase* SteelParser::ReductionRuleHandler0014 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 15: statement <- WHILE '(' exp ')' statement    
-int SteelParser::ReductionRuleHandler0015 ()
+AstBase* SteelParser::ReductionRuleHandler0015 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 16: statement <- IF '(' exp ')' statement ELSE statement     %prec ELSE
-int SteelParser::ReductionRuleHandler0016 ()
+AstBase* SteelParser::ReductionRuleHandler0016 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 17: statement <- IF '(' exp ')' statement     %prec NON_ELSE
-int SteelParser::ReductionRuleHandler0017 ()
+AstBase* SteelParser::ReductionRuleHandler0017 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 18: statement <- RETURN exp ';'    
-int SteelParser::ReductionRuleHandler0018 ()
+AstBase* SteelParser::ReductionRuleHandler0018 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 19: statement <- RETURN ';'    
-int SteelParser::ReductionRuleHandler0019 ()
+AstBase* SteelParser::ReductionRuleHandler0019 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 20: statement <- LOOP '(' exp ')' TIMES USING VAR_IDENTIFIER statement    
-int SteelParser::ReductionRuleHandler0020 ()
+AstBase* SteelParser::ReductionRuleHandler0020 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 21: statement <- BREAK ';'    
-int SteelParser::ReductionRuleHandler0021 ()
+AstBase* SteelParser::ReductionRuleHandler0021 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 22: statement <- CONTINUE ';'    
-int SteelParser::ReductionRuleHandler0022 ()
+AstBase* SteelParser::ReductionRuleHandler0022 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 23: exp <- call    
-int SteelParser::ReductionRuleHandler0023 ()
+AstBase* SteelParser::ReductionRuleHandler0023 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 24: exp <- INT    
-int SteelParser::ReductionRuleHandler0024 ()
+AstBase* SteelParser::ReductionRuleHandler0024 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 25: exp <- FLOAT    
-int SteelParser::ReductionRuleHandler0025 ()
+AstBase* SteelParser::ReductionRuleHandler0025 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 26: exp <- STRING    
-int SteelParser::ReductionRuleHandler0026 ()
+AstBase* SteelParser::ReductionRuleHandler0026 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 27: exp <- VAR_IDENTIFIER    
-int SteelParser::ReductionRuleHandler0027 ()
+AstBase* SteelParser::ReductionRuleHandler0027 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 28: exp <- exp '+' exp    %left %prec ADD_SUB
-int SteelParser::ReductionRuleHandler0028 ()
+AstBase* SteelParser::ReductionRuleHandler0028 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 29: exp <- exp '-' exp    %left %prec ADD_SUB
-int SteelParser::ReductionRuleHandler0029 ()
+AstBase* SteelParser::ReductionRuleHandler0029 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 30: exp <- exp '*' exp    %left %prec MULT_DIV_MOD
-int SteelParser::ReductionRuleHandler0030 ()
+AstBase* SteelParser::ReductionRuleHandler0030 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 31: exp <- exp '/' exp    %left %prec MULT_DIV_MOD
-int SteelParser::ReductionRuleHandler0031 ()
+AstBase* SteelParser::ReductionRuleHandler0031 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 32: exp <- exp '%' exp    %left %prec MULT_DIV_MOD
-int SteelParser::ReductionRuleHandler0032 ()
+AstBase* SteelParser::ReductionRuleHandler0032 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 33: exp <- exp D exp    %left %prec POW
-int SteelParser::ReductionRuleHandler0033 ()
+AstBase* SteelParser::ReductionRuleHandler0033 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 34: exp <- VAR_IDENTIFIER '=' exp    
-int SteelParser::ReductionRuleHandler0034 ()
+AstBase* SteelParser::ReductionRuleHandler0034 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 35: exp <- exp '^' exp    %right %prec POW
-int SteelParser::ReductionRuleHandler0035 ()
+AstBase* SteelParser::ReductionRuleHandler0035 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 36: exp <- exp OR exp    %left %prec OR
-int SteelParser::ReductionRuleHandler0036 ()
+AstBase* SteelParser::ReductionRuleHandler0036 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 37: exp <- exp AND exp    %left %prec AND
-int SteelParser::ReductionRuleHandler0037 ()
+AstBase* SteelParser::ReductionRuleHandler0037 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 38: exp <- exp EQ exp    %left %prec EQ_NE
-int SteelParser::ReductionRuleHandler0038 ()
+AstBase* SteelParser::ReductionRuleHandler0038 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 39: exp <- exp NE exp    %left %prec EQ_NE
-int SteelParser::ReductionRuleHandler0039 ()
+AstBase* SteelParser::ReductionRuleHandler0039 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 40: exp <- exp LT exp    %left %prec COMPARATOR
-int SteelParser::ReductionRuleHandler0040 ()
+AstBase* SteelParser::ReductionRuleHandler0040 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 41: exp <- exp GT exp    %left %prec COMPARATOR
-int SteelParser::ReductionRuleHandler0041 ()
+AstBase* SteelParser::ReductionRuleHandler0041 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 42: exp <- exp LTE exp    %left %prec COMPARATOR
-int SteelParser::ReductionRuleHandler0042 ()
+AstBase* SteelParser::ReductionRuleHandler0042 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 43: exp <- exp GTE exp    %left %prec COMPARATOR
-int SteelParser::ReductionRuleHandler0043 ()
+AstBase* SteelParser::ReductionRuleHandler0043 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 44: exp <- '(' exp ')'     %prec PAREN
-int SteelParser::ReductionRuleHandler0044 ()
+AstBase* SteelParser::ReductionRuleHandler0044 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 45: exp <- '-' exp     %prec UNARY
-int SteelParser::ReductionRuleHandler0045 ()
+AstBase* SteelParser::ReductionRuleHandler0045 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 46: exp <- '+' exp     %prec UNARY
-int SteelParser::ReductionRuleHandler0046 ()
+AstBase* SteelParser::ReductionRuleHandler0046 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 47: exp <- NOT exp     %prec UNARY
-int SteelParser::ReductionRuleHandler0047 ()
+AstBase* SteelParser::ReductionRuleHandler0047 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 48: exp <- INCREMENT exp     %prec UNARY
-int SteelParser::ReductionRuleHandler0048 ()
+AstBase* SteelParser::ReductionRuleHandler0048 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 49: exp <- DECREMENT exp     %prec UNARY
-int SteelParser::ReductionRuleHandler0049 ()
+AstBase* SteelParser::ReductionRuleHandler0049 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 50: exp <- exp INCREMENT     %prec UNARY
-int SteelParser::ReductionRuleHandler0050 ()
+AstBase* SteelParser::ReductionRuleHandler0050 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 51: exp <- exp DECREMENT     %prec UNARY
-int SteelParser::ReductionRuleHandler0051 ()
+AstBase* SteelParser::ReductionRuleHandler0051 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 52: exp <- ARRAY_IDENTIFIER '[' exp ']'     %prec PAREN
-int SteelParser::ReductionRuleHandler0052 ()
+AstBase* SteelParser::ReductionRuleHandler0052 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 53: call <- FUNC_IDENTIFIER '(' ')'    
-int SteelParser::ReductionRuleHandler0053 ()
+AstBase* SteelParser::ReductionRuleHandler0053 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 54: call <- FUNC_IDENTIFIER '(' param_list ')'    
-int SteelParser::ReductionRuleHandler0054 ()
+AstBase* SteelParser::ReductionRuleHandler0054 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 55: vardecl <- VAR VAR_IDENTIFIER    
-int SteelParser::ReductionRuleHandler0055 ()
+AstBase* SteelParser::ReductionRuleHandler0055 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 56: vardecl <- VAR VAR_IDENTIFIER '=' exp    
-int SteelParser::ReductionRuleHandler0056 ()
+AstBase* SteelParser::ReductionRuleHandler0056 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 57: vardecl <- VAR ARRAY_IDENTIFIER '[' INT ']'    
-int SteelParser::ReductionRuleHandler0057 ()
+AstBase* SteelParser::ReductionRuleHandler0057 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 58: param_list <- exp    
-int SteelParser::ReductionRuleHandler0058 ()
+AstBase* SteelParser::ReductionRuleHandler0058 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 // rule 59: param_list <- param_list ',' exp    
-int SteelParser::ReductionRuleHandler0059 ()
+AstBase* SteelParser::ReductionRuleHandler0059 ()
 {
-    return static_cast<int>(0);
+    return static_cast<AstBase*>(0);
 }
 
 
@@ -2887,15 +2888,21 @@ unsigned int const SteelParser::ms_state_transition_count =
     sizeof(SteelParser::StateTransition);
 
 
-#line 21 "steel.trison"
+#line 26 "steel.trison"
 
-	SteelParser::Token::Type SteelParser::Scan ()
-	{
-		int *token = new int;
-    		assert(m_scanner != NULL);
-    		//return m_scanner->Scan(&m_lookahead_token);
-		return m_scanner->Scan(&token);
-	}
+void SteelParser::setBuffer(const char * pBuffer)
+{	
+	assert( NULL != m_scanner );
+	m_scanner->setBuffer(pBuffer);
+}
 
-#line 2901 "SteelParser.cpp"
+
+SteelParser::Token::Type SteelParser::Scan ()
+{
+	assert(m_scanner != NULL);
+	return m_scanner->Scan(&m_lookahead_token);
+	//return m_scanner->Scan(&token);
+}
+
+#line 2908 "SteelParser.cpp"
 

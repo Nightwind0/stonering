@@ -1,13 +1,17 @@
 %parser_class_name "SteelParser"
+%parser_base_assigned_type "AstBase*"
 %parser_class_methods_and_members{
+    void setBuffer(const char *pBuffer);	
     Token::Type Scan ();
     SteelScanner *m_scanner;
+    const char *m_pBuffer;	
 }
 %parser_header_file_top { 
 	#ifndef STEEL_PARSER_H
 	#define STEEL_PARSER_H
 
 	#include <cassert> 
+	class AstBase;
 	class SteelScanner;
 }
 %parser_header_file_bottom {
@@ -16,16 +20,23 @@
 
 %parser_implementation_file_top {
 	#include "SteelScanner.h"
+	#include "Ast.h"
 }
 
 %parser_implementation_file_bottom {
-	SteelParser::Token::Type SteelParser::Scan ()
-	{
-		int *token = new int;
-    		assert(m_scanner != NULL);
-    		//return m_scanner->Scan(&m_lookahead_token);
-		return m_scanner->Scan(&token);
-	}
+void SteelParser::setBuffer(const char * pBuffer)
+{	
+	assert( NULL != m_scanner );
+	m_scanner->setBuffer(pBuffer);
+}
+
+
+SteelParser::Token::Type SteelParser::Scan ()
+{
+	assert(m_scanner != NULL);
+	return m_scanner->Scan(&m_lookahead_token);
+	//return m_scanner->Scan(&token);
+}
 }
 
 %parser_constructor_actions{
