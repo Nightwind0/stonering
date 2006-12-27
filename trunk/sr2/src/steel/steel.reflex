@@ -31,9 +31,14 @@
 	m_at_eof = false;
 }
 
+%language.cpp.unmatched_input_char_actions {
+	std::cout << "UNMATCHED INPUT!" << std::endl;
+}
+
 %language.cpp.return_type "SteelParser::Token::Type"
 
-%language.cpp.scan_method_parameters "void **token"
+// %language.cpp.scan_method_parameters "void **token"
+%language.cpp.scan_method_parameters "int **token"
 
 %language.cpp.return_next_input_char {
 
@@ -125,7 +130,7 @@
 		return SteelParser::Token::VAR_IDENTIFIER;		
 	}
 |
-	(;|@|$|\(|\)|,|%|\+|\-|\^|\=|\[|\]|\{|\})
+	([;|@|$|\(|\)|,|%|\+|\-|\^|\=|\[|\]|\{|\}])
 	%language.cpp{
 		std::cout << "op: " << accepted_text[0];
 		return (SteelParser::Token::Type)accepted_text[0];
@@ -141,6 +146,12 @@
 	%language.cpp{
 		std::cout << " GTE ";
 	 *token = NULL; return SteelParser::Token::GTE; 
+	}
+|
+	(!=)
+	%language.cpp{
+		std::cout << " NE ";
+		return SteelParser::Token::NE;
 	}
 |
 	(==) 

@@ -3,9 +3,15 @@
 #include <vector>
 
 
-#line 5 "steel.trison"
- #include <cassert> 
-#line 9 "SteelParser.h"
+#line 6 "steel.trison"
+ 
+	#ifndef STEEL_PARSER_H
+	#define STEEL_PARSER_H
+
+	#include <cassert> 
+	class SteelScanner;
+
+#line 15 "SteelParser.h"
 
 class SteelParser
 
@@ -98,9 +104,10 @@ public:
 
 #line 2 "steel.trison"
 
-    Token::Type Scan () { return Token::END_; }
+    Token::Type Scan ();
+    SteelScanner *m_scanner;
 
-#line 104 "SteelParser.h"
+#line 111 "SteelParser.h"
 
 private:
 
@@ -274,9 +281,18 @@ private:
     int ReductionRuleHandler0048 ();
     int ReductionRuleHandler0049 ();
     int ReductionRuleHandler0050 ();
+    int ReductionRuleHandler0051 ();
+    int ReductionRuleHandler0052 ();
+    int ReductionRuleHandler0053 ();
+    int ReductionRuleHandler0054 ();
 
 }; // end of class SteelParser
 
 std::ostream &operator << (std::ostream &stream, SteelParser::Token::Type token_type);
 
 
+#line 13 "steel.trison"
+
+	#endif // STEEL_PARSER_H
+
+#line 299 "SteelParser.h"

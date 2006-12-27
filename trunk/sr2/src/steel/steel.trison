@@ -1,8 +1,42 @@
 %parser_class_name "SteelParser"
 %parser_class_methods_and_members{
-    Token::Type Scan () { return Token::END_; }
+    Token::Type Scan ();
+    SteelScanner *m_scanner;
 }
-%parser_header_file_top %{ #include <cassert> %}
+%parser_header_file_top { 
+	#ifndef STEEL_PARSER_H
+	#define STEEL_PARSER_H
+
+	#include <cassert> 
+	class SteelScanner;
+}
+%parser_header_file_bottom {
+	#endif // STEEL_PARSER_H
+}
+
+%parser_implementation_file_top {
+	#include "SteelScanner.h"
+}
+
+%parser_implementation_file_bottom {
+	SteelParser::Token::Type SteelParser::Scan ()
+	{
+		int *token = new int;
+    		assert(m_scanner != NULL);
+    		//return m_scanner->Scan(&m_lookahead_token);
+		return m_scanner->Scan(&token);
+	}
+}
+
+%parser_constructor_actions{
+    m_scanner = new SteelScanner();
+}
+
+%parser_destructor_actions{
+    delete m_scanner;
+}
+
+
 %token ';' '(' ')' '=' '{' '}' '[' ']' ','
 %token '-' '+' '*' '/' '^' '%'
 %token D
@@ -83,6 +117,8 @@ statement
 |
 	'{' statement_list '}'
 |
+	vardecl ';'
+|
 	WHILE '(' exp ')' statement
 |
 	IF '(' exp ')' statement ELSE statement %prec ELSE
@@ -93,9 +129,9 @@ statement
 |
 	LOOP '(' exp ')' TIMES USING VAR_IDENTIFIER statement
 |
-	BREAK;
+	BREAK
 |
-	CONTINUE;
+	CONTINUE
 ;
 
 
@@ -103,11 +139,11 @@ exp
 :
 	call
 |
-	vardecl
-|
 	INT
 |	
 	FLOAT
+|
+	STRING
 |
 	VAR_IDENTIFIER
 |
@@ -122,6 +158,8 @@ exp
 	exp '%' exp %prec MULT_DIV_MOD
 |
 	exp D exp %prec POW
+|
+	VAR_IDENTIFIER '=' exp 
 |
 	exp '^' exp %right %prec POW
 |
