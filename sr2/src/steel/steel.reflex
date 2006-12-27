@@ -130,7 +130,7 @@
 		return SteelParser::Token::VAR_IDENTIFIER;		
 	}
 |
-	([;|@|$|\(|\)|,|%|\+|\-|\^|\=|\[|\]|\{|\}])
+	(;|@|$|\(|\)|,|%|\+|\-|\^|\=|\[|\]|\{|\}|%|/)
 	%language.cpp{
 		std::cout << "op: " << accepted_text[0];
 		return (SteelParser::Token::Type)accepted_text[0];
