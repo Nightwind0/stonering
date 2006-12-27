@@ -64,6 +64,7 @@
 
 %prec NON_ELSE
 %prec ELSE
+%prec ASSIGNMENT
 %prec OR
 %prec AND
 %prec EQ_NE
@@ -165,7 +166,7 @@ exp
 |
 	exp D exp %prec POW
 |
-	VAR_IDENTIFIER '=' exp 
+	VAR_IDENTIFIER '=' exp %right
 |
 	exp '^' exp %right %prec POW
 |
