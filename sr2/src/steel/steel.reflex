@@ -1,0 +1,286 @@
+%target_languages cpp
+
+%language.cpp.top_of_header_file %{
+
+#ifndef _STEEL_SCANNER_H
+#define _STEEL_SCANNER_H
+#include "SteelParser.h"
+
+%}
+
+%language.cpp.bottom_of_header_file %{
+#endif // _STEEL_SCANNER_H
+%}
+
+%language.cpp.top_of_implementation_file %{
+#include <iostream>
+#include "SteelScanner.h"
+%}
+
+%language.cpp.end_of_scan_method_actions {
+
+	std::cout << " was found. " << std::endl;
+		
+}
+
+%language.cpp.bottom_of_class_methods_and_members {
+	bool m_at_eof;
+}
+
+%language.cpp.reset_for_new_input_actions {
+	m_at_eof = false;
+}
+
+%language.cpp.return_type "SteelParser::Token::Type"
+
+%language.cpp.scan_method_parameters "void **token"
+
+%language.cpp.return_next_input_char {
+
+
+	if(std::cin.eof())
+	{
+		m_at_eof = true;
+		return EOF;
+	}	
+	else
+	{ 
+		return (char)std::cin.get();
+	}
+
+}
+
+%language.cpp.return_true_iff_input_is_at_end {
+
+	return m_at_eof;
+}
+
+
+%language.cpp.class_name SteelScanner
+
+%start MAIN
+
+%%
+
+
+%state MAIN
+:
+	(\z)
+	%language.cpp {
+		std::cout << "Found EOF" << std::endl;
+		return SteelParser::Token::END_;
+	}
+|
+	([\t \n]+)
+	 %language.cpp {
+		// Eat it
+	 }
+|
+	(")
+	%language.cpp {
+		*token = NULL;
+		TransitionToState(State::STRING_LITERAL_GUTS);
+	}
+|
+	(\+\+)
+	%language.cpp{
+		*token = NULL;
+		std::cout << " INCREMENT ";
+		return SteelParser::Token::INCREMENT;
+	}
+|
+	(\-\-)
+	%language.cpp{
+		std::cout << " DECREMENT " ;
+		*token = NULL;
+		return SteelParser::Token::DECREMENT;
+	}
+|
+	(0|[1-9][0-9]*)
+	%language.cpp{
+		*token = NULL;
+		std::cout << " INT: " << accepted_text;
+		return SteelParser::Token::INT;
+	}
+|
+	(0x[0-9a-fA-F]+)
+	%language.cpp{
+		*token = NULL;
+		std::cout << " HEX INT: " << accepted_text;
+		return SteelParser::Token::INT;
+	}
+|
+	([0-9]+\.[0-9]+)
+	%language.cpp{
+		std::cout << " FLOAT: " << accepted_text;
+		*token = NULL;
+		return SteelParser::Token::FLOAT;
+	}	
+|
+	(\$[a-zA-Z_][a-zA-Z0-9_]*)
+	%language.cpp{
+		std::cout << " VAR_IDENTIFIER: " << accepted_text;
+		*token = NULL;
+		return SteelParser::Token::VAR_IDENTIFIER;		
+	}
+|
+	(;|@|$|\(|\)|,|%|\+|\-|\^|\=|\[|\]|\{|\})
+	%language.cpp{
+		std::cout << "op: " << accepted_text[0];
+		return (SteelParser::Token::Type)accepted_text[0];
+	}
+|
+	(<=)
+	 %language.cpp{
+		std::cout << " LTE ";
+	 *token = NULL; return SteelParser::Token::LTE; 
+	}
+|
+	(>=) 
+	%language.cpp{
+		std::cout << " GTE ";
+	 *token = NULL; return SteelParser::Token::GTE; 
+	}
+|
+	(==) 
+	%language.cpp{
+		std::cout << " EQ ";
+	 *token = NULL; return SteelParser::Token::EQ;
+	 }
+|
+	(<) 
+	%language.cpp{
+		std::cout << " LT ";
+	 *token = NULL; return SteelParser::Token::LT; 
+	}
+|
+	(>)
+	 %language.cpp{
+		std::cout << " GT ";
+	 *token = NULL; return SteelParser::Token::GT; 
+	}
+|
+	(d)
+	 %language.cpp{ 
+		std::cout << " D ";
+	*token = NULL; return SteelParser::Token::D;
+	 }
+|
+	(and) 
+	%language.cpp{ 
+		std::cout << " AND ";
+	*token = NULL; return SteelParser::Token::AND;
+	 }
+|
+	(or) 
+	%language.cpp{ 
+		std::cout << " OR ";
+	*token = NULL; return SteelParser::Token::OR;
+	 }
+|
+	(not)
+	 %language.cpp{
+		std::cout << " NOT ";
+	 *token = NULL; return SteelParser::Token::NOT;
+	}
+|
+	(while)
+	 %language.cpp{
+		std::cout << " WHILE ";
+	 *token =NULL; return SteelParser::Token::WHILE;
+	}
+|
+	(loop) 
+	%language.cpp{
+		std::cout << " LOOP ";
+	 *token = NULL; return SteelParser::Token::LOOP;
+	}
+|
+	(times) 
+	%language.cpp{ 
+		std::cout << " TIMES ";
+	*token = NULL; return SteelParser::Token::TIMES;
+	}
+|
+	(using) 
+	%language.cpp{
+		std::cout << " USING ";
+	 *token = NULL; return SteelParser::Token::USING;
+	}
+|
+	(break) 
+	%language.cpp{ 
+		std::cout << " BREAK ";
+	*token = NULL; return SteelParser::Token::BREAK;
+	}
+|
+	(continue)
+	 %language.cpp{ 
+		std::cout << " CONTINUE ";
+	*token = NULL; return SteelParser::Token::CONTINUE;
+	}
+|
+	(if) 
+	%language.cpp{
+		std::cout << " IF ";
+	 *token = NULL; return SteelParser::Token::IF;
+	}
+|
+	(else)
+	 %language.cpp{
+		std::cout << " ELSE ";
+	 *token = NULL; return SteelParser::Token::ELSE;
+	}
+|
+	(return) 
+	%language.cpp{
+		 *token = NULL; 
+		std::cout << " RETURN ";
+		return SteelParser::Token::RETURN;
+	}
+|
+	(function) 
+	%language.cpp{ 
+		*token = NULL; 
+		std::cout << " FUNCTION ";
+		return SteelParser::Token::FUNCTION;
+	}
+|
+	(var)
+	 %language.cpp{
+	 	*token = NULL; 
+		std::cout << " VAR ";
+		return SteelParser::Token::VAR;
+	}
+|
+	([a-zA-Z_][a-zA-Z0-9_]*)
+	%language.cpp{
+		std::cout << "FUNC_IDENTIFIER:  " << accepted_text;
+		*token = NULL;
+		return SteelParser::Token::FUNC_IDENTIFIER;
+	}
+
+;
+
+%state STRING_LITERAL_GUTS
+:
+	(") 
+	%language.cpp { 
+	TransitionToState(State::MAIN);
+	// First, add the accepted_text to the string..
+	// (do above)
+	return SteelParser::Token::STRING; 
+	}
+|
+	(\\)
+	 %language.cpp {
+	 // add accepted_text[1] 
+	}
+|
+	(\\?\z)
+	%language.cpp
+	{
+		//EmitError(GetFileLocation(),"unterminated string literal");
+	}
+;
+

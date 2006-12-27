@@ -1,0 +1,20 @@
+( 3 )
+3;
+HELLO;
+TEST ( 9 );
+3;
+0.92;
+1.3939;
+44;
+0xDEADBEEF;
+4 + 9;
+function jerk ( $arg1, $arg2 )
+{
+	print ( $arg2 + $arg 1 );
+}
+
+while ( jesus() ) 
+{
+	if ( $cow == 1 and $dog == 2)
+		herpes(); 
+}
