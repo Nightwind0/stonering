@@ -1,0 +1,182 @@
+%parser_class_name "SteelParser"
+%parser_class_methods_and_members{
+    Token::Type Scan () { return Token::END_; }
+}
+%parser_header_file_top %{ #include <cassert> %}
+%token ';' '(' ')' '=' '{' '}' '[' ']' ','
+%token '-' '+' '*' '/' '^' '%'
+%token D
+%token GT LT EQ NE GTE LTE
+%token AND OR NOT
+%token WHILE
+%token BREAK
+%token CONTINUE
+%token RETURN
+%token IF
+%token ELSE
+%token FUNCTION
+%token FUNC_IDENTIFIER
+%token VAR_IDENTIFIER
+%token ARRAY_IDENTIFIER
+%token LOOP
+%token TIMES
+%token USING
+%token VAR
+%token INT
+%token FLOAT
+%token STRING
+%token INCREMENT
+%token DECREMENT
+
+%prec NON_ELSE
+%prec ELSE
+%prec OR
+%prec AND
+%prec EQ_NE
+%prec COMPARATOR
+%prec ADD_SUB
+%prec MULT_DIV_MOD
+%prec POW
+%prec UNARY
+%prec PAREN
+
+
+%start root
+%%
+
+root
+:
+	statement_list
+|
+	func_definition_list
+;
+
+func_definition_list
+:
+	func_definition
+|
+	func_definition_list func_definition
+;
+
+func_definition
+:
+	FUNCTION FUNC_IDENTIFIER '(' param_definition ')' statement
+;
+
+param_definition
+:
+	VAR_IDENTIFIER
+|
+	param_definition ',' VAR_IDENTIFIER
+;
+
+statement_list
+:
+// nada
+|
+	statement_list statement
+;
+
+statement
+:
+	exp ';' 
+|
+	'{' statement_list '}'
+|
+	WHILE '(' exp ')' statement
+|
+	IF '(' exp ')' statement ELSE statement %prec ELSE
+|
+	IF '(' exp ')' statement %prec NON_ELSE
+|
+	RETURN exp ';'
+|
+	LOOP '(' exp ')' TIMES USING VAR_IDENTIFIER statement
+|
+	BREAK;
+|
+	CONTINUE;
+;
+
+
+exp
+:
+	call
+|
+	vardecl
+|
+	INT
+|	
+	FLOAT
+|
+	VAR_IDENTIFIER
+|
+	exp '+' exp %prec ADD_SUB 
+|
+	exp '-' exp %prec ADD_SUB
+|
+	exp '*' exp %prec MULT_DIV_MOD
+|
+	exp '/' exp %prec MULT_DIV_MOD
+|
+	exp '%' exp %prec MULT_DIV_MOD
+|
+	exp D exp %prec POW
+|
+	exp '^' exp %right %prec POW
+|
+	exp OR exp %prec OR
+|
+	exp AND exp %prec AND
+|
+	exp EQ exp %prec EQ_NE
+|
+	exp NE exp %prec EQ_NE
+|
+	exp LT exp %prec COMPARATOR
+|
+	exp GT exp %prec COMPARATOR
+|
+	exp LTE exp %prec COMPARATOR
+|
+	exp GTE exp %prec COMPARATOR	
+|
+	'(' exp ')' %prec PAREN
+|
+	'-' exp %right %prec UNARY
+|
+	NOT exp %right %prec UNARY
+|
+	INCREMENT exp %prec UNARY
+|
+	DECREMENT exp %prec UNARY
+|
+	exp INCREMENT %prec PAREN
+|
+	exp DECREMENT %prec PAREN
+|
+	ARRAY_IDENTIFIER '[' exp ']' %prec PAREN
+;
+
+call
+:
+	FUNC_IDENTIFIER '(' param_list ')'
+;
+
+vardecl
+:
+	VAR VAR_IDENTIFIER
+|
+	VAR VAR_IDENTIFIER '=' exp
+|
+	VAR ARRAY_IDENTIFIER '[' INT ']'
+;
+
+param_list
+:
+	exp
+|
+	param_list ',' exp
+;
+
+
