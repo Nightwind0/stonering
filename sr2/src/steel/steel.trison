@@ -95,6 +95,8 @@ func_definition_list
 func_definition
 :
 	FUNCTION FUNC_IDENTIFIER '(' param_definition ')' statement
+|
+	FUNCTION FUNC_IDENTIFIER '(' ')' statement
 ;
 
 param_definition
@@ -106,13 +108,15 @@ param_definition
 
 statement_list
 :
-// nada
+	statement
 |
 	statement_list statement
 ;
 
 statement
 :
+	';'
+|
 	exp ';' 
 |
 	'{' statement_list '}'
@@ -127,11 +131,13 @@ statement
 |
 	RETURN exp ';'
 |
+	RETURN ';'
+|
 	LOOP '(' exp ')' TIMES USING VAR_IDENTIFIER statement
 |
-	BREAK
+	BREAK ';'
 |
-	CONTINUE
+	CONTINUE ';'
 ;
 
 
@@ -183,21 +189,25 @@ exp
 |
 	'-' exp %right %prec UNARY
 |
+	'+' exp %right %prec UNARY
+|
 	NOT exp %right %prec UNARY
 |
 	INCREMENT exp %prec UNARY
 |
 	DECREMENT exp %prec UNARY
 |
-	exp INCREMENT %prec PAREN
+	exp INCREMENT %prec UNARY
 |
-	exp DECREMENT %prec PAREN
+	exp DECREMENT %prec UNARY
 |
 	ARRAY_IDENTIFIER '[' exp ']' %prec PAREN
 ;
 
 call
 :
+	FUNC_IDENTIFIER '(' ')'
+|
 	FUNC_IDENTIFIER '(' param_list ')'
 ;
 

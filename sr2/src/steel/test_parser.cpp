@@ -9,5 +9,8 @@ int main()
     if(parser.Parse() != SteelParser::PRC_SUCCESS)
     {
 	std::cout << "Parse error unknown." << std::endl;
+	return 1;
     }
+
+    return 0;
 }

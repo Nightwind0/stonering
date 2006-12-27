@@ -1,0 +1,19 @@
+function foo()
+{
+	print ("HI!");
+}
+
+function add($a, $b)
+{
+	return $a + $b;
+}
+
+function doodle($a, $b)
+{
+	while ( $a < $b) $a++;
+}
+
+function yoodle($a, $b)
+{
+	while ($a < $b) ++$a;
+}
