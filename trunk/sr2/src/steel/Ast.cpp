@@ -128,6 +128,7 @@ AstScript::~AstScript()
 ostream & AstScript::print(std::ostream &out)
 {
     if(m_pList) out << *m_pList;
+    else if(m_pFunctions) out << *m_pFunctions;
 
     return out;
 }
@@ -137,8 +138,9 @@ void AstScript::SetList(AstStatementList *pList)
     m_pList = pList;
 }
 
-void AstScript::SetFunctionList( )
+void AstScript::SetFunctionList( AstFunctionDefinitionList * pList)
 {
+    m_pFunctions = pList;
 }
 
 AstStatementList::AstStatementList(unsigned int line, const std::string &script)
@@ -148,6 +150,8 @@ AstStatementList::AstStatementList(unsigned int line, const std::string &script)
 
 AstStatementList::~AstStatementList()
 {
+    for(std::list<AstStatement*>::iterator i = m_list.begin();
+	i != m_list.end(); i++) delete *i;
 }
 
 ostream & AstStatementList::print(std::ostream &out)
@@ -425,6 +429,8 @@ AstParamList::AstParamList(unsigned int line,
 }
 AstParamList::~AstParamList()
 {
+    for(std::list<AstExpression*>::iterator i = m_params.begin();
+	i != m_params.end(); i++) delete *i;
 }
 
 void AstParamList::add(AstExpression *pExp)
@@ -491,7 +497,93 @@ ostream & AstArrayDeclaration::print(std::ostream &out)
 
 
 
+AstParamDefinitionList::AstParamDefinitionList(unsigned int line,
+					       const std::string &script)
+    :AstBase(line,script)
+{
+}
+
+AstParamDefinitionList::~AstParamDefinitionList()
+{
+    for(std::list<AstVarIdentifier*>::iterator i = m_params.begin();
+	    i != m_params.end(); i++) delete *i;
+}
+
+void AstParamDefinitionList::add(AstVarIdentifier *pDef)
+{
+    m_params.push_back( pDef );
+}
+
+ostream & AstParamDefinitionList::print (std::ostream &out)
+{
+    for(std::list<AstVarIdentifier*>::const_iterator i = m_params.begin();
+	i != m_params.end(); i++)
+    {
+	std::list<AstVarIdentifier*>::const_iterator next = i ;
+	next++;
+
+	if(next == m_params.end())
+	    out << *(*i);
+	else
+	    out  << *(*i) << ',';
+    }
+    return out;
+}	       
+
+
+AstFunctionDefinition::AstFunctionDefinition(unsigned int line,
+					     const std::string &script,
+					     AstFuncIdentifier *pId,
+					     AstParamDefinitionList *pParams,
+					     AstStatementList * pStmts)
+    :AstBase(line,script),m_pId(pId),m_pParams(pParams),m_pStatements(pStmts)
+{
+    
+}
+AstFunctionDefinition::~AstFunctionDefinition()
+{
+    delete m_pId;
+    delete m_pParams;
+    delete m_pStatements;
+}
+
+ostream & AstFunctionDefinition::print (std::ostream &out)
+{
+    out << "function " << *m_pId  << '(' ;
+    if(m_pParams) out << *m_pParams;
+    out << ')' << *m_pStatements << std::endl;
+    return out;
+}
+
+AstFunctionDefinitionList::AstFunctionDefinitionList(unsigned int line,
+						     const std::string &script)
+    :AstBase(line,script)
+{
+}
+
+AstFunctionDefinitionList::~AstFunctionDefinitionList()
+{
+    for(std::list<AstFunctionDefinition*>::iterator i = m_functions.begin();
+	i != m_functions.end(); i++) delete *i;
+}
+
+void AstFunctionDefinitionList::add(AstFunctionDefinition *pFunc)
+{
+    m_functions.push_back(pFunc);
+}
+
+ostream & AstFunctionDefinitionList::print (std::ostream &out)
+{
+    for(std::list<AstFunctionDefinition*>::iterator i = m_functions.begin();
+	i != m_functions.end(); i++)
+    {
+	out << *(*i);
+    }
+}
+
 ostream & operator<<(ostream & out,AstBase & ast)
 {
     return ast.print(out);
 }
+
+

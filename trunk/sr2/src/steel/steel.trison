@@ -98,28 +98,66 @@ root %type "AstScript*"
 				return pScript;
 			} 
 |
-	func_definition_list
+	func_definition_list:list
+			{
+				AstScript * pScript = new AstScript(list->GetLine(),list->GetScript());
+				pScript->SetFunctionList( list );
+				return pScript;
+			}
 ;
 
-func_definition_list
+func_definition_list %type "AstFunctionDefinitionList*"
 :
-	func_definition
+	func_definition:def     {
+					AstFunctionDefinitionList * pList = new AstFunctionDefinitionList(def->GetLine(),def->GetScript());
+					pList->add(def);
+					return pList;
+				}
 |
-	func_definition_list func_definition
+	func_definition_list:list func_definition:def
+				{
+					list->add(def);
+					return list;
+				}	
 ;
 
-func_definition
+func_definition %type "AstFunctionDefinition*"
 :
-	FUNCTION FUNC_IDENTIFIER '(' param_definition ')' statement
+	FUNCTION FUNC_IDENTIFIER:id '(' param_definition:params ')' '{' statement_list:stmts '}'
+				{
+					return new AstFunctionDefinition(id->GetLine(),
+									id->GetScript(),
+									static_cast<AstFuncIdentifier*>(id),
+									params,
+									stmts);
+				}
 |
-	FUNCTION FUNC_IDENTIFIER '(' ')' statement
+	FUNCTION FUNC_IDENTIFIER:id '(' ')' '{' statement_list:stmts '}'
+				{
+					return new AstFunctionDefinition(id->GetLine(),
+									id->GetScript(),
+									static_cast<AstFuncIdentifier*>(id),
+									NULL,
+									stmts);
+				}
 ;
 
-param_definition
+
+
+param_definition %type "AstParamDefinitionList*"
 :
-	VAR_IDENTIFIER
+	VAR_IDENTIFIER:id 
+			{
+				AstParamDefinitionList * pList = new AstParamDefinitionList(id->GetLine(),id->GetScript());
+				pList->add(static_cast<AstVarIdentifier*>(id));
+				return pList;		
+			}
 |
-	param_definition ',' VAR_IDENTIFIER
+	param_definition:list ',' VAR_IDENTIFIER:id
+			{
+				list->add(static_cast<AstVarIdentifier*>(id));
+				return list;
+			}
 ;
 
 statement_list %type "AstStatementList*"

@@ -10,10 +10,10 @@ function add($a, $b)
 
 function doodle($a, $b)
 {
-	while ( $a < $b) $a++;
+	while ( $a < $b) $a = $a + 1;
 }
 
 function yoodle($a, $b)
 {
-	while ($a < $b) ++$a;
+	while ($a < $b) $a = $a - 1;
 }
