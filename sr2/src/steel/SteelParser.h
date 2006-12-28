@@ -9,7 +9,7 @@
 	#define STEEL_PARSER_H
 
 	#include <cassert> 
-	class AstBase;
+	#include "Ast.h"
 	class SteelScanner;
 
 #line 16 "SteelParser.h"
@@ -29,7 +29,6 @@ public:
             BREAK,
             CONTINUE,
             D,
-            DECREMENT,
             ELSE,
             EQ,
             FLOAT,
@@ -38,7 +37,6 @@ public:
             GT,
             GTE,
             IF,
-            INCREMENT,
             INT,
             LOOP,
             LT,
@@ -58,15 +56,20 @@ public:
             END_,
 
             // user-defined nonterminal tokens
+            array_identifier__,
+            array_lvalue__,
             call__,
             exp__,
             func_definition__,
             func_definition_list__,
+            func_identifier__,
+            int_literal__,
             param_definition__,
             param_list__,
             root__,
             statement__,
             statement_list__,
+            var_identifier__,
             vardecl__,
 
             // special start nonterminal
@@ -105,12 +108,12 @@ public:
 
 #line 3 "steel.trison"
 
-    void setBuffer(const char *pBuffer);	
+    void setBuffer(const char *pBuffer, const std::string &script_name);
     Token::Type Scan ();
     SteelScanner *m_scanner;
-    const char *m_pBuffer;	
+    const char *m_pBuffer;
 
-#line 114 "SteelParser.h"
+#line 117 "SteelParser.h"
 
 private:
 
@@ -293,6 +296,7 @@ private:
     AstBase* ReductionRuleHandler0057 ();
     AstBase* ReductionRuleHandler0058 ();
     AstBase* ReductionRuleHandler0059 ();
+    AstBase* ReductionRuleHandler0060 ();
 
 }; // end of class SteelParser
 
@@ -303,4 +307,4 @@ std::ostream &operator << (std::ostream &stream, SteelParser::Token::Type token_
 
 	#endif // STEEL_PARSER_H
 
-#line 307 "SteelParser.h"
+#line 311 "SteelParser.h"
