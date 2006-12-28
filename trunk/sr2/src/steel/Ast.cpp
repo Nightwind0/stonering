@@ -3,6 +3,10 @@
 #include <iostream>
 #include <cassert>
 
+
+ostream & operator<<(ostream &,AstBase&);
+
+
 AstBase::AstBase(unsigned int line, const std::string &script)
     :m_line(line),m_script_name(script)
 {
@@ -21,9 +25,10 @@ AstInteger::AstInteger(unsigned int line,
 {
 }
 
-void AstInteger::print()
+ostream & AstInteger::print(std::ostream &out)
 {
-    std::cout << m_value;
+    out << m_value;
+    return out;
 }
 
 AstString::AstString(unsigned int line,
@@ -43,9 +48,10 @@ void AstString::addString(const std::string &str)
     m_value += str;
 }
 
-void AstString::print()
+ostream & AstString::print(std::ostream &out)
 {
-    std::cout << m_value;
+    out << '\"' << m_value << '\"';
+    return out;
 }
 
 
@@ -57,9 +63,10 @@ AstFloat::AstFloat(unsigned int line,
     
 }
 
-void AstFloat::print()
+ostream & AstFloat::print(std::ostream &out)
 {
-    std::cout << m_value;
+    out << m_value;
+    return out;
 }
 
 AstIdentifier::AstIdentifier(unsigned int line,
@@ -70,9 +77,10 @@ AstIdentifier::AstIdentifier(unsigned int line,
     
 }
 
-void AstIdentifier::print()
+ostream & AstIdentifier::print(std::ostream &out)
 {
-    std::cout << m_value;
+    out << m_value;
+    return out;
 }
 
 
@@ -86,9 +94,10 @@ AstStatement::~AstStatement()
 {
 }
 
-void AstStatement::print()
+ostream & AstStatement::print(std::ostream &out)
 {
-    std::cout << "Empty Statement";
+    out << ";\n";
+    return out;
 }
 
 
@@ -102,11 +111,9 @@ AstExpressionStatement::~AstExpressionStatement()
     delete m_pExp;
 }
 
-void AstExpressionStatement::print()
+ostream & AstExpressionStatement::print(std::ostream &out)
 {
-    std::cout << "STATEMENT (\t";
-    m_pExp->print();
-    std::cout << ")";
+    out << *m_pExp << ';' << std::endl;
 }
 
 AstScript::AstScript(unsigned int line, const std::string &script)
@@ -118,11 +125,11 @@ AstScript::~AstScript()
     delete m_pList;
 }
 
-void AstScript::print()
+ostream & AstScript::print(std::ostream &out)
 {
-    std::cout << "SCRIPT[\t";
-    if(m_pList) m_pList->print();
-    std::cout << "]";
+    if(m_pList) out << *m_pList;
+
+    return out;
 }
 
 void AstScript::SetList(AstStatementList *pList)
@@ -143,17 +150,18 @@ AstStatementList::~AstStatementList()
 {
 }
 
-void AstStatementList::print()
+ostream & AstStatementList::print(std::ostream &out)
 {
-    std::cout << "STMT LIST {";
+    out << "{\n";
     for(std::list<AstStatement*>::const_iterator it = m_list.begin();
 	it != m_list.end(); it++)
     {
-	std::cout << "\t";
 	AstStatement * pStatement = *it;
-	pStatement->print();
+	out << "\t\t" << *pStatement;
     }
-    std::cout << "}";
+    out << "\t}\n";
+
+    return out;
 }
 
 
@@ -167,12 +175,12 @@ AstWhileStatement::~AstWhileStatement()
     delete m_pStatement;
 }
 
-void AstWhileStatement::print()
+ostream & AstWhileStatement::print(std::ostream &out)
 {
-    std::cout << "WHILE (";
-    m_pCondition->print();
-    std::cout << ")\n\t";
-    m_pStatement->print();
+    out << "while (" << *m_pCondition << ")\n"
+	<< '\t' << *m_pStatement<< std::endl;
+
+    return out;
 }
 
 AstIfStatement::AstIfStatement(unsigned int line, const std::string &script,
@@ -188,19 +196,16 @@ AstIfStatement::~AstIfStatement()
     delete m_pStatement;
 }
 
-void AstIfStatement::print()
+ostream & AstIfStatement::print(std::ostream &out)
 {
-    std::cout << "IF (";
-    m_pCondition->print();
-    std::cout << ')';
-    std::cout << '\t';
-	m_pStatement->print();
-
+    out << "if (" << *m_pCondition  << ")\n"
+	<< '\t' << *m_pStatement << '\n';
     if(m_pElse) 
     {
-	std::cout << " ELSE ";
-	m_pElse->print();
+	out << " else " << *m_pElse << '\n';
     }
+
+    return out;
 }
 
 AstReturnStatement::AstReturnStatement(unsigned int line, const std::string &script, AstExpression *pExp)
@@ -213,13 +218,16 @@ AstReturnStatement::~AstReturnStatement()
     delete m_pExpression;
 }
 
-void AstReturnStatement::print()
+ostream & AstReturnStatement::print(std::ostream &out)
 {
-    std::cout << "RETURN ";
+    out << "return ";
     if(m_pExpression)
     {
-	m_pExpression->print();
+	out << '(' << *m_pExpression << ')';
     }
+    out << ';' << std::endl;
+    return out;
+
 }
 
 AstLoopStatement::AstLoopStatement(unsigned int line, const std::string &script,
@@ -235,12 +243,11 @@ AstLoopStatement::~AstLoopStatement()
     delete m_pStatement;
 }
 
-void AstLoopStatement::print()
+ostream & AstLoopStatement::print(std::ostream &out)
 {
-    std::cout << "LOOP (";
-    m_pCountExpression->print();
-    std::cout << ")\t";
-    m_pStatement->print();
+    out << "loop (" << *m_pCountExpression << ')' << " times using " << *m_pIterator << "\n" << *m_pStatement;
+    
+    return out;
 }
 
 
@@ -259,9 +266,51 @@ AstBinOp::~AstBinOp()
     delete m_left;
 }
 
-void AstBinOp::print()
+std::string AstBinOp::ToString(Op op)
 {
-    std::cout << "OP";
+    switch(op)
+    {
+    case ADD:
+	return "+";
+    case SUB:
+	return "-";
+    case MULT:
+	return "*";
+    case DIV:
+	return "/";
+    case MOD:
+	return "%";
+    case AND:
+	return " and ";
+    case OR:
+	return " or ";
+    case D:
+	return " d ";
+    case POW:
+	return "^";
+    case EQ:
+	return " == ";
+    case NE:
+	return " != ";
+    case LT:
+	return " < ";
+    case GT:
+	return " > ";
+    case LTE:
+	return " <= ";
+    case GTE:
+	return " >=";
+    default:
+	assert(0);
+	return "";
+    }
+}
+
+ostream & AstBinOp::print(std::ostream &out)
+{
+    out << *m_right <<  ToString(m_op) << *m_left;
+
+    return out;
 }
 
 AstUnaryOp::AstUnaryOp(unsigned int line,
@@ -277,15 +326,34 @@ AstUnaryOp::~AstUnaryOp()
     delete m_operand;
 }
 
-void AstUnaryOp::print()
+std::string AstUnaryOp::ToString(Op op)
 {
-    std::cout << "UNOP";
+    switch(op)
+    {
+    case MINUS:
+	return "-";
+    case PLUS:
+	return "+";
+    case NOT:
+	return " not ";
+    default:
+	assert ( 0 );
+	return "";
+    }
+}
+
+ostream & AstUnaryOp::print(std::ostream &out)
+{
+    out << ToString(m_op) << *m_operand;
+
+    return out;
 }
 
 AstCallExpression::AstCallExpression(unsigned int line,
 				     const std::string &script, AstFuncIdentifier *pId, AstParamList *pList)
     :AstExpression(line,script),m_pId(pId),m_pParams(pList)
 {
+    assert ( m_pId );
 }
 AstCallExpression::~AstCallExpression()
 {
@@ -293,13 +361,19 @@ AstCallExpression::~AstCallExpression()
     delete m_pParams;
 }
 
-void AstCallExpression::print()
+ostream & AstCallExpression::print(std::ostream &out)
 {
-    std::cout << "CALL: ";
-    m_pId->print();
-    std::cout << '(';
-    m_pParams->print();
-    std::cout << ')';
+    if(m_pParams)
+    {
+	out << *m_pId 
+	    << '(' << *m_pParams << ')';
+    }
+    else
+    {
+	out << *m_pId << "()";
+    }
+    
+    return out;
 }
 
 AstArrayExpression::AstArrayExpression(unsigned int line,
@@ -315,11 +389,11 @@ AstArrayExpression::~AstArrayExpression()
     delete m_pExpression;
 }
 
-void AstArrayExpression::print()
+ostream & AstArrayExpression::print(std::ostream &out)
 {
-    std::cout << '\t';
-    m_pId->print();
-    m_pExpression->print();
+    out << *m_pId << '[' << *m_pExpression 
+	<< ']';
+    return out;
 }
 
 
@@ -338,11 +412,10 @@ AstVarAssignmentExpression::~AstVarAssignmentExpression()
     delete m_pExpression;
 }
 
-void AstVarAssignmentExpression::print()
+ostream & AstVarAssignmentExpression::print(std::ostream &out)
 {
-    m_pId->print();
-    std::cout << '=' ;
-    m_pExpression->print();
+    out << *m_pId << '=' << *m_pExpression;
+    return out;
 }
 
 AstParamList::AstParamList(unsigned int line,
@@ -358,14 +431,22 @@ void AstParamList::add(AstExpression *pExp)
 {
     m_params.push_back(pExp);
 }
-void AstParamList::print()
+ostream & AstParamList::print(std::ostream &out)
 {
     for(std::list<AstExpression*>::const_iterator i = m_params.begin();
 	i != m_params.end(); i++)
     {
-	std::cout << '\t';
-	(*i)->print();
+	std::list<AstExpression*>::const_iterator next = i ;
+	next++;
+
+	if(next == m_params.end())
+	    out << *(*i);
+	else
+	    out  << *(*i) << ',';
     }
+    
+
+    return out;
 }
 
 AstVarDeclaration::AstVarDeclaration(unsigned int line,
@@ -381,9 +462,12 @@ AstVarDeclaration::~AstVarDeclaration()
     delete m_pId;
     delete m_pExp;
 }
-void AstVarDeclaration::print()
+ostream & AstVarDeclaration::print(std::ostream &out)
 {
-    
+    out << "var " << *m_pId;
+
+    if( m_pExp ) out << '=' << *m_pExp << ';' << std::endl;
+    return out;
 }
 
 AstArrayDeclaration::AstArrayDeclaration(unsigned int line,
@@ -399,6 +483,15 @@ AstArrayDeclaration::~AstArrayDeclaration()
     delete m_pId;
     delete m_pIndex;
 }
-void AstArrayDeclaration::print()
+ostream & AstArrayDeclaration::print(std::ostream &out)
 {
+    out << *m_pId << '[' << *m_pIndex << ']';
+    return out;
+}
+
+
+
+ostream & operator<<(ostream & out,AstBase & ast)
+{
+    return ast.print(out);
 }

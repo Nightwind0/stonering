@@ -15,5 +15,5 @@ SteelParser.cpp : steel.trison
 SteelScanner.cpp : steel.reflex SteelParser.cpp
 	reflex -o SteelScanner steel.reflex
 
-test_parser : test_parser.cpp SteelParser.cpp SteelScanner.cpp
-	g++ test_parser.cpp SteelParser.cpp SteelScanner.cpp Ast.cpp -o test_parser
+test_parser : test_parser.cpp SteelParser.o SteelScanner.o Ast.o
+	g++ -g test_parser.cpp SteelParser.o SteelScanner.o Ast.o -o test_parser
