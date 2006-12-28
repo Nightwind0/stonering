@@ -140,7 +140,7 @@ statement_list %type "AstStatementList*"
 
 statement %type "AstStatement*"
 :
-	';'
+	';' { return new AstExpression(0,""); }
 |
 	exp:exp ';' { return new AstExpressionStatement(exp->GetLine(),exp->GetScript(), exp); }
 |
@@ -290,7 +290,7 @@ param_list %type "AstParamList*"
 		  return pList;
 		}
 |
-	param_list:list ',' exp:exp { list->add(exp); }
+	param_list:list ',' exp:exp { list->add(exp); return list;}
 			    
 ;
 

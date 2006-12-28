@@ -5,6 +5,9 @@
 #include <list>
 #include <iostream>
 
+using std::ostream;
+
+
 class AstBase
 {
 public:
@@ -13,10 +16,11 @@ public:
 
     unsigned int GetLine() const { return  m_line; }
     const std::string GetScript() const { return m_script_name; }
-    virtual void print()=0;
+    virtual ostream & print(ostream &out){}
 private:
     unsigned int m_line;
     std::string m_script_name;
+    friend ostream & operator<<(ostream &,AstBase&);
 };
 
 class AstKeyword : public AstBase
@@ -25,7 +29,7 @@ public:
     AstKeyword(unsigned int line, const std::string &script):AstBase(line,script){}
     virtual ~AstKeyword(){}
 
-    virtual void print(){}
+    virtual ostream & print(ostream &out){ return out;}
 private:
 };
 
@@ -37,7 +41,7 @@ public:
     AstStatement(unsigned int line, const std::string &script);
     virtual ~AstStatement();
 
-    virtual void print();
+    virtual ostream & print(ostream &out);
 private:
 };
 
@@ -48,7 +52,7 @@ public:
     AstExpressionStatement(unsigned int line, const std::string &script, AstExpression *pExp);
     virtual ~AstExpressionStatement();
 
-    virtual void print();
+    virtual ostream & print(std::ostream &out);
 private:
     AstExpression *m_pExp;
 };
@@ -61,7 +65,7 @@ public:
     AstScript(unsigned int line, const std::string &script);
     virtual ~AstScript();
 
-    virtual void print();
+    virtual ostream & print(std::ostream &out);
     void SetList( AstStatementList * pStatement);
     void SetFunctionList( );
 private:
@@ -75,7 +79,7 @@ public:
     AstStatementList(unsigned int line, const std::string &script);
     virtual ~AstStatementList();
 
-    virtual void print();
+    virtual ostream & print(std::ostream &out);
     void add(AstStatement *pStatement) { m_list.push_back(pStatement); }
 private:
     std::list<AstStatement*> m_list;
@@ -87,7 +91,7 @@ public:
     AstWhileStatement(unsigned int line, const std::string &script, AstExpression *pExp, AstStatement *pStmt);
     virtual ~AstWhileStatement();
 
-    virtual void print();
+    virtual ostream & print(std::ostream &out);
     
 	
 private:
@@ -103,7 +107,7 @@ public:
 		   AstStatement *pElse=NULL);
     virtual ~AstIfStatement();
 
-    virtual void print();
+    virtual ostream & print(std::ostream &out);
 private:
     AstExpression *m_pCondition;
     AstStatement *m_pElse;
@@ -116,7 +120,7 @@ public:
     AstReturnStatement(unsigned int line, const std::string &script, AstExpression *pExp = NULL);
     virtual ~AstReturnStatement();
 
-    virtual void print();
+    virtual ostream & print(std::ostream &out);
 private:
     AstExpression *m_pExpression;
 };
@@ -129,7 +133,7 @@ public:
 	:AstStatement(line,script){}
 	virtual ~AstBreakStatement(){}
 
-    virtual void print(){ std::cout << "BREAK" ;}
+	virtual ostream & print(std::ostream &out){ out << "break;" << std::endl ;}
 private:
 
 };
@@ -141,7 +145,7 @@ public:
 	:AstStatement(line,script){}
 	virtual ~AstContinueStatement(){}
 
-	virtual void print(){ std::cout << "CONTINUE"; }
+	virtual ostream & print(std::ostream &out){ out << "continue;" << std::endl; }
 private:
 
 };
@@ -156,7 +160,7 @@ public:
     
     virtual ~AstLoopStatement();
 
-    virtual void print();
+    virtual ostream & print(std::ostream &out);
 private:
     AstExpression *m_pCountExpression;
     AstVarIdentifier *m_pIterator;
@@ -181,7 +185,7 @@ public:
     AstInteger(unsigned int line, const std::string &script, int value);
     virtual ~AstInteger(){}
 
-    virtual void print();
+    virtual ostream & print(std::ostream &out);
 private:
     int m_value;
 };
@@ -193,7 +197,7 @@ public:
 	      const std::string &script);
     virtual ~AstString(){}
 
-    virtual void print();
+    virtual ostream & print(std::ostream &out);
     void addChar(const char c);
     void addString(const std::string &str);
 private:
@@ -208,7 +212,7 @@ public:
 	     double value);
     virtual ~AstFloat(){}
 
-    virtual void print();
+    virtual ostream & print(std::ostream &out);
 private:
     double m_value;
 };
@@ -220,7 +224,7 @@ public:
 		     const std::string &script,
 		     const std::string &value);
     virtual ~AstIdentifier(){}
-    virtual void print();
+    virtual ostream & print(std::ostream &out);
 private:
     std::string m_value;
 };
@@ -283,12 +287,14 @@ public:
 	GTE
     };
 
+    static std::string ToString(Op op);
+
     AstBinOp(unsigned int line,
 	     const std::string &script,
 	     Op op, AstExpression *right, AstExpression *left);
     virtual ~AstBinOp();
 
-    virtual void print();
+    virtual ostream & print(std::ostream &out);
 	     
 private:
     Op m_op;
@@ -305,12 +311,13 @@ public:
 	PLUS,
 	NOT
     };
+    static std::string ToString(Op op);
     AstUnaryOp(unsigned int line,
 	       const std::string &script, Op op,
 	       AstExpression *operand);
 
     virtual ~AstUnaryOp();
-    virtual void print();
+    virtual ostream & print(std::ostream &out);
 private:
     Op m_op;
     AstExpression *m_operand;
@@ -326,7 +333,7 @@ public:
 		      const std::string &script, AstFuncIdentifier *pId, AstParamList *pList=NULL);
     virtual ~AstCallExpression();
 
-    virtual void print();
+    virtual ostream & print(std::ostream &out);
 private:
     AstFuncIdentifier *m_pId;
     AstParamList *m_pParams;
@@ -341,7 +348,7 @@ public:
 		       AstExpression * pExp);
     virtual ~AstArrayExpression();
 
-    virtual void print();
+    virtual ostream & print(std::ostream &out);
 private:
     AstArrayIdentifier *m_pId;
     AstExpression * m_pExpression;
@@ -357,7 +364,7 @@ public:
 
     virtual ~AstVarAssignmentExpression();
 
-    virtual void print();
+    virtual ostream & print(std::ostream &out);
 private:
     AstVarIdentifier * m_pId;
     AstExpression * m_pExpression;
@@ -371,7 +378,7 @@ public:
     virtual ~AstParamList();
 
     void add(AstExpression *pExp);
-    virtual void print();
+    virtual ostream & print(std::ostream &out);
 private:
     std::list<AstExpression*> m_params;
 };
@@ -394,7 +401,7 @@ public:
 		      AstVarIdentifier *pId,
 		      AstExpression *pExp = NULL);
     virtual ~AstVarDeclaration();
-    virtual void print();
+    virtual ostream & print(std::ostream &out);
 private:
     AstVarIdentifier *m_pId ;
     AstExpression * m_pExp;
@@ -408,7 +415,7 @@ public:
 			AstArrayIdentifier *pId,
 			AstInteger *pInt);
     virtual ~AstArrayDeclaration();
-    virtual void print();
+    virtual ostream & print(std::ostream &out);
 private:
     AstArrayIdentifier *m_pId;
     AstInteger *m_pIndex;

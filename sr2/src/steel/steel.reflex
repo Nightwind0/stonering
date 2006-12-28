@@ -139,7 +139,6 @@ int SteelScanner::ToIntFromHex(const std::string &text)
 	%language.cpp {
 		*token = new AstString(m_line,m_script_name);
 		
-		std::cout << "String literal [" ;
 		TransitionToState(State::STRING_LITERAL_GUTS);
 	}
 |
@@ -320,8 +319,6 @@ int SteelScanner::ToIntFromHex(const std::string &text)
 	(") 
 	%language.cpp{ 
 		TransitionToState(State::MAIN);
-
-		std::cout << "]" << std::endl;
 		return SteelParser::Token::STRING; 
 	}
 |
