@@ -4,6 +4,8 @@ libsteel_la_SOURCES = SteelParser.cpp \
 			SteelParser.h \
 			SteelScanner.cpp \
 			SteelScanner.h \
+			Ast.cpp \
+			Ast.h \
 			steel.trison \
 			steel.reflex
 
@@ -14,4 +16,4 @@ SteelScanner.cpp : steel.reflex SteelParser.cpp
 	reflex -o SteelScanner steel.reflex
 
 test_parser : test_parser.cpp SteelParser.cpp SteelScanner.cpp
-	g++ test_parser.cpp SteelParser.cpp SteelScanner.cpp -o test_parser
+	g++ test_parser.cpp SteelParser.cpp SteelScanner.cpp Ast.cpp -o test_parser
