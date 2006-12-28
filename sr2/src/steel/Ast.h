@@ -58,6 +58,7 @@ private:
 };
 
 class AstStatementList;
+class AstFunctionDefinitionList;
 
 class AstScript : public AstBase
 {
@@ -67,8 +68,9 @@ public:
 
     virtual ostream & print(std::ostream &out);
     void SetList( AstStatementList * pStatement);
-    void SetFunctionList( );
+    void SetFunctionList( AstFunctionDefinitionList *pList);
 private:
+    AstFunctionDefinitionList * m_pFunctions;
     AstStatementList *m_pList;
 };
 
@@ -421,5 +423,49 @@ private:
     AstInteger *m_pIndex;
 };
 
+
+class AstParamDefinitionList : public AstBase
+{
+public:
+    AstParamDefinitionList(unsigned int line,
+			   const std::string &script);
+    virtual ~AstParamDefinitionList();
+
+    void add(AstVarIdentifier *pId);
+    virtual ostream & print (std::ostream &out);	       
+private:
+    std::list<AstVarIdentifier*> m_params;
+};
+
+class AstFunctionDefinition : public AstBase
+{
+public:
+    AstFunctionDefinition(unsigned int line,
+			  const std::string &script,
+			  AstFuncIdentifier *pId,
+			  AstParamDefinitionList *pParams,
+			  AstStatementList* pStmts);
+    virtual ~AstFunctionDefinition();
+
+    virtual ostream & print (std::ostream &out);
+private:
+    AstFuncIdentifier * m_pId;
+    AstParamDefinitionList *m_pParams;
+    AstStatementList * m_pStatements;
+};
+
+class AstFunctionDefinitionList : public AstBase
+{
+public:
+    AstFunctionDefinitionList(unsigned int line,
+			      const std::string &script);
+
+    virtual ~AstFunctionDefinitionList();
+
+    void add(AstFunctionDefinition *pFunc);
+    virtual ostream & print (std::ostream &out);
+private:
+    std::list<AstFunctionDefinition*> m_functions;
+};
 
 #endif
