@@ -130,6 +130,11 @@ int SteelScanner::ToIntFromHex(const std::string &text)
 		m_line++;
 	}
 |
+	(//.*)
+	%language.cpp {
+		// Eat the comment
+	}
+|
 	([\t ]+)
 	 %language.cpp {
 		// Eat it

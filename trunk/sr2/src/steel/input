@@ -8,7 +8,9 @@ var $contains_quote = "Hello\"Jerk\"";
 
 test();
 
-if($meat != "Hello2")
+// LALALLAL
+
+if($meat != "Hello2") // TRA LA LA LA
 {
 	print ("There was an error.");
 }
