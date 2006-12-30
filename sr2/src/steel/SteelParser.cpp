@@ -709,32 +709,39 @@ AstBase* SteelParser::ReductionRuleHandler0013 ()
     return static_cast<AstBase*>(0);
 }
 
-// rule 14: statement <- '{' statement_list:list '}'    
+// rule 14: statement <- '{':b1 statement_list:list '}':b2    
 AstBase* SteelParser::ReductionRuleHandler0014 ()
 {
+    assert(0 < m_reduction_rule_token_count);
+    AstBase* b1 = static_cast< AstBase* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 0]);
     assert(1 < m_reduction_rule_token_count);
     AstStatementList* list = static_cast< AstStatementList* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 1]);
+    assert(2 < m_reduction_rule_token_count);
+    AstBase* b2 = static_cast< AstBase* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 2]);
 
 #line 194 "steel.trison"
- return list; 
-#line 721 "SteelParser.cpp"
+ delete b1; delete b2; return list; 
+#line 725 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
-// rule 15: statement <- '{' '}':bracket    
+// rule 15: statement <- '{':b1 '}':b2    
 AstBase* SteelParser::ReductionRuleHandler0015 ()
 {
+    assert(0 < m_reduction_rule_token_count);
+    AstBase* b1 = static_cast< AstBase* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 0]);
     assert(1 < m_reduction_rule_token_count);
-    AstBase* bracket = static_cast< AstBase* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 1]);
+    AstBase* b2 = static_cast< AstBase* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 1]);
 
 #line 196 "steel.trison"
 
-			 int line = bracket->GetLine();
-			 std::string script = bracket->GetScript();
-			 delete bracket;
+			 int line = b1->GetLine();
+			 std::string script = b1->GetScript();
+			 delete b1;
+			 delete b2;
 			 return new AstStatement(line,script);
 			
-#line 738 "SteelParser.cpp"
+#line 745 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -746,9 +753,9 @@ AstBase* SteelParser::ReductionRuleHandler0016 ()
     assert(1 < m_reduction_rule_token_count);
     AstBase* semi = static_cast< AstBase* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 1]);
 
-#line 203 "steel.trison"
+#line 204 "steel.trison"
  delete semi; return vardecl; 
-#line 752 "SteelParser.cpp"
+#line 759 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -760,9 +767,9 @@ AstBase* SteelParser::ReductionRuleHandler0017 ()
     assert(4 < m_reduction_rule_token_count);
     AstStatement* stmt = static_cast< AstStatement* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 4]);
 
-#line 205 "steel.trison"
+#line 206 "steel.trison"
  return new AstWhileStatement(exp->GetLine(), exp->GetScript(),exp,stmt); 
-#line 766 "SteelParser.cpp"
+#line 773 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -776,9 +783,9 @@ AstBase* SteelParser::ReductionRuleHandler0018 ()
     assert(6 < m_reduction_rule_token_count);
     AstStatement* elses = static_cast< AstStatement* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 6]);
 
-#line 207 "steel.trison"
+#line 208 "steel.trison"
  return new AstIfStatement(exp->GetLine(), exp->GetScript(),exp,stmt,elses);
-#line 782 "SteelParser.cpp"
+#line 789 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -790,9 +797,9 @@ AstBase* SteelParser::ReductionRuleHandler0019 ()
     assert(4 < m_reduction_rule_token_count);
     AstStatement* stmt = static_cast< AstStatement* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 4]);
 
-#line 209 "steel.trison"
+#line 210 "steel.trison"
  return new AstIfStatement(exp->GetLine(),exp->GetScript(),exp,stmt); 
-#line 796 "SteelParser.cpp"
+#line 803 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -804,9 +811,9 @@ AstBase* SteelParser::ReductionRuleHandler0020 ()
     assert(2 < m_reduction_rule_token_count);
     AstBase* semi = static_cast< AstBase* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 2]);
 
-#line 211 "steel.trison"
+#line 212 "steel.trison"
  delete semi; return new AstReturnStatement(exp->GetLine(),exp->GetScript(),exp);
-#line 810 "SteelParser.cpp"
+#line 817 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -816,14 +823,14 @@ AstBase* SteelParser::ReductionRuleHandler0021 ()
     assert(1 < m_reduction_rule_token_count);
     AstBase* semi = static_cast< AstBase* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 1]);
 
-#line 214 "steel.trison"
+#line 215 "steel.trison"
 
 				int line = semi->GetLine();
 				std::string script = semi->GetScript();
 				delete semi;
 				return new AstReturnStatement(line,script);
 			
-#line 827 "SteelParser.cpp"
+#line 834 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -837,12 +844,12 @@ AstBase* SteelParser::ReductionRuleHandler0022 ()
     assert(5 < m_reduction_rule_token_count);
     AstStatement* stmt = static_cast< AstStatement* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 5]);
 
-#line 222 "steel.trison"
+#line 223 "steel.trison"
 
 				return new AstLoopStatement(start->GetLine(),start->GetScript(),start,condition, 
 						new AstExpression (start->GetLine(),start->GetScript()), stmt); 
 			
-#line 846 "SteelParser.cpp"
+#line 853 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -858,11 +865,11 @@ AstBase* SteelParser::ReductionRuleHandler0023 ()
     assert(6 < m_reduction_rule_token_count);
     AstStatement* stmt = static_cast< AstStatement* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 6]);
 
-#line 228 "steel.trison"
+#line 229 "steel.trison"
 
 				return new AstLoopStatement(start->GetLine(),start->GetScript(),start,condition,iteration,stmt);
 			
-#line 866 "SteelParser.cpp"
+#line 873 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -872,14 +879,14 @@ AstBase* SteelParser::ReductionRuleHandler0024 ()
     assert(1 < m_reduction_rule_token_count);
     AstBase* semi = static_cast< AstBase* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 1]);
 
-#line 233 "steel.trison"
+#line 234 "steel.trison"
 
 				int line = semi->GetLine();
 				std::string script = semi->GetScript();
 				delete semi;
 				return new AstBreakStatement(line,script); 
 			
-#line 883 "SteelParser.cpp"
+#line 890 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -889,14 +896,14 @@ AstBase* SteelParser::ReductionRuleHandler0025 ()
     assert(1 < m_reduction_rule_token_count);
     AstBase* semi = static_cast< AstBase* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 1]);
 
-#line 241 "steel.trison"
+#line 242 "steel.trison"
 
 				int line = semi->GetLine();
 				std::string script = semi->GetScript();
 				delete semi;
 				return new AstContinueStatement(line,script); 
 			
-#line 900 "SteelParser.cpp"
+#line 907 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -906,9 +913,9 @@ AstBase* SteelParser::ReductionRuleHandler0026 ()
     assert(0 < m_reduction_rule_token_count);
     AstCallExpression* call = static_cast< AstCallExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 0]);
 
-#line 252 "steel.trison"
+#line 253 "steel.trison"
  return call; 
-#line 912 "SteelParser.cpp"
+#line 919 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -918,9 +925,9 @@ AstBase* SteelParser::ReductionRuleHandler0027 ()
     assert(0 < m_reduction_rule_token_count);
     AstBase* i = static_cast< AstBase* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 0]);
 
-#line 254 "steel.trison"
+#line 255 "steel.trison"
  return i;
-#line 924 "SteelParser.cpp"
+#line 931 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -930,9 +937,9 @@ AstBase* SteelParser::ReductionRuleHandler0028 ()
     assert(0 < m_reduction_rule_token_count);
     AstBase* f = static_cast< AstBase* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 0]);
 
-#line 256 "steel.trison"
+#line 257 "steel.trison"
  return f; 
-#line 936 "SteelParser.cpp"
+#line 943 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -942,9 +949,9 @@ AstBase* SteelParser::ReductionRuleHandler0029 ()
     assert(0 < m_reduction_rule_token_count);
     AstBase* s = static_cast< AstBase* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 0]);
 
-#line 258 "steel.trison"
+#line 259 "steel.trison"
  return s; 
-#line 948 "SteelParser.cpp"
+#line 955 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -954,9 +961,9 @@ AstBase* SteelParser::ReductionRuleHandler0030 ()
     assert(0 < m_reduction_rule_token_count);
     AstVarIdentifier * id = static_cast< AstVarIdentifier * >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 0]);
 
-#line 260 "steel.trison"
+#line 261 "steel.trison"
  return id; 
-#line 960 "SteelParser.cpp"
+#line 967 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -966,9 +973,9 @@ AstBase* SteelParser::ReductionRuleHandler0031 ()
     assert(0 < m_reduction_rule_token_count);
     AstArrayIdentifier* id = static_cast< AstArrayIdentifier* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 0]);
 
-#line 262 "steel.trison"
+#line 263 "steel.trison"
  return id; 
-#line 972 "SteelParser.cpp"
+#line 979 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -980,9 +987,9 @@ AstBase* SteelParser::ReductionRuleHandler0032 ()
     assert(2 < m_reduction_rule_token_count);
     AstExpression* b = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 2]);
 
-#line 264 "steel.trison"
+#line 265 "steel.trison"
  return new AstBinOp(a->GetLine(),a->GetScript(),AstBinOp::ADD,a,b); 
-#line 986 "SteelParser.cpp"
+#line 993 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -994,9 +1001,9 @@ AstBase* SteelParser::ReductionRuleHandler0033 ()
     assert(2 < m_reduction_rule_token_count);
     AstExpression* b = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 2]);
 
-#line 266 "steel.trison"
+#line 267 "steel.trison"
  return new AstBinOp(a->GetLine(),a->GetScript(),AstBinOp::SUB,a,b); 
-#line 1000 "SteelParser.cpp"
+#line 1007 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1008,9 +1015,9 @@ AstBase* SteelParser::ReductionRuleHandler0034 ()
     assert(2 < m_reduction_rule_token_count);
     AstExpression* b = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 2]);
 
-#line 268 "steel.trison"
+#line 269 "steel.trison"
  return new AstBinOp(a->GetLine(),a->GetScript(),AstBinOp::MULT,a,b); 
-#line 1014 "SteelParser.cpp"
+#line 1021 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1022,9 +1029,9 @@ AstBase* SteelParser::ReductionRuleHandler0035 ()
     assert(2 < m_reduction_rule_token_count);
     AstExpression* b = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 2]);
 
-#line 270 "steel.trison"
+#line 271 "steel.trison"
  return new AstBinOp(a->GetLine(),a->GetScript(),AstBinOp::DIV,a,b); 
-#line 1028 "SteelParser.cpp"
+#line 1035 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1036,9 +1043,9 @@ AstBase* SteelParser::ReductionRuleHandler0036 ()
     assert(2 < m_reduction_rule_token_count);
     AstExpression* b = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 2]);
 
-#line 272 "steel.trison"
+#line 273 "steel.trison"
  return new AstBinOp(a->GetLine(),a->GetScript(),AstBinOp::MOD,a,b); 
-#line 1042 "SteelParser.cpp"
+#line 1049 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1050,9 +1057,9 @@ AstBase* SteelParser::ReductionRuleHandler0037 ()
     assert(2 < m_reduction_rule_token_count);
     AstExpression* b = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 2]);
 
-#line 274 "steel.trison"
+#line 275 "steel.trison"
  return new AstBinOp(a->GetLine(),a->GetScript(),AstBinOp::D,a,b); 
-#line 1056 "SteelParser.cpp"
+#line 1063 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1064,9 +1071,9 @@ AstBase* SteelParser::ReductionRuleHandler0038 ()
     assert(2 < m_reduction_rule_token_count);
     AstExpression* exp = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 2]);
 
-#line 276 "steel.trison"
+#line 277 "steel.trison"
  return new AstVarAssignmentExpression(id->GetLine(),id->GetScript(),id,exp); 
-#line 1070 "SteelParser.cpp"
+#line 1077 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1078,9 +1085,9 @@ AstBase* SteelParser::ReductionRuleHandler0039 ()
     assert(2 < m_reduction_rule_token_count);
     AstExpression* exp = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 2]);
 
-#line 278 "steel.trison"
+#line 279 "steel.trison"
  return new AstArrayElementAssignmentExpression(id->GetLine(),id->GetScript(),id,exp); 
-#line 1084 "SteelParser.cpp"
+#line 1091 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1092,9 +1099,9 @@ AstBase* SteelParser::ReductionRuleHandler0040 ()
     assert(2 < m_reduction_rule_token_count);
     AstExpression* exp = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 2]);
 
-#line 280 "steel.trison"
+#line 281 "steel.trison"
  return new AstArrayAssignmentExpression(id->GetLine(),id->GetScript(),id,exp); 
-#line 1098 "SteelParser.cpp"
+#line 1105 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1106,9 +1113,9 @@ AstBase* SteelParser::ReductionRuleHandler0041 ()
     assert(2 < m_reduction_rule_token_count);
     AstExpression* b = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 2]);
 
-#line 282 "steel.trison"
+#line 283 "steel.trison"
  return new AstBinOp(a->GetLine(),a->GetScript(),AstBinOp::POW,a,b); 
-#line 1112 "SteelParser.cpp"
+#line 1119 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1120,9 +1127,9 @@ AstBase* SteelParser::ReductionRuleHandler0042 ()
     assert(2 < m_reduction_rule_token_count);
     AstExpression* b = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 2]);
 
-#line 284 "steel.trison"
+#line 285 "steel.trison"
  return new AstBinOp(a->GetLine(),a->GetScript(),AstBinOp::OR,a,b); 
-#line 1126 "SteelParser.cpp"
+#line 1133 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1134,9 +1141,9 @@ AstBase* SteelParser::ReductionRuleHandler0043 ()
     assert(2 < m_reduction_rule_token_count);
     AstExpression* b = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 2]);
 
-#line 286 "steel.trison"
+#line 287 "steel.trison"
  return new AstBinOp(a->GetLine(),a->GetScript(),AstBinOp::AND,a,b); 
-#line 1140 "SteelParser.cpp"
+#line 1147 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1148,9 +1155,9 @@ AstBase* SteelParser::ReductionRuleHandler0044 ()
     assert(2 < m_reduction_rule_token_count);
     AstExpression* b = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 2]);
 
-#line 288 "steel.trison"
+#line 289 "steel.trison"
  return new AstBinOp(a->GetLine(),a->GetScript(),AstBinOp::EQ,a,b); 
-#line 1154 "SteelParser.cpp"
+#line 1161 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1162,9 +1169,9 @@ AstBase* SteelParser::ReductionRuleHandler0045 ()
     assert(2 < m_reduction_rule_token_count);
     AstExpression* b = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 2]);
 
-#line 290 "steel.trison"
+#line 291 "steel.trison"
  return new AstBinOp(a->GetLine(),a->GetScript(),AstBinOp::NE,a,b); 
-#line 1168 "SteelParser.cpp"
+#line 1175 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1176,9 +1183,9 @@ AstBase* SteelParser::ReductionRuleHandler0046 ()
     assert(2 < m_reduction_rule_token_count);
     AstExpression* b = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 2]);
 
-#line 292 "steel.trison"
+#line 293 "steel.trison"
  return new AstBinOp(a->GetLine(),a->GetScript(),AstBinOp::LT,a,b); 
-#line 1182 "SteelParser.cpp"
+#line 1189 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1190,9 +1197,9 @@ AstBase* SteelParser::ReductionRuleHandler0047 ()
     assert(2 < m_reduction_rule_token_count);
     AstExpression* b = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 2]);
 
-#line 294 "steel.trison"
+#line 295 "steel.trison"
  return new AstBinOp(a->GetLine(),a->GetScript(),AstBinOp::GT,a,b); 
-#line 1196 "SteelParser.cpp"
+#line 1203 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1204,9 +1211,9 @@ AstBase* SteelParser::ReductionRuleHandler0048 ()
     assert(2 < m_reduction_rule_token_count);
     AstExpression* b = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 2]);
 
-#line 296 "steel.trison"
+#line 297 "steel.trison"
  return new AstBinOp(a->GetLine(),a->GetScript(),AstBinOp::LTE,a,b); 
-#line 1210 "SteelParser.cpp"
+#line 1217 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1218,9 +1225,9 @@ AstBase* SteelParser::ReductionRuleHandler0049 ()
     assert(2 < m_reduction_rule_token_count);
     AstExpression* b = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 2]);
 
-#line 298 "steel.trison"
+#line 299 "steel.trison"
  return new AstBinOp(a->GetLine(),a->GetScript(),AstBinOp::GTE,a,b); 
-#line 1224 "SteelParser.cpp"
+#line 1231 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1230,9 +1237,9 @@ AstBase* SteelParser::ReductionRuleHandler0050 ()
     assert(1 < m_reduction_rule_token_count);
     AstExpression* exp = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 1]);
 
-#line 300 "steel.trison"
+#line 301 "steel.trison"
  return exp; 
-#line 1236 "SteelParser.cpp"
+#line 1243 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1242,9 +1249,9 @@ AstBase* SteelParser::ReductionRuleHandler0051 ()
     assert(1 < m_reduction_rule_token_count);
     AstExpression* exp = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 1]);
 
-#line 302 "steel.trison"
+#line 303 "steel.trison"
  return new AstUnaryOp(exp->GetLine(), exp->GetScript(), AstUnaryOp::MINUS,exp); 
-#line 1248 "SteelParser.cpp"
+#line 1255 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1254,9 +1261,9 @@ AstBase* SteelParser::ReductionRuleHandler0052 ()
     assert(1 < m_reduction_rule_token_count);
     AstExpression* exp = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 1]);
 
-#line 304 "steel.trison"
+#line 305 "steel.trison"
  return new AstUnaryOp(exp->GetLine(), exp->GetScript(), AstUnaryOp::PLUS,exp); 
-#line 1260 "SteelParser.cpp"
+#line 1267 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1266,9 +1273,9 @@ AstBase* SteelParser::ReductionRuleHandler0053 ()
     assert(1 < m_reduction_rule_token_count);
     AstExpression* exp = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 1]);
 
-#line 306 "steel.trison"
+#line 307 "steel.trison"
  return new AstUnaryOp(exp->GetLine(), exp->GetScript(), AstUnaryOp::NOT,exp); 
-#line 1272 "SteelParser.cpp"
+#line 1279 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1278,9 +1285,9 @@ AstBase* SteelParser::ReductionRuleHandler0054 ()
     assert(0 < m_reduction_rule_token_count);
     AstArrayElement* lvalue = static_cast< AstArrayElement* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 0]);
 
-#line 308 "steel.trison"
+#line 309 "steel.trison"
  return lvalue; 
-#line 1284 "SteelParser.cpp"
+#line 1291 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1290,14 +1297,14 @@ AstBase* SteelParser::ReductionRuleHandler0055 ()
     assert(0 < m_reduction_rule_token_count);
     AstBase* semi = static_cast< AstBase* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 0]);
 
-#line 313 "steel.trison"
+#line 314 "steel.trison"
 
 			int line = semi->GetLine();
 			std::string script = semi->GetScript(); 
 			delete semi;
 			return new AstExpression(line,script); 
 		
-#line 1301 "SteelParser.cpp"
+#line 1308 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1307,9 +1314,9 @@ AstBase* SteelParser::ReductionRuleHandler0056 ()
     assert(0 < m_reduction_rule_token_count);
     AstExpression* exp = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 0]);
 
-#line 320 "steel.trison"
+#line 321 "steel.trison"
  return exp; 
-#line 1313 "SteelParser.cpp"
+#line 1320 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1319,9 +1326,9 @@ AstBase* SteelParser::ReductionRuleHandler0057 ()
     assert(0 < m_reduction_rule_token_count);
     AstBase* i = static_cast< AstBase* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 0]);
 
-#line 325 "steel.trison"
+#line 326 "steel.trison"
  return i; 
-#line 1325 "SteelParser.cpp"
+#line 1332 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1331,9 +1338,9 @@ AstBase* SteelParser::ReductionRuleHandler0058 ()
     assert(0 < m_reduction_rule_token_count);
     AstBase* id = static_cast< AstBase* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 0]);
 
-#line 330 "steel.trison"
+#line 331 "steel.trison"
  return id; 
-#line 1337 "SteelParser.cpp"
+#line 1344 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1343,9 +1350,9 @@ AstBase* SteelParser::ReductionRuleHandler0059 ()
     assert(0 < m_reduction_rule_token_count);
     AstBase* id = static_cast< AstBase* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 0]);
 
-#line 335 "steel.trison"
+#line 336 "steel.trison"
  return id; 
-#line 1349 "SteelParser.cpp"
+#line 1356 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1355,9 +1362,9 @@ AstBase* SteelParser::ReductionRuleHandler0060 ()
     assert(0 < m_reduction_rule_token_count);
     AstBase* id = static_cast< AstBase* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 0]);
 
-#line 340 "steel.trison"
+#line 341 "steel.trison"
  return id; 
-#line 1361 "SteelParser.cpp"
+#line 1368 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1369,9 +1376,9 @@ AstBase* SteelParser::ReductionRuleHandler0061 ()
     assert(2 < m_reduction_rule_token_count);
     AstExpression* exp = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 2]);
 
-#line 345 "steel.trison"
+#line 346 "steel.trison"
  return new AstArrayElement(id->GetLine(),id->GetScript(),id,exp); 
-#line 1375 "SteelParser.cpp"
+#line 1382 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1381,9 +1388,9 @@ AstBase* SteelParser::ReductionRuleHandler0062 ()
     assert(0 < m_reduction_rule_token_count);
     AstFuncIdentifier* id = static_cast< AstFuncIdentifier* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 0]);
 
-#line 350 "steel.trison"
+#line 351 "steel.trison"
  return new AstCallExpression(id->GetLine(),id->GetScript(),id);
-#line 1387 "SteelParser.cpp"
+#line 1394 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1395,9 +1402,9 @@ AstBase* SteelParser::ReductionRuleHandler0063 ()
     assert(2 < m_reduction_rule_token_count);
     AstParamList* params = static_cast< AstParamList* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 2]);
 
-#line 352 "steel.trison"
+#line 353 "steel.trison"
  return new AstCallExpression(id->GetLine(),id->GetScript(),id,params);
-#line 1401 "SteelParser.cpp"
+#line 1408 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1407,9 +1414,9 @@ AstBase* SteelParser::ReductionRuleHandler0064 ()
     assert(1 < m_reduction_rule_token_count);
     AstVarIdentifier * id = static_cast< AstVarIdentifier * >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 1]);
 
-#line 357 "steel.trison"
+#line 358 "steel.trison"
  return new AstVarDeclaration(id->GetLine(),id->GetScript(),id);
-#line 1413 "SteelParser.cpp"
+#line 1420 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1421,9 +1428,9 @@ AstBase* SteelParser::ReductionRuleHandler0065 ()
     assert(3 < m_reduction_rule_token_count);
     AstExpression* exp = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 3]);
 
-#line 359 "steel.trison"
+#line 360 "steel.trison"
  return new AstVarDeclaration(id->GetLine(),id->GetScript(),id,exp); 
-#line 1427 "SteelParser.cpp"
+#line 1434 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1435,9 +1442,9 @@ AstBase* SteelParser::ReductionRuleHandler0066 ()
     assert(3 < m_reduction_rule_token_count);
     AstInteger* i = static_cast< AstInteger* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 3]);
 
-#line 361 "steel.trison"
+#line 362 "steel.trison"
  return new AstArrayDeclaration(id->GetLine(),id->GetScript(),id,i); 
-#line 1441 "SteelParser.cpp"
+#line 1448 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1447,9 +1454,9 @@ AstBase* SteelParser::ReductionRuleHandler0067 ()
     assert(1 < m_reduction_rule_token_count);
     AstArrayIdentifier* id = static_cast< AstArrayIdentifier* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 1]);
 
-#line 363 "steel.trison"
+#line 364 "steel.trison"
  return new AstArrayDeclaration(id->GetLine(),id->GetScript(),id); 
-#line 1453 "SteelParser.cpp"
+#line 1460 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1461,13 +1468,13 @@ AstBase* SteelParser::ReductionRuleHandler0068 ()
     assert(3 < m_reduction_rule_token_count);
     AstExpression* exp = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 3]);
 
-#line 365 "steel.trison"
+#line 366 "steel.trison"
 
 							AstArrayDeclaration *pDecl =  new AstArrayDeclaration(id->GetLine(),id->GetScript(),id);
 							pDecl->assign(exp);
 							return pDecl;
 						 
-#line 1471 "SteelParser.cpp"
+#line 1478 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1477,12 +1484,12 @@ AstBase* SteelParser::ReductionRuleHandler0069 ()
     assert(0 < m_reduction_rule_token_count);
     AstExpression* exp = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 0]);
 
-#line 374 "steel.trison"
+#line 375 "steel.trison"
  AstParamList * pList = new AstParamList ( exp->GetLine(), exp->GetScript() );
 		  pList->add(exp);
 		  return pList;
 		
-#line 1486 "SteelParser.cpp"
+#line 1493 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -1494,9 +1501,9 @@ AstBase* SteelParser::ReductionRuleHandler0070 ()
     assert(2 < m_reduction_rule_token_count);
     AstExpression* exp = static_cast< AstExpression* >(m_token_stack[m_token_stack.size() - m_reduction_rule_token_count + 2]);
 
-#line 379 "steel.trison"
+#line 380 "steel.trison"
  list->add(exp); return list;
-#line 1500 "SteelParser.cpp"
+#line 1507 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
 
@@ -3854,5 +3861,5 @@ SteelParser::Token::Type SteelParser::Scan ()
 	return m_scanner->Scan(&m_lookahead_token);
 }
 
-#line 3858 "SteelParser.cpp"
+#line 3865 "SteelParser.cpp"
 

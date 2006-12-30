@@ -191,12 +191,13 @@ statement %type "AstStatement*"
 :
 	exp_statement:exp  { return new AstExpressionStatement(exp->GetLine(),exp->GetScript(), exp); }
 |
-	'{' statement_list:list '}' { return list; }
+	'{':b1 statement_list:list '}':b2 { delete b1; delete b2; return list; }
 |
-	'{' '}':bracket {
-			 int line = bracket->GetLine();
-			 std::string script = bracket->GetScript();
-			 delete bracket;
+	'{':b1 '}':b2 {
+			 int line = b1->GetLine();
+			 std::string script = b1->GetScript();
+			 delete b1;
+			 delete b2;
 			 return new AstStatement(line,script);
 			}
 |
