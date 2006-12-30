@@ -32,13 +32,13 @@ public:
             ELSE,
             EQ,
             FLOAT,
+            FOR,
             FUNCTION,
             FUNC_IDENTIFIER,
             GT,
             GTE,
             IF,
             INT,
-            LOOP,
             LT,
             LTE,
             NE,
@@ -46,8 +46,6 @@ public:
             OR,
             RETURN,
             STRING,
-            TIMES,
-            USING,
             VAR,
             VAR_IDENTIFIER,
             WHILE,
@@ -56,15 +54,17 @@ public:
             END_,
 
             // user-defined nonterminal tokens
+            array_element_lvalue__,
             array_identifier__,
-            array_lvalue__,
             call__,
             exp__,
+            exp_statement__,
             func_definition__,
             func_definition_list__,
             func_identifier__,
             int_literal__,
             param_definition__,
+            param_id__,
             param_list__,
             root__,
             statement__,
@@ -297,6 +297,16 @@ private:
     AstBase* ReductionRuleHandler0058 ();
     AstBase* ReductionRuleHandler0059 ();
     AstBase* ReductionRuleHandler0060 ();
+    AstBase* ReductionRuleHandler0061 ();
+    AstBase* ReductionRuleHandler0062 ();
+    AstBase* ReductionRuleHandler0063 ();
+    AstBase* ReductionRuleHandler0064 ();
+    AstBase* ReductionRuleHandler0065 ();
+    AstBase* ReductionRuleHandler0066 ();
+    AstBase* ReductionRuleHandler0067 ();
+    AstBase* ReductionRuleHandler0068 ();
+    AstBase* ReductionRuleHandler0069 ();
+    AstBase* ReductionRuleHandler0070 ();
 
 }; // end of class SteelParser
 
@@ -307,4 +317,4 @@ std::ostream &operator << (std::ostream &stream, SteelParser::Token::Type token_
 
 	#endif // STEEL_PARSER_H
 
-#line 311 "SteelParser.h"
+#line 321 "SteelParser.h"

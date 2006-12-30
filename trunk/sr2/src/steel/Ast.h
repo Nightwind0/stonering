@@ -158,14 +158,16 @@ class AstLoopStatement : public AstStatement
 {
 public:
     AstLoopStatement(unsigned int line, const std::string &script,
-		     AstExpression *pExp, AstVarIdentifier *pId, AstStatement * pStmt);
+		     AstExpression *pStart, AstExpression *pCondition,
+		     AstExpression *pIteration, AstStatement * pStmt);
     
     virtual ~AstLoopStatement();
 
     virtual ostream & print(std::ostream &out);
 private:
-    AstExpression *m_pCountExpression;
-    AstVarIdentifier *m_pIterator;
+    AstExpression *m_pStart;
+    AstExpression *m_pCondition;
+    AstExpression *m_pIteration;
     AstStatement * m_pStatement;
 };
 
@@ -341,7 +343,7 @@ private:
     AstParamList *m_pParams;
 };
 
-class AstArrayExpression : public AstExpression
+/* class AstArrayExpression : public AstExpression
 {
 public:
     AstArrayExpression(unsigned int line,
@@ -354,6 +356,22 @@ public:
 private:
     AstArrayIdentifier *m_pId;
     AstExpression * m_pExpression;
+};
+*/
+
+class AstArrayElement : public AstExpression
+{
+public:
+    AstArrayElement(unsigned int line,
+		    const std::string &script,
+		    AstArrayIdentifier *pId,
+		    AstExpression *pExp);
+    virtual ~AstArrayElement();
+
+    virtual ostream & print(std::ostream &out);
+private:
+    AstArrayIdentifier * m_pId;
+    AstExpression * m_pExp;
 };
 
 class AstVarAssignmentExpression : public AstExpression
@@ -370,6 +388,39 @@ public:
 private:
     AstVarIdentifier * m_pId;
     AstExpression * m_pExpression;
+};
+
+
+class AstArrayAssignmentExpression : public AstExpression
+{
+public:
+    AstArrayAssignmentExpression(unsigned int line,
+			    const std::string &script,
+			    AstArrayIdentifier *pId,
+			    AstExpression *pExp);
+
+    virtual ~AstArrayAssignmentExpression();
+
+    virtual ostream & print(std::ostream &out);
+private:
+    AstArrayIdentifier * m_pId;
+    AstExpression * m_pExpression;
+
+};
+
+class AstArrayElementAssignmentExpression: public AstExpression
+{
+public:
+    AstArrayElementAssignmentExpression(unsigned int line,
+					const std::string &script,
+					AstArrayElement *pId,
+					AstExpression * pExp);
+    virtual ~AstArrayElementAssignmentExpression();
+
+    virtual ostream & print (std::ostream &out);
+private:
+    AstArrayElement * m_pId;
+    AstExpression *m_pExp;
 };
 
 class AstParamList : public AstBase
@@ -415,12 +466,16 @@ public:
     AstArrayDeclaration(unsigned int line,
 			const std::string &script,
 			AstArrayIdentifier *pId,
-			AstInteger *pInt);
+			AstInteger *pInt = NULL);
+
+    void assign(AstExpression *pExp);
+
     virtual ~AstArrayDeclaration();
     virtual ostream & print(std::ostream &out);
 private:
     AstArrayIdentifier *m_pId;
     AstInteger *m_pIndex;
+    AstExpression *m_pExp;
 };
 
 
@@ -431,10 +486,10 @@ public:
 			   const std::string &script);
     virtual ~AstParamDefinitionList();
 
-    void add(AstVarIdentifier *pId);
+    void add(AstIdentifier *pId);
     virtual ostream & print (std::ostream &out);	       
 private:
-    std::list<AstVarIdentifier*> m_params;
+    std::list<AstIdentifier*> m_params;
 };
 
 class AstFunctionDefinition : public AstBase

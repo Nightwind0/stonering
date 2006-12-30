@@ -12,7 +12,7 @@ int main()
 	script += std::cin.get();
     }
 
-    //parser.SetDebugSpewLevel(2);
+    parser.SetDebugSpewLevel(2);
     parser.setBuffer( script.c_str() , "Magic Script");
     if(parser.Parse() != SteelParser::PRC_SUCCESS)
     {

@@ -179,7 +179,13 @@ int SteelScanner::ToIntFromHex(const std::string &text)
 		return SteelParser::Token::ARRAY_IDENTIFIER;
 	}
 |
-	(;|@|$|\(|\)|,|%|\+|\-|\^|\=|\[|\]|\{|\}|%|/)
+	(;|\{|\})
+	%language.cpp {
+		*token = new AstKeyword(m_line,m_script_name);
+		return (SteelParser::Token::Type)accepted_text[0];
+	}
+|
+	(@|$|\(|\)|,|%|\+|\-|\^|\=|\[|\]|%|/)
 	%language.cpp{
 		return (SteelParser::Token::Type)accepted_text[0];
 	}
@@ -241,19 +247,9 @@ int SteelScanner::ToIntFromHex(const std::string &text)
 		*token =new AstKeyword(m_line,m_script_name); return SteelParser::Token::WHILE;
 	}
 |
-	(loop) 
+	(for) 
 	%language.cpp{
-		*token = new AstKeyword(m_line,m_script_name); return SteelParser::Token::LOOP;
-	}
-|
-	(times) 
-	%language.cpp{ 
-		*token = new AstKeyword(m_line,m_script_name); return SteelParser::Token::TIMES;
-	}
-|
-	(using) 
-	%language.cpp{
-		*token = new AstKeyword(m_line,m_script_name); return SteelParser::Token::USING;
+		*token = new AstKeyword(m_line,m_script_name); return SteelParser::Token::FOR;
 	}
 |
 	(break) 
