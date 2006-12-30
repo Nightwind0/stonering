@@ -17,3 +17,15 @@ function yoodle($a, $b)
 {
 	while ($a < $b) $a = $a - 1;
 }
+
+function array(@stuff)
+{
+	var $len = @stuff;
+	
+	return @stuff;	
+}
+
+function dooda(@stuff, $b)
+{
+	return $b + 2;
+}

@@ -235,21 +235,23 @@ ostream & AstReturnStatement::print(std::ostream &out)
 }
 
 AstLoopStatement::AstLoopStatement(unsigned int line, const std::string &script,
-				   AstExpression *pExp, AstVarIdentifier *pId, AstStatement * pStmt)
-    :AstStatement(line,script),m_pCountExpression(pExp),m_pIterator(pId),m_pStatement(pStmt)
+				   AstExpression *pStart, AstExpression *pCondition,
+				   AstExpression *pIteration, AstStatement* pStmt)
+    :AstStatement(line,script),m_pStart(pStart),m_pCondition(pCondition),m_pIteration(pIteration),m_pStatement(pStmt)
 {
 }
 
 AstLoopStatement::~AstLoopStatement()
 {
-    delete m_pCountExpression;
-    delete m_pIterator;
+    delete m_pStart;
+    delete m_pCondition;
+    delete m_pIteration;
     delete m_pStatement;
 }
 
 ostream & AstLoopStatement::print(std::ostream &out)
 {
-    out << "loop (" << *m_pCountExpression << ')' << " times using " << *m_pIterator << "\n" << *m_pStatement;
+    out << "for (" << *m_pStart << ';' << *m_pCondition << ';' << *m_pIteration << ')' << *m_pStatement;
     
     return out;
 }
@@ -379,7 +381,7 @@ ostream & AstCallExpression::print(std::ostream &out)
     
     return out;
 }
-
+/*
 AstArrayExpression::AstArrayExpression(unsigned int line,
 				       const std::string &script,
 				       AstArrayIdentifier *pId,
@@ -387,6 +389,7 @@ AstArrayExpression::AstArrayExpression(unsigned int line,
     :AstExpression(line,script),m_pId(pId),m_pExpression(pExp)
 {
 }
+
 AstArrayExpression::~AstArrayExpression()
 {
     delete m_pId;
@@ -398,6 +401,27 @@ ostream & AstArrayExpression::print(std::ostream &out)
     out << *m_pId << '[' << *m_pExpression 
 	<< ']';
     return out;
+}
+*/
+
+AstArrayElement::AstArrayElement(unsigned int line,
+				 const std::string &script,
+				 AstArrayIdentifier *pId,
+				 AstExpression *pExp)
+    :AstExpression(line,script),m_pId(pId),m_pExp(pExp)
+{
+    
+}
+
+AstArrayElement::~AstArrayElement()
+{
+    delete m_pId;
+    delete m_pExp;
+}
+
+ostream & AstArrayElement::print(std::ostream &out)
+{
+    out << *m_pId << '[' << *m_pExp << ']' ;
 }
 
 
@@ -421,6 +445,49 @@ ostream & AstVarAssignmentExpression::print(std::ostream &out)
     out << *m_pId << '=' << *m_pExpression;
     return out;
 }
+
+
+
+AstArrayAssignmentExpression::AstArrayAssignmentExpression(unsigned int line,
+							   const std::string &script,
+							   AstArrayIdentifier *pId,
+							   AstExpression *pExp)
+    :AstExpression(line,script),m_pId(pId),m_pExpression(pExp)
+{
+}
+
+
+AstArrayAssignmentExpression::~AstArrayAssignmentExpression()
+{
+    delete m_pId;
+    delete m_pExpression;
+}
+
+
+ostream & AstArrayAssignmentExpression::print(std::ostream &out)
+{
+    out << *m_pId << '=' << *m_pExpression;
+}
+
+AstArrayElementAssignmentExpression::AstArrayElementAssignmentExpression(unsigned int line,
+								  const std::string &script,
+								  AstArrayElement *pId,
+								  AstExpression * pExp)
+    :AstExpression(line,script),m_pId(pId),m_pExp(pExp)
+{
+}
+
+AstArrayElementAssignmentExpression::~AstArrayElementAssignmentExpression()
+{
+    delete m_pId;
+    delete m_pExp;
+}
+
+ostream & AstArrayElementAssignmentExpression::print (std::ostream &out)
+{
+    out << *m_pId << '=' << *m_pExp << ';' << std::endl;
+}
+
 
 AstParamList::AstParamList(unsigned int line,
 			   const std::string &script)
@@ -488,10 +555,22 @@ AstArrayDeclaration::~AstArrayDeclaration()
 {
     delete m_pId;
     delete m_pIndex;
+    delete m_pExp;
 }
+
+void AstArrayDeclaration::assign(AstExpression *pExp)
+{
+    // Todo: Actually evaluate this here and toss it
+    m_pExp = pExp;
+}
+
+
 ostream & AstArrayDeclaration::print(std::ostream &out)
 {
-    out << *m_pId << '[' << *m_pIndex << ']';
+    out << "var " << *m_pId ;
+    if(m_pIndex) out << '[' << *m_pIndex << ']';
+    if(m_pExp) out << '=' << *m_pExp;
+    out << ';' << std::endl;
     return out;
 }
 
@@ -505,21 +584,21 @@ AstParamDefinitionList::AstParamDefinitionList(unsigned int line,
 
 AstParamDefinitionList::~AstParamDefinitionList()
 {
-    for(std::list<AstVarIdentifier*>::iterator i = m_params.begin();
+    for(std::list<AstIdentifier*>::iterator i = m_params.begin();
 	    i != m_params.end(); i++) delete *i;
 }
 
-void AstParamDefinitionList::add(AstVarIdentifier *pDef)
+void AstParamDefinitionList::add(AstIdentifier *pDef)
 {
     m_params.push_back( pDef );
 }
 
 ostream & AstParamDefinitionList::print (std::ostream &out)
 {
-    for(std::list<AstVarIdentifier*>::const_iterator i = m_params.begin();
+    for(std::list<AstIdentifier*>::const_iterator i = m_params.begin();
 	i != m_params.end(); i++)
     {
-	std::list<AstVarIdentifier*>::const_iterator next = i ;
+	std::list<AstIdentifier*>::const_iterator next = i ;
 	next++;
 
 	if(next == m_params.end())

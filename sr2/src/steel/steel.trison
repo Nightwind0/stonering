@@ -63,9 +63,7 @@ SteelParser::Token::Type SteelParser::Scan ()
 %token FUNC_IDENTIFIER
 %token VAR_IDENTIFIER
 %token ARRAY_IDENTIFIER
-%token LOOP
-%token TIMES
-%token USING
+%token FOR
 %token VAR
 %token INT
 %token FLOAT
@@ -74,7 +72,6 @@ SteelParser::Token::Type SteelParser::Scan ()
 
 %prec NON_ELSE
 %prec ELSE
-%prec ASSIGNMENT
 %prec OR
 %prec AND
 %prec EQ_NE
@@ -84,7 +81,7 @@ SteelParser::Token::Type SteelParser::Scan ()
 %prec POW
 %prec UNARY
 %prec PAREN
-
+%prec ASSIGNMENT
 
 %start root
 %%
@@ -93,14 +90,19 @@ root %type "AstScript*"
 :
 	statement_list:list 
 			{
-				AstScript * pScript =  new AstScript(list->GetLine(),list->GetScript());
+				AstScript * pScript =   new AstScript(
+							list->GetLine(),
+							list->GetScript());
 			        pScript->SetList(list);
 				return pScript;
 			} 
 |
 	func_definition_list:list
 			{
-				AstScript * pScript = new AstScript(list->GetLine(),list->GetScript());
+				AstScript * pScript 
+				= new AstScript(
+						list->GetLine(),
+						list->GetScript());
 				pScript->SetFunctionList( list );
 				return pScript;
 			}
@@ -109,7 +111,10 @@ root %type "AstScript*"
 func_definition_list %type "AstFunctionDefinitionList*"
 :
 	func_definition:def     {
-					AstFunctionDefinitionList * pList = new AstFunctionDefinitionList(def->GetLine(),def->GetScript());
+					AstFunctionDefinitionList * pList 
+					= new AstFunctionDefinitionList(
+						def->GetLine(),
+						def->GetScript());
 					pList->add(def);
 					return pList;
 				}
@@ -143,19 +148,25 @@ func_definition %type "AstFunctionDefinition*"
 ;
 
 
+param_id %type "AstIdentifier*"
+:
+	VAR_IDENTIFIER:id { return id; }
+|
+	ARRAY_IDENTIFIER:id { return id; }
+;
 
 param_definition %type "AstParamDefinitionList*"
 :
-	VAR_IDENTIFIER:id 
+	param_id:id 
 			{
 				AstParamDefinitionList * pList = new AstParamDefinitionList(id->GetLine(),id->GetScript());
-				pList->add(static_cast<AstVarIdentifier*>(id));
+				pList->add(static_cast<AstIdentifier*>(id));
 				return pList;		
 			}
 |
-	param_definition:list ',' VAR_IDENTIFIER:id
+	param_definition:list ',' param_id:id
 			{
-				list->add(static_cast<AstVarIdentifier*>(id));
+				list->add(static_cast<AstIdentifier*>(id));
 				return list;
 			}
 ;
@@ -178,13 +189,18 @@ statement_list %type "AstStatementList*"
 
 statement %type "AstStatement*"
 :
-	';' { return new AstExpression(0,""); }
-|
-	exp:exp ';' { return new AstExpressionStatement(exp->GetLine(),exp->GetScript(), exp); }
+	exp_statement:exp  { return new AstExpressionStatement(exp->GetLine(),exp->GetScript(), exp); }
 |
 	'{' statement_list:list '}' { return list; }
 |
-	vardecl:vardecl ';' { return vardecl; }
+	'{' '}':bracket {
+			 int line = bracket->GetLine();
+			 std::string script = bracket->GetScript();
+			 delete bracket;
+			 return new AstStatement(line,script);
+			}
+|
+	vardecl:vardecl ';':semi { delete semi; return vardecl; }
 |
 	WHILE '(' exp:exp ')' statement:stmt { return new AstWhileStatement(exp->GetLine(), exp->GetScript(),exp,stmt); }
 |
@@ -192,34 +208,40 @@ statement %type "AstStatement*"
 |
 	IF '(' exp:exp ')' statement:stmt %prec NON_ELSE { return new AstIfStatement(exp->GetLine(),exp->GetScript(),exp,stmt); }
 |
-	RETURN exp:exp ';' { return new AstReturnStatement(exp->GetLine(),exp->GetScript(),exp);}
+	RETURN exp:exp ';':semi { delete semi; return new AstReturnStatement(exp->GetLine(),exp->GetScript(),exp);}
 |
-	RETURN:returns ';'
+	RETURN ';':semi
 			{
-				int line = returns->GetLine();
-			    	std::string script = returns->GetScript();
-				delete returns;
+				int line = semi->GetLine();
+				std::string script = semi->GetScript();
+				delete semi;
 				return new AstReturnStatement(line,script);
 			}
 |
-	LOOP '(' exp:exp ')' TIMES USING var_identifier:id statement:stmt
+	FOR '(' exp_statement:start exp_statement:condition ')' statement:stmt
 			{
-				return new AstLoopStatement(exp->GetLine(),exp->GetScript(),exp,id,stmt);
+				return new AstLoopStatement(start->GetLine(),start->GetScript(),start,condition, 
+						new AstExpression (start->GetLine(),start->GetScript()), stmt); 
 			}
 |
-	BREAK:breaks ';' 
+	FOR '(' exp_statement:start exp_statement:condition  exp:iteration ')' statement:stmt
 			{
-				int line = breaks->GetLine();
-				std::string script = breaks->GetScript();
-				delete breaks; 
+				return new AstLoopStatement(start->GetLine(),start->GetScript(),start,condition,iteration,stmt);
+			}
+|
+	BREAK ';':semi 
+			{
+				int line = semi->GetLine();
+				std::string script = semi->GetScript();
+				delete semi;
 				return new AstBreakStatement(line,script); 
 			}
 |
-	CONTINUE:continues ';' 
+	CONTINUE ';':semi
 			{
-				int line = continues->GetLine();
-				std::string script = continues->GetScript();
-				delete continues;
+				int line = semi->GetLine();
+				std::string script = semi->GetScript();
+				delete semi;
 				return new AstContinueStatement(line,script); 
 			}
 ;
@@ -237,6 +259,8 @@ exp %type "AstExpression*"
 |
 	var_identifier:id { return id; }
 |
+	array_identifier:id { return id; }
+|
 	exp:a '+' exp:b %prec ADD_SUB { return new AstBinOp(a->GetLine(),a->GetScript(),AstBinOp::ADD,a,b); }
 |
 	exp:a '-' exp:b %prec ADD_SUB { return new AstBinOp(a->GetLine(),a->GetScript(),AstBinOp::SUB,a,b); }
@@ -249,7 +273,11 @@ exp %type "AstExpression*"
 |
 	exp:a D exp:b %prec POW { return new AstBinOp(a->GetLine(),a->GetScript(),AstBinOp::D,a,b); }
 |
-	var_identifier:id '=' exp:exp %right { return new AstVarAssignmentExpression(id->GetLine(),id->GetScript(),id,exp); }
+	var_identifier:id '=' exp:exp %right %prec ASSIGNMENT { return new AstVarAssignmentExpression(id->GetLine(),id->GetScript(),id,exp); }
+|
+	array_element_lvalue:id '=' exp:exp  %right %prec ASSIGNMENT { return new AstArrayElementAssignmentExpression(id->GetLine(),id->GetScript(),id,exp); }
+|
+	array_identifier:id '=' exp:exp %right %prec ASSIGNMENT { return new AstArrayAssignmentExpression(id->GetLine(),id->GetScript(),id,exp); }
 |
 	exp:a '^' exp:b %right %prec POW { return new AstBinOp(a->GetLine(),a->GetScript(),AstBinOp::POW,a,b); }
 |
@@ -277,7 +305,19 @@ exp %type "AstExpression*"
 |
 	NOT exp:exp %right %prec UNARY { return new AstUnaryOp(exp->GetLine(), exp->GetScript(), AstUnaryOp::NOT,exp); }
 |
-	array_lvalue:lvalue %prec PAREN { return lvalue; }
+	array_element_lvalue:lvalue %prec PAREN { return lvalue; }
+;
+
+exp_statement %type "AstExpression*"
+:
+	';':semi {
+			int line = semi->GetLine();
+			std::string script = semi->GetScript(); 
+			delete semi;
+			return new AstExpression(line,script); 
+		}
+|
+	exp:exp ';' { return exp; }
 ;
 
 int_literal %type "AstInteger*"
@@ -285,7 +325,7 @@ int_literal %type "AstInteger*"
 	INT:i { return i; }
 ;
 
-var_identifier %type "AstVarIdentifier*"
+var_identifier %type "AstVarIdentifier *"
 :
 	VAR_IDENTIFIER:id { return id; }
 ;
@@ -300,9 +340,9 @@ array_identifier %type "AstArrayIdentifier*"
 	ARRAY_IDENTIFIER:id { return id; }
 ;
 
-array_lvalue %type "AstArrayExpression*"
+array_element_lvalue %type "AstArrayElement*"
 :
-	array_identifier:id '[' exp:exp ']' { return new AstArrayExpression(id->GetLine(),id->GetScript(),id,exp); }
+	array_identifier:id '[' exp:exp ']' { return new AstArrayElement(id->GetLine(),id->GetScript(),id,exp); }
 ;
 
 call %type "AstCallExpression*"
@@ -319,6 +359,14 @@ vardecl %type "AstDeclaration*"
 	VAR var_identifier:id '=' exp:exp { return new AstVarDeclaration(id->GetLine(),id->GetScript(),id,exp); }
 |
 	VAR array_identifier:id '[' int_literal:i ']' { return new AstArrayDeclaration(id->GetLine(),id->GetScript(),id,i); }
+|
+	VAR array_identifier:id { return new AstArrayDeclaration(id->GetLine(),id->GetScript(),id); }
+|
+	VAR array_identifier:id '=' exp:exp      {
+							AstArrayDeclaration *pDecl =  new AstArrayDeclaration(id->GetLine(),id->GetScript(),id);
+							pDecl->assign(exp);
+							return pDecl;
+						 }
 ;
 
 param_list %type "AstParamList*"
