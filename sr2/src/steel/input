@@ -20,7 +20,7 @@ foo(@basic_array);
 
 foo(@basic_array[0]);
 
-var $contains_quote = "Hello\"Jerk\"";
+//var $contains_quote = "Hello\"Jerk\"";
 
 test();
 
