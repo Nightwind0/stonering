@@ -17,3 +17,6 @@ SteelScanner.cpp : steel.reflex SteelParser.cpp
 
 test_parser : test_parser.cpp SteelParser.o SteelScanner.o Ast.o
 	g++ -g test_parser.cpp SteelParser.o SteelScanner.o Ast.o -o test_parser
+
+func_test : SteelFunctor.h func_test.cpp SteelFunctor.cpp
+	g++ -g func_test.cpp SteelFunctor.cpp -o func_test
