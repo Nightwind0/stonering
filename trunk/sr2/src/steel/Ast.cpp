@@ -585,10 +585,8 @@ SteelType AstCallExpression::evaluate(SteelInterpreter *pInterpreter)
 {
     SteelType ret;
     try{
-	// Has to be on the stack because it gets changed
-	ParamList list = m_pParams->getParamList(pInterpreter);
-	// This empties the list. But thats okay because its about to go out of scope
-	ret = pInterpreter->call( m_pId->getValue(), list );
+	
+	ret = pInterpreter->call( m_pId->getValue(), m_pParams->getParamList(pInterpreter) );
     }
     catch(ParamMismatch m)
     {
@@ -818,6 +816,8 @@ SteelType AstArrayElementAssignmentExpression::evaluate(SteelInterpreter *pInter
 			     GetScript(),
 			     "Unknown identifier: '" + m_pId->getArrayName() + '\'');
     }
+    // TODO: Return the value from the expression
+    return SteelType();
 }
 
 ostream & AstArrayElementAssignmentExpression::print (std::ostream &out)
@@ -837,13 +837,16 @@ AstParamList::~AstParamList()
 	i != m_params.end(); i++) delete *i;
 }
 
-ParamList AstParamList::getParamList(SteelInterpreter *pInterpreter) const 
+std::vector<SteelType> AstParamList::getParamList(SteelInterpreter *pInterpreter) const 
 {
-    ParamList params;
-    
+    std::vector<SteelType> params;
     for(std::list<AstExpression*>::const_iterator i = m_params.begin();
 	i != m_params.end(); i++)
-	params.enqueue ( (*i)->evaluate(pInterpreter) );
+    {
+	
+	SteelType var = (*i)->evaluate(pInterpreter);
+	params.push_back ( var );
+    }
 
     return params;
 }

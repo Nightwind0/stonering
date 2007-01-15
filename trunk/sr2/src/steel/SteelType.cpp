@@ -17,20 +17,25 @@ bool operator==(const SteelArrayRef &lhs, const SteelArrayRef &rhs)
 SteelType::SteelType()
 {
     m_value.i = 0;
-    m_storage = SteelType::INT;
+    m_value.s = NULL;
+    m_value.a = NULL;
+    m_storage = SteelType::SteelType::INT;
 }
 
 SteelType::SteelType(const SteelType &rhs)
 {
+    set(0);
     *this = rhs;
 }
 
 SteelType::~SteelType()
 {
-    if(m_storage == SteelType::STRING)
+    if(m_storage == SteelType::SteelType::STRING)
 	delete m_value.s;
-    else if (m_storage == SteelType::ARRAY)
+    else if (m_storage == SteelType::SteelType::ARRAY)
 	delete m_value.a;
+
+    m_storage = SteelType::INT;
 }
 
 
@@ -38,16 +43,16 @@ SteelType::operator int () const
 {
     switch(m_storage)
     {
-    case ARRAY:
+    case SteelType::ARRAY:
 	throw TypeMismatch();
-    case BOOL:
+    case SteelType::BOOL:
 	if(m_value.b) return 1;
 	else return 0;
-    case INT:
+    case SteelType::INT:
 	return m_value.i;
-    case DOUBLE:
+    case SteelType::DOUBLE:
 	return static_cast<int>(m_value.d);
-    case STRING:
+    case SteelType::STRING:
 	return strInt();
     }
 }
@@ -56,16 +61,16 @@ SteelType::operator double () const
 {
     switch(m_storage)
     {
-    case ARRAY:
+    case SteelType::ARRAY:
 	throw TypeMismatch();
-    case BOOL:
+    case SteelType::BOOL:
 	if(m_value.b) return 1.0;
 	else  return 0.0;
-    case INT:
+    case SteelType::INT:
 	return m_value.i;
-    case DOUBLE:
+    case SteelType::DOUBLE:
 	return m_value.d;
-    case STRING:
+    case SteelType::STRING:
 	return strDouble();
     }
 }
@@ -74,16 +79,16 @@ SteelType::operator std::string () const
 {
     switch(m_storage)
     {
-    case ARRAY:
+    case SteelType::ARRAY:
 	throw TypeMismatch();
-    case BOOL:
+    case SteelType::BOOL:
 	if(m_value.b) return "TRUE";
 	else return "FALSE";
-    case INT:
+    case SteelType::INT:
 	return strToInt(m_value.i);
-    case DOUBLE:
+    case SteelType::DOUBLE:
 	return strToDouble(m_value.d);
-    case STRING:
+    case SteelType::STRING:
 	return *m_value.s;
     }
     return "";
@@ -93,16 +98,16 @@ SteelType::operator bool () const
 {
     switch(m_storage)
     {
-    case ARRAY:
+    case SteelType::ARRAY:
 	return true;
-    case BOOL:
+    case SteelType::BOOL:
 	return m_value.b;
-    case INT:
+    case SteelType::INT:
 	return m_value.i != 0;
-    case DOUBLE:
+    case SteelType::DOUBLE:
 	return m_value.d != 0.0;
-    case STRING:
-	return m_value.s->size() > 0;
+    case SteelType::STRING:
+	return !m_value.s->empty();
     }
     return true;
 }
@@ -117,52 +122,54 @@ SteelType::operator SteelArrayRef () const
 void SteelType::set(int i)
 {
     m_value.i = i;
-    m_storage = INT;
+    m_storage = SteelType::INT;
 }
 
 void SteelType::set(double d)
 {
     m_value.d = d;
-    m_storage = DOUBLE;
+    m_storage = SteelType::DOUBLE;
 }
 
 void SteelType::set(bool b)
 {
     m_value.b = b;
-    m_storage = BOOL;
+    m_storage = SteelType::BOOL;
 }
 
 void SteelType::set(const std::string &str)
 {
     m_value.s  = new std::string(str);
-    m_storage = STRING;
+    m_storage = SteelType::STRING;
 }
 
 void SteelType::set(const SteelArrayRef &ref)
 {
     m_value.a = new SteelArrayRef();
     *m_value.a = ref;
-    m_storage = ARRAY;
+    m_storage = SteelType::ARRAY;
 }
 
 SteelType & SteelType::operator=(const SteelType &rhs)
 {
     if(&rhs == this) return *this;
 
-    if(m_storage == STRING)
+    if(m_storage == SteelType::STRING)
 	delete m_value.s;
-    else if (m_storage == ARRAY)
+    else if (m_storage == SteelType::ARRAY)
 	delete m_value.a;
 
-    if(rhs.m_storage == STRING)
+    m_storage = SteelType::INT;
+
+    if(rhs.m_storage == SteelType::STRING)
 	set ( *rhs.m_value.s );
-    else if ( rhs.m_storage == ARRAY)
+    else if ( rhs.m_storage == SteelType::ARRAY)
 	set ( *rhs.m_value.a );
-    else if ( rhs.m_storage == BOOL)
+    else if ( rhs.m_storage == SteelType::BOOL)
 	set ( rhs.m_value.b );
-    else if ( rhs.m_storage == INT)
+    else if ( rhs.m_storage == SteelType::INT)
 	set ( rhs.m_value.i );
-    else if ( rhs.m_storage == DOUBLE)
+    else if ( rhs.m_storage == SteelType::DOUBLE)
 	set ( rhs.m_value.d );
 
     return *this;
@@ -176,17 +183,17 @@ SteelType  SteelType::operator+(const SteelType &rhs)
 
     switch(s)
     {
-    case ARRAY:
-    case BOOL:
+    case SteelType::ARRAY:
+    case SteelType::BOOL:
 	throw OperationMismatch();
 	return val;
-    case INT:
+    case SteelType::INT:
 	val.set ( (int)*this + (int)rhs );
 	return val;
-    case DOUBLE:
+    case SteelType::DOUBLE:
 	val.set ( (double)*this + (double)rhs);
 	return val;
-    case STRING:
+    case SteelType::STRING:
 	val.set ( (std::string)*this + (std::string)rhs);
 	return val;
     }
@@ -199,17 +206,17 @@ SteelType  SteelType::operator-(const SteelType &rhs)
 
     switch(s)
     {
-    case ARRAY:
-    case BOOL:
+    case SteelType::ARRAY:
+    case SteelType::BOOL:
 	throw OperationMismatch();
 	return val;
-    case INT:
+    case SteelType::INT:
 	val.set ( (int)*this - (int)rhs );
 	return val;
-    case DOUBLE:
+    case SteelType::DOUBLE:
 	val.set ( (double)*this - (double)rhs);
 	return val;
-    case STRING:
+    case SteelType::STRING:
 	throw OperationMismatch();
 	return val;
     }
@@ -222,17 +229,17 @@ SteelType  SteelType::operator*(const SteelType &rhs)
 
     switch(s)
     {
-    case ARRAY:
-    case BOOL:
+    case SteelType::ARRAY:
+    case SteelType::BOOL:
 	throw OperationMismatch();
 	return val;
-    case INT:
+    case SteelType::INT:
 	val.set ( (int)*this * (int)rhs );
 	return val;
-    case DOUBLE:
+    case SteelType::DOUBLE:
 	val.set ( (double)*this * (double)rhs);
 	return val;
-    case STRING:
+    case SteelType::STRING:
 	throw OperationMismatch();
 	return val;
     }
@@ -245,17 +252,17 @@ SteelType  SteelType::operator^(const SteelType &rhs)
 
     switch(s)
     {
-    case ARRAY:
-    case BOOL:
+    case SteelType::ARRAY:
+    case SteelType::BOOL:
 	throw OperationMismatch();
 	return val;
-    case INT:
+    case SteelType::INT:
 	val.set ( pow(*this,rhs) );
 	return val;
-    case DOUBLE:
+    case SteelType::DOUBLE:
 	val.set ( pow(*this,rhs) );
 	return val;
-    case STRING:
+    case SteelType::STRING:
 	throw OperationMismatch();
 	return val;
     }
@@ -268,17 +275,17 @@ SteelType  SteelType::operator/(const SteelType &rhs)
 
     switch(s)
     {
-    case ARRAY:
-    case BOOL:
+    case SteelType::ARRAY:
+    case SteelType::BOOL:
 	throw OperationMismatch();
 	return val;
-    case INT:
+    case SteelType::INT:
 	val.set ( (int)*this / (int)rhs );
 	return val;
-    case DOUBLE:
+    case SteelType::DOUBLE:
 	val.set ( (double)*this / (double)rhs);
 	return val;
-    case STRING:
+    case SteelType::STRING:
 	throw OperationMismatch();
 	return val;
     }
@@ -291,17 +298,17 @@ SteelType  SteelType::operator%(const SteelType &rhs)
 
     switch(s)
     {
-    case ARRAY:
-    case BOOL:
+    case SteelType::ARRAY:
+    case SteelType::BOOL:
 	throw OperationMismatch();
 	return val;
-    case INT:
+    case SteelType::INT:
 	val.set ( (int)*this % (int)rhs );
 	return val;
-    case DOUBLE:
+    case SteelType::DOUBLE:
 	val.set ( (int)*this % (int)rhs);
 	return val;
-    case STRING:
+    case SteelType::STRING:
 	throw OperationMismatch();
 	return val;
     }
@@ -315,23 +322,23 @@ SteelType  SteelType::operator==(const SteelType &rhs)
 
     switch(s)
     {
-    case ARRAY:
+    case SteelType::ARRAY:
 	if( m_value.a == rhs.m_value.a)
 	    val.set(true);
 	break;
-    case BOOL:
+    case SteelType::BOOL:
 	if((bool)*this == (bool)rhs)
 	    val.set(true);
 	break;
-    case INT:
+    case SteelType::INT:
 	if((int)*this == (int)rhs)
 	    val.set(true);
 	break;
-    case DOUBLE:
+    case SteelType::DOUBLE:
 	if((double)*this == (double)rhs)
 	    val.set(true);
 	break;
-    case STRING:
+    case SteelType::STRING:
 	if((std::string)*this == (std::string)rhs)
 	    val.set(true);
 	   
@@ -357,16 +364,16 @@ SteelType  SteelType::operator<(const SteelType &rhs)
 
     switch(s)
     {
-    case ARRAY:
-    case BOOL:
+    case SteelType::ARRAY:
+    case SteelType::BOOL:
 	throw OperationMismatch();
-    case INT:
+    case SteelType::INT:
 	if((int)*this < (int)rhs)
 	    val.set(true);
-    case DOUBLE:
+    case SteelType::DOUBLE:
 	if((double)*this < (double)rhs)
 	    val.set(true);
-    case STRING:
+    case SteelType::STRING:
 	if((std::string)*this < (std::string)rhs)
 	    val.set(true);
 	   
@@ -383,16 +390,16 @@ SteelType  SteelType::operator<=(const SteelType &rhs)
 
     switch(s)
     {
-    case ARRAY:
-    case BOOL:
+    case SteelType::ARRAY:
+    case SteelType::BOOL:
 	throw OperationMismatch();
-    case INT:
+    case SteelType::INT:
 	if((int)*this <= (int)rhs)
 	    val.set(true);
-    case DOUBLE:
+    case SteelType::DOUBLE:
 	if((double)*this <= (double)rhs)
 	    val.set(true);
-    case STRING:
+    case SteelType::STRING:
 	if((std::string)*this <= (std::string)rhs)
 	    val.set(true);
 	   
@@ -460,14 +467,14 @@ SteelType SteelType::operator-()
     SteelType var;
     switch(m_storage)
     {
-    case BOOL:
-    case STRING:
-    case ARRAY:
+    case SteelType::BOOL:
+    case SteelType::STRING:
+    case SteelType::ARRAY:
 	throw OperationMismatch();
-    case INT:
+    case SteelType::INT:
 	var.set(0 - m_value.i);
 	break;
-    case DOUBLE:
+    case SteelType::DOUBLE:
 	var.set(0.0 - m_value.d);
 	break;
     }
@@ -480,14 +487,14 @@ SteelType SteelType::operator!()
     SteelType var;
     switch(m_storage)
     {
-    case BOOL:
+    case SteelType::BOOL:
 	if(m_value.b)
 	    var.set ( false );
 	else var.set( true );
-    case INT:	
-    case STRING:
-    case DOUBLE:
-    case ARRAY:
+    case SteelType::INT:	
+    case SteelType::STRING:
+    case SteelType::DOUBLE:
+    case SteelType::ARRAY:
 	throw OperationMismatch();
     }
 
@@ -496,7 +503,7 @@ SteelType SteelType::operator!()
 
 int SteelType::strInt() const
 {
-    if(m_storage != STRING) return 0;
+    if(m_storage != SteelType::STRING) return 0;
 
     std::istringstream str(*m_value.s);
 
@@ -508,7 +515,7 @@ int SteelType::strInt() const
 
 double SteelType::strDouble() const
 {
-    if(m_storage != STRING) return 0.0;
+    if(m_storage != SteelType::STRING) return 0.0;
     std::istringstream str(*m_value.s);
     
     double d;
@@ -519,7 +526,7 @@ double SteelType::strDouble() const
 
 bool SteelType::strBool() const
 {
-    if(m_storage == STRING && *m_value.s == "TRUE") return true;
+    if(m_storage == SteelType::STRING && *m_value.s == "TRUE") return true;
     else return false;
 }
 
@@ -549,42 +556,6 @@ std::string SteelType::strToDouble(double d) const
 }
 
 
-ParamList::ParamList()
-{
-}
 
-ParamList::~ParamList()
-{
-}
-
-ParamList::ParamList(const ParamList &rhs)
-{
-    *this = rhs;
-}
-
-ParamList & ParamList::operator=(const ParamList &rhs)
-{
-    if( &rhs == this ) return *this;
-    m_params = rhs.m_params;
-
-    return *this;
-}
-    
-SteelType ParamList::next()
-{
-    if(m_params.size() < 1) 
-    {
-	throw ParamMismatch();
-    }
-
-    SteelType var = m_params.front();
-    m_params.pop();
-    return var;
-}
-
-void ParamList::enqueue(const SteelType &type)
-{
-    m_params.push(type);
-}
 
 

@@ -46,7 +46,7 @@ void SteelInterpreter::run(const std::string &name,const std::string &script)
     
 }
 
-SteelType SteelInterpreter::call(const std::string &name, ParamList &pList)
+SteelType SteelInterpreter::call(const std::string &name, const std::vector<SteelType> &pList)
 {
     // First, check the builtins. They can be considered like keywords.
 

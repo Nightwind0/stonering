@@ -102,19 +102,5 @@ private:
 };
 
 
-class ParamList
-{
-public:
-    ParamList();
-    ParamList(const ParamList &rhs);
-    virtual ~ParamList();
-    
-    SteelType next();
-    void enqueue(const SteelType &type);
-    ParamList & operator=(const ParamList &rhs);
-private:
-    std::queue<SteelType> m_params;
-};
-
 
 #endif

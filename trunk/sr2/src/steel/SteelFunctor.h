@@ -3,9 +3,9 @@
 #define STEEL_FUNCTOR_H
 
 #include <string>
-#include <queue>
+#include <vector>
 #include "SteelType.h"
-
+#include "SteelException.h"
 
 class SteelFunctor
 {
@@ -13,7 +13,7 @@ public:
     SteelFunctor();
     virtual ~SteelFunctor();
 
-    virtual SteelType Call(ParamList &params)=0;
+    virtual SteelType Call(const std::vector<SteelType> &params)=0;
 
 private:
 };
@@ -26,9 +26,9 @@ public:
     SteelFunctorNoArgs(ObjType *pObj, FuncPointer p):
 	m_pFunc(p),m_pObj(pObj){}
 	virtual ~SteelFunctorNoArgs(){}
-    virtual SteelType Call(ParamList &params)
+	virtual SteelType Call(const std::vector<SteelType> &params)
     {
-	(m_pObj->*m_pFunc)();
+	return (m_pObj->*m_pFunc)();
     }
 private:
     FuncPointer m_pFunc;
@@ -43,9 +43,10 @@ public:
     SteelFunctor1Arg(ObjType *pObj, FuncPointer p)
 	:m_pFunc(p),m_pObj(pObj){}
     virtual ~SteelFunctor1Arg(){}
-    virtual SteelType Call(ParamList &params)
+    virtual SteelType Call(const std::vector<SteelType> &params)
     {
-	(m_pObj->*m_pFunc)(params.next());
+	if(params.size() != 1) throw ParamMismatch();
+	return (m_pObj->*m_pFunc)(params[0]);
     }
 
        
@@ -62,9 +63,10 @@ public:
     SteelFunctor2Arg(ObjType *pObj, FuncPointer p)
 	:m_pFunc(p),m_pObj(pObj){}
 	virtual ~SteelFunctor2Arg(){}
-	virtual SteelType Call(ParamList &params)
+	virtual SteelType Call(const std::vector<SteelType> &params)
 	{
-	    (m_pObj->*m_pFunc)(params.next(),params.next());
+	    if(params.size() != 2) throw ParamMismatch();
+	    return (m_pObj->*m_pFunc)(params[0],params[1]);
 	}
 
 private:
@@ -80,11 +82,12 @@ public:
     SteelFunctor3Arg(ObjType *pObj, FuncPointer p)
 	:m_pFunc(p),m_pObj(pObj){}
 	virtual ~SteelFunctor3Arg(){}
-	virtual SteelType Call(ParamList &params)
+	virtual SteelType Call(const std::vector<SteelType> &params)
 	{
-	    (m_pObj->*m_pFunc)(params.next(),
-			       params.next(),
-			       params.next());
+	    if(params.size() != 3) throw ParamMismatch();
+	    return (m_pObj->*m_pFunc)(params[0],
+				      params[1],
+				      params[2]);
 	}
 private:
 	FuncPointer m_pFunc;
@@ -99,12 +102,13 @@ public:
     SteelFunctor4Arg(ObjType *pObj, FuncPointer p):
 	m_pFunc(p),m_pObj(pObj){}
 	virtual ~SteelFunctor4Arg(){}
-	virtual SteelType Call(ParamList &params)
+	virtual SteelType Call(const std::vector<SteelType> &params)
 	{
-	    (m_pObj->*m_pFunc)(params.next(),
-			       params.next(),
-			       params.next(),
-			       params.next());
+	    if(params.size() != 4) throw ParamMismatch();
+	    return (m_pObj->*m_pFunc)(params[0],
+				      params[1],
+				      params[2],
+				      params[3]);
 	}
 private:
 	FuncPointer m_pFunc;
@@ -118,7 +122,7 @@ class Thunk
 {
 public:
     typedef SteelType (Class::*MemberFunction)() ;
-    Thunk(ParamList *pParams,Class *pObject, SteelFunctor f);
+    Thunk(const vector<SteelType> *pParams,Class *pObject, SteelFunctor f);
     virtual ~Thunk();
 
 private:
