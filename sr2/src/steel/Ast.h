@@ -523,11 +523,12 @@ public:
 			   const std::string &script);
     virtual ~AstParamDefinitionList();
 
-    void add(AstIdentifier *pId);
+    void add(AstDeclaration *pId);
     virtual ostream & print (std::ostream &out);
-    std::list<std::string> getParams() const;
+
+    void executeDeclarations(SteelInterpreter *pInterpreter);
 private:
-    std::list<AstIdentifier*> m_params;
+    std::list<AstDeclaration*> m_params;
 };
 
 class AstFunctionDefinition : public AstBase

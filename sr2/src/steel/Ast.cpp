@@ -649,6 +649,13 @@ SteelType AstArrayElement::evaluate(SteelInterpreter *pInterpreter)
 			     GetScript(),
 			     "Unknown identifier:'" + m_pId->getValue() + '\'');
     }
+    catch(OutOfBounds e)
+    {
+	throw SteelException(SteelException::OUT_OF_BOUNDS,
+			     GetLine(),
+			     GetScript(),
+			     "Array out of bounds: '" + m_pId->getValue() + '\'');
+    }
 }
 
 ostream & AstArrayElement::print(std::ostream &out)
@@ -685,6 +692,13 @@ SteelType AstVarAssignmentExpression::evaluate(SteelInterpreter *pInterpreter)
 			     GetScript(),
 			     "Unknown identifier:'" + m_pId->getValue() + '\'');
     }
+    catch(TypeMismatch m)
+    {
+	throw SteelException(SteelException::TYPE_MISMATCH,
+			     GetLine(),
+			     GetScript(),
+			     "Illegal assignment to '" + m_pId->getValue() + '\'');
+    }
     return exp;
 }
 
@@ -716,13 +730,24 @@ SteelType AstArrayAssignmentExpression::evaluate(SteelInterpreter *pInterpreter)
 {
     SteelType exp = m_pExpression->evaluate(pInterpreter);
     
-    if(!exp.isArray())
+    try{
+	pInterpreter->assign_array( m_pId->getValue(), exp );
+    }
+    catch(TypeMismatch m)
+    {
 	throw SteelException(SteelException::TYPE_MISMATCH, 
 			     GetLine(),
 			     GetScript(),
 			     "Illegal attempt to assign a non-array to a array '" + m_pId->getValue() + '\'');
 
-    pInterpreter->assign_array( m_pId->getValue(), exp );
+    }
+    catch(UnknownIdentifier e)
+    {
+	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
+			     GetLine(),
+			     GetScript(),
+			     "Unknown Identifier:'" + m_pId->getValue() + '\'');
+    }
     return exp;
 }
 
@@ -890,7 +915,9 @@ void AstArrayDeclaration::assign(AstExpression *pExp)
 
 void AstArrayDeclaration::execute(SteelInterpreter *pInterpreter)
 {
-    pInterpreter->declare_array( m_pId->getValue(), m_pIndex->evaluate(pInterpreter));
+    if(m_pIndex)
+	pInterpreter->declare_array( m_pId->getValue(), m_pIndex->evaluate(pInterpreter));
+    else pInterpreter->declare_array( m_pId->getValue(), 0);
 
     if(m_pExp)
 	pInterpreter->assign( m_pId->getValue(), m_pExp->evaluate(pInterpreter) );
@@ -915,33 +942,30 @@ AstParamDefinitionList::AstParamDefinitionList(unsigned int line,
 
 AstParamDefinitionList::~AstParamDefinitionList()
 {
-    for(std::list<AstIdentifier*>::iterator i = m_params.begin();
+    for(std::list<AstDeclaration*>::iterator i = m_params.begin();
 	    i != m_params.end(); i++) 
 	delete *i;
 }
 
-void AstParamDefinitionList::add(AstIdentifier *pDef)
+void AstParamDefinitionList::add(AstDeclaration *pDef)
 {
     m_params.push_back( pDef );
 }
 
-std::list<std::string> 
-AstParamDefinitionList::getParams() const
+void AstParamDefinitionList::executeDeclarations(SteelInterpreter *pInterpreter)
 {
-    std::list<std::string> params;
-    for(std::list<AstIdentifier*>::const_iterator i = m_params.begin();
+    for(std::list<AstDeclaration*>::const_iterator i = m_params.begin();
 	i != m_params.end(); i++)
-	params.push_back ( (*i)->getValue() );
-	
-    return params;
+	(*i)->execute(pInterpreter);
 }
+
 
 ostream & AstParamDefinitionList::print (std::ostream &out)
 {
-    for(std::list<AstIdentifier*>::const_iterator i = m_params.begin();
+    for(std::list<AstDeclaration*>::const_iterator i = m_params.begin();
 	i != m_params.end(); i++)
     {
-	std::list<AstIdentifier*>::const_iterator next = i ;
+	std::list<AstDeclaration*>::const_iterator next = i ;
 	next++;
 
 	if(next == m_params.end())
@@ -971,7 +995,7 @@ AstFunctionDefinition::~AstFunctionDefinition()
 
 void AstFunctionDefinition::registerFunction(SteelInterpreter *pInterpreter)
 {
-    pInterpreter->registerFunction( m_pId->getValue(), m_pParams->getParams(), m_pStatements );
+    pInterpreter->registerFunction( m_pId->getValue(), m_pParams , m_pStatements );
 }
 
 ostream & AstFunctionDefinition::print (std::ostream &out)

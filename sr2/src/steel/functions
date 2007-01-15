@@ -3,29 +3,29 @@ function foo()
 	print ("HI!");
 }
 
-function add($a, $b)
+function add(var $a, var $b)
 {
 	return $a + $b;
 }
 
-function doodle($a, $b)
+function doodle(var $a, var $b)
 {
 	while ( $a < $b) $a = $a + 1;
 }
 
-function yoodle($a, $b)
+function yoodle(var $a,var $b)
 {
 	while ($a < $b) $a = $a - 1;
 }
 
-function array(@stuff)
+function array(var @stuff)
 {
-	var $len = @stuff;
+	var $len = len(@stuff);
 	
-	return @stuff;	
+	return $len;	
 }
 
-function dooda(@stuff, $b)
+function dooda(var @stuff, var $b)
 {
 	return $b + 2;
 }

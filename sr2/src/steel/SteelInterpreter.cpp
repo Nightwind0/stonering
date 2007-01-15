@@ -89,7 +89,7 @@ void SteelInterpreter::augment_array(const std::string &name, const SteelType &v
 }
 
 void SteelInterpreter::registerFunction(const std::string &name, 
-					const std::list<std::string> &params, 
+					AstParamDefinitionList *pParams, 
 					AstStatementList *pStatements)
 {
     
@@ -120,11 +120,13 @@ SteelType * SteelInterpreter::lookup_array_internal(const std::string &name)
 void SteelInterpreter::pushScope()
 {
     m_symbols.push_front ( VariableFile() );
+    m_arrays.push_front ( ArrayFile() );
 }
 
 void SteelInterpreter::popScope()
 {
     m_symbols.pop_front();
+    m_arrays.pop_front();
 }
 
 
