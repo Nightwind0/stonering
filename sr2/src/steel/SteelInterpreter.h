@@ -38,7 +38,6 @@ public:
     // Note: Runtime check that value is of type array
     // or throw TypeMismatch
     void assign_array(const std::string &name, const SteelType &value);
-    void augment_array(const std::string &name, const SteelType &value);
     std::string name_array_ref(const std::string &array_name); 
     void pushScope();
     void popScope();
@@ -53,13 +52,13 @@ private:
 
     typedef std::map<std::string, SteelType> VariableFile;
     typedef std::vector<SteelType> SteelArray;
-    typedef std::map<std::string,SteelArray> ArrayFile;
+    typedef std::map<SteelArrayRef,SteelArray> ArrayFile;
     
     std::list<VariableFile> m_symbols;
     std::list<ArrayFile> m_arrays;
 
     SteelType * lookup_internal(const std::string &name);
-    SteelType * lookup_array_internal(const std::string &name);
+    SteelArray * lookup_internal(const SteelArrayRef &ref);
 
     void registerBifs();
     std::map<std::string,SteelFunctor*> m_bifs;
