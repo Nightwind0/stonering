@@ -11,6 +11,7 @@ public:
 	SCANNING,
 	PARSING,
 	RUNTIME,
+	OUT_OF_BOUNDS,
 	UNKNOWN_IDENTIFIER,
 	TYPE_MISMATCH,
 	PARAM_MISMATCH
@@ -53,6 +54,10 @@ class TypeMismatch
 };
 
 class UnknownIdentifier
+{
+};
+
+class OutOfBounds
 {
 };
 

@@ -157,16 +157,16 @@ param_id %type "AstIdentifier*"
 
 param_definition %type "AstParamDefinitionList*"
 :
-	param_id:id 
+	vardecl:decl 
 			{
-				AstParamDefinitionList * pList = new AstParamDefinitionList(id->GetLine(),id->GetScript());
-				pList->add(static_cast<AstIdentifier*>(id));
+				AstParamDefinitionList * pList = new AstParamDefinitionList(decl->GetLine(),decl->GetScript());
+				pList->add(static_cast<AstDeclaration*>(decl));
 				return pList;		
 			}
 |
-	param_definition:list ',' param_id:id
+	param_definition:list ',' vardecl:decl
 			{
-				list->add(static_cast<AstIdentifier*>(id));
+				list->add(static_cast<AstDeclaration*>(decl));
 				return list;
 			}
 ;

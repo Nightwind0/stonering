@@ -8,6 +8,7 @@
 
 // fwd
 class AstStatementList; 
+class AstParamDefinitionList;
 
 class SteelInterpreter
 {
@@ -20,18 +21,29 @@ public:
     void run(const std::string &name,const std::string &script);
 
     SteelType lookup(const std::string &name);
+    // Array element lookup
     SteelType lookup(const std::string &array, int index);
     void declare(const std::string &name);
+
+    // Note: Step 1 is to create a SteelArray in the ArrayFile
+    // is to create a SteelType in the variable file, and set it's 
+    // array reference to the array
     void declare_array(const std::string &array, int size);
+
+    // Note: Runtime check that we aren't trying to assign an array
+    // to a var. throw TypeMismatch
     void assign(const std::string &name, const SteelType &value);
     void assign(const std::string &array, int index, const SteelType &value);
+
+    // Note: Runtime check that value is of type array
+    // or throw TypeMismatch
     void assign_array(const std::string &name, const SteelType &value);
     void augment_array(const std::string &name, const SteelType &value);
     std::string name_array_ref(const std::string &array_name); 
     void pushScope();
     void popScope();
     void registerFunction(const std::string &name, 
-			  const std::list<std::string> &params, 
+			  AstParamDefinitionList *pParams, 
 			  AstStatementList *pStatements);
     void setReturn(const SteelType &var);
     SteelType getReturn() const;
@@ -41,9 +53,10 @@ private:
 
     typedef std::map<std::string, SteelType> VariableFile;
     typedef std::vector<SteelType> SteelArray;
+    typedef std::map<std::string,SteelArray> ArrayFile;
     
     std::list<VariableFile> m_symbols;
-    std::map<std::string,SteelArray> m_arrays;
+    std::list<ArrayFile> m_arrays;
 
     SteelType * lookup_internal(const std::string &name);
     SteelType * lookup_array_internal(const std::string &name);
