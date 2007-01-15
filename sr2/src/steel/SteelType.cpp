@@ -17,7 +17,7 @@ bool operator==(const SteelArrayRef &lhs, const SteelArrayRef &rhs)
 SteelType::SteelType()
 {
     m_value.i = 0;
-    m_storage = INT;
+    m_storage = SteelType::INT;
 }
 
 SteelType::SteelType(const SteelType &rhs)
@@ -27,9 +27,9 @@ SteelType::SteelType(const SteelType &rhs)
 
 SteelType::~SteelType()
 {
-    if(m_storage == STRING)
+    if(m_storage == SteelType::STRING)
 	delete m_value.s;
-    else if (m_storage == ARRAY)
+    else if (m_storage == SteelType::ARRAY)
 	delete m_value.a;
 }
 
@@ -153,8 +153,17 @@ SteelType & SteelType::operator=(const SteelType &rhs)
 	delete m_value.s;
     else if (m_storage == ARRAY)
 	delete m_value.a;
-    m_value = rhs.m_value;
-    m_storage = rhs.m_storage;
+
+    if(rhs.m_storage == STRING)
+	set ( *rhs.m_value.s );
+    else if ( rhs.m_storage == ARRAY)
+	set ( *rhs.m_value.a );
+    else if ( rhs.m_storage == BOOL)
+	set ( rhs.m_value.b );
+    else if ( rhs.m_storage == INT)
+	set ( rhs.m_value.i );
+    else if ( rhs.m_storage == DOUBLE)
+	set ( rhs.m_value.d );
 
     return *this;
 }

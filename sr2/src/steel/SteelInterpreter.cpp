@@ -4,9 +4,12 @@
 #include "SteelFunctor.h"
 #include "SteelException.h"
 #include <sstream>
+#include <iostream>
+#include <string>
 
 SteelInterpreter::SteelInterpreter()
 {
+    registerBifs();
 }
 
 SteelInterpreter::~SteelInterpreter()
@@ -43,6 +46,29 @@ void SteelInterpreter::run(const std::string &name,const std::string &script)
     
 }
 
+SteelType SteelInterpreter::call(const std::string &name, ParamList &pList)
+{
+    // First, check the builtins. They can be considered like keywords.
+
+    std::map<std::string,SteelFunctor*>::iterator it = m_bifs.find( name );
+
+    if( it != m_bifs.end() )
+    {
+	// Its found, and its a bif.
+	SteelFunctor * pFunctor = it->second;
+	assert ( pFunctor != NULL );
+
+	return pFunctor->Call(pList);
+    }
+    else
+    {
+	//TODO: Look through the STEEL functions
+
+	throw UnknownIdentifier();
+    }
+
+    return SteelType();
+}
 
 void SteelInterpreter::setReturn(const SteelType &var)
 {
@@ -54,6 +80,30 @@ SteelType SteelInterpreter::getReturn() const
     return m_return;
 }
 
+
+void SteelInterpreter::declare(const std::string &name)
+{
+    VariableFile &file = m_symbols.front();
+
+    file[name] = SteelType();
+}
+
+// Note: Step 1 is to create a SteelArray in the ArrayFile
+// is to create a SteelType in the variable file, and set it's 
+// array reference to the array
+void SteelInterpreter::declare_array(const std::string &array, int size)
+{
+    VariableFile &file = m_symbols.front();
+    ArrayFile &array_file = m_arrays.front();
+
+    SteelArrayRef ref; 
+    std::string sref = name_array_ref( array );
+    ref.setArrayRef ( sref );
+    array_file[ref] = SteelArray(size);
+    
+    // set the variable to reference it
+    file[array].set ( ref );
+}
 
 
 SteelType SteelInterpreter::lookup(const std::string &name)
@@ -193,6 +243,8 @@ void SteelInterpreter::registerBifs()
 {
     addFunction( "push", new SteelFunctor2Arg<SteelInterpreter,const SteelArrayRef &,const SteelType&> ( this, &SteelInterpreter::push ) );
     addFunction( "pop", new SteelFunctor1Arg<SteelInterpreter,const SteelArrayRef &>(this, &SteelInterpreter::pop) );
+    addFunction( "print", new SteelFunctor1Arg<SteelInterpreter,const std::string & >(this, &SteelInterpreter::print ) );
+    addFunction( "len", new SteelFunctor1Arg<SteelInterpreter,const SteelArrayRef&>(this, &SteelInterpreter::len ) );
 }
 
 SteelType SteelInterpreter::push(const SteelArrayRef &ref, const SteelType &value)
@@ -217,5 +269,23 @@ SteelType SteelInterpreter::pop(const SteelArrayRef &ref)
     SteelType val = pArray->front();
     pArray->pop_back();
     
+    return val;
+}
+
+SteelType SteelInterpreter::print(const std::string &str)
+{
+    std::cout << str;
+}
+
+SteelType SteelInterpreter::len(const SteelArrayRef &ref)
+{
+    SteelArray *pArray = lookup_internal(ref);
+
+    if(pArray == NULL) throw UnknownIdentifier();
+
+    SteelType val;
+
+    val.set( (int)pArray->size() );
+
     return val;
 }

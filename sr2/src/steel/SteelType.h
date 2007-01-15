@@ -40,7 +40,7 @@ private:
 public:
     SteelType();
     SteelType(const SteelType &);
-    virtual ~SteelType();
+    ~SteelType();
 
     operator int () const;
     operator double () const;
