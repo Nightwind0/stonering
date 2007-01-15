@@ -147,9 +147,10 @@ ostream & AstExpressionStatement::print(std::ostream &out)
     out << *m_pExp << ';' << std::endl;
 }
 
-void AstExpressionStatement::execute(SteelInterpreter *pInterpreter)
+AstStatement::eStopType AstExpressionStatement::execute(SteelInterpreter *pInterpreter)
 {
     m_pExp->evaluate(pInterpreter);
+    return AstStatement::COMPLETED;
 }
 
 AstScript::AstScript(unsigned int line, const std::string &script)
@@ -210,16 +211,26 @@ AstStatementList::~AstStatementList()
 	i != m_list.end(); i++) delete *i;
 }
 
-void AstStatementList::execute(SteelInterpreter *pInterpreter)
+AstStatement::eStopType AstStatementList::execute(SteelInterpreter *pInterpreter)
 {
+    eStopType ret = COMPLETED;
     pInterpreter->pushScope();
     for(std::list<AstStatement*>::const_iterator it = m_list.begin();
 	it != m_list.end(); it++)
     {
+	
 	AstStatement * pStatement = *it;
-	pStatement->execute(pInterpreter);
+	eStopType stop = pStatement->execute(pInterpreter);
+
+	if(stop == BREAK || stop == RETURN || stop ==  CONTINUE)
+	{
+	    ret = stop;
+	    break;
+	}
     }
     pInterpreter->popScope();
+
+    return ret;
 }
 
 ostream & AstStatementList::print(std::ostream &out)
@@ -247,13 +258,18 @@ AstWhileStatement::~AstWhileStatement()
     delete m_pStatement;
 }
 
-void AstWhileStatement::execute(SteelInterpreter *pInterpreter)
+AstStatement::eStopType AstWhileStatement::execute(SteelInterpreter *pInterpreter)
 {
     // I expect it to cast to boolean
     while( m_pCondition->evaluate(pInterpreter) )
     {
-	// TODO: How to do break and continue?
-	m_pStatement->execute(pInterpreter);
+	eStopType stop = m_pStatement->execute(pInterpreter);
+
+	if(stop == BREAK) return COMPLETED;
+	else if(stop == RETURN) return RETURN;
+
+	// Note: if stop is CONTINUE,
+	// Then we just want to keep looping. So no action.
     }
 }
 
@@ -278,10 +294,11 @@ AstIfStatement::~AstIfStatement()
     delete m_pStatement;
 }
 
-void AstIfStatement::execute(SteelInterpreter *pInterpreter)
+AstStatement::eStopType AstIfStatement::execute(SteelInterpreter *pInterpreter)
 {
     if(m_pCondition->evaluate(pInterpreter))
-	m_pStatement->execute(pInterpreter);
+	return m_pStatement->execute(pInterpreter);
+    else return COMPLETED;
 }
 
 ostream & AstIfStatement::print(std::ostream &out)
@@ -306,9 +323,10 @@ AstReturnStatement::~AstReturnStatement()
     delete m_pExpression;
 }
 
-void AstReturnStatement::execute(SteelInterpreter *pInterpreter)
+AstStatement::eStopType AstReturnStatement::execute(SteelInterpreter *pInterpreter)
 {
     pInterpreter->setReturn( m_pExpression->evaluate(pInterpreter) );
+    return RETURN;
 }
 
 ostream & AstReturnStatement::print(std::ostream &out)
@@ -338,16 +356,22 @@ AstLoopStatement::~AstLoopStatement()
     delete m_pStatement;
 }
 
-void AstLoopStatement::execute(SteelInterpreter *pInterpreter)
+AstStatement::eStopType AstLoopStatement::execute(SteelInterpreter *pInterpreter)
 {
     for( m_pStart->evaluate( pInterpreter) ;
 	 m_pCondition->evaluate(pInterpreter) ;
 	 m_pIteration->evaluate( pInterpreter )
 	)
     {
-	// TODO: breaks and continues
-	m_pStatement->execute(pInterpreter);
+	eStopType stop = m_pStatement->execute(pInterpreter);
+
+	if(stop == BREAK) return COMPLETED;
+	else if (stop == RETURN) return RETURN;
+
+	// For both CONTINUE and COMPLETED, we just keep going.
     }
+
+    return COMPLETED;
 }
 
 ostream & AstLoopStatement::print(std::ostream &out)
@@ -572,6 +596,12 @@ SteelType AstCallExpression::evaluate(SteelInterpreter *pInterpreter)
 			     GetLine(),GetScript(),
 			     "Function '" + m_pId->getValue() + "' called with incorrect number of parameters.");
     }
+    catch(UnknownIdentifier e)
+    {
+	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
+			     GetLine(), GetScript(),
+			     "Unknown function: '" + m_pId->getValue() + '\'');
+    }
 
     return ret;
 }
@@ -661,6 +691,12 @@ SteelType AstArrayElement::evaluate(SteelInterpreter *pInterpreter)
 ostream & AstArrayElement::print(std::ostream &out)
 {
     out << *m_pId << '[' << *m_pExp << ']' ;
+}
+
+
+SteelType AstArrayIdentifier::evaluate(SteelInterpreter *pInterpreter)
+{
+    return SteelType();
 }
 
 
@@ -866,7 +902,7 @@ AstVarDeclaration::~AstVarDeclaration()
     delete m_pExp;
 }
 
-void AstVarDeclaration::execute(SteelInterpreter *pInterpreter)
+AstStatement::eStopType AstVarDeclaration::execute(SteelInterpreter *pInterpreter)
 {
     try{
 	pInterpreter->declare(m_pId->getValue());
@@ -881,6 +917,8 @@ void AstVarDeclaration::execute(SteelInterpreter *pInterpreter)
 			     GetScript(),
 			     "Unknown identifier: '" + m_pId->getValue() + '\'');
     }
+
+    return COMPLETED;
 }
 
 ostream & AstVarDeclaration::print(std::ostream &out)
@@ -913,7 +951,7 @@ void AstArrayDeclaration::assign(AstExpression *pExp)
 }
 
 
-void AstArrayDeclaration::execute(SteelInterpreter *pInterpreter)
+AstStatement::eStopType AstArrayDeclaration::execute(SteelInterpreter *pInterpreter)
 {
     if(m_pIndex)
 	pInterpreter->declare_array( m_pId->getValue(), m_pIndex->evaluate(pInterpreter));
@@ -921,6 +959,8 @@ void AstArrayDeclaration::execute(SteelInterpreter *pInterpreter)
 
     if(m_pExp)
 	pInterpreter->assign( m_pId->getValue(), m_pExp->evaluate(pInterpreter) );
+
+    return COMPLETED;
 }
 
 ostream & AstArrayDeclaration::print(std::ostream &out)

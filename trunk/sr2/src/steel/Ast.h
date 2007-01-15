@@ -42,9 +42,17 @@ class AstStatement : public AstBase
 public:
     AstStatement(unsigned int line, const std::string &script);
     virtual ~AstStatement();
+    
+    enum eStopType
+    {
+	BREAK,
+	RETURN,
+	CONTINUE,
+	COMPLETED
+    };
 
     virtual ostream & print(ostream &out);
-    virtual void execute(SteelInterpreter *pInterpreter){}
+    virtual eStopType execute(SteelInterpreter *pInterpreter){ return COMPLETED;}
 private:
 };
 
@@ -56,7 +64,7 @@ public:
     virtual ~AstExpressionStatement();
 
     virtual ostream & print(std::ostream &out);
-    virtual void execute(SteelInterpreter *pInterpreter);
+    virtual eStopType execute(SteelInterpreter *pInterpreter);
 private:
     AstExpression *m_pExp;
 };
@@ -90,7 +98,7 @@ public:
 
     virtual ostream & print(std::ostream &out);
     void add(AstStatement *pStatement) { m_list.push_back(pStatement); }
-    virtual void execute(SteelInterpreter *pInterpreter);
+    virtual eStopType execute(SteelInterpreter *pInterpreter);
 private:
     std::list<AstStatement*> m_list;
 };
@@ -102,7 +110,7 @@ public:
     virtual ~AstWhileStatement();
 
     virtual ostream & print(std::ostream &out);
-    virtual void execute(SteelInterpreter *pInterpreter);
+    virtual eStopType execute(SteelInterpreter *pInterpreter);
 	
 private:
     AstExpression * m_pCondition;
@@ -118,7 +126,7 @@ public:
     virtual ~AstIfStatement();
 
     virtual ostream & print(std::ostream &out);
-    virtual void execute(SteelInterpreter *pInterpreter);
+    virtual eStopType execute(SteelInterpreter *pInterpreter);
 private:
     AstExpression *m_pCondition;
     AstStatement *m_pElse;
@@ -132,7 +140,7 @@ public:
     virtual ~AstReturnStatement();
 
     virtual ostream & print(std::ostream &out);
-    virtual void execute(SteelInterpreter *pInterpreter);
+    virtual eStopType execute(SteelInterpreter *pInterpreter);
 private:
     AstExpression *m_pExpression;
 };
@@ -146,7 +154,7 @@ public:
 	virtual ~AstBreakStatement(){}
 
 	virtual ostream & print(std::ostream &out){ out << "break;" << std::endl ;}
-	virtual void execute(SteelInterpreter *pInterpreter);
+	virtual eStopType execute(SteelInterpreter *pInterpreter) { return BREAK; }
 private:
 
 };
@@ -159,7 +167,7 @@ public:
 	virtual ~AstContinueStatement(){}
 
 	virtual ostream & print(std::ostream &out){ out << "continue;" << std::endl; }
-	virtual void execute(SteelInterpreter *pInterpreter);
+	virtual eStopType execute(SteelInterpreter *pInterpreter) { return CONTINUE; }
 private:
 
 };
@@ -176,7 +184,7 @@ public:
     virtual ~AstLoopStatement();
 
     virtual ostream & print(std::ostream &out);
-    virtual void execute(SteelInterpreter *pInterpreter);
+    virtual eStopType execute(SteelInterpreter *pInterpreter);
 private:
     AstExpression *m_pStart;
     AstExpression *m_pCondition;
@@ -193,7 +201,7 @@ public:
 	:AstBase(line,script){}
 	virtual ~AstExpression(){}
 
-	virtual SteelType evaluate(SteelInterpreter *pInterpreter);
+	virtual SteelType evaluate(SteelInterpreter *pInterpreter){ return SteelType();}
 private:
 };
 
@@ -275,7 +283,8 @@ public:
 	:AstIdentifier(line,script,value){}
     virtual ~AstFuncIdentifier(){}
 
-    virtual SteelType evaluate(SteelInterpreter *pInterpreter);
+    // Right? Because this isn't the same as a call?
+    virtual SteelType evaluate(SteelInterpreter *pInterpreter) { return SteelType(); }
 
 private:
 };
@@ -490,7 +499,7 @@ public:
 		      AstExpression *pExp = NULL);
     virtual ~AstVarDeclaration();
     virtual ostream & print(std::ostream &out);
-    virtual void execute(SteelInterpreter *pInterpreter);
+    virtual eStopType execute(SteelInterpreter *pInterpreter);
 private:
     AstVarIdentifier *m_pId ;
     AstExpression * m_pExp;
@@ -508,7 +517,7 @@ public:
 
     virtual ~AstArrayDeclaration();
     virtual ostream & print(std::ostream &out);
-    virtual void execute(SteelInterpreter *pInterpreter);
+    virtual eStopType execute(SteelInterpreter *pInterpreter);
 private:
     AstArrayIdentifier *m_pId;
     AstInteger *m_pIndex;

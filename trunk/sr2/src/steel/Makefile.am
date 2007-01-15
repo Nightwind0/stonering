@@ -1,4 +1,5 @@
 noinst_LTLIBRARIES = libsteel.la
+noinst_PROGRAMS = steel
 
 libsteel_la_SOURCES = SteelParser.cpp \
 			SteelParser.h \
@@ -29,3 +30,6 @@ test_parser : test_parser.cpp SteelParser.o SteelScanner.o Ast.o
 func_test : SteelFunctor.h func_test.cpp SteelFunctor.cpp
 	g++ -g func_test.cpp SteelFunctor.cpp -o func_test
 
+
+steel_SOURCES = steel.cpp
+steel_LDADD = libsteel.la
