@@ -1,4 +1,7 @@
 #include "Ast.h"
+#include "SteelInterpreter.h"
+#include "SteelType.h"
+#include "SteelException.h"
 #include <string>
 #include <iostream>
 #include <cassert>
@@ -31,6 +34,13 @@ ostream & AstInteger::print(std::ostream &out)
     return out;
 }
 
+SteelType AstInteger::evaluate(SteelInterpreter *pInterpreter)
+{
+    SteelType val;
+    val.set(m_value);
+    return val;
+}
+
 AstString::AstString(unsigned int line,
 		     const std::string &script)
     : AstExpression(line,script)
@@ -54,6 +64,14 @@ ostream & AstString::print(std::ostream &out)
     return out;
 }
 
+SteelType AstString::evaluate(SteelInterpreter *pInterpreter)
+{
+    SteelType var;
+    var.set(m_value);
+
+    return var;
+}
+
 
 AstFloat::AstFloat(unsigned int line,
 		   const std::string &script,
@@ -67,6 +85,14 @@ ostream & AstFloat::print(std::ostream &out)
 {
     out << m_value;
     return out;
+}
+
+SteelType AstFloat::evaluate(SteelInterpreter *pInterpreter)
+{
+    SteelType var;
+    var.set(m_value);
+    
+    return var;
 }
 
 AstIdentifier::AstIdentifier(unsigned int line,
@@ -83,6 +109,11 @@ ostream & AstIdentifier::print(std::ostream &out)
     return out;
 }
 
+SteelType AstIdentifier::evaluate(SteelInterpreter *pInterpreter)
+{
+    // Shouldn't ever be called.
+    return SteelType();
+}
 
 
 AstStatement::AstStatement(unsigned int line, const std::string &script)
@@ -116,12 +147,18 @@ ostream & AstExpressionStatement::print(std::ostream &out)
     out << *m_pExp << ';' << std::endl;
 }
 
+void AstExpressionStatement::execute(SteelInterpreter *pInterpreter)
+{
+    m_pExp->evaluate(pInterpreter);
+}
+
 AstScript::AstScript(unsigned int line, const std::string &script)
-    :AstBase(line,script),m_pList(NULL)
+    :AstBase(line,script),m_pFunctions(NULL),m_pList(NULL)
 {
 }
 AstScript::~AstScript()
 {
+    delete m_pFunctions;
     delete m_pList;
 }
 
@@ -131,6 +168,14 @@ ostream & AstScript::print(std::ostream &out)
     else if(m_pFunctions) out << *m_pFunctions;
 
     return out;
+}
+
+void AstScript::executeScript(SteelInterpreter *pInterpreter)
+{
+    if(m_pList)
+    {
+	m_pList->execute(pInterpreter);
+    }
 }
 
 void AstScript::SetList(AstStatementList *pList)
@@ -143,6 +188,17 @@ void AstScript::SetFunctionList( AstFunctionDefinitionList * pList)
     m_pFunctions = pList;
 }
 
+bool AstScript::containsFunctions() const
+{
+    return ( m_pFunctions != NULL );
+}
+
+void AstScript::registerFunctions(SteelInterpreter * pInterpreter)
+{
+    assert ( containsFunctions() );
+    m_pFunctions->registerFunctions(pInterpreter);
+}
+
 AstStatementList::AstStatementList(unsigned int line, const std::string &script)
     :AstStatement(line,script)
 {
@@ -152,6 +208,18 @@ AstStatementList::~AstStatementList()
 {
     for(std::list<AstStatement*>::iterator i = m_list.begin();
 	i != m_list.end(); i++) delete *i;
+}
+
+void AstStatementList::execute(SteelInterpreter *pInterpreter)
+{
+    pInterpreter->pushScope();
+    for(std::list<AstStatement*>::const_iterator it = m_list.begin();
+	it != m_list.end(); it++)
+    {
+	AstStatement * pStatement = *it;
+	pStatement->execute(pInterpreter);
+    }
+    pInterpreter->popScope();
 }
 
 ostream & AstStatementList::print(std::ostream &out)
@@ -179,6 +247,16 @@ AstWhileStatement::~AstWhileStatement()
     delete m_pStatement;
 }
 
+void AstWhileStatement::execute(SteelInterpreter *pInterpreter)
+{
+    // I expect it to cast to boolean
+    while( m_pCondition->evaluate(pInterpreter) )
+    {
+	// TODO: How to do break and continue?
+	m_pStatement->execute(pInterpreter);
+    }
+}
+
 ostream & AstWhileStatement::print(std::ostream &out)
 {
     out << "while (" << *m_pCondition << ")\n"
@@ -198,6 +276,12 @@ AstIfStatement::~AstIfStatement()
     delete m_pCondition;
     delete m_pElse;
     delete m_pStatement;
+}
+
+void AstIfStatement::execute(SteelInterpreter *pInterpreter)
+{
+    if(m_pCondition->evaluate(pInterpreter))
+	m_pStatement->execute(pInterpreter);
 }
 
 ostream & AstIfStatement::print(std::ostream &out)
@@ -220,6 +304,11 @@ AstReturnStatement::AstReturnStatement(unsigned int line, const std::string &scr
 AstReturnStatement::~AstReturnStatement()
 {
     delete m_pExpression;
+}
+
+void AstReturnStatement::execute(SteelInterpreter *pInterpreter)
+{
+    pInterpreter->setReturn( m_pExpression->evaluate(pInterpreter) );
 }
 
 ostream & AstReturnStatement::print(std::ostream &out)
@@ -249,6 +338,18 @@ AstLoopStatement::~AstLoopStatement()
     delete m_pStatement;
 }
 
+void AstLoopStatement::execute(SteelInterpreter *pInterpreter)
+{
+    for( m_pStart->evaluate( pInterpreter) ;
+	 m_pCondition->evaluate(pInterpreter) ;
+	 m_pIteration->evaluate( pInterpreter )
+	)
+    {
+	// TODO: breaks and continues
+	m_pStatement->execute(pInterpreter);
+    }
+}
+
 ostream & AstLoopStatement::print(std::ostream &out)
 {
     out << "for (" << *m_pStart << ';' << *m_pCondition << ';' << *m_pIteration << ')' << *m_pStatement;
@@ -262,7 +363,7 @@ ostream & AstLoopStatement::print(std::ostream &out)
 
 AstBinOp::AstBinOp(unsigned int line,
 		   const std::string &script,
-		   Op op, AstExpression *right, AstExpression *left)
+		   Op op, AstExpression *left, AstExpression *right)
     :AstExpression(line,script),m_op(op),m_right(right),m_left(left)
 {
 }
@@ -312,9 +413,76 @@ std::string AstBinOp::ToString(Op op)
     }
 }
 
+SteelType AstBinOp::evaluate(SteelInterpreter *pInterpreter)
+{
+    try{
+
+	switch( m_op )
+	{
+	case ADD:
+
+	    return m_left->evaluate(pInterpreter) 
+		+ m_right->evaluate(pInterpreter);
+	    
+	case SUB:
+	    return m_left->evaluate(pInterpreter) 
+		- m_right->evaluate(pInterpreter);
+	case MULT:
+	    return m_left->evaluate(pInterpreter) 
+		* m_right->evaluate(pInterpreter);
+	case DIV:
+	    return m_left->evaluate(pInterpreter)
+		/ m_right->evaluate(pInterpreter);
+	case MOD:
+	    return m_left->evaluate(pInterpreter)
+		% m_right->evaluate(pInterpreter);
+	case AND:
+	    return m_left->evaluate(pInterpreter)
+		&& m_right->evaluate(pInterpreter);
+	case OR:
+	    return m_left->evaluate(pInterpreter)
+		|| m_right->evaluate(pInterpreter);
+	case D:
+	    return m_left->evaluate(pInterpreter).d( m_right->evaluate(pInterpreter));
+	case POW:
+	    return m_left->evaluate(pInterpreter)
+		^ m_right->evaluate(pInterpreter);
+	case EQ:
+	    return m_left->evaluate(pInterpreter)
+		== m_right->evaluate(pInterpreter);
+	case NE:
+	    return m_left->evaluate(pInterpreter)
+		!= m_right->evaluate(pInterpreter);
+	case LT:
+	    return m_left->evaluate(pInterpreter)
+		< m_right->evaluate(pInterpreter);
+	case GT:
+	    return m_left->evaluate(pInterpreter)
+		> m_right->evaluate(pInterpreter);
+	case LTE:
+	    return m_left->evaluate(pInterpreter)
+		<= m_right->evaluate(pInterpreter);
+	case GTE:
+	    return m_left->evaluate(pInterpreter)
+		>= m_right->evaluate(pInterpreter);
+	default:
+	    assert(0);
+	
+	}
+    }
+    catch(OperationMismatch m)
+    {
+	throw SteelException(SteelException::RUNTIME,
+			     GetLine(),GetScript(),
+			     "Binary operation '" + ToString(m_op) + "' disallowed between these types");
+    }
+
+    return SteelType();
+}
+
 ostream & AstBinOp::print(std::ostream &out)
 {
-    out << *m_right <<  ToString(m_op) << *m_left;
+    out << *m_left <<  ToString(m_op) << *m_right;
 
     return out;
 }
@@ -348,6 +516,28 @@ std::string AstUnaryOp::ToString(Op op)
     }
 }
 
+SteelType AstUnaryOp::evaluate(SteelInterpreter *pInterpreter)
+{
+    try{
+    
+	switch(m_op)
+	{
+	case MINUS:
+	    return - m_operand->evaluate(pInterpreter);
+	case PLUS:
+	    return m_operand->evaluate(pInterpreter);
+	case NOT:
+	    return ! m_operand->evaluate(pInterpreter);
+	}
+    }
+    catch(OperationMismatch m)
+    {
+	throw SteelException(SteelException::RUNTIME,
+			     GetLine(),GetScript(),
+			     "Unary operation '" + ToString(m_op) + "' disallowed on this type");
+    }
+}
+
 ostream & AstUnaryOp::print(std::ostream &out)
 {
     out << ToString(m_op) << *m_operand;
@@ -365,6 +555,25 @@ AstCallExpression::~AstCallExpression()
 {
     delete m_pId;
     delete m_pParams;
+}
+
+SteelType AstCallExpression::evaluate(SteelInterpreter *pInterpreter)
+{
+    SteelType ret;
+    try{
+	// Has to be on the stack because it gets changed
+	ParamList list = m_pParams->getParamList(pInterpreter);
+	// This empties the list. But thats okay because its about to go out of scope
+	ret = pInterpreter->call( m_pId->getValue(), list );
+    }
+    catch(ParamMismatch m)
+    {
+	throw SteelException(SteelException::PARAM_MISMATCH,
+			     GetLine(),GetScript(),
+			     "Function '" + m_pId->getValue() + "' called with incorrect number of parameters.");
+    }
+
+    return ret;
 }
 
 ostream & AstCallExpression::print(std::ostream &out)
@@ -419,6 +628,29 @@ AstArrayElement::~AstArrayElement()
     delete m_pExp;
 }
 
+int AstArrayElement::getArrayIndex(SteelInterpreter *pInterpreter) const
+{
+    return m_pExp->evaluate(pInterpreter);
+}
+std::string AstArrayElement::getArrayName() const
+{
+    return m_pId->getValue();
+}
+
+SteelType AstArrayElement::evaluate(SteelInterpreter *pInterpreter)
+{
+    try{
+	return pInterpreter->lookup(m_pId->getValue(), m_pExp->evaluate(pInterpreter));
+    }
+    catch(UnknownIdentifier e)
+    {
+	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
+			     GetLine(),
+			     GetScript(),
+			     "Unknown identifier:'" + m_pId->getValue() + '\'');
+    }
+}
+
 ostream & AstArrayElement::print(std::ostream &out)
 {
     out << *m_pId << '[' << *m_pExp << ']' ;
@@ -438,6 +670,22 @@ AstVarAssignmentExpression::~AstVarAssignmentExpression()
 {
     delete m_pId;
     delete m_pExpression;
+}
+
+SteelType AstVarAssignmentExpression::evaluate(SteelInterpreter *pInterpreter)
+{
+    SteelType exp = m_pExpression->evaluate(pInterpreter);
+    try{
+	pInterpreter->assign ( m_pId->getValue(), exp );
+    }
+    catch(UnknownIdentifier e)
+    {
+	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
+			     GetLine(),
+			     GetScript(),
+			     "Unknown identifier:'" + m_pId->getValue() + '\'');
+    }
+    return exp;
 }
 
 ostream & AstVarAssignmentExpression::print(std::ostream &out)
@@ -464,6 +712,20 @@ AstArrayAssignmentExpression::~AstArrayAssignmentExpression()
 }
 
 
+SteelType AstArrayAssignmentExpression::evaluate(SteelInterpreter *pInterpreter)
+{
+    SteelType exp = m_pExpression->evaluate(pInterpreter);
+    
+    if(!exp.isArray())
+	throw SteelException(SteelException::TYPE_MISMATCH, 
+			     GetLine(),
+			     GetScript(),
+			     "Illegal attempt to assign a non-array to a array '" + m_pId->getValue() + '\'');
+
+    pInterpreter->assign_array( m_pId->getValue(), exp );
+    return exp;
+}
+
 ostream & AstArrayAssignmentExpression::print(std::ostream &out)
 {
     out << *m_pId << '=' << *m_pExpression;
@@ -483,6 +745,20 @@ AstArrayElementAssignmentExpression::~AstArrayElementAssignmentExpression()
     delete m_pExp;
 }
 
+SteelType AstArrayElementAssignmentExpression::evaluate(SteelInterpreter *pInterpreter)
+{
+    try {
+	pInterpreter->assign(m_pId->getArrayName(),m_pId->getArrayIndex(pInterpreter), m_pExp->evaluate(pInterpreter));
+    }
+    catch(UnknownIdentifier e)
+    {
+	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
+			     GetLine(),
+			     GetScript(),
+			     "Unknown identifier: '" + m_pId->getArrayName() + '\'');
+    }
+}
+
 ostream & AstArrayElementAssignmentExpression::print (std::ostream &out)
 {
     out << *m_pId << '=' << *m_pExp << ';' << std::endl;
@@ -498,6 +774,17 @@ AstParamList::~AstParamList()
 {
     for(std::list<AstExpression*>::iterator i = m_params.begin();
 	i != m_params.end(); i++) delete *i;
+}
+
+ParamList AstParamList::getParamList(SteelInterpreter *pInterpreter) const 
+{
+    ParamList params;
+    
+    for(std::list<AstExpression*>::const_iterator i = m_params.begin();
+	i != m_params.end(); i++)
+	params.enqueue ( (*i)->evaluate(pInterpreter) );
+
+    return params;
 }
 
 void AstParamList::add(AstExpression *pExp)
@@ -522,6 +809,24 @@ ostream & AstParamList::print(std::ostream &out)
     return out;
 }
 
+SteelType AstVarIdentifier::evaluate(SteelInterpreter *pInterpreter)
+{
+    try
+    {
+	SteelType val = pInterpreter->lookup ( getValue() );
+	return val;
+    }
+    catch(UnknownIdentifier e)
+    {
+	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
+			     GetLine(),
+			     GetScript(),
+			     "Unknown identifier:'" + getValue() + '\'');
+    }
+    
+}
+
+
 AstVarDeclaration::AstVarDeclaration(unsigned int line,
 				     const std::string &script,
 				     AstVarIdentifier *pId,
@@ -535,6 +840,24 @@ AstVarDeclaration::~AstVarDeclaration()
     delete m_pId;
     delete m_pExp;
 }
+
+void AstVarDeclaration::execute(SteelInterpreter *pInterpreter)
+{
+    try{
+	pInterpreter->declare(m_pId->getValue());
+	
+	if(m_pExp) 
+	    pInterpreter->assign( m_pId->getValue(), m_pExp->evaluate(pInterpreter) );
+    }
+    catch(UnknownIdentifier e)
+    {
+	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
+			     GetLine(),
+			     GetScript(),
+			     "Unknown identifier: '" + m_pId->getValue() + '\'');
+    }
+}
+
 ostream & AstVarDeclaration::print(std::ostream &out)
 {
     out << "var " << *m_pId;
@@ -565,6 +888,14 @@ void AstArrayDeclaration::assign(AstExpression *pExp)
 }
 
 
+void AstArrayDeclaration::execute(SteelInterpreter *pInterpreter)
+{
+    pInterpreter->declare_array( m_pId->getValue(), m_pIndex->evaluate(pInterpreter));
+
+    if(m_pExp)
+	pInterpreter->assign( m_pId->getValue(), m_pExp->evaluate(pInterpreter) );
+}
+
 ostream & AstArrayDeclaration::print(std::ostream &out)
 {
     out << "var " << *m_pId ;
@@ -585,12 +916,24 @@ AstParamDefinitionList::AstParamDefinitionList(unsigned int line,
 AstParamDefinitionList::~AstParamDefinitionList()
 {
     for(std::list<AstIdentifier*>::iterator i = m_params.begin();
-	    i != m_params.end(); i++) delete *i;
+	    i != m_params.end(); i++) 
+	delete *i;
 }
 
 void AstParamDefinitionList::add(AstIdentifier *pDef)
 {
     m_params.push_back( pDef );
+}
+
+std::list<std::string> 
+AstParamDefinitionList::getParams() const
+{
+    std::list<std::string> params;
+    for(std::list<AstIdentifier*>::const_iterator i = m_params.begin();
+	i != m_params.end(); i++)
+	params.push_back ( (*i)->getValue() );
+	
+    return params;
 }
 
 ostream & AstParamDefinitionList::print (std::ostream &out)
@@ -626,6 +969,11 @@ AstFunctionDefinition::~AstFunctionDefinition()
     delete m_pStatements;
 }
 
+void AstFunctionDefinition::registerFunction(SteelInterpreter *pInterpreter)
+{
+    pInterpreter->registerFunction( m_pId->getValue(), m_pParams->getParams(), m_pStatements );
+}
+
 ostream & AstFunctionDefinition::print (std::ostream &out)
 {
     out << "function " << *m_pId  << '(' ;
@@ -649,6 +997,15 @@ AstFunctionDefinitionList::~AstFunctionDefinitionList()
 void AstFunctionDefinitionList::add(AstFunctionDefinition *pFunc)
 {
     m_functions.push_back(pFunc);
+}
+
+void AstFunctionDefinitionList::registerFunctions(SteelInterpreter * pInterpreter)
+{
+    for(std::list<AstFunctionDefinition*>::iterator i = m_functions.begin();
+	i != m_functions.end(); i++)
+    {
+	(*i)->registerFunction(pInterpreter);
+    }
 }
 
 ostream & AstFunctionDefinitionList::print (std::ostream &out)

@@ -4,35 +4,8 @@
 
 #include <string>
 #include <queue>
+#include "SteelType.h"
 
-class SteelType
-{
-public:
-    SteelType();
-    SteelType(const SteelType &);
-    virtual ~SteelType();
-
-    operator int ();
-    operator double ();
-    operator std::string ();
-    operator bool ();
-
-    SteelType & operator=(const SteelType &rhs);
-
-private:
-};
-
-class ParamList
-{
-public:
-    ParamList();
-    virtual ~ParamList();
-    
-    SteelType next();
-    void enqueue(const SteelType &type);
-private:
-    std::queue<SteelType> m_params;
-};
 
 class SteelFunctor
 {
@@ -97,6 +70,45 @@ public:
 private:
     FuncPointer  m_pFunc;
     ObjType * m_pObj;
+};
+
+template<class ObjType, class Arg1, class Arg2, class Arg3>
+    class SteelFunctor3Arg : public SteelFunctor
+{
+public:
+    typedef SteelType (ObjType::*FuncPointer)(Arg1,Arg2,Arg3);
+    SteelFunctor3Arg(ObjType *pObj, FuncPointer p)
+	:m_pFunc(p),m_pObj(pObj){}
+	virtual ~SteelFunctor3Arg(){}
+	virtual SteelType Call(ParamList &params)
+	{
+	    (m_pObj->*m_pFunc)(params.next(),
+			       params.next(),
+			       params.next());
+	}
+private:
+	FuncPointer m_pFunc;
+	ObjType *m_pObj;
+};
+
+template<class ObjType, class Arg1, class Arg2, class Arg3, class Arg4>
+    class SteelFunctor4Arg : public SteelFunctor
+{
+public:
+    typedef SteelType (ObjType::*FuncPointer)(Arg1,Arg2,Arg3,Arg4);
+    SteelFunctor4Arg(ObjType *pObj, FuncPointer p):
+	m_pFunc(p),m_pObj(pObj){}
+	virtual ~SteelFunctor4Arg(){}
+	virtual SteelType Call(ParamList &params)
+	{
+	    (m_pObj->*m_pFunc)(params.next(),
+			       params.next(),
+			       params.next(),
+			       params.next());
+	}
+private:
+	FuncPointer m_pFunc;
+	ObjType *m_pObj;
 };
 
 /*

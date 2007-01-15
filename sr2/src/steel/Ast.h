@@ -4,9 +4,11 @@
 #include <string>
 #include <list>
 #include <iostream>
+#include "SteelType.h"
 
 using std::ostream;
 
+class SteelInterpreter;
 
 class AstBase
 {
@@ -42,6 +44,7 @@ public:
     virtual ~AstStatement();
 
     virtual ostream & print(ostream &out);
+    virtual void execute(SteelInterpreter *pInterpreter){}
 private:
 };
 
@@ -53,6 +56,7 @@ public:
     virtual ~AstExpressionStatement();
 
     virtual ostream & print(std::ostream &out);
+    virtual void execute(SteelInterpreter *pInterpreter);
 private:
     AstExpression *m_pExp;
 };
@@ -69,6 +73,9 @@ public:
     virtual ostream & print(std::ostream &out);
     void SetList( AstStatementList * pStatement);
     void SetFunctionList( AstFunctionDefinitionList *pList);
+    void executeScript(SteelInterpreter *pInterpreter);
+    bool containsFunctions() const;
+    void registerFunctions(SteelInterpreter *pInterpreter);
 private:
     AstFunctionDefinitionList * m_pFunctions;
     AstStatementList *m_pList;
@@ -83,6 +90,7 @@ public:
 
     virtual ostream & print(std::ostream &out);
     void add(AstStatement *pStatement) { m_list.push_back(pStatement); }
+    virtual void execute(SteelInterpreter *pInterpreter);
 private:
     std::list<AstStatement*> m_list;
 };
@@ -94,7 +102,7 @@ public:
     virtual ~AstWhileStatement();
 
     virtual ostream & print(std::ostream &out);
-    
+    virtual void execute(SteelInterpreter *pInterpreter);
 	
 private:
     AstExpression * m_pCondition;
@@ -110,6 +118,7 @@ public:
     virtual ~AstIfStatement();
 
     virtual ostream & print(std::ostream &out);
+    virtual void execute(SteelInterpreter *pInterpreter);
 private:
     AstExpression *m_pCondition;
     AstStatement *m_pElse;
@@ -123,6 +132,7 @@ public:
     virtual ~AstReturnStatement();
 
     virtual ostream & print(std::ostream &out);
+    virtual void execute(SteelInterpreter *pInterpreter);
 private:
     AstExpression *m_pExpression;
 };
@@ -136,6 +146,7 @@ public:
 	virtual ~AstBreakStatement(){}
 
 	virtual ostream & print(std::ostream &out){ out << "break;" << std::endl ;}
+	virtual void execute(SteelInterpreter *pInterpreter);
 private:
 
 };
@@ -148,6 +159,7 @@ public:
 	virtual ~AstContinueStatement(){}
 
 	virtual ostream & print(std::ostream &out){ out << "continue;" << std::endl; }
+	virtual void execute(SteelInterpreter *pInterpreter);
 private:
 
 };
@@ -164,6 +176,7 @@ public:
     virtual ~AstLoopStatement();
 
     virtual ostream & print(std::ostream &out);
+    virtual void execute(SteelInterpreter *pInterpreter);
 private:
     AstExpression *m_pStart;
     AstExpression *m_pCondition;
@@ -179,6 +192,8 @@ public:
 		  const std::string &script)
 	:AstBase(line,script){}
 	virtual ~AstExpression(){}
+
+	virtual SteelType evaluate(SteelInterpreter *pInterpreter);
 private:
 };
 
@@ -190,6 +205,7 @@ public:
     virtual ~AstInteger(){}
 
     virtual ostream & print(std::ostream &out);
+    virtual SteelType evaluate(SteelInterpreter *pInterpreter);
 private:
     int m_value;
 };
@@ -204,6 +220,7 @@ public:
     virtual ostream & print(std::ostream &out);
     void addChar(const char c);
     void addString(const std::string &str);
+    virtual SteelType evaluate(SteelInterpreter *pInterpreter);
 private:
     std::string m_value;
 };
@@ -217,6 +234,7 @@ public:
     virtual ~AstFloat(){}
 
     virtual ostream & print(std::ostream &out);
+    virtual SteelType evaluate(SteelInterpreter *pInterpreter);
 private:
     double m_value;
 };
@@ -229,6 +247,8 @@ public:
 		     const std::string &value);
     virtual ~AstIdentifier(){}
     virtual ostream & print(std::ostream &out);
+    virtual SteelType evaluate(SteelInterpreter *pInterpreter);
+    std::string getValue() { return m_value; }
 private:
     std::string m_value;
 };
@@ -242,6 +262,7 @@ public:
 	:AstIdentifier(line,script,value){}
     virtual ~AstVarIdentifier(){}
 
+    virtual SteelType evaluate(SteelInterpreter *pInterpreter);
 private:
 };
 
@@ -254,6 +275,8 @@ public:
 	:AstIdentifier(line,script,value){}
     virtual ~AstFuncIdentifier(){}
 
+    virtual SteelType evaluate(SteelInterpreter *pInterpreter);
+
 private:
 };
 
@@ -265,6 +288,8 @@ public:
 		       const std::string &value)
 	:AstIdentifier(line,script,value){}
     virtual ~AstArrayIdentifier(){}
+
+    virtual SteelType evaluate(SteelInterpreter *pInterpreter);
 private:
 };
 
@@ -299,7 +324,7 @@ public:
     virtual ~AstBinOp();
 
     virtual ostream & print(std::ostream &out);
-	     
+    virtual SteelType evaluate(SteelInterpreter *pInterpreter);
 private:
     Op m_op;
     AstExpression *m_right;
@@ -322,6 +347,7 @@ public:
 
     virtual ~AstUnaryOp();
     virtual ostream & print(std::ostream &out);
+    virtual SteelType evaluate(SteelInterpreter *pInterpreter);
 private:
     Op m_op;
     AstExpression *m_operand;
@@ -338,6 +364,7 @@ public:
     virtual ~AstCallExpression();
 
     virtual ostream & print(std::ostream &out);
+    virtual SteelType evaluate(SteelInterpreter *pInterpreter);
 private:
     AstFuncIdentifier *m_pId;
     AstParamList *m_pParams;
@@ -368,7 +395,10 @@ public:
 		    AstExpression *pExp);
     virtual ~AstArrayElement();
 
+    int getArrayIndex(SteelInterpreter *p) const;
+    std::string getArrayName() const;
     virtual ostream & print(std::ostream &out);
+    virtual SteelType evaluate(SteelInterpreter *pInterpreter);
 private:
     AstArrayIdentifier * m_pId;
     AstExpression * m_pExp;
@@ -385,6 +415,7 @@ public:
     virtual ~AstVarAssignmentExpression();
 
     virtual ostream & print(std::ostream &out);
+    virtual SteelType evaluate(SteelInterpreter *pInterpreter);
 private:
     AstVarIdentifier * m_pId;
     AstExpression * m_pExpression;
@@ -402,6 +433,7 @@ public:
     virtual ~AstArrayAssignmentExpression();
 
     virtual ostream & print(std::ostream &out);
+    virtual SteelType evaluate(SteelInterpreter *pInterpreter);
 private:
     AstArrayIdentifier * m_pId;
     AstExpression * m_pExpression;
@@ -418,6 +450,7 @@ public:
     virtual ~AstArrayElementAssignmentExpression();
 
     virtual ostream & print (std::ostream &out);
+    virtual SteelType evaluate(SteelInterpreter *pInterpreter);
 private:
     AstArrayElement * m_pId;
     AstExpression *m_pExp;
@@ -432,6 +465,7 @@ public:
 
     void add(AstExpression *pExp);
     virtual ostream & print(std::ostream &out);
+    ParamList getParamList(SteelInterpreter *p) const;
 private:
     std::list<AstExpression*> m_params;
 };
@@ -443,6 +477,7 @@ public:
 			const std::string &script)
 	:AstStatement(line,script){}
 	virtual ~AstDeclaration(){}
+	
 private:
 };
 
@@ -455,6 +490,7 @@ public:
 		      AstExpression *pExp = NULL);
     virtual ~AstVarDeclaration();
     virtual ostream & print(std::ostream &out);
+    virtual void execute(SteelInterpreter *pInterpreter);
 private:
     AstVarIdentifier *m_pId ;
     AstExpression * m_pExp;
@@ -472,6 +508,7 @@ public:
 
     virtual ~AstArrayDeclaration();
     virtual ostream & print(std::ostream &out);
+    virtual void execute(SteelInterpreter *pInterpreter);
 private:
     AstArrayIdentifier *m_pId;
     AstInteger *m_pIndex;
@@ -487,7 +524,8 @@ public:
     virtual ~AstParamDefinitionList();
 
     void add(AstIdentifier *pId);
-    virtual ostream & print (std::ostream &out);	       
+    virtual ostream & print (std::ostream &out);
+    std::list<std::string> getParams() const;
 private:
     std::list<AstIdentifier*> m_params;
 };
@@ -502,7 +540,10 @@ public:
 			  AstStatementList* pStmts);
     virtual ~AstFunctionDefinition();
 
+    void registerFunction(SteelInterpreter * pInterpreter);
     virtual ostream & print (std::ostream &out);
+    
+
 private:
     AstFuncIdentifier * m_pId;
     AstParamDefinitionList *m_pParams;
@@ -519,6 +560,8 @@ public:
 
     void add(AstFunctionDefinition *pFunc);
     virtual ostream & print (std::ostream &out);
+
+    void registerFunctions(SteelInterpreter * pInterpreter);
 private:
     std::list<AstFunctionDefinition*> m_functions;
 };
