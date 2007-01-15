@@ -298,7 +298,9 @@ AstStatement::eStopType AstIfStatement::execute(SteelInterpreter *pInterpreter)
 {
     if(m_pCondition->evaluate(pInterpreter))
 	return m_pStatement->execute(pInterpreter);
+    else if ( m_pElse) return m_pElse->execute(pInterpreter);
     else return COMPLETED;
+
 }
 
 ostream & AstIfStatement::print(std::ostream &out)
