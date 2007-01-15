@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <list>
+#include <vector>
 #include "SteelFunctor.h"
 
 // fwd
@@ -17,7 +18,7 @@ public:
     virtual ~SteelInterpreter();
 
     void addFunction(const std::string &name, SteelFunctor *pFunc);
-    SteelType call(const std::string &name, ParamList &pList);
+    SteelType call(const std::string &name, const std::vector<SteelType> &pList);
     void run(const std::string &name,const std::string &script);
 
     SteelType lookup(const std::string &name);

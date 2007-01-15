@@ -474,7 +474,7 @@ public:
 
     void add(AstExpression *pExp);
     virtual ostream & print(std::ostream &out);
-    ParamList getParamList(SteelInterpreter *p) const;
+    std::vector<SteelType> getParamList(SteelInterpreter *p) const;
 private:
     std::list<AstExpression*> m_params;
 };
