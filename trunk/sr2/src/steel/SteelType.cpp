@@ -4,6 +4,16 @@
 #include "SteelType.h"
 #include "SteelException.h"
 
+
+bool operator<(const SteelArrayRef &lhs, const SteelArrayRef &rhs)
+{
+    return lhs.m_array < rhs.m_array;
+}
+bool operator==(const SteelArrayRef &lhs, const SteelArrayRef &rhs)
+{
+    return lhs.m_array == rhs.m_array;
+}
+
 SteelType::SteelType()
 {
     m_value.i = 0;

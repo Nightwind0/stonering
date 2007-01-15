@@ -9,10 +9,21 @@ class SteelArrayRef
 public:
     SteelArrayRef(){}
     ~SteelArrayRef(){}
+
+    std::string getArrayRef() const { return m_array; }
+    void setArrayRef( const std::string &s){ m_array =s;}
 private:
     std::string m_array;
-
+    friend bool operator<(const SteelArrayRef &lhs, 
+			  const SteelArrayRef &rhs);
+    friend bool operator==(const SteelArrayRef &lhs, 
+			  const SteelArrayRef &rhs);
 };
+
+bool operator<(const SteelArrayRef &lhs, const SteelArrayRef &rhs);
+bool operator==(const SteelArrayRef &lhs, const SteelArrayRef &rhs);
+    
+
 
 class SteelType
 {
