@@ -3,6 +3,7 @@
 #include "SteelParser.h"
 #include "SteelFunctor.h"
 #include "SteelException.h"
+#include <ctime>
 #include <sstream>
 #include <iostream>
 #include <string>

@@ -20,6 +20,7 @@ namespace StoneRing
     class ItemManager;
 	class CharacterFactory;
     class Choice;
+	class State;
 
 class IApplication 
 {
@@ -41,7 +42,7 @@ class IApplication
       virtual int getScreenHeight()const=0;
 
       virtual CL_Rect getDisplayRect() const=0;
-
+	  virtual void requestRedraw(const State *pState)=0;
       virtual void playScene(const std::string &animation)=0;
       virtual void playSound(const std::string &sound)=0;
       virtual void loadLevel(const std::string &level, uint startX, uint startY)=0;

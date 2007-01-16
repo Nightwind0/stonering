@@ -45,7 +45,7 @@ namespace StoneRing
 	virtual const ItemManager * getItemManager() const;
 	virtual CL_Rect getDisplayRect() const;
 
-
+	virtual void requestRedraw(const State *pState);
 	virtual void playScene(const std::string &animation);
 	virtual void playSound(const std::string &sound);
 	virtual void loadLevel(const std::string &level, uint startX, uint startY);
@@ -93,7 +93,7 @@ namespace StoneRing
 	CL_ResourceManager * mpResources;
 	CL_DisplayWindow *mpWindow;
 	CL_Timer *mpMovementTimer;
-	
+	CL_Mutex mMovementMutex;
 
 	/* STATES */
 	MapState mMapState;

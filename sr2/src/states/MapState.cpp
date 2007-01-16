@@ -94,7 +94,7 @@ void StoneRing::MapState::handleKeyUp(const CL_InputEvent &key)
 
 void StoneRing::MapState::draw(const CL_Rect &screenRect,CL_GraphicContext * pGC)
 {
-	pGC->clear();
+	bool clearBg = false;
 	uint width = min( (unsigned int)screenRect.get_width(), mpLevel->getWidth() * 32);
 	uint height = min((unsigned int)screenRect.get_height(), mpLevel->getHeight() * 32);
 
@@ -106,15 +106,20 @@ void StoneRing::MapState::draw(const CL_Rect &screenRect,CL_GraphicContext * pGC
 	{
 		uint amount = (screenRect.get_width() - src.get_width()) /2;
 		dst.left += amount;
-		dst.right += amount;
+		dst.right -= amount;
+		clearBg = true;
 	}
 
 	if(screenRect.get_height() > src.get_height())
 	{
 		uint amount = (screenRect.get_height() - src.get_height()) /2;
 		dst.top += amount;
-		dst.bottom += amount;
+		dst.bottom -= amount;
+		clearBg = true;
 	}
+
+	if(clearBg)
+		pGC->clear();
 
     mpLevel->draw(src,dst, pGC, false,mbShowDebug,mbShowDebug);
     mpLevel->drawMappableObjects( src,dst, pGC);
@@ -214,11 +219,11 @@ void StoneRing::MapState::recalculatePlayerPosition()
     int X = mpPlayer->getLevelX();
     int Y = mpPlayer->getLevelY();
     
-    if( X  > mLevelX + (mScreenRect.get_width() / 2))
+    if( X  > mLevelX + (mScreenRect.get_width() / 2) && mpLevel->getWidth() * 32 > mScreenRect.get_width())
     {
         // Try to scroll right
         int amount = X - (mLevelX  + (mScreenRect.get_width()/2));
-            
+
         if(mLevelX + amount + mScreenRect.get_width() < mpLevel->getWidth() * 32)
         {
             mLevelX += amount;
@@ -230,9 +235,10 @@ void StoneRing::MapState::recalculatePlayerPosition()
         }
 
     }
-    if(X  <  mLevelX + (mScreenRect.get_width() / 2))
+    if(X  <  mLevelX + (mScreenRect.get_width() / 2) && mpLevel->getWidth() * 32 > mScreenRect.get_width())
     {
         int amount = (mLevelX + (mScreenRect.get_width()/2)) - X;
+
         if(mLevelX - amount >0)
         {
             mLevelX-= amount;
@@ -244,10 +250,10 @@ void StoneRing::MapState::recalculatePlayerPosition()
     }
     
     
-    if(Y > mLevelY + (mScreenRect.get_height()/2))
+    if(Y > mLevelY + (mScreenRect.get_height()/2) && mScreenRect.get_height() < mpLevel->getHeight() * 32)
     {
         int amount = Y - (mLevelY + (mScreenRect.get_height()/2));
-            
+
         if(mLevelY + amount + mScreenRect.get_height() < mpLevel->getHeight() * 32)
         {
             mLevelY+= amount;
@@ -258,9 +264,10 @@ void StoneRing::MapState::recalculatePlayerPosition()
         }
     }
 
-    if(Y  <  mLevelY + (mScreenRect.get_height() / 2))
+    if(Y  <  mLevelY + (mScreenRect.get_height() / 2) && mScreenRect.get_height() < mpLevel->getHeight() * 32)
     {
         int amount = (mLevelY + (mScreenRect.get_height()/2)) - Y;
+
         if(mLevelY - amount >0)
         {
             mLevelY-= amount;
@@ -279,6 +286,7 @@ void StoneRing::MapState::moveMappableObjects()
     mpLevel->moveMappableObjects(CL_Rect(mLevelX, mLevelY, 
 					 mLevelX + mScreenRect.get_width(),
 					 mLevelY + mScreenRect.get_height()));
+
 }
 
 void StoneRing::MapState::doTalk(bool prod)

@@ -18,7 +18,7 @@ public:
 
     unsigned int GetLine() const { return  m_line; }
     const std::string GetScript() const { return m_script_name; }
-    virtual ostream & print(ostream &out){}
+    virtual ostream & print(ostream &out){ return out;}
 private:
     unsigned int m_line;
     std::string m_script_name;
