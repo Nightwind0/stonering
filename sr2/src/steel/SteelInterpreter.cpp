@@ -49,9 +49,8 @@ void SteelInterpreter::run(const std::string &name,const std::string &script)
 
     AstScript *pScript = static_cast<AstScript*>( parser.GetAcceptedToken() );
 
-    if(pScript->containsFunctions())
-	pScript->registerFunctions(this);
-    else pScript->executeScript(this);
+
+    pScript->executeScript(this);
     
     
 }
