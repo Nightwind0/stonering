@@ -19,7 +19,7 @@ SteelType::SteelType()
     m_value.i = 0;
     m_value.s = NULL;
     m_value.a = NULL;
-    m_storage = SteelType::SteelType::INT;
+    m_storage = SteelType::INT;
 }
 
 SteelType::SteelType(const SteelType &rhs)
@@ -30,9 +30,9 @@ SteelType::SteelType(const SteelType &rhs)
 
 SteelType::~SteelType()
 {
-    if(m_storage == SteelType::SteelType::STRING)
+    if(m_storage == SteelType::STRING)
 	delete m_value.s;
-    else if (m_storage == SteelType::SteelType::ARRAY)
+    else if (m_storage == SteelType::ARRAY)
 	delete m_value.a;
 
     m_storage = SteelType::INT;
@@ -55,6 +55,8 @@ SteelType::operator int () const
     case SteelType::STRING:
 	return strInt();
     }
+	assert ( 0 );
+	return 0;
 }
 
 SteelType::operator double () const
@@ -73,6 +75,8 @@ SteelType::operator double () const
     case SteelType::STRING:
 	return strDouble();
     }
+	assert( 0 );
+	return 0.0;
 }
 
 SteelType::operator std::string () const
@@ -197,6 +201,9 @@ SteelType  SteelType::operator+(const SteelType &rhs)
 	val.set ( (std::string)*this + (std::string)rhs);
 	return val;
     }
+
+	assert ( 0 );
+	return val;
 }
 
 SteelType  SteelType::operator-(const SteelType &rhs)
@@ -220,6 +227,9 @@ SteelType  SteelType::operator-(const SteelType &rhs)
 	throw OperationMismatch();
 	return val;
     }
+
+	assert ( 0 );
+	return val;
 }
 
 SteelType  SteelType::operator*(const SteelType &rhs)
@@ -243,6 +253,9 @@ SteelType  SteelType::operator*(const SteelType &rhs)
 	throw OperationMismatch();
 	return val;
     }
+
+	assert ( 0 );
+	return val;
 }
 
 SteelType  SteelType::operator^(const SteelType &rhs)
@@ -257,15 +270,18 @@ SteelType  SteelType::operator^(const SteelType &rhs)
 	throw OperationMismatch();
 	return val;
     case SteelType::INT:
-	val.set ( pow(*this,rhs) );
+	val.set ( pow(*this,(int)rhs) );
 	return val;
     case SteelType::DOUBLE:
-	val.set ( pow(*this,rhs) );
+	val.set ( pow(*this,(double)rhs) );
 	return val;
     case SteelType::STRING:
 	throw OperationMismatch();
 	return val;
     }
+
+	assert ( 0 );
+	return val;
 }
 
 SteelType  SteelType::operator/(const SteelType &rhs)
@@ -289,6 +305,9 @@ SteelType  SteelType::operator/(const SteelType &rhs)
 	throw OperationMismatch();
 	return val;
     }
+
+	assert ( 0 );
+	return val;
 }
 
 SteelType  SteelType::operator%(const SteelType &rhs)
@@ -312,6 +331,9 @@ SteelType  SteelType::operator%(const SteelType &rhs)
 	throw OperationMismatch();
 	return val;
     }
+
+	assert ( 0 );
+	return val;
 }
 
 SteelType  SteelType::operator==(const SteelType &rhs)

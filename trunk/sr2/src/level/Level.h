@@ -64,10 +64,10 @@ namespace StoneRing {
 		Tilemap();
 		virtual ~Tilemap();
 		virtual eElement whichElement() const{ return ETILEMAP; }	     
-		ushort getMapX() const;
-		ushort getMapY() const;
+		inline ushort getMapX() const;
+		inline ushort getMapY() const;
 
-		CL_Surface * getTileMap() const;
+		inline CL_Surface * getTileMap() const { return mpSurface; }
 
 		virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
@@ -140,29 +140,27 @@ namespace StoneRing {
 		virtual eElement whichElement() const{ return ETILE; }	
 		ushort getZOrder() const;
 
-		bool isFloater() const;
-
+		inline bool isFloater() const;
 		bool evaluateCondition() const;
-
 		bool hasAM() const;
 
 		void activate(); // Call any attributemodifier
 
-		virtual uint getX() const;
-		virtual uint getY() const;
+		inline uint getX() const;
+		inline uint getY() const;
 
-		virtual CL_Rect getRect();
+		inline CL_Rect getRect();
 
-		virtual bool isSprite() const;
+		inline bool isSprite() const;
 
-		bool isHot() const;
+		inline bool isHot() const;
 
-		bool pops() const;
+		inline bool pops() const;
 
-		virtual void draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
+		inline void draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
 		virtual void update();
-		virtual int getDirectionBlock() const;
-		virtual bool isTile() const;
+		inline int getDirectionBlock() const;
+		inline bool isTile() const;
 		virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	protected:

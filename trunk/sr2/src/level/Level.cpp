@@ -234,7 +234,7 @@ int Level::getCumulativeDirectionBlockAtPoint(const CL_Point &point) const
 
     std::list<Tile*> tileList = mTileMap[point.x][point.y];
 
-    for(std::list<Tile*>::iterator iter = tileList.begin();
+    for(std::list<Tile*>::const_iterator iter = tileList.begin();
         iter != tileList.end();
         iter++)
     {
@@ -347,25 +347,26 @@ void Level::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC,
         
                 if(p.x >=0 && p.y >=0 && p.x < mLevelWidth && p.y < mLevelHeight)
                 {
-            
-            
+					CL_Rect tileSrc(0,0,32,32);            
+					CL_Rect tileDst ( exDst.left  + (tileX << 5),
+						exDst.top + (tileY << 5),
+						exDst.left + (tileX << 5) + 32,
+						exDst.top + (tileY << 5) + 32);
+
+			               
+					std::list<Tile*>::iterator end = mTileMap[p.x][p.y].end();
                     for(std::list<Tile*>::iterator i = mTileMap[p.x][p.y].begin();
-                        i != mTileMap[p.x][p.y].end();
+                        i != end;
                         i++)
                     {
-                        CL_Rect tileSrc(0,0,32,32);
-                        CL_Rect tileDst ( exDst.left  + (tileX << 5),
-                                          exDst.top + (tileY << 5),
-                                          exDst.left + (tileX << 5) + 32,
-                                          exDst.top + (tileY << 5) + 32);
-            
+
+               
                         Tile * pTile = *i;
                         if(pTile->evaluateCondition())
                         {
                             pTile->draw(tileSrc, tileDst , pGC );
                 
                 
-
                             // Extra code for level editing
                             if(highlightHot && pTile->isHot())
                             {
@@ -702,9 +703,10 @@ void Level::activateTilesAt ( uint x, uint y )
         iter != tileList.end();
         iter++)
     {
-        if((*iter)->evaluateCondition())
+		Tile *pTile = *iter;
+        if(pTile->evaluateCondition())
         {
-            if ( (*iter)->hasAM() )
+            if ( pTile->hasAM() )
             {
                 (*iter)->activate();
             }
@@ -920,15 +922,10 @@ void Level::LoadLevel( const std::string & filename  )
     CL_DomDocument document;
     CL_DomDocument otherdoc;
 
-
-
-    
     document.load(&file);
 
 
- 
     LoadLevel ( document );
-
 
 }
 

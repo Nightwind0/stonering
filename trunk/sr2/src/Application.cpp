@@ -23,8 +23,9 @@ using std::max;
 
 #endif
 
-const int WINDOW_HEIGHT = 600 ;
 const int WINDOW_WIDTH = 800 ;
+const int WINDOW_HEIGHT = 600 ;
+
 
 
 bool gbDebugStop;
@@ -209,8 +210,9 @@ CL_Rect Application::getDisplayRect() const
 void Application::setupClanLib()
 {
     CL_SetupCore::init();
+	CL_SetupGL::init();
     CL_SetupDisplay::init();
-    CL_SetupGL::init();
+   
         
 }
 
@@ -322,46 +324,61 @@ void Application::loadItems(const std::string &filename)
 }
 void Application::onSignalMovementTimer()
 {
-
+	mMovementMutex.enter();
     mMapState.moveMappableObjects();
 
     mStates.back()->mappableObjectMoveHook();
+	mMovementMutex.leave();
+}
 
+void Application::requestRedraw(const State * /*pState*/)
+{
+	draw();
 }
 
 void Application::draw()
 {
+	mMovementMutex.enter();
     CL_Rect dst = getDisplayRect();
 
     mpWindow->get_gc()->push_cliprect( dst);
 
+	std::vector<State*>::iterator end = mStates.end();
 
     for(std::vector<State*>::iterator iState = mStates.begin();
-        iState != mStates.end(); iState++)
+        iState != end; iState++)
     {
-        (*iState)->draw(dst, mpWindow->get_gc());
+		State * pState = *iState;
+        pState->draw(dst, mpWindow->get_gc());
         
-        if((*iState)->lastToDraw()) break; // Don't draw any further.
+        if(pState->lastToDraw()) break; // Don't draw any further.
 
     }
     
     mpWindow->get_gc()->pop_cliprect();
-
+	mMovementMutex.leave();
 }
 
 void Application::run()
 {
-
-    if ( mStates.back()->disableMappableObjects())
+	CL_FramerateCounter frameRate;
+	static int count = 0;
+	State * backState = mStates.back();
+    if ( backState->disableMappableObjects())
         mpMovementTimer->disable(); 
 
-    mStates.back()->start();
+    backState->start();
 
-    while(!mStates.back()->isDone())
+    while(!backState->isDone())
     {
         draw();
-        CL_System::keep_alive();
-        CL_Display::flip();
+		CL_Display::flip();
+		CL_System::sleep(10);
+		CL_System::keep_alive();
+#ifndef NDEBUG
+		if(count++ % 50 == 0)
+			std::cout << "FPS " <<  frameRate.get_fps() << std::endl;
+#endif
     }
 
 
@@ -406,16 +423,31 @@ int Application::main(int argc, char ** argv)
         // Load special overlay for say.
 
 
-        mpWindow  = new CL_DisplayWindow(name, WINDOW_WIDTH, WINDOW_HEIGHT);
+        mpWindow  = new CL_OpenGLWindow(name, WINDOW_WIDTH, WINDOW_HEIGHT,false,false,3);
+		//mpWindow->set_buffer_count(3);
 
-	//	mpWindow->get_buffer(0).to_format(CL_PixelFormat(24,0,0,0,0,false,0,pixelformat_rgba));
+#ifndef NDEBUG
+		std::cout << "Back Buffer Depth" <<mpWindow->get_back_buffer().get_format().get_depth() << std::endl;
+		std::cout << "Front Buffer Depth" << mpWindow->get_front_buffer().get_format().get_depth() << std::endl;
+		std::cout << "Back Buffer Red" << std::hex << mpWindow->get_back_buffer().get_format().get_red_mask() << std::endl;
+		std::cout << "Front Buffer Red" << std::hex << mpWindow->get_front_buffer().get_format().get_red_mask() << std::endl;
+		std::cout << "Back Buffer Green" << std::hex << mpWindow->get_back_buffer().get_format().get_green_mask() << std::endl;
+		std::cout << "Front Buffer Green" << std::hex << mpWindow->get_front_buffer().get_format().get_green_mask() << std::endl;
+		std::cout << "Back Buffer Blue" << std::hex << mpWindow->get_back_buffer().get_format().get_blue_mask() << std::endl;
+		std::cout << "Front Buffer Blue" << std::hex << mpWindow->get_front_buffer().get_format().get_blue_mask() << std::endl;
+		std::cout << "Back Buffer Alpha" << std::hex << mpWindow->get_back_buffer().get_format().get_alpha_mask() << std::endl;
+		std::cout << "Front Buffer Alpha" << std::hex << mpWindow->get_front_buffer().get_format().get_alpha_mask() << std::endl;
+		std::cout << std::dec;
+#endif
+		
+		//for(int i =0; i < mpWindow->get_buffer_count(); i++)
+		//	mpWindow->get_buffer(i).to_format(CL_PixelFormat(24,0,0,0,0,false,0,pixelformat_rgba));
 
-                
-        
+
+    
         CL_Display::clear();
 
-
-        showRechargeableOnionSplash();
+		showRechargeableOnionSplash();
         showIntro();
         loadStatusEffects(statusEffectDefinition);
         loadSpells(spelldefinition);
@@ -424,8 +456,9 @@ int Application::main(int argc, char ** argv)
 		loadCharacterClasses(classdefinition);
         Level * pLevel = new Level(startinglevel, mpResources);
 
+		mMapState.setDimensions(getDisplayRect());
         mMapState.pushLevel ( pLevel, 1,1 );  
-        mMapState.setDimensions(getDisplayRect());
+      
 
         mStates.push_back( &mMapState );
 
@@ -442,7 +475,7 @@ int Application::main(int argc, char ** argv)
 
         mpMovementTimer = new CL_Timer(32);
         CL_Slot slot_mo_timer = mpMovementTimer->sig_timer().connect(this,&Application::onSignalMovementTimer);
-        CL_FramerateCounter frameRate;
+       
         mpMovementTimer->enable();
 
         while(mStates.size())
@@ -454,8 +487,10 @@ int Application::main(int argc, char ** argv)
 
         }
                 
-
-                
+#ifndef NDEBUG
+        std::string foo;
+		std::getline(std::cin,foo);
+#endif
 
                 
         teardownClanLib();

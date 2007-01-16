@@ -21,7 +21,7 @@
 #include "WeaponRef.h"
 #include "ArmorRef.h"
 
-using namespace StoneRing;
+
 
 template<typename MapType,
          typename KeyArgType,
@@ -59,20 +59,20 @@ std::string BoolToString( const bool &b)
 // For the multimap of points
 bool operator < (const CL_Point &p1, const CL_Point &p2)
 {
-    uint p1value = (p1.y  *  IApplication::getInstance()->getScreenWidth()) + p1.x;
-    uint p2value = (p2.y  * IApplication::getInstance()->getScreenWidth()) + p2.x;
+	uint p1value = (p1.y  *  StoneRing::IApplication::getInstance()->getScreenWidth()) + p1.x;
+	uint p2value = (p2.y  * StoneRing::IApplication::getInstance()->getScreenWidth()) + p2.x;
     
     return p1value < p2value;
 }
 
-bool operator < (const MappableObject::eDirection dir1, const MappableObject::eDirection dir2)
+bool operator < (const StoneRing::MappableObject::eDirection dir1, const StoneRing::MappableObject::eDirection dir2)
 {
     return (int)dir1 < (int)dir2;
 }
 
 
 
-bool ItemRef::handleElement(eElement element, Element * pElement )
+bool StoneRing::ItemRef::handleElement(eElement element, StoneRing::Element * pElement )
 {
     switch(element)
     {
@@ -96,12 +96,12 @@ bool ItemRef::handleElement(eElement element, Element * pElement )
 	return true;
 }
 
-void ItemRef::loadAttributes(CL_DomNamedNodeMap *pAttributes)
+void StoneRing::ItemRef::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
     
 }
 
-void ItemRef::loadFinished()
+void StoneRing::ItemRef::loadFinished()
 {
 
     const ItemManager * pItemManager = IApplication::getInstance()->getItemManager();
@@ -116,7 +116,7 @@ void ItemRef::loadFinished()
 }
 
 
-ItemRef::ItemRef( ):
+StoneRing::ItemRef::ItemRef( ):
     mpNamedItemRef(NULL),mpWeaponRef(NULL),mpArmorRef(NULL)
 {
  
@@ -124,7 +124,7 @@ ItemRef::ItemRef( ):
 }
 
 
-CL_DomElement ItemRef::createDomElement(CL_DomDocument &doc) const
+CL_DomElement StoneRing::ItemRef::createDomElement(CL_DomDocument &doc) const
 {
     CL_DomElement element(doc, std::string("itemRef"));
 
@@ -146,7 +146,7 @@ CL_DomElement ItemRef::createDomElement(CL_DomDocument &doc) const
 
 }
 
-ItemRef::~ItemRef()
+StoneRing::ItemRef::~ItemRef()
 {
     delete mpNamedItemRef;
     delete mpWeaponRef;
@@ -155,7 +155,7 @@ ItemRef::~ItemRef()
 }
 
 #if 0
-std::string ItemRef::getItemName() const
+std::string StoneRing::ItemRef::getItemName() const
 {
     switch ( meType )
     {
@@ -171,48 +171,48 @@ std::string ItemRef::getItemName() const
 }
 #endif
 
-ItemRef::eRefType ItemRef::getType() const
+StoneRing::ItemRef::eRefType StoneRing::ItemRef::getType() const
 {
     return meType;
 }
 
-NamedItemRef * ItemRef::getNamedItemRef() const
+StoneRing::NamedItemRef * StoneRing::ItemRef::getNamedItemRef() const
 {
     return mpNamedItemRef;
 }
 
-WeaponRef * ItemRef::getWeaponRef() const
+StoneRing::WeaponRef * StoneRing::ItemRef::getWeaponRef() const
 {
     return mpWeaponRef;
 }
 
-ArmorRef * ItemRef::getArmorRef() const
+StoneRing::ArmorRef * StoneRing::ItemRef::getArmorRef() const
 {
     return mpArmorRef;
 }
 
 
 
-NamedItemRef::NamedItemRef()
+StoneRing::NamedItemRef::NamedItemRef()
 {
 }
 
-NamedItemRef:: ~NamedItemRef()
+StoneRing::NamedItemRef::~NamedItemRef()
 {
 }
 
 
-std::string NamedItemRef::getItemName()
+std::string StoneRing::NamedItemRef::getItemName()
 {
     return mName;
 }
 
-void NamedItemRef::handleText(const std::string &text)
+void StoneRing::NamedItemRef::handleText(const std::string &text)
 {
     mName = text;
 }
 
-CL_DomElement  NamedItemRef::createDomElement(CL_DomDocument &doc) const
+CL_DomElement  StoneRing::NamedItemRef::createDomElement(CL_DomDocument &doc) const
 {
     CL_DomElement element(doc,"namedItemRef");
 
@@ -226,7 +226,7 @@ CL_DomElement  NamedItemRef::createDomElement(CL_DomDocument &doc) const
 }
 
 
-CL_DomElement  Tilemap::createDomElement(CL_DomDocument &doc) const
+CL_DomElement  StoneRing::Tilemap::createDomElement(CL_DomDocument &doc) const
 {
     CL_DomElement  element(doc,"tilemap");
 
@@ -237,12 +237,12 @@ CL_DomElement  Tilemap::createDomElement(CL_DomDocument &doc) const
     return element;
 }
 
-bool Tilemap::handleElement(eElement element, Element * pElement)
+bool StoneRing::Tilemap::handleElement(eElement element, Element * pElement)
 {
 	return false;
 }
 
-void Tilemap::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+void StoneRing::Tilemap::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
     std::string name = getRequiredString("mapname",pAttributes);
     mpSurface = GraphicsManager::getInstance()->getTileMap(name);
@@ -251,32 +251,29 @@ void Tilemap::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 }
 
 
-Tilemap::Tilemap():mpSurface(NULL)
+StoneRing::Tilemap::Tilemap():mpSurface(NULL)
 {
     
 
 }
  
-Tilemap::~Tilemap()
+StoneRing::Tilemap::~Tilemap()
 {
 }
       
-ushort Tilemap::getMapX() const
+ushort StoneRing::Tilemap::getMapX() const
 {
     return mX;
 }
 
-ushort Tilemap::getMapY() const
+ushort StoneRing::Tilemap::getMapY() const
 {
     return mY;
 }
 
-CL_Surface* Tilemap::getTileMap() const
-{
-    return mpSurface;
-}
 
-CL_DomElement  SpriteRef::createDomElement(CL_DomDocument &doc) const
+
+CL_DomElement  StoneRing::SpriteRef::createDomElement(CL_DomDocument &doc) const
 {
     CL_DomElement  element(doc,"spriteRef");
 
@@ -311,12 +308,12 @@ CL_DomElement  SpriteRef::createDomElement(CL_DomDocument &doc) const
 
 }
 
-bool SpriteRef::handleElement(eElement element, Element * pElement)
+bool StoneRing::SpriteRef::handleElement(eElement element, Element * pElement)
 {
 	return false;
 }
 
-void SpriteRef::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+void StoneRing::SpriteRef::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
     if(hasAttr("type",pAttributes))
     {
@@ -330,27 +327,28 @@ void SpriteRef::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 
 }
 
-void SpriteRef::handleText(const std::string &text)
+void StoneRing::SpriteRef::handleText(const std::string &text)
 {
     mRef = text;
 }
 
 
-SpriteRef::SpriteRef( ):meType(SPR_NONE)
+StoneRing::SpriteRef::SpriteRef( ):meType(SPR_NONE)
 {
   
 }
 
-SpriteRef::~SpriteRef()
+StoneRing::SpriteRef::~SpriteRef()
 {
 }
 
-std::string SpriteRef::getRef() const
+std::string StoneRing::SpriteRef::getRef() const
 {
     return mRef;
 }
 
-SpriteRef::eType SpriteRef::getType() const
+StoneRing::SpriteRef::eType 
+StoneRing::SpriteRef::getType() const
 {
     return meType;
 }
@@ -358,11 +356,11 @@ SpriteRef::eType SpriteRef::getType() const
 
 
 
-Event::Event():mbRepeatable(true),mbRemember(false),mpCondition(NULL)
+StoneRing::Event::Event():mbRepeatable(true),mbRemember(false),mpCondition(NULL)
 {
 }
 
-CL_DomElement  Event::createDomElement(CL_DomDocument &doc) const
+CL_DomElement  StoneRing::Event::createDomElement(CL_DomDocument &doc) const
 {
     CL_DomElement  element(doc,"event");
 
@@ -413,7 +411,7 @@ CL_DomElement  Event::createDomElement(CL_DomDocument &doc) const
 
 }
 
-void Event::loadAttributes(CL_DomNamedNodeMap *pAttributes)
+void StoneRing::Event::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
     mName = getRequiredString("name",pAttributes);
 
@@ -431,7 +429,7 @@ void Event::loadAttributes(CL_DomNamedNodeMap *pAttributes)
     mbRemember = getImpliedBool("remember",pAttributes,false);
 }
 
-bool Event::handleElement(eElement element, Element *pElement)
+bool StoneRing::Event::handleElement(eElement element, Element *pElement)
 {
     if(isAction(element))
     {
@@ -450,7 +448,7 @@ bool Event::handleElement(eElement element, Element *pElement)
 }
 
 
-Event::~Event()
+StoneRing::Event::~Event()
 {
     for(std::list<Action*>::iterator i = mActions.begin();
         i != mActions.end();
@@ -460,32 +458,32 @@ Event::~Event()
     }
 }
 
-std::string Event::getName() const
+std::string StoneRing::Event::getName() const
 {
     return mName;
 }
 
-Event::eTriggerType Event::getTriggerType()
+StoneRing::Event::eTriggerType StoneRing::Event::getTriggerType()
 {
     return meTriggerType;
 }
 
-bool Event::repeatable()
+bool StoneRing::Event::repeatable()
 {
     return mbRepeatable;
 }
 
-bool Event::remember()
+bool StoneRing::Event::remember()
 {
     return mbRemember;
 }
  
-bool Event::invoke()
+bool StoneRing::Event::invoke()
 {
     
     if(mpCondition && !mpCondition->evaluate() ) return false;
 
-    IApplication::getInstance()->getParty()->doEvent ( mName, mbRemember );
+	StoneRing::IApplication::getInstance()->getParty()->doEvent ( mName, mbRemember );
 
     for(std::list<Action*>::iterator i = mActions.begin();
         i != mActions.end();
@@ -500,7 +498,7 @@ bool Event::invoke()
 }
       
 
-CL_DomElement Movement::createDomElement(CL_DomDocument &doc) const
+CL_DomElement StoneRing::Movement::createDomElement(CL_DomDocument &doc) const
 {
     CL_DomElement element(doc,"movement") ;
 
@@ -544,7 +542,7 @@ CL_DomElement Movement::createDomElement(CL_DomDocument &doc) const
 
 }
 
-void Movement::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+void StoneRing::Movement::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
     if(hasAttr("speed",pAttributes))
     {
@@ -588,52 +586,52 @@ void Movement::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 
 }
 
-Movement::Movement ( ):meType(MOVEMENT_NONE),meSpeed(SLOW)
+StoneRing::Movement::Movement ( ):meType(MOVEMENT_NONE),meSpeed(SLOW)
 {
    
 }
 
-Movement::~Movement()
+StoneRing::Movement::~Movement()
 {
 }
 
 
-Movement::eMovementType Movement::getMovementType() const
+StoneRing::Movement::eMovementType StoneRing::Movement::getMovementType() const
 {
     return meType;
 }
 
-Movement::eMovementSpeed Movement::getMovementSpeed() const
+StoneRing::Movement::eMovementSpeed StoneRing::Movement::getMovementSpeed() const
 {
     return meSpeed;
 }
 
 
-void LoadLevel::invoke()
+void StoneRing::LoadLevel::invoke()
 {
     IApplication::getInstance()->loadLevel ( mName, mStartX, mStartY );
 }
 
 
-Graphic::Graphic()
+StoneRing::Graphic::Graphic()
 {
 }
 
-Graphic::~Graphic()
+StoneRing::Graphic::~Graphic()
 {
 }
 
 
-DirectionBlock::DirectionBlock():meDirectionBlock(0)
+StoneRing::DirectionBlock::DirectionBlock():meDirectionBlock(0)
 {
 }
 
-DirectionBlock::DirectionBlock(int i )
+StoneRing::DirectionBlock::DirectionBlock(int i )
 {
     meDirectionBlock = i;
 }
 
-CL_DomElement  DirectionBlock::createDomElement(CL_DomDocument &doc) const
+CL_DomElement  StoneRing::DirectionBlock::createDomElement(CL_DomDocument &doc) const
 {
     CL_DomElement element(doc,"directionBlock");
 
@@ -645,7 +643,7 @@ CL_DomElement  DirectionBlock::createDomElement(CL_DomDocument &doc) const
     return element;
 }
 
-void DirectionBlock::loadAttributes(CL_DomNamedNodeMap *pAttributes)
+void StoneRing::DirectionBlock::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
     bool north = getRequiredBool("north",pAttributes);
     bool south = getRequiredBool("south",pAttributes);
@@ -659,31 +657,31 @@ void DirectionBlock::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 }
 
 
-DirectionBlock::~DirectionBlock()
+StoneRing::DirectionBlock::~DirectionBlock()
 {
 }
 
-int DirectionBlock::getDirectionBlock() const
+int StoneRing::DirectionBlock::getDirectionBlock() const
 {
     return meDirectionBlock;
 }
 
-bool Tile::isHot() const
+bool StoneRing::Tile::isHot() const
 {
 
     return cFlags & HOT;
 }
 
-bool Tile::pops() const
+bool StoneRing::Tile::pops() const
 {
 	return cFlags & POPS;
 }
 
-Tile::Tile():mpSprite(NULL),mpCondition(NULL),mpAM(NULL),mZOrder(0),cFlags(0)
+StoneRing::Tile::Tile():mpSprite(NULL),mpCondition(NULL),mpAM(NULL),mZOrder(0),cFlags(0)
 {
 }
 
-CL_DomElement  Tile::createDomElement(CL_DomDocument &doc) const
+CL_DomElement  StoneRing::Tile::createDomElement(CL_DomDocument &doc) const
 {
 
     CL_DomElement element(doc,"tile");
@@ -743,7 +741,7 @@ CL_DomElement  Tile::createDomElement(CL_DomDocument &doc) const
     
 }
 
-void Tile::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+void StoneRing::Tile::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
     mX = getRequiredInt("xpos",pAttributes);
     mY = getRequiredInt("ypos",pAttributes);
@@ -761,7 +759,7 @@ void Tile::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 }
 
 
-bool Tile::handleElement(eElement element, Element * pElement)
+bool StoneRing::Tile::handleElement(eElement element, Element * pElement)
 {
     switch(element)
     {
@@ -818,12 +816,12 @@ bool StoneRing::Tile::hasAM() const
     return mpAM != NULL;
 }
 
-void Tile::activate() // Call any attributemodifier
+void StoneRing::Tile::activate() // Call any attributemodifier
 {
     mpAM->invoke();   
 }
 
-Tile::~Tile()
+StoneRing::Tile::~Tile()
 {
     delete mpAM;
     delete mpCondition;
@@ -834,12 +832,12 @@ Tile::~Tile()
     else delete mGraphic.asTilemap;
 }
 
-ushort Tile::getZOrder() const
+ushort StoneRing::Tile::getZOrder() const
 {
     return mZOrder;
 }
 
-bool Tile::evaluateCondition() const
+bool StoneRing::Tile::evaluateCondition() const
 {
     if( mpCondition ) return mpCondition->evaluate();
 
@@ -847,34 +845,34 @@ bool Tile::evaluateCondition() const
 }
 
 
-uint Tile::getX() const
+uint StoneRing::Tile::getX() const
 {
     return mX;
 }
 
-uint Tile::getY() const
+uint StoneRing::Tile::getY() const
 {
     return mY;
 }
 
 
-CL_Rect Tile::getRect()
+CL_Rect StoneRing::Tile::getRect()
 {
     return CL_Rect(mX , mY , mX + 1, mY +1);
 }
 
-bool Tile::isSprite() const
+bool StoneRing::Tile::isSprite() const
 {
     return cFlags & SPRITE;
 }
 
-bool Tile::isFloater() const
+bool StoneRing::Tile::isFloater() const
 {
     return cFlags & FLOATER;
 }
 
 
-void Tile::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC)
+void StoneRing::Tile::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC)
 {
     // Get the graphic guy
     // Get our tilemap or sprite
@@ -905,12 +903,12 @@ void Tile::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC)
 
 }
 
-void Tile::update()
+void StoneRing::Tile::update()
 {
     if(isSprite()) mpSprite->update();
 }
 
-int Tile::getDirectionBlock() const
+int StoneRing::Tile::getDirectionBlock() const
 {
 
     int block = 0;
@@ -927,10 +925,11 @@ int Tile::getDirectionBlock() const
     return block;
 }
 
-bool Tile::isTile() const
+bool StoneRing::Tile::isTile() const
 {
     return true;
 }
+
 
 
 

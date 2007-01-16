@@ -576,13 +576,13 @@ SteelType AstCallExpression::evaluate(SteelInterpreter *pInterpreter)
 	    ret = pInterpreter->call( m_pId->getValue(), m_pParams->getParamList(pInterpreter) );
 	else ret = pInterpreter->call( m_pId->getValue(), std::vector<SteelType>() );
     }
-    catch(ParamMismatch m)
+    catch(ParamMismatch )
     {
 	throw SteelException(SteelException::PARAM_MISMATCH,
 			     GetLine(),GetScript(),
 			     "Function '" + m_pId->getValue() + "' called with incorrect number of parameters.");
     }
-    catch(UnknownIdentifier e)
+    catch(UnknownIdentifier )
     {
 	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
 			     GetLine(), GetScript(),
@@ -659,14 +659,14 @@ SteelType AstArrayElement::evaluate(SteelInterpreter *pInterpreter)
     try{
 	return pInterpreter->lookup(m_pId->getValue(), m_pExp->evaluate(pInterpreter));
     }
-    catch(UnknownIdentifier e)
+    catch(UnknownIdentifier)
     {
 	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
 			     GetLine(),
 			     GetScript(),
 			     "Unknown identifier:'" + m_pId->getValue() + '\'');
     }
-    catch(OutOfBounds e)
+    catch(OutOfBounds)
     {
 	throw SteelException(SteelException::OUT_OF_BOUNDS,
 			     GetLine(),
@@ -690,7 +690,7 @@ SteelType AstArrayIdentifier::evaluate(SteelInterpreter *pInterpreter)
     try {
 	var = pInterpreter->lookup(getValue()); 
     }
-    catch(UnknownIdentifier i)
+    catch(UnknownIdentifier)
     {
 	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
 			     GetLine(),
@@ -723,14 +723,14 @@ SteelType AstVarAssignmentExpression::evaluate(SteelInterpreter *pInterpreter)
     try{
 	pInterpreter->assign ( m_pId->getValue(), exp );
     }
-    catch(UnknownIdentifier e)
+    catch(UnknownIdentifier)
     {
 	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
 			     GetLine(),
 			     GetScript(),
 			     "Unknown identifier:'" + m_pId->getValue() + '\'');
     }
-    catch(TypeMismatch m)
+    catch(TypeMismatch)
     {
 	throw SteelException(SteelException::TYPE_MISMATCH,
 			     GetLine(),
@@ -771,7 +771,7 @@ SteelType AstArrayAssignmentExpression::evaluate(SteelInterpreter *pInterpreter)
     try{
 	pInterpreter->assign_array( m_pId->getValue(), exp );
     }
-    catch(TypeMismatch m)
+    catch(TypeMismatch)
     {
 	throw SteelException(SteelException::TYPE_MISMATCH, 
 			     GetLine(),
@@ -779,7 +779,7 @@ SteelType AstArrayAssignmentExpression::evaluate(SteelInterpreter *pInterpreter)
 			     "Illegal attempt to assign a non-array to a array '" + m_pId->getValue() + '\'');
 
     }
-    catch(UnknownIdentifier e)
+    catch(UnknownIdentifier)
     {
 	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
 			     GetLine(),
@@ -813,7 +813,7 @@ SteelType AstArrayElementAssignmentExpression::evaluate(SteelInterpreter *pInter
     try {
 	pInterpreter->assign(m_pId->getArrayName(),m_pId->getArrayIndex(pInterpreter), m_pExp->evaluate(pInterpreter));
     }
-    catch(UnknownIdentifier e)
+    catch(UnknownIdentifier)
     {
 	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
 			     GetLine(),
@@ -886,7 +886,7 @@ SteelType AstVarIdentifier::evaluate(SteelInterpreter *pInterpreter)
 	SteelType val = pInterpreter->lookup ( getValue() );
 	return val;
     }
-    catch(UnknownIdentifier e)
+    catch(UnknownIdentifier)
     {
 	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
 			     GetLine(),
@@ -929,7 +929,7 @@ AstStatement::eStopType AstVarDeclaration::execute(SteelInterpreter *pInterprete
 	// This is for parameters
 	if(m_bHasValue) pInterpreter->assign( m_pId->getValue(), m_value);
     }
-    catch(UnknownIdentifier e)
+    catch(UnknownIdentifier)
     {
 	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
 			     GetLine(),
@@ -983,14 +983,14 @@ AstStatement::eStopType AstArrayDeclaration::execute(SteelInterpreter *pInterpre
 
 	if(m_bHasValue) pInterpreter->assign( m_pId->getValue(), m_value);
     }
-    catch(TypeMismatch m)
+    catch(TypeMismatch)
     {
 	throw SteelException(SteelException::TYPE_MISMATCH,
 			     GetLine(),
 			     GetScript(),
 			     "Attempt to assign non-array to array:'" + m_pId->getValue() + '\'');
     }
-    catch(UnknownIdentifier i)
+    catch(UnknownIdentifier)
     {
 	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
 			     GetLine(),
@@ -1097,7 +1097,7 @@ AstStatement::eStopType AstFunctionDefinition::execute(SteelInterpreter *pInterp
     try{
 	pInterpreter->registerFunction( m_pId->getValue(), m_pParams , m_pStatements );
     }
-    catch(AlreadyDefined ex)
+    catch(AlreadyDefined)
     {
 	throw SteelException(SteelException::FUNCTION_DEFINED,
 			     GetLine(),
