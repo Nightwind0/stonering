@@ -261,16 +261,6 @@ StoneRing::Tilemap::~Tilemap()
 {
 }
       
-ushort StoneRing::Tilemap::getMapX() const
-{
-    return mX;
-}
-
-ushort StoneRing::Tilemap::getMapY() const
-{
-    return mY;
-}
-
 
 
 CL_DomElement  StoneRing::SpriteRef::createDomElement(CL_DomDocument &doc) const
@@ -666,16 +656,6 @@ int StoneRing::DirectionBlock::getDirectionBlock() const
     return meDirectionBlock;
 }
 
-bool StoneRing::Tile::isHot() const
-{
-
-    return cFlags & HOT;
-}
-
-bool StoneRing::Tile::pops() const
-{
-	return cFlags & POPS;
-}
 
 StoneRing::Tile::Tile():mpSprite(NULL),mpCondition(NULL),mpAM(NULL),mZOrder(0),cFlags(0)
 {
@@ -811,11 +791,6 @@ bool StoneRing::Tile::handleElement(eElement element, Element * pElement)
 	return true;
 }
 
-bool StoneRing::Tile::hasAM() const
-{
-    return mpAM != NULL;
-}
-
 void StoneRing::Tile::activate() // Call any attributemodifier
 {
     mpAM->invoke();   
@@ -832,11 +807,6 @@ StoneRing::Tile::~Tile()
     else delete mGraphic.asTilemap;
 }
 
-ushort StoneRing::Tile::getZOrder() const
-{
-    return mZOrder;
-}
-
 bool StoneRing::Tile::evaluateCondition() const
 {
     if( mpCondition ) return mpCondition->evaluate();
@@ -845,31 +815,11 @@ bool StoneRing::Tile::evaluateCondition() const
 }
 
 
-uint StoneRing::Tile::getX() const
-{
-    return mX;
-}
-
-uint StoneRing::Tile::getY() const
-{
-    return mY;
-}
-
-
 CL_Rect StoneRing::Tile::getRect()
 {
     return CL_Rect(mX , mY , mX + 1, mY +1);
 }
 
-bool StoneRing::Tile::isSprite() const
-{
-    return cFlags & SPRITE;
-}
-
-bool StoneRing::Tile::isFloater() const
-{
-    return cFlags & FLOATER;
-}
 
 
 void StoneRing::Tile::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC)
@@ -925,10 +875,6 @@ int StoneRing::Tile::getDirectionBlock() const
     return block;
 }
 
-bool StoneRing::Tile::isTile() const
-{
-    return true;
-}
 
 
 

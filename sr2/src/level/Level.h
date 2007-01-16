@@ -64,8 +64,8 @@ namespace StoneRing {
 		Tilemap();
 		virtual ~Tilemap();
 		virtual eElement whichElement() const{ return ETILEMAP; }	     
-		inline ushort getMapX() const;
-		inline ushort getMapY() const;
+		inline ushort getMapX() const { return mX; }
+		inline ushort getMapY() const { return mY; }
 
 		inline CL_Surface * getTileMap() const { return mpSurface; }
 
@@ -134,39 +134,40 @@ namespace StoneRing {
 
 	class Tile : public Graphic
 	{
+	protected:
+	    enum eFlags { SPRITE = 1, FLOATER = 2, HOT = 4, BLK_NORTH = 8, BLK_SOUTH = 16, BLK_EAST = 32, BLK_WEST = 64, POPS = 128};
 	public:
 		Tile();
 		virtual ~Tile(); 
 		virtual eElement whichElement() const{ return ETILE; }	
-		ushort getZOrder() const;
+		inline ushort getZOrder() const { return mZOrder; }
 
-		inline bool isFloater() const;
+		inline bool isFloater() const { return cFlags & FLOATER; }
 		bool evaluateCondition() const;
-		bool hasAM() const;
+		inline bool hasAM() const { return mpAM != NULL; }
 
 		void activate(); // Call any attributemodifier
 
-		inline uint getX() const;
-		inline uint getY() const;
+		inline uint getX() const { return mX; }
+		inline uint getY() const { return mY; }
 
-		inline CL_Rect getRect();
+		CL_Rect getRect();
 
-		inline bool isSprite() const;
+		inline bool isSprite() const { return cFlags & SPRITE; }
 
-		inline bool isHot() const;
+		inline bool isHot() const { return cFlags & HOT; }
 
-		inline bool pops() const;
+		inline bool pops() const { return cFlags & POPS; }
 
-		inline void draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
+		void draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
 		virtual void update();
-		inline int getDirectionBlock() const;
-		inline bool isTile() const;
+		int getDirectionBlock() const;
+		inline bool isTile() const { return true; }
 		virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
 	protected:
 		virtual bool handleElement(eElement element, Element * pElement );
 		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-		enum eFlags { SPRITE = 1, FLOATER = 2, HOT = 4, BLK_NORTH = 8, BLK_SOUTH = 16, BLK_EAST = 32, BLK_WEST = 64, POPS = 128};
 
 		CL_Sprite *mpSprite;
 		SpriteRefOrTilemap mGraphic;
