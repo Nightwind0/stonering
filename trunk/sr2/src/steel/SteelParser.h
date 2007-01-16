@@ -60,7 +60,6 @@ public:
             exp__,
             exp_statement__,
             func_definition__,
-            func_definition_list__,
             func_identifier__,
             int_literal__,
             param_definition__,
@@ -113,7 +112,7 @@ public:
     SteelScanner *m_scanner;
     const char *m_pBuffer;
 
-#line 117 "SteelParser.h"
+#line 116 "SteelParser.h"
 
 private:
 
@@ -305,8 +304,6 @@ private:
     AstBase* ReductionRuleHandler0066 ();
     AstBase* ReductionRuleHandler0067 ();
     AstBase* ReductionRuleHandler0068 ();
-    AstBase* ReductionRuleHandler0069 ();
-    AstBase* ReductionRuleHandler0070 ();
 
 }; // end of class SteelParser
 
@@ -317,4 +314,4 @@ std::ostream &operator << (std::ostream &stream, SteelParser::Token::Type token_
 
 	#endif // STEEL_PARSER_H
 
-#line 321 "SteelParser.h"
+#line 318 "SteelParser.h"

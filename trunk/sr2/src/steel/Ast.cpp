@@ -154,19 +154,17 @@ AstStatement::eStopType AstExpressionStatement::execute(SteelInterpreter *pInter
 }
 
 AstScript::AstScript(unsigned int line, const std::string &script)
-    :AstBase(line,script),m_pFunctions(NULL),m_pList(NULL)
+    :AstBase(line,script),m_pList(NULL)
 {
 }
 AstScript::~AstScript()
 {
-    delete m_pFunctions;
     delete m_pList;
 }
 
 ostream & AstScript::print(std::ostream &out)
 {
     if(m_pList) out << *m_pList;
-    else if(m_pFunctions) out << *m_pFunctions;
 
     return out;
 }
@@ -184,21 +182,6 @@ void AstScript::SetList(AstStatementList *pList)
     m_pList = pList;
 }
 
-void AstScript::SetFunctionList( AstFunctionDefinitionList * pList)
-{
-    m_pFunctions = pList;
-}
-
-bool AstScript::containsFunctions() const
-{
-    return ( m_pFunctions != NULL );
-}
-
-void AstScript::registerFunctions(SteelInterpreter * pInterpreter)
-{
-    assert ( containsFunctions() );
-    m_pFunctions->registerFunctions(pInterpreter);
-}
 
 AstStatementList::AstStatementList(unsigned int line, const std::string &script)
     :AstStatement(line,script)
@@ -591,7 +574,7 @@ SteelType AstCallExpression::evaluate(SteelInterpreter *pInterpreter)
     try{
 	if(m_pParams)
 	    ret = pInterpreter->call( m_pId->getValue(), m_pParams->getParamList(pInterpreter) );
-	else pInterpreter->call( m_pId->getValue(), std::vector<SteelType>() );
+	else ret = pInterpreter->call( m_pId->getValue(), std::vector<SteelType>() );
     }
     catch(ParamMismatch m)
     {
@@ -913,6 +896,12 @@ SteelType AstVarIdentifier::evaluate(SteelInterpreter *pInterpreter)
     
 }
 
+void AstDeclaration::setValue(const SteelType &value)
+{
+    m_bHasValue = true;
+    m_value = value;
+}
+
 
 AstVarDeclaration::AstVarDeclaration(unsigned int line,
 				     const std::string &script,
@@ -935,6 +924,10 @@ AstStatement::eStopType AstVarDeclaration::execute(SteelInterpreter *pInterprete
 	
 	if(m_pExp) 
 	    pInterpreter->assign( m_pId->getValue(), m_pExp->evaluate(pInterpreter) );
+
+	// If there is a value, it overrides whatever the expression was.
+	// This is for parameters
+	if(m_bHasValue) pInterpreter->assign( m_pId->getValue(), m_value);
     }
     catch(UnknownIdentifier e)
     {
@@ -954,6 +947,7 @@ ostream & AstVarDeclaration::print(std::ostream &out)
     if( m_pExp ) out << '=' << *m_pExp << ';' << std::endl;
     return out;
 }
+
 
 AstArrayDeclaration::AstArrayDeclaration(unsigned int line,
 					 const std::string &script,
@@ -986,6 +980,8 @@ AstStatement::eStopType AstArrayDeclaration::execute(SteelInterpreter *pInterpre
     try{
 	if(m_pExp)
 	    pInterpreter->assign( m_pId->getValue(), m_pExp->evaluate(pInterpreter) );
+
+	if(m_bHasValue) pInterpreter->assign( m_pId->getValue(), m_value);
     }
     catch(TypeMismatch m)
     {
@@ -1041,6 +1037,27 @@ void AstParamDefinitionList::executeDeclarations(SteelInterpreter *pInterpreter)
 	(*i)->execute(pInterpreter);
 }
 
+int AstParamDefinitionList::size() const
+{
+    return m_params.size();
+}
+
+
+void AstParamDefinitionList::executeDeclarations(SteelInterpreter *pInterpreter, 
+						 const std::vector<SteelType> &params)
+{
+    assert ( params.size() == m_params.size() );
+
+
+    int parameter = 0;
+    for(std::list<AstDeclaration*>::const_iterator i = m_params.begin();
+	i != m_params.end(); i++)
+    {
+	(*i)->setValue(params[parameter++]); 
+	(*i)->execute(pInterpreter);
+    }
+}
+
 
 ostream & AstParamDefinitionList::print (std::ostream &out)
 {
@@ -1064,7 +1081,7 @@ AstFunctionDefinition::AstFunctionDefinition(unsigned int line,
 					     AstFuncIdentifier *pId,
 					     AstParamDefinitionList *pParams,
 					     AstStatementList * pStmts)
-    :AstBase(line,script),m_pId(pId),m_pParams(pParams),m_pStatements(pStmts)
+    :AstStatement(line,script),m_pId(pId),m_pParams(pParams),m_pStatements(pStmts)
 {
     
 }
@@ -1075,7 +1092,7 @@ AstFunctionDefinition::~AstFunctionDefinition()
     delete m_pStatements;
 }
 
-void AstFunctionDefinition::registerFunction(SteelInterpreter *pInterpreter)
+AstStatement::eStopType AstFunctionDefinition::execute(SteelInterpreter *pInterpreter)
 {
     try{
 	pInterpreter->registerFunction( m_pId->getValue(), m_pParams , m_pStatements );
@@ -1087,6 +1104,8 @@ void AstFunctionDefinition::registerFunction(SteelInterpreter *pInterpreter)
 			     GetScript(),
 			     "Function '" + m_pId->getValue() + "'already defined!");
     }
+
+    return COMPLETED;
 }
 
 ostream & AstFunctionDefinition::print (std::ostream &out)
@@ -1097,40 +1116,6 @@ ostream & AstFunctionDefinition::print (std::ostream &out)
     return out;
 }
 
-AstFunctionDefinitionList::AstFunctionDefinitionList(unsigned int line,
-						     const std::string &script)
-    :AstBase(line,script)
-{
-}
-
-AstFunctionDefinitionList::~AstFunctionDefinitionList()
-{
-    for(std::list<AstFunctionDefinition*>::iterator i = m_functions.begin();
-	i != m_functions.end(); i++) delete *i;
-}
-
-void AstFunctionDefinitionList::add(AstFunctionDefinition *pFunc)
-{
-    m_functions.push_back(pFunc);
-}
-
-void AstFunctionDefinitionList::registerFunctions(SteelInterpreter * pInterpreter)
-{
-    for(std::list<AstFunctionDefinition*>::iterator i = m_functions.begin();
-	i != m_functions.end(); i++)
-    {
-	(*i)->registerFunction(pInterpreter);
-    }
-}
-
-ostream & AstFunctionDefinitionList::print (std::ostream &out)
-{
-    for(std::list<AstFunctionDefinition*>::iterator i = m_functions.begin();
-	i != m_functions.end(); i++)
-    {
-	out << *(*i);
-    }
-}
 
 ostream & operator<<(ostream & out,AstBase & ast)
 {

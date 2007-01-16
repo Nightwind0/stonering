@@ -80,12 +80,10 @@ public:
 
     virtual ostream & print(std::ostream &out);
     void SetList( AstStatementList * pStatement);
-    void SetFunctionList( AstFunctionDefinitionList *pList);
     void executeScript(SteelInterpreter *pInterpreter);
-    bool containsFunctions() const;
-    void registerFunctions(SteelInterpreter *pInterpreter);
+
 private:
-    AstFunctionDefinitionList * m_pFunctions;
+
     AstStatementList *m_pList;
 };
 
@@ -484,10 +482,14 @@ class AstDeclaration : public AstStatement
 public:
     AstDeclaration(unsigned int line,
 			const std::string &script)
-	:AstStatement(line,script){}
+	:AstStatement(line,script),m_bHasValue(false){}
 	virtual ~AstDeclaration(){}
 	
-private:
+	virtual void setValue(const SteelType &value);
+	
+protected:
+	bool m_bHasValue;
+	SteelType m_value;
 };
 
 class AstVarDeclaration : public AstDeclaration
@@ -500,6 +502,7 @@ public:
     virtual ~AstVarDeclaration();
     virtual ostream & print(std::ostream &out);
     virtual eStopType execute(SteelInterpreter *pInterpreter);
+
 private:
     AstVarIdentifier *m_pId ;
     AstExpression * m_pExp;
@@ -535,12 +538,16 @@ public:
     void add(AstDeclaration *pId);
     virtual ostream & print (std::ostream &out);
 
+    int size() const;
+
     void executeDeclarations(SteelInterpreter *pInterpreter);
+    void executeDeclarations(SteelInterpreter *pInterpreter, 
+			     const std::vector<SteelType> &params);
 private:
     std::list<AstDeclaration*> m_params;
 };
 
-class AstFunctionDefinition : public AstBase
+class AstFunctionDefinition : public AstStatement
 {
 public:
     AstFunctionDefinition(unsigned int line,
@@ -550,7 +557,7 @@ public:
 			  AstStatementList* pStmts);
     virtual ~AstFunctionDefinition();
 
-    void registerFunction(SteelInterpreter * pInterpreter);
+    eStopType execute(SteelInterpreter * pInterpreter);
     virtual ostream & print (std::ostream &out);
     
 
@@ -560,20 +567,5 @@ private:
     AstStatementList * m_pStatements;
 };
 
-class AstFunctionDefinitionList : public AstBase
-{
-public:
-    AstFunctionDefinitionList(unsigned int line,
-			      const std::string &script);
-
-    virtual ~AstFunctionDefinitionList();
-
-    void add(AstFunctionDefinition *pFunc);
-    virtual ostream & print (std::ostream &out);
-
-    void registerFunctions(SteelInterpreter * pInterpreter);
-private:
-    std::list<AstFunctionDefinition*> m_functions;
-};
 
 #endif

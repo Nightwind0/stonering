@@ -96,34 +96,7 @@ root %type "AstScript*"
 			        pScript->SetList(list);
 				return pScript;
 			} 
-|
-	func_definition_list:list
-			{
-				AstScript * pScript 
-				= new AstScript(
-						list->GetLine(),
-						list->GetScript());
-				pScript->SetFunctionList( list );
-				return pScript;
-			}
-;
 
-func_definition_list %type "AstFunctionDefinitionList*"
-:
-	func_definition:def     {
-					AstFunctionDefinitionList * pList 
-					= new AstFunctionDefinitionList(
-						def->GetLine(),
-						def->GetScript());
-					pList->add(def);
-					return pList;
-				}
-|
-	func_definition_list:list func_definition:def
-				{
-					list->add(def);
-					return list;
-				}	
 ;
 
 func_definition %type "AstFunctionDefinition*"
@@ -190,6 +163,8 @@ statement_list %type "AstStatementList*"
 statement %type "AstStatement*"
 :
 	exp_statement:exp  { return new AstExpressionStatement(exp->GetLine(),exp->GetScript(), exp); }
+|
+	func_definition:func { return func; }
 |
 	'{':b1 statement_list:list '}':b2 { delete b1; delete b2; return list; }
 |
