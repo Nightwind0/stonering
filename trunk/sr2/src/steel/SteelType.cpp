@@ -3,7 +3,7 @@
 #include <cmath>
 #include "SteelType.h"
 #include "SteelException.h"
-
+#include <cassert>
 
 bool operator<(const SteelArrayRef &lhs, const SteelArrayRef &rhs)
 {
