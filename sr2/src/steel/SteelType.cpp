@@ -437,7 +437,7 @@ SteelType  SteelType::d(const SteelType &rhs)
 
     for(int d = 0; d < dice; d++)
     {
-	total +=  1+ (rand() % sides);
+	total +=  rand() % sides + 1;
     }
 
     var.set(total);
