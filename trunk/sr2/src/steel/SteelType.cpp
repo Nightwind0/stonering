@@ -376,6 +376,8 @@ SteelType  SteelType::operator!=(const SteelType &rhs)
     if( *this == rhs )
 	var.set(false);
     else var.set(true);
+
+	return var;
 }
 
 SteelType  SteelType::operator<(const SteelType &rhs)
@@ -426,6 +428,8 @@ SteelType  SteelType::operator<=(const SteelType &rhs)
 	    val.set(true);
 	   
     }
+	assert ( 0 );
+	return val;
 }
 
 SteelType  SteelType::operator>(const SteelType &rhs)

@@ -332,6 +332,8 @@ SteelType SteelInterpreter::copy(const SteelArrayRef &lhs, const SteelArrayRef &
     if(pArrayDest == pArraySource) return ret;
 
     *pArrayDest = *pArraySource;
+
+	return ret;
     
 }
 

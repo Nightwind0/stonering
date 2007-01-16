@@ -151,7 +151,7 @@ public:
 	:AstStatement(line,script){}
 	virtual ~AstBreakStatement(){}
 
-	virtual ostream & print(std::ostream &out){ out << "break;" << std::endl ;}
+	virtual ostream & print(std::ostream &out){ out << "break;" << std::endl ; return out;}
 	virtual eStopType execute(SteelInterpreter *pInterpreter) { return BREAK; }
 private:
 
@@ -164,7 +164,7 @@ public:
 	:AstStatement(line,script){}
 	virtual ~AstContinueStatement(){}
 
-	virtual ostream & print(std::ostream &out){ out << "continue;" << std::endl; }
+	virtual ostream & print(std::ostream &out){ out << "continue;" << std::endl; return out; }
 	virtual eStopType execute(SteelInterpreter *pInterpreter) { return CONTINUE; }
 private:
 
