@@ -1,4 +1,4 @@
-SUBDIRS = abilities character factories items level party states
+SUBDIRS = abilities character factories items level party states steel
 
 bin_PROGRAMS = stonering
 
@@ -16,7 +16,8 @@ stonering_LDADD = $(CLANLIB_LIBS) \
 			@top_srcdir@/src/items/libitems.la \
 			@top_srcdir@/src/level/liblevel.la \
 			@top_srcdir@/src/party/libparty.la \
-			@top_srcdir@/src/states/libstates.la	
+			@top_srcdir@/src/states/libstates.la \
+			@top_srcdir@/src/steel/libsteel.la	
 
 stonering_CPPFLAGS = $(CLANLIB_CFLAGS) \
 			$(CPPFLAGS)
@@ -32,4 +33,5 @@ INCLUDES =  -I@top_srcdir@/src/states/ \
 		-I@top_srcdir@/src/items/weapons \
 		-I@top_srcdir@/src/items/armor \
 		-I@top_srcdir@/src/character \
-		-I@top_srcdir@/src/abilities
+		-I@top_srcdir@/src/abilities \
+		-I@top_srcdir@/src/steel
