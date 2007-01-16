@@ -1279,7 +1279,7 @@ AstBase* SteelParser::ReductionRuleHandler0053 ()
     return static_cast<AstBase*>(0);
 }
 
-// rule 54: exp <- array_element_lvalue:lvalue     %prec PAREN
+// rule 54: exp <- array_element_lvalue:lvalue    
 AstBase* SteelParser::ReductionRuleHandler0054 ()
 {
     assert(0 < m_reduction_rule_token_count);
@@ -1569,7 +1569,7 @@ SteelParser::ReductionRule const SteelParser::ms_reduction_rule[] =
     {                  Token::exp__,  2, &SteelParser::ReductionRuleHandler0051, "rule 51: exp <- '-' exp     %prec UNARY"},
     {                  Token::exp__,  2, &SteelParser::ReductionRuleHandler0052, "rule 52: exp <- '+' exp     %prec UNARY"},
     {                  Token::exp__,  2, &SteelParser::ReductionRuleHandler0053, "rule 53: exp <- NOT exp     %prec UNARY"},
-    {                  Token::exp__,  1, &SteelParser::ReductionRuleHandler0054, "rule 54: exp <- array_element_lvalue     %prec PAREN"},
+    {                  Token::exp__,  1, &SteelParser::ReductionRuleHandler0054, "rule 54: exp <- array_element_lvalue    "},
     {        Token::exp_statement__,  1, &SteelParser::ReductionRuleHandler0055, "rule 55: exp_statement <- ';'    "},
     {        Token::exp_statement__,  2, &SteelParser::ReductionRuleHandler0056, "rule 56: exp_statement <- exp ';'    "},
     {          Token::int_literal__,  1, &SteelParser::ReductionRuleHandler0057, "rule 57: int_literal <- INT    "},
@@ -1638,109 +1638,109 @@ SteelParser::State const SteelParser::ms_state[] =
     { 224,   16,    0,    0,    0}, // state   34
     {   0,    0,  240,    0,    0}, // state   35
     { 241,   20,    0,  261,    9}, // state   36
-    {   0,    0,  270,    0,    0}, // state   37
-    {   0,    0,  271,    0,    0}, // state   38
-    {   0,    0,  272,    0,    0}, // state   39
-    { 273,   10,    0,  283,    6}, // state   40
-    {   0,    0,  289,    0,    0}, // state   41
-    {   0,    0,  290,    0,    0}, // state   42
-    {   0,    0,  291,    0,    0}, // state   43
-    { 292,   16,    0,    0,    0}, // state   44
-    { 308,   10,    0,  318,    6}, // state   45
-    { 324,    1,    0,    0,    0}, // state   46
-    { 325,   11,    0,  336,    7}, // state   47
-    { 343,    1,  344,    0,    0}, // state   48
-    { 345,    2,  347,    0,    0}, // state   49
-    {   0,    0,  348,    0,    0}, // state   50
-    {   0,    0,  349,    0,    0}, // state   51
-    {   0,    0,  350,    0,    0}, // state   52
-    {   0,    0,  351,    0,    0}, // state   53
-    { 352,   10,    0,  362,    6}, // state   54
-    { 368,   10,    0,  378,    6}, // state   55
-    { 384,   10,    0,  394,    6}, // state   56
-    { 400,   10,    0,  410,    6}, // state   57
-    { 416,   10,    0,  426,    6}, // state   58
-    { 432,   10,    0,  442,    6}, // state   59
-    { 448,   10,    0,  458,    6}, // state   60
-    { 464,   10,    0,  474,    6}, // state   61
-    { 480,   10,    0,  490,    6}, // state   62
-    { 496,   10,    0,  506,    6}, // state   63
-    { 512,   10,    0,  522,    6}, // state   64
-    { 528,   10,    0,  538,    6}, // state   65
-    { 544,   10,    0,  554,    6}, // state   66
-    { 560,   10,    0,  570,    6}, // state   67
-    { 576,   10,    0,  586,    6}, // state   68
-    { 592,   10,    0,  602,    6}, // state   69
-    { 608,   11,    0,  619,    7}, // state   70
-    { 626,   10,    0,  636,    6}, // state   71
-    { 642,   10,    0,  652,    6}, // state   72
-    { 658,   10,    0,  668,    6}, // state   73
-    {   0,    0,  674,    0,    0}, // state   74
-    {   0,    0,  675,    0,    0}, // state   75
-    {   0,    0,  676,    0,    0}, // state   76
-    { 677,   16,    0,    0,    0}, // state   77
-    {   0,    0,  693,    0,    0}, // state   78
-    { 694,   16,    0,    0,    0}, // state   79
-    { 710,    2,    0,  712,    2}, // state   80
-    { 714,   11,    0,  725,    7}, // state   81
-    { 732,   10,    0,  742,    6}, // state   82
-    { 748,   10,    0,  758,    6}, // state   83
-    { 764,    1,    0,  765,    1}, // state   84
-    { 766,    5,  771,    0,    0}, // state   85
-    { 772,    5,  777,    0,    0}, // state   86
-    { 778,    2,  780,    0,    0}, // state   87
-    { 781,    2,  783,    0,    0}, // state   88
-    { 784,    1,  785,    0,    0}, // state   89
-    { 786,    2,  788,    0,    0}, // state   90
-    { 789,    1,  790,    0,    0}, // state   91
-    { 791,    7,  798,    0,    0}, // state   92
-    { 799,    7,  806,    0,    0}, // state   93
-    { 807,   11,  818,    0,    0}, // state   94
-    { 819,   11,  830,    0,    0}, // state   95
-    { 831,    7,  838,    0,    0}, // state   96
-    { 839,    7,  846,    0,    0}, // state   97
-    { 847,   13,  860,    0,    0}, // state   98
-    { 861,   14,  875,    0,    0}, // state   99
-    {   0,    0,  876,    0,    0}, // state  100
-    {   0,    0,  877,    0,    0}, // state  101
-    { 878,   15,  893,    0,    0}, // state  102
-    { 894,    2,    0,    0,    0}, // state  103
-    {   0,    0,  896,    0,    0}, // state  104
-    { 897,   16,    0,    0,    0}, // state  105
-    {   0,    0,  913,    0,    0}, // state  106
-    { 914,   19,    0,  933,    9}, // state  107
-    { 942,   19,    0,  961,    9}, // state  108
-    { 970,    1,    0,    0,    0}, // state  109
-    { 971,    2,    0,    0,    0}, // state  110
-    {   0,    0,  973,    0,    0}, // state  111
-    { 974,   11,    0,  985,    6}, // state  112
-    { 991,   15, 1006,    0,    0}, // state  113
-    {1007,   15, 1022,    0,    0}, // state  114
-    {   0,    0, 1023,    0,    0}, // state  115
-    {1024,    1,    0,    0,    0}, // state  116
-    {   0,    0, 1025,    0,    0}, // state  117
-    {1026,   10,    0, 1036,    6}, // state  118
-    {   0,    0, 1042,    0,    0}, // state  119
-    {   0,    0, 1043,    0,    0}, // state  120
-    {1044,    1, 1045,    0,    0}, // state  121
-    {1046,   19,    0, 1065,   10}, // state  122
-    {1075,    1,    0,    0,    0}, // state  123
-    {1076,    1,    0, 1077,    1}, // state  124
-    {1078,   19,    0, 1097,    9}, // state  125
-    {1106,   16,    0,    0,    0}, // state  126
-    {   0,    0, 1122,    0,    0}, // state  127
-    {1123,   15, 1138,    0,    0}, // state  128
-    {1139,   19,    0, 1158,    9}, // state  129
-    {1167,   20,    0, 1187,    9}, // state  130
-    {1196,   19,    0, 1215,   10}, // state  131
-    {   0,    0, 1225,    0,    0}, // state  132
-    {   0,    0, 1226,    0,    0}, // state  133
-    {1227,   19,    0, 1246,    9}, // state  134
-    {   0,    0, 1255,    0,    0}, // state  135
-    {   0,    0, 1256,    0,    0}, // state  136
-    {1257,   20,    0, 1277,    9}, // state  137
-    {   0,    0, 1286,    0,    0}, // state  138
-    {   0,    0, 1287,    0,    0}  // state  139
+    { 270,    2,  272,    0,    0}, // state   37
+    { 273,    2,  275,    0,    0}, // state   38
+    { 276,    2,  278,    0,    0}, // state   39
+    { 279,   10,    0,  289,    6}, // state   40
+    {   0,    0,  295,    0,    0}, // state   41
+    {   0,    0,  296,    0,    0}, // state   42
+    {   0,    0,  297,    0,    0}, // state   43
+    { 298,   16,    0,    0,    0}, // state   44
+    { 314,   10,    0,  324,    6}, // state   45
+    { 330,    1,    0,    0,    0}, // state   46
+    { 331,   11,    0,  342,    7}, // state   47
+    { 349,    1,  350,    0,    0}, // state   48
+    { 351,    2,  353,    0,    0}, // state   49
+    {   0,    0,  354,    0,    0}, // state   50
+    {   0,    0,  355,    0,    0}, // state   51
+    {   0,    0,  356,    0,    0}, // state   52
+    {   0,    0,  357,    0,    0}, // state   53
+    { 358,   10,    0,  368,    6}, // state   54
+    { 374,   10,    0,  384,    6}, // state   55
+    { 390,   10,    0,  400,    6}, // state   56
+    { 406,   10,    0,  416,    6}, // state   57
+    { 422,   10,    0,  432,    6}, // state   58
+    { 438,   10,    0,  448,    6}, // state   59
+    { 454,   10,    0,  464,    6}, // state   60
+    { 470,   10,    0,  480,    6}, // state   61
+    { 486,   10,    0,  496,    6}, // state   62
+    { 502,   10,    0,  512,    6}, // state   63
+    { 518,   10,    0,  528,    6}, // state   64
+    { 534,   10,    0,  544,    6}, // state   65
+    { 550,   10,    0,  560,    6}, // state   66
+    { 566,   10,    0,  576,    6}, // state   67
+    { 582,   10,    0,  592,    6}, // state   68
+    { 598,   10,    0,  608,    6}, // state   69
+    { 614,   11,    0,  625,    7}, // state   70
+    { 632,   10,    0,  642,    6}, // state   71
+    { 648,   10,    0,  658,    6}, // state   72
+    { 664,   10,    0,  674,    6}, // state   73
+    {   0,    0,  680,    0,    0}, // state   74
+    {   0,    0,  681,    0,    0}, // state   75
+    {   0,    0,  682,    0,    0}, // state   76
+    { 683,   16,    0,    0,    0}, // state   77
+    {   0,    0,  699,    0,    0}, // state   78
+    { 700,   16,    0,    0,    0}, // state   79
+    { 716,    2,    0,  718,    2}, // state   80
+    { 720,   11,    0,  731,    7}, // state   81
+    { 738,   10,    0,  748,    6}, // state   82
+    { 754,   10,    0,  764,    6}, // state   83
+    { 770,    1,    0,  771,    1}, // state   84
+    { 772,    5,  777,    0,    0}, // state   85
+    { 778,    5,  783,    0,    0}, // state   86
+    { 784,    2,  786,    0,    0}, // state   87
+    { 787,    2,  789,    0,    0}, // state   88
+    { 790,    1,  791,    0,    0}, // state   89
+    { 792,    2,  794,    0,    0}, // state   90
+    { 795,    1,  796,    0,    0}, // state   91
+    { 797,    7,  804,    0,    0}, // state   92
+    { 805,    7,  812,    0,    0}, // state   93
+    { 813,   11,  824,    0,    0}, // state   94
+    { 825,   11,  836,    0,    0}, // state   95
+    { 837,    7,  844,    0,    0}, // state   96
+    { 845,    7,  852,    0,    0}, // state   97
+    { 853,   13,  866,    0,    0}, // state   98
+    { 867,   14,  881,    0,    0}, // state   99
+    { 882,   15,  897,    0,    0}, // state  100
+    {   0,    0,  898,    0,    0}, // state  101
+    { 899,   15,  914,    0,    0}, // state  102
+    { 915,    2,    0,    0,    0}, // state  103
+    { 917,   15,  932,    0,    0}, // state  104
+    { 933,   16,    0,    0,    0}, // state  105
+    { 949,   15,  964,    0,    0}, // state  106
+    { 965,   19,    0,  984,    9}, // state  107
+    { 993,   19,    0, 1012,    9}, // state  108
+    {1021,    1,    0,    0,    0}, // state  109
+    {1022,    2,    0,    0,    0}, // state  110
+    {   0,    0, 1024,    0,    0}, // state  111
+    {1025,   11,    0, 1036,    6}, // state  112
+    {1042,   15, 1057,    0,    0}, // state  113
+    {1058,   15, 1073,    0,    0}, // state  114
+    {   0,    0, 1074,    0,    0}, // state  115
+    {1075,    1,    0,    0,    0}, // state  116
+    {   0,    0, 1076,    0,    0}, // state  117
+    {1077,   10,    0, 1087,    6}, // state  118
+    {   0,    0, 1093,    0,    0}, // state  119
+    {   0,    0, 1094,    0,    0}, // state  120
+    {1095,    1, 1096,    0,    0}, // state  121
+    {1097,   19,    0, 1116,   10}, // state  122
+    {1126,    1,    0,    0,    0}, // state  123
+    {1127,    1,    0, 1128,    1}, // state  124
+    {1129,   19,    0, 1148,    9}, // state  125
+    {1157,   16,    0,    0,    0}, // state  126
+    {   0,    0, 1173,    0,    0}, // state  127
+    {1174,   15, 1189,    0,    0}, // state  128
+    {1190,   19,    0, 1209,    9}, // state  129
+    {1218,   20,    0, 1238,    9}, // state  130
+    {1247,   19,    0, 1266,   10}, // state  131
+    {   0,    0, 1276,    0,    0}, // state  132
+    {   0,    0, 1277,    0,    0}, // state  133
+    {1278,   19,    0, 1297,    9}, // state  134
+    {   0,    0, 1306,    0,    0}, // state  135
+    {   0,    0, 1307,    0,    0}, // state  136
+    {1308,   20,    0, 1328,    9}, // state  137
+    {   0,    0, 1337,    0,    0}, // state  138
+    {   0,    0, 1338,    0,    0}  // state  139
 
 };
 
@@ -2230,18 +2230,27 @@ SteelParser::StateTransition const SteelParser::ms_state_transition[] =
 // ///////////////////////////////////////////////////////////////////////////
 // state   37
 // ///////////////////////////////////////////////////////////////////////////
+    // terminal transitions
+    {              Token::Type('^'), {        TA_SHIFT_AND_PUSH_STATE,   58}},
+    {                      Token::D, {        TA_SHIFT_AND_PUSH_STATE,   60}},
     // default transition
     {               Token::DEFAULT_, {           TA_REDUCE_USING_RULE,   51}},
 
 // ///////////////////////////////////////////////////////////////////////////
 // state   38
 // ///////////////////////////////////////////////////////////////////////////
+    // terminal transitions
+    {              Token::Type('^'), {        TA_SHIFT_AND_PUSH_STATE,   58}},
+    {                      Token::D, {        TA_SHIFT_AND_PUSH_STATE,   60}},
     // default transition
     {               Token::DEFAULT_, {           TA_REDUCE_USING_RULE,   52}},
 
 // ///////////////////////////////////////////////////////////////////////////
 // state   39
 // ///////////////////////////////////////////////////////////////////////////
+    // terminal transitions
+    {              Token::Type('^'), {        TA_SHIFT_AND_PUSH_STATE,   58}},
+    {                      Token::D, {        TA_SHIFT_AND_PUSH_STATE,   60}},
     // default transition
     {               Token::DEFAULT_, {           TA_REDUCE_USING_RULE,   53}},
 
@@ -3196,6 +3205,22 @@ SteelParser::StateTransition const SteelParser::ms_state_transition[] =
 // ///////////////////////////////////////////////////////////////////////////
 // state  100
 // ///////////////////////////////////////////////////////////////////////////
+    // terminal transitions
+    {              Token::Type('-'), {        TA_SHIFT_AND_PUSH_STATE,   54}},
+    {              Token::Type('+'), {        TA_SHIFT_AND_PUSH_STATE,   55}},
+    {              Token::Type('*'), {        TA_SHIFT_AND_PUSH_STATE,   56}},
+    {              Token::Type('/'), {        TA_SHIFT_AND_PUSH_STATE,   57}},
+    {              Token::Type('^'), {        TA_SHIFT_AND_PUSH_STATE,   58}},
+    {              Token::Type('%'), {        TA_SHIFT_AND_PUSH_STATE,   59}},
+    {                      Token::D, {        TA_SHIFT_AND_PUSH_STATE,   60}},
+    {                     Token::GT, {        TA_SHIFT_AND_PUSH_STATE,   61}},
+    {                     Token::LT, {        TA_SHIFT_AND_PUSH_STATE,   62}},
+    {                     Token::EQ, {        TA_SHIFT_AND_PUSH_STATE,   63}},
+    {                     Token::NE, {        TA_SHIFT_AND_PUSH_STATE,   64}},
+    {                    Token::GTE, {        TA_SHIFT_AND_PUSH_STATE,   65}},
+    {                    Token::LTE, {        TA_SHIFT_AND_PUSH_STATE,   66}},
+    {                    Token::AND, {        TA_SHIFT_AND_PUSH_STATE,   67}},
+    {                     Token::OR, {        TA_SHIFT_AND_PUSH_STATE,   68}},
     // default transition
     {               Token::DEFAULT_, {           TA_REDUCE_USING_RULE,   38}},
 
@@ -3237,6 +3262,22 @@ SteelParser::StateTransition const SteelParser::ms_state_transition[] =
 // ///////////////////////////////////////////////////////////////////////////
 // state  104
 // ///////////////////////////////////////////////////////////////////////////
+    // terminal transitions
+    {              Token::Type('-'), {        TA_SHIFT_AND_PUSH_STATE,   54}},
+    {              Token::Type('+'), {        TA_SHIFT_AND_PUSH_STATE,   55}},
+    {              Token::Type('*'), {        TA_SHIFT_AND_PUSH_STATE,   56}},
+    {              Token::Type('/'), {        TA_SHIFT_AND_PUSH_STATE,   57}},
+    {              Token::Type('^'), {        TA_SHIFT_AND_PUSH_STATE,   58}},
+    {              Token::Type('%'), {        TA_SHIFT_AND_PUSH_STATE,   59}},
+    {                      Token::D, {        TA_SHIFT_AND_PUSH_STATE,   60}},
+    {                     Token::GT, {        TA_SHIFT_AND_PUSH_STATE,   61}},
+    {                     Token::LT, {        TA_SHIFT_AND_PUSH_STATE,   62}},
+    {                     Token::EQ, {        TA_SHIFT_AND_PUSH_STATE,   63}},
+    {                     Token::NE, {        TA_SHIFT_AND_PUSH_STATE,   64}},
+    {                    Token::GTE, {        TA_SHIFT_AND_PUSH_STATE,   65}},
+    {                    Token::LTE, {        TA_SHIFT_AND_PUSH_STATE,   66}},
+    {                    Token::AND, {        TA_SHIFT_AND_PUSH_STATE,   67}},
+    {                     Token::OR, {        TA_SHIFT_AND_PUSH_STATE,   68}},
     // default transition
     {               Token::DEFAULT_, {           TA_REDUCE_USING_RULE,   40}},
 
@@ -3264,6 +3305,22 @@ SteelParser::StateTransition const SteelParser::ms_state_transition[] =
 // ///////////////////////////////////////////////////////////////////////////
 // state  106
 // ///////////////////////////////////////////////////////////////////////////
+    // terminal transitions
+    {              Token::Type('-'), {        TA_SHIFT_AND_PUSH_STATE,   54}},
+    {              Token::Type('+'), {        TA_SHIFT_AND_PUSH_STATE,   55}},
+    {              Token::Type('*'), {        TA_SHIFT_AND_PUSH_STATE,   56}},
+    {              Token::Type('/'), {        TA_SHIFT_AND_PUSH_STATE,   57}},
+    {              Token::Type('^'), {        TA_SHIFT_AND_PUSH_STATE,   58}},
+    {              Token::Type('%'), {        TA_SHIFT_AND_PUSH_STATE,   59}},
+    {                      Token::D, {        TA_SHIFT_AND_PUSH_STATE,   60}},
+    {                     Token::GT, {        TA_SHIFT_AND_PUSH_STATE,   61}},
+    {                     Token::LT, {        TA_SHIFT_AND_PUSH_STATE,   62}},
+    {                     Token::EQ, {        TA_SHIFT_AND_PUSH_STATE,   63}},
+    {                     Token::NE, {        TA_SHIFT_AND_PUSH_STATE,   64}},
+    {                    Token::GTE, {        TA_SHIFT_AND_PUSH_STATE,   65}},
+    {                    Token::LTE, {        TA_SHIFT_AND_PUSH_STATE,   66}},
+    {                    Token::AND, {        TA_SHIFT_AND_PUSH_STATE,   67}},
+    {                     Token::OR, {        TA_SHIFT_AND_PUSH_STATE,   68}},
     // default transition
     {               Token::DEFAULT_, {           TA_REDUCE_USING_RULE,   39}},
 
@@ -3845,5 +3902,5 @@ SteelParser::Token::Type SteelParser::Scan ()
 	return m_scanner->Scan(&m_lookahead_token);
 }
 
-#line 3849 "SteelParser.cpp"
+#line 3906 "SteelParser.cpp"
 

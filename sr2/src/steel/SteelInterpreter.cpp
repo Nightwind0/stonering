@@ -99,7 +99,7 @@ void SteelInterpreter::declare_array(const std::string &array, int size)
     SteelArrayRef ref; 
     std::string sref = name_array_ref( array );
     ref.setArrayRef ( sref );
-    array_file[ref] = SteelArray(size);
+    array_file[ref] = SteelArray( std::max(1,size) );
     
     // set the variable to reference it
     file[array].set ( ref );
@@ -243,8 +243,10 @@ void SteelInterpreter::registerBifs()
 {
     addFunction( "push", new SteelFunctor2Arg<SteelInterpreter,const SteelArrayRef &,const SteelType&> ( this, &SteelInterpreter::push ) );
     addFunction( "pop", new SteelFunctor1Arg<SteelInterpreter,const SteelArrayRef &>(this, &SteelInterpreter::pop) );
-    addFunction( "print", new SteelFunctor1Arg<SteelInterpreter,const std::string & >(this, &SteelInterpreter::print ) );
+    addFunction( "print", new SteelFunctor1Arg<SteelInterpreter,const std::string &>(this, &SteelInterpreter::print ) );
+    addFunction( "println", new SteelFunctor1Arg<SteelInterpreter,const std::string &>(this,&SteelInterpreter::println ) );
     addFunction( "len", new SteelFunctor1Arg<SteelInterpreter,const SteelArrayRef&>(this, &SteelInterpreter::len ) );
+    addFunction( "copy", new SteelFunctor2Arg<SteelInterpreter,const SteelArrayRef&,const SteelArrayRef&> ( this, &SteelInterpreter::copy ) );
 }
 
 SteelType SteelInterpreter::push(const SteelArrayRef &ref, const SteelType &value)
@@ -275,6 +277,19 @@ SteelType SteelInterpreter::pop(const SteelArrayRef &ref)
 SteelType SteelInterpreter::print(const std::string &str)
 {
     std::cout << str;
+    SteelType var;
+    var.set(str);
+
+    return var;
+}
+
+SteelType SteelInterpreter::println(const std::string &str)
+{
+    std::cout << str << std::endl;
+    SteelType var;
+    var.set(str);
+
+    return var;
 }
 
 SteelType SteelInterpreter::len(const SteelArrayRef &ref)
@@ -288,4 +303,20 @@ SteelType SteelInterpreter::len(const SteelArrayRef &ref)
     val.set( (int)pArray->size() );
 
     return val;
+}
+
+SteelType SteelInterpreter::copy(const SteelArrayRef &lhs, const SteelArrayRef &rhs)
+{
+    SteelType ret;
+    ret.set ( rhs );
+    SteelArray *pArrayDest = lookup_internal(lhs);
+    if(pArrayDest == NULL) throw UnknownIdentifier();
+    SteelArray *pArraySource = lookup_internal(rhs);
+    if(pArraySource == NULL) throw UnknownIdentifier();
+
+    // They both point to the same thing already
+    if(pArrayDest == pArraySource) return ret;
+
+    *pArrayDest = *pArraySource;
+    
 }

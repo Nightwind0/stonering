@@ -69,7 +69,7 @@ SteelParser::Token::Type SteelParser::Scan ()
 %token FLOAT
 %token STRING
 
-
+%prec ASSIGNMENT
 %prec NON_ELSE
 %prec ELSE
 %prec OR
@@ -78,10 +78,10 @@ SteelParser::Token::Type SteelParser::Scan ()
 %prec COMPARATOR
 %prec ADD_SUB
 %prec MULT_DIV_MOD
-%prec POW
 %prec UNARY
+%prec POW
 %prec PAREN
-%prec ASSIGNMENT
+
 
 %start root
 %%
@@ -274,7 +274,7 @@ exp %type "AstExpression*"
 |
 	exp:a D exp:b %prec POW { return new AstBinOp(a->GetLine(),a->GetScript(),AstBinOp::D,a,b); }
 |
-	var_identifier:id '=' exp:exp %right %prec ASSIGNMENT { return new AstVarAssignmentExpression(id->GetLine(),id->GetScript(),id,exp); }
+	var_identifier:id '=' exp:exp  %right %prec ASSIGNMENT { return new AstVarAssignmentExpression(id->GetLine(),id->GetScript(),id,exp); }
 |
 	array_element_lvalue:id '=' exp:exp  %right %prec ASSIGNMENT { return new AstArrayElementAssignmentExpression(id->GetLine(),id->GetScript(),id,exp); }
 |
@@ -306,7 +306,7 @@ exp %type "AstExpression*"
 |
 	NOT exp:exp %right %prec UNARY { return new AstUnaryOp(exp->GetLine(), exp->GetScript(), AstUnaryOp::NOT,exp); }
 |
-	array_element_lvalue:lvalue %prec PAREN { return lvalue; }
+	array_element_lvalue:lvalue  { return lvalue; }
 ;
 
 exp_statement %type "AstExpression*"
