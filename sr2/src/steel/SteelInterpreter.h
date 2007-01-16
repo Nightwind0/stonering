@@ -78,6 +78,7 @@ private:
     SteelType integer(const SteelType &str);
     SteelType boolean(const SteelType &str);
     SteelType substr(const std::string &str, int start, int len);
+    SteelType strlen(const std::string &str);
 };
 
 

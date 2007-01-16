@@ -259,6 +259,7 @@ void SteelInterpreter::registerBifs()
     addFunction( "integer", new SteelFunctor1Arg<SteelInterpreter,const SteelType&>(this,&SteelInterpreter::integer ) );
     addFunction( "boolean", new SteelFunctor1Arg<SteelInterpreter,const SteelType&>(this,&SteelInterpreter::boolean ) );
     addFunction( "substr", new SteelFunctor3Arg<SteelInterpreter,const std::string&,int, int>(this,&SteelInterpreter::substr ) );
+    addFunction( "strlen", new SteelFunctor1Arg<SteelInterpreter,const std::string&>(this,&SteelInterpreter::strlen));
 }
 
 SteelType SteelInterpreter::push(const SteelArrayRef &ref, const SteelType &value)
@@ -364,6 +365,15 @@ SteelType SteelInterpreter::substr(const std::string &str, int start, int len)
 
     value = str.substr (start, len);
     var.set ( value );
+
+    return var;
+}
+
+SteelType SteelInterpreter::strlen(const std::string &str)
+{
+    SteelType var;
+
+    var.set ( (int)str.size() );
 
     return var;
 }
