@@ -145,6 +145,7 @@ AstExpressionStatement::~AstExpressionStatement()
 ostream & AstExpressionStatement::print(std::ostream &out)
 {
     out << *m_pExp << ';' << std::endl;
+	return out;
 }
 
 AstStatement::eStopType AstExpressionStatement::execute(SteelInterpreter *pInterpreter)
@@ -254,6 +255,8 @@ AstStatement::eStopType AstWhileStatement::execute(SteelInterpreter *pInterprete
 	// Note: if stop is CONTINUE,
 	// Then we just want to keep looping. So no action.
     }
+
+	return COMPLETED;
 }
 
 ostream & AstWhileStatement::print(std::ostream &out)
@@ -547,6 +550,9 @@ SteelType AstUnaryOp::evaluate(SteelInterpreter *pInterpreter)
 			     GetLine(),GetScript(),
 			     "Unary operation '" + ToString(m_op) + "' disallowed on this type");
     }
+
+	assert ( 0 );
+	return SteelType();
 }
 
 ostream & AstUnaryOp::print(std::ostream &out)
@@ -678,6 +684,7 @@ SteelType AstArrayElement::evaluate(SteelInterpreter *pInterpreter)
 ostream & AstArrayElement::print(std::ostream &out)
 {
     out << *m_pId << '[' << *m_pExp << ']' ;
+	return out;
 }
 
 
@@ -792,6 +799,7 @@ SteelType AstArrayAssignmentExpression::evaluate(SteelInterpreter *pInterpreter)
 ostream & AstArrayAssignmentExpression::print(std::ostream &out)
 {
     out << *m_pId << '=' << *m_pExpression;
+	return out;
 }
 
 AstArrayElementAssignmentExpression::AstArrayElementAssignmentExpression(unsigned int line,
@@ -827,6 +835,7 @@ SteelType AstArrayElementAssignmentExpression::evaluate(SteelInterpreter *pInter
 ostream & AstArrayElementAssignmentExpression::print (std::ostream &out)
 {
     out << *m_pId << '=' << *m_pExp << ';' << std::endl;
+	return out;
 }
 
 
