@@ -606,6 +606,7 @@ SteelType AstCallExpression::evaluate(SteelInterpreter *pInterpreter)
 			     "Unknown function: '" + m_pId->getValue() + '\'');
     }
 
+
     return ret;
 }
 
@@ -1076,7 +1077,16 @@ AstFunctionDefinition::~AstFunctionDefinition()
 
 void AstFunctionDefinition::registerFunction(SteelInterpreter *pInterpreter)
 {
-    pInterpreter->registerFunction( m_pId->getValue(), m_pParams , m_pStatements );
+    try{
+	pInterpreter->registerFunction( m_pId->getValue(), m_pParams , m_pStatements );
+    }
+    catch(AlreadyDefined ex)
+    {
+	throw SteelException(SteelException::FUNCTION_DEFINED,
+			     GetLine(),
+			     GetScript(),
+			     "Function '" + m_pId->getValue() + "'already defined!");
+    }
 }
 
 ostream & AstFunctionDefinition::print (std::ostream &out)

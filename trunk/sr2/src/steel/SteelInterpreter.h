@@ -62,8 +62,8 @@ private:
     SteelArray * lookup_internal(const SteelArrayRef &ref);
 
     void registerBifs();
-    std::map<std::string,SteelFunctor*> m_bifs;
-    std::map<std::string, AstStatementList*> m_functions;
+    std::map<std::string,SteelFunctor*> m_functions;
+
     SteelType m_return;
 
 private:
@@ -74,6 +74,10 @@ private:
     SteelType println(const std::string &str);
     SteelType len(const SteelArrayRef &ref);
     SteelType copy(const SteelArrayRef &lhs, const SteelArrayRef &rhs);
+    SteelType real(const SteelType &str);
+    SteelType integer(const SteelType &str);
+    SteelType boolean(const SteelType &str);
+    SteelType substr(const std::string &str, int start, int len);
 };
 
 

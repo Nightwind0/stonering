@@ -7,15 +7,36 @@
 #include "SteelType.h"
 #include "SteelException.h"
 
+// Fowards
+class AstParamDefinitionList;
+class AstStatementList;
+class SteelInterpreter;
+
 class SteelFunctor
 {
 public:
     SteelFunctor();
     virtual ~SteelFunctor();
 
-    virtual SteelType Call(const std::vector<SteelType> &params)=0;
+    virtual SteelType Call(SteelInterpreter *,const std::vector<SteelType> &params)=0;
 
 private:
+};
+
+class SteelUserFunction : public SteelFunctor
+{
+public:
+    SteelUserFunction(AstParamDefinitionList *, AstStatementList *);
+    virtual ~SteelUserFunction();
+
+    virtual SteelType Call(SteelInterpreter * pInterpreter,const std::vector<SteelType> &params);
+    
+    void setParamDefinitionList(AstParamDefinitionList *pParams);
+    void setStatementList(AstStatementList *pList);
+private:
+    AstParamDefinitionList *m_pParams;
+    AstStatementList *m_pList;
+    
 };
 
 template<class ObjType>
@@ -26,7 +47,7 @@ public:
     SteelFunctorNoArgs(ObjType *pObj, FuncPointer p):
 	m_pFunc(p),m_pObj(pObj){}
 	virtual ~SteelFunctorNoArgs(){}
-	virtual SteelType Call(const std::vector<SteelType> &params)
+	virtual SteelType Call(SteelInterpreter*,const std::vector<SteelType> &params)
     {
 	return (m_pObj->*m_pFunc)();
     }
@@ -43,7 +64,7 @@ public:
     SteelFunctor1Arg(ObjType *pObj, FuncPointer p)
 	:m_pFunc(p),m_pObj(pObj){}
     virtual ~SteelFunctor1Arg(){}
-    virtual SteelType Call(const std::vector<SteelType> &params)
+    virtual SteelType Call(SteelInterpreter*,const std::vector<SteelType> &params)
     {
 	if(params.size() != 1) throw ParamMismatch();
 	return (m_pObj->*m_pFunc)(params[0]);
@@ -63,7 +84,7 @@ public:
     SteelFunctor2Arg(ObjType *pObj, FuncPointer p)
 	:m_pFunc(p),m_pObj(pObj){}
 	virtual ~SteelFunctor2Arg(){}
-	virtual SteelType Call(const std::vector<SteelType> &params)
+	virtual SteelType Call(SteelInterpreter*,const std::vector<SteelType> &params)
 	{
 	    if(params.size() != 2) throw ParamMismatch();
 	    return (m_pObj->*m_pFunc)(params[0],params[1]);
@@ -82,7 +103,7 @@ public:
     SteelFunctor3Arg(ObjType *pObj, FuncPointer p)
 	:m_pFunc(p),m_pObj(pObj){}
 	virtual ~SteelFunctor3Arg(){}
-	virtual SteelType Call(const std::vector<SteelType> &params)
+	virtual SteelType Call(SteelInterpreter *,const std::vector<SteelType> &params)
 	{
 	    if(params.size() != 3) throw ParamMismatch();
 	    return (m_pObj->*m_pFunc)(params[0],
@@ -102,7 +123,7 @@ public:
     SteelFunctor4Arg(ObjType *pObj, FuncPointer p):
 	m_pFunc(p),m_pObj(pObj){}
 	virtual ~SteelFunctor4Arg(){}
-	virtual SteelType Call(const std::vector<SteelType> &params)
+	virtual SteelType Call(SteelInterpreter*,const std::vector<SteelType> &params)
 	{
 	    if(params.size() != 4) throw ParamMismatch();
 	    return (m_pObj->*m_pFunc)(params[0],

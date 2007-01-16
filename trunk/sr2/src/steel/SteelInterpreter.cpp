@@ -10,13 +10,14 @@
 SteelInterpreter::SteelInterpreter()
 {
     registerBifs();
+    srand(time(0));
 }
 
 SteelInterpreter::~SteelInterpreter()
 {
     // Delete functors
-    for(std::map<std::string,SteelFunctor*>::iterator i = m_bifs.begin();
-	i != m_bifs.end(); i++)
+    for(std::map<std::string,SteelFunctor*>::iterator i = m_functions.begin();
+	i != m_functions.end(); i++)
 	delete i->second;
 }
 
@@ -24,7 +25,11 @@ SteelInterpreter::~SteelInterpreter()
 void SteelInterpreter::addFunction(const std::string &name,
 				   SteelFunctor *pFunc)
 {
-    m_bifs[name] = pFunc;
+    std::map<std::string,SteelFunctor*>::iterator it = m_functions.find ( name );
+
+    if( it != m_functions.end() ) throw AlreadyDefined();
+
+    m_functions[name] = pFunc;
 }
 
 void SteelInterpreter::run(const std::string &name,const std::string &script)
@@ -33,8 +38,13 @@ void SteelInterpreter::run(const std::string &name,const std::string &script)
     parser.setBuffer(script.c_str(),name);
     if(parser.Parse() != SteelParser::PRC_SUCCESS)
     {
-	std::cerr << "Parse error." << std::endl;
-	return;
+	AstBase * pAst = static_cast<AstBase*>( parser.GetAcceptedToken() );
+	
+	throw SteelException(SteelException::PARSING,
+			     pAst->GetLine(),
+			     pAst->GetScript(),
+			     "Parse error.");
+			     
     }
 
     AstScript *pScript = static_cast<AstScript*>( parser.GetAcceptedToken() );
@@ -50,19 +60,18 @@ SteelType SteelInterpreter::call(const std::string &name, const std::vector<Stee
 {
     // First, check the builtins. They can be considered like keywords.
 
-    std::map<std::string,SteelFunctor*>::iterator it = m_bifs.find( name );
+    std::map<std::string,SteelFunctor*>::iterator it = m_functions.find( name );
 
-    if( it != m_bifs.end() )
+    if( it != m_functions.end() )
     {
 	// Its found, and its a bif.
 	SteelFunctor * pFunctor = it->second;
 	assert ( pFunctor != NULL );
 
-	return pFunctor->Call(pList);
+	return pFunctor->Call(this,pList);
     }
     else
     {
-	//TODO: Look through the STEEL functions
 
 	throw UnknownIdentifier();
     }
@@ -190,7 +199,7 @@ void SteelInterpreter::registerFunction(const std::string &name,
 					AstParamDefinitionList *pParams, 
 					AstStatementList *pStatements)
 {
-    
+    addFunction(name,new SteelUserFunction( pParams, pStatements ));
 }
 
 SteelType * SteelInterpreter::lookup_internal(const std::string &name)
@@ -247,6 +256,10 @@ void SteelInterpreter::registerBifs()
     addFunction( "println", new SteelFunctor1Arg<SteelInterpreter,const std::string &>(this,&SteelInterpreter::println ) );
     addFunction( "len", new SteelFunctor1Arg<SteelInterpreter,const SteelArrayRef&>(this, &SteelInterpreter::len ) );
     addFunction( "copy", new SteelFunctor2Arg<SteelInterpreter,const SteelArrayRef&,const SteelArrayRef&> ( this, &SteelInterpreter::copy ) );
+    addFunction( "real", new SteelFunctor1Arg<SteelInterpreter,const SteelType&>(this,&SteelInterpreter::real ) );
+    addFunction( "integer", new SteelFunctor1Arg<SteelInterpreter,const SteelType&>(this,&SteelInterpreter::integer ) );
+    addFunction( "boolean", new SteelFunctor1Arg<SteelInterpreter,const SteelType&>(this,&SteelInterpreter::boolean ) );
+    addFunction( "substr", new SteelFunctor3Arg<SteelInterpreter,const std::string&,int, int>(this,&SteelInterpreter::substr ) );
 }
 
 SteelType SteelInterpreter::push(const SteelArrayRef &ref, const SteelType &value)
@@ -319,4 +332,39 @@ SteelType SteelInterpreter::copy(const SteelArrayRef &lhs, const SteelArrayRef &
 
     *pArrayDest = *pArraySource;
     
+}
+
+SteelType SteelInterpreter::real(const SteelType &value)
+{
+    SteelType var;
+    var.set ( (double)value );
+
+    return var;
+}
+
+SteelType SteelInterpreter::integer(const SteelType &value)
+{
+    SteelType var;
+    var.set ( (int)value );
+
+    return var;
+}
+
+SteelType SteelInterpreter::boolean(const SteelType &value)
+{
+    SteelType var;
+    var.set ( (bool)value );
+
+    return var;
+}
+
+SteelType SteelInterpreter::substr(const std::string &str, int start, int len)
+{
+    SteelType var;
+    std::string value;
+
+    value = str.substr (start, len);
+    var.set ( value );
+
+    return var;
 }

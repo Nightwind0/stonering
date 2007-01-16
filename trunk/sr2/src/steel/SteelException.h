@@ -14,7 +14,8 @@ public:
 	OUT_OF_BOUNDS,
 	UNKNOWN_IDENTIFIER,
 	TYPE_MISMATCH,
-	PARAM_MISMATCH
+	PARAM_MISMATCH,
+	FUNCTION_DEFINED
     };
 
 
@@ -58,6 +59,10 @@ class UnknownIdentifier
 };
 
 class OutOfBounds
+{
+};
+
+class AlreadyDefined
 {
 };
 
