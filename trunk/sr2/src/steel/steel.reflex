@@ -185,7 +185,7 @@ int SteelScanner::ToIntFromHex(const std::string &text)
 		return (SteelParser::Token::Type)accepted_text[0];
 	}
 |
-	(@|$|\(|\)|,|%|\+|\-|\^|\=|\[|\]|%|/)
+	(@|$|\(|\)|,|%|\+|\-|\^|\*|\=|\[|\]|%|/)
 	%language.cpp{
 		return (SteelParser::Token::Type)accepted_text[0];
 	}

@@ -327,7 +327,9 @@ AstReturnStatement::~AstReturnStatement()
 
 AstStatement::eStopType AstReturnStatement::execute(SteelInterpreter *pInterpreter)
 {
-    pInterpreter->setReturn( m_pExpression->evaluate(pInterpreter) );
+    if( m_pExpression )
+	pInterpreter->setReturn( m_pExpression->evaluate(pInterpreter) );
+    else pInterpreter->setReturn ( SteelType() );
     return RETURN;
 }
 
@@ -587,8 +589,9 @@ SteelType AstCallExpression::evaluate(SteelInterpreter *pInterpreter)
 {
     SteelType ret;
     try{
-	
-	ret = pInterpreter->call( m_pId->getValue(), m_pParams->getParamList(pInterpreter) );
+	if(m_pParams)
+	    ret = pInterpreter->call( m_pId->getValue(), m_pParams->getParamList(pInterpreter) );
+	else pInterpreter->call( m_pId->getValue(), std::vector<SteelType>() );
     }
     catch(ParamMismatch m)
     {
@@ -696,7 +699,22 @@ ostream & AstArrayElement::print(std::ostream &out)
 
 SteelType AstArrayIdentifier::evaluate(SteelInterpreter *pInterpreter)
 {
-    return SteelType();
+    
+    // Find our reference variable in the file. 
+    SteelType var;
+
+    try {
+	var = pInterpreter->lookup(getValue()); 
+    }
+    catch(UnknownIdentifier i)
+    {
+	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
+			     GetLine(),
+			     GetScript(),
+			     "Unknown array identifier:'" + getValue() + '\'');
+    }
+
+    return var;
 }
 
 
@@ -842,6 +860,7 @@ AstParamList::~AstParamList()
 std::vector<SteelType> AstParamList::getParamList(SteelInterpreter *pInterpreter) const 
 {
     std::vector<SteelType> params;
+
     for(std::list<AstExpression*>::const_iterator i = m_params.begin();
 	i != m_params.end(); i++)
     {
@@ -849,6 +868,7 @@ std::vector<SteelType> AstParamList::getParamList(SteelInterpreter *pInterpreter
 	SteelType var = (*i)->evaluate(pInterpreter);
 	params.push_back ( var );
     }
+    
 
     return params;
 }
@@ -962,8 +982,24 @@ AstStatement::eStopType AstArrayDeclaration::execute(SteelInterpreter *pInterpre
 	pInterpreter->declare_array( m_pId->getValue(), m_pIndex->evaluate(pInterpreter));
     else pInterpreter->declare_array( m_pId->getValue(), 0);
 
-    if(m_pExp)
-	pInterpreter->assign( m_pId->getValue(), m_pExp->evaluate(pInterpreter) );
+    try{
+	if(m_pExp)
+	    pInterpreter->assign( m_pId->getValue(), m_pExp->evaluate(pInterpreter) );
+    }
+    catch(TypeMismatch m)
+    {
+	throw SteelException(SteelException::TYPE_MISMATCH,
+			     GetLine(),
+			     GetScript(),
+			     "Attempt to assign non-array to array:'" + m_pId->getValue() + '\'');
+    }
+    catch(UnknownIdentifier i)
+    {
+	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
+			     GetLine(),
+			     GetScript(),
+			     "Unknown identifier in assignment.");
+    }
 
     return COMPLETED;
 }

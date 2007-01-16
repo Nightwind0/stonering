@@ -71,7 +71,9 @@ private:
     SteelType push(const SteelArrayRef &ref, const SteelType &value);
     SteelType pop(const SteelArrayRef &ref);
     SteelType print(const std::string &str);
+    SteelType println(const std::string &str);
     SteelType len(const SteelArrayRef &ref);
+    SteelType copy(const SteelArrayRef &lhs, const SteelArrayRef &rhs);
 };
 
 
