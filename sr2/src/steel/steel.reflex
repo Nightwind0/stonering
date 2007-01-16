@@ -73,6 +73,7 @@ int SteelScanner::ToIntFromHex(const std::string &text)
 	int i;
 
 	str >> std::hex >> i;
+	return i;
 }
 
 %}
