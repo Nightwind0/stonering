@@ -4,6 +4,10 @@
 #include "Action.h"
 #include "Element.h"
 
+#ifdef PlaySound
+#undef PlaySound
+#endif
+
 namespace StoneRing{
 	
 	class PlaySound : public Action, public Element

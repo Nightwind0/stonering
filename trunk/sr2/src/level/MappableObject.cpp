@@ -239,18 +239,18 @@ bool StoneRing::MappableObject::handleElement(eElement element, Element * pEleme
         switch(mpMovement->getMovementType())
         {
         case Movement::MOVEMENT_WANDER:
-            if(!mGraphic.asSpriteRef->getType() == SpriteRef::SPR_FOUR_WAY)
+            if(mGraphic.asSpriteRef->getType() != SpriteRef::SPR_FOUR_WAY)
                 throw CL_Error("Wandering MO needs a four way sprite ref.");
 
             meDirection = SOUTH;
             break;
         case Movement::MOVEMENT_PACE_NS:
             meDirection = SOUTH;
-            if(!mGraphic.asSpriteRef->getType() == SpriteRef::SPR_TWO_WAY)
+            if(mGraphic.asSpriteRef->getType() != SpriteRef::SPR_TWO_WAY)
                 throw CL_Error("Pacing MO needs a two way sprite ref.");
             break;
         case Movement::MOVEMENT_PACE_EW:
-            if(!mGraphic.asSpriteRef->getType() == SpriteRef::SPR_TWO_WAY)
+            if(mGraphic.asSpriteRef->getType() != SpriteRef::SPR_TWO_WAY)
                 throw CL_Error("Pacing MO needs a two way sprite ref.");
             meDirection = EAST;
             break;  

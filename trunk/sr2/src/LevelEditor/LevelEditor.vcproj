@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SOLUTIONDIR)/src&quot;;&quot;$(SOLUTIONDIR)/src/party&quot;;&quot;$(SOLUTIONDIR)/src/level&quot;;&quot;$(SOLUTIONDIR)/src/factories&quot;;&quot;$(SOLUTIONDIR)/src/items&quot;;&quot;$(SOLUTIONDIR)/src/abilities&quot;;&quot;$(SOLUTIONDIR)/src/states&quot;;&quot;$(SOLUTIONDIR)/src/character&quot;"
+				AdditionalIncludeDirectories="&quot;$(SOLUTIONDIR)/src&quot;;&quot;$(SOLUTIONDIR)/src/party&quot;;&quot;$(SOLUTIONDIR)/src/level&quot;;&quot;$(SOLUTIONDIR)/src/factories&quot;;&quot;$(SOLUTIONDIR)/src/items&quot;;&quot;$(SOLUTIONDIR)/src/abilities&quot;;&quot;$(SOLUTIONDIR)/src/states&quot;;&quot;$(SOLUTIONDIR)/src/character&quot;;&quot;$(SOLUTIONDIR)/src/level/actions&quot;;&quot;$(SOLUTIONDIR)/src/items/armor&quot;;&quot;$(SOLUTIONDIR)/src/items/weapons&quot;;&quot;$(SOLUTIONDIR)\src\level\checks&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -121,6 +121,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="&quot;$(SOLUTIONDIR)/src/items/armor/&quot;;&quot;$(SOLUTIONDIR)/src/items/weapons/&quot;;&quot;$(SOLUTIONDIR)/src/level/actions/&quot;;&quot;$(SOLUTIONDIR)/src/level/checks/&quot;;&quot;$(SOLUTIONDIR)/src/&quot;;&quot;$(SOLUTIONDIR)/src/party&quot;;&quot;$(SOLUTIONDIR)/src/level&quot;;&quot;$(SOLUTIONDIR)/src/factories&quot;;&quot;$(SOLUTIONDIR)/src/items&quot;;&quot;$(SOLUTIONDIR)/src/abilities&quot;;&quot;$(SOLUTIONDIR)/src/states&quot;;&quot;$(SOLUTIONDIR)/src/character&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -185,26 +186,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\abilities\AbilityManager.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\Animation.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\character\Character.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\character\CharacterClass.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\character\CharacterDefinition.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\factories\CharacterFactory.cpp"
 				>
 			</File>
@@ -217,14 +198,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Element.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\GraphicsManager.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\LevelEditor\GridPoint.cpp"
 				>
 			</File>
@@ -233,23 +206,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\items\Item.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\factories\ItemFactory.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\items\ItemManager.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\level\Level.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\level\LevelElements.cpp"
 				>
 			</File>
 			<File
@@ -261,27 +218,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\level\MappableObject.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\abilities\Skill.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\abilities\Spell.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\abilities\StatusEffect.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\LevelEditor\TileSelector.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\Utilities.cpp"
 				>
 			</File>
 		</Filter>
