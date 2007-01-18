@@ -23,10 +23,7 @@ SteelInterpreter::~SteelInterpreter()
     for(std::map<std::string,SteelFunctor*>::iterator i = m_functions.begin();
 	i != m_functions.end(); i++)
     {
-	if ( ! i->second->isUserFunction() ) 
-	{
-	    delete i->second;
-	}
+	delete i->second;
     }
 	    
 }
@@ -49,11 +46,22 @@ void SteelInterpreter::run(const std::string &name,const std::string &script)
     if(parser.Parse() != SteelParser::PRC_SUCCESS)
     {
 	AstBase * pAst = static_cast<AstBase*>( parser.GetAcceptedToken() );
-	
-	throw SteelException(SteelException::PARSING,
-			     pAst->GetLine(),
-			     pAst->GetScript(),
-			     "Parse error.");
+
+	if( pAst != NULL)
+	{
+	    throw SteelException(SteelException::PARSING,
+				 pAst->GetLine(),
+				 pAst->GetScript(),
+				 "Parse error.");
+	}
+	else
+	{
+	    // Apparently, there was nothing there. 
+	    // Which should be legal.
+	    // And theres nothing to delete. So. I think we're done here.
+	    return;
+				 
+	}
 			     
     }
 

@@ -193,101 +193,115 @@ int SteelScanner::ToIntFromHex(const std::string &text)
 |
 	(<=)
 	 %language.cpp{
-		 *token = new AstKeyword(m_line,m_script_name);
+		 *token = NULL;
 		 return SteelParser::Token::LTE; 
 	}
 |
 	(>=) 
 	%language.cpp{
-		 *token = new AstKeyword(m_line,m_script_name); return SteelParser::Token::GTE; 
+		 *token = NULL;
+		  return SteelParser::Token::GTE; 
 	}
 |
 	(!=)
 	%language.cpp{
-		*token = new AstKeyword(m_line,m_script_name);
+		*token = NULL;
 		return SteelParser::Token::NE;
 	}
 |
 	(==) 
 	%language.cpp{
-		*token = new AstKeyword(m_line,m_script_name); return SteelParser::Token::EQ;
+		*token = NULL;
+		 return SteelParser::Token::EQ;
 	 }
 |
 	(<) 
 	%language.cpp{
-		*token = new AstKeyword(m_line,m_script_name); return SteelParser::Token::LT; 
+		*token = NULL;
+		 return SteelParser::Token::LT; 
 	}
 |
 	(>)
 	 %language.cpp{
-		*token = new AstKeyword(m_line,m_script_name); return SteelParser::Token::GT; 
+		*token = NULL;
+		 return SteelParser::Token::GT; 
 	}
 |
 	(d)
 	 %language.cpp{ 
-		*token = new AstKeyword(m_line,m_script_name); return SteelParser::Token::D;
+		*token = NULL;
+		 return SteelParser::Token::D;
 	 }
 |
 	(and) 
 	%language.cpp{ 
-		*token = new AstKeyword(m_line,m_script_name); return SteelParser::Token::AND;
+		*token = NULL;
+		 return SteelParser::Token::AND;
 	 }
 |
 	(or) 
 	%language.cpp{ 
-		*token = new AstKeyword(m_line,m_script_name); return SteelParser::Token::OR;
+		*token = NULL;
+		 return SteelParser::Token::OR;
 	 }
 |
 	(not)
 	 %language.cpp{
-		*token = new AstKeyword(m_line,m_script_name); return SteelParser::Token::NOT;
+		*token = NULL;
+		 return SteelParser::Token::NOT;
 	}
 |
 	(while)
 	 %language.cpp{
-		*token =new AstKeyword(m_line,m_script_name); return SteelParser::Token::WHILE;
+		*token = NULL;
+		 return SteelParser::Token::WHILE;
 	}
 |
 	(for) 
 	%language.cpp{
-		*token = new AstKeyword(m_line,m_script_name); return SteelParser::Token::FOR;
+		*token = NULL;
+		 return SteelParser::Token::FOR;
 	}
 |
 	(break) 
 	%language.cpp{ 
-		*token = new AstKeyword(m_line,m_script_name); return SteelParser::Token::BREAK;
+		*token = NULL;
+		 return SteelParser::Token::BREAK;
 	}
 |
 	(continue)
 	 %language.cpp{ 
-		*token = new AstKeyword(m_line,m_script_name); return SteelParser::Token::CONTINUE;
+		*token = NULL;
+		 return SteelParser::Token::CONTINUE;
 	}
 |
 	(if) 
 	%language.cpp{
-		*token = new AstKeyword(m_line,m_script_name); return SteelParser::Token::IF;
+		*token = NULL;
+		 return SteelParser::Token::IF;
 	}
 |
 	(else)
 	 %language.cpp{
-		*token = new AstKeyword(m_line,m_script_name); return SteelParser::Token::ELSE;
+		*token = NULL;
+		 return SteelParser::Token::ELSE;
 	}
 |
 	(return) 
 	%language.cpp{
-		 *token = new AstKeyword(m_line,m_script_name); 
+		 *token = NULL;
 		return SteelParser::Token::RETURN;
 	}
 |
 	(function) 
 	%language.cpp{ 
-		*token = new AstKeyword(m_line,m_script_name); 
+		*token = NULL;
 		return SteelParser::Token::FUNCTION;
 	}
 |
 	(var)
 	 %language.cpp{
-	 	*token = new AstKeyword(m_line,m_script_name); 
+	 	*token = NULL;
 		
 		return SteelParser::Token::VAR;
 	}

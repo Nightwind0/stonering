@@ -101,8 +101,10 @@ root %type "AstScript*"
 
 func_definition %type "AstFunctionDefinition*"
 :
-	FUNCTION FUNC_IDENTIFIER:id '(' param_definition:params ')' '{' statement_list:stmts '}'
+	FUNCTION FUNC_IDENTIFIER:id '(' param_definition:params ')' '{':b1 statement_list:stmts '}':b2
 				{
+					delete b1;
+					delete b2;
 					return new AstFunctionDefinition(id->GetLine(),
 									id->GetScript(),
 									static_cast<AstFuncIdentifier*>(id),
@@ -110,8 +112,10 @@ func_definition %type "AstFunctionDefinition*"
 									stmts);
 				}
 |
-	FUNCTION FUNC_IDENTIFIER:id '(' ')' '{' statement_list:stmts '}'
+	FUNCTION FUNC_IDENTIFIER:id '(' ')' '{':b1 statement_list:stmts '}':b2
 				{
+					delete b1;
+					delete b2;
 					return new AstFunctionDefinition(id->GetLine(),
 									id->GetScript(),
 									static_cast<AstFuncIdentifier*>(id),
@@ -293,7 +297,7 @@ exp_statement %type "AstExpression*"
 			return new AstExpression(line,script); 
 		}
 |
-	exp:exp ';' { return exp; }
+	exp:exp ';':semi { delete semi;  return exp; }
 ;
 
 int_literal %type "AstInteger*"
