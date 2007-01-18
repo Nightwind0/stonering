@@ -48,6 +48,12 @@ SteelParser::Token::Type SteelParser::Scan ()
 }
 
 
+%parser_throw_away_token_actions{
+    delete token;
+}
+
+
+
 %token ';' '(' ')' '=' '{' '}' '[' ']' ','
 %token '-' '+' '*' '/' '^' '%'
 %token D
