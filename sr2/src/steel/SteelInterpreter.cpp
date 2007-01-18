@@ -117,7 +117,7 @@ void SteelInterpreter::declare_array(const std::string &array, int size)
     SteelArrayRef ref; 
     std::string sref = name_array_ref( array );
     ref.setArrayRef ( sref );
-    array_file[ref] = SteelArray( std::max(1,size) );
+    array_file[ref] = SteelArray( std::max(0,size) );
     
     // set the variable to reference it
     file[array].set ( ref );
