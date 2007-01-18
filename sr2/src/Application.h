@@ -78,7 +78,6 @@ namespace StoneRing
 	void onSignalQuit();
 	void onSignalKeyDown(const CL_InputEvent &key);
 	void onSignalKeyUp(const CL_InputEvent &key);
-	void onSignalMovementTimer();
   
 	int calc_fps(int);
 
@@ -92,8 +91,8 @@ namespace StoneRing
 	bool mbDone;
 	CL_ResourceManager * mpResources;
 	CL_DisplayWindow *mpWindow;
-	CL_Timer *mpMovementTimer;
-	CL_Mutex mMovementMutex;
+	//CL_Timer *mpMovementTimer;
+	//CL_Mutex mMovementMutex;
 
 	/* STATES */
 	MapState mMapState;
