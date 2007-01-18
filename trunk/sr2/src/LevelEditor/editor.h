@@ -93,7 +93,7 @@ public:
 
       virtual bool canMove(const CL_Rect &currently, const CL_Rect &destination, bool noHot, bool isPlayer);
 
-
+	  virtual void requestRedraw(const State *pState){}
       virtual void playScene(const std::string &animation){}
       virtual void playSound(const std::string &sound){}
       virtual void loadLevel(const std::string &level, uint startX, uint startY){}
