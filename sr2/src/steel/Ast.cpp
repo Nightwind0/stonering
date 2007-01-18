@@ -1010,7 +1010,7 @@ AstArrayDeclaration::AstArrayDeclaration(unsigned int line,
 					 const std::string &script,
 					 AstArrayIdentifier *pId,
 					 AstInteger *pInt)
-    :AstDeclaration(line,script),m_pId(pId),m_pIndex(pInt)
+    :AstDeclaration(line,script),m_pId(pId),m_pIndex(pInt),m_pExp(NULL)
 {
 }
 

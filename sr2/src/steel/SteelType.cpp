@@ -394,12 +394,15 @@ SteelType  SteelType::operator<(const SteelType &rhs)
     case SteelType::INT:
 	if((int)*this < (int)rhs)
 	    val.set(true);
+	break;
     case SteelType::DOUBLE:
 	if((double)*this < (double)rhs)
 	    val.set(true);
+	break;
     case SteelType::STRING:
 	if((std::string)*this < (std::string)rhs)
 	    val.set(true);
+	break;
 	   
     }
 
@@ -420,16 +423,19 @@ SteelType  SteelType::operator<=(const SteelType &rhs)
     case SteelType::INT:
 	if((int)*this <= (int)rhs)
 	    val.set(true);
+	break;
     case SteelType::DOUBLE:
 	if((double)*this <= (double)rhs)
 	    val.set(true);
+	break;
     case SteelType::STRING:
 	if((std::string)*this <= (std::string)rhs)
 	    val.set(true);
+	break;
 	   
     }
-	assert ( 0 );
-	return val;
+	
+    return val;
 }
 
 SteelType  SteelType::operator>(const SteelType &rhs)
