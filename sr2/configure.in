@@ -67,5 +67,6 @@ AC_OUTPUT(Makefile \
 		   src/level/Makefile \
 		   src/party/Makefile \
 		   src/states/Makefile \
-		   src/LevelEditor/Makefile
+		   src/LevelEditor/Makefile \
+		   src/steel/Makefile
 )

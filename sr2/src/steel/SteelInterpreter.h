@@ -68,8 +68,14 @@ private:
 
 private:
     // Bifs
-    SteelType push(const SteelArrayRef &ref, const SteelType &value);
-    SteelType pop(const SteelArrayRef &ref);
+    // Push on the FRONT of the array
+//    SteelType push(const SteelArrayRef &ref, const SteelType &value);
+    // Pop the front of the array
+//    SteelType pop(const SteelArrayRef &ref);
+    // Pop the back of the array
+    SteelType bob(const SteelArrayRef &ref);
+    // Push on the BACK of the array
+    SteelType shove(const SteelArrayRef &ref, const SteelType &value);
     SteelType print(const std::string &str);
     SteelType println(const std::string &str);
     SteelType len(const SteelArrayRef &ref);

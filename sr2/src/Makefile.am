@@ -1,4 +1,4 @@
-SUBDIRS = abilities character factories items level party states steel
+SUBDIRS = abilities character factories items level party states steel LevelEditor
 
 bin_PROGRAMS = stonering
 

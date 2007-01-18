@@ -250,12 +250,14 @@ void SteelInterpreter::popScope()
 
 void SteelInterpreter::registerBifs()
 {
-    addFunction( "push", new SteelFunctor2Arg<SteelInterpreter,const SteelArrayRef &,const SteelType&> ( this, &SteelInterpreter::push ) );
-    addFunction( "pop", new SteelFunctor1Arg<SteelInterpreter,const SteelArrayRef &>(this, &SteelInterpreter::pop) );
+//    addFunction( "push", new SteelFunctor2Arg<SteelInterpreter,const SteelArrayRef &,const SteelType&> ( this, &SteelInterpreter::push ) );
+//    addFunction( "pop", new SteelFunctor1Arg<SteelInterpreter,const SteelArrayRef &>(this, &SteelInterpreter::pop) );
+    addFunction( "bob", new SteelFunctor1Arg<SteelInterpreter,const SteelArrayRef &>(this, &SteelInterpreter::bob) );
+    addFunction( "shove", new SteelFunctor2Arg<SteelInterpreter,const SteelArrayRef &,const SteelType&> ( this, &SteelInterpreter::shove ) );
     addFunction( "print", new SteelFunctor1Arg<SteelInterpreter,const std::string &>(this, &SteelInterpreter::print ) );
     addFunction( "println", new SteelFunctor1Arg<SteelInterpreter,const std::string &>(this,&SteelInterpreter::println ) );
     addFunction( "len", new SteelFunctor1Arg<SteelInterpreter,const SteelArrayRef&>(this, &SteelInterpreter::len ) );
-    addFunction( "copy", new SteelFunctor2Arg<SteelInterpreter,const SteelArrayRef&,const SteelArrayRef&> ( this, &SteelInterpreter::copy ) );
+    addFunction( "copy", new SteelFunctor2Arg<SteelInterpreter,const SteelArrayRef&, const SteelArrayRef&> (this, &SteelInterpreter::copy ) );
     addFunction( "real", new SteelFunctor1Arg<SteelInterpreter,const SteelType&>(this,&SteelInterpreter::real ) );
     addFunction( "integer", new SteelFunctor1Arg<SteelInterpreter,const SteelType&>(this,&SteelInterpreter::integer ) );
     addFunction( "boolean", new SteelFunctor1Arg<SteelInterpreter,const SteelType&>(this,&SteelInterpreter::boolean ) );
@@ -263,7 +265,21 @@ void SteelInterpreter::registerBifs()
     addFunction( "strlen", new SteelFunctor1Arg<SteelInterpreter,const std::string&>(this,&SteelInterpreter::strlen));
 }
 
+/*
 SteelType SteelInterpreter::push(const SteelArrayRef &ref, const SteelType &value)
+{
+    SteelArray *pArray = lookup_internal(ref);
+
+    if(pArray == NULL) throw UnknownIdentifier();
+
+    pArray->push_front ( value );
+
+    return pArray->front();
+					    
+}
+*/
+
+SteelType SteelInterpreter::shove(const SteelArrayRef &ref, const SteelType &value)
 {
     SteelArray *pArray = lookup_internal(ref);
 
@@ -275,6 +291,8 @@ SteelType SteelInterpreter::push(const SteelArrayRef &ref, const SteelType &valu
 					    
 }
 
+/*
+
 SteelType SteelInterpreter::pop(const SteelArrayRef &ref)
 {
     SteelArray *pArray = lookup_internal(ref);
@@ -283,6 +301,20 @@ SteelType SteelInterpreter::pop(const SteelArrayRef &ref)
     if(pArray == NULL) throw UnknownIdentifier();
 
     SteelType val = pArray->front();
+    pArray->pop_front();
+    
+    return val;
+}
+*/
+
+SteelType SteelInterpreter::bob(const SteelArrayRef &ref)
+{
+    SteelArray *pArray = lookup_internal(ref);
+
+
+    if(pArray == NULL) throw UnknownIdentifier();
+
+    SteelType val = pArray->back();
     pArray->pop_back();
     
     return val;
@@ -322,18 +354,18 @@ SteelType SteelInterpreter::len(const SteelArrayRef &ref)
 SteelType SteelInterpreter::copy(const SteelArrayRef &lhs, const SteelArrayRef &rhs)
 {
     SteelType ret;
-    ret.set ( rhs );
+    ret.set(rhs);
     SteelArray *pArrayDest = lookup_internal(lhs);
     if(pArrayDest == NULL) throw UnknownIdentifier();
     SteelArray *pArraySource = lookup_internal(rhs);
     if(pArraySource == NULL) throw UnknownIdentifier();
 
-    // They both point to the same thing already
+    // They point to the same array already, don't assign.
     if(pArrayDest == pArraySource) return ret;
 
     *pArrayDest = *pArraySource;
 
-	return ret;
+    return ret;
     
 }
 
