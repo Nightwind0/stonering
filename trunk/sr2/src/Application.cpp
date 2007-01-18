@@ -25,7 +25,7 @@ using std::max;
 
 const int WINDOW_WIDTH = 800 ;
 const int WINDOW_HEIGHT = 600 ;
-
+const int MS_BETWEEN_MOVES = 20;
 
 
 bool gbDebugStop;
@@ -322,14 +322,6 @@ void Application::loadItems(const std::string &filename)
     mItemManager.loadItemFile ( document );
 
 }
-void Application::onSignalMovementTimer()
-{
-	mMovementMutex.enter();
-    mMapState.moveMappableObjects();
-
-    mStates.back()->mappableObjectMoveHook();
-	mMovementMutex.leave();
-}
 
 void Application::requestRedraw(const State * /*pState*/)
 {
@@ -338,7 +330,6 @@ void Application::requestRedraw(const State * /*pState*/)
 
 void Application::draw()
 {
-	mMovementMutex.enter();
     CL_Rect dst = getDisplayRect();
 
     mpWindow->get_gc()->push_cliprect( dst);
@@ -356,7 +347,6 @@ void Application::draw()
     }
     
     mpWindow->get_gc()->pop_cliprect();
-	mMovementMutex.leave();
 }
 
 void Application::run()
@@ -364,28 +354,38 @@ void Application::run()
 	CL_FramerateCounter frameRate;
 	static int count = 0;
 	State * backState = mStates.back();
-    if ( backState->disableMappableObjects())
-        mpMovementTimer->disable(); 
 
     backState->start();
-
+	unsigned int then = CL_System::get_time();
     while(!backState->isDone())
     {
+
         draw();
 		CL_Display::flip();
-		CL_System::sleep(10);
+		//CL_System::sleep(10);
 		CL_System::keep_alive();
 #ifndef NDEBUG
 		if(count++ % 50 == 0)
 			std::cout << "FPS " <<  frameRate.get_fps() << std::endl;
-#endif
+#endif	
+		unsigned int now = CL_System::get_time();
+
+		if(now - then > MS_BETWEEN_MOVES)
+		{
+			if ( !backState->disableMappableObjects())
+			{
+				mMapState.moveMappableObjects();
+				mStates.back()->mappableObjectMoveHook();
+			}
+			then = now;
+		}
+
+		
     }
 
 
     mStates.back()->finish();
-    if(mStates.back()->disableMappableObjects())
-        mpMovementTimer->enable(); // It would have been disabled. So re-enable it.
-
+  
     mStates.pop_back();
 
 
@@ -473,19 +473,8 @@ int Application::main(int argc, char ** argv)
         static int start_time = CL_System::get_time();
         static long fpscounter = 0;
 
-        mpMovementTimer = new CL_Timer(32);
-        CL_Slot slot_mo_timer = mpMovementTimer->sig_timer().connect(this,&Application::onSignalMovementTimer);
-       
-        mpMovementTimer->enable();
-
         while(mStates.size())
-        {
-                        
-        
-            run();
-                
-
-        }
+			run();
                 
 #ifndef NDEBUG
         std::string foo;
