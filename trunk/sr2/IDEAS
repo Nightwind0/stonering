@@ -1,7 +1,13 @@
+
+
+
+Make a thread for handling drawing and input! That way you don't have to make it asynchronous, instead of calling run() twice on the stack you can have it in another thread, i think. Don't make it asynch. I'm convinced its wrong.
+
 Baxwbakwalanuksiwe' ("Man-Eater at the North End of the World"; who can transform into various man-eating birds and was said to have mouths all over his body.
 
 Huxwhukw (supernatural Crane-Like Bird who cracks skulls of men to suck out their brains)
 
+Mad Squirrels - Think humans are a type of nut, and jump on your head and try to crack your skull open. Some sort of tie in with Jayton. They jump on your head and gnaw, usually doing some damage, but theres a small chance that they crack your skull and its instant death. Unless you're wearing special anti-squirrel helmets. 
 
 Vinegaroon - type of giant scorpion
 EXPONENTIAL STATS-
