@@ -139,7 +139,7 @@ SteelType SteelInterpreter::lookup(const std::string &array, int index)
     if(pVar == NULL) throw UnknownIdentifier();
 
     SteelArray *pArray = lookup_internal ( (SteelArrayRef)*pVar);
-    if(pArray == NULL) throw UnknownIdentifier();
+    if(pArray == NULL) throw BadReference();
 
     if(index >= pArray->size()) throw OutOfBounds();
 
@@ -165,7 +165,7 @@ void SteelInterpreter::assign(const std::string &array, int index, const SteelTy
     if(!pVar->isArray()) throw TypeMismatch();
 
     SteelArray *pArray = lookup_internal( (SteelArrayRef)*pVar );
-    if(pArray == NULL) throw UnknownIdentifier();
+    if(pArray == NULL) throw BadReference();
 
     if(index >= pArray->size()) throw OutOfBounds();
 
@@ -190,7 +190,7 @@ void SteelInterpreter::assign_array(const std::string &name, const SteelType &va
     if(pVar == NULL) throw UnknownIdentifier();
     // Rely on cast overloader to SteelArrayRef
     SteelArray *pRhsArray = lookup_internal( (SteelArrayRef)value );
-    if(pRhsArray == NULL) throw UnknownIdentifier();
+    if(pRhsArray == NULL) throw BadReference();
 
     std::string newname = name_array_ref ( name );
     SteelArrayRef newref;
@@ -292,7 +292,7 @@ SteelType SteelInterpreter::shove(const SteelArrayRef &ref, const SteelType &val
 {
     SteelArray *pArray = lookup_internal(ref);
 
-    if(pArray == NULL) throw UnknownIdentifier();
+    if(pArray == NULL) throw BadReference();
 
     pArray->push_back ( value );
 
@@ -321,7 +321,7 @@ SteelType SteelInterpreter::bob(const SteelArrayRef &ref)
     SteelArray *pArray = lookup_internal(ref);
 
 
-    if(pArray == NULL) throw UnknownIdentifier();
+    if(pArray == NULL) throw BadReference();
 
     SteelType val = pArray->back();
     pArray->pop_back();
@@ -351,7 +351,7 @@ SteelType SteelInterpreter::len(const SteelArrayRef &ref)
 {
     SteelArray *pArray = lookup_internal(ref);
 
-    if(pArray == NULL) throw UnknownIdentifier();
+    if(pArray == NULL) throw BadReference();
 
     SteelType val;
 
@@ -365,9 +365,9 @@ SteelType SteelInterpreter::copy(const SteelArrayRef &lhs, const SteelArrayRef &
     SteelType ret;
     ret.set(rhs);
     SteelArray *pArrayDest = lookup_internal(lhs);
-    if(pArrayDest == NULL) throw UnknownIdentifier();
+    if(pArrayDest == NULL) throw BadReference();
     SteelArray *pArraySource = lookup_internal(rhs);
-    if(pArraySource == NULL) throw UnknownIdentifier();
+    if(pArraySource == NULL) throw BadReference();
 
     // They point to the same array already, don't assign.
     if(pArrayDest == pArraySource) return ret;
