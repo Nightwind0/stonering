@@ -517,9 +517,21 @@ SteelType SteelType::operator!()
 	if(m_value.b)
 	    var.set ( false );
 	else var.set( true );
+	break;
     case SteelType::INT:	
+	if(m_value.i == 0)
+	    var.set(true);
+	else var.set ( false );
+	break;
     case SteelType::STRING:
+	if(m_value.s->empty())
+	    var.set( true );
+	else var.set ( false );
+	break;
     case SteelType::DOUBLE:
+	if(m_value.d == 0.0)
+	    var.set( true );
+	else var.set ( false );
     case SteelType::ARRAY:
 	throw OperationMismatch();
     }
