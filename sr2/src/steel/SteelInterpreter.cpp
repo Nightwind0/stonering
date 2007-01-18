@@ -17,9 +17,18 @@ SteelInterpreter::SteelInterpreter()
 SteelInterpreter::~SteelInterpreter()
 {
     // Delete functors
+    // Since the user defined functions are in the main statement list,
+    // they are already deleted when you delete the tree... therefore,
+    // we don't want to delete them here.
     for(std::map<std::string,SteelFunctor*>::iterator i = m_functions.begin();
 	i != m_functions.end(); i++)
-	delete i->second;
+    {
+	if ( ! i->second->isUserFunction() ) 
+	{
+	    delete i->second;
+	}
+    }
+	    
 }
 
 
@@ -53,7 +62,7 @@ void SteelInterpreter::run(const std::string &name,const std::string &script)
 
     pScript->executeScript(this);
     
-    
+    delete pScript;
 }
 
 SteelType SteelInterpreter::call(const std::string &name, const std::vector<SteelType> &pList)
