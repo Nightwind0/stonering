@@ -594,6 +594,14 @@ SteelType AstCallExpression::evaluate(SteelInterpreter *pInterpreter)
 			     GetLine(), GetScript(),
 			     "Unknown function: '" + m_pId->getValue() + '\'');
     }
+    catch(BadReference )
+    {
+	throw SteelException(SteelException::BAD_REFERENCE,
+			     GetLine(),GetScript(),
+			     "Array has gone out of scope in call to: '" 
+			     +
+			     m_pId->getValue() + '\'');
+    }
 
 
     return ret;
@@ -679,6 +687,16 @@ SteelType AstArrayElement::evaluate(SteelInterpreter *pInterpreter)
 			     GetScript(),
 			     "Array out of bounds: '" + m_pId->getValue() + '\'');
     }
+    catch(BadReference)
+    {
+	throw SteelException(SteelException::BAD_REFERENCE,
+			     GetLine(), 
+			     GetScript(),
+			     "Invalid array referenced by '" 
+			     +
+			     m_pId->getValue()
+			     + '\'');
+    }
 }
 
 ostream & AstArrayElement::print(std::ostream &out)
@@ -703,6 +721,16 @@ SteelType AstArrayIdentifier::evaluate(SteelInterpreter *pInterpreter)
 			     GetLine(),
 			     GetScript(),
 			     "Unknown array identifier:'" + getValue() + '\'');
+    }
+    catch(BadReference)
+    {
+	throw SteelException(SteelException::BAD_REFERENCE,
+			     GetLine(), 
+			     GetScript(),
+			     "Invalid array referenced by '" 
+			     +
+			     getValue()
+			     + '\'');
     }
 
     return var;
@@ -828,6 +856,16 @@ SteelType AstArrayElementAssignmentExpression::evaluate(SteelInterpreter *pInter
 			     GetScript(),
 			     "Unknown identifier: '" + m_pId->getArrayName() + '\'');
     }
+    catch(BadReference)
+    {
+	throw SteelException(SteelException::BAD_REFERENCE,
+			     GetLine(), 
+			     GetScript(),
+			     "Invalid array referenced by '" 
+			     +
+			     m_pId->getArrayName()
+			     + '\'');
+    }
     // TODO: Return the value from the expression
     return SteelType();
 }
@@ -901,6 +939,16 @@ SteelType AstVarIdentifier::evaluate(SteelInterpreter *pInterpreter)
 			     GetLine(),
 			     GetScript(),
 			     "Unknown identifier:'" + getValue() + '\'');
+    }
+    catch(BadReference)
+    {
+	throw SteelException(SteelException::BAD_REFERENCE,
+			     GetLine(), 
+			     GetScript(),
+			     "Invalid array referenced by '" 
+			     +
+			     getValue()
+			     + '\'');
     }
     
 }
@@ -1005,6 +1053,16 @@ AstStatement::eStopType AstArrayDeclaration::execute(SteelInterpreter *pInterpre
 			     GetLine(),
 			     GetScript(),
 			     "Unknown identifier in assignment.");
+    }
+    catch(BadReference)
+    {
+	throw SteelException(SteelException::BAD_REFERENCE,
+			     GetLine(), 
+			     GetScript(),
+			     "Invalid array referenced by '" 
+			     +
+			     m_pId->getValue()
+			     + '\'');
     }
 
     return COMPLETED;
