@@ -17,7 +17,7 @@ class SteelFunctor
 public:
     SteelFunctor();
     virtual ~SteelFunctor();
-
+    virtual bool isUserFunction() const { return false; }
     virtual SteelType Call(SteelInterpreter *,const std::vector<SteelType> &params)=0;
 
 private:
@@ -28,7 +28,7 @@ class SteelUserFunction : public SteelFunctor
 public:
     SteelUserFunction(AstParamDefinitionList *, AstStatementList *);
     virtual ~SteelUserFunction();
-
+    virtual bool isUserFunction() const { return true; }
     virtual SteelType Call(SteelInterpreter * pInterpreter,const std::vector<SteelType> &params);
     
     void setParamDefinitionList(AstParamDefinitionList *pParams);
