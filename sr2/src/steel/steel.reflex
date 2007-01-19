@@ -148,6 +148,20 @@ int SteelScanner::ToIntFromHex(const std::string &text)
 		TransitionToState(State::STRING_LITERAL_GUTS);
 	}
 |
+	(pop)
+	%language.cpp {
+		*token = NULL;
+		
+		return SteelParser::Token::POP;
+	}
+
+|
+	(\.)
+	%language.cpp {
+		*token = NULL;
+		return SteelParser::Token::CAT;
+	}
+|
 	(\-\-)
 	%language.cpp {
 		*token = NULL;

@@ -205,7 +205,6 @@ void SteelInterpreter::registerBifs()
 //    addFunction( "push", new SteelFunctor2Arg<SteelInterpreter,const SteelArrayRef &,const SteelType&> ( this, &SteelInterpreter::push ) );
 //    addFunction( "pop", new SteelFunctor1Arg<SteelInterpreter,const SteelArrayRef &>(this, &SteelInterpreter::pop) );
     addFunction( "bob", new SteelFunctor1Arg<SteelInterpreter,const SteelArray &>(this, &SteelInterpreter::bob) );
-    addFunction( "shove", new SteelFunctor2Arg<SteelInterpreter,const SteelArray &,const SteelType&> ( this, &SteelInterpreter::shove ) );
     addFunction( "print", new SteelFunctor1Arg<SteelInterpreter,const std::string &>(this, &SteelInterpreter::print ) );
     addFunction( "println", new SteelFunctor1Arg<SteelInterpreter,const std::string &>(this,&SteelInterpreter::println ) );
     addFunction( "len", new SteelFunctor1Arg<SteelInterpreter,const SteelArray&>(this, &SteelInterpreter::len ) );
@@ -230,15 +229,6 @@ SteelType SteelInterpreter::push(const SteelArrayRef &ref, const SteelType &valu
 					    
 }
 */
-
-SteelType SteelInterpreter::shove(const SteelArray &array, const SteelType &value)
-{
-    SteelType var;
-
-    var.set ( array );
-    var.add ( value );
-    return var;
-}
 
 /*
 

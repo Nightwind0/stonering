@@ -26,10 +26,6 @@ public:
     SteelType lookup(SteelType *pVar, int index);
     SteelType *lookup_lvalue(const std::string &name);
     void declare(const std::string &name);
-
-    // Note: Step 1 is to create a SteelArray in the ArrayFile
-    // is to create a SteelType in the variable file, and set it's 
-    // array reference to the array
     void declare_array(const std::string &array, int size);
 
     void assign(SteelType *pVar,const SteelType &value);
@@ -65,7 +61,6 @@ private:
     // Pop the back of the array
     SteelType bob(const SteelArray &ref);
     // Push on the BACK of the array
-    SteelType shove(const SteelArray &ref, const SteelType &value);
     SteelType print(const std::string &str);
     SteelType println(const std::string &str);
     SteelType len(const SteelArray &ref);

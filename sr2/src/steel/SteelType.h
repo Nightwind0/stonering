@@ -42,6 +42,7 @@ public:
     void add(const SteelType &var);
     void removeTail();
     void reserveArray(int index);
+    SteelType pop();
 
     // Assignment
     SteelType & operator=(const SteelType &rhs);
@@ -64,6 +65,7 @@ public:
     SteelType  operator>(const SteelType &rhs);
     SteelType  operator>=(const SteelType &rhs);
     SteelType  d(const SteelType &rhs);
+    SteelType cat(const SteelType &rhs);
 
 private:
     int strInt() const ;

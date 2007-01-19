@@ -76,6 +76,8 @@ SteelParser::Token::Type SteelParser::Scan ()
 %token STRING
 %token INCREMENT
 %token DECREMENT
+%token CAT
+%token POP
 
 %prec ASSIGNMENT
 %prec NON_ELSE
@@ -281,6 +283,8 @@ exp %type "AstExpression*"
 |
 	exp:a GTE exp:b %prec COMPARATOR { return new AstBinOp(a->GetLine(),a->GetScript(),AstBinOp::GTE,a,b); }	
 |
+	exp:a CAT exp:b %prec ADD_SUB { return new AstBinOp(a->GetLine(),a->GetScript(),AstBinOp::CAT,a,b); }
+|
 	'(' exp:exp ')' %prec PAREN { return exp; }
 |
 	'-' exp:exp %right %prec UNARY { return new AstUnaryOp(exp->GetLine(), exp->GetScript(), AstUnaryOp::MINUS,exp); }
@@ -298,6 +302,8 @@ exp %type "AstExpression*"
 	DECREMENT exp:lvalue %right %prec UNARY { return new AstDecrement(lvalue->GetLine(),lvalue->GetScript(),lvalue, AstDecrement::PRE);}
 |
 	exp:lvalue DECREMENT %prec PAREN { return new AstDecrement(lvalue->GetLine(),lvalue->GetScript(),lvalue, AstDecrement::POST);}
+|
+	POP exp:lvalue %prec UNARY { return new AstPop(lvalue->GetLine(),lvalue->GetScript(),lvalue); }
 ;
 
 exp_statement %type "AstExpression*"

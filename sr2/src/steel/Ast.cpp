@@ -155,7 +155,13 @@ ostream & AstExpressionStatement::print(std::ostream &out)
 
 AstStatement::eStopType AstExpressionStatement::execute(SteelInterpreter *pInterpreter)
 {
-    m_pExp->evaluate(pInterpreter);
+    try{
+	m_pExp->evaluate(pInterpreter);
+    }
+    catch(UnknownIdentifier)
+    {
+	// TODO: Catch everything. 
+    }
     return AstStatement::COMPLETED;
 }
 
@@ -457,7 +463,7 @@ SteelType AstDecrement::evaluate(SteelInterpreter *pInterpreter)
 	if(NULL == pVar) throw SteelException(SteelException::INVALID_LVALUE,
 					      GetLine(),
 					      GetScript(),
-					      "Invalid lvalue before increment (++) operator.");
+					      "Invalid lvalue before decrement (--) operator.");
 	
 	if(m_order == PRE)
 	    return --( *pVar );
@@ -529,6 +535,8 @@ std::string AstBinOp::ToString(Op op)
 	return " <= ";
     case GTE:
 	return " >=";
+    case CAT:
+	return " . ";
     default:
 	assert(0);
 	return "";
@@ -610,6 +618,8 @@ SteelType AstBinOp::evaluate(SteelInterpreter *pInterpreter)
 	case GTE:
 	    return m_left->evaluate(pInterpreter)
 		>= m_right->evaluate(pInterpreter);
+	case CAT:
+	    return m_left->evaluate(pInterpreter).cat( m_right->evaluate(pInterpreter) );
 	default:
 	    assert(0);
 	
@@ -697,6 +707,37 @@ ostream & AstUnaryOp::print(std::ostream &out)
 
     return out;
 }
+
+
+AstPop::AstPop(unsigned int line,
+       const std::string &script,
+       AstExpression *pLValue)
+    :AstExpression(line,script),m_pLValue(pLValue)
+{
+}
+
+AstPop::~AstPop()
+{
+}
+
+SteelType AstPop::evaluate(SteelInterpreter *pInterpreter)
+{
+    
+    SteelType *pL = m_pLValue->lvalue(pInterpreter);
+    
+    if(NULL == pL) 
+    {
+	throw SteelException(SteelException::INVALID_LVALUE,
+			     GetLine(),
+			     GetScript(),
+			     "Invalid lvalue after pop.");
+    }
+
+    return pL->pop();
+    
+}
+
+
 
 AstCallExpression::AstCallExpression(unsigned int line,
 				     const std::string &script, AstFuncIdentifier *pId, AstParamList *pList)
