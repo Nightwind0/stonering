@@ -477,22 +477,6 @@ SteelType  SteelType::d(const SteelType &rhs)
     return var;
 }
 
-SteelType  SteelType::operator&&(const SteelType &rhs)
-{
-    SteelType var;
-    if ( (bool)*this && (bool)rhs )
-	var.set(true);
-    else var.set(false);
-    return var;
-}
-SteelType  SteelType::operator||(const SteelType &rhs)
-{
-    SteelType var;
-    if ((bool)*this || (bool)rhs )
-	var.set(true);
-    else var.set(false);
-    return var;
-}
 
 SteelType SteelType::operator-()
 {
