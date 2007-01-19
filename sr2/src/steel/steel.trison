@@ -259,11 +259,7 @@ exp %type "AstExpression*"
 |
 	exp:a D exp:b %prec POW { return new AstBinOp(a->GetLine(),a->GetScript(),AstBinOp::D,a,b); }
 |
-	var_identifier:id '=' exp:exp  %right %prec ASSIGNMENT { return new AstVarAssignmentExpression(id->GetLine(),id->GetScript(),id,exp); }
-|
-	array_element_lvalue:id '=' exp:exp  %right %prec ASSIGNMENT { return new AstArrayElementAssignmentExpression(id->GetLine(),id->GetScript(),id,exp); }
-|
-	array_identifier:id '=' exp:exp %right %prec ASSIGNMENT { return new AstArrayAssignmentExpression(id->GetLine(),id->GetScript(),id,exp); }
+	exp:lvalue '=' exp:exp  %right %prec ASSIGNMENT { return new AstVarAssignmentExpression(lvalue->GetLine(),lvalue->GetScript(),lvalue,exp); }
 |
 	exp:a '^' exp:b %right %prec POW { return new AstBinOp(a->GetLine(),a->GetScript(),AstBinOp::POW,a,b); }
 |
@@ -291,7 +287,7 @@ exp %type "AstExpression*"
 |
 	NOT exp:exp %right %prec UNARY { return new AstUnaryOp(exp->GetLine(), exp->GetScript(), AstUnaryOp::NOT,exp); }
 |
-	array_element_lvalue:lvalue  { return lvalue; }
+	exp:lvalue '[' exp:index ']'  %prec PAREN { return new AstArrayElement(lvalue->GetLine(),lvalue->GetScript(),lvalue,index); }
 ;
 
 exp_statement %type "AstExpression*"
@@ -326,10 +322,6 @@ array_identifier %type "AstArrayIdentifier*"
 	ARRAY_IDENTIFIER:id { return id; }
 ;
 
-array_element_lvalue %type "AstArrayElement*"
-:
-	array_identifier:id '[' exp:exp ']' { return new AstArrayElement(id->GetLine(),id->GetScript(),id,exp); }
-;
 
 call %type "AstCallExpression*"
 :

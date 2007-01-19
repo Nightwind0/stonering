@@ -36,6 +36,7 @@ public:
     // Array stuff
     bool isArray() const { return m_storage == ARRAY; }
     SteelType getElement(int index) const;
+    SteelType *getLValue(int index) const;
     void setElement(int index,const SteelType &);
     int getArraySize()const;
     void add(const SteelType &var);

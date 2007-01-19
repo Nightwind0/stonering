@@ -23,7 +23,8 @@ public:
 
     SteelType lookup(const std::string &name);
     // Array element lookup
-    SteelType lookup(const std::string &array, int index);
+    SteelType lookup(SteelType *pVar, int index);
+    SteelType *lookup_lvalue(const std::string &name);
     void declare(const std::string &name);
 
     // Note: Step 1 is to create a SteelArray in the ArrayFile
@@ -31,11 +32,7 @@ public:
     // array reference to the array
     void declare_array(const std::string &array, int size);
 
-    // Note: Runtime check that we aren't trying to assign an array
-    // to a var. throw TypeMismatch
-    void assign(const std::string &name, const SteelType &value);
-    void assign(const std::string &array, int index, const SteelType &value);
-
+    void assign(SteelType *pVar,const SteelType &value);
 
     void pushScope();
     void popScope();

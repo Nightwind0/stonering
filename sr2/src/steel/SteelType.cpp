@@ -577,6 +577,14 @@ SteelType SteelType::getElement(int index) const
 
     return (*m_value.a)[index];
 }
+
+SteelType *SteelType::getLValue(int index) const
+{
+    if ( index >= getArraySize() ) throw OutOfBounds();
+
+    return & ((*m_value.a)[index]);
+}
+
 void SteelType::setElement(int index,const SteelType &val)
 {
     // I would check that we're an array, but getArraySize does already

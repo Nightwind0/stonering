@@ -432,6 +432,11 @@ std::string AstBinOp::ToString(Op op)
     }
 }
 
+SteelType *AstBinOp::lvalue(SteelInterpreter *pInterpreter)
+{
+    return NULL;
+}
+
 SteelType AstBinOp::evaluate(SteelInterpreter *pInterpreter)
 {
     try{
@@ -553,6 +558,11 @@ std::string AstUnaryOp::ToString(Op op)
     }
 }
 
+SteelType *AstUnaryOp::lvalue(SteelInterpreter *pInterpreter)
+{
+    return NULL;
+}
+
 SteelType AstUnaryOp::evaluate(SteelInterpreter *pInterpreter)
 {
     try{
@@ -661,16 +671,16 @@ ostream & AstArrayExpression::print(std::ostream &out)
 
 AstArrayElement::AstArrayElement(unsigned int line,
 				 const std::string &script,
-				 AstArrayIdentifier *pId,
+				 AstExpression *pLValue,
 				 AstExpression *pExp)
-    :AstExpression(line,script),m_pId(pId),m_pExp(pExp)
+    :AstExpression(line,script),m_pLValue(pLValue),m_pExp(pExp)
 {
     
 }
 
 AstArrayElement::~AstArrayElement()
 {
-    delete m_pId;
+    delete m_pLValue;
     delete m_pExp;
 }
 
@@ -678,37 +688,107 @@ int AstArrayElement::getArrayIndex(SteelInterpreter *pInterpreter) const
 {
     return m_pExp->evaluate(pInterpreter);
 }
-std::string AstArrayElement::getArrayName() const
-{
-    return m_pId->getValue();
-}
 
-SteelType AstArrayElement::evaluate(SteelInterpreter *pInterpreter)
+
+SteelType * AstArrayElement::lvalue(SteelInterpreter *pInterpreter)
 {
-    try{
-	return pInterpreter->lookup(m_pId->getValue(), m_pExp->evaluate(pInterpreter));
+    try
+    {
+	
+	SteelType * pArray = m_pLValue->lvalue(pInterpreter);
+	if(NULL == pArray)
+	{
+	    throw SteelException(SteelException::INVALID_LVALUE,
+				 GetLine(),
+				 GetScript(),
+				 "Invalid lvalue before subscript.");
+	}
+
+	if(!pArray->isArray())
+	{
+	    throw SteelException(SteelException::TYPE_MISMATCH,
+				 GetLine(),
+				 GetScript(),
+				 "Lvalue is not an array.");
+	}
+
+	int index = m_pExp->evaluate(pInterpreter);
+	
+	// It will throw out of bounds, or what not.
+	return pArray->getLValue(index);
     }
     catch(UnknownIdentifier)
     {
+	// TODO: Make these exceptions carry a god damn string.
 	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
 			     GetLine(),
 			     GetScript(),
-			     "Unknown identifier:'" + m_pId->getValue() + '\'');
+			     "Unknown identifier in array lvalue.");
+			     
     }
     catch(OutOfBounds)
     {
 	throw SteelException(SteelException::OUT_OF_BOUNDS,
 			     GetLine(),
 			     GetScript(),
-			     "Array index out of bounds: '" + m_pId->getValue() + '\'');
+			     "lvalue subscript was out of bounds.");
+    }
+
+    return NULL;
+}
+
+SteelType AstArrayElement::evaluate(SteelInterpreter *pInterpreter)
+{
+    try
+    {
+	SteelType * pL = m_pLValue->lvalue(pInterpreter);
+	if(NULL == pL)
+	    throw SteelException(SteelException::INVALID_LVALUE,
+				 GetLine(),
+				 GetScript(),
+				 "Invalid lvalue in array expression.");
+	
+	return pInterpreter->lookup(pL, m_pExp->evaluate(pInterpreter));
+    }
+    catch(UnknownIdentifier)
+    {
+	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
+			     GetLine(),
+			     GetScript(),
+			     "Unknown identifier.");
+    }
+    catch(OutOfBounds)
+    {
+	throw SteelException(SteelException::OUT_OF_BOUNDS,
+			     GetLine(),
+			     GetScript(),
+			     "Array index out of bounds.");
     }
 
 }
 
 ostream & AstArrayElement::print(std::ostream &out)
 {
-    out << *m_pId << '[' << *m_pExp << ']' ;
+    out << *m_pLValue << '[' << *m_pExp << ']' ;
 	return out;
+}
+
+SteelType * AstArrayIdentifier::lvalue(SteelInterpreter *pInterpreter)
+{
+    try
+    {
+	return pInterpreter->lookup_lvalue(getValue());
+    }
+    catch(UnknownIdentifier)
+    {
+	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
+			     GetLine(),
+			     GetScript(),
+			     "Unknown array identifier:'" + getValue() + '\'');
+
+    }
+
+    return NULL;
 }
 
 
@@ -735,141 +815,66 @@ SteelType AstArrayIdentifier::evaluate(SteelInterpreter *pInterpreter)
 
 AstVarAssignmentExpression::AstVarAssignmentExpression(unsigned int line,
 						       const std::string &script,
-						       AstVarIdentifier *pId,
+						       AstExpression *pLValue,
 						       AstExpression *pExp)
-    :AstExpression(line,script),m_pId(pId),m_pExpression(pExp)
+    :AstExpression(line,script),m_pLValue(pLValue),m_pExpression(pExp)
 {
 
 }
 
 AstVarAssignmentExpression::~AstVarAssignmentExpression()
 {
-    delete m_pId;
+    delete m_pLValue;
     delete m_pExpression;
+}
+
+SteelType *AstVarAssignmentExpression::lvalue(SteelInterpreter *pInterpreter)
+{
+    // TODO : Is this an lvalue or not??
+
+    
+
+    return NULL;
 }
 
 SteelType AstVarAssignmentExpression::evaluate(SteelInterpreter *pInterpreter)
 {
     SteelType exp = m_pExpression->evaluate(pInterpreter);
-    try{
-	pInterpreter->assign ( m_pId->getValue(), exp );
+    try
+    {
+	SteelType *pL = m_pLValue->lvalue(pInterpreter);
+	if(pL == NULL)
+	    throw SteelException(SteelException::INVALID_LVALUE,
+				 GetLine(),
+				 GetScript(),
+				 "Left of '=' is not a valid lvalue.");
+
+	pInterpreter->assign ( pL, exp );
     }
     catch(UnknownIdentifier)
     {
 	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
 			     GetLine(),
 			     GetScript(),
-			     "Unknown identifier:'" + m_pId->getValue() + '\'');
+			     "Unknown identifier");
     }
     catch(TypeMismatch)
     {
 	throw SteelException(SteelException::TYPE_MISMATCH,
 			     GetLine(),
 			     GetScript(),
-			     "Illegal assignment to '" + m_pId->getValue() + '\'');
+			     "Illegal assignment due to type mismatch.");
     }
+
     return exp;
 }
 
 ostream & AstVarAssignmentExpression::print(std::ostream &out)
 {
-    out << *m_pId << '=' << *m_pExpression;
+    out << *m_pLValue << '=' << *m_pExpression;
     return out;
 }
 
-
-
-AstArrayAssignmentExpression::AstArrayAssignmentExpression(unsigned int line,
-							   const std::string &script,
-							   AstArrayIdentifier *pId,
-							   AstExpression *pExp)
-    :AstExpression(line,script),m_pId(pId),m_pExpression(pExp)
-{
-}
-
-
-AstArrayAssignmentExpression::~AstArrayAssignmentExpression()
-{
-    delete m_pId;
-    delete m_pExpression;
-}
-
-
-SteelType AstArrayAssignmentExpression::evaluate(SteelInterpreter *pInterpreter)
-{
-    SteelType exp = m_pExpression->evaluate(pInterpreter);
-    
-    try{
-	pInterpreter->assign( m_pId->getValue(), exp );
-    }
-    catch(TypeMismatch)
-    {
-	throw SteelException(SteelException::TYPE_MISMATCH, 
-			     GetLine(),
-			     GetScript(),
-			     "Illegal attempt to assign a non-array to a array '" + m_pId->getValue() + '\'');
-
-    }
-    catch(UnknownIdentifier)
-    {
-	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
-			     GetLine(),
-			     GetScript(),
-			     "Unknown Identifier:'" + m_pId->getValue() + '\'');
-    }
-    
-    return exp;
-}
-
-ostream & AstArrayAssignmentExpression::print(std::ostream &out)
-{
-    out << *m_pId << '=' << *m_pExpression;
-	return out;
-}
-
-AstArrayElementAssignmentExpression::AstArrayElementAssignmentExpression(unsigned int line,
-								  const std::string &script,
-								  AstArrayElement *pId,
-								  AstExpression * pExp)
-    :AstExpression(line,script),m_pId(pId),m_pExp(pExp)
-{
-}
-
-AstArrayElementAssignmentExpression::~AstArrayElementAssignmentExpression()
-{
-    delete m_pId;
-    delete m_pExp;
-}
-
-SteelType AstArrayElementAssignmentExpression::evaluate(SteelInterpreter *pInterpreter)
-{
-    try {
-	pInterpreter->assign(m_pId->getArrayName(),m_pId->getArrayIndex(pInterpreter), m_pExp->evaluate(pInterpreter));
-    }
-    catch(UnknownIdentifier)
-    {
-	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
-			     GetLine(),
-			     GetScript(),
-			     "Unknown identifier: '" + m_pId->getArrayName() + '\'');
-    }
-    catch(OutOfBounds)
-    {
-	throw SteelException(SteelException::OUT_OF_BOUNDS,
-			     GetLine(),
-			     GetScript(),
-			     "Index out of bounds on array : '" + m_pId->getArrayName() + '\'');
-    }
-
-    // TODO: Return the value from the expression
-    return SteelType();
-}
-
-ostream & AstArrayElementAssignmentExpression::print (std::ostream &out)
-{
-    out << *m_pId << '=' << *m_pExp << ';' << std::endl;
-	return out;
-}
 
 
 AstParamList::AstParamList(unsigned int line,
@@ -921,6 +926,23 @@ ostream & AstParamList::print(std::ostream &out)
     return out;
 }
 
+SteelType * AstVarIdentifier::lvalue(SteelInterpreter *pInterpreter)
+{
+    try
+    {
+	return pInterpreter->lookup_lvalue ( getValue() );
+    }
+    catch(UnknownIdentifier)
+    {
+	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
+			     GetLine(),
+			     GetScript(),
+			     "Unknown identifier:'" + getValue() + '\'');
+    }
+
+    return NULL;
+};
+
 SteelType AstVarIdentifier::evaluate(SteelInterpreter *pInterpreter)
 {
     try
@@ -962,13 +984,17 @@ AstStatement::eStopType AstVarDeclaration::execute(SteelInterpreter *pInterprete
 {
     try{
 	pInterpreter->declare(m_pId->getValue());
+
+	SteelType * pVar = pInterpreter->lookup_lvalue( m_pId->getValue() );
+	// If this is null, its crazy, because we JUST declared its ass.
+	assert ( NULL != pVar);
 	
 	if(m_pExp) 
-	    pInterpreter->assign( m_pId->getValue(), m_pExp->evaluate(pInterpreter) );
+	    pInterpreter->assign( pVar, m_pExp->evaluate(pInterpreter) );
 
 	// If there is a value, it overrides whatever the expression was.
 	// This is for parameters
-	if(m_bHasValue) pInterpreter->assign( m_pId->getValue(), m_value);
+	if(m_bHasValue) pInterpreter->assign( pVar, m_value);
     }
     catch(UnknownIdentifier)
     {
@@ -1019,10 +1045,13 @@ AstStatement::eStopType AstArrayDeclaration::execute(SteelInterpreter *pInterpre
     else pInterpreter->declare_array( m_pId->getValue(), 0);
 
     try{
+	SteelType * pVar = pInterpreter->lookup_lvalue( m_pId->getValue() );
+	// If this is null here, we're in a BAD way. Programming error.
+	assert ( NULL != pVar);
 	if(m_pExp)
-	    pInterpreter->assign( m_pId->getValue(), m_pExp->evaluate(pInterpreter) );
+	    pInterpreter->assign( pVar, m_pExp->evaluate(pInterpreter) );
 
-	if(m_bHasValue) pInterpreter->assign( m_pId->getValue(), m_value);
+	if(m_bHasValue) pInterpreter->assign( pVar, m_value);
     }
     catch(TypeMismatch)
     {
