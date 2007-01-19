@@ -732,6 +732,7 @@ AstPop::AstPop(unsigned int line,
 
 AstPop::~AstPop()
 {
+    delete m_pLValue;
 }
 
 SteelType AstPop::evaluate(SteelInterpreter *pInterpreter)
