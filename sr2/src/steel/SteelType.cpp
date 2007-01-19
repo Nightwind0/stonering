@@ -5,14 +5,6 @@
 #include "SteelException.h"
 #include <cassert>
 
-bool operator<(const SteelArrayRef &lhs, const SteelArrayRef &rhs)
-{
-    return lhs.m_array < rhs.m_array;
-}
-bool operator==(const SteelArrayRef &lhs, const SteelArrayRef &rhs)
-{
-    return lhs.m_array == rhs.m_array;
-}
 
 SteelType::SteelType()
 {
@@ -116,7 +108,7 @@ SteelType::operator bool () const
     return true;
 }
 
-SteelType::operator SteelArrayRef () const
+SteelType::operator std::vector<SteelType> () const
 {
     if( !isArray() ) throw TypeMismatch();
 
@@ -147,10 +139,9 @@ void SteelType::set(const std::string &str)
     m_storage = SteelType::STRING;
 }
 
-void SteelType::set(const SteelArrayRef &ref)
+void SteelType::set(const std::vector<SteelType> &ref)
 {
-    m_value.a = new SteelArrayRef();
-    *m_value.a = ref;
+    m_value.a = new std::vector<SteelType>(ref);
     m_storage = SteelType::ARRAY;
 }
 
@@ -336,48 +327,44 @@ SteelType  SteelType::operator%(const SteelType &rhs)
 	return val;
 }
 
-SteelType  SteelType::operator==(const SteelType &rhs)
+bool  operator==(const SteelType &lhs, const SteelType &rhs)
 {
-    SteelType val;
-    val.set(false);
-    storage s = std::max(m_storage,rhs.m_storage);
+    bool val = false;
+    SteelType::storage s = std::max(lhs.m_storage,rhs.m_storage);
 
     switch(s)
     {
     case SteelType::ARRAY:
-	if( m_value.a == rhs.m_value.a)
-	    val.set(true);
+	if( rhs.m_storage == SteelType::ARRAY
+	    && lhs.m_storage == SteelType::ARRAY
+	    && *lhs.m_value.a == *rhs.m_value.a )
+	    val = true;
 	break;
     case SteelType::BOOL:
-	if((bool)*this == (bool)rhs)
-	    val.set(true);
+	if((bool)lhs == (bool)rhs)
+	    val = true;
 	break;
     case SteelType::INT:
-	if((int)*this == (int)rhs)
-	    val.set(true);
+	if((int)lhs == (int)rhs)
+	    val = true;
 	break;
     case SteelType::DOUBLE:
-	if((double)*this == (double)rhs)
-	    val.set(true);
+	if((double)lhs == (double)rhs)
+	    val = true;
 	break;
     case SteelType::STRING:
-	if((std::string)*this == (std::string)rhs)
-	    val.set(true);
+	if((std::string)lhs == (std::string)rhs)
+	    val = true;
+	break;
 	   
     }
 
     return val;
 }
 
-SteelType  SteelType::operator!=(const SteelType &rhs)
+bool  operator!=(const SteelType &lhs, const SteelType &rhs)
 {
-    SteelType var;
-
-    if( *this == rhs )
-	var.set(false);
-    else var.set(true);
-
-	return var;
+    return ! (lhs == rhs );
 }
 
 SteelType  SteelType::operator<(const SteelType &rhs)
@@ -583,7 +570,50 @@ std::string SteelType::strToDouble(double d) const
     return str.str();
 }
 
+SteelType SteelType::getElement(int index) const
+{
+    // I would check that we're an array, but getArraySize does already
+    if( index >= getArraySize() ) throw OutOfBounds();
+
+    return (*m_value.a)[index];
+}
+void SteelType::setElement(int index,const SteelType &val)
+{
+    // I would check that we're an array, but getArraySize does already
+
+    if( index >= getArraySize() ) throw OutOfBounds();
+
+    (*m_value.a)[index] = val;
+}
+
+int SteelType::getArraySize()const
+{
+    if( !isArray() ) throw TypeMismatch();
+
+    int val = m_value.a->size();
+    return val;
+}
+
+void SteelType::add(const SteelType &var)
+{
+    if( !isArray() ) throw TypeMismatch();
+
+    m_value.a->push_back ( var );
+}
 
 
+void SteelType::removeTail()
+{
+    if(!isArray()) throw TypeMismatch();
 
+    m_value.a->pop_back();
+}
+
+
+void SteelType::reserveArray(int index)
+{
+    if ( ! isArray() ) throw TypeMismatch();
+
+    m_value.a->reserve ( index );
+}
 

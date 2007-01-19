@@ -228,6 +228,8 @@ public:
     void addString(const std::string &str);
     virtual SteelType evaluate(SteelInterpreter *pInterpreter);
 private:
+
+    std::string translate_escapes();
     std::string m_value;
 };
 

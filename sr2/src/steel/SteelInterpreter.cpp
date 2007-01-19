@@ -117,18 +117,13 @@ void SteelInterpreter::declare(const std::string &name)
 // Note: Step 1 is to create a SteelArray in the ArrayFile
 // is to create a SteelType in the variable file, and set it's 
 // array reference to the array
-void SteelInterpreter::declare_array(const std::string &array, int size)
+void SteelInterpreter::declare_array(const std::string &array_name, int size)
 {
     VariableFile &file = m_symbols.front();
-    ArrayFile &array_file = m_arrays.front();
-
-    SteelArrayRef ref; 
-    std::string sref = name_array_ref( array );
-    ref.setArrayRef ( sref );
-    array_file[ref] = SteelArray( std::max(0,size) );
+    SteelType var;
+    var.set ( SteelArray( std::max(size,0)  ) );
     
-    // set the variable to reference it
-    file[array].set ( ref );
+    file[array_name]  = var;
 }
 
 
@@ -145,14 +140,9 @@ SteelType SteelInterpreter::lookup(const std::string &array, int index)
     // if strict, throw Unknown Identifier
     SteelType *pVar = lookup_internal(array);
     if(pVar == NULL) throw UnknownIdentifier();
-
-    SteelArray *pArray = lookup_internal ( (SteelArrayRef)*pVar);
-    if(pArray == NULL) throw BadReference();
-
-    if(index >= pArray->size()) throw OutOfBounds();
-
-    return (*pArray)[index];
-
+    if(!pVar->isArray()) throw TypeMismatch();
+  
+    return pVar->getElement(index);
 }
 
 void SteelInterpreter::assign(const std::string &name, const SteelType &value)
@@ -172,45 +162,11 @@ void SteelInterpreter::assign(const std::string &array, int index, const SteelTy
 
     if(!pVar->isArray()) throw TypeMismatch();
 
-    SteelArray *pArray = lookup_internal( (SteelArrayRef)*pVar );
-    if(pArray == NULL) throw BadReference();
-
-    if(index >= pArray->size()) throw OutOfBounds();
-
-    (*pArray)[index] = value;
+    
+    pVar->setElement(index,value);
 }
 
-std::string SteelInterpreter::name_array_ref(const std::string &array_name)
-{
-    std::ostringstream out;
 
-    out << m_arrays.size() << array_name;
-
-    return out.str();
-}
-
-void SteelInterpreter::assign_array(const std::string &name, const SteelType &value)
-{
-    if(!value.isArray())
-	throw TypeMismatch();
-
-    SteelType *pVar = lookup_internal( name );
-    if(pVar == NULL) throw UnknownIdentifier();
-    // Rely on cast overloader to SteelArrayRef
-    SteelArray *pRhsArray = lookup_internal( (SteelArrayRef)value );
-    if(pRhsArray == NULL) throw BadReference();
-
-    std::string newname = name_array_ref ( name );
-    SteelArrayRef newref;
-    newref.setArrayRef(newname);
-    // Create a copy of actual array associated with value
-    ArrayFile &file = m_arrays.front();
-    // Insert copy into top-most file
-    file[newref] = *pRhsArray ;
-    // Assign ref to copy into pVar
-    pVar->set(newref);
-			     
-}
 
 void SteelInterpreter::registerFunction(const std::string &name, 
 					AstParamDefinitionList *pParams, 
@@ -235,32 +191,15 @@ SteelType * SteelInterpreter::lookup_internal(const std::string &name)
     return NULL;
 }
 
-SteelInterpreter::SteelArray * SteelInterpreter::lookup_internal(const SteelArrayRef &ref)
-{
-    for(std::list<ArrayFile>::iterator i = m_arrays.begin();
-	i != m_arrays.end(); i++)
-    {
-	ArrayFile::iterator it = (*i).find(ref);
-	if( it != (*i).end() )
-	{
-	    return &(it->second);
-	}
-    }
-
-    return NULL;
-}
-
 
 void SteelInterpreter::pushScope()
 {
     m_symbols.push_front ( VariableFile() );
-    m_arrays.push_front ( ArrayFile() );
 }
 
 void SteelInterpreter::popScope()
 {
     m_symbols.pop_front();
-    m_arrays.pop_front();
 }
 
 
@@ -269,17 +208,17 @@ void SteelInterpreter::registerBifs()
 {
 //    addFunction( "push", new SteelFunctor2Arg<SteelInterpreter,const SteelArrayRef &,const SteelType&> ( this, &SteelInterpreter::push ) );
 //    addFunction( "pop", new SteelFunctor1Arg<SteelInterpreter,const SteelArrayRef &>(this, &SteelInterpreter::pop) );
-    addFunction( "bob", new SteelFunctor1Arg<SteelInterpreter,const SteelArrayRef &>(this, &SteelInterpreter::bob) );
-    addFunction( "shove", new SteelFunctor2Arg<SteelInterpreter,const SteelArrayRef &,const SteelType&> ( this, &SteelInterpreter::shove ) );
+    addFunction( "bob", new SteelFunctor1Arg<SteelInterpreter,const SteelArray &>(this, &SteelInterpreter::bob) );
+    addFunction( "shove", new SteelFunctor2Arg<SteelInterpreter,const SteelArray &,const SteelType&> ( this, &SteelInterpreter::shove ) );
     addFunction( "print", new SteelFunctor1Arg<SteelInterpreter,const std::string &>(this, &SteelInterpreter::print ) );
     addFunction( "println", new SteelFunctor1Arg<SteelInterpreter,const std::string &>(this,&SteelInterpreter::println ) );
-    addFunction( "len", new SteelFunctor1Arg<SteelInterpreter,const SteelArrayRef&>(this, &SteelInterpreter::len ) );
-    addFunction( "copy", new SteelFunctor2Arg<SteelInterpreter,const SteelArrayRef&, const SteelArrayRef&> (this, &SteelInterpreter::copy ) );
+    addFunction( "len", new SteelFunctor1Arg<SteelInterpreter,const SteelArray&>(this, &SteelInterpreter::len ) );
     addFunction( "real", new SteelFunctor1Arg<SteelInterpreter,const SteelType&>(this,&SteelInterpreter::real ) );
     addFunction( "integer", new SteelFunctor1Arg<SteelInterpreter,const SteelType&>(this,&SteelInterpreter::integer ) );
     addFunction( "boolean", new SteelFunctor1Arg<SteelInterpreter,const SteelType&>(this,&SteelInterpreter::boolean ) );
     addFunction( "substr", new SteelFunctor3Arg<SteelInterpreter,const std::string&,int, int>(this,&SteelInterpreter::substr ) );
     addFunction( "strlen", new SteelFunctor1Arg<SteelInterpreter,const std::string&>(this,&SteelInterpreter::strlen));
+    addFunction( "is_array", new SteelFunctor1Arg<SteelInterpreter,const SteelType&>(this,&SteelInterpreter::is_array));
 }
 
 /*
@@ -296,16 +235,13 @@ SteelType SteelInterpreter::push(const SteelArrayRef &ref, const SteelType &valu
 }
 */
 
-SteelType SteelInterpreter::shove(const SteelArrayRef &ref, const SteelType &value)
+SteelType SteelInterpreter::shove(const SteelArray &array, const SteelType &value)
 {
-    SteelArray *pArray = lookup_internal(ref);
+    SteelType var;
 
-    if(pArray == NULL) throw BadReference();
-
-    pArray->push_back ( value );
-
-    return pArray->back();
-					    
+    var.set ( array );
+    var.add ( value );
+    return var;
 }
 
 /*
@@ -324,15 +260,14 @@ SteelType SteelInterpreter::pop(const SteelArrayRef &ref)
 }
 */
 
-SteelType SteelInterpreter::bob(const SteelArrayRef &ref)
+SteelType SteelInterpreter::bob(const SteelArray &array)
 {
-    SteelArray *pArray = lookup_internal(ref);
+    SteelType val;
+    val.set( array );
 
-
-    if(pArray == NULL) throw BadReference();
-
-    SteelType val = pArray->back();
-    pArray->pop_back();
+    // Lets not do anything if theres nothing left
+    if( array.size() ) 
+	val.removeTail();
     
     return val;
 }
@@ -355,35 +290,13 @@ SteelType SteelInterpreter::println(const std::string &str)
     return var;
 }
 
-SteelType SteelInterpreter::len(const SteelArrayRef &ref)
+SteelType SteelInterpreter::len(const SteelArray &array)
 {
-    SteelArray *pArray = lookup_internal(ref);
-
-    if(pArray == NULL) throw BadReference();
-
     SteelType val;
 
-    val.set( (int)pArray->size() );
+    val.set((int)array.size());
 
     return val;
-}
-
-SteelType SteelInterpreter::copy(const SteelArrayRef &lhs, const SteelArrayRef &rhs)
-{
-    SteelType ret;
-    ret.set(rhs);
-    SteelArray *pArrayDest = lookup_internal(lhs);
-    if(pArrayDest == NULL) throw BadReference();
-    SteelArray *pArraySource = lookup_internal(rhs);
-    if(pArraySource == NULL) throw BadReference();
-
-    // They point to the same array already, don't assign.
-    if(pArrayDest == pArraySource) return ret;
-
-    *pArrayDest = *pArraySource;
-
-    return ret;
-    
 }
 
 SteelType SteelInterpreter::real(const SteelType &value)
@@ -426,6 +339,14 @@ SteelType SteelInterpreter::strlen(const std::string &str)
     SteelType var;
 
     var.set ( (int)str.size() );
+
+    return var;
+}
+
+SteelType SteelInterpreter::is_array(const SteelType &array)
+{
+    SteelType var;
+    var.set ( array.isArray() );
 
     return var;
 }

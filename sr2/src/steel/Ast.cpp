@@ -64,6 +64,11 @@ ostream & AstString::print(std::ostream &out)
     return out;
 }
 
+std::string AstString::translate_escapes()
+{
+    
+}
+
 SteelType AstString::evaluate(SteelInterpreter *pInterpreter)
 {
     SteelType var;
@@ -472,11 +477,19 @@ SteelType AstBinOp::evaluate(SteelInterpreter *pInterpreter)
 	    return m_left->evaluate(pInterpreter)
 		^ m_right->evaluate(pInterpreter);
 	case EQ:
-	    return m_left->evaluate(pInterpreter)
-		== m_right->evaluate(pInterpreter);
+	{
+	    SteelType var;
+	    var.set( m_left->evaluate(pInterpreter)
+		     == m_right->evaluate(pInterpreter));
+	    return var;
+	}
 	case NE:
-	    return m_left->evaluate(pInterpreter)
-		!= m_right->evaluate(pInterpreter);
+	{
+	    SteelType var;
+	    var.set ( m_left->evaluate(pInterpreter)
+		      != m_right->evaluate(pInterpreter));
+	    return var;
+	}
 	case LT:
 	    return m_left->evaluate(pInterpreter)
 		< m_right->evaluate(pInterpreter);
@@ -604,14 +617,6 @@ SteelType AstCallExpression::evaluate(SteelInterpreter *pInterpreter)
 			     GetLine(), GetScript(),
 			     "Unknown function: '" + m_pId->getValue() + '\'');
     }
-    catch(BadReference )
-    {
-	throw SteelException(SteelException::BAD_REFERENCE,
-			     GetLine(),GetScript(),
-			     "Array has gone out of scope in call to: '" 
-			     +
-			     m_pId->getValue() + '\'');
-    }
 
 
     return ret;
@@ -695,18 +700,9 @@ SteelType AstArrayElement::evaluate(SteelInterpreter *pInterpreter)
 	throw SteelException(SteelException::OUT_OF_BOUNDS,
 			     GetLine(),
 			     GetScript(),
-			     "Array out of bounds: '" + m_pId->getValue() + '\'');
+			     "Array index out of bounds: '" + m_pId->getValue() + '\'');
     }
-    catch(BadReference)
-    {
-	throw SteelException(SteelException::BAD_REFERENCE,
-			     GetLine(), 
-			     GetScript(),
-			     "Invalid array referenced by '" 
-			     +
-			     m_pId->getValue()
-			     + '\'');
-    }
+
 }
 
 ostream & AstArrayElement::print(std::ostream &out)
@@ -731,16 +727,6 @@ SteelType AstArrayIdentifier::evaluate(SteelInterpreter *pInterpreter)
 			     GetLine(),
 			     GetScript(),
 			     "Unknown array identifier:'" + getValue() + '\'');
-    }
-    catch(BadReference)
-    {
-	throw SteelException(SteelException::BAD_REFERENCE,
-			     GetLine(), 
-			     GetScript(),
-			     "Invalid array referenced by '" 
-			     +
-			     getValue()
-			     + '\'');
     }
 
     return var;
@@ -814,7 +800,7 @@ SteelType AstArrayAssignmentExpression::evaluate(SteelInterpreter *pInterpreter)
     SteelType exp = m_pExpression->evaluate(pInterpreter);
     
     try{
-	pInterpreter->assign_array( m_pId->getValue(), exp );
+	pInterpreter->assign( m_pId->getValue(), exp );
     }
     catch(TypeMismatch)
     {
@@ -831,6 +817,7 @@ SteelType AstArrayAssignmentExpression::evaluate(SteelInterpreter *pInterpreter)
 			     GetScript(),
 			     "Unknown Identifier:'" + m_pId->getValue() + '\'');
     }
+    
     return exp;
 }
 
@@ -866,16 +853,14 @@ SteelType AstArrayElementAssignmentExpression::evaluate(SteelInterpreter *pInter
 			     GetScript(),
 			     "Unknown identifier: '" + m_pId->getArrayName() + '\'');
     }
-    catch(BadReference)
+    catch(OutOfBounds)
     {
-	throw SteelException(SteelException::BAD_REFERENCE,
-			     GetLine(), 
+	throw SteelException(SteelException::OUT_OF_BOUNDS,
+			     GetLine(),
 			     GetScript(),
-			     "Invalid array referenced by '" 
-			     +
-			     m_pId->getArrayName()
-			     + '\'');
+			     "Index out of bounds on array : '" + m_pId->getArrayName() + '\'');
     }
+
     // TODO: Return the value from the expression
     return SteelType();
 }
@@ -950,17 +935,6 @@ SteelType AstVarIdentifier::evaluate(SteelInterpreter *pInterpreter)
 			     GetScript(),
 			     "Unknown identifier:'" + getValue() + '\'');
     }
-    catch(BadReference)
-    {
-	throw SteelException(SteelException::BAD_REFERENCE,
-			     GetLine(), 
-			     GetScript(),
-			     "Invalid array referenced by '" 
-			     +
-			     getValue()
-			     + '\'');
-    }
-    
 }
 
 void AstDeclaration::setValue(const SteelType &value)
@@ -1063,16 +1037,6 @@ AstStatement::eStopType AstArrayDeclaration::execute(SteelInterpreter *pInterpre
 			     GetLine(),
 			     GetScript(),
 			     "Unknown identifier in assignment.");
-    }
-    catch(BadReference)
-    {
-	throw SteelException(SteelException::BAD_REFERENCE,
-			     GetLine(), 
-			     GetScript(),
-			     "Invalid array referenced by '" 
-			     +
-			     m_pId->getValue()
-			     + '\'');
     }
 
     return COMPLETED;
