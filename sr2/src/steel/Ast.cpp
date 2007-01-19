@@ -387,6 +387,7 @@ AstIncDec::AstIncDec(unsigned int line,
 }
 AstIncDec::~AstIncDec()
 {
+    delete m_pLValue;
 }
 
 
