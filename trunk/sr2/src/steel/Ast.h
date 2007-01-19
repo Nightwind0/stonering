@@ -516,7 +516,7 @@ public:
     AstArrayDeclaration(unsigned int line,
 			const std::string &script,
 			AstArrayIdentifier *pId,
-			AstInteger *pInt = NULL);
+			AstExpression *pInt = NULL);
 
     void assign(AstExpression *pExp);
 
@@ -525,7 +525,7 @@ public:
     virtual eStopType execute(SteelInterpreter *pInterpreter);
 private:
     AstArrayIdentifier *m_pId;
-    AstInteger *m_pIndex;
+    AstExpression *m_pIndex;
     AstExpression *m_pExp;
 };
 
