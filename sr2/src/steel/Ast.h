@@ -224,7 +224,7 @@ public:
     AstString(unsigned int line,
 	      const std::string &script);
     virtual ~AstString(){}
-
+    static char getEscapedChar(char);
     virtual ostream & print(std::ostream &out);
     void addChar(const char c);
     void addString(const std::string &str);
@@ -232,7 +232,6 @@ public:
     virtual SteelType * lvalue(SteelInterpreter *pInterpreter){ return NULL; }
 private:
 
-    std::string translate_escapes();
     std::string m_value;
 };
 
