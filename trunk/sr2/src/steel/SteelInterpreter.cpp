@@ -127,6 +127,16 @@ void SteelInterpreter::declare_array(const std::string &array_name, int size)
 }
 
 
+SteelType *SteelInterpreter::lookup_lvalue(const std::string &name)
+{
+    SteelType *p = lookup_internal(name);
+
+    if(p == NULL) throw UnknownIdentifier();
+    return p;
+}
+
+
+
 SteelType SteelInterpreter::lookup(const std::string &name)
 {
     // if strict, throw Unknown Identifier
@@ -135,37 +145,23 @@ SteelType SteelInterpreter::lookup(const std::string &name)
     return *pVar;
 }
 
-SteelType SteelInterpreter::lookup(const std::string &array, int index)
+SteelType SteelInterpreter::lookup(SteelType *pVar, int index)
 {
     // if strict, throw Unknown Identifier
-    SteelType *pVar = lookup_internal(array);
+    // TODO: Unknown ID, or was it not an lvalue
     if(pVar == NULL) throw UnknownIdentifier();
     if(!pVar->isArray()) throw TypeMismatch();
   
     return pVar->getElement(index);
 }
 
-void SteelInterpreter::assign(const std::string &name, const SteelType &value)
+void SteelInterpreter::assign(SteelType *pVar, const SteelType &value)
 {
     // if strict, throw unknown id
-    SteelType *pVar = lookup_internal(name);
     if(pVar == NULL) throw UnknownIdentifier();
 
     *pVar = value;
 }
-
-void SteelInterpreter::assign(const std::string &array, int index, const SteelType &value)
-{
-    // if strict, throw unknown id
-    SteelType *pVar = lookup_internal(array);
-    if(pVar == NULL) throw UnknownIdentifier();
-
-    if(!pVar->isArray()) throw TypeMismatch();
-
-    
-    pVar->setElement(index,value);
-}
-
 
 
 void SteelInterpreter::registerFunction(const std::string &name, 

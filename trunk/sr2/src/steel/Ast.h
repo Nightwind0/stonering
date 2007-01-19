@@ -200,6 +200,7 @@ public:
 	virtual ~AstExpression(){}
 
 	virtual SteelType evaluate(SteelInterpreter *pInterpreter){ return SteelType();}
+	virtual SteelType * lvalue(SteelInterpreter *pInterpreter){ return NULL; }
 private:
 };
 
@@ -212,6 +213,7 @@ public:
 
     virtual ostream & print(std::ostream &out);
     virtual SteelType evaluate(SteelInterpreter *pInterpreter);
+    virtual SteelType * lvalue(SteelInterpreter *pInterpreter){ return NULL; }
 private:
     int m_value;
 };
@@ -227,6 +229,7 @@ public:
     void addChar(const char c);
     void addString(const std::string &str);
     virtual SteelType evaluate(SteelInterpreter *pInterpreter);
+    virtual SteelType * lvalue(SteelInterpreter *pInterpreter){ return NULL; }
 private:
 
     std::string translate_escapes();
@@ -243,6 +246,7 @@ public:
 
     virtual ostream & print(std::ostream &out);
     virtual SteelType evaluate(SteelInterpreter *pInterpreter);
+    virtual SteelType * lvalue(SteelInterpreter *pInterpreter){ return NULL; }
 private:
     double m_value;
 };
@@ -257,6 +261,7 @@ public:
     virtual ostream & print(std::ostream &out);
     virtual SteelType evaluate(SteelInterpreter *pInterpreter);
     std::string getValue() { return m_value; }
+    virtual SteelType * lvalue(SteelInterpreter *pInterpreter){ return NULL; }
 private:
     std::string m_value;
 };
@@ -271,6 +276,7 @@ public:
     virtual ~AstVarIdentifier(){}
 
     virtual SteelType evaluate(SteelInterpreter *pInterpreter);
+    virtual SteelType * lvalue(SteelInterpreter *pInterpreter);
 private:
 };
 
@@ -285,7 +291,7 @@ public:
 
     // Right? Because this isn't the same as a call?
     virtual SteelType evaluate(SteelInterpreter *pInterpreter) { return SteelType(); }
-
+    virtual SteelType * lvalue(SteelInterpreter *pInterpreter){ return NULL; }
 private:
 };
 
@@ -299,6 +305,7 @@ public:
     virtual ~AstArrayIdentifier(){}
 
     virtual SteelType evaluate(SteelInterpreter *pInterpreter);
+    virtual SteelType * lvalue(SteelInterpreter *pInterpreter);
 private:
 };
 
@@ -334,6 +341,7 @@ public:
 
     virtual ostream & print(std::ostream &out);
     virtual SteelType evaluate(SteelInterpreter *pInterpreter);
+    virtual SteelType * lvalue(SteelInterpreter *pInterpreter);
 private:
     Op m_op;
     AstExpression *m_right;
@@ -357,6 +365,7 @@ public:
     virtual ~AstUnaryOp();
     virtual ostream & print(std::ostream &out);
     virtual SteelType evaluate(SteelInterpreter *pInterpreter);
+    virtual SteelType * lvalue(SteelInterpreter *pInterpreter);
 private:
     Op m_op;
     AstExpression *m_operand;
@@ -374,6 +383,11 @@ public:
 
     virtual ostream & print(std::ostream &out);
     virtual SteelType evaluate(SteelInterpreter *pInterpreter);
+
+    // In a world with no references, you cannot have a call be an lvalue.
+    // However, if, in future, we added refs, then this (and possibly others)
+    // Would need implementations for lvalue.
+    virtual SteelType * lvalue(SteelInterpreter *pInterpreter){ return NULL; }
 private:
     AstFuncIdentifier *m_pId;
     AstParamList *m_pParams;
@@ -400,16 +414,16 @@ class AstArrayElement : public AstExpression
 public:
     AstArrayElement(unsigned int line,
 		    const std::string &script,
-		    AstArrayIdentifier *pId,
+		    AstExpression *pLValue,
 		    AstExpression *pExp);
     virtual ~AstArrayElement();
 
     int getArrayIndex(SteelInterpreter *p) const;
-    std::string getArrayName() const;
     virtual ostream & print(std::ostream &out);
     virtual SteelType evaluate(SteelInterpreter *pInterpreter);
+    virtual SteelType * lvalue(SteelInterpreter *pInterpreter);
 private:
-    AstArrayIdentifier * m_pId;
+    AstExpression * m_pLValue;
     AstExpression * m_pExp;
 };
 
@@ -418,19 +432,21 @@ class AstVarAssignmentExpression : public AstExpression
 public:
     AstVarAssignmentExpression(unsigned int line,
 			    const std::string &script,
-			    AstVarIdentifier *pId,
+			    AstExpression *pLValue,
 			    AstExpression *pExp);
 
     virtual ~AstVarAssignmentExpression();
 
     virtual ostream & print(std::ostream &out);
     virtual SteelType evaluate(SteelInterpreter *pInterpreter);
+    virtual SteelType * lvalue(SteelInterpreter *pInterpreter);
 private:
-    AstVarIdentifier * m_pId;
+    AstExpression * m_pLValue;
     AstExpression * m_pExpression;
 };
 
 
+/*
 class AstArrayAssignmentExpression : public AstExpression
 {
 public:
@@ -443,6 +459,7 @@ public:
 
     virtual ostream & print(std::ostream &out);
     virtual SteelType evaluate(SteelInterpreter *pInterpreter);
+    virtual SteelType * lvalue(SteelInterpreter *pInterpreter);
 private:
     AstArrayIdentifier * m_pId;
     AstExpression * m_pExpression;
@@ -464,6 +481,8 @@ private:
     AstArrayElement * m_pId;
     AstExpression *m_pExp;
 };
+
+*/
 
 class AstParamList : public AstBase
 {

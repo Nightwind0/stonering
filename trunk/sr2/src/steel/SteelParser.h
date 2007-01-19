@@ -54,7 +54,6 @@ public:
             END_,
 
             // user-defined nonterminal tokens
-            array_element_lvalue__,
             array_identifier__,
             call__,
             exp__,
@@ -112,7 +111,7 @@ public:
     SteelScanner *m_scanner;
     const char *m_pBuffer;
 
-#line 116 "SteelParser.h"
+#line 115 "SteelParser.h"
 
 private:
 
@@ -301,9 +300,6 @@ private:
     AstBase* ReductionRuleHandler0063 ();
     AstBase* ReductionRuleHandler0064 ();
     AstBase* ReductionRuleHandler0065 ();
-    AstBase* ReductionRuleHandler0066 ();
-    AstBase* ReductionRuleHandler0067 ();
-    AstBase* ReductionRuleHandler0068 ();
 
 }; // end of class SteelParser
 
@@ -314,4 +310,4 @@ std::ostream &operator << (std::ostream &stream, SteelParser::Token::Type token_
 
 	#endif // STEEL_PARSER_H
 
-#line 318 "SteelParser.h"
+#line 314 "SteelParser.h"
