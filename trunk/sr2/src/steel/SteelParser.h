@@ -27,6 +27,7 @@ public:
             AND = 0x100,
             ARRAY_IDENTIFIER,
             BREAK,
+            CAT,
             CONTINUE,
             D,
             DECREMENT,
@@ -46,6 +47,7 @@ public:
             NE,
             NOT,
             OR,
+            POP,
             RETURN,
             STRING,
             VAR,
@@ -113,7 +115,7 @@ public:
     SteelScanner *m_scanner;
     const char *m_pBuffer;
 
-#line 117 "SteelParser.h"
+#line 119 "SteelParser.h"
 
 private:
 
@@ -306,6 +308,8 @@ private:
     AstBase* ReductionRuleHandler0067 ();
     AstBase* ReductionRuleHandler0068 ();
     AstBase* ReductionRuleHandler0069 ();
+    AstBase* ReductionRuleHandler0070 ();
+    AstBase* ReductionRuleHandler0071 ();
 
 }; // end of class SteelParser
 
@@ -316,4 +320,4 @@ std::ostream &operator << (std::ostream &stream, SteelParser::Token::Type token_
 
 	#endif // STEEL_PARSER_H
 
-#line 320 "SteelParser.h"
+#line 324 "SteelParser.h"

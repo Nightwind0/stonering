@@ -171,6 +171,15 @@ SteelType & SteelType::operator=(const SteelType &rhs)
 }
 
 
+SteelType SteelType::pop()
+{
+    if( ! isArray() ) throw TypeMismatch();
+
+    SteelType back = (*m_value.a).back();
+    (*m_value.a).pop_back();
+    return back;
+}
+
 SteelType  SteelType::operator+(const SteelType &rhs)
 {
     SteelType val;
@@ -462,6 +471,53 @@ SteelType  SteelType::d(const SteelType &rhs)
     var.set(total);
 
     return var;
+}
+
+SteelType SteelType::cat(const SteelType &rhs)
+{
+    SteelType ret;
+    ret.set ( SteelArray() );
+    SteelType var;
+
+    if(m_storage == SteelType::ARRAY)
+    {
+	add(rhs);
+	return *this;
+    }
+    else
+    {
+	switch(m_storage)
+	{
+	case SteelType::STRING:
+	{
+	    // Create a var and put this string in it.
+	    var.set ( *m_value.s );
+	 
+	    break;
+	}
+	case SteelType::INT:
+	{
+	    var.set ( m_value.i );
+	    break;
+	}
+	case SteelType::DOUBLE:
+	{
+	    var.set ( m_value.d );
+	    break;
+	}
+	case SteelType::BOOL:
+	{
+	    var.set ( m_value.b );
+	    break;
+	}
+	    
+	}
+    }
+
+    ret.add ( var );
+    ret.add ( rhs );
+
+    return ret;
 }
 
 

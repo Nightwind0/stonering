@@ -199,7 +199,7 @@ public:
 	:AstBase(line,script){}
 	virtual ~AstExpression(){}
 
-	virtual SteelType evaluate(SteelInterpreter *pInterpreter){ return SteelType();}
+	virtual SteelType evaluate(SteelInterpreter *pInterpreter){ return SteelType(); }
 	virtual SteelType * lvalue(SteelInterpreter *pInterpreter){ return NULL; }
 private:
 };
@@ -380,7 +380,8 @@ public:
 	LT,
 	GT,
 	LTE,
-	GTE
+	GTE,
+	CAT
     };
 
     static std::string ToString(Op op);
@@ -420,6 +421,22 @@ public:
 private:
     Op m_op;
     AstExpression *m_operand;
+};
+
+class AstPop : public AstExpression
+{
+public:
+    AstPop(unsigned int line,
+	   const std::string &script,
+	   AstExpression *pLValue);
+    virtual ~AstPop();
+
+    virtual SteelType evaluate(SteelInterpreter *pInterpreter);
+    virtual SteelType * lvalue(SteelInterpreter *pInterpreter) { return NULL; }
+    
+private:
+    AstExpression *m_pLValue;
+
 };
 
 
