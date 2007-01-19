@@ -516,6 +516,62 @@ SteelType SteelType::operator!()
     return var;
 }
 
+SteelType SteelType::operator++()
+{
+    switch(m_storage)
+    {
+    case SteelType::ARRAY:
+    case SteelType::BOOL:
+    case SteelType::STRING:
+	throw OperationMismatch();
+    case SteelType::INT:
+	m_value.i = m_value.i + 1;
+	break;
+    case SteelType::DOUBLE:
+	m_value.d = m_value.d + 1;
+	break;
+    }
+
+    return *this;
+}
+
+SteelType SteelType::operator++(int) //postfix
+{
+    SteelType result = *this;
+
+    ++(*this);
+
+    return result;
+}
+
+SteelType SteelType::operator--()
+{
+    switch(m_storage)
+    {
+    case SteelType::ARRAY:
+    case SteelType::BOOL:
+    case SteelType::STRING:
+	throw OperationMismatch();
+    case SteelType::INT:
+	m_value.i = m_value.i - 1;
+	break;
+    case SteelType::DOUBLE:
+	m_value.d = m_value.d - 1;
+	break;
+    }
+
+    return *this;
+}
+
+SteelType SteelType::operator--(int) //postfix
+{
+    SteelType result = *this;
+
+    --(*this);
+
+    return result;
+}
+
 int SteelType::strInt() const
 {
     if(m_storage != SteelType::STRING) return 0;

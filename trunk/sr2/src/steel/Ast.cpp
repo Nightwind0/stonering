@@ -378,6 +378,108 @@ ostream & AstLoopStatement::print(std::ostream &out)
 
 
 
+AstIncDec::AstIncDec(unsigned int line,
+		     const std::string &script,
+		     AstExpression *pLValue,
+		     Order order)
+    :AstExpression(line,script),m_pLValue(pLValue),m_order(order)
+{
+}
+AstIncDec::~AstIncDec()
+{
+}
+
+
+AstIncrement::AstIncrement(unsigned int line,
+	     const std::string &script,
+	     AstExpression *pLValue,
+	     AstIncDec::Order order)
+    :AstIncDec(line,script,pLValue,order)
+{
+}
+
+AstIncrement::~AstIncrement()
+{
+}
+
+SteelType AstIncrement::evaluate(SteelInterpreter *pInterpreter)
+{
+    try
+    {
+	SteelType *pVar = m_pLValue->lvalue(pInterpreter);
+
+	if(NULL == pVar) throw SteelException(SteelException::INVALID_LVALUE,
+					      GetLine(),
+					      GetScript(),
+					      "Invalid lvalue before increment (++) operator.");
+	
+	if(m_order == PRE)
+	    return ++( *pVar );
+	else return (*pVar)++;
+
+    }
+    catch(UnknownIdentifier)
+    {
+	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
+			     GetLine(),
+			     GetScript(),
+			     "Unknown identifier before increment.");
+    }
+
+    return SteelType();
+}
+
+SteelType * AstIncrement::lvalue(SteelInterpreter *pInterpreter)
+{
+    return NULL;
+}
+
+
+AstDecrement::AstDecrement(unsigned int line,
+			   const std::string &script,
+			   AstExpression *pLValue,
+			   AstIncDec::Order order)
+    :AstIncDec(line,script,pLValue,order)
+{
+}
+
+AstDecrement::~AstDecrement()
+{
+}
+
+SteelType AstDecrement::evaluate(SteelInterpreter *pInterpreter)
+{
+    try
+    {
+	SteelType *pVar = m_pLValue->lvalue(pInterpreter);
+
+	if(NULL == pVar) throw SteelException(SteelException::INVALID_LVALUE,
+					      GetLine(),
+					      GetScript(),
+					      "Invalid lvalue before increment (++) operator.");
+	
+	if(m_order == PRE)
+	    return --( *pVar );
+	else return (*pVar)--;
+
+    }
+    catch(UnknownIdentifier)
+    {
+	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
+			     GetLine(),
+			     GetScript(),
+			     "Unknown identifier before increment.");
+    }
+
+    return SteelType();
+}
+
+SteelType * AstDecrement::lvalue(SteelInterpreter *pInterpreter)
+{
+    return NULL;
+}
+
+
 
 
 AstBinOp::AstBinOp(unsigned int line,
