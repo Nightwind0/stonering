@@ -451,11 +451,21 @@ SteelType AstBinOp::evaluate(SteelInterpreter *pInterpreter)
 	    return m_left->evaluate(pInterpreter)
 		% m_right->evaluate(pInterpreter);
 	case AND:
-	    return m_left->evaluate(pInterpreter)
-		&& m_right->evaluate(pInterpreter);
+	{
+	    SteelType var;
+	    var.set((bool)m_left->evaluate(pInterpreter)
+		    && (bool)m_right->evaluate(pInterpreter));
+
+	    return var;
+	}
 	case OR:
-	    return m_left->evaluate(pInterpreter)
-		|| m_right->evaluate(pInterpreter);
+	{
+	    SteelType var;
+	    var.set((bool)m_left->evaluate(pInterpreter)
+		    || (bool)m_right->evaluate(pInterpreter));
+
+	    return var;
+	}
 	case D:
 	    return m_left->evaluate(pInterpreter).d( m_right->evaluate(pInterpreter));
 	case POW:

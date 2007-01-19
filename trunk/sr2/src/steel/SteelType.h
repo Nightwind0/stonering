@@ -75,8 +75,6 @@ public:
     SteelType  operator<=(const SteelType &rhs);
     SteelType  operator>(const SteelType &rhs);
     SteelType  operator>=(const SteelType &rhs);
-    SteelType  operator&&(const SteelType &rhs);
-    SteelType  operator||(const SteelType &rhs);
     SteelType  d(const SteelType &rhs);
 
 private:
