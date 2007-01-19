@@ -4,27 +4,6 @@
 #include <queue>
 
 
-class SteelArrayRef
-{
-public:
-    SteelArrayRef(){}
-    ~SteelArrayRef(){}
-
-    std::string getArrayRef() const { return m_array; }
-    void setArrayRef( const std::string &s){ m_array =s;}
-private:
-    std::string m_array;
-    friend bool operator<(const SteelArrayRef &lhs, 
-			  const SteelArrayRef &rhs);
-    friend bool operator==(const SteelArrayRef &lhs, 
-			  const SteelArrayRef &rhs);
-};
-
-bool operator<(const SteelArrayRef &lhs, const SteelArrayRef &rhs);
-bool operator==(const SteelArrayRef &lhs, const SteelArrayRef &rhs);
-    
-
-
 class SteelType
 {
 private:
@@ -46,16 +25,22 @@ public:
     operator double () const;
     operator std::string () const;
     operator bool () const;
-    operator SteelArrayRef () const;
+    operator std::vector<SteelType> () const;
 
     void set(int i);
     void set(double d);
     void set(bool b);
     void set(const std::string &);
-    void set(const SteelArrayRef &ref);
+    void set(const std::vector<SteelType> &);
 
+    // Array stuff
     bool isArray() const { return m_storage == ARRAY; }
-
+    SteelType getElement(int index) const;
+    void setElement(int index,const SteelType &);
+    int getArraySize()const;
+    void add(const SteelType &var);
+    void removeTail();
+    void reserveArray(int index);
 
     // Assignment
     SteelType & operator=(const SteelType &rhs);
@@ -69,8 +54,6 @@ public:
     SteelType  operator^(const SteelType &rhs);
     SteelType  operator/(const SteelType &rhs);
     SteelType  operator%(const SteelType &rhs);
-    SteelType  operator==(const SteelType &rhs);
-    SteelType  operator!=(const SteelType &rhs);
     SteelType  operator<(const SteelType &rhs);
     SteelType  operator<=(const SteelType &rhs);
     SteelType  operator>(const SteelType &rhs);
@@ -85,20 +68,23 @@ private:
     std::string strToInt(int i)const;
     std::string strToDouble(double d)const;
 
-
+    
     union value
     {
 	bool b;
 	double d;
 	int i;
-	SteelArrayRef *a;
 	std::string *s;
+	std::vector<SteelType> *a;
     };
     value m_value;
     storage m_storage;
 
+    friend bool operator==(const SteelType &lhs, const SteelType &rhs);
 };
 
+typedef std::vector<SteelType> SteelArray;
 
-
+bool operator==(const SteelType &lhs, const SteelType &rhs);
+bool operator!=(const SteelType &lhs, const SteelType &rhs);
 #endif

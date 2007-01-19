@@ -13,7 +13,6 @@ public:
 	RUNTIME,
 	OUT_OF_BOUNDS,
 	UNKNOWN_IDENTIFIER,
-	BAD_REFERENCE,
 	TYPE_MISMATCH,
 	PARAM_MISMATCH,
 	FUNCTION_DEFINED
@@ -47,10 +46,6 @@ public:
 private:
 };
 
-
-class BadReference
-{
-};
 
 class ParamMismatch
 {

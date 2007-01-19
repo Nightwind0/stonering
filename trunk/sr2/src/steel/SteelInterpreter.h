@@ -36,9 +36,6 @@ public:
     void assign(const std::string &name, const SteelType &value);
     void assign(const std::string &array, int index, const SteelType &value);
 
-    // Note: Runtime check that value is of type array
-    // or throw TypeMismatch
-    void assign_array(const std::string &name, const SteelType &value);
 
     void pushScope();
     void popScope();
@@ -52,15 +49,11 @@ private:
 
     std::string name_array_ref(const std::string &array_name); 
     typedef std::map<std::string, SteelType> VariableFile;
-    typedef std::vector<SteelType> SteelArray;
-    typedef std::map<SteelArrayRef,SteelArray> ArrayFile;
-    
     std::list<VariableFile> m_symbols;
-    std::list<ArrayFile> m_arrays;
+  
 
     SteelType * lookup_internal(const std::string &name);
-    SteelArray * lookup_internal(const SteelArrayRef &ref);
-
+  
     void registerBifs();
     std::map<std::string,SteelFunctor*> m_functions;
 
@@ -73,18 +66,19 @@ private:
     // Pop the front of the array
 //    SteelType pop(const SteelArrayRef &ref);
     // Pop the back of the array
-    SteelType bob(const SteelArrayRef &ref);
+    SteelType bob(const SteelArray &ref);
     // Push on the BACK of the array
-    SteelType shove(const SteelArrayRef &ref, const SteelType &value);
+    SteelType shove(const SteelArray &ref, const SteelType &value);
     SteelType print(const std::string &str);
     SteelType println(const std::string &str);
-    SteelType len(const SteelArrayRef &ref);
-    SteelType copy(const SteelArrayRef &lhs, const SteelArrayRef &rhs);
+    SteelType len(const SteelArray &ref);
+//    SteelType copy(const SteelArray &lhs, const SteelArrayRef &rhs);
     SteelType real(const SteelType &str);
     SteelType integer(const SteelType &str);
     SteelType boolean(const SteelType &str);
     SteelType substr(const std::string &str, int start, int len);
     SteelType strlen(const std::string &str);
+    SteelType is_array(const SteelType &);
 };
 
 
