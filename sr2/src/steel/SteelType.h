@@ -48,6 +48,10 @@ public:
     // Unary operators
     SteelType operator-();
     SteelType operator!();
+    SteelType operator++();
+    SteelType operator++(int); //postfix
+    SteelType operator--();
+    SteelType operator--(int); //postfix
     // Binary operators
     SteelType  operator+(const SteelType &rhs);
     SteelType  operator-(const SteelType &rhs);

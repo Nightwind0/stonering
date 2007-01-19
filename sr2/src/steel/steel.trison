@@ -74,6 +74,8 @@ SteelParser::Token::Type SteelParser::Scan ()
 %token INT
 %token FLOAT
 %token STRING
+%token INCREMENT
+%token DECREMENT
 
 %prec ASSIGNMENT
 %prec NON_ELSE
@@ -288,6 +290,14 @@ exp %type "AstExpression*"
 	NOT exp:exp %right %prec UNARY { return new AstUnaryOp(exp->GetLine(), exp->GetScript(), AstUnaryOp::NOT,exp); }
 |
 	exp:lvalue '[' exp:index ']'  %prec PAREN { return new AstArrayElement(lvalue->GetLine(),lvalue->GetScript(),lvalue,index); }
+|
+	INCREMENT exp:lvalue %right %prec UNARY { return new AstIncrement(lvalue->GetLine(),lvalue->GetScript(),lvalue, AstIncrement::PRE);}
+|
+	exp:lvalue INCREMENT %prec PAREN { return new AstIncrement(lvalue->GetLine(),lvalue->GetScript(),lvalue, AstIncrement::POST);}
+|
+	DECREMENT exp:lvalue %right %prec UNARY { return new AstDecrement(lvalue->GetLine(),lvalue->GetScript(),lvalue, AstDecrement::PRE);}
+|
+	exp:lvalue DECREMENT %prec PAREN { return new AstDecrement(lvalue->GetLine(),lvalue->GetScript(),lvalue, AstDecrement::POST);}
 ;
 
 exp_statement %type "AstExpression*"

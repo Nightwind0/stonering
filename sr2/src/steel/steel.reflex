@@ -148,6 +148,18 @@ int SteelScanner::ToIntFromHex(const std::string &text)
 		TransitionToState(State::STRING_LITERAL_GUTS);
 	}
 |
+	(\-\-)
+	%language.cpp {
+		*token = NULL;
+		return SteelParser::Token::DECREMENT;
+	}
+|
+	(\+\+)
+	%language.cpp {
+		*token = NULL;
+		return SteelParser::Token::INCREMENT;
+	}
+|
 	(0|[1-9][0-9]*)
 	%language.cpp{
 		*token = new AstInteger(m_line,m_script_name,ToInt(accepted_text));

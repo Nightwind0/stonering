@@ -29,6 +29,7 @@ public:
             BREAK,
             CONTINUE,
             D,
+            DECREMENT,
             ELSE,
             EQ,
             FLOAT,
@@ -38,6 +39,7 @@ public:
             GT,
             GTE,
             IF,
+            INCREMENT,
             INT,
             LT,
             LTE,
@@ -111,7 +113,7 @@ public:
     SteelScanner *m_scanner;
     const char *m_pBuffer;
 
-#line 115 "SteelParser.h"
+#line 117 "SteelParser.h"
 
 private:
 
@@ -300,6 +302,10 @@ private:
     AstBase* ReductionRuleHandler0063 ();
     AstBase* ReductionRuleHandler0064 ();
     AstBase* ReductionRuleHandler0065 ();
+    AstBase* ReductionRuleHandler0066 ();
+    AstBase* ReductionRuleHandler0067 ();
+    AstBase* ReductionRuleHandler0068 ();
+    AstBase* ReductionRuleHandler0069 ();
 
 }; // end of class SteelParser
 
@@ -310,4 +316,4 @@ std::ostream &operator << (std::ostream &stream, SteelParser::Token::Type token_
 
 	#endif // STEEL_PARSER_H
 
-#line 314 "SteelParser.h"
+#line 320 "SteelParser.h"

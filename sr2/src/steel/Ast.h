@@ -310,6 +310,57 @@ private:
 };
 
 
+
+class AstIncDec : public AstExpression
+{
+public:
+    enum Order
+    {
+	PRE,
+	POST
+    };
+
+    AstIncDec(unsigned int line,
+		 const std::string &script,
+		 AstExpression *pLValue,
+		 Order order);
+    virtual ~AstIncDec();
+protected:
+
+    AstExpression * m_pLValue;
+    Order m_order;
+};
+
+class AstIncrement : public AstIncDec
+{
+public:
+    AstIncrement(unsigned int line,
+		 const std::string &script,
+		 AstExpression *pLValue,
+		 AstIncDec::Order order);
+    virtual ~AstIncrement();
+    virtual SteelType evaluate(SteelInterpreter *pInterpreter);
+    virtual SteelType * lvalue(SteelInterpreter *pInterpreter);
+    
+private:
+};
+
+
+class AstDecrement : public AstIncDec
+{
+public:
+    AstDecrement(unsigned int line,
+		 const std::string &script,
+		 AstExpression *pLValue,
+		 AstIncDec::Order order);
+    virtual ~AstDecrement();
+    virtual SteelType evaluate(SteelInterpreter *pInterpreter);
+    virtual SteelType * lvalue(SteelInterpreter *pInterpreter);
+    
+private:
+};
+
+
 class AstBinOp : public AstExpression
 {
 public:
