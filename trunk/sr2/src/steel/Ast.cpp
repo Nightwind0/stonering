@@ -64,10 +64,24 @@ ostream & AstString::print(std::ostream &out)
     return out;
 }
 
-std::string AstString::translate_escapes()
+
+char AstString::getEscapedChar(char c)
 {
-    
+
+    switch (c)
+    {
+        case '0': return '\0';
+        case 'a': return '\a';
+        case 'b': return '\b';
+        case 't': return '\t';
+        case 'n': return '\n';
+        case 'v': return '\v';
+        case 'f': return '\f';
+        case 'r': return '\r';
+        default : return c;
+    }
 }
+
 
 SteelType AstString::evaluate(SteelInterpreter *pInterpreter)
 {

@@ -156,7 +156,7 @@ int SteelScanner::ToIntFromHex(const std::string &text)
 	}
 
 |
-	(\.)
+	(:)
 	%language.cpp {
 		*token = NULL;
 		return SteelParser::Token::CAT;
@@ -343,30 +343,32 @@ int SteelScanner::ToIntFromHex(const std::string &text)
 %state STRING_LITERAL_GUTS
 :
 
-	([^"\\])
+	([^"])
 	%language.cpp{
 		// First, add the accepted_text to the string..
 		AstString *pString = (AstString*)*token;		
 		pString->addChar(accepted_text[0]);
 	}
-
 |
 	(\\.)
-	 %language.cpp {
-		AstString *pString = (AstString*)*token;	
-		pString->addChar(accepted_text[1]);
+	%language.cpp{
+		AstString *pString = (AstString*)*token;
+		pString->addChar( AstString::getEscapedChar ( accepted_text[1] ) );
 	}
+
 |
+
 	(") 
 	%language.cpp{ 
+		AstString *pString = (AstString*)*token;
+
 		TransitionToState(State::MAIN);
 		return SteelParser::Token::STRING; 
 	}
 |
-	(\\?\z)
-	%language.cpp
-	{
-		//EmitError(GetFileLocation(),"unterminated string literal");
+	(\z)
+	%language.cpp{
+		// Error
 	}
 
 ;

@@ -59,7 +59,7 @@ private:
     // Pop the front of the array
 //    SteelType pop(const SteelArrayRef &ref);
     // Pop the back of the array
-    SteelType bob(const SteelArray &ref);
+//    SteelType push(const SteelArray &ref, const SteelType &rhs);
     // Push on the BACK of the array
     SteelType print(const std::string &str);
     SteelType println(const std::string &str);
