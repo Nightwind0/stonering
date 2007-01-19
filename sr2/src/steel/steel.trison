@@ -344,7 +344,7 @@ vardecl %type "AstDeclaration*"
 |
 	VAR var_identifier:id '=' exp:exp { return new AstVarDeclaration(id->GetLine(),id->GetScript(),id,exp); }
 |
-	VAR array_identifier:id '[' int_literal:i ']' { return new AstArrayDeclaration(id->GetLine(),id->GetScript(),id,i); }
+	VAR array_identifier:id '[' exp:i ']' { return new AstArrayDeclaration(id->GetLine(),id->GetScript(),id,i); }
 |
 	VAR array_identifier:id { return new AstArrayDeclaration(id->GetLine(),id->GetScript(),id); }
 |
