@@ -406,7 +406,8 @@ public:
     {
 	MINUS,
 	PLUS,
-	NOT
+	NOT,
+	CAT
     };
     static std::string ToString(Op op);
     AstUnaryOp(unsigned int line,

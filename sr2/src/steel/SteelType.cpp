@@ -476,44 +476,42 @@ SteelType  SteelType::d(const SteelType &rhs)
 SteelType SteelType::cat(const SteelType &rhs)
 {
     SteelType ret;
-    ret.set ( SteelArray() );
     SteelType var;
 
-    if(m_storage == SteelType::ARRAY)
-    {
-	add(rhs);
-	return *this;
-    }
-    else
-    {
-	switch(m_storage)
-	{
-	case SteelType::STRING:
-	{
-	    // Create a var and put this string in it.
-	    var.set ( *m_value.s );
-	 
-	    break;
-	}
-	case SteelType::INT:
-	{
-	    var.set ( m_value.i );
-	    break;
-	}
-	case SteelType::DOUBLE:
-	{
-	    var.set ( m_value.d );
-	    break;
-	}
-	case SteelType::BOOL:
-	{
-	    var.set ( m_value.b );
-	    break;
-	}
-	    
-	}
-    }
 
+    switch(m_storage)
+    {
+    case SteelType::ARRAY:
+	ret.set ( *m_value.a );
+	ret.add ( rhs );
+	return ret;
+	
+
+    case SteelType::STRING:
+    {
+	// Create a var and put this string in it.
+	var.set ( *m_value.s );
+	
+	break;
+    }
+    case SteelType::INT:
+    {
+	var.set ( m_value.i );
+	break;
+    }
+    case SteelType::DOUBLE:
+    {
+	var.set ( m_value.d );
+	break;
+    }
+    case SteelType::BOOL:
+    {
+	var.set ( m_value.b );
+	break;
+    }
+    }
+   
+    ret.set ( SteelArray() );
     ret.add ( var );
     ret.add ( rhs );
 
