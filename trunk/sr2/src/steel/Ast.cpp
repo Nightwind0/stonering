@@ -550,7 +550,7 @@ std::string AstBinOp::ToString(Op op)
     case GTE:
 	return " >=";
     case CAT:
-	return " . ";
+	return " : ";
     default:
 	assert(0);
 	return "";
@@ -679,6 +679,8 @@ std::string AstUnaryOp::ToString(Op op)
 	return "+";
     case NOT:
 	return " not ";
+    case CAT:
+	return " : " ;
     default:
 	assert ( 0 );
 	return "";
@@ -702,6 +704,13 @@ SteelType AstUnaryOp::evaluate(SteelInterpreter *pInterpreter)
 	    return m_operand->evaluate(pInterpreter);
 	case NOT:
 	    return ! m_operand->evaluate(pInterpreter);
+	case CAT:
+	{
+	    SteelType var;
+	    var.set ( SteelArray() );
+	    var.add( m_operand->evaluate(pInterpreter) );
+	    return var;
+	}
 	}
     }
     catch(OperationMismatch m)
