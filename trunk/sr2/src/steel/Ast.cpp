@@ -911,10 +911,32 @@ SteelType AstArrayElement::evaluate(SteelInterpreter *pInterpreter)
     {
 	SteelType * pL = m_pLValue->lvalue(pInterpreter);
 	if(NULL == pL)
-	    throw SteelException(SteelException::INVALID_LVALUE,
-				 GetLine(),
-				 GetScript(),
-				 "Invalid lvalue in array expression.");
+	{
+	    // Okay. It wasn't an lvalue, but thats okay, 
+	    // We're not in an lvalue context (Although, 
+	    // If it IS an lvalue, we speed up the interpreter
+	    // By knowing that. 
+	    // We can just evaluate it and hope that it's
+	    // An array type that it evaluates to. 
+	    // If not, then we're in trouble. 
+
+	    SteelType val = m_pLValue->evaluate(pInterpreter);
+	    
+	    try
+	    {
+		return val.getElement(m_pExp->evaluate(pInterpreter)); 
+	    }
+	    catch(TypeMismatch)
+	    {
+		throw SteelException(SteelException::TYPE_MISMATCH,
+				     GetLine(),
+				     GetScript(),
+				     "Left of array subscript (aka '[' ']') was not an array.");
+	    }
+
+	    // The rest of the exceptions should be cought by the outer try.
+	    // Such as out of bounds.. and anything that goes wrong inside the index expression
+	}
 	
 	return pInterpreter->lookup(pL, m_pExp->evaluate(pInterpreter));
     }
