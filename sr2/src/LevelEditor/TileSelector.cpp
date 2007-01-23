@@ -68,7 +68,7 @@ TileSelector::~TileSelector()
 
 //	delete scrollVert;
 //	delete scrollHorz;
-	delete cur_tileset;
+//	delete cur_tileset;
 }
 
 void TileSelector::on_window_resize(int,int)
