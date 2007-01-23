@@ -257,8 +257,8 @@ int EditorMain::main(int argc, char **argv)
 			
 	gui.run();
 	
-	delete tsResources;
-	delete gui_zip;
+//	delete tsResources;
+//	delete gui_zip;
 
     }
     // Catch any errors from ClanLib
