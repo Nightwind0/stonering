@@ -21,7 +21,7 @@ class EditableLevelFactory : public LevelFactory
 {
  public:
     EditableLevelFactory(){}
-    ~EditableLevelFactory(){}
+    virtual ~EditableLevelFactory(){}
 private:
 
     virtual Element * createTile() const;
@@ -64,7 +64,7 @@ class EditableTile : public StoneRing::Tile
 {
  public:
     EditableTile();
-    ~EditableTile();
+    virtual ~EditableTile();
 
     void setLevelX(int x);
     void setLevelY(int y);

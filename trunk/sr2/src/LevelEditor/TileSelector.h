@@ -17,7 +17,7 @@ class TileSelector : public CL_Component
 public:
 		TileSelector(CL_Component *parent, CL_ResourceManager* tsResources);
 //, TileSet tileset
-		~TileSelector();
+		virtual ~TileSelector();
 
 		void changeTS(string text);
 

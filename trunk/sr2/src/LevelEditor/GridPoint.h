@@ -15,7 +15,7 @@ class GridPoint : CL_Component
 public:
 		GridPoint(CL_Rect setrect, CL_Component *parent);
 
-		~GridPoint();
+		virtual ~GridPoint();
 
 
 
