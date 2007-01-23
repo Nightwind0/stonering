@@ -111,6 +111,13 @@ void SteelInterpreter::declare(const std::string &name)
 {
     VariableFile &file = m_symbols.front();
 
+    VariableFile::iterator it = file.find(name);
+
+    if(it != file.end() )
+    {
+	throw AlreadyDefined();
+    }
+
     file[name] = SteelType();
 }
 
@@ -120,6 +127,14 @@ void SteelInterpreter::declare(const std::string &name)
 void SteelInterpreter::declare_array(const std::string &array_name, int size)
 {
     VariableFile &file = m_symbols.front();
+
+    VariableFile::iterator it = file.find(array_name);
+
+    if(it != file.end() )
+    {
+	throw AlreadyDefined();
+    }
+
     SteelType var;
     var.set ( SteelArray( std::max(size,0)  ) );
     
@@ -159,6 +174,10 @@ void SteelInterpreter::assign(SteelType *pVar, const SteelType &value)
 {
     // if strict, throw unknown id
     if(pVar == NULL) throw UnknownIdentifier();
+
+    if(pVar->isArray() && (! value.isArray() ))
+	throw TypeMismatch();
+
 
     *pVar = value;
 }

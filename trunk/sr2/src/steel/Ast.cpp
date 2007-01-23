@@ -169,13 +169,11 @@ ostream & AstExpressionStatement::print(std::ostream &out)
 
 AstStatement::eStopType AstExpressionStatement::execute(SteelInterpreter *pInterpreter)
 {
-    try{
-	m_pExp->evaluate(pInterpreter);
-    }
-    catch(UnknownIdentifier)
-    {
-	// TODO: Catch everything. 
-    }
+
+    // No try/catch because I expect everything to be caught
+    // At a lower level
+    m_pExp->evaluate(pInterpreter);
+
     return AstStatement::COMPLETED;
 }
 
@@ -281,7 +279,7 @@ AstStatement::eStopType AstWhileStatement::execute(SteelInterpreter *pInterprete
 	// Then we just want to keep looping. So no action.
     }
 
-	return COMPLETED;
+    return COMPLETED;
 }
 
 ostream & AstWhileStatement::print(std::ostream &out)
@@ -439,6 +437,13 @@ SteelType AstIncrement::evaluate(SteelInterpreter *pInterpreter)
 	else return (*pVar)++;
 
     }
+    catch(OperationMismatch)
+    {
+	throw SteelException(SteelException::TYPE_MISMATCH,
+			     GetLine(),
+			     GetScript(),
+			     "Invalid type before increment (++) operator.");
+    }
     catch(UnknownIdentifier)
     {
 	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
@@ -484,12 +489,19 @@ SteelType AstDecrement::evaluate(SteelInterpreter *pInterpreter)
 	else return (*pVar)--;
 
     }
+    catch(OperationMismatch)
+    {
+	throw SteelException(SteelException::TYPE_MISMATCH,
+			     GetLine(),
+			     GetScript(),
+			     "Invalid type before decrement (--) operator.");
+    }
     catch(UnknownIdentifier)
     {
 	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
 			     GetLine(),
 			     GetScript(),
-			     "Unknown identifier before increment.");
+			     "Unknown identifier before decrement.");
     }
 
     return SteelType();
@@ -641,7 +653,7 @@ SteelType AstBinOp::evaluate(SteelInterpreter *pInterpreter)
     }
     catch(OperationMismatch m)
     {
-	throw SteelException(SteelException::RUNTIME,
+	throw SteelException(SteelException::TYPE_MISMATCH,
 			     GetLine(),GetScript(),
 			     "Binary operation '" + ToString(m_op) + "' disallowed between these types");
     }
@@ -715,13 +727,19 @@ SteelType AstUnaryOp::evaluate(SteelInterpreter *pInterpreter)
     }
     catch(OperationMismatch m)
     {
-	throw SteelException(SteelException::RUNTIME,
+	throw SteelException(SteelException::TYPE_MISMATCH,
+			     GetLine(),GetScript(),
+			     "Unary operation '" + ToString(m_op) + "' disallowed on this type");
+    }
+    catch(TypeMismatch)
+    {
+	throw SteelException(SteelException::TYPE_MISMATCH,
 			     GetLine(),GetScript(),
 			     "Unary operation '" + ToString(m_op) + "' disallowed on this type");
     }
 
-	assert ( 0 );
-	return SteelType();
+    assert ( 0 );
+    return SteelType();
 }
 
 ostream & AstUnaryOp::print(std::ostream &out)
@@ -794,6 +812,12 @@ SteelType AstCallExpression::evaluate(SteelInterpreter *pInterpreter)
 	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
 			     GetLine(), GetScript(),
 			     "Unknown function: '" + m_pId->getValue() + '\'');
+    }
+    catch(TypeMismatch)
+    {
+	throw SteelException(SteelException::TYPE_MISMATCH,
+			     GetLine(), GetScript(),
+			     "Type mismatch in parameter to function '" + m_pId->getValue() + '\'');
     }
 
 
@@ -1020,10 +1044,7 @@ AstVarAssignmentExpression::~AstVarAssignmentExpression()
 
 SteelType *AstVarAssignmentExpression::lvalue(SteelInterpreter *pInterpreter)
 {
-    // TODO : Is this an lvalue or not??
-
-    
-
+    // Not an lvalue. I found out.
     return NULL;
 }
 
@@ -1186,12 +1207,26 @@ AstStatement::eStopType AstVarDeclaration::execute(SteelInterpreter *pInterprete
 	// This is for parameters
 	if(m_bHasValue) pInterpreter->assign( pVar, m_value);
     }
+    catch(TypeMismatch)
+    {
+	throw SteelException(SteelException::TYPE_MISMATCH,
+			     GetLine(),
+			     GetScript(),
+			     "Type mismatch in assignment part of declaration of '" + m_pId->getValue() + '\'');
+    }
     catch(UnknownIdentifier)
     {
 	throw SteelException(SteelException::UNKNOWN_IDENTIFIER,
 			     GetLine(),
 			     GetScript(),
 			     "Unknown identifier: '" + m_pId->getValue() + '\'');
+    }
+    catch(AlreadyDefined)
+    {
+	throw SteelException(SteelException::VARIABLE_DEFINED,
+			     GetLine(),
+			     GetScript(),
+			     "Variable: '" + m_pId->getValue() + "' is already defined.");
     }
 
     return COMPLETED;
@@ -1230,9 +1265,19 @@ void AstArrayDeclaration::assign(AstExpression *pExp)
 
 AstStatement::eStopType AstArrayDeclaration::execute(SteelInterpreter *pInterpreter)
 {
+    try
+    {
     if(m_pIndex)
 	pInterpreter->declare_array( m_pId->getValue(), m_pIndex->evaluate(pInterpreter));
     else pInterpreter->declare_array( m_pId->getValue(), 0);
+    }
+    catch(AlreadyDefined)
+    {
+	throw SteelException(SteelException::VARIABLE_DEFINED,
+			     GetLine(),
+			     GetScript(),
+			     "Array: '" + m_pId->getValue() + "' was previously defined.");
+    }
 
     try{
 	SteelType * pVar = pInterpreter->lookup_lvalue( m_pId->getValue() );
@@ -1248,7 +1293,7 @@ AstStatement::eStopType AstArrayDeclaration::execute(SteelInterpreter *pInterpre
 	throw SteelException(SteelException::TYPE_MISMATCH,
 			     GetLine(),
 			     GetScript(),
-			     "Attempt to assign non-array to array:'" + m_pId->getValue() + '\'');
+			     "Attempt to assign scalar to array in declaration of :'" + m_pId->getValue() + '\'');
     }
     catch(UnknownIdentifier)
     {

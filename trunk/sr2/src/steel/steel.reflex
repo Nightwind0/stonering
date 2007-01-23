@@ -1,10 +1,15 @@
 %target_languages cpp
 
+%language.cpp.header_filename "SteelScanner.h"
+%language.cpp.implementation_filename "SteelScanner.cpp"
 %language.cpp.top_of_header_file %{
 
+#include <cassert>
 #ifndef _STEEL_SCANNER_H
 #define _STEEL_SCANNER_H
+
 #include "SteelParser.h"
+
 class AstBase;
 %}
 
@@ -15,19 +20,20 @@ class AstBase;
 %language.cpp.top_of_implementation_file %{
 #include <iostream>
 #include <sstream>
+#include <cassert>
 #include "SteelScanner.h"
 #include "Ast.h"
 %}
 
-%language.cpp.end_of_scan_method_actions {
+%language.cpp.end_of_scan_method_actions %{
 			
-}
+%}
 
-%language.cpp.top_of_class_methods_and_members {
+%language.cpp.top_of_class {
 	void setBuffer(const char * pBuffer, const std::string &name);
 }
 
-%language.cpp.bottom_of_class_methods_and_members {
+%language.cpp.bottom_of_class {
 
 	// Converters
 	int ToInt(const std::string &text);
@@ -89,13 +95,16 @@ int SteelScanner::ToIntFromHex(const std::string &text)
 	m_line = 0;	
 }
 
-%language.cpp.unmatched_input_char_actions {
-	std::cerr << "Warning: unmatched input found." << std::endl;
+%language.cpp.rejection_actions {
+	//std::cerr << "Warning: unmatched input found:" 
+	//<< '\'' << accepted_string << '\'' << std::endl;
 }
 
 %language.cpp.return_type "SteelParser::Token::Type"
 
-%language.cpp.scan_method_parameters "AstBase **token"
+%language.cpp.scan_method_parameters {
+AstBase **token
+}
 
 %language.cpp.return_next_input_char {
 
@@ -145,7 +154,7 @@ int SteelScanner::ToIntFromHex(const std::string &text)
 	%language.cpp {
 		*token = new AstString(m_line,m_script_name);
 		
-		TransitionToState(State::STRING_LITERAL_GUTS);
+		SetScannerState(State::STRING_LITERAL_GUTS);
 	}
 |
 	(pop)
@@ -176,45 +185,45 @@ int SteelScanner::ToIntFromHex(const std::string &text)
 |
 	(0|[1-9][0-9]*)
 	%language.cpp{
-		*token = new AstInteger(m_line,m_script_name,ToInt(accepted_text));
+		*token = new AstInteger(m_line,m_script_name,ToInt(accepted_string));
 			
 		return SteelParser::Token::INT;
 	}
 |
 	(0x[0-9a-fA-F]+)
 	%language.cpp{
-		*token = new AstInteger(m_line,m_script_name,ToIntFromHex(accepted_text));
+		*token = new AstInteger(m_line,m_script_name,ToIntFromHex(accepted_string));
 		
 		return SteelParser::Token::INT;
 	}
 |
 	([0-9]+\.[0-9]+)
 	%language.cpp{
-		*token = new AstFloat(m_line,m_script_name,ToFloat(accepted_text));
+		*token = new AstFloat(m_line,m_script_name,ToFloat(accepted_string));
 		return SteelParser::Token::FLOAT;
 	}	
 |
 	(\$[a-zA-Z_][a-zA-Z0-9_]*)
 	%language.cpp{
-		*token = new AstVarIdentifier(m_line,m_script_name,accepted_text);
+		*token = new AstVarIdentifier(m_line,m_script_name,accepted_string);
 		return SteelParser::Token::VAR_IDENTIFIER;		
 	}
 |
 	(@[a-zA-Z_][a-zA-Z0-9_]*)
 	%language.cpp {
-		*token = new AstArrayIdentifier(m_line,m_script_name,accepted_text);
+		*token = new AstArrayIdentifier(m_line,m_script_name,accepted_string);
 		return SteelParser::Token::ARRAY_IDENTIFIER;
 	}
 |
 	(;|\{|\})
 	%language.cpp {
 		*token = new AstKeyword(m_line,m_script_name);
-		return (SteelParser::Token::Type)accepted_text[0];
+		return (SteelParser::Token::Type)accepted_string[0];
 	}
 |
 	(@|$|\(|\)|,|%|\+|\-|\^|\*|\=|\[|\]|%|/)
 	%language.cpp{
-		return (SteelParser::Token::Type)accepted_text[0];
+		return (SteelParser::Token::Type)accepted_string[0];
 	}
 |
 	(<=)
@@ -334,7 +343,7 @@ int SteelScanner::ToIntFromHex(const std::string &text)
 |
 	([a-zA-Z_][a-zA-Z0-9_]*)
 	%language.cpp{
-		*token = new AstFuncIdentifier(m_line,m_script_name,accepted_text);
+		*token = new AstFuncIdentifier(m_line,m_script_name,accepted_string);
 		return SteelParser::Token::FUNC_IDENTIFIER;
 	}
 
@@ -345,15 +354,15 @@ int SteelScanner::ToIntFromHex(const std::string &text)
 
 	([^"])
 	%language.cpp{
-		// First, add the accepted_text to the string..
+		// First, add the accepted_string to the string..
 		AstString *pString = (AstString*)*token;		
-		pString->addChar(accepted_text[0]);
+		pString->addChar(accepted_string[0]);
 	}
 |
 	(\\.)
 	%language.cpp{
 		AstString *pString = (AstString*)*token;
-		pString->addChar( AstString::getEscapedChar ( accepted_text[1] ) );
+		pString->addChar( AstString::getEscapedChar ( accepted_string[1] ) );
 	}
 
 |
@@ -362,7 +371,7 @@ int SteelScanner::ToIntFromHex(const std::string &text)
 	%language.cpp{ 
 		AstString *pString = (AstString*)*token;
 
-		TransitionToState(State::MAIN);
+		SetScannerState(State::MAIN);
 		return SteelParser::Token::STRING; 
 	}
 |
