@@ -33,8 +33,8 @@ public:
     void pushScope();
     void popScope();
     void registerFunction(const std::string &name, 
-			  AstParamDefinitionList *pParams, 
-			  AstStatementList *pStatements);
+                          AstParamDefinitionList *pParams, 
+                          AstStatementList *pStatements);
     void setReturn(const SteelType &var);
     SteelType getReturn() const;
 

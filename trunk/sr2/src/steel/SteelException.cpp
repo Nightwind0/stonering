@@ -1,9 +1,9 @@
 #include "SteelException.h"
 
 SteelException::SteelException(eType type, 
-			       int line,
-			       std::string script,
-			       std::string message)
+                               int line,
+                               std::string script,
+                               std::string message)
     :m_eType(type),m_line(line),m_script(script),m_message(message)
 {
 }
