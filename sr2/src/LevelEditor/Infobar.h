@@ -14,7 +14,7 @@ class Infobar : CL_Component
 public:
 		Infobar( CL_Component *parent);
 
-		~Infobar();
+		virtual ~Infobar();
 
 		void setToolText(string txt){ tool_text->set_text(txt);}
 		void setToolPos(string x, string y)

@@ -18,8 +18,8 @@ class MapGrid : public CL_Component
 {
 public:
 		MapGrid( CL_Component *parent, CL_GraphicContext *mgGC, TileSelector *TS);
-
-		~MapGrid();
+		
+		virtual ~MapGrid();
 
 		void set_Level(EditableLevel *mpLevel);
 		void save_Level(string filename);

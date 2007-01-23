@@ -65,10 +65,7 @@ class EditorMain : public CL_ClanApplication, public StoneRing::IApplication
 {
 public:
 	EditorMain();
-	~EditorMain();
-
-	static EditorMain *instance;
-
+	virtual ~EditorMain();
 
 	// IApplication Interface
 	

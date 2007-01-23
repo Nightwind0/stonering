@@ -27,10 +27,10 @@ Infobar::Infobar( CL_Component *parent)
 
 Infobar::~Infobar()
 {
-delete text1;
-delete tool_text;
-delete text2;
-delete tool_pos;
+//delete text1;
+//delete tool_text;
+//delete text2;
+//delete tool_pos;
 }
 
 

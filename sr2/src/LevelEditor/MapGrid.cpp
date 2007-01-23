@@ -51,8 +51,8 @@ MapGrid::MapGrid(CL_Component *parent, CL_GraphicContext *mgGC, TileSelector *TS
 MapGrid::~MapGrid()
 {
 // do nothing
-	delete mgScrollVert;
-	delete mgScrollHorz;
+//	delete mgScrollVert;
+//	delete mgScrollHorz;
 }
 
 void MapGrid::on_window_resize(int,int)
@@ -80,8 +80,8 @@ void MapGrid::on_mouse_move(const CL_InputEvent &event)
     xStr << X;
     yStr << Y;
 
-    if(EditorMain::instance->getInfo())
-	EditorMain::instance->getInfo()->setToolPos( xStr.str(), yStr.str() );
+    if(dynamic_cast<EditorMain*>(EditorMain::getInstance())->getInfo())
+	dynamic_cast<EditorMain*>(EditorMain::getInstance())->getInfo()->setToolPos( xStr.str(), yStr.str() );
 }
 
 
