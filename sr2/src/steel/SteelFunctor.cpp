@@ -32,20 +32,20 @@ SteelType SteelUserFunction::Call(SteelInterpreter * pInterpreter,const std::vec
 
     if( m_pParams != NULL)
     {
-	if( params.size() != m_pParams->size() ) throw ParamMismatch();
+        if( params.size() != m_pParams->size() ) throw ParamMismatch();
     }
     else 
     {
-	if( params.size() != 0) throw ParamMismatch();
+        if( params.size() != 0) throw ParamMismatch();
     }
 
     if(m_pParams)
-	m_pParams->executeDeclarations(pInterpreter, params);
+        m_pParams->executeDeclarations(pInterpreter, params);
 
     if(m_pList)
     {
-	m_pList->execute(pInterpreter);
-	ret = pInterpreter->getReturn();
+        m_pList->execute(pInterpreter);
+        ret = pInterpreter->getReturn();
     }
 
     pInterpreter->popScope();

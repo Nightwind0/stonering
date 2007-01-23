@@ -21,16 +21,16 @@ SteelInterpreter::~SteelInterpreter()
     // they are already deleted when you delete the tree... therefore,
     // we don't want to delete them here.
     for(std::map<std::string,SteelFunctor*>::iterator i = m_functions.begin();
-	i != m_functions.end(); i++)
+        i != m_functions.end(); i++)
     {
-	delete i->second;
+        delete i->second;
     }
 	    
 }
 
 
 void SteelInterpreter::addFunction(const std::string &name,
-				   SteelFunctor *pFunc)
+                                   SteelFunctor *pFunc)
 {
     std::map<std::string,SteelFunctor*>::iterator it = m_functions.find ( name );
 
@@ -45,23 +45,23 @@ void SteelInterpreter::run(const std::string &name,const std::string &script)
     parser.setBuffer(script.c_str(),name);
     if(parser.Parse() != SteelParser::PRC_SUCCESS)
     {
-	AstBase * pAst = static_cast<AstBase*>( parser.GetAcceptedToken() );
+        AstBase * pAst = static_cast<AstBase*>( parser.GetAcceptedToken() );
 
-	if( pAst != NULL)
-	{
-	    throw SteelException(SteelException::PARSING,
-				 pAst->GetLine(),
-				 pAst->GetScript(),
-				 "Parse error.");
-	}
-	else
-	{
-	    // Apparently, there was nothing there. 
-	    // Which should be legal.
-	    // And theres nothing to delete. So. I think we're done here.
-	    return;
+        if( pAst != NULL)
+        {
+            throw SteelException(SteelException::PARSING,
+                                 pAst->GetLine(),
+                                 pAst->GetScript(),
+                                 "Parse error.");
+        }
+        else
+        {
+            // Apparently, there was nothing there. 
+            // Which should be legal.
+            // And theres nothing to delete. So. I think we're done here.
+            return;
 				 
-	}
+        }
 			     
     }
 
@@ -81,16 +81,16 @@ SteelType SteelInterpreter::call(const std::string &name, const std::vector<Stee
 
     if( it != m_functions.end() )
     {
-	// Its found, and its a bif.
-	SteelFunctor * pFunctor = it->second;
-	assert ( pFunctor != NULL );
+        // Its found, and its a bif.
+        SteelFunctor * pFunctor = it->second;
+        assert ( pFunctor != NULL );
 
-	return pFunctor->Call(this,pList);
+        return pFunctor->Call(this,pList);
     }
     else
     {
 
-	throw UnknownIdentifier();
+        throw UnknownIdentifier();
     }
 
     return SteelType();
@@ -115,7 +115,7 @@ void SteelInterpreter::declare(const std::string &name)
 
     if(it != file.end() )
     {
-	throw AlreadyDefined();
+        throw AlreadyDefined();
     }
 
     file[name] = SteelType();
@@ -132,7 +132,7 @@ void SteelInterpreter::declare_array(const std::string &array_name, int size)
 
     if(it != file.end() )
     {
-	throw AlreadyDefined();
+        throw AlreadyDefined();
     }
 
     SteelType var;
@@ -176,7 +176,7 @@ void SteelInterpreter::assign(SteelType *pVar, const SteelType &value)
     if(pVar == NULL) throw UnknownIdentifier();
 
     if(pVar->isArray() && (! value.isArray() ))
-	throw TypeMismatch();
+        throw TypeMismatch();
 
 
     *pVar = value;
@@ -184,8 +184,8 @@ void SteelInterpreter::assign(SteelType *pVar, const SteelType &value)
 
 
 void SteelInterpreter::registerFunction(const std::string &name, 
-					AstParamDefinitionList *pParams, 
-					AstStatementList *pStatements)
+                                        AstParamDefinitionList *pParams, 
+                                        AstStatementList *pStatements)
 {
     addFunction(name,new SteelUserFunction( pParams, pStatements ));
 }
@@ -193,14 +193,14 @@ void SteelInterpreter::registerFunction(const std::string &name,
 SteelType * SteelInterpreter::lookup_internal(const std::string &name)
 {
     for(std::list<VariableFile>::iterator i = m_symbols.begin();
-	i != m_symbols.end(); i++)
+        i != m_symbols.end(); i++)
     {
-	VariableFile::iterator it = (*i).find(name);
-	if( it != (*i).end()  )
-	{
-	    // Found a match.
-	    return &(it->second);
-	}
+        VariableFile::iterator it = (*i).find(name);
+        if( it != (*i).end()  )
+        {
+            // Found a match.
+            return &(it->second);
+        }
     }
 
     return NULL;
@@ -235,32 +235,32 @@ void SteelInterpreter::registerBifs()
 }
 
 /*
-SteelType SteelInterpreter::push(const SteelArrayRef &ref, const SteelType &value)
-{
-    SteelArray *pArray = lookup_internal(ref);
+  SteelType SteelInterpreter::push(const SteelArrayRef &ref, const SteelType &value)
+  {
+  SteelArray *pArray = lookup_internal(ref);
 
-    if(pArray == NULL) throw UnknownIdentifier();
+  if(pArray == NULL) throw UnknownIdentifier();
 
-    pArray->push_front ( value );
+  pArray->push_front ( value );
 
-    return pArray->front();
+  return pArray->front();
 					    
-}
+  }
 */
 
 /*
 
 SteelType SteelInterpreter::pop(const SteelArrayRef &ref)
 {
-    SteelArray *pArray = lookup_internal(ref);
+SteelArray *pArray = lookup_internal(ref);
 
 
-    if(pArray == NULL) throw UnknownIdentifier();
+if(pArray == NULL) throw UnknownIdentifier();
 
-    SteelType val = pArray->front();
-    pArray->pop_front();
+SteelType val = pArray->front();
+pArray->pop_front();
     
-    return val;
+return val;
 }
 */
 

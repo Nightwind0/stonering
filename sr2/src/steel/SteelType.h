@@ -9,11 +9,11 @@ class SteelType
 private:
     enum storage
     {
-	ARRAY,
-	BOOL,
-	INT,
-	DOUBLE,
-	STRING
+        ARRAY,
+        BOOL,
+        INT,
+        DOUBLE,
+        STRING
     };
 
 public:
@@ -78,11 +78,11 @@ private:
     
     union value
     {
-	bool b;
-	double d;
-	int i;
-	std::string *s;
-	std::vector<SteelType> *a;
+        bool b;
+        double d;
+        int i;
+        std::string *s;
+        std::vector<SteelType> *a;
     };
     value m_value;
     storage m_storage;

@@ -45,15 +45,15 @@ class SteelFunctorNoArgs : public SteelFunctor
 public:
     typedef SteelType (ObjType::*FuncPointer)();
     SteelFunctorNoArgs(ObjType *pObj, FuncPointer p):
-	m_pFunc(p),m_pObj(pObj){}
-	virtual ~SteelFunctorNoArgs(){}
-	virtual SteelType Call(SteelInterpreter*,const std::vector<SteelType> &params)
-    {
-	return (m_pObj->*m_pFunc)();
-    }
+        m_pFunc(p),m_pObj(pObj){}
+        virtual ~SteelFunctorNoArgs(){}
+        virtual SteelType Call(SteelInterpreter*,const std::vector<SteelType> &params)
+        {
+            return (m_pObj->*m_pFunc)();
+        }
 private:
-    FuncPointer m_pFunc;
-    ObjType *m_pObj;
+        FuncPointer m_pFunc;
+        ObjType *m_pObj;
 };
 
 template<class ObjType, class Arg1>
@@ -62,18 +62,18 @@ template<class ObjType, class Arg1>
 public:
     typedef SteelType (ObjType::*FuncPointer)(Arg1);
     SteelFunctor1Arg(ObjType *pObj, FuncPointer p)
-	:m_pFunc(p),m_pObj(pObj){}
-    virtual ~SteelFunctor1Arg(){}
-    virtual SteelType Call(SteelInterpreter*,const std::vector<SteelType> &params)
-    {
-	if(params.size() != 1) throw ParamMismatch();
-	return (m_pObj->*m_pFunc)(params[0]);
-    }
+        :m_pFunc(p),m_pObj(pObj){}
+        virtual ~SteelFunctor1Arg(){}
+        virtual SteelType Call(SteelInterpreter*,const std::vector<SteelType> &params)
+        {
+            if(params.size() != 1) throw ParamMismatch();
+            return (m_pObj->*m_pFunc)(params[0]);
+        }
 
        
 private:
-    FuncPointer m_pFunc;
-    ObjType *m_pObj;
+        FuncPointer m_pFunc;
+        ObjType *m_pObj;
 };
 
 template<class ObjType, class Arg1, class Arg2>
@@ -82,17 +82,17 @@ template<class ObjType, class Arg1, class Arg2>
 public:
     typedef SteelType (ObjType::*FuncPointer)(Arg1,Arg2);
     SteelFunctor2Arg(ObjType *pObj, FuncPointer p)
-	:m_pFunc(p),m_pObj(pObj){}
-	virtual ~SteelFunctor2Arg(){}
-	virtual SteelType Call(SteelInterpreter*,const std::vector<SteelType> &params)
-	{
-	    if(params.size() != 2) throw ParamMismatch();
-	    return (m_pObj->*m_pFunc)(params[0],params[1]);
-	}
+        :m_pFunc(p),m_pObj(pObj){}
+        virtual ~SteelFunctor2Arg(){}
+        virtual SteelType Call(SteelInterpreter*,const std::vector<SteelType> &params)
+        {
+            if(params.size() != 2) throw ParamMismatch();
+            return (m_pObj->*m_pFunc)(params[0],params[1]);
+        }
 
 private:
-    FuncPointer  m_pFunc;
-    ObjType * m_pObj;
+        FuncPointer  m_pFunc;
+        ObjType * m_pObj;
 };
 
 template<class ObjType, class Arg1, class Arg2, class Arg3>
@@ -101,18 +101,18 @@ template<class ObjType, class Arg1, class Arg2, class Arg3>
 public:
     typedef SteelType (ObjType::*FuncPointer)(Arg1,Arg2,Arg3);
     SteelFunctor3Arg(ObjType *pObj, FuncPointer p)
-	:m_pFunc(p),m_pObj(pObj){}
-	virtual ~SteelFunctor3Arg(){}
-	virtual SteelType Call(SteelInterpreter *,const std::vector<SteelType> &params)
-	{
-	    if(params.size() != 3) throw ParamMismatch();
-	    return (m_pObj->*m_pFunc)(params[0],
-				      params[1],
-				      params[2]);
-	}
+        :m_pFunc(p),m_pObj(pObj){}
+        virtual ~SteelFunctor3Arg(){}
+        virtual SteelType Call(SteelInterpreter *,const std::vector<SteelType> &params)
+        {
+            if(params.size() != 3) throw ParamMismatch();
+            return (m_pObj->*m_pFunc)(params[0],
+                                      params[1],
+                                      params[2]);
+        }
 private:
-	FuncPointer m_pFunc;
-	ObjType *m_pObj;
+        FuncPointer m_pFunc;
+        ObjType *m_pObj;
 };
 
 template<class ObjType, class Arg1, class Arg2, class Arg3, class Arg4>
@@ -121,19 +121,19 @@ template<class ObjType, class Arg1, class Arg2, class Arg3, class Arg4>
 public:
     typedef SteelType (ObjType::*FuncPointer)(Arg1,Arg2,Arg3,Arg4);
     SteelFunctor4Arg(ObjType *pObj, FuncPointer p):
-	m_pFunc(p),m_pObj(pObj){}
-	virtual ~SteelFunctor4Arg(){}
-	virtual SteelType Call(SteelInterpreter*,const std::vector<SteelType> &params)
-	{
-	    if(params.size() != 4) throw ParamMismatch();
-	    return (m_pObj->*m_pFunc)(params[0],
-				      params[1],
-				      params[2],
-				      params[3]);
-	}
+        m_pFunc(p),m_pObj(pObj){}
+        virtual ~SteelFunctor4Arg(){}
+        virtual SteelType Call(SteelInterpreter*,const std::vector<SteelType> &params)
+        {
+            if(params.size() != 4) throw ParamMismatch();
+            return (m_pObj->*m_pFunc)(params[0],
+                                      params[1],
+                                      params[2],
+                                      params[3]);
+        }
 private:
-	FuncPointer m_pFunc;
-	ObjType *m_pObj;
+        FuncPointer m_pFunc;
+        ObjType *m_pObj;
 };
 
 /*
@@ -142,9 +142,9 @@ template <class Class>
 class Thunk
 {
 public:
-    typedef SteelType (Class::*MemberFunction)() ;
-    Thunk(const vector<SteelType> *pParams,Class *pObject, SteelFunctor f);
-    virtual ~Thunk();
+typedef SteelType (Class::*MemberFunction)() ;
+Thunk(const vector<SteelType> *pParams,Class *pObject, SteelFunctor f);
+virtual ~Thunk();
 
 private:
 };
