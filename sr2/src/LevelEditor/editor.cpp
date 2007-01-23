@@ -24,6 +24,7 @@ EditorMain::~EditorMain()
 	delete mTiles;
 	delete mMap;
 	delete mInfo;
+	
 }
 
 
@@ -56,12 +57,12 @@ LevelFactory * EditorMain::getLevelFactory() const
 		
 int EditorMain::getScreenWidth()const
 {
-	return 1024;
+	return 1280;
 }
 
 int EditorMain::getScreenHeight()const
 {
-	return 768;
+	return 800;
 }
 
 
@@ -226,6 +227,8 @@ int EditorMain::main(int argc, char **argv)
 			mInfo = new Infobar( gui.get_client_area());
 
 			mSlots.connect(gui.sig_resize(),mInfo, &Infobar::on_window_resize);
+
+			delete tsResources;
 #if 0
 //			cout<< "creating tileselector" << endl;
 	

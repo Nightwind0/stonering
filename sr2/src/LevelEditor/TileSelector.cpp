@@ -14,6 +14,8 @@ TileSelector::TileSelector( CL_Component *parent, CL_ResourceManager* tsResource
 	CL_Component * pWindow = get_parent();
 	CL_Component * pClient = pWindow;
 
+	cur_tileset = NULL;
+
 	set_parent(pClient);
 	//set_position(0,0);
 	set_size(get_parent()->get_width() - 20,get_parent()->get_height() - 20);
@@ -64,8 +66,9 @@ TileSelector::~TileSelector()
 {
 // does nothing
 
-	delete scrollVert;
-	delete scrollHorz;
+//	delete scrollVert;
+//	delete scrollHorz;
+	delete cur_tileset;
 }
 
 void TileSelector::on_window_resize(int,int)
@@ -111,12 +114,13 @@ void TileSelector::changeTS(string text)
 
 	tsMapName = text;
 
+	delete cur_tileset;
 	cur_tileset = new CL_Surface(tsMapName , tsResources);
 		
 	scrollVert->set_max_value((cur_tileset->get_height()/32)-11);
 	scrollHorz->set_max_value((cur_tileset->get_width()/32)-5);
 
-
+	
 }
 
 void TileSelector::draw()
