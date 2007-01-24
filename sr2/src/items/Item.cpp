@@ -75,26 +75,26 @@ Item::~Item()
 
 
 /*
-AC,
-POISON,
-STONE,
-DEATH,
-CONFUSE,
-BERSERK,
-SLOW,
-WEAK,
-BREAK, 
-SILENCE,
-SLEEP,
-BLIND,
-STEAL_MP,
-STEAL_HP,
-DROPSTR,
-DROPDEX,
-DROPMAG,
-ELEMENTAL_RESIST,
-RESIST, // All magic
-STATUS // Resistance against ANY status affect
+  AC,
+  POISON,
+  STONE,
+  DEATH,
+  CONFUSE,
+  BERSERK,
+  SLOW,
+  WEAK,
+  BREAK, 
+  SILENCE,
+  SLEEP,
+  BLIND,
+  STEAL_MP,
+  STEAL_HP,
+  DROPSTR,
+  DROPDEX,
+  DROPMAG,
+  ELEMENTAL_RESIST,
+  RESIST, // All magic
+  STATUS // Resistance against ANY status affect
 */
 
 

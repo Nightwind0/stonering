@@ -109,12 +109,12 @@ uint GeneratedArmor::getValue() const
 			value *= 2; //@todo : get value from game settings
 			break;
 		case RuneType::ULTRA_RUNE:
-			{
-				double dValue = value;
-				dValue *= 2.75; //@todo: get value from game settings
-				value = (int)dValue;
-				break;
-			}
+        {
+            double dValue = value;
+            dValue *= 2.75; //@todo: get value from game settings
+            value = (int)dValue;
+            break;
+        }
 		}
 	}
 
@@ -140,7 +140,7 @@ ArmorRef GeneratedArmor::generateArmorRef() const
 }
 
 void GeneratedArmor::generate( ArmorType * pType, ArmorClass * pClass, 
-							  SpellRef *pSpell , RuneType *pRune)
+                               SpellRef *pSpell , RuneType *pRune)
 {
 
 	for(std::list<AttributeEnhancer*>::const_iterator iter = pClass->getAttributeEnhancersBegin();

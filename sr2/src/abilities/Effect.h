@@ -6,12 +6,12 @@ namespace StoneRing {
     class Effect
     {
     public:
-	Effect();
-	virtual ~Effect();
+        Effect();
+        virtual ~Effect();
 
-	enum eType { WEAPON_DAMAGE, MAGIC_DAMAGE, STATUS_EFFECT, ANIMATION, ATTRIBUTE_EFFECT , ATTACK};
+        enum eType { WEAPON_DAMAGE, MAGIC_DAMAGE, STATUS_EFFECT, ANIMATION, ATTRIBUTE_EFFECT , ATTACK};
 
-	virtual eType getEffectType() const = 0;
+        virtual eType getEffectType() const = 0;
     private:
     };
 

@@ -4,26 +4,26 @@
 #include "NamedItem.h"
 
 namespace StoneRing{  
-	class SystemItem : public NamedItem
-	{
-	public:
-	    SystemItem();
-	    virtual ~SystemItem();
-		virtual eElement whichElement() const{ return ESYSTEMITEM; }	        
-	    virtual uint getValue() const { return 0;} // No value to system items. cant sell 'em.
-	    virtual uint getSellValue() const { return 0; }
+    class SystemItem : public NamedItem
+    {
+    public:
+        SystemItem();
+        virtual ~SystemItem();
+        virtual eElement whichElement() const{ return ESYSTEMITEM; }            
+        virtual uint getValue() const { return 0;} // No value to system items. cant sell 'em.
+        virtual uint getSellValue() const { return 0; }
 
         
-	    // We're overriding whatever was specified in the XML. Never drop a system item, ever.
-	    virtual eDropRarity getDropRarity() const { return NEVER; } 
+        // We're overriding whatever was specified in the XML. Never drop a system item, ever.
+        virtual eDropRarity getDropRarity() const { return NEVER; } 
 
-	    virtual eItemType getItemType() const { return SYSTEM ; }
+        virtual eItemType getItemType() const { return SYSTEM ; }
 
-	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
+        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
-	private:
+    private:
 
-	};
+    };
 };
 
 #endif

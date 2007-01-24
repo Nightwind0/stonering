@@ -3,30 +3,30 @@
 #include "NamedItem.h"
 
 namespace StoneRing{    
-	class Rune : public NamedItem
-	{
-	public:
-	    Rune();
-	    virtual ~Rune();
+    class Rune : public NamedItem
+    {
+    public:
+        Rune();
+        virtual ~Rune();
 
-		virtual eElement whichElement() const{ return ERUNE; }	
-	    virtual uint getValue() const ;
-	    virtual uint getSellValue() const ;
+        virtual eElement whichElement() const{ return ERUNE; }  
+        virtual uint getValue() const ;
+        virtual uint getSellValue() const ;
 
-	    // We're overriding whatever was specified in the XML. Never drop a rune unless specified by the monster
-	    virtual eDropRarity getDropRarity() const { return NEVER; } 
-	    virtual eItemType getItemType() const { return RUNE ; }
+        // We're overriding whatever was specified in the XML. Never drop a rune unless specified by the monster
+        virtual eDropRarity getDropRarity() const { return NEVER; } 
+        virtual eItemType getItemType() const { return RUNE ; }
 
-	    SpellRef * getSpellRef() const;
+        SpellRef * getSpellRef() const;
 
-	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
+        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
-	private:
-	    virtual bool handleElement(eElement element, Element * pElement );
-	    virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
-		virtual void loadFinished();
-	    SpellRef *mpSpellRef;
-	};
+    private:
+        virtual bool handleElement(eElement element, Element * pElement );
+        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
+        virtual void loadFinished();
+        SpellRef *mpSpellRef;
+    };
 };
 
 #endif

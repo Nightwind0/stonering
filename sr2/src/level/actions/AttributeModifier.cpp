@@ -71,11 +71,11 @@ bool AttributeModifier::handleElement(eElement element, Element *pElement)
 	switch(element)
 	{
 	case ECONDITION:
-		{
-			Condition * pCondition = dynamic_cast<Condition*>(pElement);
-			mConditions.push_back ( pCondition );
-			break;
-		}
+    {
+        Condition * pCondition = dynamic_cast<Condition*>(pElement);
+        mConditions.push_back ( pCondition );
+        break;
+    }
 	default:
 		return false;
 	}
@@ -143,8 +143,8 @@ AttributeModifier::~AttributeModifier()
 bool AttributeModifier::applicable() const
 {
 	for( std::list<Condition*>::const_iterator i = mConditions.begin();
-		i != mConditions.end();
-		i++)
+         i != mConditions.end();
+         i++)
 	{
 		Condition * condition = *i;
 		if( ! condition->evaluate() ) return false;
@@ -188,7 +188,7 @@ bool AttributeModifier::applicable() const
 		if(mAdd > 0 )
 		{
 			if ( pCharacter->getAttribute(static_cast<eCharacterAttribute>(mnAttribute)) 
-				< pCharacter->getMaxAttribute(static_cast<eCharacterAttribute>(mnAttribute)))
+                 < pCharacter->getMaxAttribute(static_cast<eCharacterAttribute>(mnAttribute)))
 			{
 				return true;
 			}
@@ -197,7 +197,7 @@ bool AttributeModifier::applicable() const
 		else // counts 0, but... that does nothing anyway
 		{
 			if ( pCharacter->getAttribute(static_cast<eCharacterAttribute>(mnAttribute))
-				> pCharacter->getMinAttribute(static_cast<eCharacterAttribute>(mnAttribute)))
+                 > pCharacter->getMinAttribute(static_cast<eCharacterAttribute>(mnAttribute)))
 			{
 				return true;
 			}
@@ -213,8 +213,8 @@ bool AttributeModifier::applicable() const
 void AttributeModifier::invoke()
 {
 	for( std::list<Condition*>::iterator i = mConditions.begin();
-		i != mConditions.end();
-		i++)
+         i != mConditions.end();
+         i++)
 	{
 		Condition * condition = *i;
 		if( ! condition->evaluate() ) return;
@@ -248,7 +248,7 @@ void AttributeModifier::invoke()
 		break;
 	case TO_MIN:
 		add = 0 - (pCharacter->getAttribute(static_cast<eCharacterAttribute>(mnAttribute)) -
-			pCharacter->getMinAttribute(static_cast<eCharacterAttribute>(mnAttribute)));
+                   pCharacter->getMinAttribute(static_cast<eCharacterAttribute>(mnAttribute)));
 		break;
 	case ADD:
 		add = mAdd;

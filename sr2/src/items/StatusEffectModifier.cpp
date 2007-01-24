@@ -12,13 +12,13 @@ StatusEffectModifier::StatusEffectModifier():mpStatusEffect(NULL)
 void StatusEffectModifier::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
 
-	std::string statusRef = getRequiredString("statusRef", pAttributes);
+    std::string statusRef = getRequiredString("statusRef", pAttributes);
 
-	const AbilityManager * pManager = IApplication::getInstance()->getAbilityManager();
+    const AbilityManager * pManager = IApplication::getInstance()->getAbilityManager();
 
-	mpStatusEffect = pManager->getStatusEffect( statusRef );
+    mpStatusEffect = pManager->getStatusEffect( statusRef );
 
-	mfModifier = getRequiredFloat("modifier", pAttributes );
+    mfModifier = getRequiredFloat("modifier", pAttributes );
 }
 
 StatusEffectModifier::~StatusEffectModifier()
@@ -28,19 +28,19 @@ StatusEffectModifier::~StatusEffectModifier()
 
 StatusEffect * StatusEffectModifier::getStatusEffect() const
 {
-	return mpStatusEffect;
+    return mpStatusEffect;
 }
 
 float StatusEffectModifier::getModifier() const
 {
-	return mfModifier;
+    return mfModifier;
 }
 
 
 
 CL_DomElement StatusEffectModifier::createDomElement(CL_DomDocument &doc) const
 {
-	return CL_DomElement(doc,"statusEffectModifier");
+    return CL_DomElement(doc,"statusEffectModifier");
 }
 
 

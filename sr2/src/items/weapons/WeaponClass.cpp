@@ -29,14 +29,14 @@ bool WeaponClass::handleElement(eElement element, Element * pElement)
 		mWeaponEnhancers.push_back( dynamic_cast<WeaponEnhancer*>(pElement) );
 		break;
 	case EWEAPONTYPEEXCLUSIONLIST:
-		{
-			WeaponTypeExclusionList * pList = dynamic_cast<WeaponTypeExclusionList*>(pElement);
-			std::copy(pList->getWeaponTypeRefsBegin(),pList->getWeaponTypeRefsEnd(), 
-				std::back_inserter(mExcludedTypes));
+    {
+        WeaponTypeExclusionList * pList = dynamic_cast<WeaponTypeExclusionList*>(pElement);
+        std::copy(pList->getWeaponTypeRefsBegin(),pList->getWeaponTypeRefsEnd(), 
+                  std::back_inserter(mExcludedTypes));
 
-			delete pList;
-			break;
-		}
+        delete pList;
+        break;
+    }
 	case ESTATUSEFFECTMODIFIER:
 		addStatusEffectModifier (dynamic_cast<StatusEffectModifier*>(pElement));
 		break;

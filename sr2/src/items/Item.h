@@ -33,31 +33,31 @@ namespace StoneRing{
     class StatusEffectModifier;
 
     class Item
-	{
-	public:
-	    Item();
-	    virtual ~Item();
-	    enum eItemType { REGULAR_ITEM, WEAPON, ARMOR, RUNE, SPECIAL, SYSTEM };
-	    enum eDropRarity { NEVER, COMMON, UNCOMMON, RARE };
+    {
+    public:
+        Item();
+        virtual ~Item();
+        enum eItemType { REGULAR_ITEM, WEAPON, ARMOR, RUNE, SPECIAL, SYSTEM };
+        enum eDropRarity { NEVER, COMMON, UNCOMMON, RARE };
         
-	    virtual std::string getName() const = 0;
-	    virtual eItemType getItemType() const = 0;
-	    virtual uint getMaxInventory() const = 0;
-	    virtual eDropRarity getDropRarity() const = 0;
+        virtual std::string getName() const = 0;
+        virtual eItemType getItemType() const = 0;
+        virtual uint getMaxInventory() const = 0;
+        virtual eDropRarity getDropRarity() const = 0;
 
-	    virtual std::string getIconRef() const = 0;
+        virtual std::string getIconRef() const = 0;
 
-	    // These next two do not apply to special or system items.
-	    virtual uint getValue() const = 0; // Price to buy, and worth when calculating drops.
-	    virtual uint getSellValue() const = 0;
-	    static std::string ItemTypeAsString ( Item::eItemType type );
-	    static eDropRarity DropRarityFromString(const std::string &str);
+        // These next two do not apply to special or system items.
+        virtual uint getValue() const = 0; // Price to buy, and worth when calculating drops.
+        virtual uint getSellValue() const = 0;
+        static std::string ItemTypeAsString ( Item::eItemType type );
+        static eDropRarity DropRarityFromString(const std::string &str);
 
-	    virtual bool operator== ( const ItemRef &ref )=0;
+        virtual bool operator== ( const ItemRef &ref )=0;
         
-	private:
+    private:
 
-	};
+    };
 
     bool   operator < ( const Item &lhs, const Item &rhs );
     

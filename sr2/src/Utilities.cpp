@@ -13,11 +13,11 @@ std::string IntToString(const int &i)
 
 std::string FloatToString(const float &f)
 {
-	std::ostringstream os;
+    std::ostringstream os;
 
-	os << f;
+    os << f;
 
-	return os.str();
+    return os.str();
 }
 
 

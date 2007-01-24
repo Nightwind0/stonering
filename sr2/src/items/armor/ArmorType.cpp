@@ -11,39 +11,39 @@ ArmorType::ArmorType()
 
 bool ArmorType::operator==(const ArmorType &lhs )
 {
-	return mName == lhs.mName;
+    return mName == lhs.mName;
 }
 
 void ArmorType::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-	mName = getRequiredString("name",pAttributes);
-	mnBasePrice = getRequiredInt("basePrice",pAttributes);
-	mnBaseAC = getRequiredInt("baseArmorClass",pAttributes);
-	mnBaseRST = getRequiredInt("baseResist",pAttributes);
+    mName = getRequiredString("name",pAttributes);
+    mnBasePrice = getRequiredInt("basePrice",pAttributes);
+    mnBaseAC = getRequiredInt("baseArmorClass",pAttributes);
+    mnBaseRST = getRequiredInt("baseResist",pAttributes);
 
-	std::string slot = getRequiredString("slot",pAttributes);
+    std::string slot = getRequiredString("slot",pAttributes);
 
-	if(slot == "head")
-		meSlot = HEAD;
-	else if (slot == "shield")
-		meSlot = SHIELD;
-	else if (slot == "body")
-		meSlot = BODY;
-	else if (slot == "feet")
-		meSlot = FEET;
-	else if (slot == "hands")
-		meSlot = HANDS;
+    if(slot == "head")
+        meSlot = HEAD;
+    else if (slot == "shield")
+        meSlot = SHIELD;
+    else if (slot == "body")
+        meSlot = BODY;
+    else if (slot == "feet")
+        meSlot = FEET;
+    else if (slot == "hands")
+        meSlot = HANDS;
 
 }
 
 bool ArmorType::handleElement(eElement element, Element * pElement)
 {
-	if(element == EICONREF)
-	{
-		//@todo
-		return true;
-	}
-	else return false;
+    if(element == EICONREF)
+    {
+        //@todo
+        return true;
+    }
+    else return false;
 }
 
 ArmorType::~ArmorType()
@@ -54,40 +54,40 @@ ArmorType::~ArmorType()
 CL_DomElement 
 ArmorType::createDomElement ( CL_DomDocument &doc) const
 {
-	return CL_DomElement(doc,"armorType");
+    return CL_DomElement(doc,"armorType");
 }
 
 
 std::string 
 ArmorType::getName() const
 {
-	return mName;
+    return mName;
 }
 
 std::string ArmorType::getIconRef() const
 {
-	return mIconRef;
+    return mIconRef;
 }
 
 uint ArmorType::getBasePrice() const
 {
-	return mnBasePrice;
+    return mnBasePrice;
 }
 
 int ArmorType::getBaseAC() const
 {
-	return mnBaseAC;
+    return mnBaseAC;
 }
 
 int ArmorType::getBaseRST() const
 {
-	return mnBaseRST;
+    return mnBaseRST;
 }
 
 
 ArmorType::eSlot ArmorType::getSlot() const
 {
-	return meSlot;
+    return meSlot;
 }
 
 

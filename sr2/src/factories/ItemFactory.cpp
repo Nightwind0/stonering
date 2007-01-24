@@ -38,7 +38,7 @@ ItemFactory::~ItemFactory(){}
 
 Element * ItemFactory::createIconRef() const
 {
-	return new IconRef();
+    return new IconRef();
 }
 
 
@@ -55,11 +55,11 @@ Element * ItemFactory::createRegularItem()const
 
 Element * ItemFactory::createWeaponTypeExclusionList() const
 {
-	return new WeaponTypeExclusionList;
+    return new WeaponTypeExclusionList;
 }
 Element * ItemFactory::createArmorTypeExclusionList() const
 {
-	return new ArmorTypeExclusionList;
+    return new ArmorTypeExclusionList;
 }
 
 Element * ItemFactory::createSpecialItem()const
@@ -201,7 +201,7 @@ bool ItemFactory::canCreate( Element::eElement element )
 
     if(method == NULL) return false;
     else return true;
-		
+        
 }
 
 Element * ItemFactory::createElement( Element::eElement element )
@@ -222,63 +222,63 @@ ItemFactory::getMethod(Element::eElement element) const
     switch(element)
     {
     case Element::EREGULARITEM:
-	return &ItemFactory::createRegularItem;
+        return &ItemFactory::createRegularItem;
     case Element::ESPECIALITEM:
-	return &ItemFactory::createSpecialItem;
+        return &ItemFactory::createSpecialItem;
     case Element::ESYSTEMITEM:
-	return &ItemFactory::createSystemItem;
+        return &ItemFactory::createSystemItem;
     case Element::ERUNE:
-	return &ItemFactory::createRune;
+        return &ItemFactory::createRune;
     case Element::EUNIQUEWEAPON:
-	return &ItemFactory::createUniqueWeapon;
+        return &ItemFactory::createUniqueWeapon;
     case Element::EUNIQUEARMOR:
-	return &ItemFactory::createUniqueArmor;
+        return &ItemFactory::createUniqueArmor;
     case Element::EWEAPONTYPEREF:
-	return &ItemFactory::createWeaponTypeRef;
+        return &ItemFactory::createWeaponTypeRef;
     case Element::EWEAPONCLASSREF:
-	return &ItemFactory::createWeaponClassRef;
+        return &ItemFactory::createWeaponClassRef;
     case Element::EARMORTYPEREF:
-	return &ItemFactory::createArmorTypeRef;
+        return &ItemFactory::createArmorTypeRef;
     case Element::EARMORCLASSREF:
-	return &ItemFactory::createArmorClassRef;
+        return &ItemFactory::createArmorClassRef;
     case Element::EWEAPONREF:
-	return &ItemFactory::createWeaponRef;
+        return &ItemFactory::createWeaponRef;
     case Element::EARMORREF:
-	return &ItemFactory::createArmorRef;
+        return &ItemFactory::createArmorRef;
     case Element::ERUNETYPE:
-	return &ItemFactory::createRuneType;
+        return &ItemFactory::createRuneType;
     case Element::ESPELLREF:
-	return &ItemFactory::createSpellRef;
+        return &ItemFactory::createSpellRef;
     case Element::EWEAPONENHANCER:
-	return &ItemFactory::createWeaponEnhancer;
+        return &ItemFactory::createWeaponEnhancer;
     case Element::EARMORENHANCER:
-	return &ItemFactory::createArmorEnhancer;
+        return &ItemFactory::createArmorEnhancer;
     case Element::EATTRIBUTEENHANCER:
-	return &ItemFactory::createAttributeEnhancer;
+        return &ItemFactory::createAttributeEnhancer;
     case Element::EWEAPONCLASS:
-	return &ItemFactory::createWeaponClass;
+        return &ItemFactory::createWeaponClass;
     case Element::EWEAPONTYPE:
-	return &ItemFactory::createWeaponType;
+        return &ItemFactory::createWeaponType;
     case Element::EARMORCLASS:
-	return &ItemFactory::createArmorClass;
+        return &ItemFactory::createArmorClass;
     case Element::EARMORTYPE:
-	return &ItemFactory::createArmorType;
+        return &ItemFactory::createArmorType;
     case Element::ENAMEDITEMELEMENT:
-	return &ItemFactory::createNamedItemElement;
+        return &ItemFactory::createNamedItemElement;
     case Element::EWEAPONDAMAGECATEGORY:
-	return &ItemFactory::createWeaponDamageCategory;
+        return &ItemFactory::createWeaponDamageCategory;
     case Element::EMAGICDAMAGECATEGORY:
-	return &ItemFactory::createMagicDamageCategory;
+        return &ItemFactory::createMagicDamageCategory;
     case Element::ESTATUSEFFECTMODIFIER:
-	return &ItemFactory::createStatusEffectModifier;
-	case Element::EWEAPONTYPEEXCLUSIONLIST:
-		return &ItemFactory::createWeaponTypeExclusionList;
-	case Element::EARMORTYPEEXCLUSIONLIST:
-		return &ItemFactory::createArmorTypeExclusionList;
-	case Element::EICONREF:
-		return &ItemFactory::createIconRef;
+        return &ItemFactory::createStatusEffectModifier;
+    case Element::EWEAPONTYPEEXCLUSIONLIST:
+        return &ItemFactory::createWeaponTypeExclusionList;
+    case Element::EARMORTYPEEXCLUSIONLIST:
+        return &ItemFactory::createArmorTypeExclusionList;
+    case Element::EICONREF:
+        return &ItemFactory::createIconRef;
     default:
-	return NULL;
+        return NULL;
     }
 }
 

@@ -48,7 +48,7 @@ CL_DomElement  HasGold::createDomElement(CL_DomDocument &doc) const
 
 bool HasGold::handleElement(eElement element, Element * pElement)
 {
-	return false;
+    return false;
 }
 
 void HasGold::loadAttributes(CL_DomNamedNodeMap * pAttributes)

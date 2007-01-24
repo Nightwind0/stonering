@@ -35,14 +35,14 @@ bool ArmorClass::handleElement(eElement element, Element * pElement)
 		mArmorEnhancers.push_back( dynamic_cast<ArmorEnhancer*>(pElement) );
 		break;
 	case EARMORTYPEEXCLUSIONLIST:
-		{
-			ArmorTypeExclusionList * pList = dynamic_cast<ArmorTypeExclusionList*>(pElement);
-			std::copy(pList->getArmorTypeRefsBegin(),pList->getArmorTypeRefsEnd(), 
-				std::back_inserter(mExcludedTypes));
+    {
+        ArmorTypeExclusionList * pList = dynamic_cast<ArmorTypeExclusionList*>(pElement);
+        std::copy(pList->getArmorTypeRefsBegin(),pList->getArmorTypeRefsEnd(), 
+                  std::back_inserter(mExcludedTypes));
 
-			delete pList;
-			break;
-		}
+        delete pList;
+        break;
+    }
 	case ESTATUSEFFECTMODIFIER:
 		addStatusEffectModifier (dynamic_cast<StatusEffectModifier*>(pElement));
 		break;

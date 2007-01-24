@@ -11,11 +11,11 @@ using namespace StoneRing;
 
 const char * const gFontName[GraphicsManager::__LAST_FONT__] =
 {
-"SpeakerText", // FONT_SPEAKER
-"SayText", // FONT_SAY_TEXT
-"Choice", // FONT_CHOICE
-"Option",
-"CurrentOption"
+    "SpeakerText", // FONT_SPEAKER
+    "SayText", // FONT_SAY_TEXT
+    "Choice", // FONT_CHOICE
+    "Option",
+    "CurrentOption"
 };
 
 GraphicsManager * GraphicsManager::mInstance;
@@ -40,13 +40,13 @@ CL_Sprite * GraphicsManager::createSprite ( const std::string & name )
 std::string GraphicsManager::lookUpMapWithSurface (CL_Surface * surface)
 {
     for( std::map<std::string,CL_Surface*>::iterator i = mTileMap.begin();
-	 i != mTileMap.end();
-	 i++)
+         i != mTileMap.end();
+         i++)
     {
-	if ( i->second == surface)
-	{
-	    return i->first;
-	}
+        if ( i->second == surface)
+        {
+            return i->first;
+        }
     }
 
     throw CL_Error ( "BAD! TILEMAP NOT FOUND IN lookupMapWithSurface" );

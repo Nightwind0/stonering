@@ -11,79 +11,79 @@
 
 namespace StoneRing
 {
-	class AttributeModifier;
+    class AttributeModifier;
 
-	class StatIncrease;
-	class StartingStat;
-	class ArmorTypeRef;
-	class WeaponTypeRef;
-	class SkillRef;
-	class SpellRef;
+    class StatIncrease;
+    class StartingStat;
+    class ArmorTypeRef;
+    class WeaponTypeRef;
+    class SkillRef;
+    class SpellRef;
 
-	class Skill : public Element
-	{
-	public:
-		Skill();
-		~Skill();
+    class Skill : public Element
+    {
+    public:
+        Skill();
+        ~Skill();
 
-		enum eType { BATTLE, SWITCH };
+        enum eType { BATTLE, SWITCH };
 
-		virtual eElement whichElement() const{ return ESKILL; }
+        virtual eElement whichElement() const{ return ESKILL; }
 
-		std::list<Effect*>::const_iterator getEffectsBegin() const;
-		std::list<Effect*>::const_iterator getEffectsEnd() const;
+        std::list<Effect*>::const_iterator getEffectsBegin() const;
+        std::list<Effect*>::const_iterator getEffectsEnd() const;
 
-		std::list<AttributeModifier*>::const_iterator getAttributeModifiersBegin() const;
-		std::list<AttributeModifier*>::const_iterator getAttributeModifiersEnd() const;
+        std::list<AttributeModifier*>::const_iterator getAttributeModifiersBegin() const;
+        std::list<AttributeModifier*>::const_iterator getAttributeModifiersEnd() const;
 
-		std::string getName() const;
-		uint getSPCost() const;
-		uint getBPCost() const;
-		uint getMinLevel() const;
-		
-		std::list<SkillRef*>::const_iterator getPreReqsBegin() const;
-		std::list<SkillRef*>::const_iterator getPreReqsEnd() const;
+        std::string getName() const;
+        uint getSPCost() const;
+        uint getBPCost() const;
+        uint getMinLevel() const;
+        
+        std::list<SkillRef*>::const_iterator getPreReqsBegin() const;
+        std::list<SkillRef*>::const_iterator getPreReqsEnd() const;
 
-		SpellRef * getSpellRef() const;
+        SpellRef * getSpellRef() const;
 
-		CL_DomElement createDomElement ( CL_DomDocument &doc ) const;
+        CL_DomElement createDomElement ( CL_DomDocument &doc ) const;
 
-		eType getType() const { return meType; }
-	private:
-		virtual bool handleElement(eElement element, Element * pElement );
-		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-		std::string mName;
-		std::list<Effect*> mEffects;
-		std::list<AttributeModifier*> mAttributeModifiers;
-		std::list<SkillRef*> mPreReqs;
-		SpellRef * mpSpellRef;
-		uint mnSp;
-		uint mnBp;
-		uint mnMinLevel;
-		eType meType;
-	};
+        eType getType() const { return meType; }
+    private:
+        virtual bool handleElement(eElement element, Element * pElement );
+        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+        std::string mName;
+        std::list<Effect*> mEffects;
+        std::list<AttributeModifier*> mAttributeModifiers;
+        std::list<SkillRef*> mPreReqs;
+        SpellRef * mpSpellRef;
+        uint mnSp;
+        uint mnBp;
+        uint mnMinLevel;
+        eType meType;
+    };
 
-	class SkillRef: public Element
-	{
-	public:
-		SkillRef();
-		~SkillRef();
-		virtual eElement whichElement() const{ return ESKILLREF; }
-		std::string getRef() const;
-		uint getSPCost() const;
-		uint getBPCost() const;
-		uint getMinLevel() const;
+    class SkillRef: public Element
+    {
+    public:
+        SkillRef();
+        ~SkillRef();
+        virtual eElement whichElement() const{ return ESKILLREF; }
+        std::string getRef() const;
+        uint getSPCost() const;
+        uint getBPCost() const;
+        uint getMinLevel() const;
 
-		CL_DomElement createDomElement ( CL_DomDocument &doc )const;
-	private:
-		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-		uint mnSp;
-		uint mnBp;
-		uint mnMinLevel;
-		std::string mRef;
-	};
+        CL_DomElement createDomElement ( CL_DomDocument &doc )const;
+    private:
+        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+        uint mnSp;
+        uint mnBp;
+        uint mnMinLevel;
+        std::string mRef;
+    };
 
-	
+    
 }
 
 #endif

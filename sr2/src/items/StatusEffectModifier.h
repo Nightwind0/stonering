@@ -5,7 +5,7 @@
 #include "StatusEffect.h"
 
 namespace StoneRing{
-  class StatusEffectModifier : public Element
+    class StatusEffectModifier : public Element
 	{
 	public:
 	    StatusEffectModifier();

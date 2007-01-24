@@ -33,10 +33,10 @@ bool Condition::handleElement(eElement element, Element * pElement)
     case EDIDEVENT:
         mChecks.push_back(dynamic_cast<Check*>(pElement));
         break;
-	default:
-		return false;
+    default:
+        return false;
     }
-	return true;
+    return true;
 }
  
 

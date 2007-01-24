@@ -284,8 +284,8 @@ void StoneRing::MapState::recalculatePlayerPosition()
 void StoneRing::MapState::moveMappableObjects()
 {
     mpLevel->moveMappableObjects(CL_Rect(mLevelX, mLevelY, 
-					 mLevelX + mScreenRect.get_width(),
-					 mLevelY + mScreenRect.get_height()));
+                                         mLevelX + mScreenRect.get_width(),
+                                         mLevelY + mScreenRect.get_height()));
 
 }
 

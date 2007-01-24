@@ -28,7 +28,7 @@ namespace StoneRing{
 	    virtual bool operator== ( const ItemRef &ref );
 
 	    void generate( ArmorType * pType, ArmorClass * pClass, 
-			   SpellRef *pSpell = NULL, RuneType *pRune = NULL);
+                       SpellRef *pSpell = NULL, RuneType *pRune = NULL);
         
 	private:
 	    std::string mName;

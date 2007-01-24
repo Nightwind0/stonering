@@ -8,7 +8,7 @@ WeaponClassRef::WeaponClassRef()
 
 void WeaponClassRef::handleText(const std::string &text)
 {
-	mName = text;
+    mName = text;
 }
 
 WeaponClassRef::~WeaponClassRef()
@@ -17,27 +17,27 @@ WeaponClassRef::~WeaponClassRef()
 
 bool WeaponClassRef::operator==(const WeaponClassRef &lhs)
 {
-	if(mName == lhs.mName) return true;
-	else return false;
+    if(mName == lhs.mName) return true;
+    else return false;
 }
 
 CL_DomElement  WeaponClassRef::createDomElement(CL_DomDocument &doc) const
 {
-	CL_DomElement element(doc,"weaponClassRef");
+    CL_DomElement element(doc,"weaponClassRef");
 
-	CL_DomText text(doc, mName );
+    CL_DomText text(doc, mName );
 
-	text.set_node_value ( mName );
+    text.set_node_value ( mName );
 
-	element.append_child ( text );
+    element.append_child ( text );
 
-	return element;
+    return element;
 }
 
 
 std::string WeaponClassRef::getName() const
 {
-	return mName;
+    return mName;
 }
 
 

@@ -349,9 +349,9 @@ void Level::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC,
                 {
 					CL_Rect tileSrc(0,0,32,32);            
 					CL_Rect tileDst ( exDst.left  + (tileX << 5),
-						exDst.top + (tileY << 5),
-						exDst.left + (tileX << 5) + 32,
-						exDst.top + (tileY << 5) + 32);
+                                      exDst.top + (tileY << 5),
+                                      exDst.left + (tileX << 5) + 32,
+                                      exDst.top + (tileY << 5) + 32);
 
 			               
 					std::list<Tile*>::iterator end = mTileMap[p.x][p.y].end();

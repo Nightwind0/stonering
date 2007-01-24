@@ -80,26 +80,26 @@ void Weapon::addWeaponEnhancer (WeaponEnhancer * pEnhancer)
 
 
 /* enum eAttribute
-{
-ATTACK,
-HIT,
-POISON,
-STONE,
-DEATH,
-CONFUSE,
-BERSERK,
-SLOW,
-WEAK,
-BREAK, 
-SILENCE,
-SLEEP,
-BLIND,
-STEAL_HP,
-STEAL_MP,
-DROPSTR,
-DROPDEX,
-DROPMAG
-} */
+   {
+   ATTACK,
+   HIT,
+   POISON,
+   STONE,
+   DEATH,
+   CONFUSE,
+   BERSERK,
+   SLOW,
+   WEAK,
+   BREAK, 
+   SILENCE,
+   SLEEP,
+   BLIND,
+   STEAL_HP,
+   STEAL_MP,
+   DROPSTR,
+   DROPDEX,
+   DROPMAG
+   } */
 
 
 

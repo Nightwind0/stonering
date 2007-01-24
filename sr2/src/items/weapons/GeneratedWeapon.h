@@ -32,7 +32,7 @@ namespace StoneRing{
 	    virtual bool operator== ( const ItemRef &ref );
 
 	    void generate( WeaponType * pType, WeaponClass * pClass, 
-			   SpellRef *pSpell = NULL, RuneType *pRune = NULL);
+                       SpellRef *pSpell = NULL, RuneType *pRune = NULL);
 
 	private:
 

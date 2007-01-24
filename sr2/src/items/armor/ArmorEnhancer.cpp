@@ -8,13 +8,13 @@ ArmorEnhancer::ArmorEnhancer()
 
 void ArmorEnhancer::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-	std::string strAttr = getRequiredString("attribute", pAttributes);
+    std::string strAttr = getRequiredString("attribute", pAttributes);
 
-	meAttribute = Armor::attributeForString ( strAttr );
+    meAttribute = Armor::attributeForString ( strAttr );
 
-	mfMultiplier = getImpliedFloat("multiplier",pAttributes,1);
+    mfMultiplier = getImpliedFloat("multiplier",pAttributes,1);
 
-	mnAdd = getImpliedInt("add",pAttributes,0);
+    mnAdd = getImpliedInt("add",pAttributes,0);
 }
 
 
@@ -25,23 +25,23 @@ ArmorEnhancer::~ArmorEnhancer()
 CL_DomElement 
 ArmorEnhancer::createDomElement ( CL_DomDocument &doc) const
 {
-	return CL_DomElement(doc, "armorEnhancer");
+    return CL_DomElement(doc, "armorEnhancer");
 }
 
 Armor::eAttribute 
 ArmorEnhancer::getAttribute() const
 {
-	return meAttribute;
+    return meAttribute;
 }
 
 int ArmorEnhancer::getAdd() const
 {
-	return mnAdd;
+    return mnAdd;
 }
 
 float ArmorEnhancer::getMultiplier() const
 {
-	return mfMultiplier;
+    return mfMultiplier;
 }
 
 

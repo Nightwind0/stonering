@@ -199,7 +199,7 @@ bool LevelFactory::canCreate( Element::eElement element )
 
     if(method == NULL) return false;
     else return true;
-		
+        
 }
 
 LevelFactory::factoryMethod 
@@ -208,66 +208,66 @@ LevelFactory::getMethod(Element::eElement element) const
     switch(element)
     {   
     case Element::EDIRECTIONBLOCK:
-	return &LevelFactory::createDirectionBlock;
+        return &LevelFactory::createDirectionBlock;
     case Element::ETILEMAP:
-	return &LevelFactory::createTilemap;
+        return &LevelFactory::createTilemap;
     case Element::ESPRITEREF:
-	return &LevelFactory::createSpriteRef;
+        return &LevelFactory::createSpriteRef;
     case Element::EMOVEMENT:
-	return &LevelFactory::createMovement;
+        return &LevelFactory::createMovement;
     case Element::EITEMREF:
-	return &LevelFactory::createItemRef;
+        return &LevelFactory::createItemRef;
     case Element::EATTRIBUTEMODIFIER:
-	return &LevelFactory::createAttributeModifier;
+        return &LevelFactory::createAttributeModifier;
     case Element::EHASGOLD:
-	return &LevelFactory::createHasGold;
+        return &LevelFactory::createHasGold;
     case Element::EHASITEM:
-	return &LevelFactory::createHasItem;
+        return &LevelFactory::createHasItem;
     case Element::EDIDEVENT:
-	return &LevelFactory::createDidEvent;
+        return &LevelFactory::createDidEvent;
     case Element::EAND:
-	return &LevelFactory::createAnd;
+        return &LevelFactory::createAnd;
     case Element::EOR:
-	return &LevelFactory::createOr;
+        return &LevelFactory::createOr;
     case Element::EOPERATOR:
-	return &LevelFactory::createOperator;
+        return &LevelFactory::createOperator;
     case Element::ECONDITION:
-	return &LevelFactory::createCondition;
+        return &LevelFactory::createCondition;
     case Element::EEVENT:
-	return &LevelFactory::createEvent;
+        return &LevelFactory::createEvent;
     case Element::EPLAYSCENE:
-	return &LevelFactory::createPlayScene;
+        return &LevelFactory::createPlayScene;
     case Element::EPLAYSOUND:
-	return &LevelFactory::createPlaySound;
+        return &LevelFactory::createPlaySound;
     case Element::ELOADLEVEL:
-	return &LevelFactory::createLoadLevel;
+        return &LevelFactory::createLoadLevel;
     case Element::ESTARTBATTLE:
-	return &LevelFactory::createStartBattle;
+        return &LevelFactory::createStartBattle;
     case Element::EINVOKESHOP:
-	return &LevelFactory::createInvokeShop;
+        return &LevelFactory::createInvokeShop;
     case Element::EPAUSE:
-	return &LevelFactory::createPause;
+        return &LevelFactory::createPause;
     case Element::ESAY:
-	return &LevelFactory::createSay;
+        return &LevelFactory::createSay;
     case Element::EGIVE:
-	return &LevelFactory::createGive;
+        return &LevelFactory::createGive;
     case Element::ETAKE:
-	return &LevelFactory::createTake;
+        return &LevelFactory::createTake;
     case Element::EGIVEGOLD:
-	return &LevelFactory::createGiveGold;
+        return &LevelFactory::createGiveGold;
     case Element::ETILE:
-	return &LevelFactory::createTile;
+        return &LevelFactory::createTile;
     case Element::EMAPPABLEOBJECT:
-	return &LevelFactory::createMappableObject;
+        return &LevelFactory::createMappableObject;
   
     case Element::EOPTION:
-	return &LevelFactory::createOption;
+        return &LevelFactory::createOption;
     case Element::ECHOICE:
-	return &LevelFactory::createChoice;
+        return &LevelFactory::createChoice;
     case Element::ENAMEDITEMREF:
-	return &LevelFactory::createNamedItemRef;
+        return &LevelFactory::createNamedItemRef;
     default:
-	return NULL;
+        return NULL;
     }
 }
 

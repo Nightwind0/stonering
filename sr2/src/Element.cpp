@@ -317,7 +317,7 @@ void Element::load(CL_DomElement * pDomElement)
                 {
                     pElement = pFactory->createElement(element);
 
-				//	cl_assert ( pElement->whichElement() == element );
+                    //	cl_assert ( pElement->whichElement() == element );
                     break;
                 }
                                         

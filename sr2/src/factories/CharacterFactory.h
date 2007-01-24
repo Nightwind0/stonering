@@ -10,22 +10,22 @@ namespace StoneRing
 
 
     class CharacterFactory : public IFactory
-	{
-	public:
-	    CharacterFactory(){}
-	    virtual ~CharacterFactory(){}
+    {
+    public:
+        CharacterFactory(){}
+        virtual ~CharacterFactory(){}
 
-	    virtual bool canCreate( Element::eElement element );
-	    virtual Element * createElement( Element::eElement element );
-	private:
-	    typedef Element * (CharacterFactory::*factoryMethod)() const;
-		Element * createCharacterClass() const;
-		Element * createAnimationDefinition() const;
-		Element * createCharacterDefinition() const;
-		Element * createWeaponTypeSprite() const;
+        virtual bool canCreate( Element::eElement element );
+        virtual Element * createElement( Element::eElement element );
+    private:
+        typedef Element * (CharacterFactory::*factoryMethod)() const;
+        Element * createCharacterClass() const;
+        Element * createAnimationDefinition() const;
+        Element * createCharacterDefinition() const;
+        Element * createWeaponTypeSprite() const;
 
-	    factoryMethod getMethod(Element::eElement element) const;
-	};
+        factoryMethod getMethod(Element::eElement element) const;
+    };
 };
 
 #endif

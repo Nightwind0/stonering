@@ -25,79 +25,79 @@ namespace StoneRing
     class Application : public CL_ClanApplication, public IApplication
     {
     public:
-	Application() ;
-	~Application();
+        Application() ;
+        ~Application();
       
-	virtual int main(int argc, char** argv);
+        virtual int main(int argc, char** argv);
 
-	virtual CL_ResourceManager * getResources()const;
+        virtual CL_ResourceManager * getResources()const;
   
-	virtual int getScreenWidth()const;
-	virtual int getScreenHeight()const;
+        virtual int getScreenWidth()const;
+        virtual int getScreenHeight()const;
 
-	virtual IParty * getParty() const;
-	virtual ICharacterGroup * getSelectedCharacterGroup() const;
-	virtual LevelFactory *getLevelFactory() const;
-	virtual ItemFactory * getItemFactory() const ;
-	virtual AbilityFactory * getAbilityFactory() const ;
-	virtual CharacterFactory * getCharacterFactory() const;
-	virtual const AbilityManager * getAbilityManager() const;
-	virtual const ItemManager * getItemManager() const;
-	virtual CL_Rect getDisplayRect() const;
+        virtual IParty * getParty() const;
+        virtual ICharacterGroup * getSelectedCharacterGroup() const;
+        virtual LevelFactory *getLevelFactory() const;
+        virtual ItemFactory * getItemFactory() const ;
+        virtual AbilityFactory * getAbilityFactory() const ;
+        virtual CharacterFactory * getCharacterFactory() const;
+        virtual const AbilityManager * getAbilityManager() const;
+        virtual const ItemManager * getItemManager() const;
+        virtual CL_Rect getDisplayRect() const;
 
-	virtual void requestRedraw(const State *pState);
-	virtual void playScene(const std::string &animation);
-	virtual void playSound(const std::string &sound);
-	virtual void loadLevel(const std::string &level, uint startX, uint startY);
-	virtual void startBattle(const std::string &monster, uint count, bool isBoss);
-	virtual void say(const std::string &speaker, const std::string &text);
-	virtual void pause(uint time);
-	virtual void invokeShop(const std::string &shoptype);
-	virtual void choice(const std::string &choiceText, const std::vector<std::string> &choices, Choice * pChoice);
-	virtual void pop(bool bAll);
+        virtual void requestRedraw(const State *pState);
+        virtual void playScene(const std::string &animation);
+        virtual void playSound(const std::string &sound);
+        virtual void loadLevel(const std::string &level, uint startX, uint startY);
+        virtual void startBattle(const std::string &monster, uint count, bool isBoss);
+        virtual void say(const std::string &speaker, const std::string &text);
+        virtual void pause(uint time);
+        virtual void invokeShop(const std::string &shoptype);
+        virtual void choice(const std::string &choiceText, const std::vector<std::string> &choices, Choice * pChoice);
+        virtual void pop(bool bAll);
 
     private:
-	void setupClanLib();
-	void teardownClanLib();
-	void showRechargeableOnionSplash();
-	void showIntro();
+        void setupClanLib();
+        void teardownClanLib();
+        void showRechargeableOnionSplash();
+        void showIntro();
 	
-	void loadItems(const std::string &filename);
-	void loadSpells(const std::string &filename);
-	void loadSkills(const std::string &filename);
-	void loadStatusEffects(const std::string &filename);
-	void loadCharacterClasses(const std::string &filename);
+        void loadItems(const std::string &filename);
+        void loadSpells(const std::string &filename);
+        void loadSkills(const std::string &filename);
+        void loadStatusEffects(const std::string &filename);
+        void loadCharacterClasses(const std::string &filename);
 
-	void draw();
-	void run();
+        void draw();
+        void run();
 
-	void startKeyUpQueue();
-	void stopKeyUpQueue();
+        void startKeyUpQueue();
+        void stopKeyUpQueue();
 
-	/* SIGNALS */
-	void onSignalQuit();
-	void onSignalKeyDown(const CL_InputEvent &key);
-	void onSignalKeyUp(const CL_InputEvent &key);
+        /* SIGNALS */
+        void onSignalQuit();
+        void onSignalKeyDown(const CL_InputEvent &key);
+        void onSignalKeyUp(const CL_InputEvent &key);
   
-	int calc_fps(int);
+        int calc_fps(int);
 
-	Party *mpParty;
-	LevelFactory * mpLevelFactory;
-	ItemFactory * mpItemFactory;
-	CharacterFactory * mpCharacterFactory;
-	ItemManager mItemManager;
-	AbilityManager mAbilityManager;
-	AbilityFactory * mpAbilityFactory;
-	bool mbDone;
-	CL_ResourceManager * mpResources;
-	CL_DisplayWindow *mpWindow;
-	//CL_Timer *mpMovementTimer;
-	//CL_Mutex mMovementMutex;
+        Party *mpParty;
+        LevelFactory * mpLevelFactory;
+        ItemFactory * mpItemFactory;
+        CharacterFactory * mpCharacterFactory;
+        ItemManager mItemManager;
+        AbilityManager mAbilityManager;
+        AbilityFactory * mpAbilityFactory;
+        bool mbDone;
+        CL_ResourceManager * mpResources;
+        CL_DisplayWindow *mpWindow;
+        //CL_Timer *mpMovementTimer;
+        //CL_Mutex mMovementMutex;
 
-	/* STATES */
-	MapState mMapState;
-	SayState mSayState;
-	std::vector<State*> mStates;
+        /* STATES */
+        MapState mMapState;
+        SayState mSayState;
+        std::vector<State*> mStates;
 
       
     };

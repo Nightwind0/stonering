@@ -12,36 +12,36 @@
 namespace StoneRing 
 {
   
-  class GraphicsManager
+    class GraphicsManager
     {
     public:
-      static GraphicsManager * getInstance();
+        static GraphicsManager * getInstance();
       
-      CL_Sprite * createSprite ( const std::string & name );
-      CL_Surface * getTileMap ( const std::string & name );
+        CL_Sprite * createSprite ( const std::string & name );
+        CL_Surface * getTileMap ( const std::string & name );
 
-      // Returns the name associated with this surface
-      std::string lookUpMapWithSurface( CL_Surface * );
+        // Returns the name associated with this surface
+        std::string lookUpMapWithSurface( CL_Surface * );
 
-	  enum eFont
-	  {
-		  FONT_SPEAKER,
-		  FONT_SAY_TEXT,
-		  FONT_CHOICE,
-		  FONT_OPTION,
-		  FONT_CURRENT_OPTION,
-		  __LAST_FONT__
-	  };
+        enum eFont
+        {
+            FONT_SPEAKER,
+            FONT_SAY_TEXT,
+            FONT_CHOICE,
+            FONT_OPTION,
+            FONT_CURRENT_OPTION,
+            __LAST_FONT__
+        };
 
-	  CL_Font * getFont(eFont font);
+        CL_Font * getFont(eFont font);
       
     private:
-      std::map<std::string,CL_Surface *> mTileMap;
-	  std::map<eFont,CL_Font*> mFontMap;
+        std::map<std::string,CL_Surface *> mTileMap;
+        std::map<eFont,CL_Font*> mFontMap;
       
-      static GraphicsManager *mInstance;
-      GraphicsManager();
-      ~GraphicsManager();
+        static GraphicsManager *mInstance;
+        GraphicsManager();
+        ~GraphicsManager();
       
     };
   

@@ -17,7 +17,7 @@ namespace StoneRing{
 	public:
 	    WeaponRef();
 	    WeaponRef ( WeaponType *pType, WeaponClass *pClass, 
-			SpellRef * pSpell, RuneType *pRune );
+                    SpellRef * pSpell, RuneType *pRune );
 	    virtual ~WeaponRef();
 		virtual eElement whichElement() const{ return EWEAPONREF; }	
 	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;

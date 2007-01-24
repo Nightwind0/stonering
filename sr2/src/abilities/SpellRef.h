@@ -6,7 +6,7 @@
 
 
 namespace StoneRing{
-class SpellRef : public Element
+    class SpellRef : public Element
 	{
 	public:
 	    SpellRef();

@@ -5,24 +5,24 @@
 
 namespace StoneRing{
 
-	class Or : public Check
-	{
-	public:
-		Or();
-		virtual ~Or();
+    class Or : public Check
+    {
+    public:
+        Or();
+        virtual ~Or();
 
-		virtual bool evaluate();
-		virtual eElement whichElement() const{ return EOR; }	
-		virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
+        virtual bool evaluate();
+        virtual eElement whichElement() const{ return EOR; }    
+        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
-		ushort order();
+        ushort order();
 
-	protected:
-		virtual bool handleElement(eElement element, Element * pElement );
-		ushort mOrder;
-		std::list<Check*> mOperands;
+    protected:
+        virtual bool handleElement(eElement element, Element * pElement );
+        ushort mOrder;
+        std::list<Check*> mOperands;
 
-	};
+    };
 
 };
 

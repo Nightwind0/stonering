@@ -273,8 +273,8 @@ void StoneRing::MappableObject::loadFinished()
 }
  
 StoneRing::MappableObject::MappableObject():meDirection(NONE),mpSprite(NULL),mpMovement(0),
-                                 mpCondition(0),cFlags(0),mnCellsMoved(0),
-                                 mnFrameMarks(0),mnStepsUntilChange(0)
+                                            mpCondition(0),cFlags(0),mnCellsMoved(0),
+                                            mnFrameMarks(0),mnStepsUntilChange(0)
 {
    
 }
@@ -879,24 +879,24 @@ CL_Point StoneRing::MappablePlayer::getPointInFront() const
 
 void StoneRing::MappablePlayer::setFrameForDirection()
 {
-       switch( meFacingDirection )
-       {
-       case NORTH:
-	   mpSprite->set_frame(mbStep? 6 : 7);
-	   break;
-       case EAST:
-	   mpSprite->set_frame(mbStep? 0 : 1);
-	   break;
-       case WEST:
-	   mpSprite->set_frame(mbStep? 2 : 3);
-	   break;
-       case SOUTH:
-	   mpSprite->set_frame(mbStep? 4 : 5);
-	   break;
-       case NONE:
+    switch( meFacingDirection )
+    {
+    case NORTH:
+        mpSprite->set_frame(mbStep? 6 : 7);
+        break;
+    case EAST:
+        mpSprite->set_frame(mbStep? 0 : 1);
+        break;
+    case WEST:
+        mpSprite->set_frame(mbStep? 2 : 3);
+        break;
+    case SOUTH:
+        mpSprite->set_frame(mbStep? 4 : 5);
+        break;
+    case NONE:
 	   
-	   break;
-       }
+        break;
+    }
 }
 
 

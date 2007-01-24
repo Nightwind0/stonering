@@ -18,34 +18,34 @@ namespace StoneRing
 	class ItemRef : public Element
     {
     public:
-	ItemRef();
-	ItemRef(CL_DomElement *pElement );
-	virtual ~ItemRef();
-	virtual eElement whichElement() const{ return EITEMREF; }	
-	enum eRefType { NAMED_ITEM, WEAPON_REF, ARMOR_REF };
+        ItemRef();
+        ItemRef(CL_DomElement *pElement );
+        virtual ~ItemRef();
+        virtual eElement whichElement() const{ return EITEMREF; }	
+        enum eRefType { NAMED_ITEM, WEAPON_REF, ARMOR_REF };
 
 //	std::string getItemName() const;
 
-	eRefType getType() const;
+        eRefType getType() const;
 
-	NamedItemRef * getNamedItemRef() const;
-	WeaponRef * getWeaponRef() const;
-	ArmorRef * getArmorRef() const;
+        NamedItemRef * getNamedItemRef() const;
+        WeaponRef * getWeaponRef() const;
+        ArmorRef * getArmorRef() const;
 
 
-	inline Item * getItem() const { return mpItem; }
+        inline Item * getItem() const { return mpItem; }
 
-	virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
+        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 	
     protected:
 		virtual bool handleElement(Element::eElement,Element *);	
 		virtual void loadAttributes(CL_DomNamedNodeMap *pAttributes);
 		virtual void loadFinished();
-	NamedItemRef * mpNamedItemRef;
-	WeaponRef * mpWeaponRef;
-	ArmorRef * mpArmorRef;
-	eRefType meType;
-	Item * mpItem;
+        NamedItemRef * mpNamedItemRef;
+        WeaponRef * mpWeaponRef;
+        ArmorRef * mpArmorRef;
+        eRefType meType;
+        Item * mpItem;
     };
 
 

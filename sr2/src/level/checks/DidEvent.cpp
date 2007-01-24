@@ -33,7 +33,7 @@ void DidEvent::handleText(const std::string &text)
 
 bool DidEvent::handleElement(eElement element, Element *pElement)
 {
-	return false;
+    return false;
 }
 
 DidEvent::~DidEvent()

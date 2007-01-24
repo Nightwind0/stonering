@@ -25,7 +25,7 @@ bool HasItem::handleElement(eElement element, Element *pElement)
     if(element == EITEMREF)
     {
         mpItemRef = dynamic_cast<ItemRef*>(pElement);
-		return true;
+        return true;
     }
     else return false;
 }

@@ -9,31 +9,31 @@ WeaponTypeExclusionList::WeaponTypeExclusionList()
 
 WeaponTypeExclusionList::~WeaponTypeExclusionList()
 {
-	// std::for_each(mWeaponTypes.begin(),mWeaponTypes.end(),del_fun<WeaponTypeRef>());
+    // std::for_each(mWeaponTypes.begin(),mWeaponTypes.end(),del_fun<WeaponTypeRef>());
 }
 
 CL_DomElement WeaponTypeExclusionList::createDomElement ( CL_DomDocument &doc) const
 {
-	return CL_DomElement(doc,"weaponTypeExclusionList");
+    return CL_DomElement(doc,"weaponTypeExclusionList");
 }
 
 
 std::list<WeaponTypeRef*>::const_iterator WeaponTypeExclusionList::getWeaponTypeRefsBegin()
 {
-	return mWeaponTypes.begin();
+    return mWeaponTypes.begin();
 }
 std::list<WeaponTypeRef*>::const_iterator WeaponTypeExclusionList::getWeaponTypeRefsEnd()
 {
-	return mWeaponTypes.end();
+    return mWeaponTypes.end();
 }
 bool WeaponTypeExclusionList::handleElement(eElement element, Element * pElement)
 {
-	if(element == EWEAPONTYPEREF)
-	{
-		mWeaponTypes.push_back ( dynamic_cast<WeaponTypeRef*>(pElement) );
-		return true;
-	}
-	else return false;
+    if(element == EWEAPONTYPEREF)
+    {
+        mWeaponTypes.push_back ( dynamic_cast<WeaponTypeRef*>(pElement) );
+        return true;
+    }
+    else return false;
 }
 
 
