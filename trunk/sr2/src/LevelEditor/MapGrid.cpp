@@ -6,7 +6,7 @@
 #include <sstream>
 
 MapGrid::MapGrid(CL_Component *parent, CL_GraphicContext *mgGC, TileSelector *TS)
-:   CL_Component(parent), mgGC(mgGC), TS(TS)
+    :   CL_Component(parent), mgGC(mgGC), TS(TS)
 {
 //EditableLevel *mpLevel,
 //, mgLevel(null)
@@ -81,7 +81,7 @@ void MapGrid::on_mouse_move(const CL_InputEvent &event)
     yStr << Y;
 
     if(dynamic_cast<EditorMain*>(EditorMain::getInstance())->getInfo())
-	dynamic_cast<EditorMain*>(EditorMain::getInstance())->getInfo()->setToolPos( xStr.str(), yStr.str() );
+        dynamic_cast<EditorMain*>(EditorMain::getInstance())->getInfo()->setToolPos( xStr.str(), yStr.str() );
 }
 
 
@@ -170,8 +170,8 @@ void MapGrid::on_placeTile(const CL_InputEvent &event)
 				for( std::list<Tile*>::iterator iter = TileList.begin(); iter != TileList.end(); iter++)
 				{
 				
-				if( (*iter)->getZOrder() > ZOrder) 
-					ZOrder = (*iter)->getZOrder();
+                    if( (*iter)->getZOrder() > ZOrder) 
+                        ZOrder = (*iter)->getZOrder();
 				
 				}
 				ZOrder++;

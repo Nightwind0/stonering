@@ -13,18 +13,18 @@ using namespace std;
 class GridPoint : CL_Component
 {
 public:
-		GridPoint(CL_Rect setrect, CL_Component *parent);
+    GridPoint(CL_Rect setrect, CL_Component *parent);
 
-		virtual ~GridPoint();
+    virtual ~GridPoint();
 
 
 
-		void on_paint();
+    void on_paint();
 
 private:
 
-		CL_Rect rect;
-		CL_SlotContainer slots;
+    CL_Rect rect;
+    CL_SlotContainer slots;
 
 };
 
