@@ -26,7 +26,7 @@ EditorMain::~EditorMain()
     delete mpParty;
     delete mpLevelFactory;
 
-	
+    
 }
 
 
@@ -55,7 +55,7 @@ LevelFactory * EditorMain::getLevelFactory() const
 {
     return mpLevelFactory;
 }
-		
+        
 int EditorMain::getScreenWidth()const
 {
     return 1024;
@@ -104,7 +104,7 @@ int EditorMain::main(int argc, char **argv)
         CL_SetupGL setup_gl;
         CL_SetupGUI setup_gui;
         ///////////////////Start my code//////////////
-			
+            
 
         // Create a display window
         CL_DisplayWindow display("SR2 - Editor", getScreenWidth(), getScreenHeight(), false, true);
@@ -118,7 +118,7 @@ int EditorMain::main(int argc, char **argv)
         //mGc = display.get_gc();
         CL_Window window(CL_Rect(0, 50, 640, 620), "Map", gui.get_client_area());
         CL_Window tileWindow(CL_Rect(650,75,900,380),"Tile Selector",gui.get_client_area());
-			
+            
         // Make sure our background is drawn under the GUI
         mSlots.connect(gui.sig_paint(),this, &EditorMain::on_paint);
 
@@ -134,7 +134,7 @@ int EditorMain::main(int argc, char **argv)
         menu.create_item("File/Save");
         menu.create_item("File/Save As...");
         menu.create_item("File/Quit");
-		
+        
 
         //tools menu stuff
         windowMenu.create_item("Tools/Add Row");
@@ -161,7 +161,7 @@ int EditorMain::main(int argc, char **argv)
         CL_ResourceManager* tsResources = new CL_ResourceManager ( "../../Media/resources.xml" );
         mpResources = tsResources;
 
-		
+        
         mpLevel = NULL;
         vector<string> tilemapnames = tsResources->get_all_resources("Tilemaps");
 
@@ -175,11 +175,11 @@ int EditorMain::main(int argc, char **argv)
         {
             menutileset = "TileSet/" + *iter;
             CL_MenuNode * pMenu = tileMenu.create_item(menutileset);
-				
+                
             mSlots.connect(pMenu->sig_clicked(), this, &EditorMain::on_tileset_change, *iter);
 
             tempsets.push_back(*iter);
-				
+                
         }
         tilemapnames = tempsets;
 
@@ -211,7 +211,7 @@ int EditorMain::main(int argc, char **argv)
         mSlots.connect(windowMenu.get_node("Tools/Direction Blocks -/West")->sig_clicked(), this, &EditorMain::on_change_tool, tiletemp4);
         mSlots.connect(windowMenu.get_node("Tools/Set Hot")->sig_clicked(), this, &EditorMain::on_change_tool, tiletemp5);
         mSlots.connect(windowMenu.get_node("Tools/Add Tile")->sig_clicked(), this, &EditorMain::on_change_tool, tiletemp6);
-			
+            
 
 
         mSlots.connect(windowMenu.get_node("Options/Show Hot Tiles")->sig_clicked(), this, &EditorMain::on_show_hot);
@@ -236,29 +236,29 @@ int EditorMain::main(int argc, char **argv)
 
         delete tsResources;
 #if 0
-//			cout<< "creating tileselector" << endl;
-	
+//          cout<< "creating tileselector" << endl;
+    
 
-//			cout << "creating mapgrid" << endl;			
-		
+//          cout << "creating mapgrid" << endl;         
+        
 
 
-//			cout << "creating gridpoint" << endl;
+//          cout << "creating gridpoint" << endl;
         GridPoint gp(CL_Rect(510, 410, 691, 592), &gui);
 
         //info box (bottom of screen)
-        //	info = new CL_InputBox(CL_Rect(5, 595, 505, 604), mMap->getCurrentTool(), &gui);
-        //	info->enable(false);
-		
-		
+        //  info = new CL_InputBox(CL_Rect(5, 595, 505, 604), mMap->getCurrentTool(), &gui);
+        //  info->enable(false);
+        
+        
 #endif
-        cout << "all the creation stuff completed. about to run it." << endl;			
-			
-			
+        cout << "all the creation stuff completed. about to run it." << endl;           
+            
+            
         gui.run();
-	
-//	delete tsResources;
-//	delete gui_zip;
+    
+//  delete tsResources;
+//  delete gui_zip;
 
 
     }
@@ -283,7 +283,7 @@ void EditorMain::on_quit()
     if(mpLevel != NULL)
     {
         bttn = CL_MessageBox::info("Warning", "Would you like to save the current level before quiting?", "Yes", "No", "Cancel", mGui_manager);
-		
+        
         if(bttn == 0)
         {
             on_save();
@@ -310,13 +310,13 @@ void EditorMain::on_tileset_change(string userdata)
 
 void EditorMain::on_save()
 {
-	
-//	mpDialog = new CL_FileDialog("Save","","*.xml",mGui_manager);
+    
+//  mpDialog = new CL_FileDialog("Save","","*.xml",mGui_manager);
 
-    //	string path = dialog.get_path();
+    //  string path = dialog.get_path();
     string filename = CL_FileDialog::save(mGui_manager);
 
-//	    cout << filename << endl;
+//      cout << filename << endl;
     if(filename != "")
         mMap->save_Level(filename);
     else
@@ -332,7 +332,7 @@ void EditorMain::on_load()
     if(mpLevel != NULL)
     {
         bttn = CL_MessageBox::info("Warning", "Would you like to save the current level before opening a new one?", "Yes", "No", "Cancel", mGui_manager);
-		
+        
         if(bttn == 0)
         {
             on_save();
@@ -366,13 +366,13 @@ void EditorMain::on_load()
 
 void EditorMain::on_new()
 {
-	
+    
     int bttn=0;
 
     if(mpLevel != NULL)
     {
         bttn = CL_MessageBox::info("Warning", "Would you like to save the current level before creating a new one?", "Yes", "No", "Cancel", mGui_manager);
-		
+        
         if(bttn == 0)
         {
             on_save();
@@ -390,14 +390,14 @@ void EditorMain::on_new()
         CL_InputBox *lvlHeight = new_dlg.add_input_box("Height (in tiles):", "10", 150);
 
         // Connecting signals, to allow only numbers
-//		mSlots.connect(lvlWidth->sig_validate_character(), this, &App::validator_numbers);
-//		mSlots.connect(lvlHeight->sig_validate_character(), this, &App::validator_numbers);
+//      mSlots.connect(lvlWidth->sig_validate_character(), this, &App::validator_numbers);
+//      mSlots.connect(lvlHeight->sig_validate_character(), this, &App::validator_numbers);
 
         new_dlg.run();
-	
+    
 
         if(mpLevel != NULL)
-            delete mpLevel;	
+            delete mpLevel; 
 
         mpLevel = new EditableLevel();
 
@@ -407,7 +407,7 @@ void EditorMain::on_new()
         mpLevel->addRows(atoi(lvlHeight->get_text().c_str()));
 
         mMap->set_Level(mpLevel);
-	
+    
     }
 
 }

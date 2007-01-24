@@ -26,16 +26,16 @@ namespace StoneRing
         virtual void init(const std::string &speaker, const std::string &text);
 
     private:
-	
-		std::string mSpeaker;
-		std::string mText;
-		CL_Rect mSpeakerRect;
-		CL_Rect mTextRect;
-		CL_Surface *mpSayOverlay;
-		std::string::iterator miText;
-		bool mbDone;
-		uint mnDrawnThisFrame;
-		uint mnTotalDrawn;
+    
+        std::string mSpeaker;
+        std::string mText;
+        CL_Rect mSpeakerRect;
+        CL_Rect mTextRect;
+        CL_Surface *mpSayOverlay;
+        std::string::iterator miText;
+        bool mbDone;
+        uint mnDrawnThisFrame;
+        uint mnTotalDrawn;
 
     };
 };

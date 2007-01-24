@@ -47,8 +47,8 @@ SteelType::operator int () const
     case SteelType::STRING:
         return strInt();
     }
-	assert ( 0 );
-	return 0;
+    assert ( 0 );
+    return 0;
 }
 
 SteelType::operator double () const
@@ -67,8 +67,8 @@ SteelType::operator double () const
     case SteelType::STRING:
         return strDouble();
     }
-	assert( 0 );
-	return 0.0;
+    assert( 0 );
+    return 0.0;
 }
 
 SteelType::operator std::string () const
@@ -202,8 +202,8 @@ SteelType  SteelType::operator+(const SteelType &rhs)
         return val;
     }
 
-	assert ( 0 );
-	return val;
+    assert ( 0 );
+    return val;
 }
 
 SteelType  SteelType::operator-(const SteelType &rhs)
@@ -228,8 +228,8 @@ SteelType  SteelType::operator-(const SteelType &rhs)
         return val;
     }
 
-	assert ( 0 );
-	return val;
+    assert ( 0 );
+    return val;
 }
 
 SteelType  SteelType::operator*(const SteelType &rhs)
@@ -254,8 +254,8 @@ SteelType  SteelType::operator*(const SteelType &rhs)
         return val;
     }
 
-	assert ( 0 );
-	return val;
+    assert ( 0 );
+    return val;
 }
 
 SteelType  SteelType::operator^(const SteelType &rhs)
@@ -280,8 +280,8 @@ SteelType  SteelType::operator^(const SteelType &rhs)
         return val;
     }
 
-	assert ( 0 );
-	return val;
+    assert ( 0 );
+    return val;
 }
 
 SteelType  SteelType::operator/(const SteelType &rhs)
@@ -306,8 +306,8 @@ SteelType  SteelType::operator/(const SteelType &rhs)
         return val;
     }
 
-	assert ( 0 );
-	return val;
+    assert ( 0 );
+    return val;
 }
 
 SteelType  SteelType::operator%(const SteelType &rhs)
@@ -332,8 +332,8 @@ SteelType  SteelType::operator%(const SteelType &rhs)
         return val;
     }
 
-	assert ( 0 );
-	return val;
+    assert ( 0 );
+    return val;
 }
 
 bool  operator==(const SteelType &lhs, const SteelType &rhs)
@@ -365,7 +365,7 @@ bool  operator==(const SteelType &lhs, const SteelType &rhs)
         if((std::string)lhs == (std::string)rhs)
             val = true;
         break;
-	   
+       
     }
 
     return val;
@@ -399,7 +399,7 @@ SteelType  SteelType::operator<(const SteelType &rhs)
         if((std::string)*this < (std::string)rhs)
             val.set(true);
         break;
-	   
+       
     }
 
     return val;
@@ -428,9 +428,9 @@ SteelType  SteelType::operator<=(const SteelType &rhs)
         if((std::string)*this <= (std::string)rhs)
             val.set(true);
         break;
-	   
+       
     }
-	
+    
     return val;
 }
 
@@ -485,13 +485,13 @@ SteelType SteelType::cat(const SteelType &rhs)
         ret.set ( *m_value.a );
         ret.add ( rhs );
         return ret;
-	
+    
 
     case SteelType::STRING:
     {
         // Create a var and put this string in it.
         var.set ( *m_value.s );
-	
+    
         break;
     }
     case SteelType::INT:
@@ -549,7 +549,7 @@ SteelType SteelType::operator!()
             var.set ( false );
         else var.set( true );
         break;
-    case SteelType::INT:	
+    case SteelType::INT:    
         if(m_value.i == 0)
             var.set(true);
         else var.set ( false );

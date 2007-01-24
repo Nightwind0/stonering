@@ -19,7 +19,7 @@ Effect::~Effect()
 
 void DoWeaponDamage::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
-	
+    
     mnBaseAttack = getRequiredUint("baseAttack",pAttributes);
     mfBaseCritical = getRequiredFloat("baseCritical",pAttributes);
     mfBaseHit = getRequiredFloat("baseHit",pAttributes);
@@ -42,8 +42,8 @@ bool DoWeaponDamage::handleElement(eElement element,Element *pElement)
 
 void DoWeaponDamage::loadFinished()
 {
-	if(mpDamageCategory == NULL)
-		throw CL_Error("No weapon damage category was defined for this doWeaponDamage");
+    if(mpDamageCategory == NULL)
+        throw CL_Error("No weapon damage category was defined for this doWeaponDamage");
 }
 
 DoWeaponDamage::DoWeaponDamage():mpDamageCategory(NULL)
@@ -101,11 +101,11 @@ DoMagicDamage::DoMagicDamage()
 
 void DoMagicDamage::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
-	
+    
     mnBaseDamage = getRequiredUint("baseDamage",pAttributes);
     mfBaseHit = getRequiredFloat("baseHit",pAttributes);
     mbDrain = getImpliedBool("drain",pAttributes,false);
-	mbPiercing = getImpliedBool("piercing",pAttributes,false);	
+    mbPiercing = getImpliedBool("piercing",pAttributes,false);  
 
 }
 
@@ -121,8 +121,8 @@ bool DoMagicDamage::handleElement(eElement element,Element *pElement)
 
 void DoMagicDamage::loadFinished()
 {
-	if(mpDamageCategory == NULL)
-		throw CL_Error("No magic damage category was defined for this doMagicDamage");
+    if(mpDamageCategory == NULL)
+        throw CL_Error("No magic damage category was defined for this doMagicDamage");
 }
 
 DoMagicDamage::~DoMagicDamage()
@@ -181,25 +181,25 @@ DoAttack::~DoAttack()
 
 uint DoAttack::getNumberOfHits() const
 {
-	return mnHits;
+    return mnHits;
 }
 
 
 bool DoAttack::hitAllenemies() const
 {
-	return mbHitAllEnemies;
+    return mbHitAllEnemies;
 }
 
 void DoAttack::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
-	mbHitAllEnemies = getImpliedBool("allEnemies",pAttributes,false);
-	mfMultiplyCritical = getImpliedFloat("multiplyCritical",pAttributes,1.0);
-	mnHits = getImpliedInt("hits",pAttributes,1);
-	mfAddCritical = getImpliedFloat("addCritical",pAttributes,0);
-	mnAddAttack = getImpliedInt("addAttack",pAttributes,0);
-	mfMultiplyAttack = getImpliedFloat("multiplyAttack",pAttributes,1);
-	mfHitsMultiplier = getImpliedFloat("multiplyHits",pAttributes,1);
-	mnHitsAdd = getImpliedInt("addHits",pAttributes,0);
+    mbHitAllEnemies = getImpliedBool("allEnemies",pAttributes,false);
+    mfMultiplyCritical = getImpliedFloat("multiplyCritical",pAttributes,1.0);
+    mnHits = getImpliedInt("hits",pAttributes,1);
+    mfAddCritical = getImpliedFloat("addCritical",pAttributes,0);
+    mnAddAttack = getImpliedInt("addAttack",pAttributes,0);
+    mfMultiplyAttack = getImpliedFloat("multiplyAttack",pAttributes,1);
+    mfHitsMultiplier = getImpliedFloat("multiplyHits",pAttributes,1);
+    mnHitsAdd = getImpliedInt("addHits",pAttributes,0);
 }
 
 
@@ -209,29 +209,29 @@ DoStatusEffect::DoStatusEffect()
 
 bool DoStatusEffect::handleElement(eElement element, Element * pElement)
 {
-	if(element == ESTATUSEFFECT)
-	{
-		mpStatusEffect = dynamic_cast<StatusEffect*>(pElement);
-		return true;
-	}
-	else return false;
+    if(element == ESTATUSEFFECT)
+    {
+        mpStatusEffect = dynamic_cast<StatusEffect*>(pElement);
+        return true;
+    }
+    else return false;
 }
 
 void DoStatusEffect::loadFinished()
 {
-	if(mpStatusEffect == NULL)
-		throw CL_Error("Error: DoStatusEffect must either define a status effect or include a statusRef");
+    if(mpStatusEffect == NULL)
+        throw CL_Error("Error: DoStatusEffect must either define a status effect or include a statusRef");
 }
 
 void DoStatusEffect::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
-	const AbilityManager * pManager = IApplication::getInstance()->getAbilityManager();
+    const AbilityManager * pManager = IApplication::getInstance()->getAbilityManager();
 
-	if(hasAttr("statusRef",pAttributes))
-	{
-		std::string statusRef = getString("statusRef",pAttributes);
-		mpStatusEffect = pManager->getStatusEffect(statusRef);
-	}
+    if(hasAttr("statusRef",pAttributes))
+    {
+        std::string statusRef = getString("statusRef",pAttributes);
+        mpStatusEffect = pManager->getStatusEffect(statusRef);
+    }
 
     mfChance = getRequiredFloat("chance",pAttributes);
     mbRemove = getImpliedBool("removeStatus",pAttributes, false);
@@ -269,7 +269,7 @@ Spell::Spell()
 
 void Spell::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-	mName = getRequiredString("name", pAttributes);
+    mName = getRequiredString("name", pAttributes);
     meType = getTypeFromString(getRequiredString("type", pAttributes));
     meUse = getUseFromString(getRequiredString("use", pAttributes));
     meTargetable = getTargetableFromString(getRequiredString("targetable", pAttributes));
@@ -284,22 +284,22 @@ void Spell::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 
 bool Spell::handleElement(eElement element, Element * pElement)
 {
-	switch(element)
-	{
-	case EDOWEAPONDAMAGE:
-	case EDOMAGICDAMAGE:
-	case EDOSTATUSEFFECT:
-	case EANIMATION:
-		mEffects.push_back ( dynamic_cast<Effect*>(pElement) );
-		break;
-	case EMAGICRESISTANCE:
-		mpMagicResistance = dynamic_cast<MagicResistance*>(pElement);
-		break;
-	default:
-		return false;
-	}
+    switch(element)
+    {
+    case EDOWEAPONDAMAGE:
+    case EDOMAGICDAMAGE:
+    case EDOSTATUSEFFECT:
+    case EANIMATION:
+        mEffects.push_back ( dynamic_cast<Effect*>(pElement) );
+        break;
+    case EMAGICRESISTANCE:
+        mpMagicResistance = dynamic_cast<MagicResistance*>(pElement);
+        break;
+    default:
+        return false;
+    }
 
-	return true;
+    return true;
 }
 
 
@@ -333,8 +333,8 @@ Spell::eTargetable Spell::getTargetableFromString ( const std::string &str)
 
 Spell::~Spell()
 {
-	std::for_each(mEffects.begin(),mEffects.end(),del_fun<Effect>());
-	delete mpMagicResistance;
+    std::for_each(mEffects.begin(),mEffects.end(),del_fun<Effect>());
+    delete mpMagicResistance;
 }
 
 
@@ -381,7 +381,7 @@ bool Spell::appliesToArmor() const
     return mbAppliesToArmor;
 }
 
-	
+    
 uint Spell::getMP() const
 {
     return mnMP;
@@ -438,14 +438,14 @@ MagicResistance::MagicResistance():mbResistAll(false),mbResistElemental(false)
 
 void MagicResistance::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
-	std::string type = getRequiredString("type",pAttributes);
+    std::string type = getRequiredString("type",pAttributes);
     
     if(type == "fire") meType = FIRE;
     else if (type == "water") meType = WATER;
     else if (type == "earth") meType = EARTH;
     else if (type == "wind") meType = WIND;
     else if (type == "holy") meType = HOLY;
-	else if (type == "dark") meType = DARK;
+    else if (type == "dark") meType = DARK;
     else if (type == "elemental") mbResistElemental = true;
     else if (type == "all") mbResistAll = true;
     else throw CL_Error("Bad magic resistance type of " + type);
@@ -498,7 +498,7 @@ WeaponDamageCategory::~WeaponDamageCategory()
 {
 }
 
-	
+    
 
 WeaponDamageCategory::eType WeaponDamageCategory::getType() const
 {
@@ -539,7 +539,7 @@ MagicDamageCategory::~MagicDamageCategory()
 {
 }
 
-	
+    
 
 MagicDamageCategory::eType MagicDamageCategory::getType() const
 {
@@ -551,7 +551,7 @@ CL_DomElement MagicDamageCategory::createDomElement( CL_DomDocument &doc ) const
 {
 return CL_DomElement(doc,"magicDamageCategory" );
 }
-	
+    
 
 
 */

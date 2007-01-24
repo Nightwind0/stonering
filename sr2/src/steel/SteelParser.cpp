@@ -10,8 +10,8 @@
 
 #line 21 "steel.trison"
 
-	#include "SteelScanner.h"
-	#include "Ast.h"
+    #include "SteelScanner.h"
+    #include "Ast.h"
 
 #line 17 "SteelParser.cpp"
 
@@ -506,12 +506,12 @@ AstBase* SteelParser::ReductionRuleHandler0001 ()
 
 #line 102 "steel.trison"
 
-				AstScript * pScript =   new AstScript(
-							list->GetLine(),
-							list->GetScript());
-			        pScript->SetList(list);
-				return pScript;
-			
+                AstScript * pScript =   new AstScript(
+                            list->GetLine(),
+                            list->GetScript());
+                    pScript->SetList(list);
+                return pScript;
+            
 #line 516 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
@@ -532,14 +532,14 @@ AstBase* SteelParser::ReductionRuleHandler0002 ()
 
 #line 115 "steel.trison"
 
-					delete b1;
-					delete b2;
-					return new AstFunctionDefinition(id->GetLine(),
-									id->GetScript(),
-									static_cast<AstFuncIdentifier*>(id),
-									params,
-									stmts);
-				
+                    delete b1;
+                    delete b2;
+                    return new AstFunctionDefinition(id->GetLine(),
+                                    id->GetScript(),
+                                    static_cast<AstFuncIdentifier*>(id),
+                                    params,
+                                    stmts);
+                
 #line 544 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
@@ -558,14 +558,14 @@ AstBase* SteelParser::ReductionRuleHandler0003 ()
 
 #line 126 "steel.trison"
 
-					delete b1;
-					delete b2;
-					return new AstFunctionDefinition(id->GetLine(),
-									id->GetScript(),
-									static_cast<AstFuncIdentifier*>(id),
-									NULL,
-									stmts);
-				
+                    delete b1;
+                    delete b2;
+                    return new AstFunctionDefinition(id->GetLine(),
+                                    id->GetScript(),
+                                    static_cast<AstFuncIdentifier*>(id),
+                                    NULL,
+                                    stmts);
+                
 #line 570 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
@@ -602,10 +602,10 @@ AstBase* SteelParser::ReductionRuleHandler0006 ()
 
 #line 148 "steel.trison"
 
-				AstParamDefinitionList * pList = new AstParamDefinitionList(decl->GetLine(),decl->GetScript());
-				pList->add(static_cast<AstDeclaration*>(decl));
-				return pList;		
-			
+                AstParamDefinitionList * pList = new AstParamDefinitionList(decl->GetLine(),decl->GetScript());
+                pList->add(static_cast<AstDeclaration*>(decl));
+                return pList;       
+            
 #line 610 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
@@ -620,9 +620,9 @@ AstBase* SteelParser::ReductionRuleHandler0007 ()
 
 #line 155 "steel.trison"
 
-				list->add(static_cast<AstDeclaration*>(decl));
-				return list;
-			
+                list->add(static_cast<AstDeclaration*>(decl));
+                return list;
+            
 #line 627 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
@@ -635,11 +635,11 @@ AstBase* SteelParser::ReductionRuleHandler0008 ()
 
 #line 163 "steel.trison"
 
-				AstStatementList *pList = new AstStatementList( stmt->GetLine(),
-										stmt->GetScript());
-				pList->add(stmt);
-				return pList;
-			
+                AstStatementList *pList = new AstStatementList( stmt->GetLine(),
+                                        stmt->GetScript());
+                pList->add(stmt);
+                return pList;
+            
 #line 644 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
@@ -654,9 +654,9 @@ AstBase* SteelParser::ReductionRuleHandler0009 ()
 
 #line 171 "steel.trison"
 
-					list->add( stmt ); 
-					return list;
-				
+                    list->add( stmt ); 
+                    return list;
+                
 #line 661 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
@@ -711,12 +711,12 @@ AstBase* SteelParser::ReductionRuleHandler0013 ()
 
 #line 185 "steel.trison"
 
-			 int line = b1->GetLine();
-			 std::string script = b1->GetScript();
-			 delete b1;
-			 delete b2;
-			 return new AstStatement(line,script);
-			
+             int line = b1->GetLine();
+             std::string script = b1->GetScript();
+             delete b1;
+             delete b2;
+             return new AstStatement(line,script);
+            
 #line 721 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
@@ -801,11 +801,11 @@ AstBase* SteelParser::ReductionRuleHandler0019 ()
 
 #line 204 "steel.trison"
 
-				int line = semi->GetLine();
-				std::string script = semi->GetScript();
-				delete semi;
-				return new AstReturnStatement(line,script);
-			
+                int line = semi->GetLine();
+                std::string script = semi->GetScript();
+                delete semi;
+                return new AstReturnStatement(line,script);
+            
 #line 810 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
@@ -822,9 +822,9 @@ AstBase* SteelParser::ReductionRuleHandler0020 ()
 
 #line 212 "steel.trison"
 
-				return new AstLoopStatement(start->GetLine(),start->GetScript(),start,condition, 
-						new AstExpression (start->GetLine(),start->GetScript()), stmt); 
-			
+                return new AstLoopStatement(start->GetLine(),start->GetScript(),start,condition, 
+                        new AstExpression (start->GetLine(),start->GetScript()), stmt); 
+            
 #line 829 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
@@ -843,8 +843,8 @@ AstBase* SteelParser::ReductionRuleHandler0021 ()
 
 #line 218 "steel.trison"
 
-				return new AstLoopStatement(start->GetLine(),start->GetScript(),start,condition,iteration,stmt);
-			
+                return new AstLoopStatement(start->GetLine(),start->GetScript(),start,condition,iteration,stmt);
+            
 #line 849 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
@@ -857,11 +857,11 @@ AstBase* SteelParser::ReductionRuleHandler0022 ()
 
 #line 223 "steel.trison"
 
-				int line = semi->GetLine();
-				std::string script = semi->GetScript();
-				delete semi;
-				return new AstBreakStatement(line,script); 
-			
+                int line = semi->GetLine();
+                std::string script = semi->GetScript();
+                delete semi;
+                return new AstBreakStatement(line,script); 
+            
 #line 866 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
@@ -874,11 +874,11 @@ AstBase* SteelParser::ReductionRuleHandler0023 ()
 
 #line 231 "steel.trison"
 
-				int line = semi->GetLine();
-				std::string script = semi->GetScript();
-				delete semi;
-				return new AstContinueStatement(line,script); 
-			
+                int line = semi->GetLine();
+                std::string script = semi->GetScript();
+                delete semi;
+                return new AstContinueStatement(line,script); 
+            
 #line 883 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
@@ -1336,11 +1336,11 @@ AstBase* SteelParser::ReductionRuleHandler0058 ()
 
 #line 314 "steel.trison"
 
-			int line = semi->GetLine();
-			std::string script = semi->GetScript(); 
-			delete semi;
-			return new AstExpression(line,script); 
-		
+            int line = semi->GetLine();
+            std::string script = semi->GetScript(); 
+            delete semi;
+            return new AstExpression(line,script); 
+        
 #line 1345 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
@@ -1495,10 +1495,10 @@ AstBase* SteelParser::ReductionRuleHandler0070 ()
 
 #line 362 "steel.trison"
 
-							AstArrayDeclaration *pDecl =  new AstArrayDeclaration(id->GetLine(),id->GetScript(),id);
-							pDecl->assign(exp);
-							return pDecl;
-						 
+                            AstArrayDeclaration *pDecl =  new AstArrayDeclaration(id->GetLine(),id->GetScript(),id);
+                            pDecl->assign(exp);
+                            return pDecl;
+                         
 #line 1503 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
@@ -1511,9 +1511,9 @@ AstBase* SteelParser::ReductionRuleHandler0071 ()
 
 #line 371 "steel.trison"
  AstParamList * pList = new AstParamList ( exp->GetLine(), exp->GetScript() );
-		  pList->add(exp);
-		  return pList;
-		
+          pList->add(exp);
+          return pList;
+        
 #line 1518 "SteelParser.cpp"
     return static_cast<AstBase*>(0);
 }
@@ -4312,16 +4312,16 @@ unsigned int const SteelParser::ms_state_transition_count =
 
 
 void SteelParser::setBuffer(const char * pBuffer, const std::string &name)
-{	
-	assert( NULL != m_scanner );
-	m_scanner->setBuffer(pBuffer,name);
+{   
+    assert( NULL != m_scanner );
+    m_scanner->setBuffer(pBuffer,name);
 }
 
 
 SteelParser::Token::Type SteelParser::Scan ()
 {
-	assert(m_scanner != NULL);
-	return m_scanner->Scan(&m_lookahead_token);
+    assert(m_scanner != NULL);
+    return m_scanner->Scan(&m_lookahead_token);
 }
 
 #line 4328 "SteelParser.cpp"

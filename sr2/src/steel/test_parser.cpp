@@ -9,15 +9,15 @@ int main()
 
     while(!std::cin.eof())
     {
-	script += std::cin.get();
+    script += std::cin.get();
     }
 
     parser.SetDebugSpewLevel(2);
     parser.setBuffer( script.c_str() , "Magic Script");
     if(parser.Parse() != SteelParser::PRC_SUCCESS)
     {
-	std::cout << "Parse error unknown." << std::endl;
-	return 1;
+    std::cout << "Parse error unknown." << std::endl;
+    return 1;
     }
 
     AstScript *pScript = static_cast<AstScript*>( parser.GetAcceptedToken() );

@@ -61,7 +61,7 @@ namespace StoneRing
         void teardownClanLib();
         void showRechargeableOnionSplash();
         void showIntro();
-	
+    
         void loadItems(const std::string &filename);
         void loadSpells(const std::string &filename);
         void loadSkills(const std::string &filename);

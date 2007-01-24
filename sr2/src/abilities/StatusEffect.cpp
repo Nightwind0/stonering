@@ -11,22 +11,22 @@ StoneRing::AttributeEffect::AttributeEffect()
 
 void StoneRing::AttributeEffect::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-	mnAdd = getImpliedInt("add",pAttributes,0);
-	mfMultiplier = getImpliedFloat("multiplier",pAttributes,1);
+    mnAdd = getImpliedInt("add",pAttributes,0);
+    mfMultiplier = getImpliedFloat("multiplier",pAttributes,1);
 
-	std::string changeTo = getRequiredString("changeTo",pAttributes);
+    std::string changeTo = getRequiredString("changeTo",pAttributes);
 
-	if(changeTo == "min")
-		meChangeTo = MIN;
-	else if(changeTo == "max")
-		meChangeTo = MAX;
-	else if(changeTo == "add")
-		meChangeTo = ADD;
-	else if(changeTo == "multiplier")
-		meChangeTo = MULTIPLIER;
-	else if(changeTo == "multiplier_add")
-		meChangeTo = MULTIPLIER_ADD;
-	else throw CL_Error("Bad changeto on attribute effect: " + changeTo);
+    if(changeTo == "min")
+        meChangeTo = MIN;
+    else if(changeTo == "max")
+        meChangeTo = MAX;
+    else if(changeTo == "add")
+        meChangeTo = ADD;
+    else if(changeTo == "multiplier")
+        meChangeTo = MULTIPLIER;
+    else if(changeTo == "multiplier_add")
+        meChangeTo = MULTIPLIER_ADD;
+    else throw CL_Error("Bad changeto on attribute effect: " + changeTo);
 }
 
 StoneRing::AttributeEffect::~AttributeEffect()
@@ -35,30 +35,30 @@ StoneRing::AttributeEffect::~AttributeEffect()
 
 CL_DomElement StoneRing::AttributeEffect::createDomElement(CL_DomDocument &doc) const 
 {
-	return CL_DomElement(doc,"attributeEffect");
+    return CL_DomElement(doc,"attributeEffect");
 }
 
 
 std::string StoneRing::AttributeEffect::getAttribute() const
 {
-	return mAttribute;
+    return mAttribute;
 }
 
 int StoneRing::AttributeEffect::getAdd() const
 {
-	return mnAdd;
+    return mnAdd;
 }
 
 float StoneRing::AttributeEffect::getMultiplier() const
 {
-	return mfMultiplier;
+    return mfMultiplier;
 }
 
 
 StoneRing::AttributeEffect::eChangeTo 
 StoneRing::AttributeEffect::getChangeTo() const
 {
-	return meChangeTo;
+    return meChangeTo;
 }
 
 StoneRing::StatusEffectActions::StatusEffectActions()
@@ -68,28 +68,28 @@ StoneRing::StatusEffectActions::StatusEffectActions()
 
 bool StoneRing::StatusEffectActions::handleElement(eElement element,Element * pElement)
 {
-	switch(element)
-	{
-	case EDOWEAPONDAMAGE:
-	case EDOMAGICDAMAGE:
-	case EDOSTATUSEFFECT:
-	case EANIMATION:
-	case EATTRIBUTEEFFECT:
-		mEffects.push_back( dynamic_cast<Effect*>(pElement) );
-		break;
-	default:
-		return false;
-	}
-	return true;
+    switch(element)
+    {
+    case EDOWEAPONDAMAGE:
+    case EDOMAGICDAMAGE:
+    case EDOSTATUSEFFECT:
+    case EANIMATION:
+    case EATTRIBUTEEFFECT:
+        mEffects.push_back( dynamic_cast<Effect*>(pElement) );
+        break;
+    default:
+        return false;
+    }
+    return true;
 }
-	
+    
 
 
 StoneRing::StatusEffectActions::~StatusEffectActions()
 {
-	for(std::list<Effect*>::iterator i = mEffects.begin();
-		i != mEffects.end();
-		i++)
+    for(std::list<Effect*>::iterator i = mEffects.begin();
+        i != mEffects.end();
+        i++)
     {
         delete *i;
     }
@@ -97,37 +97,37 @@ StoneRing::StatusEffectActions::~StatusEffectActions()
 
 CL_DomElement StoneRing::StatusEffectActions::createDomElement(CL_DomDocument &doc) const
 {
-	return CL_DomElement(doc,"statusEffectActions");
+    return CL_DomElement(doc,"statusEffectActions");
 }
 
 std::list<StoneRing::Effect*>::const_iterator StoneRing::StatusEffectActions::getEffectsBegin() const
 {
-	return mEffects.begin();
+    return mEffects.begin();
 }
 
 std::list<StoneRing::Effect*>::const_iterator StoneRing::StatusEffectActions::getEffectsEnd() const
 {
-	return mEffects.end();
+    return mEffects.end();
 }
 
 
 void StoneRing::StatusEffect::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
-	mName = getRequiredString("name", pAttributes );
-	std::string last = getRequiredString("last",pAttributes );
+    mName = getRequiredString("name", pAttributes );
+    std::string last = getRequiredString("last",pAttributes );
 
-	if(last == "battle") meLast = BATTLE;
-	else if (last == "round_count") meLast = ROUND_COUNT;
-	else if (last == "permanent") meLast = PERMANENT;
+    if(last == "battle") meLast = BATTLE;
+    else if (last == "round_count") meLast = ROUND_COUNT;
+    else if (last == "permanent") meLast = PERMANENT;
 
-	if( meLast == BATTLE )
-	{
-		mfLengthMultiplier = getImpliedFloat("lengthMultiplier",pAttributes,1);
-	}
-	else if (meLast == ROUND_COUNT )
-	{
-		mnRoundCount = getRequiredInt("roundCount",pAttributes);
-	}
+    if( meLast == BATTLE )
+    {
+        mfLengthMultiplier = getImpliedFloat("lengthMultiplier",pAttributes,1);
+    }
+    else if (meLast == ROUND_COUNT )
+    {
+        mnRoundCount = getRequiredInt("roundCount",pAttributes);
+    }
 
 }
 
@@ -160,59 +160,59 @@ StoneRing::StatusEffect::StatusEffect():mpOnInvoke(NULL),mpOnRound(NULL),
 
 StoneRing::StatusEffect::~StatusEffect()
 {
-	delete mpOnInvoke;
-	delete mpOnRound;
-	delete mpOnCountdown;
-	delete mpOnRemove;
+    delete mpOnInvoke;
+    delete mpOnRound;
+    delete mpOnCountdown;
+    delete mpOnRemove;
 }
 
 
 CL_DomElement StoneRing::StatusEffect::createDomElement(CL_DomDocument &doc) const
 {
-	return CL_DomElement(doc,"statusEffect");
+    return CL_DomElement(doc,"statusEffect");
 }
 
 StoneRing::StatusEffectActions * StoneRing::StatusEffect::getOnInvoke() const
 {
-	return mpOnInvoke;
+    return mpOnInvoke;
 }
 
 StoneRing::StatusEffectActions * StoneRing::StatusEffect::getOnRound() const
 {
-	return mpOnRound;
+    return mpOnRound;
 }
 
 StoneRing::StatusEffectActions * StoneRing::StatusEffect::getOnCountdown() const
 {
-	return mpOnCountdown;
+    return mpOnCountdown;
 }
 
 StoneRing::StatusEffectActions * StoneRing::StatusEffect::getOnRemove() const
 {
-	return mpOnRemove;
+    return mpOnRemove;
 }
 
 std::string StoneRing::StatusEffect::getName() const
 {
-	return mName;
+    return mName;
 }
 
 StoneRing::StatusEffect::eLast 
 StoneRing::StatusEffect::getLast() const
 {
-	return meLast;
+    return meLast;
 }
 
 uint StoneRing::StatusEffect::getRoundCount() const
 {
-	return mnRoundCount;
+    return mnRoundCount;
 }
 
 
 // Multiply the magic power of the user by this using an algorithm to get length..
 float StoneRing::StatusEffect::getLengthMultiplier() const
 {
-	return mfLengthMultiplier;
+    return mfLengthMultiplier;
 }
-				
+                
 

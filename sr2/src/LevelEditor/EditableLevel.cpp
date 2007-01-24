@@ -206,7 +206,7 @@ EditableLevel::EditableLevel(const std::string &name,CL_ResourceManager * pResou
 EditableLevel::~EditableLevel()
 {
 }
-			
+            
 void EditableLevel::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC)
 {
 }
@@ -215,7 +215,7 @@ void EditableLevel::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, 
 void EditableLevel::addRows(int rows)
 {
     for(std::vector<std::vector<std::list<Tile*> > >::iterator iter= mTileMap.begin();
-	    iter != mTileMap.end();
+        iter != mTileMap.end();
         iter++)
     {
         iter->resize ( iter->size() + rows );
@@ -247,7 +247,7 @@ void EditableLevel::setMusic(const std::string &music)
     mMusic = music;
 }
 
-		
+        
 void EditableLevel::addTile ( Tile * pTile )
 {
 
@@ -260,7 +260,7 @@ void EditableLevel::addTile ( Tile * pTile )
     }
     else
     {
-        mTileMap[ pTile->getX() ][ pTile->getY()].push_back ( pTile );	
+        mTileMap[ pTile->getX() ][ pTile->getY()].push_back ( pTile );  
     }
 
     
@@ -284,24 +284,24 @@ void EditableLevel::removeTile ( Tile * pTile )
 std::list<Tile*> EditableLevel::getTilesAt(uint levelX, uint levelY) const
 {
 
-	std::list<Tile *> tiles = mTileMap[ levelX][levelY];
+    std::list<Tile *> tiles = mTileMap[ levelX][levelY];
 
-	
-	std::map<CL_Point,std::list<Tile*> >::const_iterator iter = mFloaterMap.find ( CL_Point(levelX,levelY));
+    
+    std::map<CL_Point,std::list<Tile*> >::const_iterator iter = mFloaterMap.find ( CL_Point(levelX,levelY));
 
-	if(iter != mFloaterMap.end())
-	{
-	    for(std::list<Tile*>::const_iterator i = iter->second.begin();
+    if(iter != mFloaterMap.end())
+    {
+        for(std::list<Tile*>::const_iterator i = iter->second.begin();
             i != iter->second.end();
             i++)
-	    {
+        {
             tiles.push_back ( *i );
-	    }
-	}
-	
+        }
+    }
+    
 
 
-	return tiles;
+    return tiles;
 
 }
     
@@ -312,28 +312,28 @@ std::list<Tile*> EditableLevel::getTilesAt(uint levelX, uint levelY) const
 // false will turn it off.
 void EditableLevel::setDirectionBlockAt(uint levelX, uint levelY, eDirectionBlock dir, bool bOn)
 {
-	
+    
     std::list<Tile*> tiles = getTilesAt(levelX,levelY);
 
     for(std::list<Tile*>::iterator iter = tiles.begin();
         iter != tiles.end();
         iter++)
     {
-		switch(dir)
-		{
-		case DIR_NORTH:
-			static_cast<EditableTile*>(*iter)->setNorthBlock(bOn);
-			break;
-		case DIR_SOUTH:
-			static_cast<EditableTile*>(*iter)->setSouthBlock(bOn);
-			break;
-		case DIR_EAST:
-			static_cast<EditableTile*>(*iter)->setEastBlock(bOn);
-			break;
-		case DIR_WEST:
-			static_cast<EditableTile*>(*iter)->setWestBlock(bOn);
-			break;
-		}
+        switch(dir)
+        {
+        case DIR_NORTH:
+            static_cast<EditableTile*>(*iter)->setNorthBlock(bOn);
+            break;
+        case DIR_SOUTH:
+            static_cast<EditableTile*>(*iter)->setSouthBlock(bOn);
+            break;
+        case DIR_EAST:
+            static_cast<EditableTile*>(*iter)->setEastBlock(bOn);
+            break;
+        case DIR_WEST:
+            static_cast<EditableTile*>(*iter)->setWestBlock(bOn);
+            break;
+        }
     }
 }
 

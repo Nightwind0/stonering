@@ -10,14 +10,14 @@ int main()
 
     while(!std::cin.eof())
     {
-	script += std::cin.get();
+    script += std::cin.get();
     }
 
     try{
-	interpreter.run("STDIO", script);
+    interpreter.run("STDIO", script);
     }
     catch(SteelException ex)
     {
-	std::cerr << "Error on line " << ex.getLine() << ": " << ex.getMessage() << std::endl;
+    std::cerr << "Error on line " << ex.getLine() << ": " << ex.getMessage() << std::endl;
     }
 }

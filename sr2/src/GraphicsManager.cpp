@@ -22,19 +22,19 @@ GraphicsManager * GraphicsManager::mInstance;
 
 GraphicsManager * GraphicsManager::getInstance()
 {
-	if(mInstance == NULL)
-		mInstance = new GraphicsManager();
+    if(mInstance == NULL)
+        mInstance = new GraphicsManager();
 
-	return mInstance;
+    return mInstance;
 }
 
 CL_Sprite * GraphicsManager::createSprite ( const std::string & name )
 {
-	CL_ResourceManager *pResources  = IApplication::getInstance()->getResources();
+    CL_ResourceManager *pResources  = IApplication::getInstance()->getResources();
 
-	CL_Sprite * pSprite = new CL_Sprite("Sprites/" +  name, pResources);
+    CL_Sprite * pSprite = new CL_Sprite("Sprites/" +  name, pResources);
 
-	return pSprite;
+    return pSprite;
 }
 
 std::string GraphicsManager::lookUpMapWithSurface (CL_Surface * surface)
@@ -57,70 +57,70 @@ std::string GraphicsManager::lookUpMapWithSurface (CL_Surface * surface)
 
 CL_Surface * GraphicsManager::getTileMap ( const std::string & name )
 {
-	CL_ResourceManager *pResources  = IApplication::getInstance()->getResources();
-	CL_Surface *pSurface;
+    CL_ResourceManager *pResources  = IApplication::getInstance()->getResources();
+    CL_Surface *pSurface;
 
 
-	if(mTileMap.find( name ) == mTileMap.end())
-	{
-		
-		pSurface = new CL_Surface("Tilemaps/" + name, pResources);
+    if(mTileMap.find( name ) == mTileMap.end())
+    {
+        
+        pSurface = new CL_Surface("Tilemaps/" + name, pResources);
 #ifndef NDEBUG
-		std::cout << std::dec;
-		std::cout << "Surface Depth: " << pSurface->get_pixeldata().get_format().get_depth() << std::endl;
-		std::cout << "Red: " << std::hex << pSurface->get_pixeldata().get_format().get_red_mask() << std::endl;
-		std::cout << "Green: " << std::hex << pSurface->get_pixeldata().get_format().get_green_mask() << std::endl;
-		std::cout << "Blue: " << std::hex << pSurface->get_pixeldata().get_format().get_blue_mask() << std::endl;
-		std::cout << "Alpha: " << std::hex << pSurface->get_pixeldata().get_format().get_alpha_mask() << std::endl;
-		std::cout << std::dec;
+        std::cout << std::dec;
+        std::cout << "Surface Depth: " << pSurface->get_pixeldata().get_format().get_depth() << std::endl;
+        std::cout << "Red: " << std::hex << pSurface->get_pixeldata().get_format().get_red_mask() << std::endl;
+        std::cout << "Green: " << std::hex << pSurface->get_pixeldata().get_format().get_green_mask() << std::endl;
+        std::cout << "Blue: " << std::hex << pSurface->get_pixeldata().get_format().get_blue_mask() << std::endl;
+        std::cout << "Alpha: " << std::hex << pSurface->get_pixeldata().get_format().get_alpha_mask() << std::endl;
+        std::cout << std::dec;
 #endif
 
-		mTileMap[ name ] = pSurface;
+        mTileMap[ name ] = pSurface;
 
-		return pSurface;
-	}
-	
-	pSurface = mTileMap[name];
+        return pSurface;
+    }
+    
+    pSurface = mTileMap[name];
 
-	return pSurface;
+    return pSurface;
 }
 
 CL_Font * GraphicsManager::getFont(StoneRing::GraphicsManager::eFont font)
 {
-	std::map<eFont,CL_Font*>::iterator foundIt = mFontMap.find( font );
+    std::map<eFont,CL_Font*>::iterator foundIt = mFontMap.find( font );
 
-	if(foundIt != mFontMap.end())
-	{
-		return foundIt->second;
-	}
-	else
-	{
-		CL_ResourceManager *pResources  = IApplication::getInstance()->getResources();
-		CL_Font * pFont = NULL;
-		pFont  = new CL_Font( std::string("Fonts/") + gFontName [ font ], pResources );
+    if(foundIt != mFontMap.end())
+    {
+        return foundIt->second;
+    }
+    else
+    {
+        CL_ResourceManager *pResources  = IApplication::getInstance()->getResources();
+        CL_Font * pFont = NULL;
+        pFont  = new CL_Font( std::string("Fonts/") + gFontName [ font ], pResources );
 
-		mFontMap [ font ] = pFont;
+        mFontMap [ font ] = pFont;
 
-		return pFont;
-	}
+        return pFont;
+    }
 }
-			
-			
+            
+            
 GraphicsManager::GraphicsManager()
 {
 }
 
 GraphicsManager::~GraphicsManager()
 {
-	for( std::map<std::string, CL_Surface*>::iterator i = mTileMap.begin();
-	     i != mTileMap.end();
-	     i++)
-	{
-		delete i->second;
-	}
+    for( std::map<std::string, CL_Surface*>::iterator i = mTileMap.begin();
+         i != mTileMap.end();
+         i++)
+    {
+        delete i->second;
+    }
 
 
 }
-	
+    
 
 

@@ -347,14 +347,14 @@ void Level::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC,
         
                 if(p.x >=0 && p.y >=0 && p.x < mLevelWidth && p.y < mLevelHeight)
                 {
-					CL_Rect tileSrc(0,0,32,32);            
-					CL_Rect tileDst ( exDst.left  + (tileX << 5),
+                    CL_Rect tileSrc(0,0,32,32);            
+                    CL_Rect tileDst ( exDst.left  + (tileX << 5),
                                       exDst.top + (tileY << 5),
                                       exDst.left + (tileX << 5) + 32,
                                       exDst.top + (tileY << 5) + 32);
 
-			               
-					std::list<Tile*>::iterator end = mTileMap[p.x][p.y].end();
+                           
+                    std::list<Tile*>::iterator end = mTileMap[p.x][p.y].end();
                     for(std::list<Tile*>::iterator i = mTileMap[p.x][p.y].begin();
                         i != end;
                         i++)
@@ -455,19 +455,19 @@ void Level::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_Graph
 #if 0
 
                 pGC->draw_rect(CL_Rect(point.x * 32 - src.left + dst.left,
-									   point.y * 32 + dst.top - src.top,
-									   point.x * 32 + 32 - src.left + dst.left,
-									   point.y * 32 + 32 - src.top + dst.top),CL_Color::beige);
+                                       point.y * 32 + dst.top - src.top,
+                                       point.x * 32 + 32 - src.left + dst.left,
+                                       point.y * 32 + 32 - src.top + dst.top),CL_Color::beige);
         
 #endif
 
                 if(mnFrameCount > pMO->getFrameMarks()
-				   && pMO->evaluateCondition())
+                   && pMO->evaluateCondition())
                 {
                     pMO->markFrame();
                     CL_Rect moRect = pMO->getPixelRect();
                     CL_Rect dstRect( moRect.left - src.left + dst.left, moRect.top + dst.top - src.top,
-									 moRect.left - src.left + dst.left +moRect.get_width(), moRect.top - src.top + dst.top + moRect.get_height());
+                                     moRect.left - src.left + dst.left +moRect.get_width(), moRect.top - src.top + dst.top + moRect.get_height());
                                         
                     pMO->draw( moRect, dstRect, pGC );            
                 }
@@ -541,7 +541,7 @@ void Level::moveMappableObjects(const CL_Rect &src)
     }
 
 #ifndef NDEBUG
-	bool playerFound = false;
+    bool playerFound = false;
 
 #endif
 
@@ -571,7 +571,7 @@ void Level::moveMappableObjects(const CL_Rect &src)
                 {
                     std::list<CL_Point> intoPoints ;
                     MappableObject::CalculateEdgePoints(pMo->getPositionAfterMove(), pMo->getDirection(),
-														pMo->getSize(), &intoPoints);
+                                                        pMo->getSize(), &intoPoints);
 
                     bool bPathBlocked = false;
                                         
@@ -582,18 +582,18 @@ void Level::moveMappableObjects(const CL_Rect &src)
                         iter++)
                     {
                         if((*iter).x < cornerx || (*iter).y <cornery || (*iter).x >= cornerx+width || (*iter).y >= cornery+height
-						   || (*iter).x <0 || (*iter).y <0 || (*iter).x >= mLevelWidth || (*iter).y >= mLevelHeight
-						   ||containsSolidMappableObject(*iter)
-						   ||
-						   (getCumulativeDirectionBlockAtPoint(*iter) & MappableObject::ConvertDirectionToDirectionBlock(pMo->getDirection()))
-						   || (pMo->respectsHotness() && getCumulativeHotnessAtPoint(*iter))
+                           || (*iter).x <0 || (*iter).y <0 || (*iter).x >= mLevelWidth || (*iter).y >= mLevelHeight
+                           ||containsSolidMappableObject(*iter)
+                           ||
+                           (getCumulativeDirectionBlockAtPoint(*iter) & MappableObject::ConvertDirectionToDirectionBlock(pMo->getDirection()))
+                           || (pMo->respectsHotness() && getCumulativeHotnessAtPoint(*iter))
                             )
                         {
 #ifndef NDEBUG
-							if(pMo->getName() == "Player" && gbDebugStop)
-							{
-								playerFound = true;
-							}
+                            if(pMo->getName() == "Player" && gbDebugStop)
+                            {
+                                playerFound = true;
+                            }
 #endif
                             // No go. Change direction, so we can try again.
                             pMo->randomNewDirection();
@@ -678,12 +678,12 @@ void Level::step(const CL_Point &target)
     {
         MappableObject * pMo = iter->second;
 
-		if((pMo)->evaluateCondition())
-		{
-			// This MO needs to be stepped on
-			//(*i)->provokeEvents ( Event::STEP );
-			(pMo)->provokeEvents(Event::STEP);
-		}
+        if((pMo)->evaluateCondition())
+        {
+            // This MO needs to be stepped on
+            //(*i)->provokeEvents ( Event::STEP );
+            (pMo)->provokeEvents(Event::STEP);
+        }
     }
 
 
@@ -703,7 +703,7 @@ void Level::activateTilesAt ( uint x, uint y )
         iter != tileList.end();
         iter++)
     {
-		Tile *pTile = *iter;
+        Tile *pTile = *iter;
         if(pTile->evaluateCondition())
         {
             if ( pTile->hasAM() )
@@ -790,8 +790,8 @@ void Level::dumpMappableObjects() const
         std::cout << '\t' << pMO->getName();
             
         std::cout << " @ " << (pMO->getX() / 32) << '(' << pMO->getX() << ')'
-				  <<',' 
-				  << (pMO->getY() / 32) << '(' << pMO->getY() << ')';
+                  <<',' 
+                  << (pMO->getY() / 32) << '(' << pMO->getY() << ')';
         std::cout << std::endl;
     
             

@@ -4,23 +4,23 @@
 #include "Check.h"
 
 namespace StoneRing{
-	class And : public Check
-	{
-	public:
-		And();
-		virtual ~And();
+    class And : public Check
+    {
+    public:
+        And();
+        virtual ~And();
 
-		virtual bool evaluate();
-		virtual eElement whichElement() const{ return EAND; }	
-		virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
+        virtual bool evaluate();
+        virtual eElement whichElement() const{ return EAND; }   
+        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
-		ushort order();
+        ushort order();
 
-	protected:
-		virtual bool handleElement(eElement element, Element * pElement );
-		ushort mOrder;
-		std::list<Check*> mOperands;
-	};
+    protected:
+        virtual bool handleElement(eElement element, Element * pElement );
+        ushort mOrder;
+        std::list<Check*> mOperands;
+    };
 };
 
 #endif

@@ -36,10 +36,10 @@ SteelScanner::SteelScanner ()
 
 #line 87 "steel.reflex"
 
-	m_char_cursor = 0;
-	m_line = 1;
-	m_script_name = "UNKNOWN SCRIPT";	
-	m_pBuffer = "";
+    m_char_cursor = 0;
+    m_line = 1;
+    m_script_name = "UNKNOWN SCRIPT";   
+    m_pBuffer = "";
 
 #line 45 "SteelScanner.cpp"
 }
@@ -94,8 +94,8 @@ AstBase **token
 
 #line 98 "steel.reflex"
 
-	//std::cerr << "Warning: unmatched input found:" 
-	//<< '\'' << accepted_string << '\'' << std::endl;
+    //std::cerr << "Warning: unmatched input found:" 
+    //<< '\'' << accepted_string << '\'' << std::endl;
 
 #line 101 "SteelScanner.cpp"
 
@@ -113,8 +113,8 @@ AstBase **token
 
 #line 134 "steel.reflex"
 
-		return SteelParser::Token::END_;
-	
+        return SteelParser::Token::END_;
+    
 #line 119 "SteelScanner.cpp"
 
                 }
@@ -125,8 +125,8 @@ AstBase **token
 
 #line 139 "steel.reflex"
 
-		m_line++;
-	
+        m_line++;
+    
 #line 131 "SteelScanner.cpp"
 
                 }
@@ -137,8 +137,8 @@ AstBase **token
 
 #line 144 "steel.reflex"
 
-		// Eat the comment
-	
+        // Eat the comment
+    
 #line 143 "SteelScanner.cpp"
 
                 }
@@ -149,8 +149,8 @@ AstBase **token
 
 #line 149 "steel.reflex"
 
-		// Eat it
-	 
+        // Eat it
+     
 #line 155 "SteelScanner.cpp"
 
                 }
@@ -161,10 +161,10 @@ AstBase **token
 
 #line 154 "steel.reflex"
 
-		*token = new AstString(m_line,m_script_name);
-		
-		SetScannerState(State::STRING_LITERAL_GUTS);
-	
+        *token = new AstString(m_line,m_script_name);
+        
+        SetScannerState(State::STRING_LITERAL_GUTS);
+    
 #line 169 "SteelScanner.cpp"
 
                 }
@@ -175,10 +175,10 @@ AstBase **token
 
 #line 161 "steel.reflex"
 
-		*token = NULL;
-		
-		return SteelParser::Token::POP;
-	
+        *token = NULL;
+        
+        return SteelParser::Token::POP;
+    
 #line 183 "SteelScanner.cpp"
 
                 }
@@ -189,9 +189,9 @@ AstBase **token
 
 #line 169 "steel.reflex"
 
-		*token = NULL;
-		return SteelParser::Token::CAT;
-	
+        *token = NULL;
+        return SteelParser::Token::CAT;
+    
 #line 196 "SteelScanner.cpp"
 
                 }
@@ -202,9 +202,9 @@ AstBase **token
 
 #line 175 "steel.reflex"
 
-		*token = NULL;
-		return SteelParser::Token::DECREMENT;
-	
+        *token = NULL;
+        return SteelParser::Token::DECREMENT;
+    
 #line 209 "SteelScanner.cpp"
 
                 }
@@ -215,9 +215,9 @@ AstBase **token
 
 #line 181 "steel.reflex"
 
-		*token = NULL;
-		return SteelParser::Token::INCREMENT;
-	
+        *token = NULL;
+        return SteelParser::Token::INCREMENT;
+    
 #line 222 "SteelScanner.cpp"
 
                 }
@@ -228,10 +228,10 @@ AstBase **token
 
 #line 187 "steel.reflex"
 
-		*token = new AstInteger(m_line,m_script_name,ToInt(accepted_string));
-			
-		return SteelParser::Token::INT;
-	
+        *token = new AstInteger(m_line,m_script_name,ToInt(accepted_string));
+            
+        return SteelParser::Token::INT;
+    
 #line 236 "SteelScanner.cpp"
 
                 }
@@ -242,10 +242,10 @@ AstBase **token
 
 #line 194 "steel.reflex"
 
-		*token = new AstInteger(m_line,m_script_name,ToIntFromHex(accepted_string));
-		
-		return SteelParser::Token::INT;
-	
+        *token = new AstInteger(m_line,m_script_name,ToIntFromHex(accepted_string));
+        
+        return SteelParser::Token::INT;
+    
 #line 250 "SteelScanner.cpp"
 
                 }
@@ -256,9 +256,9 @@ AstBase **token
 
 #line 201 "steel.reflex"
 
-		*token = new AstFloat(m_line,m_script_name,ToFloat(accepted_string));
-		return SteelParser::Token::FLOAT;
-	
+        *token = new AstFloat(m_line,m_script_name,ToFloat(accepted_string));
+        return SteelParser::Token::FLOAT;
+    
 #line 263 "SteelScanner.cpp"
 
                 }
@@ -269,9 +269,9 @@ AstBase **token
 
 #line 207 "steel.reflex"
 
-		*token = new AstVarIdentifier(m_line,m_script_name,accepted_string);
-		return SteelParser::Token::VAR_IDENTIFIER;		
-	
+        *token = new AstVarIdentifier(m_line,m_script_name,accepted_string);
+        return SteelParser::Token::VAR_IDENTIFIER;      
+    
 #line 276 "SteelScanner.cpp"
 
                 }
@@ -282,9 +282,9 @@ AstBase **token
 
 #line 213 "steel.reflex"
 
-		*token = new AstArrayIdentifier(m_line,m_script_name,accepted_string);
-		return SteelParser::Token::ARRAY_IDENTIFIER;
-	
+        *token = new AstArrayIdentifier(m_line,m_script_name,accepted_string);
+        return SteelParser::Token::ARRAY_IDENTIFIER;
+    
 #line 289 "SteelScanner.cpp"
 
                 }
@@ -295,9 +295,9 @@ AstBase **token
 
 #line 219 "steel.reflex"
 
-		*token = new AstKeyword(m_line,m_script_name);
-		return (SteelParser::Token::Type)accepted_string[0];
-	
+        *token = new AstKeyword(m_line,m_script_name);
+        return (SteelParser::Token::Type)accepted_string[0];
+    
 #line 302 "SteelScanner.cpp"
 
                 }
@@ -308,8 +308,8 @@ AstBase **token
 
 #line 225 "steel.reflex"
 
-		return (SteelParser::Token::Type)accepted_string[0];
-	
+        return (SteelParser::Token::Type)accepted_string[0];
+    
 #line 314 "SteelScanner.cpp"
 
                 }
@@ -320,9 +320,9 @@ AstBase **token
 
 #line 230 "steel.reflex"
 
-		 *token = NULL;
-		 return SteelParser::Token::LTE; 
-	
+         *token = NULL;
+         return SteelParser::Token::LTE; 
+    
 #line 327 "SteelScanner.cpp"
 
                 }
@@ -333,9 +333,9 @@ AstBase **token
 
 #line 236 "steel.reflex"
 
-		 *token = NULL;
-		  return SteelParser::Token::GTE; 
-	
+         *token = NULL;
+          return SteelParser::Token::GTE; 
+    
 #line 340 "SteelScanner.cpp"
 
                 }
@@ -346,9 +346,9 @@ AstBase **token
 
 #line 242 "steel.reflex"
 
-		*token = NULL;
-		return SteelParser::Token::NE;
-	
+        *token = NULL;
+        return SteelParser::Token::NE;
+    
 #line 353 "SteelScanner.cpp"
 
                 }
@@ -359,9 +359,9 @@ AstBase **token
 
 #line 248 "steel.reflex"
 
-		*token = NULL;
-		 return SteelParser::Token::EQ;
-	 
+        *token = NULL;
+         return SteelParser::Token::EQ;
+     
 #line 366 "SteelScanner.cpp"
 
                 }
@@ -372,9 +372,9 @@ AstBase **token
 
 #line 254 "steel.reflex"
 
-		*token = NULL;
-		 return SteelParser::Token::LT; 
-	
+        *token = NULL;
+         return SteelParser::Token::LT; 
+    
 #line 379 "SteelScanner.cpp"
 
                 }
@@ -385,9 +385,9 @@ AstBase **token
 
 #line 260 "steel.reflex"
 
-		*token = NULL;
-		 return SteelParser::Token::GT; 
-	
+        *token = NULL;
+         return SteelParser::Token::GT; 
+    
 #line 392 "SteelScanner.cpp"
 
                 }
@@ -398,9 +398,9 @@ AstBase **token
 
 #line 266 "steel.reflex"
  
-		*token = NULL;
-		 return SteelParser::Token::D;
-	 
+        *token = NULL;
+         return SteelParser::Token::D;
+     
 #line 405 "SteelScanner.cpp"
 
                 }
@@ -411,9 +411,9 @@ AstBase **token
 
 #line 272 "steel.reflex"
  
-		*token = NULL;
-		 return SteelParser::Token::AND;
-	 
+        *token = NULL;
+         return SteelParser::Token::AND;
+     
 #line 418 "SteelScanner.cpp"
 
                 }
@@ -424,9 +424,9 @@ AstBase **token
 
 #line 278 "steel.reflex"
  
-		*token = NULL;
-		 return SteelParser::Token::OR;
-	 
+        *token = NULL;
+         return SteelParser::Token::OR;
+     
 #line 431 "SteelScanner.cpp"
 
                 }
@@ -437,9 +437,9 @@ AstBase **token
 
 #line 284 "steel.reflex"
 
-		*token = NULL;
-		 return SteelParser::Token::NOT;
-	
+        *token = NULL;
+         return SteelParser::Token::NOT;
+    
 #line 444 "SteelScanner.cpp"
 
                 }
@@ -450,9 +450,9 @@ AstBase **token
 
 #line 290 "steel.reflex"
 
-		*token = NULL;
-		 return SteelParser::Token::WHILE;
-	
+        *token = NULL;
+         return SteelParser::Token::WHILE;
+    
 #line 457 "SteelScanner.cpp"
 
                 }
@@ -463,9 +463,9 @@ AstBase **token
 
 #line 296 "steel.reflex"
 
-		*token = NULL;
-		 return SteelParser::Token::FOR;
-	
+        *token = NULL;
+         return SteelParser::Token::FOR;
+    
 #line 470 "SteelScanner.cpp"
 
                 }
@@ -476,9 +476,9 @@ AstBase **token
 
 #line 302 "steel.reflex"
  
-		*token = NULL;
-		 return SteelParser::Token::BREAK;
-	
+        *token = NULL;
+         return SteelParser::Token::BREAK;
+    
 #line 483 "SteelScanner.cpp"
 
                 }
@@ -489,9 +489,9 @@ AstBase **token
 
 #line 308 "steel.reflex"
  
-		*token = NULL;
-		 return SteelParser::Token::CONTINUE;
-	
+        *token = NULL;
+         return SteelParser::Token::CONTINUE;
+    
 #line 496 "SteelScanner.cpp"
 
                 }
@@ -502,9 +502,9 @@ AstBase **token
 
 #line 314 "steel.reflex"
 
-		*token = NULL;
-		 return SteelParser::Token::IF;
-	
+        *token = NULL;
+         return SteelParser::Token::IF;
+    
 #line 509 "SteelScanner.cpp"
 
                 }
@@ -515,9 +515,9 @@ AstBase **token
 
 #line 320 "steel.reflex"
 
-		*token = NULL;
-		 return SteelParser::Token::ELSE;
-	
+        *token = NULL;
+         return SteelParser::Token::ELSE;
+    
 #line 522 "SteelScanner.cpp"
 
                 }
@@ -528,9 +528,9 @@ AstBase **token
 
 #line 326 "steel.reflex"
 
-		 *token = NULL;
-		return SteelParser::Token::RETURN;
-	
+         *token = NULL;
+        return SteelParser::Token::RETURN;
+    
 #line 535 "SteelScanner.cpp"
 
                 }
@@ -541,9 +541,9 @@ AstBase **token
 
 #line 332 "steel.reflex"
  
-		*token = NULL;
-		return SteelParser::Token::FUNCTION;
-	
+        *token = NULL;
+        return SteelParser::Token::FUNCTION;
+    
 #line 548 "SteelScanner.cpp"
 
                 }
@@ -554,10 +554,10 @@ AstBase **token
 
 #line 338 "steel.reflex"
 
-	 	*token = NULL;
-		
-		return SteelParser::Token::VAR;
-	
+        *token = NULL;
+        
+        return SteelParser::Token::VAR;
+    
 #line 562 "SteelScanner.cpp"
 
                 }
@@ -568,9 +568,9 @@ AstBase **token
 
 #line 345 "steel.reflex"
 
-		*token = new AstFuncIdentifier(m_line,m_script_name,accepted_string);
-		return SteelParser::Token::FUNC_IDENTIFIER;
-	
+        *token = new AstFuncIdentifier(m_line,m_script_name,accepted_string);
+        return SteelParser::Token::FUNC_IDENTIFIER;
+    
 #line 575 "SteelScanner.cpp"
 
                 }
@@ -581,10 +581,10 @@ AstBase **token
 
 #line 356 "steel.reflex"
 
-		// First, add the accepted_string to the string..
-		AstString *pString = (AstString*)*token;		
-		pString->addChar(accepted_string[0]);
-	
+        // First, add the accepted_string to the string..
+        AstString *pString = (AstString*)*token;        
+        pString->addChar(accepted_string[0]);
+    
 #line 589 "SteelScanner.cpp"
 
                 }
@@ -595,9 +595,9 @@ AstBase **token
 
 #line 363 "steel.reflex"
 
-		AstString *pString = (AstString*)*token;
-		pString->addChar( AstString::getEscapedChar ( accepted_string[1] ) );
-	
+        AstString *pString = (AstString*)*token;
+        pString->addChar( AstString::getEscapedChar ( accepted_string[1] ) );
+    
 #line 602 "SteelScanner.cpp"
 
                 }
@@ -608,11 +608,11 @@ AstBase **token
 
 #line 371 "steel.reflex"
  
-		AstString *pString = (AstString*)*token;
+        AstString *pString = (AstString*)*token;
 
-		SetScannerState(State::MAIN);
-		return SteelParser::Token::STRING; 
-	
+        SetScannerState(State::MAIN);
+        return SteelParser::Token::STRING; 
+    
 #line 617 "SteelScanner.cpp"
 
                 }
@@ -623,8 +623,8 @@ AstBase **token
 
 #line 379 "steel.reflex"
 
-		// Error
-	
+        // Error
+    
 #line 629 "SteelScanner.cpp"
 
                 }
@@ -638,7 +638,7 @@ AstBase **token
 
 #line 28 "steel.reflex"
 
-			
+            
 
 #line 644 "SteelScanner.cpp"
 }
@@ -649,7 +649,7 @@ bool SteelScanner::IsInputAtEnd_ ()
 #line 118 "steel.reflex"
 
 
-	return (m_pBuffer[m_char_cursor] == '\0');
+    return (m_pBuffer[m_char_cursor] == '\0');
 
 #line 655 "SteelScanner.cpp"
 }
@@ -660,10 +660,10 @@ ReflexCpp_::Uint8_ SteelScanner::ReadNextAtom_ ()
 #line 109 "steel.reflex"
 
 
-	if( m_pBuffer[m_char_cursor] == '\0')
-		return '\n';
-	else
-		return m_pBuffer[m_char_cursor++];
+    if( m_pBuffer[m_char_cursor] == '\0')
+        return '\n';
+    else
+        return m_pBuffer[m_char_cursor++];
 
 
 #line 670 "SteelScanner.cpp"
@@ -676,7 +676,7 @@ void SteelScanner::ResetForNewInput_ ()
 
 #line 94 "steel.reflex"
 
-	m_line = 0;	
+    m_line = 0; 
 
 #line 682 "SteelScanner.cpp"
 }
@@ -1339,37 +1339,37 @@ ReflexCpp_::Uint32_ const SteelScanner::ms_accept_handler_count_ = 40;
 
 void SteelScanner::setBuffer(const char * pBuffer, const std::string &name)
 {
-	assert ( NULL != pBuffer );
-	m_char_cursor = 0;
-	m_line = 1;
-	m_pBuffer = pBuffer;
-	m_script_name = name;
+    assert ( NULL != pBuffer );
+    m_char_cursor = 0;
+    m_line = 1;
+    m_pBuffer = pBuffer;
+    m_script_name = name;
 }
 int SteelScanner::ToInt(const std::string &text)
 {
-	std::istringstream str(text);
-	int i;
-	str >> i;
+    std::istringstream str(text);
+    int i;
+    str >> i;
 
-	return i;
+    return i;
 }
 
 double SteelScanner::ToFloat(const std::string &text)
 {
-	std::istringstream str(text);
-	double d;
-	str >> d;
+    std::istringstream str(text);
+    double d;
+    str >> d;
 
-	return d;
+    return d;
 }
 
 int SteelScanner::ToIntFromHex(const std::string &text)
 {
-	std::istringstream str(text);
-	int i;
+    std::istringstream str(text);
+    int i;
 
-	str >> std::hex >> i;
-	return i;
+    str >> std::hex >> i;
+    return i;
 }
 
 

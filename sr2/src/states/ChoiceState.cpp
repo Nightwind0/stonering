@@ -16,7 +16,7 @@ StoneRing::ChoiceState::~ChoiceState()
 
 bool StoneRing::ChoiceState::isDone() const
 {
-	return mbDone;
+    return mbDone;
 }
 
 void StoneRing::ChoiceState::handleKeyDown(const CL_InputEvent &key)
@@ -25,18 +25,18 @@ void StoneRing::ChoiceState::handleKeyDown(const CL_InputEvent &key)
 
 void StoneRing::ChoiceState::handleKeyUp(const CL_InputEvent &key)
 {
-	switch(key.id)
-	{
-	case CL_KEY_ENTER:
-	case CL_KEY_SPACE:
-	    // Select current option.
-		mbDraw = false;
-	    mpChoice->chooseOption(mnCurrentOption);
-	    mbDone = true;
-	    break;
-	case CL_KEY_DOWN:
-	    if(mnCurrentOption + 1 < mChoices.size())
-	    {
+    switch(key.id)
+    {
+    case CL_KEY_ENTER:
+    case CL_KEY_SPACE:
+        // Select current option.
+        mbDraw = false;
+        mpChoice->chooseOption(mnCurrentOption);
+        mbDone = true;
+        break;
+    case CL_KEY_DOWN:
+        if(mnCurrentOption + 1 < mChoices.size())
+        {
             mnCurrentOption++;
                 
             // @todo: 4?? should be options per page but we'll have to latch it
@@ -44,29 +44,29 @@ void StoneRing::ChoiceState::handleKeyUp(const CL_InputEvent &key)
             {
                 mnOptionOffset++;
             }
-	    }
+        }
             
         break;
-	case CL_KEY_UP:
-	    if(mnCurrentOption > 0 )
-	    {
+    case CL_KEY_UP:
+        if(mnCurrentOption > 0 )
+        {
             mnCurrentOption--;
-		
+        
             if(mnCurrentOption < mnOptionOffset)
             {
                 mnOptionOffset--;
             }
-	    }
-	    break;
-	    
-	case CL_KEY_ESCAPE:
-	    break;
-	}
+        }
+        break;
+        
+    case CL_KEY_ESCAPE:
+        break;
+    }
 }
 
 void StoneRing::ChoiceState::draw(const CL_Rect &screenRect,CL_GraphicContext * pGC)
 {
-	if(!mbDraw) return;
+    if(!mbDraw) return;
 
     CL_Point choiceDrawPoint(screenRect.left, screenRect.top);
     CL_Size choiceDimensions = mpChoiceFont->get_size(mText,CL_Size( screenRect.get_width(), screenRect.get_height() / 2));
@@ -91,23 +91,23 @@ void StoneRing::ChoiceState::draw(const CL_Rect &screenRect,CL_GraphicContext * 
     // Draw the options
     for(uint i=0;i< optionsPerPage; i++)
     {
-	
+    
         // Don't paint more options than there are
         if(i + mnOptionOffset >= mChoices.size()) break;
-	
+    
         if(i + mnOptionOffset == mnCurrentOption)
         {
             pLineFont = mpCurrentOptionFont;
-	    
+        
         }
         else
         {
             pLineFont = mpOptionFont;
         }
-	
+    
         pLineFont->draw( 0,  i * (pLineFont->get_height() + pLineFont->get_height_offset()) + (screenRect.get_height() /2),
                          mChoices[i + mnOptionOffset], pGC);
-	
+    
     }
     
     
@@ -117,7 +117,7 @@ void StoneRing::ChoiceState::draw(const CL_Rect &screenRect,CL_GraphicContext * 
 
 bool StoneRing::ChoiceState::disableMappableObjects() const
 {
-	return true;
+    return true;
 }
 
 
@@ -128,20 +128,20 @@ void StoneRing::ChoiceState::mappableObjectMoveHook()
 void StoneRing::ChoiceState::start()
 {
 
-	mbDone = false;
-	mbDraw = true;
+    mbDone = false;
+    mbDraw = true;
 
-	if(!mpChoiceFont)
-	    mpChoiceFont = GraphicsManager::getInstance()->getFont( GraphicsManager::FONT_CHOICE );
-	
-	if(!mpOptionFont)
-	    mpOptionFont = GraphicsManager::getInstance()->getFont( GraphicsManager::FONT_OPTION );
-	
-	if(!mpCurrentOptionFont)
-	    mpCurrentOptionFont = GraphicsManager::getInstance()->getFont( GraphicsManager::FONT_CURRENT_OPTION );
+    if(!mpChoiceFont)
+        mpChoiceFont = GraphicsManager::getInstance()->getFont( GraphicsManager::FONT_CHOICE );
+    
+    if(!mpOptionFont)
+        mpOptionFont = GraphicsManager::getInstance()->getFont( GraphicsManager::FONT_OPTION );
+    
+    if(!mpCurrentOptionFont)
+        mpCurrentOptionFont = GraphicsManager::getInstance()->getFont( GraphicsManager::FONT_CURRENT_OPTION );
 
-	mnCurrentOption = 0;
-	mnOptionOffset = 0;
+    mnCurrentOption = 0;
+    mnOptionOffset = 0;
 
 /*
   if(!mpChoiceOverlay)

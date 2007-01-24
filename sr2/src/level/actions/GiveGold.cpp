@@ -9,18 +9,18 @@ GiveGold::GiveGold()
 
 CL_DomElement  GiveGold::createDomElement(CL_DomDocument &doc) const
 {
-	CL_DomElement element(doc,"giveGold");
+    CL_DomElement element(doc,"giveGold");
 
-	element.set_attribute("count", IntToString ( mCount ) );
+    element.set_attribute("count", IntToString ( mCount ) );
 
 
-	return element;
+    return element;
 }
 
 
 void GiveGold::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-	mCount = getImpliedInt("count",pAttributes,1);
+    mCount = getImpliedInt("count",pAttributes,1);
 }
 
 
@@ -30,7 +30,7 @@ GiveGold::~GiveGold()
 
 void GiveGold::invoke()
 {
-	IApplication::getInstance()->getParty()->giveGold ( mCount );
+    IApplication::getInstance()->getParty()->giveGold ( mCount );
 }
 
 

@@ -33,7 +33,7 @@ std::string FloatToString(const float &f);
 
 enum eMagicType
 {
-	FIRE, WATER, WIND, EARTH, HOLY, DARK, OTHER
+    FIRE, WATER, WIND, EARTH, HOLY, DARK, OTHER
 };
 
 

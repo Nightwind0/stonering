@@ -12,7 +12,7 @@
 namespace StoneRing{
 
 
-    class ItemRef;	
+    class ItemRef;  
 
 
 

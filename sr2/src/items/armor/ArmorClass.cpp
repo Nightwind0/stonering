@@ -14,27 +14,27 @@ ArmorClass::ArmorClass()
 
 bool ArmorClass::operator==( const ArmorClass &lhs )
 {
-	return mName == lhs.mName;
+    return mName == lhs.mName;
 }
 
 void ArmorClass::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-	mName = getRequiredString("name",pAttributes );
-	mfValueMultiplier = getImpliedFloat("valueMultiplier",pAttributes,1);
-	mnValueAdd = getImpliedInt("valueAdd",pAttributes,0);
+    mName = getRequiredString("name",pAttributes );
+    mfValueMultiplier = getImpliedFloat("valueMultiplier",pAttributes,1);
+    mnValueAdd = getImpliedInt("valueAdd",pAttributes,0);
 }
 
 bool ArmorClass::handleElement(eElement element, Element * pElement)
 {
-	switch(element)
-	{
-	case EATTRIBUTEENHANCER:
-		mAttributeEnhancers.push_back( dynamic_cast<AttributeEnhancer*>(pElement) );
-		break;
-	case EARMORENHANCER:
-		mArmorEnhancers.push_back( dynamic_cast<ArmorEnhancer*>(pElement) );
-		break;
-	case EARMORTYPEEXCLUSIONLIST:
+    switch(element)
+    {
+    case EATTRIBUTEENHANCER:
+        mAttributeEnhancers.push_back( dynamic_cast<AttributeEnhancer*>(pElement) );
+        break;
+    case EARMORENHANCER:
+        mArmorEnhancers.push_back( dynamic_cast<ArmorEnhancer*>(pElement) );
+        break;
+    case EARMORTYPEEXCLUSIONLIST:
     {
         ArmorTypeExclusionList * pList = dynamic_cast<ArmorTypeExclusionList*>(pElement);
         std::copy(pList->getArmorTypeRefsBegin(),pList->getArmorTypeRefsEnd(), 
@@ -43,82 +43,82 @@ bool ArmorClass::handleElement(eElement element, Element * pElement)
         delete pList;
         break;
     }
-	case ESTATUSEFFECTMODIFIER:
-		addStatusEffectModifier (dynamic_cast<StatusEffectModifier*>(pElement));
-		break;
-	default:
-		return false;
-	}
+    case ESTATUSEFFECTMODIFIER:
+        addStatusEffectModifier (dynamic_cast<StatusEffectModifier*>(pElement));
+        break;
+    default:
+        return false;
+    }
 
-	return true;
+    return true;
 }
 
 
 ArmorClass::~ArmorClass()
 {
-	std::for_each(mAttributeEnhancers.begin(),mAttributeEnhancers.end(),del_fun<AttributeEnhancer>());
-	std::for_each(mArmorEnhancers.begin(),mArmorEnhancers.end(),del_fun<ArmorEnhancer>());
-	std::for_each(mExcludedTypes.begin(),mExcludedTypes.end(),del_fun<ArmorTypeRef>());
+    std::for_each(mAttributeEnhancers.begin(),mAttributeEnhancers.end(),del_fun<AttributeEnhancer>());
+    std::for_each(mArmorEnhancers.begin(),mArmorEnhancers.end(),del_fun<ArmorEnhancer>());
+    std::for_each(mExcludedTypes.begin(),mExcludedTypes.end(),del_fun<ArmorTypeRef>());
 }
 
 
 CL_DomElement ArmorClass::createDomElement ( CL_DomDocument &doc) const
 {
-	return CL_DomElement(doc, "armorClass");
+    return CL_DomElement(doc, "armorClass");
 }
 
 std::string ArmorClass::getName() const
 {
-	return mName;
+    return mName;
 }
 
 int ArmorClass::getValueAdd() const
 {
-	return mnValueAdd;
+    return mnValueAdd;
 }
 
 float ArmorClass::getValueMultiplier() const
 {
-	return mfValueMultiplier;
+    return mfValueMultiplier;
 }
 
 std::list<AttributeEnhancer*>::const_iterator 
 ArmorClass::getAttributeEnhancersBegin()
 {
-	return mAttributeEnhancers.begin();
+    return mAttributeEnhancers.begin();
 }
 
 std::list<AttributeEnhancer*>::const_iterator 
 ArmorClass::getAttributeEnhancersEnd()
 {
-	return mAttributeEnhancers.end();
+    return mAttributeEnhancers.end();
 }
 
 std::list<ArmorEnhancer*>::const_iterator 
 ArmorClass::getArmorEnhancersBegin()
 {
-	return mArmorEnhancers.begin();
+    return mArmorEnhancers.begin();
 }
 
 std::list<ArmorEnhancer*>::const_iterator 
 ArmorClass::getArmorEnhancersEnd()
 {
-	return mArmorEnhancers.end();
+    return mArmorEnhancers.end();
 }
 
 bool ArmorClass::isExcluded ( const ArmorTypeRef &armorType )
 {
-	for(std::list<ArmorTypeRef*>::const_iterator iter = mExcludedTypes.begin();
-		iter != mExcludedTypes.end();
-		iter++)
-	{
-		ArmorTypeRef * pRef = *iter;
+    for(std::list<ArmorTypeRef*>::const_iterator iter = mExcludedTypes.begin();
+        iter != mExcludedTypes.end();
+        iter++)
+    {
+        ArmorTypeRef * pRef = *iter;
 
-		if( pRef->getName() == armorType.getName() ) 
-			return true;
-	}
+        if( pRef->getName() == armorType.getName() ) 
+            return true;
+    }
 
-	return false;
+    return false;
 }
 
 

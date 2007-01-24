@@ -6,24 +6,24 @@
 
 namespace StoneRing{
 
-	class ItemRef;
+    class ItemRef;
 
-	class Give: public Action, public Element
-	{
-	public:
-		Give();
-		virtual ~Give();
-		virtual eElement whichElement() const{ return EGIVE; }	
-		virtual void invoke();
+    class Give: public Action, public Element
+    {
+    public:
+        Give();
+        virtual ~Give();
+        virtual eElement whichElement() const{ return EGIVE; }  
+        virtual void invoke();
 
-		virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
+        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
-	protected:
-		virtual bool handleElement(eElement,Element*);
-		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-		ItemRef *mpItemRef;
-		uint mCount;
-	};
+    protected:
+        virtual bool handleElement(eElement,Element*);
+        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+        ItemRef *mpItemRef;
+        uint mCount;
+    };
 };
 
 #endif

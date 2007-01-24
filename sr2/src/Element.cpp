@@ -24,10 +24,10 @@ using StoneRing::Element;
 // MUST be alphabetized.
 const char * StoneRing::Element::pszElementNames[Element::__END_OF_ELEMENTS__] = 
 {
-	"addCharacter",
+    "addCharacter",
     "and",//        AND,
     "animation",//          ANIMATION,
-	"animationDefinition",
+    "animationDefinition",
     "animationSpriteRef",
     "armorClass",//         ARMORCLASS,
     "armorClassRef",//      ARMORCLASSREF,
@@ -39,7 +39,7 @@ const char * StoneRing::Element::pszElementNames[Element::__END_OF_ELEMENTS__] =
     "attributeEffect",//            ATTRIBUTEEFFECT,
     "attributeEnhancer",//          ATTRIBUTEENHANCER,
     "attributeModifier",//          ATTRIBUTEMODIFIER,
-	"character", // CHARACTER
+    "character", // CHARACTER
     "characterClass",
     "choice",//             CHOICE,
     "condition",//          CONDITION,
@@ -77,9 +77,9 @@ const char * StoneRing::Element::pszElementNames[Element::__END_OF_ELEMENTS__] =
     "playScene",//      PLAYSCENE,
     "playSound",//          PLAYSOUND,
     "pop",
-	"prereqSkillRef", // PREREQSKILLREF
+    "prereqSkillRef", // PREREQSKILLREF
     "regularItem",//        REGULARITEM,
-	"removeCharacter",
+    "removeCharacter",
     "rune",//       RUNE,
     "runeType",//           RUNETYPE,
     "say",//        SAY,
@@ -108,7 +108,7 @@ const char * StoneRing::Element::pszElementNames[Element::__END_OF_ELEMENTS__] =
     "weaponType",//         WEAPONTYPE,
     "weaponTypeExclusionList",
     "weaponTypeRef",//      WEAPONTYPEREF,
-	"weaponTypeSprite"
+    "weaponTypeSprite"
 
 };
 
@@ -254,7 +254,7 @@ std::string Element::getString (const std::string &attrname, CL_DomNamedNodeMap 
 
 std::string Element::getElementName() const
 {
-	return pszElementNames[ whichElement() ];
+    return pszElementNames[ whichElement() ];
 }
     
 
@@ -269,23 +269,23 @@ void Element::load(CL_DomElement * pDomElement)
     factories.push_back(pItemFactory);
     factories.push_back(IApplication::getInstance()->getAbilityFactory());
     factories.push_back(IApplication::getInstance()->getLevelFactory());
-	factories.push_back(IApplication::getInstance()->getCharacterFactory());
+    factories.push_back(IApplication::getInstance()->getCharacterFactory());
 
                 
     loadAttributes(&pDomElement->get_attributes());
 
     CL_DomNode childNode = pDomElement->get_first_child(); //.to_element();  
-	CL_DomElement child;
+    CL_DomElement child;
 
 
-	if(childNode.is_text())
-	{
-		CL_DomText text = childNode.to_text();
-		handleText(text.get_node_value());
-	}
+    if(childNode.is_text())
+    {
+        CL_DomText text = childNode.to_text();
+        handleText(text.get_node_value());
+    }
 
-	child = childNode.to_element();
-	
+    child = childNode.to_element();
+    
 
     while(!child.is_null())
     {
@@ -317,7 +317,7 @@ void Element::load(CL_DomElement * pDomElement)
                 {
                     pElement = pFactory->createElement(element);
 
-                    //	cl_assert ( pElement->whichElement() == element );
+                    //  cl_assert ( pElement->whichElement() == element );
                     break;
                 }
                                         
@@ -328,36 +328,36 @@ void Element::load(CL_DomElement * pDomElement)
             pElement->load( &child );
 
             if(!handleElement(element, pElement ))
-			{
-				// They didn't handle it. So lets get rid of it
-				std::cout << "Unhandled element " << element_name << " found" << std::endl;
-				delete pElement;
-			}
+            {
+                // They didn't handle it. So lets get rid of it
+                std::cout << "Unhandled element " << element_name << " found" << std::endl;
+                delete pElement;
+            }
 
-		
-		
+        
+        
 
         }
 
-		if(child.get_next_sibling().is_text())
-			std::cout << "Found Text" << std::endl;
+        if(child.get_next_sibling().is_text())
+            std::cout << "Found Text" << std::endl;
 
         child = child.get_next_sibling().to_element();
     }
 
 #if 0
-	if(pDomElement->is_text())
-	{
-		CL_DomCDATASection cdata = pDomElement->to_text();
+    if(pDomElement->is_text())
+    {
+        CL_DomCDATASection cdata = pDomElement->to_text();
 #ifndef NDEBUG
-		if(!cdata.is_null())
-		{
-			std::string theText = cdata.substring_data(0,text.get_length());
-			std::cout << '\'' << theText  << '\'' << std::endl;
-		}
+        if(!cdata.is_null())
+        {
+            std::string theText = cdata.substring_data(0,text.get_length());
+            std::cout << '\'' << theText  << '\'' << std::endl;
+        }
 #endif
-		handleText (  cdata.substring_data(0,cdata.length()) );
-	}
+        handleText (  cdata.substring_data(0,cdata.length()) );
+    }
 #endif
 
     loadFinished();

@@ -24,7 +24,7 @@ Party::~Party()
 
 bool Party::getGold() const
 {
-	return mnGold;
+    return mnGold;
 }
 
 
@@ -70,14 +70,14 @@ void Party::giveItem(ItemRef *pItemRef, uint count)
     if( mItems [ pItem ] + count <= pItem->getMaxInventory())
     {
         mItems [ pItem ] += count;
-	
+    
         if(count > 1)
             os << " x" << count;
     }
     else 
     {
         count = pItem->getMaxInventory() - mItems[ pItem ];
-	
+    
         if( count < 1 )
         {
             speaker = "**Item Lost** Inventory Full";

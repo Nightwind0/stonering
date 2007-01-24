@@ -21,7 +21,7 @@ public:
     {
         pos = "";
         pos += "("+x+","+y+")";
-			
+            
         if(tool_pos)
             tool_pos->set_text(pos);
     }

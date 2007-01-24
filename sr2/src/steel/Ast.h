@@ -45,10 +45,10 @@ public:
     
     enum eStopType
     {
-	BREAK,
-	RETURN,
-	CONTINUE,
-	COMPLETED
+    BREAK,
+    RETURN,
+    CONTINUE,
+    COMPLETED
     };
 
     virtual ostream & print(ostream &out);
@@ -109,7 +109,7 @@ public:
 
     virtual ostream & print(std::ostream &out);
     virtual eStopType execute(SteelInterpreter *pInterpreter);
-	
+    
 private:
     AstExpression * m_pCondition;
     AstStatement * m_pStatement;
@@ -119,8 +119,8 @@ class AstIfStatement : public AstStatement
 {
 public:
     AstIfStatement(unsigned int line, const std::string &script,
-		   AstExpression *pExp, AstStatement *pStmt,
-		   AstStatement *pElse=NULL);
+           AstExpression *pExp, AstStatement *pStmt,
+           AstStatement *pElse=NULL);
     virtual ~AstIfStatement();
 
     virtual ostream & print(std::ostream &out);
@@ -148,11 +148,11 @@ class AstBreakStatement : public AstStatement
 {
 public:
     AstBreakStatement(unsigned int line, const std::string &script)
-	:AstStatement(line,script){}
-	virtual ~AstBreakStatement(){}
+    :AstStatement(line,script){}
+    virtual ~AstBreakStatement(){}
 
-	virtual ostream & print(std::ostream &out){ out << "break;" << std::endl ; return out;}
-	virtual eStopType execute(SteelInterpreter *pInterpreter) { return BREAK; }
+    virtual ostream & print(std::ostream &out){ out << "break;" << std::endl ; return out;}
+    virtual eStopType execute(SteelInterpreter *pInterpreter) { return BREAK; }
 private:
 
 };
@@ -161,11 +161,11 @@ class AstContinueStatement : public AstStatement
 {
 public:
     AstContinueStatement(unsigned int line, const std::string &script)
-	:AstStatement(line,script){}
-	virtual ~AstContinueStatement(){}
+    :AstStatement(line,script){}
+    virtual ~AstContinueStatement(){}
 
-	virtual ostream & print(std::ostream &out){ out << "continue;" << std::endl; return out; }
-	virtual eStopType execute(SteelInterpreter *pInterpreter) { return CONTINUE; }
+    virtual ostream & print(std::ostream &out){ out << "continue;" << std::endl; return out; }
+    virtual eStopType execute(SteelInterpreter *pInterpreter) { return CONTINUE; }
 private:
 
 };
@@ -176,8 +176,8 @@ class AstLoopStatement : public AstStatement
 {
 public:
     AstLoopStatement(unsigned int line, const std::string &script,
-		     AstExpression *pStart, AstExpression *pCondition,
-		     AstExpression *pIteration, AstStatement * pStmt);
+             AstExpression *pStart, AstExpression *pCondition,
+             AstExpression *pIteration, AstStatement * pStmt);
     
     virtual ~AstLoopStatement();
 
@@ -195,12 +195,12 @@ class AstExpression : public AstBase
 {
 public:
     AstExpression(unsigned int line,
-		  const std::string &script)
-	:AstBase(line,script){}
-	virtual ~AstExpression(){}
+          const std::string &script)
+    :AstBase(line,script){}
+    virtual ~AstExpression(){}
 
-	virtual SteelType evaluate(SteelInterpreter *pInterpreter){ return SteelType(); }
-	virtual SteelType * lvalue(SteelInterpreter *pInterpreter){ return NULL; }
+    virtual SteelType evaluate(SteelInterpreter *pInterpreter){ return SteelType(); }
+    virtual SteelType * lvalue(SteelInterpreter *pInterpreter){ return NULL; }
 private:
 };
 
@@ -222,7 +222,7 @@ class AstString : public AstExpression
 {
 public:
     AstString(unsigned int line,
-	      const std::string &script);
+          const std::string &script);
     virtual ~AstString(){}
     static char getEscapedChar(char);
     virtual ostream & print(std::ostream &out);
@@ -239,8 +239,8 @@ class AstFloat : public AstExpression
 {
 public:
     AstFloat(unsigned int line,
-	     const std::string &script,
-	     double value);
+         const std::string &script,
+         double value);
     virtual ~AstFloat(){}
 
     virtual ostream & print(std::ostream &out);
@@ -254,8 +254,8 @@ class AstIdentifier : public AstExpression
 {
 public:
     AstIdentifier(unsigned int line,
-		     const std::string &script,
-		     const std::string &value);
+             const std::string &script,
+             const std::string &value);
     virtual ~AstIdentifier(){}
     virtual ostream & print(std::ostream &out);
     virtual SteelType evaluate(SteelInterpreter *pInterpreter);
@@ -269,9 +269,9 @@ class AstVarIdentifier : public AstIdentifier
 {
 public:
     AstVarIdentifier(unsigned int line,
-		     const std::string &script,
-		     const std::string &value)
-	:AstIdentifier(line,script,value){}
+             const std::string &script,
+             const std::string &value)
+    :AstIdentifier(line,script,value){}
     virtual ~AstVarIdentifier(){}
 
     virtual SteelType evaluate(SteelInterpreter *pInterpreter);
@@ -283,9 +283,9 @@ class AstFuncIdentifier : public AstIdentifier
 {
 public:
     AstFuncIdentifier(unsigned int line,
-		      const std::string &script,
-		      const std::string &value)
-	:AstIdentifier(line,script,value){}
+              const std::string &script,
+              const std::string &value)
+    :AstIdentifier(line,script,value){}
     virtual ~AstFuncIdentifier(){}
 
     // Right? Because this isn't the same as a call?
@@ -298,9 +298,9 @@ class AstArrayIdentifier : public AstIdentifier
 {
 public:
     AstArrayIdentifier(unsigned int line,
-		       const std::string &script,
-		       const std::string &value)
-	:AstIdentifier(line,script,value){}
+               const std::string &script,
+               const std::string &value)
+    :AstIdentifier(line,script,value){}
     virtual ~AstArrayIdentifier(){}
 
     virtual SteelType evaluate(SteelInterpreter *pInterpreter);
@@ -315,14 +315,14 @@ class AstIncDec : public AstExpression
 public:
     enum Order
     {
-	PRE,
-	POST
+    PRE,
+    POST
     };
 
     AstIncDec(unsigned int line,
-		 const std::string &script,
-		 AstExpression *pLValue,
-		 Order order);
+         const std::string &script,
+         AstExpression *pLValue,
+         Order order);
     virtual ~AstIncDec();
 protected:
 
@@ -334,9 +334,9 @@ class AstIncrement : public AstIncDec
 {
 public:
     AstIncrement(unsigned int line,
-		 const std::string &script,
-		 AstExpression *pLValue,
-		 AstIncDec::Order order);
+         const std::string &script,
+         AstExpression *pLValue,
+         AstIncDec::Order order);
     virtual ~AstIncrement();
     virtual SteelType evaluate(SteelInterpreter *pInterpreter);
     virtual SteelType * lvalue(SteelInterpreter *pInterpreter);
@@ -349,9 +349,9 @@ class AstDecrement : public AstIncDec
 {
 public:
     AstDecrement(unsigned int line,
-		 const std::string &script,
-		 AstExpression *pLValue,
-		 AstIncDec::Order order);
+         const std::string &script,
+         AstExpression *pLValue,
+         AstIncDec::Order order);
     virtual ~AstDecrement();
     virtual SteelType evaluate(SteelInterpreter *pInterpreter);
     virtual SteelType * lvalue(SteelInterpreter *pInterpreter);
@@ -365,29 +365,29 @@ class AstBinOp : public AstExpression
 public:
     enum Op
     {
-	ADD,
-	SUB,
-	MULT,
-	DIV,
-	MOD,
-	AND,
-	OR,
-	D,
-	POW,
-	EQ,
-	NE,
-	LT,
-	GT,
-	LTE,
-	GTE,
-	CAT
+    ADD,
+    SUB,
+    MULT,
+    DIV,
+    MOD,
+    AND,
+    OR,
+    D,
+    POW,
+    EQ,
+    NE,
+    LT,
+    GT,
+    LTE,
+    GTE,
+    CAT
     };
 
     static std::string ToString(Op op);
 
     AstBinOp(unsigned int line,
-	     const std::string &script,
-	     Op op, AstExpression *right, AstExpression *left);
+         const std::string &script,
+         Op op, AstExpression *right, AstExpression *left);
     virtual ~AstBinOp();
 
     virtual ostream & print(std::ostream &out);
@@ -404,15 +404,15 @@ class AstUnaryOp : public AstExpression
 public:
     enum Op
     {
-	MINUS,
-	PLUS,
-	NOT,
-	CAT
+    MINUS,
+    PLUS,
+    NOT,
+    CAT
     };
     static std::string ToString(Op op);
     AstUnaryOp(unsigned int line,
-	       const std::string &script, Op op,
-	       AstExpression *operand);
+           const std::string &script, Op op,
+           AstExpression *operand);
 
     virtual ~AstUnaryOp();
     virtual ostream & print(std::ostream &out);
@@ -427,8 +427,8 @@ class AstPop : public AstExpression
 {
 public:
     AstPop(unsigned int line,
-	   const std::string &script,
-	   AstExpression *pLValue);
+       const std::string &script,
+       AstExpression *pLValue);
     virtual ~AstPop();
 
     virtual SteelType evaluate(SteelInterpreter *pInterpreter);
@@ -446,7 +446,7 @@ class AstCallExpression : public AstExpression
 {
 public:
     AstCallExpression(unsigned int line,
-		      const std::string &script, AstFuncIdentifier *pId, AstParamList *pList=NULL);
+              const std::string &script, AstFuncIdentifier *pId, AstParamList *pList=NULL);
     virtual ~AstCallExpression();
 
     virtual ostream & print(std::ostream &out);
@@ -465,9 +465,9 @@ private:
 {
 public:
     AstArrayExpression(unsigned int line,
-		       const std::string &script,
-		       AstArrayIdentifier * pId,
-		       AstExpression * pExp);
+               const std::string &script,
+               AstArrayIdentifier * pId,
+               AstExpression * pExp);
     virtual ~AstArrayExpression();
 
     virtual ostream & print(std::ostream &out);
@@ -481,9 +481,9 @@ class AstArrayElement : public AstExpression
 {
 public:
     AstArrayElement(unsigned int line,
-		    const std::string &script,
-		    AstExpression *pLValue,
-		    AstExpression *pExp);
+            const std::string &script,
+            AstExpression *pLValue,
+            AstExpression *pExp);
     virtual ~AstArrayElement();
 
     int getArrayIndex(SteelInterpreter *p) const;
@@ -499,9 +499,9 @@ class AstVarAssignmentExpression : public AstExpression
 {
 public:
     AstVarAssignmentExpression(unsigned int line,
-			    const std::string &script,
-			    AstExpression *pLValue,
-			    AstExpression *pExp);
+                const std::string &script,
+                AstExpression *pLValue,
+                AstExpression *pExp);
 
     virtual ~AstVarAssignmentExpression();
 
@@ -519,9 +519,9 @@ class AstArrayAssignmentExpression : public AstExpression
 {
 public:
     AstArrayAssignmentExpression(unsigned int line,
-			    const std::string &script,
-			    AstArrayIdentifier *pId,
-			    AstExpression *pExp);
+                const std::string &script,
+                AstArrayIdentifier *pId,
+                AstExpression *pExp);
 
     virtual ~AstArrayAssignmentExpression();
 
@@ -538,9 +538,9 @@ class AstArrayElementAssignmentExpression: public AstExpression
 {
 public:
     AstArrayElementAssignmentExpression(unsigned int line,
-					const std::string &script,
-					AstArrayElement *pId,
-					AstExpression * pExp);
+                    const std::string &script,
+                    AstArrayElement *pId,
+                    AstExpression * pExp);
     virtual ~AstArrayElementAssignmentExpression();
 
     virtual ostream & print (std::ostream &out);
@@ -556,7 +556,7 @@ class AstParamList : public AstBase
 {
 public:
     AstParamList(unsigned int line,
-		 const std::string &script);
+         const std::string &script);
     virtual ~AstParamList();
 
     void add(AstExpression *pExp);
@@ -570,24 +570,24 @@ class AstDeclaration : public AstStatement
 {
 public:
     AstDeclaration(unsigned int line,
-			const std::string &script)
-	:AstStatement(line,script),m_bHasValue(false){}
-	virtual ~AstDeclaration(){}
-	
-	virtual void setValue(const SteelType &value);
-	
+            const std::string &script)
+    :AstStatement(line,script),m_bHasValue(false){}
+    virtual ~AstDeclaration(){}
+    
+    virtual void setValue(const SteelType &value);
+    
 protected:
-	bool m_bHasValue;
-	SteelType m_value;
+    bool m_bHasValue;
+    SteelType m_value;
 };
 
 class AstVarDeclaration : public AstDeclaration
 {
 public:
     AstVarDeclaration(unsigned int line,
-		      const std::string &script,
-		      AstVarIdentifier *pId,
-		      AstExpression *pExp = NULL);
+              const std::string &script,
+              AstVarIdentifier *pId,
+              AstExpression *pExp = NULL);
     virtual ~AstVarDeclaration();
     virtual ostream & print(std::ostream &out);
     virtual eStopType execute(SteelInterpreter *pInterpreter);
@@ -601,9 +601,9 @@ class AstArrayDeclaration: public AstDeclaration
 {
 public:
     AstArrayDeclaration(unsigned int line,
-			const std::string &script,
-			AstArrayIdentifier *pId,
-			AstExpression *pInt = NULL);
+            const std::string &script,
+            AstArrayIdentifier *pId,
+            AstExpression *pInt = NULL);
 
     void assign(AstExpression *pExp);
 
@@ -621,7 +621,7 @@ class AstParamDefinitionList : public AstBase
 {
 public:
     AstParamDefinitionList(unsigned int line,
-			   const std::string &script);
+               const std::string &script);
     virtual ~AstParamDefinitionList();
 
     void add(AstDeclaration *pId);
@@ -631,7 +631,7 @@ public:
 
     void executeDeclarations(SteelInterpreter *pInterpreter);
     void executeDeclarations(SteelInterpreter *pInterpreter, 
-			     const std::vector<SteelType> &params);
+                 const std::vector<SteelType> &params);
 private:
     std::list<AstDeclaration*> m_params;
 };
@@ -640,10 +640,10 @@ class AstFunctionDefinition : public AstStatement
 {
 public:
     AstFunctionDefinition(unsigned int line,
-			  const std::string &script,
-			  AstFuncIdentifier *pId,
-			  AstParamDefinitionList *pParams,
-			  AstStatementList* pStmts);
+              const std::string &script,
+              AstFuncIdentifier *pId,
+              AstParamDefinitionList *pParams,
+              AstStatementList* pStmts);
     virtual ~AstFunctionDefinition();
 
     eStopType execute(SteelInterpreter * pInterpreter);

@@ -164,7 +164,7 @@ AstExpressionStatement::~AstExpressionStatement()
 ostream & AstExpressionStatement::print(std::ostream &out)
 {
     out << *m_pExp << ';' << std::endl;
-	return out;
+    return out;
 }
 
 AstStatement::eStopType AstExpressionStatement::execute(SteelInterpreter *pInterpreter)
@@ -225,7 +225,7 @@ AstStatement::eStopType AstStatementList::execute(SteelInterpreter *pInterpreter
     for(std::list<AstStatement*>::const_iterator it = m_list.begin();
         it != m_list.end(); it++)
     {
-	
+    
         AstStatement * pStatement = *it;
         eStopType stop = pStatement->execute(pInterpreter);
 
@@ -431,7 +431,7 @@ SteelType AstIncrement::evaluate(SteelInterpreter *pInterpreter)
                                               GetLine(),
                                               GetScript(),
                                               "Invalid lvalue before increment (++) operator.");
-	
+    
         if(m_order == PRE)
             return ++( *pVar );
         else return (*pVar)++;
@@ -483,7 +483,7 @@ SteelType AstDecrement::evaluate(SteelInterpreter *pInterpreter)
                                               GetLine(),
                                               GetScript(),
                                               "Invalid lvalue before decrement (--) operator.");
-	
+    
         if(m_order == PRE)
             return --( *pVar );
         else return (*pVar)--;
@@ -584,7 +584,7 @@ SteelType AstBinOp::evaluate(SteelInterpreter *pInterpreter)
 
             return m_left->evaluate(pInterpreter) 
                 + m_right->evaluate(pInterpreter);
-	    
+        
         case SUB:
             return m_left->evaluate(pInterpreter) 
                 - m_right->evaluate(pInterpreter);
@@ -648,7 +648,7 @@ SteelType AstBinOp::evaluate(SteelInterpreter *pInterpreter)
             return m_left->evaluate(pInterpreter).cat( m_right->evaluate(pInterpreter) );
         default:
             assert(0);
-	
+    
         }
     }
     catch(OperationMismatch m)
@@ -886,7 +886,7 @@ SteelType * AstArrayElement::lvalue(SteelInterpreter *pInterpreter)
 {
     try
     {
-	
+    
         SteelType * pArray = m_pLValue->lvalue(pInterpreter);
         if(NULL == pArray)
         {
@@ -905,7 +905,7 @@ SteelType * AstArrayElement::lvalue(SteelInterpreter *pInterpreter)
         }
 
         int index = m_pExp->evaluate(pInterpreter);
-	
+    
         // It will throw out of bounds, or what not.
         return pArray->getLValue(index);
     }
@@ -916,7 +916,7 @@ SteelType * AstArrayElement::lvalue(SteelInterpreter *pInterpreter)
                              GetLine(),
                              GetScript(),
                              "Unknown identifier in array lvalue.");
-			     
+                 
     }
     catch(OutOfBounds)
     {
@@ -945,7 +945,7 @@ SteelType AstArrayElement::evaluate(SteelInterpreter *pInterpreter)
             // If not, then we're in trouble. 
 
             SteelType val = m_pLValue->evaluate(pInterpreter);
-	    
+        
             try
             {
                 return val.getElement(m_pExp->evaluate(pInterpreter)); 
@@ -961,7 +961,7 @@ SteelType AstArrayElement::evaluate(SteelInterpreter *pInterpreter)
             // The rest of the exceptions should be cought by the outer try.
             // Such as out of bounds.. and anything that goes wrong inside the index expression
         }
-	
+    
         return pInterpreter->lookup(pL, m_pExp->evaluate(pInterpreter));
     }
     catch(UnknownIdentifier)
@@ -984,7 +984,7 @@ SteelType AstArrayElement::evaluate(SteelInterpreter *pInterpreter)
 ostream & AstArrayElement::print(std::ostream &out)
 {
     out << *m_pLValue << '[' << *m_pExp << ']' ;
-	return out;
+    return out;
 }
 
 SteelType * AstArrayIdentifier::lvalue(SteelInterpreter *pInterpreter)
@@ -1106,7 +1106,7 @@ std::vector<SteelType> AstParamList::getParamList(SteelInterpreter *pInterpreter
     for(std::list<AstExpression*>::const_iterator i = m_params.begin();
         i != m_params.end(); i++)
     {
-	
+    
         SteelType var = (*i)->evaluate(pInterpreter);
         params.push_back ( var );
     }
@@ -1199,7 +1199,7 @@ AstStatement::eStopType AstVarDeclaration::execute(SteelInterpreter *pInterprete
         SteelType * pVar = pInterpreter->lookup_lvalue( m_pId->getValue() );
         // If this is null, its crazy, because we JUST declared its ass.
         assert ( NULL != pVar);
-	
+    
         if(m_pExp) 
             pInterpreter->assign( pVar, m_pExp->evaluate(pInterpreter) );
 
@@ -1326,7 +1326,7 @@ AstParamDefinitionList::AstParamDefinitionList(unsigned int line,
 AstParamDefinitionList::~AstParamDefinitionList()
 {
     for(std::list<AstDeclaration*>::iterator i = m_params.begin();
-	    i != m_params.end(); i++) 
+        i != m_params.end(); i++) 
         delete *i;
 }
 
@@ -1378,7 +1378,7 @@ ostream & AstParamDefinitionList::print (std::ostream &out)
             out  << *(*i) << ',';
     }
     return out;
-}	       
+}          
 
 
 AstFunctionDefinition::AstFunctionDefinition(unsigned int line,

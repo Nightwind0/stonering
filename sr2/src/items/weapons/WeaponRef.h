@@ -13,33 +13,33 @@ namespace StoneRing{
 
 
     class WeaponRef : public Element
-	{
-	public:
-	    WeaponRef();
-	    WeaponRef ( WeaponType *pType, WeaponClass *pClass, 
+    {
+    public:
+        WeaponRef();
+        WeaponRef ( WeaponType *pType, WeaponClass *pClass, 
                     SpellRef * pSpell, RuneType *pRune );
-	    virtual ~WeaponRef();
-		virtual eElement whichElement() const{ return EWEAPONREF; }	
-	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
+        virtual ~WeaponRef();
+        virtual eElement whichElement() const{ return EWEAPONREF; } 
+        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
-	    WeaponType * getWeaponType() const;
-	    WeaponClass  * getWeaponClass() const;
-	    SpellRef * getSpellRef() const;
-	    RuneType * getRuneType() const;
+        WeaponType * getWeaponType() const;
+        WeaponClass  * getWeaponClass() const;
+        SpellRef * getSpellRef() const;
+        RuneType * getRuneType() const;
 
-	    bool operator==(const WeaponRef &lhs);
+        bool operator==(const WeaponRef &lhs);
 
-	private:
-	    virtual bool handleElement(eElement element, Element * pElement );
+    private:
+        virtual bool handleElement(eElement element, Element * pElement );
 
-	    WeaponType *mpWeaponType;
-	    WeaponClass *mpWeaponClass;
-	    WeaponTypeRef mType;
-	    WeaponClassRef mClass;
-	    SpellRef * mpSpellRef;
-	    RuneType * mpRuneType;
+        WeaponType *mpWeaponType;
+        WeaponClass *mpWeaponClass;
+        WeaponTypeRef mType;
+        WeaponClassRef mClass;
+        SpellRef * mpSpellRef;
+        RuneType * mpRuneType;
 
-	};
+    };
 };
 
 #endif

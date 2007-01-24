@@ -7,31 +7,31 @@
 
 namespace StoneRing{
     class SpellRef : public Element
-	{
-	public:
-	    SpellRef();
-	    virtual ~SpellRef();
-		virtual eElement whichElement() const{ return ESPELLREF; }	
-	    enum eSpellType { ELEMENTAL, WHITE, OTHER, STATUS };
+    {
+    public:
+        SpellRef();
+        virtual ~SpellRef();
+        virtual eElement whichElement() const{ return ESPELLREF; }  
+        enum eSpellType { ELEMENTAL, WHITE, OTHER, STATUS };
 
-	    eSpellType getSpellType() const;
+        eSpellType getSpellType() const;
 
-	    std::string getName() const;
+        std::string getName() const;
 
-	    virtual CL_DomElement createDomElement ( CL_DomDocument &) const;
+        virtual CL_DomElement createDomElement ( CL_DomDocument &) const;
         
-	    bool operator==(const SpellRef &lhs);
+        bool operator==(const SpellRef &lhs);
 
-	    void setType(eSpellType type){ meSpellType = type; }
-	    void setName(const std::string &name){ mName = name; }
+        void setType(eSpellType type){ meSpellType = type; }
+        void setName(const std::string &name){ mName = name; }
 
-	private:
-	    virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
-		virtual void handleText(const std::string &text);
-	    eSpellType meSpellType;
-	    std::string mName;
+    private:
+        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
+        virtual void handleText(const std::string &text);
+        eSpellType meSpellType;
+        std::string mName;
 
-	};
+    };
 };
 
 #endif
