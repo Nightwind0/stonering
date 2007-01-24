@@ -25,7 +25,7 @@ SteelInterpreter::~SteelInterpreter()
     {
         delete i->second;
     }
-	    
+        
 }
 
 
@@ -60,9 +60,9 @@ void SteelInterpreter::run(const std::string &name,const std::string &script)
             // Which should be legal.
             // And theres nothing to delete. So. I think we're done here.
             return;
-				 
+                 
         }
-			     
+                 
     }
 
     AstScript *pScript = static_cast<AstScript*>( parser.GetAcceptedToken() );
@@ -244,7 +244,7 @@ void SteelInterpreter::registerBifs()
   pArray->push_front ( value );
 
   return pArray->front();
-					    
+                        
   }
 */
 

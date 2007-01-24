@@ -18,9 +18,9 @@ namespace StoneRing
     class LevelFactory;
     class ItemFactory;
     class ItemManager;
-	class CharacterFactory;
+    class CharacterFactory;
     class Choice;
-	class State;
+    class State;
 
     class IApplication 
     {

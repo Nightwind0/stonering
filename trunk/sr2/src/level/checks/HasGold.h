@@ -4,29 +4,29 @@
 #include "Element.h"
 #include "Check.h"
 
-namespace StoneRing{	
+namespace StoneRing{    
 
-	class HasGold : public Check
-	{
-	public:
-		virtual eElement whichElement() const{ return EHASGOLD; }	
-		enum eOperator{LT, GT, LTE, GTE, EQ};
+    class HasGold : public Check
+    {
+    public:
+        virtual eElement whichElement() const{ return EHASGOLD; }   
+        enum eOperator{LT, GT, LTE, GTE, EQ};
 
-		HasGold();
-		virtual ~HasGold();
+        HasGold();
+        virtual ~HasGold();
 
-		virtual bool evaluate();
-		virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
+        virtual bool evaluate();
+        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
-	protected:
-		virtual bool handleElement(eElement element, Element * pElement );
-		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-		virtual void handleText(const std::string &);
-		uint mAmount;
-		bool mbNot;
-		eOperator meOperator;
+    protected:
+        virtual bool handleElement(eElement element, Element * pElement );
+        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+        virtual void handleText(const std::string &);
+        uint mAmount;
+        bool mbNot;
+        eOperator meOperator;
 
-	};
+    };
 
 };
 

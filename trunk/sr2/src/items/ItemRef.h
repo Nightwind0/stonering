@@ -15,16 +15,16 @@ namespace StoneRing
     class Item;
 
 
-	class ItemRef : public Element
+    class ItemRef : public Element
     {
     public:
         ItemRef();
         ItemRef(CL_DomElement *pElement );
         virtual ~ItemRef();
-        virtual eElement whichElement() const{ return EITEMREF; }	
+        virtual eElement whichElement() const{ return EITEMREF; }   
         enum eRefType { NAMED_ITEM, WEAPON_REF, ARMOR_REF };
 
-//	std::string getItemName() const;
+//  std::string getItemName() const;
 
         eRefType getType() const;
 
@@ -36,11 +36,11 @@ namespace StoneRing
         inline Item * getItem() const { return mpItem; }
 
         virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
-	
+    
     protected:
-		virtual bool handleElement(Element::eElement,Element *);	
-		virtual void loadAttributes(CL_DomNamedNodeMap *pAttributes);
-		virtual void loadFinished();
+        virtual bool handleElement(Element::eElement,Element *);    
+        virtual void loadAttributes(CL_DomNamedNodeMap *pAttributes);
+        virtual void loadFinished();
         NamedItemRef * mpNamedItemRef;
         WeaponRef * mpWeaponRef;
         ArmorRef * mpArmorRef;
@@ -51,20 +51,20 @@ namespace StoneRing
 
 
     class NamedItemRef : public Element
-	{
-	public:
-	    NamedItemRef();
-	    NamedItemRef(CL_DomElement *pElement );
-	    virtual ~NamedItemRef();
-		virtual eElement whichElement() const{ return ENAMEDITEMREF; }
-	    std::string getItemName();
+    {
+    public:
+        NamedItemRef();
+        NamedItemRef(CL_DomElement *pElement );
+        virtual ~NamedItemRef();
+        virtual eElement whichElement() const{ return ENAMEDITEMREF; }
+        std::string getItemName();
 
-	    virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
+        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
-	protected:
-		virtual void handleText(const std::string &text);
-	    std::string mName;
-	};
+    protected:
+        virtual void handleText(const std::string &text);
+        std::string mName;
+    };
 
 };
 

@@ -64,24 +64,24 @@ private:
 class EditorMain : public CL_ClanApplication, public StoneRing::IApplication
 {
 public:
-	EditorMain();
-	virtual ~EditorMain();
+    EditorMain();
+    virtual ~EditorMain();
 
-	// IApplication Interface
-	
-	virtual CL_ResourceManager * getResources()const;
-	virtual StoneRing::IParty * getParty() const;
-	virtual LevelFactory * getLevelFactory() const;
-	
-	ICharacterGroup *getSelectedCharacterGroup() const { return NULL; }
-	CharacterFactory * getCharacterFactory() const { return NULL; }
-	ItemFactory * getItemFactory() const { static ItemFactory itemFactory; return &itemFactory; }
-	const ItemManager * getItemManager() const { static EditorItemManager itemManager; return &itemManager; }
-	virtual AbilityFactory * getAbilityFactory() const { static AbilityFactory abilityFactory; return &abilityFactory; }
-	virtual const AbilityManager * getAbilityManager() const { static AbilityManager abilityManager; return &abilityManager; }
-	
-	virtual int getScreenWidth()const;
-	virtual int getScreenHeight()const;
+    // IApplication Interface
+    
+    virtual CL_ResourceManager * getResources()const;
+    virtual StoneRing::IParty * getParty() const;
+    virtual LevelFactory * getLevelFactory() const;
+    
+    ICharacterGroup *getSelectedCharacterGroup() const { return NULL; }
+    CharacterFactory * getCharacterFactory() const { return NULL; }
+    ItemFactory * getItemFactory() const { static ItemFactory itemFactory; return &itemFactory; }
+    const ItemManager * getItemManager() const { static EditorItemManager itemManager; return &itemManager; }
+    virtual AbilityFactory * getAbilityFactory() const { static AbilityFactory abilityFactory; return &abilityFactory; }
+    virtual const AbilityManager * getAbilityManager() const { static AbilityManager abilityManager; return &abilityManager; }
+    
+    virtual int getScreenWidth()const;
+    virtual int getScreenHeight()const;
 
 
     virtual CL_Rect getLevelRect() const;
@@ -103,44 +103,44 @@ public:
     Infobar * getInfo() const { return mInfo; }
 
 private:
-	int main(int argc, char **argv);
-	
-	CL_GUIManager *mGui_manager;
-	CL_ComponentManager *mComponent_manager;
-	CL_FileDialog * mpDialog;
+    int main(int argc, char **argv);
+    
+    CL_GUIManager *mGui_manager;
+    CL_ComponentManager *mComponent_manager;
+    CL_FileDialog * mpDialog;
 
-	void on_quit();
-	void on_save();
-	void on_load();
-	void on_new();
+    void on_quit();
+    void on_save();
+    void on_load();
+    void on_new();
 
-	void on_add_row();
-	void on_add_column();
-	void on_show_hot();
-	void on_show_blocks();
-	void on_change_tool(string newtool);
-	
-	void on_paint();
-	void on_tileset_change(string userdata);
+    void on_add_row();
+    void on_add_column();
+    void on_show_hot();
+    void on_show_blocks();
+    void on_change_tool(string newtool);
+    
+    void on_paint();
+    void on_tileset_change(string userdata);
 
-	bool mbQuit;
-	string mMenuitem;
+    bool mbQuit;
+    string mMenuitem;
 
-	EditorParty * mpParty;
-	EditableLevelFactory * mpLevelFactory;
-	CL_ResourceManager *mpResources;
+    EditorParty * mpParty;
+    EditableLevelFactory * mpLevelFactory;
+    CL_ResourceManager *mpResources;
 
-	CL_SlotContainer mSlots;
+    CL_SlotContainer mSlots;
 
-	TileSelector* mTiles;
-	MapGrid* mMap;
+    TileSelector* mTiles;
+    MapGrid* mMap;
 
-	//CL_InputBox* info;
-	Infobar* mInfo;
+    //CL_InputBox* info;
+    Infobar* mInfo;
 
-	CL_GraphicContext *mGc;
+    CL_GraphicContext *mGc;
 
-	EditableLevel *mpLevel;
+    EditableLevel *mpLevel;
 
 };
 

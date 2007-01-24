@@ -36,7 +36,7 @@ void AnimationSpriteRef::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 
 void AnimationSpriteRef::handleText( const std::string &text )
 {
-	mRef = text;
+    mRef = text;
 }
 
 
@@ -144,12 +144,12 @@ bool Par::handleElement(eElement element, Element * pElement)
 
 void Par::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-	mnDuration = getRequiredInt("duration", pAttributes);	
-	
-	if(hasAttr("hide",pAttributes))
-	{
-		meHide = hideFromString(getString("hide",pAttributes));
-	}else meHide = NONE;
+    mnDuration = getRequiredInt("duration", pAttributes);   
+    
+    if(hasAttr("hide",pAttributes))
+    {
+        meHide = hideFromString(getString("hide",pAttributes));
+    }else meHide = NONE;
 
 
 }
@@ -173,12 +173,12 @@ Par::hideFromString ( const std::string &str )
 
 Par::~Par()
 {
-	delete mpPlaySound;
+    delete mpPlaySound;
 
-	std::for_each(mAnimationSpriteRefs.begin(),mAnimationSpriteRefs.end(),del_fun<AnimationSpriteRef>());
+    std::for_each(mAnimationSpriteRefs.begin(),mAnimationSpriteRefs.end(),del_fun<AnimationSpriteRef>());
 }
 
-	
+    
 CL_DomElement 
 Par::createDomElement(CL_DomDocument &doc) const
 {
@@ -225,30 +225,30 @@ Animation::Animation()
 
 void Animation::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
-	mName = getRequiredString("name",pAttributes);
+    mName = getRequiredString("name",pAttributes);
 
-	std::string type = getRequiredString("type",pAttributes);
+    std::string type = getRequiredString("type",pAttributes);
 
-	if(type == "battle") meType = BATTLE;
-	else if (type == "world") meType = WORLD;
-	else throw CL_Error("Bogus animation type: " + type );
+    if(type == "battle") meType = BATTLE;
+    else if (type == "world") meType = WORLD;
+    else throw CL_Error("Bogus animation type: " + type );
 
 }
 
 bool Animation::handleElement(eElement element, Element * pElement)
 {
-	if(element == EPAR )
-	{
-		mPars.push_back ( dynamic_cast<Par*>(pElement) );
-		return true;
-	}
-	else return false;
+    if(element == EPAR )
+    {
+        mPars.push_back ( dynamic_cast<Par*>(pElement) );
+        return true;
+    }
+    else return false;
 }
 
 
 Animation::~Animation()
 {
-	std::for_each(mPars.begin(),mPars.end(),del_fun<Par>());
+    std::for_each(mPars.begin(),mPars.end(),del_fun<Par>());
 }
 
 CL_DomElement 

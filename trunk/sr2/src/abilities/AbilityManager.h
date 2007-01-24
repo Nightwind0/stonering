@@ -43,10 +43,10 @@ namespace StoneRing
     
 
     private:
-		std::map<std::string,Skill*> mSkills;
-		std::list<Spell*> mSpells;
-		std::list<StatusEffect*> mStatusEffects;
-		std::map<std::string,CharacterClass*> mCharacterClasses;
+        std::map<std::string,Skill*> mSkills;
+        std::list<Spell*> mSpells;
+        std::list<StatusEffect*> mStatusEffects;
+        std::map<std::string,CharacterClass*> mCharacterClasses;
 
     };
 

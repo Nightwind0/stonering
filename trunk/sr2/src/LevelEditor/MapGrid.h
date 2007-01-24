@@ -18,7 +18,7 @@ class MapGrid : public CL_Component
 {
 public:
     MapGrid( CL_Component *parent, CL_GraphicContext *mgGC, TileSelector *TS);
-		
+        
     virtual ~MapGrid();
 
     void set_Level(EditableLevel *mpLevel);
@@ -71,7 +71,7 @@ private:
 
     bool hotflag, blocksflag;
 
-		
+        
 };
 
 

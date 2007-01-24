@@ -30,10 +30,10 @@ bool Operator::handleElement(eElement element, Element * pElement)
     case EAND:
         mOperands.push_back(dynamic_cast<Check*>(pElement));
         break;
-	default:
-		return false;
+    default:
+        return false;
     }   
-	return true;
+    return true;
 }
 
 Operator::~Operator()

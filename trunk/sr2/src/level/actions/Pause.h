@@ -5,20 +5,20 @@
 #include "Element.h"
 
 namespace StoneRing{ 
-	class Pause : public Action, public Element
-	{
-	public:
-		Pause();
-		virtual ~Pause();
-		virtual eElement whichElement() const{ return EPAUSE; }	
-		virtual void invoke();
+    class Pause : public Action, public Element
+    {
+    public:
+        Pause();
+        virtual ~Pause();
+        virtual eElement whichElement() const{ return EPAUSE; } 
+        virtual void invoke();
 
-		virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
+        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
-	protected:
-		virtual void handleText(const std::string &);
-		uint mMs;
-	};
+    protected:
+        virtual void handleText(const std::string &);
+        uint mMs;
+    };
 };
 
 #endif

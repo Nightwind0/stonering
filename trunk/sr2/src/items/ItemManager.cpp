@@ -97,7 +97,7 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
     }
     
 
-	    
+        
     CL_DomElement itemListNode = itemsNode.named_item("itemList").to_element();
 
     CL_DomElement namedItemNode = itemListNode.get_first_child().to_element();
@@ -115,16 +115,16 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
 
         pElement->load(&namedItemNode);
         NamedItem * pItem = pElement->getNamedItem();
-	
+    
         pItem->setIconRef ( pElement->getIconRef() );
         pItem->setMaxInventory ( pElement->getMaxInventory() );
         pItem->setName ( pElement->getName() );
         pItem->setDropRarity ( pElement->getDropRarity() );
-	
+    
         mItems.push_back ( pItem );
-	
+    
         delete pElement;
-	
+    
         namedItemNode = namedItemNode.get_next_sibling().to_element();
     }
     
@@ -181,21 +181,21 @@ void ItemManager::generateWeapons()
                         mItems.push_back ( pWeapon );
                     }
                 }
-		
+        
                 // Create the no spell, no rune weapon
 
                 GeneratedWeapon * pPlainWeapon = new GeneratedWeapon();
                 pPlainWeapon->generate( pType, pClass, NULL, NULL );
 
                 mItems.push_back ( pPlainWeapon );
-	       
+           
 
                 // Create the rune version.
                 GeneratedWeapon * pRuneWeapon = new GeneratedWeapon();
                 RuneType * runeType = new RuneType();
                 runeType->setRuneType( RuneType::RUNE );
                 pRuneWeapon->generate( pType, pClass, NULL, runeType );
-		
+        
                 mItems.push_back ( pRuneWeapon );
 
             }
@@ -215,7 +215,7 @@ void ItemManager::generateArmor()
 #ifndef NDEBUG
         std::cout << "Generating armor for type: " << pType->getName() << std::endl;
 #endif
-	
+    
         for(std::list<ArmorClass*>::const_iterator classIter = mArmorClasses.begin();
             classIter != mArmorClasses.end();
             classIter++)
@@ -242,24 +242,24 @@ void ItemManager::generateArmor()
                         mItems.push_back ( pArmor );
                     }
                 }
-		
+        
 
 
-		
+        
                 // Create the no spell, no rune Armor
 
                 GeneratedArmor * pPlainArmor = new GeneratedArmor();
                 pPlainArmor->generate( pType, pClass );
 
                 mItems.push_back ( pPlainArmor );
-	       
+           
 
                 // Create the rune version.
                 GeneratedArmor * pRuneArmor = new GeneratedArmor();
                 RuneType * runeType = new RuneType();
                 runeType->setRuneType( RuneType::RUNE );
                 pRuneArmor->generate( pType, pClass, NULL, runeType );
-		
+        
                 mItems.push_back ( pRuneArmor );
 
                 // Create the ultra rune version
@@ -354,7 +354,7 @@ void ItemManager::dumpItemList()
         iter++)
     {
         Item * pItem = *iter;
-	
+    
         std::cout << '[' << Item::ItemTypeAsString(pItem->getItemType()) << ']' << ' ';
         std::cout << pItem->getName();
         std::cout << " (" << pItem->getDropRarity() << ") ";
@@ -376,7 +376,7 @@ void ItemManager::dumpItemList()
             if(pDamageCategory->getClass() != DamageCategory::WEAPON) throw CL_Error("What? This weapon has a magic damage category.");
 
             WeaponDamageCategory * pWDC = dynamic_cast<WeaponDamageCategory*>(pDamageCategory);
-	    
+        
 
             switch ( pWDC->getType() )
             {
@@ -389,14 +389,14 @@ void ItemManager::dumpItemList()
             case WeaponDamageCategory::SLASH:
                 std::cout << "\t[SLASH]";
                 break;
-		
+        
             }
-	    
+        
 
             if(pWeapon->isTwoHanded()) std::cout << "(Two Handed)";
 
             if(pWeapon->isRanged()) std::cout << "(Ranged)" ;
-	       
+           
             std::cout << std::endl;
 
             // If there are attribute enhancers, lets list them.
@@ -412,7 +412,7 @@ void ItemManager::dumpItemList()
             ArmorType * pType = pArmor->getArmorType();
             std::cout << '\t' << "AC: " << std::setw(5) <<  pArmor->modifyArmorAttribute(Armor::AC, (int)pType->getBaseAC());
             std::cout << ' ' << "RST " << std::setw(4) << pArmor->modifyArmorAttribute(Armor::RESIST, pType->getBaseRST()) << std::endl;
-	    
+        
             switch( pType->getSlot())
             {
             case ArmorType::HEAD:
@@ -439,9 +439,9 @@ void ItemManager::dumpItemList()
 
             break;
         }
-	    
+        
         }
-	
+    
     }
 }
 void ItemManager::printAttributeEnhancers(Equipment * pItem )
@@ -449,7 +449,7 @@ void ItemManager::printAttributeEnhancers(Equipment * pItem )
     if( pItem->getAttributeEnhancersBegin() != pItem->getAttributeEnhancersEnd() )
     {
         std::cout << "\tAttribute Enhancers:"  << std::endl;
-	
+    
         for(std::list<AttributeEnhancer*>::const_iterator iter = pItem->getAttributeEnhancersBegin();
             iter != pItem->getAttributeEnhancersEnd();
             iter++)

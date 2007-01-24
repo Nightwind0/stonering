@@ -5,20 +5,20 @@
 #include "Element.h"
 
 namespace StoneRing{
-	class GiveGold : public Action, public Element
-	{
-	public:
-		GiveGold();
-		virtual ~GiveGold();
-		virtual eElement whichElement() const{ return EGIVEGOLD; }	
-		virtual void invoke();
+    class GiveGold : public Action, public Element
+    {
+    public:
+        GiveGold();
+        virtual ~GiveGold();
+        virtual eElement whichElement() const{ return EGIVEGOLD; }  
+        virtual void invoke();
 
-		virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
+        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
-	protected:
-		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-		uint mCount;
-	};
+    protected:
+        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+        uint mCount;
+    };
 };
 
 #endif

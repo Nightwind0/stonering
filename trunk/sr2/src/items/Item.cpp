@@ -14,48 +14,48 @@ using namespace StoneRing;
 
 bool   StoneRing::operator < ( const StoneRing::Item &lhs, const StoneRing::Item &rhs )
 {
-	return std::string(Item::ItemTypeAsString(lhs.getItemType()) + lhs.getName())
-		<
-		std::string(Item::ItemTypeAsString(rhs.getItemType()) + rhs.getName());
+    return std::string(Item::ItemTypeAsString(lhs.getItemType()) + lhs.getName())
+        <
+        std::string(Item::ItemTypeAsString(rhs.getItemType()) + rhs.getName());
 }
 
 
 std::string StoneRing::Item::ItemTypeAsString ( StoneRing::Item::eItemType type )
 {
 
-	switch(type )
-	{
-		//enum eItemType { ITEM, WEAPON, ARMOR, RUNE, SPECIAL, SYSTEM };
-	case Item::REGULAR_ITEM:
-		return "item";
-	case Item::WEAPON:
-		return "weapon";
-	case Item::ARMOR:
-		return "armor";
-	case Item::RUNE:
-		return "rune";
-	case Item::SPECIAL:
-		return "special";
-	case Item::SYSTEM:
-		return "system";
+    switch(type )
+    {
+        //enum eItemType { ITEM, WEAPON, ARMOR, RUNE, SPECIAL, SYSTEM };
+    case Item::REGULAR_ITEM:
+        return "item";
+    case Item::WEAPON:
+        return "weapon";
+    case Item::ARMOR:
+        return "armor";
+    case Item::RUNE:
+        return "rune";
+    case Item::SPECIAL:
+        return "special";
+    case Item::SYSTEM:
+        return "system";
 
-	}
+    }
 
-	return "";
+    return "";
 }
 
 
 Item::eDropRarity 
 Item::DropRarityFromString(const std::string &str)
 {
-	eDropRarity eRarity = NEVER;
+    eDropRarity eRarity = NEVER;
 
-	if(str == "never") eRarity = NEVER;
-	else if (str == "common") eRarity = COMMON;
-	else if (str == "uncommon") eRarity = UNCOMMON;
-	else if (str == "rare") eRarity = RARE;
+    if(str == "never") eRarity = NEVER;
+    else if (str == "common") eRarity = COMMON;
+    else if (str == "uncommon") eRarity = UNCOMMON;
+    else if (str == "rare") eRarity = RARE;
 
-	return eRarity;
+    return eRarity;
 }
 
 

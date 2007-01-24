@@ -98,7 +98,7 @@ public:
     EditableLevel(){}
     EditableLevel(const std::string &name,CL_ResourceManager * pResources);
     virtual ~EditableLevel();
-			
+            
 
     virtual void drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
 
@@ -112,7 +112,7 @@ public:
     void setDirectionBlockAt(uint levelX, uint levelY, eDirectionBlock dir, bool bOn);
 
     void setHotAt(uint levelX, uint levelY, bool bHot);
-		
+        
     void addTile ( Tile * pTile );
     void removeTile ( Tile * pTile );
 

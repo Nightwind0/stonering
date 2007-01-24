@@ -260,11 +260,11 @@ bool StoneRing::MappableObject::handleElement(eElement element, Element * pEleme
 
         break;
     }
-	default:
-		return false;
+    default:
+        return false;
     }
 
-	return true;
+    return true;
 }
 
 void StoneRing::MappableObject::loadFinished()
@@ -298,8 +298,8 @@ StoneRing::MappableObject::~MappableObject()
         delete *i;
     }
 
-	if(deleteSprite())
-		delete mpSprite;
+    if(deleteSprite())
+        delete mpSprite;
 
     delete mpMovement;
          
@@ -471,12 +471,12 @@ void StoneRing::MappableObject::randomNewDirection()
     }
 
     mnCellsMoved = 0;
-	mnStepsUntilChange = rand() % 20;
+    mnStepsUntilChange = rand() % 20;
 
     setFrameForDirection();
 
 #ifndef NDEBUG
-	std::cout << "Random new direction" << std::endl;
+    std::cout << "Random new direction" << std::endl;
 #endif
         
 }
@@ -525,7 +525,7 @@ void StoneRing::MappableObject::setFrameForDirection()
             mpSprite->set_frame ( mbStep? 2 : 3);
             break;
         case SOUTH:
-			mpSprite->set_frame ( mbStep? 0 : 1);
+            mpSprite->set_frame ( mbStep? 0 : 1);
             break;
         }
         break;
@@ -535,7 +535,7 @@ void StoneRing::MappableObject::setFrameForDirection()
         switch(meDirection)
         {
         case EAST:
-			mpSprite->set_frame ( mbStep? 0 : 1 );
+            mpSprite->set_frame ( mbStep? 0 : 1 );
             break;
         case WEST:
             mpSprite->set_frame ( mbStep? 2 : 3 );
@@ -589,22 +589,22 @@ void StoneRing::MappableObject::prod()
 
 void StoneRing::MappableObject::setOccupiedPoints(Level * pLevel,LevelPointMethod method)
 {
-	CL_Point dimensions = calcCellDimensions(meSize);
-	CL_Point position = getPosition();
+    CL_Point dimensions = calcCellDimensions(meSize);
+    CL_Point position = getPosition();
 
-	uint effectiveWidth = dimensions.x ;
-	uint effectiveHeight = dimensions.y ;
+    uint effectiveWidth = dimensions.x ;
+    uint effectiveHeight = dimensions.y ;
 
-	if(mX % 32) ++effectiveWidth;
-	if(mY % 32) ++effectiveHeight;
+    if(mX % 32) ++effectiveWidth;
+    if(mY % 32) ++effectiveHeight;
 
-	for(uint x = position.x; x < position.x + effectiveWidth; x++)
-	{
-		for(uint y = position.y; y<position.y + effectiveHeight; y++)
-		{
-			(pLevel->*method)(CL_Point(x,y),this);
-		}
-	}
+    for(uint x = position.x; x < position.x + effectiveWidth; x++)
+    {
+        for(uint y = position.y; y<position.y + effectiveHeight; y++)
+        {
+            (pLevel->*method)(CL_Point(x,y),this);
+        }
+    }
 
 }
 
@@ -721,11 +721,11 @@ void StoneRing::MappableObject::movedOneCell()
     {
         if(mnCellsMoved == mnStepsUntilChange) ///@todo: get from somewhere
         {
-			randomNewDirection();
+            randomNewDirection();
         }
     }
 
-	update();
+    update();
 
 }
 bool StoneRing::MappableObject::isAligned() const
@@ -781,27 +781,27 @@ CL_Point StoneRing::MappableObject::getPositionAfterMove() const
 
 StoneRing::MappablePlayer::MappablePlayer(uint startX, uint startY):mbHasNextDirection(false)
 {
-	meSize = MO_SMALL;
-	mStartX = startX;
-	mStartY = startY;
-	mX=startX * 32;
-	mY=startY * 32;
-	mName = "Player";
-	meType = PLAYER;
-	meDirection = NONE;
-	meFacingDirection = SOUTH; // Should come in like the startX, startY
-	mpMovement = new PlayerMovement;
+    meSize = MO_SMALL;
+    mStartX = startX;
+    mStartY = startY;
+    mX=startX * 32;
+    mY=startY * 32;
+    mName = "Player";
+    meType = PLAYER;
+    meDirection = NONE;
+    meFacingDirection = SOUTH; // Should come in like the startX, startY
+    mpMovement = new PlayerMovement;
 }
 
 StoneRing::MappablePlayer::~MappablePlayer()
 {
-	
+    
 }
 
 uint StoneRing::MappablePlayer::getMovesPerDraw() const
 {
-	if(mbRunning) return 6;
-	else return 3;
+    if(mbRunning) return 6;
+    else return 3;
 }
 
 
@@ -810,71 +810,71 @@ uint StoneRing::MappablePlayer::getMovesPerDraw() const
 
 void StoneRing::MappablePlayer::setNextDirection(eDirection newDir)
 {
-	mbHasNextDirection = true;
-	meNextDirection = newDir;
+    mbHasNextDirection = true;
+    meNextDirection = newDir;
 }
 CL_DomElement  StoneRing::MappablePlayer::createDomElement(CL_DomDocument &doc) const
 {
-	return CL_DomElement(doc,"player");
+    return CL_DomElement(doc,"player");
 }
 void StoneRing::MappablePlayer::randomNewDirection()
 {
-	meDirection = NONE;
-	mbHasNextDirection = false;
+    meDirection = NONE;
+    mbHasNextDirection = false;
 
 }
 void StoneRing::MappablePlayer::idle()
 {
-	if(mbHasNextDirection)
-	{
-		meDirection = meNextDirection;
-		meFacingDirection = meDirection;
-		mbHasNextDirection = false;
-	}
-	else
-	{
-		meDirection = NONE;
-		mbRunning = false;
-	}
+    if(mbHasNextDirection)
+    {
+        meDirection = meNextDirection;
+        meFacingDirection = meDirection;
+        mbHasNextDirection = false;
+    }
+    else
+    {
+        meDirection = NONE;
+        mbRunning = false;
+    }
 }
 
 void StoneRing::MappablePlayer::movedOneCell()
 {
 
-	idle();
-	update();
+    idle();
+    update();
 }
 
 void StoneRing::MappablePlayer::setRunning(bool running)
 {
-	mbRunning = running;
+    mbRunning = running;
 }
 
 
 
 CL_Point StoneRing::MappablePlayer::getPointInFront() const
 {
-	CL_Point point = getPosition();
+    CL_Point point = getPosition();
 
-	switch(meFacingDirection)
-	{
-	case NORTH:
-		point.y--;
-		break;
-	case SOUTH:
-		point.y++;
-		break;
-	case EAST:
-		point.x++;
-		break;
-	case WEST:
-		point.x--;
-		break;
-	default: break;
+    switch(meFacingDirection)
+    {
+    case NORTH:
+        point.y--;
+        break;
+    case SOUTH:
+        point.y++;
+        break;
+    case EAST:
+        point.x++;
+        break;
+    case WEST:
+        point.x--;
+        break;
+    default: break;
 
-	}
+    }
 
-	return point;
+    return point;
 }
 
 void StoneRing::MappablePlayer::setFrameForDirection()
@@ -894,7 +894,7 @@ void StoneRing::MappablePlayer::setFrameForDirection()
         mpSprite->set_frame(mbStep? 4 : 5);
         break;
     case NONE:
-	   
+       
         break;
     }
 }

@@ -506,7 +506,7 @@ public:
 
 #line 32 "steel.reflex"
 
-	void setBuffer(const char * pBuffer, const std::string &name);
+    void setBuffer(const char * pBuffer, const std::string &name);
 
 #line 512 "SteelScanner.h"
 
@@ -542,15 +542,15 @@ public:
 #line 36 "steel.reflex"
 
 
-	// Converters
-	int ToInt(const std::string &text);
-	double ToFloat(const std::string &text);
-	int ToIntFromHex(const std::string &text);
+    // Converters
+    int ToInt(const std::string &text);
+    double ToFloat(const std::string &text);
+    int ToIntFromHex(const std::string &text);
 
-	unsigned int m_char_cursor;
-	const char * m_pBuffer;
-	unsigned int m_line;
-	std::string m_script_name;
+    unsigned int m_char_cursor;
+    const char * m_pBuffer;
+    unsigned int m_line;
+    std::string m_script_name;
 
 #line 556 "SteelScanner.h"
 

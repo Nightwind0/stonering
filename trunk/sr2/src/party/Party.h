@@ -13,7 +13,7 @@
 
 namespace StoneRing{
 
-    class ItemRef;	
+    class ItemRef;  
 
     class Party : public IParty
     {

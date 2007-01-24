@@ -7,20 +7,20 @@
 namespace StoneRing
 {
     
-	class Condition : public Element
-	{
-	public:
-		Condition();
-		virtual ~Condition();
+    class Condition : public Element
+    {
+    public:
+        Condition();
+        virtual ~Condition();
 
-		bool evaluate() const;
-		virtual eElement whichElement() const{ return ECONDITION; }	
-		virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
+        bool evaluate() const;
+        virtual eElement whichElement() const{ return ECONDITION; } 
+        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
-	protected:
-		virtual bool handleElement(eElement element, Element * pElement );
-		std::list<Check*> mChecks;
-	};
+    protected:
+        virtual bool handleElement(eElement element, Element * pElement );
+        std::list<Check*> mChecks;
+    };
     
 };
         

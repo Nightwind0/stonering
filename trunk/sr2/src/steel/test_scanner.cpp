@@ -8,5 +8,5 @@ int main()
     int *thing = NULL;
     
     while(scanner.Scan((void**)&thing) != SteelParser::Token::END_) 
-	std::cout << std::endl;
+    std::cout << std::endl;
 }

@@ -24,7 +24,7 @@ namespace StoneRing
 
 // These MUST be kept alphabetized
         enum eElement
-        {	 
+        {    
 
             EADDCHARACTER,
             EAND,

@@ -13,20 +13,20 @@ PlayScene::PlayScene()
 
 CL_DomElement  PlayScene::createDomElement(CL_DomDocument &doc) const
 {
-	CL_DomElement element(doc,"playScene");
+    CL_DomElement element(doc,"playScene");
 
-	CL_DomText text(doc,mAnimation);
+    CL_DomText text(doc,mAnimation);
 
-	text.set_node_value( mAnimation );
+    text.set_node_value( mAnimation );
 
-	element.append_child ( text );
+    element.append_child ( text );
 
-	return element;
+    return element;
 }
 
 void PlayScene::handleText(const std::string &text)
 {
-	mAnimation = text;
+    mAnimation = text;
 }
 
 
@@ -36,6 +36,6 @@ PlayScene::~PlayScene()
 
 void PlayScene::invoke()
 {
-	IApplication::getInstance()->playScene ( mAnimation );
+    IApplication::getInstance()->playScene ( mAnimation );
 }
 

@@ -6,22 +6,22 @@
 
 
 namespace StoneRing{ 
-	class LoadLevel : public Action, public Element
-	{
-	public:
-		LoadLevel();
-		virtual ~LoadLevel();
+    class LoadLevel : public Action, public Element
+    {
+    public:
+        LoadLevel();
+        virtual ~LoadLevel();
 
-		virtual void invoke();
-		virtual eElement whichElement() const{ return ELOADLEVEL; }	
-		virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
+        virtual void invoke();
+        virtual eElement whichElement() const{ return ELOADLEVEL; } 
+        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
-	protected:
-		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-		std::string mName;
-		ushort mStartY;
-		ushort mStartX;
-	};
+    protected:
+        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+        std::string mName;
+        ushort mStartY;
+        ushort mStartX;
+    };
 };
 #endif
 

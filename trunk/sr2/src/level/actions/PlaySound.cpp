@@ -10,21 +10,21 @@ PlaySound::PlaySound()
 
 CL_DomElement  PlaySound::createDomElement(CL_DomDocument &doc) const
 {
-	CL_DomElement element(doc,"playSound");
+    CL_DomElement element(doc,"playSound");
 
-	CL_DomText text(doc, mSound );
+    CL_DomText text(doc, mSound );
 
-	text.set_node_value ( mSound );
+    text.set_node_value ( mSound );
 
-	element.append_child ( text );
+    element.append_child ( text );
 
-	return element;
+    return element;
 }
 
 
 void PlaySound::handleText(const std::string &text)
 {
-	mSound = text;
+    mSound = text;
 }
 
 PlaySound::~PlaySound()
@@ -33,7 +33,7 @@ PlaySound::~PlaySound()
 
 void PlaySound::invoke()
 {
-	IApplication::getInstance()->playSound ( mSound );
+    IApplication::getInstance()->playSound ( mSound );
 
 }
 

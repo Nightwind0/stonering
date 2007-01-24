@@ -12,15 +12,15 @@ public:
     
     SteelType foo() { return SteelType(); }
     SteelType one(int i) 
-	{
-	    std::cout << "int:" << i << std::endl;
-	    return SteelType();
-	}
+    {
+        std::cout << "int:" << i << std::endl;
+        return SteelType();
+    }
     SteelType two(const int &i,const double &d)
-	{
-	    std::cout << "int:" << i << " double:" << d << std::endl;
-	    return SteelType();
-	}
+    {
+        std::cout << "int:" << i << " double:" << d << std::endl;
+        return SteelType();
+    }
 
 private:
 };
