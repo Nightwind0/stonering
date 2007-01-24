@@ -25,13 +25,13 @@ Element * EditableLevelFactory::createTile() const
 }
 
 /*MappableObject * EditableLevelFactory::createMappableObject() const
-{
-    return new EditableMappableObject();
-}
-MappableObject * EditableLevelFactory::createMappableObject(CL_DomElement *pElement) const
-{
-    return new EditableMappableObject(pElement);
-}
+  {
+  return new EditableMappableObject();
+  }
+  MappableObject * EditableLevelFactory::createMappableObject(CL_DomElement *pElement) const
+  {
+  return new EditableMappableObject(pElement);
+  }
 */
 Element * EditableLevelFactory::createTilemap() const
 {
@@ -134,13 +134,13 @@ void EditableTile::setIsHot()
 void EditableTile::setDirectionBlock (int dirBlock )
 {
     if(dirBlock & StoneRing::DIR_NORTH)
-	cFlags |= BLK_NORTH;
+        cFlags |= BLK_NORTH;
     if(dirBlock & StoneRing::DIR_SOUTH)
-	cFlags |= DIR_SOUTH;
+        cFlags |= DIR_SOUTH;
     if(dirBlock & StoneRing::DIR_WEST)
-	cFlags |= DIR_WEST;
+        cFlags |= DIR_WEST;
     if(dirBlock & StoneRing::DIR_EAST)
-	cFlags |= DIR_EAST;
+        cFlags |= DIR_EAST;
 }
     
 
@@ -153,11 +153,11 @@ void EditableTile::setNorthBlock(bool bOn)
 {
     if(bOn)
     {
-	cFlags |= BLK_NORTH;
+        cFlags |= BLK_NORTH;
     }
     else
     {
-	cFlags &= ~BLK_NORTH;
+        cFlags &= ~BLK_NORTH;
     }
 }
 
@@ -165,11 +165,11 @@ void EditableTile::setSouthBlock(bool bOn)
 {
     if(bOn)
     {
-	cFlags |= BLK_SOUTH;
+        cFlags |= BLK_SOUTH;
     }
     else
     {
-	cFlags &= ~BLK_SOUTH;
+        cFlags &= ~BLK_SOUTH;
     }
 }
 
@@ -177,11 +177,11 @@ void EditableTile::setEastBlock(bool bOn)
 {
     if(bOn)
     {
-	cFlags |= BLK_EAST;
+        cFlags |= BLK_EAST;
     }
     else
     {
-	cFlags &= ~BLK_EAST;
+        cFlags &= ~BLK_EAST;
     }
 }
 
@@ -189,11 +189,11 @@ void EditableTile::setWestBlock(bool bOn)
 {
     if(bOn)
     {
-	cFlags |= BLK_WEST;
+        cFlags |= BLK_WEST;
     }
     else
     {
-	cFlags &= ~BLK_WEST;
+        cFlags &= ~BLK_WEST;
     }
 }
 
@@ -216,9 +216,9 @@ void EditableLevel::addRows(int rows)
 {
     for(std::vector<std::vector<std::list<Tile*> > >::iterator iter= mTileMap.begin();
 	    iter != mTileMap.end();
-	iter++)
+        iter++)
     {
-	iter->resize ( iter->size() + rows );
+        iter->resize ( iter->size() + rows );
     }
 
     mLevelHeight+=rows;
@@ -231,7 +231,7 @@ void EditableLevel::addColumns(int columns)
 
     for(int x = orig_size-1; x < mTileMap.size(); x++)
     {
-	mTileMap[x].resize ( mLevelHeight );
+        mTileMap[x].resize ( mLevelHeight );
     }
 
     mLevelWidth+=columns;
@@ -252,15 +252,15 @@ void EditableLevel::addTile ( Tile * pTile )
 {
 
     if(pTile->getX() >= mLevelWidth || pTile->getY() >= mLevelHeight )
-	return;
+        return;
 
     if( pTile->isFloater())
     {
-	mFloaterMap[ CL_Point(pTile->getX(),pTile->getY()) ].push_back(pTile);
+        mFloaterMap[ CL_Point(pTile->getX(),pTile->getY()) ].push_back(pTile);
     }
     else
     {
-	mTileMap[ pTile->getX() ][ pTile->getY()].push_back ( pTile );	
+        mTileMap[ pTile->getX() ][ pTile->getY()].push_back ( pTile );	
     }
 
     
@@ -270,14 +270,14 @@ void EditableLevel::removeTile ( Tile * pTile )
 {
     if(pTile->isFloater())
     {
-	if(mFloaterMap.count( CL_Point(pTile->getX(), pTile->getY() ) ))
-	{
-	    mFloaterMap[CL_Point(pTile->getX(),pTile->getY())].remove( pTile );
-	}
+        if(mFloaterMap.count( CL_Point(pTile->getX(), pTile->getY() ) ))
+        {
+            mFloaterMap[CL_Point(pTile->getX(),pTile->getY())].remove( pTile );
+        }
     }
     else
     {
-	mTileMap[pTile->getX()][pTile->getY()].remove (pTile );
+        mTileMap[pTile->getX()][pTile->getY()].remove (pTile );
     }
 }
  
@@ -292,10 +292,10 @@ std::list<Tile*> EditableLevel::getTilesAt(uint levelX, uint levelY) const
 	if(iter != mFloaterMap.end())
 	{
 	    for(std::list<Tile*>::const_iterator i = iter->second.begin();
-		i != iter->second.end();
-		i++)
+            i != iter->second.end();
+            i++)
 	    {
-		tiles.push_back ( *i );
+            tiles.push_back ( *i );
 	    }
 	}
 	
@@ -316,8 +316,8 @@ void EditableLevel::setDirectionBlockAt(uint levelX, uint levelY, eDirectionBloc
     std::list<Tile*> tiles = getTilesAt(levelX,levelY);
 
     for(std::list<Tile*>::iterator iter = tiles.begin();
-	iter != tiles.end();
-	iter++)
+        iter != tiles.end();
+        iter++)
     {
 		switch(dir)
 		{
@@ -342,12 +342,12 @@ void EditableLevel::setHotAt(uint levelX, uint levelY, bool bHot)
     std::list<Tile*> tiles = getTilesAt(levelX,levelY);
 
     for(std::list<Tile*>::iterator iter = tiles.begin();
-	iter != tiles.end();
-	iter++)
+        iter != tiles.end();
+        iter++)
     {
-	if(bHot)
-	    static_cast<EditableTile*>(*iter)->setIsHot();
-	else static_cast<EditableTile*>(*iter)->setNotHot();
+        if(bHot)
+            static_cast<EditableTile*>(*iter)->setIsHot();
+        else static_cast<EditableTile*>(*iter)->setNotHot();
     }
 }
 

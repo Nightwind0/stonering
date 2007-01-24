@@ -4,7 +4,7 @@
 
 
 TileSelector::TileSelector( CL_Component *parent, CL_ResourceManager* tsResources)
-:  CL_Component(parent), tsResources(tsResources)
+    :  CL_Component(parent), tsResources(tsResources)
 {
 //, TileSet tileset
 // tileset(tileset),

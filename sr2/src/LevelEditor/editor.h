@@ -84,23 +84,23 @@ public:
 	virtual int getScreenHeight()const;
 
 
-      virtual CL_Rect getLevelRect() const;
-      virtual CL_Rect getDisplayRect() const;
+    virtual CL_Rect getLevelRect() const;
+    virtual CL_Rect getDisplayRect() const;
 
 
-      virtual bool canMove(const CL_Rect &currently, const CL_Rect &destination, bool noHot, bool isPlayer);
+    virtual bool canMove(const CL_Rect &currently, const CL_Rect &destination, bool noHot, bool isPlayer);
 
-	  virtual void requestRedraw(const State *pState){}
-      virtual void playScene(const std::string &animation){}
-      virtual void playSound(const std::string &sound){}
-      virtual void loadLevel(const std::string &level, uint startX, uint startY){}
-      virtual void startBattle(const std::string &monster, uint count, bool isBoss){}
-      virtual void say(const std::string &speaker, const std::string &text){}
-      virtual void pause(uint time){}
-      virtual void invokeShop(const std::string &shoptype){}
-      virtual void choice(const std::string &, const std::vector<std::string> &, Choice*){}
-	  virtual void pop(bool){}
-      Infobar * getInfo() const { return mInfo; }
+    virtual void requestRedraw(const State *pState){}
+    virtual void playScene(const std::string &animation){}
+    virtual void playSound(const std::string &sound){}
+    virtual void loadLevel(const std::string &level, uint startX, uint startY){}
+    virtual void startBattle(const std::string &monster, uint count, bool isBoss){}
+    virtual void say(const std::string &speaker, const std::string &text){}
+    virtual void pause(uint time){}
+    virtual void invokeShop(const std::string &shoptype){}
+    virtual void choice(const std::string &, const std::vector<std::string> &, Choice*){}
+    virtual void pop(bool){}
+    Infobar * getInfo() const { return mInfo; }
 
 private:
 	int main(int argc, char **argv);

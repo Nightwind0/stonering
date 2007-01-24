@@ -19,7 +19,7 @@ using namespace StoneRing;
 
 class EditableLevelFactory : public LevelFactory
 {
- public:
+public:
     EditableLevelFactory(){}
     virtual ~EditableLevelFactory(){}
 private:
@@ -32,13 +32,13 @@ private:
 
 
 
- private:
+private:
 };
 
 
 class EditableTilemap : public StoneRing::Tilemap
 {
- public:
+public:
     EditableTilemap(){}
     virtual ~EditableTilemap();
 
@@ -51,7 +51,7 @@ class EditableTilemap : public StoneRing::Tilemap
 
 class EditableSpriteRef : public StoneRing::SpriteRef
 {
- public:
+public:
     EditableSpriteRef(){}
     virtual ~EditableSpriteRef(){}
     void setSpriteRef( const std::string &ref);
@@ -62,7 +62,7 @@ class EditableSpriteRef : public StoneRing::SpriteRef
 
 class EditableTile : public StoneRing::Tile
 {
- public:
+public:
     EditableTile();
     virtual ~EditableTile();
 
@@ -87,14 +87,14 @@ class EditableTile : public StoneRing::Tile
     void setWestBlock(bool bOn);
     void setNotHot();
 
- private:
+private:
 };
 
 
 
 class EditableLevel : public StoneRing::Level
 {
- public:
+public:
     EditableLevel(){}
     EditableLevel(const std::string &name,CL_ResourceManager * pResources);
     virtual ~EditableLevel();
@@ -123,7 +123,7 @@ class EditableLevel : public StoneRing::Level
     void setMusic(const std::string &music);
 
           
- protected:
+protected:
 
 
 
