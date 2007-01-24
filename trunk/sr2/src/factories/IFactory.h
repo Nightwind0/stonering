@@ -8,15 +8,15 @@
 namespace StoneRing
 {
 
-class IFactory
-{
-public:
-	IFactory(){}
-	virtual ~IFactory(){}
+    class IFactory
+    {
+    public:
+        IFactory(){}
+        virtual ~IFactory(){}
 
-	virtual bool canCreate( Element::eElement element )=0;
-	virtual Element * createElement( Element::eElement element )=0;
-};
+        virtual bool canCreate( Element::eElement element )=0;
+        virtual Element * createElement( Element::eElement element )=0;
+    };
 };
 
 #endif

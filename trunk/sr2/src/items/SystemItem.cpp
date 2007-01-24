@@ -14,6 +14,6 @@ SystemItem::~SystemItem()
 CL_DomElement  
 SystemItem::createDomElement(CL_DomDocument &doc) const
 {
-	return CL_DomElement(doc,"systemItem");
+    return CL_DomElement(doc,"systemItem");
 }
 

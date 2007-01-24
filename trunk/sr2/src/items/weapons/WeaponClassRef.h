@@ -5,7 +5,7 @@
 
 namespace StoneRing{     
 
- class WeaponClassRef : public Element
+    class WeaponClassRef : public Element
 	{
 	public:
 	    WeaponClassRef();

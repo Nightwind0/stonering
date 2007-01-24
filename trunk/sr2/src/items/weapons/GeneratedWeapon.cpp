@@ -93,7 +93,7 @@ uint GeneratedWeapon::getValue() const
 	const AbilityManager * pManager = IApplication::getInstance()->getAbilityManager();
 
 	uint value= (int)((float)mpType->getBasePrice() * 
-		mpClass->getValueMultiplier()) 
+                      mpClass->getValueMultiplier()) 
 		+ mpClass->getValueAdd();
 
 	if(hasSpell())
@@ -145,7 +145,7 @@ WeaponRef GeneratedWeapon::generateWeaponRef() const
 }
 
 void GeneratedWeapon::generate( WeaponType* pType, WeaponClass * pClass, 
-							   SpellRef *pSpell , RuneType *pRune)
+                                SpellRef *pSpell , RuneType *pRune)
 {
 
 	for(std::list<AttributeEnhancer*>::const_iterator iter = pClass->getAttributeEnhancersBegin();

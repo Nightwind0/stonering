@@ -10,11 +10,11 @@ AttributeEnhancer::AttributeEnhancer():mnAdd(0),mfMultiplier(1)
 
 void AttributeEnhancer::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-	mnAttribute = CAFromString(getRequiredString("attribute", pAttributes));
+    mnAttribute = CAFromString(getRequiredString("attribute", pAttributes));
 
-	mfMultiplier = getImpliedFloat("multiplier",pAttributes,1);
+    mfMultiplier = getImpliedFloat("multiplier",pAttributes,1);
 
-	mnAdd = getImpliedInt("add",pAttributes,0);
+    mnAdd = getImpliedInt("add",pAttributes,0);
 }
 
 
@@ -25,17 +25,17 @@ AttributeEnhancer::~AttributeEnhancer()
 
 uint AttributeEnhancer::getAttribute() const
 {
-	return mnAttribute;
+    return mnAttribute;
 }
 
 int AttributeEnhancer::getAdd() const
 {
-	return mnAdd;
+    return mnAdd;
 }
 
 float AttributeEnhancer::getMultiplier() const
 {
-	return mfMultiplier;
+    return mfMultiplier;
 }
 
 // Uses IParty::modifyAttribute to modify the CURRENT player,
@@ -43,18 +43,18 @@ float AttributeEnhancer::getMultiplier() const
 // when invoking. (By calling equip on the armor/weapon...)
 void AttributeEnhancer::invoke()
 {
-	ICharacter * pCharacter = IApplication::getInstance()
-		->getSelectedCharacterGroup()
-		->getSelectedCharacter();
+    ICharacter * pCharacter = IApplication::getInstance()
+        ->getSelectedCharacterGroup()
+        ->getSelectedCharacter();
 
-	int original = pCharacter->getAttribute(static_cast<eCharacterAttribute>(mnAttribute));
+    int original = pCharacter->getAttribute(static_cast<eCharacterAttribute>(mnAttribute));
 
-	pCharacter->modifyAttribute( static_cast<eCharacterAttribute>(mnAttribute), mnAdd, mfMultiplier);
+    pCharacter->modifyAttribute( static_cast<eCharacterAttribute>(mnAttribute), mnAdd, mfMultiplier);
 
-	int now = pCharacter->getAttribute(static_cast<eCharacterAttribute>(mnAttribute));
+    int now = pCharacter->getAttribute(static_cast<eCharacterAttribute>(mnAttribute));
 
-	// So we can get back to how we were.
-	mnDelta =  original - now;
+    // So we can get back to how we were.
+    mnDelta =  original - now;
 }
 
 // Uses IParty::modifyAttribute to modify the CURRENT player,
@@ -63,20 +63,20 @@ void AttributeEnhancer::invoke()
 void AttributeEnhancer::revoke()
 {
 
-	ICharacter * pCharacter = IApplication::getInstance()
-		->getSelectedCharacterGroup()
-		->getSelectedCharacter();
+    ICharacter * pCharacter = IApplication::getInstance()
+        ->getSelectedCharacterGroup()
+        ->getSelectedCharacter();
 
 
-	int add =  mnDelta;
+    int add =  mnDelta;
 
-	pCharacter->modifyAttribute( static_cast<eCharacterAttribute>(mnAttribute), add, 1 );
+    pCharacter->modifyAttribute( static_cast<eCharacterAttribute>(mnAttribute), add, 1 );
 
 }
 
 CL_DomElement 
 AttributeEnhancer::createDomElement ( CL_DomDocument &doc) const
 {
-	return CL_DomElement(doc, "attributeEnhancer");
+    return CL_DomElement(doc, "attributeEnhancer");
 }
 

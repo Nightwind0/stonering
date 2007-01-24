@@ -44,7 +44,7 @@ void Equipment::equip()
 #else
 
 	for	(std::list<AttributeEnhancer*>::const_iterator iter = mAttributeEnhancers.begin();
-		iter != mAttributeEnhancers.end(); iter++)
+         iter != mAttributeEnhancers.end(); iter++)
 	{
 		(*iter)->invoke();
 	}

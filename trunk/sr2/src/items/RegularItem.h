@@ -3,7 +3,7 @@
 
 #include "NamedItem.h"
 
-  // Concrete Named Item classes
+// Concrete Named Item classes
 namespace StoneRing{
     class RegularItem: public NamedItem
 	{

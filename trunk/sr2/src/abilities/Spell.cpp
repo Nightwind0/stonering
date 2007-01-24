@@ -29,15 +29,15 @@ void DoWeaponDamage::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 
 bool DoWeaponDamage::handleElement(eElement element,Element *pElement)
 {
-		if(element == EWEAPONDAMAGECATEGORY)
-		{
-			mpDamageCategory = dynamic_cast<WeaponDamageCategory*>(pElement);
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+    if(element == EWEAPONDAMAGECATEGORY)
+    {
+        mpDamageCategory = dynamic_cast<WeaponDamageCategory*>(pElement);
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 void DoWeaponDamage::loadFinished()
@@ -111,12 +111,12 @@ void DoMagicDamage::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 
 bool DoMagicDamage::handleElement(eElement element,Element *pElement)
 {
-		if(element == EMAGICDAMAGECATEGORY)
-		{
-			mpDamageCategory = dynamic_cast<MagicDamageCategory*>(pElement);
-			return true;
-		}
-		else return false;
+    if(element == EMAGICDAMAGECATEGORY)
+    {
+        mpDamageCategory = dynamic_cast<MagicDamageCategory*>(pElement);
+        return true;
+    }
+    else return false;
 }
 
 void DoMagicDamage::loadFinished()
@@ -410,17 +410,17 @@ SpellRef * Spell::createSpellRef() const
     switch(meType)
     {
     case ELEMENTAL:
-	type = SpellRef::ELEMENTAL;
-	break;
+        type = SpellRef::ELEMENTAL;
+        break;
     case WHITE:
-	type = SpellRef::WHITE;
-	break;
+        type = SpellRef::WHITE;
+        break;
     case STATUS:
-	type = SpellRef::STATUS;
-	break;
+        type = SpellRef::STATUS;
+        break;
     case OTHER:
-	type = SpellRef::OTHER;
-	break;
+        type = SpellRef::OTHER;
+        break;
     }
     ref->setType( type );
     ref->setName ( mName );
@@ -483,14 +483,14 @@ WeaponDamageCategory::WeaponDamageCategory()
 
 WeaponDamageCategory::WeaponDamageCategory(CL_DomElement * pElement)
 {
-    CL_DomNamedNodeMap attributes = pElement->get_attributes();
+CL_DomNamedNodeMap attributes = pElement->get_attributes();
 
-    std::string type = getRequiredString("type", pAttributes);
+std::string type = getRequiredString("type", pAttributes);
 
-    if(type == "slash") meType = SLASH;
-    else if (type == "bash") meType = BASH;
-    else if (type == "jab") meType = JAB;
-    else throw CL_Error("Bad type: " + type + " on weapon damage category.");
+if(type == "slash") meType = SLASH;
+else if (type == "bash") meType = BASH;
+else if (type == "jab") meType = JAB;
+else throw CL_Error("Bad type: " + type + " on weapon damage category.");
 
 }
 
@@ -502,13 +502,13 @@ WeaponDamageCategory::~WeaponDamageCategory()
 
 WeaponDamageCategory::eType WeaponDamageCategory::getType() const
 {
-    return meType;
+return meType;
 }
 
 
 CL_DomElement WeaponDamageCategory::createDomElement( CL_DomDocument &doc ) const
 {
-    return CL_DomElement(doc,"weaponDamageCategory" );
+return CL_DomElement(doc,"weaponDamageCategory" );
 }
 
 
@@ -520,18 +520,18 @@ MagicDamageCategory::MagicDamageCategory()
 MagicDamageCategory::MagicDamageCategory(CL_DomElement * pElement)
 {
 
-    CL_DomNamedNodeMap attributes = pElement->get_attributes();
+CL_DomNamedNodeMap attributes = pElement->get_attributes();
 
-    std::string type = getRequiredString("type", pAttributes);
+std::string type = getRequiredString("type", pAttributes);
 
-    if(type == "eart") meType = EARTH;
-    else if (type == "wind") meType = WIND;
-    else if (type == "fire") meType = FIRE;
-    else if (type == "water") meType = WATER;
-    else if (type == "holy") meType = HOLY;
-    else if (type == "other") meType = OTHER;
+if(type == "eart") meType = EARTH;
+else if (type == "wind") meType = WIND;
+else if (type == "fire") meType = FIRE;
+else if (type == "water") meType = WATER;
+else if (type == "holy") meType = HOLY;
+else if (type == "other") meType = OTHER;
 
-    else throw CL_Error("Bad type: " + type + " on weapon damage category.");
+else throw CL_Error("Bad type: " + type + " on weapon damage category.");
 
 }
 
@@ -543,13 +543,13 @@ MagicDamageCategory::~MagicDamageCategory()
 
 MagicDamageCategory::eType MagicDamageCategory::getType() const
 {
-    return meType;
+return meType;
 }
 
 
 CL_DomElement MagicDamageCategory::createDomElement( CL_DomDocument &doc ) const
 {
-    return CL_DomElement(doc,"magicDamageCategory" );
+return CL_DomElement(doc,"magicDamageCategory" );
 }
 	
 

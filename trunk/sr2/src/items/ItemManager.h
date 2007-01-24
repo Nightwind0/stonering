@@ -10,41 +10,41 @@
 namespace StoneRing
 {
 
-class ItemManager
-{
-public:
-    ItemManager();
-    ~ItemManager();
+    class ItemManager
+    {
+    public:
+        ItemManager();
+        ~ItemManager();
 
 
-    void loadItemFile ( CL_DomDocument &doc );
+        void loadItemFile ( CL_DomDocument &doc );
     
 
-    WeaponType *getWeaponType(const WeaponTypeRef &ref) const;
-    ArmorType  *getArmorType ( const ArmorTypeRef &ref) const;
+        WeaponType *getWeaponType(const WeaponTypeRef &ref) const;
+        ArmorType  *getArmorType ( const ArmorTypeRef &ref) const;
 
-    WeaponClass *getWeaponClass ( const WeaponClassRef & ref ) const;
-    ArmorClass  *getArmorClass ( const ArmorClassRef & ref ) const;
+        WeaponClass *getWeaponClass ( const WeaponClassRef & ref ) const;
+        ArmorClass  *getArmorClass ( const ArmorClassRef & ref ) const;
 
-    virtual Item * getItem( const ItemRef & ref ) const;
+        virtual Item * getItem( const ItemRef & ref ) const;
 #ifndef NDEBUG
-    void dumpItemList();
-    void printAttributeEnhancers(Equipment * pItem );
-	void printStatusModifiers(Equipment * pItem);
+        void dumpItemList();
+        void printAttributeEnhancers(Equipment * pItem );
+        void printStatusModifiers(Equipment * pItem);
 #endif
     
 
-private:
-    void generateWeapons();
-    void generateArmor();
+    private:
+        void generateWeapons();
+        void generateArmor();
 
-    std::list<WeaponClass*> mWeaponClasses;
-    std::list<ArmorClass*> mArmorClasses;
-    std::list<WeaponType*> mWeaponTypes;
-    std::list<ArmorType*> mArmorTypes;
-    std::list<Item*> mItems;
+        std::list<WeaponClass*> mWeaponClasses;
+        std::list<ArmorClass*> mArmorClasses;
+        std::list<WeaponType*> mWeaponTypes;
+        std::list<ArmorType*> mArmorTypes;
+        std::list<Item*> mItems;
 
-};
+    };
 
 
 };

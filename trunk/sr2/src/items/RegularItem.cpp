@@ -11,8 +11,8 @@ RegularItem::RegularItem()
 RegularItem::~RegularItem()
 {
 	for( std::list<Action*>::iterator iter = mActions.begin();
-		iter != mActions.end();
-		iter++)
+         iter != mActions.end();
+         iter++)
 	{
 		delete *iter;
 	}

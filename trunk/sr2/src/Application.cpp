@@ -64,12 +64,12 @@ void Application::playSound(const std::string &sound)
 }
 void Application::loadLevel(const std::string &level, uint startX, uint startY)
 {
- 	mMapState.pushLevel( new Level(level,mpResources), startX, startY );
+    mMapState.pushLevel( new Level(level,mpResources), startX, startY );
 }
 
 void Application::pop(bool bAll)
 {
-	mMapState.pop(bAll);
+    mMapState.pop(bAll);
 }
 
 void Application::startBattle(const std::string &monster, uint count, bool isBoss)
@@ -95,7 +95,7 @@ void Application::choice(const std::string &choiceText,
 
     run(); // Run pops for us.
 
-	delete pChoiceState;
+    delete pChoiceState;
 }
 
 
@@ -161,7 +161,7 @@ AbilityFactory * Application::getAbilityFactory() const
 
 CharacterFactory * Application::getCharacterFactory() const
 {
-	return mpCharacterFactory;
+    return mpCharacterFactory;
 }
 
 
@@ -189,15 +189,15 @@ Application::Application():mpParty(0),mpLevelFactory(0),
 
     mpAbilityFactory = new AbilityFactory();
 
-	mpCharacterFactory = new CharacterFactory();
+    mpCharacterFactory = new CharacterFactory();
 }
 
 Application::~Application()
 {
-	delete mpLevelFactory;
-	delete mpItemFactory;
-	delete mpAbilityFactory;
-	delete mpCharacterFactory;
+    delete mpLevelFactory;
+    delete mpItemFactory;
+    delete mpAbilityFactory;
+    delete mpCharacterFactory;
 }
 
 
@@ -210,7 +210,7 @@ CL_Rect Application::getDisplayRect() const
 void Application::setupClanLib()
 {
     CL_SetupCore::init();
-	CL_SetupGL::init();
+    CL_SetupGL::init();
     CL_SetupDisplay::init();
    
         
@@ -294,16 +294,16 @@ void Application::loadStatusEffects(const std::string &filename)
 void Application::loadCharacterClasses(const std::string &filename)
 {
 #ifndef NDEBUG
-	std::cout << "Loading character classes..." << std::endl;
+    std::cout << "Loading character classes..." << std::endl;
 #endif
 
-	CL_InputSource_File file(filename);
+    CL_InputSource_File file(filename);
 
-	CL_DomDocument document;
+    CL_DomDocument document;
 
-	document.load(&file);
+    document.load(&file);
 
-	mAbilityManager.loadCharacterClassFile( document );
+    mAbilityManager.loadCharacterClassFile( document );
 }
 
 void Application::loadItems(const std::string &filename)
@@ -325,7 +325,7 @@ void Application::loadItems(const std::string &filename)
 
 void Application::requestRedraw(const State * /*pState*/)
 {
-	draw();
+    draw();
 }
 
 void Application::draw()
@@ -334,12 +334,12 @@ void Application::draw()
 
     mpWindow->get_gc()->push_cliprect( dst);
 
-	std::vector<State*>::iterator end = mStates.end();
+    std::vector<State*>::iterator end = mStates.end();
 
     for(std::vector<State*>::iterator iState = mStates.begin();
         iState != end; iState++)
     {
-		State * pState = *iState;
+        State * pState = *iState;
         pState->draw(dst, mpWindow->get_gc());
         
         if(pState->lastToDraw()) break; // Don't draw any further.
@@ -351,36 +351,36 @@ void Application::draw()
 
 void Application::run()
 {
-	CL_FramerateCounter frameRate;
-	static int count = 0;
-	State * backState = mStates.back();
+    CL_FramerateCounter frameRate;
+    static int count = 0;
+    State * backState = mStates.back();
 
     backState->start();
-	unsigned int then = CL_System::get_time();
+    unsigned int then = CL_System::get_time();
     while(!backState->isDone())
     {
 
         draw();
-		CL_Display::flip();
-		//CL_System::sleep(10);
-		CL_System::keep_alive();
+        CL_Display::flip();
+        //CL_System::sleep(10);
+        CL_System::keep_alive();
 #ifndef NDEBUG
-		if(count++ % 50 == 0)
-			std::cout << "FPS " <<  frameRate.get_fps() << std::endl;
-#endif	
-		unsigned int now = CL_System::get_time();
+        if(count++ % 50 == 0)
+            std::cout << "FPS " <<  frameRate.get_fps() << std::endl;
+#endif  
+        unsigned int now = CL_System::get_time();
 
-		if(now - then > MS_BETWEEN_MOVES)
-		{
-			if ( !backState->disableMappableObjects())
-			{
-				mMapState.moveMappableObjects();
-				mStates.back()->mappableObjectMoveHook();
-			}
-			then = now;
-		}
+        if(now - then > MS_BETWEEN_MOVES)
+        {
+            if ( !backState->disableMappableObjects())
+            {
+                mMapState.moveMappableObjects();
+                mStates.back()->mappableObjectMoveHook();
+            }
+            then = now;
+        }
 
-		
+        
     }
 
 
@@ -405,7 +405,7 @@ int Application::main(int argc, char ** argv)
 
         setupClanLib();
 
-		//CL_Display::get_buffer()
+        //CL_Display::get_buffer()
                 
         mpResources = new CL_ResourceManager ( "Media/resources.xml" );
 
@@ -415,48 +415,48 @@ int Application::main(int argc, char ** argv)
         std::string name = CL_String::load("Configuration/name", mpResources) + " (DEBUG)";
 #endif
         std::string startinglevel = CL_String::load("Game/StartLevel",mpResources);
-		std::string itemdefinition = CL_String::load("Game/ItemDefinitions", mpResources );
+        std::string itemdefinition = CL_String::load("Game/ItemDefinitions", mpResources );
         std::string statusEffectDefinition = CL_String::load("Game/StatusEffectDefinitions",mpResources);
         std::string spelldefinition = CL_String::load("Game/SpellDefinitions", mpResources);
-		std::string skilldefinition = CL_String::load("Game/SkillDefinitions",mpResources);
-		std::string classdefinition = CL_String::load("Game/CharacterClassDefinitions",mpResources);
+        std::string skilldefinition = CL_String::load("Game/SkillDefinitions",mpResources);
+        std::string classdefinition = CL_String::load("Game/CharacterClassDefinitions",mpResources);
         // Load special overlay for say.
 
 
         mpWindow  = new CL_OpenGLWindow(name, WINDOW_WIDTH, WINDOW_HEIGHT,false,false,3);
-		//mpWindow->set_buffer_count(3);
+        //mpWindow->set_buffer_count(3);
 
 #ifndef NDEBUG
-		std::cout << "Back Buffer Depth" <<mpWindow->get_back_buffer().get_format().get_depth() << std::endl;
-		std::cout << "Front Buffer Depth" << mpWindow->get_front_buffer().get_format().get_depth() << std::endl;
-		std::cout << "Back Buffer Red" << std::hex << mpWindow->get_back_buffer().get_format().get_red_mask() << std::endl;
-		std::cout << "Front Buffer Red" << std::hex << mpWindow->get_front_buffer().get_format().get_red_mask() << std::endl;
-		std::cout << "Back Buffer Green" << std::hex << mpWindow->get_back_buffer().get_format().get_green_mask() << std::endl;
-		std::cout << "Front Buffer Green" << std::hex << mpWindow->get_front_buffer().get_format().get_green_mask() << std::endl;
-		std::cout << "Back Buffer Blue" << std::hex << mpWindow->get_back_buffer().get_format().get_blue_mask() << std::endl;
-		std::cout << "Front Buffer Blue" << std::hex << mpWindow->get_front_buffer().get_format().get_blue_mask() << std::endl;
-		std::cout << "Back Buffer Alpha" << std::hex << mpWindow->get_back_buffer().get_format().get_alpha_mask() << std::endl;
-		std::cout << "Front Buffer Alpha" << std::hex << mpWindow->get_front_buffer().get_format().get_alpha_mask() << std::endl;
-		std::cout << std::dec;
+        std::cout << "Back Buffer Depth" <<mpWindow->get_back_buffer().get_format().get_depth() << std::endl;
+        std::cout << "Front Buffer Depth" << mpWindow->get_front_buffer().get_format().get_depth() << std::endl;
+        std::cout << "Back Buffer Red" << std::hex << mpWindow->get_back_buffer().get_format().get_red_mask() << std::endl;
+        std::cout << "Front Buffer Red" << std::hex << mpWindow->get_front_buffer().get_format().get_red_mask() << std::endl;
+        std::cout << "Back Buffer Green" << std::hex << mpWindow->get_back_buffer().get_format().get_green_mask() << std::endl;
+        std::cout << "Front Buffer Green" << std::hex << mpWindow->get_front_buffer().get_format().get_green_mask() << std::endl;
+        std::cout << "Back Buffer Blue" << std::hex << mpWindow->get_back_buffer().get_format().get_blue_mask() << std::endl;
+        std::cout << "Front Buffer Blue" << std::hex << mpWindow->get_front_buffer().get_format().get_blue_mask() << std::endl;
+        std::cout << "Back Buffer Alpha" << std::hex << mpWindow->get_back_buffer().get_format().get_alpha_mask() << std::endl;
+        std::cout << "Front Buffer Alpha" << std::hex << mpWindow->get_front_buffer().get_format().get_alpha_mask() << std::endl;
+        std::cout << std::dec;
 #endif
-		
-		//for(int i =0; i < mpWindow->get_buffer_count(); i++)
-		//	mpWindow->get_buffer(i).to_format(CL_PixelFormat(24,0,0,0,0,false,0,pixelformat_rgba));
+        
+        //for(int i =0; i < mpWindow->get_buffer_count(); i++)
+        //  mpWindow->get_buffer(i).to_format(CL_PixelFormat(24,0,0,0,0,false,0,pixelformat_rgba));
 
 
     
         CL_Display::clear();
 
-		showRechargeableOnionSplash();
+        showRechargeableOnionSplash();
         showIntro();
         loadStatusEffects(statusEffectDefinition);
         loadSpells(spelldefinition);
         loadItems(itemdefinition);
-		loadSkills(skilldefinition);
-		loadCharacterClasses(classdefinition);
+        loadSkills(skilldefinition);
+        loadCharacterClasses(classdefinition);
         Level * pLevel = new Level(startinglevel, mpResources);
 
-		mMapState.setDimensions(getDisplayRect());
+        mMapState.setDimensions(getDisplayRect());
         mMapState.pushLevel ( pLevel, 1,1 );  
       
 
@@ -474,11 +474,11 @@ int Application::main(int argc, char ** argv)
         static long fpscounter = 0;
 
         while(mStates.size())
-			run();
+            run();
                 
 #ifndef NDEBUG
         std::string foo;
-		std::getline(std::cin,foo);
+        std::getline(std::cin,foo);
 #endif
 
                 

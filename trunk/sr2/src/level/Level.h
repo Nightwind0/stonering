@@ -195,8 +195,8 @@ namespace StoneRing {
 		virtual CL_DomElement createDomElement(CL_DomDocument&) const;
 
 		virtual void draw(const CL_Rect &src, const CL_Rect &dst,
-			CL_GraphicContext * pGC , bool floaters = false,
-			bool highlightHot=false,bool indicateBlocks = false);
+                          CL_GraphicContext * pGC , bool floaters = false,
+                          bool highlightHot=false,bool indicateBlocks = false);
 		virtual void drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
 		virtual void drawFloaters(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext * pGC);
 
@@ -300,9 +300,9 @@ struct LessTile : public std::binary_function<const StoneRing::Tile*,
 	const StoneRing::Tile*,bool>
 {
 	bool operator()(const StoneRing::Tile* n1, const StoneRing::Tile *n2) const
-	{
-		return n1->getZOrder() < n2->getZOrder();
-	}
+        {
+            return n1->getZOrder() < n2->getZOrder();
+        }
 };
 
 

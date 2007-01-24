@@ -8,7 +8,7 @@
 namespace StoneRing
 {
 
-	class CharacterClass;
+    class CharacterClass;
     class DoWeaponDamage;
     class DoMagicDamage;
     class DoStatusEffect;
@@ -16,52 +16,52 @@ namespace StoneRing
     class WeaponDamageCategory;
     class MagicDamageCategory;
     class Animation;
-	class AnimationSpriteRef;
+    class AnimationSpriteRef;
     class MagicResistance;
     class AttributeEffect;
     class StatusEffectActions;
     class StatusEffect;
     class StatIncrease;
-	class AnimationSpriteRef;
-	class Skill;
-	class SkillRef;
+    class AnimationSpriteRef;
+    class Skill;
+    class SkillRef;
 
 
     class AbilityFactory : public IFactory
-	{
-	public:
-	    AbilityFactory(){}
-	    virtual ~AbilityFactory(){}
+    {
+    public:
+        AbilityFactory(){}
+        virtual ~AbilityFactory(){}
 
-	    virtual bool canCreate( Element::eElement element );
-	    virtual Element * createElement( Element::eElement element );
-	protected:
-
-
-	    Element * createDoWeaponDamage() const;
-	    Element * createDoMagicDamage() const;
-	    Element * createDoStatusEffect()const;
-	    Element * createSpell() const;
-	    Element * createWeaponDamageCategory() const;
-	    Element * createMagicDamageCategory() const;
-	    Element * createAnimation() const;
-	    Element * createMagicResistance ( ) const;
-	    Element * createAttributeEffect() const;
-	    Element * createStatusEffectActions() const;
-	    Element * createStatusEffect() const;
-	    Element * createStatIncrease() const;
-		Element * createAnimationSpriteRef() const;
-		Element * createPar() const;
-		Element * createSkillRef() const;
-		Element * createSkill() const;
+        virtual bool canCreate( Element::eElement element );
+        virtual Element * createElement( Element::eElement element );
+    protected:
 
 
-	private:
-	    typedef Element * (AbilityFactory::*factoryMethod)() const;
+        Element * createDoWeaponDamage() const;
+        Element * createDoMagicDamage() const;
+        Element * createDoStatusEffect()const;
+        Element * createSpell() const;
+        Element * createWeaponDamageCategory() const;
+        Element * createMagicDamageCategory() const;
+        Element * createAnimation() const;
+        Element * createMagicResistance ( ) const;
+        Element * createAttributeEffect() const;
+        Element * createStatusEffectActions() const;
+        Element * createStatusEffect() const;
+        Element * createStatIncrease() const;
+        Element * createAnimationSpriteRef() const;
+        Element * createPar() const;
+        Element * createSkillRef() const;
+        Element * createSkill() const;
 
-	    factoryMethod getMethod(Element::eElement element) const;
 
-	};
+    private:
+        typedef Element * (AbilityFactory::*factoryMethod)() const;
+
+        factoryMethod getMethod(Element::eElement element) const;
+
+    };
 
 
 };

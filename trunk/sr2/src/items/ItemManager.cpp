@@ -50,10 +50,10 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
 
     while(!weaponClassNode.is_null())
     {
-	WeaponClass * pWeaponClass = dynamic_cast<WeaponClass*>( pItemFactory->createElement(Element::EWEAPONCLASS) );
-	pWeaponClass->load(&weaponClassNode);
-	mWeaponClasses.push_back ( pWeaponClass );
-	weaponClassNode = weaponClassNode.get_next_sibling().to_element();
+        WeaponClass * pWeaponClass = dynamic_cast<WeaponClass*>( pItemFactory->createElement(Element::EWEAPONCLASS) );
+        pWeaponClass->load(&weaponClassNode);
+        mWeaponClasses.push_back ( pWeaponClass );
+        weaponClassNode = weaponClassNode.get_next_sibling().to_element();
     }
     
     CL_DomElement weaponTypesNode = itemsNode.named_item("weaponTypes").to_element();
@@ -62,11 +62,11 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
     
     while(!weaponTypeNode.is_null())
     {
-	WeaponType * pWeaponType = dynamic_cast<WeaponType*>( pItemFactory->createElement(Element::EWEAPONTYPE) );
-	pWeaponType->load(&weaponTypeNode);
-	mWeaponTypes.push_back ( pWeaponType );
+        WeaponType * pWeaponType = dynamic_cast<WeaponType*>( pItemFactory->createElement(Element::EWEAPONTYPE) );
+        pWeaponType->load(&weaponTypeNode);
+        mWeaponTypes.push_back ( pWeaponType );
 
-	weaponTypeNode = weaponTypeNode.get_next_sibling().to_element();
+        weaponTypeNode = weaponTypeNode.get_next_sibling().to_element();
     }
 
     CL_DomElement armorClassesNode = itemsNode.named_item("armorClasses").to_element();
@@ -75,11 +75,11 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
 
     while(!armorClassNode.is_null())
     {
-	ArmorClass * pArmorClass = dynamic_cast<ArmorClass*>( pItemFactory->createElement(Element::EARMORCLASS) );
-	pArmorClass->load(&armorClassNode);
-	mArmorClasses.push_back ( pArmorClass);
+        ArmorClass * pArmorClass = dynamic_cast<ArmorClass*>( pItemFactory->createElement(Element::EARMORCLASS) );
+        pArmorClass->load(&armorClassNode);
+        mArmorClasses.push_back ( pArmorClass);
 
-	armorClassNode = armorClassNode.get_next_sibling().to_element();
+        armorClassNode = armorClassNode.get_next_sibling().to_element();
     }
 
 
@@ -89,11 +89,11 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
 
     while(!armorTypeNode.is_null())
     {
-	ArmorType * pArmorType = dynamic_cast<ArmorType*>( pItemFactory->createElement(Element::EARMORTYPE) );
-	pArmorType->load(&armorTypeNode);
-	mArmorTypes.push_back ( pArmorType);
+        ArmorType * pArmorType = dynamic_cast<ArmorType*>( pItemFactory->createElement(Element::EARMORTYPE) );
+        pArmorType->load(&armorTypeNode);
+        mArmorTypes.push_back ( pArmorType);
 
-	armorTypeNode = armorTypeNode.get_next_sibling().to_element();
+        armorTypeNode = armorTypeNode.get_next_sibling().to_element();
     }
     
 
@@ -109,23 +109,23 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
     while(!namedItemNode.is_null())
     {
 #ifndef NDEBUG
-	namedItemCount++;
+        namedItemCount++;
 #endif
-	NamedItemElement * pElement = dynamic_cast<NamedItemElement*>(pItemFactory->createElement ( Element::ENAMEDITEMELEMENT ));
+        NamedItemElement * pElement = dynamic_cast<NamedItemElement*>(pItemFactory->createElement ( Element::ENAMEDITEMELEMENT ));
 
-	pElement->load(&namedItemNode);
-	NamedItem * pItem = pElement->getNamedItem();
+        pElement->load(&namedItemNode);
+        NamedItem * pItem = pElement->getNamedItem();
 	
-	pItem->setIconRef ( pElement->getIconRef() );
-	pItem->setMaxInventory ( pElement->getMaxInventory() );
-	pItem->setName ( pElement->getName() );
-	pItem->setDropRarity ( pElement->getDropRarity() );
+        pItem->setIconRef ( pElement->getIconRef() );
+        pItem->setMaxInventory ( pElement->getMaxInventory() );
+        pItem->setName ( pElement->getName() );
+        pItem->setDropRarity ( pElement->getDropRarity() );
 	
-	mItems.push_back ( pItem );
+        mItems.push_back ( pItem );
 	
-	delete pElement;
+        delete pElement;
 	
-	namedItemNode = namedItemNode.get_next_sibling().to_element();
+        namedItemNode = namedItemNode.get_next_sibling().to_element();
     }
     
     
@@ -147,59 +147,59 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
 void ItemManager::generateWeapons()
 {
     for(std::list<WeaponType*>::iterator iter = mWeaponTypes.begin();
-	iter != mWeaponTypes.end();
-	iter++)
+        iter != mWeaponTypes.end();
+        iter++)
     {
-	WeaponType *pType = *iter;
+        WeaponType *pType = *iter;
 #ifndef NDEBUG
-	std::cout << "Generating weapons for type: " << pType->getName() << std::endl;
+        std::cout << "Generating weapons for type: " << pType->getName() << std::endl;
 #endif
 
-	for(std::list<WeaponClass*>::iterator classIter = mWeaponClasses.begin();
-	    classIter != mWeaponClasses.end();
-	    classIter++)
-	{
-	    WeaponClass * pClass = *classIter;
+        for(std::list<WeaponClass*>::iterator classIter = mWeaponClasses.begin();
+            classIter != mWeaponClasses.end();
+            classIter++)
+        {
+            WeaponClass * pClass = *classIter;
 
-	    WeaponTypeRef typeRef;
-	    typeRef.setName ( pType->getName() );
+            WeaponTypeRef typeRef;
+            typeRef.setName ( pType->getName() );
 
-	    if(!pClass->isExcluded( typeRef ) )
-	    {
-		// Create all the spell combinations. 
-		const AbilityManager * pAbilityManager = IApplication::getInstance()->getAbilityManager();
-		for(std::list<Spell*>::const_iterator spellIter = pAbilityManager->getSpellsBegin();
-		    spellIter != pAbilityManager->getSpellsEnd();
-		    spellIter++)
-		{
-		    Spell * pSpell = *spellIter;
+            if(!pClass->isExcluded( typeRef ) )
+            {
+                // Create all the spell combinations. 
+                const AbilityManager * pAbilityManager = IApplication::getInstance()->getAbilityManager();
+                for(std::list<Spell*>::const_iterator spellIter = pAbilityManager->getSpellsBegin();
+                    spellIter != pAbilityManager->getSpellsEnd();
+                    spellIter++)
+                {
+                    Spell * pSpell = *spellIter;
 
-		    if(pSpell->appliesToWeapons())
-		    {
-			GeneratedWeapon * pWeapon = new GeneratedWeapon();
-			pWeapon->generate(pType, pClass, pSpell->createSpellRef(), NULL);
-			mItems.push_back ( pWeapon );
-		    }
-		}
+                    if(pSpell->appliesToWeapons())
+                    {
+                        GeneratedWeapon * pWeapon = new GeneratedWeapon();
+                        pWeapon->generate(pType, pClass, pSpell->createSpellRef(), NULL);
+                        mItems.push_back ( pWeapon );
+                    }
+                }
 		
-		// Create the no spell, no rune weapon
+                // Create the no spell, no rune weapon
 
-		GeneratedWeapon * pPlainWeapon = new GeneratedWeapon();
-		pPlainWeapon->generate( pType, pClass, NULL, NULL );
+                GeneratedWeapon * pPlainWeapon = new GeneratedWeapon();
+                pPlainWeapon->generate( pType, pClass, NULL, NULL );
 
-		mItems.push_back ( pPlainWeapon );
+                mItems.push_back ( pPlainWeapon );
 	       
 
-		// Create the rune version.
-		GeneratedWeapon * pRuneWeapon = new GeneratedWeapon();
-		RuneType * runeType = new RuneType();
-		runeType->setRuneType( RuneType::RUNE );
-		pRuneWeapon->generate( pType, pClass, NULL, runeType );
+                // Create the rune version.
+                GeneratedWeapon * pRuneWeapon = new GeneratedWeapon();
+                RuneType * runeType = new RuneType();
+                runeType->setRuneType( RuneType::RUNE );
+                pRuneWeapon->generate( pType, pClass, NULL, runeType );
 		
-		mItems.push_back ( pRuneWeapon );
+                mItems.push_back ( pRuneWeapon );
 
-	    }
-	}
+            }
+        }
     }
 }
 
@@ -207,74 +207,74 @@ void ItemManager::generateArmor()
 {
 
     for(std::list<ArmorType*>::const_iterator iter = mArmorTypes.begin();
-	iter != mArmorTypes.end();
-	iter++)
+        iter != mArmorTypes.end();
+        iter++)
     {
-	ArmorType *pType = *iter;
+        ArmorType *pType = *iter;
 
 #ifndef NDEBUG
-	std::cout << "Generating armor for type: " << pType->getName() << std::endl;
+        std::cout << "Generating armor for type: " << pType->getName() << std::endl;
 #endif
 	
-	for(std::list<ArmorClass*>::const_iterator classIter = mArmorClasses.begin();
-	    classIter != mArmorClasses.end();
-	    classIter++)
-	{
-	    ArmorClass * pClass = *classIter;
+        for(std::list<ArmorClass*>::const_iterator classIter = mArmorClasses.begin();
+            classIter != mArmorClasses.end();
+            classIter++)
+        {
+            ArmorClass * pClass = *classIter;
 
-	    ArmorTypeRef typeRef;
-	    typeRef.setName ( pType->getName() );
+            ArmorTypeRef typeRef;
+            typeRef.setName ( pType->getName() );
 
-	    if(!pClass->isExcluded( typeRef ) )
-	    {
-		// Create all the spell combinations. 
-		const AbilityManager * pAbilityManager = IApplication::getInstance()->getAbilityManager();
-		for(std::list<Spell*>::const_iterator spellIter = pAbilityManager->getSpellsBegin();
-		    spellIter != pAbilityManager->getSpellsEnd();
-		    spellIter++)
-		{
-		    Spell * pSpell = *spellIter;
+            if(!pClass->isExcluded( typeRef ) )
+            {
+                // Create all the spell combinations. 
+                const AbilityManager * pAbilityManager = IApplication::getInstance()->getAbilityManager();
+                for(std::list<Spell*>::const_iterator spellIter = pAbilityManager->getSpellsBegin();
+                    spellIter != pAbilityManager->getSpellsEnd();
+                    spellIter++)
+                {
+                    Spell * pSpell = *spellIter;
 
-		    if(pSpell->appliesToArmor())
-		    {
-			GeneratedArmor * pArmor = new GeneratedArmor();
-			pArmor->generate(pType, pClass, pSpell->createSpellRef(), NULL);
-			mItems.push_back ( pArmor );
-		    }
-		}
+                    if(pSpell->appliesToArmor())
+                    {
+                        GeneratedArmor * pArmor = new GeneratedArmor();
+                        pArmor->generate(pType, pClass, pSpell->createSpellRef(), NULL);
+                        mItems.push_back ( pArmor );
+                    }
+                }
 		
 
 
 		
-		// Create the no spell, no rune Armor
+                // Create the no spell, no rune Armor
 
-		GeneratedArmor * pPlainArmor = new GeneratedArmor();
-		pPlainArmor->generate( pType, pClass );
+                GeneratedArmor * pPlainArmor = new GeneratedArmor();
+                pPlainArmor->generate( pType, pClass );
 
-		mItems.push_back ( pPlainArmor );
+                mItems.push_back ( pPlainArmor );
 	       
 
-		// Create the rune version.
-		GeneratedArmor * pRuneArmor = new GeneratedArmor();
-		RuneType * runeType = new RuneType();
-		runeType->setRuneType( RuneType::RUNE );
-		pRuneArmor->generate( pType, pClass, NULL, runeType );
+                // Create the rune version.
+                GeneratedArmor * pRuneArmor = new GeneratedArmor();
+                RuneType * runeType = new RuneType();
+                runeType->setRuneType( RuneType::RUNE );
+                pRuneArmor->generate( pType, pClass, NULL, runeType );
 		
-		mItems.push_back ( pRuneArmor );
+                mItems.push_back ( pRuneArmor );
 
-		// Create the ultra rune version
+                // Create the ultra rune version
 
-		GeneratedArmor * pUltraRuneArmor = new GeneratedArmor();
-		RuneType * ultraRuneType = new RuneType();
-		ultraRuneType->setRuneType( RuneType::ULTRA_RUNE );
+                GeneratedArmor * pUltraRuneArmor = new GeneratedArmor();
+                RuneType * ultraRuneType = new RuneType();
+                ultraRuneType->setRuneType( RuneType::ULTRA_RUNE );
 
-		pUltraRuneArmor->generate( pType, pClass, NULL, ultraRuneType );
+                pUltraRuneArmor->generate( pType, pClass, NULL, ultraRuneType );
 
-		mItems.push_back ( pUltraRuneArmor );
+                mItems.push_back ( pUltraRuneArmor );
 
 
-	    }
-	}
+            }
+        }
     }
 }
 
@@ -282,33 +282,33 @@ void ItemManager::generateArmor()
 WeaponType * ItemManager::getWeaponType(const WeaponTypeRef &ref) const
 {
     for(std::list<WeaponType*>::const_iterator iter = mWeaponTypes.begin();
-	iter != mWeaponTypes.end();
-	iter++)
+        iter != mWeaponTypes.end();
+        iter++)
     {
-	if( ref.getName() == (*iter)->getName())
-	    return *iter;
+        if( ref.getName() == (*iter)->getName())
+            return *iter;
     }
 }
 
 ArmorType  * ItemManager::getArmorType ( const ArmorTypeRef &ref) const
 {
     for(std::list<ArmorType*>::const_iterator iter = mArmorTypes.begin();
-	iter != mArmorTypes.end();
-	iter++)
+        iter != mArmorTypes.end();
+        iter++)
     {
-	if( ref.getName() == (*iter)->getName())
-	    return *iter;
+        if( ref.getName() == (*iter)->getName())
+            return *iter;
     }
 }
 
 WeaponClass * ItemManager::getWeaponClass ( const WeaponClassRef & ref ) const
 {
     for(std::list<WeaponClass*>::const_iterator iter = mWeaponClasses.begin();
-	iter != mWeaponClasses.end();
-	iter++)
+        iter != mWeaponClasses.end();
+        iter++)
     {
-	if( ref.getName() == (*iter)->getName())
-	    return *iter;
+        if( ref.getName() == (*iter)->getName())
+            return *iter;
     }
 }
 
@@ -317,11 +317,11 @@ ArmorClass  * ItemManager::getArmorClass ( const ArmorClassRef & ref ) const
 
 
     for(std::list<ArmorClass*>::const_iterator iter = mArmorClasses.begin();
-	iter != mArmorClasses.end();
-	iter++)
+        iter != mArmorClasses.end();
+        iter++)
     {
-	if( ref.getName() == (*iter)->getName())
-	    return *iter;
+        if( ref.getName() == (*iter)->getName())
+            return *iter;
     }
     
 
@@ -332,11 +332,11 @@ Item * ItemManager:: getItem( const ItemRef & ref ) const
 
 
     for(std::list<Item*>::const_iterator iter = mItems.begin();
-	iter != mItems.end();
-	iter++)
+        iter != mItems.end();
+        iter++)
     {
-	if( *(*iter) == ref ) 
-	    return *iter;
+        if( *(*iter) == ref ) 
+            return *iter;
     }
 
     throw CL_Error("Couldn't find item based on ref.");
@@ -350,97 +350,97 @@ Item * ItemManager:: getItem( const ItemRef & ref ) const
 void ItemManager::dumpItemList()
 {
     for(std::list<Item*>::iterator iter = mItems.begin();
-	iter != mItems.end();
-	iter++)
+        iter != mItems.end();
+        iter++)
     {
-	Item * pItem = *iter;
+        Item * pItem = *iter;
 	
-	std::cout << '[' << Item::ItemTypeAsString(pItem->getItemType()) << ']' << ' ';
-	std::cout << pItem->getName();
-	std::cout << " (" << pItem->getDropRarity() << ") ";
-	std::cout << '$' << pItem->getValue();
-	std::cout << std::endl;
+        std::cout << '[' << Item::ItemTypeAsString(pItem->getItemType()) << ']' << ' ';
+        std::cout << pItem->getName();
+        std::cout << " (" << pItem->getDropRarity() << ") ";
+        std::cout << '$' << pItem->getValue();
+        std::cout << std::endl;
 
 
-	switch(pItem->getItemType())
-	{
-	case Item::WEAPON:
-	{
-	    Weapon * pWeapon = dynamic_cast<Weapon*>(pItem);
-	    WeaponType * pType = pWeapon->getWeaponType();
-	    std::cout << '\t' << "ATK: " << std::setw(5) <<  pWeapon->modifyWeaponAttribute(Weapon::ATTACK, (int)pType->getBaseAttack());
-	    std::cout << ' ' << "Hit% " << std::setw(4) << pWeapon->modifyWeaponAttribute(Weapon::HIT, pType->getBaseHit()) * 100;
-	    std::cout << ' ' << "Critical% " << std::setw(4) << pWeapon->modifyWeaponAttribute(Weapon::CRITICAL, pType->getBaseCritical()) * 100 << std::endl;
-	    DamageCategory * pDamageCategory = pType->getDamageCategory();
+        switch(pItem->getItemType())
+        {
+        case Item::WEAPON:
+        {
+            Weapon * pWeapon = dynamic_cast<Weapon*>(pItem);
+            WeaponType * pType = pWeapon->getWeaponType();
+            std::cout << '\t' << "ATK: " << std::setw(5) <<  pWeapon->modifyWeaponAttribute(Weapon::ATTACK, (int)pType->getBaseAttack());
+            std::cout << ' ' << "Hit% " << std::setw(4) << pWeapon->modifyWeaponAttribute(Weapon::HIT, pType->getBaseHit()) * 100;
+            std::cout << ' ' << "Critical% " << std::setw(4) << pWeapon->modifyWeaponAttribute(Weapon::CRITICAL, pType->getBaseCritical()) * 100 << std::endl;
+            DamageCategory * pDamageCategory = pType->getDamageCategory();
 
-	    if(pDamageCategory->getClass() != DamageCategory::WEAPON) throw CL_Error("What? This weapon has a magic damage category.");
+            if(pDamageCategory->getClass() != DamageCategory::WEAPON) throw CL_Error("What? This weapon has a magic damage category.");
 
-	    WeaponDamageCategory * pWDC = dynamic_cast<WeaponDamageCategory*>(pDamageCategory);
+            WeaponDamageCategory * pWDC = dynamic_cast<WeaponDamageCategory*>(pDamageCategory);
 	    
 
-	    switch ( pWDC->getType() )
-	    {
-	    case WeaponDamageCategory::JAB:
-		std::cout << "\t[JAB]";
-		break;
-	    case WeaponDamageCategory::BASH:
-		std::cout << "\t[BASH]";
-		break;
-	    case WeaponDamageCategory::SLASH:
-		std::cout << "\t[SLASH]";
-		break;
+            switch ( pWDC->getType() )
+            {
+            case WeaponDamageCategory::JAB:
+                std::cout << "\t[JAB]";
+                break;
+            case WeaponDamageCategory::BASH:
+                std::cout << "\t[BASH]";
+                break;
+            case WeaponDamageCategory::SLASH:
+                std::cout << "\t[SLASH]";
+                break;
 		
-	    }
+            }
 	    
 
-	    if(pWeapon->isTwoHanded()) std::cout << "(Two Handed)";
+            if(pWeapon->isTwoHanded()) std::cout << "(Two Handed)";
 
-	    if(pWeapon->isRanged()) std::cout << "(Ranged)" ;
+            if(pWeapon->isRanged()) std::cout << "(Ranged)" ;
 	       
-	    std::cout << std::endl;
+            std::cout << std::endl;
 
-	    // If there are attribute enhancers, lets list them.
-	    printAttributeEnhancers(pWeapon);
-	    printStatusModifiers(pWeapon);
+            // If there are attribute enhancers, lets list them.
+            printAttributeEnhancers(pWeapon);
+            printStatusModifiers(pWeapon);
 
-	    break;
-	}
-	case Item::ARMOR:
-	{
-	    Armor * pArmor = dynamic_cast<Armor*>(pItem);
+            break;
+        }
+        case Item::ARMOR:
+        {
+            Armor * pArmor = dynamic_cast<Armor*>(pItem);
 
-	    ArmorType * pType = pArmor->getArmorType();
-	    std::cout << '\t' << "AC: " << std::setw(5) <<  pArmor->modifyArmorAttribute(Armor::AC, (int)pType->getBaseAC());
-	    std::cout << ' ' << "RST " << std::setw(4) << pArmor->modifyArmorAttribute(Armor::RESIST, pType->getBaseRST()) << std::endl;
+            ArmorType * pType = pArmor->getArmorType();
+            std::cout << '\t' << "AC: " << std::setw(5) <<  pArmor->modifyArmorAttribute(Armor::AC, (int)pType->getBaseAC());
+            std::cout << ' ' << "RST " << std::setw(4) << pArmor->modifyArmorAttribute(Armor::RESIST, pType->getBaseRST()) << std::endl;
 	    
-	    switch( pType->getSlot())
-	    {
-	    case ArmorType::HEAD:
-		std::cout << "\t[HEAD]";
-		break;
-	    case ArmorType::BODY:
-		std::cout << "\t[BODY]";
-		break;
-	    case ArmorType::SHIELD:
-		std::cout << "\t[SHIELD]";
-		break;
-	    case ArmorType::FEET:
-		std::cout << "\t[FEET]";
-		break;
-	    case ArmorType::HANDS:
-		std::cout << "\t[HANDS]";
-		break;
-	    }
+            switch( pType->getSlot())
+            {
+            case ArmorType::HEAD:
+                std::cout << "\t[HEAD]";
+                break;
+            case ArmorType::BODY:
+                std::cout << "\t[BODY]";
+                break;
+            case ArmorType::SHIELD:
+                std::cout << "\t[SHIELD]";
+                break;
+            case ArmorType::FEET:
+                std::cout << "\t[FEET]";
+                break;
+            case ArmorType::HANDS:
+                std::cout << "\t[HANDS]";
+                break;
+            }
 
-	    std::cout << std::endl;
+            std::cout << std::endl;
 
-	    printAttributeEnhancers(pArmor);
-	    printStatusModifiers(pArmor);
+            printAttributeEnhancers(pArmor);
+            printStatusModifiers(pArmor);
 
-	    break;
-	}
+            break;
+        }
 	    
-	}
+        }
 	
     }
 }
@@ -448,24 +448,24 @@ void ItemManager::printAttributeEnhancers(Equipment * pItem )
 {
     if( pItem->getAttributeEnhancersBegin() != pItem->getAttributeEnhancersEnd() )
     {
-	std::cout << "\tAttribute Enhancers:"  << std::endl;
+        std::cout << "\tAttribute Enhancers:"  << std::endl;
 	
-	for(std::list<AttributeEnhancer*>::const_iterator iter = pItem->getAttributeEnhancersBegin();
-	    iter != pItem->getAttributeEnhancersEnd();
-	    iter++)
-	{
-	    AttributeEnhancer * pEnhancer = *iter;
-	    std::cout << "\t\t" << pEnhancer->getAttribute() << ' ';
-	    if(pEnhancer->getMultiplier() != 1)
-	    {
-		if ( pEnhancer->getMultiplier() > 1)
-		    std::cout << (pEnhancer->getMultiplier() - 1) * 100 << "% BONUS";
-		else std::cout << abs(pEnhancer->getMultiplier() - 1) * 100 << "% PENALTY";
-	    }
-	    if(pEnhancer->getAdd() != 0)
-		std::cout << " +" << pEnhancer->getAdd();
-	    std::cout << std::endl;
-	}
+        for(std::list<AttributeEnhancer*>::const_iterator iter = pItem->getAttributeEnhancersBegin();
+            iter != pItem->getAttributeEnhancersEnd();
+            iter++)
+        {
+            AttributeEnhancer * pEnhancer = *iter;
+            std::cout << "\t\t" << pEnhancer->getAttribute() << ' ';
+            if(pEnhancer->getMultiplier() != 1)
+            {
+                if ( pEnhancer->getMultiplier() > 1)
+                    std::cout << (pEnhancer->getMultiplier() - 1) * 100 << "% BONUS";
+                else std::cout << abs(pEnhancer->getMultiplier() - 1) * 100 << "% PENALTY";
+            }
+            if(pEnhancer->getAdd() != 0)
+                std::cout << " +" << pEnhancer->getAdd();
+            std::cout << std::endl;
+        }
     }
     
 }
@@ -474,16 +474,16 @@ void ItemManager::printStatusModifiers(Equipment *pItem)
 {
     if ( pItem->getStatusEffectModifiersBegin() != pItem->getStatusEffectModifiersEnd() )
     {
-	std::cout << "\tStatus Modifiers:" << std::endl;
+        std::cout << "\tStatus Modifiers:" << std::endl;
 
-	for(std::list<StatusEffectModifier*>::const_iterator iter = pItem->getStatusEffectModifiersBegin();
-	    iter != pItem->getStatusEffectModifiersEnd();
-	    iter++)
-	{
-	    StatusEffectModifier * pModifier = *iter;
-	    std::cout << "\t\t" << pModifier->getStatusEffect()->getName() << ": " << pModifier->getModifier() * 100 << "%" ;
-	    std::cout << std::endl;
-	}
+        for(std::list<StatusEffectModifier*>::const_iterator iter = pItem->getStatusEffectModifiersBegin();
+            iter != pItem->getStatusEffectModifiersEnd();
+            iter++)
+        {
+            StatusEffectModifier * pModifier = *iter;
+            std::cout << "\t\t" << pModifier->getStatusEffect()->getName() << ": " << pModifier->getModifier() * 100 << "%" ;
+            std::cout << std::endl;
+        }
 
     }
 

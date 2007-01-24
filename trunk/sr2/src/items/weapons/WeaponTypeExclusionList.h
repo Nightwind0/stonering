@@ -7,21 +7,21 @@
 
 namespace StoneRing{
     class WeaponTypeExclusionList: public Element
-	{
-	public:
-	    WeaponTypeExclusionList();
-	    virtual ~WeaponTypeExclusionList();
-	    virtual CL_DomElement createDomElement ( CL_DomDocument &) const;
+    {
+    public:
+        WeaponTypeExclusionList();
+        virtual ~WeaponTypeExclusionList();
+        virtual CL_DomElement createDomElement ( CL_DomDocument &) const;
 
-		virtual eElement whichElement() const{ return EWEAPONTYPEEXCLUSIONLIST; }	
-	    std::list<WeaponTypeRef*>::const_iterator getWeaponTypeRefsBegin();
-	    std::list<WeaponTypeRef*>::const_iterator getWeaponTypeRefsEnd();
+        virtual eElement whichElement() const{ return EWEAPONTYPEEXCLUSIONLIST; }   
+        std::list<WeaponTypeRef*>::const_iterator getWeaponTypeRefsBegin();
+        std::list<WeaponTypeRef*>::const_iterator getWeaponTypeRefsEnd();
 
-	    virtual bool handleElement(eElement element, Element * pElement);
-	private:
-	    std::list<WeaponTypeRef*> mWeaponTypes;
+        virtual bool handleElement(eElement element, Element * pElement);
+    private:
+        std::list<WeaponTypeRef*> mWeaponTypes;
 
-	};
+    };
 };
 
 #endif

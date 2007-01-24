@@ -157,9 +157,9 @@ namespace StoneRing {
 	struct LessMOMapIter : public std::binary_function<const MOMapIter&,const MOMapIter&,bool>
 	{
 		bool operator()(const MOMapIter &i1, const MOMapIter &i2)
-		{
-			return i1->second < i2->second;
-		}
+            {
+                return i1->second < i2->second;
+            }
 	};
 };
 

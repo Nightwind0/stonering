@@ -11,90 +11,90 @@ WeaponType::WeaponType()
 
 bool WeaponType::operator==(const WeaponType &type )
 {
-	return mName == type.mName;
+    return mName == type.mName;
 }
 
 void WeaponType::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-	mName = getRequiredString("name",pAttributes);
-	mnBasePrice = getRequiredInt("basePrice",pAttributes);
-	mnBaseAttack = getRequiredInt("baseAttack",pAttributes);
-	mfBaseHit = getRequiredFloat("baseHit",pAttributes);
-	mfBaseCritical = getImpliedFloat("baseCritical",pAttributes,0.05);
-	mbRanged = getImpliedBool("ranged",pAttributes,false);
-	mbTwoHanded  = getImpliedBool("twoHanded",pAttributes,false);
+    mName = getRequiredString("name",pAttributes);
+    mnBasePrice = getRequiredInt("basePrice",pAttributes);
+    mnBaseAttack = getRequiredInt("baseAttack",pAttributes);
+    mfBaseHit = getRequiredFloat("baseHit",pAttributes);
+    mfBaseCritical = getImpliedFloat("baseCritical",pAttributes,0.05);
+    mbRanged = getImpliedBool("ranged",pAttributes,false);
+    mbTwoHanded  = getImpliedBool("twoHanded",pAttributes,false);
 }
 
 bool WeaponType::handleElement(eElement element, Element * pElement)
 {
-	switch(element)
-	{
-	case EICONREF:
+    switch(element)
+    {
+    case EICONREF:
 
-		mIconRef = dynamic_cast<IconRef*>(pElement)->getIcon();
-		break;
-	case EWEAPONDAMAGECATEGORY:
-		mpDamageCategory = dynamic_cast<DamageCategory*>(pElement);
-		break;
-	case EMAGICDAMAGECATEGORY:
-		mpDamageCategory = dynamic_cast<DamageCategory*>(pElement);
-		break;
-	default:
-		return false;
-	}
+        mIconRef = dynamic_cast<IconRef*>(pElement)->getIcon();
+        break;
+    case EWEAPONDAMAGECATEGORY:
+        mpDamageCategory = dynamic_cast<DamageCategory*>(pElement);
+        break;
+    case EMAGICDAMAGECATEGORY:
+        mpDamageCategory = dynamic_cast<DamageCategory*>(pElement);
+        break;
+    default:
+        return false;
+    }
 
-	return true;
+    return true;
 }
 
 WeaponType::~WeaponType()
 {
-	delete mpDamageCategory;
+    delete mpDamageCategory;
 }
 
 CL_DomElement WeaponType::createDomElement ( CL_DomDocument &doc) const
 {
-	return CL_DomElement(doc,"weaponType");
+    return CL_DomElement(doc,"weaponType");
 }
 
 std::string WeaponType::getName() const
 {
-	return mName;
+    return mName;
 }
 
 std::string WeaponType::getIconRef() const
 {
-	return mIconRef;
+    return mIconRef;
 }
 
 
 float WeaponType::getBaseCritical() const
 {
-	return mfBaseCritical;
+    return mfBaseCritical;
 }
 
 uint WeaponType::getBaseAttack() const
 {
-	return mnBaseAttack;
+    return mnBaseAttack;
 }
 
 float WeaponType::getBaseHit() const
 {
-	return mfBaseHit;
+    return mfBaseHit;
 }
 
 uint WeaponType::getBasePrice() const
 {
-	return mnBasePrice;
+    return mnBasePrice;
 }
 
 bool WeaponType::isRanged() const
 {
-	return mbRanged;
+    return mbRanged;
 }
 
 bool WeaponType::isTwoHanded() const
 {
-	return mbTwoHanded;
+    return mbTwoHanded;
 }
 
 

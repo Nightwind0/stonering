@@ -7,22 +7,22 @@ using namespace StoneRing;
 
 Element * CharacterFactory::createCharacterClass() const
 {
-	return new CharacterClass();
+    return new CharacterClass();
 }
 
 Element * CharacterFactory::createCharacterDefinition() const
 {
-	return new CharacterDefinition();
+    return new CharacterDefinition();
 }
 
 Element * CharacterFactory::createAnimationDefinition() const
 {
-	return new AnimationDefinition();
+    return new AnimationDefinition();
 }
 
 Element * CharacterFactory::createWeaponTypeSprite() const
 {
-	return new WeaponTypeSprite();
+    return new WeaponTypeSprite();
 }
 
 bool CharacterFactory::canCreate( Element::eElement element )
@@ -44,18 +44,18 @@ Element * CharacterFactory::createElement( Element::eElement element )
 
 CharacterFactory::factoryMethod CharacterFactory::getMethod(Element::eElement element) const
 {
-	switch(element)
-	{
-	case Element::ECHARACTERCLASS:
-		return &CharacterFactory::createCharacterClass;
-	case Element::EANIMATIONDEFINITION:
-		return &CharacterFactory::createAnimationDefinition;
-	case Element::ECHARACTER:
-		return &CharacterFactory::createCharacterDefinition;
-	case Element::EWEAPONTYPESPRITE:
-		return &CharacterFactory::createWeaponTypeSprite;
-	default:
-		return NULL;
-	}
+    switch(element)
+    {
+    case Element::ECHARACTERCLASS:
+        return &CharacterFactory::createCharacterClass;
+    case Element::EANIMATIONDEFINITION:
+        return &CharacterFactory::createAnimationDefinition;
+    case Element::ECHARACTER:
+        return &CharacterFactory::createCharacterDefinition;
+    case Element::EWEAPONTYPESPRITE:
+        return &CharacterFactory::createWeaponTypeSprite;
+    default:
+        return NULL;
+    }
 }
 

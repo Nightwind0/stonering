@@ -5,15 +5,15 @@
 
 namespace StoneRing{
 
-	// Things which take actions on the party
-	class Action
-	{
-	public:
-		Action(){}
-		virtual ~Action(){}
+    // Things which take actions on the party
+    class Action
+    {
+    public:
+        Action(){}
+        virtual ~Action(){}
 
-		virtual void invoke()=0;
-	};
+        virtual void invoke()=0;
+    };
 
 };
 

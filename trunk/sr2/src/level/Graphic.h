@@ -23,14 +23,14 @@ namespace StoneRing{
 	private:
 	};
 
-class SpriteRef;
-class Tilemap;
+    class SpriteRef;
+    class Tilemap;
 
-union SpriteRefOrTilemap
-{
-	SpriteRef* asSpriteRef;
-	Tilemap * asTilemap;
-};
+    union SpriteRefOrTilemap
+    {
+        SpriteRef* asSpriteRef;
+        Tilemap * asTilemap;
+    };
 
 
 };

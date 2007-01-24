@@ -90,9 +90,9 @@ StoneRing::StatusEffectActions::~StatusEffectActions()
 	for(std::list<Effect*>::iterator i = mEffects.begin();
 		i != mEffects.end();
 		i++)
-		{
-			delete *i;
-		}
+    {
+        delete *i;
+    }
 }
 
 CL_DomElement StoneRing::StatusEffectActions::createDomElement(CL_DomDocument &doc) const
@@ -133,28 +133,28 @@ void StoneRing::StatusEffect::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 
 bool StoneRing::StatusEffect::handleElement(eElement element, Element * pElement)
 {
-		switch(element)
-		{
-		case EONINVOKE:
-			mpOnInvoke = dynamic_cast<StatusEffectActions*>(pElement);
-			break;
-		case EONROUND:
-			mpOnRound = dynamic_cast<StatusEffectActions*>(pElement);
-			break;
-		case EONCOUNTDOWN:
-			mpOnCountdown = dynamic_cast<StatusEffectActions*>(pElement);
-			break;
-		case EONREMOVE:
-			mpOnRemove = dynamic_cast<StatusEffectActions*>(pElement);
-			break;
-		default:
-			return false;
-		}
-		return true;
+    switch(element)
+    {
+    case EONINVOKE:
+        mpOnInvoke = dynamic_cast<StatusEffectActions*>(pElement);
+        break;
+    case EONROUND:
+        mpOnRound = dynamic_cast<StatusEffectActions*>(pElement);
+        break;
+    case EONCOUNTDOWN:
+        mpOnCountdown = dynamic_cast<StatusEffectActions*>(pElement);
+        break;
+    case EONREMOVE:
+        mpOnRemove = dynamic_cast<StatusEffectActions*>(pElement);
+        break;
+    default:
+        return false;
+    }
+    return true;
 }
 
 StoneRing::StatusEffect::StatusEffect():mpOnInvoke(NULL),mpOnRound(NULL),
-mpOnCountdown(NULL), mpOnRemove(NULL)
+                                        mpOnCountdown(NULL), mpOnRemove(NULL)
 {
 }
 

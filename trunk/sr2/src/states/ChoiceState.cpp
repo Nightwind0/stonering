@@ -5,7 +5,7 @@
 #include "Choice.h" // For Choice
 
 StoneRing::ChoiceState::ChoiceState():mbDone(false),mpChoiceOverlay(NULL),mpChoice(NULL),
-				      mpChoiceFont(NULL),mpOptionFont(NULL),mpCurrentOptionFont(NULL)
+                                      mpChoiceFont(NULL),mpOptionFont(NULL),mpCurrentOptionFont(NULL)
 {
 
 }
@@ -37,25 +37,25 @@ void StoneRing::ChoiceState::handleKeyUp(const CL_InputEvent &key)
 	case CL_KEY_DOWN:
 	    if(mnCurrentOption + 1 < mChoices.size())
 	    {
-		mnCurrentOption++;
+            mnCurrentOption++;
                 
-		// @todo: 4?? should be options per page but we'll have to latch it
-		if(mnCurrentOption > mnOptionOffset + 4)
-		{
-		    mnOptionOffset++;
-		}
+            // @todo: 4?? should be options per page but we'll have to latch it
+            if(mnCurrentOption > mnOptionOffset + 4)
+            {
+                mnOptionOffset++;
+            }
 	    }
             
-                break;
+        break;
 	case CL_KEY_UP:
 	    if(mnCurrentOption > 0 )
 	    {
-		mnCurrentOption--;
+            mnCurrentOption--;
 		
-		if(mnCurrentOption < mnOptionOffset)
-		{
-		    mnOptionOffset--;
-		}
+            if(mnCurrentOption < mnOptionOffset)
+            {
+                mnOptionOffset--;
+            }
 	    }
 	    break;
 	    
@@ -72,9 +72,9 @@ void StoneRing::ChoiceState::draw(const CL_Rect &screenRect,CL_GraphicContext * 
     CL_Size choiceDimensions = mpChoiceFont->get_size(mText,CL_Size( screenRect.get_width(), screenRect.get_height() / 2));
 
     if(choiceDimensions.width < screenRect.get_width())
-	choiceDrawPoint.x += (screenRect.get_width() - choiceDimensions.width) /2;
+        choiceDrawPoint.x += (screenRect.get_width() - choiceDimensions.width) /2;
     if(choiceDimensions.height < screenRect.get_height())
-	choiceDrawPoint.y += ((screenRect.get_height() /2) - choiceDimensions.height) /2;
+        choiceDrawPoint.y += ((screenRect.get_height() /2) - choiceDimensions.height) /2;
 
     pGC->fill_rect(screenRect,CL_Color(0,0,0,200));
 
@@ -92,21 +92,21 @@ void StoneRing::ChoiceState::draw(const CL_Rect &screenRect,CL_GraphicContext * 
     for(uint i=0;i< optionsPerPage; i++)
     {
 	
-	// Don't paint more options than there are
-	if(i + mnOptionOffset >= mChoices.size()) break;
+        // Don't paint more options than there are
+        if(i + mnOptionOffset >= mChoices.size()) break;
 	
-	if(i + mnOptionOffset == mnCurrentOption)
-	{
-	    pLineFont = mpCurrentOptionFont;
+        if(i + mnOptionOffset == mnCurrentOption)
+        {
+            pLineFont = mpCurrentOptionFont;
 	    
-	}
-	else
-	{
-	    pLineFont = mpOptionFont;
-	}
+        }
+        else
+        {
+            pLineFont = mpOptionFont;
+        }
 	
-	pLineFont->draw( 0,  i * (pLineFont->get_height() + pLineFont->get_height_offset()) + (screenRect.get_height() /2),
-			 mChoices[i + mnOptionOffset], pGC);
+        pLineFont->draw( 0,  i * (pLineFont->get_height() + pLineFont->get_height_offset()) + (screenRect.get_height() /2),
+                         mChoices[i + mnOptionOffset], pGC);
 	
     }
     
@@ -144,8 +144,8 @@ void StoneRing::ChoiceState::start()
 	mnOptionOffset = 0;
 
 /*
-	if(!mpChoiceOverlay)
-		mpChoiceOverlay = new CL_Surface("Overlays/choice_overlay", IApplication::getInstance()->getResources() );
+  if(!mpChoiceOverlay)
+  mpChoiceOverlay = new CL_Surface("Overlays/choice_overlay", IApplication::getInstance()->getResources() );
 */
 }
 

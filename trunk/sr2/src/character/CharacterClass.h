@@ -14,7 +14,7 @@ namespace StoneRing
 	class StatIncrease;
 	class SkillRef;
 
-class CharacterClass : public Element
+    class CharacterClass : public Element
 	{
 	public:
 		CharacterClass();

@@ -5,7 +5,7 @@
 #include "Element.h"
 
 namespace StoneRing{
-  class WeaponTypeRef : public Element
+    class WeaponTypeRef : public Element
 	{
 	public:
 	    WeaponTypeRef();

@@ -12,8 +12,8 @@
 using namespace StoneRing;
 
 ArmorRef::ArmorRef ( ArmorType *pType, ArmorClass *pClass, 
-					SpellRef * pSpell, RuneType *pRune ):mpArmorType(pType), mpArmorClass(pClass),
-					mpSpellRef(pSpell), mpRuneType(pRune)
+                     SpellRef * pSpell, RuneType *pRune ):mpArmorType(pType), mpArmorClass(pClass),
+                                                          mpSpellRef(pSpell), mpRuneType(pRune)
 
 {
 
@@ -86,9 +86,9 @@ bool ArmorRef::handleElement(eElement element, Element * pElement)
 
 
 ArmorRef::ArmorRef():mpArmorType(NULL),
-mpArmorClass(NULL),
-mpSpellRef(NULL),
-mpRuneType(NULL)
+                     mpArmorClass(NULL),
+                     mpSpellRef(NULL),
+                     mpRuneType(NULL)
 {
 
 }

@@ -5,23 +5,23 @@
 #include "Element.h"
 
 namespace StoneRing{
-	class RemoveCharacter : public Action, public Element
-	{
-	public:
-		RemoveCharacter();
-		virtual ~RemoveCharacter();
-		virtual void invoke();
-		virtual eElement whichElement() const{ return EREMOVECHARACTER; }
-		virtual CL_DomElement createDomElement(CL_DomDocument&) const;
+    class RemoveCharacter : public Action, public Element
+    {
+    public:
+        RemoveCharacter();
+        virtual ~RemoveCharacter();
+        virtual void invoke();
+        virtual eElement whichElement() const{ return EREMOVECHARACTER; }
+        virtual CL_DomElement createDomElement(CL_DomDocument&) const;
 
-		std::string getName() const;
-		bool keepStuff() const;
-	private:
-		virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+        std::string getName() const;
+        bool keepStuff() const;
+    private:
+        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 
-		std::string mName;
-		bool mbKeepStuff;
-	};
+        std::string mName;
+        bool mbKeepStuff;
+    };
 };
 
 

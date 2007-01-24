@@ -34,7 +34,7 @@ bool Party::hasItem(ItemRef *pItemRef, uint count) const
     Item * pItem = pItemRef->getItem();
 
     if( mItems.count ( pItem ) && mItems.find( pItem )->second >= count)
-	return true;
+        return true;
     else return false;
 }
 
@@ -48,7 +48,7 @@ void Party::doEvent(const std::string &name, bool bRemember)
 {
 
     if(bRemember)
-	mEvents.insert ( name );
+        mEvents.insert ( name );
 }
 
 
@@ -63,31 +63,31 @@ void Party::giveItem(ItemRef *pItemRef, uint count)
     
     if( !mItems.count(pItem) )
     {
-	mItems [ pItem ] = 0;
+        mItems [ pItem ] = 0;
     }
     
     
     if( mItems [ pItem ] + count <= pItem->getMaxInventory())
     {
-	mItems [ pItem ] += count;
+        mItems [ pItem ] += count;
 	
-	if(count > 1)
-	    os << " x" << count;
+        if(count > 1)
+            os << " x" << count;
     }
     else 
     {
-	count = pItem->getMaxInventory() - mItems[ pItem ];
+        count = pItem->getMaxInventory() - mItems[ pItem ];
 	
-	if( count < 1 )
-	{
-	    speaker = "**Item Lost** Inventory Full";
-	}
-	else 
-	{
-	    mItems [ pItem ] += count;
+        if( count < 1 )
+        {
+            speaker = "**Item Lost** Inventory Full";
+        }
+        else 
+        {
+            mItems [ pItem ] += count;
 
-	    os << " x" << count;
-	}
+            os << " x" << count;
+        }
     }
     
 
@@ -105,20 +105,20 @@ void Party::takeItem(ItemRef *pItemRef, uint count)
     os << pItem->getName();
     if( mItems.count(pItem ))
     {
-	if ( mItems [ pItem ] < count )
-	{
-	    count = mItems [ pItem ];
-	}
+        if ( mItems [ pItem ] < count )
+        {
+            count = mItems [ pItem ];
+        }
 
-	mItems[ pItem ] -= count;
+        mItems[ pItem ] -= count;
 
-	if ( count > 1 )
-	    os << " x" << count;
+        if ( count > 1 )
+            os << " x" << count;
     }
 #ifndef NDEBUG
     else
     {
-	std::cerr <<  " An attempt was made to take an item you didn't have.";
+        std::cerr <<  " An attempt was made to take an item you didn't have.";
     }
 #endif
 
@@ -131,10 +131,10 @@ void Party::giveGold(int amount)
 
     if(amount <0 )
     {
-	// They are taking..
+        // They are taking..
 
-	if(mnGold < amount)
-	    throw CL_Error("Attempt to take more gold than we had.");
+        if(mnGold < amount)
+            throw CL_Error("Attempt to take more gold than we had.");
     }
 
     mnGold += amount;

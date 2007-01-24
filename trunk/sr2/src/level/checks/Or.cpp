@@ -35,9 +35,9 @@ bool Or::handleElement(eElement element, Element *pElement)
     case EHASGOLD:
     case EDIDEVENT:
         mOperands.push_back(dynamic_cast<Check*>(pElement));
-		return false;
+        return false;
     }
-	return true;
+    return true;
 }
  
 Or::~Or()

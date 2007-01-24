@@ -15,7 +15,7 @@ namespace StoneRing{
 	public:
 	    ArmorRef();
 	    ArmorRef ( ArmorType *pType, ArmorClass *pClass, 
-		       SpellRef * pSpell, RuneType *pRune );
+                   SpellRef * pSpell, RuneType *pRune );
 
 	    ~ArmorRef();
 		virtual eElement whichElement() const{ return EARMORREF; }	

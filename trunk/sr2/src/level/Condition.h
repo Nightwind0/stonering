@@ -6,7 +6,7 @@
 
 namespace StoneRing
 {
-
+    
 	class Condition : public Element
 	{
 	public:
@@ -21,8 +21,8 @@ namespace StoneRing
 		virtual bool handleElement(eElement element, Element * pElement );
 		std::list<Check*> mChecks;
 	};
-
+    
 };
-
+        
 #endif
 

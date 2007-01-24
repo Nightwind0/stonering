@@ -70,13 +70,13 @@ bool UniqueWeapon::handleElement(eElement element, Element * pElement)
 	switch(element)
 	{
 	case EWEAPONTYPEREF:
-		{
-			const ItemManager * pItemManager = IApplication::getInstance()->getItemManager();
+    {
+        const ItemManager * pItemManager = IApplication::getInstance()->getItemManager();
 
-			WeaponTypeRef * pType = dynamic_cast<WeaponTypeRef*>(pElement);
-			mpWeaponType = pItemManager->getWeaponType( *pType );
-			break;
-		}
+        WeaponTypeRef * pType = dynamic_cast<WeaponTypeRef*>(pElement);
+        mpWeaponType = pItemManager->getWeaponType( *pType );
+        break;
+    }
 	case EWEAPONENHANCER:
 		addWeaponEnhancer( dynamic_cast<WeaponEnhancer*>(pElement) );
 		break;

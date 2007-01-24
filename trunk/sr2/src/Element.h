@@ -17,135 +17,135 @@ namespace StoneRing
 
 
     class Element
-		{
-		public:
-			Element(){}
-			virtual ~Element(){}
+    {
+    public:
+        Element(){}
+        virtual ~Element(){}
 
 // These MUST be kept alphabetized
-			enum eElement
-				{	 
+        enum eElement
+        {	 
 
-					EADDCHARACTER,
-                    EAND,
-                    EANIMATION,
-					EANIMATIONDEFINITION,
-                    EANIMATIONSPRITEREF,
-                    EARMORCLASS,
-                    EARMORCLASSREF,
-                    EARMORENHANCER,
-                    EARMORREF,
-                    EARMORTYPE,
-                    EARMORTYPEEXCLUSIONLIST,
-                    EARMORTYPEREF,
-                    EATTRIBUTEEFFECT,
-                    EATTRIBUTEENHANCER,
-                    EATTRIBUTEMODIFIER,
-					ECHARACTER,
-                    ECHARACTERCLASS,
-                    ECHOICE,
-                    ECONDITION,
-                    EDIDEVENT,
-                    EDIRECTIONBLOCK,
-                    EDOATTACK,
-                    EDOMAGICDAMAGE,
-                    EDOSTATUSEFFECT,
-                    EDOWEAPONDAMAGE,
-                    EEVENT,
-                    EGIVE,
-                    EGIVEGOLD,
-                    EHASGOLD,
-                    EHASITEM,
-                    EICONREF,
-                    EINVOKESHOP,
-                    EITEMREF,
-                    ELEVEL,
-                    ELOADLEVEL,
-                    EMAGICDAMAGECATEGORY,
-                    EMAGICRESISTANCE,
-                    EMAPPABLEOBJECT,
-                    EMOVEMENT,
-                    ENAMEDITEMELEMENT,
-                    ENAMEDITEMREF,
-                    EONCOUNTDOWN,
-                    EONINVOKE,
-                    EONREMOVE,
-                    EONROUND,
-                    EOPERATOR,
-                    EOPTION,
-                    EOR,
-                    EPAR,
-                    EPAUSE,
-                    EPLAYSCENE,
-                    EPLAYSOUND,
-                    EPOP,
-					EPREREQSKILLREF,
-                    EREGULARITEM,
-					EREMOVECHARACTER,
-                    ERUNE,
-                    ERUNETYPE,
-                    ESAY,
-                    ESKILL,
-                    ESKILLREF,
-                    ESPECIALITEM,
-                    ESPELL,
-                    ESPELLREF,
-                    ESPRITEREF,
-                    ESTARTBATTLE,
-                    ESTATINCREASE,
-                    ESTATUSEFFECT,
-                    ESTATUSEFFECTACTIONS,
-                    ESTATUSEFFECTMODIFIER,
-                    ESYSTEMITEM,
-                    ETAKE,
-                    ETILE,
-                    ETILEMAP,
-                    EUNIQUEARMOR,
-                    EUNIQUEWEAPON,
-                    EWEAPONCLASS,
-                    EWEAPONCLASSREF,
-                    EWEAPONDAMAGECATEGORY,
-                    EWEAPONENHANCER,
-                    EWEAPONREF,
-                    EWEAPONTYPE,
-                    EWEAPONTYPEEXCLUSIONLIST,
-                    EWEAPONTYPEREF,
-					EWEAPONTYPESPRITE,
+            EADDCHARACTER,
+            EAND,
+            EANIMATION,
+            EANIMATIONDEFINITION,
+            EANIMATIONSPRITEREF,
+            EARMORCLASS,
+            EARMORCLASSREF,
+            EARMORENHANCER,
+            EARMORREF,
+            EARMORTYPE,
+            EARMORTYPEEXCLUSIONLIST,
+            EARMORTYPEREF,
+            EATTRIBUTEEFFECT,
+            EATTRIBUTEENHANCER,
+            EATTRIBUTEMODIFIER,
+            ECHARACTER,
+            ECHARACTERCLASS,
+            ECHOICE,
+            ECONDITION,
+            EDIDEVENT,
+            EDIRECTIONBLOCK,
+            EDOATTACK,
+            EDOMAGICDAMAGE,
+            EDOSTATUSEFFECT,
+            EDOWEAPONDAMAGE,
+            EEVENT,
+            EGIVE,
+            EGIVEGOLD,
+            EHASGOLD,
+            EHASITEM,
+            EICONREF,
+            EINVOKESHOP,
+            EITEMREF,
+            ELEVEL,
+            ELOADLEVEL,
+            EMAGICDAMAGECATEGORY,
+            EMAGICRESISTANCE,
+            EMAPPABLEOBJECT,
+            EMOVEMENT,
+            ENAMEDITEMELEMENT,
+            ENAMEDITEMREF,
+            EONCOUNTDOWN,
+            EONINVOKE,
+            EONREMOVE,
+            EONROUND,
+            EOPERATOR,
+            EOPTION,
+            EOR,
+            EPAR,
+            EPAUSE,
+            EPLAYSCENE,
+            EPLAYSOUND,
+            EPOP,
+            EPREREQSKILLREF,
+            EREGULARITEM,
+            EREMOVECHARACTER,
+            ERUNE,
+            ERUNETYPE,
+            ESAY,
+            ESKILL,
+            ESKILLREF,
+            ESPECIALITEM,
+            ESPELL,
+            ESPELLREF,
+            ESPRITEREF,
+            ESTARTBATTLE,
+            ESTATINCREASE,
+            ESTATUSEFFECT,
+            ESTATUSEFFECTACTIONS,
+            ESTATUSEFFECTMODIFIER,
+            ESYSTEMITEM,
+            ETAKE,
+            ETILE,
+            ETILEMAP,
+            EUNIQUEARMOR,
+            EUNIQUEWEAPON,
+            EWEAPONCLASS,
+            EWEAPONCLASSREF,
+            EWEAPONDAMAGECATEGORY,
+            EWEAPONENHANCER,
+            EWEAPONREF,
+            EWEAPONTYPE,
+            EWEAPONTYPEEXCLUSIONLIST,
+            EWEAPONTYPEREF,
+            EWEAPONTYPESPRITE,
 
-                    __END_OF_ELEMENTS__
-                };
+            __END_OF_ELEMENTS__
+        };
 
-            virtual eElement whichElement() const=0;
-			virtual CL_DomElement  createDomElement(CL_DomDocument&) const=0;
+        virtual eElement whichElement() const=0;
+        virtual CL_DomElement  createDomElement(CL_DomDocument&) const=0;
    
-            void load(CL_DomElement * pElement);
+        void load(CL_DomElement * pElement);
 
-            static const char * pszElementNames[__END_OF_ELEMENTS__];
+        static const char * pszElementNames[__END_OF_ELEMENTS__];
     
-        protected:
-            virtual bool handleElement(eElement, Element * ){ return false;}
-            virtual void loadAttributes(CL_DomNamedNodeMap *){}
-            virtual void handleText(const std::string &){}
-            virtual void loadFinished(){} // You can check shit . Make sure you got everything.
-            uint getRequiredUint(const std::string &attrname, CL_DomNamedNodeMap * pAttributes);
-            int  getRequiredInt(const std::string &attrname, CL_DomNamedNodeMap * pAttributes);
-            float getRequiredFloat(const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
-            std::string getRequiredString (const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
-            bool getRequiredBool (const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
-            bool hasAttr( const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
-            uint getUint(const std::string &attrname, CL_DomNamedNodeMap * pAttributes);
-            int  getInt(const std::string &attrname, CL_DomNamedNodeMap * pAttributes);
-            float getFloat(const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
-            bool getBool (const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
-            std::string getString (const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
-            bool getImpliedBool ( const std::string &attrname, CL_DomNamedNodeMap * pAttributes, bool defaultValue);
-            int getImpliedInt( const std::string &attrname, CL_DomNamedNodeMap * pAttributes, int defaultValue);
-            std::string getImpliedString( const std::string &attrname, CL_DomNamedNodeMap * pAttributes, const std::string &defaultValue);
-            float getImpliedFloat(const std::string &attrname, CL_DomNamedNodeMap *pAttributes, float defaultValue);
-            std::string getElementName() const;
+    protected:
+        virtual bool handleElement(eElement, Element * ){ return false;}
+        virtual void loadAttributes(CL_DomNamedNodeMap *){}
+        virtual void handleText(const std::string &){}
+        virtual void loadFinished(){} // You can check shit . Make sure you got everything.
+        uint getRequiredUint(const std::string &attrname, CL_DomNamedNodeMap * pAttributes);
+        int  getRequiredInt(const std::string &attrname, CL_DomNamedNodeMap * pAttributes);
+        float getRequiredFloat(const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
+        std::string getRequiredString (const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
+        bool getRequiredBool (const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
+        bool hasAttr( const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
+        uint getUint(const std::string &attrname, CL_DomNamedNodeMap * pAttributes);
+        int  getInt(const std::string &attrname, CL_DomNamedNodeMap * pAttributes);
+        float getFloat(const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
+        bool getBool (const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
+        std::string getString (const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
+        bool getImpliedBool ( const std::string &attrname, CL_DomNamedNodeMap * pAttributes, bool defaultValue);
+        int getImpliedInt( const std::string &attrname, CL_DomNamedNodeMap * pAttributes, int defaultValue);
+        std::string getImpliedString( const std::string &attrname, CL_DomNamedNodeMap * pAttributes, const std::string &defaultValue);
+        float getImpliedFloat(const std::string &attrname, CL_DomNamedNodeMap *pAttributes, float defaultValue);
+        std::string getElementName() const;
 
-            bool isAction(eElement element)const;
-        private:
+        bool isAction(eElement element)const;
+    private:
 
     
 
@@ -163,7 +163,7 @@ namespace StoneRing
   const static ElementCreationEntry g_pElementCreationEntries[];
 */
 
-        };
+    };
 
 
 

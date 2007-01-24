@@ -64,13 +64,13 @@ std::list<Effect*>::const_iterator
 Skill::getEffectsBegin() const
 {
 
-		return mEffects.begin();
+    return mEffects.begin();
 }
 
 std::list<Effect*>::const_iterator 
 Skill::getEffectsEnd() const
 {
-		return mEffects.end();
+    return mEffects.end();
 }
 
 std::list<AttributeModifier*>::const_iterator 
@@ -87,22 +87,22 @@ Skill::getAttributeModifiersEnd() const
 
 std::string Skill::getName() const
 {
-		return mName;
+    return mName;
 }
 
 uint Skill::getSPCost() const
 {
-		return mnSp;
+    return mnSp;
 }
 
 uint Skill::getBPCost() const
 {
-		return mnBp;
+    return mnBp;
 }
 
 uint Skill::getMinLevel() const
 {
-		return mnMinLevel;
+    return mnMinLevel;
 }
 
 

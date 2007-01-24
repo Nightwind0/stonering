@@ -9,7 +9,7 @@
 using namespace StoneRing;
 
 WeaponRef::WeaponRef():mpWeaponType(NULL), mpWeaponClass(NULL),
-mpSpellRef(NULL),mpRuneType(NULL)
+                       mpSpellRef(NULL),mpRuneType(NULL)
 {
 }
 
@@ -47,8 +47,8 @@ WeaponRef::~WeaponRef()
 
 
 WeaponRef::WeaponRef ( WeaponType *pType, WeaponClass *pClass, 
-					  SpellRef * pSpell, RuneType *pRune ):mpWeaponType(pType), mpWeaponClass(pClass),
-					  mpSpellRef(pSpell), mpRuneType(pRune)
+                       SpellRef * pSpell, RuneType *pRune ):mpWeaponType(pType), mpWeaponClass(pClass),
+                                                            mpSpellRef(pSpell), mpRuneType(pRune)
 
 {
 

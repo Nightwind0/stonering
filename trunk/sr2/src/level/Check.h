@@ -6,15 +6,15 @@
 
 namespace StoneRing{
 
-	// Things that evaluate by examining the party
-	class Check : public Element
-	{
-	public:
-		Check(){}
-		virtual ~Check(){}
+    // Things that evaluate by examining the party
+    class Check : public Element
+    {
+    public:
+        Check(){}
+        virtual ~Check(){}
 
-		virtual bool evaluate()=0;
-	};
+        virtual bool evaluate()=0;
+    };
 
 
 };

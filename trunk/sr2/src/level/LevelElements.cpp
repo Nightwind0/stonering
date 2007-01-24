@@ -59,8 +59,8 @@ std::string BoolToString( const bool &b)
 // For the multimap of points
 bool operator < (const CL_Point &p1, const CL_Point &p2)
 {
-	uint p1value = (p1.y  *  StoneRing::IApplication::getInstance()->getScreenWidth()) + p1.x;
-	uint p2value = (p2.y  * StoneRing::IApplication::getInstance()->getScreenWidth()) + p2.x;
+    uint p1value = (p1.y  *  StoneRing::IApplication::getInstance()->getScreenWidth()) + p1.x;
+    uint p2value = (p2.y  * StoneRing::IApplication::getInstance()->getScreenWidth()) + p2.x;
     
     return p1value < p2value;
 }
@@ -93,7 +93,7 @@ bool StoneRing::ItemRef::handleElement(eElement element, StoneRing::Element * pE
         return false;
     }
 
-	return true;
+    return true;
 }
 
 void StoneRing::ItemRef::loadAttributes(CL_DomNamedNodeMap *pAttributes)
@@ -239,7 +239,7 @@ CL_DomElement  StoneRing::Tilemap::createDomElement(CL_DomDocument &doc) const
 
 bool StoneRing::Tilemap::handleElement(eElement element, Element * pElement)
 {
-	return false;
+    return false;
 }
 
 void StoneRing::Tilemap::loadAttributes(CL_DomNamedNodeMap * pAttributes)
@@ -300,7 +300,7 @@ CL_DomElement  StoneRing::SpriteRef::createDomElement(CL_DomDocument &doc) const
 
 bool StoneRing::SpriteRef::handleElement(eElement element, Element * pElement)
 {
-	return false;
+    return false;
 }
 
 void StoneRing::SpriteRef::loadAttributes(CL_DomNamedNodeMap * pAttributes)
@@ -389,7 +389,7 @@ CL_DomElement  StoneRing::Event::createDomElement(CL_DomDocument &doc) const
         i != mActions.end();
         i++)
     {
-		Element * pElement = dynamic_cast<Element*>(*i);
+        Element * pElement = dynamic_cast<Element*>(*i);
         CL_DomElement e = pElement->createDomElement(doc);
     
         element.append_child ( e );
@@ -429,12 +429,12 @@ bool StoneRing::Event::handleElement(eElement element, Element *pElement)
     {
         mpCondition = dynamic_cast<Condition*>(pElement);
     }
-	else 
-	{
-		return false;
-	}
+    else 
+    {
+        return false;
+    }
 
-	return true;
+    return true;
 }
 
 
@@ -473,7 +473,7 @@ bool StoneRing::Event::invoke()
     
     if(mpCondition && !mpCondition->evaluate() ) return false;
 
-	StoneRing::IApplication::getInstance()->getParty()->doEvent ( mName, mbRemember );
+    StoneRing::IApplication::getInstance()->getParty()->doEvent ( mName, mbRemember );
 
     for(std::list<Action*>::iterator i = mActions.begin();
         i != mActions.end();
@@ -672,7 +672,7 @@ CL_DomElement  StoneRing::Tile::createDomElement(CL_DomDocument &doc) const
     if(mZOrder >0 ) element.set_attribute("zorder", IntToString (mZOrder ) );
     if(isFloater()) element.set_attribute("floater", "true");
     if(isHot())     element.set_attribute("hot", "true");
-	if(pops())      element.set_attribute("pops","true");
+    if(pops())      element.set_attribute("pops","true");
 
     if(isSprite())
     {
@@ -730,11 +730,11 @@ void StoneRing::Tile::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 
     bool floater = getImpliedBool("floater",pAttributes,false);
     bool hot = getImpliedBool("hot",pAttributes,false);
-	bool pops = getImpliedBool("pops",pAttributes,false);
+    bool pops = getImpliedBool("pops",pAttributes,false);
 
     if(floater) cFlags |= FLOATER;
     if(hot) cFlags |= HOT;
-	if(pops) cFlags |= POPS;
+    if(pops) cFlags |= POPS;
 
 }
 
@@ -784,11 +784,11 @@ bool StoneRing::Tile::handleElement(eElement element, Element * pElement)
         
         break;
     }
-	default:
-		return false;
+    default:
+        return false;
     }
 
-	return true;
+    return true;
 }
 
 void StoneRing::Tile::activate() // Call any attributemodifier

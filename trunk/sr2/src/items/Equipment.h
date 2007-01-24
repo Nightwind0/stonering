@@ -5,7 +5,7 @@
 
 namespace StoneRing{
   
-   class Equipment : public virtual Item
+    class Equipment : public virtual Item
 	{
 	public:
 	    Equipment();

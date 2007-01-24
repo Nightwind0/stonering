@@ -19,19 +19,19 @@ AnimationSpriteRef::AnimationSpriteRef()
 
 void AnimationSpriteRef::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-		meInitialFocus = initialFocusFromString(getRequiredString("initialFocus",pAttributes));
+    meInitialFocus = initialFocusFromString(getRequiredString("initialFocus",pAttributes));
 
-		if(hasAttr("initialFocusType",pAttributes))
-			meInitialFocusType = initialFocusTypeFromString( getString("initialFocusType",pAttributes));
-		 else meInitialFocusType = CENTER;
+    if(hasAttr("initialFocusType",pAttributes))
+        meInitialFocusType = initialFocusTypeFromString( getString("initialFocusType",pAttributes));
+    else meInitialFocusType = CENTER;
 
-		if(hasAttr("movementDirection",pAttributes))
-			meMovementDirection = movementDirectionFromString( getString("movementDirection",pAttributes));
-		else meMovementDirection = STILL;
+    if(hasAttr("movementDirection",pAttributes))
+        meMovementDirection = movementDirectionFromString( getString("movementDirection",pAttributes));
+    else meMovementDirection = STILL;
 
-		if(hasAttr("movementStyle",pAttributes))
-		    meMovementStyle = movementStyleFromString ( getString("movementStyle",pAttributes ));
-		else meMovementStyle = STRAIGHT;
+    if(hasAttr("movementStyle",pAttributes))
+        meMovementStyle = movementStyleFromString ( getString("movementStyle",pAttributes ));
+    else meMovementStyle = STRAIGHT;
 }
 
 void AnimationSpriteRef::handleText( const std::string &text )
@@ -127,19 +127,19 @@ AnimationSpriteRef::getMovementDirection() const
 
 bool Par::handleElement(eElement element, Element * pElement)
 {
-		switch(element)
-		{
-		case EPLAYSOUND:
-			mpPlaySound = dynamic_cast<StoneRing::PlaySound*>(pElement);
-			break;
-		case EANIMATIONSPRITEREF:
-			mAnimationSpriteRefs.push_back( dynamic_cast<AnimationSpriteRef*>(pElement));
-			break;
-		default:
-			return false;
-		}
+    switch(element)
+    {
+    case EPLAYSOUND:
+        mpPlaySound = dynamic_cast<StoneRing::PlaySound*>(pElement);
+        break;
+    case EANIMATIONSPRITEREF:
+        mAnimationSpriteRefs.push_back( dynamic_cast<AnimationSpriteRef*>(pElement));
+        break;
+    default:
+        return false;
+    }
 
-		return true;
+    return true;
 }
 
 void Par::loadAttributes(CL_DomNamedNodeMap * pAttributes)

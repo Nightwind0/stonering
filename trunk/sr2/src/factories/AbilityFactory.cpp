@@ -90,7 +90,7 @@ Element * AbilityFactory::createSkillRef() const
 
 Element * AbilityFactory::createSkill() const
 {
-	return new Skill();
+    return new Skill();
 }
 
 
@@ -146,11 +146,11 @@ AbilityFactory::getMethod(Element::eElement element) const
         return &AbilityFactory::createStatIncrease;
     case Element::EANIMATIONSPRITEREF:
         return &AbilityFactory::createAnimationSpriteRef;
-	case Element::EPAR:
-		return &AbilityFactory::createPar;
-	case Element::EPREREQSKILLREF:
-	case Element::ESKILL:
-		return &AbilityFactory::createSkill;
+    case Element::EPAR:
+        return &AbilityFactory::createPar;
+    case Element::EPREREQSKILLREF:
+    case Element::ESKILL:
+        return &AbilityFactory::createSkill;
     case Element::EONROUND:
     case Element::EONREMOVE:
     case Element::EONCOUNTDOWN:
