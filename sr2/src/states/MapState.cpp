@@ -94,32 +94,32 @@ void StoneRing::MapState::handleKeyUp(const CL_InputEvent &key)
 
 void StoneRing::MapState::draw(const CL_Rect &screenRect,CL_GraphicContext * pGC)
 {
-	bool clearBg = false;
-	uint width = min( (unsigned int)screenRect.get_width(), mpLevel->getWidth() * 32);
-	uint height = min((unsigned int)screenRect.get_height(), mpLevel->getHeight() * 32);
+    bool clearBg = false;
+    uint width = min( (unsigned int)screenRect.get_width(), mpLevel->getWidth() * 32);
+    uint height = min((unsigned int)screenRect.get_height(), mpLevel->getHeight() * 32);
 
     CL_Rect src = CL_Rect(mLevelX, mLevelY, mLevelX +width,
                           mLevelY + height);
-	CL_Rect dst = screenRect;
-	// Center
-	if(screenRect.get_width() > src.get_width())
-	{
-		uint amount = (screenRect.get_width() - src.get_width()) /2;
-		dst.left += amount;
-		dst.right -= amount;
-		clearBg = true;
-	}
+    CL_Rect dst = screenRect;
+    // Center
+    if(screenRect.get_width() > src.get_width())
+    {
+        uint amount = (screenRect.get_width() - src.get_width()) /2;
+        dst.left += amount;
+        dst.right -= amount;
+        clearBg = true;
+    }
 
-	if(screenRect.get_height() > src.get_height())
-	{
-		uint amount = (screenRect.get_height() - src.get_height()) /2;
-		dst.top += amount;
-		dst.bottom -= amount;
-		clearBg = true;
-	}
+    if(screenRect.get_height() > src.get_height())
+    {
+        uint amount = (screenRect.get_height() - src.get_height()) /2;
+        dst.top += amount;
+        dst.bottom -= amount;
+        clearBg = true;
+    }
 
-	if(clearBg)
-		pGC->clear();
+    if(clearBg)
+        pGC->clear();
 
     mpLevel->draw(src,dst, pGC, false,mbShowDebug,mbShowDebug);
     mpLevel->drawMappableObjects( src,dst, pGC);
@@ -153,63 +153,63 @@ void StoneRing::MapState::finish() // Hook to clean up or whatever after being p
 
 void StoneRing::MapState::pushLevel(Level * pLevel, uint x, uint y)
 {
-	CL_ResourceManager * pResources = IApplication::getInstance()->getResources();
+    CL_ResourceManager * pResources = IApplication::getInstance()->getResources();
     std::string defaultplayersprite = CL_String::load("Game/DefaultPlayerSprite",pResources );
-	mLevels.push( pLevel );
-	mpLevel = mLevels.top();
+    mLevels.push( pLevel );
+    mpLevel = mLevels.top();
 
 
 
-	MappablePlayer * pPlayer = new MappablePlayer(x,y);
-	if(mpPlayer)
-		pPlayer->matchFacingDirection(mpPlayer);
-	mpPlayer = pPlayer;
+    MappablePlayer * pPlayer = new MappablePlayer(x,y);
+    if(mpPlayer)
+        pPlayer->matchFacingDirection(mpPlayer);
+    mpPlayer = pPlayer;
 
-	// gets deleted in the mappableobject destructor, which is called by Level, which deletes itself after a pop
-	CL_Sprite * pPlayerSprite = new CL_Sprite(defaultplayersprite, pResources );
+    // gets deleted in the mappableobject destructor, which is called by Level, which deletes itself after a pop
+    CL_Sprite * pPlayerSprite = new CL_Sprite(defaultplayersprite, pResources );
         
-	setPlayerSprite(pPlayerSprite);
-	mpPlayer->setSprite(mpPlayerSprite);
+    setPlayerSprite(pPlayerSprite);
+    mpPlayer->setSprite(mpPlayerSprite);
 
-	mpLevel->addPlayer(mpPlayer);
+    mpLevel->addPlayer(mpPlayer);
 
-	recalculatePlayerPosition();
+    recalculatePlayerPosition();
 
-	if(mpPlayer)switchFromPlayer(mpPlayer);
+    if(mpPlayer)switchFromPlayer(mpPlayer);
 }
 
 void StoneRing::MapState::setPlayerSprite(CL_Sprite * pPlayer)
 {
-	mpPlayerSprite = pPlayer;
+    mpPlayerSprite = pPlayer;
 }
 
 void StoneRing::MapState::pop(bool bAll)
 {
-	MappableObject::eDirection oldDir = mpPlayer->getDirection();
+    MappableObject::eDirection oldDir = mpPlayer->getDirection();
 
-	switchFromPlayer(mpPlayer);
-	if(bAll)
-	{
-		while(mLevels.size() > 1)
-		{
-			mLevels.top()->markForDeath();
-			mLevels.pop();
-		}
-	}
-	else
-	{
+    switchFromPlayer(mpPlayer);
+    if(bAll)
+    {
+        while(mLevels.size() > 1)
+        {
+            mLevels.top()->markForDeath();
+            mLevels.pop();
+        }
+    }
+    else
+    {
 
-		if(mLevels.size()) 
-		{
-			mLevels.top()->markForDeath();
-			mLevels.pop();
-		}
-	}
+        if(mLevels.size()) 
+        {
+            mLevels.top()->markForDeath();
+            mLevels.pop();
+        }
+    }
 
-	mpLevel = mLevels.top();
-	mpLevel->getPlayer()->matchFacingDirection(mpPlayer);
-	mpPlayer = mpLevel->getPlayer();
-	mpPlayer->setNextDirection( oldDir );
+    mpLevel = mLevels.top();
+    mpLevel->getPlayer()->matchFacingDirection(mpPlayer);
+    mpPlayer = mpLevel->getPlayer();
+    mpPlayer->setNextDirection( oldDir );
 }
 
 
@@ -291,7 +291,7 @@ void StoneRing::MapState::moveMappableObjects()
 
 void StoneRing::MapState::doTalk(bool prod)
 {
-	CL_Point talkPoint = mpPlayer->getPointInFront();
+    CL_Point talkPoint = mpPlayer->getPointInFront();
 
     if(talkPoint.x >=0 && talkPoint.x < mpLevel->getWidth() && 
        talkPoint.y >=0 && talkPoint.y < mpLevel->getHeight())
@@ -300,7 +300,7 @@ void StoneRing::MapState::doTalk(bool prod)
 
 void StoneRing::MapState::switchFromPlayer(MappablePlayer * pPlayer)
 {
-	pPlayer->clearNextDirection();
+    pPlayer->clearNextDirection();
 }
 
 
