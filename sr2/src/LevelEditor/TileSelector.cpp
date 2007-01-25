@@ -27,15 +27,15 @@ TileSelector::TileSelector( CL_Component *parent, CL_ResourceManager* tsResource
     pWindow->add_child(scrollVert);
 
     
-    scrollVert->set_size(20,pWindow->get_height() - 40);    
-    scrollVert->set_position(pWindow->get_width()-20,40);
+	scrollVert->set_size(20,pWindow->get_height() - 20);	
+	scrollVert->set_position(pWindow->get_width()-20,20);
 
     //scrollVert->set_width(20);
     //scrollVert->set_height(get_parent()->get_height());
     scrollVert->set_tracking(true);
 
     scrollHorz = new CL_ScrollBar(true, pWindow);
-    scrollHorz->set_position(0,  pWindow->get_height()-40);
+	scrollHorz->set_position(0,  pWindow->get_height()-20);
     scrollHorz->set_width(pWindow->get_width()-20);
     scrollHorz->set_height(20);
     scrollHorz->set_tracking(true);
@@ -141,8 +141,6 @@ void TileSelector::draw()
             CL_Rect dst = client_to_screen(CL_Rect((j * 32) + 1, (i * 32)+ 1, (j * 32) + 32, (i * 32) + 32));
 
             cur_tileset->draw(src, dst);
-
-
         }
     }
 
