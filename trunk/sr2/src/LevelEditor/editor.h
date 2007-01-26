@@ -21,6 +21,7 @@
 #include "IApplication.h"
 #include "IParty.h"
 #include "Item.h"
+#include "AppUtils.h"
 
 
 
@@ -76,9 +77,9 @@ public:
     ICharacterGroup *getSelectedCharacterGroup() const { return NULL; }
     CharacterFactory * getCharacterFactory() const { return NULL; }
     ItemFactory * getItemFactory() const { static ItemFactory itemFactory; return &itemFactory; }
-    const ItemManager * getItemManager() const { static EditorItemManager itemManager; return &itemManager; }
+    virtual ItemManager * getItemManager()  { static EditorItemManager itemManager; return &itemManager; }
     virtual AbilityFactory * getAbilityFactory() const { static AbilityFactory abilityFactory; return &abilityFactory; }
-    virtual const AbilityManager * getAbilityManager() const { static AbilityManager abilityManager; return &abilityManager; }
+    virtual AbilityManager * getAbilityManager()  { static AbilityManager abilityManager; return &abilityManager; }
     
     virtual int getScreenWidth()const;
     virtual int getScreenHeight()const;
@@ -141,6 +142,7 @@ private:
     CL_GraphicContext *mGc;
 
     EditableLevel *mpLevel;
+    AppUtils mAppUtils;
 
 };
 

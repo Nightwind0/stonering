@@ -7,6 +7,7 @@
 #include "Party.h"
 #include "IApplication.h"
 #include "ItemManager.h"
+#include "AppUtils.h"
 #include <queue>
 #include "MapState.h"
 #include "SayState.h"
@@ -17,11 +18,7 @@ namespace StoneRing
     class Level;
     class Choice;
 
-
-
-
-
-  
+ 
     class Application : public CL_ClanApplication, public IApplication
     {
     public:
@@ -41,8 +38,8 @@ namespace StoneRing
         virtual ItemFactory * getItemFactory() const ;
         virtual AbilityFactory * getAbilityFactory() const ;
         virtual CharacterFactory * getCharacterFactory() const;
-        virtual const AbilityManager * getAbilityManager() const;
-        virtual const ItemManager * getItemManager() const;
+        virtual AbilityManager * getAbilityManager();
+        virtual ItemManager * getItemManager();
         virtual CL_Rect getDisplayRect() const;
 
         virtual void requestRedraw(const State *pState);
@@ -55,6 +52,8 @@ namespace StoneRing
         virtual void invokeShop(const std::string &shoptype);
         virtual void choice(const std::string &choiceText, const std::vector<std::string> &choices, Choice * pChoice);
         virtual void pop(bool bAll);
+    protected:
+
 
     private:
         void setupClanLib();
@@ -62,12 +61,6 @@ namespace StoneRing
         void showRechargeableOnionSplash();
         void showIntro();
     
-        void loadItems(const std::string &filename);
-        void loadSpells(const std::string &filename);
-        void loadSkills(const std::string &filename);
-        void loadStatusEffects(const std::string &filename);
-        void loadCharacterClasses(const std::string &filename);
-
         void draw();
         void run();
 
@@ -98,7 +91,7 @@ namespace StoneRing
         MapState mMapState;
         SayState mSayState;
         std::vector<State*> mStates;
-
+        AppUtils mAppUtils;
       
     };
   

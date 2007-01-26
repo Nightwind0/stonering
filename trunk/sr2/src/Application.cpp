@@ -139,12 +139,12 @@ ICharacterGroup * Application::getSelectedCharacterGroup() const
 }
 
 
-const ItemManager * Application::getItemManager() const
+ItemManager * Application::getItemManager()
 {
     return &mItemManager;
 }
 
-const AbilityManager * Application::getAbilityManager() const
+AbilityManager * Application::getAbilityManager()
 {
     return &mAbilityManager;
 }
@@ -241,88 +241,6 @@ void Application::onSignalQuit()
     
 }
 
-
-
-
-void Application::loadSpells(const std::string &filename)
-{
-#ifndef NDEBUG
-    std::cout << "Loading spells..." << std::endl;
-#endif    
-
-    CL_InputSource_File file(filename);
-
-    CL_DomDocument document;
-        
-    document.load(&file);
-
-    mAbilityManager.loadSpellFile ( document );
-
-}
-
-void Application::loadSkills(const std::string &filename)
-{
-#ifndef NDEBUG
-    std::cout << "Loading skills..." << std::endl;
-#endif    
-
-    CL_InputSource_File file(filename);
-
-    CL_DomDocument document;
-        
-    document.load(&file);
-
-    mAbilityManager.loadSkillFile ( document );
-
-}
-
-void Application::loadStatusEffects(const std::string &filename)
-{
-#ifndef NDEBUG
-    std::cout << "Loading status effects...." << std::endl;
-#endif
-
-    CL_InputSource_File file(filename);
-
-    CL_DomDocument document;
-
-    document.load(&file);
-
-    mAbilityManager.loadStatusEffectFile( document );
-}
-
-void Application::loadCharacterClasses(const std::string &filename)
-{
-#ifndef NDEBUG
-    std::cout << "Loading character classes..." << std::endl;
-#endif
-
-    CL_InputSource_File file(filename);
-
-    CL_DomDocument document;
-
-    document.load(&file);
-
-    mAbilityManager.loadCharacterClassFile( document );
-}
-
-void Application::loadItems(const std::string &filename)
-{
-#ifndef NDEBUG
-    std::cout << "Loading items..." << std::endl;
-#endif    
-
-  
-    CL_InputSource_File file(filename);
-
-    CL_DomDocument document;
-        
-    document.load(&file);
-
-    mItemManager.loadItemFile ( document );
-
-}
-
 void Application::requestRedraw(const State * /*pState*/)
 {
     draw();
@@ -391,6 +309,7 @@ void Application::run()
 
 }
 
+
 int Application::main(int argc, char ** argv)
 {
   
@@ -414,12 +333,10 @@ int Application::main(int argc, char ** argv)
 #else
         std::string name = CL_String::load("Configuration/name", mpResources) + " (DEBUG)";
 #endif
+
         std::string startinglevel = CL_String::load("Game/StartLevel",mpResources);
-        std::string itemdefinition = CL_String::load("Game/ItemDefinitions", mpResources );
-        std::string statusEffectDefinition = CL_String::load("Game/StatusEffectDefinitions",mpResources);
-        std::string spelldefinition = CL_String::load("Game/SpellDefinitions", mpResources);
-        std::string skilldefinition = CL_String::load("Game/SkillDefinitions",mpResources);
-        std::string classdefinition = CL_String::load("Game/CharacterClassDefinitions",mpResources);
+        mAppUtils.loadGameItemsAndSkills("",mpResources);
+
         // Load special overlay for say.
 
 
@@ -449,11 +366,7 @@ int Application::main(int argc, char ** argv)
 
         showRechargeableOnionSplash();
         showIntro();
-        loadStatusEffects(statusEffectDefinition);
-        loadSpells(spelldefinition);
-        loadItems(itemdefinition);
-        loadSkills(skilldefinition);
-        loadCharacterClasses(classdefinition);
+
         Level * pLevel = new Level(startinglevel, mpResources);
 
         mMapState.setDimensions(getDisplayRect());
@@ -507,8 +420,6 @@ void Application::showRechargeableOnionSplash()
 
 void Application::showIntro()
 {
-
-
     CL_Surface splash("Configuration/splash", mpResources);
     CL_Surface background("Configuration/splashbg", mpResources);
 

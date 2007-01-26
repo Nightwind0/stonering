@@ -42,7 +42,7 @@ namespace StoneRing {
     {
     public:
         DirectionBlock();
-        explicit DirectionBlock(int );
+        explicit DirectionBlock(int);
         virtual ~DirectionBlock();
         virtual eElement whichElement() const{ return EDIRECTIONBLOCK; }    
         int getDirectionBlock() const;
@@ -142,7 +142,7 @@ namespace StoneRing {
         virtual eElement whichElement() const{ return ETILE; }  
         inline ushort getZOrder() const { return mZOrder; }
 
-        inline bool isFloater() const { return cFlags & FLOATER; }
+        inline bool isFloater() const { return (cFlags & FLOATER) != 0; }
         bool evaluateCondition() const;
         inline bool hasAM() const { return mpAM != NULL; }
 
@@ -153,11 +153,11 @@ namespace StoneRing {
 
         CL_Rect getRect();
 
-        inline bool isSprite() const { return cFlags & SPRITE; }
+        inline bool isSprite() const { return (cFlags & SPRITE) != 0; }
 
-        inline bool isHot() const { return cFlags & HOT; }
+        inline bool isHot() const { return (cFlags & HOT) != 0; }
 
-        inline bool pops() const { return cFlags & POPS; }
+        inline bool pops() const { return (cFlags & POPS) != 0; }
 
         void draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
         virtual void update();

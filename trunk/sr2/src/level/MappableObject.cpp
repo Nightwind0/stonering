@@ -1,4 +1,4 @@
-
+#include <cassert>
 #include "Level.h"
 #include "GraphicsManager.h"
 #include "Graphic.h"
@@ -648,6 +648,9 @@ int StoneRing::MappableObject::ConvertDirectionToDirectionBlock(eDirection dir)
         return 0;
                        
     }
+
+    assert( 0 );
+    return 0;
 }
 
 void StoneRing::MappableObject::CalculateEdgePoints(const CL_Point &topleft, eDirection dir, eSize size, std::list<CL_Point> *pList)
