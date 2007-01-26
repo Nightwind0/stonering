@@ -38,6 +38,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;$(SOLUTIONDIR)/src/items/armor/&quot;;&quot;$(SOLUTIONDIR)/src/items/weapons/&quot;;&quot;$(SOLUTIONDIR)/src/level/actions/&quot;;&quot;$(SOLUTIONDIR)/src/level/checks/&quot;;&quot;$(SOLUTIONDIR)/src/&quot;;&quot;$(SOLUTIONDIR)/src/party&quot;;&quot;$(SOLUTIONDIR)/src/level&quot;;&quot;$(SOLUTIONDIR)/src/factories&quot;;&quot;$(SOLUTIONDIR)/src/items&quot;;&quot;$(SOLUTIONDIR)/src/abilities&quot;;&quot;$(SOLUTIONDIR)/src/states&quot;;&quot;$(SOLUTIONDIR)/src/character&quot;"
 				PreprocessorDefinitions="WIN32;DEBUG;_WINDOWS;_DEBUG"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -150,6 +151,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\AppUtils.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\items\armor\Armor.cpp"
 				>
 			</File>
@@ -179,6 +184,10 @@
 			</File>
 			<File
 				RelativePath="..\src\items\armor\ArmorTypeRef.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\steel\Ast.cpp"
 				>
 			</File>
 			<File
@@ -378,6 +387,30 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\steel\SteelException.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\steel\SteelFunctor.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\steel\SteelInterpreter.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\steel\SteelParser.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\steel\SteelScanner.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\steel\SteelType.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\items\SystemItem.cpp"
 				>
 			</File>
@@ -460,6 +493,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\AppUtils.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\items\armor\Armor.h"
 				>
 			</File>
@@ -489,6 +526,10 @@
 			</File>
 			<File
 				RelativePath="..\src\items\armor\ArmorTypeRef.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\steel\Ast.h"
 				>
 			</File>
 			<File
@@ -733,6 +774,30 @@
 			</File>
 			<File
 				RelativePath="..\src\items\StatusEffectModifier.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\steel\SteelException.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\steel\SteelFunctor.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\steel\SteelInterpreter.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\steel\SteelParser.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\steel\SteelScanner.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\steel\SteelType.h"
 				>
 			</File>
 			<File

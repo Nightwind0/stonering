@@ -10,7 +10,8 @@ using namespace StoneRing;
 
 bool gbDebugStop = false;
 
-EditorMain::EditorMain():mpParty(NULL),mpLevelFactory(NULL),mInfo(NULL)
+EditorMain::EditorMain():
+mpResources(NULL),mpParty(NULL),mpLevelFactory(NULL),mInfo(NULL)
 {
     mpParty = new EditorParty();
     mpLevelFactory = new EditableLevelFactory();
@@ -25,7 +26,7 @@ EditorMain::~EditorMain()
     // delete mInfo;
     delete mpParty;
     delete mpLevelFactory;
-
+    delete mpResources;
     
 }
 
@@ -115,6 +116,7 @@ int EditorMain::main(int argc, char **argv)
         CL_GUIManager gui(&style);
         mGui_manager = &gui;
 
+
         //mGc = display.get_gc();
         CL_Window window(CL_Rect(0, 50, 640, 620), "Map", gui.get_client_area());
         CL_Window tileWindow(CL_Rect(650,75,900,380),"Tile Selector",gui.get_client_area());
@@ -160,6 +162,7 @@ int EditorMain::main(int argc, char **argv)
         ////get the tileset info from xml
         CL_ResourceManager* tsResources = new CL_ResourceManager ( "../../Media/resources.xml" );
         mpResources = tsResources;
+        mAppUtils.loadGameItemsAndSkills("../../",mpResources);
 
         
         mpLevel = NULL;
@@ -234,7 +237,7 @@ int EditorMain::main(int argc, char **argv)
 
         mSlots.connect(gui.sig_resize(),mInfo, &Infobar::on_window_resize);
 
-        delete tsResources;
+       
 #if 0
 //          cout<< "creating tileselector" << endl;
     

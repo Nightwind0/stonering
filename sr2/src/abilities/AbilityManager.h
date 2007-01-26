@@ -52,6 +52,10 @@ namespace StoneRing
 
 
 };
+
+// Blah blah what kind of endings?
+
+
 #endif
 
 

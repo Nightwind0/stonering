@@ -18,6 +18,7 @@
 #include "AttributeEnhancer.h"
 #include "DamageCategory.h"
 #include "StatusEffectModifier.h"
+#include <cassert>
 
 #ifndef NDEBUG
 #include <algorithm>
@@ -288,6 +289,9 @@ WeaponType * ItemManager::getWeaponType(const WeaponTypeRef &ref) const
         if( ref.getName() == (*iter)->getName())
             return *iter;
     }
+
+    assert(0);
+    return NULL;
 }
 
 ArmorType  * ItemManager::getArmorType ( const ArmorTypeRef &ref) const
@@ -299,6 +303,9 @@ ArmorType  * ItemManager::getArmorType ( const ArmorTypeRef &ref) const
         if( ref.getName() == (*iter)->getName())
             return *iter;
     }
+
+    assert ( 0 && "Armor type not found");
+    return NULL;
 }
 
 WeaponClass * ItemManager::getWeaponClass ( const WeaponClassRef & ref ) const
@@ -310,6 +317,8 @@ WeaponClass * ItemManager::getWeaponClass ( const WeaponClassRef & ref ) const
         if( ref.getName() == (*iter)->getName())
             return *iter;
     }
+    assert(0 && "Weapon class not found");
+    return NULL;
 }
 
 ArmorClass  * ItemManager::getArmorClass ( const ArmorClassRef & ref ) const
@@ -324,7 +333,8 @@ ArmorClass  * ItemManager::getArmorClass ( const ArmorClassRef & ref ) const
             return *iter;
     }
     
-
+    assert ( 0 && "Armor class not found.");
+    return NULL;
 }
 
 Item * ItemManager:: getItem( const ItemRef & ref ) const

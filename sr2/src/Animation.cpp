@@ -1,5 +1,6 @@
 #include <ClanLib/core.h>
 #include <list>
+#include <cassert>
 #include "Animation.h"
 #include "LevelFactory.h"
 #include "IApplication.h"
@@ -84,6 +85,9 @@ AnimationSpriteRef::movementDirectionFromString ( const std::string &str )
     else if (str == "sw") return SW;
     else if (str == "toTarget") return TO_TARGET;
     else if (str == "toCaster") return TO_CASTER;
+
+    assert ( 0 );
+    return STILL;
 }
 
 AnimationSpriteRef::eMovementStyle    

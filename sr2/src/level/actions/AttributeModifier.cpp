@@ -1,4 +1,4 @@
-
+#include <cassert>
 #include "AttributeModifier.h"
 #include "CharacterDefinition.h" // for CA stuff
 #include "Condition.h"
@@ -205,7 +205,8 @@ bool AttributeModifier::applicable() const
         }
     }
 
-
+    assert ( 0 );
+    return false;
 
 }
 

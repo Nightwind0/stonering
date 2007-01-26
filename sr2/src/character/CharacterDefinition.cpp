@@ -1,3 +1,4 @@
+#include <cassert>
 #include "CharacterDefinition.h"
 #include "AbilityManager.h"
 #include "IApplication.h"
@@ -52,7 +53,8 @@ StoneRing::eCharacterAttribute StoneRing::CharAttributeFromString(const std::str
             return (eCharacterAttribute)i;
         }
     }
-
+    assert ( 0 );
+    return static_cast<StoneRing::eCharacterAttribute>(0);
 }
 
 StoneRing::eCommonAttribute StoneRing::CommonAttributeFromString(const std::string &str)
@@ -64,6 +66,9 @@ StoneRing::eCommonAttribute StoneRing::CommonAttributeFromString(const std::stri
             return (eCommonAttribute)i;
         }
     }
+
+    assert ( 0 );
+    return static_cast<eCommonAttribute>(0);
 }
 
 
@@ -77,6 +82,9 @@ uint StoneRing::CAFromString(const std::string &str)
             return i;
         }
     }
+
+   // assert ( 0 );
+    return 0;
 }
 
 std::string StoneRing::CAToString(uint i)

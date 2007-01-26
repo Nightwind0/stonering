@@ -34,8 +34,8 @@ namespace StoneRing
         virtual CharacterFactory * getCharacterFactory() const=0;
         virtual ItemFactory * getItemFactory() const = 0;
         virtual AbilityFactory * getAbilityFactory() const = 0;
-        virtual const AbilityManager * getAbilityManager() const = 0;
-        virtual const ItemManager * getItemManager() const = 0;
+        virtual AbilityManager * getAbilityManager() = 0;
+        virtual ItemManager * getItemManager() = 0;
         static IApplication * getInstance();
 
         virtual int getScreenWidth()const=0;
