@@ -41,8 +41,6 @@ void Infobar::on_paint()
 //  CL_Display::fill_rect(CL_Rect(0, 0, get_width(), get_height()), CL_Color::lightgrey);
     //component border color
     CL_Display::draw_rect(client_to_screen(CL_Rect(0, 0, get_width(), get_height())), CL_Color::grey);
-    
-    
 
 }
 

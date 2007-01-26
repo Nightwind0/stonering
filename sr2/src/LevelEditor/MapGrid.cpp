@@ -19,7 +19,6 @@ MapGrid::MapGrid(CL_Component *parent, CL_GraphicContext *mgGC, TileSelector *TS
 
     set_size(get_parent()->get_width() - 20, get_parent()->get_height() - 50);
 
-
     mgScrollVert = new CL_ScrollBar(0, 0, false, get_parent());
     mgScrollVert->set_position(get_parent()->get_width() - 20, 40);
     mgScrollVert->set_width(20);
@@ -34,7 +33,6 @@ MapGrid::MapGrid(CL_Component *parent, CL_GraphicContext *mgGC, TileSelector *TS
 
     mgScrollVert->set_min_value(0);
     mgScrollHorz->set_min_value(0);
-
 
     mgScrollVert->set_max_value(0);
     mgScrollHorz->set_max_value(0);
