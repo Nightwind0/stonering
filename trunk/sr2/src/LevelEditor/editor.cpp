@@ -59,14 +59,14 @@ LevelFactory * EditorMain::getLevelFactory() const
         
 int EditorMain::getScreenWidth()const
 {
-    return 1024;
+    return 1000;
 
 }
 
 int EditorMain::getScreenHeight()const
 {
 
-    return 768;
+    return 600;
 
 }
 
