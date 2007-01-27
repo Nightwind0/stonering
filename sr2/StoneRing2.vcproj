@@ -142,7 +142,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(PROJECTDIR)/src/items/armor/&quot;;&quot;$(PROJECTDIR)/src/items/weapons/&quot;;&quot;$(PROJECTDIR)/src/level/actions/&quot;;&quot;$(PROJECTDIR)/src/level/checks/&quot;;&quot;$(PROJECTDIR)/src/&quot;;&quot;$(PROJECTDIR)/src/party&quot;;&quot;$(PROJECTDIR)/src/level&quot;;&quot;$(PROJECTDIR)/src/factories&quot;;&quot;$(PROJECTDIR)/src/items&quot;;&quot;$(PROJECTDIR)/src/abilities&quot;;&quot;$(PROJECTDIR)/src/states&quot;;&quot;$(PROJECTDIR)/src/character&quot;"
+				AdditionalIncludeDirectories="&quot;$(PROJECTDIR)/src/items/armor/&quot;;&quot;$(PROJECTDIR)/src/items/weapons/&quot;;&quot;$(PROJECTDIR)/src/level/actions/&quot;;&quot;$(PROJECTDIR)/src/level/checks/&quot;;&quot;$(PROJECTDIR)/src/&quot;;&quot;$(PROJECTDIR)/src/party&quot;;&quot;$(PROJECTDIR)/src/level&quot;;&quot;$(PROJECTDIR)/src/factories&quot;;&quot;$(PROJECTDIR)/src/items&quot;;&quot;$(PROJECTDIR)/src/abilities&quot;;&quot;$(PROJECTDIR)/src/states&quot;;&quot;$(PROJECTDIR)/src/character&quot;;&quot;$(PROJECTDIR)/src/core&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
