@@ -7,13 +7,10 @@ editor_SOURCES = editor.cpp\
 		 TileSelector.cpp \
 		 EditableLevel.cpp \
 		Infobar.cpp \
-		$(top_srcdir)/src/Element.cpp \
-		$(top_srcdir)/src/GraphicsManager.cpp \
-		$(top_srcdir)/src/Utilities.cpp \
-		$(top_srcdir)/src/Animation.cpp \
 		$(top_srcdir)/src/factories/LevelFactory.cpp \
 		$(top_srcdir)/src/factories/ItemFactory.cpp \
 		$(top_srcdir)/src/factories/AbilityFactory.cpp
+
 
 editor_LDADD = $(CLANLIB_LIBS) \
 		$(top_srcdir)/src/states/libstates.la \
@@ -22,7 +19,9 @@ editor_LDADD = $(CLANLIB_LIBS) \
 		$(top_srcdir)/src/items/libitems.la \
 		$(top_srcdir)/src/character/libcharacter.la \
 		$(top_srcdir)/src/abilities/libabilities.la \
-		$(top_srcdir)/src/steel/libsteel.la
+		$(top_srcdir)/src/steel/libsteel.la \
+		$(top_srcdir)/src/core/libcore.la
+
 
 
 INCLUDES =  	-I@top_srcdir@/src/ \
@@ -37,6 +36,7 @@ INCLUDES =  	-I@top_srcdir@/src/ \
 		-I@top_srcdir@/src/items/armor \
 		-I@top_srcdir@/src/character \
 		-I@top_srcdir@/src/abilities \
+		-I@top_srcdir@/src/core \
 		-I@top_srcdir@/src/steel
 
 

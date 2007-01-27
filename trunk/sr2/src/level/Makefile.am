@@ -68,5 +68,6 @@ INCLUDES = 	-I@top_srcdir@/src/ \
 		-I@top_srcdir@/src/level \
 		-I@top_srcdir@/src/level/actions \
 		-I@top_srcdir@/src/level/checks \
-		-I@top_srcdir@/src/character
+		-I@top_srcdir@/src/character \
+		-I@top_srcdir@/src/core/ 
 

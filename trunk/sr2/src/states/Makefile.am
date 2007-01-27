@@ -12,6 +12,7 @@ libstates_la_SOURCES =  \
 		State.h 
 
 INCLUDES = 	-I@top_srcdir@/src/ \
+		-I@top_srcdir@/src/core/ \
 		-I@top_srcdir@/src/level \
 		-I@top_srcdir@/src/level/actions \
 		-I@top_srcdir@/src/level/checks \

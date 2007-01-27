@@ -51,7 +51,7 @@ void Application::playScene(const std::string &animation)
     std::cout << "Playing scene " << animation << std::endl;
 #endif
 
-   
+       
 }
 
 void Application::playSound(const std::string &sound)
