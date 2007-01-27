@@ -390,8 +390,7 @@ int Application::main(int argc, char ** argv)
             run();
                 
 #ifndef NDEBUG
-        std::string foo;
-        std::getline(std::cin,foo);
+        console.display_close_message();
 #endif
 
                 
@@ -403,8 +402,7 @@ int Application::main(int argc, char ** argv)
         std::cerr << error.message.c_str() << std::endl;
 
 #ifndef NDEBUG
-        std::string foo;
-        std::cin >> foo;
+        console.display_close_message();
 #endif
         
     }
