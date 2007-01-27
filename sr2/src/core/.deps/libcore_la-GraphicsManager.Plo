@@ -1,0 +1,1291 @@
+libcore_la-GraphicsManager.lo libcore_la-GraphicsManager.o:  \
+ GraphicsManager.cpp ../../src/Application.h \
+  /usr/include/ClanLib-0.8/ClanLib/application.h \
+  /usr/include/ClanLib-0.8/ClanLib/Application/clanapp.h \
+  /usr/include/ClanLib-0.8/ClanLib/core.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/core_iostream.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/iosfwd \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/x86_64-redhat-linux/bits/c++config.h \
+  /usr/include/bits/wordsize.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/x86_64-redhat-linux/bits/os_defines.h \
+  /usr/include/features.h /usr/include/sys/cdefs.h \
+  /usr/include/gnu/stubs.h /usr/include/gnu/stubs-64.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/x86_64-redhat-linux/bits/cpu_defines.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/x86_64-redhat-linux/bits/c++locale.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/cstring \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/cstddef \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/include/stddef.h \
+  /usr/include/string.h /usr/include/xlocale.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/cstdio \
+  /usr/include/stdio.h /usr/include/bits/types.h \
+  /usr/include/bits/typesizes.h /usr/include/libio.h \
+  /usr/include/_G_config.h /usr/include/wchar.h /usr/include/bits/wchar.h \
+  /usr/include/gconv.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/include/stdarg.h \
+  /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
+  /usr/include/bits/stdio.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/clocale \
+  /usr/include/locale.h /usr/include/bits/locale.h \
+  /usr/include/langinfo.h /usr/include/nl_types.h /usr/include/iconv.h \
+  /usr/include/libintl.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/x86_64-redhat-linux/bits/c++io.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/x86_64-redhat-linux/bits/gthr.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/x86_64-redhat-linux/bits/gthr-default.h \
+  /usr/include/pthread.h /usr/include/sched.h /usr/include/time.h \
+  /usr/include/bits/sched.h /usr/include/bits/time.h \
+  /usr/include/signal.h /usr/include/bits/sigset.h \
+  /usr/include/bits/pthreadtypes.h /usr/include/bits/setjmp.h \
+  /usr/include/unistd.h /usr/include/bits/posix_opt.h \
+  /usr/include/bits/environments.h /usr/include/bits/confname.h \
+  /usr/include/getopt.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/cctype \
+  /usr/include/ctype.h /usr/include/endian.h /usr/include/bits/endian.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stringfwd.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/postypes.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/cwchar \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/ctime \
+  /usr/include/stdint.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/functexcept.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/exception_defines.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/cl_assert.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/command_line.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/string \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/char_traits.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_algobase.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/climits \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/include/limits.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/include/syslimits.h \
+  /usr/include/limits.h /usr/include/bits/posix1_lim.h \
+  /usr/include/bits/local_lim.h /usr/include/linux/limits.h \
+  /usr/include/bits/posix2_lim.h /usr/include/bits/xopen_lim.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/cstdlib \
+  /usr/include/stdlib.h /usr/include/bits/waitflags.h \
+  /usr/include/bits/waitstatus.h /usr/include/sys/types.h \
+  /usr/include/sys/select.h /usr/include/bits/select.h \
+  /usr/include/sys/sysmacros.h /usr/include/alloca.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_pair.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/cpp_type_traits.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_iterator_base_types.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_iterator_base_funcs.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/concept_check.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_iterator.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/debug/debug.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/memory \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/allocator.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/x86_64-redhat-linux/bits/c++allocator.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/ext/new_allocator.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/new \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/exception \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_construct.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_uninitialized.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_raw_storage_iter.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/limits \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_function.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/basic_string.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/atomicity.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/x86_64-redhat-linux/bits/atomic_word.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/algorithm \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_algo.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_heap.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_tempbuf.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/basic_string.tcc \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/vector \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_vector.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_bvector.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/vector.tcc \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/setupcore.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/keep_alive.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/thread.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/system.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/error.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/thread.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/threadfunc_v0.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/threadfunc_v1.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/threadfunc_v2.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/mutex.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/clanstring.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/sstream \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/istream \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/ios \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/localefwd.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/ios_base.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/locale_classes.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/streambuf \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/streambuf.tcc \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/basic_ios.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/streambuf_iterator.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/locale_facets.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/cwctype \
+  /usr/include/wctype.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/x86_64-redhat-linux/bits/ctype_base.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/x86_64-redhat-linux/bits/ctype_inline.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/codecvt.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/x86_64-redhat-linux/bits/time_members.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/x86_64-redhat-linux/bits/messages_members.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/basic_ios.tcc \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/istream.tcc \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/locale \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/locale_facets.tcc \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/typeinfo \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/ostream \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/ostream.tcc \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/sstream.tcc \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/timer.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/keep_alive.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/../../signals.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/slot.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/signal_v0.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/signal.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/slot.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/slot_v0.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/slot_generic.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/list \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_list.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/list.tcc \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/signal_v1.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/slot_v1.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/signal_v2.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/slot_v2.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/signal_v3.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/slot_v3.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/signal_v4.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/slot_v4.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/signal_v5.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/slot_v5.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/slotbuffer_v0.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/signal_v0.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/slotbuffer_v1.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/slot_container.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/signal_v1.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/signal_v2.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/signal_v3.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/signal_v4.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/signal_v5.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/event_listener.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/event_trigger.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/sharedptr.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/console_window.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/log.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/clanstring.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/cl_library.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/map \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_tree.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_map.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_multimap.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/functional \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/error.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/crash_reporter.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/call_stack.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/call_stack.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/clonable.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/lazycopyptr.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/owningptr.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/sharedptr.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/weakptr.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/mutexsharedptr.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/mutex.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/System/mutexweakptr.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/IOData/datatypes.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/IOData/cl_endian.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/IOData/inputsource.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/IOData/datatypes.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/IOData/inputsource_file.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/IOData/inputsource.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/stack \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/deque \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_deque.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/deque.tcc \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_stack.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/IOData/inputsource_memory.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/IOData/inputsource_provider.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/IOData/inputsource_provider_file.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/IOData/inputsource_provider.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/IOData/outputsource.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/IOData/outputsource_file.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/IOData/outputsource.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/IOData/outputsource_memory.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/IOData/outputsource_provider.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/IOData/directory_scanner.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/IOData/../System/sharedptr.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/IOData/directory.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/IOData/zip_archive.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/IOData/zip_file_entry.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/IOData/zip_file_entry.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Resources/resource_manager.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Resources/../System/sharedptr.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Resources/../../signals.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Resources/resource.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Resources/../XML/dom_element.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Resources/../XML/dom_node.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Resources/../XML/../System/sharedptr.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Resources/resourcetype_boolean.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Resources/resourcedata.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Resources/resource.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Resources/resource_manager.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Resources/../System/error.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Resources/resourcetype_integer.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Resources/resourcetype_float.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Resources/resourcetype_string.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Resources/resourcetype_raw.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Resources/../IOData/inputsource_memory.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Math/matrix4x4.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Math/cl_vector.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/iostream \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Math/vector2.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Math/vector2.inl \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Math/math.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/cmath \
+  /usr/include/math.h /usr/include/bits/huge_val.h \
+  /usr/include/bits/huge_valf.h /usr/include/bits/huge_vall.h \
+  /usr/include/bits/inf.h /usr/include/bits/nan.h \
+  /usr/include/bits/mathdef.h /usr/include/bits/mathcalls.h \
+  /usr/include/bits/mathinline.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/cmath.tcc \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Math/line_math.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Math/point.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Math/math.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Math/triangle_math.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Math/rect.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Math/size.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Math/origin.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Math/quad.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Math/rect.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Math/size.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Math/point.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Math/number_pool.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/set \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_set.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_multiset.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Math/delauney_triangulator.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Math/../System/sharedptr.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/Math/outline_triangulator.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/XML/xml_token.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/XML/xml_tokenizer.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/XML/../System/sharedptr.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/XML/xml_writer.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_attr.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_node.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_cdata_section.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_text.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_character_data.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_character_data.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_comment.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_document.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_document_fragment.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_document_type.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_element.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_entity.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_entity_reference.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_exception.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/XML/../System/error.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_implementation.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_named_node_map.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_node.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_node_list.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_notation.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_processing_instruction.h \
+  /usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_text.h \
+  /usr/include/ClanLib-0.8/ClanLib/display.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/blend_func.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/color.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/display.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/color.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/gradient.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/../signals.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/../Core/Math/rect.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/../Core/Math/quad.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/../Core/Math/size.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/../Core/Math/point.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/../Core/Math/matrix4x4.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/display_iostream.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/display_mode.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/display_window.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/display_window_description.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/../Core/System/sharedptr.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/font.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/utility \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_relops.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/../Core/Math/origin.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/blend_func.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/../Core/Resources/resource.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/../Core/System/lazycopyptr.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/../Core/System/clonable.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/frameratecounter.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/../Core/System/keep_alive.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/glyph_buffer.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/font.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/gradient.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/graphic_context.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/stencil_func.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/pixel_buffer.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/input_buffer.h \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/queue \
+  /usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_queue.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/input_event.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/input_device.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/input_button.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/key_binding.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/input_context.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/input_device.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/input_event.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/joystick.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/key_binding.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/keyboard.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/keys.h \
+  /usr/include/X11/keysym.h /usr/include/X11/keysymdef.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/mouse.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/palette.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/pixel_buffer.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/pixel_format.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/pixel_format_type.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/pixel_format_type.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/rle_surface.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/setupdisplay.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/sprite.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/surface.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/sprite_description.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/sprite_packer.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/surface.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/canvas.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/text_styler.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/glyph_buffer.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/Providers/jpeg_provider.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/Providers/../pixel_buffer.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/Providers/pcx_provider.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/Providers/png_provider.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/Providers/targa_provider.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/Providers/provider_factory.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/Providers/provider_type.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/Providers/../../Core/System/error.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/Collision/collision_outline.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/Collision/contour.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/Collision/outline_circle.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/Collision/../../Core/Math/point.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/Collision/outline_accuracy.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/Collision/../../Core/Resources/resource.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/Collision/../../Core/Math/origin.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/Collision/../../Core/Math/circle.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/Collision/../../GL/opengl_wrap.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/Collision/../../GL/opengl.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/Collision/../../GL/../Display/pixel_format.h \
+  /usr/include/ClanLib-0.8/ClanLib/Display/Collision/outline_accuracy.h \
+  ../../src/party/Party.h ../../src/items/Item.h sr_defines.h Element.h \
+  sr_defines.h ../../src/items/ItemRef.h ../../src/party/IParty.h \
+  ../../src/character/Character.h sr_defines.h sr_defines.h \
+  IApplication.h IParty.h ../../src/factories/AbilityFactory.h \
+  ../../src/factories/IFactory.h Element.h \
+  ../../src/abilities/AbilityManager.h ../../src/abilities/Spell.h \
+  Element.h ../../src/abilities/Effect.h ../../src/abilities/Skill.h \
+  ../../src/character/Character.h ../../src/character/CharacterClass.h \
+  Element.h ../../src/abilities/Effect.h ../../src/character/Character.h \
+  ../../src/items/Item.h ../../src/items/ItemManager.h \
+  ../../src/items/Item.h ../../src/level/Level.h IApplication.h \
+  ../../src/items/Item.h ../../src/items/ItemRef.h sr_defines.h \
+  ../../src/abilities/Effect.h ../../src/level/MappableObject.h \
+  ../../src/level/Graphic.h Element.h ../../src/level/Event.h \
+  ../../src/level/Condition.h ../../src/level/Check.h \
+  ../../src/items/Equipment.h AppUtils.h ../../src/states/MapState.h \
+  ../../src/states/State.h ../../src/level/Level.h sr_defines.h \
+  ../../src/states/SayState.h ../../src/states/State.h GraphicsManager.h
+
+../../src/Application.h:
+
+/usr/include/ClanLib-0.8/ClanLib/application.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Application/clanapp.h:
+
+/usr/include/ClanLib-0.8/ClanLib/core.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/core_iostream.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/iosfwd:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/x86_64-redhat-linux/bits/c++config.h:
+
+/usr/include/bits/wordsize.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/x86_64-redhat-linux/bits/os_defines.h:
+
+/usr/include/features.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/gnu/stubs.h:
+
+/usr/include/gnu/stubs-64.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/x86_64-redhat-linux/bits/cpu_defines.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/x86_64-redhat-linux/bits/c++locale.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/cstring:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/cstddef:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/include/stddef.h:
+
+/usr/include/string.h:
+
+/usr/include/xlocale.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/cstdio:
+
+/usr/include/stdio.h:
+
+/usr/include/bits/types.h:
+
+/usr/include/bits/typesizes.h:
+
+/usr/include/libio.h:
+
+/usr/include/_G_config.h:
+
+/usr/include/wchar.h:
+
+/usr/include/bits/wchar.h:
+
+/usr/include/gconv.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/include/stdarg.h:
+
+/usr/include/bits/stdio_lim.h:
+
+/usr/include/bits/sys_errlist.h:
+
+/usr/include/bits/stdio.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/clocale:
+
+/usr/include/locale.h:
+
+/usr/include/bits/locale.h:
+
+/usr/include/langinfo.h:
+
+/usr/include/nl_types.h:
+
+/usr/include/iconv.h:
+
+/usr/include/libintl.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/x86_64-redhat-linux/bits/c++io.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/x86_64-redhat-linux/bits/gthr.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/x86_64-redhat-linux/bits/gthr-default.h:
+
+/usr/include/pthread.h:
+
+/usr/include/sched.h:
+
+/usr/include/time.h:
+
+/usr/include/bits/sched.h:
+
+/usr/include/bits/time.h:
+
+/usr/include/signal.h:
+
+/usr/include/bits/sigset.h:
+
+/usr/include/bits/pthreadtypes.h:
+
+/usr/include/bits/setjmp.h:
+
+/usr/include/unistd.h:
+
+/usr/include/bits/posix_opt.h:
+
+/usr/include/bits/environments.h:
+
+/usr/include/bits/confname.h:
+
+/usr/include/getopt.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/cctype:
+
+/usr/include/ctype.h:
+
+/usr/include/endian.h:
+
+/usr/include/bits/endian.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stringfwd.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/postypes.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/cwchar:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/ctime:
+
+/usr/include/stdint.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/functexcept.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/exception_defines.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/cl_assert.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/command_line.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/string:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/char_traits.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_algobase.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/climits:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/include/limits.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/include/syslimits.h:
+
+/usr/include/limits.h:
+
+/usr/include/bits/posix1_lim.h:
+
+/usr/include/bits/local_lim.h:
+
+/usr/include/linux/limits.h:
+
+/usr/include/bits/posix2_lim.h:
+
+/usr/include/bits/xopen_lim.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/cstdlib:
+
+/usr/include/stdlib.h:
+
+/usr/include/bits/waitflags.h:
+
+/usr/include/bits/waitstatus.h:
+
+/usr/include/sys/types.h:
+
+/usr/include/sys/select.h:
+
+/usr/include/bits/select.h:
+
+/usr/include/sys/sysmacros.h:
+
+/usr/include/alloca.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_pair.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/cpp_type_traits.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_iterator_base_types.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_iterator_base_funcs.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/concept_check.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_iterator.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/debug/debug.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/memory:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/allocator.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/x86_64-redhat-linux/bits/c++allocator.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/ext/new_allocator.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/new:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/exception:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_construct.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_uninitialized.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_raw_storage_iter.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/limits:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_function.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/basic_string.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/atomicity.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/x86_64-redhat-linux/bits/atomic_word.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/algorithm:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_algo.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_heap.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_tempbuf.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/basic_string.tcc:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/vector:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_vector.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_bvector.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/vector.tcc:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/setupcore.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/keep_alive.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/thread.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/system.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/error.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/thread.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/threadfunc_v0.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/threadfunc_v1.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/threadfunc_v2.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/mutex.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/clanstring.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/sstream:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/istream:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/ios:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/localefwd.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/ios_base.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/locale_classes.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/streambuf:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/streambuf.tcc:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/basic_ios.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/streambuf_iterator.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/locale_facets.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/cwctype:
+
+/usr/include/wctype.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/x86_64-redhat-linux/bits/ctype_base.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/x86_64-redhat-linux/bits/ctype_inline.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/codecvt.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/x86_64-redhat-linux/bits/time_members.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/x86_64-redhat-linux/bits/messages_members.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/basic_ios.tcc:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/istream.tcc:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/locale:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/locale_facets.tcc:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/typeinfo:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/ostream:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/ostream.tcc:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/sstream.tcc:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/timer.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/keep_alive.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/../../signals.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/slot.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/signal_v0.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/signal.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/slot.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/slot_v0.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/slot_generic.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/list:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_list.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/list.tcc:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/signal_v1.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/slot_v1.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/signal_v2.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/slot_v2.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/signal_v3.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/slot_v3.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/signal_v4.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/slot_v4.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/signal_v5.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/slot_v5.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/slotbuffer_v0.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/signal_v0.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/slotbuffer_v1.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/slot_container.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/signal_v1.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/signal_v2.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/signal_v3.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/signal_v4.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/../../Signals/signal_v5.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/event_listener.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/event_trigger.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/sharedptr.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/console_window.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/log.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/clanstring.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/cl_library.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/map:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_tree.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_map.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_multimap.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/functional:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/error.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/crash_reporter.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/call_stack.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/call_stack.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/clonable.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/lazycopyptr.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/owningptr.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/sharedptr.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/weakptr.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/mutexsharedptr.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/mutex.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/System/mutexweakptr.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/IOData/datatypes.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/IOData/cl_endian.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/IOData/inputsource.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/IOData/datatypes.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/IOData/inputsource_file.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/IOData/inputsource.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/stack:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/deque:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_deque.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/deque.tcc:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_stack.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/IOData/inputsource_memory.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/IOData/inputsource_provider.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/IOData/inputsource_provider_file.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/IOData/inputsource_provider.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/IOData/outputsource.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/IOData/outputsource_file.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/IOData/outputsource.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/IOData/outputsource_memory.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/IOData/outputsource_provider.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/IOData/directory_scanner.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/IOData/../System/sharedptr.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/IOData/directory.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/IOData/zip_archive.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/IOData/zip_file_entry.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/IOData/zip_file_entry.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Resources/resource_manager.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Resources/../System/sharedptr.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Resources/../../signals.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Resources/resource.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Resources/../XML/dom_element.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Resources/../XML/dom_node.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Resources/../XML/../System/sharedptr.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Resources/resourcetype_boolean.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Resources/resourcedata.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Resources/resource.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Resources/resource_manager.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Resources/../System/error.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Resources/resourcetype_integer.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Resources/resourcetype_float.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Resources/resourcetype_string.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Resources/resourcetype_raw.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Resources/../IOData/inputsource_memory.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Math/matrix4x4.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Math/cl_vector.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/iostream:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Math/vector2.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Math/vector2.inl:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Math/math.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/cmath:
+
+/usr/include/math.h:
+
+/usr/include/bits/huge_val.h:
+
+/usr/include/bits/huge_valf.h:
+
+/usr/include/bits/huge_vall.h:
+
+/usr/include/bits/inf.h:
+
+/usr/include/bits/nan.h:
+
+/usr/include/bits/mathdef.h:
+
+/usr/include/bits/mathcalls.h:
+
+/usr/include/bits/mathinline.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/cmath.tcc:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Math/line_math.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Math/point.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Math/math.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Math/triangle_math.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Math/rect.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Math/size.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Math/origin.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Math/quad.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Math/rect.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Math/size.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Math/point.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Math/number_pool.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/set:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_set.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_multiset.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Math/delauney_triangulator.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Math/../System/sharedptr.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/Math/outline_triangulator.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/XML/xml_token.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/XML/xml_tokenizer.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/XML/../System/sharedptr.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/XML/xml_writer.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_attr.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_node.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_cdata_section.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_text.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_character_data.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_character_data.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_comment.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_document.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_document_fragment.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_document_type.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_element.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_entity.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_entity_reference.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_exception.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/XML/../System/error.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_implementation.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_named_node_map.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_node.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_node_list.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_notation.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_processing_instruction.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Core/XML/dom_text.h:
+
+/usr/include/ClanLib-0.8/ClanLib/display.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/blend_func.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/color.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/display.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/color.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/gradient.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/../signals.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/../Core/Math/rect.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/../Core/Math/quad.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/../Core/Math/size.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/../Core/Math/point.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/../Core/Math/matrix4x4.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/display_iostream.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/display_mode.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/display_window.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/display_window_description.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/../Core/System/sharedptr.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/font.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/utility:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_relops.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/../Core/Math/origin.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/blend_func.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/../Core/Resources/resource.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/../Core/System/lazycopyptr.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/../Core/System/clonable.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/frameratecounter.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/../Core/System/keep_alive.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/glyph_buffer.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/font.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/gradient.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/graphic_context.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/stencil_func.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/pixel_buffer.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/input_buffer.h:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/queue:
+
+/usr/lib/gcc/x86_64-redhat-linux/4.1.1/../../../../include/c++/4.1.1/bits/stl_queue.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/input_event.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/input_device.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/input_button.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/key_binding.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/input_context.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/input_device.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/input_event.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/joystick.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/key_binding.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/keyboard.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/keys.h:
+
+/usr/include/X11/keysym.h:
+
+/usr/include/X11/keysymdef.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/mouse.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/palette.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/pixel_buffer.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/pixel_format.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/pixel_format_type.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/pixel_format_type.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/rle_surface.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/setupdisplay.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/sprite.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/surface.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/sprite_description.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/sprite_packer.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/surface.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/canvas.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/text_styler.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/glyph_buffer.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/Providers/jpeg_provider.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/Providers/../pixel_buffer.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/Providers/pcx_provider.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/Providers/png_provider.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/Providers/targa_provider.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/Providers/provider_factory.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/Providers/provider_type.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/Providers/../../Core/System/error.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/Collision/collision_outline.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/Collision/contour.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/Collision/outline_circle.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/Collision/../../Core/Math/point.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/Collision/outline_accuracy.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/Collision/../../Core/Resources/resource.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/Collision/../../Core/Math/origin.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/Collision/../../Core/Math/circle.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/Collision/../../GL/opengl_wrap.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/Collision/../../GL/opengl.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/Collision/../../GL/../Display/pixel_format.h:
+
+/usr/include/ClanLib-0.8/ClanLib/Display/Collision/outline_accuracy.h:
+
+../../src/party/Party.h:
+
+../../src/items/Item.h:
+
+sr_defines.h:
+
+Element.h:
+
+sr_defines.h:
+
+../../src/items/ItemRef.h:
+
+../../src/party/IParty.h:
+
+../../src/character/Character.h:
+
+sr_defines.h:
+
+sr_defines.h:
+
+IApplication.h:
+
+IParty.h:
+
+../../src/factories/AbilityFactory.h:
+
+../../src/factories/IFactory.h:
+
+Element.h:
+
+../../src/abilities/AbilityManager.h:
+
+../../src/abilities/Spell.h:
+
+Element.h:
+
+../../src/abilities/Effect.h:
+
+../../src/abilities/Skill.h:
+
+../../src/character/Character.h:
+
+../../src/character/CharacterClass.h:
+
+Element.h:
+
+../../src/abilities/Effect.h:
+
+../../src/character/Character.h:
+
+../../src/items/Item.h:
+
+../../src/items/ItemManager.h:
+
+../../src/items/Item.h:
+
+../../src/level/Level.h:
+
+IApplication.h:
+
+../../src/items/Item.h:
+
+../../src/items/ItemRef.h:
+
+sr_defines.h:
+
+../../src/abilities/Effect.h:
+
+../../src/level/MappableObject.h:
+
+../../src/level/Graphic.h:
+
+Element.h:
+
+../../src/level/Event.h:
+
+../../src/level/Condition.h:
+
+../../src/level/Check.h:
+
+../../src/items/Equipment.h:
+
+AppUtils.h:
+
+../../src/states/MapState.h:
+
+../../src/states/State.h:
+
+../../src/level/Level.h:
+
+sr_defines.h:
+
+../../src/states/SayState.h:
+
+../../src/states/State.h:
+
+GraphicsManager.h:

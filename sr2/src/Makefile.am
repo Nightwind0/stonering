@@ -1,12 +1,9 @@
-SUBDIRS = abilities character factories items level party states steel LevelEditor
+SUBDIRS = core abilities character factories items level party states steel LevelEditor 
 
 bin_PROGRAMS = stonering
 
-stonering_SOURCES =	Application.cpp \
-			Animation.cpp \
-			Element.cpp \
-			GraphicsManager.cpp \
-			Utilities.cpp
+
+stonering_SOURCES =	Application.cpp 
 
 
 stonering_LDADD = $(CLANLIB_LIBS) \
@@ -17,13 +14,17 @@ stonering_LDADD = $(CLANLIB_LIBS) \
 			@top_srcdir@/src/level/liblevel.la \
 			@top_srcdir@/src/party/libparty.la \
 			@top_srcdir@/src/states/libstates.la \
+			@top_srcdir@/src/core/libcore.la \
 			@top_srcdir@/src/steel/libsteel.la	
+
 
 stonering_CPPFLAGS = $(CLANLIB_CFLAGS) \
 			$(CPPFLAGS)
 stonering_CFLAGS = $(CLANLIB_CFLAGS) 
 
-INCLUDES =  -I@top_srcdir@/src/states/ \
+INCLUDES = \
+		-I@top_srcdir@/src/states/ \
+		-I@top_srcdir@/src/core/ \
 		-I@top_srcdir@/src/level/  \
 		-I@top_srcdir@/src/level/actions  \
 		-I@top_srcdir@/src/level/checks  \
