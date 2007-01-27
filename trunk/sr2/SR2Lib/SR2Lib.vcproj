@@ -151,7 +151,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\AppUtils.cpp"
+				RelativePath="..\src\AppUtils.cpp"
 				>
 			</File>
 			<File
