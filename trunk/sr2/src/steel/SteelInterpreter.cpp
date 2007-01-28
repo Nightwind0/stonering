@@ -49,6 +49,7 @@ AstScript * SteelInterpreter::prebuildAst(const std::string &script_name,
 
         if( pAst != NULL)
         {
+            m_parser.ClearAcceptedToken();
             throw SteelException(SteelException::PARSING,
                                  pAst->GetLine(),
                                  pAst->GetScript(),
@@ -62,6 +63,7 @@ AstScript * SteelInterpreter::prebuildAst(const std::string &script_name,
     }
 
     AstScript *pScript = static_cast<AstScript*>( m_parser.GetAcceptedToken() );
+    m_parser.ClearAcceptedToken();
     return pScript;
 }
 
@@ -82,6 +84,7 @@ SteelType SteelInterpreter::run(const std::string &name,const std::string &scrip
 
         if( pAst != NULL)
         {
+            m_parser.ClearAcceptedToken();
             throw SteelException(SteelException::PARSING,
                                  pAst->GetLine(),
                                  pAst->GetScript(),
@@ -103,6 +106,8 @@ SteelType SteelInterpreter::run(const std::string &name,const std::string &scrip
     pScript->executeScript(this);
     
     delete pScript;
+
+    m_parser.ClearAcceptedToken();
 
     return getReturn();
 }

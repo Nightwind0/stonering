@@ -6,7 +6,9 @@
 	<skill bp="1.0" name="Wind Slash" sp="50"	>
 		<animation name="WindSlash" type="battle">
 			<par duration="3">
-				<script id = "playSound">playSound("WindSlash");<script>
+				<script id = "playSound">
+playSound("WindSlash");
+</script>
 				<animationSpriteRef initialFocus="caster" movementDirection="toTarget">WindSlash</animationSpriteRef>
 			</par>		
 		</animation>

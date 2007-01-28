@@ -1,5 +1,6 @@
 #include "ScriptElement.h"
 #include "IApplication.h"
+#include "Ast.h"
 
 using StoneRing::ScriptElement;
 using StoneRing::Element;
@@ -47,7 +48,6 @@ void ScriptElement::loadAttributes(CL_DomNamedNodeMap *pAttr)
 void ScriptElement::handleText(const std::string &text)
 {
     IApplication *pApp = IApplication::getInstance();
-
     mpScript = pApp->loadScript(mId, text);
     mId.clear(); // The script will remember it.. I don't want to.
 }
