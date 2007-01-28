@@ -91,7 +91,6 @@ namespace StoneRing
             EWEAPONTYPEEXCLUSIONLIST,
             EWEAPONTYPEREF,
             EWEAPONTYPESPRITE,
-
             __END_OF_ELEMENTS__
         };
 
