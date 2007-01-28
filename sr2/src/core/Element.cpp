@@ -299,7 +299,7 @@ void Element::load(CL_DomElement * pDomElement)
                 {
                     pElement = pFactory->createElement(element);
 #ifndef NDEBUG
-                    if(pElement->whichElement() == element)
+                    if(pElement->whichElement() != element)
                         std::cerr << "WARNING THIS ELEMENT IS WEIRD." << std::endl;
 #endif
                     //  cl_assert ( pElement->whichElement() == element );
