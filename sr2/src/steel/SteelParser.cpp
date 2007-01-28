@@ -1,4 +1,4 @@
-#include "SteelParser.hpp"
+#include "SteelParser.h"
 
 #include <cassert>
 #include <cstdio>
