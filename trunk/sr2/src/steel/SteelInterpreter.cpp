@@ -39,38 +39,72 @@ void SteelInterpreter::addFunction(const std::string &name,
     m_functions[name] = pFunc;
 }
 
-void SteelInterpreter::run(const std::string &name,const std::string &script)
+AstScript * SteelInterpreter::prebuildAst(const std::string &script_name,
+                                          const std::string &script)
 {
-    SteelParser parser;
-    parser.setBuffer(script.c_str(),name);
-    if(parser.Parse() != SteelParser::PRC_SUCCESS)
+    m_parser.setBuffer(script.c_str(),script_name);
+    if(m_parser.Parse() != SteelParser::PRC_SUCCESS)
     {
-        AstBase * pAst = static_cast<AstBase*>( parser.GetAcceptedToken() );
+        AstBase * pAst = static_cast<AstBase*>( m_parser.GetAcceptedToken() );
 
         if( pAst != NULL)
         {
             throw SteelException(SteelException::PARSING,
                                  pAst->GetLine(),
                                  pAst->GetScript(),
-                                 "Parse error.");
+                                 "Syntax error.");
+        }
+        else
+        {
+            return NULL;
+        }
+                 
+    }
+
+    AstScript *pScript = static_cast<AstScript*>( m_parser.GetAcceptedToken() );
+    return pScript;
+}
+
+SteelType SteelInterpreter::runAst( AstScript *pScript )
+{
+    assert ( NULL != pScript );
+    pScript->executeScript(this);
+
+    return getReturn();
+}
+
+SteelType SteelInterpreter::run(const std::string &name,const std::string &script)
+{
+    m_parser.setBuffer(script.c_str(),name);
+    if(m_parser.Parse() != SteelParser::PRC_SUCCESS)
+    {
+        AstBase * pAst = static_cast<AstBase*>( m_parser.GetAcceptedToken() );
+
+        if( pAst != NULL)
+        {
+            throw SteelException(SteelException::PARSING,
+                                 pAst->GetLine(),
+                                 pAst->GetScript(),
+                                 "Syntax error.");
         }
         else
         {
             // Apparently, there was nothing there. 
             // Which should be legal.
             // And theres nothing to delete. So. I think we're done here.
-            return;
+            return SteelType();
                  
         }
                  
     }
 
-    AstScript *pScript = static_cast<AstScript*>( parser.GetAcceptedToken() );
-
+    AstScript *pScript = static_cast<AstScript*>( m_parser.GetAcceptedToken() );
 
     pScript->executeScript(this);
     
     delete pScript;
+
+    return getReturn();
 }
 
 SteelType SteelInterpreter::call(const std::string &name, const std::vector<SteelType> &pList)
