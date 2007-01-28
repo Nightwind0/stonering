@@ -14,6 +14,7 @@ INCLUDES = 	-I@top_srcdir@/src/ \
 		-I@top_srcdir@/src/factories \
 		-I@top_srcdir@/src/items \
 		-I@top_srcdir@/src/character \
+		-I@top_srcdir@/src/steel \
 		-I@top_srcdir@/src/core
 
 

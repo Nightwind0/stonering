@@ -24,7 +24,6 @@ using StoneRing::Element;
 // MUST be alphabetized.
 const char * StoneRing::Element::pszElementNames[Element::__END_OF_ELEMENTS__] = 
 {
-    "and",//        AND,
     "animation",//          ANIMATION,
     "animationDefinition",
     "animationSpriteRef",
@@ -66,6 +65,7 @@ const char * StoneRing::Element::pszElementNames[Element::__END_OF_ELEMENTS__] =
     "regularItem",//        REGULARITEM,
     "rune",//       RUNE,
     "runeType",//           RUNETYPE,
+    "script",
     "skill",
     "skillRef",
     "specialItem",//        SPECIALITEM,
@@ -77,7 +77,7 @@ const char * StoneRing::Element::pszElementNames[Element::__END_OF_ELEMENTS__] =
     "statusEffectActions",//        STATUSEFFECTACTIONS,
     "statusEffectModifier",//       STATUSEFFECTMODIFIER,
     "systemItem",//         SYSTEMITEM,
-     "tile",//       TILE,
+    "tile",//       TILE,
     "tilemap",//            TILEMAP,
     "uniqueArmor",//        UNIQUEARMOR,
     "uniqueWeapon",//       UNIQUEWEAPON,
@@ -251,9 +251,10 @@ void Element::load(CL_DomElement * pDomElement)
     factories.push_back(IApplication::getInstance()->getAbilityFactory());
     factories.push_back(IApplication::getInstance()->getLevelFactory());
     factories.push_back(IApplication::getInstance()->getCharacterFactory());
+    CL_DomNamedNodeMap attributes = pDomElement->get_attributes();
 
                 
-    loadAttributes(&pDomElement->get_attributes());
+    loadAttributes(&attributes);
 
     CL_DomNode childNode = pDomElement->get_first_child(); //.to_element();  
     CL_DomElement child;
@@ -307,7 +308,7 @@ void Element::load(CL_DomElement * pDomElement)
                                         
             }
                         
-            cl_assert ( pElement );
+            cl_assert ( pElement && "No factory wants to make this element." );
 
             pElement->load( &child );
 
