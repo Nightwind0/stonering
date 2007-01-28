@@ -28,6 +28,9 @@ namespace StoneRing{
         virtual void giveItem(ItemRef * pItemRef, uint count =1);
         virtual void takeItem(ItemRef * pItemRef, uint count =1);
         virtual void giveGold(int amount);
+        virtual bool hasItem(Item *pItem, uint count) const;
+        virtual bool giveItem(Item *pItem, uint count);
+        virtual bool takeItem(Item *pItem, uint count);
 
         // ICharacterGroup interface
         virtual uint getCharacterCount() const ;

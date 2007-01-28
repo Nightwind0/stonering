@@ -97,7 +97,6 @@ void AppUtils::loadItems(const std::string &filename)
 #ifndef NDEBUG
     std::cout << "Loading items..." << std::endl;
 #endif    
-
   
     CL_InputSource_File file(filename);
 
@@ -113,8 +112,10 @@ StoneRing::AbilityManager * AppUtils::getAbilityManager()
 {
     IApplication *pApp = IApplication::getInstance();
     assert ( NULL != pApp );
+    AbilityManager * pMgr = pApp->getAbilityManager();
+    assert ( NULL != pMgr );
 
-    return pApp->getAbilityManager();
+    return pMgr;
 }
 
 StoneRing::ItemManager * AppUtils::getItemManager()

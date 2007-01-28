@@ -29,7 +29,7 @@ public:
                             const std::string &script);
 
     // After using prebuildAst, you can later run it using runAst
-    SteelType runAst( AstScript *pAst );
+    SteelType runAst(AstScript *pAst );
     SteelType run(const std::string &name,const std::string &script);
 
     SteelType lookup(const std::string &name);

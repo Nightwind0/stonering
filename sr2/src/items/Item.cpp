@@ -4,8 +4,6 @@
 #include "ItemManager.h"
 #include "ItemFactory.h"
 #include "CharacterDefinition.h"
-#include "Action.h"
-
 
 
 using namespace StoneRing;

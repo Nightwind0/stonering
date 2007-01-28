@@ -1,14 +1,13 @@
 #ifndef SR_ATTRIBUTE_MODIFIER_H
 #define SR_ATTRIBUTE_MODIFIER_H
 
-#include "Action.h"
 #include "Element.h"
 
 namespace StoneRing{
 
-    class Condition;
+    class ScriptElement;
 
-    class AttributeModifier : public Action, public Element
+    class AttributeModifier : public Element
     {
     public:
         AttributeModifier();
@@ -27,7 +26,7 @@ namespace StoneRing{
     protected:
         virtual bool handleElement(eElement element, Element * pElement );      
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-        std::list<Condition*> mConditions;
+        ScriptElement* mpCondition;
         int mAdd;
         float mfMultiplier;
         uint mnAttribute;

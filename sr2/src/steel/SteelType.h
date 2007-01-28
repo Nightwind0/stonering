@@ -22,6 +22,7 @@ public:
     ~SteelType();
 
     operator int () const;
+    operator unsigned int() const { return static_cast<unsigned int>( (int)(*this) ); }
     operator double () const;
     operator std::string () const;
     operator bool () const;

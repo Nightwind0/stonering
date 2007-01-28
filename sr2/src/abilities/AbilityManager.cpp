@@ -1,6 +1,7 @@
 #include "AbilityManager.h"
 #include "Spell.h"
 #include <ClanLib/core.h>
+#include <cassert>
 #include "AbilityFactory.h"
 #include "CharacterFactory.h"
 #include "IApplication.h"
@@ -56,6 +57,7 @@ void AbilityManager::loadSkillFile ( CL_DomDocument &doc )
 void AbilityManager::loadStatusEffectFile ( CL_DomDocument &doc )
 {
     AbilityFactory * pAbilityFactory = IApplication::getInstance()->getAbilityFactory();
+    assert ( pAbilityFactory );
 
     CL_DomElement statusEffectsNode = doc.named_item("statusEffectList").to_element();
 

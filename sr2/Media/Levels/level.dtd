@@ -2,37 +2,19 @@
 <!ELEMENT levelHeader EMPTY>
 <!ELEMENT tiles (tile+)>
 <!ELEMENT mappableObjects (mo+)>
-<!ELEMENT tile ((tilemap | spriteRef),condition?, attributeModifier?, directionBlock?)>
+<!ELEMENT tile ((tilemap | spriteRef),conditionScript?, onStep?, directionBlock?)>
 <!ELEMENT tilemap EMPTY>
 <!ELEMENT directionBlock EMPTY>
 <!ELEMENT spriteRef (#PCDATA)>
-<!ELEMENT condition ((operator|hasGold|hasItem|didEvent)*)>
-<!ELEMENT attributeModifier (condition*)>
-<!ELEMENT operator ((and | or)*)>
-<!ELEMENT and ((hasGold|hasItem|didEvent|operator)*)>
-<!ELEMENT or ((hasGold|hasItem|didEvent|operator)*)>
-<!ELEMENT hasGold (#PCDATA)>
-<!ELEMENT hasItem (itemRef)>
+<!ELEMENT script (#PCDATA)>
+<!ELEMENT conditionScript (#PCDATA)>
+<!ELEMENT onStep (script)>
+<!ELEMENT attributeModifier (conditionScript?)>
 <!ELEMENT itemRef (namedItemRef|weaponRef|armorRef)>
 <!ELEMENT namedItemRef (#PCDATA)>
-<!ELEMENT didEvent (#PCDATA)>
-<!ELEMENT mo ((tilemap|spriteRef*)?,condition?, event*, movement?)>
-<!ELEMENT event (condition?,(attributeModifier | say | give | take | playScene | playSound | loadLevel | startBattle | pause | invokeShop | giveGold | choice | pop | addCharacter | removeCharacter)*)>
-<!ELEMENT say (#PCDATA)>
-<!ELEMENT give (itemRef)> <!-- Note: This CHANGED! -->
-<!ELEMENT take (itemRef)> <!-- Note: This CHANGED! -->
-<!ELEMENT giveGold EMPTY>
-<!ELEMENT playScene (#PCDATA)>
-<!ELEMENT playSound (#PCDATA)>
-<!ELEMENT loadLevel EMPTY>
-<!ELEMENT startBattle EMPTY>
-<!ELEMENT invokeShop EMPTY>
-<!ELEMENT pause (#PCDATA)>
+<!ELEMENT mo ((tilemap|spriteRef*)?,conditionScript?, event*, movement?)>
+<!ELEMENT event (eventScript?)>
 <!ELEMENT movement EMPTY>
-<!ELEMENT pop EMPTY> <!-- Pop the level stack. aka, leave a place...  -->
-<!ELEMENT choice (option+)>
-<!ELEMENT option (condition?, (attributeModifier | say | give | take | playScene | playSound | loadLevel | startBattle | pause | invokeShop | giveGold | choice | pop | addCharacter | removeCharacter)*)>
-
 
 <!-- Item DTD -->
 <!ELEMENT iconRef (#PCDATA)>
@@ -45,7 +27,7 @@
 <!ELEMENT weaponRef (weaponTypeRef, weaponClassRef, (spellRef|runeType)?)>
 <!ELEMENT armorRef (armorTypeRef, armorClassRef, (spellRef|runeType)?)>
 <!ELEMENT namedItem (iconRef,(regularItem | uniqueWeapon | uniqueArmor | rune | specialItem | systemItem))>
-<!ELEMENT regularItem ((attributeModifier | say | give | take | playScene | playSound | loadLevel | startBattle | pause | invokeShop | giveGold | choice | pop | addCharacter | removeCharacter)*)>
+<!ELEMENT regularItem (script?)>
 <!ELEMENT uniqueWeapon (weaponTypeRef, weaponEnhancer*, statusEffectModifier*,attributeEnhancer*,  (spellRef|runeType)?)>
 <!ELEMENT uniqueArmor   (armorTypeRef, armorEnhancer*, statusEffectModifier*, attributeEnhancer*, (spellRef|runeType)?)>
 <!ELEMENT rune (spellRef)>
@@ -74,14 +56,14 @@
 <!ELEMENT doMagicDamage  (magicDamageCategory)>
 <!ELEMENT doStatusEffect (statusEffect?)>
 <!ELEMENT doAttack EMPTY>
-<!ELEMENT spell (magicResistance?,(animation|doWeaponDamage|doMagicDamage|doStatusEffect)*)> 
+<!ELEMENT spell (magicResistance?,script?> 
 <!ELEMENT weaponDamageCategory EMPTY>
 <!ELEMENT magicDamageCategory EMPTY>
 <!ELEMENT magicResistance EMPTY>
 
 <!-- Animation DTD -->
 <!ELEMENT animation (par+)>
-<!ELEMENT par (playSound?,animationSpriteRef*)> <!-- If there are no animationSprites then its treated like a pause -->
+<!ELEMENT par (script?,animationSpriteRef*)> <!-- If there are no animationSprites then its treated like a pause -->
 <!ELEMENT animationSpriteRef (#PCDATA)>
 
 <!-- Status Effect DTD -->
@@ -90,16 +72,16 @@
 <!ELEMENT attributeEffect EMPTY> <!-- Like a simplified attributeModifier. Only works on the current user. -->
 <!-- These guys are all Effect type. -->
 <!-- Notice that you can have a status effect that causes other status effects! -->
-<!ELEMENT onInvoke (attributeEffect|doMagicDamage|doWeaponDamage|doStatusEffect|animation)*> 
-<!ELEMENT onRound (attributeEffect|doMagicDamage|doWeaponDamage|doStatusEffect|animation)*>
-<!ELEMENT onCountdown (attributeEffect|doMagicDamage|doWeaponDamage|doStatusEffect|animation)*>
-<!ELEMENT onRemove (attributeEffect|doMagicDamage|doWeaponDamage|doStatusEffect|animation)*>
+<!ELEMENT onInvoke (script)> 
+<!ELEMENT onRound (script)>
+<!ELEMENT onCountdown (script)>
+<!ELEMENT onRemove (script)>
 
 <!-- Character Class DTD -->
 <!ELEMENT characterClass (weaponTypeRef*, armorTypeRef*,startingStat*,statIncrease*,skillRef*)>
 <!ELEMENT characterClasses (characterClass+)>
 <!ELEMENT statIncrease EMPTY>
-<!ELEMENT skill (prereqSkillRef*,(spellRef | (animation|doWeaponDamage|doMagicDamage|doStatusEffect|doAttack)*), attributeModifier*)>
+<!ELEMENT skill (prereqSkillRef*,spellRef?, onInvoke?, onRemove?)>
 <!ELEMENT skillList (skill)+>
 <!ELEMENT prereqSkillRef EMPTY>
 <!ELEMENT skillRef EMPTY>
@@ -127,6 +109,8 @@
 <!ATTLIST levelHeader width CDATA #REQUIRED>
 <!ATTLIST levelHeader height CDATA #REQUIRED>
 <!ATTLIST levelHeader allowsRunning (true|false) #IMPLIED>
+<!ATTLIST script id CDATA #REQUIRED>
+<!ATTLIST conditionScript CDATA #REQUIRED>
 <!ATTLIST tile name CDATA #REQUIRED>
 <!ATTLIST tile xpos CDATA #REQUIRED>
 <!ATTLIST tile ypos CDATA #REQUIRED>
@@ -149,24 +133,7 @@
 <!ATTLIST event repeatable (true|false) #IMPLIED> 
 <!ATTLIST event remember (true|false) #IMPLIED>
 <!ATTLIST event triggerType (talk|step|act) #REQUIRED>
-<!ATTLIST say speaker CDATA #REQUIRED>
-<!ATTLIST give count CDATA #IMPLIED>
-<!ATTLIST take count CDATA #IMPLIED>
-<!ATTLIST giveGold count CDATA #REQUIRED>
 <!ATTLIST namedItemRef itemType (item|weapon|armor|rune|special|system)  #REQUIRED>
-<!ATTLIST loadLevel name CDATA #REQUIRED>
-<!ATTLIST loadLevel startx CDATA #REQUIRED>
-<!ATTLIST loadLevel starty CDATA #REQUIRED>
-<!ATTLIST startBattle monster CDATA #REQUIRED>
-<!ATTLIST startBattle count CDATA #IMPLIED>
-<!ATTLIST startBattle isBoss CDATA #IMPLIED>
-<!ATTLIST invokeShop shopType CDATA #REQUIRED>
-<!ATTLIST hasGold operator (lt|gt|lte|gte|eq) #REQUIRED>
-<!ATTLIST hasGold not (true) #IMPLIED>
-<!ATTLIST hasItem not (true) #IMPLIED>
-<!ATTLIST hasItem count CDATA #IMPLIED>
-<!ATTLIST pop all (true|false) #IMPLIED> <!-- Default is false. Only pop one level -->
-<!ATTLIST didEvent not (true) #IMPLIED>
 <!ATTLIST attributeModifier attribute CDATA #REQUIRED>
 <!ATTLIST attributeModifier add CDATA #IMPLIED>
 <!ATTLIST attributeModifier multiplier CDATA #IMPLIED> <!-- Defaults to 1 -->
@@ -177,8 +144,6 @@
 <!ATTLIST directionBlock east (true|false) #REQUIRED>
 <!ATTLIST directionBlock west (true|false) #REQUIRED>
 <!ATTLIST spriteRef type (still|twoway|fourway) #IMPLIED>
-<!ATTLIST choice text CDATA #REQUIRED>
-<!ATTLIST option text CDATA #REQUIRED>
 <!ATTLIST namedItem name CDATA #REQUIRED>
 <!ATTLIST namedItem maxInventory CDATA #IMPLIED>
 <!ATTLIST namedItem dropRarity (never|rare|uncommon|common) #REQUIRED>

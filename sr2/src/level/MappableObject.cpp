@@ -116,7 +116,7 @@ bool StoneRing::MappableObject::evaluateCondition() const
 {
     if(mpCondition)
     {
-        return mpCondition->evaluate();
+        return mpCondition->evaluateCondition();
     }
 
     return true;
@@ -225,8 +225,8 @@ bool StoneRing::MappableObject::handleElement(eElement element, Element * pEleme
             
         break;
     }
-    case ECONDITION:
-        mpCondition = dynamic_cast<Condition*>(pElement);
+    case ECONDITIONSCRIPT:
+        mpCondition = dynamic_cast<ScriptElement*>(pElement);
         break;
     case EEVENT:
         mEvents.push_back ( dynamic_cast<Event*>(pElement));

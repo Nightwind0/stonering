@@ -4,13 +4,14 @@
 
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
+#include "SteelType.h"
 #include "IParty.h"
 #include "AbilityFactory.h"
 #include "AbilityManager.h"
 
 
 
-
+class AstScript;
 
 namespace StoneRing
 {
@@ -37,21 +38,15 @@ namespace StoneRing
         virtual AbilityManager * getAbilityManager() = 0;
         virtual ItemManager * getItemManager() = 0;
         static IApplication * getInstance();
+        virtual void pop(bool popAll)=0;
 
         virtual int getScreenWidth()const=0;
         virtual int getScreenHeight()const=0;
 
         virtual CL_Rect getDisplayRect() const=0;
         virtual void requestRedraw(const State *pState)=0;
-        virtual void playScene(const std::string &animation)=0;
-        virtual void playSound(const std::string &sound)=0;
-        virtual void loadLevel(const std::string &level, uint startX, uint startY)=0;
-        virtual void startBattle(const std::string &monster, uint count, bool isBoss)=0;
-        virtual void say(const std::string &speaker, const std::string &text)=0;
-        virtual void pause(uint time)=0;
-        virtual void invokeShop(const std::string &shoptype)=0;
-        virtual void choice(const std::string &, const std::vector<std::string> &, Choice*)=0;
-        virtual void pop(bool bAll)=0;
+        virtual AstScript * loadScript(const std::string &name, const std::string &script)=0;
+        virtual SteelType runScript(AstScript * pScript)=0;
 
     };
 

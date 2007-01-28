@@ -323,8 +323,6 @@ WeaponClass * ItemManager::getWeaponClass ( const WeaponClassRef & ref ) const
 
 ArmorClass  * ItemManager::getArmorClass ( const ArmorClassRef & ref ) const
 {
-
-
     for(std::list<ArmorClass*>::const_iterator iter = mArmorClasses.begin();
         iter != mArmorClasses.end();
         iter++)
@@ -337,10 +335,22 @@ ArmorClass  * ItemManager::getArmorClass ( const ArmorClassRef & ref ) const
     return NULL;
 }
 
-Item * ItemManager:: getItem( const ItemRef & ref ) const
+Item * ItemManager::getNamedItem( const std::string &name ) const
 {
+    for(std::list<Item*>::const_iterator iter = mItems.begin();
+        iter != mItems.end();
+        iter++)
+    {
+        if( (*iter)->getName() == name ) 
+            return *iter;
+    }
 
+    throw CL_Error("Couldn't find item by name: " + name);
+    return NULL;
+}
 
+Item * ItemManager::getItem( const ItemRef & ref ) const
+{
     for(std::list<Item*>::const_iterator iter = mItems.begin();
         iter != mItems.end();
         iter++)
@@ -352,7 +362,6 @@ Item * ItemManager:: getItem( const ItemRef & ref ) const
     throw CL_Error("Couldn't find item based on ref.");
 
     return NULL;
-
 }
 
 

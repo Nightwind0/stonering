@@ -89,6 +89,16 @@ bool EditorMain::canMove(const CL_Rect &currently, const CL_Rect &destination, b
     return true;
 }
 
+AstScript * EditorMain::loadScript(const std::string &name, const std::string &script)
+{
+    return mInterpreter.prebuildAst(name,script);
+}
+
+SteelType EditorMain::runScript(AstScript *pScript)
+{
+    return mInterpreter.runAst ( pScript );
+}
+
 
 
 int EditorMain::main(int argc, char **argv)

@@ -5,8 +5,6 @@
 #include "LevelFactory.h"
 #include "IApplication.h"
 #include "Level.h"
-#include "Action.h"
-#include "PlaySound.h"
 
 using namespace StoneRing;
 
@@ -133,8 +131,8 @@ bool Par::handleElement(eElement element, Element * pElement)
 {
     switch(element)
     {
-    case EPLAYSOUND:
-        mpPlaySound = dynamic_cast<StoneRing::PlaySound*>(pElement);
+    case ESCRIPT:
+        mpScript = dynamic_cast<ScriptElement*>(pElement);
         break;
     case EANIMATIONSPRITEREF:
         mAnimationSpriteRefs.push_back( dynamic_cast<AnimationSpriteRef*>(pElement));
@@ -158,7 +156,7 @@ void Par::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 
 }
 
-Par::Par():mpPlaySound(NULL)
+Par::Par():mpScript(NULL)
 {
 }
 
@@ -177,7 +175,7 @@ Par::hideFromString ( const std::string &str )
 
 Par::~Par()
 {
-    delete mpPlaySound;
+    delete mpScript;
 
     std::for_each(mAnimationSpriteRefs.begin(),mAnimationSpriteRefs.end(),del_fun<AnimationSpriteRef>());
 }
@@ -202,9 +200,10 @@ Par::getHide() const
     return meHide;
 }
 
-PlaySound * Par::getPlaySound() const
+void Par::execute() 
 {
-    return mpPlaySound;
+    if(mpScript)
+        mpScript->executeScript();
 }
 
 std::list<AnimationSpriteRef*>::const_iterator 

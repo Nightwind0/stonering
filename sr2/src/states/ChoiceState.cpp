@@ -2,10 +2,11 @@
 #include "IApplication.h"
 #include "GraphicsManager.h"
 #include "Level.h"
-#include "Choice.h" // For Choice
 
-StoneRing::ChoiceState::ChoiceState():mbDone(false),mpChoiceOverlay(NULL),mpChoice(NULL),
-                                      mpChoiceFont(NULL),mpOptionFont(NULL),mpCurrentOptionFont(NULL)
+
+StoneRing::ChoiceState::ChoiceState():mbDone(false),mpChoiceOverlay(NULL),
+                                      mpChoiceFont(NULL),mpOptionFont(NULL),
+                                      mpCurrentOptionFont(NULL),mnSelection(-1)
 {
 
 }
@@ -31,7 +32,7 @@ void StoneRing::ChoiceState::handleKeyUp(const CL_InputEvent &key)
     case CL_KEY_SPACE:
         // Select current option.
         mbDraw = false;
-        mpChoice->chooseOption(mnCurrentOption);
+        mnSelection = mnCurrentOption;
         mbDone = true;
         break;
     case CL_KEY_DOWN:
@@ -154,13 +155,10 @@ void StoneRing::ChoiceState::finish()
 }
 
 
-void StoneRing::ChoiceState::init(const std::string &choiceText, const std::vector<std::string> &choices, Choice *pChoice)
+void StoneRing::ChoiceState::init(const std::string &choiceText, const std::vector<std::string> &choices)
 {
-
     mText = choiceText;
     mChoices = choices;
-    mpChoice = pChoice;
-
 }
 
 

@@ -25,14 +25,35 @@ public:
 private:
 
     virtual Element * createTile() const;
+    virtual Element * createEvent() const;
     // virtual MappableObject * createMappableObject() const;
     //virtual MappableObject * createMappableObject(CL_DomElement *pElement) const;
     virtual Element * createTilemap() const;
     virtual Element * createSpriteRef() const;
-
+    virtual Element * createScriptElement() const;
+    virtual Element * createConditionScript() const;
 
 
 private:
+};
+
+class EditableScriptElement : public StoneRing::ScriptElement
+{
+public:
+    EditableScriptElement(bool isCondition)
+        :StoneRing::ScriptElement(isCondition)
+    {
+    }
+    virtual ~EditableScriptElement(){}
+    virtual CL_DomElement createDomElement(CL_DomDocument&) const;
+
+    void setScript(const std::string &);
+
+    // May throw SteelException. Please catch and present
+    void parse();
+private:
+    virtual void handleText(const std::string &);
+    std::string mScript;
 };
 
 
@@ -47,6 +68,17 @@ public:
     void setMapY(int y);
 
     
+};
+
+class EditableEvent : public StoneRing::Event
+{
+public:
+    EditableEvent(){}
+    virtual ~EditableEvent(){}
+
+    void setScript(ScriptElement *pScript){ mpScript = pScript; }
+    virtual CL_DomElement createDomElement(CL_DomDocument&) const;
+private:
 };
 
 class EditableSpriteRef : public StoneRing::SpriteRef
