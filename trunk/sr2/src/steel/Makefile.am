@@ -19,7 +19,7 @@ libsteel_la_SOURCES = SteelParser.cpp \
 			steel.reflex
 
 SteelParser.cpp : steel.trison
-	trison -S steel.states -o SteelParser steel.trison
+	trison -S steel.states -o SteelParser -Hh steel.trison
 
 SteelScanner.cpp : steel.reflex SteelParser.cpp
 	reflex  steel.reflex

@@ -5,12 +5,12 @@
 
 #line 9 "steel.trison"
  
-    #ifndef STEEL_PARSER_H
-    #define STEEL_PARSER_H
+	#ifndef STEEL_PARSER_H
+	#define STEEL_PARSER_H
 
-    #include <cassert> 
-    #include "Ast.h"
-    class SteelScanner;
+	#include <cassert> 
+	#include "Ast.h"
+	class SteelScanner;
 
 #line 16 "SteelParser.h"
 
@@ -319,6 +319,6 @@ std::ostream &operator << (std::ostream &stream, SteelParser::Token::Type token_
 
 #line 17 "steel.trison"
 
-    #endif // STEEL_PARSER_H
+	#endif // STEEL_PARSER_H
 
 #line 325 "SteelParser.h"
