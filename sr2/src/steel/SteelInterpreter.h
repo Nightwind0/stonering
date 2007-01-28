@@ -5,9 +5,11 @@
 #include <string>
 #include <list>
 #include <vector>
+#include "SteelParser.h"
 #include "SteelFunctor.h"
 
 // fwd
+class AstScript;
 class AstStatementList; 
 class AstParamDefinitionList;
 
@@ -19,7 +21,16 @@ public:
 
     void addFunction(const std::string &name, SteelFunctor *pFunc);
     SteelType call(const std::string &name, const std::vector<SteelType> &pList);
-    void run(const std::string &name,const std::string &script);
+
+    // This allows you to pre-parse a script and keep a pointer to it
+    // around, which can be run over and over, and the deletion of it is
+    // up to the user of SteelInterpreter
+    AstScript * prebuildAst(const std::string &script_name,
+                            const std::string &script);
+
+    // After using prebuildAst, you can later run it using runAst
+    SteelType runAst( AstScript *pAst );
+    SteelType run(const std::string &name,const std::string &script);
 
     SteelType lookup(const std::string &name);
     // Array element lookup
@@ -51,6 +62,8 @@ private:
     std::map<std::string,SteelFunctor*> m_functions;
 
     SteelType m_return;
+
+    SteelParser m_parser;
 
 private:
     // Bifs
