@@ -7,17 +7,11 @@
 #include <list>
 #include "sr_defines.h"
 #include "Effect.h"
+#include "ScriptElement.h"
 
 
-// MS has a "PlaySound" so I nuke it
-#ifdef _MSC_VER
-#undef PlaySound
-#endif
 
 namespace StoneRing{
-
-    class PlaySound;
-
 
     class AnimationSpriteRef : public Element
     {
@@ -71,7 +65,7 @@ namespace StoneRing{
 
         eHide getHide() const;
 
-        PlaySound * getPlaySound() const;
+        void execute();
 
         std::list<AnimationSpriteRef*>::const_iterator getAnimationSpriteRefsBegin() const ;
         std::list<AnimationSpriteRef*>::const_iterator getAnimationSpriteRefsEnd() const;
@@ -82,7 +76,7 @@ namespace StoneRing{
         eHide hideFromString(const std::string &str);
         uint mnDuration;
         eHide meHide;
-        PlaySound * mpPlaySound;
+        ScriptElement *mpScript;
         std::list<AnimationSpriteRef*> mAnimationSpriteRefs;
     };
 

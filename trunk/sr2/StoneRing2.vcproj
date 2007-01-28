@@ -142,7 +142,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(PROJECTDIR)/src/items/armor/&quot;;&quot;$(PROJECTDIR)/src/items/weapons/&quot;;&quot;$(PROJECTDIR)/src/level/actions/&quot;;&quot;$(PROJECTDIR)/src/level/checks/&quot;;&quot;$(PROJECTDIR)/src/&quot;;&quot;$(PROJECTDIR)/src/party&quot;;&quot;$(PROJECTDIR)/src/level&quot;;&quot;$(PROJECTDIR)/src/factories&quot;;&quot;$(PROJECTDIR)/src/items&quot;;&quot;$(PROJECTDIR)/src/abilities&quot;;&quot;$(PROJECTDIR)/src/states&quot;;&quot;$(PROJECTDIR)/src/character&quot;;&quot;$(PROJECTDIR)/src/core&quot;"
+				AdditionalIncludeDirectories="&quot;$(PROJECTDIR)/src/steel/&quot;;&quot;$(PROJECTDIR)/src/items/armor/&quot;;&quot;$(PROJECTDIR)/src/items/weapons/&quot;;&quot;$(PROJECTDIR)/src/&quot;;&quot;$(PROJECTDIR)/src/party&quot;;&quot;$(PROJECTDIR)/src/level&quot;;&quot;$(PROJECTDIR)/src/factories&quot;;&quot;$(PROJECTDIR)/src/items&quot;;&quot;$(PROJECTDIR)/src/abilities&quot;;&quot;$(PROJECTDIR)/src/states&quot;;&quot;$(PROJECTDIR)/src/character&quot;;&quot;$(PROJECTDIR)/src/core&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -170,7 +170,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="ddraw.lib dinput8.lib dxguid.lib $(OutDir)\SR2Lib.lib"
-				OutputFile=".\StoneRing2.exe"
+				OutputFile="$(SolutionDir)\StoneRing2.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				IgnoreDefaultLibraryNames="libcmt"
@@ -230,10 +230,6 @@
 				RelativePath=".\src\factories\ItemFactory.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\src\factories\LevelFactory.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -253,10 +249,6 @@
 			</File>
 			<File
 				RelativePath=".\src\factories\ItemFactory.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\factories\LevelFactory.h"
 				>
 			</File>
 		</Filter>

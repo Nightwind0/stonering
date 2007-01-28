@@ -1,7 +1,6 @@
 #ifndef SR_INVOKE_SHOP_H
 #define SR_INVOKE_SHOP_H
 
-#include "Action.h"
 #include "Element.h"
 
 namespace StoneRing{

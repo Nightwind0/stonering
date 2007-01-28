@@ -36,8 +36,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(SOLUTIONDIR)/src/items/armor/&quot;;&quot;$(SOLUTIONDIR)/src/items/weapons/&quot;;&quot;$(SOLUTIONDIR)/src/level/actions/&quot;;&quot;$(SOLUTIONDIR)/src/level/checks/&quot;;&quot;$(SOLUTIONDIR)/src/&quot;;&quot;$(SOLUTIONDIR)/src/party&quot;;&quot;$(SOLUTIONDIR)/src/level&quot;;&quot;$(SOLUTIONDIR)/src/factories&quot;;&quot;$(SOLUTIONDIR)/src/items&quot;;&quot;$(SOLUTIONDIR)/src/abilities&quot;;&quot;$(SOLUTIONDIR)/src/states&quot;;&quot;$(SOLUTIONDIR)/src/character&quot;;&quot;$(SOLUTIONDIR)/src/core&quot;"
+				AdditionalIncludeDirectories="&quot;$(SOLUTIONDIR)/src/level/actions&quot;;&quot;$(SOLUTIONDIR)/src/steel/&quot;;&quot;$(SOLUTIONDIR)/src/items/armor/&quot;;&quot;$(SOLUTIONDIR)/src/items/weapons/&quot;;&quot;$(SOLUTIONDIR)/src/&quot;;&quot;$(SOLUTIONDIR)/src/party&quot;;&quot;$(SOLUTIONDIR)/src/level&quot;;&quot;$(SOLUTIONDIR)/src/factories&quot;;&quot;$(SOLUTIONDIR)/src/items&quot;;&quot;$(SOLUTIONDIR)/src/abilities&quot;;&quot;$(SOLUTIONDIR)/src/states&quot;;&quot;$(SOLUTIONDIR)/src/character&quot;;&quot;$(SOLUTIONDIR)/src/core&quot;"
 				PreprocessorDefinitions="WIN32;DEBUG;_WINDOWS;_DEBUG"
+				RuntimeLibrary="1"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -143,10 +144,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\level\checks\And.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\src\core\Animation.cpp"
 				>
 				<FileConfiguration
@@ -247,23 +244,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\level\actions\Choice.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\src\states\ChoiceState.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\src\level\Condition.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\src\items\DamageCategory.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\level\checks\DidEvent.cpp"
 				>
 			</File>
 			<File
@@ -305,14 +290,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\level\actions\Give.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\level\actions\GiveGold.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\src\core\GraphicsManager.cpp"
 				>
 				<FileConfiguration
@@ -335,19 +312,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\src\level\checks\HasGold.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\level\checks\HasItem.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\src\items\IconRef.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\level\actions\InvokeShop.cpp"
 				>
 			</File>
 			<File
@@ -367,7 +332,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\level\actions\LoadLevel.cpp"
+				RelativePath="..\src\factories\LevelFactory.cpp"
 				>
 			</File>
 			<File
@@ -383,31 +348,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\level\checks\Operator.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\level\checks\Or.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\src\party\Party.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\level\actions\Pause.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\level\actions\PlayScene.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\level\actions\PlaySound.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\level\actions\Pop.cpp"
 				>
 			</File>
 			<File
@@ -423,11 +364,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\level\actions\Say.cpp"
+				RelativePath="..\src\states\SayState.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\src\states\SayState.cpp"
+				RelativePath="..\src\level\ScriptElement.cpp"
 				>
 			</File>
 			<File
@@ -444,10 +385,6 @@
 			</File>
 			<File
 				RelativePath="..\src\abilities\SpellRef.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\level\actions\StartBattle.cpp"
 				>
 			</File>
 			<File
@@ -484,10 +421,6 @@
 			</File>
 			<File
 				RelativePath="..\src\items\SystemItem.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\level\actions\Take.cpp"
 				>
 			</File>
 			<File
@@ -559,27 +492,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath="..\src\factories\AbilityFactory.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\abilities\AbilityManager.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\level\Action.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\level\actions\Actions.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\level\actions\AddCharacter.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\level\checks\And.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\Animation.h"
+				RelativePath="..\src\core\Animation.h"
 				>
 			</File>
 			<File
@@ -643,23 +564,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\level\Check.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\level\checks\Checks.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\level\actions\Choice.h"
-				>
-			</File>
-			<File
 				RelativePath="..\src\states\ChoiceState.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\level\Condition.h"
 				>
 			</File>
 			<File
@@ -667,15 +572,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\level\checks\DidEvent.h"
-				>
-			</File>
-			<File
 				RelativePath="..\src\abilities\Effect.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\Element.h"
+				RelativePath="..\src\core\Element.h"
 				>
 			</File>
 			<File
@@ -695,14 +596,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\level\actions\Give.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\level\actions\GiveGold.h"
-				>
-			</File>
-			<File
 				RelativePath="..\src\level\Graphic.h"
 				>
 			</File>
@@ -711,15 +604,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\level\checks\HasGold.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\level\checks\HasItem.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\IApplication.h"
+				RelativePath="..\src\core\IApplication.h"
 				>
 			</File>
 			<File
@@ -731,19 +616,15 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\level\actions\InvokeShop.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\IParty.h"
-				>
-			</File>
-			<File
 				RelativePath="..\src\party\IParty.h"
 				>
 			</File>
 			<File
 				RelativePath="..\src\items\Item.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\factories\ItemFactory.h"
 				>
 			</File>
 			<File
@@ -759,7 +640,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\level\actions\LoadLevel.h"
+				RelativePath="..\src\factories\LevelFactory.h"
 				>
 			</File>
 			<File
@@ -775,39 +656,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\level\checks\Operator.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\level\checks\Or.h"
-				>
-			</File>
-			<File
 				RelativePath="..\src\party\Party.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\level\actions\Pause.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\level\actions\PlayScene.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\level\actions\PlaySound.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\level\actions\Pop.h"
-				>
-			</File>
-			<File
 				RelativePath="..\src\items\RegularItem.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\level\actions\RemoveCharacter.h"
 				>
 			</File>
 			<File
@@ -819,11 +672,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\level\actions\Say.h"
+				RelativePath="..\src\states\SayState.h"
 				>
 			</File>
 			<File
-				RelativePath="..\src\states\SayState.h"
+				RelativePath="..\src\level\ScriptElement.h"
 				>
 			</File>
 			<File
@@ -852,10 +705,6 @@
 			</File>
 			<File
 				RelativePath="..\src\states\State.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\State.h"
 				>
 			</File>
 			<File
@@ -892,10 +741,6 @@
 			</File>
 			<File
 				RelativePath="..\src\items\SystemItem.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\level\actions\Take.h"
 				>
 			</File>
 			<File

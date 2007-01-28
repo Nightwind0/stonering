@@ -24,7 +24,6 @@ using StoneRing::Element;
 // MUST be alphabetized.
 const char * StoneRing::Element::pszElementNames[Element::__END_OF_ELEMENTS__] = 
 {
-    "addCharacter",
     "and",//        AND,
     "animation",//          ANIMATION,
     "animationDefinition",
@@ -41,24 +40,16 @@ const char * StoneRing::Element::pszElementNames[Element::__END_OF_ELEMENTS__] =
     "attributeModifier",//          ATTRIBUTEMODIFIER,
     "character", // CHARACTER
     "characterClass",
-    "choice",//             CHOICE,
-    "condition",//          CONDITION,
-    "didEvent",//           DIDEVENT,
+    "conditionScript",
     "directionBlock",//  DIRECTIONBLOCK,
     "doAttack", // EDOATTACK
     "doMagicDamage",//      DOMAGICDAMAGE,
     "doStatusEffect",//             DOSTATUSEFFECT,
     "doWeaponDamage",//             DOWEAPONDAMAGE,
     "event",//      EVENT,
-    "give",//       GIVE,
-    "giveGold",//           GIVEGOLD,
-    "hasGold",//            HASGOLD,
-    "hasItem",//            HASITEM,
     "iconRef",
-    "invokeShop",//         INVOKESHOP,
     "itemRef",//            ITEMREF,
     "level",//      LEVEL,
-    "loadLevel",//          LOADLEVEL,
     "magicDamageCategory",//        MAGICDAMAGECATEGORY,
     "magicResistance",//            MAGICRESISTANCE,
     "mappableObject",//             MAPPABLEOBJECT,
@@ -69,34 +60,24 @@ const char * StoneRing::Element::pszElementNames[Element::__END_OF_ELEMENTS__] =
     "onInvoke",//EONINVOKE,
     "onRemove",//                   EONREMOVE,
     "onRound",//                    EONROUND,
-    "operator",//           OPERATOR,
-    "option",//             OPTION,
-    "or",//         OR,
+    "onStep",
     "par",
-    "pause",//      PAUSE,
-    "playScene",//      PLAYSCENE,
-    "playSound",//          PLAYSOUND,
-    "pop",
     "prereqSkillRef", // PREREQSKILLREF
     "regularItem",//        REGULARITEM,
-    "removeCharacter",
     "rune",//       RUNE,
     "runeType",//           RUNETYPE,
-    "say",//        SAY,
     "skill",
     "skillRef",
     "specialItem",//        SPECIALITEM,
     "spell",//      SPELL,
     "spellRef",//           SPELLREF,
     "spriteRef",//          SPRITEREF,
-    "startBattle",//        STARTBATTLE,
     "statIncrease",//       STATINCREASE,
     "statusEffect",//       STATUSEFFECT,
     "statusEffectActions",//        STATUSEFFECTACTIONS,
     "statusEffectModifier",//       STATUSEFFECTMODIFIER,
     "systemItem",//         SYSTEMITEM,
-    "take",//       TAKE,
-    "tile",//       TILE,
+     "tile",//       TILE,
     "tilemap",//            TILEMAP,
     "uniqueArmor",//        UNIQUEARMOR,
     "uniqueWeapon",//       UNIQUEWEAPON,
@@ -316,7 +297,10 @@ void Element::load(CL_DomElement * pDomElement)
                 if(pFactory->canCreate(element))
                 {
                     pElement = pFactory->createElement(element);
-
+#ifndef NDEBUG
+                    if(pElement->whichElement() == element)
+                        std::cerr << "WARNING THIS ELEMENT IS WEIRD." << std::endl;
+#endif
                     //  cl_assert ( pElement->whichElement() == element );
                     break;
                 }
@@ -361,29 +345,6 @@ void Element::load(CL_DomElement * pDomElement)
 #endif
 
     loadFinished();
-}
-
-bool Element::isAction(Element::eElement element) const
-{
-    switch(element)
-    {
-    case EPLAYSCENE:
-    case EPLAYSOUND:
-    case ELOADLEVEL:
-    case ESTARTBATTLE:
-    case EINVOKESHOP:
-    case EPAUSE:
-    case ESAY:
-    case EGIVE:
-    case ETAKE:
-    case EGIVEGOLD:
-    case ECHOICE:
-        // case EUSE:
-        return true;
-    default:
-        return false;
-    }
-
 }
 
 

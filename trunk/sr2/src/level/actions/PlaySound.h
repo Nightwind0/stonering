@@ -1,7 +1,6 @@
 #ifndef SR_PLAY_SOUND_H
 #define SR_PLAY_SOUND_H
 
-#include "Action.h"
 #include "Element.h"
 
 #ifdef PlaySound

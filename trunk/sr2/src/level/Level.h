@@ -26,7 +26,7 @@ namespace StoneRing {
     class ArmorRef;
     class NamedItemRef;
     class StartingEquipmentRef;
-    class Condition;
+    class ScriptElement;
     class Action;
 
 
@@ -172,7 +172,7 @@ namespace StoneRing {
         CL_Sprite *mpSprite;
         SpriteRefOrTilemap mGraphic;
         ushort mZOrder;
-        Condition *mpCondition;
+        ScriptElement *mpCondition;
         AttributeModifier *mpAM;
         ushort mX;
         ushort mY;

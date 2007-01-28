@@ -3499,45 +3499,20 @@
 	<mappableObjects>
 		<mo name="Action" size="small" type="square" xpos="2" ypos="0">
 			<event name="mordusDances" triggerType="step" remember="true">
-				<condition>
-					<operator>
-						<and>
-							<didEvent>Hobo</didEvent>
-							<operator>
-								<or>
-									<hasGold operator="gte">
-										50000
-									</hasGold>
-									<hasItem>
-										<itemRef>
-											<weaponRef>
-												<weaponTypeRef>
-													Sword
-												</weaponTypeRef>
-												<weaponClassRef>
-													Shoddy
-												</weaponClassRef>
-											</weaponRef>
-										</itemRef>
-									</hasItem>
-								</or>
-							</operator>
-						</and>
-					</operator>
-				</condition>
-				<playAnimation>
-					mordusDances
-				</playAnimation>
+				<conditionScript name = "_mordusDance">
+				return (didEvent("Hobo") and (hasGold(50000) or hasItem("Shoddy Sword")));
+				</conditionScript>
+
 			</event>
 		</mo>
 		<mo name="Presence" size="small" type="square" xpos="3" ypos="3">
 			<event name="sensePresence" triggerType="talk" remember="true">
-				<say speaker="????">
-					You sense a presence. It is as though you can feel the watching eyes of someone. 
+				<script id="presence_">
+					say("????", "You sense a presence. It is as though you can feel the watching eyes of someone. 
 				Perhaps someone you once knew. You are frozen in your tracks. You wonder about the sky. What color is it?
 				What does it mean to you? What will you do if it ever goes away? Why? What is it with monkeys, anyway. 
-				Do they really come in barrels? What else comes in barrels besides monkeys and pickles?
-				</say>
+				Do they really come in barrels? What else comes in barrels besides monkeys and pickles?");
+				</script>
 			</event>
 		</mo>
 		<mo name="Samantha" size="small" type="npc" xpos="0" ypos="5" solid="true">
@@ -3545,12 +3520,10 @@
 				Animals/Cat2
 			</spriteRef>
 			<event name="CatMeow" triggerType="talk" remember="true">
-				<playSound>
-					Meow
-				</playSound>
-				<say speaker="Samantha">
-					Mowwwww!!
-				</say>
+				<script id="catmeow">
+				playSound("Meow");
+				say("Samantha","Mowwwww!!");
+				</script>
 			</event>
 			<movement movementType="wander" speed="fast"/>
 		</mo>
@@ -3559,61 +3532,47 @@
 				Animals/Cat2
 			</spriteRef>
 			<event name="Cat3Go" triggerType="talk">
-				<condition>
-					<hasItem>
-						<itemRef>
-							<namedItemRef>
-								Octavia Key
-							</namedItemRef>
-						</itemRef>
-					</hasItem>
-				</condition>
-				<say speaker="Leroy">
-					I like you
-				</say>
+				<conditionScript id="Cat3Go_c">
+				return hasItem("Octavia Key");
+				</conditionScript>
+				<script id="cat3go">
+				say("Leroy","I like you.");
+				</script>
 			</event>
 			<event name="CatChoice" triggerType="talk" repeatable="false" remember="true">
-				<choice text="Who is your favorite cat?">
-					<option text="You">
-						<say speaker="Leroy">
-							Thank you! Take this key.
-						</say>
-						<give>
-							<itemRef>
-								<namedItemRef>
-									Octavia Key
-								</namedItemRef>
-							</itemRef>
-						</give>
-					</option>
-					<option text="The other cat">
-						<say speaker="Leroy">
-							Awww...
-						</say>
-					</option>
-				</choice>
+				<script id="CatChoice">
+					var decision = choice( "Who is your Favorite cat", "You" : "The other cat");
+					if(decision == 0)
+					{
+						say("Leroy","Thank you! Take this key.");
+						giveNamedItem("Octavia Key");
+					}
+					else
+					{
+						say("Leroy","Awww...");
+					}
+				</script>
 			</event>
 			<movement movementType="wander" speed="fast"/>
 		</mo>
 		<mo name="DoorRLock" size="medium" type="square" xpos="8" ypos="9" solid="true">
-			<condition>
-				<hasItem not="true">
-					<itemRef>
-						<namedItemRef>
-							Octavia Key
-						</namedItemRef>
-					</itemRef>
-				</hasItem>
-			</condition>
-			<event name="octaviaLock" triggerType="talk" remember="true">
-				<say speaker="Notice">
-					You need the Octavia Key.
-				</say>
+			<conditionScript id="hasKey">
+			return !hasItem("Octavia Key");
+			</conditionScript>
+			<event name="octaviaLock" triggerType="talk">
+				<script id="talkLock">
+					say("","This door is locked. It needs a key.");
+				</script>
 			</event>
 		</mo>
 		<mo name="DoorR" size="medium" type="door" xpos="8" ypos="9">
-			<event name="enterOctaviaInn" triggerType="step" remember="true">
-				<loadLevel startx="4" starty="8" name="octaviaInn"/>
+			<event name="octaviaLock" triggerType="step" remember="false">
+				<conditionScript id="unlock">
+					return hasItem("Octavia Key");
+				</conditionScript>
+				<script id = "opendoor">
+					loadLevel("octaviaInn",4,8);
+				</script>
 			</event>
 		</mo>
 	</mappableObjects>

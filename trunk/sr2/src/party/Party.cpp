@@ -11,6 +11,7 @@ using StoneRing::Party;
 using StoneRing::IParty;
 using StoneRing::ICharacter;
 using StoneRing::ItemRef;
+using StoneRing::Item;
 
 
 Party::Party():mnGold(0)
@@ -30,12 +31,8 @@ bool Party::getGold() const
 
 bool Party::hasItem(ItemRef *pItemRef, uint count) const
 {
-
     Item * pItem = pItemRef->getItem();
-
-    if( mItems.count ( pItem ) && mItems.find( pItem )->second >= count)
-        return true;
-    else return false;
+    return hasItem(pItem,count);
 }
 
 bool Party::didEvent(const std::string &event) const
@@ -46,7 +43,6 @@ bool Party::didEvent(const std::string &event) const
 
 void Party::doEvent(const std::string &name, bool bRemember)
 {
-
     if(bRemember)
         mEvents.insert ( name );
 }
@@ -54,13 +50,29 @@ void Party::doEvent(const std::string &name, bool bRemember)
 
 void Party::giveItem(ItemRef *pItemRef, uint count)
 {
-    std::ostringstream os;
-    std::string speaker = "Item received!"; 
-    IApplication * pApplication = IApplication::getInstance();
     Item * pItem = pItemRef->getItem();
 
-    os << pItem->getName();
+    giveItem(pItem,count);
+}
+
+void Party::takeItem(ItemRef *pItemRef, uint count)
+{
+    Item * pItem = pItemRef->getItem();
+
+    takeItem(pItem,count);
+}
+
+bool Party::hasItem(Item * pItem,uint count) const
+{
+    if( mItems.count ( pItem ) && mItems.find( pItem )->second >= count)
+        return true;
+    else return false;
     
+}
+
+bool Party::giveItem(Item *pItem, uint count)
+{
+   
     if( !mItems.count(pItem) )
     {
         mItems [ pItem ] = 0;
@@ -70,9 +82,6 @@ void Party::giveItem(ItemRef *pItemRef, uint count)
     if( mItems [ pItem ] + count <= pItem->getMaxInventory())
     {
         mItems [ pItem ] += count;
-    
-        if(count > 1)
-            os << " x" << count;
     }
     else 
     {
@@ -80,29 +89,21 @@ void Party::giveItem(ItemRef *pItemRef, uint count)
     
         if( count < 1 )
         {
-            speaker = "**Item Lost** Inventory Full";
+            return false;
         }
         else 
         {
             mItems [ pItem ] += count;
 
-            os << " x" << count;
         }
     }
     
-
-
-    pApplication->say(speaker, os.str());
+    return true;
 
 }
 
-void Party::takeItem(ItemRef *pItemRef, uint count)
+bool Party::takeItem(Item *pItem, uint count)
 {
-    std::ostringstream os;
-    IApplication * pApplication = IApplication::getInstance();
-    Item * pItem = pItemRef->getItem();
-    
-    os << pItem->getName();
     if( mItems.count(pItem ))
     {
         if ( mItems [ pItem ] < count )
@@ -112,18 +113,12 @@ void Party::takeItem(ItemRef *pItemRef, uint count)
 
         mItems[ pItem ] -= count;
 
-        if ( count > 1 )
-            os << " x" << count;
     }
-#ifndef NDEBUG
     else
     {
-        std::cerr <<  " An attempt was made to take an item you didn't have.";
+        return false;
     }
-#endif
-
-    pApplication->say("Item Taken", os.str());
-
+    return true;
 }
 
 void Party::giveGold(int amount)
@@ -132,7 +127,6 @@ void Party::giveGold(int amount)
     if(amount <0 )
     {
         // They are taking..
-
         if(mnGold < amount)
             throw CL_Error("Attempt to take more gold than we had.");
     }

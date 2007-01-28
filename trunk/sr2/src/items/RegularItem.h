@@ -2,6 +2,7 @@
 #define SR_REGULARITEM_H  
 
 #include "NamedItem.h"
+#include "ScriptElement.h"
 
 // Concrete Named Item classes
 namespace StoneRing{
@@ -37,7 +38,7 @@ namespace StoneRing{
     private:
         virtual bool handleElement(eElement element, Element * pElement );
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
-        std::list<Action*> mActions;
+        ScriptElement *mpScript;
         eUseType meUseType;
         eTargetable meTargetable;
         uint mnValue;

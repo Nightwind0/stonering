@@ -65,7 +65,7 @@ AstScript * SteelInterpreter::prebuildAst(const std::string &script_name,
     return pScript;
 }
 
-SteelType SteelInterpreter::runAst( AstScript *pScript )
+SteelType SteelInterpreter::runAst(AstScript *pScript)
 {
     assert ( NULL != pScript );
     pScript->executeScript(this);

@@ -3,6 +3,8 @@
 #include <ClanLib/gl.h>
 #include <iostream>
 #include <sstream>
+#include <vector>
+#include <string>
 #include "Application.h"
 #include "Level.h"
 #include "Party.h"
@@ -10,6 +12,7 @@
 #include "ItemFactory.h"
 #include "CharacterFactory.h"
 #include "ChoiceState.h"
+#include "SteelType.h"
 //
 //
 //
@@ -45,26 +48,28 @@ int Application::getScreenHeight()const
 }
 
 
-void Application::playScene(const std::string &animation)
+SteelType Application::playScene(const std::string &animation)
 {
 #ifndef NDEBUG
     std::cout << "Playing scene " << animation << std::endl;
 #endif
 
-       
+    return SteelType();
 }
 
-void Application::playSound(const std::string &sound)
+SteelType Application::playSound(const std::string &sound)
 {
 #ifndef NDEBUG
     std::cout << "Playing sound " << sound << std::endl;
 #endif
 
-   
+   return SteelType();
 }
-void Application::loadLevel(const std::string &level, uint startX, uint startY)
+SteelType Application::loadLevel(const std::string &level, uint startX, uint startY)
 {
-    mMapState.pushLevel( new Level(level,mpResources), startX, startY );
+    mMapState.pushLevel( new Level(level,mpResources), static_cast<uint>(startX), static_cast<uint>(startY) );
+
+    return SteelType();
 }
 
 void Application::pop(bool bAll)
@@ -72,53 +77,129 @@ void Application::pop(bool bAll)
     mMapState.pop(bAll);
 }
 
-void Application::startBattle(const std::string &monster, uint count, bool isBoss)
+SteelType Application::pop_(bool bAll)
+{
+    pop(bAll);
+
+    return SteelType();
+}
+
+SteelType Application::startBattle(const std::string &monster, uint count, bool isBoss)
 {
 #ifndef NDEBUG
     std::cout << "Start battle " << monster << std::endl;
 #endif
 
+    // TODO: Return false if you lose, true if you win.
+    return SteelType();
 }
 
-
-
-
-void Application::choice(const std::string &choiceText,
-                         const std::vector<std::string> &choices, Choice * pChoice)
+SteelType Application::choice(const std::string &choiceText,
+                              const std::vector<SteelType> &choices_)
 {
+    static ChoiceState choiceState;
+    std::vector<std::string> choices;
+    choices.reserve ( choices_.size() );
 
-    ChoiceState * pChoiceState = new ChoiceState();
+    for(int i=0;i<choices_.size();i++)
+        choices.push_back ( choices_[i] );
 
-    pChoiceState->init(choiceText,choices,pChoice);
-
-    mStates.push_back ( pChoiceState );
-
+    choiceState.init(choiceText,choices);
+    mStates.push_back ( &choiceState );
     run(); // Run pops for us.
 
-    delete pChoiceState;
+    SteelType selection;
+    selection.set( choiceState.getSelection() );
+
+    return selection;
 }
 
 
-void Application::say(const std::string &speaker, const std::string &text)
+SteelType Application::say(const std::string &speaker, const std::string &text)
 {
     mSayState.init(speaker,text);
 
     mStates.push_back(&mSayState);
 
     run();
+
+    return SteelType();
 }
 
-void Application::pause(uint time)
+void Application::showError(int line, const std::string &script, const std::string &message)
 {
+    std::ostringstream os;
+    os << "Script error in " << script << " on line " << line << " (" << message << ')';
 
+    say("Error", os.str());
 }
 
-void Application::invokeShop(const std::string &shoptype)
+SteelType Application::pause(uint time)
 {
-   
+    CL_System::sleep(time);
+
+    return SteelType();
+}
+
+SteelType Application::invokeShop(const std::string &shoptype)
+{
+    return SteelType();
 }
 
 
+SteelType Application::getGold() const
+{
+    SteelType val;
+    val.set ( mpParty->getGold() );
+    return val;
+}
+
+SteelType Application::hasItem(const std::string &item, uint count) const
+{
+    ItemManager * pMgr = IApplication::getInstance()->getItemManager();
+    assert ( pMgr );
+    SteelType var;
+    var.set ( mpParty->hasItem(pMgr->getNamedItem(item),count) );
+
+    return var;
+}
+
+SteelType Application::didEvent(const std::string &event) const
+{
+    SteelType var;
+    var.set ( mpParty->didEvent(event ) );
+
+    return var;
+}
+
+SteelType Application::doEvent(const std::string &event, bool bRemember)
+{
+    mpParty->doEvent ( event, bRemember );
+    return SteelType();
+}
+
+SteelType Application::giveNamedItem(const std::string &item, uint count)
+{
+    ItemManager * pMgr = IApplication::getInstance()->getItemManager();
+    assert ( pMgr );
+    mpParty->giveItem ( pMgr->getNamedItem(item), count );
+
+    return SteelType();
+}
+
+SteelType Application::takeNamedItem(const std::string  &item, uint count)
+{
+    ItemManager * pMgr = IApplication::getInstance()->getItemManager();
+    SteelType val;
+    val.set ( mpParty->giveItem ( pMgr->getNamedItem(item), count ) );
+    return val;
+}
+
+SteelType Application::giveGold(int amount)
+{
+    mpParty->giveGold(amount);
+    return SteelType();
+}
 
 
 IApplication * IApplication::getInstance()
@@ -129,7 +210,6 @@ IApplication * IApplication::getInstance()
 
 IParty * Application::getParty() const
 {
-   
     return mpParty;
 }
 
@@ -244,6 +324,45 @@ void Application::onSignalQuit()
 void Application::requestRedraw(const State * /*pState*/)
 {
     draw();
+}
+
+AstScript * Application::loadScript(const std::string &name, const std::string &script)
+{
+    return mInterpreter.prebuildAst(name,script);
+}
+
+SteelType Application::runScript(AstScript * pScript)
+{
+    // Intentionally letting steel exceptions 
+    // Get caught by a higher layer
+    return mInterpreter.runAst ( pScript );
+
+}
+
+void Application::registerSteelFunctions()
+{
+    mInterpreter.addFunction("say",
+        new SteelFunctor2Arg<Application,const std::string&,const std::string&>
+        (this,&Application::say));
+    mInterpreter.addFunction("playScene",
+        new SteelFunctor1Arg<Application,const std::string&>
+        (this,&Application::playScene));
+    mInterpreter.addFunction("playSound",
+        new SteelFunctor1Arg<Application,const std::string&>
+        (this,&Application::playSound));
+    mInterpreter.addFunction("loadLevel",
+        new SteelFunctor3Arg<Application,const std::string&,uint,uint>
+        (this,&Application::loadLevel));
+    mInterpreter.addFunction("startBattle",
+        new SteelFunctor3Arg<Application,const std::string &,uint,bool>
+        (this,&Application::startBattle));
+    mInterpreter.addFunction("pause",
+        new SteelFunctor1Arg<Application,uint>(this,&Application::pause));
+    mInterpreter.addFunction("choice", 
+        new SteelFunctor2Arg<Application,const std::string&, const std::vector<SteelType> &>
+        (this,&Application::choice));
+    mInterpreter.addFunction("pop",
+        new SteelFunctor1Arg<Application,bool>(this,&Application::pop_));
 }
 
 void Application::draw()
@@ -396,6 +515,10 @@ int Application::main(int argc, char ** argv)
                 
         teardownClanLib();
     }
+    catch(SteelException ex)
+    {
+        showError ( ex.getLine(), ex.getScript(), ex.getMessage() );
+    }
     catch(CL_Error error)
     {
         std::cerr << "Exception Caught!!" << std::endl;
@@ -432,7 +555,8 @@ void Application::showIntro()
     {
 
         background.draw(0,0);
-        splash.draw(displayX,displayY);
+        splash.draw(static_cast<float>(displayX),
+            static_cast<float>(displayY));
 
         CL_Display::flip();
         CL_System::keep_alive();

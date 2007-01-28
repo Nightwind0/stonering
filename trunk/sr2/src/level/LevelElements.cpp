@@ -2,9 +2,6 @@
 #include <string>
 #include <map>
 #include <list>
-#include "IApplication.h"
-#include "Level.h"
-#include "Action.h"
 #include <algorithm>
 #include <stdlib.h>
 #include <time.h>
@@ -16,11 +13,11 @@
 #include "ItemFactory.h"
 #include "ItemManager.h"
 #include "CharacterDefinition.h"
-#include "LoadLevel.h"
 #include "AttributeModifier.h"
 #include "WeaponRef.h"
 #include "ArmorRef.h"
-
+#include "IApplication.h"
+#include "Level.h"
 
 
 template<typename MapType,
@@ -346,148 +343,6 @@ StoneRing::SpriteRef::getType() const
 
 
 
-StoneRing::Event::Event():mbRepeatable(true),mbRemember(false),mpCondition(NULL)
-{
-}
-
-CL_DomElement  StoneRing::Event::createDomElement(CL_DomDocument &doc) const
-{
-    CL_DomElement  element(doc,"event");
-
-    element.set_attribute("name", mName );
-
-    std::string triggertype;
-
-    switch( meTriggerType )
-    {
-    case STEP:
-        triggertype = "step";
-        break;
-    case TALK:
-        triggertype = "talk";
-        break;
-    case ACT:
-        triggertype = "act";
-        break;
-    }
-
-    element.set_attribute("triggerType", triggertype);
-
-    if(!mbRepeatable) element.set_attribute("repeatable","false");
-
-    if(mbRemember) element.set_attribute("remember","true");
-
-    if(mpCondition )
-    {
-        CL_DomElement e = mpCondition->createDomElement(doc);
-
-        element.append_child ( e );
-
-    }
-
-    for(std::list<Action*>::const_iterator i = mActions.begin();
-        i != mActions.end();
-        i++)
-    {
-        Element * pElement = dynamic_cast<Element*>(*i);
-        CL_DomElement e = pElement->createDomElement(doc);
-    
-        element.append_child ( e );
-
-    }
-
-
-    return element;
-
-}
-
-void StoneRing::Event::loadAttributes(CL_DomNamedNodeMap *pAttributes)
-{
-    mName = getRequiredString("name",pAttributes);
-
-    std::string triggertype = getString("triggerType",pAttributes);
-
-    if(triggertype == "step")
-        meTriggerType = STEP;
-    else if (triggertype == "talk")
-        meTriggerType = TALK;
-    else if (triggertype == "act")
-        meTriggerType = ACT;
-    else throw CL_Error(" Bad trigger type on event " + mName );
-
-    mbRepeatable = getImpliedBool("repeatable",pAttributes,true);
-    mbRemember = getImpliedBool("remember",pAttributes,false);
-}
-
-bool StoneRing::Event::handleElement(eElement element, Element *pElement)
-{
-    if(isAction(element))
-    {
-        mActions.push_back( dynamic_cast<Action*>(pElement));
-    }
-    else if(element == ECONDITION)
-    {
-        mpCondition = dynamic_cast<Condition*>(pElement);
-    }
-    else 
-    {
-        return false;
-    }
-
-    return true;
-}
-
-
-StoneRing::Event::~Event()
-{
-    for(std::list<Action*>::iterator i = mActions.begin();
-        i != mActions.end();
-        i++)
-    {
-        delete *i;
-    }
-}
-
-std::string StoneRing::Event::getName() const
-{
-    return mName;
-}
-
-StoneRing::Event::eTriggerType StoneRing::Event::getTriggerType()
-{
-    return meTriggerType;
-}
-
-bool StoneRing::Event::repeatable()
-{
-    return mbRepeatable;
-}
-
-bool StoneRing::Event::remember()
-{
-    return mbRemember;
-}
- 
-bool StoneRing::Event::invoke()
-{
-    
-    if(mpCondition && !mpCondition->evaluate() ) return false;
-
-    StoneRing::IApplication::getInstance()->getParty()->doEvent ( mName, mbRemember );
-
-    for(std::list<Action*>::iterator i = mActions.begin();
-        i != mActions.end();
-        i++)
-    {
-        Action *action = *i;
-
-        action->invoke();
-    }
-
-    return true;
-}
-      
-
 CL_DomElement StoneRing::Movement::createDomElement(CL_DomDocument &doc) const
 {
     CL_DomElement element(doc,"movement") ;
@@ -595,13 +450,6 @@ StoneRing::Movement::eMovementSpeed StoneRing::Movement::getMovementSpeed() cons
 {
     return meSpeed;
 }
-
-
-void StoneRing::LoadLevel::invoke()
-{
-    IApplication::getInstance()->loadLevel ( mName, mStartX, mStartY );
-}
-
 
 StoneRing::Graphic::Graphic()
 {
@@ -757,8 +605,8 @@ bool StoneRing::Tile::handleElement(eElement element, Element * pElement)
         mpSprite = GM->createSprite( mGraphic.asSpriteRef->getRef() );
         break;
     }//ESPRITEREF
-    case ECONDITION:
-        mpCondition = dynamic_cast<Condition*>(pElement);
+    case ECONDITIONSCRIPT:
+        mpCondition = dynamic_cast<ScriptElement*>(pElement);
         break;
     case EATTRIBUTEMODIFIER:
         mpAM = dynamic_cast<AttributeModifier*>(pElement);
@@ -809,8 +657,8 @@ StoneRing::Tile::~Tile()
 
 bool StoneRing::Tile::evaluateCondition() const
 {
-    if( mpCondition ) return mpCondition->evaluate();
-
+    if( mpCondition )
+        return mpCondition->evaluateCondition();
     else return true;
 }
 

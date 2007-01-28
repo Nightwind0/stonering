@@ -102,7 +102,7 @@ WeaponRef::createDomElement(CL_DomDocument &doc) const
 
     element.append_child ( mClass.createDomElement(doc ) );
 
-    if(mpSpellRef )
+    if(mpSpellRef)
     {
         element.append_child ( mpSpellRef->createDomElement(doc ) );
     }

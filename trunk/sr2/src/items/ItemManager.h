@@ -20,11 +20,17 @@ namespace StoneRing
         void loadItemFile ( CL_DomDocument &doc );
     
 
-        WeaponType *getWeaponType(const WeaponTypeRef &ref) const;
-        ArmorType  *getArmorType ( const ArmorTypeRef &ref) const;
+        WeaponType *getWeaponType( const WeaponTypeRef &ref ) const;
+        ArmorType  *getArmorType ( const ArmorTypeRef &ref ) const;
+        WeaponType *getWeaponType( const std::string &name ) const;
+        ArmorType  *getArmorType ( const std::string &name ) const;
 
         WeaponClass *getWeaponClass ( const WeaponClassRef & ref ) const;
         ArmorClass  *getArmorClass ( const ArmorClassRef & ref ) const;
+        WeaponClass *getWeaponClass ( const std::string &name ) const;
+        ArmorClass *getArmorClass ( const std::string &name ) const;
+
+        Item * getNamedItem( const std::string &name ) const;
 
         virtual Item * getItem( const ItemRef & ref ) const;
 #ifndef NDEBUG

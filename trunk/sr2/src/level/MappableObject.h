@@ -100,7 +100,7 @@ namespace StoneRing {
         uint mX;
         uint mY;
         Movement *mpMovement;
-        Condition *mpCondition;
+        ScriptElement *mpCondition;
         eMappableObjectType meType;
         char cFlags;
         ushort mnCellsMoved;

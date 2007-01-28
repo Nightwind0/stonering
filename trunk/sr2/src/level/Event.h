@@ -2,7 +2,7 @@
 #define SR_EVENT_H
 
 #include "Element.h"
-#include "Condition.h"
+#include "ScriptElement.h"
 
 namespace StoneRing{
 
@@ -30,8 +30,8 @@ namespace StoneRing{
         bool mbRepeatable;
         bool mbRemember;
         eTriggerType meTriggerType;
-        Condition *mpCondition;
-        std::list<Action*> mActions;
+        ScriptElement *mpCondition;
+        ScriptElement *mpScript;
 
     };
 

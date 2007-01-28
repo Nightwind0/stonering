@@ -33,6 +33,23 @@ Element * EditableLevelFactory::createTile() const
   return new EditableMappableObject(pElement);
   }
 */
+
+Element * EditableLevelFactory::createEvent() const
+{
+    return new EditableEvent();
+}
+
+Element * EditableLevelFactory::createScriptElement() const
+{
+    return new EditableScriptElement(false);
+}
+
+Element * EditableLevelFactory::createConditionScript() const
+{
+    return new EditableScriptElement(true);
+}
+
+
 Element * EditableLevelFactory::createTilemap() const
 {
     return new EditableTilemap();
@@ -41,6 +58,78 @@ Element * EditableLevelFactory::createTilemap() const
 Element * EditableLevelFactory::createSpriteRef() const
 {
     return new EditableSpriteRef();
+}
+
+CL_DomElement EditableScriptElement::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement  element(doc, isConditionScript()?"conditionScript":"script");
+
+
+    element.set_attribute("id",mId);
+
+    CL_DomText text ( doc, mScript );
+    text.set_node_value ( mScript );
+
+    element.append_child ( text );
+
+    return element;
+}
+
+void EditableScriptElement::setScript(const std::string &script)
+{
+    mScript = script;
+}
+
+void EditableScriptElement::parse()
+{
+    mpScript = IApplication::getInstance()->loadScript(mId,mScript);
+}
+
+void EditableScriptElement::handleText(const std::string &script)
+{
+    mScript = script;
+}
+
+CL_DomElement EditableEvent::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement  element(doc,"event");
+
+    element.set_attribute("name", mName );
+
+    std::string triggertype;
+
+    switch( meTriggerType )
+    {
+    case STEP:
+        triggertype = "step";
+        break;
+    case TALK:
+        triggertype = "talk";
+        break;
+    case ACT:
+        triggertype = "act";
+        break;
+    }
+
+    element.set_attribute("triggerType", triggertype);
+
+    if(!mbRepeatable) element.set_attribute("repeatable","false");
+
+    if(mbRemember) element.set_attribute("remember","true");
+
+    if(mpCondition)
+    {
+        CL_DomElement e = mpCondition->createDomElement(doc);
+        element.append_child ( e );
+    }
+
+    if(mpScript)
+    {
+        CL_DomElement e = mpScript->createDomElement(doc);
+        element.append_child ( e );
+    }
+
+    return element;
 }
 
 
@@ -226,7 +315,7 @@ void EditableLevel::addRows(int rows)
 
 void EditableLevel::addColumns(int columns)
 {
-    int orig_size = mTileMap.size();
+    int orig_size = static_cast<int>(mTileMap.size());
     mTileMap.resize( orig_size + columns );
 
     for(int x = orig_size-1; x < mTileMap.size(); x++)

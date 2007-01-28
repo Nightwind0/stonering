@@ -1,21 +1,16 @@
 #include "RegularItem.h"
-#include "Action.h"
 
 using namespace StoneRing;
 
 
 RegularItem::RegularItem()
+:mpScript(NULL)
 {
 }
 
 RegularItem::~RegularItem()
 {
-    for( std::list<Action*>::iterator iter = mActions.begin();
-         iter != mActions.end();
-         iter++)
-    {
-        delete *iter;
-    }
+    delete mpScript;
 }
 
 // Execute all actions.
@@ -134,9 +129,9 @@ void RegularItem::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 
 bool RegularItem::handleElement(eElement element, Element * pElement)
 {
-    if(isAction(element))
+    if(element == Element::ESCRIPT)
     {
-        mActions.push_back( dynamic_cast<Action*>(pElement) );
+        mpScript = dynamic_cast<ScriptElement*>(pElement);
         return true;
     }
     else return false;

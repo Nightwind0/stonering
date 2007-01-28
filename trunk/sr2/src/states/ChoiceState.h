@@ -7,8 +7,6 @@
 namespace StoneRing
 {
 
-    class Choice;
-
     class ChoiceState : public State
     {
     public:
@@ -25,7 +23,8 @@ namespace StoneRing
         virtual void start(); 
         virtual void finish(); // Hook to clean up or whatever after being popped
 
-        virtual void init(const std::string &choiceText, const std::vector<std::string> &choices, Choice *pChoice);
+        virtual void init(const std::string &choiceText, const std::vector<std::string> &choices);
+        virtual int getSelection() const { return mnSelection; }
 
     private:
 
@@ -35,12 +34,12 @@ namespace StoneRing
         CL_Surface *mpChoiceOverlay;
         bool mbDone;
         std::vector<std::string> mChoices;
-        Choice * mpChoice;
         CL_Font *mpChoiceFont;
         CL_Font *mpOptionFont;
         CL_Font *mpCurrentOptionFont;
         uint mnCurrentOption;
         uint mnOptionOffset;
+        int mnSelection;
         bool mbDraw;
 
     };

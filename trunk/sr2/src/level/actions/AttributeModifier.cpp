@@ -1,7 +1,7 @@
 #include <cassert>
 #include "AttributeModifier.h"
 #include "CharacterDefinition.h" // for CA stuff
-#include "Condition.h"
+#include "ScriptElement.h"
 #include "IApplication.h"
 
 using namespace StoneRing;
@@ -52,15 +52,10 @@ CL_DomElement  AttributeModifier::createDomElement(CL_DomDocument &doc) const
         break;
     }
 
+    if(mpCondition)
+        element.append_child( mpCondition->createDomElement(doc) );
 
-    for(std::list<Condition*>::const_iterator i = mConditions.begin();
-        i != mConditions.end();
-        i++)
-    {
-        CL_DomElement  e = (*i)->createDomElement(doc);
-        element.append_child(e );
 
-    }
 
     return element;
 
@@ -70,10 +65,9 @@ bool AttributeModifier::handleElement(eElement element, Element *pElement)
 {
     switch(element)
     {
-    case ECONDITION:
+    case ECONDITIONSCRIPT:
     {
-        Condition * pCondition = dynamic_cast<Condition*>(pElement);
-        mConditions.push_back ( pCondition );
+        mpCondition = dynamic_cast<ScriptElement*>(pElement);
         break;
     }
     default:
@@ -125,31 +119,23 @@ void AttributeModifier::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 }
 
 
-AttributeModifier::AttributeModifier ():mAdd(0),meTarget(CURRENT)
+AttributeModifier::AttributeModifier ():mAdd(0),meTarget(CURRENT),mpCondition(NULL)
 {
 }
 
 AttributeModifier::~AttributeModifier()
 {
-    for(std::list<Condition*>::iterator i = mConditions.begin();
-        i != mConditions.end();
-        i++)
-    {
-        delete *i;
-    }
+    delete mpCondition;
 }
 
 
 bool AttributeModifier::applicable() const
 {
-    for( std::list<Condition*>::const_iterator i = mConditions.begin();
-         i != mConditions.end();
-         i++)
+    if(mpCondition)
     {
-        Condition * condition = *i;
-        if( ! condition->evaluate() ) return false;
+        if(!mpCondition->evaluateCondition())
+            return false;
     }
-
 
     ICharacterGroup * pParty = IApplication::getInstance()->getSelectedCharacterGroup();
     ICharacter * pCharacter = NULL;
@@ -213,18 +199,12 @@ bool AttributeModifier::applicable() const
 
 void AttributeModifier::invoke()
 {
-    for( std::list<Condition*>::iterator i = mConditions.begin();
-         i != mConditions.end();
-         i++)
-    {
-        Condition * condition = *i;
-        if( ! condition->evaluate() ) return;
-    }
 
+    if(mpCondition && ! mpCondition->evaluateCondition() )
+        return;
 
     ICharacterGroup * pParty = IApplication::getInstance()->getSelectedCharacterGroup();
     ICharacter * pCharacter = NULL;
-
 
     switch(meTarget)
     {
