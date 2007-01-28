@@ -3499,7 +3499,7 @@
 	<mappableObjects>
 		<mo name="Action" size="small" type="square" xpos="2" ypos="0">
 			<event name="mordusDances" triggerType="step" remember="true">
-				<conditionScript name = "_mordusDance">
+				<conditionScript id = "_mordusDance">
 				return (didEvent("Hobo") and (hasGold(50000) or hasItem("Shoddy Sword")));
 				</conditionScript>
 
