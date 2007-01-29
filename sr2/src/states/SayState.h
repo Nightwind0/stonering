@@ -31,7 +31,11 @@ namespace StoneRing
         std::string mText;
         CL_Rect mSpeakerRect;
         CL_Rect mTextRect;
+        CL_Color mSpeakerBGColor;
+        CL_Color mTextBGColor;
         CL_Surface *mpSayOverlay;
+        uint mX;
+        uint mY;
         std::string::iterator miText;
         bool mbDone;
         uint mnDrawnThisFrame;

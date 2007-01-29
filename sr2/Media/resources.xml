@@ -65,7 +65,64 @@
 </section>
 
 <section name="Overlays">
-	<surface name="say_overlay" file="Images/Overlays/say_overlay10.png"/>
+	<section name = "Say">
+		<surface name="overlay" file="Images/Overlays/say_overlay10.png"/>
+		<integer name="x" value="0"/>
+		<integer name="y" value="300"/>
+		<section name="header">
+			<section name="bgcolor">
+				<integer name="r" value="0"/>
+				<integer name="g" value="0"/>
+				<integer name="b" value="0"/>
+				<integer name="a" value="200"/>
+			</section>
+			<integer name="left" value="16"/>
+			<integer name="top" value="315"/>
+			<integer name="right" value="783" />
+			<integer name="bottom" value="369"/>
+		</section>
+		<section name="text">
+			<section name="bgcolor">
+				<integer name="r" value="0"/>
+				<integer name="g" value="0"/>
+				<integer name="b" value="0"/>
+				<integer name="a" value="200"/>
+			</section>
+			<integer name="left" value="16"/>
+			<integer name="top" value="388"/>
+			<integer name="right" value="783" />
+			<integer name="bottom" value="580"/>
+		</section>
+	</section>
+	<section name = "Choice">
+		<surface name="overlay" file="Images/Overlays/choice_overlay.png"/>
+		<integer name="x" value="0"/>
+		<integer name="y" value="200"/>
+		<section name="header">
+			<section name="bgcolor">
+				<integer name="r" value="0"/>
+				<integer name="g" value="0"/>
+				<integer name="b" value="0"/>
+				<integer name="a" value="0"/>
+			</section>
+			<integer name="left" value="16"/>
+			<integer name="top" value="215"/>
+			<integer name="right" value="783" />
+			<integer name="bottom" value="319"/>
+		</section>
+		<section name="text">
+			<section name="bgcolor">
+				<integer name="r" value="0"/>
+				<integer name="g" value="0"/>
+				<integer name="b" value="0"/>
+				<integer name="a" value="0"/>
+			</section>
+			<integer name="left" value="16"/>
+			<integer name="top" value="308"/>
+			<integer name="right" value="783" />
+			<integer name="bottom" value="580"/>
+		</section>
+	</section>
 </section>
 
 <!-- Can be moved off to a separate resource xml -->

@@ -518,13 +518,10 @@ int Application::main(int argc, char ** argv)
         mAppUtils.loadGameItemsAndSkills("",mpResources);
 
         // Load special overlay for say.
-        mpWindow  = new CL_OpenGLWindow(name, WINDOW_WIDTH, WINDOW_HEIGHT,false,false,3);
+        mpWindow  = new CL_OpenGLWindow(name, WINDOW_WIDTH, WINDOW_HEIGHT,false,false,2);
 
-       
-       
         //for(int i =0; i < mpWindow->get_buffer_count(); i++)
         //  mpWindow->get_buffer(i).to_format(CL_PixelFormat(24,0,0,0,0,false,0,pixelformat_rgba));
-
 
         CL_Display::clear();
             
