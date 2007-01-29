@@ -504,7 +504,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\AppUtils.h"
+				RelativePath="..\src\core\AppUtils.h"
 				>
 			</File>
 			<File

@@ -80,7 +80,7 @@ public:
     virtual ItemManager * getItemManager()  { static EditorItemManager itemManager; return &itemManager; }
     virtual AbilityFactory * getAbilityFactory() const { static AbilityFactory abilityFactory; return &abilityFactory; }
     virtual AbilityManager * getAbilityManager()  { static AbilityManager abilityManager; return &abilityManager; }
-    
+    virtual std::vector<IFactory*> & getFactories() { return mFactories; }
     virtual int getScreenWidth()const;
     virtual int getScreenHeight()const;
 
@@ -135,6 +135,7 @@ private:
     EditableLevel *mpLevel;
     AppUtils mAppUtils;
     SteelInterpreter mInterpreter;
+    std::vector<IFactory*> mFactories;
 };
 
 

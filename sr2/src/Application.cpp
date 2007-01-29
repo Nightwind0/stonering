@@ -180,24 +180,54 @@ SteelType Application::doEvent(const std::string &event, bool bRemember)
 
 SteelType Application::giveNamedItem(const std::string &item, uint count)
 {
+    std::ostringstream os;
     ItemManager * pMgr = IApplication::getInstance()->getItemManager();
     assert ( pMgr );
     mpParty->giveItem ( pMgr->getNamedItem(item), count );
+
+    os << "You received " << item;
+
+    if(count > 1)
+        os << " x" << count;
+
+    say("Item Received",os.str());
 
     return SteelType();
 }
 
 SteelType Application::takeNamedItem(const std::string  &item, uint count)
 {
+    std::ostringstream os;
     ItemManager * pMgr = IApplication::getInstance()->getItemManager();
     SteelType val;
     val.set ( mpParty->giveItem ( pMgr->getNamedItem(item), count ) );
+
+    os << "Gave up " << item;
+
+    if(count > 1)
+        os << " x" << count;
+
+    say("Item Lost",os.str());
+
     return val;
 }
 
 SteelType Application::giveGold(int amount)
 {
+    std::ostringstream os;
     mpParty->giveGold(amount);
+
+    if(amount > 0)
+    {
+        os << "You received " << amount << ' ' << mGold << '.';
+        say(mGold, os.str());
+    }
+    else if ( amount > 0)
+    {
+        os << "Lost " << amount << ' ' << mGold << '.';
+        say(mGold,os.str());
+    }
+
     return SteelType();
 }
 
@@ -264,12 +294,16 @@ Application::Application():mpParty(0),mpLevelFactory(0),
 
     // We want the generic level factory.
     mpLevelFactory = new LevelFactory();
-
     mpItemFactory = new ItemFactory();
-
     mpAbilityFactory = new AbilityFactory();
-
     mpCharacterFactory = new CharacterFactory();
+
+    mFactories.push_back ( mpLevelFactory );
+    mFactories.push_back ( mpItemFactory );
+    mFactories.push_back ( mpAbilityFactory );
+    mFactories.push_back ( mpCharacterFactory );
+       
+
 }
 
 Application::~Application()
@@ -456,13 +490,13 @@ void Application::run()
 
 int Application::main(int argc, char ** argv)
 {
-  
+ 
 #ifndef NDEBUG
 
     CL_ConsoleWindow console("Stone Ring Debug",80,1000);
     console.redirect_stdio();
 #endif
-        
+ 
     setupClanLib();
 
     //CL_Display::get_buffer()
@@ -477,7 +511,7 @@ int Application::main(int argc, char ** argv)
 #else
         std::string name = CL_String::load("Configuration/name", mpResources) + " (DEBUG)";
 #endif
-
+        mGold = CL_String::load("Game/Currency",mpResources);
         std::string startinglevel = CL_String::load("Game/StartLevel",mpResources);
 
         
@@ -487,22 +521,7 @@ int Application::main(int argc, char ** argv)
         mpWindow  = new CL_OpenGLWindow(name, WINDOW_WIDTH, WINDOW_HEIGHT,false,false,3);
 
        
-        //mpWindow->set_buffer_count(3);
-
-#ifndef NDEBUG
-        std::cout << "Back Buffer Depth" <<mpWindow->get_back_buffer().get_format().get_depth() << std::endl;
-        std::cout << "Front Buffer Depth" << mpWindow->get_front_buffer().get_format().get_depth() << std::endl;
-        std::cout << "Back Buffer Red" << std::hex << mpWindow->get_back_buffer().get_format().get_red_mask() << std::endl;
-        std::cout << "Front Buffer Red" << std::hex << mpWindow->get_front_buffer().get_format().get_red_mask() << std::endl;
-        std::cout << "Back Buffer Green" << std::hex << mpWindow->get_back_buffer().get_format().get_green_mask() << std::endl;
-        std::cout << "Front Buffer Green" << std::hex << mpWindow->get_front_buffer().get_format().get_green_mask() << std::endl;
-        std::cout << "Back Buffer Blue" << std::hex << mpWindow->get_back_buffer().get_format().get_blue_mask() << std::endl;
-        std::cout << "Front Buffer Blue" << std::hex << mpWindow->get_front_buffer().get_format().get_blue_mask() << std::endl;
-        std::cout << "Back Buffer Alpha" << std::hex << mpWindow->get_back_buffer().get_format().get_alpha_mask() << std::endl;
-        std::cout << "Front Buffer Alpha" << std::hex << mpWindow->get_front_buffer().get_format().get_alpha_mask() << std::endl;
-        std::cout << std::dec;
-#endif
-        
+       
         //for(int i =0; i < mpWindow->get_buffer_count(); i++)
         //  mpWindow->get_buffer(i).to_format(CL_PixelFormat(24,0,0,0,0,false,0,pixelformat_rgba));
 
