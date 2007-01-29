@@ -3533,7 +3533,7 @@
 			<spriteRef type="fourway">
 				Animals/Cat2
 			</spriteRef>
-			<event name="Cat3Go" triggerType="talk">
+			<event name="Cat3Go" triggerType="talk" >
 				<conditionScript id="Cat3Go_c">
 				return hasItem("Octavia Key",1);
 				</conditionScript>

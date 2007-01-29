@@ -2,8 +2,8 @@
 #include "IApplication.h"
 #include "GraphicsManager.h"
 
-StoneRing::SayState::SayState():mSpeakerRect(16,315,783,369), 
-                                mTextRect(16,388,783,580), mbDone(false),mpSayOverlay(NULL)
+StoneRing::SayState::SayState()
+:mbDone(false),mpSayOverlay(NULL)
 
 {
 
@@ -56,10 +56,10 @@ void StoneRing::SayState::draw(const CL_Rect &screenRect,CL_GraphicContext * pGC
     speakerTextRect.top += ( mSpeakerRect.get_height() - pSpeakerFont->get_height()) /2;
     speakerTextRect.bottom += ( mSpeakerRect.get_height() - pSpeakerFont->get_height()) /2;
 
-    pGC->fill_rect( mSpeakerRect, CL_Color(255,255,255,200) );
-    pGC->fill_rect( mTextRect, CL_Color(0,0,0,128) ) ;
+    pGC->fill_rect( mSpeakerRect, mSpeakerBGColor );
+    pGC->fill_rect( mTextRect, mTextBGColor ) ;
 
-    mpSayOverlay->draw(0,300, pGC);
+    mpSayOverlay->draw(mX,mY, pGC);
             
 
     if(miText != mText.end())
@@ -93,12 +93,38 @@ void StoneRing::SayState::mappableObjectMoveHook()
 
 void StoneRing::SayState::start()
 {
+    const std::string resource = "Overlays/Say/";
+    IApplication * pApp = IApplication::getInstance();
+    CL_ResourceManager *pResources = pApp->getResources();
 
     mbDone = false;
     mnTotalDrawn = mnDrawnThisFrame = 0;
 
     if(!mpSayOverlay)
-        mpSayOverlay = new CL_Surface("Overlays/say_overlay", IApplication::getInstance()->getResources() );
+        mpSayOverlay = new CL_Surface(resource + "overlay", pResources);
+
+    mSpeakerRect.top = CL_Integer(resource + "header/top", pResources);
+    mSpeakerRect.left = CL_Integer(resource + "header/left", pResources);
+    mSpeakerRect.right = CL_Integer(resource + "header/right", pResources);
+    mSpeakerRect.bottom = CL_Integer(resource + "header/bottom", pResources);
+
+    mTextRect.top = CL_Integer(resource + "text/top", pResources);
+    mTextRect.left = CL_Integer(resource + "text/left", pResources);
+    mTextRect.right = CL_Integer(resource + "text/right", pResources);
+    mTextRect.bottom = CL_Integer(resource + "text/bottom", pResources);
+
+    mSpeakerBGColor.set_red (CL_Integer(resource + "header/bgcolor/r", pResources));
+    mSpeakerBGColor.set_green (CL_Integer(resource + "header/bgcolor/g", pResources));
+    mSpeakerBGColor.set_blue (CL_Integer(resource + "header/bgcolor/b", pResources));
+    mSpeakerBGColor.set_alpha (CL_Integer(resource + "header/bgcolor/a", pResources));
+
+    mTextBGColor.set_red (CL_Integer(resource + "text/bgcolor/r", pResources));
+    mTextBGColor.set_green (CL_Integer(resource + "text/bgcolor/g", pResources));
+    mTextBGColor.set_blue (CL_Integer(resource + "text/bgcolor/b", pResources));
+    mTextBGColor.set_alpha (CL_Integer(resource + "text/bgcolor/a", pResources));
+
+    mX = CL_Integer(resource + "x", pResources);
+    mY = CL_Integer(resource + "y", pResources);
 }
 
 void StoneRing::SayState::finish()

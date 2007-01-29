@@ -32,7 +32,7 @@ void StoneRing::ChoiceState::handleKeyUp(const CL_InputEvent &key)
     case CL_KEY_SPACE:
         // Select current option.
         mbDraw = false;
-        mnSelection = mnCurrentOption;
+       // mpChoice->chooseOption(mnCurrentOption);
         mbDone = true;
         break;
     case CL_KEY_DOWN:
@@ -69,37 +69,25 @@ void StoneRing::ChoiceState::draw(const CL_Rect &screenRect,CL_GraphicContext * 
 {
     if(!mbDraw) return;
 
-    CL_Point choiceDrawPoint(screenRect.left, screenRect.top);
-    CL_Size choiceDimensions = mpChoiceFont->get_size(mText,CL_Size( screenRect.get_width(), screenRect.get_height() / 2));
+    pGC->fill_rect( mSpeakerRect, mSpeakerBGColor );
+    pGC->fill_rect( mTextRect, mTextBGColor ) ;
 
-    if(choiceDimensions.width < screenRect.get_width())
-        choiceDrawPoint.x += (screenRect.get_width() - choiceDimensions.width) /2;
-    if(choiceDimensions.height < screenRect.get_height())
-        choiceDrawPoint.y += ((screenRect.get_height() /2) - choiceDimensions.height) /2;
-
-    pGC->fill_rect(screenRect,CL_Color(0,0,0,200));
-
-
-
-    // Draw the Choice text
-    mpChoiceFont->draw(choiceDrawPoint.x,choiceDrawPoint.y, mText, pGC);
-    
-    uint optionsPerPage = (screenRect.get_height() /2) / (mpOptionFont->get_height() + mpOptionFont->get_height_offset()) ;
+    mpChoiceOverlay->draw(mX,mY,pGC);
+    mpChoiceFont->draw(mSpeakerRect,mText,pGC);
 
     CL_Font * pLineFont = NULL;
 
+    uint optionsPerPage = 0;
 
     // Draw the options
     for(uint i=0;i< optionsPerPage; i++)
     {
-    
         // Don't paint more options than there are
         if(i + mnOptionOffset >= mChoices.size()) break;
     
         if(i + mnOptionOffset == mnCurrentOption)
         {
             pLineFont = mpCurrentOptionFont;
-        
         }
         else
         {
@@ -110,7 +98,6 @@ void StoneRing::ChoiceState::draw(const CL_Rect &screenRect,CL_GraphicContext * 
                          mChoices[i + mnOptionOffset], pGC);
     
     }
-    
     
 }
 
@@ -131,6 +118,9 @@ void StoneRing::ChoiceState::start()
 
     mbDone = false;
     mbDraw = true;
+    std::string resource = "Overlays/Choice/";
+    IApplication *pApp = IApplication::getInstance();
+    CL_ResourceManager *pResources = pApp->getResources();
 
     if(!mpChoiceFont)
         mpChoiceFont = GraphicsManager::getInstance()->getFont( GraphicsManager::FONT_CHOICE );
@@ -140,6 +130,32 @@ void StoneRing::ChoiceState::start()
     
     if(!mpCurrentOptionFont)
         mpCurrentOptionFont = GraphicsManager::getInstance()->getFont( GraphicsManager::FONT_CURRENT_OPTION );
+
+    if(!mpChoiceOverlay)
+        mpChoiceOverlay = new CL_Surface("Overlays/Choice/overlay", pResources );
+
+    mSpeakerRect.top = CL_Integer(resource + "header/top", pResources);
+    mSpeakerRect.left = CL_Integer(resource + "header/left", pResources);
+    mSpeakerRect.right = CL_Integer(resource + "header/right", pResources);
+    mSpeakerRect.bottom = CL_Integer(resource + "header/bottom", pResources);
+
+    mTextRect.top = CL_Integer(resource + "text/top", pResources);
+    mTextRect.left = CL_Integer(resource + "text/left", pResources);
+    mTextRect.right = CL_Integer(resource + "text/right", pResources);
+    mTextRect.bottom = CL_Integer(resource + "text/bottom", pResources);
+
+    mSpeakerBGColor.set_red (CL_Integer(resource + "header/bgcolor/r", pResources));
+    mSpeakerBGColor.set_green (CL_Integer(resource + "header/bgcolor/g", pResources));
+    mSpeakerBGColor.set_blue (CL_Integer(resource + "header/bgcolor/b", pResources));
+    mSpeakerBGColor.set_alpha (CL_Integer(resource + "header/bgcolor/a", pResources));
+
+    mTextBGColor.set_red (CL_Integer(resource + "text/bgcolor/r", pResources));
+    mTextBGColor.set_green (CL_Integer(resource + "text/bgcolor/g", pResources));
+    mTextBGColor.set_blue (CL_Integer(resource + "text/bgcolor/b", pResources));
+    mTextBGColor.set_alpha (CL_Integer(resource + "text/bgcolor/a", pResources));
+
+    mX = CL_Integer(resource + "x", pResources);
+    mY = CL_Integer(resource + "y", pResources);
 
     mnCurrentOption = 0;
     mnOptionOffset = 0;
