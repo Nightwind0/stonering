@@ -37,6 +37,7 @@ namespace StoneRing
         virtual AbilityFactory * getAbilityFactory() const = 0;
         virtual AbilityManager * getAbilityManager() = 0;
         virtual ItemManager * getItemManager() = 0;
+        virtual std::vector<IFactory*> & getFactories() = 0;
         static IApplication * getInstance();
         virtual void pop(bool popAll)=0;
 

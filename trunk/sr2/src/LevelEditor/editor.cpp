@@ -4,6 +4,7 @@
 #include "editor.h"
 #include "IApplication.h"
 #include "EditableLevel.h"
+#include "CharacterFactory.h"
 
 
 using namespace StoneRing;
@@ -107,6 +108,11 @@ int EditorMain::main(int argc, char **argv)
     // Use printf or cout to display some text in your program
     CL_ConsoleWindow console("Console");
     console.redirect_stdio();
+
+    mFactories.push_back ( getAbilityFactory() );
+    mFactories.push_back ( getItemFactory() );
+    mFactories.push_back ( getCharacterFactory() );
+    mFactories.push_back ( getLevelFactory() );
 
     try
     {

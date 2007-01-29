@@ -42,6 +42,7 @@ namespace StoneRing
         virtual CharacterFactory * getCharacterFactory() const;
         virtual AbilityManager * getAbilityManager();
         virtual ItemManager * getItemManager();
+        virtual std::vector<IFactory*> & getFactories() { return mFactories; }
         virtual CL_Rect getDisplayRect() const;
 
         virtual void requestRedraw(const State *pState);
@@ -106,6 +107,8 @@ namespace StoneRing
         bool mbDone;
         CL_ResourceManager * mpResources;
         CL_DisplayWindow *mpWindow;
+
+        std::string mGold;
         //CL_Timer *mpMovementTimer;
         //CL_Mutex mMovementMutex;
 
@@ -113,6 +116,7 @@ namespace StoneRing
         MapState mMapState;
         SayState mSayState;
         std::vector<State*> mStates;
+        std::vector<IFactory*> mFactories;
         AppUtils mAppUtils;
       
     };

@@ -243,14 +243,8 @@ void Element::load(CL_DomElement * pDomElement)
 {
     const int n = sizeof(pszElementNames) / sizeof(const char *);
 
-    std::vector<IFactory*> factories;
+    std::vector<IFactory*> &factories = IApplication::getInstance()->getFactories();
 
-    IFactory * pItemFactory = IApplication::getInstance()->getItemFactory();
-
-    factories.push_back(pItemFactory);
-    factories.push_back(IApplication::getInstance()->getAbilityFactory());
-    factories.push_back(IApplication::getInstance()->getLevelFactory());
-    factories.push_back(IApplication::getInstance()->getCharacterFactory());
     CL_DomNamedNodeMap attributes = pDomElement->get_attributes();
 
                 
