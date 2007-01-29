@@ -42,14 +42,14 @@ void SteelInterpreter::addFunction(const std::string &name,
 AstScript * SteelInterpreter::prebuildAst(const std::string &script_name,
                                           const std::string &script)
 {
-    m_parser.setBuffer(script.c_str(),script_name);
-    if(m_parser.Parse() != SteelParser::PRC_SUCCESS)
+    SteelParser parser;
+    parser.setBuffer(script.c_str(),script_name);
+    if(parser.Parse() != SteelParser::PRC_SUCCESS)
     {
-        AstBase * pAst = static_cast<AstBase*>( m_parser.GetAcceptedToken() );
+        AstBase * pAst = static_cast<AstBase*>( parser.GetAcceptedToken() );
 
         if( pAst != NULL)
         {
-            m_parser.ClearAcceptedToken();
             throw SteelException(SteelException::PARSING,
                                  pAst->GetLine(),
                                  pAst->GetScript(),
@@ -57,13 +57,14 @@ AstScript * SteelInterpreter::prebuildAst(const std::string &script_name,
         }
         else
         {
-            return NULL;
+            throw SteelException(SteelException::PARSING,
+                                 0,script_name,"Syntax error and no ast was built.");
         }
                  
     }
 
-    AstScript *pScript = static_cast<AstScript*>( m_parser.GetAcceptedToken() );
-    m_parser.ClearAcceptedToken();
+    AstScript *pScript = static_cast<AstScript*>( parser.GetAcceptedToken() );
+
     return pScript;
 }
 
@@ -77,14 +78,14 @@ SteelType SteelInterpreter::runAst(AstScript *pScript)
 
 SteelType SteelInterpreter::run(const std::string &name,const std::string &script)
 {
-    m_parser.setBuffer(script.c_str(),name);
-    if(m_parser.Parse() != SteelParser::PRC_SUCCESS)
+    SteelParser parser;
+    parser.setBuffer(script.c_str(),name);
+    if(parser.Parse() != SteelParser::PRC_SUCCESS)
     {
-        AstBase * pAst = static_cast<AstBase*>( m_parser.GetAcceptedToken() );
+        AstBase * pAst = static_cast<AstBase*>( parser.GetAcceptedToken() );
 
         if( pAst != NULL)
         {
-            m_parser.ClearAcceptedToken();
             throw SteelException(SteelException::PARSING,
                                  pAst->GetLine(),
                                  pAst->GetScript(),
@@ -101,13 +102,13 @@ SteelType SteelInterpreter::run(const std::string &name,const std::string &scrip
                  
     }
 
-    AstScript *pScript = static_cast<AstScript*>( m_parser.GetAcceptedToken() );
+    AstScript *pScript = static_cast<AstScript*>( parser.GetAcceptedToken() );
 
     pScript->executeScript(this);
     
     delete pScript;
 
-    m_parser.ClearAcceptedToken();
+    parser.ClearAcceptedToken();
 
     return getReturn();
 }

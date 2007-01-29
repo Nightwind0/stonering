@@ -63,8 +63,6 @@ private:
 
     SteelType m_return;
 
-    SteelParser m_parser;
-
 private:
     // Bifs
     // Push on the FRONT of the array

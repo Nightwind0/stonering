@@ -63,7 +63,7 @@ SteelType Application::playSound(const std::string &sound)
     std::cout << "Playing sound " << sound << std::endl;
 #endif
 
-   return SteelType();
+    return SteelType();
 }
 SteelType Application::loadLevel(const std::string &level, uint startX, uint startY)
 {
@@ -147,14 +147,14 @@ SteelType Application::invokeShop(const std::string &shoptype)
 }
 
 
-SteelType Application::getGold() const
+SteelType Application::getGold()
 {
     SteelType val;
     val.set ( mpParty->getGold() );
     return val;
 }
 
-SteelType Application::hasItem(const std::string &item, uint count) const
+SteelType Application::hasItem(const std::string &item, uint count)
 {
     ItemManager * pMgr = IApplication::getInstance()->getItemManager();
     assert ( pMgr );
@@ -164,7 +164,7 @@ SteelType Application::hasItem(const std::string &item, uint count) const
     return var;
 }
 
-SteelType Application::didEvent(const std::string &event) const
+SteelType Application::didEvent(const std::string &event)
 {
     SteelType var;
     var.set ( mpParty->didEvent(event ) );
@@ -342,27 +342,52 @@ SteelType Application::runScript(AstScript * pScript)
 void Application::registerSteelFunctions()
 {
     mInterpreter.addFunction("say",
-        new SteelFunctor2Arg<Application,const std::string&,const std::string&>
-        (this,&Application::say));
+                             new SteelFunctor2Arg<Application,const std::string&,const std::string&>
+                             (this,&Application::say));
     mInterpreter.addFunction("playScene",
-        new SteelFunctor1Arg<Application,const std::string&>
-        (this,&Application::playScene));
+                             new SteelFunctor1Arg<Application,const std::string&>
+                             (this,&Application::playScene));
     mInterpreter.addFunction("playSound",
-        new SteelFunctor1Arg<Application,const std::string&>
-        (this,&Application::playSound));
+                             new SteelFunctor1Arg<Application,const std::string&>
+                             (this,&Application::playSound));
     mInterpreter.addFunction("loadLevel",
-        new SteelFunctor3Arg<Application,const std::string&,uint,uint>
-        (this,&Application::loadLevel));
+                             new SteelFunctor3Arg<Application,const std::string&,uint,uint>
+                             (this,&Application::loadLevel));
     mInterpreter.addFunction("startBattle",
-        new SteelFunctor3Arg<Application,const std::string &,uint,bool>
-        (this,&Application::startBattle));
+                             new SteelFunctor3Arg<Application,const std::string &,uint,bool>
+                             (this,&Application::startBattle));
     mInterpreter.addFunction("pause",
-        new SteelFunctor1Arg<Application,uint>(this,&Application::pause));
+                             new SteelFunctor1Arg<Application,uint>(this,&Application::pause));
     mInterpreter.addFunction("choice", 
-        new SteelFunctor2Arg<Application,const std::string&, const std::vector<SteelType> &>
-        (this,&Application::choice));
+                             new SteelFunctor2Arg<Application,const std::string&, const std::vector<SteelType> &>
+                             (this,&Application::choice));
     mInterpreter.addFunction("pop",
-        new SteelFunctor1Arg<Application,bool>(this,&Application::pop_));
+                             new SteelFunctor1Arg<Application,bool>(this,&Application::pop_));
+    mInterpreter.addFunction("giveNamedItem",
+                             new SteelFunctor2Arg<Application,const std::string &,uint>
+                             (this,&Application::giveNamedItem));
+    mInterpreter.addFunction("takeNamedItem",
+                             new SteelFunctor2Arg<Application,const std::string &,uint>
+                             (this,&Application::takeNamedItem));
+    mInterpreter.addFunction("getGold",
+                             new SteelFunctorNoArgs<Application>(this,&Application::getGold));
+    mInterpreter.addFunction("hasItem",
+                             new SteelFunctor2Arg<Application,const std::string &,uint>
+                             (this,&Application::hasItem));
+    mInterpreter.addFunction("didEvent",
+                             new SteelFunctor1Arg<Application,const std::string &>
+                             (this,&Application::didEvent));
+    mInterpreter.addFunction("doEvent",
+                             new SteelFunctor2Arg<Application,const std::string &, bool>
+                             (this,&Application::doEvent));
+    mInterpreter.addFunction("giveGold",
+                             new SteelFunctor1Arg<Application,int>
+                             (this,&Application::giveGold));
+
+
+//        SteelType hasGeneratedWeapon(const std::string &wepclass, const std::string &webtype);
+//       SteelType hasGeneratedArmor(const std::string &armclass, const std::string &armtype);
+
 }
 
 void Application::draw()
@@ -438,13 +463,13 @@ int Application::main(int argc, char ** argv)
     console.redirect_stdio();
 #endif
         
+    setupClanLib();
+
+    //CL_Display::get_buffer()
     try
     {
+        registerSteelFunctions();
 
-        setupClanLib();
-
-        //CL_Display::get_buffer()
-                
         mpResources = new CL_ResourceManager ( "Media/resources.xml" );
 
 #ifdef NDEBUG
@@ -454,12 +479,14 @@ int Application::main(int argc, char ** argv)
 #endif
 
         std::string startinglevel = CL_String::load("Game/StartLevel",mpResources);
+
+        
         mAppUtils.loadGameItemsAndSkills("",mpResources);
 
         // Load special overlay for say.
-
-
         mpWindow  = new CL_OpenGLWindow(name, WINDOW_WIDTH, WINDOW_HEIGHT,false,false,3);
+
+       
         //mpWindow->set_buffer_count(3);
 
 #ifndef NDEBUG
@@ -480,54 +507,78 @@ int Application::main(int argc, char ** argv)
         //  mpWindow->get_buffer(i).to_format(CL_PixelFormat(24,0,0,0,0,false,0,pixelformat_rgba));
 
 
-    
         CL_Display::clear();
-
+            
         showRechargeableOnionSplash();
         showIntro();
-
+            
         Level * pLevel = new Level(startinglevel, mpResources);
-
+            
         mMapState.setDimensions(getDisplayRect());
         mMapState.pushLevel ( pLevel, 1,1 );  
-      
-
+            
         mStates.push_back( &mMapState );
-
-        CL_Slot slot_quit = mpWindow->sig_window_close().connect(this, &Application::onSignalQuit);
-
-        CL_Slot slot_key_down = CL_Keyboard::sig_key_down().connect(this, &Application::onSignalKeyDown);
-
-        CL_Slot slot_key_up  = CL_Keyboard::sig_key_up().connect(this, &Application::onSignalKeyUp);
-
-        CL_Display::clear();
-        
-        static int start_time = CL_System::get_time();
-        static long fpscounter = 0;
-
-        while(mStates.size())
-            run();
-                
-#ifndef NDEBUG
-        console.display_close_message();
-#endif
-
-                
-        teardownClanLib();
-    }
-    catch(SteelException ex)
-    {
-        showError ( ex.getLine(), ex.getScript(), ex.getMessage() );
     }
     catch(CL_Error error)
     {
         std::cerr << "Exception Caught!!" << std::endl;
         std::cerr << error.message.c_str() << std::endl;
-
+            
 #ifndef NDEBUG
         console.display_close_message();
 #endif
-        
+        return 1;
+    }
+    catch(SteelException ex)
+    {
+        std::cerr << "Steel Exception on line " << ex.getLine() 
+                  << " of " << ex.getScript() << ':' << ex.getMessage() << std::endl;
+        console.display_close_message();
+        return 1;
+    }
+
+              
+    CL_Slot slot_quit = mpWindow->sig_window_close().connect(this, &Application::onSignalQuit);
+    CL_Slot slot_key_down = CL_Keyboard::sig_key_down().connect(this, &Application::onSignalKeyDown);
+    CL_Slot slot_key_up  = CL_Keyboard::sig_key_up().connect(this, &Application::onSignalKeyUp);
+
+
+    try
+    {
+
+        CL_Display::clear();
+            
+        static int start_time = CL_System::get_time();
+        static long fpscounter = 0;
+            
+        while(mStates.size())
+            run();
+            
+#ifndef NDEBUG
+        console.display_close_message();
+#endif
+            
+            
+        teardownClanLib();
+    }
+    catch(SteelException ex)
+    {
+        while(mStates.size()) 
+            mStates.pop_back();
+
+        showError ( ex.getLine(), ex.getScript(), ex.getMessage() );
+            
+
+    }
+    catch(CL_Error error)
+    {
+        std::cerr << "Exception Caught!!" << std::endl;
+        std::cerr << error.message.c_str() << std::endl;
+            
+#ifndef NDEBUG
+        console.display_close_message();
+#endif
+            
     }
         
 
@@ -551,16 +602,20 @@ void Application::showIntro()
 
 
 
-    while(!CL_Keyboard::get_keycode(CL_KEY_ESCAPE) && !CL_Keyboard::get_keycode(CL_KEY_ENTER) && !CL_Keyboard::get_keycode( CL_KEY_SPACE))
+    while(!CL_Keyboard::get_keycode(CL_KEY_ENTER))
     {
 
         background.draw(0,0);
         splash.draw(static_cast<float>(displayX),
-            static_cast<float>(displayY));
+                    static_cast<float>(displayY));
 
         CL_Display::flip();
         CL_System::keep_alive();
     }
+
+    // Wait for them to release the key before moving on.
+    while(CL_Keyboard::get_keycode(CL_KEY_ENTER)) CL_System::keep_alive();
+
         
 
 }

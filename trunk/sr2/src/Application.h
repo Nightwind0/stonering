@@ -63,11 +63,11 @@ namespace StoneRing
         SteelType choice(const std::string &choiceText, const std::vector<SteelType> &choices);
         SteelType pop_(bool bAll);
         SteelType giveNamedItem(const std::string &item, uint count);
-        SteelType getGold() const;
-        SteelType hasItem(const std::string&name, uint count)const;
+        SteelType getGold();
+        SteelType hasItem(const std::string&name, uint count);
         SteelType hasGeneratedWeapon(const std::string &wepclass, const std::string &webtype);
         SteelType hasGeneratedArmor(const std::string &armclass, const std::string &armtype);
-        SteelType didEvent(const std::string &event) const;
+        SteelType didEvent(const std::string &event);
         SteelType doEvent(const std::string &event, bool bRemember);
         SteelType takeNamedItem(const std::string &item, uint count);
         // You can also take
