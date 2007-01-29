@@ -3500,9 +3500,11 @@
 		<mo name="Action" size="small" type="square" xpos="2" ypos="0">
 			<event name="mordusDances" triggerType="step" remember="true">
 				<conditionScript id = "_mordusDance">
-				return (didEvent("Hobo") and (hasGold(50000) or hasItem("Shoddy Sword")));
-				</conditionScript>
-
+                                return didEvent("Awesome") and (hasItem("Awesome Sword",1) or hasGold(50000));
+			        </conditionScript>
+                                <script id="mordusDancing">
+                                playScene("Mordus Dancing.");
+                                </script>
 			</event>
 		</mo>
 		<mo name="Presence" size="small" type="square" xpos="3" ypos="3">
@@ -3533,7 +3535,7 @@
 			</spriteRef>
 			<event name="Cat3Go" triggerType="talk">
 				<conditionScript id="Cat3Go_c">
-				return hasItem("Octavia Key");
+				return hasItem("Octavia Key",1);
 				</conditionScript>
 				<script id="cat3go">
 				say("Leroy","I like you.");
@@ -3541,11 +3543,11 @@
 			</event>
 			<event name="CatChoice" triggerType="talk" repeatable="false" remember="true">
 				<script id="CatChoice">
-					var decision = choice( "Who is your Favorite cat", "You" : "The other cat");
-					if(decision == 0)
+					var $decision = choice( "Who is your Favorite cat", ("You" : "The other cat"));
+					if($decision == 0)
 					{
 						say("Leroy","Thank you! Take this key.");
-						giveNamedItem("Octavia Key");
+						giveNamedItem("Octavia Key",1);
 					}
 					else
 					{
@@ -3557,7 +3559,7 @@
 		</mo>
 		<mo name="DoorRLock" size="medium" type="square" xpos="8" ypos="9" solid="true">
 			<conditionScript id="hasKey">
-			return !hasItem("Octavia Key");
+			return not hasItem("Octavia Key",1);
 			</conditionScript>
 			<event name="octaviaLock" triggerType="talk">
 				<script id="talkLock">
@@ -3568,7 +3570,7 @@
 		<mo name="DoorR" size="medium" type="door" xpos="8" ypos="9">
 			<event name="octaviaLock" triggerType="step" remember="false">
 				<conditionScript id="unlock">
-					return hasItem("Octavia Key");
+					return hasItem("Octavia Key",1);
 				</conditionScript>
 				<script id = "opendoor">
 					loadLevel("octaviaInn",4,8);
