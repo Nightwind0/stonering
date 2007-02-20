@@ -144,6 +144,26 @@ WeaponRef GeneratedWeapon::generateWeaponRef() const
     return WeaponRef( getWeaponType(), getWeaponClass(), getSpellRef(), getRuneType() );
 }
 
+void GeneratedWeapon::executeScript()
+{
+    mpClass->executeScript();
+}
+
+bool GeneratedWeapon::equipCondition()
+{
+    return mpClass->equipCondition();
+}
+
+void GeneratedWeapon::onEquipScript()
+{
+    return mpClass->onEquipScript();
+}
+
+void GeneratedWeapon::onUnequipScript()
+{
+    return mpClass->onUnequipScript();
+}
+
 void GeneratedWeapon::generate( WeaponType* pType, WeaponClass * pClass, 
                                 SpellRef *pSpell , RuneType *pRune)
 {

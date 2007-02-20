@@ -13,6 +13,7 @@
 #include "SayState.h"
 #include "State.h"
 #include "SteelInterpreter.h"
+#include "ElementFactory.h"
 
 
 namespace StoneRing 
@@ -36,13 +37,9 @@ namespace StoneRing
         virtual void pop(bool);
         virtual IParty * getParty() const;
         virtual ICharacterGroup * getSelectedCharacterGroup() const;
-        virtual LevelFactory *getLevelFactory() const;
-        virtual ItemFactory * getItemFactory() const ;
-        virtual AbilityFactory * getAbilityFactory() const ;
-        virtual CharacterFactory * getCharacterFactory() const;
         virtual AbilityManager * getAbilityManager();
         virtual ItemManager * getItemManager();
-        virtual std::vector<IFactory*> & getFactories() { return mFactories; }
+        virtual IFactory * getElementFactory() { return &mElementFactory; }
         virtual CL_Rect getDisplayRect() const;
 
         virtual void requestRedraw(const State *pState);
@@ -97,13 +94,10 @@ namespace StoneRing
         int calc_fps(int);
 
         Party *mpParty;
-        LevelFactory * mpLevelFactory;
-        ItemFactory * mpItemFactory;
-        CharacterFactory * mpCharacterFactory;
         ItemManager mItemManager;
         AbilityManager mAbilityManager;
-        AbilityFactory * mpAbilityFactory;
         SteelInterpreter mInterpreter;
+        ElementFactory mElementFactory;
         bool mbDone;
         CL_ResourceManager * mpResources;
         CL_DisplayWindow *mpWindow;

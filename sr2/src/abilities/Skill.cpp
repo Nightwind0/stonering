@@ -1,13 +1,11 @@
 
 #include "Element.h"
-#include "Effect.h"
 #include <ClanLib/core.h>
 #include "Skill.h"
 #include "AbilityFactory.h"
 #include "IApplication.h"
 #include "Animation.h"
 #include "Level.h"
-#include "AttributeModifier.h"
 #include "SpellRef.h"
 
 using namespace StoneRing;
@@ -29,15 +27,14 @@ bool StoneRing::Skill::handleElement(eElement element, Element * pElement)
     case ESPELLREF:
         mpSpellRef = dynamic_cast<SpellRef*>(pElement);
         break;
-    case EANIMATION:
-    case EDOWEAPONDAMAGE:
-    case EDOMAGICDAMAGE:
-    case EDOSTATUSEFFECT:
-    case EDOATTACK:
-        mEffects.push_back(dynamic_cast<Effect*>(pElement));
+    case EONINVOKE:
+        mpOnInvoke = dynamic_cast<ScriptElement*>(pElement);
         break;
-    case EATTRIBUTEMODIFIER:
-        mAttributeModifiers.push_back(dynamic_cast<AttributeModifier*>(pElement));
+    case EONREMOVE:
+        mpOnRemove = dynamic_cast<ScriptElement*>(pElement);
+        break;
+    case ECONDITIONSCRIPT:
+        mpCondition = dynamic_cast<ScriptElement*>(pElement);
         break;
     case EPREREQSKILLREF:
         mPreReqs.push_back(dynamic_cast<SkillRef*>(pElement));
@@ -49,40 +46,20 @@ bool StoneRing::Skill::handleElement(eElement element, Element * pElement)
     return true;
 }
 
-StoneRing::Skill::Skill():mnBp(0), mnSp(0),mnMinLevel(0),mpSpellRef(NULL)
+StoneRing::Skill::Skill():mnBp(0), mnSp(0),mnMinLevel(0),mpSpellRef(NULL),
+mpOnInvoke(NULL),mpOnRemove(NULL),mpCondition(NULL)
 {
 
 }
 
 Skill::~Skill()
 {
-    std::for_each(mEffects.begin(),mEffects.end(),del_fun<Effect>());
+    delete mpCondition;
+    delete mpOnRemove;
+    delete mpOnInvoke;
+    delete mpSpellRef;
 }
 
-std::list<Effect*>::const_iterator 
-Skill::getEffectsBegin() const
-{
-
-    return mEffects.begin();
-}
-
-std::list<Effect*>::const_iterator 
-Skill::getEffectsEnd() const
-{
-    return mEffects.end();
-}
-
-std::list<AttributeModifier*>::const_iterator 
-Skill::getAttributeModifiersBegin() const
-{
-    return mAttributeModifiers.begin();
-}
-
-std::list<AttributeModifier*>::const_iterator 
-Skill::getAttributeModifiersEnd() const
-{
-    return mAttributeModifiers.end();
-}
 
 std::string Skill::getName() const
 {

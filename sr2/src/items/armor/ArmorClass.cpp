@@ -7,7 +7,8 @@
 
 using namespace StoneRing;
 
-ArmorClass::ArmorClass()
+ArmorClass::ArmorClass():mpScript(NULL),mpEquipScript(NULL)
+,mpUnequipScript(NULL),mpConditionScript(NULL)
 {
 }
 
@@ -28,8 +29,20 @@ bool ArmorClass::handleElement(eElement element, Element * pElement)
 {
     switch(element)
     {
+    case ESCRIPT:
+        mpScript = dynamic_cast<ScriptElement*>(pElement);
+        break;
+    case EONEQUIP:
+        mpEquipScript = dynamic_cast<ScriptElement*>(pElement);
+        break;
+    case EONUNEQUIP:
+        mpUnequipScript = dynamic_cast<ScriptElement*>(pElement);
+        break;
     case EATTRIBUTEENHANCER:
         mAttributeEnhancers.push_back( dynamic_cast<AttributeEnhancer*>(pElement) );
+        break;
+    case ECONDITIONSCRIPT:
+        mpConditionScript = dynamic_cast<ScriptElement*>(pElement);
         break;
     case EARMORENHANCER:
         mArmorEnhancers.push_back( dynamic_cast<ArmorEnhancer*>(pElement) );
@@ -59,8 +72,34 @@ ArmorClass::~ArmorClass()
     std::for_each(mAttributeEnhancers.begin(),mAttributeEnhancers.end(),del_fun<AttributeEnhancer>());
     std::for_each(mArmorEnhancers.begin(),mArmorEnhancers.end(),del_fun<ArmorEnhancer>());
     std::for_each(mExcludedTypes.begin(),mExcludedTypes.end(),del_fun<ArmorTypeRef>());
+
+    delete mpScript;
+    delete mpEquipScript;
+    delete mpUnequipScript;
+    delete mpConditionScript;
 }
 
+void ArmorClass::executeScript()
+{
+    if(mpScript) mpScript->executeScript();
+}
+
+bool ArmorClass::equipCondition()
+{
+    if(mpConditionScript)
+        return mpConditionScript->evaluateCondition();
+    else return true;
+}
+
+void ArmorClass::onEquipScript()
+{
+    mpEquipScript->executeScript();
+}
+
+void ArmorClass::onUnequipScript()
+{
+    mpUnequipScript->executeScript();
+}
 
 CL_DomElement ArmorClass::createDomElement ( CL_DomDocument &doc) const
 {

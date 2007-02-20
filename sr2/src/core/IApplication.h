@@ -31,13 +31,9 @@ namespace StoneRing
         virtual CL_ResourceManager * getResources()const=0;
         virtual IParty * getParty() const=0;
         virtual ICharacterGroup * getSelectedCharacterGroup() const = 0;
-        virtual LevelFactory *getLevelFactory() const =0;
-        virtual CharacterFactory * getCharacterFactory() const=0;
-        virtual ItemFactory * getItemFactory() const = 0;
-        virtual AbilityFactory * getAbilityFactory() const = 0;
         virtual AbilityManager * getAbilityManager() = 0;
         virtual ItemManager * getItemManager() = 0;
-        virtual std::vector<IFactory*> & getFactories() = 0;
+        virtual IFactory * getElementFactory() = 0;
         static IApplication * getInstance();
         virtual void pop(bool popAll)=0;
 

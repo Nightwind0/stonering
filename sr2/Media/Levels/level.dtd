@@ -1,5 +1,5 @@
 <!ELEMENT level (levelHeader, tiles, mappableObjects?)>
-<!ELEMENT levelHeader EMPTY>
+<!ELEMENT levelHeader (script?)>
 <!ELEMENT tiles (tile+)>
 <!ELEMENT mappableObjects (mo+)>
 <!ELEMENT tile ((tilemap | spriteRef),conditionScript?, onStep?, directionBlock?)>
@@ -9,12 +9,13 @@
 <!ELEMENT script (#PCDATA)>
 <!ELEMENT conditionScript (#PCDATA)>
 <!ELEMENT onStep (script)>
-<!ELEMENT attributeModifier (conditionScript?)>
+<!ELEMENT onEquip (script)>
+<!ELEMENT onUnequip (script)>
 <!ELEMENT itemRef (namedItemRef|weaponRef|armorRef)>
 <!ELEMENT namedItemRef (#PCDATA)>
 <!ELEMENT mo ((tilemap|spriteRef*)?,conditionScript?, event*, movement?)>
-<!ELEMENT event (eventScript?)>
-<!ELEMENT movement EMPTY>
+<!ELEMENT event (conditionScript?, script?)>
+<!ELEMENT movement (script?)>
 
 <!-- Item DTD -->
 <!ELEMENT iconRef (#PCDATA)>
@@ -28,8 +29,10 @@
 <!ELEMENT armorRef (armorTypeRef, armorClassRef, (spellRef|runeType)?)>
 <!ELEMENT namedItem (iconRef,(regularItem | uniqueWeapon | uniqueArmor | rune | specialItem | systemItem))>
 <!ELEMENT regularItem (script?)>
-<!ELEMENT uniqueWeapon (weaponTypeRef, weaponEnhancer*, statusEffectModifier*,attributeEnhancer*,  (spellRef|runeType)?)>
-<!ELEMENT uniqueArmor   (armorTypeRef, armorEnhancer*, statusEffectModifier*, attributeEnhancer*, (spellRef|runeType)?)>
+<!-- The script here is executed when the weapon is used. -->
+<!ELEMENT uniqueWeapon (weaponTypeRef, conditionScript?, weaponEnhancer*, statusEffectModifier*,attributeEnhancer*, script?, onEquip?, onUnequip?, (spellRef|runeType)?)>
+<!-- The script here is executed when the armor is used. -->
+<!ELEMENT uniqueArmor   (armorTypeRef, conditionScript?, armorEnhancer*, statusEffectModifier*, attributeEnhancer*, script?, onEquip?, onUnequip?, (spellRef|runeType)?)>
 <!ELEMENT rune (spellRef)>
 <!ELEMENT specialItem EMPTY>
 <!ELEMENT systemItem EMPTY>
@@ -38,8 +41,10 @@
 <!ELEMENT armorTypeRef (#PCDATA)>
 <!ELEMENT weaponClassRef (#PCDATA)>
 <!ELEMENT armorClassRef (#PCDATA)>
-<!ELEMENT weaponClass (attributeEnhancer*, weaponEnhancer*,statusEffectModifier*, weaponTypeExclusionList?)>
-<!ELEMENT armorClass  (attributeEnhancer*, armorEnhancer*, statusEffectModifier*, armorTypeExclusionList?)>
+<!-- The script  here is executed when the weapon is used. -->
+<!ELEMENT weaponClass (conditionScript?,attributeEnhancer*, weaponEnhancer*,statusEffectModifier*, script?, onEquip?, onUnequip?, weaponTypeExclusionList?)>
+<!-- The script here is executed when the armor is used (wearer is attacked) --> 
+<!ELEMENT armorClass  (conditionScript?,attributeEnhancer*, armorEnhancer*, statusEffectModifier*, script?, onEquip?, onUnequip?, armorTypeExclusionList?)>
 <!ELEMENT armorType (iconRef)>
 <!ELEMENT weaponType ((weaponDamageCategory|magicDamageCategory),iconRef)>
 <!ELEMENT weaponEnhancer EMPTY>
@@ -52,10 +57,6 @@
 <!-- Spell DTD -->
 <!ELEMENT spellRef (#PCDATA)>
 <!ELEMENT spellList (spell+)>
-<!ELEMENT doWeaponDamage (weaponDamageCategory)>
-<!ELEMENT doMagicDamage  (magicDamageCategory)>
-<!ELEMENT doStatusEffect (statusEffect?)>
-<!ELEMENT doAttack EMPTY>
 <!ELEMENT spell (magicResistance?,script?> 
 <!ELEMENT weaponDamageCategory EMPTY>
 <!ELEMENT magicDamageCategory EMPTY>
@@ -69,7 +70,6 @@
 <!-- Status Effect DTD -->
 <!ELEMENT statusEffectList (statusEffect*)>
 <!ELEMENT statusEffect (onInvoke?,onRound?,onCountdown?,onRemove?)>
-<!ELEMENT attributeEffect EMPTY> <!-- Like a simplified attributeModifier. Only works on the current user. -->
 <!-- These guys are all Effect type. -->
 <!-- Notice that you can have a status effect that causes other status effects! -->
 <!ELEMENT onInvoke (script)> 
@@ -78,20 +78,20 @@
 <!ELEMENT onRemove (script)>
 
 <!-- Character Class DTD -->
-<!ELEMENT characterClass (weaponTypeRef*, armorTypeRef*,startingStat*,statIncrease*,skillRef*)>
+<!ELEMENT characterClass (battleMenu,weaponTypeRef*, armorTypeRef*,startingStat*,statIncrease*,skillRef*)>
 <!ELEMENT characterClasses (characterClass+)>
 <!ELEMENT statIncrease EMPTY>
-<!ELEMENT skill (prereqSkillRef*,spellRef?, onInvoke?, onRemove?)>
+<!ELEMENT skill (conditionScript?, prereqSkillRef*,spellRef?, onInvoke?, onRemove?)>
 <!ELEMENT skillList (skill)+>
 <!ELEMENT prereqSkillRef EMPTY>
 <!ELEMENT skillRef EMPTY>
+<!ELEMENT battleMenu (battleMenuOption*)>
+<!ELEMENT battleMenuOption (conditionScript?,script)>
 
 <!-- Characters -->
 <!ELEMENT character (animationDefinition*, weaponTypeSprite+)>
 
 <!-- these next two need to be added as Actions ... and should be under the LevelFactory, in LevelElements, etc-->
-<!ELEMENT addCharacter (startingEquipmentRef*)> <!-- action which adds a character to the party -->
-<!ELEMENT removeCharacter EMPTY>
 <!ELEMENT startingEquipmentRef (itemRef)>
 
 <!-- These define what the character should look like in battle with this weapon type equipped  --> 
@@ -127,18 +127,13 @@
 <!ATTLIST mo ypos CDATA #REQUIRED>
 <!ATTLIST mo size (small|medium|large|tall|wide) #REQUIRED>
 <!ATTLIST mo solid (true|false) #IMPLIED>
-<!ATTLIST movement movementType (none|wander|paceNS|paceEW) #REQUIRED>
+<!ATTLIST movement movementType (none|wander|paceNS|paceEW|script) #REQUIRED>
 <!ATTLIST movement speed (slow|medium|fast) #IMPLIED>
 <!ATTLIST event name CDATA #REQUIRED>
 <!ATTLIST event repeatable (true|false) #IMPLIED> 
 <!ATTLIST event remember (true|false) #IMPLIED>
 <!ATTLIST event triggerType (talk|step|act) #REQUIRED>
 <!ATTLIST namedItemRef itemType (item|weapon|armor|rune|special|system)  #REQUIRED>
-<!ATTLIST attributeModifier attribute CDATA #REQUIRED>
-<!ATTLIST attributeModifier add CDATA #IMPLIED>
-<!ATTLIST attributeModifier multiplier CDATA #IMPLIED> <!-- Defaults to 1 -->
-<!ATTLIST attributeModifier changeTo (max|min|add|multiplier|multiply_add) #REQUIRED>
-<!ATTLIST attributeModifier target (current|all|caster|common) #IMPLIED>
 <!ATTLIST directionBlock north (true|false) #REQUIRED>
 <!ATTLIST directionBlock south (true|false) #REQUIRED>
 <!ATTLIST directionBlock east (true|false) #REQUIRED>
@@ -196,6 +191,8 @@
 <!ATTLIST animationSpriteRef initialFocusType (center|above|below|left|right|below_right|below_left|above_right|above_left) #IMPLIED> <!-- Center is default -->
 <!ATTLIST animationSpriteRef movementDirection (still|n|e|s|w|ne|nw|se|sw|toTarget|toCaster) #IMPLIED>
 <!ATTLIST animationSpriteRef movementStyle (straight|arc_over|arc_under|sine) #IMPLIED> <!-- Defaults to straight -->
+<!ATTLIST battleMenuOption name CDATA #REQUIRED>
+
 <!-- Note: movement speed will be determined by the amount of pixels that need to be covered and the duration of the par -->
 <!-- So that if the par duration is three seconds, the sprite will move to its destination in three seconds -->
 <!ATTLIST spell name CDATA #REQUIRED>
@@ -208,29 +205,6 @@
 <!ATTLIST spell value CDATA #REQUIRED>
 <!ATTLIST weaponDamageCategory type (slash|bash|jab) #REQUIRED>
 <!ATTLIST magicDamageCategory type (fire|water|earth|wind|holy|dark|other) #REQUIRED>
-<!ATTLIST doWeaponDamage baseAttack CDATA #REQUIRED>
-<!ATTLIST doWeaponDamage baseCritical CDATA #REQUIRED>
-<!ATTLIST doWeaponDamage baseHit  CDATA #REQUIRED> <!-- 0 to 1 floating point-->
-<!ATTLIST doWeaponDamage ranged (true|false) #IMPLIED> <!-- Defaults to false -->
-<!ATTLIST doMagicDamage  baseDamage CDATA #REQUIRED>
-<!ATTLIST doMagicDamage  baseHit    CDATA #REQUIRED>
-<!ATTLIST doMagicDamage  drain    (true|false) #IMPLIED> <!-- Defaults to false. Causes any target damage to be added to the caster -->
-<!ATTLIST doMagicDamage  piercing (true|false) #IMPLIED> <!-- Ignore hit chance. Definitely hits -->
-<!ATTLIST doMagicDamage  damageAttribute (hp|mp) #IMPLIED> <!-- Default is hp -->
-<!ATTLIST doStatusEffect statusRef CDATA #IMPLIED> <!-- If you have supply a status effect then you don't use the ref. If it exists, supply ref. -->
-<!ATTLIST doStatusEffect chance CDATA #REQUIRED> <!-- 0 to 1 floating point. -->
-<!ATTLIST doAttack multiplyCritical CDATA #IMPLIED <!-- temporarily multiply weapon's crit by this -->
-<!ATTLIST doAttack addCritical CDATA #IMPLIED <!-- Temporarily add this to weapons critical -->
-<!ATTLIST doAttack hits CDATA #IMPLIED> <!-- Defaults to one hit -->
-<!ATTLIST doAttack multiplyAttack CDATA #IMPLIED> <!-- Amount to multiply equipped weapon's ATK by -->
-<!ATTLIST doAttack addAttack CDATA #IMPLIED> <!-- Amount to add to weapons ATK -->
-<!ATTLIST doAttack allEnemies (true|false) #IMPLIED> <!-- Defaults to false -->
-<!ATTLIST doAttack multiplyHits CDATA #IMPLIED> <!-- Defaults to one -->
-<!ATTLIST doAttack addHits CDATA #IMPLIED> <!-- defaults to zero -->
-<!ATTLIST attributeEffect attribute CDATA #REQUIRED>
-<!ATTLIST attributeEffect add CDATA #IMPLIED> <!-- Implied as 0 -->
-<!ATTLIST attributeEffect changeTo (max|min|add|multiplier|multiplier_add) #REQUIRED>
-<!ATTLIST attributeEffect multiplier CDATA #IMPLIED> <!-- Implied as 1 -->
 <!-- Note that, while removeStatus does obey the 'chance' parameter, it ignores any status effect resistances of the target. -->
 <!-- Therefore, a removeStatus for poison with 80% really does remove poison 80% of the time. Whereas, when inflicting the status (con'td) -->
 <!-- You have the chance as well as the target's resistances to account for -->

@@ -21,77 +21,7 @@ using StoneRing::Element;
   }
 */
 
-// MUST be alphabetized.
-const char * StoneRing::Element::pszElementNames[Element::__END_OF_ELEMENTS__] = 
-{
-    "animation",//          ANIMATION,
-    "animationDefinition",
-    "animationSpriteRef",
-    "armorClass",//         ARMORCLASS,
-    "armorClassRef",//      ARMORCLASSREF,
-    "armorEnhancer",//      ARMORENHANCER,
-    "armorRef",//           ARMORREF,
-    "armorType",//          ARMORTYPE,
-    "armorTypeExclusionList",
-    "armorTypeRef",//       ARMORTYPEREF,
-    "attributeEffect",//            ATTRIBUTEEFFECT,
-    "attributeEnhancer",//          ATTRIBUTEENHANCER,
-    "attributeModifier",//          ATTRIBUTEMODIFIER,
-    "character", // CHARACTER
-    "characterClass",
-    "conditionScript",
-    "directionBlock",//  DIRECTIONBLOCK,
-    "doAttack", // EDOATTACK
-    "doMagicDamage",//      DOMAGICDAMAGE,
-    "doStatusEffect",//             DOSTATUSEFFECT,
-    "doWeaponDamage",//             DOWEAPONDAMAGE,
-    "event",//      EVENT,
-    "iconRef",
-    "itemRef",//            ITEMREF,
-    "level",//      LEVEL,
-    "magicDamageCategory",//        MAGICDAMAGECATEGORY,
-    "magicResistance",//            MAGICRESISTANCE,
-    "mappableObject",//             MAPPABLEOBJECT,
-    "movement",//           MOVEMENT,
-    "namedItemElement",//           NAMEDITEMELEMENT,
-    "namedItemRef",//       NAMEDITEMREF,
-    "onCountdown",         // EONCOUNTDOWN,
-    "onInvoke",//EONINVOKE,
-    "onRemove",//                   EONREMOVE,
-    "onRound",//                    EONROUND,
-    "onStep",
-    "par",
-    "prereqSkillRef", // PREREQSKILLREF
-    "regularItem",//        REGULARITEM,
-    "rune",//       RUNE,
-    "runeType",//           RUNETYPE,
-    "script",
-    "skill",
-    "skillRef",
-    "specialItem",//        SPECIALITEM,
-    "spell",//      SPELL,
-    "spellRef",//           SPELLREF,
-    "spriteRef",//          SPRITEREF,
-    "statIncrease",//       STATINCREASE,
-    "statusEffect",//       STATUSEFFECT,
-    "statusEffectActions",//        STATUSEFFECTACTIONS,
-    "statusEffectModifier",//       STATUSEFFECTMODIFIER,
-    "systemItem",//         SYSTEMITEM,
-    "tile",//       TILE,
-    "tilemap",//            TILEMAP,
-    "uniqueArmor",//        UNIQUEARMOR,
-    "uniqueWeapon",//       UNIQUEWEAPON,
-    "weaponClass",//        WEAPONCLASS,
-    "weaponClassRef",//             WEAPONCLASSREF,
-    "weaponDamageCategory",//       WEAPONDAMAGECATEGORY,
-    "weaponEnhancer",//             WEAPONENHANCER,
-    "weaponRef",//          WEAPONREF,
-    "weaponType",//         WEAPONTYPE,
-    "weaponTypeExclusionList",
-    "weaponTypeRef",//      WEAPONTYPEREF,
-    "weaponTypeSprite"
 
-};
 
 uint Element::getRequiredUint(const std::string &attrname, CL_DomNamedNodeMap * pAttributes)
 {
@@ -235,15 +165,14 @@ std::string Element::getString (const std::string &attrname, CL_DomNamedNodeMap 
 
 std::string Element::getElementName() const
 {
-    return pszElementNames[ whichElement() ];
+   // return pszElementNames[ whichElement() ];
+    return "";
 }
     
 
 void Element::load(CL_DomElement * pDomElement)
 {
-    const int n = sizeof(pszElementNames) / sizeof(const char *);
-
-    std::vector<IFactory*> &factories = IApplication::getInstance()->getFactories();
+    IFactory* pFactory = IApplication::getInstance()->getElementFactory();
 
     CL_DomNamedNodeMap attributes = pDomElement->get_attributes();
 
@@ -266,63 +195,28 @@ void Element::load(CL_DomElement * pDomElement)
     while(!child.is_null())
     {
         std::string element_name = child.get_node_name();
-        const char ** found_string = std::lower_bound(pszElementNames, pszElementNames + n, element_name.c_str(), std::less<std::string>());
-                
-        if((*found_string) == (const char*)(pszElementNames + n))
-        {
-            // It wasn't found.
-            throw CL_Error("Element " + element_name + " was not found in pszElementNames.");
-        }
-        else
-        {
-            int index = found_string - pszElementNames;
-                
-            cl_assert( pszElementNames[index] == *found_string );
-
-            eElement element = static_cast<eElement>(index);
-
-            Element * pElement = NULL;
-
-            for(std::vector<IFactory*>::iterator iter = factories.begin();
-                iter != factories.end();
-                iter++)
-            {
-                IFactory * pFactory = *iter;
+        Element * pElement = NULL;
                                         
-                if(pFactory->canCreate(element))
-                {
-                    pElement = pFactory->createElement(element);
-#ifndef NDEBUG
-                    if(pElement->whichElement() != element)
-                        std::cerr << "WARNING THIS ELEMENT IS WEIRD." << std::endl;
-#endif
-                    //  cl_assert ( pElement->whichElement() == element );
-                    break;
-                }
-                                        
-            }
-                        
-            cl_assert ( pElement && "No factory wants to make this element." );
+        pElement = pFactory->createElement(element_name);
+                                 
+        pElement->load( &child );
 
-            pElement->load( &child );
-
-            if(!handleElement(element, pElement ))
-            {
-                // They didn't handle it. So lets get rid of it
-                std::cout << "Unhandled element " << element_name << " found" << std::endl;
-                delete pElement;
-            }
-
-        
-        
-
+        if(!handleElement(pElement->whichElement(), pElement ))
+        {
+            // They didn't handle it. So lets get rid of it
+            std::cout << "Unhandled element " << element_name << " found" << std::endl;
+            delete pElement;
         }
 
+        
         if(child.get_next_sibling().is_text())
             std::cout << "Found Text" << std::endl;
 
         child = child.get_next_sibling().to_element();
+        
     }
+
+    
 
 #if 0
     if(pDomElement->is_text())

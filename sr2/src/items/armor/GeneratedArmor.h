@@ -25,12 +25,17 @@ namespace StoneRing{
         ArmorType * getArmorType() const ;
         ArmorClass * getArmorClass() const { return mpClass; }
 
+        virtual void executeScript();
+        virtual bool equipCondition();
+
         virtual bool operator== ( const ItemRef &ref );
 
         void generate( ArmorType * pType, ArmorClass * pClass, 
                        SpellRef *pSpell = NULL, RuneType *pRune = NULL);
         
     private:
+        virtual void onEquipScript();
+        virtual void onUnequipScript();
         std::string mName;
         ArmorType  *mpType;
         ArmorClass  *mpClass;

@@ -41,7 +41,7 @@ ItemManager::~ItemManager()
 
 void ItemManager::loadItemFile ( CL_DomDocument &doc )
 {
-    ItemFactory * pItemFactory = IApplication::getInstance()->getItemFactory();
+    IFactory * pItemFactory = IApplication::getInstance()->getElementFactory();
 
     CL_DomElement itemsNode = doc.named_item("items").to_element();
     CL_DomElement weaponClassesNode = itemsNode.named_item("weaponClasses").to_element(); 
@@ -51,7 +51,7 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
 
     while(!weaponClassNode.is_null())
     {
-        WeaponClass * pWeaponClass = dynamic_cast<WeaponClass*>( pItemFactory->createElement(Element::EWEAPONCLASS) );
+        WeaponClass * pWeaponClass = dynamic_cast<WeaponClass*>( pItemFactory->createElement("weaponClass") );
         pWeaponClass->load(&weaponClassNode);
         mWeaponClasses.push_back ( pWeaponClass );
         weaponClassNode = weaponClassNode.get_next_sibling().to_element();
@@ -63,7 +63,7 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
     
     while(!weaponTypeNode.is_null())
     {
-        WeaponType * pWeaponType = dynamic_cast<WeaponType*>( pItemFactory->createElement(Element::EWEAPONTYPE) );
+        WeaponType * pWeaponType = dynamic_cast<WeaponType*>( pItemFactory->createElement("weaponType") );
         pWeaponType->load(&weaponTypeNode);
         mWeaponTypes.push_back ( pWeaponType );
 
@@ -76,7 +76,7 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
 
     while(!armorClassNode.is_null())
     {
-        ArmorClass * pArmorClass = dynamic_cast<ArmorClass*>( pItemFactory->createElement(Element::EARMORCLASS) );
+        ArmorClass * pArmorClass = dynamic_cast<ArmorClass*>( pItemFactory->createElement("armorClass") );
         pArmorClass->load(&armorClassNode);
         mArmorClasses.push_back ( pArmorClass);
 
@@ -90,7 +90,7 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
 
     while(!armorTypeNode.is_null())
     {
-        ArmorType * pArmorType = dynamic_cast<ArmorType*>( pItemFactory->createElement(Element::EARMORTYPE) );
+        ArmorType * pArmorType = dynamic_cast<ArmorType*>( pItemFactory->createElement("armorType") );
         pArmorType->load(&armorTypeNode);
         mArmorTypes.push_back ( pArmorType);
 
@@ -112,7 +112,7 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
 #ifndef NDEBUG
         namedItemCount++;
 #endif
-        NamedItemElement * pElement = dynamic_cast<NamedItemElement*>(pItemFactory->createElement ( Element::ENAMEDITEMELEMENT ));
+        NamedItemElement * pElement = dynamic_cast<NamedItemElement*>(pItemFactory->createElement ( "namedItemElement" ));
 
         pElement->load(&namedItemNode);
         NamedItem * pItem = pElement->getNamedItem();

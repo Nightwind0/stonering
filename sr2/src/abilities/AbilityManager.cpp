@@ -15,7 +15,7 @@ using namespace StoneRing;
 
 void AbilityManager::loadSpellFile ( CL_DomDocument &doc )
 {
-    AbilityFactory * pAbilityFactory = IApplication::getInstance()->getAbilityFactory();
+    IFactory * pAbilityFactory = IApplication::getInstance()->getElementFactory();
 
     CL_DomElement spellsNode = doc.named_item("spellList").to_element();
 
@@ -24,7 +24,7 @@ void AbilityManager::loadSpellFile ( CL_DomDocument &doc )
 
     while(!spellNode.is_null())
     {
-        Spell * pSpell = dynamic_cast<Spell*>(pAbilityFactory->createElement(Element::ESPELL));
+        Spell * pSpell = dynamic_cast<Spell*>(pAbilityFactory->createElement("spell"));
 
         pSpell->load(&spellNode);
         mSpells.push_back ( pSpell );
@@ -37,14 +37,14 @@ void AbilityManager::loadSpellFile ( CL_DomDocument &doc )
 
 void AbilityManager::loadSkillFile ( CL_DomDocument &doc )
 {
-    AbilityFactory * pAbilityFactory = IApplication::getInstance()->getAbilityFactory();
+    IFactory * pAbilityFactory = IApplication::getInstance()->getElementFactory();
 
     CL_DomElement spellsNode = doc.named_item("skillList").to_element();
     CL_DomElement spellNode = spellsNode.get_first_child().to_element();
 
     while(!spellNode.is_null())
     {
-        Skill * pSkill = dynamic_cast<Skill*>(pAbilityFactory->createElement(Element::ESKILL));
+        Skill * pSkill = dynamic_cast<Skill*>(pAbilityFactory->createElement("skill"));
 
         pSkill->load(&spellNode);
         mSkills [ pSkill->getName() ] = pSkill;
@@ -56,7 +56,7 @@ void AbilityManager::loadSkillFile ( CL_DomDocument &doc )
 
 void AbilityManager::loadStatusEffectFile ( CL_DomDocument &doc )
 {
-    AbilityFactory * pAbilityFactory = IApplication::getInstance()->getAbilityFactory();
+    IFactory * pAbilityFactory = IApplication::getInstance()->getElementFactory();
     assert ( pAbilityFactory );
 
     CL_DomElement statusEffectsNode = doc.named_item("statusEffectList").to_element();
@@ -66,7 +66,7 @@ void AbilityManager::loadStatusEffectFile ( CL_DomDocument &doc )
 
     while(!statusEffectNode.is_null())
     {
-        StatusEffect * pStatusEffect = dynamic_cast<StatusEffect*>(pAbilityFactory->createElement(Element::ESTATUSEFFECT));
+        StatusEffect * pStatusEffect = dynamic_cast<StatusEffect*>(pAbilityFactory->createElement("statusEffect"));
         pStatusEffect->load(&statusEffectNode);
         mStatusEffects.push_back ( pStatusEffect );
         statusEffectNode = statusEffectNode.get_next_sibling().to_element();
@@ -77,7 +77,7 @@ void AbilityManager::loadStatusEffectFile ( CL_DomDocument &doc )
 
 void AbilityManager::loadCharacterClassFile ( CL_DomDocument &doc )
 {
-    CharacterFactory * pFactory = IApplication::getInstance()->getCharacterFactory();
+    IFactory * pFactory = IApplication::getInstance()->getElementFactory();
 
     CL_DomElement classesNode = doc.named_item("characterClasses").to_element();
     CL_DomElement classNode = classesNode.get_first_child().to_element();
@@ -85,7 +85,7 @@ void AbilityManager::loadCharacterClassFile ( CL_DomDocument &doc )
     while(!classNode.is_null())
     {
         CharacterClass * pCharacterClass = dynamic_cast<CharacterClass*>
-            (pFactory->createElement(Element::ECHARACTERCLASS));
+            (pFactory->createElement("characterClass"));
 
         pCharacterClass->load(&classNode);
         mCharacterClasses [ pCharacterClass->getName() ] = pCharacterClass;

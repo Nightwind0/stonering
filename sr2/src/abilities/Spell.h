@@ -2,7 +2,7 @@
 #define SR_SPELL_H
 
 #include "Element.h"
-#include "Effect.h"
+#include "ScriptElement.h"
 #include <ClanLib/core.h>
 
 namespace StoneRing
@@ -12,122 +12,6 @@ namespace StoneRing
     class MagicDamageCategory;
     class SpellRef;
     class StatusEffect;
-
-    class DoWeaponDamage : public Element, public Effect
-    {
-    public:
-        DoWeaponDamage();
-        virtual ~DoWeaponDamage();
-        virtual eElement whichElement() const{ return EDOWEAPONDAMAGE; }
-        WeaponDamageCategory * getDamageCategory();
-
-        uint getBaseAttack() const;
-        float getBaseCritical() const;
-        float getBaseHit() const;
-        bool isRanged() const;
-     
-        virtual eType getEffectType() const { return WEAPON_DAMAGE; }
-
-        CL_DomElement createDomElement( CL_DomDocument &doc ) const;
-
-    private:
-        virtual bool handleElement(eElement, Element * );
-        virtual void loadAttributes(CL_DomNamedNodeMap *);
-        virtual void loadFinished();
-        WeaponDamageCategory * mpDamageCategory;
-        uint mnBaseAttack;
-        float mfBaseCritical;
-        float mfBaseHit;
-        bool mbRanged;
-    };
-
-    class DoMagicDamage : public Element, public Effect
-    {
-    public:
-        DoMagicDamage();
-        virtual ~DoMagicDamage();
-        virtual eElement whichElement() const{ return EDOMAGICDAMAGE; }
-
-        uint getBaseDamage() const;
-        float getBaseHit() const;
-        bool drain() const;
-        bool isPiercing() const;
-    
-        MagicDamageCategory * getMagicCategory();
-
-        virtual eType getEffectType() const { return MAGIC_DAMAGE; }
-
-        enum eDamageAttr { HP, MP };
-
-        eDamageAttr getDamageAttr() const;
-
-        CL_DomElement createDomElement( CL_DomDocument &doc ) const;
-
-    private:
-        virtual bool handleElement(eElement, Element * );
-        virtual void loadAttributes(CL_DomNamedNodeMap *);
-        virtual void loadFinished();
-        MagicDamageCategory * mpDamageCategory;
-        uint mnBaseDamage;
-        float mfBaseHit;
-        bool mbDrain;
-        bool mbPiercing;
-        eDamageAttr meDamageAttr;
-    };
-
-    class DoAttack : public Element, public Effect
-    {
-    public:
-        DoAttack();
-        ~DoAttack();
-        virtual eElement whichElement() const{ return EDOATTACK; }
-        uint getNumberOfHits() const;
-        
-        float getCritMultiplier() const { return mfMultiplyCritical; }
-        float getCritAdd() const{ return mfAddCritical; }
-        float getAttackMultiplier() const { return mfMultiplyAttack; }
-        int getAttackAdd() const { return mnAddAttack; }
-        float getHitsMultiplier() const { return mfHitsMultiplier; }
-        int getHitsAdd() const { return mnHitsAdd; }
-        bool hitAllenemies() const;
-        virtual eType getEffectType() const { return ATTACK; }
-    private:
-        virtual void loadAttributes(CL_DomNamedNodeMap *);
-        bool mbHitAllEnemies;
-        float mfMultiplyAttack;
-        int mnAddAttack;
-        float mfMultiplyCritical;
-        float mfAddCritical;
-        float mfHitsMultiplier;
-        int mnHitsAdd;
-        uint mnHits;
-    };
-
-
-    class DoStatusEffect : public Element, public Effect
-    {
-    public:
-        DoStatusEffect();
-        virtual ~DoStatusEffect();
-        virtual eElement whichElement() const{ return EDOSTATUSEFFECT; }
-        StatusEffect * getStatusEffect() const;
-
-        float getChance() const;
-
-        bool removeStatus() const;
-
-        CL_DomElement createDomElement( CL_DomDocument &doc ) const;
-
-        virtual eType getEffectType() const { return STATUS_EFFECT; }
-    private:
-        virtual bool handleElement(eElement, Element*);
-        virtual void loadAttributes(CL_DomNamedNodeMap *);
-        virtual void loadFinished();
-        StatusEffect * mpStatusEffect;
-        float mfChance;
-        bool mbRemove;
-    };
-    
 
     class MagicResistance : public Element
     {
@@ -166,21 +50,14 @@ namespace StoneRing
         eUse getUse() const;
         eTargetable getTargetable() const;
 
-
         bool appliesToWeapons() const;
         bool appliesToArmor() const;
     
         uint getMP() const;
 
         SpellRef * createSpellRef() const;
-
         uint getValue() const;
-
-        std::list<Effect*>::const_iterator getEffectsBegin() const;
-        std::list<Effect*>::const_iterator getEffectsEnd() const;
-
         CL_DomElement createDomElement( CL_DomDocument &doc ) const;
-
         MagicResistance * getMagicResistance() const;
 
     
@@ -201,7 +78,7 @@ namespace StoneRing
         uint mnMP;
         uint mnValue;
         MagicResistance * mpMagicResistance;
-        std::list<Effect*> mEffects;
+        ScriptElement *mpScript;
     };
 
 

@@ -2,9 +2,8 @@
 #define SR_SKILL_H
  
 #include "Element.h"
-#include "Effect.h"
 #include <ClanLib/core.h>
-//#include "Item.h"
+#include "ScriptElement.h"
 #include "Character.h"
 
 
@@ -30,12 +29,6 @@ namespace StoneRing
 
         virtual eElement whichElement() const{ return ESKILL; }
 
-        std::list<Effect*>::const_iterator getEffectsBegin() const;
-        std::list<Effect*>::const_iterator getEffectsEnd() const;
-
-        std::list<AttributeModifier*>::const_iterator getAttributeModifiersBegin() const;
-        std::list<AttributeModifier*>::const_iterator getAttributeModifiersEnd() const;
-
         std::string getName() const;
         uint getSPCost() const;
         uint getBPCost() const;
@@ -53,9 +46,10 @@ namespace StoneRing
         virtual bool handleElement(eElement element, Element * pElement );
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
         std::string mName;
-        std::list<Effect*> mEffects;
-        std::list<AttributeModifier*> mAttributeModifiers;
         std::list<SkillRef*> mPreReqs;
+        ScriptElement *mpOnInvoke;
+        ScriptElement *mpOnRemove;
+        ScriptElement *mpCondition;
         SpellRef * mpSpellRef;
         uint mnSp;
         uint mnBp;

@@ -4,6 +4,7 @@
 #include "CharacterDefinition.h"
 #include "WeaponTypeRef.h"
 #include "ArmorTypeRef.h"
+#include "BattleMenu.h"
 
 using namespace StoneRing;
 
@@ -82,6 +83,9 @@ bool CharacterClass::handleElement(eElement element, Element * pElement)
     case ESKILLREF:
         mSkillRefs.push_back( dynamic_cast<SkillRef*>(pElement));
         break;
+    case EBATTLEMENU:
+        mpMenu = dynamic_cast<BattleMenu*>(pElement);
+        break;
     default:
         return false;
     }
@@ -89,6 +93,7 @@ bool CharacterClass::handleElement(eElement element, Element * pElement)
 }
 
 CharacterClass::CharacterClass()
+:mpMenu(NULL)
 {
     std::for_each(mWeaponTypes.begin(),mWeaponTypes.end(),del_fun<WeaponTypeRef>());
     std::for_each(mArmorTypes.begin(),mArmorTypes.end(),del_fun<ArmorTypeRef>());
@@ -98,6 +103,7 @@ CharacterClass::CharacterClass()
 
 CharacterClass::~CharacterClass()
 {
+    delete mpMenu;
 }
 
 CL_DomElement CharacterClass::createDomElement( CL_DomDocument &doc ) const

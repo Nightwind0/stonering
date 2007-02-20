@@ -8,23 +8,6 @@
 namespace StoneRing
 {
 
-    class CharacterClass;
-    class DoWeaponDamage;
-    class DoMagicDamage;
-    class DoStatusEffect;
-    class Spell;
-    class WeaponDamageCategory;
-    class MagicDamageCategory;
-    class Animation;
-    class AnimationSpriteRef;
-    class MagicResistance;
-    class AttributeEffect;
-    class StatusEffectActions;
-    class StatusEffect;
-    class StatIncrease;
-    class AnimationSpriteRef;
-    class Skill;
-    class SkillRef;
 
 
     class AbilityFactory : public IFactory

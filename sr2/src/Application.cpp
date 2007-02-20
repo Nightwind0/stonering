@@ -67,7 +67,9 @@ SteelType Application::playSound(const std::string &sound)
 }
 SteelType Application::loadLevel(const std::string &level, uint startX, uint startY)
 {
-    mMapState.pushLevel( new Level(level,mpResources), static_cast<uint>(startX), static_cast<uint>(startY) );
+    Level * pLevel = new Level();
+    pLevel->load(level, mpResources);
+    mMapState.pushLevel( pLevel, static_cast<uint>(startX), static_cast<uint>(startY) );
 
     return SteelType();
 }
@@ -259,26 +261,6 @@ AbilityManager * Application::getAbilityManager()
     return &mAbilityManager;
 }
 
-LevelFactory *Application::getLevelFactory() const
-{
-    return mpLevelFactory;
-}
-
-AbilityFactory * Application::getAbilityFactory() const
-{
-    return mpAbilityFactory;
-}
-
-CharacterFactory * Application::getCharacterFactory() const
-{
-    return mpCharacterFactory;
-}
-
-
-ItemFactory * Application::getItemFactory() const
-{
-    return mpItemFactory;
-}
 
 CL_ResourceManager * Application::getResources() const
 {
@@ -286,32 +268,16 @@ CL_ResourceManager * Application::getResources() const
 }
 
 
-Application::Application():mpParty(0),mpLevelFactory(0),
+Application::Application():mpParty(0),
                            mbDone(false)
     
 {
     mpParty = new Party();
-
-    // We want the generic level factory.
-    mpLevelFactory = new LevelFactory();
-    mpItemFactory = new ItemFactory();
-    mpAbilityFactory = new AbilityFactory();
-    mpCharacterFactory = new CharacterFactory();
-
-    mFactories.push_back ( mpLevelFactory );
-    mFactories.push_back ( mpItemFactory );
-    mFactories.push_back ( mpAbilityFactory );
-    mFactories.push_back ( mpCharacterFactory );
-       
-
 }
 
 Application::~Application()
 {
-    delete mpLevelFactory;
-    delete mpItemFactory;
-    delete mpAbilityFactory;
-    delete mpCharacterFactory;
+
 }
 
 
@@ -528,7 +494,8 @@ int Application::main(int argc, char ** argv)
         showRechargeableOnionSplash();
         showIntro();
             
-        Level * pLevel = new Level(startinglevel, mpResources);
+        Level * pLevel = new Level();
+        pLevel->load(startinglevel, mpResources);
             
         mMapState.setDimensions(getDisplayRect());
         mMapState.pushLevel ( pLevel, 1,1 );  

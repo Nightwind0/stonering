@@ -29,22 +29,30 @@ namespace StoneRing{
         std::list<StatusEffectModifier*>::const_iterator getStatusEffectModifiersBegin() { return mStatusEffectModifiers.begin(); }
         std::list<StatusEffectModifier*>::const_iterator getStatusEffectModifiersEnd() { return mStatusEffectModifiers.end(); }
 
+        void executeScript();
+        bool equipCondition();
+        void onEquipScript();
+        void onUnequipScript();
 
         bool isExcluded ( const ArmorTypeRef &weaponType );
-
         bool operator==(const ArmorClass &lhs );
 
     private:
+
         virtual bool handleElement(eElement element, Element * pElement );
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
         std::string mName;
         int mnValueAdd;
         float mfValueMultiplier;
         void addStatusEffectModifier(StatusEffectModifier *pModifier ) { mStatusEffectModifiers.push_back ( pModifier ); }
+        ScriptElement *mpScript;
         std::list<AttributeEnhancer*> mAttributeEnhancers;
         std::list<ArmorEnhancer*> mArmorEnhancers;
         std::list<ArmorTypeRef*> mExcludedTypes;
         std::list<StatusEffectModifier*> mStatusEffectModifiers;
+        ScriptElement *mpEquipScript;
+        ScriptElement *mpUnequipScript;
+        ScriptElement *mpConditionScript;
     };
 };
 

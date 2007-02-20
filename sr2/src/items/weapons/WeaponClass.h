@@ -30,15 +30,20 @@ namespace StoneRing{
         std::list<StatusEffectModifier*>::const_iterator getStatusEffectModifiersBegin() { return mStatusEffectModifiers.begin(); }
         std::list<StatusEffectModifier*>::const_iterator getStatusEffectModifiersEnd() { return mStatusEffectModifiers.end(); }
 
+        void executeScript();
+        bool equipCondition();
+        void onEquipScript();
+        void onUnequipScript();
 
         bool isExcluded ( const WeaponTypeRef &weaponType );
-
         bool operator==(const WeaponClass &lhs);
 
     private:
+
         virtual bool handleElement(eElement element, Element * pElement );
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
         void addStatusEffectModifier(StatusEffectModifier *pModifier ){ mStatusEffectModifiers.push_back ( pModifier ); }
+        ScriptElement *mpScript;
         std::string mName;
         int mnValueAdd;
         float mfValueMultiplier;
@@ -46,6 +51,9 @@ namespace StoneRing{
         std::list<WeaponEnhancer*> mWeaponEnhancers;
         std::list<WeaponTypeRef*> mExcludedTypes;
         std::list<StatusEffectModifier*> mStatusEffectModifiers;
+        ScriptElement *mpEquipScript;
+        ScriptElement *mpUnequipScript;
+        ScriptElement *mpConditionScript;
     };
 };
 

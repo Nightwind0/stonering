@@ -3,6 +3,7 @@
 
 #include "NamedItem.h"
 #include "Weapon.h"
+#include "ScriptElement.h"
 
 namespace StoneRing{
     class UniqueWeapon : public NamedItem, public Weapon
@@ -15,23 +16,28 @@ namespace StoneRing{
         virtual uint getValue() const ;
         virtual uint getSellValue() const ;
 
-
+        virtual void executeScript();
+        virtual bool equipCondition();
         WeaponType *getWeaponType() const ;
         bool isRanged() const ;
         bool isTwoHanded() const;
         
         virtual eItemType getItemType() const { return WEAPON ; }
- 
-        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
+         virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
     private:
-        virtual bool handleElement(eElement element, Element * pElement );
+        virtual void onEquipScript();
+        virtual void onUnequipScript();
+        virtual bool handleElement(eElement element, Element * pElement);
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
         virtual void loadFinished();
         WeaponType * mpWeaponType;
         float mValueMultiplier;
         uint mnValue;
-        
+        ScriptElement *mpScript;
+        ScriptElement *mpEquipScript;
+        ScriptElement *mpUnequipScript;
+        ScriptElement *mpConditionScript;
         
     };
 };

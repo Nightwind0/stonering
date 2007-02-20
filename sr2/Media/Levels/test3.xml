@@ -171,7 +171,9 @@
 			<spriteRef>
 				tiles/Lava
 			</spriteRef>
-			<attributeModifier attribute="HP" add="-1" target="current" changeTo="add"/>
+			<script id="lava">
+				doMagicDamage(2, "fire");
+			</script>
 		</tile>
 		<tile xpos="2" ypos="3">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>

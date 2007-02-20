@@ -33,6 +33,25 @@ uint GeneratedArmor::getMaxInventory() const
     return 99;
 }
 
+void GeneratedArmor::executeScript()
+{
+    mpClass->executeScript();
+}
+
+bool GeneratedArmor::equipCondition()
+{
+    return mpClass->equipCondition();
+}
+
+void GeneratedArmor::onEquipScript()
+{
+    return mpClass->onEquipScript();
+}
+
+void GeneratedArmor::onUnequipScript()
+{
+    return mpClass->onUnequipScript();
+}
 
 bool GeneratedArmor::operator== ( const ItemRef &ref )
 {

@@ -37,7 +37,7 @@ bool NamedItemElement::handleElement(eElement element, Element * pElement)
 
 void NamedItemElement::loadFinished()
 {
-    if(mpNamedItem == NULL) throw CL_Error("No named item within a named item element.");   
+    if(mpNamedItem == NULL) throw CL_Error("No named item within a named item element :" + mName);   
     mpNamedItem->setIconRef( mIconRef );
     mpNamedItem->setName ( mName );
     mpNamedItem->setMaxInventory ( mnMaxInventory );

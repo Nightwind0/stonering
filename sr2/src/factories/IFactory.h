@@ -13,9 +13,7 @@ namespace StoneRing
     public:
         IFactory(){}
         virtual ~IFactory(){}
-
-        virtual bool canCreate( Element::eElement element )=0;
-        virtual Element * createElement( Element::eElement element )=0;
+        virtual Element * createElement( const std::string &element )=0;
     };
 };
 
