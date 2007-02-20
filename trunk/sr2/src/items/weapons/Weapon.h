@@ -29,7 +29,6 @@ namespace StoneRing{
         float modifyWeaponAttribute ( eAttribute attr, float current );
 
         // Getters for weapon enhancers. need 'em.
-
     protected:
         
         void clearWeaponEnhancers();

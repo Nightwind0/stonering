@@ -49,6 +49,7 @@ void Equipment::equip()
         (*iter)->invoke();
     }
 #endif
+    onEquipScript();
 }
 
 // Remove any attribute enhancements
@@ -63,7 +64,7 @@ void Equipment::unequip()
         (*iter)->revoke();
     }
 #endif
-
+    onUnequipScript();
 }
 
 

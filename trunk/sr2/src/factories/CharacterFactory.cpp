@@ -5,25 +5,6 @@
 
 using namespace StoneRing;
 
-Element * CharacterFactory::createCharacterClass() const
-{
-    return new CharacterClass();
-}
-
-Element * CharacterFactory::createCharacterDefinition() const
-{
-    return new CharacterDefinition();
-}
-
-Element * CharacterFactory::createAnimationDefinition() const
-{
-    return new AnimationDefinition();
-}
-
-Element * CharacterFactory::createWeaponTypeSprite() const
-{
-    return new WeaponTypeSprite();
-}
 
 bool CharacterFactory::canCreate( Element::eElement element )
 {

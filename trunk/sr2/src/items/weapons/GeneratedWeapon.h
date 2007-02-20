@@ -24,6 +24,9 @@ namespace StoneRing{
         virtual uint getSellValue() const ;
         virtual eItemType getItemType() const { return WEAPON ; }
 
+        virtual void executeScript();
+        virtual bool equipCondition();
+
         // Weapon interface
         WeaponType * getWeaponType() const;
         WeaponClass * getWeaponClass() const { return mpClass; }
@@ -35,7 +38,8 @@ namespace StoneRing{
                        SpellRef *pSpell = NULL, RuneType *pRune = NULL);
 
     private:
-
+        virtual void onEquipScript();
+        virtual void onUnequipScript();
         std::string mName; //generated at generate time :)
         WeaponClass *mpClass;
         WeaponType *mpType;

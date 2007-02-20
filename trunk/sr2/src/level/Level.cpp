@@ -29,8 +29,126 @@ using std::min;
 using std::abs;
 #endif
 
+///////////////////////////////////////////////////////////////////////////
+// Tiles
+///////////////////////////////////////////////////////////////////////////
 
-Level::Level():mLevelWidth(0),mLevelHeight(0)
+Tiles::Tiles()
+{
+}
+
+Tiles::~Tiles()
+{
+}
+
+
+std::list<Tile*>::const_iterator Tiles::getTilesBegin()const
+{
+    return mTiles.begin();
+}
+
+std::list<Tile*>::const_iterator Tiles::getTilesEnd()const
+{
+    return mTiles.end();
+}
+ 
+bool Tiles::handleElement(eElement element, Element * pElement)
+{
+    if(element == ETILE)
+    {
+        mTiles.push_back ( dynamic_cast<Tile*>(pElement) );
+        return true;
+    }
+
+    return false;
+}
+
+void Tiles::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+{
+}
+
+///////////////////////////////////////////////////////////////////////////
+// MappableObjects
+///////////////////////////////////////////////////////////////////////////
+MappableObjects::MappableObjects()
+{
+}
+
+MappableObjects::~MappableObjects()
+{
+}
+
+std::list<MappableObject*>::const_iterator MappableObjects::getMappableObjectsBegin() const
+{
+    return mMappableObjects.begin();
+}
+std::list<MappableObject*>::const_iterator MappableObjects::getMappableObjectsEnd() const
+{
+    return mMappableObjects.end();
+}
+
+
+bool MappableObjects::handleElement(eElement element, Element * pElement)
+{
+    if(element == EMAPPABLEOBJECT)
+    {
+        mMappableObjects.push_back ( dynamic_cast<MappableObject*>(pElement) );
+        return true;
+    }
+
+    return false;
+}
+
+void MappableObjects::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+{
+
+}
+
+
+///////////////////////////////////////////////////////////////////////////
+// LevelHeader
+///////////////////////////////////////////////////////////////////////////
+
+LevelHeader::LevelHeader()
+{
+}
+
+LevelHeader::~LevelHeader()
+{
+    delete mpScript;
+}
+
+
+void LevelHeader::executeScript() const
+{
+    mpScript->executeScript();
+}
+
+bool LevelHeader::handleElement(eElement element, Element * pElement)
+{
+    if(element == ESCRIPT)
+    {
+        mpScript = dynamic_cast<ScriptElement*>(pElement);
+        return true;
+    }
+    return false;
+}
+
+void LevelHeader::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+{
+    mnLevelWidth = getRequiredUint("width",pAttributes);
+    mnLevelHeight = getRequiredUint("height",pAttributes);
+    mMusic = getRequiredString("music",pAttributes);
+    mbAllowsRunning = getRequiredBool("allowsRunning",pAttributes);
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// Level
+// 
+/////////////////////////////////////////////////////////////////////////////
+
+
+Level::Level():mLevelWidth(0),mLevelHeight(0),mpScript(NULL),mpHeader(NULL)
 {
 }
 
@@ -187,7 +305,7 @@ CL_DomElement  Level::createDomElement(CL_DomDocument &doc) const
 
 }
 
-
+#if 0
 Level::Level(const std::string &name,CL_ResourceManager * pResources): mpDocument(NULL)
 {
     srand(time(0));
@@ -199,11 +317,7 @@ Level::Level(const std::string &name,CL_ResourceManager * pResources): mpDocumen
     // Load the level
     LoadLevel ( path + filename );
 }
-
-Level::Level(CL_DomDocument &document):mbAllowsRunning(false),mnFrameCount(0),mnMoveCount(0)
-{
-    LoadLevel ( document );
-}
+#endif
 
 Level::~Level()
 {
@@ -706,7 +820,7 @@ void Level::activateTilesAt ( uint x, uint y )
         Tile *pTile = *iter;
         if(pTile->evaluateCondition())
         {
-            if ( pTile->hasAM() )
+            if ( pTile->hasScript() )
             {
                 (*iter)->activate();
             }
@@ -808,104 +922,74 @@ bool Level::tileSortCriterion ( const Tile * p1, const Tile * p2)
     return p1->getZOrder() < p2->getZOrder();
 }
 
-void Level::load ( CL_DomDocument &document)
+
+void Level::load(const std::string &name, CL_ResourceManager *pResources)
 {
-    LoadLevel ( document );
+    std::string path = CL_String::load("Game/LevelPath", pResources);
+    std::string filename = CL_String::load("Levels/" + name, pResources);
+
+    CL_DomDocument doc;
+    CL_InputSource_File file(path + filename);
+    doc.load(&file);
+
+    CL_DomElement levelNode = doc.named_item("level").to_element();
+    Element::load(&levelNode);
 }
 
-
-void Level::LoadLevel (CL_DomDocument &document )
+bool Level::handleElement(eElement element, Element * pElement)
 {
-
-    LevelFactory * factory = IApplication::getInstance()->getLevelFactory();
-
-    CL_DomElement levelNode = document.named_item("level").to_element(); 
-
-
-    CL_DomNamedNodeMap levelAttributes = levelNode.get_attributes();
-
-    mName = levelAttributes.get_named_item("name").get_node_value();
-    std::cout << "LEVEL NAME = " << levelAttributes.get_named_item("name").get_node_value() << std::endl;
-
-    CL_DomElement headerNode = levelNode.named_item("levelHeader").to_element();
-
-    CL_DomElement tilesNode = levelNode.named_item("tiles").to_element();
-    
-    std::cout << "FOUND TILES TAG. " << tilesNode.get_tag_name() << std::endl;
-
-    
-    // Process Header
-
-    CL_DomNamedNodeMap headerAttributes = headerNode.get_attributes();
-    
-    mMusic = headerAttributes.get_named_item("music").get_node_value();
-
-    std::cout << "MUSIC TYPE = " << mMusic << std::endl;
-
-    mLevelWidth = atoi(headerAttributes.get_named_item("width").get_node_value().c_str());
-    mLevelHeight = atoi(headerAttributes.get_named_item("height").get_node_value().c_str());
-
-    std::cout << "DIMENSIONS: " << mLevelWidth << " by " << mLevelHeight << std::endl;
-
-
-    if(headerAttributes.get_named_item("allowsRunning").get_node_value() == "true")
+    switch(element)
     {
-        mbAllowsRunning = true;
+    case ELEVELHEADER:
+        mpHeader = dynamic_cast<LevelHeader*>(pElement);
+
+        // Based on the header, lets preallocate our tiles.
+        mLevelWidth = mpHeader->getLevelWidth();
+        mLevelHeight = mpHeader->getLevelHeight();
+        mbAllowsRunning = mpHeader->allowsRunning();
+        mMusic = mpHeader->getMusic();
+        mName = mpHeader->getName();
+        mTileMap.resize( mLevelWidth );
+
+        for(int x=0;x< mLevelWidth; x++)
+        {
+            mTileMap[x].resize ( mLevelHeight );
+        }
+        break;
+    case ETILES:
+        {
+            Tiles *pTiles = dynamic_cast<Tiles*>(pElement);
+            for(std::list<Tile*>::const_iterator it = pTiles->getTilesBegin();
+                it != pTiles->getTilesEnd(); it++)
+                loadTile ( *it );
+            break;
+        }
+    case EMAPPABLEOBJECTS:
+        {
+            MappableObjects *pMOs = dynamic_cast<MappableObjects*>(pElement);
+            for(std::list<MappableObject*>::const_iterator it = pMOs->getMappableObjectsBegin();
+                it != pMOs->getMappableObjectsEnd(); it++)
+                loadMo ( *it );
+        break;
+        }
+    default:
+        return false;
     }
-    
+    return true;
+}
 
-    // Create tilemap
+void Level::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+{
+    mName = getRequiredString("name",pAttributes);
+#ifndef NDEBUG
+    std::cout << "LEVEL NAME = " << mName << std::endl;
+#endif
 
-    mTileMap.resize( mLevelWidth );
+}
 
-    for(int x=0;x< mLevelWidth; x++)
-    {
-        mTileMap[x].resize ( mLevelHeight );
-    }
-
-
-    // Process tiles
-    
-    CL_DomElement moNode = tilesNode.get_next_sibling().to_element();
-
-    std::cout << "Tiles sibling is: " << moNode.get_node_name() << std::endl;
-
-    CL_DomElement currentTile = tilesNode.get_first_child().to_element();
-    CL_DomElement *pTile = &currentTile;
-
-    int tilecount = 0;
-
-    while(!pTile->is_null())
-    {
-        tilecount++;
-        loadTile( pTile );
-
-        currentTile = currentTile.get_next_sibling().to_element();
-        pTile = &currentTile;
-    }
-
-
-
-
-    std::cout << "FOUND " << tilecount << " TILES" << std::endl;
-
-    CL_DomElement currentMo = moNode.get_first_child().to_element();
-
-    int mocount = 0;
-
-    while(!currentMo.is_null())
-    {
-        mocount++;
-
-        loadMo ( &currentMo );
-
-        currentMo = currentMo.get_next_sibling().to_element();
-
-        
-    }
-
-
-    std:: cout << "FOUND " << mocount << " MAPPABLE OBJECTS" << std::endl;
+void Level::loadFinished()
+{
+    if(mpHeader == NULL) throw CL_Error("Level was missing levelHeader.");
 
     mnFrameCount = mnMoveCount = 0 ;
 
@@ -913,46 +997,17 @@ void Level::LoadLevel (CL_DomDocument &document )
     mpPlayer = NULL;
 }
 
-void Level::LoadLevel( const std::string & filename  )
+
+
+void Level::loadMo ( MappableObject * moElement )
 {
-    CL_InputSource_File file(filename);
-
-    std::cout << "LOADING LEVEL: " << filename << std::endl;
-
-    CL_DomDocument document;
-    CL_DomDocument otherdoc;
-
-    document.load(&file);
-
-
-    LoadLevel ( document );
-
-}
-
-void Level::loadMo ( CL_DomElement * moElement )
-{
-    LevelFactory * factory = IApplication::getInstance()->getLevelFactory();
-    MappableObject * mo = dynamic_cast<MappableObject*>(factory->createElement(Element::EMAPPABLEOBJECT));
-
-    mo->load(moElement);
-
-    putMappableObjectAtCurrentPosition(mo);
-
+    putMappableObjectAtCurrentPosition(moElement);
 }
 
 
-void Level::loadTile ( CL_DomElement * tileElement)
+void Level::loadTile ( Tile * tile)
 {
-    LevelFactory * factory = IApplication::getInstance()->getLevelFactory();
-
-    if(factory == NULL) throw CL_Error("Factory was null. My life is a lie!");
     CL_Point point;
-
-    Tile * tile = dynamic_cast<Tile*>(factory->createElement ( Element::ETILE ));
-    tile->load(tileElement);
-
-    if(tile == NULL) throw CL_Error("Tile was null, it was all for naught!");
-
     if(tile->getX() >= mLevelWidth)
     {
         delete tile;
@@ -966,14 +1021,12 @@ void Level::loadTile ( CL_DomElement * tileElement)
 
     point.x = tile->getX();
     point.y = tile->getY();
-
-   
-
     
     if( tile->isFloater() )
     {
+#ifndef NDEBUG
         std::cout << "Placing floater at: " << point.x << ',' << point.y << std::endl;
-
+#endif
         mFloaterMap[ point ].push_back ( tile );
 
         mFloaterMap[ point ].sort( &tileSortCriterion );
@@ -981,14 +1034,10 @@ void Level::loadTile ( CL_DomElement * tileElement)
     }
     else
     {
-
-
-        
         mTileMap[ point.x ][point.y].push_back ( tile );
 
         // Sort by ZOrder, so that they display correctly
         mTileMap[ point.x ][point.y].sort( &tileSortCriterion );
-
     }
 }
 

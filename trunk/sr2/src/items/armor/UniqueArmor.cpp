@@ -10,15 +10,39 @@
 
 using namespace StoneRing;
 
-UniqueArmor::UniqueArmor():mpArmorType(NULL)
+UniqueArmor::UniqueArmor():mpArmorType(NULL),mpScript(NULL),
+mpEquipScript(NULL),mpUnequipScript(NULL)
 {
 
 }
 UniqueArmor::~UniqueArmor()
 {
-
+    delete mpScript;
+    delete mpEquipScript;
+    delete mpUnequipScript;
+    delete mpConditionScript;
 }
 
+void UniqueArmor::executeScript()
+{
+    if(mpScript) mpScript->executeScript();
+}
+
+bool UniqueArmor::equipCondition()
+{
+    if(mpConditionScript)
+        return mpConditionScript->evaluateCondition();
+    else return true;
+}
+
+void UniqueArmor::onEquipScript()
+{
+    mpEquipScript->executeScript();
+}
+void UniqueArmor::onUnequipScript()
+{
+    mpUnequipScript->executeScript();
+}
 
 uint UniqueArmor::getValue() const
 {
@@ -78,6 +102,18 @@ bool UniqueArmor::handleElement(eElement element, Element * pElement)
         break;
     case ESTATUSEFFECTMODIFIER:
         addStatusEffectModifier( dynamic_cast<StatusEffectModifier*>(pElement) );
+        break;
+    case ESCRIPT:
+        mpScript = dynamic_cast<ScriptElement*>(pElement);
+        break;
+    case EONEQUIP:
+        mpEquipScript = dynamic_cast<ScriptElement*>(pElement);
+        break;
+    case EONUNEQUIP:
+        mpUnequipScript = dynamic_cast<ScriptElement*>(pElement);
+        break;
+    case ECONDITIONSCRIPT:
+        mpConditionScript = dynamic_cast<ScriptElement*>(pElement);
         break;
     default:
         return false;

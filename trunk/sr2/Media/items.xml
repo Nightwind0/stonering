@@ -328,7 +328,9 @@
 		<namedItem name="Moon Seed" dropRarity="common">
 			<iconRef>Items/moonseed</iconRef>
 			<regularItem value = "50" reusable="false" targetable="single" use="both"  defaultTarget="party">
-				<attributeModifier attribute="mp" changeTo="add" add="25" target="current"/>
+				<script id="Moonseed">
+					modifyAttribute("MP",25, getTargetCharacter());
+				</script>
 			</regularItem>
 		</namedItem>
 		<namedItem name="Octavia Key" dropRarity="never">

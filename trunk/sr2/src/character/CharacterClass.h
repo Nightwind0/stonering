@@ -2,7 +2,6 @@
 #define SR_CHARACTER_CLASS
 
 #include "Element.h"
-#include "Effect.h"
 #include <ClanLib/core.h>
 #include "Character.h"
 
@@ -13,12 +12,13 @@ namespace StoneRing
     class ArmorTypeRef;
     class StatIncrease;
     class SkillRef;
+    class BattleMenu;
 
     class CharacterClass : public Element
     {
     public:
         CharacterClass();
-        ~CharacterClass();
+        virtual ~CharacterClass();
         virtual eElement whichElement() const{ return ECHARACTERCLASS; }
         CL_DomElement createDomElement( CL_DomDocument &doc ) const;
 
@@ -34,14 +34,13 @@ namespace StoneRing
         std::list<SkillRef*>::const_iterator getSkillRefsBegin() const;
         std::list<SkillRef*>::const_iterator getSkillRefsEnd() const;
 
-        std::string getName() const;
+        BattleMenu * getBattleMenu() const;
 
+        std::string getName() const;
 
         enum eGender { MALE, FEMALE, EITHER };
 
         eGender getGender() const;
-
-
     private:
         virtual bool handleElement(eElement element, Element * pElement );
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
@@ -51,6 +50,7 @@ namespace StoneRing
         std::list<ArmorTypeRef*> mArmorTypes;
         std::list<StatIncrease*> mStatIncreases;
         std::list<SkillRef*> mSkillRefs;
+        BattleMenu *mpMenu;
     };
 
     class StatIncrease : public Element

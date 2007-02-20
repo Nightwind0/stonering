@@ -1,27 +1,44 @@
 <!--DOCTYPE skillList SYSTEM "Levels/level.dtd" -->
 <skillList>
 	<skill bp="0" name="Focus" sp="5">
-		<doStatusEffect chance="1" statusRef="Focused"/>
+		<onInvoke>
+			<script id="Focus">
+				doStatusEffect("Focused",1);
+			</script>
+		</onInvoke>
 	</skill>
 	<skill bp="1.0" name="Wind Slash" sp="50"	>
-		<animation name="WindSlash" type="battle">
-			<par duration="3">
-				<script id = "playSound">
-playSound("WindSlash");
-</script>
-				<animationSpriteRef initialFocus="caster" movementDirection="toTarget">WindSlash</animationSpriteRef>
-			</par>		
-		</animation>
-		<doWeaponDamage baseAttack="40" baseCritical="1" baseHit="1">
-			<weaponDamageCategory type="slash"/>
-		</doWeaponDamage>
+		<onInvoke>
+			<script id="Wind Slash">
+				animation("WindSlash");
+				doMagicDamage(100,1.0,"wind");
+			</script>
+		</onInvoke>
 		
 	</skill>
 	<skill bp="0" name="Thrift" sp="60" type="switch">
-		<attributeModifier attribute="priceMultiplier" changeTo="multiplier" multiplier="0.9" target="common"/>
+		<onInvoke>
+			<script id="onThrift">
+				modifyCommonAttribute("priceMultiplier", getCommonAttribute("priceMultiplier") * 0.9);
+			</script>
+		</onInvoke>
+		<onRemove>
+			<script id="rmThrift">
+				modifyCommonAttribute("priceMultiplier",getCommonAttribute("priceMultiplier") * 10/9);
+			</script>
+		</onRemove>
 	</skill>
 	<skill bp="0" name="Caution" sp="60" type="switch">
-		<attributeModifier attribute="encounterRate" changeTo="multiplier" multiplier="0.75" target="common"/>
+		<onInvoke>
+			<script id="onCaution">
+			modifyCommonAttribute("encounterRate",getCommonAttribute("encounterRate") * 0.75);
+			</script>
+		</onInvoke>
+		<onRemove>
+			<script id="rmCaution">
+			modifyCommonAttribute("encounterRate",getCommonAttribute("encounterRate") * 10/7.5);
+			</script>
+		</onRemove>
 	</skill>
 	<!--
 	<spell mp="2" name="Torch" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="2200">

@@ -11,7 +11,6 @@
 #include "Item.h"
 #include "ItemRef.h"
 #include "sr_defines.h"
-#include "Effect.h"
 #include "MappableObject.h"
 
 using std::string;
@@ -107,7 +106,7 @@ namespace StoneRing {
         Movement();
         virtual ~Movement();
         virtual eElement whichElement() const{ return EMOVEMENT; }  
-        enum eMovementType { MOVEMENT_NONE, MOVEMENT_WANDER, MOVEMENT_PACE_NS, MOVEMENT_PACE_EW };
+        enum eMovementType { MOVEMENT_NONE, MOVEMENT_WANDER, MOVEMENT_PACE_NS, MOVEMENT_PACE_EW, MOVEMENT_SCRIPT};
         enum eMovementSpeed { SLOW, MEDIUM, FAST };
 
         virtual eMovementType getMovementType() const;
@@ -116,9 +115,11 @@ namespace StoneRing {
         virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
     protected:
+        virtual bool handleElement(eElement element,Element *pElement);
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
         eMovementType meType;
         eMovementSpeed meSpeed;
+        ScriptElement* mpScript;
     };
 
     class PlayerMovement : public Movement
@@ -144,7 +145,7 @@ namespace StoneRing {
 
         inline bool isFloater() const { return (cFlags & FLOATER) != 0; }
         bool evaluateCondition() const;
-        inline bool hasAM() const { return mpAM != NULL; }
+        inline bool hasScript() const { return mpScript != NULL; }
 
         void activate(); // Call any attributemodifier
 
@@ -166,14 +167,14 @@ namespace StoneRing {
         virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
     protected:
-        virtual bool handleElement(eElement element, Element * pElement );
+        virtual bool handleElement(eElement element, Element * pElement);
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 
         CL_Sprite *mpSprite;
         SpriteRefOrTilemap mGraphic;
         ushort mZOrder;
         ScriptElement *mpCondition;
-        AttributeModifier *mpAM;
+        ScriptElement *mpScript;
         ushort mX;
         ushort mY;
 
@@ -181,18 +182,75 @@ namespace StoneRing {
 
     };
 
+    class LevelHeader : public Element
+    {
+    public:
+        LevelHeader();
+        virtual ~LevelHeader();
+        uint getLevelWidth() const { return mnLevelWidth; }
+        uint getLevelHeight() const { return mnLevelHeight; }
+        std::string getName() const { return mName; }
+        std::string getMusic() const { return mMusic; }
+        bool allowsRunning() const { return mbAllowsRunning; }
+        eElement whichElement() const { return ELEVELHEADER; }
+        void executeScript() const;
+    private:
+        virtual bool handleElement(eElement element, Element * pElement);
+        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+        ScriptElement * mpScript;
 
-    class Level
+        uint mnLevelWidth;
+        uint mnLevelHeight;
+        std::string mName;
+        std::string mMusic;
+        bool mbAllowsRunning;
+    };
+
+    class Tiles : public Element
+    {
+    public:
+        Tiles();
+        virtual ~Tiles();
+
+        std::list<Tile*>::const_iterator getTilesBegin()const;
+        std::list<Tile*>::const_iterator getTilesEnd()const;
+
+        eElement whichElement() const { return ETILES; }
+    private:
+        virtual bool handleElement(eElement element, Element * pElement);
+        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+    protected:
+        std::list<Tile*> mTiles;
+    };
+
+    class MappableObjects : public Element
+    {
+    public:
+        MappableObjects();
+        virtual ~MappableObjects();
+
+        std::list<MappableObject*>::const_iterator getMappableObjectsBegin() const;
+        std::list<MappableObject*>::const_iterator getMappableObjectsEnd() const;
+
+        eElement whichElement() const { return EMAPPABLEOBJECTS; }
+
+    private:
+        virtual bool handleElement(eElement element, Element * pElement);
+        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+    protected:
+        std::list<MappableObject*> mMappableObjects;
+    };
+
+    class Level : public Element
     {
     public:
         Level();
-        Level(const std::string &name,CL_ResourceManager * pResources);
-        Level(CL_DomDocument &document);
         virtual ~Level();
 
-        void load ( CL_DomDocument &document);
-
+        void load(const std::string &name, CL_ResourceManager *pResources);
         virtual CL_DomElement createDomElement(CL_DomDocument&) const;
+
+        eElement whichElement() const { return ELEVEL; }
 
         virtual void draw(const CL_Rect &src, const CL_Rect &dst,
                           CL_GraphicContext * pGC , bool floaters = false,
@@ -201,7 +259,6 @@ namespace StoneRing {
         virtual void drawFloaters(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext * pGC);
 
         void addPlayer(MappablePlayer * pPlayer);
-
         void moveMappableObjects(const CL_Rect &src);
 
         // Checks relevant tile and MO direction block information
@@ -227,30 +284,28 @@ namespace StoneRing {
 
         uint getWidth() const { return mLevelWidth; }
         uint getHeight() const { return mLevelHeight; }
-
         bool allowsRunning() const { return mbAllowsRunning; }
-
         std::string getName() const { return mName; }
 
         MappablePlayer * getPlayer()const { return mpPlayer; }
 
         void markForDeath() { mbMarkedForDeath = true; }
 
-
 #ifndef NDEBUG
         void dumpMappableObjects() const;
 #endif
-
-
-
     protected:
-
 
         typedef MOMap::value_type MOMapValueType;
         std::vector<std::vector<std::list<Tile*> > > mTileMap;
         // Needs to be a multimap
         std::map<CL_Point, std::list<Tile*> > mFloaterMap;
         MOMap mMOMap;
+
+        // Element virtuals
+        virtual bool handleElement(eElement element, Element * pElement);
+        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+        virtual void loadFinished();
 
         // MO related operations
         bool containsMappableObjects(const CL_Point &point) const;
@@ -260,13 +315,10 @@ namespace StoneRing {
         void removeMappableObjectAt(const CL_Point &point, MappableObject * pMO);
 
         // Sort tiles on zOrder
-        static bool tileSortCriterion ( const Tile * p1, const Tile * p2);
+        static bool tileSortCriterion ( const Tile * p1, const Tile * p2 );
 
-        void LoadLevel( const std::string &filename );
-        void LoadLevel ( CL_DomDocument &document );
-
-        void loadTile ( CL_DomElement * tileElement);
-        void loadMo ( CL_DomElement * moElement );
+        void loadTile ( Tile * tileElement );
+        void loadMo ( MappableObject * moElement );
 
         // All AM's from tiles fire, as do any step events
         virtual void step(const CL_Point &destination);
@@ -279,7 +331,8 @@ namespace StoneRing {
 
         CL_ResourceManager * mpResources;
         CL_DomDocument * mpDocument;
-
+        ScriptElement *mpScript;
+        LevelHeader *mpHeader;
         std::string mMusic;
         std::string mName;
         uint mLevelWidth;

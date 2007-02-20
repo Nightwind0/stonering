@@ -215,19 +215,7 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
 			<File
-				RelativePath=".\src\factories\AbilityFactory.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\Application.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\factories\CharacterFactory.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\factories\ItemFactory.cpp"
 				>
 			</File>
 		</Filter>
@@ -236,19 +224,7 @@
 			Filter="h;hpp;hxx;hm;inl"
 			>
 			<File
-				RelativePath=".\src\factories\AbilityFactory.h"
-				>
-			</File>
-			<File
 				RelativePath=".\src\Application.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\factories\CharacterFactory.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\factories\ItemFactory.h"
 				>
 			</File>
 		</Filter>

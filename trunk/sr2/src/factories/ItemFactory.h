@@ -7,39 +7,11 @@
 
 namespace StoneRing
 {
-
-
-    class RegularItem;
-    class SpecialItem;
-    class SystemItem;
-    class Rune;
-    class UniqueWeapon;
-    class UniqueArmor;
-    class WeaponTypeRef;
-    class WeaponClassRef;
-    class ArmorTypeRef;
-    class ArmorClassRef;
-    class WeaponRef;
-    class ArmorRef;
-    class RuneType;
-    class SpellRef;
-    class WeaponEnhancer;
-    class ArmorEnhancer;
-    class AttributeEnhancer;
-    class WeaponClass;
-    class WeaponType;
-    class ArmorClass;
-    class ArmorType;
-    class NamedItemElement;
-    class WeaponDamageCategory;
-    class MagicDamageCategory;
-    class StatusEffectModifier;
-
     class ItemFactory : public IFactory
     {
     public:
         ItemFactory(){}
-        ~ItemFactory();
+        virtual ~ItemFactory();
 
         virtual bool canCreate( Element::eElement element );
         virtual Element * createElement( Element::eElement element );

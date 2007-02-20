@@ -1,4 +1,4 @@
-#include "Application.h"
+#include "IApplication.h"
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
 #include <string>

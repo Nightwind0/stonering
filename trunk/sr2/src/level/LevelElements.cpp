@@ -13,7 +13,6 @@
 #include "ItemFactory.h"
 #include "ItemManager.h"
 #include "CharacterDefinition.h"
-#include "AttributeModifier.h"
 #include "WeaponRef.h"
 #include "ArmorRef.h"
 #include "IApplication.h"
@@ -405,7 +404,7 @@ void StoneRing::Movement::loadAttributes(CL_DomNamedNodeMap * pAttributes)
         {
             meSpeed = FAST;
         }
-        else throw CL_Error("Error, movement speed must be fast or slow.");
+        else throw CL_Error("Error, movement speed must be fast, medium or slow.");
             
     }
 
@@ -423,6 +422,10 @@ void StoneRing::Movement::loadAttributes(CL_DomNamedNodeMap * pAttributes)
     {
         meType = MOVEMENT_PACE_EW;
     }
+    else if(type == "script")
+    {
+        meType = MOVEMENT_SCRIPT;
+    }
     else if(type == "none")
     {
         // Why would they ever....
@@ -431,15 +434,25 @@ void StoneRing::Movement::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 
 }
 
-StoneRing::Movement::Movement ( ):meType(MOVEMENT_NONE),meSpeed(SLOW)
+StoneRing::Movement::Movement ( ):meType(MOVEMENT_NONE),meSpeed(SLOW),mpScript(NULL)
 {
    
 }
 
 StoneRing::Movement::~Movement()
 {
+    delete mpScript;
 }
 
+
+bool StoneRing::Movement::handleElement(Element::eElement element, Element *pElement)
+{
+    if(element == ESCRIPT)
+        mpScript= dynamic_cast<ScriptElement*>(pElement);
+    else return false;
+
+    return true;
+}
 
 StoneRing::Movement::eMovementType StoneRing::Movement::getMovementType() const
 {
@@ -505,7 +518,7 @@ int StoneRing::DirectionBlock::getDirectionBlock() const
 }
 
 
-StoneRing::Tile::Tile():mpSprite(NULL),mpCondition(NULL),mpAM(NULL),mZOrder(0),cFlags(0)
+StoneRing::Tile::Tile():mpSprite(NULL),mpCondition(NULL),mpScript(NULL),mZOrder(0),cFlags(0)
 {
 }
 
@@ -544,15 +557,6 @@ CL_DomElement  StoneRing::Tile::createDomElement(CL_DomDocument &doc) const
         element.append_child ( condEl );
 
     }
-
-    if(mpAM)
-    {
-        CL_DomElement  amEl = mpAM->createDomElement(doc);
-
-        element.append_child ( amEl );
-
-    }
-
     if( getDirectionBlock() > 0)
     {
         DirectionBlock block( getDirectionBlock() );
@@ -591,6 +595,9 @@ bool StoneRing::Tile::handleElement(eElement element, Element * pElement)
 {
     switch(element)
     {
+    case ESCRIPT:
+        mpScript = dynamic_cast<ScriptElement*>(pElement);
+        break;
     case ETILEMAP:
         mGraphic.asTilemap = dynamic_cast<Tilemap*>(pElement);
         break;
@@ -607,9 +614,6 @@ bool StoneRing::Tile::handleElement(eElement element, Element * pElement)
     }//ESPRITEREF
     case ECONDITIONSCRIPT:
         mpCondition = dynamic_cast<ScriptElement*>(pElement);
-        break;
-    case EATTRIBUTEMODIFIER:
-        mpAM = dynamic_cast<AttributeModifier*>(pElement);
         break;
     case EDIRECTIONBLOCK:
     {
@@ -641,12 +645,14 @@ bool StoneRing::Tile::handleElement(eElement element, Element * pElement)
 
 void StoneRing::Tile::activate() // Call any attributemodifier
 {
-    mpAM->invoke();   
+    // Run script
+    if(mpScript)
+        mpScript->executeScript();
 }
 
 StoneRing::Tile::~Tile()
 {
-    delete mpAM;
+    delete mpScript;
     delete mpCondition;
     delete mpSprite;
 

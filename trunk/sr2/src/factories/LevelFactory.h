@@ -10,19 +10,6 @@ namespace StoneRing
 {
 
 
-    class DirectionBlock;
-    class Tilemap;
-    class SpriteRef;
-    class AttributeModifier;
-    class Movement;
-    class ItemRef;
-    class Event;
-    class Tile;
-    class MappableObject;
-    class Level;
-    class NamedItemRef;
-    class ScriptElement;
-
     class LevelFactory : public IFactory
     {
     public:

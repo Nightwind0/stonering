@@ -10,16 +10,39 @@
 
 using namespace StoneRing;
 
-UniqueWeapon::UniqueWeapon():mpWeaponType(NULL)
+UniqueWeapon::UniqueWeapon():mpWeaponType(NULL),mpScript(NULL)
 {
 }
 
 UniqueWeapon::~UniqueWeapon()
 { 
-
+    delete mpScript;
+    delete mpEquipScript;
+    delete mpUnequipScript;
+    delete mpConditionScript;
 }
 
+void UniqueWeapon::executeScript()
+{
+    if(mpScript) mpScript->executeScript();
+}
 
+bool UniqueWeapon::equipCondition()
+{
+    if(mpConditionScript)
+        return mpConditionScript->evaluateCondition();
+    else return true;
+}
+
+void UniqueWeapon::onEquipScript()
+{
+    mpEquipScript->executeScript();
+}
+
+void UniqueWeapon::onUnequipScript()
+{
+    mpUnequipScript->executeScript();
+}
 
 uint UniqueWeapon::getValue() const 
 {
@@ -92,7 +115,18 @@ bool UniqueWeapon::handleElement(eElement element, Element * pElement)
     case ESTATUSEFFECTMODIFIER:
         addStatusEffectModifier( dynamic_cast<StatusEffectModifier*>(pElement) );
         break;
-
+    case ESCRIPT:
+        mpScript = dynamic_cast<ScriptElement*>(pElement);
+        break;
+    case EONEQUIP:
+        mpEquipScript = dynamic_cast<ScriptElement*>(pElement);
+        break;
+    case EONUNEQUIP:
+        mpUnequipScript = dynamic_cast<ScriptElement*>(pElement);
+        break;
+    case ECONDITIONSCRIPT:
+        mpConditionScript = dynamic_cast<ScriptElement*>(pElement);
+        break;
     default:
         return false;
 

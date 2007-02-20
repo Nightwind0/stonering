@@ -18,12 +18,10 @@ namespace StoneRing{
         bool hasSpell() const ;
         bool hasRuneType() const;
 
-        // Apply any attribute enhancements 
         void equip();
-
-        // Remove any attribute enhancements
         void unequip();
-
+        virtual void executeScript()=0;
+        virtual bool equipCondition()=0;
 
         std::list<AttributeEnhancer*>::const_iterator getAttributeEnhancersBegin() const;
         std::list<AttributeEnhancer*>::const_iterator getAttributeEnhancersEnd() const;
@@ -31,6 +29,9 @@ namespace StoneRing{
         std::list<StatusEffectModifier*>::const_iterator getStatusEffectModifiersBegin() const { return mStatusEffectModifiers.begin(); }
         std::list<StatusEffectModifier*>::const_iterator getStatusEffectModifiersEnd() const { return mStatusEffectModifiers.end(); }
     protected:
+        virtual void onEquipScript()=0;
+        virtual void onUnequipScript()=0;
+
         void clearAttributeEnhancers();
         void addAttributeEnhancer( AttributeEnhancer * pAttr );
         void setSpellRef ( SpellRef * pRef );

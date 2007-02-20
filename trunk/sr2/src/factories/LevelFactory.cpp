@@ -8,78 +8,7 @@ using namespace StoneRing;
 
 
 
-Element * LevelFactory::createDirectionBlock()const
-{
-    return new DirectionBlock();
 
-}
-
-
-
-Element * LevelFactory::createTilemap()const
-{
-    return new Tilemap();
-}
-
-
-Element * LevelFactory::createSpriteRef()const
-{
-    return new SpriteRef();
-}
-
-
-Element * LevelFactory::createMovement()const
-{
-    return new Movement();
-}
-
-
-Element * LevelFactory::createItemRef()const
-{
-    return new ItemRef();
-}
-
-
-Element * LevelFactory::createAttributeModifier()const
-{
-    return new AttributeModifier();
-}
-
-
-
-
-Element * LevelFactory::createEvent()const
-{
-    return new Event();
-}
-
-
-Element * LevelFactory::createTile()const
-{
-    return new Tile();
-}
-
-
-Element * LevelFactory::createMappableObject()const
-{
-    return new MappableObject();
-}
-
-
-Element * LevelFactory::createNamedItemRef()const
-{
-    return new NamedItemRef();
-}
-
-Element * LevelFactory::createScriptElement()const
-{
-    return new ScriptElement(false);
-}
-
-Element * LevelFactory::createConditionScript()const
-{
-    return new ScriptElement(true);
-}
 
 
 

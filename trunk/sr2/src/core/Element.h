@@ -35,32 +35,32 @@ namespace StoneRing
             EARMORTYPE,
             EARMORTYPEEXCLUSIONLIST,
             EARMORTYPEREF,
-            EATTRIBUTEEFFECT,
             EATTRIBUTEENHANCER,
-            EATTRIBUTEMODIFIER,
+            EBATTLEMENU,
+            EBATTLEMENUOPTION,
             ECHARACTER,
             ECHARACTERCLASS,
             ECONDITIONSCRIPT,
             EDIRECTIONBLOCK,
-            EDOATTACK,
-            EDOMAGICDAMAGE,
-            EDOSTATUSEFFECT,
-            EDOWEAPONDAMAGE,
             EEVENT,
             EICONREF,
             EITEMREF,
             ELEVEL,
+            ELEVELHEADER,
             EMAGICDAMAGECATEGORY,
             EMAGICRESISTANCE,
             EMAPPABLEOBJECT,
+            EMAPPABLEOBJECTS,
             EMOVEMENT,
             ENAMEDITEMELEMENT,
             ENAMEDITEMREF,
             EONCOUNTDOWN,
+            EONEQUIP,
             EONINVOKE,
             EONREMOVE,
             EONROUND,
             EONSTEP,
+            EONUNEQUIP,
             EPAR,
             EPREREQSKILLREF,
             EREGULARITEM,
@@ -75,11 +75,11 @@ namespace StoneRing
             ESPRITEREF,
             ESTATINCREASE,
             ESTATUSEFFECT,
-            ESTATUSEFFECTACTIONS,
             ESTATUSEFFECTMODIFIER,
             ESYSTEMITEM,
             ETILE,
             ETILEMAP,
+            ETILES,
             EUNIQUEARMOR,
             EUNIQUEWEAPON,
             EWEAPONCLASS,
@@ -95,12 +95,9 @@ namespace StoneRing
         };
 
         virtual eElement whichElement() const=0;
-        virtual CL_DomElement  createDomElement(CL_DomDocument&) const=0;
-   
         void load(CL_DomElement * pElement);
 
-        static const char * pszElementNames[__END_OF_ELEMENTS__];
-    
+          
     protected:
         virtual bool handleElement(eElement, Element * ){ return false;}
         virtual void loadAttributes(CL_DomNamedNodeMap *){}

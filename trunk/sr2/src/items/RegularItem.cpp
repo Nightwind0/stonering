@@ -16,6 +16,8 @@ RegularItem::~RegularItem()
 // Execute all actions.
 void RegularItem::invoke()
 {
+    if(mpScript)
+        mpScript->executeScript();
 }
 
 

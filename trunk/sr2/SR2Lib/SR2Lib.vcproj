@@ -36,7 +36,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(SOLUTIONDIR)/src/level/actions&quot;;&quot;$(SOLUTIONDIR)/src/steel/&quot;;&quot;$(SOLUTIONDIR)/src/items/armor/&quot;;&quot;$(SOLUTIONDIR)/src/items/weapons/&quot;;&quot;$(SOLUTIONDIR)/src/&quot;;&quot;$(SOLUTIONDIR)/src/party&quot;;&quot;$(SOLUTIONDIR)/src/level&quot;;&quot;$(SOLUTIONDIR)/src/factories&quot;;&quot;$(SOLUTIONDIR)/src/items&quot;;&quot;$(SOLUTIONDIR)/src/abilities&quot;;&quot;$(SOLUTIONDIR)/src/states&quot;;&quot;$(SOLUTIONDIR)/src/character&quot;;&quot;$(SOLUTIONDIR)/src/core&quot;"
+				AdditionalIncludeDirectories="&quot;$(SOLUTIONDIR)/src/steel/&quot;;&quot;$(SOLUTIONDIR)/src/items/armor/&quot;;&quot;$(SOLUTIONDIR)/src/items/weapons/&quot;;&quot;$(SOLUTIONDIR)/src/&quot;;&quot;$(SOLUTIONDIR)/src/party&quot;;&quot;$(SOLUTIONDIR)/src/level&quot;;&quot;$(SOLUTIONDIR)/src/factories&quot;;&quot;$(SOLUTIONDIR)/src/items&quot;;&quot;$(SOLUTIONDIR)/src/abilities&quot;;&quot;$(SOLUTIONDIR)/src/states&quot;;&quot;$(SOLUTIONDIR)/src/character&quot;;&quot;$(SOLUTIONDIR)/src/core&quot;"
 				PreprocessorDefinitions="WIN32;DEBUG;_WINDOWS;_DEBUG"
 				RuntimeLibrary="1"
 				DebugInformationFormat="3"
@@ -228,7 +228,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\level\actions\AttributeModifier.cpp"
+				RelativePath="..\src\character\BattleMenu.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\character\BattleMenuOption.cpp"
 				>
 			</File>
 			<File
@@ -272,6 +276,10 @@
 						XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
 					/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\src\factories\ElementFactory.cpp"
+				>
 			</File>
 			<File
 				RelativePath="..\src\items\Equipment.cpp"
@@ -332,10 +340,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\factories\LevelFactory.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\src\level\MappableObject.cpp"
 				>
 			</File>
@@ -345,6 +349,10 @@
 			</File>
 			<File
 				RelativePath="..\src\items\NamedItem.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\core\NamedScript.cpp"
 				>
 			</File>
 			<File
@@ -548,7 +556,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\level\actions\AttributeModifier.h"
+				RelativePath="..\src\character\BattleMenuOption.h"
 				>
 			</File>
 			<File
@@ -580,6 +588,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\factories\ElementFactory.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\items\Equipment.h"
 				>
 			</File>
@@ -600,7 +612,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\GraphicsManager.h"
+				RelativePath="..\src\core\GraphicsManager.h"
 				>
 			</File>
 			<File
@@ -624,10 +636,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\factories\ItemFactory.h"
-				>
-			</File>
-			<File
 				RelativePath="..\src\items\ItemManager.h"
 				>
 			</File>
@@ -640,10 +648,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\factories\LevelFactory.h"
-				>
-			</File>
-			<File
 				RelativePath="..\src\level\MappableObject.h"
 				>
 			</File>
@@ -652,7 +656,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\character\Menu.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\items\NamedItem.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\core\NamedScript.h"
 				>
 			</File>
 			<File
