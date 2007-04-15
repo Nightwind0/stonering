@@ -2,6 +2,7 @@
 
 #include "Infobar.h"
 
+using Editor::Infobar;
 
 Infobar::Infobar( CL_Component *parent)
     :    CL_Component(parent),tool_pos(NULL)

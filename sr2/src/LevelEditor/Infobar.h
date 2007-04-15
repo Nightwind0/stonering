@@ -8,6 +8,7 @@
 #include <iostream>
 using namespace std;
 
+namespace Editor{
 
 class Infobar : CL_Component
 {
@@ -40,7 +41,7 @@ private:
 
     string pos;
 };
-
+};
 #endif
 
 

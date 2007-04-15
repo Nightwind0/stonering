@@ -182,19 +182,15 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\factories\AbilityFactory.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\factories\CharacterFactory.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\LevelEditor\EditableLevel.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\LevelEditor\editor.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\EditorElementFactory.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\EditorElements.cpp"
 				>
 			</File>
 			<File
@@ -224,11 +220,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\EditableLevel.h"
+				RelativePath=".\editor.h"
 				>
 			</File>
 			<File
-				RelativePath=".\editor.h"
+				RelativePath=".\EditorElementFactory.h"
+				>
+			</File>
+			<File
+				RelativePath=".\EditorElements.h"
 				>
 			</File>
 			<File

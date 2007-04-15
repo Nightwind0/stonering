@@ -7,12 +7,12 @@
 #include <ClanLib/gui.h>
 #include <ClanLib/display.h>
 
-#include "EditableLevel.h"
+#include "EditorElements.h"
 #include "TileSelector.h"
 
 using namespace std;
 
-
+namespace Editor{
 
 class MapGrid : public CL_Component
 {
@@ -21,7 +21,7 @@ public:
         
     virtual ~MapGrid();
 
-    void set_Level(EditableLevel *mpLevel);
+    void set_Level(Editor::Level *pLevel);
     void save_Level(string filename);
 
     void switchTool(string toolname);
@@ -57,7 +57,7 @@ private:
     CL_Rect rect;
     CL_SlotContainer slots;
 
-    EditableLevel *mgLevel;
+    Editor::Level *mgLevel;
 
     CL_GraphicContext *mgGC;
 
@@ -74,7 +74,7 @@ private:
         
 };
 
-
+};
 #endif
 
 

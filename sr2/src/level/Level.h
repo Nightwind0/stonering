@@ -46,8 +46,6 @@ namespace StoneRing {
         virtual eElement whichElement() const{ return EDIRECTIONBLOCK; }    
         int getDirectionBlock() const;
 
-        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
-
     protected:
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
 
@@ -68,8 +66,6 @@ namespace StoneRing {
 
         inline CL_Surface * getTileMap() const { return mpSurface; }
 
-        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
-
     protected:
         virtual bool handleElement(eElement element, Element * pElement );      
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
@@ -89,9 +85,6 @@ namespace StoneRing {
 
         eType getType() const;
         std::string getRef() const;
-
-        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
-
     protected:
         virtual bool handleElement(eElement element, Element * pElement );      
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
@@ -111,8 +104,6 @@ namespace StoneRing {
 
         virtual eMovementType getMovementType() const;
         virtual eMovementSpeed getMovementSpeed() const;
-
-        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
     protected:
         virtual bool handleElement(eElement element,Element *pElement);
@@ -164,7 +155,6 @@ namespace StoneRing {
         virtual void update();
         int getDirectionBlock() const;
         inline bool isTile() const { return true; }
-        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
     protected:
         virtual bool handleElement(eElement element, Element * pElement);
@@ -246,7 +236,7 @@ namespace StoneRing {
     public:
         Level();
         virtual ~Level();
-
+        void loadFromFile(const std::string &filename);
         void load(const std::string &name, CL_ResourceManager *pResources);
         virtual CL_DomElement createDomElement(CL_DomDocument&) const;
 

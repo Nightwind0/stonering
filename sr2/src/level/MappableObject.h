@@ -59,7 +59,6 @@ namespace StoneRing {
         virtual void update();
         virtual bool isTile() const;
         virtual void provokeEvents ( Event::eTriggerType trigger );
-        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
         bool evaluateCondition() const;
 
         void prod();
@@ -125,7 +124,6 @@ namespace StoneRing {
         virtual bool isTile() const { return false; }
         virtual void setNextDirection(eDirection newDir);
         virtual void clearNextDirection() { mbHasNextDirection = false; meDirection = NONE; }
-        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
         virtual void randomNewDirection();
         virtual void movedOneCell();
         virtual void idle();

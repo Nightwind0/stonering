@@ -3,11 +3,11 @@
 
 #include "editor.h"
 #include "IApplication.h"
-#include "EditableLevel.h"
-#include "CharacterFactory.h"
-
+#include "EditorElementFactory.h"
+#include "EditorElements.h"
 
 using namespace StoneRing;
+using Editor::EditorMain;
 
 bool gbDebugStop = false;
 
@@ -15,7 +15,7 @@ EditorMain::EditorMain():
 mpResources(NULL),mpParty(NULL),mpLevelFactory(NULL),mInfo(NULL)
 {
     mpParty = new EditorParty();
-    mpLevelFactory = new EditableLevelFactory();
+    mpLevelFactory = new EditorElementFactory();
 
 }
 
@@ -51,11 +51,6 @@ CL_ResourceManager * EditorMain::getResources()const
 StoneRing::IParty * EditorMain::getParty() const
 {
     return mpParty;
-}
-
-LevelFactory * EditorMain::getLevelFactory() const
-{
-    return mpLevelFactory;
 }
         
 int EditorMain::getScreenWidth()const
@@ -108,11 +103,6 @@ int EditorMain::main(int argc, char **argv)
     // Use printf or cout to display some text in your program
     CL_ConsoleWindow console("Console");
     console.redirect_stdio();
-
-    mFactories.push_back ( getAbilityFactory() );
-    mFactories.push_back ( getItemFactory() );
-    mFactories.push_back ( getCharacterFactory() );
-    mFactories.push_back ( getLevelFactory() );
 
     try
     {
@@ -365,16 +355,11 @@ void EditorMain::on_load()
 
         if(filename != "")
         {
-            CL_InputSource_File file(filename);
-
-            CL_DomDocument doc;
-            doc.load(&file);
-
             delete mpLevel;
 
-            mpLevel = new EditableLevel();
+            mpLevel = new Editor::Level();
 
-            mpLevel->load(doc);
+            mpLevel->loadFromFile(filename);
 
             mMap->set_Level(mpLevel);
         }
@@ -418,7 +403,7 @@ void EditorMain::on_new()
         if(mpLevel != NULL)
             delete mpLevel; 
 
-        mpLevel = new EditableLevel();
+        mpLevel = new Editor::Level();
 
         mpLevel->setName(lvlName->get_text());
         mpLevel->setMusic(lvlMusic->get_text());
