@@ -5,6 +5,9 @@
 #include "editor.h"
 #include <sstream>
 
+using Editor::MapGrid;
+using Editor::TileSelector;
+
 MapGrid::MapGrid(CL_Component *parent, CL_GraphicContext *mgGC, TileSelector *TS)
     :   CL_Component(parent), mgGC(mgGC), TS(TS)
 {
@@ -141,12 +144,12 @@ void MapGrid::on_placeTile(const CL_InputEvent &event)
             if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ))
             {
                 // Zap mode, delete the topmost tile
-                std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
+                std::list<StoneRing::Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
 
                 if(TileList.size() > 0)
                 {
 
-                    std::list<Tile*>::iterator lastGuy = TileList.end();
+                    std::list<StoneRing::Tile*>::iterator lastGuy = TileList.end();
 
                     // Since it's currently actually one PAST the lastguy.
                     lastGuy--;
@@ -159,13 +162,13 @@ void MapGrid::on_placeTile(const CL_InputEvent &event)
             else
             {
                 // Default mode is add mode
-                EditableTile *pTile = new EditableTile();
+                Editor::Tile *pTile = new Editor::Tile();
                 //cout << TS->get_tsMapName() << endl;
                 pTile->setTilemap(TS->get_tsMapName(), TS->get_tsX(), TS->get_tsY());
                 
                 int ZOrder = -1;
-                std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
-                for( std::list<Tile*>::iterator iter = TileList.begin(); iter != TileList.end(); iter++)
+                std::list<StoneRing::Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
+                for( std::list<StoneRing::Tile*>::iterator iter = TileList.begin(); iter != TileList.end(); iter++)
                 {
                 
                     if( (*iter)->getZOrder() > ZOrder) 
@@ -186,9 +189,9 @@ void MapGrid::on_placeTile(const CL_InputEvent &event)
 }
 
 
-void MapGrid::set_Level(EditableLevel *mpLevel)
+void MapGrid::set_Level(Editor::Level *pLevel)
 {
-    mgLevel = mpLevel;
+    mgLevel = pLevel;
 
     int widthInTiles = get_width() / 32 ;
     int heightInTiles = get_height() / 32 ;
@@ -347,13 +350,13 @@ void MapGrid::on_setNorth(const CL_InputEvent &event)
                 // Anti-Mode.  UNset the value if its set.
                 //std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
 
-                mgLevel->setDirectionBlockAt(mgX, mgY, DIR_NORTH, false);
+                mgLevel->setDirectionBlockAt(mgX, mgY, StoneRing::DIR_NORTH, false);
                 
             }
             else
             {
                 // Default mode is set mode
-                mgLevel->setDirectionBlockAt(mgX, mgY, DIR_NORTH, true);
+                mgLevel->setDirectionBlockAt(mgX, mgY, StoneRing::DIR_NORTH, true);
                 
             }
 
@@ -383,13 +386,13 @@ void MapGrid::on_setSouth(const CL_InputEvent &event)
                 // Anti-Mode.  UNset the value if its set.
                 //std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
 
-                mgLevel->setDirectionBlockAt(mgX, mgY, DIR_SOUTH, false);
+                mgLevel->setDirectionBlockAt(mgX, mgY, StoneRing::DIR_SOUTH, false);
                 
             }
             else
             {
                 // Default mode is set mode
-                mgLevel->setDirectionBlockAt(mgX, mgY, DIR_SOUTH, true);
+                mgLevel->setDirectionBlockAt(mgX, mgY, StoneRing::DIR_SOUTH, true);
             }
 
         }
@@ -418,13 +421,13 @@ void MapGrid::on_setEast(const CL_InputEvent &event)
                 // Anti-Mode.  UNset the value if its set.
                 //std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
 
-                mgLevel->setDirectionBlockAt(mgX, mgY, DIR_EAST, false);
+                mgLevel->setDirectionBlockAt(mgX, mgY, StoneRing::DIR_EAST, false);
         
             }
             else
             {
                 // Default mode is set mode
-                mgLevel->setDirectionBlockAt(mgX, mgY, DIR_EAST, true);
+                mgLevel->setDirectionBlockAt(mgX, mgY, StoneRing::DIR_EAST, true);
             }
 
         }
@@ -453,13 +456,13 @@ void MapGrid::on_setWest(const CL_InputEvent &event)
                 // Anti-Mode.  UNset the value if its set.
                 //std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
 
-                mgLevel->setDirectionBlockAt(mgX, mgY, DIR_WEST, false);
+                mgLevel->setDirectionBlockAt(mgX, mgY, StoneRing::DIR_WEST, false);
                 
             }
             else
             {
                 // Default mode is set mode
-                mgLevel->setDirectionBlockAt(mgX, mgY, DIR_WEST, true);
+                mgLevel->setDirectionBlockAt(mgX, mgY, StoneRing::DIR_WEST, true);
             }
 
         }

@@ -5,113 +5,6 @@
 
 class StoneRing::Tilemap;
 
-CL_DomElement  StoneRing::MappableObject::createDomElement(CL_DomDocument &doc) const
-{
-    CL_DomElement element(doc,"mo");
-
-    element.set_attribute( "name", mName );
-    
-    std::string motype;
-    std::string size;
-
-    switch( meSize )
-    {
-    case MO_SMALL:
-        size = "small";
-        break;
-    case MO_MEDIUM:
-        size = "medium";
-        break;
-    case MO_LARGE:
-        size = "large";
-        break;
-    case MO_TALL:
-        size = "tall";
-        break;
-    case MO_WIDE:
-        size = "wide";
-        break;
-    
-    }
-
-
-    switch ( meType )
-    {
-    case NPC:
-        motype = "npc";
-        break;
-    case SQUARE:
-        motype = "square";
-        break;
-    case CONTAINER:
-        motype = "container";
-        break;
-    case DOOR:
-        motype = "door";
-        break;
-    case WARP:
-        motype = "warp";
-        break;
-    }
-
-    element.set_attribute("size", size);
-    element.set_attribute("type", motype );
-    element.set_attribute("xpos", IntToString(mStartX) );
-    element.set_attribute("ypos", IntToString(mStartY) );
- 
-
-    if(isSolid()) element.set_attribute("solid", "true" );
-
-    if(cFlags & TILEMAP)
-    {
-        CL_DomElement  tilemapEl = mGraphic.asTilemap->createDomElement(doc);
-
-        element.append_child (  tilemapEl );
-
-    }
-
-
-    if(isSprite())
-    {
-    
-        CL_DomElement  spriteRefEl = mGraphic.asSpriteRef->createDomElement(doc);
-
-
-        element.append_child ( spriteRefEl );
-
-    }
-
-    if(mpCondition)
-    {
-        CL_DomElement condition = mpCondition->createDomElement(doc);
-
-        element.append_child( condition );
-    }
-
-    for(std::list<Event*>::const_iterator h = mEvents.begin();
-        h != mEvents.end(); h++)
-    {
-        CL_DomElement  evEl= (*h)->createDomElement(doc);
-
-        element.append_child( evEl );
-
-
-    }
-
-    if(mpMovement)
-    {
-        CL_DomElement  moveEl = mpMovement->createDomElement(doc);
-
-        element.append_child ( moveEl );
-
-
-    }
-
-
-    return element;
-    
-}
-
 bool StoneRing::MappableObject::evaluateCondition() const
 {
     if(mpCondition)
@@ -816,10 +709,7 @@ void StoneRing::MappablePlayer::setNextDirection(eDirection newDir)
     mbHasNextDirection = true;
     meNextDirection = newDir;
 }
-CL_DomElement  StoneRing::MappablePlayer::createDomElement(CL_DomDocument &doc) const
-{
-    return CL_DomElement(doc,"player");
-}
+
 void StoneRing::MappablePlayer::randomNewDirection()
 {
     meDirection = NONE;

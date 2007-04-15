@@ -17,25 +17,6 @@ typedef unsigned short ushort;
 
 using namespace StoneRing;
 
-class EditableLevelFactory : public LevelFactory
-{
-public:
-    EditableLevelFactory(){}
-    virtual ~EditableLevelFactory(){}
-private:
-
-    virtual Element * createTile() const;
-    virtual Element * createEvent() const;
-    // virtual MappableObject * createMappableObject() const;
-    //virtual MappableObject * createMappableObject(CL_DomElement *pElement) const;
-    virtual Element * createTilemap() const;
-    virtual Element * createSpriteRef() const;
-    virtual Element * createScriptElement() const;
-    virtual Element * createConditionScript() const;
-
-
-private:
-};
 
 class EditableScriptElement : public StoneRing::ScriptElement
 {

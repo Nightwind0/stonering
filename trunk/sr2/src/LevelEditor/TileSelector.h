@@ -10,7 +10,7 @@
 #include <string>
 using namespace std;
 
-
+namespace Editor{
 
 class TileSelector : public CL_Component
 {
@@ -51,7 +51,7 @@ private:
     string tsMapName;
 
 };
-
+};
 
 #endif
 

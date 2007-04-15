@@ -233,76 +233,7 @@ void Level::removeMappableObjectAt(const CL_Point &point, MappableObject *pMO)
 CL_DomElement  Level::createDomElement(CL_DomDocument &doc) const
 {
 
-    CL_DomElement element(doc, "level");
-
-    element.set_attribute("name",mName);
-
-    CL_DomElement levelHeader(doc, "levelHeader");
-    CL_DomElement tiles(doc, "tiles");
-    CL_DomElement mappableObjects(doc,"mappableObjects");
-
-
-    levelHeader.set_attribute("music", mMusic );
-    levelHeader.set_attribute("width", IntToString(mLevelWidth) );
-    levelHeader.set_attribute("height", IntToString(mLevelHeight) );
-    levelHeader.set_attribute("allowsRunning", mbAllowsRunning? "true" : "false");
-
-    element.append_child( levelHeader );
-
-    
-
-    for(int x=0; x< mLevelWidth; x++)
-    {
-        for(int y =0;y< mLevelHeight; y++)
-        {
-            for( std::list<Tile*>::const_iterator i = mTileMap[x][y].begin();
-                 i != mTileMap[x][y].end();
-                 i++)
-            {
-                CL_DomElement  tileEl = (*i)->createDomElement(doc);
-
-                tiles.append_child ( tileEl );
-
-            }
-        }
-    }
-
-    for(std::map<CL_Point,std::list<Tile*> >::const_iterator j = mFloaterMap.begin();
-        j != mFloaterMap.end();
-        j++)
-    {
-        for(std::list<Tile*>::const_iterator jj = j->second.begin();
-            jj != j->second.end();
-            jj++)
-        {
-            CL_DomElement floaterEl = (*jj)->createDomElement(doc);
-
-            tiles.append_child ( floaterEl );
-
-        }
-        
-    }
-
-    element.append_child(tiles);
-
-    ++mnFrameCount; // Use to make sure we don't save each MO more than once. Wee.
- 
-    for(MOMap::const_iterator iter = mMOMap.begin(); iter != mMOMap.end();
-        iter++)
-    {
-        MappableObject * pMo = iter->second;
-        if(mnFrameCount > pMo->getFrameMarks())
-        {
-            mappableObjects.append_child(pMo->createDomElement(doc));
-            pMo->markFrame();
-        }
-    }
-
-    element.append_child(mappableObjects);
-    
-
-    return element;
-
+    return CL_DomElement(doc,"level");
 }
 
 #if 0
@@ -922,18 +853,22 @@ bool Level::tileSortCriterion ( const Tile * p1, const Tile * p2)
     return p1->getZOrder() < p2->getZOrder();
 }
 
+void Level::loadFromFile(const std::string &filename)
+{
+    CL_DomDocument doc;
+    CL_InputSource_File file(filename);
+    doc.load(&file);
+
+    CL_DomElement levelNode = doc.named_item("level").to_element();
+    Element::load(&levelNode);
+}
 
 void Level::load(const std::string &name, CL_ResourceManager *pResources)
 {
     std::string path = CL_String::load("Game/LevelPath", pResources);
     std::string filename = CL_String::load("Levels/" + name, pResources);
 
-    CL_DomDocument doc;
-    CL_InputSource_File file(path + filename);
-    doc.load(&file);
-
-    CL_DomElement levelNode = doc.named_item("level").to_element();
-    Element::load(&levelNode);
+    loadFromFile(path + filename);
 }
 
 bool Level::handleElement(eElement element, Element * pElement)

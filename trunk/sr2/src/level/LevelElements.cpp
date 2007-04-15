@@ -222,16 +222,6 @@ CL_DomElement  StoneRing::NamedItemRef::createDomElement(CL_DomDocument &doc) co
 }
 
 
-CL_DomElement  StoneRing::Tilemap::createDomElement(CL_DomDocument &doc) const
-{
-    CL_DomElement  element(doc,"tilemap");
-
-    element.set_attribute( "mapname" , GraphicsManager::getInstance()->lookUpMapWithSurface ( mpSurface ) );
-    element.set_attribute( "mapx", IntToString ( mX ) );
-    element.set_attribute( "mapy", IntToString ( mY ) );
-
-    return element;
-}
 
 bool StoneRing::Tilemap::handleElement(eElement element, Element * pElement)
 {
@@ -256,43 +246,7 @@ StoneRing::Tilemap::Tilemap():mpSurface(NULL)
 StoneRing::Tilemap::~Tilemap()
 {
 }
-      
-
-
-CL_DomElement  StoneRing::SpriteRef::createDomElement(CL_DomDocument &doc) const
-{
-    CL_DomElement  element(doc,"spriteRef");
-
-    std::string dir;
-
-    switch(meType)
-    {
-    case SPR_STILL:
-        dir = "still";
-        break;
-    case SPR_TWO_WAY:
-        dir = "twoway";
-        break;
-    case SPR_FOUR_WAY:
-        dir = "fourway";
-        break;
-    case SPR_NONE:
-        break;
-    }
-
-    if(dir.length())
-    {
-        element.set_attribute("type", dir);
-    }
-
-    CL_DomText text(doc,mRef);
-    text.set_node_value( mRef );
-
-    element.append_child ( text );
-
-    return element;
-
-}
+     
 
 bool StoneRing::SpriteRef::handleElement(eElement element, Element * pElement)
 {
@@ -337,53 +291,6 @@ StoneRing::SpriteRef::eType
 StoneRing::SpriteRef::getType() const
 {
     return meType;
-}
-
-
-
-
-CL_DomElement StoneRing::Movement::createDomElement(CL_DomDocument &doc) const
-{
-    CL_DomElement element(doc,"movement") ;
-
-    
-    std::string movementType;
-
-    switch( meType )
-    {
-    case MOVEMENT_WANDER:
-        movementType = "wander";
-        break;
-    case MOVEMENT_PACE_NS:
-        movementType = "paceNS";
-        break;
-    case MOVEMENT_PACE_EW:
-        movementType = "paceEW";
-        break;
-    case MOVEMENT_NONE:
-        movementType = "none";
-        break;
-    }
-
-
-    element.set_attribute("movementType", movementType );
-
-    std::string speed;
-
-    switch(meSpeed)
-    {
-    case SLOW:
-        speed = "slow";
-        break;
-    case FAST:
-        speed = "fast";
-        break;
-    }
-
-    element.set_attribute("speed", speed );
-
-    return element;
-
 }
 
 void StoneRing::Movement::loadAttributes(CL_DomNamedNodeMap * pAttributes)
@@ -482,17 +389,7 @@ StoneRing::DirectionBlock::DirectionBlock(int i )
     meDirectionBlock = i;
 }
 
-CL_DomElement  StoneRing::DirectionBlock::createDomElement(CL_DomDocument &doc) const
-{
-    CL_DomElement element(doc,"directionBlock");
 
-    element.set_attribute("north", BoolToString (meDirectionBlock & DIR_NORTH ));
-    element.set_attribute("south", BoolToString (meDirectionBlock & DIR_SOUTH));
-    element.set_attribute("east", BoolToString ( meDirectionBlock & DIR_EAST ) );
-    element.set_attribute("west", BoolToString ( meDirectionBlock & DIR_WEST ) );
-
-    return element;
-}
 
 void StoneRing::DirectionBlock::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
@@ -522,56 +419,6 @@ StoneRing::Tile::Tile():mpSprite(NULL),mpCondition(NULL),mpScript(NULL),mZOrder(
 {
 }
 
-CL_DomElement  StoneRing::Tile::createDomElement(CL_DomDocument &doc) const
-{
-
-    CL_DomElement element(doc,"tile");
-
-
-    element.set_attribute("xpos", IntToString ( mX ) );
-    element.set_attribute("ypos", IntToString ( mY ) );
-    if(mZOrder >0 ) element.set_attribute("zorder", IntToString (mZOrder ) );
-    if(isFloater()) element.set_attribute("floater", "true");
-    if(isHot())     element.set_attribute("hot", "true");
-    if(pops())      element.set_attribute("pops","true");
-
-    if(isSprite())
-    {
-        CL_DomElement  spriteEl = mGraphic.asSpriteRef->createDomElement(doc);
-
-        element.append_child ( spriteEl );
-
-    }
-    else
-    {
-        CL_DomElement  tilemapEl = mGraphic.asTilemap->createDomElement(doc);
-
-        element.append_child (  tilemapEl );
-
-    }
-
-    if(mpCondition)
-    {
-        CL_DomElement  condEl = mpCondition->createDomElement(doc);
-
-        element.append_child ( condEl );
-
-    }
-    if( getDirectionBlock() > 0)
-    {
-        DirectionBlock block( getDirectionBlock() );
-
-        CL_DomElement  dirEl = block.createDomElement(doc);
-
-        element.append_child( dirEl );
-
-    }
-    
-
-    return element;
-
-    
-}
 
 void StoneRing::Tile::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {

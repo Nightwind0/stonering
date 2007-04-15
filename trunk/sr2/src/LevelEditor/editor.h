@@ -13,7 +13,7 @@
 #include <stdlib.h>
 #include "ItemFactory.h"
 #include "ItemManager.h"
-#include "EditableLevel.h"
+#include "EditorElementFactory.h"
 #include "TileSelector.h"
 #include "MapGrid.h"
 #include "GridPoint.h"
@@ -23,10 +23,14 @@
 #include "Item.h"
 #include "AppUtils.h"
 #include "SteelInterpreter.h"
+#include "EditorElements.h"
 
 
 class StoneRing::ItemRef; // Forward decl
 class StoneRing::CharacterFactory;
+class StoneRing::ICharacter;
+
+namespace Editor{
 
 class EditorParty : public StoneRing::IParty
 {
@@ -40,25 +44,25 @@ public:
     virtual uint getWidth() const { return 64; }
     virtual uint getHeight() const { return 64; }
     virtual void doEvent(const std::string &name, bool bRemember){}
-    virtual void giveItem(ItemRef * pItemRef, uint){}
-    virtual void takeItem(ItemRef * pItemRef, uint){}
+    virtual void giveItem(StoneRing::ItemRef * pItemRef, uint){}
+    virtual void takeItem(StoneRing::ItemRef * pItemRef, uint){}
     virtual void giveGold(int amount){}
     virtual uint getCharacterCount() const{ return 0;}
     virtual uint getSelectedCharacterIndex() const { return 0;}
-    virtual ICharacter* getCharacter(uint) const { return NULL;}
-    virtual ICharacter* getSelectedCharacter() const {return NULL; }
+    virtual StoneRing::ICharacter* getCharacter(uint) const { return NULL;}
+    virtual StoneRing::ICharacter* getSelectedCharacter() const {return NULL; }
     virtual uint getCasterCharacterIndex() const { return 0; }
-    virtual ICharacter * getCasterCharacter() const{ return NULL; }
+    virtual StoneRing::ICharacter * getCasterCharacter() const{ return NULL; }
 };
 
 
-class EditorItemManager : public ItemManager
+class EditorItemManager : public StoneRing::ItemManager
 {
 public:
     EditorItemManager(){}
     virtual ~EditorItemManager(){}
 
-    virtual Item * getItem ( const ItemRef & ref) const { return NULL; }
+    virtual StoneRing::Item * getItem ( const ItemRef & ref) const { return NULL; }
 private:
 };
 
@@ -72,18 +76,15 @@ public:
     virtual void requestRedraw(const StoneRing::State *){on_paint();}
     virtual CL_ResourceManager * getResources()const;
     virtual StoneRing::IParty * getParty() const;
-    virtual LevelFactory * getLevelFactory() const;
     
-    ICharacterGroup *getSelectedCharacterGroup() const { return NULL; }
-    CharacterFactory * getCharacterFactory() const { return NULL; }
-    ItemFactory * getItemFactory() const { static ItemFactory itemFactory; return &itemFactory; }
-    virtual ItemManager * getItemManager()  { static EditorItemManager itemManager; return &itemManager; }
-    virtual AbilityFactory * getAbilityFactory() const { static AbilityFactory abilityFactory; return &abilityFactory; }
-    virtual AbilityManager * getAbilityManager()  { static AbilityManager abilityManager; return &abilityManager; }
-    virtual std::vector<IFactory*> & getFactories() { return mFactories; }
+    StoneRing::ICharacterGroup *getSelectedCharacterGroup() const { return NULL; }
+    StoneRing::CharacterFactory * getCharacterFactory() const { return NULL; }
+ 
+    virtual StoneRing::ItemManager * getItemManager()  { static EditorItemManager itemManager; return &itemManager; }
+    virtual StoneRing::AbilityManager * getAbilityManager()  { static StoneRing::AbilityManager abilityManager; return &abilityManager; }
+    virtual StoneRing::IFactory *getElementFactory() { return mpLevelFactory; }
     virtual int getScreenWidth()const;
     virtual int getScreenHeight()const;
-
 
     virtual CL_Rect getLevelRect() const;
     virtual CL_Rect getDisplayRect() const;
@@ -119,7 +120,7 @@ private:
     string mMenuitem;
 
     EditorParty * mpParty;
-    EditableLevelFactory * mpLevelFactory;
+    EditorElementFactory * mpLevelFactory;
     CL_ResourceManager *mpResources;
 
     CL_SlotContainer mSlots;
@@ -132,13 +133,12 @@ private:
 
     CL_GraphicContext *mGc;
 
-    EditableLevel *mpLevel;
-    AppUtils mAppUtils;
+    Editor::Level *mpLevel;
+    StoneRing::AppUtils mAppUtils;
     SteelInterpreter mInterpreter;
-    std::vector<IFactory*> mFactories;
 };
 
-
+};
 
 #endif
 
