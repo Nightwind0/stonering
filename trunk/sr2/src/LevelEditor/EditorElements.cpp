@@ -12,7 +12,7 @@ Editor::Animation::Animation()
 Editor::Animation::~Animation()
 {
 }
-CL_DomElement Editor::Animation::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::Animation::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"animation");
 }
@@ -24,7 +24,7 @@ Editor::AnimationDefinition::AnimationDefinition()
 Editor::AnimationDefinition::~AnimationDefinition()
 {
 }
-CL_DomElement Editor::AnimationDefinition::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::AnimationDefinition::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"animationDefinition");
 }
@@ -36,7 +36,7 @@ Editor::AnimationSpriteRef::AnimationSpriteRef()
 Editor::AnimationSpriteRef::~AnimationSpriteRef()
 {
 }
-CL_DomElement Editor::AnimationSpriteRef::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::AnimationSpriteRef::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"animationSpriteRef");
 }
@@ -47,7 +47,7 @@ Editor::ArmorClass::ArmorClass()
 Editor::ArmorClass::~ArmorClass()
 {
 }
-CL_DomElement Editor::ArmorClass::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::ArmorClass::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"armorClass");
 }
@@ -59,7 +59,7 @@ Editor::ArmorClassRef::ArmorClassRef()
 Editor::ArmorClassRef::~ArmorClassRef()
 {
 }
-CL_DomElement Editor::ArmorClassRef::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::ArmorClassRef::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"armorClassRef");
 }
@@ -70,7 +70,7 @@ Editor::ArmorEnhancer::ArmorEnhancer()
 Editor::ArmorEnhancer::~ArmorEnhancer()
 {
 }
-CL_DomElement Editor::ArmorEnhancer::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::ArmorEnhancer::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"armorEnhancer");
 }
@@ -82,7 +82,7 @@ Editor::ArmorRef::ArmorRef()
 Editor::ArmorRef::~ArmorRef()
 {
 }
-CL_DomElement Editor::ArmorRef::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::ArmorRef::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"armorRef");
 }
@@ -94,7 +94,7 @@ Editor::ArmorType::ArmorType()
 Editor::ArmorType::~ArmorType()
 {
 }
-CL_DomElement Editor::ArmorType::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::ArmorType::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"armorType");
 }
@@ -106,7 +106,7 @@ Editor::ArmorTypeExclusionList::ArmorTypeExclusionList()
 Editor::ArmorTypeExclusionList::~ArmorTypeExclusionList()
 {
 }
-CL_DomElement Editor::ArmorTypeExclusionList::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::ArmorTypeExclusionList::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"armorTypeExclusionList");
 }
@@ -118,7 +118,7 @@ Editor::ArmorTypeRef::ArmorTypeRef()
 Editor::ArmorTypeRef::~ArmorTypeRef()
 {
 }
-CL_DomElement Editor::ArmorTypeRef::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::ArmorTypeRef::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"armorTypeRef");
 }
@@ -130,7 +130,7 @@ Editor::AttributeEnhancer::AttributeEnhancer()
 Editor::AttributeEnhancer::~AttributeEnhancer()
 {
 }
-CL_DomElement Editor::AttributeEnhancer::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::AttributeEnhancer::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"attributeEnhancer");
 }
@@ -142,7 +142,7 @@ Editor::BattleMenu::BattleMenu()
 Editor::BattleMenu::~BattleMenu()
 {
 }
-CL_DomElement Editor::BattleMenu::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::BattleMenu::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"battleMenu");
 }
@@ -154,7 +154,7 @@ Editor::BattleMenuOption::BattleMenuOption()
 Editor::BattleMenuOption::~BattleMenuOption()
 {
 }
-CL_DomElement Editor::BattleMenuOption::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::BattleMenuOption::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"battleMenuOption");
 }
@@ -166,7 +166,7 @@ Editor::CharacterClass::CharacterClass()
 Editor::CharacterClass::~CharacterClass()
 {
 }
-CL_DomElement Editor::CharacterClass::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::CharacterClass::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"characterClass");
 }
@@ -178,7 +178,7 @@ Editor::CharacterDefinition::CharacterDefinition()
 Editor::CharacterDefinition::~CharacterDefinition()
 {
 }
-CL_DomElement Editor::CharacterDefinition::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::CharacterDefinition::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"characterDefinition");
 }
@@ -191,7 +191,7 @@ Editor::ConditionScript::ConditionScript()
 Editor::ConditionScript::~ConditionScript()
 {
 }
-CL_DomElement Editor::ConditionScript::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::ConditionScript::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"conditionScript");
 }
@@ -209,7 +209,7 @@ Editor::DirectionBlock::DirectionBlock(int i)
 Editor::DirectionBlock::~DirectionBlock()
 {
 }
-CL_DomElement Editor::DirectionBlock::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::DirectionBlock::createDomElement(CL_DomDocument &doc)const
 {
     CL_DomElement element(doc,"directionBlock");
 
@@ -228,7 +228,7 @@ Editor::Event::Event()
 Editor::Event::~Event()
 {
 }
-CL_DomElement Editor::Event::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::Event::createDomElement(CL_DomDocument &doc)const
 {
     CL_DomElement element(doc,"event");
 
@@ -277,7 +277,7 @@ Editor::IconRef::IconRef()
 Editor::IconRef::~IconRef()
 {
 }
-CL_DomElement Editor::IconRef::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::IconRef::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"iconRef");
 }
@@ -289,7 +289,7 @@ Editor::ItemRef::ItemRef()
 Editor::ItemRef::~ItemRef()
 {
 }
-CL_DomElement Editor::ItemRef::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::ItemRef::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"itemRef");
 }
@@ -301,7 +301,7 @@ Editor::Level::Level()
 Editor::Level::~Level()
 {
 }
-CL_DomElement Editor::Level::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::Level::createDomElement(CL_DomDocument &doc)const
 {
     CL_DomElement element(doc, "level");
 
@@ -526,7 +526,7 @@ Editor::LevelHeader::LevelHeader()
 Editor::LevelHeader::~LevelHeader()
 {
 }
-CL_DomElement Editor::LevelHeader::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::LevelHeader::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"levelHeader");
 }
@@ -538,7 +538,7 @@ Editor::MagicDamageCategory::MagicDamageCategory()
 Editor::MagicDamageCategory::~MagicDamageCategory()
 {
 }
-CL_DomElement Editor::MagicDamageCategory::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::MagicDamageCategory::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"magicDamageCategory");
 }
@@ -550,7 +550,7 @@ Editor::MagicResistance::MagicResistance()
 Editor::MagicResistance::~MagicResistance()
 {
 }
-CL_DomElement Editor::MagicResistance::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::MagicResistance::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"magicResistance");
 }
@@ -562,7 +562,7 @@ MappableObject::MappableObject()
 MappableObject::~MappableObject()
 {
 }
-CL_DomElement Editor::MappableObject::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::MappableObject::createDomElement(CL_DomDocument &doc)const
 {    
     CL_DomElement element(doc,"mo");
 
@@ -672,7 +672,7 @@ Editor::MappableObjects::MappableObjects()
 Editor::MappableObjects::~MappableObjects()
 {
 }
-CL_DomElement Editor::MappableObjects::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::MappableObjects::createDomElement(CL_DomDocument &doc)const
 {
    return CL_DomElement(doc,"mappableObjects");
 }
@@ -684,7 +684,7 @@ Editor::Movement::Movement()
 Editor::Movement::~Movement()
 {
 }
-CL_DomElement Editor::Movement::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::Movement::createDomElement(CL_DomDocument &doc)const
 {
     CL_DomElement element(doc,"movement") ;
     
@@ -734,7 +734,7 @@ Editor::NamedItemElement::NamedItemElement()
 Editor::NamedItemElement::~NamedItemElement()
 {
 }
-CL_DomElement Editor::NamedItemElement::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::NamedItemElement::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"namedItemElement");
 }
@@ -746,7 +746,7 @@ Editor::NamedItemRef::NamedItemRef()
 Editor::NamedItemRef::~NamedItemRef()
 {
 }
-CL_DomElement Editor::NamedItemRef::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::NamedItemRef::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"namedItemRef");
 }
@@ -758,7 +758,7 @@ Editor::OnEquip::OnEquip()
 Editor::OnEquip::~OnEquip()
 {
 }
-CL_DomElement Editor::OnEquip::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::OnEquip::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"onEquip");
 }
@@ -770,7 +770,7 @@ Editor::OnUnequip::OnUnequip()
 Editor::OnUnequip::~OnUnequip()
 {
 }
-CL_DomElement Editor::OnUnequip::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::OnUnequip::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"onUnequip");
 }
@@ -781,7 +781,7 @@ Editor::OnRound::OnRound()
 Editor::OnRound::~OnRound()
 {
 }
-CL_DomElement Editor::OnRound::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::OnRound::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"onRound");
 }
@@ -792,7 +792,7 @@ Editor::OnStep::OnStep()
 Editor::OnStep::~OnStep()
 {
 }
-CL_DomElement Editor::OnStep::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::OnStep::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"onStep");
 }
@@ -804,7 +804,7 @@ Editor::OnCountdown::OnCountdown()
 Editor::OnCountdown::~OnCountdown()
 {
 }
-CL_DomElement Editor::OnCountdown::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::OnCountdown::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"onCountdown");
 }
@@ -816,7 +816,7 @@ Editor::OnInvoke::OnInvoke()
 Editor::OnInvoke::~OnInvoke()
 {
 }
-CL_DomElement Editor::OnInvoke::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::OnInvoke::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"onInvoke");
 }
@@ -827,7 +827,7 @@ Editor::OnRemove::OnRemove()
 Editor::OnRemove::~OnRemove()
 {
 }
-CL_DomElement Editor::OnRemove::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::OnRemove::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"onRemove");
 }
@@ -839,7 +839,7 @@ Editor::Par::Par()
 Editor::Par::~Par()
 {
 }
-CL_DomElement Editor::Par::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::Par::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"par");
 }
@@ -851,7 +851,7 @@ Editor::RegularItem::RegularItem()
 Editor::RegularItem::~RegularItem()
 {
 }
-CL_DomElement Editor::RegularItem::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::RegularItem::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"regularItem");
 }
@@ -863,7 +863,7 @@ Editor::Rune::Rune()
 Editor::Rune::~Rune()
 {
 }
-CL_DomElement Editor::Rune::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::Rune::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"rune");
 }
@@ -874,7 +874,7 @@ Editor::RuneType::RuneType()
 Editor::RuneType::~RuneType()
 {
 }
-CL_DomElement Editor::RuneType::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::RuneType::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"runeType");
 }
@@ -886,7 +886,7 @@ Editor::ScriptElement::ScriptElement()
 Editor::ScriptElement::~ScriptElement()
 {
 }
-CL_DomElement Editor::ScriptElement::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::ScriptElement::createDomElement(CL_DomDocument &doc)const
 {
     CL_DomElement element(doc, isConditionScript()?"conditionScript":"script");
 
@@ -922,7 +922,7 @@ Editor::Skill::Skill()
 Editor::Skill::~Skill()
 {
 }
-CL_DomElement Editor::Skill::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::Skill::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"skill");
 }
@@ -933,7 +933,7 @@ Editor::SkillRef::SkillRef()
 Editor::SkillRef::~SkillRef()
 {
 }
-CL_DomElement Editor::SkillRef::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::SkillRef::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"skillRef");
 }
@@ -944,7 +944,7 @@ Editor::SpecialItem::SpecialItem()
 Editor::SpecialItem::~SpecialItem()
 {
 }
-CL_DomElement Editor::SpecialItem::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::SpecialItem::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"specialItem");
 }
@@ -955,7 +955,7 @@ Editor::Spell::Spell()
 Editor::Spell::~Spell()
 {
 }
-CL_DomElement Editor::Spell::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::Spell::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"spell");
 }
@@ -966,7 +966,7 @@ Editor::SpellRef::SpellRef()
 Editor::SpellRef::~SpellRef()
 {
 }
-CL_DomElement Editor::SpellRef::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::SpellRef::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"spellRef");
 }
@@ -977,7 +977,7 @@ Editor::SpriteRef::SpriteRef()
 Editor::SpriteRef::~SpriteRef()
 {
 }
-CL_DomElement Editor::SpriteRef::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::SpriteRef::createDomElement(CL_DomDocument &doc)const
 {
     CL_DomElement  element(doc,"spriteRef");
 
@@ -1029,7 +1029,7 @@ Editor::StatIncrease::StatIncrease()
 Editor::StatIncrease::~StatIncrease()
 {
 }
-CL_DomElement Editor::StatIncrease::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::StatIncrease::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"statIncrease");
 }
@@ -1040,7 +1040,7 @@ Editor::StatusEffect::StatusEffect()
 Editor::StatusEffect::~StatusEffect()
 {
 }
-CL_DomElement Editor::StatusEffect::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::StatusEffect::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"statusEffect");
 }
@@ -1051,7 +1051,7 @@ Editor::StatusEffectModifier::StatusEffectModifier()
 Editor::StatusEffectModifier::~StatusEffectModifier()
 {
 }
-CL_DomElement Editor::StatusEffectModifier::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::StatusEffectModifier::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"statusEffectModifier");
 }
@@ -1062,7 +1062,7 @@ Editor::SystemItem::SystemItem()
 Editor::SystemItem::~SystemItem()
 {
 }
-CL_DomElement Editor::SystemItem::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::SystemItem::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"systemItem");
 }
@@ -1073,7 +1073,7 @@ Editor::Tile::Tile()
 Editor::Tile::~Tile()
 {
 }
-CL_DomElement Editor::Tile::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::Tile::createDomElement(CL_DomDocument &doc)const
 { 
     CL_DomElement element(doc,"tile");
 
@@ -1241,7 +1241,7 @@ Editor::Tiles::Tiles()
 Editor::Tiles::~Tiles()
 {
 }
-CL_DomElement Editor::Tiles::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::Tiles::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"tiles");
 }
@@ -1252,7 +1252,7 @@ Tilemap::Tilemap()
 Tilemap::~Tilemap()
 {
 }
-CL_DomElement Editor::Tilemap::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::Tilemap::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"tilemap");
  }
@@ -1279,7 +1279,7 @@ Editor::UniqueArmor::UniqueArmor()
 Editor::UniqueArmor::~UniqueArmor()
 {
 }
-CL_DomElement Editor::UniqueArmor::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::UniqueArmor::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"uniqueArmor");
 }
@@ -1290,7 +1290,7 @@ Editor::UniqueWeapon::UniqueWeapon()
 Editor::UniqueWeapon::~UniqueWeapon()
 {
 }
-CL_DomElement Editor::UniqueWeapon::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::UniqueWeapon::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"uniqueWeapon");
 }
@@ -1301,7 +1301,7 @@ Editor::WeaponClass::WeaponClass()
 Editor::WeaponClass::~WeaponClass()
 {
 }
-CL_DomElement Editor::WeaponClass::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::WeaponClass::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"weaponClass");
 }
@@ -1312,7 +1312,7 @@ Editor::WeaponClassRef::WeaponClassRef()
 Editor::WeaponClassRef::~WeaponClassRef()
 {
 }
-CL_DomElement Editor::WeaponClassRef::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::WeaponClassRef::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"weaponClassRef");
 }
@@ -1323,7 +1323,7 @@ Editor::WeaponDamageCategory::WeaponDamageCategory()
 Editor::WeaponDamageCategory::~WeaponDamageCategory()
 {
 }
-CL_DomElement Editor::WeaponDamageCategory::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::WeaponDamageCategory::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"weaponDamageCategory");
 }
@@ -1334,7 +1334,7 @@ Editor::WeaponEnhancer::WeaponEnhancer()
 Editor::WeaponEnhancer::~WeaponEnhancer()
 {
 }
-CL_DomElement Editor::WeaponEnhancer::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::WeaponEnhancer::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"weaponEnhancer");
 }
@@ -1345,7 +1345,7 @@ Editor::WeaponRef::WeaponRef()
 Editor::WeaponRef::~WeaponRef()
 {
 }
-CL_DomElement Editor::WeaponRef::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::WeaponRef::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"weaponRef");
 }
@@ -1356,7 +1356,7 @@ Editor::WeaponType::WeaponType()
 Editor::WeaponType::~WeaponType()
 {
 }
-CL_DomElement Editor::WeaponType::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::WeaponType::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"weaponType");
 }
@@ -1367,7 +1367,7 @@ Editor::WeaponTypeExclusionList::WeaponTypeExclusionList()
 Editor::WeaponTypeExclusionList::~WeaponTypeExclusionList()
 {
 }
-CL_DomElement Editor::WeaponTypeExclusionList::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::WeaponTypeExclusionList::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"weaponTypeExclusionList");
 }
@@ -1378,7 +1378,7 @@ Editor::WeaponTypeRef::WeaponTypeRef()
 Editor::WeaponTypeRef::~WeaponTypeRef()
 {
 }
-CL_DomElement Editor::WeaponTypeRef::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::WeaponTypeRef::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"weaponTypeRef");
 }
@@ -1389,7 +1389,7 @@ Editor::WeaponTypeSprite::WeaponTypeSprite()
 Editor::WeaponTypeSprite::~WeaponTypeSprite()
 {
 }
-CL_DomElement Editor::WeaponTypeSprite::createDomElement(CL_DomDocument &doc)
+CL_DomElement Editor::WeaponTypeSprite::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"weaponTypeSprite");
 }
