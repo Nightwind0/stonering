@@ -500,10 +500,6 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\src\factories\AbilityFactory.h"
-				>
-			</File>
-			<File
 				RelativePath="..\src\abilities\AbilityManager.h"
 				>
 			</File>
