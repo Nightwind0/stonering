@@ -39,7 +39,7 @@ namespace Editor {
 class WriteableElement 
 {
 public:
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)=0;
+    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const=0;
 private:
 };
 
@@ -48,94 +48,94 @@ class Animation : public StoneRing::Animation, public WriteableElement
 public:
     Animation();
     virtual ~Animation();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc);
+    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
 private:
 };
 
-class AnimationDefinition : public StoneRing::AnimationDefinition 
+class AnimationDefinition : public StoneRing::AnimationDefinition, public WriteableElement
 {
 public:
     AnimationDefinition();
     virtual ~AnimationDefinition();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc);
+    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
 private:
 };
 
-class AnimationSpriteRef : public StoneRing::AnimationSpriteRef
+class AnimationSpriteRef : public StoneRing::AnimationSpriteRef, public WriteableElement
 {
  public:
 	AnimationSpriteRef();
 	virtual ~AnimationSpriteRef();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc);
+    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
  private:
 };
 
 
-class ArmorClass : public StoneRing::ArmorClass
+class ArmorClass : public StoneRing::ArmorClass, public WriteableElement
 {
  public:
 	ArmorClass();
 	virtual ~ArmorClass();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc);
+    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
  private:
 };
 
-class ArmorClassRef : public StoneRing::ArmorClassRef
+class ArmorClassRef : public StoneRing::ArmorClassRef, public WriteableElement
 {
  public:
 	ArmorClassRef();
 	virtual ~ArmorClassRef();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc);
+    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
  private:
 };
-class ArmorEnhancer : public StoneRing::ArmorEnhancer
+class ArmorEnhancer : public StoneRing::ArmorEnhancer, public WriteableElement
 {
  public:
 	ArmorEnhancer();
 	virtual ~ArmorEnhancer();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc);
+    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
  private:
 };
-class ArmorRef : public StoneRing::ArmorRef
+class ArmorRef : public StoneRing::ArmorRef, public WriteableElement
 {
  public:
 	ArmorRef();
 	virtual ~ArmorRef();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc);
+    virtual CL_DomElement createDomElement(CL_DomDocument &doc) const;
  private:
 };
-class ArmorType : public StoneRing::ArmorType
+class ArmorType : public StoneRing::ArmorType, public WriteableElement
 {
  public:
 	ArmorType();
 	virtual ~ArmorType();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc);
+    virtual CL_DomElement createDomElement(CL_DomDocument &doc) const;
  private:
 };
-class ArmorTypeExclusionList : public StoneRing::ArmorTypeExclusionList
+class ArmorTypeExclusionList : public StoneRing::ArmorTypeExclusionList, public WriteableElement
 {
  public:
 	ArmorTypeExclusionList();
 	virtual ~ArmorTypeExclusionList();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc);
+    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
  private:
 };
-class ArmorTypeRef : public StoneRing::ArmorTypeRef
+class ArmorTypeRef : public StoneRing::ArmorTypeRef, public WriteableElement
 {
  public:
 	ArmorTypeRef();
 	virtual ~ArmorTypeRef();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc);
+    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
  private:
 };
 
 
-class AttributeEnhancer : public StoneRing::AttributeEnhancer
+class AttributeEnhancer : public StoneRing::AttributeEnhancer, public WriteableElement
 {
  public:
 	AttributeEnhancer();
 	virtual ~AttributeEnhancer();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc);
+    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
  private:
 };
 class BattleMenu : public StoneRing::BattleMenu
