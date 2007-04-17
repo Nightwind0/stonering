@@ -475,3 +475,5 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["weaponTypeRef"] = &ElementFactory::createWeaponTypeRef;
     mCreateMethods["weaponTypeSprite"] = &ElementFactory::createWeaponTypeSprite;
 }
+
+

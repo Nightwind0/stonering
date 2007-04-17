@@ -2,15 +2,10 @@ noinst_LTLIBRARIES = libfactories.la
 
 libfactories_la_CPPFLAGS = $(CLANLIB_CFLAGS) $(CPPFLAGS)
 libfactories_la_SOURCES = \
-	AbilityFactory.cpp \
-	AbilityFactory.h \
-	CharacterFactory.cpp \
-	CharacterFactory.h \
 	IFactory.h \
-	ItemFactory.cpp \
-	ItemFactory.h \
-	LevelFactory.cpp \
-	LevelFactory.h 
+	ElementFactory.h \
+	ElementFactory.cpp
+
 
 
 INCLUDES = 	-I@top_srcdir@/src/ \
