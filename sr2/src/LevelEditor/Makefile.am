@@ -11,16 +11,7 @@ editor_SOURCES = editor.cpp\
 
 
 editor_LDADD = $(CLANLIB_LIBS) \
-		$(top_srcdir)/src/states/libstates.la \
-		$(top_srcdir)/src/level/liblevel.la \
-		$(top_srcdir)/src/party/libparty.la \
-		$(top_srcdir)/src/items/libitems.la \
-		$(top_srcdir)/src/character/libcharacter.la \
-		$(top_srcdir)/src/abilities/libabilities.la \
-		$(top_srcdir)/src/steel/libsteel.la \
-		$(top_srcdir)/src/core/libcore.la \
-		$(top_srcdir)/src/factories/libfactories.la
-
+		$(top_srcdir)/src/libstonering.la
 
 
 INCLUDES =  	-I@top_srcdir@/src/ \
