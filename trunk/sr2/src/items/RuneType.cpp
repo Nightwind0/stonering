@@ -36,28 +36,6 @@ RuneType::eRuneType RuneType::getRuneType() const
     return meRuneType;
 }
 
-CL_DomElement 
-RuneType::createDomElement ( CL_DomDocument &doc) const
-{
-
-    CL_DomElement element(doc,"runeType");
-
-    switch(meRuneType)
-    {
-    case NONE:
-        element.set_attribute("type", "none");
-        break;
-    case RUNE:
-        element.set_attribute("type","rune");
-        break;
-    case ULTRA_RUNE:
-        element.set_attribute("type","ultraRune");
-        break;
-    }
-
-    return element;
-}
-
 std::string RuneType::getRuneTypeAsString() const
 {
 

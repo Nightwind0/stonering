@@ -20,7 +20,6 @@ namespace StoneRing
         CharacterClass();
         virtual ~CharacterClass();
         virtual eElement whichElement() const{ return ECHARACTERCLASS; }
-        CL_DomElement createDomElement( CL_DomDocument &doc ) const;
 
         std::list<WeaponTypeRef*>::const_iterator getWeaponTypeRefsBegin() const;
         std::list<WeaponTypeRef*>::const_iterator getWeaponTypeRefsEnd() const;

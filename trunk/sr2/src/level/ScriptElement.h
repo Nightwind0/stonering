@@ -13,7 +13,6 @@ namespace StoneRing{
     public:
         ScriptElement(bool isCondition);
         virtual ~ScriptElement();
-        virtual CL_DomElement createDomElement(CL_DomDocument&) const;
         virtual eElement whichElement() const { return ESCRIPT; }
 
         bool evaluateCondition() const;

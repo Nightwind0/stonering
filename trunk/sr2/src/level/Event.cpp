@@ -6,10 +6,6 @@ StoneRing::Event::Event():mbRepeatable(true),mbRemember(false),mpCondition(NULL)
 {
 }
 
-CL_DomElement  StoneRing::Event::createDomElement(CL_DomDocument &doc) const
-{
-    return CL_DomElement(doc,"event");
-}
 
 void StoneRing::Event::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {

@@ -20,9 +20,6 @@ void RegularItem::invoke()
         mpScript->executeScript();
 }
 
-
-
-
 RegularItem::eUseType 
 RegularItem::getUseType() const
 {
@@ -142,11 +139,6 @@ bool RegularItem::handleElement(eElement element, Element * pElement)
 void RegularItem::loadItem ( CL_DomElement * pElement )
 {
 
-}
-
-CL_DomElement  RegularItem::createDomElement(CL_DomDocument &doc) const
-{
-    return CL_DomElement (doc,"regularItem");
 }
 
 

@@ -15,7 +15,6 @@ namespace StoneRing{
         ~WeaponType();
 
         virtual eElement whichElement() const{ return EWEAPONTYPE; }    
-        virtual CL_DomElement createDomElement ( CL_DomDocument &) const;       
 
         std::string getName() const;
         std::string getIconRef() const;
@@ -23,11 +22,8 @@ namespace StoneRing{
         uint getBaseAttack() const;
         float getBaseHit() const;
         float getBaseCritical() const;
-
         uint getBasePrice() const;
-        
         bool isRanged() const;
-
         bool isTwoHanded() const;
 
         DamageCategory *getDamageCategory () const { return mpDamageCategory; }

@@ -229,13 +229,6 @@ void Level::removeMappableObjectAt(const CL_Point &point, MappableObject *pMO)
 }
 
 
-
-CL_DomElement  Level::createDomElement(CL_DomDocument &doc) const
-{
-
-    return CL_DomElement(doc,"level");
-}
-
 #if 0
 Level::Level(const std::string &name,CL_ResourceManager * pResources): mpDocument(NULL)
 {

@@ -39,8 +39,6 @@ namespace StoneRing
 
         SpellRef * getSpellRef() const;
 
-        CL_DomElement createDomElement ( CL_DomDocument &doc ) const;
-
         eType getType() const { return meType; }
     private:
         virtual bool handleElement(eElement element, Element * pElement );
@@ -68,7 +66,6 @@ namespace StoneRing
         uint getBPCost() const;
         uint getMinLevel() const;
 
-        CL_DomElement createDomElement ( CL_DomDocument &doc )const;
     private:
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
         uint mnSp;

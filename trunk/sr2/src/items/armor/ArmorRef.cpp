@@ -64,12 +64,12 @@ bool ArmorRef::handleElement(eElement element, Element * pElement)
     switch(element)
     {
     case EARMORTYPEREF:
-        mType = * (dynamic_cast<ArmorTypeRef*>(pElement));
-        mpArmorType = pItemManager->getArmorType(mType);
+        mpType = (dynamic_cast<ArmorTypeRef*>(pElement));
+        mpArmorType = pItemManager->getArmorType(*mpType);
         break;
     case EARMORCLASSREF:
-        mClass = * (dynamic_cast<ArmorClassRef*>(pElement));
-        mpArmorClass = pItemManager->getArmorClass ( mClass );
+        mpClass =  (dynamic_cast<ArmorClassRef*>(pElement));
+        mpArmorClass = pItemManager->getArmorClass (*mpClass);
         break;
     case ESPELLREF:
         mpSpellRef = dynamic_cast<SpellRef*>(pElement);
@@ -96,29 +96,6 @@ ArmorRef::ArmorRef():mpArmorType(NULL),
 ArmorRef::~ArmorRef()
 {
 }
-
-CL_DomElement  
-ArmorRef::createDomElement(CL_DomDocument &doc) const
-{
-    CL_DomElement element(doc,"armorRef");
-
-    element.append_child ( mType.createDomElement(doc ) );
-
-    element.append_child ( mClass.createDomElement(doc ) );
-
-    if(mpSpellRef )
-    {
-        element.append_child ( mpSpellRef->createDomElement(doc ) );
-    }
-    else if (mpRuneType)
-    {
-        element.append_child ( mpRuneType->createDomElement(doc ) );
-    }
-
-    return element;
-
-}
-
 
 ArmorType * ArmorRef::getArmorType() const
 {

@@ -9,8 +9,6 @@ namespace StoneRing{
         virtual eElement whichElement() const{ return EICONREF; }    
 
         std::string getIcon() const;
-        virtual CL_DomElement  createDomElement(CL_DomDocument&) const; 
-
     private:
         virtual bool handleElement(eElement element, Element * pElement );
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;

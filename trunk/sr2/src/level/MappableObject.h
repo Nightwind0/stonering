@@ -44,11 +44,8 @@ namespace StoneRing {
         typedef void (Level::*LevelPointMethod)(const CL_Point&,MappableObject*);
 
         void setOccupiedPoints(Level * pLevel, LevelPointMethod method);
-
         CL_Point getPositionAfterMove() const;
-
         virtual eDirection getDirection() const { return meDirection; }
-
         virtual int getDirectionBlock() const;
         virtual void draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
 

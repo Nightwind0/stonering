@@ -54,12 +54,6 @@ NamedItemElement::~NamedItemElement()
 }
 
 
-
-CL_DomElement  NamedItemElement::createDomElement(CL_DomDocument &doc) const
-{
-    return CL_DomElement(doc,"namedItem");
-}
-
 NamedItem * 
 NamedItemElement::getNamedItem() const
 {

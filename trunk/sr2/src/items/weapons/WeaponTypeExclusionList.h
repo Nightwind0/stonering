@@ -11,7 +11,6 @@ namespace StoneRing{
     public:
         WeaponTypeExclusionList();
         virtual ~WeaponTypeExclusionList();
-        virtual CL_DomElement createDomElement ( CL_DomDocument &) const;
 
         virtual eElement whichElement() const{ return EWEAPONTYPEEXCLUSIONLIST; }   
         std::list<WeaponTypeRef*>::const_iterator getWeaponTypeRefsBegin();

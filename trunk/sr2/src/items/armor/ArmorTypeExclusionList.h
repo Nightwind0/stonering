@@ -10,7 +10,6 @@ namespace StoneRing{
     public:
         ArmorTypeExclusionList();
         virtual ~ArmorTypeExclusionList();
-        virtual CL_DomElement createDomElement ( CL_DomDocument &) const;
         virtual eElement whichElement() const{ return EARMORTYPEEXCLUSIONLIST; }    
 
         std::list<ArmorTypeRef*>::const_iterator getArmorTypeRefsBegin();

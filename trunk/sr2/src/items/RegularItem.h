@@ -25,13 +25,9 @@ namespace StoneRing{
         
         virtual eItemType getItemType() const { return REGULAR_ITEM; }
 
-
         virtual uint getValue() const ; // Price to buy, and worth when calculating drops.
         virtual uint getSellValue() const ;
         virtual void loadItem ( CL_DomElement * pElement );
-        
-        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
-
         static eUseType UseTypeFromString ( const std::string &str );
         static eTargetable TargetableFromString ( const std::string &str );
 

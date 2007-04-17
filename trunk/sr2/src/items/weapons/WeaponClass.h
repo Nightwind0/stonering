@@ -15,8 +15,6 @@ namespace StoneRing{
         WeaponClass(CL_DomElement * pElement);
         ~WeaponClass();
         virtual eElement whichElement() const{ return EWEAPONCLASS; }   
-        virtual CL_DomElement createDomElement ( CL_DomDocument &) const;
-
         std::string getName() const;
         int getValueAdd() const;
         float getValueMultiplier() const;

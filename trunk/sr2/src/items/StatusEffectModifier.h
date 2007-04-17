@@ -15,9 +15,6 @@ namespace StoneRing{
         StatusEffect * getStatusEffect() const;
         float getModifier() const;
         
-
-        CL_DomElement createDomElement(CL_DomDocument&) const;
-
     private:
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
         StatusEffect *mpStatusEffect;

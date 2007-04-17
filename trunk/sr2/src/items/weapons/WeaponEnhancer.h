@@ -11,8 +11,6 @@ namespace StoneRing{
         WeaponEnhancer();
         ~WeaponEnhancer();
         virtual eElement whichElement() const{ return EWEAPONENHANCER; }          
-        virtual CL_DomElement createDomElement ( CL_DomDocument &) const;
-
         Weapon::eAttribute getAttribute() const;
         int getAdd() const;
         float getMultiplier() const;

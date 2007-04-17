@@ -49,11 +49,7 @@ void Rune::loadFinished()
     if(!mpSpellRef) throw CL_Error("Rune without spellref.");
 }
 
-CL_DomElement  
-Rune::createDomElement(CL_DomDocument &doc) const
-{
-    return CL_DomElement(doc,"rune");
-}
+
 
 
 

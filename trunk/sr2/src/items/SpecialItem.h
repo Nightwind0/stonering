@@ -18,9 +18,6 @@ namespace StoneRing{
         virtual eDropRarity getDropRarity() const { return NEVER; } 
 
         virtual eItemType getItemType() const { return SPECIAL ; }
-
-        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
-          
     private:
     };
 };

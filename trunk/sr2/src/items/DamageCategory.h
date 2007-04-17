@@ -28,8 +28,6 @@ namespace StoneRing{
         enum eType { SLASH, BASH, JAB };
 
         eType getType() const;
-
-        CL_DomElement createDomElement(CL_DomDocument&) const;
     private:
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
         eType TypeFromString( const std::string &str );
@@ -47,8 +45,6 @@ namespace StoneRing{
         virtual eClass getClass() const { return MAGIC; }
 
         eMagicType getType() const;
-
-        CL_DomElement createDomElement(CL_DomDocument&) const;
     private:
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
         eMagicType TypeFromString( const std::string &str );

@@ -22,12 +22,6 @@ ArmorEnhancer::~ArmorEnhancer()
 {
 }
 
-CL_DomElement 
-ArmorEnhancer::createDomElement ( CL_DomDocument &doc) const
-{
-    return CL_DomElement(doc, "armorEnhancer");
-}
-
 Armor::eAttribute 
 ArmorEnhancer::getAttribute() const
 {

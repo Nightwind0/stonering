@@ -51,13 +51,6 @@ ArmorType::~ArmorType()
 }
 
 
-CL_DomElement 
-ArmorType::createDomElement ( CL_DomDocument &doc) const
-{
-    return CL_DomElement(doc,"armorType");
-}
-
-
 std::string 
 ArmorType::getName() const
 {

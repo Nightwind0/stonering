@@ -11,8 +11,6 @@ namespace StoneRing{
         WeaponTypeRef();
         virtual ~WeaponTypeRef();
         virtual eElement whichElement() const{ return EWEAPONTYPEREF; } 
-        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
-
         std::string getName() const;
 
         void setName(const std::string &name) { mName = name; }
@@ -20,6 +18,7 @@ namespace StoneRing{
         bool operator== ( const WeaponTypeRef &lhs );
     private:
         virtual void handleText(const std::string &text);
+    protected:
         std::string mName;
     };
 };

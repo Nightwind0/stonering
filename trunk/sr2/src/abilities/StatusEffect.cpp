@@ -59,12 +59,6 @@ StoneRing::StatusEffect::~StatusEffect()
     delete mpOnRemove;
 }
 
-
-CL_DomElement StoneRing::StatusEffect::createDomElement(CL_DomDocument &doc) const
-{
-    return CL_DomElement(doc,"statusEffect");
-}
-
 StoneRing::OnInvoke * StoneRing::StatusEffect::getOnInvoke() const
 {
     return mpOnInvoke;

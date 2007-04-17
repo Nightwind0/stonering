@@ -15,11 +15,6 @@ ScriptElement::~ScriptElement()
     delete mpScript;
 }
 
-CL_DomElement ScriptElement::createDomElement(CL_DomDocument&) const
-{
-    return CL_DomElement();
-}
-
 
 bool ScriptElement::evaluateCondition() const
 {

@@ -120,28 +120,6 @@ StoneRing::ItemRef::ItemRef( ):
 }
 
 
-CL_DomElement StoneRing::ItemRef::createDomElement(CL_DomDocument &doc) const
-{
-    CL_DomElement element(doc, std::string("itemRef"));
-
-
-    switch(meType)
-    {
-    case NAMED_ITEM:
-        element.append_child ( mpNamedItemRef->createDomElement(doc) );
-        break;
-    case WEAPON_REF:
-        element.append_child ( mpWeaponRef->createDomElement(doc) );
-        break;
-    case ARMOR_REF:
-        element.append_child ( mpArmorRef->createDomElement(doc) );
-        break;
-    }
-
-    return element;
-
-}
-
 StoneRing::ItemRef::~ItemRef()
 {
     delete mpNamedItemRef;
@@ -207,20 +185,6 @@ void StoneRing::NamedItemRef::handleText(const std::string &text)
 {
     mName = text;
 }
-
-CL_DomElement  StoneRing::NamedItemRef::createDomElement(CL_DomDocument &doc) const
-{
-    CL_DomElement element(doc,"namedItemRef");
-
-    CL_DomText text(doc, mName );
-
-    text.set_node_value ( mName );
-
-    element.append_child ( text );
-
-    return element;
-}
-
 
 
 bool StoneRing::Tilemap::handleElement(eElement element, Element * pElement)

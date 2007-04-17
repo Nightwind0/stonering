@@ -13,7 +13,6 @@ namespace StoneRing{
         StatusEffect();
         virtual ~StatusEffect();
         virtual eElement whichElement() const{ return ESTATUSEFFECT; }  
-        CL_DomElement createDomElement(CL_DomDocument &doc) const;
 
         OnInvoke * getOnInvoke() const;
         OnRound * getOnRound() const;

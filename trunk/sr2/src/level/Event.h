@@ -19,10 +19,6 @@ namespace StoneRing{
         bool repeatable();
         inline bool remember();
         bool invoke();
-
-        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
-
-
     protected:
         virtual bool handleElement(eElement element, Element * pElement );
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);

@@ -26,9 +26,3 @@ StoneRing::NamedScript::~NamedScript()
     delete mpScript;
 }
 
-CL_DomElement StoneRing::NamedScript::createDomElement(CL_DomDocument &doc) const
-{
-    return CL_DomElement(doc,"NamedScript");
-}
-
-

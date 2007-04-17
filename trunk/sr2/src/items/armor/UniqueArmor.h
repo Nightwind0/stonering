@@ -20,7 +20,6 @@ namespace StoneRing{
         virtual void executeScript();
         virtual bool equipCondition();
         virtual eItemType getItemType() const { return ARMOR ; }
-        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
         
     private:
         virtual void onEquipScript();

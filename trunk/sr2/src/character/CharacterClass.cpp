@@ -37,11 +37,6 @@ uint SkillRef::getMinLevel() const
     return mnMinLevel;
 }
 
-CL_DomElement SkillRef::createDomElement ( CL_DomDocument &doc )const
-{
-    return CL_DomElement(doc,"skillRef");
-}
-
 
 void SkillRef::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
@@ -104,11 +99,6 @@ CharacterClass::CharacterClass()
 CharacterClass::~CharacterClass()
 {
     delete mpMenu;
-}
-
-CL_DomElement CharacterClass::createDomElement( CL_DomDocument &doc ) const
-{
-    return CL_DomElement(doc,"characterClass");
 }
 
 std::list<WeaponTypeRef*>::const_iterator CharacterClass::getWeaponTypeRefsBegin() const
@@ -184,12 +174,6 @@ StatIncrease::StatIncrease( )
 
 StatIncrease::~StatIncrease()
 {
-}
-
-CL_DomElement 
-StatIncrease::createDomElement( CL_DomDocument &doc ) const
-{
-    return CL_DomElement(doc,"statIncrease");
 }
 
 eCharacterAttribute 

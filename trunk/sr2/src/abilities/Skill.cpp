@@ -95,10 +95,6 @@ Skill::getPreReqsEnd() const
     return mPreReqs.end();
 }
 
-CL_DomElement Skill::createDomElement ( CL_DomDocument &doc ) const
-{
-    return CL_DomElement(doc,"skill");
-}
 
 
 

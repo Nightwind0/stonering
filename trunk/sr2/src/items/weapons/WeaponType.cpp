@@ -51,11 +51,6 @@ WeaponType::~WeaponType()
     delete mpDamageCategory;
 }
 
-CL_DomElement WeaponType::createDomElement ( CL_DomDocument &doc) const
-{
-    return CL_DomElement(doc,"weaponType");
-}
-
 std::string WeaponType::getName() const
 {
     return mName;

@@ -18,9 +18,6 @@ namespace StoneRing{
         virtual eItemType getItemType() const { return RUNE ; }
 
         SpellRef * getSpellRef() const;
-
-        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
-
     private:
         virtual bool handleElement(eElement element, Element * pElement );
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;

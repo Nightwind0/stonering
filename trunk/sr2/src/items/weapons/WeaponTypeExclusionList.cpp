@@ -12,12 +12,6 @@ WeaponTypeExclusionList::~WeaponTypeExclusionList()
     // std::for_each(mWeaponTypes.begin(),mWeaponTypes.end(),del_fun<WeaponTypeRef>());
 }
 
-CL_DomElement WeaponTypeExclusionList::createDomElement ( CL_DomDocument &doc) const
-{
-    return CL_DomElement(doc,"weaponTypeExclusionList");
-}
-
-
 std::list<WeaponTypeRef*>::const_iterator WeaponTypeExclusionList::getWeaponTypeRefsBegin()
 {
     return mWeaponTypes.begin();
