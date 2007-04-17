@@ -48,3 +48,4 @@ void BattleMenuOption::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
     mName = getRequiredString("name",pAttributes);
 }
+

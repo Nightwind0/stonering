@@ -40,3 +40,4 @@ bool BattleMenu::handleElement(eElement element, Element *pElement)
 void BattleMenu::loadAttributes(CL_DomNamedNodeMap *)
 {
 }
+

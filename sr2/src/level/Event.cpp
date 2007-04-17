@@ -88,3 +88,4 @@ bool StoneRing::Event::invoke()
     return true;
 }
       
+

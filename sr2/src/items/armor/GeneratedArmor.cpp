@@ -207,3 +207,5 @@ void GeneratedArmor::generate( ArmorType * pType, ArmorClass * pClass,
 }
 
 
+
+

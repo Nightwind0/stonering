@@ -161,3 +161,5 @@ bool ArmorClass::isExcluded ( const ArmorTypeRef &armorType )
 }
 
 
+
+

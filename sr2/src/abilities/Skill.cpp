@@ -104,3 +104,5 @@ CL_DomElement Skill::createDomElement ( CL_DomDocument &doc ) const
 
 
 
+
+

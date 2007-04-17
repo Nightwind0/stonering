@@ -38,3 +38,5 @@ bool ArmorTypeExclusionList::handleElement(eElement element, Element * pElement)
 }
 
 
+
+

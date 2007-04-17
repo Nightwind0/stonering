@@ -33,3 +33,5 @@ std::string SteelException::getMessage() const
 {
     return m_message;
 }
+
+

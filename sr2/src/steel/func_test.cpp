@@ -37,3 +37,5 @@ int main()
     functors["one"] =  new SteelFunctor1Arg<Foo,int>(&fooboy,&Foo::one);
     functors["two"] = new SteelFunctor2Arg<Foo,const int&,const double&>(&fooboy,&Foo::two);
 }
+
+

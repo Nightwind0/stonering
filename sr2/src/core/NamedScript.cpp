@@ -30,3 +30,5 @@ CL_DomElement StoneRing::NamedScript::createDomElement(CL_DomDocument &doc) cons
 {
     return CL_DomElement(doc,"NamedScript");
 }
+
+

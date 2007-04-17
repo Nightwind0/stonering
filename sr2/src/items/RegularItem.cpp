@@ -151,3 +151,5 @@ CL_DomElement  RegularItem::createDomElement(CL_DomDocument &doc) const
 
 
 
+
+
