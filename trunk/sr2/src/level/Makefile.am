@@ -12,9 +12,7 @@ liblevel_la_SOURCES = \
 		MappableObject.cpp \
 		MappableObject.h \
 		ScriptElement.cpp \
-		ScriptElement.h \
-		actions/AttributeModifier.cpp \
-		actions/AttributeModifier.h 
+		ScriptElement.h 
 
 INCLUDES = 	-I@top_srcdir@/src/ \
 		-I@top_srcdir@/src/abilities \
@@ -24,8 +22,6 @@ INCLUDES = 	-I@top_srcdir@/src/ \
 		-I@top_srcdir@/src/items/weapons \
 		-I@top_srcdir@/src/items/armor \
 		-I@top_srcdir@/src/level \
-		-I@top_srcdir@/src/level/actions \
-		-I@top_srcdir@/src/level/checks \
 		-I@top_srcdir@/src/character \
 		-I@top_srcdir@/src/steel \
 		-I@top_srcdir@/src/core/ 

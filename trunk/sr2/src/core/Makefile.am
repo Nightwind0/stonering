@@ -11,6 +11,8 @@ libcore_la_SOURCES =	\
 		Element.h \
 		GraphicsManager.cpp \
 		GraphicsManager.h \
+		NamedScript.cpp \
+		NamedScript.h \
 		IApplication.h \
 		IParty.h \
 		sr_defines.h \
@@ -20,8 +22,6 @@ INCLUDES = \
 		-I@top_srcdir@/src/	\
 		-I@top_srcdir@/src/states/ \
 		-I@top_srcdir@/src/level/  \
-		-I@top_srcdir@/src/level/actions  \
-		-I@top_srcdir@/src/level/checks  \
 		-I@top_srcdir@/src/party/ \
 		-I@top_srcdir@/src/factories \
 		-I@top_srcdir@/src/items \

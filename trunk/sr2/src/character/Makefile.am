@@ -2,12 +2,18 @@ noinst_LTLIBRARIES = libcharacter.la
 
 libcharacter_la_CPPFLAGS = $(CLANLIB_CFLAGS) $(CPPFLAGS)
 
-libcharacter_la_SOURCES = CharacterClass.cpp \
-			CharacterDefinition.cpp \
-			CharacterClass.h \
-			CharacterDefinition.h  \
-			Character.cpp	\
-			Character.h
+libcharacter_la_SOURCES = \
+BattleMenu.cpp \
+BattleMenu.h \
+BattleMenuOption.cpp \
+BattleMenuOption.h \
+CharacterClass.cpp \
+CharacterClass.h \
+Character.cpp \
+CharacterDefinition.cpp \
+CharacterDefinition.h \
+Character.h 
+
 
 
 INCLUDES = 	-I@top_srcdir@/src/ \
