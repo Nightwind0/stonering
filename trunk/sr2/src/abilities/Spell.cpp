@@ -291,3 +291,5 @@ return CL_DomElement(doc,"magicDamageCategory" );
 */
 
 
+
+

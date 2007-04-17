@@ -96,3 +96,5 @@ typedef std::vector<SteelType> SteelArray;
 bool operator==(const SteelType &lhs, const SteelType &rhs);
 bool operator!=(const SteelType &lhs, const SteelType &rhs);
 #endif
+
+

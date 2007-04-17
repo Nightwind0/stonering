@@ -238,3 +238,5 @@ void StoneRing::WeaponTypeSprite::loadAttributes(CL_DomNamedNodeMap *pAttributes
 
 
 
+
+

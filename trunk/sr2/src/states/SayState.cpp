@@ -141,3 +141,5 @@ void StoneRing::SayState::init(const std::string &speaker, const std::string &te
 
 
 
+
+

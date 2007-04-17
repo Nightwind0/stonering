@@ -617,3 +617,5 @@ class WeaponTypeSprite : public StoneRing::WeaponTypeSprite, public WriteableEle
 
 }
 #endif
+
+

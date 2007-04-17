@@ -179,3 +179,5 @@ void StoneRing::ChoiceState::init(const std::string &choiceText, const std::vect
 
 
 
+
+

@@ -1393,3 +1393,5 @@ CL_DomElement Editor::WeaponTypeSprite::createDomElement(CL_DomDocument &doc)con
 {
     return CL_DomElement(doc,"weaponTypeSprite");
 }
+
+

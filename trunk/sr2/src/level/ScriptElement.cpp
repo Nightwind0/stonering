@@ -51,3 +51,5 @@ void ScriptElement::handleText(const std::string &text)
     mpScript = pApp->loadScript(mId, text);
     mId.clear(); // The script will remember it.. I don't want to.
 }
+
+

@@ -304,3 +304,5 @@ void StoneRing::MapState::switchFromPlayer(MappablePlayer * pPlayer)
 }
 
 
+
+

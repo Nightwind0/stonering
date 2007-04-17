@@ -125,3 +125,4 @@ StoneRing::ItemManager * AppUtils::getItemManager()
 
     return pApp->getItemManager();
 }
+

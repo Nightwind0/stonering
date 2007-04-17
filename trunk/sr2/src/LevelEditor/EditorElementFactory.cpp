@@ -328,3 +328,5 @@ Element * EditorElementFactory::createWeaponTypeSprite() const
   return new Editor::WeaponTypeSprite();
 }
 
+
+

@@ -18,3 +18,5 @@ int StoneRing::Character::getAttribute(eCharacterAttribute attr) const{ return 1
 
 
 
+
+
