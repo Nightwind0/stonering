@@ -224,9 +224,7 @@ class Level : public StoneRing::Level, public WriteableElement
     // bOn of true turns the direction block on for the specified direction,
     // false will turn it off.
     void setDirectionBlockAt(uint levelX, uint levelY, StoneRing::eDirectionBlock dir, bool bOn);
-
     void setHotAt(uint levelX, uint levelY, bool bHot);
-        
     void addTile ( StoneRing::Tile * pTile );
     void removeTile ( StoneRing::Tile * pTile );
 
