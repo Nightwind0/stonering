@@ -59,12 +59,6 @@ ArmorType *UniqueArmor::getArmorType() const
     return mpArmorType;
 }
 
-CL_DomElement  
-UniqueArmor::createDomElement(CL_DomDocument &doc) const
-{
-    return CL_DomElement(doc,"uniqueArmor");
-}
-
 void UniqueArmor::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
     mValueMultiplier = getImpliedFloat("valueMultiplier",pAttributes,1);

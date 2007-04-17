@@ -13,12 +13,6 @@ ArmorTypeExclusionList::~ArmorTypeExclusionList()
     //  std::for_each(mArmorTypes.begin(),mArmorTypes.end(),del_fun<ArmorTypeRef>());
 }
 
-CL_DomElement ArmorTypeExclusionList::createDomElement ( CL_DomDocument &doc) const
-{
-    return CL_DomElement(doc,"ArmorTypeExclusionList");
-}
-
-
 std::list<ArmorTypeRef*>::const_iterator ArmorTypeExclusionList::getArmorTypeRefsBegin()
 {
     return mArmorTypes.begin();

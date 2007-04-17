@@ -101,11 +101,6 @@ void ArmorClass::onUnequipScript()
     mpUnequipScript->executeScript();
 }
 
-CL_DomElement ArmorClass::createDomElement ( CL_DomDocument &doc) const
-{
-    return CL_DomElement(doc, "armorClass");
-}
-
 std::string ArmorClass::getName() const
 {
     return mName;

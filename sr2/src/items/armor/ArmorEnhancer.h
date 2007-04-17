@@ -12,12 +12,9 @@ namespace StoneRing{
         ArmorEnhancer();
         virtual ~ArmorEnhancer();
         virtual eElement whichElement() const{ return EARMORENHANCER; }         
-        virtual CL_DomElement createDomElement ( CL_DomDocument &) const;
-
         Armor::eAttribute getAttribute() const;
         int getAdd() const;
         float getMultiplier() const;
-        
     private:
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
         Armor::eAttribute meAttribute;

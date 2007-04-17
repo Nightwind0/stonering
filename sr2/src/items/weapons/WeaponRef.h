@@ -20,8 +20,6 @@ namespace StoneRing{
                     SpellRef * pSpell, RuneType *pRune );
         virtual ~WeaponRef();
         virtual eElement whichElement() const{ return EWEAPONREF; } 
-        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
-
         WeaponType * getWeaponType() const;
         WeaponClass  * getWeaponClass() const;
         SpellRef * getSpellRef() const;
@@ -31,11 +29,11 @@ namespace StoneRing{
 
     private:
         virtual bool handleElement(eElement element, Element * pElement );
-
+    protected:
         WeaponType *mpWeaponType;
         WeaponClass *mpWeaponClass;
-        WeaponTypeRef mType;
-        WeaponClassRef mClass;
+        WeaponTypeRef *mpType;
+        WeaponClassRef *mpClass;
         SpellRef * mpSpellRef;
         RuneType * mpRuneType;
 

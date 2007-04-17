@@ -32,11 +32,7 @@ namespace StoneRing
         WeaponRef * getWeaponRef() const;
         ArmorRef * getArmorRef() const;
 
-
         inline Item * getItem() const { return mpItem; }
-
-        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
-    
     protected:
         virtual bool handleElement(Element::eElement,Element *);    
         virtual void loadAttributes(CL_DomNamedNodeMap *pAttributes);
@@ -58,9 +54,6 @@ namespace StoneRing
         virtual ~NamedItemRef();
         virtual eElement whichElement() const{ return ENAMEDITEMREF; }
         std::string getItemName();
-
-        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
-
     protected:
         virtual void handleText(const std::string &text);
         std::string mName;

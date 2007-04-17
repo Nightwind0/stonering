@@ -21,12 +21,12 @@ bool WeaponRef::handleElement(eElement element, Element * pElement)
     switch(element)
     {
     case EWEAPONTYPEREF:
-        mType = * (dynamic_cast<WeaponTypeRef*>(pElement));
-        mpWeaponType = pItemManager->getWeaponType(mType);
+        mpType =  dynamic_cast<WeaponTypeRef*>(pElement);
+        mpWeaponType = pItemManager->getWeaponType(*mpType);
         break;
     case EWEAPONCLASSREF:
-        mClass = * (dynamic_cast<WeaponClassRef*>(pElement));
-        mpWeaponClass = pItemManager->getWeaponClass ( mClass );
+        mpClass = dynamic_cast<WeaponClassRef*>(pElement);
+        mpWeaponClass = pItemManager->getWeaponClass ( *mpClass );
         break;
     case ESPELLREF:
         mpSpellRef = dynamic_cast<SpellRef*>(pElement);
@@ -87,31 +87,6 @@ bool WeaponRef::operator==(const WeaponRef &lhs)
     }
 
     return true;
-
-}
-
-
-CL_DomElement  
-WeaponRef::createDomElement(CL_DomDocument &doc) const
-{
-    CL_DomElement element(doc,"weaponRef");
-
-
-
-    element.append_child ( mType.createDomElement(doc ) );
-
-    element.append_child ( mClass.createDomElement(doc ) );
-
-    if(mpSpellRef)
-    {
-        element.append_child ( mpSpellRef->createDomElement(doc ) );
-    }
-    else if (mpRuneType)
-    {
-        element.append_child ( mpRuneType->createDomElement(doc ) );
-    }
-
-    return element;
 
 }
 

@@ -24,9 +24,6 @@ namespace StoneRing{
         // Meaning that the system must select the proper current player
         // when revoking. (By calling unequip on the armor/weapon...)
         void revoke();
-
-        virtual CL_DomElement createDomElement ( CL_DomDocument &) const;
-
     private:
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
         // Used to make sure that when we multiply the value to get it

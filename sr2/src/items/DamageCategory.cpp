@@ -31,11 +31,6 @@ WeaponDamageCategory::eType WeaponDamageCategory::getType() const
     return meType;
 }
 
-CL_DomElement WeaponDamageCategory::createDomElement(CL_DomDocument &doc) const
-{
-    return CL_DomElement(doc, "weaponDamageCategory");
-}
-
 
 MagicDamageCategory::MagicDamageCategory()
 {
@@ -69,10 +64,8 @@ eMagicType MagicDamageCategory::getType() const
     return meType;
 }
 
-CL_DomElement MagicDamageCategory::createDomElement(CL_DomDocument &doc) const
-{
-    return CL_DomElement(doc, "magicDamageCategory");
-}
+
+
 
 
 

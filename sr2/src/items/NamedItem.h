@@ -39,7 +39,6 @@ namespace StoneRing{
         ~NamedItemElement();
 
         virtual eElement whichElement() const{ return ENAMEDITEMELEMENT; }          
-        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
 
         NamedItem * getNamedItem() const;
 
@@ -48,8 +47,7 @@ namespace StoneRing{
         uint getMaxInventory() const;
         Item::eDropRarity getDropRarity() const;
         std::string getName() const;
-
-        
+     
 
     private:
         virtual bool handleElement(eElement element, Element * pElement );

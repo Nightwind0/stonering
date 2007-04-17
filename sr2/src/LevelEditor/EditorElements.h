@@ -34,13 +34,18 @@
 #include "WeaponTypeRef.h"
 
 
+#define WRITE_CHILD(element,x,doc) (element.append_child(               \
+                                        dynamic_cast<WriteableElement*>(x) \
+                                        ->createDomElement(doc))        \
+        )
+
 namespace Editor {
 
 class WriteableElement 
 {
 public:
     virtual CL_DomElement createDomElement(CL_DomDocument &doc)const=0;
-private:
+protected:
 };
 
 class Animation : public StoneRing::Animation, public WriteableElement

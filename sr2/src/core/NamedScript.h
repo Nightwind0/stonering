@@ -10,7 +10,6 @@ namespace StoneRing{
     public:
         NamedScript();
         virtual ~NamedScript();
-        CL_DomElement createDomElement(CL_DomDocument &doc) const;
 
         void executeScript();
 

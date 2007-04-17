@@ -74,11 +74,6 @@ void AttributeEnhancer::revoke()
 
 }
 
-CL_DomElement 
-AttributeEnhancer::createDomElement ( CL_DomDocument &doc) const
-{
-    return CL_DomElement(doc, "attributeEnhancer");
-}
 
 
 

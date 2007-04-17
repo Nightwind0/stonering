@@ -11,7 +11,6 @@ namespace StoneRing{
         ArmorType(CL_DomElement * pElement );
         ~ArmorType();
         virtual eElement whichElement() const{ return EARMORTYPE; } 
-        virtual CL_DomElement createDomElement ( CL_DomDocument &) const;       
 
         std::string getName() const;
         std::string getIconRef() const;
@@ -19,9 +18,7 @@ namespace StoneRing{
         uint getBasePrice() const;
         int getBaseAC() const;
         int getBaseRST() const;
-
         enum eSlot { HEAD, BODY, SHIELD, FEET, HANDS };
-
         eSlot getSlot() const;
 
         bool operator==(const ArmorType &lhs );

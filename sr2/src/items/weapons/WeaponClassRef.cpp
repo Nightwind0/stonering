@@ -21,20 +21,6 @@ bool WeaponClassRef::operator==(const WeaponClassRef &lhs)
     else return false;
 }
 
-CL_DomElement  WeaponClassRef::createDomElement(CL_DomDocument &doc) const
-{
-    CL_DomElement element(doc,"weaponClassRef");
-
-    CL_DomText text(doc, mName );
-
-    text.set_node_value ( mName );
-
-    element.append_child ( text );
-
-    return element;
-}
-
-
 std::string WeaponClassRef::getName() const
 {
     return mName;

@@ -14,8 +14,6 @@ namespace StoneRing{
         ArmorClass(CL_DomElement * pElement);
         ~ArmorClass();
         virtual eElement whichElement() const{ return EARMORCLASS; }    
-        virtual CL_DomElement createDomElement ( CL_DomDocument &) const;       
-
         std::string getName() const;
         int getValueAdd() const;
         float getValueMultiplier() const;

@@ -15,12 +15,6 @@ std::string IconRef::getIcon() const
     return mIcon;
 }
 
-CL_DomElement  IconRef::createDomElement(CL_DomDocument &doc) const
-{
-    return CL_DomElement(doc,"iconRef");
-}
-
-
 bool IconRef::handleElement(eElement element, Element * pElement )
 {
     return false;

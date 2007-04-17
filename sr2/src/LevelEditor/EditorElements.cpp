@@ -4,7 +4,7 @@
 
 using namespace Editor;
 
-//Editor::
+
 
 Editor::Animation::Animation()
 {
@@ -61,7 +61,13 @@ Editor::ArmorClassRef::~ArmorClassRef()
 }
 CL_DomElement Editor::ArmorClassRef::createDomElement(CL_DomDocument &doc)const
 {
-    return CL_DomElement(doc,"armorClassRef");
+    CL_DomElement element(doc,"armorClassRef");
+    CL_DomText text(doc, mName );
+
+    text.set_node_value ( mName );
+    element.append_child ( text );
+
+    return element;
 }
 
 Editor::ArmorEnhancer::ArmorEnhancer()
@@ -84,7 +90,22 @@ Editor::ArmorRef::~ArmorRef()
 }
 CL_DomElement Editor::ArmorRef::createDomElement(CL_DomDocument &doc)const
 {
-    return CL_DomElement(doc,"armorRef");
+    CL_DomElement element(doc,"armorRef");
+
+    
+    WRITE_CHILD(element,mpType,doc);
+    WRITE_CHILD(element,mpClass,doc);
+
+    if(mpSpellRef )
+    {
+        WRITE_CHILD(element,mpSpellRef,doc);
+    }
+    else if (mpRuneType)
+    {
+        WRITE_CHILD(element,mpRuneType,doc);
+    }
+
+    return element;
 }
 
 
@@ -120,7 +141,13 @@ Editor::ArmorTypeRef::~ArmorTypeRef()
 }
 CL_DomElement Editor::ArmorTypeRef::createDomElement(CL_DomDocument &doc)const
 {
-    return CL_DomElement(doc,"armorTypeRef");
+    CL_DomElement element(doc,"armorTypeRef");
+    CL_DomText text(doc, mName );
+
+    text.set_node_value ( mName );
+    element.append_child ( text );
+
+    return element;
 }
 
 
@@ -257,14 +284,12 @@ CL_DomElement Editor::Event::createDomElement(CL_DomDocument &doc)const
 
     if(mpCondition)
     {
-        CL_DomElement e = mpCondition->createDomElement(doc);
-        element.append_child ( e );
+        WRITE_CHILD(element,mpCondition,doc);
     }
 
     if(mpScript)
     {
-        CL_DomElement e = mpScript->createDomElement(doc);
-        element.append_child ( e );
+        WRITE_CHILD(element,mpScript,doc);
     }
 
     return element;
@@ -291,7 +316,22 @@ Editor::ItemRef::~ItemRef()
 }
 CL_DomElement Editor::ItemRef::createDomElement(CL_DomDocument &doc)const
 {
-    return CL_DomElement(doc,"itemRef");
+    CL_DomElement element(doc, std::string("itemRef"));
+
+    switch(meType)
+    {
+    case NAMED_ITEM:
+        WRITE_CHILD(element,mpNamedItemRef,doc);
+        break;
+    case WEAPON_REF:
+        WRITE_CHILD(element,mpWeaponRef,doc);
+        break;
+    case ARMOR_REF:
+        WRITE_CHILD(element,mpArmorRef,doc);
+        break;
+    }
+
+    return element;
 }
 
 
@@ -621,44 +661,28 @@ CL_DomElement Editor::MappableObject::createDomElement(CL_DomDocument &doc)const
 
     if(cFlags & TILEMAP)
     {
-        CL_DomElement tilemapEl = dynamic_cast<Editor::Tilemap*>(mGraphic.asTilemap)->createDomElement(doc);
-
-        element.append_child (  tilemapEl );
-
+        WRITE_CHILD(element,mGraphic.asTilemap,doc);
     }
 
     if(isSprite())
     {
-    
-        CL_DomElement spriteRefEl = dynamic_cast<Editor::SpriteRef*>(mGraphic.asSpriteRef)->createDomElement(doc);
-
-        element.append_child ( spriteRefEl );
-
+        WRITE_CHILD(element,mGraphic.asSpriteRef,doc);
     }
 
     if(mpCondition)
     {
-        CL_DomElement condition = mpCondition->createDomElement(doc);
-
-        element.append_child( condition );
+        WRITE_CHILD(element,mpCondition,doc);
     }
 
     for(std::list<StoneRing::Event*>::const_iterator h = mEvents.begin();
         h != mEvents.end(); h++)
     {
-        CL_DomElement evEl= dynamic_cast<Editor::Event*>(*h)->createDomElement(doc);
-
-        element.append_child( evEl );
-
-
+        WRITE_CHILD(element,*h,doc);
     }
 
     if(mpMovement)
     {
-        CL_DomElement moveEl = dynamic_cast<Editor::Movement*>(mpMovement)->createDomElement(doc);
-
-        element.append_child ( moveEl );
-
+        WRITE_CHILD(element,mpMovement,doc);
     }
 
 
@@ -748,7 +772,13 @@ Editor::NamedItemRef::~NamedItemRef()
 }
 CL_DomElement Editor::NamedItemRef::createDomElement(CL_DomDocument &doc)const
 {
-    return CL_DomElement(doc,"namedItemRef");
+    CL_DomElement element(doc,"namedItemRef");
+    CL_DomText text(doc, mName );
+
+    text.set_node_value ( mName );
+    element.append_child ( text );
+
+    return element;
 }
 
 
@@ -876,7 +906,22 @@ Editor::RuneType::~RuneType()
 }
 CL_DomElement Editor::RuneType::createDomElement(CL_DomDocument &doc)const
 {
-    return CL_DomElement(doc,"runeType");
+    CL_DomElement element(doc,"runeType");
+
+    switch(meRuneType)
+    {
+    case NONE:
+        element.set_attribute("type", "none");
+        break;
+    case RUNE:
+        element.set_attribute("type","rune");
+        break;
+    case ULTRA_RUNE:
+        element.set_attribute("type","ultraRune");
+        break;
+    }
+
+    return element;
 }
 
 Editor::ScriptElement::ScriptElement()
@@ -968,7 +1013,35 @@ Editor::SpellRef::~SpellRef()
 }
 CL_DomElement Editor::SpellRef::createDomElement(CL_DomDocument &doc)const
 {
-    return CL_DomElement(doc,"spellRef");
+    CL_DomElement element(doc,"spellRef");
+
+    std::string spellType;
+
+    switch(meSpellType)
+    {
+    case ELEMENTAL:
+        spellType = "elemental";
+        break;
+    case WHITE:
+        spellType = "white";
+        break;
+    case STATUS:
+        spellType = "status";
+        break;
+    case OTHER:
+        spellType = "other";
+        break;
+    }
+
+    element.set_attribute("type", spellType );
+
+    CL_DomText text(doc, mName );
+
+    text.set_node_value ( mName );
+
+    element.append_child ( text );
+
+    return element;
 }
 
 Editor::SpriteRef::SpriteRef()
@@ -1086,34 +1159,23 @@ CL_DomElement Editor::Tile::createDomElement(CL_DomDocument &doc)const
 
     if(isSprite())
     {
-        CL_DomElement spriteEl = dynamic_cast<Editor::SpriteRef*>(mGraphic.asSpriteRef)->createDomElement(doc);
-
-        element.append_child ( spriteEl );
-
+        WRITE_CHILD(element,mGraphic.asSpriteRef,doc);
     }
     else
     {
-        CL_DomElement tilemapEl = dynamic_cast<Editor::Tilemap*>(mGraphic.asTilemap)->createDomElement(doc);
-
-        element.append_child (  tilemapEl );
-
+        WRITE_CHILD(element,mGraphic.asTilemap,doc);
     }
 
     if(mpCondition)
     {
-        CL_DomElement condEl = mpCondition->createDomElement(doc);
-
-        element.append_child ( condEl );
-
+        WRITE_CHILD(element,mpCondition,doc);
     }
     if( getDirectionBlock() > 0)
     {
         Editor::DirectionBlock block( getDirectionBlock() );
-
         CL_DomElement dirEl = block.createDomElement(doc);
 
         element.append_child( dirEl );
-
     }
     
 
@@ -1314,7 +1376,13 @@ Editor::WeaponClassRef::~WeaponClassRef()
 }
 CL_DomElement Editor::WeaponClassRef::createDomElement(CL_DomDocument &doc)const
 {
-    return CL_DomElement(doc,"weaponClassRef");
+    CL_DomElement element(doc,"weaponClassRef");
+    CL_DomText text(doc, mName );
+
+    text.set_node_value ( mName );
+    element.append_child ( text );
+
+    return element;
 }
 
 Editor::WeaponDamageCategory::WeaponDamageCategory()
@@ -1347,7 +1415,21 @@ Editor::WeaponRef::~WeaponRef()
 }
 CL_DomElement Editor::WeaponRef::createDomElement(CL_DomDocument &doc)const
 {
-    return CL_DomElement(doc,"weaponRef");
+    CL_DomElement element(doc,"weaponRef");
+
+    WRITE_CHILD(element,mpType,doc);
+    WRITE_CHILD(element,mpClass,doc);
+
+    if(mpSpellRef)
+    {
+        WRITE_CHILD(element,mpSpellRef,doc);
+    }
+    else if (mpRuneType)
+    {
+        WRITE_CHILD(element,mpRuneType,doc);
+    }
+
+    return element;
 }
 
 Editor::WeaponType::WeaponType()
@@ -1380,7 +1462,13 @@ Editor::WeaponTypeRef::~WeaponTypeRef()
 }
 CL_DomElement Editor::WeaponTypeRef::createDomElement(CL_DomDocument &doc)const
 {
-    return CL_DomElement(doc,"weaponTypeRef");
+    CL_DomElement element(doc,"weaponTypeRef");
+    CL_DomText text(doc, mName );
+
+    text.set_node_value ( mName );
+    element.append_child ( text );
+
+    return element;
 }
 
 Editor::WeaponTypeSprite::WeaponTypeSprite()

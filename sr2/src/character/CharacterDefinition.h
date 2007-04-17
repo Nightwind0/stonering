@@ -23,7 +23,6 @@ namespace StoneRing
         CharacterDefinition(void);
         virtual ~CharacterDefinition(void);
 
-        virtual CL_DomElement createDomElement(CL_DomDocument&)const;
         virtual eElement whichElement() const { return ECHARACTER; }
 
     private:
@@ -44,7 +43,6 @@ namespace StoneRing
         AnimationDefinition();
         virtual ~AnimationDefinition();
 
-        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
         virtual eElement whichElement() const { return EANIMATIONDEFINITION; }
 
         SkillRef * getSkillRef() const;
@@ -65,7 +63,6 @@ namespace StoneRing
         WeaponTypeSprite();
         virtual ~WeaponTypeSprite();
 
-        virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
         virtual eElement whichElement() const { return EWEAPONTYPESPRITE; }
         WeaponTypeRef * getWeaponTypeRef() const;
         std::string getSpriteRef() const;

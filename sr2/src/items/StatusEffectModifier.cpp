@@ -38,10 +38,6 @@ float StatusEffectModifier::getModifier() const
 
 
 
-CL_DomElement StatusEffectModifier::createDomElement(CL_DomDocument &doc) const
-{
-    return CL_DomElement(doc,"statusEffectModifier");
-}
 
 
 

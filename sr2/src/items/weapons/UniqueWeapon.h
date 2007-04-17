@@ -23,8 +23,6 @@ namespace StoneRing{
         bool isTwoHanded() const;
         
         virtual eItemType getItemType() const { return WEAPON ; }
-         virtual CL_DomElement  createDomElement(CL_DomDocument&) const;
-
     private:
         virtual void onEquipScript();
         virtual void onUnequipScript();

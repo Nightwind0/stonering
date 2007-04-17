@@ -21,11 +21,6 @@ WeaponEnhancer::~WeaponEnhancer()
 {
 }
 
-CL_DomElement WeaponEnhancer::createDomElement ( CL_DomDocument &doc) const
-{
-    return CL_DomElement(doc, "weaponEnhancer");
-}
-
 Weapon::eAttribute WeaponEnhancer::getAttribute() const
 {
     return meAttribute;

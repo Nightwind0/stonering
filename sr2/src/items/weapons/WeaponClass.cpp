@@ -94,12 +94,6 @@ WeaponClass::~WeaponClass()
     delete mpConditionScript;
 }
 
-
-CL_DomElement WeaponClass::createDomElement ( CL_DomDocument &doc) const
-{
-    return CL_DomElement(doc,"weaponClass");
-}
-
 bool WeaponClass::operator==(const WeaponClass &lhs)
 {
     return mName == lhs.mName;

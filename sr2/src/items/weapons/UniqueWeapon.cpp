@@ -54,14 +54,6 @@ uint UniqueWeapon::getSellValue() const
     return mnValue / 2;
 }
 
-CL_DomElement  
-UniqueWeapon::createDomElement(CL_DomDocument &doc ) const
-{
-    return CL_DomElement(doc,"uniqueWeapon");
-}
-
-
-
 WeaponType * UniqueWeapon::getWeaponType() const 
 {
     return mpWeaponType;

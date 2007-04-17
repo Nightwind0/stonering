@@ -104,11 +104,6 @@ StoneRing::CharacterDefinition::~CharacterDefinition(void)
 }
 
 
-CL_DomElement  StoneRing::CharacterDefinition::createDomElement(CL_DomDocument &doc) const
-{
-    return CL_DomElement(doc,"character");
-}
-
 bool StoneRing::CharacterDefinition::handleElement(eElement element, StoneRing::Element * pElement )
 {
     switch(element)
@@ -147,11 +142,6 @@ StoneRing::AnimationDefinition::AnimationDefinition():mpSkillRef(NULL),mpAnimati
 
 StoneRing::AnimationDefinition::~AnimationDefinition()
 {
-}
-
-CL_DomElement  StoneRing::AnimationDefinition::createDomElement(CL_DomDocument &doc) const
-{
-    return CL_DomElement(doc,"animationDefinition");
 }
 
 
@@ -200,11 +190,6 @@ StoneRing::WeaponTypeSprite::~WeaponTypeSprite()
 {
 }
 
-
-CL_DomElement StoneRing::WeaponTypeSprite::createDomElement(CL_DomDocument &doc) const
-{
-    return CL_DomElement(doc,"weaponTypeSprite");
-}
 
 StoneRing::WeaponTypeRef * StoneRing::WeaponTypeSprite::getWeaponTypeRef() const
 {
