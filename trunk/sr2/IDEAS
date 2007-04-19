@@ -1,5 +1,11 @@
 
+Flavius Jobin
 
+"Hopestones"
+
+"Warmhope" - A place?
+
+Mochi Demons
 
 Make a thread for handling drawing and input! That way you don't have to make it asynchronous, instead of calling run() twice on the stack you can have it in another thread, i think. Don't make it asynch. I'm convinced its wrong.
 
