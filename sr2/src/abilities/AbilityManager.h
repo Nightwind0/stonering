@@ -17,7 +17,6 @@ namespace StoneRing
         AbilityManager(){}
         ~AbilityManager(){}
 
-
         void loadSpellFile ( CL_DomDocument &doc );
         void loadStatusEffectFile ( CL_DomDocument &doc );
         void loadSkillFile(CL_DomDocument &doc );
@@ -52,8 +51,6 @@ namespace StoneRing
 
 
 };
-
-// Blah blah what kind of endings?
 
 
 #endif

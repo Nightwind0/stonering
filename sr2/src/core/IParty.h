@@ -14,13 +14,9 @@ namespace StoneRing{
 
     class ItemRef;  
 
-
-
-
-
-// A Party interface defines the interface
-// to the player party. It is  a specialization of charactergroup
-// which includes monster parties.
+    // A Party interface defines the interface
+    // to the player party. It is  a specialization of charactergroup
+    // which includes monster parties.
     class IParty : public ICharacterGroup
     {
     public:
@@ -44,9 +40,7 @@ namespace StoneRing{
 
     private:
 
-
     };
-
 
 };
 

@@ -103,6 +103,8 @@ namespace StoneRing
         virtual void loadAttributes(CL_DomNamedNodeMap *){}
         virtual void handleText(const std::string &){}
         virtual void loadFinished(){} // You can check shit . Make sure you got everything.
+
+
         uint getRequiredUint(const std::string &attrname, CL_DomNamedNodeMap * pAttributes);
         int  getRequiredInt(const std::string &attrname, CL_DomNamedNodeMap * pAttributes);
         float getRequiredFloat(const std::string &attrname, CL_DomNamedNodeMap * pAttributes );

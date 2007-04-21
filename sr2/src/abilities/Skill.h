@@ -23,7 +23,7 @@ namespace StoneRing
     {
     public:
         Skill();
-        ~Skill();
+        virtual ~Skill();
 
         enum eType { BATTLE, SWITCH };
 
@@ -59,7 +59,7 @@ namespace StoneRing
     {
     public:
         SkillRef();
-        ~SkillRef();
+        virtual ~SkillRef();
         virtual eElement whichElement() const{ return ESKILLREF; }
         std::string getRef() const;
         uint getSPCost() const;

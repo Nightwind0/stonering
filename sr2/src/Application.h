@@ -103,8 +103,6 @@ namespace StoneRing
         CL_DisplayWindow *mpWindow;
 
         std::string mGold;
-        //CL_Timer *mpMovementTimer;
-        //CL_Mutex mMovementMutex;
 
         /* STATES */
         MapState mMapState;

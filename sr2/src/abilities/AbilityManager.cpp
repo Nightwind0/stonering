@@ -18,8 +18,6 @@ void AbilityManager::loadSpellFile ( CL_DomDocument &doc )
     IFactory * pAbilityFactory = IApplication::getInstance()->getElementFactory();
 
     CL_DomElement spellsNode = doc.named_item("spellList").to_element();
-
-
     CL_DomElement spellNode = spellsNode.get_first_child().to_element();
 
     while(!spellNode.is_null())
@@ -30,8 +28,6 @@ void AbilityManager::loadSpellFile ( CL_DomDocument &doc )
         mSpells.push_back ( pSpell );
         spellNode = spellNode.get_next_sibling().to_element();
     }
-
-
 }
 
 
@@ -50,8 +46,6 @@ void AbilityManager::loadSkillFile ( CL_DomDocument &doc )
         mSkills [ pSkill->getName() ] = pSkill;
         spellNode = spellNode.get_next_sibling().to_element();
     }
-
-
 }
 
 void AbilityManager::loadStatusEffectFile ( CL_DomDocument &doc )
@@ -60,8 +54,6 @@ void AbilityManager::loadStatusEffectFile ( CL_DomDocument &doc )
     assert ( pAbilityFactory );
 
     CL_DomElement statusEffectsNode = doc.named_item("statusEffectList").to_element();
-
-
     CL_DomElement statusEffectNode = statusEffectsNode.get_first_child().to_element();
 
     while(!statusEffectNode.is_null())
@@ -71,8 +63,6 @@ void AbilityManager::loadStatusEffectFile ( CL_DomDocument &doc )
         mStatusEffects.push_back ( pStatusEffect );
         statusEffectNode = statusEffectNode.get_next_sibling().to_element();
     }
-
-
 }
 
 void AbilityManager::loadCharacterClassFile ( CL_DomDocument &doc )
@@ -131,9 +121,6 @@ CharacterClass * AbilityManager::getClass ( const std::string &cls ) const
 {
     return mCharacterClasses.find(cls)->second;
 }
-
-
-
 
 
 Spell * AbilityManager::getSpell( const SpellRef & ref ) const

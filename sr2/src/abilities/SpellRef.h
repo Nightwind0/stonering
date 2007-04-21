@@ -21,7 +21,6 @@ namespace StoneRing{
 
         void setType(eSpellType type){ meSpellType = type; }
         void setName(const std::string &name){ mName = name; }
-
     private:
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
         virtual void handleText(const std::string &text);
