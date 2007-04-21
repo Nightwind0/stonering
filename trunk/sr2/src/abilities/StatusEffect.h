@@ -22,14 +22,11 @@ namespace StoneRing{
         std::string getName() const;
 
         enum eLast { ROUND_COUNT, BATTLE, PERMANENT };
-
         eLast getLast() const;
-
         uint getRoundCount() const; 
 
         // Multiply the magic power of the user by this using an algorithm to get length..
         float getLengthMultiplier() const;
-
 
     private:
         virtual bool handleElement(eElement element, Element * pElement );

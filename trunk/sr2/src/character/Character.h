@@ -84,8 +84,6 @@ namespace StoneRing{
         virtual int getMaxAttribute(eCharacterAttribute attr) const ;
         virtual int getMinAttribute(eCharacterAttribute attr) const ;
         virtual int getAttribute(eCharacterAttribute attr) const;
-
-
     private:
         std::string mName;
     };

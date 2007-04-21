@@ -70,9 +70,6 @@ namespace StoneRing
         float mfBase;
         eCharacterAttribute meStat;
     };
-
-
-
 };
 
 #endif

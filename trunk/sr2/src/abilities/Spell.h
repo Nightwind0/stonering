@@ -80,45 +80,6 @@ namespace StoneRing
         MagicResistance * mpMagicResistance;
         ScriptElement *mpScript;
     };
-
-
-
-
-/*
-  class WeaponDamageCategory : public Element
-  {
-  public:
-  WeaponDamageCategory();
-  WeaponDamageCategory();
-  virtual ~WeaponDamageCategory();
-    
-  enum eType { SLASH, BASH, JAB };
-  eType getType() const;
-
-  CL_DomElement createDomElement( CL_DomDocument &doc ) const;
-    
-  private:
-  eType meType;
-  };
-
-  class MagicDamageCategory : public Element
-  {
-  public:
-  MagicDamageCategory();
-  MagicDamageCategory(CL_DomElement * pElement);
-  virtual ~MagicDamageCategory();
-    
-  enum eType { FIRE, WATER, EARTH, WIND, HOLY, OTHER };
-  eType getType() const;
-
-  CL_DomElement createDomElement( CL_DomDocument &doc ) const;
-  private:
-  eType meType;
-  };
-
-
-*/
-
 };
 
 

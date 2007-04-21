@@ -8,7 +8,6 @@
 namespace StoneRing
 {
 
-
     eCharacterAttribute CharAttributeFromString(const std::string &str); 
     eCommonAttribute CommonAttributeFromString(const std::string &str);
 

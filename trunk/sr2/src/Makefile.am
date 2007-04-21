@@ -4,7 +4,8 @@ noinst_LTLIBRARIES = libstonering.la
 
 bin_PROGRAMS = stonering
 
-stonering_LDADD = libstonering.la
+stonering_LDADD = libstonering.la \
+				@top_srcdir@/src/states/libstates.la
 
 stonering_SOURCES =	Application.cpp 
 
@@ -21,7 +22,6 @@ libstonering_la_LIBADD = $(CLANLIB_LIBS) \
 			@top_srcdir@/src/items/libitems.la \
 			@top_srcdir@/src/level/liblevel.la \
 			@top_srcdir@/src/party/libparty.la \
-			@top_srcdir@/src/states/libstates.la \
 			@top_srcdir@/src/core/libcore.la \
 			@top_srcdir@/src/steel/libsteel.la	
 
