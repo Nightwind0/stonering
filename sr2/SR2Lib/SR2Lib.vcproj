@@ -248,10 +248,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\states\ChoiceState.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\src\items\DamageCategory.cpp"
 				>
 			</File>
@@ -344,10 +340,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\states\MapState.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\src\items\NamedItem.cpp"
 				>
 			</File>
@@ -369,10 +361,6 @@
 			</File>
 			<File
 				RelativePath="..\src\items\RuneType.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\states\SayState.cpp"
 				>
 			</File>
 			<File
@@ -568,10 +556,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\states\ChoiceState.h"
-				>
-			</File>
-			<File
 				RelativePath="..\src\items\DamageCategory.h"
 				>
 			</File>
@@ -648,10 +632,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\states\MapState.h"
-				>
-			</File>
-			<File
 				RelativePath="..\src\character\Menu.h"
 				>
 			</File>
@@ -677,10 +657,6 @@
 			</File>
 			<File
 				RelativePath="..\src\items\RuneType.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\states\SayState.h"
 				>
 			</File>
 			<File
