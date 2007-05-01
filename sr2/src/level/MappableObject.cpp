@@ -509,17 +509,17 @@ void StoneRing::MappableObject::provokeEvents ( Event::eTriggerType trigger )
         i != mEvents.end();
         i++)
     {
-        Event * event = *i;
+        Event * pEvent = *i;
         
         // If this is the correct trigger,
         // And the event is either repeatable or
         // Hasn't been done yet, invoke it
 
-        if( event->getTriggerType() == trigger 
-            && (event->repeatable() || ! party->didEvent ( event->getName() ))
+        if( pEvent->getTriggerType() == trigger 
+            && (pEvent->repeatable() || ! party->didEvent ( pEvent->getName() ))
             )
         {
-            event->invoke();
+            pEvent->invoke();
         }
 
     }

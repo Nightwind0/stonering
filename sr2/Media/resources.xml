@@ -118,7 +118,7 @@
 				<integer name="a" value="0"/>
 			</section>
 			<integer name="left" value="16"/>
-			<integer name="top" value="308"/>
+			<integer name="top" value="345"/>
 			<integer name="right" value="783" />
 			<integer name="bottom" value="580"/>
 		</section>
