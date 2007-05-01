@@ -13,7 +13,7 @@ namespace StoneRing{
     public:
         ScriptElement(bool isCondition);
         virtual ~ScriptElement();
-        virtual eElement whichElement() const { return ESCRIPT; }
+        virtual eElement whichElement() const { return mbIsCondition?ECONDITIONSCRIPT:ESCRIPT; }
 
         bool evaluateCondition() const;
         void executeScript() const ;

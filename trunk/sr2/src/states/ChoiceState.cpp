@@ -33,6 +33,7 @@ void StoneRing::ChoiceState::handleKeyUp(const CL_InputEvent &key)
         // Select current option.
         mbDraw = false;
        // mpChoice->chooseOption(mnCurrentOption);
+        mnSelection = mnCurrentOption;
         mbDone = true;
         break;
     case CL_KEY_DOWN:
@@ -69,15 +70,24 @@ void StoneRing::ChoiceState::draw(const CL_Rect &screenRect,CL_GraphicContext * 
 {
     if(!mbDraw) return;
 
-    pGC->fill_rect( mSpeakerRect, mSpeakerBGColor );
+    pGC->fill_rect( mQuestionRect, mQuestionBGColor );
     pGC->fill_rect( mTextRect, mTextBGColor ) ;
 
     mpChoiceOverlay->draw(mX,mY,pGC);
-    mpChoiceFont->draw(mSpeakerRect,mText,pGC);
+    mpChoiceFont->draw(mQuestionRect,mText,pGC);
 
     CL_Font * pLineFont = NULL;
 
-    uint optionsPerPage = 0;
+    uint totalHeight = mpCurrentOptionFont->get_height();
+    uint optionsPerPage = 1;
+
+    while(totalHeight < mTextRect.get_height())
+    {
+        totalHeight += mpOptionFont->get_height();
+        optionsPerPage++;
+    }
+
+    optionsPerPage = min(optionsPerPage,mChoices.size());
 
     // Draw the options
     for(uint i=0;i< optionsPerPage; i++)
@@ -94,7 +104,7 @@ void StoneRing::ChoiceState::draw(const CL_Rect &screenRect,CL_GraphicContext * 
             pLineFont = mpOptionFont;
         }
     
-        pLineFont->draw( 0,  i * (pLineFont->get_height() + pLineFont->get_height_offset()) + (screenRect.get_height() /2),
+        pLineFont->draw( mTextRect.left,  i * (pLineFont->get_height() + pLineFont->get_height_offset()) + mTextRect.top,
                          mChoices[i + mnOptionOffset], pGC);
     
     }
@@ -134,20 +144,20 @@ void StoneRing::ChoiceState::start()
     if(!mpChoiceOverlay)
         mpChoiceOverlay = new CL_Surface("Overlays/Choice/overlay", pResources );
 
-    mSpeakerRect.top = CL_Integer(resource + "header/top", pResources);
-    mSpeakerRect.left = CL_Integer(resource + "header/left", pResources);
-    mSpeakerRect.right = CL_Integer(resource + "header/right", pResources);
-    mSpeakerRect.bottom = CL_Integer(resource + "header/bottom", pResources);
+    mQuestionRect.top = CL_Integer(resource + "header/top", pResources);
+    mQuestionRect.left = CL_Integer(resource + "header/left", pResources);
+    mQuestionRect.right = CL_Integer(resource + "header/right", pResources);
+    mQuestionRect.bottom = CL_Integer(resource + "header/bottom", pResources);
 
     mTextRect.top = CL_Integer(resource + "text/top", pResources);
     mTextRect.left = CL_Integer(resource + "text/left", pResources);
     mTextRect.right = CL_Integer(resource + "text/right", pResources);
     mTextRect.bottom = CL_Integer(resource + "text/bottom", pResources);
 
-    mSpeakerBGColor.set_red (CL_Integer(resource + "header/bgcolor/r", pResources));
-    mSpeakerBGColor.set_green (CL_Integer(resource + "header/bgcolor/g", pResources));
-    mSpeakerBGColor.set_blue (CL_Integer(resource + "header/bgcolor/b", pResources));
-    mSpeakerBGColor.set_alpha (CL_Integer(resource + "header/bgcolor/a", pResources));
+    mQuestionBGColor.set_red (CL_Integer(resource + "header/bgcolor/r", pResources));
+    mQuestionBGColor.set_green (CL_Integer(resource + "header/bgcolor/g", pResources));
+    mQuestionBGColor.set_blue (CL_Integer(resource + "header/bgcolor/b", pResources));
+    mQuestionBGColor.set_alpha (CL_Integer(resource + "header/bgcolor/a", pResources));
 
     mTextBGColor.set_red (CL_Integer(resource + "text/bgcolor/r", pResources));
     mTextBGColor.set_green (CL_Integer(resource + "text/bgcolor/g", pResources));

@@ -29,9 +29,9 @@ namespace StoneRing
     private:
 
         std::string mText;
-        CL_Rect mSpeakerRect;
+        CL_Rect mQuestionRect;
         CL_Rect mTextRect;
-        CL_Color mSpeakerBGColor;
+        CL_Color mQuestionBGColor;
         CL_Color mTextBGColor;
         CL_Surface *mpChoiceOverlay;
         uint mX;
