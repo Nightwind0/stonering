@@ -1,0 +1,41 @@
+
+== Character Stats ==
+
+Exponential Stats: c*b^L + d
+Asymptotic Stats: 1 + s* pow(exp(r/s-1), L-1)
+
+Calculating b for Exponential stats: 
+b  = e^(ln(a)/c)
+
+Where a is the multiplier, and c is the number of levels to achieve that multiplication.
+So, to double every 10 levels, a = 2 (double) and c = 10. 
+
+b = e^(ln(2)/10)
+
+
+
+
+
+
+== Battle == 
+
+Basic calculation of hit chance:
+hit = your dex + your weapon's hit
+
+hit_chance = hit * ( 1 - enemy's evade)
+
+Experience calculation:
+Calculate individually. For each party member, you calculate a separate XP for each monster killed. 
+TNL() returns the amount of xp required for a particular level
+B = number of battles (of same level monsters) required to level. Say maybe 10. (Because most monsters will be less than same level).
+b is a rate, very similar to the rates used for character growth. When b = 1.07, then a monster 10 levels higher than you is worth
+double the XP, and 10 levels below your level is worth half, and so on.
+For each character C
+	TOTAL_XP = 0;
+	For each monster M
+		XP = ((TNL(C.L+1) - TNL(C.L)) /  B) * b ^ ( M.L - C.L)
+		TOTAL_XP += XP;
+	Next
+	print "Character C got TOTAL_XP experience"
+Next
+		
