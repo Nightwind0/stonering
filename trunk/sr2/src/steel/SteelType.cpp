@@ -4,7 +4,7 @@
 #include "SteelType.h"
 #include "SteelException.h"
 #include <cassert>
-
+#include <iomanip>
 
 SteelType::SteelType()
 {
@@ -666,6 +666,7 @@ std::string SteelType::strToInt(int i) const
 {
     std::ostringstream str;
 
+    str << std::setprecision(32);
     str << i;
 
     return str.str();
@@ -675,6 +676,7 @@ std::string SteelType::strToDouble(double d) const
 {
     std::ostringstream str;
 
+    str << std::setprecision(32);
     str << d;
 
     return str.str();

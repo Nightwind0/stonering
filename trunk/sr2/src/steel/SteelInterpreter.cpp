@@ -3,6 +3,7 @@
 #include "SteelParser.h"
 #include "SteelFunctor.h"
 #include "SteelException.h"
+#include <cmath>
 #include <ctime>
 #include <sstream>
 #include <iostream>
@@ -261,8 +262,6 @@ void SteelInterpreter::popScope()
 
 void SteelInterpreter::registerBifs()
 {
-//    addFunction( "push", new SteelFunctor2Arg<SteelInterpreter,const SteelArrayRef &,const SteelType&> ( this, &SteelInterpreter::push ) );
-//    addFunction( "pop", new SteelFunctor1Arg<SteelInterpreter,const SteelArrayRef &>(this, &SteelInterpreter::pop) );
     addFunction( "print", new SteelFunctor1Arg<SteelInterpreter,const std::string &>(this, &SteelInterpreter::print ) );
     addFunction( "println", new SteelFunctor1Arg<SteelInterpreter,const std::string &>(this,&SteelInterpreter::println ) );
     addFunction( "len", new SteelFunctor1Arg<SteelInterpreter,const SteelArray&>(this, &SteelInterpreter::len ) );
@@ -272,37 +271,28 @@ void SteelInterpreter::registerBifs()
     addFunction( "substr", new SteelFunctor3Arg<SteelInterpreter,const std::string&,int, int>(this,&SteelInterpreter::substr ) );
     addFunction( "strlen", new SteelFunctor1Arg<SteelInterpreter,const std::string&>(this,&SteelInterpreter::strlen));
     addFunction( "is_array", new SteelFunctor1Arg<SteelInterpreter,const SteelType&>(this,&SteelInterpreter::is_array));
+
+    // Math functions
+    addFunction("ceil", new SteelFunctor1Arg<SteelInterpreter,double>(this,&SteelInterpreter::ceil));
+    addFunction("abs", new SteelFunctor1Arg<SteelInterpreter,double>(this,&SteelInterpreter::abs));
+    addFunction("floor", new SteelFunctor1Arg<SteelInterpreter,double>(this,&SteelInterpreter::floor));
+    addFunction("exp", new SteelFunctor1Arg<SteelInterpreter,double>(this,&SteelInterpreter::exp));
+    addFunction("log", new SteelFunctor1Arg<SteelInterpreter,double>(this,&SteelInterpreter::log));
+    addFunction("log10", new SteelFunctor1Arg<SteelInterpreter,double>(this,&SteelInterpreter::log10));
+    addFunction("sqrt", new SteelFunctor1Arg<SteelInterpreter,double>(this,&SteelInterpreter::sqrt));
+    addFunction("acos", new SteelFunctor1Arg<SteelInterpreter,double>(this,&SteelInterpreter::acos));
+    addFunction("asin", new SteelFunctor1Arg<SteelInterpreter,double>(this,&SteelInterpreter::asin));
+    addFunction("atan", new SteelFunctor1Arg<SteelInterpreter,double>(this,&SteelInterpreter::atan));
+    addFunction("atan2", new SteelFunctor2Arg<SteelInterpreter,double,double>(this,&SteelInterpreter::atan2));
+    addFunction("cos", new SteelFunctor1Arg<SteelInterpreter,double>(this,&SteelInterpreter::cos));
+    addFunction("sin", new SteelFunctor1Arg<SteelInterpreter,double>(this,&SteelInterpreter::sin));
+    addFunction("tan", new SteelFunctor1Arg<SteelInterpreter,double>(this,&SteelInterpreter::tan));
+    addFunction("cosh", new SteelFunctor1Arg<SteelInterpreter,double>(this,&SteelInterpreter::cosh));
+    addFunction("sinh", new SteelFunctor1Arg<SteelInterpreter,double>(this,&SteelInterpreter::sinh));
+    addFunction("tanh", new SteelFunctor1Arg<SteelInterpreter,double>(this,&SteelInterpreter::tanh));
+    addFunction("round", new SteelFunctor1Arg<SteelInterpreter,double>(this,&SteelInterpreter::round));
 }
 
-/*
-  SteelType SteelInterpreter::push(const SteelArrayRef &ref, const SteelType &value)
-  {
-  SteelArray *pArray = lookup_internal(ref);
-
-  if(pArray == NULL) throw UnknownIdentifier();
-
-  pArray->push_front ( value );
-
-  return pArray->front();
-                        
-  }
-*/
-
-/*
-
-SteelType SteelInterpreter::pop(const SteelArrayRef &ref)
-{
-SteelArray *pArray = lookup_internal(ref);
-
-
-if(pArray == NULL) throw UnknownIdentifier();
-
-SteelType val = pArray->front();
-pArray->pop_front();
-    
-return val;
-}
-*/
 
 SteelType SteelInterpreter::print(const std::string &str)
 {
@@ -383,4 +373,152 @@ SteelType SteelInterpreter::is_array(const SteelType &array)
     return var;
 }
 
+///////////////////////////////////////////////////////////////
+//
+//  Mathematical built-ins
+//
+///////////////////////////////////////////////////////////////
 
+SteelType SteelInterpreter::ceil (double f)
+{
+    SteelType var;
+    var.set(std::ceil(f));
+
+    return var;
+}
+
+SteelType SteelInterpreter::abs  (double f)
+{
+    SteelType var;
+    var.set(std::abs(f));
+
+    return var;
+}
+
+SteelType SteelInterpreter::floor(double f)
+{
+    SteelType var;
+    var.set(std::floor(f));
+
+    return var;
+}
+
+SteelType SteelInterpreter::exp  (double f)
+{
+    SteelType var;
+    var.set(std::exp(f));
+
+    return var;
+}
+
+SteelType SteelInterpreter::log  (double f) // Natural lo
+{
+    SteelType var;
+    var.set(std::log(f));
+
+    return var;
+}
+
+SteelType SteelInterpreter::log10(double f)
+{
+    SteelType var;
+    var.set(std::log10(f));
+
+    return var;    
+}
+
+SteelType SteelInterpreter::sqrt (double f)
+{
+    SteelType var;
+    var.set(std::sqrt(f));
+
+    return var;
+}
+
+SteelType SteelInterpreter::acos (double f)
+{
+    SteelType var;
+    var.set(std::acos(f));
+
+    return var;   
+}
+
+SteelType SteelInterpreter::asin (double f)
+{
+    SteelType var;
+    var.set(std::asin(f));
+
+    return var;    
+}
+
+SteelType SteelInterpreter::atan (double f)
+{
+    SteelType var;
+    var.set(std::atan(f));
+
+    return var;    
+}
+
+SteelType SteelInterpreter::atan2(double f, double g)
+{
+    SteelType var;
+    var.set(std::atan2(f,g));
+
+    return var;    
+}
+
+SteelType SteelInterpreter::cos  (double f)
+{
+    SteelType var;
+    var.set(std::cos(f));
+
+    return var;    
+}
+
+SteelType SteelInterpreter::sin  (double f)
+{
+    SteelType var;
+    var.set(std::sin(f));
+
+    return var;    
+}
+
+SteelType SteelInterpreter::tan  (double f)
+{
+    SteelType var;
+    var.set(std::tan(f));
+
+    return var;
+}
+
+SteelType SteelInterpreter::cosh (double f)
+{
+    SteelType var;
+    var.set(std::cosh(f));
+
+    return var;    
+}
+
+SteelType SteelInterpreter::sinh (double f)
+{
+    SteelType var;
+    var.set(std::sinh(f));
+
+    return var;    
+}
+
+SteelType SteelInterpreter::tanh (double f)
+{
+    SteelType var;
+    var.set(std::tanh(f));
+
+    return var;    
+}
+
+SteelType SteelInterpreter::round (double f)
+{
+    SteelType var;
+    var.set(::round(f));
+
+    return var;    
+}
