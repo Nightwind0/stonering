@@ -65,23 +65,35 @@ private:
 
 private:
     // Bifs
-    // Push on the FRONT of the array
-//    SteelType push(const SteelArrayRef &ref, const SteelType &value);
-    // Pop the front of the array
-//    SteelType pop(const SteelArrayRef &ref);
-    // Pop the back of the array
-//    SteelType push(const SteelArray &ref, const SteelType &rhs);
-    // Push on the BACK of the array
-    SteelType print(const std::string &str);
-    SteelType println(const std::string &str);
-    SteelType len(const SteelArray &ref);
-//    SteelType copy(const SteelArray &lhs, const SteelArrayRef &rhs);
-    SteelType real(const SteelType &str);
-    SteelType integer(const SteelType &str);
-    SteelType boolean(const SteelType &str);
-    SteelType substr(const std::string &str, int start, int len);
-    SteelType strlen(const std::string &str);
+    SteelType print   (const std::string &str);
+    SteelType println (const std::string &str);
+    SteelType len     (const SteelArray &ref);
+    SteelType real    (const SteelType &str);
+    SteelType integer (const SteelType &str);
+    SteelType boolean (const SteelType &str);
+    SteelType substr  (const std::string &str, int start, int len);
+    SteelType strlen  (const std::string &str);
     SteelType is_array(const SteelType &);
+
+    // Math built-ins
+    SteelType ceil (double f);
+    SteelType abs  (double f);
+    SteelType floor(double f);
+    SteelType exp  (double f);
+    SteelType log  (double f); // Natural log
+    SteelType log10(double f);
+    SteelType sqrt (double f);
+    SteelType acos (double f);
+    SteelType asin (double f);
+    SteelType atan (double f);
+    SteelType atan2(double f, double g);
+    SteelType cos  (double f);
+    SteelType sin  (double f);
+    SteelType tan  (double f);
+    SteelType cosh (double f);
+    SteelType sinh (double f);
+    SteelType tanh (double f);
+    SteelType round(double f);
 };
 
 

@@ -1,4 +1,6 @@
 
+Mascots - with different numbers (types?) of idol slots. 
+
 Sacred Books - a main sacred book thats part of the story. Then, one that's an optional sidequest but prooves to be an awesome power.
 
 Lailoken - Wizard / Madman
@@ -28,8 +30,12 @@ Loaded Shellelagh
 
 
 Vinegaroon - type of giant scorpion
+
+
+FORMULAE:
+
 EXPONENTIAL STATS-
-c*b^L
+c*b^L+d
 L = Level
 
 C is a constant. Raise this or lower it for classes. For example, if the
@@ -39,7 +45,9 @@ will want the warriors C to be double that of the mages.
 
 B is the base and it determines growth rate. 
 If B is set to 2, then it will double every level. If you set it to
-1.07 then its more like double every 10 levels.
+1.07 then its more like double every 10 levels or so.
+
+d is just a booster for beginning levels. It can be zero to give no boost.
 
 Note: In this way, you can't just apply attribute modifiers and forget them.
 You have to keep a running tally of multipliers and adds to every stat,
@@ -55,7 +63,12 @@ For STR and the like a single digit number times a 1.05 or so looks good.
 4*1.06^L for a mage's STR maybe, and 10*1.06^L for war.
 
 
-WE CAN GET RID OF startingStat!!!! 
+
+
+
+
+
+
 
 
 addTemporaryModifier --
