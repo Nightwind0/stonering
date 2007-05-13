@@ -9,6 +9,31 @@
 #include <iostream>
 #include <string>
 
+ParameterListItem::ParameterListItem(const std::string &name, double d)
+{
+    m_name = name;
+    m_value.set(d);
+}
+
+ParameterListItem::ParameterListItem(const std::string &name, int i)
+{
+    m_name = name;
+    m_value.set(i);
+}
+
+ParameterListItem::ParameterListItem(const std::string &name, bool b)
+{
+    m_name = name;
+    m_value.set(b);
+}
+
+ParameterListItem::ParameterListItem(const std::string &name, std::string &s)
+{
+    m_name = name;
+    m_value.set(s);
+}
+
+
 SteelInterpreter::SteelInterpreter()
 {
     registerBifs();
@@ -73,6 +98,27 @@ SteelType SteelInterpreter::runAst(AstScript *pScript)
 {
     assert ( NULL != pScript );
     pScript->executeScript(this);
+
+    return getReturn();
+}
+
+// This method allows you to set up some variables at a global scope
+// for the script to use.
+SteelType SteelInterpreter::runAst(AstScript *pScript, const ParameterList &params)
+{
+    assert ( NULL != pScript );
+
+    pushScope();
+    for(ParameterList::const_iterator it = params.begin(); it != params.end();
+        it++)
+    {
+        declare( it->getName() );
+        SteelType * pVar  = lookup_internal(it->getName());
+        assign(pVar,it->getValue());
+    }
+
+    pScript->executeScript(this);
+    popScope();
 
     return getReturn();
 }

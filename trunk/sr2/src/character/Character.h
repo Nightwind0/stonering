@@ -20,12 +20,13 @@ namespace StoneRing{
         CA_MP,
         CA_MPMAX,
         CA_STR,              // Part of determining dmg of physical attack. 
-        CA_DEX,              // Chances of a hit connecting
-        CA_EVD,              // Chances of evading an attack
+        CA_DEF,              // Physical defense
+        CA_DEX,              // Chances of a hit connecting (0-1)
+        CA_EVD,              // Chances of evading an attack(0-1)
         CA_MAG,              // Magic power
         CA_RST,              // Magic resistance
         CA_LCK,              // Similar to initiative. Also helps in other aspects of the game...
-        CA_JOY,              // Increases experience gained
+        CA_JOY,              // Increases experience gained (Multiplier)
         CA_DRAW_ILL,
         CA_DRAW_STONE,
         CA_DRAW_BERSERK,

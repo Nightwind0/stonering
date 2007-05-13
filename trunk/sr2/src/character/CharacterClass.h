@@ -10,9 +10,10 @@ namespace StoneRing
 
     class WeaponTypeRef;
     class ArmorTypeRef;
-    class StatIncrease;
+    class StatScript;
     class SkillRef;
     class BattleMenu;
+    class ScriptElement;
 
     class CharacterClass : public Element
     {
@@ -27,8 +28,7 @@ namespace StoneRing
         std::list<ArmorTypeRef*>::const_iterator getArmorTypeRefsBegin() const;
         std::list<ArmorTypeRef*>::const_iterator getArmorTypeRefsEnd() const;
 
-        std::list<StatIncrease*>::const_iterator getStatIncreasesBegin() const;
-        std::list<StatIncrease*>::const_iterator getStatIncreasesEnd() const;
+        double getStat(eCharacterAttribute attr, int level);
 
         std::list<SkillRef*>::const_iterator getSkillRefsBegin() const;
         std::list<SkillRef*>::const_iterator getSkillRefsEnd() const;
@@ -47,27 +47,25 @@ namespace StoneRing
         eGender meGender;
         std::list<WeaponTypeRef*> mWeaponTypes;
         std::list<ArmorTypeRef*> mArmorTypes;
-        std::list<StatIncrease*> mStatIncreases;
+        typedef std::map<eCharacterAttribute,StatScript*> StatMap;
+        StatMap mStatScripts;
         std::list<SkillRef*> mSkillRefs;
         BattleMenu *mpMenu;
     };
 
-    class StatIncrease : public Element
+    class StatScript : public Element
     {
     public:
-        StatIncrease( );
-        ~StatIncrease();
-        virtual eElement whichElement() const{ return ESTATINCREASE; }
-        CL_DomElement createDomElement( CL_DomDocument &doc ) const;
-
+        StatScript();
+        ~StatScript();
+        virtual eElement whichElement() const{ return ESTATSCRIPT; }
         eCharacterAttribute getCharacterStat() const;
-
-        float getMultiplier() const;    
-        float getBase() const;
+        double getStat(int level);
     private:
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-        float mfMultiplier;
-        float mfBase;
+        virtual bool handleElement(Element::eElement, Element * pElement);
+        virtual void loadFinished();
+        ScriptElement *mpScript;
         eCharacterAttribute meStat;
     };
 };

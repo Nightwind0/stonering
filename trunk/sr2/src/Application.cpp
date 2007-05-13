@@ -233,6 +233,11 @@ SteelType Application::giveGold(int amount)
     return SteelType();
 }
 
+SteelType Application::useItem()
+{
+    return SteelType();
+}
+
 
 IApplication * IApplication::getInstance()
 {
@@ -337,6 +342,10 @@ SteelType Application::runScript(AstScript * pScript)
     // Get caught by a higher layer
     return mInterpreter.runAst ( pScript );
 
+}
+SteelType Application::runScript(AstScript *pScript, const ParameterList &params)
+{
+    return mInterpreter.runAst ( pScript, params );
 }
 
 void Application::registerSteelFunctions()

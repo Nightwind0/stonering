@@ -350,9 +350,9 @@ Element * ElementFactory::createMappableObjects() const
 }
 
 
-Element * ElementFactory::createStatIncrease() const
+Element * ElementFactory::createStatScript() const
 {
-    return new StatIncrease();
+    return new StatScript();
 }
 
 
@@ -456,7 +456,7 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["spell"] = &ElementFactory::createSpell;
     mCreateMethods["spellRef"] = &ElementFactory::createSpellRef;
     mCreateMethods["spriteRef"] = &ElementFactory::createSpriteRef;
-    mCreateMethods["statIncrease"] = &ElementFactory::createStatIncrease;
+    mCreateMethods["statScript"] = &ElementFactory::createStatScript;
     mCreateMethods["statusEffect"] = &ElementFactory::createStatusEffect;
     mCreateMethods["statusEffectModifier"] = &ElementFactory::createStatusEffectModifier;
     mCreateMethods["systemItem"] = &ElementFactory::createSystemItem;

@@ -3,10 +3,13 @@
 
 #include "sr_defines.h"
 #include "Element.h"
+#include "SteelType.h"
+#include "SteelInterpreter.h"
 
 class AstScript;
 
 namespace StoneRing{
+
 
     class ScriptElement : public Element
     {
@@ -16,7 +19,8 @@ namespace StoneRing{
         virtual eElement whichElement() const { return mbIsCondition?ECONDITIONSCRIPT:ESCRIPT; }
 
         bool evaluateCondition() const;
-        void executeScript() const ;
+        SteelType executeScript() const ;
+        SteelType executeScript(const ParameterList &params);
 
         bool isConditionScript() const { return mbIsCondition; }
 

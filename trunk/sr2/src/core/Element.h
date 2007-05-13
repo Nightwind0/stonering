@@ -73,7 +73,7 @@ namespace StoneRing
             ESPELL,
             ESPELLREF,
             ESPRITEREF,
-            ESTATINCREASE,
+            ESTATSCRIPT,
             ESTATUSEFFECT,
             ESTATUSEFFECTMODIFIER,
             ESYSTEMITEM,

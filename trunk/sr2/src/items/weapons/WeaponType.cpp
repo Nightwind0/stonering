@@ -19,7 +19,7 @@ void WeaponType::loadAttributes(CL_DomNamedNodeMap * pAttributes)
     mName = getRequiredString("name",pAttributes);
     mnBasePrice = getRequiredInt("basePrice",pAttributes);
     mnBaseAttack = getRequiredInt("baseAttack",pAttributes);
-    mfBaseHit = getRequiredFloat("baseHit",pAttributes);
+    mfBaseHit = getRequiredFloat("hitAdd",pAttributes);
     mfBaseCritical = getImpliedFloat("baseCritical",pAttributes,0.05);
     mbRanged = getImpliedBool("ranged",pAttributes,false);
     mbTwoHanded  = getImpliedBool("twoHanded",pAttributes,false);

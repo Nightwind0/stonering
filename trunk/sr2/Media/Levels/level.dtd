@@ -78,9 +78,9 @@
 <!ELEMENT onRemove (script)>
 
 <!-- Character Class DTD -->
-<!ELEMENT characterClass (battleMenu,weaponTypeRef*, armorTypeRef*,startingStat*,statIncrease*,skillRef*)>
+<!ELEMENT characterClass (battleMenu,weaponTypeRef*, armorTypeRef*,statScript*,skillRef*)>
 <!ELEMENT characterClasses (characterClass+)>
-<!ELEMENT statIncrease EMPTY>
+<!ELEMENT statScript (script)>
 <!ELEMENT skill (conditionScript?, prereqSkillRef*,spellRef?, onInvoke?, onRemove?)>
 <!ELEMENT skillList (skill)+>
 <!ELEMENT prereqSkillRef EMPTY>
@@ -156,7 +156,7 @@
 <!ATTLIST weaponType name CDATA #REQUIRED>
 <!ATTLIST weaponType basePrice CDATA #REQUIRED>
 <!ATTLIST weaponType baseAttack CDATA #REQUIRED> 
-<!ATTLIST weaponType baseHit CDATA #REQUIRED> <!-- In percent 0-1 float-->
+<!ATTLIST weaponType hitAdd CDATA #REQUIRED> <!-- In percent 0-1 float-->
 <!ATTLIST weaponType baseCritical CDATA #IMPLIED> <!-- In percent. Default = "0.05" -->
 <!ATTLIST weaponType ranged (true|false) #IMPLIED>
 <!ATTLIST weaponType twoHanded (true|false) #IMPLIED>
@@ -208,7 +208,6 @@
 <!-- Note that, while removeStatus does obey the 'chance' parameter, it ignores any status effect resistances of the target. -->
 <!-- Therefore, a removeStatus for poison with 80% really does remove poison 80% of the time. Whereas, when inflicting the status (con'td) -->
 <!-- You have the chance as well as the target's resistances to account for -->
-<!ATTLIST doStatusEffect removeStatus (true|false) #IMPLIED> <!-- Default is false. In order to have a spell/skill that removes a status, set this to true -->
 <!ATTLIST magicResistance resist CDATA #REQUIRED>
 <!ATTLIST magicResistance type (fire|water|earth|wind|holy|dark|elemental|all) #REQUIRED>
 
@@ -219,11 +218,7 @@
 
 <!ATTLIST characterClass name CDATA #REQUIRED>
 <!ATTLIST characterClass gender (male|female|either) #IMPLIED> <!-- Defaults to either -->
-<!ATTLIST statIncrease stat (hp_max|mp_max|str|dex|evd|mag|rst|lck|joy) #REQUIRED>
-<!ATTLIST statIncrease multiplier CDATA #REQUIRED> <!-- c * b^L -- this is c -->
-<!ATTLIST statIncrease base CDATA #REQUIRED> <!-- c * b^L this is b. Ought to be 1.07 to double every 10 levels -->
-<!ATTLIST startingStat stat (hp_max|mp_max|str|dex|evd|mag|rst|lck|joy) #REQUIRED>
-<!ATTLIST startingStat value CDATA #REQUIRED> <!-- Numeric integer -->
+<!ATTLIST statScript stat CDATA #REQUIRED>
 <!ATTLIST skill name CDATA #REQUIRED>
 <!ATTLIST skill sp CDATA #REQUIRED> <!-- Skill points to earn skill -->
 <!ATTLIST skill bp CDATA #REQUIRED> <!-- Percentage of 'Break' to use skill --> 
