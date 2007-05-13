@@ -72,9 +72,12 @@ bool CharacterClass::handleElement(eElement element, Element * pElement)
     case EARMORTYPEREF:
         mArmorTypes.push_back ( dynamic_cast<ArmorTypeRef*>(pElement) );
         break;
-    case ESTATINCREASE:
-        mStatIncreases.push_back ( dynamic_cast<StatIncrease*>(pElement) );
-        break;
+    case ESTATSCRIPT:
+        {
+            StatScript *pScript = dynamic_cast<StatScript*>(pElement);
+            mStatScripts[pScript->getCharacterStat()] = pScript;
+            break;
+        }
     case ESKILLREF:
         mSkillRefs.push_back( dynamic_cast<SkillRef*>(pElement));
         break;
@@ -87,13 +90,30 @@ bool CharacterClass::handleElement(eElement element, Element * pElement)
     return true;
 }
 
+
+double CharacterClass::getStat(eCharacterAttribute attr, int level)
+{
+    StatMap::iterator it = mStatScripts.find(attr);
+    if(it == mStatScripts.end())
+        throw CL_Error("Missing stat on character class.");
+
+    StatScript *pScript = it->second;
+    return pScript->getStat(level);
+}
+
 CharacterClass::CharacterClass()
 :mpMenu(NULL)
 {
     std::for_each(mWeaponTypes.begin(),mWeaponTypes.end(),del_fun<WeaponTypeRef>());
     std::for_each(mArmorTypes.begin(),mArmorTypes.end(),del_fun<ArmorTypeRef>());
-    std::for_each(mStatIncreases.begin(),mStatIncreases.end(),del_fun<StatIncrease>());
     std::for_each(mSkillRefs.begin(),mSkillRefs.end(),del_fun<SkillRef>());
+
+    for(std::map<eCharacterAttribute,StatScript*>::iterator it = mStatScripts.begin();
+        it != mStatScripts.end();
+        it++)
+    {
+        delete it->second;
+    }
 }
 
 CharacterClass::~CharacterClass()
@@ -121,15 +141,6 @@ std::list<ArmorTypeRef*>::const_iterator CharacterClass::getArmorTypeRefsEnd() c
     return mArmorTypes.end();
 }
 
-std::list<StatIncrease*>::const_iterator CharacterClass::getStatIncreasesBegin() const
-{
-    return mStatIncreases.begin();
-}
-
-std::list<StatIncrease*>::const_iterator CharacterClass::getStatIncreasesEnd() const
-{
-    return mStatIncreases.end();
-}
 
 std::list<SkillRef*>::const_iterator CharacterClass::getSkillRefsBegin() const
 {
@@ -156,44 +167,51 @@ CharacterClass::getGender() const
         
 
 
-void StatIncrease::loadAttributes(CL_DomNamedNodeMap *pAttributes)
+void StatScript::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
     std::string stat = getRequiredString("stat",pAttributes);
-    
     meStat = CharAttributeFromString ( stat );
-
-    mfMultiplier = getRequiredFloat("multiplier",pAttributes);
-    mfBase = getRequiredFloat("base",pAttributes );
 }
 
+bool StatScript::handleElement(Element::eElement element, StoneRing::Element *pElement)
+{
+    if(element == ESCRIPT)
+    {
+        mpScript = dynamic_cast<ScriptElement*>(pElement);
+        return true;
+    }
 
-StatIncrease::StatIncrease( )
+    return false;
+}
+
+void StatScript::loadFinished()
+{
+    if(mpScript == NULL) throw CL_Error("No script defined for scriptElement");
+}
+
+StatScript::StatScript( )
 {
 
 }
 
-StatIncrease::~StatIncrease()
+StatScript::~StatScript()
 {
 }
 
 eCharacterAttribute 
-StatIncrease::getCharacterStat() const
+StatScript::getCharacterStat() const
 {
     return meStat;
 }
 
-
-float StatIncrease::getMultiplier() const
+double StatScript::getStat(int level)
 {
-    return mfMultiplier;
+    // Magic conversion to double
+    ParameterList params;
+    params.push_back ( ParameterListItem("$_CL",level) );
+
+    return mpScript->executeScript(params);
 }
-
-float StatIncrease::getBase() const
-{
-    return mfBase;
-}
-
-
 
 
 

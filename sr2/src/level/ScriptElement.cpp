@@ -24,15 +24,25 @@ bool ScriptElement::evaluateCondition() const
     return (bool) pApp->runScript ( mpScript );
 }
 
-void ScriptElement::executeScript() const
+SteelType ScriptElement::executeScript() const
 {
    if( NULL != mpScript )
    {
        IApplication *pApp = IApplication::getInstance();
-       pApp->runScript ( mpScript );
+       return pApp->runScript ( mpScript );
    }
+   else return SteelType();
 }
 
+SteelType ScriptElement::executeScript(const ParameterList &params)
+{
+    if ( NULL != mpScript)
+    {
+        IApplication *pApp = IApplication::getInstance();
+        return pApp->runScript ( mpScript, params );
+    }
+    else return SteelType();
+}
 
 void ScriptElement::loadAttributes(CL_DomNamedNodeMap *pAttr)
 {

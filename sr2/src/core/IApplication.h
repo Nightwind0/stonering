@@ -8,7 +8,7 @@
 #include "IParty.h"
 #include "AbilityFactory.h"
 #include "AbilityManager.h"
-
+#include "SteelInterpreter.h"
 
 
 class AstScript;
@@ -44,6 +44,7 @@ namespace StoneRing
         virtual void requestRedraw(const State *pState)=0;
         virtual AstScript * loadScript(const std::string &name, const std::string &script)=0;
         virtual SteelType runScript(AstScript * pScript)=0;
+        virtual SteelType runScript(AstScript *pScript, const ParameterList &params)=0; 
 
     };
 

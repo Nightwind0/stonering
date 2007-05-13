@@ -78,25 +78,20 @@ void StoneRing::ChoiceState::draw(const CL_Rect &screenRect,CL_GraphicContext * 
 
     CL_Font * pLineFont = NULL;
 
-    uint totalHeight = mpCurrentOptionFont->get_height();
-    uint optionsPerPage = 1;
-
-    while(totalHeight < mTextRect.get_height())
-    {
-        totalHeight += mpOptionFont->get_height();
-        optionsPerPage++;
-    }
+    uint optionsPerPage = max(1, mTextRect.get_height() / mpOptionFont->get_height());
 
     optionsPerPage = min(optionsPerPage,mChoices.size());
 
     // Draw the options
     for(uint i=0;i< optionsPerPage; i++)
     {
+        int indent = 0;
         // Don't paint more options than there are
         if(i + mnOptionOffset >= mChoices.size()) break;
     
         if(i + mnOptionOffset == mnCurrentOption)
         {
+            indent = 10;
             pLineFont = mpCurrentOptionFont;
         }
         else
@@ -104,7 +99,7 @@ void StoneRing::ChoiceState::draw(const CL_Rect &screenRect,CL_GraphicContext * 
             pLineFont = mpOptionFont;
         }
     
-        pLineFont->draw( mTextRect.left,  i * (pLineFont->get_height() + pLineFont->get_height_offset()) + mTextRect.top,
+        pLineFont->draw( mTextRect.left + indent,  i * (pLineFont->get_height() + pLineFont->get_height_offset()) + mTextRect.top,
                          mChoices[i + mnOptionOffset], pGC);
     
     }

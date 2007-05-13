@@ -96,6 +96,12 @@
 	</section>
 	<section name = "Choice">
 		<surface name="overlay" file="Images/Overlays/choice_overlay.png"/>
+		<sprite name = "cursor" hint = "alpha">
+			<image file="Sprites/valyn.png">
+				<grid pos="0,0" size="32,64" array="2,4">
+				</grid>
+			</image>
+		</sprite>
 		<integer name="x" value="0"/>
 		<integer name="y" value="200"/>
 		<section name="header">

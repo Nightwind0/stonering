@@ -91,6 +91,7 @@ private:
     friend bool operator==(const SteelType &lhs, const SteelType &rhs);
 };
 
+
 typedef std::vector<SteelType> SteelArray;
 
 bool operator==(const SteelType &lhs, const SteelType &rhs);

@@ -46,6 +46,7 @@ namespace StoneRing
 
         virtual AstScript * loadScript(const std::string &name, const std::string &script);
         virtual SteelType runScript(AstScript * pScript);
+        virtual SteelType runScript(AstScript *pScript, const ParameterList &params); 
     protected:
 
 
@@ -68,6 +69,7 @@ namespace StoneRing
         SteelType didEvent(const std::string &event);
         SteelType doEvent(const std::string &event, bool bRemember);
         SteelType takeNamedItem(const std::string &item, uint count);
+        SteelType useItem();
         // You can also take
         SteelType giveGold(int amount);
         // SteelType giveGeneratedWeapon(const std::string &wepclass, const std::string &weptype);

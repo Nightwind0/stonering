@@ -12,6 +12,7 @@ const char *statXMLLookup[] =
     "mp",
     "mp_max",
     "str",
+    "def",
     "dex",
     "evd",
     "mag",

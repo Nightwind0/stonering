@@ -63,7 +63,7 @@ namespace StoneRing
         virtual Element * createSpell() const;
         virtual Element * createSpellRef()const; 
         virtual Element * createSpriteRef()const;
-        virtual Element * createStatIncrease() const;
+        virtual Element * createStatScript() const;
         virtual Element * createStatusEffect() const;
         virtual Element * createStatusEffectModifier() const;
         virtual Element * createSystemItem()const; 

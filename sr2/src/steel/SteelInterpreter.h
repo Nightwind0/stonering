@@ -13,6 +13,24 @@ class AstScript;
 class AstStatementList; 
 class AstParamDefinitionList;
 
+
+class ParameterListItem
+{
+public:
+    ParameterListItem(const std::string &name, double d);
+    ParameterListItem(const std::string &name, int i);
+    ParameterListItem(const std::string &name, bool b);
+    ParameterListItem(const std::string &name, std::string &s);
+
+    std::string getName() const { return m_name; }
+    SteelType getValue() const { return m_value; }
+private:
+    std::string m_name;
+    SteelType m_value;
+};
+
+typedef std::vector<ParameterListItem> ParameterList;
+
 class SteelInterpreter
 {
 public:
@@ -30,6 +48,9 @@ public:
 
     // After using prebuildAst, you can later run it using runAst
     SteelType runAst(AstScript *pAst );
+    // This allows you to supply some defined global level variables to your 
+    // script.
+    SteelType runAst(AstScript *pAst, const ParameterList &params);
     SteelType run(const std::string &name,const std::string &script);
 
     SteelType lookup(const std::string &name);
