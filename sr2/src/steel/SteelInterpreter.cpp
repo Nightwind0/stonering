@@ -3,6 +3,7 @@
 #include "SteelParser.h"
 #include "SteelFunctor.h"
 #include "SteelException.h"
+#include <math.h>
 #include <cmath>
 #include <ctime>
 #include <sstream>
@@ -564,7 +565,7 @@ SteelType SteelInterpreter::tanh (double f)
 SteelType SteelInterpreter::round (double f)
 {
     SteelType var;
-    var.set(::round(f));
+    var.set(static_cast<double>(round(f)));
 
     return var;    
 }
