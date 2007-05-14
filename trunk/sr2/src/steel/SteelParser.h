@@ -33,6 +33,7 @@ public:
             DECREMENT,
             ELSE,
             EQ,
+            FINAL,
             FLOAT,
             FOR,
             FUNCTION,
@@ -115,7 +116,7 @@ public:
     SteelScanner *m_scanner;
     const char *m_pBuffer;
 
-#line 119 "SteelParser.h"
+#line 120 "SteelParser.h"
 
 private:
 
@@ -311,6 +312,8 @@ private:
     AstBase* ReductionRuleHandler0070 ();
     AstBase* ReductionRuleHandler0071 ();
     AstBase* ReductionRuleHandler0072 ();
+    AstBase* ReductionRuleHandler0073 ();
+    AstBase* ReductionRuleHandler0074 ();
 
 }; // end of class SteelParser
 
@@ -321,6 +324,4 @@ std::ostream &operator << (std::ostream &stream, SteelParser::Token::Type token_
 
 	#endif // STEEL_PARSER_H
 
-#line 325 "SteelParser.h"
-
-
+#line 328 "SteelParser.h"

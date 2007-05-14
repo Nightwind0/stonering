@@ -334,6 +334,12 @@ AstBase **token
 		return SteelParser::Token::FUNCTION;
 	}
 |
+	(final)
+	%language.cpp{
+		*token = NULL;
+		return SteelParser::Token::FINAL;
+	}
+|
 	(var)
 	 %language.cpp{
 	 	*token = NULL;
