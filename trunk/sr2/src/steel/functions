@@ -25,7 +25,12 @@ function array(var @stuff)
 	return $len;	
 }
 
-function dooda(var @stuff, var $b)
+final function dooda(var @stuff, var $b)
 {
 	return $b + 2;
 }
+
+
+
+
+foo();
