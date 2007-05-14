@@ -37,7 +37,7 @@ public:
     SteelInterpreter();
     virtual ~SteelInterpreter();
 
-    void addFunction(const std::string &name, SteelFunctor *pFunc);
+    void addFunction(const std::string &name, SteelFunctor *pFunc, bool final = false);
     SteelType call(const std::string &name, const std::vector<SteelType> &pList);
 
     // This allows you to pre-parse a script and keep a pointer to it
@@ -66,7 +66,8 @@ public:
     void popScope();
     void registerFunction(const std::string &name, 
                           AstParamDefinitionList *pParams, 
-                          AstStatementList *pStatements);
+                          AstStatementList *pStatements,
+                          bool final = false);
     void setReturn(const SteelType &var);
     SteelType getReturn() const;
 

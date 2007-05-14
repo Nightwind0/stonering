@@ -883,6 +883,7 @@ bool Level::handleElement(eElement element, Element * pElement)
         {
             mTileMap[x].resize ( mLevelHeight );
         }
+        mpHeader->executeScript();
         break;
     case ETILES:
         {
@@ -923,6 +924,7 @@ void Level::loadFinished()
 
     mbMarkedForDeath = false;
     mpPlayer = NULL;
+
 }
 
 

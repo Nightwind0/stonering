@@ -1385,8 +1385,9 @@ AstFunctionDefinition::AstFunctionDefinition(unsigned int line,
                                              const std::string &script,
                                              AstFuncIdentifier *pId,
                                              AstParamDefinitionList *pParams,
-                                             AstStatementList * pStmts)
-    :AstStatement(line,script),m_pId(pId),m_pParams(pParams),m_pStatements(pStmts)
+                                             AstStatementList * pStmts,
+                                             bool final)
+    :AstStatement(line,script),m_pId(pId),m_pParams(pParams),m_pStatements(pStmts),mbFinal(final)
 {
     
 }
@@ -1400,7 +1401,7 @@ AstFunctionDefinition::~AstFunctionDefinition()
 AstStatement::eStopType AstFunctionDefinition::execute(SteelInterpreter *pInterpreter)
 {
     try{
-        pInterpreter->registerFunction( m_pId->getValue(), m_pParams , m_pStatements );
+        pInterpreter->registerFunction( m_pId->getValue(), m_pParams , m_pStatements, mbFinal );
     }
     catch(AlreadyDefined)
     {
