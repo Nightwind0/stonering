@@ -643,7 +643,8 @@ public:
               const std::string &script,
               AstFuncIdentifier *pId,
               AstParamDefinitionList *pParams,
-              AstStatementList* pStmts);
+              AstStatementList* pStmts,
+              bool final = false);
     virtual ~AstFunctionDefinition();
 
     eStopType execute(SteelInterpreter * pInterpreter);
@@ -654,6 +655,7 @@ private:
     AstFuncIdentifier * m_pId;
     AstParamDefinitionList *m_pParams;
     AstStatementList * m_pStatements;
+    bool mbFinal;
 };
 
 

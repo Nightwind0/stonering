@@ -57,11 +57,12 @@ SteelInterpreter::~SteelInterpreter()
 
 
 void SteelInterpreter::addFunction(const std::string &name,
-                                   SteelFunctor *pFunc)
+                                   SteelFunctor *pFunc,
+                                   bool final)
 {
     std::map<std::string,SteelFunctor*>::iterator it = m_functions.find ( name );
 
-    if( it != m_functions.end() ) throw AlreadyDefined();
+    if( final && it != m_functions.end() ) throw AlreadyDefined();
 
     m_functions[name] = pFunc;
 }
@@ -273,9 +274,10 @@ void SteelInterpreter::assign(SteelType *pVar, const SteelType &value)
 
 void SteelInterpreter::registerFunction(const std::string &name, 
                                         AstParamDefinitionList *pParams, 
-                                        AstStatementList *pStatements)
+                                        AstStatementList *pStatements,
+                                        bool final)
 {
-    addFunction(name,new SteelUserFunction( pParams, pStatements ));
+    addFunction(name,new SteelUserFunction( pParams, pStatements ), final);
 }
 
 SteelType * SteelInterpreter::lookup_internal(const std::string &name)

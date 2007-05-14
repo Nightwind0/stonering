@@ -1,5 +1,12 @@
 <level name="TestLevel">
-	<levelHeader music="Main" width="30" height="24" allowsRunning="true"/>
+	<levelHeader music="Main" width="30" height="24" allowsRunning="true">
+		<script id="LevelInit">
+		function exp_base(var $multiplier, var $levels)
+		{
+			return exp(log($multiplier)/$levels);
+		}
+		</script>
+	</levelHeader>
 	<tiles>
 		<tile xpos="0" ypos="0">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
