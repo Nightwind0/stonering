@@ -19,6 +19,7 @@ public:
     virtual ~SteelFunctor();
     virtual bool isUserFunction() const { return false; }
     virtual SteelType Call(SteelInterpreter *,const std::vector<SteelType> &params)=0;
+    virtual bool isFinal() const { return true; }
 
 private:
 };
@@ -26,16 +27,19 @@ private:
 class SteelUserFunction : public SteelFunctor
 {
 public:
-    SteelUserFunction(AstParamDefinitionList *, AstStatementList *);
+    SteelUserFunction(AstParamDefinitionList *, AstStatementList *, bool final);
     virtual ~SteelUserFunction();
     virtual bool isUserFunction() const { return true; }
     virtual SteelType Call(SteelInterpreter * pInterpreter,const std::vector<SteelType> &params);
     
     void setParamDefinitionList(AstParamDefinitionList *pParams);
     void setStatementList(AstStatementList *pList);
+
+    virtual bool isFinal() const { return mbFinal; }
 private:
     AstParamDefinitionList *m_pParams;
     AstStatementList *m_pList;
+    bool mbFinal;
     
 };
 

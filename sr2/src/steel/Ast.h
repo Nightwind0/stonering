@@ -650,7 +650,7 @@ public:
     eStopType execute(SteelInterpreter * pInterpreter);
     virtual ostream & print (std::ostream &out);
     
-
+    bool isFinal() const { return mbFinal; }
 private:
     AstFuncIdentifier * m_pId;
     AstParamDefinitionList *m_pParams;

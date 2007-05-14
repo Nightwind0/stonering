@@ -1389,7 +1389,7 @@ AstFunctionDefinition::AstFunctionDefinition(unsigned int line,
                                              bool final)
     :AstStatement(line,script),m_pId(pId),m_pParams(pParams),m_pStatements(pStmts),mbFinal(final)
 {
-    
+
 }
 AstFunctionDefinition::~AstFunctionDefinition()
 {
