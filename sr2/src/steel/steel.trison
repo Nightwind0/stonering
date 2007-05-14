@@ -78,6 +78,7 @@ SteelParser::Token::Type SteelParser::Scan ()
 %token DECREMENT
 %token CAT
 %token POP
+%token FINAL
 
 %prec ASSIGNMENT
 %prec NON_ELSE
@@ -119,7 +120,8 @@ func_definition %type "AstFunctionDefinition*"
 									id->GetScript(),
 									static_cast<AstFuncIdentifier*>(id),
 									params,
-									stmts);
+									stmts,
+									false);
 				}
 |
 	FUNCTION FUNC_IDENTIFIER:id '(' ')' '{':b1 statement_list:stmts '}':b2
@@ -130,8 +132,34 @@ func_definition %type "AstFunctionDefinition*"
 									id->GetScript(),
 									static_cast<AstFuncIdentifier*>(id),
 									NULL,
-									stmts);
+									stmts,
+									false);
 				}
+|
+	FINAL FUNCTION FUNC_IDENTIFIER:id '(' param_definition:params ')' '{':b1 statement_list:stmts '}':b2
+				{
+					delete b1;
+					delete b2;
+					return new AstFunctionDefinition(id->GetLine(),
+									id->GetScript(),
+									static_cast<AstFuncIdentifier*>(id),
+									params,
+									stmts,
+									true);
+				}
+|
+	FINAL FUNCTION FUNC_IDENTIFIER:id '(' ')' '{':b1 statement_list:stmts '}':b2
+				{
+					delete b1;
+					delete b2;
+					return new AstFunctionDefinition(id->GetLine(),
+									id->GetScript(),
+									static_cast<AstFuncIdentifier*>(id),
+									NULL,
+									stmts,
+									true);
+				}
+
 ;
 
 
