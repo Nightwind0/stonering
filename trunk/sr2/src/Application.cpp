@@ -12,7 +12,7 @@
 #include "ItemFactory.h"
 #include "CharacterFactory.h"
 #include "ChoiceState.h"
-#include "SteelType.h"
+#include <steel/SteelType.h>
 //
 //
 //
