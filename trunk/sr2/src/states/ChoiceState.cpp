@@ -3,6 +3,8 @@
 #include "GraphicsManager.h"
 #include "Level.h"
 
+using std::min;
+using std::max;
 
 StoneRing::ChoiceState::ChoiceState():mbDone(false),mpChoiceOverlay(NULL),
                                       mpChoiceFont(NULL),mpOptionFont(NULL),
@@ -80,7 +82,7 @@ void StoneRing::ChoiceState::draw(const CL_Rect &screenRect,CL_GraphicContext * 
 
     uint optionsPerPage = max(1, mTextRect.get_height() / mpOptionFont->get_height());
 
-    optionsPerPage = min(optionsPerPage,mChoices.size());
+    optionsPerPage = min(optionsPerPage,static_cast<uint>(mChoices.size()));
 
     // Draw the options
     for(uint i=0;i< optionsPerPage; i++)

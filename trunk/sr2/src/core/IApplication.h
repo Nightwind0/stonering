@@ -6,13 +6,15 @@
 #include <ClanLib/display.h>
 #ifdef _WINDOWS_
 #include <SteelType.h>
+#include <SteelInterpreter.h>
 #else
 #include <steel/SteelType.h>
+#include <steel/SteelInterpreter.h>
 #endif
 #include "IParty.h"
 #include "AbilityFactory.h"
 #include "AbilityManager.h"
-#include "SteelInterpreter.h"
+
 
 
 class AstScript;
