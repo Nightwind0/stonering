@@ -1,11 +1,12 @@
-SUBDIRS = core abilities character factories items level party states steel
+SUBDIRS = core abilities character factories items level party states
 
 noinst_LTLIBRARIES = libstonering.la
 
 bin_PROGRAMS = stonering
 
 stonering_LDADD = libstonering.la \
-				@top_srcdir@/src/states/libstates.la
+				@top_srcdir@/src/states/libstates.la \
+				-lsteel
 
 stonering_SOURCES =	Application.cpp 
 
@@ -22,8 +23,8 @@ libstonering_la_LIBADD = $(CLANLIB_LIBS) \
 			@top_srcdir@/src/items/libitems.la \
 			@top_srcdir@/src/level/liblevel.la \
 			@top_srcdir@/src/party/libparty.la \
-			@top_srcdir@/src/core/libcore.la \
-			@top_srcdir@/src/steel/libsteel.la	
+			@top_srcdir@/src/core/libcore.la 
+
 
 
 INCLUDES = \
@@ -38,5 +39,5 @@ INCLUDES = \
 		-I@top_srcdir@/src/items/weapons \
 		-I@top_srcdir@/src/items/armor \
 		-I@top_srcdir@/src/character \
-		-I@top_srcdir@/src/abilities \
-		-I@top_srcdir@/src/steel
+		-I@top_srcdir@/src/abilities
+

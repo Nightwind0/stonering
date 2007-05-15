@@ -4,7 +4,7 @@
 
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
-#include "SteelType.h"
+#include <steel/SteelType.h>
 #include "IParty.h"
 #include "AbilityFactory.h"
 #include "AbilityManager.h"
