@@ -93,6 +93,7 @@ public:
     virtual bool canMove(const CL_Rect &currently, const CL_Rect &destination, bool noHot, bool isPlayer);
     virtual AstScript * loadScript(const std::string &name, const std::string &script);
     virtual SteelType runScript(AstScript * pScript);
+    virtual SteelType runScript(AstScript *pScript, const ParameterList &params); 
     Infobar * getInfo() const { return mInfo; }
 
 private:

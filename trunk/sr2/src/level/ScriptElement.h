@@ -3,8 +3,13 @@
 
 #include "sr_defines.h"
 #include "Element.h"
+#ifdef _WINDOWS_
 #include "SteelType.h"
 #include "SteelInterpreter.h"
+#else
+#include <steel/SteelType.h>
+#include <stel/SteelInterpreter.h>
+#endif
 
 class AstScript;
 

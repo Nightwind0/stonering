@@ -95,7 +95,10 @@ SteelType EditorMain::runScript(AstScript *pScript)
     return mInterpreter.runAst ( pScript );
 }
 
-
+SteelType EditorMain::runScript(AstScript *pScript, const ParameterList &params)
+{
+    return mInterpreter.runAst ( pScript, params );
+}
 
 int EditorMain::main(int argc, char **argv)
 {

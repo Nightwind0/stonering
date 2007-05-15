@@ -12,7 +12,11 @@
 #include "ItemFactory.h"
 #include "CharacterFactory.h"
 #include "ChoiceState.h"
+#ifndef _WINDOWS_
 #include <steel/SteelType.h>
+#else
+#include <SteelType.h>
+#endif
 //
 //
 //

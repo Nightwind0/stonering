@@ -1096,15 +1096,15 @@ void Editor::SpriteRef::setType( StoneRing::SpriteRef::eType dir)
 }
 
 
-Editor::StatIncrease::StatIncrease()
+Editor::StatScript::StatScript()
 {
 }
-Editor::StatIncrease::~StatIncrease()
+Editor::StatScript::~StatScript()
 {
 }
-CL_DomElement Editor::StatIncrease::createDomElement(CL_DomDocument &doc)const
+CL_DomElement Editor::StatScript::createDomElement(CL_DomDocument &doc)const
 {
-    return CL_DomElement(doc,"statIncrease");
+    return CL_DomElement(doc,"statScript");
 }
 
 Editor::StatusEffect::StatusEffect()

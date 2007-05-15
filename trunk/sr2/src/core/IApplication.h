@@ -4,7 +4,11 @@
 
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
+#ifdef _WINDOWS_
+#include <SteelType.h>
+#else
 #include <steel/SteelType.h>
+#endif
 #include "IParty.h"
 #include "AbilityFactory.h"
 #include "AbilityManager.h"

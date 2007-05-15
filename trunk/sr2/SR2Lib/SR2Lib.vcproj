@@ -4,6 +4,7 @@
 	Version="8.00"
 	Name="SR2Lib"
 	ProjectGUID="{E143424A-1AA3-49FF-B9DE-79A97E33C816}"
+	RootNamespace="SR2Lib"
 	>
 	<Platforms>
 		<Platform
@@ -36,7 +37,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(SOLUTIONDIR)/src/steel/&quot;;&quot;$(SOLUTIONDIR)/src/items/armor/&quot;;&quot;$(SOLUTIONDIR)/src/items/weapons/&quot;;&quot;$(SOLUTIONDIR)/src/&quot;;&quot;$(SOLUTIONDIR)/src/party&quot;;&quot;$(SOLUTIONDIR)/src/level&quot;;&quot;$(SOLUTIONDIR)/src/factories&quot;;&quot;$(SOLUTIONDIR)/src/items&quot;;&quot;$(SOLUTIONDIR)/src/abilities&quot;;&quot;$(SOLUTIONDIR)/src/states&quot;;&quot;$(SOLUTIONDIR)/src/character&quot;;&quot;$(SOLUTIONDIR)/src/core&quot;"
+				AdditionalIncludeDirectories="&quot;$(SOLUTIONDIR)/../steel/src/&quot;;&quot;$(SOLUTIONDIR)/src/items/armor/&quot;;&quot;$(SOLUTIONDIR)/src/items/weapons/&quot;;&quot;$(SOLUTIONDIR)/src/&quot;;&quot;$(SOLUTIONDIR)/src/party&quot;;&quot;$(SOLUTIONDIR)/src/level&quot;;&quot;$(SOLUTIONDIR)/src/factories&quot;;&quot;$(SOLUTIONDIR)/src/items&quot;;&quot;$(SOLUTIONDIR)/src/abilities&quot;;&quot;$(SOLUTIONDIR)/src/states&quot;;&quot;$(SOLUTIONDIR)/src/character&quot;;&quot;$(SOLUTIONDIR)/src/core&quot;"
 				PreprocessorDefinitions="WIN32;DEBUG;_WINDOWS;_DEBUG"
 				RuntimeLibrary="1"
 				DebugInformationFormat="3"
@@ -220,10 +221,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\steel\Ast.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\src\items\AttributeEnhancer.cpp"
 				>
 			</File>
@@ -392,30 +389,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\steel\SteelException.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\steel\SteelFunctor.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\steel\SteelInterpreter.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\steel\SteelParser.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\steel\SteelScanner.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\steel\SteelType.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\src\items\SystemItem.cpp"
 				>
 			</File>
@@ -529,10 +502,6 @@
 			</File>
 			<File
 				RelativePath="..\src\items\armor\ArmorTypeRef.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\steel\Ast.h"
 				>
 			</File>
 			<File
@@ -697,30 +666,6 @@
 			</File>
 			<File
 				RelativePath="..\src\items\StatusEffectModifier.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\steel\SteelException.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\steel\SteelFunctor.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\steel\SteelInterpreter.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\steel\SteelParser.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\steel\SteelScanner.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\steel\SteelType.h"
 				>
 			</File>
 			<File
