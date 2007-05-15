@@ -238,9 +238,9 @@ Element * EditorElementFactory::createSpriteRef()const
   return new Editor::SpriteRef();
 }
 
-Element * EditorElementFactory::createStatIncrease() const
+Element * EditorElementFactory::createStatScript() const
 {
-  return new Editor::StatIncrease();
+  return new Editor::StatScript();
 }
 
 Element * EditorElementFactory::createStatusEffect() const

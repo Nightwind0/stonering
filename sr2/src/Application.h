@@ -12,7 +12,11 @@
 #include "MapState.h"
 #include "SayState.h"
 #include "State.h"
+#ifdef _WINDOWS_
+#include <SteelInterpreter.h>
+#else
 #include <steel/SteelInterpreter.h>
+#endif
 #include "ElementFactory.h"
 
 

@@ -456,11 +456,11 @@ class SpriteRef : public StoneRing::SpriteRef, public WriteableElement
     void setType( StoneRing::SpriteRef::eType dir);
  private:
 };
-class StatIncrease : public StoneRing::StatIncrease, public WriteableElement
+class StatScript : public StoneRing::StatScript, public WriteableElement
 {
  public:
-	StatIncrease();
-	virtual ~StatIncrease();
+	StatScript();
+	virtual ~StatScript();
     virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
  private:
 };
