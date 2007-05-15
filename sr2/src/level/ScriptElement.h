@@ -8,7 +8,7 @@
 #include "SteelInterpreter.h"
 #else
 #include <steel/SteelType.h>
-#include <stel/SteelInterpreter.h>
+#include <steel/SteelInterpreter.h>
 #endif
 
 class AstScript;

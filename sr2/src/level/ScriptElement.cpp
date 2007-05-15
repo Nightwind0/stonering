@@ -1,6 +1,12 @@
 #include "ScriptElement.h"
 #include "IApplication.h"
+
+#ifdef _WINDOWS_
 #include "Ast.h"
+#else
+#include <steel/Ast.h>
+#endif
+
 
 using StoneRing::ScriptElement;
 using StoneRing::Element;
