@@ -2,8 +2,10 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT(stonering, 0.0.0.0, dpalm@writeme.com)
-AC_CONFIG_SRCDIR([src/Application.h])
+AC_INIT(stonering, 0.0.0.1)
+AC_CONFIG_SRCDIR(src/Application.cpp)
+AM_INIT_AUTOMAKE
+
 #AC_CONFIG_HEADER([config.h])
 AM_CONFIG_HEADER( config.h )
 # Checks for programs.
@@ -12,9 +14,12 @@ AC_PROG_CC
 AC_DISABLE_SHARED
 AC_PROG_LIBTOOL
 AC_PROG_MAKE_SET
-AM_INIT_AUTOMAKE( stonering, 0.0.0.0)
+		
+
+
 # AM_MAINTAINER_MODE
 # Checks for libraries.
+AC_CHECK_LIB(steel,main)
 
 
 PKG_CHECK_MODULES(CLANLIB, clanCore-0.8 clanApp-0.8 clanDisplay-0.8 clanGL-0.8 clanSound-0.8 clanGUI-0.8 clanGUIStyleSilver-0.8)
@@ -68,6 +73,5 @@ AC_OUTPUT(Makefile \
 		   src/party/Makefile \
 		   src/states/Makefile \
 		   src/LevelEditor/Makefile \
-		   src/steel/Makefile \
 		   src/core/Makefile
 )
