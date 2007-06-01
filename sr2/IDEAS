@@ -2,16 +2,15 @@
 Mascots - with different numbers (types?) of idol slots. 
 
 Sacred Books - a main sacred book thats part of the story. Then, one that's an optional sidequest but prooves to be an awesome power.
-
 Lailoken - Wizard / Madman
-
 Flavius Jobin
-
 "Hopestones"
+"Warmhope" - A place? Maybe you collect hopestones and bring them to Warmhope for something.
 
-"Warmhope" - A place?
+The following types of nymphs:
+http://en.wikipedia.org/wiki/Nymphs
 
-Mochi Demons
+Mochi Demons -- Possibly the Stone Ring version of slimes?
 
 Make a thread for handling drawing and input! That way you don't have to make it asynchronous, instead of calling run() twice on the stack you can have it in another thread, i think. Don't make it asynch. I'm convinced its wrong.
 
@@ -21,16 +20,14 @@ Huxwhukw (supernatural Crane-Like Bird who cracks skulls of men to suck out thei
 
 Mad Squirrels - Think humans are a type of nut, and jump on your head and try to crack your skull open. Some sort of tie in with Jayton. They jump on your head and gnaw, usually doing some damage, but theres a small chance that they crack your skull and its instant death. Unless you're wearing special anti-squirrel helmets. 
 
-Endospores - Possibly the Stone Ring version of slimes? But maybe not the canonical SR enemy..........
+Endospores
+Naiads
+Water Bears
 
 AMNIPOGANS
-
 Shellelagh
 Loaded Shellelagh
-
-
 Vinegaroon - type of giant scorpion
-
 
 FORMULAE:
 
@@ -63,28 +60,6 @@ For STR and the like a single digit number times a 1.05 or so looks good.
 4*1.06^L for a mage's STR maybe, and 10*1.06^L for war.
 
 
-
-
-
-
-
-
-
-
-addTemporaryModifier --
-	Permanent attribute modifications will be made as they currently are,
-through modifyAttribute. Basically any type of action context will result in permanent changes. I consider +50 to HP to be "permanent" just as the -37 to HP that you get when you're hit is "permanent". So potions, other items... events, etc... all do "permanent" modifications. The code inside actually modifies the character's numbers directly. Easy cheesy.. just looks up the variable to change and changes. 
-	However, there are many temporary modifiers - status effects & equipment, and idols etc - do not use modifyAttribute. Instead, they use addTemporaryModifier, which returns a ticket that the caller must store away and use later on removeTemporaryModifier. Internally, each character stores a multimap (indexed by attribute enum), of a struct which describes the modification. When a value is queried, there is a loop that loops from lower_bound to upper_bound and does two things. One, it applies all the multiplications to the value. Two, it keeps a tally of all the "add" values, and after the loop, applies that total to the value. Thus, all multiplications happen, then all the adds, without having to loop twice. When "removeTemporaryModifier" is called, the modifier is simply removed from the list. The party has it's own similar list for "Common" attributes (buy rate, sell rate, drop rates, etc)
-Note: Need a method which takes a characterattribute enum and returns a pointer to the member variable that corresponds. Alternatively, eschew storing attributes in member variables and use std::map<eCharacterAttribute,int>...?
-	Question: How does this work for status effects and status effect resistance? What about spell types? Do they have to be hardcoded? Couldn't we define them somehow and refer to them by string.
-
----
-Refactor? Make doAttack doMagicAttack and doStatus into Actions, that way tiles and MOs and things can use them. Define weapons as just items where the "use" is a doAttack where the attack value, rather than hardcoded, is defined by the weapon, and the target is matched to whatever is the current target. 
-OR - Leave it as it is, don't consider attack as an "use" of your weapon....
-but do open doAttack for skills... with a multiplier and an add and a crit%..
-and it uses your current weapon...
-
-
 AMNIPOGANS
 Shellelagh
 Loaded Shellelagh
@@ -92,41 +67,20 @@ Green Mage
 Metaballs - item
 Caladbolg - Irish Sword the size of a rainbow
 Cashmere Yams
-Chuck Norris
-Sabotender
 REQUIRE OMEN
 ALPHA DELIMITER
 OMEGA DELIMITER
 Need: onVictory and onDefeat as children of startBattle. One or zero of each.
 Need: breakpoint cost on skills/spells
 Need: ability to have non-mp, non-bp skills like ones that make things cheaper, or make encounters higher or lower, and have on/off capability
-
-Need: doSkill, doSpell, doEscape, doSteal, doItem
-Need: Monster strategies. They should be able to select from default strategies or define special ones that should look something like
-	<strategy>
-	<onLowHP>
-		<action probability="0.01">
-		<doEscape/>
-		</action>
-		<action probability="0.10">
-		<doSkill skillRef="heal"/>
-		</action>
-	</onLowHP>
-	<onRegularTurn>
-	....
-	</onRegularTurn>
-	<onTurnNumber number=1>
-	...
-	</onTurnNumber>
-
-Need: onEnterLevel, onExitLevel properties of the level element, which
-	contains actions to fire when you enter or exit a level.
-	also, there should be an exitCondition which is a regular old Condition that evaluates whether or not you can even leave the level.
-
+Need: onEnterLevel, onExitLevel scripts in levelHeader
 
 Cool:
 Use CL_Gradient for text/menu backgrounds, battle backgrounds.... etc (CL_Display::fill_rect)
 Use set_alpha and rotate_yaw,etc, on sprites for effects. Open them up to animation
+
+
+ANIMATION:
 Provide an "arc" and "sine" option for animation movements, so you can have projectiles move either straight, in an arc, or a crazy sine wave.
 
 
@@ -143,12 +97,6 @@ Notes from Talking to Victor:
  search.
 
 5) "Talk/prod" should be handled by the level, it looks at the players position and direction and determines the next cell over and executes talk on the first active MO there if any. The app just calls talk()
-
-
-
-
-
-
 
 
 Skill system - some skills use Break, some use MP, some are switch on/off,
@@ -172,5 +120,12 @@ This can be done by providing a party-wide attribute like Money%, Weapon%, etc..
 unequipped. You could have only one idol equipped, and it equips to your whole party, in a special idol slot.... There should also be idols
 which attract/repel monsters.
 
-WORTH POINTS:
+MASCOTS:
+Also, the number of idols you can equip depends on which mascot you have equipped. You start with a small bird or something that can only carry one idol, and you progress until you can equip maybe 4. 
+
+
+OPTIMIZATIONS:
+
+Potentially, instead of keeping entire tilemaps in memory, you could , upon loading a level, load up the tilemaps that it uses, then split them into individual tiles, and delete the ones that aren't used, leaving only the tiles used by a level in memory at any one time. 
+
 

@@ -529,7 +529,9 @@ int Application::main(int argc, char ** argv)
     {
         std::cerr << "Steel Exception on line " << ex.getLine() 
                   << " of " << ex.getScript() << ':' << ex.getMessage() << std::endl;
+#ifndef NDEBUG
         console.display_close_message();
+#endif
         return 1;
     }
 
