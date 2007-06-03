@@ -913,12 +913,12 @@ void Level::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 #ifndef NDEBUG
     std::cout << "LEVEL NAME = " << mName << std::endl;
 #endif
-
 }
 
 void Level::loadFinished()
 {
     if(mpHeader == NULL) throw CL_Error("Level was missing levelHeader.");
+    
 
     mnFrameCount = mnMoveCount = 0 ;
 

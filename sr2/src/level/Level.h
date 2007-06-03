@@ -159,6 +159,7 @@ namespace StoneRing {
     protected:
         virtual bool handleElement(eElement element, Element * pElement);
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+        virtual void loadFinished();
 
         CL_Sprite *mpSprite;
         SpriteRefOrTilemap mGraphic;

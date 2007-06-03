@@ -454,6 +454,11 @@ bool StoneRing::Tile::handleElement(eElement element, Element * pElement)
     return true;
 }
 
+void StoneRing::Tile::loadFinished()
+{
+    if(mGraphic.asSpriteRef == NULL) throw CL_Error("Tile didn't have tilemap or sprite ref.");
+}
+
 void StoneRing::Tile::activate() // Call any attributemodifier
 {
     // Run script

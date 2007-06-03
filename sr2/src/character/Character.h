@@ -50,6 +50,7 @@ namespace StoneRing{
         CA_ITEM_DROP_RATE,
         CA_PRICE_MULTIPLIER,
         CA_EXP_MULTIPLIER,
+        CA_IDOL_SLOTS,
         _LAST_COMMON_ATTR_
     };
 
@@ -57,7 +58,9 @@ namespace StoneRing{
     class ICharacter
     {
     public:
-        virtual void modifyAttribute(eCharacterAttribute attr, int add, float multiplier)=0;
+        virtual void modifyAttribute(eCharacterAttribute attr, double add, double multiply=1.0)  = 0;
+        // For boolean values.
+        virtual void toggleAttribute(eCharacterAttribute attr, bool state)  = 0;
         virtual int getMaxAttribute(eCharacterAttribute attr) const = 0;
         virtual int getMinAttribute(eCharacterAttribute attr) const = 0;
         virtual int getAttribute(eCharacterAttribute attr) const = 0;
@@ -81,7 +84,9 @@ namespace StoneRing{
     {
     public:
         Character();
-        virtual void modifyAttribute(eCharacterAttribute attr, int add, float multiplier);
+        virtual void modifyAttribute(eCharacterAttribute attr, double add, double multiply=1.0);
+        // For booleans (such as CAN_ACT)
+        virtual void toggleAttribute(eCharacterAttribute attr, bool state);
         virtual int getMaxAttribute(eCharacterAttribute attr) const ;
         virtual int getMinAttribute(eCharacterAttribute attr) const ;
         virtual int getAttribute(eCharacterAttribute attr) const;
