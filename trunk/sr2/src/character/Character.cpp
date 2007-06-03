@@ -10,7 +10,8 @@ using namespace StoneRing;
 
 
 
-void StoneRing::Character::modifyAttribute(eCharacterAttribute attr, int add, float multiplier){}
+void StoneRing::Character::modifyAttribute(eCharacterAttribute attr, double add, double multiplier){}
+void StoneRing::Character::toggleAttribute(eCharacterAttribute attr, bool state) {}
 int StoneRing::Character::getMaxAttribute(eCharacterAttribute attr) const { return 1; }
 int StoneRing::Character::getMinAttribute(eCharacterAttribute attr) const { return 1; }
 int StoneRing::Character::getAttribute(eCharacterAttribute attr) const{ return 1;}

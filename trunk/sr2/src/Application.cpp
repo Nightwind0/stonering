@@ -107,7 +107,7 @@ SteelType Application::choice(const std::string &choiceText,
     std::vector<std::string> choices;
     choices.reserve ( choices_.size() );
 
-    for(int i=0;i<choices_.size();i++)
+    for(unsigned int i=0;i<choices_.size();i++)
         choices.push_back ( choices_[i] );
 
     choiceState.init(choiceText,choices);
