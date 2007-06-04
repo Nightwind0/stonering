@@ -513,6 +513,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\character\BattleMenu.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\character\BattleMenuOption.h"
 				>
 			</File>

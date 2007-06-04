@@ -11,6 +11,7 @@ namespace StoneRing{
     class WeaponTypeRef;
     class AnimationDefinition;
     class WeaponTypeSprite;
+    class BattleMenu;
 
     //str|dex|evd|mag|rst|spr
     enum eCharacterAttribute
@@ -27,6 +28,7 @@ namespace StoneRing{
         CA_RST,              // Magic resistance
         CA_LCK,              // Similar to initiative. Also helps in other aspects of the game...
         CA_JOY,              // Increases experience gained (Multiplier)
+        CA_LEVEL,
         CA_DRAW_ILL,
         CA_DRAW_STONE,
         CA_DRAW_BERSERK,
@@ -45,7 +47,7 @@ namespace StoneRing{
 
     enum eCommonAttribute
     {
-        CA_ENCOUNTER_RATE = _LAST_CHARACTER_ATTR_,
+        CA_ENCOUNTER_RATE = _LAST_CHARACTER_ATTR_ + 1,
         CA_GOLD_DROP_RATE,
         CA_ITEM_DROP_RATE,
         CA_PRICE_MULTIPLIER,
@@ -58,12 +60,23 @@ namespace StoneRing{
     class ICharacter
     {
     public:
-        virtual void modifyAttribute(eCharacterAttribute attr, double add, double multiply=1.0)  = 0;
+        enum eGender { MALE, FEMALE, NEUTER };
+
+        virtual eGender getGender() const=0;
+
+        virtual void attributeMultiply(eCharacterAttribute attr, double mult) = 0;
+        virtual void attributeAdd(eCharacterAttribute attr, double add)=0;
         // For boolean values.
         virtual void toggleAttribute(eCharacterAttribute attr, bool state)  = 0;
-        virtual int getMaxAttribute(eCharacterAttribute attr) const = 0;
-        virtual int getMinAttribute(eCharacterAttribute attr) const = 0;
-        virtual int getAttribute(eCharacterAttribute attr) const = 0;
+        virtual double getMaxAttribute(eCharacterAttribute attr) const = 0;
+        virtual double getMinAttribute(eCharacterAttribute attr) const = 0;
+        virtual double getAttribute(eCharacterAttribute attr) const = 0;
+        virtual int getAttributeInt(eCharacterAttribute attr) const = 0;
+        virtual bool getToggle(eCharacterAttribute attr) const =0;
+
+        ///@todo
+        // API for different battle animations TBD
+        
     private:
     };
 
@@ -84,14 +97,24 @@ namespace StoneRing{
     {
     public:
         Character();
-        virtual void modifyAttribute(eCharacterAttribute attr, double add, double multiply=1.0);
-        // For booleans (such as CAN_ACT)
+
+        virtual eGender getGender() const;
+        virtual void attributeMultiply(eCharacterAttribute attr, double mult);
+        virtual void attributeAdd(eCharacterAttribute attr, double add);
+        // For boolean values.
         virtual void toggleAttribute(eCharacterAttribute attr, bool state);
-        virtual int getMaxAttribute(eCharacterAttribute attr) const ;
-        virtual int getMinAttribute(eCharacterAttribute attr) const ;
-        virtual int getAttribute(eCharacterAttribute attr) const;
+        virtual double getMaxAttribute(eCharacterAttribute attr) const;
+        virtual double getMinAttribute(eCharacterAttribute attr) const;
+        virtual double getAttribute(eCharacterAttribute attr) const;
+        virtual bool getToggle(eCharacterAttribute attr) const;
+        virtual int getAttributeInt(eCharacterAttribute attr) const;
+        // Shortcuts to class data
+        BattleMenu * getBattleMenu() const;
+        std::string getClassName() const;
+
     private:
         std::string mName;
+        CharacterClass * mpClass;
     };
 
 };

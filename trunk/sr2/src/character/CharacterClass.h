@@ -34,17 +34,13 @@ namespace StoneRing
         std::list<SkillRef*>::const_iterator getSkillRefsEnd() const;
 
         BattleMenu * getBattleMenu() const;
-
         std::string getName() const;
-
-        enum eGender { MALE, FEMALE, EITHER };
-
-        eGender getGender() const;
+        ICharacter::eGender getGender() const;
     private:
         virtual bool handleElement(eElement element, Element * pElement );
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
         std::string mName;
-        eGender meGender;
+        ICharacter::eGender meGender;
         std::list<WeaponTypeRef*> mWeaponTypes;
         std::list<ArmorTypeRef*> mArmorTypes;
         typedef std::map<eCharacterAttribute,StatScript*> StatMap;
