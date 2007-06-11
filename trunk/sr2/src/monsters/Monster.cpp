@@ -60,6 +60,11 @@ double Monster::getMinAttribute(eCharacterAttribute attr) const
     return 0.0;
 }
 
+double Monster::getSpellResistance(Magic::eMagicType type) const
+{
+    return 0.0;
+}
+
 double Monster::getAttribute(eCharacterAttribute attr) const 
 {
     return 1.0;

@@ -5,71 +5,76 @@
 #include "Animation.h"
 #include "WeaponTypeRef.h"
 
-const char *statXMLLookup[] = 
+namespace StoneRing{
+struct stat_entry
 {
-    "hp",
-    "hp_max",
-    "mp",
-    "mp_max",
-    "str",
-    "def",
-    "dex",
-    "evd",
-    "mag",
-    "rst",
-    "lck",
-    "joy",
-    "draw_ill",   //    CA_DRAW_ILL,
-    "draw_stone", //    CA_DRAW_STONE,
-    "draw_berserk", //  CA_DRAW_BERSERK,
-    "draw_weak", // CA_DRAW_WEAK,
-    "draw_paralyzed", //    CA_DRAW_PARALYZED,
-    "draw_translucent", 
-    "can_act", //   CA_CAN_ACT,
-    "can_fight", // CA_CAN_FIGHT,
-    "can_cast", //  CA_CAN_CAST,
-    "can_skill", // CA_CAN_SKILL,
-    "can_item", 
-    "can_run", //   CA_CAN_RUN,
-    "alive", 
-    "encounterRate",
-    "goldDropRate",
-    "itemDropRate",
-    "priceMultiplier",
-    "expMultiplier"
-
+    const char * string;
+    uint attr;
 };
 
+const stat_entry statXMLLookup[] = 
+{
+    {"hp",CA_HP},
+    {"hp_max",CA_MAXHP},
+    {"mp",CA_MP},
+    {"mp_max",CA_MAXMP},
+    {"str",CA_STR},
+    {"def",CA_DEF},
+    {"dex",CA_DEX},
+    {"evd",CA_EVD},
+    {"mag",CA_MAG},
+    {"rst",CA_RST},
+    {"lck",CA_LCK},
+    {"joy",CA_JOY},
+    {"draw_ill",CA_DRAW_ILL},   //    CA_DRAW_ILL,
+    {"draw_stone",CA_DRAW_STONE}, //    CA_DRAW_STONE,
+    {"draw_berserk",CA_DRAW_BERSERK}, //  CA_DRAW_BERSERK,
+    {"draw_weak",CA_DRAW_WEAK}, // CA_DRAW_WEAK,
+    {"draw_paralyzed",CA_DRAW_PARALYZED}, //    CA_DRAW_PARALYZED,
+    {"draw_translucent",CA_DRAW_TRANSLUCENT}, 
+    {"can_act", CA_CAN_ACT}, //   CA_CAN_ACT,
+    {"can_fight",CA_CAN_FIGHT}, // CA_CAN_FIGHT,
+    {"can_cast", CA_CAN_CAST}, //  CA_CAN_CAST,
+    {"can_skill",CA_CAN_SKILL}, // CA_CAN_SKILL,
+    {"can_item", CA_CAN_ITEM},
+    {"can_run", CA_CAN_RUN}, //   CA_CAN_RUN,
+    {"alive", CA_ALIVE},
+    {"encounterRate", CA_ENCOUNTER_RATE},
+    {"goldDropRate", CA_GOLD_DROP_RATE},
+    {"itemDropRate", CA_ITEM_DROP_RATE},
+    {"priceMultiplier", CA_PRICE_MULTIPLIER},
+    {"expMultiplier", CA_EXP_MULTIPLIER},
+    {"level",CA_LEVEL},
+    {"idol_slots",CA_IDOL_SLOTS}
+};
 
+}
 
 StoneRing::eCharacterAttribute StoneRing::CharAttributeFromString(const std::string &str)
 {
-    // Lower
     uint numberStats = _LAST_CHARACTER_ATTR_;
     
     for(uint i =0; i < numberStats; i++)
     {
-        if( str == statXMLLookup[i] )
+        if( str == statXMLLookup[i].string )
         {
-            return (eCharacterAttribute)i;
+            return static_cast<eCharacterAttribute>(statXMLLookup[i].attr);
         }
     }
-    assert ( 0 );
-    return static_cast<StoneRing::eCharacterAttribute>(0);
+    return static_cast<StoneRing::eCharacterAttribute>(CA_INVALID);
 }
 
 StoneRing::eCommonAttribute StoneRing::CommonAttributeFromString(const std::string &str)
 {
     for(int i = _LAST_CHARACTER_ATTR_; i < _LAST_COMMON_ATTR_; i++)
     {
-        if(str == statXMLLookup[i])
+        if(str == statXMLLookup[i].string)
         {
-            return (eCommonAttribute)i;
+            return static_cast<eCommonAttribute>(statXMLLookup[i].attr);
         }
     }
 
-    assert ( 0 );
-    return static_cast<eCommonAttribute>(0);
+    return static_cast<eCommonAttribute>(CA_INVALID);
 }
 
 
@@ -78,20 +83,25 @@ uint StoneRing::CAFromString(const std::string &str)
 
     for(int i =0; i < _LAST_COMMON_ATTR_; i++)
     {
-        if(str == statXMLLookup[i])
+        if(str == statXMLLookup[i].string)
         {
-            return i;
+            return statXMLLookup[i].attr;
         }
     }
-
-   // assert ( 0 );
-    return 0;
+    return CA_INVALID;
 }
 
-std::string StoneRing::CAToString(uint i)
+std::string StoneRing::CAToString(uint v)
 {
-
-    return statXMLLookup[i];
+    for(int i =0; i < _LAST_COMMON_ATTR_; i++)
+    {
+        if(v == statXMLLookup[i].attr)
+        {
+            return statXMLLookup[i].string;
+        }
+    }
+    assert(0 && "Invalid attribute");
+    return "INVALID";
 }
 
 

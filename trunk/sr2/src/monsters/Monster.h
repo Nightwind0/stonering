@@ -29,6 +29,7 @@ public:
     virtual void toggleAttribute(eCharacterAttribute attr, bool state);
     virtual double getMaxAttribute(eCharacterAttribute attr) const ;
     virtual double getMinAttribute(eCharacterAttribute attr) const;
+    virtual double getSpellResistance(Magic::eMagicType type) const;
     virtual double getAttribute(eCharacterAttribute attr) const ;
     virtual int getAttributeInt(eCharacterAttribute attr) const;
     virtual bool getToggle(eCharacterAttribute attr) const;
