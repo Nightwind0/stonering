@@ -434,20 +434,21 @@ void ItemManager::dumpItemList()
         
             switch( pType->getSlot())
             {
-            case ArmorType::HEAD:
+            case Equipment::EHEAD:
                 std::cout << "\t[HEAD]";
                 break;
-            case ArmorType::BODY:
+            case Equipment::EBODY:
                 std::cout << "\t[BODY]";
                 break;
-            case ArmorType::SHIELD:
-                std::cout << "\t[SHIELD]";
-                break;
-            case ArmorType::FEET:
+            case Equipment::EFEET:
                 std::cout << "\t[FEET]";
                 break;
-            case ArmorType::HANDS:
+            case Equipment::EOFFHAND:
+                break;
+            case Equipment::EHANDS:
                 std::cout << "\t[HANDS]";
+                break;
+            case Equipment::EFINGER1:
                 break;
             }
 

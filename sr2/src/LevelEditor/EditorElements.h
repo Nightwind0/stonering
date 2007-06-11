@@ -280,6 +280,14 @@ class MappableObjects : public StoneRing::MappableObjects, public WriteableEleme
     virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
  private:
 };
+
+class Monster : public StoneRing::Monster, public WriteableElement
+{
+public:
+    Monster();
+    virtual ~Monster();
+    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+};
 class Movement : public StoneRing::Movement, public WriteableElement
 {
  public:

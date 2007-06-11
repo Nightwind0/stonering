@@ -3,6 +3,7 @@
 
 #include "Element.h"
 #include "ScriptElement.h"
+#include "Magic.h"
 #include <ClanLib/core.h>
 
 namespace StoneRing
@@ -20,16 +21,14 @@ namespace StoneRing
         virtual ~MagicResistance();
         virtual eElement whichElement() const{ return EMAGICRESISTANCE; }
         float getResistance() const;
-        eMagicType getType() const;
+        Magic::eMagicType getType() const;
         bool resistAll() const;
         bool resistElemental() const;
         CL_DomElement  createDomElement(CL_DomDocument &doc) const { return CL_DomElement(doc,"magicResistance"); }
 
     private:
         virtual void loadAttributes(CL_DomNamedNodeMap *);
-        eMagicType meType;
-        bool mbResistAll;
-        bool mbResistElemental;
+        Magic::eMagicType meType;
         float mfResistance;
     };
 
@@ -42,13 +41,11 @@ namespace StoneRing
 
         virtual eElement whichElement() const{ return ESPELL; }
         std::string getName() const;
-
-        enum eType { ELEMENTAL, WHITE, STATUS, OTHER };
         enum eUse { BATTLE, WORLD, BOTH };
         enum eTargetable { ALL, SINGLE, EITHER, SELF_ONLY };
-        eType getType() const;
         eUse getUse() const;
         eTargetable getTargetable() const;
+        Magic::eMagicType getMagicType() const;
 
         bool appliesToWeapons() const;
         bool appliesToArmor() const;
@@ -65,11 +62,10 @@ namespace StoneRing
         virtual bool handleElement(eElement, Element * );
         virtual void loadAttributes(CL_DomNamedNodeMap *);
 
-        eType getTypeFromString(const std::string &str);
         eUse getUseFromString ( const std::string &str);
         eTargetable getTargetableFromString ( const std::string &str);
 
-        eType meType;
+        Magic::eMagicType meType;
         eUse meUse;
         eTargetable meTargetable;
         std::string mName;

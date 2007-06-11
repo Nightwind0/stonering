@@ -51,6 +51,7 @@ namespace StoneRing
             EMAGICRESISTANCE,
             EMAPPABLEOBJECT,
             EMAPPABLEOBJECTS,
+            EMONSTER,
             EMOVEMENT,
             ENAMEDITEMELEMENT,
             ENAMEDITEMREF,

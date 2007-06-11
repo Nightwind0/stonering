@@ -6,6 +6,7 @@
 #include "Animation.h"
 #include "DamageCategory.h"
 #include "SpellRef.h"
+#include "Magic.h"
 
 using namespace StoneRing;
 
@@ -17,7 +18,13 @@ Spell::Spell()
 void Spell::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
     mName = getRequiredString("name", pAttributes);
-    meType = getTypeFromString(getRequiredString("type", pAttributes));
+    meType = Magic::typeOf(getRequiredString("type", pAttributes));
+
+    if(meType == Magic::UNKNOWN)
+    {
+        throw CL_Error("Bad magic type in spell.");
+    }
+
     meUse = getUseFromString(getRequiredString("use", pAttributes));
     meTargetable = getTargetableFromString(getRequiredString("targetable", pAttributes));
 
@@ -47,16 +54,6 @@ bool Spell::handleElement(eElement element, Element * pElement)
 }
 
 
-
-Spell::eType Spell::getTypeFromString(const std::string &str)
-{
-    if(str == "elemental") return ELEMENTAL;
-    else if (str == "white") return WHITE;
-    else if (str == "status") return STATUS;
-    else if (str == "other") return OTHER;
-    else throw CL_Error("Bad spell type.");
-}
-
 Spell::eUse Spell::getUseFromString ( const std::string &str)
 {
     if(str == "battle") return BATTLE;
@@ -82,11 +79,6 @@ Spell::~Spell()
 }
 
 
-MagicResistance * Spell::getMagicResistance() const
-{
-    return mpMagicResistance;
-}
-
 std::string Spell::getName() const
 {
     return mName;
@@ -98,7 +90,7 @@ uint Spell::getValue() const
 }
 
 
-Spell::eType Spell::getType() const
+Magic::eMagicType Spell::getMagicType() const
 {
     return meType;
 }
@@ -140,24 +132,9 @@ CL_DomElement Spell::createDomElement( CL_DomDocument &doc ) const
 SpellRef * Spell::createSpellRef() const
 {
     SpellRef * ref = new SpellRef;
-    SpellRef::eSpellType type;
-    switch(meType)
-    {
-    case ELEMENTAL:
-        type = SpellRef::ELEMENTAL;
-        break;
-    case WHITE:
-        type = SpellRef::WHITE;
-        break;
-    case STATUS:
-        type = SpellRef::STATUS;
-        break;
-    case OTHER:
-        type = SpellRef::OTHER;
-        break;
-    }
-    ref->setType( type );
-    ref->setName ( mName );
+   
+    ref->setType( meType );
+    ref->setName( mName );
 
     return ref;
 }
@@ -166,26 +143,18 @@ SpellRef * Spell::createSpellRef() const
 
 
 
-MagicResistance::MagicResistance():mbResistAll(false),mbResistElemental(false)
+MagicResistance::MagicResistance():meType(Magic::UNKNOWN)
 {
 }
 
 void MagicResistance::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
-    std::string type = getRequiredString("type",pAttributes);
-    
-    if(type == "fire") meType = FIRE;
-    else if (type == "water") meType = WATER;
-    else if (type == "earth") meType = EARTH;
-    else if (type == "wind") meType = WIND;
-    else if (type == "holy") meType = HOLY;
-    else if (type == "dark") meType = DARK;
-    else if (type == "elemental") mbResistElemental = true;
-    else if (type == "all") mbResistAll = true;
-    else throw CL_Error("Bad magic resistance type of " + type);
+    meType = Magic::typeOf(getRequiredString("type",pAttributes));
+
+    if(meType == Magic::UNKNOWN)
+        throw CL_Error("Bad magic type on magicResistance");
 
     mfResistance = getRequiredFloat("resist", pAttributes);
-
 }
 
 
@@ -202,7 +171,7 @@ float MagicResistance::getResistance() const
 
 
 
-eMagicType MagicResistance::getType() const
+Magic::eMagicType MagicResistance::getType() const
 {
     return meType;
 }

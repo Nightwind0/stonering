@@ -28,6 +28,7 @@
 #include "Animation.h"
 #include "BattleMenu.h"
 #include "BattleMenuOption.h"
+#include "Monster.h"
 
 #include "CharacterDefinition.h"
 
@@ -349,6 +350,11 @@ Element * ElementFactory::createMappableObjects() const
     return new MappableObjects();
 }
 
+Element * ElementFactory::createMonster() const
+{
+    return new Monster();
+}
+
 
 Element * ElementFactory::createStatScript() const
 {
@@ -435,6 +441,7 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["mappableObjects"] = &ElementFactory::createMappableObjects;
     mCreateMethods["mo"] = &ElementFactory::createMappableObject;
     mCreateMethods["movement"] = &ElementFactory::createMovement;
+    mCreateMethods["monster"] = &ElementFactory::createMonster;
     mCreateMethods["namedItemElement"] = &ElementFactory::createNamedItemElement;
     mCreateMethods["namedItemRef"] = &ElementFactory::createNamedItemRef;
     mCreateMethods["onCountdown"] = &ElementFactory::createOnCountdown;

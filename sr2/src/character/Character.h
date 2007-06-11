@@ -2,6 +2,7 @@
 #define SR_CHARACTER_H
 
 #include "sr_defines.h"
+#include "Equipment.h"
 
 namespace StoneRing{
 
@@ -17,9 +18,7 @@ namespace StoneRing{
     enum eCharacterAttribute
     {
         CA_HP,
-        CA_HPMAX,
         CA_MP,
-        CA_MPMAX,
         CA_STR,              // Part of determining dmg of physical attack. 
         CA_DEF,              // Physical defense
         CA_DEX,              // Chances of a hit connecting (0-1)
@@ -29,6 +28,7 @@ namespace StoneRing{
         CA_LCK,              // Similar to initiative. Also helps in other aspects of the game...
         CA_JOY,              // Increases experience gained (Multiplier)
         CA_LEVEL,
+        _START_OF_TOGGLES,
         CA_DRAW_ILL,
         CA_DRAW_STONE,
         CA_DRAW_BERSERK,
@@ -42,6 +42,11 @@ namespace StoneRing{
         CA_CAN_ITEM,
         CA_CAN_RUN,
         CA_ALIVE,
+        _LAST_TOGGLE,
+        _MAXIMA_BASE,
+        CA_MAXHP = _MAXIMA_BASE + CA_HP,
+        CA_MAXMP = _MAXIMA_BASE + CA_MP,
+
         _LAST_CHARACTER_ATTR_
     };
 
@@ -63,6 +68,7 @@ namespace StoneRing{
         enum eGender { MALE, FEMALE, NEUTER };
 
         virtual eGender getGender() const=0;
+        virtual std::string getName() const=0;
 
         virtual void attributeMultiply(eCharacterAttribute attr, double mult) = 0;
         virtual void attributeAdd(eCharacterAttribute attr, double add)=0;
@@ -99,6 +105,7 @@ namespace StoneRing{
         Character();
 
         virtual eGender getGender() const;
+        virtual std::string getName() const { return mName; }
         virtual void attributeMultiply(eCharacterAttribute attr, double mult);
         virtual void attributeAdd(eCharacterAttribute attr, double add);
         // For boolean values.
@@ -111,6 +118,9 @@ namespace StoneRing{
         // Shortcuts to class data
         BattleMenu * getBattleMenu() const;
         std::string getClassName() const;
+        // Equipment
+        void equip(Equipment::eSlot slot, Equipment *pEquip);
+        void unequip(Equipment::eSlot);
 
     private:
         std::string mName;

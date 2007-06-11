@@ -16,7 +16,6 @@ namespace StoneRing{
         enum eAttribute
         {
             AC,
-            
             STEAL_MP,
             STEAL_HP,
             ELEMENTAL_RESIST, // Your AC for elemental magic
@@ -32,8 +31,6 @@ namespace StoneRing{
         int modifyArmorAttribute( eAttribute attr, int current );
         float modifyArmorAttribute ( eAttribute attr, float current );
         static eAttribute attributeForString ( const std::string str );
-
-                
     protected:
         void clearArmorEnhancers();
         void addArmorEnhancer (ArmorEnhancer * pEnhancer);

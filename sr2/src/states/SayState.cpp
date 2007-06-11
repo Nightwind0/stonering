@@ -59,7 +59,7 @@ void StoneRing::SayState::draw(const CL_Rect &screenRect,CL_GraphicContext * pGC
     pGC->fill_rect( mSpeakerRect, mSpeakerBGColor );
     pGC->fill_rect( mTextRect, mTextBGColor ) ;
 
-    mpSayOverlay->draw(mX,mY, pGC);
+    mpSayOverlay->draw(static_cast<float>(mX),static_cast<float>(mY), pGC);
             
 
     if(miText != mText.end())

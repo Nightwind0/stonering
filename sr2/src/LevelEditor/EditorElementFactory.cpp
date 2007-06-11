@@ -133,6 +133,11 @@ Element * EditorElementFactory::createMappableObjects()const
   return new Editor::MappableObjects();
 }
 
+Element * EditorElementFactory::createMonster() const
+{
+    return new Editor::Monster();
+}
+
 Element * EditorElementFactory::createMovement()const
 {
   return new Editor::Movement();

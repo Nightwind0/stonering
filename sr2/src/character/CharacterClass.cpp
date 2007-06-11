@@ -57,9 +57,9 @@ void CharacterClass::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 
     std::string gender = getImpliedString("gender",pAttributes, "either");
 
-    if(gender == "male") meGender = MALE;       
-    else if (gender == "female") meGender = FEMALE; 
-    else if (gender == "either") meGender = EITHER;
+    if(gender == "male") meGender = ICharacter::MALE;       
+    else if (gender == "female") meGender = ICharacter::FEMALE; 
+    else if (gender == "either") meGender = ICharacter::NEUTER;
 }
 
 bool CharacterClass::handleElement(eElement element, Element * pElement)
@@ -159,7 +159,7 @@ std::string CharacterClass::getName() const
 
 
         
-CharacterClass::eGender 
+ICharacter::eGender 
 CharacterClass::getGender() const
 {
     return meGender;

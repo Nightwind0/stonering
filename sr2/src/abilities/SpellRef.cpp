@@ -4,18 +4,10 @@ using namespace StoneRing;
 
 void SpellRef::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-    std::string spellType = getRequiredString("type",pAttributes);
+    meSpellType = Magic::typeOf(getRequiredString("type",pAttributes));
 
-    if(spellType == "elemental")
-        meSpellType = ELEMENTAL;
-    else if (spellType == "white")
-        meSpellType = WHITE;
-    else if (spellType == "status")
-        meSpellType = STATUS;
-    else if (spellType == "other")
-        meSpellType = OTHER;
-    else throw CL_Error("Bad spell type in spell ref.");
-
+    if(meSpellType == Magic::UNKNOWN)
+        throw CL_Error("Bad magic type in spell ref");
 }
 
 void SpellRef::handleText(const std::string &text)
@@ -43,7 +35,7 @@ bool SpellRef::operator==(const SpellRef &lhs )
 }
 
 
-SpellRef::eSpellType SpellRef::getSpellType() const
+Magic::eMagicType SpellRef::getSpellType() const
 {
     return meSpellType;
 }
