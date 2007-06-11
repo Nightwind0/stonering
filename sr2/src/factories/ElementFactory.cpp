@@ -29,6 +29,7 @@
 #include "BattleMenu.h"
 #include "BattleMenuOption.h"
 #include "Monster.h"
+#include "Stat.h"
 
 #include "CharacterDefinition.h"
 
@@ -138,6 +139,11 @@ Element * ElementFactory::createSystemItem()const
 Element * ElementFactory::createRune()const
 {
     return new Rune();
+}
+
+Element * ElementFactory::createStat()const
+{
+    return new Stat();
 }
 
 
@@ -463,6 +469,7 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["spell"] = &ElementFactory::createSpell;
     mCreateMethods["spellRef"] = &ElementFactory::createSpellRef;
     mCreateMethods["spriteRef"] = &ElementFactory::createSpriteRef;
+    mCreateMethods["stat"] = &ElementFactory::createStat;
     mCreateMethods["statScript"] = &ElementFactory::createStatScript;
     mCreateMethods["statusEffect"] = &ElementFactory::createStatusEffect;
     mCreateMethods["statusEffectModifier"] = &ElementFactory::createStatusEffectModifier;

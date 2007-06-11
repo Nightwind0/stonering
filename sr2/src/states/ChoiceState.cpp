@@ -75,7 +75,7 @@ void StoneRing::ChoiceState::draw(const CL_Rect &screenRect,CL_GraphicContext * 
     pGC->fill_rect( mQuestionRect, mQuestionBGColor );
     pGC->fill_rect( mTextRect, mTextBGColor ) ;
 
-    mpChoiceOverlay->draw(mX,mY,pGC);
+    mpChoiceOverlay->draw(static_cast<float>(mX),static_cast<float>(mY),pGC);
     mpChoiceFont->draw(mQuestionRect,mText,pGC);
 
     CL_Font * pLineFont = NULL;

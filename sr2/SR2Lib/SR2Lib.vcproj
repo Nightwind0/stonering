@@ -152,18 +152,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\src\character\Character.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\character\CharacterClass.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\character\CharacterDefinition.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\src\abilities\Magic.cpp"
 					>
 				</File>
@@ -205,6 +193,18 @@
 				</File>
 				<File
 					RelativePath="..\src\character\BattleMenuOption.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\character\Character.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\character\CharacterClass.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\character\CharacterDefinition.cpp"
 					>
 				</File>
 			</Filter>
@@ -497,6 +497,10 @@
 					RelativePath="..\src\monsters\Monster.cpp"
 					>
 				</File>
+				<File
+					RelativePath="..\src\monsters\Stat.cpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -749,6 +753,10 @@
 				>
 				<File
 					RelativePath="..\src\monsters\Monster.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\monsters\Stat.h"
 					>
 				</File>
 			</Filter>

@@ -103,8 +103,8 @@
 <!ELEMENT animationDefinition (skillRef,animation)>
 
 <!-- Monsters -->
-<!ELEMENT monster (script, itemRef*)>
-
+<!ELEMENT monster (script, stat*, itemRef*)>
+<!ELEMENT stat EMPTY>
 <!-- Attributes -->
 
 <!ATTLIST level name CDATA #REQUIRED>
@@ -241,12 +241,18 @@
 
 <!ATTLIST equipmentRef slot (right_hand|left_hand|head|body|shield|feet|right_ring|left_ring) #REQUIRED>
 
-<!ATTLIST addCharacter name CDATA #REQUIRED>
-<!ATTLIST addCharacter level CDATA #REQUIRED>
-<!ATTLIST removeCharacter name CDATA #REQUIRED>
-<!ATTLIST removeCharacter keepStuff (true|false) #IMPLIED> <!-- false -->
 
 <!-- Which animation are you overriding? -->
 <!ATTLIST animationDefinition animationRef CDATA #IMPLIED>
 
 <!ATTLIST weaponTypeSprite spriteRef CDATA #REQUIRED>
+
+<!ATTLIST monster name CDATA #REQUIRED>
+<!ATTLIST monster mode (manual|class) #REQUIRED>
+<!ATTLIST monster spriteResources CDATA #REQUIRED>
+<!ATTLIST monster class CDATA #IMPLIED> <!-- Allows the use of a character class -->
+<!ATTLIST monster level CDATA #IMPLIED>
+
+<!ATTLIST stat id CDATA #REQUIRED>
+<!ATTLIST stat value CDATA #IMPLIED> <!-- Either this, or toggle -->
+<!ATTLIST stat toggle (true|false) #IMPLIED> <!-- Either this or value -->

@@ -3,6 +3,7 @@
 
 #include "sr_defines.h"
 #include "Equipment.h"
+#include "Magic.h"
 
 namespace StoneRing{
 
@@ -17,6 +18,7 @@ namespace StoneRing{
     //str|dex|evd|mag|rst|spr
     enum eCharacterAttribute
     {
+        CA_INVALID, // Invalid attribute
         CA_HP,
         CA_MP,
         CA_STR,              // Part of determining dmg of physical attack. 
@@ -78,11 +80,10 @@ namespace StoneRing{
         virtual double getMinAttribute(eCharacterAttribute attr) const = 0;
         virtual double getAttribute(eCharacterAttribute attr) const = 0;
         virtual int getAttributeInt(eCharacterAttribute attr) const = 0;
-        virtual bool getToggle(eCharacterAttribute attr) const =0;
-
+        virtual double getSpellResistance(Magic::eMagicType type) const = 0;
+        virtual bool getToggle(eCharacterAttribute attr) const = 0;
         ///@todo
         // API for different battle animations TBD
-        
     private:
     };
 
@@ -112,6 +113,7 @@ namespace StoneRing{
         virtual void toggleAttribute(eCharacterAttribute attr, bool state);
         virtual double getMaxAttribute(eCharacterAttribute attr) const;
         virtual double getMinAttribute(eCharacterAttribute attr) const;
+        virtual double getSpellResistance(Magic::eMagicType type) const;
         virtual double getAttribute(eCharacterAttribute attr) const;
         virtual bool getToggle(eCharacterAttribute attr) const;
         virtual int getAttributeInt(eCharacterAttribute attr) const;
