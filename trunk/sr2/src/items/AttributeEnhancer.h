@@ -11,9 +11,19 @@ namespace StoneRing{
         virtual ~AttributeEnhancer();
         virtual eElement whichElement() const{ return EATTRIBUTEENHANCER; } 
 
+        enum eType
+        {
+            EADD=1,
+            EMULTIPLY=2,
+            ETOGGLE=4,
+            EADD_MULTIPLY = EADD | EMULTIPLY,
+        }; 
+
+        eType getType() const;
         uint getAttribute() const;
         int getAdd() const;
         float getMultiplier() const;
+        bool getToggle() const;
 
         // Uses IParty::modifyAttribute to modify the CURRENT player,
         // Meaning that the system must select the proper current player
@@ -28,10 +38,12 @@ namespace StoneRing{
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
         // Used to make sure that when we multiply the value to get it
         // back to what it was, we end up with the right values.
+        eType meType;
         int mnDelta;
         int mnAdd;
         float mfMultiplier;
         uint mnAttribute;
+        bool mbToggle;
         
     };
 };

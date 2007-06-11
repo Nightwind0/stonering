@@ -24,15 +24,17 @@ void ArmorType::loadAttributes(CL_DomNamedNodeMap * pAttributes)
     std::string slot = getRequiredString("slot",pAttributes);
 
     if(slot == "head")
-        meSlot = HEAD;
+        meSlot = Equipment::EHEAD;
     else if (slot == "shield")
-        meSlot = SHIELD;
+        meSlot = Equipment::EOFFHAND;
     else if (slot == "body")
-        meSlot = BODY;
+        meSlot = Equipment::EBODY;
     else if (slot == "feet")
-        meSlot = FEET;
+        meSlot = Equipment::EFEET;
     else if (slot == "hands")
-        meSlot = HANDS;
+        meSlot = Equipment::EHANDS;
+    else if (slot == "finger")
+        meSlot = Equipment::EANYFINGER;
 
 }
 
@@ -78,7 +80,7 @@ int ArmorType::getBaseRST() const
 }
 
 
-ArmorType::eSlot ArmorType::getSlot() const
+Equipment::eSlot ArmorType::getSlot() const
 {
     return meSlot;
 }

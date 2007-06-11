@@ -11,10 +11,10 @@ AttributeEnhancer::AttributeEnhancer():mnAdd(0),mfMultiplier(1)
 void AttributeEnhancer::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
     mnAttribute = CAFromString(getRequiredString("attribute", pAttributes));
-
+    meType = static_cast<eType>( getRequiredInt("type",pAttributes) );
     mfMultiplier = getImpliedFloat("multiplier",pAttributes,1);
-
     mnAdd = getImpliedInt("add",pAttributes,0);
+    mbToggle = getImpliedBool("toggle",pAttributes,false);
 }
 
 
@@ -38,6 +38,16 @@ float AttributeEnhancer::getMultiplier() const
     return mfMultiplier;
 }
 
+bool AttributeEnhancer::getToggle() const
+{
+    return mbToggle;
+}
+
+AttributeEnhancer::eType AttributeEnhancer::getType() const
+{
+    return meType;
+}
+
 // Uses IParty::modifyAttribute to modify the CURRENT player,
 // Meaning that the system must select the proper current player
 // when invoking. (By calling equip on the armor/weapon...)
@@ -47,14 +57,14 @@ void AttributeEnhancer::invoke()
         ->getSelectedCharacterGroup()
         ->getSelectedCharacter();
 
-    int original = pCharacter->getAttribute(static_cast<eCharacterAttribute>(mnAttribute));
+    eCharacterAttribute attr = static_cast<eCharacterAttribute>(mnAttribute);
 
-    pCharacter->modifyAttribute( static_cast<eCharacterAttribute>(mnAttribute), mnAdd, mfMultiplier);
-
-    int now = pCharacter->getAttribute(static_cast<eCharacterAttribute>(mnAttribute));
-
-    // So we can get back to how we were.
-    mnDelta =  original - now;
+    if(meType & EADD)
+        pCharacter->attributeAdd(attr,mnAdd);
+    if(meType & EMULTIPLY)
+        pCharacter->attributeMultiply(attr,mfMultiplier);
+    if(meType & ETOGGLE)
+        pCharacter->toggleAttribute(attr,mbToggle);
 }
 
 // Uses IParty::modifyAttribute to modify the CURRENT player,
@@ -67,10 +77,14 @@ void AttributeEnhancer::revoke()
         ->getSelectedCharacterGroup()
         ->getSelectedCharacter();
 
+    eCharacterAttribute attr = static_cast<eCharacterAttribute>(mnAttribute);
 
-    int add =  mnDelta;
-
-    pCharacter->modifyAttribute( static_cast<eCharacterAttribute>(mnAttribute), add, 1 );
+    if(meType & EMULTIPLY)
+        pCharacter->attributeMultiply(attr,  1 / mfMultiplier);
+    if(meType & EADD)
+        pCharacter->attributeAdd(attr, 0 - mnAdd);
+    if(meType & ETOGGLE)
+        pCharacter->toggleAttribute(attr, ! mbToggle );
 
 }
 

@@ -41,6 +41,7 @@ private:
     virtual Element * createMagicResistance ( ) const;
     virtual Element * createMappableObject()const;
     virtual Element * createMappableObjects()const;
+    virtual Element * createMonster()const;
     virtual Element * createMovement()const;
     virtual Element * createNamedItemElement() const;
     virtual Element * createNamedItemRef()const;

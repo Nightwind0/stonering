@@ -11,10 +11,24 @@ namespace StoneRing{
         Equipment();
         virtual ~Equipment();
 
-
+        enum eSlot
+        { 
+            EHAND=1,
+            EOFFHAND=2,
+            EHEAD=4,
+            EHANDS=8,
+            EBODY=16,
+            EFINGER1=32,
+            EFINGER2=64,
+            EFEET=128,
+            EANYFINGER = (EFINGER1 | EFINGER2),
+            EANYHAND = (EHAND | EOFFHAND),
+            EANYARMOR = (EHEAD | EHANDS | EBODY | EANYFINGER | EFEET),
+            EANY = (EANYHAND | EANYARMOR)
+        };
+                
         SpellRef * getSpellRef() const;
         RuneType * getRuneType() const;
-        
         bool hasSpell() const ;
         bool hasRuneType() const;
 
@@ -22,7 +36,7 @@ namespace StoneRing{
         void unequip();
         virtual void executeScript()=0;
         virtual bool equipCondition()=0;
-
+        // Mainly for display, as these should be automatically invoked on equip
         std::list<AttributeEnhancer*>::const_iterator getAttributeEnhancersBegin() const;
         std::list<AttributeEnhancer*>::const_iterator getAttributeEnhancersEnd() const;
 

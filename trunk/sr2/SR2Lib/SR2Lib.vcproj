@@ -37,7 +37,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(SOLUTIONDIR)/../steel/src/&quot;;&quot;$(SOLUTIONDIR)/src/items/armor/&quot;;&quot;$(SOLUTIONDIR)/src/items/weapons/&quot;;&quot;$(SOLUTIONDIR)/src/&quot;;&quot;$(SOLUTIONDIR)/src/party&quot;;&quot;$(SOLUTIONDIR)/src/level&quot;;&quot;$(SOLUTIONDIR)/src/factories&quot;;&quot;$(SOLUTIONDIR)/src/items&quot;;&quot;$(SOLUTIONDIR)/src/abilities&quot;;&quot;$(SOLUTIONDIR)/src/states&quot;;&quot;$(SOLUTIONDIR)/src/character&quot;;&quot;$(SOLUTIONDIR)/src/core&quot;"
+				AdditionalIncludeDirectories="&quot;$(SOLUTIONDIR)/src/monsters/&quot;;&quot;$(SOLUTIONDIR)/../steel/src/&quot;;&quot;$(SOLUTIONDIR)/src/items/armor/&quot;;&quot;$(SOLUTIONDIR)/src/items/weapons/&quot;;&quot;$(SOLUTIONDIR)/src/&quot;;&quot;$(SOLUTIONDIR)/src/party&quot;;&quot;$(SOLUTIONDIR)/src/level&quot;;&quot;$(SOLUTIONDIR)/src/factories&quot;;&quot;$(SOLUTIONDIR)/src/items&quot;;&quot;$(SOLUTIONDIR)/src/abilities&quot;;&quot;$(SOLUTIONDIR)/src/states&quot;;&quot;$(SOLUTIONDIR)/src/character&quot;;&quot;$(SOLUTIONDIR)/src/core&quot;"
 				PreprocessorDefinitions="WIN32;DEBUG;_WINDOWS;_DEBUG"
 				RuntimeLibrary="1"
 				DebugInformationFormat="3"
@@ -333,6 +333,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\abilities\Magic.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\level\MappableObject.cpp"
 				>
 			</File>
@@ -605,6 +609,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\abilities\Magic.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\level\MappableObject.h"
 				>
 			</File>
@@ -661,7 +669,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\sr_defines.h"
+				RelativePath="..\src\core\sr_defines.h"
 				>
 			</File>
 			<File

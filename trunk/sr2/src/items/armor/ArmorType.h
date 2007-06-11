@@ -2,6 +2,7 @@
 #define SR_ARMOR_TYPE_H
 
 #include "Element.h"
+#include "Equipment.h"
 
 namespace StoneRing{
     class ArmorType: public Element
@@ -18,8 +19,7 @@ namespace StoneRing{
         uint getBasePrice() const;
         int getBaseAC() const;
         int getBaseRST() const;
-        enum eSlot { HEAD, BODY, SHIELD, FEET, HANDS };
-        eSlot getSlot() const;
+        Equipment::eSlot getSlot() const;
 
         bool operator==(const ArmorType &lhs );
         
@@ -31,7 +31,7 @@ namespace StoneRing{
         uint mnBasePrice;
         int mnBaseAC;
         int mnBaseRST;
-        eSlot meSlot;
+        Equipment::eSlot meSlot;
 
     };
 };

@@ -2,6 +2,7 @@
 #define SR_DAMAGE_CATEGORY_H
 
 #include "Element.h"
+#include "Magic.h"
 
 namespace StoneRing{
     class DamageCategory
@@ -41,14 +42,11 @@ namespace StoneRing{
         MagicDamageCategory(CL_DomElement *pElement);
         virtual eElement whichElement() const{ return EMAGICDAMAGECATEGORY; }   
         virtual ~MagicDamageCategory();
-
         virtual eClass getClass() const { return MAGIC; }
-
-        eMagicType getType() const;
+        Magic::eMagicType getType() const;
     private:
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
-        eMagicType TypeFromString( const std::string &str );
-        eMagicType meType;
+        Magic::eMagicType meType;
     };
 };
 

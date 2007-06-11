@@ -701,6 +701,21 @@ CL_DomElement Editor::MappableObjects::createDomElement(CL_DomDocument &doc)cons
    return CL_DomElement(doc,"mappableObjects");
 }
 
+Editor::Monster::Monster()
+{
+}
+
+Editor::Monster::~Monster()
+{
+}
+
+CL_DomElement Editor::Movement::createDomElement(CL_DomDocument &doc) const
+{
+    CL_DomElement element(doc,"monster");
+
+    return element;
+}
+
 
 Editor::Movement::Movement()
 {

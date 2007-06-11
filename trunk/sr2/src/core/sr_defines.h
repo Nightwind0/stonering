@@ -31,11 +31,6 @@ del_fun_t<T> del_fun()
 std::string IntToString(const int &i);
 std::string FloatToString(const float &f);
 
-enum eMagicType
-{
-    FIRE, WATER, WIND, EARTH, HOLY, DARK, OTHER
-};
-
 
 #ifndef NDEBUG
 extern bool gbDebugStop;

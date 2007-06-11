@@ -1,4 +1,5 @@
 #include "DamageCategory.h"
+#include "Magic.h"
 
 using namespace StoneRing;
 
@@ -38,7 +39,7 @@ MagicDamageCategory::MagicDamageCategory()
 
 void MagicDamageCategory::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
-    meType = TypeFromString(getRequiredString("type",pAttributes));
+    meType = Magic::typeOf(getRequiredString("type",pAttributes));
 }
 
 MagicDamageCategory::~MagicDamageCategory()
@@ -46,20 +47,7 @@ MagicDamageCategory::~MagicDamageCategory()
 }
 
 
-eMagicType
-MagicDamageCategory::TypeFromString ( const std::string &str )
-{
-    if(str == "fire") return FIRE;
-    else if (str == "wind") return WIND;
-    else if (str == "water") return WATER;
-    else if (str == "earth") return EARTH;
-    else if (str == "holy") return HOLY;
-    else if (str == "dark") return DARK;
-    else if (str == "other") return OTHER;
-    else throw CL_Error("Unknown type " + str + " On magic damage category");
-}
-
-eMagicType MagicDamageCategory::getType() const
+Magic::eMagicType MagicDamageCategory::getType() const
 {
     return meType;
 }
