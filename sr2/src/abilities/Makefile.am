@@ -12,7 +12,9 @@ libabilities_la_SOURCES = AbilityManager.cpp \
 			SpellRef.cpp \
 			Spell.h \
 			StatusEffect.h \
-			StatusEffect.cpp
+			StatusEffect.cpp \
+			Magic.cpp \
+			Magic.h
 
 INCLUDES = 	-I@top_srcdir@/src/ \
 		-I@top_srcdir@/src/character \

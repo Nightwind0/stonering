@@ -67,6 +67,7 @@ AC_OUTPUT(Makefile \
 		   src/Makefile \
 		   src/abilities/Makefile \
 		   src/character/Makefile \
+		   src/monsters/Makefile \
 		   src/factories/Makefile \
 		   src/items/Makefile \
 		   src/level/Makefile \
