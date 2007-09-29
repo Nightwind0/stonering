@@ -2,6 +2,10 @@
 #define _SR_MONSTER_H
 
 #include "Character.h"
+#include "Stat.h"
+#include "ScriptElement.h"
+#include <map>
+#include <list>
 
 namespace StoneRing{
 
@@ -41,6 +45,14 @@ private:
     virtual void handleText(const std::string &);
     virtual void loadFinished();
 
+    std::map<eCharacterAttribute,Stat*> mStatMap;
+    std::list<ItemRef*> mItems;
+    ScriptElement *mpScript;
+    std::string mName;
+    std::string mSpriteResources;
+    bool mbClass;
+    CharacterClass *mpClass;
+    uint mnLevel;
 };
 
 };
