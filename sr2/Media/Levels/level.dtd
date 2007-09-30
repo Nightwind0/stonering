@@ -63,9 +63,12 @@
 <!ELEMENT magicResistance EMPTY>
 
 <!-- Animation DTD -->
-<!ELEMENT animation (par+)>
-<!ELEMENT par (script?,animationSpriteRef*)> <!-- If there are no animationSprites then its treated like a pause -->
+<!ELEMENT animation (par|seq)+>
+<!ELEMENT par (alterSprite*,script?,animationSpriteRef*,  strikeAnimationRef*)> <!-- If there are no animationSprites then its treated like a pause -->
+<!ELEMENT seq (alterSprite*,script?,animationSpriteRef*)>
+<!ELEMENT hide EMPTY>
 <!ELEMENT animationSpriteRef (#PCDATA)>
+<!ELEMENT strikeAnimationRef (#PCDATA)>
 
 <!-- Status Effect DTD -->
 <!ELEMENT statusEffectList (statusEffect*)>
@@ -89,21 +92,20 @@
 <!ELEMENT battleMenuOption (conditionScript?,script)>
 
 <!-- Characters -->
-<!ELEMENT character (animationDefinition*, weaponTypeSprite+)>
+<!ELEMENT character (animationDefinition*)>
 
 <!-- these next two need to be added as Actions ... and should be under the LevelFactory, in LevelElements, etc-->
 <!ELEMENT startingEquipmentRef (itemRef)>
 
-<!-- These define what the character should look like in battle with this weapon type equipped  --> 
-<!-- There has to be one for each weapon type, but its okay if they all refer to the same sprite -->
-<!-- These sprites define also what the character looks like when using the weapon, etc -->
-<!ELEMENT weaponTypeSprite (weaponTypeRef)>
 <!-- The skill, weapontype, weapon, armortype, and armor refs define when the animation should happen -->
 <!-- so, you can define an animation for a particular skill, or usage of a weapon type, or for a specific weapon -->
-<!ELEMENT animationDefinition (skillRef,animation)>
+<!ELEMENT animationDefinition (skillRef?,animation)>
+
+<!ELEMENT strikeAnimation (weaponTypeSprite, bindPoint+)>
+<!ELEMENT bindPoint EMPTY>
 
 <!-- Monsters -->
-<!ELEMENT monster (script, stat*, itemRef*)>
+<!ELEMENT monster (script, animationDefinition*, stat*, itemRef*)>
 <!ELEMENT stat EMPTY>
 <!-- Attributes -->
 
@@ -191,11 +193,32 @@
 <!ATTLIST animation name CDATA #REQUIRED>
 <!ATTLIST animation type (battle|world) #REQUIRED>
 <!ATTLIST par duration CDATA #REQUIRED>
-<!ATTLIST par hide (none|caster|caster_group|target|target_group|all) #IMPLIED> <!-- Defaults to none --> 
-<!ATTLIST animationSpriteRef initialFocus (screen|caster|target) #REQUIRED>
-<!ATTLIST animationSpriteRef initialFocusType (center|above|below|left|right|below_right|below_left|above_right|above_left) #IMPLIED> <!-- Center is default -->
-<!ATTLIST animationSpriteRef movementDirection (still|n|e|s|w|ne|nw|se|sw|toTarget|toCaster) #IMPLIED>
+<!-- use this animation on each target -->
+<!ATTLIST par for_each (true|false) #IMPLIED>
+<!ATTLIST seq duration CDATA #REQUIRED>
+<!-- use this animation on each target -->
+<!ATTLIST seq for_each (true|false) #IMPLIED>
+<!ATTLIST alterSprite who (none|caster|caster_group|target|target_group|all) #REQUIRED>
+<!ATTLIST alterSprite how (hide|half_size|double_size|darken|lighten) #REQUIRED>
+<!ATTLIST animationSpriteRef initialFocus (screen|caster|target|caster_group|target_group) #REQUIRED>
+<!ATTLIST animationSpriteRef initialFocusX (center|towards|away) #IMPLIED> <!-- default center -->
+<!ATTLIST animationSpriteRef initialFocusY (center|top|bottom) #IMPLIED> <!-- default center-->
+<!ATTLIST animationSpriteRef initialFocusBehind (true|false) #IMPLIED> <!-- default to false -->
+<!ATTLIST animationSpriteRef movementDirection (still|n|e|s|w|ne|nw|se|sw|away|towards|endFocus) #IMPLIED>
 <!ATTLIST animationSpriteRef movementStyle (straight|arc_over|arc_under|sine) #IMPLIED> <!-- Defaults to straight -->
+<!-- defaults to target-->
+<!ATTLIST animationSpriteRef endFocus (screen|caster|target|caster_group|target_group) #IMPLIED>
+<!-- defaults to center -->
+<!ATTLIST animationSpriteRef endFocusX (center|towards|away) #IMPLIED>
+<!-- defaults to center -->
+<!ATTLIST animationSpriteRef endFocusY (center|top|bottom) #IMPLIED>
+<!-- defaults to false-->
+<!ATTLIST animationSpriteRef endFocusBehind (true|false) #IMPLIED>
+<!-- These points are relevative to the sprite wielding the weapon-->
+<!ATTLIST bindPoint point1 CDATA #REQUIRED>
+<!ATTLIST bindPoint point2 CDATA #REQUIRED>
+<!ATTLIST strikeAnimation>
+
 <!ATTLIST battleMenuOption name CDATA #REQUIRED>
 
 <!-- Note: movement speed will be determined by the amount of pixels that need to be covered and the duration of the par -->
@@ -243,6 +266,7 @@
 
 
 <!-- Which animation are you overriding? -->
+<!ATTLIST animationDefinition type (skill|attack|recoil|ready|weak) #REQUIRED>
 <!ATTLIST animationDefinition animationRef CDATA #IMPLIED>
 
 <!ATTLIST weaponTypeSprite spriteRef CDATA #REQUIRED>
