@@ -26,6 +26,7 @@ public:
     };
 
     static eMagicType typeOf(const std::string &);
+    static std::string toString(eMagicType type);
 
 private:
 };

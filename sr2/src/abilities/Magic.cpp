@@ -1,5 +1,5 @@
 #include "Magic.h"
-
+#include <ClanLib/core.h>
 //UNKNOWN = 0,
 //FIRE=1, 
 //WATER=2,
@@ -40,4 +40,33 @@ Magic::eMagicType Magic::typeOf(const std::string &str)
     else if(str == "all")
         return ALL;
     else return UNKNOWN;
+}
+
+std::string Magic::toString(eMagicType type)
+{
+    switch(type)
+    {
+    case FIRE:
+        return "fire";
+    case EARTH:
+        return "earth";
+    case WATER:
+        return "water";
+    case WIND:
+        return "wind";
+    case DARK:
+        return "dark";
+    case OTHER:
+        return "other";
+    case HOLY:
+        return "holy";
+    case STATUS:
+        return "status";
+    case DIVINE:
+        return "devine";
+    case ALL:
+        return "all";
+    default:
+        throw CL_Error("Bad magic");
+    }
 }

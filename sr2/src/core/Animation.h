@@ -7,76 +7,157 @@
 #include <list>
 #include "sr_defines.h"
 #include "ScriptElement.h"
-
+#include "SpriteRef.h"
 
 
 namespace StoneRing{
 
-    class AnimationSpriteRef : public Element
+    class SpriteStub;
+    class SpriteMovement;
+    class AlterSprite;
+    class AnimationMask;
+
+    class AlterSprite : public Element
     {
     public:
-        AnimationSpriteRef();
-        virtual ~AnimationSpriteRef();
-        virtual eElement whichElement() const{ return EANIMATIONSPRITEREF; }
-        std::string getRef() const;
+        AlterSprite(){};
+        virtual ~AlterSprite(){}
+        virtual eElement whichElement() const { return EALTERSPRITE; }
+        eWho getWho() const;
+        enum eAlter 
+        {
+            HIDE, SMALLER_SIZE, LARGER_SIZE, HALF_SIZE, DOUBLE_SIZE, NEGATIVE,
+            X_FLIP, Y_FLIP, GRAYSCALE, GREENSCALE, REDSCALE, BLUESCALE 
+        }; 
 
-        enum eInitialFocus { SCREEN, CASTER, TARGET };
-        enum eInitialFocusType {CENTER, ABOVE, BELOW, LEFT, RIGHT, BELOW_RIGHT, BELOW_LEFT, ABOVE_RIGHT, ABOVE_LEFT };
-        enum eMovementDirection { STILL, N, E, S, W, NE, NW, SE, SW, TO_TARGET, TO_CASTER };
+    private:
+        static eWho whoFromString(const std::string &str);
+        static eAlter alterFromString(const std::string &str);
+        eWho meWho; 
+        eAlter meAlter;
+
+    };
+
+    class SpriteStub : public Element
+    {
+    public:
+        SpriteStub();
+        virtual ~SpriteStub();
+        virtual eElement whichElement() const { return ESPRITESTUB; }
+        enum eBindTo { NONE, WEAPON, CHARACTER };
+
+        std::string getName() const;
+        eBindTo getBindTo() const;
+
+    private:
+        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+        eBindTo meBindTo;
+        std::string mName;
+    };
+
+    class SpriteAnimation : public Element
+    {
+    public:
+        SpriteAnimation();
+        virtual ~SpriteAnimation();
+        virtual eElement whichElement() const { return ESPRITEANIMATION; }
+
+        std::string getName() const { return mName; }
+        bool hasSpriteRef() const { return mpSpriteRef != NULL; }
+        bool hasSpriteStub() const { return mpStub != NULL; }
+        bool hasAlterSprite() const { return mpAlterSprite != NULL; }
+        bool hasSpriteMovement() const { return mpMovement != NULL; }
+
+        SpriteRef *getSpriteRef() const { return mpSpriteRef; }
+        SpriteStub *getSpriteStub() const { return mpStub; }
+        SpriteMovement *getSpriteMovement() const { return mpMovement; }
+        AlterSprite *getAlterSprite() const { return mpAlterSprite; }
+    private:
+        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+        virtual bool handleElement(eElement element, Element * pElement);
+        virtual void loadFinished();
+
+        std::string mName;
+        SpriteRef *mpSpriteRef;
+        SpriteStub *mpStub;
+        SpriteMovement *mpMovement;
+        AlterSprite *mpAlterSprite;
+    };
+
+    class SpriteMovement : public Element
+    {
+    public:
+        SpriteMovement();
+        virtual ~SpriteMovement();
+        virtual eElement whichElement() const{ return ESPRITEMOVEMENT; }
+
+        enum eFocus  { SCREEN, CASTER, TARGET, CASTER_GROUP, TARGET_GROUP };
+        enum eFocusX { X_CENTER, TOWARDS, AWAY, LEFT, RIGHT };
+        enum eFocusY { Y_CENTER, TOP, BOTTOM };
+        enum eFocusZ { BACK, FRONT };
+
+        struct Focus
+        {
+            eFocus meFocusType;
+            eFocusX meFocusX;
+            eFocusY meFocusY;
+            eFocusZ meFocusZ; 
+        };
+ 
+        enum eMovementDirection { STILL, N, E, S, W, NE, NW, SE, SW, MOVE_AWAY, MOVE_TOWARDS, END_FOCUS };
         enum eMovementStyle {STRAIGHT, ARC_OVER, ARC_UNDER, SINE };
 
-        eInitialFocus getInitialFocus() const;
-        eInitialFocusType getInitialFocusType() const;
+        Focus getInitialFocus() const;
+        bool hasEndFocus() const;
+        Focus getEndFocus() const;
+        
         eMovementDirection getMovementDirection() const;
         eMovementStyle getMovementStyle() const;
         CL_DomElement createDomElement(CL_DomDocument &doc) const;
 
     private:
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-        //  virtual bool handleElement(eElement element, Element * pElement);
-        virtual void handleText(const std::string &text);
+        //virtual bool handleElement(eElement element, Element * pElement);
+        //virtual void handleText(const std::string &text);
 
     private:
+        static eFocusX focusXFromString(const std::string &str);
+        static eFocusY focusYFromString(const std::string &str);
+        static eFocusZ focusZFromString(const std::string &str);
+        static eFocus focusTypeFromString ( const std::string &str );
+        static eMovementDirection movementDirectionFromString ( const std::string &str );
+        static eMovementStyle   movementStyleFromString( const std::string &str );
 
-        eInitialFocus initialFocusFromString(const std::string &str);
-        eInitialFocusType initialFocusTypeFromString ( const std::string &str );
-        eMovementDirection movementDirectionFromString ( const std::string &str );
-        eMovementStyle     movementStyleFromString( const std::string &str );
-        std::string mAnimationName;
-        std::string mRef;
-        eInitialFocus meInitialFocus;
-        eInitialFocusType meInitialFocusType;
+        bool mbEndFocus;
+        Focus mInitialFocus;
+        Focus mEndFocus;
         eMovementDirection meMovementDirection;
         eMovementStyle meMovementStyle;
     };
 
-    class Par : public Element
+    class Phase : public Element
     {
     public:
-        Par();
-        virtual ~Par();
-        virtual eElement whichElement() const{ return EPAR; }   
+        Phase();
+        virtual ~Phase();
+        virtual eElement whichElement() const{ return EPHASE; }   
         CL_DomElement createDomElement(CL_DomDocument &) const;
 
+        bool inParallel()const;
         uint getDurationMs() const;
-
-        enum eHide {NONE, CASTER, CASTER_GROUP, TARGET, TARGET_GROUP, ALL };
-
-        eHide getHide() const;
 
         void execute();
 
-        std::list<AnimationSpriteRef*>::const_iterator getAnimationSpriteRefsBegin() const ;
-        std::list<AnimationSpriteRef*>::const_iterator getAnimationSpriteRefsEnd() const;
+        std::list<SpriteAnimation*>::const_iterator getSpriteAnimationsBegin() const ;
+        std::list<SpriteAnimation*>::const_iterator getSpriteAnimationsEnd() const;
 
     private:
         virtual bool handleElement(eElement element, Element * pElement );
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-        eHide hideFromString(const std::string &str);
+        bool mbParallel;
         uint mnDuration;
-        eHide meHide;
         ScriptElement *mpScript;
-        std::list<AnimationSpriteRef*> mAnimationSpriteRefs;
+        std::list<SpriteAnimation*> mSpriteAnimations;
     };
 
 
@@ -92,13 +173,13 @@ namespace StoneRing{
         enum eType { BATTLE, WORLD };
         eType getType() const;
 
-        std::list<Par*>::const_iterator getParsBegin() const;
-        std::list<Par*>::const_iterator getParsEnd() const;
+        std::list<Phase*>::const_iterator getPhasesBegin() const;
+        std::list<Phase*>::const_iterator getPhasesEnd() const;
 
     private:
         virtual bool handleElement(eElement element, Element * pElement );
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-        std::list<Par*> mPars;
+        std::list<Phase*> mPhases;
         eType meType;
         std::string mName;
     };

@@ -31,6 +31,11 @@ del_fun_t<T> del_fun()
 std::string IntToString(const int &i);
 std::string FloatToString(const float &f);
 
+///////////////////////////////////////////////////////////////////////
+//
+//       Enums
+//
+enum eWho {NONE, CASTER, CASTER_GROUP, TARGET, TARGET_GROUP, ALL };
 
 #ifndef NDEBUG
 extern bool gbDebugStop;

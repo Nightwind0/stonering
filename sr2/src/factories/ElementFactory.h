@@ -16,9 +16,8 @@ namespace StoneRing
 
         virtual Element * createElement( const std::string &element_name );
     protected:
+        virtual Element * createAlterSprite() const;
         virtual Element * createAnimation() const;
-        virtual Element * createAnimationDefinition() const;
-        virtual Element * createAnimationSpriteRef() const;
         virtual Element * createArmorClass()const; 
         virtual Element * createArmorClassRef()const; 
         virtual Element * createArmorEnhancer()const; 
@@ -53,7 +52,7 @@ namespace StoneRing
         virtual Element * createOnCountdown()const;
         virtual Element * createOnInvoke()const;
         virtual Element * createOnRemove()const;
-        virtual Element * createPar() const;
+        virtual Element * createPhase() const;
         virtual Element * createRegularItem()const;  
         virtual Element * createRune()const; 
         virtual Element * createRuneType()const; 
@@ -63,7 +62,11 @@ namespace StoneRing
         virtual Element * createSpecialItem()const; 
         virtual Element * createSpell() const;
         virtual Element * createSpellRef()const; 
+        virtual Element * createSpriteAnimation()const;
+        virtual Element * createSpriteDefinition()const;
+        virtual Element * createSpriteMovement()const;
         virtual Element * createSpriteRef()const;
+        virtual Element * createSpriteStub()const;
         virtual Element * createStat() const;
         virtual Element * createStatScript() const;
         virtual Element * createStatusEffect() const;
@@ -82,7 +85,6 @@ namespace StoneRing
         virtual Element * createWeaponType()const; 
         virtual Element * createWeaponTypeExclusionList() const;
         virtual Element * createWeaponTypeRef()const; 
-        virtual Element * createWeaponTypeSprite() const;
     private:
 
         typedef Element * (ElementFactory::* CreateMethod)() const;

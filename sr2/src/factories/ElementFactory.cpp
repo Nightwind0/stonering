@@ -271,15 +271,6 @@ Element * ElementFactory::createCharacterDefinition() const
     return new CharacterDefinition();
 }
 
-Element * ElementFactory::createAnimationDefinition() const
-{
-    return new AnimationDefinition();
-}
-
-Element * ElementFactory::createWeaponTypeSprite() const
-{
-    return new WeaponTypeSprite();
-}
 
 Element * ElementFactory::createLevel() const
 {
@@ -367,15 +358,9 @@ Element * ElementFactory::createStatScript() const
     return new StatScript();
 }
 
-
-Element * ElementFactory::createAnimationSpriteRef() const
+Element * ElementFactory::createPhase() const
 {
-    return new AnimationSpriteRef();
-}
-
-Element * ElementFactory::createPar() const
-{
-    return new Par;
+    return new Phase();
 }
 
 Element * ElementFactory::createSkillRef() const
@@ -398,6 +383,30 @@ Element * ElementFactory::createBattleMenuOption() const
     return new BattleMenuOption();
 }
 
+Element * ElementFactory::createSpriteMovement() const
+{
+    return new SpriteMovement();
+}
+
+Element * ElementFactory::createSpriteAnimation() const
+{
+    return new SpriteAnimation();
+}
+
+Element * ElementFactory::createSpriteStub() const
+{
+    return new SpriteStub();
+}
+
+Element * ElementFactory::createSpriteDefinition() const
+{
+    return new SpriteDefinition();
+}
+
+Element * ElementFactory::createAlterSprite() const
+{
+    return new AlterSprite();
+}
 
 Element * ElementFactory::createElement( const std::string & element )
 {
@@ -421,8 +430,7 @@ ElementFactory::ElementFactory()
 void ElementFactory::registerCreateMethods()
 {
     mCreateMethods["animation"] = &StoneRing::ElementFactory::createAnimation;
-    mCreateMethods["animationDefinition"] = &ElementFactory::createAnimationDefinition;
-    mCreateMethods["animationSpriteRef"] = &ElementFactory::createAnimationSpriteRef;
+    mCreateMethods["spriteDefinition"] = &ElementFactory::createSpriteDefinition;
     mCreateMethods["armorClass"] = &ElementFactory::createArmorClass;
     mCreateMethods["armorClassRef"] = &ElementFactory::createArmorClassRef;
     mCreateMethods["armorEnhancer"] = &ElementFactory::createArmorEnhancer;
@@ -457,7 +465,7 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["onEquip"] = &ElementFactory::createOnEquip;
     mCreateMethods["onUnequip"] = &ElementFactory::createOnUnequip;
     mCreateMethods["onStep"] = &ElementFactory::createOnStep;
-    mCreateMethods["par"] = &ElementFactory::createPar;
+    mCreateMethods["phase"] = &ElementFactory::createPhase;
 //    mCreateMethods[Element::EPREREQSKILLREF] = &ElementFactory::createPreReqSkillRef;
     mCreateMethods["regularItem"] = &ElementFactory::createRegularItem;
     mCreateMethods["rune"] = &ElementFactory::createRune;
@@ -468,7 +476,10 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["specialItem"] = &ElementFactory::createSpecialItem;
     mCreateMethods["spell"] = &ElementFactory::createSpell;
     mCreateMethods["spellRef"] = &ElementFactory::createSpellRef;
+    mCreateMethods["spriteAnimation"] = &ElementFactory::createSpriteAnimation;
+    mCreateMethods["spriteMovement"] = &ElementFactory::createSpriteMovement;
     mCreateMethods["spriteRef"] = &ElementFactory::createSpriteRef;
+    mCreateMethods["spriteStub"] = &ElementFactory::createSpriteStub;
     mCreateMethods["stat"] = &ElementFactory::createStat;
     mCreateMethods["statScript"] = &ElementFactory::createStatScript;
     mCreateMethods["statusEffect"] = &ElementFactory::createStatusEffect;
@@ -487,7 +498,7 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["weaponType"] = &ElementFactory::createWeaponType;
     mCreateMethods["weaponTypeExclusionList"] = &ElementFactory::createWeaponTypeExclusionList;
     mCreateMethods["weaponTypeRef"] = &ElementFactory::createWeaponTypeRef;
-    mCreateMethods["weaponTypeSprite"] = &ElementFactory::createWeaponTypeSprite;
+    mCreateMethods["alterSprite"] = &ElementFactory::createAlterSprite;
 }
 
 

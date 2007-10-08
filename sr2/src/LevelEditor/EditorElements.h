@@ -32,7 +32,8 @@
 #include "WeaponType.h"
 #include "WeaponTypeExclusionList.h"
 #include "WeaponTypeRef.h"
-
+#include "SpriteRef.h"
+#include "Monster.h"
 
 #define WRITE_CHILD(element,x,doc) (element.append_child(               \
                                         dynamic_cast<WriteableElement*>(x) \
@@ -57,20 +58,39 @@ public:
 private:
 };
 
-class AnimationDefinition : public StoneRing::AnimationDefinition, public WriteableElement
+class SpriteDefinition : public StoneRing::SpriteDefinition, public WriteableElement
 {
 public:
-    AnimationDefinition();
-    virtual ~AnimationDefinition();
+    SpriteDefinition();
+    virtual ~SpriteDefinition();
     virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
 private:
 };
 
-class AnimationSpriteRef : public StoneRing::AnimationSpriteRef, public WriteableElement
+class SpriteAnimation : public StoneRing::SpriteAnimation, public WriteableElement
 {
  public:
-	AnimationSpriteRef();
-	virtual ~AnimationSpriteRef();
+	SpriteAnimation();
+	virtual ~SpriteAnimation();
+    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+ private:
+};
+
+class AlterSprite : public StoneRing::AlterSprite, public WriteableElement
+{
+ public:
+	AlterSprite();
+	virtual ~AlterSprite();
+    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+ private:
+};
+
+
+class SpriteMovement : public StoneRing::SpriteMovement, public WriteableElement
+{
+ public:
+	SpriteMovement();
+	virtual ~SpriteMovement();
     virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
  private:
 };
@@ -368,11 +388,11 @@ class OnRemove : public StoneRing::OnRemove, public WriteableElement
     virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
  private:
 };
-class Par : public StoneRing::Par, public WriteableElement
+class Phase : public StoneRing::Phase, public WriteableElement
 {
  public:
-	Par();
-	virtual ~Par();
+	Phase();
+	virtual ~Phase();
     virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
  private:
 };
@@ -464,6 +484,16 @@ class SpriteRef : public StoneRing::SpriteRef, public WriteableElement
     void setType( StoneRing::SpriteRef::eType dir);
  private:
 };
+
+class SpriteStub : public StoneRing::SpriteStub, public WriteableElement
+{
+public:
+    SpriteStub();
+    virtual ~SpriteStub();
+    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+private:
+};
+
 class StatScript : public StoneRing::StatScript, public WriteableElement
 {
  public:
@@ -619,14 +649,7 @@ class WeaponTypeRef : public StoneRing::WeaponTypeRef, public WriteableElement
     virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
  private:
 };
-class WeaponTypeSprite : public StoneRing::WeaponTypeSprite, public WriteableElement
-{
- public:
-	WeaponTypeSprite();
-	virtual ~WeaponTypeSprite();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
- private:
-};
+
 
 }
 #endif
