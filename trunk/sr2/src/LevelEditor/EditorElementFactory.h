@@ -15,9 +15,8 @@ public:
     EditorElementFactory(){}
     virtual ~EditorElementFactory(){}
 private:
+    virtual Element * createAlterSprite() const;
     virtual Element * createAnimation() const;
-    virtual Element * createAnimationDefinition() const;
-    virtual Element * createAnimationSpriteRef() const;
     virtual Element * createArmorClass()const; 
     virtual Element * createArmorClassRef()const; 
     virtual Element * createArmorEnhancer()const; 
@@ -52,7 +51,7 @@ private:
     virtual Element * createOnCountdown()const;
     virtual Element * createOnInvoke()const;
     virtual Element * createOnRemove()const;
-    virtual Element * createPar() const;
+    virtual Element * createPhase() const;
     virtual Element * createRegularItem()const;  
     virtual Element * createRune()const; 
     virtual Element * createRuneType()const; 
@@ -62,8 +61,12 @@ private:
     virtual Element * createSpecialItem()const; 
     virtual Element * createSpell() const;
     virtual Element * createSpellRef()const; 
+    virtual Element * createSpriteAnimation()const;
+    virtual Element * createSpriteDefinition()const;
+    virtual Element * createSpriteMovement() const;
     virtual Element * createSpriteRef()const;
     virtual Element * createStatScript() const;
+    virtual Element * createSpriteStub() const;
     virtual Element * createStatusEffect() const;
     virtual Element * createStatusEffectModifier() const;
     virtual Element * createSystemItem()const; 
@@ -80,7 +83,6 @@ private:
     virtual Element * createWeaponType()const; 
     virtual Element * createWeaponTypeExclusionList() const;
     virtual Element * createWeaponTypeRef()const; 
-    virtual Element * createWeaponTypeSprite() const;
 };
 
 };

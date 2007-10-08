@@ -2,6 +2,7 @@
 #include "Level.h"
 #include "GraphicsManager.h"
 #include "Graphic.h"
+#include "SpriteRef.h"
 
 class StoneRing::Tilemap;
 

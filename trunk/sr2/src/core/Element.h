@@ -24,10 +24,9 @@ namespace StoneRing
 
 // These MUST be kept alphabetized
         enum eElement
-        {    
+        {   
+            EALTERSPRITE, 
             EANIMATION,
-            EANIMATIONDEFINITION,
-            EANIMATIONSPRITEREF,
             EARMORCLASS,
             EARMORCLASSREF,
             EARMORENHANCER,
@@ -62,7 +61,7 @@ namespace StoneRing
             EONROUND,
             EONSTEP,
             EONUNEQUIP,
-            EPAR,
+            EPHASE,
             EPREREQSKILLREF,
             EREGULARITEM,
             ERUNE,
@@ -73,7 +72,11 @@ namespace StoneRing
             ESPECIALITEM,
             ESPELL,
             ESPELLREF,
+            ESPRITEANIMATION,
+            ESPRITEDEFINITION,
+            ESPRITEMOVEMENT,
             ESPRITEREF,
+            ESPRITESTUB,
             ESTAT,
             ESTATSCRIPT,
             ESTATUSEFFECT,
@@ -92,7 +95,6 @@ namespace StoneRing
             EWEAPONTYPE,
             EWEAPONTYPEEXCLUSIONLIST,
             EWEAPONTYPEREF,
-            EWEAPONTYPESPRITE,
             __END_OF_ELEMENTS__
         };
 

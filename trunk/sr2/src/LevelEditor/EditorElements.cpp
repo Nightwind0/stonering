@@ -1,10 +1,64 @@
 #include "EditorElements.h"
 #include "IApplication.h"
 #include "GraphicsManager.h"
+#include "Magic.h"
 
 using namespace Editor;
+using StoneRing::Magic;
 
 
+Editor::SpriteDefinition::SpriteDefinition()
+{
+}
+
+Editor::SpriteDefinition::~SpriteDefinition()
+{
+}
+
+CL_DomElement Editor::SpriteDefinition::createDomElement(CL_DomDocument &doc)const
+{
+    return CL_DomElement(doc,"spriteDefinition");
+}
+
+Editor::SpriteAnimation::SpriteAnimation()
+{
+}
+
+Editor::SpriteAnimation::~SpriteAnimation()
+{
+}
+
+CL_DomElement Editor::SpriteAnimation::createDomElement(CL_DomDocument &doc)const
+{
+    return CL_DomElement(doc,"spriteAnimation");
+}
+ 
+
+Editor::AlterSprite::AlterSprite()
+{
+}
+
+Editor::AlterSprite::~AlterSprite()
+{
+}
+
+CL_DomElement Editor::AlterSprite::createDomElement(CL_DomDocument &doc)const
+{
+    return CL_DomElement(doc,"alterSprite");
+}
+
+Editor::SpriteMovement::SpriteMovement()
+{
+}
+
+Editor::SpriteMovement::~SpriteMovement()
+{
+}
+
+CL_DomElement Editor::SpriteMovement::createDomElement(CL_DomDocument &doc)const
+{
+    return CL_DomElement(doc,"spriteMovement");
+}
 
 Editor::Animation::Animation()
 {
@@ -17,29 +71,6 @@ CL_DomElement Editor::Animation::createDomElement(CL_DomDocument &doc)const
     return CL_DomElement(doc,"animation");
 }
 
-
-Editor::AnimationDefinition::AnimationDefinition()
-{
-}
-Editor::AnimationDefinition::~AnimationDefinition()
-{
-}
-CL_DomElement Editor::AnimationDefinition::createDomElement(CL_DomDocument &doc)const
-{
-    return CL_DomElement(doc,"animationDefinition");
-}
-
-
-Editor::AnimationSpriteRef::AnimationSpriteRef()
-{
-}
-Editor::AnimationSpriteRef::~AnimationSpriteRef()
-{
-}
-CL_DomElement Editor::AnimationSpriteRef::createDomElement(CL_DomDocument &doc)const
-{
-    return CL_DomElement(doc,"animationSpriteRef");
-}
 
 Editor::ArmorClass::ArmorClass()
 {
@@ -709,7 +740,7 @@ Editor::Monster::~Monster()
 {
 }
 
-CL_DomElement Editor::Movement::createDomElement(CL_DomDocument &doc) const
+CL_DomElement Editor::Monster::createDomElement(CL_DomDocument &doc) const
 {
     CL_DomElement element(doc,"monster");
 
@@ -878,15 +909,15 @@ CL_DomElement Editor::OnRemove::createDomElement(CL_DomDocument &doc)const
 }
 
 
-Editor::Par::Par()
+Editor::Phase::Phase()
 {
 }
-Editor::Par::~Par()
+Editor::Phase::~Phase()
 {
 }
-CL_DomElement Editor::Par::createDomElement(CL_DomDocument &doc)const
+CL_DomElement Editor::Phase::createDomElement(CL_DomDocument &doc)const
 {
-    return CL_DomElement(doc,"par");
+    return CL_DomElement(doc,"Phase");
 }
 
 
@@ -899,6 +930,17 @@ Editor::RegularItem::~RegularItem()
 CL_DomElement Editor::RegularItem::createDomElement(CL_DomDocument &doc)const
 {
     return CL_DomElement(doc,"regularItem");
+}
+
+Editor::SpriteStub::SpriteStub()
+{
+}
+Editor::SpriteStub::~SpriteStub()
+{
+}
+CL_DomElement Editor::SpriteStub::createDomElement(CL_DomDocument &doc)const
+{
+    return CL_DomElement(doc,"spriteStub");
 }
 
 
@@ -1030,23 +1072,7 @@ CL_DomElement Editor::SpellRef::createDomElement(CL_DomDocument &doc)const
 {
     CL_DomElement element(doc,"spellRef");
 
-    std::string spellType;
-
-    switch(meSpellType)
-    {
-    case ELEMENTAL:
-        spellType = "elemental";
-        break;
-    case WHITE:
-        spellType = "white";
-        break;
-    case STATUS:
-        spellType = "status";
-        break;
-    case OTHER:
-        spellType = "other";
-        break;
-    }
+    std::string spellType = Magic::toString(meSpellType);
 
     element.set_attribute("type", spellType );
 
@@ -1484,17 +1510,6 @@ CL_DomElement Editor::WeaponTypeRef::createDomElement(CL_DomDocument &doc)const
     element.append_child ( text );
 
     return element;
-}
-
-Editor::WeaponTypeSprite::WeaponTypeSprite()
-{
-}
-Editor::WeaponTypeSprite::~WeaponTypeSprite()
-{
-}
-CL_DomElement Editor::WeaponTypeSprite::createDomElement(CL_DomDocument &doc)const
-{
-    return CL_DomElement(doc,"weaponTypeSprite");
 }
 
 

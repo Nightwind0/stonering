@@ -3,10 +3,12 @@
 
 #include "Element.h"
 #include "Character.h" // For the enums
+#include "SpriteRef.h"
 
 
 namespace StoneRing
 {
+    class SpriteDefinition;
 
     eCharacterAttribute CharAttributeFromString(const std::string &str); 
     eCommonAttribute CommonAttributeFromString(const std::string &str);
@@ -30,52 +32,33 @@ namespace StoneRing
         std::string mSpriteRef;
         std::string mName;
         // Should these both be maps? maybe later...
-        std::list<AnimationDefinition*> mAnimationDefinitions;
-        std::list<WeaponTypeSprite*> mWeaponTypeSprites;
+        std::list<SpriteDefinition*> mSpriteDefinitions;
         CharacterClass * mpClass;
 
     };
 
-    class AnimationDefinition : public Element
+    class SpriteDefinition : public Element
     {
     public:
-        AnimationDefinition();
-        virtual ~AnimationDefinition();
+        SpriteDefinition();
+        virtual ~SpriteDefinition();
 
-        virtual eElement whichElement() const { return EANIMATIONDEFINITION; }
-
-        SkillRef * getSkillRef() const;
-        Animation * getAnimation() const;
+        virtual eElement whichElement() const { return ESPRITEDEFINITION; }
+        std::string getName() const { return mName; }
+        bool hasBindPoints() const;
+        int getBindPoint1() const { return mnBindPoint1; }
+        int getBindPoint2() const { return mnBindPoint2; }
+        SpriteRef * getSpriteRef() const { return mpSpriteRef; }
 
     private:
         virtual bool handleElement(eElement, Element * );
         virtual void loadAttributes(CL_DomNamedNodeMap *);
-
-        SkillRef * mpSkillRef;
-        Animation * mpAnimation; 
-        std::string mAnimationRef;
+        std::string mName;
+        SpriteRef * mpSpriteRef;
+        bool mbHasBindPoints;
+        int mnBindPoint1;
+        int mnBindPoint2;
     };
-
-    class WeaponTypeSprite : public Element
-    {
-    public:
-        WeaponTypeSprite();
-        virtual ~WeaponTypeSprite();
-
-        virtual eElement whichElement() const { return EWEAPONTYPESPRITE; }
-        WeaponTypeRef * getWeaponTypeRef() const;
-        std::string getSpriteRef() const;
-
-
-    private:
-        virtual bool handleElement(eElement, Element * );
-        virtual void loadAttributes(CL_DomNamedNodeMap *);
-
-        WeaponTypeRef * mpWeaponTypeRef;
-        std::string mSpriteRef;
-    };
-
-
 
 
 };

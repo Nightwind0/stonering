@@ -119,11 +119,8 @@ bool StoneRing::CharacterDefinition::handleElement(eElement element, StoneRing::
 {
     switch(element)
     {
-    case EANIMATIONDEFINITION:
-        mAnimationDefinitions.push_back(dynamic_cast<AnimationDefinition*>(pElement));
-        break;
-    case EWEAPONTYPESPRITE:
-        mWeaponTypeSprites.push_back(dynamic_cast<WeaponTypeSprite*>(pElement));
+    case ESPRITEDEFINITION:
+        mSpriteDefinitions.push_back(dynamic_cast<SpriteDefinition*>(pElement));
         break;
     default:
         return false;
@@ -147,39 +144,23 @@ void StoneRing::CharacterDefinition::loadAttributes(CL_DomNamedNodeMap *pAttribu
 
 
 
-StoneRing::AnimationDefinition::AnimationDefinition():mpSkillRef(NULL),mpAnimation(NULL)
+StoneRing::SpriteDefinition::SpriteDefinition():mpSpriteRef(NULL),mbHasBindPoints(false)
 {
 }
 
-StoneRing::AnimationDefinition::~AnimationDefinition()
+StoneRing::SpriteDefinition::~SpriteDefinition()
 {
 }
 
 
-StoneRing::SkillRef * 
-StoneRing::AnimationDefinition::getSkillRef() const
-{
-    return mpSkillRef;
-}
 
-StoneRing::Animation * 
-StoneRing::AnimationDefinition::getAnimation() const
-{
-    return mpAnimation;
-}
-
-bool StoneRing::AnimationDefinition::handleElement(eElement element, Element * pElement)
+bool StoneRing::SpriteDefinition::handleElement(eElement element, Element * pElement)
 {
     switch(element)
     {
-    case ESKILLREF:
-        if(mpSkillRef) throw CL_Error("More than one skill ref specified for animation definition");
-        mpSkillRef = dynamic_cast<SkillRef*>(pElement);
-        break;
-    case EANIMATION:
-        if(mpSkillRef) throw CL_Error("More than one animation specified for animation definition");
-        mpAnimation = dynamic_cast<Animation*>(pElement);
-        break;
+    case ESPRITEREF:
+        if(mpSpriteRef) throw CL_Error("Sprite Ref already defined for Sprite Definition");
+        mpSpriteRef = dynamic_cast<SpriteRef*>(pElement);
     default:
         return false;
     }
@@ -187,52 +168,16 @@ bool StoneRing::AnimationDefinition::handleElement(eElement element, Element * p
     return true;
 }
 
-void StoneRing::AnimationDefinition::loadAttributes(CL_DomNamedNodeMap *pAttributes)
+void StoneRing::SpriteDefinition::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
-    mAnimationRef = getImpliedString("animationRef",pAttributes,"");
-}
+    mName = getRequiredString("name",pAttributes);
 
-
-StoneRing::WeaponTypeSprite::WeaponTypeSprite():mpWeaponTypeRef(NULL)
-{
-}
-
-StoneRing::WeaponTypeSprite::~WeaponTypeSprite()
-{
-}
-
-
-StoneRing::WeaponTypeRef * StoneRing::WeaponTypeSprite::getWeaponTypeRef() const
-{
-    return mpWeaponTypeRef;
-}
-
-
-std::string StoneRing::WeaponTypeSprite::getSpriteRef() const
-{
-    return mSpriteRef;
-}
-
-
-bool StoneRing::WeaponTypeSprite::handleElement(eElement element, Element *pElement )
-{
-    if(element == EWEAPONTYPEREF)
+    if(hasAttr("bindPoint1",pAttributes))
     {
-        mpWeaponTypeRef = dynamic_cast<WeaponTypeRef*>(pElement);
-        return true;
+        mbHasBindPoints = true;
+        mnBindPoint1 = getRequiredInt("bindPoint1",pAttributes);
+        mnBindPoint2 = getRequiredInt("bindPoint2",pAttributes);
     }
-    else
-    {
-        return false;
-    }
+
 }
-
-void StoneRing::WeaponTypeSprite::loadAttributes(CL_DomNamedNodeMap *pAttributes)
-{
-    mSpriteRef = getRequiredString("spriteRef",pAttributes);
-}
-
-
-
-
 

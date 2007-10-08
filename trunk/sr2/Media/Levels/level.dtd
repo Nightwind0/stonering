@@ -63,12 +63,13 @@
 <!ELEMENT magicResistance EMPTY>
 
 <!-- Animation DTD -->
-<!ELEMENT animation (par|seq)+>
-<!ELEMENT par (alterSprite*,script?,animationSpriteRef*,  strikeAnimationRef*)> <!-- If there are no animationSprites then its treated like a pause -->
-<!ELEMENT seq (alterSprite*,script?,animationSpriteRef*)>
+<!ELEMENT animation (phase+)>
+<!ELEMENT phase (spriteAnimation*)> <!-- If there are no animationSprites then its treated like a pause -->
+<!ELEMENT spriteAnimation ((spriteStub|spriteRef),spriteMovement?,alterSprite?, hide?)>
+<!ELEMENT spriteStub EMPTY>
+<!ELEMENT spriteMovement EMPTY>
 <!ELEMENT hide EMPTY>
-<!ELEMENT animationSpriteRef (#PCDATA)>
-<!ELEMENT strikeAnimationRef (#PCDATA)>
+
 
 <!-- Status Effect DTD -->
 <!ELEMENT statusEffectList (statusEffect*)>
@@ -92,16 +93,13 @@
 <!ELEMENT battleMenuOption (conditionScript?,script)>
 
 <!-- Characters -->
-<!ELEMENT character (animationDefinition*)>
+<!ELEMENT character (spriteDefinition*)>
+<!ELEMENT spriteDefinition (spriteRef)>
 
-<!-- these next two need to be added as Actions ... and should be under the LevelFactory, in LevelElements, etc-->
 <!ELEMENT startingEquipmentRef (itemRef)>
 
 <!-- The skill, weapontype, weapon, armortype, and armor refs define when the animation should happen -->
 <!-- so, you can define an animation for a particular skill, or usage of a weapon type, or for a specific weapon -->
-<!ELEMENT animationDefinition (skillRef?,animation)>
-
-<!ELEMENT strikeAnimation (weaponTypeSprite, bindPoint+)>
 <!ELEMENT bindPoint EMPTY>
 
 <!-- Monsters -->
@@ -192,33 +190,35 @@
 <!ATTLIST spellRef type (elemental|white|status|other) #REQUIRED>
 <!ATTLIST animation name CDATA #REQUIRED>
 <!ATTLIST animation type (battle|world) #REQUIRED>
-<!ATTLIST par duration CDATA #REQUIRED>
+<!ATTLIST spriteAnimation name CDATA #REQUIRED>
+<!ATTLIST phase parallel (true|false) #REQUIRED> <!-- Par means everything within this phase happens in parallel. Seq means they happen in order of their appearance in the xml -->
+<!ATTLIST phase duration CDATA #REQUIRED>
 <!-- use this animation on each target -->
-<!ATTLIST par for_each (true|false) #IMPLIED>
-<!ATTLIST seq duration CDATA #REQUIRED>
-<!-- use this animation on each target -->
-<!ATTLIST seq for_each (true|false) #IMPLIED>
+<!ATTLIST phase for_each (true|false) #IMPLIED>
+
 <!ATTLIST alterSprite who (none|caster|caster_group|target|target_group|all) #REQUIRED>
 <!ATTLIST alterSprite how (hide|half_size|double_size|darken|lighten) #REQUIRED>
-<!ATTLIST animationSpriteRef initialFocus (screen|caster|target|caster_group|target_group) #REQUIRED>
-<!ATTLIST animationSpriteRef initialFocusX (center|towards|away) #IMPLIED> <!-- default center -->
-<!ATTLIST animationSpriteRef initialFocusY (center|top|bottom) #IMPLIED> <!-- default center-->
-<!ATTLIST animationSpriteRef initialFocusBehind (true|false) #IMPLIED> <!-- default to false -->
-<!ATTLIST animationSpriteRef movementDirection (still|n|e|s|w|ne|nw|se|sw|away|towards|endFocus) #IMPLIED>
-<!ATTLIST animationSpriteRef movementStyle (straight|arc_over|arc_under|sine) #IMPLIED> <!-- Defaults to straight -->
+<!ATTLIST spriteMovement initialFocus (screen|caster|target|caster_group|target_group) #REQUIRED>
+<!ATTLIST spriteMovement initialFocusX (center|towards|away|left|right) #IMPLIED> <!-- default center -->
+<!ATTLIST spriteMovement initialFocusY (center|top|bottom) #IMPLIED> <!-- default center-->
+<!ATTLIST spriteMovement initialFocusZ (back|front) #IMPLIED> <!-- default to front -->
+<!-- defaults to endfocus if there is one, still if theres not -->
+<!ATTLIST spriteMovement movementDirection (still|n|e|s|w|ne|nw|se|sw|away|towards|endFocus) #IMPLIED>
+<!ATTLIST spriteMovement movementStyle (straight|arc_over|arc_under|sine) #IMPLIED> <!-- Defaults to straight -->
 <!-- defaults to target-->
-<!ATTLIST animationSpriteRef endFocus (screen|caster|target|caster_group|target_group) #IMPLIED>
+<!ATTLIST spriteMovement endFocus (screen|caster|target|caster_group|target_group) #IMPLIED>
 <!-- defaults to center -->
-<!ATTLIST animationSpriteRef endFocusX (center|towards|away) #IMPLIED>
+<!ATTLIST spriteMovement endFocusX (center|towards|away) #IMPLIED>
 <!-- defaults to center -->
-<!ATTLIST animationSpriteRef endFocusY (center|top|bottom) #IMPLIED>
+<!ATTLIST spriteMovement endFocusY (center|top|bottom) #IMPLIED>
 <!-- defaults to false-->
-<!ATTLIST animationSpriteRef endFocusBehind (true|false) #IMPLIED>
-<!-- These points are relevative to the sprite wielding the weapon-->
-<!ATTLIST bindPoint point1 CDATA #REQUIRED>
-<!ATTLIST bindPoint point2 CDATA #REQUIRED>
-<!ATTLIST strikeAnimation>
+<!ATTLIST spriteMovement endFocusZ (back|front) #IMPLIED>
 
+<!ATTLIST spriteStub name CDATA #REQUIRED>
+
+<!ATTLIST spriteStub bindTo (none|weapon|character) #IMPLIED> <!-- Defaults to none -->
+
+<!-- These points are relevative to the sprite wielding the weapon-->
 <!ATTLIST battleMenuOption name CDATA #REQUIRED>
 
 <!-- Note: movement speed will be determined by the amount of pixels that need to be covered and the duration of the par -->
@@ -265,11 +265,11 @@
 <!ATTLIST equipmentRef slot (right_hand|left_hand|head|body|shield|feet|right_ring|left_ring) #REQUIRED>
 
 
-<!-- Which animation are you overriding? -->
-<!ATTLIST animationDefinition type (skill|attack|recoil|ready|weak) #REQUIRED>
-<!ATTLIST animationDefinition animationRef CDATA #IMPLIED>
+<!ATTLIST spriteDefinition name CDATA #REQUIRED>
+<!ATTLIST spriteDefinition bindPoint1 CDATA #IMPLIED>
+<!ATTLIST spriteDefinition bindPoint2 CDATA #IMPLIED>
 
-<!ATTLIST weaponTypeSprite spriteRef CDATA #REQUIRED>
+
 
 <!ATTLIST monster name CDATA #REQUIRED>
 <!ATTLIST monster mode (manual|class) #REQUIRED>

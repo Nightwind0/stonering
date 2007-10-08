@@ -8,14 +8,9 @@ Element * EditorElementFactory::createAnimation() const
     return new Editor::Animation();
 }
 
-Element * EditorElementFactory::createAnimationDefinition() const
+Element * EditorElementFactory::createSpriteDefinition() const
 {
-  return new Editor::AnimationDefinition();
-}
-
-Element * EditorElementFactory::createAnimationSpriteRef() const
-{
-  return new Editor::AnimationSpriteRef();
+  return new Editor::SpriteDefinition();
 }
 
 Element * EditorElementFactory::createArmorClass()const
@@ -188,9 +183,9 @@ Element * EditorElementFactory::createOnRemove()const
   return new Editor::OnRemove();
 }
 
-Element * EditorElementFactory::createPar() const
+Element * EditorElementFactory::createPhase() const
 {
-  return new Editor::Par();
+  return new Editor::Phase();
 }
 
 Element * EditorElementFactory::createRegularItem()const 
@@ -328,10 +323,24 @@ Element * EditorElementFactory::createWeaponTypeRef()const
   return new Editor::WeaponTypeRef();
 }
 
-Element * EditorElementFactory::createWeaponTypeSprite() const
+
+Element * EditorElementFactory::createSpriteAnimation()const
 {
-  return new Editor::WeaponTypeSprite();
+    return new Editor::SpriteAnimation();
 }
 
+Element * EditorElementFactory::createSpriteStub()const
+{
+    return new Editor::SpriteStub();
+}
 
+Element * EditorElementFactory::createSpriteMovement() const
+{
+    return new Editor::SpriteMovement();
+}
+
+Element * EditorElementFactory::createAlterSprite() const
+{
+    return new Editor::AlterSprite();
+}
 

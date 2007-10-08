@@ -300,6 +300,10 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\src\core\SpriteRef.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\src\core\Utilities.cpp"
 					>
 					<FileConfiguration
@@ -374,50 +378,6 @@
 					>
 				</File>
 				<Filter
-					Name="Armor"
-					>
-					<File
-						RelativePath="..\src\items\armor\Armor.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\items\armor\ArmorClass.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\items\armor\ArmorClassRef.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\items\armor\ArmorEnhancer.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\items\armor\ArmorRef.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\items\armor\ArmorType.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\items\armor\ArmorTypeExclusionList.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\items\armor\ArmorTypeRef.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\items\armor\GeneratedArmor.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\src\items\armor\UniqueArmor.cpp"
-						>
-					</File>
-				</Filter>
-				<Filter
 					Name="Weapons"
 					>
 					<File
@@ -458,6 +418,50 @@
 					</File>
 					<File
 						RelativePath="..\src\items\weapons\WeaponTypeRef.cpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Armor"
+					>
+					<File
+						RelativePath="..\src\items\armor\Armor.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\items\armor\ArmorClass.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\items\armor\ArmorClassRef.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\items\armor\ArmorEnhancer.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\items\armor\ArmorRef.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\items\armor\ArmorType.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\items\armor\ArmorTypeExclusionList.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\items\armor\ArmorTypeRef.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\items\armor\GeneratedArmor.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\items\armor\UniqueArmor.cpp"
 						>
 					</File>
 				</Filter>
@@ -597,6 +601,10 @@
 				</File>
 				<File
 					RelativePath="..\src\core\NamedScript.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\core\SpriteRef.h"
 					>
 				</File>
 				<File
