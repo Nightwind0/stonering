@@ -24,7 +24,7 @@
 			doMagicDamage(25,0.75,"wind");
 		</script>
 	</spell>
-	<spell mp="2" name="Anoint" targetable="either" type="white" use="both" appliesToArmor="true" appliesToWeapons="true" value="2200">
+	<spell mp="2" name="Anoint" targetable="either" type="holy" use="both" appliesToArmor="true" appliesToWeapons="true" value="2200">
 		<magicResistance type="holy" resist="0.25"/>
 		<script id="SP_Anoint">
 			doMagicDamage(25,0.75,"holy");
@@ -56,7 +56,7 @@
 		</script>
 
 	</spell>
-	<spell mp="8" name="Holy Anoint" targetable="either" type="white" use="both" appliesToArmor="true" appliesToWeapons="true" value="7000">
+	<spell mp="8" name="Holy Anoint" targetable="either" type="holy" use="both" appliesToArmor="true" appliesToWeapons="true" value="7000">
 		<magicResistance type="holy" resist="0.40"/>
 		<script id="SP_HolyAnoint">
 			doMagicDamage(100,0.75,"holy");
@@ -87,7 +87,7 @@
 			doMagicDamage(250,0.80,"wind");
 		</script>
 	</spell>
-	<spell mp="20" name="Blessed Anoint" targetable="either" type="white" use="both" appliesToArmor="true" appliesToWeapons="true" value="12000">
+	<spell mp="20" name="Blessed Anoint" targetable="either" type="holy" use="both" appliesToArmor="true" appliesToWeapons="true" value="12000">
 		<magicResistance type="holy" resist="0.50"/>
 		<script id="SP_BlessedAnoint">
 			doMagicDamage(250,0.80,"holy");
@@ -117,7 +117,7 @@
 			doMagicDamage(600,0.90,"wind");
 		</script>
 	</spell>
-	<spell mp="50" name="Blessed Anoint" targetable="either" type="white" use="both" appliesToArmor="true" appliesToWeapons="true" value="25000">
+	<spell mp="50" name="Blessed Anoint" targetable="either" type="holy" use="both" appliesToArmor="true" appliesToWeapons="true" value="25000">
 		<magicResistance type="holy" resist="0.75"/>
 		<script id="SP_BlessedAnoint">
 			doMagicDamage(600,0.90,"holy");
