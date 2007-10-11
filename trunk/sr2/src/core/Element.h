@@ -19,7 +19,7 @@ namespace StoneRing
     class Element
     {
     public:
-        Element(){}
+        Element():mpParent(NULL){}
         virtual ~Element(){}
 
 // These MUST be kept alphabetized
@@ -100,7 +100,10 @@ namespace StoneRing
 
         virtual eElement whichElement() const=0;
         void load(CL_DomElement * pElement);
-
+#ifndef NDEBUG
+        void setElementName(const std::string &name) { mElementName = name; }
+        void setParent(Element *pParent) { mpParent = pParent; }
+#endif
           
     protected:
         virtual bool handleElement(eElement, Element * ){ return false;}
@@ -127,9 +130,10 @@ namespace StoneRing
         std::string getElementName() const;
 
     private:
-
-    
-
+#ifndef NDEBUG
+        Element * mpParent;
+        std::string mElementName;
+#endif
 
 /*
   struct ElementCreationEntry

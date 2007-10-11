@@ -11,10 +11,21 @@ AttributeEnhancer::AttributeEnhancer():mnAdd(0),mfMultiplier(1)
 void AttributeEnhancer::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
     mnAttribute = CAFromString(getRequiredString("attribute", pAttributes));
-    meType = static_cast<eType>( getRequiredInt("type",pAttributes) );
+    meType = static_cast<eType>( getImpliedInt("type",pAttributes, EAUTO) );
     mfMultiplier = getImpliedFloat("multiplier",pAttributes,1);
     mnAdd = getImpliedInt("add",pAttributes,0);
     mbToggle = getImpliedBool("toggle",pAttributes,false);
+
+    if(meType == EAUTO)
+    {
+        // Lets calculate the real type based on what is supplied
+        if(hasAttr("multiplier",pAttributes))
+            meType = static_cast<eType>(meType | EMULTIPLY);
+        if(hasAttr("add",pAttributes))
+            meType = static_cast<eType>(meType | EADD);
+        if(hasAttr("toggle",pAttributes))
+            meType = ETOGGLE; // No or, we can't combine this
+    }
 }
 
 

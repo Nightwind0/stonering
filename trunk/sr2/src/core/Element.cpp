@@ -165,8 +165,7 @@ std::string Element::getString (const std::string &attrname, CL_DomNamedNodeMap 
 
 std::string Element::getElementName() const
 {
-   // return pszElementNames[ whichElement() ];
-    return "";
+    return mElementName;
 }
     
 
@@ -175,7 +174,6 @@ void Element::load(CL_DomElement * pDomElement)
     IFactory* pFactory = IApplication::getInstance()->getElementFactory();
 
     CL_DomNamedNodeMap attributes = pDomElement->get_attributes();
-
                 
     loadAttributes(&attributes);
 
@@ -198,7 +196,9 @@ void Element::load(CL_DomElement * pDomElement)
         Element * pElement = NULL;
                                         
         pElement = pFactory->createElement(element_name);
-                                 
+#ifndef NDEBUG
+        pElement->setElementName(element_name);
+#endif
         pElement->load( &child );
 
         if(!handleElement(pElement->whichElement(), pElement ))

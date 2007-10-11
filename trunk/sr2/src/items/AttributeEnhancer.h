@@ -16,7 +16,8 @@ namespace StoneRing{
             EADD=1,
             EMULTIPLY=2,
             ETOGGLE=4,
-            EADD_MULTIPLY = EADD | EMULTIPLY,
+            EADD_MULTIPLY = (EADD | EMULTIPLY),
+            EAUTO = 0
         }; 
 
         eType getType() const;
