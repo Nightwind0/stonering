@@ -109,7 +109,7 @@ void MappableObjects::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 // LevelHeader
 ///////////////////////////////////////////////////////////////////////////
 
-LevelHeader::LevelHeader()
+LevelHeader::LevelHeader():mpScript(NULL)
 {
 }
 
@@ -121,7 +121,8 @@ LevelHeader::~LevelHeader()
 
 void LevelHeader::executeScript() const
 {
-    mpScript->executeScript();
+    if(NULL != mpScript)
+        mpScript->executeScript();
 }
 
 bool LevelHeader::handleElement(eElement element, Element * pElement)

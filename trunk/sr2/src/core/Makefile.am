@@ -16,7 +16,8 @@ libcore_la_SOURCES =	\
 		IApplication.h \
 		IParty.h \
 		sr_defines.h \
-		Utilities.cpp 
+		Utilities.cpp \
+		SpriteRef.cpp
 
 INCLUDES = \
 		-I@top_srcdir@/src/	\

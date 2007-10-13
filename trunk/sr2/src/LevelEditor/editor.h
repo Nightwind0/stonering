@@ -22,7 +22,7 @@
 #include "IParty.h"
 #include "Item.h"
 #include "AppUtils.h"
-#include "SteelInterpreter.h"
+//#include "SteelInterpreter.h"
 #include "EditorElements.h"
 
 

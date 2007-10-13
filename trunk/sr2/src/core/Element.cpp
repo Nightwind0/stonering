@@ -162,12 +162,12 @@ std::string Element::getString (const std::string &attrname, CL_DomNamedNodeMap 
 {
     return pAttributes->get_named_item(attrname).get_node_value();
 }
-
+#ifndef NDEBUG
 std::string Element::getElementName() const
 {
     return mElementName;
 }
-    
+#endif
 
 void Element::load(CL_DomElement * pDomElement)
 {
