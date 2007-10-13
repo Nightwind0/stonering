@@ -19,7 +19,12 @@ namespace StoneRing
     class Element
     {
     public:
-        Element():mpParent(NULL){}
+        Element()
+#ifndef NDEBUG
+            :mpParent(NULL)
+#endif
+        {}
+
         virtual ~Element(){}
 
 // These MUST be kept alphabetized
