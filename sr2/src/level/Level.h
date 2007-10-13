@@ -161,7 +161,6 @@ namespace StoneRing {
         virtual ~LevelHeader();
         uint getLevelWidth() const { return mnLevelWidth; }
         uint getLevelHeight() const { return mnLevelHeight; }
-        std::string getName() const { return mName; }
         std::string getMusic() const { return mMusic; }
         bool allowsRunning() const { return mbAllowsRunning; }
         eElement whichElement() const { return ELEVELHEADER; }
@@ -173,7 +172,6 @@ namespace StoneRing {
 
         uint mnLevelWidth;
         uint mnLevelHeight;
-        std::string mName;
         std::string mMusic;
         bool mbAllowsRunning;
     };
