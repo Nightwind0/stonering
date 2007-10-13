@@ -1357,7 +1357,13 @@ Tilemap::~Tilemap()
 }
 CL_DomElement Editor::Tilemap::createDomElement(CL_DomDocument &doc)const
 {
-    return CL_DomElement(doc,"tilemap");
+    CL_DomElement element(doc,"tilemap");
+
+    element.set_attribute( "mapname" , StoneRing::GraphicsManager::getInstance()->lookUpMapWithSurface ( mpSurface ) );
+    element.set_attribute("mapx", IntToString(mX));
+    element.set_attribute("mapy", IntToString(mY));
+
+    return element;
  }
 
 

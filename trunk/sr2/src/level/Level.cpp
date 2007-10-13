@@ -877,7 +877,6 @@ bool Level::handleElement(eElement element, Element * pElement)
         mLevelHeight = mpHeader->getLevelHeight();
         mbAllowsRunning = mpHeader->allowsRunning();
         mMusic = mpHeader->getMusic();
-        mName = mpHeader->getName();
         mTileMap.resize( mLevelWidth );
 
         for(int x=0;x< mLevelWidth; x++)

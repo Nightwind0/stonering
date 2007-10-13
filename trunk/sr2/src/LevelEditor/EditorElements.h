@@ -568,6 +568,7 @@ class Tilemap : public StoneRing::Tilemap, public WriteableElement
     void setMapX(int x);
     void setMapY(int y);
  private:
+
 };
 class UniqueArmor : public StoneRing::UniqueArmor, public WriteableElement
 {
