@@ -9,7 +9,6 @@ namespace StoneRing{
     public:
         Weapon();
         virtual ~Weapon();
-
         virtual WeaponType * getWeaponType() const = 0;
         virtual bool isRanged() const = 0;
         virtual bool isTwoHanded() const = 0;
@@ -28,6 +27,9 @@ namespace StoneRing{
         int modifyWeaponAttribute( eAttribute attr, int current );
         float modifyWeaponAttribute ( eAttribute attr, float current );
 
+        static std::string CreateWeaponName(WeaponType *pType, WeaponClass *pClass, 
+            SpellRef *pSpell, RuneType *pRune);
+
         // Getters for weapon enhancers. need 'em.
     protected:
         
@@ -37,6 +39,8 @@ namespace StoneRing{
     private:
         std::list<WeaponEnhancer*> mWeaponEnhancers;
     };
+
+
 };
 
 #endif

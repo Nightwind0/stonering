@@ -20,7 +20,6 @@ namespace StoneRing{
         OnRemove * getOnRemove() const;
 
         std::string getName() const;
-
         enum eLast { ROUND_COUNT, BATTLE, PERMANENT };
         eLast getLast() const;
         uint getRoundCount() const; 

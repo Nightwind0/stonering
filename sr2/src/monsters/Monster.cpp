@@ -46,6 +46,8 @@ void Monster::loadAttributes(CL_DomNamedNodeMap *pAttr)
     mSpriteResources = getRequiredString("spriteResources",pAttr);
     std::string mode = getRequiredString("mode",pAttr);
     mnLevel = getRequiredInt("level",pAttr);
+    std::string type = getImpliedString("type",pAttr,"living");
+
     if(mode == "manual")
     {
         mbClass = false;
@@ -55,6 +57,13 @@ void Monster::loadAttributes(CL_DomNamedNodeMap *pAttr)
         mbClass = true;
     }
     else throw CL_Error("Unknown monster mode");
+
+    if(type == "living")
+        meType = LIVING;
+    else if(type == "nonliving")
+        meType = NONLIVING;
+    else if(type == "magical")
+        meType = MAGICAL;
 
     if(mbClass)
     {
@@ -86,28 +95,13 @@ std::string Monster::getName() const
 {
     return "";
 }
-void Monster::attributeMultiply(eCharacterAttribute attr, double mult)
-{
-}
 
-void Monster::attributeAdd(eCharacterAttribute attr, double add)
-{
-}
 
 // For boolean values.
-void Monster::toggleAttribute(eCharacterAttribute attr, bool state)
+void Monster::fixAttribute(eCharacterAttribute attr, bool state)
 {
 }
 
-double Monster::getMaxAttribute(eCharacterAttribute attr) const 
-{
-    return 100.0;
-}
-
-double Monster::getMinAttribute(eCharacterAttribute attr) const
-{
-    return 0.0;
-}
 
 double Monster::getSpellResistance(Magic::eMagicType type) const
 {
@@ -119,12 +113,47 @@ double Monster::getAttribute(eCharacterAttribute attr) const
     return 1.0;
 }
 
-int Monster::getAttributeInt(eCharacterAttribute attr) const
-{
-    return 0;
-}
 
 bool Monster::getToggle(eCharacterAttribute attr) const
 {
     return false;
+}
+
+void Monster::fixAttribute(eCharacterAttribute attr, double value)
+{
+}
+
+void Monster::attachMultiplication(eCharacterAttribute attr, double factor)
+{
+}
+
+void Monster::attachAddition(eCharacterAttribute attr, double value) 
+{
+}
+
+void Monster::detachMultiplication(eCharacterAttribute attr, double factor)
+{
+}
+
+void Monster::detachAddition(eCharacterAttribute attr, double value) 
+{
+}
+
+
+void Monster::addStatusEffect(StatusEffect *)
+{
+}
+
+void Monster::removeEffects(const std::string &name)
+{
+}
+
+void Monster::statusEffectRound()
+{
+}
+
+
+ICharacter::eType Monster::getType() const
+{
+    return meType;
 }

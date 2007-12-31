@@ -9,6 +9,8 @@
 
 namespace StoneRing
 {
+    class Weapon;
+    class Armor;
 
     class ItemManager
     {
@@ -16,9 +18,7 @@ namespace StoneRing
         ItemManager();
         ~ItemManager();
 
-
         void loadItemFile ( CL_DomDocument &doc );
-    
 
         WeaponType *getWeaponType( const WeaponTypeRef &ref ) const;
         ArmorType  *getArmorType ( const ArmorTypeRef &ref ) const;
@@ -31,28 +31,26 @@ namespace StoneRing
         ArmorClass *getArmorClass ( const std::string &name ) const;
 
         Item * getNamedItem( const std::string &name ) const;
-
-        virtual Item * getItem( const ItemRef & ref ) const;
+        virtual Item * getItem( const ItemRef & ref );
 #ifndef NDEBUG
         void dumpItemList();
         void printAttributeEnhancers(Equipment * pItem );
         void printStatusModifiers(Equipment * pItem);
 #endif
-    
-
     private:
-        void generateWeapons();
-        void generateArmor();
+        typedef std::map<ItemRef,Item*> ItemMap;
+        typedef std::map<std::string,Item*> NamedItemMap;
+
+        Weapon * createWeapon(WeaponRef *pRef)const;
+        Armor * createArmor(ArmorRef *pRef)const;
 
         std::list<WeaponClass*> mWeaponClasses;
         std::list<ArmorClass*> mArmorClasses;
         std::list<WeaponType*> mWeaponTypes;
         std::list<ArmorType*> mArmorTypes;
-        std::list<Item*> mItems;
-
+        ItemMap mItems;
+        NamedItemMap mNamedItems;
     };
-
-
 };
 #endif
 

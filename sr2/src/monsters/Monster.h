@@ -27,16 +27,21 @@ public:
     */
     virtual eGender getGender() const;
     virtual std::string getName() const;
-    virtual void attributeMultiply(eCharacterAttribute attr, double mult);
-    virtual void attributeAdd(eCharacterAttribute attr, double add);
+    virtual eType getType() const;
+
     // For boolean values.
-    virtual void toggleAttribute(eCharacterAttribute attr, bool state);
-    virtual double getMaxAttribute(eCharacterAttribute attr) const ;
-    virtual double getMinAttribute(eCharacterAttribute attr) const;
     virtual double getSpellResistance(Magic::eMagicType type) const;
     virtual double getAttribute(eCharacterAttribute attr) const ;
-    virtual int getAttributeInt(eCharacterAttribute attr) const;
     virtual bool getToggle(eCharacterAttribute attr) const;
+    virtual void fixAttribute(eCharacterAttribute attr, double value);
+    virtual void fixAttribute(eCharacterAttribute attr, bool state);
+    virtual void attachMultiplication(eCharacterAttribute attr, double factor);
+    virtual void detachMultiplication(eCharacterAttribute attr, double factor);
+    virtual void attachAddition(eCharacterAttribute attr, double value);
+    virtual void detachAddition(eCharacterAttribute attr, double value);
+    virtual void addStatusEffect(StatusEffect *);
+    virtual void removeEffects(const std::string &name);
+    virtual void statusEffectRound();
 
 private:
     /* Element stuff */
@@ -53,6 +58,8 @@ private:
     bool mbClass;
     CharacterClass *mpClass;
     uint mnLevel;
+    eType meType;
+    AttributeFile mAttributes;
 };
 
 };

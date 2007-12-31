@@ -15,7 +15,7 @@ namespace StoneRing
     {
     public:
         AbilityManager(){}
-        ~AbilityManager(){}
+        ~AbilityManager();
 
         void loadSpellFile ( CL_DomDocument &doc );
         void loadStatusEffectFile ( CL_DomDocument &doc );
@@ -42,10 +42,15 @@ namespace StoneRing
     
 
     private:
-        std::map<std::string,Skill*> mSkills;
-        std::list<Spell*> mSpells;
-        std::list<StatusEffect*> mStatusEffects;
-        std::map<std::string,CharacterClass*> mCharacterClasses;
+        typedef std::map<std::string,CharacterClass*> ClassMap;
+        typedef std::map<std::string,Skill*> SkillMap;
+        typedef std::list<Spell*> SpellList;
+        typedef std::list<StatusEffect*> StatusEffectList;
+
+        SkillMap mSkills;
+        SpellList mSpells;
+        StatusEffectList mStatusEffects;
+        ClassMap mCharacterClasses;
 
     };
 

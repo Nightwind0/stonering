@@ -26,17 +26,19 @@ namespace StoneRing{
             WHITE_RESIST, // Your AC against white magic. (hey, its a valid type!)
             STATUS, // Chance of failure for a particular status effect
         };
-        
-         
         int modifyArmorAttribute( eAttribute attr, int current );
         float modifyArmorAttribute ( eAttribute attr, float current );
         static eAttribute attributeForString ( const std::string str );
+
+        static std::string CreateArmorName(ArmorType *pType, ArmorClass *pClass, 
+            SpellRef *pSpell, RuneType *pRune);
     protected:
         void clearArmorEnhancers();
         void addArmorEnhancer (ArmorEnhancer * pEnhancer);
     private:
         std::list<ArmorEnhancer*> mArmorEnhancers;
     };
+
 };
 
 #endif

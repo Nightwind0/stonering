@@ -103,7 +103,7 @@
 <!ELEMENT bindPoint EMPTY>
 
 <!-- Monsters -->
-<!ELEMENT monster (script, animationDefinition*, stat*, itemRef*)>
+<!ELEMENT monster (script, spriteDefinition*, stat*, itemRef*)>
 <!ELEMENT stat EMPTY>
 <!-- Attributes -->
 

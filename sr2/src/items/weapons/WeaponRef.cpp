@@ -13,6 +13,10 @@ WeaponRef::WeaponRef():mpWeaponType(NULL), mpWeaponClass(NULL),
 {
 }
 
+std::string WeaponRef::getName() const
+{
+    return mName;
+}
 
 bool WeaponRef::handleElement(eElement element, Element * pElement)
 {
@@ -53,7 +57,7 @@ WeaponRef::WeaponRef ( WeaponType *pType, WeaponClass *pClass,
 {
 
 }
-
+/*
 bool WeaponRef::operator==(const WeaponRef &lhs)
 {
     if( *mpWeaponType == *lhs.mpWeaponType &&
@@ -88,6 +92,11 @@ bool WeaponRef::operator==(const WeaponRef &lhs)
 
     return true;
 
+}
+*/
+void WeaponRef::loadFinished()
+{
+    mName = Weapon::CreateWeaponName(mpWeaponType,mpWeaponClass,mpSpellRef,mpRuneType);
 }
 
 

@@ -354,6 +354,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\items\ItemRef.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\src\items\NamedItem.cpp"
 					>
 				</File>

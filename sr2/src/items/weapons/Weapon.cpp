@@ -1,5 +1,9 @@
 #include "Weapon.h"
 #include "WeaponEnhancer.h"
+#include "RuneType.h"
+#include "SpellRef.h"
+#include "WeaponClass.h"
+#include "WeaponType.h"
 
 
 using namespace StoneRing;
@@ -11,6 +15,25 @@ Weapon::Weapon()
 Weapon::~Weapon()
 {
     clearWeaponEnhancers();
+}
+
+std::string StoneRing::Weapon::CreateWeaponName(WeaponType *pType, WeaponClass *pClass, SpellRef *pSpell, RuneType *pRune)
+{
+    std::ostringstream os;
+
+    if ( pRune )
+    {
+        os << pRune->getRuneTypeAsString() << ' ';
+    }
+
+    os << pClass->getName() << ' ' << pType->getName();
+
+    if(pSpell)
+    {
+        os << " of " << pSpell->getName();
+    }
+
+    return os.str();
 }
 
 

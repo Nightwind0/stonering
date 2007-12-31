@@ -86,14 +86,12 @@ bool StoneRing::MappableObject::handleElement(eElement element, Element * pEleme
     case ESPRITEREF:
     {
         GraphicsManager *GM = GraphicsManager::getInstance();
-
         SpriteRef * pRef = dynamic_cast<SpriteRef*>(pElement);
 
         mGraphic.asSpriteRef = pRef;
         cFlags |= SPRITE;
 
         mpSprite = GM->createSprite ( pRef->getRef() );
-        
 
         int swidth = mpSprite->get_width();
         int sheight = mpSprite->get_height();
@@ -135,7 +133,6 @@ bool StoneRing::MappableObject::handleElement(eElement element, Element * pEleme
         case Movement::MOVEMENT_WANDER:
             if(mGraphic.asSpriteRef->getType() != SpriteRef::SPR_FOUR_WAY)
                 throw CL_Error("Wandering MO needs a four way sprite ref.");
-
             meDirection = SOUTH;
             break;
         case Movement::MOVEMENT_PACE_NS:
@@ -170,7 +167,6 @@ StoneRing::MappableObject::MappableObject():meDirection(NONE),mpSprite(NULL),mpM
                                             mpCondition(0),cFlags(0),mnCellsMoved(0),
                                             mnFrameMarks(0),mnStepsUntilChange(0)
 {
-   
 }
 
 
@@ -196,7 +192,6 @@ StoneRing::MappableObject::~MappableObject()
         delete mpSprite;
 
     delete mpMovement;
-         
 }
 
 
@@ -267,8 +262,6 @@ CL_Rect StoneRing::MappableObject::getPixelRect() const
     {
         return CL_Rect(mX*32,mY*32,mX * 32 + myDimensions.x, mY* 32 + myDimensions.y);
     }
-    
-        
 }
 
 bool StoneRing::MappableObject::isSprite() const
@@ -278,8 +271,6 @@ bool StoneRing::MappableObject::isSprite() const
 
 void StoneRing::MappableObject::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC)
 {
-
-
     if(isSprite())
     {
         setFrameForDirection();
@@ -294,12 +285,8 @@ void StoneRing::MappableObject::draw(const CL_Rect &src, const CL_Rect &dst, CL_
         CL_Rect srcRect(mGraphic.asTilemap->getMapX() * 32 + src.left, mGraphic.asTilemap->getMapY() * 32 + src.top,
                         (mGraphic.asTilemap->getMapX() * 32) + src.right, (mGraphic.asTilemap->getMapY() * 32) + src.bottom);
 
-        
         mGraphic.asTilemap->getTileMap()->draw(srcRect, dst, pGC);
-        
     }
-    
-
 }
 
 void StoneRing::MappableObject::pickOppositeDirection()
@@ -327,8 +314,6 @@ void StoneRing::MappableObject::pickOppositeDirection()
 
 void StoneRing::MappableObject::randomNewDirection()
 {
-
-
     if(!mpMovement) return;
 
     eDirection current = meDirection;
@@ -377,8 +362,6 @@ void StoneRing::MappableObject::randomNewDirection()
 
 void StoneRing::MappableObject::setFrameForDirection()
 {
-
-    
     if(!mpMovement && mpSprite) mpSprite->set_frame(0);
     else if (!mpMovement) return;
 
@@ -443,14 +426,12 @@ void StoneRing::MappableObject::setFrameForDirection()
 
 void StoneRing::MappableObject::update()
 {
-
     // Don't bother with disabled MOs
     if(!evaluateCondition()) return;
 
     if(isSprite())
     {
         mbStep = mbStep? false:true;
-      
     }
 }
 
