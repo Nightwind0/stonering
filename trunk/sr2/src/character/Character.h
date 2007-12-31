@@ -44,7 +44,7 @@ namespace StoneRing{
         CA_CAN_ITEM,
         CA_CAN_RUN,
         CA_ALIVE,
-        _LAST_TOGGLE,
+        _END_OF_TOGGLES,
         _MAXIMA_BASE,
         CA_MAXHP = _MAXIMA_BASE + CA_HP,
         CA_MAXMP = _MAXIMA_BASE + CA_MP,
@@ -67,23 +67,26 @@ namespace StoneRing{
     class ICharacter
     {
     public:
-        enum eGender { MALE, FEMALE, NEUTER };
+        enum eGender { NEUTER = 0, MALE=0x1, FEMALE=0x2, HERMAPHRODITE = MALE | FEMALE };
+        enum eType   { NONLIVING, LIVING, MAGICAL }; 
 
         virtual eGender getGender() const=0;
+        virtual eType getType() const=0;
         virtual std::string getName() const=0;
 
-        virtual void attributeMultiply(eCharacterAttribute attr, double mult) = 0;
-        virtual void attributeAdd(eCharacterAttribute attr, double add)=0;
-        // For boolean values.
-        virtual void toggleAttribute(eCharacterAttribute attr, bool state)  = 0;
-        virtual double getMaxAttribute(eCharacterAttribute attr) const = 0;
-        virtual double getMinAttribute(eCharacterAttribute attr) const = 0;
         virtual double getAttribute(eCharacterAttribute attr) const = 0;
-        virtual int getAttributeInt(eCharacterAttribute attr) const = 0;
         virtual double getSpellResistance(Magic::eMagicType type) const = 0;
         virtual bool getToggle(eCharacterAttribute attr) const = 0;
-        ///@todo
-        // API for different battle animations TBD
+        virtual void fixAttribute(eCharacterAttribute attr, double value) = 0;
+        virtual void fixAttribute(eCharacterAttribute attr, bool toggle) =0;
+        virtual void attachMultiplication(eCharacterAttribute attr, double factor) = 0;
+        virtual void detachMultiplication(eCharacterAttribute attr, double factor) =0;
+        virtual void attachAddition(eCharacterAttribute attr, double value) = 0;
+        virtual void detachAddition(eCharacterAttribute attr, double value)=0;
+        virtual void addStatusEffect(StatusEffect *)=0;
+        virtual void removeEffects(const std::string &name)=0;
+        virtual void statusEffectRound()=0;
+        ///@todo API for different battle animations TBD
     private:
     };
 
@@ -100,6 +103,35 @@ namespace StoneRing{
     private:
     };
 
+    class AttributeFile
+    {
+    public:
+        double getAttribute(eCharacterAttribute)const;
+        bool getToggle(eCharacterAttribute)const;
+        void attachMultiplication(eCharacterAttribute,double);
+        void attachAddition(eCharacterAttribute,double);  
+        void detachMultiplication(eCharacterAttribute,double);
+        void detachAddition(eCharacterAttribute,double);  
+        void fixAttribute(eCharacterAttribute attr, double value);
+        void fixAttribute(eCharacterAttribute attr, bool toggle);
+    private:
+        typedef std::map<eCharacterAttribute,double> attr_doubles;
+        typedef std::map<eCharacterAttribute,bool> attr_bools;
+        attr_doubles::const_iterator find_attr(eCharacterAttribute)const;
+        double find_multiplier(eCharacterAttribute)const;
+        double find_addition(eCharacterAttribute)const;
+        attr_bools::const_iterator find_toggle(eCharacterAttribute)const;
+        static void assert_real(eCharacterAttribute);
+        static void assert_bool(eCharacterAttribute);
+
+
+        attr_doubles mRealAttributes;
+        attr_bools mToggles;
+        attr_doubles mAttrMultipliers;
+        attr_doubles mAttrAdditions;
+
+    };
+
     class Character : public ICharacter
     {
     public:
@@ -107,16 +139,21 @@ namespace StoneRing{
 
         virtual eGender getGender() const;
         virtual std::string getName() const { return mName; }
-        virtual void attributeMultiply(eCharacterAttribute attr, double mult);
-        virtual void attributeAdd(eCharacterAttribute attr, double add);
+
         // For boolean values.
-        virtual void toggleAttribute(eCharacterAttribute attr, bool state);
-        virtual double getMaxAttribute(eCharacterAttribute attr) const;
-        virtual double getMinAttribute(eCharacterAttribute attr) const;
         virtual double getSpellResistance(Magic::eMagicType type) const;
         virtual double getAttribute(eCharacterAttribute attr) const;
         virtual bool getToggle(eCharacterAttribute attr) const;
         virtual int getAttributeInt(eCharacterAttribute attr) const;
+        virtual void fixAttribute(eCharacterAttribute attr, double value);
+        virtual void fixAttribute(eCharacterAttribute attr, bool state);
+        virtual void attachMultiplication(eCharacterAttribute attr, double factor);
+        virtual void detachMultiplication(eCharacterAttribute attr, double factor);
+        virtual void attachAddition(eCharacterAttribute attr, double value);
+        virtual void detachAddition(eCharacterAttribute attr, double value);
+        virtual void addStatusEffect(StatusEffect *);
+        virtual void removeEffects(const std::string &name);
+        virtual void statusEffectRound();
         // Shortcuts to class data
         BattleMenu * getBattleMenu() const;
         std::string getClassName() const;
@@ -125,8 +162,10 @@ namespace StoneRing{
         void unequip(Equipment::eSlot);
 
     private:
+        AttributeFile mAttributes;
         std::string mName;
         CharacterClass * mpClass;
+        std::list<StatusEffect*> mStatusEffects;
     };
 
 };

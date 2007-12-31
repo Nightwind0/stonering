@@ -175,35 +175,12 @@ void GeneratedArmor::generate( ArmorType * pType, ArmorClass * pClass,
         addArmorEnhancer ( *iter2 );
     }
 
-    std::ostringstream os;
-
     mpType = pType;
     mpClass = pClass;
+    setSpellRef(pSpell);
+    setRuneType(pRune);
 
-    if(pSpell)
-    {
-        setSpellRef ( pSpell );
-    }
-    else if ( pRune )
-    {
-        setRuneType ( pRune );
-
-        os << pRune->getRuneTypeAsString() << ' ';
-    }
-
-    os << pClass->getName() << ' ';
-
-    os << pType->getName();
-
-    if(pSpell)
-    {
-        os << " of " <<  pSpell->getName();
-    }
-
-
-
-
-    mName = os.str();
+    mName = CreateArmorName(pType,pClass,pSpell,pRune);
 }
 
 

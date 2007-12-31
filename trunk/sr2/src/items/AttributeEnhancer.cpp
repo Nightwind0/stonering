@@ -69,13 +69,12 @@ void AttributeEnhancer::invoke()
         ->getSelectedCharacter();
 
     eCharacterAttribute attr = static_cast<eCharacterAttribute>(mnAttribute);
-
-    if(meType & EADD)
-        pCharacter->attributeAdd(attr,mnAdd);
     if(meType & EMULTIPLY)
-        pCharacter->attributeMultiply(attr,mfMultiplier);
+        pCharacter->attachMultiplication(attr, mfMultiplier);
+    if(meType & EADD)
+        pCharacter->attachAddition(attr, mnAdd);
     if(meType & ETOGGLE)
-        pCharacter->toggleAttribute(attr,mbToggle);
+        pCharacter->fixAttribute(attr,mbToggle);
 }
 
 // Uses IParty::modifyAttribute to modify the CURRENT player,
@@ -90,12 +89,12 @@ void AttributeEnhancer::revoke()
 
     eCharacterAttribute attr = static_cast<eCharacterAttribute>(mnAttribute);
 
-    if(meType & EMULTIPLY)
-        pCharacter->attributeMultiply(attr,  1 / mfMultiplier);
     if(meType & EADD)
-        pCharacter->attributeAdd(attr, 0 - mnAdd);
+        pCharacter->detachAddition(attr, mnAdd);
+    if(meType & EMULTIPLY)
+        pCharacter->detachMultiplication(attr, mfMultiplier);
     if(meType & ETOGGLE)
-        pCharacter->toggleAttribute(attr, ! mbToggle );
+        pCharacter->fixAttribute(attr, ! mbToggle );
 
 }
 

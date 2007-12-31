@@ -19,8 +19,12 @@ ArmorRef::ArmorRef ( ArmorType *pType, ArmorClass *pClass,
 
 }
 
+std::string ArmorRef::getName() const
+{
+    return  mName;
+}
 
-
+/*
 bool ArmorRef::operator==(const ArmorRef &lhs)
 {
     if( *mpArmorType == *lhs.mpArmorType &&
@@ -56,7 +60,7 @@ bool ArmorRef::operator==(const ArmorRef &lhs)
     return true;
 
 }
-
+*/
 bool ArmorRef::handleElement(eElement element, Element * pElement)
 {
     const ItemManager * pItemManager = IApplication::getInstance()->getItemManager();
@@ -84,6 +88,10 @@ bool ArmorRef::handleElement(eElement element, Element * pElement)
     return true;
 }
 
+void ArmorRef::loadFinished()
+{
+    mName = Armor::CreateArmorName(mpArmorType,mpArmorClass,mpSpellRef,mpRuneType);
+}
 
 ArmorRef::ArmorRef():mpArmorType(NULL),
                      mpArmorClass(NULL),

@@ -24,12 +24,12 @@ namespace StoneRing{
         ArmorClass * getArmorClass() const;
         SpellRef * getSpellRef() const;
         RuneType * getRuneType() const;
-
-        bool operator==(const ArmorRef &lhs );
+        std::string getName() const;
+        bool operator==(const ArmorRef&);
 
     private:
         virtual bool handleElement(eElement element, Element * pElement );
-
+        virtual void loadFinished();
     protected:
         ArmorType * mpArmorType;
         ArmorClass * mpArmorClass;
@@ -37,6 +37,7 @@ namespace StoneRing{
         ArmorClassRef *mpClass;
         SpellRef * mpSpellRef;
         RuneType * mpRuneType;
+        std::string mName;
 
     };
 };

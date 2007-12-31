@@ -1,7 +1,31 @@
 #include "Armor.h"
 #include "ArmorEnhancer.h"
+#include "RuneType.h"
+#include "ArmorClass.h"
+#include "ArmorType.h"
+#include "SpellRef.h"
 
 using namespace StoneRing;
+
+std::string StoneRing::Armor::CreateArmorName(ArmorType *pType, ArmorClass *pClass, SpellRef *pSpell, RuneType *pRune)
+{
+    std::ostringstream os;
+
+    if ( pRune )
+    {
+        os << pRune->getRuneTypeAsString() << ' ';
+    }
+
+    os << pClass->getName() << ' ' << pType->getName();
+
+    if(pSpell)
+    {
+        os << " of " << pSpell->getName();
+    }
+
+    return os.str();
+}
+
 
 Armor::eAttribute 
 Armor::attributeForString ( const std::string str )

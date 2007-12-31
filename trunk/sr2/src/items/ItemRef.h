@@ -14,7 +14,6 @@ namespace StoneRing
     class ArmorRef;
     class Item;
 
-
     class ItemRef : public Element
     {
     public:
@@ -24,10 +23,8 @@ namespace StoneRing
         virtual eElement whichElement() const{ return EITEMREF; }   
         enum eRefType { NAMED_ITEM, WEAPON_REF, ARMOR_REF };
 
-//  std::string getItemName() const;
-
+        std::string getItemName() const;
         eRefType getType() const;
-
         NamedItemRef * getNamedItemRef() const;
         WeaponRef * getWeaponRef() const;
         ArmorRef * getArmorRef() const;
@@ -58,6 +55,8 @@ namespace StoneRing
         virtual void handleText(const std::string &text);
         std::string mName;
     };
+
+    bool operator<(const ItemRef &lhs,const ItemRef &rhs);
 
 };
 

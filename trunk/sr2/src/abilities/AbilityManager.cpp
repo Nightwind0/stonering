@@ -13,6 +13,23 @@
 using namespace StoneRing;
 
 
+AbilityManager::~AbilityManager()
+{
+    std::for_each(mStatusEffects.begin(),mStatusEffects.end(),del_fun<StatusEffect>());
+    std::for_each(mSpells.begin(),mSpells.end(),del_fun<Spell>());
+
+    std::for_each(mCharacterClasses.begin(),mCharacterClasses.end(),
+        compose_f_gx(del_fun<CharacterClass>(),
+        get_second<ClassMap::value_type>())
+        );
+
+    std::for_each(mSkills.begin(),mSkills.end(),
+        compose_f_gx(del_fun<Skill>(),
+        get_second<SkillMap::value_type>())
+        );
+
+}
+
 void AbilityManager::loadSpellFile ( CL_DomDocument &doc )
 {
     IFactory * pAbilityFactory = IApplication::getInstance()->getElementFactory();

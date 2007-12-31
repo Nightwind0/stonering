@@ -9,6 +9,8 @@
 #include "ArmorClass.h"
 #include "NamedItem.h"
 #include "WeaponTypeRef.h"
+#include "WeaponRef.h"
+#include "ArmorRef.h"
 #include "GeneratedWeapon.h"
 #include "RuneType.h"
 #include "ArmorTypeRef.h"
@@ -46,7 +48,6 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
     CL_DomElement itemsNode = doc.named_item("items").to_element();
     CL_DomElement weaponClassesNode = itemsNode.named_item("weaponClasses").to_element(); 
     
-
     CL_DomElement weaponClassNode = weaponClassesNode.get_first_child().to_element();
 
     while(!weaponClassNode.is_null())
@@ -58,7 +59,6 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
     }
     
     CL_DomElement weaponTypesNode = itemsNode.named_item("weaponTypes").to_element();
-    
     CL_DomElement weaponTypeNode = weaponTypesNode.get_first_child().to_element();
     
     while(!weaponTypeNode.is_null())
@@ -83,9 +83,7 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
         armorClassNode = armorClassNode.get_next_sibling().to_element();
     }
 
-
     CL_DomElement armorTypesNode = itemsNode.named_item("armorTypes").to_element();
-
     CL_DomElement armorTypeNode = armorTypesNode.get_first_child().to_element();
 
     while(!armorTypeNode.is_null())
@@ -96,11 +94,8 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
 
         armorTypeNode = armorTypeNode.get_next_sibling().to_element();
     }
-    
-
         
     CL_DomElement itemListNode = itemsNode.named_item("itemList").to_element();
-
     CL_DomElement namedItemNode = itemListNode.get_first_child().to_element();
     
 #ifndef NDEBUG
@@ -122,29 +117,16 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
         pItem->setName ( pElement->getName() );
         pItem->setDropRarity ( pElement->getDropRarity() );
     
-        mItems.push_back ( pItem );
-    
+        mNamedItems[pItem->getName()] = pItem;
+
         delete pElement;
     
         namedItemNode = namedItemNode.get_next_sibling().to_element();
     }
-    
-    
-    generateWeapons();
-    generateArmor();
-    
-#ifndef NDEBUG
-    std::cout << "Found " << mWeaponTypes.size() << " weapon types." << std::endl;
-    std::cout << "Found " << mWeaponClasses.size() << " weapon classes." << std::endl;
-    std::cout << "Found " << mArmorTypes.size() << " armor types." << std::endl;
-    std::cout << "Found " << mArmorClasses.size() << " armor classes." << std::endl;
-    std::cout << "Found " << namedItemCount << " named items." << std::endl;
-    std::cout << "Found " << mItems.size() << " items total." << std::endl;
-#endif
-
-    
+  
+   
 }
-    
+#if 0
 void ItemManager::generateWeapons()
 {
     for(std::list<WeaponType*>::iterator iter = mWeaponTypes.begin();
@@ -279,7 +261,8 @@ void ItemManager::generateArmor()
     }
 }
 
-    
+#endif
+
 WeaponType * ItemManager::getWeaponType(const WeaponTypeRef &ref) const
 {
     for(std::list<WeaponType*>::const_iterator iter = mWeaponTypes.begin();
@@ -337,35 +320,73 @@ ArmorClass  * ItemManager::getArmorClass ( const ArmorClassRef & ref ) const
 
 Item * ItemManager::getNamedItem( const std::string &name ) const
 {
-    for(std::list<Item*>::const_iterator iter = mItems.begin();
-        iter != mItems.end();
-        iter++)
-    {
-        if( (*iter)->getName() == name ) 
-            return *iter;
-    }
+    NamedItemMap::const_iterator iter = mNamedItems.find(name);
 
+    if(iter != mNamedItems.end())
+    {
+        return iter->second;
+    }
+    
     throw CL_Error("Couldn't find item by name: " + name);
     return NULL;
 }
 
-Item * ItemManager::getItem( const ItemRef & ref ) const
+Item * ItemManager::getItem( const ItemRef & ref )
 {
-    for(std::list<Item*>::const_iterator iter = mItems.begin();
-        iter != mItems.end();
-        iter++)
+    ItemMap::const_iterator iter = mItems.find(ref);
+
+    if(iter != mItems.end())
     {
-        if( *(*iter) == ref ) 
-            return *iter;
+        // Already have this one created.
+        return iter->second;
     }
-
+    else
+    {
+        switch(ref.getType())
+        {
+        case ItemRef::NAMED_ITEM:
+            {
+                NamedItemRef *pRef = ref.getNamedItemRef();
+                return getNamedItem(pRef->getItemName());
+            }
+        case ItemRef::WEAPON_REF:
+            {
+                WeaponRef *pRef = ref.getWeaponRef();
+                Weapon *pWeapon = createWeapon(pRef);
+                mItems[ref] = pWeapon;
+                return pWeapon;
+            }
+        case ItemRef::ARMOR_REF:
+            {
+                ArmorRef *pRef = ref.getArmorRef();
+                Armor *pArmor = createArmor(pRef);
+                mItems[ref] = pArmor;
+                return pArmor;
+            }
+        }
+    }
+    
     throw CL_Error("Couldn't find item based on ref.");
-
     return NULL;
 }
 
+Weapon * ItemManager::createWeapon(WeaponRef *pRef) const
+{
+    GeneratedWeapon * pWeapon = new GeneratedWeapon();
+    pWeapon->generate(pRef->getWeaponType(), pRef->getWeaponClass(),
+        pRef->getSpellRef(),pRef->getRuneType());
+    return pWeapon;
+}
 
-#ifndef NDEBUG
+Armor * ItemManager::createArmor(ArmorRef *pRef) const
+{
+    GeneratedArmor * pArmor = new GeneratedArmor();
+    pArmor->generate(pRef->getArmorType(),pRef->getArmorClass(),
+        pRef->getSpellRef(),pRef->getRuneType());
+    return pArmor;
+}
+
+#if 0
 void ItemManager::dumpItemList()
 {
     for(std::list<Item*>::iterator iter = mItems.begin();
@@ -464,6 +485,7 @@ void ItemManager::dumpItemList()
     
     }
 }
+
 void ItemManager::printAttributeEnhancers(Equipment * pItem )
 {
     if( pItem->getAttributeEnhancersBegin() != pItem->getAttributeEnhancersEnd() )

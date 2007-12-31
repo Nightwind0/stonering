@@ -219,7 +219,8 @@ void StoneRing::MapState::recalculatePlayerPosition()
     int X = mpPlayer->getLevelX();
     int Y = mpPlayer->getLevelY();
     
-    if( X  > mLevelX + (mScreenRect.get_width() / 2) && mpLevel->getWidth() * 32 > mScreenRect.get_width())
+    if( X  > mLevelX + (mScreenRect.get_width() / 2) && 
+        static_cast<int>(mpLevel->getWidth()) * 32 > static_cast<int>(mScreenRect.get_width()))
     {
         // Try to scroll right
         int amount = X - (mLevelX  + (mScreenRect.get_width()/2));
