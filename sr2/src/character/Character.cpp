@@ -219,4 +219,11 @@ void Character::removeEffects(const std::string &name)
     mStatusEffects.erase(start,end);
 }
 
+void Character::statusEffectRound()
+{
+}
 
+double Character::getSpellResistance(Magic::eMagicType /*type*/) const
+{
+    return 0;
+}
