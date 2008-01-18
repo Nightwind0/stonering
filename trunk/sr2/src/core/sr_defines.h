@@ -39,9 +39,9 @@ struct get_second_t
 };
 
 template<class Pair>
-get_second_t<typename Pair> get_second()
+get_second_t<Pair> get_second()
 {
-    return get_second_t<typename Pair>();
+    return get_second_t<Pair>();
 }
 
 
