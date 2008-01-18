@@ -144,7 +144,6 @@ namespace StoneRing{
         virtual double getSpellResistance(Magic::eMagicType type) const;
         virtual double getAttribute(eCharacterAttribute attr) const;
         virtual bool getToggle(eCharacterAttribute attr) const;
-        virtual int getAttributeInt(eCharacterAttribute attr) const;
         virtual void fixAttribute(eCharacterAttribute attr, double value);
         virtual void fixAttribute(eCharacterAttribute attr, bool state);
         virtual void attachMultiplication(eCharacterAttribute attr, double factor);
@@ -162,10 +161,11 @@ namespace StoneRing{
         void unequip(Equipment::eSlot);
 
     private:
+        typedef std::multimap<std::string,StatusEffect*> StatusEffectMap;
         AttributeFile mAttributes;
         std::string mName;
         CharacterClass * mpClass;
-        std::list<StatusEffect*> mStatusEffects;
+        StatusEffectMap mStatusEffects;
     };
 
 };

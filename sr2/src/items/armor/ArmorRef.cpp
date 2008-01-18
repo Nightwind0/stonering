@@ -12,8 +12,9 @@
 using namespace StoneRing;
 
 ArmorRef::ArmorRef ( ArmorType *pType, ArmorClass *pClass, 
-                     SpellRef * pSpell, RuneType *pRune ):mpArmorType(pType), mpArmorClass(pClass),
-                                                          mpSpellRef(pSpell), mpRuneType(pRune)
+                     SpellRef * pSpell, RuneType *pRune )
+                     :mpArmorType(pType), mpArmorClass(pClass),
+                     mpSpellRef(pSpell), mpRuneType(pRune)
 
 {
 
@@ -24,43 +25,6 @@ std::string ArmorRef::getName() const
     return  mName;
 }
 
-/*
-bool ArmorRef::operator==(const ArmorRef &lhs)
-{
-    if( *mpArmorType == *lhs.mpArmorType &&
-        *mpArmorClass == *lhs.mpArmorClass)
-    {
-        if( mpSpellRef && lhs.mpSpellRef )
-        {
-            if(!(*mpSpellRef == *lhs.mpSpellRef))
-            {
-                return false;
-            }
-        }
-        else if ( mpSpellRef || lhs.mpSpellRef )
-        {
-            // One, but not both, had a spell ref
-            return false;
-        }
-
-
-        if( mpRuneType && lhs.mpRuneType )
-        {
-            if(!(*mpRuneType == *lhs.mpRuneType))
-            {
-                return false;
-            }
-        }
-        else if ( mpRuneType || lhs.mpRuneType)
-        {
-            return false;
-        }
-    }
-
-    return true;
-
-}
-*/
 bool ArmorRef::handleElement(eElement element, Element * pElement)
 {
     const ItemManager * pItemManager = IApplication::getInstance()->getItemManager();

@@ -121,31 +121,41 @@ bool Monster::getToggle(eCharacterAttribute attr) const
 
 void Monster::fixAttribute(eCharacterAttribute attr, double value)
 {
+    mAttributes.fixAttribute(attr,value);
 }
 
 void Monster::attachMultiplication(eCharacterAttribute attr, double factor)
 {
+    mAttributes.attachMultiplication(attr,factor);
 }
 
 void Monster::attachAddition(eCharacterAttribute attr, double value) 
 {
+    mAttributes.attachAddition(attr,value);
 }
 
 void Monster::detachMultiplication(eCharacterAttribute attr, double factor)
 {
+    mAttributes.detachMultiplication(attr,factor);
 }
 
 void Monster::detachAddition(eCharacterAttribute attr, double value) 
 {
+    mAttributes.detachAddition(attr,value);
 }
 
 
-void Monster::addStatusEffect(StatusEffect *)
+void Monster::addStatusEffect(StatusEffect *pEffect)
 {
+    mStatusEffects.insert(StatusEffectMap::value_type(pEffect->getName(),pEffect));
 }
 
 void Monster::removeEffects(const std::string &name)
 {
+    StatusEffectMap::iterator start = mStatusEffects.lower_bound(name);
+    StatusEffectMap::iterator end   = mStatusEffects.upper_bound(name);
+
+    mStatusEffects.erase(start,end);
 }
 
 void Monster::statusEffectRound()
