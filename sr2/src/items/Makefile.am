@@ -16,6 +16,7 @@ Item.h \
 ItemManager.cpp \
 ItemManager.h \
 ItemRef.h \
+ItemRef.cpp \
 NamedItem.cpp \
 NamedItem.h \
 RegularItem.cpp \
