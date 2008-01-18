@@ -208,17 +208,15 @@ void Character::detachAddition(eCharacterAttribute attr, double value)
 
 void Character::addStatusEffect(StatusEffect *pEffect)
 {
-    mStatusEffects.push_back(pEffect);
+    mStatusEffects.insert(StatusEffectMap::value_type(pEffect->getName(),pEffect));
 }
 
-static bool EffectMatches(const StatusEffect *pEffect, std::string name)
-{
-    return (pEffect->getName() == name);
-}
 void Character::removeEffects(const std::string &name)
 {
-    mStatusEffects.erase(std::remove_if(mStatusEffects.begin(),mStatusEffects.end(),
-        std::bind2nd(std::ptr_fun(EffectMatches),name))); 
+    StatusEffectMap::iterator start = mStatusEffects.lower_bound(name);
+    StatusEffectMap::iterator end   = mStatusEffects.upper_bound(name);
+
+    mStatusEffects.erase(start,end);
 }
 
 

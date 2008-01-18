@@ -10,6 +10,13 @@
 
 using namespace StoneRing;
 
+StoneRing::Skill::eType 
+StoneRing::Skill::typeFromString(const std::string type)
+{
+    if(type == "battle") return BATTLE;
+    else if(type == "switch") return SWITCH;
+    else throw CL_Error("Bad type on skill = " + type);
+}
 
 void StoneRing::Skill::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
@@ -17,7 +24,7 @@ void StoneRing::Skill::loadAttributes(CL_DomNamedNodeMap * pAttributes)
     mnSp = getRequiredInt("sp",pAttributes);
     mnBp = getRequiredInt("bp",pAttributes);
     mnMinLevel = getImpliedInt("minLevel",pAttributes,0);
-
+    meType = typeFromString(getImpliedString("type",pAttributes,"battle"));
 }
 
 bool StoneRing::Skill::handleElement(eElement element, Element * pElement)

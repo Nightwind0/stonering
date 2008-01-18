@@ -6,11 +6,8 @@ using namespace StoneRing;
 void NamedItemElement::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
     mName = getRequiredString("name",pAttributes);
-
     std::string dropRarity = getRequiredString("dropRarity",pAttributes);
-
     meDropRarity = Item::DropRarityFromString ( dropRarity );
-
     mnMaxInventory = getImpliedInt("maxInventory",pAttributes,99);
 }
 
@@ -124,9 +121,6 @@ NamedItem::eDropRarity NamedItem::getDropRarity() const
 {
     return meDropRarity;
 }
-
-
-
 
 void NamedItem::setIconRef(const std::string &ref)
 {

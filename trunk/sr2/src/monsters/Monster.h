@@ -4,6 +4,7 @@
 #include "Character.h"
 #include "Stat.h"
 #include "ScriptElement.h"
+#include "StatusEffect.h"
 #include <map>
 #include <list>
 
@@ -49,6 +50,7 @@ private:
     virtual void loadAttributes(CL_DomNamedNodeMap *);
     virtual void handleText(const std::string &);
     virtual void loadFinished();
+    typedef std::multimap<std::string,StatusEffect*> StatusEffectMap;
 
     std::map<eCharacterAttribute,Stat*> mStatMap;
     std::list<ItemRef*> mItems;
@@ -60,6 +62,7 @@ private:
     uint mnLevel;
     eType meType;
     AttributeFile mAttributes;
+    StatusEffectMap mStatusEffects;
 };
 
 };

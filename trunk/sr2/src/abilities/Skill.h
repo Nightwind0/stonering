@@ -43,6 +43,7 @@ namespace StoneRing
     private:
         virtual bool handleElement(eElement element, Element * pElement );
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+        static eType typeFromString(const std::string type);
         std::string mName;
         std::list<SkillRef*> mPreReqs;
         ScriptElement *mpOnInvoke;

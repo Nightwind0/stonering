@@ -51,49 +51,14 @@ WeaponRef::~WeaponRef()
 
 
 WeaponRef::WeaponRef ( WeaponType *pType, WeaponClass *pClass, 
-                       SpellRef * pSpell, RuneType *pRune ):mpWeaponType(pType), mpWeaponClass(pClass),
-                                                            mpSpellRef(pSpell), mpRuneType(pRune)
+                       SpellRef * pSpell, RuneType *pRune )
+                       :mpWeaponType(pType), mpWeaponClass(pClass),
+                       mpSpellRef(pSpell), mpRuneType(pRune)
 
 {
 
 }
-/*
-bool WeaponRef::operator==(const WeaponRef &lhs)
-{
-    if( *mpWeaponType == *lhs.mpWeaponType &&
-        *mpWeaponClass == *lhs.mpWeaponClass)
-    {
-        if( mpSpellRef && lhs.mpSpellRef )
-        {
-            if(!(*mpSpellRef == *lhs.mpSpellRef))
-            {
-                return false;
-            }
-        }
-        else if ( mpSpellRef || lhs.mpSpellRef )
-        {
-            // One, but not both, had a spell ref
-            return false;
-        }
 
-
-        if( mpRuneType && lhs.mpRuneType )
-        {
-            if(!(*mpRuneType == *lhs.mpRuneType))
-            {
-                return false;
-            }
-        }
-        else if ( mpRuneType || lhs.mpRuneType)
-        {
-            return false;
-        }
-    }
-
-    return true;
-
-}
-*/
 void WeaponRef::loadFinished()
 {
     mName = Weapon::CreateWeaponName(mpWeaponType,mpWeaponClass,mpSpellRef,mpRuneType);

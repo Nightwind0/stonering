@@ -48,7 +48,6 @@ namespace StoneRing{
 
         std::string getName() const;
         eBindTo getBindTo() const;
-
     private:
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
         eBindTo meBindTo;
