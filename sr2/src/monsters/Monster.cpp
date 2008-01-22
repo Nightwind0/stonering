@@ -1,6 +1,7 @@
 #include "Monster.h"
 #include "IApplication.h"
 
+
 using namespace StoneRing;
 
 Monster::Monster()
@@ -32,6 +33,9 @@ bool Monster::handleElement(eElement element, Element * pElement)
         break;
     case ESCRIPT:
         mpScript = dynamic_cast<ScriptElement*>(pElement);
+        break;
+    case ESPRITEDEFINITION:
+        mSpriteDefinitions.push_back(dynamic_cast<SpriteDefinition*>(pElement));
         break;
     default:
         return false;

@@ -5,6 +5,7 @@
 #include "Stat.h"
 #include "ScriptElement.h"
 #include "StatusEffect.h"
+#include "CharacterDefinition.h"
 #include <map>
 #include <list>
 
@@ -52,6 +53,7 @@ private:
     virtual void loadFinished();
     typedef std::multimap<std::string,StatusEffect*> StatusEffectMap;
 
+    std::list<SpriteDefinition*> mSpriteDefinitions;
     std::map<eCharacterAttribute,Stat*> mStatMap;
     std::list<ItemRef*> mItems;
     ScriptElement *mpScript;
