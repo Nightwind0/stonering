@@ -120,8 +120,11 @@ bool StoneRing::CharacterDefinition::handleElement(eElement element, StoneRing::
     switch(element)
     {
     case ESPRITEDEFINITION:
-        mSpriteDefinitions.push_back(dynamic_cast<SpriteDefinition*>(pElement));
-        break;
+        {
+            SpriteDefinition * pSpriteDef = dynamic_cast<SpriteDefinition*>(pElement);
+            mSpriteDefinitionsMap[pSpriteDef->getName()] = pSpriteDef;
+            break;
+        }
     default:
         return false;
     }

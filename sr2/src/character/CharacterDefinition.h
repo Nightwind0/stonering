@@ -31,8 +31,8 @@ namespace StoneRing
         virtual void loadAttributes(CL_DomNamedNodeMap *);
         std::string mSpriteRef;
         std::string mName;
-        // Should these both be maps? maybe later...
-        std::list<SpriteDefinition*> mSpriteDefinitions;
+        std::map<std::string,SpriteDefinition*> mSpriteDefinitionsMap;
+        // Should this be a map? maybe later...
         CharacterClass * mpClass;
 
     };

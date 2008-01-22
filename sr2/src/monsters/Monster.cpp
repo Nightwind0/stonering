@@ -35,8 +35,11 @@ bool Monster::handleElement(eElement element, Element * pElement)
         mpScript = dynamic_cast<ScriptElement*>(pElement);
         break;
     case ESPRITEDEFINITION:
-        mSpriteDefinitions.push_back(dynamic_cast<SpriteDefinition*>(pElement));
-        break;
+        {
+            SpriteDefinition * pSpriteDef = dynamic_cast<SpriteDefinition*>(pElement);
+            mSpriteDefinitionsMap[pSpriteDef->getName()] = pSpriteDef;
+            break;
+        }
     default:
         return false;
     }
