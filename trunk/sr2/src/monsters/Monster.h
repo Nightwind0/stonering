@@ -53,7 +53,7 @@ private:
     virtual void loadFinished();
     typedef std::multimap<std::string,StatusEffect*> StatusEffectMap;
 
-    std::list<SpriteDefinition*> mSpriteDefinitions;
+    std::map<std::string,SpriteDefinition*> mSpriteDefinitionsMap;
     std::map<eCharacterAttribute,Stat*> mStatMap;
     std::list<ItemRef*> mItems;
     ScriptElement *mpScript;
