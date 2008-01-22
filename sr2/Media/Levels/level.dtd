@@ -70,7 +70,6 @@
 <!ELEMENT spriteMovement EMPTY>
 <!ELEMENT hide EMPTY>
 
-
 <!-- Status Effect DTD -->
 <!ELEMENT statusEffectList (statusEffect*)>
 <!ELEMENT statusEffect (onInvoke?,onRound?,onCountdown?,onRemove?)>
@@ -105,6 +104,10 @@
 <!-- Monsters -->
 <!ELEMENT monster (script, spriteDefinition*, stat*, itemRef*)>
 <!ELEMENT stat EMPTY>
+
+<!ELEMENT monsterRegion (monsterGroup+)>
+<!ELEMENT monsterGroup (monsterEncounter+)>
+
 <!-- Attributes -->
 
 <!ATTLIST level name CDATA #REQUIRED>
@@ -276,6 +279,16 @@
 <!ATTLIST monster spriteResources CDATA #REQUIRED>
 <!ATTLIST monster class CDATA #IMPLIED> <!-- Allows the use of a character class -->
 <!ATTLIST monster level CDATA #IMPLIED>
+
+<!ATTLIST monsterRegion levelX CDATA #REQUIRED>
+<!ATTLIST monsterRegion levelY CDATA #REQUIRED>
+<!ATTLIST monsterRegion width CDATA #REQUIRED>
+<!ATTLIST monsterRegion height CDATA #REQUIRED>
+<!ATTLIST monsterRegion encounterRate CDATA #IMPLIED> <!-- 0.0 - 1.0 ,Game settings supply default -->
+
+<!ATTLIST monsterGroup encounterWeight CDATA #IMPLIED> <!-- Defaults to standard weight -->
+<!ATTLIST monsterEncounter name CDATA #REQUIRED>
+<!ATTLIST monsterEncounter count CDATA #REQUIRED>
 
 <!ATTLIST stat id CDATA #REQUIRED>
 <!ATTLIST stat value CDATA #IMPLIED> <!-- Either this, or toggle -->
