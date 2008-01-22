@@ -3552,7 +3552,7 @@
 				say("Leroy","I like you.");
 				</script>
 			</event>
-			<event name="CatChoice" triggerType="talk" repeatable="false" remember="true">
+			<event name="CatChoice" triggerType="talk" repeatable="true" remember="true">
 				<script id="CatChoice">
 					var @options = ("You" : "The other cat" : "Jesus" : "Option 3" : "Option 4" : "Option 5" : "Option 6");
 					var $decision = choice( "Who is your Favorite cat", @options);
