@@ -5,7 +5,7 @@ noinst_LTLIBRARIES = libstonering.la
 bin_PROGRAMS = stonering
 
 stonering_LDADD = libstonering.la \
-				@top_srcdir@/src/states/libstates.la \
+				 states/libstates.la \
 				-lsteel
 
 stonering_SOURCES =	Application.cpp 
@@ -17,14 +17,14 @@ stonering_CFLAGS = $(CLANLIB_CFLAGS)
 libstonering_la_SOURCES = 
 
 libstonering_la_LIBADD = $(CLANLIB_LIBS) \
-			@top_srcdir@/src/abilities/libabilities.la \
-			@top_srcdir@/src/character/libcharacter.la \
-			@top_srcdir@/src/factories/libfactories.la \
-			@top_srcdir@/src/monsters/libmonsters.la \
-			@top_srcdir@/src/items/libitems.la \
-			@top_srcdir@/src/level/liblevel.la \
-			@top_srcdir@/src/party/libparty.la \
-			@top_srcdir@/src/core/libcore.la 
+			abilities/libabilities.la \
+			character/libcharacter.la \
+			factories/libfactories.la \
+			monsters/libmonsters.la \
+			items/libitems.la \
+			level/liblevel.la \
+			party/libparty.la \
+			core/libcore.la 
 
 
 

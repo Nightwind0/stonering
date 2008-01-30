@@ -12,7 +12,9 @@ CharacterClass.h \
 Character.cpp \
 CharacterDefinition.cpp \
 CharacterDefinition.h \
-Character.h 
+Character.h \
+CharacterManager.h \
+CharacterManager.cpp
 
 
 

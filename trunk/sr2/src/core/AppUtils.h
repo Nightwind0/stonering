@@ -4,8 +4,10 @@
 #include <string>
 
 namespace StoneRing{
+
 class ItemManager;
 class AbilityManager;
+class CharacterManager;
 
 class AppUtils
 {
@@ -13,7 +15,7 @@ public:
     AppUtils();
     ~AppUtils();
 
-    void loadGameItemsAndSkills(const std::string &path,CL_ResourceManager *pResources);
+    void loadGameplayAssets(const std::string &path,CL_ResourceManager *pResources);
 private:
 
     void loadItems(const std::string &filename);
@@ -21,8 +23,10 @@ private:
     void loadSkills(const std::string &filename);
     void loadStatusEffects(const std::string &filename);
     void loadCharacterClasses(const std::string &filename);
+    void loadCharacters(const std::string &filename);
     AbilityManager * getAbilityManager();
     ItemManager * getItemManager();
+    CharacterManager * getCharacterManager();
 };
 }
 

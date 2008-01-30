@@ -7,6 +7,7 @@
 #include "Party.h"
 #include "IApplication.h"
 #include "ItemManager.h"
+#include "CharacterManager.h"
 #include "AppUtils.h"
 #include <queue>
 #include "MapState.h"
@@ -44,6 +45,7 @@ namespace StoneRing
         virtual AbilityManager * getAbilityManager();
         virtual ItemManager * getItemManager();
         virtual IFactory * getElementFactory() { return &mElementFactory; }
+        virtual CharacterManager * getCharacterManager() { return &mCharacterManager; }
         virtual CL_Rect getDisplayRect() const;
 
         virtual void requestRedraw(const State *pState);
@@ -102,6 +104,7 @@ namespace StoneRing
         Party *mpParty;
         ItemManager mItemManager;
         AbilityManager mAbilityManager;
+        CharacterManager mCharacterManager;
         SteelInterpreter mInterpreter;
         ElementFactory mElementFactory;
         bool mbDone;
