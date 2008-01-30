@@ -18,11 +18,6 @@ AbilityManager::~AbilityManager()
     std::for_each(mStatusEffects.begin(),mStatusEffects.end(),del_fun<StatusEffect>());
     std::for_each(mSpells.begin(),mSpells.end(),del_fun<Spell>());
 
-    std::for_each(mCharacterClasses.begin(),mCharacterClasses.end(),
-        compose_f_gx(del_fun<CharacterClass>(),
-        get_second<ClassMap::value_type>())
-        );
-
     std::for_each(mSkills.begin(),mSkills.end(),
         compose_f_gx(del_fun<Skill>(),
         get_second<SkillMap::value_type>())
@@ -82,30 +77,6 @@ void AbilityManager::loadStatusEffectFile ( CL_DomDocument &doc )
     }
 }
 
-void AbilityManager::loadCharacterClassFile ( CL_DomDocument &doc )
-{
-    IFactory * pFactory = IApplication::getInstance()->getElementFactory();
-
-    CL_DomElement classesNode = doc.named_item("characterClasses").to_element();
-    CL_DomElement classNode = classesNode.get_first_child().to_element();
-
-    while(!classNode.is_null())
-    {
-        CharacterClass * pCharacterClass = dynamic_cast<CharacterClass*>
-            (pFactory->createElement("characterClass"));
-
-        pCharacterClass->load(&classNode);
-        mCharacterClasses [ pCharacterClass->getName() ] = pCharacterClass;
-        classNode = classNode.get_next_sibling().to_element();
-
-#ifndef NDEBUG
-        std::cout << "Class: " << pCharacterClass->getName() << std::endl;
-#endif
-    }
-
-
-}
-
 
 std::list<Spell*>::const_iterator AbilityManager::getSpellsBegin() const
 {
@@ -131,12 +102,6 @@ std::map<std::string,Skill*>::const_iterator AbilityManager::getSkillsEnd() cons
 Skill * AbilityManager::getSkill ( const SkillRef &ref ) const
 {
     return mSkills.find( ref.getRef() )->second;
-}
-
-
-CharacterClass * AbilityManager::getClass ( const std::string &cls ) const
-{
-    return mCharacterClasses.find(cls)->second;
 }
 
 

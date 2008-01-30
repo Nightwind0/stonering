@@ -44,3 +44,4 @@ StoneRing::SpriteRef::getType() const
 {
     return meType;
 }
+

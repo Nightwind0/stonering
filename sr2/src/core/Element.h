@@ -3,6 +3,7 @@
 
 #include "sr_defines.h"
 
+#include <sstream>
 #include <ClanLib/core.h>
 //#include "IFactory.h"
 //#include "IApplication.h"
@@ -132,7 +133,15 @@ namespace StoneRing
         int getImpliedInt( const std::string &attrname, CL_DomNamedNodeMap * pAttributes, int defaultValue);
         std::string getImpliedString( const std::string &attrname, CL_DomNamedNodeMap * pAttributes, const std::string &defaultValue);
         float getImpliedFloat(const std::string &attrname, CL_DomNamedNodeMap *pAttributes, float defaultValue);
+#ifndef NDEBUG
         std::string getElementName() const;
+#else
+        std::string getElementName() const { 
+            std::ostringstream os;
+            os << "Element #" << whichElement() << "- Use debug mode to find out the name.";
+            return os.str();
+        }
+#endif
 
     private:
 #ifndef NDEBUG

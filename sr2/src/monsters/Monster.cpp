@@ -1,6 +1,6 @@
 #include "Monster.h"
 #include "IApplication.h"
-
+#include "CharacterManager.h"
 
 using namespace StoneRing;
 
@@ -75,7 +75,7 @@ void Monster::loadAttributes(CL_DomNamedNodeMap *pAttr)
     if(mbClass)
     {
         std::string classname = getRequiredString("class",pAttr);
-        mpClass = IApplication::getInstance()->getAbilityManager()->getClass(classname);
+        mpClass = IApplication::getInstance()->getCharacterManager()->getClass(classname);
     }
 
 }

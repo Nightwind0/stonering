@@ -23,14 +23,13 @@ namespace StoneRing
     class LevelFactory;
     class ItemFactory;
     class ItemManager;
-    class CharacterFactory;
+    class CharacterManager;
     class Choice;
     class State;
 
     class IApplication 
     {
     public:
-
         virtual ~IApplication(){}
         virtual CL_ResourceManager * getResources()const=0;
         virtual IParty * getParty() const=0;
@@ -38,6 +37,7 @@ namespace StoneRing
         virtual AbilityManager * getAbilityManager() = 0;
         virtual ItemManager * getItemManager() = 0;
         virtual IFactory * getElementFactory() = 0;
+        virtual CharacterManager * getCharacterManager() = 0;
         static IApplication * getInstance();
         virtual void pop(bool popAll)=0;
 

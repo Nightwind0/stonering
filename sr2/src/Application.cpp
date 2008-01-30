@@ -494,7 +494,7 @@ int Application::main(int argc, char ** argv)
         std::string startinglevel = CL_String::load("Game/StartLevel",mpResources);
 
         
-        mAppUtils.loadGameItemsAndSkills("",mpResources);
+        mAppUtils.loadGameplayAssets("",mpResources);
 
         // Load special overlay for say.
         mpWindow  = new CL_OpenGLWindow(name, WINDOW_WIDTH, WINDOW_HEIGHT,false,false,2);

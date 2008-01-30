@@ -4,6 +4,7 @@
 #include "IApplication.h"
 #include "Animation.h"
 #include "WeaponTypeRef.h"
+#include "CharacterManager.h"
 
 namespace StoneRing{
 struct stat_entry
@@ -135,13 +136,13 @@ bool StoneRing::CharacterDefinition::handleElement(eElement element, StoneRing::
 void StoneRing::CharacterDefinition::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
 
-    const AbilityManager * pAbilityManager = IApplication::getInstance()->getAbilityManager();
+    const CharacterManager * pCharacterManager = IApplication::getInstance()->getCharacterManager();
     mName = getRequiredString("name",pAttributes);
     mSpriteRef = getRequiredString("spriteResource",pAttributes);
     std::string className = getRequiredString("class",pAttributes);
 
     // Get the class pointer
-    mpClass = pAbilityManager->getClass(className);
+    mpClass = pCharacterManager->getClass(className);
 
 }
 

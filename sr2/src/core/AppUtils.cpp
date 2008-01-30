@@ -1,6 +1,7 @@
 #include "AppUtils.h"
 #include "ItemManager.h"
 #include "AbilityManager.h"
+#include "CharacterManager.h"
 #include <cassert>
 
 using StoneRing::AppUtils;
@@ -13,7 +14,7 @@ AppUtils::~AppUtils()
 {
 }
 
-void AppUtils::loadGameItemsAndSkills(const std::string &path, CL_ResourceManager *pResources)
+void AppUtils::loadGameplayAssets(const std::string &path, CL_ResourceManager *pResources)
 {
     std::string startinglevel = CL_String::load("Game/StartLevel",pResources);
     std::string itemdefinition = CL_String::load("Game/ItemDefinitions", pResources );
@@ -26,7 +27,7 @@ void AppUtils::loadGameItemsAndSkills(const std::string &path, CL_ResourceManage
     loadSpells(path + spelldefinition);
     loadItems(path + itemdefinition);
     loadSkills(path + skilldefinition);
-   // loadCharacterClasses(path + classdefinition);
+    loadCharacterClasses(path + classdefinition);
 }
 
 
@@ -37,13 +38,11 @@ void AppUtils::loadSpells(const std::string &filename)
 #endif    
 
     CL_InputSource_File file(filename);
-
     CL_DomDocument document;
         
     document.load(&file);
 
     getAbilityManager()->loadSpellFile ( document );
-
 }
 
 void AppUtils::loadSkills(const std::string &filename)
@@ -53,13 +52,10 @@ void AppUtils::loadSkills(const std::string &filename)
 #endif    
 
     CL_InputSource_File file(filename);
-
     CL_DomDocument document;
-        
     document.load(&file);
 
     getAbilityManager()->loadSkillFile ( document );
-
 }
 
 void AppUtils::loadStatusEffects(const std::string &filename)
@@ -84,12 +80,23 @@ void AppUtils::loadCharacterClasses(const std::string &filename)
 #endif
 
     CL_InputSource_File file(filename);
-
     CL_DomDocument document;
-
     document.load(&file);
 
-    getAbilityManager()->loadCharacterClassFile( document );
+    getCharacterManager()->loadCharacterClassFile( document );
+}
+
+void AppUtils::loadCharacters(const std::string &filename)
+{
+#ifndef NDEBUG
+    std::cout << "Loading characters..." << std::endl;
+#endif
+
+    CL_InputSource_File file(filename);
+    CL_DomDocument document;
+    document.load(&file);
+
+
 }
 
 void AppUtils::loadItems(const std::string &filename)
@@ -99,13 +106,10 @@ void AppUtils::loadItems(const std::string &filename)
 #endif    
   
     CL_InputSource_File file(filename);
-
     CL_DomDocument document;
-        
+   
     document.load(&file);
-
     getItemManager()->loadItemFile ( document );
-
 }
 
 StoneRing::AbilityManager * AppUtils::getAbilityManager()
@@ -126,3 +130,10 @@ StoneRing::ItemManager * AppUtils::getItemManager()
     return pApp->getItemManager();
 }
 
+StoneRing::CharacterManager * AppUtils::getCharacterManager()
+{
+    IApplication *pApp = IApplication::getInstance();
+    assert ( NULL != pApp );
+
+    return pApp->getCharacterManager();
+}
