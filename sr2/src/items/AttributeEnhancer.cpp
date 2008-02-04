@@ -1,6 +1,6 @@
 #include "AttributeEnhancer.h"
 #include "IApplication.h"
-#include "CharacterDefinition.h"
+#include "SpriteDefinition.h"
 
 using namespace StoneRing;
 
@@ -10,7 +10,7 @@ AttributeEnhancer::AttributeEnhancer():mnAdd(0),mfMultiplier(1)
 
 void AttributeEnhancer::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-    mnAttribute = CAFromString(getRequiredString("attribute", pAttributes));
+    mnAttribute = ICharacter::CAFromString(getRequiredString("attribute", pAttributes));
     meType = static_cast<eType>( getImpliedInt("type",pAttributes, EAUTO) );
     mfMultiplier = getImpliedFloat("multiplier",pAttributes,1);
     mnAdd = getImpliedInt("add",pAttributes,0);
@@ -68,7 +68,7 @@ void AttributeEnhancer::invoke()
         ->getSelectedCharacterGroup()
         ->getSelectedCharacter();
 
-    eCharacterAttribute attr = static_cast<eCharacterAttribute>(mnAttribute);
+    ICharacter::eCharacterAttribute attr = static_cast<ICharacter::eCharacterAttribute>(mnAttribute);
     if(meType & EMULTIPLY)
         pCharacter->attachMultiplication(attr, mfMultiplier);
     if(meType & EADD)
@@ -87,7 +87,7 @@ void AttributeEnhancer::revoke()
         ->getSelectedCharacterGroup()
         ->getSelectedCharacter();
 
-    eCharacterAttribute attr = static_cast<eCharacterAttribute>(mnAttribute);
+    ICharacter::eCharacterAttribute attr = static_cast<ICharacter::eCharacterAttribute>(mnAttribute);
 
     if(meType & EADD)
         pCharacter->detachAddition(attr, mnAdd);

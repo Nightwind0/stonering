@@ -28,7 +28,7 @@ namespace StoneRing
         std::list<ArmorTypeRef*>::const_iterator getArmorTypeRefsBegin() const;
         std::list<ArmorTypeRef*>::const_iterator getArmorTypeRefsEnd() const;
 
-        double getStat(eCharacterAttribute attr, int level);
+        double getStat(ICharacter::eCharacterAttribute attr, int level);
 
         std::list<SkillRef*>::const_iterator getSkillRefsBegin() const;
         std::list<SkillRef*>::const_iterator getSkillRefsEnd() const;
@@ -43,7 +43,7 @@ namespace StoneRing
         ICharacter::eGender meGender;
         std::list<WeaponTypeRef*> mWeaponTypes;
         std::list<ArmorTypeRef*> mArmorTypes;
-        typedef std::map<eCharacterAttribute,StatScript*> StatMap;
+        typedef std::map<ICharacter::eCharacterAttribute,StatScript*> StatMap;
         StatMap mStatScripts;
         std::list<SkillRef*> mSkillRefs;
         BattleMenu *mpMenu;
@@ -55,14 +55,14 @@ namespace StoneRing
         StatScript();
         ~StatScript();
         virtual eElement whichElement() const{ return ESTATSCRIPT; }
-        eCharacterAttribute getCharacterStat() const;
+        ICharacter::eCharacterAttribute getCharacterStat() const;
         double getStat(int level);
     private:
         virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
         virtual bool handleElement(Element::eElement, Element * pElement);
         virtual void loadFinished();
         ScriptElement *mpScript;
-        eCharacterAttribute meStat;
+        ICharacter::eCharacterAttribute meStat;
     };
 };
 

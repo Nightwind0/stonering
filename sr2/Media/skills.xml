@@ -1,5 +1,24 @@
 <!--DOCTYPE skillList SYSTEM "Levels/level.dtd" -->
 <skillList>
+    <skill bp="0" name="Attack" sp=0">
+        <onInvoke>
+             <script id="Attack">
+                  var $pC = getCaster(); // Caster is user of skill.... 
+                  // The animation comes first.
+                  animation($pC,"Attack");
+
+                  var $pWeapon = getMainWeapon($pC);
+                  // If hit
+                      // Calculate damage
+                      // doAttack()
+                      // hit sound
+                      // recoil animation
+                  // else
+                      // pushDisplay("Miss");
+                      // playSound("whiff");
+             </script>
+        </onInvoke>
+    </skill>
 	<skill bp="0" name="Focus" sp="5">
 		<onInvoke>
 			<script id="Focus">

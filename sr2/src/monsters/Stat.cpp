@@ -1,5 +1,5 @@
 #include "Stat.h"
-#include "CharacterDefinition.h"
+#include "SpriteDefinition.h"
 
 using namespace StoneRing;
 
@@ -21,18 +21,18 @@ bool Stat::getToggle() const
     return mbToggle;
 }
 
-eCharacterAttribute Stat::getAttribute() const
+ICharacter::eCharacterAttribute Stat::getAttribute() const
 {
     return meAttr;
 }
 
 void Stat::loadAttributes(CL_DomNamedNodeMap *attr)
 {
-    meAttr = CharAttributeFromString( getRequiredString("id",attr) );
-    if(meAttr = CA_INVALID)
+    meAttr = ICharacter::CharAttributeFromString( getRequiredString("id",attr) );
+    if(meAttr = ICharacter::CA_INVALID)
         throw CL_Error("Unknown stat type in monster stat");
 
-    if(meAttr > _START_OF_TOGGLES && meAttr < _END_OF_TOGGLES)
+    if(meAttr > ICharacter::_START_OF_TOGGLES && meAttr < ICharacter::_END_OF_TOGGLES)
         mbToggle = getRequiredBool("toggle",attr);
     else  mfValue = getRequiredFloat("value",attr);
 

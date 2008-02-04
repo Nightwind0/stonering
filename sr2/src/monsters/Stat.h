@@ -14,13 +14,12 @@ namespace StoneRing
 
         double getStat() const;
         bool getToggle() const;
-        eCharacterAttribute getAttribute() const;
+        ICharacter::eCharacterAttribute getAttribute() const;
 
         eElement whichElement()const { return ESTAT; }
-
     private:
         virtual void loadAttributes(CL_DomNamedNodeMap *);
-        eCharacterAttribute meAttr;
+        ICharacter::eCharacterAttribute meAttr;
         double mfValue;
         bool mbToggle;
     };

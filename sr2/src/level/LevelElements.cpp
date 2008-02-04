@@ -12,7 +12,7 @@
 #include "LevelFactory.h"
 #include "ItemFactory.h"
 #include "ItemManager.h"
-#include "CharacterDefinition.h"
+#include "SpriteDefinition.h"
 #include "WeaponRef.h"
 #include "ArmorRef.h"
 #include "IApplication.h"

@@ -1,6 +1,16 @@
-<!--DOCTYPE characterClasses SYSTEM "Levels/level.dtd" -->
+<!DOCTYPE characterClasses SYSTEM "Levels/level.dtd">
 <characterClasses>
 	<characterClass name = "Warrior" gender="either">
+        <battleMenu>
+            <battleMenuOption name="Attack" icon="BattleMenuIcons/attack">
+                <conditionScript>
+                    return hasWeaponEquipped(getCaster());
+                </conditionScript>
+                <script name="WarriorAttackOption">
+                    doSkill("Attack"); 
+                </script>
+            </battleMenuOption>
+        </battleMenu>
 		<weaponTypeRef>Sword</weaponTypeRef>
 		<weaponTypeRef>Broadsword</weaponTypeRef>
 		<weaponTypeRef>Greatsword</weaponTypeRef>
@@ -20,7 +30,6 @@
 		<statIncrease base="1.06" multiplier="4" stat="evd"/>
 		<statIncrease base="1.06" multiplier="1" stat="mag"/>
 		<statIncrease base="1.06" multiplier="3.5" stat="rst"/>
-
 		
 	</characterClass>
 	<characterClass name = "Ranger" gender="either">
