@@ -1,7 +1,6 @@
 #include "CharacterClass.h"
 #include "Skill.h"
 #include "Item.h"
-#include "CharacterDefinition.h"
 #include "WeaponTypeRef.h"
 #include "ArmorTypeRef.h"
 #include "BattleMenu.h"
@@ -91,7 +90,7 @@ bool CharacterClass::handleElement(eElement element, Element * pElement)
 }
 
 
-double CharacterClass::getStat(eCharacterAttribute attr, int level)
+double CharacterClass::getStat(ICharacter::eCharacterAttribute attr, int level)
 {
     StatMap::iterator it = mStatScripts.find(attr);
     if(it == mStatScripts.end())
@@ -108,7 +107,7 @@ CharacterClass::CharacterClass()
     std::for_each(mArmorTypes.begin(),mArmorTypes.end(),del_fun<ArmorTypeRef>());
     std::for_each(mSkillRefs.begin(),mSkillRefs.end(),del_fun<SkillRef>());
 
-    for(std::map<eCharacterAttribute,StatScript*>::iterator it = mStatScripts.begin();
+    for(std::map<ICharacter::eCharacterAttribute,StatScript*>::iterator it = mStatScripts.begin();
         it != mStatScripts.end();
         it++)
     {
@@ -170,7 +169,7 @@ CharacterClass::getGender() const
 void StatScript::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
     std::string stat = getRequiredString("stat",pAttributes);
-    meStat = CharAttributeFromString ( stat );
+    meStat = ICharacter::CharAttributeFromString ( stat );
 }
 
 bool StatScript::handleElement(Element::eElement element, StoneRing::Element *pElement)
@@ -198,7 +197,7 @@ StatScript::~StatScript()
 {
 }
 
-eCharacterAttribute 
+ICharacter::eCharacterAttribute 
 StatScript::getCharacterStat() const
 {
     return meStat;

@@ -10,33 +10,6 @@ namespace StoneRing
 {
     class SpriteDefinition;
 
-    eCharacterAttribute CharAttributeFromString(const std::string &str); 
-    eCommonAttribute CommonAttributeFromString(const std::string &str);
-
-    // CA encompasses both common and character attributes
-    uint CAFromString(const std::string &str);
-
-    std::string CAToString(uint);
-
-    class CharacterDefinition :     public Element
-    {
-    public:
-        CharacterDefinition(void);
-        virtual ~CharacterDefinition(void);
-
-        virtual eElement whichElement() const { return ECHARACTER; }
-
-    private:
-        virtual bool handleElement(eElement, Element * );
-        virtual void loadAttributes(CL_DomNamedNodeMap *);
-        std::string mSpriteRef;
-        std::string mName;
-        std::map<std::string,SpriteDefinition*> mSpriteDefinitionsMap;
-        // Should this be a map? maybe later...
-        CharacterClass * mpClass;
-
-    };
-
     class SpriteDefinition : public Element
     {
     public:

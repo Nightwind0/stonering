@@ -10,11 +10,11 @@ BattleMenuOption.h \
 CharacterClass.cpp \
 CharacterClass.h \
 Character.cpp \
-CharacterDefinition.cpp \
-CharacterDefinition.h \
 Character.h \
 CharacterManager.h \
-CharacterManager.cpp
+CharacterManager.cpp \
+SpriteDefinition.cpp \
+SpriteDefinition.h
 
 
 

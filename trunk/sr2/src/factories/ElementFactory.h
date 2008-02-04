@@ -29,7 +29,7 @@ namespace StoneRing
         virtual Element * createBattleMenu() const;
         virtual Element * createBattleMenuOption() const;
         virtual Element * createCharacterClass() const;
-        virtual Element * createCharacterDefinition() const;
+        virtual Element * createCharacter() const;
         virtual Element * createConditionScript() const;
         virtual Element * createDirectionBlock()const;
         virtual Element * createEvent()const;

@@ -30,8 +30,8 @@
 #include "BattleMenuOption.h"
 #include "Monster.h"
 #include "Stat.h"
-
-#include "CharacterDefinition.h"
+#include "SpriteDefinition.h"
+#include "Character.h"
 
 using namespace StoneRing;
 
@@ -266,9 +266,9 @@ Element * ElementFactory::createCharacterClass() const
     return new CharacterClass();
 }
 
-Element * ElementFactory::createCharacterDefinition() const
+Element * ElementFactory::createCharacter() const
 {
-    return new CharacterDefinition();
+    return new Character();
 }
 
 
@@ -441,7 +441,7 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["attributeEnhancer"] = &ElementFactory::createAttributeEnhancer;
     mCreateMethods["battleMenu"] = &ElementFactory::createBattleMenu;
     mCreateMethods["battleMenuOption"] = &ElementFactory::createBattleMenuOption;
-//    mCreateMethods[Element::ECHARACTER] = &ElementFactory::createCharacter;
+    mCreateMethods["character"] = &ElementFactory::createCharacter;
     mCreateMethods["characterClass"] = &ElementFactory::createCharacterClass;
     mCreateMethods["conditionScript"] = &ElementFactory::createConditionScript;
     mCreateMethods["directionBlock"] = &ElementFactory::createDirectionBlock;

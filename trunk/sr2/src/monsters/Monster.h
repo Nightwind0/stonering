@@ -5,7 +5,7 @@
 #include "Stat.h"
 #include "ScriptElement.h"
 #include "StatusEffect.h"
-#include "CharacterDefinition.h"
+#include "SpriteDefinition.h"
 #include <map>
 #include <list>
 

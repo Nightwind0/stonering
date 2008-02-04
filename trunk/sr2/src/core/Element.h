@@ -16,7 +16,6 @@ namespace StoneRing
 
     class IApplication;
 
-
     class Element
     {
     public:
