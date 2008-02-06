@@ -21,7 +21,7 @@ namespace StoneRing
         ItemRef(CL_DomElement *pElement );
         virtual ~ItemRef();
         virtual eElement whichElement() const{ return EITEMREF; }   
-        enum eRefType { NAMED_ITEM, WEAPON_REF, ARMOR_REF };
+        enum eRefType { INVALID, NAMED_ITEM, WEAPON_REF, ARMOR_REF };
 
         std::string getItemName() const;
         eRefType getType() const;
@@ -34,10 +34,14 @@ namespace StoneRing
         virtual bool handleElement(Element::eElement,Element *);    
         virtual void loadAttributes(CL_DomNamedNodeMap *pAttributes);
         virtual void loadFinished();
-        NamedItemRef * mpNamedItemRef;
-        WeaponRef * mpWeaponRef;
-        ArmorRef * mpArmorRef;
+        
+        union Ref{
+            NamedItemRef * mpNamedItemRef;
+            WeaponRef * mpWeaponRef;
+            ArmorRef * mpArmorRef;
+        };
         eRefType meType;
+        Ref mRef;
         Item * mpItem;
     };
 
@@ -52,7 +56,7 @@ namespace StoneRing
         virtual eElement whichElement() const{ return ENAMEDITEMREF; }
         std::string getItemName();
     protected:
-        virtual void handleText(const std::string &text);
+        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
         std::string mName;
     };
 

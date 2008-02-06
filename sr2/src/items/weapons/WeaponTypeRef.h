@@ -17,7 +17,7 @@ namespace StoneRing{
 
         bool operator== ( const WeaponTypeRef &lhs );
     private:
-        virtual void handleText(const std::string &text);
+        virtual void loadAttributes(CL_DomNamedNodeMap *pAttributes);
     protected:
         std::string mName;
     };

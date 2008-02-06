@@ -210,9 +210,9 @@
 			<armorEnhancer multiplier="0.5" attribute="AC"/>
 			<armorEnhancer multiplier="0.5" attribute="RST"/>
 			<armorTypeExclusionList>
-				<armorTypeRef>Robe</armorTypeRef>
-				<armorTypeRef>Boots</armorTypeRef>
-				<armorTypeRef>Vest</armorTypeRef>
+                <armorTypeRef name="Robe"/>
+                <armorTypeRef name="Boots"/>
+                <armorTypeRef name="Vest"/>
 			</armorTypeExclusionList>
 		</armorClass>
 		<armorClass name="Old" valueMultiplier = "0.75">
@@ -235,15 +235,15 @@
 		</armorClass>
 		<armorClass name="Iron" valueMultiplier = "1">
 			<armorTypeExclusionList>
-				<armorTypeRef>Robe</armorTypeRef>
-				<armorTypeRef>Vest</armorTypeRef>
+                <armorTypeRef name="Robe"/>
+                <armorTypeRef name="Vest"/>
 			</armorTypeExclusionList>
 		</armorClass>
 		<armorClass name="Steel" valueMultiplier="1.5">
 			<armorEnhancer multiplier="1.5" attribute="AC"/>
 			<armorTypeExclusionList>
-				<armorTypeRef>Robe</armorTypeRef>
-				<armorTypeRef>Vest</armorTypeRef>
+                <armorTypeRef name="Robe"/>
+                <armorTypeRef name="Vest"/>
 			</armorTypeExclusionList>
 		</armorClass>
 		<armorClass name="Mage's" valueMultiplier = "2.5">
@@ -292,18 +292,18 @@
 		<namedItem name="Ice Dragon Shield" dropRarity="rare">
 			<iconRef>Armor/poisonshield</iconRef>
 			<uniqueArmor valueMultiplier = "2.75">
-				<armorTypeRef>Shield</armorTypeRef>
+                <armorTypeRef name="Shield"/>
 				<armorEnhancer add="5" attribute="AC"/>
 				<statusEffectModifier statusRef="Poison" modifier="0.20"/>
 				<armorEnhancer multiplier="1.5" attribute="RST"/>
 				<attributeEnhancer add="40" attribute="hp_max"/>
-				<spellRef type="elemental">Ice</spellRef>
+                <spellRef type="elemental" name="Ice"/>
 			</uniqueArmor>
 		</namedItem>
 		<namedItem name = "Warrior Sword" dropRarity="rare">
 			<iconRef>Weapon/poisonsword</iconRef>
 			<uniqueWeapon valueMultiplier="4.5">
-				<weaponTypeRef>Sword</weaponTypeRef>
+                <weaponTypeRef name="Sword"/>
 				<weaponEnhancer multiplier="3" attribute="ATK"/>
 				<attributeEnhancer add="5" attribute="str"/>
 				<attributeEnhancer multiplier="1.1" attribute="hp_max"/>
@@ -312,7 +312,7 @@
 		<namedItem name = "Mage's Rod" dropRarity="rare">
 			<iconRef>Weapon/magerod</iconRef>
 			<uniqueWeapon valueMultiplier="100">
-				<weaponTypeRef>Rod</weaponTypeRef>
+                <weaponTypeRef name="Rod"/>
 				<weaponEnhancer multiplier="3" attribute="ATK"/>
 				<attributeEnhancer multiplier="1.25" attribute="mag"/>
 			</uniqueWeapon>
@@ -320,7 +320,7 @@
 		<namedItem name = "Wizard's Rod" dropRarity="rare">
 			<iconRef>Weapon/magerod</iconRef>
 			<uniqueWeapon valueMultiplier="300">
-				<weaponTypeRef>Rod</weaponTypeRef>
+                <weaponTypeRef name="Rod"/>
 				<weaponEnhancer multiplier="10" attribute="ATK"/>
 				<attributeEnhancer multiplier="1.50" attribute="mag"/>
 			</uniqueWeapon>

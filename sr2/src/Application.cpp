@@ -254,11 +254,6 @@ IParty * Application::getParty() const
     return mpParty;
 }
 
-ICharacterGroup * Application::getSelectedCharacterGroup() const
-{
-    return mpParty;
-}
-
 
 ItemManager * Application::getItemManager()
 {
@@ -289,6 +284,16 @@ Application::~Application()
 
 }
 
+
+ICharacterGroup * Application::getTargetCharacterGroup() const
+{
+    return mpParty;
+}
+
+ICharacterGroup * Application::getActorCharacterGroup() const
+{
+    return mpParty;
+}
 
 CL_Rect Application::getDisplayRect() const
 {

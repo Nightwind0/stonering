@@ -1,22 +1,41 @@
 <!--DOCTYPE skillList SYSTEM "Levels/level.dtd" -->
 <skillList>
-    <skill bp="0" name="Attack" sp=0">
+    <skill bp="0" name="Attack" sp="0">
         <onInvoke>
-             <script id="Attack">
-                  var $pC = getCaster(); // Caster is user of skill.... 
-                  // The animation comes first.
-                  animation($pC,"Attack");
+            <script id="AttackSkillScript">
+                var $pC = $_Actor;
+                // The animation comes first.
+                animation($pC,"Attack");
 
-                  var $pWeapon = getMainWeapon($pC);
-                  // If hit
-                      // Calculate damage
-                      // doAttack()
-                      // hit sound
-                      // recoil animation
-                  // else
-                      // pushDisplay("Miss");
-                      // playSound("whiff");
-             </script>
+                var $pWeapon = getMainWeapon($pC);
+                // If hit
+                // Calculate damage
+                // doAttack()
+                // hit sound
+                // recoil animation
+                // else
+                // pushDisplay("Miss");
+                // playSound("whiff");
+            </script>
+        </onInvoke>
+    </skill>
+    <skill bp="0" name="Item" sp="0">
+        <onSelect>
+            <script id="ItemSkillInvoke">
+                var $item = itemMenu();
+                // selectTarget( default enemies, allow enemies, allow players )
+                var $target = selectTarget(false,true,true);
+                var $queue = $_ActionQueue;
+                var @vars = $target : $item; 
+                enqueueAction($queue, $_ActionScript, $_Actor, $_ActorGroup, $vars);
+            </script>
+        </onSelect>
+        <onInvoke>
+            <script id ="ItemSkillScript">
+                var $target = @_VAR[0];
+                var $item = @_VAR[1]; // This was enqueued for us earlier
+                useItem($_Group, $item, $target);
+            </script>
         </onInvoke>
     </skill>
 	<skill bp="0" name="Focus" sp="5">
@@ -27,13 +46,29 @@
 		</onInvoke>
 	</skill>
 	<skill bp="1.0" name="Wind Slash" sp="50"	>
-		<onInvoke>
+		<onSelect>
 			<script id="Wind Slash">
-				animation("WindSlash");
-				doMagicDamage(100,1.0,"wind");
-			</script>
-		</onInvoke>
-		
+                // groupSelection ( default to enemy group? )
+                // allows you to select a single target or a group
+                // if you
+                if(groupSelection(false))
+                {
+                   var $group = selectGroup();
+                   enqueueGroupAction($_ActionScript,$_Actor,$group,0);
+                }
+                else
+                {
+                   var $target = selectTarget(true,true,true);
+                   enqueueAction($_ActionScript,$Actor,$target,0);
+                }
+            </script>
+		</onSelect>
+        <onInvoke>
+            <script id="WindSlashScript">
+                animation("WindSlash");
+                doMagicDamage(100,1.0,"wind");
+            </script>
+        </onInvoke>
 	</skill>
 	<skill bp="0" name="Thrift" sp="60" type="switch">
 		<onInvoke>

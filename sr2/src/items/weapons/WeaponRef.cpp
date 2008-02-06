@@ -59,6 +59,8 @@ WeaponRef::WeaponRef ( WeaponType *pType, WeaponClass *pClass,
 
 }
 
+
+
 void WeaponRef::loadFinished()
 {
     mName = Weapon::CreateWeaponName(mpWeaponType,mpWeaponClass,mpSpellRef,mpRuneType);

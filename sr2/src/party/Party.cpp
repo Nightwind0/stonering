@@ -141,12 +141,12 @@ uint Party::getCharacterCount() const
     return 1;
 }
 
-uint Party::getSelectedCharacterIndex() const
+uint Party::getTargetCharacterIndex() const
 {
     return 0;
 }
 
-uint Party::getCasterCharacterIndex() const
+uint Party::getActorCharacterIndex() const
 {
     return 0;
 }
@@ -156,12 +156,12 @@ ICharacter * Party::getCharacter(uint index) const
     return NULL;
 }
 
-ICharacter * Party::getSelectedCharacter() const 
+ICharacter * Party::getTargetCharacter() const 
 {
     return NULL;
 }
 
-ICharacter * Party::getCasterCharacter() const 
+ICharacter * Party::getActorCharacter() const 
 {
     return NULL;
 }

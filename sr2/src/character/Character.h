@@ -67,9 +67,7 @@ namespace StoneRing{
             CA_IDOL_SLOTS,
             _LAST_COMMON_ATTR_
         };
-    
-    
-    
+        
         virtual eGender getGender() const=0;
         virtual eType getType() const=0;
         virtual std::string getName() const=0;
@@ -102,11 +100,11 @@ namespace StoneRing{
     {
     public:
         virtual uint getCharacterCount() const = 0;
-        virtual uint getSelectedCharacterIndex() const = 0;
-        virtual uint getCasterCharacterIndex() const = 0;
+        virtual uint getTargetCharacterIndex() const = 0;
+        virtual uint getActorCharacterIndex() const = 0;
         virtual ICharacter * getCharacter(uint index) const = 0;
-        virtual ICharacter * getSelectedCharacter() const = 0;
-        virtual ICharacter * getCasterCharacter() const = 0;
+        virtual ICharacter * getTargetCharacter() const = 0;
+        virtual ICharacter * getActorCharacter() const = 0;
     private:
     };
 

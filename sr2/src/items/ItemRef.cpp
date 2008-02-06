@@ -17,15 +17,15 @@ bool StoneRing::ItemRef::handleElement(eElement element, StoneRing::Element * pE
     {
     case ENAMEDITEMREF:
         meType = NAMED_ITEM;
-        mpNamedItemRef = dynamic_cast<NamedItemRef*>(pElement);
+        mRef.mpNamedItemRef = dynamic_cast<NamedItemRef*>(pElement);
         break;
     case EWEAPONREF:
         meType = WEAPON_REF;
-        mpWeaponRef = dynamic_cast<WeaponRef*>(pElement);
+        mRef.mpWeaponRef = dynamic_cast<WeaponRef*>(pElement);
         break;
     case EARMORREF:
         meType = ARMOR_REF;
-        mpArmorRef = dynamic_cast<ArmorRef*>(pElement);
+        mRef.mpArmorRef = dynamic_cast<ArmorRef*>(pElement);
         break;
     default:
         
@@ -44,7 +44,7 @@ void StoneRing::ItemRef::loadFinished()
 {
     ItemManager * pItemManager = IApplication::getInstance()->getItemManager();
 
-    if(!mpNamedItemRef && !mpWeaponRef && !mpArmorRef)
+    if(meType == INVALID)
     {
         throw CL_Error("Item Ref with no child");
     }
@@ -54,20 +54,26 @@ void StoneRing::ItemRef::loadFinished()
 }
 
 
-StoneRing::ItemRef::ItemRef( ):
-    mpNamedItemRef(NULL),mpWeaponRef(NULL),mpArmorRef(NULL)
+StoneRing::ItemRef::ItemRef( ):meType(INVALID)
 {
- 
-  
+    mRef.mpWeaponRef = NULL;
 }
 
 
 StoneRing::ItemRef::~ItemRef()
 {
-    delete mpNamedItemRef;
-    delete mpWeaponRef;
-    delete mpArmorRef;
-
+    switch(meType)
+    {
+    case NAMED_ITEM:
+        delete mRef.mpNamedItemRef;
+        break;
+    case WEAPON_REF:
+        delete mRef.mpWeaponRef;
+        break;
+    case ARMOR_REF:
+        delete mRef.mpArmorRef;
+        break;
+    }
 }
 
 std::string StoneRing::ItemRef::getItemName() const
@@ -75,11 +81,11 @@ std::string StoneRing::ItemRef::getItemName() const
     switch ( meType )
     {
     case NAMED_ITEM:
-        return mpNamedItemRef->getItemName();
+        return mRef.mpNamedItemRef->getItemName();
     case WEAPON_REF:
-        return mpWeaponRef->getName();
+        return mRef.mpWeaponRef->getName();
     case ARMOR_REF:
-        return mpArmorRef->getName();
+        return mRef.mpArmorRef->getName();
     default:
         assert(0);
         return "";
@@ -93,17 +99,20 @@ StoneRing::ItemRef::eRefType StoneRing::ItemRef::getType() const
 
 StoneRing::NamedItemRef * StoneRing::ItemRef::getNamedItemRef() const
 {
-    return mpNamedItemRef;
+    assert(meType == NAMED_ITEM);
+    return mRef.mpNamedItemRef;
 }
 
 StoneRing::WeaponRef * StoneRing::ItemRef::getWeaponRef() const
 {
-    return mpWeaponRef;
+    assert(meType == WEAPON_REF);
+    return mRef.mpWeaponRef;
 }
 
 StoneRing::ArmorRef * StoneRing::ItemRef::getArmorRef() const
 {
-    return mpArmorRef;
+    assert(meType == ARMOR_REF);
+    return mRef.mpArmorRef;
 }
 
 
@@ -122,7 +131,9 @@ std::string StoneRing::NamedItemRef::getItemName()
     return mName;
 }
 
-void StoneRing::NamedItemRef::handleText(const std::string &text)
+
+void StoneRing::NamedItemRef::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-    mName = text;
+    mName = getRequiredString("name",pAttributes);
 }
+

@@ -11,9 +11,9 @@ WeaponTypeRef::~WeaponTypeRef()
 {
 }
 
-void WeaponTypeRef::handleText(const std::string &text)
+void WeaponTypeRef::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
-    mName = text;
+    mName = getRequiredString("name",pAttributes);
 }
 
 bool WeaponTypeRef::operator==(const WeaponTypeRef &lhs)

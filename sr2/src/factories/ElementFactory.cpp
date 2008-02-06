@@ -332,6 +332,18 @@ Element * ElementFactory::createOnInvoke()const
     return new OnInvoke();
 }
 
+Element * ElementFactory::createOnSelect()const
+{
+    return new OnSelect();
+}
+
+Element * ElementFactory::createOnDeselect()const
+{
+    return new OnDeselect();
+}
+
+
+
 Element * ElementFactory::createOnRemove()const
 {
     return new OnRemove();
@@ -465,6 +477,7 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["onEquip"] = &ElementFactory::createOnEquip;
     mCreateMethods["onUnequip"] = &ElementFactory::createOnUnequip;
     mCreateMethods["onStep"] = &ElementFactory::createOnStep;
+    mCreateMethods["onSelect"] = &ElementFactory::createOnSelect;
     mCreateMethods["phase"] = &ElementFactory::createPhase;
 //    mCreateMethods[Element::EPREREQSKILLREF] = &ElementFactory::createPreReqSkillRef;
     mCreateMethods["regularItem"] = &ElementFactory::createRegularItem;

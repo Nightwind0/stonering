@@ -1,57 +1,108 @@
-<!DOCTYPE characterClasses SYSTEM "Levels/level.dtd">
+<!--DOCTYPE characterClasses SYSTEM "Levels/level.dtd"-->
 <characterClasses>
 	<characterClass name = "Warrior" gender="either">
         <battleMenu>
             <battleMenuOption name="Attack" icon="BattleMenuIcons/attack">
-                <conditionScript>
-                    return hasWeaponEquipped(getCaster());
+                <conditionScript id="WarriorAttackOptionCondition">
+                    return hasAnyWeaponEquipped(getActor());
                 </conditionScript>
-                <script name="WarriorAttackOption">
-                    doSkill("Attack"); 
-                </script>
+                <skillRef skillName="Attack"/>
             </battleMenuOption>
         </battleMenu>
-		<weaponTypeRef>Sword</weaponTypeRef>
-		<weaponTypeRef>Broadsword</weaponTypeRef>
-		<weaponTypeRef>Greatsword</weaponTypeRef>
-		<weaponTypeRef>Dagger</weaponTypeRef>
-		<weaponTypeRef>Longsword</weaponTypeRef>
-		<weaponTypeRef>Mace</weaponTypeRef>
-		
-		<armorTypeRef>Shield</armorTypeRef>
-		<armorTypeRef>Plate</armorTypeRef>
-		<armorTypeRef>Buckler</armorTypeRef>
-		<armorTypeRef>Boots</armorTypeRef>
-		<armorTypeRef>Hats</armorTypeRef>
-		
-		<statIncrease base="1.07" multiplier="25" stat="hp_max"/>
-		<statIncrease base="1.06" multiplier="5" stat="str"/>
-		<statIncrease base="1.06" multiplier="4.5" stat="dex"/>
-		<statIncrease base="1.06" multiplier="4" stat="evd"/>
-		<statIncrease base="1.06" multiplier="1" stat="mag"/>
-		<statIncrease base="1.06" multiplier="3.5" stat="rst"/>
-		
-	</characterClass>
+        <weaponTypeRef name="Sword"/>
+        <weaponTypeRef name="Broadsword"/>
+        <weaponTypeRef name="Greatsword"/>
+        <weaponTypeRef name="Dagger"/>
+		<weaponTypeRef name="Longsword"/>
+		<weaponTypeRef name="Mace"/>
+        <armorTypeRef name="Shield"/>
+        <armorTypeRef name="Plate"/>
+		<armorTypeRef name="Buckler"/>
+        <armorTypeRef name="Boots"/>
+		<armorTypeRef name="Hats"/>
+
+        <statScript stat="hp_max">
+            <script id="WarHPMAX">
+                return pow(1.07, $_CL) * 25;
+            </script>
+        </statScript>
+        <statScript stat="str">
+            <script id="WarSTR">
+                return pow(1.06, $_CL) * 5;
+            </script>
+        </statScript>
+        <statScript stat="dex">
+            <script id="WarDEX">
+                return pow(1.06, $_CL) * 4.5;
+            </script>
+        </statScript>
+        <statScript stat="evd">
+            <script id="WarEVD">
+                return pow(1.06, $_CL) * 4;
+            </script>
+        </statScript>
+        <statScript stat="mag">
+            <script id="WarMAG">
+                return 0;
+            </script>
+        </statScript>
+        <statScript stat="rst">
+            <script id="WarRST">
+                return pow(1.06,$_CL) * 3.5;
+            </script>
+        </statScript>
+    </characterClass>
 	<characterClass name = "Ranger" gender="either">
 		
-		<weaponTypeRef>Bow</weaponTypeRef>
-		<weaponTypeRef>Precise Bow</weaponTypeRef>
-		<weaponTypeRef>Great Bow</weaponTypeRef>
-		<weaponTypeRef>Long Bow</weaponTypeRef>
-		<weaponTypeRef>Master Bow</weaponTypeRef>
-		<weaponTypeRef>Dagger</weaponTypeRef>
+		<weaponTypeRef name="Bow"/>
+		<weaponTypeRef name="Precise Bow"/>
+		<weaponTypeRef name="Great Bow"/>
+		<weaponTypeRef name="Long Bow"/>
+		<weaponTypeRef name="Master Bow"/>
+		<weaponTypeRef name="Dagger"/>
 		
-		<armorTypeRef>Vest</armorTypeRef>
-		<armorTypeRef>Buckler</armorTypeRef>
-		<armorTypeRef>Boots</armorTypeRef>
-		<armorTypeRef>Hats</armorTypeRef>
+		<armorTypeRef name="Vest"/>
+		<armorTypeRef name="Buckler"/>
+		<armorTypeRef name="Boots"/>
+		<armorTypeRef name="Hats"/>
 
-		<statIncrease base="1.07" multiplier="18" stat="hp_max"/>
+        <statScript stat="hp_max">
+            <script id="RngHPMAX">
+                return pow(1.07, $_CL) * 18;
+            </script>
+        </statScript>
+        <statScript stat="str">
+            <script id="RngSTR">
+                return pow(1.06, $_CL) * 4;
+            </script>
+        </statScript>
+        <statScript stat="dex">
+            <script id="RngDEX">
+                return pow(1.06, $_CL) * 5.5;
+            </script>
+        </statScript>
+        <statScript stat="evd">
+            <script id="RngEVD">
+                return pow(1.06, $_CL) * 6;
+            </script>
+        </statScript>
+        <statScript stat="mag">
+            <script id="RngMAG">
+                return 0;
+            </script>
+        </statScript>
+        <statScript stat="rst">
+            <script id="RngRST">
+                return pow(1.06,$_CL) * 4;
+            </script>
+        </statScript>
+
+		<!--statIncrease base="1.07" multiplier="18" stat="hp_max"/>
 		<statIncrease base="1.06" multiplier="4" stat="str"/>
 		<statIncrease base="1.06" multiplier="5.5" stat="dex"/>
 		<statIncrease base="1.06" multiplier="6" stat="evd"/>
 		<statIncrease base="1.06" multiplier="1" stat="mag"/>
-		<statIncrease base="1.06" multiplier="4" stat="rst"/>
+		<statIncrease base="1.06" multiplier="4" stat="rst"/-->
 	
 		
 	</characterClass>

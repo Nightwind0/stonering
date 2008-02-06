@@ -50,8 +50,10 @@ namespace StoneRing
         virtual Element * createOnRound() const;
         virtual Element * createOnStep()const;
         virtual Element * createOnCountdown()const;
+        virtual Element * createOnDeselect()const;
         virtual Element * createOnInvoke()const;
         virtual Element * createOnRemove()const;
+        virtual Element * createOnSelect()const;
         virtual Element * createPhase() const;
         virtual Element * createRegularItem()const;  
         virtual Element * createRune()const; 

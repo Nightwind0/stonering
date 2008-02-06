@@ -4,6 +4,9 @@
 #include "Element.h"
 
 namespace StoneRing{
+
+    class ICharacter;
+
     class AttributeEnhancer : public Element
     {
     public:

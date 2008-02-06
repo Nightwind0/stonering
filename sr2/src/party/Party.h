@@ -34,20 +34,16 @@ namespace StoneRing{
 
         // ICharacterGroup interface
         virtual uint getCharacterCount() const ;
-        virtual uint getSelectedCharacterIndex() const;
-        virtual uint getCasterCharacterIndex() const;
+        virtual uint getTargetCharacterIndex() const;
+        virtual uint getActorCharacterIndex() const;
         virtual ICharacter * getCharacter(uint index) const ;
-        virtual ICharacter * getSelectedCharacter() const ;
-        virtual ICharacter * getCasterCharacter() const ;
+        virtual ICharacter * getTargetCharacter() const ;
+        virtual ICharacter * getActorCharacter() const ;
 
-  
-
-    private:
+      private:
 
         std::set<std::string> mEvents;
-
         std::map<Item*,int> mItems;
-
         uint mnGold;
 
     };

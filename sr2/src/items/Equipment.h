@@ -4,6 +4,8 @@
 #include "Item.h"
 
 namespace StoneRing{
+
+    class ICharacter;
   
     class Equipment : public virtual Item
     {
@@ -32,8 +34,8 @@ namespace StoneRing{
         bool hasSpell() const ;
         bool hasRuneType() const;
 
-        void equip();
-        void unequip();
+        void equip(ICharacter *);
+        void unequip(ICharacter *);
         virtual void executeScript()=0;
         virtual bool equipCondition()=0;
         // Mainly for display, as these should be automatically invoked on equip

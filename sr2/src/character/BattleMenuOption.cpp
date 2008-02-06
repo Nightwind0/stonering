@@ -1,15 +1,31 @@
 #include "BattleMenuOption.h"
+#include "BattleMenu.h"
 
 using StoneRing::BattleMenuOption;
 
-BattleMenuOption::BattleMenuOption():mpConditionScript(NULL),mpScript(NULL)
+BattleMenuOption::BattleMenuOption(int level):mnLevel(level),
+mpConditionScript(NULL),
+mActionType(INVALID)
 {
+    mAction.mpScript = NULL;
 }
 
 BattleMenuOption::~BattleMenuOption()
 {
     delete mpConditionScript;
-    delete mpScript;
+
+    switch(mActionType)
+    {
+    case SKILLREF:
+        delete mAction.mpSkillRef;
+        break;
+    case SCRIPT:
+        delete mAction.mpScript;
+        break;
+    case SUBMENU:
+        delete mAction.mpSubMenu;
+        break;
+    }
 }
 
 std::string BattleMenuOption::getName() const
@@ -22,11 +38,7 @@ bool BattleMenuOption::enabled() const
         return mpConditionScript->evaluateCondition();
     else return true; 
 }
-void BattleMenuOption::invoke()
-{
-    if(mpScript)
-        mpScript->executeScript();
-}
+
 
 bool BattleMenuOption::handleElement(Element::eElement element, Element *pElement)
 {
@@ -35,8 +47,17 @@ bool BattleMenuOption::handleElement(Element::eElement element, Element *pElemen
     case ECONDITIONSCRIPT:
         mpConditionScript = dynamic_cast<ScriptElement*>(pElement);
         break;
-    case ESCRIPT:
-        mpScript = dynamic_cast<ScriptElement*>(pElement);
+    case EONSELECT:
+        mActionType = SCRIPT;
+        mAction.mpScript = dynamic_cast<ScriptElement*>(pElement);
+        break;
+    case ESKILLREF:
+        mActionType = SKILLREF;
+        mAction.mpSkillRef = dynamic_cast<SkillRef*>(pElement);
+        break;
+    case EBATTLEMENU:
+        mActionType = SUBMENU;
+        mAction.mpSubMenu = dynamic_cast<BattleMenu*>(pElement);
         break;
     default:
         return false;
@@ -44,6 +65,13 @@ bool BattleMenuOption::handleElement(Element::eElement element, Element *pElemen
 
     return true;
 }
+
+void BattleMenuOption::loadFinished()
+{
+    if(mActionType == INVALID)
+        throw CL_Error("Battle menu needs a skill ref or a script or submenu");
+}
+
 void BattleMenuOption::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
     mName = getRequiredString("name",pAttributes);
