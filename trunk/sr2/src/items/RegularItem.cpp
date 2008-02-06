@@ -93,7 +93,6 @@ void RegularItem::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 
     mnSellValue = mnValue / 2;
 
-
     std::string useType = getRequiredString("use",pAttributes);
     meUseType = UseTypeFromString ( useType );    
 

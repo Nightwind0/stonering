@@ -12,9 +12,9 @@ ArmorClassRef::~ArmorClassRef()
 {
 }
 
-void ArmorClassRef::handleText(const std::string &text)
+void ArmorClassRef::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
-    mName = text;
+    mName = getRequiredString("name",pAttributes);
 }
 
 bool ArmorClassRef::operator==(const ArmorClassRef &lhs)

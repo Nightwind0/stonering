@@ -66,6 +66,20 @@ namespace StoneRing{
         virtual ~OnRemove(){}
         virtual eElement whichElement() const { return EONREMOVE; }
     };
+
+    class OnSelect : public NamedScript
+    {
+    public:
+        virtual ~OnSelect(){}
+        virtual eElement whichElement() const { return EONSELECT; }
+    };
+
+    class OnDeselect : public NamedScript
+    {
+    public:
+        virtual ~OnDeselect(){}
+        virtual eElement whichElement() const { return EONDESELECT; }
+    };
 };
 #endif
 

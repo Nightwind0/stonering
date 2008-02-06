@@ -41,13 +41,13 @@ namespace StoneRing
         virtual int getScreenHeight()const;
         virtual void pop(bool);
         virtual IParty * getParty() const;
-        virtual ICharacterGroup * getSelectedCharacterGroup() const;
         virtual AbilityManager * getAbilityManager();
         virtual ItemManager * getItemManager();
         virtual IFactory * getElementFactory() { return &mElementFactory; }
         virtual CharacterManager * getCharacterManager() { return &mCharacterManager; }
         virtual CL_Rect getDisplayRect() const;
-
+        virtual ICharacterGroup * getTargetCharacterGroup() const;
+        virtual ICharacterGroup * getActorCharacterGroup() const;
         virtual void requestRedraw(const State *pState);
 
         virtual AstScript * loadScript(const std::string &name, const std::string &script);

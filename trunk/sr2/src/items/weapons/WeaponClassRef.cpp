@@ -6,9 +6,9 @@ WeaponClassRef::WeaponClassRef()
 {
 }
 
-void WeaponClassRef::handleText(const std::string &text)
+void WeaponClassRef::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
-    mName = text;
+    mName = getRequiredString("name",pAttributes);
 }
 
 WeaponClassRef::~WeaponClassRef()

@@ -64,9 +64,8 @@ AttributeEnhancer::eType AttributeEnhancer::getType() const
 // when invoking. (By calling equip on the armor/weapon...)
 void AttributeEnhancer::invoke()
 {
-    ICharacter * pCharacter = IApplication::getInstance()
-        ->getSelectedCharacterGroup()
-        ->getSelectedCharacter();
+    ICharacter * pCharacter = 
+        IApplication::getInstance()->getTargetCharacterGroup()->getTargetCharacter();
 
     ICharacter::eCharacterAttribute attr = static_cast<ICharacter::eCharacterAttribute>(mnAttribute);
     if(meType & EMULTIPLY)
@@ -84,8 +83,8 @@ void AttributeEnhancer::revoke()
 {
 
     ICharacter * pCharacter = IApplication::getInstance()
-        ->getSelectedCharacterGroup()
-        ->getSelectedCharacter();
+        ->getTargetCharacterGroup()
+        ->getTargetCharacter();
 
     ICharacter::eCharacterAttribute attr = static_cast<ICharacter::eCharacterAttribute>(mnAttribute);
 

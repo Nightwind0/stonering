@@ -37,10 +37,10 @@
 <!ELEMENT specialItem EMPTY>
 <!ELEMENT systemItem EMPTY>
 <!ELEMENT runeType EMPTY>
-<!ELEMENT weaponTypeRef (#PCDATA)>
-<!ELEMENT armorTypeRef (#PCDATA)>
-<!ELEMENT weaponClassRef (#PCDATA)>
-<!ELEMENT armorClassRef (#PCDATA)>
+<!ELEMENT weaponTypeRef EMPTY>
+<!ELEMENT armorTypeRef EMPTY>
+<!ELEMENT weaponClassRef EMPTY>
+<!ELEMENT armorClassRef EMPTY>
 <!-- The script  here is executed when the weapon is used. -->
 <!ELEMENT weaponClass (conditionScript?,attributeEnhancer*, weaponEnhancer*,statusEffectModifier*, script?, onEquip?, onUnequip?, weaponTypeExclusionList?)>
 <!-- The script here is executed when the armor is used (wearer is attacked) --> 
@@ -55,7 +55,7 @@
 <!ELEMENT armorTypeExclusionList (armorTypeRef*)>
 
 <!-- Spell DTD -->
-<!ELEMENT spellRef (#PCDATA)>
+<!ELEMENT spellRef EMPTY>
 <!ELEMENT spellList (spell+)>
 <!ELEMENT spell (magicResistance?,script?> 
 <!ELEMENT weaponDamageCategory EMPTY>
@@ -79,17 +79,19 @@
 <!ELEMENT onRound (script)>
 <!ELEMENT onCountdown (script)>
 <!ELEMENT onRemove (script)>
+<!ELEMENT onSelect (script)>
+<!ELEMENT onDeselect (script)>
 
 <!-- Character Class DTD -->
 <!ELEMENT characterClass (battleMenu,weaponTypeRef*, armorTypeRef*,statScript*,skillRef*)>
 <!ELEMENT characterClasses (characterClass+)>
 <!ELEMENT statScript (script)>
-<!ELEMENT skill (conditionScript?, prereqSkillRef*,spellRef?, onInvoke?, onRemove?)>
+<!ELEMENT skill (conditionScript?, prereqSkillRef*, onSelect?, onDeselect?, onInvoke?, onRemove?)>
 <!ELEMENT skillList (skill)+>
 <!ELEMENT prereqSkillRef EMPTY>
 <!ELEMENT skillRef EMPTY>
 <!ELEMENT battleMenu (battleMenuOption*)>
-<!ELEMENT battleMenuOption (conditionScript?,script)>
+<!ELEMENT battleMenuOption (conditionScript?,(onSelect|skillRef|battleMenu)>
 
 <!-- Characters -->
 <!ELEMENT character (spriteDefinition*)>
@@ -187,9 +189,17 @@
 <!ATTLIST armorEnhancer add CDATA #IMPLIED>
 <!ATTLIST armorEnhancer multiplier CDATA #IMPLIED>
 <!ATTLIST statusEffectModifier statusRef CDATA #REQUIRED>
+
+<!ATTLIST weaponTypeRef name CDATA #REQUIRED>
+<!ATTLIST armorTypeRef name CDATA #REQUIRED>
+<!ATTLIST weaponClassRef name CDATA #REQUIRED>
+<!ATTLIST armorClassRef name CDATA #REQUIRED>
+
+
 <!-- For a weapon, this is a chance of inflicting the status from 0 to 1. -->
 <!-- For armor it is the percentage chance of blocking the status referenced -->
-<!ATTLIST statusEffectModifier modifier CDATA #REQUIRED>  
+<!ATTLIST statusEffectModifier modifier CDATA #REQUIRED>
+<!ATTLIST spellRef name CDATA #REQUIRED>
 <!ATTLIST spellRef type (elemental|white|status|other) #REQUIRED>
 <!ATTLIST animation name CDATA #REQUIRED>
 <!ATTLIST animation type (battle|world) #REQUIRED>
@@ -223,6 +233,8 @@
 
 <!-- These points are relevative to the sprite wielding the weapon-->
 <!ATTLIST battleMenuOption name CDATA #REQUIRED>
+<!ATTLIST skill allowsGroupTarget (true|false) #IMPLIED>
+<!ATTLIST skill defaultToEnemyGroup (true|false) #IMPLIED>
 
 <!-- Note: movement speed will be determined by the amount of pixels that need to be covered and the duration of the par -->
 <!-- So that if the par duration is three seconds, the sprite will move to its destination in three seconds -->
@@ -261,8 +273,10 @@
 <!ATTLIST skillRef overrideBp CDATA #IMPLIED> <!-- Defaults to skill's value -->
 <!ATTLIST skillRef overrideMinLevel CDATA #IMPLIED> <!-- Defaults to skill's value -->
 
+
 <!ATTLIST character name CDATA #REQUIRED>
 <!ATTLIST character class CDATA #REQUIRED>
+<!ATTLIST character type (nonliving|living|magical)>
 <!ATTLIST character spriteResource CDATA #REQUIRED>
 
 <!ATTLIST equipmentRef slot (right_hand|left_hand|head|body|shield|feet|right_ring|left_ring) #REQUIRED>

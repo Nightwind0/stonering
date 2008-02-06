@@ -36,11 +36,12 @@ bool Equipment::hasRuneType() const
 }
 
 // Apply any attribute enhancements 
-void Equipment::equip()
+void Equipment::equip(ICharacter *pCharacter)
 {
 
 #ifndef _MSC_VER
-    std::for_each( mAttributeEnhancers.begin(), mAttributeEnhancers.end(), std::mem_fun ( &AttributeEnhancer::invoke ) );
+    std::for_each( mAttributeEnhancers.begin(), mAttributeEnhancers.end(), 
+        std::bind2nd(std::mem_fun ( &AttributeEnhancer::invoke ), pCharacter ));
 #else
 
     for (std::list<AttributeEnhancer*>::const_iterator iter = mAttributeEnhancers.begin();
@@ -53,10 +54,11 @@ void Equipment::equip()
 }
 
 // Remove any attribute enhancements
-void Equipment::unequip()
+void Equipment::unequip(ICharacter *pCharacter)
 {
 #ifndef _MSC_VER
-    std::for_each( mAttributeEnhancers.begin(), mAttributeEnhancers.end(), std::mem_fun ( &AttributeEnhancer::revoke ) );
+    std::for_each( mAttributeEnhancers.begin(), mAttributeEnhancers.end(), 
+        std::bind2nd(std::mem_fun ( &AttributeEnhancer::revoke ),pCharacter));
 #else
     for(std::list<AttributeEnhancer*>::const_iterator iter = mAttributeEnhancers.begin();
         iter != mAttributeEnhancers.end(); iter++)

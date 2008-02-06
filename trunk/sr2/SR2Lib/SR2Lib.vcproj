@@ -37,7 +37,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(SOLUTIONDIR)/src/monsters/&quot;;&quot;$(SOLUTIONDIR)/../steel/src/&quot;;&quot;$(SOLUTIONDIR)/src/items/armor/&quot;;&quot;$(SOLUTIONDIR)/src/items/weapons/&quot;;&quot;$(SOLUTIONDIR)/src/&quot;;&quot;$(SOLUTIONDIR)/src/party&quot;;&quot;$(SOLUTIONDIR)/src/level&quot;;&quot;$(SOLUTIONDIR)/src/factories&quot;;&quot;$(SOLUTIONDIR)/src/items&quot;;&quot;$(SOLUTIONDIR)/src/abilities&quot;;&quot;$(SOLUTIONDIR)/src/states&quot;;&quot;$(SOLUTIONDIR)/src/character&quot;;&quot;$(SOLUTIONDIR)/src/core&quot;"
+				AdditionalIncludeDirectories="&quot;$(SOLUTIONDIR)/src/battle/&quot;;&quot;$(SOLUTIONDIR)/src/monsters/&quot;;&quot;$(SOLUTIONDIR)/../steel/src/&quot;;&quot;$(SOLUTIONDIR)/src/items/armor/&quot;;&quot;$(SOLUTIONDIR)/src/items/weapons/&quot;;&quot;$(SOLUTIONDIR)/src/&quot;;&quot;$(SOLUTIONDIR)/src/party&quot;;&quot;$(SOLUTIONDIR)/src/level&quot;;&quot;$(SOLUTIONDIR)/src/factories&quot;;&quot;$(SOLUTIONDIR)/src/items&quot;;&quot;$(SOLUTIONDIR)/src/abilities&quot;;&quot;$(SOLUTIONDIR)/src/states&quot;;&quot;$(SOLUTIONDIR)/src/character&quot;;&quot;$(SOLUTIONDIR)/src/core&quot;"
 				PreprocessorDefinitions="WIN32;DEBUG;_WINDOWS;_DEBUG"
 				RuntimeLibrary="1"
 				DebugInformationFormat="3"
@@ -204,7 +204,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\src\character\CharacterDefinition.cpp"
+					RelativePath="..\src\character\CharacterManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\character\SpriteDefinition.cpp"
 					>
 				</File>
 			</Filter>
@@ -510,6 +514,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Battle"
+				>
+				<File
+					RelativePath="..\src\battle\ActionQueue.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -572,7 +584,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\src\character\CharacterDefinition.h"
+					RelativePath="..\src\character\CharacterManager.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\character\SpriteDefinition.h"
 					>
 				</File>
 			</Filter>
@@ -813,6 +829,14 @@
 				</File>
 				<File
 					RelativePath="..\src\factories\IFactory.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Battle"
+				>
+				<File
+					RelativePath="..\src\battle\ActionQueue.h"
 					>
 				</File>
 			</Filter>
