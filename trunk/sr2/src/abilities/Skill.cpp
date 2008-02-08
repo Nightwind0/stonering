@@ -100,8 +100,8 @@ bool StoneRing::Skill::handleElement(eElement element, Element * pElement)
 }
 
 StoneRing::Skill::Skill():mnBp(0), mnSp(0),mnMinLevel(0),
-mpOnInvoke(NULL),mpOnRemove(NULL),mpCondition(NULL),mpOnSelect(NULL),mpOnDeselect(NULL),
-mbAllowsGroupTarget(FALSE),mbDefaultToEnemyGroup(TRUE)
+                          mpOnInvoke(NULL),mpOnRemove(NULL),mpCondition(NULL),mpOnSelect(NULL),mpOnDeselect(NULL),
+                          mbAllowsGroupTarget(false),mbDefaultToEnemyGroup(true)
 {
 
 }

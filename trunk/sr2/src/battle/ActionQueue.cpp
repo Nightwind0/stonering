@@ -82,3 +82,4 @@ bool ActionQueue::ActionEntry::matches(StoneRing::ICharacter *pChar) const
 {
     return mpActor == pChar;
 }
+
