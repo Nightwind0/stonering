@@ -15,7 +15,7 @@ namespace StoneRing{
 class ScriptElement;
 class ICharacter;
 class ICharacterGroup;
-
+class NamedScript;
 
   class ActionQueue 
     {
@@ -27,7 +27,7 @@ class ICharacterGroup;
         void popFront();
         void enqueue(ScriptElement *pScript, ICharacter *pActor, 
             ICharacterGroup *pActorGroup, const SteelType &var);
-        void remove (ICharacter *pActor, ScriptElement *pDeselect);
+        void remove (ICharacter *pActor, NamedScript *pDeselect);
     private:
         class ActionEntry
         {
@@ -36,7 +36,7 @@ class ICharacterGroup;
                 ICharacterGroup *pParty, const SteelType &var);
             ~ActionEntry();
             void execute();
-            void deselect(ScriptElement *pDeselect);
+            void deselect(NamedScript *pDeselect);
             bool matches(ICharacter *pChar) const;
         private:
             SteelType mVar;

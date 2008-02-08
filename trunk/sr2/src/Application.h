@@ -48,6 +48,7 @@ namespace StoneRing
         virtual CL_Rect getDisplayRect() const;
         virtual ICharacterGroup * getTargetCharacterGroup() const;
         virtual ICharacterGroup * getActorCharacterGroup() const;
+        virtual void startBattle(const std::vector<MonsterRef*> &monsters);
         virtual void requestRedraw(const State *pState);
 
         virtual AstScript * loadScript(const std::string &name, const std::string &script);

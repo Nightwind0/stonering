@@ -13,10 +13,12 @@
 	<string name="StatusEffectDefinitions" value="Media/statusEffects.xml"/>
 	<string name="SkillDefinitions" value="Media/skills.xml"/>
 	<string name="CharacterClassDefinitions" value="Media/characterClasses.xml"/>
+    <string name="MonsterDefinitions" value="Media/monsters.xml"/>
  	<string name="LevelPath" value="Media/Levels/" />
 	<string name="StartLevel" value="examplelevel" />
 	<string name="DefaultPlayerSprite" value="Sprites/Party/Valyn" /> 
 	<string name="Currency" value="gods"/>
+     <string name="DefaultEncounterRate" value="0.10"/>
  </section>
 <section name="Fonts">
 <!-- 1234567890-=\+/`~!@#$%^&*()[]{};:'",.<>?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw -->
@@ -56,6 +58,7 @@
  <section name="Levels">
  	<string name="examplelevel" value="test3.xml" />
 	<string name="octaviaInn" value="foo.xml" />
+     <string name="monster_test" value="monster_test.xml" />   
 </section>
  <section name="Tilemaps">
  	<surface name = "roofs" file="Tiles/roofs.png"/>

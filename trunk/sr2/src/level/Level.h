@@ -27,8 +27,8 @@ namespace StoneRing {
     class StartingEquipmentRef;
     class ScriptElement;
     class Action;
-
-
+    class MonsterRegions;
+ 
     enum eDirectionBlock
     {
         DIR_NORTH = 1,
@@ -193,6 +193,8 @@ namespace StoneRing {
         std::list<Tile*> mTiles;
     };
 
+
+
     class MappableObjects : public Element
     {
     public:
@@ -269,6 +271,7 @@ namespace StoneRing {
         // Needs to be a multimap
         std::map<CL_Point, std::list<Tile*> > mFloaterMap;
         MOMap mMOMap;
+        MonsterRegions *mpMonsterRegions;
 
         // Element virtuals
         virtual bool handleElement(eElement element, Element * pElement);

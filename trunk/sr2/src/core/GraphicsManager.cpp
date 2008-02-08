@@ -63,20 +63,12 @@ CL_Surface * GraphicsManager::getTileMap ( const std::string & name )
 
     if(mTileMap.find( name ) == mTileMap.end())
     {
-        
-        pSurface = new CL_Surface("Tilemaps/" + name, pResources);
 #ifndef NDEBUG
-        std::cout << std::dec;
-        std::cout << "Surface Depth: " << pSurface->get_pixeldata().get_format().get_depth() << std::endl;
-        std::cout << "Red: " << std::hex << pSurface->get_pixeldata().get_format().get_red_mask() << std::endl;
-        std::cout << "Green: " << std::hex << pSurface->get_pixeldata().get_format().get_green_mask() << std::endl;
-        std::cout << "Blue: " << std::hex << pSurface->get_pixeldata().get_format().get_blue_mask() << std::endl;
-        std::cout << "Alpha: " << std::hex << pSurface->get_pixeldata().get_format().get_alpha_mask() << std::endl;
-        std::cout << std::dec;
+        std::cout << "TileMap now loading: " << name << std::endl;
 #endif
+        pSurface = new CL_Surface("Tilemaps/" + name, pResources);
 
         mTileMap[ name ] = pSurface;
-
         return pSurface;
     }
     

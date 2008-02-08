@@ -42,6 +42,10 @@ namespace StoneRing
         virtual Element * createMappableObject()const;
         virtual Element * createMappableObjects()const;
         virtual Element * createMonster()const;
+        virtual Element * createMonsterRef()const;
+        virtual Element * createMonsterGroup()const;
+        virtual Element * createMonsterRegion()const;
+        virtual Element * createMonsterRegions()const;
         virtual Element * createMovement()const;
         virtual Element * createNamedItemElement() const;
         virtual Element * createNamedItemRef()const;

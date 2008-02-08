@@ -2,18 +2,20 @@
 #include <string>
 #include <map>
 #include <list>
-#include "IApplication.h"
-#include "Level.h"
 #include <algorithm>
 #include <stdlib.h>
 #include <time.h>
 #include <set>
 #include <functional>
 #include <sstream>
+#include "IApplication.h"
+#include "Level.h"
 #include "GraphicsManager.h"
 #include "LevelFactory.h"
 #include "ItemFactory.h"
 #include "ItemManager.h"
+#include "MonsterRegion.h"
+#include "MonsterGroup.h"
 
 
 typedef unsigned int uint;
@@ -149,7 +151,7 @@ void LevelHeader::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 /////////////////////////////////////////////////////////////////////////////
 
 
-Level::Level():mLevelWidth(0),mLevelHeight(0),mpScript(NULL),mpHeader(NULL)
+Level::Level():mpMonsterRegions(NULL),mLevelWidth(0),mLevelHeight(0),mpScript(NULL),mpHeader(NULL)
 {
 }
 
@@ -470,7 +472,7 @@ void Level::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_Graph
     ++mnFrameCount;
 
 #ifndef NDEBUG
-    if(mnFrameCount %200 == 0)
+    if(mnFrameCount %2000 == 0)
     {
         std::cout << "X: " << cornerx <<  " Y: "  << cornery << std::endl;
         std::cout << "Width = " << width << " Height = " << height << std::endl;
@@ -704,9 +706,26 @@ bool Level::tryMove(const CL_Point &currently, const CL_Point & destination)
 // All AM's from tiles fire, as do any step events
 void Level::step(const CL_Point &target)
 {
+    // First, check for a battle here (events come after)
+    if(mpMonsterRegions)
+    {
+        MonsterRegion *pRegion = mpMonsterRegions->getApplicableRegion(target.x,target.y);
+        if(pRegion != NULL)
+        {
+            float rate = pRegion->getEncounterRate();
+            float value = ((float)rand() / ((float)RAND_MAX + 1)); // Generate number between 0 and 1.0
 
-    // First, process any MO step events you may have triggered
+            if(value < rate)
+            {
+                // Then we have an encounter.
+                // Let the region pick a group for us to battle
+                MonsterGroup * pGroup = pRegion->getMonsterGroup();
 
+                IApplication::getInstance()->startBattle (pGroup->getMonsters());
+            }
+        }
+    }
+    // Second, process any MO step events you may have triggered
     MOMap::const_iterator lower = mMOMap.lower_bound(target);
     MOMap::const_iterator upper = mMOMap.upper_bound(target);
     
@@ -900,6 +919,13 @@ bool Level::handleElement(eElement element, Element * pElement)
                 it != pMOs->getMappableObjectsEnd(); it++)
                 loadMo ( *it );
         break;
+        }
+    case EMONSTERREGIONS:
+        {
+            if(mpMonsterRegions != NULL) throw CL_Error("Already have monster regions on this level");
+
+            mpMonsterRegions = dynamic_cast<MonsterRegions*>(pElement);
+            break;
         }
     default:
         return false;

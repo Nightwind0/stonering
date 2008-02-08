@@ -111,10 +111,10 @@ bool UniqueWeapon::handleElement(eElement element, Element * pElement)
         mpScript = dynamic_cast<ScriptElement*>(pElement);
         break;
     case EONEQUIP:
-        mpEquipScript = dynamic_cast<ScriptElement*>(pElement);
+        mpEquipScript = dynamic_cast<NamedScript*>(pElement);
         break;
     case EONUNEQUIP:
-        mpUnequipScript = dynamic_cast<ScriptElement*>(pElement);
+        mpUnequipScript = dynamic_cast<NamedScript*>(pElement);
         break;
     case ECONDITIONSCRIPT:
         mpConditionScript = dynamic_cast<ScriptElement*>(pElement);

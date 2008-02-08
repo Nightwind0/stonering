@@ -24,6 +24,7 @@ namespace StoneRing
     class SkillRef;
     class SpellRef;
     class ActionQueue;
+    class NamedScript;
 
 
 
@@ -63,11 +64,11 @@ namespace StoneRing
         static eType typeFromString(const std::string type);
         std::string mName;
         std::list<SkillRef*> mPreReqs;
-        ScriptElement *mpOnInvoke;
-        ScriptElement *mpOnRemove;
-        ScriptElement *mpCondition;
-        ScriptElement *mpOnSelect;
-        ScriptElement *mpOnDeselect;
+        NamedScript *mpOnInvoke;
+        NamedScript *mpOnRemove;
+        NamedScript *mpCondition;
+        NamedScript *mpOnSelect;
+        NamedScript *mpOnDeselect;
 
         uint mnSp;
         uint mnBp;

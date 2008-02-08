@@ -6,6 +6,17 @@ StoneRing::NamedScript::NamedScript()
 }
 
 
+SteelType StoneRing::NamedScript::executeScript(const ParameterList &params)
+{
+    return mpScript->executeScript(params);
+}
+
+SteelType StoneRing::NamedScript::executeScript()
+{
+    return mpScript->executeScript();
+}
+
+
 bool StoneRing::NamedScript::handleElement(eElement element,Element * pElement)
 {
     switch(element)

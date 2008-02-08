@@ -104,11 +104,11 @@
 <!ELEMENT bindPoint EMPTY>
 
 <!-- Monsters -->
-<!ELEMENT monster (script, spriteDefinition*, stat*, itemRef*)>
+<!ELEMENT monster (onRound, onInvoke?,onRemove?, spriteDefinition*, stat*, itemRef*)>
 <!ELEMENT stat EMPTY>
 
 <!ELEMENT monsterRegion (monsterGroup+)>
-<!ELEMENT monsterGroup (monsterEncounter+)>
+<!ELEMENT monsterGroup (monsterRef+)>
 
 <!-- Attributes -->
 
@@ -300,9 +300,9 @@
 <!ATTLIST monsterRegion height CDATA #REQUIRED>
 <!ATTLIST monsterRegion encounterRate CDATA #IMPLIED> <!-- 0.0 - 1.0 ,Game settings supply default -->
 
-<!ATTLIST monsterGroup encounterWeight CDATA #IMPLIED> <!-- Defaults to standard weight -->
-<!ATTLIST monsterEncounter name CDATA #REQUIRED>
-<!ATTLIST monsterEncounter count CDATA #REQUIRED>
+<!ATTLIST monsterGroup weight CDATA #IMPLIED> <!-- Defaults to standard weight -->
+<!ATTLIST monsterRef name CDATA #REQUIRED>
+<!ATTLIST monsterRef count CDATA #IMPLIED> <!-- defaults to one -->
 
 <!ATTLIST stat id CDATA #REQUIRED>
 <!ATTLIST stat value CDATA #IMPLIED> <!-- Either this, or toggle -->

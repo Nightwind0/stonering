@@ -1,0 +1,45 @@
+﻿<monsters>
+    <monster name="Endospore" mode="class" spriteResources="endospore" class="Warrior" level="1">
+        <onRound>
+            <script id="Endospore_round">
+            </script>
+        </onRound>
+        <onInvoke>
+            <script id="Endospore_invoke">
+            say("Endospore","You found me!");  
+            </script>
+        </onInvoke>
+        <itemRef>
+            <weaponRef>
+                <weaponTypeRef name="Knife"/>
+                <weaponClassRef name="Poor" />
+            </weaponRef>
+        </itemRef>
+    </monster>
+    <monster name="Megaspore" mode="class" spriteResources="endospore" class="Warrior" level="3">
+        <onRound>
+            <script id="Megaspore_round">
+            </script>
+        </onRound>
+        <itemRef>
+            <weaponRef>
+                <weaponTypeRef name="Knife"/>
+                <weaponClassRef name="Poor" />
+            </weaponRef>
+        </itemRef>
+    </monster>
+    <monster name="Grass Wolf" mode="manual" spriteResources="wolf" level="1">
+        <onRound>
+            <script id="Grass Wolf_round">
+                doSkill("Attack");  // Monsters are allowed to use any skill they want.
+            </script>
+        </onRound>
+        <stat id="hp_max"   value="23"/>
+        <stat id="mp_max" value="5"/>
+        <stat id="str" value="8"/>
+        <stat id="def" value="3"/>
+        <stat id="dex" value="10"/>
+        <stat id="evd" value="8"/>
+        <stat id="mag" value="0"/>
+    </monster>
+</monsters>

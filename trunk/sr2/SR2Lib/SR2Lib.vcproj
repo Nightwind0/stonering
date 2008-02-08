@@ -510,6 +510,18 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\monsters\MonsterGroup.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\monsters\MonsterRef.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\monsters\MonsterRegion.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\src\monsters\Stat.cpp"
 					>
 				</File>
@@ -691,6 +703,10 @@
 					Name="Weapons"
 					>
 					<File
+						RelativePath="..\src\items\armor\GeneratedArmor.h"
+						>
+					</File>
+					<File
 						RelativePath="..\src\items\weapons\GeneratedWeapon.h"
 						>
 					</File>
@@ -767,10 +783,6 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\items\armor\GeneratedArmor.h"
-						>
-					</File>
-					<File
 						RelativePath="..\src\items\armor\UniqueArmor.h"
 						>
 					</File>
@@ -781,6 +793,18 @@
 				>
 				<File
 					RelativePath="..\src\monsters\Monster.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\monsters\MonsterGroup.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\monsters\MonsterRef.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\monsters\MonsterRegion.h"
 					>
 				</File>
 				<File

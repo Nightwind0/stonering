@@ -1,8 +1,13 @@
 #ifndef MONSTER_REGION_H
 #define MONSTER_REGION_H
 
-namespace stonering
+#include "Element.h"
+
+namespace StoneRing
 {
+
+    class MonsterGroup;
+
     class MonsterRegion : public Element
     {
         public:
@@ -10,8 +15,8 @@ namespace stonering
             virtual ~MonsterRegion();
         
             virtual eElement whichElement() const { return EMONSTERREGION; }
-            std::string getName() const { return mName; }
-            MonsterGroup getMonsterGroup();
+ 
+            MonsterGroup * getMonsterGroup() const;
         
             int getLevelX() const {return mLevelX;}
             int getLevelY() const {return mLevelY;}
@@ -24,29 +29,34 @@ namespace stonering
             virtual void loadAttributes(CL_DomNamedNodeMap *);
             virtual void loadFinished();
         
-            std::string mName;
-            int mLevelX;
+                 int mLevelX;
             int mLevelY;
             int mWidth;
             int mHeight;
             float mEncounterRate;
+            int mnTotalWeight;
             std::list<MonsterGroup*> mMonsterGroups;
-            
-        
+    
+    };
+
+    class MonsterRegions : public Element
+    {
+    public:
+        MonsterRegions();
+        virtual ~MonsterRegions();
+
+        MonsterRegion * getApplicableRegion(uint levelx, uint levely) const ;
+
+        virtual eElement whichElement() const { return EMONSTERREGIONS; }
+    private:
+        virtual bool handleElement(eElement, Element * );
+        virtual void loadFinished();
+
+        std::list<MonsterRegion *> mMonsterRegions;
+        int mnTotalWeight;
     };
     
-    class MonsterGroup : public Element
-    {
-        public:
-            MonsterGroup();
-            virtual ~MonsterGroup();
-        
-            virtual eElement whichElement() const { return EMONSTERGROUP; }
-            std::string getName() const { return mName; }
-        
-        private:
-            std::string mName;
-    };
+
 
 };
 
