@@ -12,6 +12,8 @@
 #include "ItemFactory.h"
 #include "CharacterFactory.h"
 #include "ChoiceState.h"
+#include "MonsterRef.h"
+#include "Monster.h"
 #ifndef _WINDOWS_
 #include <steel/SteelType.h>
 #else
@@ -88,6 +90,21 @@ SteelType Application::pop_(bool bAll)
     pop(bAll);
 
     return SteelType();
+}
+
+void Application::startBattle(const std::vector<MonsterRef*> &monsters)
+{
+#ifndef NDEBUG
+    std::cout << "Encounter!" << std::endl;
+    for(std::vector<MonsterRef*>::const_iterator it =  monsters.begin();
+        it != monsters.end(); it++)
+    {
+        MonsterRef * pRef = *it;
+        std::cout << '\t' << pRef->getName() << " x" << pRef->getCount() << std::endl;
+        Monster * pMonster = mCharacterManager.getMonster(pRef->getName());
+        pMonster->invoke();
+    }
+#endif
 }
 
 SteelType Application::startBattle(const std::string &monster, uint count, bool isBoss)
@@ -444,7 +461,7 @@ void Application::run()
         CL_Display::flip();
         //CL_System::sleep(10);
         CL_System::keep_alive();
-#ifndef NDEBUG
+#if 0
         if(count++ % 50 == 0)
             std::cout << "FPS " <<  frameRate.get_fps() << std::endl;
 #endif  

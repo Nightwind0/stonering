@@ -8,6 +8,7 @@
 #include "Level.h"
 #include "SpellRef.h"
 #include "ActionQueue.h"
+#include "NamedScript.h"
 
 using namespace StoneRing;
 
@@ -74,19 +75,19 @@ bool StoneRing::Skill::handleElement(eElement element, Element * pElement)
     switch(element)
     {
     case EONSELECT:
-        mpOnSelect = dynamic_cast<ScriptElement*>(pElement);
+        mpOnSelect = dynamic_cast<NamedScript*>(pElement);
         break;
     case EONDESELECT:
-        mpOnDeselect = dynamic_cast<ScriptElement*>(pElement);
+        mpOnDeselect = dynamic_cast<NamedScript*>(pElement);
         break;
     case EONINVOKE:
-        mpOnInvoke = dynamic_cast<ScriptElement*>(pElement);
+        mpOnInvoke = dynamic_cast<NamedScript*>(pElement);
         break;
     case EONREMOVE:
-        mpOnRemove = dynamic_cast<ScriptElement*>(pElement);
+        mpOnRemove = dynamic_cast<NamedScript*>(pElement);
         break;
     case ECONDITIONSCRIPT:
-        mpCondition = dynamic_cast<ScriptElement*>(pElement);
+        mpCondition = dynamic_cast<NamedScript*>(pElement);
         break;
     case EPREREQSKILLREF:
         mPreReqs.push_back(dynamic_cast<SkillRef*>(pElement));

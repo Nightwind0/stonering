@@ -3,6 +3,7 @@
 #include "Character.h"
 #include "AbilityManager.h"
 #include "IApplication.h"
+#include "Monster.h"
 
 using StoneRing::CharacterManager;
 
@@ -12,6 +13,13 @@ CharacterManager::~CharacterManager()
                   compose_f_gx(del_fun<CharacterClass>(),
                                get_second<ClassMap::value_type>())
         );
+}
+
+StoneRing::Monster * CharacterManager::getMonster(const std::string &name)const
+{
+    MonsterMap::const_iterator it = mMonsters.find(name);
+    if(it == mMonsters.end()) throw CL_Error("Monster " + name + " not found in manager");
+    return it->second;
 }
 
 void CharacterManager::loadCharacterClassFile ( CL_DomDocument &doc )
@@ -37,6 +45,33 @@ void CharacterManager::loadCharacterClassFile ( CL_DomDocument &doc )
 
 
 }
+void CharacterManager::loadMonsterFile ( CL_DomDocument &doc )
+{
+    IFactory * pFactory = IApplication::getInstance()->getElementFactory();
+
+    CL_DomElement monstersNode = doc.named_item("monsters").to_element();
+    assert(monstersNode.is_element());
+    assert(!monstersNode.is_null());
+    CL_DomElement monsterNode = monstersNode.get_first_child().to_element();
+    assert(monsterNode.is_element());
+
+    while(!monsterNode.is_null())
+    {
+        Monster * pMonster = dynamic_cast<Monster*>
+            (pFactory->createElement("monster"));
+
+        pMonster->load(&monsterNode);
+        mMonsters [ pMonster->getName() ] = pMonster;
+        monsterNode = monsterNode.get_next_sibling().to_element();
+
+#ifndef NDEBUG
+        std::cout << "Monster: " << '\'' << pMonster->getName() << '\'' << std::endl;
+#endif
+    }
+
+
+}
+
 
 StoneRing::CharacterClass * CharacterManager::getClass ( const std::string &cls ) const
 {

@@ -56,24 +56,13 @@ void StoneRing::ItemRef::loadFinished()
 
 StoneRing::ItemRef::ItemRef( ):meType(INVALID)
 {
-    mRef.mpWeaponRef = NULL;
+    memset(&mRef,0,sizeof(mRef));
 }
 
 
 StoneRing::ItemRef::~ItemRef()
 {
-    switch(meType)
-    {
-    case NAMED_ITEM:
-        delete mRef.mpNamedItemRef;
-        break;
-    case WEAPON_REF:
-        delete mRef.mpWeaponRef;
-        break;
-    case ARMOR_REF:
-        delete mRef.mpArmorRef;
-        break;
-    }
+
 }
 
 std::string StoneRing::ItemRef::getItemName() const

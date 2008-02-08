@@ -26,6 +26,7 @@ namespace StoneRing
     class CharacterManager;
     class Choice;
     class State;
+    class MonsterRef;
 
     class IApplication 
     {
@@ -39,6 +40,7 @@ namespace StoneRing
         virtual CharacterManager * getCharacterManager() = 0;
         virtual ICharacterGroup * getTargetCharacterGroup() const = 0;
         virtual ICharacterGroup * getActorCharacterGroup() const = 0;
+        virtual void startBattle(const std::vector<MonsterRef*> &monsters)=0;
         static IApplication * getInstance();
         virtual void pop(bool popAll)=0;
 

@@ -180,7 +180,7 @@
 			</spriteRef>
 			<script id="lava">
 				//doMagicDamage(2, "fire");
-				0;
+				loadLevel("monster_test",4,8);
 			</script>
 		</tile>
 		<tile xpos="2" ypos="3">

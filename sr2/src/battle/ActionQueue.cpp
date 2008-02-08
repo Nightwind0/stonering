@@ -1,5 +1,5 @@
 #include "ActionQueue.h"
-#include "ScriptElement.h"
+#include "NamedScript.h"
 
 using StoneRing::ActionQueue;
 
@@ -30,7 +30,7 @@ void ActionQueue::enqueue(StoneRing::ScriptElement *pScript, StoneRing::ICharact
 }
 
 
-void ActionQueue::remove (StoneRing::ICharacter *pActor, StoneRing::ScriptElement *pDeselect)
+void ActionQueue::remove (StoneRing::ICharacter *pActor, StoneRing::NamedScript *pDeselect)
 {
 
     std::list<ActionEntry>::iterator it = std::find_if(mQueue.begin(),mQueue.end(), 
@@ -52,7 +52,7 @@ ActionQueue::ActionEntry::~ActionEntry()
 {
 }
 
-void ActionQueue::ActionEntry::deselect(StoneRing::ScriptElement *pDeselect)
+void ActionQueue::ActionEntry::deselect(StoneRing::NamedScript *pDeselect)
 {
     if(pDeselect)
     {

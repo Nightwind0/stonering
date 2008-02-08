@@ -32,6 +32,9 @@
 #include "Stat.h"
 #include "SpriteDefinition.h"
 #include "Character.h"
+#include "MonsterRegion.h"
+#include "MonsterGroup.h"
+#include "MonsterRef.h"
 
 using namespace StoneRing;
 
@@ -364,6 +367,25 @@ Element * ElementFactory::createMonster() const
     return new Monster();
 }
 
+Element * ElementFactory::createMonsterGroup() const
+{
+    return new MonsterGroup();
+}
+
+Element * ElementFactory::createMonsterRef() const
+{
+    return new MonsterRef();
+}
+
+Element * ElementFactory::createMonsterRegion() const
+{
+    return new MonsterRegion();
+}
+
+Element * ElementFactory::createMonsterRegions() const
+{
+    return new MonsterRegions();
+}
 
 Element * ElementFactory::createStatScript() const
 {
@@ -468,9 +490,14 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["mo"] = &ElementFactory::createMappableObject;
     mCreateMethods["movement"] = &ElementFactory::createMovement;
     mCreateMethods["monster"] = &ElementFactory::createMonster;
+    mCreateMethods["monsterRegion"] = &ElementFactory::createMonsterRegion;
+    mCreateMethods["monsterRegions"] = &ElementFactory::createMonsterRegions;
+    mCreateMethods["monsterRef"] = &ElementFactory::createMonsterRef;
+    mCreateMethods["monsterGroup"] = &ElementFactory::createMonsterGroup;
     mCreateMethods["namedItemElement"] = &ElementFactory::createNamedItemElement;
     mCreateMethods["namedItemRef"] = &ElementFactory::createNamedItemRef;
     mCreateMethods["onCountdown"] = &ElementFactory::createOnCountdown;
+    mCreateMethods["onDeselect"] = &ElementFactory::createOnDeselect;
     mCreateMethods["onInvoke"] = &ElementFactory::createOnInvoke;
     mCreateMethods["onRemove"] = &ElementFactory::createOnRemove;
     mCreateMethods["onRound"] = &ElementFactory::createOnRound;

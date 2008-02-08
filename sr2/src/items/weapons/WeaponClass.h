@@ -49,8 +49,8 @@ namespace StoneRing{
         std::list<WeaponEnhancer*> mWeaponEnhancers;
         std::list<WeaponTypeRef*> mExcludedTypes;
         std::list<StatusEffectModifier*> mStatusEffectModifiers;
-        ScriptElement *mpEquipScript;
-        ScriptElement *mpUnequipScript;
+        NamedScript *mpEquipScript;
+        NamedScript *mpUnequipScript;
         ScriptElement *mpConditionScript;
     };
 };

@@ -6,6 +6,8 @@
 #include "ScriptElement.h"
 
 namespace StoneRing{
+    class NamedScript;
+
     class UniqueArmor : public NamedItem, public Armor
     {
     public:
@@ -31,8 +33,8 @@ namespace StoneRing{
         float mValueMultiplier;
         uint mnValue;
         ScriptElement *mpScript;
-        ScriptElement *mpEquipScript;
-        ScriptElement *mpUnequipScript;
+        NamedScript *mpEquipScript;
+        NamedScript *mpUnequipScript;
         ScriptElement *mpConditionScript;
     };
 };

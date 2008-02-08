@@ -24,6 +24,8 @@ private:
     void loadStatusEffects(const std::string &filename);
     void loadCharacterClasses(const std::string &filename);
     void loadCharacters(const std::string &filename);
+    void loadMonsters(const std::string &filename);
+
     AbilityManager * getAbilityManager();
     ItemManager * getItemManager();
     CharacterManager * getCharacterManager();

@@ -4,6 +4,7 @@
 #include "NamedItem.h"
 #include "Weapon.h"
 #include "ScriptElement.h"
+#include "NamedScript.h"
 
 namespace StoneRing{
     class UniqueWeapon : public NamedItem, public Weapon
@@ -33,8 +34,8 @@ namespace StoneRing{
         float mValueMultiplier;
         uint mnValue;
         ScriptElement *mpScript;
-        ScriptElement *mpEquipScript;
-        ScriptElement *mpUnequipScript;
+        NamedScript *mpEquipScript;
+        NamedScript *mpUnequipScript;
         ScriptElement *mpConditionScript;
         
     };

@@ -4,12 +4,31 @@
 
 using namespace StoneRing;
 
-Monster::Monster()
+Monster::Monster():mpOnInvoke(NULL),mpOnRound(NULL),mpOnRemove(NULL),mnLevel(1)
 {
 }
 
 Monster::~Monster()
 {
+    delete mpOnRound;
+    delete mpOnInvoke;
+    delete mpOnRemove;
+}
+
+void Monster::invoke()
+{
+    if(mpOnInvoke)
+        mpOnInvoke->executeScript();
+}
+void Monster::round()
+{
+    if(mpOnRound)
+        mpOnRound->executeScript();
+}
+void Monster::die()
+{
+    if(mpOnRemove)
+        mpOnRemove->executeScript();
 }
 
 std::list<ItemRef*> Monster::getDrops() const
@@ -31,8 +50,15 @@ bool Monster::handleElement(eElement element, Element * pElement)
     case EITEMREF:
         mItems.push_back ( dynamic_cast<ItemRef*>(pElement) );
         break;
-    case ESCRIPT:
-        mpScript = dynamic_cast<ScriptElement*>(pElement);
+    case EONROUND:
+        mpOnRound = dynamic_cast<NamedScript*>(pElement);
+        assert(mpOnRound != NULL);
+        break;
+    case EONINVOKE:
+        mpOnInvoke = dynamic_cast<NamedScript*>(pElement);
+        break;
+    case EONREMOVE:
+        mpOnRemove = dynamic_cast<NamedScript*>(pElement);
         break;
     case ESPRITEDEFINITION:
         {
@@ -86,10 +112,15 @@ void Monster::handleText(const std::string &)
 
 void Monster::loadFinished()
 {
-    // Check for all the required attributes
+    if(!mpOnRound) throw CL_Error("Missing onRound on monster " + mName);
+
+    // Check for all the required stats
     if(!mbClass)
     {
     } 
+#ifndef NDEBUG
+    std::cout << '\t' << mName << std::endl;
+#endif
 
 }
 
@@ -100,7 +131,7 @@ ICharacter::eGender Monster::getGender() const
 
 std::string Monster::getName() const
 {
-    return "";
+    return mName;
 }
 
 

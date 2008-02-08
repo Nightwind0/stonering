@@ -19,6 +19,10 @@ public:
     
     int getWorthPoints() const;
     std::list<ItemRef*> getDrops() const;
+    void invoke();
+    void round();
+    void die();
+
     /** 
     * Element interface
     */
@@ -56,7 +60,10 @@ private:
     std::map<std::string,SpriteDefinition*> mSpriteDefinitionsMap;
     std::map<eCharacterAttribute,Stat*> mStatMap;
     std::list<ItemRef*> mItems;
-    ScriptElement *mpScript;
+
+    NamedScript *mpOnInvoke;
+    NamedScript *mpOnRound;
+    NamedScript *mpOnRemove;
     std::string mName;
     std::string mSpriteResources;
     bool mbClass;
