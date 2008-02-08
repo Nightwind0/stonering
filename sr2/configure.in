@@ -70,6 +70,7 @@ AC_OUTPUT(Makefile \
 		   src/monsters/Makefile \
 		   src/factories/Makefile \
 		   src/items/Makefile \
+		   src/battle/Makefile \
 		   src/level/Makefile \
 		   src/party/Makefile \
 		   src/states/Makefile \

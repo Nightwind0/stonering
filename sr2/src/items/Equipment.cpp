@@ -40,8 +40,8 @@ void Equipment::equip(ICharacter *pCharacter)
 {
 
 #ifndef _MSC_VER
-    std::for_each( mAttributeEnhancers.begin(), mAttributeEnhancers.end(), 
-        std::bind2nd(std::mem_fun ( &AttributeEnhancer::invoke ), pCharacter ));
+    std::for_each( mAttributeEnhancers.begin(), mAttributeEnhancers.end(), std::mem_fun(&AttributeEnhancer::invoke));
+
 #else
 
     for (std::list<AttributeEnhancer*>::const_iterator iter = mAttributeEnhancers.begin();
@@ -57,8 +57,7 @@ void Equipment::equip(ICharacter *pCharacter)
 void Equipment::unequip(ICharacter *pCharacter)
 {
 #ifndef _MSC_VER
-    std::for_each( mAttributeEnhancers.begin(), mAttributeEnhancers.end(), 
-        std::bind2nd(std::mem_fun ( &AttributeEnhancer::revoke ),pCharacter));
+    std::for_each( mAttributeEnhancers.begin(), mAttributeEnhancers.end(), std::mem_fun(&AttributeEnhancer::revoke));
 #else
     for(std::list<AttributeEnhancer*>::const_iterator iter = mAttributeEnhancers.begin();
         iter != mAttributeEnhancers.end(); iter++)

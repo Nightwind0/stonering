@@ -1,4 +1,4 @@
-SUBDIRS = core abilities character factories items level party states monsters
+SUBDIRS = core abilities character factories items level party states monsters battle
 
 noinst_LTLIBRARIES = libstonering.la
 
@@ -24,7 +24,8 @@ libstonering_la_LIBADD = $(CLANLIB_LIBS) \
 			items/libitems.la \
 			level/liblevel.la \
 			party/libparty.la \
-			core/libcore.la 
+			core/libcore.la \
+			battle/libbattle.la
 
 
 
@@ -41,5 +42,6 @@ INCLUDES = \
 		-I@top_srcdir@/src/items/armor \
 		-I@top_srcdir@/src/character \
 		-I@top_srcdir@/src/monsters \
-		-I@top_srcdir@/src/abilities
+		-I@top_srcdir@/src/abilities \
+		-I@top_srcdir@/src/battle
 
