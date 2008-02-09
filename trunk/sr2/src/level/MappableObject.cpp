@@ -88,6 +88,11 @@ bool StoneRing::MappableObject::handleElement(eElement element, Element * pEleme
         GraphicsManager *GM = GraphicsManager::getInstance();
         SpriteRef * pRef = dynamic_cast<SpriteRef*>(pElement);
 
+        if(pRef->getType() >= SpriteRef::_END_MO_TYPES)
+        {
+            throw CL_Error("spriteRef on mappable object must have direction type, not battle type");
+        }
+
         mGraphic.asSpriteRef = pRef;
         cFlags |= SPRITE;
 

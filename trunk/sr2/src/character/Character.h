@@ -4,6 +4,7 @@
 #include "sr_defines.h"
 #include "Equipment.h"
 #include "Magic.h"
+#include "SpriteRef.h"
 
 namespace StoneRing{
 
@@ -15,7 +16,8 @@ namespace StoneRing{
     class WeaponTypeSprite;
     class BattleMenu;
     class SpriteDefinition;
-
+    class BattleSprites;
+   
     class ICharacter
     {
     public:
@@ -84,6 +86,7 @@ namespace StoneRing{
         virtual void addStatusEffect(StatusEffect *)=0;
         virtual void removeEffects(const std::string &name)=0;
         virtual void statusEffectRound()=0;
+        virtual SpriteRef * getBattleSprite(SpriteRef::eType spriteType) const =0;
 
         // Static API
         static eCharacterAttribute CharAttributeFromString(const std::string &str); 
@@ -157,6 +160,7 @@ namespace StoneRing{
         virtual void addStatusEffect(StatusEffect *);
         virtual void removeEffects(const std::string &name);
         virtual void statusEffectRound();
+        virtual SpriteRef * getBattleSprite(SpriteRef::eType spriteType) const;
         // Shortcuts to class data
         BattleMenu * getBattleMenu() const;
         std::string getClassName() const;
@@ -171,12 +175,14 @@ namespace StoneRing{
         typedef std::map<std::string,SpriteDefinition*> SpriteDefinitionMap;
         virtual bool handleElement(eElement, Element * );
         virtual void loadAttributes(CL_DomNamedNodeMap *);
+        virtual void loadFinished();
 
         std::string mSpriteRef;
         std::string mName;
         SpriteDefinitionMap mSpriteDefinitionMap;
         AttributeFile mAttributes;
         CharacterClass * mpClass;
+        BattleSprites *mpBattleSprites;
         StatusEffectMap mStatusEffects;
         eType meType;
     };
