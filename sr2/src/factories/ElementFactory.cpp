@@ -3,6 +3,7 @@
 #include "ScriptElement.h"
 #include "Level.h"
 #include "CharacterClass.h"
+#include "BattleSprites.h"
 #include "IconRef.h"
 #include "Item.h"
 #include "ItemRef.h"
@@ -54,6 +55,10 @@ Element * ElementFactory::createSpriteRef()const
     return new SpriteRef();
 }
 
+Element * ElementFactory::createBattleSprites() const
+{
+    return new BattleSprites();
+}
 
 Element * ElementFactory::createMovement()const
 {
@@ -417,6 +422,7 @@ Element * ElementFactory::createBattleMenuOption() const
     return new BattleMenuOption();
 }
 
+
 Element * ElementFactory::createSpriteMovement() const
 {
     return new SpriteMovement();
@@ -539,6 +545,7 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["weaponTypeExclusionList"] = &ElementFactory::createWeaponTypeExclusionList;
     mCreateMethods["weaponTypeRef"] = &ElementFactory::createWeaponTypeRef;
     mCreateMethods["alterSprite"] = &ElementFactory::createAlterSprite;
+    mCreateMethods["battleSprites"] = &ElementFactory::createBattleSprites;
 }
 
 

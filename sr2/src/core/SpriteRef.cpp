@@ -9,11 +9,17 @@ void StoneRing::SpriteRef::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
     if(hasAttr("type",pAttributes))
     {
-        std::string direction = getString("type",pAttributes);
+        std::string type = getString("type",pAttributes);
         
-        if(direction == "still") meType = SPR_STILL;
-        if(direction == "twoway") meType = SPR_TWO_WAY;
-        if(direction == "fourway")  meType = SPR_FOUR_WAY;
+        if(type == "still") meType = SPR_STILL;
+        else if(type == "twoway") meType = SPR_TWO_WAY;
+        else if(type == "fourway")  meType = SPR_FOUR_WAY;
+        else if(type == "idle") meType = SPR_BATTLE_IDLE;
+        else if(type == "recoil") meType = SPR_BATTLE_RECOIL;
+        else if(type == "weak") meType = SPR_BATTLE_WEAK;
+        else if(type == "use") meType = SPR_BATTLE_USE;
+        else if(type == "dead") meType = SPR_BATTLE_DEAD;
+        else throw CL_Error("Bad type on spriteRef");
 
     }
 

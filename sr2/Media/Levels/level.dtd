@@ -92,9 +92,10 @@
 <!ELEMENT skillRef EMPTY>
 <!ELEMENT battleMenu (battleMenuOption*)>
 <!ELEMENT battleMenuOption (conditionScript?,(onSelect|skillRef|battleMenu)>
+<!ELEMENT battleSprites (spriteRef*)>
 
 <!-- Characters -->
-<!ELEMENT character (spriteDefinition*)>
+<!ELEMENT character (battleSprites,spriteDefinition*)>
 <!ELEMENT spriteDefinition (spriteRef)>
 
 <!ELEMENT startingEquipmentRef (itemRef)>
@@ -104,7 +105,7 @@
 <!ELEMENT bindPoint EMPTY>
 
 <!-- Monsters -->
-<!ELEMENT monster (onRound, onInvoke?,onRemove?, spriteDefinition*, stat*, itemRef*)>
+<!ELEMENT monster (onRound, onInvoke?,onRemove?, battleSprites, spriteDefinition*, stat*, itemRef*)>
 <!ELEMENT stat EMPTY>
 
 <!ELEMENT monsterRegion (monsterGroup+)>
@@ -146,7 +147,7 @@
 <!ATTLIST directionBlock south (true|false) #REQUIRED>
 <!ATTLIST directionBlock east (true|false) #REQUIRED>
 <!ATTLIST directionBlock west (true|false) #REQUIRED>
-<!ATTLIST spriteRef type (still|twoway|fourway) #IMPLIED>
+<!ATTLIST spriteRef type (still|twoway|fourway|idle|weak|dead|use|recoil) #IMPLIED>
 <!ATTLIST namedItem name CDATA #REQUIRED>
 <!ATTLIST namedItem maxInventory CDATA #IMPLIED>
 <!ATTLIST namedItem dropRarity (never|rare|uncommon|common) #REQUIRED>

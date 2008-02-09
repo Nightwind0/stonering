@@ -18,7 +18,7 @@
 	<string name="StartLevel" value="examplelevel" />
 	<string name="DefaultPlayerSprite" value="Sprites/Party/Valyn" /> 
 	<string name="Currency" value="gods"/>
-     <string name="DefaultEncounterRate" value="0.10"/>
+    <float name="DefaultEncounterRate" value="0.10"/>
  </section>
 <section name="Fonts">
 <!-- 1234567890-=\+/`~!@#$%^&*()[]{};:'",.<>?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw -->
@@ -150,7 +150,7 @@
 				<grid pos="0,0"	size="32,32" array="4,1" >
 				</grid>
 			</image>
-			<animation speed="200" pingpong="yes" />
+			<animation speed="200" playoptions="pingpong" />
 		</sprite>
 	</section>
 	<section name ="Animals">
@@ -160,8 +160,87 @@
 				</grid>
 			</image>
 		</sprite>
-		
 	</section>
+    <section name="Monsters">
+        <section name="Endospore">
+            <sprite name="idle" hint="alpha">
+                <animation playoptions="pingpong" speed="300"/>
+                <image file="Sprites/endospore.png">
+                    <grid pos="0,0" size="100,122" array="3,1"/>
+                </image>
+            </sprite>
+            <sprite name="weak" hint="alpha">
+                <animation playoptions="pingpong" speed="300"/>
+                <image file="Sprites/endospore.png">
+                    <grid pos="0,100" size="100,122" array="3,1"/>
+                </image>
+            </sprite>
+            <sprite name="use" hint="alpha">
+                <animation playoptions="noloop" speed="200"/>
+                <image file="Sprites/endospore.png">
+                    <grid pos="300,0" size="100,122" array="3,1"/>
+                </image>
+            </sprite>
+            <sprite name="recoil" hint="alpha">
+                <animation playoptions="noloop" speed="100"/>
+                <image file="Sprites/endospore.png">
+                    <grid pos="300,100" size="100,122" array="3,1"/>
+                </image>
+            </sprite>
+        </section>
+        <section name="Megaspore">
+            <sprite name="idle" hint="alpha">
+                <animation playoptions="pingpong" speed="300"/>
+                <image file="Sprites/endospore2.png">
+                    <grid pos="0,0" size="100,122" array="3,1"/>
+                </image>
+            </sprite>
+            <sprite name="weak" hint="alpha">
+                <animation playoptions="pingpong" speed="300"/>
+                <image file="Sprites/endospore2.png">
+                    <grid pos="0,100" size="100,122" array="3,1"/>
+                </image>
+            </sprite>
+            <sprite name="use" hint="alpha">
+                <animation playoptions="noloop" speed="200"/>
+                <image file="Sprites/endospore2.png">
+                    <grid pos="300,0" size="100,122" array="3,1"/>
+                </image>
+            </sprite>
+            <sprite name="recoil" hint="alpha">
+                <animation playoptions="noloop" speed="100"/>
+                <image file="Sprites/endospore2.png">
+                    <grid pos="300,100" size="100,122" array="3,1"/>
+                </image>
+            </sprite>
+        </section>
+        <section name="Wolf">
+            <sprite name="idle" hint="alpha">
+                <animation playoptions="pingpong" speed="300"/>
+                <image file="Sprites/wolf1.png">
+                    <grid pos="0,0" size="150,175" array="3,1"/>
+                </image>
+            </sprite>
+            <sprite name="use" hint="alpha">
+                <animation playoptions="noloop" speed="200"/>
+                <image file="Sprites/wolf1.png">
+                    <grid pos="150,175" size="150,175" array="2,1"/>
+                </image>
+            </sprite>
+            <sprite name="recoil" hint="alpha">
+                <animation playoptions="noloop" speed="200"/>
+                <image file="Sprites/wolf1.png">
+                    <grid pos="0,175" size="150,175" array="1,1"/>
+                </image>
+            </sprite>
+            <sprite name="weak" hint="alpha">
+                <animation playoptions="loop" speed="200"/>
+                <image file="Sprites/wolf1.png">
+                    <grid pos="0,0" size="150,175" array="1,2"/>
+                </image>
+            </sprite>
+        </section>
+    </section>
 </section>
 		
 	
