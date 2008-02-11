@@ -1,11 +1,5 @@
 ﻿<monsters>
     <monster name="Endospore" mode="class" spriteResources="endospore" class="Warrior" level="1">
-        <battleSprites>
-            <spriteRef type="idle">Sprites/Monsters/Endospore/idle</spriteRef>
-            <spriteRef type="use">Sprites/Monsters/Endospore/use</spriteRef>
-            <spriteRef type="weak">Sprites/Monsters/Endospore/weak</spriteRef>
-            <spriteRef type="recoil">Sprites/Monsters/Endospore/recoil</spriteRef>
-        </battleSprites>
         <onRound>
             <script id="Endospore_round">
             </script>
@@ -23,12 +17,6 @@
         </itemRef>
     </monster>
     <monster name="Megaspore" mode="class" spriteResources="endospore" class="Warrior" level="3">
-        <battleSprites>
-            <spriteRef type="idle">Sprites/Monsters/Megaspore/idle</spriteRef>
-            <spriteRef type="use">Sprites/Monsters/Megaspore/use</spriteRef>
-            <spriteRef type="weak">Sprites/Monsters/Megaspore/weak</spriteRef>
-            <spriteRef type="recoil">Sprites/Monsters/Megaspore/recoil</spriteRef>
-        </battleSprites>
         <onRound>
             <script id="Megaspore_round">
             </script>
@@ -41,12 +29,6 @@
         </itemRef>
     </monster>
     <monster name="Grass Wolf" mode="manual" spriteResources="wolf" level="1">
-        <battleSprites>
-            <spriteRef type="idle">Sprites/Monsters/Wolf/idle</spriteRef>
-            <spriteRef type="use">Sprites/Monsters/Wolf/use</spriteRef>
-            <spriteRef type="weak">Sprites/Monsters/Wolf/weak</spriteRef>
-            <spriteRef type="recoil">Sprites/Monsters/Wolf/recoil</spriteRef>
-        </battleSprites>
         <onRound>
             <script id="Grass Wolf_round">
                 doSkill("Attack");  // Monsters are allowed to use any skill they want.

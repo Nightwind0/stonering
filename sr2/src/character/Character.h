@@ -16,7 +16,6 @@ namespace StoneRing{
     class WeaponTypeSprite;
     class BattleMenu;
     class SpriteDefinition;
-    class BattleSprites;
    
     class ICharacter
     {
@@ -86,8 +85,7 @@ namespace StoneRing{
         virtual void addStatusEffect(StatusEffect *)=0;
         virtual void removeEffects(const std::string &name)=0;
         virtual void statusEffectRound()=0;
-        virtual SpriteRef * getBattleSprite(SpriteRef::eType spriteType) const =0;
-
+ 
         // Static API
         static eCharacterAttribute CharAttributeFromString(const std::string &str); 
         static eCommonAttribute CommonAttributeFromString(const std::string &str); 
@@ -160,8 +158,7 @@ namespace StoneRing{
         virtual void addStatusEffect(StatusEffect *);
         virtual void removeEffects(const std::string &name);
         virtual void statusEffectRound();
-        virtual SpriteRef * getBattleSprite(SpriteRef::eType spriteType) const;
-        // Shortcuts to class data
+          // Shortcuts to class data
         BattleMenu * getBattleMenu() const;
         std::string getClassName() const;
         // Equipment
@@ -182,7 +179,6 @@ namespace StoneRing{
         SpriteDefinitionMap mSpriteDefinitionMap;
         AttributeFile mAttributes;
         CharacterClass * mpClass;
-        BattleSprites *mpBattleSprites;
         StatusEffectMap mStatusEffects;
         eType meType;
     };

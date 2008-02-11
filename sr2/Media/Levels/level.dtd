@@ -63,7 +63,9 @@
 <!ELEMENT magicResistance EMPTY>
 
 <!-- Animation DTD -->
+<!ELEMENT animations(animation+)>
 <!ELEMENT animation (phase+)>
+<!ELEMENT animationRef EMPTY>
 <!ELEMENT phase (spriteAnimation*)> <!-- If there are no animationSprites then its treated like a pause -->
 <!ELEMENT spriteAnimation ((spriteStub|spriteRef),spriteMovement?,alterSprite?, hide?)>
 <!ELEMENT spriteStub EMPTY>
@@ -92,10 +94,9 @@
 <!ELEMENT skillRef EMPTY>
 <!ELEMENT battleMenu (battleMenuOption*)>
 <!ELEMENT battleMenuOption (conditionScript?,(onSelect|skillRef|battleMenu)>
-<!ELEMENT battleSprites (spriteRef*)>
 
 <!-- Characters -->
-<!ELEMENT character (battleSprites,spriteDefinition*)>
+<!ELEMENT character (spriteDefinition*)>
 <!ELEMENT spriteDefinition (spriteRef)>
 
 <!ELEMENT startingEquipmentRef (itemRef)>
@@ -105,7 +106,7 @@
 <!ELEMENT bindPoint EMPTY>
 
 <!-- Monsters -->
-<!ELEMENT monster (onRound, onInvoke?,onRemove?, battleSprites, spriteDefinition*, stat*, itemRef*)>
+<!ELEMENT monster (onRound, onInvoke?,onRemove?, spriteDefinition*, stat*, itemRef*)>
 <!ELEMENT stat EMPTY>
 
 <!ELEMENT monsterRegion (monsterGroup+)>
@@ -274,6 +275,7 @@
 <!ATTLIST skillRef overrideBp CDATA #IMPLIED> <!-- Defaults to skill's value -->
 <!ATTLIST skillRef overrideMinLevel CDATA #IMPLIED> <!-- Defaults to skill's value -->
 
+<!ATTLIST animationRef CDATA #REQUIRED>
 
 <!ATTLIST character name CDATA #REQUIRED>
 <!ATTLIST character class CDATA #REQUIRED>

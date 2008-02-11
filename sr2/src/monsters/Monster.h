@@ -48,7 +48,6 @@ public:
     virtual void addStatusEffect(StatusEffect *);
     virtual void removeEffects(const std::string &name);
     virtual void statusEffectRound();
-    virtual SpriteRef * getBattleSprite(SpriteRef::eType spriteType) const;
 private:
     /* Element stuff */
     virtual bool handleElement(eElement, Element * );
@@ -64,7 +63,6 @@ private:
     NamedScript *mpOnInvoke;
     NamedScript *mpOnRound;
     NamedScript *mpOnRemove;
-    BattleSprites *mpBattleSprites;
     std::string mName;
     std::string mSpriteResources;
     bool mbClass;

@@ -25,6 +25,7 @@ namespace StoneRing
     class SpellRef;
     class ActionQueue;
     class NamedScript;
+    class Animation;
 
 
 
@@ -69,7 +70,6 @@ namespace StoneRing
         NamedScript *mpCondition;
         NamedScript *mpOnSelect;
         NamedScript *mpOnDeselect;
-
         uint mnSp;
         uint mnBp;
         uint mnMinLevel;
