@@ -3,8 +3,6 @@ noinst_LTLIBRARIES = libcore.la
 libcore_la_CPPFLAGS =  $(CLANLIB_CFLAGS) $(CPPFLAGS)
 
 libcore_la_SOURCES =	\
-		Animation.cpp \
-		Animation.h \
 		AppUtils.cpp \
 		AppUtils.h \
 		Element.cpp \
