@@ -2,7 +2,10 @@ noinst_LTLIBRARIES = libabilities.la
 
 libabilities_la_CPPFLAGS = $(CLANLIB_CFLAGS) $(CPPFLAGS)
 
-libabilities_la_SOURCES = AbilityManager.cpp \
+libabilities_la_SOURCES = \
+		Animation.cpp \
+		Animation.h \
+		AbilityManager.cpp \
 			AbilityManager.h \
 			Effect.h \
 			Skill.h \
