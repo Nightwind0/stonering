@@ -7,7 +7,6 @@
 #include "Character.h"
 #include "SpriteDefinition.h"
 #include "StatusEffect.h"
-#include "BattleSprites.h"
 #include <functional>
 
 
@@ -269,18 +268,10 @@ ICharacter::eGender StoneRing::Character::getGender() const
     return NEUTER;
 }
 
-StoneRing::SpriteRef * StoneRing::Character::getBattleSprite(SpriteRef::eType spriteType) const
-{
-    return mpBattleSprites->getSprite(spriteType);
-}
-
 bool StoneRing::Character::handleElement(eElement element, StoneRing::Element * pElement)
 {
     switch(element)
     {
-    case EBATTLESPRITES:
-        mpBattleSprites = dynamic_cast<BattleSprites*>(pElement);
-        break;
     case ESPRITEDEFINITION:
         {
             SpriteDefinition * pSpriteDef = dynamic_cast<SpriteDefinition*>(pElement);
@@ -327,10 +318,7 @@ void StoneRing::Character::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 
 void StoneRing::Character::loadFinished()
 {
-    if(!mpBattleSprites)
-    {
-        throw CL_Error("Character missing battle sprites.");
-    }
+    // TODO: Make sure the battle sprites exist in the resources
 }
 
 

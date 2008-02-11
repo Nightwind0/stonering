@@ -1,11 +1,10 @@
 #include "Monster.h"
 #include "IApplication.h"
 #include "CharacterManager.h"
-#include "BattleSprites.h"
 
 using namespace StoneRing;
 
-Monster::Monster():mpOnInvoke(NULL),mpOnRound(NULL),mpOnRemove(NULL),mpBattleSprites(NULL),mnLevel(1)
+Monster::Monster():mpOnInvoke(NULL),mpOnRound(NULL),mpOnRemove(NULL),mnLevel(1)
 {
 }
 
@@ -14,7 +13,6 @@ Monster::~Monster()
     delete mpOnRound;
     delete mpOnInvoke;
     delete mpOnRemove;
-    delete mpBattleSprites;
 }
 
 void Monster::invoke()
@@ -43,9 +41,6 @@ bool Monster::handleElement(eElement element, Element * pElement)
 {
     switch(element)
     {
-    case EBATTLESPRITES:
-        mpBattleSprites = dynamic_cast<BattleSprites*>(pElement);
-        break;
     case ESTAT:
         {
             Stat * pStat = dynamic_cast<Stat*>(pElement);
@@ -76,11 +71,6 @@ bool Monster::handleElement(eElement element, Element * pElement)
     }
 
     return true;
-}
-
-StoneRing::SpriteRef * Monster::getBattleSprite(SpriteRef::eType spriteType) const
-{
-    return mpBattleSprites->getSprite(spriteType);
 }
 
 void Monster::loadAttributes(CL_DomNamedNodeMap *pAttr)
@@ -129,7 +119,7 @@ void Monster::loadFinished()
     {
     } 
 
-    if(!mpBattleSprites) throw CL_Error("Missing battleSprites on monster " + mName );
+    // TODO: Make sure the required sprites are available
 #ifndef NDEBUG
     std::cout << '\t' << mName << std::endl;
 #endif

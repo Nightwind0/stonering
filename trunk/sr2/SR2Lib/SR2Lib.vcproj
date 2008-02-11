@@ -152,6 +152,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\abilities\Animation.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\src\abilities\Magic.cpp"
 					>
 				</File>
@@ -196,10 +200,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\src\character\BattleSprites.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\src\character\Character.cpp"
 					>
 				</File>
@@ -219,28 +219,6 @@
 			<Filter
 				Name="Core"
 				>
-				<File
-					RelativePath="..\src\core\Animation.cpp"
-					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)\$(InputName)1.obj"
-							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)\$(InputName)1.obj"
-							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
-						/>
-					</FileConfiguration>
-				</File>
 				<File
 					RelativePath="..\src\core\AppUtils.cpp"
 					>
@@ -556,6 +534,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\abilities\Animation.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\abilities\Magic.h"
 					>
 				</File>
@@ -592,10 +574,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\src\character\BattleSprites.h"
-					>
-				</File>
-				<File
 					RelativePath="..\src\character\Character.h"
 					>
 				</File>
@@ -615,10 +593,6 @@
 			<Filter
 				Name="Core"
 				>
-				<File
-					RelativePath="..\src\core\Animation.h"
-					>
-				</File>
 				<File
 					RelativePath="..\src\core\AppUtils.h"
 					>

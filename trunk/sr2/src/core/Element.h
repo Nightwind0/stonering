@@ -42,7 +42,6 @@ namespace StoneRing
             EATTRIBUTEENHANCER,
             EBATTLEMENU,
             EBATTLEMENUOPTION,
-            EBATTLESPRITES,
             ECHARACTER,
             ECHARACTERCLASS,
             ECONDITIONSCRIPT,
