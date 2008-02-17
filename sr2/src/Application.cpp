@@ -537,8 +537,6 @@ int Application::main(int argc, char ** argv)
         std::string startinglevel = CL_String::load("Game/StartLevel",mpResources);
 
         
-        mAppUtils.loadGameplayAssets("",mpResources);
-
         // Load special overlay for say.
         mpWindow  = new CL_OpenGLWindow(name, WINDOW_WIDTH, WINDOW_HEIGHT,false,false,2);
 
@@ -546,6 +544,8 @@ int Application::main(int argc, char ** argv)
         //  mpWindow->get_buffer(i).to_format(CL_PixelFormat(24,0,0,0,0,false,0,pixelformat_rgba));
 
         CL_Display::clear();
+
+        mAppUtils.loadGameplayAssets("",mpResources);
             
         showRechargeableOnionSplash();
         showIntro();
