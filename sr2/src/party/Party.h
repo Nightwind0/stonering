@@ -14,6 +14,7 @@
 namespace StoneRing{
 
     class ItemRef;  
+    class Character;
 
     class Party : public IParty
     {
@@ -31,6 +32,9 @@ namespace StoneRing{
         virtual bool hasItem(Item *pItem, uint count) const;
         virtual bool giveItem(Item *pItem, uint count);
         virtual bool takeItem(Item *pItem, uint count);
+        virtual void addCharacter(Character *pCharacter);
+        virtual void removeCharacter(const std::string &name);
+        virtual Character * getMapCharacter()const;
 
         // ICharacterGroup interface
         virtual uint getCharacterCount() const ;
@@ -41,10 +45,10 @@ namespace StoneRing{
         virtual ICharacter * getActorCharacter() const ;
 
       private:
-
-        std::set<std::string> mEvents;
-        std::map<Item*,int> mItems;
-        uint mnGold;
+          std::vector<Character*> mCharacters;
+          std::set<std::string> mEvents;
+          std::map<Item*,int> mItems;
+          uint mnGold;
 
     };
 

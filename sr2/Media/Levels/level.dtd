@@ -304,8 +304,20 @@
 <!ATTLIST monsterRegion encounterRate CDATA #IMPLIED> <!-- 0.0 - 1.0 ,Game settings supply default -->
 
 <!ATTLIST monsterGroup weight CDATA #IMPLIED> <!-- Defaults to standard weight -->
+<!ATTLIST monsterGroup cellWidth CDATA #IMPLIED> <!-- Defaults to system setting-->
+<!-- Defaults to system setting -->
+<!ATTLIST monsterGroup cellHeight CDATA #IMPLIED>
+
+
+
 <!ATTLIST monsterRef name CDATA #REQUIRED>
 <!ATTLIST monsterRef count CDATA #IMPLIED> <!-- defaults to one -->
+<!ATTLIST monsterRef cellX CDATA #IMPLIED> <!-- Required within monsterGroup -->
+<!ATTLIST monsterRef cellY CDATA #IMPLIED> <!-- Required within monsterGroup-->
+<!-- for multiple of this monster, how many rows -->
+<!ATTLIST monsterRef cols CDATA #IMPLIED>
+<!-- for multiple of this monster, how many rows -->
+<!ATTLIST monsterRef rows CDATA #IMPLIED>
 
 <!ATTLIST stat id CDATA #REQUIRED>
 <!ATTLIST stat value CDATA #IMPLIED> <!-- Either this, or toggle -->

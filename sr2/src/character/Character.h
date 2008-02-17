@@ -1,10 +1,13 @@
 #ifndef SR_CHARACTER_H
 #define SR_CHARACTER_H
 
+#include <ClanLib/core.h>
 #include "sr_defines.h"
 #include "Equipment.h"
 #include "Magic.h"
 #include "SpriteRef.h"
+
+class CL_Sprite;
 
 namespace StoneRing{
 
@@ -16,7 +19,6 @@ namespace StoneRing{
     class WeaponTypeSprite;
     class BattleMenu;
     class SpriteDefinition;
-   
     class ICharacter
     {
     public:
@@ -158,9 +160,11 @@ namespace StoneRing{
         virtual void addStatusEffect(StatusEffect *);
         virtual void removeEffects(const std::string &name);
         virtual void statusEffectRound();
+
+        CL_Sprite * getMapSprite() const { return mpMapSprite; }
           // Shortcuts to class data
         BattleMenu * getBattleMenu() const;
-        std::string getClassName() const;
+        CharacterClass * getClass() const { return mpClass; }
         // Equipment
         void equip(Equipment::eSlot slot, Equipment *pEquip);
         void unequip(Equipment::eSlot);
@@ -174,11 +178,11 @@ namespace StoneRing{
         virtual void loadAttributes(CL_DomNamedNodeMap *);
         virtual void loadFinished();
 
-        std::string mSpriteRef;
         std::string mName;
         SpriteDefinitionMap mSpriteDefinitionMap;
         AttributeFile mAttributes;
         CharacterClass * mpClass;
+        CL_Sprite *mpMapSprite;
         StatusEffectMap mStatusEffects;
         eType meType;
     };

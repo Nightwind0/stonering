@@ -155,6 +155,14 @@ Level::Level():mpMonsterRegions(NULL),mLevelWidth(0),mLevelHeight(0),mpScript(NU
 {
 }
 
+void Level::invoke()
+{
+    if(mpHeader)
+    {
+        mpHeader->executeScript();
+    }
+}
+
 bool Level::containsMappableObjects(const CL_Point &point) const
 {
     if(mMOMap.find(point) != mMOMap.end())
@@ -258,12 +266,9 @@ Level::~Level()
             {
                 delete *i;
             }
-
         
         }
 
-
-    
     }
 
     delete mpPlayer;

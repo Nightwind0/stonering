@@ -72,6 +72,39 @@ void CharacterManager::loadMonsterFile ( CL_DomDocument &doc )
 
 }
 
+void CharacterManager::loadCharacters(CL_DomDocument &doc)
+{
+    IFactory * pFactory = IApplication::getInstance()->getElementFactory();
+
+    CL_DomElement charactersNode = doc.named_item("characters").to_element();
+    assert(charactersNode.is_element());
+    assert(!charactersNode.is_null());
+    CL_DomElement characterNode = charactersNode.get_first_child().to_element();
+    assert(characterNode.is_element());
+    std::cout << "Node name: " << characterNode.get_node_name();
+
+    while(!characterNode.is_null())
+    {
+        Character * pCharacter = dynamic_cast<Character*>
+            (pFactory->createElement(characterNode.get_node_name()));
+
+        assert(pCharacter);
+        assert(pCharacter->whichElement() == Element::ECHARACTER);
+        pCharacter->load(&characterNode);
+        mCharacters [ pCharacter->getName() ] = pCharacter;
+        characterNode = characterNode.get_next_sibling().to_element();
+
+#ifndef NDEBUG
+        std::cout << "Character: " << '\'' << pCharacter->getName() << '\'' << std::endl;
+#endif
+    }
+
+}
+
+StoneRing::Character * CharacterManager::getCharacter(const std::string &name)const
+{
+    return mCharacters.find(name)->second;
+}
 
 StoneRing::CharacterClass * CharacterManager::getClass ( const std::string &cls ) const
 {

@@ -1,10 +1,7 @@
 <level name="TestLevel">
 	<levelHeader music="Main" width="30" height="24" allowsRunning="true">
-		<script id="LevelInit">
-		function base(var $multiplier, var $levels)
-		{
-			return exp(log($multiplier)/$levels);
-		}
+		<script id="TestLevelInit">
+            addCharacter("Valyn",1,false);
 		</script>
 	</levelHeader>
 	<tiles>

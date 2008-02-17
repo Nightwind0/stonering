@@ -12,7 +12,7 @@ using StoneRing::IParty;
 using StoneRing::ICharacter;
 using StoneRing::ItemRef;
 using StoneRing::Item;
-
+using StoneRing::Character;
 
 Party::Party():mnGold(0)
 {
@@ -164,6 +164,28 @@ ICharacter * Party::getTargetCharacter() const
 ICharacter * Party::getActorCharacter() const 
 {
     return NULL;
+}
+
+void Party::addCharacter(Character *pCharacter)
+{
+    mCharacters.push_back(pCharacter);
+}
+
+void Party::removeCharacter(const std::string &name)
+{
+
+}
+
+Character * Party::getMapCharacter()const
+{
+    if(mCharacters.size()) 
+    {
+        return mCharacters[0];
+    }
+    else
+    {
+        return NULL;
+    }
 }
 
 

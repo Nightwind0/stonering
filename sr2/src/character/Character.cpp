@@ -8,6 +8,7 @@
 #include "SpriteDefinition.h"
 #include "StatusEffect.h"
 #include <functional>
+#include <ClanLib/core.h>
 
 
 using StoneRing::ICharacter;
@@ -259,7 +260,7 @@ void StoneRing::AttributeFile::fixAttribute(ICharacter::eCharacterAttribute attr
     mToggles[attr] = toggle;
 }
 
-StoneRing::Character::Character()
+StoneRing::Character::Character():mpClass(NULL),mpMapSprite(NULL)
 {
 }
 
@@ -290,7 +291,7 @@ void StoneRing::Character::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 
     const CharacterManager * pCharacterManager = IApplication::getInstance()->getCharacterManager();
     mName = getRequiredString("name",pAttributes);
-    mSpriteRef = getRequiredString("spriteResource",pAttributes);
+    std::string spriteRef = getRequiredString("spriteResource",pAttributes);
     std::string className = getRequiredString("class",pAttributes);
     std::string typeName = getImpliedString("type",pAttributes,"living");
 
@@ -313,6 +314,9 @@ void StoneRing::Character::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 
     // Get the class pointer
     mpClass = pCharacterManager->getClass(className);
+
+    CL_ResourceManager * pResources = IApplication::getInstance()->getResources();
+    mpMapSprite = new CL_Sprite(spriteRef, pResources);
 
 }
 

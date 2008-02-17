@@ -30,7 +30,9 @@ namespace StoneRing{
         virtual void giveItem(ItemRef * pItemRef, uint count = 1)=0;
         virtual void takeItem(ItemRef * pItemRef, uint count = 1)=0;
         virtual void giveGold(int amount)=0;
-
+        virtual void addCharacter(Character *pCharacter)=0;
+        virtual void removeCharacter(const std::string &name)=0;
+        virtual Character * getMapCharacter()const=0;
 
         // ICharacterGroup interface
         virtual uint getCharacterCount() const = 0;

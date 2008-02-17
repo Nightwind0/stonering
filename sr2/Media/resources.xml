@@ -14,6 +14,7 @@
 	<string name="SkillDefinitions" value="Media/skills.xml"/>
 	<string name="CharacterClassDefinitions" value="Media/characterClasses.xml"/>
     <string name="MonsterDefinitions" value="Media/monsters.xml"/>
+    <string name="CharacterDefinitions" value="Media/characters.xml"/>
  	<string name="LevelPath" value="Media/Levels/" />
 	<string name="StartLevel" value="examplelevel" />
 	<string name="DefaultPlayerSprite" value="Sprites/Party/Valyn" /> 

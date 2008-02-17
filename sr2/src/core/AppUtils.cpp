@@ -23,6 +23,7 @@ void AppUtils::loadGameplayAssets(const std::string &path, CL_ResourceManager *p
     std::string skilldefinition = CL_String::load("Game/SkillDefinitions",pResources);
     std::string classdefinition = CL_String::load("Game/CharacterClassDefinitions",pResources);
     std::string monsterdefinition = CL_String::load("Game/MonsterDefinitions",pResources);
+    std::string characterdefinition = CL_String::load("Game/CharacterDefinitions",pResources);
 
     loadStatusEffects(path + statusEffectDefinition);
     loadSpells(path + spelldefinition);
@@ -30,6 +31,7 @@ void AppUtils::loadGameplayAssets(const std::string &path, CL_ResourceManager *p
     loadSkills(path + skilldefinition);
     loadCharacterClasses(path + classdefinition);
     loadMonsters(path + monsterdefinition);
+    loadCharacters(path + characterdefinition);
 }
 
 
@@ -90,12 +92,14 @@ void AppUtils::loadCharacterClasses(const std::string &filename)
 void AppUtils::loadCharacters(const std::string &filename)
 {
 #ifndef NDEBUG
-    std::cout << "Loading characters..." << std::endl;
+    std::cout << "Loading characters from " << filename << std::endl;
 #endif
 
     CL_InputSource_File file(filename);
     CL_DomDocument document;
     document.load(&file);
+
+    getCharacterManager()->loadCharacters(document);
 }
 
 void AppUtils::loadMonsters(const std::string &filename)
