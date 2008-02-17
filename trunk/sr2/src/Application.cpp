@@ -75,6 +75,7 @@ SteelType Application::loadLevel(const std::string &level, uint startX, uint sta
 {
     Level * pLevel = new Level();
     pLevel->load(level, mpResources);
+    pLevel->invoke();
     mMapState.pushLevel( pLevel, static_cast<uint>(startX), static_cast<uint>(startY) );
 
     return SteelType();
@@ -254,6 +255,23 @@ SteelType Application::giveGold(int amount)
     return SteelType();
 }
 
+SteelType Application::addCharacter(const std::string &character, int level, bool announce)
+{
+    Character * pCharacter = mCharacterManager.getCharacter(character);
+    pCharacter->fixAttribute(ICharacter::CA_LEVEL,static_cast<double>(level));
+    mpParty->addCharacter(pCharacter);
+
+    if(announce)
+    {
+        std::ostringstream os;
+        os << character << " joined the party!";
+
+        say("",os.str());
+    }
+
+    return SteelType();
+}
+
 SteelType Application::useItem()
 {
     return SteelType();
@@ -418,6 +436,9 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction("giveGold",
                              new SteelFunctor1Arg<Application,int>
                              (this,&Application::giveGold));
+    mInterpreter.addFunction("addCharacter",
+        new SteelFunctor3Arg<Application,const std::string &, int, bool>
+        (this,&Application::addCharacter));
 
 
 //        SteelType hasGeneratedWeapon(const std::string &wepclass, const std::string &webtype);
@@ -531,6 +552,7 @@ int Application::main(int argc, char ** argv)
             
         Level * pLevel = new Level();
         pLevel->load(startinglevel, mpResources);
+        pLevel->invoke();
             
         mMapState.setDimensions(getDisplayRect());
         mMapState.pushLevel ( pLevel, 1,1 );  

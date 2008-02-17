@@ -220,6 +220,7 @@ namespace StoneRing {
         virtual ~Level();
         void loadFromFile(const std::string &filename);
         void load(const std::string &name, CL_ResourceManager *pResources);
+        void invoke(); // run invoke script if any
         eElement whichElement() const { return ELEVEL; }
 
         virtual void draw(const CL_Rect &src, const CL_Rect &dst,

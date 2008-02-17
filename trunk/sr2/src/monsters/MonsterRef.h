@@ -13,7 +13,10 @@ namespace StoneRing
 
         std::string getName() const;
         int getCount() const;
-
+        int getCellX() const { return mnCellX; }
+        int getCellY() const { return mnCellY; }
+        int getColumns() const { return mnColumns; }
+        int getRows() const { return mnRows; }
         virtual eElement whichElement() const { return EMONSTERREF; }
     private:
         virtual void loadAttributes(CL_DomNamedNodeMap *);
@@ -21,6 +24,10 @@ namespace StoneRing
         
         std::string mName;
         int mnCount;
+        int mnCellX;
+        int mnCellY;
+        int mnColumns;
+        int mnRows;
     };
 }
 

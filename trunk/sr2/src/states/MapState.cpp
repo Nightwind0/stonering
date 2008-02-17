@@ -154,28 +154,28 @@ void StoneRing::MapState::finish() // Hook to clean up or whatever after being p
 void StoneRing::MapState::pushLevel(Level * pLevel, uint x, uint y)
 {
     CL_ResourceManager * pResources = IApplication::getInstance()->getResources();
-    std::string defaultplayersprite = CL_String::load("Game/DefaultPlayerSprite",pResources );
+    Character *pMapCharacter = IApplication::getInstance()->getParty()->getMapCharacter();
     mLevels.push( pLevel );
     mpLevel = mLevels.top();
 
+    if(pMapCharacter)
+    {
+        MappablePlayer * pPlayer = new MappablePlayer(x,y);
+        if(mpPlayer)
+            pPlayer->matchFacingDirection(mpPlayer);
+        mpPlayer = pPlayer;
 
-
-    MappablePlayer * pPlayer = new MappablePlayer(x,y);
-    if(mpPlayer)
-        pPlayer->matchFacingDirection(mpPlayer);
-    mpPlayer = pPlayer;
-
-    // gets deleted in the mappableobject destructor, which is called by Level, which deletes itself after a pop
-    CL_Sprite * pPlayerSprite = new CL_Sprite(defaultplayersprite, pResources );
+        CL_Sprite * pPlayerSprite = pMapCharacter->getMapSprite();
         
-    setPlayerSprite(pPlayerSprite);
-    mpPlayer->setSprite(mpPlayerSprite);
+        setPlayerSprite(pPlayerSprite);
+        mpPlayer->setSprite(mpPlayerSprite);
 
-    mpLevel->addPlayer(mpPlayer);
+        mpLevel->addPlayer(mpPlayer);
 
-    recalculatePlayerPosition();
+        recalculatePlayerPosition();
 
-    if(mpPlayer)switchFromPlayer(mpPlayer);
+        if(mpPlayer)switchFromPlayer(mpPlayer);
+    }
 }
 
 void StoneRing::MapState::setPlayerSprite(CL_Sprite * pPlayer)

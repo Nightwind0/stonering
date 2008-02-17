@@ -678,7 +678,7 @@ StoneRing::MappablePlayer::MappablePlayer(uint startX, uint startY):mbHasNextDir
 
 StoneRing::MappablePlayer::~MappablePlayer()
 {
-    
+    delete mpMovement;
 }
 
 uint StoneRing::MappablePlayer::getMovesPerDraw() const

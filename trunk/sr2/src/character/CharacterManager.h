@@ -19,6 +19,7 @@ namespace StoneRing{
         
         CharacterClass * getClass(const std::string &name)const;
         Monster * getMonster(const std::string &name)const;
+        Character * getCharacter(const std::string &name)const;
 
         void loadCharacterClassFile (CL_DomDocument  &doc);
         void loadCharacters(CL_DomDocument &doc);

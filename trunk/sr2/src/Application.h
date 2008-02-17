@@ -77,6 +77,7 @@ namespace StoneRing
         SteelType doEvent(const std::string &event, bool bRemember);
         SteelType takeNamedItem(const std::string &item, uint count);
         SteelType useItem();
+        SteelType addCharacter(const std::string &character, int level, bool announce);
         // You can also take
         SteelType giveGold(int amount);
         // SteelType giveGeneratedWeapon(const std::string &wepclass, const std::string &weptype);

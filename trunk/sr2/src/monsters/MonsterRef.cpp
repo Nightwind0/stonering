@@ -26,6 +26,10 @@ void MonsterRef::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
     mName = getRequiredString("name",pAttributes);
     mnCount = getImpliedInt("count",pAttributes,1);
+    mnCellX = getImpliedInt("cellX",pAttributes,-1);
+    mnCellY = getImpliedInt("cellY",pAttributes,-1);
+    mnColumns = getImpliedInt("cols",pAttributes,0);
+    mnRows = getImpliedInt("rows",pAttributes,0);
 }
 
 void MonsterRef::loadFinished()
