@@ -497,7 +497,7 @@ void Level::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_Graph
             for(MOMapIter iter = lower; iter != upper; iter++)
             {
                 MappableObject * pMO = iter->second;
-                cl_assert ( pMO != 0 );
+                assert ( pMO != 0 );
 #if 0
 
                 pGC->draw_rect(CL_Rect(point.x * 32 - src.left + dst.left,
