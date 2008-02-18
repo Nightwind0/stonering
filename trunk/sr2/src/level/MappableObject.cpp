@@ -168,7 +168,7 @@ void StoneRing::MappableObject::loadFinished()
     setFrameForDirection();
 }
  
-StoneRing::MappableObject::MappableObject():meDirection(NONE),mpSprite(NULL),mpMovement(0),
+StoneRing::MappableObject::MappableObject():meDirection(NONE),mpSprite(NULL),mpMovement(NULL),
                                             mpCondition(0),cFlags(0),mnCellsMoved(0),
                                             mnFrameMarks(0),mnStepsUntilChange(0)
 {
@@ -394,7 +394,6 @@ void StoneRing::MappableObject::setFrameForDirection()
             mpSprite->set_frame(mbStep? 4 : 5);
             break;
         case NONE:
-        
             break;
         }
         break;
@@ -678,7 +677,6 @@ StoneRing::MappablePlayer::MappablePlayer(uint startX, uint startY):mbHasNextDir
 
 StoneRing::MappablePlayer::~MappablePlayer()
 {
-    delete mpMovement;
 }
 
 uint StoneRing::MappablePlayer::getMovesPerDraw() const
@@ -774,7 +772,7 @@ void StoneRing::MappablePlayer::setFrameForDirection()
         mpSprite->set_frame(mbStep? 4 : 5);
         break;
     case NONE:
-       
+        mpSprite->set_frame(0);
         break;
     }
 }
