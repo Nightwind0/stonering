@@ -5,8 +5,7 @@ using std::min;
 
 
 StoneRing::MapState::MapState():mbDone(false),mLevelX(0),
-                                mLevelY(0),
-                                mpPlayer(NULL)
+                                mLevelY(0)
 {
 #ifndef NDEBUG
     mbShowDebug = false;
@@ -29,8 +28,10 @@ bool StoneRing::MapState::isDone() const
 
 void StoneRing::MapState::handleKeyDown(const CL_InputEvent &key)
 {
+    MappablePlayer *pPlayer = mpLevel->getPlayer();
+    assert(pPlayer);
     if(CL_Keyboard::get_keycode(CL_KEY_SHIFT) && mpLevel->allowsRunning())
-        mpPlayer->setRunning(true);
+        pPlayer->setRunning(true);
     
     switch(key.id)
     {
@@ -38,18 +39,17 @@ void StoneRing::MapState::handleKeyDown(const CL_InputEvent &key)
         mbDone = true;
         break;
     case CL_KEY_DOWN:
-        mpPlayer->setNextDirection(StoneRing::MappableObject::SOUTH);
+        pPlayer->setNextDirection(StoneRing::MappableObject::SOUTH);
         break;
     case CL_KEY_UP:
-        mpPlayer->setNextDirection(StoneRing::MappableObject::NORTH);
+        pPlayer->setNextDirection(StoneRing::MappableObject::NORTH);
         break;
     case CL_KEY_LEFT:
-        mpPlayer->setNextDirection(StoneRing::MappableObject::WEST);
+        pPlayer->setNextDirection(StoneRing::MappableObject::WEST);
         break;
     case CL_KEY_RIGHT:
-        mpPlayer->setNextDirection(StoneRing::MappableObject::EAST);
+        pPlayer->setNextDirection(StoneRing::MappableObject::EAST);
         break;
-        
     default:
         break;
     }
@@ -58,6 +58,8 @@ void StoneRing::MapState::handleKeyDown(const CL_InputEvent &key)
 
 void StoneRing::MapState::handleKeyUp(const CL_InputEvent &key)
 {
+    MappablePlayer *pPlayer = mpLevel->getPlayer();
+    assert(pPlayer);                               
     switch(key.id)
     {
     case CL_KEY_SPACE:
@@ -67,25 +69,21 @@ void StoneRing::MapState::handleKeyUp(const CL_InputEvent &key)
         doTalk(true); // Prod!
         break;
     case CL_KEY_SHIFT:
-        mpPlayer->setRunning(false);
+        pPlayer->setRunning(false);
         break;
-            
 #ifndef NDEBUG
     case CL_KEY_P:
-            
         break;
         
     case CL_KEY_D:
         mbShowDebug = mbShowDebug?false:true;
-
+        break;
     case CL_KEY_M:
-     
-        mpLevel->dumpMappableObjects();
+         mpLevel->dumpMappableObjects();
         break;
     case CL_KEY_S:
         gbDebugStop = true;
         break;
-
 #endif
             
     }
@@ -122,8 +120,8 @@ void StoneRing::MapState::draw(const CL_Rect &screenRect,CL_GraphicContext * pGC
         pGC->clear();
 
     mpLevel->draw(src,dst, pGC, false,mbShowDebug,mbShowDebug);
-    mpLevel->drawMappableObjects( src,dst, pGC);
-    mpLevel->drawFloaters(src,dst, pGC);
+    mpLevel->drawMappableObjects(src,dst,pGC);
+    mpLevel->drawFloaters(src,dst,pGC);
 }
 
 
@@ -153,28 +151,22 @@ void StoneRing::MapState::finish() // Hook to clean up or whatever after being p
 
 void StoneRing::MapState::pushLevel(Level * pLevel, uint x, uint y)
 {
+    MappablePlayer *pPlayer = pLevel->getPlayer();
+    assert(pPlayer);
     CL_ResourceManager * pResources = IApplication::getInstance()->getResources();
     Character *pMapCharacter = IApplication::getInstance()->getParty()->getMapCharacter();
+ 
     mLevels.push( pLevel );
     mpLevel = mLevels.top();
 
     if(pMapCharacter)
     {
-        MappablePlayer * pPlayer = new MappablePlayer(x,y);
-        if(mpPlayer)
-            pPlayer->matchFacingDirection(mpPlayer);
-        mpPlayer = pPlayer;
+        pPlayer->setSprite ( pMapCharacter->getMapSprite() );
+        pPlayer->resetLevelX(x);
+        pPlayer->resetLevelY(y);
 
-        CL_Sprite * pPlayerSprite = pMapCharacter->getMapSprite();
-        
-        setPlayerSprite(pPlayerSprite);
-        mpPlayer->setSprite(mpPlayerSprite);
-
-        mpLevel->addPlayer(mpPlayer);
-
+        pLevel->setPlayerPos(CL_Point(x,y));
         recalculatePlayerPosition();
-
-        if(mpPlayer)switchFromPlayer(mpPlayer);
     }
 }
 
@@ -185,9 +177,11 @@ void StoneRing::MapState::setPlayerSprite(CL_Sprite * pPlayer)
 
 void StoneRing::MapState::pop(bool bAll)
 {
-    MappableObject::eDirection oldDir = mpPlayer->getDirection();
+    MappablePlayer *pPlayer = mpLevel->getPlayer();
+    assert(pPlayer);
 
-    switchFromPlayer(mpPlayer);
+    MappableObject::eDirection oldDir = pPlayer->getDirection();
+
     if(bAll)
     {
         while(mLevels.size() > 1)
@@ -207,17 +201,20 @@ void StoneRing::MapState::pop(bool bAll)
     }
 
     mpLevel = mLevels.top();
-    mpLevel->getPlayer()->matchFacingDirection(mpPlayer);
-    mpPlayer = mpLevel->getPlayer();
-    mpPlayer->setNextDirection( oldDir );
+    MappablePlayer * pNewPlayer = mpLevel->getPlayer();
+
+    pNewPlayer->setNextDirection(oldDir);
 }
 
 
 
 void StoneRing::MapState::recalculatePlayerPosition()
 {
-    int X = mpPlayer->getLevelX();
-    int Y = mpPlayer->getLevelY();
+    MappablePlayer *pPlayer = mpLevel->getPlayer();
+    assert(pPlayer);
+
+    int X = pPlayer->getLevelX();
+    int Y = pPlayer->getLevelY();
     
     if( X  > mLevelX + (mScreenRect.get_width() / 2) && 
         static_cast<int>(mpLevel->getWidth()) * 32 > static_cast<int>(mScreenRect.get_width()))
@@ -292,7 +289,9 @@ void StoneRing::MapState::moveMappableObjects()
 
 void StoneRing::MapState::doTalk(bool prod)
 {
-    CL_Point talkPoint = mpPlayer->getPointInFront();
+    MappablePlayer *pPlayer = mpLevel->getPlayer();
+    assert(pPlayer);
+    CL_Point talkPoint = pPlayer->getPointInFront();
 
     if(talkPoint.x >=0 && talkPoint.x < mpLevel->getWidth() && 
        talkPoint.y >=0 && talkPoint.y < mpLevel->getHeight())
