@@ -229,7 +229,6 @@ namespace StoneRing {
         virtual void drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
         virtual void drawFloaters(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext * pGC);
 
-        void addPlayer(MappablePlayer * pPlayer);
         void moveMappableObjects(const CL_Rect &src);
 
         // Checks relevant tile and MO direction block information
@@ -258,7 +257,9 @@ namespace StoneRing {
         bool allowsRunning() const { return mbAllowsRunning; }
         std::string getName() const { return mName; }
 
-        MappablePlayer * getPlayer()const { return mpPlayer; }
+        // Player interfaces
+        MappablePlayer * getPlayer() { return &mPlayer; }
+        void setPlayerPos(const CL_Point &target);
 
         void markForDeath() { mbMarkedForDeath = true; }
 
@@ -312,7 +313,7 @@ namespace StoneRing {
         bool mbAllowsRunning;
         mutable uint mnFrameCount;
         uint mnMoveCount;
-        MappablePlayer * mpPlayer;
+        MappablePlayer mPlayer;
         bool mbMarkedForDeath;
 
     };

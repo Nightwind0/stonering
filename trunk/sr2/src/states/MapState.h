@@ -50,11 +50,7 @@ namespace StoneRing
         std::stack<Level*> mLevels;
         Level * mpLevel;
         CL_Sprite * mpPlayerSprite;
-        MappablePlayer  *mpPlayer;
-
         bool mbShowDebug;
-
-
     };
 };
 

@@ -151,7 +151,7 @@ void LevelHeader::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 /////////////////////////////////////////////////////////////////////////////
 
 
-Level::Level():mpMonsterRegions(NULL),mLevelWidth(0),mLevelHeight(0),mpScript(NULL),mpHeader(NULL)
+Level::Level():mpMonsterRegions(NULL),mLevelWidth(0),mLevelHeight(0),mpScript(NULL),mpHeader(NULL),mPlayer(0,0)
 {
 }
 
@@ -270,8 +270,6 @@ Level::~Level()
         }
 
     }
-
-    delete mpPlayer;
 }
 
 int Level::getCumulativeDirectionBlockAtPoint(const CL_Point &point) const
@@ -497,7 +495,7 @@ void Level::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_Graph
             for(MOMapIter iter = lower; iter != upper; iter++)
             {
                 MappableObject * pMO = iter->second;
-                assert ( pMO != 0 );
+                assert ( pMO != NULL );
 #if 0
 
                 pGC->draw_rect(CL_Rect(point.x * 32 - src.left + dst.left,
@@ -510,6 +508,7 @@ void Level::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_Graph
                 if(mnFrameCount > pMO->getFrameMarks()
                    && pMO->evaluateCondition())
                 {
+                    assert(pMO != NULL);
                     pMO->markFrame();
                     CL_Rect moRect = pMO->getPixelRect();
                     CL_Rect dstRect( moRect.left - src.left + dst.left, moRect.top + dst.top - src.top,
@@ -522,11 +521,17 @@ void Level::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_Graph
     }
 }
 
+
+void Level::setPlayerPos(const CL_Point &target)
+{
+    setMappableObjectAt(target, &mPlayer);
+}
     
 
 
 void Level::putMappableObjectAtCurrentPosition(MappableObject *pMO)
 {
+    assert ( pMO != NULL );
     CL_Point cur_pos = pMO->getPosition();
     uint width = pMO->getCellWidth();
     uint height = pMO->getCellHeight();
@@ -538,13 +543,6 @@ void Level::putMappableObjectAtCurrentPosition(MappableObject *pMO)
             setMappableObjectAt(CL_Point(x,y),pMO);
         }
     }
-}
-
-
-void Level::addPlayer(StoneRing::MappablePlayer *pPlayer)
-{
-    mpPlayer = pPlayer;
-    putMappableObjectAtCurrentPosition(pPlayer);
 }
 
 
@@ -687,9 +685,7 @@ void Level::moveMappableObjects(const CL_Rect &src)
         pMo->setOccupiedPoints(this, &Level::setMappableObjectAt);
     
     }// for iMo
-
-    if(mbMarkedForDeath) delete this;
-        
+      
 }
  
 
@@ -950,12 +946,8 @@ void Level::loadFinished()
 {
     if(mpHeader == NULL) throw CL_Error("Level was missing levelHeader.");
     
-
     mnFrameCount = mnMoveCount = 0 ;
-
     mbMarkedForDeath = false;
-    mpPlayer = NULL;
-
 }
 
 

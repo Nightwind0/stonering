@@ -193,7 +193,7 @@ StoneRing::MappableObject::~MappableObject()
         delete *i;
     }
 
-    if(deleteSprite())
+    if(mpSprite && deleteSprite())
         delete mpSprite;
 
     delete mpMovement;
@@ -252,6 +252,7 @@ CL_Rect StoneRing::MappableObject::getPixelRect() const
 
     if(isSprite())
     {
+        assert ( mpSprite != NULL );
         pixelRect.top = mY - (mpSprite->get_height() - myDimensions.y);
         pixelRect.left = mX - (mpSprite->get_width() - myDimensions.x);
         pixelRect.right = pixelRect.left + mpSprite->get_width();
