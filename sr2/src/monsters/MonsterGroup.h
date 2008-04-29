@@ -16,8 +16,8 @@ namespace StoneRing{
         
         virtual eElement whichElement() const { return EMONSTERGROUP; }
         int getEncounterWeight() const { return mnWeight; }
-        int getCellWidth() const { return mnCellWidth; }
-        int getCellHeight() const { return mnCellHeight; }
+        int getCellColumns() const { return mnCellCols; }
+        int getCellRows() const { return mnCellRows; }
         const std::vector<MonsterRef*> & getMonsters() const { return mMonsters; }
     private:
         virtual bool handleElement(eElement, Element * );
@@ -25,8 +25,8 @@ namespace StoneRing{
         virtual void loadFinished();
 
         int mnWeight;
-        int mnCellWidth;
-        int mnCellHeight;
+        int mnCellCols;
+        int mnCellRows;
         std::vector<MonsterRef*> mMonsters;
     };
 }

@@ -3,6 +3,7 @@
 #include "Character.h"
 #include "AbilityManager.h"
 #include "IApplication.h"
+#include "MonsterElement.h"
 #include "Monster.h"
 
 using StoneRing::CharacterManager;
@@ -15,11 +16,18 @@ CharacterManager::~CharacterManager()
         );
 }
 
-StoneRing::Monster * CharacterManager::getMonster(const std::string &name)const
+StoneRing::MonsterElement * CharacterManager::getMonsterElement(const std::string &name)const
 {
     MonsterMap::const_iterator it = mMonsters.find(name);
     if(it == mMonsters.end()) throw CL_Error("Monster " + name + " not found in manager");
     return it->second;
+}
+
+StoneRing::Monster * CharacterManager::createMonster(const std::string &name)const
+{
+    MonsterElement * pElement = getMonsterElement(name);
+    if(pElement == NULL) return NULL;
+    return new Monster(pElement);
 }
 
 void CharacterManager::loadCharacterClassFile ( CL_DomDocument &doc )
@@ -57,7 +65,7 @@ void CharacterManager::loadMonsterFile ( CL_DomDocument &doc )
 
     while(!monsterNode.is_null())
     {
-        Monster * pMonster = dynamic_cast<Monster*>
+        MonsterElement * pMonster = dynamic_cast<MonsterElement*>
             (pFactory->createElement("monster"));
 
         pMonster->load(&monsterNode);

@@ -9,6 +9,7 @@ namespace StoneRing{
 
     class CharacterClass;
     class Character;
+    class MonsterElement;
     class Monster;
 
     class CharacterManager
@@ -18,8 +19,9 @@ namespace StoneRing{
         ~CharacterManager();
         
         CharacterClass * getClass(const std::string &name)const;
-        Monster * getMonster(const std::string &name)const;
+        MonsterElement * getMonsterElement(const std::string &name)const;
         Character * getCharacter(const std::string &name)const;
+        Monster * createMonster(const std::string &name)const;
 
         void loadCharacterClassFile (CL_DomDocument  &doc);
         void loadCharacters(CL_DomDocument &doc);
@@ -27,7 +29,7 @@ namespace StoneRing{
     private:
         typedef std::map<std::string,CharacterClass*> ClassMap;
         typedef std::map<std::string,Character*> CharacterMap;
-        typedef std::map<std::string,Monster*> MonsterMap; // Do the  map. Do the monster map
+        typedef std::map<std::string,MonsterElement*> MonsterMap; // Do the  map. Do the monster map
         
         ClassMap mCharacterClasses;
         CharacterMap mCharacters;

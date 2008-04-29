@@ -28,7 +28,7 @@
 #include "Animation.h"
 #include "BattleMenu.h"
 #include "BattleMenuOption.h"
-#include "Monster.h"
+#include "MonsterElement.h"
 #include "Stat.h"
 #include "SpriteDefinition.h"
 #include "Character.h"
@@ -364,7 +364,7 @@ Element * ElementFactory::createMappableObjects() const
 
 Element * ElementFactory::createMonster() const
 {
-    return new Monster();
+    return new MonsterElement();
 }
 
 Element * ElementFactory::createMonsterGroup() const

@@ -1,185 +1,98 @@
 #include "Monster.h"
-#include "IApplication.h"
-#include "CharacterManager.h"
+#include "MonsterElement.h"
+#include "ItemRef.h"
+#include "StatusEffect.h"
 
-using namespace StoneRing;
+using StoneRing::Monster;
+using StoneRing::ICharacter;
+using StoneRing::MonsterElement;
+using StoneRing::ItemRef;
+using StoneRing::StatusEffect;
+using StoneRing::SpriteDefinition;
 
-Monster::Monster():mpOnInvoke(NULL),mpOnRound(NULL),mpOnRemove(NULL),mnLevel(1)
+
+
+Monster::Monster(MonsterElement *pDefinition)
+:mpMonsterDefinition(pDefinition),mName(pDefinition->getName())
 {
+
 }
 
 Monster::~Monster()
 {
-    delete mpOnRound;
-    delete mpOnInvoke;
-    delete mpOnRemove;
+}
+
+
+std::list<ItemRef*>::const_iterator Monster::getDropsBegin() const
+{
+    return mpMonsterDefinition->getItemRefsBegin();
+}
+
+std::list<ItemRef*>::const_iterator Monster::getDropsEnd() const
+{
+    return mpMonsterDefinition->getItemRefsEnd();
 }
 
 void Monster::invoke()
 {
-    if(mpOnInvoke)
-        mpOnInvoke->executeScript();
+    mpMonsterDefinition->invoke();
 }
+
 void Monster::round()
 {
-    if(mpOnRound)
-        mpOnRound->executeScript();
+    mpMonsterDefinition->round();
 }
+
 void Monster::die()
 {
-    if(mpOnRemove)
-        mpOnRemove->executeScript();
+    mpMonsterDefinition->die();
 }
 
-std::list<ItemRef*> Monster::getDrops() const
-{
-    return mItems;
-}
-
-/** Element Stuff **/
-bool Monster::handleElement(eElement element, Element * pElement)
-{
-    switch(element)
-    {
-    case ESTAT:
-        {
-            Stat * pStat = dynamic_cast<Stat*>(pElement);
-            mStatMap[pStat->getAttribute()] = pStat;
-            break;
-        }
-    case EITEMREF:
-        mItems.push_back ( dynamic_cast<ItemRef*>(pElement) );
-        break;
-    case EONROUND:
-        mpOnRound = dynamic_cast<NamedScript*>(pElement);
-        assert(mpOnRound != NULL);
-        break;
-    case EONINVOKE:
-        mpOnInvoke = dynamic_cast<NamedScript*>(pElement);
-        break;
-    case EONREMOVE:
-        mpOnRemove = dynamic_cast<NamedScript*>(pElement);
-        break;
-    case ESPRITEDEFINITION:
-        {
-            SpriteDefinition * pSpriteDef = dynamic_cast<SpriteDefinition*>(pElement);
-            mSpriteDefinitionsMap[pSpriteDef->getName()] = pSpriteDef;
-            break;
-        }
-    default:
-        return false;
-    }
-
-    return true;
-}
-
-void Monster::loadAttributes(CL_DomNamedNodeMap *pAttr)
-{
-    mName = getRequiredString("name",pAttr);
-    mSpriteResources = getRequiredString("spriteResources",pAttr);
-    std::string mode = getRequiredString("mode",pAttr);
-    mnLevel = getRequiredInt("level",pAttr);
-    std::string type = getImpliedString("type",pAttr,"living");
-
-    if(mode == "manual")
-    {
-        mbClass = false;
-    }
-    else if(mode=="class")
-    {
-        mbClass = true;
-    }
-    else throw CL_Error("Unknown monster mode");
-
-    if(type == "living")
-        meType = LIVING;
-    else if(type == "nonliving")
-        meType = NONLIVING;
-    else if(type == "magical")
-        meType = MAGICAL;
-
-    if(mbClass)
-    {
-        std::string classname = getRequiredString("class",pAttr);
-        mpClass = IApplication::getInstance()->getCharacterManager()->getClass(classname);
-    }
-
-}
-
-void Monster::handleText(const std::string &)
-{
-}
-
-void Monster::loadFinished()
-{
-    if(!mpOnRound) throw CL_Error("Missing onRound on monster " + mName);
-
-    // Check for all the required stats
-    if(!mbClass)
-    {
-    } 
-
-    // TODO: Make sure the required sprites are available
-#ifndef NDEBUG
-    std::cout << '\t' << mName << std::endl;
-#endif
-
-}
-
-ICharacter::eGender Monster::getGender() const
-{
-    return NEUTER;
-}
-
-std::string Monster::getName() const
-{
-    return mName;
-}
 
 
 // For boolean values.
-void Monster::fixAttribute(eCharacterAttribute attr, bool state)
+void Monster::fixAttribute(ICharacter::eCharacterAttribute attr, bool state)
 {
 }
 
 
-double Monster::getSpellResistance(Magic::eMagicType type) const
+double Monster::getSpellResistance(StoneRing::Magic::eMagicType type) const
 {
     return 0.0;
 }
 
-double Monster::getAttribute(eCharacterAttribute attr) const 
+double Monster::getAttribute(ICharacter::eCharacterAttribute attr) const 
 {
     return 1.0;
 }
 
 
-bool Monster::getToggle(eCharacterAttribute attr) const
+bool Monster::getToggle(ICharacter::eCharacterAttribute attr) const
 {
     return false;
 }
 
-void Monster::fixAttribute(eCharacterAttribute attr, double value)
+void Monster::fixAttribute(ICharacter::eCharacterAttribute attr, double value)
 {
     mAttributes.fixAttribute(attr,value);
 }
 
-void Monster::attachMultiplication(eCharacterAttribute attr, double factor)
+void Monster::attachMultiplication(ICharacter::eCharacterAttribute attr, double factor)
 {
     mAttributes.attachMultiplication(attr,factor);
 }
 
-void Monster::attachAddition(eCharacterAttribute attr, double value) 
+void Monster::attachAddition(ICharacter::eCharacterAttribute attr, double value) 
 {
     mAttributes.attachAddition(attr,value);
 }
 
-void Monster::detachMultiplication(eCharacterAttribute attr, double factor)
+void Monster::detachMultiplication(ICharacter::eCharacterAttribute attr, double factor)
 {
     mAttributes.detachMultiplication(attr,factor);
 }
 
-void Monster::detachAddition(eCharacterAttribute attr, double value) 
+void Monster::detachAddition(ICharacter::eCharacterAttribute attr, double value) 
 {
     mAttributes.detachAddition(attr,value);
 }
@@ -205,5 +118,12 @@ void Monster::statusEffectRound()
 
 ICharacter::eType Monster::getType() const
 {
-    return meType;
+    return mpMonsterDefinition->getType();
 }
+
+
+ICharacter::eGender Monster::getGender() const
+{
+    return NEUTER;
+}
+
