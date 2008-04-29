@@ -18,7 +18,9 @@ namespace StoneRing
         static GraphicsManager * getInstance();
       
         CL_Sprite * createSprite ( const std::string & name );
+        // TODO: Replace sprite string in these two APIs with some enum
         CL_Sprite * createMonsterSprite ( const std::string &monster, const std::string &sprite);
+        CL_Sprite * createCharacterSprite ( const std::string &player, const std::string &sprite);
         CL_Surface * getTileMap ( const std::string & name );
         CL_Surface * getBackdrop (const std::string & name );
 

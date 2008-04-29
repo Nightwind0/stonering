@@ -162,6 +162,8 @@ namespace StoneRing{
         virtual void statusEffectRound();
 
         CL_Sprite * getMapSprite() const { return mpMapSprite; }
+        CL_Sprite * getCurrentSprite() const { return mpCurrentSprite; }
+        void setCurrentSprite(CL_Sprite *pSprite) { mpCurrentSprite = pSprite; }
           // Shortcuts to class data
         BattleMenu * getBattleMenu() const;
         CharacterClass * getClass() const { return mpClass; }
@@ -183,6 +185,7 @@ namespace StoneRing{
         AttributeFile mAttributes;
         CharacterClass * mpClass;
         CL_Sprite *mpMapSprite;
+        CL_Sprite *mpCurrentSprite;
         StatusEffectMap mStatusEffects;
         eType meType;
     };

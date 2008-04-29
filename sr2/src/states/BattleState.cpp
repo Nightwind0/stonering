@@ -5,6 +5,7 @@
 #include "IApplication.h"
 #include "MonsterGroup.h"
 #include "Monster.h"
+#include "IParty.h"
 
 using StoneRing::BattleState;
 using StoneRing::MonsterRef;
@@ -99,6 +100,24 @@ void BattleState::start()
 {
     mDrawMethod = &BattleState::drawBattle;
     meState = BATTLE;
+    _initOrReleasePlayers(false);
+}
+
+void BattleState::_initOrReleasePlayers(bool bRelease)
+{
+    GraphicsManager * pGraphicsManager = GraphicsManager::getInstance();
+    IParty * pParty = IApplication::getInstance()->getParty();
+
+    uint count = pParty->getCharacterCount();
+    for(uint nPlayer = 0;nPlayer < count; nPlayer++)
+    {
+        Character * pCharacter = dynamic_cast<Character*>(pParty->getCharacter(nPlayer));
+        assert(pCharacter);
+        std::string name = pCharacter->getName();
+        if(!bRelease)
+            pCharacter->setCurrentSprite(pGraphicsManager->createCharacterSprite(name,"idle")); // bullshit 
+        else delete pCharacter->getCurrentSprite();
+    }
 }
 
 
@@ -109,6 +128,8 @@ void BattleState::finish()
         delete *it;
 
     mMonsters.clear();
+
+    _initOrReleasePlayers(true);
 }
 
 
@@ -129,7 +150,12 @@ void BattleState::drawBattle(const CL_Rect &screenRect, CL_GraphicContext *pGC)
     // Hack to get a monster size
     monsterRect.right = screenRect.get_width() * 0.66; // TODO: System variable here (not multiplier, actual size of rect)
 
+    // Hack. Player Rect needs to come from game config
+    CL_Rect playerRect = screenRect;
+    playerRect.top = screenRect.bottom * 0.5;
+    playerRect.left = monsterRect.right;
     _drawMonsters(monsterRect,pGC);
+    _drawPlayers(playerRect,pGC);
 }
 
 void BattleState::_drawMonsters(const CL_Rect &monsterRect, CL_GraphicContext *pGC)
@@ -147,6 +173,22 @@ void BattleState::_drawMonsters(const CL_Rect &monsterRect, CL_GraphicContext *p
         CL_Sprite * pSprite = pMonster->getCurrentSprite();
 
         pSprite->draw(drawX,drawY,pGC);
+        pSprite->update();
+    }
+}
+
+void BattleState::_drawPlayers(const CL_Rect &playerRect, CL_GraphicContext *pGC)
+{
+    IParty * pParty = IApplication::getInstance()->getParty();
+
+    uint playercount = pParty->getCharacterCount();
+    for(uint nPlayer = 0; nPlayer < playercount; nPlayer++)
+    {
+        Character * pCharacter = dynamic_cast<Character*>(pParty->getCharacter(nPlayer));
+        CL_Sprite * pSprite = pCharacter->getCurrentSprite();
+
+         // Need to get the spacing from game config
+        pSprite->draw(playerRect.left + nPlayer * 64, playerRect.top + (nPlayer * 64), pGC);
         pSprite->update();
     }
 }
