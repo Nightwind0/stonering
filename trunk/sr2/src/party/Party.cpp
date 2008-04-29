@@ -132,13 +132,13 @@ void Party::giveGold(int amount)
     }
 
     mnGold += amount;
-    
 }
 
 
 uint Party::getCharacterCount() const 
 {
-    return 1;
+    uint count = mCharacters.size();
+    return count;
 }
 
 uint Party::getTargetCharacterIndex() const
@@ -153,7 +153,7 @@ uint Party::getActorCharacterIndex() const
 
 ICharacter * Party::getCharacter(uint index) const 
 {
-    return NULL;
+    return mCharacters[index];
 }
 
 ICharacter * Party::getTargetCharacter() const 

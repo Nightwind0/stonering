@@ -161,7 +161,7 @@
     <section name="BattleSprites">
         <section name="Valyn">
             <sprite name="idle" hint="alpha">
-                <animation playoptions="pingpong" speed="300"/>
+                <animation pingpong="yes"  speed="300"/>
                 <image file="Sprites/valyn_battle.png">
                     <grid pos="0,0" size="150,240" array="3,1"/>
                 </image>

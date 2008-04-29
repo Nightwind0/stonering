@@ -41,6 +41,10 @@ namespace StoneRing{
         void drawStart(const CL_Rect &screenRect, CL_GraphicContext *pGC);
         void drawBattle(const CL_Rect &screenRect, CL_GraphicContext *pGC);
         void _drawMonsters(const CL_Rect &monsterRect, CL_GraphicContext *pGC);
+        void _drawPlayers(const CL_Rect &playerRect, CL_GraphicContext *pGC);
+
+        void _initOrReleasePlayers(bool bRelease=false);
+
 
         eState meState; 
         DrawMethod mDrawMethod;

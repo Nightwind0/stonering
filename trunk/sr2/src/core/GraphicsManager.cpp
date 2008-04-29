@@ -85,6 +85,15 @@ CL_Sprite * GraphicsManager::createMonsterSprite (const std::string &monster, co
     return pSprite;
 }
 
+CL_Sprite * GraphicsManager::createCharacterSprite ( const std::string &player, const std::string &sprite)
+{
+    CL_ResourceManager *pResources = IApplication::getInstance()->getResources();
+    CL_Sprite * pSprite = new CL_Sprite("Sprites/BattleSprites/"+player+'/'+sprite,pResources);
+
+    return pSprite;
+}
+
+
 CL_Surface * GraphicsManager::getBackdrop(const std::string &name)
 {
     CL_ResourceManager *pResources = IApplication::getInstance()->getResources();
