@@ -23,18 +23,19 @@ namespace StoneRing
             int getWidth() const {return mWidth;}
             int getHeight() const {return mHeight;}
             float getEncounterRate() const {return mEncounterRate;}
-        
+            std::string getBackdrop() const { return mBackdrop; }
         private:
             virtual bool handleElement(eElement, Element * );
             virtual void loadAttributes(CL_DomNamedNodeMap *);
             virtual void loadFinished();
         
-                 int mLevelX;
+            int mLevelX;
             int mLevelY;
             int mWidth;
             int mHeight;
             float mEncounterRate;
             int mnTotalWeight;
+            std::string mBackdrop;
             std::list<MonsterGroup*> mMonsterGroups;
     
     };

@@ -77,6 +77,23 @@ CL_Surface * GraphicsManager::getTileMap ( const std::string & name )
     return pSurface;
 }
 
+CL_Sprite * GraphicsManager::createMonsterSprite (const std::string &monster, const std::string &sprite)
+{
+    CL_ResourceManager *pResources = IApplication::getInstance()->getResources();
+    CL_Sprite * pSprite = new CL_Sprite("Sprites/Monsters/"+monster+'/'+sprite,pResources);
+
+    return pSprite;
+}
+
+CL_Surface * GraphicsManager::getBackdrop(const std::string &name)
+{
+    CL_ResourceManager *pResources = IApplication::getInstance()->getResources();
+    CL_Surface *pSurface = new CL_Surface("Backdrops/" + name, pResources);
+    assert(pSurface);
+
+    return pSurface;
+}
+
 CL_Font * GraphicsManager::getFont(StoneRing::GraphicsManager::eFont font)
 {
     std::map<eFont,CL_Font*>::iterator foundIt = mFontMap.find( font );

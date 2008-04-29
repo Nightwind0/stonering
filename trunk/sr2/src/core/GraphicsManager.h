@@ -18,7 +18,9 @@ namespace StoneRing
         static GraphicsManager * getInstance();
       
         CL_Sprite * createSprite ( const std::string & name );
+        CL_Sprite * createMonsterSprite ( const std::string &monster, const std::string &sprite);
         CL_Surface * getTileMap ( const std::string & name );
+        CL_Surface * getBackdrop (const std::string & name );
 
         // Returns the name associated with this surface
         std::string lookUpMapWithSurface( CL_Surface * );
@@ -38,6 +40,7 @@ namespace StoneRing
     private:
         std::map<std::string,CL_Surface *> mTileMap;
         std::map<eFont,CL_Font*> mFontMap;
+      
       
         static GraphicsManager *mInstance;
         GraphicsManager();

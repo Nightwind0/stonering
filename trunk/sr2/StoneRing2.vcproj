@@ -218,18 +218,6 @@
 				RelativePath=".\src\Application.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\src\states\ChoiceState.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\states\MapState.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\states\SayState.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -237,18 +225,6 @@
 			>
 			<File
 				RelativePath=".\src\Application.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\states\ChoiceState.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\states\MapState.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\states\SayState.h"
 				>
 			</File>
 		</Filter>

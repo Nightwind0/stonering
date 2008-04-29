@@ -93,22 +93,28 @@ SteelType Application::pop_(bool bAll)
     return SteelType();
 }
 
-void Application::startBattle(const std::vector<MonsterRef*> &monsters)
+void Application::startBattle(const MonsterGroup &group, const std::string &backdrop)
 {
 #ifndef NDEBUG
-    std::cout << "Encounter!" << std::endl;
+    std::cout << "Encounter! Backdrop = " << backdrop << std::endl;
+
+    const std::vector<MonsterRef*> &monsters = group.getMonsters();
+
     for(std::vector<MonsterRef*>::const_iterator it =  monsters.begin();
         it != monsters.end(); it++)
     {
         MonsterRef * pRef = *it;
         std::cout << '\t' << pRef->getName() << " x" << pRef->getCount() << std::endl;
-        Monster * pMonster = mCharacterManager.getMonster(pRef->getName());
-        pMonster->invoke();
     }
 #endif
+    mBattleState.init(group,backdrop);
+
+    mStates.push_back(&mBattleState);
+
+    run();
 }
 
-SteelType Application::startBattle(const std::string &monster, uint count, bool isBoss)
+SteelType Application::startBattle(const std::string &monster, uint count, bool isBoss, const std::string &backdrop)
 {
 #ifndef NDEBUG
     std::cout << "Start battle " << monster << std::endl;
@@ -407,8 +413,8 @@ void Application::registerSteelFunctions()
                              new SteelFunctor3Arg<Application,const std::string&,uint,uint>
                              (this,&Application::loadLevel));
     mInterpreter.addFunction("startBattle",
-                             new SteelFunctor3Arg<Application,const std::string &,uint,bool>
-                             (this,&Application::startBattle));
+        new SteelFunctor4Arg<Application,const std::string &,uint,bool,const std::string&>
+        (this,&Application::startBattle));
     mInterpreter.addFunction("pause",
                              new SteelFunctor1Arg<Application,uint>(this,&Application::pause));
     mInterpreter.addFunction("choice", 

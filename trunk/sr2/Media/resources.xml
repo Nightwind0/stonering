@@ -67,6 +67,10 @@
 	<surface name = "grass" file="Tiles/grass.png"/>
 	
 </section>
+<section name="Backdrops">
+    <surface name="grasslands" file="Images/Backdrops/grasslands.png"/>
+    <surface name="mountains"  file="Images/Backdrops/mountains.png"/>
+</section>
 
 <section name="Overlays">
 	<section name = "Say">
@@ -196,25 +200,25 @@
     <section name="Monsters">
         <section name="Endospore">
             <sprite name="idle" hint="alpha">
-                <animation playoptions="pingpong" speed="300"/>
+                <animation pingpong="yes"  speed="300"/>
                 <image file="Sprites/endospore.png">
                     <grid pos="0,0" size="100,122" array="3,1"/>
                 </image>
             </sprite>
             <sprite name="weak" hint="alpha">
-                <animation playoptions="pingpong" speed="300"/>
+                <animation pingpong="yes"  speed="300"/>
                 <image file="Sprites/endospore.png">
                     <grid pos="0,100" size="100,122" array="3,1"/>
                 </image>
             </sprite>
             <sprite name="use" hint="alpha">
-                <animation playoptions="noloop" speed="200"/>
+                <animation pingpong="yes"  speed="200"/>
                 <image file="Sprites/endospore.png">
                     <grid pos="300,0" size="100,122" array="3,1"/>
                 </image>
             </sprite>
             <sprite name="recoil" hint="alpha">
-                <animation playoptions="noloop" speed="100"/>
+                <animation pingpong="yes"  speed="100"/>
                 <image file="Sprites/endospore.png">
                     <grid pos="300,100" size="100,122" array="3,1"/>
                 </image>
@@ -222,51 +226,51 @@
         </section>
         <section name="Megaspore">
             <sprite name="idle" hint="alpha">
-                <animation playoptions="pingpong" speed="300"/>
+                <animation pingpong="yes"  speed="300"/>
                 <image file="Sprites/endospore2.png">
                     <grid pos="0,0" size="100,122" array="3,1"/>
                 </image>
             </sprite>
             <sprite name="weak" hint="alpha">
-                <animation playoptions="pingpong" speed="300"/>
+                <animation pingpong="yes"  speed="300"/>
                 <image file="Sprites/endospore2.png">
                     <grid pos="0,100" size="100,122" array="3,1"/>
                 </image>
             </sprite>
             <sprite name="use" hint="alpha">
-                <animation playoptions="noloop" speed="200"/>
+                <animation loop="no"  speed="200"/>
                 <image file="Sprites/endospore2.png">
                     <grid pos="300,0" size="100,122" array="3,1"/>
                 </image>
             </sprite>
             <sprite name="recoil" hint="alpha">
-                <animation playoptions="noloop" speed="100"/>
+                <animation loop="no"  speed="100"/>
                 <image file="Sprites/endospore2.png">
                     <grid pos="300,100" size="100,122" array="3,1"/>
                 </image>
             </sprite>
         </section>
-        <section name="Wolf">
+        <section name="Grass Wolf">
             <sprite name="idle" hint="alpha">
-                <animation playoptions="pingpong" speed="300"/>
+                <animation pingpong="yes"  speed="300"/>
                 <image file="Sprites/wolf1.png">
                     <grid pos="0,0" size="150,175" array="3,1"/>
                 </image>
             </sprite>
             <sprite name="use" hint="alpha">
-                <animation playoptions="noloop" speed="200"/>
+                <animation pingpong="yes"  speed="200"/>
                 <image file="Sprites/wolf1.png">
                     <grid pos="150,175" size="150,175" array="2,1"/>
                 </image>
             </sprite>
             <sprite name="recoil" hint="alpha">
-                <animation playoptions="noloop" speed="200"/>
+                <animation playoptions="noloop" loop="no"  speed="200"/>
                 <image file="Sprites/wolf1.png">
                     <grid pos="0,175" size="150,175" array="1,1"/>
                 </image>
             </sprite>
             <sprite name="weak" hint="alpha">
-                <animation playoptions="loop" speed="200"/>
+                <animation playoptions="loop" loop="yes"  speed="200"/>
                 <image file="Sprites/wolf1.png">
                     <grid pos="0,0" size="150,175" array="1,2"/>
                 </image>

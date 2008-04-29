@@ -43,6 +43,9 @@ void MonsterRegion::loadAttributes(CL_DomNamedNodeMap *pAttr)
     mLevelY = getRequiredInt("levelY", pAttr);
     mWidth = getRequiredInt("width", pAttr);
     mHeight = getRequiredInt("height", pAttr);
+    mBackdrop = getRequiredString("backdrop", pAttr);
+
+    //TODO: Make sure this backdrop exists.
 
     if(hasAttr("encounterRate", pAttr))
     {

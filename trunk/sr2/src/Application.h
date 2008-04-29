@@ -12,6 +12,7 @@
 #include <queue>
 #include "MapState.h"
 #include "SayState.h"
+#include "BattleState.h"
 #include "State.h"
 #ifdef _WINDOWS_
 #include <SteelInterpreter.h>
@@ -48,7 +49,7 @@ namespace StoneRing
         virtual CL_Rect getDisplayRect() const;
         virtual ICharacterGroup * getTargetCharacterGroup() const;
         virtual ICharacterGroup * getActorCharacterGroup() const;
-        virtual void startBattle(const std::vector<MonsterRef*> &monsters);
+        virtual void startBattle(const MonsterGroup &group,const std::string &backdrop);
         virtual void requestRedraw(const State *pState);
 
         virtual AstScript * loadScript(const std::string &name, const std::string &script);
@@ -62,7 +63,7 @@ namespace StoneRing
         SteelType playScene(const std::string &animation);
         SteelType playSound(const std::string &sound);
         SteelType loadLevel(const std::string &level, uint startX, uint startY);
-        SteelType startBattle(const std::string &monster, uint count, bool isBoss);
+        SteelType startBattle(const std::string &monster, uint count, bool isBoss, const std::string &backdrop);
         SteelType say(const std::string &speaker, const std::string &text);
         SteelType pause(uint time);
         SteelType invokeShop(const std::string &shoptype);
@@ -71,7 +72,7 @@ namespace StoneRing
         SteelType giveNamedItem(const std::string &item, uint count);
         SteelType getGold();
         SteelType hasItem(const std::string&name, uint count);
-        SteelType hasGeneratedWeapon(const std::string &wepclass, const std::string &webtype);
+        SteelType hasGeneratedWeapon(const std::string &wepclass, const std::string &weptype);
         SteelType hasGeneratedArmor(const std::string &armclass, const std::string &armtype);
         SteelType didEvent(const std::string &event);
         SteelType doEvent(const std::string &event, bool bRemember);
@@ -118,6 +119,7 @@ namespace StoneRing
         /* STATES */
         MapState mMapState;
         SayState mSayState;
+        BattleState mBattleState;
         std::vector<State*> mStates;
         std::vector<IFactory*> mFactories;
         AppUtils mAppUtils;

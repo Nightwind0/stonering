@@ -492,6 +492,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\monsters\MonsterElement.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\src\monsters\MonsterGroup.cpp"
 					>
 				</File>
@@ -513,6 +517,26 @@
 				>
 				<File
 					RelativePath="..\src\battle\ActionQueue.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="States"
+				>
+				<File
+					RelativePath="..\src\states\BattleState.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\ChoiceState.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\MapState.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\SayState.cpp"
 					>
 				</File>
 			</Filter>
@@ -778,6 +802,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\monsters\MonsterElement.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\monsters\MonsterGroup.h"
 					>
 				</File>
@@ -821,6 +849,22 @@
 			<Filter
 				Name="States"
 				>
+				<File
+					RelativePath="..\src\states\BattleState.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\ChoiceState.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\MapState.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\SayState.h"
+					>
+				</File>
 				<File
 					RelativePath="..\src\states\State.h"
 					>

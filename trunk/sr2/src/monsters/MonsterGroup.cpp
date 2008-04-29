@@ -29,8 +29,8 @@ bool MonsterGroup::handleElement(eElement element, Element * pElement)
 void MonsterGroup::loadAttributes(CL_DomNamedNodeMap *pAttributes)
 {
      mnWeight = getRequiredInt("weight",pAttributes);
-     mnCellWidth = getImpliedInt("cellWidth",pAttributes, 4); // TODO: get system default
-     mnCellHeight = getImpliedInt("cellHeight",pAttributes,4); // TODO: system default
+     mnCellCols = getImpliedInt("cellColumns",pAttributes, 4); // TODO: get system default
+     mnCellRows = getImpliedInt("cellRows",pAttributes,4); // TODO: system default
 }
 
 void MonsterGroup::loadFinished()

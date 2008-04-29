@@ -11,31 +11,37 @@
 
 namespace StoneRing{
 
-class Monster : public ICharacter, public Element
+class SpriteDefinition;
+class MonsterElement;
+
+class Monster : public ICharacter
 {
 public:
-    Monster();
+    Monster(MonsterElement *pDefintion);
     virtual ~Monster();
     
     int getWorthPoints() const;
-    std::list<ItemRef*> getDrops() const;
+    std::list<ItemRef*>::const_iterator getDropsBegin() const;
+    std::list<ItemRef*>::const_iterator getDropsEnd() const;
     void invoke();
     void round();
     void die();
 
-    /** 
-    * Element interface
-    */
-    virtual eElement whichElement() const { return EMONSTER; }
+    void setCellX(uint cellX) { mnCellX = cellX; }
+    void setCellY(uint cellY) { mnCellY = cellY; }
+    uint getCellX() const { return mnCellX; }
+    uint getCellY() const { return mnCellY; }
+
+    void setCurrentSprite(CL_Sprite *pSprite){mpSprite = pSprite;}
+    CL_Sprite* getCurrentSprite() const { return mpSprite; }
 
     /** 
     * ICharacter interface
     */
     virtual eGender getGender() const;
-    virtual std::string getName() const;
+    virtual std::string getName() const { return mName;}
     virtual eType getType() const;
 
-    // For boolean values.
     virtual double getSpellResistance(Magic::eMagicType type) const;
     virtual double getAttribute(eCharacterAttribute attr) const ;
     virtual bool getToggle(eCharacterAttribute attr) const;
@@ -49,28 +55,16 @@ public:
     virtual void removeEffects(const std::string &name);
     virtual void statusEffectRound();
 private:
-    /* Element stuff */
-    virtual bool handleElement(eElement, Element * );
-    virtual void loadAttributes(CL_DomNamedNodeMap *);
-    virtual void handleText(const std::string &);
-    virtual void loadFinished();
+
     typedef std::multimap<std::string,StatusEffect*> StatusEffectMap;
 
-    std::map<std::string,SpriteDefinition*> mSpriteDefinitionsMap;
-    std::map<eCharacterAttribute,Stat*> mStatMap;
-    std::list<ItemRef*> mItems;
-
-    NamedScript *mpOnInvoke;
-    NamedScript *mpOnRound;
-    NamedScript *mpOnRemove;
     std::string mName;
-    std::string mSpriteResources;
-    bool mbClass;
-    CharacterClass *mpClass;
-    uint mnLevel;
-    eType meType;
     AttributeFile mAttributes;
     StatusEffectMap mStatusEffects;
+    MonsterElement * mpMonsterDefinition;
+    uint mnCellX;
+    uint mnCellY;
+    CL_Sprite *mpSprite;
 };
 
 };
