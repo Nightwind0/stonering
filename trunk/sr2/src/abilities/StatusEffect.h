@@ -12,32 +12,32 @@ namespace StoneRing{
     public:
         StatusEffect();
         virtual ~StatusEffect();
-        virtual eElement whichElement() const{ return ESTATUSEFFECT; }  
+        virtual eElement WhichElement() const{ return ESTATUSEFFECT; }  
 
-        OnInvoke * getOnInvoke() const;
-        OnRound * getOnRound() const;
-        OnCountdown * getOnCountdown() const;
-        OnRemove * getOnRemove() const;
+        OnInvoke * GetOnInvoke() const;
+        OnRound * GetOnRound() const;
+        OnCountdown * GetOnCountdown() const;
+        OnRemove * GetOnRemove() const;
 
-        std::string getName() const;
+        std::string GetName() const;
         enum eLast { ROUND_COUNT, BATTLE, PERMANENT };
-        eLast getLast() const;
-        uint getRoundCount() const; 
+        eLast GetLast() const;
+        uint GetRoundCount() const; 
 
         // Multiply the magic power of the user by this using an algorithm to get length..
-        float getLengthMultiplier() const;
+        float GetLengthMultiplier() const;
 
     private:
-        virtual bool handleElement(eElement element, Element * pElement );
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
-        std::string mName;
-        OnInvoke * mpOnInvoke;
-        OnRound * mpOnRound;
-        OnCountdown * mpOnCountdown;
-        OnRemove * mpOnRemove;
-        eLast meLast;
-        uint mnRoundCount;
-        float mfLengthMultiplier;
+        virtual bool handle_element(eElement element, Element * pElement );
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes) ;
+        std::string m_name;
+        OnInvoke * m_pOnInvoke;
+        OnRound * m_pOnRound;
+        OnCountdown * m_pOnCountdown;
+        OnRemove * m_pOnRemove;
+        eLast m_eLast;
+        uint m_nRoundCount;
+        float m_fLengthMultiplier;
     };
 }
 

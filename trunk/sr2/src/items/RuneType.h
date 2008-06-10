@@ -10,18 +10,18 @@ namespace StoneRing{
     public:
         RuneType();
         virtual ~RuneType();
-        virtual eElement whichElement() const{ return ERUNETYPE; }  
+        virtual eElement WhichElement() const{ return ERUNETYPE; }  
 
         enum eRuneType { NONE, RUNE, ULTRA_RUNE };
 
-        eRuneType getRuneType() const;
-        std::string getRuneTypeAsString() const;
-        void setRuneType ( eRuneType type) { meRuneType = type; }
+        eRuneType GetRuneType() const;
+        std::string GetRuneTypeAsString() const;
+        void SetRuneType ( eRuneType type) { m_eRuneType = type; }
         bool operator==(const RuneType &lhs);
     private:
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes) ;
     protected:
-        eRuneType meRuneType;
+        eRuneType m_eRuneType;
     };
 };
 

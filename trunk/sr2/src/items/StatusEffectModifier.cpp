@@ -4,21 +4,17 @@
 
 using namespace StoneRing;
 
-StatusEffectModifier::StatusEffectModifier():mpStatusEffect(NULL)
+StatusEffectModifier::StatusEffectModifier():m_pStatusEffect(NULL)
 {
 }
 
 
-void StatusEffectModifier::loadAttributes(CL_DomNamedNodeMap *pAttributes)
+void StatusEffectModifier::load_attributes(CL_DomNamedNodeMap *pAttributes)
 {
-
-    std::string statusRef = getRequiredString("statusRef", pAttributes);
-
-    const AbilityManager * pManager = IApplication::getInstance()->getAbilityManager();
-
-    mpStatusEffect = pManager->getStatusEffect( statusRef );
-
-    mfModifier = getRequiredFloat("modifier", pAttributes );
+    std::string statusRef = get_required_string("statusRef", pAttributes);
+    const AbilityManager * pManager = IApplication::GetInstance()->GetAbilityManager();
+    m_pStatusEffect = pManager->GetStatusEffect( statusRef );
+    m_fModifier = get_required_float("modifier", pAttributes );
 }
 
 StatusEffectModifier::~StatusEffectModifier()
@@ -26,14 +22,14 @@ StatusEffectModifier::~StatusEffectModifier()
 }
 
 
-StatusEffect * StatusEffectModifier::getStatusEffect() const
+StatusEffect * StatusEffectModifier::GetStatusEffect() const
 {
-    return mpStatusEffect;
+    return m_pStatusEffect;
 }
 
-float StatusEffectModifier::getModifier() const
+float StatusEffectModifier::GetModifier() const
 {
-    return mfModifier;
+    return m_fModifier;
 }
 
 

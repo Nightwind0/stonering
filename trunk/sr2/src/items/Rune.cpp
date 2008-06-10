@@ -3,50 +3,50 @@
 
 using namespace StoneRing;
 
-Rune::Rune():mpSpellRef(NULL)
+Rune::Rune():m_pSpellRef(NULL)
 {
 }
 
 Rune::~Rune()
 {
-    delete mpSpellRef;
+    delete m_pSpellRef;
 }
 
 
-uint Rune::getValue() const 
+uint Rune::GetValue() const 
 {
     //@todo: When we have spells implemented, we will have to look up their value here.
     return 0;
 }
 
-uint Rune::getSellValue() const 
+uint Rune::GetSellValue() const 
 {
     //@todo: When we have spells implemented, we will have to look up their value here.
     return 0;
 }
 
-SpellRef * Rune::getSpellRef() const
+SpellRef * Rune::GetSpellRef() const
 {
-    return mpSpellRef;
+    return m_pSpellRef;
 }
 
-void Rune::loadAttributes(CL_DomNamedNodeMap*)
+void Rune::load_attributes(CL_DomNamedNodeMap*)
 {
 }
 
-bool Rune::handleElement(eElement element, Element * pElement)
+bool Rune::handle_element(Element::eElement element, Element * pElement)
 {
     if(element == ESPELLREF)
     {
-        mpSpellRef = dynamic_cast<SpellRef*>(pElement);
+        m_pSpellRef = dynamic_cast<SpellRef*>(pElement);
         return true;
     }
     else return false;
 }
 
-void Rune::loadFinished()
+void Rune::load_finished()
 {
-    if(!mpSpellRef) throw CL_Error("Rune without spellref.");
+    if(!m_pSpellRef) throw CL_Error("Rune without spellref.");
 }
 
 

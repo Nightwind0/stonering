@@ -19,17 +19,17 @@ namespace StoneRing
     public:
         MagicResistance();
         virtual ~MagicResistance();
-        virtual eElement whichElement() const{ return EMAGICRESISTANCE; }
-        float getResistance() const;
-        Magic::eMagicType getType() const;
-        bool resistAll() const;
-        bool resistElemental() const;
-        CL_DomElement  createDomElement(CL_DomDocument &doc) const { return CL_DomElement(doc,"magicResistance"); }
+        virtual eElement WhichElement() const{ return EMAGICRESISTANCE; }
+        float GetResistance() const;
+        Magic::eMagicType GetType() const;
+        bool ResistAll() const;
+        bool ResistElemental() const;
+        CL_DomElement  CreateDomElement(CL_DomDocument &doc) const { return CL_DomElement(doc,"magicResistance"); }
 
     private:
-        virtual void loadAttributes(CL_DomNamedNodeMap *);
+        virtual void load_attributes(CL_DomNamedNodeMap *);
         Magic::eMagicType meType;
-        float mfResistance;
+        float m_fResistance;
     };
 
 
@@ -39,7 +39,7 @@ namespace StoneRing
         Spell();
         virtual ~Spell();
 
-        virtual eElement whichElement() const{ return ESPELL; }
+        virtual eElement WhichElement() const{ return ESPELL; }
         std::string getName() const;
         enum eUse { BATTLE, WORLD, BOTH };
         enum eTargetable { ALL, SINGLE, EITHER, SELF_ONLY };

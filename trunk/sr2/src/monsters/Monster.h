@@ -20,51 +20,52 @@ public:
     Monster(MonsterElement *pDefintion);
     virtual ~Monster();
     
-    int getWorthPoints() const;
-    std::list<ItemRef*>::const_iterator getDropsBegin() const;
-    std::list<ItemRef*>::const_iterator getDropsEnd() const;
-    void invoke();
-    void round();
-    void die();
+    int GetWorthPoints() const;
+    std::list<ItemRef*>::const_iterator GetDropsBegin() const;
+    std::list<ItemRef*>::const_iterator GetDropsEnd() const;
+    void Invoke();
+    void Round();
+    void Die();
 
-    void setCellX(uint cellX) { mnCellX = cellX; }
-    void setCellY(uint cellY) { mnCellY = cellY; }
-    uint getCellX() const { return mnCellX; }
-    uint getCellY() const { return mnCellY; }
+    void SetCellX(uint cellX) { m_nCellX = cellX; }
+    void SetCellY(uint cellY) { m_nCellY = cellY; }
+    uint GetCellX() const { return m_nCellX; }
+    uint GetCellY() const { return m_nCellY; }
 
-    void setCurrentSprite(CL_Sprite *pSprite){mpSprite = pSprite;}
-    CL_Sprite* getCurrentSprite() const { return mpSprite; }
+    void SetCurrentSprite(CL_Sprite *pSprite){m_pSprite = pSprite;}
+    CL_Sprite* GetCurrentSprite() const { return m_pSprite; }
 
     /** 
     * ICharacter interface
     */
-    virtual eGender getGender() const;
-    virtual std::string getName() const { return mName;}
-    virtual eType getType() const;
+    virtual eGender GetGender() const;
+    virtual std::string GetName() const { return m_name;}
+    virtual eType GetType() const;
+	//virtual ICharacterGroup* GetGroup() const { return NULL; }
 
-    virtual double getSpellResistance(Magic::eMagicType type) const;
-    virtual double getAttribute(eCharacterAttribute attr) const ;
-    virtual bool getToggle(eCharacterAttribute attr) const;
-    virtual void fixAttribute(eCharacterAttribute attr, double value);
-    virtual void fixAttribute(eCharacterAttribute attr, bool state);
-    virtual void attachMultiplication(eCharacterAttribute attr, double factor);
-    virtual void detachMultiplication(eCharacterAttribute attr, double factor);
-    virtual void attachAddition(eCharacterAttribute attr, double value);
-    virtual void detachAddition(eCharacterAttribute attr, double value);
-    virtual void addStatusEffect(StatusEffect *);
-    virtual void removeEffects(const std::string &name);
-    virtual void statusEffectRound();
+    virtual double GetSpellResistance(Magic::eMagicType type) const;
+    virtual double GetAttribute(eCharacterAttribute attr) const ;
+    virtual bool GetToggle(eCharacterAttribute attr) const;
+    virtual void FixAttribute(eCharacterAttribute attr, double value);
+    virtual void FixAttribute(eCharacterAttribute attr, bool state);
+    virtual void AttachMultiplication(eCharacterAttribute attr, double factor);
+    virtual void DetachMultiplication(eCharacterAttribute attr, double factor);
+    virtual void AttachAddition(eCharacterAttribute attr, double value);
+    virtual void DetachAddition(eCharacterAttribute attr, double value);
+    virtual void AddStatusEffect(StatusEffect *);
+    virtual void RemoveEffects(const std::string &name);
+    virtual void StatusEffectRound();
 private:
 
     typedef std::multimap<std::string,StatusEffect*> StatusEffectMap;
 
-    std::string mName;
-    AttributeFile mAttributes;
-    StatusEffectMap mStatusEffects;
-    MonsterElement * mpMonsterDefinition;
-    uint mnCellX;
-    uint mnCellY;
-    CL_Sprite *mpSprite;
+    std::string m_name;
+    AttributeFile m_attributes;
+    StatusEffectMap m_status_effects;
+    MonsterElement * m_pMonsterDefinition;
+    uint m_nCellX;
+    uint m_nCellY;
+    CL_Sprite *m_pSprite;
 };
 
 };

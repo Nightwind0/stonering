@@ -12,21 +12,21 @@ namespace StoneRing{
     public:
         SpellRef();
         virtual ~SpellRef();
-        virtual eElement whichElement() const{ return ESPELLREF; }  
+        virtual eElement WhichElement() const{ return ESPELLREF; }  
 
-        Magic::eMagicType getSpellType() const;
+        Magic::eMagicType GetSpellType() const;
 
-        std::string getName() const;
+        std::string GetName() const;
         bool operator==(const SpellRef &lhs);
 
-        void setType(Magic::eMagicType type){ meSpellType = type; }
-        void setName(const std::string &name){ mName = name; }
+        void SetType(Magic::eMagicType type){ m_eSpellType = type; }
+        void SetName(const std::string &name){ m_name = name; }
     private:
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
-        virtual void handleText(const std::string &text);
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes) ;
+        virtual void handle_text(const std::string &text);
     protected:
-        Magic::eMagicType meSpellType;
-        std::string mName;
+        Magic::eMagicType m_eSpellType;
+        std::string m_name;
 
     };
 };

@@ -13,14 +13,14 @@ std::string StoneRing::Armor::CreateArmorName(ArmorType *pType, ArmorClass *pCla
 
     if ( pRune )
     {
-        os << pRune->getRuneTypeAsString() << ' ';
+        os << pRune->GetRuneTypeAsString() << ' ';
     }
 
-    os << pClass->getName() << ' ' << pType->getName();
+    os << pClass->GetName() << ' ' << pType->GetName();
 
     if(pSpell)
     {
-        os << " of " << pSpell->getName();
+        os << " of " << pSpell->GetName();
     }
 
     return os.str();
@@ -28,7 +28,7 @@ std::string StoneRing::Armor::CreateArmorName(ArmorType *pType, ArmorClass *pCla
 
 
 Armor::eAttribute 
-Armor::attributeForString ( const std::string str )
+Armor::AttributeForString ( const std::string str )
 {
     if(str == "AC") return AC;
 
@@ -53,46 +53,46 @@ Armor::Armor()
 
 Armor::~Armor()
 {
-    clearArmorEnhancers();
+    Clear_Armor_Enhancers();
 }
 
 
 
-int Armor::modifyArmorAttribute( eAttribute attr, int current )
+int Armor::ModifyArmorAttribute( eAttribute attr, int current )
 {
     int value = current;
 
-    for(std::list<ArmorEnhancer*>::iterator iter = mArmorEnhancers.begin();
-        iter != mArmorEnhancers.end();
+    for(std::list<ArmorEnhancer*>::iterator iter = m_armor_enhancers.begin();
+        iter != m_armor_enhancers.end();
         iter++)
     {
         ArmorEnhancer * pEnhancer = *iter;
 
-        if( pEnhancer->getAttribute() == attr )
+        if( pEnhancer->GetAttribute() == attr )
         {
-            value= (int)(pEnhancer->getMultiplier() * (float)value);
-            value += pEnhancer->getAdd();
+            value= (int)(pEnhancer->GetMultiplier() * (float)value);
+            value += pEnhancer->GetAdd();
         }
     }
 
     return value;
 }
 
-float Armor::modifyArmorAttribute ( eAttribute attr, float current )
+float Armor::ModifyArmorAttribute ( eAttribute attr, float current )
 {
 
     float  value = current;
 
-    for(std::list<ArmorEnhancer*>::iterator iter = mArmorEnhancers.begin();
-        iter != mArmorEnhancers.end();
+    for(std::list<ArmorEnhancer*>::iterator iter = m_armor_enhancers.begin();
+        iter != m_armor_enhancers.end();
         iter++)
     {
         ArmorEnhancer * pEnhancer = *iter;
 
-        if( pEnhancer->getAttribute() == attr )
+        if( pEnhancer->GetAttribute() == attr )
         {
-            value *= pEnhancer->getMultiplier();
-            value += pEnhancer->getAdd();
+            value *= pEnhancer->GetMultiplier();
+            value += pEnhancer->GetAdd();
         }
     }
 
@@ -102,20 +102,20 @@ float Armor::modifyArmorAttribute ( eAttribute attr, float current )
 
 
 
-void Armor::clearArmorEnhancers()
+void Armor::Clear_Armor_Enhancers()
 {
-    for(std::list<ArmorEnhancer*>::iterator iter = mArmorEnhancers.begin();
-        iter != mArmorEnhancers.end();
+    for(std::list<ArmorEnhancer*>::iterator iter = m_armor_enhancers.begin();
+        iter != m_armor_enhancers.end();
         iter++)
     {
         delete *iter;
     }
-    mArmorEnhancers.clear();
+    m_armor_enhancers.clear();
 }
 
-void Armor::addArmorEnhancer (ArmorEnhancer * pEnhancer)
+void Armor::Add_Armor_Enhancer (ArmorEnhancer * pEnhancer)
 {
-    mArmorEnhancers.push_back ( pEnhancer );
+    m_armor_enhancers.push_back ( pEnhancer );
 }
 
 

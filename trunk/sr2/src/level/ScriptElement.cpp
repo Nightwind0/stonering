@@ -12,55 +12,55 @@ using StoneRing::ScriptElement;
 using StoneRing::Element;
 
 ScriptElement::ScriptElement(bool isCondition)
-:mpScript(NULL),mbIsCondition(isCondition)
+:mp_script(NULL),m_bIsCondition(isCondition)
 {
 }
 
 ScriptElement::~ScriptElement()
 {
-    delete mpScript;
+    delete mp_script;
 }
 
 
-bool ScriptElement::evaluateCondition() const
+bool ScriptElement::EvaluateCondition() const
 {
-    if(mpScript == NULL) return true;
+    if(mp_script == NULL) return true;
 
-    IApplication *pApp = IApplication::getInstance();
-    return (bool) pApp->runScript ( mpScript );
+    IApplication *pApp = IApplication::GetInstance();
+    return (bool) pApp->RunScript ( mp_script );
 }
 
-SteelType ScriptElement::executeScript() const
+SteelType ScriptElement::ExecuteScript() const
 {
-   if( NULL != mpScript )
+   if( NULL != mp_script )
    {
-       IApplication *pApp = IApplication::getInstance();
-       return pApp->runScript ( mpScript );
+       IApplication *pApp = IApplication::GetInstance();
+       return pApp->RunScript ( mp_script );
    }
    else return SteelType();
 }
 
-SteelType ScriptElement::executeScript(const ParameterList &params)
+SteelType ScriptElement::ExecuteScript(const ParameterList &params)
 {
-    if ( NULL != mpScript)
+    if ( NULL != mp_script)
     {
-        IApplication *pApp = IApplication::getInstance();
-        return pApp->runScript ( mpScript, params );
+        IApplication *pApp = IApplication::GetInstance();
+        return pApp->RunScript ( mp_script, params );
     }
     else return SteelType();
 }
 
-void ScriptElement::loadAttributes(CL_DomNamedNodeMap *pAttr)
+void ScriptElement::load_attributes(CL_DomNamedNodeMap *pAttr)
 {
     // Nothing for now
-    mId = getRequiredString("id",pAttr);
+    m_id = get_required_string("id",pAttr);
 }
 
-void ScriptElement::handleText(const std::string &text)
+void ScriptElement::handle_text(const std::string &text)
 {
-    IApplication *pApp = IApplication::getInstance();
-    mpScript = pApp->loadScript(mId, text);
-    mId.clear(); // The script will remember it.. I don't want to.
+    IApplication *pApp = IApplication::GetInstance();
+    mp_script = pApp->LoadScript(m_id, text);
+    m_id.clear(); // The script will remember it.. I don't want to.
 }
 
 

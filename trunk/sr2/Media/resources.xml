@@ -26,33 +26,51 @@
 	<sprite name="Font_sb_black">
 		<image file="Images/Fonts/sb_black.png"><alpha /></image>
 	</sprite>
+    <sprite name="Font_sb_blue">
+        <image file="Images/Fonts/sb_blue.png"><alpha/></image>
+    </sprite>
+    <sprite name="Font_sb_red">
+        <image file="Images/Fonts/sb_red.png"><alpha/></image>
+    </sprite>
+    <sprite name="Font_sb_green">
+       <image file="Images/Fonts/sb_green.png"><alpha/></image>
+    </sprite>
+    <sprite name="Font_sb_purple">
+        <image file="Images/Fonts/sb_purple.png"><alpha/></image>
+    </sprite>
 
 	<font name="sb_black">
-		<bitmap glyphs="Fonts/Font_sb_black" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw" />
-	</font>
+        <bitmap glyphs="Fonts/Font_sb_black" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw" />
+    </font>
+    <font name="sb_blue">
+        <bitmap glyphs="Fonts/Font_sb_blue" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw" />
+    </font>
+    <font name="sb_green">
+        <bitmap glyphs="Fonts/Font_sb_green" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw" />
+    </font>
+    <font name="sb_red">
+        <bitmap glyphs="Fonts/Font_sb_red" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw" />
+    </font>
+    <font name="sb_purple">
+        <bitmap glyphs="Fonts/Font_sb_purple" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw" />
+    </font>
 	
 	<sprite name="Font_bold_white">
 		<image file="Images/Fonts/bold_white.png"><alpha/></image>
 	</sprite>
-        <font name="Choice">
+        <font name="BoldWhite">
 		<bitmap glyphs="Fonts/Font_bold_white" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw"/>
         </font>
-        <font name="Option">
-		<bitmap glyphs="Fonts/Font_bold_white" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw"/>
-        </font>
-	<font name="SayText">
-		<bitmap glyphs="Fonts/Font_bold_white" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw"/>
-	</font>
 	<sprite name="Font_bold_powder_blue">
 		<image file="Images/Fonts/bold_powder_blue.png"><alpha/></image>
 	</sprite>
-	<font name="CurrentOption">
+	<font name="BoldPowderBlue">
 		<bitmap glyphs="Fonts/Font_bold_powder_blue" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw"/>
 	</font>
 	<sprite name="Font_bold_gray">
 		<image file="Images/Fonts/bold_gray.png"><alpha/></image>
 	</sprite>
-	<font name="SpeakerText">
+	<font name="BoldGray">
 		<bitmap glyphs="Fonts/Font_bold_gray" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw"/>
 	</font>
 </section>
@@ -73,6 +91,33 @@
 </section>
 
 <section name="Overlays">
+    <section name ="BattleStatus">
+        <surface name="overlay" file="Images/Overlays/battle_status_overlay_s.png"/>
+        <integer name="x" value="0"/>
+        <integer name="y" value="0"/>
+        <section name="fonts">
+            <string name="hp" value="sb_green"/>
+            <string name="mp" value="sb_purple"/>
+            <string name="bp" value="sb_blue"/> 
+            <string name="general" value="sb_black"/>
+        </section>
+        <section name="text">
+            <integer name="left" value="9"/>
+            <integer name="right" value="762"/>
+            <integer name="top" value="9"/>
+            <integer name="bottom" value="92"/>
+        </section>
+    </section>
+    <section name="BattleMenu">
+        <surface name="overlay" file="Images/Overlays/battle_menu_overlay.png"/>
+        <integer name="x" value="0"/>
+        <integer name="y" value="500"/>
+        <section name="fonts">
+            <string name="on" value="BoldWhite"/>
+            <string name="off" value="BoldGray"/>
+            <string name="Selection" value="BoldPowderBlue"/>
+        </section>
+    </section>
 	<section name = "Say">
 		<surface name="overlay" file="Images/Overlays/say_overlay10.png"/>
 		<integer name="x" value="0"/>
@@ -101,6 +146,10 @@
 			<integer name="right" value="783" />
 			<integer name="bottom" value="580"/>
 		</section>
+        <section name="fonts">
+            <string name="Speaker" value="BoldWhite"/>
+            <string name="Speech" value="BoldGray"/>
+        </section>
 	</section>
 	<section name = "Choice">
 		<surface name="overlay" file="Images/Overlays/choice_overlay.png"/>
@@ -136,6 +185,11 @@
 			<integer name="right" value="783" />
 			<integer name="bottom" value="580"/>
 		</section>
+        <section name="fonts">
+            <string name="Option" value="BoldWhite"/>
+            <string name="Choice" value="BoldWhite"/>
+            <string name="Selection" value="BoldPowderBlue"/>
+        </section>
 	</section>
 </section>
 
@@ -200,7 +254,7 @@
     <section name="Monsters">
         <section name="Endospore">
             <sprite name="idle" hint="alpha">
-                <animation pingpong="yes"  speed="300"/>
+                <animation pingpong="yes"  speed="100"/>
                 <image file="Sprites/endospore.png">
                     <grid pos="0,0" size="100,122" array="3,1"/>
                 </image>
@@ -226,7 +280,7 @@
         </section>
         <section name="Megaspore">
             <sprite name="idle" hint="alpha">
-                <animation pingpong="yes"  speed="300"/>
+                <animation pingpong="yes"  speed="100"/>
                 <image file="Sprites/endospore2.png">
                     <grid pos="0,0" size="100,122" array="3,1"/>
                 </image>
@@ -252,7 +306,7 @@
         </section>
         <section name="Grass Wolf">
             <sprite name="idle" hint="alpha">
-                <animation pingpong="yes"  speed="300"/>
+                <animation pingpong="yes"  speed="500"/>
                 <image file="Sprites/wolf1.png">
                     <grid pos="0,0" size="150,175" array="3,1"/>
                 </image>

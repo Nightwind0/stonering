@@ -11,25 +11,25 @@ namespace StoneRing{
         NamedItem();
         virtual ~NamedItem();
         
-        std::string getIconRef() const;
+        std::string GetIconRef() const;
 
-        virtual std::string getName() const;
-        virtual uint getMaxInventory() const ;
-        virtual eDropRarity getDropRarity() const;
+        virtual std::string GetName() const;
+        virtual uint GetMaxInventory() const ;
+        virtual eDropRarity GetDropRarity() const;
 
              
-        void setIconRef(const std::string &ref);
-        void setName ( const std::string &name );
-        void setMaxInventory ( uint max );
-        void setDropRarity( Item::eDropRarity rarity );
+        void SetIconRef(const std::string &ref);
+        void SetName ( const std::string &name );
+        void SetMaxInventory ( uint max );
+        void SetDropRarity( Item::eDropRarity rarity );
 
         virtual bool operator== ( const ItemRef &ref );
 
     private:
-        std::string mName;
-        std::string mIconRef;
-        uint mnMaxInventory;
-        Item::eDropRarity meDropRarity;
+        std::string m_name;
+        std::string m_icon_ref;
+        uint m_nMaxInventory;
+        Item::eDropRarity m_eDropRarity;
     };
 
     class NamedItemElement : public Element
@@ -38,26 +38,26 @@ namespace StoneRing{
         NamedItemElement();
         ~NamedItemElement();
 
-        virtual eElement whichElement() const{ return ENAMEDITEMELEMENT; }          
+        virtual eElement WhichElement() const{ return ENAMEDITEMELEMENT; }          
 
-        NamedItem * getNamedItem() const;
+        NamedItem * GetNamedItem() const;
 
-        std::string getIconRef() const;
+        std::string GetIconRef() const;
 
-        uint getMaxInventory() const;
-        Item::eDropRarity getDropRarity() const;
-        std::string getName() const;
+        uint GetMaxInventory() const;
+        Item::eDropRarity GetDropRarity() const;
+        std::string GetName() const;
      
 
     private:
-        virtual bool handleElement(eElement element, Element * pElement );
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
-        virtual void loadFinished();
-        NamedItem * mpNamedItem;
-        std::string mName;
-        std::string mIconRef;
-        Item::eDropRarity meDropRarity;
-        uint mnMaxInventory;
+        virtual bool handle_element(eElement element, Element * pElement );
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes) ;
+        virtual void load_finished();
+        NamedItem * m_pNamedItem;
+        std::string m_name;
+        std::string m_icon_ref;
+        Item::eDropRarity m_eDropRarity;
+        uint m_nMaxInventory;
     };
 
 };

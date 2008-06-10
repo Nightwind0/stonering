@@ -10,16 +10,16 @@ namespace StoneRing{
     public:
         WeaponTypeRef();
         virtual ~WeaponTypeRef();
-        virtual eElement whichElement() const{ return EWEAPONTYPEREF; } 
-        std::string getName() const;
+        virtual eElement WhichElement() const{ return EWEAPONTYPEREF; } 
+        std::string GetName() const;
 
-        void setName(const std::string &name) { mName = name; }
+        void SetName(const std::string &name) { m_name = name; }
 
         bool operator== ( const WeaponTypeRef &lhs );
     private:
-        virtual void loadAttributes(CL_DomNamedNodeMap *pAttributes);
+        virtual void load_attributes(CL_DomNamedNodeMap *pAttributes);
     protected:
-        std::string mName;
+        std::string m_name;
     };
 };
 

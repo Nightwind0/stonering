@@ -9,20 +9,20 @@ namespace StoneRing{
         Rune();
         virtual ~Rune();
 
-        virtual eElement whichElement() const{ return ERUNE; }  
-        virtual uint getValue() const ;
-        virtual uint getSellValue() const ;
+        virtual eElement WhichElement() const{ return ERUNE; }  
+        virtual uint GetValue() const ;
+        virtual uint GetSellValue() const ;
 
         // We're overriding whatever was specified in the XML. Never drop a rune unless specified by the monster
-        virtual eDropRarity getDropRarity() const { return NEVER; } 
-        virtual eItemType getItemType() const { return RUNE ; }
+        virtual eDropRarity GetDropRarity() const { return NEVER; } 
+        virtual eItemType GetItemType() const { return RUNE ; }
 
-        SpellRef * getSpellRef() const;
+        SpellRef * GetSpellRef() const;
     private:
-        virtual bool handleElement(eElement element, Element * pElement );
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
-        virtual void loadFinished();
-        SpellRef *mpSpellRef;
+        virtual bool handle_element(eElement element, Element * pElement );
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes) ;
+        virtual void load_finished();
+        SpellRef *m_pSpellRef;
     };
 };
 

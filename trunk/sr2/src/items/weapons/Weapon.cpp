@@ -14,7 +14,7 @@ Weapon::Weapon()
 
 Weapon::~Weapon()
 {
-    clearWeaponEnhancers();
+    Clear_Weapon_Enhancers();
 }
 
 std::string StoneRing::Weapon::CreateWeaponName(WeaponType *pType, WeaponClass *pClass, SpellRef *pSpell, RuneType *pRune)
@@ -23,14 +23,14 @@ std::string StoneRing::Weapon::CreateWeaponName(WeaponType *pType, WeaponClass *
 
     if ( pRune )
     {
-        os << pRune->getRuneTypeAsString() << ' ';
+        os << pRune->GetRuneTypeAsString() << ' ';
     }
 
-    os << pClass->getName() << ' ' << pType->getName();
+    os << pClass->GetName() << ' ' << pType->GetName();
 
     if(pSpell)
     {
-        os << " of " << pSpell->getName();
+        os << " of " << pSpell->GetName();
     }
 
     return os.str();
@@ -38,42 +38,42 @@ std::string StoneRing::Weapon::CreateWeaponName(WeaponType *pType, WeaponClass *
 
 
 
-int Weapon::modifyWeaponAttribute( eAttribute attr, int current )
+int Weapon::ModifyWeaponAttribute( eAttribute attr, int current )
 {
 
     int value = current;
 
-    for(std::list<WeaponEnhancer*>::iterator iter = mWeaponEnhancers.begin();
-        iter != mWeaponEnhancers.end();
+    for(std::list<WeaponEnhancer*>::iterator iter = m_weapon_enhancers.begin();
+        iter != m_weapon_enhancers.end();
         iter++)
     {
         WeaponEnhancer * pEnhancer = *iter;
 
-        if( pEnhancer->getAttribute() == attr )
+        if( pEnhancer->GetAttribute() == attr )
         {
-            value= (int)(pEnhancer->getMultiplier() * (float)value);
-            value += pEnhancer->getAdd();
+            value= (int)(pEnhancer->GetMultiplier() * (float)value);
+            value += pEnhancer->GetAdd();
         }
     }
 
     return value;
 }
 
-float Weapon::modifyWeaponAttribute ( eAttribute attr, float current )
+float Weapon::ModifyWeaponAttribute ( eAttribute attr, float current )
 {
 
     float value = current;
 
-    for(std::list<WeaponEnhancer*>::iterator iter = mWeaponEnhancers.begin();
-        iter != mWeaponEnhancers.end();
+    for(std::list<WeaponEnhancer*>::iterator iter = m_weapon_enhancers.begin();
+        iter != m_weapon_enhancers.end();
         iter++)
     {
         WeaponEnhancer * pEnhancer = *iter;
 
-        if( pEnhancer->getAttribute() == attr )
+        if( pEnhancer->GetAttribute() == attr )
         {
-            value *= pEnhancer->getMultiplier() ;
-            value += pEnhancer->getAdd();
+            value *= pEnhancer->GetMultiplier() ;
+            value += pEnhancer->GetAdd();
         }
     }
 
@@ -84,20 +84,20 @@ float Weapon::modifyWeaponAttribute ( eAttribute attr, float current )
 
 //todo: Getters for weapon enhancers. need 'em.
 
-void Weapon::clearWeaponEnhancers()
+void Weapon::Clear_Weapon_Enhancers()
 {
-    for(std::list<WeaponEnhancer*>::iterator iter = mWeaponEnhancers.begin();
-        iter != mWeaponEnhancers.end();
+    for(std::list<WeaponEnhancer*>::iterator iter = m_weapon_enhancers.begin();
+        iter != m_weapon_enhancers.end();
         iter++)
     {
         delete *iter;
     }
-    mWeaponEnhancers.clear();
+    m_weapon_enhancers.clear();
 }
 
-void Weapon::addWeaponEnhancer (WeaponEnhancer * pEnhancer)
+void Weapon::Add_Weapon_Enhancer (WeaponEnhancer * pEnhancer)
 {
-    mWeaponEnhancers.push_back ( pEnhancer );
+    m_weapon_enhancers.push_back ( pEnhancer );
 }
 
 
@@ -127,7 +127,7 @@ void Weapon::addWeaponEnhancer (WeaponEnhancer * pEnhancer)
 
 
 Weapon::eAttribute 
-Weapon::attributeForString(const std::string str)
+Weapon::AttributeForString(const std::string str)
 {
     if(str == "ATK") return ATTACK;
     else if (str == "HIT") return HIT;

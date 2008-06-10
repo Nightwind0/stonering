@@ -8,24 +8,24 @@
 
 bool StoneRing::operator<(const StoneRing::ItemRef &lhs,const StoneRing::ItemRef &rhs)
 {
-    return lhs.getItemName() < rhs.getItemName();
+    return lhs.GetItemName() < rhs.GetItemName();
 }
 
-bool StoneRing::ItemRef::handleElement(eElement element, StoneRing::Element * pElement )
+bool StoneRing::ItemRef::handle_element(eElement element, StoneRing::Element * pElement )
 {
     switch(element)
     {
     case ENAMEDITEMREF:
-        meType = NAMED_ITEM;
-        mRef.mpNamedItemRef = dynamic_cast<NamedItemRef*>(pElement);
+        m_eType = NAMED_ITEM;
+        m_ref.mpNamedItemRef = dynamic_cast<NamedItemRef*>(pElement);
         break;
     case EWEAPONREF:
-        meType = WEAPON_REF;
-        mRef.mpWeaponRef = dynamic_cast<WeaponRef*>(pElement);
+        m_eType = WEAPON_REF;
+        m_ref.mpWeaponRef = dynamic_cast<WeaponRef*>(pElement);
         break;
     case EARMORREF:
-        meType = ARMOR_REF;
-        mRef.mpArmorRef = dynamic_cast<ArmorRef*>(pElement);
+        m_eType = ARMOR_REF;
+        m_ref.mpArmorRef = dynamic_cast<ArmorRef*>(pElement);
         break;
     default:
         
@@ -35,28 +35,28 @@ bool StoneRing::ItemRef::handleElement(eElement element, StoneRing::Element * pE
     return true;
 }
 
-void StoneRing::ItemRef::loadAttributes(CL_DomNamedNodeMap *pAttributes)
+void StoneRing::ItemRef::load_attributes(CL_DomNamedNodeMap *pAttributes)
 {
     
 }
 
-void StoneRing::ItemRef::loadFinished()
+void StoneRing::ItemRef::load_finished()
 {
-    ItemManager * pItemManager = IApplication::getInstance()->getItemManager();
+    ItemManager * pItemManager = IApplication::GetInstance()->GetItemManager();
 
-    if(meType == INVALID)
+    if(m_eType == INVALID)
     {
         throw CL_Error("Item Ref with no child");
     }
     
-    mpItem = pItemManager->getItem ( *this ); 
+    m_pItem = pItemManager->GetItem ( *this ); 
 
 }
 
 
-StoneRing::ItemRef::ItemRef( ):meType(INVALID)
+StoneRing::ItemRef::ItemRef( ):m_eType(INVALID)
 {
-    memset(&mRef,0,sizeof(mRef));
+    memset(&m_ref,0,sizeof(m_ref));
 }
 
 
@@ -65,43 +65,43 @@ StoneRing::ItemRef::~ItemRef()
 
 }
 
-std::string StoneRing::ItemRef::getItemName() const
+std::string StoneRing::ItemRef::GetItemName() const
 {
-    switch ( meType )
+    switch ( m_eType )
     {
     case NAMED_ITEM:
-        return mRef.mpNamedItemRef->getItemName();
+        return m_ref.mpNamedItemRef->GetItemName();
     case WEAPON_REF:
-        return mRef.mpWeaponRef->getName();
+        return m_ref.mpWeaponRef->GetName();
     case ARMOR_REF:
-        return mRef.mpArmorRef->getName();
+        return m_ref.mpArmorRef->GetName();
     default:
         assert(0);
         return "";
     }
 }
 
-StoneRing::ItemRef::eRefType StoneRing::ItemRef::getType() const
+StoneRing::ItemRef::eRefType StoneRing::ItemRef::GetType() const
 {
-    return meType;
+    return m_eType;
 }
 
-StoneRing::NamedItemRef * StoneRing::ItemRef::getNamedItemRef() const
+StoneRing::NamedItemRef * StoneRing::ItemRef::GetNamedItemRef() const
 {
-    assert(meType == NAMED_ITEM);
-    return mRef.mpNamedItemRef;
+    assert(m_eType == NAMED_ITEM);
+    return m_ref.mpNamedItemRef;
 }
 
-StoneRing::WeaponRef * StoneRing::ItemRef::getWeaponRef() const
+StoneRing::WeaponRef * StoneRing::ItemRef::GetWeaponRef() const
 {
-    assert(meType == WEAPON_REF);
-    return mRef.mpWeaponRef;
+    assert(m_eType == WEAPON_REF);
+    return m_ref.mpWeaponRef;
 }
 
-StoneRing::ArmorRef * StoneRing::ItemRef::getArmorRef() const
+StoneRing::ArmorRef * StoneRing::ItemRef::GetArmorRef() const
 {
-    assert(meType == ARMOR_REF);
-    return mRef.mpArmorRef;
+    assert(m_eType == ARMOR_REF);
+    return m_ref.mpArmorRef;
 }
 
 
@@ -115,14 +115,14 @@ StoneRing::NamedItemRef::~NamedItemRef()
 }
 
 
-std::string StoneRing::NamedItemRef::getItemName()
+std::string StoneRing::NamedItemRef::GetItemName()
 {
-    return mName;
+    return m_name;
 }
 
 
-void StoneRing::NamedItemRef::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+void StoneRing::NamedItemRef::load_attributes(CL_DomNamedNodeMap * pAttributes)
 {
-    mName = getRequiredString("name",pAttributes);
+    m_name = get_required_string("name",pAttributes);
 }
 

@@ -23,77 +23,77 @@ using StoneRing::Element;
 
 
 
-uint Element::getRequiredUint(const std::string &attrname, CL_DomNamedNodeMap * pAttributes)
+uint Element::get_required_uint(const std::string &attrname, CL_DomNamedNodeMap * pAttributes)
 {
-    if( hasAttr ( attrname, pAttributes ) )
+    if( has_attribute ( attrname, pAttributes ) )
     {
-        return getUint ( attrname, pAttributes);
+        return get_uint ( attrname, pAttributes);
     }
     else
     {
-        throw CL_Error("Missing attribute " + attrname + " on " + getElementName() );
+        throw CL_Error("Missing attribute " + attrname + " on " + get_element_name() );
     }
 }
 
-int Element:: getRequiredInt(const std::string &attrname, CL_DomNamedNodeMap * pAttributes)
+int Element:: get_required_int(const std::string &attrname, CL_DomNamedNodeMap * pAttributes)
 {
-    if( hasAttr ( attrname, pAttributes ) )
+    if( has_attribute ( attrname, pAttributes ) )
     {
-        return getInt ( attrname, pAttributes);
+        return get_int ( attrname, pAttributes);
     }
     else
     {
-        throw CL_Error("Missing attribute " + attrname + " on " + getElementName() );
-    }
-
-}
-
-float Element::getRequiredFloat(const std::string &attrname, CL_DomNamedNodeMap * pAttributes )
-{
-
-    if( hasAttr ( attrname, pAttributes ) )
-    {
-        return getFloat ( attrname, pAttributes);
-    }
-    else
-    {
-        throw CL_Error("Missing attribute " + attrname + " on " + getElementName() );
+        throw CL_Error("Missing attribute " + attrname + " on " + get_element_name() );
     }
 
 }
 
-std::string Element::getRequiredString (const std::string &attrname, CL_DomNamedNodeMap * pAttributes )
+float Element::get_required_float(const std::string &attrname, CL_DomNamedNodeMap * pAttributes )
 {
-    if( hasAttr ( attrname, pAttributes ) )
+
+    if( has_attribute ( attrname, pAttributes ) )
     {
-        return getString ( attrname, pAttributes);
+        return get_float ( attrname, pAttributes);
+    }
+    else
+    {
+        throw CL_Error("Missing attribute " + attrname + " on " + get_element_name() );
+    }
+
+}
+
+std::string Element::get_required_string (const std::string &attrname, CL_DomNamedNodeMap * pAttributes )
+{
+    if( has_attribute ( attrname, pAttributes ) )
+    {
+        return get_string ( attrname, pAttributes);
     }
     else
     {
 
-        throw CL_Error("Missing attribute " + attrname + " on " + getElementName() );
+        throw CL_Error("Missing attribute " + attrname + " on " + get_element_name() );
     }
 
     return "";
 }
 
-bool Element::getRequiredBool (const std::string &attrname, CL_DomNamedNodeMap * pAttributes )
+bool Element::get_required_bool (const std::string &attrname, CL_DomNamedNodeMap * pAttributes )
 {
-    if( hasAttr ( attrname, pAttributes ) )
+    if( has_attribute ( attrname, pAttributes ) )
     {
-        return getBool ( attrname, pAttributes );
+        return get_bool ( attrname, pAttributes );
     }
     else
     {
-        throw CL_Error("Missing attribute " + attrname + " on " + getElementName() );
+        throw CL_Error("Missing attribute " + attrname + " on " + get_element_name() );
     }
 
     return false;
 }
 
-bool Element::getBool ( const std::string &attrname, CL_DomNamedNodeMap * pAttributes)
+bool Element::get_bool ( const std::string &attrname, CL_DomNamedNodeMap * pAttributes)
 {
-    std::string str = getString ( attrname, pAttributes);
+    std::string str = get_string ( attrname, pAttributes);
 
     if(str == "true") return true;
     else if (str == "false") return false;
@@ -102,80 +102,80 @@ bool Element::getBool ( const std::string &attrname, CL_DomNamedNodeMap * pAttri
     return false;
 }
 
-bool Element::getImpliedBool ( const std::string &attrname, CL_DomNamedNodeMap * pAttributes, bool defaultValue)
+bool Element::get_implied_bool ( const std::string &attrname, CL_DomNamedNodeMap * pAttributes, bool defaultValue)
 {
-    if(hasAttr(attrname, pAttributes))
+    if(has_attribute(attrname, pAttributes))
     {
-        return getBool ( attrname, pAttributes);
+        return get_bool ( attrname, pAttributes);
     }
     else return defaultValue;
 }
 
-int Element::getImpliedInt( const std::string &attrname, CL_DomNamedNodeMap * pAttributes, int defaultValue)
+int Element::get_implied_int( const std::string &attrname, CL_DomNamedNodeMap * pAttributes, int defaultValue)
 {
-    if(hasAttr(attrname, pAttributes))
+    if(has_attribute(attrname, pAttributes))
     {
-        return getInt(attrname, pAttributes );
+        return get_int(attrname, pAttributes );
     }
     else return defaultValue;
 }
 
-std::string Element::getImpliedString( const std::string &attrname, CL_DomNamedNodeMap * pAttributes, const std::string &defaultValue)
+std::string Element::get_implied_string( const std::string &attrname, CL_DomNamedNodeMap * pAttributes, const std::string &defaultValue)
 {
-    if(hasAttr(attrname,pAttributes))
+    if(has_attribute(attrname,pAttributes))
     {
-        return getString(attrname,pAttributes);
+        return get_string(attrname,pAttributes);
     }
     else return defaultValue;
 }
 
 
-float Element::getImpliedFloat(const std::string &attrname, CL_DomNamedNodeMap *pAttributes, float defaultValue)
+float Element::get_implied_float(const std::string &attrname, CL_DomNamedNodeMap *pAttributes, float defaultValue)
 {
-    if(hasAttr(attrname,pAttributes))
+    if(has_attribute(attrname,pAttributes))
     {
-        return getFloat(attrname,pAttributes);
+        return get_float(attrname,pAttributes);
     }
     else return defaultValue;
 }
-bool Element::hasAttr( const std::string &attrname, CL_DomNamedNodeMap * pAttributes )
+bool Element::has_attribute( const std::string &attrname, CL_DomNamedNodeMap * pAttributes )
 {
     return ! pAttributes->get_named_item(attrname).is_null();
 }
 
-uint Element::getUint(const std::string &attrname, CL_DomNamedNodeMap * pAttributes)
+uint Element::get_uint(const std::string &attrname, CL_DomNamedNodeMap * pAttributes)
 {
     return atoi(pAttributes->get_named_item(attrname).get_node_value().c_str());
 }
 
-int Element:: getInt(const std::string &attrname, CL_DomNamedNodeMap * pAttributes)
+int Element::get_int(const std::string &attrname, CL_DomNamedNodeMap * pAttributes)
 {
     return atoi(pAttributes->get_named_item(attrname).get_node_value().c_str());
 }
 
-float Element::getFloat(const std::string &attrname, CL_DomNamedNodeMap * pAttributes )
+float Element::get_float(const std::string &attrname, CL_DomNamedNodeMap * pAttributes )
 {
     return atof(pAttributes->get_named_item(attrname).get_node_value().c_str());
 }
 
-std::string Element::getString (const std::string &attrname, CL_DomNamedNodeMap * pAttributes )
+std::string Element::get_string (const std::string &attrname, CL_DomNamedNodeMap * pAttributes )
 {
     return pAttributes->get_named_item(attrname).get_node_value();
 }
 #ifndef NDEBUG
-std::string Element::getElementName() const
+std::string Element::get_element_name() const
 {
-    return mElementName;
+    return m_element_name;
 }
 #endif
 
-void Element::load(CL_DomElement * pDomElement)
+void Element::Load(CL_DomElement * pDomElement)
 {
-    IFactory* pFactory = IApplication::getInstance()->getElementFactory();
+    IFactory* pFactory = IApplication::GetInstance()->GetElementFactory();
 
     CL_DomNamedNodeMap attributes = pDomElement->get_attributes();
                 
-    loadAttributes(&attributes);
+    load_attributes(&attributes);
 
     CL_DomNode childNode = pDomElement->get_first_child(); //.to_element();  
     CL_DomElement child;
@@ -184,7 +184,7 @@ void Element::load(CL_DomElement * pDomElement)
     if(childNode.is_text())
     {
         CL_DomText text = childNode.to_text();
-        handleText(text.get_node_value());
+        handle_text(text.get_node_value());
     }
 
     child = childNode.to_element();
@@ -197,11 +197,11 @@ void Element::load(CL_DomElement * pDomElement)
                                         
         pElement = pFactory->createElement(element_name);
 #ifndef NDEBUG
-        pElement->setElementName(element_name);
+        pElement->SetElementName(element_name);
 #endif
-        pElement->load( &child );
+        pElement->Load( &child );
 
-        if(!handleElement(pElement->whichElement(), pElement ))
+        if(!handle_element(pElement->WhichElement(), pElement ))
         {
             // They didn't handle it. So lets get rid of it
             std::cout << "Unhandled element " << element_name << " found" << std::endl;
@@ -233,7 +233,7 @@ void Element::load(CL_DomElement * pDomElement)
     }
 #endif
 
-    loadFinished();
+    load_finished();
 }
 
 

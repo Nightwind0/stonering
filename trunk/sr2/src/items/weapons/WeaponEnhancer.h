@@ -10,16 +10,16 @@ namespace StoneRing{
     public:
         WeaponEnhancer();
         ~WeaponEnhancer();
-        virtual eElement whichElement() const{ return EWEAPONENHANCER; }          
-        Weapon::eAttribute getAttribute() const;
-        int getAdd() const;
-        float getMultiplier() const;
+        virtual eElement WhichElement() const{ return EWEAPONENHANCER; }          
+        Weapon::eAttribute GetAttribute() const;
+        int GetAdd() const;
+        float GetMultiplier() const;
         
     private:
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
-        Weapon::eAttribute meAttribute;
-        int mnAdd;
-        float mfMultiplier;
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes) ;
+        Weapon::eAttribute m_eAttribute;
+        int m_nAdd;
+        float m_fMultiplier;
     };
 };
 

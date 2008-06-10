@@ -10,20 +10,22 @@ namespace StoneRing{
 
     class MonsterRef;
     class Monster;
+    class IBattleAction;
+	class ICharacter;
 
     class BattleState : public State
     {
     public:
         void init(const MonsterGroup &, const std::string &backdrop);
-        virtual bool isDone() const;
-        virtual void handleKeyDown(const CL_InputEvent &key);
-        virtual void handleKeyUp(const CL_InputEvent &key);
-        virtual void draw(const CL_Rect &screenRect,CL_GraphicContext * pGC);
-        virtual bool lastToDraw() const; // Should we continue drawing more states?
-        virtual bool disableMappableObjects() const; // Should the app move the MOs? 
-        virtual void mappableObjectMoveHook(); // Do stuff right after the mappable object movement
-        virtual void start(); 
-        virtual void finish(); // Hook to clean up or whatever after being popped
+        virtual bool IsDone() const;
+        virtual void HandleKeyDown(const CL_InputEvent &key);
+        virtual void HandleKeyUp(const CL_InputEvent &key);
+        virtual void Draw(const CL_Rect &screenRect,CL_GraphicContext * pGC);
+        virtual bool LastToDraw() const; // Should we continue drawing more states?
+        virtual bool DisableMappableObjects() const; // Should the app move the MOs? 
+        virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
+        virtual void Start(); 
+        virtual void Finish(); // Hook to clean up or whatever after being popped
     private:
 
         enum eState
@@ -35,24 +37,43 @@ namespace StoneRing{
             TRANSITION_OUT
         };
 
+
+        class Command 
+        {
+        public:
+            Command(IBattleAction *pAction, bool groupTarget);
+            ~Command();
+        
+            ICharacter *GetActor()const;
+            ICharacter *GetTarget()const;
+            bool GroupTarget()const;
+            void Execute();
+        private:
+            ICharacter *m_pActor;
+            ICharacter *m_pTarget;
+            bool m_bGroupTarget;
+            IBattleAction *m_pAction;
+
+        };
+
         typedef void (BattleState::* DrawMethod)(const CL_Rect &, CL_GraphicContext *);
 
-        void drawTransitionIn(const CL_Rect &screenRect, CL_GraphicContext *pGC);
-        void drawStart(const CL_Rect &screenRect, CL_GraphicContext *pGC);
-        void drawBattle(const CL_Rect &screenRect, CL_GraphicContext *pGC);
-        void _drawMonsters(const CL_Rect &monsterRect, CL_GraphicContext *pGC);
-        void _drawPlayers(const CL_Rect &playerRect, CL_GraphicContext *pGC);
+        void draw_transition_in(const CL_Rect &screenRect, CL_GraphicContext *pGC);
+        void draw_start(const CL_Rect &screenRect, CL_GraphicContext *pGC);
+        void draw_battle(const CL_Rect &screenRect, CL_GraphicContext *pGC);
+        void draw_monsters(const CL_Rect &monsterRect, CL_GraphicContext *pGC);
+        void draw_players(const CL_Rect &playerRect, CL_GraphicContext *pGC);
 
-        void _initOrReleasePlayers(bool bRelease=false);
+        void init_or_release_players(bool bRelease=false);
 
 
-        eState meState; 
-        DrawMethod mDrawMethod;
-        std::vector<Monster*> mMonsters;
-        CL_Surface *mpBackdrop;
-        bool mbDone;
-        uint mnRows;
-        uint mnColumns;
+        eState m_eState; 
+        DrawMethod m_draw_method;
+        std::vector<Monster*> m_monsters;
+        CL_Surface *m_pBackdrop;
+        bool m_bDone;
+        uint m_nRows;
+        uint m_nColumns;
     };
 
 };

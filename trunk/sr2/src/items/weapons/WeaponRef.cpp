@@ -8,35 +8,35 @@
 
 using namespace StoneRing;
 
-WeaponRef::WeaponRef():mpWeaponType(NULL), mpWeaponClass(NULL),
-                       mpSpellRef(NULL),mpRuneType(NULL)
+WeaponRef::WeaponRef():m_pWeaponType(NULL), m_pWeaponClass(NULL),
+                       m_pSpellRef(NULL),m_pRuneType(NULL)
 {
 }
 
-std::string WeaponRef::getName() const
+std::string WeaponRef::GetName() const
 {
-    return mName;
+    return m_name;
 }
 
-bool WeaponRef::handleElement(eElement element, Element * pElement)
+bool WeaponRef::handle_element(eElement element, Element * pElement)
 {
-    const ItemManager * pItemManager = IApplication::getInstance()->getItemManager();
+    const ItemManager * pItemManager = IApplication::GetInstance()->GetItemManager();
 
     switch(element)
     {
     case EWEAPONTYPEREF:
-        mpType =  dynamic_cast<WeaponTypeRef*>(pElement);
-        mpWeaponType = pItemManager->getWeaponType(*mpType);
+        m_pType =  dynamic_cast<WeaponTypeRef*>(pElement);
+        m_pWeaponType = pItemManager->GetWeaponType(*m_pType);
         break;
     case EWEAPONCLASSREF:
-        mpClass = dynamic_cast<WeaponClassRef*>(pElement);
-        mpWeaponClass = pItemManager->getWeaponClass ( *mpClass );
+        m_pClass = dynamic_cast<WeaponClassRef*>(pElement);
+        m_pWeaponClass = pItemManager->GetWeaponClass ( *m_pClass );
         break;
     case ESPELLREF:
-        mpSpellRef = dynamic_cast<SpellRef*>(pElement);
+        m_pSpellRef = dynamic_cast<SpellRef*>(pElement);
         break;
     case ERUNETYPE:
-        mpRuneType = dynamic_cast<RuneType*>(pElement);
+        m_pRuneType = dynamic_cast<RuneType*>(pElement);
         break;
     default:
         return false;
@@ -52,8 +52,8 @@ WeaponRef::~WeaponRef()
 
 WeaponRef::WeaponRef ( WeaponType *pType, WeaponClass *pClass, 
                        SpellRef * pSpell, RuneType *pRune )
-                       :mpWeaponType(pType), mpWeaponClass(pClass),
-                       mpSpellRef(pSpell), mpRuneType(pRune)
+                       :m_pWeaponType(pType), m_pWeaponClass(pClass),
+                       m_pSpellRef(pSpell), m_pRuneType(pRune)
 
 {
 
@@ -61,31 +61,31 @@ WeaponRef::WeaponRef ( WeaponType *pType, WeaponClass *pClass,
 
 
 
-void WeaponRef::loadFinished()
+void WeaponRef::load_finished()
 {
-    mName = Weapon::CreateWeaponName(mpWeaponType,mpWeaponClass,mpSpellRef,mpRuneType);
+    m_name = Weapon::CreateWeaponName(m_pWeaponType,m_pWeaponClass,m_pSpellRef,m_pRuneType);
 }
 
 
 WeaponType * 
-WeaponRef::getWeaponType() const
+WeaponRef::GetWeaponType() const
 {
-    return mpWeaponType;
+    return m_pWeaponType;
 }
 
-WeaponClass * WeaponRef::getWeaponClass() const
+WeaponClass * WeaponRef::GetWeaponClass() const
 {
-    return mpWeaponClass;
+    return m_pWeaponClass;
 }
 
-SpellRef * WeaponRef::getSpellRef() const
+SpellRef * WeaponRef::GetSpellRef() const
 {
-    return mpSpellRef;
+    return m_pSpellRef;
 }
 
-RuneType * WeaponRef::getRuneType() const
+RuneType * WeaponRef::GetRuneType() const
 {
-    return mpRuneType;
+    return m_pRuneType;
 }
 
 

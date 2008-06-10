@@ -20,33 +20,33 @@ namespace StoneRing
     public:
         CharacterClass();
         virtual ~CharacterClass();
-        virtual eElement whichElement() const{ return ECHARACTERCLASS; }
+        virtual eElement WhichElement() const{ return ECHARACTERCLASS; }
 
-        std::list<WeaponTypeRef*>::const_iterator getWeaponTypeRefsBegin() const;
-        std::list<WeaponTypeRef*>::const_iterator getWeaponTypeRefsEnd() const;
+        std::list<WeaponTypeRef*>::const_iterator GetWeaponTypeRefsBegin() const;
+        std::list<WeaponTypeRef*>::const_iterator GetWeaponTypeRefsEnd() const;
 
-        std::list<ArmorTypeRef*>::const_iterator getArmorTypeRefsBegin() const;
-        std::list<ArmorTypeRef*>::const_iterator getArmorTypeRefsEnd() const;
+        std::list<ArmorTypeRef*>::const_iterator GetArmorTypeRefsBegin() const;
+        std::list<ArmorTypeRef*>::const_iterator GetArmorTypeRefsEnd() const;
 
-        double getStat(ICharacter::eCharacterAttribute attr, int level);
+        double GetStat(ICharacter::eCharacterAttribute attr, int level);
 
-        std::list<SkillRef*>::const_iterator getSkillRefsBegin() const;
-        std::list<SkillRef*>::const_iterator getSkillRefsEnd() const;
+        std::list<SkillRef*>::const_iterator GetSkillRefsBegin() const;
+        std::list<SkillRef*>::const_iterator GetSkillRefsEnd() const;
 
-        BattleMenu * getBattleMenu() const;
-        std::string getName() const;
-        ICharacter::eGender getGender() const;
+        BattleMenu * GetBattleMenu() const;
+        std::string GetName() const;
+        ICharacter::eGender GetGender() const;
     private:
-        virtual bool handleElement(eElement element, Element * pElement );
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-        std::string mName;
-        ICharacter::eGender meGender;
-        std::list<WeaponTypeRef*> mWeaponTypes;
-        std::list<ArmorTypeRef*> mArmorTypes;
+        virtual bool handle_element(eElement element, Element * pElement );
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes);
+        std::string m_name;
+        ICharacter::eGender m_eGender;
+        std::list<WeaponTypeRef*> m_weapon_types;
+        std::list<ArmorTypeRef*> m_armor_types;
         typedef std::map<ICharacter::eCharacterAttribute,StatScript*> StatMap;
-        StatMap mStatScripts;
-        std::list<SkillRef*> mSkillRefs;
-        BattleMenu *mpMenu;
+        StatMap m_stat_scripts;
+        std::list<SkillRef*> m_skill_refs;
+        BattleMenu *m_pMenu;
     };
 
     class StatScript : public Element
@@ -54,15 +54,15 @@ namespace StoneRing
     public:
         StatScript();
         ~StatScript();
-        virtual eElement whichElement() const{ return ESTATSCRIPT; }
-        ICharacter::eCharacterAttribute getCharacterStat() const;
-        double getStat(int level);
+        virtual eElement WhichElement() const{ return ESTATSCRIPT; }
+        ICharacter::eCharacterAttribute GetCharacterStat() const;
+        double GetStat(int level);
     private:
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-        virtual bool handleElement(Element::eElement, Element * pElement);
-        virtual void loadFinished();
-        ScriptElement *mpScript;
-        ICharacter::eCharacterAttribute meStat;
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes);
+        virtual bool handle_element(Element::eElement, Element * pElement);
+        virtual void load_finished();
+        ScriptElement *m_pScript;
+        ICharacter::eCharacterAttribute m_eStat;
     };
 };
 

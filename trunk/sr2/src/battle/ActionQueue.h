@@ -16,6 +16,7 @@ class ScriptElement;
 class ICharacter;
 class ICharacterGroup;
 class NamedScript;
+class IBattleAction;
 
   class ActionQueue 
     {
@@ -23,29 +24,19 @@ class NamedScript;
         ActionQueue();
         ~ActionQueue();
 
-        void executeFront();
-        void popFront();
-        void enqueue(ScriptElement *pScript, ICharacter *pActor, 
-            ICharacterGroup *pActorGroup, const SteelType &var);
-        void remove (ICharacter *pActor, NamedScript *pDeselect);
+        void ExecuteFront();
+        void PopFront();
+        void Enqueue(IBattleAction *pAction, ICharacter *pActor, ICharacter *pTarget, bool group,const SteelType &var);
+        void RemoveActionForCharacter (ICharacter *pActor);
     private:
-        class ActionEntry
+        struct Action
         {
-        public:
-            ActionEntry(ScriptElement *pScript, ICharacter *pChar, 
-                ICharacterGroup *pParty, const SteelType &var);
-            ~ActionEntry();
-            void execute();
-            void deselect(NamedScript *pDeselect);
-            bool matches(ICharacter *pChar) const;
-        private:
-            SteelType mVar;
-            ScriptElement *mpScript;
-            ICharacter *mpActor;
-            ICharacterGroup *mpGroup;
+            IBattleAction *pAction;
+            ICharacter *pActor;
+            ICharacter *pTarget;
+            bool bGroupTarget;
         };
-
-        std::list<ActionEntry> mQueue;
+        std::deque<Action> m_Queue;
 
     };
 }

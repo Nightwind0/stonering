@@ -3,7 +3,7 @@
 #include "GraphicsManager.h"
 
 StoneRing::SayState::SayState()
-:mbDone(false),mpSayOverlay(NULL)
+:m_bDone(false),m_pSayOverlay(NULL)
 
 {
 
@@ -11,132 +11,136 @@ StoneRing::SayState::SayState()
 
 StoneRing::SayState::~SayState()
 {
-    delete mpSayOverlay;
+    delete m_pSayOverlay;
 }
 
-bool StoneRing::SayState::isDone() const
+bool StoneRing::SayState::IsDone() const
 {
-    return mbDone;
+    return m_bDone;
 }
 
-void StoneRing::SayState::handleKeyDown(const CL_InputEvent &key)
+void StoneRing::SayState::HandleKeyDown(const CL_InputEvent &key)
 {
 }
 
-void StoneRing::SayState::handleKeyUp(const CL_InputEvent &key)
+void StoneRing::SayState::HandleKeyUp(const CL_InputEvent &key)
 {
     switch(key.id)
     {
     case CL_KEY_ENTER:
     case CL_KEY_SPACE:
-        if(mnDrawnThisFrame + mnTotalDrawn == mText.size())
+        if(m_nDrawnThisFrame + m_nTotalDrawn == m_text.size())
         {
-            mbDone = true;
+            m_bDone = true;
         }
         else
         {
-            mnTotalDrawn += mnDrawnThisFrame;
-            miText += mnDrawnThisFrame;
-            mnDrawnThisFrame = 0;
+            m_nTotalDrawn += m_nDrawnThisFrame;
+            m_iText += m_nDrawnThisFrame;
+            m_nDrawnThisFrame = 0;
             CL_System::sleep(100);
         }
         break;
     case CL_KEY_ESCAPE:
-        mbDone = true;
+        m_bDone = true;
         break;
     }
 }
 
-void StoneRing::SayState::draw(const CL_Rect &screenRect,CL_GraphicContext * pGC)
+void StoneRing::SayState::Draw(const CL_Rect &screenRect,CL_GraphicContext * pGC)
 {
-    CL_Rect speakerTextRect = mSpeakerRect;
-    CL_Font * pSpeakerFont = GraphicsManager::getInstance()->getFont( GraphicsManager::FONT_SPEAKER );
-    CL_Font * pTextFont = GraphicsManager::getInstance()->getFont( GraphicsManager::FONT_SAY_TEXT );
+    CL_Rect speakerTextRect = m_speaker_rect;
 
-    speakerTextRect.top += ( mSpeakerRect.get_height() - pSpeakerFont->get_height()) /2;
-    speakerTextRect.bottom += ( mSpeakerRect.get_height() - pSpeakerFont->get_height()) /2;
+    assert(m_pSpeakerFont && m_pSpeechFont);
 
-    pGC->fill_rect( mSpeakerRect, mSpeakerBGColor );
-    pGC->fill_rect( mTextRect, mTextBGColor ) ;
+    CL_Font * pSpeakerFont = m_pSpeakerFont;
+    CL_Font * pTextFont = m_pSpeechFont;
 
-    mpSayOverlay->draw(static_cast<float>(mX),static_cast<float>(mY), pGC);
+    speakerTextRect.top += ( m_speaker_rect.get_height() - pSpeakerFont->get_height()) /2;
+    speakerTextRect.bottom += ( m_speaker_rect.get_height() - pSpeakerFont->get_height()) /2;
+
+    pGC->fill_rect( m_speaker_rect, m_speaker_BGColor );
+    pGC->fill_rect( m_text_rect, m_text_BGColor ) ;
+
+    m_pSayOverlay->draw(static_cast<float>(m_X),static_cast<float>(m_Y), pGC);
             
 
-    if(miText != mText.end())
-        mnDrawnThisFrame  =  pTextFont->draw(mTextRect, miText, mText.end(), pGC );
+    if(m_iText != m_text.end())
+        m_nDrawnThisFrame  =  pTextFont->draw(m_text_rect, m_iText, m_text.end(), pGC );
 
-    pSpeakerFont->draw(speakerTextRect, mSpeaker.begin(),mSpeaker.end(), pGC );
+    pSpeakerFont->draw(speakerTextRect, m_speaker.begin(),m_speaker.end(), pGC );
 
-
-    if(mnTotalDrawn + mnDrawnThisFrame < mText.size())
+    if(m_nTotalDrawn + m_nDrawnThisFrame < m_text.size())
     {
         // Draw a little "Theres more" doodad
         pGC->fill_rect( CL_Rect(screenRect.get_width() - 20, screenRect.get_height() - 20, screenRect.get_width() - 10, screenRect.get_height() - 10), CL_Color::black );
     }
-
-
-
-
 }
 
 
 
-bool StoneRing::SayState::disableMappableObjects() const
+bool StoneRing::SayState::DisableMappableObjects() const
 {
     return true;
 }
 
 
-void StoneRing::SayState::mappableObjectMoveHook()
+void StoneRing::SayState::MappableObjectMoveHook()
 {
 }
 
-void StoneRing::SayState::start()
+void StoneRing::SayState::Start()
 {
     const std::string resource = "Overlays/Say/";
-    IApplication * pApp = IApplication::getInstance();
-    CL_ResourceManager *pResources = pApp->getResources();
+    IApplication * pApp = IApplication::GetInstance();
+    CL_ResourceManager *pResources = pApp->GetResources();
 
-    mbDone = false;
-    mnTotalDrawn = mnDrawnThisFrame = 0;
+    m_bDone = false;
+    m_nTotalDrawn = m_nDrawnThisFrame = 0;
 
-    if(!mpSayOverlay)
-        mpSayOverlay = new CL_Surface(resource + "overlay", pResources);
+    std::string speakerFont = CL_String::load(resource + "fonts/Speaker",pResources);
+    std::string speechFont = CL_String::load(resource + "fonts/Speech",pResources);
 
-    mSpeakerRect.top = CL_Integer(resource + "header/top", pResources);
-    mSpeakerRect.left = CL_Integer(resource + "header/left", pResources);
-    mSpeakerRect.right = CL_Integer(resource + "header/right", pResources);
-    mSpeakerRect.bottom = CL_Integer(resource + "header/bottom", pResources);
+    m_pSpeakerFont = GraphicsManager::GetInstance()->GetFont(speakerFont);
+    m_pSpeechFont = GraphicsManager::GetInstance()->GetFont(speechFont);
 
-    mTextRect.top = CL_Integer(resource + "text/top", pResources);
-    mTextRect.left = CL_Integer(resource + "text/left", pResources);
-    mTextRect.right = CL_Integer(resource + "text/right", pResources);
-    mTextRect.bottom = CL_Integer(resource + "text/bottom", pResources);
+    if(!m_pSayOverlay)
+        m_pSayOverlay = new CL_Surface(resource + "overlay", pResources);
 
-    mSpeakerBGColor.set_red (CL_Integer(resource + "header/bgcolor/r", pResources));
-    mSpeakerBGColor.set_green (CL_Integer(resource + "header/bgcolor/g", pResources));
-    mSpeakerBGColor.set_blue (CL_Integer(resource + "header/bgcolor/b", pResources));
-    mSpeakerBGColor.set_alpha (CL_Integer(resource + "header/bgcolor/a", pResources));
+    m_speaker_rect.top = CL_Integer(resource + "header/top", pResources);
+    m_speaker_rect.left = CL_Integer(resource + "header/left", pResources);
+    m_speaker_rect.right = CL_Integer(resource + "header/right", pResources);
+    m_speaker_rect.bottom = CL_Integer(resource + "header/bottom", pResources);
 
-    mTextBGColor.set_red (CL_Integer(resource + "text/bgcolor/r", pResources));
-    mTextBGColor.set_green (CL_Integer(resource + "text/bgcolor/g", pResources));
-    mTextBGColor.set_blue (CL_Integer(resource + "text/bgcolor/b", pResources));
-    mTextBGColor.set_alpha (CL_Integer(resource + "text/bgcolor/a", pResources));
+    m_text_rect.top = CL_Integer(resource + "text/top", pResources);
+    m_text_rect.left = CL_Integer(resource + "text/left", pResources);
+    m_text_rect.right = CL_Integer(resource + "text/right", pResources);
+    m_text_rect.bottom = CL_Integer(resource + "text/bottom", pResources);
 
-    mX = CL_Integer(resource + "x", pResources);
-    mY = CL_Integer(resource + "y", pResources);
+    m_speaker_BGColor.set_red (CL_Integer(resource + "header/bgcolor/r", pResources));
+    m_speaker_BGColor.set_green (CL_Integer(resource + "header/bgcolor/g", pResources));
+    m_speaker_BGColor.set_blue (CL_Integer(resource + "header/bgcolor/b", pResources));
+    m_speaker_BGColor.set_alpha (CL_Integer(resource + "header/bgcolor/a", pResources));
+
+    m_text_BGColor.set_red (CL_Integer(resource + "text/bgcolor/r", pResources));
+    m_text_BGColor.set_green (CL_Integer(resource + "text/bgcolor/g", pResources));
+    m_text_BGColor.set_blue (CL_Integer(resource + "text/bgcolor/b", pResources));
+    m_text_BGColor.set_alpha (CL_Integer(resource + "text/bgcolor/a", pResources));
+
+    m_X = CL_Integer(resource + "x", pResources);
+    m_Y = CL_Integer(resource + "y", pResources);
 }
 
-void StoneRing::SayState::finish()
+void StoneRing::SayState::Finish()
 {
 }
 
 
-void StoneRing::SayState::init(const std::string &speaker, const std::string &text)
+void StoneRing::SayState::Init(const std::string &speaker, const std::string &text)
 {
-    mSpeaker = speaker;
-    mText = text;
-    miText = mText.begin();
+    m_speaker = speaker;
+    m_text = text;
+    m_iText = m_text.begin();
 }
 
 

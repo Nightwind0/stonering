@@ -36,25 +36,25 @@ namespace StoneRing
       
         virtual int main(int argc, char** argv);
 
-        virtual CL_ResourceManager * getResources()const;
+        virtual CL_ResourceManager * GetResources()const;
   
-        virtual int getScreenWidth()const;
-        virtual int getScreenHeight()const;
-        virtual void pop(bool);
-        virtual IParty * getParty() const;
-        virtual AbilityManager * getAbilityManager();
-        virtual ItemManager * getItemManager();
-        virtual IFactory * getElementFactory() { return &mElementFactory; }
-        virtual CharacterManager * getCharacterManager() { return &mCharacterManager; }
-        virtual CL_Rect getDisplayRect() const;
-        virtual ICharacterGroup * getTargetCharacterGroup() const;
-        virtual ICharacterGroup * getActorCharacterGroup() const;
-        virtual void startBattle(const MonsterGroup &group,const std::string &backdrop);
-        virtual void requestRedraw(const State *pState);
+        virtual int GetScreenWidth()const;
+        virtual int GetScreenHeight()const;
+        virtual void Pop(bool);
+        virtual IParty * GetParty() const;
+        virtual AbilityManager * GetAbilityManager();
+        virtual ItemManager * GetItemManager();
+        virtual IFactory * GetElementFactory() { return &mElementFactory; }
+        virtual CharacterManager * GetCharacterManager() { return &mCharacterManager; }
+        virtual CL_Rect GetDisplayRect() const;
+        virtual ICharacterGroup * GetTargetCharacterGroup() const;
+        virtual ICharacterGroup * GetActorCharacterGroup() const;
+        virtual void StartBattle(const MonsterGroup &group,const std::string &backdrop);
+        virtual void RequestRedraw(const State *pState);
 
-        virtual AstScript * loadScript(const std::string &name, const std::string &script);
-        virtual SteelType runScript(AstScript * pScript);
-        virtual SteelType runScript(AstScript *pScript, const ParameterList &params); 
+        virtual AstScript * LoadScript(const std::string &name, const std::string &script);
+        virtual SteelType RunScript(AstScript * pScript);
+        virtual SteelType RunScript(AstScript *pScript, const ParameterList &params); 
     protected:
 
 

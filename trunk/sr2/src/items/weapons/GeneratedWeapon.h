@@ -13,36 +13,36 @@ namespace StoneRing{
         GeneratedWeapon();
         virtual ~GeneratedWeapon();
 
-        WeaponRef generateWeaponRef() const;
+        WeaponRef GenerateWeaponRef() const;
 
         // Item interface 
-        virtual std::string getIconRef() const;
-        virtual std::string getName() const;
-        virtual uint getMaxInventory() const ;
-        virtual eDropRarity getDropRarity() const;
-        virtual uint getValue() const ;
-        virtual uint getSellValue() const ;
-        virtual eItemType getItemType() const { return WEAPON ; }
+        virtual std::string GetIconRef() const;
+        virtual std::string GetName() const;
+        virtual uint GetMaxInventory() const ;
+        virtual eDropRarity GetDropRarity() const;
+        virtual uint GetValue() const ;
+        virtual uint GetSellValue() const ;
+        virtual eItemType GetItemType() const { return WEAPON ; }
 
-        virtual void executeScript();
-        virtual bool equipCondition();
+        virtual void ExecuteScript();
+        virtual bool EquipCondition();
 
         // Weapon interface
-        WeaponType * getWeaponType() const;
-        WeaponClass * getWeaponClass() const { return mpClass; }
-        bool isRanged() const ;
-        bool isTwoHanded() const;
+        WeaponType * GetWeaponType() const;
+        WeaponClass * GetWeaponClass() const { return m_pClass; }
+        bool IsRanged() const ;
+        bool IsTwoHanded() const;
         virtual bool operator== ( const ItemRef &ref );
 
-        void generate( WeaponType * pType, WeaponClass * pClass, 
+        void Generate( WeaponType * pType, WeaponClass * pClass, 
                        SpellRef *pSpell = NULL, RuneType *pRune = NULL);
 
     private:
-        virtual void onEquipScript();
-        virtual void onUnequipScript();
-        std::string mName; //generated at generate time :)
-        WeaponClass *mpClass;
-        WeaponType *mpType;
+        virtual void OnEquipScript();
+        virtual void OnUnequipScript();
+        std::string m_name; //generated at generate time :)
+        WeaponClass *m_pClass;
+        WeaponType *m_pType;
     };
 };
 

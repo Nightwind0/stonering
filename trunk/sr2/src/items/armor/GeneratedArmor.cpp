@@ -9,7 +9,7 @@
 
 using namespace StoneRing;
 
-GeneratedArmor::GeneratedArmor():mpType(NULL),mpClass(NULL)
+GeneratedArmor::GeneratedArmor():m_pType(NULL),m_pClass(NULL)
 {
 }
 
@@ -17,71 +17,71 @@ GeneratedArmor::~GeneratedArmor()
 {
 }
 
-std::string GeneratedArmor::getIconRef() const
+std::string GeneratedArmor::GetIconRef() const
 {
-    return mpType->getIconRef();
+    return m_pType->GetIconRef();
 }
 
-std::string GeneratedArmor::getName() const
+std::string GeneratedArmor::GetName() const
 {
-    return mName;
+    return m_name;
 }
 
-uint GeneratedArmor::getMaxInventory() const 
+uint GeneratedArmor::GetMaxInventory() const 
 {
     // todo: lookup in settings
     return 99;
 }
 
-void GeneratedArmor::executeScript()
+void GeneratedArmor::ExecuteScript()
 {
-    mpClass->executeScript();
+    m_pClass->ExecuteScript();
 }
 
-bool GeneratedArmor::equipCondition()
+bool GeneratedArmor::EquipCondition()
 {
-    return mpClass->equipCondition();
+    return m_pClass->EquipCondition();
 }
 
-void GeneratedArmor::onEquipScript()
+void GeneratedArmor::OnEquipScript()
 {
-    return mpClass->onEquipScript();
+    return m_pClass->OnEquipScript();
 }
 
-void GeneratedArmor::onUnequipScript()
+void GeneratedArmor::OnUnequipScript()
 {
-    return mpClass->onUnequipScript();
+    return m_pClass->OnUnequipScript();
 }
 
 bool GeneratedArmor::operator== ( const ItemRef &ref )
 {
-    if( ref.getType() == ItemRef::ARMOR_REF
-        && *ref.getArmorRef()->getArmorClass() == *mpClass &&
-        *ref.getArmorRef()->getArmorType() == *mpType)
+    if( ref.GetType() == ItemRef::ARMOR_REF
+        && *ref.GetArmorRef()->GetArmorClass() == *m_pClass &&
+        *ref.GetArmorRef()->GetArmorType() == *m_pType)
     {
-        if(hasSpell() && ref.getArmorRef()->getSpellRef())
+        if(HasSpell() && ref.GetArmorRef()->GetSpellRef())
         {
-            if(*getSpellRef() == *ref.getArmorRef()->getSpellRef())
+            if(*GetSpellRef() == *ref.GetArmorRef()->GetSpellRef())
             {
                 return true;
             } 
             else return false;
         }
-        else if ( hasSpell() || ref.getArmorRef()->getSpellRef())
+        else if ( HasSpell() || ref.GetArmorRef()->GetSpellRef())
         {
             // One had a spell ref and one didn't.
             return false;
         }
 
-        if(hasRuneType() && ref.getArmorRef()->getRuneType())
+        if(HasRuneType() && ref.GetArmorRef()->GetRuneType())
         {
-            if(*getRuneType() == *ref.getArmorRef()->getRuneType())
+            if(*GetRuneType() == *ref.GetArmorRef()->GetRuneType())
             {
                 return true;
             }
             else return false;
         }
-        else if ( hasRuneType() || ref.getArmorRef()->getRuneType())
+        else if ( HasRuneType() || ref.GetArmorRef()->GetRuneType())
         {
             return false;
         }
@@ -93,9 +93,9 @@ bool GeneratedArmor::operator== ( const ItemRef &ref )
 }
 
 
-Item::eDropRarity GeneratedArmor::getDropRarity() const
+Item::eDropRarity GeneratedArmor::GetDropRarity() const
 {
-    if( hasSpell() || hasRuneType() )
+    if( HasSpell() || HasRuneType() )
     {
         return RARE; 
     }
@@ -103,26 +103,26 @@ Item::eDropRarity GeneratedArmor::getDropRarity() const
 }
 
 
-uint GeneratedArmor::getValue() const 
+uint GeneratedArmor::GetValue() const 
 {
     // @todo: add rune value
-    const AbilityManager * pManager = IApplication::getInstance()->getAbilityManager();
+    const AbilityManager * pManager = IApplication::GetInstance()->GetAbilityManager();
 
-    uint value =  (int)((float)mpType->getBasePrice() * mpClass->getValueMultiplier()) 
-        + mpClass->getValueAdd();
+    uint value =  (int)((float)m_pType->GetBasePrice() * m_pClass->GetValueMultiplier()) 
+        + m_pClass->GetValueAdd();
 
-    if(hasSpell())
+    if(HasSpell())
     {
-        SpellRef * pSpellRef = getSpellRef();
+        SpellRef * pSpellRef = GetSpellRef();
 
-        Spell * pSpell = pManager->getSpell ( *pSpellRef );
+        Spell * pSpell = pManager->GetSpell ( *pSpellRef );
 
         value += pSpell->getValue();
     }
 
-    if(hasRuneType())
+    if(HasRuneType())
     {
-        switch( getRuneType()->getRuneType() )
+        switch( GetRuneType()->GetRuneType() )
         {
         case RuneType::RUNE:
             value *= 2; //@todo : get value from game settings
@@ -140,47 +140,47 @@ uint GeneratedArmor::getValue() const
     return value;
 }
 
-uint GeneratedArmor::getSellValue() const 
+uint GeneratedArmor::GetSellValue() const 
 {
-    return getValue() / 2;
+    return GetValue() / 2;
 }
 
 
 
-ArmorType * GeneratedArmor::getArmorType() const 
+ArmorType * GeneratedArmor::GetArmorType() const 
 {
-    return mpType;
+    return m_pType;
 }
 
-ArmorRef GeneratedArmor::generateArmorRef() const
+ArmorRef GeneratedArmor::GenerateArmorRef() const
 {
 
-    return ArmorRef ( getArmorType(), getArmorClass(), getSpellRef(), getRuneType() );
+    return ArmorRef ( GetArmorType(), GetArmorClass(), GetSpellRef(), GetRuneType() );
 }
 
 void GeneratedArmor::generate( ArmorType * pType, ArmorClass * pClass, 
                                SpellRef *pSpell , RuneType *pRune)
 {
 
-    for(std::list<AttributeEnhancer*>::const_iterator iter = pClass->getAttributeEnhancersBegin();
-        iter != pClass->getAttributeEnhancersEnd();
+    for(std::list<AttributeEnhancer*>::const_iterator iter = pClass->GetAttributeEnhancersBegin();
+        iter != pClass->GetAttributeEnhancersEnd();
         iter++)
     {
-        addAttributeEnhancer  ( *iter );
+        Add_Attribute_Enhancer  ( *iter );
     }
-    for(std::list<ArmorEnhancer*>::const_iterator iter2 = pClass->getArmorEnhancersBegin();
-        iter2 != pClass->getArmorEnhancersEnd();
+    for(std::list<ArmorEnhancer*>::const_iterator iter2 = pClass->GetArmorEnhancersBegin();
+        iter2 != pClass->GetArmorEnhancersEnd();
         iter2++)
     {
-        addArmorEnhancer ( *iter2 );
+        Add_Armor_Enhancer ( *iter2 );
     }
 
-    mpType = pType;
-    mpClass = pClass;
-    setSpellRef(pSpell);
-    setRuneType(pRune);
+    m_pType = pType;
+    m_pClass = pClass;
+    Set_Spell_Ref(pSpell);
+    Set_Rune_Type(pRune);
 
-    mName = CreateArmorName(pType,pClass,pSpell,pRune);
+    m_name = CreateArmorName(pType,pClass,pSpell,pRune);
 }
 
 

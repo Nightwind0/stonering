@@ -12,7 +12,7 @@ namespace StoneRing{
     public:
         AttributeEnhancer();
         virtual ~AttributeEnhancer();
-        virtual eElement whichElement() const{ return EATTRIBUTEENHANCER; } 
+        virtual eElement WhichElement() const{ return EATTRIBUTEENHANCER; } 
 
         enum eType
         {
@@ -23,31 +23,31 @@ namespace StoneRing{
             EAUTO = 0
         }; 
 
-        eType getType() const;
-        uint getAttribute() const;
-        int getAdd() const;
-        float getMultiplier() const;
-        bool getToggle() const;
+        eType GetType() const;
+        uint GetAttribute() const;
+        int GetAdd() const;
+        float GetMultiplier() const;
+        bool GetToggle() const;
 
         // Uses IParty::modifyAttribute to modify the CURRENT player,
         // Meaning that the system must select the proper current player
         // when invoking. (By calling equip on the armor/weapon...)
-        void invoke();
+        void Invoke();
 
         // Uses IParty::modifyAttribute to modify the CURRENT player,
         // Meaning that the system must select the proper current player
         // when revoking. (By calling unequip on the armor/weapon...)
-        void revoke();
+        void Revoke();
     private:
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes) ;
         // Used to make sure that when we multiply the value to get it
         // back to what it was, we end up with the right values.
-        eType meType;
-        int mnDelta;
-        int mnAdd;
-        float mfMultiplier;
-        uint mnAttribute;
-        bool mbToggle;
+        eType m_eType;
+        int m_nDelta;
+        int m_nAdd;
+        float m_fMultiplier;
+        uint m_nAttribute;
+        bool m_bToggle;
         
     };
 };

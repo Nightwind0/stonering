@@ -11,27 +11,27 @@ namespace StoneRing{
         ArmorType();
         ArmorType(CL_DomElement * pElement );
         ~ArmorType();
-        virtual eElement whichElement() const{ return EARMORTYPE; } 
+        virtual eElement WhichElement() const{ return EARMORTYPE; } 
 
-        std::string getName() const;
-        std::string getIconRef() const;
+        std::string GetName() const;
+        std::string GetIconRef() const;
 
-        uint getBasePrice() const;
-        int getBaseAC() const;
-        int getBaseRST() const;
-        Equipment::eSlot getSlot() const;
+        uint GetBasePrice() const;
+        int GetBaseAC() const;
+        int GetBaseRST() const;
+        Equipment::eSlot GetSlot() const;
 
         bool operator==(const ArmorType &lhs );
         
     private:
-        virtual bool handleElement(eElement element, Element * pElement );
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
-        std::string mName;
-        std::string mIconRef;
-        uint mnBasePrice;
-        int mnBaseAC;
-        int mnBaseRST;
-        Equipment::eSlot meSlot;
+        virtual bool handle_element(eElement element, Element * pElement );
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes) ;
+        std::string m_name;
+        std::string m_icon_ref;
+        uint m_nBasePrice;
+        int m_nBaseAC;
+        int m_nBaseRST;
+        Equipment::eSlot m_eSlot;
 
     };
 };

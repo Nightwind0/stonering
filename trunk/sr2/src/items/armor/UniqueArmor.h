@@ -13,29 +13,29 @@ namespace StoneRing{
     public:
         UniqueArmor();
         virtual ~UniqueArmor();
-        virtual eElement whichElement() const{ return EUNIQUEARMOR; }   
-        virtual uint getValue() const ;
-        virtual uint getSellValue() const ;
+        virtual eElement WhichElement() const{ return EUNIQUEARMOR; }   
+        virtual uint GetValue() const ;
+        virtual uint GetSellValue() const ;
 
-        ArmorType * getArmorType() const ;
+        ArmorType * GetArmorType() const ;
         
-        virtual void executeScript();
-        virtual bool equipCondition();
-        virtual eItemType getItemType() const { return ARMOR ; }
+        virtual void ExecuteScript();
+        virtual bool EquipCondition();
+        virtual eItemType GetItemType() const { return ARMOR ; }
         
     private:
-        virtual void onEquipScript();
-        virtual void onUnequipScript();
-        virtual bool handleElement(eElement element, Element * pElement);
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
-        virtual void loadFinished();
-        ArmorType *mpArmorType;
-        float mValueMultiplier;
-        uint mnValue;
-        ScriptElement *mpScript;
-        NamedScript *mpEquipScript;
-        NamedScript *mpUnequipScript;
-        ScriptElement *mpConditionScript;
+        virtual void OnEquipScript();
+        virtual void OnUnequipScript();
+        virtual bool handle_element(eElement element, Element * pElement);
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes) ;
+        virtual void load_finished();
+        ArmorType *m_pArmorType;
+        float m_value_multiplier;
+        uint m_nValue;
+        ScriptElement *m_pScript;
+        NamedScript *m_pEquipScript;
+        NamedScript *m_pUnequipScript;
+        ScriptElement *m_pConditionScript;
     };
 };
 

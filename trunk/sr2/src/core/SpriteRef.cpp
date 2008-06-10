@@ -1,37 +1,37 @@
 #include "SpriteRef.h"
 
-bool StoneRing::SpriteRef::handleElement(eElement element, Element * pElement)
+bool StoneRing::SpriteRef::handle_element(Element::eElement element, Element * pElement)
 {
     return false;
 }
 
-void StoneRing::SpriteRef::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+void StoneRing::SpriteRef::load_attributes(CL_DomNamedNodeMap * pAttributes)
 {
-    if(hasAttr("type",pAttributes))
+    if(has_attribute("type",pAttributes))
     {
-        std::string type = getString("type",pAttributes);
+        std::string type = get_string("type",pAttributes);
         
-        if(type == "still") meType = SPR_STILL;
-        else if(type == "twoway") meType = SPR_TWO_WAY;
-        else if(type == "fourway")  meType = SPR_FOUR_WAY;
-        else if(type == "idle") meType = SPR_BATTLE_IDLE;
-        else if(type == "recoil") meType = SPR_BATTLE_RECOIL;
-        else if(type == "weak") meType = SPR_BATTLE_WEAK;
-        else if(type == "use") meType = SPR_BATTLE_USE;
-        else if(type == "dead") meType = SPR_BATTLE_DEAD;
+        if(type == "still") m_eType = SPR_STILL;
+        else if(type == "twoway") m_eType = SPR_TWO_WAY;
+        else if(type == "fourway")  m_eType = SPR_FOUR_WAY;
+        else if(type == "idle") m_eType = SPR_BATTLE_IDLE;
+        else if(type == "recoil") m_eType = SPR_BATTLE_RECOIL;
+        else if(type == "weak") m_eType = SPR_BATTLE_WEAK;
+        else if(type == "use") m_eType = SPR_BATTLE_USE;
+        else if(type == "dead") m_eType = SPR_BATTLE_DEAD;
         else throw CL_Error("Bad type on spriteRef");
 
     }
 
 }
 
-void StoneRing::SpriteRef::handleText(const std::string &text)
+void StoneRing::SpriteRef::handle_text(const std::string &text)
 {
-    mRef = text;
+    m_ref = text;
 }
 
 
-StoneRing::SpriteRef::SpriteRef( ):meType(SPR_NONE)
+StoneRing::SpriteRef::SpriteRef( ):m_eType(SPR_NONE)
 {
   
 }
@@ -40,14 +40,14 @@ StoneRing::SpriteRef::~SpriteRef()
 {
 }
 
-std::string StoneRing::SpriteRef::getRef() const
+std::string StoneRing::SpriteRef::GetRef() const
 {
-    return mRef;
+    return m_ref;
 }
 
 StoneRing::SpriteRef::eType 
-StoneRing::SpriteRef::getType() const
+StoneRing::SpriteRef::GetType() const
 {
-    return meType;
+    return m_eType;
 }
 

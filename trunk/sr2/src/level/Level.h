@@ -43,13 +43,13 @@ namespace StoneRing {
         DirectionBlock();
         explicit DirectionBlock(int);
         virtual ~DirectionBlock();
-        virtual eElement whichElement() const{ return EDIRECTIONBLOCK; }    
-        int getDirectionBlock() const;
+        virtual eElement WhichElement() const{ return EDIRECTIONBLOCK; }    
+        int GetDirectionBlock() const;
 
     protected:
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes);
 
-        int meDirectionBlock;
+        int m_eDirectionBlock;
     private:
 
     };
@@ -60,18 +60,18 @@ namespace StoneRing {
     public:
         Tilemap();
         virtual ~Tilemap();
-        virtual eElement whichElement() const{ return ETILEMAP; }        
-        inline ushort getMapX() const { return mX; }
-        inline ushort getMapY() const { return mY; }
+        virtual eElement WhichElement() const{ return ETILEMAP; }        
+        inline ushort GetMapX() const { return m_X; }
+        inline ushort GetMapY() const { return m_Y; }
 
-        inline CL_Surface * getTileMap() const { return mpSurface; }
+        inline CL_Surface * GetTileMap() const { return m_pSurface; }
 
     protected:
-        virtual bool handleElement(eElement element, Element * pElement );      
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-        CL_Surface *mpSurface;
-        ushort mX;
-        ushort mY;
+        virtual bool handle_element(eElement element, Element * pElement );      
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes);
+        CL_Surface *m_pSurface;
+        ushort m_X;
+        ushort m_Y;
     };
 
     class Movement : public Element
@@ -79,19 +79,19 @@ namespace StoneRing {
     public:
         Movement();
         virtual ~Movement();
-        virtual eElement whichElement() const{ return EMOVEMENT; }  
+        virtual eElement WhichElement() const{ return EMOVEMENT; }  
         enum eMovementType { MOVEMENT_NONE, MOVEMENT_WANDER, MOVEMENT_PACE_NS, MOVEMENT_PACE_EW, MOVEMENT_SCRIPT};
         enum eMovementSpeed { SLOW, MEDIUM, FAST };
 
-        virtual eMovementType getMovementType() const;
-        virtual eMovementSpeed getMovementSpeed() const;
+        virtual eMovementType GetMovementType() const;
+        virtual eMovementSpeed GetMovementSpeed() const;
 
     protected:
-        virtual bool handleElement(eElement element,Element *pElement);
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-        eMovementType meType;
-        eMovementSpeed meSpeed;
-        ScriptElement* mpScript;
+        virtual bool handle_element(eElement element,Element *pElement);
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes);
+        eMovementType m_eType;
+        eMovementSpeed m_eSpeed;
+        ScriptElement* m_pScript;
     };
 
     class PlayerMovement : public Movement
@@ -100,8 +100,8 @@ namespace StoneRing {
         PlayerMovement(){}
         ~PlayerMovement(){}
 
-        virtual eMovementType getMovementType() const { return MOVEMENT_WANDER; }
-        virtual eMovementSpeed getMovementSpeed() const { return MEDIUM; }
+        virtual eMovementType GetMovementType() const { return MOVEMENT_WANDER; }
+        virtual eMovementSpeed GetMovementSpeed() const { return MEDIUM; }
     private:
     };
 
@@ -112,43 +112,43 @@ namespace StoneRing {
     public:
         Tile();
         virtual ~Tile(); 
-        virtual eElement whichElement() const{ return ETILE; }  
-        inline ushort getZOrder() const { return mZOrder; }
+        virtual eElement WhichElement() const{ return ETILE; }  
+        inline ushort GetZOrder() const { return m_ZOrder; }
 
-        inline bool isFloater() const { return (cFlags & FLOATER) != 0; }
-        bool evaluateCondition() const;
-        inline bool hasScript() const { return mpScript != NULL; }
+        inline bool IsFloater() const { return (cFlags & FLOATER) != 0; }
+        bool EvaluateCondition() const;
+        inline bool HasScript() const { return m_pScript != NULL; }
 
-        void activate(); // Call any attributemodifier
+        void Activate(); // Call any attributemodifier
 
-        inline uint getX() const { return mX; }
-        inline uint getY() const { return mY; }
+        inline uint GetX() const { return m_X; }
+        inline uint GetY() const { return m_Y; }
 
-        CL_Rect getRect();
+        CL_Rect GetRect();
 
-        inline bool isSprite() const { return (cFlags & SPRITE) != 0; }
+        inline bool IsSprite() const { return (cFlags & SPRITE) != 0; }
 
-        inline bool isHot() const { return (cFlags & HOT) != 0; }
+        inline bool IsHot() const { return (cFlags & HOT) != 0; }
 
-        inline bool pops() const { return (cFlags & POPS) != 0; }
+        inline bool Pops() const { return (cFlags & POPS) != 0; }
 
-        void draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
-        virtual void update();
-        int getDirectionBlock() const;
-        inline bool isTile() const { return true; }
+        void Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
+        virtual void Update();
+        int GetDirectionBlock() const;
+        inline bool IsTile() const { return true; }
 
     protected:
-        virtual bool handleElement(eElement element, Element * pElement);
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-        virtual void loadFinished();
+        virtual bool handle_element(eElement element, Element * pElement);
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes);
+        virtual void load_finished();
 
-        CL_Sprite *mpSprite;
-        SpriteRefOrTilemap mGraphic;
-        ushort mZOrder;
-        ScriptElement *mpCondition;
-        ScriptElement *mpScript;
-        ushort mX;
-        ushort mY;
+        CL_Sprite *m_pSprite;
+        SpriteRefOrTilemap m_Graphic;
+        ushort m_ZOrder;
+        ScriptElement *m_pCondition;
+        ScriptElement *m_pScript;
+        ushort m_X;
+        ushort m_Y;
 
         unsigned char cFlags;
 
@@ -159,21 +159,21 @@ namespace StoneRing {
     public:
         LevelHeader();
         virtual ~LevelHeader();
-        uint getLevelWidth() const { return mnLevelWidth; }
-        uint getLevelHeight() const { return mnLevelHeight; }
-        std::string getMusic() const { return mMusic; }
-        bool allowsRunning() const { return mbAllowsRunning; }
-        eElement whichElement() const { return ELEVELHEADER; }
-        void executeScript() const;
+        uint GetLevelWidth() const { return m_nLevelWidth; }
+        uint GetLevelHeight() const { return m_nLevelHeight; }
+        std::string GetMusic() const { return m_music; }
+        bool AllowsRunning() const { return m_bAllowsRunning; }
+        eElement WhichElement() const { return ELEVELHEADER; }
+        void ExecuteScript() const;
     private:
-        virtual bool handleElement(eElement element, Element * pElement);
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-        ScriptElement * mpScript;
+        virtual bool handle_element(eElement element, Element * pElement);
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes);
+        ScriptElement * m_pScript;
 
-        uint mnLevelWidth;
-        uint mnLevelHeight;
-        std::string mMusic;
-        bool mbAllowsRunning;
+        uint m_nLevelWidth;
+        uint m_nLevelHeight;
+        std::string m_music;
+        bool m_bAllowsRunning;
     };
 
     class Tiles : public Element
@@ -182,15 +182,15 @@ namespace StoneRing {
         Tiles();
         virtual ~Tiles();
 
-        std::list<Tile*>::const_iterator getTilesBegin()const;
-        std::list<Tile*>::const_iterator getTilesEnd()const;
+        std::list<Tile*>::const_iterator GetTilesBegin()const;
+        std::list<Tile*>::const_iterator GetTilesEnd()const;
 
-        eElement whichElement() const { return ETILES; }
+        eElement WhichElement() const { return ETILES; }
     private:
-        virtual bool handleElement(eElement element, Element * pElement);
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+        virtual bool handle_element(eElement element, Element * pElement);
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes);
     protected:
-        std::list<Tile*> mTiles;
+        std::list<Tile*> m_tiles;
     };
 
 
@@ -201,16 +201,16 @@ namespace StoneRing {
         MappableObjects();
         virtual ~MappableObjects();
 
-        std::list<MappableObject*>::const_iterator getMappableObjectsBegin() const;
-        std::list<MappableObject*>::const_iterator getMappableObjectsEnd() const;
+        std::list<MappableObject*>::const_iterator GetMappableObjectsBegin() const;
+        std::list<MappableObject*>::const_iterator GetMappableObjectsEnd() const;
 
-        eElement whichElement() const { return EMAPPABLEOBJECTS; }
+        eElement WhichElement() const { return EMAPPABLEOBJECTS; }
 
     private:
-        virtual bool handleElement(eElement element, Element * pElement);
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+        virtual bool handle_element(eElement element, Element * pElement);
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes);
     protected:
-        std::list<MappableObject*> mMappableObjects;
+        std::list<MappableObject*> m_mappable_objects;
     };
 
     class Level : public Element
@@ -218,22 +218,22 @@ namespace StoneRing {
     public:
         Level();
         virtual ~Level();
-        void loadFromFile(const std::string &filename);
-        void load(const std::string &name, CL_ResourceManager *pResources);
-        void invoke(); // run invoke script if any
-        eElement whichElement() const { return ELEVEL; }
+        void LoadFromFile(const std::string &filename);
+        void Load(const std::string &name, CL_ResourceManager *pResources);
+        void Invoke(); // run invoke script if any
+        eElement WhichElement() const { return ELEVEL; }
 
-        virtual void draw(const CL_Rect &src, const CL_Rect &dst,
+        virtual void Draw(const CL_Rect &src, const CL_Rect &dst,
                           CL_GraphicContext * pGC , bool floaters = false,
                           bool highlightHot=false,bool indicateBlocks = false);
-        virtual void drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
-        virtual void drawFloaters(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext * pGC);
+        virtual void DrawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
+        virtual void DrawFloaters(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext * pGC);
 
-        void moveMappableObjects(const CL_Rect &src);
+        void MoveMappableObjects(const CL_Rect &src);
 
         // Checks relevant tile and MO direction block information
         // And mark occupied and unoccupied if move is successful
-        bool tryMove(const CL_Point &currently, const CL_Point & destination );
+        bool TryMove(const CL_Point &currently, const CL_Point & destination );
 
         // Any talk events fire (assuming they meet conditions)
         // "target" describes the region which the player is talking to.
@@ -247,74 +247,74 @@ namespace StoneRing {
         // This is intended as a way to get people that are blocking you
         // out of your way. You prod them until they head in some direction which helps you.
         // Or.. you know... you could just prod people for fun.
-        virtual void talk(const CL_Point &target,  bool prod=false);
+        virtual void Talk(const CL_Point &target,  bool prod=false);
 
         // Propagate updates to any MO's in view. Provides as a level coordinate based rectangle
-        virtual void update(const CL_Rect & updateRect);
+        virtual void Update(const CL_Rect & updateRect);
 
-        uint getWidth() const { return mLevelWidth; }
-        uint getHeight() const { return mLevelHeight; }
-        bool allowsRunning() const { return mbAllowsRunning; }
-        std::string getName() const { return mName; }
+        uint GetWidth() const { return m_LevelWidth; }
+        uint GetHeight() const { return m_LevelHeight; }
+        bool AllowsRunning() const { return m_bAllowsRunning; }
+        std::string GetName() const { return m_name; }
 
         // Player interfaces
-        MappablePlayer * getPlayer() { return &mPlayer; }
-        void setPlayerPos(const CL_Point &target);
+        MappablePlayer * GetPlayer() { return &m_player; }
+        void SetPlayerPos(const CL_Point &target);
 
-        void markForDeath() { mbMarkedForDeath = true; }
+        void MarkForDeath() { m_bMarkedForDeath = true; }
 
 #ifndef NDEBUG
-        void dumpMappableObjects() const;
+        void DumpMappableObjects() const;
 #endif
     protected:
 
         typedef MOMap::value_type MOMapValueType;
-        std::vector<std::vector<std::list<Tile*> > > mTileMap;
+        std::vector<std::vector<std::list<Tile*> > > m_tiles;
         // Needs to be a multimap
-        std::map<CL_Point, std::list<Tile*> > mFloaterMap;
-        MOMap mMOMap;
-        MonsterRegions *mpMonsterRegions;
+        std::map<CL_Point, std::list<Tile*> > m_floater_map;
+        MOMap m_MO_map;
+        MonsterRegions *m_pMonsterRegions;
 
         // Element virtuals
-        virtual bool handleElement(eElement element, Element * pElement);
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-        virtual void loadFinished();
+        virtual bool handle_element(eElement element, Element * pElement);
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes);
+        virtual void load_finished();
 
         // MO related operations
-        bool containsMappableObjects(const CL_Point &point) const;
-        bool containsSolidMappableObject(const CL_Point &point) const;
-        void setMappableObjectAt(const CL_Point &point, MappableObject*  pMO);
-        void putMappableObjectAtCurrentPosition(MappableObject *pMO);
-        void removeMappableObjectAt(const CL_Point &point, MappableObject * pMO);
+        bool Contains_Mappable_Objects(const CL_Point &point) const;
+        bool Contains_Solid_Mappable_Object(const CL_Point &point) const;
+        void Set_Mappable_Object_At(const CL_Point &point, MappableObject*  pMO);
+        void Put_Mappable_Object_At_Current_Position(MappableObject *pMO);
+        void Remove_Mappable_Object_At(const CL_Point &point, MappableObject * pMO);
 
         // Sort tiles on zOrder
-        static bool tileSortCriterion ( const Tile * p1, const Tile * p2 );
+        static bool Tile_Sort_Criterion ( const Tile * p1, const Tile * p2 );
 
-        void loadTile ( Tile * tileElement );
-        void loadMo ( MappableObject * moElement );
+        void Load_Tile ( Tile * tileElement );
+        void Load_Mo ( MappableObject * moElement );
 
         // All AM's from tiles fire, as do any step events
-        virtual void step(const CL_Point &destination);
+        virtual void Step(const CL_Point &destination);
 
         // Tile related operations
         // Call attribute modifiers on tiles at this location
-        void activateTilesAt ( uint x, uint y );
-        int getCumulativeDirectionBlockAtPoint(const CL_Point &point) const;
-        bool getCumulativeHotnessAtPoint(const CL_Point &point) const;
+        void Activate_Tiles_At ( uint x, uint y );
+        int Get_Cumulative_Direction_Block_At_Point(const CL_Point &point) const;
+        bool Get_Cumulative_Hotness_At_Point(const CL_Point &point) const;
 
-        CL_ResourceManager * mpResources;
-        CL_DomDocument * mpDocument;
-        ScriptElement *mpScript;
-        LevelHeader *mpHeader;
-        std::string mMusic;
-        std::string mName;
-        uint mLevelWidth;
-        uint mLevelHeight;
-        bool mbAllowsRunning;
-        mutable uint mnFrameCount;
-        uint mnMoveCount;
-        MappablePlayer mPlayer;
-        bool mbMarkedForDeath;
+        CL_ResourceManager * m_pResources;
+        CL_DomDocument * m_pDocument;
+        ScriptElement *m_pScript;
+        LevelHeader *m_pHeader;
+        std::string m_music;
+        std::string m_name;
+        uint m_LevelWidth;
+        uint m_LevelHeight;
+        bool m_bAllowsRunning;
+        mutable uint m_nFrameCount;
+        uint m_nMoveCount;
+        MappablePlayer m_player;
+        bool m_bMarkedForDeath;
 
     };
 
@@ -327,7 +327,7 @@ struct LessTile : public std::binary_function<const StoneRing::Tile*,
 {
     bool operator()(const StoneRing::Tile* n1, const StoneRing::Tile *n2) const
         {
-            return n1->getZOrder() < n2->getZOrder();
+            return n1->GetZOrder() < n2->GetZOrder();
         }
 };
 

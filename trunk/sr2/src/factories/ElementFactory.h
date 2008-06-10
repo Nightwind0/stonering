@@ -95,26 +95,7 @@ namespace StoneRing
 
         typedef Element * (ElementFactory::* CreateMethod)() const;
         typedef std::map<std::string,CreateMethod> MethodMap;
-        //class CreateFunctorBase
-        //{
-        //public:
-        //    virtual Element * operator();
-        //};
 
-        //template <class T>
-        //class CreateFunctor : public CreateFunctorBase
-        //{
-        //public:
-        //    typedef Element * (T::CreateMethod*)()const;
-        //    CreateFunctor(T *pThis,CreateMethod pMethod)
-        //        :mpThis(pThis),mpMethod(pMethod){}
-        //    ~CreateFunctor();
-
-        //    virtual Element * operator() { return (mpThis->*mpMethod); }
-        // private:
-        //    T *mpThis;
-        //    CreateMethod mpMethod;
-        //};
         void registerCreateMethods();
         MethodMap mCreateMethods;
 

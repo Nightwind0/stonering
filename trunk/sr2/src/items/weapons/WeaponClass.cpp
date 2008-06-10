@@ -7,51 +7,51 @@
 
 using namespace StoneRing;
 
-WeaponClass::WeaponClass():mpScript(NULL),mpEquipScript(NULL),
-mpUnequipScript(NULL),mpConditionScript(NULL)
+WeaponClass::WeaponClass():m_pScript(NULL),m_pEquipScript(NULL),
+m_pUnequipScript(NULL),m_pConditionScript(NULL)
 {
 }
 
-void WeaponClass::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+void WeaponClass::load_attributes(CL_DomNamedNodeMap * pAttributes)
 {
-    mName = getRequiredString("name",pAttributes );
-    mfValueMultiplier = getImpliedFloat("valueMultiplier",pAttributes,1);
-    mnValueAdd = getImpliedInt("valueAdd",pAttributes,0);
+    m_name = get_required_string("name",pAttributes );
+    m_fValueMultiplier = get_implied_float("valueMultiplier",pAttributes,1);
+    m_nValueAdd = get_implied_int("valueAdd",pAttributes,0);
 }
 
-bool WeaponClass::handleElement(eElement element, Element * pElement)
+bool WeaponClass::handle_element(eElement element, Element * pElement)
 {
     switch(element)
     {
     case ESCRIPT:
-        mpScript = dynamic_cast<ScriptElement*>(pElement);
+        m_pScript = dynamic_cast<ScriptElement*>(pElement);
         break;
     case EONUNEQUIP:
-        mpUnequipScript = dynamic_cast<NamedScript*>(pElement);
+        m_pUnequipScript = dynamic_cast<NamedScript*>(pElement);
         break;
     case EONEQUIP:
-        mpEquipScript = dynamic_cast<NamedScript*>(pElement);
+        m_pEquipScript = dynamic_cast<NamedScript*>(pElement);
         break;
     case ECONDITIONSCRIPT:
-        mpConditionScript = dynamic_cast<ScriptElement*>(pElement);
+        m_pConditionScript = dynamic_cast<ScriptElement*>(pElement);
         break;
     case EATTRIBUTEENHANCER:
-        mAttributeEnhancers.push_back( dynamic_cast<AttributeEnhancer*>(pElement) );
+        m_attribute_enhancers.push_back( dynamic_cast<AttributeEnhancer*>(pElement) );
         break;
     case EWEAPONENHANCER:
-        mWeaponEnhancers.push_back( dynamic_cast<WeaponEnhancer*>(pElement) );
+        m_weapon_enhancers.push_back( dynamic_cast<WeaponEnhancer*>(pElement) );
         break;
     case EWEAPONTYPEEXCLUSIONLIST:
     {
         WeaponTypeExclusionList * pList = dynamic_cast<WeaponTypeExclusionList*>(pElement);
-        std::copy(pList->getWeaponTypeRefsBegin(),pList->getWeaponTypeRefsEnd(), 
-                  std::back_inserter(mExcludedTypes));
+        std::copy(pList->GetWeaponTypeRefsBegin(),pList->GetWeaponTypeRefsEnd(), 
+                  std::back_inserter(m_excluded_types));
 
         delete pList;
         break;
     }
     case ESTATUSEFFECTMODIFIER:
-        addStatusEffectModifier (dynamic_cast<StatusEffectModifier*>(pElement));
+        add_status_effect_modifier (dynamic_cast<StatusEffectModifier*>(pElement));
         break;
     default:
         return false;
@@ -60,93 +60,93 @@ bool WeaponClass::handleElement(eElement element, Element * pElement)
     return true;
 }
 
-void WeaponClass::executeScript()
+void WeaponClass::ExecuteScript()
 {
-    if(mpScript) mpScript->executeScript();
+    if(m_pScript) m_pScript->ExecuteScript();
 }
 
-bool WeaponClass::equipCondition()
+bool WeaponClass::EquipCondition()
 {
-    if(mpConditionScript)
-        return mpConditionScript->evaluateCondition();
+    if(m_pConditionScript)
+        return m_pConditionScript->EvaluateCondition();
     else return true;
 }
 
-void WeaponClass::onEquipScript()
+void WeaponClass::OnEquipScript()
 {
-    mpEquipScript->executeScript();
+    m_pEquipScript->ExecuteScript();
 }
 
-void WeaponClass::onUnequipScript()
+void WeaponClass::OnUnequipScript()
 {
-    mpUnequipScript->executeScript(); 
+    m_pUnequipScript->ExecuteScript(); 
 }
 
 WeaponClass::~WeaponClass()
 {
-    std::for_each(mAttributeEnhancers.begin(),mAttributeEnhancers.end(),del_fun<AttributeEnhancer>());
-    std::for_each(mWeaponEnhancers.begin(),mWeaponEnhancers.end(),del_fun<WeaponEnhancer>());
-    std::for_each(mExcludedTypes.begin(),mExcludedTypes.end(),del_fun<WeaponTypeRef>());
+    std::for_each(m_attribute_enhancers.begin(),m_attribute_enhancers.end(),del_fun<AttributeEnhancer>());
+    std::for_each(m_weapon_enhancers.begin(),m_weapon_enhancers.end(),del_fun<WeaponEnhancer>());
+    std::for_each(m_excluded_types.begin(),m_excluded_types.end(),del_fun<WeaponTypeRef>());
 
-    delete mpScript;
-    delete mpUnequipScript;
-    delete mpEquipScript;
-    delete mpConditionScript;
+    delete m_pScript;
+    delete m_pUnequipScript;
+    delete m_pEquipScript;
+    delete m_pConditionScript;
 }
 
 bool WeaponClass::operator==(const WeaponClass &lhs)
 {
-    return mName == lhs.mName;
+    return m_name == lhs.m_name;
 }
 
-std::string WeaponClass::getName() const
+std::string WeaponClass::GetName() const
 {
-    return mName;
+    return m_name;
 }
 
-int WeaponClass::getValueAdd() const
+int WeaponClass::GetValueAdd() const
 {
-    return mnValueAdd;
+    return m_nValueAdd;
 }
 
-float WeaponClass::getValueMultiplier() const
+float WeaponClass::GetValueMultiplier() const
 {
-    return mfValueMultiplier;
-}
-
-std::list<AttributeEnhancer*>::const_iterator 
-WeaponClass::getAttributeEnhancersBegin()
-{
-    return mAttributeEnhancers.begin();
+    return m_fValueMultiplier;
 }
 
 std::list<AttributeEnhancer*>::const_iterator 
-WeaponClass::getAttributeEnhancersEnd()
+WeaponClass::GetAttributeEnhancersBegin()
 {
-    return mAttributeEnhancers.end();
+    return m_attribute_enhancers.begin();
+}
+
+std::list<AttributeEnhancer*>::const_iterator 
+WeaponClass::GetAttributeEnhancersEnd()
+{
+    return m_attribute_enhancers.end();
 }
 
 std::list<WeaponEnhancer*>::const_iterator 
-WeaponClass::getWeaponEnhancersBegin()
+WeaponClass::GetWeaponEnhancersBegin()
 {
-    return mWeaponEnhancers.begin();
+    return m_weapon_enhancers.begin();
 }
 
 std::list<WeaponEnhancer*>::const_iterator 
-WeaponClass::getWeaponEnhancersEnd()
+WeaponClass::GetWeaponEnhancersEnd()
 {
-    return mWeaponEnhancers.end();
+    return m_weapon_enhancers.end();
 }
 
-bool WeaponClass::isExcluded ( const WeaponTypeRef &weaponType )
+bool WeaponClass::IsExcluded ( const WeaponTypeRef &weaponType )
 {
-    for(std::list<WeaponTypeRef*>::const_iterator iter = mExcludedTypes.begin();
-        iter != mExcludedTypes.end();
+    for(std::list<WeaponTypeRef*>::const_iterator iter = m_excluded_types.begin();
+        iter != m_excluded_types.end();
         iter++)
     {
         WeaponTypeRef * pRef = *iter;
 
-        if( pRef->getName() == weaponType.getName() ) 
+        if( pRef->GetName() == weaponType.GetName() ) 
             return true;
     }
 

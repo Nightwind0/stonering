@@ -14,34 +14,34 @@ namespace StoneRing{
         WeaponType(CL_DomElement * pElement );
         ~WeaponType();
 
-        virtual eElement whichElement() const{ return EWEAPONTYPE; }    
+        virtual eElement WhichElement() const{ return EWEAPONTYPE; }    
 
-        std::string getName() const;
-        std::string getIconRef() const;
+        std::string GetName() const;
+        std::string GetIconRef() const;
 
-        uint getBaseAttack() const;
-        float getBaseHit() const;
-        float getBaseCritical() const;
-        uint getBasePrice() const;
-        bool isRanged() const;
-        bool isTwoHanded() const;
+        uint GetBaseAttack() const;
+        float GetBaseHit() const;
+        float GetBaseCritical() const;
+        uint GetBasePrice() const;
+        bool IsRanged() const;
+        bool IsTwoHanded() const;
 
-        DamageCategory *getDamageCategory () const { return mpDamageCategory; }
+        DamageCategory *GetDamageCategory () const { return m_pDamageCategory; }
 
         bool operator==(const WeaponType &lhs);
 
     private:
-        virtual bool handleElement(eElement element, Element * pElement );
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
-        DamageCategory * mpDamageCategory;
-        std::string mName;
-        std::string mIconRef;
-        uint mnBasePrice;
-        uint mnBaseAttack;
-        float mfBaseHit;
-        float mfBaseCritical;
-        bool mbRanged;
-        bool mbTwoHanded;
+        virtual bool handle_element(eElement element, Element * pElement );
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes) ;
+        DamageCategory * m_pDamageCategory;
+        std::string m_name;
+        std::string m_icon_ref;
+        uint m_nBasePrice;
+        uint m_nBaseAttack;
+        float m_fBaseHit;
+        float m_fBaseCritical;
+        bool m_bRanged;
+        bool m_bTwoHanded;
         
     };
 };

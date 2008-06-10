@@ -19,49 +19,49 @@ public:
     MonsterElement();
     virtual ~MonsterElement();
 
-    std::string getName() const ;
-    ICharacter::eType getType() const { return meType; }
+    std::string GetName() const ;
+    ICharacter::eType GetType() const { return m_eType; }
 
-    void invoke();
-    void round();
-    void die();
+    void Invoke();
+    void Round();
+    void Die();
 
-    bool hasClass() const { return mbClass; }
-    CharacterClass *getClass() const { return mpClass; }
+    bool HasClass() const { return m_bClass; }
+    CharacterClass *GetClass() const { return m_pClass; }
    // std::string getSpriteResources() const { return mSpriteResources; }
-    uint getLevel() const { return mnLevel; }
+    uint GetLevel() const { return m_nLevel; }
 
-    std::list<ItemRef*>::const_iterator getItemRefsBegin() const;
-    std::list<ItemRef*>::const_iterator getItemRefsEnd() const;
+    std::list<ItemRef*>::const_iterator GetItemRefsBegin() const;
+    std::list<ItemRef*>::const_iterator GetItemRefsEnd() const;
 
     // SpriteDefinition * getSpriteDefinition(const std::string &name)const;
 
     /** 
     * Element interface
     */
-    virtual eElement whichElement() const { return EMONSTER; }
+    virtual eElement WhichElement() const { return EMONSTER; }
 private:
     /* Element stuff */
-    virtual bool handleElement(eElement, Element * );
-    virtual void loadAttributes(CL_DomNamedNodeMap *);
-    virtual void handleText(const std::string &);
-    virtual void loadFinished();
+    virtual bool handle_element(eElement, Element * );
+    virtual void load_attributes(CL_DomNamedNodeMap *);
+    virtual void handle_text(const std::string &);
+    virtual void load_finished();
 
-    std::list<ItemRef*> mItems;
+    std::list<ItemRef*> m_items;
 
-    NamedScript *mpOnInvoke;
-    NamedScript *mpOnRound;
-    NamedScript *mpOnRemove;
+    NamedScript *m_pOnInvoke;
+    NamedScript *m_pOnRound;
+    NamedScript *m_pOnRemove;
 
-    std::map<ICharacter::eCharacterAttribute,Stat*> mStatMap;
-    std::map<std::string,SpriteDefinition*> mSpriteDefinitionsMap;
-    std::string mSpriteResources;
-    ICharacter::eType meType;
-    bool mbClass;
-    CharacterClass *mpClass;
-    Character::eType meCharacterType;
-    uint mnLevel;
-    std::string mName;
+    std::map<ICharacter::eCharacterAttribute,Stat*> m_stat_map;
+    std::map<std::string,SpriteDefinition*> m_sprite_definitions_map;
+    std::string m_sprite_resources;
+    ICharacter::eType m_eType;
+    bool m_bClass;
+    CharacterClass *m_pClass;
+    Character::eType m_eCharacterType;
+    uint m_nLevel;
+    std::string m_name;
 
 };
 

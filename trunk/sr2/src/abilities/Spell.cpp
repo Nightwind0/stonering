@@ -12,28 +12,30 @@ using namespace StoneRing;
 
 
 Spell::Spell()
+:mpScript(NULL),
+mpMagicResistance(NULL)
 {
 }
 
 void Spell::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 {
-    mName = getRequiredString("name", pAttributes);
-    meType = Magic::typeOf(getRequiredString("type", pAttributes));
+    mName = get_required_string("name", pAttributes);
+    meType = Magic::TypeOf(get_required_string("type", pAttributes));
 
     if(meType == Magic::UNKNOWN)
     {
         throw CL_Error("Bad magic type in spell.");
     }
 
-    meUse = getUseFromString(getRequiredString("use", pAttributes));
-    meTargetable = getTargetableFromString(getRequiredString("targetable", pAttributes));
+    meUse = getUseFromString(get_required_string("use", pAttributes));
+    meTargetable = getTargetableFromString(get_required_string("targetable", pAttributes));
 
-    mbAppliesToWeapons = getImpliedBool ("appliesToWeapons",pAttributes, false);
-    mbAppliesToArmor = getImpliedBool ("appliesToArmor",pAttributes, false);
+    mbAppliesToWeapons = get_implied_bool ("appliesToWeapons",pAttributes, false);
+    mbAppliesToArmor = get_implied_bool ("appliesToArmor",pAttributes, false);
     
-    mnValue = getRequiredUint("value",pAttributes);
+    mnValue = get_required_uint("value",pAttributes);
 
-    mnMP = getRequiredUint("mp", pAttributes);
+    mnMP = get_required_uint("mp", pAttributes);
 }
 
 bool Spell::handleElement(eElement element, Element * pElement)
@@ -133,8 +135,8 @@ SpellRef * Spell::createSpellRef() const
 {
     SpellRef * ref = new SpellRef;
    
-    ref->setType( meType );
-    ref->setName( mName );
+    ref->SetType( meType );
+    ref->SetName( mName );
 
     return ref;
 }
@@ -147,14 +149,14 @@ MagicResistance::MagicResistance():meType(Magic::UNKNOWN)
 {
 }
 
-void MagicResistance::loadAttributes(CL_DomNamedNodeMap *pAttributes)
+void MagicResistance::load_attributes(CL_DomNamedNodeMap *pAttributes)
 {
-    meType = Magic::typeOf(getRequiredString("type",pAttributes));
+    meType = Magic::TypeOf(get_required_string("type",pAttributes));
 
     if(meType == Magic::UNKNOWN)
         throw CL_Error("Bad magic type on magicResistance");
 
-    mfResistance = getRequiredFloat("resist", pAttributes);
+    m_fResistance = get_required_float("resist", pAttributes);
 }
 
 
@@ -164,14 +166,14 @@ MagicResistance::~MagicResistance()
 
 
 
-float MagicResistance::getResistance() const
+float MagicResistance::GetResistance() const
 {
-    return mfResistance;
+    return m_fResistance;
 }
 
 
 
-Magic::eMagicType MagicResistance::getType() const
+Magic::eMagicType MagicResistance::GetType() const
 {
     return meType;
 }

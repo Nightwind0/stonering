@@ -889,6 +889,10 @@
 					RelativePath="..\src\battle\ActionQueue.h"
 					>
 				</File>
+				<File
+					RelativePath="..\src\battle\IBattleAction.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

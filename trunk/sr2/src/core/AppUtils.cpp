@@ -14,7 +14,7 @@ AppUtils::~AppUtils()
 {
 }
 
-void AppUtils::loadGameplayAssets(const std::string &path, CL_ResourceManager *pResources)
+void AppUtils::LoadGameplayAssets(const std::string &path, CL_ResourceManager *pResources)
 {
     std::string startinglevel = CL_String::load("Game/StartLevel",pResources);
     std::string itemdefinition = CL_String::load("Game/ItemDefinitions", pResources );
@@ -25,17 +25,17 @@ void AppUtils::loadGameplayAssets(const std::string &path, CL_ResourceManager *p
     std::string monsterdefinition = CL_String::load("Game/MonsterDefinitions",pResources);
     std::string characterdefinition = CL_String::load("Game/CharacterDefinitions",pResources);
 
-    loadStatusEffects(path + statusEffectDefinition);
-    loadSpells(path + spelldefinition);
-    loadItems(path + itemdefinition);
-    loadSkills(path + skilldefinition);
-    loadCharacterClasses(path + classdefinition);
-    loadMonsters(path + monsterdefinition);
-    loadCharacters(path + characterdefinition);
+    LoadStatusEffects(path + statusEffectDefinition);
+    LoadSpells(path + spelldefinition);
+    LoadItems(path + itemdefinition);
+    LoadSkills(path + skilldefinition);
+    LoadCharacterClasses(path + classdefinition);
+    LoadMonsters(path + monsterdefinition);
+    LoadCharacters(path + characterdefinition);
 }
 
 
-void AppUtils::loadSpells(const std::string &filename)
+void AppUtils::LoadSpells(const std::string &filename)
 {
 #ifndef NDEBUG
     std::cout << "Loading spells..." << std::endl;
@@ -46,10 +46,10 @@ void AppUtils::loadSpells(const std::string &filename)
         
     document.load(&file);
 
-    getAbilityManager()->loadSpellFile ( document );
+    GetAbilityManager()->LoadSpellFile ( document );
 }
 
-void AppUtils::loadSkills(const std::string &filename)
+void AppUtils::LoadSkills(const std::string &filename)
 {
 #ifndef NDEBUG
     std::cout << "Loading skills..." << std::endl;
@@ -59,10 +59,10 @@ void AppUtils::loadSkills(const std::string &filename)
     CL_DomDocument document;
     document.load(&file);
 
-    getAbilityManager()->loadSkillFile ( document );
+    GetAbilityManager()->LoadSkillFile ( document );
 }
 
-void AppUtils::loadStatusEffects(const std::string &filename)
+void AppUtils::LoadStatusEffects(const std::string &filename)
 {
 #ifndef NDEBUG
     std::cout << "Loading status effects...." << std::endl;
@@ -73,10 +73,10 @@ void AppUtils::loadStatusEffects(const std::string &filename)
 
     document.load(&file);
 
-    getAbilityManager()->loadStatusEffectFile( document );
+    GetAbilityManager()->LoadStatusEffectFile( document );
 }
 
-void AppUtils::loadCharacterClasses(const std::string &filename)
+void AppUtils::LoadCharacterClasses(const std::string &filename)
 {
 #ifndef NDEBUG
     std::cout << "Loading character classes..." << std::endl;
@@ -86,10 +86,10 @@ void AppUtils::loadCharacterClasses(const std::string &filename)
     CL_DomDocument document;
     document.load(&file);
 
-    getCharacterManager()->loadCharacterClassFile( document );
+    GetCharacterManager()->LoadCharacterClassFile( document );
 }
 
-void AppUtils::loadCharacters(const std::string &filename)
+void AppUtils::LoadCharacters(const std::string &filename)
 {
 #ifndef NDEBUG
     std::cout << "Loading characters from " << filename << std::endl;
@@ -99,10 +99,10 @@ void AppUtils::loadCharacters(const std::string &filename)
     CL_DomDocument document;
     document.load(&file);
 
-    getCharacterManager()->loadCharacters(document);
+    GetCharacterManager()->LoadCharacters(document);
 }
 
-void AppUtils::loadMonsters(const std::string &filename)
+void AppUtils::LoadMonsters(const std::string &filename)
 {
 #ifndef NDEBUG
     std::cout << "Loading monsters..." << std::endl;
@@ -112,10 +112,10 @@ void AppUtils::loadMonsters(const std::string &filename)
     CL_DomDocument document;
     document.load(&file);
 
-    getCharacterManager()->loadMonsterFile(document);
+    GetCharacterManager()->LoadMonsterFile(document);
 }
 
-void AppUtils::loadItems(const std::string &filename)
+void AppUtils::LoadItems(const std::string &filename)
 {
 #ifndef NDEBUG
     std::cout << "Loading items..." << std::endl;
@@ -125,31 +125,31 @@ void AppUtils::loadItems(const std::string &filename)
     CL_DomDocument document;
    
     document.load(&file);
-    getItemManager()->loadItemFile ( document );
+    GetItemManager()->LoadItemFile ( document );
 }
 
-StoneRing::AbilityManager * AppUtils::getAbilityManager()
+StoneRing::AbilityManager * AppUtils::GetAbilityManager()
 {
-    IApplication *pApp = IApplication::getInstance();
+    IApplication *pApp = IApplication::GetInstance();
     assert ( NULL != pApp );
-    AbilityManager * pMgr = pApp->getAbilityManager();
+    AbilityManager * pMgr = pApp->GetAbilityManager();
     assert ( NULL != pMgr );
 
     return pMgr;
 }
 
-StoneRing::ItemManager * AppUtils::getItemManager()
+StoneRing::ItemManager * AppUtils::GetItemManager()
 {
-    IApplication *pApp = IApplication::getInstance();
+    IApplication *pApp = IApplication::GetInstance();
     assert ( NULL != pApp );
 
-    return pApp->getItemManager();
+    return pApp->GetItemManager();
 }
 
-StoneRing::CharacterManager * AppUtils::getCharacterManager()
+StoneRing::CharacterManager * AppUtils::GetCharacterManager()
 {
-    IApplication *pApp = IApplication::getInstance();
+    IApplication *pApp = IApplication::GetInstance();
     assert ( NULL != pApp );
 
-    return pApp->getCharacterManager();
+    return pApp->GetCharacterManager();
 }

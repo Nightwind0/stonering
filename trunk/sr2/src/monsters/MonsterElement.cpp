@@ -8,43 +8,44 @@
 using StoneRing::MonsterElement;
 using StoneRing::ItemRef;
 using StoneRing::SpriteDefinition;
+using StoneRing::Element;
 
 MonsterElement::MonsterElement()
-:mpOnInvoke(NULL),mpOnRound(NULL),mpOnRemove(NULL),mnLevel(1)
+:m_pOnInvoke(NULL),m_pOnRound(NULL),m_pOnRemove(NULL),m_nLevel(1)
 {
 }
 
 MonsterElement::~MonsterElement()
 {
-    delete mpOnRound;
-    delete mpOnInvoke;
-    delete mpOnRemove;
+    delete m_pOnRound;
+    delete m_pOnInvoke;
+    delete m_pOnRemove;
 }
 
-void MonsterElement::invoke()
+void MonsterElement::Invoke()
 {
-    if(mpOnInvoke)
-        mpOnInvoke->executeScript();
+    if(m_pOnInvoke)
+        m_pOnInvoke->ExecuteScript();
 }
-void MonsterElement::round()
+void MonsterElement::Round()
 {
-    if(mpOnRound)
-        mpOnRound->executeScript();
+    if(m_pOnRound)
+        m_pOnRound->ExecuteScript();
 }
-void MonsterElement::die()
+void MonsterElement::Die()
 {
-    if(mpOnRemove)
-        mpOnRemove->executeScript();
-}
-
-std::list<ItemRef*>::const_iterator MonsterElement::getItemRefsBegin() const
-{
-    return mItems.begin();
+    if(m_pOnRemove)
+        m_pOnRemove->ExecuteScript();
 }
 
-std::list<ItemRef*>::const_iterator MonsterElement::getItemRefsEnd() const
+std::list<ItemRef*>::const_iterator MonsterElement::GetItemRefsBegin() const
 {
-    return mItems.end();
+    return m_items.begin();
+}
+
+std::list<ItemRef*>::const_iterator MonsterElement::GetItemRefsEnd() const
+{
+    return m_items.end();
 }
 
 #if 0
@@ -59,33 +60,33 @@ SpriteDefinition * MonsterElement::getSpriteDefinition(const std::string &name) 
 #endif
 
 /** Element Stuff **/
-bool MonsterElement::handleElement(eElement element, Element * pElement)
+bool MonsterElement::handle_element(Element::eElement element, StoneRing::Element * pElement)
 {
     switch(element)
     {
     case ESTAT:
         {
             Stat * pStat = dynamic_cast<Stat*>(pElement);
-            mStatMap[pStat->getAttribute()] = pStat;
+            m_stat_map[pStat->GetAttribute()] = pStat;
             break;
         }
     case EITEMREF:
-        mItems.push_back ( dynamic_cast<ItemRef*>(pElement) );
+        m_items.push_back ( dynamic_cast<ItemRef*>(pElement) );
         break;
     case EONROUND:
-        mpOnRound = dynamic_cast<NamedScript*>(pElement);
-        assert(mpOnRound != NULL);
+        m_pOnRound = dynamic_cast<NamedScript*>(pElement);
+        assert(m_pOnRound != NULL);
         break;
     case EONINVOKE:
-        mpOnInvoke = dynamic_cast<NamedScript*>(pElement);
+        m_pOnInvoke = dynamic_cast<NamedScript*>(pElement);
         break;
     case EONREMOVE:
-        mpOnRemove = dynamic_cast<NamedScript*>(pElement);
+        m_pOnRemove = dynamic_cast<NamedScript*>(pElement);
         break;
     case ESPRITEDEFINITION:
         {
             SpriteDefinition * pSpriteDef = dynamic_cast<SpriteDefinition*>(pElement);
-            mSpriteDefinitionsMap[pSpriteDef->getName()] = pSpriteDef;
+            m_sprite_definitions_map[pSpriteDef->GetName()] = pSpriteDef;
             break;
         }
     default:
@@ -95,60 +96,60 @@ bool MonsterElement::handleElement(eElement element, Element * pElement)
     return true;
 }
 
-void MonsterElement::loadAttributes(CL_DomNamedNodeMap *pAttr)
+void MonsterElement::load_attributes(CL_DomNamedNodeMap *pAttr)
 {
-    mName = getRequiredString("name",pAttr);
-    mSpriteResources = getRequiredString("spriteResources",pAttr);
-    std::string mode = getRequiredString("mode",pAttr);
-    mnLevel = getRequiredInt("level",pAttr);
-    std::string type = getImpliedString("type",pAttr,"living");
+    m_name = get_required_string("name",pAttr);
+    m_sprite_resources = get_required_string("spriteResources",pAttr);
+    std::string mode = get_required_string("mode",pAttr);
+    m_nLevel = get_required_int("level",pAttr);
+    std::string type = get_implied_string("type",pAttr,"living");
 
     if(mode == "manual")
     {
-        mbClass = false;
+        m_bClass = false;
     }
     else if(mode=="class")
     {
-        mbClass = true;
+        m_bClass = true;
     }
     else throw CL_Error("Unknown monster mode");
 
     if(type == "living")
-        meType = ICharacter::LIVING;
+        m_eType = ICharacter::LIVING;
     else if(type == "nonliving")
-        meType = ICharacter::NONLIVING;
+        m_eType = ICharacter::NONLIVING;
     else if(type == "magical")
-        meType = ICharacter::MAGICAL;
+        m_eType = ICharacter::MAGICAL;
 
-    if(mbClass)
+    if(m_bClass)
     {
-        std::string classname = getRequiredString("class",pAttr);
-        mpClass = IApplication::getInstance()->getCharacterManager()->getClass(classname);
+        std::string classname = get_required_string("class",pAttr);
+        m_pClass = IApplication::GetInstance()->GetCharacterManager()->GetClass(classname);
     }
 
 }
 
-void MonsterElement::handleText(const std::string &)
+void MonsterElement::handle_text(const std::string &)
 {
 }
 
-void MonsterElement::loadFinished()
+void MonsterElement::load_finished()
 {
-    if(!mpOnRound) throw CL_Error("Missing onRound on monster " + mName);
+    if(!m_pOnRound) throw CL_Error("Missing onRound on monster " + m_name);
 
     // Check for all the required stats
-    if(!mbClass)
+    if(!m_bClass)
     {
     } 
 
     // TODO: Make sure the required sprites are available
 #ifndef NDEBUG
-    std::cout << '\t' << mName << std::endl;
+    std::cout << '\t' << m_name << std::endl;
 #endif
 
 }
 
-std::string MonsterElement::getName() const
+std::string MonsterElement::GetName() const
 {
-    return mName;
+    return m_name;
 }

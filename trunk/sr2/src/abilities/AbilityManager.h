@@ -17,25 +17,25 @@ namespace StoneRing
         AbilityManager(){}
         ~AbilityManager();
 
-        void loadSpellFile ( CL_DomDocument &doc );
-        void loadStatusEffectFile ( CL_DomDocument &doc );
-        void loadSkillFile(CL_DomDocument &doc );
+        void LoadSpellFile ( CL_DomDocument &doc );
+        void LoadStatusEffectFile ( CL_DomDocument &doc );
+        void LoadSkillFile(CL_DomDocument &doc );
     
-        std::list<Spell*>::const_iterator getSpellsBegin() const;
-        std::list<Spell*>::const_iterator  getSpellsEnd() const;
+        std::list<Spell*>::const_iterator GetSpellsBegin() const;
+        std::list<Spell*>::const_iterator  GetSpellsEnd() const;
 
-        std::map<std::string,Skill*>::const_iterator getSkillsBegin() const;
-        std::map<std::string,Skill*>::const_iterator getSkillsEnd() const;
+        std::map<std::string,Skill*>::const_iterator GetSkillsBegin() const;
+        std::map<std::string,Skill*>::const_iterator GetSkillsEnd() const;
 
-        std::list<StatusEffect*>::const_iterator getStatusEffectsBegin() const;
-        std::list<StatusEffect*>::const_iterator getStatusEffectsEnd() const;
+        std::list<StatusEffect*>::const_iterator GetStatusEffectsBegin() const;
+        std::list<StatusEffect*>::const_iterator GetStatusEffectsEnd() const;
 
-        virtual Spell * getSpell( const SpellRef & ref ) const;
-        virtual StatusEffect * getStatusEffect ( const std::string &ref ) const;
-        virtual Skill * getSkill ( const SkillRef &ref ) const;
+        virtual Spell * GetSpell( const SpellRef & ref ) const;
+        virtual StatusEffect * GetStatusEffect ( const std::string &ref ) const;
+        virtual Skill * GetSkill ( const SkillRef &ref ) const;
 
 #ifndef NDEBUG
-        void dumpSpellList();
+        void DumpSpellList();
 #endif
     
 
@@ -44,9 +44,9 @@ namespace StoneRing
         typedef std::list<Spell*> SpellList;
         typedef std::list<StatusEffect*> StatusEffectList;
 
-        SkillMap mSkills;
-        SpellList mSpells;
-        StatusEffectList mStatusEffects;
+        SkillMap m_skills;
+        SpellList m_spells;
+        StatusEffectList m_status_effects;
     };
 
 

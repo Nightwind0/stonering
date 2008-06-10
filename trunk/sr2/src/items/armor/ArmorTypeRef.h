@@ -10,14 +10,14 @@ namespace StoneRing{
     public:
         ArmorTypeRef();
         virtual ~ArmorTypeRef();
-        virtual eElement whichElement() const{ return EARMORTYPEREF; }  
-        std::string getName() const;
-        void setName(const std::string &name){ mName = name; }
+        virtual eElement WhichElement() const{ return EARMORTYPEREF; }  
+        std::string GetName() const;
+        void SetName(const std::string &name){ m_name = name; }
         bool operator==(const ArmorTypeRef &lhs );
     private:
-        virtual void loadAttributes(CL_DomNamedNodeMap *pAttributes);
+        virtual void load_attributes(CL_DomNamedNodeMap *pAttributes);
     protected:
-        std::string mName;
+        std::string m_name;
     };
     
 };

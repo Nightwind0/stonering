@@ -4,54 +4,54 @@ using namespace StoneRing;
 
 
 RegularItem::RegularItem()
-:mpScript(NULL)
+:m_pScript(NULL)
 {
 }
 
 RegularItem::~RegularItem()
 {
-    delete mpScript;
+    delete m_pScript;
 }
 
 // Execute all actions.
-void RegularItem::invoke()
+void RegularItem::Invoke()
 {
-    if(mpScript)
-        mpScript->executeScript();
+    if(m_pScript)
+        m_pScript->ExecuteScript();
 }
 
 RegularItem::eUseType 
-RegularItem::getUseType() const
+RegularItem::GetUseType() const
 {
-    return meUseType;
+    return m_eUseType;
 }
 
 RegularItem::eTargetable
-RegularItem::getTargetable() const
+RegularItem::GetTargetable() const
 {
-    return meTargetable;
+    return m_eTargetable;
 }
 
 RegularItem::eDefaultTarget 
-RegularItem::getDefaultTarget() const
+RegularItem::GetDefaultTarget() const
 {
-    return meDefaultTarget;
+    return m_eDefaultTarget;
 }
 
-bool RegularItem::isReusable() const
+bool RegularItem::IsReusable() const
 {
-    return mbReusable;
+    return m_bReusable;
 }
 
 
-uint RegularItem::getValue() const
+uint RegularItem::GetValue() const
 {
-    return mnValue;
+    return m_nValue;
 }
 
-uint RegularItem::getSellValue() const
+uint RegularItem::GetSellValue() const
 {
-    return mnSellValue;
+    return m_nSellValue;
 }
 
 RegularItem::eUseType 
@@ -87,55 +87,55 @@ RegularItem::TargetableFromString ( const std::string &str )
     return targetable;
 }
 
-void RegularItem::loadAttributes(CL_DomNamedNodeMap *pAttributes)
+void RegularItem::load_attributes(CL_DomNamedNodeMap *pAttributes)
 {
-    mnValue = getRequiredInt("value",pAttributes);
+    m_nValue = get_required_int("value",pAttributes);
 
-    mnSellValue = mnValue / 2;
+    m_nSellValue = m_nValue / 2;
 
-    std::string useType = getRequiredString("use",pAttributes);
-    meUseType = UseTypeFromString ( useType );    
+    std::string useType = get_required_string("use",pAttributes);
+    m_eUseType = UseTypeFromString ( useType );    
 
-    std::string targetable = getRequiredString("targetable",pAttributes); 
-    meTargetable = TargetableFromString ( targetable );    
+    std::string targetable = get_required_string("targetable",pAttributes); 
+    m_eTargetable = TargetableFromString ( targetable );    
 
-    if(hasAttr("sellValueMultiplier", pAttributes))
+    if(has_attribute("sellValueMultiplier", pAttributes))
     {
-        float multiplier = getFloat("sellValueMultiplier",pAttributes);
-        mnSellValue = (int)(mnValue * multiplier);
+        float multiplier = get_float("sellValueMultiplier",pAttributes);
+        m_nSellValue = (int)(m_nValue * multiplier);
     }
 
-    mbReusable = getRequiredBool("reusable",pAttributes);
+    m_bReusable = get_required_bool("reusable",pAttributes);
 
-    if(hasAttr("defaultTarget",pAttributes))
+    if(has_attribute("defaultTarget",pAttributes))
     {
-        std::string str = getString("defaultTarget",pAttributes);
+        std::string str = get_string("defaultTarget",pAttributes);
 
         if( str == "party" )
-            meDefaultTarget = PARTY;
+            m_eDefaultTarget = PARTY;
         else if (str == "monsters")
-            meDefaultTarget = MONSTERS;
+            m_eDefaultTarget = MONSTERS;
         else throw CL_Error("Bogus default target on regular item.");
 
     }
     else
     {
-        meDefaultTarget = PARTY;
+        m_eDefaultTarget = PARTY;
     }
 
 }
 
-bool RegularItem::handleElement(eElement element, Element * pElement)
+bool RegularItem::handle_element(eElement element, Element * pElement)
 {
     if(element == Element::ESCRIPT)
     {
-        mpScript = dynamic_cast<ScriptElement*>(pElement);
+        m_pScript = dynamic_cast<ScriptElement*>(pElement);
         return true;
     }
     else return false;
 }
 
-void RegularItem::loadItem ( CL_DomElement * pElement )
+void RegularItem::LoadItem ( CL_DomElement * pElement )
 {
 
 }

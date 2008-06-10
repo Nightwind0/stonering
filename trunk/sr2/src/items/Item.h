@@ -40,16 +40,16 @@ namespace StoneRing{
         enum eItemType { REGULAR_ITEM, WEAPON, ARMOR, RUNE, SPECIAL, SYSTEM };
         enum eDropRarity { NEVER, COMMON, UNCOMMON, RARE };
         
-        virtual std::string getName() const = 0;
-        virtual eItemType getItemType() const = 0;
-        virtual uint getMaxInventory() const = 0;
-        virtual eDropRarity getDropRarity() const = 0;
+        virtual std::string GetName() const = 0;
+        virtual eItemType GetItemType() const = 0;
+        virtual uint GetMaxInventory() const = 0;
+        virtual eDropRarity GetDropRarity() const = 0;
 
-        virtual std::string getIconRef() const = 0;
+        virtual std::string GetIconRef() const = 0;
 
         // These next two do not apply to special or system items.
-        virtual uint getValue() const = 0; // Price to buy, and worth when calculating drops.
-        virtual uint getSellValue() const = 0;
+        virtual uint GetValue() const = 0; // Price to buy, and worth when calculating drops.
+        virtual uint GetSellValue() const = 0;
         static std::string ItemTypeAsString ( Item::eItemType type );
         static eDropRarity DropRarityFromString(const std::string &str);
 

@@ -12,19 +12,19 @@ WeaponTypeExclusionList::~WeaponTypeExclusionList()
     // std::for_each(mWeaponTypes.begin(),mWeaponTypes.end(),del_fun<WeaponTypeRef>());
 }
 
-std::list<WeaponTypeRef*>::const_iterator WeaponTypeExclusionList::getWeaponTypeRefsBegin()
+std::list<WeaponTypeRef*>::const_iterator WeaponTypeExclusionList::GetWeaponTypeRefsBegin()
 {
-    return mWeaponTypes.begin();
+    return m_WeaponTypes.begin();
 }
-std::list<WeaponTypeRef*>::const_iterator WeaponTypeExclusionList::getWeaponTypeRefsEnd()
+std::list<WeaponTypeRef*>::const_iterator WeaponTypeExclusionList::GetWeaponTypeRefsEnd()
 {
-    return mWeaponTypes.end();
+    return m_WeaponTypes.end();
 }
-bool WeaponTypeExclusionList::handleElement(eElement element, Element * pElement)
+bool WeaponTypeExclusionList::handle_element(eElement element, Element * pElement)
 {
     if(element == EWEAPONTYPEREF)
     {
-        mWeaponTypes.push_back ( dynamic_cast<WeaponTypeRef*>(pElement) );
+        m_WeaponTypes.push_back ( dynamic_cast<WeaponTypeRef*>(pElement) );
         return true;
     }
     else return false;

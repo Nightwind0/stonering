@@ -6,15 +6,12 @@ ArmorEnhancer::ArmorEnhancer()
 {
 }
 
-void ArmorEnhancer::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+void ArmorEnhancer::load_attributes(CL_DomNamedNodeMap * pAttributes)
 {
-    std::string strAttr = getRequiredString("attribute", pAttributes);
-
-    meAttribute = Armor::attributeForString ( strAttr );
-
-    mfMultiplier = getImpliedFloat("multiplier",pAttributes,1);
-
-    mnAdd = getImpliedInt("add",pAttributes,0);
+    std::string strAttr = get_required_string("attribute", pAttributes);
+    m_eAttribute = Armor::AttributeForString ( strAttr );
+    m_fMultiplier = get_implied_float("multiplier",pAttributes,1);
+    m_nAdd = get_implied_int("add",pAttributes,0);
 }
 
 
@@ -23,19 +20,19 @@ ArmorEnhancer::~ArmorEnhancer()
 }
 
 Armor::eAttribute 
-ArmorEnhancer::getAttribute() const
+ArmorEnhancer::GetAttribute() const
 {
-    return meAttribute;
+    return m_eAttribute;
 }
 
-int ArmorEnhancer::getAdd() const
+int ArmorEnhancer::GetAdd() const
 {
-    return mnAdd;
+    return m_nAdd;
 }
 
-float ArmorEnhancer::getMultiplier() const
+float ArmorEnhancer::GetMultiplier() const
 {
-    return mfMultiplier;
+    return m_fMultiplier;
 }
 
 

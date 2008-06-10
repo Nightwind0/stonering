@@ -22,33 +22,33 @@ namespace StoneRing{
         Party();
         ~Party();
   
-        virtual bool getGold() const;
-        virtual bool hasItem(ItemRef *pItemRef, uint count = 1 )const;
-        virtual bool didEvent(const std::string &event) const;
-        virtual void doEvent(const std::string &event, bool bRemember);
-        virtual void giveItem(ItemRef * pItemRef, uint count =1);
-        virtual void takeItem(ItemRef * pItemRef, uint count =1);
-        virtual void giveGold(int amount);
-        virtual bool hasItem(Item *pItem, uint count) const;
-        virtual bool giveItem(Item *pItem, uint count);
-        virtual bool takeItem(Item *pItem, uint count);
-        virtual void addCharacter(Character *pCharacter);
-        virtual void removeCharacter(const std::string &name);
-        virtual Character * getMapCharacter()const;
+        virtual bool GetGold() const;
+        virtual bool HasItem(ItemRef *pItemRef, uint count = 1 )const;
+        virtual bool DidEvent(const std::string &event) const;
+        virtual void DoEvent(const std::string &event, bool bRemember);
+        virtual void GiveItem(ItemRef * pItemRef, uint count =1);
+        virtual void TakeItem(ItemRef * pItemRef, uint count =1);
+        virtual void GiveGold(int amount);
+        virtual bool HasItem(Item *pItem, uint count) const;
+        virtual bool GiveItem(Item *pItem, uint count);
+        virtual bool TakeItem(Item *pItem, uint count);
+        virtual void AddCharacter(Character *pCharacter);
+        virtual void RemoveCharacter(const std::string &name);
+        virtual Character * GetMapCharacter()const;
 
         // ICharacterGroup interface
-        virtual uint getCharacterCount() const ;
-        virtual uint getTargetCharacterIndex() const;
-        virtual uint getActorCharacterIndex() const;
-        virtual ICharacter * getCharacter(uint index) const ;
-        virtual ICharacter * getTargetCharacter() const ;
-        virtual ICharacter * getActorCharacter() const ;
+        virtual uint GetCharacterCount() const ;
+        virtual uint GetTargetCharacterIndex() const;
+        virtual uint GetActorCharacterIndex() const;
+        virtual ICharacter * GetCharacter(uint index) const ;
+        virtual ICharacter * GetTargetCharacter() const ;
+        virtual ICharacter * GetActorCharacter() const ;
 
       private:
-          std::vector<Character*> mCharacters;
-          std::set<std::string> mEvents;
-          std::map<Item*,int> mItems;
-          uint mnGold;
+          std::vector<Character*> m_characters;
+          std::set<std::string> m_events;
+          std::map<Item*,int> m_items;
+          uint m_nGold;
 
     };
 

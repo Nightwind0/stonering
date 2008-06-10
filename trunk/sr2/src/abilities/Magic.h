@@ -25,8 +25,8 @@ public:
         ALL = (ELEMENTAL | DIVINE | STATUS | OTHER)
     };
 
-    static eMagicType typeOf(const std::string &);
-    static std::string toString(eMagicType type);
+    static eMagicType TypeOf(const std::string &);
+    static std::string ToString(eMagicType type);
 
 private:
 };

@@ -12,35 +12,35 @@ namespace StoneRing{
         RegularItem();
         virtual ~RegularItem();
 
-        virtual eElement whichElement() const{ return EREGULARITEM; }    
-        void invoke(); // Execute all actions.
+        virtual eElement WhichElement() const{ return EREGULARITEM; }    
+        void Invoke(); // Execute all actions.
 
         enum eUseType {BATTLE, WORLD, BOTH };
         enum eTargetable { ALL, SINGLE, EITHER, SELF_ONLY };
         enum eDefaultTarget { PARTY, MONSTERS };
-        eUseType getUseType() const;
-        eTargetable getTargetable() const;
-        eDefaultTarget getDefaultTarget() const;
-        bool isReusable() const;
+        eUseType GetUseType() const;
+        eTargetable GetTargetable() const;
+        eDefaultTarget GetDefaultTarget() const;
+        bool IsReusable() const;
         
-        virtual eItemType getItemType() const { return REGULAR_ITEM; }
+        virtual eItemType GetItemType() const { return REGULAR_ITEM; }
 
-        virtual uint getValue() const ; // Price to buy, and worth when calculating drops.
-        virtual uint getSellValue() const ;
-        virtual void loadItem ( CL_DomElement * pElement );
+        virtual uint GetValue() const ; // Price to buy, and worth when calculating drops.
+        virtual uint GetSellValue() const ;
+        virtual void LoadItem ( CL_DomElement * pElement );
         static eUseType UseTypeFromString ( const std::string &str );
         static eTargetable TargetableFromString ( const std::string &str );
 
     private:
-        virtual bool handleElement(eElement element, Element * pElement );
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
-        ScriptElement *mpScript;
-        eUseType meUseType;
-        eTargetable meTargetable;
-        uint mnValue;
-        uint mnSellValue;
-        bool mbReusable;
-        eDefaultTarget meDefaultTarget;
+        virtual bool handle_element(eElement element, Element * pElement );
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes) ;
+        ScriptElement *m_pScript;
+        eUseType m_eUseType;
+        eTargetable m_eTargetable;
+        uint m_nValue;
+        uint m_nSellValue;
+        bool m_bReusable;
+        eDefaultTarget m_eDefaultTarget;
     };
 };
 #endif

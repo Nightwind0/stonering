@@ -6,23 +6,23 @@ RuneType::RuneType()
 {
 }
 
-void RuneType::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+void RuneType::load_attributes(CL_DomNamedNodeMap * pAttributes)
 {
-    std::string runeType = getRequiredString("runeType",pAttributes);
+    std::string runeType = get_required_string("runeType",pAttributes);
 
     if(runeType == "none")
-        meRuneType = NONE;
+        m_eRuneType = NONE;
     else if (runeType == "rune")
-        meRuneType = RUNE;
+        m_eRuneType = RUNE;
     else if (runeType == "ultraRune")
-        meRuneType = ULTRA_RUNE;
+        m_eRuneType = ULTRA_RUNE;
     else throw CL_Error("Bogus runetype supplied.");
 
 }
 
 bool RuneType::operator==(const RuneType &lhs )
 {
-    if ( meRuneType == lhs.meRuneType )
+    if ( m_eRuneType == lhs.m_eRuneType )
         return true;
     else return false;
 }
@@ -31,16 +31,16 @@ RuneType::~RuneType()
 {
 }
 
-RuneType::eRuneType RuneType::getRuneType() const
+RuneType::eRuneType RuneType::GetRuneType() const
 {
-    return meRuneType;
+    return m_eRuneType;
 }
 
-std::string RuneType::getRuneTypeAsString() const
+std::string RuneType::GetRuneTypeAsString() const
 {
 
     //@todo : Get this from a setting.
-    switch(meRuneType)
+    switch(m_eRuneType)
     {
     case NONE:
         return "";

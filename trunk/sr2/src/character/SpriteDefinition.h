@@ -16,21 +16,21 @@ namespace StoneRing
         SpriteDefinition();
         virtual ~SpriteDefinition();
 
-        virtual eElement whichElement() const { return ESPRITEDEFINITION; }
-        std::string getName() const { return mName; }
-        bool hasBindPoints() const;
-        int getBindPoint1() const { return mnBindPoint1; }
-        int getBindPoint2() const { return mnBindPoint2; }
-        SpriteRef * getSpriteRef() const { return mpSpriteRef; }
+        virtual eElement WhichElement() const { return ESPRITEDEFINITION; }
+        std::string GetName() const { return m_name; }
+        bool HasBindPoints() const;
+        int GetBindPoint1() const { return m_nBindPoint1; }
+        int GetBindPoint2() const { return m_nBindPoint2; }
+        SpriteRef * GetSpriteRef() const { return m_pSpriteRef; }
 
     private:
-        virtual bool handleElement(eElement, Element * );
-        virtual void loadAttributes(CL_DomNamedNodeMap *);
-        std::string mName;
-        SpriteRef * mpSpriteRef;
-        bool mbHasBindPoints;
-        int mnBindPoint1;
-        int mnBindPoint2;
+        virtual bool handle_element(eElement, Element * );
+        virtual void load_attributes(CL_DomNamedNodeMap *);
+        std::string m_name;
+        SpriteRef * m_pSpriteRef;
+        bool m_bHasBindPoints;
+        int m_nBindPoint1;
+        int m_nBindPoint2;
     };
 
 

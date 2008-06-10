@@ -11,7 +11,7 @@
 
 using namespace StoneRing;
 
-GeneratedWeapon::GeneratedWeapon():mpClass(NULL),mpType(NULL)
+GeneratedWeapon::GeneratedWeapon():m_pClass(NULL),m_pType(NULL)
 {
 }
 
@@ -21,33 +21,33 @@ GeneratedWeapon::~GeneratedWeapon()
 
 bool GeneratedWeapon::operator== ( const ItemRef &ref )
 {
-    if( ref.getType() == ItemRef::WEAPON_REF
-        && *ref.getWeaponRef()->getWeaponClass() == *mpClass &&
-        *ref.getWeaponRef()->getWeaponType() == *mpType)
+    if( ref.GetType() == ItemRef::WEAPON_REF
+        && *ref.GetWeaponRef()->GetWeaponClass() == *m_pClass &&
+        *ref.GetWeaponRef()->GetWeaponType() == *m_pType)
     {
-        if(hasSpell() && ref.getWeaponRef()->getSpellRef())
+        if(HasSpell() && ref.GetWeaponRef()->GetSpellRef())
         {
-            if(*getSpellRef() == *ref.getWeaponRef()->getSpellRef())
+            if(*GetSpellRef() == *ref.GetWeaponRef()->GetSpellRef())
             {
                 return true;
             } 
             else return false;
         }
-        else if ( hasSpell() || ref.getWeaponRef()->getSpellRef())
+        else if ( HasSpell() || ref.GetWeaponRef()->GetSpellRef())
         {
             // One had a spell ref and one didn't.
             return false;
         }
 
-        if(hasRuneType() && ref.getWeaponRef()->getRuneType())
+        if(HasRuneType() && ref.GetWeaponRef()->GetRuneType())
         {
-            if(*getRuneType() == *ref.getWeaponRef()->getRuneType())
+            if(*GetRuneType() == *ref.GetWeaponRef()->GetRuneType())
             {
                 return true;
             }
             else return false;
         }
-        else if ( hasRuneType() || ref.getWeaponRef()->getRuneType())
+        else if ( HasRuneType() || ref.GetWeaponRef()->GetRuneType())
         {
             return false;
 
@@ -62,50 +62,50 @@ bool GeneratedWeapon::operator== ( const ItemRef &ref )
 
 
 // Item interface 
-std::string GeneratedWeapon::getIconRef() const
+std::string GeneratedWeapon::GetIconRef() const
 {
-    return mpType->getIconRef();
+    return m_pType->GetIconRef();
 }
 
-std::string GeneratedWeapon::getName() const
+std::string GeneratedWeapon::GetName() const
 {
-    return mName;
+    return m_name;
 }
 
-uint GeneratedWeapon::getMaxInventory() const 
+uint GeneratedWeapon::GetMaxInventory() const 
 {
     // todo: get the system setting.... 
     return 99;
 }
 
 NamedItem::eDropRarity 
-GeneratedWeapon::getDropRarity() const
+GeneratedWeapon::GetDropRarity() const
 {
-    if( hasSpell() || hasRuneType() )
+    if( HasSpell() || HasRuneType() )
     {
         return RARE; 
     }
     else return UNCOMMON;
 }
 
-uint GeneratedWeapon::getValue() const 
+uint GeneratedWeapon::GetValue() const 
 {
-    const AbilityManager * pManager = IApplication::getInstance()->getAbilityManager();
+    const AbilityManager * pManager = IApplication::GetInstance()->GetAbilityManager();
 
-    uint value= (int)((float)mpType->getBasePrice() * 
-                      mpClass->getValueMultiplier()) 
-        + mpClass->getValueAdd();
+    uint value= (int)((float)m_pType->GetBasePrice() * 
+                      m_pClass->GetValueMultiplier()) 
+        + m_pClass->GetValueAdd();
 
-    if(hasSpell())
+    if(HasSpell())
     {
-        SpellRef * pSpellRef = getSpellRef();
+        SpellRef * pSpellRef = GetSpellRef();
 
-        Spell * pSpell = pManager->getSpell ( *pSpellRef );
+        Spell * pSpell = pManager->GetSpell ( *pSpellRef );
 
         value += pSpell->getValue();
     }
 
-    if(hasRuneType())
+    if(HasRuneType())
     {
         value *= 2; //@todo : get multiplier from game settings
     }
@@ -114,78 +114,78 @@ uint GeneratedWeapon::getValue() const
 
 }
 
-uint GeneratedWeapon::getSellValue() const 
+uint GeneratedWeapon::GetSellValue() const 
 {
-    return getValue() / 2;
+    return GetValue() / 2;
 }
 
 // Weapon interface
 
 
 
-WeaponType * GeneratedWeapon::getWeaponType() const
+WeaponType * GeneratedWeapon::GetWeaponType() const
 {
-    return mpType;
+    return m_pType;
 }
 
-bool GeneratedWeapon::isRanged() const 
+bool GeneratedWeapon::IsRanged() const 
 {
-    return mpType->isRanged();
+    return m_pType->IsRanged();
 }
 
-bool GeneratedWeapon::isTwoHanded() const
+bool GeneratedWeapon::IsTwoHanded() const
 {
-    return mpType->isTwoHanded();
+    return m_pType->IsTwoHanded();
 }
 
 
-WeaponRef GeneratedWeapon::generateWeaponRef() const
+WeaponRef GeneratedWeapon::GenerateWeaponRef() const
 {
-    return WeaponRef( getWeaponType(), getWeaponClass(), getSpellRef(), getRuneType() );
+    return WeaponRef( GetWeaponType(), GetWeaponClass(), GetSpellRef(), GetRuneType() );
 }
 
-void GeneratedWeapon::executeScript()
+void GeneratedWeapon::ExecuteScript()
 {
-    mpClass->executeScript();
+    m_pClass->ExecuteScript();
 }
 
-bool GeneratedWeapon::equipCondition()
+bool GeneratedWeapon::EquipCondition()
 {
-    return mpClass->equipCondition();
+    return m_pClass->EquipCondition();
 }
 
-void GeneratedWeapon::onEquipScript()
+void GeneratedWeapon::OnEquipScript()
 {
-    return mpClass->onEquipScript();
+    return m_pClass->OnEquipScript();
 }
 
-void GeneratedWeapon::onUnequipScript()
+void GeneratedWeapon::OnUnequipScript()
 {
-    return mpClass->onUnequipScript();
+    return m_pClass->OnUnequipScript();
 }
 
-void GeneratedWeapon::generate( WeaponType* pType, WeaponClass * pClass, 
+void GeneratedWeapon::Generate( WeaponType* pType, WeaponClass * pClass, 
                                 SpellRef *pSpell , RuneType *pRune)
 {
 
-    for(std::list<AttributeEnhancer*>::const_iterator iter = pClass->getAttributeEnhancersBegin();
-        iter != pClass->getAttributeEnhancersEnd();
+    for(std::list<AttributeEnhancer*>::const_iterator iter = pClass->GetAttributeEnhancersBegin();
+        iter != pClass->GetAttributeEnhancersEnd();
         iter++)
     {
-        addAttributeEnhancer  ( *iter );
+        Add_Attribute_Enhancer  ( *iter );
     }
-    for(std::list<WeaponEnhancer*>::const_iterator iter2 = pClass->getWeaponEnhancersBegin();
-        iter2 != pClass->getWeaponEnhancersEnd();
+    for(std::list<WeaponEnhancer*>::const_iterator iter2 = pClass->GetWeaponEnhancersBegin();
+        iter2 != pClass->GetWeaponEnhancersEnd();
         iter2++)
     {
-        addWeaponEnhancer ( *iter2 );
+        Add_Weapon_Enhancer ( *iter2 );
     }
-    mpType = pType;
-    mpClass = pClass;
-    setSpellRef(pSpell);
-    setRuneType(pRune);
+    m_pType = pType;
+    m_pClass = pClass;
+    Set_Spell_Ref(pSpell);
+    Set_Rune_Type(pRune);
 
-    mName = CreateWeaponName(pType,pClass,pSpell,pRune);
+    m_name = CreateWeaponName(pType,pClass,pSpell,pRune);
 
 
 }

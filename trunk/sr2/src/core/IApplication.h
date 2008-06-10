@@ -33,26 +33,26 @@ namespace StoneRing
     {
     public:
         virtual ~IApplication(){}
-        virtual CL_ResourceManager * getResources()const=0;
-        virtual IParty * getParty() const=0;
-        virtual AbilityManager * getAbilityManager() = 0;
-        virtual ItemManager * getItemManager() = 0;
-        virtual IFactory * getElementFactory() = 0;
-        virtual CharacterManager * getCharacterManager() = 0;
-        virtual ICharacterGroup * getTargetCharacterGroup() const = 0;
-        virtual ICharacterGroup * getActorCharacterGroup() const = 0;
-        virtual void startBattle(const MonsterGroup &group, const std::string &backdrop)=0;
-        static IApplication * getInstance();
-        virtual void pop(bool popAll)=0;
+        virtual CL_ResourceManager * GetResources()const=0;
+        virtual IParty * GetParty() const=0;
+        virtual AbilityManager * GetAbilityManager() = 0;
+        virtual ItemManager * GetItemManager() = 0;
+        virtual IFactory * GetElementFactory() = 0;
+        virtual CharacterManager * GetCharacterManager() = 0;
+        virtual ICharacterGroup * GetTargetCharacterGroup() const = 0;
+        virtual ICharacterGroup * GetActorCharacterGroup() const = 0;
+        virtual void StartBattle(const MonsterGroup &group, const std::string &backdrop)=0;
+        static IApplication * GetInstance();
+        virtual void Pop(bool popAll)=0;
 
-        virtual int getScreenWidth()const=0;
-        virtual int getScreenHeight()const=0;
+        virtual int GetScreenWidth()const=0;
+        virtual int GetScreenHeight()const=0;
 
-        virtual CL_Rect getDisplayRect() const=0;
-        virtual void requestRedraw(const State *pState)=0;
-        virtual AstScript * loadScript(const std::string &name, const std::string &script)=0;
-        virtual SteelType runScript(AstScript * pScript)=0;
-        virtual SteelType runScript(AstScript *pScript, const ParameterList &params)=0; 
+        virtual CL_Rect GetDisplayRect() const=0;
+        virtual void RequestRedraw(const State *pState)=0;
+        virtual AstScript * LoadScript(const std::string &name, const std::string &script)=0;
+        virtual SteelType RunScript(AstScript * pScript)=0;
+        virtual SteelType RunScript(AstScript *pScript, const ParameterList &params)=0; 
 
     };
 

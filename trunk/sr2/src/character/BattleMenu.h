@@ -13,15 +13,15 @@ namespace StoneRing
     public:
         BattleMenu();
         virtual ~BattleMenu();
-        virtual eElement whichElement() const { return EBATTLEMENU; }
+        virtual eElement WhichElement() const { return EBATTLEMENU; }
 
-        std::list<BattleMenuOption*>::const_iterator getOptionsBegin() const;
-        std::list<BattleMenuOption*>::const_iterator getOptionsEnd() const;
+        std::list<BattleMenuOption*>::const_iterator GetOptionsBegin() const;
+        std::list<BattleMenuOption*>::const_iterator GetOptionsEnd() const;
     private:
-        virtual bool handleElement(eElement, Element *);
-        virtual void loadAttributes(CL_DomNamedNodeMap *);
+        virtual bool handle_element(eElement, Element *);
+        virtual void load_attributes(CL_DomNamedNodeMap *);
 
-        std::list<BattleMenuOption*> mOptions;
+        std::list<BattleMenuOption*> m_options;
     };
 };
 

@@ -13,32 +13,31 @@ namespace StoneRing{
         UniqueWeapon();
         ~UniqueWeapon();
 
-        virtual eElement whichElement() const{ return EUNIQUEWEAPON; }  
-        virtual uint getValue() const ;
-        virtual uint getSellValue() const ;
+        virtual eElement WhichElement() const{ return EUNIQUEWEAPON; }  
+        virtual uint GetValue() const ;
+        virtual uint GetSellValue() const ;
 
-        virtual void executeScript();
-        virtual bool equipCondition();
-        WeaponType *getWeaponType() const ;
-        bool isRanged() const ;
-        bool isTwoHanded() const;
+        virtual void ExecuteScript();
+        virtual bool EquipCondition();
+        WeaponType *GetWeaponType() const ;
+        bool IsRanged() const ;
+        bool IsTwoHanded() const;
         
-        virtual eItemType getItemType() const { return WEAPON ; }
+        virtual eItemType GetItemType() const { return WEAPON ; }
     private:
-        virtual void onEquipScript();
-        virtual void onUnequipScript();
-        virtual bool handleElement(eElement element, Element * pElement);
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
-        virtual void loadFinished();
-        WeaponType * mpWeaponType;
-        float mValueMultiplier;
-        uint mnValue;
-        ScriptElement *mpScript;
-        NamedScript *mpEquipScript;
-        NamedScript *mpUnequipScript;
-        ScriptElement *mpConditionScript;
-        
-    };
+        virtual void OnEquipScript();
+        virtual void OnUnequipScript();
+        virtual bool handle_element(eElement element, Element * pElement);
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes) ;
+        virtual void load_finished();
+        WeaponType * m_pWeaponType;
+        float m_value_multiplier;
+        uint m_nValue;
+        ScriptElement *m_pScript;
+        NamedScript *m_pEquipScript;
+        NamedScript *m_pUnequipScript;
+        ScriptElement *m_pConditionScript;
+	};
 };
 #endif
 

@@ -14,7 +14,7 @@ using StoneRing::ItemRef;
 using StoneRing::Item;
 using StoneRing::Character;
 
-Party::Party():mnGold(0)
+Party::Party():m_nGold(0)
 {
 }
 
@@ -23,69 +23,69 @@ Party::~Party()
 }
 
 
-bool Party::getGold() const
+bool Party::GetGold() const
 {
-    return mnGold;
+    return m_nGold;
 }
 
 
-bool Party::hasItem(ItemRef *pItemRef, uint count) const
+bool Party::HasItem(ItemRef *pItemRef, uint count) const
 {
-    Item * pItem = pItemRef->getItem();
-    return hasItem(pItem,count);
+    Item * pItem = pItemRef->GetItem();
+    return HasItem(pItem,count);
 }
 
-bool Party::didEvent(const std::string &event) const
+bool Party::DidEvent(const std::string &event) const
 {
-    return mEvents.count(event) != 0;
+    return m_events.count(event) != 0;
 }
 
 
-void Party::doEvent(const std::string &name, bool bRemember)
+void Party::DoEvent(const std::string &name, bool bRemember)
 {
     if(bRemember)
-        mEvents.insert ( name );
+        m_events.insert ( name );
 }
 
 
-void Party::giveItem(ItemRef *pItemRef, uint count)
+void Party::GiveItem(ItemRef *pItemRef, uint count)
 {
-    Item * pItem = pItemRef->getItem();
+    Item * pItem = pItemRef->GetItem();
 
-    giveItem(pItem,count);
+    GiveItem(pItem,count);
 }
 
-void Party::takeItem(ItemRef *pItemRef, uint count)
+void Party::TakeItem(ItemRef *pItemRef, uint count)
 {
-    Item * pItem = pItemRef->getItem();
+    Item * pItem = pItemRef->GetItem();
 
-    takeItem(pItem,count);
+    TakeItem(pItem,count);
 }
 
-bool Party::hasItem(Item * pItem,uint count) const
+bool Party::HasItem(Item * pItem,uint count) const
 {
-    if( mItems.count ( pItem ) && mItems.find( pItem )->second >= count)
+    if( m_items.count ( pItem ) && m_items.find( pItem )->second >= count)
         return true;
     else return false;
     
 }
 
-bool Party::giveItem(Item *pItem, uint count)
+bool Party::GiveItem(Item *pItem, uint count)
 {
    
-    if( !mItems.count(pItem) )
+    if( !m_items.count(pItem) )
     {
-        mItems [ pItem ] = 0;
+        m_items [ pItem ] = 0;
     }
     
     
-    if( mItems [ pItem ] + count <= pItem->getMaxInventory())
+    if( m_items [ pItem ] + count <= pItem->GetMaxInventory())
     {
-        mItems [ pItem ] += count;
+        m_items [ pItem ] += count;
     }
     else 
     {
-        count = pItem->getMaxInventory() - mItems[ pItem ];
+        count = pItem->GetMaxInventory() - m_items[ pItem ];
     
         if( count < 1 )
         {
@@ -93,7 +93,7 @@ bool Party::giveItem(Item *pItem, uint count)
         }
         else 
         {
-            mItems [ pItem ] += count;
+            m_items [ pItem ] += count;
 
         }
     }
@@ -102,16 +102,16 @@ bool Party::giveItem(Item *pItem, uint count)
 
 }
 
-bool Party::takeItem(Item *pItem, uint count)
+bool Party::TakeItem(Item *pItem, uint count)
 {
-    if( mItems.count(pItem ))
+    if( m_items.count(pItem ))
     {
-        if ( mItems [ pItem ] < count )
+        if ( m_items [ pItem ] < count )
         {
-            count = mItems [ pItem ];
+            count = m_items [ pItem ];
         }
 
-        mItems[ pItem ] -= count;
+        m_items[ pItem ] -= count;
 
     }
     else
@@ -121,66 +121,66 @@ bool Party::takeItem(Item *pItem, uint count)
     return true;
 }
 
-void Party::giveGold(int amount)
+void Party::GiveGold(int amount)
 {
 
     if(amount <0 )
     {
         // They are taking..
-        if(mnGold < amount)
+        if(m_nGold < amount)
             throw CL_Error("Attempt to take more gold than we had.");
     }
 
-    mnGold += amount;
+    m_nGold += amount;
 }
 
 
-uint Party::getCharacterCount() const 
+uint Party::GetCharacterCount() const 
 {
-    uint count = mCharacters.size();
+    uint count = m_characters.size();
     return count;
 }
 
-uint Party::getTargetCharacterIndex() const
+uint Party::GetTargetCharacterIndex() const
 {
     return 0;
 }
 
-uint Party::getActorCharacterIndex() const
+uint Party::GetActorCharacterIndex() const
 {
     return 0;
 }
 
-ICharacter * Party::getCharacter(uint index) const 
+ICharacter * Party::GetCharacter(uint index) const 
 {
-    return mCharacters[index];
+    return m_characters[index];
 }
 
-ICharacter * Party::getTargetCharacter() const 
+ICharacter * Party::GetTargetCharacter() const 
 {
     return NULL;
 }
 
-ICharacter * Party::getActorCharacter() const 
+ICharacter * Party::GetActorCharacter() const 
 {
     return NULL;
 }
 
-void Party::addCharacter(Character *pCharacter)
+void Party::AddCharacter(Character *pCharacter)
 {
-    mCharacters.push_back(pCharacter);
+    m_characters.push_back(pCharacter);
 }
 
-void Party::removeCharacter(const std::string &name)
+void Party::RemoveCharacter(const std::string &name)
 {
 
 }
 
-Character * Party::getMapCharacter()const
+Character * Party::GetMapCharacter()const
 {
-    if(mCharacters.size()) 
+    if(m_characters.size()) 
     {
-        return mCharacters[0];
+        return m_characters[0];
     }
     else
     {

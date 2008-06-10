@@ -9,9 +9,9 @@ namespace StoneRing{
     public:
         Weapon();
         virtual ~Weapon();
-        virtual WeaponType * getWeaponType() const = 0;
-        virtual bool isRanged() const = 0;
-        virtual bool isTwoHanded() const = 0;
+        virtual WeaponType * GetWeaponType() const = 0;
+        virtual bool IsRanged() const = 0;
+        virtual bool IsTwoHanded() const = 0;
 
         enum eAttribute
         {
@@ -23,9 +23,9 @@ namespace StoneRing{
         };
         
 
-        static eAttribute attributeForString(const std::string str);     
-        int modifyWeaponAttribute( eAttribute attr, int current );
-        float modifyWeaponAttribute ( eAttribute attr, float current );
+        static eAttribute AttributeForString(const std::string str);     
+        int ModifyWeaponAttribute( eAttribute attr, int current );
+        float ModifyWeaponAttribute ( eAttribute attr, float current );
 
         static std::string CreateWeaponName(WeaponType *pType, WeaponClass *pClass, 
             SpellRef *pSpell, RuneType *pRune);
@@ -33,11 +33,11 @@ namespace StoneRing{
         // Getters for weapon enhancers. need 'em.
     protected:
         
-        void clearWeaponEnhancers();
-        void addWeaponEnhancer (WeaponEnhancer * pEnhancer);
+        void Clear_Weapon_Enhancers();
+        void Add_Weapon_Enhancer (WeaponEnhancer * pEnhancer);
 
     private:
-        std::list<WeaponEnhancer*> mWeaponEnhancers;
+        std::list<WeaponEnhancer*> m_weapon_enhancers;
     };
 
 

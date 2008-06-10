@@ -2,6 +2,7 @@
 #include "NamedScript.h"
 
 using StoneRing::ActionQueue;
+/*
 
 ActionQueue::ActionQueue()
 {
@@ -12,33 +13,33 @@ ActionQueue::~ActionQueue()
 }
 
 
-void ActionQueue::executeFront()
+void ActionQueue::ExecuteFront()
 {
-    ActionEntry entry = mQueue.front();
+    Action entry = m_Queue.front();
     entry.execute();
 }
 
-void ActionQueue::popFront()
+void ActionQueue::PopFront()
 {
-    mQueue.pop_front();
+    m_Queue.pop_front();
 }
 
 void ActionQueue::enqueue(StoneRing::ScriptElement *pScript, StoneRing::ICharacter *pTarget,
                           StoneRing::ICharacterGroup *pActorGroup, const SteelType &var)
 {
-    mQueue.push_back( ActionEntry(pScript,pTarget,pActorGroup,var) );
+    m_Queue.push_back( Action(pScript,pTarget,pActorGroup,var) );
 }
 
 
 void ActionQueue::remove (StoneRing::ICharacter *pActor, StoneRing::NamedScript *pDeselect)
 {
 
-    std::list<ActionEntry>::iterator it = std::find_if(mQueue.begin(),mQueue.end(), 
+    std::list<Action>::iterator it = std::find_if(m_Queue.begin(),m_Queue.end(), 
         std::bind2nd(std::mem_fun_ref(&ActionEntry::matches),pActor));
 
-    it->deselect(pDeselect);
+    it->Deselect(pDeselect);
 
-    mQueue.erase(it);
+    m_Queue.erase(it);
 
 }
 
@@ -61,7 +62,7 @@ void ActionQueue::ActionEntry::deselect(StoneRing::NamedScript *pDeselect)
         params.push_back( ParameterListItem("$_ActorGroup",mpGroup) );
         params.push_back( ParameterListItem("$_VAR",mVar) );
 
-        pDeselect->executeScript(params);
+        pDeselect->ExecuteScript(params);
     }
 }
 
@@ -82,4 +83,4 @@ bool ActionQueue::ActionEntry::matches(StoneRing::ICharacter *pChar) const
 {
     return mpActor == pChar;
 }
-
+*/

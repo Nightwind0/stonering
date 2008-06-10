@@ -6,9 +6,9 @@ WeaponClassRef::WeaponClassRef()
 {
 }
 
-void WeaponClassRef::loadAttributes(CL_DomNamedNodeMap *pAttributes)
+void WeaponClassRef::load_attributes(CL_DomNamedNodeMap *pAttributes)
 {
-    mName = getRequiredString("name",pAttributes);
+    m_name = get_required_string("name",pAttributes);
 }
 
 WeaponClassRef::~WeaponClassRef()
@@ -17,13 +17,13 @@ WeaponClassRef::~WeaponClassRef()
 
 bool WeaponClassRef::operator==(const WeaponClassRef &lhs)
 {
-    if(mName == lhs.mName) return true;
+    if(m_name == lhs.m_name) return true;
     else return false;
 }
 
-std::string WeaponClassRef::getName() const
+std::string WeaponClassRef::GetName() const
 {
-    return mName;
+    return m_name;
 }
 
 

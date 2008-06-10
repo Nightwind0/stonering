@@ -43,12 +43,12 @@ bool gbDebugStop;
 Application sr_app;
 
 
-int Application::getScreenWidth()const
+int Application::GetScreenWidth()const
 {
     return WINDOW_WIDTH;
 }
 
-int Application::getScreenHeight()const
+int Application::GetScreenHeight()const
 {
     return WINDOW_HEIGHT;
 }
@@ -74,37 +74,37 @@ SteelType Application::playSound(const std::string &sound)
 SteelType Application::loadLevel(const std::string &level, uint startX, uint startY)
 {
     Level * pLevel = new Level();
-    pLevel->load(level, mpResources);
-    pLevel->invoke();
-    mMapState.pushLevel( pLevel, static_cast<uint>(startX), static_cast<uint>(startY) );
+    pLevel->Load(level, mpResources);
+    pLevel->Invoke();
+    mMapState.PushLevel( pLevel, static_cast<uint>(startX), static_cast<uint>(startY) );
 
     return SteelType();
 }
 
-void Application::pop(bool bAll)
+void Application::Pop(bool bAll)
 {
-    mMapState.pop(bAll);
+    mMapState.Pop(bAll);
 }
 
 SteelType Application::pop_(bool bAll)
 {
-    pop(bAll);
+    Pop(bAll);
 
     return SteelType();
 }
 
-void Application::startBattle(const MonsterGroup &group, const std::string &backdrop)
+void Application::StartBattle(const MonsterGroup &group, const std::string &backdrop)
 {
 #ifndef NDEBUG
     std::cout << "Encounter! Backdrop = " << backdrop << std::endl;
 
-    const std::vector<MonsterRef*> &monsters = group.getMonsters();
+    const std::vector<MonsterRef*> &monsters = group.GetMonsters();
 
     for(std::vector<MonsterRef*>::const_iterator it =  monsters.begin();
         it != monsters.end(); it++)
     {
         MonsterRef * pRef = *it;
-        std::cout << '\t' << pRef->getName() << " x" << pRef->getCount() << std::endl;
+        std::cout << '\t' << pRef->GetName() << " x" << pRef->GetCount() << std::endl;
     }
 #endif
     mBattleState.init(group,backdrop);
@@ -134,12 +134,12 @@ SteelType Application::choice(const std::string &choiceText,
     for(unsigned int i=0;i<choices_.size();i++)
         choices.push_back ( choices_[i] );
 
-    choiceState.init(choiceText,choices);
+    choiceState.Init(choiceText,choices);
     mStates.push_back ( &choiceState );
     run(); // Run pops for us.
 
     SteelType selection;
-    selection.set( choiceState.getSelection() );
+    selection.set( choiceState.GetSelection() );
 
     return selection;
 }
@@ -147,7 +147,7 @@ SteelType Application::choice(const std::string &choiceText,
 
 SteelType Application::say(const std::string &speaker, const std::string &text)
 {
-    mSayState.init(speaker,text);
+    mSayState.Init(speaker,text);
 
     mStates.push_back(&mSayState);
 
@@ -180,16 +180,16 @@ SteelType Application::invokeShop(const std::string &shoptype)
 SteelType Application::getGold()
 {
     SteelType val;
-    val.set ( mpParty->getGold() );
+    val.set ( mpParty->GetGold() );
     return val;
 }
 
 SteelType Application::hasItem(const std::string &item, uint count)
 {
-    ItemManager * pMgr = IApplication::getInstance()->getItemManager();
+    ItemManager * pMgr = IApplication::GetInstance()->GetItemManager();
     assert ( pMgr );
     SteelType var;
-    var.set ( mpParty->hasItem(pMgr->getNamedItem(item),count) );
+    var.set ( mpParty->HasItem(pMgr->GetNamedItem(item),count) );
 
     return var;
 }
@@ -197,23 +197,23 @@ SteelType Application::hasItem(const std::string &item, uint count)
 SteelType Application::didEvent(const std::string &event)
 {
     SteelType var;
-    var.set ( mpParty->didEvent(event ) );
+    var.set ( mpParty->DidEvent(event ) );
 
     return var;
 }
 
 SteelType Application::doEvent(const std::string &event, bool bRemember)
 {
-    mpParty->doEvent ( event, bRemember );
+    mpParty->DoEvent ( event, bRemember );
     return SteelType();
 }
 
 SteelType Application::giveNamedItem(const std::string &item, uint count)
 {
     std::ostringstream os;
-    ItemManager * pMgr = IApplication::getInstance()->getItemManager();
+    ItemManager * pMgr = IApplication::GetInstance()->GetItemManager();
     assert ( pMgr );
-    mpParty->giveItem ( pMgr->getNamedItem(item), count );
+    mpParty->GiveItem ( pMgr->GetNamedItem(item), count );
 
     os << "You received " << item;
 
@@ -228,9 +228,9 @@ SteelType Application::giveNamedItem(const std::string &item, uint count)
 SteelType Application::takeNamedItem(const std::string  &item, uint count)
 {
     std::ostringstream os;
-    ItemManager * pMgr = IApplication::getInstance()->getItemManager();
+    ItemManager * pMgr = IApplication::GetInstance()->GetItemManager();
     SteelType val;
-    val.set ( mpParty->giveItem ( pMgr->getNamedItem(item), count ) );
+    val.set ( mpParty->GiveItem ( pMgr->GetNamedItem(item), count ) );
 
     os << "Gave up " << item;
 
@@ -245,7 +245,7 @@ SteelType Application::takeNamedItem(const std::string  &item, uint count)
 SteelType Application::giveGold(int amount)
 {
     std::ostringstream os;
-    mpParty->giveGold(amount);
+    mpParty->GiveGold(amount);
 
     if(amount > 0)
     {
@@ -263,9 +263,9 @@ SteelType Application::giveGold(int amount)
 
 SteelType Application::addCharacter(const std::string &character, int level, bool announce)
 {
-    Character * pCharacter = mCharacterManager.getCharacter(character);
-    pCharacter->fixAttribute(ICharacter::CA_LEVEL,static_cast<double>(level));
-    mpParty->addCharacter(pCharacter);
+    Character * pCharacter = mCharacterManager.GetCharacter(character);
+    pCharacter->FixAttribute(ICharacter::CA_LEVEL,static_cast<double>(level));
+    mpParty->AddCharacter(pCharacter);
 
     if(announce)
     {
@@ -284,30 +284,30 @@ SteelType Application::useItem()
 }
 
 
-IApplication * IApplication::getInstance()
+IApplication * IApplication::GetInstance()
 {
     return &sr_app;
 }
 
 
-IParty * Application::getParty() const
+IParty * Application::GetParty() const
 {
     return mpParty;
 }
 
 
-ItemManager * Application::getItemManager()
+ItemManager * Application::GetItemManager()
 {
     return &mItemManager;
 }
 
-AbilityManager * Application::getAbilityManager()
+AbilityManager * Application::GetAbilityManager()
 {
     return &mAbilityManager;
 }
 
 
-CL_ResourceManager * Application::getResources() const
+CL_ResourceManager * Application::GetResources() const
 {
     return mpResources;
 }
@@ -326,19 +326,19 @@ Application::~Application()
 }
 
 
-ICharacterGroup * Application::getTargetCharacterGroup() const
+ICharacterGroup * Application::GetTargetCharacterGroup() const
 {
     return mpParty;
 }
 
-ICharacterGroup * Application::getActorCharacterGroup() const
+ICharacterGroup * Application::GetActorCharacterGroup() const
 {
     return mpParty;
 }
 
-CL_Rect Application::getDisplayRect() const
+CL_Rect Application::GetDisplayRect() const
 {
-    return CL_Rect(0,0,getScreenWidth(), getScreenHeight());
+    return CL_Rect(0,0,GetScreenWidth(), GetScreenHeight());
 
 }
 
@@ -362,12 +362,12 @@ void Application::teardownClanLib()
 void Application::onSignalKeyDown(const CL_InputEvent &key)
 {
 
-    mStates.back()->handleKeyDown(key);
+    mStates.back()->HandleKeyDown(key);
 }
 
 void Application::onSignalKeyUp(const CL_InputEvent &key)
 {
-    mStates.back()->handleKeyUp(key);
+    mStates.back()->HandleKeyUp(key);
 }
 
 
@@ -376,24 +376,24 @@ void Application::onSignalQuit()
     
 }
 
-void Application::requestRedraw(const State * /*pState*/)
+void Application::RequestRedraw(const State * /*pState*/)
 {
     draw();
 }
 
-AstScript * Application::loadScript(const std::string &name, const std::string &script)
+AstScript * Application::LoadScript(const std::string &name, const std::string &script)
 {
     return mInterpreter.prebuildAst(name,script);
 }
 
-SteelType Application::runScript(AstScript * pScript)
+SteelType Application::RunScript(AstScript * pScript)
 {
     // Intentionally letting steel exceptions 
     // Get caught by a higher layer
     return mInterpreter.runAst ( pScript );
 
 }
-SteelType Application::runScript(AstScript *pScript, const ParameterList &params)
+SteelType Application::RunScript(AstScript *pScript, const ParameterList &params)
 {
     return mInterpreter.runAst ( pScript, params );
 }
@@ -454,7 +454,7 @@ void Application::registerSteelFunctions()
 
 void Application::draw()
 {
-    CL_Rect dst = getDisplayRect();
+    CL_Rect dst = GetDisplayRect();
 
     mpWindow->get_gc()->push_cliprect( dst);
 
@@ -464,9 +464,9 @@ void Application::draw()
         iState != end; iState++)
     {
         State * pState = *iState;
-        pState->draw(dst, mpWindow->get_gc());
+        pState->Draw(dst, mpWindow->get_gc());
         
-        if(pState->lastToDraw()) break; // Don't draw any further.
+        if(pState->LastToDraw()) break; // Don't draw any further.
 
     }
     
@@ -479,9 +479,9 @@ void Application::run()
     static int count = 0;
     State * backState = mStates.back();
 
-    backState->start();
+    backState->Start();
     unsigned int then = CL_System::get_time();
-    while(!backState->isDone())
+    while(!backState->IsDone())
     {
 
         draw();
@@ -496,10 +496,10 @@ void Application::run()
 
         if(now - then > MS_BETWEEN_MOVES)
         {
-            if ( !backState->disableMappableObjects())
+            if ( !backState->DisableMappableObjects())
             {
-                mMapState.moveMappableObjects();
-                mStates.back()->mappableObjectMoveHook();
+                mMapState.MoveMappableObjects();
+                mStates.back()->MappableObjectMoveHook();
             }
             then = now;
         }
@@ -508,7 +508,7 @@ void Application::run()
     }
 
 
-    mStates.back()->finish();
+    mStates.back()->Finish();
   
     mStates.pop_back();
 
@@ -551,17 +551,17 @@ int Application::main(int argc, char ** argv)
 
         CL_Display::clear();
 
-        mAppUtils.loadGameplayAssets("",mpResources);
+        mAppUtils.LoadGameplayAssets("",mpResources);
             
         showRechargeableOnionSplash();
         showIntro();
             
         Level * pLevel = new Level();
-        pLevel->load(startinglevel, mpResources);
-        pLevel->invoke();
+        pLevel->Load(startinglevel, mpResources);
+        pLevel->Invoke();
             
-        mMapState.setDimensions(getDisplayRect());
-        mMapState.pushLevel ( pLevel, 1,1 );  
+        mMapState.SetDimensions(GetDisplayRect());
+        mMapState.PushLevel ( pLevel, 1,1 );  
             
         mStates.push_back( &mMapState );
     }

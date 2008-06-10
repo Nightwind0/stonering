@@ -21,20 +21,19 @@ namespace StoneRing{
     public:
         ScriptElement(bool isCondition);
         virtual ~ScriptElement();
-        virtual eElement whichElement() const { return mbIsCondition?ECONDITIONSCRIPT:ESCRIPT; }
+        virtual eElement WhichElement() const { return m_bIsCondition?ECONDITIONSCRIPT:ESCRIPT; }
 
-        bool evaluateCondition() const;
-        SteelType executeScript() const ;
-        SteelType executeScript(const ParameterList &params);
+        bool EvaluateCondition() const;
+        SteelType ExecuteScript() const ;
+        SteelType ExecuteScript(const ParameterList &params);
 
-        bool isConditionScript() const { return mbIsCondition; }
-
+        bool IsConditionScript() const { return m_bIsCondition; }
     protected:
-        virtual void loadAttributes(CL_DomNamedNodeMap *);
-        virtual void handleText(const std::string &);
-        AstScript * mpScript;
-        std::string mId;
-        bool mbIsCondition;
+        virtual void load_attributes(CL_DomNamedNodeMap *);
+        virtual void handle_text(const std::string &);
+        AstScript * mp_script;
+        std::string m_id;
+        bool m_bIsCondition;
 
     };
 }

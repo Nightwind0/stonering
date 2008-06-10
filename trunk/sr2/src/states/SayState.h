@@ -13,33 +13,35 @@ namespace StoneRing
         SayState();
         virtual ~SayState();
 
-        virtual bool isDone() const;
-        virtual void handleKeyDown(const CL_InputEvent &key);
-        virtual void handleKeyUp(const CL_InputEvent &key);
-        virtual void draw(const CL_Rect &screenRect,CL_GraphicContext * pGC);
-        virtual bool lastToDraw() const { return false; } // It'll be last anyway.... and if not, thats okay too
-        virtual bool disableMappableObjects() const; // Should the app move the MOs? 
-        virtual void mappableObjectMoveHook(); // Do stuff right after the mappable object movement
-        virtual void start(); 
-        virtual void finish(); // Hook to clean up or whatever after being popped
+        virtual bool IsDone() const;
+        virtual void HandleKeyDown(const CL_InputEvent &key);
+        virtual void HandleKeyUp(const CL_InputEvent &key);
+        virtual void Draw(const CL_Rect &screenRect,CL_GraphicContext * pGC);
+        virtual bool LastToDraw() const { return false; } // It'll be last anyway.... and if not, thats okay too
+        virtual bool DisableMappableObjects() const; // Should the app move the MOs? 
+        virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
+        virtual void Start(); 
+        virtual void Finish(); // Hook to clean up or whatever after being popped
 
-        virtual void init(const std::string &speaker, const std::string &text);
+        virtual void Init(const std::string &speaker, const std::string &text);
 
     private:
     
-        std::string mSpeaker;
-        std::string mText;
-        CL_Rect mSpeakerRect;
-        CL_Rect mTextRect;
-        CL_Color mSpeakerBGColor;
-        CL_Color mTextBGColor;
-        CL_Surface *mpSayOverlay;
-        uint mX;
-        uint mY;
-        std::string::iterator miText;
-        bool mbDone;
-        uint mnDrawnThisFrame;
-        uint mnTotalDrawn;
+        std::string m_speaker;
+        std::string m_text;
+        CL_Font *m_pSpeakerFont;
+        CL_Font *m_pSpeechFont;
+        CL_Rect m_speaker_rect;
+        CL_Rect m_text_rect;
+        CL_Color m_speaker_BGColor;
+        CL_Color m_text_BGColor;
+        CL_Surface *m_pSayOverlay;
+        uint m_X;
+        uint m_Y;
+        std::string::iterator m_iText;
+        bool m_bDone;
+        uint m_nDrawnThisFrame;
+        uint m_nTotalDrawn;
 
     };
 };

@@ -18,6 +18,8 @@
 #include "IApplication.h"
 #include "Level.h"
 
+using StoneRing::Element;
+
 
 template<typename MapType,
          typename KeyArgType,
@@ -55,8 +57,8 @@ std::string BoolToString( const bool &b)
 // For the multimap of points
 bool operator < (const CL_Point &p1, const CL_Point &p2)
 {
-    uint p1value = (p1.y  *  StoneRing::IApplication::getInstance()->getScreenWidth()) + p1.x;
-    uint p2value = (p2.y  * StoneRing::IApplication::getInstance()->getScreenWidth()) + p2.x;
+    uint p1value = (p1.y  *  StoneRing::IApplication::GetInstance()->GetScreenWidth()) + p1.x;
+    uint p2value = (p2.y  * StoneRing::IApplication::GetInstance()->GetScreenWidth()) + p2.x;
     
     return p1value < p2value;
 }
@@ -67,21 +69,21 @@ bool operator < (const StoneRing::MappableObject::eDirection dir1, const StoneRi
 }
 
 
-bool StoneRing::Tilemap::handleElement(eElement element, Element * pElement)
+bool StoneRing::Tilemap::handle_element(Element::eElement element, Element * pElement)
 {
     return false;
 }
 
-void StoneRing::Tilemap::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+void StoneRing::Tilemap::load_attributes(CL_DomNamedNodeMap * pAttributes)
 {
-    std::string name = getRequiredString("mapname",pAttributes);
-    mpSurface = GraphicsManager::getInstance()->getTileMap(name);
-    mX = getRequiredInt("mapx",pAttributes);
-    mY = getRequiredInt("mapy",pAttributes);
+    std::string name = get_required_string("mapname",pAttributes);
+    m_pSurface = GraphicsManager::GetInstance()->GetTileMap(name);
+    m_X = get_required_int("mapx",pAttributes);
+    m_Y = get_required_int("mapy",pAttributes);
 }
 
 
-StoneRing::Tilemap::Tilemap():mpSurface(NULL)
+StoneRing::Tilemap::Tilemap():m_pSurface(NULL)
 {
     
 
@@ -91,82 +93,82 @@ StoneRing::Tilemap::~Tilemap()
 {
 }
 
-void StoneRing::Movement::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+void StoneRing::Movement::load_attributes(CL_DomNamedNodeMap * pAttributes)
 {
-    if(hasAttr("speed",pAttributes))
+    if(has_attribute("speed",pAttributes))
     {
-        std::string speed = getString("speed",pAttributes);
+        std::string speed = get_string("speed",pAttributes);
 
         if(speed == "medium")
         {
-            meSpeed = MEDIUM;
+            m_eSpeed = MEDIUM;
         }
         else if(speed == "slow")
         {
-            meSpeed = SLOW;
+            m_eSpeed = SLOW;
         }
         else if(speed == "fast")
         {
-            meSpeed = FAST;
+            m_eSpeed = FAST;
         }
         else throw CL_Error("Error, movement speed must be fast, medium or slow.");
             
     }
 
-    std::string type = getRequiredString("movementType",pAttributes);
+    std::string type = get_required_string("movementType",pAttributes);
 
     if(type == "wander")
     {   
-        meType = MOVEMENT_WANDER;
+        m_eType = MOVEMENT_WANDER;
     }
     else if(type == "paceNS")
     {
-        meType = MOVEMENT_PACE_NS;
+        m_eType = MOVEMENT_PACE_NS;
     }
     else if(type == "paceEW")
     {
-        meType = MOVEMENT_PACE_EW;
+        m_eType = MOVEMENT_PACE_EW;
     }
     else if(type == "script")
     {
-        meType = MOVEMENT_SCRIPT;
+        m_eType = MOVEMENT_SCRIPT;
     }
     else if(type == "none")
     {
         // Why would they ever....
-        meType = MOVEMENT_NONE;
+        m_eType = MOVEMENT_NONE;
     }
 
 }
 
-StoneRing::Movement::Movement ( ):meType(MOVEMENT_NONE),meSpeed(SLOW),mpScript(NULL)
+StoneRing::Movement::Movement ( ):m_eType(MOVEMENT_NONE),m_eSpeed(SLOW),m_pScript(NULL)
 {
    
 }
 
 StoneRing::Movement::~Movement()
 {
-    delete mpScript;
+    delete m_pScript;
 }
 
 
-bool StoneRing::Movement::handleElement(Element::eElement element, Element *pElement)
+bool StoneRing::Movement::handle_element(Element::eElement element, Element *pElement)
 {
     if(element == ESCRIPT)
-        mpScript= dynamic_cast<ScriptElement*>(pElement);
+        m_pScript= dynamic_cast<ScriptElement*>(pElement);
     else return false;
 
     return true;
 }
 
-StoneRing::Movement::eMovementType StoneRing::Movement::getMovementType() const
+StoneRing::Movement::eMovementType StoneRing::Movement::GetMovementType() const
 {
-    return meType;
+    return m_eType;
 }
 
-StoneRing::Movement::eMovementSpeed StoneRing::Movement::getMovementSpeed() const
+StoneRing::Movement::eMovementSpeed StoneRing::Movement::GetMovementSpeed() const
 {
-    return meSpeed;
+    return m_eSpeed;
 }
 
 StoneRing::Graphic::Graphic()
@@ -178,28 +180,28 @@ StoneRing::Graphic::~Graphic()
 }
 
 
-StoneRing::DirectionBlock::DirectionBlock():meDirectionBlock(0)
+StoneRing::DirectionBlock::DirectionBlock():m_eDirectionBlock(0)
 {
 }
 
 StoneRing::DirectionBlock::DirectionBlock(int i )
 {
-    meDirectionBlock = i;
+    m_eDirectionBlock = i;
 }
 
 
 
-void StoneRing::DirectionBlock::loadAttributes(CL_DomNamedNodeMap *pAttributes)
+void StoneRing::DirectionBlock::load_attributes(CL_DomNamedNodeMap *pAttributes)
 {
-    bool north = getRequiredBool("north",pAttributes);
-    bool south = getRequiredBool("south",pAttributes);
-    bool east =  getRequiredBool("east",pAttributes);
-    bool west =  getRequiredBool("west",pAttributes);
+    bool north = get_required_bool("north",pAttributes);
+    bool south = get_required_bool("south",pAttributes);
+    bool east =  get_required_bool("east",pAttributes);
+    bool west =  get_required_bool("west",pAttributes);
 
-    if(north) meDirectionBlock |= DIR_NORTH;
-    if(south) meDirectionBlock |= DIR_SOUTH;
-    if(east) meDirectionBlock |= DIR_EAST;
-    if(west) meDirectionBlock |= DIR_WEST;
+    if(north) m_eDirectionBlock |= DIR_NORTH;
+    if(south) m_eDirectionBlock |= DIR_SOUTH;
+    if(east) m_eDirectionBlock |= DIR_EAST;
+    if(west) m_eDirectionBlock |= DIR_WEST;
 }
 
 
@@ -207,27 +209,27 @@ StoneRing::DirectionBlock::~DirectionBlock()
 {
 }
 
-int StoneRing::DirectionBlock::getDirectionBlock() const
+int StoneRing::DirectionBlock::GetDirectionBlock() const
 {
-    return meDirectionBlock;
+    return m_eDirectionBlock;
 }
 
 
-StoneRing::Tile::Tile():mpSprite(NULL),mpCondition(NULL),mpScript(NULL),mZOrder(0),cFlags(0)
+StoneRing::Tile::Tile():m_pSprite(NULL),m_pCondition(NULL),m_pScript(NULL),m_ZOrder(0),cFlags(0)
 {
 }
 
 
-void StoneRing::Tile::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+void StoneRing::Tile::load_attributes(CL_DomNamedNodeMap * pAttributes)
 {
-    mX = getRequiredInt("xpos",pAttributes);
-    mY = getRequiredInt("ypos",pAttributes);
+    m_X = get_required_int("xpos",pAttributes);
+    m_Y = get_required_int("ypos",pAttributes);
 
-    mZOrder = getImpliedInt("zorder",pAttributes,0);
+    m_ZOrder = get_implied_int("zorder",pAttributes,0);
 
-    bool floater = getImpliedBool("floater",pAttributes,false);
-    bool hot = getImpliedBool("hot",pAttributes,false);
-    bool pops = getImpliedBool("pops",pAttributes,false);
+    bool floater = get_implied_bool("floater",pAttributes,false);
+    bool hot = get_implied_bool("hot",pAttributes,false);
+    bool pops = get_implied_bool("pops",pAttributes,false);
 
     if(floater) cFlags |= FLOATER;
     if(hot) cFlags |= HOT;
@@ -236,35 +238,35 @@ void StoneRing::Tile::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 }
 
 
-bool StoneRing::Tile::handleElement(eElement element, Element * pElement)
+bool StoneRing::Tile::handle_element(Element::eElement element, Element * pElement)
 {
     switch(element)
     {
     case ESCRIPT:
-        mpScript = dynamic_cast<ScriptElement*>(pElement);
+        m_pScript = dynamic_cast<ScriptElement*>(pElement);
         break;
     case ETILEMAP:
-        mGraphic.asTilemap = dynamic_cast<Tilemap*>(pElement);
+        m_Graphic.asTilemap = dynamic_cast<Tilemap*>(pElement);
         break;
     case ESPRITEREF:
     {
-        GraphicsManager * GM = GraphicsManager::getInstance();
-        mGraphic.asSpriteRef = dynamic_cast<SpriteRef*>(pElement);
+        GraphicsManager * GM = GraphicsManager::GetInstance();
+        m_Graphic.asSpriteRef = dynamic_cast<SpriteRef*>(pElement);
         cFlags |= SPRITE;
 
         // Actually create the ref'd sprite here.
         // And assign to mpSprite
-        mpSprite = GM->createSprite( mGraphic.asSpriteRef->getRef() );
+        m_pSprite = GM->CreateSprite( m_Graphic.asSpriteRef->GetRef() );
         break;
     }//ESPRITEREF
     case ECONDITIONSCRIPT:
-        mpCondition = dynamic_cast<ScriptElement*>(pElement);
+        m_pCondition = dynamic_cast<ScriptElement*>(pElement);
         break;
     case EDIRECTIONBLOCK:
     {
         DirectionBlock *block = dynamic_cast<DirectionBlock*>(pElement);
 
-        int db = block->getDirectionBlock();
+        int db = block->GetDirectionBlock();
 
         // This is all done to make tile's take up less space in memory
             
@@ -288,60 +290,60 @@ bool StoneRing::Tile::handleElement(eElement element, Element * pElement)
     return true;
 }
 
-void StoneRing::Tile::loadFinished()
+void StoneRing::Tile::load_finished()
 {
-    if(mGraphic.asSpriteRef == NULL) throw CL_Error("Tile didn't have tilemap or sprite ref.");
+    if(m_Graphic.asSpriteRef == NULL) throw CL_Error("Tile didn't have tilemap or sprite ref.");
 }
 
-void StoneRing::Tile::activate() // Call any attributemodifier
+void StoneRing::Tile::Activate() // Call any attributemodifier
 {
     // Run script
-    if(mpScript)
-        mpScript->executeScript();
+    if(m_pScript)
+        m_pScript->ExecuteScript();
 }
 
 StoneRing::Tile::~Tile()
 {
-    delete mpScript;
-    delete mpCondition;
-    delete mpSprite;
+    delete m_pScript;
+    delete m_pCondition;
+    delete m_pSprite;
 
-    if( isSprite() )
-        delete mGraphic.asSpriteRef;
-    else delete mGraphic.asTilemap;
+    if( IsSprite() )
+        delete m_Graphic.asSpriteRef;
+    else delete m_Graphic.asTilemap;
 }
 
-bool StoneRing::Tile::evaluateCondition() const
+bool StoneRing::Tile::EvaluateCondition() const
 {
-    if( mpCondition )
-        return mpCondition->evaluateCondition();
+    if( m_pCondition )
+        return m_pCondition->EvaluateCondition();
     else return true;
 }
 
 
-CL_Rect StoneRing::Tile::getRect()
+CL_Rect StoneRing::Tile::GetRect()
 {
-    return CL_Rect(mX , mY , mX + 1, mY +1);
+    return CL_Rect(m_X , m_Y , m_X + 1, m_Y +1);
 }
 
 
 
-void StoneRing::Tile::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC)
+void StoneRing::Tile::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC)
 {
     // Get the graphic guy
     // Get our tilemap or sprite
     // Blit it
 
-    static GraphicsManager * GM = GraphicsManager::getInstance();
+    static GraphicsManager * GM = GraphicsManager::GetInstance();
 
-    if( !isSprite() )
+    if( !IsSprite() )
     {
-        CL_Surface * tilemap = mGraphic.asTilemap->getTileMap();
+        CL_Surface * tilemap = m_Graphic.asTilemap->GetTileMap();
 
         //        void draw(  const CL_Rect& src, const CL_Rect& dest, CL_GraphicContext* context = 0);
         int mapx, mapy;
-        mapx = mGraphic.asTilemap->getMapX();
-        mapy = mGraphic.asTilemap->getMapY();
+        mapx = m_Graphic.asTilemap->GetMapX();
+        mapy = m_Graphic.asTilemap->GetMapY();
         CL_Rect srcRect((mapx << 5) + src.left, (mapy << 5) + src.top,
                         (mapx << 5) + src.right, (mapy << 5) + src.bottom);
 
@@ -351,18 +353,18 @@ void StoneRing::Tile::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicCon
     }
     else
     {
-        update();
-        mpSprite->draw( dst, pGC );
+        Update();
+        m_pSprite->draw( dst, pGC );
     }
 
 }
 
-void StoneRing::Tile::update()
+void StoneRing::Tile::Update()
 {
-    if(isSprite()) mpSprite->update();
+    if(IsSprite()) m_pSprite->update();
 }
 
-int StoneRing::Tile::getDirectionBlock() const
+int StoneRing::Tile::GetDirectionBlock() const
 {
 
     int block = 0;
