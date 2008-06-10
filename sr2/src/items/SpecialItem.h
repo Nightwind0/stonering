@@ -9,15 +9,15 @@ namespace StoneRing{
     public:
         SpecialItem();
         virtual ~SpecialItem();
-        virtual eElement whichElement() const{ return ESPECIALITEM; }        
-        virtual uint getValue() const { return 0;} // No value to special items. cant sell 'em.
-        virtual uint getSellValue() const { return 0; }
+        virtual eElement WhichElement() const{ return ESPECIALITEM; }        
+        virtual uint GetValue() const { return 0;} // No value to special items. cant sell 'em.
+        virtual uint GetSellValue() const { return 0; }
 
         
         // We're overriding whatever was specified in the XML. Never drop a special item, ever.
-        virtual eDropRarity getDropRarity() const { return NEVER; } 
+        virtual eDropRarity GetDropRarity() const { return NEVER; } 
 
-        virtual eItemType getItemType() const { return SPECIAL ; }
+        virtual eItemType GetItemType() const { return SPECIAL ; }
     private:
     };
 };

@@ -15,29 +15,29 @@ BattleMenu::~BattleMenu()
 
 
 std::list<BattleMenuOption*>::const_iterator 
-BattleMenu::getOptionsBegin() const
+BattleMenu::GetOptionsBegin() const
 {
-    return mOptions.begin();
+    return m_options.begin();
 }
 
 
 std::list<BattleMenuOption*>::const_iterator 
-BattleMenu::getOptionsEnd() const
+BattleMenu::GetOptionsEnd() const
 {
-    return mOptions.end();
+    return m_options.end();
 }
 
 
-bool BattleMenu::handleElement(eElement element, Element *pElement)
+bool BattleMenu::handle_element(Element::eElement element, Element *pElement)
 {
     if(element == EBATTLEMENUOPTION)
-        mOptions.push_back ( dynamic_cast<BattleMenuOption*>(pElement) );
+        m_options.push_back ( dynamic_cast<BattleMenuOption*>(pElement) );
     else return false;
 
     return true;
 }
 
-void BattleMenu::loadAttributes(CL_DomNamedNodeMap *)
+void BattleMenu::load_attributes(CL_DomNamedNodeMap *)
 {
 }
 

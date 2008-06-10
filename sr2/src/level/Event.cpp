@@ -1,39 +1,40 @@
 #include "Event.h"
 #include "IApplication.h"
+#include "IParty.h"
 
 
-StoneRing::Event::Event():mbRepeatable(true),mbRemember(false),mpCondition(NULL),mpScript(NULL)
+StoneRing::Event::Event():m_bRepeatable(true),m_bRemember(false),m_pCondition(NULL),m_pScript(NULL)
 {
 }
 
 
-void StoneRing::Event::loadAttributes(CL_DomNamedNodeMap *pAttributes)
+void StoneRing::Event::load_attributes(CL_DomNamedNodeMap *pAttributes)
 {
-    mName = getRequiredString("name",pAttributes);
+    m_name = get_required_string("name",pAttributes);
 
-    std::string triggertype = getString("triggerType",pAttributes);
+    std::string triggertype = get_string("triggerType",pAttributes);
 
     if(triggertype == "step")
-        meTriggerType = STEP;
+        m_eTriggerType = STEP;
     else if (triggertype == "talk")
-        meTriggerType = TALK;
+        m_eTriggerType = TALK;
     else if (triggertype == "act")
-        meTriggerType = ACT;
-    else throw CL_Error(" Bad trigger type on event " + mName );
+        m_eTriggerType = ACT;
+    else throw CL_Error(" Bad trigger type on event " + m_name );
 
-    mbRepeatable = getImpliedBool("repeatable",pAttributes,true);
-    mbRemember = getImpliedBool("remember",pAttributes,false);
+    m_bRepeatable = get_implied_bool("repeatable",pAttributes,true);
+    m_bRemember = get_implied_bool("remember",pAttributes,false);
 }
 
-bool StoneRing::Event::handleElement(eElement element, Element *pElement)
+bool StoneRing::Event::handle_element(Element::eElement element, Element *pElement)
 {
     if(element == ESCRIPT)
     {
-        mpScript = dynamic_cast<ScriptElement*>(pElement);
+        m_pScript = dynamic_cast<ScriptElement*>(pElement);
     }
     else if(element == ECONDITIONSCRIPT)
     {
-        mpCondition = dynamic_cast<ScriptElement*>(pElement);
+        m_pCondition = dynamic_cast<ScriptElement*>(pElement);
     }
     else 
     {
@@ -46,40 +47,40 @@ bool StoneRing::Event::handleElement(eElement element, Element *pElement)
 
 StoneRing::Event::~Event()
 {
-    delete mpScript;
-    delete mpCondition;
+    delete m_pScript;
+    delete m_pCondition;
 }
 
-std::string StoneRing::Event::getName() const
+std::string StoneRing::Event::GetName() const
 {
-    return mName;
+    return m_name;
 }
 
-StoneRing::Event::eTriggerType StoneRing::Event::getTriggerType()
+StoneRing::Event::eTriggerType StoneRing::Event::GetTriggerType()
 {
-    return meTriggerType;
+    return m_eTriggerType;
 }
 
-bool StoneRing::Event::repeatable()
+bool StoneRing::Event::Repeatable()
 {
-    return mbRepeatable;
+    return m_bRepeatable;
 }
 
-bool StoneRing::Event::remember()
+bool StoneRing::Event::Remember()
 {
-    return mbRemember;
+    return m_bRemember;
 }
  
-bool StoneRing::Event::invoke()
+bool StoneRing::Event::Invoke()
 {
     
-    if(mpCondition && !mpCondition->evaluateCondition() )
+    if(m_pCondition && !m_pCondition->EvaluateCondition() )
         return false;
 
-    StoneRing::IApplication::getInstance()->getParty()->doEvent ( mName, mbRemember );
+    StoneRing::IApplication::GetInstance()->GetParty()->DoEvent ( m_name, m_bRemember );
 
-    if(mpScript)
-        mpScript->executeScript();
+    if(m_pScript)
+        m_pScript->ExecuteScript();
 
     return true;
 }

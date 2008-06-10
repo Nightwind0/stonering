@@ -4,27 +4,27 @@
 
 using namespace StoneRing;
 
-AttributeEnhancer::AttributeEnhancer():mnAdd(0),mfMultiplier(1)
+AttributeEnhancer::AttributeEnhancer():m_nAdd(0),m_fMultiplier(1)
 {
 }
 
-void AttributeEnhancer::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+void AttributeEnhancer::load_attributes(CL_DomNamedNodeMap * pAttributes)
 {
-    mnAttribute = ICharacter::CAFromString(getRequiredString("attribute", pAttributes));
-    meType = static_cast<eType>( getImpliedInt("type",pAttributes, EAUTO) );
-    mfMultiplier = getImpliedFloat("multiplier",pAttributes,1);
-    mnAdd = getImpliedInt("add",pAttributes,0);
-    mbToggle = getImpliedBool("toggle",pAttributes,false);
+    m_nAttribute = ICharacter::CAFromString(get_required_string("attribute", pAttributes));
+    m_eType = static_cast<eType>( get_implied_int("type",pAttributes, EAUTO) );
+    m_fMultiplier = get_implied_float("multiplier",pAttributes,1);
+    m_nAdd = get_implied_int("add",pAttributes,0);
+    m_bToggle = get_implied_bool("toggle",pAttributes,false);
 
-    if(meType == EAUTO)
+    if(m_eType == EAUTO)
     {
         // Lets calculate the real type based on what is supplied
-        if(hasAttr("multiplier",pAttributes))
-            meType = static_cast<eType>(meType | EMULTIPLY);
-        if(hasAttr("add",pAttributes))
-            meType = static_cast<eType>(meType | EADD);
-        if(hasAttr("toggle",pAttributes))
-            meType = ETOGGLE; // No or, we can't combine this
+        if(has_attribute("multiplier",pAttributes))
+            m_eType = static_cast<eType>(m_eType | EMULTIPLY);
+        if(has_attribute("add",pAttributes))
+            m_eType = static_cast<eType>(m_eType | EADD);
+        if(has_attribute("toggle",pAttributes))
+            m_eType = ETOGGLE; // No or, we can't combine this
     }
 }
 
@@ -34,66 +34,66 @@ AttributeEnhancer::~AttributeEnhancer()
 }
 
 
-uint AttributeEnhancer::getAttribute() const
+uint AttributeEnhancer::GetAttribute() const
 {
-    return mnAttribute;
+    return m_nAttribute;
 }
 
-int AttributeEnhancer::getAdd() const
+int AttributeEnhancer::GetAdd() const
 {
-    return mnAdd;
+    return m_nAdd;
 }
 
-float AttributeEnhancer::getMultiplier() const
+float AttributeEnhancer::GetMultiplier() const
 {
-    return mfMultiplier;
+    return m_fMultiplier;
 }
 
-bool AttributeEnhancer::getToggle() const
+bool AttributeEnhancer::GetToggle() const
 {
-    return mbToggle;
+    return m_bToggle;
 }
 
-AttributeEnhancer::eType AttributeEnhancer::getType() const
+AttributeEnhancer::eType AttributeEnhancer::GetType() const
 {
-    return meType;
+    return m_eType;
 }
 
 // Uses IParty::modifyAttribute to modify the CURRENT player,
 // Meaning that the system must select the proper current player
 // when invoking. (By calling equip on the armor/weapon...)
-void AttributeEnhancer::invoke()
+void AttributeEnhancer::Invoke()
 {
     ICharacter * pCharacter = 
-        IApplication::getInstance()->getTargetCharacterGroup()->getTargetCharacter();
+        IApplication::GetInstance()->GetTargetCharacterGroup()->GetTargetCharacter();
 
-    ICharacter::eCharacterAttribute attr = static_cast<ICharacter::eCharacterAttribute>(mnAttribute);
-    if(meType & EMULTIPLY)
-        pCharacter->attachMultiplication(attr, mfMultiplier);
-    if(meType & EADD)
-        pCharacter->attachAddition(attr, mnAdd);
-    if(meType & ETOGGLE)
-        pCharacter->fixAttribute(attr,mbToggle);
+    ICharacter::eCharacterAttribute attr = static_cast<ICharacter::eCharacterAttribute>(m_nAttribute);
+    if(m_eType & EMULTIPLY)
+        pCharacter->AttachMultiplication(attr, m_fMultiplier);
+    if(m_eType & EADD)
+        pCharacter->AttachAddition(attr, m_nAdd);
+    if(m_eType & ETOGGLE)
+        pCharacter->FixAttribute(attr,m_bToggle);
 }
 
 // Uses IParty::modifyAttribute to modify the CURRENT player,
 // Meaning that the system must select the proper current player
 // when revoking. (By calling unequip on the armor/weapon...)
-void AttributeEnhancer::revoke()
+void AttributeEnhancer::Revoke()
 {
 
-    ICharacter * pCharacter = IApplication::getInstance()
-        ->getTargetCharacterGroup()
-        ->getTargetCharacter();
+    ICharacter * pCharacter = IApplication::GetInstance()
+        ->GetTargetCharacterGroup()
+        ->GetTargetCharacter();
 
-    ICharacter::eCharacterAttribute attr = static_cast<ICharacter::eCharacterAttribute>(mnAttribute);
+    ICharacter::eCharacterAttribute attr = static_cast<ICharacter::eCharacterAttribute>(m_nAttribute);
 
-    if(meType & EADD)
-        pCharacter->detachAddition(attr, mnAdd);
-    if(meType & EMULTIPLY)
-        pCharacter->detachMultiplication(attr, mfMultiplier);
-    if(meType & ETOGGLE)
-        pCharacter->fixAttribute(attr, ! mbToggle );
+    if(m_eType & EADD)
+        pCharacter->DetachAddition(attr, m_nAdd);
+    if(m_eType & EMULTIPLY)
+        pCharacter->DetachMultiplication(attr, m_fMultiplier);
+    if(m_eType & ETOGGLE)
+        pCharacter->FixAttribute(attr, ! m_bToggle );
 
 }
 

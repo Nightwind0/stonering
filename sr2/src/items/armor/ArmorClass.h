@@ -13,44 +13,44 @@ namespace StoneRing{
         ArmorClass();
         ArmorClass(CL_DomElement * pElement);
         ~ArmorClass();
-        virtual eElement whichElement() const{ return EARMORCLASS; }    
-        std::string getName() const;
-        int getValueAdd() const;
-        float getValueMultiplier() const;
+        virtual eElement WhichElement() const{ return EARMORCLASS; }    
+        std::string GetName() const;
+        int GetValueAdd() const;
+        float GetValueMultiplier() const;
 
-        std::list<AttributeEnhancer*>::const_iterator getAttributeEnhancersBegin();
-        std::list<AttributeEnhancer*>::const_iterator getAttributeEnhancersEnd();
+        std::list<AttributeEnhancer*>::const_iterator GetAttributeEnhancersBegin();
+        std::list<AttributeEnhancer*>::const_iterator GetAttributeEnhancersEnd();
         
-        std::list<ArmorEnhancer*>::const_iterator getArmorEnhancersBegin();
-        std::list<ArmorEnhancer*>::const_iterator getArmorEnhancersEnd();
+        std::list<ArmorEnhancer*>::const_iterator GetArmorEnhancersBegin();
+        std::list<ArmorEnhancer*>::const_iterator GetArmorEnhancersEnd();
 
-        std::list<StatusEffectModifier*>::const_iterator getStatusEffectModifiersBegin() { return mStatusEffectModifiers.begin(); }
-        std::list<StatusEffectModifier*>::const_iterator getStatusEffectModifiersEnd() { return mStatusEffectModifiers.end(); }
+        std::list<StatusEffectModifier*>::const_iterator GetStatusEffectModifiersBegin() { return m_status_effect_modifiers.begin(); }
+        std::list<StatusEffectModifier*>::const_iterator GetStatusEffectModifiersEnd() { return m_status_effect_modifiers.end(); }
 
-        void executeScript();
-        bool equipCondition();
-        void onEquipScript();
-        void onUnequipScript();
+        void ExecuteScript();
+        bool EquipCondition();
+        void OnEquipScript();
+        void OnUnequipScript();
 
-        bool isExcluded ( const ArmorTypeRef &weaponType );
+        bool IsExcluded ( const ArmorTypeRef &weaponType );
         bool operator==(const ArmorClass &lhs );
 
     private:
 
-        virtual bool handleElement(eElement element, Element * pElement );
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
-        std::string mName;
-        int mnValueAdd;
-        float mfValueMultiplier;
-        void addStatusEffectModifier(StatusEffectModifier *pModifier ) { mStatusEffectModifiers.push_back ( pModifier ); }
-        ScriptElement *mpScript;
-        std::list<AttributeEnhancer*> mAttributeEnhancers;
-        std::list<ArmorEnhancer*> mArmorEnhancers;
-        std::list<ArmorTypeRef*> mExcludedTypes;
-        std::list<StatusEffectModifier*> mStatusEffectModifiers;
-        NamedScript *mpEquipScript;
-        NamedScript *mpUnequipScript;
-        ScriptElement *mpConditionScript;
+        virtual bool handle_element(eElement element, Element * pElement );
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes) ;
+        std::string m_name;
+        int m_nValueAdd;
+        float m_fValueMultiplier;
+        void AddStatusEffectModifier(StatusEffectModifier *pModifier ) { m_status_effect_modifiers.push_back ( pModifier ); }
+        ScriptElement *m_pScript;
+        std::list<AttributeEnhancer*> m_attribute_enhancers;
+        std::list<ArmorEnhancer*> m_armor_enhancers;
+        std::list<ArmorTypeRef*> m_excluded_types;
+        std::list<StatusEffectModifier*> m_status_effect_modifiers;
+        NamedScript *m_pEquipScript;
+        NamedScript *m_pUnequipScript;
+        ScriptElement *m_pConditionScript;
     };
 };
 

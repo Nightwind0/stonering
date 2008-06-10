@@ -12,7 +12,7 @@ namespace StoneRing
     public:
         SpriteRef();
         virtual ~SpriteRef();
-        virtual eElement whichElement() const{ return ESPRITEREF; } 
+        virtual eElement WhichElement() const{ return ESPRITEREF; } 
         enum eType {
             SPR_NONE, 
             SPR_STILL, 
@@ -26,15 +26,15 @@ namespace StoneRing
             SPR_BATTLE_DEAD
         };
 
-        eType getType() const;
-        std::string getRef() const;
+        eType GetType() const;
+        std::string GetRef() const;
     protected:
-        virtual bool handleElement(eElement element, Element * pElement );      
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-        virtual void handleText(const std::string &text);
+        virtual bool handle_element(eElement element, Element * pElement );      
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes);
+        virtual void handle_text(const std::string &text);
 
-        eType meType;
-        std::string mRef;
+        eType m_eType;
+        std::string m_ref;
     };
 
 }

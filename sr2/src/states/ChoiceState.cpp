@@ -6,9 +6,9 @@
 using std::min;
 using std::max;
 
-StoneRing::ChoiceState::ChoiceState():mbDone(false),mpChoiceOverlay(NULL),
-                                      mpChoiceFont(NULL),mpOptionFont(NULL),
-                                      mpCurrentOptionFont(NULL),mnSelection(-1)
+StoneRing::ChoiceState::ChoiceState():m_bDone(false),m_pChoiceOverlay(NULL),
+                                      m_pChoiceFont(NULL),m_pOptionFont(NULL),
+                                      m_pCurrentOptionFont(NULL),m_nSelection(-1)
 {
 
 }
@@ -17,48 +17,48 @@ StoneRing::ChoiceState::~ChoiceState()
 {
 }
 
-bool StoneRing::ChoiceState::isDone() const
+bool StoneRing::ChoiceState::IsDone() const
 {
-    return mbDone;
+    return m_bDone;
 }
 
-void StoneRing::ChoiceState::handleKeyDown(const CL_InputEvent &key)
+void StoneRing::ChoiceState::HandleKeyDown(const CL_InputEvent &key)
 {
 }
 
-void StoneRing::ChoiceState::handleKeyUp(const CL_InputEvent &key)
+void StoneRing::ChoiceState::HandleKeyUp(const CL_InputEvent &key)
 {
     switch(key.id)
     {
     case CL_KEY_ENTER:
     case CL_KEY_SPACE:
         // Select current option.
-        mbDraw = false;
+        m_bDraw = false;
        // mpChoice->chooseOption(mnCurrentOption);
-        mnSelection = mnCurrentOption;
-        mbDone = true;
+        m_nSelection = m_nCurrentOption;
+        m_bDone = true;
         break;
     case CL_KEY_DOWN:
-        if(mnCurrentOption + 1 < mChoices.size())
+        if(m_nCurrentOption + 1 < m_choices.size())
         {
-            mnCurrentOption++;
+            m_nCurrentOption++;
                 
             // @todo: 4?? should be options per page but we'll have to latch it
-            if(mnCurrentOption > mnOptionOffset + 4)
+            if(m_nCurrentOption > m_nOptionOffset + 4)
             {
-                mnOptionOffset++;
+                m_nOptionOffset++;
             }
         }
             
         break;
     case CL_KEY_UP:
-        if(mnCurrentOption > 0 )
+        if(m_nCurrentOption > 0 )
         {
-            mnCurrentOption--;
+            m_nCurrentOption--;
         
-            if(mnCurrentOption < mnOptionOffset)
+            if(m_nCurrentOption < m_nOptionOffset)
             {
-                mnOptionOffset--;
+                m_nOptionOffset--;
             }
         }
         break;
@@ -68,41 +68,41 @@ void StoneRing::ChoiceState::handleKeyUp(const CL_InputEvent &key)
     }
 }
 
-void StoneRing::ChoiceState::draw(const CL_Rect &screenRect,CL_GraphicContext * pGC)
+void StoneRing::ChoiceState::Draw(const CL_Rect &screenRect,CL_GraphicContext * pGC)
 {
-    if(!mbDraw) return;
+    if(!m_bDraw) return;
 
-    pGC->fill_rect( mQuestionRect, mQuestionBGColor );
-    pGC->fill_rect( mTextRect, mTextBGColor ) ;
+    pGC->fill_rect( m_question_rect, m_question_BGColor );
+    pGC->fill_rect( m_text_rect, m_text_BGColor ) ;
 
-    mpChoiceOverlay->draw(static_cast<float>(mX),static_cast<float>(mY),pGC);
-    mpChoiceFont->draw(mQuestionRect,mText,pGC);
+    m_pChoiceOverlay->draw(static_cast<float>(m_X),static_cast<float>(m_Y),pGC);
+    m_pChoiceFont->draw(m_question_rect,m_text,pGC);
 
     CL_Font * pLineFont = NULL;
 
-    uint optionsPerPage = max(1, mTextRect.get_height() / mpOptionFont->get_height());
+    uint optionsPerPage = max(1, m_text_rect.get_height() / m_pOptionFont->get_height());
 
-    optionsPerPage = min(optionsPerPage,static_cast<uint>(mChoices.size()));
+    optionsPerPage = min(optionsPerPage,static_cast<uint>(m_choices.size()));
 
     // Draw the options
     for(uint i=0;i< optionsPerPage; i++)
     {
         int indent = 0;
         // Don't paint more options than there are
-        if(i + mnOptionOffset >= mChoices.size()) break;
+        if(i + m_nOptionOffset >= m_choices.size()) break;
     
-        if(i + mnOptionOffset == mnCurrentOption)
+        if(i + m_nOptionOffset == m_nCurrentOption)
         {
             indent = 10;
-            pLineFont = mpCurrentOptionFont;
+            pLineFont = m_pCurrentOptionFont;
         }
         else
         {
-            pLineFont = mpOptionFont;
+            pLineFont = m_pOptionFont;
         }
     
-        pLineFont->draw( mTextRect.left + indent,  i * (pLineFont->get_height() + pLineFont->get_height_offset()) + mTextRect.top,
-                         mChoices[i + mnOptionOffset], pGC);
+        pLineFont->draw( m_text_rect.left + indent,  i * (pLineFont->get_height() + pLineFont->get_height_offset()) + m_text_rect.top,
+                         m_choices[i + m_nOptionOffset], pGC);
     
     }
     
@@ -110,62 +110,65 @@ void StoneRing::ChoiceState::draw(const CL_Rect &screenRect,CL_GraphicContext * 
 
 
 
-bool StoneRing::ChoiceState::disableMappableObjects() const
+bool StoneRing::ChoiceState::DisableMappableObjects() const
 {
     return true;
 }
 
 
-void StoneRing::ChoiceState::mappableObjectMoveHook()
+void StoneRing::ChoiceState::MappableObjectMoveHook()
 {
 }
 
-void StoneRing::ChoiceState::start()
+void StoneRing::ChoiceState::Start()
 {
 
-    mbDone = false;
-    mbDraw = true;
+    m_bDone = false;
+    m_bDraw = true;
     std::string resource = "Overlays/Choice/";
-    IApplication *pApp = IApplication::getInstance();
-    CL_ResourceManager *pResources = pApp->getResources();
+    IApplication *pApp = IApplication::GetInstance();
+    CL_ResourceManager *pResources = pApp->GetResources();
+    std::string choiceFont = CL_String::load(resource + "fonts/Choice",pResources);
+    std::string optionFont = CL_String::load(resource + "fonts/Option",pResources);
+    std::string selectionFont = CL_String::load(resource+ "fonts/Selection",pResources);
 
-    if(!mpChoiceFont)
-        mpChoiceFont = GraphicsManager::getInstance()->getFont( GraphicsManager::FONT_CHOICE );
+    if(!m_pChoiceFont)
+        m_pChoiceFont = GraphicsManager::GetInstance()->GetFont(choiceFont);
     
-    if(!mpOptionFont)
-        mpOptionFont = GraphicsManager::getInstance()->getFont( GraphicsManager::FONT_OPTION );
+    if(!m_pOptionFont)
+        m_pOptionFont = GraphicsManager::GetInstance()->GetFont(optionFont);
     
-    if(!mpCurrentOptionFont)
-        mpCurrentOptionFont = GraphicsManager::getInstance()->getFont( GraphicsManager::FONT_CURRENT_OPTION );
+    if(!m_pCurrentOptionFont)
+        m_pCurrentOptionFont = GraphicsManager::GetInstance()->GetFont(selectionFont);
 
-    if(!mpChoiceOverlay)
-        mpChoiceOverlay = new CL_Surface("Overlays/Choice/overlay", pResources );
+    if(!m_pChoiceOverlay)
+        m_pChoiceOverlay = new CL_Surface("Overlays/Choice/overlay", pResources );
 
-    mQuestionRect.top = CL_Integer(resource + "header/top", pResources);
-    mQuestionRect.left = CL_Integer(resource + "header/left", pResources);
-    mQuestionRect.right = CL_Integer(resource + "header/right", pResources);
-    mQuestionRect.bottom = CL_Integer(resource + "header/bottom", pResources);
+    m_question_rect.top = CL_Integer(resource + "header/top", pResources);
+    m_question_rect.left = CL_Integer(resource + "header/left", pResources);
+    m_question_rect.right = CL_Integer(resource + "header/right", pResources);
+    m_question_rect.bottom = CL_Integer(resource + "header/bottom", pResources);
 
-    mTextRect.top = CL_Integer(resource + "text/top", pResources);
-    mTextRect.left = CL_Integer(resource + "text/left", pResources);
-    mTextRect.right = CL_Integer(resource + "text/right", pResources);
-    mTextRect.bottom = CL_Integer(resource + "text/bottom", pResources);
+    m_text_rect.top = CL_Integer(resource + "text/top", pResources);
+    m_text_rect.left = CL_Integer(resource + "text/left", pResources);
+    m_text_rect.right = CL_Integer(resource + "text/right", pResources);
+    m_text_rect.bottom = CL_Integer(resource + "text/bottom", pResources);
 
-    mQuestionBGColor.set_red (CL_Integer(resource + "header/bgcolor/r", pResources));
-    mQuestionBGColor.set_green (CL_Integer(resource + "header/bgcolor/g", pResources));
-    mQuestionBGColor.set_blue (CL_Integer(resource + "header/bgcolor/b", pResources));
-    mQuestionBGColor.set_alpha (CL_Integer(resource + "header/bgcolor/a", pResources));
+    m_question_BGColor.set_red (CL_Integer(resource + "header/bgcolor/r", pResources));
+    m_question_BGColor.set_green (CL_Integer(resource + "header/bgcolor/g", pResources));
+    m_question_BGColor.set_blue (CL_Integer(resource + "header/bgcolor/b", pResources));
+    m_question_BGColor.set_alpha (CL_Integer(resource + "header/bgcolor/a", pResources));
 
-    mTextBGColor.set_red (CL_Integer(resource + "text/bgcolor/r", pResources));
-    mTextBGColor.set_green (CL_Integer(resource + "text/bgcolor/g", pResources));
-    mTextBGColor.set_blue (CL_Integer(resource + "text/bgcolor/b", pResources));
-    mTextBGColor.set_alpha (CL_Integer(resource + "text/bgcolor/a", pResources));
+    m_text_BGColor.set_red (CL_Integer(resource + "text/bgcolor/r", pResources));
+    m_text_BGColor.set_green (CL_Integer(resource + "text/bgcolor/g", pResources));
+    m_text_BGColor.set_blue (CL_Integer(resource + "text/bgcolor/b", pResources));
+    m_text_BGColor.set_alpha (CL_Integer(resource + "text/bgcolor/a", pResources));
 
-    mX = CL_Integer(resource + "x", pResources);
-    mY = CL_Integer(resource + "y", pResources);
+    m_X = CL_Integer(resource + "x", pResources);
+    m_Y = CL_Integer(resource + "y", pResources);
 
-    mnCurrentOption = 0;
-    mnOptionOffset = 0;
+    m_nCurrentOption = 0;
+    m_nOptionOffset = 0;
 
 /*
   if(!mpChoiceOverlay)
@@ -173,15 +176,15 @@ void StoneRing::ChoiceState::start()
 */
 }
 
-void StoneRing::ChoiceState::finish()
+void StoneRing::ChoiceState::Finish()
 {
 }
 
 
-void StoneRing::ChoiceState::init(const std::string &choiceText, const std::vector<std::string> &choices)
+void StoneRing::ChoiceState::Init(const std::string &choiceText, const std::vector<std::string> &choices)
 {
-    mText = choiceText;
-    mChoices = choices;
+    m_text = choiceText;
+    m_choices = choices;
 }
 
 

@@ -2,17 +2,17 @@
 
 using namespace StoneRing;
 
-void SpellRef::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+void SpellRef::load_attributes(CL_DomNamedNodeMap * pAttributes)
 {
-    meSpellType = Magic::typeOf(getRequiredString("type",pAttributes));
+    m_eSpellType = Magic::TypeOf(get_required_string("type",pAttributes));
 
-    if(meSpellType == Magic::UNKNOWN)
+    if(m_eSpellType == Magic::UNKNOWN)
         throw CL_Error("Bad magic type in spell ref");
 }
 
-void SpellRef::handleText(const std::string &text)
+void SpellRef::handle_text(const std::string &text)
 {
-    mName = text;
+    m_name = text;
 }
 
 SpellRef::SpellRef(  )
@@ -26,8 +26,8 @@ SpellRef::~SpellRef()
 
 bool SpellRef::operator==(const SpellRef &lhs )
 {
-    if ( meSpellType == lhs.meSpellType &&
-         mName == lhs.mName )
+    if ( m_eSpellType == lhs.m_eSpellType &&
+         m_name == lhs.m_name )
     {
         return true;
     }
@@ -35,13 +35,13 @@ bool SpellRef::operator==(const SpellRef &lhs )
 }
 
 
-Magic::eMagicType SpellRef::getSpellType() const
+Magic::eMagicType SpellRef::GetSpellType() const
 {
-    return meSpellType;
+    return m_eSpellType;
 }
 
-std::string SpellRef::getName() const
+std::string SpellRef::GetName() const
 {
-    return mName;
+    return m_name;
 }
 

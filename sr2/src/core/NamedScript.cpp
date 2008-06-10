@@ -1,28 +1,28 @@
 #include "NamedScript.h"
 
 StoneRing::NamedScript::NamedScript()
-:mpScript(NULL)
+:m_pScript(NULL)
 {
 }
 
 
-SteelType StoneRing::NamedScript::executeScript(const ParameterList &params)
+SteelType StoneRing::NamedScript::ExecuteScript(const ParameterList &params)
 {
-    return mpScript->executeScript(params);
+    return m_pScript->ExecuteScript(params);
 }
 
-SteelType StoneRing::NamedScript::executeScript()
+SteelType StoneRing::NamedScript::ExecuteScript()
 {
-    return mpScript->executeScript();
+    return m_pScript->ExecuteScript();
 }
 
 
-bool StoneRing::NamedScript::handleElement(eElement element,Element * pElement)
+bool StoneRing::NamedScript::handle_element(Element::eElement element,Element * pElement)
 {
     switch(element)
     {
     case ESCRIPT:
-        mpScript = dynamic_cast<ScriptElement*>(pElement);
+        m_pScript = dynamic_cast<ScriptElement*>(pElement);
         break;
     default:
         return false;
@@ -34,6 +34,6 @@ bool StoneRing::NamedScript::handleElement(eElement element,Element * pElement)
 
 StoneRing::NamedScript::~NamedScript()
 {
-    delete mpScript;
+    delete m_pScript;
 }
 

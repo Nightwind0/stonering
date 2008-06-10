@@ -18,26 +18,26 @@ namespace StoneRing{
                    SpellRef * pSpell, RuneType *pRune );
 
         ~ArmorRef();
-        virtual eElement whichElement() const{ return EARMORREF; }  
+        virtual eElement WhichElement() const{ return EARMORREF; }  
 
-        ArmorType * getArmorType() const;
-        ArmorClass * getArmorClass() const;
-        SpellRef * getSpellRef() const;
-        RuneType * getRuneType() const;
-        std::string getName() const;
+        ArmorType * GetArmorType() const;
+        ArmorClass * GetArmorClass() const;
+        SpellRef * GetSpellRef() const;
+        RuneType * GetRuneType() const;
+        std::string GetName() const;
         bool operator==(const ArmorRef&);
 
     private:
-        virtual bool handleElement(eElement element, Element * pElement );
-        virtual void loadFinished();
+        virtual bool handle_element(eElement element, Element * pElement );
+        virtual void load_finished();
     protected:
-        ArmorType * mpArmorType;
-        ArmorClass * mpArmorClass;
-        ArmorTypeRef *mpType;
-        ArmorClassRef *mpClass;
-        SpellRef * mpSpellRef;
-        RuneType * mpRuneType;
-        std::string mName;
+        ArmorType * m_pArmorType;
+        ArmorClass * m_pArmorClass;
+        ArmorTypeRef *m_pType;
+        ArmorClassRef *m_pClass;
+        SpellRef * m_pSpellRef;
+        RuneType * m_pRuneType;
+        std::string m_name;
 
     };
 };

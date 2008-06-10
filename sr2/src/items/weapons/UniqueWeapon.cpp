@@ -10,114 +10,114 @@
 
 using namespace StoneRing;
 
-UniqueWeapon::UniqueWeapon():mpWeaponType(NULL),mpScript(NULL)
+UniqueWeapon::UniqueWeapon():m_pWeaponType(NULL),m_pScript(NULL)
 {
 }
 
 UniqueWeapon::~UniqueWeapon()
 { 
-    delete mpScript;
-    delete mpEquipScript;
-    delete mpUnequipScript;
-    delete mpConditionScript;
+    delete m_pScript;
+    delete m_pEquipScript;
+    delete m_pUnequipScript;
+    delete m_pConditionScript;
 }
 
-void UniqueWeapon::executeScript()
+void UniqueWeapon::ExecuteScript()
 {
-    if(mpScript) mpScript->executeScript();
+    if(m_pScript) m_pScript->ExecuteScript();
 }
 
-bool UniqueWeapon::equipCondition()
+bool UniqueWeapon::EquipCondition()
 {
-    if(mpConditionScript)
-        return mpConditionScript->evaluateCondition();
+    if(m_pConditionScript)
+        return m_pConditionScript->EvaluateCondition();
     else return true;
 }
 
-void UniqueWeapon::onEquipScript()
+void UniqueWeapon::OnEquipScript()
 {
-    mpEquipScript->executeScript();
+    m_pEquipScript->ExecuteScript();
 }
 
-void UniqueWeapon::onUnequipScript()
+void UniqueWeapon::OnUnequipScript()
 {
-    mpUnequipScript->executeScript();
+    m_pUnequipScript->ExecuteScript();
 }
 
-uint UniqueWeapon::getValue() const 
+uint UniqueWeapon::GetValue() const 
 {
-    return mnValue;
+    return m_nValue;
 }
 
-uint UniqueWeapon::getSellValue() const 
+uint UniqueWeapon::GetSellValue() const 
 {
-    return mnValue / 2;
+    return m_nValue / 2;
 }
 
-WeaponType * UniqueWeapon::getWeaponType() const 
+WeaponType * UniqueWeapon::GetWeaponType() const 
 {
-    return mpWeaponType;
+    return m_pWeaponType;
 }
 
-bool UniqueWeapon::isRanged() const 
+bool UniqueWeapon::IsRanged() const 
 {
-    return mpWeaponType->isRanged();
+    return m_pWeaponType->IsRanged();
 }
 
-bool UniqueWeapon::isTwoHanded() const
+bool UniqueWeapon::IsTwoHanded() const
 {
-    return mpWeaponType->isTwoHanded();
+    return m_pWeaponType->IsTwoHanded();
 }
 
-void UniqueWeapon::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+void UniqueWeapon::load_attributes(CL_DomNamedNodeMap * pAttributes)
 {
-    mValueMultiplier = getImpliedFloat("valueMultiplier",pAttributes,1);
+    m_value_multiplier = get_implied_float("valueMultiplier",pAttributes,1);
 
 }
 
-void UniqueWeapon::loadFinished()
+void UniqueWeapon::load_finished()
 {
-    cl_assert ( mpWeaponType );
-    mnValue = (int)(mpWeaponType->getBasePrice() * mValueMultiplier);
+    cl_assert ( m_pWeaponType );
+    m_nValue = (int)(m_pWeaponType->GetBasePrice() * m_value_multiplier);
 }
-bool UniqueWeapon::handleElement(eElement element, Element * pElement)
+bool UniqueWeapon::handle_element(eElement element, Element * pElement)
 {
     switch(element)
     {
     case EWEAPONTYPEREF:
     {
-        const ItemManager * pItemManager = IApplication::getInstance()->getItemManager();
+        const ItemManager * pItemManager = IApplication::GetInstance()->GetItemManager();
 
         WeaponTypeRef * pType = dynamic_cast<WeaponTypeRef*>(pElement);
-        mpWeaponType = pItemManager->getWeaponType( *pType );
+        m_pWeaponType = pItemManager->GetWeaponType( *pType );
         break;
     }
     case EWEAPONENHANCER:
-        addWeaponEnhancer( dynamic_cast<WeaponEnhancer*>(pElement) );
+        Add_Weapon_Enhancer( dynamic_cast<WeaponEnhancer*>(pElement) );
         break;
     case EATTRIBUTEENHANCER:
-        addAttributeEnhancer( dynamic_cast<AttributeEnhancer*>(pElement) );
+        Add_Attribute_Enhancer( dynamic_cast<AttributeEnhancer*>(pElement) );
         break;
     case ESPELLREF:
-        setSpellRef ( dynamic_cast<SpellRef*>(pElement) );
+        Set_Spell_Ref ( dynamic_cast<SpellRef*>(pElement) );
         break;
     case ERUNETYPE:
-        setRuneType( dynamic_cast<RuneType*>(pElement) );
+        Set_Rune_Type( dynamic_cast<RuneType*>(pElement) );
         break;
     case ESTATUSEFFECTMODIFIER:
-        addStatusEffectModifier( dynamic_cast<StatusEffectModifier*>(pElement) );
+        Add_Status_Effect_Modifier( dynamic_cast<StatusEffectModifier*>(pElement) );
         break;
     case ESCRIPT:
-        mpScript = dynamic_cast<ScriptElement*>(pElement);
+        m_pScript = dynamic_cast<ScriptElement*>(pElement);
         break;
     case EONEQUIP:
-        mpEquipScript = dynamic_cast<NamedScript*>(pElement);
+        m_pEquipScript = dynamic_cast<NamedScript*>(pElement);
         break;
     case EONUNEQUIP:
-        mpUnequipScript = dynamic_cast<NamedScript*>(pElement);
+        m_pUnequipScript = dynamic_cast<NamedScript*>(pElement);
         break;
     case ECONDITIONSCRIPT:
-        mpConditionScript = dynamic_cast<ScriptElement*>(pElement);
+        m_pConditionScript = dynamic_cast<ScriptElement*>(pElement);
         break;
     default:
         return false;

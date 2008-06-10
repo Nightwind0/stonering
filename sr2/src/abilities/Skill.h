@@ -37,45 +37,45 @@ namespace StoneRing
 
         enum eType { BATTLE, SWITCH };
 
-        virtual eElement whichElement() const{ return ESKILL; }
+        virtual eElement WhichElement() const{ return ESKILL; }
 
-        std::string getName() const;
-        uint getSPCost() const;
-        uint getBPCost() const;
-        uint getMinLevel() const;
+        std::string GetName() const;
+        uint GetSPCost() const;
+        uint GetBPCost() const;
+        uint GetMinLevel() const;
         
-        std::list<SkillRef*>::const_iterator getPreReqsBegin() const;
-        std::list<SkillRef*>::const_iterator getPreReqsEnd() const;
+        std::list<SkillRef*>::const_iterator GetPreReqsBegin() const;
+        std::list<SkillRef*>::const_iterator GetPreReqsEnd() const;
 
         // This is called when you actually select the option.
         // Most options will then let you select a character/party as a target
         // and then queue that selection up. 
-        void select(ActionQueue *pQueue);
+        void Select(ActionQueue *pQueue);
         // If you cancel an option, it should be able to clean itself up
         // (especially removing entries from the queue)
-        void deselect(ActionQueue *pQueue);
+        void Deselect(ActionQueue *pQueue);
 
         // For invoking from the  menu
-        void invoke();
+        void Invoke();
 
-        eType getType() const { return meType; }
+        eType GetType() const { return m_eType; }
     private:
-        virtual bool handleElement(eElement element, Element * pElement );
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-        static eType typeFromString(const std::string type);
-        std::string mName;
-        std::list<SkillRef*> mPreReqs;
-        NamedScript *mpOnInvoke;
-        NamedScript *mpOnRemove;
-        NamedScript *mpCondition;
-        NamedScript *mpOnSelect;
-        NamedScript *mpOnDeselect;
-        uint mnSp;
-        uint mnBp;
-        uint mnMinLevel;
-        eType meType;
-        bool mbAllowsGroupTarget;
-        bool mbDefaultToEnemyGroup;
+        virtual bool handle_element(eElement element, Element * pElement );
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes);
+        static eType TypeFromString(const std::string type);
+        std::string m_name;
+        std::list<SkillRef*> m_pre_reqs;
+        NamedScript *m_pOnInvoke;
+        NamedScript *m_pOnRemove;
+        NamedScript *m_pCondition;
+        NamedScript *m_pOnSelect;
+        NamedScript *m_pOnDeselect;
+        uint m_nSp;
+        uint m_nBp;
+        uint m_nMinLevel;
+        eType m_eType;
+        bool m_bAllowsGroupTarget;
+        bool m_bDefaultToEnemyGroup;
     };
 
     class SkillRef: public Element
@@ -83,18 +83,18 @@ namespace StoneRing
     public:
         SkillRef();
         virtual ~SkillRef();
-        virtual eElement whichElement() const{ return ESKILLREF; }
-        std::string getRef() const;
-        uint getSPCost() const;
-        uint getBPCost() const;
-        uint getMinLevel() const;
+        virtual eElement WhichElement() const{ return ESKILLREF; }
+        std::string GetRef() const;
+        uint GetSPCost() const;
+        uint GetBPCost() const;
+        uint GetMinLevel() const;
 
     private:
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-        uint mnSp;
-        uint mnBp;
-        uint mnMinLevel;
-        std::string mRef;
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes);
+        uint m_nSp;
+        uint m_nBp;
+        uint m_nMinLevel;
+        std::string m_ref;
     };
 
     

@@ -2,7 +2,7 @@
 
 using StoneRing::MonsterRef;
 
-MonsterRef::MonsterRef():mnCount(1)
+MonsterRef::MonsterRef():m_nCount(1)
 {
 }
 
@@ -11,35 +11,35 @@ MonsterRef::~MonsterRef()
 }
 
 
-std::string MonsterRef::getName() const
+std::string MonsterRef::GetName() const
 {
-    return mName;
+    return m_name;
 }
 
-int MonsterRef::getCount() const
+int MonsterRef::GetCount() const
 {
-    return mnCount;
+    return m_nCount;
 }
 
 
-void MonsterRef::loadAttributes(CL_DomNamedNodeMap *pAttributes)
+void MonsterRef::load_attributes(CL_DomNamedNodeMap *pAttributes)
 {
-    mName = getRequiredString("name",pAttributes);
-    mnCount = getImpliedInt("count",pAttributes,1);
-    mnCellX = getImpliedInt("cellX",pAttributes,0);
-    mnCellY = getImpliedInt("cellY",pAttributes,0);
-    mnColumns = getImpliedInt("cols",pAttributes,1);
-    mnRows = getImpliedInt("rows",pAttributes,1);
+    m_name = get_required_string("name",pAttributes);
+    m_nCount = get_implied_int("count",pAttributes,1);
+    m_nCellX = get_implied_int("cellX",pAttributes,0);
+    m_nCellY = get_implied_int("cellY",pAttributes,0);
+    m_nColumns = get_implied_int("cols",pAttributes,1);
+    m_nRows = get_implied_int("rows",pAttributes,1);
 
 #ifndef NDEBUG
-    std::cout << "Count = " << mnCount << " Cols = " << mnColumns << " Rows = " << mnRows << std::endl;
+    std::cout << "Count = " << m_nCount << " Cols = " << m_nColumns << " Rows = " << m_nRows << std::endl;
 #endif
 
-    if(mnColumns * mnRows < mnCount)
-        throw CL_Error("MonsterRef: " + mName + " has too few rows and columns for count.");
+    if(m_nColumns * m_nRows < m_nCount)
+        throw CL_Error("MonsterRef: " + m_name + " has too few rows and columns for count.");
 }
 
-void MonsterRef::loadFinished()
+void MonsterRef::load_finished()
 {
 }
         

@@ -7,9 +7,9 @@ WeaponDamageCategory::WeaponDamageCategory()
 {
 }
 
-void WeaponDamageCategory::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+void WeaponDamageCategory::load_attributes(CL_DomNamedNodeMap * pAttributes)
 {
-    meType = TypeFromString(getRequiredString("type",pAttributes));
+    m_eType = TypeFromString(get_required_string("type",pAttributes));
 }
 
 WeaponDamageCategory::eType
@@ -27,9 +27,9 @@ WeaponDamageCategory::~WeaponDamageCategory()
 }
 
 
-WeaponDamageCategory::eType WeaponDamageCategory::getType() const
+WeaponDamageCategory::eType WeaponDamageCategory::GetType() const
 {
-    return meType;
+    return m_eType;
 }
 
 
@@ -37,9 +37,9 @@ MagicDamageCategory::MagicDamageCategory()
 {
 }
 
-void MagicDamageCategory::loadAttributes(CL_DomNamedNodeMap *pAttributes)
+void MagicDamageCategory::load_attributes(CL_DomNamedNodeMap *pAttributes)
 {
-    meType = Magic::typeOf(getRequiredString("type",pAttributes));
+    m_eType = Magic::TypeOf(get_required_string("type",pAttributes));
 }
 
 MagicDamageCategory::~MagicDamageCategory()
@@ -47,9 +47,9 @@ MagicDamageCategory::~MagicDamageCategory()
 }
 
 
-Magic::eMagicType MagicDamageCategory::getType() const
+Magic::eMagicType MagicDamageCategory::GetType() const
 {
-    return meType;
+    return m_eType;
 }
 
 

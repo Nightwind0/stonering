@@ -2,18 +2,15 @@
 
 using namespace StoneRing;
 
-void WeaponEnhancer::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+void WeaponEnhancer::load_attributes(CL_DomNamedNodeMap * pAttributes)
 {
-    std::string strAttr = getRequiredString("attribute", pAttributes);
-
-    meAttribute = Weapon::attributeForString ( strAttr );
-
-    mfMultiplier = getImpliedFloat("multiplier",pAttributes,1);
-
-    mnAdd = getImpliedInt("add",pAttributes,0);
+    std::string strAttr = get_required_string("attribute", pAttributes);
+    m_eAttribute = Weapon::AttributeForString ( strAttr );
+    m_fMultiplier = get_implied_float("multiplier",pAttributes,1);
+    m_nAdd = get_implied_int("add",pAttributes,0);
 }
 
-WeaponEnhancer::WeaponEnhancer():mfMultiplier(1),mnAdd(0)
+WeaponEnhancer::WeaponEnhancer():m_fMultiplier(1),m_nAdd(0)
 {
 }
 
@@ -21,19 +18,19 @@ WeaponEnhancer::~WeaponEnhancer()
 {
 }
 
-Weapon::eAttribute WeaponEnhancer::getAttribute() const
+Weapon::eAttribute WeaponEnhancer::GetAttribute() const
 {
-    return meAttribute;
+    return m_eAttribute;
 }
 
-int WeaponEnhancer::getAdd() const
+int WeaponEnhancer::GetAdd() const
 {
-    return mnAdd;
+    return m_nAdd;
 }
 
-float WeaponEnhancer::getMultiplier() const
+float WeaponEnhancer::GetMultiplier() const
 {
-    return mfMultiplier;
+    return m_fMultiplier;
 }
 
 

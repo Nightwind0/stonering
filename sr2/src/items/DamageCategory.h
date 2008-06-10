@@ -13,7 +13,7 @@ namespace StoneRing{
 
         enum eClass { WEAPON, MAGIC };
 
-        virtual eClass getClass() const=0;
+        virtual eClass GetClass() const=0;
     private:
     };
 
@@ -23,16 +23,16 @@ namespace StoneRing{
         WeaponDamageCategory();
         WeaponDamageCategory(CL_DomElement *pElement);
         virtual ~WeaponDamageCategory();
-        virtual eElement whichElement() const{ return EWEAPONDAMAGECATEGORY; }  
-        virtual eClass getClass() const { return WEAPON; }
+        virtual eElement WhichElement() const{ return EWEAPONDAMAGECATEGORY; }  
+        virtual eClass GetClass() const { return WEAPON; }
 
         enum eType { SLASH, BASH, JAB };
 
-        eType getType() const;
+        eType GetType() const;
     private:
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
-        eType TypeFromString( const std::string &str );
-        eType meType;
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes) ;
+        static eType TypeFromString( const std::string &str );
+        eType m_eType;
     };
 
     class MagicDamageCategory : public Element, public DamageCategory
@@ -40,13 +40,13 @@ namespace StoneRing{
     public:
         MagicDamageCategory();
         MagicDamageCategory(CL_DomElement *pElement);
-        virtual eElement whichElement() const{ return EMAGICDAMAGECATEGORY; }   
+        virtual eElement WhichElement() const{ return EMAGICDAMAGECATEGORY; }   
         virtual ~MagicDamageCategory();
-        virtual eClass getClass() const { return MAGIC; }
-        Magic::eMagicType getType() const;
+        virtual eClass GetClass() const { return MAGIC; }
+        Magic::eMagicType GetType() const;
     private:
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
-        Magic::eMagicType meType;
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes) ;
+        Magic::eMagicType m_eType;
     };
 };
 

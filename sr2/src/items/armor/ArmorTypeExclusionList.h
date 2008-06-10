@@ -10,14 +10,14 @@ namespace StoneRing{
     public:
         ArmorTypeExclusionList();
         virtual ~ArmorTypeExclusionList();
-        virtual eElement whichElement() const{ return EARMORTYPEEXCLUSIONLIST; }    
+        virtual eElement WhichElement() const{ return EARMORTYPEEXCLUSIONLIST; }    
 
-        std::list<ArmorTypeRef*>::const_iterator getArmorTypeRefsBegin();
-        std::list<ArmorTypeRef*>::const_iterator getArmorTypeRefsEnd();
+        std::list<ArmorTypeRef*>::const_iterator GetArmorTypeRefsBegin();
+        std::list<ArmorTypeRef*>::const_iterator GetArmorTypeRefsEnd();
 
-        virtual bool handleElement(eElement element, Element * pElement);
     private:
-        std::list<ArmorTypeRef*> mArmorTypes;
+        virtual bool handle_element(eElement element, Element * pElement);
+        std::list<ArmorTypeRef*> m_ArmorTypes;
 
     };
 };

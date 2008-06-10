@@ -11,33 +11,33 @@ WeaponType::WeaponType()
 
 bool WeaponType::operator==(const WeaponType &type )
 {
-    return mName == type.mName;
+    return m_name == type.m_name;
 }
 
-void WeaponType::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+void WeaponType::load_attributes(CL_DomNamedNodeMap * pAttributes)
 {
-    mName = getRequiredString("name",pAttributes);
-    mnBasePrice = getRequiredInt("basePrice",pAttributes);
-    mnBaseAttack = getRequiredInt("baseAttack",pAttributes);
-    mfBaseHit = getRequiredFloat("hitAdd",pAttributes);
-    mfBaseCritical = getImpliedFloat("baseCritical",pAttributes,0.05);
-    mbRanged = getImpliedBool("ranged",pAttributes,false);
-    mbTwoHanded  = getImpliedBool("twoHanded",pAttributes,false);
+    m_name = get_required_string("name",pAttributes);
+    m_nBasePrice = get_required_int("basePrice",pAttributes);
+    m_nBaseAttack = get_required_int("baseAttack",pAttributes);
+    m_fBaseHit = get_required_float("hitAdd",pAttributes);
+    m_fBaseCritical = get_implied_float("baseCritical",pAttributes,0.05);
+    m_bRanged = get_implied_bool("ranged",pAttributes,false);
+    m_bTwoHanded  = get_implied_bool("twoHanded",pAttributes,false);
 }
 
-bool WeaponType::handleElement(eElement element, Element * pElement)
+bool WeaponType::handle_element(eElement element, Element * pElement)
 {
     switch(element)
     {
     case EICONREF:
 
-        mIconRef = dynamic_cast<IconRef*>(pElement)->getIcon();
+        m_icon_ref = dynamic_cast<IconRef*>(pElement)->GetIcon();
         break;
     case EWEAPONDAMAGECATEGORY:
-        mpDamageCategory = dynamic_cast<DamageCategory*>(pElement);
+        m_pDamageCategory = dynamic_cast<DamageCategory*>(pElement);
         break;
     case EMAGICDAMAGECATEGORY:
-        mpDamageCategory = dynamic_cast<DamageCategory*>(pElement);
+        m_pDamageCategory = dynamic_cast<DamageCategory*>(pElement);
         break;
     default:
         return false;
@@ -48,48 +48,48 @@ bool WeaponType::handleElement(eElement element, Element * pElement)
 
 WeaponType::~WeaponType()
 {
-    delete mpDamageCategory;
+    delete m_pDamageCategory;
 }
 
-std::string WeaponType::getName() const
+std::string WeaponType::GetName() const
 {
-    return mName;
+    return m_name;
 }
 
-std::string WeaponType::getIconRef() const
+std::string WeaponType::GetIconRef() const
 {
-    return mIconRef;
+    return m_icon_ref;
 }
 
 
-float WeaponType::getBaseCritical() const
+float WeaponType::GetBaseCritical() const
 {
-    return mfBaseCritical;
+    return m_fBaseCritical;
 }
 
-uint WeaponType::getBaseAttack() const
+uint WeaponType::GetBaseAttack() const
 {
-    return mnBaseAttack;
+    return m_nBaseAttack;
 }
 
-float WeaponType::getBaseHit() const
+float WeaponType::GetBaseHit() const
 {
-    return mfBaseHit;
+    return m_fBaseHit;
 }
 
-uint WeaponType::getBasePrice() const
+uint WeaponType::GetBasePrice() const
 {
-    return mnBasePrice;
+    return m_nBasePrice;
 }
 
-bool WeaponType::isRanged() const
+bool WeaponType::IsRanged() const
 {
-    return mbRanged;
+    return m_bRanged;
 }
 
-bool WeaponType::isTwoHanded() const
+bool WeaponType::IsTwoHanded() const
 {
-    return mbTwoHanded;
+    return m_bTwoHanded;
 }
 
 

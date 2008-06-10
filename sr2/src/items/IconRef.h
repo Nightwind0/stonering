@@ -6,14 +6,14 @@ namespace StoneRing{
     public:
         IconRef();
         virtual ~IconRef();
-        virtual eElement whichElement() const{ return EICONREF; }    
+        virtual eElement WhichElement() const{ return EICONREF; }    
 
-        std::string getIcon() const;
+        std::string GetIcon() const;
     private:
-        virtual bool handleElement(eElement element, Element * pElement );
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
-        virtual void handleText(const std::string &text);
-        std::string mIcon;
+        virtual bool handle_element(eElement element, Element * pElement );
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes) ;
+        virtual void handle_text(const std::string &text);
+        std::string m_icon;
     };
 
 

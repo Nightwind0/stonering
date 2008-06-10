@@ -11,7 +11,7 @@ namespace StoneRing{
         Armor();
         virtual ~Armor();
         
-        virtual ArmorType *getArmorType() const = 0;
+        virtual ArmorType *GetArmorType() const = 0;
 
         enum eAttribute
         {
@@ -26,17 +26,17 @@ namespace StoneRing{
             WHITE_RESIST, // Your AC against white magic. (hey, its a valid type!)
             STATUS, // Chance of failure for a particular status effect
         };
-        int modifyArmorAttribute( eAttribute attr, int current );
-        float modifyArmorAttribute ( eAttribute attr, float current );
-        static eAttribute attributeForString ( const std::string str );
+        int ModifyArmorAttribute( eAttribute attr, int current );
+        float ModifyArmorAttribute ( eAttribute attr, float current );
+        static eAttribute AttributeForString ( const std::string str );
 
         static std::string CreateArmorName(ArmorType *pType, ArmorClass *pClass, 
             SpellRef *pSpell, RuneType *pRune);
     protected:
-        void clearArmorEnhancers();
-        void addArmorEnhancer (ArmorEnhancer * pEnhancer);
+        void Clear_Armor_Enhancers();
+        void Add_Armor_Enhancer (ArmorEnhancer * pEnhancer);
     private:
-        std::list<ArmorEnhancer*> mArmorEnhancers;
+        std::list<ArmorEnhancer*> m_armor_enhancers;
     };
 
 };

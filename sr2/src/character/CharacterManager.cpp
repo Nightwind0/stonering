@@ -10,29 +10,29 @@ using StoneRing::CharacterManager;
 
 CharacterManager::~CharacterManager()
 {
-    std::for_each(mCharacterClasses.begin(),mCharacterClasses.end(),
+    std::for_each(m_character_classes.begin(),m_character_classes.end(),
                   compose_f_gx(del_fun<CharacterClass>(),
                                get_second<ClassMap::value_type>())
         );
 }
 
-StoneRing::MonsterElement * CharacterManager::getMonsterElement(const std::string &name)const
+StoneRing::MonsterElement * CharacterManager::GetMonsterElement(const std::string &name)const
 {
-    MonsterMap::const_iterator it = mMonsters.find(name);
-    if(it == mMonsters.end()) throw CL_Error("Monster " + name + " not found in manager");
+    MonsterMap::const_iterator it = m_monsters.find(name);
+    if(it == m_monsters.end()) throw CL_Error("Monster " + name + " not found in manager");
     return it->second;
 }
 
-StoneRing::Monster * CharacterManager::createMonster(const std::string &name)const
+StoneRing::Monster * CharacterManager::CreateMonster(const std::string &name)const
 {
-    MonsterElement * pElement = getMonsterElement(name);
+    MonsterElement * pElement = GetMonsterElement(name);
     if(pElement == NULL) return NULL;
-    return new Monster(pElement);
+	return new StoneRing::Monster(pElement);
 }
 
-void CharacterManager::loadCharacterClassFile ( CL_DomDocument &doc )
+void CharacterManager::LoadCharacterClassFile ( CL_DomDocument &doc )
 {
-    IFactory * pFactory = IApplication::getInstance()->getElementFactory();
+    IFactory * pFactory = IApplication::GetInstance()->GetElementFactory();
 
     CL_DomElement classesNode = doc.named_item("characterClasses").to_element();
     CL_DomElement classNode = classesNode.get_first_child().to_element();
@@ -42,20 +42,20 @@ void CharacterManager::loadCharacterClassFile ( CL_DomDocument &doc )
         CharacterClass * pCharacterClass = dynamic_cast<CharacterClass*>
             (pFactory->createElement("characterClass"));
 
-        pCharacterClass->load(&classNode);
-        mCharacterClasses [ pCharacterClass->getName() ] = pCharacterClass;
+        pCharacterClass->Load(&classNode);
+        m_character_classes [ pCharacterClass->GetName() ] = pCharacterClass;
         classNode = classNode.get_next_sibling().to_element();
 
 #ifndef NDEBUG
-        std::cout << "Class: " << pCharacterClass->getName() << std::endl;
+        std::cout << "Class: " << pCharacterClass->GetName() << std::endl;
 #endif
     }
 
 
 }
-void CharacterManager::loadMonsterFile ( CL_DomDocument &doc )
+void CharacterManager::LoadMonsterFile ( CL_DomDocument &doc )
 {
-    IFactory * pFactory = IApplication::getInstance()->getElementFactory();
+    IFactory * pFactory = IApplication::GetInstance()->GetElementFactory();
 
     CL_DomElement monstersNode = doc.named_item("monsters").to_element();
     assert(monstersNode.is_element());
@@ -68,21 +68,21 @@ void CharacterManager::loadMonsterFile ( CL_DomDocument &doc )
         MonsterElement * pMonster = dynamic_cast<MonsterElement*>
             (pFactory->createElement("monster"));
 
-        pMonster->load(&monsterNode);
-        mMonsters [ pMonster->getName() ] = pMonster;
+        pMonster->Load(&monsterNode);
+        m_monsters [ pMonster->GetName() ] = pMonster;
         monsterNode = monsterNode.get_next_sibling().to_element();
 
 #ifndef NDEBUG
-        std::cout << "Monster: " << '\'' << pMonster->getName() << '\'' << std::endl;
+        std::cout << "Monster: " << '\'' << pMonster->GetName() << '\'' << std::endl;
 #endif
     }
 
 
 }
 
-void CharacterManager::loadCharacters(CL_DomDocument &doc)
+void CharacterManager::LoadCharacters(CL_DomDocument &doc)
 {
-    IFactory * pFactory = IApplication::getInstance()->getElementFactory();
+    IFactory * pFactory = IApplication::GetInstance()->GetElementFactory();
 
     CL_DomElement charactersNode = doc.named_item("characters").to_element();
     assert(charactersNode.is_element());
@@ -97,26 +97,26 @@ void CharacterManager::loadCharacters(CL_DomDocument &doc)
             (pFactory->createElement(characterNode.get_node_name()));
 
         assert(pCharacter);
-        assert(pCharacter->whichElement() == Element::ECHARACTER);
-        pCharacter->load(&characterNode);
-        mCharacters [ pCharacter->getName() ] = pCharacter;
+        assert(pCharacter->WhichElement() == Element::ECHARACTER);
+        pCharacter->Load(&characterNode);
+        m_characters [ pCharacter->GetName() ] = pCharacter;
         characterNode = characterNode.get_next_sibling().to_element();
 
 #ifndef NDEBUG
-        std::cout << "Character: " << '\'' << pCharacter->getName() << '\'' << std::endl;
+        std::cout << "Character: " << '\'' << pCharacter->GetName() << '\'' << std::endl;
 #endif
     }
 
 }
 
-StoneRing::Character * CharacterManager::getCharacter(const std::string &name)const
+StoneRing::Character * CharacterManager::GetCharacter(const std::string &name)const
 {
-    return mCharacters.find(name)->second;
+    return m_characters.find(name)->second;
 }
 
-StoneRing::CharacterClass * CharacterManager::getClass ( const std::string &cls ) const
+StoneRing::CharacterClass * CharacterManager::GetClass ( const std::string &cls ) const
 {
-    return mCharacterClasses.find(cls)->second;
+    return m_character_classes.find(cls)->second;
 }
 
 

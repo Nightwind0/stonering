@@ -7,7 +7,7 @@ using StoneRing::MonsterRegions;
 using StoneRing::MonsterGroup;
 
 
-MonsterRegion::MonsterRegion():mLevelX(0), mLevelY(0), mWidth(0), mHeight(0),mnTotalWeight(0)
+MonsterRegion::MonsterRegion():m_LevelX(0), m_LevelY(0), m_Width(0), m_Height(0),m_nTotalWeight(0)
 {
     
 }
@@ -18,7 +18,7 @@ MonsterRegion::~MonsterRegion()
 }
 
 
-bool MonsterRegion::handleElement(eElement element, Element * pElement)
+bool MonsterRegion::handle_element(eElement element, Element * pElement)
 {
     switch(element)
     {
@@ -26,8 +26,8 @@ bool MonsterRegion::handleElement(eElement element, Element * pElement)
         {
         MonsterGroup * pGroup = dynamic_cast<MonsterGroup*>(pElement);
         assert(pGroup);
-        mnTotalWeight += pGroup->getEncounterWeight();
-        mMonsterGroups.push_back ( pGroup );
+        m_nTotalWeight += pGroup->GetEncounterWeight();
+        m_monster_groups.push_back ( pGroup );
         break;
         }
     default:
@@ -37,19 +37,19 @@ bool MonsterRegion::handleElement(eElement element, Element * pElement)
     return true;
 }
 
-void MonsterRegion::loadAttributes(CL_DomNamedNodeMap *pAttr)
+void MonsterRegion::load_attributes(CL_DomNamedNodeMap *pAttr)
 {
-    mLevelX = getRequiredInt("levelX", pAttr);
-    mLevelY = getRequiredInt("levelY", pAttr);
-    mWidth = getRequiredInt("width", pAttr);
-    mHeight = getRequiredInt("height", pAttr);
-    mBackdrop = getRequiredString("backdrop", pAttr);
+    m_LevelX = get_required_int("levelX", pAttr);
+    m_LevelY = get_required_int("levelY", pAttr);
+    m_Width = get_required_int("width", pAttr);
+    m_Height = get_required_int("height", pAttr);
+    m_backdrop = get_required_string("backdrop", pAttr);
 
     //TODO: Make sure this backdrop exists.
 
-    if(hasAttr("encounterRate", pAttr))
+    if(has_attribute("encounterRate", pAttr))
     {
-        mEncounterRate = getFloat("encounterRate", pAttr);
+        m_encounter_rate = get_float("encounterRate", pAttr);
     }
     else
     {
@@ -59,17 +59,17 @@ void MonsterRegion::loadAttributes(CL_DomNamedNodeMap *pAttr)
                                     
 }
 
-void MonsterRegion::loadFinished()
+void MonsterRegion::load_finished()
 {
     //if monster groups is empty throw an error
-    if(mMonsterGroups.empty())
+    if(m_monster_groups.empty())
     {
         throw CL_Error("Didn't provide a MonsterGroup"); 
     }
 
 }
 
-MonsterGroup * MonsterRegion::getMonsterGroup() const
+MonsterGroup * MonsterRegion::GetMonsterGroup() const
 {
     //Return a semi random monster group based on weights
         
@@ -77,14 +77,14 @@ MonsterGroup * MonsterRegion::getMonsterGroup() const
     //and thats your total, and then your chance for each is the 
     //weight of that one divided by the total weight....
 
-    int n = (int)(rand() / (((double)RAND_MAX + 1)/ mnTotalWeight));
+    int n = (int)(rand() / (((double)RAND_MAX + 1)/ m_nTotalWeight));
     int totalSoFar = 0;
 
-    for(std::list<MonsterGroup*>::const_iterator it = mMonsterGroups.begin();
-        it != mMonsterGroups.end(); it++)
+    for(std::list<MonsterGroup*>::const_iterator it = m_monster_groups.begin();
+        it != m_monster_groups.end(); it++)
     {
         MonsterGroup * pGroup = *it;
-        totalSoFar += pGroup->getEncounterWeight();
+        totalSoFar += pGroup->GetEncounterWeight();
 
         if(n < totalSoFar) 
             return pGroup;
@@ -104,15 +104,15 @@ MonsterRegions::~MonsterRegions()
 }
 
 
-MonsterRegion * MonsterRegions::getApplicableRegion(uint x, uint y) const 
+MonsterRegion * MonsterRegions::GetApplicableRegion(uint x, uint y) const 
 {
-    for(std::list<MonsterRegion*>::const_iterator it = mMonsterRegions.begin();
-        it != mMonsterRegions.end(); 
+    for(std::list<MonsterRegion*>::const_iterator it = m_monster_regions.begin();
+        it != m_monster_regions.end(); 
         it++)
     {
         MonsterRegion * pRegion = *it;
-        if(x >= pRegion->getLevelX() && x <= pRegion->getLevelX() + pRegion->getWidth()
-            && y >= pRegion->getLevelY() && y <= pRegion->getLevelY() + pRegion->getHeight())
+        if(x >= pRegion->GetLevelX() && x <= pRegion->GetLevelX() + pRegion->GetWidth()
+            && y >= pRegion->GetLevelY() && y <= pRegion->GetLevelY() + pRegion->GetHeight())
         {
             return pRegion;
         }
@@ -122,7 +122,7 @@ MonsterRegion * MonsterRegions::getApplicableRegion(uint x, uint y) const
 }
 
 
-bool MonsterRegions::handleElement(StoneRing::Element::eElement element, Element * pElement)
+bool MonsterRegions::handle_element(StoneRing::Element::eElement element, StoneRing::Element * pElement)
 {
     switch(element)
     {
@@ -130,7 +130,7 @@ bool MonsterRegions::handleElement(StoneRing::Element::eElement element, Element
         {
             MonsterRegion *pRegion = dynamic_cast<MonsterRegion*>(pElement);
             assert(pRegion);
-            mMonsterRegions.push_back ( pRegion);
+            m_monster_regions.push_back ( pRegion);
             return true;
         }
     default:
@@ -138,7 +138,7 @@ bool MonsterRegions::handleElement(StoneRing::Element::eElement element, Element
     }
 }
 
-void MonsterRegions::loadFinished()
+void MonsterRegions::load_finished()
 {
 }
 

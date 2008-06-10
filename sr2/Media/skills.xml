@@ -26,8 +26,7 @@
                 // selectTarget( default enemies, allow enemies, allow players )
                 var $target = selectTarget(false,true,true);
                 var $queue = $_ActionQueue;
-                var @vars = $target : $item; 
-                enqueueAction($queue, $_ActionScript, $_Actor, $_ActorGroup, $vars);
+                enqueueAction($queue, $_ActionScript, $_Actor, $target, false, $item);
             </script>
         </onSelect>
         <onInvoke>

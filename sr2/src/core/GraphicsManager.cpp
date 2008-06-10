@@ -9,38 +9,29 @@
 using namespace StoneRing;
 
 
-const char * const gFontName[GraphicsManager::__LAST_FONT__] =
+GraphicsManager * GraphicsManager::m_pInstance;
+
+GraphicsManager * GraphicsManager::GetInstance()
 {
-    "SpeakerText", // FONT_SPEAKER
-    "SayText", // FONT_SAY_TEXT
-    "Choice", // FONT_CHOICE
-    "Option",
-    "CurrentOption"
-};
+    if(m_pInstance == NULL)
+        m_pInstance = new GraphicsManager();
 
-GraphicsManager * GraphicsManager::mInstance;
-
-GraphicsManager * GraphicsManager::getInstance()
-{
-    if(mInstance == NULL)
-        mInstance = new GraphicsManager();
-
-    return mInstance;
+    return m_pInstance;
 }
 
-CL_Sprite * GraphicsManager::createSprite ( const std::string & name )
+CL_Sprite * GraphicsManager::CreateSprite ( const std::string & name )
 {
-    CL_ResourceManager *pResources  = IApplication::getInstance()->getResources();
+    CL_ResourceManager *pResources  = IApplication::GetInstance()->GetResources();
 
     CL_Sprite * pSprite = new CL_Sprite("Sprites/" +  name, pResources);
 
     return pSprite;
 }
 
-std::string GraphicsManager::lookUpMapWithSurface (CL_Surface * surface)
+std::string GraphicsManager::LookUpMapWithSurface (CL_Surface * surface)
 {
-    for( std::map<std::string,CL_Surface*>::iterator i = mTileMap.begin();
-         i != mTileMap.end();
+    for( std::map<std::string,CL_Surface*>::iterator i = m_tile_map.begin();
+         i != m_tile_map.end();
          i++)
     {
         if ( i->second == surface)
@@ -55,69 +46,69 @@ std::string GraphicsManager::lookUpMapWithSurface (CL_Surface * surface)
 
 }
 
-CL_Surface * GraphicsManager::getTileMap ( const std::string & name )
+CL_Surface * GraphicsManager::GetTileMap ( const std::string & name )
 {
-    CL_ResourceManager *pResources  = IApplication::getInstance()->getResources();
+    CL_ResourceManager *pResources  = IApplication::GetInstance()->GetResources();
     CL_Surface *pSurface;
 
 
-    if(mTileMap.find( name ) == mTileMap.end())
+    if(m_tile_map.find( name ) == m_tile_map.end())
     {
 #ifndef NDEBUG
         std::cout << "TileMap now loading: " << name << std::endl;
 #endif
         pSurface = new CL_Surface("Tilemaps/" + name, pResources);
 
-        mTileMap[ name ] = pSurface;
+        m_tile_map[ name ] = pSurface;
         return pSurface;
     }
     
-    pSurface = mTileMap[name];
+    pSurface = m_tile_map[name];
 
     return pSurface;
 }
 
-CL_Sprite * GraphicsManager::createMonsterSprite (const std::string &monster, const std::string &sprite)
+CL_Sprite * GraphicsManager::CreateMonsterSprite (const std::string &monster, const std::string &sprite)
 {
-    CL_ResourceManager *pResources = IApplication::getInstance()->getResources();
+    CL_ResourceManager *pResources = IApplication::GetInstance()->GetResources();
     CL_Sprite * pSprite = new CL_Sprite("Sprites/Monsters/"+monster+'/'+sprite,pResources);
 
     return pSprite;
 }
 
-CL_Sprite * GraphicsManager::createCharacterSprite ( const std::string &player, const std::string &sprite)
+CL_Sprite * GraphicsManager::CreateCharacterSprite ( const std::string &player, const std::string &sprite)
 {
-    CL_ResourceManager *pResources = IApplication::getInstance()->getResources();
+    CL_ResourceManager *pResources = IApplication::GetInstance()->GetResources();
     CL_Sprite * pSprite = new CL_Sprite("Sprites/BattleSprites/"+player+'/'+sprite,pResources);
 
     return pSprite;
 }
 
 
-CL_Surface * GraphicsManager::getBackdrop(const std::string &name)
+CL_Surface * GraphicsManager::GetBackdrop(const std::string &name)
 {
-    CL_ResourceManager *pResources = IApplication::getInstance()->getResources();
+    CL_ResourceManager *pResources = IApplication::GetInstance()->GetResources();
     CL_Surface *pSurface = new CL_Surface("Backdrops/" + name, pResources);
     assert(pSurface);
 
     return pSurface;
 }
 
-CL_Font * GraphicsManager::getFont(StoneRing::GraphicsManager::eFont font)
+CL_Font * GraphicsManager::GetFont(const std::string &name)
 {
-    std::map<eFont,CL_Font*>::iterator foundIt = mFontMap.find( font );
+    std::map<std::string,CL_Font*>::iterator foundIt = m_font_map.find( name );
 
-    if(foundIt != mFontMap.end())
+    if(foundIt != m_font_map.end())
     {
         return foundIt->second;
     }
     else
     {
-        CL_ResourceManager *pResources  = IApplication::getInstance()->getResources();
+        CL_ResourceManager *pResources  = IApplication::GetInstance()->GetResources();
         CL_Font * pFont = NULL;
-        pFont  = new CL_Font( std::string("Fonts/") + gFontName [ font ], pResources );
+        pFont  = new CL_Font( std::string("Fonts/") + name, pResources );
 
-        mFontMap [ font ] = pFont;
+        m_font_map [ name ] = pFont;
 
         return pFont;
     }
@@ -130,8 +121,8 @@ GraphicsManager::GraphicsManager()
 
 GraphicsManager::~GraphicsManager()
 {
-    for( std::map<std::string, CL_Surface*>::iterator i = mTileMap.begin();
-         i != mTileMap.end();
+    for( std::map<std::string, CL_Surface*>::iterator i = m_tile_map.begin();
+         i != m_tile_map.end();
          i++)
     {
         delete i->second;

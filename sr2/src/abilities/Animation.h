@@ -22,8 +22,8 @@ namespace StoneRing{
     public:
         AlterSprite(){};
         virtual ~AlterSprite(){}
-        virtual eElement whichElement() const { return EALTERSPRITE; }
-        eWho getWho() const;
+        virtual eElement WhichElement() const { return EALTERSPRITE; }
+        eWho GetWho() const;
         enum eAlter 
         {
             HIDE, SMALLER_SIZE, LARGER_SIZE, HALF_SIZE, DOUBLE_SIZE, NEGATIVE,
@@ -31,10 +31,10 @@ namespace StoneRing{
         }; 
 
     private:
-        static eWho whoFromString(const std::string &str);
-        static eAlter alterFromString(const std::string &str);
-        eWho meWho; 
-        eAlter meAlter;
+        static eWho who_from_string(const std::string &str);
+        static eAlter alter_from_string(const std::string &str);
+        eWho m_eWho; 
+        eAlter m_eAlter;
 
     };
 
@@ -43,15 +43,15 @@ namespace StoneRing{
     public:
         SpriteStub();
         virtual ~SpriteStub();
-        virtual eElement whichElement() const { return ESPRITESTUB; }
+        virtual eElement WhichElement() const { return ESPRITESTUB; }
         enum eBindTo { NONE, WEAPON, CHARACTER };
 
-        std::string getName() const;
-        eBindTo getBindTo() const;
+        std::string GetName() const;
+        eBindTo GetBindTo() const;
     private:
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-        eBindTo meBindTo;
-        std::string mName;
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes);
+        eBindTo m_eBindTo;
+        std::string m_name;
     };
 
     class SpriteAnimation : public Element
@@ -59,28 +59,28 @@ namespace StoneRing{
     public:
         SpriteAnimation();
         virtual ~SpriteAnimation();
-        virtual eElement whichElement() const { return ESPRITEANIMATION; }
+        virtual eElement WhichElement() const { return ESPRITEANIMATION; }
 
-        std::string getName() const { return mName; }
-        bool hasSpriteRef() const { return mpSpriteRef != NULL; }
-        bool hasSpriteStub() const { return mpStub != NULL; }
-        bool hasAlterSprite() const { return mpAlterSprite != NULL; }
-        bool hasSpriteMovement() const { return mpMovement != NULL; }
+        std::string GetName() const { return m_name; }
+        bool HasSpriteRef() const { return m_pSpriteRef != NULL; }
+        bool HasSpriteStub() const { return m_pStub != NULL; }
+        bool HasAlterSprite() const { return m_pAlterSprite != NULL; }
+        bool HasSpriteMovement() const { return m_pMovement != NULL; }
 
-        SpriteRef *getSpriteRef() const { return mpSpriteRef; }
-        SpriteStub *getSpriteStub() const { return mpStub; }
-        SpriteMovement *getSpriteMovement() const { return mpMovement; }
-        AlterSprite *getAlterSprite() const { return mpAlterSprite; }
+        SpriteRef *GetSpriteRef() const { return m_pSpriteRef; }
+        SpriteStub *GetSpriteStub() const { return m_pStub; }
+        SpriteMovement *GetSpriteMovement() const { return m_pMovement; }
+        AlterSprite *GetAlterSprite() const { return m_pAlterSprite; }
     private:
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-        virtual bool handleElement(eElement element, Element * pElement);
-        virtual void loadFinished();
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes);
+        virtual bool handle_element(eElement element, Element * pElement);
+        virtual void load_finished();
 
-        std::string mName;
-        SpriteRef *mpSpriteRef;
-        SpriteStub *mpStub;
-        SpriteMovement *mpMovement;
-        AlterSprite *mpAlterSprite;
+        std::string m_name;
+        SpriteRef *m_pSpriteRef;
+        SpriteStub *m_pStub;
+        SpriteMovement *m_pMovement;
+        AlterSprite *m_pAlterSprite;
     };
 
     class SpriteMovement : public Element
@@ -88,7 +88,7 @@ namespace StoneRing{
     public:
         SpriteMovement();
         virtual ~SpriteMovement();
-        virtual eElement whichElement() const{ return ESPRITEMOVEMENT; }
+        virtual eElement WhichElement() const{ return ESPRITEMOVEMENT; }
 
         enum eFocus  { SCREEN, CASTER, TARGET, CASTER_GROUP, TARGET_GROUP };
         enum eFocusX { X_CENTER, TOWARDS, AWAY, LEFT, RIGHT };
@@ -106,16 +106,16 @@ namespace StoneRing{
         enum eMovementDirection { STILL, N, E, S, W, NE, NW, SE, SW, MOVE_AWAY, MOVE_TOWARDS, END_FOCUS };
         enum eMovementStyle {STRAIGHT, ARC_OVER, ARC_UNDER, SINE };
 
-        Focus getInitialFocus() const;
-        bool hasEndFocus() const;
-        Focus getEndFocus() const;
+        Focus GetInitialFocus() const;
+        bool HasEndFocus() const;
+        Focus GetEndFocus() const;
         
-        eMovementDirection getMovementDirection() const;
-        eMovementStyle getMovementStyle() const;
-        CL_DomElement createDomElement(CL_DomDocument &doc) const;
+        eMovementDirection GetMovementDirection() const;
+        eMovementStyle GetMovementStyle() const;
+        CL_DomElement CreateDomElement(CL_DomDocument &doc) const;
 
     private:
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes);
         //virtual bool handleElement(eElement element, Element * pElement);
         //virtual void handleText(const std::string &text);
 
@@ -127,11 +127,11 @@ namespace StoneRing{
         static eMovementDirection movementDirectionFromString ( const std::string &str );
         static eMovementStyle   movementStyleFromString( const std::string &str );
 
-        bool mbEndFocus;
-        Focus mInitialFocus;
-        Focus mEndFocus;
-        eMovementDirection meMovementDirection;
-        eMovementStyle meMovementStyle;
+        bool m_bEndFocus;
+        Focus m_initial_focus;
+        Focus m_end_focus;
+        eMovementDirection m_eMovementDirection;
+        eMovementStyle m_eMovementStyle;
     };
 
     class Phase : public Element
@@ -139,24 +139,24 @@ namespace StoneRing{
     public:
         Phase();
         virtual ~Phase();
-        virtual eElement whichElement() const{ return EPHASE; }   
-        CL_DomElement createDomElement(CL_DomDocument &) const;
+        virtual eElement WhichElement() const{ return EPHASE; }   
+        CL_DomElement CreateDomElement(CL_DomDocument &) const;
 
-        bool inParallel()const;
-        uint getDurationMs() const;
+        bool InParallel()const;
+        uint GetDurationMs() const;
 
-        void execute();
+        void Execute();
 
-        std::list<SpriteAnimation*>::const_iterator getSpriteAnimationsBegin() const ;
-        std::list<SpriteAnimation*>::const_iterator getSpriteAnimationsEnd() const;
+        std::list<SpriteAnimation*>::const_iterator GetSpriteAnimationsBegin() const ;
+        std::list<SpriteAnimation*>::const_iterator GetSpriteAnimationsEnd() const;
 
     private:
-        virtual bool handleElement(eElement element, Element * pElement );
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-        bool mbParallel;
-        uint mnDuration;
-        ScriptElement *mpScript;
-        std::list<SpriteAnimation*> mSpriteAnimations;
+        virtual bool handle_element(eElement element, Element * pElement );
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes);
+        bool m_bParallel;
+        uint m_nDuration;
+        ScriptElement *m_pScript;
+        std::list<SpriteAnimation*> m_sprite_animations;
     };
 
 
@@ -165,22 +165,22 @@ namespace StoneRing{
     public:
         Animation();
         virtual ~Animation();
-        virtual eElement whichElement() const{ return EANIMATION; } 
+        virtual eElement WhichElement() const{ return EANIMATION; } 
 
-        CL_DomElement createDomElement(CL_DomDocument &) const;
-        std::string getName() const;
+        CL_DomElement CreateDomElement(CL_DomDocument &) const;
+        std::string GetName() const;
         enum eType { BATTLE, WORLD };
-        eType getType() const;
+        eType GetType() const;
 
-        std::list<Phase*>::const_iterator getPhasesBegin() const;
-        std::list<Phase*>::const_iterator getPhasesEnd() const;
+        std::list<Phase*>::const_iterator GetPhasesBegin() const;
+        std::list<Phase*>::const_iterator GetPhasesEnd() const;
 
     private:
-        virtual bool handleElement(eElement element, Element * pElement );
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes);
-        std::list<Phase*> mPhases;
-        eType meType;
-        std::string mName;
+        virtual bool handle_element(eElement element, Element * pElement );
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes);
+        std::list<Phase*> m_phases;
+        eType m_eType;
+        std::string m_name;
     };
 
 

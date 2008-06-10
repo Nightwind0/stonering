@@ -11,14 +11,14 @@ namespace StoneRing{
         Graphic();
         virtual ~Graphic();
 
-        virtual uint getX() const=0;
-        virtual uint getY() const=0;
-        virtual CL_Rect getRect()=0;
-        virtual bool isSprite() const=0;
-        virtual void draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC)=0;
-        virtual void update()=0;
-        virtual int getDirectionBlock() const=0;
-        virtual bool isTile() const=0;
+        virtual uint GetX() const=0;
+        virtual uint GetY() const=0;
+        virtual CL_Rect GetRect()=0;
+        virtual bool IsSprite() const=0;
+        virtual void Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC)=0;
+        virtual void Update()=0;
+        virtual int GetDirectionBlock() const=0;
+        virtual bool IsTile() const=0;
 
     private:
     };

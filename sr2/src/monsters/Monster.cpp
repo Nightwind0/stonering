@@ -13,7 +13,7 @@ using StoneRing::SpriteDefinition;
 
 
 Monster::Monster(MonsterElement *pDefinition)
-:mpMonsterDefinition(pDefinition),mName(pDefinition->getName())
+:m_pMonsterDefinition(pDefinition),m_name(pDefinition->GetName())
 {
 
 }
@@ -23,106 +23,106 @@ Monster::~Monster()
 }
 
 
-std::list<ItemRef*>::const_iterator Monster::getDropsBegin() const
+std::list<ItemRef*>::const_iterator Monster::GetDropsBegin() const
 {
-    return mpMonsterDefinition->getItemRefsBegin();
+    return m_pMonsterDefinition->GetItemRefsBegin();
 }
 
-std::list<ItemRef*>::const_iterator Monster::getDropsEnd() const
+std::list<ItemRef*>::const_iterator Monster::GetDropsEnd() const
 {
-    return mpMonsterDefinition->getItemRefsEnd();
+    return m_pMonsterDefinition->GetItemRefsEnd();
 }
 
-void Monster::invoke()
+void Monster::Invoke()
 {
-    mpMonsterDefinition->invoke();
+    m_pMonsterDefinition->Invoke();
 }
 
-void Monster::round()
+void Monster::Round()
 {
-    mpMonsterDefinition->round();
+    m_pMonsterDefinition->Round();
 }
 
-void Monster::die()
+void Monster::Die()
 {
-    mpMonsterDefinition->die();
+    m_pMonsterDefinition->Die();
 }
 
 
 
 // For boolean values.
-void Monster::fixAttribute(ICharacter::eCharacterAttribute attr, bool state)
+void Monster::FixAttribute(ICharacter::eCharacterAttribute attr, bool state)
 {
 }
 
 
-double Monster::getSpellResistance(StoneRing::Magic::eMagicType type) const
+double Monster::GetSpellResistance(StoneRing::Magic::eMagicType type) const
 {
     return 0.0;
 }
 
-double Monster::getAttribute(ICharacter::eCharacterAttribute attr) const 
+double Monster::GetAttribute(ICharacter::eCharacterAttribute attr) const 
 {
     return 1.0;
 }
 
 
-bool Monster::getToggle(ICharacter::eCharacterAttribute attr) const
+bool Monster::GetToggle(ICharacter::eCharacterAttribute attr) const
 {
     return false;
 }
 
-void Monster::fixAttribute(ICharacter::eCharacterAttribute attr, double value)
+void Monster::FixAttribute(ICharacter::eCharacterAttribute attr, double value)
 {
-    mAttributes.fixAttribute(attr,value);
+    m_attributes.FixAttribute(attr,value);
 }
 
-void Monster::attachMultiplication(ICharacter::eCharacterAttribute attr, double factor)
+void Monster::AttachMultiplication(ICharacter::eCharacterAttribute attr, double factor)
 {
-    mAttributes.attachMultiplication(attr,factor);
+    m_attributes.AttachMultiplication(attr,factor);
 }
 
-void Monster::attachAddition(ICharacter::eCharacterAttribute attr, double value) 
+void Monster::AttachAddition(ICharacter::eCharacterAttribute attr, double value) 
 {
-    mAttributes.attachAddition(attr,value);
+    m_attributes.AttachAddition(attr,value);
 }
 
-void Monster::detachMultiplication(ICharacter::eCharacterAttribute attr, double factor)
+void Monster::DetachMultiplication(ICharacter::eCharacterAttribute attr, double factor)
 {
-    mAttributes.detachMultiplication(attr,factor);
+    m_attributes.DetachMultiplication(attr,factor);
 }
 
-void Monster::detachAddition(ICharacter::eCharacterAttribute attr, double value) 
+void Monster::DetachAddition(ICharacter::eCharacterAttribute attr, double value) 
 {
-    mAttributes.detachAddition(attr,value);
-}
-
-
-void Monster::addStatusEffect(StatusEffect *pEffect)
-{
-    mStatusEffects.insert(StatusEffectMap::value_type(pEffect->getName(),pEffect));
-}
-
-void Monster::removeEffects(const std::string &name)
-{
-    StatusEffectMap::iterator start = mStatusEffects.lower_bound(name);
-    StatusEffectMap::iterator end   = mStatusEffects.upper_bound(name);
-
-    mStatusEffects.erase(start,end);
-}
-
-void Monster::statusEffectRound()
-{
+    m_attributes.DetachAddition(attr,value);
 }
 
 
-ICharacter::eType Monster::getType() const
+void Monster::AddStatusEffect(StatusEffect *pEffect)
 {
-    return mpMonsterDefinition->getType();
+    m_status_effects.insert(StatusEffectMap::value_type(pEffect->GetName(),pEffect));
+}
+
+void Monster::RemoveEffects(const std::string &name)
+{
+    StatusEffectMap::iterator start = m_status_effects.lower_bound(name);
+    StatusEffectMap::iterator end   = m_status_effects.upper_bound(name);
+
+    m_status_effects.erase(start,end);
+}
+
+void Monster::StatusEffectRound()
+{
 }
 
 
-ICharacter::eGender Monster::getGender() const
+ICharacter::eType Monster::GetType() const
+{
+    return m_pMonsterDefinition->GetType();
+}
+
+
+ICharacter::eGender Monster::GetGender() const
 {
     return NEUTER;
 }

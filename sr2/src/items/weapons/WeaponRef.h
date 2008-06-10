@@ -19,23 +19,23 @@ namespace StoneRing{
         WeaponRef ( WeaponType *pType, WeaponClass *pClass, 
                     SpellRef * pSpell, RuneType *pRune );
         virtual ~WeaponRef();
-        virtual eElement whichElement() const{ return EWEAPONREF; } 
-        WeaponType * getWeaponType() const;
-        WeaponClass  * getWeaponClass() const;
-        SpellRef * getSpellRef() const;
-        RuneType * getRuneType() const;
-        std::string getName() const;
+        virtual eElement WhichElement() const{ return EWEAPONREF; } 
+        WeaponType * GetWeaponType() const;
+        WeaponClass  * GetWeaponClass() const;
+        SpellRef * GetSpellRef() const;
+        RuneType * GetRuneType() const;
+        std::string GetName() const;
     private:
-        virtual bool handleElement(eElement element, Element * pElement );
-        virtual void loadFinished();
+        virtual bool handle_element(eElement element, Element * pElement );
+        virtual void load_finished();
     protected:
-        WeaponType *mpWeaponType;
-        WeaponClass *mpWeaponClass;
-        WeaponTypeRef *mpType;
-        WeaponClassRef *mpClass;
-        SpellRef * mpSpellRef;
-        RuneType * mpRuneType;
-        std::string mName;
+        WeaponType *m_pWeaponType;
+        WeaponClass *m_pWeaponClass;
+        WeaponTypeRef *m_pType;
+        WeaponClassRef *m_pClass;
+        SpellRef * m_pSpellRef;
+        RuneType * m_pRuneType;
+        std::string m_name;
 
     };
 };

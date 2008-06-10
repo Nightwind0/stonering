@@ -19,6 +19,8 @@ namespace StoneRing{
     class WeaponTypeSprite;
     class BattleMenu;
     class SpriteDefinition;
+    class ICharacterGroup;
+
     class ICharacter
     {
     public:
@@ -71,22 +73,23 @@ namespace StoneRing{
             _LAST_COMMON_ATTR_
         };
         
-        virtual eGender getGender() const=0;
-        virtual eType getType() const=0;
-        virtual std::string getName() const=0;
+        virtual eGender GetGender() const=0;
+        virtual eType GetType() const=0;
+        virtual std::string GetName() const=0;
+     //   virtual ICharacterGroup* GetGroup() const=0;
 
-        virtual double getAttribute(eCharacterAttribute attr) const = 0;
-        virtual double getSpellResistance(Magic::eMagicType type) const = 0;
-        virtual bool getToggle(eCharacterAttribute attr) const = 0;
-        virtual void fixAttribute(eCharacterAttribute attr, double value) = 0;
-        virtual void fixAttribute(eCharacterAttribute attr, bool toggle) =0;
-        virtual void attachMultiplication(eCharacterAttribute attr, double factor) = 0;
-        virtual void detachMultiplication(eCharacterAttribute attr, double factor) =0;
-        virtual void attachAddition(eCharacterAttribute attr, double value) = 0;
-        virtual void detachAddition(eCharacterAttribute attr, double value)=0;
-        virtual void addStatusEffect(StatusEffect *)=0;
-        virtual void removeEffects(const std::string &name)=0;
-        virtual void statusEffectRound()=0;
+        virtual double GetAttribute(eCharacterAttribute attr) const = 0;
+        virtual double GetSpellResistance(Magic::eMagicType type) const = 0;
+        virtual bool GetToggle(eCharacterAttribute attr) const = 0;
+        virtual void FixAttribute(eCharacterAttribute attr, double value) = 0;
+        virtual void FixAttribute(eCharacterAttribute attr, bool toggle) =0;
+        virtual void AttachMultiplication(eCharacterAttribute attr, double factor) = 0;
+        virtual void DetachMultiplication(eCharacterAttribute attr, double factor) =0;
+        virtual void AttachAddition(eCharacterAttribute attr, double value) = 0;
+        virtual void DetachAddition(eCharacterAttribute attr, double value)=0;
+        virtual void AddStatusEffect(StatusEffect *)=0;
+        virtual void RemoveEffects(const std::string &name)=0;
+        virtual void StatusEffectRound()=0;
  
         // Static API
         static eCharacterAttribute CharAttributeFromString(const std::string &str); 
@@ -102,26 +105,26 @@ namespace StoneRing{
     class ICharacterGroup
     {
     public:
-        virtual uint getCharacterCount() const = 0;
-        virtual uint getTargetCharacterIndex() const = 0;
-        virtual uint getActorCharacterIndex() const = 0;
-        virtual ICharacter * getCharacter(uint index) const = 0;
-        virtual ICharacter * getTargetCharacter() const = 0;
-        virtual ICharacter * getActorCharacter() const = 0;
+        virtual uint GetCharacterCount() const = 0;
+        virtual uint GetTargetCharacterIndex() const = 0;
+        virtual uint GetActorCharacterIndex() const = 0;
+        virtual ICharacter * GetCharacter(uint index) const = 0;
+        virtual ICharacter * GetTargetCharacter() const = 0;
+        virtual ICharacter * GetActorCharacter() const = 0;
     private:
     };
 
     class AttributeFile
     {
     public:
-        double getAttribute(ICharacter::eCharacterAttribute)const;
-        bool getToggle(ICharacter::eCharacterAttribute)const;
-        void attachMultiplication(ICharacter::eCharacterAttribute,double);
-        void attachAddition(ICharacter::eCharacterAttribute,double);  
-        void detachMultiplication(ICharacter::eCharacterAttribute,double);
-        void detachAddition(ICharacter::eCharacterAttribute,double);  
-        void fixAttribute(ICharacter::eCharacterAttribute attr, double value);
-        void fixAttribute(ICharacter::eCharacterAttribute attr, bool toggle);
+        double GetAttribute(ICharacter::eCharacterAttribute)const;
+        bool GetToggle(ICharacter::eCharacterAttribute)const;
+        void AttachMultiplication(ICharacter::eCharacterAttribute,double);
+        void AttachAddition(ICharacter::eCharacterAttribute,double);  
+        void DetachMultiplication(ICharacter::eCharacterAttribute,double);
+        void DetachAddition(ICharacter::eCharacterAttribute,double);  
+        void FixAttribute(ICharacter::eCharacterAttribute attr, double value);
+        void FixAttribute(ICharacter::eCharacterAttribute attr, bool toggle);
     private:
         typedef std::map<ICharacter::eCharacterAttribute,double> attr_doubles;
         typedef std::map<ICharacter::eCharacterAttribute,bool> attr_bools;
@@ -133,10 +136,10 @@ namespace StoneRing{
         static void assert_bool(ICharacter::eCharacterAttribute);
 
 
-        attr_doubles mRealAttributes;
-        attr_bools mToggles;
-        attr_doubles mAttrMultipliers;
-        attr_doubles mAttrAdditions;
+        attr_doubles m_real_attributes;
+        attr_bools m_toggles;
+        attr_doubles m_attr_multipliers;
+        attr_doubles m_attr_additions;
 
     };
 
@@ -145,49 +148,50 @@ namespace StoneRing{
     public:
         Character();
 
-        virtual eGender getGender() const;
-        virtual std::string getName() const { return mName; }
-        virtual eType getType() const { return meType; }
-        virtual double getSpellResistance(Magic::eMagicType type) const;
-        virtual double getAttribute(eCharacterAttribute attr) const;
-        virtual bool getToggle(eCharacterAttribute attr) const;
-        virtual void fixAttribute(eCharacterAttribute attr, double value);
-        virtual void fixAttribute(eCharacterAttribute attr, bool state);
-        virtual void attachMultiplication(eCharacterAttribute attr, double factor);
-        virtual void detachMultiplication(eCharacterAttribute attr, double factor);
-        virtual void attachAddition(eCharacterAttribute attr, double value);
-        virtual void detachAddition(eCharacterAttribute attr, double value);
-        virtual void addStatusEffect(StatusEffect *);
-        virtual void removeEffects(const std::string &name);
-        virtual void statusEffectRound();
+        virtual eGender GetGender() const;
+        virtual std::string GetName() const { return m_name; }
+        virtual eType GetType() const { return m_eType; }
+      //  virtual ICharacterGroup * GetGroup() const;
+        virtual double GetSpellResistance(Magic::eMagicType type) const;
+        virtual double GetAttribute(eCharacterAttribute attr) const;
+        virtual bool GetToggle(eCharacterAttribute attr) const;
+        virtual void FixAttribute(eCharacterAttribute attr, double value);
+        virtual void FixAttribute(eCharacterAttribute attr, bool state);
+        virtual void AttachMultiplication(eCharacterAttribute attr, double factor);
+        virtual void DetachMultiplication(eCharacterAttribute attr, double factor);
+        virtual void AttachAddition(eCharacterAttribute attr, double value);
+        virtual void DetachAddition(eCharacterAttribute attr, double value);
+        virtual void AddStatusEffect(StatusEffect *);
+        virtual void RemoveEffects(const std::string &name);
+        virtual void StatusEffectRound();
 
-        CL_Sprite * getMapSprite() const { return mpMapSprite; }
-        CL_Sprite * getCurrentSprite() const { return mpCurrentSprite; }
-        void setCurrentSprite(CL_Sprite *pSprite) { mpCurrentSprite = pSprite; }
+        CL_Sprite * GetMapSprite() const { return m_pMapSprite; }
+        CL_Sprite * GetCurrentSprite() const { return m_pCurrentSprite; }
+        void SetCurrentSprite(CL_Sprite *pSprite) { m_pCurrentSprite = pSprite; }
           // Shortcuts to class data
-        BattleMenu * getBattleMenu() const;
-        CharacterClass * getClass() const { return mpClass; }
+        BattleMenu * GetBattleMenu() const;
+        CharacterClass * GetClass() const { return m_pClass; }
         // Equipment
-        void equip(Equipment::eSlot slot, Equipment *pEquip);
-        void unequip(Equipment::eSlot);
+        void Equip(Equipment::eSlot slot, Equipment *pEquip);
+        void Unequip(Equipment::eSlot);
 
         // Element API
-        virtual eElement whichElement() const { return ECHARACTER; }
+        virtual eElement WhichElement() const { return ECHARACTER; }
     private:
         typedef std::multimap<std::string,StatusEffect*> StatusEffectMap;
         typedef std::map<std::string,SpriteDefinition*> SpriteDefinitionMap;
-        virtual bool handleElement(eElement, Element * );
-        virtual void loadAttributes(CL_DomNamedNodeMap *);
-        virtual void loadFinished();
+        virtual bool handle_element(eElement, Element * );
+        virtual void load_attributes(CL_DomNamedNodeMap *);
+        virtual void load_finished();
 
-        std::string mName;
-        SpriteDefinitionMap mSpriteDefinitionMap;
-        AttributeFile mAttributes;
-        CharacterClass * mpClass;
-        CL_Sprite *mpMapSprite;
-        CL_Sprite *mpCurrentSprite;
-        StatusEffectMap mStatusEffects;
-        eType meType;
+        std::string m_name;
+        SpriteDefinitionMap m_sprite_definition_map;
+        AttributeFile m_attributes;
+        CharacterClass * m_pClass;
+        CL_Sprite *m_pMapSprite;
+        CL_Sprite *m_pCurrentSprite;
+        StatusEffectMap m_status_effects;
+        eType m_eType;
     };
 
 };

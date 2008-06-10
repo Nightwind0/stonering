@@ -11,74 +11,74 @@ namespace StoneRing{
         NamedScript();
         virtual ~NamedScript();
 
-        SteelType executeScript();
-        SteelType executeScript(const ParameterList &params);
+        SteelType ExecuteScript();
+        SteelType ExecuteScript(const ParameterList &params);
     private:
-        virtual bool handleElement(eElement element, Element * pElement );
-        ScriptElement *mpScript;
+        virtual bool handle_element(eElement element, Element * pElement );
+        ScriptElement *m_pScript;
     };
 
     class OnEquip : public NamedScript
     {
     public:
         virtual ~OnEquip(){}
-        virtual eElement whichElement() const { return EONEQUIP; }
+        virtual eElement WhichElement() const { return EONEQUIP; }
     };
 
     class OnUnequip : public NamedScript
     {
     public:
         virtual ~OnUnequip() {}
-        virtual eElement whichElement() const { return EONUNEQUIP; }
+        virtual eElement WhichElement() const { return EONUNEQUIP; }
     };
 
     class OnRound : public NamedScript
     {
     public:
         virtual ~OnRound() {}
-        virtual eElement whichElement() const { return EONROUND; }
+        virtual eElement WhichElement() const { return EONROUND; }
     };
 
     class OnStep : public NamedScript
     {
     public:
         virtual ~OnStep() {}
-        virtual eElement whichElement() const { return EONSTEP; }
+        virtual eElement WhichElement() const { return EONSTEP; }
     };
 
     class OnCountdown : public NamedScript
     {
     public:
         virtual ~OnCountdown(){}
-        virtual eElement whichElement() const { return EONCOUNTDOWN; }
+        virtual eElement WhichElement() const { return EONCOUNTDOWN; }
     };
 
     class OnInvoke : public NamedScript
     {
     public:
         virtual ~OnInvoke(){}
-        virtual eElement whichElement() const { return EONINVOKE; }
+        virtual eElement WhichElement() const { return EONINVOKE; }
     };
 
     class OnRemove : public NamedScript
     {
     public:
         virtual ~OnRemove(){}
-        virtual eElement whichElement() const { return EONREMOVE; }
+        virtual eElement WhichElement() const { return EONREMOVE; }
     };
 
     class OnSelect : public NamedScript
     {
     public:
         virtual ~OnSelect(){}
-        virtual eElement whichElement() const { return EONSELECT; }
+        virtual eElement WhichElement() const { return EONSELECT; }
     };
 
     class OnDeselect : public NamedScript
     {
     public:
         virtual ~OnDeselect(){}
-        virtual eElement whichElement() const { return EONDESELECT; }
+        virtual eElement WhichElement() const { return EONDESELECT; }
     };
 };
 #endif

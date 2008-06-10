@@ -12,20 +12,20 @@ ArmorTypeRef::~ArmorTypeRef()
 {
 }
 
-void ArmorTypeRef::loadAttributes(CL_DomNamedNodeMap *pAttributes)
+void ArmorTypeRef::load_attributes(CL_DomNamedNodeMap *pAttributes)
 {
-    mName = getRequiredString("name",pAttributes);
+    m_name = get_required_string("name",pAttributes);
 }
 
 bool ArmorTypeRef::operator==(const ArmorTypeRef &lhs)
 {
-    if( mName == lhs.mName) return true;
+    if( m_name == lhs.m_name) return true;
     else return false;
 }
 
-std::string ArmorTypeRef::getName() const
+std::string ArmorTypeRef::GetName() const
 {
-    return mName;
+    return m_name;
 }
 
 

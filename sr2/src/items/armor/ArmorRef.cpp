@@ -13,37 +13,37 @@ using namespace StoneRing;
 
 ArmorRef::ArmorRef ( ArmorType *pType, ArmorClass *pClass, 
                      SpellRef * pSpell, RuneType *pRune )
-                     :mpArmorType(pType), mpArmorClass(pClass),
-                     mpSpellRef(pSpell), mpRuneType(pRune)
+                     :m_pArmorType(pType), m_pArmorClass(pClass),
+                     m_pSpellRef(pSpell), m_pRuneType(pRune)
 
 {
 
 }
 
-std::string ArmorRef::getName() const
+std::string ArmorRef::GetName() const
 {
-    return  mName;
+    return  m_name;
 }
 
-bool ArmorRef::handleElement(eElement element, Element * pElement)
+bool ArmorRef::handle_element(eElement element, Element * pElement)
 {
-    const ItemManager * pItemManager = IApplication::getInstance()->getItemManager();
+    const ItemManager * pItemManager = IApplication::GetInstance()->GetItemManager();
 
     switch(element)
     {
     case EARMORTYPEREF:
-        mpType = (dynamic_cast<ArmorTypeRef*>(pElement));
-        mpArmorType = pItemManager->getArmorType(*mpType);
+        m_pType = (dynamic_cast<ArmorTypeRef*>(pElement));
+        m_pArmorType = pItemManager->GetArmorType(*m_pType);
         break;
     case EARMORCLASSREF:
-        mpClass =  (dynamic_cast<ArmorClassRef*>(pElement));
-        mpArmorClass = pItemManager->getArmorClass (*mpClass);
+        m_pClass =  (dynamic_cast<ArmorClassRef*>(pElement));
+        m_pArmorClass = pItemManager->GetArmorClass (*m_pClass);
         break;
     case ESPELLREF:
-        mpSpellRef = dynamic_cast<SpellRef*>(pElement);
+        m_pSpellRef = dynamic_cast<SpellRef*>(pElement);
         break;
     case ERUNETYPE:
-        mpRuneType = dynamic_cast<RuneType*>(pElement);
+        m_pRuneType = dynamic_cast<RuneType*>(pElement);
         break;
     default:
         return false;
@@ -52,15 +52,15 @@ bool ArmorRef::handleElement(eElement element, Element * pElement)
     return true;
 }
 
-void ArmorRef::loadFinished()
+void ArmorRef::load_finished()
 {
-    mName = Armor::CreateArmorName(mpArmorType,mpArmorClass,mpSpellRef,mpRuneType);
+    m_name = Armor::CreateArmorName(m_pArmorType,m_pArmorClass,m_pSpellRef,m_pRuneType);
 }
 
-ArmorRef::ArmorRef():mpArmorType(NULL),
-                     mpArmorClass(NULL),
-                     mpSpellRef(NULL),
-                     mpRuneType(NULL)
+ArmorRef::ArmorRef():m_pArmorType(NULL),
+                     m_pArmorClass(NULL),
+                     m_pSpellRef(NULL),
+                     m_pRuneType(NULL)
 {
 
 }
@@ -69,24 +69,24 @@ ArmorRef::~ArmorRef()
 {
 }
 
-ArmorType * ArmorRef::getArmorType() const
+ArmorType * ArmorRef::GetArmorType() const
 {
-    return mpArmorType;
+    return m_pArmorType;
 }
 
-ArmorClass * ArmorRef::getArmorClass() const
+ArmorClass * ArmorRef::GetArmorClass() const
 {
-    return mpArmorClass;
+    return m_pArmorClass;
 }
 
-SpellRef * ArmorRef::getSpellRef() const
+SpellRef * ArmorRef::GetSpellRef() const
 {
-    return mpSpellRef;
+    return m_pSpellRef;
 }
 
-RuneType * ArmorRef::getRuneType() const
+RuneType * ArmorRef::GetRuneType() const
 {
-    return mpRuneType;
+    return m_pRuneType;
 }
 
 

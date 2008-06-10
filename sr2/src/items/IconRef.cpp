@@ -10,24 +10,24 @@ IconRef::~IconRef()
 {
 }
 
-std::string IconRef::getIcon() const
+std::string IconRef::GetIcon() const
 {
-    return mIcon;
+    return m_icon;
 }
 
-bool IconRef::handleElement(eElement element, Element * pElement )
+bool IconRef::handle_element(eElement element, Element * pElement )
 {
     return false;
 }
 
-void IconRef::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+void IconRef::load_attributes(CL_DomNamedNodeMap * pAttributes)
 {
 
 }
 
-void IconRef::handleText(const std::string &text)
+void IconRef::handle_text(const std::string &text)
 {
-    mIcon = text;
+    m_icon = text;
 }
 
 

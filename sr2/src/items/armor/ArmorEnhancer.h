@@ -11,15 +11,15 @@ namespace StoneRing{
     public:
         ArmorEnhancer();
         virtual ~ArmorEnhancer();
-        virtual eElement whichElement() const{ return EARMORENHANCER; }         
-        Armor::eAttribute getAttribute() const;
-        int getAdd() const;
-        float getMultiplier() const;
+        virtual eElement WhichElement() const{ return EARMORENHANCER; }         
+        Armor::eAttribute GetAttribute() const;
+        int GetAdd() const;
+        float GetMultiplier() const;
     private:
-        virtual void loadAttributes(CL_DomNamedNodeMap * pAttributes) ;
-        Armor::eAttribute meAttribute;
-        int mnAdd;
-        float mfMultiplier;
+        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes) ;
+        Armor::eAttribute m_eAttribute;
+        int m_nAdd;
+        float m_fMultiplier;
     };
 };
 

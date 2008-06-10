@@ -21,7 +21,7 @@ namespace StoneRing
     public:
         Element()
 #ifndef NDEBUG
-            :mpParent(NULL)
+            :m_pParent(NULL)
 #endif
         {}
 
@@ -109,37 +109,37 @@ namespace StoneRing
             __END_OF_ELEMENTS__
         };
 
-        virtual eElement whichElement() const=0;
-        void load(CL_DomElement * pElement);
+        virtual eElement WhichElement() const=0;
+        void Load(CL_DomElement * pElement);
 #ifndef NDEBUG
-        void setElementName(const std::string &name) { mElementName = name; }
-        void setParent(Element *pParent) { mpParent = pParent; }
+        void SetElementName(const std::string &name) { m_element_name = name; }
+        void SetParent(Element *pParent) { m_pParent = pParent; }
 #endif
           
     protected:
-        virtual bool handleElement(eElement, Element * ){ return false;}
-        virtual void loadAttributes(CL_DomNamedNodeMap *){}
-        virtual void handleText(const std::string &){}
-        virtual void loadFinished(){} // You can check shit . Make sure you got everything.
+        virtual bool handle_element(eElement, Element * ){ return false;}
+        virtual void load_attributes(CL_DomNamedNodeMap *){}
+        virtual void handle_text(const std::string &){}
+        virtual void load_finished(){} // You can check shit . Make sure you got everything.
 
 
-        uint getRequiredUint(const std::string &attrname, CL_DomNamedNodeMap * pAttributes);
-        int  getRequiredInt(const std::string &attrname, CL_DomNamedNodeMap * pAttributes);
-        float getRequiredFloat(const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
-        std::string getRequiredString (const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
-        bool getRequiredBool (const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
-        bool hasAttr( const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
-        uint getUint(const std::string &attrname, CL_DomNamedNodeMap * pAttributes);
-        int  getInt(const std::string &attrname, CL_DomNamedNodeMap * pAttributes);
-        float getFloat(const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
-        bool getBool (const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
-        std::string getString (const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
-        bool getImpliedBool ( const std::string &attrname, CL_DomNamedNodeMap * pAttributes, bool defaultValue);
-        int getImpliedInt( const std::string &attrname, CL_DomNamedNodeMap * pAttributes, int defaultValue);
-        std::string getImpliedString( const std::string &attrname, CL_DomNamedNodeMap * pAttributes, const std::string &defaultValue);
-        float getImpliedFloat(const std::string &attrname, CL_DomNamedNodeMap *pAttributes, float defaultValue);
+        uint get_required_uint(const std::string &attrname, CL_DomNamedNodeMap * pAttributes);
+        int  get_required_int(const std::string &attrname, CL_DomNamedNodeMap * pAttributes);
+        float get_required_float(const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
+        std::string get_required_string (const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
+        bool get_required_bool (const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
+        bool has_attribute( const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
+        uint get_uint(const std::string &attrname, CL_DomNamedNodeMap * pAttributes);
+        int  get_int(const std::string &attrname, CL_DomNamedNodeMap * pAttributes);
+        float get_float(const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
+        bool get_bool (const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
+        std::string get_string (const std::string &attrname, CL_DomNamedNodeMap * pAttributes );
+        bool get_implied_bool ( const std::string &attrname, CL_DomNamedNodeMap * pAttributes, bool defaultValue);
+        int get_implied_int( const std::string &attrname, CL_DomNamedNodeMap * pAttributes, int defaultValue);
+        std::string get_implied_string( const std::string &attrname, CL_DomNamedNodeMap * pAttributes, const std::string &defaultValue);
+        float get_implied_float(const std::string &attrname, CL_DomNamedNodeMap *pAttributes, float defaultValue);
 #ifndef NDEBUG
-        std::string getElementName() const;
+        std::string get_element_name() const;
 #else
         std::string getElementName() const { 
             std::ostringstream os;
@@ -150,8 +150,8 @@ namespace StoneRing
 
     private:
 #ifndef NDEBUG
-        Element * mpParent;
-        std::string mElementName;
+        Element * m_pParent;
+        std::string m_element_name;
 #endif
 
 /*

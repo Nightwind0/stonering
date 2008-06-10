@@ -4,6 +4,7 @@
 #include "Element.h"
 #include "ScriptElement.h"
 #include "Skill.h"
+#include "IBattleAction.h"
 
 
 namespace StoneRing
@@ -21,15 +22,14 @@ namespace StoneRing
     public:
         BattleMenuOption(int level=0);
         virtual ~BattleMenuOption();
-        virtual eElement whichElement() const { return EBATTLEMENUOPTION; }
+        virtual eElement WhichElement() const { return EBATTLEMENUOPTION; }
 
-        std::string getName() const;
-        bool enabled() const;
-
+        std::string GetName() const;
+        bool Enabled() const;
     private:
-        virtual bool handleElement(eElement, Element *);
-        virtual void loadAttributes(CL_DomNamedNodeMap *);
-        virtual void loadFinished();
+        virtual bool handle_element(eElement, Element *);
+        virtual void load_attributes(CL_DomNamedNodeMap *);
+        virtual void load_finished();
     protected:
         enum ActionType
         {
@@ -38,16 +38,16 @@ namespace StoneRing
             SCRIPT,
             SUBMENU
         };
-        std::string mName;
-        int mnLevel;
-        ScriptElement *mpConditionScript;
+        std::string m_name;
+        int m_nLevel;
+        ScriptElement *m_pConditionScript;
         union Action{ 
-            ScriptElement *mpScript;
-            SkillRef *mpSkillRef;
-            BattleMenu * mpSubMenu;
+            ScriptElement *m_pScript;
+            SkillRef *m_pSkillRef;
+            BattleMenu * m_pSubMenu;
         };
-        Action mAction;
-        ActionType mActionType;
+        Action m_action;
+        ActionType m_action_type;
     };
 };
 

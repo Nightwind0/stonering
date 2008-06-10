@@ -14,29 +14,29 @@ namespace StoneRing
             MonsterRegion();
             virtual ~MonsterRegion();
         
-            virtual eElement whichElement() const { return EMONSTERREGION; }
+            virtual eElement WhichElement() const { return EMONSTERREGION; }
  
-            MonsterGroup * getMonsterGroup() const;
+            MonsterGroup * GetMonsterGroup() const;
         
-            int getLevelX() const {return mLevelX;}
-            int getLevelY() const {return mLevelY;}
-            int getWidth() const {return mWidth;}
-            int getHeight() const {return mHeight;}
-            float getEncounterRate() const {return mEncounterRate;}
-            std::string getBackdrop() const { return mBackdrop; }
+            int GetLevelX() const {return m_LevelX;}
+            int GetLevelY() const {return m_LevelY;}
+            int GetWidth() const {return m_Width;}
+            int GetHeight() const {return m_Height;}
+            float GetEncounterRate() const {return m_encounter_rate;}
+            std::string GetBackdrop() const { return m_backdrop; }
         private:
-            virtual bool handleElement(eElement, Element * );
-            virtual void loadAttributes(CL_DomNamedNodeMap *);
-            virtual void loadFinished();
+            virtual bool handle_element(eElement, Element * );
+            virtual void load_attributes(CL_DomNamedNodeMap *);
+            virtual void load_finished();
         
-            int mLevelX;
-            int mLevelY;
-            int mWidth;
-            int mHeight;
-            float mEncounterRate;
-            int mnTotalWeight;
-            std::string mBackdrop;
-            std::list<MonsterGroup*> mMonsterGroups;
+            int m_LevelX;
+            int m_LevelY;
+            int m_Width;
+            int m_Height;
+            float m_encounter_rate;
+            int m_nTotalWeight;
+            std::string m_backdrop;
+            std::list<MonsterGroup*> m_monster_groups;
     
     };
 
@@ -46,15 +46,15 @@ namespace StoneRing
         MonsterRegions();
         virtual ~MonsterRegions();
 
-        MonsterRegion * getApplicableRegion(uint levelx, uint levely) const ;
+        MonsterRegion * GetApplicableRegion(uint levelx, uint levely) const ;
 
-        virtual eElement whichElement() const { return EMONSTERREGIONS; }
+        virtual eElement WhichElement() const { return EMONSTERREGIONS; }
     private:
-        virtual bool handleElement(eElement, Element * );
-        virtual void loadFinished();
+        virtual bool handle_element(eElement, Element * );
+        virtual void load_finished();
 
-        std::list<MonsterRegion *> mMonsterRegions;
-        int mnTotalWeight;
+        std::list<MonsterRegion *> m_monster_regions;
+        int m_nTotalWeight;
     };
     
 

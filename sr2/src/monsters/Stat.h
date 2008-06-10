@@ -12,16 +12,16 @@ namespace StoneRing
         Stat();
         virtual ~Stat();
 
-        double getStat() const;
-        bool getToggle() const;
-        ICharacter::eCharacterAttribute getAttribute() const;
+        double GetStat() const;
+        bool GetToggle() const;
+        ICharacter::eCharacterAttribute GetAttribute() const;
 
-        eElement whichElement()const { return ESTAT; }
+        eElement WhichElement()const { return ESTAT; }
     private:
-        virtual void loadAttributes(CL_DomNamedNodeMap *);
-        ICharacter::eCharacterAttribute meAttr;
-        double mfValue;
-        bool mbToggle;
+        virtual void load_attributes(CL_DomNamedNodeMap *);
+        ICharacter::eCharacterAttribute m_eAttr;
+        double m_fValue;
+        bool m_bToggle;
     };
 };
 

@@ -17,31 +17,31 @@ SpriteStub::~SpriteStub()
 {
 }
 
-std::string SpriteStub::getName() const
+std::string SpriteStub::GetName() const
 {
-    return mName;
+    return m_name;
 }
 
-SpriteStub::eBindTo SpriteStub::getBindTo() const
+SpriteStub::eBindTo SpriteStub::GetBindTo() const
 {
-    return meBindTo;
+    return m_eBindTo;
 }
 
 
-void SpriteStub::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+void SpriteStub::load_attributes(CL_DomNamedNodeMap * pAttributes)
 {
-    mName = getRequiredString("name",pAttributes);
+    m_name = get_required_string("name",pAttributes);
 
-    if(hasAttr("bindTo",pAttributes))
+    if(has_attribute("bindTo",pAttributes))
     {
-        meBindTo = static_cast<eBindTo>(getRequiredInt("bindTo",pAttributes));
+        m_eBindTo = static_cast<eBindTo>(get_required_int("bindTo",pAttributes));
     }
-    else meBindTo = NONE;
+    else m_eBindTo = NONE;
 }
 
 
 eWho 
-AlterSprite::whoFromString ( const std::string &str )
+AlterSprite::who_from_string ( const std::string &str )
 {
     if(str == "none") return NONE;
     else if (str == "caster") return CASTER;
@@ -56,7 +56,7 @@ AlterSprite::whoFromString ( const std::string &str )
             HIDE, SMALLER_SIZE, LARGER_SIZE, HALF_SIZE, DOUBLE_SIZE, NEGATIVE,
             X_FLIP, Y_FLIP, GRAYSCALE, GREENSCALE, REDSCALE, BLUESCALE 
 */
-AlterSprite::eAlter AlterSprite::alterFromString(const std::string &str)
+AlterSprite::eAlter AlterSprite::alter_from_string(const std::string &str)
 {
     if(str == "hide") return HIDE;
     else if(str == "smaller_size") return SMALLER_SIZE;
@@ -75,10 +75,10 @@ AlterSprite::eAlter AlterSprite::alterFromString(const std::string &str)
 
 
 SpriteAnimation::SpriteAnimation()
-:mpSpriteRef(NULL),
- mpStub(NULL),
- mpMovement(NULL),
- mpAlterSprite(NULL)
+:m_pSpriteRef(NULL),
+ m_pStub(NULL),
+ m_pMovement(NULL),
+ m_pAlterSprite(NULL)
 {
 }
 
@@ -86,26 +86,26 @@ SpriteAnimation::~SpriteAnimation()
 {
 }
 
-void SpriteAnimation::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+void SpriteAnimation::load_attributes(CL_DomNamedNodeMap * pAttributes)
 {
-    mName = getRequiredString("name",pAttributes);
+    m_name = get_required_string("name",pAttributes);
 }
 
-bool SpriteAnimation::handleElement(eElement element, Element * pElement)
+bool SpriteAnimation::handle_element(eElement element, Element * pElement)
 {
     switch(element)
     {
     case ESPRITESTUB:
-        mpStub = dynamic_cast<SpriteStub*>(pElement);
+        m_pStub = dynamic_cast<SpriteStub*>(pElement);
         break;
     case ESPRITEREF:
-        mpSpriteRef = dynamic_cast<SpriteRef*>(pElement);
+        m_pSpriteRef = dynamic_cast<SpriteRef*>(pElement);
         break;
     case ESPRITEMOVEMENT:
-        mpMovement = dynamic_cast<SpriteMovement*>(pElement);
+        m_pMovement = dynamic_cast<SpriteMovement*>(pElement);
         break;
     case EALTERSPRITE:
-        mpAlterSprite = dynamic_cast<AlterSprite*>(pElement);
+        m_pAlterSprite = dynamic_cast<AlterSprite*>(pElement);
         break;
     default: return false;
     }
@@ -113,69 +113,69 @@ bool SpriteAnimation::handleElement(eElement element, Element * pElement)
     return false;
 }
 
-void SpriteAnimation::loadFinished()
+void SpriteAnimation::load_finished()
 {
-    if(!mpStub && !mpSpriteRef)
+    if(!m_pStub && !m_pSpriteRef)
         throw CL_Error("Missing sprite stub or sprite ref on spriteAnimation");
 }
 
 
 SpriteMovement::SpriteMovement()
-:mbEndFocus(false)
+:m_bEndFocus(false)
 {
 }
 
 
-void SpriteMovement::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+void SpriteMovement::load_attributes(CL_DomNamedNodeMap * pAttributes)
 {
-    mInitialFocus.meFocusType = focusTypeFromString(getRequiredString("initialFocus",pAttributes));
+    m_initial_focus.meFocusType = focusTypeFromString(get_required_string("initialFocus",pAttributes));
 
-    if(hasAttr("initialFocusX",pAttributes))
-        mInitialFocus.meFocusX = focusXFromString( getString("initialFocusX",pAttributes));
-    else mInitialFocus.meFocusX = X_CENTER;
+    if(has_attribute("initialFocusX",pAttributes))
+        m_initial_focus.meFocusX = focusXFromString( get_string("initialFocusX",pAttributes));
+    else m_initial_focus.meFocusX = X_CENTER;
 
-    if(hasAttr("initialFocusY",pAttributes))
-        mInitialFocus.meFocusY = focusYFromString( getString("initialFocusY",pAttributes));
-    else mInitialFocus.meFocusY = Y_CENTER;
+    if(has_attribute("initialFocusY",pAttributes))
+        m_initial_focus.meFocusY = focusYFromString( get_string("initialFocusY",pAttributes));
+    else m_initial_focus.meFocusY = Y_CENTER;
 
-    if(hasAttr("initialFocusZ",pAttributes))
-        mInitialFocus.meFocusZ = focusZFromString( getString("initialFocusZ",pAttributes));
-    else mInitialFocus.meFocusZ = FRONT;
+    if(has_attribute("initialFocusZ",pAttributes))
+        m_initial_focus.meFocusZ = focusZFromString( get_string("initialFocusZ",pAttributes));
+    else m_initial_focus.meFocusZ = FRONT;
 
-    if(hasAttr("endFocus",pAttributes))
+    if(has_attribute("endFocus",pAttributes))
     {
-        mbEndFocus = true;
-        mEndFocus.meFocusType = focusTypeFromString(getRequiredString("endFocus",pAttributes));
+        m_bEndFocus = true;
+        m_end_focus.meFocusType = focusTypeFromString(get_required_string("endFocus",pAttributes));
 
-        if(hasAttr("endFocusX",pAttributes))
-            mEndFocus.meFocusX = focusXFromString( getString("endFocusX",pAttributes));
-        else mEndFocus.meFocusX = X_CENTER;
+        if(has_attribute("endFocusX",pAttributes))
+            m_end_focus.meFocusX = focusXFromString( get_string("endFocusX",pAttributes));
+        else m_end_focus.meFocusX = X_CENTER;
 
-        if(hasAttr("endFocusY",pAttributes))
-            mEndFocus.meFocusY = focusYFromString( getString("endFocusY",pAttributes));
-        else mEndFocus.meFocusY = Y_CENTER;
+        if(has_attribute("endFocusY",pAttributes))
+            m_end_focus.meFocusY = focusYFromString( get_string("endFocusY",pAttributes));
+        else m_end_focus.meFocusY = Y_CENTER;
 
-        if(hasAttr("endFocusZ",pAttributes))
-            mEndFocus.meFocusZ = focusZFromString( getString("endFocusZ",pAttributes));
-        else mEndFocus.meFocusZ = FRONT;
+        if(has_attribute("endFocusZ",pAttributes))
+            m_end_focus.meFocusZ = focusZFromString( get_string("endFocusZ",pAttributes));
+        else m_end_focus.meFocusZ = FRONT;
     }
 
-    if(hasAttr("movementDirection",pAttributes))
-        meMovementDirection = movementDirectionFromString( getString("movementDirection",pAttributes));
-    else meMovementDirection = STILL;
+    if(has_attribute("movementDirection",pAttributes))
+        m_eMovementDirection = movementDirectionFromString( get_string("movementDirection",pAttributes));
+    else m_eMovementDirection = STILL;
 
-    if(hasAttr("movementStyle",pAttributes))
-        meMovementStyle = movementStyleFromString ( getString("movementStyle",pAttributes ));
-    else meMovementStyle = STRAIGHT;
+    if(has_attribute("movementStyle",pAttributes))
+        m_eMovementStyle = movementStyleFromString ( get_string("movementStyle",pAttributes ));
+    else m_eMovementStyle = STRAIGHT;
 }
 
-bool SpriteMovement::hasEndFocus() const
+bool SpriteMovement::HasEndFocus() const
 {
-    return mbEndFocus;
+    return m_bEndFocus;
 }
 
 CL_DomElement 
-SpriteMovement::createDomElement(CL_DomDocument &doc) const
+SpriteMovement::CreateDomElement(CL_DomDocument &doc) const
 {
     return CL_DomElement(doc, "SpriteMovement");
 }
@@ -255,37 +255,37 @@ SpriteMovement::~SpriteMovement()
 }
 
 
-SpriteMovement::Focus SpriteMovement::getInitialFocus() const
+SpriteMovement::Focus SpriteMovement::GetInitialFocus() const
 {
-    return mInitialFocus;
+    return m_initial_focus;
 }
 
-SpriteMovement::Focus SpriteMovement::getEndFocus() const
+SpriteMovement::Focus SpriteMovement::GetEndFocus() const
 {
-    return mEndFocus;
+    return m_end_focus;
 }
 
 
 SpriteMovement::eMovementDirection 
-SpriteMovement::getMovementDirection() const
+SpriteMovement::GetMovementDirection() const
 {
-    return meMovementDirection;
+    return m_eMovementDirection;
 }
 
-SpriteMovement::eMovementStyle SpriteMovement::getMovementStyle() const
+SpriteMovement::eMovementStyle SpriteMovement::GetMovementStyle() const
 {
-    return meMovementStyle;
+    return m_eMovementStyle;
 }
 
-bool Phase::handleElement(eElement element, Element * pElement)
+bool Phase::handle_element(eElement element, Element * pElement)
 {
     switch(element)
     {
     case ESCRIPT:
-        mpScript = dynamic_cast<ScriptElement*>(pElement);
+        m_pScript = dynamic_cast<ScriptElement*>(pElement);
         break;
     case ESPRITEANIMATION:
-        mSpriteAnimations.push_back( dynamic_cast<SpriteAnimation*>(pElement));
+        m_sprite_animations.push_back( dynamic_cast<SpriteAnimation*>(pElement));
         break;
     default:
         return false;
@@ -294,53 +294,53 @@ bool Phase::handleElement(eElement element, Element * pElement)
     return true;
 }
 
-void Phase::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+void Phase::load_attributes(CL_DomNamedNodeMap * pAttributes)
 {
 
-    mnDuration = getRequiredInt("duration", pAttributes);   
-    mbParallel = getRequiredBool("parallel",pAttributes);
+    m_nDuration = get_required_int("duration", pAttributes);   
+    m_bParallel = get_required_bool("parallel",pAttributes);
 
 }
 
-Phase::Phase():mpScript(NULL)
+Phase::Phase():m_pScript(NULL)
 {
 }
 
 Phase::~Phase()
 {
-    delete mpScript;
+    delete m_pScript;
 
-    std::for_each(mSpriteAnimations.begin(),mSpriteAnimations.end(),del_fun<SpriteAnimation>());
+    std::for_each(m_sprite_animations.begin(),m_sprite_animations.end(),del_fun<SpriteAnimation>());
 }
 
     
 CL_DomElement 
-Phase::createDomElement(CL_DomDocument &doc) const
+Phase::CreateDomElement(CL_DomDocument &doc) const
 {
     return CL_DomElement(doc, "Phase");
 }
 
-uint Phase::getDurationMs() const
+uint Phase::GetDurationMs() const
 {
-    return mnDuration;
+    return m_nDuration;
 }
 
-void Phase::execute() 
+void Phase::Execute() 
 {
-    if(mpScript)
-        mpScript->executeScript();
-}
-
-std::list<SpriteAnimation*>::const_iterator 
-Phase::getSpriteAnimationsBegin() const 
-{
-    return mSpriteAnimations.begin();
+    if(m_pScript)
+        m_pScript->ExecuteScript();
 }
 
 std::list<SpriteAnimation*>::const_iterator 
-Phase::getSpriteAnimationsEnd() const
+Phase::GetSpriteAnimationsBegin() const 
 {
-    return mSpriteAnimations.end();
+    return m_sprite_animations.begin();
+}
+
+std::list<SpriteAnimation*>::const_iterator 
+Phase::GetSpriteAnimationsEnd() const
+{
+    return m_sprite_animations.end();
 }
 
 
@@ -351,23 +351,23 @@ Animation::Animation()
 }
 
 
-void Animation::loadAttributes(CL_DomNamedNodeMap *pAttributes)
+void Animation::load_attributes(CL_DomNamedNodeMap *pAttributes)
 {
-    mName = getRequiredString("name",pAttributes);
+    m_name = get_required_string("name",pAttributes);
 
-    std::string type = getRequiredString("type",pAttributes);
+    std::string type = get_required_string("type",pAttributes);
 
-    if(type == "battle") meType = BATTLE;
-    else if (type == "world") meType = WORLD;
+    if(type == "battle") m_eType = BATTLE;
+    else if (type == "world") m_eType = WORLD;
     else throw CL_Error("Bogus animation type: " + type );
 
 }
 
-bool Animation::handleElement(eElement element, Element * pElement)
+bool Animation::handle_element(Element::eElement element, Element * pElement)
 {
     if(element == EPHASE )
     {
-        mPhases.push_back ( dynamic_cast<Phase*>(pElement) );
+        m_phases.push_back ( dynamic_cast<Phase*>(pElement) );
         return true;
     }
     else return false;
@@ -376,38 +376,38 @@ bool Animation::handleElement(eElement element, Element * pElement)
 
 Animation::~Animation()
 {
-    std::for_each(mPhases.begin(),mPhases.end(),del_fun<Phase>());
+    std::for_each(m_phases.begin(),m_phases.end(),del_fun<Phase>());
 }
 
 CL_DomElement 
-Animation::createDomElement(CL_DomDocument &doc) const
+Animation::CreateDomElement(CL_DomDocument &doc) const
 {
     return CL_DomElement(doc, "animation");
 }
 
 std::string 
-Animation::getName() const
+Animation::GetName() const
 {
-    return mName;
+    return m_name;
 }
 
 
 
 Animation::eType 
-Animation::getType() const
+Animation::GetType() const
 {
-    return meType;
+    return m_eType;
 }
 
 
-std::list<Phase*>::const_iterator Animation::getPhasesBegin() const
+std::list<Phase*>::const_iterator Animation::GetPhasesBegin() const
 {
-    return mPhases.begin();
+    return m_phases.begin();
 }
 
-std::list<Phase*>::const_iterator Animation::getPhasesEnd() const
+std::list<Phase*>::const_iterator Animation::GetPhasesEnd() const
 {
-    return mPhases.end();
+    return m_phases.end();
 }
 
 

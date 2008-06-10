@@ -41,9 +41,9 @@ ItemManager::~ItemManager()
 }
 
 
-void ItemManager::loadItemFile ( CL_DomDocument &doc )
+void ItemManager::LoadItemFile ( CL_DomDocument &doc )
 {
-    IFactory * pItemFactory = IApplication::getInstance()->getElementFactory();
+    IFactory * pItemFactory = IApplication::GetInstance()->GetElementFactory();
 
     CL_DomElement itemsNode = doc.named_item("items").to_element();
     CL_DomElement weaponClassesNode = itemsNode.named_item("weaponClasses").to_element(); 
@@ -53,8 +53,8 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
     while(!weaponClassNode.is_null())
     {
         WeaponClass * pWeaponClass = dynamic_cast<WeaponClass*>( pItemFactory->createElement("weaponClass") );
-        pWeaponClass->load(&weaponClassNode);
-        mWeaponClasses.push_back ( pWeaponClass );
+        pWeaponClass->Load(&weaponClassNode);
+        m_weapon_classes.push_back ( pWeaponClass );
         weaponClassNode = weaponClassNode.get_next_sibling().to_element();
     }
     
@@ -64,8 +64,8 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
     while(!weaponTypeNode.is_null())
     {
         WeaponType * pWeaponType = dynamic_cast<WeaponType*>( pItemFactory->createElement("weaponType") );
-        pWeaponType->load(&weaponTypeNode);
-        mWeaponTypes.push_back ( pWeaponType );
+        pWeaponType->Load(&weaponTypeNode);
+        m_weapon_types.push_back ( pWeaponType );
 
         weaponTypeNode = weaponTypeNode.get_next_sibling().to_element();
     }
@@ -77,8 +77,8 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
     while(!armorClassNode.is_null())
     {
         ArmorClass * pArmorClass = dynamic_cast<ArmorClass*>( pItemFactory->createElement("armorClass") );
-        pArmorClass->load(&armorClassNode);
-        mArmorClasses.push_back ( pArmorClass);
+        pArmorClass->Load(&armorClassNode);
+        m_armor_classes.push_back ( pArmorClass);
 
         armorClassNode = armorClassNode.get_next_sibling().to_element();
     }
@@ -89,8 +89,8 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
     while(!armorTypeNode.is_null())
     {
         ArmorType * pArmorType = dynamic_cast<ArmorType*>( pItemFactory->createElement("armorType") );
-        pArmorType->load(&armorTypeNode);
-        mArmorTypes.push_back ( pArmorType);
+        pArmorType->Load(&armorTypeNode);
+        m_armor_types.push_back ( pArmorType);
 
         armorTypeNode = armorTypeNode.get_next_sibling().to_element();
     }
@@ -109,15 +109,15 @@ void ItemManager::loadItemFile ( CL_DomDocument &doc )
 #endif
         NamedItemElement * pElement = dynamic_cast<NamedItemElement*>(pItemFactory->createElement ( "namedItemElement" ));
 
-        pElement->load(&namedItemNode);
-        NamedItem * pItem = pElement->getNamedItem();
+        pElement->Load(&namedItemNode);
+        NamedItem * pItem = pElement->GetNamedItem();
     
-        pItem->setIconRef ( pElement->getIconRef() );
-        pItem->setMaxInventory ( pElement->getMaxInventory() );
-        pItem->setName ( pElement->getName() );
-        pItem->setDropRarity ( pElement->getDropRarity() );
+        pItem->SetIconRef ( pElement->GetIconRef() );
+        pItem->SetMaxInventory ( pElement->GetMaxInventory() );
+        pItem->SetName ( pElement->GetName() );
+        pItem->SetDropRarity ( pElement->GetDropRarity() );
     
-        mNamedItems[pItem->getName()] = pItem;
+        m_named_items[pItem->GetName()] = pItem;
 
         delete pElement;
     
@@ -263,13 +263,13 @@ void ItemManager::generateArmor()
 
 #endif
 
-WeaponType * ItemManager::getWeaponType(const WeaponTypeRef &ref) const
+WeaponType * ItemManager::GetWeaponType(const WeaponTypeRef &ref) const
 {
-    for(std::list<WeaponType*>::const_iterator iter = mWeaponTypes.begin();
-        iter != mWeaponTypes.end();
+    for(std::list<WeaponType*>::const_iterator iter = m_weapon_types.begin();
+        iter != m_weapon_types.end();
         iter++)
     {
-        if( ref.getName() == (*iter)->getName())
+        if( ref.GetName() == (*iter)->GetName())
             return *iter;
     }
 
@@ -277,13 +277,13 @@ WeaponType * ItemManager::getWeaponType(const WeaponTypeRef &ref) const
     return NULL;
 }
 
-ArmorType  * ItemManager::getArmorType ( const ArmorTypeRef &ref) const
+ArmorType  * ItemManager::GetArmorType ( const ArmorTypeRef &ref) const
 {
-    for(std::list<ArmorType*>::const_iterator iter = mArmorTypes.begin();
-        iter != mArmorTypes.end();
+    for(std::list<ArmorType*>::const_iterator iter = m_armor_types.begin();
+        iter != m_armor_types.end();
         iter++)
     {
-        if( ref.getName() == (*iter)->getName())
+        if( ref.GetName() == (*iter)->GetName())
             return *iter;
     }
 
@@ -291,26 +291,26 @@ ArmorType  * ItemManager::getArmorType ( const ArmorTypeRef &ref) const
     return NULL;
 }
 
-WeaponClass * ItemManager::getWeaponClass ( const WeaponClassRef & ref ) const
+WeaponClass * ItemManager::GetWeaponClass ( const WeaponClassRef & ref ) const
 {
-    for(std::list<WeaponClass*>::const_iterator iter = mWeaponClasses.begin();
-        iter != mWeaponClasses.end();
+    for(std::list<WeaponClass*>::const_iterator iter = m_weapon_classes.begin();
+        iter != m_weapon_classes.end();
         iter++)
     {
-        if( ref.getName() == (*iter)->getName())
+        if( ref.GetName() == (*iter)->GetName())
             return *iter;
     }
     assert(0 && "Weapon class not found");
     return NULL;
 }
 
-ArmorClass  * ItemManager::getArmorClass ( const ArmorClassRef & ref ) const
+ArmorClass  * ItemManager::GetArmorClass ( const ArmorClassRef & ref ) const
 {
-    for(std::list<ArmorClass*>::const_iterator iter = mArmorClasses.begin();
-        iter != mArmorClasses.end();
+    for(std::list<ArmorClass*>::const_iterator iter = m_armor_classes.begin();
+        iter != m_armor_classes.end();
         iter++)
     {
-        if( ref.getName() == (*iter)->getName())
+        if( ref.GetName() == (*iter)->GetName())
             return *iter;
     }
     
@@ -318,11 +318,11 @@ ArmorClass  * ItemManager::getArmorClass ( const ArmorClassRef & ref ) const
     return NULL;
 }
 
-Item * ItemManager::getNamedItem( const std::string &name ) const
+Item * ItemManager::GetNamedItem( const std::string &name ) const
 {
-    NamedItemMap::const_iterator iter = mNamedItems.find(name);
+    NamedItemMap::const_iterator iter = m_named_items.find(name);
 
-    if(iter != mNamedItems.end())
+    if(iter != m_named_items.end())
     {
         return iter->second;
     }
@@ -331,36 +331,36 @@ Item * ItemManager::getNamedItem( const std::string &name ) const
     return NULL;
 }
 
-Item * ItemManager::getItem( const ItemRef & ref )
+Item * ItemManager::GetItem( const ItemRef & ref )
 {
-    ItemMap::const_iterator iter = mItems.find(ref);
+    ItemMap::const_iterator iter = m_items.find(ref);
 
-    if(iter != mItems.end())
+    if(iter != m_items.end())
     {
         // Already have this one created.
         return iter->second;
     }
     else
     {
-        switch(ref.getType())
+        switch(ref.GetType())
         {
         case ItemRef::NAMED_ITEM:
             {
-                NamedItemRef *pRef = ref.getNamedItemRef();
-                return getNamedItem(pRef->getItemName());
+                NamedItemRef *pRef = ref.GetNamedItemRef();
+                return GetNamedItem(pRef->GetItemName());
             }
         case ItemRef::WEAPON_REF:
             {
-                WeaponRef *pRef = ref.getWeaponRef();
+                WeaponRef *pRef = ref.GetWeaponRef();
                 Weapon *pWeapon = createWeapon(pRef);
-                mItems[ref] = pWeapon;
+                m_items[ref] = pWeapon;
                 return pWeapon;
             }
         case ItemRef::ARMOR_REF:
             {
-                ArmorRef *pRef = ref.getArmorRef();
+                ArmorRef *pRef = ref.GetArmorRef();
                 Armor *pArmor = createArmor(pRef);
-                mItems[ref] = pArmor;
+                m_items[ref] = pArmor;
                 return pArmor;
             }
         }
@@ -373,16 +373,16 @@ Item * ItemManager::getItem( const ItemRef & ref )
 Weapon * ItemManager::createWeapon(WeaponRef *pRef) const
 {
     GeneratedWeapon * pWeapon = new GeneratedWeapon();
-    pWeapon->generate(pRef->getWeaponType(), pRef->getWeaponClass(),
-        pRef->getSpellRef(),pRef->getRuneType());
+    pWeapon->Generate(pRef->GetWeaponType(), pRef->GetWeaponClass(),
+        pRef->GetSpellRef(),pRef->GetRuneType());
     return pWeapon;
 }
 
 Armor * ItemManager::createArmor(ArmorRef *pRef) const
 {
     GeneratedArmor * pArmor = new GeneratedArmor();
-    pArmor->generate(pRef->getArmorType(),pRef->getArmorClass(),
-        pRef->getSpellRef(),pRef->getRuneType());
+    pArmor->generate(pRef->GetArmorType(),pRef->GetArmorClass(),
+        pRef->GetSpellRef(),pRef->GetRuneType());
     return pArmor;
 }
 

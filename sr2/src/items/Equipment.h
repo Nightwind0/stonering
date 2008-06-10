@@ -29,37 +29,37 @@ namespace StoneRing{
             EANY = (EANYHAND | EANYARMOR)
         };
                 
-        SpellRef * getSpellRef() const;
-        RuneType * getRuneType() const;
-        bool hasSpell() const ;
-        bool hasRuneType() const;
+        SpellRef * GetSpellRef() const;
+        RuneType * GetRuneType() const;
+        bool HasSpell() const ;
+        bool HasRuneType() const;
 
-        void equip(ICharacter *);
-        void unequip(ICharacter *);
-        virtual void executeScript()=0;
-        virtual bool equipCondition()=0;
+        void Equip(ICharacter *);
+        void Unequip(ICharacter *);
+        virtual void ExecuteScript()=0;
+        virtual bool EquipCondition()=0;
         // Mainly for display, as these should be automatically invoked on equip
-        std::list<AttributeEnhancer*>::const_iterator getAttributeEnhancersBegin() const;
-        std::list<AttributeEnhancer*>::const_iterator getAttributeEnhancersEnd() const;
+        std::list<AttributeEnhancer*>::const_iterator GetAttributeEnhancersBegin() const;
+        std::list<AttributeEnhancer*>::const_iterator GetAttributeEnhancersEnd() const;
 
-        std::list<StatusEffectModifier*>::const_iterator getStatusEffectModifiersBegin() const { return mStatusEffectModifiers.begin(); }
-        std::list<StatusEffectModifier*>::const_iterator getStatusEffectModifiersEnd() const { return mStatusEffectModifiers.end(); }
+        std::list<StatusEffectModifier*>::const_iterator GetStatusEffectModifiersBegin() const { return m_status_effect_modifiers.begin(); }
+        std::list<StatusEffectModifier*>::const_iterator GetStatusEffectModifiersEnd() const { return m_status_effect_modifiers.end(); }
     protected:
-        virtual void onEquipScript()=0;
-        virtual void onUnequipScript()=0;
+        virtual void OnEquipScript()=0;
+        virtual void OnUnequipScript()=0;
 
-        void clearAttributeEnhancers();
-        void addAttributeEnhancer( AttributeEnhancer * pAttr );
-        void setSpellRef ( SpellRef * pRef );
-        void setRuneType ( RuneType * pType );
-        void addStatusEffectModifier(StatusEffectModifier *pModifier) { mStatusEffectModifiers.push_back ( pModifier ) ; }
+        void Clear_Attribute_Enhancers();
+        void Add_Attribute_Enhancer( AttributeEnhancer * pAttr );
+        void Set_Spell_Ref ( SpellRef * pRef );
+        void Set_Rune_Type ( RuneType * pType );
+        void Add_Status_Effect_Modifier(StatusEffectModifier *pModifier) { m_status_effect_modifiers.push_back ( pModifier ) ; }
     
     private:
-        std::list<AttributeEnhancer*> mAttributeEnhancers;
-        SpellOrRuneRef  mSpellOrRuneRef;
+        std::list<AttributeEnhancer*> m_attribute_enhancers;
+        SpellOrRuneRef  m_SpellOrRuneRef;
         enum eMagic { NONE, SPELL, RUNE };
-        eMagic meMagic;
-        std::list<StatusEffectModifier*> mStatusEffectModifiers;
+        eMagic m_eMagic;
+        std::list<StatusEffectModifier*> m_status_effect_modifiers;
         
     };
 };

@@ -13,34 +13,34 @@
 using namespace StoneRing;
 
 StoneRing::Skill::eType 
-StoneRing::Skill::typeFromString(const std::string type)
+StoneRing::Skill::TypeFromString(const std::string type)
 {
     if(type == "battle") return BATTLE;
     else if(type == "switch") return SWITCH;
     else throw CL_Error("Bad type on skill = " + type);
 }
 
-void StoneRing::Skill::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+void StoneRing::Skill::load_attributes(CL_DomNamedNodeMap * pAttributes)
 {
-    mName = getRequiredString("name",pAttributes);
-    mnSp = getRequiredInt("sp",pAttributes);
-    mnBp = getRequiredInt("bp",pAttributes);
-    mnMinLevel = getImpliedInt("minLevel",pAttributes,0);
-    meType = typeFromString(getImpliedString("type",pAttributes,"battle"));
-    mbAllowsGroupTarget = getImpliedBool("allowsGroupTarget",pAttributes,false);
-    mbDefaultToEnemyGroup = getImpliedBool("defaultToEnemyGroup", pAttributes,true);
+    m_name = get_required_string("name",pAttributes);
+    m_nSp = get_required_int("sp",pAttributes);
+    m_nBp = get_required_int("bp",pAttributes);
+    m_nMinLevel = get_implied_int("minLevel",pAttributes,0);
+    m_eType = TypeFromString(get_implied_string("type",pAttributes,"battle"));
+    m_bAllowsGroupTarget = get_implied_bool("allowsGroupTarget",pAttributes,false);
+    m_bDefaultToEnemyGroup = get_implied_bool("defaultToEnemyGroup", pAttributes,true);
 }
 
-void StoneRing::Skill::select(StoneRing::ActionQueue *pQueue)
+void StoneRing::Skill::Select(StoneRing::ActionQueue *pQueue)
 {
-    if(mpOnSelect)
+    if(m_pOnSelect)
     {
         // Put pQueue in scope
         ParameterList params;
         params.push_back ( ParameterListItem("$_ActionQueue",pQueue) );
-        params.push_back ( ParameterListItem("$_ActionScript", mpOnInvoke ) );
+        params.push_back ( ParameterListItem("$_ActionScript", m_pOnInvoke ) );
 
-        mpOnSelect->executeScript(params);
+        m_pOnSelect->ExecuteScript(params);
     }
     else
     {
@@ -63,34 +63,34 @@ void StoneRing::Skill::select(StoneRing::ActionQueue *pQueue)
 
 // If you cancel an option, it should be able to clean itself up
 // (especially removing entries from the queue)
-void StoneRing::Skill::deselect(StoneRing::ActionQueue *pQueue)
+void StoneRing::Skill::Deselect(StoneRing::ActionQueue *pQueue)
 {
     ICharacter *pCharacter = 
-        IApplication::getInstance()->getActorCharacterGroup()->getActorCharacter();
-    pQueue->remove(pCharacter, mpOnDeselect);
+        IApplication::GetInstance()->GetActorCharacterGroup()->GetActorCharacter();
+//TODO: Return this    pQueue->Remove(pCharacter, m_pOnDeselect);
 }
 
-bool StoneRing::Skill::handleElement(eElement element, Element * pElement)
+bool StoneRing::Skill::handle_element(eElement element, Element * pElement)
 {
     switch(element)
     {
     case EONSELECT:
-        mpOnSelect = dynamic_cast<NamedScript*>(pElement);
+        m_pOnSelect = dynamic_cast<NamedScript*>(pElement);
         break;
     case EONDESELECT:
-        mpOnDeselect = dynamic_cast<NamedScript*>(pElement);
+        m_pOnDeselect = dynamic_cast<NamedScript*>(pElement);
         break;
     case EONINVOKE:
-        mpOnInvoke = dynamic_cast<NamedScript*>(pElement);
+        m_pOnInvoke = dynamic_cast<NamedScript*>(pElement);
         break;
     case EONREMOVE:
-        mpOnRemove = dynamic_cast<NamedScript*>(pElement);
+        m_pOnRemove = dynamic_cast<NamedScript*>(pElement);
         break;
     case ECONDITIONSCRIPT:
-        mpCondition = dynamic_cast<NamedScript*>(pElement);
+        m_pCondition = dynamic_cast<NamedScript*>(pElement);
         break;
     case EPREREQSKILLREF:
-        mPreReqs.push_back(dynamic_cast<SkillRef*>(pElement));
+        m_pre_reqs.push_back(dynamic_cast<SkillRef*>(pElement));
         break;
     default:
         return false;
@@ -99,55 +99,55 @@ bool StoneRing::Skill::handleElement(eElement element, Element * pElement)
     return true;
 }
 
-StoneRing::Skill::Skill():mnBp(0), mnSp(0),mnMinLevel(0),
-                          mpOnInvoke(NULL),mpOnRemove(NULL),mpCondition(NULL),mpOnSelect(NULL),mpOnDeselect(NULL),
-                          mbAllowsGroupTarget(false),mbDefaultToEnemyGroup(true)
+StoneRing::Skill::Skill():m_nBp(0), m_nSp(0),m_nMinLevel(0),
+                          m_pOnInvoke(NULL),m_pOnRemove(NULL),m_pCondition(NULL),m_pOnSelect(NULL),m_pOnDeselect(NULL),
+                          m_bAllowsGroupTarget(false),m_bDefaultToEnemyGroup(true)
 {
 
 }
 
 Skill::~Skill()
 {
-    delete mpCondition;
-    delete mpOnRemove;
-    delete mpOnInvoke;
-    delete mpOnSelect;
-    delete mpOnDeselect;
+    delete m_pCondition;
+    delete m_pOnRemove;
+    delete m_pOnInvoke;
+    delete m_pOnSelect;
+    delete m_pOnDeselect;
 }
 
 
-std::string Skill::getName() const
+std::string Skill::GetName() const
 {
-    return mName;
+    return m_name;
 }
 
-uint Skill::getSPCost() const
+uint Skill::GetSPCost() const
 {
-    return mnSp;
+    return m_nSp;
 }
 
-uint Skill::getBPCost() const
+uint Skill::GetBPCost() const
 {
-    return mnBp;
+    return m_nBp;
 }
 
-uint Skill::getMinLevel() const
+uint Skill::GetMinLevel() const
 {
-    return mnMinLevel;
+    return m_nMinLevel;
 }
 
 
         
 std::list<SkillRef*>::const_iterator 
-Skill::getPreReqsBegin() const
+Skill::GetPreReqsBegin() const
 {
-    return mPreReqs.begin();
+    return m_pre_reqs.begin();
 }
 
 std::list<SkillRef*>::const_iterator 
-Skill::getPreReqsEnd() const
+Skill::GetPreReqsEnd() const
 {
-    return mPreReqs.end();
+    return m_pre_reqs.end();
 }
 
 

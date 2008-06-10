@@ -11,20 +11,20 @@ WeaponTypeRef::~WeaponTypeRef()
 {
 }
 
-void WeaponTypeRef::loadAttributes(CL_DomNamedNodeMap *pAttributes)
+void WeaponTypeRef::load_attributes(CL_DomNamedNodeMap *pAttributes)
 {
-    mName = getRequiredString("name",pAttributes);
+    m_name = get_required_string("name",pAttributes);
 }
 
 bool WeaponTypeRef::operator==(const WeaponTypeRef &lhs)
 {
-    if( mName == lhs.mName) return true;
+    if( m_name == lhs.m_name) return true;
     else return false;
 }
 
-std::string WeaponTypeRef::getName() const
+std::string WeaponTypeRef::GetName() const
 {
-    return mName;
+    return m_name;
 }
 
 

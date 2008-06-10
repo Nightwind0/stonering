@@ -7,43 +7,41 @@
 #include "Monster.h"
 #include "IParty.h"
 
-using StoneRing::BattleState;
-using StoneRing::MonsterRef;
-using StoneRing::MonsterGroup;
+using namespace StoneRing;
 
 
 void BattleState::init(const MonsterGroup &group, const std::string &backdrop)
 {
-    CharacterManager * pCharManager = IApplication::getInstance()->getCharacterManager();
-    GraphicsManager * pGraphicsManager = GraphicsManager::getInstance();
+    CharacterManager * pCharManager = IApplication::GetInstance()->GetCharacterManager();
+    GraphicsManager * pGraphicsManager = GraphicsManager::GetInstance();
 
-    mnRows = group.getCellRows();
-    mnColumns = group.getCellColumns();
+    m_nRows = group.GetCellRows();
+    m_nColumns = group.GetCellColumns();
 
-    uint bottomrow = mnRows - 1;
+    uint bottomrow = m_nRows - 1;
 
-    const std::vector<MonsterRef*> & monsters = group.getMonsters();
+    const std::vector<MonsterRef*> & monsters = group.GetMonsters();
 
     for(std::vector<MonsterRef*>::const_iterator it = monsters.begin();
         it != monsters.end(); it++)
     {
         MonsterRef *pRef= *it;
-        uint count = pRef->getCount();
+        uint count = pRef->GetCount();
    
-        for(int x=0;x<pRef->getColumns();x++)
+        for(int x=0;x<pRef->GetColumns();x++)
         {
-            for(int y=0;y<pRef->getRows();y++)
+            for(int y=0;y<pRef->GetRows();y++)
             {
                 if(count>0)
                 {
-                    Monster * pMonster = pCharManager->createMonster(pRef->getName());
-                    pMonster->setCellX( pRef->getCellX() + x );
-                    pMonster->setCellY( bottomrow - pRef->getCellY() - y);
+                    Monster * pMonster = pCharManager->CreateMonster(pRef->GetName());
+                    pMonster->SetCellX( pRef->GetCellX() + x );
+                    pMonster->SetCellY( bottomrow - pRef->GetCellY() - y);
                   
-                    pMonster->setCurrentSprite(pGraphicsManager->createMonsterSprite(pMonster->getName(),
+                    pMonster->SetCurrentSprite(pGraphicsManager->CreateMonsterSprite(pMonster->GetName(),
                         "idle")); // fuck, dude
 
-                    mMonsters.push_back(pMonster);
+                    m_monsters.push_back(pMonster);
                 }
 
                 if(--count == 0) break;
@@ -52,98 +50,98 @@ void BattleState::init(const MonsterGroup &group, const std::string &backdrop)
 
         if(count > 0) throw CL_Error("Couldn't fit all monsters in their rows and columns");
     }
-    mpBackdrop = pGraphicsManager->getBackdrop(backdrop);
-    mbDone = false;
+    m_pBackdrop = pGraphicsManager->GetBackdrop(backdrop);
+    m_bDone = false;
 }
 
-bool BattleState::isDone() const
+bool BattleState::IsDone() const
 {
-    return mbDone;
+    return m_bDone;
 }
 
-void BattleState::handleKeyDown(const CL_InputEvent &key)
+void BattleState::HandleKeyDown(const CL_InputEvent &key)
 {
 }
 
-void BattleState::handleKeyUp(const CL_InputEvent &key)
+void BattleState::HandleKeyUp(const CL_InputEvent &key)
 {
     switch(key.id)
     {
     case CL_KEY_ESCAPE:
-        mbDone = true;
+        m_bDone = true;
         break;
     }
 }
 
-void BattleState::draw(const CL_Rect &screenRect,CL_GraphicContext * pGC)
+void BattleState::Draw(const CL_Rect &screenRect,CL_GraphicContext * pGC)
 {
-    assert(mDrawMethod != NULL);
+    assert(m_draw_method != NULL);
 
-    (this->*mDrawMethod)(screenRect,pGC);
+    (this->*m_draw_method)(screenRect,pGC);
 }
 
-bool BattleState::lastToDraw() const
+bool BattleState::LastToDraw() const
 {
     return false;
 }
 
-bool BattleState::disableMappableObjects() const
+bool BattleState::DisableMappableObjects() const
 {
     return true;
 }
 
-void BattleState::mappableObjectMoveHook()
+void BattleState::MappableObjectMoveHook()
 {
 }
 
-void BattleState::start()
+void BattleState::Start()
 {
-    mDrawMethod = &BattleState::drawBattle;
-    meState = BATTLE;
-    _initOrReleasePlayers(false);
+    m_draw_method = &BattleState::draw_battle;
+    m_eState = BATTLE;
+    init_or_release_players(false);
 }
 
-void BattleState::_initOrReleasePlayers(bool bRelease)
+void BattleState::init_or_release_players(bool bRelease)
 {
-    GraphicsManager * pGraphicsManager = GraphicsManager::getInstance();
-    IParty * pParty = IApplication::getInstance()->getParty();
+	GraphicsManager * pGraphicsManager = GraphicsManager::GetInstance();
+    IParty * pParty = IApplication::GetInstance()->GetParty();
 
-    uint count = pParty->getCharacterCount();
+    uint count = pParty->GetCharacterCount();
     for(uint nPlayer = 0;nPlayer < count; nPlayer++)
     {
-        Character * pCharacter = dynamic_cast<Character*>(pParty->getCharacter(nPlayer));
+        Character * pCharacter = dynamic_cast<Character*>(pParty->GetCharacter(nPlayer));
         assert(pCharacter);
-        std::string name = pCharacter->getName();
+        std::string name = pCharacter->GetName();
         if(!bRelease)
-            pCharacter->setCurrentSprite(pGraphicsManager->createCharacterSprite(name,"idle")); // bullshit 
-        else delete pCharacter->getCurrentSprite();
+            pCharacter->SetCurrentSprite(pGraphicsManager->CreateCharacterSprite(name,"idle")); // bullshit 
+        else delete pCharacter->GetCurrentSprite();
     }
 }
 
 
-void BattleState::finish()
+void BattleState::Finish()
 {
-    for(std::vector<Monster*>::iterator it = mMonsters.begin();
-        it != mMonsters.end(); it++)
+    for(std::vector<Monster*>::iterator it = m_monsters.begin();
+        it != m_monsters.end(); it++)
         delete *it;
 
-    mMonsters.clear();
+    m_monsters.clear();
 
-    _initOrReleasePlayers(true);
+    init_or_release_players(true);
 }
 
 
-void BattleState::drawTransitionIn(const CL_Rect &screenRect, CL_GraphicContext *pGC)
+void BattleState::draw_transition_in(const CL_Rect &screenRect, CL_GraphicContext *pGC)
 {
 }
 
-void BattleState::drawStart(const CL_Rect &screenRect, CL_GraphicContext *pGC)
+void BattleState::draw_start(const CL_Rect &screenRect, CL_GraphicContext *pGC)
 {
 }
 
-void BattleState::drawBattle(const CL_Rect &screenRect, CL_GraphicContext *pGC)
+void BattleState::draw_battle(const CL_Rect &screenRect, CL_GraphicContext *pGC)
 {
-    mpBackdrop->draw(screenRect,pGC);
+    m_pBackdrop->draw(screenRect,pGC);
 
     CL_Rect monsterRect = screenRect;
 
@@ -152,40 +150,40 @@ void BattleState::drawBattle(const CL_Rect &screenRect, CL_GraphicContext *pGC)
 
     // Hack. Player Rect needs to come from game config
     CL_Rect playerRect = screenRect;
-    playerRect.top = screenRect.bottom * 0.5;
+    playerRect.top = screenRect.bottom * 0.33;
     playerRect.left = monsterRect.right;
-    _drawMonsters(monsterRect,pGC);
-    _drawPlayers(playerRect,pGC);
+    draw_monsters(monsterRect,pGC);
+    draw_players(playerRect,pGC);
 }
 
-void BattleState::_drawMonsters(const CL_Rect &monsterRect, CL_GraphicContext *pGC)
+void BattleState::draw_monsters(const CL_Rect &monsterRect, CL_GraphicContext *pGC)
 {
-    uint cellWidth = monsterRect.get_width() / mnColumns;
-    uint cellHeight = monsterRect.get_height() / mnRows;
+    uint cellWidth = monsterRect.get_width() / m_nColumns;
+    uint cellHeight = monsterRect.get_height() / m_nRows;
 
-    for(std::vector<Monster*>::iterator it = mMonsters.begin();
-        it != mMonsters.end(); it++)
+    for(std::vector<Monster*>::iterator it = m_monsters.begin();
+        it != m_monsters.end(); it++)
     {
         Monster *pMonster = *it;
-        int drawX = pMonster->getCellX() * cellWidth;
-        int drawY = pMonster->getCellY() * cellHeight;
+        int drawX = pMonster->GetCellX() * cellWidth;
+        int drawY = pMonster->GetCellY() * cellHeight;
 
-        CL_Sprite * pSprite = pMonster->getCurrentSprite();
+        CL_Sprite * pSprite = pMonster->GetCurrentSprite();
 
         pSprite->draw(drawX,drawY,pGC);
         pSprite->update();
     }
 }
 
-void BattleState::_drawPlayers(const CL_Rect &playerRect, CL_GraphicContext *pGC)
+void BattleState::draw_players(const CL_Rect &playerRect, CL_GraphicContext *pGC)
 {
-    IParty * pParty = IApplication::getInstance()->getParty();
+	IParty * pParty = IApplication::GetInstance()->GetParty();
 
-    uint playercount = pParty->getCharacterCount();
+    uint playercount = pParty->GetCharacterCount();
     for(uint nPlayer = 0; nPlayer < playercount; nPlayer++)
     {
-        Character * pCharacter = dynamic_cast<Character*>(pParty->getCharacter(nPlayer));
-        CL_Sprite * pSprite = pCharacter->getCurrentSprite();
+        Character * pCharacter = dynamic_cast<Character*>(pParty->GetCharacter(nPlayer));
+        CL_Sprite * pSprite = pCharacter->GetCurrentSprite();
 
          // Need to get the spacing from game config
         pSprite->draw(playerRect.left + nPlayer * 64, playerRect.top + (nPlayer * 64), pGC);

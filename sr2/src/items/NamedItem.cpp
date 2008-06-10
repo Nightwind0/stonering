@@ -3,20 +3,20 @@
 
 using namespace StoneRing;
 
-void NamedItemElement::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+void NamedItemElement::load_attributes(CL_DomNamedNodeMap * pAttributes)
 {
-    mName = getRequiredString("name",pAttributes);
-    std::string dropRarity = getRequiredString("dropRarity",pAttributes);
-    meDropRarity = Item::DropRarityFromString ( dropRarity );
-    mnMaxInventory = getImpliedInt("maxInventory",pAttributes,99);
+    m_name = get_required_string("name",pAttributes);
+    std::string dropRarity = get_required_string("dropRarity",pAttributes);
+    m_eDropRarity = Item::DropRarityFromString ( dropRarity );
+    m_nMaxInventory = get_implied_int("maxInventory",pAttributes,99);
 }
 
-bool NamedItemElement::handleElement(eElement element, Element * pElement)
+bool NamedItemElement::handle_element(eElement element, Element * pElement)
 {
     switch(element)
     {
     case EICONREF:
-        mIconRef = dynamic_cast<IconRef*>(pElement)->getIcon();
+        m_icon_ref = dynamic_cast<IconRef*>(pElement)->GetIcon();
         break;
     case EREGULARITEM:
     case EUNIQUEWEAPON:
@@ -24,7 +24,7 @@ bool NamedItemElement::handleElement(eElement element, Element * pElement)
     case ERUNE:
     case ESPECIALITEM:
     case ESYSTEMITEM:
-        mpNamedItem = dynamic_cast<NamedItem*>(pElement);
+        m_pNamedItem = dynamic_cast<NamedItem*>(pElement);
         break;
     default:
         return false;
@@ -32,16 +32,16 @@ bool NamedItemElement::handleElement(eElement element, Element * pElement)
     return true;
 }
 
-void NamedItemElement::loadFinished()
+void NamedItemElement::load_finished()
 {
-    if(mpNamedItem == NULL) throw CL_Error("No named item within a named item element :" + mName);   
-    mpNamedItem->setIconRef( mIconRef );
-    mpNamedItem->setName ( mName );
-    mpNamedItem->setMaxInventory ( mnMaxInventory );
-    mpNamedItem->setDropRarity( meDropRarity );
+    if(m_pNamedItem == NULL) throw CL_Error("No named item within a named item element :" + m_name);   
+    m_pNamedItem->SetIconRef( m_icon_ref );
+    m_pNamedItem->SetName ( m_name );
+    m_pNamedItem->SetMaxInventory ( m_nMaxInventory );
+    m_pNamedItem->SetDropRarity( m_eDropRarity );
 }
 
-NamedItemElement::NamedItemElement ():mpNamedItem(NULL),meDropRarity(Item::NEVER),mnMaxInventory(0)
+NamedItemElement::NamedItemElement ():m_pNamedItem(NULL),m_eDropRarity(Item::NEVER),m_nMaxInventory(0)
 {
 }
 
@@ -52,32 +52,32 @@ NamedItemElement::~NamedItemElement()
 
 
 NamedItem * 
-NamedItemElement::getNamedItem() const
+NamedItemElement::GetNamedItem() const
 {
-    return mpNamedItem;
+    return m_pNamedItem;
 }
 
-std::string NamedItemElement::getIconRef() const
+std::string NamedItemElement::GetIconRef() const
 {
-    return mIconRef;
+    return m_icon_ref;
 }
 
-uint NamedItemElement::getMaxInventory() const
+uint NamedItemElement::GetMaxInventory() const
 {
-    return mnMaxInventory;
+    return m_nMaxInventory;
 }
 
 Item::eDropRarity 
-NamedItemElement::getDropRarity() const
+NamedItemElement::GetDropRarity() const
 {
-    return meDropRarity;
+    return m_eDropRarity;
 }
 
 
 std::string 
-NamedItemElement::getName() const
+NamedItemElement::GetName() const
 {
-    return mName;
+    return m_name;
 }
 
 
@@ -93,8 +93,8 @@ NamedItem::~NamedItem()
 
 bool NamedItem::operator== ( const ItemRef &ref )
 {
-    if( ref.getType() == ItemRef::NAMED_ITEM
-        && ref.getNamedItemRef()->getItemName() == mName)
+    if( ref.GetType() == ItemRef::NAMED_ITEM
+        && ref.GetNamedItemRef()->GetItemName() == m_name)
         return true;
     else return false;
 }
@@ -102,44 +102,44 @@ bool NamedItem::operator== ( const ItemRef &ref )
 
 
 
-std::string NamedItem::getIconRef() const
+std::string NamedItem::GetIconRef() const
 {
-    return mIconRef;
+    return m_icon_ref;
 }
 
-std::string NamedItem::getName() const
+std::string NamedItem::GetName() const
 {
-    return mName;
+    return m_name;
 }
 
-uint NamedItem::getMaxInventory() const 
+uint NamedItem::GetMaxInventory() const 
 {
-    return mnMaxInventory;
+    return m_nMaxInventory;
 }
 
-NamedItem::eDropRarity NamedItem::getDropRarity() const
+NamedItem::eDropRarity NamedItem::GetDropRarity() const
 {
-    return meDropRarity;
+    return m_eDropRarity;
 }
 
-void NamedItem::setIconRef(const std::string &ref)
+void NamedItem::SetIconRef(const std::string &ref)
 {
-    mIconRef = ref;
+    m_icon_ref = ref;
 }
 
-void NamedItem::setName ( const std::string &name )
+void NamedItem::SetName ( const std::string &name )
 {
-    mName = name;
+    m_name = name;
 }
 
-void NamedItem::setMaxInventory ( uint max )
+void NamedItem::SetMaxInventory ( uint max )
 {
-    mnMaxInventory = max;
+    m_nMaxInventory = max;
 }
 
-void NamedItem::setDropRarity( Item::eDropRarity rarity )
+void NamedItem::SetDropRarity( Item::eDropRarity rarity )
 {
-    meDropRarity = rarity;
+    m_eDropRarity = rarity;
 }
 
 

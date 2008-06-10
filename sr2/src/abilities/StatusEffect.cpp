@@ -4,41 +4,41 @@
 #include "Animation.h"
 
 
-void StoneRing::StatusEffect::loadAttributes(CL_DomNamedNodeMap *pAttributes)
+void StoneRing::StatusEffect::load_attributes(CL_DomNamedNodeMap *pAttributes)
 {
-    mName = getRequiredString("name", pAttributes );
-    std::string last = getRequiredString("last",pAttributes );
+    m_name = get_required_string("name", pAttributes );
+    std::string last = get_required_string("last",pAttributes );
 
-    if(last == "battle") meLast = BATTLE;
-    else if (last == "round_count") meLast = ROUND_COUNT;
-    else if (last == "permanent") meLast = PERMANENT;
+    if(last == "battle") m_eLast = BATTLE;
+    else if (last == "round_count") m_eLast = ROUND_COUNT;
+    else if (last == "permanent") m_eLast = PERMANENT;
 
-    if( meLast == BATTLE )
+    if( m_eLast == BATTLE )
     {
-        mfLengthMultiplier = getImpliedFloat("lengthMultiplier",pAttributes,1);
+        m_fLengthMultiplier = get_implied_float("lengthMultiplier",pAttributes,1);
     }
-    else if (meLast == ROUND_COUNT )
+    else if (m_eLast == ROUND_COUNT )
     {
-        mnRoundCount = getRequiredInt("roundCount",pAttributes);
+        m_nRoundCount = get_required_int("roundCount",pAttributes);
     }
 
 }
 
-bool StoneRing::StatusEffect::handleElement(eElement element, Element * pElement)
+bool StoneRing::StatusEffect::handle_element(eElement element, Element * pElement)
 {
     switch(element)
     {
     case EONINVOKE:
-        mpOnInvoke = dynamic_cast<OnInvoke*>(pElement);
+        m_pOnInvoke = dynamic_cast<OnInvoke*>(pElement);
         break;
     case EONROUND:
-        mpOnRound = dynamic_cast<OnRound*>(pElement);
+        m_pOnRound = dynamic_cast<OnRound*>(pElement);
         break;
     case EONCOUNTDOWN:
-        mpOnCountdown = dynamic_cast<OnCountdown*>(pElement);
+        m_pOnCountdown = dynamic_cast<OnCountdown*>(pElement);
         break;
     case EONREMOVE:
-        mpOnRemove = dynamic_cast<OnRemove*>(pElement);
+        m_pOnRemove = dynamic_cast<OnRemove*>(pElement);
         break;
     default:
         return false;
@@ -46,60 +46,60 @@ bool StoneRing::StatusEffect::handleElement(eElement element, Element * pElement
     return true;
 }
 
-StoneRing::StatusEffect::StatusEffect():mpOnInvoke(NULL),mpOnRound(NULL),
-                                        mpOnCountdown(NULL), mpOnRemove(NULL)
+StoneRing::StatusEffect::StatusEffect():m_pOnInvoke(NULL),m_pOnRound(NULL),
+                                        m_pOnCountdown(NULL), m_pOnRemove(NULL)
 {
 }
 
 StoneRing::StatusEffect::~StatusEffect()
 {
-    delete mpOnInvoke;
-    delete mpOnRound;
-    delete mpOnCountdown;
-    delete mpOnRemove;
+    delete m_pOnInvoke;
+    delete m_pOnRound;
+    delete m_pOnCountdown;
+    delete m_pOnRemove;
 }
 
-StoneRing::OnInvoke * StoneRing::StatusEffect::getOnInvoke() const
+StoneRing::OnInvoke * StoneRing::StatusEffect::GetOnInvoke() const
 {
-    return mpOnInvoke;
+    return m_pOnInvoke;
 }
 
-StoneRing::OnRound * StoneRing::StatusEffect::getOnRound() const
+StoneRing::OnRound * StoneRing::StatusEffect::GetOnRound() const
 {
-    return mpOnRound;
+    return m_pOnRound;
 }
 
-StoneRing::OnCountdown * StoneRing::StatusEffect::getOnCountdown() const
+StoneRing::OnCountdown * StoneRing::StatusEffect::GetOnCountdown() const
 {
-    return mpOnCountdown;
+    return m_pOnCountdown;
 }
 
-StoneRing::OnRemove * StoneRing::StatusEffect::getOnRemove() const
+StoneRing::OnRemove * StoneRing::StatusEffect::GetOnRemove() const
 {
-    return mpOnRemove;
+    return m_pOnRemove;
 }
 
-std::string StoneRing::StatusEffect::getName() const
+std::string StoneRing::StatusEffect::GetName() const
 {
-    return mName;
+    return m_name;
 }
 
 StoneRing::StatusEffect::eLast 
-StoneRing::StatusEffect::getLast() const
+StoneRing::StatusEffect::GetLast() const
 {
-    return meLast;
+    return m_eLast;
 }
 
-uint StoneRing::StatusEffect::getRoundCount() const
+uint StoneRing::StatusEffect::GetRoundCount() const
 {
-    return mnRoundCount;
+    return m_nRoundCount;
 }
 
 
 // Multiply the magic power of the user by this using an algorithm to get length..
-float StoneRing::StatusEffect::getLengthMultiplier() const
+float StoneRing::StatusEffect::GetLengthMultiplier() const
 {
-    return mfLengthMultiplier;
+    return m_fLengthMultiplier;
 }
                 
 

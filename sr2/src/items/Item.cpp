@@ -12,9 +12,9 @@ using namespace StoneRing;
 
 bool   StoneRing::operator < ( const StoneRing::Item &lhs, const StoneRing::Item &rhs )
 {
-    return std::string(Item::ItemTypeAsString(lhs.getItemType()) + lhs.getName())
+    return std::string(Item::ItemTypeAsString(lhs.GetItemType()) + lhs.GetName())
         <
-        std::string(Item::ItemTypeAsString(rhs.getItemType()) + rhs.getName());
+        std::string(Item::ItemTypeAsString(rhs.GetItemType()) + rhs.GetName());
 }
 
 

@@ -9,7 +9,7 @@
 namespace StoneRing{
 
 
-StoneRing::SpriteDefinition::SpriteDefinition():mpSpriteRef(NULL),mbHasBindPoints(false)
+StoneRing::SpriteDefinition::SpriteDefinition():m_pSpriteRef(NULL),m_bHasBindPoints(false)
 {
 }
 
@@ -19,13 +19,13 @@ StoneRing::SpriteDefinition::~SpriteDefinition()
 
 
 
-bool StoneRing::SpriteDefinition::handleElement(eElement element, Element * pElement)
+bool StoneRing::SpriteDefinition::handle_element(eElement element, Element * pElement)
 {
     switch(element)
     {
     case ESPRITEREF:
-        if(mpSpriteRef) throw CL_Error("Sprite Ref already defined for Sprite Definition");
-        mpSpriteRef = dynamic_cast<SpriteRef*>(pElement);
+        if(m_pSpriteRef) throw CL_Error("Sprite Ref already defined for Sprite Definition");
+        m_pSpriteRef = dynamic_cast<SpriteRef*>(pElement);
     default:
         return false;
     }
@@ -33,15 +33,15 @@ bool StoneRing::SpriteDefinition::handleElement(eElement element, Element * pEle
     return true;
 }
 
-void StoneRing::SpriteDefinition::loadAttributes(CL_DomNamedNodeMap *pAttributes)
+void StoneRing::SpriteDefinition::load_attributes(CL_DomNamedNodeMap *pAttributes)
 {
-    mName = getRequiredString("name",pAttributes);
+    m_name = get_required_string("name",pAttributes);
 
-    if(hasAttr("bindPoint1",pAttributes))
+    if(has_attribute("bindPoint1",pAttributes))
     {
-        mbHasBindPoints = true;
-        mnBindPoint1 = getRequiredInt("bindPoint1",pAttributes);
-        mnBindPoint2 = getRequiredInt("bindPoint2",pAttributes);
+        m_bHasBindPoints = true;
+        m_nBindPoint1 = get_required_int("bindPoint1",pAttributes);
+        m_nBindPoint2 = get_required_int("bindPoint2",pAttributes);
     }
 
 }

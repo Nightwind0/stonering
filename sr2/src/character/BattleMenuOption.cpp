@@ -3,61 +3,61 @@
 
 using StoneRing::BattleMenuOption;
 
-BattleMenuOption::BattleMenuOption(int level):mnLevel(level),
-mpConditionScript(NULL),
-mActionType(INVALID)
+BattleMenuOption::BattleMenuOption(int level):m_nLevel(level),
+m_pConditionScript(NULL),
+m_action_type(INVALID)
 {
-    mAction.mpScript = NULL;
+    m_action.m_pScript = NULL;
 }
 
 BattleMenuOption::~BattleMenuOption()
 {
-    delete mpConditionScript;
+    delete m_pConditionScript;
 
-    switch(mActionType)
+    switch(m_action_type)
     {
     case SKILLREF:
-        delete mAction.mpSkillRef;
+        delete m_action.m_pSkillRef;
         break;
     case SCRIPT:
-        delete mAction.mpScript;
+        delete m_action.m_pScript;
         break;
     case SUBMENU:
-        delete mAction.mpSubMenu;
+        delete m_action.m_pSubMenu;
         break;
     }
 }
 
-std::string BattleMenuOption::getName() const
+std::string BattleMenuOption::GetName() const
 {
-    return mName;
+    return m_name;
 }
-bool BattleMenuOption::enabled() const
+bool BattleMenuOption::Enabled() const
 {
-    if(mpConditionScript)
-        return mpConditionScript->evaluateCondition();
+    if(m_pConditionScript)
+        return m_pConditionScript->EvaluateCondition();
     else return true; 
 }
 
 
-bool BattleMenuOption::handleElement(Element::eElement element, Element *pElement)
+bool BattleMenuOption::handle_element(Element::eElement element, Element *pElement)
 {
     switch(element)
     {
     case ECONDITIONSCRIPT:
-        mpConditionScript = dynamic_cast<ScriptElement*>(pElement);
+        m_pConditionScript = dynamic_cast<ScriptElement*>(pElement);
         break;
     case EONSELECT:
-        mActionType = SCRIPT;
-        mAction.mpScript = dynamic_cast<ScriptElement*>(pElement);
+        m_action_type = SCRIPT;
+        m_action.m_pScript = dynamic_cast<ScriptElement*>(pElement);
         break;
     case ESKILLREF:
-        mActionType = SKILLREF;
-        mAction.mpSkillRef = dynamic_cast<SkillRef*>(pElement);
+        m_action_type = SKILLREF;
+        m_action.m_pSkillRef = dynamic_cast<SkillRef*>(pElement);
         break;
     case EBATTLEMENU:
-        mActionType = SUBMENU;
-        mAction.mpSubMenu = dynamic_cast<BattleMenu*>(pElement);
+        m_action_type = SUBMENU;
+        m_action.m_pSubMenu = dynamic_cast<BattleMenu*>(pElement);
         break;
     default:
         return false;
@@ -66,14 +66,14 @@ bool BattleMenuOption::handleElement(Element::eElement element, Element *pElemen
     return true;
 }
 
-void BattleMenuOption::loadFinished()
+void BattleMenuOption::load_finished()
 {
-    if(mActionType == INVALID)
+    if(m_action_type == INVALID)
         throw CL_Error("Battle menu needs a skill ref or a script or submenu");
 }
 
-void BattleMenuOption::loadAttributes(CL_DomNamedNodeMap *pAttributes)
+void BattleMenuOption::load_attributes(CL_DomNamedNodeMap *pAttributes)
 {
-    mName = getRequiredString("name",pAttributes);
+    m_name = get_required_string("name",pAttributes);
 }
 

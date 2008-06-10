@@ -11,29 +11,29 @@ Stat::~Stat()
 {
 }
 
-double Stat::getStat() const
+double Stat::GetStat() const
 {
-    return mfValue;
+    return m_fValue;
 }
 
-bool Stat::getToggle() const
+bool Stat::GetToggle() const
 {
-    return mbToggle;
+    return m_bToggle;
 }
 
-ICharacter::eCharacterAttribute Stat::getAttribute() const
+ICharacter::eCharacterAttribute Stat::GetAttribute() const
 {
-    return meAttr;
+    return m_eAttr;
 }
 
-void Stat::loadAttributes(CL_DomNamedNodeMap *attr)
+void Stat::load_attributes(CL_DomNamedNodeMap *attr)
 {
-    meAttr = ICharacter::CharAttributeFromString( getRequiredString("id",attr) );
-    if(meAttr = ICharacter::CA_INVALID)
+    m_eAttr = ICharacter::CharAttributeFromString( get_required_string("id",attr) );
+    if(m_eAttr = ICharacter::CA_INVALID)
         throw CL_Error("Unknown stat type in monster stat");
 
-    if(meAttr > ICharacter::_START_OF_TOGGLES && meAttr < ICharacter::_END_OF_TOGGLES)
-        mbToggle = getRequiredBool("toggle",attr);
-    else  mfValue = getRequiredFloat("value",attr);
+    if(m_eAttr > ICharacter::_START_OF_TOGGLES && m_eAttr < ICharacter::_END_OF_TOGGLES)
+        m_bToggle = get_required_bool("toggle",attr);
+    else  m_fValue = get_required_float("value",attr);
 
 }

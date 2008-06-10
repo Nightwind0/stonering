@@ -3,9 +3,9 @@
 
 using namespace StoneRing;
 
-Equipment::Equipment():meMagic(NONE)
+Equipment::Equipment():m_eMagic(NONE)
 {
-    mSpellOrRuneRef.mpSpellRef = NULL;
+    m_SpellOrRuneRef.mpSpellRef = NULL;
 }
 
 
@@ -13,94 +13,94 @@ Equipment::~Equipment()
 {
 }
 
-SpellRef * Equipment::getSpellRef() const
+SpellRef * Equipment::GetSpellRef() const
 {
-    return mSpellOrRuneRef.mpSpellRef;
+    return m_SpellOrRuneRef.mpSpellRef;
 }
 
-RuneType * Equipment::getRuneType() const
+RuneType * Equipment::GetRuneType() const
 {
-    return mSpellOrRuneRef.mpRuneType;
+    return m_SpellOrRuneRef.mpRuneType;
 }
 
-bool Equipment::hasSpell() const
+bool Equipment::HasSpell() const
 {
-    if( meMagic == SPELL ) return true;
+    if( m_eMagic == SPELL ) return true;
     else return false;
 }
 
-bool Equipment::hasRuneType() const
+bool Equipment::HasRuneType() const
 {
-    if( meMagic == RUNE ) return true;
+    if( m_eMagic == RUNE ) return true;
     else return false;
 }
 
 // Apply any attribute enhancements 
-void Equipment::equip(ICharacter *pCharacter)
+void Equipment::Equip(ICharacter *pCharacter)
 {
 
 #ifndef _MSC_VER
-    std::for_each( mAttributeEnhancers.begin(), mAttributeEnhancers.end(), std::mem_fun(&AttributeEnhancer::invoke));
+    std::for_each( m_attribute_enhancers.begin(), m_attribute_enhancers.end(), std::mem_fun(&AttributeEnhancer::Invoke));
 
 #else
 
-    for (std::list<AttributeEnhancer*>::const_iterator iter = mAttributeEnhancers.begin();
-         iter != mAttributeEnhancers.end(); iter++)
+    for (std::list<AttributeEnhancer*>::const_iterator iter = m_attribute_enhancers.begin();
+         iter != m_attribute_enhancers.end(); iter++)
     {
-        (*iter)->invoke();
+        (*iter)->Invoke();
     }
 #endif
-    onEquipScript();
+    OnEquipScript();
 }
 
 // Remove any attribute enhancements
-void Equipment::unequip(ICharacter *pCharacter)
+void Equipment::Unequip(ICharacter *pCharacter)
 {
 #ifndef _MSC_VER
-    std::for_each( mAttributeEnhancers.begin(), mAttributeEnhancers.end(), std::mem_fun(&AttributeEnhancer::revoke));
+    std::for_each( m_attribute_enhancers.begin(), m_attribute_enhancers.end(), std::mem_fun(&AttributeEnhancer::Revoke));
 #else
-    for(std::list<AttributeEnhancer*>::const_iterator iter = mAttributeEnhancers.begin();
-        iter != mAttributeEnhancers.end(); iter++)
+    for(std::list<AttributeEnhancer*>::const_iterator iter = m_attribute_enhancers.begin();
+        iter != m_attribute_enhancers.end(); iter++)
     {
-        (*iter)->revoke();
+        (*iter)->Revoke();
     }
 #endif
-    onUnequipScript();
+    OnUnequipScript();
 }
 
 
-std::list<AttributeEnhancer*>::const_iterator Equipment::getAttributeEnhancersBegin() const
+std::list<AttributeEnhancer*>::const_iterator Equipment::GetAttributeEnhancersBegin() const
 {
-    return mAttributeEnhancers.begin();
+    return m_attribute_enhancers.begin();
 }
 
-std::list<AttributeEnhancer*>::const_iterator Equipment::getAttributeEnhancersEnd() const
+std::list<AttributeEnhancer*>::const_iterator Equipment::GetAttributeEnhancersEnd() const
 {
-    return mAttributeEnhancers.end();
+    return m_attribute_enhancers.end();
 }
 
 
-void Equipment::clearAttributeEnhancers()
+void Equipment::Clear_Attribute_Enhancers()
 {
-    mAttributeEnhancers.clear();
+    m_attribute_enhancers.clear();
 }
 
-void Equipment::addAttributeEnhancer( AttributeEnhancer * pAttr )
+void Equipment::Add_Attribute_Enhancer( AttributeEnhancer * pAttr )
 {
-    mAttributeEnhancers.push_back ( pAttr );
+    m_attribute_enhancers.push_back ( pAttr );
 }
 
-void Equipment::setSpellRef ( SpellRef * pRef )
+void Equipment::Set_Spell_Ref ( SpellRef * pRef )
 {
-    mSpellOrRuneRef.mpSpellRef = pRef;
-    meMagic = SPELL;
+    m_SpellOrRuneRef.mpSpellRef = pRef;
+    m_eMagic = SPELL;
 }
 
-void Equipment::setRuneType ( RuneType * pType )
+void Equipment::Set_Rune_Type ( RuneType * pType )
 {
-    mSpellOrRuneRef.mpRuneType = pType;
+    m_SpellOrRuneRef.mpRuneType = pType;
 
-    meMagic = RUNE;
+    m_eMagic = RUNE;
 }
 
 

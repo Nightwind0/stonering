@@ -12,13 +12,12 @@ namespace StoneRing{
         WeaponTypeExclusionList();
         virtual ~WeaponTypeExclusionList();
 
-        virtual eElement whichElement() const{ return EWEAPONTYPEEXCLUSIONLIST; }   
-        std::list<WeaponTypeRef*>::const_iterator getWeaponTypeRefsBegin();
-        std::list<WeaponTypeRef*>::const_iterator getWeaponTypeRefsEnd();
-
-        virtual bool handleElement(eElement element, Element * pElement);
+        virtual eElement WhichElement() const{ return EWEAPONTYPEEXCLUSIONLIST; }   
+        std::list<WeaponTypeRef*>::const_iterator GetWeaponTypeRefsBegin();
+        std::list<WeaponTypeRef*>::const_iterator GetWeaponTypeRefsEnd();
     private:
-        std::list<WeaponTypeRef*> mWeaponTypes;
+        virtual bool handle_element(eElement element, Element * pElement);
+        std::list<WeaponTypeRef*> m_WeaponTypes;
 
     };
 };

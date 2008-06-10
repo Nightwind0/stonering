@@ -16,72 +16,72 @@ SkillRef::~SkillRef()
 {
 }
 
-std::string SkillRef::getRef() const
+std::string SkillRef::GetRef() const
 {
-    return mRef;
+    return m_ref;
 }
 
-uint SkillRef::getSPCost() const
+uint SkillRef::GetSPCost() const
 {
-    return mnSp;
+    return m_nSp;
 }
 
-uint SkillRef::getBPCost() const
+uint SkillRef::GetBPCost() const
 {
-    return mnBp;
+    return m_nBp;
 }
 
-uint SkillRef::getMinLevel() const
+uint SkillRef::GetMinLevel() const
 {
-    return mnMinLevel;
+    return m_nMinLevel;
 }
 
 
-void SkillRef::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+void SkillRef::load_attributes(CL_DomNamedNodeMap * pAttributes)
 {
-    mRef = getRequiredString("skillName", pAttributes);
-    mnSp = getImpliedInt("overrideSp", pAttributes,0);
-    mnBp = getImpliedInt("overrideBp", pAttributes,0);
-    mnMinLevel = getImpliedInt("overrideMinLevel",pAttributes,0);
+    m_ref = get_required_string("skillName", pAttributes);
+    m_nSp = get_implied_int("overrideSp", pAttributes,0);
+    m_nBp = get_implied_int("overrideBp", pAttributes,0);
+    m_nMinLevel = get_implied_int("overrideMinLevel",pAttributes,0);
 }
 
-void CharacterClass::loadAttributes(CL_DomNamedNodeMap * pAttributes)
+void CharacterClass::load_attributes(CL_DomNamedNodeMap * pAttributes)
 {
-    mName = getRequiredString("name",pAttributes);
+    m_name = get_required_string("name",pAttributes);
 
 #ifndef NDEBUG
-    std::cout << "Loading class: " << mName << std::endl;
+    std::cout << "Loading class: " << m_name << std::endl;
 #endif
 
 
-    std::string gender = getImpliedString("gender",pAttributes, "either");
+    std::string gender = get_implied_string("gender",pAttributes, "either");
 
-    if(gender == "male") meGender = ICharacter::MALE;       
-    else if (gender == "female") meGender = ICharacter::FEMALE; 
-    else if (gender == "either") meGender = ICharacter::NEUTER;
+    if(gender == "male") m_eGender = ICharacter::MALE;       
+    else if (gender == "female") m_eGender = ICharacter::FEMALE; 
+    else if (gender == "either") m_eGender = ICharacter::NEUTER;
 }
 
-bool CharacterClass::handleElement(eElement element, Element * pElement)
+bool CharacterClass::handle_element(eElement element, Element * pElement)
 {
     switch(element)
     {
     case EWEAPONTYPEREF:
-        mWeaponTypes.push_back ( dynamic_cast<WeaponTypeRef*>(pElement) );
+        m_weapon_types.push_back ( dynamic_cast<WeaponTypeRef*>(pElement) );
         break;
     case EARMORTYPEREF:
-        mArmorTypes.push_back ( dynamic_cast<ArmorTypeRef*>(pElement) );
+        m_armor_types.push_back ( dynamic_cast<ArmorTypeRef*>(pElement) );
         break;
     case ESTATSCRIPT:
         {
             StatScript *pScript = dynamic_cast<StatScript*>(pElement);
-            mStatScripts[pScript->getCharacterStat()] = pScript;
+            m_stat_scripts[pScript->GetCharacterStat()] = pScript;
             break;
         }
     case ESKILLREF:
-        mSkillRefs.push_back( dynamic_cast<SkillRef*>(pElement));
+        m_skill_refs.push_back( dynamic_cast<SkillRef*>(pElement));
         break;
     case EBATTLEMENU:
-        mpMenu = dynamic_cast<BattleMenu*>(pElement);
+        m_pMenu = dynamic_cast<BattleMenu*>(pElement);
         break;
     default:
         return false;
@@ -90,25 +90,25 @@ bool CharacterClass::handleElement(eElement element, Element * pElement)
 }
 
 
-double CharacterClass::getStat(ICharacter::eCharacterAttribute attr, int level)
+double CharacterClass::GetStat(ICharacter::eCharacterAttribute attr, int level)
 {
-    StatMap::iterator it = mStatScripts.find(attr);
-    if(it == mStatScripts.end())
+    StatMap::iterator it = m_stat_scripts.find(attr);
+    if(it == m_stat_scripts.end())
         throw CL_Error("Missing stat on character class.");
 
     StatScript *pScript = it->second;
-    return pScript->getStat(level);
+    return pScript->GetStat(level);
 }
 
 CharacterClass::CharacterClass()
-:mpMenu(NULL)
+:m_pMenu(NULL)
 {
-    std::for_each(mWeaponTypes.begin(),mWeaponTypes.end(),del_fun<WeaponTypeRef>());
-    std::for_each(mArmorTypes.begin(),mArmorTypes.end(),del_fun<ArmorTypeRef>());
-    std::for_each(mSkillRefs.begin(),mSkillRefs.end(),del_fun<SkillRef>());
+    std::for_each(m_weapon_types.begin(),m_weapon_types.end(),del_fun<WeaponTypeRef>());
+    std::for_each(m_armor_types.begin(),m_armor_types.end(),del_fun<ArmorTypeRef>());
+    std::for_each(m_skill_refs.begin(),m_skill_refs.end(),del_fun<SkillRef>());
 
-    for(std::map<ICharacter::eCharacterAttribute,StatScript*>::iterator it = mStatScripts.begin();
-        it != mStatScripts.end();
+    for(std::map<ICharacter::eCharacterAttribute,StatScript*>::iterator it = m_stat_scripts.begin();
+        it != m_stat_scripts.end();
         it++)
     {
         delete it->second;
@@ -117,75 +117,75 @@ CharacterClass::CharacterClass()
 
 CharacterClass::~CharacterClass()
 {
-    delete mpMenu;
+    delete m_pMenu;
 }
 
-std::list<WeaponTypeRef*>::const_iterator CharacterClass::getWeaponTypeRefsBegin() const
+std::list<WeaponTypeRef*>::const_iterator CharacterClass::GetWeaponTypeRefsBegin() const
 {
-    return mWeaponTypes.begin();
+    return m_weapon_types.begin();
 }
 
-std::list<WeaponTypeRef*>::const_iterator CharacterClass::getWeaponTypeRefsEnd() const
+std::list<WeaponTypeRef*>::const_iterator CharacterClass::GetWeaponTypeRefsEnd() const
 {
-    return mWeaponTypes.end();
+    return m_weapon_types.end();
 }
 
-std::list<ArmorTypeRef*>::const_iterator CharacterClass::getArmorTypeRefsBegin() const
+std::list<ArmorTypeRef*>::const_iterator CharacterClass::GetArmorTypeRefsBegin() const
 {
-    return mArmorTypes.begin();
+    return m_armor_types.begin();
 }
 
-std::list<ArmorTypeRef*>::const_iterator CharacterClass::getArmorTypeRefsEnd() const
+std::list<ArmorTypeRef*>::const_iterator CharacterClass::GetArmorTypeRefsEnd() const
 {
-    return mArmorTypes.end();
+    return m_armor_types.end();
 }
 
 
-std::list<SkillRef*>::const_iterator CharacterClass::getSkillRefsBegin() const
+std::list<SkillRef*>::const_iterator CharacterClass::GetSkillRefsBegin() const
 {
-    return mSkillRefs.begin();
+    return m_skill_refs.begin();
 }
 
-std::list<SkillRef*>::const_iterator CharacterClass::getSkillRefsEnd() const
+std::list<SkillRef*>::const_iterator CharacterClass::GetSkillRefsEnd() const
 {
-    return mSkillRefs.end();
+    return m_skill_refs.end();
 }
 
-std::string CharacterClass::getName() const
+std::string CharacterClass::GetName() const
 {
-    return mName;
+    return m_name;
 }
 
 
         
 ICharacter::eGender 
-CharacterClass::getGender() const
+CharacterClass::GetGender() const
 {
-    return meGender;
+    return m_eGender;
 }
         
 
 
-void StatScript::loadAttributes(CL_DomNamedNodeMap *pAttributes)
+void StatScript::load_attributes(CL_DomNamedNodeMap *pAttributes)
 {
-    std::string stat = getRequiredString("stat",pAttributes);
-    meStat = ICharacter::CharAttributeFromString ( stat );
+    std::string stat = get_required_string("stat",pAttributes);
+    m_eStat = ICharacter::CharAttributeFromString ( stat );
 }
 
-bool StatScript::handleElement(Element::eElement element, StoneRing::Element *pElement)
+bool StatScript::handle_element(Element::eElement element, StoneRing::Element *pElement)
 {
     if(element == ESCRIPT)
     {
-        mpScript = dynamic_cast<ScriptElement*>(pElement);
+        m_pScript = dynamic_cast<ScriptElement*>(pElement);
         return true;
     }
 
     return false;
 }
 
-void StatScript::loadFinished()
+void StatScript::load_finished()
 {
-    if(mpScript == NULL) throw CL_Error("No script defined for scriptElement");
+    if(m_pScript == NULL) throw CL_Error("No script defined for scriptElement");
 }
 
 StatScript::StatScript( )
@@ -198,18 +198,18 @@ StatScript::~StatScript()
 }
 
 ICharacter::eCharacterAttribute 
-StatScript::getCharacterStat() const
+StatScript::GetCharacterStat() const
 {
-    return meStat;
+    return m_eStat;
 }
 
-double StatScript::getStat(int level)
+double StatScript::GetStat(int level)
 {
     // Magic conversion to double
     ParameterList params;
     params.push_back ( ParameterListItem("$_CL",level) );
 
-    return mpScript->executeScript(params);
+    return m_pScript->ExecuteScript(params);
 }
 
 

@@ -132,15 +132,15 @@ StoneRing::AttributeFile::attr_doubles::const_iterator
 StoneRing::AttributeFile::find_attr(ICharacter::eCharacterAttribute attr) const
 {
     assert_real(attr);
-    return mRealAttributes.find(attr);
+    return m_real_attributes.find(attr);
 }
 
 double 
 StoneRing::AttributeFile::find_multiplier(ICharacter::eCharacterAttribute attr)const
 {
     assert_real(attr);
-    attr_doubles::const_iterator iter = mAttrMultipliers.find(attr);
-    if(iter != mAttrMultipliers.end())
+    attr_doubles::const_iterator iter = m_attr_multipliers.find(attr);
+    if(iter != m_attr_multipliers.end())
     {
         return iter->second; 
     }
@@ -151,8 +151,8 @@ double
 StoneRing::AttributeFile::find_addition(ICharacter::eCharacterAttribute attr)const
 {
     assert_real(attr);
-    attr_doubles::const_iterator iter = mAttrAdditions.find(attr);
-    if(iter != mAttrAdditions.end())
+    attr_doubles::const_iterator iter = m_attr_additions.find(attr);
+    if(iter != m_attr_additions.end())
     {
         return iter->second; 
     }
@@ -163,15 +163,15 @@ StoneRing::AttributeFile::attr_bools::const_iterator
 StoneRing::AttributeFile::find_toggle(ICharacter::eCharacterAttribute attr)const
 {
     assert_bool(attr);
-    return mToggles.find(attr);
+    return m_toggles.find(attr);
 }
 
-double StoneRing::AttributeFile::getAttribute(ICharacter::eCharacterAttribute attr)const
+double StoneRing::AttributeFile::GetAttribute(ICharacter::eCharacterAttribute attr)const
 {
     assert_real(attr);
     attr_doubles::const_iterator 
-        iter = mRealAttributes.find(attr);
-    if(iter != mRealAttributes.end())
+        iter = m_real_attributes.find(attr);
+    if(iter != m_real_attributes.end())
     {
         double base = iter->second; 
         return base * find_multiplier(attr) + find_addition(attr);
@@ -180,103 +180,105 @@ double StoneRing::AttributeFile::getAttribute(ICharacter::eCharacterAttribute at
     return 0.0;
 }
 
-bool StoneRing::AttributeFile::getToggle(ICharacter::eCharacterAttribute attr)const
+bool StoneRing::AttributeFile::GetToggle(ICharacter::eCharacterAttribute attr)const
 {
     assert_bool(attr);
     attr_bools::const_iterator 
-        iter = mToggles.find(attr);
-    if(iter != mToggles.end())
+        iter = m_toggles.find(attr);
+    if(iter != m_toggles.end())
     {
         return iter->second; 
     }
     throw CL_Error("Attribute not set");
     return false;
 }
-void StoneRing::AttributeFile::attachMultiplication(ICharacter::eCharacterAttribute attr,double value)
+void StoneRing::AttributeFile::AttachMultiplication(ICharacter::eCharacterAttribute attr,double value)
 {
     assert_real(attr);
-    if(mAttrMultipliers.find(attr) == mAttrMultipliers.end())
+    if(m_attr_multipliers.find(attr) == m_attr_multipliers.end())
     {
-        mAttrMultipliers[attr] = value;
+        m_attr_multipliers[attr] = value;
     }
     else
     {
-        mAttrMultipliers[attr] *= value;
+        m_attr_multipliers[attr] *= value;
     }
 }
 
-void StoneRing::AttributeFile::attachAddition(ICharacter::eCharacterAttribute attr,double value)
+void StoneRing::AttributeFile::AttachAddition(ICharacter::eCharacterAttribute attr,double value)
 {
     assert_real(attr);
-    if(mAttrMultipliers.find(attr) == mAttrMultipliers.end())
+    if(m_attr_multipliers.find(attr) == m_attr_multipliers.end())
     {
-        mAttrMultipliers[attr] = value;
+        m_attr_multipliers[attr] = value;
     }
     else
     {
-        mAttrMultipliers[attr] += value;
+        m_attr_multipliers[attr] += value;
     }
 }
 
-void StoneRing::AttributeFile::detachMultiplication(ICharacter::eCharacterAttribute attr,double value)
+void StoneRing::AttributeFile::DetachMultiplication(ICharacter::eCharacterAttribute attr,double value)
 {
     assert_real(attr);
     if(value != 0.0)
     {
-        if(mAttrMultipliers.find(attr) == mAttrMultipliers.end())
+        if(m_attr_multipliers.find(attr) == m_attr_multipliers.end())
         {
             throw CL_Error("Attempt to detach when there was no attach!");
         }
         else
         {
-            mAttrMultipliers[attr] /= value;
+            m_attr_multipliers[attr] /= value;
         }
     }
 }
 
-void StoneRing::AttributeFile::detachAddition(ICharacter::eCharacterAttribute attr,double value)
+void StoneRing::AttributeFile::DetachAddition(ICharacter::eCharacterAttribute attr,double value)
 {
     assert_real(attr);
-    if(mAttrMultipliers.find(attr) == mAttrMultipliers.end())
+    if(m_attr_multipliers.find(attr) == m_attr_multipliers.end())
     {
-        mAttrMultipliers[attr] = value;
+        m_attr_multipliers[attr] = value;
     }
     else
     {
-        mAttrMultipliers[attr] -= value;
+        m_attr_multipliers[attr] -= value;
     }
 }
 
 
-void StoneRing::AttributeFile::fixAttribute(ICharacter::eCharacterAttribute attr, double value)
+void StoneRing::AttributeFile::FixAttribute(ICharacter::eCharacterAttribute attr, double value)
 {
     assert_real(attr);
-    mRealAttributes[attr] = value;
+    m_real_attributes[attr] = value;
 }
 
-void StoneRing::AttributeFile::fixAttribute(ICharacter::eCharacterAttribute attr, bool toggle)
+void StoneRing::AttributeFile::FixAttribute(ICharacter::eCharacterAttribute attr, bool toggle)
 {
     assert_bool(attr);
-    mToggles[attr] = toggle;
+    m_toggles[attr] = toggle;
 }
 
-StoneRing::Character::Character():mpClass(NULL),mpMapSprite(NULL)
+StoneRing::Character::Character():m_pClass(NULL),m_pMapSprite(NULL)
 {
 }
 
-ICharacter::eGender StoneRing::Character::getGender() const
+ICharacter::eGender StoneRing::Character::GetGender() const
 {
     return NEUTER;
 }
 
-bool StoneRing::Character::handleElement(eElement element, StoneRing::Element * pElement)
+
+
+bool StoneRing::Character::handle_element(eElement element, StoneRing::Element * pElement)
 {
     switch(element)
     {
     case ESPRITEDEFINITION:
         {
             SpriteDefinition * pSpriteDef = dynamic_cast<SpriteDefinition*>(pElement);
-            mSpriteDefinitionMap[pSpriteDef->getName()] = pSpriteDef;
+            m_sprite_definition_map[pSpriteDef->GetName()] = pSpriteDef;
             break;
         }
     default:
@@ -286,26 +288,26 @@ bool StoneRing::Character::handleElement(eElement element, StoneRing::Element * 
     return true;
 }
 
-void StoneRing::Character::loadAttributes(CL_DomNamedNodeMap *pAttributes)
+void StoneRing::Character::load_attributes(CL_DomNamedNodeMap *pAttributes)
 {
 
-    const CharacterManager * pCharacterManager = IApplication::getInstance()->getCharacterManager();
-    mName = getRequiredString("name",pAttributes);
-    std::string spriteRef = getRequiredString("spriteResource",pAttributes);
-    std::string className = getRequiredString("class",pAttributes);
-    std::string typeName = getImpliedString("type",pAttributes,"living");
+    const CharacterManager * pCharacterManager = IApplication::GetInstance()->GetCharacterManager();
+    m_name = get_required_string("name",pAttributes);
+    std::string spriteRef = get_required_string("spriteResource",pAttributes);
+    std::string className = get_required_string("class",pAttributes);
+    std::string typeName = get_implied_string("type",pAttributes,"living");
 
     if(typeName == "living")
     {
-        meType = LIVING;
+        m_eType = LIVING;
     }
     else if(typeName == "nonliving")
     {
-        meType = NONLIVING;
+        m_eType = NONLIVING;
     }
     else if(typeName == "magical")
     {
-        meType = MAGICAL;
+        m_eType = MAGICAL;
     }
     else
     {
@@ -313,78 +315,78 @@ void StoneRing::Character::loadAttributes(CL_DomNamedNodeMap *pAttributes)
     }
 
     // Get the class pointer
-    mpClass = pCharacterManager->getClass(className);
+    m_pClass = pCharacterManager->GetClass(className);
 
-    CL_ResourceManager * pResources = IApplication::getInstance()->getResources();
-    mpMapSprite = new CL_Sprite(spriteRef, pResources);
+    CL_ResourceManager * pResources = IApplication::GetInstance()->GetResources();
+    m_pMapSprite = new CL_Sprite(spriteRef, pResources);
 
 }
 
-void StoneRing::Character::loadFinished()
+void StoneRing::Character::load_finished()
 {
     // TODO: Make sure the battle sprites exist in the resources
 }
 
 
-double StoneRing::Character::getAttribute(eCharacterAttribute attr) const
+double StoneRing::Character::GetAttribute(eCharacterAttribute attr) const
 {
-    return mAttributes.getAttribute(attr);
+    return m_attributes.GetAttribute(attr);
 }
 
-bool StoneRing::Character::getToggle(eCharacterAttribute attr) const
+bool StoneRing::Character::GetToggle(eCharacterAttribute attr) const
 {
-    return mAttributes.getToggle(attr);
+    return m_attributes.GetToggle(attr);
 }
 
 
-void StoneRing::Character::fixAttribute(eCharacterAttribute attr, bool value)
+void StoneRing::Character::FixAttribute(eCharacterAttribute attr, bool value)
 {
-    mAttributes.fixAttribute(attr,value);
+    m_attributes.FixAttribute(attr,value);
 }
 
-void StoneRing::Character::fixAttribute(eCharacterAttribute attr, double value)
+void StoneRing::Character::FixAttribute(eCharacterAttribute attr, double value)
 {
-    mAttributes.fixAttribute(attr,value);
+    m_attributes.FixAttribute(attr,value);
 }
 
-void StoneRing::Character::attachMultiplication(eCharacterAttribute attr, double factor)
+void StoneRing::Character::AttachMultiplication(eCharacterAttribute attr, double factor)
 {
-    mAttributes.attachMultiplication(attr,factor);
+    m_attributes.AttachMultiplication(attr,factor);
 }
 
-void StoneRing::Character::attachAddition(eCharacterAttribute attr, double value)
+void StoneRing::Character::AttachAddition(eCharacterAttribute attr, double value)
 {
-    mAttributes.attachAddition(attr,value);
+    m_attributes.AttachAddition(attr,value);
 }
 
-void StoneRing::Character::detachMultiplication(eCharacterAttribute attr, double factor)
+void StoneRing::Character::DetachMultiplication(eCharacterAttribute attr, double factor)
 {
-    mAttributes.detachMultiplication(attr,factor);
+    m_attributes.DetachMultiplication(attr,factor);
 }
 
-void StoneRing::Character::detachAddition(eCharacterAttribute attr, double value)
+void StoneRing::Character::DetachAddition(eCharacterAttribute attr, double value)
 {
-    mAttributes.detachAddition(attr,value);
+    m_attributes.DetachAddition(attr,value);
 }
 
-void StoneRing::Character::addStatusEffect(StatusEffect *pEffect)
+void StoneRing::Character::AddStatusEffect(StoneRing::StatusEffect *pEffect)
 {
-    mStatusEffects.insert(StatusEffectMap::value_type(pEffect->getName(),pEffect));
+    m_status_effects.insert(StatusEffectMap::value_type(pEffect->GetName(),pEffect));
 }
 
-void StoneRing::Character::removeEffects(const std::string &name)
+void StoneRing::Character::RemoveEffects(const std::string &name)
 {
-    StatusEffectMap::iterator start = mStatusEffects.lower_bound(name);
-    StatusEffectMap::iterator end   = mStatusEffects.upper_bound(name);
+    StatusEffectMap::iterator start = m_status_effects.lower_bound(name);
+    StatusEffectMap::iterator end   = m_status_effects.upper_bound(name);
 
-    mStatusEffects.erase(start,end);
+    m_status_effects.erase(start,end);
 }
 
-void StoneRing::Character::statusEffectRound()
+void StoneRing::Character::StatusEffectRound()
 {
 }
 
-double StoneRing::Character::getSpellResistance(Magic::eMagicType /*type*/) const
+double StoneRing::Character::GetSpellResistance(Magic::eMagicType /*type*/) const
 {
     return 0;
 }

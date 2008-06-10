@@ -15,36 +15,26 @@ namespace StoneRing
     class GraphicsManager
     {
     public:
-        static GraphicsManager * getInstance();
+        static GraphicsManager * GetInstance();
       
-        CL_Sprite * createSprite ( const std::string & name );
+        CL_Sprite * CreateSprite ( const std::string & name );
         // TODO: Replace sprite string in these two APIs with some enum
-        CL_Sprite * createMonsterSprite ( const std::string &monster, const std::string &sprite);
-        CL_Sprite * createCharacterSprite ( const std::string &player, const std::string &sprite);
-        CL_Surface * getTileMap ( const std::string & name );
-        CL_Surface * getBackdrop (const std::string & name );
+        CL_Sprite * CreateMonsterSprite ( const std::string &monster, const std::string &sprite);
+        CL_Sprite * CreateCharacterSprite ( const std::string &player, const std::string &sprite);
+        CL_Surface * GetTileMap ( const std::string & name );
+        CL_Surface * GetBackdrop (const std::string & name );
 
         // Returns the name associated with this surface
-        std::string lookUpMapWithSurface( CL_Surface * );
+        std::string LookUpMapWithSurface( CL_Surface * );
 
-        enum eFont
-        {
-            FONT_SPEAKER,
-            FONT_SAY_TEXT,
-            FONT_CHOICE,
-            FONT_OPTION,
-            FONT_CURRENT_OPTION,
-            __LAST_FONT__
-        };
-
-        CL_Font * getFont(eFont font);
+        CL_Font * GetFont(const std::string &name);
       
     private:
-        std::map<std::string,CL_Surface *> mTileMap;
-        std::map<eFont,CL_Font*> mFontMap;
+        std::map<std::string,CL_Surface *> m_tile_map;
+        std::map<std::string,CL_Font*> m_font_map;
       
       
-        static GraphicsManager *mInstance;
+        static GraphicsManager *m_pInstance;
         GraphicsManager();
         ~GraphicsManager();
       

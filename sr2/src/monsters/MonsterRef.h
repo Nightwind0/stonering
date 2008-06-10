@@ -11,23 +11,23 @@ namespace StoneRing
         MonsterRef();
         virtual ~MonsterRef();
 
-        std::string getName() const;
-        int getCount() const;
-        int getCellX() const { return mnCellX; }
-        int getCellY() const { return mnCellY; }
-        int getColumns() const { return mnColumns; }
-        int getRows() const { return mnRows; }
-        virtual eElement whichElement() const { return EMONSTERREF; }
+        std::string GetName() const;
+        int GetCount() const;
+        int GetCellX() const { return m_nCellX; }
+        int GetCellY() const { return m_nCellY; }
+        int GetColumns() const { return m_nColumns; }
+        int GetRows() const { return m_nRows; }
+        virtual eElement WhichElement() const { return EMONSTERREF; }
     private:
-        virtual void loadAttributes(CL_DomNamedNodeMap *);
-        virtual void loadFinished();
+        virtual void load_attributes(CL_DomNamedNodeMap *);
+        virtual void load_finished();
         
-        std::string mName;
-        int mnCount;
-        int mnCellX;
-        int mnCellY;
-        int mnColumns;
-        int mnRows;
+        std::string m_name;
+        int m_nCount;
+        int m_nCellX;
+        int m_nCellY;
+        int m_nColumns;
+        int m_nRows;
     };
 }
 

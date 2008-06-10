@@ -13,19 +13,19 @@ ArmorTypeExclusionList::~ArmorTypeExclusionList()
     //  std::for_each(mArmorTypes.begin(),mArmorTypes.end(),del_fun<ArmorTypeRef>());
 }
 
-std::list<ArmorTypeRef*>::const_iterator ArmorTypeExclusionList::getArmorTypeRefsBegin()
+std::list<ArmorTypeRef*>::const_iterator ArmorTypeExclusionList::GetArmorTypeRefsBegin()
 {
-    return mArmorTypes.begin();
+    return m_ArmorTypes.begin();
 }
-std::list<ArmorTypeRef*>::const_iterator ArmorTypeExclusionList::getArmorTypeRefsEnd()
+std::list<ArmorTypeRef*>::const_iterator ArmorTypeExclusionList::GetArmorTypeRefsEnd()
 {
-    return mArmorTypes.end();
+    return m_ArmorTypes.end();
 }
-bool ArmorTypeExclusionList::handleElement(eElement element, Element * pElement)
+bool ArmorTypeExclusionList::handle_element(eElement element, Element * pElement)
 {
     if(element == EARMORTYPEREF)
     {
-        mArmorTypes.push_back ( dynamic_cast<ArmorTypeRef*>(pElement) );
+        m_ArmorTypes.push_back ( dynamic_cast<ArmorTypeRef*>(pElement) );
         return true;
     }
     else return false;

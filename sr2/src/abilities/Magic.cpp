@@ -15,7 +15,7 @@
 
 using namespace StoneRing;
 
-Magic::eMagicType Magic::typeOf(const std::string &str)
+Magic::eMagicType Magic::TypeOf(const std::string &str)
 {
     if(str == "fire")
         return FIRE;
@@ -42,7 +42,7 @@ Magic::eMagicType Magic::typeOf(const std::string &str)
     else return UNKNOWN;
 }
 
-std::string Magic::toString(eMagicType type)
+std::string Magic::ToString(eMagicType type)
 {
     switch(type)
     {

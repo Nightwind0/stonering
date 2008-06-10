@@ -12,21 +12,21 @@ namespace StoneRing{
         GeneratedArmor();
         virtual ~GeneratedArmor();
 
-        ArmorRef generateArmorRef() const;
+        ArmorRef GenerateArmorRef() const;
 
-        virtual std::string getIconRef() const;
-        virtual std::string getName() const;
-        virtual uint getMaxInventory() const ;
-        virtual eDropRarity getDropRarity() const;
-        virtual uint getValue() const ;
-        virtual uint getSellValue() const ;
-        virtual eItemType getItemType() const { return ARMOR ; }
+        virtual std::string GetIconRef() const;
+        virtual std::string GetName() const;
+        virtual uint GetMaxInventory() const ;
+        virtual eDropRarity GetDropRarity() const;
+        virtual uint GetValue() const ;
+        virtual uint GetSellValue() const ;
+        virtual eItemType GetItemType() const { return ARMOR ; }
 
-        ArmorType * getArmorType() const ;
-        ArmorClass * getArmorClass() const { return mpClass; }
+        ArmorType * GetArmorType() const ;
+        ArmorClass * GetArmorClass() const { return m_pClass; }
 
-        virtual void executeScript();
-        virtual bool equipCondition();
+        virtual void ExecuteScript();
+        virtual bool EquipCondition();
 
         virtual bool operator== ( const ItemRef &ref );
 
@@ -34,11 +34,11 @@ namespace StoneRing{
                        SpellRef *pSpell = NULL, RuneType *pRune = NULL);
         
     private:
-        virtual void onEquipScript();
-        virtual void onUnequipScript();
-        std::string mName;
-        ArmorType  *mpType;
-        ArmorClass  *mpClass;
+        virtual void OnEquipScript();
+        virtual void OnUnequipScript();
+        std::string m_name;
+        ArmorType  *m_pType;
+        ArmorClass  *m_pClass;
     };
 
 };
