@@ -8,6 +8,7 @@
   <!-- integer name="height" value="480" / -->
  </section>
  <section name="Game">
+     <string name="StartupScript" value=""/>
  	<string name="SpellDefinitions" value="Media/spells.xml"/>
  	<string name="ItemDefinitions" value="Media/items.xml"/>
 	<string name="StatusEffectDefinitions" value="Media/statusEffects.xml"/>
@@ -93,13 +94,14 @@
 <section name="Overlays">
     <section name ="BattleStatus">
         <surface name="overlay" file="Images/Overlays/battle_status_overlay_s.png"/>
-        <integer name="x" value="0"/>
-        <integer name="y" value="0"/>
+        <integer name="x" value="6"/>
+        <integer name="y" value="6"/>
         <section name="fonts">
             <string name="hp" value="sb_green"/>
             <string name="mp" value="sb_purple"/>
             <string name="bp" value="sb_blue"/> 
             <string name="general" value="sb_black"/>
+            <string name="bad" value="sb_red"/>
         </section>
         <section name="text">
             <integer name="left" value="9"/>
@@ -213,6 +215,13 @@
 		</sprite>
 	</section>
     <section name="BattleSprites">
+        <section name="Garian">
+            <sprite name="idle" hint="alpha">
+                <image file="Sprites/garian_battle_demo.png">
+                    <grid pos="0,0" size="209,256" array="1,1"/>
+                </image>
+            </sprite>
+        </section>
         <section name="Valyn">
             <sprite name="idle" hint="alpha">
                 <animation pingpong="yes"  speed="300"/>

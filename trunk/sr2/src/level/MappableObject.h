@@ -132,13 +132,14 @@ namespace StoneRing {
         virtual void MatchFacingDirection(MappablePlayer * pOther) { m_eFacingDirection = pOther->m_eFacingDirection; }
         virtual void ResetLevelX(uint x) { m_X = x * 32;}
         virtual void ResetLevelY(uint y) { m_Y = y * 32;}
+        virtual bool Step() const { return true; }
     private:
         virtual bool handle_element(eElement element, Element * pElement ){ return false;}
         virtual void load_attributes(CL_DomNamedNodeMap * pAttributes){}
         virtual void load_finished(){}
         virtual void set_frame_for_direction();
         virtual bool delete_sprite() const { return false; }
-        virtual bool step() const { return true; }
+
 
 
         eDirection m_eNextDirection;
