@@ -7,6 +7,7 @@
 #include <string>
 #include <set>
 #include <map>
+#include "SteelType.h"
 #include "IParty.h"
 #include "sr_defines.h"
 
@@ -45,6 +46,21 @@ namespace StoneRing{
         virtual ICharacter * GetActorCharacter() const ;
 
       private:
+
+          SteelType get_gold();
+          SteelType give_gold(int gold);
+          SteelType has_item(const std::string &name, uint count);
+          SteelType give_item(const std::string &name, uint count);
+          SteelType take_item(const std::string &name, uint count);
+          SteelType add_character(const std::string &name, uint level, bool announce);
+          SteelType remove_character(const std::string &name);
+          SteelType did_event(const std::string &name);
+          SteelType do_event(const std::string &name);
+          SteelType has_generated_weapon(const std::string &wepclass, const std::string &weptype);
+          SteelType has_generated_armor(const std::string &armclass, const std::string &armtype);
+
+
+
           std::vector<Character*> m_characters;
           std::set<std::string> m_events;
           std::map<Item*,int> m_items;

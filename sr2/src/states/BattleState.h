@@ -63,6 +63,7 @@ namespace StoneRing{
         void draw_battle(const CL_Rect &screenRect, CL_GraphicContext *pGC);
         void draw_monsters(const CL_Rect &monsterRect, CL_GraphicContext *pGC);
         void draw_players(const CL_Rect &playerRect, CL_GraphicContext *pGC);
+        void draw_status(const CL_Rect &screenRect, CL_GraphicContext *pGC);
 
         void init_or_release_players(bool bRelease=false);
 
@@ -71,7 +72,16 @@ namespace StoneRing{
         DrawMethod m_draw_method;
         std::vector<Monster*> m_monsters;
         CL_Surface *m_pBackdrop;
+        CL_Surface *m_pStatusBar;
+        CL_Font *m_pStatusGeneralFont;
+        CL_Font *m_pStatusHPFont;
+        CL_Font *m_pStatusMPFont;
+        CL_Font *m_pStatusBPFont;
+        CL_Font *m_pStatusBadFont;
+        CL_Rect m_status_rect;
         bool m_bDone;
+        uint m_nStatusBarX;
+        uint m_nStatusBarY;
         uint m_nRows;
         uint m_nColumns;
     };

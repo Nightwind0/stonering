@@ -116,7 +116,8 @@ std::string StoneRing::ICharacter::CAToString(uint v)
 
 void StoneRing::AttributeFile::assert_real(ICharacter::eCharacterAttribute attr)
 {
-    if (attr != ICharacter::CA_INVALID && attr < ICharacter::_START_OF_TOGGLES)
+    if ((attr != ICharacter::CA_INVALID && attr < ICharacter::_START_OF_TOGGLES)
+        || (attr > ICharacter::_MAXIMA_BASE && attr < ICharacter::_LAST_CHARACTER_ATTR_))
         return;
     throw CL_Error("Attribute was not a real value");
 }

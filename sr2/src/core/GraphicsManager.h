@@ -16,6 +16,16 @@ namespace StoneRing
     {
     public:
         static GraphicsManager * GetInstance();
+
+        enum Overlay
+        {
+            CHOICE,
+            BATTLE_STATUS,
+            BATTLE_MENU,
+            SAY,
+            MAIN_MENU,
+            SHOP
+        };
       
         CL_Sprite * CreateSprite ( const std::string & name );
         // TODO: Replace sprite string in these two APIs with some enum
