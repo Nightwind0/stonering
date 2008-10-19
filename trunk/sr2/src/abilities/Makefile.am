@@ -21,6 +21,7 @@ libabilities_la_SOURCES = \
 
 INCLUDES = 	-I@top_srcdir@/src/ \
 		-I@top_srcdir@/src/character \
+		-I@top_srcdir@/src/monsters \ 
 		-I@top_srcdir@/src/party \
 		-I@top_srcdir@/src/items \
 		-I@top_srcdir@/src/level \

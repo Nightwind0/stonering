@@ -29,4 +29,5 @@ INCLUDES = \
 		-I@top_srcdir@/src/items/armor \
 		-I@top_srcdir@/src/character \
 		-I@top_srcdir@/src/abilities \
+		-I@top_srcdir@/src/monsters \
 		-I@top_srcdir@/src/steel
