@@ -151,7 +151,7 @@ namespace StoneRing{
         virtual eGender GetGender() const;
         virtual std::string GetName() const { return m_name; }
         virtual eType GetType() const { return m_eType; }
-      //  virtual ICharacterGroup * GetGroup() const;
+        //  virtual ICharacterGroup * GetGroup() const;
         virtual double GetSpellResistance(Magic::eMagicType type) const;
         virtual double GetAttribute(eCharacterAttribute attr) const;
         virtual bool GetToggle(eCharacterAttribute attr) const;
@@ -168,9 +168,11 @@ namespace StoneRing{
         CL_Sprite * GetMapSprite() const { return m_pMapSprite; }
         CL_Sprite * GetCurrentSprite() const { return m_pCurrentSprite; }
         void SetCurrentSprite(CL_Sprite *pSprite) { m_pCurrentSprite = pSprite; }
-          // Shortcuts to class data
+
+        // Shortcuts to class data
         BattleMenu * GetBattleMenu() const;
         CharacterClass * GetClass() const { return m_pClass; }
+
         // Equipment
         void Equip(Equipment::eSlot slot, Equipment *pEquip);
         void Unequip(Equipment::eSlot);

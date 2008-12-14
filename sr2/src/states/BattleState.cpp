@@ -256,3 +256,8 @@ void BattleState::draw_players(const CL_Rect &playerRect, CL_GraphicContext *pGC
         pSprite->update();
     }
 }
+
+void BattleState::RegisterSteelFunctions(SteelInterpreter* pInterpreter)
+{
+
+}

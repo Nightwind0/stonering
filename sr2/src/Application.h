@@ -79,10 +79,20 @@ namespace StoneRing
         SteelType takeNamedItem(const std::string &item, uint count);
         SteelType useItem();
         SteelType addCharacter(const std::string &character, int level, bool announce);
+        SteelType getPartyCount(void);
+        SteelType getCharacter(uint index);
         // You can also take
         SteelType giveGold(int amount);
         // SteelType giveGeneratedWeapon(const std::string &wepclass, const std::string &weptype);
         // SteelType giveGeneratedArmor(const std::string &armclass, const std::string &armtype);
+
+        // Character steel bindings
+        SteelType getCharacterName(const SteelType::Handle pCharacter);
+        SteelType addStatusEffect(SteelType::Handle pCharacter, const std::string &effect);
+        SteelType removeStatusEffects(SteelType::Handle pCharacter, const std::string &effect);
+
+        void steelConst(const std::string &name, int value);
+        void steelConst(const std::string &name, double value);
 
         void setupClanLib();
         void teardownClanLib();
@@ -125,9 +135,25 @@ namespace StoneRing
         AppUtils mAppUtils;
       
     };
+
+inline void Application::steelConst(const std::string &name, int value)
+{
+    SteelType val;
+    val.set(value);
+    mInterpreter.declare_const(name,val);
+}
+
+inline void Application::steelConst(const std::string &name, double value)
+{
+    SteelType val;
+    val.set(value);
+    mInterpreter.declare_const(name,val);
+}
   
   
 };
+
+
 
 extern StoneRing::Application app;
 

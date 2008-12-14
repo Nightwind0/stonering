@@ -28,6 +28,7 @@ namespace StoneRing
         virtual bool DrawMappableObjects() const; // Should the app draw the MOs, including the player?
         virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
         virtual void Start(); 
+        virtual void RegisterSteelFunctions(SteelInterpreter *);
         virtual void Finish(); // Hook to clean up or whatever after being popped
 
         void SetDimensions(const CL_Rect &screenRect);

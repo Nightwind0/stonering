@@ -274,8 +274,10 @@ SteelType Application::addCharacter(const std::string &character, int level, boo
 
         say("",os.str());
     }
+    SteelType returnPointer;
+    returnPointer.set(pCharacter);
 
-    return SteelType();
+    return returnPointer;
 }
 
 SteelType Application::useItem()
@@ -283,6 +285,45 @@ SteelType Application::useItem()
     return SteelType();
 }
 
+SteelType Application::getCharacterName(const SteelType::Handle handle)
+{
+    Character * pCharacter = static_cast<Character*>(handle);
+    SteelType name;
+    name.set(pCharacter->GetName());
+
+    return name;
+}
+
+SteelType Application::getPartyCount(void)
+{
+    SteelType count;
+    count.set((int)mpParty->GetCharacterCount());
+
+    return count;
+}
+
+SteelType Application::getCharacter(uint index)
+{
+    SteelType pointer;
+    pointer.set(static_cast<SteelType::Handle>(mpParty->GetCharacter(index)));
+    return pointer;
+}
+
+SteelType Application::addStatusEffect(SteelType::Handle hCharacter, const std::string &effect)
+{
+    Character *pCharacter = static_cast<Character*>(hCharacter);
+    pCharacter->AddStatusEffect( mAbilityManager.GetStatusEffect(effect) );
+
+    return SteelType();
+}
+
+SteelType Application::removeStatusEffects(SteelType::Handle hCharacter, const std::string &effect)
+{
+    Character *pCharacter = static_cast<Character*>(hCharacter);
+    pCharacter->RemoveEffects(effect);
+
+    return SteelType();
+}
 
 IApplication * IApplication::GetInstance()
 {
@@ -400,52 +441,81 @@ SteelType Application::RunScript(AstScript *pScript, const ParameterList &params
 
 void Application::registerSteelFunctions()
 {
-    mInterpreter.addFunction("say",
-                             new SteelFunctor2Arg<Application,const std::string&,const std::string&>
-                             (this,&Application::say));
-    mInterpreter.addFunction("playScene",
-                             new SteelFunctor1Arg<Application,const std::string&>
-                             (this,&Application::playScene));
-    mInterpreter.addFunction("playSound",
-                             new SteelFunctor1Arg<Application,const std::string&>
-                             (this,&Application::playSound));
-    mInterpreter.addFunction("loadLevel",
-                             new SteelFunctor3Arg<Application,const std::string&,uint,uint>
-                             (this,&Application::loadLevel));
-    mInterpreter.addFunction("startBattle",
-        new SteelFunctor4Arg<Application,const std::string &,uint,bool,const std::string&>
-        (this,&Application::startBattle));
-    mInterpreter.addFunction("pause",
-                             new SteelFunctor1Arg<Application,uint>(this,&Application::pause));
-    mInterpreter.addFunction("choice", 
-                             new SteelFunctor2Arg<Application,const std::string&, const std::vector<SteelType> &>
-                             (this,&Application::choice));
-    mInterpreter.addFunction("pop",
-                             new SteelFunctor1Arg<Application,bool>(this,&Application::pop_));
-    mInterpreter.addFunction("giveNamedItem",
-                             new SteelFunctor2Arg<Application,const std::string &,uint>
-                             (this,&Application::giveNamedItem));
-    mInterpreter.addFunction("takeNamedItem",
-                             new SteelFunctor2Arg<Application,const std::string &,uint>
-                             (this,&Application::takeNamedItem));
-    mInterpreter.addFunction("getGold",
-                             new SteelFunctorNoArgs<Application>(this,&Application::getGold));
-    mInterpreter.addFunction("hasItem",
-                             new SteelFunctor2Arg<Application,const std::string &,uint>
-                             (this,&Application::hasItem));
-    mInterpreter.addFunction("didEvent",
-                             new SteelFunctor1Arg<Application,const std::string &>
-                             (this,&Application::didEvent));
-    mInterpreter.addFunction("doEvent",
-                             new SteelFunctor2Arg<Application,const std::string &, bool>
-                             (this,&Application::doEvent));
-    mInterpreter.addFunction("giveGold",
-                             new SteelFunctor1Arg<Application,int>
-                             (this,&Application::giveGold));
-    mInterpreter.addFunction("addCharacter",
-        new SteelFunctor3Arg<Application,const std::string &, int, bool>
-        (this,&Application::addCharacter));
+    static SteelFunctor2Arg<Application,const std::string&,const std::string&> fn_say(this,&Application::say);
+    static SteelFunctor1Arg<Application,const std::string&> fn_playScene(this,&Application::playScene);
+    static SteelFunctor1Arg<Application,const std::string&> fn_playSound(this,&Application::playSound);
+    static SteelFunctor3Arg<Application,const std::string&,uint,uint> fn_loadLevel(this,&Application::loadLevel);
+    static SteelFunctor4Arg<Application,const std::string &,uint,bool,const std::string&> fn_startBattle(this,&Application::startBattle);
+    static SteelFunctor1Arg<Application,uint> fn_pause(this,&Application::pause);
+    static SteelFunctor2Arg<Application,const std::string&, const std::vector<SteelType> &> fn_choice(this,&Application::choice);
+    static SteelFunctor1Arg<Application,bool> fn_pop(this,&Application::pop_);
+    static SteelFunctor2Arg<Application,const std::string &,uint> fn_giveNamedItem(this,&Application::giveNamedItem);
+    static SteelFunctor2Arg<Application,const std::string &,uint> fn_takeNamedItem(this,&Application::takeNamedItem);
+    static SteelFunctorNoArgs<Application> fn_getGold(this,&Application::getGold);
+    static SteelFunctor2Arg<Application,const std::string &,uint> fn_hasItem (this,&Application::hasItem);
+    static SteelFunctor1Arg<Application,const std::string &> fn_didEvent (this,&Application::didEvent);
+    static SteelFunctor2Arg<Application,const std::string &, bool> fn_doEvent (this,&Application::doEvent);
+    static SteelFunctor1Arg<Application,int> fn_giveGold(this,&Application::giveGold);
+    static SteelFunctor3Arg<Application,const std::string &, int, bool> fn_addCharacter(this,&Application::addCharacter);
+    static SteelFunctorNoArgs<Application> fn_getPartyCount(this, &Application::getPartyCount);
+    static SteelFunctor1Arg<Application,uint> fn_getCharacter(this, &Application::getCharacter);
 
+    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getCharacterName(this,&Application::getCharacterName);
+    static SteelFunctor2Arg<Application,const SteelType::Handle,const std::string&> fn_addStatusEffect(this,&Application::addStatusEffect);
+    static SteelFunctor2Arg<Application,const SteelType::Handle,const std::string&> fn_removeStatusEffects(this,&Application::removeStatusEffects);
+
+
+    steelConst("_HP",Character::CA_HP);
+    steelConst("_MP",Character::CA_MP);
+    steelConst("_STR",Character::CA_STR);
+    steelConst("_DEF",Character::CA_DEF);
+    steelConst("_DEX",Character::CA_DEX);
+    steelConst("_EVD",Character::CA_EVD);
+    steelConst("_MAG",Character::CA_MAG);
+    steelConst("_RST",Character::CA_RST);
+    steelConst("_LCK",Character::CA_LCK);
+    steelConst("_JOY",Character::CA_JOY);
+    steelConst("_LEVEL",Character::CA_LEVEL);
+
+    steelConst("_DRAW_ILL",Character::CA_DRAW_ILL);
+    steelConst("_DRAW_STONE",Character::CA_DRAW_STONE);
+    steelConst("_DRAW_BERSERK",Character::CA_DRAW_BERSERK);
+    steelConst("_DRAW_WEAK",Character::CA_DRAW_WEAK);
+    steelConst("_DRAW_PARALYZED",Character::CA_DRAW_PARALYZED);
+    steelConst("_DRAW_TRANSLUCENT",Character::CA_DRAW_TRANSLUCENT);
+    steelConst("_CAN_ACT",Character::CA_CAN_ACT);
+    steelConst("_CAN_FIGHT",Character::CA_CAN_FIGHT);
+    steelConst("_CAN_CAST",Character::CA_CAN_CAST);
+    steelConst("_CAN_SKILL",Character::CA_CAN_SKILL);
+    steelConst("_CAN_ITEM",Character::CA_CAN_ITEM);
+    steelConst("_CAN_RUN",Character::CA_CAN_RUN);
+    steelConst("_ALIVE",Character::CA_ALIVE);
+
+    steelConst("_MAXHP",Character::CA_MAXHP);
+    steelConst("_MAXMP",Character::CA_MAXMP);
+
+    mInterpreter.addFunction("say",&fn_say);
+    mInterpreter.addFunction("playScene", &fn_playScene);
+    mInterpreter.addFunction("playSound", &fn_playSound);
+    mInterpreter.addFunction("loadLevel", &fn_loadLevel);
+    mInterpreter.addFunction("startBattle", &fn_startBattle);
+    mInterpreter.addFunction("pause",&fn_pause);
+    mInterpreter.addFunction("choice", &fn_choice);
+    mInterpreter.addFunction("pop", &fn_pop);
+    mInterpreter.addFunction("giveNamedItem", &fn_giveNamedItem );
+    mInterpreter.addFunction("takeNamedItem", &fn_takeNamedItem );
+    mInterpreter.addFunction("getGold", &fn_getGold );
+    mInterpreter.addFunction("hasItem", &fn_hasItem );
+    mInterpreter.addFunction("didEvent", &fn_didEvent );
+    mInterpreter.addFunction("doEvent", &fn_doEvent );
+    mInterpreter.addFunction("giveGold", &fn_giveGold );
+    mInterpreter.addFunction("addCharacter", &fn_addCharacter );
+    mInterpreter.addFunction("getPartyCount", &fn_getPartyCount);
+    mInterpreter.addFunction("getCharacter", &fn_getCharacter);
+
+    mInterpreter.addFunction("getCharacterName", &fn_getCharacterName);
+    mInterpreter.addFunction("addStatusEffect", &fn_addStatusEffect);
+    mInterpreter.addFunction("removeStatusEffects", &fn_removeStatusEffects);
 
 //        SteelType hasGeneratedWeapon(const std::string &wepclass, const std::string &webtype);
 //       SteelType hasGeneratedArmor(const std::string &armclass, const std::string &armtype);
@@ -479,6 +549,7 @@ void Application::run()
     static int count = 0;
     State * backState = mStates.back();
 
+    backState->RegisterSteelFunctions(&mInterpreter);
     backState->Start();
     unsigned int then = CL_System::get_time();
     while(!backState->IsDone())
