@@ -22,7 +22,7 @@ namespace StoneRing
         virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
         virtual void Start(); 
         virtual void Finish(); // Hook to clean up or whatever after being popped
-
+        virtual void RegisterSteelFunctions(SteelInterpreter*){}
         virtual void Init(const std::string &speaker, const std::string &text);
 
     private:

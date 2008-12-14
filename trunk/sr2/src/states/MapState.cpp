@@ -29,6 +29,11 @@ bool StoneRing::MapState::IsDone() const
     return m_bDone;
 }
 
+void StoneRing::MapState::RegisterSteelFunctions(SteelInterpreter* pInterpreter)
+{
+
+}
+
 void StoneRing::MapState::HandleKeyDown(const CL_InputEvent &key)
 {
     MappablePlayer *pPlayer = m_pLevel->GetPlayer();
