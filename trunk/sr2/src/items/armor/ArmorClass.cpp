@@ -1,5 +1,5 @@
 #include "ArmorClass.h"
-#include "AttributeEnhancer.h"
+#include "AttributeModifier.h"
 #include "ArmorEnhancer.h"
 #include "ArmorTypeExclusionList.h"
 #include "StatusEffectModifier.h"
@@ -38,8 +38,8 @@ bool ArmorClass::handle_element(eElement element, Element * pElement)
     case EONUNEQUIP:
         m_pUnequipScript = dynamic_cast<NamedScript*>(pElement);
         break;
-    case EATTRIBUTEENHANCER:
-        m_attribute_enhancers.push_back( dynamic_cast<AttributeEnhancer*>(pElement) );
+    case EATTRIBUTEMODIFIER:
+        m_attribute_modifiers.push_back( dynamic_cast<AttributeModifier*>(pElement) );
         break;
     case ECONDITIONSCRIPT:
         m_pConditionScript = dynamic_cast<ScriptElement*>(pElement);
@@ -69,7 +69,7 @@ bool ArmorClass::handle_element(eElement element, Element * pElement)
 
 ArmorClass::~ArmorClass()
 {
-    std::for_each(m_attribute_enhancers.begin(),m_attribute_enhancers.end(),del_fun<AttributeEnhancer>());
+    std::for_each(m_attribute_modifiers.begin(),m_attribute_modifiers.end(),del_fun<AttributeModifier>());
     std::for_each(m_armor_enhancers.begin(),m_armor_enhancers.end(),del_fun<ArmorEnhancer>());
     std::for_each(m_excluded_types.begin(),m_excluded_types.end(),del_fun<ArmorTypeRef>());
 
@@ -116,16 +116,16 @@ float ArmorClass::GetValueMultiplier() const
     return m_fValueMultiplier;
 }
 
-std::list<AttributeEnhancer*>::const_iterator 
-ArmorClass::GetAttributeEnhancersBegin()
+std::list<AttributeModifier*>::const_iterator 
+ArmorClass::GetAttributeModifiersBegin()
 {
-    return m_attribute_enhancers.begin();
+    return m_attribute_modifiers.begin();
 }
 
-std::list<AttributeEnhancer*>::const_iterator 
-ArmorClass::GetAttributeEnhancersEnd()
+std::list<AttributeModifier*>::const_iterator 
+ArmorClass::GetAttributeModifiersEnd()
 {
-    return m_attribute_enhancers.end();
+    return m_attribute_modifiers.end();
 }
 
 std::list<ArmorEnhancer*>::const_iterator 

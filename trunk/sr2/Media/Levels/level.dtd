@@ -30,9 +30,9 @@
 <!ELEMENT namedItem (iconRef,(regularItem | uniqueWeapon | uniqueArmor | rune | specialItem | systemItem))>
 <!ELEMENT regularItem (script?)>
 <!-- The script here is executed when the weapon is used. -->
-<!ELEMENT uniqueWeapon (weaponTypeRef, conditionScript?, weaponEnhancer*, statusEffectModifier*,attributeEnhancer*, script?, onEquip?, onUnequip?, (spellRef|runeType)?)>
+<!ELEMENT uniqueWeapon (weaponTypeRef, conditionScript?, weaponEnhancer*, statusEffectModifier*,attributeModifier*, script?, onEquip?, onUnequip?, (spellRef|runeType)?)>
 <!-- The script here is executed when the armor is used. -->
-<!ELEMENT uniqueArmor   (armorTypeRef, conditionScript?, armorEnhancer*, statusEffectModifier*, attributeEnhancer*, script?, onEquip?, onUnequip?, (spellRef|runeType)?)>
+<!ELEMENT uniqueArmor   (armorTypeRef, conditionScript?, armorEnhancer*, statusEffectModifier*, attributeModifier*, script?, onEquip?, onUnequip?, (spellRef|runeType)?)>
 <!ELEMENT rune (spellRef)>
 <!ELEMENT specialItem EMPTY>
 <!ELEMENT systemItem EMPTY>
@@ -42,14 +42,15 @@
 <!ELEMENT weaponClassRef EMPTY>
 <!ELEMENT armorClassRef EMPTY>
 <!-- The script  here is executed when the weapon is used. -->
-<!ELEMENT weaponClass (conditionScript?,attributeEnhancer*, weaponEnhancer*,statusEffectModifier*, script?, onEquip?, onUnequip?, weaponTypeExclusionList?)>
+<!ELEMENT weaponClass (conditionScript?,attributeModifier*, weaponEnhancer*,statusEffectModifier*, script?, onEquip?, onUnequip?, weaponTypeExclusionList?)>
 <!-- The script here is executed when the armor is used (wearer is attacked) --> 
-<!ELEMENT armorClass  (conditionScript?,attributeEnhancer*, armorEnhancer*, statusEffectModifier*, script?, onEquip?, onUnequip?, armorTypeExclusionList?)>
+<!ELEMENT armorClass  (conditionScript?,attributeModifier*, armorEnhancer*, statusEffectModifier*, script?, onEquip?, onUnequip?, armorTypeExclusionList?)>
 <!ELEMENT armorType (iconRef)>
 <!ELEMENT weaponType ((weaponDamageCategory|magicDamageCategory),iconRef)>
 <!ELEMENT weaponEnhancer EMPTY>
 <!ELEMENT armorEnhancer EMPTY>
 <!ELEMENT statusEffectModifier EMPTY>
+<!ELEMENT attributeModifier (script?)>
 <!ELEMENT attributeEnhancer EMPTY> <!-- Similar to attributeModifier, but a temporary bonus when item is equipped. -->
 <!ELEMENT weaponTypeExclusionList (weaponTypeRef*)>
 <!ELEMENT armorTypeExclusionList (armorTypeRef*)>
@@ -74,7 +75,7 @@
 
 <!-- Status Effect DTD -->
 <!ELEMENT statusEffectList (statusEffect*)>
-<!ELEMENT statusEffect (onInvoke?,onRound?,onCountdown?,onRemove?)>
+<!ELEMENT statusEffect (onInvoke?,onRound?,onCountdown?,onRemove?, attributeModifier*)>
 <!-- These guys are all Effect type. -->
 <!-- Notice that you can have a status effect that causes other status effects! -->
 <!ELEMENT onInvoke (script)> 
@@ -182,7 +183,10 @@
 <!ATTLIST attributeEnhancer attribute CDATA #REQUIRED>
 <!ATTLIST attributeEnhancer add  CDATA #IMPLIED>
 <!ATTLIST attributeEnhancer multiplier CDATA #IMPLIED>
-<!ATTLIST attributeEnhancer toggle (true|false) #IMPLIED> 
+<!ATTLIST attributeEnhancer toggle (true|false) #IMPLIED>
+<!ATTLIST attributeModifier type(add|multiply|toggle) #REQUIRED>
+<!ATTLIST attributeModifier attribute CDATA #REQUIRED>
+<!ATTLIST attributeModifier value CDATA #IMPLIED>
 <!ATTLIST runeType type (none|rune|ultraRune) #REQUIRED>
 <!ATTLIST weaponEnhancer attribute CDATA #REQUIRED>
 <!ATTLIST weaponEnhancer add CDATA #IMPLIED>

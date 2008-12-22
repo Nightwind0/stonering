@@ -3,7 +3,7 @@
 #include "ItemManager.h"
 #include "ArmorTypeRef.h"
 #include "ArmorEnhancer.h"
-#include "AttributeEnhancer.h"
+#include "AttributeModifier.h"
 #include "SpellRef.h"
 #include "RuneType.h"
 #include "StatusEffectModifier.h"
@@ -85,8 +85,8 @@ bool UniqueArmor::handle_element(eElement element, Element * pElement)
     case EARMORENHANCER:
         Add_Armor_Enhancer( dynamic_cast<ArmorEnhancer*>(pElement) );
         break;
-    case EATTRIBUTEENHANCER:
-        Add_Attribute_Enhancer( dynamic_cast<AttributeEnhancer*>(pElement) );
+    case EATTRIBUTEMODIFIER:
+        Add_Attribute_Modifier( dynamic_cast<AttributeModifier*>(pElement) );
         break;
     case ESPELLREF:
         Set_Spell_Ref ( dynamic_cast<SpellRef*>(pElement) );

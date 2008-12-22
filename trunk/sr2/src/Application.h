@@ -87,9 +87,12 @@ namespace StoneRing
         // SteelType giveGeneratedArmor(const std::string &armclass, const std::string &armtype);
 
         // Character steel bindings
-        SteelType getCharacterName(const SteelType::Handle pCharacter);
-        SteelType addStatusEffect(SteelType::Handle pCharacter, const std::string &effect);
-        SteelType removeStatusEffects(SteelType::Handle pCharacter, const std::string &effect);
+        SteelType getCharacterName(const SteelType::Handle hCharacter);
+        SteelType addStatusEffect(SteelType::Handle hCharacter, const std::string &effect);
+        SteelType removeStatusEffects(SteelType::Handle hCharacter, const std::string &effect);
+        // This method directly affects a character's HP. No factors are taken into account
+        // The handle is to an ICharacter
+        SteelType doDamage(SteelType::Handle hICharacter, int damage);
 
         void steelConst(const std::string &name, int value);
         void steelConst(const std::string &name, double value);
@@ -103,6 +106,7 @@ namespace StoneRing
     
         void draw();
         void run();
+        void loadscript(std::string &o_str, const std::string & filename);
 
         void startKeyUpQueue();
         void stopKeyUpQueue();

@@ -3,7 +3,7 @@
 #include "ItemManager.h"
 #include "WeaponTypeRef.h"
 #include "WeaponEnhancer.h"
-#include "AttributeEnhancer.h"
+#include "AttributeModifier.h"
 #include "SpellRef.h"
 #include "RuneType.h"
 #include "StatusEffectModifier.h"
@@ -95,8 +95,8 @@ bool UniqueWeapon::handle_element(eElement element, Element * pElement)
     case EWEAPONENHANCER:
         Add_Weapon_Enhancer( dynamic_cast<WeaponEnhancer*>(pElement) );
         break;
-    case EATTRIBUTEENHANCER:
-        Add_Attribute_Enhancer( dynamic_cast<AttributeEnhancer*>(pElement) );
+    case EATTRIBUTEMODIFIER:
+        Add_Attribute_Modifier( dynamic_cast<AttributeModifier*>(pElement) );
         break;
     case ESPELLREF:
         Set_Spell_Ref ( dynamic_cast<SpellRef*>(pElement) );

@@ -21,10 +21,19 @@ namespace StoneRing
         virtual bool DisableMappableObjects() const =0; // Should the app move the MOs? 
         virtual void MappableObjectMoveHook() =0; // Do stuff right after the mappable object movement
         virtual void Start()=0; 
-        virtual void RegisterSteelFunctions(SteelInterpreter *)=0;
+        virtual void SteelInit      (SteelInterpreter *);
+        virtual void SteelCleanup   (SteelInterpreter *);
         virtual void Finish()=0; // Hook to clean up or whatever after being popped
 
     };
+
+    inline void State::SteelInit(SteelInterpreter* )
+    {
+    }
+
+    inline void State::SteelCleanup(SteelInterpreter* )
+    {
+    }
 };
 
 

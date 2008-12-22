@@ -28,9 +28,11 @@ namespace StoneRing{
         enum eType   { NONLIVING, LIVING, MAGICAL }; 
         enum eCharacterAttribute
         {
-            CA_INVALID, // Invalid attribute
+            CA_INVALID,
+            _START_OF_INTS, 
             CA_HP,
             CA_MP,
+            CA_LEVEL,
             CA_STR,              // Part of determining dmg of physical attack. 
             CA_DEF,              // Physical defense
             CA_DEX,              // Chances of a hit connecting (0-1)
@@ -38,8 +40,8 @@ namespace StoneRing{
             CA_MAG,              // Magic power
             CA_RST,              // Magic resistance
             CA_LCK,              // Similar to initiative. Also helps in other aspects of the game...
+            _START_OF_REALS,
             CA_JOY,              // Increases experience gained (Multiplier)
-            CA_LEVEL,
             _START_OF_TOGGLES,
             CA_DRAW_ILL,
             CA_DRAW_STONE,
@@ -47,6 +49,7 @@ namespace StoneRing{
             CA_DRAW_WEAK,
             CA_DRAW_PARALYZED,
             CA_DRAW_TRANSLUCENT,
+            CA_DRAW_MINI,
             CA_CAN_ACT,
             CA_CAN_FIGHT,
             CA_CAN_CAST,
@@ -54,7 +57,6 @@ namespace StoneRing{
             CA_CAN_ITEM,
             CA_CAN_RUN,
             CA_ALIVE,
-            _END_OF_TOGGLES,
             _MAXIMA_BASE,
             CA_MAXHP = _MAXIMA_BASE + CA_HP,
             CA_MAXMP = _MAXIMA_BASE + CA_MP,
@@ -76,26 +78,27 @@ namespace StoneRing{
         virtual eGender GetGender() const=0;
         virtual eType GetType() const=0;
         virtual std::string GetName() const=0;
-     //   virtual ICharacterGroup* GetGroup() const=0;
+        //   virtual ICharacterGroup* GetGroup() const=0;
 
-        virtual double GetAttribute(eCharacterAttribute attr) const = 0;
+        virtual double GetAttributeReal(eCharacterAttribute attr) const = 0;
+        virtual int    GetAttribute    (eCharacterAttribute attr) const = 0;
         virtual double GetSpellResistance(Magic::eMagicType type) const = 0;
         virtual bool GetToggle(eCharacterAttribute attr) const = 0;
-        virtual void FixAttribute(eCharacterAttribute attr, double value) = 0;
-        virtual void FixAttribute(eCharacterAttribute attr, bool toggle) =0;
-        virtual void AttachMultiplication(eCharacterAttribute attr, double factor) = 0;
-        virtual void DetachMultiplication(eCharacterAttribute attr, double factor) =0;
-        virtual void AttachAddition(eCharacterAttribute attr, double value) = 0;
-        virtual void DetachAddition(eCharacterAttribute attr, double value)=0;
+        virtual void SetToggle(eCharacterAttribute attr, bool toggle) = 0;
         virtual void AddStatusEffect(StatusEffect *)=0;
         virtual void RemoveEffects(const std::string &name)=0;
         virtual void StatusEffectRound()=0;
+        virtual void PermanentAugment(eCharacterAttribute attr, int augment)=0;
+        virtual void PermanentAugment(eCharacterAttribute attr, double augment)=0;
  
         // Static API
         static eCharacterAttribute CharAttributeFromString(const std::string &str); 
         static eCommonAttribute CommonAttributeFromString(const std::string &str); 
         static uint CAFromString(const std::string &str);
         static std::string CAToString(uint);
+        static bool IsInteger(eCharacterAttribute attr);
+        static bool IsReal(eCharacterAttribute attr);
+        static bool IsToggle(eCharacterAttribute attr);
     
         ///@todo API for different battle animations TBD
     private:
@@ -114,35 +117,6 @@ namespace StoneRing{
     private:
     };
 
-    class AttributeFile
-    {
-    public:
-        double GetAttribute(ICharacter::eCharacterAttribute)const;
-        bool GetToggle(ICharacter::eCharacterAttribute)const;
-        void AttachMultiplication(ICharacter::eCharacterAttribute,double);
-        void AttachAddition(ICharacter::eCharacterAttribute,double);  
-        void DetachMultiplication(ICharacter::eCharacterAttribute,double);
-        void DetachAddition(ICharacter::eCharacterAttribute,double);  
-        void FixAttribute(ICharacter::eCharacterAttribute attr, double value);
-        void FixAttribute(ICharacter::eCharacterAttribute attr, bool toggle);
-    private:
-        typedef std::map<ICharacter::eCharacterAttribute,double> attr_doubles;
-        typedef std::map<ICharacter::eCharacterAttribute,bool> attr_bools;
-        attr_doubles::const_iterator find_attr(ICharacter::eCharacterAttribute)const;
-        double find_multiplier(ICharacter::eCharacterAttribute)const;
-        double find_addition(ICharacter::eCharacterAttribute)const;
-        attr_bools::const_iterator find_toggle(ICharacter::eCharacterAttribute)const;
-        static void assert_real(ICharacter::eCharacterAttribute);
-        static void assert_bool(ICharacter::eCharacterAttribute);
-
-
-        attr_doubles m_real_attributes;
-        attr_bools m_toggles;
-        attr_doubles m_attr_multipliers;
-        attr_doubles m_attr_additions;
-
-    };
-
     class Character : public ICharacter, public Element
     {
     public:
@@ -153,14 +127,12 @@ namespace StoneRing{
         virtual eType GetType() const { return m_eType; }
         //  virtual ICharacterGroup * GetGroup() const;
         virtual double GetSpellResistance(Magic::eMagicType type) const;
-        virtual double GetAttribute(eCharacterAttribute attr) const;
+        virtual double GetAttributeReal(eCharacterAttribute attr) const;
+        virtual int  GetAttribute(eCharacterAttribute attr) const;
         virtual bool GetToggle(eCharacterAttribute attr) const;
-        virtual void FixAttribute(eCharacterAttribute attr, double value);
-        virtual void FixAttribute(eCharacterAttribute attr, bool state);
-        virtual void AttachMultiplication(eCharacterAttribute attr, double factor);
-        virtual void DetachMultiplication(eCharacterAttribute attr, double factor);
-        virtual void AttachAddition(eCharacterAttribute attr, double value);
-        virtual void DetachAddition(eCharacterAttribute attr, double value);
+        virtual void SetToggle(eCharacterAttribute attr, bool state);
+        virtual void PermanentAugment(eCharacterAttribute attr, int augment);
+        virtual void PermanentAugment(eCharacterAttribute attr, double augment);
         virtual void AddStatusEffect(StatusEffect *);
         virtual void RemoveEffects(const std::string &name);
         virtual void StatusEffectRound();
@@ -187,9 +159,11 @@ namespace StoneRing{
         virtual void load_finished();
 
         std::string m_name;
+        std::map<eCharacterAttribute,double> m_real_augments;
+        std::map<eCharacterAttribute,int> m_augments;
         SpriteDefinitionMap m_sprite_definition_map;
-        AttributeFile m_attributes;
         CharacterClass * m_pClass;
+        uint m_nLevel;
         CL_Sprite *m_pMapSprite;
         CL_Sprite *m_pCurrentSprite;
         StatusEffectMap m_status_effects;

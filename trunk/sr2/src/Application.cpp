@@ -5,6 +5,7 @@
 #include <sstream>
 #include <vector>
 #include <string>
+#include <fstream>
 #include "Application.h"
 #include "Level.h"
 #include "Party.h"
@@ -264,7 +265,7 @@ SteelType Application::giveGold(int amount)
 SteelType Application::addCharacter(const std::string &character, int level, bool announce)
 {
     Character * pCharacter = mCharacterManager.GetCharacter(character);
-    pCharacter->FixAttribute(ICharacter::CA_LEVEL,static_cast<double>(level));
+    pCharacter->SetAttribute(ICharacter::CA_LEVEL,level);
     mpParty->AddCharacter(pCharacter);
 
     if(announce)
@@ -279,6 +280,38 @@ SteelType Application::addCharacter(const std::string &character, int level, boo
 
     return returnPointer;
 }
+
+SteelType Application::doDamage(SteelType::Handle hICharacter, int damage)
+{
+    ICharacter * pCharacter = static_cast<ICharacter*>(hICharacter);
+
+    if(!pCharacter->GetToggle(Character::CA_ALIVE)) return SteelType();
+
+    int hp = pCharacter->GetAttribute(Character::CA_HP);
+    const int maxhp = pCharacter->GetAttribute(Character::CA_MAXHP);
+    hp -= damage;
+    if(hp <0)
+    {
+        hp = 0;
+        // Kill him/her/it
+        pCharacter->SetToggle(Character::CA_ALIVE,false);
+        //TODO: Check if all characters are dead and game over
+    }
+
+    if(hp>maxhp)
+    {
+        hp = maxhp;
+    }
+
+    pCharacter->SetAttribute(Character::CA_HP,hp);
+
+    SteelType newhp;
+    newhp.set(hp);
+
+    return newhp;
+
+}
+
 
 SteelType Application::useItem()
 {
@@ -463,7 +496,9 @@ void Application::registerSteelFunctions()
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getCharacterName(this,&Application::getCharacterName);
     static SteelFunctor2Arg<Application,const SteelType::Handle,const std::string&> fn_addStatusEffect(this,&Application::addStatusEffect);
     static SteelFunctor2Arg<Application,const SteelType::Handle,const std::string&> fn_removeStatusEffects(this,&Application::removeStatusEffects);
+    static SteelFunctor2Arg<Application,const SteelType::Handle,int> fn_doDamage(this,&Application::doDamage);
 
+    mInterpreter.pushScope();
 
     steelConst("_HP",Character::CA_HP);
     steelConst("_MP",Character::CA_MP);
@@ -483,6 +518,7 @@ void Application::registerSteelFunctions()
     steelConst("_DRAW_WEAK",Character::CA_DRAW_WEAK);
     steelConst("_DRAW_PARALYZED",Character::CA_DRAW_PARALYZED);
     steelConst("_DRAW_TRANSLUCENT",Character::CA_DRAW_TRANSLUCENT);
+    steelConst("_DRAW_MINI",Character::CA_DRAW_MINI);
     steelConst("_CAN_ACT",Character::CA_CAN_ACT);
     steelConst("_CAN_FIGHT",Character::CA_CAN_FIGHT);
     steelConst("_CAN_CAST",Character::CA_CAN_CAST);
@@ -516,6 +552,7 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction("getCharacterName", &fn_getCharacterName);
     mInterpreter.addFunction("addStatusEffect", &fn_addStatusEffect);
     mInterpreter.addFunction("removeStatusEffects", &fn_removeStatusEffects);
+    mInterpreter.addFunction("doDamage",&fn_doDamage);
 
 //        SteelType hasGeneratedWeapon(const std::string &wepclass, const std::string &webtype);
 //       SteelType hasGeneratedArmor(const std::string &armclass, const std::string &armtype);
@@ -549,7 +586,7 @@ void Application::run()
     static int count = 0;
     State * backState = mStates.back();
 
-    backState->RegisterSteelFunctions(&mInterpreter);
+    backState->SteelInit(&mInterpreter);
     backState->Start();
     unsigned int then = CL_System::get_time();
     while(!backState->IsDone())
@@ -580,10 +617,23 @@ void Application::run()
 
 
     mStates.back()->Finish();
+    mStates.back()->SteelCleanup(&mInterpreter);
   
     mStates.pop_back();
 
 
+}
+
+void Application::loadscript(std::string &o_str, const std::string & filename)
+{
+    std::ifstream in;
+    in.open(filename.c_str());
+    char c;
+    while(in >> c)
+    {
+        o_str += c;
+    }
+    in.close();
 }
 
 
@@ -611,9 +661,8 @@ int Application::main(int argc, char ** argv)
         std::string name = CL_String::load("Configuration/name", mpResources) + " (DEBUG)";
 #endif
         mGold = CL_String::load("Game/Currency",mpResources);
-        std::string startinglevel = CL_String::load("Game/StartLevel",mpResources);
-
-        
+   
+       
         // Load special overlay for say.
         mpWindow  = new CL_OpenGLWindow(name, WINDOW_WIDTH, WINDOW_HEIGHT,false,false,2);
 
@@ -623,6 +672,10 @@ int Application::main(int argc, char ** argv)
         CL_Display::clear();
 
         mAppUtils.LoadGameplayAssets("",mpResources);
+        std::string startinglevel = CL_String::load("Game/StartLevel",mpResources);
+        std::string initscript;
+        loadscript(initscript,CL_String::load("Game/StartupScript",mpResources));
+        mInterpreter.run("Init",initscript);
             
         showRechargeableOnionSplash();
         showIntro();
@@ -700,6 +753,7 @@ int Application::main(int argc, char ** argv)
             
     }
         
+    mInterpreter.popScope();
 
     return 0;
 

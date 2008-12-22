@@ -35,8 +35,8 @@ bool WeaponClass::handle_element(eElement element, Element * pElement)
     case ECONDITIONSCRIPT:
         m_pConditionScript = dynamic_cast<ScriptElement*>(pElement);
         break;
-    case EATTRIBUTEENHANCER:
-        m_attribute_enhancers.push_back( dynamic_cast<AttributeEnhancer*>(pElement) );
+    case EATTRIBUTEMODIFIER:
+        m_attribute_modifiers.push_back( dynamic_cast<AttributeModifier*>(pElement) );
         break;
     case EWEAPONENHANCER:
         m_weapon_enhancers.push_back( dynamic_cast<WeaponEnhancer*>(pElement) );
@@ -84,7 +84,7 @@ void WeaponClass::OnUnequipScript()
 
 WeaponClass::~WeaponClass()
 {
-    std::for_each(m_attribute_enhancers.begin(),m_attribute_enhancers.end(),del_fun<AttributeEnhancer>());
+    std::for_each(m_attribute_modifiers.begin(),m_attribute_modifiers.end(),del_fun<AttributeModifier>());
     std::for_each(m_weapon_enhancers.begin(),m_weapon_enhancers.end(),del_fun<WeaponEnhancer>());
     std::for_each(m_excluded_types.begin(),m_excluded_types.end(),del_fun<WeaponTypeRef>());
 
@@ -114,16 +114,16 @@ float WeaponClass::GetValueMultiplier() const
     return m_fValueMultiplier;
 }
 
-std::list<AttributeEnhancer*>::const_iterator 
-WeaponClass::GetAttributeEnhancersBegin()
+std::list<AttributeModifier*>::const_iterator 
+WeaponClass::GetAttributeModifiersBegin()
 {
-    return m_attribute_enhancers.begin();
+    return m_attribute_modifiers.begin();
 }
 
-std::list<AttributeEnhancer*>::const_iterator 
-WeaponClass::GetAttributeEnhancersEnd()
+std::list<AttributeModifier*>::const_iterator 
+WeaponClass::GetAttributeModifiersEnd()
 {
-    return m_attribute_enhancers.end();
+    return m_attribute_modifiers.end();
 }
 
 std::list<WeaponEnhancer*>::const_iterator 

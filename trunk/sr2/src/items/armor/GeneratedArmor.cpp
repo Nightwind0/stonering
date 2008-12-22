@@ -162,11 +162,11 @@ void GeneratedArmor::generate( ArmorType * pType, ArmorClass * pClass,
                                SpellRef *pSpell , RuneType *pRune)
 {
 
-    for(std::list<AttributeEnhancer*>::const_iterator iter = pClass->GetAttributeEnhancersBegin();
-        iter != pClass->GetAttributeEnhancersEnd();
+    for(std::list<AttributeModifier*>::const_iterator iter = pClass->GetAttributeModifiersBegin();
+        iter != pClass->GetAttributeModifiersEnd();
         iter++)
     {
-        Add_Attribute_Enhancer  ( *iter );
+        Add_Attribute_Modifier  ( *iter );
     }
     for(std::list<ArmorEnhancer*>::const_iterator iter2 = pClass->GetArmorEnhancersBegin();
         iter2 != pClass->GetArmorEnhancersEnd();
