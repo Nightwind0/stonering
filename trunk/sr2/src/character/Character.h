@@ -32,7 +32,6 @@ namespace StoneRing{
             _START_OF_INTS, 
             CA_HP,
             CA_MP,
-            CA_LEVEL,
             CA_STR,              // Part of determining dmg of physical attack. 
             CA_DEF,              // Physical defense
             CA_DEX,              // Chances of a hit connecting (0-1)
@@ -79,6 +78,8 @@ namespace StoneRing{
         virtual eType GetType() const=0;
         virtual std::string GetName() const=0;
         //   virtual ICharacterGroup* GetGroup() const=0;
+        virtual uint GetLevel()const=0;
+        virtual void SetLevel(uint level)=0;
 
         virtual double GetAttributeReal(eCharacterAttribute attr) const = 0;
         virtual int    GetAttribute    (eCharacterAttribute attr) const = 0;
@@ -90,6 +91,7 @@ namespace StoneRing{
         virtual void StatusEffectRound()=0;
         virtual void PermanentAugment(eCharacterAttribute attr, int augment)=0;
         virtual void PermanentAugment(eCharacterAttribute attr, double augment)=0;
+        virtual void Kill()=0;
  
         // Static API
         static eCharacterAttribute CharAttributeFromString(const std::string &str); 
@@ -126,6 +128,8 @@ namespace StoneRing{
         virtual std::string GetName() const { return m_name; }
         virtual eType GetType() const { return m_eType; }
         //  virtual ICharacterGroup * GetGroup() const;
+        virtual uint GetLevel(void)const;
+        virtual void SetLevel(uint);
         virtual double GetSpellResistance(Magic::eMagicType type) const;
         virtual double GetAttributeReal(eCharacterAttribute attr) const;
         virtual int  GetAttribute(eCharacterAttribute attr) const;
@@ -133,6 +137,7 @@ namespace StoneRing{
         virtual void SetToggle(eCharacterAttribute attr, bool state);
         virtual void PermanentAugment(eCharacterAttribute attr, int augment);
         virtual void PermanentAugment(eCharacterAttribute attr, double augment);
+        virtual void Kill();
         virtual void AddStatusEffect(StatusEffect *);
         virtual void RemoveEffects(const std::string &name);
         virtual void StatusEffectRound();

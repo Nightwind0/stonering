@@ -13,7 +13,7 @@ using StoneRing::SpriteDefinition;
 
 
 Monster::Monster(MonsterElement *pDefinition)
-:m_pMonsterDefinition(pDefinition),m_name(pDefinition->GetName())
+:m_pMonsterDefinition(pDefinition),m_name(pDefinition->GetName()),m_nLevel(0)
 {
 
 }
@@ -48,13 +48,24 @@ void Monster::Die()
     m_pMonsterDefinition->Die();
 }
 
+uint Monster::GetLevel(void)const
+{
+    return m_nLevel;
+}
 
-
+void Monster::SetLevel(uint level)
+{
+    m_nLevel = level;
+}
 // For boolean values.
 void Monster::SetToggle(ICharacter::eCharacterAttribute attr, bool state)
 {
 }
 
+void Monster::Kill()
+{
+    SetToggle(CA_ALIVE,false);
+}
 
 double Monster::GetSpellResistance(StoneRing::Magic::eMagicType type) const
 {
@@ -75,6 +86,22 @@ int Monster::GetAttribute(ICharacter::eCharacterAttribute attr) const
 bool Monster::GetToggle(ICharacter::eCharacterAttribute attr) const
 {
     return false;
+}
+
+void Monster::PermanentAugment(eCharacterAttribute attr, int augment)
+{
+    std::map<eCharacterAttribute,int>::iterator aug = m_augments.find(attr);
+    if(aug == m_augments.end())
+        m_augments[attr] = augment;
+    else aug->second += augment;
+}
+
+void Monster::PermanentAugment(eCharacterAttribute attr, double augment)
+{
+    std::map<eCharacterAttribute,double>::iterator aug = m_real_augments.find(attr);
+    if(aug == m_real_augments.end())
+        m_real_augments[attr] = augment;
+    else  aug->second += augment;
 }
 
 
