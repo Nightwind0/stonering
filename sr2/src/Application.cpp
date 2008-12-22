@@ -265,7 +265,7 @@ SteelType Application::giveGold(int amount)
 SteelType Application::addCharacter(const std::string &character, int level, bool announce)
 {
     Character * pCharacter = mCharacterManager.GetCharacter(character);
-    pCharacter->SetAttribute(ICharacter::CA_LEVEL,level);
+    pCharacter->SetLevel(level);
     mpParty->AddCharacter(pCharacter);
 
     if(announce)
@@ -289,27 +289,26 @@ SteelType Application::doDamage(SteelType::Handle hICharacter, int damage)
 
     int hp = pCharacter->GetAttribute(Character::CA_HP);
     const int maxhp = pCharacter->GetAttribute(Character::CA_MAXHP);
-    hp -= damage;
-    if(hp <0)
+
+    if(hp - damage<=0)
     {
-        hp = 0;
+        damage = hp;
         // Kill him/her/it
-        pCharacter->SetToggle(Character::CA_ALIVE,false);
+        pCharacter->Kill();
         //TODO: Check if all characters are dead and game over
     }
 
-    if(hp>maxhp)
+    if(hp - damage >maxhp)
     {
-        hp = maxhp;
+        damage = maxhp - hp;
     }
 
-    pCharacter->SetAttribute(Character::CA_HP,hp);
+    pCharacter->PermanentAugment(Character::CA_HP,damage);
 
     SteelType newhp;
-    newhp.set(hp);
+    newhp.set(damage);
 
     return newhp;
-
 }
 
 
@@ -320,7 +319,7 @@ SteelType Application::useItem()
 
 SteelType Application::getCharacterName(const SteelType::Handle handle)
 {
-    Character * pCharacter = static_cast<Character*>(handle);
+    ICharacter * pCharacter = static_cast<Character*>(handle);
     SteelType name;
     name.set(pCharacter->GetName());
 
@@ -342,9 +341,18 @@ SteelType Application::getCharacter(uint index)
     return pointer;
 }
 
+SteelType Application::getCharacterLevel(const SteelType::Handle hCharacter)
+{
+    ICharacter *pCharacter = static_cast<ICharacter*>(hCharacter);
+    SteelType level;
+    level.set((int)pCharacter->GetLevel());
+
+    return level;
+}
+
 SteelType Application::addStatusEffect(SteelType::Handle hCharacter, const std::string &effect)
 {
-    Character *pCharacter = static_cast<Character*>(hCharacter);
+    ICharacter *pCharacter = static_cast<ICharacter*>(hCharacter);
     pCharacter->AddStatusEffect( mAbilityManager.GetStatusEffect(effect) );
 
     return SteelType();
@@ -352,7 +360,7 @@ SteelType Application::addStatusEffect(SteelType::Handle hCharacter, const std::
 
 SteelType Application::removeStatusEffects(SteelType::Handle hCharacter, const std::string &effect)
 {
-    Character *pCharacter = static_cast<Character*>(hCharacter);
+    ICharacter *pCharacter = static_cast<ICharacter*>(hCharacter);
     pCharacter->RemoveEffects(effect);
 
     return SteelType();
@@ -510,7 +518,6 @@ void Application::registerSteelFunctions()
     steelConst("_RST",Character::CA_RST);
     steelConst("_LCK",Character::CA_LCK);
     steelConst("_JOY",Character::CA_JOY);
-    steelConst("_LEVEL",Character::CA_LEVEL);
 
     steelConst("_DRAW_ILL",Character::CA_DRAW_ILL);
     steelConst("_DRAW_STONE",Character::CA_DRAW_STONE);

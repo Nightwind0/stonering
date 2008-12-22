@@ -42,7 +42,8 @@ public:
     virtual std::string GetName() const { return m_name;}
     virtual eType GetType() const;
 	//virtual ICharacterGroup* GetGroup() const { return NULL; }
-
+    virtual uint GetLevel(void)const;
+    virtual void SetLevel(uint);
     virtual double GetSpellResistance(Magic::eMagicType type) const;
     virtual double GetAttributeReal(eCharacterAttribute attr) const ;
     virtual int  GetAttribute(eCharacterAttribute attr) const;
@@ -53,11 +54,13 @@ public:
     virtual void AddStatusEffect(StatusEffect *);
     virtual void RemoveEffects(const std::string &name);
     virtual void StatusEffectRound();
+    virtual void Kill();
 private:
 
     typedef std::multimap<std::string,StatusEffect*> StatusEffectMap;
 
     std::string m_name;
+    uint m_nLevel;
     std::map<eCharacterAttribute,double> m_real_augments;
     std::map<eCharacterAttribute,int> m_augments;
     StatusEffectMap m_status_effects;

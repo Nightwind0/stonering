@@ -87,7 +87,8 @@ namespace StoneRing
         // SteelType giveGeneratedArmor(const std::string &armclass, const std::string &armtype);
 
         // Character steel bindings
-        SteelType getCharacterName(const SteelType::Handle hCharacter);
+        SteelType getCharacterName(const SteelType::Handle hICharacter);
+        SteelType getCharacterLevel(const SteelType::Handle hICharacter);
         SteelType addStatusEffect(SteelType::Handle hCharacter, const std::string &effect);
         SteelType removeStatusEffects(SteelType::Handle hCharacter, const std::string &effect);
         // This method directly affects a character's HP. No factors are taken into account

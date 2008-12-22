@@ -51,7 +51,6 @@ const stat_entry statXMLLookup[] =
     {"itemDropRate", ICharacter::CA_ITEM_DROP_RATE},
     {"priceMultiplier", ICharacter::CA_PRICE_MULTIPLIER},
     {"expMultiplier", ICharacter::CA_EXP_MULTIPLIER},
-    {"level",ICharacter::CA_LEVEL},
     {"idol_slots",ICharacter::CA_IDOL_SLOTS}
 };
 
@@ -135,11 +134,41 @@ StoneRing::Character::Character():m_pClass(NULL),m_pMapSprite(NULL)
 {
 }
 
+uint StoneRing::Character::GetLevel(void)const
+{
+    return m_nLevel;
+}
+
+void StoneRing::Character::SetLevel(uint level)
+{
+    m_nLevel = level;
+}
+
 ICharacter::eGender StoneRing::Character::GetGender() const
 {
     return NEUTER;
 }
 
+void StoneRing::Character::Kill()
+{
+    SetToggle(CA_ALIVE,false);
+}
+
+void StoneRing::Character::PermanentAugment(eCharacterAttribute attr, int augment)
+{
+    std::map<eCharacterAttribute,int>::iterator aug = m_augments.find(attr);
+    if(aug == m_augments.end())
+        m_augments[attr] = augment;
+    else aug->second += augment;
+}
+
+void StoneRing::Character::PermanentAugment(eCharacterAttribute attr, double augment)
+{
+    std::map<eCharacterAttribute,double>::iterator aug = m_real_augments.find(attr);
+    if(aug == m_real_augments.end())
+        m_real_augments[attr] = augment;
+    else  aug->second += augment;
+}
 
 
 bool StoneRing::Character::handle_element(eElement element, StoneRing::Element * pElement)
