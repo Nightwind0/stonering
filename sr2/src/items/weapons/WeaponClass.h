@@ -2,7 +2,7 @@
 #define SR_WEAPON_CLASS_H
 
 #include "Element.h"
-#include "AttributeEnhancer.h"
+#include "AttributeModifier.h"
 #include "WeaponEnhancer.h"
 #include "StatusEffectModifier.h"
 #include <list>
@@ -19,8 +19,8 @@ namespace StoneRing{
         int GetValueAdd() const;
         float GetValueMultiplier() const;
 
-        std::list<AttributeEnhancer*>::const_iterator GetAttributeEnhancersBegin();
-        std::list<AttributeEnhancer*>::const_iterator GetAttributeEnhancersEnd();
+        std::list<AttributeModifier*>::const_iterator GetAttributeModifiersBegin();
+        std::list<AttributeModifier*>::const_iterator GetAttributeModifiersEnd();
         
         std::list<WeaponEnhancer*>::const_iterator GetWeaponEnhancersBegin();
         std::list<WeaponEnhancer*>::const_iterator GetWeaponEnhancersEnd();
@@ -45,7 +45,7 @@ namespace StoneRing{
         std::string m_name;
         int m_nValueAdd;
         float m_fValueMultiplier;
-        std::list<AttributeEnhancer*> m_attribute_enhancers;
+        std::list<AttributeModifier*> m_attribute_modifiers;
         std::list<WeaponEnhancer*> m_weapon_enhancers;
         std::list<WeaponTypeRef*> m_excluded_types;
         std::list<StatusEffectModifier*> m_status_effect_modifiers;

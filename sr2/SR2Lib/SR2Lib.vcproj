@@ -242,6 +242,10 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\src\core\AttributeModifier.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\src\core\Element.cpp"
 					>
 					<FileConfiguration
@@ -619,6 +623,10 @@
 				>
 				<File
 					RelativePath="..\src\core\AppUtils.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\core\AttributeModifier.h"
 					>
 				</File>
 				<File

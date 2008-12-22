@@ -2,6 +2,7 @@
 #include "AbilityFactory.h"
 #include "IApplication.h"
 #include "Animation.h"
+#include "AttributeModifier.h"
 
 
 void StoneRing::StatusEffect::load_attributes(CL_DomNamedNodeMap *pAttributes)
@@ -40,6 +41,12 @@ bool StoneRing::StatusEffect::handle_element(eElement element, Element * pElemen
     case EONREMOVE:
         m_pOnRemove = dynamic_cast<OnRemove*>(pElement);
         break;
+    case EATTRIBUTEMODIFIER:{
+        AttributeModifier * pAM = dynamic_cast<AttributeModifier*>(pElement);
+        m_attribute_modifiers.insert(std::pair<ICharacter::eCharacterAttribute,AttributeModifier*>
+            (static_cast<ICharacter::eCharacterAttribute>(pAM->GetAttribute()),pAM));
+        break;
+                            }
     default:
         return false;
     }
@@ -102,6 +109,29 @@ float StoneRing::StatusEffect::GetLengthMultiplier() const
     return m_fLengthMultiplier;
 }
                 
+double StoneRing::StatusEffect::GetAttributeMultiplier(ICharacter::eCharacterAttribute attr) const
+{
+    double multiplier = 0.0;
+    for(AttributeModifierSet::const_iterator iter = m_attribute_modifiers.lower_bound(attr);
+        iter != m_attribute_modifiers.upper_bound(attr);iter++)
+    {
+        if(iter->second->GetType() == AttributeModifier::EMULTIPLY)
+            multiplier += iter->second->GetMultiplier();
+    }
 
+    return multiplier;
+}
 
+double StoneRing::StatusEffect::GetAttributeAdd(ICharacter::eCharacterAttribute attr)const
+{
+    double add = 0.0;
+    for(AttributeModifierSet::const_iterator iter = m_attribute_modifiers.lower_bound(attr);
+        iter != m_attribute_modifiers.upper_bound(attr);iter++)
+    {
+        if(iter->second->GetType() == AttributeModifier::EADD)
+            add += iter->second->GetAdd();
+    }
+
+    return add;
+}
 

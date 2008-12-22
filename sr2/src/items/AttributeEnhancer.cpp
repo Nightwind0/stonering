@@ -64,16 +64,7 @@ AttributeEnhancer::eType AttributeEnhancer::GetType() const
 // when invoking. (By calling equip on the armor/weapon...)
 void AttributeEnhancer::Invoke()
 {
-    ICharacter * pCharacter = 
-        IApplication::GetInstance()->GetTargetCharacterGroup()->GetTargetCharacter();
 
-    ICharacter::eCharacterAttribute attr = static_cast<ICharacter::eCharacterAttribute>(m_nAttribute);
-    if(m_eType & EMULTIPLY)
-        pCharacter->AttachMultiplication(attr, m_fMultiplier);
-    if(m_eType & EADD)
-        pCharacter->AttachAddition(attr, m_nAdd);
-    if(m_eType & ETOGGLE)
-        pCharacter->FixAttribute(attr,m_bToggle);
 }
 
 // Uses IParty::modifyAttribute to modify the CURRENT player,
@@ -82,18 +73,6 @@ void AttributeEnhancer::Invoke()
 void AttributeEnhancer::Revoke()
 {
 
-    ICharacter * pCharacter = IApplication::GetInstance()
-        ->GetTargetCharacterGroup()
-        ->GetTargetCharacter();
-
-    ICharacter::eCharacterAttribute attr = static_cast<ICharacter::eCharacterAttribute>(m_nAttribute);
-
-    if(m_eType & EADD)
-        pCharacter->DetachAddition(attr, m_nAdd);
-    if(m_eType & EMULTIPLY)
-        pCharacter->DetachMultiplication(attr, m_fMultiplier);
-    if(m_eType & ETOGGLE)
-        pCharacter->FixAttribute(attr, ! m_bToggle );
 
 }
 

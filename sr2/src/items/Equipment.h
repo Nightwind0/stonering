@@ -6,7 +6,8 @@
 namespace StoneRing{
 
     class ICharacter;
-  
+    class AttributeModifier;
+
     class Equipment : public virtual Item
     {
     public:
@@ -39,8 +40,8 @@ namespace StoneRing{
         virtual void ExecuteScript()=0;
         virtual bool EquipCondition()=0;
         // Mainly for display, as these should be automatically invoked on equip
-        std::list<AttributeEnhancer*>::const_iterator GetAttributeEnhancersBegin() const;
-        std::list<AttributeEnhancer*>::const_iterator GetAttributeEnhancersEnd() const;
+        std::list<AttributeModifier*>::const_iterator GetAttributeModifiersBegin() const;
+        std::list<AttributeModifier*>::const_iterator GetAttributeModifiersEnd() const;
 
         std::list<StatusEffectModifier*>::const_iterator GetStatusEffectModifiersBegin() const { return m_status_effect_modifiers.begin(); }
         std::list<StatusEffectModifier*>::const_iterator GetStatusEffectModifiersEnd() const { return m_status_effect_modifiers.end(); }
@@ -48,14 +49,14 @@ namespace StoneRing{
         virtual void OnEquipScript()=0;
         virtual void OnUnequipScript()=0;
 
-        void Clear_Attribute_Enhancers();
-        void Add_Attribute_Enhancer( AttributeEnhancer * pAttr );
+        void Clear_Attribute_Modifiers();
+        void Add_Attribute_Modifier( AttributeModifier * pAttr );
         void Set_Spell_Ref ( SpellRef * pRef );
         void Set_Rune_Type ( RuneType * pType );
         void Add_Status_Effect_Modifier(StatusEffectModifier *pModifier) { m_status_effect_modifiers.push_back ( pModifier ) ; }
     
     private:
-        std::list<AttributeEnhancer*> m_attribute_enhancers;
+        std::list<AttributeModifier*> m_attribute_modifiers;
         SpellOrRuneRef  m_SpellOrRuneRef;
         enum eMagic { NONE, SPELL, RUNE };
         eMagic m_eMagic;

@@ -44,14 +44,12 @@ public:
 	//virtual ICharacterGroup* GetGroup() const { return NULL; }
 
     virtual double GetSpellResistance(Magic::eMagicType type) const;
-    virtual double GetAttribute(eCharacterAttribute attr) const ;
+    virtual double GetAttributeReal(eCharacterAttribute attr) const ;
+    virtual int  GetAttribute(eCharacterAttribute attr) const;
     virtual bool GetToggle(eCharacterAttribute attr) const;
-    virtual void FixAttribute(eCharacterAttribute attr, double value);
-    virtual void FixAttribute(eCharacterAttribute attr, bool state);
-    virtual void AttachMultiplication(eCharacterAttribute attr, double factor);
-    virtual void DetachMultiplication(eCharacterAttribute attr, double factor);
-    virtual void AttachAddition(eCharacterAttribute attr, double value);
-    virtual void DetachAddition(eCharacterAttribute attr, double value);
+    virtual void SetToggle(eCharacterAttribute attr, bool state);
+    virtual void PermanentAugment(eCharacterAttribute attr, int augment);
+    virtual void PermanentAugment(eCharacterAttribute attr, double augment);
     virtual void AddStatusEffect(StatusEffect *);
     virtual void RemoveEffects(const std::string &name);
     virtual void StatusEffectRound();
@@ -60,7 +58,8 @@ private:
     typedef std::multimap<std::string,StatusEffect*> StatusEffectMap;
 
     std::string m_name;
-    AttributeFile m_attributes;
+    std::map<eCharacterAttribute,double> m_real_augments;
+    std::map<eCharacterAttribute,int> m_augments;
     StatusEffectMap m_status_effects;
     MonsterElement * m_pMonsterDefinition;
     uint m_nCellX;

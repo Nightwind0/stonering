@@ -32,7 +32,7 @@ void Stat::load_attributes(CL_DomNamedNodeMap *attr)
     if(m_eAttr = ICharacter::CA_INVALID)
         throw CL_Error("Unknown stat type in monster stat");
 
-    if(m_eAttr > ICharacter::_START_OF_TOGGLES && m_eAttr < ICharacter::_END_OF_TOGGLES)
+    if(m_eAttr > ICharacter::_START_OF_TOGGLES && m_eAttr < ICharacter::_MAXIMA_BASE)
         m_bToggle = get_required_bool("toggle",attr);
     else  m_fValue = get_required_float("value",attr);
 

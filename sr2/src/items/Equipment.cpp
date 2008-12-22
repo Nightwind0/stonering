@@ -39,55 +39,35 @@ bool Equipment::HasRuneType() const
 void Equipment::Equip(ICharacter *pCharacter)
 {
 
-#ifndef _MSC_VER
-    std::for_each( m_attribute_enhancers.begin(), m_attribute_enhancers.end(), std::mem_fun(&AttributeEnhancer::Invoke));
-
-#else
-
-    for (std::list<AttributeEnhancer*>::const_iterator iter = m_attribute_enhancers.begin();
-         iter != m_attribute_enhancers.end(); iter++)
-    {
-        (*iter)->Invoke();
-    }
-#endif
     OnEquipScript();
 }
 
 // Remove any attribute enhancements
 void Equipment::Unequip(ICharacter *pCharacter)
 {
-#ifndef _MSC_VER
-    std::for_each( m_attribute_enhancers.begin(), m_attribute_enhancers.end(), std::mem_fun(&AttributeEnhancer::Revoke));
-#else
-    for(std::list<AttributeEnhancer*>::const_iterator iter = m_attribute_enhancers.begin();
-        iter != m_attribute_enhancers.end(); iter++)
-    {
-        (*iter)->Revoke();
-    }
-#endif
     OnUnequipScript();
 }
 
 
-std::list<AttributeEnhancer*>::const_iterator Equipment::GetAttributeEnhancersBegin() const
+std::list<AttributeModifier*>::const_iterator Equipment::GetAttributeModifiersBegin() const
 {
-    return m_attribute_enhancers.begin();
+    return m_attribute_modifiers.begin();
 }
 
-std::list<AttributeEnhancer*>::const_iterator Equipment::GetAttributeEnhancersEnd() const
+std::list<AttributeModifier*>::const_iterator Equipment::GetAttributeModifiersEnd() const
 {
-    return m_attribute_enhancers.end();
+    return m_attribute_modifiers.end();
 }
 
 
-void Equipment::Clear_Attribute_Enhancers()
+void Equipment::Clear_Attribute_Modifiers()
 {
-    m_attribute_enhancers.clear();
+    m_attribute_modifiers.clear();
 }
 
-void Equipment::Add_Attribute_Enhancer( AttributeEnhancer * pAttr )
+void Equipment::Add_Attribute_Modifier( AttributeModifier * pAttr )
 {
-    m_attribute_enhancers.push_back ( pAttr );
+    m_attribute_modifiers.push_back ( pAttr );
 }
 
 void Equipment::Set_Spell_Ref ( SpellRef * pRef )

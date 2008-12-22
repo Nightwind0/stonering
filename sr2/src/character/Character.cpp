@@ -111,155 +111,25 @@ std::string StoneRing::ICharacter::CAToString(uint v)
     return "INVALID";
 }
 
-
-
-
-void StoneRing::AttributeFile::assert_real(ICharacter::eCharacterAttribute attr)
+bool StoneRing::ICharacter::IsInteger(eCharacterAttribute attr)
 {
-    if ((attr != ICharacter::CA_INVALID && attr < ICharacter::_START_OF_TOGGLES)
-        || (attr > ICharacter::_MAXIMA_BASE && attr < ICharacter::_LAST_CHARACTER_ATTR_))
-        return;
-    throw CL_Error("Attribute was not a real value");
+    return (attr > ICharacter::_START_OF_INTS && attr < ICharacter::_START_OF_REALS) ||
+        (attr > ICharacter::_MAXIMA_BASE && attr < ICharacter::_LAST_CHARACTER_ATTR_);
 }
 
-void StoneRing::AttributeFile::assert_bool(ICharacter::eCharacterAttribute attr)
+bool StoneRing::ICharacter::IsReal(eCharacterAttribute attr)
 {
-    if(attr > ICharacter::_START_OF_TOGGLES && attr < ICharacter::_END_OF_TOGGLES)
-        return;
-    throw CL_Error("Attribute was not a real value");
+    return (attr > ICharacter::_START_OF_REALS && attr < ICharacter::_START_OF_TOGGLES);
 }
 
-StoneRing::AttributeFile::attr_doubles::const_iterator 
-StoneRing::AttributeFile::find_attr(ICharacter::eCharacterAttribute attr) const
+bool StoneRing::ICharacter::IsToggle(eCharacterAttribute attr)
 {
-    assert_real(attr);
-    return m_real_attributes.find(attr);
-}
-
-double 
-StoneRing::AttributeFile::find_multiplier(ICharacter::eCharacterAttribute attr)const
-{
-    assert_real(attr);
-    attr_doubles::const_iterator iter = m_attr_multipliers.find(attr);
-    if(iter != m_attr_multipliers.end())
-    {
-        return iter->second; 
-    }
-    else return 1.0;
-}
-
-double
-StoneRing::AttributeFile::find_addition(ICharacter::eCharacterAttribute attr)const
-{
-    assert_real(attr);
-    attr_doubles::const_iterator iter = m_attr_additions.find(attr);
-    if(iter != m_attr_additions.end())
-    {
-        return iter->second; 
-    }
-    else return 0;
-}
-
-StoneRing::AttributeFile::attr_bools::const_iterator 
-StoneRing::AttributeFile::find_toggle(ICharacter::eCharacterAttribute attr)const
-{
-    assert_bool(attr);
-    return m_toggles.find(attr);
-}
-
-double StoneRing::AttributeFile::GetAttribute(ICharacter::eCharacterAttribute attr)const
-{
-    assert_real(attr);
-    attr_doubles::const_iterator 
-        iter = m_real_attributes.find(attr);
-    if(iter != m_real_attributes.end())
-    {
-        double base = iter->second; 
-        return base * find_multiplier(attr) + find_addition(attr);
-    }
-    throw CL_Error("Attribute not set");
-    return 0.0;
-}
-
-bool StoneRing::AttributeFile::GetToggle(ICharacter::eCharacterAttribute attr)const
-{
-    assert_bool(attr);
-    attr_bools::const_iterator 
-        iter = m_toggles.find(attr);
-    if(iter != m_toggles.end())
-    {
-        return iter->second; 
-    }
-    throw CL_Error("Attribute not set");
-    return false;
-}
-void StoneRing::AttributeFile::AttachMultiplication(ICharacter::eCharacterAttribute attr,double value)
-{
-    assert_real(attr);
-    if(m_attr_multipliers.find(attr) == m_attr_multipliers.end())
-    {
-        m_attr_multipliers[attr] = value;
-    }
-    else
-    {
-        m_attr_multipliers[attr] *= value;
-    }
-}
-
-void StoneRing::AttributeFile::AttachAddition(ICharacter::eCharacterAttribute attr,double value)
-{
-    assert_real(attr);
-    if(m_attr_multipliers.find(attr) == m_attr_multipliers.end())
-    {
-        m_attr_multipliers[attr] = value;
-    }
-    else
-    {
-        m_attr_multipliers[attr] += value;
-    }
-}
-
-void StoneRing::AttributeFile::DetachMultiplication(ICharacter::eCharacterAttribute attr,double value)
-{
-    assert_real(attr);
-    if(value != 0.0)
-    {
-        if(m_attr_multipliers.find(attr) == m_attr_multipliers.end())
-        {
-            throw CL_Error("Attempt to detach when there was no attach!");
-        }
-        else
-        {
-            m_attr_multipliers[attr] /= value;
-        }
-    }
-}
-
-void StoneRing::AttributeFile::DetachAddition(ICharacter::eCharacterAttribute attr,double value)
-{
-    assert_real(attr);
-    if(m_attr_multipliers.find(attr) == m_attr_multipliers.end())
-    {
-        m_attr_multipliers[attr] = value;
-    }
-    else
-    {
-        m_attr_multipliers[attr] -= value;
-    }
+    return (attr > ICharacter::_START_OF_TOGGLES && attr < ICharacter::_LAST_CHARACTER_ATTR_);
 }
 
 
-void StoneRing::AttributeFile::FixAttribute(ICharacter::eCharacterAttribute attr, double value)
-{
-    assert_real(attr);
-    m_real_attributes[attr] = value;
-}
 
-void StoneRing::AttributeFile::FixAttribute(ICharacter::eCharacterAttribute attr, bool toggle)
-{
-    assert_bool(attr);
-    m_toggles[attr] = toggle;
-}
+
 
 StoneRing::Character::Character():m_pClass(NULL),m_pMapSprite(NULL)
 {
@@ -329,46 +199,44 @@ void StoneRing::Character::load_finished()
 }
 
 
-double StoneRing::Character::GetAttribute(eCharacterAttribute attr) const
+double StoneRing::Character::GetAttributeReal(eCharacterAttribute attr) const
 {
-    return m_attributes.GetAttribute(attr);
+    double base = m_pClass->GetStatReal(attr,m_nLevel);
+    // Go through all equipment, multiplying by the AMs that are mults
+    // Same with the status effects
+    // Then do it with the adders
+    double augment  = 0.0;
+    std::map<eCharacterAttribute,double>::const_iterator aug = m_real_augments.find(attr);
+    if(aug != m_real_augments.end())
+        augment = aug->second;
+    return base + augment;
 }
+
+int StoneRing::Character::GetAttribute(eCharacterAttribute attr) const
+{
+    int base = m_pClass->GetStat(attr,m_nLevel);
+    // Go through all equipment, multiplying by the AMs that are mults
+    // Same with the status effects
+    // Then do it with the adders
+    int augment  = 0;
+    std::map<eCharacterAttribute,int>::const_iterator aug = m_augments.find(attr);
+    if(aug != m_augments.end())
+        augment = aug->second;
+    return base + augment;
+}
+
 
 bool StoneRing::Character::GetToggle(eCharacterAttribute attr) const
 {
-    return m_attributes.GetToggle(attr);
+    return false;
 }
 
 
-void StoneRing::Character::FixAttribute(eCharacterAttribute attr, bool value)
+void StoneRing::Character::SetToggle(eCharacterAttribute attr, bool value)
 {
-    m_attributes.FixAttribute(attr,value);
+   
 }
 
-void StoneRing::Character::FixAttribute(eCharacterAttribute attr, double value)
-{
-    m_attributes.FixAttribute(attr,value);
-}
-
-void StoneRing::Character::AttachMultiplication(eCharacterAttribute attr, double factor)
-{
-    m_attributes.AttachMultiplication(attr,factor);
-}
-
-void StoneRing::Character::AttachAddition(eCharacterAttribute attr, double value)
-{
-    m_attributes.AttachAddition(attr,value);
-}
-
-void StoneRing::Character::DetachMultiplication(eCharacterAttribute attr, double factor)
-{
-    m_attributes.DetachMultiplication(attr,factor);
-}
-
-void StoneRing::Character::DetachAddition(eCharacterAttribute attr, double value)
-{
-    m_attributes.DetachAddition(attr,value);
-}
 
 void StoneRing::Character::AddStatusEffect(StoneRing::StatusEffect *pEffect)
 {

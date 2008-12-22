@@ -18,8 +18,8 @@ namespace StoneRing{
         int GetValueAdd() const;
         float GetValueMultiplier() const;
 
-        std::list<AttributeEnhancer*>::const_iterator GetAttributeEnhancersBegin();
-        std::list<AttributeEnhancer*>::const_iterator GetAttributeEnhancersEnd();
+        std::list<AttributeModifier*>::const_iterator GetAttributeModifiersBegin();
+        std::list<AttributeModifier*>::const_iterator GetAttributeModifiersEnd();
         
         std::list<ArmorEnhancer*>::const_iterator GetArmorEnhancersBegin();
         std::list<ArmorEnhancer*>::const_iterator GetArmorEnhancersEnd();
@@ -44,7 +44,7 @@ namespace StoneRing{
         float m_fValueMultiplier;
         void AddStatusEffectModifier(StatusEffectModifier *pModifier ) { m_status_effect_modifiers.push_back ( pModifier ); }
         ScriptElement *m_pScript;
-        std::list<AttributeEnhancer*> m_attribute_enhancers;
+        std::list<AttributeModifier*> m_attribute_modifiers;
         std::list<ArmorEnhancer*> m_armor_enhancers;
         std::list<ArmorTypeRef*> m_excluded_types;
         std::list<StatusEffectModifier*> m_status_effect_modifiers;

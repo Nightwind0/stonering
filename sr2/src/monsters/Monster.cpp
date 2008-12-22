@@ -51,7 +51,7 @@ void Monster::Die()
 
 
 // For boolean values.
-void Monster::FixAttribute(ICharacter::eCharacterAttribute attr, bool state)
+void Monster::SetToggle(ICharacter::eCharacterAttribute attr, bool state)
 {
 }
 
@@ -61,40 +61,20 @@ double Monster::GetSpellResistance(StoneRing::Magic::eMagicType type) const
     return 0.0;
 }
 
-double Monster::GetAttribute(ICharacter::eCharacterAttribute attr) const 
+double Monster::GetAttributeReal(ICharacter::eCharacterAttribute attr) const 
 {
     return 1.0;
+}
+
+int Monster::GetAttribute(ICharacter::eCharacterAttribute attr) const
+{
+    return 0;
 }
 
 
 bool Monster::GetToggle(ICharacter::eCharacterAttribute attr) const
 {
     return false;
-}
-
-void Monster::FixAttribute(ICharacter::eCharacterAttribute attr, double value)
-{
-    m_attributes.FixAttribute(attr,value);
-}
-
-void Monster::AttachMultiplication(ICharacter::eCharacterAttribute attr, double factor)
-{
-    m_attributes.AttachMultiplication(attr,factor);
-}
-
-void Monster::AttachAddition(ICharacter::eCharacterAttribute attr, double value) 
-{
-    m_attributes.AttachAddition(attr,value);
-}
-
-void Monster::DetachMultiplication(ICharacter::eCharacterAttribute attr, double factor)
-{
-    m_attributes.DetachMultiplication(attr,factor);
-}
-
-void Monster::DetachAddition(ICharacter::eCharacterAttribute attr, double value) 
-{
-    m_attributes.DetachAddition(attr,value);
 }
 
 
