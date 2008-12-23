@@ -2,7 +2,6 @@
 #define SR_ARMOR_CLASS_H
 
 #include "Element.h"
-#include "AttributeEnhancer.h"
 #include "ArmorEnhancer.h"
 #include "StatusEffectModifier.h"
 

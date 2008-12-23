@@ -320,10 +320,6 @@
 				Name="Items"
 				>
 				<File
-					RelativePath="..\src\items\AttributeEnhancer.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\src\items\DamageCategory.cpp"
 					>
 				</File>
@@ -661,10 +657,6 @@
 			<Filter
 				Name="Items"
 				>
-				<File
-					RelativePath="..\src\items\AttributeEnhancer.h"
-					>
-				</File>
 				<File
 					RelativePath="..\src\items\DamageCategory.h"
 					>

@@ -25,7 +25,7 @@ namespace StoneRing
         virtual Element * createArmorType()const; 
         virtual Element * createArmorTypeExclusionList() const;
         virtual Element * createArmorTypeRef()const; 
-        virtual Element * createAttributeEnhancer()const; 
+        virtual Element * createAttributeModifier()const; 
         virtual Element * createBattleMenu() const;
         virtual Element * createBattleMenuOption() const;
         virtual Element * createCharacterClass() const;

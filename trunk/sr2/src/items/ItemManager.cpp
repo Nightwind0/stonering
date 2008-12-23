@@ -17,7 +17,6 @@
 #include "GeneratedArmor.h"
 #include "WeaponClassRef.h"
 #include "ArmorClassRef.h"
-#include "AttributeEnhancer.h"
 #include "DamageCategory.h"
 #include "StatusEffectModifier.h"
 #include <cassert>

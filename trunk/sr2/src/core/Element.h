@@ -39,7 +39,6 @@ namespace StoneRing
             EARMORTYPE,
             EARMORTYPEEXCLUSIONLIST,
             EARMORTYPEREF,
-            EATTRIBUTEENHANCER,
             EATTRIBUTEMODIFIER,
             EBATTLEMENU,
             EBATTLEMENUOPTION,
