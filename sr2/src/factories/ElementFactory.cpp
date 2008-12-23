@@ -35,6 +35,7 @@
 #include "MonsterRegion.h"
 #include "MonsterGroup.h"
 #include "MonsterRef.h"
+#include "AttributeModifier.h"
 
 using namespace StoneRing;
 
@@ -221,9 +222,9 @@ Element * ElementFactory::createArmorEnhancer()const
 }
 
 
-Element * ElementFactory::createAttributeEnhancer()const
+Element * ElementFactory::createAttributeModifier()const
 {
-    return new AttributeEnhancer();
+    return new AttributeModifier();
 }
 
 
@@ -473,7 +474,7 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["armorType"] = &ElementFactory::createArmorType;
     mCreateMethods["armorTypeExclusionList"] = &ElementFactory::createArmorTypeExclusionList;
     mCreateMethods["armorTypeRef"] = &ElementFactory::createArmorTypeRef;
-    mCreateMethods["attributeEnhancer"] = &ElementFactory::createAttributeEnhancer;
+    mCreateMethods["attributeModifier"] = &ElementFactory::createAttributeModifier;
     mCreateMethods["battleMenu"] = &ElementFactory::createBattleMenu;
     mCreateMethods["battleMenuOption"] = &ElementFactory::createBattleMenuOption;
     mCreateMethods["character"] = &ElementFactory::createCharacter;

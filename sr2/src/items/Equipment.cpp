@@ -1,5 +1,6 @@
 #include "Equipment.h"
-#include "AttributeEnhancer.h"
+#include "Character.h"
+#include "AttributeModifier.h"
 
 using namespace StoneRing;
 
@@ -49,14 +50,40 @@ void Equipment::Unequip(ICharacter *pCharacter)
 }
 
 
-std::list<AttributeModifier*>::const_iterator Equipment::GetAttributeModifiersBegin() const
+Equipment::AttributeModifierSet::const_iterator Equipment::GetAttributeModifiersBegin() const
 {
     return m_attribute_modifiers.begin();
 }
 
-std::list<AttributeModifier*>::const_iterator Equipment::GetAttributeModifiersEnd() const
+Equipment::AttributeModifierSet::const_iterator Equipment::GetAttributeModifiersEnd() const
 {
     return m_attribute_modifiers.end();
+}
+
+double StoneRing::Equipment::GetAttributeMultiplier(uint attr) const
+{
+    double multiplier = 0.0;
+    for(AttributeModifierSet::const_iterator iter = m_attribute_modifiers.lower_bound(attr);
+        iter != m_attribute_modifiers.upper_bound(attr);iter++)
+    {
+        if(iter->second->GetType() == AttributeModifier::EMULTIPLY)
+            multiplier += iter->second->GetMultiplier();
+    }
+
+    return multiplier;
+}
+
+double StoneRing::Equipment::GetAttributeAdd(uint attr)const
+{
+    double add = 0.0;
+    for(AttributeModifierSet::const_iterator iter = m_attribute_modifiers.lower_bound(attr);
+        iter != m_attribute_modifiers.upper_bound(attr);iter++)
+    {
+        if(iter->second->GetType() == AttributeModifier::EADD)
+            add += iter->second->GetAdd();
+    }
+
+    return add;
 }
 
 
@@ -67,7 +94,8 @@ void Equipment::Clear_Attribute_Modifiers()
 
 void Equipment::Add_Attribute_Modifier( AttributeModifier * pAttr )
 {
-    m_attribute_modifiers.push_back ( pAttr );
+    m_attribute_modifiers.insert(std::pair<ICharacter::eCharacterAttribute,AttributeModifier*>
+            (static_cast<ICharacter::eCharacterAttribute>(pAttr->GetAttribute()),pAttr));
 }
 
 void Equipment::Set_Spell_Ref ( SpellRef * pRef )

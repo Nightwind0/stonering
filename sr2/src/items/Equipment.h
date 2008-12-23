@@ -39,12 +39,16 @@ namespace StoneRing{
         void Unequip(ICharacter *);
         virtual void ExecuteScript()=0;
         virtual bool EquipCondition()=0;
+        typedef std::multimap<uint,AttributeModifier*> AttributeModifierSet;
         // Mainly for display, as these should be automatically invoked on equip
-        std::list<AttributeModifier*>::const_iterator GetAttributeModifiersBegin() const;
-        std::list<AttributeModifier*>::const_iterator GetAttributeModifiersEnd() const;
+        AttributeModifierSet::const_iterator GetAttributeModifiersBegin() const;
+        AttributeModifierSet::const_iterator GetAttributeModifiersEnd() const;
 
         std::list<StatusEffectModifier*>::const_iterator GetStatusEffectModifiersBegin() const { return m_status_effect_modifiers.begin(); }
         std::list<StatusEffectModifier*>::const_iterator GetStatusEffectModifiersEnd() const { return m_status_effect_modifiers.end(); }
+
+        double GetAttributeMultiplier(uint attr) const;
+        double GetAttributeAdd(uint attr)const;
     protected:
         virtual void OnEquipScript()=0;
         virtual void OnUnequipScript()=0;
@@ -56,7 +60,7 @@ namespace StoneRing{
         void Add_Status_Effect_Modifier(StatusEffectModifier *pModifier) { m_status_effect_modifiers.push_back ( pModifier ) ; }
     
     private:
-        std::list<AttributeModifier*> m_attribute_modifiers;
+        AttributeModifierSet m_attribute_modifiers;
         SpellOrRuneRef  m_SpellOrRuneRef;
         enum eMagic { NONE, SPELL, RUNE };
         eMagic m_eMagic;
