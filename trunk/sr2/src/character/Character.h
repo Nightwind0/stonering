@@ -29,9 +29,10 @@ namespace StoneRing{
         enum eCharacterAttribute
         {
             CA_INVALID,
-            _START_OF_INTS, 
+            _START_OF_TRANSIENTS,
             CA_HP,
-            CA_MP,
+            CA_MP,            
+            _START_OF_INTS,
             CA_STR,              // Part of determining dmg of physical attack. 
             CA_DEF,              // Physical defense
             CA_DEX,              // Chances of a hit connecting (0-1)
@@ -101,6 +102,7 @@ namespace StoneRing{
         static bool IsInteger(eCharacterAttribute attr);
         static bool IsReal(eCharacterAttribute attr);
         static bool IsToggle(eCharacterAttribute attr);
+        static bool IsTransient(eCharacterAttribute attr);
     
         ///@todo API for different battle animations TBD
     private:
@@ -150,9 +152,11 @@ namespace StoneRing{
         BattleMenu * GetBattleMenu() const;
         CharacterClass * GetClass() const { return m_pClass; }
 
-        // Equipment
+        // Equipment. If theres equipment in this slot already,
+        // this overwrites it.
         void Equip(Equipment::eSlot slot, Equipment *pEquip);
-        void Unequip(Equipment::eSlot);
+        // Returns a pointer to the equipment that was in that slot
+        Equipment* Unequip(Equipment::eSlot);
 
         // Element API
         virtual eElement WhichElement() const { return ECHARACTER; }
@@ -166,6 +170,7 @@ namespace StoneRing{
         std::string m_name;
         std::map<eCharacterAttribute,double> m_real_augments;
         std::map<eCharacterAttribute,int> m_augments;
+        std::map<Equipment::eSlot,Equipment*> m_equipment;
         SpriteDefinitionMap m_sprite_definition_map;
         CharacterClass * m_pClass;
         uint m_nLevel;
