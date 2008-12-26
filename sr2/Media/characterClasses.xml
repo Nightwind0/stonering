@@ -23,22 +23,22 @@
 
         <statScript stat="hp_max">
             <script id="WarHPMAX">
-                return pow(1.07, $_CL) * 25;
+                return math::pow(1.07, $_CL) * 25;
             </script>
         </statScript>
         <statScript stat="str">
             <script id="WarSTR">
-                return pow(1.06, $_CL) * 5;
+                return math::pow(1.06, $_CL) * 5;
             </script>
         </statScript>
         <statScript stat="dex">
             <script id="WarDEX">
-                return pow(1.06, $_CL) * 4.5;
+                return math::pow(1.06, $_CL) * 4.5;
             </script>
         </statScript>
         <statScript stat="evd">
             <script id="WarEVD">
-                return pow(1.06, $_CL) * 4;
+                return math::pow(1.06, $_CL) * 4;
             </script>
         </statScript>
         <statScript stat="mag">
@@ -48,7 +48,7 @@
         </statScript>
         <statScript stat="rst">
             <script id="WarRST">
-                return pow(1.06,$_CL) * 3.5;
+                return math::pow(1.06,$_CL) * 3.5;
             </script>
         </statScript>
     </characterClass>
@@ -68,22 +68,22 @@
 
         <statScript stat="hp_max">
             <script id="RngHPMAX">
-                return pow(1.07, $_CL) * 18;
+                return math::pow(1.07, $_CL) * 18;
             </script>
         </statScript>
         <statScript stat="str">
             <script id="RngSTR">
-                return pow(1.06, $_CL) * 4;
+                return math::pow(1.06, $_CL) * 4;
             </script>
         </statScript>
         <statScript stat="dex">
             <script id="RngDEX">
-                return pow(1.06, $_CL) * 5.5;
+                return math::pow(1.06, $_CL) * 5.5;
             </script>
         </statScript>
         <statScript stat="evd">
             <script id="RngEVD">
-                return pow(1.06, $_CL) * 6;
+                return math::pow(1.06, $_CL) * 6;
             </script>
         </statScript>
         <statScript stat="mag">
@@ -93,7 +93,7 @@
         </statScript>
         <statScript stat="rst">
             <script id="RngRST">
-                return pow(1.06,$_CL) * 4;
+                return math::pow(1.06,$_CL) * 4;
             </script>
         </statScript>
 

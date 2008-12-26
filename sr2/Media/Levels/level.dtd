@@ -179,11 +179,7 @@
 <!ATTLIST armorType baseArmorClass CDATA #REQUIRED> 
 <!ATTLIST armorType baseResist CDATA #REQUIRED>
 <!ATTLIST armorType slot (head|body|shield|feet|hands) #REQUIRED>
-<!ATTLIST attributeEnhancer type(auto|add|multiply|add_multiply|toggle) #IMPLIED> <!-- defaults to auto -->
-<!ATTLIST attributeEnhancer attribute CDATA #REQUIRED>
-<!ATTLIST attributeEnhancer add  CDATA #IMPLIED>
-<!ATTLIST attributeEnhancer multiplier CDATA #IMPLIED>
-<!ATTLIST attributeEnhancer toggle (true|false) #IMPLIED>
+
 <!ATTLIST attributeModifier type(add|multiply|toggle) #REQUIRED>
 <!ATTLIST attributeModifier attribute CDATA #REQUIRED>
 <!ATTLIST attributeModifier value CDATA #IMPLIED>

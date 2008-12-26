@@ -94,7 +94,7 @@ double CharacterClass::GetStatReal(ICharacter::eCharacterAttribute attr, int lev
 {
     StatMap::iterator it = m_stat_scripts.find(attr);
     if(it == m_stat_scripts.end())
-        throw CL_Error("Missing stat on character class.");
+        throw CL_Error("Missing stat: " + ICharacter::CAToString(attr) +  " on character class: " + m_name );
 
     StatScript *pScript = it->second;
     return pScript->GetStatReal(level);
@@ -104,7 +104,7 @@ int CharacterClass::GetStat(ICharacter::eCharacterAttribute attr, int level)
 {
     StatMap::iterator it = m_stat_scripts.find(attr);
     if(it == m_stat_scripts.end())
-        throw CL_Error("Missing stat on character class.");
+        throw CL_Error("Missing stat: " + ICharacter::CAToString(attr) + " on character class: " + m_name );
 
     StatScript * pScript = it->second;
     return pScript->GetStat(level);
