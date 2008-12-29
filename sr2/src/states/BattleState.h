@@ -5,6 +5,7 @@
 #include "sr_defines.h"
 #include "MonsterGroup.h"
 #include <ClanLib/core.h>
+#include <deque>
 
 namespace StoneRing{
 
@@ -67,6 +68,8 @@ namespace StoneRing{
         void draw_status(const CL_Rect &screenRect, CL_GraphicContext *pGC);
 
         void init_or_release_players(bool bRelease=false);
+        void roll_initiative();
+        void next_turn();
 
 
         eState m_eState; 
@@ -85,6 +88,8 @@ namespace StoneRing{
         uint m_nStatusBarY;
         uint m_nRows;
         uint m_nColumns;
+        std::deque<ICharacter*> m_initiative;
+        uint m_cur_char;
     };
 
 };

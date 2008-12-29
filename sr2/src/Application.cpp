@@ -266,6 +266,8 @@ SteelType Application::addCharacter(const std::string &character, int level, boo
 {
     Character * pCharacter = mCharacterManager.GetCharacter(character);
     pCharacter->SetLevel(level);
+    pCharacter->PermanentAugment(ICharacter::CA_HP, pCharacter->GetAttribute(ICharacter::CA_MAXHP));
+    pCharacter->PermanentAugment(ICharacter::CA_MP, pCharacter->GetAttribute(ICharacter::CA_MAXMP));
     mpParty->AddCharacter(pCharacter);
 
     if(announce)

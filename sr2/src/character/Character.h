@@ -92,6 +92,8 @@ namespace StoneRing{
         virtual void StatusEffectRound()=0;
         virtual void PermanentAugment(eCharacterAttribute attr, int augment)=0;
         virtual void PermanentAugment(eCharacterAttribute attr, double augment)=0;
+        virtual void RollInitiative(void)=0;
+        virtual uint GetInitiative(void)const=0;
         virtual void Kill()=0;
  
         // Static API
@@ -103,6 +105,7 @@ namespace StoneRing{
         static bool IsReal(eCharacterAttribute attr);
         static bool IsToggle(eCharacterAttribute attr);
         static bool IsTransient(eCharacterAttribute attr);
+        static uint GetMaximumAttribute(eCharacterAttribute attr);
     
         ///@todo API for different battle animations TBD
     private:
@@ -143,6 +146,8 @@ namespace StoneRing{
         virtual void AddStatusEffect(StatusEffect *);
         virtual void RemoveEffects(const std::string &name);
         virtual void StatusEffectRound();
+        virtual void RollInitiative(void);
+        virtual uint GetInitiative(void)const;
 
         CL_Sprite * GetMapSprite() const { return m_pMapSprite; }
         CL_Sprite * GetCurrentSprite() const { return m_pCurrentSprite; }
@@ -174,11 +179,24 @@ namespace StoneRing{
         SpriteDefinitionMap m_sprite_definition_map;
         CharacterClass * m_pClass;
         uint m_nLevel;
+        uint m_nInitiative;
         CL_Sprite *m_pMapSprite;
         CL_Sprite *m_pCurrentSprite;
         StatusEffectMap m_status_effects;
         eType m_eType;
     };
+
+    inline void Character::RollInitiative(void)
+    {
+        // 20% variance
+        int init = static_cast<int>(random_distribution(GetAttribute(CA_LCK),0.2));
+        m_nInitiative = max(0,init);
+    }
+
+    inline uint Character::GetInitiative(void)const
+    {
+        return m_nInitiative;
+    }
 
 };
 #endif

@@ -54,6 +54,8 @@ public:
     virtual void AddStatusEffect(StatusEffect *);
     virtual void RemoveEffects(const std::string &name);
     virtual void StatusEffectRound();
+    virtual void RollInitiative(void);
+    virtual uint GetInitiative(void)const;
     virtual void Kill();
 private:
 
@@ -67,8 +69,21 @@ private:
     MonsterElement * m_pMonsterDefinition;
     uint m_nCellX;
     uint m_nCellY;
+    uint m_nInitiative;
     CL_Sprite *m_pSprite;
 };
+
+
+inline void Monster::RollInitiative(void)
+{
+    int init = static_cast<int>(random_distribution(GetAttribute(CA_LCK),0.2));
+    m_nInitiative = max(0,init);
+
+}
+inline uint Monster::GetInitiative(void)const
+{
+    return m_nInitiative;
+}
 
 };
 

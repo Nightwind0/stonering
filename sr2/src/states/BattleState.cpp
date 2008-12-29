@@ -20,6 +20,8 @@ void BattleState::init(const MonsterGroup &group, const std::string &backdrop)
     m_nRows = group.GetCellRows();
     m_nColumns = group.GetCellColumns();
 
+    m_cur_char = 0;
+
     uint bottomrow = m_nRows - 1;
 
     const std::vector<MonsterRef*> & monsters = group.GetMonsters();
@@ -54,6 +56,60 @@ void BattleState::init(const MonsterGroup &group, const std::string &backdrop)
     }
     m_pBackdrop = pGraphicsManager->GetBackdrop(backdrop);
     m_bDone = false;
+    roll_initiative();
+    next_turn();
+}
+
+void BattleState::next_turn()
+{
+    Character * pCharacter = dynamic_cast<Character*>(m_initiative[m_cur_char]);
+
+    if(pCharacter != NULL)
+    {
+    }
+    else
+    {
+        Monster * pMonster = dynamic_cast<Monster*>(m_initiative[m_cur_char]);
+        cl_assert(pMonster != NULL); // has to be a monster...
+
+    }
+    
+}
+
+bool characterInitiativeSort(const ICharacter* pChar1, const ICharacter* pChar2)
+{
+    return pChar1->GetInitiative() > pChar2->GetInitiative();
+}
+
+void BattleState::roll_initiative()
+{
+    IParty * party = IApplication::GetInstance()->GetParty();
+
+    for(uint i=0;i<party->GetCharacterCount();i++)
+    {
+        ICharacter * pChar = party->GetCharacter(i);
+        pChar->RollInitiative();
+        m_initiative.push_back(pChar);
+    }
+
+    for(uint i=0;i<m_monsters.size();i++)
+    {
+        m_monsters[i]->RollInitiative();
+        m_initiative.push_back(m_monsters[i]);
+    }
+
+    // Okay they're all in the deque, now we just need to sort 
+    // it's ass
+    std::sort(m_initiative.begin(),m_initiative.end(),characterInitiativeSort);
+
+#ifndef NDEBUG
+    std::cerr << "Initiative Order:" << std::endl;
+    for(std::deque<ICharacter*>::const_iterator iter = m_initiative.begin(); iter != m_initiative.end();
+        iter++)
+    {
+        std::cerr << '\t' <<(*iter)->GetName() << " @ " << (*iter)->GetInitiative() << std::endl;
+    }
+#endif
 }
 
 bool BattleState::IsDone() const
@@ -200,6 +256,11 @@ void BattleState::draw_status(const CL_Rect &screenRect, CL_GraphicContext *pGC)
             m_pStatusGeneralFont->get_height()), name.str());
         m_pStatusHPFont->draw(m_status_rect.get_width() / 3 + m_status_rect.left,
             m_status_rect.top + (p* m_pStatusGeneralFont->get_height()),hp.str());
+        std::ostringstream mp;
+        mp << std::setw(6) << pChar->GetAttribute(ICharacter::CA_MP) << '/'
+            << pChar->GetAttribute(ICharacter::CA_MAXMP);
+        m_pStatusMPFont->draw((m_status_rect.get_width() / 3) * 2 + m_status_rect.left,
+            m_status_rect.top + (p*m_pStatusGeneralFont->get_height()),mp.str());
 
     }
 }

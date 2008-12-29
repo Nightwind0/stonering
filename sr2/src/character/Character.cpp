@@ -132,6 +132,17 @@ bool StoneRing::ICharacter::IsToggle(eCharacterAttribute attr)
     return (attr > ICharacter::_START_OF_TOGGLES && attr < ICharacter::_LAST_CHARACTER_ATTR_);
 }
 
+uint StoneRing::ICharacter::GetMaximumAttribute(eCharacterAttribute attr)
+{
+    if(ICharacter::_MAXIMA_BASE + attr < ICharacter::_LAST_CHARACTER_ATTR_)
+    {
+        // There IS a maximum for this guy
+        return ICharacter::_MAXIMA_BASE + attr;
+    }
+
+    return ICharacter::_LAST_CHARACTER_ATTR_;
+}
+
 
 
 
