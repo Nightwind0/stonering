@@ -26,6 +26,11 @@
                 return math::pow(1.07, $_CL) * 25;
             </script>
         </statScript>
+        <statScript stat="mp_max">
+            <script id="WarMPMAX">
+                return math::pow(1.07, $_CL) * 2;
+            </script>
+        </statScript>
         <statScript stat="str">
             <script id="WarSTR">
                 return math::pow(1.06, $_CL) * 5;
@@ -49,6 +54,11 @@
         <statScript stat="rst">
             <script id="WarRST">
                 return math::pow(1.06,$_CL) * 3.5;
+            </script>
+        </statScript>
+        <statScript stat="lck">
+            <script id="WarLCK">
+                return  math::pow(1.06,$_CL) * 4.25;
             </script>
         </statScript>
     </characterClass>

@@ -5,6 +5,7 @@
 #include <sstream>
 #include <string>
 #include <functional>
+#include <cmath>
 typedef unsigned int uint;
 typedef unsigned short ushort;
 
@@ -80,6 +81,38 @@ compose_f_gx (const OP1& o1, const OP2& o2) {
 
 std::string IntToString(const int &i);
 std::string FloatToString(const float &f);
+
+inline double ranf()
+{
+  return (double)rand() / (double)RAND_MAX;
+}
+
+// random dist centered around 0
+inline double gaussian_random (const double sigma=1.0)
+{
+  double x, y, r2;
+
+  do
+    {
+      /* choose x,y in uniform square (-1,-1) to (+1,+1) */
+
+      x = -1 + 2 * ranf();
+      y = -1 + 2 * ranf();
+
+      /* see if it is in the unit circle */
+      r2 = x * x + y * y;
+    }
+  while (r2 > 1.0 || r2 == 0);
+
+  /* Box-Muller transform */
+  return sigma * y * sqrt (-2.0 * log (r2) / r2);
+}
+
+inline double random_distribution(double center, double std_dev_ratio)
+{
+  return center + gaussian_random(std_dev_ratio * center);
+}
+
 
 
 ///////////////////////////////////////////////////////////////////////
