@@ -166,7 +166,9 @@ std::string CharacterClass::GetName() const
     return m_name;
 }
 
-
+StoneRing::BattleMenu * StoneRing::CharacterClass::GetBattleMenu() const{
+    return m_pMenu;
+}
         
 ICharacter::eGender 
 CharacterClass::GetGender() const

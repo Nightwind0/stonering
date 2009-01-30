@@ -32,11 +32,31 @@ std::string BattleMenuOption::GetName() const
 {
     return m_name;
 }
-bool BattleMenuOption::Enabled() const
+bool BattleMenuOption::Enabled(const ParameterList &params) const
 {
     if(m_pConditionScript)
-        return m_pConditionScript->EvaluateCondition();
+        return m_pConditionScript->EvaluateCondition(params);
     else return true; 
+    // TODO: Check for BP/MP requirements on skills here??
+}
+
+void BattleMenuOption::Select(StoneRing::BattleMenuStack& stack){
+    switch(m_action_type){
+        case SUBMENU:
+            stack.push(m_action.m_pSubMenu);
+            break;
+        case SKILLREF:
+            {
+                Skill * pSkill =  m_action.m_pSkillRef->GetSkill();
+                pSkill->Select();
+                break;
+            }
+        case SCRIPT:
+            // TODO: We may want to actually provide 
+            // some data params to this script here
+            m_action.m_pScript->ExecuteScript();
+            break;
+    }
 }
 
 

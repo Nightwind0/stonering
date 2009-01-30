@@ -7,6 +7,7 @@
 #include "Character.h"
 #include "SpriteDefinition.h"
 #include "StatusEffect.h"
+#include "Equipment.h"
 #include <functional>
 #include <ClanLib/core.h>
 
@@ -339,11 +340,21 @@ void StoneRing::Character::SetToggle(eCharacterAttribute attr, bool value)
    
 }
 
+bool StoneRing::Character::HasEquipment(Equipment::eSlot slot)
+{
+    return m_equipment.find(slot) != m_equipment.end();
+}
+
 // Equipment. If theres equipment in this slot already,
 // this overwrites it.
 void StoneRing::Character::Equip(Equipment::eSlot slot, Equipment *pEquip)
 {
     m_equipment[slot] = pEquip;
+}
+
+StoneRing::Equipment* StoneRing::Character::GetEquipment(Equipment::eSlot slot)
+{
+    return m_equipment[slot];
 }
 
 // Returns a pointer to the equipment that was in that slot
@@ -381,4 +392,9 @@ void StoneRing::Character::StatusEffectRound()
 double StoneRing::Character::GetSpellResistance(Magic::eMagicType /*type*/) const
 {
     return 0;
+}
+
+StoneRing::BattleMenu * StoneRing::Character::GetBattleMenu() const
+{
+    return m_pClass->GetBattleMenu();
 }

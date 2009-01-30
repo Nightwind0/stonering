@@ -35,11 +35,7 @@ namespace StoneRing{
 
         // ICharacterGroup interface
         virtual uint GetCharacterCount() const = 0;
-        virtual uint GetActorCharacterIndex() const = 0;
-        virtual uint GetTargetCharacterIndex() const = 0;
         virtual ICharacter * GetCharacter(uint index) const = 0;
-        virtual ICharacter * GetTargetCharacter() const = 0;
-        virtual ICharacter * GetActorCharacter() const = 0;
 
     private:
 

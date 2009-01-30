@@ -49,11 +49,10 @@ namespace StoneRing
 
         // This is called when you actually select the option.
         // Most options will then let you select a character/party as a target
-        // and then queue that selection up. 
-        void Select(ActionQueue *pQueue);
+        void Select();
         // If you cancel an option, it should be able to clean itself up
         // (especially removing entries from the queue)
-        void Deselect(ActionQueue *pQueue);
+        void Deselect();
 
         // For invoking from the  menu
         void Invoke();
@@ -88,6 +87,7 @@ namespace StoneRing
         uint GetSPCost() const;
         uint GetBPCost() const;
         uint GetMinLevel() const;
+        Skill * GetSkill() const;
 
     private:
         virtual void load_attributes(CL_DomNamedNodeMap * pAttributes);

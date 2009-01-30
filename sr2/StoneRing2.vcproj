@@ -220,20 +220,60 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl"
-			>
-			<File
-				RelativePath=".\src\Application.h"
-				>
-			</File>
-		</Filter>
-		<Filter
 			Name="Resource Files"
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 			>
 			<File
 				RelativePath=".\Media\resources.xml"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Data"
+			>
+			<File
+				RelativePath=".\Media\characterClasses.xml"
+				>
+			</File>
+			<File
+				RelativePath=".\Media\characters.xml"
+				>
+			</File>
+			<File
+				RelativePath=".\Media\init.steel"
+				>
+			</File>
+			<File
+				RelativePath=".\Media\items.xml"
+				>
+			</File>
+			<File
+				RelativePath=".\Media\monsters.xml"
+				>
+			</File>
+			<File
+				RelativePath=".\Media\skills.xml"
+				>
+			</File>
+			<File
+				RelativePath=".\Media\spells.xml"
+				>
+			</File>
+			<File
+				RelativePath=".\Media\spells2.xml"
+				>
+			</File>
+			<File
+				RelativePath=".\Media\statusEffects.xml"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl"
+			>
+			<File
+				RelativePath=".\src\Application.h"
 				>
 			</File>
 		</Filter>

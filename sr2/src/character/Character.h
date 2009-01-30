@@ -116,11 +116,7 @@ namespace StoneRing{
     {
     public:
         virtual uint GetCharacterCount() const = 0;
-        virtual uint GetTargetCharacterIndex() const = 0;
-        virtual uint GetActorCharacterIndex() const = 0;
         virtual ICharacter * GetCharacter(uint index) const = 0;
-        virtual ICharacter * GetTargetCharacter() const = 0;
-        virtual ICharacter * GetActorCharacter() const = 0;
     private:
     };
 
@@ -162,6 +158,10 @@ namespace StoneRing{
         void Equip(Equipment::eSlot slot, Equipment *pEquip);
         // Returns a pointer to the equipment that was in that slot
         Equipment* Unequip(Equipment::eSlot);
+        // Whether the slot is in use
+        bool HasEquipment(Equipment::eSlot);
+
+        Equipment* GetEquipment(Equipment::eSlot);
 
         // Element API
         virtual eElement WhichElement() const { return ECHARACTER; }

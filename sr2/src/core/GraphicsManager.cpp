@@ -68,6 +68,26 @@ CL_Surface * GraphicsManager::GetTileMap ( const std::string & name )
     return pSurface;
 }
 
+std::string GraphicsManager::NameOfOverlay(Overlay overlay)
+{
+    switch(overlay)
+    {
+    case BATTLE_STATUS:
+        return "BattleStatus";
+    case BATTLE_MENU:
+        return "BattleMenu";
+    case BATTLE_POPUP_MENU:
+        return "BattlePopup";
+    case CHOICE:
+        return "Choice";
+    case SAY:
+        return "Say";
+    }
+
+    cl_assert(0);
+    return "";
+}
+
 CL_Sprite * GraphicsManager::CreateMonsterSprite (const std::string &monster, const std::string &sprite)
 {
     CL_ResourceManager *pResources = IApplication::GetInstance()->GetResources();
@@ -94,6 +114,26 @@ CL_Surface * GraphicsManager::GetBackdrop(const std::string &name)
     return pSurface;
 }
 
+CL_Surface * GraphicsManager::GetOverlay(GraphicsManager::Overlay overlay)
+{
+    std::map<Overlay,CL_Surface*>::iterator foundIt = m_overlay_map.find(overlay);
+
+    if(foundIt != m_overlay_map.end())
+    {
+        return foundIt->second;
+    }
+    else
+    {
+        CL_ResourceManager *pResources  = IApplication::GetInstance()->GetResources();
+        CL_Surface * pSurface = NULL;
+        pSurface  = new CL_Surface( std::string("Overlays/") + NameOfOverlay(overlay) + "/overlay", pResources );
+
+        m_overlay_map [ overlay ] = pSurface;
+
+        return pSurface;
+    }
+}
+
 CL_Font * GraphicsManager::GetFont(const std::string &name)
 {
     std::map<std::string,CL_Font*>::iterator foundIt = m_font_map.find( name );
@@ -112,6 +152,40 @@ CL_Font * GraphicsManager::GetFont(const std::string &name)
 
         return pFont;
     }
+}
+
+CL_Font * GraphicsManager::GetFont( Overlay overlay, const std::string& type )
+{
+    std::map<Overlay,std::map<std::string,std::string> >::iterator mapIt = m_overlay_font_map.find( overlay  );
+    CL_ResourceManager *pResources  = IApplication::GetInstance()->GetResources();
+    std::string fontname;
+
+    if(mapIt != m_overlay_font_map.end())
+    {
+        std::map<std::string,std::string>::iterator foundIt = mapIt->second.find(type);
+        if(foundIt != mapIt->second.end())
+        {
+            fontname = foundIt->second;
+        }
+        else
+        {
+            // This overlay has an entry, but not this font yet
+            fontname =  CL_String::load( std::string("Overlays/" + NameOfOverlay(overlay)
+                + "/fonts/" + type ), pResources );
+            mapIt->second[type] = fontname;
+        }
+    }
+    else
+    {
+        // Overlay doesnt have an entry yet
+        fontname = CL_String::load( std::string("Overlays/" + NameOfOverlay(overlay)
+                + "/fonts/" + type ), pResources );
+
+        m_overlay_font_map[overlay][type] = fontname;
+    }
+
+
+    return GetFont(fontname);
 }
             
             

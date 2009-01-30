@@ -1,1 +1,2 @@
-addCharacter("Valyn",1,false);
+var $char = addCharacter("Valyn",1,false);
+equip($char,$_HAND,"Warrior Sword");

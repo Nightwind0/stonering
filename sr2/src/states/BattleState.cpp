@@ -6,6 +6,7 @@
 #include "MonsterGroup.h"
 #include "Monster.h"
 #include "IParty.h"
+#include "BattleMenu.h"
 #include <sstream>
 #include <iomanip>
 
@@ -21,6 +22,7 @@ void BattleState::init(const MonsterGroup &group, const std::string &backdrop)
     m_nColumns = group.GetCellColumns();
 
     m_cur_char = 0;
+    m_nRound = 0;
 
     uint bottomrow = m_nRows - 1;
 
@@ -66,12 +68,15 @@ void BattleState::next_turn()
 
     if(pCharacter != NULL)
     {
+        m_combat_state = BATTLE_MENU;
+        m_menu_stack.push ( pCharacter->GetBattleMenu() );
     }
     else
     {
         Monster * pMonster = dynamic_cast<Monster*>(m_initiative[m_cur_char]);
         cl_assert(pMonster != NULL); // has to be a monster...
-
+        // Figure out what the monster will do here.
+        m_combat_state = DISPLAY_ACTION;
     }
     
 }
@@ -119,6 +124,17 @@ bool BattleState::IsDone() const
 
 void BattleState::HandleKeyDown(const CL_InputEvent &key)
 {
+    switch(key.id)
+    {
+    case CL_KEY_DOWN:
+        if(m_combat_state == BATTLE_MENU)
+            m_menu_stack.top()->SelectNext();
+        break;
+    case CL_KEY_UP:
+        if(m_combat_state == BATTLE_MENU)
+            m_menu_stack.top()->SelectPrevious();
+        break;
+    }
 }
 
 void BattleState::HandleKeyUp(const CL_InputEvent &key)
@@ -154,25 +170,22 @@ void BattleState::MappableObjectMoveHook()
 
 void BattleState::Start()
 {
+    GraphicsManager * pGraphicsManager = GraphicsManager::GetInstance();
     m_draw_method = &BattleState::draw_battle;
-    m_eState = BATTLE;
+    m_eState = COMBAT;
     const std::string resource = "Overlays/BattleStatus/";
     IApplication * pApp = IApplication::GetInstance();
     CL_ResourceManager *pResources = pApp->GetResources();
 
     m_bDone = false;
 
-    std::string hpFont = CL_String::load(resource + "fonts/hp",pResources);
-    std::string mpFont = CL_String::load(resource + "fonts/mp",pResources);
-    std::string bpFont = CL_String::load(resource + "fonts/bp",pResources);
-    std::string generalFont = CL_String::load(resource + "fonts/general",pResources);
-    std::string badFont = CL_String::load(resource +  "fonts/bad",pResources);
-
-    m_pStatusHPFont = GraphicsManager::GetInstance()->GetFont(hpFont);
-    m_pStatusMPFont = GraphicsManager::GetInstance()->GetFont(mpFont);
-    m_pStatusBPFont = GraphicsManager::GetInstance()->GetFont(bpFont);
-    m_pStatusGeneralFont = GraphicsManager::GetInstance()->GetFont(generalFont);
-    m_pStatusBadFont = GraphicsManager::GetInstance()->GetFont(badFont);
+#if 0
+    m_pStatusHPFont = pGraphicsManager->GetFont(GraphicsManager::BATTLE_STATUS, GraphicsManager::HP);
+    m_pStatusMPFont =  pGraphicsManager->GetFont(GraphicsManager::BATTLE_STATUS, GraphicsManager::MP);
+    m_pStatusBPFont =  pGraphicsManager->GetFont(GraphicsManager::BATTLE_STATUS, GraphicsManager::BP);
+    m_pStatusGeneralFont =  pGraphicsManager->GetFont(GraphicsManager::BATTLE_STATUS, GraphicsManager::GENERAL);
+    m_pStatusBadFont = pGraphicsManager->GetFont(GraphicsManager::BATTLE_STATUS, GraphicsManager::BAD);
+#endif 
 
     m_nStatusBarX = CL_Integer::load(resource + "x",pResources);
     m_nStatusBarY = CL_Integer::load(resource + "y",pResources);
@@ -196,7 +209,9 @@ void BattleState::Start()
     m_status_rect.top += m_nStatusBarY;
     m_status_rect.left += m_nStatusBarX;
 
-    m_pStatusBar = new CL_Surface("Overlays/BattleStatus/overlay", pResources );
+    m_pStatusBar = pGraphicsManager->GetOverlay(GraphicsManager::BATTLE_STATUS);
+    m_pBattleMenu = pGraphicsManager->GetOverlay(GraphicsManager::BATTLE_MENU);
+    m_pBattlePopup = pGraphicsManager->GetOverlay(GraphicsManager::BATTLE_POPUP_MENU);
     init_or_release_players(false);
 }
 
@@ -226,6 +241,8 @@ void BattleState::Finish()
 
     m_monsters.clear();
 
+    m_initiative.clear();
+
     init_or_release_players(true);
 }
 
@@ -241,6 +258,7 @@ void BattleState::draw_start(const CL_Rect &screenRect, CL_GraphicContext *pGC)
 void BattleState::draw_status(const CL_Rect &screenRect, CL_GraphicContext *pGC)
 {
     IParty * pParty = IApplication::GetInstance()->GetParty();
+    GraphicsManager * pGraphicsManager = GraphicsManager::GetInstance();
     m_pStatusBar->draw(m_nStatusBarX,m_nStatusBarY,pGC);
 
     for(uint p = 0; p < pParty->GetCharacterCount(); p++)
@@ -251,16 +269,19 @@ void BattleState::draw_status(const CL_Rect &screenRect, CL_GraphicContext *pGC)
         std::ostringstream hp;
         hp << std::setw(6) << pChar->GetAttribute(ICharacter::CA_HP) << '/'
             << pChar->GetAttribute(ICharacter::CA_MAXHP); 
+        CL_Font * generalFont = pGraphicsManager->GetFont(GraphicsManager::BATTLE_STATUS, "general");
+        CL_Font * hpFont = pGraphicsManager->GetFont(GraphicsManager::BATTLE_STATUS, "hp");
+        CL_Font * mpFont = pGraphicsManager->GetFont(GraphicsManager::BATTLE_STATUS, "mp");
 
-        m_pStatusGeneralFont->draw(m_status_rect.left,m_status_rect.top + (p * 
-            m_pStatusGeneralFont->get_height()), name.str());
-        m_pStatusHPFont->draw(m_status_rect.get_width() / 3 + m_status_rect.left,
-            m_status_rect.top + (p* m_pStatusGeneralFont->get_height()),hp.str());
+        generalFont->draw(m_status_rect.left,m_status_rect.top + (p * 
+            generalFont->get_height()), name.str());
+        hpFont->draw(m_status_rect.get_width() / 3 + m_status_rect.left,
+            m_status_rect.top + (p* hpFont->get_height()),hp.str());
         std::ostringstream mp;
         mp << std::setw(6) << pChar->GetAttribute(ICharacter::CA_MP) << '/'
             << pChar->GetAttribute(ICharacter::CA_MAXMP);
-        m_pStatusMPFont->draw((m_status_rect.get_width() / 3) * 2 + m_status_rect.left,
-            m_status_rect.top + (p*m_pStatusGeneralFont->get_height()),mp.str());
+        mpFont->draw((m_status_rect.get_width() / 3) * 2 + m_status_rect.left,
+            m_status_rect.top + (p*mpFont->get_height()),mp.str());
 
     }
 }
@@ -281,6 +302,16 @@ void BattleState::draw_battle(const CL_Rect &screenRect, CL_GraphicContext *pGC)
     draw_monsters(monsterRect,pGC);
     draw_players(playerRect,pGC);
     draw_status(screenRect,pGC);
+
+    if(m_combat_state == BATTLE_MENU)
+    {
+        CL_Rect menu_rect = screenRect;
+        // TODO: These SHOULD come from the graphics manager,
+        // the values are data driven in resources.xml
+        menu_rect.top = screenRect.bottom * 0.5;
+        menu_rect.left = screenRect.right * 0.1;
+        draw_menus(menu_rect,pGC);
+    }
 }
 
 void BattleState::draw_monsters(const CL_Rect &monsterRect, CL_GraphicContext *pGC)
@@ -318,6 +349,54 @@ void BattleState::draw_players(const CL_Rect &playerRect, CL_GraphicContext *pGC
     }
 }
 
+void BattleState::draw_menus(const CL_Rect &screenrect, CL_GraphicContext *pGC)
+{
+    BattleMenu * pMenu = m_menu_stack.top();
+    GraphicsManager * pGraphicsManager = GraphicsManager::GetInstance();
+    CL_Font * onFont;
+    CL_Font * offFont;
+    CL_Font * selectedFont;
+
+    ParameterList params;
+    // Supply a handle to the character in question
+    Character *pChar = dynamic_cast<Character*>(m_initiative[m_cur_char]);
+    params.push_back ( ParameterListItem("$Character", pChar ) );
+    params.push_back ( ParameterListItem("$Round", static_cast<int>(m_nRound) ) );
+
+    if(pMenu->GetType() == BattleMenu::POPUP){
+        onFont = pGraphicsManager->GetFont(GraphicsManager::BATTLE_POPUP_MENU,"on");
+        offFont = pGraphicsManager->GetFont(GraphicsManager::BATTLE_POPUP_MENU,"off");
+        selectedFont = pGraphicsManager->GetFont(GraphicsManager::BATTLE_POPUP_MENU,"Selection");
+        m_pBattlePopup->draw(screenrect.left,screenrect.top,pGC);
+        std::list<BattleMenuOption*>::iterator iter;
+        uint pos = 0;
+
+        for(iter = pMenu->GetOptionsBegin();iter != pMenu->GetOptionsEnd();iter++)
+        {
+            BattleMenuOption * pOption = *iter;
+            CL_Font * font;
+            if(pOption->Enabled(params))
+            {
+                font = onFont;
+            }
+            else
+            {
+                font = offFont;
+            }
+
+            if(m_menu_stack.top()->GetSelectedOption() == iter)
+                font = selectedFont;
+
+            // TODO: get font box from resources
+            font->draw(screenrect.left + 20 , 20 + screenrect.top + font->get_height() * pos,pOption->GetName(),pGC);
+
+            ++pos;
+        }
+    }
+    else{
+        m_pBattleMenu->draw(screenrect.left,screenrect.top,pGC);
+    }
+}
 void BattleState::SteelInit(SteelInterpreter* pInterpreter)
 {
 
