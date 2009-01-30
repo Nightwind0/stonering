@@ -31,13 +31,12 @@ void StoneRing::Skill::load_attributes(CL_DomNamedNodeMap * pAttributes)
     m_bDefaultToEnemyGroup = get_implied_bool("defaultToEnemyGroup", pAttributes,true);
 }
 
-void StoneRing::Skill::Select(StoneRing::ActionQueue *pQueue)
+void StoneRing::Skill::Select()
 {
     if(m_pOnSelect)
     {
         // Put pQueue in scope
         ParameterList params;
-        params.push_back ( ParameterListItem("$_ActionQueue",pQueue) );
         params.push_back ( ParameterListItem("$_ActionScript", m_pOnInvoke ) );
 
         m_pOnSelect->ExecuteScript(params);
@@ -63,11 +62,9 @@ void StoneRing::Skill::Select(StoneRing::ActionQueue *pQueue)
 
 // If you cancel an option, it should be able to clean itself up
 // (especially removing entries from the queue)
-void StoneRing::Skill::Deselect(StoneRing::ActionQueue *pQueue)
+void StoneRing::Skill::Deselect()
 {
-    ICharacter *pCharacter = 
-        IApplication::GetInstance()->GetActorCharacterGroup()->GetActorCharacter();
-//TODO: Return this    pQueue->Remove(pCharacter, m_pOnDeselect);
+
 }
 
 bool StoneRing::Skill::handle_element(eElement element, Element * pElement)
@@ -148,6 +145,11 @@ std::list<SkillRef*>::const_iterator
 Skill::GetPreReqsEnd() const
 {
     return m_pre_reqs.end();
+}
+
+Skill * SkillRef::GetSkill() const{
+    AbilityManager * pAM = IApplication::GetInstance()->GetAbilityManager();
+    return pAM->GetSkill(*this);
 }
 
 

@@ -30,6 +30,14 @@ bool ScriptElement::EvaluateCondition() const
     return (bool) pApp->RunScript ( mp_script );
 }
 
+bool ScriptElement::EvaluateCondition(const ParameterList &params) const
+{
+    if(mp_script == NULL) return true;
+    IApplication *pApp = IApplication::GetInstance();
+    return pApp->RunScript ( mp_script, params );   
+}
+
+
 SteelType ScriptElement::ExecuteScript() const
 {
    if( NULL != mp_script )

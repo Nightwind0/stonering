@@ -1,12 +1,17 @@
 <!--DOCTYPE characterClasses SYSTEM "Levels/level.dtd"-->
 <characterClasses>
 	<characterClass name = "Warrior" gender="either">
-        <battleMenu>
+        <battleMenu type="popup">
             <battleMenuOption name="Attack" icon="BattleMenuIcons/attack">
                 <conditionScript id="WarriorAttackOptionCondition">
-                    return hasAnyWeaponEquipped(getActor());
+                    return hasEquipment($Character, $_HAND)
+                    or 
+                    hasEquipment($Character, $_OFFHAND);
                 </conditionScript>
                 <skillRef skillName="Attack"/>
+            </battleMenuOption>
+            <battleMenuOption name="Item" icon="BattleMenuIcons/attack">
+                 <skillRef skillName="Item"/>
             </battleMenuOption>
         </battleMenu>
         <weaponTypeRef name="Sword"/>

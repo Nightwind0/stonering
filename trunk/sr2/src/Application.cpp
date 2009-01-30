@@ -352,6 +352,24 @@ SteelType Application::getCharacterLevel(const SteelType::Handle hCharacter)
     return level;
 }
 
+SteelType Application::equip(SteelType::Handle hCharacter, int slot, const std::string &equipment)
+{
+    Character * pCharacter = static_cast<Character*>(hCharacter);
+    Equipment * pEquipment = dynamic_cast<Equipment*>(mItemManager.GetNamedItem(equipment));
+    SteelType result;
+    if(pEquipment != NULL)
+    {
+        pCharacter->Equip(static_cast<Equipment::eSlot>(slot),pEquipment);
+        result.set(true);
+    }
+    else
+    {
+        result.set(false);
+    }
+
+    return result;
+}
+
 SteelType Application::addStatusEffect(SteelType::Handle hCharacter, const std::string &effect)
 {
     ICharacter *pCharacter = static_cast<ICharacter*>(hCharacter);
@@ -367,6 +385,23 @@ SteelType Application::removeStatusEffects(SteelType::Handle hCharacter, const s
 
     return SteelType();
 }
+
+SteelType Application::hasEquipment(SteelType::Handle hCharacter, int slot)
+{
+    SteelType result;
+    Character *pCharacter = static_cast<Character*>(hCharacter);
+    result.set(pCharacter->HasEquipment(static_cast<Equipment::eSlot>(slot)));
+    return result;
+}
+
+SteelType Application::getEquipment(SteelType::Handle hCharacter, int slot)
+{
+    SteelType result;
+    Character *pCharacter = static_cast<Character*>(hCharacter);
+    result.set(pCharacter->GetEquipment(static_cast<Equipment::eSlot>(slot)));
+    return result;
+}
+
 
 IApplication * IApplication::GetInstance()
 {
@@ -508,36 +543,51 @@ void Application::registerSteelFunctions()
     static SteelFunctor2Arg<Application,const SteelType::Handle,const std::string&> fn_removeStatusEffects(this,&Application::removeStatusEffects);
     static SteelFunctor2Arg<Application,const SteelType::Handle,int> fn_doDamage(this,&Application::doDamage);
 
+    static SteelFunctor2Arg<Application,const SteelType::Handle,int> fn_hasEquipment(this,&Application::hasEquipment);
+    static SteelFunctor2Arg<Application,const SteelType::Handle,int> fn_getEquipment(this,&Application::getEquipment);
+    static SteelFunctor3Arg<Application,const SteelType::Handle,int,const std::string&> fn_equip(this,&Application::equip);
+
+
     mInterpreter.pushScope();
 
-    steelConst("_HP",Character::CA_HP);
-    steelConst("_MP",Character::CA_MP);
-    steelConst("_STR",Character::CA_STR);
-    steelConst("_DEF",Character::CA_DEF);
-    steelConst("_DEX",Character::CA_DEX);
-    steelConst("_EVD",Character::CA_EVD);
-    steelConst("_MAG",Character::CA_MAG);
-    steelConst("_RST",Character::CA_RST);
-    steelConst("_LCK",Character::CA_LCK);
-    steelConst("_JOY",Character::CA_JOY);
+    steelConst("$_HAND",Equipment::EHAND);
+    steelConst("$_OFFHAND",Equipment::EOFFHAND);
+    steelConst("$_HEAD",Equipment::EHEAD);
+    steelConst("$_HANDS",Equipment::EHANDS);
+    steelConst("$_BODY",Equipment::EBODY);
+    steelConst("$_FINGER1",Equipment::EFINGER1);
+    steelConst("$_FINGER2",Equipment::EFINGER2);
+    steelConst("$_FEET",Equipment::EFEET);
 
-    steelConst("_DRAW_ILL",Character::CA_DRAW_ILL);
-    steelConst("_DRAW_STONE",Character::CA_DRAW_STONE);
-    steelConst("_DRAW_BERSERK",Character::CA_DRAW_BERSERK);
-    steelConst("_DRAW_WEAK",Character::CA_DRAW_WEAK);
-    steelConst("_DRAW_PARALYZED",Character::CA_DRAW_PARALYZED);
-    steelConst("_DRAW_TRANSLUCENT",Character::CA_DRAW_TRANSLUCENT);
-    steelConst("_DRAW_MINI",Character::CA_DRAW_MINI);
-    steelConst("_CAN_ACT",Character::CA_CAN_ACT);
-    steelConst("_CAN_FIGHT",Character::CA_CAN_FIGHT);
-    steelConst("_CAN_CAST",Character::CA_CAN_CAST);
-    steelConst("_CAN_SKILL",Character::CA_CAN_SKILL);
-    steelConst("_CAN_ITEM",Character::CA_CAN_ITEM);
-    steelConst("_CAN_RUN",Character::CA_CAN_RUN);
-    steelConst("_ALIVE",Character::CA_ALIVE);
 
-    steelConst("_MAXHP",Character::CA_MAXHP);
-    steelConst("_MAXMP",Character::CA_MAXMP);
+    steelConst("$_HP",Character::CA_HP);
+    steelConst("$_MP",Character::CA_MP);
+    steelConst("$_STR",Character::CA_STR);
+    steelConst("$_DEF",Character::CA_DEF);
+    steelConst("$_DEX",Character::CA_DEX);
+    steelConst("$_EVD",Character::CA_EVD);
+    steelConst("$_MAG",Character::CA_MAG);
+    steelConst("$_RST",Character::CA_RST);
+    steelConst("$_LCK",Character::CA_LCK);
+    steelConst("$_JOY",Character::CA_JOY);
+
+    steelConst("$_DRAW_ILL",Character::CA_DRAW_ILL);
+    steelConst("$_DRAW_STONE",Character::CA_DRAW_STONE);
+    steelConst("$_DRAW_BERSERK",Character::CA_DRAW_BERSERK);
+    steelConst("$_DRAW_WEAK",Character::CA_DRAW_WEAK);
+    steelConst("$_DRAW_PARALYZED",Character::CA_DRAW_PARALYZED);
+    steelConst("$_DRAW_TRANSLUCENT",Character::CA_DRAW_TRANSLUCENT);
+    steelConst("$_DRAW_MINI",Character::CA_DRAW_MINI);
+    steelConst("$_CAN_ACT",Character::CA_CAN_ACT);
+    steelConst("$_CAN_FIGHT",Character::CA_CAN_FIGHT);
+    steelConst("$_CAN_CAST",Character::CA_CAN_CAST);
+    steelConst("$_CAN_SKILL",Character::CA_CAN_SKILL);
+    steelConst("$_CAN_ITEM",Character::CA_CAN_ITEM);
+    steelConst("$_CAN_RUN",Character::CA_CAN_RUN);
+    steelConst("$_ALIVE",Character::CA_ALIVE);
+
+    steelConst("$_MAXHP",Character::CA_MAXHP);
+    steelConst("$_MAXMP",Character::CA_MAXMP);
 
     mInterpreter.addFunction("say",&fn_say);
     mInterpreter.addFunction("playScene", &fn_playScene);
@@ -562,6 +612,12 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction("addStatusEffect", &fn_addStatusEffect);
     mInterpreter.addFunction("removeStatusEffects", &fn_removeStatusEffects);
     mInterpreter.addFunction("doDamage",&fn_doDamage);
+    mInterpreter.addFunction("hasEquipment",&fn_hasEquipment);
+    mInterpreter.addFunction("getEquipment",&fn_getEquipment);
+    mInterpreter.addFunction("equip",&fn_equip);
+
+
+
 
 //        SteelType hasGeneratedWeapon(const std::string &wepclass, const std::string &webtype);
 //       SteelType hasGeneratedArmor(const std::string &armclass, const std::string &armtype);
@@ -636,11 +692,13 @@ void Application::run()
 void Application::loadscript(std::string &o_str, const std::string & filename)
 {
     std::ifstream in;
+    std::string line;
     in.open(filename.c_str());
-    char c;
-    while(in >> c)
+
+    while(in)
     {
-        o_str += c;
+        getline(in,line);
+        o_str += line;
     }
     in.close();
 }

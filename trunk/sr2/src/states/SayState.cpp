@@ -98,11 +98,8 @@ void StoneRing::SayState::Start()
     m_bDone = false;
     m_nTotalDrawn = m_nDrawnThisFrame = 0;
 
-    std::string speakerFont = CL_String::load(resource + "fonts/Speaker",pResources);
-    std::string speechFont = CL_String::load(resource + "fonts/Speech",pResources);
-
-    m_pSpeakerFont = GraphicsManager::GetInstance()->GetFont(speakerFont);
-    m_pSpeechFont = GraphicsManager::GetInstance()->GetFont(speechFont);
+    m_pSpeakerFont = GraphicsManager::GetInstance()->GetFont(GraphicsManager::SAY,"Speaker");
+    m_pSpeechFont = GraphicsManager::GetInstance()->GetFont(GraphicsManager::SAY,"Speech");
 
     if(!m_pSayOverlay)
         m_pSayOverlay = new CL_Surface(resource + "overlay", pResources);

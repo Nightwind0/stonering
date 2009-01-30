@@ -24,6 +24,7 @@ namespace StoneRing{
         virtual eElement WhichElement() const { return m_bIsCondition?ECONDITIONSCRIPT:ESCRIPT; }
 
         bool EvaluateCondition() const;
+        bool EvaluateCondition(const ParameterList &params)const;
         SteelType ExecuteScript() const ;
         SteelType ExecuteScript(const ParameterList &params);
 

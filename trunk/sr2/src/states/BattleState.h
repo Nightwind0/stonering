@@ -6,6 +6,8 @@
 #include "MonsterGroup.h"
 #include <ClanLib/core.h>
 #include <deque>
+#include <stack>
+#include "BattleMenuOption.h"
 
 namespace StoneRing{
 
@@ -34,9 +36,16 @@ namespace StoneRing{
         {
             TRANSITION_IN,
             BATTLE_START,
-            BATTLE,
+            COMBAT,
             BATTLE_REWARDS,
             TRANSITION_OUT
+        };
+
+        enum eCombatState
+        {
+            BATTLE_MENU,
+            DISPLAY_ACTION
+              
         };
 
 
@@ -66,6 +75,7 @@ namespace StoneRing{
         void draw_monsters(const CL_Rect &monsterRect, CL_GraphicContext *pGC);
         void draw_players(const CL_Rect &playerRect, CL_GraphicContext *pGC);
         void draw_status(const CL_Rect &screenRect, CL_GraphicContext *pGC);
+        void draw_menus(const CL_Rect &screenrect, CL_GraphicContext *pGC);
 
         void init_or_release_players(bool bRelease=false);
         void roll_initiative();
@@ -77,18 +87,19 @@ namespace StoneRing{
         std::vector<Monster*> m_monsters;
         CL_Surface *m_pBackdrop;
         CL_Surface *m_pStatusBar;
-        CL_Font *m_pStatusGeneralFont;
-        CL_Font *m_pStatusHPFont;
-        CL_Font *m_pStatusMPFont;
-        CL_Font *m_pStatusBPFont;
-        CL_Font *m_pStatusBadFont;
+        CL_Surface *m_pBattleMenu;
+        CL_Surface *m_pBattlePopup;
         CL_Rect m_status_rect;
+
+        eCombatState m_combat_state;
+        BattleMenuStack m_menu_stack;
         bool m_bDone;
         uint m_nStatusBarX;
         uint m_nStatusBarY;
         uint m_nRows;
         uint m_nColumns;
         std::deque<ICharacter*> m_initiative;
+        uint m_nRound;
         uint m_cur_char;
     };
 

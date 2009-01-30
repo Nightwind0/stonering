@@ -141,30 +141,12 @@ uint Party::GetCharacterCount() const
     return count;
 }
 
-uint Party::GetTargetCharacterIndex() const
-{
-    return 0;
-}
-
-uint Party::GetActorCharacterIndex() const
-{
-    return 0;
-}
 
 ICharacter * Party::GetCharacter(uint index) const 
 {
     return m_characters[index];
 }
 
-ICharacter * Party::GetTargetCharacter() const 
-{
-    return NULL;
-}
-
-ICharacter * Party::GetActorCharacter() const 
-{
-    return NULL;
-}
 
 void Party::AddCharacter(Character *pCharacter)
 {
