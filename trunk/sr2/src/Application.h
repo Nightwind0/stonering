@@ -51,6 +51,7 @@ namespace StoneRing
         virtual ICharacterGroup * GetActorCharacterGroup() const;
         virtual void StartBattle(const MonsterGroup &group,const std::string &backdrop);
         virtual void RequestRedraw(const State *pState);
+	    virtual void RunState(State *pState);
 
         virtual AstScript * LoadScript(const std::string &name, const std::string &script);
         virtual SteelType RunScript(AstScript * pScript);

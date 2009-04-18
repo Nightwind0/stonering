@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual C++ Express 2005
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual C++ Express 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StoneRing2", "StoneRing2.vcproj", "{FC272BF0-BB24-4D05-840F-8E65552E7271}"
 	ProjectSection(ProjectDependencies) = postProject
 		{F5425C27-97C9-4DEF-8A52-246D6A3D2923} = {F5425C27-97C9-4DEF-8A52-246D6A3D2923}

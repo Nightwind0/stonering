@@ -30,8 +30,15 @@ namespace StoneRing{
         virtual void Start(); 
         virtual void SteelInit(SteelInterpreter*);
         virtual void Finish(); // Hook to clean up or whatever after being popped
-    private:
 
+
+    private:
+		friend class TargetingState;
+		void StartTargeting();
+		void FinishTargeting();
+		void SelectFirstTarget(bool monster);
+		void SelectNextTarget();
+		void SelectPreviousTarget();
         enum eState
         {
             TRANSITION_IN,
@@ -44,6 +51,7 @@ namespace StoneRing{
         enum eCombatState
         {
             BATTLE_MENU,
+			TARGETING,
             DISPLAY_ACTION
               
         };

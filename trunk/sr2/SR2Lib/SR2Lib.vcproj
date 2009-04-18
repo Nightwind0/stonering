@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="9.00"
 	Name="SR2Lib"
 	ProjectGUID="{E143424A-1AA3-49FF-B9DE-79A97E33C816}"
 	RootNamespace="SR2Lib"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -105,6 +106,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -123,9 +126,6 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -519,6 +519,10 @@
 					RelativePath="..\src\battle\ActionQueue.cpp"
 					>
 				</File>
+				<File
+					RelativePath="..\src\battle\TargetingState.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="States"
@@ -891,6 +895,10 @@
 				</File>
 				<File
 					RelativePath="..\src\battle\IBattleAction.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\battle\TargetingState.h"
 					>
 				</File>
 			</Filter>
