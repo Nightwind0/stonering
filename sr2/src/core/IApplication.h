@@ -50,6 +50,7 @@ namespace StoneRing
 
         virtual CL_Rect GetDisplayRect() const=0;
         virtual void RequestRedraw(const State *pState)=0;
+		virtual void RunState(State *pState)=0;
         virtual AstScript * LoadScript(const std::string &name, const std::string &script)=0;
         virtual SteelType RunScript(AstScript * pScript)=0;
         virtual SteelType RunScript(AstScript *pScript, const ParameterList &params)=0; 

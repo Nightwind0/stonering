@@ -168,6 +168,16 @@ void BattleState::MappableObjectMoveHook()
 {
 }
 
+void BattleState::StartTargeting()
+{
+	m_combat_state = TARGETING;
+}
+
+void BattleState::FinishTargeting()
+{
+	m_combat_state = DISPLAY_ACTION;
+}
+
 void BattleState::Start()
 {
     GraphicsManager * pGraphicsManager = GraphicsManager::GetInstance();

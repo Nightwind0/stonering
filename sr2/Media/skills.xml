@@ -3,11 +3,11 @@
     <skill bp="0" name="Attack" sp="0">
         <onInvoke>
             <script id="AttackSkillScript">
-                var $pC = $_Actor;
+                var $pC = $Character;
                 // The animation comes first.
                 animation($pC,"Attack");
 
-                var $pWeapon = getMainWeapon($pC);
+                var $pWeapon = getEquipment($pC, $_HAND);
                 // If hit
                 // Calculate damage
                 // doAttack()

@@ -157,6 +157,13 @@ SteelType Application::say(const std::string &speaker, const std::string &text)
     return SteelType();
 }
 
+void Application::RunState(State * pState)
+{
+	mStates.push_back(pState);
+
+	run();
+}
+
 void Application::showError(int line, const std::string &script, const std::string &message)
 {
     std::ostringstream os;

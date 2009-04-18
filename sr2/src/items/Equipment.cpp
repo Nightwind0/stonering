@@ -62,7 +62,7 @@ Equipment::AttributeModifierSet::const_iterator Equipment::GetAttributeModifiers
 
 double StoneRing::Equipment::GetAttributeMultiplier(uint attr) const
 {
-    double multiplier = 0.0;
+    double multiplier = 1.0;
     for(AttributeModifierSet::const_iterator iter = m_attribute_modifiers.lower_bound(attr);
         iter != m_attribute_modifiers.upper_bound(attr);iter++)
     {
