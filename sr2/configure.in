@@ -22,7 +22,7 @@ AC_PROG_MAKE_SET
 AC_CHECK_LIB(steel,main)
 
 
-PKG_CHECK_MODULES(CLANLIB, clanCore-0.8 clanApp-0.8 clanDisplay-0.8 clanGL-0.8 clanSound-0.8 clanGUI-0.8 clanGUIStyleSilver-0.8)
+PKG_CHECK_MODULES(CLANLIB, clanCore-1.0 clanApp-1.0 clanDisplay-1.0 clanGL-1.0 clanSound-1.0 clanGUI-1.0 clanGUIStyleSilver-1.0)
 
 AC_SUBST(CLANLIB_LIBS) 
 AC_SUBST(CLANLIB_CFLAGS)

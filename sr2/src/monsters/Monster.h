@@ -77,7 +77,7 @@ private:
 inline void Monster::RollInitiative(void)
 {
     int init = static_cast<int>(random_distribution(GetAttribute(CA_LCK),0.2));
-    m_nInitiative = max(0,init);
+    m_nInitiative = std::max(0,init);
 
 }
 inline uint Monster::GetInitiative(void)const

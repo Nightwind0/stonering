@@ -1,3 +1,3 @@
 #!/bin/bash
-cp build/src/stonering .
+cp src/stonering .
 ./stonering

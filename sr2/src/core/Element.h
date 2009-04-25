@@ -141,9 +141,9 @@ namespace StoneRing
 #ifndef NDEBUG
         std::string get_element_name() const;
 #else
-        std::string getElementName() const { 
+        std::string get_element_name() const { 
             std::ostringstream os;
-            os << "Element #" << whichElement() << "- Use debug mode to find out the name.";
+            os << "Element #" << WhichElement() << "- Use debug mode to find out the name.";
             return os.str();
         }
 #endif
