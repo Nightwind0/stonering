@@ -14,6 +14,7 @@ void TargetingState::Init(BattleState *pParent, Targetable targetable, bool bDef
 
 	if(bDefaultMonsters)
 	{
+		// Wtf was I going to do here?
 		
 	}
 }
