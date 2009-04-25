@@ -7,7 +7,11 @@
 #include <string>
 #include <set>
 #include <map>
+#ifdef _WIN32
 #include "SteelType.h"
+#else
+#include "steel/SteelType.h"
+#endif
 #include "IParty.h"
 #include "sr_defines.h"
 

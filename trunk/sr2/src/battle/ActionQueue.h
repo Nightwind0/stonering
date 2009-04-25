@@ -1,6 +1,7 @@
 #ifndef SR_ACTION_QUEUE_H
 #define SR_ACTION_QUEUE_H
 
+#include <string>
 #ifdef _WIN32
 #include "SteelType.h"
 #include "SteelInterpreter.h"

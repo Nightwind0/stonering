@@ -4,7 +4,9 @@ libbattle_la_CPPFLAGS = $(CLANLIB_CFLAGS) $(CPPFLAGS)
 
 libbattle_la_SOURCES = \
 ActionQueue.h \
-ActionQueue.cpp
+ActionQueue.cpp \
+TargetingState.cpp \
+TargetingState.h
 
 
 INCLUDES = 	-I@top_srcdir@/src/ \
@@ -17,6 +19,7 @@ INCLUDES = 	-I@top_srcdir@/src/ \
 		-I@top_srcdir@/src/monsters \ 
 		-I@top_srcdir@/src/level \
 		-I@top_srcdir@/src/factories \
-		-I@top_srcdir@/src/steel \
-		-I@top_srcdir@/src/core
+		-I@top_srcdir@/src/states \
+		-I@top_srcdir@/src/core \
+		-I@top_srcdir@/src/character 
 

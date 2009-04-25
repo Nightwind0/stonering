@@ -3,6 +3,8 @@ noinst_LTLIBRARIES = libstates.la
 libstates_la_CPPFLAGS = $(CLANLIB_CFLAGS) $(CPPFLAGS)
 
 libstates_la_SOURCES =  \
+		BattleState.cpp \
+		BattleState.h \
 		ChoiceState.cpp \
 		ChoiceState.h \
 		MapState.cpp \

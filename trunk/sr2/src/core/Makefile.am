@@ -15,7 +15,9 @@ libcore_la_SOURCES =	\
 		IParty.h \
 		sr_defines.h \
 		Utilities.cpp \
-		SpriteRef.cpp
+		SpriteRef.cpp \
+		AttributeModifier.cpp \
+		AttributeModifier.h
 
 INCLUDES = \
 		-I@top_srcdir@/src/	\

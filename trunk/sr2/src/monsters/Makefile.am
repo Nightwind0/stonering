@@ -11,6 +11,8 @@ libmonsters_la_SOURCES = \
 	MonsterRef.cpp \
 	MonsterGroup.h \
 	MonsterGroup.cpp \
+	MonsterElement.cpp \
+	MonsterElement.h \
 	Stat.cpp \
 	Stat.h
 

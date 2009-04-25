@@ -3,8 +3,6 @@ noinst_LTLIBRARIES = libitems.la
 libitems_la_CPPFLAGS = $(CLANLIB_CFLAGS) $(CPPFLAGS)
 
 libitems_la_SOURCES = \
-AttributeEnhancer.cpp \
-AttributeEnhancer.h \
 DamageCategory.cpp \
 DamageCategory.h \
 Equipment.cpp \
