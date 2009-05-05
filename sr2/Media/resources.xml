@@ -18,7 +18,7 @@
     <string name="CharacterDefinitions" value="Media/characters.xml"/>
  	<string name="LevelPath" value="Media/Levels/" />
 	<string name="StartLevel" value="examplelevel" />
-	<string name="DefaultPlayerSprite" value="Sprites/Party/Valyn" /> 
+	<string name="DefaultPlayerSprite" value="Sprites/Party/Valyn" />
 	<string name="Currency" value="gods"/>
     <float name="DefaultEncounterRate" value="0.10"/>
  </section>
@@ -55,7 +55,7 @@
     <font name="sb_purple">
         <bitmap glyphs="Fonts/Font_sb_purple" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw" />
     </font>
-	
+
 	<sprite name="Font_bold_white">
 		<image file="Images/Fonts/bold_white.png"><alpha/></image>
 	</sprite>
@@ -78,13 +78,13 @@
  <section name="Levels">
  	<string name="examplelevel" value="test3.xml" />
 	<string name="octaviaInn" value="foo.xml" />
-     <string name="monster_test" value="monster_test.xml" />   
+     <string name="monster_test" value="monster_test.xml" />
 </section>
  <section name="Tilemaps">
  	<surface name = "roofs" file="Tiles/roofs.png"/>
  	<surface name = "wall1" file="Tiles/walls1.png"/>
 	<surface name = "grass" file="Tiles/grass.png"/>
-	
+
 </section>
 <section name="Backdrops">
     <surface name="grasslands" file="Images/Backdrops/grasslands.png"/>
@@ -99,7 +99,7 @@
         <section name="fonts">
             <string name="hp" value="sb_green"/>
             <string name="mp" value="sb_purple"/>
-            <string name="bp" value="sb_blue"/> 
+            <string name="bp" value="sb_blue"/>
             <string name="general" value="sb_black"/>
             <string name="bad" value="sb_red"/>
         </section>
@@ -207,6 +207,11 @@
 
 <!-- Can be moved off to a separate resource xml -->
 <section name = "Sprites">
+    <section name = "Battle">
+        <sprite name ="Target" hint="alpha">
+            <image file="Sprites/target.png"/>
+        </sprite>
+    </section>
 	<section name = "Party">
 		<sprite name = "Valyn" hint = "alpha">
 			<image file="Sprites/valyn.png">
@@ -351,7 +356,7 @@
         </section>
     </section>
 </section>
-		
-	
-  
+
+
+
 </resources>

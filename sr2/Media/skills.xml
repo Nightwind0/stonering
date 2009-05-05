@@ -5,7 +5,8 @@
             <script id="AttackSkillScript">
                 var $pC = $Character;
                 // The animation comes first.
-                animation($pC,"Attack");
+                var @targets = selectTargets(true,false,true);
+                //animation($pC,"Attack");
 
                 var $pWeapon = getEquipment($pC, $_HAND);
                 // If hit
@@ -22,11 +23,11 @@
     <skill bp="0" name="Item" sp="0">
         <onSelect>
             <script id="ItemSkillInvoke">
-                var $item = itemMenu();
-                // selectTarget( default enemies, allow enemies, allow players )
-                var $target = selectTarget(false,true,true);
-                var $queue = $_ActionQueue;
-                enqueueAction($queue, $_ActionScript, $_Actor, $target, false, $item);
+                //var $item = itemMenu();
+                // selectTarget( single , group, default monsters )
+                var @targets = selectTargets(true,false,false);
+                //var $queue = $_ActionQueue;
+                //enqueueAction($queue, $_ActionScript, $_Actor, $target, false, $item);
             </script>
         </onSelect>
         <onInvoke>
@@ -213,6 +214,6 @@
 		<doMagicDamage baseDamage="600" baseHit="90">
 			<magicDamageCategory type="holy"/>
 		</doMagicDamage>
-	</spell> --> 
+	</spell> -->
 
 </skillList>

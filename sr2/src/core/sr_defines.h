@@ -10,9 +10,9 @@
 typedef unsigned int uint;
 typedef unsigned short ushort;
 
-
+#ifdef WIN32
 #pragma warning (disable : 4250 )
-
+#endif
 
 template<class T>
 struct del_fun_t
@@ -50,7 +50,7 @@ get_second_t<Pair> get_second()
   /* class for the compose_f_gx adapter
    */
 template <class OP1, class OP2>
-class compose_f_gx_t : 
+class compose_f_gx_t :
     public std::unary_function<typename OP2::argument_type, typename OP1::result_type>
   {
     private:

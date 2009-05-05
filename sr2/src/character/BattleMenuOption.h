@@ -28,7 +28,7 @@ namespace StoneRing
 
         std::string GetName() const;
         bool Enabled(const ParameterList &params) const;
-        void Select(BattleMenuStack& stack);
+        void Select(BattleMenuStack& stack, const ParameterList& params);
         void Deselect(BattleMenuStack& stack); // For backing out of a selection
     private:
         virtual bool handle_element(eElement, Element *);
@@ -45,7 +45,7 @@ namespace StoneRing
         std::string m_name;
         int m_nLevel;
         ScriptElement *m_pConditionScript;
-        union Action{ 
+        union Action{
             ScriptElement *m_pScript;
             SkillRef *m_pSkillRef;
             BattleMenu * m_pSubMenu;

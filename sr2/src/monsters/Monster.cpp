@@ -4,6 +4,7 @@
 #include "StatusEffect.h"
 
 using StoneRing::Monster;
+using StoneRing::MonsterParty;
 using StoneRing::ICharacter;
 using StoneRing::MonsterElement;
 using StoneRing::ItemRef;
@@ -13,7 +14,7 @@ using StoneRing::SpriteDefinition;
 
 
 Monster::Monster(MonsterElement *pDefinition)
-:m_pMonsterDefinition(pDefinition),m_name(pDefinition->GetName()),m_nLevel(0)
+        :m_pMonsterDefinition(pDefinition),m_name(pDefinition->GetName()),m_nLevel(0)
 {
 
 }
@@ -72,7 +73,7 @@ double Monster::GetSpellResistance(StoneRing::Magic::eMagicType type) const
     return 0.0;
 }
 
-double Monster::GetAttributeReal(ICharacter::eCharacterAttribute attr) const 
+double Monster::GetAttributeReal(ICharacter::eCharacterAttribute attr) const
 {
     return 1.0;
 }
@@ -91,7 +92,7 @@ bool Monster::GetToggle(ICharacter::eCharacterAttribute attr) const
 void Monster::PermanentAugment(eCharacterAttribute attr, int augment)
 {
     std::map<eCharacterAttribute,int>::iterator aug = m_augments.find(attr);
-    if(aug == m_augments.end())
+    if (aug == m_augments.end())
         m_augments[attr] = augment;
     else aug->second += augment;
 }
@@ -99,7 +100,7 @@ void Monster::PermanentAugment(eCharacterAttribute attr, int augment)
 void Monster::PermanentAugment(eCharacterAttribute attr, double augment)
 {
     std::map<eCharacterAttribute,double>::iterator aug = m_real_augments.find(attr);
-    if(aug == m_real_augments.end())
+    if (aug == m_real_augments.end())
         m_real_augments[attr] = augment;
     else  aug->second += augment;
 }
@@ -132,5 +133,21 @@ ICharacter::eType Monster::GetType() const
 ICharacter::eGender Monster::GetGender() const
 {
     return NEUTER;
+}
+
+
+
+void MonsterParty::AddMonster(Monster * pMonster)
+{
+    m_monsters.push_back(pMonster);
+}
+uint MonsterParty::GetCharacterCount() const
+{
+    return m_monsters.size();
+}
+
+ICharacter * MonsterParty::GetCharacter(uint index) const
+{
+    return m_monsters[index];
 }
 

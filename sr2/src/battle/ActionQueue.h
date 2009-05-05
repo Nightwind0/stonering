@@ -18,8 +18,7 @@ class ICharacter;
 class ICharacterGroup;
 class NamedScript;
 class IBattleAction;
-
-  class ActionQueue 
+  class ActionQueue
     {
     public:
         ActionQueue();

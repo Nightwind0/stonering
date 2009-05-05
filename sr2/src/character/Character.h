@@ -25,15 +25,15 @@ namespace StoneRing{
     {
     public:
         enum eGender { NEUTER = 0, MALE=0x1, FEMALE=0x2, HERMAPHRODITE = MALE | FEMALE };
-        enum eType   { NONLIVING, LIVING, MAGICAL }; 
+        enum eType   { NONLIVING, LIVING, MAGICAL };
         enum eCharacterAttribute
         {
             CA_INVALID,
             _START_OF_TRANSIENTS,
             CA_HP,
-            CA_MP,            
+            CA_MP,
             _START_OF_INTS,
-            CA_STR,              // Part of determining dmg of physical attack. 
+            CA_STR,              // Part of determining dmg of physical attack.
             CA_DEF,              // Physical defense
             CA_DEX,              // Chances of a hit connecting (0-1)
             CA_EVD,              // Chances of evading an attack(0-1)
@@ -74,7 +74,7 @@ namespace StoneRing{
             CA_IDOL_SLOTS,
             _LAST_COMMON_ATTR_
         };
-        
+
         virtual eGender GetGender() const=0;
         virtual eType GetType() const=0;
         virtual std::string GetName() const=0;
@@ -95,10 +95,10 @@ namespace StoneRing{
         virtual void RollInitiative(void)=0;
         virtual uint GetInitiative(void)const=0;
         virtual void Kill()=0;
- 
+
         // Static API
-        static eCharacterAttribute CharAttributeFromString(const std::string &str); 
-        static eCommonAttribute CommonAttributeFromString(const std::string &str); 
+        static eCharacterAttribute CharAttributeFromString(const std::string &str);
+        static eCommonAttribute CommonAttributeFromString(const std::string &str);
         static uint CAFromString(const std::string &str);
         static std::string CAToString(uint);
         static bool IsInteger(eCharacterAttribute attr);
@@ -106,7 +106,7 @@ namespace StoneRing{
         static bool IsToggle(eCharacterAttribute attr);
         static bool IsTransient(eCharacterAttribute attr);
         static uint GetMaximumAttribute(eCharacterAttribute attr);
-    
+
         ///@todo API for different battle animations TBD
     private:
     };
@@ -115,6 +115,7 @@ namespace StoneRing{
     class ICharacterGroup
     {
     public:
+        virtual ~ICharacterGroup(){}
         virtual uint GetCharacterCount() const = 0;
         virtual ICharacter * GetCharacter(uint index) const = 0;
     private:
