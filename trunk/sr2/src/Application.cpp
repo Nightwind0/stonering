@@ -441,7 +441,7 @@ CL_ResourceManager * Application::GetResources() const
 
 Application::Application():mpParty(0),
                            mbDone(false)
-    
+
 {
     mpParty = new Party();
 }
@@ -473,8 +473,8 @@ void Application::setupClanLib()
     CL_SetupCore::init();
     CL_SetupGL::init();
     CL_SetupDisplay::init();
-   
-        
+
+
 }
 
 void Application::teardownClanLib()
@@ -499,7 +499,7 @@ void Application::onSignalKeyUp(const CL_InputEvent &key)
 
 void Application::onSignalQuit()
 {
-    
+
 }
 
 void Application::RequestRedraw(const State * /*pState*/)
@@ -514,7 +514,7 @@ AstScript * Application::LoadScript(const std::string &name, const std::string &
 
 SteelType Application::RunScript(AstScript * pScript)
 {
-    // Intentionally letting steel exceptions 
+    // Intentionally letting steel exceptions
     // Get caught by a higher layer
     return mInterpreter.runAst ( pScript );
 
@@ -644,11 +644,11 @@ void Application::draw()
     {
         State * pState = *iState;
         pState->Draw(dst, mpWindow->get_gc());
-        
+
         if(pState->LastToDraw()) break; // Don't draw any further.
 
     }
-    
+
     mpWindow->get_gc()->pop_cliprect();
 }
 
@@ -671,7 +671,7 @@ void Application::run()
 #if 0
         if(count++ % 50 == 0)
             std::cout << "FPS " <<  frameRate.get_fps() << std::endl;
-#endif  
+#endif
         unsigned int now = CL_System::get_time();
 
         if(now - then > MS_BETWEEN_MOVES)
@@ -684,13 +684,13 @@ void Application::run()
             then = now;
         }
 
-        
+
     }
 
 
     mStates.back()->Finish();
     mStates.back()->SteelCleanup(&mInterpreter);
-  
+
     mStates.pop_back();
 
 
@@ -713,13 +713,13 @@ void Application::loadscript(std::string &o_str, const std::string & filename)
 
 int Application::main(int argc, char ** argv)
 {
- 
+
 #ifndef NDEBUG
 
     CL_ConsoleWindow console("Stone Ring Debug",80,1000);
     console.redirect_stdio();
 #endif
- 
+
     setupClanLib();
 
     //CL_Display::get_buffer()
@@ -735,8 +735,8 @@ int Application::main(int argc, char ** argv)
         std::string name = CL_String::load("Configuration/name", mpResources) + " (DEBUG)";
 #endif
         mGold = CL_String::load("Game/Currency",mpResources);
-   
-       
+
+
         // Load special overlay for say.
         mpWindow  = new CL_OpenGLWindow(name, WINDOW_WIDTH, WINDOW_HEIGHT,false,false,2);
 
@@ -750,24 +750,24 @@ int Application::main(int argc, char ** argv)
         std::string initscript;
         loadscript(initscript,CL_String::load("Game/StartupScript",mpResources));
         mInterpreter.run("Init",initscript);
-            
+
         showRechargeableOnionSplash();
         showIntro();
-            
+
         Level * pLevel = new Level();
         pLevel->Load(startinglevel, mpResources);
         pLevel->Invoke();
-            
+
         mMapState.SetDimensions(GetDisplayRect());
-        mMapState.PushLevel ( pLevel, 1,1 );  
-            
+        mMapState.PushLevel ( pLevel, 1,1 );
+
         mStates.push_back( &mMapState );
     }
     catch(CL_Error error)
     {
         std::cerr << "Exception Caught!!" << std::endl;
         std::cerr << error.message.c_str() << std::endl;
-            
+
 #ifndef NDEBUG
         console.display_close_message();
 #endif
@@ -775,7 +775,7 @@ int Application::main(int argc, char ** argv)
     }
     catch(SteelException ex)
     {
-        std::cerr << "Steel Exception on line " << ex.getLine() 
+        std::cerr << "Steel Exception on line " << ex.getLine()
                   << " of " << ex.getScript() << ':' << ex.getMessage() << std::endl;
 #ifndef NDEBUG
         console.display_close_message();
@@ -783,7 +783,7 @@ int Application::main(int argc, char ** argv)
         return 1;
     }
 
-              
+
     CL_Slot slot_quit = mpWindow->sig_window_close().connect(this, &Application::onSignalQuit);
     CL_Slot slot_key_down = CL_Keyboard::sig_key_down().connect(this, &Application::onSignalKeyDown);
     CL_Slot slot_key_up  = CL_Keyboard::sig_key_up().connect(this, &Application::onSignalKeyUp);
@@ -793,40 +793,40 @@ int Application::main(int argc, char ** argv)
     {
 
         CL_Display::clear();
-            
+
         static int start_time = CL_System::get_time();
         static long fpscounter = 0;
-            
+
         while(mStates.size())
             run();
-            
+
 #ifndef NDEBUG
         console.display_close_message();
 #endif
-            
-            
+
+
         teardownClanLib();
     }
     catch(SteelException ex)
     {
-        while(mStates.size()) 
+        while(mStates.size())
             mStates.pop_back();
 
         showError ( ex.getLine(), ex.getScript(), ex.getMessage() );
-            
+
 
     }
     catch(CL_Error error)
     {
         std::cerr << "Exception Caught!!" << std::endl;
         std::cerr << error.message.c_str() << std::endl;
-            
+
 #ifndef NDEBUG
         console.display_close_message();
 #endif
-            
+
     }
-        
+
     mInterpreter.popScope();
 
     return 0;
@@ -863,7 +863,7 @@ void Application::showIntro()
     // Wait for them to release the key before moving on.
     while(CL_Keyboard::get_keycode(CL_KEY_ENTER)) CL_System::keep_alive();
 
-        
+
 
 }
 
@@ -872,7 +872,7 @@ int Application::calc_fps(int frame_time)
     static int fps_result = 0;
     static int fps_counter = 0;
     static int total_time = 0;
-        
+
     total_time += frame_time;
     if(total_time >= 1000)      // One second has passed
     {

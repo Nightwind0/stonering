@@ -19,7 +19,7 @@ class Monster : public ICharacter
 public:
     Monster(MonsterElement *pDefintion);
     virtual ~Monster();
-    
+
     int GetWorthPoints() const;
     std::list<ItemRef*>::const_iterator GetDropsBegin() const;
     std::list<ItemRef*>::const_iterator GetDropsEnd() const;
@@ -35,7 +35,7 @@ public:
     void SetCurrentSprite(CL_Sprite *pSprite){m_pSprite = pSprite;}
     CL_Sprite* GetCurrentSprite() const { return m_pSprite; }
 
-    /** 
+    /**
     * ICharacter interface
     */
     virtual eGender GetGender() const;
@@ -84,6 +84,18 @@ inline uint Monster::GetInitiative(void)const
 {
     return m_nInitiative;
 }
+
+class MonsterParty : public ICharacterGroup
+{
+public:
+    MonsterParty(){}
+    virtual ~MonsterParty(){}
+    void AddMonster(Monster * pMonster);
+    virtual uint GetCharacterCount() const;
+    virtual ICharacter * GetCharacter(uint index) const;
+private:
+    std::vector<Monster*> m_monsters;
+};
 
 };
 

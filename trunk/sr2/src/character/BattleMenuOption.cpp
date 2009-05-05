@@ -36,11 +36,11 @@ bool BattleMenuOption::Enabled(const ParameterList &params) const
 {
     if(m_pConditionScript)
         return m_pConditionScript->EvaluateCondition(params);
-    else return true; 
+    else return true;
     // TODO: Check for BP/MP requirements on skills here??
 }
 
-void BattleMenuOption::Select(StoneRing::BattleMenuStack& stack){
+void BattleMenuOption::Select(StoneRing::BattleMenuStack& stack, const ParameterList& params){
     switch(m_action_type){
         case SUBMENU:
             stack.push(m_action.m_pSubMenu);
@@ -52,10 +52,8 @@ void BattleMenuOption::Select(StoneRing::BattleMenuStack& stack){
                 break;
             }
         case SCRIPT:
-            // TODO: We may want to actually provide 
-            // some data params to this script here
-            m_action.m_pScript->ExecuteScript();
-            break;
+            m_action.m_pScript->ExecuteScript(params);
+        break;
     }
 }
 

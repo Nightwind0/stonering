@@ -56,8 +56,8 @@ void CharacterClass::load_attributes(CL_DomNamedNodeMap * pAttributes)
 
     std::string gender = get_implied_string("gender",pAttributes, "either");
 
-    if(gender == "male") m_eGender = ICharacter::MALE;       
-    else if (gender == "female") m_eGender = ICharacter::FEMALE; 
+    if(gender == "male") m_eGender = ICharacter::MALE;
+    else if (gender == "female") m_eGender = ICharacter::FEMALE;
     else if (gender == "either") m_eGender = ICharacter::NEUTER;
 }
 
@@ -169,13 +169,13 @@ std::string CharacterClass::GetName() const
 StoneRing::BattleMenu * StoneRing::CharacterClass::GetBattleMenu() const{
     return m_pMenu;
 }
-        
-ICharacter::eGender 
+
+ICharacter::eGender
 CharacterClass::GetGender() const
 {
     return m_eGender;
 }
-        
+
 
 
 void StatScript::load_attributes(CL_DomNamedNodeMap *pAttributes)
@@ -209,7 +209,7 @@ StatScript::~StatScript()
 {
 }
 
-ICharacter::eCharacterAttribute 
+ICharacter::eCharacterAttribute
 StatScript::GetCharacterStat() const
 {
     return m_eStat;

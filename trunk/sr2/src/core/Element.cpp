@@ -13,8 +13,8 @@ using StoneRing::LevelFactory;
 using StoneRing::Element;
 
 
-/*const  Element::ElementCreationEntry Element::g_pElementCreationEntries[] = 
-  { 
+/*const  Element::ElementCreationEntry Element::g_pElementCreationEntries[] =
+  {
   {"itemRef", &IApplication::getLevelFactory, &LevelFactory::createItemRef},
   {"tile", &IApplication::getLevelFactory, &LevelFactory::createTile},
   {"condition", &IApplication::getLevelFactory, &LevelFactory::createCondition}
@@ -174,10 +174,10 @@ void Element::Load(CL_DomElement * pDomElement)
     IFactory* pFactory = IApplication::GetInstance()->GetElementFactory();
 
     CL_DomNamedNodeMap attributes = pDomElement->get_attributes();
-                
+
     load_attributes(&attributes);
 
-    CL_DomNode childNode = pDomElement->get_first_child(); //.to_element();  
+    CL_DomNode childNode = pDomElement->get_first_child(); //.to_element();
     CL_DomElement child;
 
 
@@ -188,13 +188,13 @@ void Element::Load(CL_DomElement * pDomElement)
     }
 
     child = childNode.to_element();
-    
+
 
     while(!child.is_null())
     {
         std::string element_name = child.get_node_name();
         Element * pElement = NULL;
-                                        
+
         pElement = pFactory->createElement(element_name);
 #ifndef NDEBUG
         pElement->SetElementName(element_name);
@@ -208,15 +208,15 @@ void Element::Load(CL_DomElement * pDomElement)
             delete pElement;
         }
 
-        
+
         if(child.get_next_sibling().is_text())
             std::cout << "Found Text" << std::endl;
 
         child = child.get_next_sibling().to_element();
-        
+
     }
 
-    
+
 
 #if 0
     if(pDomElement->is_text())
@@ -235,7 +235,6 @@ void Element::Load(CL_DomElement * pDomElement)
 
     load_finished();
 }
-
 
 
 

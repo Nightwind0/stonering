@@ -23,7 +23,7 @@ Element * AbilityFactory::createElement( Element::eElement element )
 
 
 
-AbilityFactory::factoryMethod 
+AbilityFactory::factoryMethod
 AbilityFactory::getMethod(Element::eElement element) const
 {
     switch(element)
@@ -32,8 +32,6 @@ AbilityFactory::getMethod(Element::eElement element) const
         return &AbilityFactory::createDoWeaponDamage;
     case Element::EDOMAGICDAMAGE:
         return &AbilityFactory::createDoMagicDamage;
-    case Element::EDOSTATUSEFFECT:
-        return &AbilityFactory::createDoStatusEffect;
     case Element::ESPELL:
         return &AbilityFactory::createSpell;
     case Element::EWEAPONDAMAGECATEGORY:
@@ -50,12 +48,8 @@ AbilityFactory::getMethod(Element::eElement element) const
         return &AbilityFactory::createStatusEffectActions;
     case Element::ESTATUSEFFECT:
         return &AbilityFactory::createStatusEffect;
-    case Element::ESTATINCREASE:
-        return &AbilityFactory::createStatIncrease;
     case Element::EANIMATIONSPRITEREF:
         return &AbilityFactory::createAnimationSpriteRef;
-    case Element::EPAR:
-        return &AbilityFactory::createPar;
     case Element::EPREREQSKILLREF:
     case Element::ESKILL:
         return &AbilityFactory::createSkill;
