@@ -10,7 +10,8 @@
 #include "SpriteRef.h"
 
 
-namespace StoneRing{
+namespace StoneRing
+{
 
     class SpriteStub;
     class SpriteMovement;
@@ -22,18 +23,21 @@ namespace StoneRing{
     public:
         AlterSprite(){};
         virtual ~AlterSprite(){}
-        virtual eElement WhichElement() const { return EALTERSPRITE; }
+        virtual eElement WhichElement() const
+        {
+            return EALTERSPRITE;
+        }
         eWho GetWho() const;
-        enum eAlter 
+        enum eAlter
         {
             HIDE, SMALLER_SIZE, LARGER_SIZE, HALF_SIZE, DOUBLE_SIZE, NEGATIVE,
-            X_FLIP, Y_FLIP, GRAYSCALE, GREENSCALE, REDSCALE, BLUESCALE 
-        }; 
+            X_FLIP, Y_FLIP, GRAYSCALE, GREENSCALE, REDSCALE, BLUESCALE,
+            IDLE_SPRITE,ATTACK_SPRITE, USE_SPRITE, RECOIL_SPRITE, WEAK_SPRITE
+        };
 
     private:
-        static eWho who_from_string(const std::string &str);
         static eAlter alter_from_string(const std::string &str);
-        eWho m_eWho; 
+        eWho m_eWho;
         eAlter m_eAlter;
 
     };
@@ -43,7 +47,10 @@ namespace StoneRing{
     public:
         SpriteStub();
         virtual ~SpriteStub();
-        virtual eElement WhichElement() const { return ESPRITESTUB; }
+        virtual eElement WhichElement() const
+        {
+            return ESPRITESTUB;
+        }
         enum eBindTo { NONE, WEAPON, CHARACTER };
 
         std::string GetName() const;
@@ -54,23 +61,80 @@ namespace StoneRing{
         std::string m_name;
     };
 
+    class BattleSprite : public Element
+    {
+    public:
+        BattleSprite();
+        virtual ~BattleSprite();
+
+        virtual eElement WhichElement() const { return EBATTLESPRITE; }
+
+
+        eWho GetWho() const;
+        eBattleSprite GetWhich() const;
+
+    private:
+        virtual void load_attributes(CL_DomNamedNodeMap *);
+        eWho m_eWho;
+        eBattleSprite m_eWhich;
+    };
+
     class SpriteAnimation : public Element
     {
     public:
         SpriteAnimation();
         virtual ~SpriteAnimation();
-        virtual eElement WhichElement() const { return ESPRITEANIMATION; }
+        virtual eElement WhichElement() const
+        {
+            return ESPRITEANIMATION;
+        }
 
-        std::string GetName() const { return m_name; }
-        bool HasSpriteRef() const { return m_pSpriteRef != NULL; }
-        bool HasSpriteStub() const { return m_pStub != NULL; }
-        bool HasAlterSprite() const { return m_pAlterSprite != NULL; }
-        bool HasSpriteMovement() const { return m_pMovement != NULL; }
+        std::string GetName() const
+        {
+            return m_name;
+        }
+        bool HasSpriteRef() const
+        {
+            return m_pSpriteRef != NULL;
+        }
+        bool HasSpriteStub() const
+        {
+            return m_pStub != NULL;
+        }
+        bool HasAlterSprite() const
+        {
+            return m_pAlterSprite != NULL;
+        }
+        bool HasSpriteMovement() const
+        {
+            return m_pMovement != NULL;
+        }
+        bool HasBattleSprite() const
+        {
+            return m_pBattleSprite;
+        }
 
-        SpriteRef *GetSpriteRef() const { return m_pSpriteRef; }
-        SpriteStub *GetSpriteStub() const { return m_pStub; }
-        SpriteMovement *GetSpriteMovement() const { return m_pMovement; }
-        AlterSprite *GetAlterSprite() const { return m_pAlterSprite; }
+        SpriteRef *GetSpriteRef() const
+        {
+            return m_pSpriteRef;
+        }
+        SpriteStub *GetSpriteStub() const
+        {
+            return m_pStub;
+        }
+        BattleSprite *GetBattleSprite() const
+        {
+            return m_pBattleSprite;
+        }
+
+        SpriteMovement *GetSpriteMovement() const
+        {
+            return m_pMovement;
+        }
+        AlterSprite *GetAlterSprite() const
+        {
+            return m_pAlterSprite;
+        }
     private:
         virtual void load_attributes(CL_DomNamedNodeMap * pAttributes);
         virtual bool handle_element(eElement element, Element * pElement);
@@ -78,6 +142,7 @@ namespace StoneRing{
 
         std::string m_name;
         SpriteRef *m_pSpriteRef;
+        BattleSprite * m_pBattleSprite;
         SpriteStub *m_pStub;
         SpriteMovement *m_pMovement;
         AlterSprite *m_pAlterSprite;
@@ -88,7 +153,10 @@ namespace StoneRing{
     public:
         SpriteMovement();
         virtual ~SpriteMovement();
-        virtual eElement WhichElement() const{ return ESPRITEMOVEMENT; }
+        virtual eElement WhichElement() const
+        {
+            return ESPRITEMOVEMENT;
+        }
 
         enum eFocus  { SCREEN, CASTER, TARGET, CASTER_GROUP, TARGET_GROUP };
         enum eFocusX { X_CENTER, TOWARDS, AWAY, LEFT, RIGHT };
@@ -100,16 +168,16 @@ namespace StoneRing{
             eFocus meFocusType;
             eFocusX meFocusX;
             eFocusY meFocusY;
-            eFocusZ meFocusZ; 
+            eFocusZ meFocusZ;
         };
- 
+
         enum eMovementDirection { STILL, N, E, S, W, NE, NW, SE, SW, MOVE_AWAY, MOVE_TOWARDS, END_FOCUS };
         enum eMovementStyle {STRAIGHT, ARC_OVER, ARC_UNDER, SINE };
 
         Focus GetInitialFocus() const;
         bool HasEndFocus() const;
         Focus GetEndFocus() const;
-        
+
         eMovementDirection GetMovementDirection() const;
         eMovementStyle GetMovementStyle() const;
         CL_DomElement CreateDomElement(CL_DomDocument &doc) const;
@@ -139,7 +207,10 @@ namespace StoneRing{
     public:
         Phase();
         virtual ~Phase();
-        virtual eElement WhichElement() const{ return EPHASE; }   
+        virtual eElement WhichElement() const
+        {
+            return EPHASE;
+        }
         CL_DomElement CreateDomElement(CL_DomDocument &) const;
 
         bool InParallel()const;
@@ -165,7 +236,10 @@ namespace StoneRing{
     public:
         Animation();
         virtual ~Animation();
-        virtual eElement WhichElement() const{ return EANIMATION; } 
+        virtual eElement WhichElement() const
+        {
+            return EANIMATION;
+        }
 
         CL_DomElement CreateDomElement(CL_DomDocument &) const;
         std::string GetName() const;

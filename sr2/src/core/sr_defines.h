@@ -122,6 +122,15 @@ inline double random_distribution(double center, double std_dev_ratio)
 //
 enum eWho {NONE, CASTER, CASTER_GROUP, TARGET, TARGET_GROUP, ALL };
 
+enum eBattleSprite  {
+            IDLE,
+            ATTACK,
+            USE,
+            RECOIL,
+            WEAK,
+            DEAD
+        };
+
 #ifndef NDEBUG
 extern bool gbDebugStop;
 #endif

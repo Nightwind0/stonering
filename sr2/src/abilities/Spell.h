@@ -49,7 +49,7 @@ namespace StoneRing
 
         bool appliesToWeapons() const;
         bool appliesToArmor() const;
-    
+
         uint getMP() const;
 
         SpellRef * createSpellRef() const;
@@ -57,7 +57,7 @@ namespace StoneRing
         CL_DomElement createDomElement( CL_DomDocument &doc ) const;
         MagicResistance * getMagicResistance() const;
 
-    
+
     private:
         virtual bool handleElement(eElement, Element * );
         virtual void loadAttributes(CL_DomNamedNodeMap *);

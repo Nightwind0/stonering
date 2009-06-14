@@ -1,11 +1,11 @@
 <!--DOCTYPE skillList SYSTEM "Levels/level.dtd" -->
 <skillList>
     <skill bp="0" name="Attack" sp="0">
-        <onInvoke>
+        <onSelect>
             <script id="AttackSkillScript">
                 var $pC = $Character;
                 // The animation comes first.
-                var @targets = selectTargets(true,false,true);
+                var @targets = battle::selectTargets(true,false,true);
                 //animation($pC,"Attack");
 
                 var $pWeapon = getEquipment($pC, $_HAND);
@@ -18,14 +18,14 @@
                 // pushDisplay("Miss");
                 // playSound("whiff");
             </script>
-        </onInvoke>
+        </onSelect>
     </skill>
     <skill bp="0" name="Item" sp="0">
         <onSelect>
             <script id="ItemSkillInvoke">
                 //var $item = itemMenu();
                 // selectTarget( single , group, default monsters )
-                var @targets = selectTargets(true,false,false);
+                var @targets = battle::selectTargets(true,false,false);
                 //var $queue = $_ActionQueue;
                 //enqueueAction($queue, $_ActionScript, $_Actor, $target, false, $item);
             </script>
