@@ -12,7 +12,7 @@
 
 using namespace StoneRing;
 
-StoneRing::Skill::eType 
+StoneRing::Skill::eType
 StoneRing::Skill::TypeFromString(const std::string type)
 {
     if(type == "battle") return BATTLE;
@@ -31,21 +31,17 @@ void StoneRing::Skill::load_attributes(CL_DomNamedNodeMap * pAttributes)
     m_bDefaultToEnemyGroup = get_implied_bool("defaultToEnemyGroup", pAttributes,true);
 }
 
-void StoneRing::Skill::Select()
+void StoneRing::Skill::Select(const ParameterList& params)
 {
     if(m_pOnSelect)
     {
-        // Put pQueue in scope
-        ParameterList params;
-        params.push_back ( ParameterListItem("$_ActionScript", m_pOnInvoke ) );
-
         m_pOnSelect->ExecuteScript(params);
     }
     else
     {
         // Default implementation
         /*
-        //selectTarget(true,true,true); 
+        //selectTarget(true,true,true);
         if(mbGroup && groupSelection(mbDefaultToEnemies))
         {
            ICharacterGroup *pGroup = selectGroup();
@@ -134,14 +130,14 @@ uint Skill::GetMinLevel() const
 }
 
 
-        
-std::list<SkillRef*>::const_iterator 
+
+std::list<SkillRef*>::const_iterator
 Skill::GetPreReqsBegin() const
 {
     return m_pre_reqs.begin();
 }
 
-std::list<SkillRef*>::const_iterator 
+std::list<SkillRef*>::const_iterator
 Skill::GetPreReqsEnd() const
 {
     return m_pre_reqs.end();

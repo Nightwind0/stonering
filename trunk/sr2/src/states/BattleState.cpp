@@ -458,7 +458,12 @@ void BattleState::SteelInit(SteelInterpreter* pInterpreter)
 {
     static SteelFunctor3Arg<BattleState,bool,bool,bool> fn_selectTargets(this,&BattleState::selectTargets);
 
-    pInterpreter->addFunction("selectTargets",&fn_selectTargets);
+    pInterpreter->addFunction("selectTargets","battle",&fn_selectTargets);
+}
+
+void BattleState::SteelCleanup   (SteelInterpreter* pInterpreter)
+{
+    pInterpreter->removeFunctions("battle",false);
 }
 
 ICharacter* BattleState::get_next_character(const ICharacterGroup* pParty, const ICharacter* pCharacter) const

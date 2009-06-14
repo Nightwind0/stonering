@@ -1,6 +1,6 @@
 #ifndef SR_SKILL_H
 #define SR_SKILL_H
- 
+
 #include "Element.h"
 #include <ClanLib/core.h>
 #include "ScriptElement.h"
@@ -25,8 +25,6 @@ namespace StoneRing
     class SpellRef;
     class ActionQueue;
     class NamedScript;
-    class Animation;
-
 
 
     class Skill : public Element
@@ -43,13 +41,13 @@ namespace StoneRing
         uint GetSPCost() const;
         uint GetBPCost() const;
         uint GetMinLevel() const;
-        
+
         std::list<SkillRef*>::const_iterator GetPreReqsBegin() const;
         std::list<SkillRef*>::const_iterator GetPreReqsEnd() const;
 
         // This is called when you actually select the option.
         // Most options will then let you select a character/party as a target
-        void Select();
+        void Select(const ParameterList& params);
         // If you cancel an option, it should be able to clean itself up
         // (especially removing entries from the queue)
         void Deselect();
@@ -97,7 +95,7 @@ namespace StoneRing
         std::string m_ref;
     };
 
-    
+
 }
 
 #endif

@@ -48,12 +48,12 @@ void BattleMenuOption::Select(StoneRing::BattleMenuStack& stack, const Parameter
         case SKILLREF:
             {
                 Skill * pSkill =  m_action.m_pSkillRef->GetSkill();
-                pSkill->Select();
+                pSkill->Select(params);
                 break;
             }
         case SCRIPT:
             m_action.m_pScript->ExecuteScript(params);
-        break;
+            break;
     }
 }
 

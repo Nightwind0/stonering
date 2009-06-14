@@ -31,6 +31,7 @@ namespace StoneRing{
         virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
         virtual void Start();
         virtual void SteelInit(SteelInterpreter*);
+        virtual void SteelCleanup   (SteelInterpreter *);
         virtual void Finish(); // Hook to clean up or whatever after being popped
 
 

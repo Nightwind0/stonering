@@ -68,10 +68,12 @@
 <!ELEMENT animation (phase+)>
 <!ELEMENT animationRef EMPTY>
 <!ELEMENT phase (spriteAnimation*)> <!-- If there are no animationSprites then its treated like a pause -->
-<!ELEMENT spriteAnimation ((spriteStub|spriteRef),spriteMovement?,alterSprite?, hide?)>
+<!ELEMENT spriteAnimation ((spriteStub|spriteRef|battleSprite),spriteMovement?,alterSprite?, hide?)>
 <!ELEMENT spriteStub EMPTY>
+<!ELEMENT battleSprite EMPTY>
 <!ELEMENT spriteMovement EMPTY>
 <!ELEMENT hide EMPTY>
+
 
 <!-- Status Effect DTD -->
 <!ELEMENT statusEffectList (statusEffect*)>
@@ -233,12 +235,15 @@
 
 <!ATTLIST spriteStub bindTo (none|weapon|character) #IMPLIED> <!-- Defaults to none -->
 
+
+<!ATTLIST battleSprite who (none|caster|caster_group|target|target_group|all) #REQUIRED>
+<!ATTLIST battleSprite which (idle|attack|recoil|weak|dead|use) #REQUIRED>
 <!-- These points are relevative to the sprite wielding the weapon-->
 <!ATTLIST battleMenuOption name CDATA #REQUIRED>
 <!ATTLIST skill allowsGroupTarget (true|false) #IMPLIED>
 <!ATTLIST skill defaultToEnemyGroup (true|false) #IMPLIED>
 
-<!-- Note: movement speed will be determined by the amount of pixels that need to be covered and the duration of the par -->
+<!-- Note: movement speed will be determined by the amount of pixels that need to be covered and thy e duration of the par -->
 <!-- So that if the par duration is three seconds, the sprite will move to its destination in three seconds -->
 <!ATTLIST spell name CDATA #REQUIRED>
 <!ATTLIST spell type (elemental|white|status|other) #REQUIRED>

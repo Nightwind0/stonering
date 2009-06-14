@@ -29,8 +29,8 @@ namespace StoneRing
 
 // These MUST be kept alphabetized
         enum eElement
-        {   
-            EALTERSPRITE, 
+        {
+            EALTERSPRITE,
             EANIMATION,
             EARMORCLASS,
             EARMORCLASSREF,
@@ -42,6 +42,7 @@ namespace StoneRing
             EATTRIBUTEMODIFIER,
             EBATTLEMENU,
             EBATTLEMENUOPTION,
+            EBATTLESPRITE,
             ECHARACTER,
             ECHARACTERCLASS,
             ECONDITIONSCRIPT,
@@ -115,7 +116,7 @@ namespace StoneRing
         void SetElementName(const std::string &name) { m_element_name = name; }
         void SetParent(Element *pParent) { m_pParent = pParent; }
 #endif
-          
+
     protected:
         virtual bool handle_element(eElement, Element * ){ return false;}
         virtual void load_attributes(CL_DomNamedNodeMap *){}
@@ -141,7 +142,7 @@ namespace StoneRing
 #ifndef NDEBUG
         std::string get_element_name() const;
 #else
-        std::string get_element_name() const { 
+        std::string get_element_name() const {
             std::ostringstream os;
             os << "Element #" << WhichElement() << "- Use debug mode to find out the name.";
             return os.str();
@@ -157,13 +158,13 @@ namespace StoneRing
 /*
   struct ElementCreationEntry
   {
-  const char * pszElementName; 
+  const char * pszElementName;
   const IFactory * (IApplication::*pGetFactory)();
   const CreateElementMethod
   const Element     * (Factory::*pCreateElement)();
-  };        
+  };
 
-  // You have to keep this bitch sorted so you can binary search it's ass   
+  // You have to keep this bitch sorted so you can binary search it's ass
   const static ElementCreationEntry g_pElementCreationEntries[];
 */
 
