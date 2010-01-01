@@ -51,7 +51,7 @@ namespace StoneRing
         ItemMap m_items;
         NamedItemMap m_named_items;
     };
-};
+}
 #endif
 
 

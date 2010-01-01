@@ -6,6 +6,8 @@
 #include "Equipment.h"
 #include "Magic.h"
 #include "SpriteRef.h"
+#include "Weapon.h"
+#include "Armor.h"
 
 class CL_Sprite;
 
@@ -35,13 +37,13 @@ namespace StoneRing{
             _START_OF_INTS,
             CA_STR,              // Part of determining dmg of physical attack.
             CA_DEF,              // Physical defense
-            CA_DEX,              // Chances of a hit connecting (0-1)
-            CA_EVD,              // Chances of evading an attack(0-1)
             CA_MAG,              // Magic power
             CA_RST,              // Magic resistance
-            CA_LCK,              // Similar to initiative. Also helps in other aspects of the game...
             _START_OF_REALS,
+            CA_LCK,              // Similar to initiative. Also helps in other aspects of the game...
             CA_JOY,              // Increases experience gained (Multiplier)
+            CA_DEX,              // Chances of a hit connecting (0-1)
+            CA_EVD,              // Chances of evading an attack(0-1)
             _START_OF_TOGGLES,
             CA_DRAW_ILL,
             CA_DRAW_STONE,
@@ -82,15 +84,16 @@ namespace StoneRing{
         virtual uint GetLevel()const=0;
         virtual void SetLevel(uint level)=0;
 
-        virtual double GetAttributeReal(eCharacterAttribute attr) const = 0;
-        virtual int    GetAttribute    (eCharacterAttribute attr) const = 0;
+
+        virtual double GetAttribute    (eCharacterAttribute attr) const = 0;
         virtual double GetSpellResistance(Magic::eMagicType type) const = 0;
         virtual bool GetToggle(eCharacterAttribute attr) const = 0;
         virtual void SetToggle(eCharacterAttribute attr, bool toggle) = 0;
         virtual void AddStatusEffect(StatusEffect *)=0;
         virtual void RemoveEffects(const std::string &name)=0;
+        virtual double GetEquippedWeaponAttribute(Weapon::eAttribute) const = 0;
+        virtual double GetEquippedArmorAttribute(Armor::eAttribute) const = 0;
         virtual void StatusEffectRound()=0;
-        virtual void PermanentAugment(eCharacterAttribute attr, int augment)=0;
         virtual void PermanentAugment(eCharacterAttribute attr, double augment)=0;
         virtual void RollInitiative(void)=0;
         virtual uint GetInitiative(void)const=0;
@@ -133,11 +136,9 @@ namespace StoneRing{
         virtual uint GetLevel(void)const;
         virtual void SetLevel(uint);
         virtual double GetSpellResistance(Magic::eMagicType type) const;
-        virtual double GetAttributeReal(eCharacterAttribute attr) const;
-        virtual int  GetAttribute(eCharacterAttribute attr) const;
+        virtual double  GetAttribute(eCharacterAttribute attr) const;
         virtual bool GetToggle(eCharacterAttribute attr) const;
         virtual void SetToggle(eCharacterAttribute attr, bool state);
-        virtual void PermanentAugment(eCharacterAttribute attr, int augment);
         virtual void PermanentAugment(eCharacterAttribute attr, double augment);
         virtual void Kill();
         virtual void AddStatusEffect(StatusEffect *);
@@ -145,6 +146,8 @@ namespace StoneRing{
         virtual void StatusEffectRound();
         virtual void RollInitiative(void);
         virtual uint GetInitiative(void)const;
+        virtual double GetEquippedWeaponAttribute(Weapon::eAttribute) const;
+        virtual double GetEquippedArmorAttribute(Armor::eAttribute) const;
 
         CL_Sprite * GetMapSprite() const { return m_pMapSprite; }
         CL_Sprite * GetCurrentSprite() const { return m_pCurrentSprite; }
@@ -164,6 +167,9 @@ namespace StoneRing{
 
         Equipment* GetEquipment(Equipment::eSlot);
 
+        // Includes permanent augments
+        double GetBaseAttribute(eCharacterAttribute attr)const;
+
         // Element API
         virtual eElement WhichElement() const { return ECHARACTER; }
     private:
@@ -174,8 +180,7 @@ namespace StoneRing{
         virtual void load_finished();
 
         std::string m_name;
-        std::map<eCharacterAttribute,double> m_real_augments;
-        std::map<eCharacterAttribute,int> m_augments;
+        std::map<eCharacterAttribute,double> m_augments;
         std::map<Equipment::eSlot,Equipment*> m_equipment;
         SpriteDefinitionMap m_sprite_definition_map;
         CharacterClass * m_pClass;
@@ -190,7 +195,7 @@ namespace StoneRing{
     inline void Character::RollInitiative(void)
     {
         // 20% variance
-        int init = static_cast<int>(random_distribution(GetAttribute(CA_LCK),0.2));
+        int init = static_cast<int>(normal_random(GetAttribute(CA_LCK), GetAttribute(CA_LCK) * 0.2));
         m_nInitiative = std::max(0,init);
     }
 
@@ -199,7 +204,7 @@ namespace StoneRing{
         return m_nInitiative;
     }
 
-};
+}
 #endif
 
 

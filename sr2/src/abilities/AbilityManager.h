@@ -20,7 +20,7 @@ namespace StoneRing
         void LoadSpellFile ( CL_DomDocument &doc );
         void LoadStatusEffectFile ( CL_DomDocument &doc );
         void LoadSkillFile(CL_DomDocument &doc );
-    
+
         std::list<Spell*>::const_iterator GetSpellsBegin() const;
         std::list<Spell*>::const_iterator  GetSpellsEnd() const;
 
@@ -37,7 +37,7 @@ namespace StoneRing
 #ifndef NDEBUG
         void DumpSpellList();
 #endif
-    
+
 
     private:
         typedef std::map<std::string,Skill*> SkillMap;
@@ -50,7 +50,7 @@ namespace StoneRing
     };
 
 
-};
+}
 
 
 #endif

@@ -15,7 +15,7 @@ namespace StoneRing
         virtual ~IFactory(){}
         virtual Element * createElement( const std::string &element )=0;
     };
-};
+}
 
 #endif
 

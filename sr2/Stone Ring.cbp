@@ -53,6 +53,16 @@
 			<Add library="clanSound" />
 			<Add library="clanGL" />
 		</Linker>
+		<Unit filename="Media/characterClasses.xml" />
+		<Unit filename="Media/characters.xml" />
+		<Unit filename="Media/init.steel" />
+		<Unit filename="Media/items.xml" />
+		<Unit filename="Media/monsters.xml" />
+		<Unit filename="Media/resources.xml" />
+		<Unit filename="Media/skills.xml" />
+		<Unit filename="Media/spells.xml" />
+		<Unit filename="Media/statusEffects.xml" />
+		<Unit filename="Media/todos.txt" />
 		<Unit filename="src/Application.cpp" />
 		<Unit filename="src/Application.h" />
 		<Unit filename="src/LevelEditor/EditableLevel.h" />

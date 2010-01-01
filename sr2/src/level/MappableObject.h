@@ -20,7 +20,7 @@ namespace StoneRing {
 
         MappableObject();
         virtual ~MappableObject();
-        virtual eElement WhichElement() const{ return EMAPPABLEOBJECT; }    
+        virtual eElement WhichElement() const{ return EMAPPABLEOBJECT; }
         virtual uint GetX() const { return m_X; }
         virtual uint GetY() const { return m_Y; }
 
@@ -134,8 +134,8 @@ namespace StoneRing {
         virtual void ResetLevelY(uint y) { m_Y = y * 32;}
         virtual bool Step() const { return true; }
     private:
-        virtual bool handle_element(eElement element, Element * pElement ){ return false;}
-        virtual void load_attributes(CL_DomNamedNodeMap * pAttributes){}
+        virtual bool handle_element(eElement, Element* ){ return false;}
+        virtual void load_attributes(CL_DomNamedNodeMap ){}
         virtual void load_finished(){}
         virtual void set_frame_for_direction();
         virtual bool delete_sprite() const { return false; }
@@ -156,7 +156,7 @@ namespace StoneRing {
                 return i1->second < i2->second;
             }
     };
-};
+}
 
 #endif
 

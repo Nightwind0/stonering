@@ -136,5 +136,5 @@ namespace StoneRing{
         uint m_cur_char;
     };
 
-};
+}
 #endif

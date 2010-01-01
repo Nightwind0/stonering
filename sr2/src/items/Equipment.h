@@ -15,7 +15,7 @@ namespace StoneRing{
         virtual ~Equipment();
 
         enum eSlot
-        { 
+        {
             EHAND=1,
             EOFFHAND=2,
             EHEAD=4,
@@ -29,14 +29,18 @@ namespace StoneRing{
             EANYARMOR = (EHEAD | EHANDS | EBODY | EANYFINGER | EFEET),
             EANY = (EANYHAND | EANYARMOR)
         };
-                
+
         SpellRef * GetSpellRef() const;
         RuneType * GetRuneType() const;
         bool HasSpell() const ;
         bool HasRuneType() const;
 
-        void Equip(ICharacter *);
-        void Unequip(ICharacter *);
+        // True for armor, false for weapon
+        virtual bool IsArmor() const=0;
+        bool IsWeapon() const { return !IsArmor(); }
+
+        virtual void Equip(ICharacter *);
+        virtual void Unequip(ICharacter *);
         virtual void ExecuteScript()=0;
         virtual bool EquipCondition()=0;
         typedef std::multimap<uint,AttributeModifier*> AttributeModifierSet;
@@ -58,16 +62,16 @@ namespace StoneRing{
         void Set_Spell_Ref ( SpellRef * pRef );
         void Set_Rune_Type ( RuneType * pType );
         void Add_Status_Effect_Modifier(StatusEffectModifier *pModifier) { m_status_effect_modifiers.push_back ( pModifier ) ; }
-    
+
     private:
         AttributeModifierSet m_attribute_modifiers;
         SpellOrRuneRef  m_SpellOrRuneRef;
         enum eMagic { NONE, SPELL, RUNE };
         eMagic m_eMagic;
         std::list<StatusEffectModifier*> m_status_effect_modifiers;
-        
+
     };
-};
+}
 
 #endif
 

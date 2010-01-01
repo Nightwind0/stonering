@@ -28,7 +28,7 @@ namespace StoneRing {
     class ScriptElement;
     class Action;
     class MonsterRegions;
- 
+
     enum eDirectionBlock
     {
         DIR_NORTH = 1,
@@ -43,7 +43,7 @@ namespace StoneRing {
         DirectionBlock();
         explicit DirectionBlock(int);
         virtual ~DirectionBlock();
-        virtual eElement WhichElement() const{ return EDIRECTIONBLOCK; }    
+        virtual eElement WhichElement() const{ return EDIRECTIONBLOCK; }
         int GetDirectionBlock() const;
 
     protected:
@@ -60,14 +60,14 @@ namespace StoneRing {
     public:
         Tilemap();
         virtual ~Tilemap();
-        virtual eElement WhichElement() const{ return ETILEMAP; }        
+        virtual eElement WhichElement() const{ return ETILEMAP; }
         inline ushort GetMapX() const { return m_X; }
         inline ushort GetMapY() const { return m_Y; }
 
         inline CL_Surface * GetTileMap() const { return m_pSurface; }
 
     protected:
-        virtual bool handle_element(eElement element, Element * pElement );      
+        virtual bool handle_element(eElement element, Element * pElement );
         virtual void load_attributes(CL_DomNamedNodeMap * pAttributes);
         CL_Surface *m_pSurface;
         ushort m_X;
@@ -79,7 +79,7 @@ namespace StoneRing {
     public:
         Movement();
         virtual ~Movement();
-        virtual eElement WhichElement() const{ return EMOVEMENT; }  
+        virtual eElement WhichElement() const{ return EMOVEMENT; }
         enum eMovementType { MOVEMENT_NONE, MOVEMENT_WANDER, MOVEMENT_PACE_NS, MOVEMENT_PACE_EW, MOVEMENT_SCRIPT};
         enum eMovementSpeed { SLOW, MEDIUM, FAST };
 
@@ -111,8 +111,8 @@ namespace StoneRing {
         enum eFlags { SPRITE = 1, FLOATER = 2, HOT = 4, BLK_NORTH = 8, BLK_SOUTH = 16, BLK_EAST = 32, BLK_WEST = 64, POPS = 128};
     public:
         Tile();
-        virtual ~Tile(); 
-        virtual eElement WhichElement() const{ return ETILE; }  
+        virtual ~Tile();
+        virtual eElement WhichElement() const{ return ETILE; }
         inline ushort GetZOrder() const { return m_ZOrder; }
 
         inline bool IsFloater() const { return (cFlags & FLOATER) != 0; }
@@ -320,7 +320,7 @@ namespace StoneRing {
 
 
 
-};
+}
 
 struct LessTile : public std::binary_function<const StoneRing::Tile*,
     const StoneRing::Tile*,bool>

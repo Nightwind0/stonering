@@ -1,5 +1,5 @@
 #ifndef GRAPHIC_H
-#define GRAPHIC_H 
+#define GRAPHIC_H
 
 #include "Element.h"
 
@@ -33,7 +33,7 @@ namespace StoneRing{
     };
 
 
-};
+}
 
 #endif
 

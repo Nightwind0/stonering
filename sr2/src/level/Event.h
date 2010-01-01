@@ -13,7 +13,7 @@ namespace StoneRing{
         virtual ~Event();
 
         enum eTriggerType { STEP, TALK, ACT };
-        virtual eElement WhichElement() const{ return EEVENT; } 
+        virtual eElement WhichElement() const{ return EEVENT; }
         std::string GetName() const;
         eTriggerType GetTriggerType();
         bool Repeatable();
@@ -32,7 +32,7 @@ namespace StoneRing{
     };
 
 
-};
+}
 
 
 #endif

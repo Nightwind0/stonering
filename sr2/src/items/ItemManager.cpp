@@ -45,8 +45,8 @@ void ItemManager::LoadItemFile ( CL_DomDocument &doc )
     IFactory * pItemFactory = IApplication::GetInstance()->GetElementFactory();
 
     CL_DomElement itemsNode = doc.named_item("items").to_element();
-    CL_DomElement weaponClassesNode = itemsNode.named_item("weaponClasses").to_element(); 
-    
+    CL_DomElement weaponClassesNode = itemsNode.named_item("weaponClasses").to_element();
+
     CL_DomElement weaponClassNode = weaponClassesNode.get_first_child().to_element();
 
     while(!weaponClassNode.is_null())
@@ -56,10 +56,10 @@ void ItemManager::LoadItemFile ( CL_DomDocument &doc )
         m_weapon_classes.push_back ( pWeaponClass );
         weaponClassNode = weaponClassNode.get_next_sibling().to_element();
     }
-    
+
     CL_DomElement weaponTypesNode = itemsNode.named_item("weaponTypes").to_element();
     CL_DomElement weaponTypeNode = weaponTypesNode.get_first_child().to_element();
-    
+
     while(!weaponTypeNode.is_null())
     {
         WeaponType * pWeaponType = dynamic_cast<WeaponType*>( pItemFactory->createElement("weaponType") );
@@ -93,10 +93,10 @@ void ItemManager::LoadItemFile ( CL_DomDocument &doc )
 
         armorTypeNode = armorTypeNode.get_next_sibling().to_element();
     }
-        
+
     CL_DomElement itemListNode = itemsNode.named_item("itemList").to_element();
     CL_DomElement namedItemNode = itemListNode.get_first_child().to_element();
-    
+
 #ifndef NDEBUG
     uint namedItemCount = 0;
 #endif
@@ -110,20 +110,20 @@ void ItemManager::LoadItemFile ( CL_DomDocument &doc )
 
         pElement->Load(&namedItemNode);
         NamedItem * pItem = pElement->GetNamedItem();
-    
+
         pItem->SetIconRef ( pElement->GetIconRef() );
         pItem->SetMaxInventory ( pElement->GetMaxInventory() );
         pItem->SetName ( pElement->GetName() );
         pItem->SetDropRarity ( pElement->GetDropRarity() );
-    
+
         m_named_items[pItem->GetName()] = pItem;
 
         delete pElement;
-    
+
         namedItemNode = namedItemNode.get_next_sibling().to_element();
     }
-  
-   
+
+
 }
 #if 0
 void ItemManager::generateWeapons()
@@ -148,7 +148,7 @@ void ItemManager::generateWeapons()
 
             if(!pClass->isExcluded( typeRef ) )
             {
-                // Create all the spell combinations. 
+                // Create all the spell combinations.
                 const AbilityManager * pAbilityManager = IApplication::getInstance()->getAbilityManager();
                 for(std::list<Spell*>::const_iterator spellIter = pAbilityManager->getSpellsBegin();
                     spellIter != pAbilityManager->getSpellsEnd();
@@ -163,21 +163,21 @@ void ItemManager::generateWeapons()
                         mItems.push_back ( pWeapon );
                     }
                 }
-        
+
                 // Create the no spell, no rune weapon
 
                 GeneratedWeapon * pPlainWeapon = new GeneratedWeapon();
                 pPlainWeapon->generate( pType, pClass, NULL, NULL );
 
                 mItems.push_back ( pPlainWeapon );
-           
+
 
                 // Create the rune version.
                 GeneratedWeapon * pRuneWeapon = new GeneratedWeapon();
                 RuneType * runeType = new RuneType();
                 runeType->setRuneType( RuneType::RUNE );
                 pRuneWeapon->generate( pType, pClass, NULL, runeType );
-        
+
                 mItems.push_back ( pRuneWeapon );
 
             }
@@ -197,7 +197,7 @@ void ItemManager::generateArmor()
 #ifndef NDEBUG
         std::cout << "Generating armor for type: " << pType->getName() << std::endl;
 #endif
-    
+
         for(std::list<ArmorClass*>::const_iterator classIter = mArmorClasses.begin();
             classIter != mArmorClasses.end();
             classIter++)
@@ -209,7 +209,7 @@ void ItemManager::generateArmor()
 
             if(!pClass->isExcluded( typeRef ) )
             {
-                // Create all the spell combinations. 
+                // Create all the spell combinations.
                 const AbilityManager * pAbilityManager = IApplication::getInstance()->getAbilityManager();
                 for(std::list<Spell*>::const_iterator spellIter = pAbilityManager->getSpellsBegin();
                     spellIter != pAbilityManager->getSpellsEnd();
@@ -224,24 +224,24 @@ void ItemManager::generateArmor()
                         mItems.push_back ( pArmor );
                     }
                 }
-        
 
 
-        
+
+
                 // Create the no spell, no rune Armor
 
                 GeneratedArmor * pPlainArmor = new GeneratedArmor();
                 pPlainArmor->generate( pType, pClass );
 
                 mItems.push_back ( pPlainArmor );
-           
+
 
                 // Create the rune version.
                 GeneratedArmor * pRuneArmor = new GeneratedArmor();
                 RuneType * runeType = new RuneType();
                 runeType->setRuneType( RuneType::RUNE );
                 pRuneArmor->generate( pType, pClass, NULL, runeType );
-        
+
                 mItems.push_back ( pRuneArmor );
 
                 // Create the ultra rune version
@@ -312,7 +312,7 @@ ArmorClass  * ItemManager::GetArmorClass ( const ArmorClassRef & ref ) const
         if( ref.GetName() == (*iter)->GetName())
             return *iter;
     }
-    
+
     assert ( 0 && "Armor class not found.");
     return NULL;
 }
@@ -325,7 +325,7 @@ Item * ItemManager::GetNamedItem( const std::string &name ) const
     {
         return iter->second;
     }
-    
+
     throw CL_Error("Couldn't find item by name: " + name);
     return NULL;
 }
@@ -362,9 +362,11 @@ Item * ItemManager::GetItem( const ItemRef & ref )
                 m_items[ref] = pArmor;
                 return pArmor;
             }
+        default:
+            assert(0);
         }
     }
-    
+
     throw CL_Error("Couldn't find item based on ref.");
     return NULL;
 }
@@ -393,7 +395,7 @@ void ItemManager::dumpItemList()
         iter++)
     {
         Item * pItem = *iter;
-    
+
         std::cout << '[' << Item::ItemTypeAsString(pItem->getItemType()) << ']' << ' ';
         std::cout << pItem->getName();
         std::cout << " (" << pItem->getDropRarity() << ") ";
@@ -415,7 +417,7 @@ void ItemManager::dumpItemList()
             if(pDamageCategory->getClass() != DamageCategory::WEAPON) throw CL_Error("What? This weapon has a magic damage category.");
 
             WeaponDamageCategory * pWDC = dynamic_cast<WeaponDamageCategory*>(pDamageCategory);
-        
+
 
             switch ( pWDC->getType() )
             {
@@ -428,14 +430,14 @@ void ItemManager::dumpItemList()
             case WeaponDamageCategory::SLASH:
                 std::cout << "\t[SLASH]";
                 break;
-        
+
             }
-        
+
 
             if(pWeapon->isTwoHanded()) std::cout << "(Two Handed)";
 
             if(pWeapon->isRanged()) std::cout << "(Ranged)" ;
-           
+
             std::cout << std::endl;
 
             // If there are attribute enhancers, lets list them.
@@ -451,7 +453,7 @@ void ItemManager::dumpItemList()
             ArmorType * pType = pArmor->getArmorType();
             std::cout << '\t' << "AC: " << std::setw(5) <<  pArmor->modifyArmorAttribute(Armor::AC, (int)pType->getBaseAC());
             std::cout << ' ' << "RST " << std::setw(4) << pArmor->modifyArmorAttribute(Armor::RESIST, pType->getBaseRST()) << std::endl;
-        
+
             switch( pType->getSlot())
             {
             case Equipment::EHEAD:
@@ -479,9 +481,9 @@ void ItemManager::dumpItemList()
 
             break;
         }
-        
+
         }
-    
+
     }
 }
 
@@ -490,7 +492,7 @@ void ItemManager::printAttributeEnhancers(Equipment * pItem )
     if( pItem->getAttributeEnhancersBegin() != pItem->getAttributeEnhancersEnd() )
     {
         std::cout << "\tAttribute Enhancers:"  << std::endl;
-    
+
         for(std::list<AttributeEnhancer*>::const_iterator iter = pItem->getAttributeEnhancersBegin();
             iter != pItem->getAttributeEnhancersEnd();
             iter++)
@@ -508,7 +510,7 @@ void ItemManager::printAttributeEnhancers(Equipment * pItem )
             std::cout << std::endl;
         }
     }
-    
+
 }
 
 void ItemManager::printStatusModifiers(Equipment *pItem)

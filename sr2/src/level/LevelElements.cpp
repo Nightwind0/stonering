@@ -59,7 +59,7 @@ bool operator < (const CL_Point &p1, const CL_Point &p2)
 {
     uint p1value = (p1.y  *  StoneRing::IApplication::GetInstance()->GetScreenWidth()) + p1.x;
     uint p2value = (p2.y  * StoneRing::IApplication::GetInstance()->GetScreenWidth()) + p2.x;
-    
+
     return p1value < p2value;
 }
 
@@ -85,10 +85,10 @@ void StoneRing::Tilemap::load_attributes(CL_DomNamedNodeMap * pAttributes)
 
 StoneRing::Tilemap::Tilemap():m_pSurface(NULL)
 {
-    
+
 
 }
- 
+
 StoneRing::Tilemap::~Tilemap()
 {
 }
@@ -112,13 +112,13 @@ void StoneRing::Movement::load_attributes(CL_DomNamedNodeMap * pAttributes)
             m_eSpeed = FAST;
         }
         else throw CL_Error("Error, movement speed must be fast, medium or slow.");
-            
+
     }
 
     std::string type = get_required_string("movementType",pAttributes);
 
     if(type == "wander")
-    {   
+    {
         m_eType = MOVEMENT_WANDER;
     }
     else if(type == "paceNS")
@@ -143,7 +143,7 @@ void StoneRing::Movement::load_attributes(CL_DomNamedNodeMap * pAttributes)
 
 StoneRing::Movement::Movement ( ):m_eType(MOVEMENT_NONE),m_eSpeed(SLOW),m_pScript(NULL)
 {
-   
+
 }
 
 StoneRing::Movement::~Movement()
@@ -269,7 +269,7 @@ bool StoneRing::Tile::handle_element(Element::eElement element, Element * pEleme
         int db = block->GetDirectionBlock();
 
         // This is all done to make tile's take up less space in memory
-            
+
         if(db & DIR_NORTH)
             cFlags |= BLK_NORTH;
         if(db & DIR_SOUTH)
@@ -280,7 +280,7 @@ bool StoneRing::Tile::handle_element(Element::eElement element, Element * pEleme
             cFlags |= BLK_WEST;
 
         delete block;
-        
+
         break;
     }
     default:
@@ -334,7 +334,7 @@ void StoneRing::Tile::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicCon
     // Get our tilemap or sprite
     // Blit it
 
-    static GraphicsManager * GM = GraphicsManager::GetInstance();
+    // static GraphicsManager * GM = GraphicsManager::GetInstance();
 
     if( !IsSprite() )
     {
@@ -347,9 +347,9 @@ void StoneRing::Tile::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicCon
         CL_Rect srcRect((mapx << 5) + src.left, (mapy << 5) + src.top,
                         (mapx << 5) + src.right, (mapy << 5) + src.bottom);
 
-        
+
         tilemap->draw(srcRect, dst, pGC);
-        
+
     }
     else
     {

@@ -85,33 +85,46 @@ std::string FloatToString(const float &f);
 
 inline double ranf()
 {
-  return (double)rand() / (double)RAND_MAX;
+  return (double)rand() / ((double)RAND_MAX + 1.0);
 }
 
-// random dist centered around 0
-inline double gaussian_random (const double sigma=1.0)
+/* boxmuller.c           Implements the Polar form of the Box-Muller
+                         Transformation
+
+                      (c) Copyright 1994, Everett F. Carter Jr.
+                          Permission is granted by the author to use
+			  this software for any application provided this
+			  copyright notice is preserved.
+
+*/
+/* normal random variate generator */
+/* mean m, standard deviation s */
+inline double normal_random(double m, double sigma)
 {
-  double x, y, r2;
+	double x1, x2, w, y1;
+	static double y2;
+	static bool use_last = false;
 
-  do
-    {
-      /* choose x,y in uniform square (-1,-1) to (+1,+1) */
+	if (use_last)		        /* use value from previous call */
+	{
+		y1 = y2;
+		use_last = false;
+	}
+	else
+	{
+		do {
+			x1 = 2.0 * ranf() - 1.0;
+			x2 = 2.0 * ranf() - 1.0;
+			w = x1 * x1 + x2 * x2;
+		} while ( w >= 1.0 );
 
-      x = -1 + 2 * ranf();
-      y = -1 + 2 * ranf();
+		w = sqrt( (-2.0 * log( w ) ) / w );
+		y1 = x1 * w;
+		y2 = x2 * w;
+		use_last = true;
+	}
 
-      /* see if it is in the unit circle */
-      r2 = x * x + y * y;
-    }
-  while (r2 > 1.0 || r2 == 0);
-
-  /* Box-Muller transform */
-  return sigma * y * sqrt (-2.0 * log (r2) / r2);
-}
-
-inline double random_distribution(double center, double std_dev_ratio)
-{
-  return center + gaussian_random(std_dev_ratio * center);
+	return( m + y1 * sigma );
 }
 
 

@@ -25,6 +25,8 @@ BattleMenuOption::~BattleMenuOption()
     case SUBMENU:
         delete m_action.m_pSubMenu;
         break;
+    default:
+        break;
     }
 }
 
@@ -53,6 +55,8 @@ void BattleMenuOption::Select(StoneRing::BattleMenuStack& stack, const Parameter
             }
         case SCRIPT:
             m_action.m_pScript->ExecuteScript(params);
+            break;
+        default:
             break;
     }
 }

@@ -53,7 +53,7 @@ namespace StoneRing
         Action m_action;
         ActionType m_action_type;
     };
-};
+}
 
 
 #endif

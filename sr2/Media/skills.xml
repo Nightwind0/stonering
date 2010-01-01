@@ -3,12 +3,34 @@
     <skill bp="0" name="Attack" sp="0">
         <onSelect>
             <script id="AttackSkillScript">
-                var $pC = $Character;
-                // The animation comes first.
-                var @targets = battle::selectTargets(true,false,true);
-                //animation($pC,"Attack");
+	    <![CDATA[
+        var $pC = $Character;
+		var $name = getCharacterName($pC);
+        // The animation comes first.
+        var @targets = battle::selectTargets(true,false,true);
+        //animation($pC,"Attack");
 
-                var $pWeapon = getEquipment($pC, $_HAND);
+        var $pWeapon = getEquipment($pC, $_HAND);
+		var $pTarget = @targets[0];
+		//var $pTargetArmor = getEquipment($pTarget
+
+		println($name + " attacks " + getCharacterName($pTarget) + " with " + getItemName($pWeapon));
+
+		var $hit = getCharacterAttribute($pC, $_DEX) + getEquippedWeaponAttribute($pC,$_HIT);
+		var $dodge = getCharacterAttribute($pTarget, $_EVD) + getEquippedArmorAttribute($pTarget,$_AC);
+
+		var $chance = $hit * ( 1.0 - $dodge );
+
+		var $roll = math::randf();
+
+		println("Hit was " + $hit + " and dodge was " + $dodge);
+		println("Roll was " + $roll);
+
+		var $bHit = false;
+		if($roll < $chance)
+			$bHit = true;
+
+
                 // If hit
                 // Calculate damage
                 // doAttack()
@@ -17,6 +39,7 @@
                 // else
                 // pushDisplay("Miss");
                 // playSound("whiff");
+		]]>
             </script>
         </onSelect>
     </skill>

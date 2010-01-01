@@ -17,6 +17,7 @@ Weapon::~Weapon()
     Clear_Weapon_Enhancers();
 }
 
+
 std::string StoneRing::Weapon::CreateWeaponName(WeaponType *pType, WeaponClass *pClass, SpellRef *pSpell, RuneType *pRune)
 {
     std::ostringstream os;
@@ -28,7 +29,7 @@ std::string StoneRing::Weapon::CreateWeaponName(WeaponType *pType, WeaponClass *
 
     os << pClass->GetName() << ' ' << pType->GetName();
 
-    if(pSpell)
+    if (pSpell)
     {
         os << " of " << pSpell->GetName();
     }
@@ -38,44 +39,50 @@ std::string StoneRing::Weapon::CreateWeaponName(WeaponType *pType, WeaponClass *
 
 
 
-int Weapon::ModifyWeaponAttribute( eAttribute attr, int current )
+
+double Weapon::GetWeaponAttribute ( eAttribute attr )
 {
-
-    int value = current;
-
-    for(std::list<WeaponEnhancer*>::iterator iter = m_weapon_enhancers.begin();
-        iter != m_weapon_enhancers.end();
-        iter++)
-    {
-        WeaponEnhancer * pEnhancer = *iter;
-
-        if( pEnhancer->GetAttribute() == attr )
-        {
-            value= (int)(pEnhancer->GetMultiplier() * (float)value);
-            value += pEnhancer->GetAdd();
-        }
+    double current = 0.0;
+    switch(attr){
+        case HIT:
+            current = GetWeaponType()->GetBaseHit();
+            break;
+        case ATTACK:
+            current = GetWeaponType()->GetBaseAttack();
+            break;
+        case CRITICAL:
+            current = GetWeaponType()->GetBaseCritical();
+            break;
+        default:
+            break;
     }
 
-    return value;
-}
+    double  value = current;
 
-float Weapon::ModifyWeaponAttribute ( eAttribute attr, float current )
-{
-
-    float value = current;
-
-    for(std::list<WeaponEnhancer*>::iterator iter = m_weapon_enhancers.begin();
-        iter != m_weapon_enhancers.end();
-        iter++)
+    for (std::list<WeaponEnhancer*>::iterator iter = m_weapon_enhancers.begin();
+            iter != m_weapon_enhancers.end();
+            iter++)
     {
         WeaponEnhancer * pEnhancer = *iter;
 
-        if( pEnhancer->GetAttribute() == attr )
+        if ( pEnhancer->GetAttribute() == attr )
         {
             value *= pEnhancer->GetMultiplier() ;
+        }
+    }
+
+    for (std::list<WeaponEnhancer*>::iterator iter = m_weapon_enhancers.begin();
+            iter != m_weapon_enhancers.end();
+            iter++)
+    {
+        WeaponEnhancer * pEnhancer = *iter;
+
+        if ( pEnhancer->GetAttribute() == attr )
+        {
             value += pEnhancer->GetAdd();
         }
     }
+
 
     return value;
 }
@@ -86,9 +93,9 @@ float Weapon::ModifyWeaponAttribute ( eAttribute attr, float current )
 
 void Weapon::Clear_Weapon_Enhancers()
 {
-    for(std::list<WeaponEnhancer*>::iterator iter = m_weapon_enhancers.begin();
-        iter != m_weapon_enhancers.end();
-        iter++)
+    for (std::list<WeaponEnhancer*>::iterator iter = m_weapon_enhancers.begin();
+            iter != m_weapon_enhancers.end();
+            iter++)
     {
         delete *iter;
     }
@@ -113,7 +120,7 @@ void Weapon::Add_Weapon_Enhancer (WeaponEnhancer * pEnhancer)
    BERSERK,
    SLOW,
    WEAK,
-   BREAK, 
+   BREAK,
    SILENCE,
    SLEEP,
    BLIND,
@@ -126,11 +133,13 @@ void Weapon::Add_Weapon_Enhancer (WeaponEnhancer * pEnhancer)
 
 
 
-Weapon::eAttribute 
+Weapon::eAttribute
 Weapon::AttributeForString(const std::string str)
 {
-    if(str == "ATK") return ATTACK;
-    else if (str == "HIT") return HIT;
+
+    if (str == "ATK") return ATTACK;
+    else if(str == "HIT") return HIT;
+    else if (str == "Change_BP") return CHANGE_BP;
     else if (str == "Steal_HP%") return STEAL_HP;
     else if (str == "Steal_MP%") return STEAL_MP;
     else if (str == "Critical%") return CRITICAL;

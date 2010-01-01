@@ -483,6 +483,9 @@ ICharacter* BattleState::get_next_character(const ICharacterGroup* pParty, const
             }
         }
     }
+
+    assert(0);
+    return NULL;
 }
 
 ICharacter* BattleState::get_prev_character(const ICharacterGroup* pParty, const ICharacter* pCharacter) const
@@ -503,6 +506,9 @@ ICharacter* BattleState::get_prev_character(const ICharacterGroup* pParty, const
         }
 
     }
+
+    assert(0);
+    return NULL;
 }
 
 void BattleState::SelectNextTarget()

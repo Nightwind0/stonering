@@ -49,5 +49,5 @@ namespace StoneRing
 
     };
 
-};
+}
 #endif

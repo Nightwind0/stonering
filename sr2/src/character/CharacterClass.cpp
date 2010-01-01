@@ -90,23 +90,13 @@ bool CharacterClass::handle_element(eElement element, Element * pElement)
 }
 
 
-double CharacterClass::GetStatReal(ICharacter::eCharacterAttribute attr, int level)
+double CharacterClass::GetStat(ICharacter::eCharacterAttribute attr, int level)
 {
     StatMap::iterator it = m_stat_scripts.find(attr);
     if(it == m_stat_scripts.end())
         throw CL_Error("Missing stat: " + ICharacter::CAToString(attr) +  " on character class: " + m_name );
 
     StatScript *pScript = it->second;
-    return pScript->GetStatReal(level);
-}
-
-int CharacterClass::GetStat(ICharacter::eCharacterAttribute attr, int level)
-{
-    StatMap::iterator it = m_stat_scripts.find(attr);
-    if(it == m_stat_scripts.end())
-        throw CL_Error("Missing stat: " + ICharacter::CAToString(attr) + " on character class: " + m_name );
-
-    StatScript * pScript = it->second;
     return pScript->GetStat(level);
 }
 
@@ -215,7 +205,7 @@ StatScript::GetCharacterStat() const
     return m_eStat;
 }
 
-double StatScript::GetStatReal(int level)
+double StatScript::GetStat(int level)
 {
     // Magic conversion to double
     ParameterList params;
@@ -224,14 +214,6 @@ double StatScript::GetStatReal(int level)
     return m_pScript->ExecuteScript(params);
 }
 
-int StatScript::GetStat(int level)
-{
-    // Magic conversion to double
-    ParameterList params;
-    params.push_back ( ParameterListItem("$_CL",level) );
-
-    return m_pScript->ExecuteScript(params);
-}
 
 
 
