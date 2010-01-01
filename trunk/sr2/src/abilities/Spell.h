@@ -76,7 +76,7 @@ namespace StoneRing
         MagicResistance * mpMagicResistance;
         ScriptElement *mpScript;
     };
-};
+}
 
 
 #endif

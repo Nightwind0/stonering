@@ -12,7 +12,7 @@
 namespace StoneRing{
 
 
-    class ItemRef;  
+    class ItemRef;
 
     // A Party interface defines the interface
     // to the player party. It is  a specialization of charactergroup
@@ -43,7 +43,7 @@ namespace StoneRing{
     };
 
 
-};
+}
 
 
 #endif

@@ -80,6 +80,6 @@ namespace StoneRing{
         virtual ~OnDeselect(){}
         virtual eElement WhichElement() const { return EONDESELECT; }
     };
-};
+}
 #endif
 

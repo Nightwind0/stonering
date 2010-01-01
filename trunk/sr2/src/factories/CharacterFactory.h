@@ -26,7 +26,7 @@ namespace StoneRing
 
         factoryMethod getMethod(Element::eElement element) const;
     };
-};
+}
 
 #endif
 

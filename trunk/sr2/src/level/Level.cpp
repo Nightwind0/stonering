@@ -53,7 +53,7 @@ std::list<Tile*>::const_iterator Tiles::GetTilesEnd()const
 {
     return m_tiles.end();
 }
- 
+
 bool Tiles::handle_element(eElement element, Element * pElement)
 {
     if(element == ETILE)
@@ -147,7 +147,7 @@ void LevelHeader::load_attributes(CL_DomNamedNodeMap * pAttributes)
 
 /////////////////////////////////////////////////////////////////////////////
 // Level
-// 
+//
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -187,7 +187,7 @@ bool matchesMappableObject(const std::multimap<CL_Point,MappableObject*>::value_
 
 bool Level::Contains_Solid_Mappable_Object(const CL_Point &point) const
 {
-    
+
 //  MOMap::const_iterator i = std::find_if(m_MO_map.lower_bound(point),m_MO_map.upper_bound(point),activeSolidMappableObject);
     MOMap::const_iterator lower = m_MO_map.lower_bound(point);
     MOMap::const_iterator upper = m_MO_map.upper_bound(point);
@@ -230,9 +230,9 @@ void Level::Remove_Mappable_Object_At(const CL_Point &point, MappableObject *pMO
         if ( findit->second == pMO)
         {
             removals.push_back (findit);
-        }       
-    }                               
-    
+        }
+    }
+
     for(std::list<MOMapIter>::const_iterator iter = removals.begin();
         iter != removals.end(); iter++)
     {
@@ -257,9 +257,9 @@ Level::Level(const std::string &name,CL_ResourceManager * pResources): mpDocumen
 
 Level::~Level()
 {
-    for(int x=0;x<m_LevelWidth;x++)
+    for(uint x=0;x<m_LevelWidth;x++)
     {
-        for(int y=0;y<m_LevelHeight;y++)
+        for(uint y=0;y<m_LevelHeight;y++)
         {
             for(std::list<Tile*>::iterator i = m_tiles[x][y].begin();
                 i != m_tiles[x][y].end();
@@ -267,7 +267,7 @@ Level::~Level()
             {
                 delete *i;
             }
-        
+
         }
 
     }
@@ -302,11 +302,11 @@ bool Level::Get_Cumulative_Hotness_At_Point(const CL_Point &point) const
         if((*iter)->EvaluateCondition())
             if((*iter)->IsHot()) return true;
     }
-        
+
     return false;
 
 }
-    
+
 
 void Level::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC, bool floaters,
                  bool highlightHot, bool indicateBlocks)
@@ -316,19 +316,19 @@ void Level::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC,
     int cornerx = static_cast<int>(src.left / 32);
     int cornery = static_cast<int>(src.top / 32);
 
-    int widthInTiles = static_cast<int>((int)ceil((double)src.right/32.0)) - cornerx;
-    int heightInTiles = static_cast<int>((int)ceil((double)src.bottom/32.0)) - cornery;
+    uint widthInTiles = static_cast<int>((int)ceil((double)src.right/32.0)) - cornerx;
+    uint heightInTiles = static_cast<int>((int)ceil((double)src.bottom/32.0)) - cornery;
 
-    int widthInPx = widthInTiles * 32;
-    int heightInPx = heightInTiles * 32;
+    uint widthInPx = widthInTiles * 32;
+    uint heightInPx = heightInTiles * 32;
 
 
     CL_Rect exDst = dst; // expanded Dest
-     
+
     // Make it as big as the full source tiles
     // (It maintains the top/left position when you do this)
     exDst.set_size(CL_Size( widthInPx, heightInPx ));
-    
+
     // Move the top and left position out
 
     int newleftDelta = src.left - ((src.left / 32) * 32);
@@ -338,24 +338,24 @@ void Level::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC,
     exDst.right -= newleftDelta;
     exDst.top -= newtopDelta;
     exDst.bottom -= newtopDelta;
-    
+
 
 
     if(floaters)
     {
-    
+
         for(std::map<CL_Point,std::list<Tile*> >::iterator f = m_floater_map.begin();
             f != m_floater_map.end();
             f++)
         {
-    
+
             // Possible optimization... instead of using is_overlapped, do a couple quick comparisons
             CL_Rect floaterRect(f->first.x,f->first.y,f->first.x + 32, f->first.y + 32);
-        
+
 
             // Is this floater even on screen
             if(src.is_overlapped( floaterRect))
-        
+
                 for(std::list<Tile*>::iterator i = f->second.begin();
                     i != f->second.end();
                     i++)
@@ -365,53 +365,53 @@ void Level::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC,
                                       exDst.top + f->first.y * 32,
                                       exDst.left + f->first.x * 32 + 32,
                                       exDst.top + f->first.y * 32 + 32);
-                    
+
                     Tile * pTile = *i;
                     if(pTile->EvaluateCondition())
                     {
                         pTile->Draw(tileSrc, tileDst , pGC );
 
                     }
-            
-            
+
+
                 }
         }
-    
-    }       
+
+    }
     else
     {
         // Regular tiles, not floaters
-    
-        for(int tileX = 0; tileX < widthInTiles; tileX++)
+
+        for(uint tileX = 0; tileX < widthInTiles; tileX++)
         {
-            for(int tileY =0; tileY < heightInTiles; tileY++)
+            for(uint tileY =0; tileY < heightInTiles; tileY++)
             {
-        
+
                 CL_Point p( src.left / 32 + tileX, src.top /32 + tileY);
-        
-        
+
+
                 if(p.x >=0 && p.y >=0 && p.x < m_LevelWidth && p.y < m_LevelHeight)
                 {
-                    CL_Rect tileSrc(0,0,32,32);            
+                    CL_Rect tileSrc(0,0,32,32);
                     CL_Rect tileDst ( exDst.left  + (tileX << 5),
                                       exDst.top + (tileY << 5),
                                       exDst.left + (tileX << 5) + 32,
                                       exDst.top + (tileY << 5) + 32);
 
-                           
+
                     std::list<Tile*>::iterator end = m_tiles[p.x][p.y].end();
                     for(std::list<Tile*>::iterator i = m_tiles[p.x][p.y].begin();
                         i != end;
                         i++)
                     {
 
-               
+
                         Tile * pTile = *i;
                         if(pTile->EvaluateCondition())
                         {
                             pTile->Draw(tileSrc, tileDst , pGC );
-                
-                
+
+
                             // Extra code for level editing
                             if(highlightHot && pTile->IsHot())
                             {
@@ -420,7 +420,7 @@ void Level::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC,
                             if(indicateBlocks)
                             {
                                 int block = pTile->GetDirectionBlock();
-                            
+
                                 if(block & DIR_WEST)
                                 {
                                     pGC->fill_rect(CL_Rect(tileDst.left,tileDst.top,tileDst.left + 8, tileDst.bottom), CL_Color(0,255,255,120));
@@ -439,30 +439,30 @@ void Level::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC,
                                 }
                             }
                         }
-                    
 
-                    
 
-                    
-                    
+
+
+
+
                     }
                 }
-            
-            
-            
-            
-            
+
+
+
+
+
             }
         }
-    
+
     }
-    
-    
 
 
-    
 
-}       
+
+
+
+}
 
 
 void Level::DrawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC)
@@ -472,10 +472,10 @@ void Level::DrawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_Graph
 
     int width = static_cast<int>((int)ceil((double)src.right/32.0)) - cornerx;
     int height = static_cast<int>((int)ceil((double)src.bottom/32.0)) - cornery;
-        
+
     ++m_nFrameCount;
 
-#ifndef NDEBUG
+#if(!defined NDEBUG) && 0
     if(m_nFrameCount %2000 == 0)
     {
         std::cout << "X: " << cornerx <<  " Y: "  << cornery << std::endl;
@@ -503,7 +503,7 @@ void Level::DrawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_Graph
                                        point.y * 32 + dst.top - src.top,
                                        point.x * 32 + 32 - src.left + dst.left,
                                        point.y * 32 + 32 - src.top + dst.top),CL_Color::beige);
-        
+
 #endif
 
                 if(m_nFrameCount > pMO->GetFrameMarks()
@@ -514,8 +514,8 @@ void Level::DrawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_Graph
                     CL_Rect moRect = pMO->GetPixelRect();
                     CL_Rect dstRect( moRect.left - src.left + dst.left, moRect.top + dst.top - src.top,
                                      moRect.left - src.left + dst.left +moRect.get_width(), moRect.top - src.top + dst.top + moRect.get_height());
-                                        
-                    pMO->Draw( moRect, dstRect, pGC );            
+
+                    pMO->Draw( moRect, dstRect, pGC );
                 }
             }
         }
@@ -527,7 +527,7 @@ void Level::SetPlayerPos(const CL_Point &target)
 {
     Set_Mappable_Object_At(target, &m_player);
 }
-    
+
 
 
 void Level::Put_Mappable_Object_At_Current_Position(MappableObject *pMO)
@@ -537,9 +537,9 @@ void Level::Put_Mappable_Object_At_Current_Position(MappableObject *pMO)
     uint width = pMO->GetCellWidth();
     uint height = pMO->GetCellHeight();
 
-    for(int x = cur_pos.x; x< width + cur_pos.x;x++)
+    for(uint x = cur_pos.x; x< width + cur_pos.x;x++)
     {
-        for(int y=cur_pos.y;y<height + cur_pos.y;y++)
+        for(uint y=cur_pos.y;y<height + cur_pos.y;y++)
         {
             Set_Mappable_Object_At(CL_Point(x,y),pMO);
         }
@@ -551,16 +551,16 @@ void Level::MoveMappableObjects(const CL_Rect &src)
 {
 
     // They can't change direction unless they are aligned.
-    // They can't stop unless they are aligned. 
+    // They can't stop unless they are aligned.
     // Otherwise they can move as much as they want.
     // The timer should go off at the lowest time (the fastest mover)
-          
+
     int cornerx = static_cast<int>(src.left / 32.0);
     int cornery = static_cast<int>(src.top / 32.0);
 
     int width = static_cast<int>(ceil((double)src.right/32.0)) - cornerx;
     int height = static_cast<int>(ceil((double)src.bottom/32.0)) - cornery;
-        
+
     m_nMoveCount++;
 
     std::set<MOMapIter,LessMOMapIter> MOIters;
@@ -573,7 +573,7 @@ void Level::MoveMappableObjects(const CL_Rect &src)
 
             MOMapIter lower = m_MO_map.lower_bound(point);
             MOMapIter upper = m_MO_map.upper_bound(point);
-        
+
             // No list here.... move along
             for(MOMapIter iter = lower; iter!= upper; iter++)
             {
@@ -604,8 +604,8 @@ void Level::MoveMappableObjects(const CL_Rect &src)
 
         // Clear the MO from the map altogether, to be reinserted later
         pMo->SetOccupiedPoints(this, &Level::Remove_Mappable_Object_At);
-    
-        
+
+
         for(uint d=0;d<pMo->GetMovesPerDraw();d++)
         {
             if(pMo->GetDirection() != MappableObject::NONE)
@@ -617,7 +617,7 @@ void Level::MoveMappableObjects(const CL_Rect &src)
                                                         pMo->GetSize(), &intoPoints);
 
                     bool bPathBlocked = false;
-                                        
+
                     // Make sure none of these points is occupied.
                     // Break this into a method so I can if() off it
                     for(std::list<CL_Point>::iterator iter = intoPoints.begin();
@@ -646,12 +646,12 @@ void Level::MoveMappableObjects(const CL_Rect &src)
 
                         // Not blocked!
 
-                    }// all points    
+                    }// all points
 
                     if(bPathBlocked) continue;
 
 
-                  
+
 
                 }// Aligned
 
@@ -674,7 +674,7 @@ void Level::MoveMappableObjects(const CL_Rect &src)
             else
             {
 
-                
+
                 if(m_nMoveCount % 32 == 0)
                     pMo->MovedOneCell();
                 else pMo->Idle();
@@ -682,11 +682,11 @@ void Level::MoveMappableObjects(const CL_Rect &src)
         }// For d
 
         pMo->SetOccupiedPoints(this, &Level::Set_Mappable_Object_At);
-    
+
     }// for iMo
-      
+
 }
- 
+
 
 void Level::DrawFloaters(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext * pGC)
 {
@@ -694,7 +694,7 @@ void Level::DrawFloaters(const CL_Rect &src, const CL_Rect &dst, CL_GraphicConte
 }
 
 
-      
+
 // Checks relevant tile and MO direction block information
 // Rects are in cells
 bool Level::TryMove(const CL_Point &currently, const CL_Point & destination)
@@ -728,7 +728,7 @@ void Level::Step(const CL_Point &target)
     // Second, process any MO step events you may have triggered
     MOMap::const_iterator lower = m_MO_map.lower_bound(target);
     MOMap::const_iterator upper = m_MO_map.upper_bound(target);
-    
+
 
     for(MOMap::const_iterator iter = lower;
         iter != upper;
@@ -743,7 +743,7 @@ void Level::Step(const CL_Point &target)
             (pMo)->ProvokeEvents(Event::STEP);
         }
     }
-    
+
     Activate_Tiles_At(target.x,target.y);
 }
 
@@ -769,9 +769,9 @@ void Level::Activate_Tiles_At ( uint x, uint y )
             }
         }
     }
-    
+
 }
-      
+
 // Any talk events fire (assuming they meet conditions)
 void Level::Talk(const CL_Point &target, bool prod)
 {
@@ -779,7 +779,7 @@ void Level::Talk(const CL_Point &target, bool prod)
 
     MOMap::const_iterator lower = m_MO_map.lower_bound(target);
     MOMap::const_iterator upper = m_MO_map.upper_bound(target);
-    
+
 
     for(MOMap::const_iterator iter = lower;
         iter != upper;
@@ -804,11 +804,11 @@ void Level::Talk(const CL_Point &target, bool prod)
                     (pMo)->Prod();
                 }
 
-        
+
             }
-        
+
             return; // We only do the first one.
-        
+
         }
     }
 
@@ -820,14 +820,11 @@ void Level::Talk(const CL_Point &target, bool prod)
 void Level::Update(const CL_Rect & updateRect)
 {
 }
-      
- 
+
+
 #ifndef NDEBUG
 void Level::DumpMappableObjects() const
 {
-
-    IApplication * pApp = IApplication::GetInstance();
-
 
     std::cout << "=== Mappable Objects ===" << std::endl;
 
@@ -841,13 +838,13 @@ void Level::DumpMappableObjects() const
         MappableObject * pMO = iList->second;
 
         std::cout << '\t' << pMO->GetName();
-            
+
         std::cout << " @ " << (pMO->GetX() / 32) << '(' << pMO->GetX() << ')'
-                  <<',' 
+                  <<','
                   << (pMO->GetY() / 32) << '(' << pMO->GetY() << ')';
         std::cout << std::endl;
-    
-            
+
+
     }
 
 
@@ -893,7 +890,7 @@ bool Level::handle_element(Element::eElement element, Element * pElement)
         m_music = m_pHeader->GetMusic();
         m_tiles.resize( m_LevelWidth );
 
-        for(int x=0;x< m_LevelWidth; x++)
+        for(uint x=0;x< m_LevelWidth; x++)
         {
             m_tiles[x].resize ( m_LevelHeight );
         }
@@ -938,7 +935,7 @@ void Level::load_attributes(CL_DomNamedNodeMap * pAttributes)
 void Level::load_finished()
 {
     if(m_pHeader == NULL) throw CL_Error("Level was missing levelHeader.");
-    
+
     m_nFrameCount = m_nMoveCount = 0 ;
     m_bMarkedForDeath = false;
 }
@@ -967,7 +964,7 @@ void Level::Load_Tile ( Tile * tile)
 
     point.x = tile->GetX();
     point.y = tile->GetY();
-    
+
     if( tile->IsFloater() )
     {
 #ifndef NDEBUG

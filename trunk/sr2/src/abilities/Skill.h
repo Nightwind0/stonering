@@ -67,8 +67,8 @@ namespace StoneRing
         NamedScript *m_pCondition;
         NamedScript *m_pOnSelect;
         NamedScript *m_pOnDeselect;
-        uint m_nSp;
         uint m_nBp;
+        uint m_nSp;
         uint m_nMinLevel;
         eType m_eType;
         bool m_bAllowsGroupTarget;

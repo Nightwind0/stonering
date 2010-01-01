@@ -23,7 +23,7 @@ namespace StoneRing
         double m_fValue;
         bool m_bToggle;
     };
-};
+}\
 
 
 #endif

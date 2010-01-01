@@ -43,12 +43,14 @@
         </statScript>
         <statScript stat="dex">
             <script id="WarDEX">
-                return math::pow(1.06, $_CL) * 4.5;
+                //return math::pow(1.06, $_CL) * 4.5;
+		return 1 - math::pow((1/($_CL+15)),0.7);
             </script>
         </statScript>
         <statScript stat="evd">
             <script id="WarEVD">
-                return math::pow(1.06, $_CL) * 4;
+                //return math::pow(1.06, $_CL) * 4;
+		return 1 - math::pow((1/$_CL),0.05);
             </script>
         </statScript>
         <statScript stat="mag">
@@ -93,12 +95,14 @@
         </statScript>
         <statScript stat="dex">
             <script id="RngDEX">
-                return math::pow(1.06, $_CL) * 5.5;
+                //return math::pow(1.06, $_CL) * 5.5;
+		return 1 - pow((1/($_CL+15)),0.7);
             </script>
         </statScript>
         <statScript stat="evd">
             <script id="RngEVD">
-                return math::pow(1.06, $_CL) * 6;
+                //return math::pow(1.06, $_CL) * 6;
+		return 1 - math::pow((1/$_CL),0.057);
             </script>
         </statScript>
         <statScript stat="mag">

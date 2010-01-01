@@ -18,7 +18,7 @@
 
 namespace StoneRing{
 
-    class ItemRef;  
+    class ItemRef;
     class Character;
 
     class Party : public IParty
@@ -26,7 +26,7 @@ namespace StoneRing{
     public:
         Party();
         ~Party();
-  
+
         virtual bool GetGold() const;
         virtual bool HasItem(ItemRef *pItemRef, uint count = 1 )const;
         virtual bool DidEvent(const std::string &event) const;
@@ -56,7 +56,7 @@ namespace StoneRing{
     };
 
 
-};
+}
 
 
 #endif

@@ -19,27 +19,27 @@ namespace StoneRing
     protected:
 
         virtual Element * createNamedItemElement() const;
-        virtual Element * createRegularItem()const;  
-        virtual Element * createSpecialItem()const; 
-        virtual Element * createSystemItem()const; 
-        virtual Element * createRune()const; 
-        virtual Element * createUniqueWeapon()const; 
-        virtual Element * createUniqueArmor()const; 
-        virtual Element * createWeaponTypeRef()const; 
-        virtual Element * createWeaponClassRef()const; 
-        virtual Element * createArmorTypeRef()const; 
-        virtual Element * createArmorClassRef()const; 
-        virtual Element * createWeaponRef()const; 
-        virtual Element * createArmorRef()const; 
-        virtual Element * createRuneType()const; 
-        virtual Element * createSpellRef()const; 
-        virtual Element * createWeaponEnhancer()const; 
-        virtual Element * createArmorEnhancer()const; 
-        virtual Element * createAttributeEnhancer()const; 
-        virtual Element * createWeaponClass()const; 
-        virtual Element * createWeaponType()const; 
-        virtual Element * createArmorClass()const; 
-        virtual Element * createArmorType()const; 
+        virtual Element * createRegularItem()const;
+        virtual Element * createSpecialItem()const;
+        virtual Element * createSystemItem()const;
+        virtual Element * createRune()const;
+        virtual Element * createUniqueWeapon()const;
+        virtual Element * createUniqueArmor()const;
+        virtual Element * createWeaponTypeRef()const;
+        virtual Element * createWeaponClassRef()const;
+        virtual Element * createArmorTypeRef()const;
+        virtual Element * createArmorClassRef()const;
+        virtual Element * createWeaponRef()const;
+        virtual Element * createArmorRef()const;
+        virtual Element * createRuneType()const;
+        virtual Element * createSpellRef()const;
+        virtual Element * createWeaponEnhancer()const;
+        virtual Element * createArmorEnhancer()const;
+        virtual Element * createAttributeEnhancer()const;
+        virtual Element * createWeaponClass()const;
+        virtual Element * createWeaponType()const;
+        virtual Element * createArmorClass()const;
+        virtual Element * createArmorType()const;
         virtual Element * createWeaponDamageCategory() const;
         virtual Element * createMagicDamageCategory() const;
         virtual Element * createStatusEffectModifier() const;
@@ -54,7 +54,7 @@ namespace StoneRing
     };
 
 
-};
+}
 
 #endif
 

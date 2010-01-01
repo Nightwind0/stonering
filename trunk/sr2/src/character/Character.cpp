@@ -20,7 +20,7 @@ struct stat_entry
     uint attr;
 };
 
-const stat_entry statXMLLookup[] = 
+const stat_entry statXMLLookup[] =
 {
     {"hp",ICharacter::CA_HP},
     {"hp_max",ICharacter::CA_MAXHP},
@@ -39,7 +39,7 @@ const stat_entry statXMLLookup[] =
     {"draw_berserk",ICharacter::CA_DRAW_BERSERK}, //  CA_DRAW_BERSERK,
     {"draw_weak",ICharacter::CA_DRAW_WEAK}, // CA_DRAW_WEAK,
     {"draw_paralyzed",ICharacter::CA_DRAW_PARALYZED}, //    CA_DRAW_PARALYZED,
-    {"draw_translucent",ICharacter::CA_DRAW_TRANSLUCENT}, 
+    {"draw_translucent",ICharacter::CA_DRAW_TRANSLUCENT},
     {"draw_mini",ICharacter::CA_DRAW_MINI},
     {"can_act", ICharacter::CA_CAN_ACT}, //   CA_CAN_ACT,
     {"can_fight",ICharacter::CA_CAN_FIGHT}, // CA_CAN_FIGHT,
@@ -60,8 +60,8 @@ const stat_entry statXMLLookup[] =
 
 StoneRing::ICharacter::eCharacterAttribute StoneRing::ICharacter::CharAttributeFromString(const std::string &str)
 {
-    uint numberStats = _LAST_CHARACTER_ATTR_;
-    
+    uint numberStats = sizeof(statXMLLookup) / sizeof(stat_entry);
+
     for(uint i =0; i < numberStats; i++)
     {
         if( str == statXMLLookup[i].string )
@@ -74,14 +74,15 @@ StoneRing::ICharacter::eCharacterAttribute StoneRing::ICharacter::CharAttributeF
 
 StoneRing::ICharacter::eCommonAttribute StoneRing::ICharacter::CommonAttributeFromString(const std::string &str)
 {
-    for(int i = _LAST_CHARACTER_ATTR_; i < _LAST_COMMON_ATTR_; i++)
+    uint numberStats = sizeof(statXMLLookup) / sizeof(stat_entry);
+
+    for(uint i =0; i < numberStats; i++)
     {
-        if(str == statXMLLookup[i].string)
+        if( str == statXMLLookup[i].string )
         {
             return static_cast<eCommonAttribute>(statXMLLookup[i].attr);
         }
     }
-
     return static_cast<eCommonAttribute>(CA_INVALID);
 }
 
@@ -172,19 +173,12 @@ void StoneRing::Character::Kill()
     SetToggle(CA_ALIVE,false);
 }
 
-void StoneRing::Character::PermanentAugment(eCharacterAttribute attr, int augment)
-{
-    std::map<eCharacterAttribute,int>::iterator aug = m_augments.find(attr);
-    if(aug == m_augments.end())
-        m_augments[attr] = augment;
-    else aug->second += augment;
-}
 
 void StoneRing::Character::PermanentAugment(eCharacterAttribute attr, double augment)
 {
-    std::map<eCharacterAttribute,double>::iterator aug = m_real_augments.find(attr);
-    if(aug == m_real_augments.end())
-        m_real_augments[attr] = augment;
+    std::map<eCharacterAttribute,double>::iterator aug = m_augments.find(attr);
+    if(aug == m_augments.end())
+        m_augments[attr] = augment;
     else  aug->second += augment;
 }
 
@@ -245,18 +239,31 @@ void StoneRing::Character::load_finished()
     // TODO: Make sure the battle sprites exist in the resources
 }
 
+double StoneRing::Character::GetBaseAttribute(eCharacterAttribute attr)const
+{
+    double augment  = 0.0;
+    double base = m_pClass->GetStat(attr,m_nLevel);
+    std::map<eCharacterAttribute,double>::const_iterator aug = m_augments.find(attr);
+    if(aug != m_augments.end())
+        augment = aug->second;
+
+    if(IsInteger(attr))
+        return static_cast<int>(base + augment);
+    else return base + augment;
+}
+
 // Note:
-// If this shit takes too long at any point, another way we can do it is to 
+// If this shit takes too long at any point, another way we can do it is to
 // have all the shit register AttributeModifiers with us directly which
 // we will stick in a multimap by attr. Alternatively, we can register/unregister
 // them ourselves when we equip/unequip or are affected/unaffected. But
 // this requires remembering which AM goes with which equipment/status effect
-double StoneRing::Character::GetAttributeReal(eCharacterAttribute attr) const
+double StoneRing::Character::GetAttribute(eCharacterAttribute attr) const
 {
     double base = 0.0;
     if(!IsTransient(attr))
     {
-        base = m_pClass->GetStatReal(attr,m_nLevel);
+        base = m_pClass->GetStat(attr,m_nLevel);
         // Go through all equipment, multiplying by the AMs that are mults
         for(std::map<Equipment::eSlot,Equipment*>::const_iterator iter= m_equipment.begin();
             iter != m_equipment.end();iter++)
@@ -282,51 +289,17 @@ double StoneRing::Character::GetAttributeReal(eCharacterAttribute attr) const
         }
     }
     double augment  = 0.0;
-    std::map<eCharacterAttribute,double>::const_iterator aug = m_real_augments.find(attr);
-    if(aug != m_real_augments.end())
-        augment = aug->second;
-    return base + augment;
-    
-}
-
-int StoneRing::Character::GetAttribute(eCharacterAttribute attr) const
-{
-    int base = 0;
-    if(!IsTransient(attr))
-    {
-        base = m_pClass->GetStat(attr,m_nLevel);
-        // Go through all equipment, multiplying by the AMs that are mults
-        for(std::map<Equipment::eSlot,Equipment*>::const_iterator iter= m_equipment.begin();
-            iter != m_equipment.end();iter++)
-        {
-            base = (int)((double)base * iter->second->GetAttributeMultiplier(attr));
-        }
-        for(StatusEffectMap::const_iterator iter= m_status_effects.begin();
-            iter != m_status_effects.end();iter++)
-        {
-            base = (int)((double)base * iter->second->GetAttributeMultiplier(attr));
-        }
-        // Same with the status effects
-        // Then do it with the adders
-        for(std::map<Equipment::eSlot,Equipment*>::const_iterator iter= m_equipment.begin();
-            iter != m_equipment.end();iter++)
-        {
-            base = (int)((double)base + iter->second->GetAttributeAdd(attr));
-        }
-
-        for(StatusEffectMap::const_iterator iter= m_status_effects.begin();
-            iter != m_status_effects.end();iter++)
-        {
-            base = (int)((double)base + iter->second->GetAttributeMultiplier(attr));
-        }
-    }
-
-    int augment  = 0;
-    std::map<eCharacterAttribute,int>::const_iterator aug = m_augments.find(attr);
+    std::map<eCharacterAttribute,double>::const_iterator aug = m_augments.find(attr);
     if(aug != m_augments.end())
         augment = aug->second;
-    return base + augment;
+
+    if(IsInteger(attr))
+        return static_cast<int>( base + augment );
+    else
+        return base + augment;
+
 }
+
 
 
 bool StoneRing::Character::GetToggle(eCharacterAttribute attr) const
@@ -337,7 +310,7 @@ bool StoneRing::Character::GetToggle(eCharacterAttribute attr) const
 
 void StoneRing::Character::SetToggle(eCharacterAttribute attr, bool value)
 {
-   
+
 }
 
 bool StoneRing::Character::HasEquipment(Equipment::eSlot slot)
@@ -369,6 +342,35 @@ StoneRing::Equipment* StoneRing::Character::Unequip(Equipment::eSlot slot)
     }
 
     return there;
+}
+
+double StoneRing::Character::GetEquippedWeaponAttribute(Weapon::eAttribute attr) const
+{
+    double v = 0.0;
+    for(std::map<Equipment::eSlot,Equipment*>::const_iterator it=m_equipment.begin();
+        it!=m_equipment.end();it++)
+    {
+        if(it->second->IsWeapon()){
+            Weapon* weapon = dynamic_cast<Weapon*>(it->second);
+            v += weapon->GetWeaponAttribute(attr);
+        }
+    }
+
+    return v;
+}
+double StoneRing::Character::GetEquippedArmorAttribute(Armor::eAttribute attr) const
+{
+    double v = 0.0;
+    for(std::map<Equipment::eSlot,Equipment*>::const_iterator it=m_equipment.begin();
+        it!=m_equipment.end();it++)
+    {
+        if(it->second->IsArmor()){
+            Armor* armor = dynamic_cast<Armor*>(it->second);
+            v += armor->GetArmorAttribute(attr);
+        }
+    }
+
+    return v;
 }
 
 

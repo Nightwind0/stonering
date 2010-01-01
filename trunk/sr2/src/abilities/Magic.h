@@ -12,12 +12,12 @@ public:
     enum eMagicType
     {
         UNKNOWN = 0,
-        FIRE=1, 
+        FIRE=1,
         WATER=2,
-        WIND=4, 
+        WIND=4,
         EARTH=8,
         HOLY=16,
-        DARK=32, 
+        DARK=32,
         OTHER=64,
         STATUS=128,
         ELEMENTAL = (FIRE | WATER | WIND | EARTH),
@@ -31,6 +31,6 @@ public:
 private:
 };
 
-};
+}
 #endif
 

@@ -18,14 +18,14 @@ namespace StoneRing
         virtual void HandleKeyUp(const CL_InputEvent &key);
         virtual void Draw(const CL_Rect &screenRect,CL_GraphicContext * pGC);
         virtual bool LastToDraw() const { return false; } // It'll be last anyway.... and if not, thats okay too
-        virtual bool DisableMappableObjects() const; // Should the app move the MOs? 
+        virtual bool DisableMappableObjects() const; // Should the app move the MOs?
         virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
-        virtual void Start(); 
+        virtual void Start();
         virtual void Finish(); // Hook to clean up or whatever after being popped
         virtual void Init(const std::string &speaker, const std::string &text);
 
     private:
-    
+
         std::string m_speaker;
         std::string m_text;
         CL_Font *m_pSpeakerFont;
@@ -43,7 +43,7 @@ namespace StoneRing
         uint m_nTotalDrawn;
 
     };
-};
+}
 
 
 #endif

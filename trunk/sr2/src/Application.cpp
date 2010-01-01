@@ -15,6 +15,8 @@
 #include "ChoiceState.h"
 #include "MonsterRef.h"
 #include "Monster.h"
+#include "Weapon.h"
+#include "Armor.h"
 #ifndef _WINDOWS_
 #include <steel/SteelType.h>
 #else
@@ -33,9 +35,9 @@ using std::max;
 
 #endif
 
-const int WINDOW_WIDTH = 800 ;
-const int WINDOW_HEIGHT = 600 ;
-const int MS_BETWEEN_MOVES = 20;
+const unsigned int WINDOW_WIDTH = 800 ;
+const unsigned int WINDOW_HEIGHT = 600 ;
+const unsigned int MS_BETWEEN_MOVES = 20;
 
 
 bool gbDebugStop;
@@ -101,8 +103,8 @@ void Application::StartBattle(const MonsterGroup &group, const std::string &back
 
     const std::vector<MonsterRef*> &monsters = group.GetMonsters();
 
-    for(std::vector<MonsterRef*>::const_iterator it =  monsters.begin();
-        it != monsters.end(); it++)
+    for (std::vector<MonsterRef*>::const_iterator it =  monsters.begin();
+            it != monsters.end(); it++)
     {
         MonsterRef * pRef = *it;
         std::cout << '\t' << pRef->GetName() << " x" << pRef->GetCount() << std::endl;
@@ -115,7 +117,7 @@ void Application::StartBattle(const MonsterGroup &group, const std::string &back
     run();
 }
 
-SteelType Application::startBattle(const std::string &monster, uint count, bool isBoss, const std::string &backdrop)
+SteelType Application::startBattle(const std::string &monster, uint /*count*/, bool /*isBoss*/, const std::string& /*backdrop*/)
 {
 #ifndef NDEBUG
     std::cout << "Start battle " << monster << std::endl;
@@ -132,7 +134,7 @@ SteelType Application::choice(const std::string &choiceText,
     std::vector<std::string> choices;
     choices.reserve ( choices_.size() );
 
-    for(unsigned int i=0;i<choices_.size();i++)
+    for (unsigned int i=0;i<choices_.size();i++)
         choices.push_back ( choices_[i] );
 
     choiceState.Init(choiceText,choices);
@@ -159,9 +161,9 @@ SteelType Application::say(const std::string &speaker, const std::string &text)
 
 void Application::RunState(State * pState)
 {
-	mStates.push_back(pState);
+    mStates.push_back(pState);
 
-	run();
+    run();
 }
 
 void Application::showError(int line, const std::string &script, const std::string &message)
@@ -171,6 +173,16 @@ void Application::showError(int line, const std::string &script, const std::stri
 
     say("Error", os.str());
 }
+
+
+SteelType Application::gaussian(double mean, double sigma)
+{
+    SteelType result;
+    result.set ( normal_random(mean,sigma) );
+
+    return result;
+}
+
 
 SteelType Application::pause(uint time)
 {
@@ -225,7 +237,7 @@ SteelType Application::giveNamedItem(const std::string &item, uint count)
 
     os << "You received " << item;
 
-    if(count > 1)
+    if (count > 1)
         os << " x" << count;
 
     say("Item Received",os.str());
@@ -242,7 +254,7 @@ SteelType Application::takeNamedItem(const std::string  &item, uint count)
 
     os << "Gave up " << item;
 
-    if(count > 1)
+    if (count > 1)
         os << " x" << count;
 
     say("Item Lost",os.str());
@@ -255,7 +267,7 @@ SteelType Application::giveGold(int amount)
     std::ostringstream os;
     mpParty->GiveGold(amount);
 
-    if(amount > 0)
+    if (amount > 0)
     {
         os << "You received " << amount << ' ' << mGold << '.';
         say(mGold, os.str());
@@ -277,7 +289,7 @@ SteelType Application::addCharacter(const std::string &character, int level, boo
     pCharacter->PermanentAugment(ICharacter::CA_MP, pCharacter->GetAttribute(ICharacter::CA_MAXMP));
     mpParty->AddCharacter(pCharacter);
 
-    if(announce)
+    if (announce)
     {
         std::ostringstream os;
         os << character << " joined the party!";
@@ -294,12 +306,12 @@ SteelType Application::doDamage(SteelType::Handle hICharacter, int damage)
 {
     ICharacter * pCharacter = static_cast<ICharacter*>(hICharacter);
 
-    if(!pCharacter->GetToggle(Character::CA_ALIVE)) return SteelType();
+    if (!pCharacter->GetToggle(Character::CA_ALIVE)) return SteelType();
 
     int hp = pCharacter->GetAttribute(Character::CA_HP);
     const int maxhp = pCharacter->GetAttribute(Character::CA_MAXHP);
 
-    if(hp - damage<=0)
+    if (hp - damage<=0)
     {
         damage = hp;
         // Kill him/her/it
@@ -307,7 +319,7 @@ SteelType Application::doDamage(SteelType::Handle hICharacter, int damage)
         //TODO: Check if all characters are dead and game over
     }
 
-    if(hp - damage >maxhp)
+    if (hp - damage >maxhp)
     {
         damage = maxhp - hp;
     }
@@ -364,7 +376,7 @@ SteelType Application::equip(SteelType::Handle hCharacter, int slot, const std::
     Character * pCharacter = static_cast<Character*>(hCharacter);
     Equipment * pEquipment = dynamic_cast<Equipment*>(mItemManager.GetNamedItem(equipment));
     SteelType result;
-    if(pEquipment != NULL)
+    if (pEquipment != NULL)
     {
         pCharacter->Equip(static_cast<Equipment::eSlot>(slot),pEquipment);
         result.set(true);
@@ -409,6 +421,63 @@ SteelType Application::getEquipment(SteelType::Handle hCharacter, int slot)
     return result;
 }
 
+SteelType Application::getEquippedWeaponAttribute(const SteelType::Handle hICharacter, uint attr)
+{
+    SteelType result;
+    ICharacter * pCharacter = static_cast<ICharacter*>(hICharacter);
+    result.set(pCharacter->GetEquippedWeaponAttribute(static_cast<Weapon::eAttribute>(attr)));
+
+    return result;
+}
+
+SteelType Application::getEquippedArmorAttribute(const SteelType::Handle hICharacter, uint attr)
+{
+    SteelType result;
+    ICharacter * pCharacter = static_cast<ICharacter*>(hICharacter);
+    result.set(pCharacter->GetEquippedArmorAttribute(static_cast<Armor::eAttribute>(attr)));
+
+    return result;
+}
+
+SteelType Application::getItemName(const SteelType::Handle hItem)
+{
+    SteelType result;
+    Item * pItem = static_cast<Item*>(hItem);
+    result.set(pItem->GetName());
+    return result;
+}
+
+SteelType Application::getWeaponAttribute(const SteelType::Handle hWeapon, uint attr)
+{
+    SteelType result;
+    Weapon* pWeapon = static_cast<Weapon*>(hWeapon);
+    float value = pWeapon->GetWeaponAttribute(static_cast<Weapon::eAttribute>(attr));
+    result.set(value);
+
+    return result;
+}
+
+SteelType Application::getArmorAttribute(const SteelType::Handle hArmor, uint attr)
+{
+    SteelType result;
+    Armor * pArmor = static_cast<Armor*>(hArmor);
+    float value = pArmor->GetArmorAttribute(static_cast<Armor::eAttribute>(attr));
+    result.set(value);
+
+    return result;
+}
+
+SteelType Application::getCharacterAttribute(const SteelType::Handle hICharacter, uint attr)
+{
+    SteelType result;
+    ICharacter * pCharacter = static_cast<ICharacter*>(hICharacter);
+    ICharacter::eCharacterAttribute theAttr = static_cast<ICharacter::eCharacterAttribute>(attr);
+
+    result.set(pCharacter->GetAttribute(theAttr));
+
+    return result;
+}
+
 
 IApplication * IApplication::GetInstance()
 {
@@ -440,7 +509,7 @@ CL_ResourceManager * Application::GetResources() const
 
 
 Application::Application():mpParty(0),
-                           mbDone(false)
+        mbDone(false)
 
 {
     mpParty = new Party();
@@ -544,8 +613,15 @@ void Application::registerSteelFunctions()
     static SteelFunctor3Arg<Application,const std::string &, int, bool> fn_addCharacter(this,&Application::addCharacter);
     static SteelFunctorNoArgs<Application> fn_getPartyCount(this, &Application::getPartyCount);
     static SteelFunctor1Arg<Application,uint> fn_getCharacter(this, &Application::getCharacter);
+    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getItemName(this,&Application::getItemName);
+    static SteelFunctor2Arg<Application,const SteelType::Handle, uint> fn_getWeaponAttribute(this,&Application::getWeaponAttribute);
+    static SteelFunctor2Arg<Application,const SteelType::Handle, uint> fn_getArmorAttribute(this,&Application::getArmorAttribute);
+    static SteelFunctor2Arg<Application, double, double> fn_gaussian(this,&Application::gaussian);
 
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getCharacterName(this,&Application::getCharacterName);
+    static SteelFunctor2Arg<Application,const SteelType::Handle,uint> fn_getCharacterAttribute(this, &Application::getCharacterAttribute);
+    static SteelFunctor2Arg<Application,const SteelType::Handle, uint> fn_getEquippedWeaponAttribute(this,&Application::getEquippedWeaponAttribute);
+    static SteelFunctor2Arg<Application,const SteelType::Handle, uint> fn_getEquippedArmorAttribute(this,&Application::getEquippedArmorAttribute);
     static SteelFunctor2Arg<Application,const SteelType::Handle,const std::string&> fn_addStatusEffect(this,&Application::addStatusEffect);
     static SteelFunctor2Arg<Application,const SteelType::Handle,const std::string&> fn_removeStatusEffects(this,&Application::removeStatusEffects);
     static SteelFunctor2Arg<Application,const SteelType::Handle,int> fn_doDamage(this,&Application::doDamage);
@@ -578,6 +654,13 @@ void Application::registerSteelFunctions()
     steelConst("$_LCK",Character::CA_LCK);
     steelConst("$_JOY",Character::CA_JOY);
 
+    steelConst("$_HIT",Weapon::HIT);
+    steelConst("$_ATTACK", Weapon::ATTACK);
+    steelConst("$_CRITICAL", Weapon::CRITICAL);
+
+    steelConst("$_AC", Armor::AC);
+    steelConst("$_RESIST", Armor::RESIST);
+
     steelConst("$_DRAW_ILL",Character::CA_DRAW_ILL);
     steelConst("$_DRAW_STONE",Character::CA_DRAW_STONE);
     steelConst("$_DRAW_BERSERK",Character::CA_DRAW_BERSERK);
@@ -596,6 +679,8 @@ void Application::registerSteelFunctions()
     steelConst("$_MAXHP",Character::CA_MAXHP);
     steelConst("$_MAXMP",Character::CA_MAXMP);
 
+    mInterpreter.addFunction("normal_random", &fn_gaussian);
+
     mInterpreter.addFunction("say",&fn_say);
     mInterpreter.addFunction("playScene", &fn_playScene);
     mInterpreter.addFunction("playSound", &fn_playSound);
@@ -608,23 +693,26 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction("takeNamedItem", &fn_takeNamedItem );
     mInterpreter.addFunction("getGold", &fn_getGold );
     mInterpreter.addFunction("hasItem", &fn_hasItem );
+    mInterpreter.addFunction("getItemName",&fn_getItemName);
     mInterpreter.addFunction("didEvent", &fn_didEvent );
     mInterpreter.addFunction("doEvent", &fn_doEvent );
     mInterpreter.addFunction("giveGold", &fn_giveGold );
     mInterpreter.addFunction("addCharacter", &fn_addCharacter );
     mInterpreter.addFunction("getPartyCount", &fn_getPartyCount);
     mInterpreter.addFunction("getCharacter", &fn_getCharacter);
+    mInterpreter.addFunction("getWeaponAttribute", &fn_getWeaponAttribute);
+    mInterpreter.addFunction("getArmorAttribute", &fn_getArmorAttribute);
 
+    mInterpreter.addFunction("getCharacterAttribute", &fn_getCharacterAttribute);
     mInterpreter.addFunction("getCharacterName", &fn_getCharacterName);
+    mInterpreter.addFunction("getEquippedWeaponAttribute",&fn_getEquippedWeaponAttribute);
+    mInterpreter.addFunction("getEquippedArmorAttribute",&fn_getEquippedArmorAttribute);
     mInterpreter.addFunction("addStatusEffect", &fn_addStatusEffect);
     mInterpreter.addFunction("removeStatusEffects", &fn_removeStatusEffects);
     mInterpreter.addFunction("doDamage",&fn_doDamage);
     mInterpreter.addFunction("hasEquipment",&fn_hasEquipment);
     mInterpreter.addFunction("getEquipment",&fn_getEquipment);
     mInterpreter.addFunction("equip",&fn_equip);
-
-
-
 
 //        SteelType hasGeneratedWeapon(const std::string &wepclass, const std::string &webtype);
 //       SteelType hasGeneratedArmor(const std::string &armclass, const std::string &armtype);
@@ -639,13 +727,13 @@ void Application::draw()
 
     std::vector<State*>::iterator end = mStates.end();
 
-    for(std::vector<State*>::iterator iState = mStates.begin();
-        iState != end; iState++)
+    for (std::vector<State*>::iterator iState = mStates.begin();
+            iState != end; iState++)
     {
         State * pState = *iState;
         pState->Draw(dst, mpWindow->get_gc());
 
-        if(pState->LastToDraw()) break; // Don't draw any further.
+        if (pState->LastToDraw()) break; // Don't draw any further.
 
     }
 
@@ -655,13 +743,12 @@ void Application::draw()
 void Application::run()
 {
     CL_FramerateCounter frameRate;
-    static int count = 0;
     State * backState = mStates.back();
 
     backState->SteelInit(&mInterpreter);
     backState->Start();
     unsigned int then = CL_System::get_time();
-    while(!backState->IsDone())
+    while (!backState->IsDone())
     {
 
         draw();
@@ -669,12 +756,12 @@ void Application::run()
         //CL_System::sleep(10);
         CL_System::keep_alive();
 #if 0
-        if(count++ % 50 == 0)
+        if (count++ % 50 == 0)
             std::cout << "FPS " <<  frameRate.get_fps() << std::endl;
 #endif
         unsigned int now = CL_System::get_time();
 
-        if(now - then > MS_BETWEEN_MOVES)
+        if (now - then > MS_BETWEEN_MOVES)
         {
             if ( !backState->DisableMappableObjects())
             {
@@ -702,7 +789,7 @@ void Application::loadscript(std::string &o_str, const std::string & filename)
     std::string line;
     in.open(filename.c_str());
 
-    while(in)
+    while (in)
     {
         getline(in,line);
         o_str += line;
@@ -711,7 +798,7 @@ void Application::loadscript(std::string &o_str, const std::string & filename)
 }
 
 
-int Application::main(int argc, char ** argv)
+int Application::main(int, char **)
 {
 
 #ifndef NDEBUG
@@ -763,7 +850,7 @@ int Application::main(int argc, char ** argv)
 
         mStates.push_back( &mMapState );
     }
-    catch(CL_Error error)
+    catch (CL_Error error)
     {
         std::cerr << "Exception Caught!!" << std::endl;
         std::cerr << error.message.c_str() << std::endl;
@@ -773,10 +860,10 @@ int Application::main(int argc, char ** argv)
 #endif
         return 1;
     }
-    catch(SteelException ex)
+    catch (SteelException ex)
     {
         std::cerr << "Steel Exception on line " << ex.getLine()
-                  << " of " << ex.getScript() << ':' << ex.getMessage() << std::endl;
+        << " of " << ex.getScript() << ':' << ex.getMessage() << std::endl;
 #ifndef NDEBUG
         console.display_close_message();
 #endif
@@ -795,36 +882,30 @@ int Application::main(int argc, char ** argv)
         CL_Display::clear();
 
         static int start_time = CL_System::get_time();
-        static long fpscounter = 0;
 
-        while(mStates.size())
+        while (mStates.size())
             run();
 
-#ifndef NDEBUG
+#if 1
         console.display_close_message();
 #endif
 
 
         teardownClanLib();
     }
-    catch(SteelException ex)
+    catch (SteelException ex)
     {
-        while(mStates.size())
+        while (mStates.size())
             mStates.pop_back();
 
         showError ( ex.getLine(), ex.getScript(), ex.getMessage() );
 
 
     }
-    catch(CL_Error error)
+    catch (CL_Error error)
     {
         std::cerr << "Exception Caught!!" << std::endl;
         std::cerr << error.message.c_str() << std::endl;
-
-#ifndef NDEBUG
-        console.display_close_message();
-#endif
-
     }
 
     mInterpreter.popScope();
@@ -842,14 +923,14 @@ void Application::showIntro()
     CL_Surface splash("Configuration/splash", mpResources);
     CL_Surface background("Configuration/splashbg", mpResources);
 
-    CL_GraphicContext *gc = mpWindow->get_gc();
+    // CL_GraphicContext *gc = mpWindow->get_gc();
 
     int displayX = (WINDOW_WIDTH - splash.get_width()) / 2;
     int displayY = (WINDOW_HEIGHT - splash.get_height()) / 2;
 
 
 
-    while(!CL_Keyboard::get_keycode(CL_KEY_ENTER))
+    while (!CL_Keyboard::get_keycode(CL_KEY_ENTER))
     {
 
         background.draw(0,0);
@@ -861,7 +942,7 @@ void Application::showIntro()
     }
 
     // Wait for them to release the key before moving on.
-    while(CL_Keyboard::get_keycode(CL_KEY_ENTER)) CL_System::keep_alive();
+    while (CL_Keyboard::get_keycode(CL_KEY_ENTER)) CL_System::keep_alive();
 
 
 
@@ -874,7 +955,7 @@ int Application::calc_fps(int frame_time)
     static int total_time = 0;
 
     total_time += frame_time;
-    if(total_time >= 1000)      // One second has passed
+    if (total_time >= 1000)     // One second has passed
     {
         fps_result = fps_counter + 1;
         fps_counter = total_time = 0;

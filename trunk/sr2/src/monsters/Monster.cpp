@@ -73,14 +73,9 @@ double Monster::GetSpellResistance(StoneRing::Magic::eMagicType type) const
     return 0.0;
 }
 
-double Monster::GetAttributeReal(ICharacter::eCharacterAttribute attr) const
+double Monster::GetAttribute(ICharacter::eCharacterAttribute attr) const
 {
-    return 1.0;
-}
-
-int Monster::GetAttribute(ICharacter::eCharacterAttribute attr) const
-{
-    return 0;
+    return 0.0;
 }
 
 
@@ -89,19 +84,11 @@ bool Monster::GetToggle(ICharacter::eCharacterAttribute attr) const
     return false;
 }
 
-void Monster::PermanentAugment(eCharacterAttribute attr, int augment)
-{
-    std::map<eCharacterAttribute,int>::iterator aug = m_augments.find(attr);
-    if (aug == m_augments.end())
-        m_augments[attr] = augment;
-    else aug->second += augment;
-}
-
 void Monster::PermanentAugment(eCharacterAttribute attr, double augment)
 {
-    std::map<eCharacterAttribute,double>::iterator aug = m_real_augments.find(attr);
-    if (aug == m_real_augments.end())
-        m_real_augments[attr] = augment;
+    std::map<eCharacterAttribute,double>::iterator aug = m_augments.find(attr);
+    if (aug == m_augments.end())
+        m_augments[attr] = augment;
     else  aug->second += augment;
 }
 

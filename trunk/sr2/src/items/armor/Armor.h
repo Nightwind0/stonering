@@ -10,7 +10,7 @@ namespace StoneRing{
     public:
         Armor();
         virtual ~Armor();
-        
+
         virtual ArmorType *GetArmorType() const = 0;
 
         enum eAttribute
@@ -18,19 +18,28 @@ namespace StoneRing{
             AC,
             STEAL_MP,
             STEAL_HP,
+            CHANGE_BP,
             ELEMENTAL_RESIST, // Your AC for elemental magic
             SLASH_AC, // Extra AC against slash attacks (Multiplier)
             JAB_AC, // Extra AC against jab attacks (Multiplier)
             BASH_AC, // Extra AC against bash attacks (Multiplier)
             RESIST, // Resist is your AC for magic attacks
             WHITE_RESIST, // Your AC against white magic. (hey, its a valid type!)
-            STATUS, // Chance of failure for a particular status effect
+            STATUS // Chance of failure for a particular status effect
         };
-        int ModifyArmorAttribute( eAttribute attr, int current );
-        float ModifyArmorAttribute ( eAttribute attr, float current );
-        static eAttribute AttributeForString ( const std::string str );
 
-        static std::string CreateArmorName(ArmorType *pType, ArmorClass *pClass, 
+        virtual bool IsArmor() const { return true; }
+
+        /*
+        * These are based on the armor type, and any enhancers added by the class
+        * or the unique enhancements.
+        * example, if the ArmorType's baseResist is 100, and this particular armor
+        * has a 1.5 multiplier and +7 add, this will return 157
+        */
+        double GetArmorAttribute ( eAttribute attr );
+
+        static eAttribute AttributeForString ( const std::string str );
+        static std::string CreateArmorName(ArmorType *pType, ArmorClass *pClass,
             SpellRef *pSpell, RuneType *pRune);
     protected:
         void Clear_Armor_Enhancers();
@@ -39,7 +48,7 @@ namespace StoneRing{
         std::list<ArmorEnhancer*> m_armor_enhancers;
     };
 
-};
+}
 
 #endif
 

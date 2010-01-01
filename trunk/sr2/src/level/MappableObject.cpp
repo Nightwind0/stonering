@@ -24,7 +24,7 @@ bool StoneRing::MappableObject::EvaluateCondition() const
 StoneRing::MappableObject::eSize StoneRing::MappableObject::GetSize() const
 {
     return m_eSize;
-} 
+}
 
 void StoneRing::MappableObject::Move()
 {
@@ -41,6 +41,8 @@ void StoneRing::MappableObject::Move()
         break;
     case WEST:
         m_X--;
+        break;
+    default:
         break;
 
     }
@@ -124,7 +126,7 @@ bool StoneRing::MappableObject::handle_element(Element::eElement element, Elemen
             if( swidth != 64 && sheight != 32) throw CL_Error("Sprite size does not match MO size(TALL)");
             break;
         }
-            
+
         break;
     }
     case ECONDITIONSCRIPT:
@@ -154,7 +156,7 @@ bool StoneRing::MappableObject::handle_element(Element::eElement element, Elemen
             if(m_graphic.asSpriteRef->GetType() != SpriteRef::SPR_TWO_WAY)
                 throw CL_Error("Pacing MO needs a two way sprite ref.");
             m_eDirection = EAST;
-            break;  
+            break;
         default:
             break;
         }
@@ -172,7 +174,7 @@ void StoneRing::MappableObject::load_finished()
 {
     Set_Frame_For_Direction();
 }
- 
+
 StoneRing::MappableObject::MappableObject():m_eDirection(NONE),m_pSprite(NULL),m_pMovement(NULL),
                                             m_pCondition(0),cFlags(0),m_nCellsMoved(0),
                                             m_nFrameMarks(0),m_nStepsUntilChange(0)
@@ -223,7 +225,7 @@ std::string StoneRing::MappableObject::GetName() const
 
 CL_Point StoneRing::MappableObject::calcCellDimensions(eSize size)
 {
-    uint width,height;
+    uint width,height = 0;
 
     switch ( size )
     {
@@ -263,7 +265,7 @@ CL_Rect StoneRing::MappableObject::GetPixelRect() const
         pixelRect.right = pixelRect.left + m_pSprite->get_width();
         pixelRect.bottom = pixelRect.top + m_pSprite->get_height();
 
-        return pixelRect;     
+        return pixelRect;
     }
     else if (cFlags & TILEMAP)
     {
@@ -328,11 +330,11 @@ void StoneRing::MappableObject::RandomNewDirection()
     if(!m_pMovement) return;
 
     eDirection current = m_eDirection;
-    
+
     while(m_eDirection == current)
     {
         int r= rand() % 5;
-    
+
         switch ( m_pMovement->GetMovementType())
         {
         case Movement::MOVEMENT_NONE:
@@ -356,7 +358,7 @@ void StoneRing::MappableObject::RandomNewDirection()
             break;
         default:
             break;
-        
+
         }
     }
 
@@ -368,7 +370,7 @@ void StoneRing::MappableObject::RandomNewDirection()
 #ifndef NDEBUG
     std::cout << "Random new direction" << std::endl;
 #endif
-        
+
 }
 
 void StoneRing::MappableObject::Set_Frame_For_Direction()
@@ -381,7 +383,7 @@ void StoneRing::MappableObject::Set_Frame_For_Direction()
     case Movement::MOVEMENT_NONE:
         if(m_bStep) m_pSprite->set_frame(1);
         else m_pSprite->set_frame(0);
-    
+
         break;
     case Movement::MOVEMENT_WANDER:
     {
@@ -414,6 +416,8 @@ void StoneRing::MappableObject::Set_Frame_For_Direction()
         case SOUTH:
             m_pSprite->set_frame ( m_bStep? 0 : 1);
             break;
+        default:
+            assert(0);
         }
         break;
     }
@@ -427,9 +431,13 @@ void StoneRing::MappableObject::Set_Frame_For_Direction()
         case WEST:
             m_pSprite->set_frame ( m_bStep? 2 : 3 );
             break;
+        default:
+            assert(0);
         }
         break;
     }
+    default:
+        break;
     }
 }
 
@@ -502,11 +510,11 @@ void StoneRing::MappableObject::ProvokeEvents ( Event::eTriggerType trigger )
         i++)
     {
         Event * pEvent = *i;
-        
+
         // If this is the correct trigger,
         // And the event is either repeatable or
-        // Hasn't been done yet, invoke 
-        if( pEvent->GetTriggerType() == trigger 
+        // Hasn't been done yet, invoke
+        if( pEvent->GetTriggerType() == trigger
             && (pEvent->Repeatable()
 			|| ! party->DidEvent ( pEvent->GetName() ))
             )
@@ -517,7 +525,7 @@ void StoneRing::MappableObject::ProvokeEvents ( Event::eTriggerType trigger )
     }
 }
 
-int StoneRing::MappableObject::ConvertDirectionToDirectionBlock(eDirection dir) 
+int StoneRing::MappableObject::ConvertDirectionToDirectionBlock(eDirection dir)
 {
     switch(dir)
     {
@@ -531,7 +539,7 @@ int StoneRing::MappableObject::ConvertDirectionToDirectionBlock(eDirection dir)
         return DIR_EAST;
     case NONE:
         return 0;
-                       
+
     }
 
     assert( 0 );
@@ -543,7 +551,7 @@ void StoneRing::MappableObject::CalculateEdgePoints(const CL_Point &topleft, eDi
     uint points = 0;
     CL_Point dimensions = calcCellDimensions(size);
     pList->clear();
-        
+
     switch(dir)
     {
     case NONE:
@@ -554,7 +562,7 @@ void StoneRing::MappableObject::CalculateEdgePoints(const CL_Point &topleft, eDi
         {
             pList->push_back ( CL_Point(topleft.x+i,topleft.y ));
         }
-                
+
         return;
     case SOUTH:
         points = dimensions.x;
@@ -605,7 +613,7 @@ StoneRing::MappableObject::eDirection StoneRing::MappableObject::OppositeDirecti
 
 void StoneRing::MappableObject::MovedOneCell()
 {
-    if(++m_nCellsMoved) 
+    if(++m_nCellsMoved)
     {
         if(m_nCellsMoved == m_nStepsUntilChange) ///@todo: get from somewhere
         {
@@ -657,6 +665,8 @@ CL_Point StoneRing::MappableObject::GetPositionAfterMove() const
         break;
     case WEST:
         point.x -=1;
+        break;
+    default:
         break;
     }
 

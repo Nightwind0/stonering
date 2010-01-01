@@ -39,7 +39,7 @@ namespace StoneRing{
         virtual ~Item();
         enum eItemType { REGULAR_ITEM, WEAPON, ARMOR, RUNE, SPECIAL, SYSTEM };
         enum eDropRarity { NEVER, COMMON, UNCOMMON, RARE };
-        
+
         virtual std::string GetName() const = 0;
         virtual eItemType GetItemType() const = 0;
         virtual uint GetMaxInventory() const = 0;
@@ -53,14 +53,14 @@ namespace StoneRing{
         static std::string ItemTypeAsString ( Item::eItemType type );
         static eDropRarity DropRarityFromString(const std::string &str);
 
-        virtual bool operator== ( const ItemRef &ref )=0;
-        
+        virtual bool operator == ( const ItemRef &ref )=0;
+
     private:
 
     };
 
     bool   operator < ( const Item &lhs, const Item &rhs );
-    
+
     union SpellOrRuneRef
     {
         SpellRef *mpSpellRef;
@@ -68,9 +68,9 @@ namespace StoneRing{
     };
 
 
-  
 
-};
+
+}
 
 
 

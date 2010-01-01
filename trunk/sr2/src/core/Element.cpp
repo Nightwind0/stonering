@@ -187,6 +187,12 @@ void Element::Load(CL_DomElement * pDomElement)
         handle_text(text.get_node_value());
     }
 
+    if(childNode.is_cdata_section())
+    {
+        CL_DomCDATASection text = childNode.to_cdata_section();
+        handle_text(text.get_node_value());
+    }
+
     child = childNode.to_element();
 
 

@@ -27,11 +27,11 @@ std::string StoneRing::Armor::CreateArmorName(ArmorType *pType, ArmorClass *pCla
 }
 
 
-Armor::eAttribute 
+Armor::eAttribute
 Armor::AttributeForString ( const std::string str )
 {
     if(str == "AC") return AC;
-
+    else if(str == "Change_BP") return CHANGE_BP;
     else if (str == "Steal_MP%") return STEAL_MP;
     else if (str == "Steal_HP%") return STEAL_HP;
 
@@ -58,30 +58,27 @@ Armor::~Armor()
 
 
 
-int Armor::ModifyArmorAttribute( eAttribute attr, int current )
+
+double Armor::GetArmorAttribute ( eAttribute attr )
 {
-    int value = current;
 
-    for(std::list<ArmorEnhancer*>::iterator iter = m_armor_enhancers.begin();
-        iter != m_armor_enhancers.end();
-        iter++)
-    {
-        ArmorEnhancer * pEnhancer = *iter;
-
-        if( pEnhancer->GetAttribute() == attr )
-        {
-            value= (int)(pEnhancer->GetMultiplier() * (float)value);
-            value += pEnhancer->GetAdd();
-        }
+    double current = 0.0;
+    switch(attr){
+        case ELEMENTAL_RESIST: // Your AC for elemental magic
+        case RESIST:
+        case WHITE_RESIST:
+            current = GetArmorType()->GetBaseRST();
+            break;
+        case AC:
+        case SLASH_AC: // Extra AC against slash attacks (Multiplier)
+        case JAB_AC: // Extra AC against jab attacks (Multiplier)
+        case BASH_AC: // Extra AC against bash attacks (Multiplier)
+            current = GetArmorType()->GetBaseAC();
+            break;
+        default:
+            break;
     }
-
-    return value;
-}
-
-float Armor::ModifyArmorAttribute ( eAttribute attr, float current )
-{
-
-    float  value = current;
+    double  value = current;
 
     for(std::list<ArmorEnhancer*>::iterator iter = m_armor_enhancers.begin();
         iter != m_armor_enhancers.end();
@@ -92,9 +89,20 @@ float Armor::ModifyArmorAttribute ( eAttribute attr, float current )
         if( pEnhancer->GetAttribute() == attr )
         {
             value *= pEnhancer->GetMultiplier();
+        }
+    }
+    for(std::list<ArmorEnhancer*>::iterator iter = m_armor_enhancers.begin();
+        iter != m_armor_enhancers.end();
+        iter++)
+    {
+        ArmorEnhancer * pEnhancer = *iter;
+
+        if( pEnhancer->GetAttribute() == attr )
+        {
             value += pEnhancer->GetAdd();
         }
     }
+
 
     return value;
 

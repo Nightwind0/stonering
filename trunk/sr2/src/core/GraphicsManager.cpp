@@ -62,7 +62,7 @@ CL_Surface * GraphicsManager::GetTileMap ( const std::string & name )
         m_tile_map[ name ] = pSurface;
         return pSurface;
     }
-    
+
     pSurface = m_tile_map[name];
 
     return pSurface;
@@ -82,6 +82,8 @@ std::string GraphicsManager::NameOfOverlay(Overlay overlay)
         return "Choice";
     case SAY:
         return "Say";
+    default:
+        cl_assert(0);
     }
 
     cl_assert(0);
@@ -187,8 +189,8 @@ CL_Font * GraphicsManager::GetFont( Overlay overlay, const std::string& type )
 
     return GetFont(fontname);
 }
-            
-            
+
+
 GraphicsManager::GraphicsManager()
 {
 }
@@ -204,7 +206,7 @@ GraphicsManager::~GraphicsManager()
 
 
 }
-    
+
 
 
 

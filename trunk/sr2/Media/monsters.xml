@@ -38,8 +38,8 @@
         <stat id="mp_max" value="5"/>
         <stat id="str" value="8"/>
         <stat id="def" value="3"/>
-        <stat id="dex" value="10"/>
-        <stat id="evd" value="8"/>
+        <stat id="dex" value="0.90"/>
+        <stat id="evd" value="0.08"/>
         <stat id="mag" value="0"/>
     </monster>
 </monsters>

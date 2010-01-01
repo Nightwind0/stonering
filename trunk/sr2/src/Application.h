@@ -22,22 +22,22 @@
 #include "ElementFactory.h"
 
 
-namespace StoneRing 
+namespace StoneRing
 {
     class Level;
     class Choice;
 
- 
+
     class Application : public CL_ClanApplication, public IApplication
     {
     public:
         Application() ;
         virtual ~Application();
-      
+
         virtual int main(int argc, char** argv);
 
         virtual CL_ResourceManager * GetResources()const;
-  
+
         virtual int GetScreenWidth()const;
         virtual int GetScreenHeight()const;
         virtual void Pop(bool);
@@ -55,12 +55,15 @@ namespace StoneRing
 
         virtual AstScript * LoadScript(const std::string &name, const std::string &script);
         virtual SteelType RunScript(AstScript * pScript);
-        virtual SteelType RunScript(AstScript *pScript, const ParameterList &params); 
+        virtual SteelType RunScript(AstScript *pScript, const ParameterList &params);
     protected:
 
 
     private:
         // Steel functions.
+        SteelType gaussian(double mean, double sigma);
+
+
         SteelType playScene(const std::string &animation);
         SteelType playSound(const std::string &sound);
         SteelType loadLevel(const std::string &level, uint startX, uint startY);
@@ -82,14 +85,19 @@ namespace StoneRing
         SteelType addCharacter(const std::string &character, int level, bool announce);
         SteelType getPartyCount(void);
         SteelType getCharacter(uint index);
+        SteelType getItemName(const SteelType::Handle hItem);
+        SteelType getWeaponAttribute(const SteelType::Handle hWeapon, uint attr);
+        SteelType getArmorAttribute(const SteelType::Handle hArmor, uint attr);
         // You can also take
         SteelType giveGold(int amount);
         // SteelType giveGeneratedWeapon(const std::string &wepclass, const std::string &weptype);
         // SteelType giveGeneratedArmor(const std::string &armclass, const std::string &armtype);
-
-        // Character steel bindings
         SteelType getCharacterName(const SteelType::Handle hICharacter);
         SteelType getCharacterLevel(const SteelType::Handle hICharacter);
+        //
+        SteelType getCharacterAttribute(const SteelType::Handle hICharacter, uint attr);
+        SteelType getEquippedWeaponAttribute(const SteelType::Handle hICharacter, uint attr);
+        SteelType getEquippedArmorAttribute(const SteelType::Handle hICharacter, uint attr);
         SteelType addStatusEffect(SteelType::Handle hCharacter, const std::string &effect);
         SteelType removeStatusEffects(SteelType::Handle hCharacter, const std::string &effect);
         // This method directly affects a character's HP. No factors are taken into account
@@ -109,7 +117,7 @@ namespace StoneRing
         void showIntro();
         void showError(int line, const std::string &script, const std::string &message);
         void registerSteelFunctions();
-    
+
         void draw();
         void run();
         void loadscript(std::string &o_str, const std::string & filename);
@@ -121,7 +129,7 @@ namespace StoneRing
         void onSignalQuit();
         void onSignalKeyDown(const CL_InputEvent &key);
         void onSignalKeyUp(const CL_InputEvent &key);
-  
+
         int calc_fps(int);
 
         Party *mpParty;
@@ -143,7 +151,7 @@ namespace StoneRing
         std::vector<State*> mStates;
         std::vector<IFactory*> mFactories;
         AppUtils mAppUtils;
-      
+
     };
 
 inline void Application::steelConst(const std::string &name, int value)
@@ -159,9 +167,9 @@ inline void Application::steelConst(const std::string &name, double value)
     val.set(value);
     mInterpreter.declare_const(name,val);
 }
-  
-  
-};
+
+
+}
 
 
 

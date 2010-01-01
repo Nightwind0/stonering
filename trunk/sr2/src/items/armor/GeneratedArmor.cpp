@@ -27,7 +27,7 @@ std::string GeneratedArmor::GetName() const
     return m_name;
 }
 
-uint GeneratedArmor::GetMaxInventory() const 
+uint GeneratedArmor::GetMaxInventory() const
 {
     // todo: lookup in settings
     return 99;
@@ -64,7 +64,7 @@ bool GeneratedArmor::operator== ( const ItemRef &ref )
             if(*GetSpellRef() == *ref.GetArmorRef()->GetSpellRef())
             {
                 return true;
-            } 
+            }
             else return false;
         }
         else if ( HasSpell() || ref.GetArmorRef()->GetSpellRef())
@@ -97,18 +97,18 @@ Item::eDropRarity GeneratedArmor::GetDropRarity() const
 {
     if( HasSpell() || HasRuneType() )
     {
-        return RARE; 
+        return RARE;
     }
     else return UNCOMMON;
 }
 
 
-uint GeneratedArmor::GetValue() const 
+uint GeneratedArmor::GetValue() const
 {
     // @todo: add rune value
     const AbilityManager * pManager = IApplication::GetInstance()->GetAbilityManager();
 
-    uint value =  (int)((float)m_pType->GetBasePrice() * m_pClass->GetValueMultiplier()) 
+    uint value =  (int)((float)m_pType->GetBasePrice() * m_pClass->GetValueMultiplier())
         + m_pClass->GetValueAdd();
 
     if(HasSpell())
@@ -134,20 +134,22 @@ uint GeneratedArmor::GetValue() const
             value = (int)dValue;
             break;
         }
+        default:
+            assert(0);
         }
     }
 
     return value;
 }
 
-uint GeneratedArmor::GetSellValue() const 
+uint GeneratedArmor::GetSellValue() const
 {
     return GetValue() / 2;
 }
 
 
 
-ArmorType * GeneratedArmor::GetArmorType() const 
+ArmorType * GeneratedArmor::GetArmorType() const
 {
     return m_pType;
 }
@@ -158,7 +160,7 @@ ArmorRef GeneratedArmor::GenerateArmorRef() const
     return ArmorRef ( GetArmorType(), GetArmorClass(), GetSpellRef(), GetRuneType() );
 }
 
-void GeneratedArmor::generate( ArmorType * pType, ArmorClass * pClass, 
+void GeneratedArmor::generate( ArmorType * pType, ArmorClass * pClass,
                                SpellRef *pSpell , RuneType *pRune)
 {
 

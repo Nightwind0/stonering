@@ -45,11 +45,11 @@ public:
     virtual uint GetLevel(void)const;
     virtual void SetLevel(uint);
     virtual double GetSpellResistance(Magic::eMagicType type) const;
-    virtual double GetAttributeReal(eCharacterAttribute attr) const ;
-    virtual int  GetAttribute(eCharacterAttribute attr) const;
+    virtual double  GetAttribute(eCharacterAttribute attr) const;
     virtual bool GetToggle(eCharacterAttribute attr) const;
     virtual void SetToggle(eCharacterAttribute attr, bool state);
-    virtual void PermanentAugment(eCharacterAttribute attr, int augment);
+    virtual double GetEquippedWeaponAttribute(Weapon::eAttribute) const { return 0.0; }
+    virtual double GetEquippedArmorAttribute(Armor::eAttribute) const { return 0.0; }
     virtual void PermanentAugment(eCharacterAttribute attr, double augment);
     virtual void AddStatusEffect(StatusEffect *);
     virtual void RemoveEffects(const std::string &name);
@@ -63,8 +63,7 @@ private:
 
     std::string m_name;
     uint m_nLevel;
-    std::map<eCharacterAttribute,double> m_real_augments;
-    std::map<eCharacterAttribute,int> m_augments;
+    std::map<eCharacterAttribute,double> m_augments;
     StatusEffectMap m_status_effects;
     MonsterElement * m_pMonsterDefinition;
     uint m_nCellX;
@@ -76,7 +75,7 @@ private:
 
 inline void Monster::RollInitiative(void)
 {
-    int init = static_cast<int>(random_distribution(GetAttribute(CA_LCK),0.2));
+    int init = static_cast<int>(normal_random(GetAttribute(CA_LCK), GetAttribute(CA_LCK) * 0.2));
     m_nInitiative = std::max(0,init);
 
 }
@@ -97,6 +96,6 @@ private:
     std::vector<Monster*> m_monsters;
 };
 
-};
+}
 
 #endif
