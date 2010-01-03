@@ -75,13 +75,17 @@ double Monster::GetSpellResistance(StoneRing::Magic::eMagicType type) const
 
 double Monster::GetAttribute(ICharacter::eCharacterAttribute attr) const
 {
-    return 0.0;
+    const Stat * pStat = m_pMonsterDefinition->GetStat(attr);
+    if(pStat != NULL)
+        return pStat->GetStat();
+    else
+        return 0.0;
 }
 
 
 bool Monster::GetToggle(ICharacter::eCharacterAttribute attr) const
 {
-    return false;
+    return m_pMonsterDefinition->GetStat(attr)->GetToggle();
 }
 
 void Monster::PermanentAugment(eCharacterAttribute attr, double augment)

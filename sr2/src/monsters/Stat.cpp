@@ -29,7 +29,7 @@ ICharacter::eCharacterAttribute Stat::GetAttribute() const
 void Stat::load_attributes(CL_DomNamedNodeMap *attr)
 {
     m_eAttr = ICharacter::CharAttributeFromString( get_required_string("id",attr) );
-    if(m_eAttr = ICharacter::CA_INVALID)
+    if(m_eAttr == ICharacter::CA_INVALID)
         throw CL_Error("Unknown stat type in monster stat");
 
     if(m_eAttr > ICharacter::_START_OF_TOGGLES && m_eAttr < ICharacter::_MAXIMA_BASE)

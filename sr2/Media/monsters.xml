@@ -6,7 +6,7 @@
         </onRound>
         <onInvoke>
             <script id="Endospore_invoke">
-            say("Endospore","You found me!");  
+            say("Endospore","You found me!");
             </script>
         </onInvoke>
         <itemRef>
@@ -15,6 +15,13 @@
                 <weaponClassRef name="Poor" />
             </weaponRef>
         </itemRef>
+        <stat id="hp_max"   value="12"/>
+        <stat id="mp_max" value="0"/>
+        <stat id="str" value="5"/>
+        <stat id="def" value="3"/>
+        <stat id="dex" value="0.90"/>
+        <stat id="evd" value="0.12"/>
+        <stat id="mag" value="0"/>
     </monster>
     <monster name="Megaspore" mode="class" spriteResources="endospore" class="Warrior" level="3">
         <onRound>
@@ -27,6 +34,13 @@
                 <weaponClassRef name="Poor" />
             </weaponRef>
         </itemRef>
+        <stat id="hp_max"   value="23"/>
+        <stat id="mp_max" value="5"/>
+        <stat id="str" value="8"/>
+        <stat id="def" value="3"/>
+        <stat id="dex" value="0.90"/>
+        <stat id="evd" value="0.08"/>
+        <stat id="mag" value="0"/>
     </monster>
     <monster name="Grass Wolf" mode="manual" spriteResources="wolf" level="1">
         <onRound>
