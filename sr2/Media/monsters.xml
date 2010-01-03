@@ -22,6 +22,7 @@
         <stat id="dex" value="0.90"/>
         <stat id="evd" value="0.12"/>
         <stat id="mag" value="0"/>
+        <stat id="lck" value="3"/>
     </monster>
     <monster name="Megaspore" mode="class" spriteResources="endospore" class="Warrior" level="3">
         <onRound>
@@ -41,6 +42,8 @@
         <stat id="dex" value="0.90"/>
         <stat id="evd" value="0.08"/>
         <stat id="mag" value="0"/>
+        <stat id="lck" value="3"/>
+        <stat id="rst" value="6"/>
     </monster>
     <monster name="Grass Wolf" mode="manual" spriteResources="wolf" level="1">
         <onRound>
@@ -48,12 +51,14 @@
                 doSkill("Attack");  // Monsters are allowed to use any skill they want.
             </script>
         </onRound>
-        <stat id="hp_max"   value="23"/>
+        <stat id="hp_max"   value="30"/>
         <stat id="mp_max" value="5"/>
-        <stat id="str" value="8"/>
+        <stat id="str" value="12"/>
         <stat id="def" value="3"/>
-        <stat id="dex" value="0.90"/>
-        <stat id="evd" value="0.08"/>
+        <stat id="dex" value="0.95"/>
+        <stat id="evd" value="0.09"/>
         <stat id="mag" value="0"/>
+        <stat id="lck" value="3"/>
+        <stat id="rst" value="6"/>
     </monster>
 </monsters>
