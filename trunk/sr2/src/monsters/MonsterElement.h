@@ -34,9 +34,11 @@ public:
     std::list<ItemRef*>::const_iterator GetItemRefsBegin() const;
     std::list<ItemRef*>::const_iterator GetItemRefsEnd() const;
 
+    const Stat* GetStat(ICharacter::eCharacterAttribute attr) const;
+
     // SpriteDefinition * getSpriteDefinition(const std::string &name)const;
 
-    /** 
+    /**
     * Element interface
     */
     virtual eElement WhichElement() const { return EMONSTER; }
@@ -65,6 +67,14 @@ private:
 
 };
 
-};
+inline const Stat * MonsterElement::GetStat(ICharacter::eCharacterAttribute attr) const{
+    std::map<ICharacter::eCharacterAttribute,Stat*>::const_iterator it = m_stat_map.find(attr);
+
+    if(it != m_stat_map.end())
+    return it->second;
+    else return NULL;
+}
+
+}
 
 #endif
