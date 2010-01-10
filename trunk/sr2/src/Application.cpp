@@ -480,6 +480,27 @@ SteelType Application::getCharacterAttribute(const SteelType::Handle hICharacter
     return result;
 }
 
+SteelType Application::getCharacterToggle(const SteelType::Handle hICharacter, uint attr)
+{
+    SteelType result;
+    ICharacter * pCharacter = static_cast<ICharacter*>(hICharacter);
+    ICharacter::eCharacterAttribute theAttr = static_cast<ICharacter::eCharacterAttribute>(attr);
+
+    result.set(pCharacter->GetToggle(theAttr));
+
+    return result;
+}
+
+SteelType Application::setCharacterToggle(const SteelType::Handle hICharacter, uint attr, bool toggle)
+{
+    ICharacter * pCharacter = static_cast<ICharacter*>(hICharacter);
+    ICharacter::eCharacterAttribute theAttr = static_cast<ICharacter::eCharacterAttribute>(attr);
+
+    pCharacter->SetToggle(theAttr,toggle);
+
+    return SteelType();
+}
+
 
 SteelType Application::getWeaponType(SteelType::Handle hWeapon)
 {
@@ -676,6 +697,8 @@ void Application::registerSteelFunctions()
 
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getCharacterName(this,&Application::getCharacterName);
     static SteelFunctor2Arg<Application,const SteelType::Handle,uint> fn_getCharacterAttribute(this, &Application::getCharacterAttribute);
+    static SteelFunctor2Arg<Application,const SteelType::Handle,uint> fn_getCharacterToggle(this, &Application::getCharacterToggle);
+    static SteelFunctor3Arg<Application,const SteelType::Handle,uint,bool> fn_setCharacterToggle(this, &Application::setCharacterToggle);
     static SteelFunctor2Arg<Application,const SteelType::Handle, uint> fn_getEquippedWeaponAttribute(this,&Application::getEquippedWeaponAttribute);
     static SteelFunctor2Arg<Application,const SteelType::Handle, uint> fn_getEquippedArmorAttribute(this,&Application::getEquippedArmorAttribute);
     static SteelFunctor2Arg<Application,const SteelType::Handle,const std::string&> fn_addStatusEffect(this,&Application::addStatusEffect);
@@ -770,6 +793,8 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction("getArmorAttribute", &fn_getArmorAttribute);
 
     mInterpreter.addFunction("getCharacterAttribute", &fn_getCharacterAttribute);
+    mInterpreter.addFunction("getCharacterToggle", &fn_getCharacterToggle);
+    mInterpreter.addFunction("setCharacterToggle", &fn_setCharacterToggle);
     mInterpreter.addFunction("getCharacterName", &fn_getCharacterName);
     mInterpreter.addFunction("getEquippedWeaponAttribute",&fn_getEquippedWeaponAttribute);
     mInterpreter.addFunction("getEquippedArmorAttribute",&fn_getEquippedArmorAttribute);

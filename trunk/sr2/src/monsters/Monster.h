@@ -58,6 +58,10 @@ public:
     virtual void RollInitiative(void);
     virtual uint GetInitiative(void)const;
     virtual void Kill();
+
+    void MarkDeathAnimated() { m_bDeathAnimated = true; }
+    void ClearDeathAnimated() { m_bDeathAnimated = false; }
+    bool DeathAnimated()const { return m_bDeathAnimated;}
 private:
 
     typedef std::multimap<std::string,StatusEffect*> StatusEffectMap;
@@ -74,6 +78,7 @@ private:
     uint m_nCellY;
     uint m_nInitiative;
     CL_Sprite *m_pSprite;
+    bool m_bDeathAnimated;
 };
 
 

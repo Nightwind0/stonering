@@ -41,6 +41,7 @@ const stat_entry statXMLLookup[] =
     {"draw_paralyzed",ICharacter::CA_DRAW_PARALYZED}, //    CA_DRAW_PARALYZED,
     {"draw_translucent",ICharacter::CA_DRAW_TRANSLUCENT},
     {"draw_mini",ICharacter::CA_DRAW_MINI},
+    {"visible", ICharacter::CA_VISIBLE},
     {"can_act", ICharacter::CA_CAN_ACT}, //   CA_CAN_ACT,
     {"can_fight",ICharacter::CA_CAN_FIGHT}, // CA_CAN_FIGHT,
     {"can_cast", ICharacter::CA_CAN_CAST}, //  CA_CAN_CAST,
@@ -167,6 +168,7 @@ void StoneRing::Character::set_toggle_defaults()
             case CA_DRAW_MINI:
                 m_toggles[static_cast<eCharacterAttribute>(toggle)] = false;
                 break;
+            case CA_VISIBLE:
             case CA_CAN_ACT:
             case CA_CAN_FIGHT:
             case CA_CAN_CAST:

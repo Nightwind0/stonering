@@ -120,6 +120,8 @@ namespace StoneRing{
         void roll_initiative();
         void next_turn();
         void pick_next_character();
+        void check_for_death();
+        void death_animation(Monster* pMonster);
         ICharacter* get_next_character(const ICharacterGroup* pGroup, const ICharacter* pCharacter)const;
         ICharacter* get_prev_character(const ICharacterGroup* pGroup, const ICharacter* pCharacter)const;
 
