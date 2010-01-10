@@ -119,7 +119,7 @@
     <section name="BattlePopup">
         <surface name="overlay" file="Images/Overlays/battle_popup.png"/>
         <integer name="x" value="100"/>
-        <integer name="y" value="300"/>
+        <integer name="y" value="240"/>
         <section name="fonts">
             <string name="on" value="BoldPowderBlue"/>
             <string name="off" value="BoldGray"/>

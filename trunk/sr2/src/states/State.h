@@ -4,7 +4,8 @@
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
 
-class SteelInterpreter;
+#include "steel/SteelInterpreter.h"
+#include "steel/SteelType.h"
 
 namespace StoneRing
 {
@@ -24,7 +25,8 @@ namespace StoneRing
         virtual void SteelInit      (SteelInterpreter *);
         virtual void SteelCleanup   (SteelInterpreter *);
         virtual void Finish()=0; // Hook to clean up or whatever after being popped
-
+        void SteelConst(SteelInterpreter*,const std::string &name, int value);
+        void SteelConst(SteelInterpreter*,const std::string &name, double value);
     };
 
     inline void State::SteelInit(SteelInterpreter* )
@@ -34,6 +36,21 @@ namespace StoneRing
     inline void State::SteelCleanup(SteelInterpreter* )
     {
     }
+
+    inline void State::SteelConst(SteelInterpreter* pInterpreter,const std::string &name, int value)
+    {
+        SteelType val;
+        val.set(value);
+        pInterpreter->declare_const(name,val);
+    }
+
+    inline void State::SteelConst(SteelInterpreter* pInterpreter,const std::string &name, double value)
+    {
+        SteelType val;
+        val.set(value);
+        pInterpreter->declare_const(name,val);
+    }
+
 }
 
 

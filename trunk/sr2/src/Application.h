@@ -108,6 +108,17 @@ namespace StoneRing
         SteelType getEquipment(SteelType::Handle hCharacter, int slot);
         SteelType equip(SteelType::Handle hCharacter, int slot, const std::string &);
 
+        SteelType getWeaponType(SteelType::Handle hWeapon);
+        SteelType getArmorType(SteelType::Handle hArmor);
+        SteelType getWeaponTypeDamageCategory(SteelType::Handle hWeaponType);
+        SteelType getWeaponDamageCategoryResistance(SteelType::Handle hICharacter, int damage_category);
+
+        SteelType doSound(const std::string&);
+        SteelType getHitSound(SteelType::Handle hWeaponType);
+        SteelType getMissSound(SteelType::Handle hWeaponType);
+
+
+
         void steelConst(const std::string &name, int value);
         void steelConst(const std::string &name, double value);
 

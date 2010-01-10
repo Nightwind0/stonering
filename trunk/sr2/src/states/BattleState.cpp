@@ -86,8 +86,10 @@ void BattleState::next_turn()
 
 }
 
-void BattleState::pick_next_character(){
-    if(++m_cur_char == m_initiative.size()){
+void BattleState::pick_next_character()
+{
+    if (++m_cur_char == m_initiative.size())
+    {
         m_cur_char = 0;
     }
 }
@@ -350,8 +352,8 @@ void BattleState::draw_battle(const CL_Rect &screenRect, CL_GraphicContext *pGC)
         CL_Rect menu_rect = screenRect;
         // TODO: These SHOULD come from the graphics manager,
         // the values are data driven in resources.xml
-        menu_rect.top = screenRect.bottom * 0.5;
-        menu_rect.left = screenRect.right * 0.1;
+        menu_rect.top = screenRect.bottom * 0.33;
+        menu_rect.left = screenRect.right * 0.66;
         draw_menus(menu_rect,pGC);
     }
 
@@ -453,16 +455,20 @@ void BattleState::draw_menus(const CL_Rect &screenrect, CL_GraphicContext *pGC)
 
             bool selected = false;
 
-            if (m_menu_stack.top()->GetSelectedOption() == iter){
+            if (m_menu_stack.top()->GetSelectedOption() == iter)
+            {
                 font = selectedFont;
                 selected = true;
             }
 
             CL_Surface* pIcon = pOption->GetIcon();
 
-            if(!selected){
+            if (!selected)
+            {
                 pIcon->set_alpha(0.5f);
-            }else{
+            }
+            else
+            {
                 pIcon->set_alpha(1.0f);
             }
 
@@ -484,18 +490,29 @@ void BattleState::draw_menus(const CL_Rect &screenrect, CL_GraphicContext *pGC)
 }
 void BattleState::SteelInit(SteelInterpreter* pInterpreter)
 {
+    pInterpreter->pushScope();
     static SteelFunctor3Arg<BattleState,bool,bool,bool> fn_selectTargets(this,&BattleState::selectTargets);
     static SteelFunctorNoArgs<BattleState> fn_finishTurn(this,&BattleState::finishTurn);
     static SteelFunctorNoArgs<BattleState> fn_cancelOption(this,&BattleState::cancelOption);
+    static SteelFunctor2Arg<BattleState,SteelType::Handle,const std::string&> fn_doCharacterAnimation(this,&BattleState::doCharacterAnimation);
+    static SteelFunctor3Arg<BattleState,int,SteelType::Handle,int> fn_createDisplay(this,&BattleState::createDisplay);
+
+
+    SteelConst(pInterpreter,"$_DISP_DAMAGE", DISPLAY_DAMAGE);
+    SteelConst(pInterpreter,"$_DISP_MP", DISPLAY_MP);
+    SteelConst(pInterpreter,"$_DISP_MISS", DISPLAY_MISS);
 
     pInterpreter->addFunction("selectTargets","battle",&fn_selectTargets);
     pInterpreter->addFunction("finishTurn","battle",&fn_finishTurn);
     pInterpreter->addFunction("cancelOption","battle",&fn_cancelOption);
+    pInterpreter->addFunction("doCharacterAnimation","battle",&fn_doCharacterAnimation);
+    pInterpreter->addFunction("createDisplay","battle",&fn_createDisplay);
 }
 
 void BattleState::SteelCleanup   (SteelInterpreter* pInterpreter)
 {
     pInterpreter->removeFunctions("battle",false);
+    pInterpreter->popScope();
 }
 
 ICharacter* BattleState::get_next_character(const ICharacterGroup* pParty, const ICharacter* pCharacter) const
@@ -604,13 +621,15 @@ bool BattleState::MonstersOnLeft()
     return true;
 }
 
-void BattleState::FinishTurn(){
+void BattleState::FinishTurn()
+{
     // TODO: Good time to check if either side is wiped out, etc
     pick_next_character();
     next_turn();
 }
 // Go back to menu, they decided not to proceed with this option
-void BattleState::CancelOption(){
+void BattleState::CancelOption()
+{
     m_combat_state = BATTLE_MENU;
 }
 
@@ -659,10 +678,20 @@ SteelType BattleState::finishTurn()
     FinishTurn();
     return SteelType();
 }
-        // if they back out and want to go back to the battle menu
+// if they back out and want to go back to the battle menu
 SteelType BattleState::cancelOption()
 {
     CancelOption();
+    return SteelType();
+}
+
+SteelType BattleState::doCharacterAnimation(SteelType::Handle pICharacter,const std::string& animation)
+{
+    return SteelType();
+}
+
+SteelType BattleState::createDisplay(int damage,SteelType::Handle,int display_type)
+{
     return SteelType();
 }
 

@@ -16,6 +16,7 @@
 #include "MonsterRef.h"
 #include "Monster.h"
 #include "Weapon.h"
+#include "WeaponType.h"
 #include "Armor.h"
 #ifndef _WINDOWS_
 #include <steel/SteelType.h>
@@ -479,6 +480,60 @@ SteelType Application::getCharacterAttribute(const SteelType::Handle hICharacter
 }
 
 
+SteelType Application::getWeaponType(SteelType::Handle hWeapon)
+{
+    SteelType val;
+    val.set ( static_cast<Weapon*>(hWeapon)->GetWeaponType() );
+
+    return val;
+}
+
+SteelType Application::getArmorType(SteelType::Handle hArmor)
+{
+    SteelType val;
+    val.set ( static_cast<Armor*>(hArmor)->GetArmorType() );
+
+    return val;
+}
+
+SteelType Application::getWeaponTypeDamageCategory(SteelType::Handle hWeaponType)
+{
+    SteelType val;
+    val.set ( dynamic_cast<WeaponDamageCategory*>(static_cast<WeaponType*>(hWeaponType)->GetDamageCategory())->GetType() );
+
+    return val;
+}
+
+SteelType Application::getWeaponDamageCategoryResistance(SteelType::Handle hICharacter, int damage_category)
+{
+    SteelType val;
+
+    WeaponDamageCategory::eType type = static_cast<WeaponDamageCategory::eType>(damage_category);
+
+    val.set ( static_cast<ICharacter*>(hICharacter)->GetWeaponDamageCategoryResistance(type) );
+
+    return val;
+}
+
+SteelType Application::doSound(const std::string &sound)
+{
+
+    return SteelType();
+}
+
+SteelType Application::getHitSound(SteelType::Handle hWeaponType)
+{
+
+    return SteelType();
+}
+
+SteelType Application::getMissSound(SteelType::Handle hWeaponType)
+{
+    return SteelType();
+}
+
+
+
 IApplication * IApplication::GetInstance()
 {
     return &sr_app;
@@ -631,6 +686,16 @@ void Application::registerSteelFunctions()
     static SteelFunctor3Arg<Application,const SteelType::Handle,int,const std::string&> fn_equip(this,&Application::equip);
 
 
+    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getWeaponType(this,&Application::getWeaponType);
+    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getArmorType(this,&Application::getArmorType);
+    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getWeaponTypeDamageCategory(this,&Application::getWeaponTypeDamageCategory);
+    static SteelFunctor2Arg<Application,const SteelType::Handle,int> fn_getWeaponDamageCategoryResistance(this,&Application::getWeaponDamageCategoryResistance);
+    static SteelFunctor1Arg<Application,const std::string&> fn_doSound(this,&Application::doSound);
+    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getHitSound(this,&Application::getHitSound);
+    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getMissSound(this,&Application::getMissSound);
+
+
+
     mInterpreter.pushScope();
 
     steelConst("$_HAND",Equipment::EHAND);
@@ -713,6 +778,16 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction("hasEquipment",&fn_hasEquipment);
     mInterpreter.addFunction("getEquipment",&fn_getEquipment);
     mInterpreter.addFunction("equip",&fn_equip);
+
+    mInterpreter.addFunction("getWeaponType",&fn_getWeaponType);
+    mInterpreter.addFunction("getArmorType",&fn_getArmorType);
+    mInterpreter.addFunction("getWeaponTypeDamageCategory",&fn_getWeaponTypeDamageCategory);
+    mInterpreter.addFunction("getWeaponDamageCategoryResistance",&fn_getWeaponDamageCategoryResistance);
+    mInterpreter.addFunction("doSound",&fn_doSound);
+    mInterpreter.addFunction("getHitSound",&fn_getHitSound);
+    mInterpreter.addFunction("getMissSound",&fn_getMissSound);
+
+
 
 //        SteelType hasGeneratedWeapon(const std::string &wepclass, const std::string &webtype);
 //       SteelType hasGeneratedArmor(const std::string &armclass, const std::string &armtype);

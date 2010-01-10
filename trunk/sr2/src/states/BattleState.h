@@ -66,6 +66,12 @@ namespace StoneRing{
             DISPLAY_ACTION
         };
 
+        enum eDisplayType{
+            DISPLAY_DAMAGE,
+            DISPLAY_MP,
+            DISPLAY_MISS
+        };
+
 
         class Command
         {
@@ -123,7 +129,8 @@ namespace StoneRing{
         SteelType finishTurn();
         // if they back out and want to go back to the battle menu
         SteelType cancelOption();
-
+        SteelType doCharacterAnimation(SteelType::Handle pICharacter,const std::string& animation);
+        SteelType createDisplay(int damage,SteelType::Handle,int display_type);
 
 
 

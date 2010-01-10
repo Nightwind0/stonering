@@ -45,6 +45,7 @@ public:
     virtual uint GetLevel(void)const;
     virtual void SetLevel(uint);
     virtual double GetSpellResistance(Magic::eMagicType type) const;
+    virtual double GetWeaponDamageCategoryResistance(WeaponDamageCategory::eType type) const;
     virtual double  GetAttribute(eCharacterAttribute attr) const;
     virtual bool GetToggle(eCharacterAttribute attr) const;
     virtual void SetToggle(eCharacterAttribute attr, bool state);

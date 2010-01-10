@@ -8,6 +8,7 @@
 #include "SpriteRef.h"
 #include "Weapon.h"
 #include "Armor.h"
+#include "DamageCategory.h"
 
 class CL_Sprite;
 
@@ -87,6 +88,7 @@ namespace StoneRing{
 
         virtual double GetAttribute    (eCharacterAttribute attr) const = 0;
         virtual double GetSpellResistance(Magic::eMagicType type) const = 0;
+        virtual double GetWeaponDamageCategoryResistance(WeaponDamageCategory::eType type) const = 0;
         virtual bool GetToggle(eCharacterAttribute attr) const = 0;
         virtual void SetToggle(eCharacterAttribute attr, bool toggle) = 0;
         virtual void AddStatusEffect(StatusEffect *)=0;
@@ -136,6 +138,7 @@ namespace StoneRing{
         virtual uint GetLevel(void)const;
         virtual void SetLevel(uint);
         virtual double GetSpellResistance(Magic::eMagicType type) const;
+        virtual double GetWeaponDamageCategoryResistance(WeaponDamageCategory::eType type) const;
         virtual double  GetAttribute(eCharacterAttribute attr) const;
         virtual bool GetToggle(eCharacterAttribute attr) const;
         virtual void SetToggle(eCharacterAttribute attr, bool state);

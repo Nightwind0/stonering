@@ -73,10 +73,15 @@ double Monster::GetSpellResistance(StoneRing::Magic::eMagicType type) const
     return 0.0;
 }
 
+double Monster::GetWeaponDamageCategoryResistance(WeaponDamageCategory::eType type) const
+{
+    return 1.0;
+}
+
 double Monster::GetAttribute(ICharacter::eCharacterAttribute attr) const
 {
     const Stat * pStat = m_pMonsterDefinition->GetStat(attr);
-    if(pStat != NULL)
+    if (pStat != NULL)
         return pStat->GetStat();
     else
         return 0.0;
@@ -85,7 +90,11 @@ double Monster::GetAttribute(ICharacter::eCharacterAttribute attr) const
 
 bool Monster::GetToggle(ICharacter::eCharacterAttribute attr) const
 {
-    return m_pMonsterDefinition->GetStat(attr)->GetToggle();
+    const Stat * pStat =  m_pMonsterDefinition->GetStat(attr);
+    if ( pStat != NULL )
+        return pStat->GetToggle();
+    else
+        return false;
 }
 
 void Monster::PermanentAugment(eCharacterAttribute attr, double augment)
