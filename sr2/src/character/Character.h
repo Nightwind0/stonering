@@ -56,6 +56,7 @@ namespace StoneRing{
             CA_DRAW_PARALYZED,
             CA_DRAW_TRANSLUCENT,
             CA_DRAW_MINI,
+            CA_VISIBLE,
             CA_CAN_ACT,
             CA_CAN_FIGHT,
             CA_CAN_CAST,

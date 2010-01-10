@@ -9,6 +9,11 @@
                 println("Target: " + getCharacterName($pTarget));
                 println("HP: " + getCharacterAttribute($pTarget,$_HP) + " / " + getCharacterAttribute($pTarget,$_MAXHP));
                 println("MP: " + getCharacterAttribute($pTarget,$_MP) + " / " + getCharacterAttribute($pTarget,$_MAXMP));
+
+                if(getCharacterToggle($pTarget,$_ALIVE))
+                    println("Alive");
+                else println("Dead");
+
                 battle::finishTurn();
                 ]]>
             </script>

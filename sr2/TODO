@@ -2,11 +2,14 @@ Danny TODOs
 
 
 
+- Attack skill should just "use" the weapon being used, and then "use" the armor being hit. Those scripts should generally do exactly what the "Attack" script does now.
+
 - battle bifs need to be filled in
 - "chooseItem" dialog & bif,  and "useItem" bif
 - character attributes need to be nicer, some kind of table, because
   even though we can derive maxima for the transients, we can't do so with
   minima. 
+
 
 
 

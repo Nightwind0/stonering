@@ -96,6 +96,8 @@ namespace StoneRing
         SteelType getCharacterLevel(const SteelType::Handle hICharacter);
         //
         SteelType getCharacterAttribute(const SteelType::Handle hICharacter, uint attr);
+        SteelType getCharacterToggle(const SteelType::Handle hICharacter, uint attr);
+        SteelType setCharacterToggle(const SteelType::Handle hICharacter, uint attr, bool toggle);
         SteelType getEquippedWeaponAttribute(const SteelType::Handle hICharacter, uint attr);
         SteelType getEquippedArmorAttribute(const SteelType::Handle hICharacter, uint attr);
         SteelType addStatusEffect(SteelType::Handle hCharacter, const std::string &effect);

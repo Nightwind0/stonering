@@ -69,7 +69,9 @@ void BattleState::init(const MonsterGroup &group, const std::string &backdrop)
 
 void BattleState::next_turn()
 {
-    Character * pCharacter = dynamic_cast<Character*>(m_initiative[m_cur_char]);
+    ICharacter * iCharacter = m_initiative[m_cur_char];
+    Character * pCharacter = dynamic_cast<Character*>(iCharacter);
+    iCharacter->StatusEffectRound();
 
     if (pCharacter != NULL)
     {
@@ -368,6 +370,9 @@ void BattleState::draw_monsters(const CL_Rect &monsterRect, CL_GraphicContext *p
     for (int i = 0; i < m_monsters->GetCharacterCount(); i++)
     {
         Monster *pMonster = dynamic_cast<Monster*>(m_monsters->GetCharacter(i));
+
+        if(!pMonster->GetToggle(ICharacter::CA_VISIBLE))
+            continue;
         int drawX = pMonster->GetCellX() * cellWidth;
         int drawY = pMonster->GetCellY() * cellHeight;
 
@@ -399,6 +404,8 @@ void BattleState::draw_players(const CL_Rect &playerRect, CL_GraphicContext *pGC
         CL_Sprite * pSprite = pCharacter->GetCurrentSprite();
 
         // Need to get the spacing from game config
+        if(!pCharacter->GetToggle(ICharacter::CA_VISIBLE))
+            continue;
         pSprite->draw(playerRect.left + nPlayer * 64, playerRect.top + (nPlayer * 64), pGC);
         pSprite->update();
 
@@ -626,14 +633,45 @@ void BattleState::FinishTurn()
 {
     // TODO: Good time to check if either side is wiped out, etc
     // And, any dead monsters need to have ->Remove called on them
+    check_for_death();
     pick_next_character();
     next_turn();
 }
+
+
 // Go back to menu, they decided not to proceed with this option
 void BattleState::CancelOption()
 {
     m_combat_state = BATTLE_MENU;
 }
+
+void BattleState::check_for_death()
+{
+    for(std::deque<ICharacter*>::const_iterator iter = m_initiative.begin();
+        iter != m_initiative.end(); iter++)
+        {
+            Monster * pMonster = dynamic_cast<Monster*>(*iter);
+
+            if(pMonster)
+            {
+                if(!pMonster->GetToggle(ICharacter::CA_ALIVE) && !pMonster->DeathAnimated()){
+                    pMonster->Die();
+                    death_animation(pMonster);
+                    pMonster->SetToggle(ICharacter::CA_VISIBLE,false);
+                }
+            }
+            else
+            {
+                // Change PC sprite to dead one?
+            }
+        }
+}
+
+void BattleState::death_animation(Monster* pMonster)
+{
+    pMonster->MarkDeathAnimated();
+}
+
 
 /***** BIFS *****/
 SteelType BattleState::selectTargets(bool single, bool group, bool defaultMonsters)

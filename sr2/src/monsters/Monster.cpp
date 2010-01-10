@@ -48,6 +48,7 @@ void Monster::set_toggle_defaults()
             case CA_DRAW_MINI:
                 m_toggles[static_cast<eCharacterAttribute>(toggle)] = false;
                 break;
+            case CA_VISIBLE:
             case CA_CAN_ACT:
             case CA_CAN_FIGHT:
             case CA_CAN_CAST:
@@ -77,6 +78,7 @@ std::list<ItemRef*>::const_iterator Monster::GetDropsEnd() const
 
 void Monster::Invoke()
 {
+    ClearDeathAnimated();
     set_toggle_defaults();
     set_transients();
     m_pMonsterDefinition->Invoke();
