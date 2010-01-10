@@ -85,10 +85,10 @@
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
 		<tile xpos="1" ypos="0">
-			<tilemap mapname="grass" mapx="4" mapy="4"/>
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
 		<tile xpos="1" ypos="1">
-			<tilemap mapname="grass" mapx="4" mapy="4"/>
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
 		<tile xpos="1" ypos="2">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -556,10 +556,10 @@
 			<tilemap mapname="grass" mapx="2" mapy="4"/>
 		</tile>
 		<tile xpos="5" ypos="11">
-			<tilemap mapname="grass" mapx="4" mapy="1"/>
+			<tilemap mapname="grass" mapx="2" mapy="1"/>
 		</tile>
 		<tile xpos="5" ypos="11" zorder="1">
-			<tilemap mapname="grass" mapx="0" mapy="2"/>
+			<tilemap mapname="grass" mapx="2" mapy="0"/>
 		</tile>
 		<tile xpos="5" ypos="12">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -568,38 +568,23 @@
 			<tilemap mapname="grass" mapx="1" mapy="4"/>
 		</tile>
 		<tile xpos="5" ypos="13">
-			<tilemap mapname="grass" mapx="4" mapy="1"/>
-		</tile>
-		<tile xpos="5" ypos="13" zorder="1">
-			<tilemap mapname="grass" mapx="0" mapy="0"/>
+			<tilemap mapname="grass" mapx="2" mapy="1"/>
 		</tile>
 		<tile xpos="5" ypos="14">
-			<tilemap mapname="grass" mapx="4" mapy="1"/>
-		</tile>
-		<tile xpos="5" ypos="14" zorder="1">
 			<tilemap mapname="grass" mapx="2" mapy="4"/>
 		</tile>
-		<tile xpos="5" ypos="15">
-			<tilemap mapname="grass" mapx="4" mapy="1"/>
-		</tile>
+
 		<tile xpos="5" ypos="15" zorder="1">
 			<tilemap mapname="grass" mapx="2" mapy="4"/>
 		</tile>
-		<tile xpos="5" ypos="16">
-			<tilemap mapname="grass" mapx="4" mapy="1"/>
-		</tile>
+
 		<tile xpos="5" ypos="16" zorder="1">
-			<tilemap mapname="grass" mapx="0" mapy="2"/>
-		</tile>
-		<tile xpos="5" ypos="17">
-			<tilemap mapname="grass" mapx="4" mapy="1"/>
+			<tilemap mapname="grass" mapx="2" mapy="0"/>
 		</tile>
 		<tile xpos="5" ypos="17" zorder="1">
 			<tilemap mapname="grass" mapx="1" mapy="4"/>
 		</tile>
-		<tile xpos="5" ypos="18">
-			<tilemap mapname="grass" mapx="4" mapy="1"/>
-		</tile>
+
 		<tile xpos="5" ypos="18" zorder="1">
 			<tilemap mapname="grass" mapx="1" mapy="5"/>
 		</tile>
@@ -2007,11 +1992,9 @@
 		<tile xpos="16" ypos="7">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
-		<tile xpos="16" ypos="8">
-			<tilemap mapname="grass" mapx="4" mapy="1"/>
-		</tile>
+
 		<tile xpos="16" ypos="8" zorder="1">
-			<tilemap mapname="grass" mapx="5" mapy="6"/>
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
 		<tile xpos="16" ypos="9">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -2154,11 +2137,9 @@
 		<tile xpos="17" ypos="15" zorder="1">
 			<tilemap mapname="grass" mapx="0" mapy="4"/>
 		</tile>
-		<tile xpos="17" ypos="16">
-			<tilemap mapname="grass" mapx="4" mapy="1"/>
-		</tile>
+
 		<tile xpos="17" ypos="16" zorder="1">
-			<tilemap mapname="grass" mapx="2" mapy="2"/>
+			<tilemap mapname="grass" mapx="1" mapy="0"/>
 		</tile>
 		<tile xpos="17" ypos="17">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -2856,14 +2837,12 @@
 		<tile xpos="23" ypos="8" zorder="1">
 			<tilemap mapname="grass" mapx="0" mapy="4"/>
 		</tile>
-		<tile xpos="23" ypos="9">
-			<tilemap mapname="grass" mapx="4" mapy="1"/>
-		</tile>
+
 		<tile xpos="23" ypos="9" zorder="1">
 			<tilemap mapname="grass" mapx="0" mapy="4"/>
 		</tile>
 		<tile xpos="23" ypos="10">
-			<tilemap mapname="grass" mapx="4" mapy="1"/>
+			<tilemap mapname="grass" mapx="1" mapy="0"/>
 		</tile>
 		<tile xpos="23" ypos="10" zorder="1">
 			<tilemap mapname="grass" mapx="2" mapy="2"/>
@@ -2942,7 +2921,7 @@
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
 		<tile xpos="24" ypos="2">
-			<tilemap mapname="grass" mapx="4" mapy="4"/>
+			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
 		<tile xpos="24" ypos="2" zorder="1">
 			<tilemap mapname="grass" mapx="2" mapy="9"/>
@@ -2993,9 +2972,7 @@
 		<tile xpos="24" ypos="9" zorder="1">
 			<tilemap mapname="grass" mapx="1" mapy="4"/>
 		</tile>
-		<tile xpos="24" ypos="10">
-			<tilemap mapname="grass" mapx="4" mapy="1"/>
-		</tile>
+
 		<tile xpos="24" ypos="10" zorder="1">
 			<tilemap mapname="grass" mapx="1" mapy="4"/>
 		</tile>
@@ -3515,9 +3492,9 @@
 			<event name="sensePresence" triggerType="talk" remember="true">
 				<script id="presence_">
 					say("????", round(50 * base(2,10) ^ 50));
-					say("????", "You sense a presence. It is as though you can feel the watching eyes of someone. 
+					say("????", "You sense a presence. It is as though you can feel the watching eyes of someone.
 				Perhaps someone you once knew. You are frozen in your tracks. You wonder about the sky. What color is it?
-				What does it mean to you? What will you do if it ever goes away? Why? What is it with monkeys, anyway. 
+				What does it mean to you? What will you do if it ever goes away? Why? What is it with monkeys, anyway.
 				Do they really come in barrels? What else comes in barrels besides monkeys and pickles?");
 				</script>
 			</event>

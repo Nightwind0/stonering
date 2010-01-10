@@ -22,8 +22,8 @@ using StoneRing::Element;
 
 
 template<typename MapType,
-         typename KeyArgType,
-         typename ValueArgType>
+typename KeyArgType,
+typename ValueArgType>
 typename MapType::iterator
 efficientAddOrUpdate(MapType &m,
                      const KeyArgType &k,
@@ -31,8 +31,8 @@ efficientAddOrUpdate(MapType &m,
 {
     typename MapType::iterator lb = m.lower_bound(k);
 
-    if(lb != m.end() &&
-       !(m.key_comp()(k,lb->first)))
+    if (lb != m.end() &&
+            !(m.key_comp()(k,lb->first)))
     {
         lb->second = v;
         return lb;
@@ -47,7 +47,7 @@ efficientAddOrUpdate(MapType &m,
 
 std::string BoolToString( const bool &b)
 {
-    if(b) return "true";
+    if (b) return "true";
     else return "false";
 }
 
@@ -95,19 +95,19 @@ StoneRing::Tilemap::~Tilemap()
 
 void StoneRing::Movement::load_attributes(CL_DomNamedNodeMap * pAttributes)
 {
-    if(has_attribute("speed",pAttributes))
+    if (has_attribute("speed",pAttributes))
     {
         std::string speed = get_string("speed",pAttributes);
 
-        if(speed == "medium")
+        if (speed == "medium")
         {
             m_eSpeed = MEDIUM;
         }
-        else if(speed == "slow")
+        else if (speed == "slow")
         {
             m_eSpeed = SLOW;
         }
-        else if(speed == "fast")
+        else if (speed == "fast")
         {
             m_eSpeed = FAST;
         }
@@ -117,23 +117,23 @@ void StoneRing::Movement::load_attributes(CL_DomNamedNodeMap * pAttributes)
 
     std::string type = get_required_string("movementType",pAttributes);
 
-    if(type == "wander")
+    if (type == "wander")
     {
         m_eType = MOVEMENT_WANDER;
     }
-    else if(type == "paceNS")
+    else if (type == "paceNS")
     {
         m_eType = MOVEMENT_PACE_NS;
     }
-    else if(type == "paceEW")
+    else if (type == "paceEW")
     {
         m_eType = MOVEMENT_PACE_EW;
     }
-    else if(type == "script")
+    else if (type == "script")
     {
         m_eType = MOVEMENT_SCRIPT;
     }
-    else if(type == "none")
+    else if (type == "none")
     {
         // Why would they ever....
         m_eType = MOVEMENT_NONE;
@@ -154,7 +154,7 @@ StoneRing::Movement::~Movement()
 
 bool StoneRing::Movement::handle_element(Element::eElement element, Element *pElement)
 {
-    if(element == ESCRIPT)
+    if (element == ESCRIPT)
         m_pScript= dynamic_cast<ScriptElement*>(pElement);
     else return false;
 
@@ -198,10 +198,10 @@ void StoneRing::DirectionBlock::load_attributes(CL_DomNamedNodeMap *pAttributes)
     bool east =  get_required_bool("east",pAttributes);
     bool west =  get_required_bool("west",pAttributes);
 
-    if(north) m_eDirectionBlock |= DIR_NORTH;
-    if(south) m_eDirectionBlock |= DIR_SOUTH;
-    if(east) m_eDirectionBlock |= DIR_EAST;
-    if(west) m_eDirectionBlock |= DIR_WEST;
+    if (north) m_eDirectionBlock |= DIR_NORTH;
+    if (south) m_eDirectionBlock |= DIR_SOUTH;
+    if (east) m_eDirectionBlock |= DIR_EAST;
+    if (west) m_eDirectionBlock |= DIR_WEST;
 }
 
 
@@ -231,16 +231,16 @@ void StoneRing::Tile::load_attributes(CL_DomNamedNodeMap * pAttributes)
     bool hot = get_implied_bool("hot",pAttributes,false);
     bool pops = get_implied_bool("pops",pAttributes,false);
 
-    if(floater) cFlags |= FLOATER;
-    if(hot) cFlags |= HOT;
-    if(pops) cFlags |= POPS;
+    if (floater) cFlags |= FLOATER;
+    if (hot) cFlags |= HOT;
+    if (pops) cFlags |= POPS;
 
 }
 
 
 bool StoneRing::Tile::handle_element(Element::eElement element, Element * pElement)
 {
-    switch(element)
+    switch (element)
     {
     case ESCRIPT:
         m_pScript = dynamic_cast<ScriptElement*>(pElement);
@@ -270,13 +270,13 @@ bool StoneRing::Tile::handle_element(Element::eElement element, Element * pEleme
 
         // This is all done to make tile's take up less space in memory
 
-        if(db & DIR_NORTH)
+        if (db & DIR_NORTH)
             cFlags |= BLK_NORTH;
-        if(db & DIR_SOUTH)
+        if (db & DIR_SOUTH)
             cFlags |= BLK_SOUTH;
-        if(db & DIR_EAST)
+        if (db & DIR_EAST)
             cFlags |= BLK_EAST;
-        if(db & DIR_WEST)
+        if (db & DIR_WEST)
             cFlags |= BLK_WEST;
 
         delete block;
@@ -292,13 +292,13 @@ bool StoneRing::Tile::handle_element(Element::eElement element, Element * pEleme
 
 void StoneRing::Tile::load_finished()
 {
-    if(m_Graphic.asSpriteRef == NULL) throw CL_Error("Tile didn't have tilemap or sprite ref.");
+    if (m_Graphic.asSpriteRef == NULL) throw CL_Error("Tile didn't have tilemap or sprite ref.");
 }
 
 void StoneRing::Tile::Activate() // Call any attributemodifier
 {
     // Run script
-    if(m_pScript)
+    if (m_pScript)
         m_pScript->ExecuteScript();
 }
 
@@ -308,14 +308,14 @@ StoneRing::Tile::~Tile()
     delete m_pCondition;
     delete m_pSprite;
 
-    if( IsSprite() )
+    if ( IsSprite() )
         delete m_Graphic.asSpriteRef;
     else delete m_Graphic.asTilemap;
 }
 
 bool StoneRing::Tile::EvaluateCondition() const
 {
-    if( m_pCondition )
+    if ( m_pCondition )
         return m_pCondition->EvaluateCondition();
     else return true;
 }
@@ -336,7 +336,7 @@ void StoneRing::Tile::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicCon
 
     // static GraphicsManager * GM = GraphicsManager::GetInstance();
 
-    if( !IsSprite() )
+    if ( !IsSprite() )
     {
         CL_Surface * tilemap = m_Graphic.asTilemap->GetTileMap();
 
@@ -361,7 +361,7 @@ void StoneRing::Tile::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicCon
 
 void StoneRing::Tile::Update()
 {
-    if(IsSprite()) m_pSprite->update();
+    if (IsSprite()) m_pSprite->update();
 }
 
 int StoneRing::Tile::GetDirectionBlock() const
@@ -369,13 +369,13 @@ int StoneRing::Tile::GetDirectionBlock() const
 
     int block = 0;
 
-    if( cFlags & BLK_NORTH)
+    if ( cFlags & BLK_NORTH)
         block |= DIR_NORTH;
-    if( cFlags & BLK_SOUTH)
+    if ( cFlags & BLK_SOUTH)
         block |= DIR_SOUTH;
-    if( cFlags & BLK_EAST)
+    if ( cFlags & BLK_EAST)
         block |= DIR_EAST;
-    if( cFlags & BLK_WEST)
+    if ( cFlags & BLK_WEST)
         block |= DIR_WEST;
 
     return block;

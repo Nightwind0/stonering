@@ -81,8 +81,16 @@ void BattleState::next_turn()
         cl_assert(pMonster != NULL); // has to be a monster...
         // Figure out what the monster will do here.
         m_combat_state = DISPLAY_ACTION;
+        // Display what the monster does
+        FinishTurn();
     }
 
+}
+
+void BattleState::pick_next_character(){
+    if(++m_cur_char == m_initiative.size()){
+        m_cur_char = 0;
+    }
 }
 
 bool characterInitiativeSort(const ICharacter* pChar1, const ICharacter* pChar2)
@@ -156,13 +164,17 @@ void BattleState::HandleKeyUp(const CL_InputEvent &key)
 
             {
                 BattleMenuOption * pOption = *it;
+
                 ParameterList params;
                 // Supply a handle to the character in question
                 Character *pChar = dynamic_cast<Character*>(m_initiative[m_cur_char]);
                 params.push_back ( ParameterListItem("$Character", pChar ) );
                 params.push_back ( ParameterListItem("$Round", static_cast<int>(m_nRound) ) );
+
                 if (pOption->Enabled(params))
+                {
                     pOption->Select(m_menu_stack,params);
+                }
             }
         }
     }
@@ -457,8 +469,12 @@ void BattleState::draw_menus(const CL_Rect &screenrect, CL_GraphicContext *pGC)
 void BattleState::SteelInit(SteelInterpreter* pInterpreter)
 {
     static SteelFunctor3Arg<BattleState,bool,bool,bool> fn_selectTargets(this,&BattleState::selectTargets);
+    static SteelFunctorNoArgs<BattleState> fn_finishTurn(this,&BattleState::finishTurn);
+    static SteelFunctorNoArgs<BattleState> fn_cancelOption(this,&BattleState::cancelOption);
 
     pInterpreter->addFunction("selectTargets","battle",&fn_selectTargets);
+    pInterpreter->addFunction("finishTurn","battle",&fn_finishTurn);
+    pInterpreter->addFunction("cancelOption","battle",&fn_cancelOption);
 }
 
 void BattleState::SteelCleanup   (SteelInterpreter* pInterpreter)
@@ -567,11 +583,20 @@ void BattleState::SelectFromRightGroup()
     m_targets.m_bSelectedGroup  = false;
 }
 
-	bool BattleState::MonstersOnLeft()
-	{
-	    return true;
-	}
+bool BattleState::MonstersOnLeft()
+{
+    return true;
+}
 
+void BattleState::FinishTurn(){
+    // TODO: Good time to check if either side is wiped out, etc
+    pick_next_character();
+    next_turn();
+}
+// Go back to menu, they decided not to proceed with this option
+void BattleState::CancelOption(){
+    m_combat_state = BATTLE_MENU;
+}
 
 /***** BIFS *****/
 SteelType BattleState::selectTargets(bool single, bool group, bool defaultMonsters)
@@ -593,12 +618,12 @@ SteelType BattleState::selectTargets(bool single, bool group, bool defaultMonste
     if (m_targets.m_bSelectedGroup)
     {
 
-            for (int i=0;i<m_targets.selected.m_pGroup->GetCharacterCount();i++)
-            {
-                SteelType ref;
-                ref.set(m_targets.selected.m_pGroup->GetCharacter(i));
-                targets.push_back(ref);
-            }
+        for (int i=0;i<m_targets.selected.m_pGroup->GetCharacterCount();i++)
+        {
+            SteelType ref;
+            ref.set(m_targets.selected.m_pGroup->GetCharacter(i));
+            targets.push_back(ref);
+        }
 
     }
     else
@@ -612,3 +637,16 @@ SteelType BattleState::selectTargets(bool single, bool group, bool defaultMonste
     val.set(targets);
     return val;
 }
+
+SteelType BattleState::finishTurn()
+{
+    FinishTurn();
+    return SteelType();
+}
+        // if they back out and want to go back to the battle menu
+SteelType BattleState::cancelOption()
+{
+    CancelOption();
+    return SteelType();
+}
+

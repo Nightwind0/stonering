@@ -39,6 +39,7 @@
                 // else
                 // pushDisplay("Miss");
                 // playSound("whiff");
+        battle::finishTurn();
 		]]>
             </script>
         </onSelect>
@@ -51,6 +52,7 @@
                 var @targets = battle::selectTargets(true,false,false);
                 //var $queue = $_ActionQueue;
                 //enqueueAction($queue, $_ActionScript, $_Actor, $target, false, $item);
+                battle::finishTurn();
             </script>
         </onSelect>
         <onInvoke>
