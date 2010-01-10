@@ -91,6 +91,12 @@
     <surface name="mountains"  file="Images/Backdrops/mountains.png"/>
 </section>
 
+<section name="Icons">
+    <surface name="no_icon" file="Images/Icons/no_icon.png"/>
+    <surface name="attack" file="Images/Icons/attack.png"/>
+    <surface name="item" file="Images/Icons/I_Chest02.png"/>
+</section>
+
 <section name="Overlays">
     <section name ="BattleStatus">
         <surface name="overlay" file="Images/Overlays/battle_status_overlay_s.png"/>
@@ -115,9 +121,9 @@
         <integer name="x" value="100"/>
         <integer name="y" value="300"/>
         <section name="fonts">
-            <string name="on" value="BoldWhite"/>
+            <string name="on" value="BoldPowderBlue"/>
             <string name="off" value="BoldGray"/>
-            <string name="Selection" value="BoldPowderBlue"/>
+            <string name="Selection" value="BoldWhite"/>
         </section>
     </section>
     <section name="BattleMenu">
@@ -125,9 +131,9 @@
         <integer name="x" value="0"/>
         <integer name="y" value="500"/>
         <section name="fonts">
-            <string name="on" value="BoldWhite"/>
+            <string name="on" value="BoldPowderBlue"/>
             <string name="off" value="BoldGray"/>
-            <string name="Selection" value="BoldPowderBlue"/>
+            <string name="Selection" value="BoldWhite"/>
         </section>
     </section>
 	<section name = "Say">

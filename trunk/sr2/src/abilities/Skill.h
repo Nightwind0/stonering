@@ -38,6 +38,7 @@ namespace StoneRing
         virtual eElement WhichElement() const{ return ESKILL; }
 
         std::string GetName() const;
+        CL_Surface* GetIcon() const{ return m_pIcon; }
         uint GetSPCost() const;
         uint GetBPCost() const;
         uint GetMinLevel() const;
@@ -52,7 +53,8 @@ namespace StoneRing
         // (especially removing entries from the queue)
         void Deselect();
 
-        // For invoking from the  menu
+        // DEPRECATED: For invoking from the  menu
+        // We just use Select now, rather than queueing up commands
         void Invoke();
 
         eType GetType() const { return m_eType; }
@@ -69,6 +71,7 @@ namespace StoneRing
         NamedScript *m_pOnDeselect;
         uint m_nBp;
         uint m_nSp;
+        CL_Surface* m_pIcon;
         uint m_nMinLevel;
         eType m_eType;
         bool m_bAllowsGroupTarget;

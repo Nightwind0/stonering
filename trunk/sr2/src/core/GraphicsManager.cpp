@@ -136,6 +136,27 @@ CL_Surface * GraphicsManager::GetOverlay(GraphicsManager::Overlay overlay)
     }
 }
 
+
+CL_Surface * GraphicsManager::GetIcon(const std::string& icon)
+{
+    std::map<std::string,CL_Surface*>::iterator foundIt = m_icon_map.find(icon);
+
+    if(foundIt != m_icon_map.end())
+    {
+        return foundIt->second;
+    }
+    else
+    {
+        CL_ResourceManager *pResources  = IApplication::GetInstance()->GetResources();
+        CL_Surface * pSurface = NULL;
+        pSurface  = new CL_Surface( std::string("Icons/") + icon, pResources );
+
+        m_icon_map [ icon ] = pSurface;
+
+        return pSurface;
+    }
+}
+
 CL_Font * GraphicsManager::GetFont(const std::string &name)
 {
     std::map<std::string,CL_Font*>::iterator foundIt = m_font_map.find( name );

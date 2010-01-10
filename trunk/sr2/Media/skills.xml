@@ -1,6 +1,6 @@
 <!--DOCTYPE skillList SYSTEM "Levels/level.dtd" -->
 <skillList>
-    <skill bp="0" name="Attack" sp="0">
+    <skill bp="0" name="Attack" sp="0" icon="attack">
         <onSelect>
             <script id="AttackSkillScript">
 	    <![CDATA[
@@ -44,7 +44,7 @@
             </script>
         </onSelect>
     </skill>
-    <skill bp="0" name="Item" sp="0">
+    <skill bp="0" name="Item" sp="0" icon="item">
         <onSelect>
             <script id="ItemSkillInvoke">
                 //var $item = itemMenu();

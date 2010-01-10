@@ -81,7 +81,6 @@ void BattleState::next_turn()
         cl_assert(pMonster != NULL); // has to be a monster...
         // Figure out what the monster will do here.
         m_combat_state = DISPLAY_ACTION;
-        // Display what the monster does
         FinishTurn();
     }
 
@@ -452,11 +451,28 @@ void BattleState::draw_menus(const CL_Rect &screenrect, CL_GraphicContext *pGC)
                 font = offFont;
             }
 
-            if (m_menu_stack.top()->GetSelectedOption() == iter)
+            bool selected = false;
+
+            if (m_menu_stack.top()->GetSelectedOption() == iter){
                 font = selectedFont;
+                selected = true;
+            }
+
+            CL_Surface* pIcon = pOption->GetIcon();
+
+            if(!selected){
+                pIcon->set_alpha(0.5f);
+            }else{
+                pIcon->set_alpha(1.0f);
+            }
+
+            const uint option_height = std::max(font->get_height(), pIcon->get_height());
+
 
             // TODO: get font box from resources
-            font->draw(screenrect.left + 20 , 20 + screenrect.top + font->get_height() * pos,pOption->GetName(),pGC);
+            pIcon->draw(screenrect.left + 14, 20 + screenrect.top + option_height* pos, pGC);
+
+            font->draw(screenrect.left + 24 + pIcon->get_width() , 20 + screenrect.top + option_height * pos,pOption->GetName(),pGC);
 
             ++pos;
         }

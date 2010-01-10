@@ -1,5 +1,6 @@
 #include "BattleMenuOption.h"
 #include "BattleMenu.h"
+#include "GraphicsManager.h"
 
 using StoneRing::BattleMenuOption;
 
@@ -97,5 +98,6 @@ void BattleMenuOption::load_finished()
 void BattleMenuOption::load_attributes(CL_DomNamedNodeMap *pAttributes)
 {
     m_name = get_required_string("name",pAttributes);
+    m_pIcon = GraphicsManager::GetInstance()->GetIcon( get_implied_string("icon",pAttributes,"no_icon") );
 }
 

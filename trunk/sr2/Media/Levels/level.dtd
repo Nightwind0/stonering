@@ -43,7 +43,7 @@
 <!ELEMENT armorClassRef EMPTY>
 <!-- The script  here is executed when the weapon is used. -->
 <!ELEMENT weaponClass (conditionScript?,attributeModifier*, weaponEnhancer*,statusEffectModifier*, script?, onEquip?, onUnequip?, weaponTypeExclusionList?)>
-<!-- The script here is executed when the armor is used (wearer is attacked) --> 
+<!-- The script here is executed when the armor is used (wearer is attacked) -->
 <!ELEMENT armorClass  (conditionScript?,attributeModifier*, armorEnhancer*, statusEffectModifier*, script?, onEquip?, onUnequip?, armorTypeExclusionList?)>
 <!ELEMENT armorType (iconRef)>
 <!ELEMENT weaponType ((weaponDamageCategory|magicDamageCategory),iconRef)>
@@ -58,7 +58,7 @@
 <!-- Spell DTD -->
 <!ELEMENT spellRef EMPTY>
 <!ELEMENT spellList (spell+)>
-<!ELEMENT spell (magicResistance?,script?> 
+<!ELEMENT spell (magicResistance?,script?>
 <!ELEMENT weaponDamageCategory EMPTY>
 <!ELEMENT magicDamageCategory EMPTY>
 <!ELEMENT magicResistance EMPTY>
@@ -80,7 +80,7 @@
 <!ELEMENT statusEffect (onInvoke?,onRound?,onCountdown?,onRemove?, attributeModifier*)>
 <!-- These guys are all Effect type. -->
 <!-- Notice that you can have a status effect that causes other status effects! -->
-<!ELEMENT onInvoke (script)> 
+<!ELEMENT onInvoke (script)>
 <!ELEMENT onRound (script)>
 <!ELEMENT onCountdown (script)>
 <!ELEMENT onRemove (script)>
@@ -143,7 +143,7 @@
 <!ATTLIST movement movementType (none|wander|paceNS|paceEW|script) #REQUIRED>
 <!ATTLIST movement speed (slow|medium|fast) #IMPLIED>
 <!ATTLIST event name CDATA #REQUIRED>
-<!ATTLIST event repeatable (true|false) #IMPLIED> 
+<!ATTLIST event repeatable (true|false) #IMPLIED>
 <!ATTLIST event remember (true|false) #IMPLIED>
 <!ATTLIST event triggerType (talk|step|act) #REQUIRED>
 <!ATTLIST namedItemRef itemType (item|weapon|armor|rune|special|system)  #REQUIRED>
@@ -168,7 +168,7 @@
 <!ATTLIST weaponClass valueAdd  CDATA #IMPLIED>
 <!ATTLIST weaponType name CDATA #REQUIRED>
 <!ATTLIST weaponType basePrice CDATA #REQUIRED>
-<!ATTLIST weaponType baseAttack CDATA #REQUIRED> 
+<!ATTLIST weaponType baseAttack CDATA #REQUIRED>
 <!ATTLIST weaponType hitAdd CDATA #REQUIRED> <!-- In percent 0-1 float-->
 <!ATTLIST weaponType baseCritical CDATA #IMPLIED> <!-- In percent. Default = "0.05" -->
 <!ATTLIST weaponType ranged (true|false) #IMPLIED>
@@ -178,7 +178,7 @@
 <!ATTLIST armorClass valueAdd  CDATA #IMPLIED>
 <!ATTLIST armorType name CDATA #REQUIRED>
 <!ATTLIST armorType basePrice CDATA #REQUIRED>
-<!ATTLIST armorType baseArmorClass CDATA #REQUIRED> 
+<!ATTLIST armorType baseArmorClass CDATA #REQUIRED>
 <!ATTLIST armorType baseResist CDATA #REQUIRED>
 <!ATTLIST armorType slot (head|body|shield|feet|hands) #REQUIRED>
 
@@ -246,6 +246,7 @@
 <!-- Note: movement speed will be determined by the amount of pixels that need to be covered and thy e duration of the par -->
 <!-- So that if the par duration is three seconds, the sprite will move to its destination in three seconds -->
 <!ATTLIST spell name CDATA #REQUIRED>
+<!ATTLIST spell icon CDATA #REQUIRED>
 <!ATTLIST spell type (elemental|white|status|other) #REQUIRED>
 <!ATTLIST spell use (battle|world|both) #REQUIRED>
 <!ATTLIST spell targetable (all|single|either|self-only) #REQUIRED>
@@ -264,14 +265,15 @@
 <!ATTLIST statusEffect name CDATA #REQUIRED>
 <!ATTLIST statusEffect last (battle|round_count|permanent) #REQUIRED>
 <!ATTLIST statusEffect lengthMultiplier CDATA #IMPLIED>
-<!ATTLIST statusEffect roundCount CDATA #IMPLIED> 
+<!ATTLIST statusEffect roundCount CDATA #IMPLIED>
 
 <!ATTLIST characterClass name CDATA #REQUIRED>
 <!ATTLIST characterClass gender (male|female|either) #IMPLIED> <!-- Defaults to either -->
 <!ATTLIST statScript stat CDATA #REQUIRED>
 <!ATTLIST skill name CDATA #REQUIRED>
+<!ATTLIST skill icon CDATA #IMPLIED>
 <!ATTLIST skill sp CDATA #REQUIRED> <!-- Skill points to earn skill -->
-<!ATTLIST skill bp CDATA #REQUIRED> <!-- Percentage of 'Break' to use skill --> 
+<!ATTLIST skill bp CDATA #REQUIRED> <!-- Percentage of 'Break' to use skill -->
 <!ATTLIST skill minLevel CDATA #IMPLIED> <!-- Default is 1 -->
 <!ATTLIST skill type (battle|switch) #IMPLIED> <!-- Defaults to battle -->
 <!ATTLIST prereqSkillRef skillName CDATA #REQUIRED>
