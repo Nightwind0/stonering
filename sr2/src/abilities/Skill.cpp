@@ -33,6 +33,14 @@ void StoneRing::Skill::load_attributes(CL_DomNamedNodeMap * pAttributes)
     m_pIcon = GraphicsManager::GetInstance()->GetIcon(get_implied_string("icon",pAttributes,"no_icon"));
 }
 
+void StoneRing::Skill::Invoke(const ParameterList& params)
+{
+    if(m_pOnInvoke)
+    {
+        m_pOnInvoke->ExecuteScript(params);
+    }
+}
+
 void StoneRing::Skill::Select(const ParameterList& params)
 {
     if(m_pOnSelect)
@@ -76,8 +84,7 @@ bool StoneRing::Skill::handle_element(eElement element, Element * pElement)
         m_pOnDeselect = dynamic_cast<NamedScript*>(pElement);
         break;
     case EONINVOKE:
-        std::cerr << "Invoke element on skill is deprecated and will be ignored" << std::endl;
-        //m_pOnInvoke = dynamic_cast<NamedScript*>(pElement);
+        m_pOnInvoke = dynamic_cast<NamedScript*>(pElement);
         break;
     case EONREMOVE:
         m_pOnRemove = dynamic_cast<NamedScript*>(pElement);

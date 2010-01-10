@@ -286,6 +286,7 @@ SteelType Application::addCharacter(const std::string &character, int level, boo
 {
     Character * pCharacter = mCharacterManager.GetCharacter(character);
     pCharacter->SetLevel(level);
+    // TODO: This is kind of a hack... probably ought to do this via steel API
     pCharacter->PermanentAugment(ICharacter::CA_HP, pCharacter->GetAttribute(ICharacter::CA_MAXHP));
     pCharacter->PermanentAugment(ICharacter::CA_MP, pCharacter->GetAttribute(ICharacter::CA_MAXMP));
     mpParty->AddCharacter(pCharacter);
@@ -325,7 +326,7 @@ SteelType Application::doDamage(SteelType::Handle hICharacter, int damage)
         damage = maxhp - hp;
     }
 
-    pCharacter->PermanentAugment(Character::CA_HP,damage);
+    pCharacter->PermanentAugment(Character::CA_HP,-damage);
 
     SteelType newhp;
     newhp.set(damage);

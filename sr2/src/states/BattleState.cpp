@@ -52,6 +52,7 @@ void BattleState::init(const MonsterGroup &group, const std::string &backdrop)
                                                "idle")); // fuck, dude
 
                     m_monsters->AddMonster(pMonster);
+                    pMonster->Invoke();
                 }
 
                 if (--count == 0) break;
@@ -624,6 +625,7 @@ bool BattleState::MonstersOnLeft()
 void BattleState::FinishTurn()
 {
     // TODO: Good time to check if either side is wiped out, etc
+    // And, any dead monsters need to have ->Remove called on them
     pick_next_character();
     next_turn();
 }

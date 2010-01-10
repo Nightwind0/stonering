@@ -1,5 +1,15 @@
 Danny TODOs
 
+
+
+- battle bifs need to be filled in
+- "chooseItem" dialog & bif,  and "useItem" bif
+- character attributes need to be nicer, some kind of table, because
+  even though we can derive maxima for the transients, we can't do so with
+  minima. 
+
+
+
 1) Levels need a load script and an unload script. The game itself also needs to be able to load a script at the beginning that can load functions in
 
 2) Skills need to be based off either Break, MP, or always on, or have a setting in the menu to turn them on or off.

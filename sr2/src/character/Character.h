@@ -35,16 +35,19 @@ namespace StoneRing{
             _START_OF_TRANSIENTS,
             CA_HP,
             CA_MP,
+            _END_OF_TRANSIENTS,
             _START_OF_INTS,
             CA_STR,              // Part of determining dmg of physical attack.
             CA_DEF,              // Physical defense
             CA_MAG,              // Magic power
             CA_RST,              // Magic resistance
+            _END_OF_INTS,
             _START_OF_REALS,
             CA_LCK,              // Similar to initiative. Also helps in other aspects of the game...
             CA_JOY,              // Increases experience gained (Multiplier)
             CA_DEX,              // Chances of a hit connecting (0-1)
             CA_EVD,              // Chances of evading an attack(0-1)
+            _END_OF_REALS,
             _START_OF_TOGGLES,
             CA_DRAW_ILL,
             CA_DRAW_STONE,
@@ -60,6 +63,7 @@ namespace StoneRing{
             CA_CAN_ITEM,
             CA_CAN_RUN,
             CA_ALIVE,
+            _END_OF_TOGGLES,
             _MAXIMA_BASE,
             CA_MAXHP = _MAXIMA_BASE + CA_HP,
             CA_MAXMP = _MAXIMA_BASE + CA_MP,
@@ -110,7 +114,7 @@ namespace StoneRing{
         static bool IsReal(eCharacterAttribute attr);
         static bool IsToggle(eCharacterAttribute attr);
         static bool IsTransient(eCharacterAttribute attr);
-        static uint GetMaximumAttribute(eCharacterAttribute attr);
+        static eCharacterAttribute GetMaximumAttribute(eCharacterAttribute attr);
 
         ///@todo API for different battle animations TBD
     private:
@@ -181,9 +185,11 @@ namespace StoneRing{
         virtual bool handle_element(eElement, Element * );
         virtual void load_attributes(CL_DomNamedNodeMap *);
         virtual void load_finished();
+        void set_toggle_defaults();
 
         std::string m_name;
         std::map<eCharacterAttribute,double> m_augments;
+        std::map<eCharacterAttribute,bool> m_toggles;
         std::map<Equipment::eSlot,Equipment*> m_equipment;
         SpriteDefinitionMap m_sprite_definition_map;
         CharacterClass * m_pClass;

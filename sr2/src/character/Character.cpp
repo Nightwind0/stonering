@@ -113,6 +113,7 @@ std::string StoneRing::ICharacter::CAToString(uint v)
     return "INVALID";
 }
 
+
 bool StoneRing::ICharacter::IsInteger(eCharacterAttribute attr)
 {
     return (attr > ICharacter::_START_OF_INTS && attr < ICharacter::_START_OF_REALS) ||
@@ -134,23 +135,51 @@ bool StoneRing::ICharacter::IsToggle(eCharacterAttribute attr)
     return (attr > ICharacter::_START_OF_TOGGLES && attr < ICharacter::_LAST_CHARACTER_ATTR_);
 }
 
-uint StoneRing::ICharacter::GetMaximumAttribute(eCharacterAttribute attr)
+ICharacter::eCharacterAttribute StoneRing::ICharacter::GetMaximumAttribute(eCharacterAttribute attr)
 {
     if(ICharacter::_MAXIMA_BASE + attr < ICharacter::_LAST_CHARACTER_ATTR_)
     {
         // There IS a maximum for this guy
-        return ICharacter::_MAXIMA_BASE + attr;
+        return static_cast<eCharacterAttribute>(_MAXIMA_BASE + attr);
     }
 
     return ICharacter::_LAST_CHARACTER_ATTR_;
 }
 
 
-
-
-
 StoneRing::Character::Character():m_pClass(NULL),m_pMapSprite(NULL)
 {
+    set_toggle_defaults();
+}
+
+void StoneRing::Character::set_toggle_defaults()
+{
+    for(uint toggle=_START_OF_TOGGLES;toggle<_END_OF_TOGGLES;toggle++)
+    {
+        switch(toggle)
+        {
+            case CA_DRAW_ILL:
+            case CA_DRAW_STONE:
+            case CA_DRAW_BERSERK:
+            case CA_DRAW_WEAK:
+            case CA_DRAW_PARALYZED:
+            case CA_DRAW_TRANSLUCENT:
+            case CA_DRAW_MINI:
+                m_toggles[static_cast<eCharacterAttribute>(toggle)] = false;
+                break;
+            case CA_CAN_ACT:
+            case CA_CAN_FIGHT:
+            case CA_CAN_CAST:
+            case CA_CAN_SKILL:
+            case CA_CAN_ITEM:
+            case CA_CAN_RUN:
+            case CA_ALIVE:
+                m_toggles[static_cast<eCharacterAttribute>(toggle)] = true;
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 uint StoneRing::Character::GetLevel(void)const
@@ -186,6 +215,14 @@ void StoneRing::Character::PermanentAugment(eCharacterAttribute attr, double aug
     if(aug == m_augments.end())
         m_augments[attr] = augment;
     else  aug->second += augment;
+
+    if(IsTransient(attr))
+    {
+        if(m_augments[attr] > GetAttribute ( GetMaximumAttribute(attr) ) )
+        {
+            m_augments[attr] = GetAttribute ( GetMaximumAttribute(attr) );
+        }
+    }
 }
 
 
@@ -310,13 +347,16 @@ double StoneRing::Character::GetAttribute(eCharacterAttribute attr) const
 
 bool StoneRing::Character::GetToggle(eCharacterAttribute attr) const
 {
-    return false;
+    std::map<eCharacterAttribute,bool>::const_iterator iter = m_toggles.find(attr);
+    if(iter != m_toggles.end())
+        return iter->second;
+    else return false;
 }
 
 
 void StoneRing::Character::SetToggle(eCharacterAttribute attr, bool value)
 {
-
+    m_toggles[attr] = value;
 }
 
 bool StoneRing::Character::HasEquipment(Equipment::eSlot slot)

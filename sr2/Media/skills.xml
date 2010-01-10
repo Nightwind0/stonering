@@ -1,7 +1,21 @@
 <!--DOCTYPE skillList SYSTEM "Levels/level.dtd" -->
 <skillList>
+    <skill bp="0" name="Info" sp="0">
+        <onInvoke>
+            <script id="InfoSkillScript">
+                <![CDATA[
+                var @targets = battle::selectTargets(true,false,true);
+                var $pTarget = @targets[0];
+                println("Target: " + getCharacterName($pTarget));
+                println("HP: " + getCharacterAttribute($pTarget,$_HP) + " / " + getCharacterAttribute($pTarget,$_MAXHP));
+                println("MP: " + getCharacterAttribute($pTarget,$_MP) + " / " + getCharacterAttribute($pTarget,$_MAXMP));
+                battle::finishTurn();
+                ]]>
+            </script>
+        </onInvoke>
+    </skill>
     <skill bp="0" name="Attack" sp="0" icon="attack">
-        <onSelect>
+        <onInvoke>
             <script id="AttackSkillScript">
 	    <![CDATA[
         var $pC = $Character;
@@ -59,26 +73,25 @@
         battle::finishTurn();
 		]]>
             </script>
-        </onSelect>
+        </onInvoke>
     </skill>
     <skill bp="0" name="Item" sp="0" icon="item">
-        <onSelect>
+        <onInvoke>
             <script id="ItemSkillInvoke">
                 //var $item = itemMenu();
                 // selectTarget( single , group, default monsters )
                 var @targets = battle::selectTargets(true,false,false);
                 //var $queue = $_ActionQueue;
                 //enqueueAction($queue, $_ActionScript, $_Actor, $target, false, $item);
+                var $target = @targets[0];
+                //var $item =  chooseItem();
+                //useItem($_Group, $item, $target);
+
                 battle::finishTurn();
-            </script>
-        </onSelect>
-        <onInvoke>
-            <script id ="ItemSkillScript">
-                var $target = @_VAR[0];
-                var $item = @_VAR[1]; // This was enqueued for us earlier
-                useItem($_Group, $item, $target);
+
             </script>
         </onInvoke>
+
     </skill>
 	<skill bp="0" name="Focus" sp="5">
 		<onInvoke>
@@ -103,14 +116,11 @@
                    var $target = selectTarget(true,true,true);
                    enqueueAction($_ActionScript,$Actor,$target,0);
                 }
-            </script>
-		</onSelect>
-        <onInvoke>
-            <script id="WindSlashScript">
-                animation("WindSlash");
+                                animation("WindSlash");
                 doMagicDamage(100,1.0,"wind");
             </script>
-        </onInvoke>
+		</onSelect>
+
 	</skill>
 	<skill bp="0" name="Thrift" sp="60" type="switch">
 		<onInvoke>
