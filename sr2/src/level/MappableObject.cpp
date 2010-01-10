@@ -367,10 +367,6 @@ void StoneRing::MappableObject::RandomNewDirection()
 
     Set_Frame_For_Direction();
 
-#ifndef NDEBUG
-    std::cout << "Random new direction" << std::endl;
-#endif
-
 }
 
 void StoneRing::MappableObject::Set_Frame_For_Direction()

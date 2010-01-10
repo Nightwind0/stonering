@@ -40,7 +40,7 @@ void StoneRing::MapState::HandleKeyDown(const CL_InputEvent &key)
     assert(pPlayer);
     if(CL_Keyboard::get_keycode(CL_KEY_SHIFT) && m_pLevel->AllowsRunning())
         pPlayer->SetRunning(true);
-    
+
     switch(key.id)
     {
     case CL_KEY_ESCAPE:
@@ -61,13 +61,13 @@ void StoneRing::MapState::HandleKeyDown(const CL_InputEvent &key)
     default:
         break;
     }
-    
+
 }
 
 void StoneRing::MapState::HandleKeyUp(const CL_InputEvent &key)
 {
     MappablePlayer *pPlayer = m_pLevel->GetPlayer();
-    assert(pPlayer);                               
+    assert(pPlayer);
     switch(key.id)
     {
     case CL_KEY_SPACE:
@@ -81,8 +81,9 @@ void StoneRing::MapState::HandleKeyUp(const CL_InputEvent &key)
         break;
 #ifndef NDEBUG
     case CL_KEY_P:
+        std::cout << "Player location:" << pPlayer->GetPosition().x << ',' << pPlayer->GetPosition().y << std::endl;
         break;
-        
+
     case CL_KEY_D:
         m_bShowDebug = m_bShowDebug?false:true;
         break;
@@ -93,7 +94,7 @@ void StoneRing::MapState::HandleKeyUp(const CL_InputEvent &key)
         gbDebugStop = true;
         break;
 #endif
-            
+
     }
 
 }
@@ -163,7 +164,7 @@ void StoneRing::MapState::PushLevel(Level * pLevel, uint x, uint y)
     assert(pPlayer);
     CL_ResourceManager * pResources = IApplication::GetInstance()->GetResources();
     Character *pMapCharacter = IApplication::GetInstance()->GetParty()->GetMapCharacter();
- 
+
     m_levels.push( pLevel );
     m_pLevel = m_levels.top();
 
@@ -201,7 +202,7 @@ void StoneRing::MapState::Pop(bool bAll)
     else
     {
 
-        if(m_levels.size()) 
+        if(m_levels.size())
         {
             m_levels.top()->MarkForDeath();
             m_levels.pop();
@@ -223,8 +224,8 @@ void StoneRing::MapState::recalculate_player_position()
 
     int X = pPlayer->GetLevelX();
     int Y = pPlayer->GetLevelY();
-    
-    if( X  > m_LevelX + (m_screen_rect.get_width() / 2) && 
+
+    if( X  > m_LevelX + (m_screen_rect.get_width() / 2) &&
         static_cast<int>(m_pLevel->GetWidth()) * 32 > static_cast<int>(m_screen_rect.get_width()))
     {
         // Try to scroll right
@@ -254,8 +255,8 @@ void StoneRing::MapState::recalculate_player_position()
             m_LevelX = 0;
         }
     }
-    
-    
+
+
     if(Y > m_LevelY + (m_screen_rect.get_height()/2) && m_screen_rect.get_height() < m_pLevel->GetHeight() * 32)
     {
         int amount = Y - (m_LevelY + (m_screen_rect.get_height()/2));
@@ -283,13 +284,13 @@ void StoneRing::MapState::recalculate_player_position()
             m_LevelY = 0;
         }
     }
-        
+
 
 }
 
 void StoneRing::MapState::MoveMappableObjects()
 {
-    m_pLevel->MoveMappableObjects(CL_Rect(m_LevelX, m_LevelY, 
+    m_pLevel->MoveMappableObjects(CL_Rect(m_LevelX, m_LevelY,
                                          m_LevelX + m_screen_rect.get_width(),
                                          m_LevelY + m_screen_rect.get_height()));
 
@@ -301,7 +302,7 @@ void StoneRing::MapState::do_talk(bool prod)
     assert(pPlayer);
     CL_Point talkPoint = pPlayer->GetPointInFront();
 
-    if(talkPoint.x >=0 && talkPoint.x < m_pLevel->GetWidth() && 
+    if(talkPoint.x >=0 && talkPoint.x < m_pLevel->GetWidth() &&
        talkPoint.y >=0 && talkPoint.y < m_pLevel->GetHeight())
         m_pLevel->Talk ( talkPoint, prod );
 }

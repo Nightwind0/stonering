@@ -146,6 +146,7 @@ void TargetingState::MappableObjectMoveHook()
 
 void TargetingState::Start()
 {
+    m_bDone = false;
 }
 
 void TargetingState::SteelInit      (SteelInterpreter *)

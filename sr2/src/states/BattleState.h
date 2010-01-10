@@ -18,6 +18,7 @@ namespace StoneRing{
     class IBattleAction;
     class ICharacter;
 
+
     class BattleState : public State
     {
     public:
@@ -38,6 +39,9 @@ namespace StoneRing{
     private:
 	friend class TargetingState;
 	void StartTargeting();
+	void FinishTurn();
+	// Go back to menu, they decided not to proceed with this option
+	void CancelOption();
 	void FinishTargeting();
 	void SelectNextTarget();
 	void SelectPreviousTarget();
@@ -81,6 +85,20 @@ namespace StoneRing{
 
         };
 
+        class BattleManager
+        {
+        public:
+             BattleManager(BattleState& parent);
+            ~BattleManager();
+            void StartPlayerTurn(Character* pC);
+            void FinishedTargeting(Character* pC);
+        private:
+            BattleState & m_parent;
+
+        };
+
+        friend class BattleManager;
+
         typedef void (BattleState::* DrawMethod)(const CL_Rect &, CL_GraphicContext *);
 
         void draw_transition_in(const CL_Rect &screenRect, CL_GraphicContext *pGC);
@@ -95,12 +113,16 @@ namespace StoneRing{
         void init_or_release_players(bool bRelease=false);
         void roll_initiative();
         void next_turn();
+        void pick_next_character();
         ICharacter* get_next_character(const ICharacterGroup* pGroup, const ICharacter* pCharacter)const;
         ICharacter* get_prev_character(const ICharacterGroup* pGroup, const ICharacter* pCharacter)const;
 
 
         /* Battle BIFs */
         SteelType selectTargets(bool single, bool group, bool defaultMonsters);
+        SteelType finishTurn();
+        // if they back out and want to go back to the battle menu
+        SteelType cancelOption();
 
 
 
