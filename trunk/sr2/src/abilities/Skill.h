@@ -55,7 +55,7 @@ namespace StoneRing
 
         // DEPRECATED: For invoking from the  menu
         // We just use Select now, rather than queueing up commands
-        void Invoke();
+        void Invoke(const ParameterList& params);
 
         eType GetType() const { return m_eType; }
     private:

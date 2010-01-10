@@ -23,6 +23,47 @@ Monster::~Monster()
 {
 }
 
+void Monster::set_transients()
+{
+    for(uint i = _START_OF_TRANSIENTS+1;i<_END_OF_TRANSIENTS;i++){
+        m_augments[ static_cast<eCharacterAttribute>(i) ] =
+            GetAttribute( GetMaximumAttribute(static_cast<eCharacterAttribute>(i)) );
+    }
+
+
+}
+
+void Monster::set_toggle_defaults()
+{
+    for(uint toggle=_START_OF_TOGGLES;toggle<_END_OF_TOGGLES;toggle++)
+    {
+        switch(toggle)
+        {
+            case CA_DRAW_ILL:
+            case CA_DRAW_STONE:
+            case CA_DRAW_BERSERK:
+            case CA_DRAW_WEAK:
+            case CA_DRAW_PARALYZED:
+            case CA_DRAW_TRANSLUCENT:
+            case CA_DRAW_MINI:
+                m_toggles[static_cast<eCharacterAttribute>(toggle)] = false;
+                break;
+            case CA_CAN_ACT:
+            case CA_CAN_FIGHT:
+            case CA_CAN_CAST:
+            case CA_CAN_SKILL:
+            case CA_CAN_ITEM:
+            case CA_CAN_RUN:
+            case CA_ALIVE:
+                m_toggles[static_cast<eCharacterAttribute>(toggle)] = true;
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+
 
 std::list<ItemRef*>::const_iterator Monster::GetDropsBegin() const
 {
@@ -36,6 +77,8 @@ std::list<ItemRef*>::const_iterator Monster::GetDropsEnd() const
 
 void Monster::Invoke()
 {
+    set_toggle_defaults();
+    set_transients();
     m_pMonsterDefinition->Invoke();
 }
 
@@ -61,6 +104,7 @@ void Monster::SetLevel(uint level)
 // For boolean values.
 void Monster::SetToggle(ICharacter::eCharacterAttribute attr, bool state)
 {
+    m_toggles[attr] = state;
 }
 
 void Monster::Kill()
@@ -80,21 +124,30 @@ double Monster::GetWeaponDamageCategoryResistance(WeaponDamageCategory::eType ty
 
 double Monster::GetAttribute(ICharacter::eCharacterAttribute attr) const
 {
-    const Stat * pStat = m_pMonsterDefinition->GetStat(attr);
-    if (pStat != NULL)
-        return pStat->GetStat();
+    if(!IsTransient(attr))
+    {
+        const Stat * pStat = m_pMonsterDefinition->GetStat(attr);
+        if (pStat != NULL)
+            return pStat->GetStat();
+        else
+            return 0.0;
+    }
     else
-        return 0.0;
+    {
+        std::map<eCharacterAttribute,double>::const_iterator iter = m_augments.find(attr);
+        if( iter != m_augments.end())
+            return iter->second;
+        else return 0.0;
+    }
 }
 
 
 bool Monster::GetToggle(ICharacter::eCharacterAttribute attr) const
 {
-    const Stat * pStat =  m_pMonsterDefinition->GetStat(attr);
-    if ( pStat != NULL )
-        return pStat->GetToggle();
-    else
-        return false;
+    std::map<eCharacterAttribute,bool>::const_iterator iter = m_toggles.find(attr);
+    if(iter != m_toggles.end())
+        return iter->second;
+    else return false;
 }
 
 void Monster::PermanentAugment(eCharacterAttribute attr, double augment)
@@ -103,6 +156,15 @@ void Monster::PermanentAugment(eCharacterAttribute attr, double augment)
     if (aug == m_augments.end())
         m_augments[attr] = augment;
     else  aug->second += augment;
+
+    if(IsTransient(attr))
+    {
+        if(m_augments[attr] > GetAttribute ( GetMaximumAttribute(attr) ) )
+        {
+            m_augments[attr] = GetAttribute ( GetMaximumAttribute(attr) );
+        }
+    }
+
 }
 
 

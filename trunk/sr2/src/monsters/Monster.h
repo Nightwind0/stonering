@@ -61,10 +61,13 @@ public:
 private:
 
     typedef std::multimap<std::string,StatusEffect*> StatusEffectMap;
+    void set_toggle_defaults();
+    void set_transients();
 
     std::string m_name;
     uint m_nLevel;
     std::map<eCharacterAttribute,double> m_augments;
+    std::map<eCharacterAttribute,bool> m_toggles;
     StatusEffectMap m_status_effects;
     MonsterElement * m_pMonsterDefinition;
     uint m_nCellX;
