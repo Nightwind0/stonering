@@ -8,7 +8,7 @@
 		var $name = getCharacterName($pC);
         // The animation comes first.
         var @targets = battle::selectTargets(true,false,true);
-        //animation($pC,"Attack");
+        battle::doCharacterAnimation($pC,"attack");
 
         var $pWeapon = getEquipment($pC, $_HAND);
 		var $pTarget = @targets[0];
@@ -23,12 +23,29 @@
 
 		var $roll = math::randf();
 
-		println("Hit was " + $hit + " and dodge was " + $dodge);
+		println("Hit was " + $hit + " and dodge was " + $dodge + " and chance was " + $chance);
 		println("Roll was " + $roll);
 
 		var $bHit = false;
 		if($roll < $chance)
 			$bHit = true;
+
+        if($bHit){
+            println("You hit!");
+            doSound(getHitSound(getWeaponType($pWeapon)));
+            battle::doCharacterAnimation($pTarget,"recoil");
+            var $damageMean = getCharacterAttribute($pC, $_STR) + getEquippedWeaponAttribute($pC,$_ATTACK);
+            // Random about the damageMean, standard deviation is 15% of the mean, so 68% of attacks fall within 10% deviation of the mean
+            var $baseDamage = normal_random($damageMean,$damageMean * 0.15);
+            var $actualDamage = $baseDamage *  getWeaponDamageCategoryResistance($pTarget,getWeaponTypeDamageCategory(getWeaponType($pWeapon)));
+            battle::createDisplay($actualDamage,$pTarget,$_DISP_DAMAGE);
+            doDamage($pTarget,integer($actualDamage));
+            println("Mean damage was " + $damageMean + " and base damage was " + $baseDamage + " and actual damage was " + $actualDamage);
+        }else{
+            println("You missed.");
+            doSound(getMissSound(getWeaponType($pWeapon)));
+        }
+
 
 
                 // If hit

@@ -174,6 +174,12 @@ void StoneRing::Character::Kill()
 }
 
 
+double StoneRing::Character::GetWeaponDamageCategoryResistance(WeaponDamageCategory::eType type) const
+{
+    return 1.0;
+}
+
+
 void StoneRing::Character::PermanentAugment(eCharacterAttribute attr, double augment)
 {
     std::map<eCharacterAttribute,double>::iterator aug = m_augments.find(attr);
