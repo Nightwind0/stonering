@@ -27,6 +27,7 @@ namespace StoneRing
         virtual eElement WhichElement() const { return EBATTLEMENUOPTION; }
 
         std::string GetName() const;
+        CL_Surface* GetIcon() const { return m_pIcon; }
         bool Enabled(const ParameterList &params) const;
         void Select(BattleMenuStack& stack, const ParameterList& params);
         void Deselect(BattleMenuStack& stack); // For backing out of a selection
@@ -50,6 +51,7 @@ namespace StoneRing
             SkillRef *m_pSkillRef;
             BattleMenu * m_pSubMenu;
         };
+        CL_Surface* m_pIcon;
         Action m_action;
         ActionType m_action_type;
     };

@@ -9,6 +9,7 @@
 #include "SpellRef.h"
 #include "ActionQueue.h"
 #include "NamedScript.h"
+#include "GraphicsManager.h"
 
 using namespace StoneRing;
 
@@ -29,6 +30,7 @@ void StoneRing::Skill::load_attributes(CL_DomNamedNodeMap * pAttributes)
     m_eType = TypeFromString(get_implied_string("type",pAttributes,"battle"));
     m_bAllowsGroupTarget = get_implied_bool("allowsGroupTarget",pAttributes,false);
     m_bDefaultToEnemyGroup = get_implied_bool("defaultToEnemyGroup", pAttributes,true);
+    m_pIcon = GraphicsManager::GetInstance()->GetIcon(get_implied_string("icon",pAttributes,"no_icon"));
 }
 
 void StoneRing::Skill::Select(const ParameterList& params)
@@ -74,7 +76,8 @@ bool StoneRing::Skill::handle_element(eElement element, Element * pElement)
         m_pOnDeselect = dynamic_cast<NamedScript*>(pElement);
         break;
     case EONINVOKE:
-        m_pOnInvoke = dynamic_cast<NamedScript*>(pElement);
+        std::cerr << "Invoke element on skill is deprecated and will be ignored" << std::endl;
+        //m_pOnInvoke = dynamic_cast<NamedScript*>(pElement);
         break;
     case EONREMOVE:
         m_pOnRemove = dynamic_cast<NamedScript*>(pElement);

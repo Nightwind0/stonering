@@ -2,15 +2,15 @@
 <characterClasses>
 	<characterClass name = "Warrior" gender="either">
         <battleMenu type="popup">
-            <battleMenuOption name="Attack" icon="BattleMenuIcons/attack">
+            <battleMenuOption name="Attack" icon="attack">
                 <conditionScript id="WarriorAttackOptionCondition">
                     return hasEquipment($Character, $_HAND)
-                    or 
+                    or
                     hasEquipment($Character, $_OFFHAND);
                 </conditionScript>
                 <skillRef skillName="Attack"/>
             </battleMenuOption>
-            <battleMenuOption name="Item" icon="BattleMenuIcons/attack">
+            <battleMenuOption name="Item" icon="item">
                  <skillRef skillName="Item"/>
             </battleMenuOption>
         </battleMenu>
@@ -70,14 +70,14 @@
         </statScript>
     </characterClass>
 	<characterClass name = "Ranger" gender="either">
-		
+
 		<weaponTypeRef name="Bow"/>
 		<weaponTypeRef name="Precise Bow"/>
 		<weaponTypeRef name="Great Bow"/>
 		<weaponTypeRef name="Long Bow"/>
 		<weaponTypeRef name="Master Bow"/>
 		<weaponTypeRef name="Dagger"/>
-		
+
 		<armorTypeRef name="Vest"/>
 		<armorTypeRef name="Buckler"/>
 		<armorTypeRef name="Boots"/>
@@ -122,8 +122,8 @@
 		<statIncrease base="1.06" multiplier="6" stat="evd"/>
 		<statIncrease base="1.06" multiplier="1" stat="mag"/>
 		<statIncrease base="1.06" multiplier="4" stat="rst"/-->
-	
-		
+
+
 	</characterClass>
 </characterClasses>
 
