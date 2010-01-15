@@ -13,16 +13,16 @@ namespace StoneRing{
         UniqueWeapon();
         ~UniqueWeapon();
 
-        virtual eElement WhichElement() const{ return EUNIQUEWEAPON; }  
+        virtual eElement WhichElement() const{ return EUNIQUEWEAPON; }
         virtual uint GetValue() const ;
         virtual uint GetSellValue() const ;
 
-        virtual void ExecuteScript();
+        virtual void Invoke();
         virtual bool EquipCondition();
         WeaponType *GetWeaponType() const ;
         bool IsRanged() const ;
         bool IsTwoHanded() const;
-        
+
         virtual eItemType GetItemType() const { return WEAPON ; }
     private:
         virtual void OnEquipScript();

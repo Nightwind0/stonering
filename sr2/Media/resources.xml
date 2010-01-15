@@ -280,6 +280,12 @@
 				</grid>
 			</image>
 		</sprite>
+        <sprite name = "Cat" hint="alpha">
+			<image file = "Sprites/cat.png">
+				<grid pos="0,0" size="32,32" array="2,4">
+				</grid>
+			</image>
+		</sprite>
 	</section>
     <section name="Monsters">
         <section name="Endospore">

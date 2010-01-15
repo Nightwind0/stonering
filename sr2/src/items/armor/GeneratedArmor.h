@@ -25,14 +25,14 @@ namespace StoneRing{
         ArmorType * GetArmorType() const ;
         ArmorClass * GetArmorClass() const { return m_pClass; }
 
-        virtual void ExecuteScript();
+        virtual void Invoke();
         virtual bool EquipCondition();
 
         virtual bool operator== ( const ItemRef &ref );
 
-        void generate( ArmorType * pType, ArmorClass * pClass, 
+        void generate( ArmorType * pType, ArmorClass * pClass,
                        SpellRef *pSpell = NULL, RuneType *pRune = NULL);
-        
+
     private:
         virtual void OnEquipScript();
         virtual void OnUnequipScript();

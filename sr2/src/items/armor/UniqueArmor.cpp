@@ -23,7 +23,7 @@ UniqueArmor::~UniqueArmor()
     delete m_pConditionScript;
 }
 
-void UniqueArmor::ExecuteScript()
+void UniqueArmor::Invoke()
 {
     if(m_pScript) m_pScript->ExecuteScript();
 }
@@ -49,7 +49,7 @@ uint UniqueArmor::GetValue() const
     return m_nValue;
 }
 
-uint UniqueArmor::GetSellValue() const 
+uint UniqueArmor::GetSellValue() const
 {
     return m_nValue / 2;
 }

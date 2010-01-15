@@ -91,7 +91,7 @@
 <!ELEMENT characterClass (battleMenu,weaponTypeRef*, armorTypeRef*,statScript*,skillRef*)>
 <!ELEMENT characterClasses (characterClass+)>
 <!ELEMENT statScript (script)>
-<!ELEMENT skill (conditionScript?, prereqSkillRef*, onSelect?, onDeselect?, onInvoke?, onRemove?)>
+<!ELEMENT skill (conditionScript?, prereqSkillRef*, onInvoke?, onRemove?)>
 <!ELEMENT skillList (skill)+>
 <!ELEMENT prereqSkillRef EMPTY>
 <!ELEMENT skillRef EMPTY>
@@ -163,9 +163,12 @@
 <!ATTLIST regularItem defaultTarget (party|monsters) #IMPLIED>
 <!ATTLIST uniqueArmor valueMultiplier CDATA #REQUIRED>
 <!ATTLIST uniqueWeapon valueMultiplier CDATA #REQUIRED>
+<!ATTLIST uniqueWeapon scriptMode (attackBefore|attackAfter|forgoAttack|world) #IMPLIED>
 <!ATTLIST weaponClass name CDATA #REQUIRED>
 <!ATTLIST weaponClass valueMultiplier CDATA #REQUIRED>
 <!ATTLIST weaponClass valueAdd  CDATA #IMPLIED>
+<!-- -->
+<!ATTLIST weaponClass scriptMode (attackBefore|attackAfter|forgoAttack|world) #IMPLIED>
 <!ATTLIST weaponType name CDATA #REQUIRED>
 <!ATTLIST weaponType basePrice CDATA #REQUIRED>
 <!ATTLIST weaponType baseAttack CDATA #REQUIRED>

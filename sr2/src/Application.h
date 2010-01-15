@@ -115,7 +115,6 @@ namespace StoneRing
         SteelType getWeaponTypeDamageCategory(SteelType::Handle hWeaponType);
         SteelType getWeaponDamageCategoryResistance(SteelType::Handle hICharacter, int damage_category);
 
-        SteelType doSound(const std::string&);
         SteelType getHitSound(SteelType::Handle hWeaponType);
         SteelType getMissSound(SteelType::Handle hWeaponType);
 

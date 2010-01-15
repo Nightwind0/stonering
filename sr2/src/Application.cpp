@@ -537,12 +537,6 @@ SteelType Application::getWeaponDamageCategoryResistance(SteelType::Handle hICha
     return val;
 }
 
-SteelType Application::doSound(const std::string &sound)
-{
-
-    return SteelType();
-}
-
 SteelType Application::getHitSound(SteelType::Handle hWeaponType)
 {
 
@@ -714,7 +708,6 @@ void Application::registerSteelFunctions()
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getArmorType(this,&Application::getArmorType);
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getWeaponTypeDamageCategory(this,&Application::getWeaponTypeDamageCategory);
     static SteelFunctor2Arg<Application,const SteelType::Handle,int> fn_getWeaponDamageCategoryResistance(this,&Application::getWeaponDamageCategoryResistance);
-    static SteelFunctor1Arg<Application,const std::string&> fn_doSound(this,&Application::doSound);
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getHitSound(this,&Application::getHitSound);
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getMissSound(this,&Application::getMissSound);
 
@@ -809,7 +802,6 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction("getArmorType",&fn_getArmorType);
     mInterpreter.addFunction("getWeaponTypeDamageCategory",&fn_getWeaponTypeDamageCategory);
     mInterpreter.addFunction("getWeaponDamageCategoryResistance",&fn_getWeaponDamageCategoryResistance);
-    mInterpreter.addFunction("doSound",&fn_doSound);
     mInterpreter.addFunction("getHitSound",&fn_getHitSound);
     mInterpreter.addFunction("getMissSound",&fn_getMissSound);
 

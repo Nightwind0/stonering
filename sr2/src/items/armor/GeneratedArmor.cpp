@@ -33,7 +33,7 @@ uint GeneratedArmor::GetMaxInventory() const
     return 99;
 }
 
-void GeneratedArmor::ExecuteScript()
+void GeneratedArmor::Invoke()
 {
     m_pClass->ExecuteScript();
 }

@@ -29,8 +29,16 @@ namespace StoneRing{
             CRITICAL
         };
 
+        enum eScriptMode{
+            ATTACK_BEFORE,
+            ATTACK_AFTER,
+            FORGO_ATTACK,
+            WORLD_ONLY
+        };
 
-        static eAttribute AttributeForString(const std::string str);
+
+        static eAttribute AttributeForString(const std::string& str);
+        static eScriptMode ScriptModeForString(const std::string& str);
 
         /*
         * These are based on the weapon type, and any enhancers added by the class
@@ -39,6 +47,9 @@ namespace StoneRing{
         * has a 1.5 multiplier and +7 add, this will return 157
         */
         double GetWeaponAttribute ( eAttribute attr );
+
+        eScriptMode GetScriptMode() const { return m_eScriptMode; }
+
 #endif
 
 
@@ -50,11 +61,15 @@ namespace StoneRing{
 
         void Clear_Weapon_Enhancers();
         void Add_Weapon_Enhancer (WeaponEnhancer * pEnhancer);
-
+        void Set_Script_Mode(eScriptMode script_mode);
     private:
+        eScriptMode m_eScriptMode;
         std::list<WeaponEnhancer*> m_weapon_enhancers;
     };
 
+    inline void Weapon::Set_Script_Mode(eScriptMode script_mode){
+        m_eScriptMode = script_mode;
+    }
 
 }
 

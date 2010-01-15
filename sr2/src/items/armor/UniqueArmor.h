@@ -13,16 +13,16 @@ namespace StoneRing{
     public:
         UniqueArmor();
         virtual ~UniqueArmor();
-        virtual eElement WhichElement() const{ return EUNIQUEARMOR; }   
+        virtual eElement WhichElement() const{ return EUNIQUEARMOR; }
         virtual uint GetValue() const ;
         virtual uint GetSellValue() const ;
 
         ArmorType * GetArmorType() const ;
-        
-        virtual void ExecuteScript();
+
+        virtual void Invoke();
         virtual bool EquipCondition();
         virtual eItemType GetItemType() const { return ARMOR ; }
-        
+
     private:
         virtual void OnEquipScript();
         virtual void OnUnequipScript();

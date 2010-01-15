@@ -51,7 +51,7 @@
 
         if($bHit){
             println("You hit!");
-            doSound(getHitSound(getWeaponType($pWeapon)));
+            playSound(getHitSound(getWeaponType($pWeapon)));
             battle::doCharacterAnimation($pTarget,"recoil");
             var $damageMean = getCharacterAttribute($pC, $_STR) + getEquippedWeaponAttribute($pC,$_ATTACK);
             // Random about the damageMean, standard deviation is 15% of the mean, so 68% of attacks fall within 10% deviation of the mean
@@ -62,7 +62,7 @@
             println("Mean damage was " + $damageMean + " and base damage was " + $baseDamage + " and actual damage was " + $actualDamage);
         }else{
             println("You missed.");
-            doSound(getMissSound(getWeaponType($pWeapon)));
+            playSound(getMissSound(getWeaponType($pWeapon)));
         }
 
 

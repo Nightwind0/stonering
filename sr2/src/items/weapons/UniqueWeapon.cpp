@@ -15,14 +15,14 @@ UniqueWeapon::UniqueWeapon():m_pWeaponType(NULL),m_pScript(NULL)
 }
 
 UniqueWeapon::~UniqueWeapon()
-{ 
+{
     delete m_pScript;
     delete m_pEquipScript;
     delete m_pUnequipScript;
     delete m_pConditionScript;
 }
 
-void UniqueWeapon::ExecuteScript()
+void UniqueWeapon::Invoke()
 {
     if(m_pScript) m_pScript->ExecuteScript();
 }
@@ -44,22 +44,22 @@ void UniqueWeapon::OnUnequipScript()
     m_pUnequipScript->ExecuteScript();
 }
 
-uint UniqueWeapon::GetValue() const 
+uint UniqueWeapon::GetValue() const
 {
     return m_nValue;
 }
 
-uint UniqueWeapon::GetSellValue() const 
+uint UniqueWeapon::GetSellValue() const
 {
     return m_nValue / 2;
 }
 
-WeaponType * UniqueWeapon::GetWeaponType() const 
+WeaponType * UniqueWeapon::GetWeaponType() const
 {
     return m_pWeaponType;
 }
 
-bool UniqueWeapon::IsRanged() const 
+bool UniqueWeapon::IsRanged() const
 {
     return m_pWeaponType->IsRanged();
 }
@@ -72,6 +72,7 @@ bool UniqueWeapon::IsTwoHanded() const
 void UniqueWeapon::load_attributes(CL_DomNamedNodeMap * pAttributes)
 {
     m_value_multiplier = get_implied_float("valueMultiplier",pAttributes,1);
+    Set_Script_Mode( ScriptModeForString( get_implied_string("scriptMode",pAttributes,"attackBefore") ) );
 
 }
 
