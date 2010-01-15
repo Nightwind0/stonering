@@ -14,14 +14,15 @@ namespace StoneRing{
         WeaponClass();
         WeaponClass(CL_DomElement * pElement);
         ~WeaponClass();
-        virtual eElement WhichElement() const{ return EWEAPONCLASS; }   
+        virtual eElement WhichElement() const{ return EWEAPONCLASS; }
         std::string GetName() const;
         int GetValueAdd() const;
         float GetValueMultiplier() const;
+        Weapon::eScriptMode GetScriptMode() const { return m_eScriptMode; }
 
         std::list<AttributeModifier*>::const_iterator GetAttributeModifiersBegin();
         std::list<AttributeModifier*>::const_iterator GetAttributeModifiersEnd();
-        
+
         std::list<WeaponEnhancer*>::const_iterator GetWeaponEnhancersBegin();
         std::list<WeaponEnhancer*>::const_iterator GetWeaponEnhancersEnd();
 
@@ -44,6 +45,7 @@ namespace StoneRing{
         ScriptElement *m_pScript;
         std::string m_name;
         int m_nValueAdd;
+        Weapon::eScriptMode m_eScriptMode;
         float m_fValueMultiplier;
         std::list<AttributeModifier*> m_attribute_modifiers;
         std::list<WeaponEnhancer*> m_weapon_enhancers;

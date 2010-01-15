@@ -30,7 +30,7 @@ bool GeneratedWeapon::operator== ( const ItemRef &ref )
             if(*GetSpellRef() == *ref.GetWeaponRef()->GetSpellRef())
             {
                 return true;
-            } 
+            }
             else return false;
         }
         else if ( HasSpell() || ref.GetWeaponRef()->GetSpellRef())
@@ -61,7 +61,7 @@ bool GeneratedWeapon::operator== ( const ItemRef &ref )
 
 
 
-// Item interface 
+// Item interface
 std::string GeneratedWeapon::GetIconRef() const
 {
     return m_pType->GetIconRef();
@@ -72,28 +72,28 @@ std::string GeneratedWeapon::GetName() const
     return m_name;
 }
 
-uint GeneratedWeapon::GetMaxInventory() const 
+uint GeneratedWeapon::GetMaxInventory() const
 {
-    // todo: get the system setting.... 
+    // todo: get the system setting....
     return 99;
 }
 
-NamedItem::eDropRarity 
+NamedItem::eDropRarity
 GeneratedWeapon::GetDropRarity() const
 {
     if( HasSpell() || HasRuneType() )
     {
-        return RARE; 
+        return RARE;
     }
     else return UNCOMMON;
 }
 
-uint GeneratedWeapon::GetValue() const 
+uint GeneratedWeapon::GetValue() const
 {
     const AbilityManager * pManager = IApplication::GetInstance()->GetAbilityManager();
 
-    uint value= (int)((float)m_pType->GetBasePrice() * 
-                      m_pClass->GetValueMultiplier()) 
+    uint value= (int)((float)m_pType->GetBasePrice() *
+                      m_pClass->GetValueMultiplier())
         + m_pClass->GetValueAdd();
 
     if(HasSpell())
@@ -114,7 +114,7 @@ uint GeneratedWeapon::GetValue() const
 
 }
 
-uint GeneratedWeapon::GetSellValue() const 
+uint GeneratedWeapon::GetSellValue() const
 {
     return GetValue() / 2;
 }
@@ -128,7 +128,7 @@ WeaponType * GeneratedWeapon::GetWeaponType() const
     return m_pType;
 }
 
-bool GeneratedWeapon::IsRanged() const 
+bool GeneratedWeapon::IsRanged() const
 {
     return m_pType->IsRanged();
 }
@@ -144,7 +144,7 @@ WeaponRef GeneratedWeapon::GenerateWeaponRef() const
     return WeaponRef( GetWeaponType(), GetWeaponClass(), GetSpellRef(), GetRuneType() );
 }
 
-void GeneratedWeapon::ExecuteScript()
+void GeneratedWeapon::Invoke()
 {
     m_pClass->ExecuteScript();
 }
@@ -164,7 +164,7 @@ void GeneratedWeapon::OnUnequipScript()
     return m_pClass->OnUnequipScript();
 }
 
-void GeneratedWeapon::Generate( WeaponType* pType, WeaponClass * pClass, 
+void GeneratedWeapon::Generate( WeaponType* pType, WeaponClass * pClass,
                                 SpellRef *pSpell , RuneType *pRune)
 {
 
@@ -184,6 +184,7 @@ void GeneratedWeapon::Generate( WeaponType* pType, WeaponClass * pClass,
     m_pClass = pClass;
     Set_Spell_Ref(pSpell);
     Set_Rune_Type(pRune);
+    Set_Script_Mode(m_pClass->GetScriptMode());
 
     m_name = CreateWeaponName(pType,pClass,pSpell,pRune);
 

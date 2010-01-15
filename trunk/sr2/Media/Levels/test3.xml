@@ -3501,7 +3501,7 @@
 		</mo>
 		<mo name="Samantha" size="small" type="npc" xpos="0" ypos="5" solid="true">
 			<spriteRef type="fourway">
-				Animals/Cat2
+				Animals/Cat
 			</spriteRef>
 			<event name="CatMeow" triggerType="talk" remember="true">
 				<script id="catmeow">

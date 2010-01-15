@@ -15,7 +15,7 @@ namespace StoneRing{
 
         WeaponRef GenerateWeaponRef() const;
 
-        // Item interface 
+        // Item interface
         virtual std::string GetIconRef() const;
         virtual std::string GetName() const;
         virtual uint GetMaxInventory() const ;
@@ -24,7 +24,7 @@ namespace StoneRing{
         virtual uint GetSellValue() const ;
         virtual eItemType GetItemType() const { return WEAPON ; }
 
-        virtual void ExecuteScript();
+        virtual void Invoke();
         virtual bool EquipCondition();
 
         // Weapon interface
@@ -34,7 +34,7 @@ namespace StoneRing{
         bool IsTwoHanded() const;
         virtual bool operator== ( const ItemRef &ref );
 
-        void Generate( WeaponType * pType, WeaponClass * pClass, 
+        void Generate( WeaponType * pType, WeaponClass * pClass,
                        SpellRef *pSpell = NULL, RuneType *pRune = NULL);
 
     private:

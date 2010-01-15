@@ -10,6 +10,7 @@ using namespace StoneRing;
 
 Weapon::Weapon()
 {
+    m_eScriptMode = ATTACK_BEFORE;
 }
 
 Weapon::~Weapon()
@@ -134,7 +135,7 @@ void Weapon::Add_Weapon_Enhancer (WeaponEnhancer * pEnhancer)
 
 
 Weapon::eAttribute
-Weapon::AttributeForString(const std::string str)
+Weapon::AttributeForString(const std::string& str)
 {
 
     if (str == "ATK") return ATTACK;
@@ -148,5 +149,13 @@ Weapon::AttributeForString(const std::string str)
 
 }
 
-
+Weapon::eScriptMode
+Weapon::ScriptModeForString(const std::string& str)
+{
+    if(str == "attackBefore") return ATTACK_BEFORE;
+    else if(str == "attackAfter") return ATTACK_AFTER;
+    else if(str == "forgoAttack") return FORGO_ATTACK;
+    else if(str == "world") return WORLD_ONLY;
+    else throw CL_Error("Bad scriptMode : " + str );
+}
 

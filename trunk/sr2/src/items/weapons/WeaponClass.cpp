@@ -7,7 +7,7 @@
 using namespace StoneRing;
 
 WeaponClass::WeaponClass():m_pScript(NULL),m_pEquipScript(NULL),
-m_pUnequipScript(NULL),m_pConditionScript(NULL)
+m_pUnequipScript(NULL),m_pConditionScript(NULL),m_eScriptMode(Weapon::ATTACK_BEFORE)
 {
 }
 
@@ -16,6 +16,8 @@ void WeaponClass::load_attributes(CL_DomNamedNodeMap * pAttributes)
     m_name = get_required_string("name",pAttributes );
     m_fValueMultiplier = get_implied_float("valueMultiplier",pAttributes,1);
     m_nValueAdd = get_implied_int("valueAdd",pAttributes,0);
+    std::string script_mode = get_implied_string("scriptMode",pAttributes,"attackBefore");
+    m_eScriptMode = Weapon::ScriptModeForString(script_mode);
 }
 
 bool WeaponClass::handle_element(eElement element, Element * pElement)
@@ -43,7 +45,7 @@ bool WeaponClass::handle_element(eElement element, Element * pElement)
     case EWEAPONTYPEEXCLUSIONLIST:
     {
         WeaponTypeExclusionList * pList = dynamic_cast<WeaponTypeExclusionList*>(pElement);
-        std::copy(pList->GetWeaponTypeRefsBegin(),pList->GetWeaponTypeRefsEnd(), 
+        std::copy(pList->GetWeaponTypeRefsBegin(),pList->GetWeaponTypeRefsEnd(),
                   std::back_inserter(m_excluded_types));
 
         delete pList;
@@ -78,7 +80,7 @@ void WeaponClass::OnEquipScript()
 
 void WeaponClass::OnUnequipScript()
 {
-    m_pUnequipScript->ExecuteScript(); 
+    m_pUnequipScript->ExecuteScript();
 }
 
 WeaponClass::~WeaponClass()
@@ -113,25 +115,25 @@ float WeaponClass::GetValueMultiplier() const
     return m_fValueMultiplier;
 }
 
-std::list<AttributeModifier*>::const_iterator 
+std::list<AttributeModifier*>::const_iterator
 WeaponClass::GetAttributeModifiersBegin()
 {
     return m_attribute_modifiers.begin();
 }
 
-std::list<AttributeModifier*>::const_iterator 
+std::list<AttributeModifier*>::const_iterator
 WeaponClass::GetAttributeModifiersEnd()
 {
     return m_attribute_modifiers.end();
 }
 
-std::list<WeaponEnhancer*>::const_iterator 
+std::list<WeaponEnhancer*>::const_iterator
 WeaponClass::GetWeaponEnhancersBegin()
 {
     return m_weapon_enhancers.begin();
 }
 
-std::list<WeaponEnhancer*>::const_iterator 
+std::list<WeaponEnhancer*>::const_iterator
 WeaponClass::GetWeaponEnhancersEnd()
 {
     return m_weapon_enhancers.end();
@@ -145,7 +147,7 @@ bool WeaponClass::IsExcluded ( const WeaponTypeRef &weaponType )
     {
         WeaponTypeRef * pRef = *iter;
 
-        if( pRef->GetName() == weaponType.GetName() ) 
+        if( pRef->GetName() == weaponType.GetName() )
             return true;
     }
 
