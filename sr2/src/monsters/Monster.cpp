@@ -114,6 +114,10 @@ void Monster::Kill()
     SetToggle(CA_ALIVE,false);
 }
 
+void Monster::Attacked()
+{
+}
+
 double Monster::GetSpellResistance(StoneRing::Magic::eMagicType type) const
 {
     return 0.0;
