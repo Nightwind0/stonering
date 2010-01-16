@@ -58,6 +58,7 @@ public:
     virtual void RollInitiative(void);
     virtual uint GetInitiative(void)const;
     virtual void Kill();
+    virtual void Attacked();
 
     void MarkDeathAnimated() { m_bDeathAnimated = true; }
     void ClearDeathAnimated() { m_bDeathAnimated = false; }

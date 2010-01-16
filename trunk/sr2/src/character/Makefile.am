@@ -14,7 +14,8 @@ Character.h \
 CharacterManager.h \
 CharacterManager.cpp \
 SpriteDefinition.cpp \
-SpriteDefinition.h
+SpriteDefinition.h \
+ICharacter.h
 
 
 

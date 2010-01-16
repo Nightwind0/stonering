@@ -30,6 +30,13 @@
         battle::doCharacterAnimation($pC,"attack");
 
         var $pWeapon = getEquipment($pC, $_HAND);
+        const $kScriptMode = getWeaponScriptMode($pWeapon);
+        if( $kScriptMode == $_SM_FORGO_ATTACK || getWeaponS)
+            return;
+        if( $kScriptMode == $_SM_ATTACK_AFTER){
+            invokeEquipment($pWeapon);
+        }
+
 		var $pTarget = @targets[0];
 		//var $pTargetArmor = getEquipment($pTarget
 
@@ -75,6 +82,11 @@
                 // else
                 // pushDisplay("Miss");
                 // playSound("whiff");
+
+        if($kScriptMode == $_SM_ATTACK_BEFORE){
+            invokeEquipment($pWeapon);
+        }
+        attackCharacter($pTarget);
         battle::finishTurn();
 		]]>
             </script>

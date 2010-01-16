@@ -204,6 +204,11 @@ void StoneRing::Character::Kill()
     SetToggle(CA_ALIVE,false);
 }
 
+void StoneRing::Character::Attacked()
+{
+    // Go through armors calling Invoke on them
+}
+
 
 double StoneRing::Character::GetWeaponDamageCategoryResistance(WeaponDamageCategory::eType type) const
 {

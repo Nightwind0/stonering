@@ -459,6 +459,16 @@ SteelType Application::getWeaponAttribute(const SteelType::Handle hWeapon, uint 
     return result;
 }
 
+SteelType Application::getWeaponScriptMode(SteelType::Handle hWeapon)
+{
+    SteelType result;
+    Weapon* pWeapon = static_cast<Weapon*>(hWeapon);
+
+    result.set( pWeapon->GetScriptMode() );
+
+    return result;
+}
+
 SteelType Application::getArmorAttribute(const SteelType::Handle hArmor, uint attr)
 {
     SteelType result;
@@ -548,7 +558,21 @@ SteelType Application::getMissSound(SteelType::Handle hWeaponType)
     return SteelType();
 }
 
+SteelType Application::invokeEquipment(SteelType::Handle hEquipment)
+{
+    Equipment* equipment = static_cast<Equipment*>(hEquipment);
+    equipment->Invoke();
 
+    return SteelType();
+}
+
+SteelType Application::attackCharacter(SteelType::Handle hICharacter)
+{
+    ICharacter* iCharacter = static_cast<ICharacter*>(hICharacter);
+    iCharacter->Attacked();
+
+    return SteelType();
+}
 
 IApplication * IApplication::GetInstance()
 {
@@ -707,6 +731,10 @@ void Application::registerSteelFunctions()
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getWeaponType(this,&Application::getWeaponType);
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getArmorType(this,&Application::getArmorType);
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getWeaponTypeDamageCategory(this,&Application::getWeaponTypeDamageCategory);
+    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getWeaponScriptMode(this,&Application::getWeaponScriptMode);
+    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_invokeEquipment(this,&Application::invokeEquipment);
+    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_attackCharacter(this,&Application::attackCharacter);
+
     static SteelFunctor2Arg<Application,const SteelType::Handle,int> fn_getWeaponDamageCategoryResistance(this,&Application::getWeaponDamageCategoryResistance);
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getHitSound(this,&Application::getHitSound);
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getMissSound(this,&Application::getMissSound);
@@ -723,6 +751,11 @@ void Application::registerSteelFunctions()
     steelConst("$_FINGER1",Equipment::EFINGER1);
     steelConst("$_FINGER2",Equipment::EFINGER2);
     steelConst("$_FEET",Equipment::EFEET);
+
+    steelConst("$_SM_ATTACK_BEFORE",Weapon::ATTACK_BEFORE);
+    steelConst("$_SM_ATTACK_AFTER",Weapon::ATTACK_AFTER);
+    steelConst("$_SM_FORGO_ATTACK",Weapon::FORGO_ATTACK);
+    steelConst("$_SM_WORLD_ONLY",Weapon::WORLD_ONLY);
 
 
     steelConst("$_HP",Character::CA_HP);
@@ -782,7 +815,9 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction("addCharacter", &fn_addCharacter );
     mInterpreter.addFunction("getPartyCount", &fn_getPartyCount);
     mInterpreter.addFunction("getCharacter", &fn_getCharacter);
+    mInterpreter.addFunction("attackCharacter", &fn_attackCharacter);
     mInterpreter.addFunction("getWeaponAttribute", &fn_getWeaponAttribute);
+    mInterpreter.addFunction("getWeaponScriptMode",&fn_getWeaponScriptMode);
     mInterpreter.addFunction("getArmorAttribute", &fn_getArmorAttribute);
 
     mInterpreter.addFunction("getCharacterAttribute", &fn_getCharacterAttribute);
@@ -802,6 +837,7 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction("getArmorType",&fn_getArmorType);
     mInterpreter.addFunction("getWeaponTypeDamageCategory",&fn_getWeaponTypeDamageCategory);
     mInterpreter.addFunction("getWeaponDamageCategoryResistance",&fn_getWeaponDamageCategoryResistance);
+    mInterpreter.addFunction("invokeEquipment",&fn_invokeEquipment);
     mInterpreter.addFunction("getHitSound",&fn_getHitSound);
     mInterpreter.addFunction("getMissSound",&fn_getMissSound);
 

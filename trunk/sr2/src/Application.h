@@ -114,6 +114,10 @@ namespace StoneRing
         SteelType getArmorType(SteelType::Handle hArmor);
         SteelType getWeaponTypeDamageCategory(SteelType::Handle hWeaponType);
         SteelType getWeaponDamageCategoryResistance(SteelType::Handle hICharacter, int damage_category);
+        SteelType getWeaponScriptMode(SteelType::Handle hWeaponType);
+
+        SteelType invokeEquipment(SteelType::Handle hEquipment);
+        SteelType attackCharacter(SteelType::Handle hICharacter);
 
         SteelType getHitSound(SteelType::Handle hWeaponType);
         SteelType getMissSound(SteelType::Handle hWeaponType);
