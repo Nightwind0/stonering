@@ -31,8 +31,10 @@
 
         var $pWeapon = getEquipment($pC, $_HAND);
         const $kScriptMode = getWeaponScriptMode($pWeapon);
-        if( $kScriptMode == $_SM_FORGO_ATTACK || getWeaponS)
+
+        if( $kScriptMode == $_SM_FORGO_ATTACK)
             return;
+
         if( $kScriptMode == $_SM_ATTACK_AFTER){
             invokeEquipment($pWeapon);
         }
