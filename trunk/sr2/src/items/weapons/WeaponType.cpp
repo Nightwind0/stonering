@@ -23,6 +23,7 @@ void WeaponType::load_attributes(CL_DomNamedNodeMap * pAttributes)
     m_fBaseCritical = get_implied_float("baseCritical",pAttributes,0.05);
     m_bRanged = get_implied_bool("ranged",pAttributes,false);
     m_bTwoHanded  = get_implied_bool("twoHanded",pAttributes,false);
+    m_damageCategory = DamageCategoryFromString(get_required_string("damageCategory",pAttributes));
 }
 
 bool WeaponType::handle_element(eElement element, Element * pElement)
@@ -33,12 +34,6 @@ bool WeaponType::handle_element(eElement element, Element * pElement)
 
         m_icon_ref = dynamic_cast<IconRef*>(pElement)->GetIcon();
         break;
-    case EWEAPONDAMAGECATEGORY:
-        m_pDamageCategory = dynamic_cast<DamageCategory*>(pElement);
-        break;
-    case EMAGICDAMAGECATEGORY:
-        m_pDamageCategory = dynamic_cast<DamageCategory*>(pElement);
-        break;
     default:
         return false;
     }
@@ -48,7 +43,7 @@ bool WeaponType::handle_element(eElement element, Element * pElement)
 
 WeaponType::~WeaponType()
 {
-    delete m_pDamageCategory;
+
 }
 
 std::string WeaponType::GetName() const

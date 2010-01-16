@@ -5,6 +5,7 @@
 #include "ScriptElement.h"
 #include "Magic.h"
 #include <ClanLib/core.h>
+#include "DamageCategory.h"
 
 namespace StoneRing
 {
@@ -54,6 +55,7 @@ namespace StoneRing
 
         SpellRef * createSpellRef() const;
         uint getValue() const;
+        eDamageCategory GetDamageCategory() const { return m_damageCategory; }
         CL_DomElement createDomElement( CL_DomDocument &doc ) const;
         MagicResistance * getMagicResistance() const;
 
@@ -66,6 +68,7 @@ namespace StoneRing
         eTargetable getTargetableFromString ( const std::string &str);
 
         Magic::eMagicType meType;
+        eDamageCategory m_damageCategory;
         eUse meUse;
         eTargetable meTargetable;
         std::string mName;

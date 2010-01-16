@@ -46,7 +46,7 @@
 <!-- The script here is executed when the armor is used (wearer is attacked) -->
 <!ELEMENT armorClass  (conditionScript?,attributeModifier*, armorEnhancer*, statusEffectModifier*, script?, onEquip?, onUnequip?, armorTypeExclusionList?)>
 <!ELEMENT armorType (iconRef)>
-<!ELEMENT weaponType ((weaponDamageCategory|magicDamageCategory),iconRef)>
+<!ELEMENT weaponType (iconRef)>
 <!ELEMENT weaponEnhancer EMPTY>
 <!ELEMENT armorEnhancer EMPTY>
 <!ELEMENT statusEffectModifier EMPTY>
@@ -59,8 +59,6 @@
 <!ELEMENT spellRef EMPTY>
 <!ELEMENT spellList (spell+)>
 <!ELEMENT spell (magicResistance?,script?>
-<!ELEMENT weaponDamageCategory EMPTY>
-<!ELEMENT magicDamageCategory EMPTY>
 <!ELEMENT magicResistance EMPTY>
 
 <!-- Animation DTD -->
@@ -170,6 +168,7 @@
 <!-- -->
 <!ATTLIST weaponClass scriptMode (attackBefore|attackAfter|forgoAttack|world) #IMPLIED>
 <!ATTLIST weaponType name CDATA #REQUIRED>
+<!ATTLIST weaponType damageCategory (bash|jab|slice|dark|holy|wind|air|water|ice|fire|lightning|poison) #REQUIRED>
 <!ATTLIST weaponType basePrice CDATA #REQUIRED>
 <!ATTLIST weaponType baseAttack CDATA #REQUIRED>
 <!ATTLIST weaponType hitAdd CDATA #REQUIRED> <!-- In percent 0-1 float-->
@@ -249,6 +248,7 @@
 <!-- Note: movement speed will be determined by the amount of pixels that need to be covered and thy e duration of the par -->
 <!-- So that if the par duration is three seconds, the sprite will move to its destination in three seconds -->
 <!ATTLIST spell name CDATA #REQUIRED>
+<!ATTLIST spell damageCategory (bash|jab|slice|dark|holy|wind|air|water|ice|fire|lightning|poison) #REQUIRED>
 <!ATTLIST spell icon CDATA #REQUIRED>
 <!ATTLIST spell type (elemental|white|status|other) #REQUIRED>
 <!ATTLIST spell use (battle|world|both) #REQUIRED>
@@ -257,8 +257,7 @@
 <!ATTLIST spell appliesToArmor   (true|false) #IMPLIED> <!-- Used in generation of random armor? Defaults to false -->
 <!ATTLIST spell mp CDATA #REQUIRED>
 <!ATTLIST spell value CDATA #REQUIRED>
-<!ATTLIST weaponDamageCategory type (slash|bash|jab) #REQUIRED>
-<!ATTLIST magicDamageCategory type (fire|water|earth|wind|holy|dark|other) #REQUIRED>
+
 <!-- Note that, while removeStatus does obey the 'chance' parameter, it ignores any status effect resistances of the target. -->
 <!-- Therefore, a removeStatus for poison with 80% really does remove poison 80% of the time. Whereas, when inflicting the status (con'td) -->
 <!-- You have the chance as well as the target's resistances to account for -->

@@ -32,8 +32,10 @@ void Spell::loadAttributes(CL_DomNamedNodeMap * pAttributes)
 
     mbAppliesToWeapons = get_implied_bool ("appliesToWeapons",pAttributes, false);
     mbAppliesToArmor = get_implied_bool ("appliesToArmor",pAttributes, false);
-    
+
     mnValue = get_required_uint("value",pAttributes);
+
+    m_damageCategory = DamageCategoryFromString(get_required_string("damageCategory",pAttributes));
 
     mnMP = get_required_uint("mp", pAttributes);
 }
@@ -119,7 +121,7 @@ bool Spell::appliesToArmor() const
     return mbAppliesToArmor;
 }
 
-    
+
 uint Spell::getMP() const
 {
     return mnMP;
@@ -134,7 +136,7 @@ CL_DomElement Spell::createDomElement( CL_DomDocument &doc ) const
 SpellRef * Spell::createSpellRef() const
 {
     SpellRef * ref = new SpellRef;
-   
+
     ref->SetType( meType );
     ref->SetName( mName );
 

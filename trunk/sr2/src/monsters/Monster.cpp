@@ -123,9 +123,9 @@ double Monster::GetSpellResistance(StoneRing::Magic::eMagicType type) const
     return 0.0;
 }
 
-double Monster::GetWeaponDamageCategoryResistance(WeaponDamageCategory::eType type) const
+double Monster::GetDamageCategoryResistance(eDamageCategory type) const
 {
-    return 1.0;
+    return (type == HOLY)?-1.0:1.0;
 }
 
 double Monster::GetAttribute(ICharacter::eCharacterAttribute attr) const

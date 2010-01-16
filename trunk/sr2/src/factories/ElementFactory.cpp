@@ -248,17 +248,6 @@ Element * ElementFactory::createArmorType()const
     return new ArmorType();
 }
 
-Element * ElementFactory::createWeaponDamageCategory() const
-{
-    return new WeaponDamageCategory();
-}
-
-
-Element * ElementFactory::createMagicDamageCategory() const
-{
-    return new MagicDamageCategory();
-}
-
 
 Element *ElementFactory::createStatusEffectModifier() const
 {
@@ -486,7 +475,6 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["itemRef"] = &ElementFactory::createItemRef;
     mCreateMethods["level"] = &ElementFactory::createLevel;
     mCreateMethods["levelHeader"] = &ElementFactory::createLevelHeader;
-    mCreateMethods["magicDamageCategory"] = &ElementFactory::createMagicDamageCategory;
     mCreateMethods["magicResistance"] = &ElementFactory::createMagicResistance;
     mCreateMethods["mappableObjects"] = &ElementFactory::createMappableObjects;
     mCreateMethods["mo"] = &ElementFactory::createMappableObject;
@@ -534,7 +522,6 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["uniqueWeapon"] = &ElementFactory::createUniqueWeapon;
     mCreateMethods["weaponClass"] = &ElementFactory::createWeaponClass;
     mCreateMethods["weaponClassRef"] = &ElementFactory::createWeaponClassRef;
-    mCreateMethods["weaponDamageCategory"] = &ElementFactory::createWeaponDamageCategory;
     mCreateMethods["weaponEnhancer"] = &ElementFactory::createWeaponEnhancer;
     mCreateMethods["weaponRef"] = &ElementFactory::createWeaponRef;
     mCreateMethods["weaponType"] = &ElementFactory::createWeaponType;
