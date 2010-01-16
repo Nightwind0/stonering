@@ -3,53 +3,33 @@
 
 using namespace StoneRing;
 
-WeaponDamageCategory::WeaponDamageCategory()
+bool StoneRing::DamageCategoryIsPhysical(eDamageCategory category)
 {
+    return category < _END_OF_PHYSICAL_DAMAGE;
 }
 
-void WeaponDamageCategory::load_attributes(CL_DomNamedNodeMap * pAttributes)
+bool StoneRing::DamageCategoryIsMagic(eDamageCategory category)
 {
-    m_eType = TypeFromString(get_required_string("type",pAttributes));
+    return category > _END_OF_PHYSICAL_DAMAGE;
 }
 
-WeaponDamageCategory::eType
-WeaponDamageCategory::TypeFromString ( const std::string &str )
+eDamageCategory StoneRing::DamageCategoryFromString(const std::string& string)
 {
-    if(str == "slash") return SLASH;
-    else if (str == "bash") return BASH;
-    else if (str == "jab") return JAB;
-    else throw CL_Error("Unknown type " + str + " On weapon damage category");
-}
+    if(string == "bash") return BASH;
+    else if(string == "jab") return JAB;
+    else if(string == "slice") return SLICE;
+    else if(string == "holy") return HOLY;
+    else if(string == "dark") return DARK;
+    else if(string == "fire") return FIRE;
+    else if(string == "wind") return WIND;
+    else if(string == "water") return WATER;
+    else if(string == "ice") return ICE;
+    else if(string == "earth") return EARTH;
+    else if(string == "lightning") return LIGHTNING;
+    else if(string == "poison") return POISON;
 
-
-WeaponDamageCategory::~WeaponDamageCategory()
-{
-}
-
-
-WeaponDamageCategory::eType WeaponDamageCategory::GetType() const
-{
-    return m_eType;
-}
-
-
-MagicDamageCategory::MagicDamageCategory()
-{
-}
-
-void MagicDamageCategory::load_attributes(CL_DomNamedNodeMap *pAttributes)
-{
-    m_eType = Magic::TypeOf(get_required_string("type",pAttributes));
-}
-
-MagicDamageCategory::~MagicDamageCategory()
-{
-}
-
-
-Magic::eMagicType MagicDamageCategory::GetType() const
-{
-    return m_eType;
+    throw CL_Error("Damage Category unknown: " + string);
+    return BASH;
 }
 
 

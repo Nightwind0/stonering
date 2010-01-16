@@ -531,18 +531,18 @@ SteelType Application::getArmorType(SteelType::Handle hArmor)
 SteelType Application::getWeaponTypeDamageCategory(SteelType::Handle hWeaponType)
 {
     SteelType val;
-    val.set ( dynamic_cast<WeaponDamageCategory*>(static_cast<WeaponType*>(hWeaponType)->GetDamageCategory())->GetType() );
+    val.set ( static_cast<WeaponType*>(hWeaponType)->GetDamageCategory() );
 
     return val;
 }
 
-SteelType Application::getWeaponDamageCategoryResistance(SteelType::Handle hICharacter, int damage_category)
+SteelType Application::getDamageCategoryResistance(SteelType::Handle hICharacter, int damage_category)
 {
     SteelType val;
 
-    WeaponDamageCategory::eType type = static_cast<WeaponDamageCategory::eType>(damage_category);
+    eDamageCategory type = static_cast<eDamageCategory>(damage_category);
 
-    val.set ( static_cast<ICharacter*>(hICharacter)->GetWeaponDamageCategoryResistance(type) );
+    val.set ( static_cast<ICharacter*>(hICharacter)->GetDamageCategoryResistance(type) );
 
     return val;
 }
@@ -735,7 +735,7 @@ void Application::registerSteelFunctions()
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_invokeEquipment(this,&Application::invokeEquipment);
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_attackCharacter(this,&Application::attackCharacter);
 
-    static SteelFunctor2Arg<Application,const SteelType::Handle,int> fn_getWeaponDamageCategoryResistance(this,&Application::getWeaponDamageCategoryResistance);
+    static SteelFunctor2Arg<Application,const SteelType::Handle,int> fn_getDamageCategoryResistance(this,&Application::getDamageCategoryResistance);
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getHitSound(this,&Application::getHitSound);
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getMissSound(this,&Application::getMissSound);
 
@@ -836,7 +836,7 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction("getWeaponType",&fn_getWeaponType);
     mInterpreter.addFunction("getArmorType",&fn_getArmorType);
     mInterpreter.addFunction("getWeaponTypeDamageCategory",&fn_getWeaponTypeDamageCategory);
-    mInterpreter.addFunction("getWeaponDamageCategoryResistance",&fn_getWeaponDamageCategoryResistance);
+    mInterpreter.addFunction("getDamageCategoryResistance",&fn_getDamageCategoryResistance);
     mInterpreter.addFunction("invokeEquipment",&fn_invokeEquipment);
     mInterpreter.addFunction("getHitSound",&fn_getHitSound);
     mInterpreter.addFunction("getMissSound",&fn_getMissSound);

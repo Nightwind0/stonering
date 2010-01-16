@@ -210,9 +210,12 @@ void StoneRing::Character::Attacked()
 }
 
 
-double StoneRing::Character::GetWeaponDamageCategoryResistance(WeaponDamageCategory::eType type) const
+double StoneRing::Character::GetDamageCategoryResistance(eDamageCategory type) const
 {
-    return 1.0;
+    if(type == HOLY)
+        return -1.0;
+    else
+        return 1.0;
 }
 
 

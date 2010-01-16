@@ -37,7 +37,6 @@ namespace StoneRing
         virtual Element * createItemRef()const;
         virtual Element * createLevel()const;
         virtual Element * createLevelHeader()const;
-        virtual Element * createMagicDamageCategory() const;
         virtual Element * createMagicResistance ( ) const;
         virtual Element * createMappableObject()const;
         virtual Element * createMappableObjects()const;
@@ -85,7 +84,6 @@ namespace StoneRing
         virtual Element * createUniqueWeapon()const;
         virtual Element * createWeaponClass()const;
         virtual Element * createWeaponClassRef()const;
-        virtual Element * createWeaponDamageCategory() const;
         virtual Element * createWeaponEnhancer()const;
         virtual Element * createWeaponRef()const;
         virtual Element * createWeaponType()const;
