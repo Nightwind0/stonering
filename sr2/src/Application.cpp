@@ -574,6 +574,18 @@ SteelType Application::attackCharacter(SteelType::Handle hICharacter)
     return SteelType();
 }
 
+SteelType Application::isDebug(){
+    SteelType result;
+
+#ifndef NDEBUG
+    result.set(true);
+#else
+    result.set(false);
+#endif
+
+    return result;
+}
+
 IApplication * IApplication::GetInstance()
 {
     return &sr_app;
@@ -616,15 +628,6 @@ Application::~Application()
 }
 
 
-ICharacterGroup * Application::GetTargetCharacterGroup() const
-{
-    return mpParty;
-}
-
-ICharacterGroup * Application::GetActorCharacterGroup() const
-{
-    return mpParty;
-}
 
 CL_Rect Application::GetDisplayRect() const
 {
@@ -690,7 +693,9 @@ SteelType Application::RunScript(AstScript *pScript, const ParameterList &params
 
 void Application::registerSteelFunctions()
 {
+
     static SteelFunctor2Arg<Application,const std::string&,const std::string&> fn_say(this,&Application::say);
+    static SteelFunctorNoArgs<Application> fn_isDebug(this,&Application::isDebug);
     static SteelFunctor1Arg<Application,const std::string&> fn_playScene(this,&Application::playScene);
     static SteelFunctor1Arg<Application,const std::string&> fn_playSound(this,&Application::playSound);
     static SteelFunctor3Arg<Application,const std::string&,uint,uint> fn_loadLevel(this,&Application::loadLevel);
@@ -795,7 +800,7 @@ void Application::registerSteelFunctions()
     steelConst("$_MAXMP",Character::CA_MAXMP);
 
     mInterpreter.addFunction("normal_random", &fn_gaussian);
-
+    mInterpreter.addFunction("isDebug", &fn_isDebug);
     mInterpreter.addFunction("say",&fn_say);
     mInterpreter.addFunction("playScene", &fn_playScene);
     mInterpreter.addFunction("playSound", &fn_playSound);
@@ -1015,7 +1020,7 @@ int Application::main(int, char **)
         while (mStates.size())
             run();
 
-#if 1
+#ifndef NDEBUG
         console.display_close_message();
 #endif
 

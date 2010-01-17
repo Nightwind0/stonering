@@ -5,9 +5,9 @@
             <monsterGroup weight="1">
                 <monsterRef name="Grass Wolf" count="1" cellY="1"/>
             </monsterGroup>
-            <monsterGroup weight="2">
+            <monsterGroup weight="2" cellRows="2">
                 <monsterRef name="Stoked Green Tea Mochi" count="1" cellY="1"/>
-                <monsterRef name="Green Tea Mochi" count="2" cellX="1" cellY="0" cols="1" rows="2"/>
+                <monsterRef name="Green Tea Mochi" count="2" cellX="2" cellY="0" cols="1" rows="2"/>
             </monsterGroup>
         </monsterRegion>
         <monsterRegion name="Endospores" levelX="0" levelY="4" width="10" height="5" encounterRate ="0.1" backdrop="mountains">

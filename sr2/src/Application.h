@@ -47,8 +47,6 @@ namespace StoneRing
         virtual IFactory * GetElementFactory() { return &mElementFactory; }
         virtual CharacterManager * GetCharacterManager() { return &mCharacterManager; }
         virtual CL_Rect GetDisplayRect() const;
-        virtual ICharacterGroup * GetTargetCharacterGroup() const;
-        virtual ICharacterGroup * GetActorCharacterGroup() const;
         virtual void StartBattle(const MonsterGroup &group,const std::string &backdrop);
         virtual void RequestRedraw(const State *pState);
 	    virtual void RunState(State *pState);
@@ -121,6 +119,8 @@ namespace StoneRing
 
         SteelType getHitSound(SteelType::Handle hWeaponType);
         SteelType getMissSound(SteelType::Handle hWeaponType);
+
+        SteelType isDebug();
 
 
 

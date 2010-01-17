@@ -14,6 +14,9 @@
                  <skillRef skillName="Item"/>
             </battleMenuOption>
             <battleMenuOption name="Info">
+                <conditionScript id="WarriorInfoOptionCondition">
+                    return isDebug();
+                </conditionScript>
                 <skillRef skillName="Info"/>
             </battleMenuOption>
         </battleMenu>

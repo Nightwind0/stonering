@@ -207,6 +207,8 @@ void BattleState::MappableObjectMoveHook()
 
 void BattleState::StartTargeting()
 {
+    m_targets.selected.m_pTarget = NULL;
+    m_targets.m_bSelectedGroup = false;
     m_combat_state = TARGETING;
 }
 
