@@ -39,8 +39,6 @@ namespace StoneRing
         virtual ItemManager * GetItemManager() = 0;
         virtual IFactory * GetElementFactory() = 0;
         virtual CharacterManager * GetCharacterManager() = 0;
-        virtual ICharacterGroup * GetTargetCharacterGroup() const = 0;
-        virtual ICharacterGroup * GetActorCharacterGroup() const = 0;
         virtual void StartBattle(const MonsterGroup &group, const std::string &backdrop)=0;
         static IApplication * GetInstance();
         virtual void Pop(bool popAll)=0;
