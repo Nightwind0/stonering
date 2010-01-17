@@ -146,6 +146,9 @@ namespace StoneRing{
         CL_Surface *m_pBattlePopup;
         CL_Sprite  *m_target_sprite;
         CL_Rect m_status_rect;
+        CL_Rect m_popup_rect;
+        CL_Rect m_monster_rect;
+        CL_Rect m_player_rect;
 
         eCombatState m_combat_state;
         BattleMenuStack m_menu_stack;
@@ -160,6 +163,8 @@ namespace StoneRing{
         bool m_bDone;
         uint m_nStatusBarX;
         uint m_nStatusBarY;
+        uint m_nPopupX;
+        uint m_nPopupY;
         uint m_nRows;
         uint m_nColumns;
         std::deque<ICharacter*> m_initiative;

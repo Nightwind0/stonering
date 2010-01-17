@@ -9,7 +9,7 @@ namespace StoneRing{
         _START_OF_PHYSICAL_DAMAGE,
         BASH,
         JAB,
-        SLICE,
+        SLASH,
         _END_OF_PHYSICAL_DAMAGE,
         HOLY,
         DARK,
@@ -24,6 +24,7 @@ namespace StoneRing{
 
     bool DamageCategoryIsPhysical(eDamageCategory category);
     bool DamageCategoryIsMagic(eDamageCategory category);
+    bool DamageCategoryIsElemental(eDamageCategory category);
     eDamageCategory DamageCategoryFromString(const std::string& string);
 };
 

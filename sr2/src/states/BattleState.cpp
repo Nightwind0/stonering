@@ -38,15 +38,15 @@ void BattleState::init(const MonsterGroup &group, const std::string &backdrop)
         MonsterRef *pRef= *it;
         uint count = pRef->GetCount();
 
-        for (int x=0;x<pRef->GetColumns();x++)
+        for (int y=0;y<pRef->GetRows();y++)
         {
-            for (int y=0;y<pRef->GetRows();y++)
+            for (int x=0;x<pRef->GetColumns();x++)
             {
                 if (count>0)
                 {
                     Monster * pMonster = pCharManager->CreateMonster(pRef->GetName());
                     pMonster->SetCellX( pRef->GetCellX() + x );
-                    pMonster->SetCellY( bottomrow - pRef->GetCellY() - y);
+                    pMonster->SetCellY( pRef->GetCellY() + y );
 
                     pMonster->SetCurrentSprite(pGraphicsManager->CreateMonsterSprite(pMonster->GetName(),
                                                "idle")); // fuck, dude
@@ -220,7 +220,10 @@ void BattleState::Start()
     GraphicsManager * pGraphicsManager = GraphicsManager::GetInstance();
     m_draw_method = &BattleState::draw_battle;
     m_eState = COMBAT;
-    const std::string resource = "Overlays/BattleStatus/";
+    const std::string status_resource = "Overlays/BattleStatus/";
+    const std::string popup_resource = "Overlays/BattlePopup/";
+    const std::string monster_rect_resource = "States/Battle/MonsterRect/";
+    const std::string player_rect_resource= "States/Battle/PlayerRect/";
     IApplication * pApp = IApplication::GetInstance();
     CL_ResourceManager *pResources = pApp->GetResources();
 
@@ -234,8 +237,10 @@ void BattleState::Start()
     m_pStatusBadFont = pGraphicsManager->GetFont(GraphicsManager::BATTLE_STATUS, GraphicsManager::BAD);
 #endif
 
-    m_nStatusBarX = CL_Integer::load(resource + "x",pResources);
-    m_nStatusBarY = CL_Integer::load(resource + "y",pResources);
+    m_nStatusBarX = CL_Integer::load(status_resource + "x",pResources);
+    m_nStatusBarY = CL_Integer::load(status_resource + "y",pResources);
+    m_nPopupX = CL_Integer::load(popup_resource + "x",pResources);
+    m_nPopupY = CL_Integer::load(popup_resource + "y",pResources);
 
     /**
      * TODO:
@@ -248,13 +253,34 @@ void BattleState::Start()
      */
 
 
-    m_status_rect.top = CL_Integer(resource + "text/top", pResources);
-    m_status_rect.left = CL_Integer(resource + "text/left", pResources);
-    m_status_rect.right = CL_Integer(resource + "text/right", pResources);
-    m_status_rect.bottom = CL_Integer(resource + "text/bottom", pResources);
+    m_status_rect.top = CL_Integer(status_resource + "text/top", pResources);
+    m_status_rect.left = CL_Integer(status_resource + "text/left", pResources);
+    m_status_rect.right = CL_Integer(status_resource + "text/right", pResources);
+    m_status_rect.bottom = CL_Integer(status_resource + "text/bottom", pResources);
 
     m_status_rect.top += m_nStatusBarY;
     m_status_rect.left += m_nStatusBarX;
+
+
+    m_popup_rect.top = CL_Integer(popup_resource + "text/top", pResources);
+    m_popup_rect.left = CL_Integer(popup_resource + "text/left", pResources);
+    m_popup_rect.right = CL_Integer(popup_resource + "text/right", pResources);
+    m_popup_rect.bottom = CL_Integer(popup_resource + "text/bottom", pResources);
+
+    m_popup_rect.top += m_nPopupY;
+    m_popup_rect.left += m_nPopupX;
+
+    m_player_rect.top = CL_Integer(player_rect_resource + "top", pResources);
+    m_player_rect.left = CL_Integer(player_rect_resource + "left", pResources);
+    m_player_rect.right = CL_Integer(player_rect_resource + "right", pResources);
+    m_player_rect.bottom = CL_Integer(player_rect_resource + "bottom", pResources);
+
+
+    m_monster_rect.top = CL_Integer(monster_rect_resource + "top", pResources);
+    m_monster_rect.left = CL_Integer(monster_rect_resource + "left", pResources);
+    m_monster_rect.right = CL_Integer(monster_rect_resource + "right", pResources);
+    m_monster_rect.bottom = CL_Integer(monster_rect_resource + "bottom", pResources);
+
 
     m_pStatusBar = pGraphicsManager->GetOverlay(GraphicsManager::BATTLE_STATUS);
     m_pBattleMenu = pGraphicsManager->GetOverlay(GraphicsManager::BATTLE_MENU);
@@ -337,27 +363,14 @@ void BattleState::draw_battle(const CL_Rect &screenRect, CL_GraphicContext *pGC)
 {
     m_pBackdrop->draw(screenRect,pGC);
 
-    CL_Rect monsterRect = screenRect;
 
-    // Hack to get a monster size
-    monsterRect.right = screenRect.get_width() * 0.66; // TODO: System variable here (not multiplier, actual size of rect)
-
-    // Hack. Player Rect needs to come from game config
-    CL_Rect playerRect = screenRect;
-    playerRect.top = screenRect.bottom * 0.33;
-    playerRect.left = monsterRect.right;
-    draw_monsters(monsterRect,pGC);
-    draw_players(playerRect,pGC);
+    draw_monsters(m_monster_rect,pGC);
+    draw_players(m_player_rect,pGC);
     draw_status(screenRect,pGC);
 
     if (m_combat_state == BATTLE_MENU)
     {
-        CL_Rect menu_rect = screenRect;
-        // TODO: These SHOULD come from the graphics manager,
-        // the values are data driven in resources.xml
-        menu_rect.top = screenRect.bottom * 0.33;
-        menu_rect.left = screenRect.right * 0.66;
-        draw_menus(menu_rect,pGC);
+        draw_menus(screenRect,pGC);
     }
 
 }
@@ -444,7 +457,7 @@ void BattleState::draw_menus(const CL_Rect &screenrect, CL_GraphicContext *pGC)
         onFont = pGraphicsManager->GetFont(GraphicsManager::BATTLE_POPUP_MENU,"on");
         offFont = pGraphicsManager->GetFont(GraphicsManager::BATTLE_POPUP_MENU,"off");
         selectedFont = pGraphicsManager->GetFont(GraphicsManager::BATTLE_POPUP_MENU,"Selection");
-        m_pBattlePopup->draw(screenrect.left,screenrect.top,pGC);
+        m_pBattlePopup->draw(m_nPopupX,m_nPopupY,pGC);
         std::list<BattleMenuOption*>::iterator iter;
         uint pos = 0;
 
@@ -483,10 +496,10 @@ void BattleState::draw_menus(const CL_Rect &screenrect, CL_GraphicContext *pGC)
             const uint option_height = std::max(font->get_height(), pIcon->get_height());
 
 
-            // TODO: get font box from resources
-            pIcon->draw(screenrect.left + 14, 20 + screenrect.top + option_height* pos, pGC);
 
-            font->draw(screenrect.left + 24 + pIcon->get_width() , 20 + screenrect.top + option_height * pos,pOption->GetName(),pGC);
+            pIcon->draw(m_popup_rect.left + 14, 20 + m_popup_rect.top + option_height* pos, pGC);
+
+            font->draw(m_popup_rect.left + 24 + pIcon->get_width() , 20 + m_popup_rect.top + option_height * pos,pOption->GetName(),pGC);
 
             ++pos;
         }

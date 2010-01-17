@@ -1,123 +1,123 @@
 <!--DOCTYPE spellList SYSTEM "Levels/level.dtd" -->
 <spellList>
-	<spell mp="2" name="Torch" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="2200">
+	<spell mp="2" name="Torch" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="2200" damageCategory="fire">
 		<magicResistance type="fire" resist="0.25"/>
 		<script id="SP_Fire">
 			doMagicDamage(25,0.75,"fire");
 		</script>
 	</spell>
-	<spell mp="2" name="Stonepelt" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="2200">
+	<spell mp="2" name="Stonepelt" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="2200" damageCategory="earth">
 		<magicResistance type="earth" resist="0.25"/>
 		<script id="SP_Stonepelt">
 			doMagicDamage(25,0.75,"earth");
 		</script>
 	</spell>
-	<spell mp="2" name="Ice" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="2200">
+	<spell mp="2" name="Ice" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="2200" damageCategory="water">
 		<magicResistance type="water" resist="0.25"/>
 		<script id="SP_Ice">
 			doMagicDamage(25,0.75,"water");
 		</script>
 	</spell>
-	<spell mp="2" name="Wind" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="2200">
+	<spell mp="2" name="Wind" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="2200" damageCategory="wind">
 		<magicResistance type="wind" resist="0.25"/>
 		<script id="SP_Wind">
 			doMagicDamage(25,0.75,"wind");
 		</script>
 	</spell>
-	<spell mp="2" name="Anoint" targetable="either" type="holy" use="both" appliesToArmor="true" appliesToWeapons="true" value="2200">
+	<spell mp="2" name="Anoint" targetable="either" type="holy" use="both" appliesToArmor="true" appliesToWeapons="true" value="2200" damageCategory="holy">
 		<magicResistance type="holy" resist="0.25"/>
 		<script id="SP_Anoint">
 			doMagicDamage(25,0.75,"holy");
 		</script>
 	</spell>
-	<spell mp="8" name="Flame" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="7000">
+	<spell mp="8" name="Flame" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="7000" damageCategory="fire">
 		<magicResistance type="fire" resist="0.40"/>
 		<script id="SP_Flame">
 			doMagicDamage(100,0.75,"fire");
 		</script>
 	</spell>
-	<spell mp="8" name="Crush" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="7000">
+	<spell mp="8" name="Crush" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="7000" damageCategory="earth">
 		<magicResistance type="earth" resist="0.40"/>
 		<script id="SP_Crush">
 			doMagicDamage(100,0.75,"earth");
 		</script>
 	</spell>
-	<spell mp="8" name="Frost" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="7000">
+	<spell mp="8" name="Frost" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="7000" damageCategory="water">
 		<magicResistance type="water" resist="0.40"/>
 		<script id="SP_Frost">
 			doMagicDamage(100,0.75,"water");
 		</script>
 
 	</spell>
-	<spell mp="8" name="Storm" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="7000">
+	<spell mp="8" name="Storm" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="7000" damageCategory="wind">
 		<magicResistance type="wind" resist="0.40"/>
 		<script id="SP_Storm">
 			doMagicDamage(100,0.75,"wind");
 		</script>
 
 	</spell>
-	<spell mp="8" name="Holy Anoint" targetable="either" type="holy" use="both" appliesToArmor="true" appliesToWeapons="true" value="7000">
+	<spell mp="8" name="Holy Anoint" targetable="either" type="holy" use="both" appliesToArmor="true" appliesToWeapons="true" value="7000" damageCategory="holy">
 		<magicResistance type="holy" resist="0.40"/>
 		<script id="SP_HolyAnoint">
 			doMagicDamage(100,0.75,"holy");
 		</script>
 
 	</spell>
-	<spell mp="20" name="Blaze" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="12000">
+	<spell mp="20" name="Blaze" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="12000" damageCategory="fire">
 		<magicResistance type="fire" resist="0.50"/>
 		<script id="SP_Blaze">
 			doMagicDamage(250,0.80,"fire");
 		</script>
 	</spell>
-	<spell mp="20" name="Avalanche" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="12000">
+	<spell mp="20" name="Avalanche" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="12000" damageCategory="earth">
 		<magicResistance type="earth" resist="0.50"/>
 		<script id="SP_Avalanche">
 			doMagicDamage(250,0.80,"earth");
 		</script>
 	</spell>
-	<spell mp="20" name="Blizzard" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="12000">
+	<spell mp="20" name="Blizzard" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="12000" damageCategory="water">
 		<magicResistance type="water" resist="0.50"/>
 		<script id="SP_Blizzard">
 			doMagicDamage(250,0.80,"water");
 		</script>
 	</spell>
-	<spell mp="20" name="Hurricane" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="12000">
+	<spell mp="20" name="Hurricane" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="12000" damageCategory="wind">
 		<magicResistance type="wind" resist="0.50"/>
 		<script id ="SP_Hurricane">
 			doMagicDamage(250,0.80,"wind");
 		</script>
 	</spell>
-	<spell mp="20" name="Blessed Anoint" targetable="either" type="holy" use="both" appliesToArmor="true" appliesToWeapons="true" value="12000">
+	<spell mp="20" name="Blessed Anoint" targetable="either" type="holy" use="both" appliesToArmor="true" appliesToWeapons="true" value="12000" damageCategory="holy">
 		<magicResistance type="holy" resist="0.50"/>
 		<script id="SP_BlessedAnoint">
 			doMagicDamage(250,0.80,"holy");
 		</script>
 	</spell>
-	<spell mp="50" name="Firestorm" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="25000">
+	<spell mp="50" name="Firestorm" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="25000" damageCategory="fire">
 		<magicResistance type="fire" resist="0.75"/>
 		<script id="SP_Firestorm">
 			doMagicDamage(600,0.90,"fire");
 		</script>
 	</spell>
-	<spell mp="50" name="Meteor" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="25000">
+	<spell mp="50" name="Meteor" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="25000" damageCategory="earth">
 		<magicResistance type="earth" resist="0.75"/>
 		<script id="SP_Meteor">
 			doMagicDamage(600,0.90,"earth");
 		</script>
 	</spell>
-	<spell mp="50" name="Absolute Zero" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="25000">
+	<spell mp="50" name="Absolute Zero" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="25000" damageCategory="water">
 		<magicResistance type="water" resist="0.75"/>
 		<script id="SP_AbsoluteZero">
 			doMagicDamage(600,0.90,"water");
 		</script>
 	</spell>
-	<spell mp="50" name="Zephyr" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="25000">
+	<spell mp="50" name="Zephyr" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="25000" damageCategory="wind">
 		<magicResistance type="wind" resist="0.75"/>
 		<script id="SP_Zephyr">
 			doMagicDamage(600,0.90,"wind");
 		</script>
 	</spell>
-	<spell mp="50" name="Blessed Anoint" targetable="either" type="holy" use="both" appliesToArmor="true" appliesToWeapons="true" value="25000">
+	<spell mp="50" name="Blessed Anoint" targetable="either" type="holy" use="both" appliesToArmor="true" appliesToWeapons="true" value="25000" damageCategory="holy">
 		<magicResistance type="holy" resist="0.75"/>
 		<script id="SP_BlessedAnoint">
 			doMagicDamage(600,0.90,"holy");

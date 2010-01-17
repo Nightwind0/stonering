@@ -65,7 +65,7 @@
             var $damageMean = getCharacterAttribute($pC, $_STR) + getEquippedWeaponAttribute($pC,$_ATTACK);
             // Random about the damageMean, standard deviation is 15% of the mean, so 68% of attacks fall within 10% deviation of the mean
             var $baseDamage = normal_random($damageMean,$damageMean * 0.15);
-            var $actualDamage = $baseDamage *  getWeaponDamageCategoryResistance($pTarget,getWeaponTypeDamageCategory(getWeaponType($pWeapon)));
+            var $actualDamage = $baseDamage *  getDamageCategoryResistance($pTarget,getWeaponTypeDamageCategory(getWeaponType($pWeapon)));
             battle::createDisplay($actualDamage,$pTarget,$_DISP_DAMAGE);
             doDamage($pTarget,integer($actualDamage));
             println("Mean damage was " + $damageMean + " and base damage was " + $baseDamage + " and actual damage was " + $actualDamage);
