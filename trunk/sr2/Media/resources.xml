@@ -268,28 +268,28 @@
         <section name="Valyn">
             <sprite name="idle" hint="alpha">
                 <animation pingpong="yes"  speed="600"/>
-                <image file="Sprites/valyn_battle.png">
+                <image file="Sprites/Party/valyn_battle.png">
                     <grid pos="0,0" size="80,160" array="2,1"/>
                 </image>
             </sprite>
             <sprite name="weak" hint="alpha">
-                <image file="Sprites/valyn_battle.png">
+                <image file="Sprites/Party/valyn_battle.png">
                     <grid pos="450,0" size="150,240" array="1,1"/>
                 </image>
             </sprite>
             <sprite name="dead" hint="alpha">
-                <image file="Sprites/valyn_battle.png">
+                <image file="Sprites/Party/valyn_battle.png">
                     <grid pos="450,240" size="150,240" array="1,1"/>
                 </image>
             </sprite>
             <sprite name="recoil" hint="alpha">
-                <image file="Sprites/valyn_battle.png">
+                <image file="Sprites/Party/valyn_battle.png">
                     <grid pos="160,0" size="80,160" array="1,1"/>
                 </image>
             </sprite>
             <sprite name="attack">
                 <animation speed="300"/>
-                <image file="Sprites/valyn_battle.png">
+                <image file="Sprites/Party/valyn_battle.png">
                     <grid pos="0,240" size="150,240" array="2,1"/>
                 </image>
             </sprite>
@@ -313,25 +313,25 @@
         <section name="Endospore">
             <sprite name="idle" hint="alpha">
                 <animation pingpong="yes"  speed="100"/>
-                <image file="Sprites/endospore.png">
+                <image file="Sprites/Monsters/endospore.png">
                     <grid pos="0,0" size="100,122" array="3,1"/>
                 </image>
             </sprite>
             <sprite name="weak" hint="alpha">
                 <animation pingpong="yes"  speed="300"/>
-                <image file="Sprites/endospore.png">
+                <image file="Sprites/Monsters/endospore.png">
                     <grid pos="0,100" size="100,122" array="3,1"/>
                 </image>
             </sprite>
             <sprite name="use" hint="alpha">
                 <animation pingpong="yes"  speed="200"/>
-                <image file="Sprites/endospore.png">
+                <image file="Sprites/Monsters/endospore.png">
                     <grid pos="300,0" size="100,122" array="3,1"/>
                 </image>
             </sprite>
             <sprite name="recoil" hint="alpha">
                 <animation pingpong="yes"  speed="100"/>
-                <image file="Sprites/endospore.png">
+                <image file="Sprites/Monsters/endospore.png">
                     <grid pos="300,100" size="100,122" array="3,1"/>
                 </image>
             </sprite>
@@ -339,7 +339,7 @@
         <section name="Green Tea Mochi">
             <sprite name="idle" hint="alpha">
                 <animation pingpong="yes"  speed="700"/>
-                <image file="Sprites/angry_mochi_green.png">
+                <image file="Sprites/Monsters/angry_mochi_green.png">
                     <grid pos="0,0" size="172,172" array="2,1"/>
                 </image>
             </sprite>
@@ -351,13 +351,13 @@
             </sprite>
             <sprite name="use" hint="alpha">
                 <animation loop="no"  speed="200"/>
-                <image file="Sprites/angry_mochi_green.png">
+                <image file="Sprites/Monsters/angry_mochi_green.png">
                     <grid pos="0,0" size="172,172" array="2,1"/>
                 </image>
             </sprite>
             <sprite name="recoil" hint="alpha">
                 <animation loop="no"  speed="100"/>
-                <image file="Sprites/angry_mochi_green.png">
+                <image file="Sprites/Monsters/angry_mochi_green.png">
                     <grid pos="0,0" size="172,172" array="2,1"/>
                 </image>
             </sprite>
@@ -365,25 +365,25 @@
         <section name="Stoked Green Tea Mochi">
             <sprite name="idle" hint="alpha">
                 <animation pingpong="yes"  speed="650"/>
-                <image file="Sprites/stoked_mochi_green.png">
+                <image file="Sprites/Monsters/stoked_mochi_green.png">
                     <grid pos="0,0" size="172,172" array="2,1"/>
                 </image>
             </sprite>
             <sprite name="weak" hint="alpha">
                 <animation pingpong="yes"  speed="300"/>
-                <image file="Sprites/stoked_mochi_green.png">
+                <image file="Sprites/Monsters/stoked_mochi_green.png">
                     <grid pos="0,0" size="172,172" array="2,1"/>
                 </image>
             </sprite>
             <sprite name="use" hint="alpha">
                 <animation loop="no"  speed="200"/>
-                <image file="Sprites/stoked_mochi_green.png">
+                <image file="Sprites/Monsters/stoked_mochi_green.png">
                     <grid pos="0,0" size="172,172" array="2,1"/>
                 </image>
             </sprite>
             <sprite name="recoil" hint="alpha">
                 <animation loop="no"  speed="100"/>
-                <image file="Sprites/stoked_mochi_green.png">
+                <image file="Sprites/Monsters/stoked_mochi_green.png">
                     <grid pos="0,0" size="172,172" array="2,1"/>
                 </image>
             </sprite>
@@ -391,49 +391,49 @@
         <section name="Megaspore">
             <sprite name="idle" hint="alpha">
                 <animation pingpong="yes"  speed="100"/>
-                <image file="Sprites/endospore2.png">
+                <image file="Sprites/Monsters/endospore2.png">
                     <grid pos="0,0" size="100,122" array="3,1"/>
                 </image>
             </sprite>
             <sprite name="weak" hint="alpha">
                 <animation pingpong="yes"  speed="300"/>
-                <image file="Sprites/endospore2.png">
+                <image file="Sprites/Monsters/endospore2.png">
                     <grid pos="0,100" size="100,122" array="3,1"/>
                 </image>
             </sprite>
             <sprite name="use" hint="alpha">
                 <animation loop="no"  speed="200"/>
-                <image file="Sprites/endospore2.png">
+                <image file="Sprites/Monsters/endospore2.png">
                     <grid pos="300,0" size="100,122" array="3,1"/>
                 </image>
             </sprite>
             <sprite name="recoil" hint="alpha">
                 <animation loop="no"  speed="100"/>
-                <image file="Sprites/endospore2.png">
+                <image file="Sprites/Monsters/endospore2.png">
                     <grid pos="300,100" size="100,122" array="3,1"/>
                 </image>
             </sprite>
         </section>
         <section name="Grass Wolf">
             <sprite name="idle" hint="alpha">
-                <image file="Sprites/wolf.png">
+                <image file="Sprites/Monsters/wolf.png">
                 </image>
             </sprite>
             <sprite name="use" hint="alpha">
                 <animation pingpong="yes"  speed="200"/>
-                <image file="Sprites/wolf1.png">
+                <image file="Sprites/Monsters/wolf1.png">
                     <grid pos="150,175" size="150,175" array="2,1"/>
                 </image>
             </sprite>
             <sprite name="recoil" hint="alpha">
                 <animation playoptions="noloop" loop="no"  speed="200"/>
-                <image file="Sprites/wolf1.png">
+                <image file="Sprites/Monsters/wolf1.png">
                     <grid pos="0,175" size="150,175" array="1,1"/>
                 </image>
             </sprite>
             <sprite name="weak" hint="alpha">
                 <animation playoptions="loop" loop="yes"  speed="200"/>
-                <image file="Sprites/wolf1.png">
+                <image file="Sprites/Monsters/wolf1.png">
                     <grid pos="0,0" size="150,175" array="1,2"/>
                 </image>
             </sprite>
