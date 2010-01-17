@@ -3,8 +3,11 @@
     <monsterRegions>
         <monsterRegion name ="Stuff" levelX="0" levelY="0" width="10" height="5" encounterRate="0.05" backdrop="grasslands">
             <monsterGroup weight="1">
-                <monsterRef name="Endospore" count="2" cellX="1" cols="2"/>
                 <monsterRef name="Grass Wolf" count="1" cellY="1"/>
+            </monsterGroup>
+            <monsterGroup weight="2">
+                <monsterRef name="Stoked Green Tea Mochi" count="1"/>
+                <monsterRef name="Green Tea Mochi" count="2" cellX="1" cellY="1" cols="1" rows="2"/>
             </monsterGroup>
         </monsterRegion>
         <monsterRegion name="Endospores" levelX="0" levelY="4" width="10" height="5" encounterRate ="0.1" backdrop="mountains">

@@ -108,6 +108,7 @@
 		<Unit filename="src/character/CharacterClass.h" />
 		<Unit filename="src/character/CharacterManager.cpp" />
 		<Unit filename="src/character/CharacterManager.h" />
+		<Unit filename="src/character/ICharacter.h" />
 		<Unit filename="src/character/SpriteDefinition.cpp" />
 		<Unit filename="src/character/SpriteDefinition.h" />
 		<Unit filename="src/core/AppUtils.cpp" />

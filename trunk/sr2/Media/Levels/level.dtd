@@ -46,7 +46,7 @@
 <!-- The script here is executed when the armor is used (wearer is attacked) -->
 <!ELEMENT armorClass  (conditionScript?,attributeModifier*, armorEnhancer*, statusEffectModifier*, script?, onEquip?, onUnequip?, armorTypeExclusionList?)>
 <!ELEMENT armorType (iconRef)>
-<!ELEMENT weaponType (iconRef)>
+<!ELEMENT weaponType (iconRef,onEquip?,onUnequip?,onInvoke?)>
 <!ELEMENT weaponEnhancer EMPTY>
 <!ELEMENT armorEnhancer EMPTY>
 <!ELEMENT statusEffectModifier EMPTY>

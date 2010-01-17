@@ -22,6 +22,22 @@
 	<string name="Currency" value="gods"/>
     <float name="DefaultEncounterRate" value="0.10"/>
  </section>
+ <section name="States">
+    <section name="Battle">
+        <section  name="MonsterRect">
+            <integer name="top" value="0"/>
+            <integer name="left" value="0"/>
+            <integer name="right" value="528"/>
+            <integer name="bottom" value="396"/>
+        </section>
+        <section name="PlayerRect">
+            <integer name="top" value="0"/>
+            <integer name="left" value="528"/>
+            <integer name="right" value="800"/>
+            <integer name="bottom" value="396"/>
+        </section>
+    </section>
+ </section>
 <section name="Fonts">
 <!-- 1234567890-=\+/`~!@#$%^&*()[]{};:'",.<>?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw -->
 	<sprite name="Font_sb_black">
@@ -100,8 +116,8 @@
 <section name="Overlays">
     <section name ="BattleStatus">
         <surface name="overlay" file="Images/Overlays/battle_status_overlay_s.png"/>
-        <integer name="x" value="6"/>
-        <integer name="y" value="6"/>
+        <integer name="x" value="0"/>
+        <integer name="y" value="396"/>
         <section name="fonts">
             <string name="hp" value="sb_green"/>
             <string name="mp" value="sb_purple"/>
@@ -110,20 +126,26 @@
             <string name="bad" value="sb_red"/>
         </section>
         <section name="text">
-            <integer name="left" value="9"/>
-            <integer name="right" value="762"/>
-            <integer name="top" value="9"/>
-            <integer name="bottom" value="92"/>
+            <integer name="left" value="12"/>
+            <integer name="right" value="484"/>
+            <integer name="top" value="12"/>
+            <integer name="bottom" value="191"/>
         </section>
     </section>
     <section name="BattlePopup">
         <surface name="overlay" file="Images/Overlays/battle_popup.png"/>
-        <integer name="x" value="100"/>
-        <integer name="y" value="240"/>
+        <integer name="y" value="396"/>
+        <integer name="x" value="476"/>
         <section name="fonts">
             <string name="on" value="BoldPowderBlue"/>
             <string name="off" value="BoldGray"/>
             <string name="Selection" value="BoldWhite"/>
+        </section>
+        <section name="text">
+            <integer name="left" value="12"/>
+            <integer name="right" value="312"/>
+            <integer name="top" value="12"/>
+            <integer name="bottom" value="192"/>
         </section>
     </section>
     <section name="BattleMenu">
@@ -245,9 +267,9 @@
         </section>
         <section name="Valyn">
             <sprite name="idle" hint="alpha">
-                <animation pingpong="yes"  speed="300"/>
+                <animation pingpong="yes"  speed="600"/>
                 <image file="Sprites/valyn_battle.png">
-                    <grid pos="0,0" size="150,240" array="3,1"/>
+                    <grid pos="0,0" size="80,160" array="2,1"/>
                 </image>
             </sprite>
             <sprite name="weak" hint="alpha">
@@ -262,7 +284,7 @@
             </sprite>
             <sprite name="recoil" hint="alpha">
                 <image file="Sprites/valyn_battle.png">
-                    <grid pos="300,240" size="150,240" array="1,1"/>
+                    <grid pos="160,0" size="80,160" array="1,1"/>
                 </image>
             </sprite>
             <sprite name="attack">
@@ -314,6 +336,58 @@
                 </image>
             </sprite>
         </section>
+        <section name="Green Tea Mochi">
+            <sprite name="idle" hint="alpha">
+                <animation pingpong="yes"  speed="700"/>
+                <image file="Sprites/angry_mochi_green.png">
+                    <grid pos="0,0" size="172,172" array="2,1"/>
+                </image>
+            </sprite>
+            <sprite name="weak" hint="alpha">
+                <animation pingpong="yes"  speed="300"/>
+                <image file="Sprites/angry_mochi_green.png">
+                    <grid pos="0,0" size="172,172" array="2,1"/>
+                </image>
+            </sprite>
+            <sprite name="use" hint="alpha">
+                <animation loop="no"  speed="200"/>
+                <image file="Sprites/angry_mochi_green.png">
+                    <grid pos="0,0" size="172,172" array="2,1"/>
+                </image>
+            </sprite>
+            <sprite name="recoil" hint="alpha">
+                <animation loop="no"  speed="100"/>
+                <image file="Sprites/angry_mochi_green.png">
+                    <grid pos="0,0" size="172,172" array="2,1"/>
+                </image>
+            </sprite>
+        </section>
+        <section name="Stoked Green Tea Mochi">
+            <sprite name="idle" hint="alpha">
+                <animation pingpong="yes"  speed="650"/>
+                <image file="Sprites/stoked_mochi_green.png">
+                    <grid pos="0,0" size="172,172" array="2,1"/>
+                </image>
+            </sprite>
+            <sprite name="weak" hint="alpha">
+                <animation pingpong="yes"  speed="300"/>
+                <image file="Sprites/stoked_mochi_green.png">
+                    <grid pos="0,0" size="172,172" array="2,1"/>
+                </image>
+            </sprite>
+            <sprite name="use" hint="alpha">
+                <animation loop="no"  speed="200"/>
+                <image file="Sprites/stoked_mochi_green.png">
+                    <grid pos="0,0" size="172,172" array="2,1"/>
+                </image>
+            </sprite>
+            <sprite name="recoil" hint="alpha">
+                <animation loop="no"  speed="100"/>
+                <image file="Sprites/stoked_mochi_green.png">
+                    <grid pos="0,0" size="172,172" array="2,1"/>
+                </image>
+            </sprite>
+        </section>
         <section name="Megaspore">
             <sprite name="idle" hint="alpha">
                 <animation pingpong="yes"  speed="100"/>
@@ -342,9 +416,7 @@
         </section>
         <section name="Grass Wolf">
             <sprite name="idle" hint="alpha">
-                <animation pingpong="yes"  speed="500"/>
-                <image file="Sprites/wolf1.png">
-                    <grid pos="0,0" size="150,175" array="3,1"/>
+                <image file="Sprites/wolf.png">
                 </image>
             </sprite>
             <sprite name="use" hint="alpha">

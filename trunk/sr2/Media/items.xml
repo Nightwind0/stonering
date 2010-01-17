@@ -2,7 +2,7 @@
 <items>
 	<weaponClasses>
 		<weaponClass name="Sublime" valueMultiplier="6.75">
-			<attributeModifier attribute="hp_max" type="multiply" value="1.2"/> 
+			<attributeModifier attribute="hp_max" type="multiply" value="1.2"/>
 			<weaponEnhancer attribute="ATK" multiplier="5"/>
 			<weaponEnhancer attribute="Critical%" add="0.10"/>
 		</weaponClass>
@@ -50,7 +50,7 @@
 		<weaponClass name="Wolf's" valueMultiplier="2.75">
 			<attributeModifier attribute="hp_max" type="multiply" value="1.15"/>
 			<weaponEnhancer attribute="ATK" multiplier="2"/>
-		</weaponClass>                                                                                                                
+		</weaponClass>
 		<weaponClass name="Dragon" valueMultiplier="9">
 			<attributeModifier attribute="hp_max" type="multiply" value="1.20"/>
 			<weaponEnhancer attribute="ATK" multiplier="7"/>
@@ -118,90 +118,69 @@
 		</weaponClass>
 	</weaponClasses>
 	<weaponTypes>
-		<weaponType basePrice="100" name="Sword" baseAttack="10" hitAdd="0.01">
-			<weaponDamageCategory type="slash"/>
+		<weaponType basePrice="100" name="Sword" baseAttack="10" hitAdd="0.01" damageCategory="slash">
 			<iconRef>Weapons/sword</iconRef>
 		</weaponType>
-		<weaponType basePrice="375" name="Broadsword" baseAttack="35" hitAdd="0.01"  >
-			<weaponDamageCategory type="slash"/>
+		<weaponType basePrice="375" name="Broadsword" baseAttack="35" hitAdd="0.01" damageCategory="slash" >
 			<iconRef>Weapons/broadsword</iconRef>
 		</weaponType>
-		<weaponType basePrice="1200" name="Greatsword" baseAttack="100" hitAdd="0.03" twoHanded="true">
-			<weaponDamageCategory type="slash"/>
+		<weaponType basePrice="1200" name="Greatsword" baseAttack="100" hitAdd="0.03" twoHanded="true" damageCategory="slash">
 			<iconRef>Weapons/greatsword</iconRef>
 		</weaponType>
-		<weaponType basePrice="75" name="Gladius" baseAttack="7" hitAdd="0" baseCritical="0.07">
-			<weaponDamageCategory type="slash"/>
+		<weaponType basePrice="75" name="Gladius" baseAttack="7" hitAdd="0" baseCritical="0.07" damageCategory="slash">
 			<iconRef>Weapons/gladius</iconRef>
 		</weaponType>
-		<weaponType basePrice="50" name="Dagger" baseAttack="5" hitAdd="-0.03"  >
-			<weaponDamageCategory type="slash"/>
+		<weaponType basePrice="50" name="Dagger" baseAttack="5" hitAdd="-0.03"  damageCategory="slash">
 			<iconRef>Weapons/dagger</iconRef>
 		</weaponType>
-		<weaponType basePrice="250" name="Longsword" baseAttack="20" hitAdd = "-0.03"  >
-			<weaponDamageCategory type="slash"/>
+		<weaponType basePrice="250" name="Longsword" baseAttack="20" hitAdd = "-0.03"  damageCategory="slash">
 			<iconRef>Weapons/longsword</iconRef>
 		</weaponType>
-		<weaponType basePrice="20" name="Knife" baseAttack="3" hitAdd = "0"  >
-			<weaponDamageCategory type="slash"/>
+		<weaponType basePrice="20" name="Knife" baseAttack="3" hitAdd = "0"  damageCategory="slash">
 			<iconRef>Weapons/knife</iconRef>
-		</weaponType>		
-		<weaponType basePrice="100" name="Axe" baseAttack = "15" hitAdd="-0.05"  >
-			<weaponDamageCategory type="slash"/>
+		</weaponType>
+		<weaponType basePrice="100" name="Axe" baseAttack = "15" hitAdd="-0.05"  damageCategory="slash">
 			<iconRef>Weapons/axe</iconRef>
 		</weaponType>
-		<weaponType basePrice="1250" name="Great Axe" baseAttack = "120" hitAdd="-0.05" twoHanded = "true">
-			<weaponDamageCategory type="slash"/>
+		<weaponType basePrice="1250" name="Great Axe" baseAttack = "120" hitAdd="-0.05" twoHanded = "true" damageCategory="slash">
 			<iconRef>Weapons/greataxe</iconRef>
 		</weaponType>
-		<weaponType basePrice="250" name="Poleaxe" baseAttack = "25" hitAdd = "-0.06" baseCritical="0.10">
-			<weaponDamageCategory type="slash"/>
+		<weaponType basePrice="250" name="Poleaxe" baseAttack = "25" hitAdd = "-0.06" baseCritical="0.10" damageCategory="slash">
 			<iconRef>Weapons/poleaxe</iconRef>
 		</weaponType>
-		<weaponType basePrice="75" name="Mace" baseAttack = "10" hitAdd="-0.03" baseCritical = "0.03">
-			<weaponDamageCategory type="bash"/>	
+		<weaponType basePrice="75" name="Mace" baseAttack = "10" hitAdd="-0.03" baseCritical = "0.03" damageCategory="bash">
 			<iconRef>Weapons/mace</iconRef>
 		</weaponType>
-		<weaponType basePrice="250" name="Flail" baseAttack = "20" hitAdd = "0.01" baseCritical = "0.03">
-			<weaponDamageCategory type="bash"/>
+		<weaponType basePrice="250" name="Flail" baseAttack = "20" hitAdd = "0.01" baseCritical = "0.03" damageCategory="bash">
 			<iconRef>Weapons/flail</iconRef>
 		</weaponType>
-		<weaponType basePrice="1200" name="Morning Star" baseAttack = "100" hitAdd = "0.04" baseCritical = "0.03" twoHanded="true">
-			<weaponDamageCategory type="bash"/>
+		<weaponType basePrice="1200" name="Morning Star" baseAttack = "100" hitAdd = "0.04" baseCritical = "0.03" twoHanded="true" damageCategory="bash">
 			<iconRef>Weapons/morning_star</iconRef>
 		</weaponType>
-		
-		
-		<weaponType basePrice="400" name="Halberd" baseAttack="35" hitAdd = "-0.03"  >
-			<weaponDamageCategory type="slash"/>
+
+
+		<weaponType basePrice="400" name="Halberd" baseAttack="35" hitAdd = "-0.03" damageCategory="slash" >
 			<iconRef>Weapons/halberd</iconRef>
 		</weaponType>
-		<weaponType basePrice="205" name="Scimitar" baseAttack="15" hitAdd="0"  >
-			<weaponDamageCategory type="slash"/>
+		<weaponType basePrice="205" name="Scimitar" baseAttack="15" hitAdd="0"  damageCategory="slash">
 			<iconRef>Weapons/scimitar</iconRef>
 		</weaponType>
-		<weaponType baseAttack="10" hitAdd="-0.04" basePrice="100" name="Bow" ranged="true" baseCritical = "0.03">
-			<weaponDamageCategory type="jab"/>
+		<weaponType baseAttack="10" hitAdd="-0.04" basePrice="100" name="Bow" ranged="true" baseCritical = "0.03" damageCategory="jab">
 			<iconRef>Weapons/bow</iconRef>
 		</weaponType>
-		<weaponType baseAttack="10" hitAdd="0" basePrice="300" name="Precise Bow" ranged="true"  >
-			<weaponDamageCategory type="jab"/>
+		<weaponType baseAttack="10" hitAdd="0" basePrice="300" name="Precise Bow" ranged="true"  damageCategory="jab">
 			<iconRef>Weapons/precisebow</iconRef>
 		</weaponType>
-		<weaponType baseAttack="15" hitAdd="-0.04" basePrice="200" name="Long Bow" ranged="true" baseCritical = "0.03">
-			<weaponDamageCategory type="jab"/>
+		<weaponType baseAttack="15" hitAdd="-0.04" basePrice="200" name="Long Bow" ranged="true" baseCritical = "0.03" damageCategory="jab">
 			<iconRef>Weapons/longbow</iconRef>
 		</weaponType>
-		<weaponType baseAttack="50" hitAdd="-0.03" basePrice="600" name="Great Bow" ranged="true"  >
-			<weaponDamageCategory type="jab"/>
+		<weaponType baseAttack="50" hitAdd="-0.03" basePrice="600" name="Great Bow" ranged="true"  damageCategory="jab">
 			<iconRef>Weapons/greatbow</iconRef>
 		</weaponType>
-		<weaponType baseAttack="100" hitAdd="0" basePrice="1200" name="Master Bow" ranged="true"  >
-			<weaponDamageCategory type="jab"/>
+		<weaponType baseAttack="100" hitAdd="0" basePrice="1200" name="Master Bow" ranged="true"  damageCategory="jab">
 			<iconRef>Weapons/masterbow</iconRef>
 		</weaponType>
-		<weaponType baseAttack="3" hitAdd="-0.03" basePrice="35" name="Rod"  >
-			<weaponDamageCategory type="bash"/>
+		<weaponType baseAttack="3" hitAdd="-0.03" basePrice="35" name="Rod" damageCategory="bash"  >
 			<iconRef>Weapons/rod</iconRef>
 		</weaponType>
 	</weaponTypes>
@@ -281,13 +260,13 @@
 		</armorType>
 		<armorType baseArmorClass="5" baseResist="5" basePrice="200" name="Boots" slot="feet">
 			<iconRef>Armor/boot</iconRef>
-		</armorType>	
+		</armorType>
 		<armorType baseArmorClass="10" baseResist="50" basePrice="250" name="Hat" slot="head">
 			<iconRef>Armor/hat</iconRef>
 		</armorType>
 	</armorTypes>
-	
-	
+
+
 	<itemList>
 		<namedItem name="Ice Dragon Shield" dropRarity="rare">
 			<iconRef>Armor/poisonshield</iconRef>
@@ -338,5 +317,5 @@
 			<specialItem/>
 		</namedItem>
 	</itemList>
-		
+
 </items>

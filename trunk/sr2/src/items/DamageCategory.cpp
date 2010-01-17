@@ -13,11 +13,28 @@ bool StoneRing::DamageCategoryIsMagic(eDamageCategory category)
     return category > _END_OF_PHYSICAL_DAMAGE;
 }
 
+bool StoneRing::DamageCategoryIsElemental(eDamageCategory category)
+{
+    switch(category)
+    {
+        case EARTH:
+        case FIRE:
+        case WIND:
+        case WATER:
+        // case HEART:
+        case LIGHTNING:
+        case ICE:
+            return true;
+        default:
+            return false;
+    }
+}
+
 eDamageCategory StoneRing::DamageCategoryFromString(const std::string& string)
 {
     if(string == "bash") return BASH;
     else if(string == "jab") return JAB;
-    else if(string == "slice") return SLICE;
+    else if(string == "slash") return SLASH;
     else if(string == "holy") return HOLY;
     else if(string == "dark") return DARK;
     else if(string == "fire") return FIRE;
