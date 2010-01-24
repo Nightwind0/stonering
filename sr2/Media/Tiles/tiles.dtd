@@ -1,7 +1,0 @@
-<!ELEMENT tilemaps (tilemap+)>
-<!ELEMENT tilemap EMPTY>
-<!ATTLIST tilemap name CDATA #REQUIRED>
-<!ATTLIST tilemap surface CDATA #REQUIRED>
-<!ATTLIST tilemap width CDATA #REQUIRED>
-<!ATTLIST tilemap height CDATA #REQUIRED>
-
