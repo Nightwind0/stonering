@@ -1,0 +1,163 @@
+
+
+Vict Orb
+
+Bears with Crossbows
+
+Rat Kings http://www.boingboing.net/2008/02/07/rat-kings.html
+
+Tapirs
+
+Balloon thrower - with ballons filled with one of:
+water
+piss
+acid
+molten lead
+blood
+ambrosia (heal)
+
+Seven Elves named after the seven stars of the big dipper:
+Dubhe
+Merak
+Phecda
+Megrez
+Alioth
+Mizar
+Alkaid.
+
+
+
+Heart-kun as a summon. (The dog with the heart shaped mark)
+
+Instead of "Mage" or "Enchanter" We're going to go with "Lailoken"
+
+Mascots - with different numbers (types?) of idol slots. 
+
+Sacred Books - a main sacred book thats part of the story. Then, one that's an optional sidequest but prooves to be an awesome power.
+Lailoken - Wizard / Madman
+Flavius Jobin
+"Hopestones"
+"Warmhope" - A place? Maybe you collect hopestones and bring them to Warmhope for something.
+
+The following types of nymphs:
+http://en.wikipedia.org/wiki/Nymphs
+
+Mochi Demons -- Possibly the Stone Ring version of slimes?
+
+Make a thread for handling drawing and input! That way you don't have to make it asynchronous, instead of calling run() twice on the stack you can have it in another thread, i think. Don't make it asynch. I'm convinced its wrong.
+
+Baxwbakwalanuksiwe' ("Man-Eater at the North End of the World"; who can transform into various man-eating birds and was said to have mouths all over his body.
+
+Huxwhukw (supernatural Crane-Like Bird who cracks skulls of men to suck out their brains)
+
+Mad Squirrels - Think humans are a type of nut, and jump on your head and try to crack your skull open. Some sort of tie in with Jayton. They jump on your head and gnaw, usually doing some damage, but theres a small chance that they crack your skull and its instant death. Unless you're wearing special anti-squirrel helmets. 
+
+Endospores
+Naiads
+Water Bears
+
+AMNIPOGANS
+Shellelagh
+Loaded Shellelagh
+Vinegaroon - type of giant scorpion
+
+FORMULAE:
+
+EXPONENTIAL STATS-
+c*b^L+d
+L = Level
+
+C is a constant. Raise this or lower it for classes. For example, if the
+equation is STR = c*b^L
+If you want a warrior's strength to be double that of a mages, then you
+will want the warriors C to be double that of the mages. 
+
+B is the base and it determines growth rate. 
+If B is set to 2, then it will double every level. If you set it to
+1.07 then its more like double every 10 levels or so.
+
+d is just a booster for beginning levels. It can be zero to give no boost.
+
+Note: In this way, you can't just apply attribute modifiers and forget them.
+You have to keep a running tally of multipliers and adds to every stat,
+and apply them when calculating (Don't forget to add in temporary bonuses!). Call the total of all multipliers m, and the total of all adds e (including start stat if any). When you calculate a stat, it looks like this:
+e + mcb^L
+
+In this case, statIncrease should take, instead of increment and period,
+a "c" factor and a "b" factor. Remember, b determines growth speed and should
+be close to 1.05 or so for most stats. Maybe 1.1 for HP/MP....
+Experimentally, 10*1.1^L for a mages HP looks okay,and
+17*1.1^L for a warrior HP looks okay... or at least somewhere around these values.
+For STR and the like a single digit number times a 1.05 or so looks good.
+4*1.06^L for a mage's STR maybe, and 10*1.06^L for war.
+
+
+AMNIPOGANS
+Shellelagh
+Loaded Shellelagh
+Green Mage
+Metaballs - item
+Caladbolg - Irish Sword the size of a rainbow
+Cashmere Yams
+REQUIRE OMEN
+ALPHA DELIMITER
+OMEGA DELIMITER
+Need: onVictory and onDefeat as children of startBattle. One or zero of each.
+Need: breakpoint cost on skills/spells
+Need: ability to have non-mp, non-bp skills like ones that make things cheaper, or make encounters higher or lower, and have on/off capability
+Need: onEnterLevel, onExitLevel scripts in levelHeader
+
+Cool:
+Use CL_Gradient for text/menu backgrounds, battle backgrounds.... etc (CL_Display::fill_rect)
+Use set_alpha and rotate_yaw,etc, on sprites for effects. Open them up to animation
+
+
+ANIMATION:
+Provide an "arc" and "sine" option for animation movements, so you can have projectiles move either straight, in an arc, or a crazy sine wave.
+
+
+Notes from Talking to Victor:
+1) You CAN display MOs by iterating over the tiles from topleft to bottom right, even though some may take up multiple tiles, by giving them a frame count. i.e. you increment the frame count (a long?) each time you draw it and then if the frame count is already high enough then you don't have to draw it again.
+
+2) You can fix the "MO stuck inside another MO that became relevant" problem by either ignoring it and letting the player reload the level, or by "killing" the MO and letting it respawn. It would be cool to gib the object too, just for fun, and seeing an object gib would be rare, unless you designed a level to do it. If you put a solid object in a spawn point, its a stupid idea, but the object would just gib over and over. You could also potentially have things blocked off entirely by being surrounded by tiles or stationary objects, but thats a level design consideration, not an engine consideration.
+
+3) You can easily know which tiles to draw by adding the floor() and ciel() to the X and Y dimensions of tiles to draw around the character
+
+4) The level object will have to take care of "step()" by checking a virtual method on the mappable objects which indicates if they are the player. If so, when he becomes aligned, step() should be called. 
+
+5) The application should be able to query the level to get a pointer to the player. The level should keep a separate pointer latched so it doesnt have to
+ search.
+
+5) "Talk/prod" should be handled by the level, it looks at the players position and direction and determines the next cell over and executes talk on the first active MO there if any. The app just calls talk()
+
+
+Skill system - some skills use Break, some use MP, some are switch on/off,
+some are always on.
+
+SKILLS:
+Bartering: 10% off sales
+Scouting: Increased encounters
+Stealth: Decreased encounters
+Treasure Hunter: Sense when hidden treasure is near
+
+
+IDOLS:
+You should be able to obtain idols which shift the awards you get from battle from money to goods or vice versa.
+A money idol shifts you to more money.
+A weapon idol shifts you towards weapons.
+A potion idol " " " " 
+etc.
+
+This can be done by providing a party-wide attribute like Money%, Weapon%, etc... which the idol shifts when equipped and unshifts when
+unequipped. You could have only one idol equipped, and it equips to your whole party, in a special idol slot.... There should also be idols
+which attract/repel monsters.
+
+MASCOTS:
+Also, the number of idols you can equip depends on which mascot you have equipped. You start with a small bird or something that can only carry one idol, and you progress until you can equip maybe 4. 
+
+
+OPTIMIZATIONS:
+
+Potentially, instead of keeping entire tilemaps in memory, you could , upon loading a level, load up the tilemaps that it uses, then split them into individual tiles, and delete the ones that aren't used, leaving only the tiles used by a level in memory at any one time. 
+
+
