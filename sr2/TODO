@@ -1,0 +1,57 @@
+Danny TODOs
+
+
+
+- Attack skill should just "use" the weapon being used, and then "use" the armor being hit. Those scripts should generally do exactly what the "Attack" script does now.
+
+- battle bifs need to be filled in
+- "chooseItem" dialog & bif,  and "useItem" bif
+- character attributes need to be nicer, some kind of table, because
+  even though we can derive maxima for the transients, we can't do so with
+  minima. 
+
+
+
+
+1) Levels need a load script and an unload script. The game itself also needs to be able to load a script at the beginning that can load functions in
+
+2) Skills need to be based off either Break, MP, or always on, or have a setting in the menu to turn them on or off.
+
+testing
+
+5) How will monsters work? How will you know what monsters to load? How will you know where you can even have monsters? 
+Monster region. Can they overlap?  no.
+A certain maximum per level. But each region can have multiple rectangles.
+In other words, if you had blue, red and green regions, you could have as many
+blue red and green rectangles across a level as you wanted, with a resolution of one tile.
+Each contains a table of monster party and incident rate. The rate is a number, 
+and the chance is that number divided by the number total for that region.
+So you might have a party of three Teds with an incident of 20, and several
+other parties adding up to a total of 200, meaning 10% chance of three teds.
+For speed reasons, at load time, the region which covers each tile is calculated,
+and that tile gets an mcMonsterRegionIndex set. That index is into an array or vector
+of monster regions. Since we allow only a few (8? 12?) different regions per level,
+this need only be a character, which we shall treat as a very short int. 
+This array lookup by tile gives us FAST lookup. We already know the tiles stepped on in the
+Level::step() method, so we simply grab a monster region index from one of them. 
+That gets translated into a monster region almost for free. Then we can also look at the region's encounter rate to determine if we should have a battle.
+
+NOTE: The short int (or even char really...) representing the monster rectangle is smaller and almost as effecient as a pointer to the region itself. So use the char per tile.
+
+
+7) HasEquipped ( item type, item name, any | current )
+
+8) SaveDialog <saveDialog/>
+
+9) UseItem (list of items that respond to this, and each of these contains a list of actions to respond to using this item here). This makes the engine bring up a list of the party's items, and lets you try using them. If you use an item for which there is no option, nothing happens and you keep your item.
+<useItem>
+ <option removeOnUse="true"> <!-- Or you could use a takeItem, but this is convenient -->
+  <itemRef>GemStone</itemRef>
+  <actionList>
+   <say speaker="God">You have used the GemStone on this door...</say>
+  </actionList>
+  </option>
+</useItem>
+
+
+

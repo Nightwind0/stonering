@@ -1,0 +1,95 @@
+﻿<monsters>
+    <monster name="Endospore" mode="class" spriteResources="endospore" class="Warrior" level="1">
+        <onRound>
+            <script id="Endospore_round">
+            </script>
+        </onRound>
+
+        <itemRef>
+            <weaponRef>
+                <weaponTypeRef name="Knife"/>
+                <weaponClassRef name="Poor" />
+            </weaponRef>
+        </itemRef>
+        <stat id="hp_max"   value="92"/>
+        <stat id="mp_max" value="0"/>
+        <stat id="str" value="5"/>
+        <stat id="def" value="3"/>
+        <stat id="dex" value="0.90"/>
+        <stat id="evd" value="0.12"/>
+        <stat id="mag" value="0"/>
+        <stat id="lck" value="3"/>
+    </monster>
+    <monster name="Green Tea Mochi" mode="class" spriteResources="Green Tea Mochi" class="Warrior" level="1">
+        <onRound>
+            <script id="GreenTeaMochi_round">
+            </script>
+        </onRound>
+
+        <itemRef>
+            <weaponRef>
+                <weaponTypeRef name="Knife"/>
+                <weaponClassRef name="Poor" />
+            </weaponRef>
+        </itemRef>
+        <stat id="hp_max"   value="92"/>
+        <stat id="mp_max" value="0"/>
+        <stat id="str" value="5"/>
+        <stat id="def" value="3"/>
+        <stat id="dex" value="0.90"/>
+        <stat id="evd" value="0.12"/>
+        <stat id="mag" value="0"/>
+        <stat id="lck" value="3"/>
+    </monster>
+    <monster name="Stoked Green Tea Mochi" mode="class" spriteResources="Stoked Green Tea Mochi" class="Warrior" level="1">
+        <onRound>
+            <script id="StokedGreenTeaMochi_round">
+            </script>
+        </onRound>
+        <stat id="hp_max"   value="152"/>
+        <stat id="mp_max" value="0"/>
+        <stat id="str" value="5"/>
+        <stat id="def" value="3"/>
+        <stat id="dex" value="0.90"/>
+        <stat id="evd" value="0.12"/>
+        <stat id="mag" value="0"/>
+        <stat id="lck" value="3"/>
+    </monster>
+    <monster name="Megaspore" mode="class" spriteResources="endospore" class="Warrior" level="3">
+        <onRound>
+            <script id="Megaspore_round">
+            </script>
+        </onRound>
+        <itemRef>
+            <weaponRef>
+                <weaponTypeRef name="Knife"/>
+                <weaponClassRef name="Poor" />
+            </weaponRef>
+        </itemRef>
+        <stat id="hp_max"   value="133"/>
+        <stat id="mp_max" value="5"/>
+        <stat id="str" value="8"/>
+        <stat id="def" value="3"/>
+        <stat id="dex" value="0.90"/>
+        <stat id="evd" value="0.08"/>
+        <stat id="mag" value="0"/>
+        <stat id="lck" value="3"/>
+        <stat id="rst" value="6"/>
+    </monster>
+    <monster name="Grass Wolf" mode="manual" spriteResources="wolf" level="1">
+        <onRound>
+            <script id="Grass Wolf_round">
+                doSkill("Attack");  // Monsters are allowed to use any skill they want.
+            </script>
+        </onRound>
+        <stat id="hp_max"   value="130"/>
+        <stat id="mp_max" value="5"/>
+        <stat id="str" value="12"/>
+        <stat id="def" value="3"/>
+        <stat id="dex" value="0.95"/>
+        <stat id="evd" value="0.09"/>
+        <stat id="mag" value="0"/>
+        <stat id="lck" value="3"/>
+        <stat id="rst" value="6"/>
+    </monster>
+</monsters>

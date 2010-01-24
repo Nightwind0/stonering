@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE tilemaps SYSTEM "tiles.dtd">
+<tilemaps>
+ 	<tilemap name = "grass" surface = "grass.png" width="16" height="16"/>
+	<tilemap name = "water" surface = "water.png" width="16" height="16"/>
+	<tilemap name = "rock" surface = "rock.png" width="16" height="16"/>
+	<tilemap name = "bridge" surface = "bridge.png" width = "16" height = "3"/>
+</tilemaps>
+

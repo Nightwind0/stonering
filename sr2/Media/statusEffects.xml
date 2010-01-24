@@ -1,0 +1,28 @@
+<statusEffectList>
+	<statusEffect last="permanent" name="Poison">
+		<onRound>
+			<script id="SE_Poison">
+			
+			</script>
+		</onRound>
+	</statusEffect>
+	<statusEffect last="permanent" name="Stone">
+		<onInvoke>
+			<script id="SE_Stone">
+			</script>
+		</onInvoke>
+	</statusEffect>
+	<statusEffect last="battle" name="Enraged">
+		<onInvoke>
+			<script id = "SE_Enraged">
+			</script>
+		</onInvoke>
+	</statusEffect>
+	<statusEffect last="battle" name="Focused">
+		<onInvoke>
+			<script id="SE_Focused">
+			</script>
+		</onInvoke>
+	</statusEffect>
+		
+</statusEffectList>
