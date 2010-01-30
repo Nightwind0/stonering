@@ -166,6 +166,7 @@ bool TargetingState::SelectFromRightGroup()
     {
         m_pParent->m_targets.selected.m_pTarget = m_pParent->m_monsters->GetCharacter(0);
     }
+    m_pParent->m_targets.m_bSelectedGroup = false;
     return true;
 }
 bool TargetingState::SelectFromLeftGroup()
@@ -180,7 +181,7 @@ bool TargetingState::SelectFromLeftGroup()
     {
         m_pParent->m_targets.selected.m_pTarget = m_pParty->GetCharacter(0);
     }
-    // nop, just a state change
+    m_pParent->m_targets.m_bSelectedGroup = false;
     return true;
 }
 bool TargetingState::SelectTargetOnLeft()
