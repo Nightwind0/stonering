@@ -1,17 +1,23 @@
 #include "TargetingState.h"
 #include "BattleState.h"
+#include "IApplication.h"
+#include "Monster.h"
+#include "GraphicsManager.h"
 
 using StoneRing::TargetingState;
 using StoneRing::BattleState;
 
 void TargetingState::Init(BattleState *pParent, Targetable targetable, bool bDefaultMonsters)
 {
+    GraphicsManager * pGraphicsManager = GraphicsManager::GetInstance();
+
+    m_target_sprite = pGraphicsManager->CreateSprite("Battle/Target");
     m_pParent = pParent;
     m_targetable = targetable;
     m_bDefaultMonsters = bDefaultMonsters;
     m_pParent->StartTargeting();
 
-
+    m_pParty = IApplication::GetInstance()->GetParty();
     if (bDefaultMonsters)
     {
         if (m_pParent->MonstersOnLeft())
@@ -41,16 +47,16 @@ void TargetingState::ChangeState(State newState)
     switch (newState)
     {
     case SELECT_RIGHT_GROUP:
-        m_pParent->SelectRightGroup();
+        SelectRightGroup();
         break;
     case SELECT_LEFT_GROUP:
-        m_pParent->SelectLeftGroup();
+        SelectLeftGroup();
         break;
     case SELECT_SINGLE_LEFT:
-        m_pParent->SelectFromLeftGroup();
+        SelectFromLeftGroup();
         break;
     case SELECT_SINGLE_RIGHT:
-        m_pParent->SelectFromRightGroup();
+        SelectFromRightGroup();
         break;
     }
 
@@ -66,12 +72,6 @@ void TargetingState::HandleKeyDown(const CL_InputEvent &key)
 {
     switch (key.id)
     {
-    case CL_KEY_DOWN:
-        m_pParent->SelectNextTarget();
-        break;
-    case CL_KEY_UP:
-        m_pParent->SelectPreviousTarget();
-        break;
 
 
     }
@@ -82,44 +82,50 @@ void TargetingState::HandleKeyUp(const CL_InputEvent &key)
     switch (key.id)
     {
     case CL_KEY_LEFT:
-        if (m_state == SELECT_SINGLE_RIGHT)
+        if (m_state == SELECT_SINGLE_LEFT)
         {
-            ChangeState(SELECT_SINGLE_LEFT);
+            if (!SelectTargetOnLeft())
+            {
+                ChangeState(SELECT_LEFT_GROUP);
+            }
+        }
+        else if (m_state == SELECT_SINGLE_RIGHT)
+        {
+            if (!SelectTargetOnLeft())
+            {
+                ChangeState(SELECT_SINGLE_LEFT);
+            }
         }
         else if (m_state == SELECT_RIGHT_GROUP)
         {
-            if (m_targetable & SINGLE)
-                ChangeState(SELECT_SINGLE_RIGHT);
-            else
-                ChangeState(SELECT_LEFT_GROUP);
-        }
-        else if (m_state == SELECT_SINGLE_LEFT)
-        {
-            if(m_targetable & GROUP)
-                ChangeState(SELECT_LEFT_GROUP);
+            ChangeState(SELECT_SINGLE_RIGHT);
         }
         break;
     case CL_KEY_RIGHT:
-        if(m_state == SELECT_SINGLE_RIGHT)
+        if (m_state == SELECT_SINGLE_LEFT)
         {
-            if(m_targetable & GROUP)
-                ChangeState(SELECT_RIGHT_GROUP);
-        }
-        else if(m_state == SELECT_SINGLE_LEFT)
-        {
-            if(m_targetable & SINGLE)
+            if (!SelectTargetOnRight())
+            {
                 ChangeState(SELECT_SINGLE_RIGHT);
-            else
-                ChangeState(SELECT_RIGHT_GROUP);
+            }
         }
-        else if(m_state == SELECT_LEFT_GROUP)
+        else if (m_state == SELECT_SINGLE_RIGHT)
         {
-            if(m_targetable & SINGLE)
-                ChangeState(SELECT_SINGLE_LEFT);
-            else
+            if (!SelectTargetOnRight())
+            {
                 ChangeState(SELECT_RIGHT_GROUP);
+            }
         }
-
+        else if (m_state == SELECT_LEFT_GROUP)
+        {
+            ChangeState(SELECT_SINGLE_LEFT);
+        }
+        break;
+    case CL_KEY_DOWN:
+        SelectDownTarget();
+        break;
+    case CL_KEY_UP:
+        SelectUpTarget();
         break;
     case CL_KEY_ENTER:
         m_bDone = true;
@@ -127,8 +133,310 @@ void TargetingState::HandleKeyUp(const CL_InputEvent &key)
     }
 }
 
-void TargetingState::Draw(const CL_Rect &screenRect,CL_GraphicContext& pGC)
+bool TargetingState::SelectRightGroup()
 {
+    if (m_pParent->MonstersOnLeft())
+        m_pParent->m_targets.selected.m_pGroup = m_pParty;
+    else
+        m_pParent->m_targets.selected.m_pGroup = m_pParent->m_monsters;
+
+
+    m_pParent->m_targets.m_bSelectedGroup = true;
+    return true;
+}
+bool TargetingState::SelectLeftGroup()
+{
+    if (m_pParent->MonstersOnLeft())
+        m_pParent->m_targets.selected.m_pGroup = m_pParent->m_monsters;
+    else
+        m_pParent->m_targets.selected.m_pGroup = m_pParty;
+
+
+    m_pParent->m_targets.m_bSelectedGroup = true;
+    return true;
+}
+bool TargetingState::SelectFromRightGroup()
+{
+    // nop, just a state change
+    if (m_pParent->MonstersOnLeft())
+    {
+        m_pParent->m_targets.selected.m_pTarget = m_pParty->GetCharacter(0);
+    }
+    else
+    {
+        m_pParent->m_targets.selected.m_pTarget = m_pParent->m_monsters->GetCharacter(0);
+    }
+    return true;
+}
+bool TargetingState::SelectFromLeftGroup()
+{
+    if (m_pParent->MonstersOnLeft())
+    {
+
+        m_pParent->m_targets.selected.m_pTarget = m_pParent->m_monsters->GetCharacter(0);
+
+    }
+    else
+    {
+        m_pParent->m_targets.selected.m_pTarget = m_pParty->GetCharacter(0);
+    }
+    // nop, just a state change
+    return true;
+}
+bool TargetingState::SelectTargetOnLeft()
+{
+    if (m_pParent->m_targets.m_bSelectedGroup)
+    {
+        // Pick top one in this group
+    }
+    else
+    {
+        ICharacter * target = m_pParent->m_targets.selected.m_pTarget;
+        Monster * pMonster = dynamic_cast<Monster*>(target);
+        if (pMonster != NULL)
+        {
+            // It's a monster... find out where it is
+            uint cellX = pMonster->GetCellX();
+            uint cellY = pMonster->GetCellY();
+
+            // Can't go left from here
+            if (cellX == 0) return false;
+
+            uint currentCellX = cellX - 1;
+            bool found = false;
+            while (!found && currentCellX >0)
+            {
+                uint currentCellY_up = cellY;
+                uint currentCellY_down = cellY;
+
+                // Or, so that one can continue if the other is maxed out
+                while (currentCellY_up >0 || currentCellY_down < m_pParent->m_nRows)
+                {
+                    for (std::deque<ICharacter*>::const_iterator iter = m_pParent->m_initiative.begin(); iter != m_pParent->m_initiative.end(); iter++)
+                    {
+                        Monster * pMonster = dynamic_cast<Monster*>(*iter);
+                        if (pMonster != NULL)
+                        {
+                            if (pMonster->GetCellX() == currentCellX && (pMonster->GetCellY() == currentCellY_up || pMonster->GetCellY() == currentCellY_down))
+                            {
+                                m_pParent->m_targets.selected.m_pTarget = pMonster;
+                                return true;
+                            }
+                        }
+                    }
+                    currentCellY_up--;
+                    currentCellY_down++;
+
+                }
+
+                currentCellX--;
+
+            }
+
+        }
+        else
+        {
+            // It's a player
+            // TODO: This..
+            // for now, we can only deal with one player
+            return false;
+        }
+    }
+
+    return false;
+}
+bool TargetingState::SelectTargetOnRight()
+{
+    if (m_pParent->m_targets.m_bSelectedGroup)
+    {
+        // Pick top one in this group
+    }
+    else
+    {
+        ICharacter * target = m_pParent->m_targets.selected.m_pTarget;
+        Monster * pMonster = dynamic_cast<Monster*>(target);
+        if (pMonster != NULL)
+        {
+            // It's a monster... find out where it is
+            uint cellX = pMonster->GetCellX();
+            uint cellY = pMonster->GetCellY();
+
+            uint currentCellX = cellX + 1;
+            bool found = false;
+            while (!found && currentCellX < m_pParent->m_nColumns)
+            {
+                uint currentCellY_up = cellY;
+                uint currentCellY_down = cellY;
+
+                // Or, so that one can continue if the other is maxed out
+                while (currentCellY_up >0 || currentCellY_down < m_pParent->m_nRows)
+                {
+                    for (std::deque<ICharacter*>::const_iterator iter = m_pParent->m_initiative.begin(); iter != m_pParent->m_initiative.end(); iter++)
+                    {
+                        Monster * pMonster = dynamic_cast<Monster*>(*iter);
+                        if (pMonster != NULL)
+                        {
+                            if (pMonster->GetCellX() == currentCellX && (pMonster->GetCellY() == currentCellY_up || pMonster->GetCellY() == currentCellY_down))
+                            {
+                                m_pParent->m_targets.selected.m_pTarget = pMonster;
+                                return true;
+                            }
+                        }
+                    }
+
+                    if(currentCellY_up > 0)
+                        currentCellY_up--;
+
+                    currentCellY_down++;
+
+                }
+
+                currentCellX++;
+
+            }
+
+        }
+        else
+        {
+            // It's a player
+            // TODO: This..
+            // for now, we can only deal with one player
+            return false;
+        }
+    }
+
+    return false;
+}
+void TargetingState::SelectDownTarget()
+{
+    if (m_pParent->m_targets.m_bSelectedGroup)
+    {
+        // Pick top one in this group
+    }
+    else
+    {
+        ICharacter * target = m_pParent->m_targets.selected.m_pTarget;
+        Monster * pMonster = dynamic_cast<Monster*>(target);
+        if (pMonster != NULL)
+        {
+            // It's a monster... find out where it is
+            uint cellX = pMonster->GetCellX();
+            uint cellY = pMonster->GetCellY();
+            uint currentCellY_down = cellY + 1;
+
+            while (currentCellY_down < m_pParent->m_nRows)
+            {
+                for (std::deque<ICharacter*>::const_iterator iter = m_pParent->m_initiative.begin(); iter != m_pParent->m_initiative.end(); iter++)
+                {
+                    Monster * pMonster = dynamic_cast<Monster*>(*iter);
+                    if (pMonster != NULL)
+                    {
+                        if (pMonster->GetCellX() == cellX && pMonster->GetCellY() == currentCellY_down)
+                        {
+                            m_pParent->m_targets.selected.m_pTarget = pMonster;
+                            return;
+                        }
+                    }
+                }
+                currentCellY_down++;
+
+            }
+        }
+        else
+        {
+            // It's a player
+            // TODO: This..
+            // for now, we can only deal with one player
+            return;
+        }
+    }
+
+    return;
+}
+void TargetingState::SelectUpTarget()
+{
+
+    if (m_pParent->m_targets.m_bSelectedGroup)
+    {
+        // Pick top one in this group
+    }
+    else
+    {
+        ICharacter * target = m_pParent->m_targets.selected.m_pTarget;
+        Monster * pMonster = dynamic_cast<Monster*>(target);
+        if (pMonster != NULL)
+        {
+            // It's a monster... find out where it is
+            uint cellX = pMonster->GetCellX();
+            uint cellY = pMonster->GetCellY();
+            uint currentCellY_up = cellY -1;
+
+            while (currentCellY_up > 0)
+            {
+                for (std::deque<ICharacter*>::const_iterator iter = m_pParent->m_initiative.begin(); iter != m_pParent->m_initiative.end(); iter++)
+                {
+                    Monster * pMonster = dynamic_cast<Monster*>(*iter);
+                    if (pMonster != NULL && pMonster->GetToggle(ICharacter::CA_VISIBLE))
+                    {
+                        if (pMonster->GetCellX() == cellX && pMonster->GetCellY() == currentCellY_up)
+                        {
+                            m_pParent->m_targets.selected.m_pTarget = pMonster;
+                            return;
+                        }
+                    }
+                }
+                currentCellY_up--;
+
+            }
+        }
+        else
+        {
+            // It's a player
+            // TODO: This..
+            // for now, we can only deal with one player
+            return;
+        }
+    }
+
+    return;
+}
+
+
+void TargetingState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
+{
+
+    m_target_sprite.update();
+    // TODO: Add methods to BattleState so I can ask where things will get displayed..
+    uint cellWidth = m_pParent->m_monster_rect.get_width() / m_pParent->m_nColumns;
+    uint cellHeight = m_pParent->m_monster_rect.get_height() / m_pParent->m_nRows;
+
+    uint playercount = m_pParty->GetCharacterCount();
+    for (uint nPlayer = 0; nPlayer < playercount; nPlayer++)
+    {
+
+        ICharacter * pCharacter = m_pParty->GetCharacter(nPlayer);
+        if ((m_pParent->m_targets.m_bSelectedGroup && m_pParent->m_targets.selected.m_pGroup == m_pParty)
+                || m_pParent->m_targets.selected.m_pTarget == pCharacter)
+        {
+            m_target_sprite.draw(GC,
+                                 static_cast<int>(m_pParent->m_player_rect.left + nPlayer * 64 -   (m_target_sprite.get_width()/2)),
+                                 static_cast<int>(m_pParent->m_player_rect.top + (nPlayer*64) - (m_target_sprite.get_height()/2)));
+        }
+    }
+
+
+    for (int i = 0; i < m_pParent->m_monsters->GetCharacterCount(); i++)
+    {
+        Monster * pMonster = dynamic_cast<Monster*>( m_pParent->m_monsters->GetCharacter(i));
+        if ((m_pParent->m_targets.m_bSelectedGroup && m_pParent->m_targets.selected.m_pGroup == m_pParent->m_monsters)
+                || m_pParent->m_targets.selected.m_pTarget == pMonster)
+        {
+            int drawX = pMonster->GetCellX() * cellWidth;
+            int drawY = pMonster->GetCellY() * cellHeight;
+            m_target_sprite.draw(GC,drawX -   (m_target_sprite.get_width()/2),
+                                 drawY - (m_target_sprite.get_height()/2));
+        }
+    }
 }
 
 bool TargetingState::LastToDraw() const

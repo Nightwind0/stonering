@@ -43,13 +43,19 @@ namespace StoneRing{
 	// Go back to menu, they decided not to proceed with this option
 	void CancelOption();
 	void FinishTargeting();
-	void SelectNextTarget();
-	void SelectPreviousTarget();
-	void SelectFromLeftGroup();
-	void SelectFromRightGroup();
-	void SelectLeftGroup();
-	void SelectRightGroup();
-	bool MonstersOnLeft();
+	// These return true if one is selected, false if
+	// there is nothing in that direction
+	/*
+	bool SelectTargetOnLeft();
+	bool SelectTargetOnRight();
+	bool SelectFromLeftGroup();
+	bool SelectFromRightGroup();
+	bool SelectLeftGroup();
+	bool SelectRightGroup();
+	void SelectUpTarget();
+	void SelectDownTarget();
+	*/
+		bool MonstersOnLeft();
         enum eState
         {
             TRANSITION_IN,
@@ -144,7 +150,6 @@ namespace StoneRing{
         CL_Image m_statusBar;
         CL_Image m_battleMenu;
         CL_Image m_battlePopup;
-        CL_Sprite  m_target_sprite;
         CL_Rect m_status_rect;
         CL_Rect m_popup_rect;
         CL_Rect m_monster_rect;

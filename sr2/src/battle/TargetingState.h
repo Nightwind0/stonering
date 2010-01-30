@@ -4,12 +4,14 @@
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
 #include "State.h"
+#include "ICharacter.h"
+#include "Party.h"
 
 class SteelInterpreter;
 
 namespace StoneRing
 {
-  class BattleState;
+    class BattleState;
 
     class TargetingState : public State
     {
@@ -37,16 +39,30 @@ namespace StoneRing
       {
         SELECT_SINGLE_LEFT,
         SELECT_SINGLE_RIGHT,
+
         SELECT_LEFT_GROUP,
         SELECT_RIGHT_GROUP
       };
+      bool SelectRightGroup();
+      bool SelectLeftGroup();
+      bool SelectFromRightGroup();
+      bool SelectFromLeftGroup();
+      bool SelectTargetOnLeft();
+      bool SelectTargetOnRight();
+      void SelectDownTarget();
+      void SelectUpTarget();
+
+      ICharacterGroup * get_left_group() const;
+      ICharacterGroup * get_right_group() const;
+
       void ChangeState(State newState);
       BattleState *m_pParent;
+      IParty * m_pParty;
       State m_state;
       Targetable m_targetable;
       bool m_bDefaultMonsters;
       bool m_bDone;
-
+      CL_Sprite  m_target_sprite;
     };
 
 }
