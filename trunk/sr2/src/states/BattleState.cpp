@@ -19,8 +19,6 @@ void BattleState::init(const MonsterGroup &group, const std::string &backdrop)
     CharacterManager * pCharManager = IApplication::GetInstance()->GetCharacterManager();
     GraphicsManager * pGraphicsManager = GraphicsManager::GetInstance();
 
-    m_target_sprite = pGraphicsManager->CreateSprite("Battle/Target");
-
     m_monsters = new MonsterParty();
 
     m_nRows = group.GetCellRows();
@@ -349,18 +347,18 @@ void BattleState::draw_status(const CL_Rect &screenRect, CL_GraphicContext& GC)
         CL_Font  mpFont = pGraphicsManager->GetFont(GraphicsManager::BATTLE_STATUS, "mp");
 
         generalFont.draw_text(GC,m_status_rect.left,
-                            static_cast<int>(m_status_rect.top + (p *
+                            static_cast<int>(m_status_rect.top + generalFont.get_font_metrics(GC).get_height() +(p *
                           generalFont.get_font_metrics(GC).get_height())
                           ),
                            name.str());
         hpFont.draw_text(GC,m_status_rect.get_width() / 3 + m_status_rect.left,
-                     static_cast<int>(m_status_rect.top + (p* hpFont.get_font_metrics(GC).get_height()))
+                     static_cast<int>(m_status_rect.top + hpFont.get_font_metrics(GC).get_height()+(p* hpFont.get_font_metrics(GC).get_height()))
                      ,hp.str());
         std::ostringstream mp;
         mp << std::setw(6) << pChar->GetAttribute(ICharacter::CA_MP) << '/'
         << pChar->GetAttribute(ICharacter::CA_MAXMP);
         mpFont.draw_text(GC,(m_status_rect.get_width() / 3) * 2 + m_status_rect.left,
-                     static_cast<int>(m_status_rect.top + (p*mpFont.get_font_metrics(GC).get_height())),mp.str());
+                     static_cast<int>(m_status_rect.top + mpFont.get_font_metrics(GC).get_height() + (p*mpFont.get_font_metrics(GC).get_height())),mp.str());
 
     }
 }
@@ -400,15 +398,6 @@ void BattleState::draw_monsters(const CL_Rect &monsterRect, CL_GraphicContext& G
         sprite.draw(GC,drawX,drawY);
         sprite.update();
 
-        if (m_combat_state == TARGETING)
-        {
-            if ((m_targets.m_bSelectedGroup && m_targets.selected.m_pGroup == m_monsters)
-                    || m_targets.selected.m_pTarget == pMonster)
-            {
-                m_target_sprite.draw(GC,drawX -   (m_target_sprite.get_width()/2),
-                                      drawY - (m_target_sprite.get_height()/2));
-            }
-        }
     }
 }
 
@@ -428,16 +417,6 @@ void BattleState::draw_players(const CL_Rect &playerRect, CL_GraphicContext& GC)
         sprite.draw(GC,static_cast<int>(playerRect.left + nPlayer * 64), static_cast<int>(playerRect.top + (nPlayer * 64)));
         sprite.update();
 
-        if (m_combat_state == TARGETING)
-        {
-            if ((m_targets.m_bSelectedGroup && m_targets.selected.m_pGroup == pParty)
-                    || m_targets.selected.m_pTarget == pCharacter)
-            {
-                m_target_sprite.draw(GC,
-                    static_cast<int>(playerRect.left + nPlayer * 64 -   (m_target_sprite.get_width()/2)),
-                    static_cast<int>(playerRect.top + (nPlayer*64) - (m_target_sprite.get_height()/2)));
-            }
-        }
     }
 }
 
@@ -506,7 +485,7 @@ void BattleState::draw_menus(const CL_Rect &screenrect, CL_GraphicContext& GC)
 
             icon.draw(GC,static_cast<int>(m_popup_rect.left + 14), static_cast<int>(20 + m_popup_rect.top + option_height* pos));
 
-            font.draw_text(GC,static_cast<int>(m_popup_rect.left + 24 + icon.get_width()) , static_cast<int>(20 + m_popup_rect.top + option_height * pos),pOption->GetName());
+            font.draw_text(GC,static_cast<int>(m_popup_rect.left + 24 + icon.get_width()) , static_cast<int>(20 + font.get_font_metrics(GC).get_height() +  m_popup_rect.top + option_height * pos),pOption->GetName());
 
             ++pos;
         }
@@ -588,6 +567,7 @@ ICharacter* BattleState::get_prev_character(const ICharacterGroup* pParty, const
     return NULL;
 }
 
+#if 0
 void BattleState::SelectNextTarget()
 {
     Monster * pMonster = dynamic_cast<Monster*>(m_targets.selected.m_pTarget);
@@ -619,30 +599,28 @@ void BattleState::SelectPreviousTarget()
     }
 }
 
-void BattleState::SelectLeftGroup()
+void BattleState::SelectLeftTarget()
 {
-    m_targets.m_bSelectedGroup = true;
-    // TODO: Don't assume monsters are left, players are right...
-    m_targets.selected.m_pGroup = m_monsters;
+
 }
 
-void BattleState::SelectRightGroup()
+void BattleState::SelectRightTarget()
 {
-    m_targets.m_bSelectedGroup = true;
-    m_targets.selected.m_pGroup = IApplication::GetInstance()->GetParty();
+
 }
 
 
-void BattleState::SelectFromLeftGroup()
+void BattleState::SelectUpTarget()
 {
-    m_targets.selected.m_pTarget = m_monsters->GetCharacter(0);
-    m_targets.m_bSelectedGroup  = false;
+
 }
-void BattleState::SelectFromRightGroup()
+void BattleState::SelectDownTarget()
 {
-    m_targets.selected.m_pTarget = m_initiative[m_cur_char];
-    m_targets.m_bSelectedGroup  = false;
+
+
 }
+
+#endif
 
 bool BattleState::MonstersOnLeft()
 {

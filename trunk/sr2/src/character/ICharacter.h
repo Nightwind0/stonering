@@ -1,7 +1,20 @@
 #ifndef __ICHARACTER_H_INCLUDED
 #define __ICHARACTER_H_INCLUDED
 
+#include "sr_defines.h"
+#include "sr_defines.h"
+#include "Equipment.h"
+#include "Magic.h"
+#include "SpriteRef.h"
+#include "Weapon.h"
+#include "Armor.h"
+#include "DamageCategory.h"
+#include "ICharacter.h"
+
+
 namespace StoneRing{
+
+    class StatusEffect;
 
     class ICharacter
     {
