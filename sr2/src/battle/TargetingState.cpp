@@ -457,8 +457,9 @@ void TargetingState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
         {
             int drawX = pMonster->GetCellX() * cellWidth;
             int drawY = pMonster->GetCellY() * cellHeight;
-            m_target_sprite.draw(GC,drawX -   (m_target_sprite.get_width()/2),
-                                 drawY - (m_target_sprite.get_height()/2));
+            CL_Sprite sprite = pMonster->GetCurrentSprite();
+            m_target_sprite.draw(GC,drawX -   (m_target_sprite.get_width()/2.0f),
+                                 drawY - (m_target_sprite.get_height()/2.0f) + sprite.get_height()/2.0f);
         }
     }
 }
