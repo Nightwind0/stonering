@@ -22,7 +22,7 @@ void TargetingState::Init(BattleState *pParent, Targetable targetable, bool bDef
     {
         if (m_pParent->MonstersOnLeft())
         {
-            if (targetable & SINGLE)
+            if (may_target_single())
                 ChangeState(SELECT_SINGLE_LEFT);
             else
                 ChangeState(SELECT_LEFT_GROUP);
@@ -33,7 +33,7 @@ void TargetingState::Init(BattleState *pParent, Targetable targetable, bool bDef
 
         if (m_pParent->MonstersOnLeft())
         {
-            if (targetable & SINGLE)
+            if (may_target_single())
                 ChangeState(SELECT_SINGLE_RIGHT);
             else
                 ChangeState(SELECT_RIGHT_GROUP);
@@ -84,19 +84,19 @@ void TargetingState::HandleKeyUp(const CL_InputEvent &key)
     case CL_KEY_LEFT:
         if (m_state == SELECT_SINGLE_LEFT)
         {
-            if (!SelectTargetOnLeft())
+            if (!SelectTargetOnLeft() && may_target_group())
             {
                 ChangeState(SELECT_LEFT_GROUP);
             }
         }
         else if (m_state == SELECT_SINGLE_RIGHT)
         {
-            if (!SelectTargetOnLeft())
+            if (!SelectTargetOnLeft() && may_target_single())
             {
                 ChangeState(SELECT_SINGLE_LEFT);
             }
         }
-        else if (m_state == SELECT_RIGHT_GROUP)
+        else if (m_state == SELECT_RIGHT_GROUP && may_target_single())
         {
             ChangeState(SELECT_SINGLE_RIGHT);
         }
@@ -104,19 +104,19 @@ void TargetingState::HandleKeyUp(const CL_InputEvent &key)
     case CL_KEY_RIGHT:
         if (m_state == SELECT_SINGLE_LEFT)
         {
-            if (!SelectTargetOnRight())
+            if (!SelectTargetOnRight() && may_target_single())
             {
                 ChangeState(SELECT_SINGLE_RIGHT);
             }
         }
         else if (m_state == SELECT_SINGLE_RIGHT)
         {
-            if (!SelectTargetOnRight())
+            if (!SelectTargetOnRight() && may_target_group())
             {
                 ChangeState(SELECT_RIGHT_GROUP);
             }
         }
-        else if (m_state == SELECT_LEFT_GROUP)
+        else if (m_state == SELECT_LEFT_GROUP && may_target_single())
         {
             ChangeState(SELECT_SINGLE_LEFT);
         }
@@ -157,32 +157,48 @@ bool TargetingState::SelectLeftGroup()
 }
 bool TargetingState::SelectFromRightGroup()
 {
-    // nop, just a state change
     if (m_pParent->MonstersOnLeft())
     {
         m_pParent->m_targets.selected.m_pTarget = m_pParty->GetCharacter(0);
+        m_pParent->m_targets.m_bSelectedGroup = false;
+        return true;
     }
     else
     {
-        m_pParent->m_targets.selected.m_pTarget = m_pParent->m_monsters->GetCharacter(0);
+       for(uint i=0;i<m_pParent->m_monsters->GetCharacterCount();i++)
+       {
+           if(can_target(m_pParent->m_monsters->GetCharacter(i))){
+            m_pParent->m_targets.selected.m_pTarget = m_pParent->m_monsters->GetCharacter(i);
+            m_pParent->m_targets.m_bSelectedGroup = false;
+            return true;
+           }
+       }
     }
-    m_pParent->m_targets.m_bSelectedGroup = false;
-    return true;
+
+    return false;
 }
 bool TargetingState::SelectFromLeftGroup()
 {
     if (m_pParent->MonstersOnLeft())
     {
 
-        m_pParent->m_targets.selected.m_pTarget = m_pParent->m_monsters->GetCharacter(0);
+       for(uint i=0;i<m_pParent->m_monsters->GetCharacterCount();i++)
+       {
+           if(can_target(m_pParent->m_monsters->GetCharacter(i))){
+            m_pParent->m_targets.selected.m_pTarget = m_pParent->m_monsters->GetCharacter(i);
+            m_pParent->m_targets.m_bSelectedGroup = false;
+            return true;
+           }
+       }
 
     }
     else
     {
         m_pParent->m_targets.selected.m_pTarget = m_pParty->GetCharacter(0);
+        m_pParent->m_targets.m_bSelectedGroup = false;
+        return true;
     }
-    m_pParent->m_targets.m_bSelectedGroup = false;
-    return true;
+    return false;
 }
 bool TargetingState::SelectTargetOnLeft()
 {
@@ -203,20 +219,20 @@ bool TargetingState::SelectTargetOnLeft()
             // Can't go left from here
             if (cellX == 0) return false;
 
-            uint currentCellX = cellX - 1;
+            int currentCellX = cellX - 1;
             bool found = false;
-            while (!found && currentCellX >0)
+            while (!found && currentCellX >=0)
             {
-                uint currentCellY_up = cellY;
+                int currentCellY_up = cellY;
                 uint currentCellY_down = cellY;
 
                 // Or, so that one can continue if the other is maxed out
-                while (currentCellY_up >0 || currentCellY_down < m_pParent->m_nRows)
+                while (currentCellY_up >=0 || currentCellY_down < m_pParent->m_nRows)
                 {
                     for (std::deque<ICharacter*>::const_iterator iter = m_pParent->m_initiative.begin(); iter != m_pParent->m_initiative.end(); iter++)
                     {
                         Monster * pMonster = dynamic_cast<Monster*>(*iter);
-                        if (pMonster != NULL)
+                        if (pMonster != NULL && can_target(pMonster))
                         {
                             if (pMonster->GetCellX() == currentCellX && (pMonster->GetCellY() == currentCellY_up || pMonster->GetCellY() == currentCellY_down))
                             {
@@ -225,6 +241,8 @@ bool TargetingState::SelectTargetOnLeft()
                             }
                         }
                     }
+
+
                     currentCellY_up--;
                     currentCellY_down++;
 
@@ -275,7 +293,7 @@ bool TargetingState::SelectTargetOnRight()
                     for (std::deque<ICharacter*>::const_iterator iter = m_pParent->m_initiative.begin(); iter != m_pParent->m_initiative.end(); iter++)
                     {
                         Monster * pMonster = dynamic_cast<Monster*>(*iter);
-                        if (pMonster != NULL)
+                        if (pMonster != NULL && can_target(pMonster))
                         {
                             if (pMonster->GetCellX() == currentCellX && (pMonster->GetCellY() == currentCellY_up || pMonster->GetCellY() == currentCellY_down))
                             {
@@ -285,7 +303,7 @@ bool TargetingState::SelectTargetOnRight()
                         }
                     }
 
-                    if(currentCellY_up > 0)
+                    if (currentCellY_up > 0)
                         currentCellY_up--;
 
                     currentCellY_down++;
@@ -330,7 +348,7 @@ void TargetingState::SelectDownTarget()
                 for (std::deque<ICharacter*>::const_iterator iter = m_pParent->m_initiative.begin(); iter != m_pParent->m_initiative.end(); iter++)
                 {
                     Monster * pMonster = dynamic_cast<Monster*>(*iter);
-                    if (pMonster != NULL)
+                    if (pMonster != NULL && can_target(pMonster))
                     {
                         if (pMonster->GetCellX() == cellX && pMonster->GetCellY() == currentCellY_down)
                         {
@@ -370,14 +388,17 @@ void TargetingState::SelectUpTarget()
             // It's a monster... find out where it is
             uint cellX = pMonster->GetCellX();
             uint cellY = pMonster->GetCellY();
+
+            if (cellY == 0) return;
+
             uint currentCellY_up = cellY -1;
 
-            while (currentCellY_up > 0)
+            while (currentCellY_up >= 0)
             {
                 for (std::deque<ICharacter*>::const_iterator iter = m_pParent->m_initiative.begin(); iter != m_pParent->m_initiative.end(); iter++)
                 {
                     Monster * pMonster = dynamic_cast<Monster*>(*iter);
-                    if (pMonster != NULL && pMonster->GetToggle(ICharacter::CA_VISIBLE))
+                    if (pMonster != NULL && can_target(pMonster))
                     {
                         if (pMonster->GetCellX() == cellX && pMonster->GetCellY() == currentCellY_up)
                         {
@@ -386,7 +407,9 @@ void TargetingState::SelectUpTarget()
                         }
                     }
                 }
-                currentCellY_up--;
+
+                if(currentCellY_up >0)
+                    currentCellY_up--;
 
             }
         }
@@ -426,7 +449,7 @@ void TargetingState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
     }
 
 
-    for (int i = 0; i < m_pParent->m_monsters->GetCharacterCount(); i++)
+    for (uint i = 0; i < m_pParent->m_monsters->GetCharacterCount(); i++)
     {
         Monster * pMonster = dynamic_cast<Monster*>( m_pParent->m_monsters->GetCharacter(i));
         if ((m_pParent->m_targets.m_bSelectedGroup && m_pParent->m_targets.selected.m_pGroup == m_pParent->m_monsters)
@@ -471,4 +494,16 @@ void TargetingState::Finish()
     m_pParent->FinishTargeting();
 }
 
+bool TargetingState::can_target(ICharacter*pTarget)const
+{
+    Monster * pMonster = dynamic_cast<Monster*>(pTarget);
 
+    if(pMonster != NULL)
+    {
+        return pMonster->GetToggle(ICharacter::CA_VISIBLE);
+    }
+    else
+    {
+        return true;
+    }
+}
