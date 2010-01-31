@@ -51,6 +51,9 @@ namespace StoneRing
       bool SelectTargetOnRight();
       void SelectDownTarget();
       void SelectUpTarget();
+      bool may_target_single()const;
+      bool may_target_group()const;
+      bool can_target(ICharacter*pTarget)const;
 
       ICharacterGroup * get_left_group() const;
       ICharacterGroup * get_right_group() const;
@@ -64,6 +67,13 @@ namespace StoneRing
       bool m_bDone;
       CL_Sprite  m_target_sprite;
     };
+
+    inline bool TargetingState::may_target_single() const{
+        return m_targetable & SINGLE;
+    }
+    inline bool TargetingState::may_target_group() const{
+        return m_targetable & GROUP;
+    }
 
 }
 #endif
