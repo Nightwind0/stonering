@@ -27,7 +27,7 @@ void BattleState::init(const MonsterGroup &group, const std::string &backdrop)
     m_cur_char = 0;
     m_nRound = 0;
 
-    uint bottomrow = m_nRows - 1;
+   // uint bottomrow = m_nRows - 1;
 
     const std::vector<MonsterRef*> & monsters = group.GetMonsters();
 
@@ -309,7 +309,7 @@ void BattleState::init_or_release_players(bool bRelease)
 void BattleState::Finish()
 {
 
-    for (int i =0; i < m_monsters->GetCharacterCount();i++)
+    for (uint i =0; i < m_monsters->GetCharacterCount();i++)
         delete m_monsters->GetCharacter(i);
 
     delete m_monsters;
@@ -384,19 +384,31 @@ void BattleState::draw_monsters(const CL_Rect &monsterRect, CL_GraphicContext& G
     uint cellWidth = monsterRect.get_width() / m_nColumns;
     uint cellHeight = monsterRect.get_height() / m_nRows;
 
-    for (int i = 0; i < m_monsters->GetCharacterCount(); i++)
+    for (uint i = 0; i < m_monsters->GetCharacterCount(); i++)
     {
         Monster *pMonster = dynamic_cast<Monster*>(m_monsters->GetCharacter(i));
 
+        ICharacter *iCharacter = m_monsters->GetCharacter(i);
         if(!pMonster->GetToggle(ICharacter::CA_VISIBLE))
             continue;
         int drawX = pMonster->GetCellX() * cellWidth;
         int drawY = pMonster->GetCellY() * cellHeight;
 
         CL_Sprite  sprite = pMonster->GetCurrentSprite();
-
-        sprite.draw(GC,drawX,drawY);
+        sprite.set_alpha(1.0f);
         sprite.update();
+
+        if(m_combat_state == TARGETING){
+            if((m_targets.m_bSelectedGroup && m_targets.selected.m_pGroup == m_monsters)
+            || (!m_targets.m_bSelectedGroup && iCharacter == m_targets.selected.m_pTarget)){
+                sprite.draw(GC,drawX,drawY);
+            }else{
+                sprite.set_alpha(0.7f);
+                sprite.draw(GC,drawX,drawY);
+            }
+        }else{
+            sprite.draw(GC,drawX,drawY);
+        }
 
     }
 }
@@ -409,13 +421,27 @@ void BattleState::draw_players(const CL_Rect &playerRect, CL_GraphicContext& GC)
     for (uint nPlayer = 0; nPlayer < playercount; nPlayer++)
     {
         Character * pCharacter = dynamic_cast<Character*>(pParty->GetCharacter(nPlayer));
+        ICharacter * iCharacter = pParty->GetCharacter(nPlayer);
         CL_Sprite  sprite = pCharacter->GetCurrentSprite();
+        sprite.set_alpha(1.0f);
+        sprite.update();
 
         // Need to get the spacing from game config
         if(!pCharacter->GetToggle(ICharacter::CA_VISIBLE))
             continue;
-        sprite.draw(GC,static_cast<int>(playerRect.left + nPlayer * 64), static_cast<int>(playerRect.top + (nPlayer * 64)));
-        sprite.update();
+
+        if(m_combat_state == TARGETING){
+             if((m_targets.m_bSelectedGroup && m_targets.selected.m_pGroup == m_monsters)
+            || (!m_targets.m_bSelectedGroup && iCharacter == m_targets.selected.m_pTarget)){
+                sprite.draw(GC,static_cast<int>(playerRect.left + nPlayer * 64), static_cast<int>(playerRect.top + (nPlayer * 64)));
+            }else{
+                sprite.set_alpha(0.7f);
+                sprite.draw(GC,static_cast<int>(playerRect.left + nPlayer * 64), static_cast<int>(playerRect.top + (nPlayer * 64)));
+
+            }
+        }else{
+            sprite.draw(GC,static_cast<int>(playerRect.left + nPlayer * 64), static_cast<int>(playerRect.top + (nPlayer * 64)));
+        }
 
     }
 }
@@ -691,7 +717,7 @@ SteelType BattleState::selectTargets(bool single, bool group, bool defaultMonste
     if (m_targets.m_bSelectedGroup)
     {
 
-        for (int i=0;i<m_targets.selected.m_pGroup->GetCharacterCount();i++)
+        for (uint i=0;i<m_targets.selected.m_pGroup->GetCharacterCount();i++)
         {
             SteelType ref;
             ref.set(m_targets.selected.m_pGroup->GetCharacter(i));
