@@ -381,7 +381,7 @@ void BattleState::draw_battle(const CL_Rect &screenRect, CL_GraphicContext& GC)
 }
 
 BattleState::Display::Display(BattleState& parent,BattleState::Display::eDisplayType type,int damage,SteelType::Handle pICharacter)
-:m_parent(parent),m_eDisplayType(type),m_amount(damage)
+:m_parent(parent),m_eDisplayType(type),m_amount(-damage)
 {
     m_pTarget = static_cast<ICharacter*>(pICharacter);
 }
@@ -461,6 +461,7 @@ void BattleState::Display::draw(CL_GraphicContext& GC)
     if(pMonster)
     {
         pos = m_parent.get_monster_pos(pMonster);
+        pos.x += pMonster->GetCurrentSprite().get_width();
     }
     else
     {
@@ -476,6 +477,9 @@ void BattleState::Display::draw(CL_GraphicContext& GC)
     }
 
     CL_String value(stream.str());
+
+    pos.y += font.get_font_metrics(GC).get_height();
+    pos.x -= font.get_text_size(GC,value).width;
 
     font.draw_text(GC,pos.x-2,pos.y-2,value,shadow_color);
     font.draw_text(GC,pos.x,pos.y,value,color);
