@@ -40,6 +40,12 @@
  </section>
 <section name="Fonts">
 <!-- 1234567890-=\+/`~!@#$%^&*()[]{};:'",.<>?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw -->
+
+    <freetype name="Font_hp_plus" file="Images/Fonts/cwisdom.ttf" size="32" color="#00FF00FF" font_name="Conventional Wisdom"/>
+    <freetype name="Font_hp_minus" file="Images/Fonts/cwisdom.ttf" size="32" color="#FF0000FF" font_name="Conventional Wisdom"/>
+    <freetype name="Font_mp_plus" file="Images/Fonts/cwisdom.ttf" size="32" color="#FF00FFFF" font_name="Conventional Wisdom"/>
+    <freetype name="Font_mp_minus" file="Images/Fonts/cwisdom.ttf" size="32" color="#00FFFFFF"font_name="Conventional Wisdom"/>
+    <freetype name="Font_miss" file="Images/Fonts/cwisdom.ttf" size="32" color="#FFFF00FF" font_name="Conventional Wisdom"/>
 	<sprite name="Font_sb_black">
 		<image file="Images/Fonts/sb_black.png"><alpha /></image>
 	</sprite>
