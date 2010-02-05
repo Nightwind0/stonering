@@ -37,7 +37,7 @@ namespace StoneRing{
 
 
     private:
-	friend class TargetingState;
+
 	void StartTargeting();
 	void FinishTurn();
 	// Go back to menu, they decided not to proceed with this option
@@ -72,11 +72,7 @@ namespace StoneRing{
             DISPLAY_ACTION
         };
 
-        enum eDisplayType{
-            DISPLAY_DAMAGE,
-            DISPLAY_MP,
-            DISPLAY_MISS
-        };
+
 
 
         class Command
@@ -109,7 +105,32 @@ namespace StoneRing{
 
         };
 
-        friend class BattleManager;
+        class Display
+        {
+            public:
+            enum eDisplayType{
+                DISPLAY_DAMAGE,
+                DISPLAY_MP,
+                DISPLAY_MISS
+            };
+
+            Display(BattleState& parent,eDisplayType type,int damage,SteelType::Handle pICharacter);
+            ~Display();
+
+            void start();
+            void update();
+            void draw(CL_GraphicContext& GC);
+            bool expired() const;
+
+            private:
+            BattleState& m_parent;
+            ICharacter * m_pTarget;
+            eDisplayType m_eDisplayType;
+            int m_amount;
+            uint m_start_time;
+            float m_complete;
+        };
+
 
         typedef void (BattleState::* DrawMethod)(const CL_Rect &, CL_GraphicContext&);
 
@@ -121,6 +142,7 @@ namespace StoneRing{
         void draw_status(const CL_Rect &screenRect, CL_GraphicContext& GC);
         void draw_menus(const CL_Rect &screenrect, CL_GraphicContext& GC);
         void draw_targets(const CL_Rect &screenrect, CL_GraphicContext& GC);
+        void draw_displays(CL_GraphicContext& GC);
 
         void init_or_release_players(bool bRelease=false);
         void roll_initiative();
@@ -128,6 +150,8 @@ namespace StoneRing{
         void pick_next_character();
         void check_for_death();
         void death_animation(Monster* pMonster);
+        CL_Point get_monster_pos(Monster* pMonster)const;
+        CL_Point get_player_pos(uint n)const;
         ICharacter* get_next_character(const ICharacterGroup* pGroup, const ICharacter* pCharacter)const;
         ICharacter* get_prev_character(const ICharacterGroup* pGroup, const ICharacter* pCharacter)const;
 
@@ -138,7 +162,7 @@ namespace StoneRing{
         // if they back out and want to go back to the battle menu
         SteelType cancelOption();
         SteelType doCharacterAnimation(SteelType::Handle pICharacter,const std::string& animation);
-        SteelType createDisplay(int damage,SteelType::Handle,int display_type);
+        SteelType createDisplay(int damage,SteelType::Handle pICharacter,int display_type);
 
 
 
@@ -175,6 +199,11 @@ namespace StoneRing{
         std::deque<ICharacter*> m_initiative;
         uint m_nRound;
         uint m_cur_char;
+        std::list<Display> m_displays;
+
+        friend class BattleState::Display;
+        friend class TargetingState;
+        friend class BattleManager;
     };
 
 }

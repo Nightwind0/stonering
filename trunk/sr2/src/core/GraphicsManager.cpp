@@ -13,7 +13,7 @@ GraphicsManager * GraphicsManager::m_pInstance;
 
 GraphicsManager * GraphicsManager::GetInstance()
 {
-    if(m_pInstance == NULL)
+    if (m_pInstance == NULL)
         m_pInstance = new GraphicsManager();
 
     return m_pInstance;
@@ -30,9 +30,9 @@ CL_Sprite GraphicsManager::CreateSprite ( const std::string & name )
 
 std::string GraphicsManager::LookUpMapWithSprite (CL_Sprite surface)
 {
-    for( std::map<std::string,CL_Sprite>::iterator i = m_tile_map.begin();
-         i != m_tile_map.end();
-         i++)
+    for ( std::map<std::string,CL_Sprite>::iterator i = m_tile_map.begin();
+            i != m_tile_map.end();
+            i++)
     {
         if ( i->second == surface)
         {
@@ -53,7 +53,7 @@ CL_Sprite GraphicsManager::GetTileMap ( const std::string & name )
     CL_Sprite surface;
 
 
-    if(m_tile_map.find( name ) == m_tile_map.end())
+    if (m_tile_map.find( name ) == m_tile_map.end())
     {
 #ifndef NDEBUG
         std::cout << "TileMap now loading: " << name << std::endl;
@@ -71,7 +71,7 @@ CL_Sprite GraphicsManager::GetTileMap ( const std::string & name )
 
 std::string GraphicsManager::NameOfOverlay(Overlay overlay)
 {
-    switch(overlay)
+    switch (overlay)
     {
     case BATTLE_STATUS:
         return "BattleStatus";
@@ -89,6 +89,27 @@ std::string GraphicsManager::NameOfOverlay(Overlay overlay)
 
     assert(0);
     return "";
+}
+
+std::string GraphicsManager::NameOfDisplayFont(DisplayFont font)
+{
+    switch (font)
+    {
+    case DISPLAY_HP_POSITIVE:
+        return "Font_hp_plus";
+    case DISPLAY_HP_NEGATIVE:
+        return "Font_hp_minus";
+    case DISPLAY_MP_POSITIVE:
+        return "Font_mp_plus";
+    case DISPLAY_MP_NEGATIVE:
+        return "Font_mp_minus";
+    case DISPLAY_MISS:
+        return "Font_miss";
+    default:
+        assert(0);
+        return "";
+    }
+
 }
 
 CL_Sprite  GraphicsManager::CreateMonsterSprite (const std::string &monster, const std::string &sprite_id)
@@ -120,7 +141,7 @@ CL_Image GraphicsManager::GetOverlay(GraphicsManager::Overlay overlay)
 {
     std::map<Overlay,CL_Image>::iterator foundIt = m_overlay_map.find(overlay);
 
-    if(foundIt != m_overlay_map.end())
+    if (foundIt != m_overlay_map.end())
     {
         return foundIt->second;
     }
@@ -141,7 +162,7 @@ CL_Image GraphicsManager::GetIcon(const std::string& icon)
 {
     std::map<std::string,CL_Image>::iterator foundIt = m_icon_map.find(icon);
 
-    if(foundIt != m_icon_map.end())
+    if (foundIt != m_icon_map.end())
     {
         return foundIt->second;
     }
@@ -161,7 +182,7 @@ CL_Font  GraphicsManager::GetFont(const std::string &name)
 {
     std::map<std::string,CL_Font>::iterator foundIt = m_font_map.find( name );
 
-    if(foundIt != m_font_map.end())
+    if (foundIt != m_font_map.end())
     {
         return foundIt->second;
     }
@@ -183,10 +204,10 @@ CL_Font  GraphicsManager::GetFont( Overlay overlay, const std::string& type )
     CL_ResourceManager & resources  = IApplication::GetInstance()->GetResources();
     std::string fontname;
 
-    if(mapIt != m_overlay_font_map.end())
+    if (mapIt != m_overlay_font_map.end())
     {
         std::map<std::string,std::string>::iterator foundIt = mapIt->second.find(type);
-        if(foundIt != mapIt->second.end())
+        if (foundIt != mapIt->second.end())
         {
             fontname = foundIt->second;
         }
@@ -194,7 +215,7 @@ CL_Font  GraphicsManager::GetFont( Overlay overlay, const std::string& type )
         {
             // This overlay has an entry, but not this font yet
             fontname =  CL_String_load( std::string("Overlays/" + NameOfOverlay(overlay)
-                + "/fonts/" + type ), resources );
+                                                    + "/fonts/" + type ), resources );
             mapIt->second[type] = fontname;
         }
     }
@@ -202,13 +223,62 @@ CL_Font  GraphicsManager::GetFont( Overlay overlay, const std::string& type )
     {
         // Overlay doesnt have an entry yet
         fontname = CL_String_load( std::string("Overlays/" + NameOfOverlay(overlay)
-                + "/fonts/" + type ), resources );
+                                               + "/fonts/" + type ), resources );
 
         m_overlay_font_map[overlay][type] = fontname;
     }
 
 
     return GetFont(fontname);
+}
+
+CL_Font  GraphicsManager::GetDisplayFont( DisplayFont font )
+{
+    std::map<DisplayFont,CL_Font>::iterator mapIt = m_display_font_map.find(font);
+
+    if (mapIt == m_display_font_map.end())
+    {
+        CL_ResourceManager & resources  = IApplication::GetInstance()->GetResources();
+        CL_Resource resource = resources.get_resource("Fonts/" + NameOfDisplayFont(font));
+
+        CL_String filename = resource.get_element().get_attribute("file");
+        CL_String fontname = resource.get_element().get_attribute("font_name");
+        CL_String size_str = resource.get_element().get_attribute("size");
+        CL_String color =    resource.get_element().get_attribute("color");
+
+        m_display_font_colors[font] = CL_Colorf(color);
+        int size = atoi(size_str.c_str());
+        /*
+         	CL_Font_Freetype::CL_Font_Freetype(
+        	CL_GraphicContext & gc,
+        	const CL_StringRef & typeface_name,
+        	int height,
+        	const CL_VirtualDirectory & directory);
+
+        */
+        CL_IODevice file = resources.get_directory(resource).open_file_read(filename);
+        CL_Font_Freetype thefont(GET_MAIN_GC(),
+                                 filename,
+                                 size,
+                                 file);
+
+        if(thefont.is_null()) throw CL_Exception("Bad display font");
+
+
+        m_display_font_map[font] = thefont;
+        return thefont;
+    }
+    else
+    {
+        return mapIt->second;
+    }
+
+}
+
+CL_Colorf GraphicsManager::GetFontColor ( DisplayFont font )
+{
+    return m_display_font_colors[font];
+    //return CL_Colorf::teal;
 }
 
 

@@ -5,9 +5,7 @@
 #include "SpriteRef.h"
 #include "IParty.h"
 
-class StoneRing::Tilemap;
-class StoneRing::Element;
-class StoneRing::Level;
+
 
 using StoneRing::IParty;
 

@@ -27,7 +27,7 @@ void BattleState::init(const MonsterGroup &group, const std::string &backdrop)
     m_cur_char = 0;
     m_nRound = 0;
 
-   // uint bottomrow = m_nRows - 1;
+    // uint bottomrow = m_nRows - 1;
 
     const std::vector<MonsterRef*> & monsters = group.GetMonsters();
 
@@ -347,18 +347,18 @@ void BattleState::draw_status(const CL_Rect &screenRect, CL_GraphicContext& GC)
         CL_Font  mpFont = pGraphicsManager->GetFont(GraphicsManager::BATTLE_STATUS, "mp");
 
         generalFont.draw_text(GC,m_status_rect.left,
-                            static_cast<int>(m_status_rect.top + generalFont.get_font_metrics(GC).get_height() +(p *
-                          generalFont.get_font_metrics(GC).get_height())
-                          ),
-                           name.str());
+                              static_cast<int>(m_status_rect.top + generalFont.get_font_metrics(GC).get_height() +(p *
+                                               generalFont.get_font_metrics(GC).get_height())
+                                              ),
+                              name.str());
         hpFont.draw_text(GC,m_status_rect.get_width() / 3 + m_status_rect.left,
-                     static_cast<int>(m_status_rect.top + hpFont.get_font_metrics(GC).get_height()+(p* hpFont.get_font_metrics(GC).get_height()))
-                     ,hp.str());
+                         static_cast<int>(m_status_rect.top + hpFont.get_font_metrics(GC).get_height()+(p* hpFont.get_font_metrics(GC).get_height()))
+                         ,hp.str());
         std::ostringstream mp;
         mp << std::setw(6) << pChar->GetAttribute(ICharacter::CA_MP) << '/'
         << pChar->GetAttribute(ICharacter::CA_MAXMP);
         mpFont.draw_text(GC,(m_status_rect.get_width() / 3) * 2 + m_status_rect.left,
-                     static_cast<int>(m_status_rect.top + mpFont.get_font_metrics(GC).get_height() + (p*mpFont.get_font_metrics(GC).get_height())),mp.str());
+                         static_cast<int>(m_status_rect.top + mpFont.get_font_metrics(GC).get_height() + (p*mpFont.get_font_metrics(GC).get_height())),mp.str());
 
     }
 }
@@ -371,6 +371,7 @@ void BattleState::draw_battle(const CL_Rect &screenRect, CL_GraphicContext& GC)
     draw_monsters(m_monster_rect,GC);
     draw_players(m_player_rect,GC);
     draw_status(screenRect,GC);
+    draw_displays(GC);
 
     if (m_combat_state == BATTLE_MENU)
     {
@@ -379,35 +380,142 @@ void BattleState::draw_battle(const CL_Rect &screenRect, CL_GraphicContext& GC)
 
 }
 
+BattleState::Display::Display(BattleState& parent,BattleState::Display::eDisplayType type,int damage,SteelType::Handle pICharacter)
+:m_parent(parent),m_eDisplayType(type),m_amount(damage)
+{
+    m_pTarget = static_cast<ICharacter*>(pICharacter);
+}
+BattleState::Display::~Display()
+{
+}
+
+void BattleState::Display::start()
+{
+    m_start_time = CL_System::get_time();
+    m_complete = 0.0f;
+}
+
+bool BattleState::Display::expired() const
+{
+    return m_complete >= 1.0f;
+}
+
+void BattleState::Display::update()
+{
+    int elapsed = CL_System::get_time()-m_start_time;
+
+    m_complete = (double)elapsed / 2000.0;
+}
+void BattleState::Display::draw(CL_GraphicContext& GC)
+{
+    std::ostringstream stream;
+    CL_Font font;
+    CL_Colorf color;
+    CL_Colorf shadow_color;
+
+    shadow_color.set_red(0.0f);
+    shadow_color.set_green(0.0f);
+    shadow_color.set_blue(0.0f);
+
+
+    GraphicsManager * pGraphics = GraphicsManager::GetInstance();
+
+    GraphicsManager::DisplayFont displayFont;
+
+    switch(m_eDisplayType)
+    {
+        case DISPLAY_DAMAGE:
+            if(m_amount >= 0){
+                displayFont = GraphicsManager::DISPLAY_HP_POSITIVE;
+                stream << m_amount;
+            }else{
+                displayFont = GraphicsManager::DISPLAY_HP_NEGATIVE;
+                stream << -m_amount;
+            }
+            break;
+        case DISPLAY_MP:
+            if(m_amount >= 0){
+                displayFont = GraphicsManager::DISPLAY_MP_POSITIVE;
+                stream << m_amount;
+            }else{
+                displayFont = GraphicsManager::DISPLAY_MP_NEGATIVE;
+                stream << -m_amount;
+            }
+            break;
+        case DISPLAY_MISS:
+            displayFont = GraphicsManager::DISPLAY_MISS;
+            stream << "MISS";
+            break;
+
+    }
+
+    font = pGraphics->GetDisplayFont(displayFont);
+    color = pGraphics->GetFontColor(displayFont);
+
+    color.set_alpha(1.0f - m_complete);
+    shadow_color.set_alpha(1.0f-m_complete);
+
+    CL_Point pos;
+    Monster *pMonster = dynamic_cast<Monster*>(m_pTarget);
+
+    if(pMonster)
+    {
+        pos = m_parent.get_monster_pos(pMonster);
+    }
+    else
+    {
+        IParty * pParty = IApplication::GetInstance()->GetParty();
+        for(uint n=0;n<pParty->GetCharacterCount();n++)
+        {
+            if(m_pTarget == pParty->GetCharacter(n))
+            {
+                pos = m_parent.get_player_pos(n);
+                break;
+            }
+        }
+    }
+
+    CL_String value(stream.str());
+
+    font.draw_text(GC,pos.x-2,pos.y-2,value,shadow_color);
+    font.draw_text(GC,pos.x,pos.y,value,color);
+
+
+}
+
 void BattleState::draw_monsters(const CL_Rect &monsterRect, CL_GraphicContext& GC)
 {
-    uint cellWidth = monsterRect.get_width() / m_nColumns;
-    uint cellHeight = monsterRect.get_height() / m_nRows;
 
     for (uint i = 0; i < m_monsters->GetCharacterCount(); i++)
     {
         Monster *pMonster = dynamic_cast<Monster*>(m_monsters->GetCharacter(i));
 
         ICharacter *iCharacter = m_monsters->GetCharacter(i);
-        if(!pMonster->GetToggle(ICharacter::CA_VISIBLE))
+        if (!pMonster->GetToggle(ICharacter::CA_VISIBLE))
             continue;
-        int drawX = pMonster->GetCellX() * cellWidth;
-        int drawY = pMonster->GetCellY() * cellHeight;
+
+        CL_Point point = get_monster_pos(pMonster);
 
         CL_Sprite  sprite = pMonster->GetCurrentSprite();
         sprite.set_alpha(1.0f);
         sprite.update();
 
-        if(m_combat_state == TARGETING){
-            if((m_targets.m_bSelectedGroup && m_targets.selected.m_pGroup == m_monsters)
-            || (!m_targets.m_bSelectedGroup && iCharacter == m_targets.selected.m_pTarget)){
-                sprite.draw(GC,drawX,drawY);
-            }else{
-                sprite.set_alpha(0.7f);
-                sprite.draw(GC,drawX,drawY);
+        if (m_combat_state == TARGETING)
+        {
+            if ((m_targets.m_bSelectedGroup && m_targets.selected.m_pGroup == m_monsters)
+                    || (!m_targets.m_bSelectedGroup && iCharacter == m_targets.selected.m_pTarget))
+            {
+                sprite.draw(GC,point.x,point.y);
             }
-        }else{
-            sprite.draw(GC,drawX,drawY);
+            else
+            {
+                sprite.set_alpha(0.7f);
+                sprite.draw(GC,point.x,point.y);
+            }
+        }
+        else
+        {
+            sprite.draw(GC,point.x,point.y);
         }
 
     }
@@ -423,32 +531,71 @@ void BattleState::draw_players(const CL_Rect &playerRect, CL_GraphicContext& GC)
         Character * pCharacter = dynamic_cast<Character*>(pParty->GetCharacter(nPlayer));
         ICharacter * iCharacter = pParty->GetCharacter(nPlayer);
         CL_Sprite  sprite = pCharacter->GetCurrentSprite();
+        CL_Point point = get_player_pos(nPlayer);
         sprite.set_alpha(1.0f);
         sprite.update();
 
         // Need to get the spacing from game config
-        if(!pCharacter->GetToggle(ICharacter::CA_VISIBLE))
+        if (!pCharacter->GetToggle(ICharacter::CA_VISIBLE))
             continue;
 
-        if(m_combat_state == TARGETING){
-             if((m_targets.m_bSelectedGroup && m_targets.selected.m_pGroup == m_monsters)
-            || (!m_targets.m_bSelectedGroup && iCharacter == m_targets.selected.m_pTarget)){
-                sprite.draw(GC,static_cast<int>(playerRect.left + nPlayer * 64), static_cast<int>(playerRect.top + (nPlayer * 64)));
-            }else{
+        if (m_combat_state == TARGETING)
+        {
+            if ((m_targets.m_bSelectedGroup && m_targets.selected.m_pGroup == m_monsters)
+                    || (!m_targets.m_bSelectedGroup && iCharacter == m_targets.selected.m_pTarget))
+            {
+                sprite.draw(GC,point.x,point.y);
+            }
+            else
+            {
                 sprite.set_alpha(0.7f);
-                sprite.draw(GC,static_cast<int>(playerRect.left + nPlayer * 64), static_cast<int>(playerRect.top + (nPlayer * 64)));
+                sprite.draw(GC,point.x,point.y);
 
             }
-        }else{
-            sprite.draw(GC,static_cast<int>(playerRect.left + nPlayer * 64), static_cast<int>(playerRect.top + (nPlayer * 64)));
+        }
+        else
+        {
+            sprite.draw(GC,point.x,point.y);
         }
 
     }
 }
 
-void BattleState::draw_targets(const CL_Rect &screenrect, CL_GraphicContext& GC)
+CL_Point BattleState::get_monster_pos(Monster * pMonster)const
 {
+    CL_Point point;
+    const uint cellWidth = m_monster_rect.get_width() / m_nColumns;
+    const uint cellHeight = m_monster_rect.get_height() / m_nRows;
+
+
+    int drawX = pMonster->GetCellX() * cellWidth;
+    int drawY = pMonster->GetCellY() * cellHeight;
+    point.x = drawX;
+    point.y = drawY;
+    return point;
 }
+
+CL_Point BattleState::get_player_pos(uint nPlayer)const
+{
+    CL_Point point;
+    point.x = static_cast<int>(m_player_rect.left + nPlayer * 64);
+    point.y = static_cast<int>(m_player_rect.top + nPlayer * 64);
+    return point;
+}
+
+
+void BattleState::draw_displays(CL_GraphicContext& GC)
+{
+    for(std::list<Display>::iterator iter = m_displays.begin();iter != m_displays.end();iter++)
+    {
+        iter->update();
+        iter->draw(GC);
+    }
+
+   // m_displays.remove_if(Display::has_expired);
+   m_displays.remove_if(std::mem_fun_ref(&Display::expired));
+}
+
 
 void BattleState::draw_menus(const CL_Rect &screenrect, CL_GraphicContext& GC)
 {
@@ -531,9 +678,9 @@ void BattleState::SteelInit(SteelInterpreter* pInterpreter)
     static SteelFunctor3Arg<BattleState,int,SteelType::Handle,int> fn_createDisplay(this,&BattleState::createDisplay);
 
 
-    SteelConst(pInterpreter,"$_DISP_DAMAGE", DISPLAY_DAMAGE);
-    SteelConst(pInterpreter,"$_DISP_MP", DISPLAY_MP);
-    SteelConst(pInterpreter,"$_DISP_MISS", DISPLAY_MISS);
+    SteelConst(pInterpreter,"$_DISP_DAMAGE", Display::DISPLAY_DAMAGE);
+    SteelConst(pInterpreter,"$_DISP_MP", Display::DISPLAY_MP);
+    SteelConst(pInterpreter,"$_DISP_MISS", Display::DISPLAY_MISS);
 
     pInterpreter->addFunction("selectTargets","battle",&fn_selectTargets);
     pInterpreter->addFunction("finishTurn","battle",&fn_finishTurn);
@@ -671,24 +818,25 @@ void BattleState::CancelOption()
 
 void BattleState::check_for_death()
 {
-    for(std::deque<ICharacter*>::const_iterator iter = m_initiative.begin();
-        iter != m_initiative.end(); iter++)
-        {
-            Monster * pMonster = dynamic_cast<Monster*>(*iter);
+    for (std::deque<ICharacter*>::const_iterator iter = m_initiative.begin();
+            iter != m_initiative.end(); iter++)
+    {
+        Monster * pMonster = dynamic_cast<Monster*>(*iter);
 
-            if(pMonster)
+        if (pMonster)
+        {
+            if (!pMonster->GetToggle(ICharacter::CA_ALIVE) && !pMonster->DeathAnimated())
             {
-                if(!pMonster->GetToggle(ICharacter::CA_ALIVE) && !pMonster->DeathAnimated()){
-                    pMonster->Die();
-                    death_animation(pMonster);
-                    pMonster->SetToggle(ICharacter::CA_VISIBLE,false);
-                }
-            }
-            else
-            {
-                // Change PC sprite to dead one?
+                pMonster->Die();
+                death_animation(pMonster);
+                pMonster->SetToggle(ICharacter::CA_VISIBLE,false);
             }
         }
+        else
+        {
+            // Change PC sprite to dead one?
+        }
+    }
 }
 
 void BattleState::death_animation(Monster* pMonster)
@@ -754,8 +902,13 @@ SteelType BattleState::doCharacterAnimation(SteelType::Handle pICharacter,const 
     return SteelType();
 }
 
-SteelType BattleState::createDisplay(int damage,SteelType::Handle,int display_type)
+SteelType BattleState::createDisplay(int damage,SteelType::Handle hICharacter,int display_type)
 {
+    //            Display(BattleState& parent,eDisplayType type,int damage,SteelType::Handle pICharacter);
+    Display display(*this, static_cast<Display::eDisplayType>(display_type),damage,hICharacter);
+    display.start();
+    m_displays.push_back(display);
+
     return SteelType();
 }
 
