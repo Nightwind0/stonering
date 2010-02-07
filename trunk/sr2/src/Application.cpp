@@ -415,10 +415,19 @@ SteelType Application::removeStatusEffects(SteelType::Handle hCharacter, const s
     return SteelType();
 }
 
-SteelType Application::hasEquipment(SteelType::Handle hCharacter, int slot)
+SteelType Application::hasEquipment(SteelType::Handle hICharacter, int slot)
 {
     SteelType result;
-    Character *pCharacter = static_cast<Character*>(hCharacter);
+    ICharacter *iCharacter = static_cast<ICharacter*>(hICharacter);
+
+    Monster * pMonster = dynamic_cast<Monster*>(iCharacter);
+
+    if (pMonster) // Monsters currently can't have equipment
+    {
+        result.set(false);
+        return result;
+    }
+    Character *pCharacter = dynamic_cast<Character*>(iCharacter);
     result.set(pCharacter->HasEquipment(static_cast<Equipment::eSlot>(slot)));
     return result;
 }
@@ -565,6 +574,17 @@ SteelType Application::getMissSound(SteelType::Handle hWeaponType)
 {
     return SteelType();
 }
+
+SteelType Application::getUnarmedHitSound(SteelType::Handle hICharacter)
+{
+    return SteelType();
+}
+
+SteelType Application::getUnarmedMissSound(SteelType::Handle hICharacter)
+{
+    return SteelType();
+}
+
 
 SteelType Application::invokeEquipment(SteelType::Handle hEquipment)
 {
@@ -732,6 +752,8 @@ void Application::registerSteelFunctions()
     static SteelFunctor2Arg<Application,const SteelType::Handle,int> fn_getDamageCategoryResistance(this,&Application::getDamageCategoryResistance);
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getHitSound(this,&Application::getHitSound);
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getMissSound(this,&Application::getMissSound);
+    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getUnarmedHitSound(this,&Application::getUnarmedHitSound);
+    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getUnarmedMissSound(this,&Application::getUnarmedMissSound);
 
 
 
@@ -834,6 +856,8 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction("invokeEquipment",&fn_invokeEquipment);
     mInterpreter.addFunction("getHitSound",&fn_getHitSound);
     mInterpreter.addFunction("getMissSound",&fn_getMissSound);
+    mInterpreter.addFunction("getUnarmedHitSound",&fn_getUnarmedHitSound);
+    mInterpreter.addFunction("getUnarmedMissSound",&fn_getUnarmedMissSound);
 
 
 
@@ -1103,16 +1127,16 @@ int Application::calc_fps(int frame_time)
 class Program
 {
 public:
-	static int main(const std::vector<CL_String> &args)
-	{
-		CL_SetupCore setup_core;
+    static int main(const std::vector<CL_String> &args)
+    {
+        CL_SetupCore setup_core;
         CL_SetupDisplay setup_display;
         CL_SetupGL setup_gl;
 
-		Application app;
-		pApp = &app;
-		return app.main(args);
-	}
+        Application app;
+        pApp = &app;
+        return app.main(args);
+    }
 };
 
 CL_ClanApplication app(&Program::main);
