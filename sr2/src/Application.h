@@ -104,7 +104,7 @@ namespace StoneRing
         // The handle is to an ICharacter
         SteelType doDamage(SteelType::Handle hICharacter, int damage);
 
-        SteelType hasEquipment(SteelType::Handle hCharacter, int slot);
+        SteelType hasEquipment(SteelType::Handle hICharacter, int slot);
         SteelType getEquipment(SteelType::Handle hCharacter, int slot);
         SteelType equip(SteelType::Handle hCharacter, int slot, const std::string &);
 
@@ -119,6 +119,8 @@ namespace StoneRing
 
         SteelType getHitSound(SteelType::Handle hWeaponType);
         SteelType getMissSound(SteelType::Handle hWeaponType);
+        SteelType getUnarmedHitSound(SteelType::Handle hICharacter);
+        SteelType getUnarmedMissSound(SteelType::Handle hICharacter);
 
 
 
