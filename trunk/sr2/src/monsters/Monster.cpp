@@ -2,6 +2,7 @@
 #include "MonsterElement.h"
 #include "ItemRef.h"
 #include "StatusEffect.h"
+#include "DamageCategory.h"
 
 using StoneRing::Monster;
 using StoneRing::MonsterParty;
@@ -10,6 +11,7 @@ using StoneRing::MonsterElement;
 using StoneRing::ItemRef;
 using StoneRing::StatusEffect;
 using StoneRing::SpriteDefinition;
+using StoneRing::eDamageCategory;
 
 
 
@@ -201,6 +203,11 @@ ICharacter::eType Monster::GetType() const
 ICharacter::eGender Monster::GetGender() const
 {
     return NEUTER;
+}
+
+eDamageCategory Monster::GetDefaultDamageCategory() const
+{
+      return m_pMonsterDefinition->GetDefaultDamageCategory();
 }
 
 
