@@ -4,6 +4,7 @@
 #include "NamedScript.h"
 #include "Stat.h"
 #include "SpriteDefinition.h"
+#include "DamageCategory.h"
 
 using StoneRing::MonsterElement;
 using StoneRing::ItemRef;
@@ -103,6 +104,10 @@ void MonsterElement::load_attributes(CL_DomNamedNodeMap attr)
     std::string mode = get_required_string("mode",attr);
     m_nLevel = get_required_int("level",attr);
     std::string type = get_implied_string("type",attr,"living");
+
+    std::string damageCategory = get_implied_string("damageCategory",attr,"bash"); // they punch by default
+
+    m_eDamageCategory = DamageCategoryFromString(damageCategory);
 
     if(mode == "manual")
     {

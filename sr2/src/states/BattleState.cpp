@@ -83,7 +83,7 @@ void BattleState::next_turn()
         assert(pMonster != NULL); // has to be a monster...
         // Figure out what the monster will do here.
         m_combat_state = DISPLAY_ACTION;
-        FinishTurn();
+        pMonster->Round();
     }
 
 }
@@ -93,6 +93,7 @@ void BattleState::pick_next_character()
     if (++m_cur_char == m_initiative.size())
     {
         m_cur_char = 0;
+        m_nRound++;
     }
 }
 
@@ -381,7 +382,7 @@ void BattleState::draw_battle(const CL_Rect &screenRect, CL_GraphicContext& GC)
 }
 
 BattleState::Display::Display(BattleState& parent,BattleState::Display::eDisplayType type,int damage,SteelType::Handle pICharacter)
-:m_parent(parent),m_eDisplayType(type),m_amount(-damage)
+        :m_parent(parent),m_eDisplayType(type),m_amount(-damage)
 {
     m_pTarget = static_cast<ICharacter*>(pICharacter);
 }
@@ -422,30 +423,36 @@ void BattleState::Display::draw(CL_GraphicContext& GC)
 
     GraphicsManager::DisplayFont displayFont;
 
-    switch(m_eDisplayType)
+    switch (m_eDisplayType)
     {
-        case DISPLAY_DAMAGE:
-            if(m_amount >= 0){
-                displayFont = GraphicsManager::DISPLAY_HP_POSITIVE;
-                stream << m_amount;
-            }else{
-                displayFont = GraphicsManager::DISPLAY_HP_NEGATIVE;
-                stream << -m_amount;
-            }
-            break;
-        case DISPLAY_MP:
-            if(m_amount >= 0){
-                displayFont = GraphicsManager::DISPLAY_MP_POSITIVE;
-                stream << m_amount;
-            }else{
-                displayFont = GraphicsManager::DISPLAY_MP_NEGATIVE;
-                stream << -m_amount;
-            }
-            break;
-        case DISPLAY_MISS:
-            displayFont = GraphicsManager::DISPLAY_MISS;
-            stream << "MISS";
-            break;
+    case DISPLAY_DAMAGE:
+        if (m_amount >= 0)
+        {
+            displayFont = GraphicsManager::DISPLAY_HP_POSITIVE;
+            stream << m_amount;
+        }
+        else
+        {
+            displayFont = GraphicsManager::DISPLAY_HP_NEGATIVE;
+            stream << -m_amount;
+        }
+        break;
+    case DISPLAY_MP:
+        if (m_amount >= 0)
+        {
+            displayFont = GraphicsManager::DISPLAY_MP_POSITIVE;
+            stream << m_amount;
+        }
+        else
+        {
+            displayFont = GraphicsManager::DISPLAY_MP_NEGATIVE;
+            stream << -m_amount;
+        }
+        break;
+    case DISPLAY_MISS:
+        displayFont = GraphicsManager::DISPLAY_MISS;
+        stream << "MISS";
+        break;
 
     }
 
@@ -458,7 +465,7 @@ void BattleState::Display::draw(CL_GraphicContext& GC)
     CL_Point pos;
     Monster *pMonster = dynamic_cast<Monster*>(m_pTarget);
 
-    if(pMonster)
+    if (pMonster)
     {
         pos = m_parent.get_monster_pos(pMonster);
         pos.x += pMonster->GetCurrentSprite().get_width();
@@ -466,9 +473,9 @@ void BattleState::Display::draw(CL_GraphicContext& GC)
     else
     {
         IParty * pParty = IApplication::GetInstance()->GetParty();
-        for(uint n=0;n<pParty->GetCharacterCount();n++)
+        for (uint n=0;n<pParty->GetCharacterCount();n++)
         {
-            if(m_pTarget == pParty->GetCharacter(n))
+            if (m_pTarget == pParty->GetCharacter(n))
             {
                 pos = m_parent.get_player_pos(n);
                 break;
@@ -590,14 +597,14 @@ CL_Point BattleState::get_player_pos(uint nPlayer)const
 
 void BattleState::draw_displays(CL_GraphicContext& GC)
 {
-    for(std::list<Display>::iterator iter = m_displays.begin();iter != m_displays.end();iter++)
+    for (std::list<Display>::iterator iter = m_displays.begin();iter != m_displays.end();iter++)
     {
         iter->update();
         iter->draw(GC);
     }
 
-   // m_displays.remove_if(Display::has_expired);
-   m_displays.remove_if(std::mem_fun_ref(&Display::expired));
+    // m_displays.remove_if(Display::has_expired);
+    m_displays.remove_if(std::mem_fun_ref(&Display::expired));
 }
 
 
@@ -675,11 +682,16 @@ void BattleState::draw_menus(const CL_Rect &screenrect, CL_GraphicContext& GC)
 void BattleState::SteelInit(SteelInterpreter* pInterpreter)
 {
     pInterpreter->pushScope();
+
     static SteelFunctor3Arg<BattleState,bool,bool,bool> fn_selectTargets(this,&BattleState::selectTargets);
     static SteelFunctorNoArgs<BattleState> fn_finishTurn(this,&BattleState::finishTurn);
     static SteelFunctorNoArgs<BattleState> fn_cancelOption(this,&BattleState::cancelOption);
     static SteelFunctor2Arg<BattleState,SteelType::Handle,const std::string&> fn_doCharacterAnimation(this,&BattleState::doCharacterAnimation);
     static SteelFunctor3Arg<BattleState,int,SteelType::Handle,int> fn_createDisplay(this,&BattleState::createDisplay);
+    static SteelFunctor1Arg<BattleState,bool> fn_getCharacterGroup(this,&BattleState::getCharacterGroup);
+    static SteelFunctorNoArgs<BattleState> fn_getAllCharacters(this,&BattleState::getAllCharacters);
+    static SteelFunctor1Arg<BattleState,SteelType::Handle> fn_getMonsterDamageCategory(this,&BattleState::getMonsterDamageCategory);
+    static SteelFunctor2Arg<BattleState,SteelType::Handle,const std::string&> fn_doSkill(this,&BattleState::doSkill);
 
 
     SteelConst(pInterpreter,"$_DISP_DAMAGE", Display::DISPLAY_DAMAGE);
@@ -691,6 +703,11 @@ void BattleState::SteelInit(SteelInterpreter* pInterpreter)
     pInterpreter->addFunction("cancelOption","battle",&fn_cancelOption);
     pInterpreter->addFunction("doCharacterAnimation","battle",&fn_doCharacterAnimation);
     pInterpreter->addFunction("createDisplay","battle",&fn_createDisplay);
+    pInterpreter->addFunction("getCharacterGroup","battle",&fn_getCharacterGroup);
+    pInterpreter->addFunction("getAllCharacters","battle",&fn_getAllCharacters);
+    pInterpreter->addFunction("getMonsterDamageCategory","battle",&fn_getMonsterDamageCategory);
+    pInterpreter->addFunction("doSkill","battle",&fn_doSkill);
+
 }
 
 void BattleState::SteelCleanup   (SteelInterpreter* pInterpreter)
@@ -916,3 +933,74 @@ SteelType BattleState::createDisplay(int damage,SteelType::Handle hICharacter,in
     return SteelType();
 }
 
+SteelType BattleState::getCharacterGroup(bool monsters)
+{
+    std::vector<SteelType> vector;
+    ICharacterGroup * group;
+
+    if (monsters)
+    {
+        group = m_monsters;
+    }
+    else
+    {
+        group = IApplication::GetInstance()->GetParty();
+    }
+
+    for (uint i=0;i<group->GetCharacterCount();i++)
+    {
+        SteelType handle;
+        handle.set( group->GetCharacter(i) );
+        vector.push_back(handle);
+    }
+    SteelType array;
+    array.set(vector);
+    return array;
+}
+
+SteelType BattleState::getAllCharacters()
+{
+    std::vector<SteelType> vector;
+
+    for (uint i=0;i<m_initiative.size();i++)
+    {
+        SteelType handle;
+        handle.set ( m_initiative[i] );
+        vector.push_back(handle);
+    }
+
+    SteelType array;
+    array.set(vector);
+    return array;
+}
+
+SteelType BattleState::getMonsterDamageCategory(SteelType::Handle hMonster)
+{
+    SteelType result;
+    Monster * pMonster = static_cast<Monster*>(hMonster);
+
+    result.set ( pMonster->GetDefaultDamageCategory() );
+
+    return result;
+}
+
+SteelType BattleState::doSkill(SteelType::Handle pICharacter, const std::string& whichskill)
+{
+    AbilityManager * AbilityManager = IApplication::GetInstance()->GetAbilityManager();
+    if(!AbilityManager->SkillExists(whichskill)){
+        throw CL_Exception("(doSkill) Skill doesn't exist: " + whichskill);
+    }
+
+    ParameterList params;
+    // Supply a handle to the character in question;
+    params.push_back ( ParameterListItem("$Character", pICharacter ) );
+    params.push_back ( ParameterListItem("$Round", static_cast<int>(m_nRound) ) );
+
+
+    Skill * pSkill = AbilityManager->GetSkill(whichskill);
+
+    pSkill->Select(params);
+    pSkill->Invoke(params);
+
+    return SteelType();
+}

@@ -702,6 +702,7 @@ SteelType Application::RunScript(AstScript *pScript, const ParameterList &params
     return mInterpreter.runAst ( pScript, params );
 }
 
+
 void Application::registerSteelFunctions()
 {
     static SteelFunctor2Arg<Application,const std::string&,const std::string&> fn_say(this,&Application::say);
@@ -810,6 +811,19 @@ void Application::registerSteelFunctions()
     steelConst("$_MAXHP",Character::CA_MAXHP);
     steelConst("$_MAXMP",Character::CA_MAXMP);
 
+    steelConst("$_BASH",BASH);
+    steelConst("$_JAB",JAB);
+    steelConst("$_SLASH",SLASH);
+    steelConst("$_HOLY",HOLY);
+    steelConst("$_DARK",DARK);
+    steelConst("$_FIRE",FIRE);
+    steelConst("$_WATER",WATER);
+    steelConst("$_WIND",WIND);
+    steelConst("$_EARTH",EARTH);
+    steelConst("$_LIGHTNING",LIGHTNING);
+    steelConst("$_ICE",ICE);
+    steelConst("$_POISON",POISON);
+
     mInterpreter.addFunction("normal_random", &fn_gaussian);
 
     mInterpreter.addFunction("say",&fn_say);
@@ -858,7 +872,6 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction("getMissSound",&fn_getMissSound);
     mInterpreter.addFunction("getUnarmedHitSound",&fn_getUnarmedHitSound);
     mInterpreter.addFunction("getUnarmedMissSound",&fn_getUnarmedMissSound);
-
 
 
 //        SteelType hasGeneratedWeapon(const std::string &wepclass, const std::string &webtype);

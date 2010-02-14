@@ -78,6 +78,12 @@
             var $damageMean = getCharacterAttribute($pC, $_STR) + getEquippedWeaponAttribute($pC,$_ATTACK);
             // Random about the damageMean, standard deviation is 15% of the mean, so 68% of attacks fall within 10% deviation of the mean
             var $baseDamage = normal_random($damageMean,$damageMean * 0.15);
+            var $damageCategory;
+            if($hasWeapon){
+                $damageCategory = getWeaponTypeDamageCategory(getWeaponType($pWeapon));
+            }else{
+                $damageCategory = $_BASH; //punch
+            }
             var $actualDamage = $baseDamage *  getDamageCategoryResistance($pTarget,getWeaponTypeDamageCategory(getWeaponType($pWeapon)));
             battle::createDisplay($actualDamage,$pTarget,$_DISP_DAMAGE);
             doDamage($pTarget,integer($actualDamage));
@@ -92,14 +98,64 @@
         }
 
 
-        if($hasWeapon){
-            if(getWeaponScriptMode($pWeapon) == $_SM_ATTACK_BEFORE){
-                invokeEquipment($pWeapon);
-            }
+        if($hasWeapon and getWeaponScriptMode($pWeapon) == $_SM_ATTACK_BEFORE){
+            invokeEquipment($pWeapon);
         }
         attackCharacter($pTarget);
         battle::finishTurn();
 		]]>
+            </script>
+        </onInvoke>
+    </skill>
+    <skill bp="0" name="MonsterBasicAttack" sp="0">
+        <onInvoke>
+            <script id="MonsterBasicAttackInvoke">
+            <![CDATA[
+                var @enemies = battle::getCharacterGroup(false);
+                var $which = math::rand() % len(@enemies);
+                var $pTarget = @enemies[$which];
+                var $name = getCharacterName($Character);
+                battle::doCharacterAnimation($Character,"attack");
+                println($name + " attacks " + getCharacterName($pTarget));
+
+                var $hit = getCharacterAttribute($Character, $_DEX) + getEquippedWeaponAttribute($Character,$_HIT);
+                var $dodge = getCharacterAttribute($pTarget, $_EVD) + getEquippedArmorAttribute($pTarget,$_AC);
+
+                var $chance = $hit * ( 1.0 - $dodge );
+
+                var $roll = math::randf();
+
+                println("Hit was " + $hit + " and dodge was " + $dodge + " and chance was " + $chance);
+                println("Roll was " + $roll);
+
+                var $bHit = false;
+                if($roll < $chance)
+                    $bHit = true;
+
+
+                if($bHit){
+                    println($name + " hit!");
+
+                    playSound(getUnarmedHitSound($pC));
+                    battle::doCharacterAnimation($pTarget,"recoil");
+                    var $damageMean = getCharacterAttribute($Character, $_STR) + getEquippedWeaponAttribute($Character,$_ATTACK);
+                    // Random about the damageMean, standard deviation is 15% of the mean, so 68% of attacks fall within 10% deviation of the mean
+                    var $baseDamage = normal_random($damageMean,$damageMean * 0.15);
+                    var $actualDamage = $baseDamage *  getDamageCategoryResistance($pTarget,battle::getMonsterDamageCategory($Character));
+                    battle::createDisplay($actualDamage,$pTarget,$_DISP_DAMAGE);
+                    doDamage($pTarget,integer($actualDamage));
+                    println("Mean damage was " + $damageMean + " and base damage was " + $baseDamage + " and actual damage was " + $actualDamage);
+                }else{
+                    println("You missed.");
+
+                    playSound(getUnarmedMissSound($Character));
+                    battle::createDisplay(0,$pTarget,$_DISP_MISS);
+                }
+
+
+                attackCharacter($pTarget);
+                battle::finishTurn();
+            ]]>
             </script>
         </onInvoke>
     </skill>

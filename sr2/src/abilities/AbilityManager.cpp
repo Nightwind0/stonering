@@ -20,9 +20,9 @@ AbilityManager::~AbilityManager()
     std::for_each(m_spells.begin(),m_spells.end(),del_fun<Spell>());
 
     std::for_each(m_skills.begin(),m_skills.end(),
-        compose_f_gx(del_fun<Skill>(),
-        get_second<SkillMap::value_type>())
-        );
+                  compose_f_gx(del_fun<Skill>(),
+                               get_second<SkillMap::value_type>())
+                 );
 
 }
 
@@ -33,7 +33,7 @@ void AbilityManager::LoadSpellFile ( CL_DomDocument &doc )
     CL_DomElement spellsNode = doc.named_item("spellList").to_element();
     CL_DomElement spellNode = spellsNode.get_first_child().to_element();
 
-    while(!spellNode.is_null())
+    while (!spellNode.is_null())
     {
         Spell * pSpell = dynamic_cast<Spell*>(pAbilityFactory->createElement("spell"));
 
@@ -51,7 +51,7 @@ void AbilityManager::LoadSkillFile ( CL_DomDocument &doc )
     CL_DomElement spellsNode = doc.named_item("skillList").to_element();
     CL_DomElement spellNode = spellsNode.get_first_child().to_element();
 
-    while(!spellNode.is_null())
+    while (!spellNode.is_null())
     {
         Skill * pSkill = dynamic_cast<Skill*>(pAbilityFactory->createElement("skill"));
 
@@ -69,7 +69,7 @@ void AbilityManager::LoadStatusEffectFile ( CL_DomDocument &doc )
     CL_DomElement statusEffectsNode = doc.named_item("statusEffectList").to_element();
     CL_DomElement statusEffectNode = statusEffectsNode.get_first_child().to_element();
 
-    while(!statusEffectNode.is_null())
+    while (!statusEffectNode.is_null())
     {
         StatusEffect * pStatusEffect = dynamic_cast<StatusEffect*>(pAbilityFactory->createElement("statusEffect"));
         pStatusEffect->Load(statusEffectNode);
@@ -105,17 +105,26 @@ Skill * AbilityManager::GetSkill ( const SkillRef &ref ) const
     return m_skills.find( ref.GetRef() )->second;
 }
 
+Skill * AbilityManager::GetSkill ( const std::string &skill ) const
+{
+    return m_skills.find ( skill )->second;
+}
+
+bool AbilityManager::SkillExists ( const std::string &skill ) const
+{
+    return m_skills.find(skill) != m_skills.end();
+}
 
 Spell * AbilityManager::GetSpell( const SpellRef & ref ) const
 {
 
-    for(std::list<Spell*>::const_iterator iter = m_spells.begin();
-        iter != m_spells.end();
-        iter++)
+    for (std::list<Spell*>::const_iterator iter = m_spells.begin();
+            iter != m_spells.end();
+            iter++)
     {
         SpellRef * pRef = (*iter)->createSpellRef();
 
-        if( *pRef == ref )
+        if ( *pRef == ref )
         {
             delete pRef;
             return *iter;
@@ -133,11 +142,11 @@ Spell * AbilityManager::GetSpell( const SpellRef & ref ) const
 
 StatusEffect * AbilityManager::GetStatusEffect ( const std::string &ref ) const
 {
-    for(std::list<StatusEffect*>::const_iterator iter = m_status_effects.begin();
-        iter != m_status_effects.end();
-        iter++)
+    for (std::list<StatusEffect*>::const_iterator iter = m_status_effects.begin();
+            iter != m_status_effects.end();
+            iter++)
     {
-        if((*iter)->GetName() == ref)
+        if ((*iter)->GetName() == ref)
             return *iter;
     }
 

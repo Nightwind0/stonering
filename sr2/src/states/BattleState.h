@@ -163,6 +163,14 @@ namespace StoneRing{
         SteelType cancelOption();
         SteelType doCharacterAnimation(SteelType::Handle pICharacter,const std::string& animation);
         SteelType createDisplay(int damage,SteelType::Handle pICharacter,int display_type);
+        // returns monster group or party as array of character handles
+        SteelType getCharacterGroup(bool monsters);
+        SteelType getAllCharacters();
+
+        SteelType getMonsterDamageCategory(SteelType::Handle hMonster);
+
+        SteelType doSkill(SteelType::Handle pICharacter,const std::string& whichskill);
+
 
 
 

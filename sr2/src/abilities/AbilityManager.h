@@ -34,6 +34,10 @@ namespace StoneRing
         virtual StatusEffect * GetStatusEffect ( const std::string &ref ) const;
         virtual Skill * GetSkill ( const SkillRef &ref ) const;
 
+        virtual Skill * GetSkill ( const std::string &skill ) const;
+
+        bool SkillExists ( const std::string &skill ) const;
+
 #ifndef NDEBUG
         void DumpSpellList();
 #endif

@@ -2,6 +2,7 @@
     <monster name="Endospore" mode="class" spriteResources="endospore" class="Warrior" level="1">
         <onRound>
             <script id="Endospore_round">
+                battle::doSkill($Character,"MonsterBasicAttack");
             </script>
         </onRound>
 
@@ -23,6 +24,7 @@
     <monster name="Green Tea Mochi" mode="class" spriteResources="Green Tea Mochi" class="Warrior" level="1">
         <onRound>
             <script id="GreenTeaMochi_round">
+                battle::doSkill($Character,"MonsterBasicAttack");
             </script>
         </onRound>
 
@@ -44,6 +46,7 @@
     <monster name="Stoked Green Tea Mochi" mode="class" spriteResources="Stoked Green Tea Mochi" class="Warrior" level="1">
         <onRound>
             <script id="StokedGreenTeaMochi_round">
+                    battle::doSkill($Character,"MonsterBasicAttack");
             </script>
         </onRound>
         <stat id="hp_max"   value="152"/>
@@ -58,6 +61,7 @@
     <monster name="Megaspore" mode="class" spriteResources="endospore" class="Warrior" level="3">
         <onRound>
             <script id="Megaspore_round">
+            battle::doSkill($Character,"MonsterBasicAttack");
             </script>
         </onRound>
         <itemRef>
@@ -79,7 +83,7 @@
     <monster name="Grass Wolf" mode="manual" spriteResources="wolf" level="1">
         <onRound>
             <script id="Grass Wolf_round">
-                doSkill("Attack");  // Monsters are allowed to use any skill they want.
+                battle::doSkill($Character,"MonsterBasicAttack");  // Monsters are allowed to use any skill they want.
             </script>
         </onRound>
         <stat id="hp_max"   value="130"/>

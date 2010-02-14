@@ -8,6 +8,7 @@
 #include "SpriteDefinition.h"
 #include <map>
 #include <list>
+#include "DamageCategory.h"
 
 namespace StoneRing{
 
@@ -59,6 +60,8 @@ public:
     virtual uint GetInitiative(void)const;
     virtual void Kill();
     virtual void Attacked();
+
+    eDamageCategory GetDefaultDamageCategory(void)const;
 
     void MarkDeathAnimated() { m_bDeathAnimated = true; }
     void ClearDeathAnimated() { m_bDeathAnimated = false; }
