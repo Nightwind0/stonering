@@ -10,6 +10,9 @@
 #include <list>
 #include "DamageCategory.h"
 
+
+
+
 namespace StoneRing{
 
 class SpriteDefinition;
@@ -25,8 +28,11 @@ public:
     std::list<ItemRef*>::const_iterator GetDropsBegin() const;
     std::list<ItemRef*>::const_iterator GetDropsEnd() const;
     void Invoke();
+    void Invoke(const ParameterList& params);
     void Round();
+    void Round(const ParameterList& params);
     void Die();
+    void Die(const ParameterList& params);
 
     void SetCellX(uint cellX) { m_nCellX = cellX; }
     void SetCellY(uint cellY) { m_nCellY = cellY; }

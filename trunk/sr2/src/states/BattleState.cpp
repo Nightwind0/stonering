@@ -83,7 +83,11 @@ void BattleState::next_turn()
         assert(pMonster != NULL); // has to be a monster...
         // Figure out what the monster will do here.
         m_combat_state = DISPLAY_ACTION;
-        pMonster->Round();
+        ParameterList params;
+        // Supply a handle to the character in question;
+        params.push_back ( ParameterListItem("$Character", pMonster ) );
+        params.push_back ( ParameterListItem("$Round", static_cast<int>(m_nRound) ) );
+        pMonster->Round(params);
     }
 
 }

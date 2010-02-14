@@ -55,7 +55,7 @@
 		println($name + " attacks " + getCharacterName($pTarget) + " with " + getItemName($pWeapon));
 
 		var $hit = getCharacterAttribute($pC, $_DEX) + getEquippedWeaponAttribute($pC,$_HIT);
-		var $dodge = getCharacterAttribute($pTarget, $_EVD) + getEquippedArmorAttribute($pTarget,$_AC);
+		var $dodge = getCharacterAttribute($pTarget, $_EVD); //+ getEquippedArmorAttribute($pTarget,$_AC);
 
 		var $chance = $hit * ( 1.0 - $dodge );
 
@@ -85,8 +85,12 @@
                 $damageCategory = $_BASH; //punch
             }
             var $actualDamage = $baseDamage *  getDamageCategoryResistance($pTarget,getWeaponTypeDamageCategory(getWeaponType($pWeapon)));
-            battle::createDisplay($actualDamage,$pTarget,$_DISP_DAMAGE);
-            doDamage($pTarget,integer($actualDamage));
+            var $modDamage = integer($actualDamage - getEquippedArmorAttribute($pTarget,$_AC));
+
+            if($modDamage <0 and $actualDamage >0) $modDamage = 0;
+
+            battle::createDisplay($modDamage,$pTarget,$_DISP_DAMAGE);
+            doDamage($pTarget,$modDamage);
             println("Mean damage was " + $damageMean + " and base damage was " + $baseDamage + " and actual damage was " + $actualDamage);
         }else{
             println("You missed.");
@@ -119,7 +123,7 @@
                 println($name + " attacks " + getCharacterName($pTarget));
 
                 var $hit = getCharacterAttribute($Character, $_DEX) + getEquippedWeaponAttribute($Character,$_HIT);
-                var $dodge = getCharacterAttribute($pTarget, $_EVD) + getEquippedArmorAttribute($pTarget,$_AC);
+                var $dodge = getCharacterAttribute($pTarget, $_EVD); //+ getEquippedArmorAttribute($pTarget,$_AC);
 
                 var $chance = $hit * ( 1.0 - $dodge );
 
@@ -138,12 +142,16 @@
 
                     playSound(getUnarmedHitSound($pC));
                     battle::doCharacterAnimation($pTarget,"recoil");
-                    var $damageMean = getCharacterAttribute($Character, $_STR) + getEquippedWeaponAttribute($Character,$_ATTACK);
+                    var $damageMean = getCharacterAttribute($Character, $_STR);
                     // Random about the damageMean, standard deviation is 15% of the mean, so 68% of attacks fall within 10% deviation of the mean
                     var $baseDamage = normal_random($damageMean,$damageMean * 0.15);
                     var $actualDamage = $baseDamage *  getDamageCategoryResistance($pTarget,battle::getMonsterDamageCategory($Character));
-                    battle::createDisplay($actualDamage,$pTarget,$_DISP_DAMAGE);
-                    doDamage($pTarget,integer($actualDamage));
+                    var $modDamage = integer($actualDamage - getEquippedArmorAttribute($pTarget,$_AC));
+
+                    if($modDamage <0 and $actualDamage >0) $modDamage = 0;
+
+                    battle::createDisplay($modDamage,$pTarget,$_DISP_DAMAGE);
+                    doDamage($pTarget,$modDamage);
                     println("Mean damage was " + $damageMean + " and base damage was " + $baseDamage + " and actual damage was " + $actualDamage);
                 }else{
                     println("You missed.");

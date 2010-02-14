@@ -279,6 +279,13 @@
                 <spellRef type="elemental" name="Ice"/>
 			</uniqueArmor>
 		</namedItem>
+        <namedItem name="Kid Shield" dropRarity="rare">
+			<iconRef>Armor/poisonshield</iconRef>
+			<uniqueArmor valueMultiplier = "0.25">
+                <armorTypeRef name="Shield"/>
+				<armorEnhancer multiplier="0.2" attribute="AC"/>
+			</uniqueArmor>
+		</namedItem>
 		<namedItem name = "Warrior Sword" dropRarity="rare">
 			<iconRef>Weapon/poisonsword</iconRef>
 			<uniqueWeapon valueMultiplier="4.5">
@@ -286,6 +293,13 @@
 				<weaponEnhancer multiplier="3" attribute="ATK"/>
 				<attributeModifier type="add" value="5" attribute="str"/>
 				<attributeModifier type="multiply" value="1.1" attribute="hp_max"/>
+			</uniqueWeapon>
+		</namedItem>
+        <namedItem name = "Kid Sword" dropRarity="rare">
+			<iconRef>Weapon/poisonsword</iconRef>
+			<uniqueWeapon valueMultiplier="0.25">
+                <weaponTypeRef name="Sword"/>
+				<weaponEnhancer multiplier="0.5" attribute="ATK"/>
 			</uniqueWeapon>
 		</namedItem>
 		<namedItem name = "Mage's Rod" dropRarity="rare">

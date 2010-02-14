@@ -3,6 +3,7 @@
 
 #include "Element.h"
 #include "Character.h"
+#include "steel/SteelInterpreter.h"
 
 using StoneRing::ICharacter;
 
@@ -12,6 +13,7 @@ class CharacterClass;
 class ItemRef;
 class NamedScript;
 class Stat;
+
 
 class MonsterElement : public Element
 {
@@ -23,8 +25,11 @@ public:
     ICharacter::eType GetType() const { return m_eType; }
 
     void Invoke();
+    void Invoke(const ParameterList& params);
     void Round();
+    void Round(const ParameterList& params);
     void Die();
+    void Die(const ParameterList& params);
 
     bool HasClass() const { return m_bClass; }
     CharacterClass *GetClass() const { return m_pClass; }

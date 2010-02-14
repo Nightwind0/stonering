@@ -3,6 +3,7 @@
 #include "ItemRef.h"
 #include "StatusEffect.h"
 #include "DamageCategory.h"
+#include "steel/SteelType.h"
 
 using StoneRing::Monster;
 using StoneRing::MonsterParty;
@@ -86,14 +87,33 @@ void Monster::Invoke()
     m_pMonsterDefinition->Invoke();
 }
 
+void Monster::Invoke(const ParameterList& params)
+{
+    ClearDeathAnimated();
+    set_toggle_defaults();
+    set_transients();
+    m_pMonsterDefinition->Invoke(params);
+}
+
+
 void Monster::Round()
 {
     m_pMonsterDefinition->Round();
 }
 
+void Monster::Round(const ParameterList& params)
+{
+    m_pMonsterDefinition->Round(params);
+}
+
 void Monster::Die()
 {
     m_pMonsterDefinition->Die();
+}
+
+void Monster::Die(const ParameterList& params)
+{
+    m_pMonsterDefinition->Die(params);
 }
 
 uint Monster::GetLevel(void)const

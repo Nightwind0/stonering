@@ -1,2 +1,3 @@
 var $char = addCharacter("Valyn",1,false);
-equip($char,$_HAND,"Warrior Sword");
+equip($char,$_HAND,"Kid Sword");
+equip($char,$_OFFHAND,"Kid Shield");
