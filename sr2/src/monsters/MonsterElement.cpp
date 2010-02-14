@@ -28,15 +28,35 @@ void MonsterElement::Invoke()
     if(m_pOnInvoke)
         m_pOnInvoke->ExecuteScript();
 }
+
+void MonsterElement::Invoke(const ParameterList& params)
+{
+    if(m_pOnInvoke)
+        m_pOnInvoke->ExecuteScript(params);
+}
+
 void MonsterElement::Round()
 {
     if(m_pOnRound)
         m_pOnRound->ExecuteScript();
 }
+
+void MonsterElement::Round(const ParameterList& params)
+{
+    if(m_pOnRound)
+        m_pOnRound->ExecuteScript(params);
+}
+
 void MonsterElement::Die()
 {
     if(m_pOnRemove)
         m_pOnRemove->ExecuteScript();
+}
+
+void MonsterElement::Die(const ParameterList& params)
+{
+    if(m_pOnRemove)
+        m_pOnRemove->ExecuteScript(params);
 }
 
 std::list<ItemRef*>::const_iterator MonsterElement::GetItemRefsBegin() const
