@@ -6,7 +6,9 @@ libbattle_la_SOURCES = \
 ActionQueue.h \
 ActionQueue.cpp \
 TargetingState.cpp \
-TargetingState.h
+TargetingState.h \
+AnimationState.h \
+AnimationState.cpp
 
 
 INCLUDES = 	-I@top_srcdir@/src/ \

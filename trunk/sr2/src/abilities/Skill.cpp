@@ -154,8 +154,7 @@ Skill::GetPreReqsEnd() const
 }
 
 Skill * SkillRef::GetSkill() const{
-    AbilityManager * pAM = IApplication::GetInstance()->GetAbilityManager();
-    return pAM->GetSkill(*this);
+    return AbilityManager::GetSkill(*this);
 }
 
 

@@ -25,8 +25,8 @@ private:
     void LoadCharacterClasses(const std::string &filename);
     void LoadCharacters(const std::string &filename);
     void LoadMonsters(const std::string &filename);
+    void LoadAnimations(const std::string &filename);
 
-    AbilityManager * GetAbilityManager();
     ItemManager * GetItemManager();
     CharacterManager * GetCharacterManager();
 };

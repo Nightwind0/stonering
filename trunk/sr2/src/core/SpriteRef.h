@@ -30,7 +30,7 @@ namespace StoneRing
 
         eType GetType() const;
         std::string GetRef() const;
-        CL_Sprite * CreateSprite() const;
+        CL_Sprite  CreateSprite() const;
     protected:
         virtual bool handle_element(eElement element, Element * pElement );
         virtual void load_attributes(CL_DomNamedNodeMap attributes);

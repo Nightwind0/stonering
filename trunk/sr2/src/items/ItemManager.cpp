@@ -149,9 +149,8 @@ void ItemManager::generateWeapons()
             if(!pClass->isExcluded( typeRef ) )
             {
                 // Create all the spell combinations.
-                const AbilityManager * pAbilityManager = IApplication::getInstance()->getAbilityManager();
-                for(std::list<Spell*>::const_iterator spellIter = pAbilityManager->getSpellsBegin();
-                    spellIter != pAbilityManager->getSpellsEnd();
+                for(std::list<Spell*>::const_iterator spellIter = AbilityManager::getSpellsBegin();
+                    spellIter != AbilityManager::getSpellsEnd();
                     spellIter++)
                 {
                     Spell * pSpell = *spellIter;
@@ -210,9 +209,8 @@ void ItemManager::generateArmor()
             if(!pClass->isExcluded( typeRef ) )
             {
                 // Create all the spell combinations.
-                const AbilityManager * pAbilityManager = IApplication::getInstance()->getAbilityManager();
-                for(std::list<Spell*>::const_iterator spellIter = pAbilityManager->getSpellsBegin();
-                    spellIter != pAbilityManager->getSpellsEnd();
+                for(std::list<Spell*>::const_iterator spellIter = AbilityManager::getSpellsBegin();
+                    spellIter != AbilityManager::getSpellsEnd();
                     spellIter++)
                 {
                     Spell * pSpell = *spellIter;

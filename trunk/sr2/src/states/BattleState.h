@@ -145,13 +145,19 @@ namespace StoneRing{
         void draw_displays(CL_GraphicContext& GC);
 
         void init_or_release_players(bool bRelease=false);
+        void set_positions_to_loci();
         void roll_initiative();
         void next_turn();
         void pick_next_character();
         void check_for_death();
         void death_animation(Monster* pMonster);
-        CL_Point get_monster_pos(Monster* pMonster)const;
-        CL_Point get_player_pos(uint n)const;
+        CL_Rect  get_group_rect(ICharacterGroup* group);
+        CL_Rect  get_character_rect (ICharacter* pCharacter);
+        CL_Rect get_character_locus_rect (ICharacter* pCharacter);
+        CL_Size get_character_size(ICharacter*);
+        CL_Point get_character_locus(ICharacter* pCharacter);
+        CL_Point get_monster_locus(Monster* pMonster)const;
+        CL_Point get_player_locus(uint n)const;
         ICharacter* get_next_character(const ICharacterGroup* pGroup, const ICharacter* pCharacter)const;
         ICharacter* get_prev_character(const ICharacterGroup* pGroup, const ICharacter* pCharacter)const;
 
@@ -212,6 +218,7 @@ namespace StoneRing{
         friend class BattleState::Display;
         friend class TargetingState;
         friend class BattleManager;
+        friend class AnimationState;
     };
 
 }

@@ -99,6 +99,8 @@ namespace StoneRing{
         virtual uint   GetInitiative(void)const=0;
         virtual void   Kill()=0;
         virtual void   Attacked()=0;
+        virtual CL_Point       GetBattlePos()const=0;
+        virtual void           SetBattlePos(CL_Point point)=0;
 
         // Static API
         static eCharacterAttribute CharAttributeFromString(const std::string &str);

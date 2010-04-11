@@ -1,4 +1,6 @@
 #include "SpriteRef.h"
+#include "GraphicsManager.h"
+
 
 bool StoneRing::SpriteRef::handle_element(Element::eElement element, Element * pElement)
 {
@@ -50,5 +52,10 @@ StoneRing::SpriteRef::eType
 StoneRing::SpriteRef::GetType() const
 {
     return m_eType;
+}
+
+CL_Sprite StoneRing::SpriteRef::CreateSprite() const
+{
+    return GraphicsManager::GetInstance()->CreateSprite( m_ref );
 }
 

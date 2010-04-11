@@ -63,7 +63,18 @@ void BattleState::init(const MonsterGroup &group, const std::string &backdrop)
     m_backdrop = pGraphicsManager->GetBackdrop(backdrop);
     m_bDone = false;
     roll_initiative();
+    set_positions_to_loci();
     next_turn();
+}
+
+void BattleState::set_positions_to_loci()
+{
+    for(std::deque<ICharacter*>::iterator iter = m_initiative.begin();
+    iter != m_initiative.end(); iter++)
+    {
+        CL_Point pos = get_character_locus_rect(*iter).get_top_left();
+        (*iter)->SetBattlePos(pos);
+    }
 }
 
 void BattleState::next_turn()
@@ -466,13 +477,12 @@ void BattleState::Display::draw(CL_GraphicContext& GC)
     color.set_alpha(1.0f - m_complete);
     shadow_color.set_alpha(1.0f-m_complete);
 
-    CL_Point pos;
+    CL_Rect rect;
     Monster *pMonster = dynamic_cast<Monster*>(m_pTarget);
 
     if (pMonster)
     {
-        pos = m_parent.get_monster_pos(pMonster);
-        pos.x += pMonster->GetCurrentSprite().get_width();
+        rect = m_parent.get_character_rect(pMonster);
     }
     else
     {
@@ -481,13 +491,15 @@ void BattleState::Display::draw(CL_GraphicContext& GC)
         {
             if (m_pTarget == pParty->GetCharacter(n))
             {
-                pos = m_parent.get_player_pos(n);
+                rect = m_parent.get_character_rect(pParty->GetCharacter(n));
                 break;
             }
         }
     }
 
     CL_String value(stream.str());
+
+    CL_Point pos = rect.get_top_right();
 
     pos.y += font.get_font_metrics(GC).get_height();
     pos.x -= font.get_text_size(GC,value).width;
@@ -509,7 +521,7 @@ void BattleState::draw_monsters(const CL_Rect &monsterRect, CL_GraphicContext& G
         if (!pMonster->GetToggle(ICharacter::CA_VISIBLE))
             continue;
 
-        CL_Point point = get_monster_pos(pMonster);
+        CL_Rect rect = get_character_rect(iCharacter);
 
         CL_Sprite  sprite = pMonster->GetCurrentSprite();
         sprite.set_alpha(1.0f);
@@ -520,17 +532,17 @@ void BattleState::draw_monsters(const CL_Rect &monsterRect, CL_GraphicContext& G
             if ((m_targets.m_bSelectedGroup && m_targets.selected.m_pGroup == m_monsters)
                     || (!m_targets.m_bSelectedGroup && iCharacter == m_targets.selected.m_pTarget))
             {
-                sprite.draw(GC,point.x,point.y);
+                sprite.draw(GC,rect);
             }
             else
             {
                 sprite.set_alpha(0.7f);
-                sprite.draw(GC,point.x,point.y);
+                sprite.draw(GC,rect);
             }
         }
         else
         {
-            sprite.draw(GC,point.x,point.y);
+            sprite.draw(GC,rect);
         }
 
     }
@@ -546,7 +558,7 @@ void BattleState::draw_players(const CL_Rect &playerRect, CL_GraphicContext& GC)
         Character * pCharacter = dynamic_cast<Character*>(pParty->GetCharacter(nPlayer));
         ICharacter * iCharacter = pParty->GetCharacter(nPlayer);
         CL_Sprite  sprite = pCharacter->GetCurrentSprite();
-        CL_Point point = get_player_pos(nPlayer);
+        CL_Rect rect = get_character_rect(iCharacter);
         sprite.set_alpha(1.0f);
         sprite.update();
 
@@ -559,24 +571,35 @@ void BattleState::draw_players(const CL_Rect &playerRect, CL_GraphicContext& GC)
             if ((m_targets.m_bSelectedGroup && m_targets.selected.m_pGroup == m_monsters)
                     || (!m_targets.m_bSelectedGroup && iCharacter == m_targets.selected.m_pTarget))
             {
-                sprite.draw(GC,point.x,point.y);
+                sprite.draw(GC,rect);
             }
             else
             {
                 sprite.set_alpha(0.7f);
-                sprite.draw(GC,point.x,point.y);
+                sprite.draw(GC,rect);
 
             }
         }
         else
         {
-            sprite.draw(GC,point.x,point.y);
+            sprite.draw(GC,rect);
         }
 
     }
 }
 
-CL_Point BattleState::get_monster_pos(Monster * pMonster)const
+CL_Rect  BattleState::get_group_rect(ICharacterGroup* group)
+{
+    MonsterParty * monsterParty = dynamic_cast<MonsterParty*>(group);
+
+    if(monsterParty != NULL){
+        return m_monster_rect;
+    }else{
+        return m_player_rect;
+    }
+}
+
+CL_Point BattleState::get_monster_locus(Monster * pMonster)const
 {
     CL_Point point;
     const uint cellWidth = m_monster_rect.get_width() / m_nColumns;
@@ -590,12 +613,64 @@ CL_Point BattleState::get_monster_pos(Monster * pMonster)const
     return point;
 }
 
-CL_Point BattleState::get_player_pos(uint nPlayer)const
+CL_Point BattleState::get_player_locus(uint nPlayer)const
 {
     CL_Point point;
     point.x = static_cast<int>(m_player_rect.left + nPlayer * 64);
     point.y = static_cast<int>(m_player_rect.top + nPlayer * 64);
     return point;
+}
+
+CL_Point BattleState::get_character_locus(ICharacter* pCharacter)
+{
+    CL_Point point;
+    Monster * pMonster = dynamic_cast<Monster*>(pCharacter);
+    if(pMonster != NULL){
+        return get_monster_locus(pMonster);
+    }else{
+        IParty * pParty = IApplication::GetInstance()->GetParty();
+        uint playercount = pParty->GetCharacterCount();
+        for(uint i=0;i<playercount;i++){
+            ICharacter * iCharacter = pParty->GetCharacter(i);
+
+            if(pCharacter == iCharacter){
+                return get_player_locus(i);
+            }
+        }
+    }
+    assert(0);
+    return CL_Point();
+}
+
+CL_Size  BattleState::get_character_size(ICharacter* pCharacter)
+{
+    Monster * pMonster = dynamic_cast<Monster*>(pCharacter);
+    if(pMonster != NULL){
+        return pMonster->GetCurrentSprite().get_size();
+    }else{
+        return CL_Size(64,128);
+    }
+}
+
+
+CL_Rect BattleState::get_character_rect(ICharacter* pCharacter)
+{
+    CL_Rect rect;
+    CL_Point point = pCharacter->GetBattlePos();
+    rect.set_top_left(point);
+    rect.set_size(get_character_size(pCharacter));
+
+    return rect;
+}
+
+CL_Rect BattleState::get_character_locus_rect(ICharacter* pCharacter)
+{
+    CL_Rect rect;
+    CL_Point point = get_character_locus(pCharacter);
+    rect.set_top_left(point);
+    rect.set_size(get_character_size(pCharacter));
+
+    return rect;
 }
 
 

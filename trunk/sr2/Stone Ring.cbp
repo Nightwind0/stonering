@@ -100,6 +100,8 @@
 		<Unit filename="src/abilities/StatusEffect.h" />
 		<Unit filename="src/battle/ActionQueue.cpp" />
 		<Unit filename="src/battle/ActionQueue.h" />
+		<Unit filename="src/battle/AnimationState.cpp" />
+		<Unit filename="src/battle/AnimationState.h" />
 		<Unit filename="src/battle/IBattleAction.h" />
 		<Unit filename="src/battle/TargetingState.cpp" />
 		<Unit filename="src/battle/TargetingState.h" />

@@ -10,8 +10,10 @@
 #include "SpellRef.h"
 #include <map>
 #include <algorithm>
+#include "Animation.h"
 
 using namespace StoneRing;
+#define     INSTANCE() IApplication::GetInstance()->GetAbilityManager();
 
 
 AbilityManager::~AbilityManager()
@@ -28,6 +30,7 @@ AbilityManager::~AbilityManager()
 
 void AbilityManager::LoadSpellFile ( CL_DomDocument &doc )
 {
+    AbilityManager* instance = INSTANCE();
     IFactory * pAbilityFactory = IApplication::GetInstance()->GetElementFactory();
 
     CL_DomElement spellsNode = doc.named_item("spellList").to_element();
@@ -38,7 +41,7 @@ void AbilityManager::LoadSpellFile ( CL_DomDocument &doc )
         Spell * pSpell = dynamic_cast<Spell*>(pAbilityFactory->createElement("spell"));
 
         pSpell->Load(spellNode);
-        m_spells.push_back ( pSpell );
+        instance->m_spells.push_back ( pSpell );
         spellNode = spellNode.get_next_sibling().to_element();
     }
 }
@@ -46,6 +49,7 @@ void AbilityManager::LoadSpellFile ( CL_DomDocument &doc )
 
 void AbilityManager::LoadSkillFile ( CL_DomDocument &doc )
 {
+    AbilityManager * instance = INSTANCE();
     IFactory * pAbilityFactory = IApplication::GetInstance()->GetElementFactory();
 
     CL_DomElement spellsNode = doc.named_item("skillList").to_element();
@@ -56,13 +60,14 @@ void AbilityManager::LoadSkillFile ( CL_DomDocument &doc )
         Skill * pSkill = dynamic_cast<Skill*>(pAbilityFactory->createElement("skill"));
 
         pSkill->Load(spellNode);
-        m_skills [ pSkill->GetName() ] = pSkill;
+        instance->m_skills [ pSkill->GetName() ] = pSkill;
         spellNode = spellNode.get_next_sibling().to_element();
     }
 }
 
 void AbilityManager::LoadStatusEffectFile ( CL_DomDocument &doc )
 {
+    AbilityManager * instance = INSTANCE();
     IFactory * pAbilityFactory = IApplication::GetInstance()->GetElementFactory();
     assert ( pAbilityFactory );
 
@@ -73,53 +78,79 @@ void AbilityManager::LoadStatusEffectFile ( CL_DomDocument &doc )
     {
         StatusEffect * pStatusEffect = dynamic_cast<StatusEffect*>(pAbilityFactory->createElement("statusEffect"));
         pStatusEffect->Load(statusEffectNode);
-        m_status_effects.push_back ( pStatusEffect );
+        instance->m_status_effects.push_back ( pStatusEffect );
         statusEffectNode = statusEffectNode.get_next_sibling().to_element();
     }
 }
 
 
-std::list<Spell*>::const_iterator AbilityManager::GetSpellsBegin() const
+void AbilityManager::LoadAnimationFile ( CL_DomDocument &doc )
 {
-    return m_spells.begin();
+    AbilityManager * instance = INSTANCE();
+    IFactory * pAbilityFactory = IApplication::GetInstance()->GetElementFactory();
+    assert ( pAbilityFactory );
+
+    CL_DomElement animationsNode = doc.named_item("animations").to_element();
+    CL_DomElement animationNode = animationsNode.get_first_child().to_element();
+
+    while (!animationNode.is_null())
+    {
+        Animation * pAnimation = dynamic_cast<Animation*>(pAbilityFactory->createElement("animation"));
+        pAnimation->Load(animationNode);
+        instance->m_animations[ pAnimation->GetName() ] =  pAnimation ;
+        animationNode = animationNode.get_next_sibling().to_element();
+    }
 }
 
 
-std::list<Spell*>::const_iterator AbilityManager::GetSpellsEnd() const
+std::list<Spell*>::const_iterator AbilityManager::GetSpellsBegin()
 {
-    return m_spells.end();
-}
-std::map<std::string,Skill*>::const_iterator AbilityManager::GetSkillsBegin() const
-{
-    return m_skills.begin();
+    AbilityManager * instance = INSTANCE();
+    return instance->m_spells.begin();
 }
 
 
-std::map<std::string,Skill*>::const_iterator AbilityManager::GetSkillsEnd() const
+std::list<Spell*>::const_iterator AbilityManager::GetSpellsEnd()
 {
-    return m_skills.end();
+    AbilityManager * instance = INSTANCE();
+    return instance->m_spells.end();
+}
+std::map<std::string,Skill*>::const_iterator AbilityManager::GetSkillsBegin()
+{
+    AbilityManager * instance = INSTANCE();
+    return instance->m_skills.begin();
 }
 
-Skill * AbilityManager::GetSkill ( const SkillRef &ref ) const
+
+std::map<std::string,Skill*>::const_iterator AbilityManager::GetSkillsEnd()
 {
-    return m_skills.find( ref.GetRef() )->second;
+    AbilityManager * instance = INSTANCE();
+    return instance->m_skills.end();
 }
 
-Skill * AbilityManager::GetSkill ( const std::string &skill ) const
+Skill * AbilityManager::GetSkill ( const SkillRef &ref )
 {
-    return m_skills.find ( skill )->second;
+    AbilityManager * instance = INSTANCE();
+    return instance->m_skills.find( ref.GetRef() )->second;
 }
 
-bool AbilityManager::SkillExists ( const std::string &skill ) const
+Skill * AbilityManager::GetSkill ( const std::string &skill )
 {
-    return m_skills.find(skill) != m_skills.end();
+    AbilityManager * instance = INSTANCE();
+    return instance->m_skills.find ( skill )->second;
 }
 
-Spell * AbilityManager::GetSpell( const SpellRef & ref ) const
+bool AbilityManager::SkillExists ( const std::string &skill )
 {
+    AbilityManager * instance = INSTANCE();
+    return instance->m_skills.find(skill) != instance->m_skills.end();
+}
 
-    for (std::list<Spell*>::const_iterator iter = m_spells.begin();
-            iter != m_spells.end();
+Spell * AbilityManager::GetSpell( const SpellRef & ref )
+{
+    AbilityManager * instance = INSTANCE();
+    for (std::list<Spell*>::const_iterator iter = instance->m_spells.begin();
+            iter != instance->m_spells.end();
             iter++)
     {
         SpellRef * pRef = (*iter)->createSpellRef();
@@ -140,10 +171,11 @@ Spell * AbilityManager::GetSpell( const SpellRef & ref ) const
 
 
 
-StatusEffect * AbilityManager::GetStatusEffect ( const std::string &ref ) const
+StatusEffect * AbilityManager::GetStatusEffect ( const std::string &ref )
 {
-    for (std::list<StatusEffect*>::const_iterator iter = m_status_effects.begin();
-            iter != m_status_effects.end();
+    AbilityManager * instance = INSTANCE();
+    for (std::list<StatusEffect*>::const_iterator iter = instance->m_status_effects.begin();
+            iter != instance->m_status_effects.end();
             iter++)
     {
         if ((*iter)->GetName() == ref)

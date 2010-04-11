@@ -224,7 +224,7 @@ bool TargetingState::SelectTargetOnLeft()
             while (!found && currentCellX >=0)
             {
                 int currentCellY_up = cellY;
-                uint currentCellY_down = cellY;
+                int currentCellY_down = cellY;
 
                 // Or, so that one can continue if the other is maxed out
                 while (currentCellY_up >=0 || currentCellY_down < m_pParent->m_nRows)

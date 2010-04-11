@@ -39,6 +39,12 @@
 
 using namespace StoneRing;
 
+
+Element * ElementFactory::createBattleSprite() const
+{
+    return new BattleSprite();
+}
+
 Element * ElementFactory::createDirectionBlock()const
 {
     return new DirectionBlock();
@@ -466,6 +472,7 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["attributeModifier"] = &ElementFactory::createAttributeModifier;
     mCreateMethods["battleMenu"] = &ElementFactory::createBattleMenu;
     mCreateMethods["battleMenuOption"] = &ElementFactory::createBattleMenuOption;
+    mCreateMethods["battleSprite"] = &ElementFactory::createBattleSprite;
     mCreateMethods["character"] = &ElementFactory::createCharacter;
     mCreateMethods["characterClass"] = &ElementFactory::createCharacterClass;
     mCreateMethods["conditionScript"] = &ElementFactory::createConditionScript;
@@ -496,6 +503,7 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["onStep"] = &ElementFactory::createOnStep;
     mCreateMethods["onSelect"] = &ElementFactory::createOnSelect;
     mCreateMethods["phase"] = &ElementFactory::createPhase;
+  //  mCreateMethods["playSound"] = &ElementFactory::createPlaySound;
 //    mCreateMethods[Element::EPREREQSKILLREF] = &ElementFactory::createPreReqSkillRef;
     mCreateMethods["regularItem"] = &ElementFactory::createRegularItem;
     mCreateMethods["rune"] = &ElementFactory::createRune;

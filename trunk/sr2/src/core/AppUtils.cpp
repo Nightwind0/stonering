@@ -24,6 +24,7 @@ void AppUtils::LoadGameplayAssets(const std::string &path, CL_ResourceManager& r
     std::string classdefinition = CL_String_load("Game/CharacterClassDefinitions",resources);
     std::string monsterdefinition = CL_String_load("Game/MonsterDefinitions",resources);
     std::string characterdefinition = CL_String_load("Game/CharacterDefinitions",resources);
+    std::string animationdefintion = CL_String_load("Game/AnimationDefinitions",resources);
 
     LoadStatusEffects(path + statusEffectDefinition);
     LoadSpells(path + spelldefinition);
@@ -32,6 +33,7 @@ void AppUtils::LoadGameplayAssets(const std::string &path, CL_ResourceManager& r
     LoadCharacterClasses(path + classdefinition);
     LoadMonsters(path + monsterdefinition);
     LoadCharacters(path + characterdefinition);
+    LoadAnimations(path + animationdefintion);
 }
 
 
@@ -46,7 +48,7 @@ void AppUtils::LoadSpells(const std::string &filename)
 
     document.load(file);
 
-    GetAbilityManager()->LoadSpellFile ( document );
+    AbilityManager::LoadSpellFile ( document );
 }
 
 void AppUtils::LoadSkills(const std::string &filename)
@@ -59,7 +61,7 @@ void AppUtils::LoadSkills(const std::string &filename)
     CL_DomDocument document;
     document.load(file);
 
-    GetAbilityManager()->LoadSkillFile ( document );
+    AbilityManager::LoadSkillFile ( document );
 }
 
 void AppUtils::LoadStatusEffects(const std::string &filename)
@@ -73,7 +75,7 @@ void AppUtils::LoadStatusEffects(const std::string &filename)
 
     document.load(file);
 
-    GetAbilityManager()->LoadStatusEffectFile( document );
+    AbilityManager::LoadStatusEffectFile( document );
 }
 
 void AppUtils::LoadCharacterClasses(const std::string &filename)
@@ -87,6 +89,19 @@ void AppUtils::LoadCharacterClasses(const std::string &filename)
     document.load(file);
 
     GetCharacterManager()->LoadCharacterClassFile( document );
+}
+
+void AppUtils::LoadAnimations(const std::string &filename)
+{
+#ifndef NDEBUG
+    std::cout << "Loading animationss..." << std::endl;
+#endif
+
+    CL_File file(filename);
+    CL_DomDocument document;
+    document.load(file);
+
+    AbilityManager::LoadAnimationFile( document );
 }
 
 void AppUtils::LoadCharacters(const std::string &filename)
@@ -128,15 +143,6 @@ void AppUtils::LoadItems(const std::string &filename)
     GetItemManager()->LoadItemFile ( document );
 }
 
-StoneRing::AbilityManager * AppUtils::GetAbilityManager()
-{
-    IApplication *pApp = IApplication::GetInstance();
-    assert ( NULL != pApp );
-    AbilityManager * pMgr = pApp->GetAbilityManager();
-    assert ( NULL != pMgr );
-
-    return pMgr;
-}
 
 StoneRing::ItemManager * AppUtils::GetItemManager()
 {
