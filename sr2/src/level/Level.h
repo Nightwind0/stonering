@@ -144,9 +144,10 @@ namespace StoneRing {
 
         CL_Sprite m_sprite;
         SpriteRefOrTilemap m_Graphic;
-        ushort m_ZOrder;
+
         ScriptElement *m_pCondition;
         ScriptElement *m_pScript;
+        ushort m_ZOrder;
         ushort m_X;
         ushort m_Y;
 

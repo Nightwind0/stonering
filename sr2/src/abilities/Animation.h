@@ -17,6 +17,7 @@ namespace StoneRing
     class SpriteMovement;
     class AlterSprite;
     class AnimationMask;
+    class PlaySound;
 
     class AlterSprite : public Element
     {
@@ -31,8 +32,7 @@ namespace StoneRing
         enum eAlter
         {
             HIDE, SMALLER_SIZE, LARGER_SIZE, HALF_SIZE, DOUBLE_SIZE, NEGATIVE,
-            X_FLIP, Y_FLIP, GRAYSCALE, GREENSCALE, REDSCALE, BLUESCALE,
-            IDLE_SPRITE,ATTACK_SPRITE, USE_SPRITE, RECOIL_SPRITE, WEAK_SPRITE
+            X_FLIP, Y_FLIP, GRAYSCALE, GREENSCALE, REDSCALE, BLUESCALE
         };
 
     private:
@@ -158,7 +158,7 @@ namespace StoneRing
             return ESPRITEMOVEMENT;
         }
 
-        enum eFocus  { SCREEN, CASTER, TARGET, CASTER_GROUP, TARGET_GROUP };
+        enum eFocus  { SCREEN, CASTER, TARGET, CASTER_GROUP, TARGET_GROUP, CASTER_LOCUS, TARGET_LOCUS };
         enum eFocusX { X_CENTER, TOWARDS, AWAY, LEFT, RIGHT };
         enum eFocusY { Y_CENTER, TOP, BOTTOM };
         enum eFocusZ { BACK, FRONT };
@@ -172,11 +172,12 @@ namespace StoneRing
         };
 
         enum eMovementDirection { STILL, N, E, S, W, NE, NW, SE, SW, MOVE_AWAY, MOVE_TOWARDS, END_FOCUS };
-        enum eMovementStyle {STRAIGHT, ARC_OVER, ARC_UNDER, SINE };
+        enum eMovementStyle {STRAIGHT, ARC_OVER, ARC_UNDER, SINE, XONLY, YONLY };
 
         Focus GetInitialFocus() const;
         bool HasEndFocus() const;
         Focus GetEndFocus() const;
+        bool ForEachTarget() const;
 
         eMovementDirection GetMovementDirection() const;
         eMovementStyle GetMovementStyle() const;
@@ -198,6 +199,7 @@ namespace StoneRing
         bool m_bEndFocus;
         Focus m_initial_focus;
         Focus m_end_focus;
+        bool m_bForEach;
         eMovementDirection m_eMovementDirection;
         eMovementStyle m_eMovementStyle;
     };
@@ -213,7 +215,9 @@ namespace StoneRing
         }
         CL_DomElement CreateDomElement(CL_DomDocument &) const;
 
-        bool InParallel()const;
+        bool InParallel()const{
+            return m_bParallel;
+        }
         uint GetDurationMs() const;
 
         void Execute();
@@ -226,6 +230,7 @@ namespace StoneRing
         virtual void load_attributes(CL_DomNamedNodeMap attributes);
         bool m_bParallel;
         uint m_nDuration;
+
         ScriptElement *m_pScript;
         std::list<SpriteAnimation*> m_sprite_animations;
     };

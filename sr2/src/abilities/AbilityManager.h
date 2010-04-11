@@ -17,29 +17,30 @@ namespace StoneRing
         AbilityManager(){}
         ~AbilityManager();
 
-        void LoadSpellFile ( CL_DomDocument &doc );
-        void LoadStatusEffectFile ( CL_DomDocument &doc );
-        void LoadSkillFile(CL_DomDocument &doc );
+        static void LoadSpellFile ( CL_DomDocument &doc );
+        static void LoadStatusEffectFile ( CL_DomDocument &doc );
+        static void LoadSkillFile(CL_DomDocument &doc);
+        static void LoadAnimationFile(CL_DomDocument &doc);
 
-        std::list<Spell*>::const_iterator GetSpellsBegin() const;
-        std::list<Spell*>::const_iterator  GetSpellsEnd() const;
+        static std::list<Spell*>::const_iterator GetSpellsBegin();
+        static std::list<Spell*>::const_iterator  GetSpellsEnd();
 
-        std::map<std::string,Skill*>::const_iterator GetSkillsBegin() const;
-        std::map<std::string,Skill*>::const_iterator GetSkillsEnd() const;
+        static std::map<std::string,Skill*>::const_iterator GetSkillsBegin();
+        static std::map<std::string,Skill*>::const_iterator GetSkillsEnd();
 
-        std::list<StatusEffect*>::const_iterator GetStatusEffectsBegin() const;
-        std::list<StatusEffect*>::const_iterator GetStatusEffectsEnd() const;
+        static std::list<StatusEffect*>::const_iterator GetStatusEffectsBegin();
+        static std::list<StatusEffect*>::const_iterator GetStatusEffectsEnd();
 
-        virtual Spell * GetSpell( const SpellRef & ref ) const;
-        virtual StatusEffect * GetStatusEffect ( const std::string &ref ) const;
-        virtual Skill * GetSkill ( const SkillRef &ref ) const;
+        static Spell * GetSpell( const SpellRef & ref );
+        static StatusEffect * GetStatusEffect ( const std::string &ref );
+        static Skill * GetSkill ( const SkillRef &ref );
 
-        virtual Skill * GetSkill ( const std::string &skill ) const;
+        static Skill * GetSkill ( const std::string &skill );
 
-        bool SkillExists ( const std::string &skill ) const;
+        static bool SkillExists ( const std::string &skill );
 
 #ifndef NDEBUG
-        void DumpSpellList();
+        static void DumpSpellList();
 #endif
 
 
@@ -47,10 +48,12 @@ namespace StoneRing
         typedef std::map<std::string,Skill*> SkillMap;
         typedef std::list<Spell*> SpellList;
         typedef std::list<StatusEffect*> StatusEffectList;
+        typedef std::map<std::string,Animation*> AnimationMap;
 
         SkillMap m_skills;
         SpellList m_spells;
         StatusEffectList m_status_effects;
+        AnimationMap m_animations;
     };
 
 

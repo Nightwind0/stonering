@@ -79,12 +79,12 @@ void BattleSprite::load_attributes(CL_DomNamedNodeMap attributes)
 
     std::string which = get_required_string("which",attributes);
 
-    if(which == "idle") m_eWhich = IDLE;
-    else if(which == "attack") m_eWhich = ATTACK;
-    else if(which == "use") m_eWhich = USE;
-    else if(which == "recoil") m_eWhich = RECOIL;
-    else if(which == "weak") m_eWhich = WEAK;
-    else if(which == "dead") m_eWhich = DEAD;
+    if (which == "idle") m_eWhich = IDLE;
+    else if (which == "attack") m_eWhich = ATTACK;
+    else if (which == "use") m_eWhich = USE;
+    else if (which == "recoil") m_eWhich = RECOIL;
+    else if (which == "weak") m_eWhich = WEAK;
+    else if (which == "dead") m_eWhich = DEAD;
     else throw CL_Exception("Bad which on battleSprite");
 }
 
@@ -146,7 +146,7 @@ bool SpriteAnimation::handle_element(eElement element, Element * pElement)
     case EALTERSPRITE:
         m_pAlterSprite = dynamic_cast<AlterSprite*>(pElement);
         break;
-        case EBATTLESPRITE:
+    case EBATTLESPRITE:
         m_pBattleSprite = dynamic_cast<BattleSprite*>(pElement);
         break;
     default:
@@ -158,13 +158,13 @@ bool SpriteAnimation::handle_element(eElement element, Element * pElement)
 
 void SpriteAnimation::load_finished()
 {
-    if (!m_pStub && !m_pSpriteRef)
-        throw CL_Exception("Missing sprite stub or sprite ref on spriteAnimation");
+    if (!m_pStub && !m_pSpriteRef && !m_pBattleSprite)
+        throw CL_Exception("Missing sprite stub or sprite ref or battle sprite on spriteAnimation");
 }
 
 
 SpriteMovement::SpriteMovement()
-        :m_bEndFocus(false)
+        :m_bEndFocus(false),m_bForEach(false)
 {
 }
 
@@ -210,6 +210,8 @@ void SpriteMovement::load_attributes(CL_DomNamedNodeMap attributes)
     if (has_attribute("movementStyle",attributes))
         m_eMovementStyle = movementStyleFromString ( get_string("movementStyle",attributes ));
     else m_eMovementStyle = STRAIGHT;
+
+    get_implied_bool("forEach",attributes,false);
 }
 
 bool SpriteMovement::HasEndFocus() const
@@ -231,6 +233,7 @@ SpriteMovement::focusTypeFromString(const std::string &str)
     else if (str == "target") return TARGET;
     else if (str == "caster_group") return CASTER_GROUP;
     else if (str == "target_group") return TARGET_GROUP;
+    else if (str == "locus") return CASTER_LOCUS;
     else throw CL_Exception("Bad focus: " + str );
 }
 
@@ -290,6 +293,8 @@ SpriteMovement::movementStyleFromString( const std::string &str )
     else if (str == "arc_over") return ARC_OVER;
     else if (str == "arc_under") return ARC_UNDER;
     else if (str == "sine") return SINE;
+    else if (str == "xonly") return XONLY;
+    else if (str == "yonly") return YONLY;
     else throw CL_Exception("Bad movementStyle " + str );
 }
 
@@ -308,6 +313,10 @@ SpriteMovement::Focus SpriteMovement::GetEndFocus() const
     return m_end_focus;
 }
 
+bool SpriteMovement::ForEachTarget() const
+{
+    return m_bForEach;
+}
 
 SpriteMovement::eMovementDirection
 SpriteMovement::GetMovementDirection() const
@@ -330,6 +339,7 @@ bool Phase::handle_element(eElement element, Element * pElement)
     case ESPRITEANIMATION:
         m_sprite_animations.push_back( dynamic_cast<SpriteAnimation*>(pElement));
         break;
+
     default:
         return false;
     }
@@ -385,6 +395,7 @@ Phase::GetSpriteAnimationsEnd() const
 {
     return m_sprite_animations.end();
 }
+
 
 
 

@@ -106,7 +106,6 @@ Item::eDropRarity GeneratedArmor::GetDropRarity() const
 uint GeneratedArmor::GetValue() const
 {
     // @todo: add rune value
-    const AbilityManager * pManager = IApplication::GetInstance()->GetAbilityManager();
 
     uint value =  (int)((float)m_pType->GetBasePrice() * m_pClass->GetValueMultiplier())
         + m_pClass->GetValueAdd();
@@ -115,7 +114,7 @@ uint GeneratedArmor::GetValue() const
     {
         SpellRef * pSpellRef = GetSpellRef();
 
-        Spell * pSpell = pManager->GetSpell ( *pSpellRef );
+        Spell * pSpell = AbilityManager::GetSpell ( *pSpellRef );
 
         value += pSpell->getValue();
     }

@@ -1049,7 +1049,6 @@ int Application::main(const std::vector<CL_String> &args)
 
         m_window.get_gc().clear(CL_Colorf(0.0f, 0.0f, 0.0f));
 
-        static int start_time = CL_System::get_time();
 
         while (mStates.size())
             run();

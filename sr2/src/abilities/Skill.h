@@ -64,6 +64,7 @@ namespace StoneRing
         static eType TypeFromString(const std::string type);
         std::string m_name;
         std::list<SkillRef*> m_pre_reqs;
+        uint m_nMinLevel;
         NamedScript *m_pOnInvoke;
         NamedScript *m_pOnRemove;
         NamedScript *m_pCondition;
@@ -72,7 +73,7 @@ namespace StoneRing
         uint m_nBp;
         uint m_nSp;
         CL_Image m_pIcon;
-        uint m_nMinLevel;
+
         eType m_eType;
         bool m_bAllowsGroupTarget;
         bool m_bDefaultToEnemyGroup;

@@ -12,8 +12,7 @@ using namespace StoneRing;
 
 
 Spell::Spell()
-:mpScript(NULL),
-mpMagicResistance(NULL)
+:mpMagicResistance(NULL),mpScript(NULL)
 {
 }
 

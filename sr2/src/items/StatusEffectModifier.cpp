@@ -12,8 +12,8 @@ StatusEffectModifier::StatusEffectModifier():m_pStatusEffect(NULL)
 void StatusEffectModifier::load_attributes(CL_DomNamedNodeMap attributes)
 {
     std::string statusRef = get_required_string("statusRef", attributes);
-    const AbilityManager * pManager = IApplication::GetInstance()->GetAbilityManager();
-    m_pStatusEffect = pManager->GetStatusEffect( statusRef );
+
+    m_pStatusEffect = AbilityManager::GetStatusEffect( statusRef );
     m_fModifier = get_required_float("modifier", attributes );
 }
 
