@@ -17,6 +17,7 @@ namespace StoneRing{
     class MonsterParty;
     class IBattleAction;
     class ICharacter;
+    class AnimationState;
 
 
     class BattleState : public State
@@ -151,6 +152,8 @@ namespace StoneRing{
         void pick_next_character();
         void check_for_death();
         void death_animation(Monster* pMonster);
+		void move_character (ICharacter* character, CL_Pointf point);
+		ICharacterGroup* group_for_character(ICharacter*);
         CL_Rect  get_group_rect(ICharacterGroup* group);
         CL_Rect  get_character_rect (ICharacter* pCharacter);
         CL_Rect get_character_locus_rect (ICharacter* pCharacter);
@@ -167,7 +170,8 @@ namespace StoneRing{
         SteelType finishTurn();
         // if they back out and want to go back to the battle menu
         SteelType cancelOption();
-        SteelType doCharacterAnimation(SteelType::Handle pICharacter,const std::string& animation);
+        SteelType doTargetedAnimation(SteelType::Handle pIActor,  SteelType::Handle pITarget, const std::string& animation);
+		SteelType doCharacterAnimation(SteelType::Handle pIActor, const std::string& animation);
         SteelType createDisplay(int damage,SteelType::Handle pICharacter,int display_type);
         // returns monster group or party as array of character handles
         SteelType getCharacterGroup(bool monsters);

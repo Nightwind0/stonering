@@ -27,7 +27,7 @@
 		var $name = getCharacterName($pC);
         // The animation comes first.
         var @targets = battle::selectTargets(true,false,true);
-        battle::doCharacterAnimation($pC,"attack");
+        battle::doTargetedAnimation($pC,@targets[0],"attack");
         var $pWeapon;
         var $hasWeapon = false;
         if(hasEquipment($pC,$_HAND)){
@@ -74,7 +74,7 @@
                 playSound(getHitSound(getWeaponType($pWeapon)));
             else
                 playSound(getUnarmedHitSound($pC));
-            battle::doCharacterAnimation($pTarget,"recoil");
+            battle::doTargetedAnimation($pTarget,$pC,"recoil");
             var $damageMean = getCharacterAttribute($pC, $_STR) + getEquippedWeaponAttribute($pC,$_ATTACK);
             // Random about the damageMean, standard deviation is 15% of the mean, so 68% of attacks fall within 10% deviation of the mean
             var $baseDamage = normal_random($damageMean,$damageMean * 0.15);
@@ -140,7 +140,7 @@
                 if($bHit){
                     println($name + " hit!");
 
-                    playSound(getUnarmedHitSound($pC));
+                    playSound(getUnarmedHitSound($Character));
                     battle::doCharacterAnimation($pTarget,"recoil");
                     var $damageMean = getCharacterAttribute($Character, $_STR);
                     // Random about the damageMean, standard deviation is 15% of the mean, so 68% of attacks fall within 10% deviation of the mean

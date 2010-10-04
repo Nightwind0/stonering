@@ -3,8 +3,7 @@
 #include "IApplication.h"
 #include "BattleState.h"
 
-
-using StoneRing::AnimationState;
+using namespace StoneRing;
 
 
 AnimationState::AnimationState(BattleState& parent,
@@ -14,7 +13,8 @@ AnimationState::AnimationState(BattleState& parent,
                                ICharacter* target):
         m_parent(parent),m_pCasterGroup(casterGroup),m_pTargetGroup(targetGroup),m_pCaster(caster),m_pTarget(target),m_pAnim(NULL),m_bDone(false)
 {
-}
+
+} 
 
 AnimationState::~AnimationState()
 {
@@ -37,6 +37,7 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
             point.x = IApplication::GetInstance()->GetScreenWidth() / 2;
             break;
         case SpriteMovement::TOWARDS:
+	    point = m_pTarget->GetBattlePos();
             break;
         case SpriteMovement::AWAY:
             break;
@@ -68,7 +69,7 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
             point.x = m_parent.get_character_rect(m_pCaster).get_center().x;
             break;
         case SpriteMovement::TOWARDS:
-
+	    point.x = m_pTarget->GetBattlePos().x;
             break;
         case SpriteMovement::AWAY:
             break;
@@ -99,7 +100,7 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
             point.x = m_parent.get_character_rect(pTarget).get_center().x;
             break;
         case SpriteMovement::TOWARDS:
-
+	 
             break;
         case SpriteMovement::AWAY:
             break;
@@ -137,6 +138,8 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
         case SpriteMovement::RIGHT:
             point.x = rect.get_top_right().x;
             break;
+        default:
+            break;
 
         }
 
@@ -168,6 +171,8 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
             break;
         case SpriteMovement::RIGHT:
             point.x = rect.get_top_right().x;
+            break;
+        default:
             break;
 
         }
@@ -268,51 +273,206 @@ void AnimationState::HandleKeyUp(const CL_InputEvent &key)
 {
 }
 
+void AnimationState::move_character(ICharacter* character, SpriteAnimation* anim, SpriteMovement* movement, float percentage)
+{
+    if(percentage > 1.0f) percentage = 1.0f;
+    CL_Point origin_i = GetFocusOrigin(movement->GetInitialFocus(), character);
+    CL_Pointf origin(origin_i.x,origin_i.y);
+    CL_Point dest_i;
+    CL_Pointf current = origin;
+    if (movement->HasEndFocus())
+    {
+        dest_i = GetFocusOrigin(movement->GetEndFocus(), character);
+        CL_Pointf dest(dest_i.x,dest_i.y);
+        //(1-p)*A + p*B
+        //current = (1.0f - percentage) * origin + percentage * dest;
+        switch (movement->GetMovementStyle())
+        {
+        case SpriteMovement::STRAIGHT:
+            current = origin * (1.0f - percentage) + dest * percentage;
+            break;
+        case SpriteMovement::SINE:
+        {
+            CL_Pointf d,c;
+            d.x = dest.x - origin.x;
+            d.y = dest.y - origin.y;
+            float l = sqrt(d.x*d.x + d.y+d.y);
+            d.x /=  l;
+            d.y /= l;
+            float w = 2.0f * M_PI * movement->Periods(); // make this 1/2 to arc up
+
+            current.x = percentage*dest.x + (1.0f-percentage)*origin.x + movement->Amplitude()*d.y*sin(w*percentage);
+            current.y = percentage*dest.y + (1.0f-percentage)*origin.y - movement->Amplitude()*d.x*sin(w*percentage);
+            break;
+        }
+        case SpriteMovement::ARC_OVER:
+        {
+            CL_Pointf d,c;
+            d.x = dest.x - origin.x;
+            d.y = dest.y - origin.y;
+            float l = sqrt(d.x*d.x + d.y+d.y);
+            d.x /=  l;
+            d.y /= l;
+            float w = 2.0f * M_PI *0.5f; // make this 1/2 to arc up
+
+            current.x = percentage*dest.x + (1.0f-percentage)*origin.x + movement->Amplitude()*d.y*sin(w*percentage);
+            current.y = percentage*dest.y + (1.0f-percentage)*origin.y - movement->Amplitude()*d.x*sin(w*percentage);
+            break;
+        }
+        default:
+            break;
+        }
+    }
+    else
+    {
+        // move a set distance in direction
+        CL_Pointf direction;
+        SpriteMovement::eMovementDirection dir = movement->GetMovementDirection();
+
+        if(dir == SpriteMovement::AWAY)
+        {
+            if(m_parent.MonstersOnLeft())
+            {
+                if(m_pCaster->IsMonster())
+                    dir = SpriteMovement::W;
+                else dir = SpriteMovement::E;
+            }
+            else
+            {
+                if(m_pCaster->IsMonster())
+                    dir = SpriteMovement::E;
+                else dir = SpriteMovement::W;
+            }
+        }
+        else
+        {
+            if(!m_parent.MonstersOnLeft())
+            {
+                if(m_pCaster->IsMonster())
+                    dir = SpriteMovement::W;
+                else dir = SpriteMovement::E;
+            }
+            else
+            {
+                if(m_pCaster->IsMonster())
+                    dir = SpriteMovement::E;
+                else dir = SpriteMovement::W;
+            }
+        }
+
+        switch (dir)
+        {
+        case SpriteMovement::N:
+            direction.x = 0.0f;
+            direction.y = -1.0f;
+            break;
+        case SpriteMovement::S:
+            direction.x = 0.0f;
+            direction.y = 1.0f;
+            break;
+        case SpriteMovement::E:
+            direction.x = 1.0f;
+            direction.y = 0.0f;
+            break;
+        case SpriteMovement::W:
+            direction.x = -1.0f;
+            direction.y = 0.0f;
+            break;
+        case SpriteMovement::SE:
+            direction.y = 1.0f;
+            direction.x = 1.0f;
+            break;
+        case SpriteMovement::SW:
+            direction.x = - 1.0f;
+            direction.y = 1.0f;
+            break;
+        case SpriteMovement::NE:
+            direction.x = 1.0f;
+            direction.y = -1.0f;
+            break;
+        case SpriteMovement::NW:
+            direction.x = - 1.0f;
+            direction.y = - 1.0f;
+            break;
+
+        }
+
+        direction *= percentage;
+        current = origin * direction;
+
+
+    }
+    std::cout << "Moving to " << current.x << ',' << current.y << " at " << percentage << '%' << std::endl;
+    // TODO: Now take whatever it is, and display it at 'current'
+    if (anim->HasSpriteStub())
+    {
+    }
+    
+    else if (anim->HasSpriteRef())
+    {
+        CL_Sprite sprite = anim->GetSpriteRef()->CreateSprite();
+    }
+    else if (anim->HasBattleSprite())
+    {
+        // Have parent move this thing
+        CL_Point point;
+        point.x = current.x;
+        point.y = current.y;
+        switch (anim->GetBattleSprite()->GetWho())
+        {
+        case CASTER:
+            m_pCaster->SetBattlePos ( point );
+            break;
+        case TARGET:
+            m_pTarget->SetBattlePos ( point );
+            break;
+        }
+    }
+}
+
+
 void AnimationState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
 {
-    uint passed = CL_System::get_time() - m_phase_start_time;
-    float percentage = (float)passed / (float)(*m_phase_iterator)->GetDurationMs();
-    if (percentage >= 1.0f)
+    if (!m_bDone)
     {
-        NextPhase();
-        percentage = (float)passed / (float)(*m_phase_iterator)->GetDurationMs();
-    }
-
-    for (std::list<SpriteAnimation*>::const_iterator iter = (*m_phase_iterator)->GetSpriteAnimationsBegin();
-            iter != (*m_phase_iterator)->GetSpriteAnimationsEnd(); iter++)
-    {
-        SpriteAnimation* anim = *iter;
-        if (anim->HasSpriteMovement())
+        uint passed = CL_System::get_time() - m_phase_start_time;
+        float percentage = (float)passed / (float)(*m_phase_iterator)->GetDurationMs();
+        bool draw = true;
+        if (percentage >= 1.0f)
         {
-            SpriteMovement * movement = anim->GetSpriteMovement();
-            if (movement->ForEachTarget() && (*m_phase_iterator)->InParallel())
+            draw = NextPhase();
+            if(draw)
             {
-                for (uint i=0;i<m_pTargetGroup->GetCharacterCount();i++)
-                {
-                    ICharacter * pTarget = m_pTargetGroup->GetCharacter(i);
-                    CL_Point origin = GetFocusOrigin(movement->GetInitialFocus(), pTarget);
-                    CL_Point dest;
-                    if(movement->HasEndFocus()){
-                          dest = GetFocusOrigin(movement->GetEndFocus(), pTarget);
-                    }
+                StartPhase();
+                percentage = (float)passed / (float)(*m_phase_iterator)->GetDurationMs();
+            }
 
-                    if (anim->HasSpriteStub())
+        }
+
+        if (draw)
+        {
+            for (std::list<SpriteAnimation*>::const_iterator iter = (*m_phase_iterator)->GetSpriteAnimationsBegin();
+                    iter != (*m_phase_iterator)->GetSpriteAnimationsEnd(); iter++)
+            {
+                SpriteAnimation* anim = *iter;
+                if (anim->HasSpriteMovement())
+                {
+                    SpriteMovement * movement = anim->GetSpriteMovement();
+                    if (movement->ForEachTarget() && (*m_phase_iterator)->InParallel())
                     {
-                    }
-                    else if (anim->HasSpriteRef())
-                    {
-                        CL_Sprite sprite = anim->GetSpriteRef()->CreateSprite();
-                    }
-                    else if (anim->HasBattleSprite())
-                    {
-                        // Have parent move this thing
+                        for (uint i=0;i<m_pTargetGroup->GetCharacterCount();i++)
+                        {
+                            ICharacter * pTarget = m_pTargetGroup->GetCharacter(i);
+                            move_character(pTarget,anim,movement,percentage);
+                        }
+
+                    }else{
+                        move_character(m_pCaster,anim,movement,percentage);
                     }
                 }
             }
         }
     }
-
-
 }
 
 bool AnimationState::LastToDraw() const // Should we continue drawing more states?
@@ -329,9 +489,23 @@ void AnimationState::MappableObjectMoveHook() // Do stuff right after the mappab
 {
 }
 
-void AnimationState::NextPhase()
+bool AnimationState::NextPhase()
 {
-    (*++m_phase_iterator)->Execute();
+
+    m_phase_iterator++;
+    if (m_phase_iterator == m_pAnim->GetPhasesEnd())
+    {
+        // Done
+        m_bDone = true;
+        return false;
+    }
+
+    return true;
+}
+void AnimationState::StartPhase()
+{
+    Phase * phase = *m_phase_iterator;
+    phase->Execute();
     m_phase_start_time = CL_System::get_time();
 
     for (std::list<SpriteAnimation*>::const_iterator iter = (*m_phase_iterator)->GetSpriteAnimationsBegin();
@@ -349,13 +523,14 @@ void AnimationState::NextPhase()
             // to GetWhich
         }
     }
+
+    return;
 }
 
 void AnimationState::Start()
 {
     m_phase_iterator = m_pAnim->GetPhasesBegin();
-    NextPhase();
-
+    StartPhase();
 }
 
 void AnimationState::SteelInit      (SteelInterpreter *)

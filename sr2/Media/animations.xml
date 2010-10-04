@@ -22,8 +22,8 @@
     <animation name="recoil" type="battle">
       <phase parallel="false" duration="100">
 	<spriteAnimation name="recoil">
-	  <battleSprite who="target" which="recoil"/>
-	  <alterSprite who="target" how="negative"/>
+	  <battleSprite who="caster" which="recoil"/>
+	  <alterSprite who="caster" how="negative"/>
 	  <spriteMovement initialFocus="locus" endFocus="caster" movementDirection="away" movementStyle="straight"/>
 	</spriteAnimation>
       </phase>

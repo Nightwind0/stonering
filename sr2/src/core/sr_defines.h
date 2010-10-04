@@ -156,6 +156,17 @@ extern bool gbDebugStop;
 int draw_text(CL_GraphicContext& gc, CL_Font font, CL_Rectf rect, CL_StringRef string, uint string_pos=0);
 
 
+template<class T>
+CL_Vec2<T> operator+(const CL_Vec2<T> &a, const CL_Vec2<T> &b);
+template<class T>
+CL_Vec2<T> operator*(const CL_Vec2<T> &a, const CL_Vec2<T> &b);
+
+template<class T>
+CL_Vec2<T> operator*(const CL_Vec2<T> &a, const T& t);
+
+template<class T>
+CL_Vec2<T> operator*(const T& t, const CL_Vec2<T> &v);
+
 #endif
 
 

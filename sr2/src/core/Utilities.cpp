@@ -111,3 +111,41 @@ int draw_text(CL_GraphicContext& gc, CL_Font font, CL_Rectf rect, CL_StringRef s
     return max_characters;
 
 }
+
+template<class T>
+CL_Vec2<T> operator+(const CL_Vec2<T> &a, const CL_Vec2<T> &b)
+{
+    CL_Vec2<T> val = a;
+    a += b;
+
+    return val;
+}
+
+template<class T>
+CL_Vec2<T> operator*(const CL_Vec2<T> &a, const CL_Vec2<T> &b)
+{
+    CL_Vec2<T> val = a;
+    a *= b;
+
+    return val;
+}
+
+
+template<class T>
+CL_Vec2<T> operator*(const CL_Vec2<T> &a, const T& t)
+{
+    CL_Vec2<T> val = a;
+    a *= t;
+
+    return val;
+}
+
+
+
+template<class T>
+CL_Vec2<T> operator*(const T& t, const CL_Vec2<T> &v)
+{
+    return operator*(v,t);
+}
+
+

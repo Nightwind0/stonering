@@ -1053,7 +1053,7 @@ int Application::main(const std::vector<CL_String> &args)
         while (mStates.size())
             run();
 
-#if 1
+#ifndef NDEBUG
         console.wait_for_key();
 #endif
 
