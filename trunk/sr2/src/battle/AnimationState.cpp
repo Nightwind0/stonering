@@ -100,7 +100,7 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
             point.x = m_parent.get_character_rect(pTarget).get_center().x;
             break;
         case SpriteMovement::TOWARDS:
-	 
+	    point.x = m_parent.get_character_rect(pTarget).get_center().x;
             break;
         case SpriteMovement::AWAY:
             break;
@@ -329,7 +329,7 @@ void AnimationState::move_character(ICharacter* character, SpriteAnimation* anim
         CL_Pointf direction;
         SpriteMovement::eMovementDirection dir = movement->GetMovementDirection();
 
-        if(dir == SpriteMovement::AWAY)
+        if(dir == SpriteMovement::MOVE_AWAY)
         {
             if(m_parent.MonstersOnLeft())
             {
@@ -344,7 +344,7 @@ void AnimationState::move_character(ICharacter* character, SpriteAnimation* anim
                 else dir = SpriteMovement::W;
             }
         }
-        else
+        else if(dir == SpriteMovement::MOVE_TOWARDS)
         {
             if(!m_parent.MonstersOnLeft())
             {
