@@ -153,7 +153,7 @@ bool SpriteAnimation::handle_element(eElement element, Element * pElement)
         return false;
     }
 
-    return false;
+    return true;
 }
 
 void SpriteAnimation::load_finished()
@@ -164,7 +164,7 @@ void SpriteAnimation::load_finished()
 
 
 SpriteMovement::SpriteMovement()
-        :m_bEndFocus(false),m_bForEach(false)
+        :m_bEndFocus(false),m_bForEach(false),m_periods(6.0f),m_amplitude(30.0f),m_nDistance(64)
 {
 }
 
@@ -210,6 +210,11 @@ void SpriteMovement::load_attributes(CL_DomNamedNodeMap attributes)
     if (has_attribute("movementStyle",attributes))
         m_eMovementStyle = movementStyleFromString ( get_string("movementStyle",attributes ));
     else m_eMovementStyle = STRAIGHT;
+
+    m_amplitude = get_implied_float("amplitude",attributes,30.0f);
+    m_rotation = get_implied_float("rotation",attributes,0.0f);
+    m_periods = get_implied_float("periods",attributes,6.0f);
+    m_nDistance = get_implied_int("distance",attributes,64);
 
     get_implied_bool("forEach",attributes,false);
 }
@@ -327,6 +332,21 @@ SpriteMovement::GetMovementDirection() const
 SpriteMovement::eMovementStyle SpriteMovement::GetMovementStyle() const
 {
     return m_eMovementStyle;
+}
+
+float SpriteMovement::Amplitude() const
+{
+    return m_amplitude;
+}
+
+float SpriteMovement::Periods() const
+{
+    return m_periods;
+}
+
+int SpriteMovement::Distance() const
+{
+    return m_nDistance;
 }
 
 bool Phase::handle_element(eElement element, Element * pElement)

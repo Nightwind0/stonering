@@ -64,6 +64,7 @@
 		<Unit filename="Media/Levels/level.dtd" />
 		<Unit filename="Media/Levels/monster_test.xml" />
 		<Unit filename="Media/Levels/test3.xml" />
+		<Unit filename="Media/animations.xml" />
 		<Unit filename="Media/characterClasses.xml" />
 		<Unit filename="Media/characters.xml" />
 		<Unit filename="Media/init.steel" />

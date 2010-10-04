@@ -39,7 +39,9 @@ namespace StoneRing
 
     private:
         CL_Point GetFocusOrigin(const SpriteMovement::Focus&, ICharacter* pTarget);
-        void NextPhase();
+        bool NextPhase();
+        void StartPhase();
+        void move_character(ICharacter* character, SpriteAnimation* anim, SpriteMovement* movement, float percentage);
 
         BattleState& m_parent;
         ICharacterGroup* m_pCasterGroup;

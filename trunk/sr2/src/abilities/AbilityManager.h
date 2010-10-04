@@ -39,6 +39,8 @@ namespace StoneRing
 
         static bool SkillExists ( const std::string &skill );
 
+		static Animation* GetAnimation ( const std::string &animation );
+
 #ifndef NDEBUG
         static void DumpSpellList();
 #endif

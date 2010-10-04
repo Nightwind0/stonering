@@ -7,6 +7,7 @@
 #include "Monster.h"
 #include "Party.h"
 #include "BattleMenu.h"
+#include "AnimationState.h"
 #include <sstream>
 #include <iomanip>
 #include <algorithm>
@@ -61,10 +62,7 @@ void BattleState::init(const MonsterGroup &group, const std::string &backdrop)
         if (count > 0) throw CL_Exception("Couldn't fit all monsters in their rows and columns");
     }
     m_backdrop = pGraphicsManager->GetBackdrop(backdrop);
-    m_bDone = false;
-    roll_initiative();
-    set_positions_to_loci();
-    next_turn();
+
 }
 
 void BattleState::set_positions_to_loci()
@@ -303,6 +301,11 @@ void BattleState::Start()
     m_battleMenu = pGraphicsManager->GetOverlay(GraphicsManager::BATTLE_MENU);
     m_battlePopup = pGraphicsManager->GetOverlay(GraphicsManager::BATTLE_POPUP_MENU);
     init_or_release_players(false);
+
+	m_bDone = false;
+    roll_initiative();
+    set_positions_to_loci();
+    next_turn();
 }
 
 void BattleState::init_or_release_players(bool bRelease)
@@ -765,7 +768,8 @@ void BattleState::SteelInit(SteelInterpreter* pInterpreter)
     static SteelFunctor3Arg<BattleState,bool,bool,bool> fn_selectTargets(this,&BattleState::selectTargets);
     static SteelFunctorNoArgs<BattleState> fn_finishTurn(this,&BattleState::finishTurn);
     static SteelFunctorNoArgs<BattleState> fn_cancelOption(this,&BattleState::cancelOption);
-    static SteelFunctor2Arg<BattleState,SteelType::Handle,const std::string&> fn_doCharacterAnimation(this,&BattleState::doCharacterAnimation);
+    static SteelFunctor3Arg<BattleState,SteelType::Handle,SteelType::Handle,const std::string&> fn_doTargetedAnimation(this,&BattleState::doTargetedAnimation);
+	static SteelFunctor2Arg<BattleState,SteelType::Handle,const std::string&> fn_doCharacterAnimation(this,&BattleState::doCharacterAnimation);
     static SteelFunctor3Arg<BattleState,int,SteelType::Handle,int> fn_createDisplay(this,&BattleState::createDisplay);
     static SteelFunctor1Arg<BattleState,bool> fn_getCharacterGroup(this,&BattleState::getCharacterGroup);
     static SteelFunctorNoArgs<BattleState> fn_getAllCharacters(this,&BattleState::getAllCharacters);
@@ -780,7 +784,8 @@ void BattleState::SteelInit(SteelInterpreter* pInterpreter)
     pInterpreter->addFunction("selectTargets","battle",&fn_selectTargets);
     pInterpreter->addFunction("finishTurn","battle",&fn_finishTurn);
     pInterpreter->addFunction("cancelOption","battle",&fn_cancelOption);
-    pInterpreter->addFunction("doCharacterAnimation","battle",&fn_doCharacterAnimation);
+    pInterpreter->addFunction("doTargetedAnimation","battle",&fn_doTargetedAnimation);
+	pInterpreter->addFunction("doCharacterAnimation","battle",&fn_doCharacterAnimation);
     pInterpreter->addFunction("createDisplay","battle",&fn_createDisplay);
     pInterpreter->addFunction("getCharacterGroup","battle",&fn_getCharacterGroup);
     pInterpreter->addFunction("getAllCharacters","battle",&fn_getAllCharacters);
@@ -893,7 +898,13 @@ void BattleState::SelectDownTarget()
 
 }
 
-#endif
+#endif		
+
+ICharacterGroup* BattleState::group_for_character(ICharacter* pICharacter)
+{
+	if(pICharacter->IsMonster()) return m_monsters;
+	else return IApplication::GetInstance()->GetParty();
+}
 
 bool BattleState::MonstersOnLeft()
 {
@@ -997,8 +1008,36 @@ SteelType BattleState::cancelOption()
     return SteelType();
 }
 
+SteelType BattleState::doTargetedAnimation(SteelType::Handle pICharacter, SteelType::Handle pITarget,const std::string& animation)
+{
+    ICharacter * character = reinterpret_cast<ICharacter*>(pICharacter);
+    ICharacter * target = reinterpret_cast<ICharacter*>(pITarget);
+    Animation * anim = AbilityManager::GetAnimation(animation);
+    if(anim == NULL)
+    {
+	throw CL_Exception ("Animation was missing: " + animation);
+    }
+    StoneRing::AnimationState state(*this, group_for_character(character), group_for_character(target), character, target);
+    state.Init(anim);
+
+    IApplication::GetInstance()->RunState (&state);
+    
+    return SteelType();
+}
+
 SteelType BattleState::doCharacterAnimation(SteelType::Handle pICharacter,const std::string& animation)
 {
+	ICharacter * character = reinterpret_cast<ICharacter*>(pICharacter);
+	Animation * anim = AbilityManager::GetAnimation(animation);
+	if(anim == NULL)
+	{
+		throw CL_Exception ("Animation was missing: " + animation);
+	}
+	StoneRing::AnimationState state(*this, group_for_character(character), NULL, character, NULL);
+	state.Init(anim);
+
+	IApplication::GetInstance()->RunState (&state);
+	
     return SteelType();
 }
 

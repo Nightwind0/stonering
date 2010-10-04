@@ -186,6 +186,17 @@ StatusEffect * AbilityManager::GetStatusEffect ( const std::string &ref )
     return NULL;
 }
 
+Animation* AbilityManager::GetAnimation ( const std::string &animation )
+{
+	AbilityManager * instance = INSTANCE();
+
+	if(instance->m_animations.find(animation) != instance->m_animations.end())
+	{
+		return instance->m_animations.find(animation)->second;
+	}
+	return NULL;
+}
+
 #ifndef NDEBUG
 void AbilityManager::DumpSpellList()
 {

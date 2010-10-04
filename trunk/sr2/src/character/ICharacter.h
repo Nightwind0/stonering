@@ -81,6 +81,7 @@ namespace StoneRing{
         //   virtual ICharacterGroup* GetGroup() const=0;
         virtual uint GetLevel()const=0;
         virtual void SetLevel(uint level)=0;
+		virtual bool IsMonster() const { return false; }
 
 
         virtual double GetAttribute    (eCharacterAttribute attr) const = 0;
