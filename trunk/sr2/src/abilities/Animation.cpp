@@ -215,6 +215,8 @@ void SpriteMovement::load_attributes(CL_DomNamedNodeMap attributes)
     m_rotation = get_implied_float("rotation",attributes,0.0f);
     m_periods = get_implied_float("periods",attributes,6.0f);
     m_nDistance = get_implied_int("distance",attributes,64);
+    m_fCompletion = get_implied_float("movementCompletion",attributes,1.0f);
+    m_bInvert = get_implied_bool("invert",attributes,false);
 
     get_implied_bool("forEach",attributes,false);
 }
@@ -348,6 +350,17 @@ int SpriteMovement::Distance() const
 {
     return m_nDistance;
 }
+
+float SpriteMovement::Completion() const
+{
+    return m_fCompletion;
+}
+
+bool SpriteMovement::Invert() const
+{
+    return m_bInvert;
+}
+
 
 bool Phase::handle_element(eElement element, Element * pElement)
 {

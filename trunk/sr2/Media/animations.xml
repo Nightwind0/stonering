@@ -4,7 +4,7 @@
       <phase parallel="false" duration="300">
 	<spriteAnimation name="move_to_attack">
 	  <battleSprite who="caster" which="idle"/>
-	  <spriteMovement initialFocus="locus" movementDirection="towards" movementStyle="xonly" endFocus="target" endFocusX="towards" movementCompletion="0.2"/>
+	  <spriteMovement initialFocus="locus" movementStyle="xonly" endFocus="target" endFocusX="towards" movementCompletion="0.2"/>
 	</spriteAnimation>
       </phase>
       <phase parallel="false" duration="1000">
@@ -12,10 +12,10 @@
 	  <battleSprite who="caster" which="attack"/>
 	</spriteAnimation>
       </phase>
-      <phase parallel="false" duration="300">
+      <phase parallel="false" duration="600">
 	<spriteAnimation name="return_from_attack">
 	  <battleSprite who="caster" which="idle"/>
-	  <spriteMovement initialFocus="caster" endFocus="locus" movementDirection="towards" movementStyle="xonly" movementCompletion="1.0"/>
+	  <spriteMovement initialFocus="caster" endFocus="locus" endFocusX="towards" movementStyle="xonly" movementCompletion="1.0"/>
 	</spriteAnimation>
       </phase>
     </animation>
@@ -24,7 +24,7 @@
 	<spriteAnimation name="recoil">
 	  <battleSprite who="caster" which="recoil"/>
 	  <alterSprite who="caster" how="negative"/>
-	  <spriteMovement initialFocus="locus" endFocus="caster" movementDirection="away" movementStyle="straight"/>
+	  <spriteMovement initialFocus="locus" endFocus="target" endFocusX="towards" movementStyle="xonly" invert="true"/>
 	</spriteAnimation>
       </phase>
     </animation>

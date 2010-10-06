@@ -642,7 +642,7 @@ CL_Point BattleState::get_character_locus(ICharacter* pCharacter)
         }
     }
     assert(0);
-    return CL_Point();
+    return CL_Point(0.0,0.0);
 }
 
 CL_Size  BattleState::get_character_size(ICharacter* pCharacter)

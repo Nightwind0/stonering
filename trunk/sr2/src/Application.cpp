@@ -912,7 +912,7 @@ void Application::run()
 
         draw();
         m_window.flip();
-        //CL_System::sleep(10);
+
         CL_KeepAlive::process();
 #if 0
         if (count++ % 50 == 0)
