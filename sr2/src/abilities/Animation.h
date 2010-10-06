@@ -182,6 +182,8 @@ namespace StoneRing
         float Periods() const; // how many periods for sine
         float Amplitude() const; // amplitude for arc/sine
         int Distance() const; // For movement without an end focus, the distance in pixels to move. (Ignored if there is an end focus)
+        float Completion() const;
+	bool Invert() const;
 
         eMovementDirection GetMovementDirection() const;
         eMovementStyle GetMovementStyle() const;
@@ -208,6 +210,8 @@ namespace StoneRing
         float m_amplitude;
         int m_nDistance;
         float m_rotation;
+	float m_fCompletion;
+	bool m_bInvert;
         eMovementDirection m_eMovementDirection;
         eMovementStyle m_eMovementStyle;
     };

@@ -27,7 +27,7 @@ void AnimationState::Init(Animation* pAnimation)
 
 CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICharacter * pTarget)
 {
-    CL_Point point;
+    CL_Point point(0,0);
     switch (focus.meFocusType)
     {
     case SpriteMovement::SCREEN:
@@ -37,7 +37,6 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
             point.x = IApplication::GetInstance()->GetScreenWidth() / 2;
             break;
         case SpriteMovement::TOWARDS:
-	    point = m_pTarget->GetBattlePos();
             break;
         case SpriteMovement::AWAY:
             break;
@@ -63,13 +62,14 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
         }
         break;
     case SpriteMovement::CASTER:
+	return m_parent.get_character_rect(m_pCaster).get_top_left();
         switch (focus.meFocusX)
         {
         case SpriteMovement::X_CENTER:
             point.x = m_parent.get_character_rect(m_pCaster).get_center().x;
             break;
         case SpriteMovement::TOWARDS:
-	    point.x = m_pTarget->GetBattlePos().x;
+	    point = m_pCaster->GetBattlePos();
             break;
         case SpriteMovement::AWAY:
             break;
@@ -94,33 +94,34 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
         }
         break;
     case SpriteMovement::TARGET:
+	return m_parent.get_character_rect(m_pTarget).get_top_left();
         switch (focus.meFocusX)
         {
         case SpriteMovement::X_CENTER:
-            point.x = m_parent.get_character_rect(pTarget).get_center().x;
+            point.x = m_parent.get_character_rect(m_pTarget).get_center().x;
             break;
         case SpriteMovement::TOWARDS:
-	    point.x = m_parent.get_character_rect(pTarget).get_center().x;
+	    point.x = m_parent.get_character_rect(m_pTarget).get_center().x;
             break;
         case SpriteMovement::AWAY:
             break;
         case SpriteMovement::LEFT:
-            point.x = m_parent.get_character_rect(pTarget).get_top_left().x;
+            point.x = m_parent.get_character_rect(m_pTarget).get_top_left().x;
             break;
         case SpriteMovement::RIGHT:
-            point.x = m_parent.get_character_rect(pTarget).get_top_right().x;
+            point.x = m_parent.get_character_rect(m_pTarget).get_top_right().x;
             break;
         }
         switch (focus.meFocusY)
         {
         case SpriteMovement::Y_CENTER:
-            point.y =  m_parent.get_character_rect(m_pCaster).get_center().y;
+            point.y =  m_parent.get_character_rect(m_pTarget).get_center().y;
             break;
         case SpriteMovement::TOP:
-            point.y =  m_parent.get_character_rect(m_pCaster).get_top_left().y;
+            point.y =  m_parent.get_character_rect(m_pTarget).get_top_left().y;
             break;
         case SpriteMovement::BOTTOM:
-            point.y =  m_parent.get_character_rect(m_pCaster).get_bottom_left().y;
+            point.y =  m_parent.get_character_rect(m_pTarget).get_bottom_left().y;
             break;
         }
         break;
@@ -193,14 +194,13 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
         break;
     }
     case SpriteMovement::CASTER_LOCUS:
+	return m_parent.get_character_locus(m_pCaster);
         switch (focus.meFocusX)
         {
         case SpriteMovement::X_CENTER:
             point.x = m_parent.get_character_locus_rect(m_pCaster).get_center().x;
             break;
-        case SpriteMovement::TOWARDS:
 
-            break;
         case SpriteMovement::AWAY:
             break;
         case SpriteMovement::LEFT:
@@ -208,6 +208,10 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
             break;
         case SpriteMovement::RIGHT:
             point.x = m_parent.get_character_locus_rect(m_pCaster).get_top_right().x;
+            break;
+	case SpriteMovement::TOWARDS:
+	default:
+	    point.x = m_parent.get_character_locus_rect(m_pCaster).get_top_left().x;
             break;
         }
         switch (focus.meFocusY)
@@ -224,22 +228,26 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
         }
         break;
     case SpriteMovement::TARGET_LOCUS:
+	return m_parent.get_character_locus(m_pTarget);
         switch (focus.meFocusX)
         {
         case SpriteMovement::X_CENTER:
-            point.x = m_parent.get_character_locus_rect(pTarget).get_center().x;
+            point.x = m_parent.get_character_locus_rect(m_pTarget).get_center().x;
             break;
-        case SpriteMovement::TOWARDS:
 
-            break;
         case SpriteMovement::AWAY:
             break;
         case SpriteMovement::LEFT:
-            point.x = m_parent.get_character_locus_rect(pTarget).get_top_left().x;
+            point.x = m_parent.get_character_locus_rect(m_pTarget).get_top_left().x;
             break;
         case SpriteMovement::RIGHT:
-            point.x = m_parent.get_character_locus_rect(pTarget).get_top_right().x;
+            point.x = m_parent.get_character_locus_rect(m_pTarget).get_top_right().x;
+            break; 
+	default:
+	case SpriteMovement::TOWARDS:
+	    point.x = m_parent.get_character_rect(m_pTarget).get_top_left().x;
             break;
+	    
         }
         switch (focus.meFocusY)
         {
@@ -277,13 +285,18 @@ void AnimationState::move_character(ICharacter* character, SpriteAnimation* anim
 {
     if(percentage > 1.0f) percentage = 1.0f;
     CL_Point origin_i = GetFocusOrigin(movement->GetInitialFocus(), character);
+   // std::cout << "Origin is " << origin_i.x << ',' << origin_i.y << std::endl;
     CL_Pointf origin(origin_i.x,origin_i.y);
     CL_Point dest_i;
     CL_Pointf current = origin;
+  
+    float completion = movement->Completion();
+    percentage *= completion;
     if (movement->HasEndFocus())
     {
         dest_i = GetFocusOrigin(movement->GetEndFocus(), character);
         CL_Pointf dest(dest_i.x,dest_i.y);
+	std::cout << "Moving between " << current.x << ',' << current.y << " and " << dest_i.x << ',' << dest_i.y <<  " at " << percentage << '%' << std::endl;
         //(1-p)*A + p*B
         //current = (1.0f - percentage) * origin + percentage * dest;
         switch (movement->GetMovementStyle())
@@ -291,6 +304,12 @@ void AnimationState::move_character(ICharacter* character, SpriteAnimation* anim
         case SpriteMovement::STRAIGHT:
             current = origin * (1.0f - percentage) + dest * percentage;
             break;
+	case SpriteMovement::XONLY:
+	    current.x = origin.x * (1.0f - percentage) + dest.x * percentage;
+	    break;
+	case SpriteMovement::YONLY:
+	    current.y = origin.y * (1.0f - percentage) + dest.y * percentage;
+	    break;
         case SpriteMovement::SINE:
         {
             CL_Pointf d,c;
@@ -402,6 +421,14 @@ void AnimationState::move_character(ICharacter* character, SpriteAnimation* anim
 
 
     }
+    
+    if(movement->Invert())
+    {
+	float diff_x = origin.x - current.x;
+	float diff_y = origin.y - current.y;
+	current.x -= diff_x;
+	current.y -= diff_y;
+    }
     std::cout << "Moving to " << current.x << ',' << current.y << " at " << percentage << '%' << std::endl;
     // TODO: Now take whatever it is, and display it at 'current'
     if (anim->HasSpriteStub())
@@ -473,6 +500,7 @@ void AnimationState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
             }
         }
     }
+    CL_System::sleep(10);
 }
 
 bool AnimationState::LastToDraw() const // Should we continue drawing more states?
