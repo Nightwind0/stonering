@@ -89,9 +89,12 @@
 
             if($modDamage <0 and $actualDamage >0) $modDamage = 0;
 
-            battle::createDisplay($modDamage,$pTarget,$_DISP_DAMAGE);
+
             doDamage($pTarget,$modDamage);
 	    battle::doTargetedAnimation($pTarget,$pC,"recoil");
+	    battle::createDisplay($modDamage,$pTarget,$_DISP_DAMAGE);
+	    battle::doTargetedAnimation($pC,$pTarget,"return_from_attack");
+
             println("Mean damage was " + $damageMean + " and base damage was " + $baseDamage + " and actual damage was " + $actualDamage);
         }else{
             println("You missed.");
@@ -151,9 +154,12 @@
 
                     if($modDamage <0 and $actualDamage >0) $modDamage = 0;
 
-                    battle::createDisplay($modDamage,$pTarget,$_DISP_DAMAGE);
+
                     doDamage($pTarget,$modDamage);
+
 		    battle::doTargetedAnimation($pTarget,$Character,"recoil");
+		    battle::createDisplay($modDamage,$pTarget,$_DISP_DAMAGE);
+		    battle::doTargetedAnimation($pC,$pTarget,"return_from_attack");
                     println("Mean damage was " + $damageMean + " and base damage was " + $baseDamage + " and actual damage was " + $actualDamage);
                 }else{
                     println("You missed.");

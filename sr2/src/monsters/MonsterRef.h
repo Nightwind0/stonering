@@ -21,13 +21,27 @@ namespace StoneRing
     private:
         virtual void load_attributes(CL_DomNamedNodeMap);
         virtual void load_finished();
-
+    protected:
         std::string m_name;
         int m_nCount;
         int m_nCellX;
         int m_nCellY;
         int m_nColumns;
         int m_nRows;
+    };
+    
+    class DynamicMonsterRef : public MonsterRef 
+    {
+    public:
+	DynamicMonsterRef();
+	virtual ~DynamicMonsterRef();
+	
+	void SetName(const std::string &name);
+	void SetCount(int count);
+	void SetCellX(int cell_x);
+	void SetCellY(int cell_y);
+	void SetColumns(int cols);
+	void SetRows(int rows);
     };
 }
 

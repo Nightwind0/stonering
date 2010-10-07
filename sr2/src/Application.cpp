@@ -126,11 +126,32 @@ void Application::StartBattle(const MonsterGroup &group, const std::string &back
     run();
 }
 
-SteelType Application::startBattle(const std::string &monster, uint /*count*/, bool /*isBoss*/, const std::string& /*backdrop*/)
+SteelType Application::startBattle(const std::string &monster, uint count, bool isBoss, const std::string& backdrop)
 {
 #ifndef NDEBUG
     std::cout << "Start battle " << monster << std::endl;
 #endif
+    
+    DynamicMonsterRef* monsterRef = new DynamicMonsterRef();
+    monsterRef->SetName(monster);
+    monsterRef->SetCellX(0);
+    monsterRef->SetCellY(0);
+    monsterRef->SetCount(count);
+    monsterRef->SetRows( 1+ count /3  );
+    monsterRef->SetColumns(1+count /3);
+    
+    std::vector<MonsterRef*> monsters;
+    monsters.push_back(monsterRef);
+    
+    mBattleState.init(monsters,
+		      monsterRef->GetRows(),
+		      monsterRef->GetColumns(),
+		      backdrop);
+
+    mStates.push_back(&mBattleState);
+
+    run();
+    
 
     // TODO: Return false if you lose, true if you win.
     return SteelType();
