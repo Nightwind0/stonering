@@ -61,70 +61,80 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
 
         }
         break;
-    case SpriteMovement::CASTER:
-	return m_parent.get_character_rect(m_pCaster).get_top_left();
+    case SpriteMovement::CASTER:{
+	CL_Rect rect =  m_parent.get_character_rect(m_pCaster);
         switch (focus.meFocusX)
         {
+
         case SpriteMovement::X_CENTER:
-            point.x = m_parent.get_character_rect(m_pCaster).get_center().x;
+            point.x = rect.get_center().x;
             break;
+	default:
         case SpriteMovement::TOWARDS:
-	    point = m_pCaster->GetBattlePos();
+	    point.x = rect.get_top_left().x;
             break;
         case SpriteMovement::AWAY:
             break;
         case SpriteMovement::LEFT:
-            point.x = m_parent.get_character_rect(m_pCaster).get_top_left().x;
+            point.x = rect.get_top_left().x;
             break;
         case SpriteMovement::RIGHT:
-            point.x = m_parent.get_character_rect(m_pCaster).get_top_right().x;
+            point.x = rect.get_top_right().x;
             break;
         }
         switch (focus.meFocusY)
         {
         case SpriteMovement::Y_CENTER:
-            point.y =  m_parent.get_character_rect(m_pCaster).get_center().y;
+            point.y =  rect.get_center().y;
             break;
+	default:
         case SpriteMovement::TOP:
-            point.y =  m_parent.get_character_rect(m_pCaster).get_top_left().y;
+            point.y =  rect.get_top_left().y;
             break;
         case SpriteMovement::BOTTOM:
-            point.y =  m_parent.get_character_rect(m_pCaster).get_bottom_left().y;
+            point.y =  rect.get_bottom_left().y;
             break;
         }
         break;
+    }
     case SpriteMovement::TARGET:
-	return m_parent.get_character_rect(m_pTarget).get_top_left();
+    {
+	CL_Rect rect = m_parent.get_character_rect(m_pTarget);
         switch (focus.meFocusX)
         {
+
         case SpriteMovement::X_CENTER:
-            point.x = m_parent.get_character_rect(m_pTarget).get_center().x;
+            point.x = rect.get_center().x;
             break;
+	default:
         case SpriteMovement::TOWARDS:
-	    point.x = m_parent.get_character_rect(m_pTarget).get_center().x;
+	    point.x = rect.get_center().x;
             break;
         case SpriteMovement::AWAY:
             break;
         case SpriteMovement::LEFT:
-            point.x = m_parent.get_character_rect(m_pTarget).get_top_left().x;
+            point.x = rect.get_top_left().x;
             break;
         case SpriteMovement::RIGHT:
-            point.x = m_parent.get_character_rect(m_pTarget).get_top_right().x;
+            point.x = rect.get_top_right().x;
             break;
         }
         switch (focus.meFocusY)
         {
+
         case SpriteMovement::Y_CENTER:
-            point.y =  m_parent.get_character_rect(m_pTarget).get_center().y;
+            point.y =  rect.get_center().y;
             break;
+	default:
         case SpriteMovement::TOP:
-            point.y =  m_parent.get_character_rect(m_pTarget).get_top_left().y;
+            point.y =  rect.get_top_left().y;
             break;
         case SpriteMovement::BOTTOM:
-            point.y =  m_parent.get_character_rect(m_pTarget).get_bottom_left().y;
+            point.y =  rect.get_bottom_left().y;
             break;
         }
         break;
+    }
     case SpriteMovement::CASTER_GROUP:
     {
         CL_Rect rect = m_parent.get_group_rect(m_pCasterGroup);
@@ -133,13 +143,12 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
         case SpriteMovement::X_CENTER:
             point.x = rect.get_center().x;
             break;
+	default:
         case SpriteMovement::LEFT:
             point.x = rect.get_top_left().x;
             break;
         case SpriteMovement::RIGHT:
             point.x = rect.get_top_right().x;
-            break;
-        default:
             break;
 
         }
@@ -149,6 +158,7 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
         case SpriteMovement::Y_CENTER:
             point.y = rect.get_center().y;
             break;
+	default:
         case SpriteMovement::TOP:
             point.y = rect.get_top_left().y;
             break;
@@ -167,13 +177,12 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
         case SpriteMovement::X_CENTER:
             point.x = rect.get_center().x;
             break;
+	default:
         case SpriteMovement::LEFT:
             point.x = rect.get_top_left().x;
             break;
         case SpriteMovement::RIGHT:
             point.x = rect.get_top_right().x;
-            break;
-        default:
             break;
 
         }
@@ -183,6 +192,7 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
         case SpriteMovement::Y_CENTER:
             point.y = rect.get_center().y;
             break;
+	default:
         case SpriteMovement::TOP:
             point.y = rect.get_top_left().y;
             break;
@@ -193,75 +203,83 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
 
         break;
     }
-    case SpriteMovement::CASTER_LOCUS:
-	return m_parent.get_character_locus(m_pCaster);
+    case SpriteMovement::CASTER_LOCUS:{
+	CL_Rect rect =  m_parent.get_character_locus_rect(m_pCaster);
         switch (focus.meFocusX)
         {
         case SpriteMovement::X_CENTER:
-            point.x = m_parent.get_character_locus_rect(m_pCaster).get_center().x;
+            point.x = rect.get_center().x;
             break;
 
         case SpriteMovement::AWAY:
             break;
         case SpriteMovement::LEFT:
-            point.x = m_parent.get_character_locus_rect(m_pCaster).get_top_left().x;
+            point.x = rect.get_top_left().x;
             break;
         case SpriteMovement::RIGHT:
-            point.x = m_parent.get_character_locus_rect(m_pCaster).get_top_right().x;
+            point.x = rect.get_top_right().x;
             break;
 	case SpriteMovement::TOWARDS:
 	default:
-	    point.x = m_parent.get_character_locus_rect(m_pCaster).get_top_left().x;
+	    point.x = rect.get_top_left().x;
             break;
         }
         switch (focus.meFocusY)
         {
-        case SpriteMovement::Y_CENTER:
-            point.y =  m_parent.get_character_locus_rect(m_pCaster).get_center().y;
-            break;
+
+	    default:
         case SpriteMovement::TOP:
-            point.y =  m_parent.get_character_locus_rect(m_pCaster).get_top_left().y;
+            point.y =  rect.get_top_left().y;
             break;
         case SpriteMovement::BOTTOM:
-            point.y =  m_parent.get_character_locus_rect(m_pCaster).get_bottom_left().y;
+            point.y =  rect.get_bottom_left().y;
+            break;
+
+	case SpriteMovement::Y_CENTER:
+            point.y =  rect.get_center().y;
             break;
         }
         break;
-    case SpriteMovement::TARGET_LOCUS:
-	return m_parent.get_character_locus(m_pTarget);
+    }
+    case SpriteMovement::TARGET_LOCUS:{
+	CL_Rect rect =  m_parent.get_character_locus_rect(m_pTarget);
         switch (focus.meFocusX)
         {
         case SpriteMovement::X_CENTER:
-            point.x = m_parent.get_character_locus_rect(m_pTarget).get_center().x;
+            point.x =rect.get_center().x;
             break;
 
         case SpriteMovement::AWAY:
             break;
         case SpriteMovement::LEFT:
-            point.x = m_parent.get_character_locus_rect(m_pTarget).get_top_left().x;
+            point.x = rect.get_top_left().x;
             break;
         case SpriteMovement::RIGHT:
-            point.x = m_parent.get_character_locus_rect(m_pTarget).get_top_right().x;
+            point.x = rect.get_top_right().x;
             break; 
 	default:
 	case SpriteMovement::TOWARDS:
-	    point.x = m_parent.get_character_rect(m_pTarget).get_top_left().x;
+	    point.x = rect.get_top_left().x;
             break;
 	    
         }
         switch (focus.meFocusY)
         {
-        case SpriteMovement::Y_CENTER:
-            point.y =  m_parent.get_character_locus_rect(m_pCaster).get_center().y;
-            break;
+
+	default:
         case SpriteMovement::TOP:
-            point.y =  m_parent.get_character_locus_rect(m_pCaster).get_top_left().y;
+            point.y =  rect.get_top_left().y;
             break;
         case SpriteMovement::BOTTOM:
-            point.y =  m_parent.get_character_locus_rect(m_pCaster).get_bottom_left().y;
+            point.y =  rect.get_bottom_left().y;
+            break;
+
+	case SpriteMovement::Y_CENTER:
+            point.y =  rect.get_center().y;
             break;
         }
         break;
+    }
     }
 
     return point;
@@ -424,10 +442,11 @@ void AnimationState::move_character(ICharacter* character, SpriteAnimation* anim
     
     if(movement->Invert())
     {
+	std::cout << "Inverted ";
 	float diff_x = origin.x - current.x;
 	float diff_y = origin.y - current.y;
-	current.x -= diff_x;
-	current.y -= diff_y;
+	current.x += diff_x*2;
+	current.y += diff_y*2;
     }
     std::cout << "Moving to " << current.x << ',' << current.y << " at " << percentage << '%' << std::endl;
     // TODO: Now take whatever it is, and display it at 'current'

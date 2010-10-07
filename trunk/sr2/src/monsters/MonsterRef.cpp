@@ -1,6 +1,7 @@
 #include "MonsterRef.h"
 
 using StoneRing::MonsterRef;
+using StoneRing::DynamicMonsterRef;
 
 MonsterRef::MonsterRef():m_nCount(1)
 {
@@ -41,4 +42,43 @@ void MonsterRef::load_attributes(CL_DomNamedNodeMap attributes)
 
 void MonsterRef::load_finished()
 {
+}
+
+
+DynamicMonsterRef::DynamicMonsterRef()
+{
+}
+
+DynamicMonsterRef::~DynamicMonsterRef()
+{
+}
+
+void DynamicMonsterRef::SetName(const std::string &name)
+{
+    m_name = name;
+}
+
+void DynamicMonsterRef::SetCount(int count)
+{
+    m_nCount = count;
+}
+
+void DynamicMonsterRef::SetCellX(int cell_x)
+{
+    m_nCellX = cell_x;
+}
+
+void DynamicMonsterRef::SetCellY(int cell_y)
+{
+    m_nCellY = cell_y;
+}
+
+void DynamicMonsterRef::SetColumns(int cols)
+{
+    m_nColumns = cols;
+}
+
+void DynamicMonsterRef::SetRows(int rows)
+{
+    m_nRows = rows;
 }

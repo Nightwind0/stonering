@@ -175,11 +175,11 @@ void SpriteMovement::load_attributes(CL_DomNamedNodeMap attributes)
 
     if (has_attribute("initialFocusX",attributes))
         m_initial_focus.meFocusX = focusXFromString( get_string("initialFocusX",attributes));
-    else m_initial_focus.meFocusX = X_CENTER;
+    else m_initial_focus.meFocusX = LEFT;
 
     if (has_attribute("initialFocusY",attributes))
         m_initial_focus.meFocusY = focusYFromString( get_string("initialFocusY",attributes));
-    else m_initial_focus.meFocusY = Y_CENTER;
+    else m_initial_focus.meFocusY = TOP;
 
     if (has_attribute("initialFocusZ",attributes))
         m_initial_focus.meFocusZ = focusZFromString( get_string("initialFocusZ",attributes));

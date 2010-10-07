@@ -15,23 +15,21 @@
 using namespace StoneRing;
 
 
-void BattleState::init(const MonsterGroup &group, const std::string &backdrop)
+void BattleState::init(const std::vector<MonsterRef*>& monsters, int cellRows, int cellColumns, const std::string & backdrop)
 {
     CharacterManager * pCharManager = IApplication::GetInstance()->GetCharacterManager();
     GraphicsManager * pGraphicsManager = GraphicsManager::GetInstance();
 
     m_monsters = new MonsterParty();
 
-    m_nRows = group.GetCellRows();
-    m_nColumns = group.GetCellColumns();
+    m_nRows = cellRows;
+    m_nColumns = cellColumns;
 
     m_cur_char = 0;
     m_nRound = 0;
 
     // uint bottomrow = m_nRows - 1;
-
-    const std::vector<MonsterRef*> & monsters = group.GetMonsters();
-
+    
     for (std::vector<MonsterRef*>::const_iterator it = monsters.begin();
             it != monsters.end(); it++)
     {
@@ -62,7 +60,14 @@ void BattleState::init(const MonsterGroup &group, const std::string &backdrop)
         if (count > 0) throw CL_Exception("Couldn't fit all monsters in their rows and columns");
     }
     m_backdrop = pGraphicsManager->GetBackdrop(backdrop);
+}
 
+void BattleState::init(const MonsterGroup &group, const std::string &backdrop)
+{
+  
+    const std::vector<MonsterRef*> & monsters = group.GetMonsters();
+
+    init(monsters,group.GetCellRows(),group.GetCellColumns(),backdrop);
 }
 
 void BattleState::set_positions_to_loci()
@@ -79,6 +84,7 @@ void BattleState::next_turn()
 {
     ICharacter * iCharacter = m_initiative[m_cur_char];
     Character * pCharacter = dynamic_cast<Character*>(iCharacter);
+    set_positions_to_loci();
     iCharacter->StatusEffectRound();
 
     if (pCharacter != NULL)
