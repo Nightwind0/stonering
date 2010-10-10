@@ -923,8 +923,10 @@ void BattleState::FinishTurn()
     // TODO: Good time to check if either side is wiped out, etc
     // And, any dead monsters need to have ->Remove called on them
     check_for_death();
-    pick_next_character();
-    next_turn();
+    if(!end_conditions()){
+	pick_next_character();
+	next_turn();
+    }
 }
 
 
@@ -934,8 +936,53 @@ void BattleState::CancelOption()
     m_combat_state = BATTLE_MENU;
 }
 
+bool BattleState::end_conditions()
+{
+    IParty * party = IApplication::GetInstance()->GetParty();
+       // Now, see if the monsters are all dead
+    bool anyAlive = false;
+    for(int i=0;i<m_monsters->GetCharacterCount();i++)
+    {
+	if(m_monsters->GetCharacter(i)->GetToggle(ICharacter::CA_ALIVE))
+	{
+	    anyAlive= true;
+	    break;
+	}
+    }
+    
+    if(!anyAlive)
+    {
+	// You win!
+	// TODO: Win
+	win();
+	// return so you don't lose after you win
+	return true;
+    }
+    
+    anyAlive = false;
+    
+    for(int i=0;i<party->GetCharacterCount();i++)
+    {
+	if(party->GetCharacter(i)->GetToggle(ICharacter::CA_ALIVE) )
+	{
+	    anyAlive = true;
+	    break;
+	}
+    }
+    
+    if(!anyAlive)
+    {
+	lose();
+	return true;
+    }
+    
+    return false;
+}
+
+
 void BattleState::check_for_death()
 {
+
     for (std::deque<ICharacter*>::const_iterator iter = m_initiative.begin();
             iter != m_initiative.end(); iter++)
     {
@@ -955,11 +1002,30 @@ void BattleState::check_for_death()
             // Change PC sprite to dead one?
         }
     }
+    // BRING OUT YOUR DEAD!
+    m_initiative.erase(std::remove_if(m_initiative.begin(), m_initiative.end(),
+				      std::not1(std::bind2nd(std::mem_fun(&ICharacter::GetToggle),ICharacter::CA_ALIVE)))
+				    ,m_initiative.end());
+    
 }
 
 void BattleState::death_animation(Monster* pMonster)
 {
     pMonster->MarkDeathAnimated();
+}
+
+void BattleState::lose()
+{
+    m_bDone = true;
+    // TODO: Put up lose state
+    std::cout << "Lose :(" << std::endl;
+}
+
+void BattleState::win()
+{
+    m_bDone = true;
+    // TODO: Put up win state
+    std::cout << "Win!" << std::endl;
 }
 
 

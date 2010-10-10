@@ -152,9 +152,12 @@ namespace StoneRing{
         void next_turn();
         void pick_next_character();
         void check_for_death();
+	bool end_conditions();
+	void win();
+	void lose();
         void death_animation(Monster* pMonster);
-		void move_character (ICharacter* character, CL_Pointf point);
-		ICharacterGroup* group_for_character(ICharacter*);
+	void move_character (ICharacter* character, CL_Pointf point);
+	ICharacterGroup* group_for_character(ICharacter*);
         CL_Rect  get_group_rect(ICharacterGroup* group);
         CL_Rect  get_character_rect (ICharacter* pCharacter);
         CL_Rect get_character_locus_rect (ICharacter* pCharacter);
