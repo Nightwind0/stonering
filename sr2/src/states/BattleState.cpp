@@ -55,6 +55,7 @@ void BattleState::init(const std::vector<MonsterRef*>& monsters, int cellRows, i
 
                 if (--count == 0) break;
             }
+            if(count == 0) break;
         }
 
         if (count > 0) throw CL_Exception("Couldn't fit all monsters in their rows and columns");
@@ -392,9 +393,10 @@ void BattleState::draw_battle(const CL_Rect &screenRect, CL_GraphicContext& GC)
 {
     m_backdrop.draw(GC,screenRect);
 
-
-    draw_monsters(m_monster_rect,GC);
     draw_players(m_player_rect,GC);
+    draw_monsters(m_monster_rect,GC);
+
+    
     draw_status(screenRect,GC);
     draw_displays(GC);
 
@@ -519,12 +521,36 @@ void BattleState::Display::draw(CL_GraphicContext& GC)
 
 }
 
-void BattleState::draw_monsters(const CL_Rect &monsterRect, CL_GraphicContext& GC)
+bool SortByBattlePos(const ICharacter* d1, const ICharacter* d2)
 {
 
-    for (uint i = 0; i < m_monsters->GetCharacterCount(); i++)
+    CL_Point pos1,pos2;
+    pos1 = d1->GetBattlePos();
+    pos2 = d2->GetBattlePos();
+
+    
+  return pos1.y * IApplication::GetInstance()->GetScreenWidth() + pos1.x <
+	pos2.y * IApplication::GetInstance()->GetScreenWidth() + pos2.x;
+}
+
+
+void BattleState::draw_monsters(const CL_Rect &monsterRect, CL_GraphicContext& GC)
+{
+    std::vector<Monster*> sortedList;
+    sortedList.reserve(m_monsters->GetCharacterCount());
+    for(uint i=0;i<m_monsters->GetCharacterCount();i++)
     {
-        Monster *pMonster = dynamic_cast<Monster*>(m_monsters->GetCharacter(i));
+	Monster *pMonster = dynamic_cast<Monster*>(m_monsters->GetCharacter(i));
+	sortedList.push_back(pMonster);	
+    }
+    
+   std::sort(sortedList.begin(), sortedList.end(), SortByBattlePos);
+
+    
+
+    for (uint i = 0; i < sortedList.size(); i++)
+    {
+        Monster *pMonster = sortedList[i];
 
         ICharacter *iCharacter = m_monsters->GetCharacter(i);
         if (!pMonster->GetToggle(ICharacter::CA_VISIBLE))
@@ -597,7 +623,7 @@ void BattleState::draw_players(const CL_Rect &playerRect, CL_GraphicContext& GC)
     }
 }
 
-CL_Rect  BattleState::get_group_rect(ICharacterGroup* group)
+CL_Rect  BattleState::get_group_rect(ICharacterGroup* group) const
 {
     MonsterParty * monsterParty = dynamic_cast<MonsterParty*>(group);
 
@@ -608,7 +634,7 @@ CL_Rect  BattleState::get_group_rect(ICharacterGroup* group)
     }
 }
 
-CL_Point BattleState::get_monster_locus(Monster * pMonster)const
+CL_Point BattleState::get_monster_locus(const Monster * pMonster)const
 {
     CL_Point point;
     const uint cellWidth = m_monster_rect.get_width() / m_nColumns;
@@ -626,15 +652,15 @@ CL_Point BattleState::get_monster_locus(Monster * pMonster)const
 CL_Point BattleState::get_player_locus(uint nPlayer)const
 {
     CL_Point point;
-    point.x = static_cast<int>(m_player_rect.left + nPlayer * 64);
+    point.x = static_cast<int>(m_player_rect.left + nPlayer * 64 + (m_player_rect.get_width() - 32) / 2);
     point.y = static_cast<int>(m_player_rect.top + nPlayer * 64);
     return point;
 }
 
-CL_Point BattleState::get_character_locus(ICharacter* pCharacter)
+CL_Point BattleState::get_character_locus(const ICharacter* pCharacter) const
 {
     CL_Point point;
-    Monster * pMonster = dynamic_cast<Monster*>(pCharacter);
+    const Monster * pMonster = dynamic_cast<const Monster*>(pCharacter);
     if(pMonster != NULL){
         return get_monster_locus(pMonster);
     }else{
@@ -652,9 +678,9 @@ CL_Point BattleState::get_character_locus(ICharacter* pCharacter)
     return CL_Point(0.0,0.0);
 }
 
-CL_Size  BattleState::get_character_size(ICharacter* pCharacter)
+CL_Size  BattleState::get_character_size(const ICharacter* pCharacter) const
 {
-    Monster * pMonster = dynamic_cast<Monster*>(pCharacter);
+    const Monster * pMonster = dynamic_cast<const Monster*>(pCharacter);
     if(pMonster != NULL){
         return pMonster->GetCurrentSprite().get_size();
     }else{
@@ -663,7 +689,7 @@ CL_Size  BattleState::get_character_size(ICharacter* pCharacter)
 }
 
 
-CL_Rect BattleState::get_character_rect(ICharacter* pCharacter)
+CL_Rect BattleState::get_character_rect(const ICharacter* pCharacter)const
 {
     CL_Rect rect;
     CL_Point point = pCharacter->GetBattlePos();
@@ -673,7 +699,7 @@ CL_Rect BattleState::get_character_rect(ICharacter* pCharacter)
     return rect;
 }
 
-CL_Rect BattleState::get_character_locus_rect(ICharacter* pCharacter)
+CL_Rect BattleState::get_character_locus_rect(const ICharacter* pCharacter)const
 {
     CL_Rect rect;
     CL_Point point = get_character_locus(pCharacter);

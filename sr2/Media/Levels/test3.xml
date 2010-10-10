@@ -3500,7 +3500,7 @@
 			<event name="CatMeow" triggerType="talk" remember="true">
 				<script id="catmeow">
 				    say("Karate Cat","Do you want karate?");
-				    startBattle("Grass Wolf",1,false,"grasslands");
+				    startBattle("Grass Wolf",2,false,"grasslands");
 				</script>
 				
 			</event>
