@@ -93,7 +93,7 @@
             doDamage($pTarget,$modDamage);
 	    battle::doTargetedAnimation($pTarget,$pC,"recoil");
 	    battle::createDisplay($modDamage,$pTarget,$_DISP_DAMAGE);
-	    battle::doTargetedAnimation($pC,$pTarget,"return_from_attack");
+
 
             println("Mean damage was " + $damageMean + " and base damage was " + $baseDamage + " and actual damage was " + $actualDamage);
         }else{
@@ -104,6 +104,7 @@
                 playSound(getUnarmedMissSound($pC));
             battle::createDisplay(0,$pTarget,$_DISP_MISS);
         }
+	battle::doTargetedAnimation($pC,$pTarget,"return_from_attack");
 
 
         if($hasWeapon and getWeaponScriptMode($pWeapon) == $_SM_ATTACK_BEFORE){
@@ -159,7 +160,6 @@
 
 		    battle::doTargetedAnimation($pTarget,$Character,"recoil");
 		    battle::createDisplay($modDamage,$pTarget,$_DISP_DAMAGE);
-		    battle::doTargetedAnimation($pC,$pTarget,"return_from_attack");
                     println("Mean damage was " + $damageMean + " and base damage was " + $baseDamage + " and actual damage was " + $actualDamage);
                 }else{
                     println("You missed.");
@@ -167,6 +167,7 @@
                     playSound(getUnarmedMissSound($Character));
                     battle::createDisplay(0,$pTarget,$_DISP_MISS);
                 }
+		battle::doTargetedAnimation($Character,$pTarget,"return_from_attack");
 
 
                 attackCharacter($pTarget);

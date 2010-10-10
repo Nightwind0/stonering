@@ -314,8 +314,7 @@ void AnimationState::move_character(ICharacter* character, SpriteAnimation* anim
     {
         dest_i = GetFocusOrigin(movement->GetEndFocus(), character);
         CL_Pointf dest(dest_i.x,dest_i.y);
-	std::cout << "Moving between " << current.x << ',' << current.y << " and " << dest_i.x << ',' << dest_i.y <<  " at " << percentage << '%' << std::endl;
-        //(1-p)*A + p*B
+	  //(1-p)*A + p*B
         //current = (1.0f - percentage) * origin + percentage * dest;
         switch (movement->GetMovementStyle())
         {
@@ -448,7 +447,6 @@ void AnimationState::move_character(ICharacter* character, SpriteAnimation* anim
 	current.x += diff_x*2;
 	current.y += diff_y*2;
     }
-    std::cout << "Moving to " << current.x << ',' << current.y << " at " << percentage << '%' << std::endl;
     // TODO: Now take whatever it is, and display it at 'current'
     if (anim->HasSpriteStub())
     {
