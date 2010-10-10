@@ -307,6 +307,13 @@ void AnimationState::move_character(ICharacter* character, SpriteAnimation* anim
     CL_Pointf origin(origin_i.x,origin_i.y);
     CL_Point dest_i;
     CL_Pointf current = origin;
+    
+    // Rotation
+    double degrees = percentage * movement->Rotation();
+    CL_Angle angle = CL_Angle::from_degrees(degrees);
+    // TODO: Mechanism to affect ALL this character's sprites in case it changes
+    CL_Sprite sprite = character->GetCurrentSprite();
+    sprite.set_angle(angle);
   
     float completion = movement->Completion();
     percentage *= completion;

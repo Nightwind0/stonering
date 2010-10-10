@@ -102,6 +102,7 @@ namespace StoneRing{
         virtual void   Attacked()=0;
         virtual CL_Point       GetBattlePos()const=0;
         virtual void           SetBattlePos(CL_Point point)=0;
+	virtual CL_Sprite GetCurrentSprite() const=0;
 
         // Static API
         static eCharacterAttribute CharAttributeFromString(const std::string &str);
@@ -113,6 +114,7 @@ namespace StoneRing{
         static bool IsToggle(eCharacterAttribute attr);
         static bool IsTransient(eCharacterAttribute attr);
         static eCharacterAttribute GetMaximumAttribute(eCharacterAttribute attr);
+
 
         ///@todo API for different battle animations TBD
     private:
