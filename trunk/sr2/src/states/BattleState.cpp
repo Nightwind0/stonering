@@ -613,10 +613,11 @@ CL_Point BattleState::get_monster_locus(Monster * pMonster)const
     CL_Point point;
     const uint cellWidth = m_monster_rect.get_width() / m_nColumns;
     const uint cellHeight = m_monster_rect.get_height() / m_nRows;
+    CL_Sprite  sprite = pMonster->GetCurrentSprite();
 
 
-    int drawX = pMonster->GetCellX() * cellWidth;
-    int drawY = pMonster->GetCellY() * cellHeight;
+    int drawX = pMonster->GetCellX() * cellWidth + (cellWidth - sprite.get_width()) /2;
+    int drawY = pMonster->GetCellY() * cellHeight + (cellHeight - sprite.get_height())/2;
     point.x = drawX;
     point.y = drawY;
     return point;
