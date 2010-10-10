@@ -23,10 +23,10 @@ std::string FloatToString(const float &f)
 std::string CL_String_load(const std::string& id, CL_ResourceManager& resources)
 {
     CL_Resource res = resources.get_resource(id);
-    if (res.get_type() != cl_text("string"))
-        throw CL_Exception(cl_text("Resource is not string type!"));
+    if (res.get_type() != "string")
+        throw CL_Exception("Resource is not string type!");
 
-    return res.get_element().get_attribute(cl_text("value"));
+    return res.get_element().get_attribute("value");
     //return res.get_element().get_text();
 }
 CL_Size get_text_size(CL_Font font, CL_GraphicContext &gc, const CL_StringRef &text)
@@ -37,8 +37,8 @@ CL_Size get_text_size(CL_Font font, CL_GraphicContext &gc, const CL_StringRef &t
 	{
 		CL_FontMetrics fm = font.get_font_metrics(gc);
 		int line_spacing = fm.get_external_leading();
-		std::vector<CL_TempString> lines = CL_StringHelp::split_text(text, cl_text("\n"), false);
-		for (std::vector<CL_TempString>::size_type i=0; i<lines.size(); i++)
+		std::vector<CL_String> lines = CL_StringHelp::split_text(text, "\n", false);
+		for (std::vector<CL_String>::size_type i=0; i<lines.size(); i++)
 		{
 			CL_Size line_size = font.get_provider()->get_text_size(gc, lines[i]);
 
