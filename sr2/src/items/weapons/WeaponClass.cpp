@@ -5,6 +5,7 @@
 #include "WeaponTypeExclusionList.h"
 
 #include <algorithm>
+#include <iterator>
 
 
 using namespace StoneRing;

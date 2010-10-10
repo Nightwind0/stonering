@@ -4,6 +4,7 @@
 #include "ArmorTypeExclusionList.h"
 #include "StatusEffectModifier.h"
 #include <algorithm>
+#include <iterator>
 
 
 using namespace StoneRing;
