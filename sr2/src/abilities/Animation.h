@@ -178,7 +178,7 @@ namespace StoneRing
         bool HasEndFocus() const;
         Focus GetEndFocus() const;
         bool ForEachTarget() const;
-        float Rotation() const; // how many radians to rotate about it's center during its movement
+        float Rotation() const { return m_rotation; } // how many degrees to rotate about it's center during its movement
         float Periods() const; // how many periods for sine
         float Amplitude() const; // amplitude for arc/sine
         int Distance() const; // For movement without an end focus, the distance in pixels to move. (Ignored if there is an end focus)

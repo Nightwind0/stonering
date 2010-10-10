@@ -57,7 +57,7 @@ namespace StoneRing{
 	void SelectUpTarget();
 	void SelectDownTarget();
 	*/
-		bool MonstersOnLeft();
+	bool MonstersOnLeft();
         enum eState
         {
             TRANSITION_IN,

@@ -146,7 +146,6 @@
                     println($name + " hit!");
 
                     playSound(getUnarmedHitSound($Character));
-                    battle::doTargetedAnimation($pTarget,$pTarget,"recoil");
                     var $damageMean = getCharacterAttribute($Character, $_STR);
                     // Random about the damageMean, standard deviation is 15% of the mean, so 68% of attacks fall within 10% deviation of the mean
                     var $baseDamage = normal_random($damageMean,$damageMean * 0.15);

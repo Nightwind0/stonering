@@ -24,8 +24,11 @@ CL_Sprite GraphicsManager::CreateSprite ( const std::string & name )
     CL_ResourceManager& resources  = IApplication::GetInstance()->GetResources();
 
     CL_Sprite  sprite(GET_MAIN_GC(),"Sprites/" +  name, &resources);
+    
+    CL_Sprite clone(GET_MAIN_GC());
+    clone.clone(sprite); 
 
-    return sprite;
+    return clone;
 }
 
 std::string GraphicsManager::LookUpMapWithSprite (CL_Sprite surface)
@@ -117,13 +120,17 @@ CL_Sprite  GraphicsManager::CreateMonsterSprite (const std::string &monster, con
     CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
     CL_Sprite  sprite = CL_Sprite(GET_MAIN_GC(),"Sprites/Monsters/"+monster+'/'+sprite_id,&resources);
 
-    return sprite;
+    CL_Sprite clone(GET_MAIN_GC());
+    clone.clone(sprite);
+  
+    return clone;
 }
 
 CL_Sprite GraphicsManager::CreateCharacterSprite ( const std::string &player, const std::string &sprite_id)
 {
     CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
     CL_Sprite sprite = CL_Sprite(GET_MAIN_GC(),"Sprites/BattleSprites/"+player+'/'+sprite_id,&resources);
+
 
     return sprite;
 }

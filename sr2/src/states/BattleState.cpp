@@ -579,6 +579,7 @@ void BattleState::draw_monsters(const CL_Rect &monsterRect, CL_GraphicContext& G
         {
             sprite.draw(GC,rect);
         }
+        
 
     }
 }
