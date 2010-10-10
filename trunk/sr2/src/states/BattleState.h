@@ -135,6 +135,7 @@ namespace StoneRing{
 
 
         typedef void (BattleState::* DrawMethod)(const CL_Rect &, CL_GraphicContext&);
+	//bool SortByBattlePos(const ICharacter* d1, const ICharacter* d2)const;
 
         void draw_transition_in(const CL_Rect &screenRect, CL_GraphicContext& GC);
         void draw_start(const CL_Rect &screenRect, CL_GraphicContext& GC);
@@ -158,12 +159,12 @@ namespace StoneRing{
         void death_animation(Monster* pMonster);
 	void move_character (ICharacter* character, CL_Pointf point);
 	ICharacterGroup* group_for_character(ICharacter*);
-        CL_Rect  get_group_rect(ICharacterGroup* group);
-        CL_Rect  get_character_rect (ICharacter* pCharacter);
-        CL_Rect get_character_locus_rect (ICharacter* pCharacter);
-        CL_Size get_character_size(ICharacter*);
-        CL_Point get_character_locus(ICharacter* pCharacter);
-        CL_Point get_monster_locus(Monster* pMonster)const;
+        CL_Rect  get_group_rect(ICharacterGroup* group)const;
+        CL_Rect  get_character_rect (const ICharacter* pCharacter)const;
+        CL_Rect get_character_locus_rect (const ICharacter* pCharacter)const;
+        CL_Size get_character_size(const ICharacter*)const;
+        CL_Point get_character_locus(const ICharacter* pCharacter)const;
+        CL_Point get_monster_locus(const Monster* pMonster)const;
         CL_Point get_player_locus(uint n)const;
         ICharacter* get_next_character(const ICharacterGroup* pGroup, const ICharacter* pCharacter)const;
         ICharacter* get_prev_character(const ICharacterGroup* pGroup, const ICharacter* pCharacter)const;
