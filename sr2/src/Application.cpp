@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <cmath>
 #include "Application.h"
 #include "Level.h"
 #include "Party.h"
@@ -133,12 +134,15 @@ SteelType Application::startBattle(const std::string &monster, uint count, bool 
 #endif
     
     DynamicMonsterRef* monsterRef = new DynamicMonsterRef();
+    
+    float square_root = sqrt(count);
+    int square_size = ceil(square_root);
     monsterRef->SetName(monster);
     monsterRef->SetCellX(0);
     monsterRef->SetCellY(0);
     monsterRef->SetCount(count);
-    monsterRef->SetRows( 1+ count /3  );
-    monsterRef->SetColumns(1+count /3);
+    monsterRef->SetRows( square_size );
+    monsterRef->SetColumns( square_size );
     
     std::vector<MonsterRef*> monsters;
     monsters.push_back(monsterRef);

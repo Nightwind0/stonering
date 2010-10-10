@@ -430,9 +430,7 @@ void TargetingState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
 {
 
     m_target_sprite.update();
-    // TODO: Add methods to BattleState so I can ask where things will get displayed..
-    uint cellWidth = m_pParent->m_monster_rect.get_width() / m_pParent->m_nColumns;
-    uint cellHeight = m_pParent->m_monster_rect.get_height() / m_pParent->m_nRows;
+    
 
     uint playercount = m_pParty->GetCharacterCount();
     for (uint nPlayer = 0; nPlayer < playercount; nPlayer++)
@@ -442,9 +440,10 @@ void TargetingState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
         if ((m_pParent->m_targets.m_bSelectedGroup && m_pParent->m_targets.selected.m_pGroup == m_pParty)
                 || m_pParent->m_targets.selected.m_pTarget == pCharacter)
         {
+	    CL_Rect rect = m_pParent->get_character_rect(pCharacter);
             m_target_sprite.draw(GC,
-                                 static_cast<int>(m_pParent->m_player_rect.left + nPlayer * 64 -   (m_target_sprite.get_width()/2)),
-                                 static_cast<int>(m_pParent->m_player_rect.top + (nPlayer*64) - (m_target_sprite.get_height()/2)));
+                                 static_cast<int>(rect.left -   (m_target_sprite.get_width()/2)),
+                                 static_cast<int>(rect.top - (m_target_sprite.get_height()/2)));
         }
     }
 
@@ -455,11 +454,10 @@ void TargetingState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
         if ((m_pParent->m_targets.m_bSelectedGroup && m_pParent->m_targets.selected.m_pGroup == m_pParent->m_monsters)
                 || m_pParent->m_targets.selected.m_pTarget == pMonster)
         {
-            int drawX = pMonster->GetCellX() * cellWidth;
-            int drawY = pMonster->GetCellY() * cellHeight;
+	    CL_Rect rect = m_pParent->get_character_rect(pMonster);
             CL_Sprite sprite = pMonster->GetCurrentSprite();
-            m_target_sprite.draw(GC,drawX -   (m_target_sprite.get_width()/2.0f),
-                                 drawY - (m_target_sprite.get_height()/2.0f) + sprite.get_height()/2.0f);
+            m_target_sprite.draw(GC,rect.left-   (m_target_sprite.get_width()/2.0f),
+                                 rect.top - (m_target_sprite.get_height()/2.0f) + sprite.get_height()/2.0f);
         }
     }
 }
