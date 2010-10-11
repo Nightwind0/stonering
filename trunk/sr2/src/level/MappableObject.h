@@ -120,7 +120,8 @@ namespace StoneRing {
         CL_Point GetPointInFront() const;
         virtual bool IsTile() const { return false; }
         virtual void SetNextDirection(eDirection newDir);
-        virtual void ClearNextDirection() { m_bHasNextDirection = false; m_eDirection = NONE; }
+	virtual void StopMovement();
+        virtual void ClearNextDirection();
         virtual void RandomNewDirection();
         virtual void MovedOneCell();
         virtual void Idle();

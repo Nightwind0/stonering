@@ -7,16 +7,25 @@
 #include "steel/SteelInterpreter.h"
 #include "steel/SteelType.h"
 
+#include "IApplication.h"
+
 namespace StoneRing
 {
 
     class State
     {
     public:
+	
 
         virtual bool IsDone() const = 0;
+	// Handle raw key events
         virtual void HandleKeyDown(const CL_InputEvent &key)=0;
         virtual void HandleKeyUp(const CL_InputEvent &key)=0;
+	// Handle joystick / key events that are processed according to mappings
+	virtual void HandleButtonUp(const IApplication::Button& button){}
+	virtual void HandleButtonDown(const IApplication::Button& button){}
+	virtual void HandleAxisMove(const IApplication::Axis& axis, float pos){}
+	
         virtual void Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)=0;
         virtual bool LastToDraw() const =0; // Should we continue drawing more states?
         virtual bool DisableMappableObjects() const =0; // Should the app move the MOs?

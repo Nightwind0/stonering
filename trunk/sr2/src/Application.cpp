@@ -135,7 +135,7 @@ SteelType Application::startBattle(const std::string &monster, uint count, bool 
     
     DynamicMonsterRef* monsterRef = new DynamicMonsterRef();
     
-    float square_root = sqrt(count);
+    float square_root = sqrt((float)count);
     int square_size = ceil(square_root);
     monsterRef->SetName(monster);
     monsterRef->SetCellX(0);
@@ -382,19 +382,21 @@ SteelType Application::getCharacterName(const SteelType::Handle handle)
     return name;
 }
 
-SteelType Application::getPartyCount(void)
-{
-    SteelType count;
-    count.set((int)mpParty->GetCharacterCount());
 
-    return count;
-}
-
-SteelType Application::getCharacter(uint index)
+SteelType Application::getPartyArray()
 {
-    SteelType pointer;
-    pointer.set(static_cast<SteelType::Handle>(mpParty->GetCharacter(index)));
-    return pointer;
+    SteelType array;
+    std::vector<SteelType> vector;
+    for(int i=0;i<mpParty->GetCharacterCount();i++)
+    {
+	SteelType ptr;
+	ptr.set(mpParty->GetCharacter(i));
+	vector.push_back(ptr);
+    }
+    
+    array.set(vector);
+  
+    return array;
 }
 
 SteelType Application::getCharacterLevel(const SteelType::Handle hCharacter)
@@ -691,12 +693,170 @@ void Application::teardownClanLib()
 void Application::onSignalKeyDown(const CL_InputEvent &key, const CL_InputState&)
 {
 
+    // Handle raw key press
     mStates.back()->HandleKeyDown(key);
+    
+    // Do mappings now
+    switch(key.id)
+    {
+	case CL_KEY_DOWN:
+	    mStates.back()->HandleAxisMove(IApplication::AXIS_VERTICAL,1.0);
+	    break;
+	case CL_KEY_UP:
+	    mStates.back()->HandleAxisMove(IApplication::AXIS_VERTICAL,-1.0);
+	    break;
+	case CL_KEY_LEFT:
+	    mStates.back()->HandleAxisMove(IApplication::AXIS_HORIZONTAL,-1.0);
+	    break;
+	case CL_KEY_RIGHT:
+	    mStates.back()->HandleAxisMove(IApplication::AXIS_HORIZONTAL,1.0);
+	    break;
+	case CL_KEY_SPACE:
+	    mStates.back()->HandleButtonDown(BUTTON_CONFIRM);
+	    break;
+	case CL_KEY_TAB:
+	    mStates.back()->HandleButtonDown(BUTTON_ALT);
+	    break;
+	case CL_KEY_ESCAPE:
+	    mStates.back()->HandleButtonDown(BUTTON_CANCEL);
+	    break;
+	case CL_KEY_ENTER:
+	    mStates.back()->HandleButtonDown(BUTTON_START);
+	    break;
+	case CL_KEY_HOME:
+	    mStates.back()->HandleButtonDown(BUTTON_MENU);
+	    break;
+	case CL_KEY_ADD:
+	    mStates.back()->HandleButtonDown(BUTTON_R);
+	    break;
+	case CL_KEY_SUBTRACT:
+	    mStates.back()->HandleButtonDown(BUTTON_L);
+	    break;
+    }
+    
 }
 
 void Application::onSignalKeyUp(const CL_InputEvent &key, const CL_InputState&)
 {
     mStates.back()->HandleKeyUp(key);
+
+        // Do mappings now
+    switch(key.id)
+    {
+	case CL_KEY_DOWN:
+	case CL_KEY_UP:
+	    mStates.back()->HandleAxisMove(IApplication::AXIS_VERTICAL,0.0);
+	    break;
+	case CL_KEY_LEFT:
+	case CL_KEY_RIGHT:
+	    mStates.back()->HandleAxisMove(IApplication::AXIS_HORIZONTAL,0.0);
+	    break;
+	case CL_KEY_SPACE:
+	    mStates.back()->HandleButtonUp(BUTTON_CONFIRM);
+	    break;
+	case CL_KEY_TAB:
+	    mStates.back()->HandleButtonUp(BUTTON_ALT);
+	    break;
+	case CL_KEY_ESCAPE:
+	    mStates.back()->HandleButtonUp(BUTTON_CANCEL);
+	    break;
+	case CL_KEY_ENTER:
+	    mStates.back()->HandleButtonUp(BUTTON_START);
+	    break;
+	case CL_KEY_HOME:
+	    mStates.back()->HandleButtonUp(BUTTON_MENU);
+	    break;
+	case CL_KEY_ADD:
+	    mStates.back()->HandleButtonUp(BUTTON_R);
+	    break;
+	case CL_KEY_SUBTRACT:
+	    mStates.back()->HandleButtonUp(BUTTON_L);
+	    break;
+    }
+    
+}
+
+void Application::onSignalJoystickButtonDown(const CL_InputEvent &event, const CL_InputState& state)
+{
+    
+    if(!mStates.size()) return;
+    
+    switch(event.id)
+    {
+        // Do mappings now
+  
+	case 5:
+	    mStates.back()->HandleButtonDown(BUTTON_CONFIRM);
+	    break;
+	case 0:
+	    mStates.back()->HandleButtonDown(BUTTON_ALT);
+	    break;
+	case 1:
+	    mStates.back()->HandleButtonDown(BUTTON_CANCEL);
+	    break;
+	case 2:
+	    mStates.back()->HandleButtonDown(BUTTON_START);
+	    break;
+	case 4:
+	    mStates.back()->HandleButtonDown(BUTTON_MENU);
+	    break;
+	case 6:
+	    mStates.back()->HandleButtonDown(BUTTON_R);
+	    break;
+	case 7:
+	    mStates.back()->HandleButtonDown(BUTTON_L);
+	    break;
+    }
+    
+
+}
+
+void Application::onSignalJoystickButtonUp(const CL_InputEvent &event, const CL_InputState& state)
+{
+        
+    if(!mStates.size()) return;
+    
+        switch(event.id)
+    {
+        // Do mappings now
+  
+	case 5:
+	    mStates.back()->HandleButtonUp(BUTTON_CONFIRM);
+	    break;
+	case 0:
+	    mStates.back()->HandleButtonUp(BUTTON_ALT);
+	    break;
+	case 1:
+	    mStates.back()->HandleButtonUp(BUTTON_CANCEL);
+	    break;
+	case 2:
+	    mStates.back()->HandleButtonUp(BUTTON_START);
+	    break;
+	case 4:
+	    mStates.back()->HandleButtonUp(BUTTON_MENU);
+	    break;
+	case 6:
+	    mStates.back()->HandleButtonUp(BUTTON_R);
+	    break;
+	case 7:
+	    mStates.back()->HandleButtonUp(BUTTON_L);
+	    break;
+    }
+    
+    
+}
+
+void Application::onSignalJoystickAxisMove(const CL_InputEvent &event, const CL_InputState& state)
+{
+    
+    if(event.id == 0)
+    {
+	mStates.back()->HandleAxisMove(AXIS_HORIZONTAL, event.axis_pos);
+    }
+    else
+    {
+	mStates.back()->HandleAxisMove(AXIS_VERTICAL, event.axis_pos);
+    }
 }
 
 
@@ -746,8 +906,8 @@ void Application::registerSteelFunctions()
     static SteelFunctor2Arg<Application,const std::string &, bool> fn_doEvent (this,&Application::doEvent);
     static SteelFunctor1Arg<Application,int> fn_giveGold(this,&Application::giveGold);
     static SteelFunctor3Arg<Application,const std::string &, int, bool> fn_addCharacter(this,&Application::addCharacter);
-    static SteelFunctorNoArgs<Application> fn_getPartyCount(this, &Application::getPartyCount);
-    static SteelFunctor1Arg<Application,uint> fn_getCharacter(this, &Application::getCharacter);
+
+    static SteelFunctorNoArgs<Application> fn_getPartyArray(this,&Application::getPartyArray);
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getItemName(this,&Application::getItemName);
     static SteelFunctor2Arg<Application,const SteelType::Handle, uint> fn_getWeaponAttribute(this,&Application::getWeaponAttribute);
     static SteelFunctor2Arg<Application,const SteelType::Handle, uint> fn_getArmorAttribute(this,&Application::getArmorAttribute);
@@ -868,8 +1028,8 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction("doEvent", &fn_doEvent );
     mInterpreter.addFunction("giveGold", &fn_giveGold );
     mInterpreter.addFunction("addCharacter", &fn_addCharacter );
-    mInterpreter.addFunction("getPartyCount", &fn_getPartyCount);
-    mInterpreter.addFunction("getCharacter", &fn_getCharacter);
+
+    mInterpreter.addFunction("getPartyArray", &fn_getPartyArray);
     mInterpreter.addFunction("attackCharacter", &fn_attackCharacter);
     mInterpreter.addFunction("getWeaponAttribute", &fn_getWeaponAttribute);
     mInterpreter.addFunction("getWeaponScriptMode",&fn_getWeaponScriptMode);
@@ -904,6 +1064,18 @@ void Application::registerSteelFunctions()
 
 }
 
+void Application::queryJoystick()
+{
+#if 0
+    if(m_window.get_ic().get_joystick_count())
+    {
+	CL_InputDevice& joystick = m_window.get_ic().get_joystick(0);
+	mStates.back()->HandleAxisMove(AXIS_HORIZONTAL, joystick.get_axis(0));
+	mStates.back()->HandleAxisMove(AXIS_VERTICAL, joystick.get_axis(1));
+    }
+#endif
+}
+
 void Application::draw()
 {
     CL_Rect dst = GetDisplayRect();
@@ -934,7 +1106,7 @@ void Application::run()
     unsigned int then = CL_System::get_time();
     while (!backState->IsDone())
     {
-
+	queryJoystick();
         draw();
         m_window.flip();
 
@@ -1014,7 +1186,10 @@ int Application::main(const std::vector<CL_String> &args)
         desc.set_title(name);
         desc.set_size(CL_Size(WINDOW_WIDTH,WINDOW_HEIGHT), true);
 
+
         m_window = CL_DisplayWindow(desc);
+	
+
 
 
         //for(int i =0; i < m_window.get_buffer_count(); i++)
@@ -1067,6 +1242,21 @@ int Application::main(const std::vector<CL_String> &args)
     CL_Slot slot_quit = m_window.sig_window_close().connect(this, &Application::onSignalQuit);
     CL_Slot slot_key_down = keyboard.sig_key_down().connect(this, &Application::onSignalKeyDown);
     CL_Slot slot_key_up  = keyboard.sig_key_up().connect(this, &Application::onSignalKeyUp);
+    
+    CL_Slot joystickDown;
+    CL_Slot joystickUp;
+    CL_Slot joystickAxis;
+    
+    if(m_window.get_ic().get_joystick_count()){
+	std::cout << "Joystick count = " << m_window.get_ic().get_joystick_count();
+#if 1 
+	CL_InputDevice& joystick = m_window.get_ic().get_joystick(0);
+	joystickDown = joystick.sig_key_down().connect(this,&Application::onSignalJoystickButtonDown);
+	joystickUp = joystick.sig_key_down().connect(this,&Application::onSignalJoystickButtonUp);
+	joystickAxis = joystick.sig_axis_move().connect(this,&Application::onSignalJoystickAxisMove);
+#endif
+    }
+
 
 
     try
@@ -1126,6 +1316,12 @@ void Application::showIntro()
 
     while (!keyboard.get_keycode(CL_KEY_ENTER))
     {
+	if(m_window.get_ic().get_joystick_count())
+	{
+	    CL_InputDevice& joystick = m_window.get_ic().get_joystick(0);
+	    if(joystick.get_keycode(5)) break;
+	}
+	
 
         background.draw(m_window.get_gc(),0,0);
         splash.draw(m_window.get_gc(),static_cast<float>(displayX),

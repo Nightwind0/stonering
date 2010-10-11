@@ -26,7 +26,7 @@
 	<spriteAnimation name="recoil">
 	  <battleSprite who="caster" which="recoil"/>
 	  <alterSprite who="caster" how="negative"/>
-	  <spriteMovement initialFocus="locus" endFocus="target" endFocusX="towards" endFocusY="top"  rotation="360" movementStyle="straight" invert="true" movementCompletion="0.1"/>
+	  <spriteMovement initialFocus="locus" endFocus="target" endFocusX="towards" endFocusY="top"  rotation="-25" movementStyle="xonly" invert="true" movementCompletion="0.1"/>
 	</spriteAnimation>
     </phase>
     <phase parallel="false" duration="300">

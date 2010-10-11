@@ -16,6 +16,10 @@ namespace StoneRing
         virtual bool IsDone() const;
         virtual void HandleKeyDown(const CL_InputEvent &key);
         virtual void HandleKeyUp(const CL_InputEvent &key);
+	virtual void HandleButtonUp(const IApplication::Button& button);
+	virtual void HandleButtonDown(const IApplication::Button& button);
+	virtual void HandleAxisMove(const IApplication::Axis& axis, float pos);
+	
         virtual void Draw(const CL_Rect &screenRect,CL_GraphicContext& GC);
         virtual bool LastToDraw() const { return false; } // It'll be last anyway.... and if not, thats okay too
         virtual bool DisableMappableObjects() const; // Should the app move the MOs?

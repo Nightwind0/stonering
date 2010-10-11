@@ -170,7 +170,11 @@
 		</tile>
 		<tile xpos="2" ypos="2" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-
+			
+		</tile>
+		<tile xpos="2" ypos="2">
+		    <tilemap mapname="rocks" mapx="5" mapy="1"/>
+		   <directionBlock north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="2" ypos="3">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -3500,7 +3504,7 @@
 			<event name="CatMeow" triggerType="talk" remember="true">
 				<script id="catmeow">
 				    say("Karate Cat","Do you want karate?");
-				    startBattle("Grass Wolf",2,false,"grasslands");
+				    startBattle("Grass Wolf",3,false,"grasslands");
 				</script>
 				
 			</event>
@@ -3553,6 +3557,23 @@
 					loadLevel("octaviaInn",4,8);
 				</script>
 			</event>
+		</mo>
+		<mo name="Podium" size="small" type="square" xpos="2" ypos="2">
+		    <event name="podium" triggerType="talk">
+			<script id="usePodium">
+			    <![CDATA[
+			    var @array = getPartyArray();
+			    var $i;
+			    for($i=0;$i<len(@array);$i++)
+			    {
+				doDamage(@array[$i],0-getCharacterAttribute(@array[$i],$_MAXHP)-getCharacterAttribute(@array[$i],$_HP));
+				print(getCharacterName(@array[$i]) + " HP = " + getCharacterAttribute(@array[$i],$_HP));
+				setCharacterToggle(@array[$i],$_ALIVE,true);
+			    }
+			    print("Healed\n");
+			]]>
+			</script>
+		    </event>
 		</mo>
 	</mappableObjects>
 </level>

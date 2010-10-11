@@ -6,6 +6,7 @@
 
 using StoneRing::TargetingState;
 using StoneRing::BattleState;
+using StoneRing::ICharacter;
 
 void TargetingState::Init(BattleState *pParent, Targetable targetable, bool bDefaultMonsters)
 {
@@ -77,60 +78,84 @@ void TargetingState::HandleKeyDown(const CL_InputEvent &key)
     }
 }
 
+void TargetingState::HandleButtonUp(const IApplication::Button& button)
+{
+    switch(button)
+    {
+	case IApplication::BUTTON_CONFIRM:
+	    m_bDone = true;
+	    break;
+    }
+}
+
+void TargetingState::HandleButtonDown(const IApplication::Button& button)
+{
+}
+
+void TargetingState::HandleAxisMove(const IApplication::Axis& axis, float pos)
+{
+    if(axis == IApplication::AXIS_VERTICAL)
+    {
+	if(pos == -1.0)
+	{
+	    SelectUpTarget();
+	}
+	else if(pos == 1.0)
+	{
+	    SelectDownTarget();
+	}
+    }
+    else
+    {
+	if(pos == -1.0)
+	{
+	    if (m_state == SELECT_SINGLE_LEFT)
+	    {
+		if (!SelectTargetOnLeft() && may_target_group())
+		{
+		    ChangeState(SELECT_LEFT_GROUP);
+		}
+	    }
+	    else if (m_state == SELECT_SINGLE_RIGHT)
+	    {
+		if (!SelectTargetOnLeft() && may_target_single())
+		{
+		    ChangeState(SELECT_SINGLE_LEFT);
+		}
+	    }
+	    else if (m_state == SELECT_RIGHT_GROUP && may_target_single())
+	    {
+		ChangeState(SELECT_SINGLE_RIGHT);
+	    }
+	}
+	else if(pos == 1.0)
+	{
+	    if (m_state == SELECT_SINGLE_LEFT)
+	    {
+		if (!SelectTargetOnRight() && may_target_single())
+		{
+		    ChangeState(SELECT_SINGLE_RIGHT);
+		}
+	    }
+	    else if (m_state == SELECT_SINGLE_RIGHT)
+	    {
+		if (!SelectTargetOnRight() && may_target_group())
+		{
+		    ChangeState(SELECT_RIGHT_GROUP);
+		}
+	    }
+	    else if (m_state == SELECT_LEFT_GROUP && may_target_single())
+	    {
+		ChangeState(SELECT_SINGLE_LEFT);
+	    }
+	}
+    }
+}
+
+
 void TargetingState::HandleKeyUp(const CL_InputEvent &key)
 {
-    switch (key.id)
-    {
-    case CL_KEY_LEFT:
-        if (m_state == SELECT_SINGLE_LEFT)
-        {
-            if (!SelectTargetOnLeft() && may_target_group())
-            {
-                ChangeState(SELECT_LEFT_GROUP);
-            }
-        }
-        else if (m_state == SELECT_SINGLE_RIGHT)
-        {
-            if (!SelectTargetOnLeft() && may_target_single())
-            {
-                ChangeState(SELECT_SINGLE_LEFT);
-            }
-        }
-        else if (m_state == SELECT_RIGHT_GROUP && may_target_single())
-        {
-            ChangeState(SELECT_SINGLE_RIGHT);
-        }
-        break;
-    case CL_KEY_RIGHT:
-        if (m_state == SELECT_SINGLE_LEFT)
-        {
-            if (!SelectTargetOnRight() && may_target_single())
-            {
-                ChangeState(SELECT_SINGLE_RIGHT);
-            }
-        }
-        else if (m_state == SELECT_SINGLE_RIGHT)
-        {
-            if (!SelectTargetOnRight() && may_target_group())
-            {
-                ChangeState(SELECT_RIGHT_GROUP);
-            }
-        }
-        else if (m_state == SELECT_LEFT_GROUP && may_target_single())
-        {
-            ChangeState(SELECT_SINGLE_LEFT);
-        }
-        break;
-    case CL_KEY_DOWN:
-        SelectDownTarget();
-        break;
-    case CL_KEY_UP:
-        SelectUpTarget();
-        break;
-    case CL_KEY_ENTER:
-        m_bDone = true;
-        break;
-    }
+
 }
 
 bool TargetingState::SelectRightGroup()

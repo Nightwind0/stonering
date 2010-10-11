@@ -118,12 +118,11 @@ std::string GraphicsManager::NameOfDisplayFont(DisplayFont font)
 CL_Sprite  GraphicsManager::CreateMonsterSprite (const std::string &monster, const std::string &sprite_id)
 {
     CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
-    CL_Sprite  sprite = CL_Sprite(GET_MAIN_GC(),"Sprites/Monsters/"+monster+'/'+sprite_id,&resources);
+    CL_Sprite  sprite(GET_MAIN_GC(),"Sprites/Monsters/"+monster+'/'+sprite_id,&resources);
 
-    CL_Sprite clone(GET_MAIN_GC());
-    clone.clone(sprite);
+
   
-    return clone;
+    return sprite;
 }
 
 CL_Sprite GraphicsManager::CreateCharacterSprite ( const std::string &player, const std::string &sprite_id)

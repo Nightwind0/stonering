@@ -26,6 +26,9 @@ namespace StoneRing{
         void init(const MonsterGroup& monsters, const std::string &backdrop);
 	void init(const std::vector<MonsterRef*>& monsters, int cellRows, int cellColumns, const std::string & backdrop);
         virtual bool IsDone() const;
+	virtual void HandleButtonUp(const IApplication::Button& button);
+	virtual void HandleButtonDown(const IApplication::Button& button);
+	virtual void HandleAxisMove(const IApplication::Axis& axis, float pos);
         virtual void HandleKeyDown(const CL_InputEvent &key);
         virtual void HandleKeyUp(const CL_InputEvent &key);
         virtual void Draw(const CL_Rect &screenRect,CL_GraphicContext& GC);

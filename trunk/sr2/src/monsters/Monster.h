@@ -70,14 +70,9 @@ namespace StoneRing
             m_offsety = y;
         }
 
-        void SetCurrentSprite(CL_Sprite sprite)
-        {
-            m_sprite = sprite;
-        }
-        CL_Sprite GetCurrentSprite() const
-        {
-            return m_sprite;
-        }
+        void SetCurrentSprite(CL_Sprite sprite);
+
+        CL_Sprite GetCurrentSprite() const;
 
         /**
         * ICharacter interface

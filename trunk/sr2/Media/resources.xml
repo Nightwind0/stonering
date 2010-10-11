@@ -107,6 +107,7 @@
  	<sprite name = "roofs"><image file="Tiles/roofs.png"/></sprite>
  	<sprite name = "wall1"><image file="Tiles/walls1.png"/></sprite>
 	<sprite name = "grass"><image file="Tiles/grass.png"/></sprite>
+	<sprite name = "rocks"><image file="Tiles/rock.png"/></sprite>
 
 </section>
 <section name="Backdrops">

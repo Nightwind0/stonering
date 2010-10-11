@@ -13,6 +13,8 @@ StoneRing::MapState::MapState():m_bDone(false),m_LevelX(0),
 #ifndef NDEBUG
     m_bShowDebug = false;
 #endif
+    m_horizontal_idle = true;
+    m_vertical_idle = true;
 }
 
 StoneRing::MapState::~MapState()
@@ -34,6 +36,80 @@ void StoneRing::MapState::RegisterSteelFunctions(SteelInterpreter* pInterpreter)
 
 }
 
+void StoneRing::MapState::HandleButtonUp(const IApplication::Button& button)
+{
+    MappablePlayer *pPlayer = m_pLevel->GetPlayer();
+    switch(button)
+    {
+	case IApplication::BUTTON_CANCEL:
+	    pPlayer->SetRunning(false);
+	    std::cout << "Turning off running..." << std::endl;
+	    break;
+	case IApplication::BUTTON_CONFIRM:
+	    do_talk();
+	    break;
+	case IApplication::BUTTON_ALT:
+	    do_talk(true);
+	    break;
+    }
+}
+
+void StoneRing::MapState::HandleButtonDown(const IApplication::Button& button)
+{
+     MappablePlayer *pPlayer = m_pLevel->GetPlayer();
+     
+     switch(button)
+     {
+	 case IApplication::BUTTON_CANCEL:
+	     pPlayer->SetRunning(true);
+	     std::cout << "Turning on running..." << std::endl;
+	     break;
+     }
+}
+
+void StoneRing::MapState::HandleAxisMove(const IApplication::Axis& axis, float pos)
+{
+    MappablePlayer *pPlayer = m_pLevel->GetPlayer();
+
+    if(axis == IApplication::AXIS_HORIZONTAL)
+    {
+	m_horizontal_idle = false;
+	if(pos  == 1.0)
+	{
+	    pPlayer->SetNextDirection(StoneRing::MappableObject::EAST);
+	}
+	else if(pos == -1.0)
+	{
+	    pPlayer->SetNextDirection(StoneRing::MappableObject::WEST);
+	}
+	else 
+	{
+	    m_horizontal_idle = true;
+	}
+    }
+    else
+    {
+	m_vertical_idle = false;
+	if(pos  == 1.0)
+	{
+	    pPlayer->SetNextDirection(StoneRing::MappableObject::SOUTH);
+	}
+	else if(pos == -1.0)
+	{
+	    pPlayer->SetNextDirection(StoneRing::MappableObject::NORTH);
+	}
+	else
+	{
+	    m_vertical_idle = true;
+	}
+    }
+    
+    if(m_horizontal_idle && m_vertical_idle)
+    {
+	pPlayer->StopMovement();
+    }
+}
+
 void StoneRing::MapState::HandleKeyDown(const CL_InputEvent &key)
 {
     MappablePlayer *pPlayer = m_pLevel->GetPlayer();
@@ -46,6 +122,7 @@ void StoneRing::MapState::HandleKeyDown(const CL_InputEvent &key)
     case CL_KEY_ESCAPE:
         m_bDone = true;
         break;
+#if 0
     case CL_KEY_DOWN:
         pPlayer->SetNextDirection(StoneRing::MappableObject::SOUTH);
         break;
@@ -58,6 +135,7 @@ void StoneRing::MapState::HandleKeyDown(const CL_InputEvent &key)
     case CL_KEY_RIGHT:
         pPlayer->SetNextDirection(StoneRing::MappableObject::EAST);
         break;
+#endif
     default:
         break;
     }

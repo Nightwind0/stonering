@@ -123,7 +123,7 @@ namespace StoneRing{
     inline void      Character::SetBattlePos(CL_Point point)
     {
         m_battle_pos = point;
-#if 1
+#if 0
 		std::cout << m_name << ' ' << point.x << ',' << point.y << std::endl;
 #endif
     }

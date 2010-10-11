@@ -158,30 +158,15 @@ bool BattleState::IsDone() const
     return m_bDone;
 }
 
-void BattleState::HandleKeyDown(const CL_InputEvent &key)
+void BattleState::HandleButtonUp(const IApplication::Button& button)
 {
-    switch (key.id)
+    switch(button)
     {
-    case CL_KEY_DOWN:
-        if (m_combat_state == BATTLE_MENU)
-            m_menu_stack.top()->SelectNext();
-        break;
-    case CL_KEY_UP:
-        if (m_combat_state == BATTLE_MENU)
-            m_menu_stack.top()->SelectPrevious();
-        break;
-    }
-}
-
-void BattleState::HandleKeyUp(const CL_InputEvent &key)
-{
-    switch (key.id)
-    {
-    case CL_KEY_ESCAPE:
-        m_bDone = true;
-        break;
-    case CL_KEY_ENTER:
-        if (m_combat_state == BATTLE_MENU)
+	case IApplication::BUTTON_CANCEL:
+	    m_bDone = true;
+	    break;
+	case IApplication::BUTTON_CONFIRM:
+	 if (m_combat_state == BATTLE_MENU)
         {
             std::list<BattleMenuOption*>::iterator it = m_menu_stack.top()->GetSelectedOption ();
             if (it != m_menu_stack.top()->GetOptionsEnd ())
@@ -200,8 +185,41 @@ void BattleState::HandleKeyUp(const CL_InputEvent &key)
                     pOption->Select(m_menu_stack,params);
                 }
             }
-        }
+	    
+	}
     }
+}
+
+void BattleState::HandleButtonDown(const IApplication::Button& button)
+{
+    
+}
+
+void BattleState::HandleAxisMove(const IApplication::Axis& axis, float pos)
+{
+    if(axis == IApplication::AXIS_VERTICAL)
+    {
+	if(pos == 1.0)
+	{
+	    if (m_combat_state == BATTLE_MENU)
+		m_menu_stack.top()->SelectNext();
+	}
+	else if(pos == -1.0)
+	{
+	    if (m_combat_state == BATTLE_MENU)
+		m_menu_stack.top()->SelectPrevious();
+	}
+    }
+}
+
+void BattleState::HandleKeyDown(const CL_InputEvent &key)
+{
+
+}
+
+void BattleState::HandleKeyUp(const CL_InputEvent &key)
+{
+
 }
 
 void BattleState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
@@ -552,11 +570,11 @@ void BattleState::draw_monsters(const CL_Rect &monsterRect, CL_GraphicContext& G
     {
         Monster *pMonster = sortedList[i];
 
-        ICharacter *iCharacter = m_monsters->GetCharacter(i);
+       // ICharacter *iCharacter = m_monsters->GetCharacter(i);
         if (!pMonster->GetToggle(ICharacter::CA_VISIBLE))
             continue;
 
-        CL_Rect rect = get_character_rect(iCharacter);
+        CL_Rect rect = get_character_rect(pMonster);
 
         CL_Sprite  sprite = pMonster->GetCurrentSprite();
         sprite.set_alpha(1.0f);
@@ -565,7 +583,7 @@ void BattleState::draw_monsters(const CL_Rect &monsterRect, CL_GraphicContext& G
         if (m_combat_state == TARGETING)
         {
             if ((m_targets.m_bSelectedGroup && m_targets.selected.m_pGroup == m_monsters)
-                    || (!m_targets.m_bSelectedGroup && iCharacter == m_targets.selected.m_pTarget))
+                    || (!m_targets.m_bSelectedGroup && pMonster == m_targets.selected.m_pTarget))
             {
                 sprite.draw(GC,rect);
             }
