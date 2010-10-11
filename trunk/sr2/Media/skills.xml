@@ -6,14 +6,11 @@
                 <![CDATA[
                 var @targets = battle::selectTargets(true,false,true);
                 var $pTarget = @targets[0];
-                println("Target: " + getCharacterName($pTarget));
-                println("HP: " + getCharacterAttribute($pTarget,$_HP) + " / " + getCharacterAttribute($pTarget,$_MAXHP));
-                println("MP: " + getCharacterAttribute($pTarget,$_MP) + " / " + getCharacterAttribute($pTarget,$_MAXMP));
+                var $info = getCharacterName($pTarget) + "\nHP: " + getCharacterAttribute($pTarget,$_HP) + " / " ; 
+		$info = $info + getCharacterAttribute($pTarget,$_MAXHP) + "\n";
+		$info = $info + "MP: " + getCharacterAttribute($pTarget,$_MP) + " / " + getCharacterAttribute($pTarget,$_MAXMP);
 
-                if(getCharacterToggle($pTarget,$_ALIVE))
-                    println("Alive");
-                else println("Dead");
-
+		say("Info",$info);
                 battle::finishTurn();
                 ]]>
             </script>

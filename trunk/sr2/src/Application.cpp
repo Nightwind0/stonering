@@ -1252,7 +1252,7 @@ int Application::main(const std::vector<CL_String> &args)
 #if 1 
 	CL_InputDevice& joystick = m_window.get_ic().get_joystick(0);
 	joystickDown = joystick.sig_key_down().connect(this,&Application::onSignalJoystickButtonDown);
-	joystickUp = joystick.sig_key_down().connect(this,&Application::onSignalJoystickButtonUp);
+	joystickUp = joystick.sig_key_up().connect(this,&Application::onSignalJoystickButtonUp);
 	joystickAxis = joystick.sig_axis_move().connect(this,&Application::onSignalJoystickAxisMove);
 #endif
     }
