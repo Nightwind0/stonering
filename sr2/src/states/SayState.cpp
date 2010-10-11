@@ -18,31 +18,44 @@ bool StoneRing::SayState::IsDone() const
     return m_bDone;
 }
 
+
+void StoneRing::SayState::HandleButtonUp(const IApplication::Button& button)
+{
+    switch(button)
+    {
+	case IApplication::BUTTON_CONFIRM:
+	    if(m_nDrawnThisFrame + m_nTotalDrawn >= m_text.size())
+	    {
+		m_bDone = true;
+	    }
+	    else
+	    {
+		m_nTotalDrawn += m_nDrawnThisFrame;
+		m_nDrawnThisFrame = 0;
+		CL_System::sleep(100);
+	    }
+        break;
+	case IApplication::BUTTON_CANCEL:
+	    m_bDone = true;
+	    break;
+    }
+}
+
+void StoneRing::SayState::HandleButtonDown(const IApplication::Button& button)
+{
+}
+
+void StoneRing::SayState::HandleAxisMove(const IApplication::Axis& axis, float pos)
+{
+}
+
 void StoneRing::SayState::HandleKeyDown(const CL_InputEvent &key)
 {
 }
 
 void StoneRing::SayState::HandleKeyUp(const CL_InputEvent &key)
 {
-    switch(key.id)
-    {
-    case CL_KEY_ENTER:
-    case CL_KEY_SPACE:
-        if(m_nDrawnThisFrame + m_nTotalDrawn >= m_text.size())
-        {
-            m_bDone = true;
-        }
-        else
-        {
-            m_nTotalDrawn += m_nDrawnThisFrame;
-            m_nDrawnThisFrame = 0;
-            CL_System::sleep(100);
-        }
-        break;
-    case CL_KEY_ESCAPE:
-        m_bDone = true;
-        break;
-    }
+
 }
 
 void StoneRing::SayState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)

@@ -4,6 +4,8 @@
 #include "StatusEffect.h"
 #include "DamageCategory.h"
 #include "steel/SteelType.h"
+#include "IApplication.h"
+
 
 using StoneRing::Monster;
 using StoneRing::MonsterParty;
@@ -17,7 +19,7 @@ using StoneRing::eDamageCategory;
 
 
 Monster::Monster(MonsterElement *pDefinition)
-        :m_pMonsterDefinition(pDefinition),m_name(pDefinition->GetName()),m_nLevel(0)
+        :m_pMonsterDefinition(pDefinition),m_name(pDefinition->GetName()),m_sprite(GET_MAIN_GC()),m_nLevel(0)
 {
 
 }
@@ -213,6 +215,16 @@ void Monster::StatusEffectRound()
 {
 }
 
+void Monster::SetCurrentSprite(CL_Sprite sprite)
+{
+    m_sprite.clone(sprite);
+}
+
+CL_Sprite Monster::GetCurrentSprite() const
+{
+    return m_sprite;
+}
+
 
 ICharacter::eType Monster::GetType() const
 {
@@ -245,4 +257,6 @@ ICharacter * MonsterParty::GetCharacter(uint index) const
 {
     return m_monsters[index];
 }
+
+
 

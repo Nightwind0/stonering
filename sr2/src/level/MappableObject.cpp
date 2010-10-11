@@ -703,11 +703,16 @@ void StoneRing::MappablePlayer::SetNextDirection(eDirection newDir)
     m_eNextDirection = newDir;
 }
 
+void StoneRing::MappablePlayer::ClearNextDirection ()
+{ 
+    m_bHasNextDirection = false; 
+    m_eDirection = NONE; 
+}
+
 void StoneRing::MappablePlayer::RandomNewDirection()
 {
     m_eDirection = NONE;
     m_bHasNextDirection = false;
-
 }
 void StoneRing::MappablePlayer::Idle()
 {
@@ -715,18 +720,24 @@ void StoneRing::MappablePlayer::Idle()
     {
         m_eDirection = m_eNextDirection;
         m_eFacingDirection = m_eDirection;
-        m_bHasNextDirection = false;
+       // m_bHasNextDirection = false;
+	set_frame_for_direction();
     }
     else
     {
         m_eDirection = NONE;
-        m_bRunning = false;
     }
+}
+
+void StoneRing::MappablePlayer::StopMovement()
+{
+   // m_eDirection = NONE;
+    m_bHasNextDirection = false;
+   // Update();
 }
 
 void StoneRing::MappablePlayer::MovedOneCell()
 {
-
     Idle();
     Update();
 }

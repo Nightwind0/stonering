@@ -20,6 +20,9 @@ namespace StoneRing
         virtual ~MapState();
 
         virtual bool IsDone() const;
+	virtual void HandleButtonUp(const IApplication::Button& button);
+	virtual void HandleButtonDown(const IApplication::Button& button);
+	virtual void HandleAxisMove(const IApplication::Axis& axis, float pos);
         virtual void HandleKeyDown(const CL_InputEvent &key);
         virtual void HandleKeyUp(const CL_InputEvent &key);
         virtual void Draw(const CL_Rect &screenRect,CL_GraphicContext& GC);
@@ -47,6 +50,8 @@ namespace StoneRing
         bool m_bDone;
         int m_LevelX; // Offset into level. TopLeft corner of our view into level
         int m_LevelY;
+	bool m_horizontal_idle;
+	bool m_vertical_idle;
         CL_Rect m_screen_rect;
         std::stack<Level*> m_levels;
         Level * m_pLevel;

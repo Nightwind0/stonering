@@ -20,6 +20,58 @@ bool StoneRing::ChoiceState::IsDone() const
     return m_bDone;
 }
 
+ void StoneRing::ChoiceState::HandleButtonUp(const IApplication::Button& button)
+ {
+    switch(button)
+    {
+	case IApplication::BUTTON_CONFIRM:
+	    // Select current option.
+	    m_bDraw = false;
+	    // mpChoice->chooseOption(mnCurrentOption);
+	    m_nSelection = m_nCurrentOption;
+	    m_bDone = true;
+	    break;
+	case IApplication::BUTTON_CANCEL:
+	    break;
+    }
+ }
+ void StoneRing::ChoiceState::HandleButtonDown(const IApplication::Button& button)
+ {
+ }
+ 
+ void StoneRing::ChoiceState::HandleAxisMove(const IApplication::Axis& axis, float pos)
+ {
+     if(axis == IApplication::AXIS_VERTICAL)
+     {
+	 if(pos == -1.0)
+	 {
+	        if(m_nCurrentOption > 0 )
+		{
+		    m_nCurrentOption--;
+
+		    if(m_nCurrentOption < m_nOptionOffset)
+		    {
+			m_nOptionOffset--;
+		    }
+		}
+	 }
+	 else if(pos == 1.0)
+	 {
+	    if(m_nCurrentOption + 1 < m_choices.size())
+	    {
+		m_nCurrentOption++;
+
+		// @todo: 4?? should be options per page but we'll have to latch it
+		if(m_nCurrentOption > m_nOptionOffset + 4)
+		{
+		    m_nOptionOffset++;
+		}
+	    }
+
+	 }
+     }
+ }
+
 void StoneRing::ChoiceState::HandleKeyDown(const CL_InputEvent &key)
 {
 }
@@ -30,35 +82,13 @@ void StoneRing::ChoiceState::HandleKeyUp(const CL_InputEvent &key)
     {
     case CL_KEY_ENTER:
     case CL_KEY_SPACE:
-        // Select current option.
-        m_bDraw = false;
-       // mpChoice->chooseOption(mnCurrentOption);
-        m_nSelection = m_nCurrentOption;
-        m_bDone = true;
+
         break;
     case CL_KEY_DOWN:
-        if(m_nCurrentOption + 1 < m_choices.size())
-        {
-            m_nCurrentOption++;
-
-            // @todo: 4?? should be options per page but we'll have to latch it
-            if(m_nCurrentOption > m_nOptionOffset + 4)
-            {
-                m_nOptionOffset++;
-            }
-        }
 
         break;
     case CL_KEY_UP:
-        if(m_nCurrentOption > 0 )
-        {
-            m_nCurrentOption--;
 
-            if(m_nCurrentOption < m_nOptionOffset)
-            {
-                m_nOptionOffset--;
-            }
-        }
         break;
 
     case CL_KEY_ESCAPE:

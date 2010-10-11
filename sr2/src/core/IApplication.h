@@ -32,6 +32,23 @@ namespace StoneRing
     class IApplication
     {
     public:
+	enum Button{
+	    BUTTON_CONFIRM,
+	    BUTTON_CANCEL,
+	    BUTTON_MENU,
+	    BUTTON_ALT,
+	    BUTTON_SELECT,
+	    BUTTON_START,
+	    BUTTON_R,
+	    BUTTON_L
+	};
+	
+	enum Axis {
+	    AXIS_HORIZONTAL,
+	    AXIS_VERTICAL
+	};
+
+	
         virtual ~IApplication(){}
         virtual CL_ResourceManager&  GetResources()=0;
         virtual CL_DisplayWindow& GetApplicationWindow()=0;

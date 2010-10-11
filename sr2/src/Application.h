@@ -58,6 +58,9 @@ namespace StoneRing
 
 
     private:
+	
+	void queryJoystick();
+	
         // Steel functions.
         SteelType gaussian(double mean, double sigma);
 
@@ -81,8 +84,8 @@ namespace StoneRing
         SteelType takeNamedItem(const std::string &item, uint count);
         SteelType useItem();
         SteelType addCharacter(const std::string &character, int level, bool announce);
-        SteelType getPartyCount(void);
-        SteelType getCharacter(uint index);
+
+	SteelType getPartyArray(void);
         SteelType getItemName(const SteelType::Handle hItem);
         SteelType getWeaponAttribute(const SteelType::Handle hWeapon, uint attr);
         SteelType getArmorAttribute(const SteelType::Handle hArmor, uint attr);
@@ -145,6 +148,9 @@ namespace StoneRing
         void onSignalQuit();
         void onSignalKeyDown(const CL_InputEvent &key,const CL_InputState& state);
         void onSignalKeyUp(const CL_InputEvent &key, const CL_InputState& state);
+	void onSignalJoystickButtonDown(const CL_InputEvent &event, const CL_InputState& state);
+	void onSignalJoystickButtonUp(const CL_InputEvent &event, const CL_InputState& state);
+	void onSignalJoystickAxisMove(const CL_InputEvent &event, const CL_InputState& state);
 
         int calc_fps(int);
 

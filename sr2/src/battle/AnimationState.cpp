@@ -310,6 +310,11 @@ void AnimationState::move_character(ICharacter* character, SpriteAnimation* anim
     
     // Rotation
     double degrees = percentage * movement->Rotation();
+    if((!character->IsMonster() && m_parent.MonstersOnLeft()) || 
+	character->IsMonster() && !m_parent.MonstersOnLeft())    
+	degrees = 0 - degrees;
+
+    
     CL_Angle angle = CL_Angle::from_degrees(degrees);
     // TODO: Mechanism to affect ALL this character's sprites in case it changes
     CL_Sprite sprite = character->GetCurrentSprite();
@@ -339,10 +344,10 @@ void AnimationState::move_character(ICharacter* character, SpriteAnimation* anim
             CL_Pointf d,c;
             d.x = dest.x - origin.x;
             d.y = dest.y - origin.y;
-            float l = sqrt(d.x*d.x + d.y+d.y);
+            float l = sqrt((double)d.x*d.x + d.y+d.y);
             d.x /=  l;
             d.y /= l;
-            float w = 2.0f * M_PI * movement->Periods(); // make this 1/2 to arc up
+            float w = 2.0f * CL_PI * movement->Periods(); // make this 1/2 to arc up
 
             current.x = percentage*dest.x + (1.0f-percentage)*origin.x + movement->Amplitude()*d.y*sin(w*percentage);
             current.y = percentage*dest.y + (1.0f-percentage)*origin.y - movement->Amplitude()*d.x*sin(w*percentage);
@@ -353,10 +358,10 @@ void AnimationState::move_character(ICharacter* character, SpriteAnimation* anim
             CL_Pointf d,c;
             d.x = dest.x - origin.x;
             d.y = dest.y - origin.y;
-            float l = sqrt(d.x*d.x + d.y+d.y);
+            float l = sqrt((double)d.x*d.x + d.y+d.y);
             d.x /=  l;
             d.y /= l;
-            float w = 2.0f * M_PI *0.5f; // make this 1/2 to arc up
+            float w = 2.0f * CL_PI *0.5f; // make this 1/2 to arc up
 
             current.x = percentage*dest.x + (1.0f-percentage)*origin.x + movement->Amplitude()*d.y*sin(w*percentage);
             current.y = percentage*dest.y + (1.0f-percentage)*origin.y - movement->Amplitude()*d.x*sin(w*percentage);
