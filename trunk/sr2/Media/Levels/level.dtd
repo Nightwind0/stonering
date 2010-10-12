@@ -226,6 +226,7 @@
 <!ATTLIST spriteMovement movementStyle (straight|arc_over|arc_under|sine|xonly|yonly) #IMPLIED> <!-- Defaults to straight -->
 <!ATTLIST spriteMovement rotationDegrees CDATA #IMPLIED> <!-- default is 0, no rotation applied -->
 <!ATTLIST spriteMovement movementCompletion CDATA #IMPLIED> <!-- How far to move. defaults to 1.0, but you could do 0.5 for halfway, etc -->
+<!ATTLIST spriteMovement pixelDistance CDATA #IMPLIED> <!-- If you want to limit your movement to a particular pixel distance, otherwise -1 -->
 <!-- defaults to target-->
 <!ATTLIST spriteMovement endFocus (screen|caster|target|caster_group|target_group|locus) #IMPLIED>
 <!-- defaults to center -->

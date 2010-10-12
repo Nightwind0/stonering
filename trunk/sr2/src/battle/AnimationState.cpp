@@ -445,9 +445,9 @@ void AnimationState::move_character(ICharacter* character, SpriteAnimation* anim
 
         }
 
-        direction *= percentage;
-        current = origin * direction;
+        direction *=  (percentage * movement->Distance());
 
+        current = origin + direction;
 
     }
     
