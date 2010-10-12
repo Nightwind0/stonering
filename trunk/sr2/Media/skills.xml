@@ -20,8 +20,10 @@
 	<onInvoke>
 	    <script id="FleeSkillScript">
 		<![CDATA[
-		battle::flee();
-		battle::finishTurn();
+		    println("Luck is " + getCharacterAttribute($Character,$_LCK));
+		    if(math::randf() + getCharacterAttribute($Character,$_LCK) / 50.0 > 0.8)
+			battle::flee();
+		    battle::finishTurn();
 		    ]]>
 	    </script>
 	</onInvoke>

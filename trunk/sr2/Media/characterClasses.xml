@@ -17,6 +17,11 @@
                 <skillRef skillName="Info"/>
             </battleMenuOption>
 	    <battleMenuOption name="Flee" icon="flee">
+		<conditionScript id="WarriorFleeCondition">
+		    <![CDATA[
+			return !battle::isBossBattle();
+			]]>
+		</conditionScript>
 		<skillRef skillName="Flee"/>
 	    </battleMenuOption>
         </battleMenu>
