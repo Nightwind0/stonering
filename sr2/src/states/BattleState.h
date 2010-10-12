@@ -189,7 +189,7 @@ namespace StoneRing{
 
         SteelType doSkill(SteelType::Handle pICharacter,const std::string& whichskill);
 
-
+	SteelType flee();
 
 
 
@@ -216,6 +216,7 @@ namespace StoneRing{
         bool m_bSelectedGroup;
         }m_targets;
         bool m_bDone;
+	bool m_bDoneAfterRound;
         uint m_nStatusBarX;
         uint m_nStatusBarY;
         uint m_nPopupX;
