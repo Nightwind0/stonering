@@ -3509,7 +3509,7 @@
 			<event name="CatMeow" triggerType="talk" remember="true">
 				<script id="catmeow">
 				    say("Karate Cat","Do you want karate?");
-				    startBattle("Green Tea Mochi",3,false,"grasslands");
+				    startBattle("Black Cat",1,false,"grasslands");
 				</script>
 				
 			</event>

@@ -80,7 +80,7 @@
         <stat id="lck" value="3"/>
         <stat id="rst" value="6"/>
     </monster>
-    <monster name="Grass Wolf" mode="manual" spriteResources="wolf" level="1">
+    <monster name="Grass Wolf" mode="manual" spriteResources="wolf" level="5">
         <onRound>
             <script id="Grass Wolf_round">
                 battle::doSkill($Character,"MonsterBasicAttack");  // Monsters are allowed to use any skill they want.
@@ -90,6 +90,22 @@
         <stat id="mp_max" value="5"/>
         <stat id="str" value="12"/>
         <stat id="def" value="3"/>
+        <stat id="dex" value="0.95"/>
+        <stat id="evd" value="0.09"/>
+        <stat id="mag" value="0"/>
+        <stat id="lck" value="3"/>
+        <stat id="rst" value="6"/>
+    </monster>
+     <monster name="Black Cat" mode="manual" spriteResources="Black Cat" level="3">
+        <onRound>
+            <script id="Black_cat_round">
+                battle::doSkill($Character,"MonsterBasicAttack");  // Monsters are allowed to use any skill they want.
+            </script>
+        </onRound>
+        <stat id="hp_max"   value="35"/>
+        <stat id="mp_max" value="5"/>
+        <stat id="str" value="7"/>
+        <stat id="def" value="2"/>
         <stat id="dex" value="0.95"/>
         <stat id="evd" value="0.09"/>
         <stat id="mag" value="0"/>

@@ -447,6 +447,24 @@
                 </image>
             </sprite>
         </section>
+      <section name="Black Cat">
+            <sprite name="idle" hint="alpha">
+                <image file="Sprites/Monsters/black_cat.png">
+                </image>
+            </sprite>
+            <sprite name="use" hint="alpha">
+                <image file="Sprites/Monsters/black_cat.png">
+                </image>
+            </sprite>
+            <sprite name="recoil" hint="alpha">
+                <image file="Sprites/Monsters/black_cat.png">
+                </image>
+            </sprite>
+            <sprite name="weak" hint="alpha">
+                <image file="Sprites/Monsters/black_cat.png">
+                </image>
+            </sprite>
+        </section>
     </section>
 </section>
 
