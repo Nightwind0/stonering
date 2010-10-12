@@ -46,7 +46,7 @@ namespace StoneRing{
 	void StartTargeting();
 	void FinishTurn();
 	// Go back to menu, they decided not to proceed with this option
-	void CancelOption();
+	void CancelTargeting();
 	void FinishTargeting();
 	// These return true if one is selected, false if
 	// there is nothing in that direction

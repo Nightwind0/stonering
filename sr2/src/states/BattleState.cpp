@@ -985,9 +985,10 @@ void BattleState::FinishTurn()
 
 
 // Go back to menu, they decided not to proceed with this option
-void BattleState::CancelOption()
+void BattleState::CancelTargeting()
 {
-    m_combat_state = BATTLE_MENU;
+    m_targets.m_bSelectedGroup = false;
+    m_targets.selected.m_pTarget = NULL;
 }
 
 bool BattleState::end_conditions()
@@ -1114,8 +1115,10 @@ SteelType BattleState::selectTargets(bool single, bool group, bool defaultMonste
     else
     {
         SteelType ref;
-        ref.set(m_targets.selected.m_pTarget);
-        targets.push_back(ref);
+	if(m_targets.selected.m_pTarget){
+	    ref.set(m_targets.selected.m_pTarget);
+	    targets.push_back(ref);
+	}
     }
 
     SteelType val;
@@ -1131,7 +1134,7 @@ SteelType BattleState::finishTurn()
 // if they back out and want to go back to the battle menu
 SteelType BattleState::cancelOption()
 {
-    CancelOption();
+    m_combat_state = BATTLE_MENU;
     return SteelType();
 }
 

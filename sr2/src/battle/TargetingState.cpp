@@ -85,6 +85,10 @@ void TargetingState::HandleButtonUp(const IApplication::Button& button)
 	case IApplication::BUTTON_CONFIRM:
 	    m_bDone = true;
 	    break;
+	case IApplication::BUTTON_CANCEL:
+	    m_pParent->CancelTargeting();
+	    m_bDone = true;
+	    break;
     }
 }
 
