@@ -5,6 +5,8 @@
             <script id="InfoSkillScript">
                 <![CDATA[
                 var @targets = battle::selectTargets(true,false,true);
+		if(!len(@targets))
+		    return battle::cancelOption(); // return is just cause I can, to do a one-liner
                 var $pTarget = @targets[0];
                 var $info = getCharacterName($pTarget) + "\nHP: " + getCharacterAttribute($pTarget,$_HP) + " / " ; 
 		$info = $info + getCharacterAttribute($pTarget,$_MAXHP) + "\n";
@@ -36,6 +38,8 @@
 		var $name = getCharacterName($pC);
         // The animation comes first.
         var @targets = battle::selectTargets(true,false,true);
+	if(!len(@targets))
+	    return battle::cancelOption(); // return is just cause I can, to do a one-liner
         battle::doTargetedAnimation($pC,@targets[0],"attack");
         var $pWeapon;
         var $hasWeapon = false;
