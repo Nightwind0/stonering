@@ -24,7 +24,7 @@ namespace StoneRing{
     {
     public:
         void init(const MonsterGroup& monsters, const std::string &backdrop);
-	void init(const std::vector<MonsterRef*>& monsters, int cellRows, int cellColumns, const std::string & backdrop);
+	void init(const std::vector<MonsterRef*>& monsters, int cellRows, int cellColumns, bool isBoss, const std::string & backdrop);
         virtual bool IsDone() const;
 	virtual void HandleButtonUp(const IApplication::Button& button);
 	virtual void HandleButtonDown(const IApplication::Button& button);
@@ -189,7 +189,8 @@ namespace StoneRing{
 
         SteelType doSkill(SteelType::Handle pICharacter,const std::string& whichskill);
 
-	SteelType flee();
+	SteelType flee();	
+	SteelType isBossBattle();
 
 
 
@@ -226,6 +227,7 @@ namespace StoneRing{
         std::deque<ICharacter*> m_initiative;
         uint m_nRound;
         uint m_cur_char;
+	bool m_bBossBattle;
         std::list<Display> m_displays;
 
         friend class BattleState::Display;

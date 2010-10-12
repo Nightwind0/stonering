@@ -150,6 +150,7 @@ SteelType Application::startBattle(const std::string &monster, uint count, bool 
     mBattleState.init(monsters,
 		      monsterRef->GetRows(),
 		      monsterRef->GetColumns(),
+		      isBoss,
 		      backdrop);
 
     mStates.push_back(&mBattleState);

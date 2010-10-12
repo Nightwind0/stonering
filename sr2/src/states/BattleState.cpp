@@ -15,7 +15,7 @@
 using namespace StoneRing;
 
 
-void BattleState::init(const std::vector<MonsterRef*>& monsters, int cellRows, int cellColumns, const std::string & backdrop)
+void BattleState::init(const std::vector<MonsterRef*>& monsters, int cellRows, int cellColumns, bool isBoss, const std::string & backdrop)
 {
     CharacterManager * pCharManager = IApplication::GetInstance()->GetCharacterManager();
     GraphicsManager * pGraphicsManager = GraphicsManager::GetInstance();
@@ -30,6 +30,7 @@ void BattleState::init(const std::vector<MonsterRef*>& monsters, int cellRows, i
     
     m_bDoneAfterRound = false;
 
+    m_bBossBattle = isBoss;
     // uint bottomrow = m_nRows - 1;
     
     for (std::vector<MonsterRef*>::const_iterator it = monsters.begin();
@@ -67,10 +68,10 @@ void BattleState::init(const std::vector<MonsterRef*>& monsters, int cellRows, i
 
 void BattleState::init(const MonsterGroup &group, const std::string &backdrop)
 {
-  
+    m_bBossBattle = false;
     const std::vector<MonsterRef*> & monsters = group.GetMonsters();
 
-    init(monsters,group.GetCellRows(),group.GetCellColumns(),backdrop);
+    init(monsters,group.GetCellRows(),group.GetCellColumns(),false,backdrop);
 }
 
 void BattleState::set_positions_to_loci()
@@ -832,6 +833,7 @@ void BattleState::SteelInit(SteelInterpreter* pInterpreter)
     static SteelFunctor1Arg<BattleState,SteelType::Handle> fn_getMonsterDamageCategory(this,&BattleState::getMonsterDamageCategory);
     static SteelFunctor2Arg<BattleState,SteelType::Handle,const std::string&> fn_doSkill(this,&BattleState::doSkill);
     static SteelFunctorNoArgs<BattleState> fn_flee(this,&BattleState::flee);
+    static SteelFunctorNoArgs<BattleState> fn_isBossBattle(this,&BattleState::isBossBattle);
 
 
     SteelConst(pInterpreter,"$_DISP_DAMAGE", Display::DISPLAY_DAMAGE);
@@ -849,6 +851,7 @@ void BattleState::SteelInit(SteelInterpreter* pInterpreter)
     pInterpreter->addFunction("getMonsterDamageCategory","battle",&fn_getMonsterDamageCategory);
     pInterpreter->addFunction("doSkill","battle",&fn_doSkill);
     pInterpreter->addFunction("flee","battle",&fn_flee);
+    pInterpreter->addFunction("isBossBattle","battle",&fn_isBossBattle);
 
 }
 
@@ -1230,6 +1233,14 @@ SteelType BattleState::flee()
 {
     m_bDoneAfterRound = true;
     return SteelType();
+}
+
+SteelType BattleState::isBossBattle()
+{
+    SteelType val;
+    val.set(m_bBossBattle);
+    
+    return val;
 }
 
 SteelType BattleState::doSkill(SteelType::Handle pICharacter, const std::string& whichskill)
