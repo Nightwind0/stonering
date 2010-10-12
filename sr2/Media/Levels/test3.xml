@@ -3523,17 +3523,19 @@
 			</event>
 			<event name="CatChoice" triggerType="talk" repeatable="false" remember="true">
 				<script id="CatChoice">
-					var @options = ("You" : "The other cat" : "Jesus" : "Option 3" : "Option 4" : "Option 5" : "Option 6");
+					var @options = array("You" , "The other cat" , "Jesus" , "Option 3" , "Option 4" , "Option 5" , "Option 6");
 					var $decision = choice( "Who is your Favorite cat", @options);
-					if($decision == 0)
+					switch($decision)
 					{
+					    case 0:
 						say("Leroy","Thank you! Take this key.");
 						giveNamedItem("Octavia Key",1);
+						break;
+					    default:
+						say("Leroy", "No, not " + @options[$decision]);
+						break;
 					}
-					else
-					{
-						say("Leroy","Awww... Not " + @options[$decision]);
-					}
+					
 				</script>
 			</event>
 			<movement movementType="wander" speed="fast"/>

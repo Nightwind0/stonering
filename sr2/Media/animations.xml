@@ -4,7 +4,7 @@
       <phase parallel="false" duration="300">
 	<spriteAnimation name="move_to_attack">
 	  <battleSprite who="caster" which="idle"/>
-	  <spriteMovement initialFocus="locus" movementStyle="xonly" endFocus="target"  endFocusX="towards" endFocusY="top" movementCompletion="0.2"/>
+	  <spriteMovement initialFocus="locus" movementStyle="xonly" movementDirection="towards" distance="64"/>
 	</spriteAnimation>
       </phase>
       <phase parallel="false" duration="1000">

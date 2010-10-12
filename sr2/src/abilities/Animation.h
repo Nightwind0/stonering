@@ -212,6 +212,7 @@ namespace StoneRing
         float m_rotation;
 	float m_fCompletion;
 	bool m_bInvert;
+	
         eMovementDirection m_eMovementDirection;
         eMovementStyle m_eMovementStyle;
     };
