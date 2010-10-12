@@ -16,6 +16,9 @@
             <battleMenuOption name="Info">
                 <skillRef skillName="Info"/>
             </battleMenuOption>
+	    <battleMenuOption name="Flee" icon="flee">
+		<skillRef skillName="Flee"/>
+	    </battleMenuOption>
         </battleMenu>
         <weaponTypeRef name="Sword"/>
         <weaponTypeRef name="Broadsword"/>

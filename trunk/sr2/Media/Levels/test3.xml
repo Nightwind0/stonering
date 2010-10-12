@@ -179,6 +179,7 @@
 		<tile xpos="2" ypos="3">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
+
 		<tile xpos="2" ypos="4">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
@@ -253,6 +254,10 @@
 		</tile>
 		<tile xpos="3" ypos="2">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
+		</tile>
+		<tile xpos="3" ypos="2">
+		    <tilemap mapname="rocks" mapx="6" mapy="1"/>
+		   <directionBlock north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="3" ypos="3">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -3509,6 +3514,23 @@
 				
 			</event>
 			<movement movementType="wander" speed="fast"/>
+		</mo>
+		<mo name="BattlePodium" size="small" type="npc" xpos="3" ypos="2" solid="true">
+		    <event name="podium" triggerType="talk">
+			<script id="useBattlePodium">
+			    <![CDATA[
+				var $decision = choice("Do you challenge me?", array("I will strike you down!","Nevermind"));
+				switch($decision){
+				    case 0:
+					startBattle("Green Tea Mochi",3,false,"grasslands");
+				    break;
+				    case 1:
+					say("Podium","A wise choice");
+				    break;
+				}
+			]]>
+			</script>
+		    </event>    
 		</mo>
 		<mo name="Leroy" size="small" type="npc" xpos="2" ypos="8" solid="true">
 			<spriteRef type="fourway" ref="Animals/Cat2">

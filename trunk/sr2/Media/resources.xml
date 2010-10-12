@@ -119,6 +119,7 @@
     <image name="no_icon"><image-file file="Images/Icons/no_icon.png"/></image>
     <image name="attack"><image-file file="Images/Icons/attack.png"/></image>
     <image name="item"><image-file file="Images/Icons/I_Chest02.png"/></image>
+    <image name="flee"><image-file file="Images/Icons/run.png"/></image>
 </section>
 
 <section name="Overlays">

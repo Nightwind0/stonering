@@ -16,6 +16,16 @@
             </script>
         </onInvoke>
     </skill>
+    <skill bp="0" name="Flee" sp="0">
+	<onInvoke>
+	    <script id="FleeSkillScript">
+		<![CDATA[
+		battle::flee();
+		battle::finishTurn();
+		    ]]>
+	    </script>
+	</onInvoke>
+    </skill>
     <skill bp="0" name="Attack" sp="0" icon="attack">
         <onInvoke>
             <script id="AttackSkillScript">

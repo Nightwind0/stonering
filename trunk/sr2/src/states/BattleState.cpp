@@ -27,6 +27,8 @@ void BattleState::init(const std::vector<MonsterRef*>& monsters, int cellRows, i
 
     m_cur_char = 0;
     m_nRound = 0;
+    
+    m_bDoneAfterRound = false;
 
     // uint bottomrow = m_nRows - 1;
     
@@ -83,6 +85,11 @@ void BattleState::set_positions_to_loci()
 
 void BattleState::next_turn()
 {
+    if(m_bDoneAfterRound) 
+    {
+	m_bDone = true;
+	return;
+    }
     ICharacter * iCharacter = m_initiative[m_cur_char];
     Character * pCharacter = dynamic_cast<Character*>(iCharacter);
     set_positions_to_loci();
@@ -162,9 +169,6 @@ void BattleState::HandleButtonUp(const IApplication::Button& button)
 {
     switch(button)
     {
-	case IApplication::BUTTON_CANCEL:
-	    m_bDone = true;
-	    break;
 	case IApplication::BUTTON_CONFIRM:
 	 if (m_combat_state == BATTLE_MENU)
         {
@@ -827,6 +831,7 @@ void BattleState::SteelInit(SteelInterpreter* pInterpreter)
     static SteelFunctorNoArgs<BattleState> fn_getAllCharacters(this,&BattleState::getAllCharacters);
     static SteelFunctor1Arg<BattleState,SteelType::Handle> fn_getMonsterDamageCategory(this,&BattleState::getMonsterDamageCategory);
     static SteelFunctor2Arg<BattleState,SteelType::Handle,const std::string&> fn_doSkill(this,&BattleState::doSkill);
+    static SteelFunctorNoArgs<BattleState> fn_flee(this,&BattleState::flee);
 
 
     SteelConst(pInterpreter,"$_DISP_DAMAGE", Display::DISPLAY_DAMAGE);
@@ -843,6 +848,7 @@ void BattleState::SteelInit(SteelInterpreter* pInterpreter)
     pInterpreter->addFunction("getAllCharacters","battle",&fn_getAllCharacters);
     pInterpreter->addFunction("getMonsterDamageCategory","battle",&fn_getMonsterDamageCategory);
     pInterpreter->addFunction("doSkill","battle",&fn_doSkill);
+    pInterpreter->addFunction("flee","battle",&fn_flee);
 
 }
 
@@ -1218,6 +1224,12 @@ SteelType BattleState::getMonsterDamageCategory(SteelType::Handle hMonster)
     result.set ( pMonster->GetDefaultDamageCategory() );
 
     return result;
+}
+
+SteelType BattleState::flee()
+{
+    m_bDoneAfterRound = true;
+    return SteelType();
 }
 
 SteelType BattleState::doSkill(SteelType::Handle pICharacter, const std::string& whichskill)
