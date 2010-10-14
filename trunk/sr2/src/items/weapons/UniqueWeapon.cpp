@@ -10,7 +10,7 @@
 
 using namespace StoneRing;
 
-UniqueWeapon::UniqueWeapon():m_pWeaponType(NULL),m_pScript(NULL)
+UniqueWeapon::UniqueWeapon():m_pWeaponType(NULL),m_pScript(NULL),m_pEquipScript(NULL),m_pUnequipScript(NULL),m_pConditionScript(NULL)
 {
 }
 
@@ -36,12 +36,14 @@ bool UniqueWeapon::EquipCondition()
 
 void UniqueWeapon::OnEquipScript()
 {
-    m_pEquipScript->ExecuteScript();
+	if(m_pEquipScript)
+		m_pEquipScript->ExecuteScript();
 }
 
 void UniqueWeapon::OnUnequipScript()
 {
-    m_pUnequipScript->ExecuteScript();
+	if(m_pUnequipScript)
+		m_pUnequipScript->ExecuteScript();
 }
 
 uint UniqueWeapon::GetValue() const
