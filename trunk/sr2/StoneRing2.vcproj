@@ -50,6 +50,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\src\party&quot;;&quot;$(SolutionDir)\src\character&quot;;&quot;$(SolutionDir)src\core&quot;;&quot;$(SolutionDir)\src&quot;;&quot;$(SolutionDir)\..\steel\src&quot;;&quot;$(SolutionDir)\src\level&quot;;&quot;$(SolutionDir)\src\states&quot;;&quot;$(SolutionDir)\src\monsters&quot;;&quot;$(SolutionDir)\src\items\armor&quot;;&quot;$(SolutionDir)\src\items\weapons&quot;;&quot;$(SolutionDir)\src\items&quot;;&quot;$(SolutionDir)\src\factories&quot;;&quot;$(SolutionDir)\src\battle&quot;;&quot;$(SolutionDir)\src\abilities&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -74,7 +75,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ddraw.lib dinput8.lib dxguid.lib"
 				OutputFile=".\Release/StoneRing2.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -142,7 +142,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SOLUTIONDIR)/../steel/src/&quot;;&quot;$(PROJECTDIR)/src/items/armor/&quot;;&quot;$(PROJECTDIR)/src/items/weapons/&quot;;&quot;$(PROJECTDIR)/src/&quot;;&quot;$(PROJECTDIR)/src/party&quot;;&quot;$(PROJECTDIR)/src/level&quot;;&quot;$(PROJECTDIR)/src/factories&quot;;&quot;$(PROJECTDIR)/src/items&quot;;&quot;$(PROJECTDIR)/src/abilities&quot;;&quot;$(PROJECTDIR)/src/states&quot;;&quot;$(PROJECTDIR)/src/character&quot;;&quot;$(PROJECTDIR)/src/core&quot;;&quot;$(PROJECTDIR)/src/monsters&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\src\party&quot;;&quot;$(SolutionDir)\src\character&quot;;&quot;$(SolutionDir)src\core&quot;;&quot;$(SolutionDir)\src&quot;;&quot;$(SolutionDir)\..\steel\src&quot;;&quot;$(SolutionDir)\src\level&quot;;&quot;$(SolutionDir)\src\states&quot;;&quot;$(SolutionDir)\src\monsters&quot;;&quot;$(SolutionDir)\src\items\armor&quot;;&quot;$(SolutionDir)\src\items\weapons&quot;;&quot;$(SolutionDir)\src\items&quot;;&quot;$(SolutionDir)\src\factories&quot;;&quot;$(SolutionDir)\src\battle&quot;;&quot;$(SolutionDir)\src\abilities&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -169,7 +169,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="ddraw.lib dinput8.lib dxguid.lib $(OutDir)\SR2Lib.lib"
+				AdditionalDependencies="$(OutDir)\SR2Lib.lib"
 				OutputFile="$(SolutionDir)\StoneRing2.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"

@@ -7,6 +7,7 @@
 using StoneRing::TargetingState;
 using StoneRing::BattleState;
 using StoneRing::ICharacter;
+using StoneRing::IApplication;
 
 void TargetingState::Init(BattleState *pParent, Targetable targetable, bool bDefaultMonsters)
 {
@@ -78,7 +79,7 @@ void TargetingState::HandleKeyDown(const CL_InputEvent &key)
     }
 }
 
-void TargetingState::HandleButtonUp(const IApplication::Button& button)
+void TargetingState::HandleButtonUp(const StoneRing::IApplication::Button& button)
 {
     switch(button)
     {

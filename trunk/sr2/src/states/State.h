@@ -4,9 +4,13 @@
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
 
+#ifndef _WINDOWS_
 #include "steel/SteelInterpreter.h"
 #include "steel/SteelType.h"
-
+#else
+#include "SteelInterpreter.h"
+#include "SteelType.h"
+#endif
 #include "IApplication.h"
 
 namespace StoneRing

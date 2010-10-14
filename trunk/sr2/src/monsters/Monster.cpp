@@ -3,7 +3,11 @@
 #include "ItemRef.h"
 #include "StatusEffect.h"
 #include "DamageCategory.h"
+#ifdef _WINDOWS_
+#include "SteelType.h"
+#else
 #include "steel/SteelType.h"
+#endif
 #include "IApplication.h"
 
 
