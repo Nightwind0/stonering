@@ -802,7 +802,7 @@ void BattleState::draw_menus(const CL_Rect &screenrect, CL_GraphicContext& GC)
                 icon.set_alpha(1.0f);
             }
 
-            const float option_height = std::max(font.get_font_metrics(GC).get_height(), (float)icon.get_height());
+            const float option_height = cl_max(font.get_font_metrics(GC).get_height(), (float)icon.get_height());
 
 
 

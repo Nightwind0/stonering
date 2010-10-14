@@ -152,7 +152,7 @@ namespace StoneRing
     inline void Monster::RollInitiative(void)
     {
         int init = static_cast<int>(normal_random(GetAttribute(CA_LCK), GetAttribute(CA_LCK) * 0.2));
-        m_nInitiative = std::max(0,init);
+        m_nInitiative = cl_max(0,init);
 
     }
     inline uint Monster::GetInitiative(void)const

@@ -3,8 +3,11 @@
 
 #include "Element.h"
 #include "Character.h"
+#ifdef _WINDOWS_
+#include "SteelInterpreter.h"
+#else
 #include "steel/SteelInterpreter.h"
-
+#endif
 using StoneRing::ICharacter;
 
 namespace StoneRing{
