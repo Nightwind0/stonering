@@ -7,13 +7,13 @@
 	  <spriteMovement initialFocus="locus" movementStyle="xonly" movementDirection="towards" distance="64"/>
 	</spriteAnimation>
       </phase>
-      <phase parallel="true" duration="1000">
+      <phase parallel="true" duration="300">
 	<spriteAnimation name="attack">
 	  <battleSprite who="caster" which="attack"/>
 	</spriteAnimation>
 	<spriteAnimation name="attack_swing">
 	  <spriteStub who="caster" which="main"/>
-	  <spriteMovement initialFocus="locus" endFocus="locus" movementStyle="circle" circleStartAngle="0" rotation="90" circleDegrees="90" circleRadius="120" circleDirection="towards"/>
+	  <spriteMovement initialFocus="locus" endFocus="locus" movementStyle="circle" circleStartAngle="270" rotation="90" circleDegrees="90" circleRadius="196" circleDirection="towards"/>
 	</spriteAnimation>
       </phase>
   </animation>

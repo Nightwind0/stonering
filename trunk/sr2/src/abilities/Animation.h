@@ -185,6 +185,7 @@ namespace StoneRing
         enum eFocusY { Y_CENTER, TOP, BOTTOM };
         enum eFocusZ { BACK, FRONT };
 
+
         struct Focus
         {
             eFocus meFocusType;
@@ -229,6 +230,7 @@ namespace StoneRing
         static eFocus focusTypeFromString ( const std::string &str );
         static eMovementDirection movementDirectionFromString ( const std::string &str );
         static eMovementStyle   movementStyleFromString( const std::string &str );
+	static eMovementCircleDir circleMovementFromString( const std::string &str );
 
         bool m_bEndFocus;
         Focus m_initial_focus;
@@ -246,6 +248,7 @@ namespace StoneRing
 	
         eMovementDirection m_eMovementDirection;
         eMovementStyle m_eMovementStyle;
+	eMovementCircleDir m_eMovementCircleDir;
     };
 
     class Phase : public Element

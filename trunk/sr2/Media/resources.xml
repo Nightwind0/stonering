@@ -32,8 +32,8 @@
             <integer name="bottom" value="396"/>
         </section>
         <section name="PlayerRect">
-            <integer name="top" value="0"/>
-            <integer name="left" value="528"/>
+            <integer name="top" value="64"/>
+            <integer name="left" value="594"/>
             <integer name="right" value="800"/>
             <integer name="bottom" value="396"/>
         </section>

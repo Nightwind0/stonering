@@ -225,9 +225,12 @@ void SpriteMovement::load_attributes(CL_DomNamedNodeMap attributes)
     m_nDistance = get_implied_int("distance",attributes,64);
     m_fCompletion = get_implied_float("movementCompletion",attributes,1.0f);
     m_bInvert = get_implied_bool("invert",attributes,false);
-    m_fCircleAngle = get_implied_float("circleAngle",attributes,0.0f);
+    m_fCircleAngle = get_implied_float("circleStartAngle",attributes,0.0f);
     m_fCircleDegrees = get_implied_float("circleDegrees",attributes,0.0f);
     m_fCircleRadius = get_implied_float("circleRadius",attributes,0.0f);
+    if(has_attribute("circleDirection",attributes))
+	m_eMovementCircleDir = circleMovementFromString( get_string("circleDirection",attributes) );
+    else m_eMovementCircleDir = CLOCKWISE;
 
     get_implied_bool("forEach",attributes,false);
 }
@@ -283,6 +286,15 @@ SpriteMovement::focusZFromString ( const std::string &str )
     else throw CL_Exception("Bad focus z type: " + str );
 }
 
+SpriteMovement::eMovementCircleDir SpriteMovement::circleMovementFromString( const std::string &str )
+{
+    if(str == "towards") return ROTATE_TOWARDS;
+    else if(str == "away") return ROTATE_AWAY;
+    else if(str == "clockwise") return CLOCKWISE;
+    else if(str == "counterclockwise") return COUNTERCLOCKWISE;
+    else throw CL_Exception("Bad circleDirection on " + str);
+    
+}
 
 SpriteMovement::eMovementDirection
 SpriteMovement::movementDirectionFromString ( const std::string &str )
@@ -337,6 +349,11 @@ bool SpriteMovement::ForEachTarget() const
     return m_bForEach;
 }
 
+SpriteMovement::eMovementCircleDir SpriteMovement::circleDirection() const
+{
+    return m_eMovementCircleDir;
+}
+
 SpriteMovement::eMovementDirection
 SpriteMovement::GetMovementDirection() const
 {
@@ -387,9 +404,6 @@ float SpriteMovement::circleRadius() const // in pixels
     return m_fCircleRadius;
 }
 
-SpriteMovement::eMovementCircleDir SpriteMovement::circleDirection() const
-{
-}
 
 
 
