@@ -109,8 +109,8 @@ namespace StoneRing
         virtual void Kill();
         virtual void Attacked();
 
-        virtual CL_Point GetBattlePos() const;
-        virtual void     SetBattlePos(CL_Point pos);
+        virtual CL_Pointf GetBattlePos() const;
+        virtual void     SetBattlePos(CL_Pointf pos);
 
         eDamageCategory GetDefaultDamageCategory(void)const;
 
@@ -145,7 +145,7 @@ namespace StoneRing
         uint m_nInitiative;
         CL_Sprite m_sprite;
         bool m_bDeathAnimated;
-        CL_Point m_battle_pos;
+        CL_Pointf m_battle_pos;
     };
 
 
@@ -160,12 +160,12 @@ namespace StoneRing
         return m_nInitiative;
     }
 
-    inline CL_Point Monster::GetBattlePos() const
+    inline CL_Pointf Monster::GetBattlePos() const
     {
         return m_battle_pos;
     }
 
-    inline void     Monster::SetBattlePos(CL_Point pos)
+    inline void     Monster::SetBattlePos(CL_Pointf pos)
     {
         m_battle_pos = pos;
     }

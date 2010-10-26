@@ -1,5 +1,6 @@
 #include "sr_defines.h"
 
+
 std::string IntToString(const int &i)
 {
     std::ostringstream os;
@@ -147,5 +148,3 @@ CL_Vec2<T> operator*(const T& t, const CL_Vec2<T> &v)
 {
     return operator*(v,t);
 }
-
-

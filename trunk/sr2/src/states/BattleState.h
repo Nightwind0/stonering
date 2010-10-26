@@ -40,7 +40,8 @@ namespace StoneRing{
         virtual void SteelCleanup   (SteelInterpreter *);
         virtual void Finish(); // Hook to clean up or whatever after being popped
 
-
+	typedef int SpriteTicket;
+	static const SpriteTicket UNDEFINED_SPRITE_TICKET;
     private:
 
 	void StartTargeting();
@@ -135,20 +136,49 @@ namespace StoneRing{
             uint m_start_time;
             float m_complete;
         };
+	
+	class Sprite
+	{
+	public:
+	    Sprite(CL_Sprite sprite);
+	    ~Sprite();
+	    
+	    int ZOrder() const;
+	    void SetPosition(const CL_Pointf& pos);
+	    CL_Pointf Position()const;
+	    void SetZOrder(int z);
+	    void Draw(CL_GraphicContext& gc);
+	    bool Enabled() const;
+	    void SetEnabled(bool enabled);
+	    CL_Sprite GetSprite() const;
+	private:
+	    CL_Sprite m_sprite;
+	    CL_Pointf m_pos;
+	    int m_zorder;
+	    bool m_enabled;
+	};
 
 
-        typedef void (BattleState::* DrawMethod)(const CL_Rect &, CL_GraphicContext&);
+        typedef void (BattleState::* DrawMethod)(const CL_Rectf &, CL_GraphicContext&);
 	//bool SortByBattlePos(const ICharacter* d1, const ICharacter* d2)const;
 
-        void draw_transition_in(const CL_Rect &screenRect, CL_GraphicContext& GC);
-        void draw_start(const CL_Rect &screenRect, CL_GraphicContext& GC);
-        void draw_battle(const CL_Rect &screenRect, CL_GraphicContext& GC);
-        void draw_monsters(const CL_Rect &monsterRect, CL_GraphicContext& GC);
-        void draw_players(const CL_Rect &playerRect, CL_GraphicContext& GC);
-        void draw_status(const CL_Rect &screenRect, CL_GraphicContext& GC);
-        void draw_menus(const CL_Rect &screenrect, CL_GraphicContext& GC);
-        void draw_targets(const CL_Rect &screenrect, CL_GraphicContext& GC);
+        void draw_transition_in(const CL_Rectf &screenRect, CL_GraphicContext& GC);
+        void draw_start(const CL_Rectf &screenRect, CL_GraphicContext& GC);
+        void draw_battle(const CL_Rectf &screenRect, CL_GraphicContext& GC);
+        void draw_monsters(const CL_Rectf &monsterRect, CL_GraphicContext& GC);
+        void draw_players(const CL_Rectf &playerRect, CL_GraphicContext& GC);
+        void draw_status(const CL_Rectf &screenRect, CL_GraphicContext& GC);
+        void draw_menus(const CL_Rectf &screenrect, CL_GraphicContext& GC);
+        void draw_targets(const CL_Rectf &screenrect, CL_GraphicContext& GC);
         void draw_displays(CL_GraphicContext& GC);
+	void draw_sprites(int z, CL_GraphicContext& GC);
+	
+	// int is a handle
+
+	SpriteTicket add_sprite(CL_Sprite sprite);
+	void set_sprite_pos(SpriteTicket nSprite, CL_Pointf pos);
+	CL_Sprite get_sprite(SpriteTicket nSprite) const;
+	void remove_sprite(SpriteTicket nSprite);
 
         void init_or_release_players(bool bRelease=false);
         void set_positions_to_loci();
@@ -162,13 +192,13 @@ namespace StoneRing{
         void death_animation(Monster* pMonster);
 	void move_character (ICharacter* character, CL_Pointf point);
 	ICharacterGroup* group_for_character(ICharacter*);
-        CL_Rect  get_group_rect(ICharacterGroup* group)const;
-        CL_Rect  get_character_rect (const ICharacter* pCharacter)const;
-        CL_Rect get_character_locus_rect (const ICharacter* pCharacter)const;
-        CL_Size get_character_size(const ICharacter*)const;
-        CL_Point get_character_locus(const ICharacter* pCharacter)const;
-        CL_Point get_monster_locus(const Monster* pMonster)const;
-        CL_Point get_player_locus(uint n)const;
+        CL_Rectf  get_group_rect(ICharacterGroup* group)const;
+        CL_Rectf  get_character_rect (const ICharacter* pCharacter)const;
+        CL_Rectf get_character_locus_rect (const ICharacter* pCharacter)const;
+        CL_Sizef get_character_size(const ICharacter*)const;
+        CL_Pointf get_character_locus(const ICharacter* pCharacter)const;
+        CL_Pointf get_monster_locus(const Monster* pMonster)const;
+        CL_Pointf get_player_locus(uint n)const;
         ICharacter* get_next_character(const ICharacterGroup* pGroup, const ICharacter* pCharacter)const;
         ICharacter* get_prev_character(const ICharacterGroup* pGroup, const ICharacter* pCharacter)const;
 
@@ -201,10 +231,10 @@ namespace StoneRing{
         CL_Image m_statusBar;
         CL_Image m_battleMenu;
         CL_Image m_battlePopup;
-        CL_Rect m_status_rect;
-        CL_Rect m_popup_rect;
-        CL_Rect m_monster_rect;
-        CL_Rect m_player_rect;
+        CL_Rectf m_status_rect;
+        CL_Rectf m_popup_rect;
+        CL_Rectf m_monster_rect;
+        CL_Rectf m_player_rect;
 
         eCombatState m_combat_state;
         BattleMenuStack m_menu_stack;
@@ -229,6 +259,8 @@ namespace StoneRing{
         uint m_cur_char;
 	bool m_bBossBattle;
         std::list<Display> m_displays;
+	std::vector<Sprite> m_sprites;
+	
 
         friend class BattleState::Display;
         friend class TargetingState;

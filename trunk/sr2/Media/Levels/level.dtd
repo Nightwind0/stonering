@@ -223,8 +223,12 @@
 <!ATTLIST spriteMovement initialFocusZ (back|front) #IMPLIED> <!-- default to front -->
 <!-- defaults to endfocus if there is one, still if theres not -->
 <!ATTLIST spriteMovement movementDirection (still|n|e|s|w|ne|nw|se|sw|away|towards|endFocus) #IMPLIED>
-<!ATTLIST spriteMovement movementStyle (straight|arc_over|arc_under|sine|xonly|yonly) #IMPLIED> <!-- Defaults to straight -->
+<!ATTLIST spriteMovement movementStyle (straight|arc_over|arc_under|sine|xonly|yonly|circle) #IMPLIED> <!-- Defaults to straight -->
 <!ATTLIST spriteMovement rotationDegrees CDATA #IMPLIED> <!-- default is 0, no rotation applied -->
+<!ATTLIST spriteMovement circleDegrees CDATA #IMPLIED> <!-- for movementStyle circle, how many degrees to circle -->
+<!ATTLIST spriteMovement circleStartAngle CDATA #IMPLIED> <!-- From where to start circling, for movementStyle circle -->
+<!ATTLIST spriteMovement circleDirection (clockwise|counterclockwise|away|towards) #IMPLIED>
+<!ATTLIST spriteMovement circleRadius CDATA #IMPLIED>
 <!ATTLIST spriteMovement movementCompletion CDATA #IMPLIED> <!-- How far to move. defaults to 1.0, but you could do 0.5 for halfway, etc -->
 <!ATTLIST spriteMovement pixelDistance CDATA #IMPLIED> <!-- If you want to limit your movement to a particular pixel distance, otherwise -1 -->
 <!-- defaults to target-->
@@ -236,13 +240,12 @@
 <!-- defaults to false-->
 <!ATTLIST spriteMovement endFocusZ (back|front) #IMPLIED>
 
-<!ATTLIST spriteStub name CDATA #REQUIRED>
 
-<!ATTLIST spriteStub bindTo (none|weapon|character) #IMPLIED> <!-- Defaults to none -->
+<!ATTLIST spriteStub which (main|off) #IMPLIED> <!-- So far no others... -->
 
 
 <!ATTLIST battleSprite who (none|caster|caster_group|target|target_group|all) #REQUIRED>
-<!ATTLIST battleSprite which (idle|attack|recoil|weak|dead|use) #REQUIRED>
+<!ATTLIST battleSprite which (idle|attack|recoil|weak|dead|use) #REQUIRED> 
 <!-- These points are relevative to the sprite wielding the weapon-->
 <!ATTLIST battleMenuOption name CDATA #REQUIRED>
 <!ATTLIST skill allowsGroupTarget (true|false) #IMPLIED>

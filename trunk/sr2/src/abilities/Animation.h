@@ -8,7 +8,7 @@
 #include "sr_defines.h"
 #include "ScriptElement.h"
 #include "SpriteRef.h"
-
+#include "BattleState.h"
 
 namespace StoneRing
 {
@@ -18,6 +18,7 @@ namespace StoneRing
     class AlterSprite;
     class AnimationMask;
     class PlaySound;
+
 
     class AlterSprite : public Element
     {
@@ -51,14 +52,14 @@ namespace StoneRing
         {
             return ESPRITESTUB;
         }
-        enum eBindTo { NONE, WEAPON, CHARACTER };
+        enum eWhich { MAIN, OFF };
 
-        std::string GetName() const;
-        eBindTo GetBindTo() const;
+        eWhich Which() const;
+
     private:
         virtual void load_attributes(CL_DomNamedNodeMap attributes);
-        eBindTo m_eBindTo;
-        std::string m_name;
+        eWhich m_eWhich;
+
     };
 
     class BattleSprite : public Element
@@ -135,17 +136,38 @@ namespace StoneRing
         {
             return m_pAlterSprite;
         }
+        
+        	
+	BattleState::SpriteTicket GetSpriteTicket() const;
+	
+	void SetSpriteTicket(BattleState::SpriteTicket ticket);
+	
+	bool ShouldSkip() const 
+	{
+	    return m_bSkip;
+	}
+	void Skip() 
+	{
+	    m_bSkip = true;
+	}
+	void Unskip()
+	{
+	    m_bSkip = false;
+	}
+	
     private:
         virtual void load_attributes(CL_DomNamedNodeMap attributes);
         virtual bool handle_element(eElement element, Element *pElement);
         virtual void load_finished();
 
+	bool m_bSkip;
         std::string m_name;
         SpriteRef *m_pSpriteRef;
         BattleSprite * m_pBattleSprite;
         SpriteStub *m_pStub;
         SpriteMovement *m_pMovement;
         AlterSprite *m_pAlterSprite;
+	BattleState::SpriteTicket m_sprite;
     };
 
     class SpriteMovement : public Element
@@ -172,7 +194,8 @@ namespace StoneRing
         };
 
         enum eMovementDirection { STILL, N, E, S, W, NE, NW, SE, SW, MOVE_AWAY, MOVE_TOWARDS, END_FOCUS };
-        enum eMovementStyle {STRAIGHT, ARC_OVER, ARC_UNDER, SINE, XONLY, YONLY };
+        enum eMovementStyle {STRAIGHT, ARC_OVER, ARC_UNDER, SINE, XONLY, YONLY, CIRCLE };
+	enum eMovementCircleDir { CLOCKWISE, COUNTERCLOCKWISE, ROTATE_AWAY, ROTATE_TOWARDS };
 
         Focus GetInitialFocus() const;
         bool HasEndFocus() const;
@@ -184,6 +207,11 @@ namespace StoneRing
         int Distance() const; // For movement without an end focus, the distance in pixels to move. (Ignored if there is an end focus)
         float Completion() const;
 	bool Invert() const;
+	float circleDegrees()const;
+	float circleStartAngle() const;
+	float circleRadius() const; // in pixels
+	eMovementCircleDir circleDirection() const;
+
 
         eMovementDirection GetMovementDirection() const;
         eMovementStyle GetMovementStyle() const;
@@ -212,6 +240,9 @@ namespace StoneRing
         float m_rotation;
 	float m_fCompletion;
 	bool m_bInvert;
+	float m_fCircleDegrees;
+	float m_fCircleRadius;
+	float m_fCircleAngle;
 	
         eMovementDirection m_eMovementDirection;
         eMovementStyle m_eMovementStyle;

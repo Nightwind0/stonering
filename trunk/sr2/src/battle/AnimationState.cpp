@@ -2,6 +2,7 @@
 #include "Animation.h"
 #include "IApplication.h"
 #include "BattleState.h"
+#include "WeaponType.h"
 
 using namespace StoneRing;
 
@@ -25,14 +26,15 @@ void AnimationState::Init(Animation* pAnimation)
     m_pAnim = pAnimation;
 }
 
-CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICharacter * pTarget)
+CL_Pointf AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICharacter * pTarget)
 {
-    CL_Point point(0,0);
+    CL_Pointf point(0,0);
     switch (focus.meFocusType)
     {
     case SpriteMovement::SCREEN:
         switch (focus.meFocusX)
         {
+	    default:
         case SpriteMovement::X_CENTER:
             point.x = IApplication::GetInstance()->GetScreenWidth() / 2;
             break;
@@ -49,6 +51,7 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
         }
         switch (focus.meFocusY)
         {
+	    default:
         case SpriteMovement::Y_CENTER:
             point.y = IApplication::GetInstance()->GetScreenHeight() / 2;
             break;
@@ -62,16 +65,16 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
         }
         break;
     case SpriteMovement::CASTER:{
-	CL_Rect rect =  m_parent.get_character_rect(m_pCaster);
+	CL_Rectf rect =  m_parent.get_character_rect(m_pCaster);
         switch (focus.meFocusX)
         {
-
+	default:
         case SpriteMovement::X_CENTER:
             point.x = rect.get_center().x;
             break;
-	default:
+
         case SpriteMovement::TOWARDS:
-	    point.x = rect.get_top_left().x;
+	    point = rect.get_top_left();
             break;
         case SpriteMovement::AWAY:
             break;
@@ -84,10 +87,11 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
         }
         switch (focus.meFocusY)
         {
+	    	default:
         case SpriteMovement::Y_CENTER:
             point.y =  rect.get_center().y;
             break;
-	default:
+
         case SpriteMovement::TOP:
             point.y =  rect.get_top_left().y;
             break;
@@ -99,16 +103,16 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
     }
     case SpriteMovement::TARGET:
     {
-	CL_Rect rect = m_parent.get_character_rect(m_pTarget);
+	CL_Rectf rect = m_parent.get_character_rect(m_pTarget);
         switch (focus.meFocusX)
         {
-
+	default:
         case SpriteMovement::X_CENTER:
             point.x = rect.get_center().x;
             break;
-	default:
+
         case SpriteMovement::TOWARDS:
-	    point.x = rect.get_center().x;
+	    point = rect.get_center();
             break;
         case SpriteMovement::AWAY:
             break;
@@ -121,11 +125,11 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
         }
         switch (focus.meFocusY)
         {
-
+	default:
         case SpriteMovement::Y_CENTER:
             point.y =  rect.get_center().y;
             break;
-	default:
+
         case SpriteMovement::TOP:
             point.y =  rect.get_top_left().y;
             break;
@@ -137,13 +141,14 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
     }
     case SpriteMovement::CASTER_GROUP:
     {
-        CL_Rect rect = m_parent.get_group_rect(m_pCasterGroup);
+        CL_Rectf rect = m_parent.get_group_rect(m_pCasterGroup);
         switch (focus.meFocusX)
         {
+	default:
         case SpriteMovement::X_CENTER:
             point.x = rect.get_center().x;
             break;
-	default:
+
         case SpriteMovement::LEFT:
             point.x = rect.get_top_left().x;
             break;
@@ -155,10 +160,11 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
 
         switch (focus.meFocusY)
         {
+	default:
         case SpriteMovement::Y_CENTER:
             point.y = rect.get_center().y;
             break;
-	default:
+
         case SpriteMovement::TOP:
             point.y = rect.get_top_left().y;
             break;
@@ -171,13 +177,14 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
     }
     case SpriteMovement::TARGET_GROUP:
     {
-        CL_Rect rect = m_parent.get_group_rect(m_pTargetGroup);
+        CL_Rectf rect = m_parent.get_group_rect(m_pTargetGroup);
         switch (focus.meFocusX)
         {
+	default:
         case SpriteMovement::X_CENTER:
             point.x = rect.get_center().x;
             break;
-	default:
+
         case SpriteMovement::LEFT:
             point.x = rect.get_top_left().x;
             break;
@@ -189,10 +196,11 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
 
         switch (focus.meFocusY)
         {
+	default:    
         case SpriteMovement::Y_CENTER:
             point.y = rect.get_center().y;
             break;
-	default:
+
         case SpriteMovement::TOP:
             point.y = rect.get_top_left().y;
             break;
@@ -204,15 +212,14 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
         break;
     }
     case SpriteMovement::CASTER_LOCUS:{
-	CL_Rect rect =  m_parent.get_character_locus_rect(m_pCaster);
+	CL_Rectf rect =  m_parent.get_character_locus_rect(m_pCaster);
         switch (focus.meFocusX)
         {
+	default:
         case SpriteMovement::X_CENTER:
             point.x = rect.get_center().x;
             break;
 
-        case SpriteMovement::AWAY:
-            break;
         case SpriteMovement::LEFT:
             point.x = rect.get_top_left().x;
             break;
@@ -220,21 +227,21 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
             point.x = rect.get_top_right().x;
             break;
 	case SpriteMovement::TOWARDS:
-	default:
-	    point.x = rect.get_top_left().x;
+
+	    point = rect.get_center();
             break;
         }
         switch (focus.meFocusY)
         {
 
-	    default:
+
         case SpriteMovement::TOP:
             point.y =  rect.get_top_left().y;
             break;
         case SpriteMovement::BOTTOM:
             point.y =  rect.get_bottom_left().y;
             break;
-
+	default:
 	case SpriteMovement::Y_CENTER:
             point.y =  rect.get_center().y;
             break;
@@ -242,15 +249,14 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
         break;
     }
     case SpriteMovement::TARGET_LOCUS:{
-	CL_Rect rect =  m_parent.get_character_locus_rect(m_pTarget);
+	CL_Rectf rect =  m_parent.get_character_locus_rect(m_pTarget);
         switch (focus.meFocusX)
         {
+
         case SpriteMovement::X_CENTER:
             point.x =rect.get_center().x;
             break;
 
-        case SpriteMovement::AWAY:
-            break;
         case SpriteMovement::LEFT:
             point.x = rect.get_top_left().x;
             break;
@@ -259,21 +265,21 @@ CL_Point AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICha
             break; 
 	default:
 	case SpriteMovement::TOWARDS:
-	    point.x = rect.get_top_left().x;
+	    point = rect.get_center();
             break;
 	    
         }
         switch (focus.meFocusY)
         {
 
-	default:
+
         case SpriteMovement::TOP:
             point.y =  rect.get_top_left().y;
             break;
         case SpriteMovement::BOTTOM:
             point.y =  rect.get_bottom_left().y;
             break;
-
+	default:
 	case SpriteMovement::Y_CENTER:
             point.y =  rect.get_center().y;
             break;
@@ -299,33 +305,55 @@ void AnimationState::HandleKeyUp(const CL_InputEvent &key)
 {
 }
 
-void AnimationState::move_character(ICharacter* character, SpriteAnimation* anim, SpriteMovement* movement, float percentage)
+void AnimationState::move_sprite(ICharacter* pActor, ICharacter* pTarget, SpriteAnimation* anim, SpriteMovement* movement, float percentage)
 {
     if(percentage > 1.0f) percentage = 1.0f;
-    CL_Point origin_i = GetFocusOrigin(movement->GetInitialFocus(), character);
+    CL_Pointf origin = GetFocusOrigin(movement->GetInitialFocus(), pActor);
    // std::cout << "Origin is " << origin_i.x << ',' << origin_i.y << std::endl;
-    CL_Pointf origin(origin_i.x,origin_i.y);
-    CL_Point dest_i;
+
     CL_Pointf current = origin;
     
+    CL_Sprite sprite;
+    
+    // TODO: Now take whatever it is, and display it at 'current'
+
+    if(anim->GetSpriteTicket() != BattleState::UNDEFINED_SPRITE_TICKET)
+	sprite = m_parent.get_sprite(anim->GetSpriteTicket());
+    
+    
+    if(anim->HasBattleSprite())
+    {
+	switch(anim->GetBattleSprite()->GetWho())
+	{
+	    case CASTER:
+		sprite = m_pCaster->GetCurrentSprite();
+		break;
+	    case TARGET:
+		sprite = m_pTarget->GetCurrentSprite();
+		break;
+	}
+    }
+   
+
     // Rotation
+    // TODO: Switch to away/toward
+    
     double degrees = percentage * movement->Rotation();
-    if((!character->IsMonster() && m_parent.MonstersOnLeft()) || 
-	character->IsMonster() && !m_parent.MonstersOnLeft())    
+    if((!pActor->IsMonster() && m_parent.MonstersOnLeft()) || 
+	pActor->IsMonster() && !m_parent.MonstersOnLeft())    
 	degrees = 0 - degrees;
 
     
     CL_Angle angle = CL_Angle::from_degrees(degrees);
     // TODO: Mechanism to affect ALL this character's sprites in case it changes
-    CL_Sprite sprite = character->GetCurrentSprite();
     sprite.set_angle(angle);
   
     float completion = movement->Completion();
-    percentage *= completion;
+    percentage *= completion;      
+    
     if (movement->HasEndFocus())
     {
-        dest_i = GetFocusOrigin(movement->GetEndFocus(), character);
-        CL_Pointf dest(dest_i.x,dest_i.y);
+        CL_Pointf dest = GetFocusOrigin(movement->GetEndFocus(), pActor);
 	  //(1-p)*A + p*B
         //current = (1.0f - percentage) * origin + percentage * dest;
         switch (movement->GetMovementStyle())
@@ -339,6 +367,15 @@ void AnimationState::move_character(ICharacter* character, SpriteAnimation* anim
 	case SpriteMovement::YONLY:
 	    current.y = origin.y * (1.0f - percentage) + dest.y * percentage;
 	    break;
+	case SpriteMovement::CIRCLE:{
+	    float angle_deg = movement->circleStartAngle() + percentage * movement->circleDegrees();
+	    
+	    float radius = movement->circleRadius();
+	    float angle = (CL_PI/180.0f) * angle_deg;
+	    CL_Pointf cpoint(cos(angle),sin(angle));
+	    current = dest +  cpoint * radius; // C + R * (cos A, sin A)
+	    break;
+	}
         case SpriteMovement::SINE:
         {
             CL_Pointf d,c;
@@ -450,28 +487,25 @@ void AnimationState::move_character(ICharacter* character, SpriteAnimation* anim
         current = origin + direction;
 
     }
-    
+     
     if(movement->Invert())
     {
-	std::cout << "Inverted ";
 	float diff_x = origin.x - current.x;
 	float diff_y = origin.y - current.y;
 	current.x += diff_x*2;
 	current.y += diff_y*2;
     }
-    // TODO: Now take whatever it is, and display it at 'current'
-    if (anim->HasSpriteStub())
+    
+    if(anim->GetSpriteTicket() != BattleState::UNDEFINED_SPRITE_TICKET)
     {
+	sprite = m_parent.get_sprite(anim->GetSpriteTicket());
+	m_parent.set_sprite_pos(anim->GetSpriteTicket(),current);
     }
     
-    else if (anim->HasSpriteRef())
-    {
-        CL_Sprite sprite = anim->GetSpriteRef()->CreateSprite();
-    }
-    else if (anim->HasBattleSprite())
+    if (anim->HasBattleSprite())
     {
         // Have parent move this thing
-        CL_Point point;
+        CL_Pointf point;
         point.x = current.x;
         point.y = current.y;
         switch (anim->GetBattleSprite()->GetWho())
@@ -484,8 +518,38 @@ void AnimationState::move_character(ICharacter* character, SpriteAnimation* anim
             break;
         }
     }
+    
+    
 }
+/*
+void AnimationState::move_character(ICharacter* character, SpriteAnimation* anim, SpriteMovement* movement, float percentage)
+{
+    if(percentage > 1.0f) percentage = 1.0f;
+    CL_Point origin_i = GetFocusOrigin(movement->GetInitialFocus(), character);
+   // std::cout << "Origin is " << origin_i.x << ',' << origin_i.y << std::endl;
+    CL_Pointf origin(origin_i.x,origin_i.y);
+    CL_Point dest_i;
+    CL_Pointf current = origin;
+    
+    // Rotation
+    // TODO: Switch to away/toward
+    double degrees = percentage * movement->Rotation();
+    if((!character->IsMonster() && m_parent.MonstersOnLeft()) || 
+	character->IsMonster() && !m_parent.MonstersOnLeft())    
+	degrees = 0 - degrees;
 
+    
+    CL_Angle angle = CL_Angle::from_degrees(degrees);
+    // TODO: Mechanism to affect ALL this character's sprites in case it changes
+    CL_Sprite sprite = character->GetCurrentSprite();
+    sprite.set_angle(angle);
+  
+    float completion = movement->Completion();
+    percentage *= completion;
+   
+
+}
+*/
 
 void AnimationState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
 {
@@ -496,6 +560,7 @@ void AnimationState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
         bool draw = true;
         if (percentage >= 1.0f)
         {
+	    EndPhase();
             draw = NextPhase();
             if(draw)
             {
@@ -511,7 +576,7 @@ void AnimationState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
                     iter != (*m_phase_iterator)->GetSpriteAnimationsEnd(); iter++)
             {
                 SpriteAnimation* anim = *iter;
-                if (anim->HasSpriteMovement())
+                if (!anim->ShouldSkip() && anim->HasSpriteMovement())
                 {
                     SpriteMovement * movement = anim->GetSpriteMovement();
                     if (movement->ForEachTarget() && (*m_phase_iterator)->InParallel())
@@ -519,11 +584,11 @@ void AnimationState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
                         for (uint i=0;i<m_pTargetGroup->GetCharacterCount();i++)
                         {
                             ICharacter * pTarget = m_pTargetGroup->GetCharacter(i);
-                            move_character(pTarget,anim,movement,percentage);
+                            move_sprite(pTarget, m_pCaster,anim,movement,percentage);
                         }
 
                     }else{
-                        move_character(m_pCaster,anim,movement,percentage);
+                        move_sprite(m_pCaster,m_pTarget,anim,movement,percentage);
                     }
                 }
             }
@@ -559,6 +624,21 @@ bool AnimationState::NextPhase()
 
     return true;
 }
+
+void AnimationState::EndPhase()
+{
+    for (std::list<SpriteAnimation*>::const_iterator iter = (*m_phase_iterator)->GetSpriteAnimationsBegin();
+            iter != (*m_phase_iterator)->GetSpriteAnimationsEnd(); iter++)
+    {
+	SpriteAnimation* animation = *iter;
+	if(animation->GetSpriteTicket() != BattleState::UNDEFINED_SPRITE_TICKET)
+	{
+	    m_parent.remove_sprite(animation->GetSpriteTicket());
+	    animation->SetSpriteTicket(BattleState::UNDEFINED_SPRITE_TICKET);
+	}
+    }
+}
+
 void AnimationState::StartPhase()
 {
     Phase * phase = *m_phase_iterator;
@@ -579,6 +659,40 @@ void AnimationState::StartPhase()
             // Change battle sprite using the parent now
             // to GetWhich
         }
+        
+        if(animation->HasSpriteStub())
+	{
+	    // Create sprite on parent state
+	    // keep pointer to it around
+	    SpriteStub* stub = animation->GetSpriteStub();
+		    // Monsters don't have weapons for now. TODO: Don't assume this
+	    if(!m_pCaster->IsMonster())
+	    {
+		Character * pCharacter = dynamic_cast<Character*>(m_pCaster);
+		Equipment* equipment = pCharacter->GetEquipment(stub->Which() == SpriteStub::MAIN? Equipment::EHAND:Equipment::EOFFHAND);
+		Weapon* pWeapon = dynamic_cast<Weapon*>(equipment);
+		if(pWeapon)
+		{
+		    animation->Unskip();
+		    WeaponType* pType = pWeapon->GetWeaponType();
+		    animation->SetSpriteTicket(m_parent.add_sprite(pType->GetSprite()));
+		}
+		else
+		{
+		    animation->Skip();
+		}
+	    }
+	    else
+	    {
+		animation->Skip();
+	    }
+
+	}
+	
+	if(animation->HasSpriteRef())
+	{
+	    animation->SetSpriteTicket(m_parent.add_sprite(animation->GetSpriteRef()->CreateSprite()));
+	}
     }
 
     return;

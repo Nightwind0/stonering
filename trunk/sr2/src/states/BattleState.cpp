@@ -15,6 +15,8 @@
 using namespace StoneRing;
 
 
+const BattleState::SpriteTicket BattleState::UNDEFINED_SPRITE_TICKET=-1;
+
 void BattleState::init(const std::vector<MonsterRef*>& monsters, int cellRows, int cellColumns, bool isBoss, const std::string & backdrop)
 {
     CharacterManager * pCharManager = IApplication::GetInstance()->GetCharacterManager();
@@ -79,7 +81,7 @@ void BattleState::set_positions_to_loci()
     for(std::deque<ICharacter*>::iterator iter = m_initiative.begin();
     iter != m_initiative.end(); iter++)
     {
-        CL_Point pos = get_character_locus_rect(*iter).get_top_left();
+        CL_Pointf pos = get_character_locus_rect(*iter).get_center();
         (*iter)->SetBattlePos(pos);
     }
 }
@@ -363,21 +365,25 @@ void BattleState::Finish()
 
     delete m_monsters;
 
+    m_displays.clear();
+    
+    m_sprites.clear();
+
     m_initiative.clear();
 
     init_or_release_players(true);
 }
 
 
-void BattleState::draw_transition_in(const CL_Rect &screenRect, CL_GraphicContext& GC)
+void BattleState::draw_transition_in(const CL_Rectf &screenRect, CL_GraphicContext& GC)
 {
 }
 
-void BattleState::draw_start(const CL_Rect &screenRect, CL_GraphicContext& GC)
+void BattleState::draw_start(const CL_Rectf &screenRect, CL_GraphicContext& GC)
 {
 }
 
-void BattleState::draw_status(const CL_Rect &screenRect, CL_GraphicContext& GC)
+void BattleState::draw_status(const CL_Rectf &screenRect, CL_GraphicContext& GC)
 {
     IParty * pParty = IApplication::GetInstance()->GetParty();
     GraphicsManager * pGraphicsManager = GraphicsManager::GetInstance();
@@ -396,23 +402,23 @@ void BattleState::draw_status(const CL_Rect &screenRect, CL_GraphicContext& GC)
         CL_Font  mpFont = pGraphicsManager->GetFont(GraphicsManager::BATTLE_STATUS, "mp");
 
         generalFont.draw_text(GC,m_status_rect.left,
-                              static_cast<int>(m_status_rect.top + generalFont.get_font_metrics(GC).get_height() +(p *
+                              m_status_rect.top + generalFont.get_font_metrics(GC).get_height() +(p *
                                                generalFont.get_font_metrics(GC).get_height())
-                                              ),
+                                              ,
                               name.str());
         hpFont.draw_text(GC,m_status_rect.get_width() / 3 + m_status_rect.left,
-                         static_cast<int>(m_status_rect.top + hpFont.get_font_metrics(GC).get_height()+(p* hpFont.get_font_metrics(GC).get_height()))
+                         m_status_rect.top + hpFont.get_font_metrics(GC).get_height()+(p* hpFont.get_font_metrics(GC).get_height())
                          ,hp.str());
         std::ostringstream mp;
         mp << std::setw(6) << pChar->GetAttribute(ICharacter::CA_MP) << '/'
         << pChar->GetAttribute(ICharacter::CA_MAXMP);
         mpFont.draw_text(GC,(m_status_rect.get_width() / 3) * 2 + m_status_rect.left,
-                         static_cast<int>(m_status_rect.top + mpFont.get_font_metrics(GC).get_height() + (p*mpFont.get_font_metrics(GC).get_height())),mp.str());
+                         m_status_rect.top + mpFont.get_font_metrics(GC).get_height() + (p*mpFont.get_font_metrics(GC).get_height()),mp.str());
 
     }
 }
 
-void BattleState::draw_battle(const CL_Rect &screenRect, CL_GraphicContext& GC)
+void BattleState::draw_battle(const CL_Rectf &screenRect, CL_GraphicContext& GC)
 {
     m_backdrop.draw(GC,screenRect);
 
@@ -421,6 +427,7 @@ void BattleState::draw_battle(const CL_Rect &screenRect, CL_GraphicContext& GC)
 
     
     draw_status(screenRect,GC);
+    draw_sprites(0,GC);
     draw_displays(GC);
 
     if (m_combat_state == BATTLE_MENU)
@@ -544,10 +551,105 @@ void BattleState::Display::draw(CL_GraphicContext& GC)
 
 }
 
+BattleState::Sprite::Sprite(CL_Sprite sprite):m_sprite(sprite)
+{
+}
+ 
+BattleState::Sprite::~Sprite()
+{
+}
+ 
+void BattleState::Sprite::SetPosition(const CL_Pointf& pos)
+{
+    m_pos = pos;
+}
+ 
+CL_Pointf BattleState::Sprite::Position()const
+{
+    return m_pos;
+}
+void BattleState::Sprite::Draw(CL_GraphicContext& gc)
+{
+    m_sprite.set_alignment(origin_center);
+    m_sprite.draw(gc,m_pos.x,m_pos.y);
+}
+
+int BattleState::Sprite::ZOrder() const
+{
+    return m_zorder;
+}
+
+void BattleState::Sprite::SetZOrder(int z)
+{
+    m_zorder = z;
+}
+
+bool BattleState::Sprite::Enabled() const
+{
+	return m_enabled;
+}
+
+void BattleState::Sprite::SetEnabled(bool enabled)
+{
+	m_enabled = enabled;
+}
+
+CL_Sprite BattleState::Sprite::GetSprite() const
+{
+    return m_sprite;
+}
+
+int BattleState::add_sprite(CL_Sprite sprite)
+{
+    int index = m_sprites.size();
+    sprite.set_alignment(origin_center);
+    Sprite mysprite(sprite);
+
+    
+    for(int i=0;i<m_sprites.size();i++)
+    {
+	if(!m_sprites[i].Enabled())
+	{
+	    m_sprites[i] = mysprite;
+	    return i;
+	}
+    }
+    m_sprites.push_back(mysprite);
+    return index;
+}
+
+void BattleState::set_sprite_pos(int nSprite, CL_Pointf pos)
+{
+    m_sprites[nSprite].SetPosition(pos);
+}
+
+
+CL_Sprite BattleState::get_sprite(int nSprite) const
+{
+    return m_sprites[nSprite].GetSprite();
+}
+
+void BattleState::remove_sprite(int nSprite)
+{
+    if(nSprite <  m_sprites.size())
+    {
+	m_sprites[nSprite].SetEnabled(false);
+    }
+}
+
+void BattleState::draw_sprites(int z, CL_GraphicContext& GC)
+{
+    for(int i=0;i<m_sprites.size();i++)
+    {
+	if(m_sprites[i].Enabled())
+	    m_sprites[i].Draw(GC);
+    }
+}
+
 bool SortByBattlePos(const ICharacter* d1, const ICharacter* d2)
 {
 
-    CL_Point pos1,pos2;
+    CL_Pointf pos1,pos2;
     pos1 = d1->GetBattlePos();
     pos2 = d2->GetBattlePos();
 
@@ -557,7 +659,7 @@ bool SortByBattlePos(const ICharacter* d1, const ICharacter* d2)
 }
 
 
-void BattleState::draw_monsters(const CL_Rect &monsterRect, CL_GraphicContext& GC)
+void BattleState::draw_monsters(const CL_Rectf &monsterRect, CL_GraphicContext& GC)
 {
     std::vector<Monster*> sortedList;
     sortedList.reserve(m_monsters->GetCharacterCount());
@@ -579,7 +681,10 @@ void BattleState::draw_monsters(const CL_Rect &monsterRect, CL_GraphicContext& G
         if (!pMonster->GetToggle(ICharacter::CA_VISIBLE))
             continue;
 
-        CL_Rect rect = get_character_rect(pMonster);
+       // CL_Rectf rect = get_character_rect(pMonster);
+	CL_Pointf center = pMonster->GetBattlePos();
+	//std::cout << pMonster->GetName() << '@' << rect.top << ',' << rect.left << std::endl;
+	//rect.translate ( rect.get_width() / 2.0f,  rect.get_height() / 2.0f);
 
         CL_Sprite  sprite = pMonster->GetCurrentSprite();
         sprite.set_alpha(1.0f);
@@ -590,24 +695,24 @@ void BattleState::draw_monsters(const CL_Rect &monsterRect, CL_GraphicContext& G
             if ((m_targets.m_bSelectedGroup && m_targets.selected.m_pGroup == m_monsters)
                     || (!m_targets.m_bSelectedGroup && pMonster == m_targets.selected.m_pTarget))
             {
-                sprite.draw(GC,rect);
+                sprite.draw(GC,center.x,center.y);
             }
             else
             {
                 sprite.set_alpha(0.7f);
-                sprite.draw(GC,rect);
+                sprite.draw(GC,center.x,center.y);
             }
         }
         else
         {
-            sprite.draw(GC,rect);
+            sprite.draw(GC,center.x,center.y);
         }
         
 
     }
 }
 
-void BattleState::draw_players(const CL_Rect &playerRect, CL_GraphicContext& GC)
+void BattleState::draw_players(const CL_Rectf &playerRect, CL_GraphicContext& GC)
 {
     IParty * pParty = IApplication::GetInstance()->GetParty();
 
@@ -617,7 +722,9 @@ void BattleState::draw_players(const CL_Rect &playerRect, CL_GraphicContext& GC)
         Character * pCharacter = dynamic_cast<Character*>(pParty->GetCharacter(nPlayer));
         ICharacter * iCharacter = pParty->GetCharacter(nPlayer);
         CL_Sprite  sprite = pCharacter->GetCurrentSprite();
-        CL_Rect rect = get_character_rect(iCharacter);
+       // CL_Rect rect = get_character_rect(iCharacter);
+	CL_Pointf center = pCharacter->GetBattlePos();
+	//rect.translate (  rect.get_width() / 2.0f,  rect.get_height() / 2.0f );
         sprite.set_alpha(1.0f);
         sprite.update();
 
@@ -630,24 +737,24 @@ void BattleState::draw_players(const CL_Rect &playerRect, CL_GraphicContext& GC)
             if ((m_targets.m_bSelectedGroup && m_targets.selected.m_pGroup == m_monsters)
                     || (!m_targets.m_bSelectedGroup && iCharacter == m_targets.selected.m_pTarget))
             {
-                sprite.draw(GC,rect);
+                sprite.draw(GC,center.x,center.y);
             }
             else
             {
                 sprite.set_alpha(0.7f);
-                sprite.draw(GC,rect);
+                sprite.draw(GC,center.x,center.y);
 
             }
         }
         else
         {
-            sprite.draw(GC,rect);
+            sprite.draw(GC,center.x,center.y);
         }
 
     }
 }
 
-CL_Rect  BattleState::get_group_rect(ICharacterGroup* group) const
+CL_Rectf  BattleState::get_group_rect(ICharacterGroup* group) const
 {
     MonsterParty * monsterParty = dynamic_cast<MonsterParty*>(group);
 
@@ -658,32 +765,30 @@ CL_Rect  BattleState::get_group_rect(ICharacterGroup* group) const
     }
 }
 
-CL_Point BattleState::get_monster_locus(const Monster * pMonster)const
+CL_Pointf BattleState::get_monster_locus(const Monster * pMonster)const
 {
-    CL_Point point;
+    CL_Pointf point;
     const uint cellWidth = m_monster_rect.get_width() / m_nColumns;
     const uint cellHeight = m_monster_rect.get_height() / m_nRows;
     CL_Sprite  sprite = pMonster->GetCurrentSprite();
 
 
-    int drawX = pMonster->GetCellX() * cellWidth + (cellWidth - sprite.get_width()) /2;
-    int drawY = pMonster->GetCellY() * cellHeight + (cellHeight - sprite.get_height())/2;
-    point.x = drawX;
-    point.y = drawY;
+    point.x = m_monster_rect.left + pMonster->GetCellX() * cellWidth + (cellWidth  /2);
+    point.y = m_monster_rect.top + pMonster->GetCellY() * cellHeight + (cellHeight /2);
     return point;
 }
 
-CL_Point BattleState::get_player_locus(uint nPlayer)const
+CL_Pointf BattleState::get_player_locus(uint nPlayer)const
 {
-    CL_Point point;
-    point.x = static_cast<int>(m_player_rect.left + nPlayer * 64 + (m_player_rect.get_width() - 32) / 2);
-    point.y = static_cast<int>(m_player_rect.top + nPlayer * 64);
+    CL_Pointf point;
+    point.x = m_player_rect.left + (nPlayer+1) * 64 + 32;
+    point.y = m_player_rect.top + (nPlayer+1) * 64 + 64;
     return point;
 }
 
-CL_Point BattleState::get_character_locus(const ICharacter* pCharacter) const
+CL_Pointf BattleState::get_character_locus(const ICharacter* pCharacter) const
 {
-    CL_Point point;
+    CL_Point pointf;
     const Monster * pMonster = dynamic_cast<const Monster*>(pCharacter);
     if(pMonster != NULL){
         return get_monster_locus(pMonster);
@@ -699,37 +804,51 @@ CL_Point BattleState::get_character_locus(const ICharacter* pCharacter) const
         }
     }
     assert(0);
-    return CL_Point(0.0,0.0);
+    return CL_Pointf(0.0,0.0);
 }
 
-CL_Size  BattleState::get_character_size(const ICharacter* pCharacter) const
+CL_Sizef  BattleState::get_character_size(const ICharacter* pCharacter) const
 {
     const Monster * pMonster = dynamic_cast<const Monster*>(pCharacter);
     if(pMonster != NULL){
         return pMonster->GetCurrentSprite().get_size();
     }else{
-        return CL_Size(64,128);
+        return CL_Sizef(64,128);
     }
 }
 
 
-CL_Rect BattleState::get_character_rect(const ICharacter* pCharacter)const
+CL_Rectf BattleState::get_character_rect(const ICharacter* pCharacter)const
 {
-    CL_Rect rect;
-    CL_Point point = pCharacter->GetBattlePos();
-    rect.set_top_left(point);
-    rect.set_size(get_character_size(pCharacter));
-
+    CL_Rectf rect;
+    CL_Pointf point = pCharacter->GetBattlePos();
+    CL_Sizef size = get_character_size(pCharacter);
+    
+    rect.set_top_left(CL_Pointf(point.x - size.width / 2.0f,point.y - size.height / 2.0f));
+   /* rect.top = point.x - size.width / 2.0f;
+    rect.left = point.y - size.height / 2.0f;
+    rect.bottom = rect.top + size.height;
+    rect.right = rect.left + size.width; */
+    rect.set_size(size);
+  
+   
     return rect;
 }
 
-CL_Rect BattleState::get_character_locus_rect(const ICharacter* pCharacter)const
+CL_Rectf BattleState::get_character_locus_rect(const ICharacter* pCharacter)const
 {
-    CL_Rect rect;
-    CL_Point point = get_character_locus(pCharacter);
-    rect.set_top_left(point);
+    CL_Rectf rect;
+    CL_Pointf point = get_character_locus(pCharacter);
+    CL_Sizef size = get_character_size(pCharacter);
+    rect.set_top_left(CL_Pointf(point.x - size.width / 2.0f, point.y - size.height / 2.0f));
     rect.set_size(get_character_size(pCharacter));
-
+    
+    
+    /*
+    std::cout << pCharacter->GetName() <<" locus " << '(' << rect.left << ',' << rect.top << ')' << '(' 
+    << rect.right << ',' << rect.bottom <<')' << 'c'
+    << rect.get_center().x << ',' << rect.get_center().y << std::endl;
+    */
     return rect;
 }
 
@@ -747,7 +866,7 @@ void BattleState::draw_displays(CL_GraphicContext& GC)
 }
 
 
-void BattleState::draw_menus(const CL_Rect &screenrect, CL_GraphicContext& GC)
+void BattleState::draw_menus(const CL_Rectf &screenrect, CL_GraphicContext& GC)
 {
     BattleMenu * pMenu = m_menu_stack.top();
     GraphicsManager * pGraphicsManager = GraphicsManager::GetInstance();
@@ -826,7 +945,7 @@ void BattleState::SteelInit(SteelInterpreter* pInterpreter)
     static SteelFunctorNoArgs<BattleState> fn_finishTurn(this,&BattleState::finishTurn);
     static SteelFunctorNoArgs<BattleState> fn_cancelOption(this,&BattleState::cancelOption);
     static SteelFunctor3Arg<BattleState,SteelType::Handle,SteelType::Handle,const std::string&> fn_doTargetedAnimation(this,&BattleState::doTargetedAnimation);
-	static SteelFunctor2Arg<BattleState,SteelType::Handle,const std::string&> fn_doCharacterAnimation(this,&BattleState::doCharacterAnimation);
+    static SteelFunctor2Arg<BattleState,SteelType::Handle,const std::string&> fn_doCharacterAnimation(this,&BattleState::doCharacterAnimation);
     static SteelFunctor3Arg<BattleState,int,SteelType::Handle,int> fn_createDisplay(this,&BattleState::createDisplay);
     static SteelFunctor1Arg<BattleState,bool> fn_getCharacterGroup(this,&BattleState::getCharacterGroup);
     static SteelFunctorNoArgs<BattleState> fn_getAllCharacters(this,&BattleState::getAllCharacters);

@@ -7,9 +7,13 @@
 	  <spriteMovement initialFocus="locus" movementStyle="xonly" movementDirection="towards" distance="64"/>
 	</spriteAnimation>
       </phase>
-      <phase parallel="false" duration="1000">
+      <phase parallel="true" duration="1000">
 	<spriteAnimation name="attack">
 	  <battleSprite who="caster" which="attack"/>
+	</spriteAnimation>
+	<spriteAnimation name="attack_swing">
+	  <spriteStub who="caster" which="main"/>
+	  <spriteMovement initialFocus="locus" endFocus="locus" movementStyle="circle" circleStartAngle="0" rotation="90" circleDegrees="90" circleRadius="120" circleDirection="towards"/>
 	</spriteAnimation>
       </phase>
   </animation>
@@ -17,7 +21,7 @@
       <phase parallel="false" duration="600">
 	<spriteAnimation name="return_from_attack">
 	  <battleSprite who="caster" which="idle"/>
-	  <spriteMovement initialFocus="caster" endFocus="locus" endFocusX="towards" endFocusY="top" movementStyle="xonly" movementCompletion="1.0"/>
+	  <spriteMovement initialFocus="caster" endFocus="locus"  movementStyle="xonly" movementCompletion="1.0"/>
 	</spriteAnimation>
       </phase>
     </animation>
@@ -26,13 +30,13 @@
 	<spriteAnimation name="recoil">
 	  <battleSprite who="caster" which="recoil"/>
 	  <alterSprite who="caster" how="negative"/>
-	  <spriteMovement initialFocus="locus" endFocus="target" endFocusX="towards" endFocusY="top"  rotation="-25" movementStyle="xonly" invert="true" movementCompletion="0.1"/>
+	  <spriteMovement initialFocus="locus" endFocus="target"   rotation="-25" movementStyle="xonly" invert="true" movementCompletion="0.1"/>
 	</spriteAnimation>
     </phase>
     <phase parallel="false" duration="300">
-	<spriteAnimation name="recoil">
+	<spriteAnimation name="recoil2">
 	    <battleSprite who="caster" which="idle"/>
-	  <spriteMovement initialFocus="caster" endFocus="locus" endFocusX="left" endFocusY="top"  movementStyle="xonly"  movementCompletion="1"/>
+	  <spriteMovement initialFocus="caster" endFocus="locus"   movementStyle="xonly"  movementCompletion="1.0"/>
 	</spriteAnimation>
       </phase>
     </animation>
