@@ -1,6 +1,8 @@
 #include "WeaponType.h"
 #include "IconRef.h"
 #include "DamageCategory.h"
+#include "GraphicsManager.h"
+#include "ClanLib/core.h"
 
 using namespace StoneRing;
 
@@ -24,6 +26,16 @@ void WeaponType::load_attributes(CL_DomNamedNodeMap attributes)
     m_bRanged = get_implied_bool("ranged",attributes,false);
     m_bTwoHanded  = get_implied_bool("twoHanded",attributes,false);
     m_damageCategory = DamageCategoryFromString(get_required_string("damageCategory",attributes));
+}
+
+void WeaponType::load_finished()
+{
+    try {
+	m_sprite = GraphicsManager::GetInstance()->CreateEquipmentSprite(GraphicsManager::EQUIPMENT_SPRITE_WEAPON,m_name);
+    }catch(CL_Exception err)
+    {
+	std::cerr << "Warning: Missing graphic for weapon type : " << m_name << std::endl;
+    }
 }
 
 bool WeaponType::handle_element(eElement element, Element * pElement)
@@ -54,6 +66,11 @@ std::string WeaponType::GetName() const
 std::string WeaponType::GetIconRef() const
 {
     return m_icon_ref;
+}
+
+CL_Sprite WeaponType::GetSprite() const
+{
+    return m_sprite;
 }
 
 

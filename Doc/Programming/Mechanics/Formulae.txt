@@ -38,4 +38,30 @@ For each character C
 	Next
 	print "Character C got TOTAL_XP experience"
 Next
+
+
+
+
+
+
+
+----- 
+Functions that approach a number K the higher they get, up to infinity
+K - 1/n
+K - e^(-n)
+2K/pi atan(n)
+
+Or, to slow the approach, I like
+K - 1 / (sqrt(n))
+
+To calculate a dex, you can do something like 0.5 - 1/sqrt($_DEX)
+that gives a b
+
+
+Ted recommends K - 1 / x ^ (-a) , where a is like 1/2 for sqrt, etc
+1 - (1/(level+15))^(0.7) -- I like this for dex. You can adjust the 0.7 and 15 per class
 		
+For evade, you want something that starts generally pretty low (except maybe a ninja class or something) and grows pretty slowly..
+1 - (1/level)^0.1 would be for a pretty evasive character...
+1 - (1/level)^0.05 seems reasonable
+

@@ -36,6 +36,12 @@ namespace StoneRing
           DISPLAY_MP_NEGATIVE,
           DISPLAY_MISS
         };
+	
+	enum EquipmentSpriteType
+	{
+	    EQUIPMENT_SPRITE_WEAPON,
+	    EQUIPMENT_SPRITE_ARMOR
+	};
 
         CL_Sprite  CreateSprite ( const std::string& name );
         CL_Image  GetOverlay( Overlay overlay );
@@ -43,6 +49,7 @@ namespace StoneRing
         // TODO: Replace sprite string in these two APIs with some enum
         CL_Sprite  CreateMonsterSprite ( const std::string& monster, const std::string& sprite);
         CL_Sprite  CreateCharacterSprite ( const std::string& player, const std::string& sprite);
+	CL_Sprite  CreateEquipmentSprite ( EquipmentSpriteType type, const std::string& sprite_name); 
         CL_Sprite  GetTileMap ( const std::string& name );
         CL_Image  GetBackdrop (const std::string& name );
         CL_Image  GetIcon ( const std::string& icon );

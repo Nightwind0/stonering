@@ -6,16 +6,20 @@
 #include "Element.h"
 #include "DamageCategory.h"
 
+
+class CL_Sprite;
+
 namespace StoneRing{
     class WeaponType : public Element
     {
     public:
         WeaponType();
         WeaponType(CL_DomElement * pElement );
-        ~WeaponType();
+        virtual ~WeaponType();
 
         virtual eElement WhichElement() const{ return EWEAPONTYPE; }
 
+	CL_Sprite GetSprite() const;
         std::string GetName() const;
         std::string GetIconRef() const;
 
@@ -31,11 +35,13 @@ namespace StoneRing{
         bool operator==(const WeaponType &lhs);
 
     private:
+	virtual void load_finished();
         virtual bool handle_element(eElement element, Element * pElement );
         virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
         eDamageCategory m_damageCategory;
         std::string m_name;
         std::string m_icon_ref;
+	CL_Sprite m_sprite;
         uint m_nBasePrice;
         uint m_nBaseAttack;
         float m_fBaseHit;

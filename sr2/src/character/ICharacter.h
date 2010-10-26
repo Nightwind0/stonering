@@ -100,8 +100,8 @@ namespace StoneRing{
         virtual uint   GetInitiative(void)const=0;
         virtual void   Kill()=0;
         virtual void   Attacked()=0;
-        virtual CL_Point       GetBattlePos()const=0;
-        virtual void           SetBattlePos(CL_Point point)=0;
+        virtual CL_Pointf       GetBattlePos()const=0;
+        virtual void           SetBattlePos(CL_Pointf point)=0;
 	virtual CL_Sprite GetCurrentSprite() const=0;
 
         // Static API

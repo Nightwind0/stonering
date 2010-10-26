@@ -57,8 +57,8 @@ namespace StoneRing{
         CL_Sprite  GetCurrentSprite() const { return m_currentSprite; }
         void SetCurrentSprite(CL_Sprite sprite) { m_currentSprite = sprite; }
 
-        virtual CL_Point       GetBattlePos()const;
-        virtual void           SetBattlePos(CL_Point point);
+        virtual CL_Pointf       GetBattlePos()const;
+        virtual void           SetBattlePos(CL_Pointf point);
 
         // Shortcuts to class data
         BattleMenu * GetBattleMenu() const;
@@ -99,7 +99,7 @@ namespace StoneRing{
         CL_Sprite m_currentSprite;
         StatusEffectMap m_status_effects;
         eType m_eType;
-        CL_Point m_battle_pos;
+        CL_Pointf m_battle_pos;
     };
 
     inline void Character::RollInitiative(void)
@@ -115,12 +115,12 @@ namespace StoneRing{
     }
 
 
-    inline CL_Point  Character::GetBattlePos()const
+    inline CL_Pointf  Character::GetBattlePos()const
     {
         return m_battle_pos;
     }
 
-    inline void      Character::SetBattlePos(CL_Point point)
+    inline void      Character::SetBattlePos(CL_Pointf point)
     {
         m_battle_pos = point;
 #if 0

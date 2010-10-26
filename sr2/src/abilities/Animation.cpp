@@ -32,27 +32,22 @@ SpriteStub::~SpriteStub()
 {
 }
 
-std::string SpriteStub::GetName() const
-{
-    return m_name;
-}
 
-SpriteStub::eBindTo SpriteStub::GetBindTo() const
+SpriteStub::eWhich SpriteStub::Which() const
 {
-    return m_eBindTo;
+    return m_eWhich;
 }
 
 
 void SpriteStub::load_attributes(CL_DomNamedNodeMap attributes)
 {
-    m_name = get_required_string("name",attributes);
-
-    if (has_attribute("bindTo",attributes))
-    {
-        m_eBindTo = static_cast<eBindTo>(get_required_int("bindTo",attributes));
-    }
-    else m_eBindTo = NONE;
+  
+    std::string which = get_required_string("which",attributes);
+    if(which == "main")
+	m_eWhich = MAIN;
+    else m_eWhich = OFF;
 }
+  
 
 BattleSprite::BattleSprite()
 {
@@ -113,11 +108,14 @@ AlterSprite::eAlter AlterSprite::alter_from_string(const std::string &str)
 
 
 SpriteAnimation::SpriteAnimation()
-        :m_pSpriteRef(NULL),
+        :
+        m_bSkip(false),
+        m_pSpriteRef(NULL),
         m_pBattleSprite(NULL),
         m_pStub(NULL),
         m_pMovement(NULL),
-        m_pAlterSprite(NULL)
+        m_pAlterSprite(NULL),
+        m_sprite(BattleState::UNDEFINED_SPRITE_TICKET)
 {
 }
 
@@ -162,6 +160,16 @@ void SpriteAnimation::load_finished()
         throw CL_Exception("Missing sprite stub or sprite ref or battle sprite on spriteAnimation");
 }
 
+BattleState::SpriteTicket SpriteAnimation::GetSpriteTicket() const
+{
+    return m_sprite;
+}
+
+void SpriteAnimation::SetSpriteTicket(BattleState::SpriteTicket ticket)
+{
+    m_sprite = ticket;
+}
+
 
 SpriteMovement::SpriteMovement()
         :m_bEndFocus(false),m_bForEach(false),m_periods(6.0f),m_amplitude(30.0f),m_nDistance(64)
@@ -175,11 +183,11 @@ void SpriteMovement::load_attributes(CL_DomNamedNodeMap attributes)
 
     if (has_attribute("initialFocusX",attributes))
         m_initial_focus.meFocusX = focusXFromString( get_string("initialFocusX",attributes));
-    else m_initial_focus.meFocusX = LEFT;
+    else m_initial_focus.meFocusX = X_CENTER;
 
     if (has_attribute("initialFocusY",attributes))
         m_initial_focus.meFocusY = focusYFromString( get_string("initialFocusY",attributes));
-    else m_initial_focus.meFocusY = TOP;
+    else m_initial_focus.meFocusY = Y_CENTER;
 
     if (has_attribute("initialFocusZ",attributes))
         m_initial_focus.meFocusZ = focusZFromString( get_string("initialFocusZ",attributes));
@@ -217,6 +225,9 @@ void SpriteMovement::load_attributes(CL_DomNamedNodeMap attributes)
     m_nDistance = get_implied_int("distance",attributes,64);
     m_fCompletion = get_implied_float("movementCompletion",attributes,1.0f);
     m_bInvert = get_implied_bool("invert",attributes,false);
+    m_fCircleAngle = get_implied_float("circleAngle",attributes,0.0f);
+    m_fCircleDegrees = get_implied_float("circleDegrees",attributes,0.0f);
+    m_fCircleRadius = get_implied_float("circleRadius",attributes,0.0f);
 
     get_implied_bool("forEach",attributes,false);
 }
@@ -302,6 +313,7 @@ SpriteMovement::movementStyleFromString( const std::string &str )
     else if (str == "sine") return SINE;
     else if (str == "xonly") return XONLY;
     else if (str == "yonly") return YONLY;
+    else if (str == "circle") return CIRCLE;
     else throw CL_Exception("Bad movementStyle " + str );
 }
 
@@ -360,6 +372,25 @@ bool SpriteMovement::Invert() const
 {
     return m_bInvert;
 }
+
+float SpriteMovement::circleDegrees()const
+{
+    return m_fCircleDegrees;
+}
+
+float SpriteMovement::circleStartAngle() const
+{
+    return m_fCircleAngle;
+}
+float SpriteMovement::circleRadius() const // in pixels
+{
+    return m_fCircleRadius;
+}
+
+SpriteMovement::eMovementCircleDir SpriteMovement::circleDirection() const
+{
+}
+
 
 
 bool Phase::handle_element(eElement element, Element * pElement)

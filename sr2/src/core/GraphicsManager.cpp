@@ -27,6 +27,8 @@ CL_Sprite GraphicsManager::CreateSprite ( const std::string & name )
     
     CL_Sprite clone(GET_MAIN_GC());
     clone.clone(sprite); 
+    
+    sprite.set_alignment(origin_center);
 
     return clone;
 }
@@ -121,6 +123,7 @@ CL_Sprite  GraphicsManager::CreateMonsterSprite (const std::string &monster, con
     CL_Sprite  sprite(GET_MAIN_GC(),"Sprites/Monsters/"+monster+'/'+sprite_id,&resources);
 
 
+    sprite.set_alignment(origin_center);
   
     return sprite;
 }
@@ -131,6 +134,28 @@ CL_Sprite GraphicsManager::CreateCharacterSprite ( const std::string &player, co
     CL_Sprite sprite = CL_Sprite(GET_MAIN_GC(),"Sprites/BattleSprites/"+player+'/'+sprite_id,&resources);
 
 
+    sprite.set_alignment(origin_center);
+    return sprite;
+}
+
+CL_Sprite  GraphicsManager::CreateEquipmentSprite ( EquipmentSpriteType type, const std::string& sprite_name)
+{
+    CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
+    std::string item_type;
+    switch(type)
+    {
+	case EQUIPMENT_SPRITE_WEAPON:
+	    item_type = "Weapon";
+	    break;
+	case EQUIPMENT_SPRITE_ARMOR:
+	    item_type = "Armor";
+	    break;
+    }
+    
+    CL_Sprite sprite = CL_Sprite(GET_MAIN_GC(),"Sprites/Equipment/" + item_type + '/' + sprite_name, &resources);
+    
+    
+    sprite.set_alignment(origin_center);
     return sprite;
 }
 

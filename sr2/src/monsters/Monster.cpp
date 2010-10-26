@@ -222,6 +222,7 @@ void Monster::StatusEffectRound()
 void Monster::SetCurrentSprite(CL_Sprite sprite)
 {
     m_sprite.clone(sprite);
+    m_sprite.set_alignment(origin_center);
 }
 
 CL_Sprite Monster::GetCurrentSprite() const

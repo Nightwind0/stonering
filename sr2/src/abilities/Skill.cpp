@@ -1,6 +1,6 @@
 
 #include "Element.h"
-#include <ClanLib/core.h>
+#include <ClanLib/display.h>
 #include "Skill.h"
 #include "AbilityFactory.h"
 #include "IApplication.h"

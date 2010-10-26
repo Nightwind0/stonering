@@ -249,6 +249,14 @@
             <image file="Sprites/target.png"/>
         </sprite>
     </section>
+    <section name="Equipment">
+	<section name = "Weapon">
+	    <sprite name="Sword">
+		<image file="Images/Items/Weapons/basic_sword.png">
+		</image>
+	    </sprite>
+	</section>
+    </section>
 	<section name = "Party">
 		<sprite name = "Valyn" hint = "alpha">
 			<image file="Sprites/valyn.png">

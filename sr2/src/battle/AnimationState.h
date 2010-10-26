@@ -17,6 +17,7 @@ namespace StoneRing
     class ICharacterGroup;
     class ICharacter;
 
+
     class AnimationState : public State
     {
     public:
@@ -38,10 +39,12 @@ namespace StoneRing
         virtual void Finish(); // Hook to clean up or whatever after being popped
 
     private:
-        CL_Point GetFocusOrigin(const SpriteMovement::Focus&, ICharacter* pTarget);
+        CL_Pointf GetFocusOrigin(const SpriteMovement::Focus&, ICharacter* pTarget);
+	void EndPhase();
         bool NextPhase();
         void StartPhase();
-        void move_character(ICharacter* character, SpriteAnimation* anim, SpriteMovement* movement, float percentage);
+	void move_sprite(ICharacter *pActor, ICharacter* pTarget, SpriteAnimation* anim, SpriteMovement* movement, float percentage);
+        //void move_character(ICharacter* character, SpriteAnimation* anim, SpriteMovement* movement, float percentage);
 
         BattleState& m_parent;
         ICharacterGroup* m_pCasterGroup;

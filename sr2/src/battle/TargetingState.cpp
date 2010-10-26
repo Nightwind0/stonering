@@ -470,10 +470,9 @@ void TargetingState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
         if ((m_pParent->m_targets.m_bSelectedGroup && m_pParent->m_targets.selected.m_pGroup == m_pParty)
                 || m_pParent->m_targets.selected.m_pTarget == pCharacter)
         {
-	    CL_Rect rect = m_pParent->get_character_rect(pCharacter);
-            m_target_sprite.draw(GC,
-                                 static_cast<int>(rect.left -   (m_target_sprite.get_width()/2)),
-                                 static_cast<int>(rect.top - (m_target_sprite.get_height()/2)));
+	    CL_Rectf rect = m_pParent->get_character_rect(pCharacter);
+            m_target_sprite.draw(GC,rect.left,rect.top);
+                                 //(rect.top - (m_target_sprite.get_height()/2));
         }
     }
 
@@ -484,10 +483,10 @@ void TargetingState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
         if ((m_pParent->m_targets.m_bSelectedGroup && m_pParent->m_targets.selected.m_pGroup == m_pParent->m_monsters)
                 || m_pParent->m_targets.selected.m_pTarget == pMonster)
         {
-	    CL_Rect rect = m_pParent->get_character_rect(pMonster);
+	    CL_Rectf rect = m_pParent->get_character_rect(pMonster);
             CL_Sprite sprite = pMonster->GetCurrentSprite();
-            m_target_sprite.draw(GC,rect.left-   (m_target_sprite.get_width()/2.0f),
-                                 rect.top - (m_target_sprite.get_height()/2.0f) + sprite.get_height()/2.0f);
+            m_target_sprite.draw(GC,rect.left, rect.top );
+                                // rect.top - (m_target_sprite.get_height()/2.0f) + sprite.get_height()/2.0f);
         }
     }
 }

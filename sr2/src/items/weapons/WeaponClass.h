@@ -13,7 +13,7 @@ namespace StoneRing{
     public:
         WeaponClass();
         WeaponClass(CL_DomElement * pElement);
-        ~WeaponClass();
+        virtual ~WeaponClass();
         virtual eElement WhichElement() const{ return EWEAPONCLASS; }
         std::string GetName() const;
         int GetValueAdd() const;
