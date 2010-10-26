@@ -240,6 +240,8 @@
 <!-- defaults to false-->
 <!ATTLIST spriteMovement endFocusZ (back|front) #IMPLIED>
 
+<!ATTLIST spriteMovement circleGrowth CDATA #IMPLIED> <!-- defaults at 0, lets you make spirals -->
+
 
 <!ATTLIST spriteStub which (main|off) #IMPLIED> <!-- So far no others... -->
 

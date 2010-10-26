@@ -231,6 +231,8 @@ void SpriteMovement::load_attributes(CL_DomNamedNodeMap attributes)
     if(has_attribute("circleDirection",attributes))
 	m_eMovementCircleDir = circleMovementFromString( get_string("circleDirection",attributes) );
     else m_eMovementCircleDir = CLOCKWISE;
+    
+    m_fCircleGrowth = get_implied_float("circleGrowth",attributes,0.0f);
 
     get_implied_bool("forEach",attributes,false);
 }
@@ -349,6 +351,11 @@ bool SpriteMovement::ForEachTarget() const
     return m_bForEach;
 }
 
+float SpriteMovement::circleGrowth() const
+{
+    return m_fCircleGrowth;
+}
+
 SpriteMovement::eMovementCircleDir SpriteMovement::circleDirection() const
 {
     return m_eMovementCircleDir;
@@ -403,6 +410,7 @@ float SpriteMovement::circleRadius() const // in pixels
 {
     return m_fCircleRadius;
 }
+
 
 
 

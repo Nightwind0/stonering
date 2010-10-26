@@ -212,6 +212,7 @@ namespace StoneRing
 	float circleStartAngle() const;
 	float circleRadius() const; // in pixels
 	eMovementCircleDir circleDirection() const;
+	float circleGrowth() const; // for spirals
 
 
         eMovementDirection GetMovementDirection() const;
@@ -245,6 +246,7 @@ namespace StoneRing
 	float m_fCircleDegrees;
 	float m_fCircleRadius;
 	float m_fCircleAngle;
+	float m_fCircleGrowth;
 	
         eMovementDirection m_eMovementDirection;
         eMovementStyle m_eMovementStyle;

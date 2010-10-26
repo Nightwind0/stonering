@@ -382,7 +382,7 @@ void AnimationState::move_sprite(ICharacter* pActor, ICharacter* pTarget, Sprite
 	    if(clockwise)
 		angle_deg = movement->circleStartAngle() + (percentage) * movement->circleDegrees();
 	    else angle_deg = movement->circleStartAngle() - (percentage) * movement->circleDegrees();
-	    float radius = movement->circleRadius();
+	    float radius = movement->circleRadius() + percentage * movement->circleGrowth(); // spiral powers
 	    float angle = (CL_PI/180.0f) * angle_deg;
 	    CL_Pointf cpoint(cos(angle),sin(angle));
 	    current = dest +  cpoint * radius; // C + R * (cos A, sin A)
