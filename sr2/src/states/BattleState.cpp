@@ -781,8 +781,8 @@ CL_Pointf BattleState::get_monster_locus(const Monster * pMonster)const
 CL_Pointf BattleState::get_player_locus(uint nPlayer)const
 {
     CL_Pointf point;
-    point.x = m_player_rect.left + (nPlayer+1) * 64 + 32;
-    point.y = m_player_rect.top + (nPlayer+1) * 64 + 64;
+    point.x = m_player_rect.left + (nPlayer) * 64 + 32;
+    point.y = m_player_rect.top + (nPlayer) * 64 + 64;
     return point;
 }
 

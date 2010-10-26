@@ -74,7 +74,7 @@ CL_Pointf AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICh
             break;
 
         case SpriteMovement::TOWARDS:
-	    point = rect.get_top_left();
+	    point.x = rect.get_top_left().x;
             break;
         case SpriteMovement::AWAY:
             break;
@@ -112,7 +112,7 @@ CL_Pointf AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICh
             break;
 
         case SpriteMovement::TOWARDS:
-	    point = rect.get_center();
+	    point.x = rect.get_center().x;
             break;
         case SpriteMovement::AWAY:
             break;
@@ -228,7 +228,7 @@ CL_Pointf AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICh
             break;
 	case SpriteMovement::TOWARDS:
 
-	    point = rect.get_center();
+	    point.x = rect.get_center().x;
             break;
         }
         switch (focus.meFocusY)
@@ -265,7 +265,7 @@ CL_Pointf AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICh
             break; 
 	default:
 	case SpriteMovement::TOWARDS:
-	    point = rect.get_center();
+	    point.x = rect.get_center().x;
             break;
 	    
         }
@@ -338,10 +338,20 @@ void AnimationState::move_sprite(ICharacter* pActor, ICharacter* pTarget, Sprite
     // Rotation
     // TODO: Switch to away/toward
     
+    bool clockwise = true;
+    
     double degrees = percentage * movement->Rotation();
     if((!pActor->IsMonster() && m_parent.MonstersOnLeft()) || 
-	pActor->IsMonster() && !m_parent.MonstersOnLeft())    
+	pActor->IsMonster() && !m_parent.MonstersOnLeft()){    
 	degrees = 0 - degrees;
+	
+	if(movement->circleDirection() == SpriteMovement::ROTATE_TOWARDS)
+	    clockwise = false;
+
+    }
+    
+    if(movement->circleDirection() == SpriteMovement::COUNTERCLOCKWISE)
+	clockwise = false;
 
     
     CL_Angle angle = CL_Angle::from_degrees(degrees);
@@ -368,8 +378,10 @@ void AnimationState::move_sprite(ICharacter* pActor, ICharacter* pTarget, Sprite
 	    current.y = origin.y * (1.0f - percentage) + dest.y * percentage;
 	    break;
 	case SpriteMovement::CIRCLE:{
-	    float angle_deg = movement->circleStartAngle() + percentage * movement->circleDegrees();
-	    
+	    float angle_deg = 0.0f;
+	    if(clockwise)
+		angle_deg = movement->circleStartAngle() + (percentage) * movement->circleDegrees();
+	    else angle_deg = movement->circleStartAngle() - (percentage) * movement->circleDegrees();
 	    float radius = movement->circleRadius();
 	    float angle = (CL_PI/180.0f) * angle_deg;
 	    CL_Pointf cpoint(cos(angle),sin(angle));
