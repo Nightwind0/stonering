@@ -1,12 +1,14 @@
 <!--DOCTYPE animations SYSTEM "Levels/level.dtd"-->
 <animations>
-    <animation name="attack" type="battle">
+    <animation name="move_to_attack" type="battle">
       <phase parallel="false" duration="300">
 	<spriteAnimation name="move_to_attack">
 	  <battleSprite who="caster" which="idle"/>
 	  <spriteMovement initialFocus="locus" movementStyle="xonly" movementDirection="towards" distance="64"/>
 	</spriteAnimation>
       </phase>
+    </animation>
+    <animation name="attack" type="battle">
       <phase parallel="true" duration="300">
 	<spriteAnimation name="attack">
 	  <battleSprite who="caster" which="attack"/>

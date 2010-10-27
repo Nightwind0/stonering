@@ -208,8 +208,8 @@ namespace StoneRing{
         SteelType finishTurn();
         // if they back out and want to go back to the battle menu
         SteelType cancelOption();
-        SteelType doTargetedAnimation(SteelType::Handle pIActor,  SteelType::Handle pITarget, const std::string& animation);
-		SteelType doCharacterAnimation(SteelType::Handle pIActor, const std::string& animation);
+        SteelType doTargetedAnimation(SteelType::Handle pIActor,  SteelType::Handle pITarget, SteelType::Handle hAnim);
+	SteelType doCharacterAnimation(SteelType::Handle pIActor, SteelType::Handle hAnim);
         SteelType createDisplay(int damage,SteelType::Handle pICharacter,int display_type);
         // returns monster group or party as array of character handles
         SteelType getCharacterGroup(bool monsters);

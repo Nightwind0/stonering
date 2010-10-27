@@ -581,6 +581,23 @@ SteelType Application::getWeaponTypeDamageCategory(SteelType::Handle hWeaponType
     return val;
 }
 
+SteelType Application::getWeaponTypeAnimation(SteelType::Handle hWeaponType)
+{
+    SteelType val;
+    val.set ( static_cast<WeaponType*>(hWeaponType)->GetAnimation() );
+
+    return val;
+}
+
+SteelType Application::weaponTypeHasAnimation(SteelType::Handle hWeaponType)
+{
+    SteelType val;
+    val.set ( static_cast<WeaponType*>(hWeaponType)->GetAnimation() != NULL );
+
+    return val;
+}
+
+
 SteelType Application::getDamageCategoryResistance(SteelType::Handle hICharacter, int damage_category)
 {
     SteelType val;
@@ -611,6 +628,19 @@ SteelType Application::getUnarmedHitSound(SteelType::Handle hICharacter)
 SteelType Application::getUnarmedMissSound(SteelType::Handle hICharacter)
 {
     return SteelType();
+}
+
+SteelType Application::getAnimation(const std::string& name)
+{
+    SteelType val;
+    
+    Animation * pAnim = GetAbilityManager()->GetAnimation(name);
+    
+    if(pAnim == NULL) throw CL_Exception("Animation: " + name + " was missing.");
+    
+    val.set ( pAnim );
+    
+    return val;
 }
 
 
@@ -932,6 +962,8 @@ void Application::registerSteelFunctions()
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getWeaponType(this,&Application::getWeaponType);
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getArmorType(this,&Application::getArmorType);
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getWeaponTypeDamageCategory(this,&Application::getWeaponTypeDamageCategory);
+    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getWeaponTypeAnimation(this,&Application::getWeaponTypeAnimation);
+    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_weaponTypeHasAnimation(this,&Application::weaponTypeHasAnimation);
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getWeaponScriptMode(this,&Application::getWeaponScriptMode);
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_invokeEquipment(this,&Application::invokeEquipment);
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_attackCharacter(this,&Application::attackCharacter);
@@ -941,6 +973,8 @@ void Application::registerSteelFunctions()
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getMissSound(this,&Application::getMissSound);
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getUnarmedHitSound(this,&Application::getUnarmedHitSound);
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getUnarmedMissSound(this,&Application::getUnarmedMissSound);
+    
+    static SteelFunctor1Arg<Application,const std::string&> fn_getAnimation(this,&Application::getAnimation);
 
 
 
@@ -1052,12 +1086,16 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction("getWeaponType",&fn_getWeaponType);
     mInterpreter.addFunction("getArmorType",&fn_getArmorType);
     mInterpreter.addFunction("getWeaponTypeDamageCategory",&fn_getWeaponTypeDamageCategory);
+    mInterpreter.addFunction("getWeaponTypeAnimation",&fn_getWeaponTypeAnimation);
+    mInterpreter.addFunction("weaponTypeHasAnimation",&fn_weaponTypeHasAnimation);
     mInterpreter.addFunction("getDamageCategoryResistance",&fn_getDamageCategoryResistance);
     mInterpreter.addFunction("invokeEquipment",&fn_invokeEquipment);
     mInterpreter.addFunction("getHitSound",&fn_getHitSound);
     mInterpreter.addFunction("getMissSound",&fn_getMissSound);
     mInterpreter.addFunction("getUnarmedHitSound",&fn_getUnarmedHitSound);
     mInterpreter.addFunction("getUnarmedMissSound",&fn_getUnarmedMissSound);
+    
+    mInterpreter.addFunction("getAnimation",&fn_getAnimation);
 
 
 //        SteelType hasGeneratedWeapon(const std::string &wepclass, const std::string &webtype);
