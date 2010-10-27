@@ -114,6 +114,8 @@ namespace StoneRing
         SteelType getWeaponType(SteelType::Handle hWeapon);
         SteelType getArmorType(SteelType::Handle hArmor);
         SteelType getWeaponTypeDamageCategory(SteelType::Handle hWeaponType);
+	SteelType getWeaponTypeAnimation(SteelType::Handle hWeaponType);
+	SteelType weaponTypeHasAnimation(SteelType::Handle hWeaponType);
         SteelType getDamageCategoryResistance(SteelType::Handle hICharacter, int damage_category);
         SteelType getWeaponScriptMode(SteelType::Handle hWeaponType);
 
@@ -124,6 +126,8 @@ namespace StoneRing
         SteelType getMissSound(SteelType::Handle hWeaponType);
         SteelType getUnarmedHitSound(SteelType::Handle hICharacter);
         SteelType getUnarmedMissSound(SteelType::Handle hICharacter);
+	
+	SteelType getAnimation(const std::string& name);
 
 
 

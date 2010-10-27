@@ -3,10 +3,11 @@
 #include "DamageCategory.h"
 #include "GraphicsManager.h"
 #include "ClanLib/core.h"
+#include "Animation.h"
 
 using namespace StoneRing;
 
-WeaponType::WeaponType()
+WeaponType::WeaponType():m_pAnimation(NULL)
 {
 }
 
@@ -43,9 +44,12 @@ bool WeaponType::handle_element(eElement element, Element * pElement)
     switch(element)
     {
     case EICONREF:
-
         m_icon_ref = dynamic_cast<IconRef*>(pElement)->GetIcon();
         break;
+    case EANIMATION:
+	m_pAnimation = dynamic_cast<Animation*>(pElement);
+	break;
+	
     default:
         return false;
     }
@@ -102,6 +106,11 @@ bool WeaponType::IsRanged() const
 bool WeaponType::IsTwoHanded() const
 {
     return m_bTwoHanded;
+}
+
+Animation* WeaponType::GetAnimation() const 
+{
+    return m_pAnimation;
 }
 
 

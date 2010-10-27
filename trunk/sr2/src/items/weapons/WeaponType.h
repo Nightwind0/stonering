@@ -10,6 +10,8 @@
 class CL_Sprite;
 
 namespace StoneRing{
+    
+    class Animation;
     class WeaponType : public Element
     {
     public:
@@ -29,6 +31,7 @@ namespace StoneRing{
         uint GetBasePrice() const;
         bool IsRanged() const;
         bool IsTwoHanded() const;
+	Animation* GetAnimation() const;
 
         eDamageCategory GetDamageCategory () const { return m_damageCategory; }
 
@@ -48,6 +51,7 @@ namespace StoneRing{
         float m_fBaseCritical;
         bool m_bRanged;
         bool m_bTwoHanded;
+	Animation* m_pAnimation;
 
     };
 };

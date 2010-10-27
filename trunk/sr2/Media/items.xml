@@ -1,335 +1,348 @@
 
-<items>
-	<weaponClasses>
-		<weaponClass name="Sublime" valueMultiplier="6.75">
-			<attributeModifier attribute="hp_max" type="multiply" value="1.2"/>
-			<weaponEnhancer attribute="ATK" multiplier="5"/>
-			<weaponEnhancer attribute="Critical%" add="0.10"/>
-		</weaponClass>
-		<weaponClass name="Quaoar" valueMultiplier="10">
-			<weaponEnhancer attribute="ATK" multiplier="7"/>
-			<weaponEnhancer attribute="HIT" add="0.03"/>
-			<weaponEnhancer attribute="Critical%" add="0.15"/>
-		</weaponClass>
-		<weaponClass name="Europa" valueMultiplier="7.35">
-			<attributeModifier attribute="hp_max" type="multiply" value="1.1"/>
-			<weaponEnhancer attribute="ATK" multiplier ="6"/>
-		</weaponClass>
-		<weaponClass name="Atropos" valueMultiplier="8">
-			<weaponEnhancer attribute="ATK" multiplier="6.5"/>
-			<weaponEnhancer attribute="Critical%" add="0.10"/>
-		</weaponClass>
-		<weaponClass name="Nemesis" valueMultiplier="9">
-			<weaponEnhancer attribute="ATK" multiplier="6.5"/>
-			<weaponEnhancer attribute="Critical%" add="0.3"/>
-		</weaponClass>
-		<weaponClass name="Fine" valueMultiplier="2.5">
-			<weaponEnhancer attribute="ATK" multiplier="2"/>
-		</weaponClass>
-		<weaponClass name="Dark" valueMultiplier="3.75">
-			<weaponEnhancer attribute="ATK" multiplier="3"/>
-		</weaponClass>
-		<weaponClass name="Noble" valueMultiplier="3">
-			<weaponEnhancer attribute="ATK" multiplier="2.5"/>
-		</weaponClass>
-		<weaponClass name="Sterling" valueMultiplier="5.25">
-			<weaponEnhancer attribute="ATK" multiplier="4.5"/>
-		</weaponClass>
-		<weaponClass name="Sturdy" valueMultiplier="5.75">
-			<attributeModifier attribute="hp_max" type="multiply" value="1.05"/>
-			<weaponEnhancer attribute="ATK" multiplier="4.5"/>
-		</weaponClass>
-		<weaponClass name="Giant's" valueMultiplier="5.25">
-			<attributeModifier attribute="hp_max" type="multiply" value="1.15"/>
-			<weaponEnhancer attribute="ATK" multiplier="4"/>
-		</weaponClass>
-		<weaponClass name="Bear's" valueMultiplier="4">
-			<attributeModifier attribute="hp_max" type="multiply" value="1.15"/>
-			<weaponEnhancer attribute="ATK" multiplier="3"/>
-		</weaponClass>
-		<weaponClass name="Wolf's" valueMultiplier="2.75">
-			<attributeModifier attribute="hp_max" type="multiply" value="1.15"/>
-			<weaponEnhancer attribute="ATK" multiplier="2"/>
-		</weaponClass>
-		<weaponClass name="Dragon" valueMultiplier="9">
-			<attributeModifier attribute="hp_max" type="multiply" value="1.20"/>
-			<weaponEnhancer attribute="ATK" multiplier="7"/>
-		</weaponClass>
-		<weaponClass name="Black" valueMultiplier="12">
-			<attributeModifier attribute="hp_max" type="multiply" value="1.1"/>
-			<weaponEnhancer attribute="ATK" multiplier="8"/>
-			<weaponEnhancer attribute="HIT" add="0.02"/>
-		</weaponClass>
-		<weaponClass name="Wondrous" valueMultiplier="6.2">
-			<attributeModifier attribute="hp_max" type="multiply"  value="1.1"/>
-			<weaponEnhancer attribute="ATK" multiplier="5"/>
-			<weaponEnhancer attribute="HIT" add="0.03"/>
-		</weaponClass>
-		<weaponClass name="King" valueMultiplier="5">
-			<weaponEnhancer attribute="ATK" multiplier="4"/>
-			<weaponEnhancer attribute="HIT" add="0.015" />
-		</weaponClass>
-		<weaponClass name="Royal" valueMultiplier="5">
-			<weaponEnhancer attribute="ATK" multiplier="4"/>
-			<weaponEnhancer attribute="Critical%" add="0.015" />
-		</weaponClass>
-		<weaponClass name="Knight" valueMultiplier="1.75">
-			<weaponEnhancer attribute="ATK" multiplier="1.5"/>
-		</weaponClass>
-		<weaponClass name="Poor" valueMultiplier="0.75">
-			<weaponEnhancer multiplier="0.5" attribute="ATK" />
-		</weaponClass>
-		<weaponClass name="Iron" valueMultiplier="1">
-		</weaponClass>
-		<weaponClass name="Masterwork" valueMultiplier="1.8" >
-			<weaponEnhancer add="0.020" attribute="HIT"/>
-		</weaponClass>
-		<weaponClass name="Steel" valueMultiplier="1.4">
-			<weaponEnhancer multiplier="1.3" attribute="ATK"/>
-		</weaponClass>
-		<weaponClass name="Shoddy" valueMultiplier="0.3">
-			<weaponEnhancer multiplier="0.3" attribute="ATK"/>
-		</weaponClass>
-		<weaponClass name="Adamantine" valueMultiplier="4">
-			<weaponEnhancer multiplier="3.5" attribute="ATK"/>
-		</weaponClass>
-		<weaponClass name="Mithral" valueMultiplier="4.75">
-			<weaponEnhancer multiplier="3.5" attribute="ATK"/>
-			<weaponEnhancer add="0.010" attribute="HIT"/>
-		</weaponClass>
-		<weaponClass name="War" valueMultiplier="5">
-			<weaponEnhancer multiplier="3.75" attribute="ATK"/>
-			<weaponEnhancer add="0.020" attribute="HIT"/>
-		</weaponClass>
-		<weaponClass name="Poison" valueMultiplier="1.5" valueAdd="5000">
-			<statusEffectModifier statusRef="Poison" modifier="0.33"/>
-		</weaponClass>
-		<weaponClass name="Deadly" valueMultiplier="2.2" valueAdd="7000">
-			<weaponEnhancer multiplier="2" attribute="ATK"/>
-
-		</weaponClass>
-		<weaponClass name="Medusa" valueMultiplier="4" valueAdd="12000">
-			<weaponEnhancer attribute="ATK" multiplier="2"/>
-			<statusEffectModifier statusRef="Stone" modifier="0.30"/>
-		</weaponClass>
-		<weaponClass name="Erebus" valueMultiplier="4" valueAdd="1000">
-			<weaponEnhancer attribute="ATK" multiplier="3"/>
-			<weaponEnhancer attribute="Critical%" add = "0.10"/>
-		</weaponClass>
-	</weaponClasses>
-	<weaponTypes>
-		<weaponType basePrice="100" name="Sword" baseAttack="10" hitAdd="0.01" damageCategory="slash">
-			<iconRef>Weapons/sword</iconRef>
-		</weaponType>
-		<weaponType basePrice="375" name="Broadsword" baseAttack="35" hitAdd="0.01" damageCategory="slash" >
-			<iconRef>Weapons/broadsword</iconRef>
-		</weaponType>
-		<weaponType basePrice="1200" name="Greatsword" baseAttack="100" hitAdd="0.03" twoHanded="true" damageCategory="slash">
-			<iconRef>Weapons/greatsword</iconRef>
-		</weaponType>
-		<weaponType basePrice="75" name="Gladius" baseAttack="7" hitAdd="0" baseCritical="0.07" damageCategory="slash">
-			<iconRef>Weapons/gladius</iconRef>
-		</weaponType>
-		<weaponType basePrice="50" name="Dagger" baseAttack="5" hitAdd="-0.03"  damageCategory="slash">
-			<iconRef>Weapons/dagger</iconRef>
-		</weaponType>
-		<weaponType basePrice="250" name="Longsword" baseAttack="20" hitAdd = "-0.03"  damageCategory="slash">
-			<iconRef>Weapons/longsword</iconRef>
-		</weaponType>
-		<weaponType basePrice="20" name="Knife" baseAttack="3" hitAdd = "0"  damageCategory="slash">
-			<iconRef>Weapons/knife</iconRef>
-		</weaponType>
-		<weaponType basePrice="100" name="Axe" baseAttack = "15" hitAdd="-0.05"  damageCategory="slash">
-			<iconRef>Weapons/axe</iconRef>
-		</weaponType>
-		<weaponType basePrice="1250" name="Great Axe" baseAttack = "120" hitAdd="-0.05" twoHanded = "true" damageCategory="slash">
-			<iconRef>Weapons/greataxe</iconRef>
-		</weaponType>
-		<weaponType basePrice="250" name="Poleaxe" baseAttack = "25" hitAdd = "-0.06" baseCritical="0.10" damageCategory="slash">
-			<iconRef>Weapons/poleaxe</iconRef>
-		</weaponType>
-		<weaponType basePrice="75" name="Mace" baseAttack = "10" hitAdd="-0.03" baseCritical = "0.03" damageCategory="bash">
-			<iconRef>Weapons/mace</iconRef>
-		</weaponType>
-		<weaponType basePrice="250" name="Flail" baseAttack = "20" hitAdd = "0.01" baseCritical = "0.03" damageCategory="bash">
-			<iconRef>Weapons/flail</iconRef>
-		</weaponType>
-		<weaponType basePrice="1200" name="Morning Star" baseAttack = "100" hitAdd = "0.04" baseCritical = "0.03" twoHanded="true" damageCategory="bash">
-			<iconRef>Weapons/morning_star</iconRef>
-		</weaponType>
-
-
-		<weaponType basePrice="400" name="Halberd" baseAttack="35" hitAdd = "-0.03" damageCategory="slash" >
-			<iconRef>Weapons/halberd</iconRef>
-		</weaponType>
-		<weaponType basePrice="205" name="Scimitar" baseAttack="15" hitAdd="0"  damageCategory="slash">
-			<iconRef>Weapons/scimitar</iconRef>
-		</weaponType>
-		<weaponType baseAttack="10" hitAdd="-0.04" basePrice="100" name="Bow" ranged="true" baseCritical = "0.03" damageCategory="jab">
-			<iconRef>Weapons/bow</iconRef>
-		</weaponType>
-		<weaponType baseAttack="10" hitAdd="0" basePrice="300" name="Precise Bow" ranged="true"  damageCategory="jab">
-			<iconRef>Weapons/precisebow</iconRef>
-		</weaponType>
-		<weaponType baseAttack="15" hitAdd="-0.04" basePrice="200" name="Long Bow" ranged="true" baseCritical = "0.03" damageCategory="jab">
-			<iconRef>Weapons/longbow</iconRef>
-		</weaponType>
-		<weaponType baseAttack="50" hitAdd="-0.03" basePrice="600" name="Great Bow" ranged="true"  damageCategory="jab">
-			<iconRef>Weapons/greatbow</iconRef>
-		</weaponType>
-		<weaponType baseAttack="100" hitAdd="0" basePrice="1200" name="Master Bow" ranged="true"  damageCategory="jab">
-			<iconRef>Weapons/masterbow</iconRef>
-		</weaponType>
-		<weaponType baseAttack="3" hitAdd="-0.03" basePrice="35" name="Rod" damageCategory="bash"  >
-			<iconRef>Weapons/rod</iconRef>
-		</weaponType>
-	</weaponTypes>
-	<armorClasses>
-		<armorClass name="Wooden" valueMultiplier="0.5">
-			<armorEnhancer multiplier="0.5" attribute="AC"/>
-			<armorEnhancer multiplier="0.5" attribute="RST"/>
-			<armorTypeExclusionList>
-                <armorTypeRef name="Robe"/>
-                <armorTypeRef name="Boots"/>
-                <armorTypeRef name="Vest"/>
-			</armorTypeExclusionList>
-		</armorClass>
-		<armorClass name="Old" valueMultiplier = "0.75">
-			<armorEnhancer multiplier="0.75" attribute="AC"/>
-			<armorEnhancer multiplier="0.75" attribute="RST"/>
-		</armorClass>
-		<armorClass name="Fine" valueMultiplier = "2">
-			<armorEnhancer multiplier="2" attribute="AC"/>
-		</armorClass>
-		<armorClass name="Pristine" valueMultiplier = "2.75">
-			<armorEnhancer multiplier="2" attribute="AC"/>
-			<armorEnhancer multiplier="1.5" attribute="RST"/>
-		</armorClass>
-		<armorClass name="Aegis" valueMultiplier = "3">
-			<armorEnhancer multiplier="3" attribute="AC"/>
-			<armorEnhancer multiplier="1.5" attribute="RST"/>
-		</armorClass>
-		<armorClass name="Noble" valueMultiplier = "4.5">
-			<armorEnhancer multiplier="4" attribute="AC"/>
-		</armorClass>
-		<armorClass name="Iron" valueMultiplier = "1">
-			<armorTypeExclusionList>
-                <armorTypeRef name="Robe"/>
-                <armorTypeRef name="Vest"/>
-			</armorTypeExclusionList>
-		</armorClass>
-		<armorClass name="Steel" valueMultiplier="1.5">
-			<armorEnhancer multiplier="1.5" attribute="AC"/>
-			<armorTypeExclusionList>
-                <armorTypeRef name="Robe"/>
-                <armorTypeRef name="Vest"/>
-			</armorTypeExclusionList>
-		</armorClass>
-		<armorClass name="Mage's" valueMultiplier = "2.5">
-			<attributeModifier attribute="mag" type="multiply" value="1.20"/>
-			<armorEnhancer multiplier="1.5" attribute="RST"/>
-		</armorClass>
-		<armorClass name="Enchanted" valueMultiplier = "2.5">
-			<attributeModifier attribute="mag" type="multiply" value="1.5"/>
-		</armorClass>
-		<armorClass name="Shimmering" valueMultiplier = "4">
-			<attributeModifier attribute="evd" type="multiply" value="1.5"/>
-			<armorEnhancer multiplier="2" attribute="AC"/>
-			<armorEnhancer multiplier="1.5" attribute="RST"/>
-		</armorClass>
-		<armorClass name="Divine" valueMultiplier = "4.5">
-			<armorEnhancer multiplier="3" attribute="AC"/>
-			<armorEnhancer multiplier="3" attribute="RST"/>
-		</armorClass>
-	</armorClasses>
-	<armorTypes>
-		<armorType baseArmorClass="20" baseResist="10" basePrice="300" name="Shield" slot="shield">
-			<iconRef>Armor/shield</iconRef>
-		</armorType>
-		<armorType baseArmorClass="15" baseResist="10" basePrice="150" name="Vest" slot="body">
-			<iconRef>Armor/vest</iconRef>
-		</armorType>
-		<armorType baseArmorClass="35" baseResist="15" basePrice="400" name="Plate" slot="body">
-			<iconRef>Armor/plate</iconRef>
-		</armorType>
-		<armorType baseArmorClass="5" baseResist="20" basePrice="100" name="Robe" slot="body">
-			<iconRef>Armor/robe</iconRef>
-		</armorType>
-		<armorType baseArmorClass="10" baseResist="10" basePrice="200" name="Buckler" slot="shield">
-			<iconRef>Armor/buckler</iconRef>
-		</armorType>
-		<armorType baseArmorClass="5" baseResist="5" basePrice="200" name="Boots" slot="feet">
-			<iconRef>Armor/boot</iconRef>
-		</armorType>
-		<armorType baseArmorClass="10" baseResist="50" basePrice="250" name="Hat" slot="head">
-			<iconRef>Armor/hat</iconRef>
-		</armorType>
-	</armorTypes>
-
-
-	<itemList>
-		<namedItem name="Ice Dragon Shield" dropRarity="rare">
-			<iconRef>Armor/poisonshield</iconRef>
-			<uniqueArmor valueMultiplier = "2.75">
-                <armorTypeRef name="Shield"/>
-				<armorEnhancer add="5" attribute="AC"/>
-				<statusEffectModifier statusRef="Poison" modifier="0.20"/>
-				<armorEnhancer multiplier="1.5" attribute="RST"/>
-				<attributeModifier type="add" value="40" attribute="hp_max"/>
-                <spellRef type="elemental" name="Ice"/>
-			</uniqueArmor>
-		</namedItem>
-        <namedItem name="Kid Shield" dropRarity="rare">
-			<iconRef>Armor/poisonshield</iconRef>
-			<uniqueArmor valueMultiplier = "0.25">
-                <armorTypeRef name="Shield"/>
-				<armorEnhancer multiplier="0.2" attribute="AC"/>
-			</uniqueArmor>
-		</namedItem>
-		<namedItem name = "Warrior Sword" dropRarity="rare">
-			<iconRef>Weapon/poisonsword</iconRef>
-			<uniqueWeapon valueMultiplier="4.5">
-                <weaponTypeRef name="Sword"/>
-				<weaponEnhancer multiplier="3" attribute="ATK"/>
-				<attributeModifier type="add" value="5" attribute="str"/>
-				<attributeModifier type="multiply" value="1.1" attribute="hp_max"/>
-			</uniqueWeapon>
-		</namedItem>
-        <namedItem name = "Kid Sword" dropRarity="rare">
-			<iconRef>Weapon/poisonsword</iconRef>
-			<uniqueWeapon valueMultiplier="0.25">
-                <weaponTypeRef name="Sword"/>
-				<weaponEnhancer multiplier="0.5" attribute="ATK"/>
-			</uniqueWeapon>
-		</namedItem>
-		<namedItem name = "Mage's Rod" dropRarity="rare">
-			<iconRef>Weapon/magerod</iconRef>
-			<uniqueWeapon valueMultiplier="100">
-                <weaponTypeRef name="Rod"/>
-				<weaponEnhancer multiplier="3" attribute="ATK"/>
-				<attributeModifier type="multiply" value="1.25" attribute="mag"/>
-			</uniqueWeapon>
-		</namedItem>
-		<namedItem name = "Wizard's Rod" dropRarity="rare">
-			<iconRef>Weapon/magerod</iconRef>
-			<uniqueWeapon valueMultiplier="300">
-                <weaponTypeRef name="Rod"/>
-				<weaponEnhancer multiplier="10" attribute="ATK"/>
-				<attributeModifier type="multiply" value="1.50" attribute="mag"/>
-			</uniqueWeapon>
-		</namedItem>
-		<namedItem name="Moon Seed" dropRarity="common">
-			<iconRef>Items/moonseed</iconRef>
-			<regularItem value = "50" reusable="false" targetable="single" use="both"  defaultTarget="party">
-				<script id="Moonseed">
-					modifyAttribute("MP",25, getTargetCharacter());
-				</script>
-			</regularItem>
-		</namedItem>
-		<namedItem name="Octavia Key" dropRarity="never">
-			<iconRef></iconRef>
-			<specialItem/>
-		</namedItem>
-	</itemList>
-
-</items>
+   <items>
+       <weaponClasses>
+	   <weaponClass name="Sublime" valueMultiplier="6.75">
+	       <attributeModifier attribute="hp_max" type="multiply" value="1.2"/>
+	       <weaponEnhancer attribute="ATK" multiplier="5"/>
+	       <weaponEnhancer attribute="Critical%" add="0.10"/>
+	   </weaponClass>
+	   <weaponClass name="Quaoar" valueMultiplier="10">
+	       <weaponEnhancer attribute="ATK" multiplier="7"/>
+	       <weaponEnhancer attribute="HIT" add="0.03"/>
+	       <weaponEnhancer attribute="Critical%" add="0.15"/>
+	   </weaponClass>
+	   <weaponClass name="Europa" valueMultiplier="7.35">
+	       <attributeModifier attribute="hp_max" type="multiply" value="1.1"/>
+	       <weaponEnhancer attribute="ATK" multiplier ="6"/>
+	   </weaponClass>
+	   <weaponClass name="Atropos" valueMultiplier="8">
+	       <weaponEnhancer attribute="ATK" multiplier="6.5"/>
+	       <weaponEnhancer attribute="Critical%" add="0.10"/>
+	   </weaponClass>
+	   <weaponClass name="Nemesis" valueMultiplier="9">
+	       <weaponEnhancer attribute="ATK" multiplier="6.5"/>
+	       <weaponEnhancer attribute="Critical%" add="0.3"/>
+	   </weaponClass>
+	   <weaponClass name="Fine" valueMultiplier="2.5">
+	       <weaponEnhancer attribute="ATK" multiplier="2"/>
+	   </weaponClass>
+	   <weaponClass name="Dark" valueMultiplier="3.75">
+	       <weaponEnhancer attribute="ATK" multiplier="3"/>
+	   </weaponClass>
+	   <weaponClass name="Noble" valueMultiplier="3">
+	       <weaponEnhancer attribute="ATK" multiplier="2.5"/>
+	   </weaponClass>
+	   <weaponClass name="Sterling" valueMultiplier="5.25">
+	       <weaponEnhancer attribute="ATK" multiplier="4.5"/>
+	   </weaponClass>
+	   <weaponClass name="Sturdy" valueMultiplier="5.75">
+	       <attributeModifier attribute="hp_max" type="multiply" value="1.05"/>
+	       <weaponEnhancer attribute="ATK" multiplier="4.5"/>
+	   </weaponClass>
+	   <weaponClass name="Giant's" valueMultiplier="5.25">
+	       <attributeModifier attribute="hp_max" type="multiply" value="1.15"/>
+	       <weaponEnhancer attribute="ATK" multiplier="4"/>
+	   </weaponClass>
+	   <weaponClass name="Bear's" valueMultiplier="4">
+	       <attributeModifier attribute="hp_max" type="multiply" value="1.15"/>
+	       <weaponEnhancer attribute="ATK" multiplier="3"/>
+	   </weaponClass>
+	   <weaponClass name="Wolf's" valueMultiplier="2.75">
+	       <attributeModifier attribute="hp_max" type="multiply" value="1.15"/>
+	       <weaponEnhancer attribute="ATK" multiplier="2"/>
+	   </weaponClass>
+	   <weaponClass name="Dragon" valueMultiplier="9">
+	       <attributeModifier attribute="hp_max" type="multiply" value="1.20"/>
+	       <weaponEnhancer attribute="ATK" multiplier="7"/>
+	   </weaponClass>
+	   <weaponClass name="Black" valueMultiplier="12">
+	       <attributeModifier attribute="hp_max" type="multiply" value="1.1"/>
+	       <weaponEnhancer attribute="ATK" multiplier="8"/>
+	       <weaponEnhancer attribute="HIT" add="0.02"/>
+	   </weaponClass>
+	   <weaponClass name="Wondrous" valueMultiplier="6.2">
+	       <attributeModifier attribute="hp_max" type="multiply"  value="1.1"/>
+	       <weaponEnhancer attribute="ATK" multiplier="5"/>
+	       <weaponEnhancer attribute="HIT" add="0.03"/>
+	   </weaponClass>
+	   <weaponClass name="King" valueMultiplier="5">
+	       <weaponEnhancer attribute="ATK" multiplier="4"/>
+	       <weaponEnhancer attribute="HIT" add="0.015" />
+	   </weaponClass>
+	   <weaponClass name="Royal" valueMultiplier="5">
+	       <weaponEnhancer attribute="ATK" multiplier="4"/>
+	       <weaponEnhancer attribute="Critical%" add="0.015" />
+	   </weaponClass>
+	   <weaponClass name="Knight" valueMultiplier="1.75">
+	       <weaponEnhancer attribute="ATK" multiplier="1.5"/>
+	   </weaponClass>
+	   <weaponClass name="Poor" valueMultiplier="0.75">
+	       <weaponEnhancer multiplier="0.5" attribute="ATK" />
+	   </weaponClass>
+	   <weaponClass name="Iron" valueMultiplier="1">
+	   </weaponClass>
+	   <weaponClass name="Masterwork" valueMultiplier="1.8" >
+	       <weaponEnhancer add="0.020" attribute="HIT"/>
+	   </weaponClass>
+	   <weaponClass name="Steel" valueMultiplier="1.4">
+	       <weaponEnhancer multiplier="1.3" attribute="ATK"/>
+	   </weaponClass>
+	   <weaponClass name="Shoddy" valueMultiplier="0.3">
+	       <weaponEnhancer multiplier="0.3" attribute="ATK"/>
+	   </weaponClass>
+	   <weaponClass name="Adamantine" valueMultiplier="4">
+	       <weaponEnhancer multiplier="3.5" attribute="ATK"/>
+	   </weaponClass>
+	   <weaponClass name="Mithral" valueMultiplier="4.75">
+	       <weaponEnhancer multiplier="3.5" attribute="ATK"/>
+	       <weaponEnhancer add="0.010" attribute="HIT"/>
+	   </weaponClass>
+	   <weaponClass name="War" valueMultiplier="5">
+	       <weaponEnhancer multiplier="3.75" attribute="ATK"/>
+	       <weaponEnhancer add="0.020" attribute="HIT"/>
+	   </weaponClass>
+	   <weaponClass name="Poison" valueMultiplier="1.5" valueAdd="5000">
+	       <statusEffectModifier statusRef="Poison" modifier="0.33"/>
+	   </weaponClass>
+	   <weaponClass name="Deadly" valueMultiplier="2.2" valueAdd="7000">
+	       <weaponEnhancer multiplier="2" attribute="ATK"/>
+	       
+	   </weaponClass>
+	   <weaponClass name="Medusa" valueMultiplier="4" valueAdd="12000">
+	       <weaponEnhancer attribute="ATK" multiplier="2"/>
+	       <statusEffectModifier statusRef="Stone" modifier="0.30"/>
+	   </weaponClass>
+	   <weaponClass name="Erebus" valueMultiplier="4" valueAdd="1000">
+	       <weaponEnhancer attribute="ATK" multiplier="3"/>
+	       <weaponEnhancer attribute="Critical%" add = "0.10"/>
+	   </weaponClass>
+       </weaponClasses>
+       <weaponTypes>
+	   <weaponType basePrice="100" name="Sword" baseAttack="10" hitAdd="0.01" damageCategory="slash">
+	       <iconRef>Weapons/sword</iconRef>
+	       <animation name="sword attack" type="battle">
+		   <phase parallel="true" duration="300">
+		       <spriteAnimation name="attack">
+			   <battleSprite who="caster" which="attack"/>
+		       </spriteAnimation>
+		       <spriteAnimation name="attack_swing">
+			   <spriteStub who="caster" which="main"/>
+			   <spriteMovement initialFocus="locus" endFocus="locus" movementStyle="circle" circleStartAngle="270" rotation="90" circleDegrees="90" circleRadius="196" circleDirection="towards"/>
+			   <!--spriteMovement initialFocus="target" endFocus="target" movementStyle="circle" circleStartAngle="180" rotation="720" circleDegrees="720" circleGrowth="-300" circleRadius="300" circleDirection="towards"/-->
+			   </spriteAnimation>
+		       </phase>
+		 </animation>
+	       </weaponType>
+	       <weaponType basePrice="375" name="Broadsword" baseAttack="35" hitAdd="0.01" damageCategory="slash" >
+		   <iconRef>Weapons/broadsword</iconRef>
+	       </weaponType>
+	       <weaponType basePrice="1200" name="Greatsword" baseAttack="100" hitAdd="0.03" twoHanded="true" damageCategory="slash">
+		   <iconRef>Weapons/greatsword</iconRef>
+	       </weaponType>
+	       <weaponType basePrice="75" name="Gladius" baseAttack="7" hitAdd="0" baseCritical="0.07" damageCategory="slash">
+		   <iconRef>Weapons/gladius</iconRef>
+	       </weaponType>
+	       <weaponType basePrice="50" name="Dagger" baseAttack="5" hitAdd="-0.03"  damageCategory="slash">
+		   <iconRef>Weapons/dagger</iconRef>
+	       </weaponType>
+	       <weaponType basePrice="250" name="Longsword" baseAttack="20" hitAdd = "-0.03"  damageCategory="slash">
+		   <iconRef>Weapons/longsword</iconRef>
+	       </weaponType>
+	       <weaponType basePrice="20" name="Knife" baseAttack="3" hitAdd = "0"  damageCategory="slash">
+		   <iconRef>Weapons/knife</iconRef>
+	       </weaponType>
+	       <weaponType basePrice="100" name="Axe" baseAttack = "15" hitAdd="-0.05"  damageCategory="slash">
+		   <iconRef>Weapons/axe</iconRef>
+	       </weaponType>
+	       <weaponType basePrice="1250" name="Great Axe" baseAttack = "120" hitAdd="-0.05" twoHanded = "true" damageCategory="slash">
+		   <iconRef>Weapons/greataxe</iconRef>
+	       </weaponType>
+	       <weaponType basePrice="250" name="Poleaxe" baseAttack = "25" hitAdd = "-0.06" baseCritical="0.10" damageCategory="slash">
+		   <iconRef>Weapons/poleaxe</iconRef>
+	       </weaponType>
+	       <weaponType basePrice="75" name="Mace" baseAttack = "10" hitAdd="-0.03" baseCritical = "0.03" damageCategory="bash">
+		   <iconRef>Weapons/mace</iconRef>
+	       </weaponType>
+	       <weaponType basePrice="250" name="Flail" baseAttack = "20" hitAdd = "0.01" baseCritical = "0.03" damageCategory="bash">
+		   <iconRef>Weapons/flail</iconRef>
+	       </weaponType>
+	       <weaponType basePrice="1200" name="Morning Star" baseAttack = "100" hitAdd = "0.04" baseCritical = "0.03" twoHanded="true" damageCategory="bash">
+		   <iconRef>Weapons/morning_star</iconRef>
+	       </weaponType>
+	       
+	       
+	       <weaponType basePrice="400" name="Halberd" baseAttack="35" hitAdd = "-0.03" damageCategory="slash" >
+		   <iconRef>Weapons/halberd</iconRef>
+	       </weaponType>
+	       <weaponType basePrice="205" name="Scimitar" baseAttack="15" hitAdd="0"  damageCategory="slash">
+		   <iconRef>Weapons/scimitar</iconRef>
+	       </weaponType>
+	       <weaponType baseAttack="10" hitAdd="-0.04" basePrice="100" name="Bow" ranged="true" baseCritical = "0.03" damageCategory="jab">
+		   <iconRef>Weapons/bow</iconRef>
+	       </weaponType>
+	       <weaponType baseAttack="10" hitAdd="0" basePrice="300" name="Precise Bow" ranged="true"  damageCategory="jab">
+		   <iconRef>Weapons/precisebow</iconRef>
+	       </weaponType>
+	       <weaponType baseAttack="15" hitAdd="-0.04" basePrice="200" name="Long Bow" ranged="true" baseCritical = "0.03" damageCategory="jab">
+		   <iconRef>Weapons/longbow</iconRef>
+	       </weaponType>
+	       <weaponType baseAttack="50" hitAdd="-0.03" basePrice="600" name="Great Bow" ranged="true"  damageCategory="jab">
+		   <iconRef>Weapons/greatbow</iconRef>
+	       </weaponType>
+	       <weaponType baseAttack="100" hitAdd="0" basePrice="1200" name="Master Bow" ranged="true"  damageCategory="jab">
+		   <iconRef>Weapons/masterbow</iconRef>
+	       </weaponType>
+	       <weaponType baseAttack="3" hitAdd="-0.03" basePrice="35" name="Rod" damageCategory="bash"  >
+		   <iconRef>Weapons/rod</iconRef>
+	       </weaponType>
+	   </weaponTypes>
+	   <armorClasses>
+	       <armorClass name="Wooden" valueMultiplier="0.5">
+		   <armorEnhancer multiplier="0.5" attribute="AC"/>
+		   <armorEnhancer multiplier="0.5" attribute="RST"/>
+		   <armorTypeExclusionList>
+		       <armorTypeRef name="Robe"/>
+		       <armorTypeRef name="Boots"/>
+		       <armorTypeRef name="Vest"/>
+		   </armorTypeExclusionList>
+	       </armorClass>
+	       <armorClass name="Old" valueMultiplier = "0.75">
+		   <armorEnhancer multiplier="0.75" attribute="AC"/>
+		   <armorEnhancer multiplier="0.75" attribute="RST"/>
+	       </armorClass>
+	       <armorClass name="Fine" valueMultiplier = "2">
+		   <armorEnhancer multiplier="2" attribute="AC"/>
+	       </armorClass>
+	       <armorClass name="Pristine" valueMultiplier = "2.75">
+		   <armorEnhancer multiplier="2" attribute="AC"/>
+		   <armorEnhancer multiplier="1.5" attribute="RST"/>
+	       </armorClass>
+	       <armorClass name="Aegis" valueMultiplier = "3">
+		   <armorEnhancer multiplier="3" attribute="AC"/>
+		   <armorEnhancer multiplier="1.5" attribute="RST"/>
+	       </armorClass>
+	       <armorClass name="Noble" valueMultiplier = "4.5">
+		   <armorEnhancer multiplier="4" attribute="AC"/>
+	       </armorClass>
+	       <armorClass name="Iron" valueMultiplier = "1">
+		   <armorTypeExclusionList>
+		       <armorTypeRef name="Robe"/>
+		       <armorTypeRef name="Vest"/>
+		   </armorTypeExclusionList>
+	       </armorClass>
+	       <armorClass name="Steel" valueMultiplier="1.5">
+		   <armorEnhancer multiplier="1.5" attribute="AC"/>
+		   <armorTypeExclusionList>
+		       <armorTypeRef name="Robe"/>
+		       <armorTypeRef name="Vest"/>
+		   </armorTypeExclusionList>
+	       </armorClass>
+	       <armorClass name="Mage's" valueMultiplier = "2.5">
+		   <attributeModifier attribute="mag" type="multiply" value="1.20"/>
+		   <armorEnhancer multiplier="1.5" attribute="RST"/>
+	       </armorClass>
+	       <armorClass name="Enchanted" valueMultiplier = "2.5">
+		   <attributeModifier attribute="mag" type="multiply" value="1.5"/>
+	       </armorClass>
+	       <armorClass name="Shimmering" valueMultiplier = "4">
+		   <attributeModifier attribute="evd" type="multiply" value="1.5"/>
+		   <armorEnhancer multiplier="2" attribute="AC"/>
+		   <armorEnhancer multiplier="1.5" attribute="RST"/>
+	       </armorClass>
+	       <armorClass name="Divine" valueMultiplier = "4.5">
+		   <armorEnhancer multiplier="3" attribute="AC"/>
+		   <armorEnhancer multiplier="3" attribute="RST"/>
+	       </armorClass>
+	   </armorClasses>
+	   <armorTypes>
+	       <armorType baseArmorClass="20" baseResist="10" basePrice="300" name="Shield" slot="shield">
+		   <iconRef>Armor/shield</iconRef>
+	       </armorType>
+	       <armorType baseArmorClass="15" baseResist="10" basePrice="150" name="Vest" slot="body">
+		   <iconRef>Armor/vest</iconRef>
+	       </armorType>
+	       <armorType baseArmorClass="35" baseResist="15" basePrice="400" name="Plate" slot="body">
+		   <iconRef>Armor/plate</iconRef>
+	       </armorType>
+	       <armorType baseArmorClass="5" baseResist="20" basePrice="100" name="Robe" slot="body">
+		   <iconRef>Armor/robe</iconRef>
+	       </armorType>
+	       <armorType baseArmorClass="10" baseResist="10" basePrice="200" name="Buckler" slot="shield">
+		   <iconRef>Armor/buckler</iconRef>
+	       </armorType>
+	       <armorType baseArmorClass="5" baseResist="5" basePrice="200" name="Boots" slot="feet">
+		   <iconRef>Armor/boot</iconRef>
+	       </armorType>
+	       <armorType baseArmorClass="10" baseResist="50" basePrice="250" name="Hat" slot="head">
+		   <iconRef>Armor/hat</iconRef>
+	       </armorType>
+	   </armorTypes>
+	   
+	   
+	   <itemList>
+	       <namedItem name="Ice Dragon Shield" dropRarity="rare">
+		   <iconRef>Armor/poisonshield</iconRef>
+		   <uniqueArmor valueMultiplier = "2.75">
+		       <armorTypeRef name="Shield"/>
+		       <armorEnhancer add="5" attribute="AC"/>
+		       <statusEffectModifier statusRef="Poison" modifier="0.20"/>
+		       <armorEnhancer multiplier="1.5" attribute="RST"/>
+		       <attributeModifier type="add" value="40" attribute="hp_max"/>
+		       <spellRef type="elemental" name="Ice"/>
+		   </uniqueArmor>
+	       </namedItem>
+	       <namedItem name="Kid Shield" dropRarity="rare">
+		   <iconRef>Armor/poisonshield</iconRef>
+		   <uniqueArmor valueMultiplier = "0.25">
+		       <armorTypeRef name="Shield"/>
+		       <armorEnhancer multiplier="0.2" attribute="AC"/>
+		   </uniqueArmor>
+	       </namedItem>
+	       <namedItem name = "Warrior Sword" dropRarity="rare">
+		   <iconRef>Weapon/poisonsword</iconRef>
+		   <uniqueWeapon valueMultiplier="4.5">
+		       <weaponTypeRef name="Sword"/>
+		       <weaponEnhancer multiplier="3" attribute="ATK"/>
+		       <attributeModifier type="add" value="5" attribute="str"/>
+		       <attributeModifier type="multiply" value="1.1" attribute="hp_max"/>
+		   </uniqueWeapon>
+	       </namedItem>
+	       <namedItem name = "Kid Sword" dropRarity="rare">
+		   <iconRef>Weapon/poisonsword</iconRef>
+		   <uniqueWeapon valueMultiplier="0.25">
+		       <weaponTypeRef name="Sword"/>
+		       <weaponEnhancer multiplier="0.5" attribute="ATK"/>
+		   </uniqueWeapon>
+	       </namedItem>
+	       <namedItem name = "Mage's Rod" dropRarity="rare">
+		   <iconRef>Weapon/magerod</iconRef>
+		   <uniqueWeapon valueMultiplier="100">
+		       <weaponTypeRef name="Rod"/>
+		       <weaponEnhancer multiplier="3" attribute="ATK"/>
+		       <attributeModifier type="multiply" value="1.25" attribute="mag"/>
+		   </uniqueWeapon>
+	       </namedItem>
+	       <namedItem name = "Wizard's Rod" dropRarity="rare">
+		   <iconRef>Weapon/magerod</iconRef>
+		   <uniqueWeapon valueMultiplier="300">
+		       <weaponTypeRef name="Rod"/>
+		       <weaponEnhancer multiplier="10" attribute="ATK"/>
+		       <attributeModifier type="multiply" value="1.50" attribute="mag"/>
+		   </uniqueWeapon>
+	       </namedItem>
+	       <namedItem name="Moon Seed" dropRarity="common">
+		   <iconRef>Items/moonseed</iconRef>
+		   <regularItem value = "50" reusable="false" targetable="single" use="both"  defaultTarget="party">
+		       <script id="Moonseed">
+			   modifyAttribute("MP",25, getTargetCharacter());
+		       </script>
+		   </regularItem>
+	       </namedItem>
+	       <namedItem name="Octavia Key" dropRarity="never">
+	       <iconRef>
+	       </iconRef>
+	       <specialItem/>
+	   </namedItem>
+       </itemList>
+       
+   </items>
