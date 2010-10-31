@@ -45,6 +45,28 @@ namespace StoneRing
         void StartPhase();
 	void move_sprite(ICharacter *pActor, ICharacter* pTarget, SpriteAnimation* anim, SpriteMovement* movement, float percentage);
         //void move_character(ICharacter* character, SpriteAnimation* anim, SpriteMovement* movement, float percentage);
+	/*
+	SteelType getSpritePoint(SteelType::Handle hSprite);
+	SteelType setSpritePoint(SteelType::Handle hSprite, SteelType::Handle hPoint);
+	SteelType translatePoint(SteelType::Handle hPoint, float x, float y); // Add to point
+	SteelType addPointToPoint(SteelType::Handle hPoint, SteelType::Handle hOther);
+	SteelType multiplyPoint(SteelType::Handle hPoint, float x, float y);
+	SteelType multiplyPointByPoint(SteelType::Handle hPoint, SteelType::Handle hOther);
+	SteelType getPointX(SteelType::Handle hPoint);
+	SteelType getPointY(SteelType::Handle hPoint);
+	SteelType setPoint(SteelType::Handle hPoint, float x, float y);
+	SteelType createPoint(void);
+	SteelType releasePoint(SteelType::Handle hPoint);
+	SteelType createColor(float r, float g, float b);
+	SteelType releaseColor(SteelType::Handle hColor);
+	SteelType setSpriteScale(SteelType::Handle hSprite, float scale);
+	SteelType setSpriteRotation(SteelType::Handle hSprite, float radians);
+	SteelType setSpritePitch(SteelType::Handle hSprite, float pitch);
+	SteelType setSpriteYaw(SteelType::Handle hSprite, float yaw);
+	SteelType setSpriteAlpha(SteelType::Handle hSprite, float alpha);
+	SteelType setSpriteColor(SteelType::Handle hSprite, SteelType::Handle hColor);
+	*/
+	
 
         BattleState& m_parent;
         ICharacterGroup* m_pCasterGroup;

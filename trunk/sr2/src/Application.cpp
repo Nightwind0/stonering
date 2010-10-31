@@ -357,7 +357,7 @@ SteelType Application::doDamage(SteelType::Handle hICharacter, int damage)
 
     if (hp - damage >maxhp)
     {
-        damage = maxhp - hp;
+        damage = -(maxhp - hp);
     }
 
     pCharacter->PermanentAugment(Character::CA_HP,-damage);

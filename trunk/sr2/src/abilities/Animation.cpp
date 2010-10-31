@@ -228,6 +228,7 @@ void SpriteMovement::load_attributes(CL_DomNamedNodeMap attributes)
     m_fCircleAngle = get_implied_float("circleStartAngle",attributes,0.0f);
     m_fCircleDegrees = get_implied_float("circleDegrees",attributes,0.0f);
     m_fCircleRadius = get_implied_float("circleRadius",attributes,0.0f);
+   
     if(has_attribute("circleDirection",attributes))
 	m_eMovementCircleDir = circleMovementFromString( get_string("circleDirection",attributes) );
     else m_eMovementCircleDir = CLOCKWISE;
@@ -235,6 +236,32 @@ void SpriteMovement::load_attributes(CL_DomNamedNodeMap attributes)
     m_fCircleGrowth = get_implied_float("circleGrowth",attributes,0.0f);
 
     get_implied_bool("forEach",attributes,false);
+}
+
+bool SpriteMovement::handle_element(eElement element, Element * pElement)
+{
+    if(element == Element::ESPRITEMOVEMENTSCRIPT)
+    {
+	SpriteMovementScript* pScript = dynamic_cast<SpriteMovementScript*>(pElement);
+	m_movementScripts[pScript->GetScriptType()] = pScript;
+	return true;
+    }
+    
+    return false;
+}
+
+bool SpriteMovement::hasMovementScript(eMovementScriptType type)const
+{
+    return m_movementScripts.find(type) != m_movementScripts.end();
+}
+
+SteelType SpriteMovement::executeMovementScript(eMovementScriptType type, float percentage)
+{
+    SpriteMovementScript * script = m_movementScripts[type];
+    ParameterListItem p("$P",percentage);
+    ParameterList params;
+    params.push_back(p);
+    return script->ExecuteScript(params);
 }
 
 bool SpriteMovement::HasEndFocus() const
@@ -411,6 +438,39 @@ float SpriteMovement::circleRadius() const // in pixels
     return m_fCircleRadius;
 }
 
+SpriteMovementScript::SpriteMovementScript()
+:ScriptElement(false)
+{
+}
+
+SpriteMovementScript::~SpriteMovementScript()
+{
+}
+
+
+	
+SpriteMovement::eMovementScriptType SpriteMovementScript::GetScriptType()
+{
+    return m_eType;
+}
+
+void SpriteMovementScript::load_attributes(CL_DomNamedNodeMap attributes)
+{
+    std::string type = get_required_string("type",attributes);
+    
+    // 	enum eMovementScriptType { SPRITE_ROTATION, SPRITE_SCALE, SPRITE_PITCH, SPRITE_YAW, CIRCLE_RADIUS, AMPLITUDE };
+    
+    if(type=="circleRadius") m_eType = SpriteMovement::CIRCLE_RADIUS;
+    else if(type=="amplitude") m_eType = SpriteMovement::AMPLITUDE;
+    else if(type=="spriteRotation") m_eType = SpriteMovement::SPRITE_ROTATION;
+    else if(type=="spriteScale") m_eType = SpriteMovement::SPRITE_SCALE;
+    else if(type=="spritePitch") m_eType = SpriteMovement::SPRITE_PITCH;
+    else if(type=="spriteYaw") m_eType = SpriteMovement::SPRITE_YAW;
+    else if(type=="circleAngle") m_eType = SpriteMovement::CIRCLE_ANGLE;
+    else throw CL_Exception("Unrecognized sprite movement script: " + type);
+    ScriptElement::load_attributes(attributes);
+}
+	
 
 
 

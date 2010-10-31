@@ -9,38 +9,50 @@
       </phase>
     </animation>
     <animation name="attack" type="battle">
-      <phase parallel="true" duration="300">
-	<spriteAnimation name="attack">
-	  <battleSprite who="caster" which="attack"/>
-	</spriteAnimation>
-	<spriteAnimation name="attack_swing">
-	  <spriteStub who="caster" which="main"/>
-	  <spriteMovement initialFocus="locus" endFocus="locus" movementStyle="circle" circleStartAngle="270" rotation="90" circleDegrees="90" circleRadius="196" circleDirection="towards"/>
-	  <!--spriteMovement initialFocus="target" endFocus="target" movementStyle="circle" circleStartAngle="180" rotation="720" circleDegrees="720" circleGrowth="-300" circleRadius="300" circleDirection="towards"/-->
-	</spriteAnimation>
-      </phase>
-  </animation>
-  <animation name="return_from_attack" type="battle">
-      <phase parallel="false" duration="600">
-	<spriteAnimation name="return_from_attack">
-	  <battleSprite who="caster" which="idle"/>
-	  <spriteMovement initialFocus="caster" endFocus="locus"  movementStyle="xonly" movementCompletion="1.0"/>
-	</spriteAnimation>
-      </phase>
+	<phase parallel="true" duration="300">
+	    <spriteAnimation name="attack">
+		<battleSprite who="caster" which="attack"/>
+	    </spriteAnimation>
+	    <spriteAnimation name="attack_swing">
+		<spriteStub who="caster" which="main"/>
+		<spriteMovement initialFocus="locus" endFocus="locus" movementStyle="circle" circleStartAngle="270" rotation="90" circleDegrees="90" circleRadius="196" circleDirection="towards">
+		</spriteMovement>
+	    </spriteAnimation>
+	</phase>
+    </animation>
+    <animation name="return_from_attack" type="battle">
+	<phase parallel="false" duration="600">
+	    <spriteAnimation name="return_from_attack">
+		<battleSprite who="caster" which="idle"/>
+		<spriteMovement initialFocus="caster" endFocus="locus"  movementStyle="xonly" movementCompletion="1.0"/>
+	    </spriteAnimation>
+	</phase>
     </animation>
     <animation name="recoil" type="battle">
-      <phase parallel="false" duration="100">
-	<spriteAnimation name="recoil">
-	  <battleSprite who="caster" which="recoil"/>
-	  <alterSprite who="caster" how="negative"/>
-	  <spriteMovement initialFocus="locus" endFocus="target"   rotation="-25" movementStyle="xonly" invert="true" movementCompletion="0.1"/>
-	</spriteAnimation>
-    </phase>
-    <phase parallel="false" duration="300">
-	<spriteAnimation name="recoil2">
-	    <battleSprite who="caster" which="idle"/>
-	  <spriteMovement initialFocus="caster" endFocus="locus"   movementStyle="xonly"  movementCompletion="1.0"/>
-	</spriteAnimation>
-      </phase>
+	<phase parallel="false" duration="100">
+	    <spriteAnimation name="recoil">
+		<battleSprite who="caster" which="recoil"/>
+		<alterSprite who="caster" how="negative"/>
+		<spriteMovement initialFocus="locus" endFocus="target"   rotation="-25" movementStyle="xonly" invert="true" movementCompletion="0.1"/>
+	    </spriteAnimation>
+	</phase>
+	<phase parallel="false" duration="300">
+	    <spriteAnimation name="recoil2">
+		<battleSprite who="caster" which="idle"/>
+		<spriteMovement initialFocus="caster" endFocus="locus"   movementStyle="xonly"  movementCompletion="1.0"/>
+	    </spriteAnimation>
+	</phase>
+    </animation>
+    <animation name="heal" type="battle">
+	<phase parallel="true" duration="600">
+	    <spriteAnimation name="heal">
+		<spriteRef ref="Skills/Heal"/>
+		<spriteMovement initialFocus="target" intialFocusY="top" initialFocusX="right" endFocusX="right" endFocusY="bottom" endFocus="target" movementStyle="straight"/>
+	    </spriteAnimation>
+	    <spriteAnimation name="heal2">
+		<spriteRef ref="Skills/Heal"/>
+		<spriteMovement initialFocus="target" intialFocusY="top" initialFocusX="left"  endFocusX="left" endFocusY="bottom" endFocus="target" movementStyle="straight"/>
+	    </spriteAnimation>
+	</phase>
     </animation>
 </animations>

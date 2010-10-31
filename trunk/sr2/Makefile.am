@@ -55,6 +55,8 @@ stonering_SOURCES =	src/Application.cpp \
 			src/core/GraphicsManager.h \
 			src/core/IApplication.h \
 			src/core/NamedScript.h \
+			src/core/Menu.h \
+			src/core/Menu.cpp \
 			src/core/SpriteRef.h \
 			src/core/sr_defines.h \
 			src/factories/ElementFactory.cpp \

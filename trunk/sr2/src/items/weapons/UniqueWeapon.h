@@ -7,6 +7,7 @@
 #include "NamedScript.h"
 
 namespace StoneRing{
+    class Animation;
     class UniqueWeapon : public NamedItem, public Weapon
     {
     public:

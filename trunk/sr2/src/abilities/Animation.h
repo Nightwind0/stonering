@@ -169,7 +169,9 @@ namespace StoneRing
         AlterSprite *m_pAlterSprite;
 	BattleState::SpriteTicket m_sprite;
     };
+    
 
+    class SpriteMovementScript;
     class SpriteMovement : public Element
     {
     public:
@@ -197,6 +199,7 @@ namespace StoneRing
         enum eMovementDirection { STILL, N, E, S, W, NE, NW, SE, SW, MOVE_AWAY, MOVE_TOWARDS, END_FOCUS };
         enum eMovementStyle {STRAIGHT, ARC_OVER, ARC_UNDER, SINE, XONLY, YONLY, CIRCLE };
 	enum eMovementCircleDir { CLOCKWISE, COUNTERCLOCKWISE, ROTATE_AWAY, ROTATE_TOWARDS };
+	enum eMovementScriptType { SPRITE_ROTATION, SPRITE_SCALE, SPRITE_PITCH, SPRITE_YAW, CIRCLE_RADIUS, AMPLITUDE, CIRCLE_ANGLE };
 
         Focus GetInitialFocus() const;
         bool HasEndFocus() const;
@@ -213,6 +216,9 @@ namespace StoneRing
 	float circleRadius() const; // in pixels
 	eMovementCircleDir circleDirection() const;
 	float circleGrowth() const; // for spirals
+	
+	bool hasMovementScript(eMovementScriptType type)const;
+	SteelType executeMovementScript(eMovementScriptType type, float percentage);
 
 
         eMovementDirection GetMovementDirection() const;
@@ -221,7 +227,7 @@ namespace StoneRing
 
     private:
         virtual void load_attributes(CL_DomNamedNodeMap attributes);
-        //virtual bool handleElement(eElement element, Element * pElement);
+        virtual bool handle_element(eElement element, Element * pElement);
         //virtual void handleText(const std::string &text);
 
     private:
@@ -251,6 +257,20 @@ namespace StoneRing
         eMovementDirection m_eMovementDirection;
         eMovementStyle m_eMovementStyle;
 	eMovementCircleDir m_eMovementCircleDir;
+	std::map<eMovementScriptType,SpriteMovementScript*> m_movementScripts;
+    };
+    
+    class SpriteMovementScript : public ScriptElement 
+    {
+    public:
+	SpriteMovementScript();
+	virtual ~SpriteMovementScript();
+	virtual eElement WhichElement() const { return ESPRITEMOVEMENTSCRIPT; }
+	
+	SpriteMovement::eMovementScriptType GetScriptType();
+    protected:
+	virtual void load_attributes(CL_DomNamedNodeMap attributes);
+	SpriteMovement::eMovementScriptType m_eType;	
     };
 
     class Phase : public Element

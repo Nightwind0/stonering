@@ -13,9 +13,12 @@
             <battleMenuOption name="Item" icon="item">
                  <skillRef skillName="Item"/>
             </battleMenuOption>
-            <battleMenuOption name="Info">
-                <skillRef skillName="Info"/>
-            </battleMenuOption>
+	    <battleMenuOption name="Heal">
+		<conditionScript id="WarriorHealCondition">
+		    return getCharacterAttribute($Character,$_HP) > 4;
+		</conditionScript>
+		<skillRef skillName="Heal"/>
+	    </battleMenuOption>
 	    <battleMenuOption name="Flee" icon="flee">
 		<conditionScript id="WarriorFleeCondition">
 		    <![CDATA[
