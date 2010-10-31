@@ -419,6 +419,11 @@ Element * ElementFactory::createSpriteMovement() const
     return new SpriteMovement();
 }
 
+Element * ElementFactory::createSpriteMovementScript()const
+{
+    return new SpriteMovementScript();
+}
+
 Element * ElementFactory::createSpriteAnimation() const
 {
     return new SpriteAnimation();
@@ -516,6 +521,7 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["spellRef"] = &ElementFactory::createSpellRef;
     mCreateMethods["spriteAnimation"] = &ElementFactory::createSpriteAnimation;
     mCreateMethods["spriteMovement"] = &ElementFactory::createSpriteMovement;
+    mCreateMethods["spriteMovementScript"] = &ElementFactory::createSpriteMovementScript;
     mCreateMethods["spriteRef"] = &ElementFactory::createSpriteRef;
     mCreateMethods["spriteStub"] = &ElementFactory::createSpriteStub;
     mCreateMethods["stat"] = &ElementFactory::createStat;

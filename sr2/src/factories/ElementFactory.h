@@ -71,6 +71,7 @@ namespace StoneRing
         virtual Element * createSpriteAnimation()const;
         virtual Element * createSpriteDefinition()const;
         virtual Element * createSpriteMovement()const;
+	virtual Element * createSpriteMovementScript()const;
         virtual Element * createSpriteRef()const;
         virtual Element * createSpriteStub()const;
         virtual Element * createStat() const;

@@ -120,18 +120,6 @@
        <weaponTypes>
 	   <weaponType basePrice="100" name="Sword" baseAttack="10" hitAdd="0.01" damageCategory="slash">
 	       <iconRef>Weapons/sword</iconRef>
-	       <animation name="sword attack" type="battle">
-		   <phase parallel="true" duration="300">
-		       <spriteAnimation name="attack">
-			   <battleSprite who="caster" which="attack"/>
-		       </spriteAnimation>
-		       <spriteAnimation name="attack_swing">
-			   <spriteStub who="caster" which="main"/>
-			   <spriteMovement initialFocus="locus" endFocus="locus" movementStyle="circle" circleStartAngle="270" rotation="90" circleDegrees="90" circleRadius="196" circleDirection="towards"/>
-			   <!--spriteMovement initialFocus="target" endFocus="target" movementStyle="circle" circleStartAngle="180" rotation="720" circleDegrees="720" circleGrowth="-300" circleRadius="300" circleDirection="towards"/-->
-			   </spriteAnimation>
-		       </phase>
-		 </animation>
 	       </weaponType>
 	       <weaponType basePrice="375" name="Broadsword" baseAttack="35" hitAdd="0.01" damageCategory="slash" >
 		   <iconRef>Weapons/broadsword</iconRef>

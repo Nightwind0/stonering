@@ -642,7 +642,10 @@ void BattleState::draw_sprites(int z, CL_GraphicContext& GC)
     for(int i=0;i<m_sprites.size();i++)
     {
 	if(m_sprites[i].Enabled())
+	{
+	    m_sprites[i].GetSprite().update();
 	    m_sprites[i].Draw(GC);
+	}
     }
 }
 

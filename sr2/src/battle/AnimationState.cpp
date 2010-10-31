@@ -333,6 +333,40 @@ void AnimationState::move_sprite(ICharacter* pActor, ICharacter* pTarget, Sprite
 		break;
 	}
     }
+    
+   // 	enum eMovementScriptType { SPRITE_ROTATION, SPRITE_SCALE, SPRITE_PITCH, SPRITE_YAW, CIRCLE_RADIUS, AMPLITUDE };
+   
+   float rotation = movement->Rotation();
+   float scale = 1.0f;
+   float pitch = 0.0f;
+   float yaw = 0.0f;
+   float radius = movement->circleRadius();
+   float amplitude = movement->Amplitude();
+   
+   if(movement->hasMovementScript(SpriteMovement::SPRITE_ROTATION))
+   {
+       rotation = (double)movement->executeMovementScript(SpriteMovement::SPRITE_ROTATION, percentage);
+   }
+   if(movement->hasMovementScript(SpriteMovement::SPRITE_SCALE))
+   {
+       scale = (double)movement->executeMovementScript(SpriteMovement::SPRITE_SCALE,percentage);
+   }
+   if(movement->hasMovementScript(SpriteMovement::SPRITE_PITCH))
+   {
+       pitch = (double)movement->executeMovementScript(SpriteMovement::SPRITE_PITCH,percentage);
+   }
+   if(movement->hasMovementScript(SpriteMovement::SPRITE_YAW))
+   {
+       yaw = (double)movement->executeMovementScript(SpriteMovement::SPRITE_YAW,percentage);
+   }
+   if(movement->hasMovementScript(SpriteMovement::CIRCLE_RADIUS))
+   {
+       radius = (double)movement->executeMovementScript(SpriteMovement::CIRCLE_RADIUS,percentage);
+   }
+   if(movement->hasMovementScript(SpriteMovement::AMPLITUDE))
+   {
+       amplitude = (double)movement->executeMovementScript(SpriteMovement::AMPLITUDE,percentage);
+   }
    
 
     // Rotation
@@ -355,8 +389,12 @@ void AnimationState::move_sprite(ICharacter* pActor, ICharacter* pTarget, Sprite
 
     
     CL_Angle angle = CL_Angle::from_degrees(degrees);
+    CL_Angle yaw_angle = CL_Angle::from_radians(yaw);
+    CL_Angle pitch_angle = CL_Angle::from_radians(pitch);
     // TODO: Mechanism to affect ALL this character's sprites in case it changes
     sprite.set_angle(angle);
+    sprite.set_angle_yaw(yaw_angle);
+    sprite.set_angle_pitch(pitch_angle);
   
     float completion = movement->Completion();
     percentage *= completion;      
@@ -379,10 +417,20 @@ void AnimationState::move_sprite(ICharacter* pActor, ICharacter* pTarget, Sprite
 	    break;
 	case SpriteMovement::CIRCLE:{
 	    float angle_deg = 0.0f;
-	    if(clockwise)
-		angle_deg = movement->circleStartAngle() + (percentage) * movement->circleDegrees();
-	    else angle_deg = movement->circleStartAngle() - (percentage) * movement->circleDegrees();
-	    float radius = movement->circleRadius() + percentage * movement->circleGrowth(); // spiral powers
+	    if(!movement->hasMovementScript(SpriteMovement::CIRCLE_ANGLE))
+	    {
+		if(clockwise)
+		    angle_deg = movement->circleStartAngle() + (percentage) * movement->circleDegrees();
+		else angle_deg = movement->circleStartAngle() - (percentage) * movement->circleDegrees();
+	    }
+	    else
+	    {
+		angle_deg = (double)movement->executeMovementScript(SpriteMovement::CIRCLE_ANGLE,percentage);
+	    }
+	    if(!movement->hasMovementScript(SpriteMovement::CIRCLE_RADIUS))
+	    {
+		radius = movement->circleRadius() + percentage * movement->circleGrowth(); // spiral powers
+	    }
 	    float angle = (CL_PI/180.0f) * angle_deg;
 	    CL_Pointf cpoint(cos(angle),sin(angle));
 	    current = dest +  cpoint * radius; // C + R * (cos A, sin A)
@@ -398,8 +446,8 @@ void AnimationState::move_sprite(ICharacter* pActor, ICharacter* pTarget, Sprite
             d.y /= l;
             float w = 2.0f * CL_PI * movement->Periods(); // make this 1/2 to arc up
 
-            current.x = percentage*dest.x + (1.0f-percentage)*origin.x + movement->Amplitude()*d.y*sin(w*percentage);
-            current.y = percentage*dest.y + (1.0f-percentage)*origin.y - movement->Amplitude()*d.x*sin(w*percentage);
+            current.x = percentage*dest.x + (1.0f-percentage)*origin.x + amplitude*d.y*sin(w*percentage);
+            current.y = percentage*dest.y + (1.0f-percentage)*origin.y - amplitude*d.x*sin(w*percentage);
             break;
         }
         case SpriteMovement::ARC_OVER:
@@ -412,8 +460,8 @@ void AnimationState::move_sprite(ICharacter* pActor, ICharacter* pTarget, Sprite
             d.y /= l;
             float w = 2.0f * CL_PI *0.5f; // make this 1/2 to arc up
 
-            current.x = percentage*dest.x + (1.0f-percentage)*origin.x + movement->Amplitude()*d.y*sin(w*percentage);
-            current.y = percentage*dest.y + (1.0f-percentage)*origin.y - movement->Amplitude()*d.x*sin(w*percentage);
+            current.x = percentage*dest.x + (1.0f-percentage)*origin.x + amplitude*d.y*sin(w*percentage);
+            current.y = percentage*dest.y + (1.0f-percentage)*origin.y - amplitude*d.x*sin(w*percentage);
             break;
         }
         default:

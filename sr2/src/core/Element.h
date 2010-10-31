@@ -86,6 +86,7 @@ namespace StoneRing
             ESPRITEANIMATION,
             ESPRITEDEFINITION,
             ESPRITEMOVEMENT,
+	    ESPRITEMOVEMENTSCRIPT,
             ESPRITEREF,
             ESPRITESTUB,
             ESTAT,

@@ -249,6 +249,14 @@
             <image file="Sprites/target.png"/>
         </sprite>
     </section>
+    <section name="Skills">
+	<sprite name="Heal" hint="alpha">
+	    <animation pingpong="no"  speed="300"/>
+	    <image file="Sprites/heal.png">
+		<grid pos="0,0" size="64,64" array="6,1"/>
+	    </image>
+	</sprite>
+    </section>
     <section name="Equipment">
 	<section name = "Weapon">
 	    <sprite name="Sword">

@@ -14,6 +14,7 @@ namespace StoneRing{
         virtual bool IsTwoHanded() const = 0;
 
         virtual bool IsArmor() const { return false; }
+        // TODO Plumb the weapon type animation through here, so that UniqueWeapons can have their own animations
         /*
         virtual void Equip(ICharacter *);
         virtual void Unequip(ICharacter *);
