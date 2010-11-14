@@ -21,34 +21,33 @@
 #define MENU_H
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
-#include <vector>
+#include <set>
 #include <string>
 
-class MenuDelegate {
-public:
-    void DrawMenuItem(CL_GraphicContext& gc, CL_Rect& rect, int option);
-    void ChooseMenuItem(int option);
-};
+
 
 class Menu
 {
 public:
-    Menu(MenuDelegate& delegate);
+    Menu();
     ~Menu();
-    
-    void SetRect(const CL_Rect& rect);
-    void SetRowHeight(int height);
-    
+
+    void Init();
     void Draw(CL_GraphicContext& gc);
     bool SelectUp();
     bool SelectDown();
-    
+    int Choose();
+
 protected:
+    virtual CL_Rectf get_rect()=0;
+    virtual void draw_option(int option, bool selected, float x, float y, CL_GraphicContext& gc)=0;
+    virtual int height_for_option(CL_GraphicContext& gc)=0;
+    virtual void process_choice(int selection)=0;
+    virtual int get_option_count()=0;
+    int get_current_choice() const { return m_cursor; }
+    bool is_selected(int index) { return index == m_cursor; }
 private:
-    MenuDelegate& m_delegate;
-    CL_Rect m_rect;
-    int m_height;
-    int m_nSelection;
+    int m_cursor;
 };
 
 #endif // MENU_H

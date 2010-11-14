@@ -47,11 +47,15 @@
 	<phase parallel="true" duration="600">
 	    <spriteAnimation name="heal">
 		<spriteRef ref="Skills/Heal"/>
-		<spriteMovement initialFocus="target" intialFocusY="top" initialFocusX="right" endFocusX="right" endFocusY="bottom" endFocus="target" movementStyle="straight"/>
+		<spriteMovement initialFocus="target" initialFocusY="top" initialFocusX="right" endFocusX="right" endFocusY="bottom" endFocus="target" movementStyle="straight"/>
 	    </spriteAnimation>
 	    <spriteAnimation name="heal2">
 		<spriteRef ref="Skills/Heal"/>
-		<spriteMovement initialFocus="target" intialFocusY="top" initialFocusX="left"  endFocusX="left" endFocusY="bottom" endFocus="target" movementStyle="straight"/>
+		<spriteMovement initialFocus="target" initialFocusY="top" initialFocusX="left"  endFocusX="left" endFocusY="bottom" endFocus="target" movementStyle="straight"/>
+	    </spriteAnimation>
+	    <spriteAnimation name="heal3">
+		<spriteRef ref="Skills/Heal"/>
+		<spriteMovement initialFocus="target" initialFocusY="top" initialFocusX="center"  endFocusX="center" endFocusY="bottom" endFocus="target" movementStyle="straight"/>
 	    </spriteAnimation>
 	</phase>
     </animation>

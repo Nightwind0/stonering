@@ -11,17 +11,21 @@
                 <skillRef skillName="Attack"/>
             </battleMenuOption>
             <battleMenuOption name="Item" icon="item">
+		<conditionScript id="WarriorItemCondition">
+		    return false;
+		</conditionScript>
                  <skillRef skillName="Item"/>
             </battleMenuOption>
-	    <battleMenuOption name="Heal">
+	    <!--battleMenuOption name="Heal">
 		<conditionScript id="WarriorHealCondition">
 		    return getCharacterAttribute($Character,$_HP) > 4;
 		</conditionScript>
 		<skillRef skillName="Heal"/>
-	    </battleMenuOption>
+	    </battleMenuOption-->
 	    <battleMenuOption name="Flee" icon="flee">
 		<conditionScript id="WarriorFleeCondition">
 		    <![CDATA[
+			return false;
 			return !battle::isBossBattle();
 			]]>
 		</conditionScript>

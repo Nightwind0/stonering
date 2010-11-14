@@ -101,6 +101,7 @@ void BattleState::next_turn()
     if (pCharacter != NULL)
     {
         m_combat_state = BATTLE_MENU;
+	pCharacter->GetBattleMenu()->Init();
         m_menu_stack.push ( pCharacter->GetBattleMenu() );
     }
     else
@@ -175,11 +176,8 @@ void BattleState::HandleButtonUp(const IApplication::Button& button)
 	case IApplication::BUTTON_CONFIRM:
 	 if (m_combat_state == BATTLE_MENU)
         {
-            std::list<BattleMenuOption*>::iterator it = m_menu_stack.top()->GetSelectedOption ();
-            if (it != m_menu_stack.top()->GetOptionsEnd ())
 
-            {
-                BattleMenuOption * pOption = *it;
+                BattleMenuOption * pOption = m_menu_stack.top()->GetSelectedOption();
 
                 ParameterList params;
                 // Supply a handle to the character in question
@@ -193,7 +191,7 @@ void BattleState::HandleButtonUp(const IApplication::Button& button)
                 }
             }
 	    
-	}
+	
     }
 }
 
@@ -209,12 +207,12 @@ void BattleState::HandleAxisMove(const IApplication::Axis& axis, float pos)
 	if(pos == 1.0)
 	{
 	    if (m_combat_state == BATTLE_MENU)
-		m_menu_stack.top()->SelectNext();
+		m_menu_stack.top()->SelectDown();
 	}
 	else if(pos == -1.0)
 	{
 	    if (m_combat_state == BATTLE_MENU)
-		m_menu_stack.top()->SelectPrevious();
+		m_menu_stack.top()->SelectUp();
 	}
     }
 }
@@ -313,9 +311,6 @@ void BattleState::Start()
     m_popup_rect.left = resources.get_integer_resource(popup_resource + "text/left",0);
     m_popup_rect.right = resources.get_integer_resource(popup_resource + "text/right",0);
     m_popup_rect.bottom = resources.get_integer_resource(popup_resource + "text/bottom",0);
-
-    m_popup_rect.top += m_nPopupY;
-    m_popup_rect.left += m_nPopupX;
 
     m_player_rect.top = resources.get_integer_resource(player_rect_resource + "top",0);
     m_player_rect.left = resources.get_integer_resource(player_rect_resource + "left",0);
@@ -611,10 +606,12 @@ int BattleState::add_sprite(CL_Sprite sprite)
 	if(!m_sprites[i].Enabled())
 	{
 	    m_sprites[i] = mysprite;
+	    m_sprites[i].SetEnabled(true);
 	    return i;
 	}
     }
     m_sprites.push_back(mysprite);
+    m_sprites.back().SetEnabled(true);
     return index;
 }
 
@@ -872,68 +869,20 @@ void BattleState::draw_displays(CL_GraphicContext& GC)
 void BattleState::draw_menus(const CL_Rectf &screenrect, CL_GraphicContext& GC)
 {
     BattleMenu * pMenu = m_menu_stack.top();
-    GraphicsManager * pGraphicsManager = GraphicsManager::GetInstance();
-    CL_Font  onFont;
-    CL_Font  offFont;
-    CL_Font  selectedFont;
-
+    CL_Rectf menu_rect = m_popup_rect;
+    menu_rect.translate(m_nPopupX,m_nPopupY);
+    pMenu->SetRect(menu_rect);
     ParameterList params;
     // Supply a handle to the character in question
     Character *pChar = dynamic_cast<Character*>(m_initiative[m_cur_char]);
     params.push_back ( ParameterListItem("$Character", pChar ) );
     params.push_back ( ParameterListItem("$Round", static_cast<int>(m_nRound) ) );
 
+    pMenu->SetEnableConditionParams(params);
     if (pMenu->GetType() == BattleMenu::POPUP)
     {
-        onFont = pGraphicsManager->GetFont(GraphicsManager::BATTLE_POPUP_MENU,"on");
-        offFont = pGraphicsManager->GetFont(GraphicsManager::BATTLE_POPUP_MENU,"off");
-        selectedFont = pGraphicsManager->GetFont(GraphicsManager::BATTLE_POPUP_MENU,"Selection");
         m_battlePopup.draw(GC,(int)m_nPopupX,(int)m_nPopupY);
-        std::list<BattleMenuOption*>::iterator iter;
-        uint pos = 0;
-
-        for (iter = pMenu->GetOptionsBegin();iter != pMenu->GetOptionsEnd();iter++)
-        {
-            BattleMenuOption * pOption = *iter;
-            CL_Font  font;
-            if (pOption->Enabled(params))
-            {
-                font = onFont;
-            }
-            else
-            {
-                font = offFont;
-            }
-
-            bool selected = false;
-
-            if (m_menu_stack.top()->GetSelectedOption() == iter)
-            {
-                font = selectedFont;
-                selected = true;
-            }
-
-            CL_Image icon = pOption->GetIcon();
-
-            if (!selected)
-            {
-                icon.set_alpha(0.5f);
-            }
-            else
-            {
-                icon.set_alpha(1.0f);
-            }
-
-            const float option_height = cl_max(font.get_font_metrics(GC).get_height(), (float)icon.get_height());
-
-
-
-            icon.draw(GC,static_cast<int>(m_popup_rect.left + 14), static_cast<int>(20 + m_popup_rect.top + option_height* pos));
-
-            font.draw_text(GC,static_cast<int>(m_popup_rect.left + 24 + icon.get_width()) , static_cast<int>(20 + font.get_font_metrics(GC).get_height() +  m_popup_rect.top + option_height * pos),pOption->GetName());
-
-            ++pos;
-        }
+	pMenu->Draw(GC);
     }
     else
     {

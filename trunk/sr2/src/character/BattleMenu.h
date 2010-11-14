@@ -1,14 +1,16 @@
 #ifndef SR_BATTLE_MENU_H
 #define SR_BATTLE_MENU_H
 
-#include <list>
+#include <vector>
 #include "Element.h"
+#include "Menu.h"
+#include "steel/SteelInterpreter.h"
 
 namespace StoneRing
 {
     class BattleMenuOption;
 
-    class BattleMenu : public Element
+    class BattleMenu : public Element, public Menu
     {
     public:
         BattleMenu();
@@ -23,23 +25,34 @@ namespace StoneRing
             CUSTOM // TODO: Way to populate this
         };
 
-        std::list<BattleMenuOption*>::iterator GetOptionsBegin();
-        std::list<BattleMenuOption*>::iterator GetOptionsEnd();
-
-        std::list<BattleMenuOption*>::iterator GetSelectedOption();
-
-        void SelectNext();
-        void SelectPrevious();
+        std::vector<BattleMenuOption*>::iterator GetOptionsBegin();
+        std::vector<BattleMenuOption*>::iterator GetOptionsEnd();
+	
+	BattleMenuOption* GetSelectedOption() const;
 
         eType GetType ( void ) const;
+	void SetRect(CL_Rectf& rect);
+	void SetEnableConditionParams(const ParameterList& params);
+	void Init();
     private:
+	virtual CL_Rectf get_rect();
+	virtual void draw_option(int option, bool selected,  float x, float y, CL_GraphicContext& gc);
+	virtual int height_for_option(CL_GraphicContext& gc);
+	virtual void process_choice(int selection){}
+	virtual int get_option_count();
+	
         virtual bool handle_element(eElement, Element *);
         virtual void load_attributes(CL_DomNamedNodeMap );
         virtual void load_finished();
 
-        std::list<BattleMenuOption*> m_options;
-        std::list<BattleMenuOption*>::iterator m_current;
+        std::vector<BattleMenuOption*> m_options;
         eType m_eType;
+	CL_Font m_onFont;
+	CL_Font m_offFont;
+	CL_Font m_selectedFont;
+	CL_Rectf m_rect;
+	int m_font_height;
+	ParameterList m_params;
     };
 };
 
