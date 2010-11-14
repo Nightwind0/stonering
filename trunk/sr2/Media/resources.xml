@@ -269,6 +269,11 @@
 	    <sprite name="Balloon_cyan">
 		<image file="Images/Items/Ammo/Balloon_cyan.png"/>
 	    </sprite>
+	    <sprite name="Balloon_pop">
+		<image file="Sprites/balloon_pop.png">
+		    <grid pos="0,0" size="128,128" array="4,1"/>
+		</image>
+	    </sprite>
 	</section>
     </section>
 	<section name = "Party">

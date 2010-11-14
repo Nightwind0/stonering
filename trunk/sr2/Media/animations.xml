@@ -66,5 +66,11 @@
 		<spriteMovement initialFocus="caster" initialFocusY="top" endFocus="target" movementStyle="arc_over" amplitude="100" rotation="720"/>
 	    </spriteAnimation>
 	</phase>
+	<phase parallel="false" duration="200">
+	    <spriteAnimation name="pop">
+		<spriteRef ref="Equipment/Ammo/Balloon_pop"/>
+		<spriteMovement initialFocus="target" endFocus="target" movementStyle="straight"/>
+	    </spriteAnimation>
+	</phase>
     </animation>
 </animations>
