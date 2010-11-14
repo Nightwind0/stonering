@@ -28,7 +28,7 @@ bool StoneRing::ChoiceState::IsDone() const
 	    // Select current option.
 	    m_bDraw = false;
 	    // mpChoice->chooseOption(mnCurrentOption);
-	    m_nSelection = m_nCurrentOption;
+	    m_nSelection = get_current_choice();
 	    m_bDone = true;
 	    break;
 	case IApplication::BUTTON_CANCEL:
@@ -45,29 +45,11 @@ bool StoneRing::ChoiceState::IsDone() const
      {
 	 if(pos == -1.0)
 	 {
-	        if(m_nCurrentOption > 0 )
-		{
-		    m_nCurrentOption--;
-
-		    if(m_nCurrentOption < m_nOptionOffset)
-		    {
-			m_nOptionOffset--;
-		    }
-		}
+	        SelectUp();
 	 }
 	 else if(pos == 1.0)
 	 {
-	    if(m_nCurrentOption + 1 < m_choices.size())
-	    {
-		m_nCurrentOption++;
-
-		// @todo: 4?? should be options per page but we'll have to latch it
-		if(m_nCurrentOption > m_nOptionOffset + 4)
-		{
-		    m_nOptionOffset++;
-		}
-	    }
-
+		SelectDown();
 	 }
      }
  }
@@ -106,35 +88,7 @@ void StoneRing::ChoiceState::Draw(const CL_Rect &screenRect,CL_GraphicContext& G
     m_choiceOverlay.draw(GC,static_cast<float>(m_X),static_cast<float>(m_Y));
     m_choiceFont.draw_text(GC,m_question_rect.left,m_question_rect.top + m_choiceFont.get_font_metrics(GC).get_height(),m_text);
 
-    CL_Font  lineFont;
-
-    uint optionsPerPage = max(1.0f, m_text_rect.get_height() / m_optionFont.get_font_metrics(GC).get_height());
-
-    optionsPerPage = min(optionsPerPage,static_cast<uint>(m_choices.size()));
-
-    // Draw the options
-    for(uint i=0;i< optionsPerPage; i++)
-    {
-        int indent = 0;
-        // Don't paint more options than there are
-        if(i + m_nOptionOffset >= m_choices.size()) break;
-
-        if(i + m_nOptionOffset == m_nCurrentOption)
-        {
-            indent = 10;
-            lineFont = m_currentOptionFont;
-        }
-        else
-        {
-            lineFont = m_optionFont;
-        }
-        CL_FontMetrics metrics = lineFont.get_font_metrics(GC);
-
-        lineFont.draw_text(GC, m_text_rect.left + indent,  i * (lineFont.get_font_metrics(GC).get_height()) + m_text_rect.top + lineFont.get_font_metrics(GC).get_height(),
-                         m_choices[i + m_nOptionOffset]);
-
-    }
-
+    Menu::Draw(GC);
 }
 
 
@@ -193,9 +147,6 @@ void StoneRing::ChoiceState::Start()
     m_X = resources.get_integer_resource(resource + "x",0);
     m_Y = resources.get_integer_resource(resource + "y",0);
 
-    m_nCurrentOption = 0;
-    m_nOptionOffset = 0;
-
 /*
   if(!mpChoiceOverlay)
   mpChoiceOverlay = new CL_Surface("Overlays/choice_overlay", IApplication::getInstance()->getResources() );
@@ -211,9 +162,42 @@ void StoneRing::ChoiceState::Init(const std::string &choiceText, const std::vect
 {
     m_text = choiceText;
     m_choices = choices;
+    Menu::Init();
 }
 
+CL_Rectf StoneRing::ChoiceState::get_rect()
+{
+    return m_text_rect;
+}
 
+void StoneRing::ChoiceState::draw_option(int option, bool selected, float x, float y, CL_GraphicContext& gc)
+{
+        CL_Font  lineFont;
+	
+	lineFont = m_optionFont;
+	
+	if(selected)
+	    lineFont = m_currentOptionFont;  
+
+        lineFont.draw_text(gc, x,  y + lineFont.get_font_metrics(gc).get_height(),
+                         m_choices[option]);
+}
+
+int StoneRing::ChoiceState::height_for_option(CL_GraphicContext& gc)
+{
+    return std::max(m_optionFont.get_font_metrics(gc).get_height(),
+		    m_currentOptionFont.get_font_metrics(gc).get_height());
+}
+
+void StoneRing::ChoiceState::process_choice(int selection)
+{
+
+}
+
+int StoneRing::ChoiceState::get_option_count()
+{
+    return m_choices.size();
+}
 
 
 
