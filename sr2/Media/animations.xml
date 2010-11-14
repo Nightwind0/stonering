@@ -59,4 +59,12 @@
 	    </spriteAnimation>
 	</phase>
     </animation>
+    <animation name="hurl_balloon" type="battle">
+	<phase parallel="false" duration="600">
+	    <spriteAnimation name="throw">
+		<spriteRef ref="Equipment/Ammo/Balloon_cyan"/>
+		<spriteMovement initialFocus="caster" initialFocusY="top" endFocus="target" movementStyle="arc_over" amplitude="100" rotation="720"/>
+	    </spriteAnimation>
+	</phase>
+    </animation>
 </animations>

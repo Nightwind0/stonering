@@ -12,7 +12,7 @@
             </battleMenuOption>
             <battleMenuOption name="Item" icon="item">
 		<conditionScript id="WarriorItemCondition">
-		    return false;
+		    return true;
 		</conditionScript>
                  <skillRef skillName="Item"/>
             </battleMenuOption>
@@ -22,10 +22,18 @@
 		</conditionScript>
 		<skillRef skillName="Heal"/>
 	    </battleMenuOption-->
-	    <battleMenuOption name="Flee" icon="flee">
+
+	  <battleMenuOption name="Throw" icon="hurl">
+		<conditionScript id="WarriorThrowCondition">
+		    <![CDATA[
+			return true;
+			]]>
+		</conditionScript>
+		<skillRef skillName="Throw"/>
+	    </battleMenuOption>
+	  <battleMenuOption name="Flee" icon="flee">
 		<conditionScript id="WarriorFleeCondition">
 		    <![CDATA[
-			return false;
 			return !battle::isBossBattle();
 			]]>
 		</conditionScript>

@@ -461,6 +461,20 @@ void AnimationState::move_sprite(ICharacter* pActor, ICharacter* pTarget, Sprite
             float w = 2.0f * CL_PI *0.5f; // make this 1/2 to arc up
 
             current.x = percentage*dest.x + (1.0f-percentage)*origin.x + amplitude*d.y*sin(w*percentage);
+            current.y = percentage*dest.y + (1.0f-percentage)*origin.y + amplitude*d.x*sin(w*percentage);
+            break;
+        }
+        case SpriteMovement::ARC_UNDER:
+        {
+            CL_Pointf d,c;
+            d.x = dest.x - origin.x;
+            d.y = dest.y - origin.y;
+            float l = sqrt((double)d.x*d.x + d.y+d.y);
+            d.x /=  l;
+            d.y /= l;
+            float w = 2.0f * CL_PI *0.5f; // make this 1/2 to arc up
+
+            current.x = percentage*dest.x + (1.0f-percentage)*origin.x + amplitude*d.y*sin(w*percentage);
             current.y = percentage*dest.y + (1.0f-percentage)*origin.y - amplitude*d.x*sin(w*percentage);
             break;
         }
