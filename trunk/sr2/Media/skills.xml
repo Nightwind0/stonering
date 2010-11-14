@@ -1,28 +1,75 @@
 <!--DOCTYPE skillList SYSTEM "Levels/level.dtd" -->
 <skillList>
-    <skill bp="0" name="Info" sp="0">
-        <onInvoke>
-            <script id="InfoSkillScript">
-                <![CDATA[
-                var @targets = battle::selectTargets(true,false,true);
+        <skill bp="0" name="Throw" sp="12">
+	<onInvoke>
+	    <script id="HurlScript">
+		<![CDATA[ 
+		declare @targets = battle::selectTargets(true,false,true);
 		if(!len(@targets))
 		    return battle::cancelOption(); // return is just cause I can, to do a one-liner
-                var $pTarget = @targets[0];
-                var $info = getCharacterName($pTarget) + "\nHP: " + getCharacterAttribute($pTarget,$_HP) + " / " ; 
+		battle::doTargetedAnimation($Character,@targets[0],getAnimation("move_to_attack"));
+		
+		declare $pTarget = @targets[0];
+		
+		battle::doTargetedAnimation($Character,$pTarget,getAnimation("hurl_balloon"));
+		
+		declare $hit = getCharacterAttribute($Character, $_DEX) + 0.2;
+		declare $dodge = getCharacterAttribute($pTarget, $_EVD);
+
+		declare $chance = $hit * ( 1.0 - $dodge );
+
+		declare $roll = math::randf();
+		declare $bHit = false;
+		if($roll < $chance)
+			$bHit = true;
+			
+		if($bHit){
+		    declare $baseDamage = 5;
+		    declare $actualDamage = $baseDamage *  getDamageCategoryResistance($pTarget,$_BASH);
+		    declare $modDamage = integer($actualDamage - getEquippedArmorAttribute($pTarget,$_AC));
+
+		    if($modDamage < 0 and $actualDamage >0) $modDamage = 0;
+
+		    doDamage($pTarget,$modDamage);
+		    battle::doTargetedAnimation($pTarget,$Character,getAnimation("recoil"));
+		    battle::createDisplay($modDamage,$pTarget,$_DISP_DAMAGE);
+		}else{
+		    println("You missed.");
+		    //playSound(getUnarmedMissSound($Character));
+		    battle::createDisplay(0,$pTarget,$_DISP_MISS);
+		}
+		
+		attackCharacter($pTarget);
+		battle::finishTurn();
+		]]>
+	    </script>
+	</onInvoke>
+    </skill>
+    <skill bp="0" name="Info" sp="0">
+	<onInvoke>
+	    <script id="InfoSkillScript">
+		<![CDATA[
+		var @targets = battle::selectTargets(true,false,true);
+		if(!len(@targets))
+		    return battle::cancelOption(); // return is just cause I can, to do a one-liner
+		var $pTarget = @targets[0];
+		var $info = getCharacterName($pTarget) + "\nHP: " + getCharacterAttribute($pTarget,$_HP) + " / " ; 
 		$info = $info + getCharacterAttribute($pTarget,$_MAXHP) + "\n";
 		$info = $info + "MP: " + getCharacterAttribute($pTarget,$_MP) + " / " + getCharacterAttribute($pTarget,$_MAXMP);
 
 		say("Info",$info);
-                battle::finishTurn();
-                ]]>
-            </script>
-        </onInvoke>
+		battle::finishTurn();
+		]]>
+	    </script>
+	</onInvoke>
     </skill>
     <skill bp="0" name="Heal" sp="12">
 	<onInvoke>
 	    <script id="HealScript">
 		<![CDATA[ 
 		declare @targets = battle::selectTargets(true,false,false);
+		
+		if(!len(@targets)) return battle::cancelOption();
 		
 		battle::doTargetedAnimation($Character,@targets[0],getAnimation("heal"));
 		declare $damageMean = -20;
@@ -49,42 +96,42 @@
 	</onInvoke>
     </skill>
     <skill bp="0" name="Attack" sp="0" icon="attack">
-        <onInvoke>
-            <script id="AttackSkillScript">
+	<onInvoke>
+	    <script id="AttackSkillScript">
 	    <![CDATA[
-        declare $pC = $Character;
+	declare $pC = $Character;
 		var $name = getCharacterName($pC);
-        // The animation comes first.
-        declare @targets = battle::selectTargets(true,false,true);
+	// The animation comes first.
+	declare @targets = battle::selectTargets(true,false,true);
 	if(!len(@targets))
 	    return battle::cancelOption(); // return is just cause I can, to do a one-liner
 	declare $attack_anim = getAnimation("attack");
 
 	battle::doTargetedAnimation($pC,@targets[0],getAnimation("move_to_attack"));
-        declare $pWeapon;
-        declare $hasWeapon = false;
-        if(hasEquipment($pC,$_HAND)){
-            $pWeapon = getEquipment($pC, $_HAND);
-            $hasWeapon = true;
-        }else if(hasEquipment($pC,$_OFFHAND)){
-            $pWeapon = getEquipment($pC, $_OFFHAND);
-            $hasWeapon = true;
-        }
+	declare $pWeapon;
+	declare $hasWeapon = false;
+	if(hasEquipment($pC,$_HAND)){
+	    $pWeapon = getEquipment($pC, $_HAND);
+	    $hasWeapon = true;
+	}else if(hasEquipment($pC,$_OFFHAND)){
+	    $pWeapon = getEquipment($pC, $_OFFHAND);
+	    $hasWeapon = true;
+	}
 
-        if($hasWeapon){
+	if($hasWeapon){
 	    if(weaponTypeHasAnimation(getWeaponType($pWeapon))){
 		$attack_anim = getWeaponTypeAnimation(getWeaponType($pWeapon));
 	    }
 
-            const $kScriptMode = getWeaponScriptMode($pWeapon);
+	    const $kScriptMode = getWeaponScriptMode($pWeapon);
 
-            if( $kScriptMode == $_SM_FORGO_ATTACK)
-                return;
+	    if( $kScriptMode == $_SM_FORGO_ATTACK)
+		return;
 
-            if( $kScriptMode == $_SM_ATTACK_AFTER){
-                invokeEquipment($pWeapon);
-            }
-        }
+	    if( $kScriptMode == $_SM_ATTACK_AFTER){
+		invokeEquipment($pWeapon);
+	    }
+	}
 	
 		battle::doTargetedAnimation($pC,@targets[0],$attack_anim);
 
@@ -107,132 +154,115 @@
 		if($roll < $chance)
 			$bHit = true;
 
-        if($bHit){
-            println("You hit!");
-            if($hasWeapon)
-                playSound(getHitSound(getWeaponType($pWeapon)));
-            else
-                playSound(getUnarmedHitSound($pC));
+	if($bHit){
+	    println("You hit!");
+	    if($hasWeapon)
+		playSound(getHitSound(getWeaponType($pWeapon)));
+	    else
+		playSound(getUnarmedHitSound($pC));
 
-            declare $damageMean = getCharacterAttribute($pC, $_STR) + getEquippedWeaponAttribute($pC,$_ATTACK);
-            // Random about the damageMean, standard deviation is 15% of the mean, so 68% of attacks fall within 10% deviation of the mean
-            declare $baseDamage = normal_random($damageMean,$damageMean * 0.15);
-            declare $damageCategory;
-            if($hasWeapon){
-                $damageCategory = getWeaponTypeDamageCategory(getWeaponType($pWeapon));
-            }else{
-                $damageCategory = $_BASH; //punch
-            }
-            declare $actualDamage = $baseDamage *  getDamageCategoryResistance($pTarget,getWeaponTypeDamageCategory(getWeaponType($pWeapon)));
-            declare $modDamage = integer($actualDamage - getEquippedArmorAttribute($pTarget,$_AC));
+	    declare $damageMean = getCharacterAttribute($pC, $_STR) + getEquippedWeaponAttribute($pC,$_ATTACK);
+	    // Random about the damageMean, standard deviation is 15% of the mean, so 68% of attacks fall within 10% deviation of the mean
+	    declare $baseDamage = normal_random($damageMean,$damageMean * 0.15);
+	    declare $damageCategory;
+	    if($hasWeapon){
+		$damageCategory = getWeaponTypeDamageCategory(getWeaponType($pWeapon));
+	    }else{
+		$damageCategory = $_BASH; //punch
+	    }
+	    declare $actualDamage = $baseDamage *  getDamageCategoryResistance($pTarget,getWeaponTypeDamageCategory(getWeaponType($pWeapon)));
+	    declare $modDamage = integer($actualDamage - getEquippedArmorAttribute($pTarget,$_AC));
 
-            if($modDamage <0 and $actualDamage >0) $modDamage = 0;
+	    if($modDamage <0 and $actualDamage >0) $modDamage = 0;
 
 
-            doDamage($pTarget,$modDamage);
+	    doDamage($pTarget,$modDamage);
 	    battle::doTargetedAnimation($pTarget,$pC,getAnimation("recoil"));
 	    battle::createDisplay($modDamage,$pTarget,$_DISP_DAMAGE);
 
 
-            println("Mean damage was " + $damageMean + " and base damage was " + $baseDamage + " and actual damage was " + $actualDamage);
-        }else{
-            println("You missed.");
-            if($hasWeapon)
-                playSound(getMissSound(getWeaponType($pWeapon)));
-            else
-                playSound(getUnarmedMissSound($pC));
-            battle::createDisplay(0,$pTarget,$_DISP_MISS);
-        }
+	    println("Mean damage was " + $damageMean + " and base damage was " + $baseDamage + " and actual damage was " + $actualDamage);
+	}else{
+	    println("You missed.");
+	    if($hasWeapon)
+		playSound(getMissSound(getWeaponType($pWeapon)));
+	    else
+		playSound(getUnarmedMissSound($pC));
+	    battle::createDisplay(0,$pTarget,$_DISP_MISS);
+	}
 	battle::doTargetedAnimation($pC,$pTarget,getAnimation("return_from_attack"));
 
 
-        if($hasWeapon and getWeaponScriptMode($pWeapon) == $_SM_ATTACK_BEFORE){
-            invokeEquipment($pWeapon);
-        }
-        attackCharacter($pTarget);
-        battle::finishTurn();
+	if($hasWeapon and getWeaponScriptMode($pWeapon) == $_SM_ATTACK_BEFORE){
+	    invokeEquipment($pWeapon);
+	}
+	attackCharacter($pTarget);
+	battle::finishTurn();
 		]]>
-            </script>
-        </onInvoke>
+	    </script>
+	</onInvoke>
     </skill>
     <skill bp="0" name="MonsterBasicAttack" sp="0">
-        <onInvoke>
-            <script id="MonsterBasicAttackInvoke">
-            <![CDATA[
-                var @enemies = battle::getCharacterGroup(false);
-                var $which = math::rand() % len(@enemies);
-                var $pTarget = @enemies[$which];
-                var $name = getCharacterName($Character);
+	<onInvoke>
+	    <script id="MonsterBasicAttackInvoke">
+	    <![CDATA[
+		var @enemies = battle::getCharacterGroup(false);
+		var $which = math::rand() % len(@enemies);
+		var $pTarget = @enemies[$which];
+		var $name = getCharacterName($Character);
 		battle::doTargetedAnimation($Character,$pTarget,getAnimation("move_to_attack"));
-                battle::doTargetedAnimation($Character,$pTarget,getAnimation("attack"));
-                println($name + " attacks " + getCharacterName($pTarget));
+		battle::doTargetedAnimation($Character,$pTarget,getAnimation("attack"));
+		println($name + " attacks " + getCharacterName($pTarget));
 
-                var $hit = getCharacterAttribute($Character, $_DEX) + getEquippedWeaponAttribute($Character,$_HIT);
-                var $dodge = getCharacterAttribute($pTarget, $_EVD); //+ getEquippedArmorAttribute($pTarget,$_AC);
+		var $hit = getCharacterAttribute($Character, $_DEX) + getEquippedWeaponAttribute($Character,$_HIT);
+		var $dodge = getCharacterAttribute($pTarget, $_EVD); //+ getEquippedArmorAttribute($pTarget,$_AC);
 
-                var $chance = $hit * ( 1.0 - $dodge );
+		var $chance = $hit * ( 1.0 - $dodge );
 
-                var $roll = math::randf();
+		var $roll = math::randf();
 
-                println("Hit was " + $hit + " and dodge was " + $dodge + " and chance was " + $chance);
-                println("Roll was " + $roll);
+		println("Hit was " + $hit + " and dodge was " + $dodge + " and chance was " + $chance);
+		println("Roll was " + $roll);
 
-                var $bHit = false;
-                if($roll < $chance)
-                    $bHit = true;
-
-
-                if($bHit){
-                    println($name + " hit!");
-
-                    playSound(getUnarmedHitSound($Character));
-                    var $damageMean = getCharacterAttribute($Character, $_STR);
-                    // Random about the damageMean, standard deviation is 15% of the mean, so 68% of attacks fall within 10% deviation of the mean
-                    var $baseDamage = normal_random($damageMean,$damageMean * 0.15);
-                    var $actualDamage = $baseDamage *  getDamageCategoryResistance($pTarget,battle::getMonsterDamageCategory($Character));
-                    var $modDamage = integer($actualDamage - getEquippedArmorAttribute($pTarget,$_AC));
-
-                    if($modDamage <0 and $actualDamage >0) $modDamage = 0;
+		var $bHit = false;
+		if($roll < $chance)
+		    $bHit = true;
 
 
-                    doDamage($pTarget,$modDamage);
+		if($bHit){
+		    println($name + " hit!");
+
+		    playSound(getUnarmedHitSound($Character));
+		    var $damageMean = getCharacterAttribute($Character, $_STR);
+		    // Random about the damageMean, standard deviation is 15% of the mean, so 68% of attacks fall within 10% deviation of the mean
+		    var $baseDamage = normal_random($damageMean,$damageMean * 0.15);
+		    var $actualDamage = $baseDamage *  getDamageCategoryResistance($pTarget,battle::getMonsterDamageCategory($Character));
+		    var $modDamage = integer($actualDamage - getEquippedArmorAttribute($pTarget,$_AC));
+
+		    if($modDamage <0 and $actualDamage >0) $modDamage = 0;
+
+
+		    doDamage($pTarget,$modDamage);
 
 		    battle::doTargetedAnimation($pTarget,$Character,getAnimation("recoil"));
 		    battle::createDisplay($modDamage,$pTarget,$_DISP_DAMAGE);
-                    println("Mean damage was " + $damageMean + " and base damage was " + $baseDamage + " and actual damage was " + $actualDamage);
-                }else{
-                    println("You missed.");
+		    println("Mean damage was " + $damageMean + " and base damage was " + $baseDamage + " and actual damage was " + $actualDamage);
+		}else{
+		    println("You missed.");
 
-                    playSound(getUnarmedMissSound($Character));
-                    battle::createDisplay(0,$pTarget,$_DISP_MISS);
-                }
+		    playSound(getUnarmedMissSound($Character));
+		    battle::createDisplay(0,$pTarget,$_DISP_MISS);
+		}
 		battle::doTargetedAnimation($Character,$pTarget,getAnimation("return_from_attack"));
 
 
-                attackCharacter($pTarget);
-                battle::finishTurn();
-            ]]>
-            </script>
-        </onInvoke>
+		attackCharacter($pTarget);
+		battle::finishTurn();
+	    ]]>
+	    </script>
+	</onInvoke>
     </skill>
-    <skill bp="0" name="Item" sp="0" icon="item">
-        <onInvoke>
-            <script id="ItemSkillInvoke">
-                //var $item = itemMenu();
-                // selectTarget( single , group, default monsters )
-                var @targets = battle::selectTargets(true,false,false);
-                //var $queue = $_ActionQueue;
-                //enqueueAction($queue, $_ActionScript, $_Actor, $target, false, $item);
-                var $target = @targets[0];
-                //var $item =  chooseItem();
-                //useItem($_Group, $item, $target);
 
-                battle::finishTurn();
-
-            </script>
-        </onInvoke>
-
-    </skill>
 	<skill bp="0" name="Focus" sp="5">
 		<onInvoke>
 			<script id="Focus">
@@ -240,26 +270,11 @@
 			</script>
 		</onInvoke>
 	</skill>
-	<skill bp="1.0" name="Wind Slash" sp="50"	>
-		<onSelect>
-			<script id="Wind Slash">
-                // groupSelection ( default to enemy group? )
-                // allows you to select a single target or a group
-                // if you
-                if(groupSelection(false))
-                {
-                   var $group = selectGroup();
-                   enqueueGroupAction($_ActionScript,$_Actor,$group,0);
-                }
-                else
-                {
-                   var $target = selectTarget(true,true,true);
-                   enqueueAction($_ActionScript,$Actor,$target,0);
-                }
-                                animation("WindSlash");
-                doMagicDamage(100,1.0,"wind");
-            </script>
-		</onSelect>
+	<skill bp="0" name="Hurl" sp="0"	>
+		<onInvoke>
+			<script id="HurlSkillInvoke">
+			</script>
+		</onInvoke>
 
 	</skill>
 	<skill bp="0" name="Thrift" sp="60" type="switch">

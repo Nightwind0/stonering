@@ -120,6 +120,7 @@
     <image name="attack"><image-file file="Images/Icons/attack.png"/></image>
     <image name="item"><image-file file="Images/Icons/I_Chest02.png"/></image>
     <image name="flee"><image-file file="Images/Icons/run.png"/></image>
+    <image name="hurl"><image-file file="Images/Icons/Balloon.png"/></image>
 </section>
 
 <section name="Overlays">
@@ -262,6 +263,11 @@
 	    <sprite name="Sword">
 		<image file="Images/Items/Weapons/basic_sword.png">
 		</image>
+	    </sprite>
+	</section>
+	<section name = "Ammo">
+	    <sprite name="Balloon_cyan">
+		<image file="Images/Items/Ammo/Balloon_cyan.png"/>
 	    </sprite>
 	</section>
     </section>

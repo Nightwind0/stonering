@@ -183,6 +183,8 @@
 	       <weaponType baseAttack="3" hitAdd="-0.03" basePrice="35" name="Rod" damageCategory="bash"  >
 		   <iconRef>Weapons/rod</iconRef>
 	       </weaponType>
+	       <!--weaponType baseAttack="3" basePrice="20" name="Balloon" damageCategory="bash">
+	       </weaponType-->
 	   </weaponTypes>
 	   <armorClasses>
 	       <armorClass name="Wooden" valueMultiplier="0.5">

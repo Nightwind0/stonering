@@ -44,6 +44,8 @@ protected:
     virtual int height_for_option(CL_GraphicContext& gc)=0;
     virtual void process_choice(int selection)=0;
     virtual int get_option_count()=0;
+    virtual void draw_more_down_indicator(){}
+    virtual void draw_more_up_indicator(){}
     int get_current_choice() const { return m_cursor; }
     bool is_selected(int index) { return index == m_cursor; }
 private:
