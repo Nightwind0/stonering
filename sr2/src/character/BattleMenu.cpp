@@ -1,12 +1,14 @@
 #include <list>
 #include "BattleMenu.h"
 #include "BattleMenuOption.h"
+#include "GraphicsManager.h"
 
 using StoneRing::BattleMenu;
 using StoneRing::BattleMenuOption;
 
 BattleMenu::BattleMenu()
 {
+    m_font_height = -1;
 }
 
 BattleMenu::~BattleMenu()
@@ -19,15 +21,30 @@ BattleMenu::eType BattleMenu::GetType ( void ) const
     return m_eType;
 }
 
+void BattleMenu::Init() 
+{
+    Menu::Init();
+    GraphicsManager * pGraphicsManager = GraphicsManager::GetInstance();
+    if(m_onFont.is_null()){
+	m_onFont = pGraphicsManager->GetFont(GraphicsManager::BATTLE_POPUP_MENU,"on");
+	m_offFont = pGraphicsManager->GetFont(GraphicsManager::BATTLE_POPUP_MENU,"off");
+	m_selectedFont = pGraphicsManager->GetFont(GraphicsManager::BATTLE_POPUP_MENU,"Selection");
+    }
+}
 
-std::list<BattleMenuOption*>::iterator
+void BattleMenu::SetEnableConditionParams(const ParameterList& params)
+{
+    m_params = params;
+}
+
+std::vector<BattleMenuOption*>::iterator
 BattleMenu::GetOptionsBegin()
 {
     return m_options.begin();
 }
 
 
-std::list<BattleMenuOption*>::iterator
+std::vector<BattleMenuOption*>::iterator
 BattleMenu::GetOptionsEnd()
 {
     return m_options.end();
@@ -45,33 +62,70 @@ bool BattleMenu::handle_element(Element::eElement element, Element *pElement)
 
 void BattleMenu::load_finished()
 {
-    m_current = m_options.begin();
+
 }
 
 
-std::list<BattleMenuOption*>::iterator BattleMenu::GetSelectedOption()
+
+CL_Rectf BattleMenu::get_rect()
 {
-    return m_current;
+    return m_rect;
 }
 
-void BattleMenu::SelectNext()
+BattleMenuOption* BattleMenu::GetSelectedOption() const
 {
-    if(++m_current == m_options.end())
-        m_current = m_options.begin();
+    return m_options[get_current_choice()];
 }
 
-void BattleMenu::SelectPrevious()
+void BattleMenu::draw_option(int option, bool selected, float x, float y, CL_GraphicContext& gc)
 {
-    if(m_current == m_options.begin())
+    BattleMenuOption * pOption = m_options[option];
+    
+    CL_Font font;
+    CL_Image icon = pOption->GetIcon();
+    //icon.set_alignment(origin_bottom_left,0,0);
+    
+
+    if(pOption->Enabled(m_params))
     {
-        m_current = m_options.end();
+	font = m_onFont;
     }
+    else
+    {
+	font = m_offFont;
+    }
+    
+    if(selected)
+    {
+	font = m_selectedFont;
+    }
+    
+    font.draw_text(gc,x  + 12.0f + icon.get_width() , font.get_font_metrics(gc).get_height() + y,pOption->GetName());
 
-    --m_current;
-
+    icon.draw(gc,static_cast<int>(x ), static_cast<int>(y));
+    
 }
 
+int BattleMenu::height_for_option(CL_GraphicContext& gc)
+{
+    if(m_font_height != -1) return m_font_height; 
+    
+    m_font_height = m_onFont.get_font_metrics(gc).get_height();
+    m_font_height = std::max(m_offFont.get_font_metrics(gc).get_height(),static_cast<float>(m_font_height));
+    m_font_height = std::max(m_selectedFont.get_font_metrics(gc).get_height(),static_cast<float>(m_font_height));
+    
+    return m_font_height;
+}
 
+int BattleMenu::get_option_count()
+{
+    return m_options.size();
+}
+
+void BattleMenu::SetRect(CL_Rectf& rect)
+{
+    m_rect = rect;
+}
 
 void BattleMenu::load_attributes(CL_DomNamedNodeMap attr)
 {

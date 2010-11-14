@@ -151,9 +151,9 @@
             <string name="Selection" value="BoldWhite"/>
         </section>
         <section name="text">
-            <integer name="left" value="12"/>
+            <integer name="left" value="14"/>
             <integer name="right" value="312"/>
-            <integer name="top" value="12"/>
+            <integer name="top" value="20"/>
             <integer name="bottom" value="192"/>
         </section>
     </section>

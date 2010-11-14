@@ -241,7 +241,7 @@ namespace StoneRing{
         TargetingState m_targeting_state;
         struct Targets {
             union {
-                ICharacter * m_pTarget;
+                ICharacter * m_pTarget; 
                 ICharacterGroup * m_pGroup;
             }selected;
         bool m_bSelectedGroup;
