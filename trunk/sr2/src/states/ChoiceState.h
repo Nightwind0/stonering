@@ -2,12 +2,13 @@
 #define SR2_CHOICE_STATE_H
 
 #include "State.h"
+#include "Menu.h"
 #include "sr_defines.h"
 
 namespace StoneRing
 {
 
-    class ChoiceState : public State
+    class ChoiceState : public State, public Menu
     {
     public:
         ChoiceState();
@@ -32,6 +33,11 @@ namespace StoneRing
         virtual int GetSelection() const { return m_nSelection; }
 
     private:
+	virtual CL_Rectf get_rect();
+	virtual void draw_option(int option, bool selected, float x, float y, CL_GraphicContext& gc);
+	virtual int height_for_option(CL_GraphicContext& gc);
+	virtual void process_choice(int selection);
+	virtual int get_option_count();
 
         std::string m_text;
         CL_Rectf m_question_rect;
@@ -46,8 +52,6 @@ namespace StoneRing
         CL_Font m_choiceFont;
         CL_Font m_optionFont;
         CL_Font m_currentOptionFont;
-        uint m_nCurrentOption;
-        uint m_nOptionOffset;
         int m_nSelection;
         bool m_bDraw;
     };

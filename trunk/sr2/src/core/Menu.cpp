@@ -19,6 +19,8 @@
 
 #include "Menu.h"
 
+using StoneRing::Menu;
+
 Menu::Menu()
 {
 }

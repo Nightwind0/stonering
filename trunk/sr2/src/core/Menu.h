@@ -24,7 +24,7 @@
 #include <set>
 #include <string>
 
-
+namespace StoneRing {
 
 class Menu
 {
@@ -50,4 +50,5 @@ private:
     int m_cursor;
 };
 
+};
 #endif // MENU_H
