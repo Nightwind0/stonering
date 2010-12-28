@@ -219,17 +219,61 @@ CL_Font  GraphicsManager::GetFont(const std::string &name)
     }
     else
     {
-        CL_ResourceManager& resources  = IApplication::GetInstance()->GetResources();
-
-        CL_Font_Sprite font( GET_MAIN_GC(), "Fonts/" + name, &resources );
-
-        m_font_map [ name ] = font;
-
-        return font;
+	return LoadFont(name); // also puts it into map
     }
 }
 
-CL_Font  GraphicsManager::GetFont( Overlay overlay, const std::string& type )
+CL_Font GraphicsManager::LoadFont(const std::string& name)
+{
+    CL_ResourceManager& resources  = IApplication::GetInstance()->GetResources();
+    const std::string fontname = "Fonts/" + name;
+    CL_Resource font_resource = resources.get_resource(fontname);
+    
+    CL_Font font;
+    CL_Colorf color = CL_Colorf::white;
+    if(font_resource.get_type() == "font")
+    {
+	 CL_Font_Sprite spritefont( GET_MAIN_GC(), fontname, &resources );
+	 font = spritefont;
+    }
+    else if(font_resource.get_type() == "freetype")
+    {
+        CL_String filename = font_resource.get_element().get_attribute("file");
+        CL_String fontname = font_resource.get_element().get_attribute("font_name");
+        CL_String size_str = font_resource.get_element().get_attribute("size");
+        CL_String color_str =  font_resource.get_element().get_attribute("color");
+	
+	CL_Colorf thecolor(color_str);
+        int size = atoi(size_str.c_str());
+
+        CL_IODevice file = resources.get_directory(font_resource).open_file_read(filename);
+        CL_Font_Freetype thefont(GET_MAIN_GC(),
+                                 filename,
+                                 size,
+                                 file);
+	font = thefont;
+	color = thecolor;
+    }
+    else if(font_resource.get_type() == "systemfont")
+    {
+	CL_String fontname = font_resource.get_element().get_attribute("font_name");
+	CL_String size_str = font_resource.get_element().get_attribute("size");
+	CL_String color_str = font_resource.get_element().get_attribute("color");
+	CL_Colorf thecolor(color_str);
+	
+	CL_Font_System thefont(GET_MAIN_GC(), fontname, atoi(size_str.c_str()));
+	
+	font = thefont;
+	color = thecolor;
+    }
+    
+    m_font_map[name] = font;
+    m_font_colors[name] = color;
+    
+    return font;
+}
+
+std::string  GraphicsManager::GetFontName ( Overlay overlay, const std::string& type )
 {
     std::map<Overlay,std::map<std::string,std::string> >::iterator mapIt = m_overlay_font_map.find( overlay  );
     CL_ResourceManager & resources  = IApplication::GetInstance()->GetResources();
@@ -260,58 +304,19 @@ CL_Font  GraphicsManager::GetFont( Overlay overlay, const std::string& type )
     }
 
 
-    return GetFont(fontname);
+    return fontname;
 }
 
-CL_Font  GraphicsManager::GetDisplayFont( DisplayFont font )
+std::string  GraphicsManager::GetFontName( DisplayFont font )
 {
-    std::map<DisplayFont,CL_Font>::iterator mapIt = m_display_font_map.find(font);
-
-    if (mapIt == m_display_font_map.end())
-    {
-        CL_ResourceManager & resources  = IApplication::GetInstance()->GetResources();
-        CL_Resource resource = resources.get_resource("Fonts/" + NameOfDisplayFont(font));
-
-        CL_String filename = resource.get_element().get_attribute("file");
-        CL_String fontname = resource.get_element().get_attribute("font_name");
-        CL_String size_str = resource.get_element().get_attribute("size");
-        CL_String color =    resource.get_element().get_attribute("color");
-
-        m_display_font_colors[font] = CL_Colorf(color);
-        int size = atoi(size_str.c_str());
-        /*
-         	CL_Font_Freetype::CL_Font_Freetype(
-        	CL_GraphicContext & gc,
-        	const CL_StringRef & typeface_name,
-        	int height,
-        	const CL_VirtualDirectory & directory);
-
-        */
-        CL_IODevice file = resources.get_directory(resource).open_file_read(filename);
-        CL_Font_Freetype thefont(GET_MAIN_GC(),
-                                 filename,
-                                 size,
-                                 file);
-
-        if(thefont.is_null()) throw CL_Exception("Bad display font");
-
-
-        m_display_font_map[font] = thefont;
-        return thefont;
-    }
-    else
-    {
-        return mapIt->second;
-    }
+    return NameOfDisplayFont(font);
 
 }
 
-CL_Colorf GraphicsManager::GetFontColor ( DisplayFont font )
+CL_Colorf GraphicsManager::GetFontColor ( const std::string& font )
 {
-    return m_display_font_colors[font];
-    //return CL_Colorf::teal;
+    return m_font_colors[font];
 }
-
 
 GraphicsManager::GraphicsManager()
 {

@@ -29,6 +29,8 @@ stonering_SOURCES =	src/Application.cpp \
 			src/battle/AnimationState.cpp \
 			src/battle/TargetingState.cpp \
 			src/battle/TargetingState.h \
+			src/battle/BattleConfig.h \
+			src/battle/BattleConfig.cpp \
 			src/character/BattleMenu.cpp \
 			src/character/BattleMenuOption.cpp \
 			src/character/Character.cpp \

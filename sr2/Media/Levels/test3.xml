@@ -3495,7 +3495,6 @@
 		<mo name="Presence" size="small" type="square" xpos="3" ypos="3">
 			<event name="sensePresence" triggerType="talk" remember="true">
 				<script id="presence_">
-					say("????", round(50 * base(2,10) ^ 50));
 					say("????", "You sense a presence. It is as though you can feel the watching eyes of someone.
 				Perhaps someone you once knew. You are frozen in your tracks. You wonder about the sky. What color is it?
 				What does it mean to you? What will you do if it ever goes away? Why? What is it with monkeys, anyway.
@@ -3546,7 +3545,7 @@
 			<event name="CatChoice" triggerType="talk" repeatable="false" remember="true">
 				<script id="CatChoice">
 					var @options = array("You" , "The other cat" , "Jesus" , "Option 3" , "Option 4" , "Option 5" , "Option 6");
-					var $decision = choice( "Who is your Favorite cat", @options);
+					var $decision = choice( "Who is your Favorite cat?", @options);
 					switch($decision)
 					{
 					    case 0:

@@ -153,7 +153,7 @@ extern bool gbDebugStop;
 #endif
 
 
-int draw_text(CL_GraphicContext& gc, CL_Font font, CL_Rectf rect, CL_StringRef string, uint string_pos=0);
+int draw_text(CL_GraphicContext& gc, CL_Font font, CL_Colorf ccolor, CL_Rectf rect, CL_StringRef string, uint string_pos=0);
 
 
 template<class T>

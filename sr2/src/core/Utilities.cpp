@@ -58,7 +58,7 @@ CL_Size get_text_size(CL_Font font, CL_GraphicContext &gc, const CL_StringRef &t
 
 
 
-int draw_text(CL_GraphicContext& gc, CL_Font font, CL_Rectf rect, CL_StringRef string, uint string_pos)
+int draw_text(CL_GraphicContext& gc, CL_Font font, CL_Colorf color, CL_Rectf rect, CL_StringRef string, uint string_pos)
 {
     CL_StringRef str = string.substr(string_pos);
     CL_FontMetrics metrics = font.get_font_metrics(gc);
@@ -107,7 +107,7 @@ int draw_text(CL_GraphicContext& gc, CL_Font font, CL_Rectf rect, CL_StringRef s
     }
 
 
-    font.draw_text(gc,rect.left,rect.top + metrics.get_height(),string.substr(string_pos,max_characters));
+    font.draw_text(gc,rect.left,rect.top + metrics.get_height(),string.substr(string_pos,max_characters),color);
 
     return max_characters;
 
