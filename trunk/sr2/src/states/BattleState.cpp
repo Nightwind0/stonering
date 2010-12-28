@@ -66,6 +66,10 @@ void BattleState::init(const std::vector<MonsterRef*>& monsters, int cellRows, i
         if (count > 0) throw CL_Exception("Couldn't fit all monsters in their rows and columns");
     }
     m_backdrop = pGraphicsManager->GetBackdrop(backdrop);
+    
+    
+    
+    
 }
 
 void BattleState::init(const MonsterGroup &group, const std::string &backdrop)
@@ -392,23 +396,31 @@ void BattleState::draw_status(const CL_Rectf &screenRect, CL_GraphicContext& GC)
         std::ostringstream hp;
         hp << std::setw(6) << pChar->GetAttribute(ICharacter::CA_HP) << '/'
         << pChar->GetAttribute(ICharacter::CA_MAXHP);
-        CL_Font generalFont = pGraphicsManager->GetFont(GraphicsManager::BATTLE_STATUS, "general");
-        CL_Font  hpFont = pGraphicsManager->GetFont(GraphicsManager::BATTLE_STATUS, "hp");
-        CL_Font  mpFont = pGraphicsManager->GetFont(GraphicsManager::BATTLE_STATUS, "mp");
+	std::string generalFontName = pGraphicsManager->GetFontName(GraphicsManager::BATTLE_STATUS, "general");
+	std::string hpFontName = pGraphicsManager->GetFontName(GraphicsManager::BATTLE_STATUS, "hp");
+	std::string mpFontName = pGraphicsManager->GetFontName(GraphicsManager::BATTLE_STATUS, "mp");
+        CL_Font generalFont = pGraphicsManager->GetFont(generalFontName);
+        CL_Font  hpFont = pGraphicsManager->GetFont(hpFontName);
+        CL_Font  mpFont = pGraphicsManager->GetFont(mpFontName);
+	CL_Colorf generalColor = pGraphicsManager->GetFontColor(generalFontName);
+	CL_Colorf hpColor = pGraphicsManager->GetFontColor(hpFontName);
+	CL_Colorf mpColor = pGraphicsManager->GetFontColor(mpFontName);
 
         generalFont.draw_text(GC,m_status_rect.left,
                               m_status_rect.top + generalFont.get_font_metrics(GC).get_height() +(p *
                                                generalFont.get_font_metrics(GC).get_height())
                                               ,
-                              name.str());
+                              name.str(),generalColor);
         hpFont.draw_text(GC,m_status_rect.get_width() / 3 + m_status_rect.left,
                          m_status_rect.top + hpFont.get_font_metrics(GC).get_height()+(p* hpFont.get_font_metrics(GC).get_height())
-                         ,hp.str());
+                         ,hp.str(),hpColor);
         std::ostringstream mp;
         mp << std::setw(6) << pChar->GetAttribute(ICharacter::CA_MP) << '/'
         << pChar->GetAttribute(ICharacter::CA_MAXMP);
         mpFont.draw_text(GC,(m_status_rect.get_width() / 3) * 2 + m_status_rect.left,
-                         m_status_rect.top + mpFont.get_font_metrics(GC).get_height() + (p*mpFont.get_font_metrics(GC).get_height()),mp.str());
+                         m_status_rect.top + mpFont.get_font_metrics(GC).get_height() + (p*mpFont.get_font_metrics(GC).get_height()),mp.str(), 
+			 mpColor
+			);
 
     }
 }
@@ -507,8 +519,8 @@ void BattleState::Display::draw(CL_GraphicContext& GC)
 
     }
 
-    font = pGraphics->GetDisplayFont(displayFont);
-    color = pGraphics->GetFontColor(displayFont);
+    font = pGraphics->GetFont(pGraphics->GetFontName(displayFont));
+    color = pGraphics->GetFontColor(pGraphics->GetFontName(displayFont));
 
     color.set_alpha(1.0f - m_complete);
     shadow_color.set_alpha(1.0f-m_complete);
@@ -1145,6 +1157,9 @@ void BattleState::lose()
     m_bDone = true;
     // TODO: Put up lose state
     std::cout << "Lose :(" << std::endl;
+    
+    BattleConfig * battleConfig = IApplication::GetInstance()->GetBattleConfig();
+    
 }
 
 void BattleState::win()

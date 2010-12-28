@@ -260,6 +260,7 @@ namespace StoneRing{
 	bool m_bBossBattle;
         std::list<Display> m_displays;
 	std::vector<Sprite> m_sprites;
+	BattleConfig * m_config;
 	
 
         friend class BattleState::Display;

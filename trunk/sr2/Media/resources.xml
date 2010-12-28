@@ -4,11 +4,13 @@
   <string name="name" value="Stone Ring: Reign of Mordus" />
   <image name="splash"><image-file file="Images/Screens/splash.png"  /></image>
   <image name="splashbg"><image-file file="Images/Screens/splash_bg.png" /></image>
+  <string name="BattleConfig" value="Media/battleConfig.xml"/>
   <!-- integer name="width" value="640" / -->
   <!-- integer name="height" value="480" / -->
  </section>
  <section name="Game">
     <string name="StartupScript" value="Media/init.steel"/>
+   
  	<string name="SpellDefinitions" value="Media/spells.xml"/>
  	<string name="ItemDefinitions" value="Media/items.xml"/>
 	<string name="StatusEffectDefinitions" value="Media/statusEffects.xml"/>
@@ -45,39 +47,27 @@
     <freetype name="Font_hp_plus" file="Images/Fonts/cwisdom.ttf" size="32" color="#00FF00FF" font_name="Conventional Wisdom"/>
     <freetype name="Font_hp_minus" file="Images/Fonts/cwisdom.ttf" size="32" color="#FF0000FF" font_name="Conventional Wisdom"/>
     <freetype name="Font_mp_plus" file="Images/Fonts/cwisdom.ttf" size="32" color="#FF00FFFF" font_name="Conventional Wisdom"/>
-    <freetype name="Font_mp_minus" file="Images/Fonts/cwisdom.ttf" size="32" color="#00FFFFFF"font_name="Conventional Wisdom"/>
+    <freetype name="Font_mp_minus" file="Images/Fonts/cwisdom.ttf" size="32" color="#00FFFFFF" font_name="Conventional Wisdom"/>
+    <freetype name="sb_black" size="24" color="#000000" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+    <freetype name="sb_blue" size="24" color="#000080" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+    <freetype name="sb_green" size="24" color="#00FF00" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+    <freetype name="sb_purple" size="24" color="#680090" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+    <freetype name="sb_red" size="24" color="#FF0000" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+    <freetype name="sb_cyan" size="24" color="#00FFFF" file="Images/Fonts/BorisBlackBloxx.ttf"/>
     <freetype name="Font_miss" file="Images/Fonts/cwisdom.ttf" size="32" color="#FFFF00FF" font_name="Conventional Wisdom"/>
-	<sprite name="Font_sb_black">
-		<image file="Images/Fonts/sb_black.png"><alpha /></image>
-	</sprite>
-    <sprite name="Font_sb_blue">
-        <image file="Images/Fonts/sb_blue.png"><alpha/></image>
-    </sprite>
-    <sprite name="Font_sb_red">
-        <image file="Images/Fonts/sb_red.png"><alpha/></image>
-    </sprite>
-    <sprite name="Font_sb_green">
-       <image file="Images/Fonts/sb_green.png"><alpha/></image>
-    </sprite>
-    <sprite name="Font_sb_purple">
-        <image file="Images/Fonts/sb_purple.png"><alpha/></image>
-    </sprite>
 
-	<font name="sb_black">
+
+	<!--font name="sb_black">
         <bitmap glyphs="Fonts/Font_sb_black" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw" />
     </font>
+
     <font name="sb_blue">
         <bitmap glyphs="Fonts/Font_sb_blue" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw" />
     </font>
     <font name="sb_green">
         <bitmap glyphs="Fonts/Font_sb_green" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw" />
-    </font>
-    <font name="sb_red">
-        <bitmap glyphs="Fonts/Font_sb_red" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw" />
-    </font>
-    <font name="sb_purple">
-        <bitmap glyphs="Fonts/Font_sb_purple" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw" />
-    </font>
+    </font-->
+
 
 	<sprite name="Font_bold_white">
 		<image file="Images/Fonts/bold_white.png"><alpha/></image>
@@ -97,6 +87,13 @@
 	<font name="BoldGray">
 		<bitmap glyphs="Fonts/Font_bold_gray" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw"/>
 	</font>
+	<sprite name="Font_bold_black">
+		<image file="Images/Fonts/bold_black.png"><alpha/></image>
+	</sprite>
+	<font name="BoldBlack">
+		<bitmap glyphs="Fonts/Font_bold_black" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw"/>
+	</font>
+
 </section>
  <section name="Levels">
  	<string name="examplelevel" value="test3.xml" />
@@ -130,7 +127,7 @@
         <integer name="y" value="396"/>
         <section name="fonts">
             <string name="hp" value="sb_green"/>
-            <string name="mp" value="sb_purple"/>
+            <string name="mp" value="sb_cyan"/>
             <string name="bp" value="sb_blue"/>
             <string name="general" value="sb_black"/>
             <string name="bad" value="sb_red"/>
@@ -138,7 +135,7 @@
         <section name="text">
             <integer name="left" value="12"/>
             <integer name="right" value="484"/>
-            <integer name="top" value="12"/>
+            <integer name="top" value="24"/>
             <integer name="bottom" value="191"/>
         </section>
     </section>
@@ -147,7 +144,7 @@
         <integer name="y" value="396"/>
         <integer name="x" value="476"/>
         <section name="fonts">
-            <string name="on" value="BoldPowderBlue"/>
+            <string name="on" value="BoldBlack"/>
             <string name="off" value="BoldGray"/>
             <string name="Selection" value="BoldWhite"/>
         </section>
@@ -171,16 +168,16 @@
 	<section name = "Say">
 		<image name="overlay"><image-file file="Images/Overlays/say_overlay10.png"/></image>
 		<integer name="x" value="0"/>
-		<integer name="y" value="300"/>
+		<integer name="y" value="320"/>
 		<section name="header">
 			<section name="bgcolor">
 				<integer name="r" value="0"/>
 				<integer name="g" value="0"/>
 				<integer name="b" value="0"/>
-				<integer name="a" value="200"/>
+				<integer name="a" value="0"/>
 			</section>
-			<integer name="left" value="16"/>
-			<integer name="top" value="315"/>
+			<integer name="left" value="24"/>
+			<integer name="top" value="340"/>
 			<integer name="right" value="783" />
 			<integer name="bottom" value="369"/>
 		</section>
@@ -189,16 +186,16 @@
 				<integer name="r" value="0"/>
 				<integer name="g" value="0"/>
 				<integer name="b" value="0"/>
-				<integer name="a" value="200"/>
+				<integer name="a" value="0"/>
 			</section>
-			<integer name="left" value="16"/>
+			<integer name="left" value="24"/>
 			<integer name="top" value="388"/>
 			<integer name="right" value="783" />
 			<integer name="bottom" value="580"/>
 		</section>
         <section name="fonts">
-            <string name="Speaker" value="BoldWhite"/>
-            <string name="Speech" value="BoldGray"/>
+            <string name="Speaker" value="BoldBlack"/>
+            <string name="Speech" value="BoldWhite"/>
         </section>
 	</section>
 	<section name = "Choice">
@@ -218,8 +215,8 @@
 				<integer name="b" value="0"/>
 				<integer name="a" value="0"/>
 			</section>
-			<integer name="left" value="16"/>
-			<integer name="top" value="215"/>
+			<integer name="left" value="24"/>
+			<integer name="top" value="224"/>
 			<integer name="right" value="783" />
 			<integer name="bottom" value="319"/>
 		</section>
@@ -230,15 +227,15 @@
 				<integer name="b" value="0"/>
 				<integer name="a" value="0"/>
 			</section>
-			<integer name="left" value="16"/>
-			<integer name="top" value="345"/>
+			<integer name="left" value="24"/>
+			<integer name="top" value="352"/>
 			<integer name="right" value="783" />
 			<integer name="bottom" value="580"/>
 		</section>
         <section name="fonts">
-            <string name="Option" value="BoldWhite"/>
+            <string name="Option" value="BoldBlack"/>
             <string name="Choice" value="BoldWhite"/>
-            <string name="Selection" value="BoldPowderBlue"/>
+            <string name="Selection" value="BoldWhite"/>
         </section>
 	</section>
 </section>

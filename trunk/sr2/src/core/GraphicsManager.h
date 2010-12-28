@@ -58,21 +58,21 @@ namespace StoneRing
         std::string LookUpMapWithSprite( CL_Sprite );
 
         CL_Font  GetFont(const std::string& name);
-        CL_Font  GetFont( Overlay overlay, const std::string& type );
-        CL_Font  GetDisplayFont( DisplayFont font );
-        CL_Colorf GetFontColor ( DisplayFont font );
+        std::string GetFontName( Overlay overlay, const std::string& type );
+        std::string  GetFontName ( DisplayFont font );
+	CL_Colorf GetFontColor ( const std::string& font );
 
     private:
 
         static std::string NameOfOverlay(Overlay overlay);
         static std::string NameOfDisplayFont(DisplayFont font);
+	CL_Font LoadFont(const std::string& name);
         std::map<Overlay,CL_Image> m_overlay_map;
         std::map<std::string,CL_Sprite> m_tile_map;
         std::map<std::string,CL_Font> m_font_map;
         std::map<std::string,CL_Image> m_icon_map;
         std::map<Overlay,std::map<std::string,std::string> > m_overlay_font_map;
-        std::map<DisplayFont,CL_Font> m_display_font_map;
-        std::map<DisplayFont,CL_Colorf> m_display_font_colors;
+        std::map<std::string,CL_Colorf> m_font_colors;
         static GraphicsManager *m_pInstance;
         GraphicsManager();
         ~GraphicsManager();

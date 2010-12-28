@@ -24,6 +24,9 @@
 #else
 #include <SteelType.h>
 #endif
+
+#include "BattleConfig.h"
+
 //
 //
 //
@@ -901,6 +904,8 @@ void Application::RequestRedraw(const State * /*pState*/)
     draw();
 }
 
+
+
 AstScript * Application::LoadScript(const std::string &name, const std::string &script)
 {
     return mInterpreter.prebuildAst(name,script);
@@ -1229,7 +1234,8 @@ int Application::main(const std::vector<CL_String> &args)
         m_window = CL_DisplayWindow(desc);
 	
 
-
+	std::string battleConfig = CL_String_load("Configuration/BattleConfig",m_resources);
+	mBattleConfig.Load(battleConfig);
 
         //for(int i =0; i < m_window.get_buffer_count(); i++)
         //  m_window.get_buffer(i).to_format(CL_PixelFormat(24,0,0,0,0,false,0,pixelformat_rgba));

@@ -33,6 +33,8 @@ namespace StoneRing
         std::string m_text;
         CL_Font m_speakerFont;
         CL_Font m_speechFont;
+	CL_Colorf m_speakerColor;
+	CL_Colorf m_speechColor;
         CL_Rectf m_speaker_rect;
         CL_Rectf m_text_rect;
         CL_Color m_speaker_BGColor;
