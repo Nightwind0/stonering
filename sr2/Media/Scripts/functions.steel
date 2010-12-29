@@ -1,0 +1,4 @@
+final function tnl(declare $level)
+{
+	return 100.0 * $level ^ 2;
+}

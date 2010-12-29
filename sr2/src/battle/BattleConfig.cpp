@@ -70,7 +70,16 @@ void BattleConfig::Load(const std::string& filename)
 	if(!grandchild.is_text() && !grandchild.is_cdata_section())
 	    throw CL_Exception("Child of battle configuration element wasn't text.");
 	
-	*ppScript = IApplication::GetInstance()->LoadScript(childElement.get_node_name(), grandchild.to_text().get_node_value());
+	std::string script_text;
+	if(grandchild.is_cdata_section())
+	    script_text = grandchild.to_cdata_section().get_node_value();
+	else if(grandchild.is_text())
+	    script_text = grandchild.to_text().get_node_value();
+	else
+	    std::cout << "What is Grandchild?" << std::endl;
+	
+	
+	*ppScript = IApplication::GetInstance()->LoadScript(childElement.get_node_name(), script_text);
 	 
     }
     
