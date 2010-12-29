@@ -140,6 +140,7 @@ void Monster::SetToggle(ICharacter::eCharacterAttribute attr, bool state)
 void Monster::Kill()
 {
     SetToggle(CA_ALIVE,false);
+    // TODO: They should have some kind of steel hook here
 }
 
 void Monster::Attacked()

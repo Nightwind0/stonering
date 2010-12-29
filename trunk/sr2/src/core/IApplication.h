@@ -66,7 +66,6 @@ namespace StoneRing
         virtual int GetScreenHeight()const=0;
 
         virtual CL_Rect GetDisplayRect() const=0;
-	virtual BattleConfig* GetBattleConfig() const =0;
         virtual void RequestRedraw(const State *pState)=0;
         virtual void RunState(State *pState)=0;
         virtual AstScript * LoadScript(const std::string &name, const std::string &script)=0;

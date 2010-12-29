@@ -951,6 +951,7 @@ void Application::registerSteelFunctions()
 
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getCharacterName(this,&Application::getCharacterName);
     static SteelFunctor2Arg<Application,const SteelType::Handle,uint> fn_getCharacterAttribute(this, &Application::getCharacterAttribute);
+    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getCharacterLevel(this, &Application::getCharacterLevel);
     static SteelFunctor2Arg<Application,const SteelType::Handle,uint> fn_getCharacterToggle(this, &Application::getCharacterToggle);
     static SteelFunctor3Arg<Application,const SteelType::Handle,uint,bool> fn_setCharacterToggle(this, &Application::setCharacterToggle);
     static SteelFunctor2Arg<Application,const SteelType::Handle, uint> fn_getEquippedWeaponAttribute(this,&Application::getEquippedWeaponAttribute);
@@ -1076,6 +1077,7 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction("getArmorAttribute", &fn_getArmorAttribute);
 
     mInterpreter.addFunction("getCharacterAttribute", &fn_getCharacterAttribute);
+    mInterpreter.addFunction("getCharacterLevel", &fn_getCharacterLevel);
     mInterpreter.addFunction("getCharacterToggle", &fn_getCharacterToggle);
     mInterpreter.addFunction("setCharacterToggle", &fn_setCharacterToggle);
     mInterpreter.addFunction("getCharacterName", &fn_getCharacterName);
@@ -1236,6 +1238,7 @@ int Application::main(const std::vector<CL_String> &args)
 
 	std::string battleConfig = CL_String_load("Configuration/BattleConfig",m_resources);
 	mBattleConfig.Load(battleConfig);
+	mBattleState.SetConfig(&mBattleConfig);
 
         //for(int i =0; i < m_window.get_buffer_count(); i++)
         //  m_window.get_buffer(i).to_format(CL_PixelFormat(24,0,0,0,0,false,0,pixelformat_rgba));

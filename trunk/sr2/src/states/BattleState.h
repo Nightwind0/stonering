@@ -9,6 +9,7 @@
 #include <stack>
 #include "BattleMenuOption.h"
 #include "TargetingState.h"
+#include "BattleConfig.h"
 
 namespace StoneRing{
 
@@ -40,6 +41,7 @@ namespace StoneRing{
         virtual void SteelCleanup   (SteelInterpreter *);
         virtual void Finish(); // Hook to clean up or whatever after being popped
 
+	void SetConfig(BattleConfig* config);
 	typedef int SpriteTicket;
 	static const SpriteTicket UNDEFINED_SPRITE_TICKET;
     private:

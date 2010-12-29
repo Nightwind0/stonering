@@ -8,6 +8,7 @@
 #include "Party.h"
 #include "BattleMenu.h"
 #include "AnimationState.h"
+#include "BattleConfig.h"
 #include <sstream>
 #include <iomanip>
 #include <algorithm>
@@ -17,10 +18,16 @@ using namespace StoneRing;
 
 const BattleState::SpriteTicket BattleState::UNDEFINED_SPRITE_TICKET=-1;
 
+void BattleState::SetConfig(BattleConfig* config)
+{
+    m_config = config;
+}
+
 void BattleState::init(const std::vector<MonsterRef*>& monsters, int cellRows, int cellColumns, bool isBoss, const std::string & backdrop)
 {
     CharacterManager * pCharManager = IApplication::GetInstance()->GetCharacterManager();
     GraphicsManager * pGraphicsManager = GraphicsManager::GetInstance();
+
 
     m_monsters = new MonsterParty();
 
@@ -331,9 +338,11 @@ void BattleState::Start()
     m_statusBar = pGraphicsManager->GetOverlay(GraphicsManager::BATTLE_STATUS);
     m_battleMenu = pGraphicsManager->GetOverlay(GraphicsManager::BATTLE_MENU);
     m_battlePopup = pGraphicsManager->GetOverlay(GraphicsManager::BATTLE_POPUP_MENU);
+
+    
     init_or_release_players(false);
 
-	m_bDone = false;
+    m_bDone = false;
     roll_initiative();
     set_positions_to_loci();
     next_turn();
@@ -935,6 +944,8 @@ void BattleState::SteelInit(SteelInterpreter* pInterpreter)
     pInterpreter->addFunction("doSkill","battle",&fn_doSkill);
     pInterpreter->addFunction("flee","battle",&fn_flee);
     pInterpreter->addFunction("isBossBattle","battle",&fn_isBossBattle);
+    
+    m_config->SetupForBattle();
 
 }
 
@@ -942,6 +953,7 @@ void BattleState::SteelCleanup   (SteelInterpreter* pInterpreter)
 {
     pInterpreter->removeFunctions("battle",false);
     pInterpreter->popScope();
+    m_config->TeardownForBattle();
 }
 
 ICharacter* BattleState::get_next_character(const ICharacterGroup* pParty, const ICharacter* pCharacter) const
@@ -1023,7 +1035,7 @@ void BattleState::SelectPreviousTarget()
 
 void BattleState::SelectLeftTarget()
 {
-
+// 
 }
 
 void BattleState::SelectRightTarget()
@@ -1059,6 +1071,8 @@ void BattleState::FinishTurn()
 {
     // TODO: Good time to check if either side is wiped out, etc
     // And, any dead monsters need to have ->Remove called on them
+    ParameterList params;
+    m_config->OnTurn(params);
     check_for_death();
     if(!end_conditions()){
 	pick_next_character();
@@ -1155,18 +1169,18 @@ void BattleState::death_animation(Monster* pMonster)
 void BattleState::lose()
 {
     m_bDone = true;
-    // TODO: Put up lose state
-    std::cout << "Lose :(" << std::endl;
-    
-    BattleConfig * battleConfig = IApplication::GetInstance()->GetBattleConfig();
-    
+
+
+    ParameterList params;
+    m_config->OnBattleLost(params);    
 }
 
 void BattleState::win()
 {
     m_bDone = true;
-    // TODO: Put up win state
-    std::cout << "Win!" << std::endl;
+    ParameterList params;
+    // All battle methods remain valid here
+    m_config->OnBattleWon(params);
 }
 
 

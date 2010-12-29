@@ -9,7 +9,7 @@
   <!-- integer name="height" value="480" / -->
  </section>
  <section name="Game">
-    <string name="StartupScript" value="Media/init.steel"/>
+    <string name="StartupScript" value="Media/Scripts/init.steel"/>
    
  	<string name="SpellDefinitions" value="Media/spells.xml"/>
  	<string name="ItemDefinitions" value="Media/items.xml"/>

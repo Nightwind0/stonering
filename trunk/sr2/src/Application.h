@@ -50,7 +50,6 @@ namespace StoneRing
         virtual void StartBattle(const MonsterGroup &group,const std::string &backdrop);
         virtual void RequestRedraw(const State *pState);
 	virtual void RunState(State *pState);
-	virtual BattleConfig* GetBattleConfig() const  { return const_cast<BattleConfig*>(&mBattleConfig); }
         virtual AstScript * LoadScript(const std::string &name, const std::string &script);
         virtual SteelType RunScript(AstScript * pScript);
         virtual SteelType RunScript(AstScript *pScript, const ParameterList &params);

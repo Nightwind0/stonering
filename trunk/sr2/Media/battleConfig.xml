@@ -1,13 +1,33 @@
 <setup>
     <![CDATA[
+    println("Setup");
 	]]>
 </setup>
 <onWon>
     <![CDATA[
-    
+	include "Media/Scripts/functions.steel";
+	println("A winner is you");
+	declare @monsters = battle::getCharacterGroup(true); // Get monsters
+	declare @characters = battle::getCharacterGroup(false); // Get characters
+	const $B = 10; // How many equal-level monsters to defeat to gain a level
+	const $b = 1.07; // At 1.07, a character 10 levels higher than you is worth double the XP
+	foreach (declare $character) in @characters {
+	    declare $total_xp = 0;
+	    foreach (declare $monster) in @monsters {
+		declare $char_level = getCharacterLevel($character);
+		declare $monster_level = getCharacterLevel($monster);
+	
+		declare $xp = (((tnl($char_level + 1) - tnl($char_level)) /  $B)) * $b ^ ($char_level - $monster_level);
+		//declare $xp = tnl($char_level + 1) - tnl($char_level);
+		$total_xp = $total_xp + $xp;
+	    }
+	    $total_xp = math::ceil($total_xp);
+	    println ( "{getCharacterName($character)} got {$total_xp}" );
+	}
 	]]>
 </onWon>
 <onLost>
     <![CDATA[
+    println("Lost");
 	]]>
 </onLost>
