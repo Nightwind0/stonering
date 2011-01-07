@@ -30,6 +30,11 @@
 //
 //
 //
+
+
+
+
+
 using StoneRing::Application;
 using namespace StoneRing;
 
@@ -724,6 +729,54 @@ void Application::teardownClanLib()
 }
 
 
+double Application::get_value_for_axis_direction(IApplication::AxisDirection dir) const
+{
+    // TODO: Make these dynamic, some joysticks are different
+    switch(dir)
+    {
+	case AXIS_LEFT:
+	    return -1.0;
+	case AXIS_RIGHT:
+	    return 1.0;
+	case AXIS_UP:
+	    return -1.0;
+	case AXIS_DOWN:
+	    return 1.0;
+    }
+}
+
+IApplication::AxisDirection Application::get_direction_for_value(IApplication::Axis axis, double value) const
+{
+    if(value == 0.0) return AXIS_NEUTRAL;
+    if(axis == IApplication::AXIS_HORIZONTAL)
+    {
+	if(get_value_for_axis_direction(AXIS_LEFT) >0)
+	{
+	    if(value >0) return AXIS_LEFT;
+	    else return AXIS_RIGHT;
+	}
+	else
+	{
+	    if(value >0) return AXIS_RIGHT;
+	    else return AXIS_LEFT;
+	}
+    }
+    else if(axis == IApplication::AXIS_VERTICAL)
+    {
+	if(get_value_for_axis_direction(AXIS_UP) >0)
+	{
+	    if(value >0) return AXIS_UP;
+	    else return AXIS_DOWN;
+	}
+	else
+	{
+	    if(value >0) return AXIS_DOWN;
+	    else return AXIS_UP;
+	}
+    }
+}
+
+
 void Application::onSignalKeyDown(const CL_InputEvent &key, const CL_InputState&)
 {
 
@@ -734,16 +787,16 @@ void Application::onSignalKeyDown(const CL_InputEvent &key, const CL_InputState&
     switch(key.id)
     {
 	case CL_KEY_DOWN:
-	    mStates.back()->HandleAxisMove(IApplication::AXIS_VERTICAL,1.0);
+	    mStates.back()->HandleAxisMove(IApplication::AXIS_VERTICAL,AXIS_DOWN,get_value_for_axis_direction(AXIS_DOWN));
 	    break;
 	case CL_KEY_UP:
-	    mStates.back()->HandleAxisMove(IApplication::AXIS_VERTICAL,-1.0);
+	    mStates.back()->HandleAxisMove(IApplication::AXIS_VERTICAL,AXIS_UP,get_value_for_axis_direction(AXIS_UP));
 	    break;
 	case CL_KEY_LEFT:
-	    mStates.back()->HandleAxisMove(IApplication::AXIS_HORIZONTAL,-1.0);
+	    mStates.back()->HandleAxisMove(IApplication::AXIS_HORIZONTAL,AXIS_LEFT,get_value_for_axis_direction(AXIS_LEFT));
 	    break;
 	case CL_KEY_RIGHT:
-	    mStates.back()->HandleAxisMove(IApplication::AXIS_HORIZONTAL,1.0);
+	    mStates.back()->HandleAxisMove(IApplication::AXIS_HORIZONTAL,AXIS_RIGHT,get_value_for_axis_direction(AXIS_RIGHT));
 	    break;
 	case CL_KEY_SPACE:
 	    mStates.back()->HandleButtonDown(BUTTON_CONFIRM);
@@ -768,6 +821,7 @@ void Application::onSignalKeyDown(const CL_InputEvent &key, const CL_InputState&
 	    break;
     }
     
+    
 }
 
 void Application::onSignalKeyUp(const CL_InputEvent &key, const CL_InputState&)
@@ -778,13 +832,13 @@ void Application::onSignalKeyUp(const CL_InputEvent &key, const CL_InputState&)
     switch(key.id)
     {
 	case CL_KEY_DOWN:
-	case CL_KEY_UP:
-	    mStates.back()->HandleAxisMove(IApplication::AXIS_VERTICAL,0.0);
+	case CL_KEY_UP: 
+	   mStates.back()->HandleAxisMove(IApplication::AXIS_VERTICAL,AXIS_NEUTRAL,0.0);
 	    break;
 	case CL_KEY_LEFT:
 	case CL_KEY_RIGHT:
-	    mStates.back()->HandleAxisMove(IApplication::AXIS_HORIZONTAL,0.0);
-	    break;
+	   mStates.back()->HandleAxisMove(IApplication::AXIS_HORIZONTAL,AXIS_NEUTRAL,0.0);
+	   break;
 	case CL_KEY_SPACE:
 	    mStates.back()->HandleButtonUp(BUTTON_CONFIRM);
 	    break;
@@ -885,11 +939,11 @@ void Application::onSignalJoystickAxisMove(const CL_InputEvent &event, const CL_
     
     if(event.id == 0)
     {
-	mStates.back()->HandleAxisMove(AXIS_HORIZONTAL, event.axis_pos);
+	mStates.back()->HandleAxisMove(AXIS_HORIZONTAL,get_direction_for_value(AXIS_HORIZONTAL,event.axis_pos), event.axis_pos);
     }
     else
     {
-	mStates.back()->HandleAxisMove(AXIS_VERTICAL, event.axis_pos);
+	mStates.back()->HandleAxisMove(AXIS_VERTICAL, get_direction_for_value(AXIS_VERTICAL,event.axis_pos),event.axis_pos);
     }
 }
 
@@ -1207,10 +1261,17 @@ int Application::main(const std::vector<CL_String> &args)
 
     CL_ConsoleWindow console("Stone Ring Debug",80,1000);
 #endif
-
+    int njoystick = 0;
     setupClanLib();
 
-
+    for(int i=0;i<args.size();i++)
+    {
+	std::string string = args[i];
+	if(string.substr(0,5) == "--js=")
+	{
+		njoystick = atoi(string.substr(5).c_str());
+	}
+    }
 
 
     //CL_Display::get_buffer()
@@ -1295,10 +1356,10 @@ int Application::main(const std::vector<CL_String> &args)
     CL_Slot joystickUp;
     CL_Slot joystickAxis;
     
-    if(m_window.get_ic().get_joystick_count()){
+    if(njoystick < m_window.get_ic().get_joystick_count()){
 	std::cout << "Joystick count = " << m_window.get_ic().get_joystick_count();
 #if 1 
-	CL_InputDevice& joystick = m_window.get_ic().get_joystick(0);
+	CL_InputDevice& joystick = m_window.get_ic().get_joystick(njoystick);
 	joystickDown = joystick.sig_key_down().connect(this,&Application::onSignalJoystickButtonDown);
 	joystickUp = joystick.sig_key_up().connect(this,&Application::onSignalJoystickButtonUp);
 	joystickAxis = joystick.sig_axis_move().connect(this,&Application::onSignalJoystickAxisMove);

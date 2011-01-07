@@ -45,7 +45,7 @@ void StoneRing::SayState::HandleButtonDown(const IApplication::Button& button)
 {
 }
 
-void StoneRing::SayState::HandleAxisMove(const IApplication::Axis& axis, float pos)
+void StoneRing::SayState::HandleAxisMove(const IApplication::Axis& axis, IApplication::AxisDirection dir, float pos)
 {
 }
 

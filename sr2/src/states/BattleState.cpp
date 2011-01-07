@@ -211,16 +211,16 @@ void BattleState::HandleButtonDown(const IApplication::Button& button)
     
 }
 
-void BattleState::HandleAxisMove(const IApplication::Axis& axis, float pos)
+void BattleState::HandleAxisMove(const IApplication::Axis& axis, IApplication::AxisDirection dir, float pos)
 {
     if(axis == IApplication::AXIS_VERTICAL)
     {
-	if(pos == 1.0)
+	if(dir == IApplication::AXIS_DOWN)
 	{
 	    if (m_combat_state == BATTLE_MENU)
 		m_menu_stack.top()->SelectDown();
 	}
-	else if(pos == -1.0)
+	else if(dir == IApplication::AXIS_UP)
 	{
 	    if (m_combat_state == BATTLE_MENU)
 		m_menu_stack.top()->SelectUp();

@@ -173,7 +173,7 @@ void StoneRing::MappableObject::load_finished()
     Set_Frame_For_Direction();
 }
 
-StoneRing::MappableObject::MappableObject():m_eDirection(NONE),m_pMovement(NULL),
+StoneRing::MappableObject::MappableObject():m_eDirection(NONE),m_nStep(0),m_pMovement(NULL),
                                             m_pCondition(0),cFlags(0),m_nCellsMoved(0),
                                             m_nFrameMarks(0),m_nStepsUntilChange(0)
 {
@@ -363,6 +363,12 @@ void StoneRing::MappableObject::RandomNewDirection()
 
 }
 
+void StoneRing::MappableObject::Idle()
+{
+    m_nStep = 0; // Set to what will be idle if the sprite has it.
+    Set_Frame_For_Direction();
+}
+
 void StoneRing::MappableObject::Set_Frame_For_Direction()
 {
     if(m_sprite.is_null()) return;
@@ -373,25 +379,24 @@ void StoneRing::MappableObject::Set_Frame_For_Direction()
     switch(m_pMovement->GetMovementType())
     {
     case Movement::MOVEMENT_NONE:
-        if(m_bStep) m_sprite.set_frame(1);
-        else m_sprite.set_frame(0);
+        m_sprite.set_frame(m_nStep);
 
         break;
     case Movement::MOVEMENT_WANDER:
     {
-        switch( m_eDirection )
+        switch( m_eDirection ) //SWEN
         {
         case NORTH:
-            m_sprite.set_frame(m_bStep? 6 : 7);
+            m_sprite.set_frame(12 + m_nStep);
             break;
         case EAST:
-            m_sprite.set_frame(m_bStep? 0 : 1);
+            m_sprite.set_frame(8 + m_nStep);
             break;
         case WEST:
-            m_sprite.set_frame(m_bStep? 2 : 3);
+            m_sprite.set_frame(4 + m_nStep);
             break;
         case SOUTH:
-            m_sprite.set_frame(m_bStep? 4 : 5);
+            m_sprite.set_frame(m_nStep);
             break;
         case NONE:
             break;
@@ -403,10 +408,10 @@ void StoneRing::MappableObject::Set_Frame_For_Direction()
         switch(m_eDirection)
         {
         case NORTH:
-            m_sprite.set_frame ( m_bStep? 2 : 3);
+            m_sprite.set_frame ( 4 + m_nStep );
             break;
         case SOUTH:
-            m_sprite.set_frame ( m_bStep? 0 : 1);
+            m_sprite.set_frame ( m_nStep);
             break;
         default:
             assert(0);
@@ -418,10 +423,10 @@ void StoneRing::MappableObject::Set_Frame_For_Direction()
         switch(m_eDirection)
         {
         case EAST:
-            m_sprite.set_frame ( m_bStep? 0 : 1 );
+            m_sprite.set_frame ( 4 + m_nStep  );
             break;
         case WEST:
-            m_sprite.set_frame ( m_bStep? 2 : 3 );
+            m_sprite.set_frame ( m_nStep );
             break;
         default:
             assert(0);
@@ -441,7 +446,8 @@ void StoneRing::MappableObject::Update()
 
     if(IsSprite())
     {
-        m_bStep = m_bStep? false:true;
+       if(++m_nStep > 3)
+	   m_nStep = 0;
     }
 }
 
@@ -732,6 +738,9 @@ void StoneRing::MappablePlayer::Idle()
 void StoneRing::MappablePlayer::StopMovement()
 {
    // m_eDirection = NONE;
+   std::cout << "Stop" << std::endl;
+    m_nStep = 0;
+    Set_Frame_For_Direction();
     m_bHasNextDirection = false;
    // Update();
 }
@@ -776,19 +785,19 @@ CL_Point StoneRing::MappablePlayer::GetPointInFront() const
 
 void StoneRing::MappablePlayer::set_frame_for_direction()
 {
-    switch( m_eFacingDirection )
+    switch( m_eFacingDirection ) // SWEN
     {
     case NORTH:
-        m_sprite.set_frame(m_bStep? 6 : 7);
+        m_sprite.set_frame(12 + m_nStep);
         break;
     case EAST:
-        m_sprite.set_frame(m_bStep? 0 : 1);
+        m_sprite.set_frame(8 + m_nStep);
         break;
     case WEST:
-        m_sprite.set_frame(m_bStep? 2 : 3);
+        m_sprite.set_frame(4 + m_nStep);
         break;
     case SOUTH:
-        m_sprite.set_frame(m_bStep? 4 : 5);
+        m_sprite.set_frame(m_nStep);
         break;
     case NONE:
         m_sprite.set_frame(0);

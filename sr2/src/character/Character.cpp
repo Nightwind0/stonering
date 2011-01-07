@@ -194,6 +194,16 @@ void StoneRing::Character::SetLevel(uint level)
     m_nLevel = level;
 }
 
+uint   StoneRing::Character::GetXP()const
+{
+    return m_nXP;
+}
+
+void   StoneRing::Character::SetXP(uint amount)
+{
+    m_nXP = amount;
+}
+
 ICharacter::eGender StoneRing::Character::GetGender() const
 {
     return NEUTER;
