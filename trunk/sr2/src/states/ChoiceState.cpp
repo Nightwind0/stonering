@@ -39,15 +39,15 @@ bool StoneRing::ChoiceState::IsDone() const
  {
  }
  
- void StoneRing::ChoiceState::HandleAxisMove(const IApplication::Axis& axis, float pos)
+ void StoneRing::ChoiceState::HandleAxisMove(const IApplication::Axis& axis, IApplication::AxisDirection dir, float pos)
  {
      if(axis == IApplication::AXIS_VERTICAL)
      {
-	 if(pos == -1.0)
+	 if(dir == IApplication::AXIS_UP)
 	 {
 	        SelectUp();
 	 }
-	 else if(pos == 1.0)
+	 else if(dir == IApplication::AXIS_DOWN)
 	 {
 		SelectDown();
 	 }

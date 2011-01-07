@@ -97,22 +97,22 @@ void TargetingState::HandleButtonDown(const IApplication::Button& button)
 {
 }
 
-void TargetingState::HandleAxisMove(const IApplication::Axis& axis, float pos)
+void TargetingState::HandleAxisMove(const IApplication::Axis& axis, IApplication::AxisDirection dir, float pos)
 {
     if(axis == IApplication::AXIS_VERTICAL)
     {
-	if(pos == -1.0)
+	if(dir == IApplication::AXIS_UP)
 	{
 	    SelectUpTarget();
 	}
-	else if(pos == 1.0)
+	else if(dir == IApplication::AXIS_DOWN)
 	{
 	    SelectDownTarget();
 	}
     }
     else
     {
-	if(pos == -1.0)
+	if(dir == IApplication::AXIS_LEFT)
 	{
 	    if (m_state == SELECT_SINGLE_LEFT)
 	    {
@@ -133,7 +133,7 @@ void TargetingState::HandleAxisMove(const IApplication::Axis& axis, float pos)
 		ChangeState(SELECT_SINGLE_RIGHT);
 	    }
 	}
-	else if(pos == 1.0)
+	else if(dir == IApplication::AXIS_RIGHT)
 	{
 	    if (m_state == SELECT_SINGLE_LEFT)
 	    {

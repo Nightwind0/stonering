@@ -48,6 +48,14 @@ namespace StoneRing
 	    AXIS_HORIZONTAL,
 	    AXIS_VERTICAL
 	};
+	
+	enum AxisDirection {
+	    AXIS_NEUTRAL,
+	    AXIS_LEFT,
+	    AXIS_RIGHT,
+	    AXIS_UP,
+	    AXIS_DOWN
+	};
 
 	
         virtual ~IApplication(){}

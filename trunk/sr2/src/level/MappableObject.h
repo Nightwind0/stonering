@@ -66,7 +66,7 @@ namespace StoneRing {
         static int ConvertDirectionToDirectionBlock(eDirection dir);
         virtual void RandomNewDirection();
         virtual void MovedOneCell();
-        virtual void Idle(){} // Wait while direction is none.
+        virtual void Idle(); // Wait while direction is none.
 
         uint GetFrameMarks() const{return m_nFrameMarks;}
         void MarkFrame()  { ++m_nFrameMarks; }
@@ -90,7 +90,7 @@ namespace StoneRing {
         eDirection m_eFacingDirection;
 
 
-        bool m_bStep; // step frame alternator
+        uint m_nStep; // step frame alternator
         ushort m_StartX;
         ushort m_StartY;
         uint m_X;

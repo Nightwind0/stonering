@@ -37,6 +37,8 @@ namespace StoneRing{
         //  virtual ICharacterGroup * GetGroup() const;
         virtual uint   GetLevel(void)const;
         virtual void   SetLevel(uint);
+	virtual uint   GetXP()const;
+	virtual void   SetXP(uint amount);
         virtual double GetSpellResistance(Magic::eMagicType type) const;
         virtual double GetDamageCategoryResistance(eDamageCategory type) const;
         virtual double GetAttribute(eCharacterAttribute attr) const;
@@ -95,6 +97,7 @@ namespace StoneRing{
         CharacterClass * m_pClass;
         uint m_nLevel;
         uint m_nInitiative;
+	uint m_nXP;
         CL_Sprite m_mapSprite;
         CL_Sprite m_currentSprite;
         StatusEffectMap m_status_effects;

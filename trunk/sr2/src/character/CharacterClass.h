@@ -29,6 +29,7 @@ namespace StoneRing
         std::list<ArmorTypeRef*>::const_iterator GetArmorTypeRefsEnd() const;
 
         double    GetStat(ICharacter::eCharacterAttribute attr, int level);
+	int	  GetExperienceToLevel(int level);
 
         std::list<SkillRef*>::const_iterator GetSkillRefsBegin() const;
         std::list<SkillRef*>::const_iterator GetSkillRefsEnd() const;
@@ -45,6 +46,7 @@ namespace StoneRing
         std::list<ArmorTypeRef*> m_armor_types;
         typedef std::map<ICharacter::eCharacterAttribute,StatScript*> StatMap;
         StatMap m_stat_scripts;
+	//AstScript* m_pTNL;
         std::list<SkillRef*> m_skill_refs;
         BattleMenu *m_pMenu;
     };

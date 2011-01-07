@@ -59,6 +59,8 @@ namespace StoneRing
     private:
 	
 	void queryJoystick();
+	double get_value_for_axis_direction(IApplication::AxisDirection dir) const;
+	AxisDirection get_direction_for_value(IApplication::Axis axis, double value) const;
 	
         // Steel functions.
         SteelType gaussian(double mean, double sigma);

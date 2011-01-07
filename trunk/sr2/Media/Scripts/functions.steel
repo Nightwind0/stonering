@@ -2,3 +2,8 @@ final function tnl(declare $level)
 {
 	return 100.0 * $level ^ 2;
 }
+
+final function lnt(declare $xp)
+{
+	return math::sqrt($xp/100.0);
+}

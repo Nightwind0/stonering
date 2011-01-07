@@ -67,22 +67,23 @@ void StoneRing::MapState::HandleButtonDown(const IApplication::Button& button)
      }
 }
 
-void StoneRing::MapState::HandleAxisMove(const IApplication::Axis& axis, float pos)
+void StoneRing::MapState::HandleAxisMove(const IApplication::Axis& axis, IApplication::AxisDirection dir, float pos)
 {
     MappablePlayer *pPlayer = m_pLevel->GetPlayer();
+    IApplication* pApp = IApplication::GetInstance();
 
     if(axis == IApplication::AXIS_HORIZONTAL)
     {
 	m_horizontal_idle = false;
-	if(pos  == 1.0)
+	if(dir == IApplication::AXIS_RIGHT)
 	{
 	    pPlayer->SetNextDirection(StoneRing::MappableObject::EAST);
 	}
-	else if(pos == -1.0)
+	else if(dir == IApplication::AXIS_LEFT)
 	{
 	    pPlayer->SetNextDirection(StoneRing::MappableObject::WEST);
 	}
-	else 
+	else // neutral
 	{
 	    m_horizontal_idle = true;
 	}
@@ -90,15 +91,15 @@ void StoneRing::MapState::HandleAxisMove(const IApplication::Axis& axis, float p
     else
     {
 	m_vertical_idle = false;
-	if(pos  == 1.0)
+	if(dir == IApplication::AXIS_DOWN)
 	{
 	    pPlayer->SetNextDirection(StoneRing::MappableObject::SOUTH);
 	}
-	else if(pos == -1.0)
+	else if(dir == IApplication::AXIS_UP)
 	{
 	    pPlayer->SetNextDirection(StoneRing::MappableObject::NORTH);
 	}
-	else
+	else // neutral
 	{
 	    m_vertical_idle = true;
 	}
