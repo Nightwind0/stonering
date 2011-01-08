@@ -201,7 +201,7 @@
 	<section name = "Choice">
 		<image name="overlay"><image-file file="Images/Overlays/choice_overlay.png"/></image>
 		<sprite name = "cursor" hint = "alpha">
-			<image file="Sprites/valyn2.png">
+			<image file="Sprites/valyn.png">
 				<grid pos="0,0" size="32,48" array="4,4">
 				</grid>
 			</image>
@@ -275,7 +275,7 @@
     </section>
 	<section name = "Party">
 		<sprite name = "Valyn" hint = "alpha">
-			<image file="Sprites/valyn2.png">
+			<image file="Sprites/valyn.png">
 				<grid pos="0,0" size="32,48" array="4,4">
 				</grid>
 			</image>
