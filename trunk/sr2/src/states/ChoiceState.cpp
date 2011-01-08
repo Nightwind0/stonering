@@ -185,8 +185,7 @@ void StoneRing::ChoiceState::draw_option(int option, bool selected, float x, flo
 
 int StoneRing::ChoiceState::height_for_option(CL_GraphicContext& gc)
 {
-    return std::max(m_optionFont.get_font_metrics(gc).get_height(),
-		    m_currentOptionFont.get_font_metrics(gc).get_height());
+    return cl_max(m_optionFont.get_font_metrics(gc).get_height(),m_currentOptionFont.get_font_metrics(gc).get_height());
 }
 
 void StoneRing::ChoiceState::process_choice(int selection)

@@ -64,7 +64,7 @@ namespace StoneRing
 	
         // Steel functions.
         SteelType gaussian(double mean, double sigma);
-
+		SteelType log(const std::string &string);
 
         SteelType playScene(const std::string &animation);
         SteelType playSound(const std::string &sound);

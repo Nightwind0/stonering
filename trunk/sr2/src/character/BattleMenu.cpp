@@ -114,8 +114,8 @@ int BattleMenu::height_for_option(CL_GraphicContext& gc)
     if(m_font_height != -1) return m_font_height; 
     
     m_font_height = m_onFont.get_font_metrics(gc).get_height();
-    m_font_height = std::max(m_offFont.get_font_metrics(gc).get_height(),static_cast<float>(m_font_height));
-    m_font_height = std::max(m_selectedFont.get_font_metrics(gc).get_height(),static_cast<float>(m_font_height));
+    m_font_height = cl_max(m_offFont.get_font_metrics(gc).get_height(),static_cast<float>(m_font_height));
+    m_font_height = cl_max(m_selectedFont.get_font_metrics(gc).get_height(),static_cast<float>(m_font_height));
     
     return m_font_height;
 }

@@ -644,6 +644,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\core\Menu.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\core\Menu.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\core\NamedScript.h"
 					>
 				</File>
@@ -893,6 +901,14 @@
 				</File>
 				<File
 					RelativePath="..\src\battle\AnimationState.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\battle\BattleConfig.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\battle\BattleConfig.h"
 					>
 				</File>
 				<File
