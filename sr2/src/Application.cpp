@@ -668,6 +668,12 @@ SteelType Application::attackCharacter(SteelType::Handle hICharacter)
     return SteelType();
 }
 
+SteelType Application::log(const std::string& str)
+{
+	CL_Console::write_line(str);
+	return SteelType();
+}
+
 IApplication * IApplication::GetInstance()
 {
     return pApp;
@@ -1035,6 +1041,7 @@ void Application::registerSteelFunctions()
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getUnarmedMissSound(this,&Application::getUnarmedMissSound);
     
     static SteelFunctor1Arg<Application,const std::string&> fn_getAnimation(this,&Application::getAnimation);
+	static SteelFunctor1Arg<Application,const std::string&> fn_log(this,&Application::log);
 
 
 
@@ -1105,6 +1112,7 @@ void Application::registerSteelFunctions()
     steelConst("$_POISON",POISON);
 
     mInterpreter.addFunction("normal_random", &fn_gaussian);
+	mInterpreter.addFunction("log",&fn_log);
 
     mInterpreter.addFunction("say",&fn_say);
     mInterpreter.addFunction("playScene", &fn_playScene);
@@ -1259,7 +1267,7 @@ int Application::main(const std::vector<CL_String> &args)
 
 #ifndef NDEBUG
 
-    CL_ConsoleWindow console("Stone Ring Debug",80,1000);
+    CL_ConsoleWindow console("Stone Ring Debug",80,100);
 #endif
     int njoystick = 0;
     setupClanLib();

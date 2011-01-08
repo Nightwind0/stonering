@@ -34,7 +34,7 @@
 		    battle::doTargetedAnimation($pTarget,$Character,getAnimation("recoil"));
 		    battle::createDisplay($modDamage,$pTarget,$_DISP_DAMAGE);
 		}else{
-		    println("You missed.");
+		    log("You missed.");
 		    //playSound(getUnarmedMissSound($Character));
 		    battle::createDisplay(0,$pTarget,$_DISP_MISS);
 		}
@@ -87,7 +87,7 @@
 	<onInvoke>
 	    <script id="FleeSkillScript">
 		<![CDATA[
-		    println("Luck is " + getCharacterAttribute($Character,$_LCK));
+		    log("Luck is " + getCharacterAttribute($Character,$_LCK));
 		    if(math::randf() + getCharacterAttribute($Character,$_LCK) / 50.0 > 0.8)
 			battle::flee();
 		    battle::finishTurn();
@@ -137,8 +137,8 @@
 
 		declare $pTarget = @targets[0];
 		//var $pTargetArmor = getEquipment($pTarget
-
-		println($name + " attacks " + getCharacterName($pTarget) + " with " + getItemName($pWeapon));
+  
+		//log($name + " attacks " + getCharacterName($pTarget) + " with " + getItemName($pWeapon));
 
 		declare $hit = getCharacterAttribute($pC, $_DEX) + getEquippedWeaponAttribute($pC,$_HIT);
 		declare $dodge = getCharacterAttribute($pTarget, $_EVD); //+ getEquippedArmorAttribute($pTarget,$_AC);
@@ -147,15 +147,15 @@
 
 		declare $roll = math::randf();
 
-		println("Hit was " + $hit + " and dodge was " + $dodge + " and chance was " + $chance);
-		println("Roll was " + $roll);
+		log("Hit was " + $hit + " and dodge was " + $dodge + " and chance was " + $chance);
+		log("Roll was " + $roll);
 
 		declare $bHit = false;
 		if($roll < $chance)
 			$bHit = true;
 
 	if($bHit){
-	    println("You hit!");
+	    log("You hit!");
 	    if($hasWeapon)
 		playSound(getHitSound(getWeaponType($pWeapon)));
 	    else
@@ -181,9 +181,9 @@
 	    battle::createDisplay($modDamage,$pTarget,$_DISP_DAMAGE);
 
 
-	    println("Mean damage was " + $damageMean + " and base damage was " + $baseDamage + " and actual damage was " + $actualDamage);
+	    log("Mean damage was " + $damageMean + " and base damage was " + $baseDamage + " and actual damage was " + $actualDamage);
 	}else{
-	    println("You missed.");
+	    log("You missed.");
 	    if($hasWeapon)
 		playSound(getMissSound(getWeaponType($pWeapon)));
 	    else
@@ -212,7 +212,7 @@
 		var $name = getCharacterName($Character);
 		battle::doTargetedAnimation($Character,$pTarget,getAnimation("move_to_attack"));
 		battle::doTargetedAnimation($Character,$pTarget,getAnimation("attack"));
-		println($name + " attacks " + getCharacterName($pTarget));
+		log($name + " attacks " + getCharacterName($pTarget));
 
 		var $hit = getCharacterAttribute($Character, $_DEX) + getEquippedWeaponAttribute($Character,$_HIT);
 		var $dodge = getCharacterAttribute($pTarget, $_EVD); //+ getEquippedArmorAttribute($pTarget,$_AC);
@@ -221,8 +221,8 @@
 
 		var $roll = math::randf();
 
-		println("Hit was " + $hit + " and dodge was " + $dodge + " and chance was " + $chance);
-		println("Roll was " + $roll);
+		log("Hit was " + $hit + " and dodge was " + $dodge + " and chance was " + $chance);
+		log("Roll was " + $roll);
 
 		var $bHit = false;
 		if($roll < $chance)
@@ -230,7 +230,7 @@
 
 
 		if($bHit){
-		    println($name + " hit!");
+		    log($name + " hit!");
 
 		    playSound(getUnarmedHitSound($Character));
 		    var $damageMean = getCharacterAttribute($Character, $_STR);
@@ -246,9 +246,9 @@
 
 		    battle::doTargetedAnimation($pTarget,$Character,getAnimation("recoil"));
 		    battle::createDisplay($modDamage,$pTarget,$_DISP_DAMAGE);
-		    println("Mean damage was " + $damageMean + " and base damage was " + $baseDamage + " and actual damage was " + $actualDamage);
+		    log("Mean damage was " + $damageMean + " and base damage was " + $baseDamage + " and actual damage was " + $actualDamage);
 		}else{
-		    println("You missed.");
+		    log("You missed.");
 
 		    playSound(getUnarmedMissSound($Character));
 		    battle::createDisplay(0,$pTarget,$_DISP_MISS);

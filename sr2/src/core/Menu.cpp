@@ -41,7 +41,7 @@ void Menu::Draw(CL_GraphicContext& gc)
     int page = m_cursor / options_per_page;
    
     
-    for(int i = options_per_page * page; i < std::min(get_option_count(),options_per_page * (page+1)); i++)
+    for(int i = options_per_page * page; i < cl_min(get_option_count(),options_per_page * (page+1)); i++)
     {
 	draw_option(i,i==m_cursor,rect.get_top_left().x,rect.get_top_left().y + (i-options_per_page * page) * height_for_option(gc),gc) ;
     }
@@ -53,6 +53,7 @@ bool Menu::SelectUp()
 	m_cursor--;
     else
 	m_cursor = get_option_count() - 1;
+	return true;
 }
 
 bool Menu::SelectDown()
@@ -61,6 +62,7 @@ bool Menu::SelectDown()
 	m_cursor++;
     else
 	m_cursor = 0;
+	return true;
 }
 
 int Menu::Choose()
