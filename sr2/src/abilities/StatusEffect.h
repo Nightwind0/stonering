@@ -9,7 +9,7 @@
 
 namespace StoneRing{
 
-    class StatusEffect : public Element
+    class StatusEffect : public Element, public SteelType::IHandle
     {
     public:
         StatusEffect();

@@ -738,7 +738,6 @@ void StoneRing::MappablePlayer::Idle()
 void StoneRing::MappablePlayer::StopMovement()
 {
    // m_eDirection = NONE;
-   std::cout << "Stop" << std::endl;
     m_nStep = 0;
     Set_Frame_For_Direction();
     m_bHasNextDirection = false;

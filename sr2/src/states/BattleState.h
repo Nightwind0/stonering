@@ -122,7 +122,7 @@ namespace StoneRing{
                 DISPLAY_MISS
             };
 
-            Display(BattleState& parent,eDisplayType type,int damage,SteelType::Handle pICharacter);
+            Display(BattleState& parent,eDisplayType type,int damage,ICharacter* pICharacter);
             ~Display();
 
             void start();

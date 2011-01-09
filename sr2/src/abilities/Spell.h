@@ -6,6 +6,11 @@
 #include "Magic.h"
 #include <ClanLib/core.h>
 #include "DamageCategory.h"
+#ifndef WIN32
+#include "steel/SteelType.h"
+#else
+#include "SteelType.h"
+#endif
 
 namespace StoneRing
 {
@@ -34,7 +39,7 @@ namespace StoneRing
     };
 
 
-    class Spell : public Element
+    class Spell : public Element, public SteelType::IHandle
     {
     public:
         Spell();

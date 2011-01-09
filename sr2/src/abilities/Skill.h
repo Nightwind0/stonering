@@ -27,7 +27,7 @@ namespace StoneRing
     class NamedScript;
 
 
-    class Skill : public Element
+    class Skill : public Element, public SteelType::IHandle
     {
     public:
         Skill();

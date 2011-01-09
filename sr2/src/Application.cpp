@@ -26,10 +26,11 @@
 #endif
 
 #include "BattleConfig.h"
+#include "Animation.h"
 
 //
 //
-//
+// 
 
 
 
@@ -348,7 +349,7 @@ SteelType Application::addCharacter(const std::string &character, int level, boo
 
 SteelType Application::doDamage(SteelType::Handle hICharacter, int damage)
 {
-    ICharacter * pCharacter = static_cast<ICharacter*>(hICharacter);
+    ICharacter * pCharacter = dynamic_cast<ICharacter*>(hICharacter);
 
     if (!pCharacter->GetToggle(Character::CA_ALIVE)) return SteelType();
 
@@ -384,7 +385,8 @@ SteelType Application::useItem()
 
 SteelType Application::getCharacterName(const SteelType::Handle handle)
 {
-    ICharacter * pCharacter = static_cast<Character*>(handle);
+    ICharacter * pCharacter = dynamic_cast<ICharacter*>(handle);
+    if(!pCharacter) throw TypeMismatch();
     SteelType name;
     name.set(pCharacter->GetName());
 
@@ -410,7 +412,8 @@ SteelType Application::getPartyArray()
 
 SteelType Application::getCharacterLevel(const SteelType::Handle hCharacter)
 {
-    ICharacter *pCharacter = static_cast<ICharacter*>(hCharacter);
+    ICharacter *pCharacter = dynamic_cast<ICharacter*>(hCharacter);
+    if(pCharacter == NULL) throw TypeMismatch();
     SteelType level;
     level.set((int)pCharacter->GetLevel());
 
@@ -419,7 +422,8 @@ SteelType Application::getCharacterLevel(const SteelType::Handle hCharacter)
 
 SteelType Application::equip(SteelType::Handle hCharacter, int slot, const std::string &equipment)
 {
-    Character * pCharacter = static_cast<Character*>(hCharacter);
+    Character * pCharacter = dynamic_cast<Character*>(hCharacter);
+    if(!pCharacter) throw TypeMismatch();
     Equipment * pEquipment = dynamic_cast<Equipment*>(mItemManager.GetNamedItem(equipment));
     SteelType result;
     if (pEquipment != NULL)
@@ -437,7 +441,8 @@ SteelType Application::equip(SteelType::Handle hCharacter, int slot, const std::
 
 SteelType Application::addStatusEffect(SteelType::Handle hCharacter, const std::string &effect)
 {
-    ICharacter *pCharacter = static_cast<ICharacter*>(hCharacter);
+    ICharacter *pCharacter = dynamic_cast<ICharacter*>(hCharacter);
+    if(!pCharacter) throw TypeMismatch();
     pCharacter->AddStatusEffect( mAbilityManager.GetStatusEffect(effect) );
 
     return SteelType();
@@ -445,7 +450,8 @@ SteelType Application::addStatusEffect(SteelType::Handle hCharacter, const std::
 
 SteelType Application::removeStatusEffects(SteelType::Handle hCharacter, const std::string &effect)
 {
-    ICharacter *pCharacter = static_cast<ICharacter*>(hCharacter);
+    ICharacter *pCharacter = dynamic_cast<ICharacter*>(hCharacter);
+    if(!pCharacter) throw TypeMismatch();
     pCharacter->RemoveEffects(effect);
 
     return SteelType();
@@ -454,8 +460,8 @@ SteelType Application::removeStatusEffects(SteelType::Handle hCharacter, const s
 SteelType Application::hasEquipment(SteelType::Handle hICharacter, int slot)
 {
     SteelType result;
-    ICharacter *iCharacter = static_cast<ICharacter*>(hICharacter);
-
+    ICharacter *iCharacter = dynamic_cast<ICharacter*>(hICharacter);
+    if(!iCharacter) throw TypeMismatch();
     Monster * pMonster = dynamic_cast<Monster*>(iCharacter);
 
     if (pMonster) // Monsters currently can't have equipment
@@ -471,7 +477,8 @@ SteelType Application::hasEquipment(SteelType::Handle hICharacter, int slot)
 SteelType Application::getEquipment(SteelType::Handle hCharacter, int slot)
 {
     SteelType result;
-    Character *pCharacter = static_cast<Character*>(hCharacter);
+    Character *pCharacter = dynamic_cast<Character*>(hCharacter);
+    if(!pCharacter) throw TypeMismatch();
     result.set(pCharacter->GetEquipment(static_cast<Equipment::eSlot>(slot)));
     return result;
 }
@@ -479,7 +486,8 @@ SteelType Application::getEquipment(SteelType::Handle hCharacter, int slot)
 SteelType Application::getEquippedWeaponAttribute(const SteelType::Handle hICharacter, uint attr)
 {
     SteelType result;
-    ICharacter * pCharacter = static_cast<ICharacter*>(hICharacter);
+    ICharacter * pCharacter = dynamic_cast<ICharacter*>(hICharacter);
+    if(!pCharacter) throw TypeMismatch();
     result.set(pCharacter->GetEquippedWeaponAttribute(static_cast<Weapon::eAttribute>(attr)));
 
     return result;
@@ -488,7 +496,8 @@ SteelType Application::getEquippedWeaponAttribute(const SteelType::Handle hIChar
 SteelType Application::getEquippedArmorAttribute(const SteelType::Handle hICharacter, uint attr)
 {
     SteelType result;
-    ICharacter * pCharacter = static_cast<ICharacter*>(hICharacter);
+    ICharacter * pCharacter = dynamic_cast<ICharacter*>(hICharacter);
+    if(!pCharacter) throw TypeMismatch();
     result.set(pCharacter->GetEquippedArmorAttribute(static_cast<Armor::eAttribute>(attr)));
 
     return result;
@@ -497,7 +506,8 @@ SteelType Application::getEquippedArmorAttribute(const SteelType::Handle hIChara
 SteelType Application::getItemName(const SteelType::Handle hItem)
 {
     SteelType result;
-    Item * pItem = static_cast<Item*>(hItem);
+    Item * pItem = dynamic_cast<Item*>(hItem);
+    if(!pItem) throw TypeMismatch();
     result.set(pItem->GetName());
     return result;
 }
@@ -505,7 +515,8 @@ SteelType Application::getItemName(const SteelType::Handle hItem)
 SteelType Application::getWeaponAttribute(const SteelType::Handle hWeapon, uint attr)
 {
     SteelType result;
-    Weapon* pWeapon = static_cast<Weapon*>(hWeapon);
+    Weapon* pWeapon = dynamic_cast<Weapon*>(hWeapon);
+    if(!pWeapon) throw TypeMismatch();
     float value = pWeapon->GetWeaponAttribute(static_cast<Weapon::eAttribute>(attr));
     result.set(value);
 
@@ -515,7 +526,8 @@ SteelType Application::getWeaponAttribute(const SteelType::Handle hWeapon, uint 
 SteelType Application::getWeaponScriptMode(SteelType::Handle hWeapon)
 {
     SteelType result;
-    Weapon* pWeapon = static_cast<Weapon*>(hWeapon);
+    Weapon* pWeapon = dynamic_cast<Weapon*>(hWeapon);
+    if(!pWeapon) throw TypeMismatch();
 
     result.set( pWeapon->GetScriptMode() );
 
@@ -525,7 +537,8 @@ SteelType Application::getWeaponScriptMode(SteelType::Handle hWeapon)
 SteelType Application::getArmorAttribute(const SteelType::Handle hArmor, uint attr)
 {
     SteelType result;
-    Armor * pArmor = static_cast<Armor*>(hArmor);
+    Armor * pArmor = dynamic_cast<Armor*>(hArmor);
+    if(!pArmor) throw TypeMismatch();
     float value = pArmor->GetArmorAttribute(static_cast<Armor::eAttribute>(attr));
     result.set(value);
 
@@ -535,7 +548,8 @@ SteelType Application::getArmorAttribute(const SteelType::Handle hArmor, uint at
 SteelType Application::getCharacterAttribute(const SteelType::Handle hICharacter, uint attr)
 {
     SteelType result;
-    ICharacter * pCharacter = static_cast<ICharacter*>(hICharacter);
+    ICharacter * pCharacter = dynamic_cast<ICharacter*>(hICharacter);
+    if(!pCharacter) throw TypeMismatch();
     ICharacter::eCharacterAttribute theAttr = static_cast<ICharacter::eCharacterAttribute>(attr);
 
     result.set(pCharacter->GetAttribute(theAttr));
@@ -546,7 +560,8 @@ SteelType Application::getCharacterAttribute(const SteelType::Handle hICharacter
 SteelType Application::getCharacterToggle(const SteelType::Handle hICharacter, uint attr)
 {
     SteelType result;
-    ICharacter * pCharacter = static_cast<ICharacter*>(hICharacter);
+    ICharacter * pCharacter = dynamic_cast<ICharacter*>(hICharacter);
+    if(!pCharacter) throw TypeMismatch();
     ICharacter::eCharacterAttribute theAttr = static_cast<ICharacter::eCharacterAttribute>(attr);
 
     result.set(pCharacter->GetToggle(theAttr));
@@ -556,7 +571,8 @@ SteelType Application::getCharacterToggle(const SteelType::Handle hICharacter, u
 
 SteelType Application::setCharacterToggle(const SteelType::Handle hICharacter, uint attr, bool toggle)
 {
-    ICharacter * pCharacter = static_cast<ICharacter*>(hICharacter);
+    ICharacter * pCharacter = dynamic_cast<ICharacter*>(hICharacter);
+    if(!pCharacter) throw TypeMismatch();
     ICharacter::eCharacterAttribute theAttr = static_cast<ICharacter::eCharacterAttribute>(attr);
 
     pCharacter->SetToggle(theAttr,toggle);
@@ -568,7 +584,9 @@ SteelType Application::setCharacterToggle(const SteelType::Handle hICharacter, u
 SteelType Application::getWeaponType(SteelType::Handle hWeapon)
 {
     SteelType val;
-    val.set ( static_cast<Weapon*>(hWeapon)->GetWeaponType() );
+    Weapon* pWeapon = dynamic_cast<Weapon*>(hWeapon);
+    if(!pWeapon) throw TypeMismatch();
+    val.set ( pWeapon->GetWeaponType() );
 
     return val;
 }
@@ -576,7 +594,9 @@ SteelType Application::getWeaponType(SteelType::Handle hWeapon)
 SteelType Application::getArmorType(SteelType::Handle hArmor)
 {
     SteelType val;
-    val.set ( static_cast<Armor*>(hArmor)->GetArmorType() );
+    Armor* pArmor = dynamic_cast<Armor*>(hArmor);
+    if(!pArmor) throw TypeMismatch();
+    val.set ( pArmor->GetArmorType() );
 
     return val;
 }
@@ -584,7 +604,9 @@ SteelType Application::getArmorType(SteelType::Handle hArmor)
 SteelType Application::getWeaponTypeDamageCategory(SteelType::Handle hWeaponType)
 {
     SteelType val;
-    val.set ( static_cast<WeaponType*>(hWeaponType)->GetDamageCategory() );
+    WeaponType* pWeaponType = dynamic_cast<WeaponType*>(hWeaponType);
+    if(!pWeaponType) throw TypeMismatch();
+    val.set ( pWeaponType->GetDamageCategory() );
 
     return val;
 }
@@ -592,7 +614,9 @@ SteelType Application::getWeaponTypeDamageCategory(SteelType::Handle hWeaponType
 SteelType Application::getWeaponTypeAnimation(SteelType::Handle hWeaponType)
 {
     SteelType val;
-    val.set ( static_cast<WeaponType*>(hWeaponType)->GetAnimation() );
+    WeaponType* pWeaponType = dynamic_cast<WeaponType*>(hWeaponType);
+    if(!pWeaponType) throw TypeMismatch();
+    val.set ( pWeaponType->GetAnimation() );
 
     return val;
 }
@@ -600,7 +624,9 @@ SteelType Application::getWeaponTypeAnimation(SteelType::Handle hWeaponType)
 SteelType Application::weaponTypeHasAnimation(SteelType::Handle hWeaponType)
 {
     SteelType val;
-    val.set ( static_cast<WeaponType*>(hWeaponType)->GetAnimation() != NULL );
+    WeaponType* pWeaponType = dynamic_cast<WeaponType*>(hWeaponType);
+    if(!pWeaponType) throw TypeMismatch();
+    val.set ( pWeaponType->GetAnimation() != NULL );
 
     return val;
 }
@@ -611,8 +637,10 @@ SteelType Application::getDamageCategoryResistance(SteelType::Handle hICharacter
     SteelType val;
 
     eDamageCategory type = static_cast<eDamageCategory>(damage_category);
+    ICharacter* iChar = dynamic_cast<ICharacter*>(hICharacter);
+    if(!iChar) throw TypeMismatch();
 
-    val.set ( static_cast<ICharacter*>(hICharacter)->GetDamageCategoryResistance(type) );
+    val.set ( iChar->GetDamageCategoryResistance(type) );
 
     return val;
 }
@@ -646,7 +674,7 @@ SteelType Application::getAnimation(const std::string& name)
     
     if(pAnim == NULL) throw CL_Exception("Animation: " + name + " was missing.");
     
-    val.set ( pAnim );
+    val.set (static_cast<SteelType::IHandle*>(pAnim));
     
     return val;
 }
@@ -654,7 +682,8 @@ SteelType Application::getAnimation(const std::string& name)
 
 SteelType Application::invokeEquipment(SteelType::Handle hEquipment)
 {
-    Equipment* equipment = static_cast<Equipment*>(hEquipment);
+    Equipment* equipment = dynamic_cast<Equipment*>(hEquipment);
+    if(!equipment) throw TypeMismatch();
     equipment->Invoke();
 
     return SteelType();
@@ -662,7 +691,8 @@ SteelType Application::invokeEquipment(SteelType::Handle hEquipment)
 
 SteelType Application::attackCharacter(SteelType::Handle hICharacter)
 {
-    ICharacter* iCharacter = static_cast<ICharacter*>(hICharacter);
+    ICharacter* iCharacter = dynamic_cast<ICharacter*>(hICharacter);
+    if(!iCharacter) throw TypeMismatch();
     iCharacter->Attacked();
 
     return SteelType();
@@ -1269,7 +1299,7 @@ int Application::main(const std::vector<CL_String> &args)
 
     CL_ConsoleWindow console("Stone Ring Debug",80,100);
 #endif
-    int njoystick = 0;
+    int njoystick = -1;
     setupClanLib();
 
     for(int i=0;i<args.size();i++)
