@@ -116,11 +116,11 @@ void StoneRing::ChoiceState::Start()
     std::string optionFont = CL_String_load(resource + "fonts/Option",resources);
     std::string selectionFont = CL_String_load(resource+ "fonts/Selection",resources);
 
-    m_choiceFont = GraphicsManager::GetInstance()->GetFont(choiceFont);
+    m_choiceFont = GraphicsManager::GetFont(choiceFont);
 
-    m_optionFont = GraphicsManager::GetInstance()->GetFont(optionFont);
+    m_optionFont = GraphicsManager::GetFont(optionFont);
 
-    m_currentOptionFont = GraphicsManager::GetInstance()->GetFont(selectionFont);
+    m_currentOptionFont = GraphicsManager::GetFont(selectionFont);
 
     m_choiceOverlay = CL_Image(GC,"Overlays/Choice/overlay", &resources );
 

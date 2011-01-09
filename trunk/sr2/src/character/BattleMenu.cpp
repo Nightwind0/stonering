@@ -24,14 +24,13 @@ BattleMenu::eType BattleMenu::GetType ( void ) const
 void BattleMenu::Init() 
 {
     Menu::Init();
-    GraphicsManager * pGraphicsManager = GraphicsManager::GetInstance();
     if(m_onFont.is_null()){
-	m_onFont = pGraphicsManager->GetFont(pGraphicsManager->GetFontName(GraphicsManager::BATTLE_POPUP_MENU,"on"));
-	m_offFont = pGraphicsManager->GetFont(pGraphicsManager->GetFontName(GraphicsManager::BATTLE_POPUP_MENU,"off"));
-	m_selectedFont = pGraphicsManager->GetFont(pGraphicsManager->GetFontName(GraphicsManager::BATTLE_POPUP_MENU,"Selection"));
-	m_onColor = pGraphicsManager->GetFontColor(pGraphicsManager->GetFontName(GraphicsManager::BATTLE_POPUP_MENU,"on"));
-	m_offColor = pGraphicsManager->GetFontColor(pGraphicsManager->GetFontName(GraphicsManager::BATTLE_POPUP_MENU,"off"));
-	m_selectedColor = pGraphicsManager->GetFontColor(pGraphicsManager->GetFontName(GraphicsManager::BATTLE_POPUP_MENU,"Selection"));
+	m_onFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::BATTLE_POPUP_MENU,"on"));
+	m_offFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::BATTLE_POPUP_MENU,"off"));
+	m_selectedFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::BATTLE_POPUP_MENU,"Selection"));
+	m_onColor = GraphicsManager::GetFontColor(GraphicsManager::GetFontName(GraphicsManager::BATTLE_POPUP_MENU,"on"));
+	m_offColor = GraphicsManager::GetFontColor(GraphicsManager::GetFontName(GraphicsManager::BATTLE_POPUP_MENU,"off"));
+	m_selectedColor = GraphicsManager::GetFontColor(GraphicsManager::GetFontName(GraphicsManager::BATTLE_POPUP_MENU,"Selection"));
     }
 }
 

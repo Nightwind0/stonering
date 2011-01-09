@@ -32,7 +32,7 @@ void WeaponType::load_attributes(CL_DomNamedNodeMap attributes)
 void WeaponType::load_finished()
 {
     try {
-	m_sprite = GraphicsManager::GetInstance()->CreateEquipmentSprite(GraphicsManager::EQUIPMENT_SPRITE_WEAPON,m_name);
+	m_sprite = GraphicsManager::CreateEquipmentSprite(GraphicsManager::EQUIPMENT_SPRITE_WEAPON,m_name);
     }catch(CL_Exception err)
     {
 	std::cerr << "Warning: Missing graphic for weapon type : " << m_name << std::endl;

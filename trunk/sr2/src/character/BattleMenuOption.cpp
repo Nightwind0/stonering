@@ -99,6 +99,6 @@ void BattleMenuOption::load_finished()
 void BattleMenuOption::load_attributes(CL_DomNamedNodeMap attributes)
 {
     m_name = get_required_string("name",attributes);
-    m_icon = GraphicsManager::GetInstance()->GetIcon( get_implied_string("icon",attributes,"no_icon") );
+    m_icon = GraphicsManager::GetIcon( get_implied_string("icon",attributes,"no_icon") );
 }
 

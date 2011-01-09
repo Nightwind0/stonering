@@ -11,9 +11,7 @@ using StoneRing::IApplication;
 
 void TargetingState::Init(BattleState *pParent, Targetable targetable, bool bDefaultMonsters)
 {
-    GraphicsManager * pGraphicsManager = GraphicsManager::GetInstance();
-
-    m_target_sprite = pGraphicsManager->CreateSprite("Battle/Target");
+    m_target_sprite = GraphicsManager::CreateSprite("Battle/Target");
     m_pParent = pParent;
     m_targetable = targetable;
     m_bDefaultMonsters = bDefaultMonsters;

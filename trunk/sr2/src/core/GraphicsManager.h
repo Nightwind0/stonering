@@ -15,7 +15,6 @@ namespace StoneRing
     class GraphicsManager
     {
     public:
-        static GraphicsManager * GetInstance();
 
         enum Overlay
         {
@@ -24,6 +23,8 @@ namespace StoneRing
             BATTLE_MENU,
             BATTLE_POPUP_MENU,
             SAY,
+	    EXPERIENCE,
+	    LOOT,
             MAIN_MENU,
             SHOP
         };
@@ -42,25 +43,25 @@ namespace StoneRing
 	    EQUIPMENT_SPRITE_WEAPON,
 	    EQUIPMENT_SPRITE_ARMOR
 	};
-
-        CL_Sprite  CreateSprite ( const std::string& name );
-        CL_Image  GetOverlay( Overlay overlay );
+	static void initialize();
+        static CL_Sprite  CreateSprite ( const std::string& name );
+        static CL_Image  GetOverlay( Overlay overlay );
 
         // TODO: Replace sprite string in these two APIs with some enum
-        CL_Sprite  CreateMonsterSprite ( const std::string& monster, const std::string& sprite);
-        CL_Sprite  CreateCharacterSprite ( const std::string& player, const std::string& sprite);
-	CL_Sprite  CreateEquipmentSprite ( EquipmentSpriteType type, const std::string& sprite_name); 
-        CL_Sprite  GetTileMap ( const std::string& name );
-        CL_Image  GetBackdrop (const std::string& name );
-        CL_Image  GetIcon ( const std::string& icon );
+        static CL_Sprite  CreateMonsterSprite ( const std::string& monster, const std::string& sprite);
+        static CL_Sprite  CreateCharacterSprite ( const std::string& player, const std::string& sprite);
+	static CL_Sprite  CreateEquipmentSprite ( EquipmentSpriteType type, const std::string& sprite_name); 
+        static CL_Sprite  GetTileMap ( const std::string& name );
+        static CL_Image  GetBackdrop (const std::string& name );
+        static CL_Image  GetIcon ( const std::string& icon );
 
         // Returns the name associated with this surface
-        std::string LookUpMapWithSprite( CL_Sprite );
+        static std::string LookUpMapWithSprite( CL_Sprite );
 
-        CL_Font  GetFont(const std::string& name);
-        std::string GetFontName( Overlay overlay, const std::string& type );
-        std::string  GetFontName ( DisplayFont font );
-	CL_Colorf GetFontColor ( const std::string& font );
+        static CL_Font  GetFont(const std::string& name);
+        static std::string GetFontName( Overlay overlay, const std::string& type );
+        static std::string  GetFontName ( DisplayFont font );
+	static CL_Colorf GetFontColor ( const std::string& font );
 
     private:
 

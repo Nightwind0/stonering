@@ -56,6 +56,6 @@ StoneRing::SpriteRef::GetType() const
 
 CL_Sprite StoneRing::SpriteRef::CreateSprite() const
 {
-    return GraphicsManager::GetInstance()->CreateSprite( m_ref );
+    return GraphicsManager::CreateSprite( m_ref );
 }
 
