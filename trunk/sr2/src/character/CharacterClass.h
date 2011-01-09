@@ -15,7 +15,7 @@ namespace StoneRing
     class BattleMenu;
     class ScriptElement;
 
-    class CharacterClass : public Element
+    class CharacterClass : public Element, public SteelType::IHandle
     {
     public:
         CharacterClass();

@@ -11,6 +11,7 @@
 namespace StoneRing
 {
 
+    class Animation;
     class AbilityManager
     {
     public:

@@ -2,6 +2,11 @@
 #define SR_ITEM_H
 
 #include <string>
+#ifndef WIN32
+#include "steel/SteelType.h"
+#else
+#include "SteelType.h"
+#endif
 #include "sr_defines.h"
 #include "Element.h"
 #include "ItemRef.h"
@@ -32,7 +37,7 @@ namespace StoneRing{
     class StatusEffect;
     class StatusEffectModifier;
 
-    class Item
+    class Item: public SteelType::IHandle
     {
     public:
         Item();

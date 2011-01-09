@@ -8,7 +8,7 @@
 #include <list>
 
 namespace StoneRing{
-    class WeaponClass : public Element
+    class WeaponClass : public Element, public SteelType::IHandle
     {
     public:
         WeaponClass();

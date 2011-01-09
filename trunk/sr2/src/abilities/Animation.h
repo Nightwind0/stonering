@@ -305,7 +305,7 @@ namespace StoneRing
     };
 
 
-    class Animation : public Element
+    class Animation : public Element, public SteelType::IHandle
     {
     public:
         Animation();

@@ -453,10 +453,10 @@ void BattleState::draw_battle(const CL_Rectf &screenRect, CL_GraphicContext& GC)
 
 }
 
-BattleState::Display::Display(BattleState& parent,BattleState::Display::eDisplayType type,int damage,SteelType::Handle pICharacter)
+BattleState::Display::Display(BattleState& parent,BattleState::Display::eDisplayType type,int damage,ICharacter* pICharacter)
         :m_parent(parent),m_eDisplayType(type),m_amount(-damage)
 {
-    m_pTarget = static_cast<ICharacter*>(pICharacter);
+    m_pTarget = dynamic_cast<ICharacter*>(pICharacter);
 }
 BattleState::Display::~Display()
 {
@@ -1240,13 +1240,15 @@ SteelType BattleState::cancelOption()
 
 SteelType BattleState::doTargetedAnimation(SteelType::Handle pICharacter, SteelType::Handle pITarget,SteelType::Handle hAnim)
 {
-    ICharacter * character = reinterpret_cast<ICharacter*>(pICharacter);
-    ICharacter * target = reinterpret_cast<ICharacter*>(pITarget);
-    Animation * anim = reinterpret_cast<Animation*>(hAnim);
+    ICharacter * character = dynamic_cast<ICharacter*>(pICharacter);
+    ICharacter * target = dynamic_cast<ICharacter*>(pITarget);
+    Animation * anim = dynamic_cast<Animation*>(hAnim);
     if(anim == NULL)
     {
-	throw CL_Exception ("Animation was missing in doTargetedAnimation ");
+	throw TypeMismatch();
     }
+    if(!target) throw TypeMismatch();
+    if(!character) throw TypeMismatch();
     StoneRing::AnimationState state(*this, group_for_character(character), group_for_character(target), character, target);
     state.Init(anim);
 
@@ -1260,12 +1262,13 @@ SteelType BattleState::doTargetedAnimation(SteelType::Handle pICharacter, SteelT
 
 SteelType BattleState::doCharacterAnimation(SteelType::Handle pICharacter,SteelType::Handle hAnim)
 {
-	ICharacter * character = reinterpret_cast<ICharacter*>(pICharacter);
-	Animation * anim = reinterpret_cast<Animation*>(hAnim);
+	ICharacter * character = dynamic_cast<ICharacter*>(pICharacter);
+	Animation * anim = dynamic_cast<Animation*>(hAnim);
 	if(anim == NULL)
 	{
-		throw CL_Exception ("Animation was missing in doCharacterAnimation ");
+		throw TypeMismatch();
 	}
+	if(!character) throw TypeMismatch();
 	StoneRing::AnimationState state(*this, group_for_character(character), NULL, character, NULL);
 	state.Init(anim);
 
@@ -1277,7 +1280,9 @@ SteelType BattleState::doCharacterAnimation(SteelType::Handle pICharacter,SteelT
 SteelType BattleState::createDisplay(int damage,SteelType::Handle hICharacter,int display_type)
 {
     //            Display(BattleState& parent,eDisplayType type,int damage,SteelType::Handle pICharacter);
-    Display display(*this, static_cast<Display::eDisplayType>(display_type),damage,hICharacter);
+    ICharacter* iChar = dynamic_cast<ICharacter*>(hICharacter);
+    if(!iChar) throw TypeMismatch();
+    Display display(*this, static_cast<Display::eDisplayType>(display_type),damage,iChar);
     display.start();
     m_displays.push_back(display);
 
@@ -1328,7 +1333,8 @@ SteelType BattleState::getAllCharacters()
 SteelType BattleState::getMonsterDamageCategory(SteelType::Handle hMonster)
 {
     SteelType result;
-    Monster * pMonster = static_cast<Monster*>(hMonster);
+    Monster * pMonster = dynamic_cast<Monster*>(hMonster);
+    if(!pMonster) throw TypeMismatch();
 
     result.set ( pMonster->GetDefaultDamageCategory() );
 

@@ -43,7 +43,6 @@ void StoneRing::MapState::HandleButtonUp(const IApplication::Button& button)
     {
 	case IApplication::BUTTON_CANCEL:
 	    pPlayer->SetRunning(false);
-	    std::cout << "Turning off running..." << std::endl;
 	    break;
 	case IApplication::BUTTON_CONFIRM:
 	    do_talk();
@@ -62,7 +61,6 @@ void StoneRing::MapState::HandleButtonDown(const IApplication::Button& button)
      {
 	 case IApplication::BUTTON_CANCEL:
 	     pPlayer->SetRunning(true);
-	     std::cout << "Turning on running..." << std::endl;
 	     break;
      }
 }

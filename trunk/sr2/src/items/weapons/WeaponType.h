@@ -12,7 +12,7 @@ class CL_Sprite;
 namespace StoneRing{
     
     class Animation;
-    class WeaponType : public Element
+    class WeaponType : public Element, public SteelType::IHandle
     {
     public:
         WeaponType();

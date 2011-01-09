@@ -6,7 +6,7 @@
 #include "StatusEffectModifier.h"
 
 namespace StoneRing{
-    class ArmorClass : public Element
+    class ArmorClass : public Element, public SteelType::IHandle
     {
     public:
         ArmorClass();

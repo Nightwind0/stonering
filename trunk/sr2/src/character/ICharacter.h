@@ -10,13 +10,17 @@
 #include "Armor.h"
 #include "DamageCategory.h"
 #include "ICharacter.h"
-
+#ifndef WIN32
+#include "steel/SteelType.h"
+#else
+#include "SteelType.h"
+#endif
 
 namespace StoneRing{
 
     class StatusEffect;
 
-    class ICharacter
+    class ICharacter: public SteelType::IHandle
     {
     public:
         enum eGender { NEUTER = 0, MALE=0x1, FEMALE=0x2, HERMAPHRODITE = MALE | FEMALE };
@@ -121,7 +125,7 @@ namespace StoneRing{
     };
 
 
-    class ICharacterGroup
+    class ICharacterGroup: public SteelType::IHandle
     {
     public:
         virtual ~ICharacterGroup(){}

@@ -2,7 +2,11 @@
 #define SR_ELEMENT_H
 
 #include "sr_defines.h"
-
+#ifndef WIN32
+    #include "steel/SteelType.h"
+#else
+    #include "SteelType.h"
+#endif
 #include <sstream>
 #include <ClanLib/core.h>
 //#include "IFactory.h"
@@ -16,7 +20,7 @@ namespace StoneRing
 
     class IApplication;
 
-    class Element
+    class Element 
     {
     public:
         Element()
