@@ -77,7 +77,7 @@ bool StoneRing::Tilemap::handle_element(Element::eElement element, Element * pEl
 void StoneRing::Tilemap::load_attributes(CL_DomNamedNodeMap attributes)
 {
     std::string name = get_required_string("mapname",attributes);
-    m_sprite = GraphicsManager::GetInstance()->GetTileMap(name);
+    m_sprite = GraphicsManager::GetTileMap(name);
     m_X = get_required_int("mapx",attributes);
     m_Y = get_required_int("mapy",attributes);
 }
@@ -250,13 +250,12 @@ bool StoneRing::Tile::handle_element(Element::eElement element, Element * pEleme
         break;
     case ESPRITEREF:
     {
-        GraphicsManager * GM = GraphicsManager::GetInstance();
         m_Graphic.asSpriteRef = dynamic_cast<SpriteRef*>(pElement);
         cFlags |= SPRITE;
 
         // Actually create the ref'd sprite here.
         // And assign to mpSprite
-        m_sprite = GM->CreateSprite( m_Graphic.asSpriteRef->GetRef() );
+        m_sprite = GraphicsManager::CreateSprite( m_Graphic.asSpriteRef->GetRef() );
         break;
     }//ESPRITEREF
     case ECONDITIONSCRIPT:

@@ -12,6 +12,7 @@
 #include <queue>
 #include "MapState.h"
 #include "SayState.h"
+#include "ExperienceState.h"
 #include "BattleState.h"
 #include "State.h"
 #ifdef _WINDOWS_
@@ -132,6 +133,7 @@ namespace StoneRing
         SteelType getUnarmedMissSound(SteelType::Handle hICharacter);
 	
 	SteelType getAnimation(const std::string& name);
+	SteelType showExperience(const SteelArray&  characters, const SteelArray& xp_gained, const SteelArray& oldLevels);
 
 
 
@@ -178,6 +180,7 @@ namespace StoneRing
         MapState mMapState;
         SayState mSayState;
         BattleState mBattleState;
+	ExperienceState mExperienceState;
         std::vector<State*> mStates;
         std::vector<IFactory*> mFactories;
 	BattleConfig mBattleConfig;

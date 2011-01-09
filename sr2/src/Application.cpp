@@ -14,6 +14,7 @@
 #include "ItemFactory.h"
 #include "CharacterFactory.h"
 #include "ChoiceState.h"
+#include "GraphicsManager.h"
 #include "MonsterRef.h"
 #include "Monster.h"
 #include "Weapon.h"
@@ -686,6 +687,20 @@ SteelType Application::log(const std::string& str)
 	return SteelType();
 }
 
+SteelType Application::showExperience(const SteelArray&  characters, const SteelArray& xp_gained, const SteelArray& oldLevels)
+{
+    mExperienceState.Init();
+    for(int i=0;i<characters.size();i++)
+    {
+	Character* c = GrabHandle<Character*>(characters[i]);
+	mExperienceState.AddCharacter(c,xp_gained[i],oldLevels[i]);
+    }
+    
+    mStates.push_back(&mExperienceState);
+    run();
+    return SteelType();
+}
+
 IApplication * IApplication::GetInstance()
 {
     return pApp;
@@ -1054,6 +1069,7 @@ void Application::registerSteelFunctions()
     
     static SteelFunctor1Arg<Application,const std::string&> fn_getAnimation(this,&Application::getAnimation);
     static SteelFunctor1Arg<Application,const std::string&> fn_log(this,&Application::log);
+    static SteelFunctor3Arg<Application,const SteelArray&,const SteelArray&, const SteelArray&> fn_showExperience(this,&Application::showExperience);
 
 
 
@@ -1124,7 +1140,7 @@ void Application::registerSteelFunctions()
     steelConst("$_POISON",POISON);
 
     mInterpreter.addFunction("normal_random", &fn_gaussian);
-	mInterpreter.addFunction("log",&fn_log);
+    mInterpreter.addFunction("log",&fn_log);
 
     mInterpreter.addFunction("say",&fn_say);
     mInterpreter.addFunction("playScene", &fn_playScene);
@@ -1177,7 +1193,7 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction("getUnarmedMissSound",&fn_getUnarmedMissSound);
     
     mInterpreter.addFunction("getAnimation",&fn_getAnimation);
-
+    mInterpreter.addFunction("showExperience", &fn_showExperience);
 
 //        SteelType hasGeneratedWeapon(const std::string &wepclass, const std::string &webtype);
 //       SteelType hasGeneratedArmor(const std::string &armclass, const std::string &armtype);
@@ -1276,6 +1292,7 @@ void Application::loadscript(std::string &o_str, const std::string & filename)
 
 int Application::main(const std::vector<CL_String> &args)
 {
+    GraphicsManager::initialize();
 
 #ifndef NDEBUG
 

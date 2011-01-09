@@ -30,7 +30,7 @@ void StoneRing::Skill::load_attributes(CL_DomNamedNodeMap attributes)
     m_eType = TypeFromString(get_implied_string("type",attributes,"battle"));
     m_bAllowsGroupTarget = get_implied_bool("allowsGroupTarget",attributes,false);
     m_bDefaultToEnemyGroup = get_implied_bool("defaultToEnemyGroup", attributes,true);
-    m_pIcon = GraphicsManager::GetInstance()->GetIcon(get_implied_string("icon",attributes,"no_icon"));
+    m_pIcon = GraphicsManager::GetIcon(get_implied_string("icon",attributes,"no_icon"));
 }
 
 void StoneRing::Skill::Invoke(const ParameterList& params)

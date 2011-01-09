@@ -26,8 +26,6 @@ void BattleState::SetConfig(BattleConfig* config)
 void BattleState::init(const std::vector<MonsterRef*>& monsters, int cellRows, int cellColumns, bool isBoss, const std::string & backdrop)
 {
     CharacterManager * pCharManager = IApplication::GetInstance()->GetCharacterManager();
-    GraphicsManager * pGraphicsManager = GraphicsManager::GetInstance();
-
 
     m_monsters = new MonsterParty();
 
@@ -58,7 +56,7 @@ void BattleState::init(const std::vector<MonsterRef*>& monsters, int cellRows, i
                     pMonster->SetCellX( pRef->GetCellX() + x );
                     pMonster->SetCellY( pRef->GetCellY() + y );
 
-                    pMonster->SetCurrentSprite(pGraphicsManager->CreateMonsterSprite(pMonster->GetName(),
+                    pMonster->SetCurrentSprite(GraphicsManager::CreateMonsterSprite(pMonster->GetName(),
                                                "idle")); // fuck, dude
 
                     m_monsters->AddMonster(pMonster);
@@ -72,7 +70,7 @@ void BattleState::init(const std::vector<MonsterRef*>& monsters, int cellRows, i
 
         if (count > 0) throw CL_Exception("Couldn't fit all monsters in their rows and columns");
     }
-    m_backdrop = pGraphicsManager->GetBackdrop(backdrop);
+    m_backdrop = GraphicsManager::GetBackdrop(backdrop);
     
     
     
@@ -273,7 +271,6 @@ void BattleState::FinishTargeting()
 
 void BattleState::Start()
 {
-    GraphicsManager * pGraphicsManager = GraphicsManager::GetInstance();
     m_draw_method = &BattleState::draw_battle;
     m_eState = COMBAT;
     const std::string status_resource = "Overlays/BattleStatus/";
@@ -335,9 +332,9 @@ void BattleState::Start()
     m_monster_rect.bottom = resources.get_integer_resource(monster_rect_resource + "bottom",0);
 
 
-    m_statusBar = pGraphicsManager->GetOverlay(GraphicsManager::BATTLE_STATUS);
-    m_battleMenu = pGraphicsManager->GetOverlay(GraphicsManager::BATTLE_MENU);
-    m_battlePopup = pGraphicsManager->GetOverlay(GraphicsManager::BATTLE_POPUP_MENU);
+    m_statusBar = GraphicsManager::GetOverlay(GraphicsManager::BATTLE_STATUS);
+    m_battleMenu = GraphicsManager::GetOverlay(GraphicsManager::BATTLE_MENU);
+    m_battlePopup = GraphicsManager::GetOverlay(GraphicsManager::BATTLE_POPUP_MENU);
 
     
     init_or_release_players(false);
@@ -350,7 +347,6 @@ void BattleState::Start()
 
 void BattleState::init_or_release_players(bool bRelease)
 {
-    GraphicsManager * pGraphicsManager = GraphicsManager::GetInstance();
     IParty * pParty = IApplication::GetInstance()->GetParty();
 
     uint count = pParty->GetCharacterCount();
@@ -360,7 +356,7 @@ void BattleState::init_or_release_players(bool bRelease)
         assert(pCharacter);
         std::string name = pCharacter->GetName();
         if (!bRelease)
-            pCharacter->SetCurrentSprite(pGraphicsManager->CreateCharacterSprite(name,"idle")); // bullshit
+            pCharacter->SetCurrentSprite(GraphicsManager::CreateCharacterSprite(name,"idle")); // bullshit
     }
 }
 
@@ -394,7 +390,6 @@ void BattleState::draw_start(const CL_Rectf &screenRect, CL_GraphicContext& GC)
 void BattleState::draw_status(const CL_Rectf &screenRect, CL_GraphicContext& GC)
 {
     IParty * pParty = IApplication::GetInstance()->GetParty();
-    GraphicsManager * pGraphicsManager = GraphicsManager::GetInstance();
     m_statusBar.draw(GC,(int)m_nStatusBarX,(int)m_nStatusBarY);
 
     for (uint p = 0; p < pParty->GetCharacterCount(); p++)
@@ -405,15 +400,15 @@ void BattleState::draw_status(const CL_Rectf &screenRect, CL_GraphicContext& GC)
         std::ostringstream hp;
         hp << std::setw(6) << pChar->GetAttribute(ICharacter::CA_HP) << '/'
         << pChar->GetAttribute(ICharacter::CA_MAXHP);
-	std::string generalFontName = pGraphicsManager->GetFontName(GraphicsManager::BATTLE_STATUS, "general");
-	std::string hpFontName = pGraphicsManager->GetFontName(GraphicsManager::BATTLE_STATUS, "hp");
-	std::string mpFontName = pGraphicsManager->GetFontName(GraphicsManager::BATTLE_STATUS, "mp");
-        CL_Font generalFont = pGraphicsManager->GetFont(generalFontName);
-        CL_Font  hpFont = pGraphicsManager->GetFont(hpFontName);
-        CL_Font  mpFont = pGraphicsManager->GetFont(mpFontName);
-	CL_Colorf generalColor = pGraphicsManager->GetFontColor(generalFontName);
-	CL_Colorf hpColor = pGraphicsManager->GetFontColor(hpFontName);
-	CL_Colorf mpColor = pGraphicsManager->GetFontColor(mpFontName);
+	std::string generalFontName = GraphicsManager::GetFontName(GraphicsManager::BATTLE_STATUS, "general");
+	std::string hpFontName = GraphicsManager::GetFontName(GraphicsManager::BATTLE_STATUS, "hp");
+	std::string mpFontName = GraphicsManager::GetFontName(GraphicsManager::BATTLE_STATUS, "mp");
+        CL_Font generalFont = GraphicsManager::GetFont(generalFontName);
+        CL_Font  hpFont = GraphicsManager::GetFont(hpFontName);
+        CL_Font  mpFont = GraphicsManager::GetFont(mpFontName);
+	CL_Colorf generalColor = GraphicsManager::GetFontColor(generalFontName);
+	CL_Colorf hpColor = GraphicsManager::GetFontColor(hpFontName);
+	CL_Colorf mpColor = GraphicsManager::GetFontColor(mpFontName);
 
         generalFont.draw_text(GC,m_status_rect.left,
                               m_status_rect.top + generalFont.get_font_metrics(GC).get_height() +(p *
@@ -491,8 +486,6 @@ void BattleState::Display::draw(CL_GraphicContext& GC)
     shadow_color.set_blue(0.0f);
 
 
-    GraphicsManager * pGraphics = GraphicsManager::GetInstance();
-
     GraphicsManager::DisplayFont displayFont;
 
     switch (m_eDisplayType)
@@ -528,8 +521,8 @@ void BattleState::Display::draw(CL_GraphicContext& GC)
 
     }
 
-    font = pGraphics->GetFont(pGraphics->GetFontName(displayFont));
-    color = pGraphics->GetFontColor(pGraphics->GetFontName(displayFont));
+    font = GraphicsManager::GetFont(GraphicsManager::GetFontName(displayFont));
+    color = GraphicsManager::GetFontColor(GraphicsManager::GetFontName(displayFont));
 
     color.set_alpha(1.0f - m_complete);
     shadow_color.set_alpha(1.0f-m_complete);

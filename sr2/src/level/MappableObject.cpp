@@ -90,7 +90,6 @@ bool StoneRing::MappableObject::handle_element(Element::eElement element, Elemen
     }
     case ESPRITEREF:
     {
-        GraphicsManager *GM = GraphicsManager::GetInstance();
         SpriteRef * pRef = dynamic_cast<SpriteRef*>(pElement);
 
         if(pRef->GetType() >= SpriteRef::_END_MO_TYPES)
@@ -101,7 +100,7 @@ bool StoneRing::MappableObject::handle_element(Element::eElement element, Elemen
         m_graphic.asSpriteRef = pRef;
         cFlags |= SPRITE;
 
-        m_sprite = GM->CreateSprite ( pRef->GetRef() );
+        m_sprite = GraphicsManager::CreateSprite ( pRef->GetRef() );
 
         int swidth = m_sprite.get_width();
         int sheight = m_sprite.get_height();

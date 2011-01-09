@@ -105,10 +105,10 @@ void StoneRing::SayState::Start()
     m_bDone = false;
     m_nTotalDrawn = m_nDrawnThisFrame = 0;
 
-    m_speakerFont = GraphicsManager::GetInstance()->GetFont(GraphicsManager::GetInstance()->GetFontName(GraphicsManager::SAY,"Speaker"));
-    m_speechFont = GraphicsManager::GetInstance()->GetFont(GraphicsManager::GetInstance()->GetFontName(GraphicsManager::SAY,"Speech"));
-    m_speakerColor = GraphicsManager::GetInstance()->GetFontColor(GraphicsManager::GetInstance()->GetFontName(GraphicsManager::SAY,"Speaker"));
-    m_speechColor = GraphicsManager::GetInstance()->GetFontColor(GraphicsManager::GetInstance()->GetFontName(GraphicsManager::SAY,"Speech"));
+    m_speakerFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::SAY,"Speaker"));
+    m_speechFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::SAY,"Speech"));
+    m_speakerColor = GraphicsManager::GetFontColor(GraphicsManager::GetFontName(GraphicsManager::SAY,"Speaker"));
+    m_speechColor = GraphicsManager::GetFontColor(GraphicsManager::GetFontName(GraphicsManager::SAY,"Speech"));
 
     m_sayOverlay = CL_Image(GET_MAIN_GC(),resource + "overlay",&resources);
 

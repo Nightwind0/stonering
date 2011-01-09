@@ -9,15 +9,16 @@
 using namespace StoneRing;
 
 
-GraphicsManager * GraphicsManager::m_pInstance;
+GraphicsManager * GraphicsManager::m_pInstance=NULL;
 
-GraphicsManager * GraphicsManager::GetInstance()
+
+void GraphicsManager::initialize()
 {
-    if (m_pInstance == NULL)
-        m_pInstance = new GraphicsManager();
-
-    return m_pInstance;
+    if(!m_pInstance){
+	m_pInstance = new GraphicsManager();
+    }
 }
+
 
 CL_Sprite GraphicsManager::CreateSprite ( const std::string & name )
 {
@@ -35,8 +36,8 @@ CL_Sprite GraphicsManager::CreateSprite ( const std::string & name )
 
 std::string GraphicsManager::LookUpMapWithSprite (CL_Sprite surface)
 {
-    for ( std::map<std::string,CL_Sprite>::iterator i = m_tile_map.begin();
-            i != m_tile_map.end();
+    for ( std::map<std::string,CL_Sprite>::iterator i = m_pInstance->m_tile_map.begin();
+            i != m_pInstance->m_tile_map.end();
             i++)
     {
         if ( i->second == surface)
@@ -58,18 +59,18 @@ CL_Sprite GraphicsManager::GetTileMap ( const std::string & name )
     CL_Sprite surface;
 
 
-    if (m_tile_map.find( name ) == m_tile_map.end())
+    if (m_pInstance->m_tile_map.find( name ) == m_pInstance->m_tile_map.end())
     {
 #ifndef NDEBUG
         std::cout << "TileMap now loading: " << name << std::endl;
 #endif
         surface = CL_Sprite(GET_MAIN_GC(),"Tilemaps/" + name, &resources);
 
-        m_tile_map[ name ] = surface;
+        m_pInstance->m_tile_map[ name ] = surface;
         return surface;
     }
 
-    surface = m_tile_map[name];
+    surface = m_pInstance->m_tile_map[name];
 
     return surface;
 }
@@ -88,6 +89,8 @@ std::string GraphicsManager::NameOfOverlay(Overlay overlay)
         return "Choice";
     case SAY:
         return "Say";
+    case EXPERIENCE:
+	return "Experience";
     default:
         assert(0);
     }
@@ -170,9 +173,9 @@ CL_Image  GraphicsManager::GetBackdrop(const std::string &name)
 
 CL_Image GraphicsManager::GetOverlay(GraphicsManager::Overlay overlay)
 {
-    std::map<Overlay,CL_Image>::iterator foundIt = m_overlay_map.find(overlay);
+    std::map<Overlay,CL_Image>::iterator foundIt = m_pInstance->m_overlay_map.find(overlay);
 
-    if (foundIt != m_overlay_map.end())
+    if (foundIt != m_pInstance->m_overlay_map.end())
     {
         return foundIt->second;
     }
@@ -182,7 +185,7 @@ CL_Image GraphicsManager::GetOverlay(GraphicsManager::Overlay overlay)
 
         CL_Image surface( GET_MAIN_GC(),std::string("Overlays/") + NameOfOverlay(overlay) + "/overlay", &resources );
 
-        m_overlay_map [ overlay ] = surface;
+        m_pInstance->m_overlay_map [ overlay ] = surface;
 
         return surface;
     }
@@ -191,9 +194,9 @@ CL_Image GraphicsManager::GetOverlay(GraphicsManager::Overlay overlay)
 
 CL_Image GraphicsManager::GetIcon(const std::string& icon)
 {
-    std::map<std::string,CL_Image>::iterator foundIt = m_icon_map.find(icon);
+    std::map<std::string,CL_Image>::iterator foundIt = m_pInstance->m_icon_map.find(icon);
 
-    if (foundIt != m_icon_map.end())
+    if (foundIt != m_pInstance->m_icon_map.end())
     {
         return foundIt->second;
     }
@@ -203,7 +206,7 @@ CL_Image GraphicsManager::GetIcon(const std::string& icon)
 
         CL_Image surface( GET_MAIN_GC(), std::string("Icons/") + icon, &resources );
 
-        m_icon_map [ icon ] = surface;
+        m_pInstance->m_icon_map [ icon ] = surface;
 
         return surface;
     }
@@ -211,15 +214,15 @@ CL_Image GraphicsManager::GetIcon(const std::string& icon)
 
 CL_Font  GraphicsManager::GetFont(const std::string &name)
 {
-    std::map<std::string,CL_Font>::iterator foundIt = m_font_map.find( name );
+    std::map<std::string,CL_Font>::iterator foundIt = m_pInstance->m_font_map.find( name );
 
-    if (foundIt != m_font_map.end())
+    if (foundIt != m_pInstance->m_font_map.end())
     {
         return foundIt->second;
     }
     else
     {
-	return LoadFont(name); // also puts it into map
+	return m_pInstance->LoadFont(name); // also puts it into map
     }
 }
 
@@ -267,19 +270,19 @@ CL_Font GraphicsManager::LoadFont(const std::string& name)
 	color = thecolor;
     }
     
-    m_font_map[name] = font;
-    m_font_colors[name] = color;
+    m_pInstance->m_font_map[name] = font;
+    m_pInstance->m_font_colors[name] = color;
     
     return font;
 }
 
 std::string  GraphicsManager::GetFontName ( Overlay overlay, const std::string& type )
 {
-    std::map<Overlay,std::map<std::string,std::string> >::iterator mapIt = m_overlay_font_map.find( overlay  );
+    std::map<Overlay,std::map<std::string,std::string> >::iterator mapIt = m_pInstance->m_overlay_font_map.find( overlay  );
     CL_ResourceManager & resources  = IApplication::GetInstance()->GetResources();
     std::string fontname;
 
-    if (mapIt != m_overlay_font_map.end())
+    if (mapIt != m_pInstance->m_overlay_font_map.end())
     {
         std::map<std::string,std::string>::iterator foundIt = mapIt->second.find(type);
         if (foundIt != mapIt->second.end())
@@ -300,7 +303,7 @@ std::string  GraphicsManager::GetFontName ( Overlay overlay, const std::string& 
         fontname = CL_String_load( std::string("Overlays/" + NameOfOverlay(overlay)
                                                + "/fonts/" + type ), resources );
 
-        m_overlay_font_map[overlay][type] = fontname;
+        m_pInstance->m_overlay_font_map[overlay][type] = fontname;
     }
 
 
@@ -315,7 +318,7 @@ std::string  GraphicsManager::GetFontName( DisplayFont font )
 
 CL_Colorf GraphicsManager::GetFontColor ( const std::string& font )
 {
-    return m_font_colors[font];
+    return m_pInstance->m_font_colors[font];
 }
 
 GraphicsManager::GraphicsManager()
