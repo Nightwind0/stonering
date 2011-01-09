@@ -122,6 +122,9 @@ namespace StoneRing
 
         SteelType invokeEquipment(SteelType::Handle hEquipment);
         SteelType attackCharacter(SteelType::Handle hICharacter);
+	SteelType attackCharacter1(ICharacter* pChar){
+	    return SteelType();
+	}
 
         SteelType getHitSound(SteelType::Handle hWeaponType);
         SteelType getMissSound(SteelType::Handle hWeaponType);
