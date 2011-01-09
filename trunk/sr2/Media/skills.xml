@@ -138,7 +138,7 @@
 		declare $pTarget = @targets[0];
 		//var $pTargetArmor = getEquipment($pTarget
   
-		//log($name + " attacks " + getCharacterName($pTarget) + " with " + getItemName($pWeapon));
+		log($name + " attacks " + getCharacterName($pTarget) + " with " + getItemName($pWeapon));
 
 		declare $hit = getCharacterAttribute($pC, $_DEX) + getEquippedWeaponAttribute($pC,$_HIT);
 		declare $dodge = getCharacterAttribute($pTarget, $_EVD); //+ getEquippedArmorAttribute($pTarget,$_AC);
