@@ -19,6 +19,19 @@ void GraphicsManager::initialize()
     }
 }
 
+CL_Sprite GraphicsManager::GetPortraits ( const std::string& character)
+{
+    CL_ResourceManager& resources  = IApplication::GetInstance()->GetResources();
+
+    CL_Sprite  sprite(GET_MAIN_GC(),"Sprites/Portraits/" +  character, &resources);
+    
+    CL_Sprite clone(GET_MAIN_GC());
+    clone.clone(sprite); 
+    
+    sprite.set_alignment(origin_center);
+    return clone;
+}
+
 
 CL_Sprite GraphicsManager::CreateSprite ( const std::string & name )
 {

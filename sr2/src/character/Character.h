@@ -30,6 +30,15 @@ namespace StoneRing{
     {
     public:
         Character();
+	
+	enum ePortrait {
+	    PORTRAIT_DEFAULT=0,
+	    PORTRAIT_HAPPY=1,
+	    PORTRAIT_SAD=2,
+	    PORTRAIT_ANGRY=3,
+	    PORTRAIT_SCARED=4,
+	    PORTRAIT_SURPRISED=5
+	};
 
         virtual eGender GetGender() const;
         virtual std::string GetName() const { return m_name; }
@@ -54,30 +63,36 @@ namespace StoneRing{
         virtual uint   GetInitiative(void)const;
         virtual double GetEquippedWeaponAttribute(Weapon::eAttribute) const;
         virtual double GetEquippedArmorAttribute(Armor::eAttribute) const;
-
+        // Includes permanent augments
+        double         GetBaseAttribute(eCharacterAttribute attr)const;
+	/***************************************************************************
+	* Sprites and images
+	***************************************************************************/
+	CL_Sprite  GetPortrait(ePortrait portrait);
         CL_Sprite  GetMapSprite() const { return m_mapSprite; }
         CL_Sprite  GetCurrentSprite() const { return m_currentSprite; }
-        void SetCurrentSprite(CL_Sprite sprite) { m_currentSprite = sprite; }
+        void       SetCurrentSprite(CL_Sprite sprite) { m_currentSprite = sprite; }
 
-        virtual CL_Pointf       GetBattlePos()const;
+	/**************************************************************************
+	* Battle stuff
+	***************************************************************************/
+        virtual CL_Pointf      GetBattlePos()const;
         virtual void           SetBattlePos(CL_Pointf point);
-
         // Shortcuts to class data
-        BattleMenu * GetBattleMenu() const;
-        CharacterClass * GetClass() const { return m_pClass; }
+        BattleMenu *           GetBattleMenu() const;
+        CharacterClass *       GetClass() const { return m_pClass; }
 
+	/**************************************************************************
+	* Equipment
+	***************************************************************************/
         // Equipment. If theres equipment in this slot already,
         // this overwrites it.
-        void Equip(Equipment::eSlot slot, Equipment *pEquip);
+        void       Equip(Equipment::eSlot slot, Equipment *pEquip);
         // Returns a pointer to the equipment that was in that slot
         Equipment* Unequip(Equipment::eSlot);
         // Whether the slot is in use
-        bool HasEquipment(Equipment::eSlot);
-
+        bool       HasEquipment(Equipment::eSlot);
         Equipment* GetEquipment(Equipment::eSlot);
-
-        // Includes permanent augments
-        double GetBaseAttribute(eCharacterAttribute attr)const;
 
         // Element API
         virtual eElement WhichElement() const { return ECHARACTER; }
@@ -93,6 +108,7 @@ namespace StoneRing{
         std::map<eCharacterAttribute,double> m_augments;
         std::map<eCharacterAttribute,bool> m_toggles;
         std::map<Equipment::eSlot,Equipment*> m_equipment;
+	CL_Sprite m_portraits;
         SpriteDefinitionMap m_sprite_definition_map;
         CharacterClass * m_pClass;
         uint m_nLevel;
@@ -100,6 +116,7 @@ namespace StoneRing{
 	uint m_nXP;
         CL_Sprite m_mapSprite;
         CL_Sprite m_currentSprite;
+	CL_Sprite m_portrait;
         StatusEffectMap m_status_effects;
         eType m_eType;
         CL_Pointf m_battle_pos;

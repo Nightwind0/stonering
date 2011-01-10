@@ -386,12 +386,30 @@ SteelType Application::useItem()
 
 SteelType Application::getCharacterName(const SteelType::Handle handle)
 {
-    ICharacter * pCharacter = dynamic_cast<ICharacter*>(handle);
-    if(!pCharacter) throw TypeMismatch();
+    ICharacter * pCharacter = GrabHandle<ICharacter*>(handle);
     SteelType name;
     name.set(pCharacter->GetName());
 
     return name;
+}
+
+SteelType Application::addExperience(const SteelType::Handle hCharacter, int xp)
+{
+    Character * pCharacter = GrabHandle<Character*>(hCharacter);
+    pCharacter->SetXP(pCharacter->GetXP() + xp);
+    SteelType val;
+    val.set(static_cast<int>(pCharacter->GetXP()));
+    
+    return val;
+}
+
+SteelType Application::getExperience(const SteelType::Handle hCharacter)
+{
+    Character * pCharacter = GrabHandle<Character*>(hCharacter);
+    SteelType val;
+    val.set(static_cast<int>(pCharacter->GetXP()));
+    
+    return val;
 }
 
 
@@ -1038,6 +1056,8 @@ void Application::registerSteelFunctions()
 
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getCharacterName(this,&Application::getCharacterName);
     static SteelFunctor2Arg<Application,const SteelType::Handle,uint> fn_getCharacterAttribute(this, &Application::getCharacterAttribute);
+    static SteelFunctor2Arg<Application,const SteelType::Handle,int> fn_addExperience(this,&Application::addExperience);
+    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getExperience(this,&Application::getExperience);
     static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getCharacterLevel(this, &Application::getCharacterLevel);
     static SteelFunctor2Arg<Application,const SteelType::Handle,uint> fn_getCharacterToggle(this, &Application::getCharacterToggle);
     static SteelFunctor3Arg<Application,const SteelType::Handle,uint,bool> fn_setCharacterToggle(this, &Application::setCharacterToggle);
@@ -1168,6 +1188,8 @@ void Application::registerSteelFunctions()
 
     mInterpreter.addFunction("getCharacterAttribute", &fn_getCharacterAttribute);
     mInterpreter.addFunction("getCharacterLevel", &fn_getCharacterLevel);
+    mInterpreter.addFunction("getExperience",&fn_getExperience);
+    mInterpreter.addFunction("addExperience",&fn_addExperience);
     mInterpreter.addFunction("getCharacterToggle", &fn_getCharacterToggle);
     mInterpreter.addFunction("setCharacterToggle", &fn_setCharacterToggle);
     mInterpreter.addFunction("getCharacterName", &fn_getCharacterName);

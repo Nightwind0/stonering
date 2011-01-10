@@ -9,6 +9,8 @@
 	println("A winner is you");
 	declare @monsters = battle::getCharacterGroup(true); // Get monsters
 	declare @characters = battle::getCharacterGroup(false); // Get characters
+	declare @xp_gain;
+	declare @original_level;
 	const $B = 10; // How many equal-level monsters to defeat to gain a level
 	const $b = 1.07; // At 1.07, a character 10 levels higher than you is worth double the XP
 	foreach (declare $character) in @characters {
@@ -22,8 +24,15 @@
 		$total_xp = $total_xp + $xp;
 	    }
 	    $total_xp = math::ceil($total_xp);
+	    
 	    println ( "{getCharacterName($character)} got {$total_xp}" );
+	    @xp_gain += $total_xp;
+	    @original_level += getCharacterLevel($character); 
+	    addExperience($character,$total_xp);
 	}
+	battle::darkColor(0.0,0.0,0.0,0.8);
+	battle::darkMode($_FINAL_DRAW);
+	showExperience(@characters,@xp_gain,@original_level);
 	]]>
 </onWon>
 <onLost>
