@@ -23,8 +23,8 @@ namespace StoneRing
 
         virtual bool IsDone() const = 0;
 	// Handle raw key events
-        virtual void HandleKeyDown(const CL_InputEvent &key)=0;
-        virtual void HandleKeyUp(const CL_InputEvent &key)=0;
+        virtual void HandleKeyDown(const CL_InputEvent &key){}
+        virtual void HandleKeyUp(const CL_InputEvent &key){}
 	// Handle joystick / key events that are processed according to mappings
 	virtual void HandleButtonUp(const IApplication::Button& button){}
 	virtual void HandleButtonDown(const IApplication::Button& button){}

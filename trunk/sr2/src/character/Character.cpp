@@ -396,6 +396,16 @@ StoneRing::Equipment* StoneRing::Character::GetEquipment(Equipment::eSlot slot)
     return m_equipment[slot];
 }
 
+CL_Sprite StoneRing::Character::GetPortrait(ePortrait portrait)
+{
+    if(m_portrait.is_null())
+    {
+	m_portrait = GraphicsManager::GetPortraits(GetName());
+    }
+    m_portrait.set_frame(static_cast<int>(portrait));
+    return m_portrait;
+}
+
 // Returns a pointer to the equipment that was in that slot
 StoneRing::Equipment* StoneRing::Character::Unequip(Equipment::eSlot slot)
 {

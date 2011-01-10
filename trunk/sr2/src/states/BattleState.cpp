@@ -73,7 +73,7 @@ void BattleState::init(const std::vector<MonsterRef*>& monsters, int cellRows, i
     m_backdrop = GraphicsManager::GetBackdrop(backdrop);
     
     
-    
+    m_ndarkMode = DISPLAY_ORDER_NO_DISPLAY;
     
 }
 
@@ -378,6 +378,10 @@ void BattleState::Finish()
     init_or_release_players(true);
 }
 
+void BattleState::draw_darkness(const CL_Rectf &screenRect, CL_GraphicContext& GC)
+{
+    CL_Draw::fill(GC,screenRect,m_darkColor);
+}
 
 void BattleState::draw_transition_in(const CL_Rectf &screenRect, CL_GraphicContext& GC)
 {
@@ -433,18 +437,45 @@ void BattleState::draw_battle(const CL_Rectf &screenRect, CL_GraphicContext& GC)
 {
     m_backdrop.draw(GC,screenRect);
 
+    if(m_ndarkMode == DISPLAY_ORDER_PRE_PLAYERS)
+	draw_darkness(screenRect,GC);
     draw_players(m_player_rect,GC);
-    draw_monsters(m_monster_rect,GC);
-
+    if(m_ndarkMode == DISPLAY_ORDER_POST_PLAYERS)
+	draw_darkness(screenRect,GC);
     
-    draw_status(screenRect,GC);
-    draw_sprites(0,GC);
-    draw_displays(GC);
+    if(m_ndarkMode == DISPLAY_ORDER_PREMONSTERS)
+	draw_darkness(screenRect,GC);
+    draw_monsters(m_monster_rect,GC);
+    if(m_ndarkMode == DISPLAY_ORDER_POSTMONSTERS)
+	draw_darkness(screenRect,GC);
 
+    draw_status(screenRect,GC);
+    
+    if(m_ndarkMode == DISPLAY_ORDER_PRE_SPRITES)
+	draw_darkness(screenRect,GC);
+    draw_sprites(0,GC);
+    if(m_ndarkMode == DISPLAY_ORDER_POST_SPRITES)
+	draw_darkness(screenRect,GC);
+    
+    if(m_ndarkMode == DISPLAY_ORDER_PRE_DISPLAYS)
+	draw_darkness(screenRect,GC);
+    draw_displays(GC);
+    if(m_ndarkMode == DISPLAY_ORDER_POST_DISPLAYS)
+	draw_darkness(screenRect,GC);
+    
+
+    if(m_ndarkMode == DISPLAY_ORDER_PRE_MENUS)
+	draw_darkness(screenRect,GC);
     if (m_combat_state == BATTLE_MENU)
     {
         draw_menus(screenRect,GC);
     }
+    
+    if(m_ndarkMode == DISPLAY_ORDER_POST_MENUS)
+	draw_darkness(screenRect,GC);
+    
+    if(m_ndarkMode == DISPLAY_ORDER_FINAL) 
+	draw_darkness(screenRect,GC);
 
 }
 
@@ -919,11 +950,24 @@ void BattleState::SteelInit(SteelInterpreter* pInterpreter)
     static SteelFunctor2Arg<BattleState,SteelType::Handle,const std::string&> fn_doSkill(this,&BattleState::doSkill);
     static SteelFunctorNoArgs<BattleState> fn_flee(this,&BattleState::flee);
     static SteelFunctorNoArgs<BattleState> fn_isBossBattle(this,&BattleState::isBossBattle);
-
+    static SteelFunctor1Arg<BattleState,int> fn_darkMode(this, &BattleState::darkMode);
+    static SteelFunctor4Arg<BattleState,double,double,double,double> fn_darkColor(this,&BattleState::darkColor);
 
     SteelConst(pInterpreter,"$_DISP_DAMAGE", Display::DISPLAY_DAMAGE);
     SteelConst(pInterpreter,"$_DISP_MP", Display::DISPLAY_MP);
     SteelConst(pInterpreter,"$_DISP_MISS", Display::DISPLAY_MISS);
+    SteelConst(pInterpreter,"$_POST_BACKDROP", DISPLAY_ORDER_POSTBACKDROP);
+    SteelConst(pInterpreter,"$_PRE_MONSTERS", DISPLAY_ORDER_PREMONSTERS);
+    SteelConst(pInterpreter,"$_POST_MONSTERS", DISPLAY_ORDER_POSTMONSTERS);
+    SteelConst(pInterpreter,"$_PRE_PLAYERS", DISPLAY_ORDER_PRE_PLAYERS);
+    SteelConst(pInterpreter,"$_POST_PLAYERS", DISPLAY_ORDER_POST_PLAYERS);
+    SteelConst(pInterpreter,"$_PRE_SPRITES", DISPLAY_ORDER_PRE_SPRITES);
+    SteelConst(pInterpreter,"$_POST_SPRITES", DISPLAY_ORDER_POST_SPRITES);
+    SteelConst(pInterpreter,"$_PRE_DISPLAYS", DISPLAY_ORDER_PRE_DISPLAYS);
+    SteelConst(pInterpreter,"$_POST_DISPLAYS",DISPLAY_ORDER_POST_DISPLAYS);
+    SteelConst(pInterpreter, "$_PRE_MENUS", DISPLAY_ORDER_PRE_MENUS);
+    SteelConst(pInterpreter, "$_POST_MENUS", DISPLAY_ORDER_POST_MENUS);
+    SteelConst(pInterpreter, "$_FINAL_DRAW", DISPLAY_ORDER_FINAL);
 
     pInterpreter->addFunction("selectTargets","battle",&fn_selectTargets);
     pInterpreter->addFunction("finishTurn","battle",&fn_finishTurn);
@@ -937,7 +981,8 @@ void BattleState::SteelInit(SteelInterpreter* pInterpreter)
     pInterpreter->addFunction("doSkill","battle",&fn_doSkill);
     pInterpreter->addFunction("flee","battle",&fn_flee);
     pInterpreter->addFunction("isBossBattle","battle",&fn_isBossBattle);
-    
+    pInterpreter->addFunction("darkMode","battle",&fn_darkMode);
+    pInterpreter->addFunction("darkColor","battle",&fn_darkColor);
     m_config->SetupForBattle();
 
 }
@@ -1230,6 +1275,19 @@ SteelType BattleState::cancelOption()
     m_combat_state = BATTLE_MENU;
     return SteelType();
 }
+
+SteelType BattleState::darkMode(int nOrder)
+{
+    m_ndarkMode = nOrder;
+    return SteelType();
+}
+
+SteelType BattleState::darkColor(double r, double g, double b, double a)
+{
+    m_darkColor = CL_Colorf((float)r,(float)g,(float)b,(float)a);
+    return SteelType();
+}
+
 
 SteelType BattleState::doTargetedAnimation(SteelType::Handle pICharacter, SteelType::Handle pITarget,SteelType::Handle hAnim)
 {

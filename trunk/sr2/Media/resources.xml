@@ -233,8 +233,8 @@
 			<integer name="x" value="0"/>
 			<integer name="y" value="0"/>
 			<section name="portrait">
-			    <integer name="x" value="20"/>
-			    <integer name="y" value="20"/>
+			    <integer name="x" value="36"/>
+			    <integer name="y" value="36"/>
 			</section>
 			<section name="text">
 			    <integer name="x" value = "148"/>
@@ -328,6 +328,13 @@
 					<grid pos="0,0" size="32,48" array="4,4"></grid>
 				</image>
 			</sprite>
+		</section>
+		<section name="Portraits">
+		    <sprite name="Valyn" hint="alpha">
+			<image file="Images/Portrait/Valyn.png">
+			    <grid pos="0,0" size="128,128" array="3,2"/>
+			</image>
+		    </sprite>
 		</section>
 		<section name="tiles">
 			<sprite name="Lava" hint="alpha">

@@ -97,6 +97,8 @@ namespace StoneRing
         // SteelType giveGeneratedArmor(const std::string &armclass, const std::string &armtype);
         SteelType getCharacterName(const SteelType::Handle hICharacter);
         SteelType getCharacterLevel(const SteelType::Handle hICharacter);
+	SteelType addExperience(const SteelType::Handle hICharacter, int xp);
+	SteelType getExperience(const SteelType::Handle hICharacter);
         //
         SteelType getCharacterAttribute(const SteelType::Handle hICharacter, uint attr);
         SteelType getCharacterToggle(const SteelType::Handle hICharacter, uint attr);

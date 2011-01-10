@@ -79,9 +79,23 @@ namespace StoneRing{
             TARGETING,
             DISPLAY_ACTION
         };
-
-
-
+	
+	enum eDisplayOrder
+	{
+	    DISPLAY_ORDER_NO_DISPLAY,
+	    DISPLAY_ORDER_POSTBACKDROP,
+	    DISPLAY_ORDER_PREMONSTERS,
+	    DISPLAY_ORDER_POSTMONSTERS,
+	    DISPLAY_ORDER_PRE_PLAYERS,
+	    DISPLAY_ORDER_POST_PLAYERS,
+	    DISPLAY_ORDER_PRE_SPRITES,
+	    DISPLAY_ORDER_POST_SPRITES,
+	    DISPLAY_ORDER_PRE_DISPLAYS,
+	    DISPLAY_ORDER_POST_DISPLAYS,
+	    DISPLAY_ORDER_PRE_MENUS,
+	    DISPLAY_ORDER_POST_MENUS,
+	    DISPLAY_ORDER_FINAL
+	};
 
         class Command
         {
@@ -174,6 +188,7 @@ namespace StoneRing{
         void draw_targets(const CL_Rectf &screenrect, CL_GraphicContext& GC);
         void draw_displays(CL_GraphicContext& GC);
 	void draw_sprites(int z, CL_GraphicContext& GC);
+	void draw_darkness(const CL_Rectf &screenRect, CL_GraphicContext& GC);
 	
 	// int is a handle
 
@@ -223,6 +238,8 @@ namespace StoneRing{
 
 	SteelType flee();	
 	SteelType isBossBattle();
+	SteelType darkMode(int order);
+	SteelType darkColor(double r, double g, double b, double a);
 
 
 
@@ -237,6 +254,8 @@ namespace StoneRing{
         CL_Rectf m_popup_rect;
         CL_Rectf m_monster_rect;
         CL_Rectf m_player_rect;
+	CL_Colorf m_darkColor;
+	uint m_ndarkMode;
 
         eCombatState m_combat_state;
         BattleMenuStack m_menu_stack;

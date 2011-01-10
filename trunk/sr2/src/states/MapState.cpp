@@ -147,12 +147,14 @@ void StoneRing::MapState::HandleKeyUp(const CL_InputEvent &key)
     assert(pPlayer);
     switch(key.id)
     {
+	/*
     case CL_KEY_SPACE:
         do_talk();
         break;
     case CL_KEY_TAB:
         do_talk(true); // Prod!
         break;
+	*/
     case CL_KEY_SHIFT:
         pPlayer->SetRunning(false);
         break;
