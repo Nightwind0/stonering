@@ -3586,12 +3586,12 @@
 			<script id="usePodium">
 			    <![CDATA[
 			    var @array = getPartyArray();
-			    var $i;
-			    for($i=0;$i<len(@array);$i++)
+			    
+			    foreach (declare $character) in @array
 			    {
-				doDamage(@array[$i],0-getCharacterAttribute(@array[$i],$_MAXHP)-getCharacterAttribute(@array[$i],$_HP));
-				print(getCharacterName(@array[$i]) + " HP = " + getCharacterAttribute(@array[$i],$_HP));
-				setCharacterToggle(@array[$i],$_ALIVE,true);
+				doDamage($character,0-getCharacterAttribute($character,$_MAXHP)-getCharacterAttribute($character,$_HP));
+				print(getCharacterName($character) + " HP = " + getCharacterAttribute($character,$_HP));
+				setCharacterToggle($character,$_ALIVE,true);
 			    }
 			    print("Healed\n");
 			]]>

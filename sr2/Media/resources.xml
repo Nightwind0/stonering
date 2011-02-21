@@ -64,6 +64,7 @@
 		<freetype name="BoldPowderBlue" size="40" color="#006A91FF" file="Images/Fonts/BorisBlackBloxx.ttf"/>
 		<freetype name="BoldBlack" size="40" color="#000000FF" file="Images/Fonts/BorisBlackBloxx.ttf"/>
 		<freetype name="BoldGray" size="40" color="#616165FF" file="Images/Fonts/BorisBlackBloxx.ttf"/>	
+		<freetype name="BoldYellow" size="40" color="#00FFFFFF" file="Images/Fonts/BorisBlackBloxx.ttf"/>	
 
 
 	</section>
@@ -228,7 +229,7 @@
 			    <string name="Character" value="BoldWhite"/>
 			    <string name="XP"        value="BoldBlack"/>
 			    <string name="OldLevel"  value="BoldWhite"/>
-			    <string name="Level"     value="BoldPowderBlue"/>
+			    <string name="Level"     value="BoldYellow"/>
 			</section>
 		</section>
 		<section name="Choice">

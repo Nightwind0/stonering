@@ -102,10 +102,10 @@
                 battle::doSkill($Character,"MonsterBasicAttack");  // Monsters are allowed to use any skill they want.
             </script>
         </onRound>
-        <stat id="hp_max"   value="35"/>
+        <stat id="hp_max"   value="65"/>
         <stat id="mp_max" value="5"/>
-        <stat id="str" value="7"/>
-        <stat id="def" value="2"/>
+        <stat id="str" value="15"/>
+        <stat id="def" value="10"/>
         <stat id="dex" value="0.95"/>
         <stat id="evd" value="0.09"/>
         <stat id="mag" value="0"/>
