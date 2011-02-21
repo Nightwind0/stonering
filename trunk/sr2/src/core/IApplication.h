@@ -56,6 +56,12 @@ namespace StoneRing
 	    AXIS_UP,
 	    AXIS_DOWN
 	};
+	
+	
+	enum Utility {
+	    XP_FOR_LEVEL,
+	    LEVEL_FOR_XP
+	};
 
 	
         virtual ~IApplication(){}
@@ -80,8 +86,7 @@ namespace StoneRing
         virtual AstScript * LoadScript(const std::string &name, const std::string &script)=0;
         virtual SteelType RunScript(AstScript * pScript)=0;
         virtual SteelType RunScript(AstScript *pScript, const ParameterList &params)=0;
-	virtual bool HasUtility(const std::string& utility_name)const=0;
-	virtual AstScript * GetUtility(const std::string& utility)const=0;
+	virtual AstScript * GetUtility(Utility util)const=0;
 
     };
 

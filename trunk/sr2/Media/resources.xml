@@ -217,7 +217,7 @@
 			<section name="xp_bar">
 			    <integer name="x" value="194"/>
 			    <integer name="y" value ="135"/>
-			    <integer name="width" value="200"/>
+			    <integer name="width" value="300"/>
 			    <integer name="height" value="32"/>
 			    <string name="gradient_top_left" value="#FFFFFFFF"/>
 			    <string name="gradient_top_right" value="#FF00FFFF"/>

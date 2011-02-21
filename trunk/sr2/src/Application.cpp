@@ -329,7 +329,7 @@ SteelType Application::giveGold(int amount)
 SteelType Application::addCharacter(const std::string &character, int level, bool announce)
 {
     Character * pCharacter = mCharacterManager.GetCharacter(character);
-    AstScript * pTNL = GetUtility("tnl");
+    AstScript * pTNL = GetUtility(XP_FOR_LEVEL);
     ParameterList params;
     params.push_back(ParameterListItem("$_LEVEL",level));
     pCharacter->SetXP(RunScript(pTNL,params));
@@ -1472,14 +1472,19 @@ int Application::main(const std::vector<CL_String> &args)
 
 }
 
-bool Application::HasUtility(const std::string& utility_name)const
-{
-    return mUtilityScripts.ScriptExists(utility_name);
-}
 
-AstScript* Application::GetUtility(const std::string& utility)const
+
+AstScript* Application::GetUtility(Utility util)const
 {
-    return mUtilityScripts.GetScript(utility);
+    switch(util)
+    {
+	case XP_FOR_LEVEL:
+	    return mUtilityScripts.GetScript("tnl");
+	case LEVEL_FOR_XP:
+	    return mUtilityScripts.GetScript("lnt");
+    }
+    assert(0);
+    return NULL;
 }
 
 void Application::showRechargeableOnionSplash()
