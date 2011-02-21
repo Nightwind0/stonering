@@ -22,6 +22,7 @@
 #endif
 #include "ElementFactory.h"
 #include "BattleConfig.h"
+#include "UtilityScripts.h"
 
 namespace StoneRing
 {
@@ -54,6 +55,8 @@ namespace StoneRing
         virtual AstScript * LoadScript(const std::string &name, const std::string &script);
         virtual SteelType RunScript(AstScript * pScript);
         virtual SteelType RunScript(AstScript *pScript, const ParameterList &params);
+	virtual bool HasUtility(const std::string& utility_name)const;
+	virtual AstScript* GetUtility(const std::string& utility)const;
     protected:
 
 
@@ -135,7 +138,8 @@ namespace StoneRing
         SteelType getUnarmedMissSound(SteelType::Handle hICharacter);
 	
 	SteelType getAnimation(const std::string& name);
-	SteelType showExperience(const SteelArray&  characters, const SteelArray& xp_gained, const SteelArray& oldLevels);
+	SteelType showExperience(const SteelArray&  characters, const SteelArray& xp_gained,
+				 const SteelArray& oldLevels);
 
 
 
@@ -187,7 +191,7 @@ namespace StoneRing
         std::vector<IFactory*> mFactories;
 	BattleConfig mBattleConfig;
         AppUtils mAppUtils;
-
+	UtilityScripts mUtilityScripts;
     };
 
 inline void Application::steelConst(const std::string &name, int value)

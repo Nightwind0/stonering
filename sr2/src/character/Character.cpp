@@ -191,7 +191,7 @@ uint StoneRing::Character::GetLevel(void)const
 
 void StoneRing::Character::SetLevel(uint level)
 {
-    m_nLevel = level;
+    
 }
 
 uint   StoneRing::Character::GetXP()const
@@ -202,6 +202,10 @@ uint   StoneRing::Character::GetXP()const
 void   StoneRing::Character::SetXP(uint amount)
 {
     m_nXP = amount;
+    static AstScript * LNT = IApplication::GetInstance()->GetUtility("lnt");
+    ParameterList params;
+    params.push_back(ParameterListItem("$_XP",(int)m_nXP));
+    m_nLevel = IApplication::GetInstance()->RunScript(LNT,params);
 }
 
 ICharacter::eGender StoneRing::Character::GetGender() const
@@ -305,7 +309,7 @@ void StoneRing::Character::load_finished()
 double StoneRing::Character::GetBaseAttribute(eCharacterAttribute attr)const
 {
     double augment  = 0.0;
-    double base = m_pClass->GetStat(attr,m_nLevel);
+    double base = m_pClass->GetStat(attr,GetLevel());
     std::map<eCharacterAttribute,double>::const_iterator aug = m_augments.find(attr);
     if(aug != m_augments.end())
         augment = aug->second;
@@ -326,7 +330,7 @@ double StoneRing::Character::GetAttribute(eCharacterAttribute attr) const
     double base = 0.0;
     if(!IsTransient(attr))
     {
-        base = m_pClass->GetStat(attr,m_nLevel);
+        base = m_pClass->GetStat(attr,GetLevel());
         // Go through all equipment, multiplying by the AMs that are mults
         for(std::map<Equipment::eSlot,Equipment*>::const_iterator iter= m_equipment.begin();
             iter != m_equipment.end();iter++)

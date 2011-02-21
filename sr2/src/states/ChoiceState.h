@@ -52,6 +52,9 @@ namespace StoneRing
         CL_Font m_choiceFont;
         CL_Font m_optionFont;
         CL_Font m_currentOptionFont;
+	CL_Colorf m_choiceColor;
+	CL_Colorf m_optionColor;
+	CL_Colorf m_currentOptionColor;
         int m_nSelection;
         bool m_bDraw;
     };

@@ -86,7 +86,7 @@ void StoneRing::ChoiceState::Draw(const CL_Rect &screenRect,CL_GraphicContext& G
     CL_Draw::fill(GC, m_text_rect, m_text_BGColor ) ;
 
     m_choiceOverlay.draw(GC,static_cast<float>(m_X),static_cast<float>(m_Y));
-    m_choiceFont.draw_text(GC,m_question_rect.left,m_question_rect.top + m_choiceFont.get_font_metrics(GC).get_height(),m_text);
+    m_choiceFont.draw_text(GC,m_question_rect.left,m_question_rect.top + m_choiceFont.get_font_metrics(GC).get_height(),m_text,m_choiceColor);
 
     Menu::Draw(GC);
 }
@@ -112,15 +112,14 @@ void StoneRing::ChoiceState::Start()
     std::string resource = "Overlays/Choice/";
     IApplication *pApp = IApplication::GetInstance();
     CL_ResourceManager& resources = pApp->GetResources();
-    std::string choiceFont = CL_String_load(resource + "fonts/Choice",resources);
-    std::string optionFont = CL_String_load(resource + "fonts/Option",resources);
-    std::string selectionFont = CL_String_load(resource+ "fonts/Selection",resources);
 
-    m_choiceFont = GraphicsManager::GetFont(choiceFont);
 
-    m_optionFont = GraphicsManager::GetFont(optionFont);
-
-    m_currentOptionFont = GraphicsManager::GetFont(selectionFont);
+    m_choiceFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::CHOICE,"Choice"));
+    m_optionFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::CHOICE,"Option"));
+    m_currentOptionFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::CHOICE,"Selection"));
+    m_choiceColor = GraphicsManager::GetFontColor(GraphicsManager::GetFontName(GraphicsManager::CHOICE,"Choice"));
+    m_optionColor = GraphicsManager::GetFontColor(GraphicsManager::GetFontName(GraphicsManager::CHOICE,"Option"));
+    m_currentOptionColor = GraphicsManager::GetFontColor(GraphicsManager::GetFontName(GraphicsManager::CHOICE,"Selection"));
 
     m_choiceOverlay = CL_Image(GC,"Overlays/Choice/overlay", &resources );
 
@@ -173,14 +172,17 @@ CL_Rectf StoneRing::ChoiceState::get_rect()
 void StoneRing::ChoiceState::draw_option(int option, bool selected, float x, float y, CL_GraphicContext& gc)
 {
         CL_Font  lineFont;
+	CL_Colorf drawColor = m_optionColor;
 	
 	lineFont = m_optionFont;
 	
-	if(selected)
+	if(selected){
 	    lineFont = m_currentOptionFont;  
+	    drawColor = m_currentOptionColor;
+	}
 
         lineFont.draw_text(gc, x,  y + lineFont.get_font_metrics(gc).get_height(),
-                         m_choices[option]);
+                         m_choices[option],drawColor);
 }
 
 int StoneRing::ChoiceState::height_for_option(CL_GraphicContext& gc)
