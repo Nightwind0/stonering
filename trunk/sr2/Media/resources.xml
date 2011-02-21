@@ -9,6 +9,7 @@
 			<image-file file="Images/Screens/splash_bg.png" />
 		</image>
 		<string name="BattleConfig" value="Media/battleConfig.xml"/>
+		<string name="UtilityScripts" value="Media/utilityScripts.xml"/>
   <!-- integer name="width" value="640" / -->
   <!-- integer name="height" value="480" / -->
 	</section>
@@ -59,38 +60,11 @@
 		<freetype name="sb_cyan" size="24" color="#00FFFF" file="Images/Fonts/BorisBlackBloxx.ttf"/>
 		<freetype name="Font_miss" file="Images/Fonts/cwisdom.ttf" size="32" color="#FFFF00FF" font_name="Conventional Wisdom"/>
 
-		<sprite name="Font_bold_white">
-			<image file="Images/Fonts/bold_white.png">
-				<alpha/>
-			</image>
-		</sprite>
-		<font name="BoldWhite">
-			<bitmap glyphs="Fonts/Font_bold_white" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw"/>
-		</font>
-		<sprite name="Font_bold_powder_blue">
-			<image file="Images/Fonts/bold_powder_blue.png">
-				<alpha/>
-			</image>
-		</sprite>
-		<font name="BoldPowderBlue">
-			<bitmap glyphs="Fonts/Font_bold_powder_blue" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw"/>
-		</font>
-		<sprite name="Font_bold_gray">
-			<image file="Images/Fonts/bold_gray.png">
-				<alpha/>
-			</image>
-		</sprite>
-		<font name="BoldGray">
-			<bitmap glyphs="Fonts/Font_bold_gray" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw"/>
-		</font>
-		<sprite name="Font_bold_black">
-			<image file="Images/Fonts/bold_black.png">
-				<alpha/>
-			</image>
-		</sprite>
-		<font name="BoldBlack">
-			<bitmap glyphs="Fonts/Font_bold_black" letters="1234567890-=\+/`~!@#$%^&amp;*()[]{};:'&quot;,.&lt;&gt;?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw"/>
-		</font>
+		<freetype name="BoldWhite" size="40" color="#FFFFFFFF" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+		<freetype name="BoldPowderBlue" size="40" color="#006A91FF" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+		<freetype name="BoldBlack" size="40" color="#000000FF" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+		<freetype name="BoldGray" size="40" color="#616165FF" file="Images/Fonts/BorisBlackBloxx.ttf"/>	
+
 
 	</section>
 	<section name="Levels">
@@ -237,12 +211,22 @@
 			    <integer name="y" value="36"/>
 			</section>
 			<section name="text">
-			    <integer name="x" value = "148"/>
-			    <integer name="y" value = "36"/>
+			    <integer name="x" value = "180"/>
+			    <integer name="y" value = "70"/>
+			</section>
+			<section name="xp_bar">
+			    <integer name="x" value="194"/>
+			    <integer name="y" value ="135"/>
+			    <integer name="width" value="200"/>
+			    <integer name="height" value="32"/>
+			    <string name="gradient_top_left" value="#FFFFFFFF"/>
+			    <string name="gradient_top_right" value="#FF00FFFF"/>
+			    <string name="gradient_bottom_left" value="#00FF00FF"/>
+			    <string name="gradient_bottom_right" value="#F0F0F0FF"/>
 			</section>
 			<section name="fonts">
 			    <string name="Character" value="BoldWhite"/>
-			    <string name="XP"        value="BoldPowderBlue"/>
+			    <string name="XP"        value="BoldBlack"/>
 			    <string name="OldLevel"  value="BoldWhite"/>
 			    <string name="Level"     value="BoldPowderBlue"/>
 			</section>

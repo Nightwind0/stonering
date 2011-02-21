@@ -30,6 +30,7 @@ namespace StoneRing
 
         double    GetStat(ICharacter::eCharacterAttribute attr, int level);
 	int	  GetExperienceToLevel(int level);
+	int       GetLevelForExperience(int xp);
 
         std::list<SkillRef*>::const_iterator GetSkillRefsBegin() const;
         std::list<SkillRef*>::const_iterator GetSkillRefsEnd() const;

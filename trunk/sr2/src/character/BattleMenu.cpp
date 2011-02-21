@@ -84,25 +84,35 @@ void BattleMenu::draw_option(int option, bool selected, float x, float y, CL_Gra
     BattleMenuOption * pOption = m_options[option];
     
     CL_Font font;
+    CL_Colorf drawColor;
     CL_Image icon = pOption->GetIcon();
+
     //icon.set_alignment(origin_bottom_left,0,0);
     
 
     if(pOption->Enabled(m_params))
     {
 	font = m_onFont;
+	drawColor = m_onColor;
     }
     else
     {
 	font = m_offFont;
+	drawColor = m_offColor;
     }
     
     if(selected)
     {
 	font = m_selectedFont;
+	drawColor = m_selectedColor;
     }
     
-    font.draw_text(gc,x  + 12.0f + icon.get_width() , font.get_font_metrics(gc).get_height() + y,pOption->GetName());
+    float font_height_offset = 0 - ((font.get_font_metrics(gc).get_height() - 
+				    font.get_font_metrics(gc).get_descent() -  
+				    font.get_font_metrics(gc).get_internal_leading())/ 2);
+ 
+    
+    font.draw_text(gc,x  + 12.0f + icon.get_width() , font.get_font_metrics(gc).get_height() + y + font_height_offset,pOption->GetName(),drawColor);
 
     icon.draw(gc,static_cast<int>(x ), static_cast<int>(y));
     

@@ -142,6 +142,7 @@
             </script>
         </statScript>
 
+
 		<!--statIncrease base="1.07" multiplier="18" stat="hp_max"/>
 		<statIncrease base="1.06" multiplier="4" stat="str"/>
 		<statIncrease base="1.06" multiplier="5.5" stat="dex"/>

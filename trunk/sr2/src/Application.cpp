@@ -329,10 +329,15 @@ SteelType Application::giveGold(int amount)
 SteelType Application::addCharacter(const std::string &character, int level, bool announce)
 {
     Character * pCharacter = mCharacterManager.GetCharacter(character);
+    AstScript * pTNL = GetUtility("tnl");
+    ParameterList params;
+    params.push_back(ParameterListItem("$_LEVEL",level));
+    pCharacter->SetXP(RunScript(pTNL,params));
     pCharacter->SetLevel(level);
     // TODO: This is kind of a hack... probably ought to do this via steel API
     pCharacter->PermanentAugment(ICharacter::CA_HP, pCharacter->GetAttribute(ICharacter::CA_MAXHP));
     pCharacter->PermanentAugment(ICharacter::CA_MP, pCharacter->GetAttribute(ICharacter::CA_MAXMP));
+  
     mpParty->AddCharacter(pCharacter);
 
     if (announce)
@@ -705,7 +710,8 @@ SteelType Application::log(const std::string& str)
 	return SteelType();
 }
 
-SteelType Application::showExperience(const SteelArray&  characters, const SteelArray& xp_gained, const SteelArray& oldLevels)
+SteelType Application::showExperience(const SteelArray&  characters, const SteelArray& xp_gained,
+				      const SteelArray& oldLevels)
 {
     mExperienceState.Init();
     for(int i=0;i<characters.size();i++)
@@ -1367,6 +1373,8 @@ int Application::main(const std::vector<CL_String> &args)
 
 
         mAppUtils.LoadGameplayAssets("",m_resources);
+	std::string utilityConfig = CL_String_load("Configuration/UtilityScripts",m_resources);
+	mUtilityScripts.Load(utilityConfig);
         std::string startinglevel = CL_String_load("Game/StartLevel",m_resources);
         std::string initscript;
         loadscript(initscript,CL_String_load("Game/StartupScript",m_resources));
@@ -1462,6 +1470,16 @@ int Application::main(const std::vector<CL_String> &args)
 
     return 0;
 
+}
+
+bool Application::HasUtility(const std::string& utility_name)const
+{
+    return mUtilityScripts.ScriptExists(utility_name);
+}
+
+AstScript* Application::GetUtility(const std::string& utility)const
+{
+    return mUtilityScripts.GetScript(utility);
 }
 
 void Application::showRechargeableOnionSplash()

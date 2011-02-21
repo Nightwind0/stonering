@@ -444,6 +444,12 @@ Element * ElementFactory::createAlterSprite() const
     return new AlterSprite();
 }
 
+template <class T>
+Element * CreateElement()
+{
+    return new T();
+}
+
 Element * ElementFactory::createElement( const std::string & element )
 {
     MethodMap::iterator it = mCreateMethods.find(element);
@@ -542,6 +548,7 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["weaponTypeExclusionList"] = &ElementFactory::createWeaponTypeExclusionList;
     mCreateMethods["weaponTypeRef"] = &ElementFactory::createWeaponTypeRef;
     mCreateMethods["alterSprite"] = &ElementFactory::createAlterSprite;
+   // mCreateMethods["alterSprite"] = &CreateElement<AlterSprite>();
 }
 
 

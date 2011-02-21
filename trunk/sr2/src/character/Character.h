@@ -111,7 +111,7 @@ namespace StoneRing{
 	CL_Sprite m_portraits;
         SpriteDefinitionMap m_sprite_definition_map;
         CharacterClass * m_pClass;
-        uint m_nLevel;
+	uint m_nLevel;
         uint m_nInitiative;
 	uint m_nXP;
         CL_Sprite m_mapSprite;

@@ -73,12 +73,15 @@ namespace StoneRing
         virtual int GetScreenWidth()const=0;
         virtual int GetScreenHeight()const=0;
 
+
         virtual CL_Rect GetDisplayRect() const=0;
         virtual void RequestRedraw(const State *pState)=0;
         virtual void RunState(State *pState)=0;
         virtual AstScript * LoadScript(const std::string &name, const std::string &script)=0;
         virtual SteelType RunScript(AstScript * pScript)=0;
         virtual SteelType RunScript(AstScript *pScript, const ParameterList &params)=0;
+	virtual bool HasUtility(const std::string& utility_name)const=0;
+	virtual AstScript * GetUtility(const std::string& utility)const=0;
 
     };
 

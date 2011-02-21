@@ -51,6 +51,8 @@ stonering_SOURCES =	src/Application.cpp \
 			src/core/NamedScript.cpp \
 			src/core/SpriteRef.cpp \
 			src/core/Utilities.cpp \
+			src/core/UtilityScripts.cpp \
+			src/core/UtilityScripts.h \
 			src/core/AppUtils.h \
 			src/core/AttributeModifier.h \
 			src/core/Element.h \
