@@ -5,7 +5,7 @@
 </setup>
 <onWon>
     <![CDATA[
-	include "Media/Scripts/functions.steel";
+	require("Media/Scripts/functions.steel");
 	println("A winner is you");
 	declare @monsters = battle::getCharacterGroup(true); // Get monsters
 	declare @characters = battle::getCharacterGroup(false); // Get characters

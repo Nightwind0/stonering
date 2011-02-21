@@ -1,12 +1,12 @@
 <script id="tnl">
     <![CDATA[
-	include "Media/Scripts/functions.steel";
+	require( "Media/Scripts/functions.steel" );
 	return tnl($_LEVEL);
 	]]>
 </script>
 <script id="lnt">
     <![CDATA[
-    	include "Media/Scripts/functions.steel";
-	return lnt($_XP);    	
+	require( "Media/Scripts/functions.steel" );
+	return lnt($_XP);
 	]]>
 </script>
