@@ -55,8 +55,7 @@ namespace StoneRing
         virtual AstScript * LoadScript(const std::string &name, const std::string &script);
         virtual SteelType RunScript(AstScript * pScript);
         virtual SteelType RunScript(AstScript *pScript, const ParameterList &params);
-	virtual bool HasUtility(const std::string& utility_name)const;
-	virtual AstScript* GetUtility(const std::string& utility)const;
+	virtual AstScript* GetUtility(Utility util)const;
     protected:
 
 

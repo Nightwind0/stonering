@@ -19,7 +19,8 @@
 		declare $char_level = getCharacterLevel($character);
 		declare $monster_level = getCharacterLevel($monster);
 	
-		declare $xp = (((tnl($char_level + 1) - tnl($char_level)) /  $B)) * $b ^ ($char_level - $monster_level);
+		declare $xp = ((tnl($char_level + 1) - tnl($char_level)) /  $B) * ($b ^ ($monster_level - $char_level));
+		//((TNL(C.L+1) - TNL(C.L)) /  B) * (b ^ ( M.L - C.L))
 		//declare $xp = tnl($char_level + 1) - tnl($char_level);
 		$total_xp = $total_xp + $xp;
 	    }
