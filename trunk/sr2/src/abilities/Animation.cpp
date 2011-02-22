@@ -467,6 +467,7 @@ void SpriteMovementScript::load_attributes(CL_DomNamedNodeMap attributes)
     else if(type=="spritePitch") m_eType = SpriteMovement::SPRITE_PITCH;
     else if(type=="spriteYaw") m_eType = SpriteMovement::SPRITE_YAW;
     else if(type=="circleAngle") m_eType = SpriteMovement::CIRCLE_ANGLE;
+    else if(type=="alpha") m_eType = SpriteMovement::ALPHA;
     else throw CL_Exception("Unrecognized sprite movement script: " + type);
     ScriptElement::load_attributes(attributes);
 }

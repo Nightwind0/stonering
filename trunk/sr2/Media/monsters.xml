@@ -27,7 +27,12 @@
                 battle::doSkill($Character,"MonsterBasicAttack");
             </script>
         </onRound>
-
+	<onRemove>
+	    <script id="GreenTeaMochi_death">
+		//say("Mochi",getCharacterName($Character));
+		battle::doCharacterAnimation($Character,getAnimation("standard_monster_death"));
+	    </script>
+	</onRemove>
         <itemRef>
             <weaponRef>
                 <weaponTypeRef name="Knife"/>
@@ -102,8 +107,8 @@
                 battle::doSkill($Character,"MonsterBasicAttack");  // Monsters are allowed to use any skill they want.
             </script>
         </onRound>
-        <stat id="hp_max"   value="65"/>
-        <stat id="mp_max" value="5"/>
+        <stat id="hp_max"   value="70"/>
+        <stat id="mp_max" value="0"/>
         <stat id="str" value="15"/>
         <stat id="def" value="10"/>
         <stat id="dex" value="0.95"/>

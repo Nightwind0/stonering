@@ -87,6 +87,9 @@ std::list<ItemRef*>::const_iterator Monster::GetDropsEnd() const
 
 void Monster::Invoke()
 {
+    ParameterList params;
+    params.push_back(ParameterListItem("$Character",this));
+    SetLevel ( m_pMonsterDefinition->GetLevel() );
     ClearDeathAnimated();
     set_toggle_defaults();
     set_transients();
@@ -114,7 +117,9 @@ void Monster::Round(const ParameterList& params)
 
 void Monster::Die()
 {
-    m_pMonsterDefinition->Die();
+    ParameterList params;
+    params.push_back(ParameterListItem("$Character",this));
+    m_pMonsterDefinition->Die(params);
 }
 
 void Monster::Die(const ParameterList& params)
@@ -140,7 +145,7 @@ void Monster::SetToggle(ICharacter::eCharacterAttribute attr, bool state)
 void Monster::Kill()
 {
     SetToggle(CA_ALIVE,false);
-    // TODO: They should have some kind of steel hook here
+   // Die();
 }
 
 void Monster::Attacked()

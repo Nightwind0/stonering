@@ -3518,13 +3518,17 @@
 		    <event name="podium" triggerType="talk">
 			<script id="useBattlePodium">
 			    <![CDATA[
-				var $decision = choice("Do you challenge me?", array("I will strike you down!","Nevermind"));
+				var $decision = choice("Who do you challenge?", 
+				    array("Mochi Team!","One Mochi","Nevermind"));
 				switch($decision){
 				    case 0:
 					startBattle("Green Tea Mochi",3,false,"grasslands");
 				    break;
 				    case 1:
-					say("Podium","A wise choice");
+					startBattle("Green Tea Mochi",1,false,"grasslands");
+				    break;
+				    case 2:
+					say("Podium","Very well.");
 				    break;
 				}
 			]]>

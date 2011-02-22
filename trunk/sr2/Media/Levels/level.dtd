@@ -69,7 +69,7 @@
 <!ELEMENT spriteAnimation ((spriteStub|spriteRef|battleSprite),spriteMovement?,alterSprite?, hide?)>
 <!ELEMENT spriteStub EMPTY>
 <!ELEMENT battleSprite EMPTY>
-<!ELEMENT spriteMovement EMPTY>
+<!ELEMENT spriteMovement (spriteMovementScript*)>
 <!ELEMENT hide EMPTY>
 
 

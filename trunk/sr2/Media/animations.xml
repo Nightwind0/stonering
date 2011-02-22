@@ -73,4 +73,28 @@
 	    </spriteAnimation>
 	</phase>
     </animation>
+    <animation name="standard_monster_death" type="battle">
+	<phase parallel="true" duration="700">
+	    <spriteAnimation name="monster_death">
+	    <battleSprite who="caster" which="recoil"/>
+
+	    <spriteMovement initialFocus="caster" endFocus="caster" movementStyle="straight">
+		<spriteMovementScript  id="StandardMonsterDeathAnimation_Alpha" type="spritePitch" >
+		        <![CDATA[
+			return $P * (3.1415926/2);
+			    ]]>
+		</spriteMovementScript>
+		<spriteMovementScript  id="StandardMonsterDeathAnimation_Alpha" type="alpha" >
+		        <![CDATA[
+			return 1.0 - $P;
+			    ]]>
+		</spriteMovementScript>
+	    </spriteMovement>
+	</spriteAnimation>
+	<spriteAnimation name="red_for_death">
+	    <battleSprite who="caster" which="recoil"/>
+	    <alterSprite who="caster" how="redscale"/>
+	</spriteAnimation>
+	</phase>
+    </animation>
 </animations>
