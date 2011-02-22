@@ -391,9 +391,20 @@ void TargetingState::SelectDownTarget()
         }
         else
         {
-            // It's a player
-            // TODO: This..
-            // for now, we can only deal with one player
+	    Character* pCharacter = dynamic_cast<Character*>(target);
+	    int current_index = 0;
+	    for(int i=0;i<m_pParty->GetCharacterCount();i++)
+	    {
+		if(pCharacter == m_pParty->GetCharacter(i))
+		{
+		    current_index = i;
+		    break;
+		}
+	    }
+	    current_index++;
+	    if(current_index == m_pParty->GetCharacterCount())
+		current_index = 0;
+	    m_pParent->m_targets.selected.m_pTarget = m_pParty->GetCharacter(current_index);
             return;
         }
     }
@@ -443,9 +454,20 @@ void TargetingState::SelectUpTarget()
         }
         else
         {
-            // It's a player
-            // TODO: This..
-            // for now, we can only deal with one player
+	    Character* pCharacter = dynamic_cast<Character*>(target);
+	    int current_index = 0;
+	    for(int i=0;i<m_pParty->GetCharacterCount();i++)
+	    {
+		if(pCharacter == m_pParty->GetCharacter(i))
+		{
+		    current_index = i;
+		    break;
+		}
+	    }
+	    current_index--;
+	    if(current_index == -1)
+		current_index = m_pParty->GetCharacterCount() -1 ;
+	    m_pParent->m_targets.selected.m_pTarget = m_pParty->GetCharacter(current_index);
             return;
         }
     }

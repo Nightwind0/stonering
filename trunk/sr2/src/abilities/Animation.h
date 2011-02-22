@@ -29,19 +29,21 @@ namespace StoneRing
         {
             return EALTERSPRITE;
         }
-        eWho GetWho() const;
-	float GetAlpha() const;
+
         enum eAlter
         {
             HIDE, SMALLER_SIZE, LARGER_SIZE, HALF_SIZE, DOUBLE_SIZE, NEGATIVE,
-            X_FLIP, Y_FLIP, GRAYSCALE, GREENSCALE, REDSCALE, BLUESCALE
+            X_FLIP, Y_FLIP, GRAYSCALE, GREENSCALE, REDSCALE, BLUESCALE, RESET // Reset = back to normal
         };
+	
+	eAlter GetAlter() const { return m_eAlter; }
+	eWho GetWho() const { return m_eWho; }
 
     private:
         static eAlter alter_from_string(const std::string &str);
+	virtual void load_attributes(CL_DomNamedNodeMap attributes);
         eWho m_eWho;
         eAlter m_eAlter;
-	float m_fAlpha;
     };
 
     class SpriteStub : public Element

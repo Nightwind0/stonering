@@ -32,6 +32,13 @@
 	battle::darkColor(0.0,0.0,0.0,0.9);
 	battle::darkMode($_FINAL_DRAW);
 	showExperience(@characters,@xp_gain,@original_level);
+	declare $winnings = 0;
+	const $winningsPerLevel = 5;
+	const $winningsGrowth = 1.15;
+	foreach (declare $monster) in @monsters {
+	    $winnings += $winningsPerLevel * ($b ^ getCharacterLevel($monster));
+	}
+	giveGold($winnings);
 	]]>
 </onWon>
 <onLost>
