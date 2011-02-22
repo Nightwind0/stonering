@@ -30,6 +30,7 @@ namespace StoneRing
             return EALTERSPRITE;
         }
         eWho GetWho() const;
+	float GetAlpha() const;
         enum eAlter
         {
             HIDE, SMALLER_SIZE, LARGER_SIZE, HALF_SIZE, DOUBLE_SIZE, NEGATIVE,
@@ -40,7 +41,7 @@ namespace StoneRing
         static eAlter alter_from_string(const std::string &str);
         eWho m_eWho;
         eAlter m_eAlter;
-
+	float m_fAlpha;
     };
 
     class SpriteStub : public Element
@@ -199,7 +200,7 @@ namespace StoneRing
         enum eMovementDirection { STILL, N, E, S, W, NE, NW, SE, SW, MOVE_AWAY, MOVE_TOWARDS, END_FOCUS };
         enum eMovementStyle {STRAIGHT, ARC_OVER, ARC_UNDER, SINE, XONLY, YONLY, CIRCLE };
 	enum eMovementCircleDir { CLOCKWISE, COUNTERCLOCKWISE, ROTATE_AWAY, ROTATE_TOWARDS };
-	enum eMovementScriptType { SPRITE_ROTATION, SPRITE_SCALE, SPRITE_PITCH, SPRITE_YAW, CIRCLE_RADIUS, AMPLITUDE, CIRCLE_ANGLE };
+	enum eMovementScriptType { SPRITE_ROTATION, SPRITE_SCALE, SPRITE_PITCH, SPRITE_YAW, CIRCLE_RADIUS, AMPLITUDE, CIRCLE_ANGLE, ALPHA };
 
         Focus GetInitialFocus() const;
         bool HasEndFocus() const;

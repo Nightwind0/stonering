@@ -342,6 +342,7 @@ void AnimationState::move_sprite(ICharacter* pActor, ICharacter* pTarget, Sprite
    float yaw = 0.0f;
    float radius = movement->circleRadius();
    float amplitude = movement->Amplitude();
+   double alpha = 1.0f;
    
    if(movement->hasMovementScript(SpriteMovement::SPRITE_ROTATION))
    {
@@ -366,6 +367,10 @@ void AnimationState::move_sprite(ICharacter* pActor, ICharacter* pTarget, Sprite
    if(movement->hasMovementScript(SpriteMovement::AMPLITUDE))
    {
        amplitude = (double)movement->executeMovementScript(SpriteMovement::AMPLITUDE,percentage);
+   }
+   if(movement->hasMovementScript(SpriteMovement::ALPHA))
+   {
+       alpha = (double)movement->executeMovementScript(SpriteMovement::ALPHA,percentage);
    }
    
 
@@ -395,6 +400,7 @@ void AnimationState::move_sprite(ICharacter* pActor, ICharacter* pTarget, Sprite
     sprite.set_angle(angle);
     sprite.set_angle_yaw(yaw_angle);
     sprite.set_angle_pitch(pitch_angle);
+    sprite.set_alpha(alpha);
   
     float completion = movement->Completion();
     percentage *= completion;      
@@ -788,4 +794,8 @@ void AnimationState::SteelCleanup   (SteelInterpreter *)
 
 void AnimationState::Finish() // Hook to clean up or whatever after being popped
 {
+    m_pCaster = NULL;
+    m_pTarget = NULL;
+    m_pCasterGroup = NULL;
+    m_pTargetGroup = NULL;
 }

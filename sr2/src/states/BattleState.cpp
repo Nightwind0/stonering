@@ -732,7 +732,7 @@ void BattleState::draw_monsters(const CL_Rectf &monsterRect, CL_GraphicContext& 
 	//rect.translate ( rect.get_width() / 2.0f,  rect.get_height() / 2.0f);
 
         CL_Sprite  sprite = pMonster->GetCurrentSprite();
-        sprite.set_alpha(1.0f);
+        //
         sprite.update();
 
         if (m_combat_state == TARGETING)
@@ -740,11 +740,12 @@ void BattleState::draw_monsters(const CL_Rectf &monsterRect, CL_GraphicContext& 
             if ((m_targets.m_bSelectedGroup && m_targets.selected.m_pGroup == m_monsters)
                     || (!m_targets.m_bSelectedGroup && pMonster == m_targets.selected.m_pTarget))
             {
+		//sprite.set_alpha(1.0f);
                 sprite.draw(GC,center.x,center.y);
             }
             else
             {
-                sprite.set_alpha(0.7f);
+                //sprite.set_alpha(0.7f);
                 sprite.draw(GC,center.x,center.y);
             }
         }
@@ -770,7 +771,7 @@ void BattleState::draw_players(const CL_Rectf &playerRect, CL_GraphicContext& GC
        // CL_Rect rect = get_character_rect(iCharacter);
 	CL_Pointf center = pCharacter->GetBattlePos();
 	//rect.translate (  rect.get_width() / 2.0f,  rect.get_height() / 2.0f );
-        sprite.set_alpha(1.0f);
+
         sprite.update();
 
         // Need to get the spacing from game config
@@ -782,11 +783,12 @@ void BattleState::draw_players(const CL_Rectf &playerRect, CL_GraphicContext& GC
             if ((m_targets.m_bSelectedGroup && m_targets.selected.m_pGroup == m_monsters)
                     || (!m_targets.m_bSelectedGroup && iCharacter == m_targets.selected.m_pTarget))
             {
+		//sprite.set_alpha(1.0f);
                 sprite.draw(GC,center.x,center.y);
             }
             else
             {
-                sprite.set_alpha(0.7f);
+                //sprite.set_alpha(0.7f);
                 sprite.draw(GC,center.x,center.y);
 
             }
