@@ -130,7 +130,7 @@ void BattleState::next_turn()
 
 void BattleState::pick_next_character()
 {
-    if (++m_cur_char == m_initiative.size())
+    if (++m_cur_char >= m_initiative.size())
     {
         m_cur_char = 0;
         m_nRound++;

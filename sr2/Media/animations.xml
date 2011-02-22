@@ -73,17 +73,36 @@
 	    </spriteAnimation>
 	</phase>
     </animation>
+    <animation name="wind_swept" type="battle">
+	<phase parallel="true" duration="1000">
+	    <spriteAnimation name="wind_sweep">
+		<battleSprite who="target" which="recoil"/>
+		<spriteMovement initialFocus="target" endFocus="target" movementStyle="straight">
+		    	<spriteMovementScript  id="WindSweepPitch" type="spritePitch" >
+		        <![CDATA[
+			return math::sin($P*2);
+			    ]]>
+			</spriteMovementScript>
+		    	<spriteMovementScript  id="WindSweepScale" type="spriteScale" >
+		        <![CDATA[
+			return math::sin($P*2);
+			    ]]>
+			</spriteMovementScript>
+		</spriteMovement>
+	    </spriteAnimation>
+	</phase>
+    </animation>
     <animation name="standard_monster_death" type="battle">
 	<phase parallel="true" duration="700">
 	    <spriteAnimation name="monster_death">
 	    <battleSprite who="caster" which="recoil"/>
 
 	    <spriteMovement initialFocus="caster" endFocus="caster" movementStyle="straight">
-		<spriteMovementScript  id="StandardMonsterDeathAnimation_Alpha" type="spritePitch" >
+		<!--spriteMovementScript  id="StandardMonsterDeathAnimation_Alpha" type="spritePitch" >
 		        <![CDATA[
 			return $P * (3.1415926/2);
 			    ]]>
-		</spriteMovementScript>
+		</spriteMovementScript-->
 		<spriteMovementScript  id="StandardMonsterDeathAnimation_Alpha" type="alpha" >
 		        <![CDATA[
 			return 1.0 - $P;

@@ -401,6 +401,7 @@ void AnimationState::move_sprite(ICharacter* pActor, ICharacter* pTarget, Sprite
     sprite.set_angle_yaw(yaw_angle);
     sprite.set_angle_pitch(pitch_angle);
     sprite.set_alpha(alpha);
+    sprite.set_scale(scale,scale);
   
     float completion = movement->Completion();
     percentage *= completion;      
@@ -731,7 +732,61 @@ void AnimationState::StartPhase()
         SpriteAnimation* animation = *iter;
         if (animation->HasAlterSprite())
         {
+	    CL_Sprite sprite;
             // Alter any sprites on the parent now
+	    switch(animation->GetAlterSprite()->GetWho())
+	    {
+	    case CASTER:
+		sprite = m_pCaster->GetCurrentSprite();
+		break;
+	    case TARGET:
+		sprite = m_pTarget->GetCurrentSprite();
+		break;
+	    }
+	    
+	    switch(animation->GetAlterSprite()->GetAlter())
+	    {
+		case AlterSprite::HIDE:
+		    sprite.set_alpha(0.0f);
+		    break;
+		case AlterSprite::SMALLER_SIZE:
+		    sprite.set_scale(1.0f/1.5f,1.0/1.5f);
+		    break;
+		case AlterSprite::LARGER_SIZE:
+		    sprite.set_scale(1.5f,1.5f);
+		    break;
+		case AlterSprite::HALF_SIZE:
+		    sprite.set_scale(0.5f,0.5f);
+		    break;
+		case AlterSprite::DOUBLE_SIZE:
+		    sprite.set_scale(2.0f,2.0f);
+		    break;
+		case AlterSprite::NEGATIVE:
+		// TODO:
+		    break;
+		case AlterSprite::X_FLIP:
+		    // TODO:
+		case AlterSprite::Y_FLIP:
+		    // TODO:
+		    break;
+		case AlterSprite::GRAYSCALE:
+		    sprite.set_color(CL_Colorf(0.7f,0.7f,0.7f));
+		    break;
+		case AlterSprite::GREENSCALE:
+		    sprite.set_color(CL_Colorf(0.0f,1.0f,0.0f));
+		    break;
+		case AlterSprite::REDSCALE:
+		    sprite.set_color(CL_Colorf(1.0f,0.0f,0.0f));
+		    break;
+		case AlterSprite::BLUESCALE:
+		    sprite.set_color(CL_Colorf(0.0f,0.0f,1.0f));
+		    break;
+		case AlterSprite::RESET:
+		    sprite.set_color(CL_Colorf(1.0f,1.0f,1.0f));
+		    sprite.set_scale(1.0f,1.0f);
+		    sprite.set_alpha(1.0f);
+		    break;
+	    }
         }
 
         if (animation->HasBattleSprite())

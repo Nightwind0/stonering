@@ -89,6 +89,16 @@ void BattleSprite::load_attributes(CL_DomNamedNodeMap attributes)
             HIDE, SMALLER_SIZE, LARGER_SIZE, HALF_SIZE, DOUBLE_SIZE, NEGATIVE,
             X_FLIP, Y_FLIP, GRAYSCALE, GREENSCALE, REDSCALE, BLUESCALE
 */
+
+void AlterSprite::load_attributes(CL_DomNamedNodeMap attributes)
+{
+    std::string alter = get_required_string("how",attributes);
+    std::string who = get_required_string("who",attributes);
+    
+    m_eWho = who_from_string(who);
+    m_eAlter = alter_from_string(alter);
+}
+
 AlterSprite::eAlter AlterSprite::alter_from_string(const std::string &str)
 {
     if (str == "hide") return HIDE;
