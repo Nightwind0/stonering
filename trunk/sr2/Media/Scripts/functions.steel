@@ -1,9 +1,9 @@
-final function tnl(declare $level)
+function tnl(declare $level)
 {
 	return 1000.0 * ($level-1);
 }
 
-final function lnt(declare $xp)
+function lnt(declare $xp)
 {
 	return 1 + $xp / 1000.0;
 }

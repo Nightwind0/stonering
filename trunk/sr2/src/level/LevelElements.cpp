@@ -9,8 +9,6 @@
 #include <functional>
 #include <sstream>
 #include "GraphicsManager.h"
-#include "LevelFactory.h"
-#include "ItemFactory.h"
 #include "ItemManager.h"
 #include "SpriteDefinition.h"
 #include "WeaponRef.h"
@@ -57,8 +55,8 @@ std::string BoolToString( const bool &b)
 // For the multimap of points
 bool operator < (const CL_Point &p1, const CL_Point &p2)
 {
-    uint p1value = (p1.y  *  StoneRing::IApplication::GetInstance()->GetScreenWidth()) + p1.x;
-    uint p2value = (p2.y  * StoneRing::IApplication::GetInstance()->GetScreenWidth()) + p2.x;
+    uint p1value = (p1.y  *  StoneRing::IApplication::GetInstance()->GetDisplayRect().get_width()) + p1.x;
+    uint p2value = (p2.y  * StoneRing::IApplication::GetInstance()->GetDisplayRect().get_width()) + p2.x;
 
     return p1value < p2value;
 }

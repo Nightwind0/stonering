@@ -2,7 +2,7 @@
 #include <sstream>
 #include "Item.h"
 #include "ItemManager.h"
-#include "ItemFactory.h"
+//#include "ItemFactory.h"
 #include "SpriteDefinition.h"
 
 

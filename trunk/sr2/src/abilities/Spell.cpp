@@ -1,5 +1,4 @@
 #include "Spell.h"
-#include "AbilityFactory.h"
 #include "IApplication.h"
 #include "StatusEffect.h"
 #include "sr_defines.h"

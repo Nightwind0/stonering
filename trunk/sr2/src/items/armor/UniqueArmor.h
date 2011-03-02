@@ -8,7 +8,7 @@
 namespace StoneRing{
     class NamedScript;
 
-    class UniqueArmor : public NamedItem, public Armor
+    class UniqueArmor : public NamedItemElement, public Armor
     {
     public:
         UniqueArmor();
@@ -16,6 +16,10 @@ namespace StoneRing{
         virtual eElement WhichElement() const{ return EUNIQUEARMOR; }
         virtual uint GetValue() const ;
         virtual uint GetSellValue() const ;
+	virtual std::string GetName() const { return NamedItemElement::GetName(); }
+	virtual CL_Image GetIcon() const { return NamedItemElement::GetIcon(); }
+	virtual uint GetMaxInventory() const { return NamedItemElement::GetMaxInventory(); }
+	virtual eDropRarity GetDropRarity() const { return NamedItemElement::GetDropRarity(); }
 
         ArmorType * GetArmorType() const ;
 
@@ -23,6 +27,7 @@ namespace StoneRing{
         virtual bool EquipCondition();
         virtual eItemType GetItemType() const { return ARMOR ; }
 
+	virtual bool operator==(const ItemRef& ref);
     private:
         virtual void OnEquipScript();
         virtual void OnUnequipScript();

@@ -1,7 +1,6 @@
 #include <ClanLib/core.h>
 #include "ItemManager.h"
 #include "IApplication.h"
-#include "ItemFactory.h"
 #include "StatusEffect.h"
 #include "WeaponClass.h"
 #include "WeaponType.h"
@@ -106,19 +105,22 @@ void ItemManager::LoadItemFile ( CL_DomDocument &doc )
 #ifndef NDEBUG
         namedItemCount++;
 #endif
-        NamedItemElement * pElement = dynamic_cast<NamedItemElement*>(pItemFactory->createElement ( "namedItemElement" ));
+        NamedItemElement* pElement = dynamic_cast<NamedItemElement*>(pItemFactory->createElement ( namedItemNode.get_node_name() ));
 
         pElement->Load(namedItemNode);
-        NamedItem * pItem = pElement->GetNamedItem();
+	
+	switch(pElement->WhichElement())
+	{
+	    case Element::EREGULARITEM:
+	    case Element::ESYSTEMITEM:
+	    case Element::ESPECIALITEM:
+	    case Element::EUNIQUEARMOR:
+	    case Element::EUNIQUEWEAPON:
+		Item * pItem = dynamic_cast<Item*>(pElement);
+		m_named_items[pItem->GetName()] = pItem;
+		break;
+	}
 
-        pItem->SetIconRef ( pElement->GetIconRef() );
-        pItem->SetMaxInventory ( pElement->GetMaxInventory() );
-        pItem->SetName ( pElement->GetName() );
-        pItem->SetDropRarity ( pElement->GetDropRarity() );
-
-        m_named_items[pItem->GetName()] = pItem;
-
-        delete pElement;
 
         namedItemNode = namedItemNode.get_next_sibling().to_element();
     }

@@ -3,34 +3,42 @@
 
 #include "NamedItem.h"
 #include "ScriptElement.h"
+#include "ICharacter.h"
+
 
 // Concrete Named Item classes
 namespace StoneRing{
-    class RegularItem: public NamedItem
+    class RegularItem: public NamedItemElement, public Item
     {
     public:
         RegularItem();
         virtual ~RegularItem();
 
         virtual eElement WhichElement() const{ return EREGULARITEM; }
-        void Invoke(); // Execute all actions.
+        
+        virtual std::string GetName() const ;
+        virtual eItemType GetItemType() const { return REGULAR_ITEM; }
+        virtual uint GetMaxInventory() const;
+        virtual eDropRarity GetDropRarity() const;
+        virtual CL_Image GetIcon() const;
+        
+        
+        void Invoke(ICharacter * pTarget=NULL, ICharacterGroup * pGroup=NULL); // Execute all actions.
 
         enum eUseType {BATTLE, WORLD, BOTH };
-        enum eTargetable { ALL, SINGLE, EITHER, SELF_ONLY };
+        enum eTargetable { ALL, SINGLE, EITHER, SELF_ONLY, NO_TARGET };
         enum eDefaultTarget { PARTY, MONSTERS };
         eUseType GetUseType() const;
         eTargetable GetTargetable() const;
         eDefaultTarget GetDefaultTarget() const;
         bool IsReusable() const;
-
-        virtual eItemType GetItemType() const { return REGULAR_ITEM; }
-
-        virtual uint GetValue() const ; // Price to buy, and worth when calculating drops.
+	virtual uint GetValue() const ; // Price to buy, and worth when calculating drops.
         virtual uint GetSellValue() const ;
         virtual void LoadItem ( CL_DomElement * pElement );
         static eUseType UseTypeFromString ( const std::string &str );
         static eTargetable TargetableFromString ( const std::string &str );
-
+	
+        virtual bool operator == ( const ItemRef &ref );	
     private:
         virtual bool handle_element(eElement element, Element * pElement );
         virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
@@ -42,6 +50,7 @@ namespace StoneRing{
         bool m_bReusable;
         eDefaultTarget m_eDefaultTarget;
     };
+
 };
 #endif
 

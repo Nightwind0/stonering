@@ -50,6 +50,9 @@ void StoneRing::MapState::HandleButtonUp(const IApplication::Button& button)
 	case IApplication::BUTTON_ALT:
 	    do_talk(true);
 	    break;
+	case IApplication::BUTTON_MENU:
+	    IApplication::GetInstance()->MainMenu();
+	    break;
     }
 }
 

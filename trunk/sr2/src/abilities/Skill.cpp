@@ -2,7 +2,6 @@
 #include "Element.h"
 #include <ClanLib/display.h>
 #include "Skill.h"
-#include "AbilityFactory.h"
 #include "IApplication.h"
 #include "Animation.h"
 #include "Level.h"

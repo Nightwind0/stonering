@@ -3,7 +3,7 @@
 #include "NamedItem.h"
 
 namespace StoneRing{
-    class Rune : public NamedItem
+    class Rune : public NamedItemElement, public Item
     {
     public:
         Rune();
@@ -12,15 +12,19 @@ namespace StoneRing{
         virtual eElement WhichElement() const{ return ERUNE; }
         virtual uint GetValue() const ;
         virtual uint GetSellValue() const ;
+        virtual std::string GetName() const { return NamedItemElement::GetName(); }
+        virtual uint GetMaxInventory() const { return NamedItemElement::GetMaxInventory(); }
+        virtual CL_Image GetIcon() const { return NamedItemElement::GetIcon(); }
 
         // We're overriding whatever was specified in the XML. Never drop a rune unless specified by the monster
         virtual eDropRarity GetDropRarity() const { return NEVER; }
         virtual eItemType GetItemType() const { return RUNE ; }
 
         SpellRef * GetSpellRef() const;
+	
+	virtual bool operator==(const StoneRing::ItemRef&);
     private:
         virtual bool handle_element(eElement element, Element * pElement );
-        virtual void load_attributes(CL_DomNamedNodeMap * attributes) ;
         virtual void load_finished();
         SpellRef *m_pSpellRef;
     };

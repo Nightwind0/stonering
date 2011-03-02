@@ -6,6 +6,7 @@
 #include "SpellRef.h"
 #include "AbilityManager.h"
 #include "IApplication.h"
+#include "GraphicsManager.h"
 
 using namespace StoneRing;
 
@@ -17,9 +18,9 @@ GeneratedArmor::~GeneratedArmor()
 {
 }
 
-std::string GeneratedArmor::GetIconRef() const
+CL_Image GeneratedArmor::GetIcon() const
 {
-    return m_pType->GetIconRef();
+    return GraphicsManager::GetIcon(m_pType->GetIconRef());
 }
 
 std::string GeneratedArmor::GetName() const

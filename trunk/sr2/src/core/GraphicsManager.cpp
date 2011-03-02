@@ -104,6 +104,8 @@ std::string GraphicsManager::NameOfOverlay(Overlay overlay)
         return "Say";
     case EXPERIENCE:
 	return "Experience";
+    case MAIN_MENU:
+	return "MainMenu";
     default:
         assert(0);
     }
@@ -332,6 +334,16 @@ std::string  GraphicsManager::GetFontName( DisplayFont font )
 CL_Colorf GraphicsManager::GetFontColor ( const std::string& font )
 {
     return m_pInstance->m_font_colors[font];
+}
+
+CL_Font GraphicsManager::GetFont( Overlay overlay, const std::string& type )
+{
+    return GetFont( GetFontName ( overlay, type ) );
+}
+
+CL_Colorf GraphicsManager::GetFontColor ( Overlay overlay, const std::string& type ) 
+{
+    return GetFontColor ( GetFontName ( overlay, type ) );
 }
 
 GraphicsManager::GraphicsManager()

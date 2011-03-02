@@ -2,10 +2,8 @@
 #include "Element.h"
 
 #include "IApplication.h"
-#include "LevelFactory.h"
 #include <algorithm>
-#include "ItemFactory.h"
-#include "CharacterFactory.h"
+
 
 
 using StoneRing::IApplication;

@@ -11,8 +11,6 @@
 #include "IApplication.h"
 #include "Level.h"
 #include "GraphicsManager.h"
-#include "LevelFactory.h"
-#include "ItemFactory.h"
 #include "ItemManager.h"
 #include "MonsterRegion.h"
 #include "MonsterGroup.h"
@@ -765,7 +763,7 @@ void Level::Activate_Tiles_At ( uint x, uint y )
             }
             else if ((*iter)->Pops() )
             {
-                IApplication::GetInstance()->Pop(false);
+                IApplication::GetInstance()->PopLevelStack(false);
             }
         }
     }

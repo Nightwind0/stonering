@@ -10,10 +10,9 @@
 #include <steel/SteelType.h>
 #endif
 #include "IParty.h"
-#include "AbilityFactory.h"
 #include "AbilityManager.h"
 #include "MonsterGroup.h"
-
+#include "ElementFactory.h"
 
 
 class AstScript;
@@ -63,7 +62,7 @@ namespace StoneRing
 	    LEVEL_FOR_XP
 	};
 
-	
+	static IApplication * GetInstance();
         virtual ~IApplication(){}
         virtual CL_ResourceManager&  GetResources()=0;
         virtual CL_DisplayWindow& GetApplicationWindow()=0;
@@ -73,13 +72,9 @@ namespace StoneRing
         virtual IFactory * GetElementFactory() = 0;
         virtual CharacterManager * GetCharacterManager() = 0;
         virtual void StartBattle(const MonsterGroup &group, const std::string &backdrop)=0;
-        static IApplication * GetInstance();
-        virtual void Pop(bool popAll)=0;
-
-        virtual int GetScreenWidth()const=0;
-        virtual int GetScreenHeight()const=0;
-
-
+	virtual void PopLevelStack(bool popAll)=0;
+	virtual void MainMenu()=0;
+	virtual void LoadMainMenu(CL_DomDocument&)=0;
         virtual CL_Rect GetDisplayRect() const=0;
         virtual void RequestRedraw(const State *pState)=0;
         virtual void RunState(State *pState)=0;

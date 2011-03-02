@@ -36,7 +36,7 @@ CL_Pointf AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICh
         {
 	    default:
         case SpriteMovement::X_CENTER:
-            point.x = IApplication::GetInstance()->GetScreenWidth() / 2;
+            point.x = IApplication::GetInstance()->GetDisplayRect().get_width() / 2;
             break;
         case SpriteMovement::TOWARDS:
             break;
@@ -46,20 +46,20 @@ CL_Pointf AnimationState::GetFocusOrigin(const SpriteMovement::Focus& focus, ICh
             point.x = 0;
             break;
         case SpriteMovement::RIGHT:
-            point.x = IApplication::GetInstance()->GetScreenWidth();
+            point.x = IApplication::GetInstance()->GetDisplayRect().get_width() / 2;
             break;
         }
         switch (focus.meFocusY)
         {
 	    default:
         case SpriteMovement::Y_CENTER:
-            point.y = IApplication::GetInstance()->GetScreenHeight() / 2;
+            point.y = IApplication::GetInstance()->GetDisplayRect().get_height() / 2;
             break;
         case SpriteMovement::TOP:
             point.y = 0;
             break;
         case SpriteMovement::BOTTOM:
-            point.y = IApplication::GetInstance()->GetScreenHeight();
+            point.y = IApplication::GetInstance()->GetDisplayRect().get_height() / 2;
             break;
 
         }

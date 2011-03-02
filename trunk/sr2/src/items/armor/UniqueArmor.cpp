@@ -61,6 +61,7 @@ ArmorType *UniqueArmor::GetArmorType() const
 
 void UniqueArmor::load_attributes(CL_DomNamedNodeMap attributes)
 {
+    NamedItemElement::load_attributes(attributes);
     m_value_multiplier = get_implied_float("valueMultiplier",attributes,1);
 
 }
@@ -68,11 +69,14 @@ void UniqueArmor::load_attributes(CL_DomNamedNodeMap attributes)
 void UniqueArmor::load_finished()
 {
     assert ( m_pArmorType );
+    NamedItemElement::load_finished();
     m_nValue = (int)(m_pArmorType->GetBasePrice() * m_value_multiplier);
 }
 
 bool UniqueArmor::handle_element(eElement element, Element * pElement)
 {
+    if(NamedItemElement::handle_element(element,pElement))
+	return true;
     switch(element)
     {
     case EARMORTYPEREF:
@@ -117,6 +121,12 @@ bool UniqueArmor::handle_element(eElement element, Element * pElement)
     return true;
 }
 
+
+bool UniqueArmor::operator==(const ItemRef& ref)
+{
+    return ref.GetType() == ItemRef::NAMED_ITEM &&
+    ref.GetItemName() == GetName();
+}
 
 
 

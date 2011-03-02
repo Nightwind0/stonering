@@ -25,6 +25,7 @@ void AppUtils::LoadGameplayAssets(const std::string &path, CL_ResourceManager& r
     std::string monsterdefinition = CL_String_load("Game/MonsterDefinitions",resources);
     std::string characterdefinition = CL_String_load("Game/CharacterDefinitions",resources);
     std::string animationdefintion = CL_String_load("Game/AnimationDefinitions",resources);
+    std::string mainmenudefinition = CL_String_load("Game/MainMenuDefinitions",resources);
 
     LoadStatusEffects(path + statusEffectDefinition);
     LoadSpells(path + spelldefinition);
@@ -34,6 +35,7 @@ void AppUtils::LoadGameplayAssets(const std::string &path, CL_ResourceManager& r
     LoadMonsters(path + monsterdefinition);
     LoadCharacters(path + characterdefinition);
     LoadAnimations(path + animationdefintion);
+    LoadMainMenu(path + mainmenudefinition);
 }
 
 
@@ -142,6 +144,20 @@ void AppUtils::LoadItems(const std::string &filename)
     document.load(file);
     GetItemManager()->LoadItemFile ( document );
 }
+
+void AppUtils::LoadMainMenu(const std::string &filename)
+{
+#ifndef NDEBUG
+    std::cout << "Loading main menu..." << std::endl;
+#endif
+
+    CL_File file(filename);
+    CL_DomDocument document;
+
+    document.load(file);
+    IApplication::GetInstance()->LoadMainMenu(document);
+}
+
 
 
 StoneRing::ItemManager * AppUtils::GetItemManager()

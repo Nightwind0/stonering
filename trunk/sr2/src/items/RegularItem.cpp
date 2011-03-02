@@ -1,4 +1,5 @@
 #include "RegularItem.h"
+#include "IconRef.h"
 
 using namespace StoneRing;
 
@@ -14,10 +15,13 @@ RegularItem::~RegularItem()
 }
 
 // Execute all actions.
-void RegularItem::Invoke()
+void RegularItem::Invoke(ICharacter * pTarget, ICharacterGroup* pGroup)
 {
+    ParameterList params;
+    params.push_back ( ParameterListItem("$_Character",pTarget) );
+    params.push_back ( ParameterListItem("$_Group",pGroup) );
     if(m_pScript)
-        m_pScript->ExecuteScript();
+        m_pScript->ExecuteScript(params);
 }
 
 RegularItem::eUseType
@@ -81,6 +85,7 @@ RegularItem::TargetableFromString ( const std::string &str )
     else if (str == "single") targetable = SINGLE;
     else if (str == "either") targetable = EITHER;
     else if (str == "self_only") targetable = SELF_ONLY;
+    else if (str == "no_target") targetable = NO_TARGET;
     else throw CL_Exception("Bad targetable on regular item. " + str);
 
 
@@ -89,6 +94,8 @@ RegularItem::TargetableFromString ( const std::string &str )
 
 void RegularItem::load_attributes(CL_DomNamedNodeMap attributes)
 {
+    NamedItemElement::load_attributes(attributes);
+
     m_nValue = get_required_int("value",attributes);
 
     m_nSellValue = m_nValue / 2;
@@ -127,6 +134,8 @@ void RegularItem::load_attributes(CL_DomNamedNodeMap attributes)
 
 bool RegularItem::handle_element(eElement element, Element * pElement)
 {
+    if(NamedItemElement::handle_element(element,pElement))
+	return true;
     if(element == Element::ESCRIPT)
     {
         m_pScript = dynamic_cast<ScriptElement*>(pElement);
@@ -138,6 +147,33 @@ bool RegularItem::handle_element(eElement element, Element * pElement)
 void RegularItem::LoadItem ( CL_DomElement * pElement )
 {
 
+}
+
+
+std::string RegularItem::GetName() const
+{
+    return NamedItemElement::GetName();
+}
+uint RegularItem::GetMaxInventory() const
+{
+    return NamedItemElement::GetMaxInventory();
+}
+Item::eDropRarity RegularItem::GetDropRarity() const
+{
+    return NamedItemElement::GetDropRarity();
+}
+CL_Image RegularItem::GetIcon() const
+{
+    return NamedItemElement::GetIcon();
+}
+
+bool RegularItem::operator == ( const ItemRef &ref )
+{
+    if(ref.GetType() == ItemRef::NAMED_ITEM) return false;
+    
+    if(ref.GetItemName() != GetName()) return false;
+    
+    return true;
 }
 
 

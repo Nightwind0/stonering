@@ -61,9 +61,11 @@ namespace StoneRing
         static std::string LookUpMapWithSprite( CL_Sprite );
 
         static CL_Font  GetFont(const std::string& name);
-        static std::string GetFontName( Overlay overlay, const std::string& type );
-        static std::string  GetFontName ( DisplayFont font );
+	static CL_Font  GetFont( Overlay overlay, const std::string& type );
+        static std::string GetFontName ( Overlay overlay, const std::string& type );
+        static std::string GetFontName ( DisplayFont font );
 	static CL_Colorf GetFontColor ( const std::string& font );
+	static CL_Colorf GetFontColor ( Overlay overlay, const std::string& type );
 
     private:
 
