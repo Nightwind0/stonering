@@ -8,6 +8,7 @@
 #include "Spell.h"
 #include "AbilityManager.h"
 #include "IApplication.h"
+#include "GraphicsManager.h"
 
 using namespace StoneRing;
 
@@ -62,9 +63,9 @@ bool GeneratedWeapon::operator== ( const ItemRef &ref )
 
 
 // Item interface
-std::string GeneratedWeapon::GetIconRef() const
+CL_Image GeneratedWeapon::GetIcon() const
 {
-    return m_pType->GetIconRef();
+    return GraphicsManager::GetIcon(m_pType->GetIconRef());
 }
 
 std::string GeneratedWeapon::GetName() const
@@ -78,7 +79,7 @@ uint GeneratedWeapon::GetMaxInventory() const
     return 99;
 }
 
-NamedItem::eDropRarity
+Item::eDropRarity
 GeneratedWeapon::GetDropRarity() const
 {
     if( HasSpell() || HasRuneType() )

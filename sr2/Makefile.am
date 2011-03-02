@@ -167,7 +167,11 @@ stonering_SOURCES =	src/Application.cpp \
 			src/states/SayState.h \
 			src/states/State.h \
 			src/states/ExperienceState.cpp \
-			src/states/ExperienceState.h
+			src/states/ExperienceState.h \
+			src/states/MainMenuState.cpp \
+			src/states/MainMenuState.h \
+			src/core/MenuOption.h \
+			src/core/MenuOption.cpp
 
 
 

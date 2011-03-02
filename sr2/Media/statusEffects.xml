@@ -1,5 +1,6 @@
 <statusEffectList>
-	<statusEffect last="permanent" name="Poison">
+	<statusEffect last="round_count" roundCount="12" name="Poison">
+	    <spriteRef ref="StatusEffect/Poisoned"/>
 		<onRound>
 			<script id="SE_Poison">
 			
@@ -7,18 +8,25 @@
 		</onRound>
 	</statusEffect>
 	<statusEffect last="permanent" name="Stone">
+	    <attributeModifier attribute="can_act" type="toggle" value="false"/>
+	    <spriteRef ref="StatusEffect/Stone"/>
 		<onInvoke>
 			<script id="SE_Stone">
 			</script>
 		</onInvoke>
 	</statusEffect>
-	<statusEffect last="battle" name="Enraged">
+	<statusEffect last="round_count" roundCount="8" name="Dragon Rage">
+	    <spriteRef ref="StatusEffect/DragonRage"/>
+	    <attributeModifier attribute="str" type="multiply" value="1.25"/>
+	    <attributeModifier attribute="def" type="multiply" value="0.75"/>	    
 		<onInvoke>
 			<script id = "SE_Enraged">
 			</script>
 		</onInvoke>
 	</statusEffect>
-	<statusEffect last="battle" name="Focused">
+	<statusEffect last="round_count" roundCount="8" name="Focused">
+	    <spriteRef ref="StatusEffect/Focused"/>
+	    <attributeModifier attribute="dex" type="multiply" value="1.25"/>
 		<onInvoke>
 			<script id="SE_Focused">
 			</script>

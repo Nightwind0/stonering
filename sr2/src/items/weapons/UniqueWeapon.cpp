@@ -73,18 +73,21 @@ bool UniqueWeapon::IsTwoHanded() const
 
 void UniqueWeapon::load_attributes(CL_DomNamedNodeMap attributes)
 {
+    NamedItemElement::load_attributes(attributes);
     m_value_multiplier = get_implied_float("valueMultiplier",attributes,1);
     Set_Script_Mode( ScriptModeForString( get_implied_string("scriptMode",attributes,"attackBefore") ) );
-
 }
 
 void UniqueWeapon::load_finished()
 {
     assert ( m_pWeaponType );
+    NamedItemElement::load_finished();
     m_nValue = (int)(m_pWeaponType->GetBasePrice() * m_value_multiplier);
 }
 bool UniqueWeapon::handle_element(eElement element, Element * pElement)
 {
+    if(NamedItemElement::handle_element(element,pElement))
+	return true;
     switch(element)
     {
     case EWEAPONTYPEREF:
@@ -131,5 +134,9 @@ bool UniqueWeapon::handle_element(eElement element, Element * pElement)
 }
 
 
-
+bool UniqueWeapon::operator == ( const ItemRef &ref )
+{
+    return ref.GetType() == ItemRef::NAMED_ITEM && 
+    ref.GetItemName() == GetName();
+}
 

@@ -10,9 +10,6 @@
 #include "Application.h"
 #include "Level.h"
 #include "Party.h"
-#include "LevelFactory.h"
-#include "ItemFactory.h"
-#include "CharacterFactory.h"
 #include "ChoiceState.h"
 #include "GraphicsManager.h"
 #include "MonsterRef.h"
@@ -104,16 +101,29 @@ SteelType Application::loadLevel(const std::string &level, uint startX, uint sta
     return SteelType();
 }
 
-void Application::Pop(bool bAll)
+void Application::PopLevelStack(bool bAll)
 {
     mMapState.Pop(bAll);
 }
 
 SteelType Application::pop_(bool bAll)
 {
-    Pop(bAll);
+    PopLevelStack(bAll);
 
     return SteelType();
+}
+
+SteelType Application::mainMenu()
+{
+    MainMenu();
+    
+    return SteelType();
+}
+
+void Application::MainMenu()
+{
+    mMainMenuState.Init();
+    RunState(&mMainMenuState);
 }
 
 void Application::StartBattle(const MonsterGroup &group, const std::string &backdrop)
@@ -173,7 +183,7 @@ SteelType Application::startBattle(const std::string &monster, uint count, bool 
 }
 
 SteelType Application::choice(const std::string &choiceText,
-                              const std::vector<SteelType> &choices_)
+                              const SteelType::Container &choices_)
 {
     static ChoiceState choiceState;
     std::vector<std::string> choices;
@@ -421,7 +431,7 @@ SteelType Application::getExperience(const SteelType::Handle hCharacter)
 SteelType Application::getPartyArray()
 {
     SteelType array;
-    std::vector<SteelType> vector;
+    SteelType::Container vector;
     for(int i=0;i<mpParty->GetCharacterCount();i++)
     {
 	SteelType ptr;
@@ -723,6 +733,25 @@ SteelType Application::showExperience(const SteelArray&  characters, const Steel
     mStates.push_back(&mExperienceState);
     run();
     return SteelType();
+}
+
+
+void Application::LoadMainMenu(CL_DomDocument& doc)
+{
+    IFactory * pFactory = IApplication::GetInstance()->GetElementFactory();
+
+
+    CL_DomElement menuElement = doc.get_first_child().to_element();
+    CL_DomElement menuoptionNode = menuElement.get_first_child().to_element();
+
+    while(!menuoptionNode.is_null())
+    {
+        MenuOption * menuOption = dynamic_cast<MenuOption*>( pFactory->createElement(menuoptionNode.get_node_name()) );
+        menuOption->Load(menuoptionNode);
+	mMainMenuState.AddOption(menuOption);
+
+        menuoptionNode = menuoptionNode.get_next_sibling().to_element();
+    }
 }
 
 IApplication * IApplication::GetInstance()
@@ -1037,65 +1066,65 @@ SteelType Application::RunScript(AstScript *pScript, const ParameterList &params
 
 void Application::registerSteelFunctions()
 {
-    static SteelFunctor2Arg<Application,const std::string&,const std::string&> fn_say(this,&Application::say);
-    static SteelFunctor1Arg<Application,const std::string&> fn_playScene(this,&Application::playScene);
-    static SteelFunctor1Arg<Application,const std::string&> fn_playSound(this,&Application::playSound);
-    static SteelFunctor3Arg<Application,const std::string&,uint,uint> fn_loadLevel(this,&Application::loadLevel);
-    static SteelFunctor4Arg<Application,const std::string &,uint,bool,const std::string&> fn_startBattle(this,&Application::startBattle);
-    static SteelFunctor1Arg<Application,uint> fn_pause(this,&Application::pause);
-    static SteelFunctor2Arg<Application,const std::string&, const std::vector<SteelType> &> fn_choice(this,&Application::choice);
-    static SteelFunctor1Arg<Application,bool> fn_pop(this,&Application::pop_);
-    static SteelFunctor2Arg<Application,const std::string &,uint> fn_giveNamedItem(this,&Application::giveNamedItem);
-    static SteelFunctor2Arg<Application,const std::string &,uint> fn_takeNamedItem(this,&Application::takeNamedItem);
-    static SteelFunctorNoArgs<Application> fn_getGold(this,&Application::getGold);
-    static SteelFunctor2Arg<Application,const std::string &,uint> fn_hasItem (this,&Application::hasItem);
-    static SteelFunctor1Arg<Application,const std::string &> fn_didEvent (this,&Application::didEvent);
-    static SteelFunctor2Arg<Application,const std::string &, bool> fn_doEvent (this,&Application::doEvent);
-    static SteelFunctor1Arg<Application,int> fn_giveGold(this,&Application::giveGold);
-    static SteelFunctor3Arg<Application,const std::string &, int, bool> fn_addCharacter(this,&Application::addCharacter);
+    SteelFunctor* fn_say= new SteelFunctor2Arg<Application,const std::string&,const std::string&>(this,&Application::say);
+    SteelFunctor* fn_playScene = new SteelFunctor1Arg<Application,const std::string&>(this,&Application::playScene);
+    SteelFunctor* fn_playSound  = new SteelFunctor1Arg<Application,const std::string&>(this,&Application::playSound);
+    SteelFunctor* fn_loadLevel = new SteelFunctor3Arg<Application,const std::string&,uint,uint>(this,&Application::loadLevel);
+    SteelFunctor* fn_startBattle = new SteelFunctor4Arg<Application,const std::string &,uint,bool,const std::string&>(this,&Application::startBattle);
+    SteelFunctor* fn_pause = new  SteelFunctor1Arg<Application,uint>(this,&Application::pause);
+    SteelFunctor* fn_choice = new SteelFunctor2Arg<Application,const std::string&, const SteelType::Container &>(this,&Application::choice);
+    SteelFunctor* fn_pop = new SteelFunctor1Arg<Application,bool>(this,&Application::pop_);
+    SteelFunctor* fn_giveNamedItem = new SteelFunctor2Arg<Application,const std::string &,uint>(this,&Application::giveNamedItem);
+    SteelFunctor*  fn_takeNamedItem = new SteelFunctor2Arg<Application,const std::string &,uint>(this,&Application::takeNamedItem);
+    SteelFunctor*  fn_getGold = new SteelFunctorNoArgs<Application>(this,&Application::getGold);
+    SteelFunctor*  fn_hasItem = new SteelFunctor2Arg<Application,const std::string &,uint>(this,&Application::hasItem);
+    SteelFunctor*  fn_didEvent = new SteelFunctor1Arg<Application,const std::string &>(this,&Application::didEvent);
+    SteelFunctor* fn_doEvent = new  SteelFunctor2Arg<Application,const std::string &, bool>(this,&Application::doEvent);
+    SteelFunctor*  fn_giveGold = new SteelFunctor1Arg<Application,int>(this,&Application::giveGold);
+    SteelFunctor*  fn_addCharacter = new SteelFunctor3Arg<Application,const std::string &, int, bool>(this,&Application::addCharacter);
 
-    static SteelFunctorNoArgs<Application> fn_getPartyArray(this,&Application::getPartyArray);
-    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getItemName(this,&Application::getItemName);
-    static SteelFunctor2Arg<Application,const SteelType::Handle, uint> fn_getWeaponAttribute(this,&Application::getWeaponAttribute);
-    static SteelFunctor2Arg<Application,const SteelType::Handle, uint> fn_getArmorAttribute(this,&Application::getArmorAttribute);
-    static SteelFunctor2Arg<Application, double, double> fn_gaussian(this,&Application::gaussian);
+    SteelFunctor*  fn_getPartyArray = new SteelFunctorNoArgs<Application>(this,&Application::getPartyArray);
+    SteelFunctor*  fn_getItemName = new SteelFunctor1Arg<Application,const SteelType::Handle>(this,&Application::getItemName);
+    SteelFunctor* fn_getWeaponAttribute = new  SteelFunctor2Arg<Application,const SteelType::Handle, uint>(this,&Application::getWeaponAttribute);
+    SteelFunctor*  fn_getArmorAttribute = new SteelFunctor2Arg<Application,const SteelType::Handle, uint>(this,&Application::getArmorAttribute);
+    SteelFunctor*  fn_gaussian =  new SteelFunctor2Arg<Application, double, double>(this,&Application::gaussian);
 
-    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getCharacterName(this,&Application::getCharacterName);
-    static SteelFunctor2Arg<Application,const SteelType::Handle,uint> fn_getCharacterAttribute(this, &Application::getCharacterAttribute);
-    static SteelFunctor2Arg<Application,const SteelType::Handle,int> fn_addExperience(this,&Application::addExperience);
-    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getExperience(this,&Application::getExperience);
-    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getCharacterLevel(this, &Application::getCharacterLevel);
-    static SteelFunctor2Arg<Application,const SteelType::Handle,uint> fn_getCharacterToggle(this, &Application::getCharacterToggle);
-    static SteelFunctor3Arg<Application,const SteelType::Handle,uint,bool> fn_setCharacterToggle(this, &Application::setCharacterToggle);
-    static SteelFunctor2Arg<Application,const SteelType::Handle, uint> fn_getEquippedWeaponAttribute(this,&Application::getEquippedWeaponAttribute);
-    static SteelFunctor2Arg<Application,const SteelType::Handle, uint> fn_getEquippedArmorAttribute(this,&Application::getEquippedArmorAttribute);
-    static SteelFunctor2Arg<Application,const SteelType::Handle,const std::string&> fn_addStatusEffect(this,&Application::addStatusEffect);
-    static SteelFunctor2Arg<Application,const SteelType::Handle,const std::string&> fn_removeStatusEffects(this,&Application::removeStatusEffects);
-    static SteelFunctor2Arg<Application,const SteelType::Handle,int> fn_doDamage(this,&Application::doDamage);
+    SteelFunctor*  fn_getCharacterName = new SteelFunctor1Arg<Application,const SteelType::Handle>(this,&Application::getCharacterName);
+    SteelFunctor*  fn_getCharacterAttribute = new SteelFunctor2Arg<Application,const SteelType::Handle,uint>(this, &Application::getCharacterAttribute);
+    SteelFunctor*  fn_addExperience = new SteelFunctor2Arg<Application,const SteelType::Handle,int>(this,&Application::addExperience);
+    SteelFunctor*  fn_getExperience = new SteelFunctor1Arg<Application,const SteelType::Handle>(this,&Application::getExperience);
+    SteelFunctor*  fn_getCharacterLevel = new SteelFunctor1Arg<Application,const SteelType::Handle>(this, &Application::getCharacterLevel);
+    SteelFunctor*  fn_getCharacterToggle = new SteelFunctor2Arg<Application,const SteelType::Handle,uint>(this, &Application::getCharacterToggle);
+    SteelFunctor*  fn_setCharacterToggle = new SteelFunctor3Arg<Application,const SteelType::Handle,uint,bool>(this, &Application::setCharacterToggle);
+    SteelFunctor*  fn_getEquippedWeaponAttribute = new SteelFunctor2Arg<Application,const SteelType::Handle, uint>(this,&Application::getEquippedWeaponAttribute);
+    SteelFunctor*  fn_getEquippedArmorAttribute = new SteelFunctor2Arg<Application,const SteelType::Handle, uint>(this,&Application::getEquippedArmorAttribute);
+    SteelFunctor*  fn_addStatusEffect = new SteelFunctor2Arg<Application,const SteelType::Handle,const std::string&>(this,&Application::addStatusEffect);
+    SteelFunctor*  fn_removeStatusEffects = new SteelFunctor2Arg<Application,const SteelType::Handle,const std::string&>(this,&Application::removeStatusEffects);
+    SteelFunctor*  fn_doDamage = new SteelFunctor2Arg<Application,const SteelType::Handle,int>(this,&Application::doDamage);
 
-    static SteelFunctor2Arg<Application,const SteelType::Handle,int> fn_hasEquipment(this,&Application::hasEquipment);
-    static SteelFunctor2Arg<Application,const SteelType::Handle,int> fn_getEquipment(this,&Application::getEquipment);
-    static SteelFunctor3Arg<Application,const SteelType::Handle,int,const std::string&> fn_equip(this,&Application::equip);
+    SteelFunctor*  fn_hasEquipment = new SteelFunctor2Arg<Application,const SteelType::Handle,int>(this,&Application::hasEquipment);
+    SteelFunctor*  fn_getEquipment = new SteelFunctor2Arg<Application,const SteelType::Handle,int>(this,&Application::getEquipment);
+    SteelFunctor*  fn_equip = new SteelFunctor3Arg<Application,const SteelType::Handle,int,const std::string&>(this,&Application::equip);
 
 
-    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getWeaponType(this,&Application::getWeaponType);
-    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getArmorType(this,&Application::getArmorType);
-    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getWeaponTypeDamageCategory(this,&Application::getWeaponTypeDamageCategory);
-    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getWeaponTypeAnimation(this,&Application::getWeaponTypeAnimation);
-    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_weaponTypeHasAnimation(this,&Application::weaponTypeHasAnimation);
-    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getWeaponScriptMode(this,&Application::getWeaponScriptMode);
-    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_invokeEquipment(this,&Application::invokeEquipment);
-    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_attackCharacter(this,&Application::attackCharacter);
+    SteelFunctor*  fn_getWeaponType = new SteelFunctor1Arg<Application,const SteelType::Handle>(this,&Application::getWeaponType);
+    SteelFunctor*  fn_getArmorType = new SteelFunctor1Arg<Application,const SteelType::Handle>(this,&Application::getArmorType);
+    SteelFunctor*  fn_getWeaponTypeDamageCategory = new SteelFunctor1Arg<Application,const SteelType::Handle>(this,&Application::getWeaponTypeDamageCategory);
+    SteelFunctor*  fn_getWeaponTypeAnimation = new SteelFunctor1Arg<Application,const SteelType::Handle>(this,&Application::getWeaponTypeAnimation);
+    SteelFunctor*  fn_weaponTypeHasAnimation = new SteelFunctor1Arg<Application,const SteelType::Handle>(this,&Application::weaponTypeHasAnimation);
+    SteelFunctor*  fn_getWeaponScriptMode = new SteelFunctor1Arg<Application,const SteelType::Handle>(this,&Application::getWeaponScriptMode);
+    SteelFunctor*  fn_invokeEquipment = new SteelFunctor1Arg<Application,const SteelType::Handle>(this,&Application::invokeEquipment);
+    SteelFunctor*  fn_attackCharacter= new SteelFunctor1Arg<Application,const SteelType::Handle>(this,&Application::attackCharacter);
 
-    static SteelFunctor2Arg<Application,const SteelType::Handle,int> fn_getDamageCategoryResistance(this,&Application::getDamageCategoryResistance);
-    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getHitSound(this,&Application::getHitSound);
-    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getMissSound(this,&Application::getMissSound);
-    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getUnarmedHitSound(this,&Application::getUnarmedHitSound);
-    static SteelFunctor1Arg<Application,const SteelType::Handle> fn_getUnarmedMissSound(this,&Application::getUnarmedMissSound);
+    SteelFunctor*  fn_getDamageCategoryResistance = new SteelFunctor2Arg<Application,const SteelType::Handle,int>(this,&Application::getDamageCategoryResistance);
+    SteelFunctor*  fn_getHitSound = new SteelFunctor1Arg<Application,const SteelType::Handle>(this,&Application::getHitSound);
+    SteelFunctor*  fn_getMissSound= new SteelFunctor1Arg<Application,const SteelType::Handle>(this,&Application::getMissSound);
+    SteelFunctor*  fn_getUnarmedHitSound= new SteelFunctor1Arg<Application,const SteelType::Handle>(this,&Application::getUnarmedHitSound);
+    SteelFunctor*  fn_getUnarmedMissSound = new SteelFunctor1Arg<Application,const SteelType::Handle>(this,&Application::getUnarmedMissSound);
     
-    static SteelFunctor1Arg<Application,const std::string&> fn_getAnimation(this,&Application::getAnimation);
-    static SteelFunctor1Arg<Application,const std::string&> fn_log(this,&Application::log);
-    static SteelFunctor3Arg<Application,const SteelArray&,const SteelArray&, const SteelArray&> fn_showExperience(this,&Application::showExperience);
+    SteelFunctor*  fn_getAnimation= new SteelFunctor1Arg<Application,const std::string&>(this,&Application::getAnimation);
+    SteelFunctor*  fn_log = new SteelFunctor1Arg<Application,const std::string&>(this,&Application::log);
+    SteelFunctor*  fn_showExperience= new SteelFunctor3Arg<Application,const SteelArray&,const SteelArray&, const SteelArray&>(this,&Application::showExperience);
 
 
 
@@ -1165,63 +1194,65 @@ void Application::registerSteelFunctions()
     steelConst("$_ICE",ICE);
     steelConst("$_POISON",POISON);
 
-    mInterpreter.addFunction("normal_random", &fn_gaussian);
-    mInterpreter.addFunction("log",&fn_log);
+    mInterpreter.addFunction("normal_random", fn_gaussian);
+    mInterpreter.addFunction("log",fn_log);
 
-    mInterpreter.addFunction("say",&fn_say);
-    mInterpreter.addFunction("playScene", &fn_playScene);
-    mInterpreter.addFunction("playSound", &fn_playSound);
-    mInterpreter.addFunction("loadLevel", &fn_loadLevel);
-    mInterpreter.addFunction("startBattle", &fn_startBattle);
-    mInterpreter.addFunction("pause",&fn_pause);
-    mInterpreter.addFunction("choice", &fn_choice);
-    mInterpreter.addFunction("pop", &fn_pop);
-    mInterpreter.addFunction("giveNamedItem", &fn_giveNamedItem );
-    mInterpreter.addFunction("takeNamedItem", &fn_takeNamedItem );
-    mInterpreter.addFunction("getGold", &fn_getGold );
-    mInterpreter.addFunction("hasItem", &fn_hasItem );
-    mInterpreter.addFunction("getItemName",&fn_getItemName);
-    mInterpreter.addFunction("didEvent", &fn_didEvent );
-    mInterpreter.addFunction("doEvent", &fn_doEvent );
-    mInterpreter.addFunction("giveGold", &fn_giveGold );
-    mInterpreter.addFunction("addCharacter", &fn_addCharacter );
+    mInterpreter.addFunction("say",fn_say);
+    mInterpreter.addFunction("playScene", fn_playScene);
+    mInterpreter.addFunction("playSound", fn_playSound);
+    mInterpreter.addFunction("loadLevel", fn_loadLevel);
+    mInterpreter.addFunction("startBattle", fn_startBattle);
+    mInterpreter.addFunction("pause",fn_pause);
+    mInterpreter.addFunction("choice", fn_choice);
+    mInterpreter.addFunction("pop", fn_pop);
+    mInterpreter.addFunction("giveNamedItem", fn_giveNamedItem );
+    mInterpreter.addFunction("takeNamedItem", fn_takeNamedItem );
+    mInterpreter.addFunction("getGold", fn_getGold );
+    mInterpreter.addFunction("hasItem", fn_hasItem );
+    mInterpreter.addFunction("getItemName",fn_getItemName);
+    mInterpreter.addFunction("didEvent", fn_didEvent );
+    mInterpreter.addFunction("doEvent", fn_doEvent );
+    mInterpreter.addFunction("giveGold", fn_giveGold );
+    mInterpreter.addFunction("addCharacter", fn_addCharacter );
 
-    mInterpreter.addFunction("getPartyArray", &fn_getPartyArray);
-    mInterpreter.addFunction("attackCharacter", &fn_attackCharacter);
-    mInterpreter.addFunction("getWeaponAttribute", &fn_getWeaponAttribute);
-    mInterpreter.addFunction("getWeaponScriptMode",&fn_getWeaponScriptMode);
-    mInterpreter.addFunction("getArmorAttribute", &fn_getArmorAttribute);
+    mInterpreter.addFunction("getPartyArray", fn_getPartyArray);
+    mInterpreter.addFunction("attackCharacter", fn_attackCharacter);
+    mInterpreter.addFunction("getWeaponAttribute", fn_getWeaponAttribute);
+    mInterpreter.addFunction("getWeaponScriptMode",fn_getWeaponScriptMode);
+    mInterpreter.addFunction("getArmorAttribute", fn_getArmorAttribute);
 
-    mInterpreter.addFunction("getCharacterAttribute", &fn_getCharacterAttribute);
-    mInterpreter.addFunction("getCharacterLevel", &fn_getCharacterLevel);
-    mInterpreter.addFunction("getExperience",&fn_getExperience);
-    mInterpreter.addFunction("addExperience",&fn_addExperience);
-    mInterpreter.addFunction("getCharacterToggle", &fn_getCharacterToggle);
-    mInterpreter.addFunction("setCharacterToggle", &fn_setCharacterToggle);
-    mInterpreter.addFunction("getCharacterName", &fn_getCharacterName);
-    mInterpreter.addFunction("getEquippedWeaponAttribute",&fn_getEquippedWeaponAttribute);
-    mInterpreter.addFunction("getEquippedArmorAttribute",&fn_getEquippedArmorAttribute);
-    mInterpreter.addFunction("addStatusEffect", &fn_addStatusEffect);
-    mInterpreter.addFunction("removeStatusEffects", &fn_removeStatusEffects);
-    mInterpreter.addFunction("doDamage",&fn_doDamage);
-    mInterpreter.addFunction("hasEquipment",&fn_hasEquipment);
-    mInterpreter.addFunction("getEquipment",&fn_getEquipment);
-    mInterpreter.addFunction("equip",&fn_equip);
+    mInterpreter.addFunction("getCharacterAttribute", fn_getCharacterAttribute);
+    mInterpreter.addFunction("getCharacterLevel", fn_getCharacterLevel);
+    mInterpreter.addFunction("getExperience",fn_getExperience);
+    mInterpreter.addFunction("addExperience",fn_addExperience);
+    mInterpreter.addFunction("getCharacterToggle", fn_getCharacterToggle);
+    mInterpreter.addFunction("setCharacterToggle", fn_setCharacterToggle);
+    mInterpreter.addFunction("getCharacterName", fn_getCharacterName);
+    mInterpreter.addFunction("getEquippedWeaponAttribute",fn_getEquippedWeaponAttribute);
+    mInterpreter.addFunction("getEquippedArmorAttribute",fn_getEquippedArmorAttribute);
+    mInterpreter.addFunction("addStatusEffect", fn_addStatusEffect);
+    mInterpreter.addFunction("removeStatusEffects", fn_removeStatusEffects);
+    mInterpreter.addFunction("doDamage",fn_doDamage);
+    mInterpreter.addFunction("hasEquipment",fn_hasEquipment);
+    mInterpreter.addFunction("getEquipment",fn_getEquipment);
+    mInterpreter.addFunction("equip",fn_equip);
 
-    mInterpreter.addFunction("getWeaponType",&fn_getWeaponType);
-    mInterpreter.addFunction("getArmorType",&fn_getArmorType);
-    mInterpreter.addFunction("getWeaponTypeDamageCategory",&fn_getWeaponTypeDamageCategory);
-    mInterpreter.addFunction("getWeaponTypeAnimation",&fn_getWeaponTypeAnimation);
-    mInterpreter.addFunction("weaponTypeHasAnimation",&fn_weaponTypeHasAnimation);
-    mInterpreter.addFunction("getDamageCategoryResistance",&fn_getDamageCategoryResistance);
-    mInterpreter.addFunction("invokeEquipment",&fn_invokeEquipment);
-    mInterpreter.addFunction("getHitSound",&fn_getHitSound);
-    mInterpreter.addFunction("getMissSound",&fn_getMissSound);
-    mInterpreter.addFunction("getUnarmedHitSound",&fn_getUnarmedHitSound);
-    mInterpreter.addFunction("getUnarmedMissSound",&fn_getUnarmedMissSound);
+    mInterpreter.addFunction("getWeaponType",fn_getWeaponType);
+    mInterpreter.addFunction("getArmorType",fn_getArmorType);
+    mInterpreter.addFunction("getWeaponTypeDamageCategory",fn_getWeaponTypeDamageCategory);
+    mInterpreter.addFunction("getWeaponTypeAnimation",fn_getWeaponTypeAnimation);
+    mInterpreter.addFunction("weaponTypeHasAnimation",fn_weaponTypeHasAnimation);
+    mInterpreter.addFunction("getDamageCategoryResistance",fn_getDamageCategoryResistance);
+    mInterpreter.addFunction("invokeEquipment",fn_invokeEquipment);
+    mInterpreter.addFunction("getHitSound",fn_getHitSound);
+    mInterpreter.addFunction("getMissSound",fn_getMissSound);
+    mInterpreter.addFunction("getUnarmedHitSound",fn_getUnarmedHitSound);
+    mInterpreter.addFunction("getUnarmedMissSound",fn_getUnarmedMissSound);
     
-    mInterpreter.addFunction("getAnimation",&fn_getAnimation);
-    mInterpreter.addFunction("showExperience", &fn_showExperience);
+    mInterpreter.addFunction("getAnimation",fn_getAnimation);
+    mInterpreter.addFunction("showExperience", fn_showExperience);
+    
+    mInterpreter.addFunction("mainMenu", new SteelFunctorNoArgs<Application>(this,&Application::mainMenu));
 
 //        SteelType hasGeneratedWeapon(const std::string &wepclass, const std::string &webtype);
 //       SteelType hasGeneratedArmor(const std::string &armclass, const std::string &armtype);

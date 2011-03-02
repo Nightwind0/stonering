@@ -1,0 +1,6 @@
+<menu>
+    <menuOption name="Items" icon="item">
+	<script id="MainMenuItems">
+	</script>
+    </menuOption>
+</menu>

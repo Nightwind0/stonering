@@ -14,7 +14,7 @@ namespace StoneRing{
 
         ArmorRef GenerateArmorRef() const;
 
-        virtual std::string GetIconRef() const;
+        virtual CL_Image GetIcon() const;
         virtual std::string GetName() const;
         virtual uint GetMaxInventory() const ;
         virtual eDropRarity GetDropRarity() const;

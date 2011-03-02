@@ -16,7 +16,7 @@ namespace StoneRing{
         WeaponRef GenerateWeaponRef() const;
 
         // Item interface
-        virtual std::string GetIconRef() const;
+        virtual CL_Image GetIcon() const;
         virtual std::string GetName() const;
         virtual uint GetMaxInventory() const ;
         virtual eDropRarity GetDropRarity() const;
@@ -43,6 +43,7 @@ namespace StoneRing{
         std::string m_name; //generated at generate time :)
         WeaponClass *m_pClass;
         WeaponType *m_pType;
+	CL_Image m_icon;
     };
 };
 

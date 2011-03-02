@@ -65,7 +65,7 @@ namespace StoneRing
             EMONSTERREGION,
             EMONSTERREGIONS,
             EMOVEMENT,
-            ENAMEDITEMELEMENT,
+	    EMENUOPTION,
             ENAMEDITEMREF,
             EONCOUNTDOWN,
             EONDESELECT,

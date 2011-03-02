@@ -30,12 +30,9 @@ SpellRef * Rune::GetSpellRef() const
     return m_pSpellRef;
 }
 
-void Rune::load_attributes(CL_DomNamedNodeMap*)
-{
-}
-
 bool Rune::handle_element(Element::eElement element, Element * pElement)
 {
+    NamedItemElement::handle_element(element,pElement);
     if(element == ESPELLREF)
     {
         m_pSpellRef = dynamic_cast<SpellRef*>(pElement);
@@ -46,10 +43,17 @@ bool Rune::handle_element(Element::eElement element, Element * pElement)
 
 void Rune::load_finished()
 {
+    NamedItemElement::load_finished();
     if(!m_pSpellRef) throw CL_Exception("Rune without spellref.");
 }
 
-
+bool Rune::operator==(const StoneRing::ItemRef& ref)
+{
+    if(ref.GetType() == ItemRef::NAMED_ITEM &&
+	ref.GetItemName() == GetName())
+	return true;
+    return false;
+}
 
 
 

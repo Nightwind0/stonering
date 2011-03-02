@@ -699,8 +699,8 @@ bool SortByBattlePos(const ICharacter* d1, const ICharacter* d2)
     pos2 = d2->GetBattlePos();
 
     
-  return pos1.y * IApplication::GetInstance()->GetScreenWidth() + pos1.x <
-	pos2.y * IApplication::GetInstance()->GetScreenWidth() + pos2.x;
+  return pos1.y * IApplication::GetInstance()->GetDisplayRect().get_width() + pos1.x <
+	pos2.y * IApplication::GetInstance()->GetDisplayRect().get_width() + pos2.x;
 }
 
 
@@ -971,27 +971,27 @@ void BattleState::SteelInit(SteelInterpreter* pInterpreter)
     SteelConst(pInterpreter, "$_POST_MENUS", DISPLAY_ORDER_POST_MENUS);
     SteelConst(pInterpreter, "$_FINAL_DRAW", DISPLAY_ORDER_FINAL);
 
-    pInterpreter->addFunction("selectTargets","battle",&fn_selectTargets);
-    pInterpreter->addFunction("finishTurn","battle",&fn_finishTurn);
-    pInterpreter->addFunction("cancelOption","battle",&fn_cancelOption);
-    pInterpreter->addFunction("doTargetedAnimation","battle",&fn_doTargetedAnimation);
-    pInterpreter->addFunction("doCharacterAnimation","battle",&fn_doCharacterAnimation);
-    pInterpreter->addFunction("createDisplay","battle",&fn_createDisplay);
-    pInterpreter->addFunction("getCharacterGroup","battle",&fn_getCharacterGroup);
-    pInterpreter->addFunction("getAllCharacters","battle",&fn_getAllCharacters);
-    pInterpreter->addFunction("getMonsterDamageCategory","battle",&fn_getMonsterDamageCategory);
-    pInterpreter->addFunction("doSkill","battle",&fn_doSkill);
-    pInterpreter->addFunction("flee","battle",&fn_flee);
-    pInterpreter->addFunction("isBossBattle","battle",&fn_isBossBattle);
-    pInterpreter->addFunction("darkMode","battle",&fn_darkMode);
-    pInterpreter->addFunction("darkColor","battle",&fn_darkColor);
+    pInterpreter->addFunction("selectTargets","battle",new SteelFunctor3Arg<BattleState,bool,bool,bool>(this,&BattleState::selectTargets));
+    pInterpreter->addFunction("finishTurn","battle",new SteelFunctorNoArgs<BattleState>(this,&BattleState::finishTurn));
+    pInterpreter->addFunction("cancelOption","battle",new SteelFunctorNoArgs<BattleState>(this,&BattleState::cancelOption));
+    pInterpreter->addFunction("doTargetedAnimation","battle",new SteelFunctor3Arg<BattleState,SteelType::Handle,SteelType::Handle,SteelType::Handle>(this,&BattleState::doTargetedAnimation));
+    pInterpreter->addFunction("doCharacterAnimation","battle",new SteelFunctor2Arg<BattleState,SteelType::Handle,SteelType::Handle>(this,&BattleState::doCharacterAnimation));
+    pInterpreter->addFunction("createDisplay","battle",new SteelFunctor3Arg<BattleState,int,SteelType::Handle,int>(this,&BattleState::createDisplay));
+    pInterpreter->addFunction("getCharacterGroup","battle",new SteelFunctor1Arg<BattleState,bool>(this,&BattleState::getCharacterGroup));
+    pInterpreter->addFunction("getAllCharacters","battle",new SteelFunctorNoArgs<BattleState>(this,&BattleState::getAllCharacters));
+    pInterpreter->addFunction("getMonsterDamageCategory","battle",new SteelFunctor1Arg<BattleState,SteelType::Handle>(this,&BattleState::getMonsterDamageCategory));
+    pInterpreter->addFunction("doSkill","battle",new SteelFunctor2Arg<BattleState,SteelType::Handle,const std::string&>(this,&BattleState::doSkill));
+    pInterpreter->addFunction("flee","battle",new SteelFunctorNoArgs<BattleState>(this,&BattleState::flee));
+    pInterpreter->addFunction("isBossBattle","battle",new SteelFunctorNoArgs<BattleState>(this,&BattleState::isBossBattle));
+    pInterpreter->addFunction("darkMode","battle",new SteelFunctor1Arg<BattleState,int>(this,&BattleState::darkMode));
+    pInterpreter->addFunction("darkColor","battle",new SteelFunctor4Arg<BattleState,double,double,double,double>(this,&BattleState::darkColor));
     m_config->SetupForBattle();
 
 }
 
 void BattleState::SteelCleanup   (SteelInterpreter* pInterpreter)
 {
-    pInterpreter->removeFunctions("battle",false);
+    pInterpreter->removeFunctions("battle");
     pInterpreter->popScope();
     m_config->TeardownForBattle();
 }
@@ -1228,7 +1228,7 @@ void BattleState::win()
 SteelType BattleState::selectTargets(bool single, bool group, bool defaultMonsters)
 {
     m_combat_state = TARGETING;
-    std::vector<SteelType> targets;
+    SteelType::Container targets;
     TargetingState::Targetable targetable;
     if (single && group)
         targetable = TargetingState::EITHER;
@@ -1344,7 +1344,7 @@ SteelType BattleState::createDisplay(int damage,SteelType::Handle hICharacter,in
 
 SteelType BattleState::getCharacterGroup(bool monsters)
 {
-    std::vector<SteelType> vector;
+    SteelType::Container vector;
     ICharacterGroup * group;
 
     if (monsters)
@@ -1369,7 +1369,7 @@ SteelType BattleState::getCharacterGroup(bool monsters)
 
 SteelType BattleState::getAllCharacters()
 {
-    std::vector<SteelType> vector;
+    SteelType::Container vector;
 
     for (uint i=0;i<m_initiative.size();i++)
     {

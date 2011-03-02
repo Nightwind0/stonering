@@ -2,8 +2,6 @@
 #include "Spell.h"
 #include <ClanLib/core.h>
 #include <cassert>
-#include "AbilityFactory.h"
-#include "CharacterFactory.h"
 #include "IApplication.h"
 #include "StatusEffect.h"
 #include "Skill.h"

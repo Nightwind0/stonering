@@ -14,6 +14,8 @@
 #include "SayState.h"
 #include "ExperienceState.h"
 #include "BattleState.h"
+#include "MainMenuState.h"
+#include "ChoiceState.h"
 #include "State.h"
 #ifdef _WINDOWS_
 #include <SteelInterpreter.h>
@@ -40,9 +42,7 @@ namespace StoneRing
 
         virtual CL_ResourceManager& GetResources();
         virtual CL_DisplayWindow& GetApplicationWindow();
-        virtual int GetScreenWidth()const;
-        virtual int GetScreenHeight()const;
-        virtual void Pop(bool);
+        virtual void PopLevelStack(bool);
         virtual IParty * GetParty() const;
         virtual AbilityManager * GetAbilityManager();
         virtual ItemManager * GetItemManager();
@@ -52,13 +52,16 @@ namespace StoneRing
         virtual void StartBattle(const MonsterGroup &group,const std::string &backdrop);
         virtual void RequestRedraw(const State *pState);
 	virtual void RunState(State *pState);
+	virtual void LoadMainMenu(CL_DomDocument& doc);
         virtual AstScript * LoadScript(const std::string &name, const std::string &script);
         virtual SteelType RunScript(AstScript * pScript);
         virtual SteelType RunScript(AstScript *pScript, const ParameterList &params);
 	virtual AstScript* GetUtility(Utility util)const;
+	
+	virtual void MainMenu();
     protected:
-
-
+        virtual int GetScreenWidth()const;
+        virtual int GetScreenHeight()const;
     private:
 	
 	void queryJoystick();
@@ -67,16 +70,17 @@ namespace StoneRing
 	
         // Steel functions.
         SteelType gaussian(double mean, double sigma);
-		SteelType log(const std::string &string);
+	SteelType log(const std::string &string);
 
         SteelType playScene(const std::string &animation);
         SteelType playSound(const std::string &sound);
         SteelType loadLevel(const std::string &level, uint startX, uint startY);
+	SteelType mainMenu();
         SteelType startBattle(const std::string &monster, uint count, bool isBoss, const std::string &backdrop);
         SteelType say(const std::string &speaker, const std::string &text);
         SteelType pause(uint time);
         SteelType invokeShop(const std::string &shoptype);
-        SteelType choice(const std::string &choiceText, const std::vector<SteelType> &choices);
+        SteelType choice(const std::string &choiceText, const SteelType::Container &choices);
         SteelType pop_(bool bAll);
         SteelType giveNamedItem(const std::string &item, uint count);
         SteelType getGold();
@@ -186,6 +190,7 @@ namespace StoneRing
         SayState mSayState;
         BattleState mBattleState;
 	ExperienceState mExperienceState;
+	MainMenuState  mMainMenuState;
         std::vector<State*> mStates;
         std::vector<IFactory*> mFactories;
 	BattleConfig mBattleConfig;

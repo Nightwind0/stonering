@@ -1,18 +1,19 @@
-#ifndef SR2_CHOICE_STATE_H
-#define SR2_CHOICE_STATE_H
+#ifndef SR2_MAIN_MENU_STATE_H
+#define SR2_MAIN_MENU_STATE_H
 
 #include "State.h"
 #include "Menu.h"
+#include "MenuOption.h"
 #include "sr_defines.h"
 
 namespace StoneRing
 {
 
-    class ChoiceState : public State, public Menu
+    class MainMenuState : public State, public Menu
     {
     public:
-        ChoiceState();
-        virtual ~ChoiceState();
+        MainMenuState();
+        virtual ~MainMenuState();
 
         virtual bool IsDone() const;
         virtual void HandleKeyDown(const CL_InputEvent &key);
@@ -29,9 +30,10 @@ namespace StoneRing
         virtual void RegisterSteelFunctions(SteelInterpreter*){}
         virtual void Finish(); // Hook to clean up or whatever after being popped
 
-        virtual void Init(const std::string &choiceText, const std::vector<std::string> &choices);
-        virtual int GetSelection() const { return m_nSelection; }
+        virtual void Init();
 
+	void AddOption(MenuOption*);
+	
     private:
 	virtual CL_Rectf get_rect();
 	virtual void draw_option(int option, bool selected, float x, float y, CL_GraphicContext& gc);
@@ -40,21 +42,16 @@ namespace StoneRing
 	virtual int get_option_count();
 
         std::string m_text;
-        CL_Rectf m_question_rect;
-        CL_Rectf m_text_rect;
-        CL_Image m_choiceOverlay;
-        uint m_X;
-        uint m_Y;
-        bool m_bDone;
-        std::vector<std::string> m_choices;
-        CL_Font m_choiceFont;
-        CL_Font m_optionFont;
-        CL_Font m_currentOptionFont;
-	CL_Colorf m_choiceColor;
+	CL_Image m_overlay;
 	CL_Colorf m_optionColor;
-	CL_Colorf m_currentOptionColor;
-        int m_nSelection;
-        bool m_bDraw;
+	CL_Colorf m_selectionColor;
+	CL_Font m_optionFont;
+	CL_Font m_selectionFont;
+        CL_Rectf m_menu_rect;
+	CL_Rectf m_character_rect;
+	CL_Rectf m_party_rect;
+	std::vector<MenuOption*> m_choices;
+        bool m_bDone;
     };
 }
 

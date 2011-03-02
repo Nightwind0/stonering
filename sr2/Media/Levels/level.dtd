@@ -17,6 +17,9 @@
 <!ELEMENT event (conditionScript?, script?)>
 <!ELEMENT movement (script?)>
 
+
+<!ELEMENT menuOption (conditionScript?,script)>
+
 <!-- Item DTD -->
 <!ELEMENT iconRef (#PCDATA)>
 <!ELEMENT weaponClasses (weaponClass+)>
@@ -24,10 +27,9 @@
 <!ELEMENT armorClasses  (armorClass+)>
 <!ELEMENT armorTypes    (armorType+)>
 <!ELEMENT items (weaponClasses,weaponTypes, armorClasses, armorTypes,itemList)>
-<!ELEMENT itemList (namedItem+)>
+<!ELEMENT itemList ((regularItem | uniqueWeapon | uniqueArmor | rune | specialItem | systemItem)*)>
 <!ELEMENT weaponRef (weaponTypeRef, weaponClassRef, (spellRef|runeType)?)>
 <!ELEMENT armorRef (armorTypeRef, armorClassRef, (spellRef|runeType)?)>
-<!ELEMENT namedItem (iconRef,(regularItem | uniqueWeapon | uniqueArmor | rune | specialItem | systemItem))>
 <!ELEMENT regularItem (script?)>
 <!-- The script here is executed when the weapon is used. -->
 <!ELEMENT uniqueWeapon (weaponTypeRef, conditionScript?, weaponEnhancer*, statusEffectModifier*,attributeModifier*, script?, onEquip?, onUnequip?, (spellRef|runeType)?)>
@@ -75,7 +77,7 @@
 
 <!-- Status Effect DTD -->
 <!ELEMENT statusEffectList (statusEffect*)>
-<!ELEMENT statusEffect (onInvoke?,onRound?,onCountdown?,onRemove?, attributeModifier*)>
+<!ELEMENT statusEffect (spriteRef,onInvoke?,onRound?,onCountdown?,onRemove?, attributeModifier*)>
 <!-- These guys are all Effect type. -->
 <!-- Notice that you can have a status effect that causes other status effects! -->
 <!ELEMENT onInvoke (script)>
@@ -114,7 +116,8 @@
 <!ELEMENT monsterGroup (monsterRef+)>
 
 <!-- Attributes -->
-
+<!ATTLIST menuOption name CDATA #REQUIRED>
+<!ATTLIST menuOption icon CDATA #REQUIRED>
 <!ATTLIST level name CDATA #REQUIRED>
 <!ATTLIST levelHeader music CDATA #REQUIRED>
 <!ATTLIST levelHeader width CDATA #REQUIRED>
@@ -156,7 +159,7 @@
 <!ATTLIST regularItem value CDATA #REQUIRED>
 <!ATTLIST regularItem sellValueMultiplier CDATA #IMPLIED>
 <!ATTLIST regularItem reusable (true|false) #REQUIRED>
-<!ATTLIST regularItem targetable (all|single|either|self-only) #REQUIRED>
+<!ATTLIST regularItem targetable (all|single|either|self_only|no_target) #REQUIRED>
 <!ATTLIST regularItem use (battle|world|both) #REQUIRED>
 <!ATTLIST regularItem defaultTarget (party|monsters) #IMPLIED>
 <!ATTLIST uniqueArmor valueMultiplier CDATA #REQUIRED>

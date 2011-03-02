@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <cassert>
 #include "Animation.h"
-#include "LevelFactory.h"
 #include "IApplication.h"
 #include "Level.h"
 

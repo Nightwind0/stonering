@@ -270,9 +270,8 @@
 	   
 	   
 	   <itemList>
-	       <namedItem name="Ice Dragon Shield" dropRarity="rare">
+	       <uniqueArmor name="Ice Dragon Shield" dropRarity="rare" valueMultiplier = "2.75">
 		   <iconRef>Armor/poisonshield</iconRef>
-		   <uniqueArmor valueMultiplier = "2.75">
 		       <armorTypeRef name="Shield"/>
 		       <armorEnhancer add="5" attribute="AC"/>
 		       <statusEffectModifier statusRef="Poison" modifier="0.20"/>
@@ -280,59 +279,37 @@
 		       <attributeModifier type="add" value="40" attribute="hp_max"/>
 		       <spellRef type="elemental" name="Ice"/>
 		   </uniqueArmor>
-	       </namedItem>
-	       <namedItem name="Kid Shield" dropRarity="rare">
-		   <iconRef>Armor/poisonshield</iconRef>
-		   <uniqueArmor valueMultiplier = "0.25">
+		   <uniqueArmor name="Kid Shield" dropRarity="rare" valueMultiplier = "0.25">
+		    <iconRef>Armor/basic_shield</iconRef>		      
 		       <armorTypeRef name="Shield"/>
 		       <armorEnhancer multiplier="0.2" attribute="AC"/>
 		   </uniqueArmor>
-	       </namedItem>
-	       <namedItem name = "Warrior Sword" dropRarity="rare">
-		   <iconRef>Weapon/poisonsword</iconRef>
-		   <uniqueWeapon valueMultiplier="4.5">
+		   <uniqueWeapon name = "Warrior Sword" dropRarity="rare" valueMultiplier="4.5">
+		   <iconRef>Weapon/basic_sword</iconRef>		       
 		       <weaponTypeRef name="Sword"/>
 		       <weaponEnhancer multiplier="3" attribute="ATK"/>
 		       <attributeModifier type="add" value="5" attribute="str"/>
 		       <attributeModifier type="multiply" value="1.1" attribute="hp_max"/>
 		   </uniqueWeapon>
-	       </namedItem>
-	       <namedItem name = "Kid Sword" dropRarity="rare">
-		   <iconRef>Weapon/poisonsword</iconRef>
-		   <uniqueWeapon valueMultiplier="0.25">
+		   <uniqueWeapon name = "Kid Sword" dropRarity="rare" valueMultiplier="0.25">
+		   <iconRef>Weapon/basic_sword</iconRef>		       
 		       <weaponTypeRef name="Sword"/>
 		       <weaponEnhancer multiplier="0.5" attribute="ATK"/>
 		   </uniqueWeapon>
-	       </namedItem>
-	       <namedItem name = "Mage's Rod" dropRarity="rare">
-		   <iconRef>Weapon/magerod</iconRef>
-		   <uniqueWeapon valueMultiplier="100">
-		       <weaponTypeRef name="Rod"/>
-		       <weaponEnhancer multiplier="3" attribute="ATK"/>
-		       <attributeModifier type="multiply" value="1.25" attribute="mag"/>
-		   </uniqueWeapon>
-	       </namedItem>
-	       <namedItem name = "Wizard's Rod" dropRarity="rare">
-		   <iconRef>Weapon/magerod</iconRef>
-		   <uniqueWeapon valueMultiplier="300">
-		       <weaponTypeRef name="Rod"/>
-		       <weaponEnhancer multiplier="10" attribute="ATK"/>
-		       <attributeModifier type="multiply" value="1.50" attribute="mag"/>
-		   </uniqueWeapon>
-	       </namedItem>
-	       <namedItem name="Moon Seed" dropRarity="common">
-		   <iconRef>Items/moonseed</iconRef>
-		   <regularItem value = "50" reusable="false" targetable="single" use="both"  defaultTarget="party">
+
+
+
+		   <regularItem name="Moon Seed" dropRarity="common" value = "50" reusable="false" targetable="single" use="both"  defaultTarget="party">
+		      <iconRef>Items/moonseed</iconRef>
 		       <script id="Moonseed">
 			   modifyAttribute("MP",25, getTargetCharacter());
 		       </script>
 		   </regularItem>
-	       </namedItem>
-	       <namedItem name="Octavia Key" dropRarity="never">
-	       <iconRef>
-	       </iconRef>
-	       <specialItem/>
-	   </namedItem>
+
+
+	       <specialItem name="Octavia Key" dropRarity="never">
+			       <iconRef>Item/key</iconRef>
+	       </specialItem>
        </itemList>
        
    </items>

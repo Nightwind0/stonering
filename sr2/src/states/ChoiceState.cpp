@@ -82,9 +82,6 @@ void StoneRing::ChoiceState::Draw(const CL_Rect &screenRect,CL_GraphicContext& G
 {
     if(!m_bDraw) return;
 
-    CL_Draw::fill(GC, m_question_rect, m_question_BGColor );
-    CL_Draw::fill(GC, m_text_rect, m_text_BGColor ) ;
-
     m_choiceOverlay.draw(GC,static_cast<float>(m_X),static_cast<float>(m_Y));
     m_choiceFont.draw_text(GC,m_question_rect.left,m_question_rect.top + m_choiceFont.get_font_metrics(GC).get_height(),m_text,m_choiceColor);
 
@@ -121,7 +118,9 @@ void StoneRing::ChoiceState::Start()
     m_optionColor = GraphicsManager::GetFontColor(GraphicsManager::GetFontName(GraphicsManager::CHOICE,"Option"));
     m_currentOptionColor = GraphicsManager::GetFontColor(GraphicsManager::GetFontName(GraphicsManager::CHOICE,"Selection"));
 
-    m_choiceOverlay = CL_Image(GC,"Overlays/Choice/overlay", &resources );
+    m_choiceOverlay = GraphicsManager::GetOverlay(GraphicsManager::CHOICE);
+    
+    // TODO: Have some general way to do this kind of thing:
 
     m_question_rect.top = (float)resources.get_integer_resource(resource + "header/top",0);
     m_question_rect.left = (float)resources.get_integer_resource(resource + "header/left",0);
@@ -133,15 +132,6 @@ void StoneRing::ChoiceState::Start()
     m_text_rect.right = (float)resources.get_integer_resource(resource + "text/right",0);
     m_text_rect.bottom = (float)resources.get_integer_resource(resource + "text/bottom",0);
 
-    m_question_BGColor.set_red (resources.get_integer_resource(resource + "header/bgcolor/r",0));
-    m_question_BGColor.set_green (resources.get_integer_resource(resource + "header/bgcolor/g",0));
-    m_question_BGColor.set_blue (resources.get_integer_resource(resource + "header/bgcolor/b",0));
-    m_question_BGColor.set_alpha (resources.get_integer_resource(resource + "header/bgcolor/a",0));
-
-    m_text_BGColor.set_red ((float)resources.get_integer_resource(resource + "text/bgcolor/r",0) / 255.0f);
-    m_text_BGColor.set_green ((float)resources.get_integer_resource(resource + "text/bgcolor/g",0) / 255.0f);
-    m_text_BGColor.set_blue ((float)resources.get_integer_resource(resource + "text/bgcolor/b",0) / 255.0f);
-    m_text_BGColor.set_alpha ((float)resources.get_integer_resource(resource + "text/bgcolor/a",0) / 255.0f);
 
     m_X = resources.get_integer_resource(resource + "x",0);
     m_Y = resources.get_integer_resource(resource + "y",0);

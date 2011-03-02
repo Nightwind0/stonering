@@ -23,6 +23,7 @@
 		<string name="MonsterDefinitions" value="Media/monsters.xml"/>
 		<string name="CharacterDefinitions" value="Media/characters.xml"/>
 		<string name="AnimationDefinitions" value="Media/animations.xml"/>
+		<string name="MainMenuDefinitions" value="Media/mainmenu.xml"/>
 		<string name="LevelPath" value="Media/Levels/" />
 		<string name="StartLevel" value="examplelevel" />
 		<string name="DefaultPlayerSprite" value="Sprites/Party/Valyn" />
@@ -113,9 +114,61 @@
 		<image name="hurl">
 			<image-file file="Images/Icons/Balloon.png"/>
 		</image>
+		<section name="Item">
+		    <image name="key">
+			<image-file file="Images/Icons/I_Key01.png"/>
+		    </image>
+		</section>
+		<section name="Weapon">
+		    <image name="basic_sword">
+			<image-file file="Images/Icons/W_Sword001.png"/>
+		    </image>			    
+		</section>
+		<section name="Armor">
+		    <image name="poisonshield">
+			<image-file file="Images/Icons/PoisonShield.png"/>
+		    </image>
+		    <image name="basic_shield">
+			<image-file file="Images/Icons/E_Wood01.png"/>
+		    </image>	
+		  
+		</section>
+		<section name="Items">
+		    <image name="moonseed">
+			<image-file file="Images/Icons/I_C_Nut.png"/>
+		    </image>		    
+		</section>
 	</section>
 
 	<section name="Overlays">
+	    <section name="MainMenu">
+		<image name="overlay">
+		    <image-file file="Images/Overlays/main_menu_overlay.png"/>
+		</image>
+		<section name="fonts">
+			<string name="Option" value="BoldBlack"/>
+			<string name="Choice" value="BoldWhite"/>
+			<string name="Selection" value="BoldWhite"/>
+		</section>
+		<section name="menu">
+			<integer name="left" value="479"/>
+			<integer name="right" value="752"/>
+			<integer name="top" value="43"/>
+			<integer name="bottom" value="363"/>
+		</section>
+		<section name="party">
+			<integer name="left" value="12"/>
+			<integer name="right" value="484"/>
+			<integer name="top" value="24"/>
+			<integer name="bottom" value="191"/>
+		</section>
+		<section name="character">
+			<integer name="left" value="12"/>
+			<integer name="right" value="484"/>
+			<integer name="top" value="24"/>
+			<integer name="bottom" value="191"/>
+		</section>
+	    </section>
 		<section name="BattleStatus">
 			<image name="overlay">
 				<image-file file="Images/Overlays/battle_status_overlay_s.png"/>
@@ -244,24 +297,12 @@
 			<integer name="x" value="0"/>
 			<integer name="y" value="200"/>
 			<section name="header">
-				<section name="bgcolor">
-					<integer name="r" value="0"/>
-					<integer name="g" value="0"/>
-					<integer name="b" value="0"/>
-					<integer name="a" value="0"/>
-				</section>
 				<integer name="left" value="24"/>
 				<integer name="top" value="224"/>
 				<integer name="right" value="783" />
 				<integer name="bottom" value="319"/>
 			</section>
 			<section name="text">
-				<section name="bgcolor">
-					<integer name="r" value="0"/>
-					<integer name="g" value="0"/>
-					<integer name="b" value="0"/>
-					<integer name="a" value="0"/>
-				</section>
 				<integer name="left" value="24"/>
 				<integer name="top" value="352"/>
 				<integer name="right" value="783" />
@@ -281,6 +322,21 @@
 			<sprite name="Target" hint="alpha">
 				<image file="Sprites/target.png"/>
 			</sprite>
+		</section>
+		<section name="StatusEffect">
+		    <sprite name="Poisoned">
+			<image file="Sprites/Status Effects/Poisoned.png"/>
+		    </sprite>
+		    <sprite name="Stone">
+			<image file="Sprites/Status Effects/Stone.png"/>
+		    </sprite>
+		    <sprite name="DragonRage">
+			<image file="Sprites/Status Effects/DragonRage.png"/>
+		    </sprite>
+		    <sprite name="Focused">
+			<image file="Sprites/Status Effects/AimUp.png"/>
+		    </sprite>	
+		    
 		</section>
 		<section name="Skills">
 			<sprite name="Heal" hint="alpha">

@@ -8,7 +8,7 @@
 
 namespace StoneRing{
     class Animation;
-    class UniqueWeapon : public NamedItem, public Weapon
+    class UniqueWeapon : public NamedItemElement, public Weapon
     {
     public:
         UniqueWeapon();
@@ -23,8 +23,13 @@ namespace StoneRing{
         WeaponType *GetWeaponType() const ;
         bool IsRanged() const ;
         bool IsTwoHanded() const;
+	virtual std::string GetName() const { return NamedItemElement::GetName(); }
+	virtual CL_Image GetIcon() const { return NamedItemElement::GetIcon(); }
+	virtual uint GetMaxInventory() const { return NamedItemElement::GetMaxInventory(); }
+	virtual eDropRarity GetDropRarity() const { return NamedItemElement::GetDropRarity(); }
 
         virtual eItemType GetItemType() const { return WEAPON ; }
+        virtual bool operator == ( const ItemRef &ref );
     private:
         virtual void OnEquipScript();
         virtual void OnUnequipScript();

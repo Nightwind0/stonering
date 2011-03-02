@@ -1,5 +1,4 @@
 #include "StatusEffect.h"
-#include "AbilityFactory.h"
 #include "IApplication.h"
 #include "Animation.h"
 #include "AttributeModifier.h"
@@ -29,6 +28,11 @@ bool StoneRing::StatusEffect::handle_element(eElement element, Element * pElemen
 {
     switch(element)
     {
+    case ESPRITEREF:{
+	SpriteRef * pRef = dynamic_cast<SpriteRef*>(pElement);
+	m_icon = pRef->CreateSprite();
+	break;
+    }
     case EONINVOKE:
         m_pOnInvoke = dynamic_cast<OnInvoke*>(pElement);
         break;
