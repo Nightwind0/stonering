@@ -3,4 +3,25 @@
 	<script id="MainMenuItems">
 	</script>
     </menuOption>
+    <menuOption name="Skills" icon="skills">
+	<script id="MainMenuSkills">
+	</script>
+    </menuOption>
+    <menuOption name="Equip" icon="equip">
+	<script id="MainMenuEquip">
+	</script>
+    </menuOption>
+    
+    <menuOption name="Omegas" icon="omegas">
+	<script id="MainMenuOmegas">
+	</script>
+    </menuOption>
+    <menuOption name="Config" icon="config">
+	<script id="MainMenuConfig">
+	</script>
+    </menuOption>
+    <menuOption name="Status" icon="status">
+	<script id="MainMenuStatus">
+	</script>
+    </menuOption>  
 </menu>

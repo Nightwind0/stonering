@@ -5,6 +5,9 @@
 #include "Menu.h"
 #include "MenuOption.h"
 #include "sr_defines.h"
+#include "GraphicsManager.h"
+
+using StoneRing::Font;
 
 namespace StoneRing
 {
@@ -40,16 +43,22 @@ namespace StoneRing
 	virtual int height_for_option(CL_GraphicContext& gc);
 	virtual void process_choice(int selection);
 	virtual int get_option_count();
+	virtual void draw_party(CL_GraphicContext& gc);
 
         std::string m_text;
 	CL_Image m_overlay;
-	CL_Colorf m_optionColor;
-	CL_Colorf m_selectionColor;
-	CL_Font m_optionFont;
-	CL_Font m_selectionFont;
+	Font m_optionFont;
+	Font m_selectionFont;
+	Font m_XPFont;
+	Font m_HPFont;
+	Font m_MPFont;
+	Font m_LevelFont;
+	Font m_SPFont;
+	Font m_CharacterFont;
         CL_Rectf m_menu_rect;
 	CL_Rectf m_character_rect;
 	CL_Rectf m_party_rect;
+	CL_Image m_portrait_shadow;
 	std::vector<MenuOption*> m_choices;
         bool m_bDone;
     };

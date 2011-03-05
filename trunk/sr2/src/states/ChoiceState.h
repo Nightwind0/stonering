@@ -4,6 +4,7 @@
 #include "State.h"
 #include "Menu.h"
 #include "sr_defines.h"
+#include "GraphicsManager.h"
 
 namespace StoneRing
 {
@@ -47,12 +48,10 @@ namespace StoneRing
         uint m_Y;
         bool m_bDone;
         std::vector<std::string> m_choices;
-        CL_Font m_choiceFont;
-        CL_Font m_optionFont;
-        CL_Font m_currentOptionFont;
-	CL_Colorf m_choiceColor;
-	CL_Colorf m_optionColor;
-	CL_Colorf m_currentOptionColor;
+        StoneRing::Font m_choiceFont;
+        StoneRing::Font m_optionFont;
+        StoneRing::Font m_currentOptionFont;
+
         int m_nSelection;
         bool m_bDraw;
     };

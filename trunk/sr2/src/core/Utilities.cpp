@@ -1,5 +1,5 @@
 #include "sr_defines.h"
-
+#include "GraphicsManager.h"
 
 std::string IntToString(const int &i)
 {
@@ -30,18 +30,18 @@ std::string CL_String_load(const std::string& id, CL_ResourceManager& resources)
     return res.get_element().get_attribute("value");
     //return res.get_element().get_text();
 }
-CL_Size get_text_size(CL_Font font, CL_GraphicContext &gc, const CL_StringRef &text)
+CL_Size get_text_size(const StoneRing::Font& font, CL_GraphicContext &gc, const CL_StringRef &text)
 {
 	CL_Size total_size;
 
 
 	{
-		CL_FontMetrics fm = font.get_font_metrics(gc);
+		CL_FontMetrics fm = const_cast<StoneRing::Font&>(font).get_font_metrics(gc);
 		int line_spacing = fm.get_external_leading();
 		std::vector<CL_String> lines = CL_StringHelp::split_text(text, "\n", false);
 		for (std::vector<CL_String>::size_type i=0; i<lines.size(); i++)
 		{
-			CL_Size line_size = font.get_provider()->get_text_size(gc, lines[i]);
+			CL_Size line_size = const_cast<StoneRing::Font&>(font).get_text_size(gc, lines[i]);
 
 			if ((i+1) != lines.size())	// Do not add the line spacing on the last line
 				line_size.height += line_spacing;
@@ -58,10 +58,10 @@ CL_Size get_text_size(CL_Font font, CL_GraphicContext &gc, const CL_StringRef &t
 
 
 
-int draw_text(CL_GraphicContext& gc, CL_Font font, CL_Colorf color, CL_Rectf rect, CL_StringRef string, uint string_pos)
+int draw_text(CL_GraphicContext& gc,StoneRing::Font &font, CL_Rectf rect, CL_StringRef string, uint string_pos)
 {
     CL_StringRef str = string.substr(string_pos);
-    CL_FontMetrics metrics = font.get_font_metrics(gc);
+    CL_FontMetrics metrics = const_cast<StoneRing::Font&>(font).get_font_metrics(gc);
 
     //CL_Size testSize = font.get_text_size(gc,"Hello Hello");
 
@@ -107,7 +107,7 @@ int draw_text(CL_GraphicContext& gc, CL_Font font, CL_Colorf color, CL_Rectf rec
     }
 
 
-    font.draw_text(gc,rect.left,rect.top + metrics.get_height(),string.substr(string_pos,max_characters),color);
+    font.draw_text(gc,rect.left,rect.top + metrics.get_height(),string.substr(string_pos,max_characters));
 
     return max_characters;
 

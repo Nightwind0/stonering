@@ -12,6 +12,7 @@
 #include <stdlib.h>
 typedef unsigned int uint;
 typedef unsigned short ushort;
+#include "Font.h"
 
 #ifdef WIN32
 #pragma warning (disable : 4250 )
@@ -87,6 +88,7 @@ std::string IntToString(const int &i);
 std::string FloatToString(const float &f);
 std::string CL_String_load(const std::string& id, CL_ResourceManager& resources);
 
+
 inline double ranf()
 {
   return (double)rand() / ((double)RAND_MAX + 1.0);
@@ -153,7 +155,7 @@ extern bool gbDebugStop;
 #endif
 
 
-int draw_text(CL_GraphicContext& gc, CL_Font font, CL_Colorf ccolor, CL_Rectf rect, CL_StringRef string, uint string_pos=0);
+int draw_text(CL_GraphicContext& gc,  StoneRing::Font &font, CL_Rectf rect, CL_StringRef string, uint string_pos=0);
 
 
 template<class T>

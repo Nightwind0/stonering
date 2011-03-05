@@ -404,30 +404,24 @@ void BattleState::draw_status(const CL_Rectf &screenRect, CL_GraphicContext& GC)
         std::ostringstream hp;
         hp << std::setw(6) << pChar->GetAttribute(ICharacter::CA_HP) << '/'
         << pChar->GetAttribute(ICharacter::CA_MAXHP);
-	std::string generalFontName = GraphicsManager::GetFontName(GraphicsManager::BATTLE_STATUS, "general");
-	std::string hpFontName = GraphicsManager::GetFontName(GraphicsManager::BATTLE_STATUS, "hp");
-	std::string mpFontName = GraphicsManager::GetFontName(GraphicsManager::BATTLE_STATUS, "mp");
-        CL_Font generalFont = GraphicsManager::GetFont(generalFontName);
-        CL_Font  hpFont = GraphicsManager::GetFont(hpFontName);
-        CL_Font  mpFont = GraphicsManager::GetFont(mpFontName);
-	CL_Colorf generalColor = GraphicsManager::GetFontColor(generalFontName);
-	CL_Colorf hpColor = GraphicsManager::GetFontColor(hpFontName);
-	CL_Colorf mpColor = GraphicsManager::GetFontColor(mpFontName);
+        Font generalFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_STATUS,"general");
+        Font  hpFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_STATUS,"hp");
+        Font  mpFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_STATUS,"mp");
+\
 
         generalFont.draw_text(GC,m_status_rect.left,
                               m_status_rect.top + generalFont.get_font_metrics(GC).get_height() +(p *
                                                generalFont.get_font_metrics(GC).get_height())
                                               ,
-                              name.str(),generalColor);
+                              name.str());
         hpFont.draw_text(GC,m_status_rect.get_width() / 3 + m_status_rect.left,
                          m_status_rect.top + hpFont.get_font_metrics(GC).get_height()+(p* hpFont.get_font_metrics(GC).get_height())
-                         ,hp.str(),hpColor);
+                         ,hp.str());
         std::ostringstream mp;
         mp << std::setw(6) << pChar->GetAttribute(ICharacter::CA_MP) << '/'
         << pChar->GetAttribute(ICharacter::CA_MAXMP);
         mpFont.draw_text(GC,(m_status_rect.get_width() / 3) * 2 + m_status_rect.left,
-                         m_status_rect.top + mpFont.get_font_metrics(GC).get_height() + (p*mpFont.get_font_metrics(GC).get_height()),mp.str(), 
-			 mpColor
+                         m_status_rect.top + mpFont.get_font_metrics(GC).get_height() + (p*mpFont.get_font_metrics(GC).get_height()),mp.str()
 			);
 
     }
@@ -508,16 +502,11 @@ void BattleState::Display::update()
 void BattleState::Display::draw(CL_GraphicContext& GC)
 {
     std::ostringstream stream;
-    CL_Font font;
-    CL_Colorf color;
-    CL_Colorf shadow_color;
-
-    shadow_color.set_red(0.0f);
-    shadow_color.set_green(0.0f);
-    shadow_color.set_blue(0.0f);
-
+    Font font;
+    Font shadow_font;
 
     GraphicsManager::DisplayFont displayFont;
+    
 
     switch (m_eDisplayType)
     {
@@ -553,10 +542,10 @@ void BattleState::Display::draw(CL_GraphicContext& GC)
     }
 
     font = GraphicsManager::GetFont(GraphicsManager::GetFontName(displayFont));
-    color = GraphicsManager::GetFontColor(GraphicsManager::GetFontName(displayFont));
+    shadow_font = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::DISPLAY_FONT_SHADOW));
 
-    color.set_alpha(1.0f - m_complete);
-    shadow_color.set_alpha(1.0f-m_complete);
+    font.set_alpha(1.0f - m_complete);
+    shadow_font.set_alpha(1.0f-m_complete);
 
     CL_Rect rect;
     Monster *pMonster = dynamic_cast<Monster*>(m_pTarget);
@@ -585,8 +574,8 @@ void BattleState::Display::draw(CL_GraphicContext& GC)
     pos.y += font.get_font_metrics(GC).get_height();
     pos.x -= font.get_text_size(GC,value).width;
 
-    font.draw_text(GC,pos.x-2,pos.y-2,value,shadow_color);
-    font.draw_text(GC,pos.x,pos.y,value,color);
+    shadow_font.draw_text(GC,pos.x-2,pos.y-2,value);
+    font.draw_text(GC,pos.x,pos.y,value);
 
 
 }

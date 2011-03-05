@@ -62,8 +62,8 @@ void StoneRing::SayState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
 {
     CL_Rect speakerTextRect = m_speaker_rect;
 
-    CL_Font speakerFont = m_speakerFont;
-    CL_Font textFont = m_speechFont;
+    Font speakerFont = m_speakerFont;
+    Font textFont = m_speechFont;
 
     speakerTextRect.top += ( m_speaker_rect.get_height() - speakerFont.get_font_metrics(GC).get_height()) /2;
     speakerTextRect.bottom += ( m_speaker_rect.get_height() - speakerFont.get_font_metrics(GC).get_height()) /2;
@@ -72,10 +72,10 @@ void StoneRing::SayState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
     CL_Draw::fill(GC, m_text_rect, CL_Colorf(m_text_BGColor)) ;
 
     m_sayOverlay.draw(GC,static_cast<float>(m_X),static_cast<float>(m_Y));
-    speakerFont.draw_text(GC,(float)speakerTextRect.left, speakerTextRect.top + speakerFont.get_font_metrics(GC).get_height(),m_speaker, m_speakerColor);
+    speakerFont.draw_text(GC,(float)speakerTextRect.left, speakerTextRect.top + speakerFont.get_font_metrics(GC).get_height(),m_speaker);
 
 
-    m_nDrawnThisFrame = draw_text(GC,textFont,m_speechColor,m_text_rect,m_text,m_nTotalDrawn);//textFont.draw_text(GC,m_text_rect.get_top_left(.x,m_text_rect.get_top_left().y, m_iText, m_text.end());
+    m_nDrawnThisFrame = draw_text(GC,textFont,m_text_rect,m_text,m_nTotalDrawn);//textFont.draw_text(GC,m_text_rect.get_top_left(.x,m_text_rect.get_top_left().y, m_iText, m_text.end());
     if(m_nTotalDrawn + m_nDrawnThisFrame < m_text.size())
     {
         // Draw a little "Theres more" doodad
@@ -107,8 +107,7 @@ void StoneRing::SayState::Start()
 
     m_speakerFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::SAY,"Speaker"));
     m_speechFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::SAY,"Speech"));
-    m_speakerColor = GraphicsManager::GetFontColor(GraphicsManager::GetFontName(GraphicsManager::SAY,"Speaker"));
-    m_speechColor = GraphicsManager::GetFontColor(GraphicsManager::GetFontName(GraphicsManager::SAY,"Speech"));
+
 
     m_sayOverlay = CL_Image(GET_MAIN_GC(),resource + "overlay",&resources);
 

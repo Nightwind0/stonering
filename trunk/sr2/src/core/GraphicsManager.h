@@ -12,6 +12,7 @@
 namespace StoneRing
 {
 
+
     class GraphicsManager
     {
     public:
@@ -35,7 +36,8 @@ namespace StoneRing
           DISPLAY_HP_NEGATIVE,
           DISPLAY_MP_POSITIVE,
           DISPLAY_MP_NEGATIVE,
-          DISPLAY_MISS
+          DISPLAY_MISS,
+	  DISPLAY_FONT_SHADOW,
         };
 	
 	enum EquipmentSpriteType
@@ -45,6 +47,7 @@ namespace StoneRing
 	};
 	static void initialize();
         static CL_Sprite  CreateSprite ( const std::string& name );
+	static CL_Image   CreateImage ( const std::string& name );
         static CL_Image  GetOverlay( Overlay overlay );
 
         // TODO: Replace sprite string in these two APIs with some enum
@@ -60,24 +63,21 @@ namespace StoneRing
         // Returns the name associated with this surface
         static std::string LookUpMapWithSprite( CL_Sprite );
 
-        static CL_Font  GetFont(const std::string& name);
-	static CL_Font  GetFont( Overlay overlay, const std::string& type );
+        static Font  GetFont(const std::string& name);
+	static Font  GetFont( Overlay overlay, const std::string& type );
         static std::string GetFontName ( Overlay overlay, const std::string& type );
         static std::string GetFontName ( DisplayFont font );
-	static CL_Colorf GetFontColor ( const std::string& font );
-	static CL_Colorf GetFontColor ( Overlay overlay, const std::string& type );
 
     private:
 
         static std::string NameOfOverlay(Overlay overlay);
         static std::string NameOfDisplayFont(DisplayFont font);
-	CL_Font LoadFont(const std::string& name);
+	Font LoadFont(const std::string& name);
         std::map<Overlay,CL_Image> m_overlay_map;
         std::map<std::string,CL_Sprite> m_tile_map;
-        std::map<std::string,CL_Font> m_font_map;
+        std::map<std::string,Font> m_font_map;
         std::map<std::string,CL_Image> m_icon_map;
         std::map<Overlay,std::map<std::string,std::string> > m_overlay_font_map;
-        std::map<std::string,CL_Colorf> m_font_colors;
         static GraphicsManager *m_pInstance;
         GraphicsManager();
         ~GraphicsManager();
