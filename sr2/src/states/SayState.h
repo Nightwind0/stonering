@@ -3,6 +3,7 @@
 
 #include "State.h"
 #include "sr_defines.h"
+#include "GraphicsManager.h"
 
 namespace StoneRing
 {
@@ -31,10 +32,8 @@ namespace StoneRing
 
         std::string m_speaker;
         std::string m_text;
-        CL_Font m_speakerFont;
-        CL_Font m_speechFont;
-	CL_Colorf m_speakerColor;
-	CL_Colorf m_speechColor;
+        StoneRing::Font m_speakerFont;
+        StoneRing::Font m_speechFont;
         CL_Rectf m_speaker_rect;
         CL_Rectf m_text_rect;
         CL_Color m_speaker_BGColor;

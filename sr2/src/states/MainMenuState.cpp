@@ -80,9 +80,33 @@ void StoneRing::MainMenuState::Draw(const CL_Rect &screenRect,CL_GraphicContext&
 {
     m_overlay.draw(GC,0,0);
     Menu::Draw(GC);
+    
+    draw_party(GC);
 }
 
-
+void StoneRing::MainMenuState::draw_party(CL_GraphicContext& GC)
+{
+    IParty * party = IApplication::GetInstance()->GetParty();
+    float height = m_character_rect.get_height() / 4;
+    const float spacing = 12.0f;
+    for(int i=0;i<party->GetCharacterCount();i++){
+	CL_Pointf portraitPoint;
+	portraitPoint.x = m_character_rect.left; // TODO Row?
+	portraitPoint.y = m_character_rect.top + height * i;
+	CL_Pointf shadowPoint = portraitPoint;
+	shadowPoint += CL_Pointf(-15.0f-15.0f);
+	m_portrait_shadow.draw(GC,shadowPoint.x,shadowPoint.y);
+	Character * pCharacter = dynamic_cast<Character*>(party->GetCharacter(i));
+	// TODO: Which portrait should change, and depend on status effects
+	CL_Sprite portrait = pCharacter->GetPortrait(Character::PORTRAIT_DEFAULT);
+	portrait.draw(GC,portraitPoint.x,portraitPoint.y);
+	std::ostringstream stream;
+	stream <<  "Level " << pCharacter->GetLevel();
+	m_CharacterFont.draw_text(GC,spacing + portraitPoint.x + portrait.get_width(), portraitPoint.y, pCharacter->GetName(), Font::TOP_LEFT);
+	m_LevelFont.draw_text(GC,spacing + portraitPoint.x + portrait.get_width(), portraitPoint.y + m_CharacterFont.get_font_metrics(GC).get_height(),
+			      stream.str(),Font::TOP_LEFT);
+    }
+}
 
 bool StoneRing::MainMenuState::DisableMappableObjects() const
 {
@@ -104,11 +128,15 @@ void StoneRing::MainMenuState::Start()
     CL_ResourceManager& resources = pApp->GetResources();
 
 
+    m_portrait_shadow = GraphicsManager::CreateImage("Overlays/MainMenu/portrait_shadow");
 
     m_optionFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"Option");
     m_selectionFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"Selection");
-    m_optionColor = GraphicsManager::GetFontColor(GraphicsManager::MAIN_MENU,"Option");
-    m_selectionColor = GraphicsManager::GetFontColor(GraphicsManager::MAIN_MENU,"Selection");
+    m_XPFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"XP");
+    m_MPFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"MP");
+    m_SPFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"SP");
+    m_LevelFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"Level");
+    m_CharacterFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"Character");
 
     m_overlay = GraphicsManager::GetOverlay(GraphicsManager::MAIN_MENU);
 
@@ -147,14 +175,12 @@ CL_Rectf StoneRing::MainMenuState::get_rect()
 
 void StoneRing::MainMenuState::draw_option(int option, bool selected, float x, float y, CL_GraphicContext& gc)
 {
-        CL_Font  lineFont;
-	CL_Colorf drawColor = m_optionColor;
+        Font  lineFont;
 	
 	lineFont = m_optionFont;
 	
 	if(selected){
-	    lineFont = m_selectionFont;  
-	    drawColor = m_selectionColor;
+	    lineFont = m_selectionFont;  ;
 	}
 	
 	float font_height_offset = 0 - ((lineFont.get_font_metrics(gc).get_height() - 
@@ -163,12 +189,13 @@ void StoneRing::MainMenuState::draw_option(int option, bool selected, float x, f
 	
 	m_choices[option]->GetIcon().draw(gc,x,y);
         lineFont.draw_text(gc, x + m_choices[option]->GetIcon().get_width() + 10,  y + lineFont.get_font_metrics(gc).get_height() + font_height_offset,
-                         m_choices[option]->GetName(),drawColor);
+                         m_choices[option]->GetName());
 }
 
 int StoneRing::MainMenuState::height_for_option(CL_GraphicContext& gc)
 {
-    return cl_max(m_optionFont.get_font_metrics(gc).get_height(),m_selectionFont.get_font_metrics(gc).get_height());
+    //return cl_max(m_optionFont.get_font_metrics(gc).get_height(),m_selectionFont.get_font_metrics(gc).get_height());
+    return m_menu_rect.get_height() / (get_option_count());
 }
 
 void StoneRing::MainMenuState::process_choice(int selection)

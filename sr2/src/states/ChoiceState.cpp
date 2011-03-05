@@ -83,7 +83,7 @@ void StoneRing::ChoiceState::Draw(const CL_Rect &screenRect,CL_GraphicContext& G
     if(!m_bDraw) return;
 
     m_choiceOverlay.draw(GC,static_cast<float>(m_X),static_cast<float>(m_Y));
-    m_choiceFont.draw_text(GC,m_question_rect.left,m_question_rect.top + m_choiceFont.get_font_metrics(GC).get_height(),m_text,m_choiceColor);
+    m_choiceFont.draw_text(GC,m_question_rect.left,m_question_rect.top + m_choiceFont.get_font_metrics(GC).get_height(),m_text);
 
     Menu::Draw(GC);
 }
@@ -111,12 +111,10 @@ void StoneRing::ChoiceState::Start()
     CL_ResourceManager& resources = pApp->GetResources();
 
 
-    m_choiceFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::CHOICE,"Choice"));
-    m_optionFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::CHOICE,"Option"));
-    m_currentOptionFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::CHOICE,"Selection"));
-    m_choiceColor = GraphicsManager::GetFontColor(GraphicsManager::GetFontName(GraphicsManager::CHOICE,"Choice"));
-    m_optionColor = GraphicsManager::GetFontColor(GraphicsManager::GetFontName(GraphicsManager::CHOICE,"Option"));
-    m_currentOptionColor = GraphicsManager::GetFontColor(GraphicsManager::GetFontName(GraphicsManager::CHOICE,"Selection"));
+    m_choiceFont = GraphicsManager::GetFont(GraphicsManager::CHOICE,"Choice");
+    m_optionFont = GraphicsManager::GetFont(GraphicsManager::CHOICE,"Option");
+    m_currentOptionFont = GraphicsManager::GetFont(GraphicsManager::CHOICE,"Selection");
+
 
     m_choiceOverlay = GraphicsManager::GetOverlay(GraphicsManager::CHOICE);
     
@@ -161,18 +159,16 @@ CL_Rectf StoneRing::ChoiceState::get_rect()
 
 void StoneRing::ChoiceState::draw_option(int option, bool selected, float x, float y, CL_GraphicContext& gc)
 {
-        CL_Font  lineFont;
-	CL_Colorf drawColor = m_optionColor;
+        Font  lineFont;
 	
 	lineFont = m_optionFont;
 	
 	if(selected){
 	    lineFont = m_currentOptionFont;  
-	    drawColor = m_currentOptionColor;
 	}
 
         lineFont.draw_text(gc, x,  y + lineFont.get_font_metrics(gc).get_height(),
-                         m_choices[option],drawColor);
+                         m_choices[option]);
 }
 
 int StoneRing::ChoiceState::height_for_option(CL_GraphicContext& gc)

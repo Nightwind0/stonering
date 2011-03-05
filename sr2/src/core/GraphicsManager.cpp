@@ -7,6 +7,9 @@
 
 
 using namespace StoneRing;
+using StoneRing::Font;
+
+
 
 
 GraphicsManager * GraphicsManager::m_pInstance=NULL;
@@ -30,6 +33,15 @@ CL_Sprite GraphicsManager::GetPortraits ( const std::string& character)
     
     sprite.set_alignment(origin_center);
     return clone;
+}
+
+CL_Image GraphicsManager::CreateImage ( const std::string& name )
+{
+    CL_ResourceManager& resources  = IApplication::GetInstance()->GetResources();
+    
+    CL_Image image(GET_MAIN_GC(),name,&resources);
+    
+    return image;
 }
 
 
@@ -128,6 +140,8 @@ std::string GraphicsManager::NameOfDisplayFont(DisplayFont font)
         return "Font_mp_minus";
     case DISPLAY_MISS:
         return "Font_miss";
+    case DISPLAY_FONT_SHADOW:
+	return "Font_display_shadow";
     default:
         assert(0);
         return "";
@@ -227,9 +241,9 @@ CL_Image GraphicsManager::GetIcon(const std::string& icon)
     }
 }
 
-CL_Font  GraphicsManager::GetFont(const std::string &name)
+StoneRing::Font  GraphicsManager::GetFont(const std::string &name)
 {
-    std::map<std::string,CL_Font>::iterator foundIt = m_pInstance->m_font_map.find( name );
+    std::map<std::string,Font>::iterator foundIt = m_pInstance->m_font_map.find( name );
 
     if (foundIt != m_pInstance->m_font_map.end())
     {
@@ -241,7 +255,7 @@ CL_Font  GraphicsManager::GetFont(const std::string &name)
     }
 }
 
-CL_Font GraphicsManager::LoadFont(const std::string& name)
+StoneRing::Font GraphicsManager::LoadFont(const std::string& name)
 {
     CL_ResourceManager& resources  = IApplication::GetInstance()->GetResources();
     const std::string fontname = "Fonts/" + name;
@@ -285,10 +299,12 @@ CL_Font GraphicsManager::LoadFont(const std::string& name)
 	color = thecolor;
     }
     
-    m_pInstance->m_font_map[name] = font;
-    m_pInstance->m_font_colors[name] = color;
+    Font thefont;
+    thefont.m_font = font;
+    thefont.m_color = color;
+    m_pInstance->m_font_map[name] = thefont;;
     
-    return font;
+    return thefont;
 }
 
 std::string  GraphicsManager::GetFontName ( Overlay overlay, const std::string& type )
@@ -331,20 +347,12 @@ std::string  GraphicsManager::GetFontName( DisplayFont font )
 
 }
 
-CL_Colorf GraphicsManager::GetFontColor ( const std::string& font )
-{
-    return m_pInstance->m_font_colors[font];
-}
 
-CL_Font GraphicsManager::GetFont( Overlay overlay, const std::string& type )
+StoneRing::Font GraphicsManager::GetFont( Overlay overlay, const std::string& type )
 {
     return GetFont( GetFontName ( overlay, type ) );
 }
 
-CL_Colorf GraphicsManager::GetFontColor ( Overlay overlay, const std::string& type ) 
-{
-    return GetFontColor ( GetFontName ( overlay, type ) );
-}
 
 GraphicsManager::GraphicsManager()
 {

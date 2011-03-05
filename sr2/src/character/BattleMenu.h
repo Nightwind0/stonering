@@ -9,6 +9,9 @@
 #else
 #include "steel/SteelInterpreter.h"
 #endif
+
+#include "GraphicsManager.h"
+
 namespace StoneRing
 {
     class BattleMenuOption;
@@ -50,12 +53,10 @@ namespace StoneRing
 
         std::vector<BattleMenuOption*> m_options;
         eType m_eType;
-	CL_Font m_onFont;
-	CL_Font m_offFont;
-	CL_Font m_selectedFont;
-	CL_Colorf m_onColor;
-	CL_Colorf m_offColor;
-	CL_Colorf m_selectedColor;
+	Font m_onFont;
+	Font m_offFont;
+	Font m_selectedFont;
+
 	CL_Rectf m_rect;
 	int m_font_height;
 	ParameterList m_params;

@@ -53,7 +53,9 @@
 		<freetype name="Font_hp_minus" file="Images/Fonts/cwisdom.ttf" size="32" color="#FF0000FF" font_name="Conventional Wisdom"/>
 		<freetype name="Font_mp_plus" file="Images/Fonts/cwisdom.ttf" size="32" color="#FF00FFFF" font_name="Conventional Wisdom"/>
 		<freetype name="Font_mp_minus" file="Images/Fonts/cwisdom.ttf" size="32" color="#00FFFFFF" font_name="Conventional Wisdom"/>
-		<freetype name="sb_black" size="24" color="#000000" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+		<freetype name="Font_display_shadow" file="Images/Fonts/cwisdom.ttf" size="32" color="#00000080" font_name="Conventional Wisdom"/>
+		<freetype name="sb_black" size="24" color="#000000" file="Images/Fonts/BorisBlackBloxx.ttf"/>	
+		<freetype name="sb_white" size="24" color="#000000" file="Images/Fonts/BorisBlackBloxx.ttf"/>			
 		<freetype name="sb_blue" size="24" color="#000080" file="Images/Fonts/BorisBlackBloxx.ttf"/>
 		<freetype name="sb_green" size="24" color="#00FF00" file="Images/Fonts/BorisBlackBloxx.ttf"/>
 		<freetype name="sb_purple" size="24" color="#680090" file="Images/Fonts/BorisBlackBloxx.ttf"/>
@@ -65,9 +67,11 @@
 		<freetype name="BoldPowderBlue" size="40" color="#006A91FF" file="Images/Fonts/BorisBlackBloxx.ttf"/>
 		<freetype name="BoldBlack" size="40" color="#000000FF" file="Images/Fonts/BorisBlackBloxx.ttf"/>
 		<freetype name="BoldGray" size="40" color="#616165FF" file="Images/Fonts/BorisBlackBloxx.ttf"/>	
-		<freetype name="BoldYellow" size="40" color="#00FFFFFF" file="Images/Fonts/BorisBlackBloxx.ttf"/>	
-
-
+		<freetype name="BoldYellow" size="40" color="#FFFF00FF" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+		<freetype name="BoldCyan" size="40" color="#00FFFFFF" file="Images/Fonts/BorisBlackBloxx.ttf"/>		
+		<freetype name="BoldShadow" size="40" color="#00000080" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+		<freetype name="BoldGreen" size="40" color="#0000FFFF" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+		<freetype name="BoldPurple" size="40" color="#6A1172FF" file="Images/Fonts/BorisBlackBloxx.ttf"/>
 	</section>
 	<section name="Levels">
 		<string name="examplelevel" value="test3.xml" />
@@ -108,6 +112,22 @@
 		<image name="item">
 			<image-file file="Images/Icons/I_Chest02.png"/>
 		</image>
+		<image name="skills">
+		    <image-file file="Images/Icons/W_Book02.png"/>
+		</image>
+		<image name="equip">
+		    <image-file file="Images/Icons/A_Armour02.png"/>
+		</image>
+		<image name="omegas">
+		    <image-file file="Images/Icons/I_Saphire.png"/>
+		</image>
+		<image name="config">
+		    <image-file file="Images/Icons/I_Book.png"/>
+		</image>		
+		<image name="status">
+		    <image-file file="Images/Icons/I_Scroll.png"/>
+		</image>	
+		
 		<image name="flee">
 			<image-file file="Images/Icons/run.png"/>
 		</image>
@@ -145,10 +165,19 @@
 		<image name="overlay">
 		    <image-file file="Images/Overlays/main_menu_overlay.png"/>
 		</image>
+		<image name="portrait_shadow">
+		    <image-file file="Images/Portrait/PortraitShadow.png"/>
+		</image>
 		<section name="fonts">
 			<string name="Option" value="BoldBlack"/>
 			<string name="Choice" value="BoldWhite"/>
 			<string name="Selection" value="BoldWhite"/>
+			<string name="Character" value="BoldWhite"/>
+			<string name="Level" value = "sb_black"/>
+			<string name="XP"    value = "sb_white"/>
+			<string name="HP"    value = "sb_green"/>
+			<string name="MP"    value = "sb_purple"/>
+			<string name="SP"    value = "sb_cyan"/>
 		</section>
 		<section name="menu">
 			<integer name="left" value="479"/>
@@ -163,9 +192,9 @@
 			<integer name="bottom" value="191"/>
 		</section>
 		<section name="character">
-			<integer name="left" value="12"/>
+			<integer name="left" value="30"/>
 			<integer name="right" value="484"/>
-			<integer name="top" value="24"/>
+			<integer name="top" value="30"/>
 			<integer name="bottom" value="191"/>
 		</section>
 	    </section>

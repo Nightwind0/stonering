@@ -25,12 +25,9 @@ void BattleMenu::Init()
 {
     Menu::Init();
     if(m_onFont.is_null()){
-	m_onFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::BATTLE_POPUP_MENU,"on"));
-	m_offFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::BATTLE_POPUP_MENU,"off"));
-	m_selectedFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::BATTLE_POPUP_MENU,"Selection"));
-	m_onColor = GraphicsManager::GetFontColor(GraphicsManager::GetFontName(GraphicsManager::BATTLE_POPUP_MENU,"on"));
-	m_offColor = GraphicsManager::GetFontColor(GraphicsManager::GetFontName(GraphicsManager::BATTLE_POPUP_MENU,"off"));
-	m_selectedColor = GraphicsManager::GetFontColor(GraphicsManager::GetFontName(GraphicsManager::BATTLE_POPUP_MENU,"Selection"));
+	m_onFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_POPUP_MENU,"on");
+	m_offFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_POPUP_MENU,"off");
+	m_selectedFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_POPUP_MENU,"Selection");
     }
 }
 
@@ -83,8 +80,7 @@ void BattleMenu::draw_option(int option, bool selected, float x, float y, CL_Gra
 {
     BattleMenuOption * pOption = m_options[option];
     
-    CL_Font font;
-    CL_Colorf drawColor;
+    Font font;
     CL_Image icon = pOption->GetIcon();
 
     //icon.set_alignment(origin_bottom_left,0,0);
@@ -93,18 +89,15 @@ void BattleMenu::draw_option(int option, bool selected, float x, float y, CL_Gra
     if(pOption->Enabled(m_params))
     {
 	font = m_onFont;
-	drawColor = m_onColor;
     }
     else
     {
 	font = m_offFont;
-	drawColor = m_offColor;
     }
     
     if(selected)
     {
 	font = m_selectedFont;
-	drawColor = m_selectedColor;
     }
     
     float font_height_offset = 0 - ((font.get_font_metrics(gc).get_height() - 
@@ -112,7 +105,7 @@ void BattleMenu::draw_option(int option, bool selected, float x, float y, CL_Gra
 				    font.get_font_metrics(gc).get_internal_leading())/ 2);
  
     
-    font.draw_text(gc,x  + 12.0f + icon.get_width() , font.get_font_metrics(gc).get_height() + y + font_height_offset,pOption->GetName(),drawColor);
+    font.draw_text(gc,x  + 12.0f + icon.get_width() , font.get_font_metrics(gc).get_height() + y + font_height_offset,pOption->GetName());
 
     icon.draw(gc,static_cast<int>(x ), static_cast<int>(y));
     
