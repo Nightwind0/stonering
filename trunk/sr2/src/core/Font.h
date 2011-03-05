@@ -57,6 +57,7 @@ namespace StoneRing{
 	float calc_offset(CL_GraphicContext&);
 	CL_Colorf m_color;
 	CL_Font   m_font;
+	CL_Pointf m_shadow_offset;
     };
 
 }

@@ -262,6 +262,7 @@ StoneRing::Font GraphicsManager::LoadFont(const std::string& name)
     CL_Resource font_resource = resources.get_resource(fontname);
     
     CL_Font font;
+    CL_Pointf shadow_offset;
     CL_Colorf color = CL_Colorf::white;
     if(font_resource.get_type() == "font")
     {
@@ -274,7 +275,13 @@ StoneRing::Font GraphicsManager::LoadFont(const std::string& name)
         CL_String fontname = font_resource.get_element().get_attribute("font_name");
         CL_String size_str = font_resource.get_element().get_attribute("size");
         CL_String color_str =  font_resource.get_element().get_attribute("color");
+	float shadowx, shadowy;
+	if(font_resource.get_element().has_attribute("shadowx"))
+	    shadowx = atof(font_resource.get_element().get_attribute("shadowx").c_str());
+	if(font_resource.get_element().has_attribute("shadowy"))
+	    shadowy = atof(font_resource.get_element().get_attribute("shadowy").c_str());	
 	
+	shadow_offset = CL_Pointf(shadowx,shadowy);
 	CL_Colorf thecolor(color_str);
         int size = atoi(size_str.c_str());
 
@@ -302,6 +309,7 @@ StoneRing::Font GraphicsManager::LoadFont(const std::string& name)
     Font thefont;
     thefont.m_font = font;
     thefont.m_color = color;
+    thefont.m_shadow_offset = shadow_offset;
     m_pInstance->m_font_map[name] = thefont;;
     
     return thefont;

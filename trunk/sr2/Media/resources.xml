@@ -54,24 +54,34 @@
 		<freetype name="Font_mp_plus" file="Images/Fonts/cwisdom.ttf" size="32" color="#FF00FFFF" font_name="Conventional Wisdom"/>
 		<freetype name="Font_mp_minus" file="Images/Fonts/cwisdom.ttf" size="32" color="#00FFFFFF" font_name="Conventional Wisdom"/>
 		<freetype name="Font_display_shadow" file="Images/Fonts/cwisdom.ttf" size="32" color="#00000080" font_name="Conventional Wisdom"/>
-		<freetype name="sb_black" size="24" color="#000000" file="Images/Fonts/BorisBlackBloxx.ttf"/>	
-		<freetype name="sb_white" size="24" color="#000000" file="Images/Fonts/BorisBlackBloxx.ttf"/>			
-		<freetype name="sb_blue" size="24" color="#000080" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-		<freetype name="sb_green" size="24" color="#00FF00" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-		<freetype name="sb_purple" size="24" color="#680090" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-		<freetype name="sb_red" size="24" color="#FF0000" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-		<freetype name="sb_cyan" size="24" color="#00FFFF" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-		<freetype name="Font_miss" file="Images/Fonts/cwisdom.ttf" size="32" color="#FFFF00FF" font_name="Conventional Wisdom"/>
+		<freetype name="sb_black" size="24" color="#000000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+		<freetype name="sb_gray" size="24" color="#636363" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>		
+		<freetype name="sb_white" size="24" color="#000000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>			
+		<freetype name="sb_blue" size="24" color="#000080"  shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+		<freetype name="sb_green" size="24" color="#00A000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+		<freetype name="sb_purple" size="24" color="#680090" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+		<freetype name="sb_red" size="24" color="#FF0000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+		<freetype name="sb_cyan" size="24" color="#00FFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+		<freetype name="mono_green" size="24" color="#00A000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+		<freetype name="mono_black" size="24" color="#000000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+		<freetype name="mono_gray" size="24" color="#636363" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>		
+		<freetype name="mono_white" size="24" color="#000000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>			
+		<freetype name="mono_blue" size="24" color="#000080"  shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+		<freetype name="mono_green" size="24" color="#00A000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+		<freetype name="mono_purple" size="24" color="#980090" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+		<freetype name="mono_red" size="24" color="#FF0000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+		<freetype name="mono_cyan" size="24" color="#00FFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+		<freetype name="Font_miss" file="Images/Fonts/cwisdom.ttf" size="32" color="#FFFF00FF"  font_name="Conventional Wisdom"/>
 
-		<freetype name="BoldWhite" size="40" color="#FFFFFFFF" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-		<freetype name="BoldPowderBlue" size="40" color="#006A91FF" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-		<freetype name="BoldBlack" size="40" color="#000000FF" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-		<freetype name="BoldGray" size="40" color="#616165FF" file="Images/Fonts/BorisBlackBloxx.ttf"/>	
-		<freetype name="BoldYellow" size="40" color="#FFFF00FF" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-		<freetype name="BoldCyan" size="40" color="#00FFFFFF" file="Images/Fonts/BorisBlackBloxx.ttf"/>		
-		<freetype name="BoldShadow" size="40" color="#00000080" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-		<freetype name="BoldGreen" size="40" color="#0000FFFF" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-		<freetype name="BoldPurple" size="40" color="#6A1172FF" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+		<freetype name="BoldWhite" size="40" color="#FFFFFFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+		<freetype name="BoldPowderBlue" size="40" color="#006A91FF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+		<freetype name="BoldBlack" size="40" color="#000000FF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+		<freetype name="BoldGray" size="40" color="#616165FF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>	
+		<freetype name="BoldYellow" size="40" color="#FFFF00FF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+		<freetype name="BoldCyan" size="40" color="#00FFFFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>		
+		<freetype name="BoldShadow" size="40" color="#00000080" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+		<freetype name="BoldGreen" size="40" color="#0000FFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+		<freetype name="BoldPurple" size="40" color="#6A1172FF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
 	</section>
 	<section name="Levels">
 		<string name="examplelevel" value="test3.xml" />
@@ -169,15 +179,15 @@
 		    <image-file file="Images/Portrait/PortraitShadow.png"/>
 		</image>
 		<section name="fonts">
-			<string name="Option" value="BoldBlack"/>
+			<string name="Option" value="BoldGray"/>
 			<string name="Choice" value="BoldWhite"/>
 			<string name="Selection" value="BoldWhite"/>
 			<string name="Character" value="BoldWhite"/>
-			<string name="Level" value = "sb_black"/>
-			<string name="XP"    value = "sb_white"/>
-			<string name="HP"    value = "sb_green"/>
-			<string name="MP"    value = "sb_purple"/>
-			<string name="SP"    value = "sb_cyan"/>
+			<string name="Level" value = "mono_cyan"/>
+			<string name="XP"    value = "mono_white"/>
+			<string name="HP"    value = "mono_green"/>
+			<string name="MP"    value = "mono_purple"/>
+			<string name="SP"    value = "mono_cyan"/>
 		</section>
 		<section name="menu">
 			<integer name="left" value="479"/>
@@ -338,7 +348,7 @@
 				<integer name="bottom" value="580"/>
 			</section>
 			<section name="fonts">
-				<string name="Option" value="BoldBlack"/>
+				<string name="Option" value="BoldGray"/>
 				<string name="Choice" value="BoldWhite"/>
 				<string name="Selection" value="BoldWhite"/>
 			</section>

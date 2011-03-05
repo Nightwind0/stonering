@@ -83,7 +83,9 @@ void StoneRing::ChoiceState::Draw(const CL_Rect &screenRect,CL_GraphicContext& G
     if(!m_bDraw) return;
 
     m_choiceOverlay.draw(GC,static_cast<float>(m_X),static_cast<float>(m_Y));
-    m_choiceFont.draw_text(GC,m_question_rect.left,m_question_rect.top + m_choiceFont.get_font_metrics(GC).get_height(),m_text);
+    m_choiceFont.draw_text(GC,m_question_rect.left,m_question_rect.top + m_choiceFont.get_font_metrics(GC).get_height(),
+			   m_text
+  			);
 
     Menu::Draw(GC);
 }
@@ -168,7 +170,8 @@ void StoneRing::ChoiceState::draw_option(int option, bool selected, float x, flo
 	}
 
         lineFont.draw_text(gc, x,  y + lineFont.get_font_metrics(gc).get_height(),
-                         m_choices[option]);
+                         m_choices[option], Font::ABOVE
+  			);
 }
 
 int StoneRing::ChoiceState::height_for_option(CL_GraphicContext& gc)
