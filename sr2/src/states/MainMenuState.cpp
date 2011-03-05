@@ -2,6 +2,7 @@
 #include "IApplication.h"
 #include "GraphicsManager.h"
 #include "Level.h"
+#include <iomanip>
 
 using std::min;
 using std::max;
@@ -94,17 +95,42 @@ void StoneRing::MainMenuState::draw_party(CL_GraphicContext& GC)
 	portraitPoint.x = m_character_rect.left; // TODO Row?
 	portraitPoint.y = m_character_rect.top + height * i;
 	CL_Pointf shadowPoint = portraitPoint;
-	shadowPoint += CL_Pointf(-15.0f-15.0f);
+	shadowPoint += CL_Pointf(-8.0f,-8.0f);
 	m_portrait_shadow.draw(GC,shadowPoint.x,shadowPoint.y);
 	Character * pCharacter = dynamic_cast<Character*>(party->GetCharacter(i));
 	// TODO: Which portrait should change, and depend on status effects
 	CL_Sprite portrait = pCharacter->GetPortrait(Character::PORTRAIT_DEFAULT);
 	portrait.draw(GC,portraitPoint.x,portraitPoint.y);
-	std::ostringstream stream;
-	stream <<  "Level " << pCharacter->GetLevel();
+	std::ostringstream levelstream;
+	levelstream <<  "Level " << pCharacter->GetLevel();
 	m_CharacterFont.draw_text(GC,spacing + portraitPoint.x + portrait.get_width(), portraitPoint.y, pCharacter->GetName(), Font::TOP_LEFT);
-	m_LevelFont.draw_text(GC,spacing + portraitPoint.x + portrait.get_width(), portraitPoint.y + m_CharacterFont.get_font_metrics(GC).get_height(),
-			      stream.str(),Font::TOP_LEFT);
+	m_LevelFont.draw_text(GC,spacing + spacing + portraitPoint.x + portrait.get_width(), portraitPoint.y + m_CharacterFont.get_font_metrics(GC).get_height(),
+			      levelstream.str(),Font::TOP_LEFT);
+	std::ostringstream hpstream;
+	hpstream << "HP "
+		 << std::setw(9)
+		 << std::setfill(' ')
+		 << pCharacter->GetAttribute(ICharacter::CA_HP)
+		 << " / "
+		 << std::setw(9)
+		 << std::setfill(' ')
+		 << pCharacter->GetAttribute(ICharacter::CA_MAXHP);
+	std::ostringstream mpstream;
+	mpstream << "MP "
+		 << std::setw(9)
+		 << std::setfill(' ')
+		 << pCharacter->GetAttribute(ICharacter::CA_MP)
+		 << " / "
+		 << std::setw(9)
+		 << std::setfill(' ')
+		 << pCharacter->GetAttribute(ICharacter::CA_MAXMP);		 
+	m_HPFont.draw_text(GC,spacing + spacing + portraitPoint.x + portrait.get_width(),
+			   portraitPoint.y + m_CharacterFont.get_font_metrics(GC).get_height() + m_LevelFont.get_font_metrics(GC).get_height(),
+			   hpstream.str(),Font::TOP_LEFT);
+	m_MPFont.draw_text(GC,spacing + spacing + portraitPoint.x + portrait.get_width(),
+			   portraitPoint.y + m_CharacterFont.get_font_metrics(GC).get_height()
+			   + m_LevelFont.get_font_metrics(GC).get_height() + m_HPFont.get_font_metrics(GC).get_height(),
+			   mpstream.str(),Font::TOP_LEFT);	
     }
 }
 
@@ -135,6 +161,7 @@ void StoneRing::MainMenuState::Start()
     m_XPFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"XP");
     m_MPFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"MP");
     m_SPFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"SP");
+    m_HPFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"HP");
     m_LevelFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"Level");
     m_CharacterFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"Character");
 
@@ -189,7 +216,7 @@ void StoneRing::MainMenuState::draw_option(int option, bool selected, float x, f
 	
 	m_choices[option]->GetIcon().draw(gc,x,y);
         lineFont.draw_text(gc, x + m_choices[option]->GetIcon().get_width() + 10,  y + lineFont.get_font_metrics(gc).get_height() + font_height_offset,
-                         m_choices[option]->GetName());
+                         m_choices[option]->GetName(), Font::DEFAULT);
 }
 
 int StoneRing::MainMenuState::height_for_option(CL_GraphicContext& gc)
