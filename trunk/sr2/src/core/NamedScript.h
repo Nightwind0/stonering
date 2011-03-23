@@ -15,6 +15,7 @@ namespace StoneRing{
         SteelType ExecuteScript(const ParameterList &params);
     private:
         virtual bool handle_element(eElement element, Element * pElement );
+	virtual void load_finished();
         ScriptElement *m_pScript;
     };
 

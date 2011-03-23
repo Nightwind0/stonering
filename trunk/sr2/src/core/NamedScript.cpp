@@ -30,6 +30,11 @@ bool StoneRing::NamedScript::handle_element(Element::eElement element,Element * 
     return true;
 }
     
+void StoneRing::NamedScript::load_finished()
+{
+    if(!m_pScript)
+	throw CL_Exception("Script missing on named script element");
+}
 
 
 StoneRing::NamedScript::~NamedScript()
