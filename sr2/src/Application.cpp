@@ -1457,7 +1457,7 @@ int Application::main(const std::vector<CL_String> &args)
     CL_Slot joystickUp;
     CL_Slot joystickAxis;
     
-    if(njoystick < m_window.get_ic().get_joystick_count()){
+    if(m_window.get_ic().get_joystick_count() && njoystick < m_window.get_ic().get_joystick_count()){
 	std::cout << "Joystick count = " << m_window.get_ic().get_joystick_count();
 #if 1 
 	CL_InputDevice& joystick = m_window.get_ic().get_joystick(njoystick);
