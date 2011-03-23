@@ -1,6 +1,7 @@
 <menu>
     <menuOption name="Items" icon="item">
 	<script id="MainMenuItems">
+	    useItem();
 	</script>
     </menuOption>
     <menuOption name="Skills" icon="skills">

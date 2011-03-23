@@ -27,7 +27,7 @@ bool StoneRing::MainMenuState::IsDone() const
     {
 	case IApplication::BUTTON_CONFIRM:
 	    // Select current option.
-
+	    Menu::Choose();
 	    break;
 	case IApplication::BUTTON_CANCEL:
 	    m_bDone = true;
@@ -104,6 +104,10 @@ void StoneRing::MainMenuState::draw_party(CL_GraphicContext& GC)
 	std::ostringstream levelstream;
 	levelstream <<  "Level " << pCharacter->GetLevel();
 	m_CharacterFont.draw_text(GC,spacing + portraitPoint.x + portrait.get_width(), portraitPoint.y, pCharacter->GetName(), Font::TOP_LEFT);
+	m_ClassFont.draw_text(GC,spacing + portraitPoint.x + portrait.get_width() + m_CharacterFont.get_text_size(GC, pCharacter->GetName()).width + spacing,
+			      portraitPoint.y + m_CharacterFont.get_font_metrics(GC).get_height(), pCharacter->GetClass()->GetName(),
+			      Font::BOTTOM_LEFT
+ 			    );
 	m_LevelFont.draw_text(GC,spacing + spacing + portraitPoint.x + portrait.get_width(), portraitPoint.y + m_CharacterFont.get_font_metrics(GC).get_height(),
 			      levelstream.str(),Font::TOP_LEFT);
 	std::ostringstream hpstream;
@@ -158,7 +162,7 @@ void StoneRing::MainMenuState::Start()
 
     m_optionFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"Option");
     m_selectionFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"Selection");
-    m_XPFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"XP");
+    m_ClassFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"Class");
     m_MPFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"MP");
     m_SPFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"SP");
     m_HPFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"HP");
@@ -227,7 +231,7 @@ int StoneRing::MainMenuState::height_for_option(CL_GraphicContext& gc)
 
 void StoneRing::MainMenuState::process_choice(int selection)
 {
-
+    m_choices[selection]->Select(ParameterList());
 }
 
 int StoneRing::MainMenuState::get_option_count()

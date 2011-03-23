@@ -36,6 +36,8 @@ std::string StoneRing::Item::ItemTypeAsString ( StoneRing::Item::eItemType type 
         return "special";
     case Item::SYSTEM:
         return "system";
+    case Item::OMEGA:
+	return "omega";
 
     }
 

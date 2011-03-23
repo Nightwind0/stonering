@@ -25,6 +25,7 @@
 #include "ElementFactory.h"
 #include "BattleConfig.h"
 #include "UtilityScripts.h"
+#include "ItemSelectState.h"
 
 namespace StoneRing
 {
@@ -191,6 +192,7 @@ namespace StoneRing
         BattleState mBattleState;
 	ExperienceState mExperienceState;
 	MainMenuState  mMainMenuState;
+	ItemSelectState mItemSelectState;
         std::vector<State*> mStates;
         std::vector<IFactory*> mFactories;
 	BattleConfig mBattleConfig;

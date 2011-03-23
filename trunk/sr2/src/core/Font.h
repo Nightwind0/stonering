@@ -29,6 +29,7 @@ namespace StoneRing{
 	enum Alignment {
 	    DEFAULT,
 	    CENTER,
+	    BOTTOM_LEFT,
 	    TOP_LEFT,
 	    ABOVE
 	};

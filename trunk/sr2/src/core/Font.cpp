@@ -47,6 +47,9 @@ void Font::draw_text(CL_GraphicContext &  	gc,
 	case ABOVE:
 	    offset = CL_Pointf(0.0f,calc_offset(gc));
 	    break;
+	case BOTTOM_LEFT:
+	    offset = CL_Pointf(0.0f, - m_font.get_font_metrics(gc).get_ascent() + m_font.get_font_metrics(gc).get_internal_leading() - m_font.get_font_metrics(gc).get_external_leading());
+	    break;
 	default:
 	    break;
     }

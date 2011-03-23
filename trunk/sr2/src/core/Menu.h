@@ -46,8 +46,10 @@ protected:
     virtual int get_option_count()=0;
     virtual void draw_more_down_indicator(){}
     virtual void draw_more_up_indicator(){}
+    virtual uint get_columns() const { return 1; }
     int get_current_choice() const { return m_cursor; }
     bool is_selected(int index) { return index == m_cursor; }
+
 private:
     int m_cursor;
 };

@@ -49,7 +49,7 @@ namespace StoneRing
 	CL_Image m_overlay;
 	Font m_optionFont;
 	Font m_selectionFont;
-	Font m_XPFont;
+	Font m_ClassFont;
 	Font m_HPFont;
 	Font m_MPFont;
 	Font m_LevelFont;

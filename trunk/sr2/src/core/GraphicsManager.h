@@ -27,7 +27,8 @@ namespace StoneRing
 	    EXPERIENCE,
 	    LOOT,
             MAIN_MENU,
-            SHOP
+            SHOP,
+	    ITEMS
         };
 
         enum DisplayFont

@@ -173,7 +173,9 @@ stonering_SOURCES =	src/Application.cpp \
 			src/core/MenuOption.h \
 			src/core/MenuOption.cpp \
 			src/core/Font.h \
-			src/core/Font.cpp
+			src/core/Font.cpp \
+			src/states/ItemSelectState.h \
+			src/states/ItemSelectState.cpp
 
 
 
