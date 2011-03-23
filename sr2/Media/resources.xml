@@ -72,7 +72,7 @@
 		<freetype name="mono_red" size="24" color="#FF0000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
 		<freetype name="mono_cyan" size="24" color="#00FFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
 		<freetype name="Font_miss" file="Images/Fonts/cwisdom.ttf" size="32" color="#FFFF00FF"  font_name="Conventional Wisdom"/>
-
+		<freetype name="CharacterClass" size="24" color="#0000A0" shadowx="1.0" shadowy="1.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
 		<freetype name="BoldWhite" size="40" color="#FFFFFFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
 		<freetype name="BoldPowderBlue" size="40" color="#006A91FF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
 		<freetype name="BoldBlack" size="40" color="#000000FF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
@@ -128,6 +128,19 @@
 		<image name="equip">
 		    <image-file file="Images/Icons/A_Armour02.png"/>
 		</image>
+		<image name="armor">
+		    <image-file file="Images/Icons/A_Armour02.png"/>
+		</image>
+		<image name="regular_items">
+		    <image-file file="Images/Icons/P_Green01.png"/>
+		</image>
+		<image name="special_items">
+		    <image-file file="Images/Icons/I_Key01.png"/>
+		</image>
+		<image name="weapons">
+		    <image-file file="Images/Icons/W_Sword001.png"/>
+		</image>
+		
 		<image name="omegas">
 		    <image-file file="Images/Icons/I_Saphire.png"/>
 		</image>
@@ -183,8 +196,8 @@
 			<string name="Choice" value="BoldWhite"/>
 			<string name="Selection" value="BoldWhite"/>
 			<string name="Character" value="BoldWhite"/>
+			<string name="Class"     value="CharacterClass"/>
 			<string name="Level" value = "mono_cyan"/>
-			<string name="XP"    value = "mono_white"/>
 			<string name="HP"    value = "mono_green"/>
 			<string name="MP"    value = "mono_purple"/>
 			<string name="SP"    value = "mono_cyan"/>
@@ -207,6 +220,27 @@
 			<integer name="top" value="30"/>
 			<integer name="bottom" value="191"/>
 		</section>
+	    </section>
+	    <section name="ItemSelect">
+		<image name="overlay">
+		    <image-file file="Images/Overlays/item_select.png"/>
+		</image>
+		<section name="header">
+		    <integer name="left" value="80"/>
+		    <integer name="right" value="720"/>
+		    <integer name="top" value="26"/>
+		    <integer name="bottom" value="50"/>
+		</section>
+		<section name="list">
+			<integer name="left" value="479"/>
+			<integer name="right" value="752"/>
+			<integer name="top" value="43"/>
+			<integer name="bottom" value="363"/>
+		</section>	
+		<section name="fonts">
+			<string name="Option" value="BoldGray"/>
+			<string name="Selection" value="BoldWhite"/>
+		</section>		
 	    </section>
 		<section name="BattleStatus">
 			<image name="overlay">

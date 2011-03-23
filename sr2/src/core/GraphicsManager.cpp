@@ -118,6 +118,8 @@ std::string GraphicsManager::NameOfOverlay(Overlay overlay)
 	return "Experience";
     case MAIN_MENU:
 	return "MainMenu";
+    case ITEMS:
+	return "ItemSelect";
     default:
         assert(0);
     }
