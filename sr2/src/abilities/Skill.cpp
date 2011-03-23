@@ -153,6 +153,11 @@ Skill::GetPreReqsEnd() const
 }
 
 Skill * SkillRef::GetSkill() const{
+    if(!AbilityManager::SkillExists(m_ref))
+    {
+	throw CL_Exception("Missing skill: " + m_ref);
+	return NULL;
+    }
     return AbilityManager::GetSkill(*this);
 }
 

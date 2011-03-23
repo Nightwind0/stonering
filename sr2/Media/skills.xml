@@ -1,5 +1,12 @@
 <!--DOCTYPE skillList SYSTEM "Levels/level.dtd" -->
 <skillList>
+    <skill bp="0" name="Item" sp="0">
+	<onInvoke>
+	    <script id="ItemScript">
+	    useItem();
+	</script>
+	</onInvoke>
+    </skill>
         <skill bp="0" name="Throw" sp="12">
 	<onInvoke>
 	    <script id="HurlScript">
