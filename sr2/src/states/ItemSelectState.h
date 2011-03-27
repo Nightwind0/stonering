@@ -41,6 +41,7 @@ namespace StoneRing
 	virtual int height_for_option(CL_GraphicContext& gc);
 	virtual void process_choice(int selection);
 	virtual int get_option_count();
+	void addItem(Item*,int count);
     private:
 	void draw_categories();
 	CL_Rectf m_rect;
@@ -48,6 +49,7 @@ namespace StoneRing
         CL_Image m_overlay;
         Item::eItemType m_itemType;
 	std::map<Item::eItemType,CL_Image> m_type_icons;
+	std::map<Item::eItemType, std::vector<std::pair<Item*,int> > > m_items;
         StoneRing::Font m_optionFont;
         StoneRing::Font m_currentOptionFont;	
 	bool m_bDone;

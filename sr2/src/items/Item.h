@@ -63,6 +63,13 @@ namespace StoneRing{
     private:
 
     };
+    
+    class ItemVisitor{
+    public:
+	ItemVisitor(){}
+	virtual ~ItemVisitor(){}
+	virtual void operator()(Item*,int)=0;
+    };
 
     bool   operator < ( const Item &lhs, const Item &rhs );
 
