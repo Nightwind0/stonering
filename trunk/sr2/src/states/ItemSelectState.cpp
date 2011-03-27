@@ -1,6 +1,7 @@
 #include "ItemSelectState.h"
 #include "GraphicsManager.h"
 #include "Item.h"
+#include "RegularItem.h"
 #include <iomanip>
 using StoneRing::ItemSelectState;
 using StoneRing::Item;
@@ -24,6 +25,12 @@ private:
 
 
 
+void ItemSelectState::Init(bool battle, int type_mask)
+{
+    m_typemask = type_mask;
+    m_battle = battle;
+}
+
 bool ItemSelectState::IsDone() const
 {
     return m_bDone;
@@ -36,6 +43,18 @@ void ItemSelectState::HandleButtonUp(const IApplication::Button& button)
     case IApplication::BUTTON_CANCEL:
 	m_bDone = true;
     break;
+    case IApplication::BUTTON_CONFIRM:
+	Choose();
+	if(selection_applies(m_selected_item))
+	{
+	    m_bDone = true;
+	}
+	else
+	{
+	    // Play sound
+	    
+	}
+	break;
     	case IApplication::BUTTON_R:
 	     switch(m_itemType)
 	     {
@@ -141,6 +160,7 @@ void ItemSelectState::MappableObjectMoveHook() // Do stuff right after the mappa
 void ItemSelectState::Start()
 {
     m_items.clear();
+    m_selected_item = NULL;
     Menu::Init();
     m_bDone = false;
     std::string resource = "Overlays/ItemSelect/";
@@ -157,7 +177,8 @@ void ItemSelectState::Start()
     m_rect.bottom = (float)resources.get_integer_resource(resource + "list/bottom",0);   
     
     m_optionFont = GraphicsManager::GetFont(GraphicsManager::ITEMS,"Option");
-    m_currentOptionFont = GraphicsManager::GetFont(GraphicsManager::ITEMS,"Selection");    
+    m_currentOptionFont = GraphicsManager::GetFont(GraphicsManager::ITEMS,"Selection"); 
+    m_unavailableOption = GraphicsManager::GetFont(GraphicsManager::ITEMS,"Unavailable");
     
     m_overlay = GraphicsManager::GetOverlay(GraphicsManager::ITEMS);
     
@@ -175,6 +196,23 @@ void ItemSelectState::Start()
     
 }
 
+bool ItemSelectState::selection_applies(Item *pItem)
+{
+    if(pItem->GetItemType() & m_typemask == 0) return false;
+    
+    switch(pItem->GetItemType())
+    {
+	case Item::REGULAR_ITEM:{
+	    RegularItem* pRegularItem = dynamic_cast<RegularItem*>(pItem);
+	    if(m_battle && pRegularItem->GetUseType() == RegularItem::WORLD ||
+		!m_battle && pRegularItem->GetUseType() == RegularItem::BATTLE)
+		return false;
+	    break;
+	}
+	
+    }
+    return true;
+}
 
 void ItemSelectState::Finish() // Hook to clean up or whatever after being popped
 {
@@ -191,10 +229,13 @@ void ItemSelectState::draw_option(int option, bool selected, float x, float y, C
 
     Item * pItem = pair.first;
     const int count = pair.second;
-    
+    bool available = selection_applies(pItem);
     CL_Image icon = pItem->GetIcon();
     //icon.set_alignment(origin_top_left);
-    
+    if(available)
+	icon.set_alpha(1.0f);
+    else
+	icon.set_alpha(0.5f);
     icon.draw(gc,x,y);
     const float icon_width = icon.get_width();
     std::ostringstream text;
@@ -205,8 +246,13 @@ void ItemSelectState::draw_option(int option, bool selected, float x, float y, C
     
     if(selected)
 	m_currentOptionFont.draw_text(gc,x + icon_width + 12,y,text.str(), Font::TOP_LEFT);
-    else
-	m_optionFont.draw_text(gc,x + icon_width,y + 12,text.str(), Font::TOP_LEFT);
+    else{
+	if(!available){
+	    m_unavailableOption.draw_text(gc,x + icon_width + 12, y, text.str(),Font::TOP_LEFT);
+	}else{
+	    m_optionFont.draw_text(gc,x + icon_width+12,y,text.str(), Font::TOP_LEFT);
+	}
+    }
     
 }
 
@@ -217,6 +263,7 @@ int ItemSelectState::height_for_option(CL_GraphicContext& gc)
 
 void ItemSelectState::process_choice(int selection)
 {
+    m_selected_item = m_items[m_itemType][selection].first;
 }
 
 int ItemSelectState::get_option_count()

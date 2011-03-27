@@ -394,10 +394,13 @@ SteelType Application::doDamage(SteelType::Handle hICharacter, int damage)
 }
 
 
-SteelType Application::useItem()
+SteelType Application::selectItem(bool battle)
 {
+    mItemSelectState.Init(false,Item::REGULAR_ITEM);
     RunState(&mItemSelectState);
-    return SteelType();
+    SteelType val;
+    val.set ( mItemSelectState.GetSelectedItem() );
+    return val;
 }
 
 SteelType Application::getCharacterName(const SteelType::Handle handle)
@@ -1079,7 +1082,7 @@ void Application::registerSteelFunctions()
     SteelFunctor*  fn_takeNamedItem = new SteelFunctor2Arg<Application,const std::string &,uint>(this,&Application::takeNamedItem);
     SteelFunctor*  fn_getGold = new SteelFunctorNoArgs<Application>(this,&Application::getGold);
     SteelFunctor*  fn_hasItem = new SteelFunctor2Arg<Application,const std::string &,uint>(this,&Application::hasItem);
-    SteelFunctor*  fn_useItem = new SteelFunctorNoArgs<Application>(this,&Application::useItem);    
+    SteelFunctor*  fn_useItem = new SteelFunctor1Arg<Application,bool>(this,&Application::selectItem);    
     SteelFunctor*  fn_didEvent = new SteelFunctor1Arg<Application,const std::string &>(this,&Application::didEvent);
     SteelFunctor* fn_doEvent = new  SteelFunctor2Arg<Application,const std::string &, bool>(this,&Application::doEvent);
     SteelFunctor*  fn_giveGold = new SteelFunctor1Arg<Application,int>(this,&Application::giveGold);
@@ -1210,7 +1213,7 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction("giveNamedItem", fn_giveNamedItem );
     mInterpreter.addFunction("takeNamedItem", fn_takeNamedItem );
     mInterpreter.addFunction("getGold", fn_getGold );
-    mInterpreter.addFunction("useItem", fn_useItem );
+    mInterpreter.addFunction("selectItem", fn_useItem );
     mInterpreter.addFunction("hasItem", fn_hasItem );
     mInterpreter.addFunction("getItemName",fn_getItemName);
     mInterpreter.addFunction("didEvent", fn_didEvent );

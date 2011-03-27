@@ -22,7 +22,7 @@ namespace StoneRing
     class ItemSelectState : public State, public Menu
     {
     public:
-
+	void Init(bool battle, int type_mask);
         virtual bool IsDone() const;
 	// Handle joystick / key events that are processed according to mappings
 	virtual void HandleButtonUp(const IApplication::Button& button);
@@ -42,16 +42,22 @@ namespace StoneRing
 	virtual void process_choice(int selection);
 	virtual int get_option_count();
 	void addItem(Item*,int count);
+	Item * GetSelectedItem()const { return m_selected_item; }
     private:
 	void draw_categories();
+	bool selection_applies(Item *pItem);
 	CL_Rectf m_rect;
 	CL_Rectf m_header_rect;
         CL_Image m_overlay;
+	int m_typemask;
+	bool m_battle;
+	Item* m_selected_item;
         Item::eItemType m_itemType;
 	std::map<Item::eItemType,CL_Image> m_type_icons;
 	std::map<Item::eItemType, std::vector<std::pair<Item*,int> > > m_items;
         StoneRing::Font m_optionFont;
         StoneRing::Font m_currentOptionFont;	
+	StoneRing::Font m_unavailableOption;
 	bool m_bDone;
     };
 

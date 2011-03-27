@@ -91,7 +91,7 @@ namespace StoneRing
         SteelType didEvent(const std::string &event);
         SteelType doEvent(const std::string &event, bool bRemember);
         SteelType takeNamedItem(const std::string &item, uint count);
-        SteelType useItem();
+        SteelType selectItem(bool battle);
         SteelType addCharacter(const std::string &character, int level, bool announce);
 
 	SteelType getPartyArray(void);

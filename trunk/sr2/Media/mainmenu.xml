@@ -1,7 +1,7 @@
 <menu>
     <menuOption name="Items" icon="item">
 	<script id="MainMenuItems">
-	    useItem();
+	    declare $item = selectItem(false);
 	</script>
     </menuOption>
     <menuOption name="Skills" icon="skills">
