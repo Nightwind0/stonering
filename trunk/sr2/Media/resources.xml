@@ -71,6 +71,8 @@
 		<freetype name="mono_purple" size="24" color="#980090" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
 		<freetype name="mono_red" size="24" color="#FF0000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
 		<freetype name="mono_cyan" size="24" color="#00FFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+		<freetype name="BoldMonoWhite" size="40" color="#FFFFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+		<freetype name="BoldMonoGray" size="40" color="#616165FF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>		
 		<freetype name="Font_miss" file="Images/Fonts/cwisdom.ttf" size="32" color="#FFFF00FF"  font_name="Conventional Wisdom"/>
 		<freetype name="CharacterClass" size="24" color="#0000A0" shadowx="1.0" shadowy="1.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
 		<freetype name="BoldWhite" size="40" color="#FFFFFFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
@@ -178,7 +180,7 @@
 		</section>
 		<section name="Items">
 		    <image name="moonseed">
-			<image-file file="Images/Icons/I_C_Nut.png"/>
+			<image-file file="Images/Icons/I_MoonSeed.png"/>
 		    </image>		    
 		</section>
 	</section>
@@ -232,14 +234,14 @@
 		    <integer name="bottom" value="50"/>
 		</section>
 		<section name="list">
-			<integer name="left" value="479"/>
+			<integer name="left" value="20"/>
 			<integer name="right" value="752"/>
-			<integer name="top" value="43"/>
+			<integer name="top" value="86"/>
 			<integer name="bottom" value="363"/>
 		</section>	
 		<section name="fonts">
-			<string name="Option" value="BoldGray"/>
-			<string name="Selection" value="BoldWhite"/>
+			<string name="Option" value="BoldMonoGray"/>
+			<string name="Selection" value="BoldMonoWhite"/>
 		</section>		
 	    </section>
 		<section name="BattleStatus">

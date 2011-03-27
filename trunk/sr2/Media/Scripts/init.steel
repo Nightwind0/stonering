@@ -4,3 +4,4 @@ equip($char,$_OFFHAND,"Kid Shield");
 if(hasEquipment($char,$_HAND)){
     log("I have equipment!");
 }
+//giveNamedItem("Moon Seed",2);

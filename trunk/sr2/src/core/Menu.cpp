@@ -70,3 +70,8 @@ int Menu::Choose()
     process_choice(m_cursor);
     return m_cursor;
 }
+
+void Menu::reset_menu()
+{
+    m_cursor = 0;
+}

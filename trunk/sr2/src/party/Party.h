@@ -40,6 +40,7 @@ namespace StoneRing{
         virtual void AddCharacter(Character *pCharacter);
         virtual void RemoveCharacter(const std::string &name);
         virtual Character * GetMapCharacter()const;
+	virtual void IterateItems( ItemVisitor & f);	
 
         // ICharacterGroup interface
         virtual uint GetCharacterCount() const ;

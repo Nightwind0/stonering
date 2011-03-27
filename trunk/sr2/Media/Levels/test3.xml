@@ -3597,7 +3597,7 @@
 				print(getCharacterName($character) + " HP = " + getCharacterAttribute($character,$_HP));
 				setCharacterToggle($character,$_ALIVE,true);
 			    }
-			    print("Healed\n");
+			    giveNamedItem("Moon Seed",1);
 			]]>
 			</script>
 		    </event>
