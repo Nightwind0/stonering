@@ -72,7 +72,8 @@
 		<freetype name="mono_red" size="24" color="#FF0000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
 		<freetype name="mono_cyan" size="24" color="#00FFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
 		<freetype name="BoldMonoWhite" size="40" color="#FFFFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
-		<freetype name="BoldMonoGray" size="40" color="#616165FF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>		
+		<freetype name="BoldMonoGray" size="40" color="#616165FF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+		<freetype name="BoldMonoDark" size="40" color="#22222280" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>		
 		<freetype name="Font_miss" file="Images/Fonts/cwisdom.ttf" size="32" color="#FFFF00FF"  font_name="Conventional Wisdom"/>
 		<freetype name="CharacterClass" size="24" color="#0000A0" shadowx="1.0" shadowy="1.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
 		<freetype name="BoldWhite" size="40" color="#FFFFFFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
@@ -242,6 +243,7 @@
 		<section name="fonts">
 			<string name="Option" value="BoldMonoGray"/>
 			<string name="Selection" value="BoldMonoWhite"/>
+			<string name="Unavailable" value="BoldMonoDark"/>
 		</section>		
 	    </section>
 		<section name="BattleStatus">

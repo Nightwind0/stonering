@@ -299,17 +299,41 @@
 
 
 
-		   <regularItem name="Moon Seed" dropRarity="common" value = "50" reusable="false" targetable="single" use="both"  defaultTarget="party">
+		   <regularItem name="Moon Seed" dropRarity="common" value = "60" reusable="false" targetable="single" use="both"  defaultTarget="party">
 		      <iconRef>Items/moonseed</iconRef>
 		       <script id="Moonseed">
-			   modifyAttribute("MP",25, getTargetCharacter());
+			   modifyAttribute($_MP,25, $Target);
 		       </script>
 		   </regularItem>
+		   <regularItem name="Sun Seed" dropRarity="common" value = "50" reusable="false" targetable="single" use="both"  defaultTarget="party">
+		      <iconRef>Items/moonseed</iconRef>
+		       <script id="Sunseed">
+			   modifyAttribute($_HP,25, $Target);
+		       </script>
+		   </regularItem>	
+		   <regularItem name="Star Seed" dropRarity="common" value = "250" reusable="false" targetable="single" use="both"  defaultTarget="party">
+		      <iconRef>Items/moonseed</iconRef>
+		       <script id="Starseed">
+			   setCharacterToggle($Target,$_ALIVE,true);
+		       </script>
+		   </regularItem>	
+		   <regularItem name="Star Chip" dropRarity="common" value = "1200" reusable="false" targetable="single" use="battle"  defaultTarget="party">
+		      <iconRef>Items/moonseed</iconRef>
+		       <script id="Starchip">
+			   //setCharacterToggle($Target,$_ALIVE,true);
+		       </script>
+		   </regularItem>		   
 
 
 	       <specialItem name="Octavia Key" dropRarity="never">
 			       <iconRef>Item/key</iconRef>
 	       </specialItem>
+	       <specialItem name="Barn Key" dropRarity="never">
+			       <iconRef>Item/key</iconRef>
+	       </specialItem>
+	       <specialItem name="Home Key" dropRarity="never">
+			       <iconRef>Item/key</iconRef>
+	       </specialItem>	       
        </itemList>
        
    </items>

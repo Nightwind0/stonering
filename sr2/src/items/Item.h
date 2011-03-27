@@ -42,7 +42,14 @@ namespace StoneRing{
     public:
         Item();
         virtual ~Item();
-        enum eItemType { REGULAR_ITEM, WEAPON, ARMOR, RUNE, OMEGA, SPECIAL, SYSTEM };
+        enum eItemType { REGULAR_ITEM = 1,
+			WEAPON = 2,
+			ARMOR = 4,
+			RUNE = 8,
+			OMEGA = 16,
+			SPECIAL = 32,
+			SYSTEM  = 64	    
+			};
         enum eDropRarity { NEVER, COMMON, UNCOMMON, RARE };
 
         virtual std::string GetName() const = 0;

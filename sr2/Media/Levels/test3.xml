@@ -3598,6 +3598,8 @@
 				setCharacterToggle($character,$_ALIVE,true);
 			    }
 			    giveNamedItem("Moon Seed",1);
+			    giveNamedItem("Sun Seed",1);
+			    giveNamedItem("Star Chip",1);
 			]]>
 			</script>
 		    </event>
