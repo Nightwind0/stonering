@@ -46,6 +46,13 @@ namespace StoneRing
     private:
 	void draw_categories();
 	bool selection_applies(Item *pItem);
+	enum eArrowState
+	{
+	    ARROWS_IDLE,
+	    ARROW_LEFT_DOWN,
+	    ARROW_RIGHT_DOWN
+	};
+	eArrowState m_eArrowState;
 	CL_Rectf m_rect;
 	CL_Rectf m_header_rect;
         CL_Image m_overlay;
