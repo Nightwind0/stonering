@@ -3,9 +3,11 @@
 #include "Item.h"
 #include "RegularItem.h"
 #include <iomanip>
+
 using StoneRing::ItemSelectState;
 using StoneRing::Item;
 using StoneRing::Font;
+using std::abs;
 
 
 class ItemCollector : public StoneRing::ItemVisitor
@@ -115,6 +117,33 @@ void ItemSelectState::HandleAxisMove(const IApplication::Axis& axis, IApplicatio
 		SelectDown();
 	 }
      }
+     else
+     {
+	 if(pos == 0.0f)
+	 {
+	    if(m_eArrowState == ARROW_LEFT_DOWN)
+	    {
+		HandleButtonUp(IApplication::BUTTON_L);
+	    }
+	    else if(m_eArrowState == ARROW_RIGHT_DOWN)
+	    {
+		HandleButtonUp(IApplication::BUTTON_R);
+	    }
+	 }
+	 if(dir == IApplication::AXIS_LEFT)
+	 {
+	     if(abs(pos) == 1.0f)
+		m_eArrowState = ARROW_LEFT_DOWN;
+	     
+	 }
+	 else if(dir == IApplication::AXIS_RIGHT)
+	 {
+	     if(abs(pos) == 1.0f)
+		m_eArrowState = ARROW_RIGHT_DOWN;
+	 }
+	 
+
+     }
 }
 
 	
@@ -161,6 +190,7 @@ void ItemSelectState::Start()
 {
     m_items.clear();
     m_selected_item = NULL;
+    m_eArrowState = ARROWS_IDLE;
     Menu::Init();
     m_bDone = false;
     std::string resource = "Overlays/ItemSelect/";
