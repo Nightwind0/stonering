@@ -7,7 +7,7 @@
 using std::min;
 using std::max;
 
-StoneRing::MainMenuState::MainMenuState():m_bDone(false)
+StoneRing::MainMenuState::MainMenuState():m_targetingState(*this),m_bDone(false)
 {
 
 }
@@ -83,6 +83,35 @@ void StoneRing::MainMenuState::Draw(const CL_Rect &screenRect,CL_GraphicContext&
     Menu::Draw(GC);
     
     draw_party(GC);
+    
+    if(m_bSelectingTarget){
+	IParty * party = IApplication::GetInstance()->GetParty();
+	const int player_count = party->GetCharacterCount();
+	if(m_bSelectAll)
+	{
+	    for(int i=0;i<player_count;i++)
+	    {
+		CL_Pointf point = calc_player_position(i);
+		m_target_sprite.draw(GC,point.x,point.y);
+	    }
+	}
+	else
+	{
+	    CL_Pointf point = calc_player_position(m_nSelectedChar);
+	    m_target_sprite.draw(GC,point.x,point.y);
+	}
+    }
+}
+
+CL_Pointf StoneRing::MainMenuState::calc_player_position(int player)const
+{
+    float height = m_character_rect.get_height() / 4;
+
+    CL_Pointf portraitPoint;
+    portraitPoint.x = m_character_rect.left; // TODO Row?
+    portraitPoint.y = m_character_rect.top + height * player;
+    
+    return portraitPoint;
 }
 
 void StoneRing::MainMenuState::draw_party(CL_GraphicContext& GC)
@@ -91,9 +120,8 @@ void StoneRing::MainMenuState::draw_party(CL_GraphicContext& GC)
     float height = m_character_rect.get_height() / 4;
     const float spacing = 12.0f;
     for(int i=0;i<party->GetCharacterCount();i++){
-	CL_Pointf portraitPoint;
-	portraitPoint.x = m_character_rect.left; // TODO Row?
-	portraitPoint.y = m_character_rect.top + height * i;
+	CL_Pointf portraitPoint = calc_player_position(i);
+
 	CL_Pointf shadowPoint = portraitPoint;
 	shadowPoint += CL_Pointf(-8.0f,-8.0f);
 	m_portrait_shadow.draw(GC,shadowPoint.x,shadowPoint.y);
@@ -157,6 +185,7 @@ void StoneRing::MainMenuState::Start()
     IApplication *pApp = IApplication::GetInstance();
     CL_ResourceManager& resources = pApp->GetResources();
 
+    m_target_sprite = GraphicsManager::CreateSprite("Menu/Target");
 
     m_portrait_shadow = GraphicsManager::CreateImage("Overlays/MainMenu/portrait_shadow");
 
@@ -186,7 +215,7 @@ void StoneRing::MainMenuState::Start()
     m_character_rect.right = (float)resources.get_integer_resource(resource + "character/right",0);
     m_character_rect.bottom = (float)resources.get_integer_resource(resource + "character/bottom",0);
 
-
+    SelectionFinish();
 }
 
 void StoneRing::MainMenuState::Finish()
@@ -244,4 +273,89 @@ void StoneRing::MainMenuState::AddOption(MenuOption* pOption)
     m_choices.push_back(pOption);
 }
 
+SteelType StoneRing::MainMenuState::selectTargets(bool group)
+{
+    m_targetingState.Init(group);
+    IApplication::GetInstance()->RunState(&m_targetingState);
+    IParty * party = IApplication::GetInstance()->GetParty();
+    SteelType targets;
+    if(m_nSelectedChar >= 0)
+    {
+	SteelArray array;
+	if(m_bSelectAll)
+	{
 
+	    for(int i=0;i<party->GetCharacterCount();i++)
+	    {
+		SteelType man;
+		man.set(party->GetCharacter(i));
+		array.push_back(man);
+	    }
+	    targets.set(array);
+	}
+	else
+	{
+	    SteelType man;
+	    man.set( party->GetCharacter(m_nSelectedChar) );
+	    array.push_back(man);
+	    targets.set(array);
+	}
+	
+	return targets;
+    }
+    else
+    {
+	
+	targets.set(SteelArray());
+	return targets;
+    }
+}
+
+void StoneRing::MainMenuState::SteelInit      (SteelInterpreter *pInterpreter)
+{
+    pInterpreter->addFunction("selectTargets","menu",new SteelFunctor1Arg<MainMenuState,bool>(this,&MainMenuState::selectTargets));
+}
+
+void StoneRing::MainMenuState::SteelCleanup   (SteelInterpreter *pInterpreter)
+{
+    pInterpreter->removeFunctions("menu");
+}
+
+void StoneRing::MainMenuState::SelectCharacterUp()
+{
+    IParty * party = IApplication::GetInstance()->GetParty();
+    if(--m_nSelectedChar < 0){
+	m_nSelectedChar = party->GetCharacterCount() - 1;
+    }
+}
+
+void StoneRing::MainMenuState::SelectCharacterDown()
+{
+    IParty * party = IApplication::GetInstance()->GetParty();
+    if(++m_nSelectedChar >= party->GetCharacterCount()){
+	m_nSelectedChar = 0;
+    }    
+}
+
+void StoneRing::MainMenuState::SelectAllCharacters()
+{
+    m_nSelectedChar = 0;
+    m_bSelectAll = true;
+}
+
+void StoneRing::MainMenuState::SelectionStart()
+{
+    m_bSelectingTarget = true;
+    m_nSelectedChar = 0;
+}
+void StoneRing::MainMenuState::SelectionFinish()
+{
+    m_bSelectingTarget = false;
+}
+
+void StoneRing::MainMenuState::SelectionCancel()
+{
+    m_nSelectedChar = -1;
+    m_bSelectAll = false;
+    m_bSelectingTarget = false;
+}

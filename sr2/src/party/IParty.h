@@ -30,6 +30,8 @@ namespace StoneRing{
         virtual void DoEvent(const std::string &name, bool bRemember)=0;
         virtual void GiveItem(ItemRef * pItemRef, uint count = 1)=0;
         virtual void TakeItem(ItemRef * pItemRef, uint count = 1)=0;
+	virtual bool GiveItem(Item *pItem, uint count)=0;
+	virtual bool TakeItem(Item *pItem, uint count)=0;
         virtual void GiveGold(int amount)=0;
         virtual void AddCharacter(Character *pCharacter)=0;
         virtual void RemoveCharacter(const std::string &name)=0;

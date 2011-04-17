@@ -93,6 +93,7 @@ namespace StoneRing
         SteelType takeNamedItem(const std::string &item, uint count);
         SteelType selectItem(bool battle);
         SteelType addCharacter(const std::string &character, int level, bool announce);
+	SteelType inBattle();
 
 	SteelType getPartyArray(void);
         SteelType getItemName(const SteelType::Handle hItem);
@@ -108,6 +109,7 @@ namespace StoneRing
 	SteelType getExperience(const SteelType::Handle hICharacter);
         //
         SteelType getCharacterAttribute(const SteelType::Handle hICharacter, uint attr);
+
         SteelType getCharacterToggle(const SteelType::Handle hICharacter, uint attr);
         SteelType setCharacterToggle(const SteelType::Handle hICharacter, uint attr, bool toggle);
         SteelType getEquippedWeaponAttribute(const SteelType::Handle hICharacter, uint attr);
@@ -117,6 +119,7 @@ namespace StoneRing
         // This method directly affects a character's HP. No factors are taken into account
         // The handle is to an ICharacter
         SteelType doDamage(SteelType::Handle hICharacter, int damage);
+	SteelType doMPDamage(const SteelType::Handle hICharacter, int amount);
 
         SteelType hasEquipment(SteelType::Handle hICharacter, int slot);
         SteelType getEquipment(SteelType::Handle hCharacter, int slot);
@@ -135,6 +138,17 @@ namespace StoneRing
 	SteelType attackCharacter1(ICharacter* pChar){
 	    return SteelType();
 	}
+	
+	// Item Steel API
+	SteelType getItemType(SteelType::Handle hItem);
+	SteelType getItemValue(SteelType::Handle hItem);
+	SteelType getItemSellValue(SteelType::Handle hItem);
+	SteelType isBattleItem(SteelType::Handle hItem);
+	SteelType isWorldItem(SteelType::Handle hItem);
+	SteelType getItemTargetable(SteelType::Handle hItem);
+	SteelType getItemDefaultTarget(SteelType::Handle hItem);
+	SteelType isReusableItem(SteelType::Handle hItem);
+	SteelType useItem(SteelType::Handle hItem, const SteelType& targets);
 
         SteelType getHitSound(SteelType::Handle hWeaponType);
         SteelType getMissSound(SteelType::Handle hWeaponType);

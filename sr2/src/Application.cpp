@@ -25,6 +25,7 @@
 
 #include "BattleConfig.h"
 #include "Animation.h"
+#include "RegularItem.h"
 
 //
 //
@@ -393,6 +394,34 @@ SteelType Application::doDamage(SteelType::Handle hICharacter, int damage)
     return newhp;
 }
 
+SteelType Application::doMPDamage(SteelType::Handle hICharacter, int damage)
+{
+    ICharacter * pCharacter = dynamic_cast<ICharacter*>(hICharacter);
+
+    if (!pCharacter->GetToggle(Character::CA_ALIVE)) return SteelType();
+
+    int mp = pCharacter->GetAttribute(Character::CA_MP);
+    const int maxmp = pCharacter->GetAttribute(Character::CA_MAXMP);
+
+    if (mp - damage<=0)
+    {
+        damage = mp;
+    }
+
+    if (mp - damage >maxmp)
+    {
+        damage = -(maxmp - mp);
+    }
+
+    pCharacter->PermanentAugment(Character::CA_MP,-damage);
+
+    SteelType newmp;
+    newmp.set(damage);
+
+    return newmp;
+}
+
+
 
 SteelType Application::selectItem(bool battle)
 {
@@ -718,10 +747,145 @@ SteelType Application::attackCharacter(SteelType::Handle hICharacter)
     return SteelType();
 }
 
+SteelType Application::getItemType(SteelType::Handle hItem)
+{
+    SteelType val;
+    Item* pItem = GrabHandle<Item*>(hItem);
+    val.set(pItem->GetItemType());
+    
+    return val;
+}
+
+SteelType Application::getItemValue(SteelType::Handle hItem)
+{
+    SteelType val;
+    Item* pItem = GrabHandle<Item*>(hItem);
+    val.set((int)pItem->GetValue());
+    
+    return val;
+}
+
+SteelType Application::getItemSellValue(SteelType::Handle hItem)
+{
+    SteelType val;
+    Item* pItem = GrabHandle<Item*>(hItem);
+    val.set((int)pItem->GetSellValue());
+    
+    return val;
+}
+
+SteelType Application::isWorldItem(SteelType::Handle hItem)
+{   
+    SteelType val;
+    Item* pItem = GrabHandle<Item*>(hItem);
+    RegularItem * pRegularItem = dynamic_cast<RegularItem*>(pItem);
+    if(pRegularItem == NULL){
+	val.set(false);
+    }else{
+	val.set ( pRegularItem->GetUseType() == RegularItem::WORLD || 
+		    pRegularItem->GetUseType() == RegularItem::BOTH);
+    }
+    
+    return val;
+}
+SteelType Application::isBattleItem(SteelType::Handle hItem)
+{   
+    SteelType val;
+    Item* pItem = GrabHandle<Item*>(hItem);
+    RegularItem * pRegularItem = dynamic_cast<RegularItem*>(pItem);
+    if(pRegularItem == NULL){
+	val.set(false);
+    }else{
+	val.set ( pRegularItem->GetUseType() == RegularItem::BATTLE || 
+		    pRegularItem->GetUseType() == RegularItem::BOTH);
+    }
+    
+    return val;
+}
+
+
+SteelType Application::getItemTargetable(SteelType::Handle hItem)
+{
+    SteelType val;
+    Item* pItem = GrabHandle<Item*>(hItem);
+    RegularItem * pRegularItem = dynamic_cast<RegularItem*>(pItem);
+    if(pRegularItem == NULL){
+	val.set(RegularItem::NO_TARGET);
+    }else{
+	val.set ( pRegularItem->GetTargetable() );
+    }
+    
+    return val;
+}
+
+SteelType Application::getItemDefaultTarget(SteelType::Handle hItem)
+{
+    SteelType val;
+    Item* pItem = GrabHandle<Item*>(hItem);
+    RegularItem * pRegularItem = dynamic_cast<RegularItem*>(pItem);
+    if(pRegularItem == NULL){
+	val.set(RegularItem::PARTY);
+    }else{
+	val.set ( pRegularItem->GetDefaultTarget() );
+    }
+    
+    return val;
+}
+
+SteelType Application::isReusableItem(SteelType::Handle hItem)
+{
+    SteelType val;
+    Item* pItem = GrabHandle<Item*>(hItem);
+    RegularItem * pRegularItem = dynamic_cast<RegularItem*>(pItem);
+    if(pRegularItem == NULL){
+	val.set(false);
+    }else{
+	val.set ( pRegularItem->IsReusable() );
+    }
+    
+    return val;    
+}
+
+SteelType Application::useItem(SteelType::Handle hItem, const SteelType& targets)
+{
+    Item* pItem = GrabHandle<Item*>(hItem);
+    IParty * party = IApplication::GetInstance()->GetParty();
+    RegularItem * pRegularItem = dynamic_cast<RegularItem*>(pItem);
+    SteelType used;
+    if(pRegularItem != NULL){
+	pRegularItem->Invoke(targets);
+	if(!pRegularItem->IsReusable())
+	{
+	    used.set(party->TakeItem(pItem,1));
+	}
+    }
+    else
+    {
+	used.set(false);
+    }
+    return used;
+}
+
 SteelType Application::log(const std::string& str)
 {
 	CL_Console::write_line(str);
 	return SteelType();
+}
+
+SteelType Application::inBattle()
+{
+    SteelType val;
+    for(int i = 0;i < mStates.size(); i++)
+    {
+	State * pState = mStates[i];
+	if(pState == &mBattleState)
+	{
+	    val.set(true);
+	}
+    }
+    val.set(false);
+    
+    return val;
 }
 
 SteelType Application::showExperience(const SteelArray&  characters, const SteelArray& xp_gained,
@@ -1132,8 +1296,24 @@ void Application::registerSteelFunctions()
     SteelFunctor*  fn_showExperience= new SteelFunctor3Arg<Application,const SteelArray&,const SteelArray&, const SteelArray&>(this,&Application::showExperience);
 
 
-
     mInterpreter.pushScope();
+    
+    steelConst("$_ITEM_REGULAR",Item::REGULAR_ITEM);
+    steelConst("$_ITEM_SPECIAL",Item::SPECIAL);
+    steelConst("$_ITEM_WEAPON",Item::WEAPON);
+    steelConst("$_ITEM_ARMOR",Item::ARMOR);
+    steelConst("$_ITEM_RUNE",Item::RUNE);
+    steelConst("$_ITEM_SYSTEM",Item::SYSTEM);
+    steelConst("$_ITEM_OMEGA",Item::OMEGA);
+    
+    steelConst("$_ITEM_TRG_ALL",RegularItem::ALL);
+    steelConst("$_ITEM_TRG_GROUP",RegularItem::GROUP);
+    steelConst("$_ITEM_TRG_SINGLE",RegularItem::SINGLE);
+    steelConst("$_ITEM_TRG_SELF_ONLY",RegularItem::SELF_ONLY);
+    steelConst("$_ITEM_TRG_NONE",RegularItem::NO_TARGET);
+    
+    steelConst("$_ITEM_DEF_PARTY",RegularItem::PARTY);
+    steelConst("$_ITEM_DEF_MONSTERS",RegularItem::MONSTERS);
 
     steelConst("$_HAND",Equipment::EHAND);
     steelConst("$_OFFHAND",Equipment::EOFFHAND);
@@ -1259,6 +1439,20 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction("showExperience", fn_showExperience);
     
     mInterpreter.addFunction("mainMenu", new SteelFunctorNoArgs<Application>(this,&Application::mainMenu));
+
+   mInterpreter.addFunction("getItemType",new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::getItemType));
+   mInterpreter.addFunction("getItemValue",new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::getItemValue));
+   mInterpreter.addFunction("getItemSellValue",new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::getItemSellValue));  
+   mInterpreter.addFunction("isBattleItem",new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::isBattleItem));  
+   mInterpreter.addFunction("isWorldItem",new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::isWorldItem));   
+   mInterpreter.addFunction("isReusableItem",new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::isReusableItem));    
+   mInterpreter.addFunction("getItemTargetable",new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::getItemTargetable));   
+   mInterpreter.addFunction("getItemDefaultTarget",new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::getItemDefaultTarget));
+   mInterpreter.addFunction("useItem", new SteelFunctor2Arg<Application,SteelType::Handle,const SteelType&>(this,&Application::useItem));
+   
+   mInterpreter.addFunction("inBattle", new SteelFunctorNoArgs<Application>(this,&Application::inBattle));
+   
+   mInterpreter.addFunction("doMPDamage", new SteelFunctor2Arg<Application,SteelType::Handle,int>(this,&Application::doMPDamage));
 
 //        SteelType hasGeneratedWeapon(const std::string &wepclass, const std::string &webtype);
 //       SteelType hasGeneratedArmor(const std::string &armclass, const std::string &armtype);

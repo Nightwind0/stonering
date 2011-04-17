@@ -23,10 +23,10 @@ namespace StoneRing{
         virtual CL_Image GetIcon() const;
         
         
-        void Invoke(ICharacter * pTarget=NULL, ICharacterGroup * pGroup=NULL); // Execute all actions.
+        void Invoke(const SteelType& targetArray); // Execute all actions.
 
         enum eUseType {BATTLE, WORLD, BOTH };
-        enum eTargetable { ALL, SINGLE, EITHER, SELF_ONLY, NO_TARGET };
+        enum eTargetable { ALL, SINGLE, GROUP, SELF_ONLY, NO_TARGET };
         enum eDefaultTarget { PARTY, MONSTERS };
         eUseType GetUseType() const;
         eTargetable GetTargetable() const;

@@ -302,13 +302,24 @@
 		   <regularItem name="Moon Seed" dropRarity="common" value = "60" reusable="false" targetable="single" use="both"  defaultTarget="party">
 		      <iconRef>Items/moonseed</iconRef>
 		       <script id="Moonseed">
-			   modifyAttribute($_MP,25, $Target);
+			   doMPDamage(@_Targets[0],-25);
+			   if(inBattle())
+			   {
+			     battle::doCharacterAnimation(@_Targets[0],"heal");
+			     battle::createDisplay(-25,@_Targets[0],$_DISP_MP);
+			   }
+			   //play some sound
 		       </script>
 		   </regularItem>
 		   <regularItem name="Sun Seed" dropRarity="common" value = "50" reusable="false" targetable="single" use="both"  defaultTarget="party">
 		      <iconRef>Items/moonseed</iconRef>
 		       <script id="Sunseed">
-			   modifyAttribute($_HP,25, $Target);
+			   doDamage(@_Targets[0],-25);
+			   if(inBattle())
+			   {
+			     battle::doCharacterAnimation(@_Targets[0],"heal");
+ 			     battle::createDisplay(-25,@_Targets[0],$_DISP_DAMAGE);
+			   }
 		       </script>
 		   </regularItem>	
 		   <regularItem name="Star Seed" dropRarity="common" value = "250" reusable="false" targetable="single" use="both"  defaultTarget="party">
