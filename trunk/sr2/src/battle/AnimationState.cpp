@@ -14,7 +14,7 @@ AnimationState::AnimationState(BattleState& parent,
                                ICharacter* target):
         m_parent(parent),m_pCasterGroup(casterGroup),m_pTargetGroup(targetGroup),m_pCaster(caster),m_pTarget(target),m_pAnim(NULL),m_bDone(false)
 {
-
+    if(m_pTarget == NULL) m_pTarget = m_pCaster;
 } 
 
 AnimationState::~AnimationState()

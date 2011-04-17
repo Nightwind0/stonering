@@ -881,6 +881,7 @@ SteelType Application::inBattle()
 	if(pState == &mBattleState)
 	{
 	    val.set(true);
+	    return val;
 	}
     }
     val.set(false);
