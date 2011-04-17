@@ -106,9 +106,10 @@ bool Party::TakeItem(Item *pItem, uint count)
 {
     if( m_items.count(pItem ))
     {
-        if ( m_items [ pItem ] < count )
+        if ( m_items [ pItem ] <= count )
         {
-            count = m_items [ pItem ];
+            m_items.erase( pItem );
+	    return true;
         }
 
         m_items[ pItem ] -= count;

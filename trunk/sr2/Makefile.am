@@ -175,7 +175,9 @@ stonering_SOURCES =	src/Application.cpp \
 			src/core/Font.h \
 			src/core/Font.cpp \
 			src/states/ItemSelectState.h \
-			src/states/ItemSelectState.cpp
+			src/states/ItemSelectState.cpp \
+			src/states/MainMenuTargetingState.cpp \
+			src/states/MainMenuTargetingState.h
 
 
 

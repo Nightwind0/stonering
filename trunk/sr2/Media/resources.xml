@@ -400,6 +400,11 @@
 				<image file="Sprites/target.png"/>
 			</sprite>
 		</section>
+		<section name="Menu">
+		    <sprite name="Target" hint="alpha">
+			<image file="Sprites/target.png"/>
+		    </sprite>
+		</section>
 		<section name="StatusEffect">
 		    <sprite name="Poisoned">
 			<image file="Sprites/Status Effects/Poisoned.png"/>

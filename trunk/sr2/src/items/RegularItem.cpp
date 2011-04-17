@@ -15,11 +15,10 @@ RegularItem::~RegularItem()
 }
 
 // Execute all actions.
-void RegularItem::Invoke(ICharacter * pTarget, ICharacterGroup* pGroup)
+void RegularItem::Invoke(const SteelType& array)
 {
     ParameterList params;
-    params.push_back ( ParameterListItem("$_Character",pTarget) );
-    params.push_back ( ParameterListItem("$_Group",pGroup) );
+    params.push_back ( ParameterListItem("@_Targets",array) );
     if(m_pScript)
         m_pScript->ExecuteScript(params);
 }
@@ -83,7 +82,7 @@ RegularItem::TargetableFromString ( const std::string &str )
 
     if(str == "all") targetable = ALL;
     else if (str == "single") targetable = SINGLE;
-    else if (str == "either") targetable = EITHER;
+    else if (str == "group") targetable = GROUP;
     else if (str == "self_only") targetable = SELF_ONLY;
     else if (str == "no_target") targetable = NO_TARGET;
     else throw CL_Exception("Bad targetable on regular item. " + str);

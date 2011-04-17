@@ -6,6 +6,7 @@
 #include "MenuOption.h"
 #include "sr_defines.h"
 #include "GraphicsManager.h"
+#include "MainMenuTargetingState.h"
 
 using StoneRing::Font;
 
@@ -32,10 +33,18 @@ namespace StoneRing
         virtual void Start();
         virtual void RegisterSteelFunctions(SteelInterpreter*){}
         virtual void Finish(); // Hook to clean up or whatever after being popped
-
+        virtual void SteelInit      (SteelInterpreter *);
+        virtual void SteelCleanup   (SteelInterpreter *);	
         virtual void Init();
 
 	void AddOption(MenuOption*);
+	// Character selection stuff
+	void SelectCharacterUp();
+	void SelectCharacterDown();
+	void SelectAllCharacters();
+	void SelectionStart();
+	void SelectionFinish();
+	void SelectionCancel();
 	
     private:
 	virtual CL_Rectf get_rect();
@@ -44,6 +53,14 @@ namespace StoneRing
 	virtual void process_choice(int selection);
 	virtual int get_option_count();
 	virtual void draw_party(CL_GraphicContext& gc);
+	
+	CL_Pointf calc_player_position(int player)const;
+	
+	SteelType selectTargets(bool group);
+	
+	int m_nSelectedChar;
+	bool m_bSelectAll;
+	bool m_bSelectingTarget;
 
         std::string m_text;
 	CL_Image m_overlay;
@@ -59,7 +76,9 @@ namespace StoneRing
 	CL_Rectf m_character_rect;
 	CL_Rectf m_party_rect;
 	CL_Image m_portrait_shadow;
+	CL_Sprite m_target_sprite;
 	std::vector<MenuOption*> m_choices;
+	MainMenuTargetingState m_targetingState;
         bool m_bDone;
     };
 }
