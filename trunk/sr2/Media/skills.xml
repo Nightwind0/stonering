@@ -3,7 +3,34 @@
     <skill bp="0" name="Item" sp="0">
 	<onInvoke>
 	    <script id="ItemScript">
-	    useItem();
+	    declare $item = selectItem(true);
+	    if(is_valid($item))
+	    {
+		declare @targets;
+		switch(getItemTargetable($item))
+		{
+		    case $_ITEM_TRG_ALL:
+			@targets = battle::getAllCharacters();
+		    break;
+		    case $_ITEM_TRG_GROUP:
+		    //        SteelType selectTargets(bool single, bool group, bool defaultMonsters);
+		        @targets = battle::selectTargets(false,true, getItemDefaultTarget($item) == $_ITEM_DEF_MONSTERS);
+		    break;
+		    case $_ITEM_TRG_SELF_ONLY:
+		    case $_ITEM_TRG_SINGLE:
+			@targets = battle::selectTargets(true,false, getItemDefaultTarget($item) == $_ITEM_DEF_PARTY);
+		    break;
+		    case $_ITEM_TRG_NONE:
+		    default:
+		    break;
+		}
+		if(len(@targets) != 0){
+		    useItem($item,@targets);
+		}else{
+		    return battle::cancelOption();
+		}
+		battle::finishTurn();
+	    }	    
 	</script>
 	</onInvoke>
     </skill>
