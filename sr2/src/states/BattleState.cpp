@@ -1282,9 +1282,9 @@ SteelType BattleState::darkColor(double r, double g, double b, double a)
 
 SteelType BattleState::doTargetedAnimation(SteelType::Handle pICharacter, SteelType::Handle pITarget,SteelType::Handle hAnim)
 {
-    ICharacter * character = dynamic_cast<ICharacter*>(pICharacter);
-    ICharacter * target = dynamic_cast<ICharacter*>(pITarget);
-    Animation * anim = dynamic_cast<Animation*>(hAnim);
+    ICharacter * character = GrabHandle<ICharacter*>(pICharacter);
+    ICharacter * target = GrabHandle<ICharacter*>(pITarget);
+    Animation * anim = GrabHandle<Animation*>(hAnim);
     if(anim == NULL)
     {
 	throw TypeMismatch();
@@ -1304,8 +1304,8 @@ SteelType BattleState::doTargetedAnimation(SteelType::Handle pICharacter, SteelT
 
 SteelType BattleState::doCharacterAnimation(SteelType::Handle pICharacter,SteelType::Handle hAnim)
 {
-	ICharacter * character = dynamic_cast<ICharacter*>(pICharacter);
-	Animation * anim = dynamic_cast<Animation*>(hAnim);
+	ICharacter * character = GrabHandle<ICharacter*>(pICharacter);
+	Animation * anim = GrabHandle<Animation*>(hAnim);
 	if(anim == NULL)
 	{
 		throw TypeMismatch();
@@ -1322,7 +1322,7 @@ SteelType BattleState::doCharacterAnimation(SteelType::Handle pICharacter,SteelT
 SteelType BattleState::createDisplay(int damage,SteelType::Handle hICharacter,int display_type)
 {
     //            Display(BattleState& parent,eDisplayType type,int damage,SteelType::Handle pICharacter);
-    ICharacter* iChar = dynamic_cast<ICharacter*>(hICharacter);
+    ICharacter* iChar = GrabHandle<ICharacter*>(hICharacter);
     if(!iChar) throw TypeMismatch();
     Display display(*this, static_cast<Display::eDisplayType>(display_type),damage,iChar);
     display.start();
@@ -1375,7 +1375,7 @@ SteelType BattleState::getAllCharacters()
 SteelType BattleState::getMonsterDamageCategory(SteelType::Handle hMonster)
 {
     SteelType result;
-    Monster * pMonster = dynamic_cast<Monster*>(hMonster);
+    Monster * pMonster = GrabHandle<Monster*>(hMonster);
     if(!pMonster) throw TypeMismatch();
 
     result.set ( pMonster->GetDefaultDamageCategory() );
