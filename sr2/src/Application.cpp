@@ -169,10 +169,10 @@ SteelType Application::startBattle(const std::string &monster, uint count, bool 
     monsters.push_back(monsterRef);
     
     mBattleState.init(monsters,
-		      monsterRef->GetRows(),
-		      monsterRef->GetColumns(),
-		      isBoss,
-		      backdrop);
+                    monsterRef->GetRows(),
+                    monsterRef->GetColumns(),
+                    isBoss,
+                    backdrop);
 
     mStates.push_back(&mBattleState);
 
@@ -184,7 +184,7 @@ SteelType Application::startBattle(const std::string &monster, uint count, bool 
 }
 
 SteelType Application::choice(const std::string &choiceText,
-                              const SteelType::Container &choices_)
+                            const SteelType::Container &choices_)
 {
     static ChoiceState choiceState;
     std::vector<std::string> choices;
@@ -348,7 +348,7 @@ SteelType Application::addCharacter(const std::string &character, int level, boo
     // TODO: This is kind of a hack... probably ought to do this via steel API
     pCharacter->PermanentAugment(ICharacter::CA_HP, pCharacter->GetAttribute(ICharacter::CA_MAXHP));
     pCharacter->PermanentAugment(ICharacter::CA_MP, pCharacter->GetAttribute(ICharacter::CA_MAXMP));
-  
+
     mpParty->AddCharacter(pCharacter);
 
     if (announce)
@@ -467,13 +467,13 @@ SteelType Application::getPartyArray()
     SteelType::Container vector;
     for(int i=0;i<mpParty->GetCharacterCount();i++)
     {
-	SteelType ptr;
-	ptr.set(mpParty->GetCharacter(i));
-	vector.push_back(ptr);
+        SteelType ptr;
+        ptr.set(mpParty->GetCharacter(i));
+        vector.push_back(ptr);
     }
     
     array.set(vector);
-  
+
     return array;
 }
 
@@ -780,10 +780,10 @@ SteelType Application::isWorldItem(SteelType::Handle hItem)
     Item* pItem = GrabHandle<Item*>(hItem);
     RegularItem * pRegularItem = dynamic_cast<RegularItem*>(pItem);
     if(pRegularItem == NULL){
-	val.set(false);
+        val.set(false);
     }else{
-	val.set ( pRegularItem->GetUseType() == RegularItem::WORLD || 
-		    pRegularItem->GetUseType() == RegularItem::BOTH);
+        val.set ( pRegularItem->GetUseType() == RegularItem::WORLD || 
+                    pRegularItem->GetUseType() == RegularItem::BOTH);
     }
     
     return val;
@@ -794,10 +794,10 @@ SteelType Application::isBattleItem(SteelType::Handle hItem)
     Item* pItem = GrabHandle<Item*>(hItem);
     RegularItem * pRegularItem = dynamic_cast<RegularItem*>(pItem);
     if(pRegularItem == NULL){
-	val.set(false);
+        val.set(false);
     }else{
-	val.set ( pRegularItem->GetUseType() == RegularItem::BATTLE || 
-		    pRegularItem->GetUseType() == RegularItem::BOTH);
+        val.set ( pRegularItem->GetUseType() == RegularItem::BATTLE || 
+                    pRegularItem->GetUseType() == RegularItem::BOTH);
     }
     
     return val;
@@ -810,9 +810,9 @@ SteelType Application::getItemTargetable(SteelType::Handle hItem)
     Item* pItem = GrabHandle<Item*>(hItem);
     RegularItem * pRegularItem = dynamic_cast<RegularItem*>(pItem);
     if(pRegularItem == NULL){
-	val.set(RegularItem::NO_TARGET);
+        val.set(RegularItem::NO_TARGET);
     }else{
-	val.set ( pRegularItem->GetTargetable() );
+        val.set ( pRegularItem->GetTargetable() );
     }
     
     return val;
@@ -824,9 +824,9 @@ SteelType Application::getItemDefaultTarget(SteelType::Handle hItem)
     Item* pItem = GrabHandle<Item*>(hItem);
     RegularItem * pRegularItem = dynamic_cast<RegularItem*>(pItem);
     if(pRegularItem == NULL){
-	val.set(RegularItem::PARTY);
+        val.set(RegularItem::PARTY);
     }else{
-	val.set ( pRegularItem->GetDefaultTarget() );
+        val.set ( pRegularItem->GetDefaultTarget() );
     }
     
     return val;
@@ -838,9 +838,9 @@ SteelType Application::isReusableItem(SteelType::Handle hItem)
     Item* pItem = GrabHandle<Item*>(hItem);
     RegularItem * pRegularItem = dynamic_cast<RegularItem*>(pItem);
     if(pRegularItem == NULL){
-	val.set(false);
+        val.set(false);
     }else{
-	val.set ( pRegularItem->IsReusable() );
+        val.set ( pRegularItem->IsReusable() );
     }
     
     return val;    
@@ -853,23 +853,23 @@ SteelType Application::useItem(SteelType::Handle hItem, const SteelType& targets
     RegularItem * pRegularItem = dynamic_cast<RegularItem*>(pItem);
     SteelType used;
     if(pRegularItem != NULL){
-	pRegularItem->Invoke(targets);
-	if(!pRegularItem->IsReusable())
-	{
-	    used.set(party->TakeItem(pItem,1));
-	}
+        pRegularItem->Invoke(targets);
+        if(!pRegularItem->IsReusable())
+        {
+            used.set(party->TakeItem(pItem,1));
+        }
     }
     else
     {
-	used.set(false);
+        used.set(false);
     }
     return used;
 }
 
 SteelType Application::log(const std::string& str)
 {
-	CL_Console::write_line(str);
-	return SteelType();
+        CL_Console::write_line(str);
+        return SteelType();
 }
 
 SteelType Application::inBattle()
@@ -877,12 +877,12 @@ SteelType Application::inBattle()
     SteelType val;
     for(int i = 0;i < mStates.size(); i++)
     {
-	State * pState = mStates[i];
-	if(pState == &mBattleState)
-	{
-	    val.set(true);
-	    return val;
-	}
+        State * pState = mStates[i];
+        if(pState == &mBattleState)
+        {
+            val.set(true);
+            return val;
+        }
     }
     val.set(false);
     
@@ -890,13 +890,13 @@ SteelType Application::inBattle()
 }
 
 SteelType Application::showExperience(const SteelArray&  characters, const SteelArray& xp_gained,
-				      const SteelArray& oldLevels)
+                                    const SteelArray& oldLevels)
 {
     mExperienceState.Init();
     for(int i=0;i<characters.size();i++)
     {
-	Character* c = GrabHandle<Character*>(characters[i]);
-	mExperienceState.AddCharacter(c,xp_gained[i],oldLevels[i]);
+        Character* c = GrabHandle<Character*>(characters[i]);
+        mExperienceState.AddCharacter(c,xp_gained[i],oldLevels[i]);
     }
     
     mStates.push_back(&mExperienceState);
@@ -917,7 +917,7 @@ void Application::LoadMainMenu(CL_DomDocument& doc)
     {
         MenuOption * menuOption = dynamic_cast<MenuOption*>( pFactory->createElement(menuoptionNode.get_node_name()) );
         menuOption->Load(menuoptionNode);
-	mMainMenuState.AddOption(menuOption);
+        mMainMenuState.AddOption(menuOption);
 
         menuoptionNode = menuoptionNode.get_next_sibling().to_element();
     }
@@ -989,17 +989,17 @@ double Application::get_value_for_axis_direction(IApplication::AxisDirection dir
     // TODO: Make these dynamic, some joysticks are different
     switch(dir)
     {
-	case AXIS_LEFT:
-	    return -1.0;
-	case AXIS_RIGHT:
-	    return 1.0;
-	case AXIS_UP:
-	    return -1.0;
-	case AXIS_DOWN:
-	    return 1.0;
+        case AXIS_LEFT:
+            return -1.0;
+        case AXIS_RIGHT:
+            return 1.0;
+        case AXIS_UP:
+            return -1.0;
+        case AXIS_DOWN:
+            return 1.0;
     }
 
-	return 0;
+        return 0;
 }
 
 IApplication::AxisDirection Application::get_direction_for_value(IApplication::Axis axis, double value) const
@@ -1007,29 +1007,29 @@ IApplication::AxisDirection Application::get_direction_for_value(IApplication::A
     if(value == 0.0) return AXIS_NEUTRAL;
     if(axis == IApplication::AXIS_HORIZONTAL)
     {
-	if(get_value_for_axis_direction(AXIS_LEFT) >0)
-	{
-	    if(value >0) return AXIS_LEFT;
-	    else return AXIS_RIGHT;
-	}
-	else
-	{
-	    if(value >0) return AXIS_RIGHT;
-	    else return AXIS_LEFT;
-	}
+        if(get_value_for_axis_direction(AXIS_LEFT) >0)
+        {
+            if(value >0) return AXIS_LEFT;
+            else return AXIS_RIGHT;
+        }
+        else
+        {
+            if(value >0) return AXIS_RIGHT;
+            else return AXIS_LEFT;
+        }
     }
     else if(axis == IApplication::AXIS_VERTICAL)
     {
-	if(get_value_for_axis_direction(AXIS_UP) >0)
-	{
-	    if(value >0) return AXIS_UP;
-	    else return AXIS_DOWN;
-	}
-	else
-	{
-	    if(value >0) return AXIS_DOWN;
-	    else return AXIS_UP;
-	}
+        if(get_value_for_axis_direction(AXIS_UP) >0)
+        {
+            if(value >0) return AXIS_UP;
+            else return AXIS_DOWN;
+        }
+        else
+        {
+            if(value >0) return AXIS_DOWN;
+            else return AXIS_UP;
+        }
     }
 }
 
@@ -1043,39 +1043,39 @@ void Application::onSignalKeyDown(const CL_InputEvent &key, const CL_InputState&
     // Do mappings now
     switch(key.id)
     {
-	case CL_KEY_DOWN:
-	    mStates.back()->HandleAxisMove(IApplication::AXIS_VERTICAL,AXIS_DOWN,get_value_for_axis_direction(AXIS_DOWN));
-	    break;
-	case CL_KEY_UP:
-	    mStates.back()->HandleAxisMove(IApplication::AXIS_VERTICAL,AXIS_UP,get_value_for_axis_direction(AXIS_UP));
-	    break;
-	case CL_KEY_LEFT:
-	    mStates.back()->HandleAxisMove(IApplication::AXIS_HORIZONTAL,AXIS_LEFT,get_value_for_axis_direction(AXIS_LEFT));
-	    break;
-	case CL_KEY_RIGHT:
-	    mStates.back()->HandleAxisMove(IApplication::AXIS_HORIZONTAL,AXIS_RIGHT,get_value_for_axis_direction(AXIS_RIGHT));
-	    break;
-	case CL_KEY_SPACE:
-	    mStates.back()->HandleButtonDown(BUTTON_CONFIRM);
-	    break;
-	case CL_KEY_TAB:
-	    mStates.back()->HandleButtonDown(BUTTON_ALT);
-	    break;
-	case CL_KEY_ESCAPE:
-	    mStates.back()->HandleButtonDown(BUTTON_CANCEL);
-	    break;
-	case CL_KEY_ENTER:
-	    mStates.back()->HandleButtonDown(BUTTON_START);
-	    break;
-	case CL_KEY_HOME:
-	    mStates.back()->HandleButtonDown(BUTTON_MENU);
-	    break;
-	case CL_KEY_M:
-	    mStates.back()->HandleButtonDown(BUTTON_R);
-	    break;
-	case CL_KEY_N:
-	    mStates.back()->HandleButtonDown(BUTTON_L);
-	    break;
+        case CL_KEY_DOWN:
+            mStates.back()->HandleAxisMove(IApplication::AXIS_VERTICAL,AXIS_DOWN,get_value_for_axis_direction(AXIS_DOWN));
+            break;
+        case CL_KEY_UP:
+            mStates.back()->HandleAxisMove(IApplication::AXIS_VERTICAL,AXIS_UP,get_value_for_axis_direction(AXIS_UP));
+            break;
+        case CL_KEY_LEFT:
+            mStates.back()->HandleAxisMove(IApplication::AXIS_HORIZONTAL,AXIS_LEFT,get_value_for_axis_direction(AXIS_LEFT));
+            break;
+        case CL_KEY_RIGHT:
+            mStates.back()->HandleAxisMove(IApplication::AXIS_HORIZONTAL,AXIS_RIGHT,get_value_for_axis_direction(AXIS_RIGHT));
+            break;
+        case CL_KEY_SPACE:
+            mStates.back()->HandleButtonDown(BUTTON_CONFIRM);
+            break;
+        case CL_KEY_TAB:
+            mStates.back()->HandleButtonDown(BUTTON_ALT);
+            break;
+        case CL_KEY_ESCAPE:
+            mStates.back()->HandleButtonDown(BUTTON_CANCEL);
+            break;
+        case CL_KEY_ENTER:
+            mStates.back()->HandleButtonDown(BUTTON_START);
+            break;
+        case CL_KEY_HOME:
+            mStates.back()->HandleButtonDown(BUTTON_MENU);
+            break;
+        case CL_KEY_M:
+            mStates.back()->HandleButtonDown(BUTTON_R);
+            break;
+        case CL_KEY_N:
+            mStates.back()->HandleButtonDown(BUTTON_L);
+            break;
     }
     
     
@@ -1088,35 +1088,36 @@ void Application::onSignalKeyUp(const CL_InputEvent &key, const CL_InputState&)
         // Do mappings now
     switch(key.id)
     {
-	case CL_KEY_DOWN:
-	case CL_KEY_UP: 
-	   mStates.back()->HandleAxisMove(IApplication::AXIS_VERTICAL,AXIS_NEUTRAL,0.0);
-	    break;
-	case CL_KEY_LEFT:
-	case CL_KEY_RIGHT:
-	   mStates.back()->HandleAxisMove(IApplication::AXIS_HORIZONTAL,AXIS_NEUTRAL,0.0);
-	   break;
-	case CL_KEY_SPACE:
-	    mStates.back()->HandleButtonUp(BUTTON_CONFIRM);
-	    break;
-	case CL_KEY_TAB:
-	    mStates.back()->HandleButtonUp(BUTTON_ALT);
-	    break;
-	case CL_KEY_ESCAPE:
-	    mStates.back()->HandleButtonUp(BUTTON_CANCEL);
-	    break;
-	case CL_KEY_ENTER:
-	    mStates.back()->HandleButtonUp(BUTTON_START);
-	    break;
-	case CL_KEY_HOME:
-	    mStates.back()->HandleButtonUp(BUTTON_MENU);
-	    break;
-	case CL_KEY_M:
-	    mStates.back()->HandleButtonUp(BUTTON_R);
-	    break;
-	case CL_KEY_N:
-	    mStates.back()->HandleButtonUp(BUTTON_L);
-	    break;
+        case CL_KEY_DOWN:
+            break;
+        case CL_KEY_UP: 
+        mStates.back()->HandleAxisMove(IApplication::AXIS_VERTICAL,AXIS_NEUTRAL,0.0);
+            break;
+        case CL_KEY_LEFT:
+        case CL_KEY_RIGHT:
+        mStates.back()->HandleAxisMove(IApplication::AXIS_HORIZONTAL,AXIS_NEUTRAL,0.0);
+        break;
+        case CL_KEY_SPACE:
+            mStates.back()->HandleButtonUp(BUTTON_CONFIRM);
+            break;
+        case CL_KEY_TAB:
+            mStates.back()->HandleButtonUp(BUTTON_ALT);
+            break;
+        case CL_KEY_ESCAPE:
+            mStates.back()->HandleButtonUp(BUTTON_CANCEL);
+            break;
+        case CL_KEY_ENTER:
+            mStates.back()->HandleButtonUp(BUTTON_START);
+            break;
+        case CL_KEY_HOME:
+            mStates.back()->HandleButtonUp(BUTTON_MENU);
+            break;
+        case CL_KEY_M:
+            mStates.back()->HandleButtonUp(BUTTON_R);
+            break;
+        case CL_KEY_N:
+            mStates.back()->HandleButtonUp(BUTTON_L);
+            break;
     }
     
 }
@@ -1129,28 +1130,28 @@ void Application::onSignalJoystickButtonDown(const CL_InputEvent &event, const C
     switch(event.id)
     {
         // Do mappings now
-  
-	case 5:
-	    mStates.back()->HandleButtonDown(BUTTON_CONFIRM);
-	    break;
-	case 0:
-	    mStates.back()->HandleButtonDown(BUTTON_ALT);
-	    break;
-	case 1:
-	    mStates.back()->HandleButtonDown(BUTTON_CANCEL);
-	    break;
-	case 2:
-	    mStates.back()->HandleButtonDown(BUTTON_START);
-	    break;
-	case 4:
-	    mStates.back()->HandleButtonDown(BUTTON_MENU);
-	    break;
-	case 6:
-	    mStates.back()->HandleButtonDown(BUTTON_R);
-	    break;
-	case 7:
-	    mStates.back()->HandleButtonDown(BUTTON_L);
-	    break;
+
+        case 5:
+            mStates.back()->HandleButtonDown(BUTTON_CONFIRM);
+            break;
+        case 0:
+            mStates.back()->HandleButtonDown(BUTTON_ALT);
+            break;
+        case 1:
+            mStates.back()->HandleButtonDown(BUTTON_CANCEL);
+            break;
+        case 2:
+            mStates.back()->HandleButtonDown(BUTTON_START);
+            break;
+        case 4:
+            mStates.back()->HandleButtonDown(BUTTON_MENU);
+            break;
+        case 6:
+            mStates.back()->HandleButtonDown(BUTTON_R);
+            break;
+        case 7:
+            mStates.back()->HandleButtonDown(BUTTON_L);
+            break;
     }
     
 
@@ -1164,28 +1165,28 @@ void Application::onSignalJoystickButtonUp(const CL_InputEvent &event, const CL_
         switch(event.id)
     {
         // Do mappings now
-  
-	case 5:
-	    mStates.back()->HandleButtonUp(BUTTON_CONFIRM);
-	    break;
-	case 0:
-	    mStates.back()->HandleButtonUp(BUTTON_ALT);
-	    break;
-	case 1:
-	    mStates.back()->HandleButtonUp(BUTTON_CANCEL);
-	    break;
-	case 2:
-	    mStates.back()->HandleButtonUp(BUTTON_START);
-	    break;
-	case 4:
-	    mStates.back()->HandleButtonUp(BUTTON_MENU);
-	    break;
-	case 6:
-	    mStates.back()->HandleButtonUp(BUTTON_R);
-	    break;
-	case 7:
-	    mStates.back()->HandleButtonUp(BUTTON_L);
-	    break;
+
+        case 5:
+            mStates.back()->HandleButtonUp(BUTTON_CONFIRM);
+            break;
+        case 0:
+            mStates.back()->HandleButtonUp(BUTTON_ALT);
+            break;
+        case 1:
+            mStates.back()->HandleButtonUp(BUTTON_CANCEL);
+            break;
+        case 2:
+            mStates.back()->HandleButtonUp(BUTTON_START);
+            break;
+        case 4:
+            mStates.back()->HandleButtonUp(BUTTON_MENU);
+            break;
+        case 6:
+            mStates.back()->HandleButtonUp(BUTTON_R);
+            break;
+        case 7:
+            mStates.back()->HandleButtonUp(BUTTON_L);
+            break;
     }
     
     
@@ -1196,11 +1197,11 @@ void Application::onSignalJoystickAxisMove(const CL_InputEvent &event, const CL_
     
     if(event.id == 0)
     {
-	mStates.back()->HandleAxisMove(AXIS_HORIZONTAL,get_direction_for_value(AXIS_HORIZONTAL,event.axis_pos), event.axis_pos);
+        mStates.back()->HandleAxisMove(AXIS_HORIZONTAL,get_direction_for_value(AXIS_HORIZONTAL,event.axis_pos), event.axis_pos);
     }
     else
     {
-	mStates.back()->HandleAxisMove(AXIS_VERTICAL, get_direction_for_value(AXIS_VERTICAL,event.axis_pos),event.axis_pos);
+        mStates.back()->HandleAxisMove(AXIS_VERTICAL, get_direction_for_value(AXIS_VERTICAL,event.axis_pos),event.axis_pos);
     }
 }
 
@@ -1443,19 +1444,19 @@ void Application::registerSteelFunctions()
     
     mInterpreter.addFunction("mainMenu", new SteelFunctorNoArgs<Application>(this,&Application::mainMenu));
 
-   mInterpreter.addFunction("getItemType",new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::getItemType));
-   mInterpreter.addFunction("getItemValue",new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::getItemValue));
-   mInterpreter.addFunction("getItemSellValue",new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::getItemSellValue));  
-   mInterpreter.addFunction("isBattleItem",new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::isBattleItem));  
-   mInterpreter.addFunction("isWorldItem",new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::isWorldItem));   
-   mInterpreter.addFunction("isReusableItem",new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::isReusableItem));    
-   mInterpreter.addFunction("getItemTargetable",new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::getItemTargetable));   
-   mInterpreter.addFunction("getItemDefaultTarget",new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::getItemDefaultTarget));
-   mInterpreter.addFunction("useItem", new SteelFunctor2Arg<Application,SteelType::Handle,const SteelType&>(this,&Application::useItem));
-   
-   mInterpreter.addFunction("inBattle", new SteelFunctorNoArgs<Application>(this,&Application::inBattle));
-   
-   mInterpreter.addFunction("doMPDamage", new SteelFunctor2Arg<Application,SteelType::Handle,int>(this,&Application::doMPDamage));
+mInterpreter.addFunction("getItemType",new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::getItemType));
+mInterpreter.addFunction("getItemValue",new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::getItemValue));
+mInterpreter.addFunction("getItemSellValue",new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::getItemSellValue));  
+mInterpreter.addFunction("isBattleItem",new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::isBattleItem));  
+mInterpreter.addFunction("isWorldItem",new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::isWorldItem));   
+mInterpreter.addFunction("isReusableItem",new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::isReusableItem));    
+mInterpreter.addFunction("getItemTargetable",new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::getItemTargetable));   
+mInterpreter.addFunction("getItemDefaultTarget",new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::getItemDefaultTarget));
+mInterpreter.addFunction("useItem", new SteelFunctor2Arg<Application,SteelType::Handle,const SteelType&>(this,&Application::useItem));
+
+mInterpreter.addFunction("inBattle", new SteelFunctorNoArgs<Application>(this,&Application::inBattle));
+
+mInterpreter.addFunction("doMPDamage", new SteelFunctor2Arg<Application,SteelType::Handle,int>(this,&Application::doMPDamage));
 
 //        SteelType hasGeneratedWeapon(const std::string &wepclass, const std::string &webtype);
 //       SteelType hasGeneratedArmor(const std::string &armclass, const std::string &armtype);
@@ -1467,9 +1468,9 @@ void Application::queryJoystick()
 #if 0
     if(m_window.get_ic().get_joystick_count())
     {
-	CL_InputDevice& joystick = m_window.get_ic().get_joystick(0);
-	mStates.back()->HandleAxisMove(AXIS_HORIZONTAL, joystick.get_axis(0));
-	mStates.back()->HandleAxisMove(AXIS_VERTICAL, joystick.get_axis(1));
+        CL_InputDevice& joystick = m_window.get_ic().get_joystick(0);
+        mStates.back()->HandleAxisMove(AXIS_HORIZONTAL, joystick.get_axis(0));
+        mStates.back()->HandleAxisMove(AXIS_VERTICAL, joystick.get_axis(1));
     }
 #endif
 }
@@ -1504,7 +1505,7 @@ void Application::run()
     unsigned int then = CL_System::get_time();
     while (!backState->IsDone())
     {
-	queryJoystick();
+        queryJoystick();
         draw();
         m_window.flip();
 
@@ -1565,11 +1566,11 @@ int Application::main(const std::vector<CL_String> &args)
 
     for(int i=0;i<args.size();i++)
     {
-	std::string string = args[i];
-	if(string.substr(0,5) == "--js=")
-	{
-		njoystick = atoi(string.substr(5).c_str());
-	}
+        std::string string = args[i];
+        if(string.substr(0,5) == "--js=")
+        {
+                njoystick = atoi(string.substr(5).c_str());
+        }
     }
 
 
@@ -1594,11 +1595,11 @@ int Application::main(const std::vector<CL_String> &args)
 
 
         m_window = CL_DisplayWindow(desc);
-	
+        
 
-	std::string battleConfig = CL_String_load("Configuration/BattleConfig",m_resources);
-	mBattleConfig.Load(battleConfig);
-	mBattleState.SetConfig(&mBattleConfig);
+        std::string battleConfig = CL_String_load("Configuration/BattleConfig",m_resources);
+        mBattleConfig.Load(battleConfig);
+        mBattleState.SetConfig(&mBattleConfig);
 
         //for(int i =0; i < m_window.get_buffer_count(); i++)
         //  m_window.get_buffer(i).to_format(CL_PixelFormat(24,0,0,0,0,false,0,pixelformat_rgba));
@@ -1607,8 +1608,8 @@ int Application::main(const std::vector<CL_String> &args)
 
 
         mAppUtils.LoadGameplayAssets("",m_resources);
-	std::string utilityConfig = CL_String_load("Configuration/UtilityScripts",m_resources);
-	mUtilityScripts.Load(utilityConfig);
+        std::string utilityConfig = CL_String_load("Configuration/UtilityScripts",m_resources);
+        mUtilityScripts.Load(utilityConfig);
         std::string startinglevel = CL_String_load("Game/StartLevel",m_resources);
         std::string initscript;
         loadscript(initscript,CL_String_load("Game/StartupScript",m_resources));
@@ -1658,12 +1659,12 @@ int Application::main(const std::vector<CL_String> &args)
     CL_Slot joystickAxis;
     
     if(njoystick > 0 &&  njoystick < m_window.get_ic().get_joystick_count()){
-	std::cout << "Joystick count = " << m_window.get_ic().get_joystick_count();
+        std::cout << "Joystick count = " << m_window.get_ic().get_joystick_count();
 #if 1 
-	CL_InputDevice& joystick = m_window.get_ic().get_joystick(njoystick);
-	joystickDown = joystick.sig_key_down().connect(this,&Application::onSignalJoystickButtonDown);
-	joystickUp = joystick.sig_key_up().connect(this,&Application::onSignalJoystickButtonUp);
-	joystickAxis = joystick.sig_axis_move().connect(this,&Application::onSignalJoystickAxisMove);
+        CL_InputDevice& joystick = m_window.get_ic().get_joystick(njoystick);
+        joystickDown = joystick.sig_key_down().connect(this,&Application::onSignalJoystickButtonDown);
+        joystickUp = joystick.sig_key_up().connect(this,&Application::onSignalJoystickButtonUp);
+        joystickAxis = joystick.sig_axis_move().connect(this,&Application::onSignalJoystickAxisMove);
 #endif
     }
 
@@ -1712,10 +1713,10 @@ AstScript* Application::GetUtility(Utility util)const
 {
     switch(util)
     {
-	case XP_FOR_LEVEL:
-	    return mUtilityScripts.GetScript("tnl");
-	case LEVEL_FOR_XP:
-	    return mUtilityScripts.GetScript("lnt");
+        case XP_FOR_LEVEL:
+            return mUtilityScripts.GetScript("tnl");
+        case LEVEL_FOR_XP:
+            return mUtilityScripts.GetScript("lnt");
     }
     assert(0);
     return NULL;
@@ -1741,12 +1742,12 @@ void Application::showIntro()
 
     while (!keyboard.get_keycode(CL_KEY_ENTER))
     {
-	if(m_window.get_ic().get_joystick_count())
-	{
-	    CL_InputDevice& joystick = m_window.get_ic().get_joystick(0);
-	    if(joystick.get_keycode(5)) break;
-	}
-	
+        if(m_window.get_ic().get_joystick_count())
+        {
+            CL_InputDevice& joystick = m_window.get_ic().get_joystick(0);
+            if(joystick.get_keycode(5)) break;
+        }
+        
 
         background.draw(m_window.get_gc(),0,0);
         splash.draw(m_window.get_gc(),static_cast<float>(displayX),
@@ -1800,8 +1801,7 @@ public:
 CL_ClanApplication app(&Program::main);
 
 
-
-
+// doko
 
 
 
