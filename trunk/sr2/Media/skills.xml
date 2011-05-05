@@ -18,7 +18,7 @@
 		    break;
 		    case $_ITEM_TRG_SELF_ONLY:
 		    case $_ITEM_TRG_SINGLE:
-			@targets = battle::selectTargets(true,false, getItemDefaultTarget($item) == $_ITEM_DEF_PARTY);
+			@targets = battle::selectTargets(true,false, getItemDefaultTarget($item) == $_ITEM_DEF_MONSTERS);
 		    break;
 		    case $_ITEM_TRG_NONE:
 		    default:
