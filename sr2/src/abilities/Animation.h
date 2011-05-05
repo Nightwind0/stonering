@@ -115,7 +115,7 @@ namespace StoneRing
         }
         bool HasBattleSprite() const
         {
-            return m_pBattleSprite;
+            return m_pBattleSprite != NULL;
         }
 
         SpriteRef *GetSpriteRef() const

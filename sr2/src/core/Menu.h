@@ -23,6 +23,7 @@
 #include <ClanLib/display.h>
 #include <set>
 #include <string>
+#include "sr_defines.h"
 
 namespace StoneRing {
 

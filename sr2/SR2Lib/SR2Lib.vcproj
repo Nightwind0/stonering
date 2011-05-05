@@ -39,7 +39,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\src\party&quot;;&quot;$(SolutionDir)\src\character&quot;;&quot;$(SolutionDir)src\core&quot;;&quot;$(SolutionDir)\src&quot;;&quot;$(SolutionDir)\..\steel\src&quot;;&quot;$(SolutionDir)\src\level&quot;;&quot;$(SolutionDir)\src\states&quot;;&quot;$(SolutionDir)\src\monsters&quot;;&quot;$(SolutionDir)\src\items\armor&quot;;&quot;$(SolutionDir)\src\items\weapons&quot;;&quot;$(SolutionDir)\src\items&quot;;&quot;$(SolutionDir)\src\factories&quot;;&quot;$(SolutionDir)\src\battle&quot;;&quot;$(SolutionDir)\src\abilities&quot;"
-				PreprocessorDefinitions="WIN32"
+				PreprocessorDefinitions="_WINDOWS;WIN32;_DEBUG"
 				RuntimeLibrary="1"
 				DebugInformationFormat="3"
 			/>
@@ -95,7 +95,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\src\party&quot;;&quot;$(SolutionDir)\src\character&quot;;&quot;$(SolutionDir)src\core&quot;;&quot;$(SolutionDir)\src&quot;;&quot;$(SolutionDir)\..\steel\src&quot;;&quot;$(SolutionDir)\src\level&quot;;&quot;$(SolutionDir)\src\states&quot;;&quot;$(SolutionDir)\src\monsters&quot;;&quot;$(SolutionDir)\src\items\armor&quot;;&quot;$(SolutionDir)\src\items\weapons&quot;;&quot;$(SolutionDir)\src\items&quot;;&quot;$(SolutionDir)\src\factories&quot;;&quot;$(SolutionDir)\src\battle&quot;;&quot;$(SolutionDir)\src\abilities&quot;"
-				PreprocessorDefinitions="WIN32"
+				PreprocessorDefinitions="_WINDOWS;WIN32;NDEBUG"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -135,7 +135,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\src\core\MenuOption.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\party\Party.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\core\UtilityScripts.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\core\UtilityScripts.h"
 				>
 			</File>
 			<Filter
@@ -534,6 +546,22 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\states\ExperienceState.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\ItemSelectState.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\MainMenuState.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\MainMenuTargetingState.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\src\states\MapState.cpp"
 					>
 				</File>
@@ -632,6 +660,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\core\Font.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\core\Font.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\core\GraphicsManager.h"
 					>
 				</File>
@@ -649,6 +685,10 @@
 				</File>
 				<File
 					RelativePath="..\src\core\Menu.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\core\MenuOption.h"
 					>
 				</File>
 				<File
@@ -865,6 +905,22 @@
 				</File>
 				<File
 					RelativePath="..\src\states\ChoiceState.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\ExperienceState.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\ItemSelectState.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\MainMenuState.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\MainMenuTargetingState.h"
 					>
 				</File>
 				<File

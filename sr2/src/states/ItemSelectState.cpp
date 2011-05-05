@@ -7,6 +7,7 @@
 using StoneRing::ItemSelectState;
 using StoneRing::Item;
 using StoneRing::Font;
+using StoneRing::IApplication;
 using std::abs;
 
 
@@ -176,10 +177,12 @@ void ItemSelectState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
 
 bool ItemSelectState::LastToDraw() const // Should we continue drawing more states?
 {
+	return false;
 }
 
 bool ItemSelectState::DisableMappableObjects() const // Should the app move the MOs?
 {
+	return false;
 }
 
 void ItemSelectState::MappableObjectMoveHook() // Do stuff right after the mappable object movement

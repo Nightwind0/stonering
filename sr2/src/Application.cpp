@@ -998,6 +998,8 @@ double Application::get_value_for_axis_direction(IApplication::AxisDirection dir
 	case AXIS_DOWN:
 	    return 1.0;
     }
+
+	return 0;
 }
 
 IApplication::AxisDirection Application::get_direction_for_value(IApplication::Axis axis, double value) const

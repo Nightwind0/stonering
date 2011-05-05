@@ -171,7 +171,7 @@ Character * Party::GetMapCharacter()const
     }
 }
 
-void Party::IterateItems( ItemVisitor& func )
+void Party::IterateItems( StoneRing::ItemVisitor& func )
 {
     for(std::map<Item*,int>::const_iterator iter= m_items.begin();
 	iter != m_items.end(); iter++)
