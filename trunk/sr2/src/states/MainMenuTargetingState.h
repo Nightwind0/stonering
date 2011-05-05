@@ -36,7 +36,7 @@ public:
     virtual bool IsDone() const;
     // Handle joystick / key events that are processed according to mappings
     virtual void HandleButtonUp(const IApplication::Button& button);
-    virtual void HandleAxisMove(const IApplication::Axis& axis, IApplication::AxisDirection dir, float pos);
+    virtual void HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos);
     
     virtual void Draw(const CL_Rect &screenRect,CL_GraphicContext& GC);
     virtual bool LastToDraw() const; // Should we continue drawing more states?

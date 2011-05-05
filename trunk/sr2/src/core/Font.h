@@ -21,6 +21,9 @@
 #define FONT_H
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
+#ifndef uint
+typedef unsigned int uint;
+#endif
 namespace StoneRing{
     class GraphicsManager;
     class Font

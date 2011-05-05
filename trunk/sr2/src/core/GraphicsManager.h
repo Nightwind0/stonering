@@ -7,7 +7,7 @@
 #include <ClanLib/display.h>
 #include <string>
 #include <map>
-
+#include "Font.h"
 
 namespace StoneRing
 {
@@ -73,7 +73,7 @@ namespace StoneRing
 
         static std::string NameOfOverlay(Overlay overlay);
         static std::string NameOfDisplayFont(DisplayFont font);
-	Font LoadFont(const std::string& name);
+		Font LoadFont(const std::string& name);
         std::map<Overlay,CL_Image> m_overlay_map;
         std::map<std::string,CL_Sprite> m_tile_map;
         std::map<std::string,Font> m_font_map;

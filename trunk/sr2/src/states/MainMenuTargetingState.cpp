@@ -21,7 +21,8 @@
 #include "MainMenuState.h"
 
 using StoneRing::MainMenuTargetingState;
-
+using StoneRing::MainMenuState;
+using StoneRing::IApplication;
 
 MainMenuTargetingState::MainMenuTargetingState(MainMenuState& parent):m_parent(parent),m_bDone(false)
 {
@@ -45,7 +46,7 @@ bool MainMenuTargetingState::IsDone() const
     return m_bDone;
 }
     // Handle joystick / key events that are processed according to mappings
-void MainMenuTargetingState::HandleButtonUp(const IApplication::Button& button)
+void MainMenuTargetingState::HandleButtonUp(const StoneRing::IApplication::Button& button)
 {
     if(button == IApplication::BUTTON_CONFIRM)
     {
@@ -78,11 +79,12 @@ void MainMenuTargetingState::Draw(const CL_Rect &screenRect,CL_GraphicContext& G
 
 bool MainMenuTargetingState::LastToDraw() const
 {
+	return false;
 }
 
 bool MainMenuTargetingState::DisableMappableObjects() const
 {
-
+	return true;
 }
 
 void MainMenuTargetingState::MappableObjectMoveHook()

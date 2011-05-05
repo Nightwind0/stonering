@@ -22,6 +22,7 @@
 #include <sstream>
 
 using StoneRing::ExperienceState;
+using StoneRing::IApplication;
 
 ExperienceState::ExperienceState()
 {
@@ -100,12 +101,12 @@ void ExperienceState::MappableObjectMoveHook()
 
 bool ExperienceState::DisableMappableObjects() const
 {
-
+	return true;
 }
 
 bool ExperienceState::LastToDraw() const
 {
-
+	return false;
 }
 
 void ExperienceState::Draw(const CL_Rect& screenRect, CL_GraphicContext& GC)
