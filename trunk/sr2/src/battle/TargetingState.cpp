@@ -81,13 +81,13 @@ void TargetingState::HandleButtonUp(const StoneRing::IApplication::Button& butto
 {
     switch(button)
     {
-	case IApplication::BUTTON_CONFIRM:
-	    m_bDone = true;
-	    break;
-	case IApplication::BUTTON_CANCEL:
-	    m_pParent->CancelTargeting();
-	    m_bDone = true;
-	    break;
+        case IApplication::BUTTON_CONFIRM:
+            m_bDone = true;
+            break;
+        case IApplication::BUTTON_CANCEL:
+            m_pParent->CancelTargeting();
+            m_bDone = true;
+            break;
     }
 }
 
@@ -99,59 +99,59 @@ void TargetingState::HandleAxisMove(const IApplication::Axis& axis, IApplication
 {
     if(axis == IApplication::AXIS_VERTICAL)
     {
-	if(dir == IApplication::AXIS_UP)
-	{
-	    SelectUpTarget();
-	}
-	else if(dir == IApplication::AXIS_DOWN)
-	{
-	    SelectDownTarget();
-	}
+        if(dir == IApplication::AXIS_UP)
+        {
+            SelectUpTarget();
+        }
+        else if(dir == IApplication::AXIS_DOWN)
+        {
+            SelectDownTarget();
+        }
     }
     else
     {
-	if(dir == IApplication::AXIS_LEFT)
-	{
-	    if (m_state == SELECT_SINGLE_LEFT)
-	    {
-		if (!SelectTargetOnLeft() && may_target_group())
-		{
-		    ChangeState(SELECT_LEFT_GROUP);
-		}
-	    }
-	    else if (m_state == SELECT_SINGLE_RIGHT)
-	    {
-		if (!SelectTargetOnLeft() && may_target_single())
-		{
-		    ChangeState(SELECT_SINGLE_LEFT);
-		}
-	    }
-	    else if (m_state == SELECT_RIGHT_GROUP && may_target_single())
-	    {
-		ChangeState(SELECT_SINGLE_RIGHT);
-	    }
-	}
-	else if(dir == IApplication::AXIS_RIGHT)
-	{
-	    if (m_state == SELECT_SINGLE_LEFT)
-	    {
-		if (!SelectTargetOnRight() && may_target_single())
-		{
-		    ChangeState(SELECT_SINGLE_RIGHT);
-		}
-	    }
-	    else if (m_state == SELECT_SINGLE_RIGHT)
-	    {
-		if (!SelectTargetOnRight() && may_target_group())
-		{
-		    ChangeState(SELECT_RIGHT_GROUP);
-		}
-	    }
-	    else if (m_state == SELECT_LEFT_GROUP && may_target_single())
-	    {
-		ChangeState(SELECT_SINGLE_LEFT);
-	    }
-	}
+        if(dir == IApplication::AXIS_LEFT)
+        {
+            if (m_state == SELECT_SINGLE_LEFT)
+            {
+                if (!SelectTargetOnLeft() && may_target_group())
+                {
+                    ChangeState(SELECT_LEFT_GROUP);
+                }
+            }
+            else if (m_state == SELECT_SINGLE_RIGHT)
+            {
+                if (!SelectTargetOnLeft() && may_target_single())
+                {
+                    ChangeState(SELECT_SINGLE_LEFT);
+                }
+            }
+            else if (m_state == SELECT_RIGHT_GROUP && may_target_single())
+            {
+                ChangeState(SELECT_SINGLE_RIGHT);
+            }
+        }
+        else if(dir == IApplication::AXIS_RIGHT)
+        {
+            if (m_state == SELECT_SINGLE_LEFT)
+            {
+                if (!SelectTargetOnRight() && may_target_single())
+                {
+                    ChangeState(SELECT_SINGLE_RIGHT);
+                }
+            }
+            else if (m_state == SELECT_SINGLE_RIGHT)
+            {
+                if (!SelectTargetOnRight() && may_target_group())
+                {
+                    ChangeState(SELECT_RIGHT_GROUP);
+                }
+            }
+            else if (m_state == SELECT_LEFT_GROUP && may_target_single())
+            {
+                ChangeState(SELECT_SINGLE_LEFT);
+            }
+        }
     }
 }
 
@@ -193,14 +193,14 @@ bool TargetingState::SelectFromRightGroup()
     }
     else
     {
-       for(uint i=0;i<m_pParent->m_monsters->GetCharacterCount();i++)
-       {
-           if(can_target(m_pParent->m_monsters->GetCharacter(i))){
+    for(uint i=0;i<m_pParent->m_monsters->GetCharacterCount();i++)
+    {
+        if(can_target(m_pParent->m_monsters->GetCharacter(i))){
             m_pParent->m_targets.selected.m_pTarget = m_pParent->m_monsters->GetCharacter(i);
             m_pParent->m_targets.m_bSelectedGroup = false;
             return true;
-           }
-       }
+        }
+    }
     }
 
     return false;
@@ -210,14 +210,14 @@ bool TargetingState::SelectFromLeftGroup()
     if (m_pParent->MonstersOnLeft())
     {
 
-       for(uint i=0;i<m_pParent->m_monsters->GetCharacterCount();i++)
-       {
-           if(can_target(m_pParent->m_monsters->GetCharacter(i))){
+    for(uint i=0;i<m_pParent->m_monsters->GetCharacterCount();i++)
+    {
+        if(can_target(m_pParent->m_monsters->GetCharacter(i))){
             m_pParent->m_targets.selected.m_pTarget = m_pParent->m_monsters->GetCharacter(i);
             m_pParent->m_targets.m_bSelectedGroup = false;
             return true;
-           }
-       }
+        }
+    }
 
     }
     else
@@ -391,20 +391,20 @@ void TargetingState::SelectDownTarget()
         }
         else
         {
-	    Character* pCharacter = dynamic_cast<Character*>(target);
-	    int current_index = 0;
-	    for(int i=0;i<m_pParty->GetCharacterCount();i++)
-	    {
-		if(pCharacter == m_pParty->GetCharacter(i))
-		{
-		    current_index = i;
-		    break;
-		}
-	    }
-	    current_index++;
-	    if(current_index == m_pParty->GetCharacterCount())
-		current_index = 0;
-	    m_pParent->m_targets.selected.m_pTarget = m_pParty->GetCharacter(current_index);
+            Character* pCharacter = dynamic_cast<Character*>(target);
+            int current_index = 0;
+            for(int i=0;i<m_pParty->GetCharacterCount();i++)
+            {
+                if(pCharacter == m_pParty->GetCharacter(i))
+                {
+                    current_index = i;
+                    break;
+                }
+            }
+            current_index++;
+            if(current_index == m_pParty->GetCharacterCount())
+                current_index = 0;
+            m_pParent->m_targets.selected.m_pTarget = m_pParty->GetCharacter(current_index);
             return;
         }
     }
@@ -454,20 +454,20 @@ void TargetingState::SelectUpTarget()
         }
         else
         {
-	    Character* pCharacter = dynamic_cast<Character*>(target);
-	    int current_index = 0;
-	    for(int i=0;i<m_pParty->GetCharacterCount();i++)
-	    {
-		if(pCharacter == m_pParty->GetCharacter(i))
-		{
-		    current_index = i;
-		    break;
-		}
-	    }
-	    current_index--;
-	    if(current_index == -1)
-		current_index = m_pParty->GetCharacterCount() -1 ;
-	    m_pParent->m_targets.selected.m_pTarget = m_pParty->GetCharacter(current_index);
+            Character* pCharacter = dynamic_cast<Character*>(target);
+            int current_index = 0;
+            for(int i=0;i<m_pParty->GetCharacterCount();i++)
+            {
+                if(pCharacter == m_pParty->GetCharacter(i))
+                {
+                    current_index = i;
+                    break;
+                }
+            }
+            current_index--;
+            if(current_index == -1)
+                current_index = m_pParty->GetCharacterCount() -1 ;
+            m_pParent->m_targets.selected.m_pTarget = m_pParty->GetCharacter(current_index);
             return;
         }
     }
@@ -490,9 +490,9 @@ void TargetingState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
         if ((m_pParent->m_targets.m_bSelectedGroup && m_pParent->m_targets.selected.m_pGroup == m_pParty)
                 || m_pParent->m_targets.selected.m_pTarget == pCharacter)
         {
-	    CL_Rectf rect = m_pParent->get_character_rect(pCharacter);
+            CL_Rectf rect = m_pParent->get_character_rect(pCharacter);
             m_target_sprite.draw(GC,rect.left,rect.top);
-                                 //(rect.top - (m_target_sprite.get_height()/2));
+                                //(rect.top - (m_target_sprite.get_height()/2));
         }
     }
 
@@ -503,7 +503,7 @@ void TargetingState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
         if ((m_pParent->m_targets.m_bSelectedGroup && m_pParent->m_targets.selected.m_pGroup == m_pParent->m_monsters)
                 || m_pParent->m_targets.selected.m_pTarget == pMonster)
         {
-	    CL_Rectf rect = m_pParent->get_character_rect(pMonster);
+            CL_Rectf rect = m_pParent->get_character_rect(pMonster);
             CL_Sprite sprite = pMonster->GetCurrentSprite();
             m_target_sprite.draw(GC,rect.left, rect.top );
                                 // rect.top - (m_target_sprite.get_height()/2.0f) + sprite.get_height()/2.0f);
