@@ -1089,6 +1089,7 @@ void Application::onSignalKeyUp(const CL_InputEvent &key, const CL_InputState&)
     switch(key.id)
     {
         case CL_KEY_DOWN:
+			mStates.back()->HandleAxisMove(IApplication::AXIS_VERTICAL,AXIS_NEUTRAL,0.0);
             break;
         case CL_KEY_UP: 
         mStates.back()->HandleAxisMove(IApplication::AXIS_VERTICAL,AXIS_NEUTRAL,0.0);
