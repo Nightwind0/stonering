@@ -177,7 +177,9 @@ stonering_SOURCES =	src/Application.cpp \
 			src/states/ItemSelectState.h \
 			src/states/ItemSelectState.cpp \
 			src/states/MainMenuTargetingState.cpp \
-			src/states/MainMenuTargetingState.h
+			src/states/MainMenuTargetingState.h \
+			src/states/DynamicMenuState.h \
+			src/states/DynamicMenuState.cpp
 
 
 

@@ -187,6 +187,22 @@
 	</section>
 
 	<section name="Overlays">
+            <section name="DynamicMenu">
+                <section name="points">
+                    <point name="margins" x="20" y="20"/>
+                </section>
+                <section name="gradients">
+                    <gradient name="bg" top_left="#0057ff" top_right="#0057ff" bottom_right="#003397" bottom_left="#003397"/>
+                </section>
+                <section name="colors">
+                    <string name="border" value="#FFFFFF"/>
+                    <string name="shadow" value="#20202077"/>
+                </section>
+                <section name="fonts">
+                    <string name="Option" value="BoldGray"/>
+                    <string name="Selection" value="BoldWhite"/>
+                </section>
+            </section>
 	    <section name="MainMenu">
 		<image name="overlay">
 		    <image-file file="Images/Overlays/main_menu_overlay.png"/>

@@ -904,6 +904,24 @@ SteelType Application::showExperience(const SteelArray&  characters, const Steel
     return SteelType();
 }
 
+SteelType Application::menu(const SteelArray& array)
+{
+    DynamicMenuState* pState = new DynamicMenuState();
+    std::vector<std::string> options;
+    for(SteelArray::const_iterator iter = array.begin(); iter != array.end(); iter++)
+    {
+        options.push_back ( *iter );
+    }
+    pState->Init(options);
+    mStates.push_back(pState);
+    run();
+    int selection = pState->GetSelection();
+    SteelType val;
+    val.set(selection);
+    delete pState;
+    return val;
+}
+
 
 void Application::LoadMainMenu(CL_DomDocument& doc)
 {
@@ -1458,6 +1476,7 @@ mInterpreter.addFunction("useItem", new SteelFunctor2Arg<Application,SteelType::
 mInterpreter.addFunction("inBattle", new SteelFunctorNoArgs<Application>(this,&Application::inBattle));
 
 mInterpreter.addFunction("doMPDamage", new SteelFunctor2Arg<Application,SteelType::Handle,int>(this,&Application::doMPDamage));
+mInterpreter.addFunction("menu",new SteelFunctor1Arg<Application,const SteelArray&>(this,&Application::menu));
 
 //        SteelType hasGeneratedWeapon(const std::string &wepclass, const std::string &webtype);
 //       SteelType hasGeneratedArmor(const std::string &armclass, const std::string &armtype);

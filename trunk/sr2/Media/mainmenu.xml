@@ -1,6 +1,7 @@
 <menu>
     <menuOption name="Items" icon="item">
 	<script id="MainMenuItems">
+            declare $choice = menu(array("Use","Drop"));
 	    declare $item = selectItem(false);
 	    if(is_valid($item))
 	    {
