@@ -231,6 +231,7 @@ void ItemSelectState::Start()
 
 bool ItemSelectState::selection_applies(Item *pItem)
 {
+    if(!pItem) return false;
     if(pItem->GetItemType() & m_typemask == 0) return false;
     
     switch(pItem->GetItemType())
@@ -296,7 +297,10 @@ int ItemSelectState::height_for_option(CL_GraphicContext& gc)
 
 void ItemSelectState::process_choice(int selection)
 {
-    m_selected_item = m_items[m_itemType][selection].first;
+    if(!m_items.empty() && m_items[m_itemType].size() > selection)
+    {
+        m_selected_item = m_items[m_itemType][selection].first;
+    }
 }
 
 int ItemSelectState::get_option_count()
