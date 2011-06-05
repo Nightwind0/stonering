@@ -14,6 +14,7 @@ namespace StoneRing
     class SkillRef;
     class BattleMenu;
     class ScriptElement;
+    class SkillTreeNode;
 
     class CharacterClass : public Element, public SteelType::IHandle
     {
@@ -32,8 +33,8 @@ namespace StoneRing
 	int	  GetExperienceToLevel(int level);
 	int       GetLevelForExperience(int xp);
 
-        std::list<SkillRef*>::const_iterator GetSkillRefsBegin() const;
-        std::list<SkillRef*>::const_iterator GetSkillRefsEnd() const;
+        std::list<SkillTreeNode*>::const_iterator GetSkillTreeNodesBegin() const;
+        std::list<SkillTreeNode*>::const_iterator GetSkillTreeNodesEnd() const;
 
         BattleMenu * GetBattleMenu() const;
         std::string GetName() const;
@@ -50,7 +51,7 @@ namespace StoneRing
         typedef std::map<ICharacter::eCharacterAttribute,StatScript*> StatMap;
         StatMap m_stat_scripts;
 	//AstScript* m_pTNL;
-        std::list<SkillRef*> m_skill_refs;
+        std::list<SkillTreeNode*> m_skill_tree;
         BattleMenu *m_pMenu;
     };
 

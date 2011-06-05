@@ -84,6 +84,7 @@ namespace StoneRing
             ESCRIPT,
             ESKILL,
             ESKILLREF,
+            ESKILLTREENODE,
             ESPECIALITEM,
             ESPELL,
             ESPELLREF,

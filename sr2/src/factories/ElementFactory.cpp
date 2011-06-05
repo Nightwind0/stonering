@@ -131,6 +131,7 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["script"] = &ElementFactory::createScriptElement;
     mCreateMethods["skill"] = &ElementFactory::CreateElement<Skill>;
     mCreateMethods["skillRef"] = &ElementFactory::CreateElement<SkillRef>;
+    mCreateMethods["skillTreeNode"] = &ElementFactory::CreateElement<SkillTreeNode>;
     mCreateMethods["specialItem"] = &ElementFactory::CreateElement<SpecialItem>;
     mCreateMethods["spell"] = &ElementFactory::CreateElement<Spell>;
     mCreateMethods["spellRef"] = &ElementFactory::CreateElement<SpellRef>;

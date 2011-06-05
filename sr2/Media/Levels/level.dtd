@@ -88,11 +88,12 @@
 <!ELEMENT onDeselect (script)>
 
 <!-- Character Class DTD -->
-<!ELEMENT characterClass (battleMenu,weaponTypeRef*, armorTypeRef*,statScript*,skillRef*)>
+<!ELEMENT characterClass (battleMenu,weaponTypeRef*, armorTypeRef*,statScript*,skillTreeNode*)>
 <!ELEMENT characterClasses (characterClass+)>
 <!ELEMENT statScript (script)>
-<!ELEMENT skill (conditionScript?, prereqSkillRef*, onInvoke?, onRemove?)>
+<!ELEMENT skill (conditionScript?, onInvoke?, onRemove?)>
 <!ELEMENT skillList (skill)+>
+<!ELEMENT skillTreeNode (skillRef,conditionScript?,skillTreeNode*)>
 <!ELEMENT prereqSkillRef EMPTY>
 <!ELEMENT skillRef EMPTY>
 <!ELEMENT battleMenu (battleMenuOption*)>
@@ -285,15 +286,13 @@
 <!ATTLIST statScript stat CDATA #REQUIRED>
 <!ATTLIST skill name CDATA #REQUIRED>
 <!ATTLIST skill icon CDATA #IMPLIED>
-<!ATTLIST skill sp CDATA #REQUIRED> <!-- Skill points to earn skill -->
 <!ATTLIST skill bp CDATA #REQUIRED> <!-- Percentage of 'Break' to use skill -->
-<!ATTLIST skill minLevel CDATA #IMPLIED> <!-- Default is 1 -->
 <!ATTLIST skill type (battle|switch) #IMPLIED> <!-- Defaults to battle -->
 <!ATTLIST prereqSkillRef skillName CDATA #REQUIRED>
 <!ATTLIST skillRef skillName CDATA #REQUIRED>
-<!ATTLIST skillRef overrideSp CDATA #IMPLIED> <!-- Defaults to skill's value -->
-<!ATTLIST skillRef overrideBp CDATA #IMPLIED> <!-- Defaults to skill's value -->
-<!ATTLIST skillRef overrideMinLevel CDATA #IMPLIED> <!-- Defaults to skill's value -->
+<!ATTLIST skillTreeNode reqs CDATA #IMPLIED> <!-- string describing any conditions above minlevel and pre-reqs -->
+<!ATTLIST skillTreeNode sp CDATA #IMPLIED> <!-- SP cost to learn this skill -->
+<!ATTLIST skillTreeNode min_level CDATA #IMPLIED> <!-- minimum level to learn this skill -->
 
 <!ATTLIST animationRef CDATA #REQUIRED>
 

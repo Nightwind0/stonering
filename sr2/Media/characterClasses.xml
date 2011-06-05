@@ -113,10 +113,18 @@
                 return  math::pow(1.06,$_CL) * 4.25;
             </script>
         </statScript>
-        <skillRef skillName="Attack"/>
-        <skillRef skillName="Flee"/>
-        <skillRef skillName="Item"/>
-        <skillRef skillName="Throw"/>
+        <skillTreeNode>
+            <skillRef skillName="Attack"/>
+        </skillTreeNode>
+        <skillTreeNode>
+            <skillRef skillName="Flee"/>
+        </skillTreeNode>
+        <skillTreeNode>
+            <skillRef skillName="Item"/>
+        </skillTreeNode>
+        <skillTreeNode>
+            <skillRef skillName="Throw"/>
+        </skillTreeNode>
     </characterClass>
 	<characterClass name = "Ranger" gender="either">
 
@@ -164,7 +172,15 @@
                 return math::pow(1.06,$_CL) * 4;
             </script>
         </statScript>
-
+        <skillTreeNode>
+            <skillRef skillName="Attack"/>
+        </skillTreeNode>
+        <skillTreeNode>
+            <skillRef skillName="Flee"/>
+        </skillTreeNode>
+        <skillTreeNode>
+            <skillRef skillName="Item"/>
+        </skillTreeNode>
 
 		<!--statIncrease base="1.07" multiplier="18" stat="hp_max"/>
 		<statIncrease base="1.06" multiplier="4" stat="str"/>
@@ -172,9 +188,6 @@
 		<statIncrease base="1.06" multiplier="6" stat="evd"/>
 		<statIncrease base="1.06" multiplier="1" stat="mag"/>
 		<statIncrease base="1.06" multiplier="4" stat="rst"/-->
-                    <skillRef skillName="Attack"/>
-                    <skillRef skillName="Flee"/>
-                    <skillRef skillName="Item"/>
 	</characterClass>
 </characterClasses>
 
