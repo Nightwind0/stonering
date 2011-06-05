@@ -29,7 +29,20 @@
 			return true;
 			]]>
 		</conditionScript>
-		<skillRef skillName="Throw"/>
+                <battleMenu type="popup">
+                    <battleMenuOption name="Throw1" icon="hurl">
+                        <conditionScript id="WarriorThrow1Condition">
+                            return true;
+                        </conditionScript>
+                        <skillRef skillName="Throw"/>
+                    </battleMenuOption>
+                    <battleMenuOption name="Throw2" icon="hurl">
+                        <conditionScript id="WarriorThrow2Condition">
+                            return true;
+                        </conditionScript>
+                        <skillRef skillName="Throw"/>
+                    </battleMenuOption>                    
+                </battleMenu>
 	    </battleMenuOption>
 	  <battleMenuOption name="Flee" icon="flee">
 		<conditionScript id="WarriorFleeCondition">

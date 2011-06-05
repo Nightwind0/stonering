@@ -80,6 +80,7 @@ namespace StoneRing
 	SteelType mainMenu();
         SteelType startBattle(const std::string &monster, uint count, bool isBoss, const std::string &backdrop);
         SteelType say(const std::string &speaker, const std::string &text);
+        SteelType message( const std::string &text );
         SteelType pause(uint time);
         SteelType invokeShop(const std::string &shoptype);
         SteelType choice(const std::string &choiceText, const SteelType::Container &choices);
@@ -92,7 +93,7 @@ namespace StoneRing
         SteelType didEvent(const std::string &event);
         SteelType doEvent(const std::string &event, bool bRemember);
         SteelType takeNamedItem(const std::string &item, uint count);
-        SteelType selectItem(bool battle);
+        SteelType selectItem(bool battle, bool dispose);
         SteelType addCharacter(const std::string &character, int level, bool announce);
 	SteelType inBattle();
 
@@ -149,6 +150,7 @@ namespace StoneRing
 	SteelType getItemTargetable(SteelType::Handle hItem);
 	SteelType getItemDefaultTarget(SteelType::Handle hItem);
 	SteelType isReusableItem(SteelType::Handle hItem);
+        SteelType disposeItem(SteelType::Handle hItem,  uint count); // Call multiple times to take multiple of this item
 	SteelType useItem(SteelType::Handle hItem, const SteelType& targets);
 
         SteelType getHitSound(SteelType::Handle hWeaponType);
