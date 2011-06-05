@@ -30,22 +30,7 @@
 		<string name="Currency" value="Drops"/>
 		<float name="DefaultEncounterRate" value="0.10"/>
 	</section>
-	<section name="States">
-		<section name="Battle">
-			<section name="MonsterRect">
-				<integer name="top" value="0"/>
-				<integer name="left" value="0"/>
-				<integer name="right" value="528"/>
-				<integer name="bottom" value="396"/>
-			</section>
-			<section name="PlayerRect">
-				<integer name="top" value="64"/>
-				<integer name="left" value="594"/>
-				<integer name="right" value="800"/>
-				<integer name="bottom" value="396"/>
-			</section>
-		</section>
-	</section>
+
 	<section name="Fonts">
 <!-- 1234567890-=\+/`~!@#$%^&*()[]{};:'",.<>?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw -->
 
@@ -221,41 +206,20 @@
 			<string name="MP"    value = "mono_purple"/>
 			<string name="SP"    value = "mono_cyan"/>
 		</section>
-		<section name="menu">
-			<integer name="left" value="479"/>
-			<integer name="right" value="752"/>
-			<integer name="top" value="43"/>
-			<integer name="bottom" value="363"/>
-		</section>
-		<section name="party">
-			<integer name="left" value="12"/>
-			<integer name="right" value="484"/>
-			<integer name="top" value="24"/>
-			<integer name="bottom" value="191"/>
-		</section>
-		<section name="character">
-			<integer name="left" value="30"/>
-			<integer name="right" value="484"/>
-			<integer name="top" value="30"/>
-			<integer name="bottom" value="191"/>
-		</section>
+                <section name="rects">
+                    <rect name="menu" left="479" right="752" top="43" bottom="363"/>
+                    <rect name="party" left="12" right="484" top="24" bottom="191"/>
+                    <rect name="character" left="30" right="484" top="30" bottom="191"/>
+                </section>
 	    </section>
 	    <section name="ItemSelect">
 		<image name="overlay">
 		    <image-file file="Images/Overlays/item_select.png"/>
 		</image>
-		<section name="header">
-		    <integer name="left" value="80"/>
-		    <integer name="right" value="720"/>
-		    <integer name="top" value="26"/>
-		    <integer name="bottom" value="50"/>
-		</section>
-		<section name="list">
-			<integer name="left" value="20"/>
-			<integer name="right" value="752"/>
-			<integer name="top" value="86"/>
-			<integer name="bottom" value="363"/>
-		</section>	
+                <section name="rects">
+                    <rect name="header" left="80" right="720" top="26" bottom="50"/>
+                    <rect name="list" left="20" right="752" top="86" bottom="363"/>
+                </section>
 		<section name="fonts">
 			<string name="Option" value="BoldMonoGray"/>
 			<string name="Selection" value="BoldMonoWhite"/>
@@ -266,8 +230,6 @@
 			<image name="overlay">
 				<image-file file="Images/Overlays/battle_status_overlay_s.png"/>
 			</image>
-			<integer name="x" value="0"/>
-			<integer name="y" value="396"/>
 			<section name="fonts">
 				<string name="hp" value="sb_green"/>
 				<string name="mp" value="sb_cyan"/>
@@ -275,37 +237,39 @@
 				<string name="general" value="sb_black"/>
 				<string name="bad" value="sb_red"/>
 			</section>
-			<section name="text">
-				<integer name="left" value="12"/>
-				<integer name="right" value="484"/>
-				<integer name="top" value="24"/>
-				<integer name="bottom" value="191"/>
-			</section>
+                        <section name="points">
+                            <point name="origin" x="0" y="396"/>
+                        </section>
+                        <section name="rects">
+                            <rect name="text" left="12" right="484" top="24" bottom="191"/>
+                            <rect name="monster" left="0" top="0" right="528" bottom="396"/>
+                            <rect name="player" left="594" top="64" right="800" bottom="396"/>
+                        </section>
 		</section>
 		<section name="BattlePopup">
 			<image name="overlay">
 				<image-file file="Images/Overlays/battle_popup.png"/>
 			</image>
-			<integer name="y" value="396"/>
-			<integer name="x" value="476"/>
+                        <section name="points">
+                            <point name="origin" x="476" y="396"/>
+                        </section>
+                        <section name="rects">
+                            <rect name="text" left="14" right="312" top="20" bottom="192"/>
+
+                        </section>
 			<section name="fonts">
 				<string name="on" value="BoldBlack"/>
 				<string name="off" value="BoldGray"/>
 				<string name="Selection" value="BoldWhite"/>
-			</section>
-			<section name="text">
-				<integer name="left" value="14"/>
-				<integer name="right" value="312"/>
-				<integer name="top" value="20"/>
-				<integer name="bottom" value="192"/>
 			</section>
 		</section>
 		<section name="BattleMenu">
 			<image name="overlay">
 				<image-file file="Images/Overlays/battle_menu_overlay.png"/>
 			</image>
-			<integer name="x" value="0"/>
-			<integer name="y" value="500"/>
+                        <section name="points">
+                            <point name="origin" x="0" y="500"/>
+                        </section>
 			<section name="fonts">
 				<string name="on" value="BoldPowderBlue"/>
 				<string name="off" value="BoldGray"/>
@@ -316,32 +280,13 @@
 			<image name="overlay">
 				<image-file file="Images/Overlays/say_overlay10.png"/>
 			</image>
-			<integer name="x" value="0"/>
-			<integer name="y" value="320"/>
-			<section name="header">
-				<section name="bgcolor">
-					<integer name="r" value="0"/>
-					<integer name="g" value="0"/>
-					<integer name="b" value="0"/>
-					<integer name="a" value="0"/>
-				</section>
-				<integer name="left" value="24"/>
-				<integer name="top" value="340"/>
-				<integer name="right" value="783" />
-				<integer name="bottom" value="369"/>
-			</section>
-			<section name="text">
-				<section name="bgcolor">
-					<integer name="r" value="0"/>
-					<integer name="g" value="0"/>
-					<integer name="b" value="0"/>
-					<integer name="a" value="0"/>
-				</section>
-				<integer name="left" value="24"/>
-				<integer name="top" value="388"/>
-				<integer name="right" value="783" />
-				<integer name="bottom" value="580"/>
-			</section>
+                        <section name="points">
+                            <point name="origin" x="0" y="320"/>
+                        </section>
+                        <section name="rects">
+                            <rect name="header" left="24" top="340" right="783" bottom="369"/>
+                            <rect name="text" left="24" top="388" right="783" bottom="580"/>
+                        </section>
 			<section name="fonts">
 				<string name="Speaker" value="BoldBlack"/>
 				<string name="Speech" value="BoldWhite"/>
@@ -351,26 +296,17 @@
 			<image name="overlay">
 				<image-file file="Images/Overlays/xp_overlay.png"/>
 			</image>
-			<integer name="x" value="0"/>
-			<integer name="y" value="0"/>
-			<section name="portrait">
-			    <integer name="x" value="36"/>
-			    <integer name="y" value="36"/>
-			</section>
-			<section name="text">
-			    <integer name="x" value = "180"/>
-			    <integer name="y" value = "70"/>
-			</section>
-			<section name="xp_bar">
-			    <integer name="x" value="194"/>
-			    <integer name="y" value ="135"/>
-			    <integer name="width" value="300"/>
-			    <integer name="height" value="32"/>
-			    <string name="gradient_top_left" value="#FFFFFFFF"/>
-			    <string name="gradient_top_right" value="#FF00FFFF"/>
-			    <string name="gradient_bottom_left" value="#00FF00FF"/>
-			    <string name="gradient_bottom_right" value="#F0F0F0FF"/>
-			</section>
+                        <section name="points">
+                            <point name="origin" x="0" y="0"/>
+                            <point name="portrait" x="36" y="36"/>
+                            <point name="text" x="180" y="70"/>
+                        </section>
+                        <section name="rects">
+                            <rect name="xp_bar" left="194" top="135" right="494" bottom="167"/>
+                        </section>
+                        <section name="gradients">
+                            <gradient name="xp_bar" top_left="#FFFFFFFF" top_right="#FF00FFFF" bottom_left="#00FF00FF" bottom_right="#F0F0F0FF"/>
+                        </section>
 			<section name="fonts">
 			    <string name="Character" value="BoldWhite"/>
 			    <string name="XP"        value="BoldBlack"/>

@@ -36,16 +36,12 @@ ExperienceState::~ExperienceState()
 
 void ExperienceState::Init()
 {
-    CL_ResourceManager resources = IApplication::GetInstance()->GetResources();
-    static std::string resource = "Overlays/Experience/";
     m_characters.clear();
     m_overlay = GraphicsManager::GetOverlay(GraphicsManager::EXPERIENCE);
-    m_portraitOffset.x = (float)resources.get_integer_resource(resource + "portrait/x",0);
-    m_portraitOffset.y = (float)resources.get_integer_resource(resource + "portrait/y",0);
-    m_offset.x = (float)resources.get_integer_resource(resource + "x",0);
-    m_offset.y = (float)resources.get_integer_resource(resource + "y",0);
-    m_textOffset.x = (float)resources.get_integer_resource(resource + "text/x",0);
-    m_textOffset.y = (float)resources.get_integer_resource(resource + "text/y",0);
+    m_portraitOffset = GraphicsManager::GetPoint(GraphicsManager::EXPERIENCE,"portrait");
+    m_offset = GraphicsManager::GetPoint(GraphicsManager::EXPERIENCE,"origin");
+    m_textOffset = GraphicsManager::GetPoint(GraphicsManager::EXPERIENCE,"text");
+
     
     m_characterFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::EXPERIENCE,"Character"));
     m_xpFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::EXPERIENCE,"XP"));
@@ -53,17 +49,8 @@ void ExperienceState::Init()
     m_levelFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::EXPERIENCE,"Level"));
 
     
-    CL_Colorf xp_bar_tl(CL_String_load(resource + "xp_bar/gradient_top_left",resources));
-    CL_Colorf xp_bar_tr(CL_String_load(resource + "xp_bar/gradient_top_right",resources));
-    CL_Colorf xp_bar_bl(CL_String_load(resource + "xp_bar/gradient_bottom_left",resources));
-    CL_Colorf xp_bar_br(CL_String_load(resource + "xp_bar/gradient_bottom_right",resources));
-    
-    m_barGradient = CL_Gradient(xp_bar_tl,xp_bar_tr,xp_bar_bl,xp_bar_br);
-    m_barPoint = CL_Pointf(resources.get_integer_resource(resource + "xp_bar/x",0),
-			   resources.get_integer_resource(resource + "xp_bar/y",0));
-    CL_Sizef barSize = CL_Sizef(resources.get_integer_resource(resource + "xp_bar/width",0),
-				resources.get_integer_resource(resource + "xp_bar/height",0));
-    m_barRect = CL_Rectf(m_barPoint,barSize);
+    m_barGradient = GraphicsManager::GetGradient(GraphicsManager::EXPERIENCE,"xp_bar");
+    m_barRect = GraphicsManager::GetRect(GraphicsManager::EXPERIENCE,"xp_bar");
 
     m_pTNL = IApplication::GetInstance()->GetUtility(IApplication::XP_FOR_LEVEL);
     m_pLNT = IApplication::GetInstance()->GetUtility(IApplication::LEVEL_FOR_XP);
@@ -118,7 +105,7 @@ void ExperienceState::Draw(const CL_Rect& screenRect, CL_GraphicContext& GC)
     const int height_per_char = m_overlay.get_height();
     CL_Pointf offset = m_offset;
     offset.x += (IApplication::GetInstance()->GetDisplayRect().get_width() - m_overlay.get_width()) / 2.0;
-    offset.y += (IApplication::GetInstance()->GetDisplayRect().get_width() - (height_per_char * total_characters)) / 2.0;
+    offset.y += (IApplication::GetInstance()->GetDisplayRect().get_height() - (height_per_char * total_characters)) / 2.0;
     for(int i=0;i<m_characters.size();i++)
     {
 	CL_Pointf point = offset;

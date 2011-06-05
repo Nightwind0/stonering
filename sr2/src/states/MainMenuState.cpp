@@ -181,9 +181,6 @@ void StoneRing::MainMenuState::Start()
 
     CL_GraphicContext& GC = GET_MAIN_GC();
     m_bDone = false;
-    std::string resource = "Overlays/MainMenu/";
-    IApplication *pApp = IApplication::GetInstance();
-    CL_ResourceManager& resources = pApp->GetResources();
 
     m_target_sprite = GraphicsManager::CreateSprite("Menu/Target");
 
@@ -199,22 +196,10 @@ void StoneRing::MainMenuState::Start()
     m_CharacterFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"Character");
 
     m_overlay = GraphicsManager::GetOverlay(GraphicsManager::MAIN_MENU);
-
-    m_menu_rect.top = (float)resources.get_integer_resource(resource + "menu/top",0);
-    m_menu_rect.left = (float)resources.get_integer_resource(resource + "menu/left",0);
-    m_menu_rect.right = (float)resources.get_integer_resource(resource + "menu/right",0);
-    m_menu_rect.bottom = (float)resources.get_integer_resource(resource + "menu/bottom",0);
-
-    m_party_rect.top = (float)resources.get_integer_resource(resource + "party/top",0);
-    m_party_rect.left = (float)resources.get_integer_resource(resource + "party/left",0);
-    m_party_rect.right = (float)resources.get_integer_resource(resource + "party/right",0);
-    m_party_rect.bottom = (float)resources.get_integer_resource(resource + "party/bottom",0);
     
-    m_character_rect.top = (float)resources.get_integer_resource(resource + "character/top",0);
-    m_character_rect.left = (float)resources.get_integer_resource(resource + "character/left",0);
-    m_character_rect.right = (float)resources.get_integer_resource(resource + "character/right",0);
-    m_character_rect.bottom = (float)resources.get_integer_resource(resource + "character/bottom",0);
-
+    m_menu_rect = GraphicsManager::GetRect(GraphicsManager::MAIN_MENU,"menu");
+    m_party_rect = GraphicsManager::GetRect(GraphicsManager::MAIN_MENU,"party");
+    m_character_rect = GraphicsManager::GetRect(GraphicsManager::MAIN_MENU,"character");
     SelectionFinish();
 }
 

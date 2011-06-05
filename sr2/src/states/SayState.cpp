@@ -98,10 +98,6 @@ void StoneRing::SayState::MappableObjectMoveHook()
 
 void StoneRing::SayState::Start()
 {
-    const std::string resource = "Overlays/Say/";
-    IApplication * pApp = IApplication::GetInstance();
-    CL_ResourceManager& resources = pApp->GetResources();
-
     m_bDone = false;
     m_nTotalDrawn = m_nDrawnThisFrame = 0;
 
@@ -109,30 +105,15 @@ void StoneRing::SayState::Start()
     m_speechFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::SAY,"Speech"));
 
 
-    m_sayOverlay = CL_Image(GET_MAIN_GC(),resource + "overlay",&resources);
-
-    m_speaker_rect.top = (float)resources.get_integer_resource(resource + "header/top", 0);
-    m_speaker_rect.left = (float)resources.get_integer_resource(resource + "header/left", 0);
-    m_speaker_rect.right = (float)resources.get_integer_resource(resource + "header/right", 0);
-    m_speaker_rect.bottom = (float)resources.get_integer_resource(resource + "header/bottom", 0);
-
-    m_text_rect.top = (float)resources.get_integer_resource(resource + "text/top", 0);
-    m_text_rect.left = (float)resources.get_integer_resource(resource + "text/left", 0);
-    m_text_rect.right = (float)resources.get_integer_resource(resource + "text/right", 0);
-    m_text_rect.bottom = (float)resources.get_integer_resource(resource + "text/bottom", 0);
-
-    m_speaker_BGColor.set_red (resources.get_integer_resource(resource + "header/bgcolor/r", 0));
-    m_speaker_BGColor.set_green (resources.get_integer_resource(resource + "header/bgcolor/g", 0));
-    m_speaker_BGColor.set_blue (resources.get_integer_resource(resource + "header/bgcolor/b", 0));
-    m_speaker_BGColor.set_alpha (resources.get_integer_resource(resource + "header/bgcolor/a", 0));
-
-    m_text_BGColor.set_red (resources.get_integer_resource(resource + "text/bgcolor/r", 0));
-    m_text_BGColor.set_green (resources.get_integer_resource(resource + "text/bgcolor/g", 0));
-    m_text_BGColor.set_blue (resources.get_integer_resource(resource + "text/bgcolor/b", 0));
-    m_text_BGColor.set_alpha (resources.get_integer_resource(resource + "text/bgcolor/a", 0));
-
-    m_X = resources.get_integer_resource(resource + "x", 0);
-    m_Y = resources.get_integer_resource(resource + "y", 0);
+    m_sayOverlay = GraphicsManager::GetOverlay(GraphicsManager::SAY);
+ 
+    m_speaker_rect = GraphicsManager::GetRect(GraphicsManager::SAY,"header");
+    m_text_rect = GraphicsManager::GetRect(GraphicsManager::SAY,"text");
+  
+    CL_Pointf origin = GraphicsManager::GetPoint(GraphicsManager::SAY,"origin");
+  
+    m_X = origin.x;
+    m_Y = origin.y;
 }
 
 void StoneRing::SayState::Finish()
