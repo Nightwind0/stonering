@@ -8,44 +8,6 @@
 
 using namespace StoneRing;
 
-
-SkillRef::SkillRef()
-{
-}
-
-SkillRef::~SkillRef()
-{
-}
-
-std::string SkillRef::GetRef() const
-{
-    return m_ref;
-}
-
-uint SkillRef::GetSPCost() const
-{
-    return m_nSp;
-}
-
-uint SkillRef::GetBPCost() const
-{
-    return m_nBp;
-}
-
-uint SkillRef::GetMinLevel() const
-{
-    return m_nMinLevel;
-}
-
-
-void SkillRef::load_attributes(CL_DomNamedNodeMap attributes)
-{
-    m_ref = get_required_string("skillName", attributes);
-    m_nSp = get_implied_int("overrideSp", attributes,0);
-    m_nBp = get_implied_int("overrideBp", attributes,0);
-    m_nMinLevel = get_implied_int("overrideMinLevel",attributes,0);
-}
-
 void CharacterClass::load_attributes(CL_DomNamedNodeMap attributes)
 {
     m_name = get_required_string("name",attributes);
@@ -78,8 +40,8 @@ bool CharacterClass::handle_element(eElement element, Element * pElement)
             m_stat_scripts[pScript->GetCharacterStat()] = pScript;
             break;
         }
-    case ESKILLREF:
-        m_skill_refs.push_back( dynamic_cast<SkillRef*>(pElement));
+    case ESKILLTREENODE:
+        m_skill_tree.push_back( dynamic_cast<SkillTreeNode*>(pElement));
         break;
     case EBATTLEMENU:
         m_pMenu = dynamic_cast<BattleMenu*>(pElement);
@@ -132,7 +94,7 @@ CharacterClass::~CharacterClass()
     delete m_pMenu;
     std::for_each(m_weapon_types.begin(),m_weapon_types.end(),del_fun<WeaponTypeRef>());
     std::for_each(m_armor_types.begin(),m_armor_types.end(),del_fun<ArmorTypeRef>());
-    std::for_each(m_skill_refs.begin(),m_skill_refs.end(),del_fun<SkillRef>());
+    std::for_each(m_skill_tree.begin(),m_skill_tree.end(),del_fun<SkillTreeNode>());
 
     for(std::map<ICharacter::eCharacterAttribute,StatScript*>::iterator it = m_stat_scripts.begin();
         it != m_stat_scripts.end();
@@ -163,14 +125,14 @@ std::list<ArmorTypeRef*>::const_iterator CharacterClass::GetArmorTypeRefsEnd() c
 }
 
 
-std::list<SkillRef*>::const_iterator CharacterClass::GetSkillRefsBegin() const
+std::list<SkillTreeNode*>::const_iterator CharacterClass::GetSkillTreeNodesBegin() const
 {
-    return m_skill_refs.begin();
+    return m_skill_tree.begin();
 }
 
-std::list<SkillRef*>::const_iterator CharacterClass::GetSkillRefsEnd() const
+std::list<SkillTreeNode*>::const_iterator CharacterClass::GetSkillTreeNodesEnd() const
 {
-    return m_skill_refs.end();
+    return m_skill_tree.end();
 }
 
 std::string CharacterClass::GetName() const

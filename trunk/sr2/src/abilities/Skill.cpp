@@ -23,13 +23,12 @@ StoneRing::Skill::TypeFromString(const std::string type)
 void StoneRing::Skill::load_attributes(CL_DomNamedNodeMap attributes)
 {
     m_name = get_required_string("name",attributes);
-    m_nSp = get_required_int("sp",attributes);
     m_nBp = get_required_int("bp",attributes);
-    m_nMinLevel = get_implied_int("minLevel",attributes,0);
     m_eType = TypeFromString(get_implied_string("type",attributes,"battle"));
     m_bAllowsGroupTarget = get_implied_bool("allowsGroupTarget",attributes,false);
     m_bDefaultToEnemyGroup = get_implied_bool("defaultToEnemyGroup", attributes,true);
     m_pIcon = GraphicsManager::GetIcon(get_implied_string("icon",attributes,"no_icon"));
+    m_description = get_implied_string("desc",attributes, "");
 }
 
 void StoneRing::Skill::Invoke(const ParameterList& params)
@@ -91,9 +90,6 @@ bool StoneRing::Skill::handle_element(eElement element, Element * pElement)
     case ECONDITIONSCRIPT:
         m_pCondition = dynamic_cast<NamedScript*>(pElement);
         break;
-    case EPREREQSKILLREF:
-        m_pre_reqs.push_back(dynamic_cast<SkillRef*>(pElement));
-        break;
     default:
         return false;
     }
@@ -101,7 +97,7 @@ bool StoneRing::Skill::handle_element(eElement element, Element * pElement)
     return true;
 }
 
-StoneRing::Skill::Skill():m_nBp(0), m_nSp(0),m_nMinLevel(0),
+StoneRing::Skill::Skill():m_nBp(0), 
                           m_pOnInvoke(NULL),m_pOnRemove(NULL),m_pCondition(NULL),m_pOnSelect(NULL),m_pOnDeselect(NULL),
                           m_bAllowsGroupTarget(false),m_bDefaultToEnemyGroup(true)
 {
@@ -123,34 +119,12 @@ std::string Skill::GetName() const
     return m_name;
 }
 
-uint Skill::GetSPCost() const
-{
-    return m_nSp;
-}
 
 uint Skill::GetBPCost() const
 {
     return m_nBp;
 }
 
-uint Skill::GetMinLevel() const
-{
-    return m_nMinLevel;
-}
-
-
-
-std::list<SkillRef*>::const_iterator
-Skill::GetPreReqsBegin() const
-{
-    return m_pre_reqs.begin();
-}
-
-std::list<SkillRef*>::const_iterator
-Skill::GetPreReqsEnd() const
-{
-    return m_pre_reqs.end();
-}
 
 Skill * SkillRef::GetSkill() const{
     if(!AbilityManager::SkillExists(m_ref))
@@ -163,9 +137,90 @@ Skill * SkillRef::GetSkill() const{
 
 
 
+
+SkillRef::SkillRef()
+{
+}
+
+SkillRef::~SkillRef()
+{
+}
+
+std::string SkillRef::GetRef() const
+{
+    return m_ref;
+}
+
+
+
+void SkillRef::load_attributes(CL_DomNamedNodeMap attributes)
+{
+    m_ref = get_required_string("skillName", attributes);
+}
+
 bool operator==(const SkillRef& lhs, const SkillRef& rhs) 
 {
     return lhs.GetRef() == rhs.GetRef();
+}
+
+
+SkillTreeNode::SkillTreeNode()
+{
+
+}
+
+SkillTreeNode::~SkillTreeNode()
+{
+
+} 
+
+uint SkillTreeNode::GetSPCost() const
+{
+    return m_nSp;
+}
+
+uint SkillTreeNode::GetMinLevel() const
+{
+    return m_nMinLevel;
+}
+
+bool SkillTreeNode::CanLearn ( Character* pCharacter )
+{
+    // Shove character into parameters, call condition script
+    return true;
+}
+
+SkillRef* SkillTreeNode::GetRef() const
+{
+    return m_ref;
+}
+
+void SkillTreeNode::load_attributes ( CL_DomNamedNodeMap attributes )
+{
+    m_nSp = get_implied_int("sp",attributes,0);
+    m_nMinLevel = get_implied_int("min_level",attributes,1);
+    m_requirements = get_implied_string("reqs",attributes,"");
+}
+
+
+bool SkillTreeNode::handle_element ( Element::eElement element, Element* pElement )
+{
+    switch(element)
+    {
+        case ESKILLREF:
+            m_ref = dynamic_cast<SkillRef*>(pElement);
+            break;
+        case ESKILLTREENODE:
+            m_sub_skills.push_back(dynamic_cast<SkillTreeNode*>(pElement));
+            break;
+        case ECONDITIONSCRIPT:
+            m_pCondition = dynamic_cast<ScriptElement*>(pElement);
+            break;
+        default:
+            return false;
+    }
+    
+    return true;
 }
 
 
