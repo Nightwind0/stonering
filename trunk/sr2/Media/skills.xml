@@ -3,7 +3,7 @@
     <skill bp="0" name="Item" sp="0">
 	<onInvoke>
 	    <script id="ItemScript">
-	    declare $item = selectItem(true);
+	    declare $item = selectItem(true,false);
 	    if(is_valid($item))
 	    {
 		declare @targets;

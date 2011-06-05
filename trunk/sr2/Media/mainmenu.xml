@@ -1,27 +1,36 @@
 <menu>
     <menuOption name="Items" icon="item">
 	<script id="MainMenuItems">
-            declare $choice = menu(array("Use","Drop"));
-	    declare $item = selectItem(false);
+            declare $choice = menu(array("Use Item","Drop Item"));
+            declare $drop = ($choice == 1);
+	    declare $item = selectItem(false,$drop);
 	    if(is_valid($item))
 	    {
-		declare @targets;
-		switch(getItemTargetable($item))
-		{
-		    case $_ITEM_TRG_ALL:
-		    case $_ITEM_TRG_GROUP:
-		        @targets = menu::selectTargets(true);
-		    break;
-		    case $_ITEM_TRG_SELF_ONLY:
-		    case $_ITEM_TRG_SINGLE:
-			@targets = menu::selectTargets(false);
-		    break;
-		    case $_ITEM_TRG_NONE:
-		    default:
-		    break;
-		}
-		if(len(@targets) == 0) return; // they hit back
-		useItem($item,@targets);
+                if($drop)
+                {
+                    disposeItem($item,1);
+                    message("Dropped {getItemName($item)}");
+                }
+                else
+                {
+                    declare @targets;
+                    switch(getItemTargetable($item))
+                    {
+                        case $_ITEM_TRG_ALL:
+                        case $_ITEM_TRG_GROUP:
+                            @targets = menu::selectTargets(true);
+                        break;
+                        case $_ITEM_TRG_SELF_ONLY:
+                        case $_ITEM_TRG_SINGLE:
+                            @targets = menu::selectTargets(false);
+                        break;
+                        case $_ITEM_TRG_NONE:
+                        default:
+                        break;
+                    }
+                    if(len(@targets) == 0) return; // they hit back
+                    useItem($item,@targets);
+                }
 	    }
 	</script>
     </menuOption>

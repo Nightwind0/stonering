@@ -203,6 +203,11 @@ SteelType Application::choice(const std::string &choiceText,
     return selection;
 }
 
+SteelType Application::message(const std::string& text)
+{
+    
+    return SteelType();
+}
 
 SteelType Application::say(const std::string &speaker, const std::string &text)
 {
@@ -296,8 +301,16 @@ SteelType Application::giveNamedItem(const std::string &item, uint count)
     if (count > 1)
         os << " x" << count;
 
-    say("Item Received",os.str());
+    say("Inventory",os.str());
 
+    return SteelType();
+}
+
+SteelType Application::disposeItem(SteelType::Handle iItem, uint count)
+{
+    Item* pItem = GrabHandle<Item*>(iItem);
+    mpParty->TakeItem(pItem,count);
+    
     return SteelType();
 }
 
@@ -313,7 +326,7 @@ SteelType Application::takeNamedItem(const std::string  &item, uint count)
     if (count > 1)
         os << " x" << count;
 
-    say("Item Lost",os.str());
+    say("Inventory",os.str());
 
     return val;
 }
@@ -422,10 +435,13 @@ SteelType Application::doMPDamage(SteelType::Handle hICharacter, int damage)
 }
 
 
-
-SteelType Application::selectItem(bool battle)
+SteelType Application::selectItem(bool battle, bool dispose)
 {
-    mItemSelectState.Init(false,Item::REGULAR_ITEM);
+    if(!dispose){
+        mItemSelectState.Init(battle,Item::REGULAR_ITEM);
+    }else{
+        mItemSelectState.Init(battle,Item::REGULAR_ITEM | Item::WEAPON | Item::ARMOR);
+    }
     RunState(&mItemSelectState);
     SteelType val;
     val.set ( mItemSelectState.GetSelectedItem() );
@@ -1269,7 +1285,7 @@ void Application::registerSteelFunctions()
     SteelFunctor*  fn_takeNamedItem = new SteelFunctor2Arg<Application,const std::string &,uint>(this,&Application::takeNamedItem);
     SteelFunctor*  fn_getGold = new SteelFunctorNoArgs<Application>(this,&Application::getGold);
     SteelFunctor*  fn_hasItem = new SteelFunctor2Arg<Application,const std::string &,uint>(this,&Application::hasItem);
-    SteelFunctor*  fn_useItem = new SteelFunctor1Arg<Application,bool>(this,&Application::selectItem);    
+    SteelFunctor*  fn_useItem = new SteelFunctor2Arg<Application,bool,bool>(this,&Application::selectItem);    
     SteelFunctor*  fn_didEvent = new SteelFunctor1Arg<Application,const std::string &>(this,&Application::didEvent);
     SteelFunctor* fn_doEvent = new  SteelFunctor2Arg<Application,const std::string &, bool>(this,&Application::doEvent);
     SteelFunctor*  fn_giveGold = new SteelFunctor1Arg<Application,int>(this,&Application::giveGold);
@@ -1445,6 +1461,7 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction("hasEquipment",fn_hasEquipment);
     mInterpreter.addFunction("getEquipment",fn_getEquipment);
     mInterpreter.addFunction("equip",fn_equip);
+   
 
     mInterpreter.addFunction("getWeaponType",fn_getWeaponType);
     mInterpreter.addFunction("getArmorType",fn_getArmorType);
@@ -1472,11 +1489,12 @@ mInterpreter.addFunction("isReusableItem",new SteelFunctor1Arg<Application,Steel
 mInterpreter.addFunction("getItemTargetable",new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::getItemTargetable));   
 mInterpreter.addFunction("getItemDefaultTarget",new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::getItemDefaultTarget));
 mInterpreter.addFunction("useItem", new SteelFunctor2Arg<Application,SteelType::Handle,const SteelType&>(this,&Application::useItem));
-
+mInterpreter.addFunction("disposeItem", new SteelFunctor2Arg<Application,SteelType::Handle,uint>(this,&Application::disposeItem));
 mInterpreter.addFunction("inBattle", new SteelFunctorNoArgs<Application>(this,&Application::inBattle));
 
 mInterpreter.addFunction("doMPDamage", new SteelFunctor2Arg<Application,SteelType::Handle,int>(this,&Application::doMPDamage));
 mInterpreter.addFunction("menu",new SteelFunctor1Arg<Application,const SteelArray&>(this,&Application::menu));
+mInterpreter.addFunction("message", new SteelFunctor1Arg<Application,const std::string&>(this,&Application::message));
 
 //        SteelType hasGeneratedWeapon(const std::string &wepclass, const std::string &webtype);
 //       SteelType hasGeneratedArmor(const std::string &armclass, const std::string &armtype);

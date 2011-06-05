@@ -199,6 +199,17 @@ void BattleState::HandleButtonUp(const IApplication::Button& button)
                     pOption->Select(m_menu_stack,params);
                 }
             }
+            break;
+        case IApplication::BUTTON_CANCEL:
+            if(m_combat_state == BATTLE_MENU)
+            {
+                if(m_menu_stack.size() > 1)
+                {
+                    m_menu_stack.pop();
+                    // TODO: Should I "Deselect" here??
+                }
+            }
+            break;
 	    
 	
     }
@@ -1098,6 +1109,9 @@ bool BattleState::MonstersOnLeft()
 
 void BattleState::FinishTurn()
 {
+    // Clear the menu stack
+    while(!m_menu_stack.empty())
+        m_menu_stack.pop();
     // TODO: Good time to check if either side is wiped out, etc
     // And, any dead monsters need to have ->Remove called on them
     ParameterList params;

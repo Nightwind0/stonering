@@ -46,6 +46,7 @@ bool BattleMenuOption::Enabled(const ParameterList &params) const
 void BattleMenuOption::Select(StoneRing::BattleMenuStack& stack, const ParameterList& params){
     switch(m_action_type){
         case SUBMENU:
+            m_action.m_pSubMenu->Init();
             stack.push(m_action.m_pSubMenu);
             break;
         case SKILLREF:

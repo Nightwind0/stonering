@@ -23,12 +23,12 @@ BattleMenu::eType BattleMenu::GetType ( void ) const
 
 void BattleMenu::Init() 
 {
-    Menu::Init();
     if(m_onFont.is_null()){
 	m_onFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_POPUP_MENU,"on");
 	m_offFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_POPUP_MENU,"off");
 	m_selectedFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_POPUP_MENU,"Selection");
     }
+    Menu::Init();    
 }
 
 void BattleMenu::SetEnableConditionParams(const ParameterList& params)
