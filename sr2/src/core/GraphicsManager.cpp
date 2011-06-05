@@ -120,6 +120,8 @@ std::string GraphicsManager::NameOfOverlay(Overlay overlay)
 	return "MainMenu";
     case ITEMS:
 	return "ItemSelect";
+    case DYNAMIC_MENU:
+        return "DynamicMenu";
     default:
         assert(0);
     }
@@ -351,6 +353,15 @@ std::string  GraphicsManager::GetFontName ( Overlay overlay, const std::string& 
     return fontname;
 }
 
+CL_Colorf GraphicsManager::GetColor ( Overlay overlay, const std::string& name )
+{
+    CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
+    CL_String colorStr = CL_String_load( std::string("Overlays/" + NameOfOverlay(overlay) + "/colors/" + name),resources);
+    
+    return CL_Colorf(colorStr);
+}
+
+
 std::string  GraphicsManager::GetFontName( DisplayFont font )
 {
     return NameOfDisplayFont(font);
@@ -361,6 +372,60 @@ std::string  GraphicsManager::GetFontName( DisplayFont font )
 StoneRing::Font GraphicsManager::GetFont( Overlay overlay, const std::string& type )
 {
     return GetFont( GetFontName ( overlay, type ) );
+}
+
+
+CL_Pointf GraphicsManager::GetPoint ( Overlay overlay, const std::string& name )
+{
+    CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
+    CL_String pointname = CL_String("Overlays/" + NameOfOverlay(overlay) + "/points/" + name);
+    
+    CL_Resource resource = resources.get_resource(pointname);
+    
+    if(resource.get_type() != "point")
+        throw CL_Exception("Point resource element was not 'point' type");
+    
+    
+    float x = atof(resource.get_element().get_attribute("x").c_str());
+    float y = atof(resource.get_element().get_attribute("y").c_str());
+    
+    return CL_Pointf(x,y);    
+}
+
+CL_Rectf GraphicsManager::GetRect ( Overlay overlay, const std::string& name )
+{
+    CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
+    CL_String pointname = CL_String("Overlays/" + NameOfOverlay(overlay) + "/rects/" + name);
+    
+    CL_Resource resource = resources.get_resource(pointname);
+    
+    if(resource.get_type() != "rect")
+        throw CL_Exception("Rect resource element was not 'rect' type");
+    
+    
+    float top = atof(resource.get_element().get_attribute("top").c_str());
+    float left = atof(resource.get_element().get_attribute("left").c_str());
+    float right = atof(resource.get_element().get_attribute("right").c_str());
+    float bottom = atof(resource.get_element().get_attribute("bottom").c_str());    
+    return CL_Rectf(left,top,right,bottom);
+}
+
+CL_Gradient GraphicsManager::GetGradient ( Overlay overlay, const std::string& name )
+{
+    CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
+    CL_String gradientname = CL_String("Overlays/" + NameOfOverlay(overlay) + "/gradients/" + name);
+    
+    CL_Resource resource = resources.get_resource(gradientname);
+    
+    if(resource.get_type() != "gradient")
+        throw CL_Exception("Gradient resource element was not 'gradient' type");
+    
+    CL_Colorf top_left(resource.get_element().get_attribute("top_left"));
+    CL_Colorf top_right(resource.get_element().get_attribute("top_right"));
+    CL_Colorf bottom_left(resource.get_element().get_attribute("bottom_left"));
+    CL_Colorf bottom_right(resource.get_element().get_attribute("bottom_right"));
+
+    return CL_Gradient(top_left,top_right,bottom_left,bottom_right);
 }
 
 

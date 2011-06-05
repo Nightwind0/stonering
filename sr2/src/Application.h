@@ -26,6 +26,7 @@
 #include "BattleConfig.h"
 #include "UtilityScripts.h"
 #include "ItemSelectState.h"
+#include "DynamicMenuState.h"
 
 namespace StoneRing
 {
@@ -158,6 +159,7 @@ namespace StoneRing
 	SteelType getAnimation(const std::string& name);
 	SteelType showExperience(const SteelArray&  characters, const SteelArray& xp_gained,
 				 const SteelArray& oldLevels);
+        SteelType menu(const SteelArray& options);
 
 
 

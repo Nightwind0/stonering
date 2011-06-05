@@ -37,7 +37,7 @@ void Menu::Init()
 void Menu::Draw(CL_GraphicContext& gc)
 {
     CL_Rectf rect = get_rect();
-    int options_per_page = rect.get_height() / height_for_option(gc);
+    int options_per_page = cl_max(1,rect.get_height() / height_for_option(gc));
     int page = m_cursor / options_per_page;
    
     

@@ -28,6 +28,7 @@ namespace StoneRing
 	    LOOT,
             MAIN_MENU,
             SHOP,
+            DYNAMIC_MENU,
 	    ITEMS
         };
 
@@ -68,6 +69,11 @@ namespace StoneRing
 	static Font  GetFont( Overlay overlay, const std::string& type );
         static std::string GetFontName ( Overlay overlay, const std::string& type );
         static std::string GetFontName ( DisplayFont font );
+        
+        static CL_Colorf GetColor ( Overlay overlay, const std::string& name );
+        static CL_Pointf GetPoint ( Overlay overlay, const std::string& name );
+        static CL_Rectf GetRect ( Overlay overlay, const std::string& name );
+        static CL_Gradient GetGradient ( Overlay overlay, const std::string& name );
 
     private:
 
@@ -79,6 +85,7 @@ namespace StoneRing
         std::map<std::string,Font> m_font_map;
         std::map<std::string,CL_Image> m_icon_map;
         std::map<Overlay,std::map<std::string,std::string> > m_overlay_font_map;
+
         static GraphicsManager *m_pInstance;
         GraphicsManager();
         ~GraphicsManager();
