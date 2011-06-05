@@ -41,6 +41,8 @@ namespace StoneRing
     private:
         virtual bool handle_element(eElement element, Element * pElement );
         virtual void load_attributes(CL_DomNamedNodeMap attributes);
+        virtual void load_finished();
+        //void verify_menu_options(BattleMenu* pMenu);
         std::string m_name;
         ICharacter::eGender m_eGender;
         std::list<WeaponTypeRef*> m_weapon_types;

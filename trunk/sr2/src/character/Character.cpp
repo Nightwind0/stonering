@@ -150,7 +150,19 @@ ICharacter::eCharacterAttribute StoneRing::ICharacter::GetMaximumAttribute(eChar
 
 StoneRing::Character::Character():m_pClass(NULL)
 {
+    m_nSP = 0;
     set_toggle_defaults();
+}
+
+
+void StoneRing::Character::LearnSkill(const SkillRef& skill)
+{
+    m_skillset.insert ( skill.GetRef() );
+}
+
+bool StoneRing::Character::HasSkill(const SkillRef& skill)
+{
+    return m_skillset.count(skill.GetRef());
 }
 
 void StoneRing::Character::set_toggle_defaults()
@@ -206,6 +218,16 @@ void   StoneRing::Character::SetXP(uint amount)
     ParameterList params;
     params.push_back(ParameterListItem("$_XP",(int)m_nXP));
     m_nLevel = IApplication::GetInstance()->RunScript(LNT,params);
+}
+
+uint StoneRing::Character::GetSP() const
+{
+    return m_nSP;
+}
+
+void StoneRing::Character::SetSP(uint amount)
+{
+    m_nSP = amount;
 }
 
 ICharacter::eGender StoneRing::Character::GetGender() const

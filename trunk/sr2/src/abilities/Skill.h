@@ -99,6 +99,8 @@ namespace StoneRing
         std::string m_ref;
     };
 
+    
+    bool operator==(const SkillRef& lhs, const SkillRef& rhs);
 
 }
 
