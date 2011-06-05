@@ -291,12 +291,7 @@ void BattleState::Start()
 {
     m_draw_method = &BattleState::draw_battle;
     m_eState = COMBAT;
-    const std::string status_resource = "Overlays/BattleStatus/";
-    const std::string popup_resource = "Overlays/BattlePopup/";
-    const std::string monster_rect_resource = "States/Battle/MonsterRect/";
-    const std::string player_rect_resource= "States/Battle/PlayerRect/";
-    IApplication * pApp = IApplication::GetInstance();
-    CL_ResourceManager& resources = pApp->GetResources();
+  
 
     m_bDone = false;
 
@@ -308,10 +303,12 @@ void BattleState::Start()
     m_pStatusBadFont = pGraphicsManager->GetFont(GraphicsManager::BATTLE_STATUS, GraphicsManager::BAD);
 #endif
 
-    m_nStatusBarX = resources.get_integer_resource(status_resource + "x",0);
-    m_nStatusBarY = resources.get_integer_resource(status_resource + "y",0);
-    m_nPopupX = resources.get_integer_resource(popup_resource + "x",0);
-    m_nPopupY = resources.get_integer_resource(popup_resource + "y",0);
+    CL_Pointf statusBar = GraphicsManager::GetPoint(GraphicsManager::BATTLE_STATUS,"origin");
+    m_nStatusBarX = statusBar.x;
+    m_nStatusBarY = statusBar.y;
+    CL_Pointf popupOrigin = GraphicsManager::GetPoint(GraphicsManager::BATTLE_POPUP_MENU,"origin");
+    m_nPopupX = popupOrigin.x;
+    m_nPopupY = popupOrigin.y;
 
     /**
      * TODO:
@@ -324,30 +321,16 @@ void BattleState::Start()
      */
 
 
-    m_status_rect.top = resources.get_integer_resource(status_resource + "text/top",0);
-    m_status_rect.left = resources.get_integer_resource(status_resource + "text/left",0);
-    m_status_rect.right = resources.get_integer_resource(status_resource + "text/right",0);
-    m_status_rect.bottom = resources.get_integer_resource(status_resource + "text/bottom",0);
+    m_status_rect = GraphicsManager::GetRect(GraphicsManager::BATTLE_STATUS,"text");
 
     m_status_rect.top += m_nStatusBarY;
     m_status_rect.left += m_nStatusBarX;
 
 
-    m_popup_rect.top = resources.get_integer_resource(popup_resource + "text/top",0);
-    m_popup_rect.left = resources.get_integer_resource(popup_resource + "text/left",0);
-    m_popup_rect.right = resources.get_integer_resource(popup_resource + "text/right",0);
-    m_popup_rect.bottom = resources.get_integer_resource(popup_resource + "text/bottom",0);
+    m_popup_rect = GraphicsManager::GetRect(GraphicsManager::BATTLE_POPUP_MENU,"text");
 
-    m_player_rect.top = resources.get_integer_resource(player_rect_resource + "top",0);
-    m_player_rect.left = resources.get_integer_resource(player_rect_resource + "left",0);
-    m_player_rect.right = resources.get_integer_resource(player_rect_resource + "right",0);
-    m_player_rect.bottom = resources.get_integer_resource(player_rect_resource + "bottom",0);
-
-
-    m_monster_rect.top = resources.get_integer_resource(monster_rect_resource + "top",0);
-    m_monster_rect.left = resources.get_integer_resource(monster_rect_resource + "left",0);
-    m_monster_rect.right = resources.get_integer_resource(monster_rect_resource + "right",0);
-    m_monster_rect.bottom = resources.get_integer_resource(monster_rect_resource + "bottom",0);
+    m_player_rect = GraphicsManager::GetRect(GraphicsManager::BATTLE_STATUS,"player");
+    m_monster_rect = GraphicsManager::GetRect(GraphicsManager::BATTLE_STATUS,"monster");
 
 
     m_statusBar = GraphicsManager::GetOverlay(GraphicsManager::BATTLE_STATUS);

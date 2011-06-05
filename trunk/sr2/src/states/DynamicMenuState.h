@@ -56,6 +56,7 @@ protected:
 private:
     CL_Rect calculate_rect();
     std::vector<std::string> m_choices;
+    std::vector<CL_Image> m_icons;
     CL_Rectf m_rect;
     CL_Rectf m_optionsRect;
     StoneRing::Font m_option_font;
@@ -67,6 +68,7 @@ private:
     int m_nSelection;
     int m_nOptionHeight;
     bool m_bDone;
+    bool m_bIcons;
 };
 
 }

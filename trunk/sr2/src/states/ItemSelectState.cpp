@@ -196,18 +196,9 @@ void ItemSelectState::Start()
     m_eArrowState = ARROWS_IDLE;
     Menu::Init();
     m_bDone = false;
-    std::string resource = "Overlays/ItemSelect/";
-    IApplication *pApp = IApplication::GetInstance();    
-    CL_ResourceManager& resources = pApp->GetResources();    
-    m_header_rect.top = (float)resources.get_integer_resource(resource + "header/top",0);
-    m_header_rect.left = (float)resources.get_integer_resource(resource + "header/left",0);
-    m_header_rect.right = (float)resources.get_integer_resource(resource + "header/right",0);
-    m_header_rect.bottom = (float)resources.get_integer_resource(resource + "header/bottom",0);
-    
-    m_rect.top = (float)resources.get_integer_resource(resource + "list/top",0);
-    m_rect.left = (float)resources.get_integer_resource(resource + "list/left",0);
-    m_rect.right = (float)resources.get_integer_resource(resource + "list/right",0);
-    m_rect.bottom = (float)resources.get_integer_resource(resource + "list/bottom",0);   
+    m_header_rect = GraphicsManager::GetRect(GraphicsManager::ITEMS,"header");
+    m_rect = GraphicsManager::GetRect(GraphicsManager::ITEMS,"list");
+
     
     m_optionFont = GraphicsManager::GetFont(GraphicsManager::ITEMS,"Option");
     m_currentOptionFont = GraphicsManager::GetFont(GraphicsManager::ITEMS,"Selection"); 
