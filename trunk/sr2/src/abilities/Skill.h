@@ -99,6 +99,7 @@ namespace StoneRing
         uint GetMinLevel() const;
         bool CanLearn(Character* pCharacter);
         SkillRef* GetRef() const;
+        SkillTreeNode* GetParent() const;
     private:
         virtual bool handle_element(eElement element, Element * pElement);
         virtual void load_attributes(CL_DomNamedNodeMap attributes);
@@ -108,6 +109,7 @@ namespace StoneRing
         std::string m_requirements;
         uint m_nSp;
         uint m_nMinLevel;        
+        SkillTreeNode* m_parent;
     };
     
   

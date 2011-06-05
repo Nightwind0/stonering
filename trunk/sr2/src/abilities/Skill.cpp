@@ -158,13 +158,14 @@ void SkillRef::load_attributes(CL_DomNamedNodeMap attributes)
     m_ref = get_required_string("skillName", attributes);
 }
 
-bool operator==(const SkillRef& lhs, const SkillRef& rhs) 
+// StoneRing:: is the namespace here (confusing kinda)
+bool StoneRing::operator==(const SkillRef& lhs, const SkillRef& rhs) 
 {
     return lhs.GetRef() == rhs.GetRef();
 }
 
 
-SkillTreeNode::SkillTreeNode()
+SkillTreeNode::SkillTreeNode():m_pCondition(NULL),m_parent(NULL)
 {
 
 }
@@ -184,10 +185,19 @@ uint SkillTreeNode::GetMinLevel() const
     return m_nMinLevel;
 }
 
+SkillTreeNode* SkillTreeNode::GetParent() const
+{
+    return m_parent;
+}
+
+
 bool SkillTreeNode::CanLearn ( Character* pCharacter )
 {
-    // Shove character into parameters, call condition script
-    return true;
+    if(pCharacter->GetLevel() >= m_nMinLevel)
+        return true;
+    else return false;
+    
+    // TODO: Shove character into parameters, call condition script
 }
 
 SkillRef* SkillTreeNode::GetRef() const
@@ -210,9 +220,12 @@ bool SkillTreeNode::handle_element ( Element::eElement element, Element* pElemen
         case ESKILLREF:
             m_ref = dynamic_cast<SkillRef*>(pElement);
             break;
-        case ESKILLTREENODE:
-            m_sub_skills.push_back(dynamic_cast<SkillTreeNode*>(pElement));
+        case ESKILLTREENODE:{
+            SkillTreeNode* pNode = dynamic_cast<SkillTreeNode*>(pElement);
+            pNode->m_parent = this;
+            m_sub_skills.push_back(pNode);
             break;
+        }
         case ECONDITIONSCRIPT:
             m_pCondition = dynamic_cast<ScriptElement*>(pElement);
             break;

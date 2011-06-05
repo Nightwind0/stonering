@@ -9,6 +9,7 @@ using StoneRing::BattleMenuOption;
 BattleMenu::BattleMenu()
 {
     m_font_height = -1;
+    m_pCharacter = NULL;
 }
 
 BattleMenu::~BattleMenu()
@@ -28,12 +29,27 @@ void BattleMenu::Init()
 	m_offFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_POPUP_MENU,"off");
 	m_selectedFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_POPUP_MENU,"Selection");
     }
+    build_visible_list();
     Menu::Init();    
 }
 
-void BattleMenu::SetEnableConditionParams(const ParameterList& params)
+void BattleMenu::build_visible_list()
+{
+    assert(m_pCharacter);
+    m_visible_options.clear();
+    for(std::vector<BattleMenuOption*>::iterator iter = m_options.begin(); 
+        iter != m_options.end(); iter++)
+        {
+            if((*iter)->Visible(m_pCharacter))
+                m_visible_options.push_back(*iter);
+        }
+}
+
+
+void BattleMenu::SetEnableConditionParams(const ParameterList& params, Character * pChar)
 {
     m_params = params;
+    m_pCharacter = pChar;
 }
 
 std::vector<BattleMenuOption*>::iterator
@@ -73,12 +89,12 @@ CL_Rectf BattleMenu::get_rect()
 
 BattleMenuOption* BattleMenu::GetSelectedOption() const
 {
-    return m_options[get_current_choice()];
+    return m_visible_options[get_current_choice()];
 }
 
 void BattleMenu::draw_option(int option, bool selected, float x, float y, CL_GraphicContext& gc)
 {
-    BattleMenuOption * pOption = m_options[option];
+    BattleMenuOption * pOption = m_visible_options[option];
     
     Font font;
     CL_Image icon = pOption->GetIcon();
@@ -124,7 +140,7 @@ int BattleMenu::height_for_option(CL_GraphicContext& gc)
 
 int BattleMenu::get_option_count()
 {
-    return m_options.size();
+    return m_visible_options.size();
 }
 
 void BattleMenu::SetRect(CL_Rectf& rect)

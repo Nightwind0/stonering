@@ -30,8 +30,9 @@ namespace StoneRing
         std::string GetName() const;
         CL_Image GetIcon() const { return m_icon; }
         bool Enabled(const ParameterList &params) const;
-        void Select(BattleMenuStack& stack, const ParameterList& params);
+        void Select(BattleMenuStack& stack, const ParameterList& params, Character * pCharacter);
         void Deselect(BattleMenuStack& stack); // For backing out of a selection
+        bool Visible(Character * pCharacter);
     private:
         virtual bool handle_element(eElement, Element *);
         virtual void load_attributes(CL_DomNamedNodeMap );
@@ -55,6 +56,7 @@ namespace StoneRing
         CL_Image m_icon;
         Action m_action;
         ActionType m_action_type;
+        
     };
 }
 
