@@ -162,6 +162,16 @@ void StoneRing::Character::LearnSkill(const SkillRef& skill)
 
 bool StoneRing::Character::HasSkill(const SkillRef& skill)
 {
+    for(std::list<SkillTreeNode*>::const_iterator iter = m_pClass->GetSkillTreeNodesBegin();
+        iter != m_pClass->GetSkillTreeNodesEnd(); iter++)
+        {
+            SkillTreeNode* pNode = *iter;
+            // If this skill is a top-level skill (no pre-reqs),
+            // and has no special restrictions (by, level, etc),
+            // then we are considered to have it, regardless of it being in our explicit list
+            if(*pNode->GetRef() == skill && pNode->GetParent() == NULL && pNode->CanLearn(this))
+                return true;
+        }
     return m_skillset.count(skill.GetRef());
 }
 

@@ -2,6 +2,7 @@
 #include "BattleMenu.h"
 #include "GraphicsManager.h"
 
+
 using StoneRing::BattleMenuOption;
 
 BattleMenuOption::BattleMenuOption(int level):m_nLevel(level),
@@ -43,9 +44,10 @@ bool BattleMenuOption::Enabled(const ParameterList &params) const
     // TODO: Check for BP/MP requirements on skills here??
 }
 
-void BattleMenuOption::Select(StoneRing::BattleMenuStack& stack, const ParameterList& params){
+void BattleMenuOption::Select(StoneRing::BattleMenuStack& stack, const ParameterList& params, Character * pCharacter){
     switch(m_action_type){
         case SUBMENU:
+            m_action.m_pSubMenu->SetEnableConditionParams(params,pCharacter);
             m_action.m_pSubMenu->Init();
             stack.push(m_action.m_pSubMenu);
             break;
@@ -62,6 +64,19 @@ void BattleMenuOption::Select(StoneRing::BattleMenuStack& stack, const Parameter
         default:
             break;
     }
+}
+
+
+bool BattleMenuOption::Visible ( StoneRing::Character* pCharacter )
+{
+    if(m_action_type == SKILLREF)
+    {
+        assert(m_action.m_pSkillRef);
+        if(!pCharacter->HasSkill(*m_action.m_pSkillRef))
+            return false;
+    }
+    
+    return true;
 }
 
 

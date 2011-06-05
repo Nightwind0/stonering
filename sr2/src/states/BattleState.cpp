@@ -110,7 +110,14 @@ void BattleState::next_turn()
     if (pCharacter != NULL)
     {
         m_combat_state = BATTLE_MENU;
-	pCharacter->GetBattleMenu()->Init();
+        ParameterList params;
+        // Supply a handle to the character in question
+        Character *pChar = dynamic_cast<Character*>(m_initiative[m_cur_char]);
+        params.push_back ( ParameterListItem("$Character", pChar ) );
+        params.push_back ( ParameterListItem("$Round", static_cast<int>(m_nRound) ) );
+
+        pCharacter->GetBattleMenu()->SetEnableConditionParams(params, pChar);
+        pCharacter->GetBattleMenu()->Init();
         m_menu_stack.push ( pCharacter->GetBattleMenu() );
     }
     else
@@ -196,7 +203,7 @@ void BattleState::HandleButtonUp(const IApplication::Button& button)
 
                 if (pOption->Enabled(params))
                 {
-                    pOption->Select(m_menu_stack,params);
+                    pOption->Select(m_menu_stack,params,pChar);
                 }
             }
             break;
@@ -919,17 +926,11 @@ void BattleState::draw_menus(const CL_Rectf &screenrect, CL_GraphicContext& GC)
     CL_Rectf menu_rect = m_popup_rect;
     menu_rect.translate(m_nPopupX,m_nPopupY);
     pMenu->SetRect(menu_rect);
-    ParameterList params;
-    // Supply a handle to the character in question
-    Character *pChar = dynamic_cast<Character*>(m_initiative[m_cur_char]);
-    params.push_back ( ParameterListItem("$Character", pChar ) );
-    params.push_back ( ParameterListItem("$Round", static_cast<int>(m_nRound) ) );
 
-    pMenu->SetEnableConditionParams(params);
     if (pMenu->GetType() == BattleMenu::POPUP)
     {
         m_battlePopup.draw(GC,(int)m_nPopupX,(int)m_nPopupY);
-	pMenu->Draw(GC);
+        pMenu->Draw(GC);
     }
     else
     {
