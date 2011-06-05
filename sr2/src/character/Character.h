@@ -2,6 +2,7 @@
 #define SR_CHARACTER_H
 
 #include <ClanLib/core.h>
+#include <set>
 #include "sr_defines.h"
 #include "Equipment.h"
 #include "Magic.h"
@@ -48,6 +49,8 @@ namespace StoneRing{
         virtual void   SetLevel(uint);
 	virtual uint   GetXP()const;
 	virtual void   SetXP(uint amount);
+        virtual uint   GetSP()const;
+        virtual void   SetSP(uint amount);
         virtual double GetSpellResistance(Magic::eMagicType type) const;
         virtual double GetDamageCategoryResistance(eDamageCategory type) const;
         virtual double GetAttribute(eCharacterAttribute attr) const;
@@ -93,7 +96,14 @@ namespace StoneRing{
         // Whether the slot is in use
         bool       HasEquipment(Equipment::eSlot);
         Equipment* GetEquipment(Equipment::eSlot);
-
+        
+        /*************************************************************************
+         * Skills
+         * ***********************************************************************/
+        void LearnSkill(const SkillRef& skill);
+        bool HasSkill(const SkillRef& skill);
+        
+        
         // Element API
         virtual eElement WhichElement() const { return ECHARACTER; }
     private:
@@ -108,12 +118,14 @@ namespace StoneRing{
         std::map<eCharacterAttribute,double> m_augments;
         std::map<eCharacterAttribute,bool> m_toggles;
         std::map<Equipment::eSlot,Equipment*> m_equipment;
+        std::set<std::string> m_skillset;
 	CL_Sprite m_portraits;
         SpriteDefinitionMap m_sprite_definition_map;
         CharacterClass * m_pClass;
 	uint m_nLevel;
         uint m_nInitiative;
 	uint m_nXP;
+        uint m_nSP;
         CL_Sprite m_mapSprite;
         CL_Sprite m_currentSprite;
 	CL_Sprite m_portrait;

@@ -30,18 +30,24 @@
 			]]>
 		</conditionScript>
                 <battleMenu type="popup">
-                    <battleMenuOption name="Throw1" icon="hurl">
+                    <battleMenuOption name="Easy Throw" icon="hurl">
                         <conditionScript id="WarriorThrow1Condition">
                             return true;
                         </conditionScript>
                         <skillRef skillName="Throw"/>
                     </battleMenuOption>
-                    <battleMenuOption name="Throw2" icon="hurl">
+                    <battleMenuOption name="Fast Throw" icon="hurl">
                         <conditionScript id="WarriorThrow2Condition">
                             return true;
                         </conditionScript>
                         <skillRef skillName="Throw"/>
-                    </battleMenuOption>                    
+                    </battleMenuOption>     
+                     <battleMenuOption name="Super Throw" icon="hurl">
+                        <conditionScript id="WarriorThrow3Condition">
+                            return false;
+                        </conditionScript>
+                        <skillRef skillName="Throw"/>
+                    </battleMenuOption>    
                 </battleMenu>
 	    </battleMenuOption>
 	  <battleMenuOption name="Flee" icon="flee">
@@ -107,6 +113,10 @@
                 return  math::pow(1.06,$_CL) * 4.25;
             </script>
         </statScript>
+        <skillRef skillName="Attack"/>
+        <skillRef skillName="Flee"/>
+        <skillRef skillName="Item"/>
+        <skillRef skillName="Throw"/>
     </characterClass>
 	<characterClass name = "Ranger" gender="either">
 
@@ -162,8 +172,9 @@
 		<statIncrease base="1.06" multiplier="6" stat="evd"/>
 		<statIncrease base="1.06" multiplier="1" stat="mag"/>
 		<statIncrease base="1.06" multiplier="4" stat="rst"/-->
-
-
+                    <skillRef skillName="Attack"/>
+                    <skillRef skillName="Flee"/>
+                    <skillRef skillName="Item"/>
 	</characterClass>
 </characterClasses>
 

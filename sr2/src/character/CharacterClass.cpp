@@ -90,6 +90,26 @@ bool CharacterClass::handle_element(eElement element, Element * pElement)
     return true;
 }
 
+/*
+ * 
+ * For now it's okay if they have a battle menu option that refers to a skill that the class doesn't even have..
+ * but ideally it should be a warning */
+/*
+void CharacterClass::verify_menu_options ( BattleMenu* pMenu )
+{
+    for(std::vector<BattleMenuOption*>::iterator iter = pMenu->GetOptionsBegin();
+        iter != pMenu->GetOptionsEnd(); iter++)
+        {
+            
+        }
+}
+*/
+
+void CharacterClass::load_finished()
+{
+   // TODO: Construct battle menu for skills here???
+   // or, .. something? not sure..
+}
 
 double CharacterClass::GetStat(ICharacter::eCharacterAttribute attr, int level)
 {
@@ -104,6 +124,12 @@ double CharacterClass::GetStat(ICharacter::eCharacterAttribute attr, int level)
 CharacterClass::CharacterClass()
 :m_pMenu(NULL)
 {
+
+}
+
+CharacterClass::~CharacterClass()
+{
+    delete m_pMenu;
     std::for_each(m_weapon_types.begin(),m_weapon_types.end(),del_fun<WeaponTypeRef>());
     std::for_each(m_armor_types.begin(),m_armor_types.end(),del_fun<ArmorTypeRef>());
     std::for_each(m_skill_refs.begin(),m_skill_refs.end(),del_fun<SkillRef>());
@@ -114,11 +140,6 @@ CharacterClass::CharacterClass()
     {
         delete it->second;
     }
-}
-
-CharacterClass::~CharacterClass()
-{
-    delete m_pMenu;
 }
 
 std::list<WeaponTypeRef*>::const_iterator CharacterClass::GetWeaponTypeRefsBegin() const
@@ -214,7 +235,6 @@ double StatScript::GetStat(int level)
 
     return m_pScript->ExecuteScript(params);
 }
-
 
 
 

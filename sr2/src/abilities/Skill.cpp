@@ -163,7 +163,10 @@ Skill * SkillRef::GetSkill() const{
 
 
 
-
+bool operator==(const SkillRef& lhs, const SkillRef& rhs) 
+{
+    return lhs.GetRef() == rhs.GetRef();
+}
 
 
 
