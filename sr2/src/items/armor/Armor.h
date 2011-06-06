@@ -2,6 +2,7 @@
 #define SR_ARMOR_H
 
 #include "Equipment.h"
+#include "DamageCategory.h"
 
 namespace StoneRing{
 
@@ -16,15 +17,10 @@ namespace StoneRing{
         enum eAttribute
         {
             AC,
+            RST,
             STEAL_MP,
             STEAL_HP,
             CHANGE_BP,
-            ELEMENTAL_RESIST, // Your AC for elemental magic
-            SLASH_AC, // Extra AC against slash attacks (Multiplier)
-            JAB_AC, // Extra AC against jab attacks (Multiplier)
-            BASH_AC, // Extra AC against bash attacks (Multiplier)
-            RESIST, // Resist is your AC for magic attacks
-            WHITE_RESIST, // Your AC against white magic. (hey, its a valid type!)
             STATUS // Chance of failure for a particular status effect
         };
 
@@ -37,6 +33,9 @@ namespace StoneRing{
         * has a 1.5 multiplier and +7 add, this will return 157
         */
         double GetArmorAttribute ( eAttribute attr );
+        
+        double GetResistance ( DamageCategory::eDamageCategory category );
+        //int GetResistanceAdd ( DamageCategory::eDamageCategory category );
 
         static eAttribute AttributeForString ( const std::string str );
         static std::string CreateArmorName(ArmorType *pType, ArmorClass *pClass,

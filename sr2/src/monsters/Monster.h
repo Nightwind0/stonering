@@ -88,7 +88,7 @@ namespace StoneRing
         virtual void SetLevel(uint);
 		virtual bool IsMonster()const { return true; }
         virtual double GetSpellResistance(Magic::eMagicType type) const;
-        virtual double GetDamageCategoryResistance(eDamageCategory type) const;
+        virtual double GetDamageCategoryResistance(DamageCategory::eDamageCategory type) const;
         virtual double  GetAttribute(eCharacterAttribute attr) const;
         virtual bool GetToggle(eCharacterAttribute attr) const;
         virtual void SetToggle(eCharacterAttribute attr, bool state);
@@ -112,7 +112,7 @@ namespace StoneRing
         virtual CL_Pointf GetBattlePos() const;
         virtual void     SetBattlePos(CL_Pointf pos);
 
-        eDamageCategory GetDefaultDamageCategory(void)const;
+        DamageCategory::eDamageCategory GetDefaultDamageCategory(void)const;
 
         void MarkDeathAnimated()
         {

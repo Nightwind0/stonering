@@ -1,6 +1,10 @@
 #ifndef SR_MAGIC_H
 #define SR_MAGIC_H
 #include <string>
+#include "DamageCategory.h"
+
+
+using StoneRing::DamageCategory;
 
 namespace StoneRing{
 
@@ -12,14 +16,15 @@ public:
     enum eMagicType
     {
         UNKNOWN = 0,
-        FIRE=1,
-        WATER=2,
-        WIND=4,
-        EARTH=8,
-        HOLY=16,
-        DARK=32,
-        OTHER=64,
-        STATUS=128,
+        HOLY=DamageCategory::HOLY,
+        DARK=DamageCategory::DARK,
+        FIRE=DamageCategory::FIRE,
+        WATER=DamageCategory::WATER,
+        WIND=DamageCategory::WIND,
+        EARTH=DamageCategory::EARTH,
+
+        OTHER=(EARTH <<1),
+        STATUS=(EARTH <<2),
         ELEMENTAL = (FIRE | WATER | WIND | EARTH),
         DIVINE = (DARK | HOLY),
         ALL = (ELEMENTAL | DIVINE | STATUS | OTHER)

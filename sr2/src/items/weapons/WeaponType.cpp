@@ -26,7 +26,7 @@ void WeaponType::load_attributes(CL_DomNamedNodeMap attributes)
     m_fBaseCritical = get_implied_float("baseCritical",attributes,0.05);
     m_bRanged = get_implied_bool("ranged",attributes,false);
     m_bTwoHanded  = get_implied_bool("twoHanded",attributes,false);
-    m_damageCategory = DamageCategoryFromString(get_required_string("damageCategory",attributes));
+    m_damageCategory = DamageCategory::DamageCategoryFromString(get_required_string("damageCategory",attributes));
 }
 
 void WeaponType::load_finished()

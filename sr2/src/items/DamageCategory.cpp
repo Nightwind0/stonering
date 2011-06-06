@@ -1,36 +1,25 @@
 #include "DamageCategory.h"
-#include "Magic.h"
+#include <ClanLib/core.h>
 
-using namespace StoneRing;
+using StoneRing::DamageCategory;
 
-bool StoneRing::DamageCategoryIsPhysical(eDamageCategory category)
+
+bool StoneRing::DamageCategory::DamageCategoryIsPhysical(eDamageCategory category)
 {
-    return category < _END_OF_PHYSICAL_DAMAGE;
+    return category & PHYSICAL;
 }
 
-bool StoneRing::DamageCategoryIsMagic(eDamageCategory category)
+bool StoneRing::DamageCategory::DamageCategoryIsMagic(eDamageCategory category)
 {
-    return category > _END_OF_PHYSICAL_DAMAGE;
+    return category & MAGIC;
 }
 
-bool StoneRing::DamageCategoryIsElemental(eDamageCategory category)
+bool StoneRing::DamageCategory::DamageCategoryIsElemental(eDamageCategory category)
 {
-    switch(category)
-    {
-        case EARTH:
-        case FIRE:
-        case WIND:
-        case WATER:
-        // case HEART:
-        case LIGHTNING:
-        case ICE:
-            return true;
-        default:
-            return false;
-    }
+    return category & ELEMENTAL;
 }
 
-eDamageCategory StoneRing::DamageCategoryFromString(const std::string& string)
+DamageCategory::eDamageCategory StoneRing::DamageCategory::DamageCategoryFromString(const std::string& string)
 {
     if(string == "bash") return BASH;
     else if(string == "jab") return JAB;
@@ -40,10 +29,12 @@ eDamageCategory StoneRing::DamageCategoryFromString(const std::string& string)
     else if(string == "fire") return FIRE;
     else if(string == "wind") return WIND;
     else if(string == "water") return WATER;
-    else if(string == "ice") return ICE;
     else if(string == "earth") return EARTH;
-    else if(string == "lightning") return LIGHTNING;
     else if(string == "poison") return POISON;
+    else if(string == "magic") return MAGIC;
+    else if(string == "elemental") return ELEMENTAL;
+    else if(string == "divine") return DIVINE;
+    else if(string == "physical") return PHYSICAL;
 
     throw CL_Exception("Damage Category unknown: " + string);
     return BASH;

@@ -33,7 +33,7 @@ void Spell::loadAttributes(CL_DomNamedNodeMap attributes)
 
     mnValue = get_required_uint("value",attributes);
 
-    m_damageCategory = DamageCategoryFromString(get_required_string("damageCategory",attributes));
+    m_damageCategory = DamageCategory::DamageCategoryFromString(get_required_string("damageCategory",attributes));
 
     mnMP = get_required_uint("mp", attributes);
 }

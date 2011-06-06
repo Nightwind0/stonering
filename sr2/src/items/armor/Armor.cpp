@@ -31,17 +31,11 @@ Armor::eAttribute
 Armor::AttributeForString ( const std::string str )
 {
     if(str == "AC") return AC;
+    else if(str == "RST") return RST;
     else if(str == "Change_BP") return CHANGE_BP;
     else if (str == "Steal_MP%") return STEAL_MP;
     else if (str == "Steal_HP%") return STEAL_HP;
-
-    else if (str == "ElementalRST") return ELEMENTAL_RESIST;
-    else if (str == "RST") return RESIST; // Resist is basically Magic AC
     else if (str == "Status%") return STATUS;
-    else if (str == "SlashAC") return SLASH_AC; // Extra AC against slash attacks
-    else if (str == "JabAC") return JAB_AC;
-    else if (str == "BashAC") return BASH_AC;
-    else if (str == "WhiteRST") return WHITE_RESIST;
     else throw CL_Exception("Bad Armor enhancer attribute.");
 }
 
@@ -64,16 +58,11 @@ double Armor::GetArmorAttribute ( eAttribute attr )
 
     double current = 0.0;
     switch(attr){
-        case ELEMENTAL_RESIST: // Your AC for elemental magic
-        case RESIST:
-        case WHITE_RESIST:
-            current = GetArmorType()->GetBaseRST();
-            break;
         case AC:
-        case SLASH_AC: // Extra AC against slash attacks (Multiplier)
-        case JAB_AC: // Extra AC against jab attacks (Multiplier)
-        case BASH_AC: // Extra AC against bash attacks (Multiplier)
             current = GetArmorType()->GetBaseAC();
+            break;
+         case RST:
+            current = GetArmorType()->GetBaseRST();
             break;
         default:
             break;
@@ -86,7 +75,7 @@ double Armor::GetArmorAttribute ( eAttribute attr )
     {
         ArmorEnhancer * pEnhancer = *iter;
 
-        if( pEnhancer->GetAttribute() == attr )
+        if( pEnhancer->GetType() == ArmorEnhancer::ARMOR_ATTRIBUTE && pEnhancer->GetAttribute() == attr )
         {
             value *= pEnhancer->GetMultiplier();
         }
@@ -97,7 +86,7 @@ double Armor::GetArmorAttribute ( eAttribute attr )
     {
         ArmorEnhancer * pEnhancer = *iter;
 
-        if( pEnhancer->GetAttribute() == attr )
+        if( pEnhancer->GetType() == ArmorEnhancer::ARMOR_ATTRIBUTE &&  pEnhancer->GetAttribute() == attr )
         {
             value += pEnhancer->GetAdd();
         }
@@ -108,7 +97,45 @@ double Armor::GetArmorAttribute ( eAttribute attr )
 
 }
 
+double Armor::GetResistance ( DamageCategory::eDamageCategory category )
+{
+    double value = 0.0;
+ 
+    for(std::list<ArmorEnhancer*>::iterator iter = m_armor_enhancers.begin();
+        iter != m_armor_enhancers.end();
+        iter++)
+    {
+        ArmorEnhancer * pEnhancer = *iter;
 
+        if( pEnhancer->GetType() == ArmorEnhancer::DAMAGE_CATEGORY && pEnhancer->GetDamageCategory() & category )
+        {
+            value += pEnhancer->GetMultiplier();
+        }
+    }
+
+    return value;
+}
+
+/*
+int Armor::GetResistanceAdd( DamageCategory::eDamageCategory category )
+{
+    int value = 0;
+    
+    for(std::list<ArmorEnhancer*>::iterator iter = m_armor_enhancers.begin();
+        iter != m_armor_enhancers.end();
+        iter++)
+    {
+        ArmorEnhancer * pEnhancer = *iter;
+
+        if( pEnhancer->GetType() == ArmorEnhancer::DAMAGE_CATEGORY &&  pEnhancer->GetDamageCategory() == category )
+        {
+            value += pEnhancer->GetAdd();
+        }
+    }
+    
+    return value;
+}
+*/
 
 void Armor::Clear_Armor_Enhancers()
 {

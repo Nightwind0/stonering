@@ -33,7 +33,7 @@ namespace StoneRing{
         bool IsTwoHanded() const;
 	Animation* GetAnimation() const;
 
-        eDamageCategory GetDamageCategory () const { return m_damageCategory; }
+        DamageCategory::eDamageCategory GetDamageCategory () const { return m_damageCategory; }
 
         bool operator==(const WeaponType &lhs);
 
@@ -41,7 +41,7 @@ namespace StoneRing{
 	virtual void load_finished();
         virtual bool handle_element(eElement element, Element * pElement );
         virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
-        eDamageCategory m_damageCategory;
+        DamageCategory::eDamageCategory m_damageCategory;
         std::string m_name;
         std::string m_icon_ref;
 	CL_Sprite m_sprite;

@@ -205,8 +205,11 @@ SteelType Application::choice(const std::string &choiceText,
 
 SteelType Application::message(const std::string& text)
 {
-    
-    return SteelType();
+    SteelArray array;
+    SteelType type;
+    type.set(text);
+    array.push_back(type);
+    return menu(array);
 }
 
 SteelType Application::say(const std::string &speaker, const std::string &text)
@@ -704,7 +707,7 @@ SteelType Application::getDamageCategoryResistance(SteelType::Handle hICharacter
 {
     SteelType val;
 
-    eDamageCategory type = static_cast<eDamageCategory>(damage_category);
+    DamageCategory::eDamageCategory type = static_cast<DamageCategory::eDamageCategory>(damage_category);
     ICharacter* iChar = GrabHandle<ICharacter*>(hICharacter);
 
     val.set ( iChar->GetDamageCategoryResistance(type) );
@@ -1387,7 +1390,6 @@ void Application::registerSteelFunctions()
     steelConst("$_CRITICAL", Weapon::CRITICAL);
 
     steelConst("$_AC", Armor::AC);
-    steelConst("$_RESIST", Armor::RESIST);
 
     steelConst("$_DRAW_ILL",Character::CA_DRAW_ILL);
     steelConst("$_DRAW_STONE",Character::CA_DRAW_STONE);
@@ -1407,18 +1409,19 @@ void Application::registerSteelFunctions()
     steelConst("$_MAXHP",Character::CA_MAXHP);
     steelConst("$_MAXMP",Character::CA_MAXMP);
 
-    steelConst("$_BASH",BASH);
-    steelConst("$_JAB",JAB);
-    steelConst("$_SLASH",SLASH);
-    steelConst("$_HOLY",HOLY);
-    steelConst("$_DARK",DARK);
-    steelConst("$_FIRE",FIRE);
-    steelConst("$_WATER",WATER);
-    steelConst("$_WIND",WIND);
-    steelConst("$_EARTH",EARTH);
-    steelConst("$_LIGHTNING",LIGHTNING);
-    steelConst("$_ICE",ICE);
-    steelConst("$_POISON",POISON);
+    steelConst("$_BASH",DamageCategory::BASH);
+    steelConst("$_JAB",DamageCategory::JAB);
+    steelConst("$_SLASH",DamageCategory::SLASH);
+    steelConst("$_HOLY",DamageCategory::HOLY);
+    steelConst("$_DARK",DamageCategory::DARK);
+    steelConst("$_FIRE",DamageCategory::FIRE);
+    steelConst("$_WATER",DamageCategory::WATER);
+    steelConst("$_WIND",DamageCategory::WIND);
+    steelConst("$_EARTH",DamageCategory::EARTH);
+    steelConst("$_ELEMENTAL",DamageCategory::ELEMENTAL);
+    steelConst("$_DIVINE",DamageCategory::DIVINE);
+    steelConst("$_PHYSICAL",DamageCategory::PHYSICAL);
+    steelConst("$_POISON",DamageCategory::POISON);
 
     mInterpreter.addFunction("normal_random", fn_gaussian);
     mInterpreter.addFunction("log",fn_log);

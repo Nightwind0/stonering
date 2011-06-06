@@ -256,12 +256,24 @@ void StoneRing::Character::Attacked()
 }
 
 
-double StoneRing::Character::GetDamageCategoryResistance(eDamageCategory type) const
+double StoneRing::Character::GetDamageCategoryResistance(DamageCategory::eDamageCategory type) const
 {
-    if(type == HOLY)
-        return -1.0;
+    double value;
+    if(type == DamageCategory::HOLY)
+        value = -1.0;
     else
-        return 1.0;
+        value =  1.0;
+    
+    for(std::map<Equipment::eSlot,Equipment*>::const_iterator it=m_equipment.begin();
+        it!=m_equipment.end();it++)
+    {
+        if(it->second->IsArmor()){
+            Armor* armor = dynamic_cast<Armor*>(it->second);
+            value += armor->GetResistance(type);
+        }
+    }
+    
+    return value;
 }
 
 

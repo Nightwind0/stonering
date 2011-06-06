@@ -275,7 +275,7 @@
 		       <armorTypeRef name="Shield"/>
 		       <armorEnhancer add="5" attribute="AC"/>
 		       <statusEffectModifier statusRef="Poison" modifier="0.20"/>
-		       <armorEnhancer multiplier="1.5" attribute="RST"/>
+		       <armorEnhancer multiplier="-0.25" damageCategory="fire"/>
 		       <attributeModifier type="add" value="40" attribute="hp_max"/>
 		       <spellRef type="elemental" name="Ice"/>
 		   </uniqueArmor>
@@ -283,6 +283,7 @@
 		    <iconRef>Armor/basic_shield</iconRef>		      
 		       <armorTypeRef name="Shield"/>
 		       <armorEnhancer multiplier="0.2" attribute="AC"/>
+                       <armorEnhancer multiplier="-1.0" damageCategory="physical"/>
 		   </uniqueArmor>
 		   <uniqueWeapon name = "Warrior Sword" dropRarity="rare" valueMultiplier="4.5">
 		   <iconRef>Weapon/basic_sword</iconRef>		       

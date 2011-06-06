@@ -45,6 +45,7 @@ namespace StoneRing{
         virtual void Unequip(ICharacter *);
         virtual void Invoke()=0;
         virtual bool EquipCondition()=0;
+     
         typedef std::multimap<uint,AttributeModifier*> AttributeModifierSet;
         // Mainly for display, as these should be automatically invoked on equip
         AttributeModifierSet::const_iterator GetAttributeModifiersBegin() const;
