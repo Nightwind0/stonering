@@ -323,20 +323,13 @@
 					<grid pos="0,0" size="32,48" array="4,4"></grid>
 				</image>
 			</sprite>
-			<integer name="x" value="0"/>
-			<integer name="y" value="200"/>
-			<section name="header">
-				<integer name="left" value="24"/>
-				<integer name="top" value="224"/>
-				<integer name="right" value="783" />
-				<integer name="bottom" value="319"/>
-			</section>
-			<section name="text">
-				<integer name="left" value="24"/>
-				<integer name="top" value="352"/>
-				<integer name="right" value="783" />
-				<integer name="bottom" value="580"/>
-			</section>
+                        <section name="points">
+                            <point name="origin" x="0" y="200"/>
+                        </section>
+                        <section name="rects">
+                            <rect name="header" left="24" top="224" right="783" bottom="319"/>
+                            <rect name="text" left="24" top="352" right="783" bottom="580"/>                
+                        </section>
 			<section name="fonts">
 				<string name="Option" value="BoldGray"/>
 				<string name="Choice" value="BoldWhite"/>
