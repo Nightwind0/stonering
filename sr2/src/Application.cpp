@@ -1373,7 +1373,16 @@ void Application::registerSteelFunctions()
     steelConst("$_SM_FORGO_ATTACK",Weapon::FORGO_ATTACK);
     steelConst("$_SM_WORLD_ONLY",Weapon::WORLD_ONLY);
 
-
+    steelConst("$_BASH_DEF",Character::CA_BASH_DEF);
+    steelConst("$_JAB_DEF",Character::CA_JAB_DEF);
+    steelConst("$_SLASH_DEF",Character::CA_SLASH_DEF);
+    steelConst("$_HOLY_RST",Character::CA_HOLY_RST);
+    steelConst("$_DARK_RST",Character::CA_DARK_RST);
+    steelConst("$_FIRE_RST",Character::CA_FIRE_RST);
+    steelConst("$_WATER_RST",Character::CA_WATER_RST);
+    steelConst("$_WIND_RST",Character::CA_WIND_RST);
+    steelConst("$_EARTH_RST",Character::CA_EARTH_RST);
+    
     steelConst("$_HP",Character::CA_HP);
     steelConst("$_MP",Character::CA_MP);
     steelConst("$_STR",Character::CA_STR);
@@ -1390,6 +1399,7 @@ void Application::registerSteelFunctions()
     steelConst("$_CRITICAL", Weapon::CRITICAL);
 
     steelConst("$_AC", Armor::AC);
+    steelConst("$_ARMOR_RST",Armor::RST);
 
     steelConst("$_DRAW_ILL",Character::CA_DRAW_ILL);
     steelConst("$_DRAW_STONE",Character::CA_DRAW_STONE);
@@ -1418,10 +1428,7 @@ void Application::registerSteelFunctions()
     steelConst("$_WATER",DamageCategory::WATER);
     steelConst("$_WIND",DamageCategory::WIND);
     steelConst("$_EARTH",DamageCategory::EARTH);
-    steelConst("$_ELEMENTAL",DamageCategory::ELEMENTAL);
-    steelConst("$_DIVINE",DamageCategory::DIVINE);
-    steelConst("$_PHYSICAL",DamageCategory::PHYSICAL);
-    steelConst("$_POISON",DamageCategory::POISON);
+
 
     mInterpreter.addFunction("normal_random", fn_gaussian);
     mInterpreter.addFunction("log",fn_log);

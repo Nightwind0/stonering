@@ -87,7 +87,6 @@ namespace StoneRing
         virtual uint GetLevel(void)const;
         virtual void SetLevel(uint);
 		virtual bool IsMonster()const { return true; }
-        virtual double GetSpellResistance(Magic::eMagicType type) const;
         virtual double GetDamageCategoryResistance(DamageCategory::eDamageCategory type) const;
         virtual double  GetAttribute(eCharacterAttribute attr) const;
         virtual bool GetToggle(eCharacterAttribute attr) const;

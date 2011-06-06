@@ -34,6 +34,15 @@ const stat_entry statXMLLookup[] =
     {"rst",ICharacter::CA_RST},
     {"lck",ICharacter::CA_LCK},
     {"joy",ICharacter::CA_JOY},
+    {"bash_def",ICharacter::CA_BASH_DEF},
+    {"jab_def",ICharacter::CA_JAB_DEF},
+    {"slash_def",ICharacter::CA_SLASH_DEF},
+    {"wind_rst",ICharacter::CA_WIND_RST},
+    {"fire_rst",ICharacter::CA_FIRE_RST},
+    {"water_rst",ICharacter::CA_WATER_RST},
+    {"earth_rst",ICharacter::CA_EARTH_RST},
+    {"dark_rst",ICharacter::CA_DARK_RST},
+    {"holy_rst",ICharacter::CA_HOLY_RST},
     {"draw_ill",ICharacter::CA_DRAW_ILL},   //    CA_DRAW_ILL,
     {"draw_stone",ICharacter::CA_DRAW_STONE}, //    CA_DRAW_STONE,
     {"draw_berserk",ICharacter::CA_DRAW_BERSERK}, //  CA_DRAW_BERSERK,
@@ -57,6 +66,13 @@ const stat_entry statXMLLookup[] =
     {"idol_slots",ICharacter::CA_IDOL_SLOTS}
 };
 
+
+bool StoneRing::ICharacter::IsDamageCategoryAttribute(StoneRing::ICharacter::eCharacterAttribute attr)
+{
+    if(attr > StoneRing::ICharacter::_START_OF_DAMAGE_CATEGORIES && attr < StoneRing::ICharacter::_END_OF_DAMAGE_CATEGORIES)
+        return true;
+    else return false;
+}
 
 
 StoneRing::ICharacter::eCharacterAttribute StoneRing::ICharacter::CharAttributeFromString(const std::string &str)
@@ -258,22 +274,29 @@ void StoneRing::Character::Attacked()
 
 double StoneRing::Character::GetDamageCategoryResistance(DamageCategory::eDamageCategory type) const
 {
-    double value;
-    if(type == DamageCategory::HOLY)
-        value = -1.0;
-    else
-        value =  1.0;
-    
-    for(std::map<Equipment::eSlot,Equipment*>::const_iterator it=m_equipment.begin();
-        it!=m_equipment.end();it++)
+    switch(type)
     {
-        if(it->second->IsArmor()){
-            Armor* armor = dynamic_cast<Armor*>(it->second);
-            value += armor->GetResistance(type);
-        }
+        case DamageCategory::WIND:
+            return GetAttribute(CA_WIND_RST);
+        case DamageCategory::WATER:
+            return GetAttribute(CA_WATER_RST);
+        case DamageCategory::EARTH:
+            return GetAttribute(CA_EARTH_RST);
+        case DamageCategory::FIRE:
+            return GetAttribute(CA_FIRE_RST);
+        case DamageCategory::BASH:
+            return GetAttribute(CA_BASH_DEF);
+        case DamageCategory::JAB:
+            return GetAttribute(CA_JAB_DEF);
+        case DamageCategory::SLASH:
+            return GetAttribute(CA_SLASH_DEF);
+        case DamageCategory::DARK:
+            return GetAttribute(CA_DARK_RST);
+        case DamageCategory::HOLY:
+            return GetAttribute(CA_HOLY_RST);
     }
-    
-    return value;
+
+
 }
 
 
@@ -372,9 +395,19 @@ double StoneRing::Character::GetBaseAttribute(eCharacterAttribute attr)const
 double StoneRing::Character::GetAttribute(eCharacterAttribute attr) const
 {
     double base = 0.0;
+     
     if(!IsTransient(attr))
     {
-        base = m_pClass->GetStat(attr,GetLevel());
+        if(ICharacter::IsDamageCategoryAttribute(attr))
+        {
+            base = 1.0;
+            if(attr == ICharacter::CA_HOLY_RST)
+                base = -1.0;
+        }
+        else 
+        {
+            base = m_pClass->GetStat(attr,GetLevel());
+        }
         // Go through all equipment, multiplying by the AMs that are mults
         for(std::map<Equipment::eSlot,Equipment*>::const_iterator iter= m_equipment.begin();
             iter != m_equipment.end();iter++)
@@ -515,10 +548,6 @@ void StoneRing::Character::StatusEffectRound()
 {
 }
 
-double StoneRing::Character::GetSpellResistance(Magic::eMagicType /*type*/) const
-{
-    return 0;
-}
 
 StoneRing::BattleMenu * StoneRing::Character::GetBattleMenu() const
 {

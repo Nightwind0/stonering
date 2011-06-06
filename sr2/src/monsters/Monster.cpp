@@ -156,10 +156,6 @@ void Monster::Attacked()
 {
 }
 
-double Monster::GetSpellResistance(StoneRing::Magic::eMagicType type) const
-{
-    return 0.0;
-}
 
 double Monster::GetDamageCategoryResistance(DamageCategory::eDamageCategory type) const
 {

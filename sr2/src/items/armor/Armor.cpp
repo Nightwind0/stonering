@@ -75,7 +75,7 @@ double Armor::GetArmorAttribute ( eAttribute attr )
     {
         ArmorEnhancer * pEnhancer = *iter;
 
-        if( pEnhancer->GetType() == ArmorEnhancer::ARMOR_ATTRIBUTE && pEnhancer->GetAttribute() == attr )
+        if( pEnhancer->GetAttribute() == attr )
         {
             value *= pEnhancer->GetMultiplier();
         }
@@ -86,7 +86,7 @@ double Armor::GetArmorAttribute ( eAttribute attr )
     {
         ArmorEnhancer * pEnhancer = *iter;
 
-        if( pEnhancer->GetType() == ArmorEnhancer::ARMOR_ATTRIBUTE &&  pEnhancer->GetAttribute() == attr )
+        if( pEnhancer->GetAttribute() == attr )
         {
             value += pEnhancer->GetAdd();
         }
@@ -97,24 +97,6 @@ double Armor::GetArmorAttribute ( eAttribute attr )
 
 }
 
-double Armor::GetResistance ( DamageCategory::eDamageCategory category )
-{
-    double value = 0.0;
- 
-    for(std::list<ArmorEnhancer*>::iterator iter = m_armor_enhancers.begin();
-        iter != m_armor_enhancers.end();
-        iter++)
-    {
-        ArmorEnhancer * pEnhancer = *iter;
-
-        if( pEnhancer->GetType() == ArmorEnhancer::DAMAGE_CATEGORY && pEnhancer->GetDamageCategory() & category )
-        {
-            value += pEnhancer->GetMultiplier();
-        }
-    }
-
-    return value;
-}
 
 /*
 int Armor::GetResistanceAdd( DamageCategory::eDamageCategory category )
