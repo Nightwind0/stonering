@@ -22,6 +22,7 @@
 
 
 using namespace StoneRing;
+using StoneRing::DynamicMenuState;
 
 DynamicMenuState::DynamicMenuState()
 {

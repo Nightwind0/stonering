@@ -1,9 +1,10 @@
 #include "BattleMenuOption.h"
 #include "BattleMenu.h"
 #include "GraphicsManager.h"
-
+#include "Character.h"
 
 using StoneRing::BattleMenuOption;
+using StoneRing::Character;
 
 BattleMenuOption::BattleMenuOption(int level):m_nLevel(level),
 m_pConditionScript(NULL),

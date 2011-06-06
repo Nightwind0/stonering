@@ -2,9 +2,11 @@
 #include "BattleMenu.h"
 #include "BattleMenuOption.h"
 #include "GraphicsManager.h"
+#include "Character.h"
 
 using StoneRing::BattleMenu;
 using StoneRing::BattleMenuOption;
+using StoneRing::Character;
 
 BattleMenu::BattleMenu()
 {
