@@ -1065,6 +1065,8 @@ IApplication::AxisDirection Application::get_direction_for_value(IApplication::A
             else return AXIS_UP;
         }
     }
+
+	return AXIS_NEUTRAL;
 }
 
 
