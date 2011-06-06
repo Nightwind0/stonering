@@ -1,177 +1,177 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <resources>
-	<section name="Configuration">
-		<string name="name" value="Stone Ring: Reign of Mordus" />
-		<image name="splash">
-			<image-file file="Images/Screens/splash.png" />
-		</image>
-		<image name="splashbg">
-			<image-file file="Images/Screens/splash_bg.png" />
-		</image>
-		<string name="BattleConfig" value="Media/battleConfig.xml"/>
-		<string name="UtilityScripts" value="Media/utilityScripts.xml"/>
-  <!-- integer name="width" value="640" / -->
-  <!-- integer name="height" value="480" / -->
-	</section>
-	<section name="Game">
-		<string name="StartupScript" value="Media/Scripts/init.steel"/> 	
-		<string name="SpellDefinitions" value="Media/spells.xml"/>
-		<string name="ItemDefinitions" value="Media/items.xml"/>
-		<string name="StatusEffectDefinitions" value="Media/statusEffects.xml"/>
-		<string name="SkillDefinitions" value="Media/skills.xml"/>
-		<string name="CharacterClassDefinitions" value="Media/characterClasses.xml"/>
-		<string name="MonsterDefinitions" value="Media/monsters.xml"/>
-		<string name="CharacterDefinitions" value="Media/characters.xml"/>
-		<string name="AnimationDefinitions" value="Media/animations.xml"/>
-		<string name="MainMenuDefinitions" value="Media/mainmenu.xml"/>
-		<string name="LevelPath" value="Media/Levels/" />
-		<string name="StartLevel" value="examplelevel" />
-		<string name="DefaultPlayerSprite" value="Sprites/Party/Valyn" />
-		<string name="Currency" value="Drops"/>
-		<float name="DefaultEncounterRate" value="0.10"/>
-	</section>
+        <section name="Configuration">
+                <string name="name" value="Stone Ring: Reign of Mordus" />
+                <image name="splash">
+                        <image-file file="Images/Screens/splash.png" />
+                </image>
+                <image name="splashbg">
+                        <image-file file="Images/Screens/splash_bg.png" />
+                </image>
+                <string name="BattleConfig" value="Media/battleConfig.xml"/>
+                <string name="UtilityScripts" value="Media/utilityScripts.xml"/>
+<!-- integer name="width" value="640" / -->
+<!-- integer name="height" value="480" / -->
+        </section>
+        <section name="Game">
+                <string name="StartupScript" value="Media/Scripts/init.steel"/> 	
+                <string name="SpellDefinitions" value="Media/spells.xml"/>
+                <string name="ItemDefinitions" value="Media/items.xml"/>
+                <string name="StatusEffectDefinitions" value="Media/statusEffects.xml"/>
+                <string name="SkillDefinitions" value="Media/skills.xml"/>
+                <string name="CharacterClassDefinitions" value="Media/characterClasses.xml"/>
+                <string name="MonsterDefinitions" value="Media/monsters.xml"/>
+                <string name="CharacterDefinitions" value="Media/characters.xml"/>
+                <string name="AnimationDefinitions" value="Media/animations.xml"/>
+                <string name="MainMenuDefinitions" value="Media/mainmenu.xml"/>
+                <string name="LevelPath" value="Media/Levels/" />
+                <string name="StartLevel" value="examplelevel" />
+                <string name="DefaultPlayerSprite" value="Sprites/Party/Valyn" />
+                <string name="Currency" value="Drops"/>
+                <float name="DefaultEncounterRate" value="0.10"/>
+        </section>
 
-	<section name="Fonts">
+        <section name="Fonts">
 <!-- 1234567890-=\+/`~!@#$%^&*()[]{};:'",.<>?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw -->
 
-		<freetype name="Font_hp_plus" file="Images/Fonts/cwisdom.ttf" size="32" color="#00FF00FF" font_name="Conventional Wisdom"/>
-		<freetype name="Font_hp_minus" file="Images/Fonts/cwisdom.ttf" size="32" color="#FF0000FF" font_name="Conventional Wisdom"/>
-		<freetype name="Font_mp_plus" file="Images/Fonts/cwisdom.ttf" size="32" color="#FF00FFFF" font_name="Conventional Wisdom"/>
-		<freetype name="Font_mp_minus" file="Images/Fonts/cwisdom.ttf" size="32" color="#00FFFFFF" font_name="Conventional Wisdom"/>
-		<freetype name="Font_display_shadow" file="Images/Fonts/cwisdom.ttf" size="32" color="#00000080" font_name="Conventional Wisdom"/>
-		<freetype name="sb_black" size="24" color="#000000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-		<freetype name="sb_gray" size="24" color="#636363" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>		
-		<freetype name="sb_white" size="24" color="#000000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>			
-		<freetype name="sb_blue" size="24" color="#000080"  shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-		<freetype name="sb_green" size="24" color="#00A000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-		<freetype name="sb_purple" size="24" color="#680090" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-		<freetype name="sb_red" size="24" color="#FF0000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-		<freetype name="sb_cyan" size="24" color="#00FFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-		<freetype name="mono_green" size="24" color="#00A000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
-		<freetype name="mono_black" size="24" color="#000000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
-		<freetype name="mono_gray" size="24" color="#636363" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>		
-		<freetype name="mono_white" size="24" color="#000000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>			
-		<freetype name="mono_blue" size="24" color="#000080"  shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
-		<freetype name="mono_green" size="24" color="#00A000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
-		<freetype name="mono_purple" size="24" color="#980090" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
-		<freetype name="mono_red" size="24" color="#FF0000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
-		<freetype name="mono_cyan" size="24" color="#00FFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
-		<freetype name="BoldMonoWhite" size="40" color="#FFFFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
-		<freetype name="BoldMonoGray" size="40" color="#616165FF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
-		<freetype name="BoldMonoDark" size="40" color="#22222280" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>		
-		<freetype name="Font_miss" file="Images/Fonts/cwisdom.ttf" size="32" color="#FFFF00FF"  font_name="Conventional Wisdom"/>
-		<freetype name="CharacterClass" size="24" color="#0000A0" shadowx="1.0" shadowy="1.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-		<freetype name="BoldWhite" size="40" color="#FFFFFFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-		<freetype name="BoldPowderBlue" size="40" color="#006A91FF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-		<freetype name="BoldBlack" size="40" color="#000000FF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-		<freetype name="BoldGray" size="40" color="#616165FF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>	
-		<freetype name="BoldYellow" size="40" color="#FFFF00FF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-		<freetype name="BoldCyan" size="40" color="#00FFFFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>		
-		<freetype name="BoldShadow" size="40" color="#00000080" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-		<freetype name="BoldGreen" size="40" color="#0000FFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-		<freetype name="BoldPurple" size="40" color="#6A1172FF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-	</section>
-	<section name="Levels">
-		<string name="examplelevel" value="test3.xml" />
-		<string name="octaviaInn" value="foo.xml" />
-		<string name="monster_test" value="monster_test.xml" />
-	</section>
-	<section name="Tilemaps">
-		<sprite name="roofs">
-			<image file="Tiles/roofs.png"/>
-		</sprite>
-		<sprite name="wall1">
-			<image file="Tiles/walls1.png"/>
-		</sprite>
-		<sprite name="grass">
-			<image file="Tiles/grass.png"/>
-		</sprite>
-		<sprite name="rocks">
-			<image file="Tiles/rock.png"/>
-		</sprite>
+                <freetype name="Font_hp_plus" file="Images/Fonts/cwisdom.ttf" size="32" color="#00FF00FF" font_name="Conventional Wisdom"/>
+                <freetype name="Font_hp_minus" file="Images/Fonts/cwisdom.ttf" size="32" color="#FF0000FF" font_name="Conventional Wisdom"/>
+                <freetype name="Font_mp_plus" file="Images/Fonts/cwisdom.ttf" size="32" color="#FF00FFFF" font_name="Conventional Wisdom"/>
+                <freetype name="Font_mp_minus" file="Images/Fonts/cwisdom.ttf" size="32" color="#00FFFFFF" font_name="Conventional Wisdom"/>
+                <freetype name="Font_display_shadow" file="Images/Fonts/cwisdom.ttf" size="32" color="#00000080" font_name="Conventional Wisdom"/>
+                <freetype name="sb_black" size="24" color="#000000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+                <freetype name="sb_gray" size="24" color="#636363" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>		
+                <freetype name="sb_white" size="24" color="#000000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>			
+                <freetype name="sb_blue" size="24" color="#000080"  shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+                <freetype name="sb_green" size="24" color="#00A000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+                <freetype name="sb_purple" size="24" color="#680090" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+                <freetype name="sb_red" size="24" color="#FF0000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+                <freetype name="sb_cyan" size="24" color="#00FFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+                <freetype name="mono_green" size="24" color="#00A000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="mono_black" size="24" color="#000000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="mono_gray" size="24" color="#636363" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>		
+                <freetype name="mono_white" size="24" color="#000000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>			
+                <freetype name="mono_blue" size="24" color="#000080"  shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="mono_green" size="24" color="#00A000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="mono_purple" size="24" color="#980090" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="mono_red" size="24" color="#FF0000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="mono_cyan" size="24" color="#00FFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="BoldMonoWhite" size="40" color="#FFFFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="BoldMonoGray" size="40" color="#616165FF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="BoldMonoDark" size="40" color="#22222280" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>		
+                <freetype name="Font_miss" file="Images/Fonts/cwisdom.ttf" size="32" color="#FFFF00FF"  font_name="Conventional Wisdom"/>
+                <freetype name="CharacterClass" size="24" color="#0000A0" shadowx="1.0" shadowy="1.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+                <freetype name="BoldWhite" size="40" color="#FFFFFFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+                <freetype name="BoldPowderBlue" size="40" color="#006A91FF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+                <freetype name="BoldBlack" size="40" color="#000000FF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+                <freetype name="BoldGray" size="40" color="#616165FF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>	
+                <freetype name="BoldYellow" size="40" color="#FFFF00FF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+                <freetype name="BoldCyan" size="40" color="#00FFFFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>		
+                <freetype name="BoldShadow" size="40" color="#00000080" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+                <freetype name="BoldGreen" size="40" color="#0000FFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+                <freetype name="BoldPurple" size="40" color="#6A1172FF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+        </section>
+        <section name="Levels">
+                <string name="examplelevel" value="test3.xml" />
+                <string name="octaviaInn" value="foo.xml" />
+                <string name="monster_test" value="monster_test.xml" />
+        </section>
+        <section name="Tilemaps">
+                <sprite name="roofs">
+                        <image file="Tiles/roofs.png"/>
+                </sprite>
+                <sprite name="wall1">
+                        <image file="Tiles/walls1.png"/>
+                </sprite>
+                <sprite name="grass">
+                        <image file="Tiles/grass.png"/>
+                </sprite>
+                <sprite name="rocks">
+                        <image file="Tiles/rock.png"/>
+                </sprite>
 
-	</section>
-	<section name="Backdrops">
-		<image name="grasslands">
-			<image-file file="Images/Backdrops/grasslands.png"/>
-		</image>
-		<image name="mountains">
-			<image-file file="Images/Backdrops/mountains.png"/>
-		</image>
-	</section>
+        </section>
+        <section name="Backdrops">
+                <image name="grasslands">
+                        <image-file file="Images/Backdrops/grasslands.png"/>
+                </image>
+                <image name="mountains">
+                        <image-file file="Images/Backdrops/mountains.png"/>
+                </image>
+        </section>
 
-	<section name="Icons">
-		<image name="no_icon">
-			<image-file file="Images/Icons/no_icon.png"/>
-		</image>
-		<image name="attack">
-			<image-file file="Images/Icons/attack.png"/>
-		</image>
-		<image name="item">
-			<image-file file="Images/Icons/I_Chest02.png"/>
-		</image>
-		<image name="skills">
-		    <image-file file="Images/Icons/W_Book02.png"/>
-		</image>
-		<image name="equip">
-		    <image-file file="Images/Icons/A_Armour02.png"/>
-		</image>
-		<image name="armor">
-		    <image-file file="Images/Icons/A_Armour02.png"/>
-		</image>
-		<image name="regular_items">
-		    <image-file file="Images/Icons/P_Green01.png"/>
-		</image>
-		<image name="special_items">
-		    <image-file file="Images/Icons/I_Key01.png"/>
-		</image>
-		<image name="weapons">
-		    <image-file file="Images/Icons/W_Sword001.png"/>
-		</image>
-		
-		<image name="omegas">
-		    <image-file file="Images/Icons/I_Saphire.png"/>
-		</image>
-		<image name="config">
-		    <image-file file="Images/Icons/I_Book.png"/>
-		</image>		
-		<image name="status">
-		    <image-file file="Images/Icons/I_Scroll.png"/>
-		</image>	
-		
-		<image name="flee">
-			<image-file file="Images/Icons/run.png"/>
-		</image>
-		<image name="hurl">
-			<image-file file="Images/Icons/Balloon.png"/>
-		</image>
-		<section name="Item">
-		    <image name="key">
-			<image-file file="Images/Icons/I_Key01.png"/>
-		    </image>
-		</section>
-		<section name="Weapon">
-		    <image name="basic_sword">
-			<image-file file="Images/Icons/W_Sword001.png"/>
-		    </image>			    
-		</section>
-		<section name="Armor">
-		    <image name="poisonshield">
-			<image-file file="Images/Icons/PoisonShield.png"/>
-		    </image>
-		    <image name="basic_shield">
-			<image-file file="Images/Icons/E_Wood01.png"/>
-		    </image>	
-		  
-		</section>
-		<section name="Items">
-		    <image name="moonseed">
-			<image-file file="Images/Icons/I_MoonSeed.png"/>
-		    </image>		    
-		</section>
-	</section>
+        <section name="Icons">
+                <image name="no_icon">
+                        <image-file file="Images/Icons/no_icon.png"/>
+                </image>
+                <image name="attack">
+                        <image-file file="Images/Icons/attack.png"/>
+                </image>
+                <image name="item">
+                        <image-file file="Images/Icons/I_Chest02.png"/>
+                </image>
+                <image name="skills">
+                    <image-file file="Images/Icons/W_Book02.png"/>
+                </image>
+                <image name="equip">
+                    <image-file file="Images/Icons/A_Armour02.png"/>
+                </image>
+                <image name="armor">
+                    <image-file file="Images/Icons/A_Armour02.png"/>
+                </image>
+                <image name="regular_items">
+                    <image-file file="Images/Icons/P_Green01.png"/>
+                </image>
+                <image name="special_items">
+                    <image-file file="Images/Icons/I_Key01.png"/>
+                </image>
+                <image name="weapons">
+                    <image-file file="Images/Icons/W_Sword001.png"/>
+                </image>
+                
+                <image name="omegas">
+                    <image-file file="Images/Icons/I_Saphire.png"/>
+                </image>
+                <image name="config">
+                    <image-file file="Images/Icons/I_Book.png"/>
+                </image>		
+                <image name="status">
+                    <image-file file="Images/Icons/I_Scroll.png"/>
+                </image>	
+                
+                <image name="flee">
+                        <image-file file="Images/Icons/run.png"/>
+                </image>
+                <image name="hurl">
+                        <image-file file="Images/Icons/Balloon.png"/>
+                </image>
+                <section name="Item">
+                    <image name="key">
+                        <image-file file="Images/Icons/I_Key01.png"/>
+                    </image>
+                </section>
+                <section name="Weapon">
+                    <image name="basic_sword">
+                        <image-file file="Images/Icons/W_Sword001.png"/>
+                    </image>			    
+                </section>
+                <section name="Armor">
+                    <image name="poisonshield">
+                        <image-file file="Images/Icons/PoisonShield.png"/>
+                    </image>
+                    <image name="basic_shield">
+                        <image-file file="Images/Icons/E_Wood01.png"/>
+                    </image>	
+                
+                </section>
+                <section name="Items">
+                    <image name="moonseed">
+                        <image-file file="Images/Icons/I_MoonSeed.png"/>
+                    </image>		    
+                </section>
+        </section>
 
-	<section name="Overlays">
+        <section name="Overlays">
             <section name="DynamicMenu">
                 <section name="points">
                     <point name="margins" x="20" y="20"/>
@@ -188,55 +188,55 @@
                     <string name="Selection" value="BoldWhite"/>
                 </section>
             </section>
-	    <section name="MainMenu">
-		<image name="overlay">
-		    <image-file file="Images/Overlays/main_menu_overlay.png"/>
-		</image>
-		<image name="portrait_shadow">
-		    <image-file file="Images/Portrait/PortraitShadow.png"/>
-		</image>
-		<section name="fonts">
-			<string name="Option" value="BoldGray"/>
-			<string name="Choice" value="BoldWhite"/>
-			<string name="Selection" value="BoldWhite"/>
-			<string name="Character" value="BoldWhite"/>
-			<string name="Class"     value="CharacterClass"/>
-			<string name="Level" value = "mono_cyan"/>
-			<string name="HP"    value = "mono_green"/>
-			<string name="MP"    value = "mono_purple"/>
-			<string name="SP"    value = "mono_cyan"/>
-		</section>
+            <section name="MainMenu">
+                <image name="overlay">
+                    <image-file file="Images/Overlays/main_menu_overlay.png"/>
+                </image>
+                <image name="portrait_shadow">
+                    <image-file file="Images/Portrait/PortraitShadow.png"/>
+                </image>
+                <section name="fonts">
+                        <string name="Option" value="BoldGray"/>
+                        <string name="Choice" value="BoldWhite"/>
+                        <string name="Selection" value="BoldWhite"/>
+                        <string name="Character" value="BoldWhite"/>
+                        <string name="Class"     value="CharacterClass"/>
+                        <string name="Level" value = "mono_cyan"/>
+                        <string name="HP"    value = "mono_green"/>
+                        <string name="MP"    value = "mono_purple"/>
+                        <string name="SP"    value = "mono_cyan"/>
+                </section>
                 <section name="rects">
                     <rect name="menu" left="479" right="752" top="43" bottom="363"/>
                     <rect name="party" left="12" right="484" top="24" bottom="191"/>
                     <rect name="character" left="30" right="484" top="30" bottom="191"/>
                 </section>
-	    </section>
-	    <section name="ItemSelect">
-		<image name="overlay">
-		    <image-file file="Images/Overlays/item_select.png"/>
-		</image>
+            </section>
+            <section name="ItemSelect">
+                <image name="overlay">
+                    <image-file file="Images/Overlays/item_select.png"/>
+                </image>
                 <section name="rects">
                     <rect name="header" left="80" right="720" top="26" bottom="50"/>
                     <rect name="list" left="20" right="752" top="86" bottom="363"/>
                 </section>
-		<section name="fonts">
-			<string name="Option" value="BoldMonoGray"/>
-			<string name="Selection" value="BoldMonoWhite"/>
-			<string name="Unavailable" value="BoldMonoDark"/>
-		</section>		
-	    </section>
-		<section name="BattleStatus">
-			<image name="overlay">
-				<image-file file="Images/Overlays/battle_status_overlay_s.png"/>
-			</image>
-			<section name="fonts">
-				<string name="hp" value="sb_green"/>
-				<string name="mp" value="sb_cyan"/>
-				<string name="bp" value="sb_blue"/>
-				<string name="general" value="sb_black"/>
-				<string name="bad" value="sb_red"/>
-			</section>
+                <section name="fonts">
+                        <string name="Option" value="BoldMonoGray"/>
+                        <string name="Selection" value="BoldMonoWhite"/>
+                        <string name="Unavailable" value="BoldMonoDark"/>
+                </section>		
+            </section>
+                <section name="BattleStatus">
+                        <image name="overlay">
+                                <image-file file="Images/Overlays/battle_status_overlay_s.png"/>
+                        </image>
+                        <section name="fonts">
+                                <string name="hp" value="sb_green"/>
+                                <string name="mp" value="sb_cyan"/>
+                                <string name="bp" value="sb_blue"/>
+                                <string name="general" value="sb_black"/>
+                                <string name="bad" value="sb_red"/>
+                        </section>
                         <section name="points">
                             <point name="origin" x="0" y="396"/>
                         </section>
@@ -245,11 +245,11 @@
                             <rect name="monster" left="0" top="0" right="528" bottom="396"/>
                             <rect name="player" left="594" top="64" right="800" bottom="396"/>
                         </section>
-		</section>
-		<section name="BattlePopup">
-			<image name="overlay">
-				<image-file file="Images/Overlays/battle_popup.png"/>
-			</image>
+                </section>
+                <section name="BattlePopup">
+                        <image name="overlay">
+                                <image-file file="Images/Overlays/battle_popup.png"/>
+                        </image>
                         <section name="points">
                             <point name="origin" x="476" y="396"/>
                         </section>
@@ -257,29 +257,29 @@
                             <rect name="text" left="14" right="312" top="20" bottom="192"/>
 
                         </section>
-			<section name="fonts">
-				<string name="on" value="BoldBlack"/>
-				<string name="off" value="BoldGray"/>
-				<string name="Selection" value="BoldWhite"/>
-			</section>
-		</section>
-		<section name="BattleMenu">
-			<image name="overlay">
-				<image-file file="Images/Overlays/battle_menu_overlay.png"/>
-			</image>
+                        <section name="fonts">
+                                <string name="on" value="BoldBlack"/>
+                                <string name="off" value="BoldGray"/>
+                                <string name="Selection" value="BoldWhite"/>
+                        </section>
+                </section>
+                <section name="BattleMenu">
+                        <image name="overlay">
+                                <image-file file="Images/Overlays/battle_menu_overlay.png"/>
+                        </image>
                         <section name="points">
                             <point name="origin" x="0" y="500"/>
                         </section>
-			<section name="fonts">
-				<string name="on" value="BoldPowderBlue"/>
-				<string name="off" value="BoldGray"/>
-				<string name="Selection" value="BoldWhite"/>
-			</section>
-		</section>
-		<section name="Say">
-			<image name="overlay">
-				<image-file file="Images/Overlays/say_overlay10.png"/>
-			</image>
+                        <section name="fonts">
+                                <string name="on" value="BoldPowderBlue"/>
+                                <string name="off" value="BoldGray"/>
+                                <string name="Selection" value="BoldWhite"/>
+                        </section>
+                </section>
+                <section name="Say">
+                        <image name="overlay">
+                                <image-file file="Images/Overlays/say_overlay10.png"/>
+                        </image>
                         <section name="points">
                             <point name="origin" x="0" y="320"/>
                         </section>
@@ -287,15 +287,15 @@
                             <rect name="header" left="24" top="340" right="783" bottom="369"/>
                             <rect name="text" left="24" top="388" right="783" bottom="580"/>
                         </section>
-			<section name="fonts">
-				<string name="Speaker" value="BoldBlack"/>
-				<string name="Speech" value="BoldWhite"/>
-			</section>
-		</section>
-		<section name="Experience">
-			<image name="overlay">
-				<image-file file="Images/Overlays/xp_overlay.png"/>
-			</image>
+                        <section name="fonts">
+                                <string name="Speaker" value="BoldBlack"/>
+                                <string name="Speech" value="BoldWhite"/>
+                        </section>
+                </section>
+                <section name="Experience">
+                        <image name="overlay">
+                                <image-file file="Images/Overlays/xp_overlay.png"/>
+                        </image>
                         <section name="points">
                             <point name="origin" x="0" y="0"/>
                             <point name="portrait" x="36" y="36"/>
@@ -307,22 +307,22 @@
                         <section name="gradients">
                             <gradient name="xp_bar" top_left="#FFFFFFFF" top_right="#FF00FFFF" bottom_left="#00FF00FF" bottom_right="#F0F0F0FF"/>
                         </section>
-			<section name="fonts">
-			    <string name="Character" value="BoldWhite"/>
-			    <string name="XP"        value="BoldBlack"/>
-			    <string name="OldLevel"  value="BoldWhite"/>
-			    <string name="Level"     value="BoldYellow"/>
-			</section>
-		</section>
-		<section name="Choice">
-			<image name="overlay">
-				<image-file file="Images/Overlays/choice_overlay.png"/>
-			</image>
-			<sprite name="cursor" hint="alpha">
-				<image file="Sprites/valyn.png">
-					<grid pos="0,0" size="32,48" array="4,4"></grid>
-				</image>
-			</sprite>
+                        <section name="fonts">
+                            <string name="Character" value="BoldWhite"/>
+                            <string name="XP"        value="BoldBlack"/>
+                            <string name="OldLevel"  value="BoldWhite"/>
+                            <string name="Level"     value="BoldYellow"/>
+                        </section>
+                </section>
+                <section name="Choice">
+                        <image name="overlay">
+                                <image-file file="Images/Overlays/choice_overlay.png"/>
+                        </image>
+                        <sprite name="cursor" hint="alpha">
+                                <image file="Sprites/valyn.png">
+                                        <grid pos="0,0" size="32,48" array="4,4"></grid>
+                                </image>
+                        </sprite>
                         <section name="points">
                             <point name="origin" x="0" y="200"/>
                         </section>
@@ -330,282 +330,282 @@
                             <rect name="header" left="24" top="224" right="783" bottom="319"/>
                             <rect name="text" left="24" top="352" right="783" bottom="580"/>                
                         </section>
-			<section name="fonts">
-				<string name="Option" value="BoldGray"/>
-				<string name="Choice" value="BoldWhite"/>
-				<string name="Selection" value="BoldWhite"/>
-			</section>
-		</section>
-	</section>
+                        <section name="fonts">
+                                <string name="Option" value="BoldGray"/>
+                                <string name="Choice" value="BoldWhite"/>
+                                <string name="Selection" value="BoldWhite"/>
+                        </section>
+                </section>
+        </section>
 
 <!-- Can be moved off to a separate resource xml -->
-	<section name="Sprites">
-		<section name="Battle">
-			<sprite name="Target" hint="alpha">
-				<image file="Sprites/target.png"/>
-			</sprite>
-		</section>
-		<section name="Menu">
-		    <sprite name="Target" hint="alpha">
-			<image file="Sprites/target.png"/>
-		    </sprite>
-		</section>
-		<section name="StatusEffect">
-		    <sprite name="Poisoned">
-			<image file="Sprites/Status Effects/Poisoned.png"/>
-		    </sprite>
-		    <sprite name="Stone">
-			<image file="Sprites/Status Effects/Stone.png"/>
-		    </sprite>
-		    <sprite name="DragonRage">
-			<image file="Sprites/Status Effects/DragonRage.png"/>
-		    </sprite>
-		    <sprite name="Focused">
-			<image file="Sprites/Status Effects/AimUp.png"/>
-		    </sprite>	
-		    
-		</section>
-		<section name="Skills">
-			<sprite name="Heal" hint="alpha">
-				<animation pingpong="no" speed="300"/>
-				<image file="Sprites/heal.png">
-					<grid pos="0,0" size="64,64" array="6,1"/>
-				</image>
-			</sprite>
-		</section>
-		<section name="Equipment">
-			<section name="Weapon">
-				<sprite name="Sword">
-					<image file="Images/Items/Weapons/basic_sword.png"></image>
-				</sprite>
-			</section>
-			<section name="Ammo">
-				<sprite name="Balloon_cyan">
-					<image file="Images/Items/Ammo/Balloon_cyan.png"/>
-				</sprite>
-				<sprite name="Balloon_pop">
-					<image file="Sprites/balloon_pop.png">
-						<grid pos="0,0" size="128,128" array="4,1"/>
-					</image>
-				</sprite>
-			</section>
-		</section>
-		<section name="Party">
-			<sprite name="Valyn" hint="alpha">
-				<image file="Sprites/valyn.png">
-					<grid pos="0,0" size="32,48" array="4,4"></grid>
-				</image>
-			</sprite>
-		</section>
-		<section name="Portraits">
-		    <sprite name="Valyn" hint="alpha">
-			<image file="Images/Portrait/Valyn.png">
-			    <grid pos="0,0" size="128,128" array="3,2"/>
-			</image>
-		    </sprite>
-		</section>
-		<section name="tiles">
-			<sprite name="Lava" hint="alpha">
-				<image file="Sprites/lava.png">
-					<grid pos="0,0" size="32,32" array="4,1"></grid>
-				</image>
-				<animation speed="200" playoptions="pingpong" />
-			</sprite>
-		</section>
-		<section name="BattleSprites">
-			<section name="Garian">
-				<sprite name="idle" hint="alpha">
-					<image file="Sprites/garian_battle_demo.png">
-						<grid pos="0,0" size="209,256" array="1,1"/>
-					</image>
-				</sprite>
-			</section>
-			<section name="Valyn">
-				<sprite name="idle" hint="alpha">
-					<animation pingpong="yes" speed="600"/>
-					<image file="Sprites/Party/valyn_battle.png">
-						<grid pos="0,0" size="80,160" array="2,1"/>
-					</image>
-				</sprite>
-				<sprite name="weak" hint="alpha">
-					<image file="Sprites/Party/valyn_battle.png">
-						<grid pos="450,0" size="150,240" array="1,1"/>
-					</image>
-				</sprite>
-				<sprite name="dead" hint="alpha">
-					<image file="Sprites/Party/valyn_battle.png">
-						<grid pos="450,240" size="150,240" array="1,1"/>
-					</image>
-				</sprite>
-				<sprite name="recoil" hint="alpha">
-					<image file="Sprites/Party/valyn_battle.png">
-						<grid pos="160,0" size="80,160" array="1,1"/>
-					</image>
-				</sprite>
-				<sprite name="attack">
-					<animation speed="300"/>
-					<image file="Sprites/Party/valyn_battle.png">
-						<grid pos="0,240" size="150,240" array="2,1"/>
-					</image>
-				</sprite>
-			</section>
-		</section>
-		<section name="Animals">
-			<sprite name="Cat2" hint="alpha">
-				<image file="Sprites/cat2.png">
-					<grid pos="0,0" size="32,32" array="4,4"></grid>
-				</image>
-			</sprite>
-			<sprite name="Cat" hint="alpha">
-				<image file="Sprites/cat.png">
-					<grid pos="0,0" size="32,32" array="4,4"></grid>
-				</image>
-			</sprite>
-		</section>
-		<section name="Monsters">
-			<section name="Endospore">
-				<sprite name="idle" hint="alpha">
-					<animation pingpong="yes" speed="100"/>
-					<image file="Sprites/Monsters/endospore.png">
-						<grid pos="0,0" size="100,122" array="3,1"/>
-					</image>
-				</sprite>
-				<sprite name="weak" hint="alpha">
-					<animation pingpong="yes" speed="300"/>
-					<image file="Sprites/Monsters/endospore.png">
-						<grid pos="0,100" size="100,122" array="3,1"/>
-					</image>
-				</sprite>
-				<sprite name="use" hint="alpha">
-					<animation pingpong="yes" speed="200"/>
-					<image file="Sprites/Monsters/endospore.png">
-						<grid pos="300,0" size="100,122" array="3,1"/>
-					</image>
-				</sprite>
-				<sprite name="recoil" hint="alpha">
-					<animation pingpong="yes" speed="100"/>
-					<image file="Sprites/Monsters/endospore.png">
-						<grid pos="300,100" size="100,122" array="3,1"/>
-					</image>
-				</sprite>
-			</section>
-			<section name="Green Tea Mochi">
-				<sprite name="idle" hint="alpha">
-					<animation pingpong="yes" speed="700"/>
-					<image file="Sprites/Monsters/angry_mochi_green.png">
-						<grid pos="0,0" size="172,172" array="2,1"/>
-					</image>
-				</sprite>
-				<sprite name="weak" hint="alpha">
-					<animation pingpong="yes" speed="300"/>
-					<image file="Sprites/angry_mochi_green.png">
-						<grid pos="0,0" size="172,172" array="2,1"/>
-					</image>
-				</sprite>
-				<sprite name="use" hint="alpha">
-					<animation loop="no" speed="200"/>
-					<image file="Sprites/Monsters/angry_mochi_green.png">
-						<grid pos="0,0" size="172,172" array="2,1"/>
-					</image>
-				</sprite>
-				<sprite name="recoil" hint="alpha">
-					<animation loop="no" speed="100"/>
-					<image file="Sprites/Monsters/angry_mochi_green.png">
-						<grid pos="0,0" size="172,172" array="2,1"/>
-					</image>
-				</sprite>
-			</section>
-			<section name="Stoked Green Tea Mochi">
-				<sprite name="idle" hint="alpha">
-					<animation pingpong="yes" speed="650"/>
-					<image file="Sprites/Monsters/stoked_mochi_green.png">
-						<grid pos="0,0" size="172,172" array="2,1"/>
-					</image>
-				</sprite>
-				<sprite name="weak" hint="alpha">
-					<animation pingpong="yes" speed="300"/>
-					<image file="Sprites/Monsters/stoked_mochi_green.png">
-						<grid pos="0,0" size="172,172" array="2,1"/>
-					</image>
-				</sprite>
-				<sprite name="use" hint="alpha">
-					<animation loop="no" speed="200"/>
-					<image file="Sprites/Monsters/stoked_mochi_green.png">
-						<grid pos="0,0" size="172,172" array="2,1"/>
-					</image>
-				</sprite>
-				<sprite name="recoil" hint="alpha">
-					<animation loop="no" speed="100"/>
-					<image file="Sprites/Monsters/stoked_mochi_green.png">
-						<grid pos="0,0" size="172,172" array="2,1"/>
-					</image>
-				</sprite>
-			</section>
-			<section name="Megaspore">
-				<sprite name="idle" hint="alpha">
-					<animation pingpong="yes" speed="100"/>
-					<image file="Sprites/Monsters/endospore2.png">
-						<grid pos="0,0" size="100,122" array="3,1"/>
-					</image>
-				</sprite>
-				<sprite name="weak" hint="alpha">
-					<animation pingpong="yes" speed="300"/>
-					<image file="Sprites/Monsters/endospore2.png">
-						<grid pos="0,100" size="100,122" array="3,1"/>
-					</image>
-				</sprite>
-				<sprite name="use" hint="alpha">
-					<animation loop="no" speed="200"/>
-					<image file="Sprites/Monsters/endospore2.png">
-						<grid pos="300,0" size="100,122" array="3,1"/>
-					</image>
-				</sprite>
-				<sprite name="recoil" hint="alpha">
-					<animation loop="no" speed="100"/>
-					<image file="Sprites/Monsters/endospore2.png">
-						<grid pos="300,100" size="100,122" array="3,1"/>
-					</image>
-				</sprite>
-			</section>
-			<section name="Grass Wolf">
-				<sprite name="idle" hint="alpha">
-					<image file="Sprites/Monsters/wolf.png"></image>
-				</sprite>
-				<sprite name="use" hint="alpha">
-					<animation pingpong="yes" speed="200"/>
-					<image file="Sprites/Monsters/wolf1.png">
-						<grid pos="150,175" size="150,175" array="2,1"/>
-					</image>
-				</sprite>
-				<sprite name="recoil" hint="alpha">
-					<animation playoptions="noloop" loop="no" speed="200"/>
-					<image file="Sprites/Monsters/wolf1.png">
-						<grid pos="0,175" size="150,175" array="1,1"/>
-					</image>
-				</sprite>
-				<sprite name="weak" hint="alpha">
-					<animation playoptions="loop" loop="yes" speed="200"/>
-					<image file="Sprites/Monsters/wolf1.png">
-						<grid pos="0,0" size="150,175" array="1,2"/>
-					</image>
-				</sprite>
-			</section>
-			<section name="Black Cat">
-				<sprite name="idle" hint="alpha">
-					<image file="Sprites/Monsters/black_cat.png"></image>
-				</sprite>
-				<sprite name="use" hint="alpha">
-					<image file="Sprites/Monsters/black_cat.png"></image>
-				</sprite>
-				<sprite name="recoil" hint="alpha">
-					<image file="Sprites/Monsters/black_cat.png"></image>
-				</sprite>
-				<sprite name="weak" hint="alpha">
-					<image file="Sprites/Monsters/black_cat.png"></image>
-				</sprite>
-			</section>
-		</section>
-	</section>
+        <section name="Sprites">
+                <section name="Battle">
+                        <sprite name="Target" hint="alpha">
+                                <image file="Sprites/target.png"/>
+                        </sprite>
+                </section>
+                <section name="Menu">
+                    <sprite name="Target" hint="alpha">
+                        <image file="Sprites/target.png"/>
+                    </sprite>
+                </section>
+                <section name="StatusEffect">
+                    <sprite name="Poisoned">
+                        <image file="Sprites/Status Effects/Poisoned.png"/>
+                    </sprite>
+                    <sprite name="Stone">
+                        <image file="Sprites/Status Effects/Stone.png"/>
+                    </sprite>
+                    <sprite name="DragonRage">
+                        <image file="Sprites/Status Effects/DragonRage.png"/>
+                    </sprite>
+                    <sprite name="Focused">
+                        <image file="Sprites/Status Effects/AimUp.png"/>
+                    </sprite>	
+                    
+                </section>
+                <section name="Skills">
+                        <sprite name="Heal" hint="alpha">
+                                <animation pingpong="no" speed="300"/>
+                                <image file="Sprites/heal.png">
+                                        <grid pos="0,0" size="64,64" array="6,1"/>
+                                </image>
+                        </sprite>
+                </section>
+                <section name="Equipment">
+                        <section name="Weapon">
+                                <sprite name="Sword">
+                                        <image file="Images/Items/Weapons/basic_sword.png"></image>
+                                </sprite>
+                        </section>
+                        <section name="Ammo">
+                                <sprite name="Balloon_cyan">
+                                        <image file="Images/Items/Ammo/Balloon_cyan.png"/>
+                                </sprite>
+                                <sprite name="Balloon_pop">
+                                        <image file="Sprites/balloon_pop.png">
+                                                <grid pos="0,0" size="128,128" array="4,1"/>
+                                        </image>
+                                </sprite>
+                        </section>
+                </section>
+                <section name="Party">
+                        <sprite name="Valyn" hint="alpha">
+                                <image file="Sprites/valyn.png">
+                                        <grid pos="0,0" size="32,48" array="4,4"></grid>
+                                </image>
+                        </sprite>
+                </section>
+                <section name="Portraits">
+                    <sprite name="Valyn" hint="alpha">
+                        <image file="Images/Portrait/Valyn.png">
+                            <grid pos="0,0" size="128,128" array="3,2"/>
+                        </image>
+                    </sprite>
+                </section>
+                <section name="tiles">
+                        <sprite name="Lava" hint="alpha">
+                                <image file="Sprites/lava.png">
+                                        <grid pos="0,0" size="32,32" array="4,1"></grid>
+                                </image>
+                                <animation speed="200" playoptions="pingpong" />
+                        </sprite>
+                </section>
+                <section name="BattleSprites">
+                        <section name="Garian">
+                                <sprite name="idle" hint="alpha">
+                                        <image file="Sprites/garian_battle_demo.png">
+                                                <grid pos="0,0" size="209,256" array="1,1"/>
+                                        </image>
+                                </sprite>
+                        </section>
+                        <section name="Valyn">
+                                <sprite name="idle" hint="alpha">
+                                        <animation pingpong="yes" speed="600"/>
+                                        <image file="Sprites/Party/valyn_battle.png">
+                                                <grid pos="0,0" size="80,160" array="2,1"/>
+                                        </image>
+                                </sprite>
+                                <sprite name="weak" hint="alpha">
+                                        <image file="Sprites/Party/valyn_battle.png">
+                                                <grid pos="450,0" size="150,240" array="1,1"/>
+                                        </image>
+                                </sprite>
+                                <sprite name="dead" hint="alpha">
+                                        <image file="Sprites/Party/valyn_battle.png">
+                                                <grid pos="450,240" size="150,240" array="1,1"/>
+                                        </image>
+                                </sprite>
+                                <sprite name="recoil" hint="alpha">
+                                        <image file="Sprites/Party/valyn_battle.png">
+                                                <grid pos="160,0" size="80,160" array="1,1"/>
+                                        </image>
+                                </sprite>
+                                <sprite name="attack">
+                                        <animation speed="300"/>
+                                        <image file="Sprites/Party/valyn_battle.png">
+                                                <grid pos="0,240" size="150,240" array="2,1"/>
+                                        </image>
+                                </sprite>
+                        </section>
+                </section>
+                <section name="Animals">
+                        <sprite name="Cat2" hint="alpha">
+                                <image file="Sprites/cat2.png">
+                                        <grid pos="0,0" size="32,32" array="4,4"></grid>
+                                </image>
+                        </sprite>
+                        <sprite name="Cat" hint="alpha">
+                                <image file="Sprites/cat.png">
+                                        <grid pos="0,0" size="32,32" array="4,4"></grid>
+                                </image>
+                        </sprite>
+                </section>
+                <section name="Monsters">
+                        <section name="Endospore">
+                                <sprite name="idle" hint="alpha">
+                                        <animation pingpong="yes" speed="100"/>
+                                        <image file="Sprites/Monsters/endospore.png">
+                                                <grid pos="0,0" size="100,122" array="3,1"/>
+                                        </image>
+                                </sprite>
+                                <sprite name="weak" hint="alpha">
+                                        <animation pingpong="yes" speed="300"/>
+                                        <image file="Sprites/Monsters/endospore.png">
+                                                <grid pos="0,100" size="100,122" array="3,1"/>
+                                        </image>
+                                </sprite>
+                                <sprite name="use" hint="alpha">
+                                        <animation pingpong="yes" speed="200"/>
+                                        <image file="Sprites/Monsters/endospore.png">
+                                                <grid pos="300,0" size="100,122" array="3,1"/>
+                                        </image>
+                                </sprite>
+                                <sprite name="recoil" hint="alpha">
+                                        <animation pingpong="yes" speed="100"/>
+                                        <image file="Sprites/Monsters/endospore.png">
+                                                <grid pos="300,100" size="100,122" array="3,1"/>
+                                        </image>
+                                </sprite>
+                        </section>
+                        <section name="Green Tea Mochi">
+                                <sprite name="idle" hint="alpha">
+                                        <animation pingpong="yes" speed="700"/>
+                                        <image file="Sprites/Monsters/angry_mochi_green.png">
+                                                <grid pos="0,0" size="172,172" array="2,1"/>
+                                        </image>
+                                </sprite>
+                                <sprite name="weak" hint="alpha">
+                                        <animation pingpong="yes" speed="300"/>
+                                        <image file="Sprites/angry_mochi_green.png">
+                                                <grid pos="0,0" size="172,172" array="2,1"/>
+                                        </image>
+                                </sprite>
+                                <sprite name="use" hint="alpha">
+                                        <animation loop="no" speed="200"/>
+                                        <image file="Sprites/Monsters/angry_mochi_green.png">
+                                                <grid pos="0,0" size="172,172" array="2,1"/>
+                                        </image>
+                                </sprite>
+                                <sprite name="recoil" hint="alpha">
+                                        <animation loop="no" speed="100"/>
+                                        <image file="Sprites/Monsters/angry_mochi_green.png">
+                                                <grid pos="0,0" size="172,172" array="2,1"/>
+                                        </image>
+                                </sprite>
+                        </section>
+                        <section name="Stoked Green Tea Mochi">
+                                <sprite name="idle" hint="alpha">
+                                        <animation pingpong="yes" speed="650"/>
+                                        <image file="Sprites/Monsters/stoked_mochi_green.png">
+                                                <grid pos="0,0" size="172,172" array="2,1"/>
+                                        </image>
+                                </sprite>
+                                <sprite name="weak" hint="alpha">
+                                        <animation pingpong="yes" speed="300"/>
+                                        <image file="Sprites/Monsters/stoked_mochi_green.png">
+                                                <grid pos="0,0" size="172,172" array="2,1"/>
+                                        </image>
+                                </sprite>
+                                <sprite name="use" hint="alpha">
+                                        <animation loop="no" speed="200"/>
+                                        <image file="Sprites/Monsters/stoked_mochi_green.png">
+                                                <grid pos="0,0" size="172,172" array="2,1"/>
+                                        </image>
+                                </sprite>
+                                <sprite name="recoil" hint="alpha">
+                                        <animation loop="no" speed="100"/>
+                                        <image file="Sprites/Monsters/stoked_mochi_green.png">
+                                                <grid pos="0,0" size="172,172" array="2,1"/>
+                                        </image>
+                                </sprite>
+                        </section>
+                        <section name="Megaspore">
+                                <sprite name="idle" hint="alpha">
+                                        <animation pingpong="yes" speed="100"/>
+                                        <image file="Sprites/Monsters/endospore2.png">
+                                                <grid pos="0,0" size="100,122" array="3,1"/>
+                                        </image>
+                                </sprite>
+                                <sprite name="weak" hint="alpha">
+                                        <animation pingpong="yes" speed="300"/>
+                                        <image file="Sprites/Monsters/endospore2.png">
+                                                <grid pos="0,100" size="100,122" array="3,1"/>
+                                        </image>
+                                </sprite>
+                                <sprite name="use" hint="alpha">
+                                        <animation loop="no" speed="200"/>
+                                        <image file="Sprites/Monsters/endospore2.png">
+                                                <grid pos="300,0" size="100,122" array="3,1"/>
+                                        </image>
+                                </sprite>
+                                <sprite name="recoil" hint="alpha">
+                                        <animation loop="no" speed="100"/>
+                                        <image file="Sprites/Monsters/endospore2.png">
+                                                <grid pos="300,100" size="100,122" array="3,1"/>
+                                        </image>
+                                </sprite>
+                        </section>
+                        <section name="Grass Wolf">
+                                <sprite name="idle" hint="alpha">
+                                        <image file="Sprites/Monsters/wolf.png"></image>
+                                </sprite>
+                                <sprite name="use" hint="alpha">
+                                        <animation pingpong="yes" speed="200"/>
+                                        <image file="Sprites/Monsters/wolf1.png">
+                                                <grid pos="150,175" size="150,175" array="2,1"/>
+                                        </image>
+                                </sprite>
+                                <sprite name="recoil" hint="alpha">
+                                        <animation playoptions="noloop" loop="no" speed="200"/>
+                                        <image file="Sprites/Monsters/wolf1.png">
+                                                <grid pos="0,175" size="150,175" array="1,1"/>
+                                        </image>
+                                </sprite>
+                                <sprite name="weak" hint="alpha">
+                                        <animation playoptions="loop" loop="yes" speed="200"/>
+                                        <image file="Sprites/Monsters/wolf1.png">
+                                                <grid pos="0,0" size="150,175" array="1,2"/>
+                                        </image>
+                                </sprite>
+                        </section>
+                        <section name="Black Cat">
+                                <sprite name="idle" hint="alpha">
+                                        <image file="Sprites/Monsters/black_cat.png"></image>
+                                </sprite>
+                                <sprite name="use" hint="alpha">
+                                        <image file="Sprites/Monsters/black_cat.png"></image>
+                                </sprite>
+                                <sprite name="recoil" hint="alpha">
+                                        <image file="Sprites/Monsters/black_cat.png"></image>
+                                </sprite>
+                                <sprite name="weak" hint="alpha">
+                                        <image file="Sprites/Monsters/black_cat.png"></image>
+                                </sprite>
+                        </section>
+                </section>
+        </section>
 
 
 

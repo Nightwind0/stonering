@@ -4,15 +4,18 @@
             declare $choice = menu(array("Use Item","Drop Item"));
             declare $drop = ($choice == 1);
 	    declare $item = selectItem(false,$drop);
-	    if(is_valid($item))
-	    {
-                if($drop)
+            if($drop)
+            {
+                while(is_valid($item))
                 {
                     disposeItem($item,1);
                     message("Dropped {getItemName($item)}");
+                    $item = selectItem(false,true);
                 }
-                else
-                {
+               
+            }
+	    else if(is_valid($item))
+	    {
                     declare @targets;
                     switch(getItemTargetable($item))
                     {
@@ -30,7 +33,7 @@
                     }
                     if(len(@targets) == 0) return; // they hit back
                     useItem($item,@targets);
-                }
+                
 	    }
 	</script>
     </menuOption>

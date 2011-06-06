@@ -18,16 +18,18 @@ using StoneRing::MonsterElement;
 using StoneRing::ItemRef;
 using StoneRing::StatusEffect;
 using StoneRing::SpriteDefinition;
-using StoneRing::eDamageCategory;
 
 
 
+ 
+ 
+ 
 Monster::Monster(MonsterElement *pDefinition)
         :m_pMonsterDefinition(pDefinition),m_name(pDefinition->GetName()),m_sprite(GET_MAIN_GC()),m_nLevel(0)
 {
-
+ 
 }
-
+ 
 Monster::~Monster()
 {
 }
@@ -41,6 +43,8 @@ void Monster::set_transients()
 
 
 }
+
+
 
 void Monster::set_toggle_defaults()
 {
@@ -157,9 +161,10 @@ double Monster::GetSpellResistance(StoneRing::Magic::eMagicType type) const
     return 0.0;
 }
 
-double Monster::GetDamageCategoryResistance(eDamageCategory type) const
+double Monster::GetDamageCategoryResistance(DamageCategory::eDamageCategory type) const
 {
-    return (type == HOLY)?-1.0:1.0;
+    // TODO: Umm... something better than this, monsters should be able to override this
+    return (type == DamageCategory::HOLY)?-1.0:1.0;
 }
 
 double Monster::GetAttribute(ICharacter::eCharacterAttribute attr) const
@@ -248,7 +253,7 @@ ICharacter::eGender Monster::GetGender() const
     return NEUTER;
 }
 
-eDamageCategory Monster::GetDefaultDamageCategory() const
+DamageCategory::eDamageCategory Monster::GetDefaultDamageCategory() const
 {
       return m_pMonsterDefinition->GetDefaultDamageCategory();
 }

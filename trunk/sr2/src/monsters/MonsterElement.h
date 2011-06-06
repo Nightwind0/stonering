@@ -44,7 +44,7 @@ public:
 
     const Stat* GetStat(ICharacter::eCharacterAttribute attr) const;
 
-    eDamageCategory GetDefaultDamageCategory(void) const { return m_eDamageCategory; }
+    DamageCategory::eDamageCategory GetDefaultDamageCategory(void) const { return m_eDamageCategory; }
 
     // SpriteDefinition * getSpriteDefinition(const std::string &name)const;
 
@@ -73,7 +73,7 @@ private:
     CharacterClass *m_pClass;
     Character::eType m_eCharacterType;
     uint m_nLevel;
-    eDamageCategory m_eDamageCategory;
+    DamageCategory::eDamageCategory m_eDamageCategory;
     std::string m_name;
 
 };

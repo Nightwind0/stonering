@@ -127,7 +127,7 @@ void MonsterElement::load_attributes(CL_DomNamedNodeMap attr)
 
     std::string damageCategory = get_implied_string("damageCategory",attr,"bash"); // they punch by default
 
-    m_eDamageCategory = DamageCategoryFromString(damageCategory);
+    m_eDamageCategory = DamageCategory::DamageCategoryFromString(damageCategory);
 
     if(mode == "manual")
     {

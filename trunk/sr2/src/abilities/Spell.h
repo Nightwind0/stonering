@@ -60,7 +60,7 @@ namespace StoneRing
 
         SpellRef * createSpellRef() const;
         uint getValue() const;
-        eDamageCategory GetDamageCategory() const { return m_damageCategory; }
+        DamageCategory::eDamageCategory GetDamageCategory() const { return m_damageCategory; }
         CL_DomElement createDomElement( CL_DomDocument &doc ) const;
         MagicResistance * getMagicResistance() const;
 
@@ -73,7 +73,7 @@ namespace StoneRing
         eTargetable getTargetableFromString ( const std::string &str);
 
         Magic::eMagicType meType;
-        eDamageCategory m_damageCategory;
+        DamageCategory::eDamageCategory m_damageCategory;
         eUse meUse;
         eTargetable meTargetable;
         std::string mName;
