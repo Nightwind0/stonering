@@ -104,38 +104,22 @@ void StoneRing::ChoiceState::MappableObjectMoveHook()
 
 void StoneRing::ChoiceState::Start()
 {
-
     CL_GraphicContext& GC = GET_MAIN_GC();
     m_bDone = false;
     m_bDraw = true;
-    std::string resource = "Overlays/Choice/";
-    IApplication *pApp = IApplication::GetInstance();
-    CL_ResourceManager& resources = pApp->GetResources();
-
 
     m_choiceFont = GraphicsManager::GetFont(GraphicsManager::CHOICE,"Choice");
     m_optionFont = GraphicsManager::GetFont(GraphicsManager::CHOICE,"Option");
     m_currentOptionFont = GraphicsManager::GetFont(GraphicsManager::CHOICE,"Selection");
 
-
     m_choiceOverlay = GraphicsManager::GetOverlay(GraphicsManager::CHOICE);
-    
-    // TODO: Have some general way to do this kind of thing:
 
-    m_question_rect.top = (float)resources.get_integer_resource(resource + "header/top",0);
-    m_question_rect.left = (float)resources.get_integer_resource(resource + "header/left",0);
-    m_question_rect.right = (float)resources.get_integer_resource(resource + "header/right",0);
-    m_question_rect.bottom = (float)resources.get_integer_resource(resource + "header/bottom",0);
+    m_question_rect = GraphicsManager::GetRect(GraphicsManager::CHOICE,"header");
+    m_text_rect = GraphicsManager::GetRect(GraphicsManager::CHOICE,"text");
 
-    m_text_rect.top = (float)resources.get_integer_resource(resource + "text/top",0);
-    m_text_rect.left = (float)resources.get_integer_resource(resource + "text/left",0);
-    m_text_rect.right = (float)resources.get_integer_resource(resource + "text/right",0);
-    m_text_rect.bottom = (float)resources.get_integer_resource(resource + "text/bottom",0);
-
-
-    m_X = resources.get_integer_resource(resource + "x",0);
-    m_Y = resources.get_integer_resource(resource + "y",0);
-
+    CL_Pointf origin = GraphicsManager::GetPoint(GraphicsManager::CHOICE,"origin");
+    m_X = origin.x;
+    m_Y = origin.y;
 /*
   if(!mpChoiceOverlay)
   mpChoiceOverlay = new CL_Surface("Overlays/choice_overlay", IApplication::getInstance()->getResources() );

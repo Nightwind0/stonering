@@ -54,9 +54,6 @@ void ExperienceState::Init()
 
     m_pTNL = IApplication::GetInstance()->GetUtility(IApplication::XP_FOR_LEVEL);
     m_pLNT = IApplication::GetInstance()->GetUtility(IApplication::LEVEL_FOR_XP);
-    
-				       
-    
 }
 
 
@@ -108,53 +105,53 @@ void ExperienceState::Draw(const CL_Rect& screenRect, CL_GraphicContext& GC)
     offset.y += (IApplication::GetInstance()->GetDisplayRect().get_height() - (height_per_char * total_characters)) / 2.0;
     for(int i=0;i<m_characters.size();i++)
     {
-	CL_Pointf point = offset;
-	point.y += height_per_char * i;
-	m_overlay.draw(GC,point.x,point.y);
-	CL_Pointf portraitPoint = point + m_portraitOffset;  
-	Character * pCharacter = m_characters[i].m_pCharacter;
-	pCharacter->GetPortrait(Character::PORTRAIT_HAPPY).draw(GC,portraitPoint.x,portraitPoint.y);
-	m_characterFont.draw_text(GC,point + m_textOffset,pCharacter->GetName());
-	CL_Pointf xp_point = point + m_textOffset;
-	std::ostringstream ostream;
-	ostream << '+' << m_characters[i].m_nXP << "XP";
-	xp_point.y += m_characterFont.get_font_metrics(GC).get_height();
-	m_xpFont.draw_text(GC,xp_point,ostream.str());
-	int levelsGained = pCharacter->GetLevel() - m_characters[i].m_nOldLevel;
-	if(levelsGained)
-	{
-	    CL_Pointf levelPoint = xp_point;
-	    CL_Sizef xpSize = m_xpFont.get_text_size(GC,ostream.str());
-	    levelPoint.x += xpSize.width;
-	    std::ostringstream ostream;
-	    ostream << " Level Up! ";
-	    if(levelsGained > 1)
-		ostream << 'X' << levelsGained;
-	    m_levelFont.draw_text(GC,levelPoint,ostream.str());
-	}	
-	//int original_level = getLNT(pCharacter->GetXP() - m_characters[i].m_nXP);
-	int next_level = getTNL(m_characters[i].m_nOldLevel+1);
-	int to_start_level = getTNL(m_characters[i].m_nOldLevel);
-	int to_current_level = getTNL(pCharacter->GetLevel());
-	int tnl =  next_level - to_start_level;
-	float start_percent = (float)(pCharacter->GetXP() - m_characters[i].m_nXP - to_start_level) / (float)tnl;
-	if(start_percent < 0.0f || start_percent > 1.0f) start_percent = 0.0f;
-	
-	float total_percent_to_draw = (pCharacter->GetXP() - to_current_level ) / (float)tnl - start_percent;
-	//if(m_characters[i].m_nOldLevel != pCharacter->GetLevel()){
-	total_percent_to_draw += levelsGained;
-	float percent = start_percent + draw_percentage * total_percent_to_draw;
+        CL_Pointf point = offset;
+        point.y += height_per_char * i;
+        m_overlay.draw(GC,point.x,point.y);
+        CL_Pointf portraitPoint = point + m_portraitOffset;  
+        Character * pCharacter = m_characters[i].m_pCharacter;
+        pCharacter->GetPortrait(Character::PORTRAIT_HAPPY).draw(GC,portraitPoint.x,portraitPoint.y);
+        m_characterFont.draw_text(GC,point + m_textOffset,pCharacter->GetName());
+        CL_Pointf xp_point = point + m_textOffset;
+        std::ostringstream ostream;
+        ostream << '+' << m_characters[i].m_nXP << "XP";
+        xp_point.y += m_characterFont.get_font_metrics(GC).get_height();
+        m_xpFont.draw_text(GC,xp_point,ostream.str());
+        int levelsGained = pCharacter->GetLevel() - m_characters[i].m_nOldLevel;
+        if(levelsGained)
+        {
+            CL_Pointf levelPoint = xp_point;
+            CL_Sizef xpSize = m_xpFont.get_text_size(GC,ostream.str());
+            levelPoint.x += xpSize.width;
+            std::ostringstream ostream;
+            ostream << " Level Up! ";
+            if(levelsGained > 1)
+                ostream << 'X' << levelsGained;
+            m_levelFont.draw_text(GC,levelPoint,ostream.str());
+        }	
+        //int original_level = getLNT(pCharacter->GetXP() - m_characters[i].m_nXP);
+        int next_level = getTNL(m_characters[i].m_nOldLevel+1);
+        int to_start_level = getTNL(m_characters[i].m_nOldLevel);
+        int to_current_level = getTNL(pCharacter->GetLevel());
+        int tnl =  next_level - to_start_level;
+        float start_percent = (float)(pCharacter->GetXP() - m_characters[i].m_nXP - to_start_level) / (float)tnl;
+        if(start_percent < 0.0f || start_percent > 1.0f) start_percent = 0.0f;
+        
+        float total_percent_to_draw = (pCharacter->GetXP() - to_current_level ) / (float)tnl - start_percent;
+        //if(m_characters[i].m_nOldLevel != pCharacter->GetLevel()){
+        total_percent_to_draw += levelsGained;
+        float percent = start_percent + draw_percentage * total_percent_to_draw;
 
-	percent = percent - (int)percent;
+        percent = percent - (int)percent;
 
-	float barWidth = m_barRect.get_width() * percent;
-	CL_Pointf barPoint = m_barRect.get_top_left();
-	barPoint.y += point.y;
-	CL_Sizef barSize(barWidth,m_barRect.get_height());
-	CL_Rectf barRect(barPoint,barSize);
-	CL_Draw::gradient_fill(GC,barRect,m_barGradient);
+        float barWidth = m_barRect.get_width() * percent;
+        CL_Pointf barPoint = m_barRect.get_top_left();
+        barPoint.y += point.y;
+        CL_Sizef barSize(barWidth,m_barRect.get_height());
+        CL_Rectf barRect(barPoint,barSize);
+        CL_Draw::gradient_fill(GC,barRect,m_barGradient);
     }
-}
+    }
 
 void ExperienceState::HandleButtonUp(const IApplication::Button& button)
 {
