@@ -33,9 +33,7 @@ namespace StoneRing{
         * has a 1.5 multiplier and +7 add, this will return 157
         */
         double GetArmorAttribute ( eAttribute attr );
-        
-        double GetResistance ( DamageCategory::eDamageCategory category );
-        //int GetResistanceAdd ( DamageCategory::eDamageCategory category );
+  
 
         static eAttribute AttributeForString ( const std::string str );
         static std::string CreateArmorName(ArmorType *pType, ArmorClass *pClass,

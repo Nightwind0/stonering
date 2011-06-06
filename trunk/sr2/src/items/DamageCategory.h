@@ -17,11 +17,7 @@ namespace StoneRing{
         WATER=64,
         WIND=128,
         EARTH=256,
-        POISON=512,
-        ELEMENTAL = (FIRE|WATER|WIND|EARTH),
-        DIVINE = (HOLY|DARK),
-        MAGIC = (ELEMENTAL|DIVINE),
-        PHYSICAL = (BASH|JAB|SLASH)
+        _LAST_DAMAGE_CATEGORY=512
     };
 
     static bool DamageCategoryIsPhysical(eDamageCategory category);

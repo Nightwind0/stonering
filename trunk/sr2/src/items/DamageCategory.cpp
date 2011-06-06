@@ -6,17 +6,45 @@ using StoneRing::DamageCategory;
 
 bool StoneRing::DamageCategory::DamageCategoryIsPhysical(eDamageCategory category)
 {
-    return category & PHYSICAL;
+    switch(category)
+    {
+        case JAB:
+        case BASH:
+        case SLASH:
+            return true;
+        default:
+            return false;
+    }
 }
 
 bool StoneRing::DamageCategory::DamageCategoryIsMagic(eDamageCategory category)
 {
-    return category & MAGIC;
+    switch(category)
+    {
+        case WIND:
+        case FIRE:
+        case EARTH:
+        case WATER:
+        case DARK:
+        case HOLY:
+            return true;
+        default:
+            return false;
+    }
 }
 
 bool StoneRing::DamageCategory::DamageCategoryIsElemental(eDamageCategory category)
 {
-    return category & ELEMENTAL;
+    switch(category)
+    {
+        case WIND:
+        case FIRE:
+        case WATER:
+        case EARTH:
+            return true;
+        default:
+            return false;
+    }
 }
 
 DamageCategory::eDamageCategory StoneRing::DamageCategory::DamageCategoryFromString(const std::string& string)
@@ -30,11 +58,6 @@ DamageCategory::eDamageCategory StoneRing::DamageCategory::DamageCategoryFromStr
     else if(string == "wind") return WIND;
     else if(string == "water") return WATER;
     else if(string == "earth") return EARTH;
-    else if(string == "poison") return POISON;
-    else if(string == "magic") return MAGIC;
-    else if(string == "elemental") return ELEMENTAL;
-    else if(string == "divine") return DIVINE;
-    else if(string == "physical") return PHYSICAL;
 
     throw CL_Exception("Damage Category unknown: " + string);
     return BASH;

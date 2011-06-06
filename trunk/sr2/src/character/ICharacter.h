@@ -27,7 +27,8 @@ namespace StoneRing{
         enum eType   { NONLIVING, LIVING, MAGICAL };
         enum eCharacterAttribute
         {
-            CA_INVALID,
+            CA_INVALID=0,
+
             _START_OF_TRANSIENTS,
             CA_HP,
             CA_MP,
@@ -43,6 +44,17 @@ namespace StoneRing{
             CA_JOY,              // Increases experience gained (Multiplier)
             CA_DEX,              // Chances of a hit connecting (0-1)
             CA_EVD,              // Chances of evading an attack(0-1)
+            _START_OF_DAMAGE_CATEGORIES,
+            CA_BASH_DEF,
+            CA_JAB_DEF,
+            CA_SLASH_DEF,
+            CA_HOLY_RST,
+            CA_DARK_RST,
+            CA_FIRE_RST,
+            CA_WATER_RST,
+            CA_WIND_RST,
+            CA_EARTH_RST,
+            _END_OF_DAMAGE_CATEGORIES,
             _END_OF_REALS,
             _START_OF_TOGGLES,
             CA_DRAW_ILL,
@@ -86,10 +98,7 @@ namespace StoneRing{
         virtual uint GetLevel()const=0;
         virtual void SetLevel(uint level)=0;
 	virtual bool IsMonster() const { return false; }
-
-
         virtual double GetAttribute    (eCharacterAttribute attr) const = 0;
-        virtual double GetSpellResistance(Magic::eMagicType type) const = 0;
         virtual double GetDamageCategoryResistance(DamageCategory::eDamageCategory type) const = 0;
 
         virtual bool   GetToggle(eCharacterAttribute attr) const = 0;
@@ -113,6 +122,7 @@ namespace StoneRing{
         static eCommonAttribute CommonAttributeFromString(const std::string &str);
         static uint CAFromString(const std::string &str);
         static std::string CAToString(uint);
+        static bool IsDamageCategoryAttribute(eCharacterAttribute attr);
         static bool IsInteger(eCharacterAttribute attr);
         static bool IsReal(eCharacterAttribute attr);
         static bool IsToggle(eCharacterAttribute attr);

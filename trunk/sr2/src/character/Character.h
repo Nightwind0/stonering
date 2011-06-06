@@ -51,7 +51,6 @@ namespace StoneRing{
 	virtual void   SetXP(uint amount);
         virtual uint   GetSP()const;
         virtual void   SetSP(uint amount);
-        virtual double GetSpellResistance(Magic::eMagicType type) const;
         virtual double GetDamageCategoryResistance(DamageCategory::eDamageCategory type) const;
         virtual double GetAttribute(eCharacterAttribute attr) const;
         virtual bool   GetToggle(eCharacterAttribute attr) const;
