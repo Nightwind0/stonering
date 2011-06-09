@@ -201,7 +201,7 @@ void BattleState::HandleButtonUp(const IApplication::Button& button)
                 params.push_back ( ParameterListItem("$Character", pChar ) );
                 params.push_back ( ParameterListItem("$Round", static_cast<int>(m_nRound) ) );
 
-                if (pOption->Enabled(params))
+                if (pOption->Enabled(params,pChar))
                 {
                     pOption->Select(m_menu_stack,params,pChar);
                 }
@@ -1398,6 +1398,7 @@ SteelType BattleState::isBossBattle()
 SteelType BattleState::doSkill(SteelType::Handle pICharacter, const std::string& whichskill)
 {
     AbilityManager * AbilityManager = IApplication::GetInstance()->GetAbilityManager();
+    ICharacter* iChar = GrabHandle<ICharacter*>(pICharacter);
     if(!AbilityManager->SkillExists(whichskill)){
         throw CL_Exception("(doSkill) Skill doesn't exist: " + whichskill);
     }
@@ -1410,8 +1411,7 @@ SteelType BattleState::doSkill(SteelType::Handle pICharacter, const std::string&
 
     Skill * pSkill = AbilityManager->GetSkill(whichskill);
 
-    pSkill->Select(params);
-    pSkill->Invoke(params);
+    pSkill->Invoke(iChar, params);
 
     return SteelType();
 }

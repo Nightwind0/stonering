@@ -196,6 +196,7 @@
 		playSound(getUnarmedHitSound($pC));
 
 	    declare $damageMean = getCharacterAttribute($pC, $_STR) + getEquippedWeaponAttribute($pC,$_ATTACK);
+            // TODO: Account for ranged attacks and rows
 	    // Random about the damageMean, standard deviation is 15% of the mean, so 68% of attacks fall within 10% deviation of the mean
 	    declare $baseDamage = normal_random($damageMean,$damageMean * 0.15);
 	    declare $damageCategory;
@@ -213,6 +214,8 @@
 	    doDamage($pTarget,$modDamage);
 	    battle::doTargetedAnimation($pTarget,$pC,getAnimation("recoil"));
 	    battle::createDisplay($modDamage,$pTarget,$_DISP_DAMAGE);
+            
+            // TODO: If the weapon has a spell on it, cast it on the target now
 
 
 	    log("Mean damage was " + $damageMean + " and base damage was " + $baseDamage + " and actual damage was " + $actualDamage);
@@ -311,7 +314,7 @@
 		</onInvoke>
 
 	</skill>
-	<skill bp="0" name="Thrift" sp="60" type="switch">
+	<skill bp="0" name="Thrift" sp="60" type="world">
 		<onInvoke>
 			<script id="onThrift">
 				modifyCommonAttribute("priceMultiplier", getCommonAttribute("priceMultiplier") * 0.9);
@@ -323,7 +326,7 @@
 			</script>
 		</onRemove>
 	</skill>
-	<skill bp="0" name="Caution" sp="60" type="switch">
+	<skill bp="0" name="Caution" sp="60" type="world">
 		<onInvoke>
 			<script id="onCaution">
 			modifyCommonAttribute("encounterRate",getCommonAttribute("encounterRate") * 0.75);

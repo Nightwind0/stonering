@@ -32,6 +32,7 @@ namespace StoneRing{
             _START_OF_TRANSIENTS,
             CA_HP,
             CA_MP,
+            CA_BP,
             _END_OF_TRANSIENTS,
             _START_OF_INTS,
             CA_STR,              // Part of determining dmg of physical attack.
@@ -76,6 +77,7 @@ namespace StoneRing{
             _MAXIMA_BASE,
             CA_MAXHP = _MAXIMA_BASE + CA_HP,
             CA_MAXMP = _MAXIMA_BASE + CA_MP,
+            CA_MAXBP = _MAXIMA_BASE + CA_BP,
 
             _LAST_CHARACTER_ATTR_
         };
@@ -105,6 +107,7 @@ namespace StoneRing{
         virtual void   SetToggle(eCharacterAttribute attr, bool toggle) = 0;
         virtual void   AddStatusEffect(StatusEffect *)=0;
         virtual void   RemoveEffects(const std::string &name)=0;
+        virtual double StatusEffectChance(StatusEffect *)const=0;
         virtual double GetEquippedWeaponAttribute(Weapon::eAttribute) const = 0;
         virtual double GetEquippedArmorAttribute(Armor::eAttribute) const = 0;
         virtual void   StatusEffectRound()=0;

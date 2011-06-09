@@ -2,6 +2,9 @@
 #include "IApplication.h"
 #include "Animation.h"
 #include "AttributeModifier.h"
+#include "StatusEffectModifier.h"
+
+using namespace StoneRing;
 
 
 void StoneRing::StatusEffect::load_attributes(CL_DomNamedNodeMap attributes)
@@ -138,4 +141,12 @@ double StoneRing::StatusEffect::GetAttributeAdd(ICharacter::eCharacterAttribute 
 
     return add;
 }
+
+double StoneRing::StatusEffect::GetStatusEffectModifier(const std::string &statuseffect) const
+{
+    std::map<std::string,StatusEffectModifier*>::const_iterator iter = m_statuseffect_modifiers.find(statuseffect);
+    if(iter == m_statuseffect_modifiers.end()) return 0.0;
+    else return iter->second->GetModifier();   
+}
+
 

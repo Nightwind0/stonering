@@ -181,6 +181,13 @@ void GeneratedWeapon::Generate( WeaponType* pType, WeaponClass * pClass,
     {
         Add_Weapon_Enhancer ( *iter2 );
     }
+    for(std::list<StatusEffectModifier*>::const_iterator iter3 = pClass->GetStatusEffectModifiersBegin();
+        iter3 != pClass->GetStatusEffectModifiersEnd(); 
+        iter3++)
+        {
+            Add_StatusEffect_Modifier( *iter3 );
+        }
+        
     m_pType = pType;
     m_pClass = pClass;
     Set_Spell_Ref(pSpell);

@@ -37,7 +37,9 @@ namespace StoneRing{
 
         double GetAttributeMultiplier(ICharacter::eCharacterAttribute attr) const;
         double GetAttributeAdd(ICharacter::eCharacterAttribute attr)const;
-
+        
+        //StatusEffectModifiers
+        double GetStatusEffectModifier(const std::string &statuseffect)const;
     private:
         virtual bool handle_element(eElement element, Element * pElement );
         virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
@@ -51,6 +53,9 @@ namespace StoneRing{
         uint m_nRoundCount;
         float m_fLengthMultiplier;
         AttributeModifierSet m_attribute_modifiers;
+        // These are for modifying your chance to be afflicted by OTHER status effects
+        // In other words, a status effect could make you immune to poison, for instance
+        std::map<std::string,StatusEffectModifier*> m_statuseffect_modifiers;
     };
 
     inline StatusEffect::AttributeModifierSet::const_iterator StatusEffect::GetAttributeModifiersBegin() const

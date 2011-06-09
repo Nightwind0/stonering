@@ -1,6 +1,7 @@
 #include "Equipment.h"
 #include "Character.h"
 #include "AttributeModifier.h"
+#include "StatusEffectModifier.h"
 
 using namespace StoneRing;
 
@@ -98,16 +99,33 @@ void Equipment::Add_Attribute_Modifier( AttributeModifier * pAttr )
             (static_cast<ICharacter::eCharacterAttribute>(pAttr->GetAttribute()),pAttr));
 }
 
+void Equipment::Clear_StatusEffect_Modifiers()
+{
+    m_statuseffect_modifiers.clear();
+}
+
+void Equipment::Add_StatusEffect_Modifier( StatusEffectModifier * pModifier )
+{
+    m_statuseffect_modifiers.insert ( StatusEffectModifierSet::value_type(pModifier->GetStatusEffect()->GetName(),pModifier) );
+}
+
+double Equipment::GetStatusEffectModifier(const std::string &statuseffect)const
+{
+    StatusEffectModifierSet::const_iterator iter = m_statuseffect_modifiers.find(statuseffect);
+    if(iter == m_statuseffect_modifiers.end()) return 0.0;
+    else return iter->second->GetModifier();   
+}
+
 void Equipment::Set_Spell_Ref ( SpellRef * pRef )
 {
     m_SpellOrRuneRef.mpSpellRef = pRef;
     m_eMagic = SPELL;
+    
 }
 
 void Equipment::Set_Rune_Type ( RuneType * pType )
 {
     m_SpellOrRuneRef.mpRuneType = pType;
-
     m_eMagic = RUNE;
 }
 

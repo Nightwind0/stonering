@@ -16,7 +16,7 @@ using namespace StoneRing;
 
 AbilityManager::~AbilityManager()
 {
-    std::for_each(m_status_effects.begin(),m_status_effects.end(),del_fun<StatusEffect>());
+    std::for_each(m_status_effects.begin(),m_status_effects.end(),compose_f_gx(del_fun<StatusEffect>(), get_second<StatusEffectMap::value_type>()));
     std::for_each(m_spells.begin(),m_spells.end(),del_fun<Spell>());
 
     std::for_each(m_skills.begin(),m_skills.end(),
@@ -76,7 +76,9 @@ void AbilityManager::LoadStatusEffectFile ( CL_DomDocument &doc )
     {
         StatusEffect * pStatusEffect = dynamic_cast<StatusEffect*>(pAbilityFactory->createElement("statusEffect"));
         pStatusEffect->Load(statusEffectNode);
-        instance->m_status_effects.push_back ( pStatusEffect );
+        if(instance->m_status_effects.find(pStatusEffect->GetName()) != instance->m_status_effects.end())
+            throw CL_Exception("Duplicate Status Effect named " + pStatusEffect->GetName() + " found");
+        instance->m_status_effects[pStatusEffect->GetName()] = pStatusEffect;
         statusEffectNode = statusEffectNode.get_next_sibling().to_element();
     }
 }
@@ -162,7 +164,7 @@ Spell * AbilityManager::GetSpell( const SpellRef & ref )
         delete pRef;
     }
 
-    throw CL_Exception("Couldn't find spell based on ref.");
+    throw CL_Exception("Couldn't find spell based on ref, named " + ref.GetName());
 
     return NULL;
 }
@@ -172,15 +174,11 @@ Spell * AbilityManager::GetSpell( const SpellRef & ref )
 StatusEffect * AbilityManager::GetStatusEffect ( const std::string &ref )
 {
     AbilityManager * instance = INSTANCE();
-    for (std::list<StatusEffect*>::const_iterator iter = instance->m_status_effects.begin();
-            iter != instance->m_status_effects.end();
-            iter++)
-    {
-        if ((*iter)->GetName() == ref)
-            return *iter;
-    }
-
-    throw CL_Exception("Couldn't find a status ref called: " + ref );
+    StatusEffectMap::const_iterator iter = instance->m_status_effects.find(ref);
+    
+    if(iter == instance->m_status_effects.end())
+        throw CL_Exception("Couldn't find a status ref called: " + ref );
+    else return iter->second;
     return NULL;
 }
 

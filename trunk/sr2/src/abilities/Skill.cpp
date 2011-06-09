@@ -16,14 +16,16 @@ StoneRing::Skill::eType
 StoneRing::Skill::TypeFromString(const std::string type)
 {
     if(type == "battle") return BATTLE;
-    else if(type == "switch") return SWITCH;
+    else if(type == "world") return WORLD;
+    else if(type == "both") return BOTH;
     else throw CL_Exception("Bad type on skill = " + type);
 }
 
 void StoneRing::Skill::load_attributes(CL_DomNamedNodeMap attributes)
 {
     m_name = get_required_string("name",attributes);
-    m_nBp = get_required_int("bp",attributes);
+    m_nBp = get_implied_int("bp",attributes,0);
+    m_nMp = get_implied_int("mp",attributes,0);
     m_eType = TypeFromString(get_implied_string("type",attributes,"battle"));
     m_bAllowsGroupTarget = get_implied_bool("allowsGroupTarget",attributes,false);
     m_bDefaultToEnemyGroup = get_implied_bool("defaultToEnemyGroup", attributes,true);
@@ -31,19 +33,30 @@ void StoneRing::Skill::load_attributes(CL_DomNamedNodeMap attributes)
     m_description = get_implied_string("desc",attributes, "");
 }
 
-void StoneRing::Skill::Invoke(const ParameterList& params)
+uint Skill::GetMPCost() const
 {
+    return m_nMp;
+}
+
+
+SpellRef* Skill::GetSpellRef() const 
+{
+    return m_pSpellRef;
+}
+
+void StoneRing::Skill::Invoke(ICharacter* pCharacter,const ParameterList& params)
+{
+    // Take the BP and MP cost here
+    assert(pCharacter->GetAttribute(ICharacter::CA_BP) >= m_nBp &&
+        pCharacter->GetAttribute(ICharacter::CA_MP) >= m_nMp  &&
+        "Assure BP and MP before calling Invoke on a skill");
+    pCharacter->PermanentAugment(ICharacter::CA_BP,-m_nBp);
+    pCharacter->PermanentAugment(ICharacter::CA_MP,-m_nMp);
+    
+    
     if(m_pOnInvoke)
     {
         m_pOnInvoke->ExecuteScript(params);
-    }
-}
-
-void StoneRing::Skill::Select(const ParameterList& params)
-{
-    if(m_pOnSelect)
-    {
-        m_pOnSelect->ExecuteScript(params);
     }
     else
     {
@@ -64,24 +77,13 @@ void StoneRing::Skill::Select(const ParameterList& params)
     }
 }
 
-// If you cancel an option, it should be able to clean itself up
-// (especially removing entries from the queue)
-void StoneRing::Skill::Deselect()
-{
-
-}
 
 bool StoneRing::Skill::handle_element(eElement element, Element * pElement)
 {
     switch(element)
     {
-    case EONSELECT:
-        m_pOnSelect = dynamic_cast<NamedScript*>(pElement);
-        break;
-    case EONDESELECT:
-        m_pOnDeselect = dynamic_cast<NamedScript*>(pElement);
-        break;
     case EONINVOKE:
+    case EONSELECT:
         m_pOnInvoke = dynamic_cast<NamedScript*>(pElement);
         break;
     case EONREMOVE:
@@ -90,6 +92,9 @@ bool StoneRing::Skill::handle_element(eElement element, Element * pElement)
     case ECONDITIONSCRIPT:
         m_pCondition = dynamic_cast<NamedScript*>(pElement);
         break;
+    case ESPELLREF:
+        m_pSpellRef = dynamic_cast<SpellRef*>(pElement);
+        break;
     default:
         return false;
     }
@@ -97,8 +102,8 @@ bool StoneRing::Skill::handle_element(eElement element, Element * pElement)
     return true;
 }
 
-StoneRing::Skill::Skill():m_nBp(0), 
-                          m_pOnInvoke(NULL),m_pOnRemove(NULL),m_pCondition(NULL),m_pOnSelect(NULL),m_pOnDeselect(NULL),
+StoneRing::Skill::Skill():m_nBp(0), m_pSpellRef(NULL),
+                          m_pOnInvoke(NULL),m_pOnRemove(NULL),m_pCondition(NULL),
                           m_bAllowsGroupTarget(false),m_bDefaultToEnemyGroup(true)
 {
 
@@ -109,8 +114,7 @@ Skill::~Skill()
     delete m_pCondition;
     delete m_pOnRemove;
     delete m_pOnInvoke;
-    delete m_pOnSelect;
-    delete m_pOnDeselect;
+    delete m_pSpellRef;
 }
 
 

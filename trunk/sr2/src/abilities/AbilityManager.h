@@ -40,7 +40,7 @@ namespace StoneRing
 
         static bool SkillExists ( const std::string &skill );
 
-		static Animation* GetAnimation ( const std::string &animation );
+        static Animation* GetAnimation ( const std::string &animation );
 
 #ifndef NDEBUG
         static void DumpSpellList();
@@ -50,12 +50,12 @@ namespace StoneRing
     private:
         typedef std::map<std::string,Skill*> SkillMap;
         typedef std::list<Spell*> SpellList;
-        typedef std::list<StatusEffect*> StatusEffectList;
+        typedef std::map<std::string,StatusEffect*> StatusEffectMap;
         typedef std::map<std::string,Animation*> AnimationMap;
 
         SkillMap m_skills;
         SpellList m_spells;
-        StatusEffectList m_status_effects;
+        StatusEffectMap m_status_effects;
         AnimationMap m_animations;
     };
 

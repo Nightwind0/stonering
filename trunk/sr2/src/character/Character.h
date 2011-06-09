@@ -49,8 +49,6 @@ namespace StoneRing{
         virtual void   SetLevel(uint);
 	virtual uint   GetXP()const;
 	virtual void   SetXP(uint amount);
-        virtual uint   GetSP()const;
-        virtual void   SetSP(uint amount);
         virtual double GetDamageCategoryResistance(DamageCategory::eDamageCategory type) const;
         virtual double GetAttribute(eCharacterAttribute attr) const;
         virtual bool   GetToggle(eCharacterAttribute attr) const;
@@ -60,6 +58,7 @@ namespace StoneRing{
         virtual void   Kill();
         virtual void   AddStatusEffect(StatusEffect *);
         virtual void   RemoveEffects(const std::string &name);
+        virtual double StatusEffectChance(StatusEffect *)const;
         virtual void   StatusEffectRound();
         virtual void   RollInitiative(void);
         virtual uint   GetInitiative(void)const;
@@ -67,6 +66,8 @@ namespace StoneRing{
         virtual double GetEquippedArmorAttribute(Armor::eAttribute) const;
         // Includes permanent augments
         double         GetBaseAttribute(eCharacterAttribute attr)const;
+        uint   GetSP()const;
+        void   SetSP(uint amount);     
 	/***************************************************************************
 	* Sprites and images
 	***************************************************************************/
@@ -106,8 +107,9 @@ namespace StoneRing{
         // Element API
         virtual eElement WhichElement() const { return ECHARACTER; }
     private:
-        typedef std::multimap<std::string,StatusEffect*> StatusEffectMap;
+        typedef std::map<std::string,StatusEffect*> StatusEffectMap;
         typedef std::map<std::string,SpriteDefinition*> SpriteDefinitionMap;
+
         virtual bool handle_element(eElement, Element *);
         virtual void load_attributes(CL_DomNamedNodeMap);
         virtual void load_finished();
@@ -125,12 +127,14 @@ namespace StoneRing{
         uint m_nInitiative;
 	uint m_nXP;
         uint m_nSP;
+        uint m_nBP;
         CL_Sprite m_mapSprite;
         CL_Sprite m_currentSprite;
 	CL_Sprite m_portrait;
         StatusEffectMap m_status_effects;
         eType m_eType;
         CL_Pointf m_battle_pos;
+        
     };
 
     inline void Character::RollInitiative(void)

@@ -11,11 +11,11 @@ using namespace StoneRing;
 
 
 Spell::Spell()
-:mpMagicResistance(NULL),mpScript(NULL)
+:mpMagicResistance(NULL)
 {
 }
 
-void Spell::loadAttributes(CL_DomNamedNodeMap attributes)
+void Spell::load_attributes(CL_DomNamedNodeMap attributes)
 {
     mName = get_required_string("name", attributes);
     meType = Magic::TypeOf(get_required_string("type", attributes));
@@ -25,8 +25,10 @@ void Spell::loadAttributes(CL_DomNamedNodeMap attributes)
         throw CL_Exception("Bad magic type in spell.");
     }
 
+#if 0
     meUse = getUseFromString(get_required_string("use", attributes));
     meTargetable = getTargetableFromString(get_required_string("targetable", attributes));
+#endif
 
     mbAppliesToWeapons = get_implied_bool ("appliesToWeapons",attributes, false);
     mbAppliesToArmor = get_implied_bool ("appliesToArmor",attributes, false);
@@ -34,17 +36,13 @@ void Spell::loadAttributes(CL_DomNamedNodeMap attributes)
     mnValue = get_required_uint("value",attributes);
 
     m_damageCategory = DamageCategory::DamageCategoryFromString(get_required_string("damageCategory",attributes));
-
-    mnMP = get_required_uint("mp", attributes);
 }
 
-bool Spell::handleElement(eElement element, Element * pElement)
+bool Spell::handle_element(eElement element, Element * pElement)
 {
     switch(element)
     {
-    case ESCRIPT:
-        mpScript = dynamic_cast<ScriptElement*>(pElement);
-        break;
+
     case EMAGICRESISTANCE:
         mpMagicResistance = dynamic_cast<MagicResistance*>(pElement);
         break;
@@ -55,7 +53,7 @@ bool Spell::handleElement(eElement element, Element * pElement)
     return true;
 }
 
-
+#if 0
 Spell::eUse Spell::getUseFromString ( const std::string &str)
 {
     if(str == "battle") return BATTLE;
@@ -72,11 +70,10 @@ Spell::eTargetable Spell::getTargetableFromString ( const std::string &str)
     else if (str == "self-only") return SELF_ONLY;
     else throw CL_Exception("Bad spell targetable.");
 }
-
+#endif
 
 Spell::~Spell()
 {
-    delete mpScript;
     delete mpMagicResistance;
 }
 
@@ -97,16 +94,6 @@ Magic::eMagicType Spell::getMagicType() const
     return meType;
 }
 
-Spell::eUse Spell::getUse() const
-{
-    return meUse;
-}
-
-Spell::eTargetable Spell::getTargetable() const
-{
-    return meTargetable;
-}
-
 
 
 bool Spell::appliesToWeapons() const
@@ -117,12 +104,6 @@ bool Spell::appliesToWeapons() const
 bool Spell::appliesToArmor() const
 {
     return mbAppliesToArmor;
-}
-
-
-uint Spell::getMP() const
-{
-    return mnMP;
 }
 
 
@@ -141,6 +122,10 @@ SpellRef * Spell::createSpellRef() const
     return ref;
 }
 
+MagicResistance * Spell::getMagicResistance() const
+{
+    return mpMagicResistance;
+}
 
 
 

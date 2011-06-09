@@ -275,15 +275,15 @@
 		       <armorTypeRef name="Shield"/>
 		       <armorEnhancer add="5" attribute="AC"/>
 		       <statusEffectModifier statusRef="Poison" modifier="0.20"/>
-		       <attributeModifier type="multiplier" value="-0.25" attribute="fire_rst"/>
+		       <attributeModifier type="add" value="-0.25" attribute="fire_rst"/>
 		       <attributeModifier type="add" value="40" attribute="hp_max"/>
-		       <spellRef type="elemental" name="Ice"/>
+                       <spellRef type="elemental">Ice</spellRef>
 		   </uniqueArmor>
 		   <uniqueArmor name="Kid Shield" dropRarity="rare" valueMultiplier = "0.25">
 		    <iconRef>Armor/basic_shield</iconRef>		      
 		       <armorTypeRef name="Shield"/>
 		       <armorEnhancer multiplier="0.2" attribute="AC"/>
-                       <attributeModifier type="multiplier" value="-0.2" attribute="dark_rst"/>
+                       <attributeModifier type="add" value="-0.2" attribute="dark_rst"/>
 		   </uniqueArmor>
 		   <uniqueWeapon name = "Warrior Sword" dropRarity="rare" valueMultiplier="4.5">
 		   <iconRef>Weapon/basic_sword</iconRef>		       
