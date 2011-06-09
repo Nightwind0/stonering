@@ -4,7 +4,7 @@
 #include "SpellRef.h"
 #include "WeaponClass.h"
 #include "WeaponType.h"
-
+#include "AbilityManager.h"
 
 using namespace StoneRing;
 
@@ -17,7 +17,6 @@ Weapon::~Weapon()
 {
     Clear_Weapon_Enhancers();
 }
-
 
 std::string StoneRing::Weapon::CreateWeaponName(WeaponType *pType, WeaponClass *pClass, SpellRef *pSpell, RuneType *pRune)
 {

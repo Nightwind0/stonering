@@ -211,15 +211,25 @@ void Monster::PermanentAugment(eCharacterAttribute attr, double augment)
 
 void Monster::AddStatusEffect(StatusEffect *pEffect)
 {
+    // Clear out the old one, if any
+    RemoveEffects(pEffect->GetName());
     m_status_effects.insert(StatusEffectMap::value_type(pEffect->GetName(),pEffect));
 }
 
 void Monster::RemoveEffects(const std::string &name)
 {
-    StatusEffectMap::iterator start = m_status_effects.lower_bound(name);
-    StatusEffectMap::iterator end   = m_status_effects.upper_bound(name);
+    m_status_effects.erase(name);
+}
 
-    m_status_effects.erase(start,end);
+double Monster::StatusEffectChance(StatusEffect* pEffect) const
+{
+    double chance = 1.0;
+        for(StatusEffectMap::const_iterator iter = m_status_effects.begin();
+            iter != m_status_effects.end(); iter++)
+        {
+            chance += iter->second->GetStatusEffectModifier(pEffect->GetName());
+        }
+    return chance;
 }
 
 void Monster::StatusEffectRound()

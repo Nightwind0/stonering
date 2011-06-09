@@ -104,7 +104,7 @@ void BattleMenu::draw_option(int option, bool selected, float x, float y, CL_Gra
     //icon.set_alignment(origin_bottom_left,0,0);
     
 
-    if(pOption->Enabled(m_params))
+    if(pOption->Enabled(m_params, m_pCharacter))
     {
 	font = m_onFont;
     }

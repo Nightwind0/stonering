@@ -89,7 +89,7 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["armorType"] = &ElementFactory::CreateElement<ArmorType>;
     mCreateMethods["armorTypeExclusionList"] = &ElementFactory::CreateElement<ArmorTypeExclusionList>;
     mCreateMethods["armorTypeRef"] = &ElementFactory::CreateElement<ArmorTypeRef>;
-    mCreateMethods["attributeModifier"] = &ElementFactory::CreateElement<AttributeModifier>;
+    mCreateMethods["attributeModifier"] = &ElementFactory::CreateElement<AttributeModifierElement>;
     mCreateMethods["battleMenu"] = &ElementFactory::CreateElement<BattleMenu>;
     mCreateMethods["battleMenuOption"] = &ElementFactory::CreateElement<BattleMenuOption>;
     mCreateMethods["battleSprite"] = &ElementFactory::CreateElement<BattleSprite>;

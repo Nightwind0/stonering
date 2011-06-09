@@ -26,7 +26,7 @@ SpellRef::~SpellRef()
 
 bool SpellRef::operator==(const SpellRef &lhs )
 {
-    if ( m_eSpellType == lhs.m_eSpellType &&
+     if ( m_eSpellType == lhs.m_eSpellType &&
          m_name == lhs.m_name )
     {
         return true;

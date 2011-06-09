@@ -37,12 +37,26 @@ std::string BattleMenuOption::GetName() const
 {
     return m_name;
 }
-bool BattleMenuOption::Enabled(const ParameterList &params) const
+bool BattleMenuOption::Enabled(const ParameterList &params, Character * pCharacter) const
 {
+    if(m_action_type == SKILLREF)
+    {
+        Skill * pSkill = m_action.m_pSkillRef->GetSkill();
+        if(pSkill->GetBPCost() > pCharacter->GetAttribute(ICharacter::CA_BP))
+        {
+            return false;
+        }
+        
+        if(pSkill->GetMPCost() > pCharacter->GetAttribute(ICharacter::CA_MP))
+        {
+            return false;
+        }
+    }
+    
+    
     if(m_pConditionScript)
         return m_pConditionScript->EvaluateCondition(params);
     else return true;
-    // TODO: Check for BP/MP requirements on skills here??
 }
 
 void BattleMenuOption::Select(StoneRing::BattleMenuStack& stack, const ParameterList& params, Character * pCharacter){
@@ -55,8 +69,7 @@ void BattleMenuOption::Select(StoneRing::BattleMenuStack& stack, const Parameter
         case SKILLREF:
             {
                 Skill * pSkill =  m_action.m_pSkillRef->GetSkill();
-                pSkill->Select(params);
-                pSkill->Invoke(params);
+                pSkill->Invoke(pCharacter,params);
                 break;
             }
         case SCRIPT:

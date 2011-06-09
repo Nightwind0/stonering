@@ -47,31 +47,35 @@ namespace StoneRing{
         virtual bool EquipCondition()=0;
      
         typedef std::multimap<uint,AttributeModifier*> AttributeModifierSet;
+        typedef std::map<std::string,StatusEffectModifier*> StatusEffectModifierSet;
         // Mainly for display, as these should be automatically invoked on equip
         AttributeModifierSet::const_iterator GetAttributeModifiersBegin() const;
         AttributeModifierSet::const_iterator GetAttributeModifiersEnd() const;
 
-        std::list<StatusEffectModifier*>::const_iterator GetStatusEffectModifiersBegin() const { return m_status_effect_modifiers.begin(); }
-        std::list<StatusEffectModifier*>::const_iterator GetStatusEffectModifiersEnd() const { return m_status_effect_modifiers.end(); }
+        StatusEffectModifierSet::const_iterator GetStatusEffectModifiersBegin() const { return m_statuseffect_modifiers.begin(); }
+        StatusEffectModifierSet::const_iterator GetStatusEffectModifiersEnd() const { return m_statuseffect_modifiers.end(); }
 
         double GetAttributeMultiplier(uint attr) const;
         double GetAttributeAdd(uint attr)const;
+        
+        double GetStatusEffectModifier(const std::string &statuseffect)const;
     protected:
         virtual void OnEquipScript()=0;
         virtual void OnUnequipScript()=0;
 
         void Clear_Attribute_Modifiers();
         void Add_Attribute_Modifier( AttributeModifier * pAttr );
+        void Clear_StatusEffect_Modifiers();
+        void Add_StatusEffect_Modifier( StatusEffectModifier * pModifier );
         void Set_Spell_Ref ( SpellRef * pRef );
         void Set_Rune_Type ( RuneType * pType );
-        void Add_Status_Effect_Modifier(StatusEffectModifier *pModifier) { m_status_effect_modifiers.push_back ( pModifier ) ; }
 
     private:
         AttributeModifierSet m_attribute_modifiers;
+        StatusEffectModifierSet m_statuseffect_modifiers;
         SpellOrRuneRef  m_SpellOrRuneRef;
         enum eMagic { NONE, SPELL, RUNE };
         eMagic m_eMagic;
-        std::list<StatusEffectModifier*> m_status_effect_modifiers;
 
     };
 }

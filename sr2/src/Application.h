@@ -61,6 +61,7 @@ namespace StoneRing
 	virtual AstScript* GetUtility(Utility util)const;
 	
 	virtual void MainMenu();
+    std::basic_ostream< char, std::char_traits< char > >::__ostream_type frameRate();
     protected:
         virtual int GetScreenWidth()const;
         virtual int GetScreenHeight()const;

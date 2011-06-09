@@ -22,9 +22,8 @@ public:
         WATER=DamageCategory::WATER,
         WIND=DamageCategory::WIND,
         EARTH=DamageCategory::EARTH,
-
-        OTHER=(EARTH <<1),
-        STATUS=(EARTH <<2),
+        STATUS=(EARTH <<1),
+        OTHER=(EARTH <<2),
         ELEMENTAL = (FIRE | WATER | WIND | EARTH),
         DIVINE = (DARK | HOLY),
         ALL = (ELEMENTAL | DIVINE | STATUS | OTHER)

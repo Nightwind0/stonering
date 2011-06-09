@@ -4,11 +4,78 @@
 
 using namespace StoneRing;
 
-AttributeModifier::AttributeModifier():m_pScript(NULL)
+
+
+AttributeModifier::eType AttributeModifier::GetType() const
+{
+    return m_eType;
+}
+
+uint AttributeModifier::GetAttribute() const
+{
+    return m_nAttribute;
+}
+
+
+AttributeModifier::AttributeModifier()
+{
+    m_value.m_int = 0;
+}
+
+AttributeModifier::~AttributeModifier()
+{
+
+}
+
+void AttributeModifier::SetAdd ( double value )
+{
+    m_eType = EADD;
+    m_value.m_float = value;
+}
+void AttributeModifier::SetMultiplier ( double value )
+{
+    m_eType = EMULTIPLY;
+    m_value.m_float = value;
+}
+void AttributeModifier::SetToggle ( bool toggle )
+{
+    m_eType = ETOGGLE;
+    m_value.m_toggle = toggle;
+}
+
+void AttributeModifier::SetAttribute ( uint attribute )
+{
+    m_nAttribute = attribute;
+}
+
+
+
+double AttributeModifier::GetAdd() const
+{
+    if(m_eType == EADD)
+        return m_value.m_float;
+    else return 0.0;
+}
+
+double AttributeModifier::GetMultiplier() const
+{
+    if(m_eType == EMULTIPLY)
+        return m_value.m_float;
+    else return 1.0;
+}
+
+bool AttributeModifier::GetToggle() const
+{
+    return m_value.m_toggle;
+}
+
+
+
+AttributeModifierElement::AttributeModifierElement():m_pScript(NULL)
 {
 }
 
-void AttributeModifier::load_attributes(CL_DomNamedNodeMap attributes)
+void AttributeModifierElement::load_attributes(CL_DomNamedNodeMap attributes)
 {
     m_nAttribute = ICharacter::CAFromString(get_required_string("attribute", attributes));
     m_eType = static_cast<eType>( get_required_int("type",attributes));
@@ -34,7 +101,7 @@ void AttributeModifier::load_attributes(CL_DomNamedNodeMap attributes)
 
 }
 
-void AttributeModifier::load_finished()
+void AttributeModifierElement::load_finished()
 {
     if(m_pScript == NULL && !m_has_value)
     {
@@ -43,17 +110,13 @@ void AttributeModifier::load_finished()
 }
 
 
-AttributeModifier::~AttributeModifier()
+AttributeModifierElement::~AttributeModifierElement()
 {
 }
 
 
-uint AttributeModifier::GetAttribute() const
-{
-    return m_nAttribute;
-}
 
-double AttributeModifier::GetAdd() const
+double AttributeModifierElement::GetAdd() const
 {
     if(m_eType == EADD)
     {
@@ -73,7 +136,7 @@ double AttributeModifier::GetAdd() const
     }
 }
 
-double AttributeModifier::GetMultiplier() const
+double AttributeModifierElement::GetMultiplier() const
 {
     if(m_eType == EMULTIPLY)
     {
@@ -93,7 +156,7 @@ double AttributeModifier::GetMultiplier() const
     }
 }
 
-bool AttributeModifier::GetToggle() const
+bool AttributeModifierElement::GetToggle() const
 {
     if(m_eType == ETOGGLE)
     {
@@ -114,12 +177,8 @@ bool AttributeModifier::GetToggle() const
     }
 }
 
-AttributeModifier::eType AttributeModifier::GetType() const
-{
-    return m_eType;
-}
 
-bool AttributeModifier::handle_element(Element::eElement element, Element * pElement)
+bool AttributeModifierElement::handle_element(Element::eElement element, Element * pElement)
 {
     if(element == Element::ESCRIPT)
     {

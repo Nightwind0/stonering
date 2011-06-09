@@ -34,40 +34,41 @@ namespace StoneRing
         Skill();
         virtual ~Skill();
 
-        enum eType { BATTLE, SWITCH };
+        enum eType { BATTLE, WORLD, BOTH };
 
         virtual eElement WhichElement() const{ return ESKILL; }
 
         std::string GetName() const;
+        
         CL_Image GetIcon() const{ return m_pIcon; }
+        
         uint GetBPCost() const;
+        uint GetMPCost() const;
+        
+        SpellRef* GetSpellRef() const;
 
         // This is called when you actually select the option.
         // Most options will then let you select a character/party as a target
-        void Select(const ParameterList& params);
-        // If you cancel an option, it should be able to clean itself up
-        // (especially removing entries from the queue)
-        void Deselect();
-
-        // DEPRECATED: For invoking from the  menu
-        // We just use Select now, rather than queueing up commands
-        void Invoke(const ParameterList& params);
+        void Invoke(ICharacter*pCharacter, const ParameterList& params);
         
-        std::string GetDescription() const ;
+        std::string GetDescription() const;
 
         eType GetType() const { return m_eType; }
+        
     private:
         virtual bool handle_element(eElement element, Element * pElement );
         virtual void load_attributes(CL_DomNamedNodeMap attributes);
         static eType TypeFromString(const std::string type);
         std::string m_name;
         std::string m_description;
-        NamedScript *m_pOnInvoke;
-        NamedScript *m_pOnRemove;
-        NamedScript *m_pCondition;
-        NamedScript *m_pOnSelect;
-        NamedScript *m_pOnDeselect;
+
+        SpellRef*    m_pSpellRef;
+        NamedScript* m_pOnInvoke;
+        NamedScript* m_pOnRemove;
+        NamedScript* m_pCondition;
+
         uint m_nBp;
+        uint m_nMp;
         CL_Image m_pIcon;
 
         eType m_eType;

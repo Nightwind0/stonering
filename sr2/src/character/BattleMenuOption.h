@@ -29,7 +29,7 @@ namespace StoneRing
 
         std::string GetName() const;
         CL_Image GetIcon() const { return m_icon; }
-        bool Enabled(const ParameterList &params) const;
+        bool Enabled(const ParameterList &params, Character* pCharacter) const;
         void Select(BattleMenuStack& stack, const ParameterList& params, Character * pCharacter);
         void Deselect(BattleMenuStack& stack); // For backing out of a selection
         bool Visible(Character * pCharacter);

@@ -60,7 +60,7 @@
 <!-- Spell DTD -->
 <!ELEMENT spellRef EMPTY>
 <!ELEMENT spellList (spell+)>
-<!ELEMENT spell (magicResistance?,script?>
+<!ELEMENT spell (magicResistance?)>
 <!ELEMENT magicResistance EMPTY>
 
 <!-- Animation DTD -->
@@ -77,7 +77,9 @@
 
 <!-- Status Effect DTD -->
 <!ELEMENT statusEffectList (statusEffect*)>
-<!ELEMENT statusEffect (spriteRef,onInvoke?,onRound?,onCountdown?,onRemove?, attributeModifier*)>
+<!-- the statusEffectModifier on the statusEffects is so you can have a spell that ups your resistance to negative
+ status effects, for example. So, an anti-poison status effect or something -->
+<!ELEMENT statusEffect (spriteRef,onInvoke?,onRound?,onCountdown?,onRemove?, attributeModifier*, statusEffectModifier*)>
 <!-- These guys are all Effect type. -->
 <!-- Notice that you can have a status effect that causes other status effects! -->
 <!ELEMENT onInvoke (script)>
@@ -91,7 +93,7 @@
 <!ELEMENT characterClass (battleMenu,weaponTypeRef*, armorTypeRef*,statScript*,skillTreeNode*)>
 <!ELEMENT characterClasses (characterClass+)>
 <!ELEMENT statScript (script)>
-<!ELEMENT skill (conditionScript?, onInvoke?, onRemove?)>
+<!ELEMENT skill (conditionScript?, (onInvoke?, onRemove?|spellRef?))>
 <!ELEMENT skillList (skill)+>
 <!ELEMENT skillTreeNode (skillRef,conditionScript?,skillTreeNode*)>
 <!ELEMENT prereqSkillRef EMPTY>
@@ -263,11 +265,8 @@
 <!ATTLIST spell damageCategory (bash|jab|slice|dark|holy|wind|air|water|ice|fire|lightning|poison) #REQUIRED>
 <!ATTLIST spell icon CDATA #REQUIRED>
 <!ATTLIST spell type (elemental|white|status|other) #REQUIRED>
-<!ATTLIST spell use (battle|world|both) #REQUIRED>
-<!ATTLIST spell targetable (all|single|either|self-only) #REQUIRED>
 <!ATTLIST spell appliesToWeapons (true|false) #IMPLIED> <!-- Used in generation of random weapons? Defaults to false -->
 <!ATTLIST spell appliesToArmor   (true|false) #IMPLIED> <!-- Used in generation of random armor? Defaults to false -->
-<!ATTLIST spell mp CDATA #REQUIRED>
 <!ATTLIST spell value CDATA #REQUIRED>
 
 <!-- Note that, while removeStatus does obey the 'chance' parameter, it ignores any status effect resistances of the target. -->
@@ -287,6 +286,7 @@
 <!ATTLIST skill name CDATA #REQUIRED>
 <!ATTLIST skill icon CDATA #IMPLIED>
 <!ATTLIST skill bp CDATA #REQUIRED> <!-- Percentage of 'Break' to use skill -->
+<!ATTLIST skipp mp CDATA #REQUIRED>
 <!ATTLIST skill type (battle|switch) #IMPLIED> <!-- Defaults to battle -->
 <!ATTLIST prereqSkillRef skillName CDATA #REQUIRED>
 <!ATTLIST skillRef skillName CDATA #REQUIRED>

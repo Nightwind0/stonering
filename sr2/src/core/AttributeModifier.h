@@ -10,12 +10,11 @@ namespace StoneRing{
 
     class ScriptElement;
 
-    class AttributeModifier : public Element
+    class AttributeModifier 
     {
     public:
         AttributeModifier();
         virtual ~AttributeModifier();
-        virtual eElement WhichElement() const{ return EATTRIBUTEMODIFIER; }
 
         enum eType
         {
@@ -29,10 +28,12 @@ namespace StoneRing{
         double GetAdd() const;
         double GetMultiplier() const;
         bool GetToggle() const;
-    private:
-        virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
-        virtual bool handle_element(eElement, Element * );
-        virtual void load_finished();
+        void SetAttribute(uint attribute);
+        void SetMultiplier(double value);
+        void SetAdd(double value);
+        void SetToggle(bool toggle);
+    protected:
+
         // Used to make sure that when we multiply the value to get it
         // back to what it was, we end up with the right values.
         eType m_eType;
@@ -43,6 +44,22 @@ namespace StoneRing{
             bool m_toggle;
         };
         ValueType m_value;
+
+    };
+    
+    class AttributeModifierElement : public Element, public AttributeModifier
+    {
+    public:
+        AttributeModifierElement();
+        virtual ~AttributeModifierElement();
+        virtual eElement WhichElement() const{ return EATTRIBUTEMODIFIER; }
+        double GetAdd() const;
+        double GetMultiplier() const;
+        bool GetToggle() const;
+    private:
+        virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
+        virtual bool handle_element(eElement, Element * );
+        virtual void load_finished();
         bool m_has_value;
         ScriptElement* m_pScript;
     };

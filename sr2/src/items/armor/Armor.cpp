@@ -4,6 +4,8 @@
 #include "ArmorClass.h"
 #include "ArmorType.h"
 #include "SpellRef.h"
+#include "AbilityManager.h"
+#include "AttributeModifier.h"
 
 using namespace StoneRing;
 
@@ -51,6 +53,52 @@ Armor::~Armor()
 }
 
 
+void Armor::Set_Rune_Type ( RuneType* pType )
+{
+    Equipment::Set_Rune_Type(pType);
+    
+    // TODO: Create and apply attribute modifiers
+}
+
+void Armor::Set_Spell_Ref ( SpellRef* pRef )
+{
+    assert(pRef);
+    Equipment::Set_Spell_Ref(pRef);
+    Spell * pSpell = AbilityManager::GetSpell(*pRef);
+    MagicResistance * pMagicResistance = pSpell->getMagicResistance();
+    
+    if(pMagicResistance)
+    {
+        AttributeModifier *pAM = new AttributeModifier();
+        uint attribute = 0;
+        // TODO: Handle when it applies to more than one magic type,
+        // such as Magic::ALL, Magic::ELEMENTAL, Magic::DIVINE
+        switch(pMagicResistance->GetType())
+        {
+            case Magic::DARK:
+                attribute = ICharacter::CA_DARK_RST;
+                break;
+            case Magic::HOLY:
+                attribute = ICharacter::CA_HOLY_RST;
+                break;
+            case Magic::FIRE:
+                attribute = ICharacter::CA_FIRE_RST;
+                break;
+            case Magic::WATER:
+                attribute = ICharacter::CA_WATER_RST;
+                break;
+            case Magic::WIND:
+                attribute = ICharacter::CA_WIND_RST;
+                break;
+            case Magic::EARTH:
+                attribute = ICharacter::CA_EARTH_RST;
+                break;
+        }
+        pAM->SetAttribute(attribute);
+        pAM->SetAdd(pMagicResistance->GetResistance());
+        Add_Attribute_Modifier(pAM);
+    }
+}
 
 
 double Armor::GetArmorAttribute ( eAttribute attr )

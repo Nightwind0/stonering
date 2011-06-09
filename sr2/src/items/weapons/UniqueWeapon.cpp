@@ -111,7 +111,7 @@ bool UniqueWeapon::handle_element(eElement element, Element * pElement)
         Set_Rune_Type( dynamic_cast<RuneType*>(pElement) );
         break;
     case ESTATUSEFFECTMODIFIER:
-        Add_Status_Effect_Modifier( dynamic_cast<StatusEffectModifier*>(pElement) );
+        Add_StatusEffect_Modifier( dynamic_cast<StatusEffectModifier*>(pElement) );
         break;
     case ESCRIPT:
         m_pScript = dynamic_cast<ScriptElement*>(pElement);

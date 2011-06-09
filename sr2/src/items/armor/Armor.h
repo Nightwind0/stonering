@@ -41,6 +41,8 @@ namespace StoneRing{
     protected:
         void Clear_Armor_Enhancers();
         void Add_Armor_Enhancer (ArmorEnhancer * pEnhancer);
+        void Set_Spell_Ref(SpellRef* pRef);
+        void Set_Rune_Type(RuneType* pType);
     private:
         std::list<ArmorEnhancer*> m_armor_enhancers;
     };

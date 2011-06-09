@@ -81,6 +81,11 @@
                 return math::pow(1.07, $_CL) * 8;
             </script>
         </statScript>
+        <statScript stat="bp_max">
+            <script id="WarBPMAX">
+                return 100;
+            </script>
+        </statScript>
         <statScript stat="str">
             <script id="WarSTR">
                 return math::pow(1.06, $_CL) * 5;
@@ -143,6 +148,16 @@
         <statScript stat="hp_max">
             <script id="RngHPMAX">
                 return math::pow(1.07, $_CL) * 18;
+            </script>
+        </statScript>
+        <statScript stat="bp_max">
+            <script id="RngBPMAX">
+                return 100;
+            </script>
+        </statScript>
+         <statScript stat="mp_max">
+            <script id="RngMPMAX">
+                return 0;
             </script>
         </statScript>
         <statScript stat="str">

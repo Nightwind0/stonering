@@ -102,6 +102,7 @@ namespace StoneRing
         virtual void PermanentAugment(eCharacterAttribute attr, double augment);
         virtual void AddStatusEffect(StatusEffect *);
         virtual void RemoveEffects(const std::string &name);
+        virtual double StatusEffectChance(StatusEffect *)const;
         virtual void StatusEffectRound();
         virtual void RollInitiative(void);
         virtual uint GetInitiative(void)const;
@@ -127,7 +128,7 @@ namespace StoneRing
         }
     private:
 
-        typedef std::multimap<std::string,StatusEffect*> StatusEffectMap;
+        typedef std::map<std::string,StatusEffect*> StatusEffectMap;
         void set_toggle_defaults();
         void set_transients();
 

@@ -1556,10 +1556,8 @@ void Application::run()
     while (!backState->IsDone())
     {
         queryJoystick();
-        draw();
-        m_window.flip();
 
-        CL_KeepAlive::process();
+
 #if 0
         if (count++ % 50 == 0)
             std::cout << "FPS " <<  frameRate.get_fps() << std::endl;
@@ -1575,7 +1573,11 @@ void Application::run()
             }
             then = now;
         }
+        draw();
+        m_window.flip();
 
+        CL_KeepAlive::process();
+        CL_System::sleep(1);
 
     }
 

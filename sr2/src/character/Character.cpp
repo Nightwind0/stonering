@@ -26,6 +26,8 @@ const stat_entry statXMLLookup[] =
     {"hp_max",ICharacter::CA_MAXHP},
     {"mp",ICharacter::CA_MP},
     {"mp_max",ICharacter::CA_MAXMP},
+    {"bp",ICharacter::CA_BP},
+    {"bp_max",ICharacter::CA_MAXBP},
     {"str",ICharacter::CA_STR},
     {"def",ICharacter::CA_DEF},
     {"dex",ICharacter::CA_DEX},
@@ -533,15 +535,30 @@ double StoneRing::Character::GetEquippedArmorAttribute(Armor::eAttribute attr) c
 
 void StoneRing::Character::AddStatusEffect(StoneRing::StatusEffect *pEffect)
 {
-    m_status_effects.insert(StatusEffectMap::value_type(pEffect->GetName(),pEffect));
+    RemoveEffects(pEffect->GetName());
+    m_status_effects[pEffect->GetName()] = pEffect;
 }
 
 void StoneRing::Character::RemoveEffects(const std::string &name)
 {
-    StatusEffectMap::iterator start = m_status_effects.lower_bound(name);
-    StatusEffectMap::iterator end   = m_status_effects.upper_bound(name);
+    m_status_effects.erase(name);
+}
 
-    m_status_effects.erase(start,end);
+double StoneRing::Character::StatusEffectChance(StoneRing::StatusEffect *pEffect) const
+{
+        double chance = 1.0;
+        for(std::map<Equipment::eSlot,Equipment*>::const_iterator iter= m_equipment.begin();
+            iter != m_equipment.end();iter++)
+        {
+            chance += iter->second->GetStatusEffectModifier(pEffect->GetName());
+        }
+        for(StatusEffectMap::const_iterator iter = m_status_effects.begin();
+            iter != m_status_effects.end(); iter++)
+        {
+            chance += iter->second->GetStatusEffectModifier(pEffect->GetName());
+        }
+        
+        return chance;
 }
 
 void StoneRing::Character::StatusEffectRound()
