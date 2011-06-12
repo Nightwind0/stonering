@@ -1,11 +1,9 @@
 #include "AbilityManager.h"
-#include "Spell.h"
 #include <ClanLib/core.h>
 #include <cassert>
 #include "IApplication.h"
 #include "StatusEffect.h"
 #include "Skill.h"
-#include "SpellRef.h"
 #include <map>
 #include <algorithm>
 #include "Animation.h"
@@ -17,8 +15,6 @@ using namespace StoneRing;
 AbilityManager::~AbilityManager()
 {
     std::for_each(m_status_effects.begin(),m_status_effects.end(),compose_f_gx(del_fun<StatusEffect>(), get_second<StatusEffectMap::value_type>()));
-    std::for_each(m_spells.begin(),m_spells.end(),del_fun<Spell>());
-
     std::for_each(m_skills.begin(),m_skills.end(),
                   compose_f_gx(del_fun<Skill>(),
                                get_second<SkillMap::value_type>())
@@ -26,23 +22,6 @@ AbilityManager::~AbilityManager()
 
 }
 
-void AbilityManager::LoadSpellFile ( CL_DomDocument &doc )
-{
-    AbilityManager* instance = INSTANCE();
-    IFactory * pAbilityFactory = IApplication::GetInstance()->GetElementFactory();
-
-    CL_DomElement spellsNode = doc.named_item("spellList").to_element();
-    CL_DomElement spellNode = spellsNode.get_first_child().to_element();
-
-    while (!spellNode.is_null())
-    {
-        Spell * pSpell = dynamic_cast<Spell*>(pAbilityFactory->createElement("spell"));
-
-        pSpell->Load(spellNode);
-        instance->m_spells.push_back ( pSpell );
-        spellNode = spellNode.get_next_sibling().to_element();
-    }
-}
 
 
 void AbilityManager::LoadSkillFile ( CL_DomDocument &doc )
@@ -103,18 +82,6 @@ void AbilityManager::LoadAnimationFile ( CL_DomDocument &doc )
 }
 
 
-std::list<Spell*>::const_iterator AbilityManager::GetSpellsBegin()
-{
-    AbilityManager * instance = INSTANCE();
-    return instance->m_spells.begin();
-}
-
-
-std::list<Spell*>::const_iterator AbilityManager::GetSpellsEnd()
-{
-    AbilityManager * instance = INSTANCE();
-    return instance->m_spells.end();
-}
 std::map<std::string,Skill*>::const_iterator AbilityManager::GetSkillsBegin()
 {
     AbilityManager * instance = INSTANCE();
@@ -146,30 +113,6 @@ bool AbilityManager::SkillExists ( const std::string &skill )
     return instance->m_skills.find(skill) != instance->m_skills.end();
 }
 
-Spell * AbilityManager::GetSpell( const SpellRef & ref )
-{
-    AbilityManager * instance = INSTANCE();
-    for (std::list<Spell*>::const_iterator iter = instance->m_spells.begin();
-            iter != instance->m_spells.end();
-            iter++)
-    {
-        SpellRef * pRef = (*iter)->createSpellRef();
-
-        if ( *pRef == ref )
-        {
-            delete pRef;
-            return *iter;
-        }
-
-        delete pRef;
-    }
-
-    throw CL_Exception("Couldn't find spell based on ref, named " + ref.GetName());
-
-    return NULL;
-}
-
-
 
 StatusEffect * AbilityManager::GetStatusEffect ( const std::string &ref )
 {
@@ -193,12 +136,6 @@ Animation* AbilityManager::GetAnimation ( const std::string &animation )
 	return NULL;
 }
 
-#ifndef NDEBUG
-void AbilityManager::DumpSpellList()
-{
-
-}
-#endif
 
 
 

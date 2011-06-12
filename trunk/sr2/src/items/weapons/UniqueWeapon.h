@@ -18,8 +18,8 @@ namespace StoneRing{
         virtual uint GetValue() const ;
         virtual uint GetSellValue() const ;
 
-        virtual void Invoke();
-        virtual bool EquipCondition();
+        virtual void Invoke(eScriptMode invokeTime, const ParameterList& params);
+        virtual bool EquipCondition(const ParameterList& params);
         WeaponType *GetWeaponType() const ;
         bool IsRanged() const ;
         bool IsTwoHanded() const;
@@ -31,8 +31,8 @@ namespace StoneRing{
         virtual eItemType GetItemType() const { return WEAPON ; }
         virtual bool operator == ( const ItemRef &ref );
     private:
-        virtual void OnEquipScript();
-        virtual void OnUnequipScript();
+        virtual void OnEquipScript(const ParameterList& params);
+        virtual void OnUnequipScript(const ParameterList& params);
         virtual bool handle_element(eElement element, Element * pElement);
         virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
         virtual void load_finished();

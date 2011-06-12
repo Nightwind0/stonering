@@ -1,15 +1,14 @@
 #include "Rune.h"
-#include "SpellRef.h"
+
 
 using namespace StoneRing;
 
-Rune::Rune():m_pSpellRef(NULL)
+Rune::Rune()
 {
 }
 
 Rune::~Rune()
 {
-    delete m_pSpellRef;
 }
 
 
@@ -25,26 +24,17 @@ uint Rune::GetSellValue() const
     return 0;
 }
 
-SpellRef * Rune::GetSpellRef() const
-{
-    return m_pSpellRef;
-}
 
 bool Rune::handle_element(Element::eElement element, Element * pElement)
 {
     NamedItemElement::handle_element(element,pElement);
-    if(element == ESPELLREF)
-    {
-        m_pSpellRef = dynamic_cast<SpellRef*>(pElement);
-        return true;
-    }
-    else return false;
+
+    return false;
 }
 
 void Rune::load_finished()
 {
     NamedItemElement::load_finished();
-    if(!m_pSpellRef) throw CL_Exception("Rune without spellref.");
 }
 
 bool Rune::operator==(const StoneRing::ItemRef& ref)

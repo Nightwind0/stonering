@@ -2,6 +2,7 @@
 #define SR_EQUIPMENT_H
 
 #include "Item.h"
+#include "steel/SteelInterpreter.h"
 #include <list>
 #include <map>
 
@@ -9,6 +10,7 @@ namespace StoneRing{
 
     class ICharacter;
     class AttributeModifier;
+    
 
     class Equipment : public virtual Item
     {
@@ -32,9 +34,7 @@ namespace StoneRing{
             EANY = (EANYHAND | EANYARMOR)
         };
 
-        SpellRef * GetSpellRef() const;
         RuneType * GetRuneType() const;
-        bool HasSpell() const ;
         bool HasRuneType() const;
 
         // True for armor, false for weapon
@@ -43,8 +43,7 @@ namespace StoneRing{
 
         virtual void Equip(ICharacter *);
         virtual void Unequip(ICharacter *);
-        virtual void Invoke()=0;
-        virtual bool EquipCondition()=0;
+        virtual bool EquipCondition(const ParameterList& params)=0;
      
         typedef std::multimap<uint,AttributeModifier*> AttributeModifierSet;
         typedef std::map<std::string,StatusEffectModifier*> StatusEffectModifierSet;
@@ -60,14 +59,13 @@ namespace StoneRing{
         
         double GetStatusEffectModifier(const std::string &statuseffect)const;
     protected:
-        virtual void OnEquipScript()=0;
-        virtual void OnUnequipScript()=0;
+        virtual void OnEquipScript(const ParameterList& params)=0;
+        virtual void OnUnequipScript(const ParameterList& params)=0;
 
         void Clear_Attribute_Modifiers();
         void Add_Attribute_Modifier( AttributeModifier * pAttr );
         void Clear_StatusEffect_Modifiers();
         void Add_StatusEffect_Modifier( StatusEffectModifier * pModifier );
-        void Set_Spell_Ref ( SpellRef * pRef );
         void Set_Rune_Type ( RuneType * pType );
 
     private:

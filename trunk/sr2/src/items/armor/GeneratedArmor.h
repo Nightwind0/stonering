@@ -24,21 +24,23 @@ namespace StoneRing{
 
         ArmorType * GetArmorType() const ;
         ArmorClass * GetArmorClass() const { return m_pClass; }
+        ArmorClass * GetImbuement() const { return m_pImbuement; }
 
-        virtual void Invoke();
-        virtual bool EquipCondition();
+        virtual void Invoke(const ParameterList& params);
+        virtual bool EquipCondition(const ParameterList& params);
 
         virtual bool operator== ( const ItemRef &ref );
 
         void generate( ArmorType * pType, ArmorClass * pClass,
-                       SpellRef *pSpell = NULL, RuneType *pRune = NULL);
+                       ArmorClass *pImbuement = NULL, RuneType *pRune = NULL);
 
     private:
-        virtual void OnEquipScript();
-        virtual void OnUnequipScript();
+        virtual void OnEquipScript(const ParameterList& params);
+        virtual void OnUnequipScript(const ParameterList& params);
         std::string m_name;
         ArmorType  *m_pType;
         ArmorClass  *m_pClass;
+        ArmorClass *m_pImbuement;
     };
 
 };

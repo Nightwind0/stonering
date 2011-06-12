@@ -7,7 +7,6 @@ using namespace StoneRing;
 
 Equipment::Equipment():m_eMagic(NONE)
 {
-    m_SpellOrRuneRef.mpSpellRef = NULL;
 }
 
 
@@ -15,21 +14,12 @@ Equipment::~Equipment()
 {
 }
 
-SpellRef * Equipment::GetSpellRef() const
-{
-    return m_SpellOrRuneRef.mpSpellRef;
-}
 
 RuneType * Equipment::GetRuneType() const
 {
     return m_SpellOrRuneRef.mpRuneType;
 }
 
-bool Equipment::HasSpell() const
-{
-    if( m_eMagic == SPELL ) return true;
-    else return false;
-}
 
 bool Equipment::HasRuneType() const
 {
@@ -40,14 +30,19 @@ bool Equipment::HasRuneType() const
 // Apply any attribute enhancements 
 void Equipment::Equip(ICharacter *pCharacter)
 {
-
-    OnEquipScript();
+    ParameterList params;
+    ParameterListItem item("$_Character",pCharacter);
+    params.push_back(item);
+    OnEquipScript(params);
 }
 
 // Remove any attribute enhancements
 void Equipment::Unequip(ICharacter *pCharacter)
 {
-    OnUnequipScript();
+    ParameterList params;
+    ParameterListItem item("$_Character",pCharacter);
+    params.push_back(item);
+    OnUnequipScript(params);
 }
 
 
@@ -116,12 +111,6 @@ double Equipment::GetStatusEffectModifier(const std::string &statuseffect)const
     else return iter->second->GetModifier();   
 }
 
-void Equipment::Set_Spell_Ref ( SpellRef * pRef )
-{
-    m_SpellOrRuneRef.mpSpellRef = pRef;
-    m_eMagic = SPELL;
-    
-}
 
 void Equipment::Set_Rune_Type ( RuneType * pType )
 {

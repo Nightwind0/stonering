@@ -16,8 +16,10 @@ namespace StoneRing{
         virtual ~WeaponClass();
         virtual eElement WhichElement() const{ return EWEAPONCLASS; }
         std::string GetName() const;
+        std::string GetDescription() const;
         int GetValueAdd() const;
         float GetValueMultiplier() const;
+        bool Imbuement() const { return m_bImbuement; }
         Weapon::eScriptMode GetScriptMode() const { return m_eScriptMode; }
 
         std::list<AttributeModifier*>::const_iterator GetAttributeModifiersBegin();
@@ -29,10 +31,10 @@ namespace StoneRing{
         std::list<StatusEffectModifier*>::const_iterator GetStatusEffectModifiersBegin() { return m_status_effect_modifiers.begin(); }
         std::list<StatusEffectModifier*>::const_iterator GetStatusEffectModifiersEnd() { return m_status_effect_modifiers.end(); }
 
-        void ExecuteScript();
-        bool EquipCondition();
-        void OnEquipScript();
-        void OnUnequipScript();
+        void ExecuteScript(const ParameterList& params);
+        bool EquipCondition(const ParameterList& params);
+        void OnEquipScript(const ParameterList& params);
+        void OnUnequipScript(const ParameterList& params);
 
         bool IsExcluded ( const WeaponTypeRef &weaponType );
         bool operator==(const WeaponClass &lhs);
@@ -44,6 +46,7 @@ namespace StoneRing{
         void add_status_effect_modifier(StatusEffectModifier *pModifier ){ m_status_effect_modifiers.push_back ( pModifier ); }
         ScriptElement *m_pScript;
         std::string m_name;
+        std::string m_desc;
         int m_nValueAdd;
         Weapon::eScriptMode m_eScriptMode;
         float m_fValueMultiplier;
@@ -54,7 +57,9 @@ namespace StoneRing{
         NamedScript *m_pEquipScript;
         NamedScript *m_pUnequipScript;
         ScriptElement *m_pConditionScript;
+        bool m_bImbuement;
     };
+
 };
 
 #endif

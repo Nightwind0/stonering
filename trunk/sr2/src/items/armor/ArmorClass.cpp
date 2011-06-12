@@ -25,6 +25,8 @@ void ArmorClass::load_attributes(CL_DomNamedNodeMap attributes)
     m_name = get_required_string("name",attributes );
     m_fValueMultiplier = get_implied_float("valueMultiplier",attributes,1);
     m_nValueAdd = get_implied_int("valueAdd",attributes,0);
+    m_desc = get_implied_string("desc",attributes,"Description Missing");
+    m_bImbuement = get_implied_bool("imbuement",attributes,false);
 }
 
 bool ArmorClass::handle_element(eElement element, Element * pElement)
@@ -81,26 +83,26 @@ ArmorClass::~ArmorClass()
     delete m_pConditionScript;
 }
 
-void ArmorClass::ExecuteScript()
+void ArmorClass::ExecuteScript(const ParameterList& params)
 {
-    if(m_pScript) m_pScript->ExecuteScript();
+    if(m_pScript) m_pScript->ExecuteScript(params);
 }
 
-bool ArmorClass::EquipCondition()
+bool ArmorClass::EquipCondition(const ParameterList& params)
 {
     if(m_pConditionScript)
-        return m_pConditionScript->EvaluateCondition();
+        return m_pConditionScript->EvaluateCondition(params);
     else return true;
 }
 
-void ArmorClass::OnEquipScript()
+void ArmorClass::OnEquipScript(const ParameterList& params)
 {
-    m_pEquipScript->ExecuteScript();
+    m_pEquipScript->ExecuteScript(params);
 }
 
-void ArmorClass::OnUnequipScript()
+void ArmorClass::OnUnequipScript(const ParameterList& params)
 {
-    m_pUnequipScript->ExecuteScript();
+    m_pUnequipScript->ExecuteScript(params);
 }
 
 std::string ArmorClass::GetName() const

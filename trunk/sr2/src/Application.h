@@ -117,8 +117,9 @@ namespace StoneRing
         SteelType setCharacterToggle(const SteelType::Handle hICharacter, uint attr, bool toggle);
         SteelType getEquippedWeaponAttribute(const SteelType::Handle hICharacter, uint attr);
         SteelType getEquippedArmorAttribute(const SteelType::Handle hICharacter, uint attr);
-        SteelType addStatusEffect(SteelType::Handle hCharacter, const std::string &effect);
-        SteelType removeStatusEffects(SteelType::Handle hCharacter, const std::string &effect);
+        SteelType getStatusEffect(const std::string &effect);
+        SteelType addStatusEffect(SteelType::Handle hCharacter, SteelType::Handle hStatusEffect);
+        SteelType removeStatusEffects(SteelType::Handle hCharacter, SteelType::Handle hStatusEffect);
         // This method directly affects a character's HP. No factors are taken into account
         // The handle is to an ICharacter
         SteelType doDamage(SteelType::Handle hICharacter, int damage);
@@ -128,15 +129,16 @@ namespace StoneRing
         SteelType getEquipment(SteelType::Handle hCharacter, int slot);
         SteelType equip(SteelType::Handle hCharacter, int slot, const std::string &);
 
+        SteelType forgoAttack(SteelType::Handle hWeapon);
         SteelType getWeaponType(SteelType::Handle hWeapon);
         SteelType getArmorType(SteelType::Handle hArmor);
         SteelType getWeaponTypeDamageCategory(SteelType::Handle hWeaponType);
 	SteelType getWeaponTypeAnimation(SteelType::Handle hWeaponType);
 	SteelType weaponTypeHasAnimation(SteelType::Handle hWeaponType);
         SteelType getDamageCategoryResistance(SteelType::Handle hICharacter, int damage_category);
-        SteelType getWeaponScriptMode(SteelType::Handle hWeaponType);
 
-        SteelType invokeEquipment(SteelType::Handle hEquipment);
+        SteelType invokeArmor(SteelType::Handle hCharacter, SteelType::Handle hArmor);
+        SteelType invokeWeapon(SteelType::Handle hCharacter, SteelType::Handle hWeapon, uint invokeTime);
         SteelType attackCharacter(SteelType::Handle hICharacter);
 	SteelType attackCharacter1(ICharacter* pChar){
 	    return SteelType();

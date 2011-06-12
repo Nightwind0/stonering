@@ -5,7 +5,6 @@
 #include "IApplication.h"
 #include "Animation.h"
 #include "Level.h"
-#include "SpellRef.h"
 #include "ActionQueue.h"
 #include "NamedScript.h"
 #include "GraphicsManager.h"
@@ -38,11 +37,6 @@ uint Skill::GetMPCost() const
     return m_nMp;
 }
 
-
-SpellRef* Skill::GetSpellRef() const 
-{
-    return m_pSpellRef;
-}
 
 void StoneRing::Skill::Invoke(ICharacter* pCharacter,const ParameterList& params)
 {
@@ -92,9 +86,6 @@ bool StoneRing::Skill::handle_element(eElement element, Element * pElement)
     case ECONDITIONSCRIPT:
         m_pCondition = dynamic_cast<NamedScript*>(pElement);
         break;
-    case ESPELLREF:
-        m_pSpellRef = dynamic_cast<SpellRef*>(pElement);
-        break;
     default:
         return false;
     }
@@ -102,7 +93,7 @@ bool StoneRing::Skill::handle_element(eElement element, Element * pElement)
     return true;
 }
 
-StoneRing::Skill::Skill():m_nBp(0), m_pSpellRef(NULL),
+StoneRing::Skill::Skill():m_nBp(0), 
                           m_pOnInvoke(NULL),m_pOnRemove(NULL),m_pCondition(NULL),
                           m_bAllowsGroupTarget(false),m_bDefaultToEnemyGroup(true)
 {
@@ -114,7 +105,6 @@ Skill::~Skill()
     delete m_pCondition;
     delete m_pOnRemove;
     delete m_pOnInvoke;
-    delete m_pSpellRef;
 }
 
 

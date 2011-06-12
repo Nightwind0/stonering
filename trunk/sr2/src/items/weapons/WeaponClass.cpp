@@ -22,6 +22,8 @@ void WeaponClass::load_attributes(CL_DomNamedNodeMap attributes)
     m_nValueAdd = get_implied_int("valueAdd",attributes,0);
     std::string script_mode = get_implied_string("scriptMode",attributes,"attackBefore");
     m_eScriptMode = Weapon::ScriptModeForString(script_mode);
+    m_desc = get_implied_string("desc",attributes,"Description missing");
+    m_bImbuement = get_implied_bool("imbuement",attributes,false);
 }
 
 bool WeaponClass::handle_element(eElement element, Element * pElement)
@@ -65,26 +67,26 @@ bool WeaponClass::handle_element(eElement element, Element * pElement)
     return true;
 }
 
-void WeaponClass::ExecuteScript()
+void WeaponClass::ExecuteScript(const ParameterList& params)
 {
-    if(m_pScript) m_pScript->ExecuteScript();
+    if(m_pScript) m_pScript->ExecuteScript(params);
 }
 
-bool WeaponClass::EquipCondition()
+bool WeaponClass::EquipCondition(const ParameterList& params)
 {
     if(m_pConditionScript)
-        return m_pConditionScript->EvaluateCondition();
+        return m_pConditionScript->EvaluateCondition(params);
     else return true;
 }
 
-void WeaponClass::OnEquipScript()
+void WeaponClass::OnEquipScript(const ParameterList& params)
 {
-    m_pEquipScript->ExecuteScript();
+    m_pEquipScript->ExecuteScript(params);
 }
 
-void WeaponClass::OnUnequipScript()
+void WeaponClass::OnUnequipScript(const ParameterList& params)
 {
-    m_pUnequipScript->ExecuteScript();
+    m_pUnequipScript->ExecuteScript(params);
 }
 
 WeaponClass::~WeaponClass()

@@ -2,7 +2,6 @@
 #include "ArmorRef.h"
 #include "ArmorType.h"
 #include "ArmorClass.h"
-#include "SpellRef.h"
 #include "RuneType.h"
 #include "ItemManager.h"
 #include "IApplication.h"
@@ -12,9 +11,9 @@
 using namespace StoneRing;
 
 ArmorRef::ArmorRef ( ArmorType *pType, ArmorClass *pClass, 
-                     SpellRef * pSpell, RuneType *pRune )
+                     ArmorClass *pImbuement, RuneType *pRune )
                      :m_pArmorType(pType), m_pArmorClass(pClass),
-                     m_pSpellRef(pSpell), m_pRuneType(pRune)
+                     m_pImbuement(pImbuement), m_pRuneType(pRune)
 
 {
 
@@ -39,8 +38,8 @@ bool ArmorRef::handle_element(eElement element, Element * pElement)
         m_pClass =  (dynamic_cast<ArmorClassRef*>(pElement));
         m_pArmorClass = pItemManager->GetArmorClass (*m_pClass);
         break;
-    case ESPELLREF:
-        m_pSpellRef = dynamic_cast<SpellRef*>(pElement);
+    case EARMORIMBUEMENTREF:
+        m_pImbuement = pItemManager->GetArmorImbuement(* dynamic_cast<ArmorImbuementRef*>(pElement));
         break;
     case ERUNETYPE:
         m_pRuneType = dynamic_cast<RuneType*>(pElement);
@@ -54,12 +53,12 @@ bool ArmorRef::handle_element(eElement element, Element * pElement)
 
 void ArmorRef::load_finished()
 {
-    m_name = Armor::CreateArmorName(m_pArmorType,m_pArmorClass,m_pSpellRef,m_pRuneType);
+    m_name = Armor::CreateArmorName(m_pArmorType,m_pArmorClass,m_pImbuement,m_pRuneType);
 }
 
 ArmorRef::ArmorRef():m_pArmorType(NULL),
                      m_pArmorClass(NULL),
-                     m_pSpellRef(NULL),
+                     m_pImbuement(NULL),
                      m_pRuneType(NULL)
 {
 
@@ -79,9 +78,9 @@ ArmorClass * ArmorRef::GetArmorClass() const
     return m_pArmorClass;
 }
 
-SpellRef * ArmorRef::GetSpellRef() const
+ArmorClass * ArmorRef::GetArmorImbuement() const
 {
-    return m_pSpellRef;
+    return m_pImbuement;
 }
 
 RuneType * ArmorRef::GetRuneType() const

@@ -14,9 +14,6 @@
 
 
 namespace StoneRing{
-
-    class Spell;
-    class SpellRef;
     class RuneType;
     class AttributeEnhancer;
     class WeaponEnhancer;
@@ -25,6 +22,8 @@ namespace StoneRing{
     class ArmorTypeRef;
     class WeaponClassRef;
     class ArmorClassRef;
+    class WeaponImbuementRef;
+    class ArmorImbuementRef;
     class Action;
     class WeaponType;
     class ArmorType;
@@ -82,7 +81,6 @@ namespace StoneRing{
 
     union SpellOrRuneRef
     {
-        SpellRef *mpSpellRef;
         RuneType * mpRuneType;
     };
 

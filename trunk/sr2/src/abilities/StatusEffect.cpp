@@ -54,6 +54,11 @@ bool StoneRing::StatusEffect::handle_element(eElement element, Element * pElemen
             (static_cast<ICharacter::eCharacterAttribute>(pAM->GetAttribute()),pAM));
         break;
                             }
+    case ESTATUSEFFECTMODIFIER:{
+        StatusEffectModifier* pModifier = dynamic_cast<StatusEffectModifier*>(pElement);
+        m_statuseffect_modifiers[pModifier->GetStatusEffect()->GetName()] = pModifier;
+        break;
+    }
     default:
         return false;
     }

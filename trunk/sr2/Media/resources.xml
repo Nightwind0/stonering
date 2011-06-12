@@ -15,7 +15,6 @@
         </section>
         <section name="Game">
                 <string name="StartupScript" value="Media/Scripts/init.steel"/> 	
-                <string name="SpellDefinitions" value="Media/spells.xml"/>
                 <string name="ItemDefinitions" value="Media/items.xml"/>
                 <string name="StatusEffectDefinitions" value="Media/statusEffects.xml"/>
                 <string name="SkillDefinitions" value="Media/skills.xml"/>

@@ -52,7 +52,10 @@ void ItemManager::LoadItemFile ( CL_DomDocument &doc )
     {
         WeaponClass * pWeaponClass = dynamic_cast<WeaponClass*>( pItemFactory->createElement("weaponClass") );
         pWeaponClass->Load(weaponClassNode);
-        m_weapon_classes.push_back ( pWeaponClass );
+        if(pWeaponClass->Imbuement())
+            m_weapon_imbuements.push_back( pWeaponClass );
+        else
+            m_weapon_classes.push_back ( pWeaponClass );
         weaponClassNode = weaponClassNode.get_next_sibling().to_element();
     }
 
@@ -76,7 +79,10 @@ void ItemManager::LoadItemFile ( CL_DomDocument &doc )
     {
         ArmorClass * pArmorClass = dynamic_cast<ArmorClass*>( pItemFactory->createElement("armorClass") );
         pArmorClass->Load(armorClassNode);
-        m_armor_classes.push_back ( pArmorClass);
+        if(pArmorClass->Imbuement())
+            m_armor_imbuements.push_back ( pArmorClass );
+        else 
+            m_armor_classes.push_back ( pArmorClass);
 
         armorClassNode = armorClassNode.get_next_sibling().to_element();
     }
@@ -317,6 +323,33 @@ ArmorClass  * ItemManager::GetArmorClass ( const ArmorClassRef & ref ) const
     return NULL;
 }
 
+WeaponClass * ItemManager::GetWeaponImbuement ( const WeaponImbuementRef & ref ) const
+{
+    for(std::list<WeaponClass*>::const_iterator iter = m_weapon_imbuements.begin();
+        iter != m_weapon_imbuements.end();
+        iter++)
+    {
+        if( ref.GetName() == (*iter)->GetName())
+            return *iter;
+    }
+    assert(0 && "Weapon imbuement not found");
+    return NULL;
+}
+
+ArmorClass  * ItemManager::GetArmorImbuement ( const ArmorImbuementRef & ref ) const
+{
+    for(std::list<ArmorClass*>::const_iterator iter = m_armor_imbuements.begin();
+        iter != m_armor_imbuements.end();
+        iter++)
+    {
+        if( ref.GetName() == (*iter)->GetName())
+            return *iter;
+    }
+
+    assert ( 0 && "Armor imbuement not found.");
+    return NULL;
+}
+
 Item * ItemManager::GetNamedItem( const std::string &name ) const
 {
     NamedItemMap::const_iterator iter = m_named_items.find(name);
@@ -375,7 +408,7 @@ Weapon * ItemManager::createWeapon(WeaponRef *pRef) const
 {
     GeneratedWeapon * pWeapon = new GeneratedWeapon();
     pWeapon->Generate(pRef->GetWeaponType(), pRef->GetWeaponClass(),
-        pRef->GetSpellRef(),pRef->GetRuneType());
+        pRef->GetWeaponImbuement(),pRef->GetRuneType());
     return pWeapon;
 }
 
@@ -383,7 +416,7 @@ Armor * ItemManager::createArmor(ArmorRef *pRef) const
 {
     GeneratedArmor * pArmor = new GeneratedArmor();
     pArmor->generate(pRef->GetArmorType(),pRef->GetArmorClass(),
-        pRef->GetSpellRef(),pRef->GetRuneType());
+        pRef->GetArmorImbuement(),pRef->GetRuneType());
     return pArmor;
 }
 

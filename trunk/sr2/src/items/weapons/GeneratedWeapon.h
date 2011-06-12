@@ -24,24 +24,26 @@ namespace StoneRing{
         virtual uint GetSellValue() const ;
         virtual eItemType GetItemType() const { return WEAPON ; }
 
-        virtual void Invoke();
-        virtual bool EquipCondition();
+        virtual void Invoke(eScriptMode invokeTime, const ParameterList& param);
+        virtual bool EquipCondition(const ParameterList& param);
 
         // Weapon interface
         WeaponType * GetWeaponType() const;
         WeaponClass * GetWeaponClass() const { return m_pClass; }
+        WeaponClass * GetImbuement() const { return m_pImbuement; }
         bool IsRanged() const ;
         bool IsTwoHanded() const;
         virtual bool operator== ( const ItemRef &ref );
 
         void Generate( WeaponType * pType, WeaponClass * pClass,
-                       SpellRef *pSpell = NULL, RuneType *pRune = NULL);
+                       WeaponClass* pImbuement = NULL, RuneType *pRune = NULL);
 
     private:
-        virtual void OnEquipScript();
-        virtual void OnUnequipScript();
+        virtual void OnEquipScript(const ParameterList& param);
+        virtual void OnUnequipScript(const ParameterList& param);
         std::string m_name; //generated at generate time :)
         WeaponClass *m_pClass;
+        WeaponClass *m_pImbuement;
         WeaponType *m_pType;
 	CL_Image m_icon;
     };

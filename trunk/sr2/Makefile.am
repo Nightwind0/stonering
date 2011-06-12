@@ -17,10 +17,6 @@ stonering_SOURCES =	src/Application.cpp \
 			src/abilities/Magic.h \
 			src/abilities/Skill.cpp \
 			src/abilities/Skill.h \
-			src/abilities/Spell.cpp \
-			src/abilities/Spell.h \
-			src/abilities/SpellRef.cpp \
-			src/abilities/SpellRef.h \
 			src/abilities/StatusEffect.cpp \
 			src/abilities/StatusEffect.h \
 			src/battle/ActionQueue.h \

@@ -19,7 +19,6 @@ void AppUtils::LoadGameplayAssets(const std::string &path, CL_ResourceManager& r
     std::string startinglevel = CL_String_load("Game/StartLevel",resources);
     std::string itemdefinition = CL_String_load("Game/ItemDefinitions", resources );
     std::string statusEffectDefinition = CL_String_load("Game/StatusEffectDefinitions",resources);
-    std::string spelldefinition = CL_String_load("Game/SpellDefinitions", resources);
     std::string skilldefinition = CL_String_load("Game/SkillDefinitions",resources);
     std::string classdefinition = CL_String_load("Game/CharacterClassDefinitions",resources);
     std::string monsterdefinition = CL_String_load("Game/MonsterDefinitions",resources);
@@ -28,7 +27,6 @@ void AppUtils::LoadGameplayAssets(const std::string &path, CL_ResourceManager& r
     std::string mainmenudefinition = CL_String_load("Game/MainMenuDefinitions",resources);
 
     LoadStatusEffects(path + statusEffectDefinition);
-    LoadSpells(path + spelldefinition);
     LoadItems(path + itemdefinition);
     LoadSkills(path + skilldefinition);
     LoadCharacterClasses(path + classdefinition);
@@ -38,20 +36,6 @@ void AppUtils::LoadGameplayAssets(const std::string &path, CL_ResourceManager& r
     LoadMainMenu(path + mainmenudefinition);
 }
 
-
-void AppUtils::LoadSpells(const std::string &filename)
-{
-#ifndef NDEBUG
-    std::cout << "Loading spells..." << std::endl;
-#endif
-
-    CL_File file(filename);
-    CL_DomDocument document;
-
-    document.load(file);
-
-    AbilityManager::LoadSpellFile ( document );
-}
 
 void AppUtils::LoadSkills(const std::string &filename)
 {

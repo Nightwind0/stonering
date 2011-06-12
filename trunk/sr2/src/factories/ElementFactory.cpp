@@ -85,6 +85,7 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["armorClass"] = &ElementFactory::CreateElement<ArmorClass>;
     mCreateMethods["armorClassRef"] = &ElementFactory::CreateElement<ArmorClassRef>;
     mCreateMethods["armorEnhancer"] = &ElementFactory::CreateElement<ArmorEnhancer>;
+    mCreateMethods["armorImbuementRef"] = &ElementFactory::CreateElement<ArmorImbuementRef>;
     mCreateMethods["armorRef"] = &ElementFactory::CreateElement<ArmorRef>;
     mCreateMethods["armorType"] = &ElementFactory::CreateElement<ArmorType>;
     mCreateMethods["armorTypeExclusionList"] = &ElementFactory::CreateElement<ArmorTypeExclusionList>;
@@ -102,7 +103,6 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["itemRef"] = &ElementFactory::CreateElement<ItemRef>;
     mCreateMethods["level"] = &ElementFactory::CreateElement<Level>;
     mCreateMethods["levelHeader"] = &ElementFactory::CreateElement<LevelHeader>;
-    mCreateMethods["magicResistance"] = &ElementFactory::CreateElement<MagicResistance>;
     mCreateMethods["mappableObjects"] = &ElementFactory::CreateElement<MappableObjects>;
     mCreateMethods["mo"] = &ElementFactory::CreateElement<MappableObject>;
     mCreateMethods["movement"] = &ElementFactory::CreateElement<Movement>;
@@ -133,8 +133,6 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["skillRef"] = &ElementFactory::CreateElement<SkillRef>;
     mCreateMethods["skillTreeNode"] = &ElementFactory::CreateElement<SkillTreeNode>;
     mCreateMethods["specialItem"] = &ElementFactory::CreateElement<SpecialItem>;
-    mCreateMethods["spell"] = &ElementFactory::CreateElement<Spell>;
-    mCreateMethods["spellRef"] = &ElementFactory::CreateElement<SpellRef>;
     mCreateMethods["spriteAnimation"] = &ElementFactory::CreateElement<SpriteAnimation>;
     mCreateMethods["spriteMovement"] = &ElementFactory::CreateElement<SpriteMovement>;
     mCreateMethods["spriteMovementScript"] = &ElementFactory::CreateElement<SpriteMovementScript>;
@@ -153,6 +151,7 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["weaponClass"] = &ElementFactory::CreateElement<WeaponClass>;
     mCreateMethods["weaponClassRef"] = &ElementFactory::CreateElement<WeaponClassRef>;
     mCreateMethods["weaponEnhancer"] = &ElementFactory::CreateElement<WeaponEnhancer>;
+    mCreateMethods["weaponImbuementRef"] = &ElementFactory::CreateElement<WeaponImbuementRef>;
     mCreateMethods["weaponRef"] = &ElementFactory::CreateElement<WeaponRef>;
     mCreateMethods["weaponType"] = &ElementFactory::CreateElement<WeaponType>;
     mCreateMethods["weaponTypeExclusionList"] = &ElementFactory::CreateElement<WeaponTypeExclusionList>;
