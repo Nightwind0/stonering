@@ -4,15 +4,17 @@
         <battleMenu type="popup">
             <battleMenuOption name="Attack" icon="attack">
                 <conditionScript id="WarriorAttackOptionCondition">
-                    return hasEquipment($Character, $_HAND)
-                    or
-                    hasEquipment($Character, $_OFFHAND);
+                    return getCharacterToggle($Character,$_CAN_ACT) and 
+                           getCharacterToggle($Character,$_CAN_FIGHT) and
+                        (hasEquipment($Character, $_HAND)
+                        or
+                        hasEquipment($Character, $_OFFHAND));
                 </conditionScript>
                 <skillRef skillName="Attack"/>
             </battleMenuOption>
             <battleMenuOption name="Item" icon="item">
 		<conditionScript id="WarriorItemCondition">
-		    return true;
+		    return getCharacterToggle($Character,$_CAN_ACT) and getCharacterToggle($Character,$_CAN_ITEM);
 		</conditionScript>
                  <skillRef skillName="Item"/>
             </battleMenuOption>
@@ -26,7 +28,8 @@
 	  <battleMenuOption name="Throw" icon="hurl">
 		<conditionScript id="WarriorThrowCondition">
 		    <![CDATA[
-			return true;
+			return getCharacterToggle($Character,$_CAN_ACT) 
+                        and getCharacterToggle($Character,$_CAN_SKILL);
 			]]>
 		</conditionScript>
                 <battleMenu type="popup">
@@ -53,7 +56,11 @@
 	  <battleMenuOption name="Flee" icon="flee">
 		<conditionScript id="WarriorFleeCondition">
 		    <![CDATA[
-			return !battle::isBossBattle();
+			return getCharacterToggle($Character,$_CAN_ACT) 
+                        and
+                        getCharacterToggle($Character,$_CAN_RUN) 
+                        and
+                        !battle::isBossBattle();
 			]]>
 		</conditionScript>
 		<skillRef skillName="Flee"/>

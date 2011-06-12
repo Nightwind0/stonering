@@ -57,9 +57,10 @@ namespace StoneRing{
         virtual void   Attacked();
         virtual void   Kill();
         virtual void   AddStatusEffect(StatusEffect *);
-        virtual void   RemoveEffects(const std::string &name);
+        virtual void   RemoveEffect(StatusEffect *);
         virtual double StatusEffectChance(StatusEffect *)const;
         virtual void   StatusEffectRound();
+        virtual void   RemoveBattleStatusEffects();
         virtual void   RollInitiative(void);
         virtual uint   GetInitiative(void)const;
         virtual double GetEquippedWeaponAttribute(Weapon::eAttribute) const;
@@ -109,6 +110,7 @@ namespace StoneRing{
     private:
         typedef std::map<std::string,StatusEffect*> StatusEffectMap;
         typedef std::map<std::string,SpriteDefinition*> SpriteDefinitionMap;
+        typedef std::map<std::string,uint> StatusEffectRounds;
 
         virtual bool handle_element(eElement, Element *);
         virtual void load_attributes(CL_DomNamedNodeMap);
@@ -132,6 +134,7 @@ namespace StoneRing{
         CL_Sprite m_currentSprite;
 	CL_Sprite m_portrait;
         StatusEffectMap m_status_effects;
+        StatusEffectRounds m_status_effect_rounds;
         eType m_eType;
         CL_Pointf m_battle_pos;
         

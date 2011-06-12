@@ -180,6 +180,7 @@ double Monster::GetAttribute(ICharacter::eCharacterAttribute attr) const
             return iter->second;
         else return 0.0;
     }
+    // TODO: Status effects similar to Character's version
 }
 
 
@@ -189,6 +190,8 @@ bool Monster::GetToggle(ICharacter::eCharacterAttribute attr) const
     if(iter != m_toggles.end())
         return iter->second;
     else return false;
+    
+    // TODO: Status effects into account
 }
 
 void Monster::PermanentAugment(eCharacterAttribute attr, double augment)
@@ -212,13 +215,13 @@ void Monster::PermanentAugment(eCharacterAttribute attr, double augment)
 void Monster::AddStatusEffect(StatusEffect *pEffect)
 {
     // Clear out the old one, if any
-    RemoveEffects(pEffect->GetName());
+    RemoveEffect(pEffect);
     m_status_effects.insert(StatusEffectMap::value_type(pEffect->GetName(),pEffect));
 }
 
-void Monster::RemoveEffects(const std::string &name)
+void Monster::RemoveEffect(StatusEffect *pEffect)
 {
-    m_status_effects.erase(name);
+    m_status_effects.erase(pEffect->GetName());
 }
 
 double Monster::StatusEffectChance(StatusEffect* pEffect) const

@@ -78,8 +78,17 @@ AttributeModifierElement::AttributeModifierElement():m_pScript(NULL)
 void AttributeModifierElement::load_attributes(CL_DomNamedNodeMap attributes)
 {
     m_nAttribute = ICharacter::CAFromString(get_required_string("attribute", attributes));
-    m_eType = static_cast<eType>( get_required_int("type",attributes));
-
+    
+    std::string type = get_required_string("type",attributes);
+    
+    if(type == "add")
+        m_eType = EADD;
+    else if(type == "multiply")
+        m_eType = EMULTIPLY;
+    else if(type == "toggle")
+        m_eType = ETOGGLE;
+    else throw CL_Exception("Bad Attribute Modifier type");
+    
     if(has_attribute("value",attributes))
     {
         m_has_value = true;

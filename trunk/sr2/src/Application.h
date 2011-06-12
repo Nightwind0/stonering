@@ -119,11 +119,14 @@ namespace StoneRing
         SteelType getEquippedArmorAttribute(const SteelType::Handle hICharacter, uint attr);
         SteelType getStatusEffect(const std::string &effect);
         SteelType addStatusEffect(SteelType::Handle hCharacter, SteelType::Handle hStatusEffect);
-        SteelType removeStatusEffects(SteelType::Handle hCharacter, SteelType::Handle hStatusEffect);
+        SteelType removeStatusEffect(SteelType::Handle hCharacter, SteelType::Handle hStatusEffect);
+        SteelType statusEffectChance(SteelType::Handle HCharacter, SteelType::Handle hStatusEffect);
         // This method directly affects a character's HP. No factors are taken into account
         // The handle is to an ICharacter
         SteelType doDamage(SteelType::Handle hICharacter, int damage);
 	SteelType doMPDamage(const SteelType::Handle hICharacter, int amount);
+        SteelType kill(SteelType::Handle hICharacter);
+        SteelType raise(SteelType::Handle hICharacter);
 
         SteelType hasEquipment(SteelType::Handle hICharacter, int slot);
         SteelType getEquipment(SteelType::Handle hCharacter, int slot);

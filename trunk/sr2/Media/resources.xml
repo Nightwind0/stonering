@@ -257,8 +257,8 @@
 
                         </section>
                         <section name="fonts">
-                                <string name="on" value="BoldBlack"/>
-                                <string name="off" value="BoldGray"/>
+                                <string name="on" value="BoldGray"/>
+                                <string name="off" value="BoldBlack"/>
                                 <string name="Selection" value="BoldWhite"/>
                         </section>
                 </section>
@@ -361,7 +361,13 @@
                     </sprite>
                     <sprite name="Focused">
                         <image file="Sprites/Status Effects/AimUp.png"/>
-                    </sprite>	
+                    </sprite>
+                    <sprite name="Doomed">
+                        <image file="Sprites/Status Effects/Doom.png"/>
+                    </sprite>
+                    <sprite name="Tangled">
+                        <image file="Sprites/Status Effects/Baffled.png"/>
+                    </sprite>
                     
                 </section>
                 <section name="Skills">

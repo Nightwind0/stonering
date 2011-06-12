@@ -154,6 +154,26 @@ bool StoneRing::ICharacter::IsToggle(eCharacterAttribute attr)
     return (attr > ICharacter::_START_OF_TOGGLES && attr < ICharacter::_LAST_CHARACTER_ATTR_);
 }
 
+bool StoneRing::ICharacter::ToggleDefaultTrue(eCharacterAttribute attr)
+{
+    assert ( IsToggle ( attr ) );
+    
+    switch(attr)
+    {
+        case CA_ALIVE:
+        case CA_VISIBLE:
+        case CA_CAN_ACT:
+        case CA_CAN_RUN:
+        case CA_CAN_CAST:
+        case CA_CAN_FIGHT:
+        case CA_CAN_ITEM:
+        case CA_CAN_SKILL:
+            return true;
+        default:
+            return false;
+    }
+}
+
 ICharacter::eCharacterAttribute StoneRing::ICharacter::GetMaximumAttribute(eCharacterAttribute attr)
 {
     if(ICharacter::_MAXIMA_BASE + attr < ICharacter::_LAST_CHARACTER_ATTR_)
@@ -195,33 +215,20 @@ bool StoneRing::Character::HasSkill(const SkillRef& skill)
 
 void StoneRing::Character::set_toggle_defaults()
 {
-    for(uint toggle=_START_OF_TOGGLES;toggle<_END_OF_TOGGLES;toggle++)
+    for(uint toggle=_START_OF_TOGGLES+1;toggle<_END_OF_TOGGLES;toggle++)
     {
-        switch(toggle)
-        {
-            case CA_DRAW_ILL:
-            case CA_DRAW_STONE:
-            case CA_DRAW_BERSERK:
-            case CA_DRAW_WEAK:
-            case CA_DRAW_PARALYZED:
-            case CA_DRAW_TRANSLUCENT:
-            case CA_DRAW_MINI:
-                m_toggles[static_cast<eCharacterAttribute>(toggle)] = false;
-                break;
-            case CA_VISIBLE:
-            case CA_CAN_ACT:
-            case CA_CAN_FIGHT:
-            case CA_CAN_CAST:
-            case CA_CAN_SKILL:
-            case CA_CAN_ITEM:
-            case CA_CAN_RUN:
-            case CA_ALIVE:
-                m_toggles[static_cast<eCharacterAttribute>(toggle)] = true;
-                break;
-            default:
-                break;
-        }
+        m_toggles[static_cast<eCharacterAttribute>(toggle)] = ToggleDefaultTrue(static_cast<eCharacterAttribute>(toggle));
     }
+}
+
+void StoneRing::Character::RemoveBattleStatusEffects()
+{
+    for(StatusEffectMap::iterator iter = m_status_effects.begin();
+        iter != m_status_effects.end(); iter++)
+        {
+            if(iter->second->GetLast() != StatusEffect::PERMANENT)
+                RemoveEffect(iter->second);
+        }
 }
 
 uint StoneRing::Character::GetLevel(void)const
@@ -258,7 +265,7 @@ void StoneRing::Character::SetSP(uint amount)
     m_nSP = amount;
 }
 
-ICharacter::eGender StoneRing::Character::GetGender() const
+StoneRing::ICharacter::eGender StoneRing::Character::GetGender() const
 {
     return NEUTER;
 }
@@ -414,12 +421,12 @@ double StoneRing::Character::GetAttribute(eCharacterAttribute attr) const
         for(std::map<Equipment::eSlot,Equipment*>::const_iterator iter= m_equipment.begin();
             iter != m_equipment.end();iter++)
         {
-            base *= iter->second->GetAttributeMultiplier(attr);
+            base *=  iter->second->GetAttributeMultiplier(attr);
         }
         for(StatusEffectMap::const_iterator iter= m_status_effects.begin();
             iter != m_status_effects.end();iter++)
         {
-            base *= iter->second->GetAttributeMultiplier(attr);
+            base *=  iter->second->GetAttributeMultiplier(attr);
         }
         // Same with the status effects
         // Then do it with the adders
@@ -431,7 +438,7 @@ double StoneRing::Character::GetAttribute(eCharacterAttribute attr) const
         for(StatusEffectMap::const_iterator iter= m_status_effects.begin();
             iter != m_status_effects.end();iter++)
         {
-            base += iter->second->GetAttributeMultiplier(attr);
+            base += iter->second->GetAttributeAdd(attr);
         }
     }
     double augment  = 0.0;
@@ -450,10 +457,23 @@ double StoneRing::Character::GetAttribute(eCharacterAttribute attr) const
 
 bool StoneRing::Character::GetToggle(eCharacterAttribute attr) const
 {
+    bool base = ToggleDefaultTrue(attr);
     std::map<eCharacterAttribute,bool>::const_iterator iter = m_toggles.find(attr);
     if(iter != m_toggles.end())
-        return iter->second;
-    else return false;
+        base =  iter->second;
+    
+    for(StatusEffectMap::const_iterator iter= m_status_effects.begin();
+            iter != m_status_effects.end();iter++)
+        {
+            if(ToggleDefaultTrue(attr))
+                 base = base && iter->second->GetAttributeToggle(attr, base);
+            else
+                base = base || iter->second->GetAttributeToggle(attr, base);
+        }   
+        
+        // TODO: Iterate equipment too
+
+    return base;
 }
 
 
@@ -535,13 +555,21 @@ double StoneRing::Character::GetEquippedArmorAttribute(Armor::eAttribute attr) c
 
 void StoneRing::Character::AddStatusEffect(StoneRing::StatusEffect *pEffect)
 {
-    RemoveEffects(pEffect->GetName());
+    //RemoveEffect(pEffect);
+    m_status_effect_rounds[pEffect->GetName()] = 0;
     m_status_effects[pEffect->GetName()] = pEffect;
+    ParameterList params;
+    params.push_back(ParameterListItem("$_Character",this));
+    pEffect->Invoke(params);
 }
 
-void StoneRing::Character::RemoveEffects(const std::string &name)
+void StoneRing::Character::RemoveEffect(StoneRing::StatusEffect *pEffect)
 {
-    m_status_effects.erase(name);
+    m_status_effects.erase(pEffect->GetName());
+    m_status_effect_rounds.erase(pEffect->GetName());
+    ParameterList params;
+    params.push_back(ParameterListItem("$_Character",this));
+    pEffect->Remove(params);
 }
 
 double StoneRing::Character::StatusEffectChance(StoneRing::StatusEffect *pEffect) const
@@ -563,6 +591,25 @@ double StoneRing::Character::StatusEffectChance(StoneRing::StatusEffect *pEffect
 
 void StoneRing::Character::StatusEffectRound()
 {
+
+
+    
+    for(StatusEffectMap::iterator iter = m_status_effects.begin();
+        iter != m_status_effects.end(); iter++)
+        {
+            StatusEffect * pEffect = iter->second;
+            uint round = ++m_status_effect_rounds[pEffect->GetName()];
+            ParameterList params;
+            params.push_back(ParameterListItem("$_Character",this));
+            params.push_back(ParameterListItem("$_EffectRound",static_cast<int>(round)));
+            if(pEffect->GetLast() == StatusEffect::ROUND_COUNT)
+            {
+                if(round <= pEffect->GetRoundCount())
+                    iter->second->Round(params);
+                else
+                    RemoveEffect(pEffect); // Times up!
+            }
+        }
 }
 
 

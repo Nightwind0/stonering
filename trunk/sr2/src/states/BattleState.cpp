@@ -205,6 +205,10 @@ void BattleState::HandleButtonUp(const IApplication::Button& button)
                 {
                     pOption->Select(m_menu_stack,params,pChar);
                 }
+                else
+                {
+                    // Play bbzt sound
+                }
             }
             break;
         case IApplication::BUTTON_CANCEL:
@@ -1208,6 +1212,11 @@ void BattleState::win()
     ParameterList params;
     // All battle methods remain valid here
     m_config->OnBattleWon(params);
+    IParty * pParty = IApplication::GetInstance()->GetParty();
+    
+    // TODO: Maybe this should just be steel in OnBattleWon? 
+    for(int i=0;i<pParty->GetCharacterCount(); i++)
+        dynamic_cast<Character*>(pParty->GetCharacter(i))->RemoveBattleStatusEffects();
 }
 
 

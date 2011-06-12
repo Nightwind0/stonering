@@ -59,6 +59,7 @@ void AbilityManager::LoadStatusEffectFile ( CL_DomDocument &doc )
             throw CL_Exception("Duplicate Status Effect named " + pStatusEffect->GetName() + " found");
         instance->m_status_effects[pStatusEffect->GetName()] = pStatusEffect;
         statusEffectNode = statusEffectNode.get_next_sibling().to_element();
+        std::cout << "Status Effect named " << pStatusEffect->GetName() << std::endl;
     }
 }
 

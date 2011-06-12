@@ -3,9 +3,36 @@
             <spriteRef ref="StatusEffect/Poisoned"/>
                 <onRound>
                         <script id="SE_Poison">
-                        
+                            <![CDATA[
+                            const $kMaxHp = getCharacterAttribute($_Character,$_MAX_HP);
+                            declare $damage = normal_random($kMaxHp * 0.05, $kMaxHp * 0.01); 
+                            doDamage($_Character,$damage);
+                            if(inBattle()){
+                                battle::doCharacterAnimation($_Character,getAnimation("recoil"));
+                                battle::createDisplay($damage,$_Character,$_DISP_DAMAGE);
+                            }else{
+                            // TODO: Play sound bzzrp
+                            }
+                                ]]>
                         </script>
                 </onRound>
+        </statusEffect>
+        <statusEffect last="round_count" roundCount="12" name="Doom">
+            <spriteRef ref="StatusEffect/Doomed"/>
+                <onRound>
+                        <script id="SE_Doom">
+                            <![CDATA[
+                                if($_EffectRound > 5)
+                                {
+                                    kill($_Character);
+                                }
+                                ]]>
+                        </script>
+                </onRound>
+        </statusEffect>
+        <statusEffect last="round_count" roundCount="5" name="Tangled">
+            <attributeModifier attribute="can_fight" type="toggle" value="false"/>
+            <spriteRef ref="StatusEffect/Tangled"/>
         </statusEffect>
         <statusEffect last="permanent" name="Stone">
             <attributeModifier attribute="can_act" type="toggle" value="false"/>

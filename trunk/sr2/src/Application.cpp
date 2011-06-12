@@ -388,9 +388,27 @@ SteelType Application::addCharacter ( const std::string &character, int level, b
     return returnPointer;
 }
 
+SteelType Application::kill(SteelType::Handle hICharacter)
+{
+    ICharacter * iCharacter = GrabHandle<ICharacter*>(hICharacter);
+    
+    iCharacter->Kill();
+    
+    return SteelType();
+}
+
+SteelType Application::raise(SteelType::Handle hICharacter)
+{
+    ICharacter * iCharacter = GrabHandle<ICharacter*>(hICharacter);
+    
+    iCharacter->SetToggle(ICharacter::CA_ALIVE,true);
+    
+    return SteelType();
+}
+
 SteelType Application::doDamage ( SteelType::Handle hICharacter, int damage )
 {
-    ICharacter * pCharacter = dynamic_cast<ICharacter*> ( hICharacter );
+    ICharacter * pCharacter = GrabHandle<ICharacter*> ( hICharacter );
 
     if ( !pCharacter->GetToggle ( Character::CA_ALIVE ) ) return SteelType();
 
@@ -548,26 +566,41 @@ SteelType Application::equip ( SteelType::Handle hCharacter, int slot, const std
     return result;
 }
 
-SteelType Application::addStatusEffect ( SteelType::Handle hCharacter, const std::string &effect )
+SteelType Application::getStatusEffect( const std::string &name )
 {
-    ICharacter *pCharacter = dynamic_cast<ICharacter*> ( hCharacter );
+    SteelType var;
+    var.set(AbilityManager::GetStatusEffect(name));
+    return var;
+}
 
-    if ( !pCharacter ) throw TypeMismatch();
+SteelType Application::addStatusEffect ( SteelType::Handle hCharacter, SteelType::Handle hStatusEffect )
+{
+    ICharacter *pCharacter = GrabHandle<ICharacter*> ( hCharacter );
+    StatusEffect* pEffect = GrabHandle<StatusEffect*>(hStatusEffect);
 
-    pCharacter->AddStatusEffect ( mAbilityManager.GetStatusEffect ( effect ) );
+    pCharacter->AddStatusEffect ( pEffect );
 
     return SteelType();
 }
 
-SteelType Application::removeStatusEffects ( SteelType::Handle hCharacter, const std::string &effect )
+SteelType Application::removeStatusEffect ( SteelType::Handle hCharacter, SteelType::Handle hStatusEffect )
 {
-    ICharacter *pCharacter = dynamic_cast<ICharacter*> ( hCharacter );
+    ICharacter *pCharacter = GrabHandle<ICharacter*> ( hCharacter );
+    StatusEffect * pEffect = GrabHandle<StatusEffect*> ( hStatusEffect );
 
-    if ( !pCharacter ) throw TypeMismatch();
-
-    pCharacter->RemoveEffects ( effect );
+    pCharacter->RemoveEffect ( pEffect );
 
     return SteelType();
+}
+
+SteelType Application::statusEffectChance ( SteelType::Handle hCharacter, SteelType::Handle hStatusEffect )
+{
+    ICharacter *pCharacter = GrabHandle<ICharacter*> ( hCharacter );
+    StatusEffect * pEffect = GrabHandle<StatusEffect*> ( hStatusEffect );
+    
+    SteelType var;
+    var.set ( pCharacter->StatusEffectChance(pEffect) );
+    return var;
 }
 
 SteelType Application::hasEquipment ( SteelType::Handle hICharacter, int slot )
@@ -1392,8 +1425,8 @@ void Application::registerSteelFunctions()
     SteelFunctor*  fn_setCharacterToggle = new SteelFunctor3Arg<Application, const SteelType::Handle, uint, bool> ( this, &Application::setCharacterToggle );
     SteelFunctor*  fn_getEquippedWeaponAttribute = new SteelFunctor2Arg<Application, const SteelType::Handle, uint> ( this, &Application::getEquippedWeaponAttribute );
     SteelFunctor*  fn_getEquippedArmorAttribute = new SteelFunctor2Arg<Application, const SteelType::Handle, uint> ( this, &Application::getEquippedArmorAttribute );
-    SteelFunctor*  fn_addStatusEffect = new SteelFunctor2Arg<Application, const SteelType::Handle, const std::string&> ( this, &Application::addStatusEffect );
-    SteelFunctor*  fn_removeStatusEffects = new SteelFunctor2Arg<Application, const SteelType::Handle, const std::string&> ( this, &Application::removeStatusEffects );
+    SteelFunctor*  fn_addStatusEffect = new SteelFunctor2Arg<Application, const SteelType::Handle, const SteelType::Handle> ( this, &Application::addStatusEffect );
+    SteelFunctor*  fn_removeStatusEffect = new SteelFunctor2Arg<Application, const SteelType::Handle, const SteelType::Handle> ( this, &Application::removeStatusEffect );
     SteelFunctor*  fn_doDamage = new SteelFunctor2Arg<Application, const SteelType::Handle, int> ( this, &Application::doDamage );
 
     SteelFunctor*  fn_hasEquipment = new SteelFunctor2Arg<Application, const SteelType::Handle, int> ( this, &Application::hasEquipment );
@@ -1547,7 +1580,7 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "getEquippedWeaponAttribute", fn_getEquippedWeaponAttribute );
     mInterpreter.addFunction ( "getEquippedArmorAttribute", fn_getEquippedArmorAttribute );
     mInterpreter.addFunction ( "addStatusEffect", fn_addStatusEffect );
-    mInterpreter.addFunction ( "removeStatusEffects", fn_removeStatusEffects );
+    mInterpreter.addFunction ( "removeStatusEffect", fn_removeStatusEffect );
     mInterpreter.addFunction ( "doDamage", fn_doDamage );
     mInterpreter.addFunction ( "hasEquipment", fn_hasEquipment );
     mInterpreter.addFunction ( "getEquipment", fn_getEquipment );
@@ -1589,8 +1622,12 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "message", new SteelFunctor1Arg<Application, const std::string&> ( this, &Application::message ) );
     mInterpreter.addFunction ( "forgoAttack", new SteelFunctor1Arg<Application, SteelType::Handle> ( this, &Application::forgoAttack ) );
 
+    mInterpreter.addFunction ( "getStatusEffect", new SteelFunctor1Arg<Application,const std::string&> (this, &Application::getStatusEffect));
+    mInterpreter.addFunction ( "statusEffectChance", new SteelFunctor2Arg<Application,SteelType::Handle,SteelType::Handle>( this, &Application::statusEffectChance ) );;
 //        SteelType hasGeneratedWeapon(const std::string &wepclass, const std::string &webtype);
 //       SteelType hasGeneratedArmor(const std::string &armclass, const std::string &armtype);
+    mInterpreter.addFunction ( "kill", new SteelFunctor1Arg<Application,SteelType::Handle>( this, &Application::kill ));
+    mInterpreter.addFunction ( "raise", new SteelFunctor1Arg<Application,SteelType::Handle>( this, &Application::raise ));
 
 }
 
@@ -1843,7 +1880,10 @@ int Application::main ( const std::vector<CL_String> &args )
     }
     catch ( CL_Exception error )
     {
-        std::cerr << "Exception Caught!!" << std::endl;
+        while ( mStates.size() )
+            mStates.pop_back();
+        
+        std::cerr << "Exception caught" << std::endl;
         std::cerr << error.message.c_str() << std::endl;
     }
 

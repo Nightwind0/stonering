@@ -56,6 +56,7 @@ namespace StoneRing{
 
         double GetAttributeMultiplier(uint attr) const;
         double GetAttributeAdd(uint attr)const;
+        bool   GetAttributeToggle(uint attr, bool current)const;
         
         double GetStatusEffectModifier(const std::string &statuseffect)const;
     protected:
