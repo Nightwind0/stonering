@@ -7,3 +7,20 @@ function lnt(declare $xp)
 {
 	return 1 + $xp / 1000.0;
 }
+
+function tryStatusEffect(declare $hTarget, declare $status_name)
+{
+    println("Trying status effect {$status_name}");
+    declare $hEffect = getStatusEffect($status_name);
+    declare $roll = math::randf();
+
+    if($roll < statusEffectChance($hTarget,$hEffect))
+    {
+        addStatusEffect($hTarget,$hEffect);
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}

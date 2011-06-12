@@ -101,7 +101,7 @@ namespace StoneRing
         }
         virtual void PermanentAugment(eCharacterAttribute attr, double augment);
         virtual void AddStatusEffect(StatusEffect *);
-        virtual void RemoveEffects(const std::string &name);
+        virtual void RemoveEffect(StatusEffect *);
         virtual double StatusEffectChance(StatusEffect *)const;
         virtual void StatusEffectRound();
         virtual void RollInitiative(void);

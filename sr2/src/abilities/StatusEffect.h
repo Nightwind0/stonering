@@ -17,11 +17,11 @@ namespace StoneRing{
 	enum eLast { ROUND_COUNT, BATTLE, PERMANENT };
         typedef std::multimap<ICharacter::eCharacterAttribute,AttributeModifier*> AttributeModifierSet;
         virtual eElement WhichElement() const{ return ESTATUSEFFECT; }
-
-        OnInvoke * GetOnInvoke() const;
-        OnRound * GetOnRound() const;
-        OnCountdown * GetOnCountdown() const;
-        OnRemove * GetOnRemove() const;
+        
+        void Invoke(const ParameterList& params);
+        void Round(const ParameterList& params);
+        void Remove(const ParameterList& params);
+        void Countdown(const ParameterList& params); // WTF is countdown?
 
         std::string GetName() const;
 	CL_Sprite GetIcon() const;
@@ -37,6 +37,7 @@ namespace StoneRing{
 
         double GetAttributeMultiplier(ICharacter::eCharacterAttribute attr) const;
         double GetAttributeAdd(ICharacter::eCharacterAttribute attr)const;
+        bool GetAttributeToggle(ICharacter::eCharacterAttribute attr, bool current)const;
         
         //StatusEffectModifiers
         double GetStatusEffectModifier(const std::string &statuseffect)const;

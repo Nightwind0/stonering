@@ -78,25 +78,31 @@ StoneRing::StatusEffect::~StatusEffect()
     delete m_pOnRemove;
 }
 
-StoneRing::OnInvoke * StoneRing::StatusEffect::GetOnInvoke() const
+
+void StatusEffect::Countdown(const ParameterList& params)
 {
-    return m_pOnInvoke;
+    if(m_pOnCountdown)
+        m_pOnCountdown->ExecuteScript(params);
 }
 
-StoneRing::OnRound * StoneRing::StatusEffect::GetOnRound() const
+void StatusEffect::Invoke ( const ParameterList& params )
 {
-    return m_pOnRound;
+    if(m_pOnInvoke)
+        m_pOnInvoke->ExecuteScript(params);
 }
 
-StoneRing::OnCountdown * StoneRing::StatusEffect::GetOnCountdown() const
+void StatusEffect::Remove ( const ParameterList& params )
 {
-    return m_pOnCountdown;
+    if(m_pOnRemove)
+        m_pOnRemove->ExecuteScript(params);
 }
 
-StoneRing::OnRemove * StoneRing::StatusEffect::GetOnRemove() const
+void StatusEffect::Round ( const ParameterList& params )
 {
-    return m_pOnRemove;
+    if(m_pOnRound)
+        m_pOnRound->ExecuteScript(params);
 }
+
 
 std::string StoneRing::StatusEffect::GetName() const
 {
@@ -123,12 +129,12 @@ float StoneRing::StatusEffect::GetLengthMultiplier() const
 
 double StoneRing::StatusEffect::GetAttributeMultiplier(ICharacter::eCharacterAttribute attr) const
 {
-    double multiplier = 0.0;
+    double multiplier = 1.0;
     for(AttributeModifierSet::const_iterator iter = m_attribute_modifiers.lower_bound(attr);
         iter != m_attribute_modifiers.upper_bound(attr);iter++)
     {
         if(iter->second->GetType() == AttributeModifier::EMULTIPLY)
-            multiplier += iter->second->GetMultiplier();
+            multiplier *= iter->second->GetMultiplier();
     }
 
     return multiplier;
@@ -146,6 +152,27 @@ double StoneRing::StatusEffect::GetAttributeAdd(ICharacter::eCharacterAttribute 
 
     return add;
 }
+
+bool StatusEffect::GetAttributeToggle ( ICharacter::eCharacterAttribute attr, bool current ) const
+{
+    double base = current;
+    std::pair<AttributeModifierSet::const_iterator,AttributeModifierSet::const_iterator> range = m_attribute_modifiers.equal_range(attr);
+    
+    
+    
+    for(AttributeModifierSet::const_iterator iter = range.first;
+        iter != range.second; iter++)
+        {
+            if(iter->second->GetType() == AttributeModifier::ETOGGLE)
+                if(ICharacter::ToggleDefaultTrue(attr))
+                    base = base && iter->second->GetToggle(); 
+                else 
+                    base = base || iter->second->GetToggle();
+        }
+        
+    return base;
+}
+
 
 double StoneRing::StatusEffect::GetStatusEffectModifier(const std::string &statuseffect) const
 {

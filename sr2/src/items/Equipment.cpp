@@ -63,7 +63,7 @@ double StoneRing::Equipment::GetAttributeMultiplier(uint attr) const
         iter != m_attribute_modifiers.upper_bound(attr);iter++)
     {
         if(iter->second->GetType() == AttributeModifier::EMULTIPLY)
-            multiplier += iter->second->GetMultiplier();
+            multiplier *= iter->second->GetMultiplier();
     }
 
     return multiplier;
@@ -80,6 +80,23 @@ double StoneRing::Equipment::GetAttributeAdd(uint attr)const
     }
 
     return add;
+}
+
+bool Equipment::GetAttributeToggle ( uint i_attr, bool current ) const
+{
+    ICharacter::eCharacterAttribute attr = static_cast<ICharacter::eCharacterAttribute>(i_attr);
+    double base = current;
+    for(AttributeModifierSet::const_iterator iter = m_attribute_modifiers.lower_bound(attr);
+        iter != m_attribute_modifiers.upper_bound(attr); iter++)
+        {
+            if(iter->second->GetType() == AttributeModifier::ETOGGLE)
+                if(ICharacter::ToggleDefaultTrue(attr))
+                    base = base && iter->second->GetToggle(); 
+                else 
+                    base = base || iter->second->GetToggle();
+        }
+        
+    return base;
 }
 
 

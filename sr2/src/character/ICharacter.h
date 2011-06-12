@@ -106,7 +106,7 @@ namespace StoneRing{
         virtual bool   GetToggle(eCharacterAttribute attr) const = 0;
         virtual void   SetToggle(eCharacterAttribute attr, bool toggle) = 0;
         virtual void   AddStatusEffect(StatusEffect *)=0;
-        virtual void   RemoveEffects(const std::string &name)=0;
+        virtual void   RemoveEffect(StatusEffect *)=0; // Removes by name
         virtual double StatusEffectChance(StatusEffect *)const=0;
         virtual double GetEquippedWeaponAttribute(Weapon::eAttribute) const = 0;
         virtual double GetEquippedArmorAttribute(Armor::eAttribute) const = 0;
@@ -130,6 +130,7 @@ namespace StoneRing{
         static bool IsReal(eCharacterAttribute attr);
         static bool IsToggle(eCharacterAttribute attr);
         static bool IsTransient(eCharacterAttribute attr);
+        static bool ToggleDefaultTrue(eCharacterAttribute attr);
         static eCharacterAttribute GetMaximumAttribute(eCharacterAttribute attr);
 
 

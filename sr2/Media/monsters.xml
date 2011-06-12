@@ -28,7 +28,21 @@
     <monster name="Green Tea Mochi" mode="class" spriteResources="Green Tea Mochi" class="Warrior" level="1">
         <onRound>
             <script id="GreenTeaMochi_round">
-                battle::doSkill($Character,"MonsterBasicAttack");
+                <![CDATA[
+                require("Media/Scripts/functions.steel");
+                declare $r = math::randf();
+                if($r > 0.5){
+                    battle::doSkill($Character,"MonsterBasicAttack");
+                }else{
+                    var @enemies = battle::getCharacterGroup(false);
+                    var $which = math::rand() % len(@enemies);
+                    var $pTarget = @enemies[$which];
+                    if(!tryStatusEffect($pTarget,"Tangled")){
+                        println("Status Effect missed!");
+                    }
+                    battle::finishTurn();
+                }
+                    ]]>
             </script>
         </onRound>
 	<onRemove>
