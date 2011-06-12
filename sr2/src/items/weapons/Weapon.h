@@ -4,6 +4,8 @@
 #include "Equipment.h"
 
 namespace StoneRing{
+    
+    
     class Weapon : public Equipment
     {
     public:
@@ -31,15 +33,18 @@ namespace StoneRing{
         };
 
         enum eScriptMode{
-            ATTACK_BEFORE,
-            ATTACK_AFTER,
-            FORGO_ATTACK,
-            WORLD_ONLY
+            ATTACK_BEFORE = 1,
+            ATTACK_AFTER = 2,
+            FORGO_ATTACK = 4,
+            WORLD_ONLY = 8
         };
 
 
         static eAttribute AttributeForString(const std::string& str);
         static eScriptMode ScriptModeForString(const std::string& str);
+        
+        virtual void Invoke(eScriptMode invokeTime, const ParameterList& params)=0;
+        bool ForgoAttack() const;
 
         /*
         * These are based on the weapon type, and any enhancers added by the class
@@ -49,27 +54,27 @@ namespace StoneRing{
         */
         double GetWeaponAttribute ( eAttribute attr );
 
-        eScriptMode GetScriptMode() const { return m_eScriptMode; }
+        bool ScriptModeApplies(eScriptMode mode) const { return m_eScriptMode & mode; }
 
 #endif
 
 
         static std::string CreateWeaponName(WeaponType *pType, WeaponClass *pClass,
-            SpellRef *pSpell, RuneType *pRune);
+            WeaponClass* pImbuement, RuneType *pRune);
 
         // Getters for weapon enhancers. need 'em.
     protected:
 
         void Clear_Weapon_Enhancers();
         void Add_Weapon_Enhancer (WeaponEnhancer * pEnhancer);
-        void Set_Script_Mode(eScriptMode script_mode);
+        void Add_Script_Mode(eScriptMode script_mode);
     private:
-        eScriptMode m_eScriptMode;
+        uint m_eScriptMode;
         std::list<WeaponEnhancer*> m_weapon_enhancers;
     };
 
-    inline void Weapon::Set_Script_Mode(eScriptMode script_mode){
-        m_eScriptMode = script_mode;
+    inline void Weapon::Add_Script_Mode(eScriptMode mode){
+        m_eScriptMode |= mode;
     }
 
 }

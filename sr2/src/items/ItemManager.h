@@ -29,6 +29,8 @@ namespace StoneRing
         ArmorClass  *GetArmorClass ( const ArmorClassRef & ref ) const;
         WeaponClass *GetWeaponClass ( const std::string &name ) const;
         ArmorClass *GetArmorClass ( const std::string &name ) const;
+        WeaponClass * GetWeaponImbuement ( const WeaponImbuementRef & ref ) const;
+        ArmorClass *  GetArmorImbuement ( const ArmorImbuementRef & ref ) const;
 
         Item * GetNamedItem( const std::string &name ) const;
         virtual Item * GetItem( const ItemRef & ref );
@@ -48,6 +50,8 @@ namespace StoneRing
         std::list<ArmorClass*> m_armor_classes;
         std::list<WeaponType*> m_weapon_types;
         std::list<ArmorType*> m_armor_types;
+        std::list<WeaponClass*> m_weapon_imbuements;
+        std::list<ArmorClass*> m_armor_imbuements;
         ItemMap m_items;
         NamedItemMap m_named_items;
     };

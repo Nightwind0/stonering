@@ -1,7 +1,6 @@
 #include "Weapon.h"
 #include "WeaponEnhancer.h"
 #include "RuneType.h"
-#include "SpellRef.h"
 #include "WeaponClass.h"
 #include "WeaponType.h"
 #include "AbilityManager.h"
@@ -10,7 +9,7 @@ using namespace StoneRing;
 
 Weapon::Weapon()
 {
-    m_eScriptMode = ATTACK_BEFORE;
+    m_eScriptMode = 0;
 }
 
 Weapon::~Weapon()
@@ -18,7 +17,13 @@ Weapon::~Weapon()
     Clear_Weapon_Enhancers();
 }
 
-std::string StoneRing::Weapon::CreateWeaponName(WeaponType *pType, WeaponClass *pClass, SpellRef *pSpell, RuneType *pRune)
+bool Weapon::ForgoAttack() const
+{
+    return m_eScriptMode & FORGO_ATTACK;
+}
+
+
+std::string StoneRing::Weapon::CreateWeaponName(WeaponType *pType, WeaponClass *pClass, WeaponClass *pImbuement, RuneType *pRune)
 {
     std::ostringstream os;
 
@@ -29,9 +34,9 @@ std::string StoneRing::Weapon::CreateWeaponName(WeaponType *pType, WeaponClass *
 
     os << pClass->GetName() << ' ' << pType->GetName();
 
-    if (pSpell)
+    if (pImbuement)
     {
-        os << " of " << pSpell->GetName();
+        os << pImbuement->GetName();
     }
 
     return os.str();

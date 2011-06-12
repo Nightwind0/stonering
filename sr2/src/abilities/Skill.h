@@ -23,7 +23,6 @@ namespace StoneRing
     class ArmorTypeRef;
     class WeaponTypeRef;
     class SkillRef;
-    class SpellRef;
     class ActionQueue;
     class NamedScript;
 
@@ -44,8 +43,6 @@ namespace StoneRing
         
         uint GetBPCost() const;
         uint GetMPCost() const;
-        
-        SpellRef* GetSpellRef() const;
 
         // This is called when you actually select the option.
         // Most options will then let you select a character/party as a target
@@ -62,7 +59,6 @@ namespace StoneRing
         std::string m_name;
         std::string m_description;
 
-        SpellRef*    m_pSpellRef;
         NamedScript* m_pOnInvoke;
         NamedScript* m_pOnRemove;
         NamedScript* m_pCondition;

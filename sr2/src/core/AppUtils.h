@@ -19,7 +19,6 @@ public:
 private:
 
     void LoadItems(const std::string &filename);
-    void LoadSpells(const std::string &filename);
     void LoadSkills(const std::string &filename);
     void LoadStatusEffects(const std::string &filename);
     void LoadCharacterClasses(const std::string &filename);

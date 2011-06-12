@@ -23,14 +23,14 @@ namespace StoneRing{
 
         ArmorType * GetArmorType() const ;
 
-        virtual void Invoke();
-        virtual bool EquipCondition();
+        virtual void Invoke(const ParameterList& params);
+        virtual bool EquipCondition(const ParameterList& params);
         virtual eItemType GetItemType() const { return ARMOR ; }
 
 	virtual bool operator==(const ItemRef& ref);
     private:
-        virtual void OnEquipScript();
-        virtual void OnUnequipScript();
+        virtual void OnEquipScript(const ParameterList& params);
+        virtual void OnUnequipScript(const ParameterList& params);
         virtual bool handle_element(eElement element, Element * pElement);
         virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
         virtual void load_finished();

@@ -2,14 +2,13 @@
 #include "IApplication.h"
 #include "WeaponTypeRef.h"
 #include "WeaponClassRef.h"
-#include "SpellRef.h"
 #include "RuneType.h"
 #include "ItemManager.h"
 
 using namespace StoneRing;
 
 WeaponRef::WeaponRef():m_pWeaponType(NULL), m_pWeaponClass(NULL),
-                       m_pSpellRef(NULL),m_pRuneType(NULL)
+                       m_pImbuement(NULL),m_pRuneType(NULL)
 {
 }
 
@@ -32,8 +31,8 @@ bool WeaponRef::handle_element(eElement element, Element * pElement)
         m_pClass = dynamic_cast<WeaponClassRef*>(pElement);
         m_pWeaponClass = pItemManager->GetWeaponClass ( *m_pClass );
         break;
-    case ESPELLREF:
-        m_pSpellRef = dynamic_cast<SpellRef*>(pElement);
+    case EWEAPONIMBUEMENTREF:
+        m_pImbuement = pItemManager->GetWeaponImbuement(*dynamic_cast<WeaponImbuementRef*>(pElement));
         break;
     case ERUNETYPE:
         m_pRuneType = dynamic_cast<RuneType*>(pElement);
@@ -51,9 +50,9 @@ WeaponRef::~WeaponRef()
 
 
 WeaponRef::WeaponRef ( WeaponType *pType, WeaponClass *pClass, 
-                       SpellRef * pSpell, RuneType *pRune )
+                       WeaponClass* pImbuement, RuneType *pRune )
                        :m_pWeaponType(pType), m_pWeaponClass(pClass),
-                       m_pSpellRef(pSpell), m_pRuneType(pRune)
+                       m_pImbuement(pImbuement), m_pRuneType(pRune)
 
 {
 
@@ -63,7 +62,7 @@ WeaponRef::WeaponRef ( WeaponType *pType, WeaponClass *pClass,
 
 void WeaponRef::load_finished()
 {
-    m_name = Weapon::CreateWeaponName(m_pWeaponType,m_pWeaponClass,m_pSpellRef,m_pRuneType);
+    m_name = Weapon::CreateWeaponName(m_pWeaponType,m_pWeaponClass,m_pImbuement,m_pRuneType);
 }
 
 
@@ -78,9 +77,9 @@ WeaponClass * WeaponRef::GetWeaponClass() const
     return m_pWeaponClass;
 }
 
-SpellRef * WeaponRef::GetSpellRef() const
+WeaponClass * WeaponRef::GetWeaponImbuement() const
 {
-    return m_pSpellRef;
+    return m_pImbuement;
 }
 
 RuneType * WeaponRef::GetRuneType() const

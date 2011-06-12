@@ -3,14 +3,13 @@
 #include "ArmorRef.h"
 #include "RuneType.h"
 #include "ArmorClass.h"
-#include "SpellRef.h"
 #include "AbilityManager.h"
 #include "IApplication.h"
 #include "GraphicsManager.h"
 
 using namespace StoneRing;
 
-GeneratedArmor::GeneratedArmor():m_pType(NULL),m_pClass(NULL)
+GeneratedArmor::GeneratedArmor():m_pType(NULL),m_pClass(NULL), m_pImbuement(NULL)
 {
 }
 
@@ -34,24 +33,29 @@ uint GeneratedArmor::GetMaxInventory() const
     return 99;
 }
 
-void GeneratedArmor::Invoke()
+void GeneratedArmor::Invoke(const ParameterList& params)
 {
-    m_pClass->ExecuteScript();
+    m_pClass->ExecuteScript(params);
 }
 
-bool GeneratedArmor::EquipCondition()
+bool GeneratedArmor::EquipCondition(const ParameterList& params)
 {
-    return m_pClass->EquipCondition();
+    return m_pClass->EquipCondition(params)
+    && m_pImbuement?m_pImbuement->EquipCondition(params):true;
 }
 
-void GeneratedArmor::OnEquipScript()
+void GeneratedArmor::OnEquipScript(const ParameterList& params)
 {
-    return m_pClass->OnEquipScript();
+    m_pClass->OnEquipScript(params);
+    if(m_pImbuement) 
+        m_pImbuement->OnEquipScript(params);
 }
 
-void GeneratedArmor::OnUnequipScript()
+void GeneratedArmor::OnUnequipScript(const ParameterList& params)
 {
-    return m_pClass->OnUnequipScript();
+    m_pClass->OnUnequipScript(params);
+    if(m_pImbuement)
+        m_pImbuement->OnUnequipScript(params);
 }
 
 bool GeneratedArmor::operator== ( const ItemRef &ref )
@@ -60,15 +64,15 @@ bool GeneratedArmor::operator== ( const ItemRef &ref )
         && *ref.GetArmorRef()->GetArmorClass() == *m_pClass &&
         *ref.GetArmorRef()->GetArmorType() == *m_pType)
     {
-        if(HasSpell() && ref.GetArmorRef()->GetSpellRef())
+        if(m_pImbuement && ref.GetArmorRef()->GetArmorImbuement())
         {
-            if(*GetSpellRef() == *ref.GetArmorRef()->GetSpellRef())
+            if(*GetImbuement() == *ref.GetArmorRef()->GetArmorImbuement())
             {
                 return true;
             }
             else return false;
         }
-        else if ( HasSpell() || ref.GetArmorRef()->GetSpellRef())
+        else if ( m_pImbuement || ref.GetArmorRef()->GetArmorImbuement())
         {
             // One had a spell ref and one didn't.
             return false;
@@ -96,7 +100,7 @@ bool GeneratedArmor::operator== ( const ItemRef &ref )
 
 Item::eDropRarity GeneratedArmor::GetDropRarity() const
 {
-    if( HasSpell() || HasRuneType() )
+    if( m_pImbuement || HasRuneType() )
     {
         return RARE;
     }
@@ -108,17 +112,15 @@ uint GeneratedArmor::GetValue() const
 {
     // @todo: add rune value
 
-    uint value =  (int)((float)m_pType->GetBasePrice() * m_pClass->GetValueMultiplier())
-        + m_pClass->GetValueAdd();
+    uint value =  (int)((float)m_pType->GetBasePrice() * m_pClass->GetValueMultiplier());
 
-    if(HasSpell())
+    if(m_pImbuement)
     {
-        SpellRef * pSpellRef = GetSpellRef();
-
-        Spell * pSpell = AbilityManager::GetSpell ( *pSpellRef );
-
-        value += pSpell->getValue();
+        value *= m_pImbuement->GetValueMultiplier();
+        value += m_pImbuement->GetValueAdd();
     }
+    
+    value += m_pClass->GetValueAdd();
 
     if(HasRuneType())
     {
@@ -157,11 +159,11 @@ ArmorType * GeneratedArmor::GetArmorType() const
 ArmorRef GeneratedArmor::GenerateArmorRef() const
 {
 
-    return ArmorRef ( GetArmorType(), GetArmorClass(), GetSpellRef(), GetRuneType() );
+    return ArmorRef ( GetArmorType(), GetArmorClass(), GetImbuement(), GetRuneType() );
 }
 
 void GeneratedArmor::generate( ArmorType * pType, ArmorClass * pClass,
-                               SpellRef *pSpell , RuneType *pRune)
+                               ArmorClass* pImbuement , RuneType *pRune)
 {
 
     for(std::list<AttributeModifier*>::const_iterator iter = pClass->GetAttributeModifiersBegin();
@@ -179,16 +181,39 @@ void GeneratedArmor::generate( ArmorType * pType, ArmorClass * pClass,
     for(std::list<StatusEffectModifier*>::const_iterator iter3 = pClass->GetStatusEffectModifiersBegin();
         iter3 != pClass->GetStatusEffectModifiersEnd();
         iter3++)
-        {
+    {
             Add_StatusEffect_Modifier( *iter3 );
+    }
+        
+    if(pImbuement)
+    {
+        for(std::list<AttributeModifier*>::const_iterator iter = pImbuement->GetAttributeModifiersBegin();
+            iter != pImbuement->GetAttributeModifiersEnd();
+            iter++)
+        {
+            Add_Attribute_Modifier  ( *iter );
         }
+        
+        for(std::list<ArmorEnhancer*>::const_iterator iter2 = pImbuement->GetArmorEnhancersBegin();
+            iter2 != pImbuement->GetArmorEnhancersEnd();
+            iter2++)
+        {
+            Add_Armor_Enhancer ( *iter2 );
+        }
+        for(std::list<StatusEffectModifier*>::const_iterator iter3 = pImbuement->GetStatusEffectModifiersBegin();
+            iter3 != pImbuement->GetStatusEffectModifiersEnd();
+            iter3++)
+        {
+                Add_StatusEffect_Modifier( *iter3 );
+        }
+    }    
 
     m_pType = pType;
     m_pClass = pClass;
-    Set_Spell_Ref(pSpell);
+    m_pImbuement = pImbuement;
     Set_Rune_Type(pRune);
 
-    m_name = CreateArmorName(pType,pClass,pSpell,pRune);
+    m_name = CreateArmorName(pType,pClass,pImbuement,pRune);
 }
 
 

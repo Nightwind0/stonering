@@ -33,15 +33,16 @@ namespace StoneRing{
         * has a 1.5 multiplier and +7 add, this will return 157
         */
         double GetArmorAttribute ( eAttribute attr );
+        
+        virtual void Invoke(const ParameterList& params)=0;
   
 
         static eAttribute AttributeForString ( const std::string str );
         static std::string CreateArmorName(ArmorType *pType, ArmorClass *pClass,
-            SpellRef *pSpell, RuneType *pRune);
+            ArmorClass* pImbuement, RuneType *pRune);
     protected:
         void Clear_Armor_Enhancers();
         void Add_Armor_Enhancer (ArmorEnhancer * pEnhancer);
-        void Set_Spell_Ref(SpellRef* pRef);
         void Set_Rune_Type(RuneType* pType);
     private:
         std::list<ArmorEnhancer*> m_armor_enhancers;

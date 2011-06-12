@@ -277,7 +277,6 @@
 		       <statusEffectModifier statusRef="Poison" modifier="0.20"/>
 		       <attributeModifier type="add" value="-0.25" attribute="fire_rst"/>
 		       <attributeModifier type="add" value="40" attribute="hp_max"/>
-                       <spellRef type="elemental">Ice</spellRef>
 		   </uniqueArmor>
 		   <uniqueArmor name="Kid Shield" dropRarity="rare" valueMultiplier = "0.25">
 		    <iconRef>Armor/basic_shield</iconRef>		      

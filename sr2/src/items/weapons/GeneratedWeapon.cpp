@@ -3,16 +3,14 @@
 #include "WeaponClass.h"
 #include "NamedItem.h"
 #include "WeaponType.h"
-#include "SpellRef.h"
 #include "RuneType.h"
-#include "Spell.h"
 #include "AbilityManager.h"
 #include "IApplication.h"
 #include "GraphicsManager.h"
 
 using namespace StoneRing;
 
-GeneratedWeapon::GeneratedWeapon():m_pClass(NULL),m_pType(NULL)
+GeneratedWeapon::GeneratedWeapon():m_pClass(NULL),m_pImbuement(NULL),m_pType(NULL)
 {
 }
 
@@ -26,15 +24,15 @@ bool GeneratedWeapon::operator== ( const ItemRef &ref )
         && *ref.GetWeaponRef()->GetWeaponClass() == *m_pClass &&
         *ref.GetWeaponRef()->GetWeaponType() == *m_pType)
     {
-        if(HasSpell() && ref.GetWeaponRef()->GetSpellRef())
+        if(m_pImbuement && ref.GetWeaponRef()->GetWeaponImbuement())
         {
-            if(*GetSpellRef() == *ref.GetWeaponRef()->GetSpellRef())
+            if(*m_pImbuement == *ref.GetWeaponRef()->GetWeaponImbuement())
             {
                 return true;
             }
             else return false;
         }
-        else if ( HasSpell() || ref.GetWeaponRef()->GetSpellRef())
+        else if ( m_pImbuement || ref.GetWeaponRef()->GetWeaponImbuement())
         {
             // One had a spell ref and one didn't.
             return false;
@@ -82,7 +80,7 @@ uint GeneratedWeapon::GetMaxInventory() const
 Item::eDropRarity
 GeneratedWeapon::GetDropRarity() const
 {
-    if( HasSpell() || HasRuneType() )
+    if( m_pImbuement || HasRuneType() )
     {
         return RARE;
     }
@@ -94,17 +92,15 @@ uint GeneratedWeapon::GetValue() const
     const AbilityManager * pManager = IApplication::GetInstance()->GetAbilityManager();
 
     uint value= (int)((float)m_pType->GetBasePrice() *
-                      m_pClass->GetValueMultiplier())
-        + m_pClass->GetValueAdd();
+                      m_pClass->GetValueMultiplier());
 
-    if(HasSpell())
+    if(m_pImbuement)
     {
-        SpellRef * pSpellRef = GetSpellRef();
-
-        Spell * pSpell = pManager->GetSpell ( *pSpellRef );
-
-        value += pSpell->getValue();
+        value *= m_pImbuement->GetValueMultiplier();
+        value += m_pImbuement->GetValueAdd();
     }
+    
+    value += m_pImbuement->GetValueAdd();
 
     if(HasRuneType())
     {
@@ -142,31 +138,39 @@ bool GeneratedWeapon::IsTwoHanded() const
 
 WeaponRef GeneratedWeapon::GenerateWeaponRef() const
 {
-    return WeaponRef( GetWeaponType(), GetWeaponClass(), GetSpellRef(), GetRuneType() );
+    return WeaponRef( GetWeaponType(), GetWeaponClass(), GetImbuement(), GetRuneType() );
 }
 
-void GeneratedWeapon::Invoke()
+void GeneratedWeapon::Invoke(Weapon::eScriptMode invokeTime, const ParameterList& params)
 {
-    m_pClass->ExecuteScript();
+    if(m_pClass->GetScriptMode() & invokeTime)
+        m_pClass->ExecuteScript(params);
+    if(m_pImbuement && m_pImbuement->GetScriptMode() & invokeTime)
+        m_pImbuement->ExecuteScript(params);
 }
 
-bool GeneratedWeapon::EquipCondition()
+bool GeneratedWeapon::EquipCondition(const ParameterList& params)
 {
-    return m_pClass->EquipCondition();
+    return m_pClass->EquipCondition(params)
+            && m_pImbuement?m_pImbuement->EquipCondition(params):true;
 }
 
-void GeneratedWeapon::OnEquipScript()
+void GeneratedWeapon::OnEquipScript(const ParameterList& params)
 {
-    return m_pClass->OnEquipScript();
+    m_pClass->OnEquipScript(params);
+    if(m_pImbuement)
+        m_pImbuement->OnEquipScript(params);
 }
 
-void GeneratedWeapon::OnUnequipScript()
+void GeneratedWeapon::OnUnequipScript(const ParameterList& params)
 {
-    return m_pClass->OnUnequipScript();
+    m_pClass->OnUnequipScript(params);
+    if(m_pImbuement)
+        m_pImbuement->OnUnequipScript(params);
 }
 
 void GeneratedWeapon::Generate( WeaponType* pType, WeaponClass * pClass,
-                                SpellRef *pSpell , RuneType *pRune)
+                                WeaponClass* pImbuement , RuneType *pRune)
 {
 
     for(std::list<AttributeModifier*>::const_iterator iter = pClass->GetAttributeModifiersBegin();
@@ -184,18 +188,40 @@ void GeneratedWeapon::Generate( WeaponType* pType, WeaponClass * pClass,
     for(std::list<StatusEffectModifier*>::const_iterator iter3 = pClass->GetStatusEffectModifiersBegin();
         iter3 != pClass->GetStatusEffectModifiersEnd(); 
         iter3++)
+    {
+        Add_StatusEffect_Modifier( *iter3 );
+    }
+    
+    if(pImbuement){
+        for(std::list<AttributeModifier*>::const_iterator iter = pImbuement->GetAttributeModifiersBegin();
+            iter != pImbuement->GetAttributeModifiersEnd();
+            iter++)
+        {
+            Add_Attribute_Modifier  ( *iter );
+        }
+        for(std::list<WeaponEnhancer*>::const_iterator iter2 = pImbuement->GetWeaponEnhancersBegin();
+            iter2 != pImbuement->GetWeaponEnhancersEnd();
+            iter2++)
+        {
+            Add_Weapon_Enhancer ( *iter2 );
+        }
+        for(std::list<StatusEffectModifier*>::const_iterator iter3 = pImbuement->GetStatusEffectModifiersBegin();
+            iter3 != pImbuement->GetStatusEffectModifiersEnd(); 
+            iter3++)
         {
             Add_StatusEffect_Modifier( *iter3 );
         }
+    }
         
     m_pType = pType;
     m_pClass = pClass;
-    Set_Spell_Ref(pSpell);
+    m_pImbuement = pImbuement;
     Set_Rune_Type(pRune);
-    Set_Script_Mode(m_pClass->GetScriptMode());
+    Add_Script_Mode(m_pClass->GetScriptMode());
+    if(m_pImbuement)
+        Add_Script_Mode(m_pImbuement->GetScriptMode());
 
-    m_name = CreateWeaponName(pType,pClass,pSpell,pRune);
-
+    m_name = CreateWeaponName(pType,pClass,pImbuement,pRune);
 
 }
 

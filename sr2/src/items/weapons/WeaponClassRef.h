@@ -20,6 +20,14 @@ namespace StoneRing{
     protected:
         std::string m_name;
     };
+    
+    class WeaponImbuementRef : public WeaponClassRef
+    {
+    public:
+        WeaponImbuementRef(){}
+        virtual ~WeaponImbuementRef(){}
+        virtual eElement WhichElement() const { return EWEAPONIMBUEMENTREF; }
+    };
 };
 
 #endif

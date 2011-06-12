@@ -4,7 +4,6 @@
 #include "WeaponTypeRef.h"
 #include "WeaponEnhancer.h"
 #include "AttributeModifier.h"
-#include "SpellRef.h"
 #include "RuneType.h"
 #include "StatusEffectModifier.h"
 
@@ -22,28 +21,29 @@ UniqueWeapon::~UniqueWeapon()
     delete m_pConditionScript;
 }
 
-void UniqueWeapon::Invoke()
+void UniqueWeapon::Invoke(eScriptMode invokeTime, const ParameterList& params)
 {
-    if(m_pScript) m_pScript->ExecuteScript();
+    if(m_pScript && ScriptModeApplies(invokeTime)) 
+        m_pScript->ExecuteScript(params);
 }
 
-bool UniqueWeapon::EquipCondition()
+bool UniqueWeapon::EquipCondition(const ParameterList& params)
 {
     if(m_pConditionScript)
-        return m_pConditionScript->EvaluateCondition();
+        return m_pConditionScript->EvaluateCondition(params);
     else return true;
 }
 
-void UniqueWeapon::OnEquipScript()
+void UniqueWeapon::OnEquipScript(const ParameterList& params)
 {
 	if(m_pEquipScript)
-		m_pEquipScript->ExecuteScript();
+		m_pEquipScript->ExecuteScript(params);
 }
 
-void UniqueWeapon::OnUnequipScript()
+void UniqueWeapon::OnUnequipScript(const ParameterList& params)
 {
 	if(m_pUnequipScript)
-		m_pUnequipScript->ExecuteScript();
+		m_pUnequipScript->ExecuteScript(params);
 }
 
 uint UniqueWeapon::GetValue() const
@@ -75,7 +75,7 @@ void UniqueWeapon::load_attributes(CL_DomNamedNodeMap attributes)
 {
     NamedItemElement::load_attributes(attributes);
     m_value_multiplier = get_implied_float("valueMultiplier",attributes,1);
-    Set_Script_Mode( ScriptModeForString( get_implied_string("scriptMode",attributes,"attackBefore") ) );
+    Add_Script_Mode( ScriptModeForString( get_implied_string("scriptMode",attributes,"attackBefore") ) );
 }
 
 void UniqueWeapon::load_finished()
@@ -103,9 +103,6 @@ bool UniqueWeapon::handle_element(eElement element, Element * pElement)
         break;
     case EATTRIBUTEMODIFIER:
         Add_Attribute_Modifier( dynamic_cast<AttributeModifier*>(pElement) );
-        break;
-    case ESPELLREF:
-        Set_Spell_Ref ( dynamic_cast<SpellRef*>(pElement) );
         break;
     case ERUNETYPE:
         Set_Rune_Type( dynamic_cast<RuneType*>(pElement) );

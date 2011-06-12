@@ -5,7 +5,6 @@
 #include "WeaponTypeRef.h"
 #include "WeaponClassRef.h"
 #include "WeaponClass.h"
-#include "SpellRef.h"
 #include "RuneType.h"
 #include "WeaponType.h"
 
@@ -17,12 +16,12 @@ namespace StoneRing{
     public:
         WeaponRef();
         WeaponRef ( WeaponType *pType, WeaponClass *pClass, 
-                    SpellRef * pSpell, RuneType *pRune );
+                    WeaponClass* pImbuement, RuneType *pRune );
         virtual ~WeaponRef();
         virtual eElement WhichElement() const{ return EWEAPONREF; } 
         WeaponType * GetWeaponType() const;
         WeaponClass  * GetWeaponClass() const;
-        SpellRef * GetSpellRef() const;
+        WeaponClass * GetWeaponImbuement() const;
         RuneType * GetRuneType() const;
         std::string GetName() const;
     private:
@@ -33,7 +32,7 @@ namespace StoneRing{
         WeaponClass *m_pWeaponClass;
         WeaponTypeRef *m_pType;
         WeaponClassRef *m_pClass;
-        SpellRef * m_pSpellRef;
+        WeaponClass *m_pImbuement;
         RuneType * m_pRuneType;
         std::string m_name;
 

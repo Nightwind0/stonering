@@ -2,6 +2,7 @@
 #define SR_ARMORCLASS_REF
 
 #include "Element.h"
+#include "Armor.h"
 
 namespace StoneRing{
 
@@ -19,6 +20,14 @@ namespace StoneRing{
         virtual void load_attributes(CL_DomNamedNodeMap);
     protected:
         std::string m_name;
+    };
+    
+    class ArmorImbuementRef: public ArmorClassRef
+    {
+    public:
+        ArmorImbuementRef(){}
+        virtual ~ArmorImbuementRef(){}
+        virtual eElement WhichElement() const { return EARMORIMBUEMENTREF; }
     };
 
 };

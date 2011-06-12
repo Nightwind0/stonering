@@ -1,463 +1,460 @@
 <!--DOCTYPE skillList SYSTEM "Levels/level.dtd" -->
 <skillList>
     <skill bp="0" name="Item" sp="0">
-	<onInvoke>
-	    <script id="ItemScript">
-	    declare $item = selectItem(true,false);
-	    if(is_valid($item))
-	    {
-		declare @targets;
-		switch(getItemTargetable($item))
-		{
-		    case $_ITEM_TRG_ALL:
-			@targets = battle::getAllCharacters();
-		    break;
-		    case $_ITEM_TRG_GROUP:
-		    //        SteelType selectTargets(bool single, bool group, bool defaultMonsters);
-		        @targets = battle::selectTargets(false,true, getItemDefaultTarget($item) == $_ITEM_DEF_MONSTERS);
-		    break;
-		    case $_ITEM_TRG_SELF_ONLY:
-		    case $_ITEM_TRG_SINGLE:
-			@targets = battle::selectTargets(true,false, getItemDefaultTarget($item) == $_ITEM_DEF_MONSTERS);
-		    break;
-		    case $_ITEM_TRG_NONE:
-		    default:
-		    break;
-		}
-		if(len(@targets) != 0){
-		    useItem($item,@targets);
-		}else{
-		    return battle::cancelOption();
-		}
-		battle::finishTurn();
-	    }	    
-	</script>
-	</onInvoke>
+        <onInvoke>
+            <script id="ItemScript">
+            declare $item = selectItem(true,false);
+            if(is_valid($item))
+            {
+                declare @targets;
+                switch(getItemTargetable($item))
+                {
+                    case $_ITEM_TRG_ALL:
+                        @targets = battle::getAllCharacters();
+                    break;
+                    case $_ITEM_TRG_GROUP:
+                    //        SteelType selectTargets(bool single, bool group, bool defaultMonsters);
+                        @targets = battle::selectTargets(false,true, getItemDefaultTarget($item) == $_ITEM_DEF_MONSTERS);
+                    break;
+                    case $_ITEM_TRG_SELF_ONLY:
+                    case $_ITEM_TRG_SINGLE:
+                        @targets = battle::selectTargets(true,false, getItemDefaultTarget($item) == $_ITEM_DEF_MONSTERS);
+                    break;
+                    case $_ITEM_TRG_NONE:
+                    default:
+                    break;
+                }
+                if(len(@targets) != 0){
+                    useItem($item,@targets);
+                }else{
+                    return battle::cancelOption();
+                }
+                battle::finishTurn();
+            }	    
+        </script>
+        </onInvoke>
     </skill>
         <skill bp="0" name="Throw" sp="12">
-	<onInvoke>
-	    <script id="HurlScript">
-		<![CDATA[ 
-		declare @targets = battle::selectTargets(true,false,true);
-		if(!len(@targets))
-		    return battle::cancelOption(); // return is just cause I can, to do a one-liner
-		battle::doTargetedAnimation($Character,@targets[0],getAnimation("move_to_attack"));
-		
-		declare $pTarget = @targets[0];
-		
-		battle::doTargetedAnimation($Character,$pTarget,getAnimation("hurl_balloon"));
-		
-		declare $hit = getCharacterAttribute($Character, $_DEX) + 0.2;
-		declare $dodge = getCharacterAttribute($pTarget, $_EVD);
+        <onInvoke>
+            <script id="HurlScript">
+                <![CDATA[ 
+                declare @targets = battle::selectTargets(true,false,true);
+                if(!len(@targets))
+                    return battle::cancelOption(); // return is just cause I can, to do a one-liner
+                battle::doTargetedAnimation($Character,@targets[0],getAnimation("move_to_attack"));
+                
+                declare $pTarget = @targets[0];
+                
+                battle::doTargetedAnimation($Character,$pTarget,getAnimation("hurl_balloon"));
+                
+                declare $hit = getCharacterAttribute($Character, $_DEX) + 0.2;
+                declare $dodge = getCharacterAttribute($pTarget, $_EVD);
 
-		declare $chance = $hit * ( 1.0 - $dodge );
+                declare $chance = $hit * ( 1.0 - $dodge );
 
-		declare $roll = math::randf();
-		declare $bHit = false;
-		if($roll < $chance)
-			$bHit = true;
-			
-		if($bHit){
-		    declare $baseDamage = 5;
-		    declare $actualDamage = $baseDamage *  getDamageCategoryResistance($pTarget,$_BASH);
-		    declare $modDamage = integer($actualDamage - getEquippedArmorAttribute($pTarget,$_AC));
+                declare $roll = math::randf();
+                declare $bHit = false;
+                if($roll < $chance)
+                        $bHit = true;
+                        
+                if($bHit){
+                    declare $baseDamage = 5;
+                    declare $actualDamage = $baseDamage *  getDamageCategoryResistance($pTarget,$_BASH);
+                    declare $modDamage = integer($actualDamage - getEquippedArmorAttribute($pTarget,$_AC));
 
-		    if($modDamage < 0 and $actualDamage >0) $modDamage = 0;
+                    if($modDamage < 0 and $actualDamage >0) $modDamage = 0;
 
-		    doDamage($pTarget,$modDamage);
-		    battle::doTargetedAnimation($pTarget,$Character,getAnimation("recoil"));
-		    battle::createDisplay($modDamage,$pTarget,$_DISP_DAMAGE);
-		}else{
-		    log("You missed.");
-		    //playSound(getUnarmedMissSound($Character));
-		    battle::createDisplay(0,$pTarget,$_DISP_MISS);
-		}
-		
-		attackCharacter($pTarget);
-		battle::finishTurn();
-		]]>
-	    </script>
-	</onInvoke>
+                    doDamage($pTarget,$modDamage);
+                    battle::doTargetedAnimation($pTarget,$Character,getAnimation("recoil"));
+                    battle::createDisplay($modDamage,$pTarget,$_DISP_DAMAGE);
+                }else{
+                    log("You missed.");
+                    //playSound(getUnarmedMissSound($Character));
+                    battle::createDisplay(0,$pTarget,$_DISP_MISS);
+                }
+                
+                attackCharacter($pTarget);
+                battle::finishTurn();
+                ]]>
+            </script>
+        </onInvoke>
     </skill>
     <skill bp="0" name="Info" sp="0">
-	<onInvoke>
-	    <script id="InfoSkillScript">
-		<![CDATA[
-		var @targets = battle::selectTargets(true,false,true);
-		if(!len(@targets))
-		    return battle::cancelOption(); // return is just cause I can, to do a one-liner
-		var $pTarget = @targets[0];
-		var $info = getCharacterName($pTarget) + "\nHP: " + getCharacterAttribute($pTarget,$_HP) + " / " ; 
-		$info = $info + getCharacterAttribute($pTarget,$_MAXHP) + "\n";
-		$info = $info + "MP: " + getCharacterAttribute($pTarget,$_MP) + " / " + getCharacterAttribute($pTarget,$_MAXMP);
+        <onInvoke>
+            <script id="InfoSkillScript">
+                <![CDATA[
+                var @targets = battle::selectTargets(true,false,true);
+                if(!len(@targets))
+                    return battle::cancelOption(); // return is just cause I can, to do a one-liner
+                var $pTarget = @targets[0];
+                var $info = getCharacterName($pTarget) + "\nHP: " + getCharacterAttribute($pTarget,$_HP) + " / " ; 
+                $info = $info + getCharacterAttribute($pTarget,$_MAXHP) + "\n";
+                $info = $info + "MP: " + getCharacterAttribute($pTarget,$_MP) + " / " + getCharacterAttribute($pTarget,$_MAXMP);
 
-		say("Info",$info);
-		battle::finishTurn();
-		]]>
-	    </script>
-	</onInvoke>
+                say("Info",$info);
+                battle::finishTurn();
+                ]]>
+            </script>
+        </onInvoke>
     </skill>
     <skill bp="0" name="Heal" sp="12">
-	<onInvoke>
-	    <script id="HealScript">
-		<![CDATA[ 
-		declare @targets = battle::selectTargets(true,false,false);
-		
-		if(!len(@targets)) return battle::cancelOption();
-		
-		battle::doTargetedAnimation($Character,@targets[0],getAnimation("heal"));
-		declare $damageMean = -20;
-		declare $baseDamage = normal_random($damageMean,$damageMean * 0.15);
-		if($baseDamage > 0)
-			$baseDamage = 0;
-		declare $actualDamage = doDamage(@targets[0],$baseDamage);
-		battle::createDisplay($actualDamage,@targets[0],$_DISP_DAMAGE);
-		battle::finishTurn();
-		    ]]>
-	    </script>
-	</onInvoke>
+        <onInvoke>
+            <script id="HealScript">
+                <![CDATA[ 
+                declare @targets = battle::selectTargets(true,false,false);
+                
+                if(!len(@targets)) return battle::cancelOption();
+                
+                battle::doTargetedAnimation($Character,@targets[0],getAnimation("heal"));
+                declare $damageMean = -20;
+                declare $baseDamage = normal_random($damageMean,$damageMean * 0.15);
+                if($baseDamage > 0)
+                        $baseDamage = 0;
+                declare $actualDamage = doDamage(@targets[0],$baseDamage);
+                battle::createDisplay($actualDamage,@targets[0],$_DISP_DAMAGE);
+                battle::finishTurn();
+                    ]]>
+            </script>
+        </onInvoke>
     </skill>
     <skill bp="0" name="Flee" sp="0">
-	<onInvoke>
-	    <script id="FleeSkillScript">
-		<![CDATA[
-		    log("Luck is " + getCharacterAttribute($Character,$_LCK));
-		    if(math::randf() + getCharacterAttribute($Character,$_LCK) / 50.0 > 0.8)
-			battle::flee();
-		    battle::finishTurn();
-		    ]]>
-	    </script>
-	</onInvoke>
+        <onInvoke>
+            <script id="FleeSkillScript">
+                <![CDATA[
+                    log("Luck is " + getCharacterAttribute($Character,$_LCK));
+                    if(math::randf() + getCharacterAttribute($Character,$_LCK) / 50.0 > 0.8)
+                        battle::flee();
+                    battle::finishTurn();
+                    ]]>
+            </script>
+        </onInvoke>
     </skill>
     <skill bp="0" name="Attack" sp="0" icon="attack">
-	<onInvoke>
-	    <script id="AttackSkillScript">
-	    <![CDATA[
-	declare $pC = $Character;
-		var $name = getCharacterName($pC);
-	// The animation comes first.
-	declare @targets = battle::selectTargets(true,false,true);
-	if(!len(@targets))
-	    return battle::cancelOption(); // return is just cause I can, to do a one-liner
-	declare $attack_anim = getAnimation("attack");
+        <onInvoke>
+            <script id="AttackSkillScript">
+            <![CDATA[
+        declare $pC = $Character;
+                var $name = getCharacterName($pC);
+        // The animation comes first.
+        declare @targets = battle::selectTargets(true,false,true);
+        if(!len(@targets))
+            return battle::cancelOption(); // return is just cause I can, to do a one-liner
+        declare $attack_anim = getAnimation("attack");
 
-	battle::doTargetedAnimation($pC,@targets[0],getAnimation("move_to_attack"));
-	declare $pWeapon;
-	declare $hasWeapon = false;
-	if(hasEquipment($pC,$_HAND)){
-	    $pWeapon = getEquipment($pC, $_HAND);
-	    $hasWeapon = true;
-	}else if(hasEquipment($pC,$_OFFHAND)){
-	    $pWeapon = getEquipment($pC, $_OFFHAND);
-	    $hasWeapon = true;
-	}
+        battle::doTargetedAnimation($pC,@targets[0],getAnimation("move_to_attack"));
+        declare $pWeapon;
+        declare $hasWeapon = false;
+        if(hasEquipment($pC,$_HAND)){
+            $pWeapon = getEquipment($pC, $_HAND);
+            $hasWeapon = true;
+        }else if(hasEquipment($pC,$_OFFHAND)){
+            $pWeapon = getEquipment($pC, $_OFFHAND);
+            $hasWeapon = true;
+        }
 
-	if($hasWeapon){
-	    if(weaponTypeHasAnimation(getWeaponType($pWeapon))){
-		$attack_anim = getWeaponTypeAnimation(getWeaponType($pWeapon));
-	    }
+        if($hasWeapon){
+            if(weaponTypeHasAnimation(getWeaponType($pWeapon))){
+                $attack_anim = getWeaponTypeAnimation(getWeaponType($pWeapon));
+            }
 
-	    const $kScriptMode = getWeaponScriptMode($pWeapon);
+            if(forgoAttack($pWeapon)){
+                invokeWeapon($pC,$pWeapon,$_FORGO_ATTACK);
+                return;
+            }
+            invokeWeapon($pC,$pWeapon,$_PRE_ATTACK);
+        }
+        
+                battle::doTargetedAnimation($pC,@targets[0],$attack_anim);
 
-	    if( $kScriptMode == $_SM_FORGO_ATTACK)
-		return;
+                declare $pTarget = @targets[0];
+                //var $pTargetArmor = getEquipment($pTarget
 
-	    if( $kScriptMode == $_SM_ATTACK_AFTER){
-		invokeEquipment($pWeapon);
-	    }
-	}
-	
-		battle::doTargetedAnimation($pC,@targets[0],$attack_anim);
+                log($name + " attacks " + getCharacterName($pTarget) + " with " + getItemName($pWeapon));
 
-		declare $pTarget = @targets[0];
-		//var $pTargetArmor = getEquipment($pTarget
-  
-		log($name + " attacks " + getCharacterName($pTarget) + " with " + getItemName($pWeapon));
+                declare $hit = getCharacterAttribute($pC, $_DEX) + getEquippedWeaponAttribute($pC,$_HIT);
+                declare $dodge = getCharacterAttribute($pTarget, $_EVD); //+ getEquippedArmorAttribute($pTarget,$_AC);
 
-		declare $hit = getCharacterAttribute($pC, $_DEX) + getEquippedWeaponAttribute($pC,$_HIT);
-		declare $dodge = getCharacterAttribute($pTarget, $_EVD); //+ getEquippedArmorAttribute($pTarget,$_AC);
+                declare $chance = $hit * ( 1.0 - $dodge );
 
-		declare $chance = $hit * ( 1.0 - $dodge );
+                declare $roll = math::randf();
 
-		declare $roll = math::randf();
+                log("Hit was " + $hit + " and dodge was " + $dodge + " and chance was " + $chance);
+                log("Roll was " + $roll);
 
-		log("Hit was " + $hit + " and dodge was " + $dodge + " and chance was " + $chance);
-		log("Roll was " + $roll);
+                declare $bHit = false;
+                if($roll < $chance)
+                        $bHit = true;
 
-		declare $bHit = false;
-		if($roll < $chance)
-			$bHit = true;
+        if($bHit){
+            log("You hit!");
+            if($hasWeapon)
+                playSound(getHitSound(getWeaponType($pWeapon)));
+            else
+                playSound(getUnarmedHitSound($pC));
 
-	if($bHit){
-	    log("You hit!");
-	    if($hasWeapon)
-		playSound(getHitSound(getWeaponType($pWeapon)));
-	    else
-		playSound(getUnarmedHitSound($pC));
-
-	    declare $damageMean = getCharacterAttribute($pC, $_STR) + getEquippedWeaponAttribute($pC,$_ATTACK);
+            declare $damageMean = getCharacterAttribute($pC, $_STR) + getEquippedWeaponAttribute($pC,$_ATTACK);
             // TODO: Account for ranged attacks and rows
-	    // Random about the damageMean, standard deviation is 15% of the mean, so 68% of attacks fall within 10% deviation of the mean
-	    declare $baseDamage = normal_random($damageMean,$damageMean * 0.15);
-	    declare $damageCategory;
-	    if($hasWeapon){
-		$damageCategory = getWeaponTypeDamageCategory(getWeaponType($pWeapon));
-	    }else{
-		$damageCategory = $_BASH; //punch
-	    }
-	    declare $actualDamage = $baseDamage *  getDamageCategoryResistance($pTarget,getWeaponTypeDamageCategory(getWeaponType($pWeapon)));
-	    declare $modDamage = integer($actualDamage - getEquippedArmorAttribute($pTarget,$_AC));
+            // Random about the damageMean, standard deviation is 15% of the mean, so 68% of attacks fall within 10% deviation of the mean
+            declare $baseDamage = normal_random($damageMean,$damageMean * 0.15);
+            declare $damageCategory;
+            if($hasWeapon){
+                $damageCategory = getWeaponTypeDamageCategory(getWeaponType($pWeapon));
+            }else{
+                $damageCategory = $_BASH; //punch
+            }
+            declare $actualDamage = $baseDamage *  getDamageCategoryResistance($pTarget,getWeaponTypeDamageCategory(getWeaponType($pWeapon)));
+            declare $modDamage = integer($actualDamage - getEquippedArmorAttribute($pTarget,$_AC));
 
-	    if($modDamage <0 and $actualDamage >0) $modDamage = 0;
+            if($modDamage <0 and $actualDamage >0) $modDamage = 0;
 
 
-	    doDamage($pTarget,$modDamage);
-	    battle::doTargetedAnimation($pTarget,$pC,getAnimation("recoil"));
-	    battle::createDisplay($modDamage,$pTarget,$_DISP_DAMAGE);
+            doDamage($pTarget,$modDamage);
+            battle::doTargetedAnimation($pTarget,$pC,getAnimation("recoil"));
+            battle::createDisplay($modDamage,$pTarget,$_DISP_DAMAGE);
             
             // TODO: If the weapon has a spell on it, cast it on the target now
 
 
-	    log("Mean damage was " + $damageMean + " and base damage was " + $baseDamage + " and actual damage was " + $actualDamage);
-	}else{
-	    log("You missed.");
-	    if($hasWeapon)
-		playSound(getMissSound(getWeaponType($pWeapon)));
-	    else
-		playSound(getUnarmedMissSound($pC));
-	    battle::createDisplay(0,$pTarget,$_DISP_MISS);
-	}
-	battle::doTargetedAnimation($pC,$pTarget,getAnimation("return_from_attack"));
+            log("Mean damage was " + $damageMean + " and base damage was " + $baseDamage + " and actual damage was " + $actualDamage);
+        }else{
+            log("You missed.");
+            if($hasWeapon)
+                playSound(getMissSound(getWeaponType($pWeapon)));
+            else
+                playSound(getUnarmedMissSound($pC));
+            battle::createDisplay(0,$pTarget,$_DISP_MISS);
+        }
+        battle::doTargetedAnimation($pC,$pTarget,getAnimation("return_from_attack"));
 
 
-	if($hasWeapon and getWeaponScriptMode($pWeapon) == $_SM_ATTACK_BEFORE){
-	    invokeEquipment($pWeapon);
-	}
-	attackCharacter($pTarget);
-	battle::finishTurn();
-		]]>
-	    </script>
-	</onInvoke>
+        if($hasWeapon){
+            invokeWeapon($pC,$pWeapon,$_POST_ATTACK);
+        }
+        attackCharacter($pTarget);
+        battle::finishTurn();
+                ]]>
+            </script>
+        </onInvoke>
     </skill>
     <skill bp="0" name="MonsterBasicAttack" sp="0">
-	<onInvoke>
-	    <script id="MonsterBasicAttackInvoke">
-	    <![CDATA[
-		var @enemies = battle::getCharacterGroup(false);
-		var $which = math::rand() % len(@enemies);
-		var $pTarget = @enemies[$which];
-		var $name = getCharacterName($Character);
-		battle::doTargetedAnimation($Character,$pTarget,getAnimation("move_to_attack"));
-		battle::doTargetedAnimation($Character,$pTarget,getAnimation("attack"));
-		log($name + " attacks " + getCharacterName($pTarget));
+        <onInvoke>
+            <script id="MonsterBasicAttackInvoke">
+            <![CDATA[
+                var @enemies = battle::getCharacterGroup(false);
+                var $which = math::rand() % len(@enemies);
+                var $pTarget = @enemies[$which];
+                var $name = getCharacterName($Character);
+                battle::doTargetedAnimation($Character,$pTarget,getAnimation("move_to_attack"));
+                battle::doTargetedAnimation($Character,$pTarget,getAnimation("attack"));
+                log($name + " attacks " + getCharacterName($pTarget));
 
-		var $hit = getCharacterAttribute($Character, $_DEX) + getEquippedWeaponAttribute($Character,$_HIT);
-		var $dodge = getCharacterAttribute($pTarget, $_EVD); //+ getEquippedArmorAttribute($pTarget,$_AC);
+                var $hit = getCharacterAttribute($Character, $_DEX) + getEquippedWeaponAttribute($Character,$_HIT);
+                var $dodge = getCharacterAttribute($pTarget, $_EVD); //+ getEquippedArmorAttribute($pTarget,$_AC);
 
-		var $chance = $hit * ( 1.0 - $dodge );
+                var $chance = $hit * ( 1.0 - $dodge );
 
-		var $roll = math::randf();
+                var $roll = math::randf();
 
-		log("Hit was " + $hit + " and dodge was " + $dodge + " and chance was " + $chance);
-		log("Roll was " + $roll);
+                log("Hit was " + $hit + " and dodge was " + $dodge + " and chance was " + $chance);
+                log("Roll was " + $roll);
 
-		var $bHit = false;
-		if($roll < $chance)
-		    $bHit = true;
-
-
-		if($bHit){
-		    log($name + " hit!");
-
-		    playSound(getUnarmedHitSound($Character));
-		    var $damageMean = getCharacterAttribute($Character, $_STR);
-		    // Random about the damageMean, standard deviation is 15% of the mean, so 68% of attacks fall within 10% deviation of the mean
-		    var $baseDamage = normal_random($damageMean,$damageMean * 0.15);
-		    var $actualDamage = $baseDamage *  getDamageCategoryResistance($pTarget,battle::getMonsterDamageCategory($Character));
-		    var $modDamage = integer($actualDamage - getEquippedArmorAttribute($pTarget,$_AC));
-
-		    if($modDamage <0 and $actualDamage >0) $modDamage = 0;
+                var $bHit = false;
+                if($roll < $chance)
+                    $bHit = true;
 
 
-		    doDamage($pTarget,$modDamage);
+                if($bHit){
+                    log($name + " hit!");
 
-		    battle::doTargetedAnimation($pTarget,$Character,getAnimation("recoil"));
-		    battle::createDisplay($modDamage,$pTarget,$_DISP_DAMAGE);
-		    log("Mean damage was " + $damageMean + " and base damage was " + $baseDamage + " and actual damage was " + $actualDamage);
-		}else{
-		    log("You missed.");
+                    playSound(getUnarmedHitSound($Character));
+                    var $damageMean = getCharacterAttribute($Character, $_STR);
+                    // Random about the damageMean, standard deviation is 15% of the mean, so 68% of attacks fall within 10% deviation of the mean
+                    var $baseDamage = normal_random($damageMean,$damageMean * 0.15);
+                    var $actualDamage = $baseDamage *  getDamageCategoryResistance($pTarget,battle::getMonsterDamageCategory($Character));
+                    var $modDamage = integer($actualDamage - getEquippedArmorAttribute($pTarget,$_AC));
 
-		    playSound(getUnarmedMissSound($Character));
-		    battle::createDisplay(0,$pTarget,$_DISP_MISS);
-		}
-		battle::doTargetedAnimation($Character,$pTarget,getAnimation("return_from_attack"));
+                    if($modDamage <0 and $actualDamage >0) $modDamage = 0;
 
 
-		attackCharacter($pTarget);
-		battle::finishTurn();
-	    ]]>
-	    </script>
-	</onInvoke>
+                    doDamage($pTarget,$modDamage);
+
+                    battle::doTargetedAnimation($pTarget,$Character,getAnimation("recoil"));
+                    battle::createDisplay($modDamage,$pTarget,$_DISP_DAMAGE);
+                    log("Mean damage was " + $damageMean + " and base damage was " + $baseDamage + " and actual damage was " + $actualDamage);
+                }else{
+                    log("You missed.");
+
+                    playSound(getUnarmedMissSound($Character));
+                    battle::createDisplay(0,$pTarget,$_DISP_MISS);
+                }
+                battle::doTargetedAnimation($Character,$pTarget,getAnimation("return_from_attack"));
+
+
+                attackCharacter($pTarget);
+                battle::finishTurn();
+            ]]>
+            </script>
+        </onInvoke>
     </skill>
 
-	<skill bp="0" name="Focus" sp="5">
-		<onInvoke>
-			<script id="Focus">
-				doStatusEffect("Focused",1);
-			</script>
-		</onInvoke>
-	</skill>
-	<skill bp="0" name="Hurl" sp="0"	>
-		<onInvoke>
-			<script id="HurlSkillInvoke">
-			</script>
-		</onInvoke>
+        <skill bp="0" name="Focus" sp="5">
+                <onInvoke>
+                        <script id="Focus">
+                                doStatusEffect("Focused",1);
+                        </script>
+                </onInvoke>
+        </skill>
+        <skill bp="0" name="Hurl" sp="0"	>
+                <onInvoke>
+                        <script id="HurlSkillInvoke">
+                        </script>
+                </onInvoke>
 
-	</skill>
-	<skill bp="0" name="Thrift" sp="60" type="world">
-		<onInvoke>
-			<script id="onThrift">
-				modifyCommonAttribute("priceMultiplier", getCommonAttribute("priceMultiplier") * 0.9);
-			</script>
-		</onInvoke>
-		<onRemove>
-			<script id="rmThrift">
-				modifyCommonAttribute("priceMultiplier",getCommonAttribute("priceMultiplier") * 10/9);
-			</script>
-		</onRemove>
-	</skill>
-	<skill bp="0" name="Caution" sp="60" type="world">
-		<onInvoke>
-			<script id="onCaution">
-			modifyCommonAttribute("encounterRate",getCommonAttribute("encounterRate") * 0.75);
-			</script>
-		</onInvoke>
-		<onRemove>
-			<script id="rmCaution">
-			modifyCommonAttribute("encounterRate",getCommonAttribute("encounterRate") * 10/7.5);
-			</script>
-		</onRemove>
-	</skill>
-	<!--
-	<spell mp="2" name="Torch" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="2200">
-		<magicResistance type="fire" resist="0.25"/>
-		<doMagicDamage baseDamage="25" baseHit="75">
-			<magicDamageCategory type="fire"/>
-		</doMagicDamage>
-	</spell>
-	<spell mp="2" name="Stonepelt" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="2200">
-		<magicResistance type="earth" resist="0.25"/>
-		<doMagicDamage baseDamage="25" baseHit="75">
-			<magicDamageCategory type="earth"/>
-		</doMagicDamage>
-	</spell>
-	<spell mp="2" name="Ice" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="2200">
-		<magicResistance type="water" resist="0.25"/>
-		<doMagicDamage baseDamage="25" baseHit="75">
-			<magicDamageCategory type="water"/>
-		</doMagicDamage>
-	</spell>
-	<spell mp="2" name="Wind" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="2200">
-		<magicResistance type="wind" resist="0.25"/>
-		<doMagicDamage baseDamage="25" baseHit="75">
-			<magicDamageCategory type="wind"/>
-		</doMagicDamage>
-	</spell>
-	<spell mp="2" name="Anoint" targetable="either" type="white" use="both" appliesToArmor="true" appliesToWeapons="true" value="2200">
-		<magicResistance type="holy" resist="0.25"/>
-		<doMagicDamage baseDamage="25" baseHit="75">
-			<magicDamageCategory type="holy"/>
-		</doMagicDamage>
-	</spell>
-	<spell mp="8" name="Flame" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="7000">
-		<magicResistance type="fire" resist="0.40"/>
-		<doMagicDamage baseDamage="100" baseHit="75">
-			<magicDamageCategory type="fire"/>
-		</doMagicDamage>
-	</spell>
-	<spell mp="8" name="Crush" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="7000">
-		<magicResistance type="earth" resist="0.40"/>
-		<doMagicDamage baseDamage="100" baseHit="75">
-			<magicDamageCategory type="earth"/>
-		</doMagicDamage>
-	</spell>
-	<spell mp="8" name="Frost" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="7000">
-		<magicResistance type="water" resist="0.40"/>
-		<doMagicDamage baseDamage="100" baseHit="75">
-			<magicDamageCategory type="water"/>
-		</doMagicDamage>
-	</spell>
-	<spell mp="8" name="Storm" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="7000">
-		<magicResistance type="wind" resist="0.40"/>
-		<doMagicDamage baseDamage="100" baseHit="75">
-			<magicDamageCategory type="wind"/>
-		</doMagicDamage>
-	</spell>
-	<spell mp="8" name="Holy Anoint" targetable="either" type="white" use="both" appliesToArmor="true" appliesToWeapons="true" value="7000">
-		<magicResistance type="holy" resist="0.40"/>
-		<doMagicDamage baseDamage="100" baseHit="75">
-			<magicDamageCategory type="holy"/>
-		</doMagicDamage>
-	</spell>
-	<spell mp="20" name="Blaze" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="12000">
-		<magicResistance type="fire" resist="0.50"/>
-		<doMagicDamage baseDamage="250" baseHit="80">
-			<magicDamageCategory type="fire"/>
-		</doMagicDamage>
-	</spell>
-	<spell mp="20" name="Avalanche" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="12000">
-		<magicResistance type="earth" resist="0.50"/>
-		<doMagicDamage baseDamage="250" baseHit="80">
-			<magicDamageCategory type="earth"/>
-		</doMagicDamage>
-	</spell>
-	<spell mp="20" name="Blizzard" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="12000">
-		<magicResistance type="water" resist="0.50"/>
-		<doMagicDamage baseDamage="250" baseHit="80">
-			<magicDamageCategory type="water"/>
-		</doMagicDamage>
-	</spell>
-	<spell mp="20" name="Hurricane" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="12000">
-		<magicResistance type="wind" resist="0.50"/>
-		<doMagicDamage baseDamage="250" baseHit="80">
-			<magicDamageCategory type="wind"/>
-		</doMagicDamage>
-	</spell>
-	<spell mp="20" name="Blessed Anoint" targetable="either" type="white" use="both" appliesToArmor="true" appliesToWeapons="true" value="12000">
-		<magicResistance type="holy" resist="0.50"/>
-		<doMagicDamage baseDamage="250" baseHit="80">
-			<magicDamageCategory type="holy"/>
-		</doMagicDamage>
-	</spell>
-	<spell mp="50" name="Firestorm" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="25000">
-		<magicResistance type="fire" resist="0.75"/>
-		<doMagicDamage baseDamage="600" baseHit="90">
-			<magicDamageCategory type="fire"/>
-		</doMagicDamage>
-	</spell>
-	<spell mp="50" name="Meteor" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="25000">
-		<magicResistance type="earth" resist="0.75"/>
-		<doMagicDamage baseDamage="600" baseHit="90">
-			<magicDamageCategory type="earth"/>
-		</doMagicDamage>
-	</spell>
-	<spell mp="50" name="Absolute Zero" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="25000">
-		<magicResistance type="water" resist="0.75"/>
-		<doMagicDamage baseDamage="600" baseHit="90">
-			<magicDamageCategory type="water"/>
-		</doMagicDamage>
-	</spell>
-	<spell mp="50" name="Zephyr" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="25000">
-		<magicResistance type="wind" resist="0.75"/>
-		<doMagicDamage baseDamage="600" baseHit="90">
-			<magicDamageCategory type="wind"/>
-		</doMagicDamage>
-	</spell>
-	<spell mp="50" name="Blessed Anoint" targetable="either" type="white" use="both" appliesToArmor="true" appliesToWeapons="true" value="25000">
-		<magicResistance type="holy" resist="0.75"/>
-		<doMagicDamage baseDamage="600" baseHit="90">
-			<magicDamageCategory type="holy"/>
-		</doMagicDamage>
-	</spell> -->
+        </skill>
+        <skill bp="0" name="Thrift" sp="60" type="world">
+                <onInvoke>
+                        <script id="onThrift">
+                                modifyCommonAttribute("priceMultiplier", getCommonAttribute("priceMultiplier") * 0.9);
+                        </script>
+                </onInvoke>
+                <onRemove>
+                        <script id="rmThrift">
+                                modifyCommonAttribute("priceMultiplier",getCommonAttribute("priceMultiplier") * 10/9);
+                        </script>
+                </onRemove>
+        </skill>
+        <skill bp="0" name="Caution" sp="60" type="world">
+                <onInvoke>
+                        <script id="onCaution">
+                        modifyCommonAttribute("encounterRate",getCommonAttribute("encounterRate") * 0.75);
+                        </script>
+                </onInvoke>
+                <onRemove>
+                        <script id="rmCaution">
+                        modifyCommonAttribute("encounterRate",getCommonAttribute("encounterRate") * 10/7.5);
+                        </script>
+                </onRemove>
+        </skill>
+        <!--
+        <spell mp="2" name="Torch" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="2200">
+                <magicResistance type="fire" resist="0.25"/>
+                <doMagicDamage baseDamage="25" baseHit="75">
+                        <magicDamageCategory type="fire"/>
+                </doMagicDamage>
+        </spell>
+        <spell mp="2" name="Stonepelt" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="2200">
+                <magicResistance type="earth" resist="0.25"/>
+                <doMagicDamage baseDamage="25" baseHit="75">
+                        <magicDamageCategory type="earth"/>
+                </doMagicDamage>
+        </spell>
+        <spell mp="2" name="Ice" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="2200">
+                <magicResistance type="water" resist="0.25"/>
+                <doMagicDamage baseDamage="25" baseHit="75">
+                        <magicDamageCategory type="water"/>
+                </doMagicDamage>
+        </spell>
+        <spell mp="2" name="Wind" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="2200">
+                <magicResistance type="wind" resist="0.25"/>
+                <doMagicDamage baseDamage="25" baseHit="75">
+                        <magicDamageCategory type="wind"/>
+                </doMagicDamage>
+        </spell>
+        <spell mp="2" name="Anoint" targetable="either" type="white" use="both" appliesToArmor="true" appliesToWeapons="true" value="2200">
+                <magicResistance type="holy" resist="0.25"/>
+                <doMagicDamage baseDamage="25" baseHit="75">
+                        <magicDamageCategory type="holy"/>
+                </doMagicDamage>
+        </spell>
+        <spell mp="8" name="Flame" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="7000">
+                <magicResistance type="fire" resist="0.40"/>
+                <doMagicDamage baseDamage="100" baseHit="75">
+                        <magicDamageCategory type="fire"/>
+                </doMagicDamage>
+        </spell>
+        <spell mp="8" name="Crush" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="7000">
+                <magicResistance type="earth" resist="0.40"/>
+                <doMagicDamage baseDamage="100" baseHit="75">
+                        <magicDamageCategory type="earth"/>
+                </doMagicDamage>
+        </spell>
+        <spell mp="8" name="Frost" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="7000">
+                <magicResistance type="water" resist="0.40"/>
+                <doMagicDamage baseDamage="100" baseHit="75">
+                        <magicDamageCategory type="water"/>
+                </doMagicDamage>
+        </spell>
+        <spell mp="8" name="Storm" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="7000">
+                <magicResistance type="wind" resist="0.40"/>
+                <doMagicDamage baseDamage="100" baseHit="75">
+                        <magicDamageCategory type="wind"/>
+                </doMagicDamage>
+        </spell>
+        <spell mp="8" name="Holy Anoint" targetable="either" type="white" use="both" appliesToArmor="true" appliesToWeapons="true" value="7000">
+                <magicResistance type="holy" resist="0.40"/>
+                <doMagicDamage baseDamage="100" baseHit="75">
+                        <magicDamageCategory type="holy"/>
+                </doMagicDamage>
+        </spell>
+        <spell mp="20" name="Blaze" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="12000">
+                <magicResistance type="fire" resist="0.50"/>
+                <doMagicDamage baseDamage="250" baseHit="80">
+                        <magicDamageCategory type="fire"/>
+                </doMagicDamage>
+        </spell>
+        <spell mp="20" name="Avalanche" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="12000">
+                <magicResistance type="earth" resist="0.50"/>
+                <doMagicDamage baseDamage="250" baseHit="80">
+                        <magicDamageCategory type="earth"/>
+                </doMagicDamage>
+        </spell>
+        <spell mp="20" name="Blizzard" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="12000">
+                <magicResistance type="water" resist="0.50"/>
+                <doMagicDamage baseDamage="250" baseHit="80">
+                        <magicDamageCategory type="water"/>
+                </doMagicDamage>
+        </spell>
+        <spell mp="20" name="Hurricane" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="12000">
+                <magicResistance type="wind" resist="0.50"/>
+                <doMagicDamage baseDamage="250" baseHit="80">
+                        <magicDamageCategory type="wind"/>
+                </doMagicDamage>
+        </spell>
+        <spell mp="20" name="Blessed Anoint" targetable="either" type="white" use="both" appliesToArmor="true" appliesToWeapons="true" value="12000">
+                <magicResistance type="holy" resist="0.50"/>
+                <doMagicDamage baseDamage="250" baseHit="80">
+                        <magicDamageCategory type="holy"/>
+                </doMagicDamage>
+        </spell>
+        <spell mp="50" name="Firestorm" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="25000">
+                <magicResistance type="fire" resist="0.75"/>
+                <doMagicDamage baseDamage="600" baseHit="90">
+                        <magicDamageCategory type="fire"/>
+                </doMagicDamage>
+        </spell>
+        <spell mp="50" name="Meteor" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="25000">
+                <magicResistance type="earth" resist="0.75"/>
+                <doMagicDamage baseDamage="600" baseHit="90">
+                        <magicDamageCategory type="earth"/>
+                </doMagicDamage>
+        </spell>
+        <spell mp="50" name="Absolute Zero" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="25000">
+                <magicResistance type="water" resist="0.75"/>
+                <doMagicDamage baseDamage="600" baseHit="90">
+                        <magicDamageCategory type="water"/>
+                </doMagicDamage>
+        </spell>
+        <spell mp="50" name="Zephyr" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="25000">
+                <magicResistance type="wind" resist="0.75"/>
+                <doMagicDamage baseDamage="600" baseHit="90">
+                        <magicDamageCategory type="wind"/>
+                </doMagicDamage>
+        </spell>
+        <spell mp="50" name="Blessed Anoint" targetable="either" type="white" use="both" appliesToArmor="true" appliesToWeapons="true" value="25000">
+                <magicResistance type="holy" resist="0.75"/>
+                <doMagicDamage baseDamage="600" baseHit="90">
+                        <magicDamageCategory type="holy"/>
+                </doMagicDamage>
+        </spell> -->
 
 </skillList>

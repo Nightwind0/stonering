@@ -4,7 +4,6 @@
 #include "ArmorTypeRef.h"
 #include "ArmorEnhancer.h"
 #include "AttributeModifier.h"
-#include "SpellRef.h"
 #include "RuneType.h"
 #include "StatusEffectModifier.h"
 
@@ -23,25 +22,25 @@ UniqueArmor::~UniqueArmor()
     delete m_pConditionScript;
 }
 
-void UniqueArmor::Invoke()
+void UniqueArmor::Invoke(const ParameterList& params)
 {
-    if(m_pScript) m_pScript->ExecuteScript();
+    if(m_pScript) m_pScript->ExecuteScript(params);
 }
 
-bool UniqueArmor::EquipCondition()
+bool UniqueArmor::EquipCondition(const ParameterList& params)
 {
     if(m_pConditionScript)
-        return m_pConditionScript->EvaluateCondition();
+        return m_pConditionScript->EvaluateCondition(params);
     else return true;
 }
 
-void UniqueArmor::OnEquipScript()
+void UniqueArmor::OnEquipScript(const ParameterList& params)
 {
-    m_pEquipScript->ExecuteScript();
+    m_pEquipScript->ExecuteScript(params);
 }
-void UniqueArmor::OnUnequipScript()
+void UniqueArmor::OnUnequipScript(const ParameterList& params)
 {
-    m_pUnequipScript->ExecuteScript();
+    m_pUnequipScript->ExecuteScript(params);
 }
 
 uint UniqueArmor::GetValue() const
@@ -91,9 +90,6 @@ bool UniqueArmor::handle_element(eElement element, Element * pElement)
         break;
     case EATTRIBUTEMODIFIER:
         Add_Attribute_Modifier( dynamic_cast<AttributeModifier*>(pElement) );
-        break;
-    case ESPELLREF:
-        Set_Spell_Ref ( dynamic_cast<SpellRef*>(pElement) );
         break;
     case ERUNETYPE:
         Set_Rune_Type( dynamic_cast<RuneType*>(pElement) );
