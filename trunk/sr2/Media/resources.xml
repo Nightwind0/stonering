@@ -166,7 +166,13 @@
                 <section name="Items">
                     <image name="moonseed">
                         <image-file file="Images/Icons/I_MoonSeed.png"/>
-                    </image>		    
+                    </image>
+                    <image name="sunseed">
+                        <image-file file="Images/Icons/I_SunSeed.png"/>
+                    </image>
+                    <image name="antidote">
+                        <image-file file="Images/Icons/P_Blue03.png"/>
+                    </image>
                 </section>
         </section>
 
@@ -238,11 +244,15 @@
                         </section>
                         <section name="points">
                             <point name="origin" x="0" y="396"/>
+                            <point name="status_effect_spacing" x="8" y="8"/>
                         </section>
                         <section name="rects">
                             <rect name="text" left="12" right="484" top="24" bottom="191"/>
                             <rect name="monster" left="0" top="0" right="528" bottom="396"/>
                             <rect name="player" left="594" top="64" right="800" bottom="396"/>
+                        </section>
+                        <section name="colors">
+                            <string name="status_effect_shadow" value="#00000070"/>
                         </section>
                 </section>
                 <section name="BattlePopup">
