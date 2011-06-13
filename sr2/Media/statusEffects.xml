@@ -1,11 +1,12 @@
 <statusEffectList>
-        <statusEffect last="round_count" roundCount="12" name="Poison">
+        <statusEffect last="permanent"  name="Poison">
             <spriteRef ref="StatusEffect/Poisoned"/>
                 <onRound>
                         <script id="SE_Poison">
                             <![CDATA[
-                            const $kMaxHp = getCharacterAttribute($_Character,$_MAX_HP);
-                            declare $damage = normal_random($kMaxHp * 0.05, $kMaxHp * 0.01); 
+                            const $kMaxHp = getCharacterAttribute($_Character,$_MAXHP);
+                            declare $damage = normal_random($kMaxHp * 0.025, $kMaxHp * 0.01); 
+                            if($damage <1) $damage = 1;
                             doDamage($_Character,$damage);
                             if(inBattle()){
                                 battle::doCharacterAnimation($_Character,getAnimation("recoil"));
