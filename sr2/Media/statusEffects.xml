@@ -1,6 +1,31 @@
 <statusEffectList>
+            <statusEffect last="round_count" roundCount="8"  name="Paralyzed">
+            <spriteRef ref="StatusEffect/Tangled"/>
+            <onInvoke>
+                <script id="SE_TangledInv">
+                setCharacterToggle($_Character,$_CAN_FIGHT,false);
+                setCharacterToggle($_Character,$_DRAW_PARALYZED,true);            
+                </script>
+            </onInvoke>
+            <onRemove>
+                <script id="SE_TangledRem">
+                setCharacterToggle($_Character,$_CAN_FIGHT,true);
+                setCharacterToggle($_Character,$_DRAW_PARALYZED,false);
+                </script>
+            </onRemove>
+        </statusEffect>
         <statusEffect last="permanent"  name="Poison">
             <spriteRef ref="StatusEffect/Poisoned"/>
+            <onInvoke>
+                <script id="SE_PoisonInv">
+                setCharacterToggle($_Character,$_DRAW_ILL,true);            
+                </script>
+            </onInvoke>
+            <onRemove>
+                <script id="SE_PoisonRem">
+                setCharacterToggle($_Character,$_DRAW_ILL,false);
+                </script>
+            </onRemove>
                 <onRound>
                         <script id="SE_Poison">
                             <![CDATA[

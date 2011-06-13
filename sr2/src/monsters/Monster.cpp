@@ -126,7 +126,6 @@ void Monster::SetToggle(ICharacter::eCharacterAttribute attr, bool state)
 void Monster::Kill()
 {
     SetToggle(CA_ALIVE,false);
-    Die();
 }
 
 void Monster::Attacked()
