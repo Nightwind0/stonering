@@ -69,8 +69,10 @@ void CharacterClass::verify_menu_options ( BattleMenu* pMenu )
 
 void CharacterClass::load_finished()
 {
-   // TODO: Construct battle menu for skills here???
-   // or, .. something? not sure..
+    if(m_pMenu == NULL)
+        throw CL_Exception("Missing battle menu on class " + m_name);
+    if(m_skill_tree.empty())
+        throw CL_Exception("No skill tree on class " + m_name);
 }
 
 double CharacterClass::GetStat(ICharacter::eCharacterAttribute attr, int level)

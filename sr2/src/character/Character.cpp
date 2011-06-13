@@ -274,6 +274,14 @@ StoneRing::ICharacter::eGender StoneRing::Character::GetGender() const
 void StoneRing::Character::Kill()
 {
     SetToggle(CA_ALIVE,false);
+    SetCurrentSprite(GraphicsManager::CreateCharacterSprite(m_name,"dead"));
+}
+
+void StoneRing::Character::Raise()
+{
+    SetToggle(CA_ALIVE,true);
+    // TODO: Maybe draw weak
+    SetCurrentSprite(GraphicsManager::CreateCharacterSprite(m_name,"idle"));
 }
 
 void StoneRing::Character::Attacked()

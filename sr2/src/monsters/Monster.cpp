@@ -128,6 +128,11 @@ void Monster::Kill()
     SetToggle(CA_ALIVE,false);
 }
 
+void Monster::Raise()
+{
+    SetToggle(CA_ALIVE,true);
+}
+
 void Monster::Attacked()
 {
     // TODO: What do I call here?

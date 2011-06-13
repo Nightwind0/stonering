@@ -15,13 +15,15 @@
 	const $b = 1.12; // At 1.07, a character 10 levels higher than you is worth double the XP
 	foreach (declare $character) in @characters {
 	    declare $total_xp = 0;
-	    foreach (declare $monster) in @monsters {
-		declare $char_level = getCharacterLevel($character);
-		declare $monster_level = getCharacterLevel($monster);
+            if(getCharacterToggle($_CA_ALIVE)){
+                foreach (declare $monster) in @monsters {
+                    declare $char_level = getCharacterLevel($character);
+                    declare $monster_level = getCharacterLevel($monster);
 	
-		declare $xp = ((tnl($char_level + 1) - tnl($char_level)) /  $B) * ($b ^ ($monster_level - $char_level));
-		$total_xp = $total_xp + $xp;
-	    }
+                    declare $xp = ((tnl($char_level + 1) - tnl($char_level)) /  $B) * ($b ^ ($monster_level - $char_level));
+                    $total_xp = $total_xp + $xp;
+                }
+            }
 	    $total_xp = math::ceil($total_xp);
 	    
 	    println ( "{getCharacterName($character)} got {$total_xp}" );

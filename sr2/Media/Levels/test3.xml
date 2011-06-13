@@ -3599,7 +3599,7 @@
 			    }
 			    giveNamedItem("Moon Seed",1);
 			    giveNamedItem("Sun Seed",1);
-                            //giveNamedItem("Star Chip",1);
+                            giveNamedItem("Star Chip",1);
                             giveNamedItem("Antidote",1);
 			]]>
 			</script>
