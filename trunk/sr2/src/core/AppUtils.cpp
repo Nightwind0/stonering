@@ -26,13 +26,14 @@ void AppUtils::LoadGameplayAssets(const std::string &path, CL_ResourceManager& r
     std::string animationdefintion = CL_String_load("Game/AnimationDefinitions",resources);
     std::string mainmenudefinition = CL_String_load("Game/MainMenuDefinitions",resources);
 
+    LoadAnimations(path + animationdefintion);
     LoadStatusEffects(path + statusEffectDefinition);
     LoadItems(path + itemdefinition);
     LoadSkills(path + skilldefinition);
     LoadCharacterClasses(path + classdefinition);
     LoadMonsters(path + monsterdefinition);
     LoadCharacters(path + characterdefinition);
-    LoadAnimations(path + animationdefintion);
+
     LoadMainMenu(path + mainmenudefinition);
 }
 

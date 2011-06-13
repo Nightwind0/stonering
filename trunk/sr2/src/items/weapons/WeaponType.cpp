@@ -26,6 +26,10 @@ void WeaponType::load_attributes(CL_DomNamedNodeMap attributes)
     m_fBaseCritical = get_implied_float("baseCritical",attributes,0.05);
     m_bRanged = get_implied_bool("ranged",attributes,false);
     m_bTwoHanded  = get_implied_bool("twoHanded",attributes,false);
+    if(has_attribute("animationRef",attributes)){
+        std::string animation = get_implied_string("animationRef",attributes,"");
+        m_pAnimation = AbilityManager::GetAnimation(animation);
+    }
     m_damageCategory = DamageCategory::DamageCategoryFromString(get_required_string("damageCategory",attributes));
 }
 
@@ -47,6 +51,8 @@ bool WeaponType::handle_element(eElement element, Element * pElement)
         m_icon_ref = dynamic_cast<IconRef*>(pElement)->GetIcon();
         break;
     case EANIMATION:
+        if(m_pAnimation) 
+            throw CL_Exception("WeaponType can have either animationRef or animation element, not both: " + m_name);
 	m_pAnimation = dynamic_cast<Animation*>(pElement);
 	break;
 	
