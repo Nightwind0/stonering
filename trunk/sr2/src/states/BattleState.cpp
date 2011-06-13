@@ -13,8 +13,52 @@
 #include <iomanip>
 #include <algorithm>
 
+
 using namespace StoneRing;
 
+
+namespace StoneRing{
+class StatusEffectPainter : public Visitor<StatusEffect*>
+{
+public:
+    StatusEffectPainter(CL_GraphicContext& gc):m_i(0),m_gc(gc){}
+    virtual ~StatusEffectPainter(){}
+    
+    void SetShadow(CL_Colorf shadow){ m_shadow = shadow; }
+    void SetSpacing(CL_Pointf spacing) { m_spacing = spacing; }
+    void SetStart(CL_Pointf point) { m_start = point; }
+    void SetHeight(int height) { m_height = height; }
+    void SetMultiplier(int m) { m_mult = m; }
+    
+    virtual void Visit(StatusEffect* pEffect) {
+        CL_Sprite sprite = pEffect->GetIcon();
+        sprite.set_alpha(0.75f);
+        int sprites_per_col = m_height / (sprite.get_height() + m_spacing.y);
+        int col = m_i / sprites_per_col;
+        int row = m_i % sprites_per_col;
+        CL_Pointf origin(m_start.x + col * m_spacing.x * sprite.get_width(),
+                     m_start.y + row * m_spacing.y * sprite.get_height());
+        CL_Sizef size(sprite.get_width(),sprite.get_height());
+        CL_Rectf box(origin,size);
+        CL_Rectf shadowbox = box;
+        shadowbox.translate(CL_Pointf(2,2));
+
+        CL_Draw::fill(m_gc, shadowbox, m_shadow);
+        sprite.draw(m_gc,m_start.x + col * m_spacing.x * sprite.get_width() * m_mult,
+                    m_start.y + row * m_spacing.y * sprite.get_height());
+        m_i++;
+    }
+    
+private:
+    int m_i;
+    int m_height;
+    int m_mult;
+    CL_Colorf m_shadow;
+    CL_Pointf m_start;
+    CL_Pointf m_spacing;
+    CL_GraphicContext & m_gc;
+};
+}
 
 const BattleState::SpriteTicket BattleState::UNDEFINED_SPRITE_TICKET=-1;
 
@@ -340,7 +384,8 @@ void BattleState::Start()
     m_statusBar = GraphicsManager::GetOverlay(GraphicsManager::BATTLE_STATUS);
     m_battleMenu = GraphicsManager::GetOverlay(GraphicsManager::BATTLE_MENU);
     m_battlePopup = GraphicsManager::GetOverlay(GraphicsManager::BATTLE_POPUP_MENU);
-
+    m_status_effect_shadow_color = GraphicsManager::GetColor(GraphicsManager::BATTLE_STATUS, "status_effect_shadow");
+    m_status_effect_spacing = GraphicsManager::GetPoint(GraphicsManager::BATTLE_STATUS,"status_effect_spacing");
     
     init_or_release_players(false);
 
@@ -453,6 +498,7 @@ void BattleState::draw_battle(const CL_Rectf &screenRect, CL_GraphicContext& GC)
     if(m_ndarkMode == DISPLAY_ORDER_PRE_SPRITES)
 	draw_darkness(screenRect,GC);
     draw_sprites(0,GC);
+    draw_status_effects(GC);
     if(m_ndarkMode == DISPLAY_ORDER_POST_SPRITES)
 	draw_darkness(screenRect,GC);
     
@@ -477,6 +523,40 @@ void BattleState::draw_battle(const CL_Rectf &screenRect, CL_GraphicContext& GC)
 	draw_darkness(screenRect,GC);
 
 }
+
+void BattleState::draw_status_effects ( CL_GraphicContext& GC )
+{
+    for(std::deque<ICharacter*>::iterator iter = m_initiative.begin();
+        iter != m_initiative.end(); iter++)
+        {
+            ICharacter * pICharacter = *iter;
+            Character * pCharacter = dynamic_cast<Character*>(pICharacter);
+            
+            StatusEffectPainter painter(GC);
+            painter.SetShadow(m_status_effect_shadow_color);
+            painter.SetSpacing(m_status_effect_spacing);
+            if(pCharacter != NULL)
+            {
+                CL_Rectf rectf = get_character_rect(pICharacter);
+            
+                painter.SetStart ( rectf.get_top_right() );
+                painter.SetHeight(rectf.get_height());
+                painter.SetMultiplier(1);
+               
+            }
+            else
+            {
+                CL_Rectf rectf = get_character_rect(pICharacter);
+                painter.SetHeight(rectf.get_height());
+                painter.SetStart ( rectf.get_top_left());
+                painter.SetMultiplier(-1);
+            }
+            
+            pICharacter->IterateStatusEffects(painter);          
+            
+        }
+}
+
 
 BattleState::Display::Display(BattleState& parent,BattleState::Display::eDisplayType type,int damage,ICharacter* pICharacter)
         :m_parent(parent),m_eDisplayType(type),m_amount(-damage)
@@ -1424,3 +1504,5 @@ SteelType BattleState::doSkill(SteelType::Handle pICharacter, const std::string&
 
     return SteelType();
 }
+
+

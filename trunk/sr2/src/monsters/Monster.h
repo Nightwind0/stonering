@@ -111,6 +111,8 @@ namespace StoneRing
 
         virtual CL_Pointf GetBattlePos() const;
         virtual void     SetBattlePos(CL_Pointf pos);
+        
+        virtual void   IterateStatusEffects(Visitor<StatusEffect*> &);        
 
         DamageCategory::eDamageCategory GetDefaultDamageCategory(void)const;
 
@@ -139,6 +141,7 @@ namespace StoneRing
         std::map<eCharacterAttribute,double> m_augments;
         std::map<eCharacterAttribute,bool> m_toggles;
         StatusEffectMap m_status_effects;
+        std::map<std::string,uint> m_status_effect_rounds;
         MonsterElement * m_pMonsterDefinition;
         uint m_nCellX;
         uint m_nCellY;

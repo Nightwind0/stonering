@@ -65,6 +65,7 @@ namespace StoneRing{
         virtual uint   GetInitiative(void)const;
         virtual double GetEquippedWeaponAttribute(Weapon::eAttribute) const;
         virtual double GetEquippedArmorAttribute(Armor::eAttribute) const;
+        virtual void   IterateStatusEffects(Visitor<StatusEffect*> &);
         // Includes permanent augments
         double         GetBaseAttribute(eCharacterAttribute attr)const;
         uint   GetSP()const;

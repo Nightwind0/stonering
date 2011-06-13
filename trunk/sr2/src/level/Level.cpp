@@ -741,6 +741,13 @@ void Level::Step(const CL_Point &target)
             (pMo)->ProvokeEvents(Event::STEP);
         }
     }
+    
+    IParty * pParty = IApplication::GetInstance()->GetParty();
+    for(int i=0;i<pParty->GetCharacterCount();i++)
+    {
+        Character *pChar = dynamic_cast<Character*>(pParty->GetCharacter(i));
+        pChar->StatusEffectRound();
+    }
 
     Activate_Tiles_At(target.x,target.y);
 }

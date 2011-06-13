@@ -169,6 +169,17 @@ CL_Vec2<T> operator*(const CL_Vec2<T> &a, const T& t);
 template<class T>
 CL_Vec2<T> operator*(const T& t, const CL_Vec2<T> &v);
 
+
+template<class T>
+class Visitor
+{
+public:
+    Visitor(){}
+    virtual ~Visitor(){}
+    
+    virtual void Visit(T)=0;    
+};
+
 #endif
 
 

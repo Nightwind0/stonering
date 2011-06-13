@@ -40,7 +40,7 @@ namespace StoneRing{
         virtual void SteelInit(SteelInterpreter*);
         virtual void SteelCleanup   (SteelInterpreter *);
         virtual void Finish(); // Hook to clean up or whatever after being popped
-
+        
 	void SetConfig(BattleConfig* config);
 	typedef int SpriteTicket;
 	static const SpriteTicket UNDEFINED_SPRITE_TICKET;
@@ -189,6 +189,7 @@ namespace StoneRing{
         void draw_displays(CL_GraphicContext& GC);
 	void draw_sprites(int z, CL_GraphicContext& GC);
 	void draw_darkness(const CL_Rectf &screenRect, CL_GraphicContext& GC);
+        void draw_status_effects(CL_GraphicContext& GC);
 	
 	// int is a handle
 
@@ -196,7 +197,7 @@ namespace StoneRing{
 	void set_sprite_pos(SpriteTicket nSprite, CL_Pointf pos);
 	CL_Sprite get_sprite(SpriteTicket nSprite) const;
 	void remove_sprite(SpriteTicket nSprite);
-
+        
         void init_or_release_players(bool bRelease=false);
         void set_positions_to_loci();
         void roll_initiative();
@@ -254,7 +255,9 @@ namespace StoneRing{
         CL_Rectf m_popup_rect;
         CL_Rectf m_monster_rect;
         CL_Rectf m_player_rect;
+        CL_Pointf m_status_effect_spacing;
 	CL_Colorf m_darkColor;
+        CL_Colorf m_status_effect_shadow_color;
 	uint m_ndarkMode;
 
         eCombatState m_combat_state;

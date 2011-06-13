@@ -48,32 +48,9 @@ void Monster::set_transients()
 
 void Monster::set_toggle_defaults()
 {
-    for(uint toggle=_START_OF_TOGGLES;toggle<_END_OF_TOGGLES;toggle++)
+    for(uint toggle=_START_OF_TOGGLES+1;toggle<_END_OF_TOGGLES;toggle++)
     {
-        switch(toggle)
-        {
-            case CA_DRAW_ILL:
-            case CA_DRAW_STONE:
-            case CA_DRAW_BERSERK:
-            case CA_DRAW_WEAK:
-            case CA_DRAW_PARALYZED:
-            case CA_DRAW_TRANSLUCENT:
-            case CA_DRAW_MINI:
-                m_toggles[static_cast<eCharacterAttribute>(toggle)] = false;
-                break;
-            case CA_VISIBLE:
-            case CA_CAN_ACT:
-            case CA_CAN_FIGHT:
-            case CA_CAN_CAST:
-            case CA_CAN_SKILL:
-            case CA_CAN_ITEM:
-            case CA_CAN_RUN:
-            case CA_ALIVE:
-                m_toggles[static_cast<eCharacterAttribute>(toggle)] = true;
-                break;
-            default:
-                break;
-        }
+        m_toggles[static_cast<eCharacterAttribute>(toggle)] = ToggleDefaultTrue(static_cast<eCharacterAttribute>(toggle));
     }
 }
 
@@ -149,11 +126,12 @@ void Monster::SetToggle(ICharacter::eCharacterAttribute attr, bool state)
 void Monster::Kill()
 {
     SetToggle(CA_ALIVE,false);
-   // Die();
+    Die();
 }
 
 void Monster::Attacked()
 {
+    // TODO: What do I call here?
 }
 
 
@@ -165,33 +143,63 @@ double Monster::GetDamageCategoryResistance(DamageCategory::eDamageCategory type
 
 double Monster::GetAttribute(ICharacter::eCharacterAttribute attr) const
 {
+    
+    
+   double base = 0.0;
+     
     if(!IsTransient(attr))
     {
-        const Stat * pStat = m_pMonsterDefinition->GetStat(attr);
-        if (pStat != NULL)
-            return pStat->GetStat();
-        else
-            return 0.0;
+        if(ICharacter::IsDamageCategoryAttribute(attr))
+        {
+            base = 1.0;
+            if(attr == ICharacter::CA_HOLY_RST)
+                base = -1.0;
+        }
+        else 
+        {
+            base = m_pMonsterDefinition->GetStat(attr);       
+        }
+        for(StatusEffectMap::const_iterator iter= m_status_effects.begin();
+            iter != m_status_effects.end();iter++)
+        {
+            base *=  iter->second->GetAttributeMultiplier(attr);
+        }
+        for(StatusEffectMap::const_iterator iter= m_status_effects.begin();
+            iter != m_status_effects.end();iter++)
+        {
+            base += iter->second->GetAttributeAdd(attr);
+        }
     }
+    double augment  = 0.0;
+    std::map<eCharacterAttribute,double>::const_iterator aug = m_augments.find(attr);
+    if(aug != m_augments.end())
+        augment = aug->second;
+
+    if(IsInteger(attr))
+        return static_cast<int>( base + augment );
     else
-    {
-        std::map<eCharacterAttribute,double>::const_iterator iter = m_augments.find(attr);
-        if( iter != m_augments.end())
-            return iter->second;
-        else return 0.0;
-    }
-    // TODO: Status effects similar to Character's version
+        return base + augment;
 }
 
 
 bool Monster::GetToggle(ICharacter::eCharacterAttribute attr) const
 {
+    bool base = ToggleDefaultTrue(attr);
     std::map<eCharacterAttribute,bool>::const_iterator iter = m_toggles.find(attr);
     if(iter != m_toggles.end())
-        return iter->second;
-    else return false;
+        base =  iter->second;
     
-    // TODO: Status effects into account
+    for(StatusEffectMap::const_iterator iter= m_status_effects.begin();
+            iter != m_status_effects.end();iter++)
+        {
+            if(ToggleDefaultTrue(attr))
+                 base = base && iter->second->GetAttributeToggle(attr, base);
+            else
+                base = base || iter->second->GetAttributeToggle(attr, base);
+        }   
+        
+    return base;    
+
 }
 
 void Monster::PermanentAugment(eCharacterAttribute attr, double augment)
@@ -214,14 +222,20 @@ void Monster::PermanentAugment(eCharacterAttribute attr, double augment)
 
 void Monster::AddStatusEffect(StatusEffect *pEffect)
 {
-    // Clear out the old one, if any
-    RemoveEffect(pEffect);
-    m_status_effects.insert(StatusEffectMap::value_type(pEffect->GetName(),pEffect));
+    m_status_effect_rounds[pEffect->GetName()] = 0;
+    m_status_effects[pEffect->GetName()] = pEffect;
+    ParameterList params;
+    params.push_back(ParameterListItem("$_Character",this));
+    pEffect->Invoke(params);    
 }
 
 void Monster::RemoveEffect(StatusEffect *pEffect)
 {
     m_status_effects.erase(pEffect->GetName());
+    m_status_effect_rounds.erase(pEffect->GetName());
+    ParameterList params;
+    params.push_back(ParameterListItem("$_Character",this));
+    pEffect->Remove(params);    
 }
 
 double Monster::StatusEffectChance(StatusEffect* pEffect) const
@@ -237,6 +251,26 @@ double Monster::StatusEffectChance(StatusEffect* pEffect) const
 
 void Monster::StatusEffectRound()
 {
+        for(StatusEffectMap::iterator iter = m_status_effects.begin();
+        iter != m_status_effects.end(); iter++)
+        {
+            StatusEffect * pEffect = iter->second;
+            uint round = ++m_status_effect_rounds[pEffect->GetName()];
+            ParameterList params;
+            params.push_back(ParameterListItem("$_Character",this));
+            params.push_back(ParameterListItem("$_EffectRound",static_cast<int>(round)));
+            if(pEffect->GetLast() == StatusEffect::ROUND_COUNT)
+            {
+                if(round <= pEffect->GetRoundCount())
+                    iter->second->Round(params);
+                else
+                    RemoveEffect(pEffect); // Times up!
+            }
+            else
+            {
+                iter->second->Round(params);
+            }
+        }
 }
 
 void Monster::SetCurrentSprite(CL_Sprite sprite)
@@ -284,4 +318,13 @@ ICharacter * MonsterParty::GetCharacter(uint index) const
 }
 
 
+void StoneRing::Monster::IterateStatusEffects ( Visitor< StoneRing::StatusEffect* >& visitor)
+{
+    for(StatusEffectMap::iterator iter = m_status_effects.begin();
+        iter != m_status_effects.end();
+        iter++)
+        {
+            visitor.Visit(iter->second);
+        }
+}
 
