@@ -32,20 +32,19 @@ public:
     
     virtual void Visit(StatusEffect* pEffect) {
         CL_Sprite sprite = pEffect->GetIcon();
-        sprite.set_alpha(0.75f);
+        sprite.set_alpha(0.5f);
         int sprites_per_col = m_height / (sprite.get_height() + m_spacing.y);
         int col = m_i / sprites_per_col;
         int row = m_i % sprites_per_col;
-        CL_Pointf origin(m_start.x + col * m_spacing.x * sprite.get_width(),
-                     m_start.y + row * m_spacing.y * sprite.get_height());
+        CL_Pointf origin(m_start.x + col * (m_spacing.x + sprite.get_width()) * m_mult,
+                     m_start.y + row * (m_spacing.y + sprite.get_height()));
         CL_Sizef size(sprite.get_width(),sprite.get_height());
         CL_Rectf box(origin,size);
         CL_Rectf shadowbox = box;
         shadowbox.translate(CL_Pointf(2,2));
 
-        CL_Draw::fill(m_gc, shadowbox, m_shadow);
-        sprite.draw(m_gc,m_start.x + col * m_spacing.x * sprite.get_width() * m_mult,
-                    m_start.y + row * m_spacing.y * sprite.get_height());
+       // CL_Draw::fill(m_gc, shadowbox, m_shadow);
+        sprite.draw(m_gc,origin.x,origin.y);
         m_i++;
     }
     
@@ -146,36 +145,60 @@ void BattleState::next_turn()
 	m_bDone = true;
 	return;
     }
-    ICharacter * iCharacter = m_initiative[m_cur_char];
-    Character * pCharacter = dynamic_cast<Character*>(iCharacter);
-    set_positions_to_loci();
-    iCharacter->StatusEffectRound();
-
-    if (pCharacter != NULL)
+    
+    while(true)
     {
-        m_combat_state = BATTLE_MENU;
-        ParameterList params;
-        // Supply a handle to the character in question
-        Character *pChar = dynamic_cast<Character*>(m_initiative[m_cur_char]);
-        params.push_back ( ParameterListItem("$Character", pChar ) );
-        params.push_back ( ParameterListItem("$Round", static_cast<int>(m_nRound) ) );
+        ICharacter * iCharacter = m_initiative[m_cur_char];
+        Character * pCharacter = dynamic_cast<Character*>(iCharacter);
+        
+        if(!iCharacter->GetToggle(ICharacter::CA_CAN_ACT)){
+            pick_next_character();
+            continue;
+        }
+        
+        set_positions_to_loci();
+        iCharacter->StatusEffectRound();
 
-        pCharacter->GetBattleMenu()->SetEnableConditionParams(params, pChar);
-        pCharacter->GetBattleMenu()->Init();
-        m_menu_stack.push ( pCharacter->GetBattleMenu() );
+        if (pCharacter != NULL)
+        {
+            ParameterList params;
+            // Supply a handle to the character in question
+            Character *pChar = dynamic_cast<Character*>(m_initiative[m_cur_char]);
+            params.push_back ( ParameterListItem("$Character", pChar ) );
+            params.push_back ( ParameterListItem("$Round", static_cast<int>(m_nRound) ) );
+
+            pCharacter->GetBattleMenu()->SetEnableConditionParams(params, pChar);
+            pCharacter->GetBattleMenu()->Init();
+
+            // TODO: This check is wrong... maybe I should just add a 
+            // "Skip" option that just calls finish...
+            if(pCharacter->GetBattleMenu()->GetOptionsBegin() == 
+                pCharacter->GetBattleMenu()->GetOptionsEnd())
+            {
+                // No options.. skip this guy
+                pick_next_character();
+                continue;
+            }
+            m_combat_state = BATTLE_MENU;
+            m_menu_stack.push ( pCharacter->GetBattleMenu() );
+            break;
+        }
+        else
+        {
+            Monster * pMonster = dynamic_cast<Monster*>(m_initiative[m_cur_char]);
+            assert(pMonster != NULL); // has to be a monster...
+            // Figure out what the monster will do here.
+            m_combat_state = DISPLAY_ACTION;
+            ParameterList params;
+            // Supply a handle to the character in question;
+            params.push_back ( ParameterListItem("$Character", pMonster ) );
+            params.push_back ( ParameterListItem("$Round", static_cast<int>(m_nRound) ) );
+            pMonster->Round(params);
+            break;
+        }
+            
     }
-    else
-    {
-        Monster * pMonster = dynamic_cast<Monster*>(m_initiative[m_cur_char]);
-        assert(pMonster != NULL); // has to be a monster...
-        // Figure out what the monster will do here.
-        m_combat_state = DISPLAY_ACTION;
-        ParameterList params;
-        // Supply a handle to the character in question;
-        params.push_back ( ParameterListItem("$Character", pMonster ) );
-        params.push_back ( ParameterListItem("$Round", static_cast<int>(m_nRound) ) );
-        pMonster->Round(params);
-    }
+    
 
 }
 
@@ -805,7 +828,7 @@ void BattleState::draw_monsters(const CL_Rectf &monsterRect, CL_GraphicContext& 
 	//std::cout << pMonster->GetName() << '@' << rect.top << ',' << rect.left << std::endl;
 	//rect.translate ( rect.get_width() / 2.0f,  rect.get_height() / 2.0f);
 
-        CL_Sprite  sprite = pMonster->GetCurrentSprite();
+        CL_Sprite  sprite = current_sprite(pMonster);
         //
         sprite.update();
 
@@ -832,6 +855,37 @@ void BattleState::draw_monsters(const CL_Rectf &monsterRect, CL_GraphicContext& 
     }
 }
 
+CL_Sprite BattleState::current_sprite ( ICharacter* iCharacter )
+{
+        CL_Sprite  sprite = iCharacter->GetCurrentSprite();
+        
+        sprite.set_color(CL_Colorf::white);
+        sprite.set_scale(1.0,1.0);
+        sprite.set_alpha(1.0);
+        
+        if(iCharacter->GetToggle(ICharacter::CA_DRAW_ILL))
+            sprite.set_color(CL_Colorf::palegreen);
+        if(iCharacter->GetToggle(ICharacter::CA_DRAW_BERSERK))
+            sprite.set_color(CL_Colorf::red);
+        if(iCharacter->GetToggle(ICharacter::CA_DRAW_MINI))
+            sprite.set_scale(0.5,0.5);
+        if(iCharacter->GetToggle(ICharacter::CA_DRAW_FLIPPED))
+            sprite.set_scale(-1.0,-1.0);
+        if(iCharacter->GetToggle(ICharacter::CA_DRAW_MINI) &&
+            iCharacter->GetToggle(ICharacter::CA_DRAW_FLIPPED))
+            sprite.set_scale(-0.5,0.5);
+        if(iCharacter->GetToggle(ICharacter::CA_DRAW_TRANSLUCENT))
+            sprite.set_alpha(0.25);
+        if(iCharacter->GetToggle(ICharacter::CA_DRAW_STONE))
+            sprite.set_color(CL_Colorf::gray40);
+        if(iCharacter->GetToggle(ICharacter::CA_DRAW_PARALYZED))
+            sprite.set_color(CL_Colorf::purple);
+        
+
+        return sprite;
+}
+
+
 void BattleState::draw_players(const CL_Rectf &playerRect, CL_GraphicContext& GC)
 {
     IParty * pParty = IApplication::GetInstance()->GetParty();
@@ -841,7 +895,8 @@ void BattleState::draw_players(const CL_Rectf &playerRect, CL_GraphicContext& GC
     {
         Character * pCharacter = dynamic_cast<Character*>(pParty->GetCharacter(nPlayer));
         ICharacter * iCharacter = pParty->GetCharacter(nPlayer);
-        CL_Sprite  sprite = pCharacter->GetCurrentSprite();
+        
+        CL_Sprite sprite = current_sprite(iCharacter);
        // CL_Rect rect = get_character_rect(iCharacter);
 	CL_Pointf center = pCharacter->GetBattlePos();
 	//rect.translate (  rect.get_width() / 2.0f,  rect.get_height() / 2.0f );

@@ -1,11 +1,10 @@
 <!--DOCTYPE characterClasses SYSTEM "Levels/level.dtd"-->
 <characterClasses>
-	<characterClass name = "Warrior" gender="either">
+        <characterClass name = "Warrior" gender="either">
         <battleMenu type="popup">
             <battleMenuOption name="Attack" icon="attack">
                 <conditionScript id="WarriorAttackOptionCondition">
-                    return getCharacterToggle($Character,$_CAN_ACT) and 
-                           getCharacterToggle($Character,$_CAN_FIGHT) and
+                    return  getCharacterToggle($Character,$_CAN_FIGHT) and
                         (hasEquipment($Character, $_HAND)
                         or
                         hasEquipment($Character, $_OFFHAND));
@@ -13,25 +12,17 @@
                 <skillRef skillName="Attack"/>
             </battleMenuOption>
             <battleMenuOption name="Item" icon="item">
-		<conditionScript id="WarriorItemCondition">
-		    return getCharacterToggle($Character,$_CAN_ACT) and getCharacterToggle($Character,$_CAN_ITEM);
-		</conditionScript>
-                 <skillRef skillName="Item"/>
+                <conditionScript id="WarriorItemCondition">
+                    return  getCharacterToggle($Character,$_CAN_ITEM);
+                </conditionScript>
+                <skillRef skillName="Item"/>
             </battleMenuOption>
-	    <!--battleMenuOption name="Heal">
-		<conditionScript id="WarriorHealCondition">
-		    return getCharacterAttribute($Character,$_HP) > 4;
-		</conditionScript>
-		<skillRef skillName="Heal"/>
-	    </battleMenuOption-->
-
-	  <battleMenuOption name="Throw" icon="hurl">
-		<conditionScript id="WarriorThrowCondition">
-		    <![CDATA[
-			return getCharacterToggle($Character,$_CAN_ACT) 
-                        and getCharacterToggle($Character,$_CAN_SKILL);
-			]]>
-		</conditionScript>
+        <battleMenuOption name="Throw" icon="hurl">
+                <conditionScript id="WarriorThrowCondition">
+                    <![CDATA[
+                        return getCharacterToggle($Character,$_CAN_SKILL);
+                        ]]>
+                </conditionScript>
                 <battleMenu type="popup">
                     <battleMenuOption name="Easy Throw" icon="hurl">
                         <conditionScript id="WarriorThrow1Condition">
@@ -45,38 +36,37 @@
                         </conditionScript>
                         <skillRef skillName="Throw"/>
                     </battleMenuOption>     
-                     <battleMenuOption name="Super Throw" icon="hurl">
+                    <battleMenuOption name="Super Throw" icon="hurl">
                         <conditionScript id="WarriorThrow3Condition">
                             return false;
                         </conditionScript>
                         <skillRef skillName="Throw"/>
                     </battleMenuOption>    
                 </battleMenu>
-	    </battleMenuOption>
-	  <battleMenuOption name="Flee" icon="flee">
-		<conditionScript id="WarriorFleeCondition">
-		    <![CDATA[
-			return getCharacterToggle($Character,$_CAN_ACT) 
-                        and
+            </battleMenuOption>
+        <battleMenuOption name="Flee" icon="flee">
+                <conditionScript id="WarriorFleeCondition">
+                    <![CDATA[
+                        return 
                         getCharacterToggle($Character,$_CAN_RUN) 
                         and
                         !battle::isBossBattle();
-			]]>
-		</conditionScript>
-		<skillRef skillName="Flee"/>
-	    </battleMenuOption>
+                        ]]>
+                </conditionScript>
+                <skillRef skillName="Flee"/>
+            </battleMenuOption>
         </battleMenu>
         <weaponTypeRef name="Sword"/>
         <weaponTypeRef name="Broadsword"/>
         <weaponTypeRef name="Greatsword"/>
         <weaponTypeRef name="Dagger"/>
-		<weaponTypeRef name="Longsword"/>
-		<weaponTypeRef name="Mace"/>
+                <weaponTypeRef name="Longsword"/>
+                <weaponTypeRef name="Mace"/>
         <armorTypeRef name="Shield"/>
         <armorTypeRef name="Plate"/>
-		<armorTypeRef name="Buckler"/>
+                <armorTypeRef name="Buckler"/>
         <armorTypeRef name="Boots"/>
-		<armorTypeRef name="Hats"/>
+                <armorTypeRef name="Hats"/>
 
         <statScript stat="hp_max">
             <script id="WarHPMAX">
@@ -101,13 +91,13 @@
         <statScript stat="dex">
             <script id="WarDEX">
                 //return math::pow(1.06, $_CL) * 4.5;
-		return 1 - math::pow((1/($_CL+15)),0.7);
+                return 1 - math::pow((1/($_CL+15)),0.7);
             </script>
         </statScript>
         <statScript stat="evd">
             <script id="WarEVD">
                 //return math::pow(1.06, $_CL) * 4;
-		return 1 - math::pow((1/$_CL),0.05);
+                return 1 - math::pow((1/$_CL),0.05);
             </script>
         </statScript>
         <statScript stat="mag">
@@ -138,19 +128,19 @@
             <skillRef skillName="Throw"/>
         </skillTreeNode>
     </characterClass>
-	<characterClass name = "Ranger" gender="either">
+        <characterClass name = "Ranger" gender="either">
 
-		<weaponTypeRef name="Bow"/>
-		<weaponTypeRef name="Precise Bow"/>
-		<weaponTypeRef name="Great Bow"/>
-		<weaponTypeRef name="Long Bow"/>
-		<weaponTypeRef name="Master Bow"/>
-		<weaponTypeRef name="Dagger"/>
+                <weaponTypeRef name="Bow"/>
+                <weaponTypeRef name="Precise Bow"/>
+                <weaponTypeRef name="Great Bow"/>
+                <weaponTypeRef name="Long Bow"/>
+                <weaponTypeRef name="Master Bow"/>
+                <weaponTypeRef name="Dagger"/>
 
-		<armorTypeRef name="Vest"/>
-		<armorTypeRef name="Buckler"/>
-		<armorTypeRef name="Boots"/>
-		<armorTypeRef name="Hats"/>
+                <armorTypeRef name="Vest"/>
+                <armorTypeRef name="Buckler"/>
+                <armorTypeRef name="Boots"/>
+                <armorTypeRef name="Hats"/>
 
         <statScript stat="hp_max">
             <script id="RngHPMAX">
@@ -162,7 +152,7 @@
                 return 100;
             </script>
         </statScript>
-         <statScript stat="mp_max">
+        <statScript stat="mp_max">
             <script id="RngMPMAX">
                 return 0;
             </script>
@@ -175,13 +165,13 @@
         <statScript stat="dex">
             <script id="RngDEX">
                 //return math::pow(1.06, $_CL) * 5.5;
-		return 1 - pow((1/($_CL+15)),0.7);
+                return 1 - pow((1/($_CL+15)),0.7);
             </script>
         </statScript>
         <statScript stat="evd">
             <script id="RngEVD">
                 //return math::pow(1.06, $_CL) * 6;
-		return 1 - math::pow((1/$_CL),0.057);
+                return 1 - math::pow((1/$_CL),0.057);
             </script>
         </statScript>
         <statScript stat="mag">
@@ -204,12 +194,12 @@
             <skillRef skillName="Item"/>
         </skillTreeNode>
 
-		<!--statIncrease base="1.07" multiplier="18" stat="hp_max"/>
-		<statIncrease base="1.06" multiplier="4" stat="str"/>
-		<statIncrease base="1.06" multiplier="5.5" stat="dex"/>
-		<statIncrease base="1.06" multiplier="6" stat="evd"/>
-		<statIncrease base="1.06" multiplier="1" stat="mag"/>
-		<statIncrease base="1.06" multiplier="4" stat="rst"/-->
-	</characterClass>
+                <!--statIncrease base="1.07" multiplier="18" stat="hp_max"/>
+                <statIncrease base="1.06" multiplier="4" stat="str"/>
+                <statIncrease base="1.06" multiplier="5.5" stat="dex"/>
+                <statIncrease base="1.06" multiplier="6" stat="evd"/>
+                <statIncrease base="1.06" multiplier="1" stat="mag"/>
+                <statIncrease base="1.06" multiplier="4" stat="rst"/-->
+        </characterClass>
 </characterClasses>
 

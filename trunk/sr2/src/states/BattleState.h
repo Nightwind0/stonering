@@ -190,6 +190,8 @@ namespace StoneRing{
 	void draw_sprites(int z, CL_GraphicContext& GC);
 	void draw_darkness(const CL_Rectf &screenRect, CL_GraphicContext& GC);
         void draw_status_effects(CL_GraphicContext& GC);
+        
+        CL_Sprite current_sprite(ICharacter *pCharacter);
 	
 	// int is a handle
 

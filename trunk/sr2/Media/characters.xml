@@ -1,3 +1,4 @@
 ﻿<characters>
     <character name="Valyn" class="Warrior" type="living" spriteResource="Sprites/Party/Valyn" portraitResource="Sprites/Portraits/Valyn"/>
+    <character name="Torriq" class="Ranger" type="living" spriteResource="Sprites/Party/Valyn" portraitResource="Sprites/Portraits/Valyn"/>
 </characters>

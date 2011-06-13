@@ -491,7 +491,8 @@ void TargetingState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
                 || m_pParent->m_targets.selected.m_pTarget == pCharacter)
         {
             CL_Rectf rect = m_pParent->get_character_rect(pCharacter);
-            m_target_sprite.draw(GC,rect.left,rect.top);
+            m_target_sprite.set_scale(-1.0,-1.0);
+            m_target_sprite.draw(GC,rect.get_top_right().x + m_target_sprite.get_width(),rect.get_top_right().y + m_target_sprite.get_height());
                                 //(rect.top - (m_target_sprite.get_height()/2));
         }
     }
@@ -505,6 +506,7 @@ void TargetingState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
         {
             CL_Rectf rect = m_pParent->get_character_rect(pMonster);
             CL_Sprite sprite = pMonster->GetCurrentSprite();
+            m_target_sprite.set_scale(1.0,1.0);
             m_target_sprite.draw(GC,rect.left, rect.top );
                                 // rect.top - (m_target_sprite.get_height()/2.0f) + sprite.get_height()/2.0f);
         }

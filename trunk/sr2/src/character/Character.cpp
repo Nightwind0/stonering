@@ -52,6 +52,7 @@ const stat_entry statXMLLookup[] =
     {"draw_paralyzed",ICharacter::CA_DRAW_PARALYZED}, //    CA_DRAW_PARALYZED,
     {"draw_translucent",ICharacter::CA_DRAW_TRANSLUCENT},
     {"draw_mini",ICharacter::CA_DRAW_MINI},
+    {"draw_flipped",ICharacter::CA_DRAW_FLIPPED},
     {"visible", ICharacter::CA_VISIBLE},
     {"can_act", ICharacter::CA_CAN_ACT}, //   CA_CAN_ACT,
     {"can_fight",ICharacter::CA_CAN_FIGHT}, // CA_CAN_FIGHT,
