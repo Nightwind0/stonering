@@ -117,4 +117,18 @@
 	</spriteAnimation>
 	</phase>
     </animation>
+    <animation name="fire_arrow" type="battle">
+        <phase parallel="false" duration="200">
+            <spriteAnimation name="pull">
+                <spriteStub who="caster" which="main"/>
+                <spriteMovement initialFocus="caster" initialFocusX="left" initialFocusY="center" endFocus="caster" endFocusX="towards" endFocusY="center" movementDierction="still"/>
+            </spriteAnimation>
+        </phase>
+        <phase parallel="false" duration="200">
+            <spriteAnimation name="arrow">
+                <spriteRef ref="Equipment/Ammo/Arrow"/>
+                <spriteMovement initialFocus="caster" initialFocusY="center" endFocus="target" movementStyle="straight" />
+            </spriteAnimation>
+        </phase>
+    </animation>    
 </animations>

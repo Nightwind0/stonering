@@ -165,7 +165,7 @@
             <weaponType basePrice="205" name="Scimitar" baseAttack="15" hitAdd="0"  damageCategory="slash">
                 <iconRef>Weapons/scimitar</iconRef>
             </weaponType>
-            <weaponType baseAttack="10" hitAdd="-0.04" basePrice="100" name="Bow" ranged="true" baseCritical = "0.03" damageCategory="jab">
+            <weaponType baseAttack="10" hitAdd="-0.04" basePrice="100" name="Bow" ranged="true" baseCritical = "0.03" damageCategory="jab" animationRef="fire_arrow">
                 <iconRef>Weapons/bow</iconRef>
                     <animation name="fire_arrow" type="battle">
                         <phase parallel="false" duration="200">
