@@ -59,6 +59,7 @@
 	    </spriteAnimation>
 	</phase>
     </animation>
+
     <animation name="hurl_balloon" type="battle">
 	<phase parallel="false" duration="600">
 	    <spriteAnimation name="throw">

@@ -151,7 +151,8 @@ void BattleState::next_turn()
         ICharacter * iCharacter = m_initiative[m_cur_char];
         Character * pCharacter = dynamic_cast<Character*>(iCharacter);
         
-        if(!iCharacter->GetToggle(ICharacter::CA_CAN_ACT)){
+        if(!iCharacter->GetToggle(ICharacter::CA_CAN_ACT)
+           || !iCharacter->GetToggle(ICharacter::CA_ALIVE)){
             pick_next_character();
             continue;
         }
@@ -428,7 +429,7 @@ void BattleState::init_or_release_players(bool bRelease)
         Character * pCharacter = dynamic_cast<Character*>(pParty->GetCharacter(nPlayer));
         assert(pCharacter);
         std::string name = pCharacter->GetName();
-        if (!bRelease)
+        if (!bRelease) // TODO: If they're dead, their sprite should be dead.
             pCharacter->SetCurrentSprite(GraphicsManager::CreateCharacterSprite(name,"idle")); // bullshit
     }
 }
@@ -473,7 +474,7 @@ void BattleState::draw_status(const CL_Rectf &screenRect, CL_GraphicContext& GC)
     {
         ICharacter * pChar = pParty->GetCharacter(p);
         std::ostringstream name;
-        name << std::setw(16) << pChar->GetName();
+        name << std::setw(16) << std::left << pChar->GetName();
         std::ostringstream hp;
         hp << std::setw(6) << pChar->GetAttribute(ICharacter::CA_HP) << '/'
         << pChar->GetAttribute(ICharacter::CA_MAXHP);
@@ -957,8 +958,9 @@ CL_Pointf BattleState::get_monster_locus(const Monster * pMonster)const
 CL_Pointf BattleState::get_player_locus(uint nPlayer)const
 {
     CL_Pointf point;
-    point.x = m_player_rect.left + (nPlayer) * 64 + 32;
-    point.y = m_player_rect.top + (nPlayer) * 64 + 64;
+    // TODO: Get the spacing from config
+    point.x = m_player_rect.left + (nPlayer) * 32 + 32;
+    point.y = m_player_rect.top + (nPlayer) * 64;
     return point;
 }
 

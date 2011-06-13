@@ -56,6 +56,7 @@ namespace StoneRing{
         virtual void   PermanentAugment(eCharacterAttribute attr, double augment);
         virtual void   Attacked();
         virtual void   Kill();
+        virtual void   Raise();
         virtual void   AddStatusEffect(StatusEffect *);
         virtual void   RemoveEffect(StatusEffect *);
         virtual double StatusEffectChance(StatusEffect *)const;

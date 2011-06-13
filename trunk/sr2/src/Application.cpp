@@ -401,7 +401,7 @@ SteelType Application::raise(SteelType::Handle hICharacter)
 {
     ICharacter * iCharacter = GrabHandle<ICharacter*>(hICharacter);
     
-    iCharacter->SetToggle(ICharacter::CA_ALIVE,true);
+    iCharacter->Raise();
     
     return SteelType();
 }

@@ -107,6 +107,7 @@ namespace StoneRing
         virtual void RollInitiative(void);
         virtual uint GetInitiative(void)const;
         virtual void Kill();
+        virtual void Raise();
         virtual void Attacked();
 
         virtual CL_Pointf GetBattlePos() const;

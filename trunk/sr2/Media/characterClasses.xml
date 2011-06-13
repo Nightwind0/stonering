@@ -129,7 +129,34 @@
         </skillTreeNode>
     </characterClass>
         <characterClass name = "Ranger" gender="either">
-
+        <battleMenu type="popup">
+            <battleMenuOption name="Attack" icon="attack">
+                <conditionScript id="RangerAttackOptionCondition">
+                    return  getCharacterToggle($Character,$_CAN_FIGHT) and
+                        (hasEquipment($Character, $_HAND)
+                        or
+                        hasEquipment($Character, $_OFFHAND));
+                </conditionScript>
+                <skillRef skillName="Attack"/>
+            </battleMenuOption>
+            <battleMenuOption name="Item" icon="item">
+                <conditionScript id="RangerItemCondition">
+                    return  getCharacterToggle($Character,$_CAN_ITEM);
+                </conditionScript>
+                <skillRef skillName="Item"/>
+            </battleMenuOption>
+        <battleMenuOption name="Flee" icon="flee">
+                <conditionScript id="RangerFleeCondition">
+                    <![CDATA[
+                        return 
+                        getCharacterToggle($Character,$_CAN_RUN) 
+                        and
+                        !battle::isBossBattle();
+                        ]]>
+                </conditionScript>
+                <skillRef skillName="Flee"/>
+            </battleMenuOption>            
+        </battleMenu>
                 <weaponTypeRef name="Bow"/>
                 <weaponTypeRef name="Precise Bow"/>
                 <weaponTypeRef name="Great Bow"/>
@@ -165,7 +192,7 @@
         <statScript stat="dex">
             <script id="RngDEX">
                 //return math::pow(1.06, $_CL) * 5.5;
-                return 1 - pow((1/($_CL+15)),0.7);
+                return 1 - math::pow((1/($_CL+15)),0.7);
             </script>
         </statScript>
         <statScript stat="evd">
@@ -184,6 +211,11 @@
                 return math::pow(1.06,$_CL) * 4;
             </script>
         </statScript>
+        <statScript stat="lck">
+            <script id="RngLCK">
+                return  math::pow(1.06,$_CL) * 4.3;
+            </script>
+        </statScript>        
         <skillTreeNode>
             <skillRef skillName="Attack"/>
         </skillTreeNode>

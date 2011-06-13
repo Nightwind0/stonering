@@ -245,6 +245,12 @@
                 var @enemies = battle::getCharacterGroup(false);
                 var $which = math::rand() % len(@enemies);
                 var $pTarget = @enemies[$which];
+                // TODO: Make this into a function
+                while(!getCharacterToggle($pTarget, $_ALIVE))
+                {
+                    $which = math::rand() % len(@enemies);
+                    $pTarget = @enemies[$which];
+                }
                 var $name = getCharacterName($Character);
                 battle::doTargetedAnimation($Character,$pTarget,getAnimation("move_to_attack"));
                 battle::doTargetedAnimation($Character,$pTarget,getAnimation("attack"));

@@ -152,7 +152,10 @@
                 <section name="Weapon">
                     <image name="basic_sword">
                         <image-file file="Images/Icons/W_Sword001.png"/>
-                    </image>			    
+                    </image>
+                    <image name="basic_bow">
+                        <image-file file="Images/Icons/W_Bow01.png"/>
+                    </image>
                 </section>
                 <section name="Armor">
                     <image name="poisonshield">
@@ -214,7 +217,7 @@
                 <section name="rects">
                     <rect name="menu" left="479" right="752" top="43" bottom="363"/>
                     <rect name="party" left="12" right="484" top="24" bottom="191"/>
-                    <rect name="character" left="30" right="484" top="30" bottom="191"/>
+                    <rect name="character" left="30" right="484" top="30" bottom="570"/>
                 </section>
             </section>
             <section name="ItemSelect">
@@ -247,9 +250,9 @@
                             <point name="status_effect_spacing" x="8" y="8"/>
                         </section>
                         <section name="rects">
-                            <rect name="text" left="12" right="484" top="24" bottom="191"/>
+                            <rect name="text" left="24" right="484" top="24" bottom="191"/>
                             <rect name="monster" left="0" top="0" right="528" bottom="396"/>
-                            <rect name="player" left="594" top="64" right="800" bottom="396"/>
+                            <rect name="player" left="564" top="128" right="800" bottom="440"/>
                         </section>
                         <section name="colors">
                             <string name="status_effect_shadow" value="#00000070"/>
@@ -393,6 +396,9 @@
                                 <sprite name="Sword">
                                         <image file="Images/Items/Weapons/basic_sword.png"></image>
                                 </sprite>
+                                <sprite name="Bow">
+                                    <image file="Images/Items/Weapons/basic_bow.png"></image>
+                                </sprite>
                         </section>
                         <section name="Ammo">
                                 <sprite name="Balloon_cyan">
@@ -402,6 +408,9 @@
                                         <image file="Sprites/balloon_pop.png">
                                                 <grid pos="0,0" size="128,128" array="4,1"/>
                                         </image>
+                                </sprite>
+                                <sprite name="Arrow">
+                                    <image file="Images/Items/Ammo/arrow.png"/>
                                 </sprite>
                         </section>
                 </section>
@@ -418,6 +427,11 @@
                             <grid pos="0,0" size="128,128" array="3,2"/>
                         </image>
                     </sprite>
+                    <sprite name="Torriq" hint="alpha">
+                        <image file="Images/Portrait/Valyn.png">
+                            <grid pos="0,0" size="128,128" array="3,2"/>
+                        </image>
+                    </sprite>                    
                 </section>
                 <section name="tiles">
                         <sprite name="Lava" hint="alpha">
@@ -428,13 +442,6 @@
                         </sprite>
                 </section>
                 <section name="BattleSprites">
-                        <section name="Garian">
-                                <sprite name="idle" hint="alpha">
-                                        <image file="Sprites/garian_battle_demo.png">
-                                                <grid pos="0,0" size="209,256" array="1,1"/>
-                                        </image>
-                                </sprite>
-                        </section>
                         <section name="Valyn">
                                 <sprite name="idle" hint="alpha">
                                         <animation pingpong="yes" speed="600"/>
@@ -447,9 +454,35 @@
                                                 <grid pos="450,0" size="150,240" array="1,1"/>
                                         </image>
                                 </sprite>
-                                <sprite name="dead" hint="alpha">
+                                <sprite name="dead">
+                                        <image file="Sprites/Party/valyn_dead.png"/>
+                                </sprite>
+                                <sprite name="recoil" hint="alpha">
                                         <image file="Sprites/Party/valyn_battle.png">
-                                                <grid pos="450,240" size="150,240" array="1,1"/>
+                                                <grid pos="160,0" size="80,160" array="3,1"/>
+                                        </image>
+                                </sprite>
+                                <sprite name="attack">
+                                        <animation speed="300"/>
+                                        <image file="Sprites/Party/valyn_battle.png">
+                                                <grid pos="0,240" size="150,240" array="2,1"/>
+                                        </image>
+                                </sprite>
+                        </section>
+                        <section name="Torriq">
+                                <sprite name="idle" hint="alpha">
+                                        <animation pingpong="yes" speed="600"/>
+                                        <image file="Sprites/Party/valyn_battle.png">
+                                                <grid pos="0,0" size="80,160" array="2,1"/>
+                                        </image>
+                                </sprite>
+                                <sprite name="weak" hint="alpha">
+                                        <image file="Sprites/Party/valyn_battle.png">
+                                                <grid pos="450,0" size="150,240" array="1,1"/>
+                                        </image>
+                                </sprite>
+                                <sprite name="dead" hint="alpha">
+                                        <image file="Sprites/Party/valyn_dead.png">
                                         </image>
                                 </sprite>
                                 <sprite name="recoil" hint="alpha">
@@ -464,6 +497,7 @@
                                         </image>
                                 </sprite>
                         </section>
+
                 </section>
                 <section name="Animals">
                         <sprite name="Cat2" hint="alpha">
