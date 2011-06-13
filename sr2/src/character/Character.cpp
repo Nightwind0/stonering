@@ -226,7 +226,7 @@ void StoneRing::Character::RemoveBattleStatusEffects()
     for(StatusEffectMap::iterator iter = m_status_effects.begin();
         iter != m_status_effects.end(); iter++)
         {
-            if(iter->second->GetLast() != StatusEffect::PERMANENT)
+            if(iter->second->GetLast() == StatusEffect::PERMANENT)
                 RemoveEffect(iter->second);
         }
 }
@@ -471,8 +471,14 @@ bool StoneRing::Character::GetToggle(eCharacterAttribute attr) const
                 base = base || iter->second->GetAttributeToggle(attr, base);
         }   
         
-        // TODO: Iterate equipment too
-
+    for(std::map<Equipment::eSlot,Equipment*>::const_iterator iter = m_equipment.begin();
+        iter != m_equipment.end(); iter++)
+        {
+            if(ToggleDefaultTrue(attr))
+                 base = base && iter->second->GetAttributeToggle(attr, base);
+            else
+                base = base || iter->second->GetAttributeToggle(attr, base);              
+        }
     return base;
 }
 
@@ -590,10 +596,7 @@ double StoneRing::Character::StatusEffectChance(StoneRing::StatusEffect *pEffect
 }
 
 void StoneRing::Character::StatusEffectRound()
-{
-
-
-    
+{   
     for(StatusEffectMap::iterator iter = m_status_effects.begin();
         iter != m_status_effects.end(); iter++)
         {
@@ -609,8 +612,23 @@ void StoneRing::Character::StatusEffectRound()
                 else
                     RemoveEffect(pEffect); // Times up!
             }
+            else
+            {
+                iter->second->Round(params);
+            }
         }
 }
+
+void StoneRing::Character::IterateStatusEffects ( Visitor< StoneRing::StatusEffect* >& visitor)
+{
+    for(StatusEffectMap::iterator iter = m_status_effects.begin();
+        iter != m_status_effects.end();
+        iter++)
+        {
+            visitor.Visit(iter->second);
+        }
+}
+
 
 
 StoneRing::BattleMenu * StoneRing::Character::GetBattleMenu() const

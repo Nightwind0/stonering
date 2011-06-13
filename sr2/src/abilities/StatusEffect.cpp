@@ -120,6 +120,11 @@ uint StoneRing::StatusEffect::GetRoundCount() const
     return m_nRoundCount;
 }
 
+CL_Sprite StatusEffect::GetIcon() const
+{
+    return m_icon;
+}
+
 
 // Multiply the magic power of the user by this using an algorithm to get length..
 float StoneRing::StatusEffect::GetLengthMultiplier() const

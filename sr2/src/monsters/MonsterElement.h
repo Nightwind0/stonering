@@ -17,7 +17,6 @@ class ItemRef;
 class NamedScript;
 class Stat;
 
-
 class MonsterElement : public Element
 {
 public:
@@ -42,7 +41,7 @@ public:
     std::list<ItemRef*>::const_iterator GetItemRefsBegin() const;
     std::list<ItemRef*>::const_iterator GetItemRefsEnd() const;
 
-    const Stat* GetStat(ICharacter::eCharacterAttribute attr) const;
+    double GetStat(ICharacter::eCharacterAttribute attr) const;
 
     DamageCategory::eDamageCategory GetDefaultDamageCategory(void) const { return m_eDamageCategory; }
 
@@ -78,13 +77,7 @@ private:
 
 };
 
-inline const Stat * MonsterElement::GetStat(ICharacter::eCharacterAttribute attr) const{
-    std::map<ICharacter::eCharacterAttribute,Stat*>::const_iterator it = m_stat_map.find(attr);
 
-    if(it != m_stat_map.end())
-    return it->second;
-    else return NULL;
-}
 
 }
 

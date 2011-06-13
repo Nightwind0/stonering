@@ -119,6 +119,8 @@ namespace StoneRing{
         virtual CL_Pointf       GetBattlePos()const=0;
         virtual void           SetBattlePos(CL_Pointf point)=0;
 	virtual CL_Sprite GetCurrentSprite() const=0;
+        
+        virtual void   IterateStatusEffects(Visitor<StatusEffect*> &)=0;
 
         // Static API
         static eCharacterAttribute CharAttributeFromString(const std::string &str);

@@ -178,3 +178,20 @@ std::string MonsterElement::GetName() const
 {
     return m_name;
 }
+
+
+double MonsterElement::GetStat(ICharacter::eCharacterAttribute attr) const{
+    
+    if(m_bClass)
+    {
+        return m_pClass->GetStat(attr,m_nLevel);
+    }
+    else
+    {
+        std::map<ICharacter::eCharacterAttribute,Stat*>::const_iterator it = m_stat_map.find(attr);
+
+        if(it != m_stat_map.end())
+        return it->second->GetStat();
+        else return 0.0;
+    }
+}
