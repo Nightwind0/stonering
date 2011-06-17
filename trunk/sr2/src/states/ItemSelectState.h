@@ -55,6 +55,7 @@ namespace StoneRing
 	eArrowState m_eArrowState;
 	CL_Rectf m_rect;
 	CL_Rectf m_header_rect;
+        CL_Rectf m_text_rect;
         CL_Image m_overlay;
 	int m_typemask;
 	bool m_battle;
@@ -65,6 +66,7 @@ namespace StoneRing
         StoneRing::Font m_optionFont;
         StoneRing::Font m_currentOptionFont;	
 	StoneRing::Font m_unavailableOption;
+        StoneRing::Font m_descriptionFont;
 	bool m_bDone;
     };
 

@@ -27,6 +27,7 @@ namespace StoneRing{
 	virtual CL_Image GetIcon() const { return NamedItemElement::GetIcon(); }
 	virtual uint GetMaxInventory() const { return NamedItemElement::GetMaxInventory(); }
 	virtual eDropRarity GetDropRarity() const { return NamedItemElement::GetDropRarity(); }
+        virtual std::string GetDescription() const { return m_description; }
 
         virtual eItemType GetItemType() const { return WEAPON ; }
         virtual bool operator == ( const ItemRef &ref );
@@ -39,6 +40,7 @@ namespace StoneRing{
         WeaponType * m_pWeaponType;
         float m_value_multiplier;
         uint m_nValue;
+        std::string m_description;
         ScriptElement *m_pScript;
         NamedScript *m_pEquipScript;
         NamedScript *m_pUnequipScript;

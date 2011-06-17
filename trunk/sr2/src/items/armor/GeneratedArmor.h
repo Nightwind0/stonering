@@ -21,6 +21,7 @@ namespace StoneRing{
         virtual uint GetValue() const ;
         virtual uint GetSellValue() const ;
         virtual eItemType GetItemType() const { return ARMOR ; }
+        virtual std::string GetDescription() const;
 
         ArmorType * GetArmorType() const ;
         ArmorClass * GetArmorClass() const { return m_pClass; }

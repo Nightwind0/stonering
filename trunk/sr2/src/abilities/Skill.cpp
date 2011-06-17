@@ -25,6 +25,8 @@ void StoneRing::Skill::load_attributes(CL_DomNamedNodeMap attributes)
     m_name = get_required_string("name",attributes);
     m_nBp = get_implied_int("bp",attributes,0);
     m_nMp = get_implied_int("mp",attributes,0);
+    if(m_nBp && m_nMp)
+        throw CL_Exception("Skill " + m_name + " has both BP and MP cost (Not allowed)");
     m_eType = TypeFromString(get_implied_string("type",attributes,"battle"));
     m_bAllowsGroupTarget = get_implied_bool("allowsGroupTarget",attributes,false);
     m_bDefaultToEnemyGroup = get_implied_bool("defaultToEnemyGroup", attributes,true);
@@ -51,6 +53,8 @@ void StoneRing::Skill::Invoke(ICharacter* pCharacter,const ParameterList& params
     if(m_pOnInvoke)
     {
         m_pOnInvoke->ExecuteScript(params);
+        pCharacter->PermanentAugment(ICharacter::CA_BP, -static_cast<double>(m_nBp));
+        pCharacter->PermanentAugment(ICharacter::CA_MP, -static_cast<double>(m_nMp));
     }
     else
     {

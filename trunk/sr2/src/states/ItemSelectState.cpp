@@ -171,13 +171,13 @@ void ItemSelectState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
 	    iter->second.draw(GC,m_header_rect.left + i * each_width + offset,m_header_rect.top);
 	    ++i;
 	}
-    
+ 
    
 }
 
 bool ItemSelectState::LastToDraw() const // Should we continue drawing more states?
 {
-	return false;
+	return true;
 }
 
 bool ItemSelectState::DisableMappableObjects() const // Should the app move the MOs?
@@ -198,11 +198,13 @@ void ItemSelectState::Start()
     m_bDone = false;
     m_header_rect = GraphicsManager::GetRect(GraphicsManager::ITEMS,"header");
     m_rect = GraphicsManager::GetRect(GraphicsManager::ITEMS,"list");
+    m_text_rect = GraphicsManager::GetRect(GraphicsManager::ITEMS,"text");
 
     
     m_optionFont = GraphicsManager::GetFont(GraphicsManager::ITEMS,"Option");
     m_currentOptionFont = GraphicsManager::GetFont(GraphicsManager::ITEMS,"Selection"); 
     m_unavailableOption = GraphicsManager::GetFont(GraphicsManager::ITEMS,"Unavailable");
+    m_descriptionFont = GraphicsManager::GetFont(GraphicsManager::ITEMS,"Description");
     
     m_overlay = GraphicsManager::GetOverlay(GraphicsManager::ITEMS);
     
@@ -278,6 +280,9 @@ void ItemSelectState::draw_option(int option, bool selected, float x, float y, C
 	    m_optionFont.draw_text(gc,x + icon_width+12,y,text.str(), Font::TOP_LEFT);
 	}
     }
+
+    if(selected)
+        draw_text(gc,m_descriptionFont,m_text_rect, pItem->GetDescription());
     
 }
 

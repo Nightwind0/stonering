@@ -34,7 +34,7 @@
         </script>
         </onInvoke>
     </skill>
-        <skill bp="0" name="Throw" sp="12">
+        <skill mp="2" name="Throw" sp="12">
         <onInvoke>
             <script id="HurlScript">
                 <![CDATA[ 
@@ -242,14 +242,12 @@
         <onInvoke>
             <script id="MonsterBasicAttackInvoke">
             <![CDATA[
+                require("Media/Scripts/functions.steel");
                 var @enemies = battle::getCharacterGroup(false);
-                var $which = math::rand() % len(@enemies);
-                var $pTarget = @enemies[$which];
-                // TODO: Make this into a function
-                while(!getCharacterToggle($pTarget, $_ALIVE))
-                {
-                    $which = math::rand() % len(@enemies);
-                    $pTarget = @enemies[$which];
+                var $pTarget = pickTarget(@enemies);
+                if(!is_valid($pTarget) or !getCharacterToggle($Character,$_CAN_FIGHT)){
+                    battle::finishTurn(); // No valid targets
+                    return;
                 }
                 var $name = getCharacterName($Character);
                 battle::doTargetedAnimation($Character,$pTarget,getAnimation("move_to_attack"));

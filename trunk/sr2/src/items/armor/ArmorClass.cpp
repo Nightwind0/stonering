@@ -29,6 +29,12 @@ void ArmorClass::load_attributes(CL_DomNamedNodeMap attributes)
     m_bImbuement = get_implied_bool("imbuement",attributes,false);
 }
 
+std::string ArmorClass::GetDescription() const
+{
+    return m_desc;
+}
+
+
 bool ArmorClass::handle_element(eElement element, Element * pElement)
 {
     switch(element)

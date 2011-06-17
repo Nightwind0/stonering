@@ -24,3 +24,28 @@ function tryStatusEffect(declare $hTarget, declare $status_name)
         return false;
     }
 }
+
+function shuffle(declare @array)
+{
+    declare @result[len(@array)];
+    declare $i = 0;
+    while(len(@array)){
+        declare $r = math::rand() % len(@array);
+        @result[$i++] = remove(@array,$r);
+    }
+    return @result;
+}
+
+function pickTarget(declare @enemies)
+{
+        @enemies = shuffle(@enemies);
+        var $i = 0;
+        var $pTarget = @enemies[0];
+        while(!getCharacterToggle($pTarget,$_ALIVE) || !getCharacterToggle($pTarget,$_VISIBLE))
+        {
+            $pTarget = @enemies[++$i];
+            if($i == len(@enemies))
+                return 0;
+        }
+        return $pTarget;
+}

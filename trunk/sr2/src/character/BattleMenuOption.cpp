@@ -132,3 +132,23 @@ void BattleMenuOption::load_attributes(CL_DomNamedNodeMap attributes)
     m_icon = GraphicsManager::GetIcon( get_implied_string("icon",attributes,"no_icon") );
 }
 
+int BattleMenuOption::GetBPCost() const
+{
+    if(m_action_type == SKILLREF)
+    {
+        return m_action.m_pSkillRef->GetSkill()->GetBPCost();
+    }
+    
+    return 0;
+}
+
+int BattleMenuOption::GetMPCost() const
+{
+    if(m_action_type == SKILLREF)
+    {
+        return m_action.m_pSkillRef->GetSkill()->GetMPCost();
+    }
+    
+    return 0;
+}
+

@@ -15,6 +15,12 @@ m_pUnequipScript(NULL),m_pConditionScript(NULL),m_eScriptMode(Weapon::ATTACK_BEF
 {
 }
 
+std::string WeaponClass::GetDescription() const
+{
+    return m_desc;
+}
+
+
 void WeaponClass::load_attributes(CL_DomNamedNodeMap attributes)
 {
     m_name = get_required_string("name",attributes );

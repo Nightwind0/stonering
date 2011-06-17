@@ -77,6 +77,14 @@ uint GeneratedWeapon::GetMaxInventory() const
     return 99;
 }
 
+std::string GeneratedWeapon::GetDescription() const
+{
+    if(m_pImbuement)
+    return m_pType->GetName() + " " + m_pClass->GetDescription() + " " + m_pImbuement->GetDescription();
+    else return m_pType->GetName() + " " + m_pClass->GetDescription();
+}
+
+
 Item::eDropRarity
 GeneratedWeapon::GetDropRarity() const
 {
