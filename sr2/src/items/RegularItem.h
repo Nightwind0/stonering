@@ -37,7 +37,7 @@ namespace StoneRing{
         virtual void LoadItem ( CL_DomElement * pElement );
         static eUseType UseTypeFromString ( const std::string &str );
         static eTargetable TargetableFromString ( const std::string &str );
-	
+	virtual std::string GetDescription() const { return m_description; }
         virtual bool operator == ( const ItemRef &ref );	
     private:
         virtual bool handle_element(eElement element, Element * pElement );
@@ -48,6 +48,7 @@ namespace StoneRing{
         uint m_nValue;
         uint m_nSellValue;
         bool m_bReusable;
+        std::string m_description;
         eDefaultTarget m_eDefaultTarget;
     };
 

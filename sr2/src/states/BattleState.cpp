@@ -481,7 +481,7 @@ void BattleState::draw_status(const CL_Rectf &screenRect, CL_GraphicContext& GC)
         Font generalFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_STATUS,"general");
         Font  hpFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_STATUS,"hp");
         Font  mpFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_STATUS,"mp");
-\
+
 
         generalFont.draw_text(GC,m_status_rect.left,
                               m_status_rect.top + generalFont.get_font_metrics(GC).get_height() +(p *
@@ -958,8 +958,10 @@ CL_Pointf BattleState::get_monster_locus(const Monster * pMonster)const
 CL_Pointf BattleState::get_player_locus(uint nPlayer)const
 {
     CL_Pointf point;
+    const uint partySize = IApplication::GetInstance()->GetParty()->GetCharacterCount();
+    double each_player = m_player_rect.get_width() / partySize;
     // TODO: Get the spacing from config
-    point.x = m_player_rect.left + (nPlayer) * 32 + 32;
+    point.x = m_player_rect.left + (nPlayer) * each_player + (each_player/2.0);
     point.y = m_player_rect.top + (nPlayer) * 64;
     return point;
 }

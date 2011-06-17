@@ -55,6 +55,7 @@ namespace StoneRing{
         virtual eItemType GetItemType() const = 0;
         virtual uint GetMaxInventory() const = 0;
         virtual eDropRarity GetDropRarity() const = 0;
+        virtual std::string GetDescription() const = 0;
 
         virtual CL_Image GetIcon() const = 0;
 

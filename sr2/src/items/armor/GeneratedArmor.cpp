@@ -17,6 +17,13 @@ GeneratedArmor::~GeneratedArmor()
 {
 }
 
+std::string GeneratedArmor::GetDescription() const
+{
+    if(m_pImbuement)
+    return m_pType->GetName() + " " + m_pClass->GetDescription() + " " + m_pImbuement->GetDescription();
+    else return m_pType->GetName() + " " + m_pClass->GetDescription();
+}
+
 CL_Image GeneratedArmor::GetIcon() const
 {
     return GraphicsManager::GetIcon(m_pType->GetIconRef());

@@ -167,20 +167,6 @@
             </weaponType>
             <weaponType baseAttack="10" hitAdd="-0.04" basePrice="100" name="Bow" ranged="true" baseCritical = "0.03" damageCategory="jab" animationRef="fire_arrow">
                 <iconRef>Weapons/bow</iconRef>
-                    <animation name="fire_arrow" type="battle">
-                        <phase parallel="false" duration="200">
-                            <spriteAnimation name="pull">
-                                <spriteStub who="caster" which="main"/>
-                                <spriteMovement initialFocus="caster" initialFocusX="left" initialFocusY="center" endFocus="caster" endFocusX="towards" endFocusY="center" movementDierction="still"/>
-                            </spriteAnimation>
-                        </phase>
-                        <phase parallel="false" duration="200">
-                            <spriteAnimation name="arrow">
-                                <spriteRef ref="Equipment/Ammo/Arrow"/>
-                                <spriteMovement initialFocus="caster" initialFocusY="center" endFocus="target" movementStyle="straight" />
-                            </spriteAnimation>
-                        </phase>
-                    </animation>
             </weaponType>
             <weaponType baseAttack="10" hitAdd="0" basePrice="300" name="Precise Bow" ranged="true"  damageCategory="jab">
                 <iconRef>Weapons/precisebow</iconRef>
@@ -324,7 +310,7 @@
 
 
 
-                <regularItem name="Moon Seed" dropRarity="common" value = "60" reusable="false" targetable="single" use="both"  defaultTarget="party">
+                <regularItem name="Moon Seed" dropRarity="common" value = "60" reusable="false" targetable="single" use="both"  defaultTarget="party" description="Restores 25 MP.">
                     <iconRef>Items/moonseed</iconRef>
                     <script id="Moonseed">
                         doMPDamage(@_Targets[0],-25);
@@ -336,7 +322,7 @@
                         //play some sound
                     </script>
                 </regularItem>
-                <regularItem name="Sun Seed" dropRarity="common" value = "50" reusable="false" targetable="single" use="both"  defaultTarget="party">
+                <regularItem name="Sun Seed" dropRarity="common" value = "50" reusable="false" targetable="single" use="both"  defaultTarget="party" description="Restores 25 HP.">
                     <iconRef>Items/sunseed</iconRef>
                     <script id="Sunseed">
                         doDamage(@_Targets[0],-25);
@@ -353,7 +339,7 @@
 
                     </script>
                 </regularItem>	
-                <regularItem name="Star Chip" dropRarity="common" value = "1200" reusable="false" targetable="single" use="both"  defaultTarget="party">
+                <regularItem name="Star Chip" dropRarity="common" value = "1200" reusable="false" targetable="single" use="both"  defaultTarget="party" description="Restore life to the deceased.">
                     <iconRef>Items/sunseed</iconRef>
                     <script id="Starchip">
                         raise(@_Targets[0]);
@@ -365,7 +351,7 @@
                         }
                     </script>
                 </regularItem>
-                <regularItem name="Antidote" dropRarity="common" value="65" reusable="false" targetable="single" use="both" defaultTarget="party">
+                <regularItem name="Antidote" dropRarity="common" value="65" reusable="false" targetable="single" use="both" defaultTarget="party" description="Cure Poison.">
                     <iconRef>Items/antidote</iconRef>
                     <script id="Antidote">
                         removeStatusEffect(@_Targets[0],getStatusEffect("Poison"));

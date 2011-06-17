@@ -46,6 +46,8 @@
                 <freetype name="sb_purple" size="24" color="#680090" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
                 <freetype name="sb_red" size="24" color="#FF0000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
                 <freetype name="sb_cyan" size="24" color="#00FFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+                <freetype name="sm_cyan" size="14" color="#00FFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+                <freetype name="sm_blue" size="14" color="#000080" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
                 <freetype name="mono_green" size="24" color="#00A000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
                 <freetype name="mono_black" size="24" color="#000000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
                 <freetype name="mono_gray" size="24" color="#636363" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>		
@@ -226,12 +228,14 @@
                 </image>
                 <section name="rects">
                     <rect name="header" left="80" right="720" top="26" bottom="50"/>
-                    <rect name="list" left="20" right="752" top="86" bottom="363"/>
+                    <rect name="list" left="20" right="752" top="86" bottom="532"/>
+                    <rect name="text" left="26" right="752" top="540" bottom="584"/>
                 </section>
                 <section name="fonts">
                         <string name="Option" value="BoldMonoGray"/>
                         <string name="Selection" value="BoldMonoWhite"/>
                         <string name="Unavailable" value="BoldMonoDark"/>
+                        <string name="Description" value="BoldWhite"/>
                 </section>		
             </section>
                 <section name="BattleStatus">
@@ -264,15 +268,17 @@
                         </image>
                         <section name="points">
                             <point name="origin" x="476" y="396"/>
+                            <point name="cost_spacing" x="20" y="0"/>
                         </section>
                         <section name="rects">
-                            <rect name="text" left="14" right="312" top="20" bottom="192"/>
-
+                            <rect name="text" left="14" right="290" top="20" bottom="192"/>
                         </section>
                         <section name="fonts">
                                 <string name="on" value="BoldGray"/>
                                 <string name="off" value="BoldBlack"/>
                                 <string name="Selection" value="BoldWhite"/>
+                                <string name="bp"     value="sm_blue"/>
+                                <string name="mp"     value="sm_cyan"/>
                         </section>
                 </section>
                 <section name="BattleMenu">
@@ -472,7 +478,7 @@
                         <section name="Torriq">
                                 <sprite name="idle" hint="alpha">
                                         <animation pingpong="yes" speed="600"/>
-                                        <image file="Sprites/Party/valyn_battle.png">
+                                        <image file="Sprites/Party/torriq_battle.png">
                                                 <grid pos="0,0" size="80,160" array="2,1"/>
                                         </image>
                                 </sprite>

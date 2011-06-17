@@ -59,8 +59,11 @@ namespace StoneRing
         Font m_onFont;
         Font m_offFont;
         Font m_selectedFont;
+        Font m_bpFont;
+        Font m_mpFont;
         Character *m_pCharacter;
         CL_Rectf m_rect;
+        CL_Pointf m_cost_spacing;
         int m_font_height;
         ParameterList m_params;
     };

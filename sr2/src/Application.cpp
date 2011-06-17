@@ -1528,6 +1528,7 @@ void Application::registerSteelFunctions()
     steelConst ( "$_CAN_ITEM", Character::CA_CAN_ITEM );
     steelConst ( "$_CAN_RUN", Character::CA_CAN_RUN );
     steelConst ( "$_ALIVE", Character::CA_ALIVE );
+    steelConst ( "$_VISIBLE", Character::CA_VISIBLE );
 
     steelConst ( "$_MAXHP", Character::CA_MAXHP );
     steelConst ( "$_MAXMP", Character::CA_MAXMP );

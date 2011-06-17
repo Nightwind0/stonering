@@ -33,6 +33,8 @@ namespace StoneRing
         void Select(BattleMenuStack& stack, const ParameterList& params, Character * pCharacter);
         void Deselect(BattleMenuStack& stack); // For backing out of a selection
         bool Visible(Character * pCharacter);
+        int  GetMPCost() const;
+        int  GetBPCost() const;
     private:
         virtual bool handle_element(eElement, Element *);
         virtual void load_attributes(CL_DomNamedNodeMap );

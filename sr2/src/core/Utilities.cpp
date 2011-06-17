@@ -61,6 +61,7 @@ CL_Size get_text_size(const StoneRing::Font& font, CL_GraphicContext &gc, const 
 int draw_text(CL_GraphicContext& gc,StoneRing::Font &font, CL_Rectf rect, CL_StringRef string, uint string_pos)
 {
     CL_StringRef str = string.substr(string_pos);
+    if(!str.size()) return 0;
     CL_FontMetrics metrics = const_cast<StoneRing::Font&>(font).get_font_metrics(gc);
 
     //CL_Size testSize = font.get_text_size(gc,"Hello Hello");
@@ -90,7 +91,7 @@ int draw_text(CL_GraphicContext& gc,StoneRing::Font &font, CL_Rectf rect, CL_Str
                 str[space] = '\n';
             }else{
                 // no space... gonna have to cut it off here by inserting a newline
-                str = str.substr(0,max_characters) + "\n" + str.substr(max_characters);
+                str = str.substr(0,max_characters-1) + '\n' + str.substr(max_characters-1);
             }
             --max_characters;
             continue;

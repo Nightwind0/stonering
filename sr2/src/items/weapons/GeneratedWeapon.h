@@ -26,6 +26,7 @@ namespace StoneRing{
 
         virtual void Invoke(eScriptMode invokeTime, const ParameterList& param);
         virtual bool EquipCondition(const ParameterList& param);
+        virtual std::string GetDescription()const;
 
         // Weapon interface
         WeaponType * GetWeaponType() const;

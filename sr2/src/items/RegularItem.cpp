@@ -98,6 +98,8 @@ void RegularItem::load_attributes(CL_DomNamedNodeMap attributes)
     m_nValue = get_required_int("value",attributes);
 
     m_nSellValue = m_nValue / 2;
+    
+    m_description = get_implied_string("description",attributes,"");
 
     std::string useType = get_required_string("use",attributes);
     m_eUseType = UseTypeFromString ( useType );
