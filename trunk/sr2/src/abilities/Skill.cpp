@@ -8,6 +8,7 @@
 #include "ActionQueue.h"
 #include "NamedScript.h"
 #include "GraphicsManager.h"
+#include "Description.h"
 
 using namespace StoneRing;
 
@@ -31,7 +32,6 @@ void StoneRing::Skill::load_attributes(CL_DomNamedNodeMap attributes)
     m_bAllowsGroupTarget = get_implied_bool("allowsGroupTarget",attributes,false);
     m_bDefaultToEnemyGroup = get_implied_bool("defaultToEnemyGroup", attributes,true);
     m_pIcon = GraphicsManager::GetIcon(get_implied_string("icon",attributes,"no_icon"));
-    m_description = get_implied_string("desc",attributes, "");
 }
 
 uint Skill::GetMPCost() const
@@ -89,6 +89,9 @@ bool StoneRing::Skill::handle_element(eElement element, Element * pElement)
         break;
     case ECONDITIONSCRIPT:
         m_pCondition = dynamic_cast<NamedScript*>(pElement);
+        break;
+    case EDESCRIPTION:
+        m_description = (dynamic_cast<Description*>(pElement))->GetText();
         break;
     default:
         return false;
@@ -191,11 +194,25 @@ SkillTreeNode* SkillTreeNode::GetParent() const
 
 bool SkillTreeNode::CanLearn ( Character* pCharacter )
 {
-    if(pCharacter->GetLevel() >= m_nMinLevel)
-        return true;
-    else return false;
+    if(pCharacter->GetLevel() < m_nMinLevel)
+        return false;
     
-    // TODO: Shove character into parameters, call condition script
+    if(m_parent)
+    {
+        // They have to have the parent skill. That's how trees work, you see.
+        if(!pCharacter->HasSkill(*m_parent->GetRef()))
+            return false;
+    }
+    
+    if(m_pCondition)
+    {
+        ParameterList params;
+        params.push_back(ParameterListItem("$_Character",pCharacter));
+        return m_pCondition->EvaluateCondition(params);
+    } 
+    
+    return true;
+    
 }
 
 SkillRef* SkillTreeNode::GetRef() const
@@ -235,5 +252,14 @@ bool SkillTreeNode::handle_element ( Element::eElement element, Element* pElemen
 }
 
 
+std::list< SkillTreeNode* >::const_iterator SkillTreeNode::GetSubSkillsBegin() const
+{
+    return m_sub_skills.begin();
+}
+
+std::list< SkillTreeNode* >::const_iterator SkillTreeNode::GetSubSkillsEnd() const
+{
+    return m_sub_skills.end();
+}
 
 

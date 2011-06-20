@@ -27,6 +27,7 @@
 #include "UtilityScripts.h"
 #include "ItemSelectState.h"
 #include "DynamicMenuState.h"
+#include "SkillTreeState.h"
 
 namespace StoneRing
 {
@@ -168,6 +169,7 @@ namespace StoneRing
 	SteelType showExperience(const SteelArray&  characters, const SteelArray& xp_gained,
 				 const SteelArray& oldLevels);
         SteelType menu(const SteelArray& options);
+        SteelType skilltree(SteelType::Handle hCharacter);
 
 
 
@@ -217,6 +219,7 @@ namespace StoneRing
 	ExperienceState mExperienceState;
 	MainMenuState  mMainMenuState;
 	ItemSelectState mItemSelectState;
+        SkillTreeState mSkillTreeState;
         std::vector<State*> mStates;
         std::vector<IFactory*> mFactories;
 	BattleConfig mBattleConfig;

@@ -122,6 +122,8 @@ std::string GraphicsManager::NameOfOverlay(Overlay overlay)
 	return "ItemSelect";
     case DYNAMIC_MENU:
         return "DynamicMenu";
+    case SKILL_TREE:
+        return "SkillTree";
     default:
         assert(0);
     }
@@ -426,6 +428,16 @@ CL_Gradient GraphicsManager::GetGradient ( Overlay overlay, const std::string& n
     CL_Colorf bottom_right(resource.get_element().get_attribute("bottom_right"));
 
     return CL_Gradient(top_left,top_right,bottom_left,bottom_right);
+}
+
+CL_Sprite GraphicsManager::GetSprite ( GraphicsManager::Overlay overlay, const std::string& name )
+{
+    CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
+    CL_Sprite sprite = CL_Sprite(GET_MAIN_GC(),"Overlays/"+NameOfOverlay(overlay)+"/sprites/"+name,&resources);
+
+
+    sprite.set_alignment(origin_center);
+    return sprite;
 }
 
 

@@ -175,7 +175,11 @@ stonering_SOURCES =	src/Application.cpp \
 			src/states/MainMenuTargetingState.cpp \
 			src/states/MainMenuTargetingState.h \
 			src/states/DynamicMenuState.h \
-			src/states/DynamicMenuState.cpp
+			src/states/DynamicMenuState.cpp \
+			src/states/SkillTreeState.cpp \
+			src/states/SkilltreeState.h \
+			src/core/Description.cpp \
+			src/core/Description.h
 
 
 

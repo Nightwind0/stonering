@@ -1051,6 +1051,20 @@ SteelType Application::menu ( const SteelArray& array )
     return val;
 }
 
+SteelType Application::skilltree ( SteelType::Handle hCharacter )
+{
+    Character * pChar = GrabHandle<Character*>(hCharacter);
+    
+    mSkillTreeState.Init(pChar);
+    
+    mStates.push_back ( &mSkillTreeState );
+    run();
+    
+    // TODO: Get selected skill
+    
+    return SteelType();
+}
+
 
 void Application::LoadMainMenu ( CL_DomDocument& doc )
 {
@@ -1630,6 +1644,7 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "kill", new SteelFunctor1Arg<Application,SteelType::Handle>( this, &Application::kill ));
     mInterpreter.addFunction ( "raise", new SteelFunctor1Arg<Application,SteelType::Handle>( this, &Application::raise ));
 
+    mInterpreter.addFunction ( "skilltree", new SteelFunctor1Arg<Application,SteelType::Handle>( this, &Application::skilltree ));
 }
 
 void Application::queryJoystick()
