@@ -1,6 +1,7 @@
 <!--DOCTYPE skillList SYSTEM "Levels/level.dtd" -->
 <skillList>
-    <skill bp="0" name="Item" sp="0">
+    <skill bp="0" name="Item" sp="0" icon="item">
+        <description>Use an item.</description>
         <onInvoke>
             <script id="ItemScript">
             declare $item = selectItem(true,false);
@@ -34,7 +35,8 @@
         </script>
         </onInvoke>
     </skill>
-        <skill mp="2" name="Throw" sp="12">
+        <skill mp="2" name="Throw" sp="12" icon="hurl">
+            <description>Hurl balloons at your enemy.</description>
         <onInvoke>
             <script id="HurlScript">
                 <![CDATA[ 
@@ -81,6 +83,150 @@
             </script>
         </onInvoke>
     </skill>
+       <skill mp="4" name="Super Throw" sp="40" icon="hurl">
+            <description>Vigorously hurl balloons at your enemy.</description>
+        <onInvoke>
+            <script id="HurlScript">
+                <![CDATA[ 
+                declare @targets = battle::selectTargets(true,false,true);
+                if(!len(@targets))
+                    return battle::cancelOption(); // return is just cause I can, to do a one-liner
+                battle::doTargetedAnimation($Character,@targets[0],getAnimation("move_to_attack"));
+                
+                declare $pTarget = @targets[0];
+                
+                battle::doTargetedAnimation($Character,$pTarget,getAnimation("hurl_balloon"));
+                
+                declare $hit = getCharacterAttribute($Character, $_DEX) + 0.2;
+                declare $dodge = getCharacterAttribute($pTarget, $_EVD);
+
+                declare $chance = $hit * ( 1.0 - $dodge );
+
+                declare $roll = math::randf();
+                declare $bHit = false;
+                if($roll < $chance)
+                        $bHit = true;
+                        
+                if($bHit){
+                    declare $baseDamage = 15;
+                    declare $actualDamage = $baseDamage *  getDamageCategoryResistance($pTarget,$_BASH);
+                    declare $modDamage = integer($actualDamage - getEquippedArmorAttribute($pTarget,$_AC));
+
+                    if($modDamage < 0 and $actualDamage >0) $modDamage = 0;
+
+                    doDamage($pTarget,$modDamage);
+                    battle::doTargetedAnimation($pTarget,$Character,getAnimation("recoil"));
+                    battle::createDisplay($modDamage,$pTarget,$_DISP_DAMAGE);
+                    require("Media/Scripts/functions.steel");
+                    tryStatusEffect($pTarget,"Tangled");
+                }else{
+                    log("You missed.");
+                    //playSound(getUnarmedMissSound($Character));
+                    battle::createDisplay(0,$pTarget,$_DISP_MISS);
+                }
+                
+                attackCharacter($pTarget);
+                battle::finishTurn();
+                ]]>
+            </script>
+        </onInvoke>
+    </skill>
+    <skill mp="4" name="Fast Throw" icon="hurl">
+            <description>Hurl balloons at your enemy, increased accuracy.</description>
+        <onInvoke>
+            <script id="HurlScript">
+                <![CDATA[ 
+                declare @targets = battle::selectTargets(true,false,true);
+                if(!len(@targets))
+                    return battle::cancelOption(); // return is just cause I can, to do a one-liner
+                battle::doTargetedAnimation($Character,@targets[0],getAnimation("move_to_attack"));
+                
+                declare $pTarget = @targets[0];
+                
+                battle::doTargetedAnimation($Character,$pTarget,getAnimation("hurl_balloon"));
+                
+                declare $hit = getCharacterAttribute($Character, $_DEX) + 0.4;
+                declare $dodge = getCharacterAttribute($pTarget, $_EVD);
+
+                declare $chance = $hit * ( 1.0 - $dodge );
+
+                declare $roll = math::randf();
+                declare $bHit = false;
+                if($roll < $chance)
+                        $bHit = true;
+                        
+                if($bHit){
+                    declare $baseDamage = 10;
+                    declare $actualDamage = $baseDamage *  getDamageCategoryResistance($pTarget,$_BASH);
+                    declare $modDamage = integer($actualDamage - getEquippedArmorAttribute($pTarget,$_AC));
+
+                    if($modDamage < 0 and $actualDamage >0) $modDamage = 0;
+
+                    doDamage($pTarget,$modDamage);
+                    battle::doTargetedAnimation($pTarget,$Character,getAnimation("recoil"));
+                    battle::createDisplay($modDamage,$pTarget,$_DISP_DAMAGE);
+                    require("Media/Scripts/functions.steel");
+                    tryStatusEffect($pTarget,"Tangled");
+                }else{
+                    log("You missed.");
+                    //playSound(getUnarmedMissSound($Character));
+                    battle::createDisplay(0,$pTarget,$_DISP_MISS);
+                }
+                
+                attackCharacter($pTarget);
+                battle::finishTurn();
+                ]]>
+            </script>
+        </onInvoke>
+    </skill>
+     <skill mp="16" name="Mega Throw" icon="hurl">
+        <description>Viciously hurl balloons at your enemy, increased accuracy.</description>
+        <onInvoke>
+            <script id="HurlScript">
+                <![CDATA[ 
+                declare @targets = battle::selectTargets(true,false,true);
+                if(!len(@targets))
+                    return battle::cancelOption(); // return is just cause I can, to do a one-liner
+                battle::doTargetedAnimation($Character,@targets[0],getAnimation("move_to_attack"));
+                
+                declare $pTarget = @targets[0];
+                
+                battle::doTargetedAnimation($Character,$pTarget,getAnimation("hurl_balloon"));
+                
+                declare $hit = getCharacterAttribute($Character, $_DEX) + 0.4;
+                declare $dodge = getCharacterAttribute($pTarget, $_EVD);
+
+                declare $chance = $hit * ( 1.0 - $dodge );
+
+                declare $roll = math::randf();
+                declare $bHit = false;
+                if($roll < $chance)
+                        $bHit = true;
+                        
+                if($bHit){
+                    declare $baseDamage = 30;
+                    declare $actualDamage = $baseDamage *  getDamageCategoryResistance($pTarget,$_BASH);
+                    declare $modDamage = integer($actualDamage - getEquippedArmorAttribute($pTarget,$_AC));
+
+                    if($modDamage < 0 and $actualDamage >0) $modDamage = 0;
+
+                    doDamage($pTarget,$modDamage);
+                    battle::doTargetedAnimation($pTarget,$Character,getAnimation("recoil"));
+                    battle::createDisplay($modDamage,$pTarget,$_DISP_DAMAGE);
+                    require("Media/Scripts/functions.steel");
+                    tryStatusEffect($pTarget,"Tangled");
+                }else{
+                    log("You missed.");
+                    //playSound(getUnarmedMissSound($Character));
+                    battle::createDisplay(0,$pTarget,$_DISP_MISS);
+                }
+                
+                attackCharacter($pTarget);
+                battle::finishTurn();
+                ]]>
+            </script>
+        </onInvoke>
+    </skill>
     <skill bp="0" name="Info" sp="0">
         <onInvoke>
             <script id="InfoSkillScript">
@@ -99,7 +245,8 @@
             </script>
         </onInvoke>
     </skill>
-    <skill bp="0" name="Heal" sp="12">
+    <skill bp="100" name="Heal" sp="12" icon="heal">
+        <description>Regain some strength.</description>
         <onInvoke>
             <script id="HealScript">
                 <![CDATA[ 
@@ -119,7 +266,8 @@
             </script>
         </onInvoke>
     </skill>
-    <skill bp="0" name="Flee" sp="0">
+    <skill bp="0" name="Flee" sp="0" icon="flee">
+        <description>Escape from a battle. Success depends on how lucky you are.</dscripotion>
         <onInvoke>
             <script id="FleeSkillScript">
                 <![CDATA[
@@ -132,6 +280,7 @@
         </onInvoke>
     </skill>
     <skill bp="0" name="Attack" sp="0" icon="attack">
+        <description>Attack an enemy with equipped weapon.</description>
         <onInvoke>
             <script id="AttackSkillScript">
             <![CDATA[

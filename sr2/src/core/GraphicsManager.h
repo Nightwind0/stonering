@@ -29,7 +29,8 @@ namespace StoneRing
             MAIN_MENU,
             SHOP,
             DYNAMIC_MENU,
-	    ITEMS
+	    ITEMS,
+            SKILL_TREE
         };
 
         enum DisplayFont
@@ -74,6 +75,7 @@ namespace StoneRing
         static CL_Pointf GetPoint ( Overlay overlay, const std::string& name );
         static CL_Rectf GetRect ( Overlay overlay, const std::string& name );
         static CL_Gradient GetGradient ( Overlay overlay, const std::string& name );
+        static CL_Sprite GetSprite ( Overlay overlay, const std::string& name );
 
     private:
 

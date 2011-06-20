@@ -351,7 +351,7 @@
                         }
                     </script>
                 </regularItem>
-                <regularItem name="Antidote" dropRarity="common" value="65" reusable="false" targetable="single" use="both" defaultTarget="party" description="Cure Poison.">
+                <regularItem name="Antidote" dropRarity="common" value="65" reusable="false" targetable="single" use="both" defaultTarget="party" description="Cures Poison.">
                     <iconRef>Items/antidote</iconRef>
                     <script id="Antidote">
                         removeStatusEffect(@_Targets[0],getStatusEffect("Poison"));

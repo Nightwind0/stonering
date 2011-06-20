@@ -34,13 +34,13 @@
                         <conditionScript id="WarriorThrow2Condition">
                             return true;
                         </conditionScript>
-                        <skillRef skillName="Throw"/>
+                        <skillRef skillName="Fast Throw"/>
                     </battleMenuOption>     
                     <battleMenuOption name="Super Throw" icon="hurl">
                         <conditionScript id="WarriorThrow3Condition">
                             return false;
                         </conditionScript>
-                        <skillRef skillName="Throw"/>
+                        <skillRef skillName="Super Throw"/>
                     </battleMenuOption>    
                 </battleMenu>
             </battleMenuOption>
@@ -124,8 +124,25 @@
         <skillTreeNode>
             <skillRef skillName="Item"/>
         </skillTreeNode>
-        <skillTreeNode>
+        <skillTreeNode sp="12">
             <skillRef skillName="Throw"/>
+            <skillTreeNode sp="40">
+                <skillRef skillName="Super Throw"/>
+                <skillTreeNode sp="80">
+                    <skillRef skillName="Mega Throw"/>
+                </skillTreeNode>
+                <skillTreeNode sp="80">
+                    <skillRef skillName="Fast Throw"/>
+                </skillTreeNode>
+            </skillTreeNode>
+        </skillTreeNode>
+        <skillTreeNode sp="20" reqs="Must be awesome.">
+            <skillRef skillName="Heal"/>
+            <conditionScript id="WarHealSTCond">
+                <![CDATA[
+                return false;
+                    ]]>
+            </conditionScript>
         </skillTreeNode>
     </characterClass>
         <characterClass name = "Ranger" gender="either">

@@ -4,18 +4,16 @@
             declare $choice = menu(array("Use Item","Drop Item"));
             declare $drop = ($choice == 1);
 	    declare $item = selectItem(false,$drop);
-            if($drop)
+            
+            if(is_valid($item))
             {
-                while(is_valid($item))
+                if($drop)
                 {
                     disposeItem($item,1);
                     message("Dropped {getItemName($item)}");
-                    $item = selectItem(false,true);
                 }
-               
-            }
-	    else if(is_valid($item))
-	    {
+                else
+                {
                     declare @targets;
                     switch(getItemTargetable($item))
                     {
@@ -33,12 +31,15 @@
                     }
                     if(len(@targets) == 0) return; // they hit back
                     useItem($item,@targets);
+                }
                 
 	    }
 	</script>
     </menuOption>
     <menuOption name="Skills" icon="skills">
 	<script id="MainMenuSkills">
+            declare @targets  = menu::selectTargets(false);
+            skilltree(@targets[0]);
 	</script>
     </menuOption>
     <menuOption name="Equip" icon="equip">

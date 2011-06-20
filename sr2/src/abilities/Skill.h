@@ -48,7 +48,7 @@ namespace StoneRing
         // Most options will then let you select a character/party as a target
         void Invoke(ICharacter*pCharacter, const ParameterList& params);
         
-        std::string GetDescription() const;
+        std::string GetDescription() const { return m_description; }
 
         eType GetType() const { return m_eType; }
         
@@ -95,8 +95,11 @@ namespace StoneRing
         uint GetSPCost() const;
         uint GetMinLevel() const;
         bool CanLearn(Character* pCharacter);
+        std::string GetRequirements() const { return m_requirements; }
         SkillRef* GetRef() const;
         SkillTreeNode* GetParent() const;
+        std::list<SkillTreeNode*>::const_iterator GetSubSkillsBegin() const;
+        std::list<SkillTreeNode*>::const_iterator GetSubSkillsEnd() const;
     private:
         virtual bool handle_element(eElement element, Element * pElement);
         virtual void load_attributes(CL_DomNamedNodeMap attributes);

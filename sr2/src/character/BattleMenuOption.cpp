@@ -108,6 +108,8 @@ bool BattleMenuOption::handle_element(Element::eElement element, Element *pEleme
     case ESKILLREF:
         m_action_type = SKILLREF;
         m_action.m_pSkillRef = dynamic_cast<SkillRef*>(pElement);
+        if(m_icon.is_null())
+            m_icon = m_action.m_pSkillRef->GetSkill()->GetIcon();
         break;
     case EBATTLEMENU:
         m_action_type = SUBMENU;
@@ -122,6 +124,8 @@ bool BattleMenuOption::handle_element(Element::eElement element, Element *pEleme
 
 void BattleMenuOption::load_finished()
 {
+    if(m_icon.is_null()) 
+        throw CL_Exception("Battle menu option needs either an icon or a skill ref");
     if(m_action_type == INVALID)
         throw CL_Exception("Battle menu needs a skill ref or a script or submenu");
 }
@@ -129,7 +133,8 @@ void BattleMenuOption::load_finished()
 void BattleMenuOption::load_attributes(CL_DomNamedNodeMap attributes)
 {
     m_name = get_required_string("name",attributes);
-    m_icon = GraphicsManager::GetIcon( get_implied_string("icon",attributes,"no_icon") );
+    if(has_attribute("icon",attributes))
+        m_icon = GraphicsManager::GetIcon( get_required_string("icon",attributes) );
 }
 
 int BattleMenuOption::GetBPCost() const

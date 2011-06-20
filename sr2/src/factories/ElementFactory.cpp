@@ -37,6 +37,7 @@
 #include "MonsterRef.h"
 #include "AttributeModifier.h"
 #include "MenuOption.h"
+#include "Description.h"
 
 using namespace StoneRing;
 
@@ -98,6 +99,7 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["characterClass"] = &ElementFactory::CreateElement<CharacterClass>;
     mCreateMethods["conditionScript"] = &ElementFactory::createConditionScript;
     mCreateMethods["directionBlock"] = &ElementFactory::CreateElement<DirectionBlock>;
+    mCreateMethods["description"] = &ElementFactory::CreateElement<Description>;
     mCreateMethods["event"] = &ElementFactory::CreateElement<Event>;
     mCreateMethods["iconRef"] = &ElementFactory::CreateElement<IconRef>;
     mCreateMethods["itemRef"] = &ElementFactory::CreateElement<ItemRef>;

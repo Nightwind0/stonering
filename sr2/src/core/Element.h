@@ -52,6 +52,7 @@ namespace StoneRing
             ECHARACTERCLASS,
             ECONDITIONSCRIPT,
             EDIRECTIONBLOCK,
+            EDESCRIPTION,
             EEVENT,
             EICONREF,
             EITEMREF,
