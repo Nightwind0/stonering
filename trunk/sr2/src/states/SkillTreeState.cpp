@@ -53,6 +53,7 @@ void SkillTreeState::Init ( StoneRing::Character* pCharacter )
     m_lock_point = GraphicsManager::GetPoint(GraphicsManager::SKILL_TREE,"lock");
     m_skill_size = GraphicsManager::GetPoint(GraphicsManager::SKILL_TREE,"skill_size");
     m_name_offset = GraphicsManager::GetPoint(GraphicsManager::SKILL_TREE,"name");
+    m_portrait_offset = GraphicsManager::GetPoint(GraphicsManager::SKILL_TREE,"portrait");
     m_desc_font = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"desc");
     m_obtained_font = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"Obtained");
     m_selection_font = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"Selection");
@@ -67,6 +68,8 @@ void SkillTreeState::Init ( StoneRing::Character* pCharacter )
     
     m_overlay = GraphicsManager::GetOverlay(GraphicsManager::SKILL_TREE);
     
+    m_portrait_shadow = GraphicsManager::CreateImage("Overlays/MainMenu/portrait_shadow");
+    
 }
 
 void SkillTreeState::fill_vector ( std::list< StoneRing::SkillTreeNode* >::const_iterator begin, std::list< StoneRing::SkillTreeNode* >::const_iterator end )
@@ -77,7 +80,6 @@ void SkillTreeState::fill_vector ( std::list< StoneRing::SkillTreeNode* >::const
     {
         m_skills.push_back ( *iter );
     }
-    Menu::reset_menu();
 }
 
 int SkillTreeState::get_option_count()
@@ -126,8 +128,6 @@ void SkillTreeState::draw_option ( int option, bool selected, float x, float y, 
     }
     else
     {
-        // TODO: If this has a parent, check that this guy
-        // has that skill, otherwise it's automatically unavailable
         gradient = m_unavilable_gradient;
         if(selected){
             CL_Rectf box = m_reqs;
@@ -193,6 +193,12 @@ void SkillTreeState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
     box.expand(2,2);
     CL_Draw::box(GC,box,CL_Colorf::white);
     Menu::Draw( GC );
+    
+    // Draw portrait
+    // shadow first
+    m_portrait_shadow.draw(GC,m_portrait_offset.x + 4, m_portrait_offset.y + 4);
+    m_pChar->GetPortrait(Character::PORTRAIT_DEFAULT).draw(GC,m_portrait_offset.x,m_portrait_offset.y);
+    
     // Now draw description
     SkillTreeNode * pNode = m_skills[ get_current_choice() ];
     Skill * pSkill = pNode->GetRef()->GetSkill();
@@ -252,7 +258,7 @@ void SkillTreeState::HandleAxisMove ( const StoneRing::IApplication::Axis& axis,
                 m_pNode = m_skills[get_current_choice()];
                 fill_vector(m_skills[get_current_choice()]->GetSubSkillsBegin(),
                     m_skills[get_current_choice()]->GetSubSkillsEnd());
-                
+                PushMenu();
             }
         }
         else if(dir == IApplication::AXIS_LEFT)
@@ -268,6 +274,7 @@ void SkillTreeState::HandleAxisMove ( const StoneRing::IApplication::Axis& axis,
                     fill_vector(m_pChar->GetClass()->GetSkillTreeNodesBegin(),
                         m_pChar->GetClass()->GetSkillTreeNodesEnd());
                 }
+                PopMenu();
             }
         }
     }

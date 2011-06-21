@@ -53,6 +53,7 @@ private:
     void fill_vector(std::list<SkillTreeNode*>::const_iterator begin, std::list<SkillTreeNode*>::const_iterator end);
     CL_Sprite m_arrow;
     CL_Sprite m_lock;
+    CL_Image m_portrait_shadow;
     CL_Image  m_overlay;
     CL_Rectf m_description;
     CL_Rectf m_menu;
@@ -63,6 +64,7 @@ private:
     CL_Pointf m_lock_point;
     CL_Pointf m_skill_size;
     CL_Pointf m_name_offset;
+    CL_Pointf m_portrait_offset;
     CL_Gradient m_available_gradient;
     CL_Gradient m_unavilable_gradient;
     CL_Gradient m_req_gradient;

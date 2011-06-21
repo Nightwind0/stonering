@@ -31,47 +31,65 @@ Menu::~Menu()
 
 void Menu::Init() 
 {
-    m_cursor = 0;
+    PushMenu();
 }
+
+void Menu::PopMenu()
+{
+    m_stack.pop_front();
+}
+
+void Menu::PushMenu()
+{
+    m_stack.push_front(0);
+}
+
 
 void Menu::Draw(CL_GraphicContext& gc)
 {
     CL_Rectf rect = get_rect();
+    int cursor = m_stack.front();
     int options_per_page = cl_max(1,rect.get_height() / height_for_option(gc));
-    int page = m_cursor / options_per_page;
+    int page = cursor / options_per_page;
    
     
     for(int i = options_per_page * page; i < cl_min(get_option_count(),options_per_page * (page+1)); i++)
     {
-	draw_option(i,i==m_cursor,rect.get_top_left().x,rect.get_top_left().y + (i-options_per_page * page) * height_for_option(gc),gc) ;
+	draw_option(i,i==cursor,rect.get_top_left().x,rect.get_top_left().y + (i-options_per_page * page) * height_for_option(gc),gc) ;
     }
 }
 
 bool Menu::SelectUp()
 {
-    if(m_cursor > 0)
-	m_cursor--;
+    int cursor = m_stack.front();
+    if(cursor > 0)
+	cursor--;
     else
-	m_cursor = get_option_count() - 1;
-	return true;
+	cursor = get_option_count() - 1;
+    
+    m_stack.front() = cursor;
+    return true;
 }
 
 bool Menu::SelectDown()
 {
-    if(m_cursor + 1 < get_option_count())
-	m_cursor++;
+    int cursor = m_stack.front();
+    if(cursor + 1 < get_option_count())
+	cursor++;
     else
-	m_cursor = 0;
-	return true;
+	cursor = 0;
+    m_stack.front() = cursor;
+    return true;
 }
 
 int Menu::Choose()
 {
-    process_choice(m_cursor);
-    return m_cursor;
+    process_choice(m_stack.front());
+    return m_stack.front();
 }
 
 void Menu::reset_menu()
 {
-    m_cursor = 0;
+    m_stack.clear();
+    m_stack.push_front(0);
 }

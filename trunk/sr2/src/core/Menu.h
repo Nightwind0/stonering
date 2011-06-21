@@ -24,6 +24,8 @@
 #include <set>
 #include <string>
 #include "sr_defines.h"
+#include <stack>
+
 
 namespace StoneRing {
 
@@ -38,6 +40,8 @@ public:
     bool SelectUp();
     bool SelectDown();
     int Choose();
+    void PushMenu();
+    void PopMenu();
 
 protected:
     virtual CL_Rectf get_rect()=0;
@@ -49,11 +53,11 @@ protected:
     virtual void draw_more_up_indicator(){}
     virtual uint get_columns() const { return 1; }
     void reset_menu();
-    int get_current_choice() const { return m_cursor; }
-    bool is_selected(int index) { return index == m_cursor; }
+    int get_current_choice() const { return m_stack.front(); }
+    bool is_selected(int index) const { return index == m_stack.front(); }
 
 private:
-    int m_cursor;
+    std::deque<int> m_stack;
 };
 
 };

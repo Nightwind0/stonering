@@ -330,6 +330,7 @@ void StoneRing::MainMenuState::SelectAllCharacters()
 
 void StoneRing::MainMenuState::SelectionStart()
 {
+    m_bSelectAll = false;
     m_bSelectingTarget = true;
     m_nSelectedChar = 0;
 }
