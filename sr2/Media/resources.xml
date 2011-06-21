@@ -367,7 +367,10 @@
                         </sprite>
                         <sprite name="lock">
                             <image file="Sprites/lock.png"/>
-                        </sprite>      
+                        </sprite>   
+                        <sprite name="portrait_shadow">
+                            <image file="Images/Portrait/PortraitShadow.png"/>
+                        </sprite>
                     </section>
                     <section name="rects">
                         <rect name="reqs" left="50" top="442" right="750" bottom="552"/>
@@ -387,6 +390,7 @@
                         <point name="lock"  x="378" y="40"/>
                         <point name="skill_size" x="400" y="60"/>
                         <point name="name" x="12" y="12"/>
+                        <point name="portrait" x="560" y="80"/>
                     </section>
                     <section name="fonts">
                         <string name="desc" value="BoldWhite"/>
