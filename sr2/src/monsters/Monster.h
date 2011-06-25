@@ -24,8 +24,6 @@ namespace StoneRing
     public:
         Monster(MonsterElement *pDefintion);
         virtual ~Monster();
-
-        int GetWorthPoints() const;
         std::list<ItemRef*>::const_iterator GetDropsBegin() const;
         std::list<ItemRef*>::const_iterator GetDropsEnd() const;
         void Invoke();
@@ -129,6 +127,9 @@ namespace StoneRing
         {
             return m_bDeathAnimated;
         }
+        
+        int GetSPReward() const;
+        
     private:
 
         typedef std::map<std::string,StatusEffect*> StatusEffectMap;

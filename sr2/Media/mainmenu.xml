@@ -39,6 +39,7 @@
     <menuOption name="Skills" icon="skills">
 	<script id="MainMenuSkills">
             declare @targets  = menu::selectTargets(false);
+            if(len(@targets) ==0) return; // they hit back
             skilltree(@targets[0]);
 	</script>
     </menuOption>

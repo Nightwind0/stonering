@@ -46,11 +46,13 @@
                 <freetype name="sb_purple" size="24" color="#680090" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
                 <freetype name="sb_red" size="24" color="#FF0000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
                 <freetype name="sb_cyan" size="24" color="#00FFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-                <freetype name="sm_cyan" size="14" color="#00FFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-                <freetype name="sm_blue" size="14" color="#000080" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-                <freetype name="mm_white" size="18" color="#FFFFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-                <freetype name="mm_black" size="18" color="#000000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>   
-                <freetype name="mm_gray" size="18" color="#636363" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>                  
+                <freetype name="sm_cyan" size="14" color="#00FFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="sm_blue" size="14" color="#000080" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="mm_white" size="22" color="#FFFFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="mm_black" size="22" color="#000000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>   
+                <freetype name="mm_gray" size="22" color="#636363" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>   
+                <freetype name="mm_cyan" size="22" color="#00FFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="mm_purple" size="22" color="#980090" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>                
                 <freetype name="mono_green" size="24" color="#00A000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
                 <freetype name="mono_black" size="24" color="#000000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
                 <freetype name="mono_gray" size="24" color="#636363" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>		
@@ -322,20 +324,21 @@
                         </image>
                         <section name="points">
                             <point name="origin" x="0" y="0"/>
-                            <point name="portrait" x="36" y="36"/>
-                            <point name="text" x="180" y="70"/>
+                            <point name="portrait" x="36" y="9"/>
+                            <point name="text" x="180" y="9"/>
                         </section>
                         <section name="rects">
-                            <rect name="xp_bar" left="194" top="135" right="494" bottom="167"/>
+                            <rect name="xp_bar" left="190" top="104" right="488" bottom="129"/>
                         </section>
                         <section name="gradients">
                             <gradient name="xp_bar" top_left="#FFFFFFFF" top_right="#FF00FFFF" bottom_left="#00FF00FF" bottom_right="#F0F0F0FF"/>
                         </section>
                         <section name="fonts">
                             <string name="Character" value="BoldWhite"/>
-                            <string name="XP"        value="BoldBlack"/>
+                            <string name="XP"        value="mm_cyan"/>
                             <string name="OldLevel"  value="BoldWhite"/>
                             <string name="Level"     value="BoldYellow"/>
+                            <string name="SP"        value="mm_purple"/>
                         </section>
                 </section>
                 <section name="Choice">
@@ -395,11 +398,15 @@
                         <point name="lock"  x="378" y="40"/>
                         <point name="skill_size" x="400" y="60"/>
                         <point name="name" x="62" y="12"/>
-                        <point name="portrait" x="560" y="80"/>
+                        <point name="portrait" x="550" y="80"/>
+                        <point name="char_name" x="550" y="260"/>
+                        <point name="char_sp"  x="550" y="290"/>
                     </section>
                     <section name="fonts">
                         <string name="desc" value="BoldWhite"/>
                         <string name="reqs" value="BoldWhite"/>
+                        <string name="char_name" value="BoldWhite"/>
+                        <string name="char_sp" value="BoldGreen"/>
                         <string name="Path" value="sb_white"/>
                         <string name="Option" value="BoldWhite"/>
                         <string name="Selection" value="BoldWhite"/>

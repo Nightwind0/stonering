@@ -987,6 +987,37 @@ SteelType Application::useItem ( SteelType::Handle hItem, const SteelType& targe
     return used;
 }
 
+SteelType Application::getCharacterSP ( const SteelType::Handle hCharacter )
+{
+    Character * pChar = GrabHandle<Character*>(hCharacter);
+    
+    SteelType var;
+    var.set((int)pChar->GetSP());
+    return var;
+}
+
+SteelType Application::setCharacterSP ( const SteelType::Handle hCharacter, int sp )
+{
+    Character * pChar = GrabHandle<Character*>(hCharacter);
+
+    pChar->SetSP(sp);
+    
+    return SteelType();
+}
+
+
+SteelType Application::getMonsterSPReward ( const SteelType::Handle hMonster )
+{
+    Monster * pMonster = GrabHandle<Monster*>(hMonster);
+    
+    SteelType var;
+    var.set(pMonster->GetSPReward());
+    
+    return var;
+}
+
+
+
 SteelType Application::log ( const std::string& str )
 {
     CL_Console::write_line ( str );
@@ -1014,14 +1045,14 @@ SteelType Application::inBattle()
 }
 
 SteelType Application::showExperience ( const SteelArray&  characters, const SteelArray& xp_gained,
-                                        const SteelArray& oldLevels )
+                                        const SteelArray& oldLevels , const SteelArray& sp_gained)
 {
     mExperienceState.Init();
 
     for ( int i = 0;i < characters.size();i++ )
     {
         Character* c = GrabHandle<Character*> ( characters[i] );
-        mExperienceState.AddCharacter ( c, xp_gained[i], oldLevels[i] );
+        mExperienceState.AddCharacter ( c, xp_gained[i], oldLevels[i], sp_gained[i] );
     }
 
     mStates.push_back ( &mExperienceState );
@@ -1465,7 +1496,8 @@ void Application::registerSteelFunctions()
 
     SteelFunctor*  fn_getAnimation = new SteelFunctor1Arg<Application, const std::string&> ( this, &Application::getAnimation );
     SteelFunctor*  fn_log = new SteelFunctor1Arg<Application, const std::string&> ( this, &Application::log );
-    SteelFunctor*  fn_showExperience = new SteelFunctor3Arg<Application, const SteelArray&, const SteelArray&, const SteelArray&> ( this, &Application::showExperience );
+    SteelFunctor*  fn_showExperience = new SteelFunctor4Arg<Application, const SteelArray&, const SteelArray&, const SteelArray&, const SteelArray&> 
+                                            ( this, &Application::showExperience );
 
 
     mInterpreter.pushScope();
@@ -1645,6 +1677,10 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "raise", new SteelFunctor1Arg<Application,SteelType::Handle>( this, &Application::raise ));
 
     mInterpreter.addFunction ( "skilltree", new SteelFunctor1Arg<Application,SteelType::Handle>( this, &Application::skilltree ));
+    
+    mInterpreter.addFunction ( "getCharacterSP", new SteelFunctor1Arg<Application,SteelType::Handle>( this, &Application::getCharacterSP) );
+    mInterpreter.addFunction ( "setCharacterSP", new SteelFunctor2Arg<Application,SteelType::Handle,int>( this, &Application::setCharacterSP) );
+    mInterpreter.addFunction ( "getMonsterSPReward", new SteelFunctor1Arg<Application, SteelType::Handle>( this, &Application::getMonsterSPReward) );
 }
 
 void Application::queryJoystick()

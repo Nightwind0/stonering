@@ -94,7 +94,8 @@ CL_Rectf BattleMenu::get_rect()
 
 BattleMenuOption* BattleMenu::GetSelectedOption() const
 {
-    return m_visible_options[get_current_choice()];
+    if(m_visible_options.size() == 0) return NULL;
+    else return m_visible_options[get_current_choice()];
 }
 
 void BattleMenu::draw_option(int option, bool selected, float x, float y, CL_GraphicContext& gc)

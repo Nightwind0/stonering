@@ -66,12 +66,16 @@ private:
     CL_Pointf m_skill_size;
     CL_Pointf m_name_offset;
     CL_Pointf m_portrait_offset;
+    CL_Pointf m_char_name_pt;
+    CL_Pointf m_char_sp_pt;
     CL_Gradient m_available_gradient;
     CL_Gradient m_unavilable_gradient;
     CL_Gradient m_selected_gradient;
     CL_Gradient m_req_gradient;
     Font   m_desc_font;
     Font   m_option_font;
+    Font   m_char_name_font;
+    Font   m_char_sp_font;
     Font   m_selection_font;
     Font   m_obtained_font;
     Font   m_points_font;

@@ -34,7 +34,7 @@ public:
     ExperienceState();
     virtual ~ExperienceState();
     void Init();
-    void AddCharacter(Character* pCharacter, int xp_gained, int old_level);
+    void AddCharacter(Character* pCharacter, int xp_gained, int old_level, int sp);
     virtual void Finish();
     virtual void Start();
     virtual void MappableObjectMoveHook();
@@ -53,6 +53,7 @@ private:
 	Character* m_pCharacter;
 	int m_nXP;
 	int m_nOldLevel;
+        int m_nSP;
     };
     CL_Pointf m_offset;
     CL_Pointf m_portraitOffset;
@@ -64,6 +65,7 @@ private:
     CL_Gradient m_barGradient;
     StoneRing::Font m_characterFont;
     StoneRing::Font m_xpFont;
+    StoneRing::Font m_spFont;
     StoneRing::Font m_oldlevelFont;
     StoneRing::Font m_levelFont;
 
