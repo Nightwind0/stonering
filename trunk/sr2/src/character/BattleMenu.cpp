@@ -121,16 +121,12 @@ void BattleMenu::draw_option(int option, bool selected, float x, float y, CL_Gra
 	font = m_selectedFont;
     }
     
-    float font_height_offset = 0 - ((font.get_font_metrics(gc).get_height() - 
-				    font.get_font_metrics(gc).get_descent() -  
-				    font.get_font_metrics(gc).get_internal_leading())/ 2);
- 
     
     bool cost = false;
     if(pOption->GetBPCost() != 0 ||
         pOption->GetMPCost() != 0)
         cost = true;
-    CL_Rectf text_rect(x + 12.0f + icon.get_width() ,  y + font_height_offset,
+    CL_Rectf text_rect(x + 12.0f + icon.get_width() ,  y ,
                        CL_Sizef(m_rect.get_width() - 12.0f - icon.get_width() - (cost?m_cost_spacing.x:0), height_for_option(gc)));
    // font.draw_text(gc,x  + 12.0f + icon.get_width() , font.get_font_metrics(gc).get_height() + y + font_height_offset,pOption->GetName());
     draw_text(gc,font,text_rect,pOption->GetName());
@@ -152,11 +148,9 @@ void BattleMenu::draw_option(int option, bool selected, float x, float y, CL_Gra
         }
         float font_height = font.get_font_metrics(gc).get_height();
         float height = height_for_option(gc);
-        float font_height_offset = 0 - ((font.get_font_metrics(gc).get_height() - 
-                                    font.get_font_metrics(gc).get_descent() -  
-                                    font.get_font_metrics(gc).get_internal_leading())/ 2);
+
         
-        CL_Rectf cost_rect(x + m_rect.get_width()- m_cost_spacing.x, y + font_height_offset + (height - font_height)/2.0f,
+        CL_Rectf cost_rect(x + m_rect.get_width()- m_cost_spacing.x, y  + (height - font_height)/2.0f,
                            CL_Sizef(m_cost_spacing.x,height));
         std::ostringstream stream;
         stream << cost  << type;

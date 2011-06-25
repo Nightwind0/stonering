@@ -58,6 +58,7 @@ private:
     CL_Rectf m_description;
     CL_Rectf m_menu;
     CL_Rectf m_reqs;
+    CL_Rectf m_path_rect;
     CL_Pointf m_icon_point;
     CL_Pointf m_cost_point;
     CL_Pointf m_arrow_point;
@@ -67,14 +68,18 @@ private:
     CL_Pointf m_portrait_offset;
     CL_Gradient m_available_gradient;
     CL_Gradient m_unavilable_gradient;
+    CL_Gradient m_selected_gradient;
     CL_Gradient m_req_gradient;
     Font   m_desc_font;
     Font   m_option_font;
     Font   m_selection_font;
     Font   m_obtained_font;
     Font   m_points_font;
+    Font   m_unavailable_font;
     Font   m_not_enough_points_font;
+    Font   m_unmet_reqs_font;
     Font   m_reqs_font;
+    Font   m_path_font;
     bool   m_bDone;
     Character* m_pChar;
     SkillTreeNode* m_pNode;

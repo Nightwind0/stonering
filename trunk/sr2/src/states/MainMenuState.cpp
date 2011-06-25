@@ -227,13 +227,10 @@ void StoneRing::MainMenuState::draw_option(int option, bool selected, float x, f
 	if(selected){
 	    lineFont = m_selectionFont;  ;
 	}
-	
-	float font_height_offset = 0 - ((lineFont.get_font_metrics(gc).get_height() - 
-				    lineFont.get_font_metrics(gc).get_descent() -  
-				    lineFont.get_font_metrics(gc).get_internal_leading())/ 2);
+
 	
 	m_choices[option]->GetIcon().draw(gc,x,y);
-        lineFont.draw_text(gc, x + m_choices[option]->GetIcon().get_width() + 10,  y + lineFont.get_font_metrics(gc).get_height() + font_height_offset,
+        lineFont.draw_text(gc, x + m_choices[option]->GetIcon().get_width() + 10,  y + lineFont.get_font_metrics(gc).get_height(),
                          m_choices[option]->GetName(), Font::DEFAULT);
 }
 

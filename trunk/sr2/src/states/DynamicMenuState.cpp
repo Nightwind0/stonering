@@ -189,11 +189,8 @@ void DynamicMenuState::draw_option ( int option, bool selected, float x, float y
         lineFont = m_option_font;
     }
     
-    float font_height_offset = 0 - ((lineFont.get_font_metrics(gc).get_height() - 
-                                    lineFont.get_font_metrics(gc).get_descent() -  
-                                    lineFont.get_font_metrics(gc).get_internal_leading())/ 2);
     
-    lineFont.draw_text(gc,x,y + lineFont.get_font_metrics(gc).get_height() + font_height_offset, m_choices[option]); 
+    lineFont.draw_text(gc,x,y + lineFont.get_font_metrics(gc).get_height(), m_choices[option]); 
     
 }
 
