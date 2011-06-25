@@ -56,6 +56,10 @@ void SkillTreeState::Init ( StoneRing::Character* pCharacter )
     m_skill_size = GraphicsManager::GetPoint(GraphicsManager::SKILL_TREE,"skill_size");
     m_name_offset = GraphicsManager::GetPoint(GraphicsManager::SKILL_TREE,"name");
     m_portrait_offset = GraphicsManager::GetPoint(GraphicsManager::SKILL_TREE,"portrait");
+    m_char_name_pt = GraphicsManager::GetPoint(GraphicsManager::SKILL_TREE,"char_name");
+    m_char_sp_pt =   GraphicsManager::GetPoint(GraphicsManager::SKILL_TREE,"char_sp");
+    
+    
     m_desc_font = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"desc");
     m_obtained_font = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"Obtained");
     m_selection_font = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"Selection");
@@ -66,6 +70,8 @@ void SkillTreeState::Init ( StoneRing::Character* pCharacter )
     m_unmet_reqs_font = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"UnmetReqs");
     m_reqs_font = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"reqs");
     m_path_font = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"Path");
+    m_char_name_font = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"char_name");
+    m_char_sp_font = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"char_sp");
     
     m_available_gradient = GraphicsManager::GetGradient(GraphicsManager::SKILL_TREE,"available");
     m_unavilable_gradient = GraphicsManager::GetGradient(GraphicsManager::SKILL_TREE,"unavailable");
@@ -168,7 +174,7 @@ void SkillTreeState::draw_option ( int option, bool selected, float x, float y, 
     if(!has_skill)
     {
         std::ostringstream cost_stream;
-            cost_stream << std::setw(3) << m_skills[option]->GetSPCost() << ' ' << "SP";
+            cost_stream << std::setw(4) << m_skills[option]->GetSPCost() << ' ' << "SP";
         if(!can_afford)
             costFont = m_not_enough_points_font;
         else
@@ -242,6 +248,9 @@ void SkillTreeState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
     Skill * pSkill = pNode->GetRef()->GetSkill();
     
     draw_text(GC, m_desc_font, m_description, pSkill->GetDescription()); 
+    
+    m_char_name_font.draw_text(GC,m_char_name_pt.x,m_char_name_pt.y, m_pChar->GetName());
+    m_char_sp_font.draw_text(GC,m_char_sp_pt.x,m_char_sp_pt.y, "SP " +IntToString(m_pChar->GetSP()));
 }
 
 bool SkillTreeState::IsDone() const

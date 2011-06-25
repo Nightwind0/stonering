@@ -262,21 +262,26 @@ void BattleState::HandleButtonUp(const IApplication::Button& button)
         {
 
                 BattleMenuOption * pOption = m_menu_stack.top()->GetSelectedOption();
+                if(pOption){
+                    ParameterList params;
+                    // Supply a handle to the character in question
+                    Character *pChar = dynamic_cast<Character*>(m_initiative[m_cur_char]);
+                    params.push_back ( ParameterListItem("$Character", pChar ) );
+                    params.push_back ( ParameterListItem("$Round", static_cast<int>(m_nRound) ) );
 
-                ParameterList params;
-                // Supply a handle to the character in question
-                Character *pChar = dynamic_cast<Character*>(m_initiative[m_cur_char]);
-                params.push_back ( ParameterListItem("$Character", pChar ) );
-                params.push_back ( ParameterListItem("$Round", static_cast<int>(m_nRound) ) );
-
-                if (pOption->Enabled(params,pChar))
-                {
-                    pOption->Select(m_menu_stack,params,pChar);
-                }
-                else
-                {
+                    if (pOption->Enabled(params,pChar))
+                    {
+                        pOption->Select(m_menu_stack,params,pChar);
+                    }
+                    else
+                    {
                     // Play bbzt sound
+                    }
                 }
+            }
+            else 
+            {
+                // Play bbzt sound
             }
             break;
         case IApplication::BUTTON_CANCEL:

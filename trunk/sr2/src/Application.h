@@ -109,6 +109,9 @@ namespace StoneRing
         // SteelType giveGeneratedArmor(const std::string &armclass, const std::string &armtype);
         SteelType getCharacterName(const SteelType::Handle hICharacter);
         SteelType getCharacterLevel(const SteelType::Handle hICharacter);
+        SteelType getCharacterSP(const SteelType::Handle hCharacter);
+        SteelType setCharacterSP(const SteelType::Handle hCharacter, int sp);
+        SteelType getMonsterSPReward(const SteelType::Handle hMonster);
 	SteelType addExperience(const SteelType::Handle hICharacter, int xp);
 	SteelType getExperience(const SteelType::Handle hICharacter);
         //
@@ -167,7 +170,7 @@ namespace StoneRing
 	
 	SteelType getAnimation(const std::string& name);
 	SteelType showExperience(const SteelArray&  characters, const SteelArray& xp_gained,
-				 const SteelArray& oldLevels);
+				 const SteelArray& oldLevels, const SteelArray& sp_gained);
         SteelType menu(const SteelArray& options);
         SteelType skilltree(SteelType::Handle hCharacter);
 

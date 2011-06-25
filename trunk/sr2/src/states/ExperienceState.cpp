@@ -20,6 +20,7 @@
 #include "ExperienceState.h"
 #include "GraphicsManager.h"
 #include <sstream>
+#include <iomanip>
 
 using StoneRing::ExperienceState;
 using StoneRing::IApplication;
@@ -44,25 +45,27 @@ void ExperienceState::Init()
 
     
     m_characterFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::EXPERIENCE,"Character"));
-    m_xpFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::EXPERIENCE,"XP"));
+    m_xpFont = GraphicsManager::GetFont(GraphicsManager::GraphicsManager::EXPERIENCE,"XP");
     m_oldlevelFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::EXPERIENCE,"OldLevel"));
     m_levelFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::EXPERIENCE,"Level"));
+    m_spFont = GraphicsManager::GetFont(GraphicsManager::EXPERIENCE,"SP");
 
     
     m_barGradient = GraphicsManager::GetGradient(GraphicsManager::EXPERIENCE,"xp_bar");
     m_barRect = GraphicsManager::GetRect(GraphicsManager::EXPERIENCE,"xp_bar");
 
-    m_pTNL = IApplication::GetInstance()->GetUtility(IApplication::XP_FOR_LEVEL);
+    m_pTNL = IApplication::GetInstance()->GetUtility(IApplication::XP_FOR_LEVEL); 
     m_pLNT = IApplication::GetInstance()->GetUtility(IApplication::LEVEL_FOR_XP);
 }
 
 
-void ExperienceState::AddCharacter(StoneRing::Character* pCharacter, int xp_gained, int old_level)
+void ExperienceState::AddCharacter(StoneRing::Character* pCharacter, int xp_gained, int old_level, int sp)
 {
     Char c;
     c.m_pCharacter = pCharacter;
     c.m_nXP = xp_gained;
     c.m_nOldLevel = old_level;
+    c.m_nSP = sp;
     m_characters.push_back(c);
 }
 
@@ -111,12 +114,17 @@ void ExperienceState::Draw(const CL_Rect& screenRect, CL_GraphicContext& GC)
         CL_Pointf portraitPoint = point + m_portraitOffset;  
         Character * pCharacter = m_characters[i].m_pCharacter;
         pCharacter->GetPortrait(Character::PORTRAIT_HAPPY).draw(GC,portraitPoint.x,portraitPoint.y);
-        m_characterFont.draw_text(GC,point + m_textOffset,pCharacter->GetName());
+        m_characterFont.draw_text(GC,point + m_textOffset,pCharacter->GetName(), StoneRing::Font::TOP_LEFT);
         CL_Pointf xp_point = point + m_textOffset;
         std::ostringstream ostream;
-        ostream << '+' << m_characters[i].m_nXP << "XP";
+        ostream << '+' << std::setw(6) << m_characters[i].m_nXP << " XP";
         xp_point.y += m_characterFont.get_font_metrics(GC).get_height();
-        m_xpFont.draw_text(GC,xp_point,ostream.str());
+        m_xpFont.draw_text(GC,xp_point,ostream.str(), StoneRing::Font::TOP_LEFT);
+        ostream.str("");
+        ostream << '+' << std::setw(6) << m_characters[i].m_nSP << " SP";
+        CL_Pointf sp_point = xp_point;
+        sp_point.y = xp_point.y + m_xpFont.get_font_metrics(GC).get_height();
+        m_spFont.draw_text(GC,sp_point,ostream.str(),StoneRing::Font::TOP_LEFT);
         int levelsGained = pCharacter->GetLevel() - m_characters[i].m_nOldLevel;
         if(levelsGained)
         {
@@ -147,6 +155,7 @@ void ExperienceState::Draw(const CL_Rect& screenRect, CL_GraphicContext& GC)
         float barWidth = m_barRect.get_width() * percent;
         CL_Pointf barPoint = m_barRect.get_top_left();
         barPoint.y += point.y;
+        barPoint.x += point.x;
         CL_Sizef barSize(barWidth,m_barRect.get_height());
         CL_Rectf barRect(barPoint,barSize);
         CL_Draw::gradient_fill(GC,barRect,m_barGradient);

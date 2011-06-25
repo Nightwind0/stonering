@@ -332,3 +332,9 @@ void StoneRing::Monster::IterateStatusEffects ( Visitor< StoneRing::StatusEffect
         }
 }
 
+
+int Monster::GetSPReward() const
+{
+    return m_nLevel;
+}
+

@@ -10,18 +10,21 @@
 	declare @monsters = battle::getCharacterGroup(true); // Get monsters
 	declare @characters = battle::getCharacterGroup(false); // Get characters
 	declare @xp_gain;
-	declare @original_level;
+        declare @sp_gain;
+	declare @original_level; 
 	const $B = 10; // How many equal-level monsters to defeat to gain a level
 	const $b = 1.12; // At 1.07, a character 10 levels higher than you is worth double the XP
 	foreach (declare $character) in @characters {
 	    declare $total_xp = 0;
-            if(getCharacterToggle($_CA_ALIVE)){
+            declare $total_sp = 0;
+            if(getCharacterToggle($character,$_ALIVE)){
                 foreach (declare $monster) in @monsters {
                     declare $char_level = getCharacterLevel($character);
                     declare $monster_level = getCharacterLevel($monster);
 	
                     declare $xp = ((tnl($char_level + 1) - tnl($char_level)) /  $B) * ($b ^ ($monster_level - $char_level));
                     $total_xp = $total_xp + $xp;
+                    $total_sp += getMonsterSPReward($monster);
                 }
             }
 	    $total_xp = math::ceil($total_xp);
@@ -29,11 +32,13 @@
 	    println ( "{getCharacterName($character)} got {$total_xp}" );
 	    @xp_gain += $total_xp;
 	    @original_level += getCharacterLevel($character); 
+            @sp_gain += getCharacterSP($character)+$total_sp;
 	    addExperience($character,$total_xp);
+            setCharacterSP($character,getCharacterSP($character)+$total_sp);
 	}
 	battle::darkColor(0.0,0.0,0.0,0.9);
 	battle::darkMode($_FINAL_DRAW);
-	showExperience(@characters,@xp_gain,@original_level);
+	showExperience(@characters,@xp_gain,@original_level, @sp_gain);
 	declare $winnings = 0;
 	const $winningsPerLevel = 5;
 	const $winningsGrowth = 1.15;
