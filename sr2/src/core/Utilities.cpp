@@ -107,8 +107,8 @@ int draw_text(CL_GraphicContext& gc,StoneRing::Font &font, CL_Rectf rect, CL_Str
 
     }
 
-
-    font.draw_text(gc,rect.left,rect.top + metrics.get_height(),string.substr(string_pos,max_characters));
+    font.draw_text(gc,rect.left,rect.top + metrics.get_height(),
+                   string.substr(string_pos,max_characters));
 
     return max_characters;
 

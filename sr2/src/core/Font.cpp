@@ -44,6 +44,7 @@ void Font::draw_text(CL_GraphicContext &  	gc,
 	case CENTER:
 	    offset = CL_Pointf(0.0f,m_font.get_font_metrics(gc).get_ascent() / 2.0f);
 	    break;
+        case DEFAULT:
 	case ABOVE:
 	    offset = CL_Pointf(0.0f,calc_offset(gc));
 	    break;

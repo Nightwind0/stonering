@@ -21,6 +21,7 @@
 #include "GraphicsManager.h"
 #include <sstream>
 #include <iomanip>
+#include <Graphic.h>
 
 
 using namespace StoneRing;
@@ -47,6 +48,7 @@ void SkillTreeState::Init ( StoneRing::Character* pCharacter )
     m_description = GraphicsManager::GetRect(GraphicsManager::SKILL_TREE,"desc");
     m_menu = GraphicsManager::GetRect(GraphicsManager::SKILL_TREE,"menu");
     m_reqs = GraphicsManager::GetRect(GraphicsManager::SKILL_TREE,"reqs");
+    m_path_rect = GraphicsManager::GetRect(GraphicsManager::SKILL_TREE,"path");
     m_icon_point = GraphicsManager::GetPoint(GraphicsManager::SKILL_TREE,"icon");
     m_cost_point = GraphicsManager::GetPoint(GraphicsManager::SKILL_TREE,"points");
     m_arrow_point = GraphicsManager::GetPoint(GraphicsManager::SKILL_TREE,"arrow");
@@ -60,11 +62,16 @@ void SkillTreeState::Init ( StoneRing::Character* pCharacter )
     m_points_font = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"EnoughPoints");
     m_not_enough_points_font = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"NotEnoughPoints");
     m_option_font = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"Option");
+    m_unavailable_font = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"Unavailable");
+    m_unmet_reqs_font = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"UnmetReqs");
     m_reqs_font = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"reqs");
+    m_path_font = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"Path");
     
     m_available_gradient = GraphicsManager::GetGradient(GraphicsManager::SKILL_TREE,"available");
     m_unavilable_gradient = GraphicsManager::GetGradient(GraphicsManager::SKILL_TREE,"unavailable");
+    m_selected_gradient = GraphicsManager::GetGradient(GraphicsManager::SKILL_TREE,"selected");
     m_req_gradient = GraphicsManager::GetGradient(GraphicsManager::SKILL_TREE,"reqs");
+    
     
     m_overlay = GraphicsManager::GetOverlay(GraphicsManager::SKILL_TREE);
     
@@ -109,26 +116,26 @@ void SkillTreeState::draw_option ( int option, bool selected, float x, float y, 
     CL_Gradient gradient;
 
     bool has_skill = m_pChar->HasSkill(*pSkillRef);
-    if(selected)
-    {
-        font = m_selection_font;
-    }
-    else
-    {
-        if(has_skill){
-            font = m_obtained_font;
-        }else{ 
-            font = m_option_font;
-        }
-    }
-    
-    if(m_skills[option]->CanLearn(m_pChar) || has_skill)
-    {
+    bool can_afford = m_pChar->GetSP() >= m_skills[option]->GetSPCost();
+    bool met_reqs = m_skills[option]->CanLearn(m_pChar) && ! has_skill;
+
+    if(has_skill)
+        font = m_obtained_font;
+    else if(can_afford && met_reqs)
+        font = m_option_font;
+    else if(!met_reqs)
+        font = m_unmet_reqs_font;
+    else if(!can_afford)
+        font = m_unavailable_font;
+           
+   
+   if(selected)
+        gradient = m_selected_gradient;
+   else
         gradient = m_available_gradient;
-    }
-    else
+
+    if((!m_skills[option]->CanLearn(m_pChar) && ! has_skill))
     {
-        gradient = m_unavilable_gradient;
         if(selected){
             CL_Rectf box = m_reqs;
             box.expand(2,2);
@@ -146,6 +153,8 @@ void SkillTreeState::draw_option ( int option, bool selected, float x, float y, 
             CL_Draw::gradient_fill(gc,m_reqs,m_req_gradient);
             CL_Draw::box(gc,box,CL_Colorf::white);
             draw_text(gc,m_reqs_font,m_reqs,reqs.str(), Font::DEFAULT);
+        }else { 
+            gradient = m_unavilable_gradient;
         }
     }
     
@@ -160,7 +169,7 @@ void SkillTreeState::draw_option ( int option, bool selected, float x, float y, 
     {
         std::ostringstream cost_stream;
             cost_stream << std::setw(3) << m_skills[option]->GetSPCost() << ' ' << "SP";
-        if(m_skills[option]->GetSPCost() > m_pChar->GetSP())
+        if(!can_afford)
             costFont = m_not_enough_points_font;
         else
             costFont = m_points_font;
@@ -175,8 +184,8 @@ void SkillTreeState::draw_option ( int option, bool selected, float x, float y, 
     
 
     
-    font.draw_text(gc, x + m_menu.get_top_left().x + m_name_offset.x, 
-                   y + m_menu.get_top_left().y + m_name_offset.y,m_skills[option]->GetRef()->GetRef(),Font::DEFAULT);
+    font.draw_text(gc, x + m_name_offset.x, 
+                   y +  m_name_offset.y,m_skills[option]->GetRef()->GetRef(),Font::TOP_LEFT);
     
 }
 
@@ -192,6 +201,35 @@ void SkillTreeState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
     CL_Rectf box = m_menu;
     box.expand(2,2);
     CL_Draw::box(GC,box,CL_Colorf::white);
+    box = m_path_rect;
+    box.expand(2,2);
+    CL_Draw::box(GC,box,CL_Colorf::white);
+    
+    std::deque<SkillTreeNode*> skillStack;
+    std::ostringstream pathDesc;
+    
+    SkillTreeNode * pCurrentNode = m_pNode;
+    if(pCurrentNode == NULL){
+        pathDesc << "Basic skills";
+    }
+    
+    while(pCurrentNode != NULL){
+        skillStack.push_front(pCurrentNode);
+        pCurrentNode = pCurrentNode->GetParent();
+    }
+    
+    for(std::deque<SkillTreeNode*>::const_iterator iter = skillStack.begin();
+        iter != skillStack.end(); iter++)
+    {
+        pathDesc << (*iter)->GetRef()->GetRef();
+        std::deque<SkillTreeNode*>::const_iterator next = iter;
+        next++;
+        if(next != skillStack.end())
+            pathDesc << " > ";
+    }
+    
+    
+    draw_text(GC, m_path_font, m_path_rect, pathDesc.str());  
     Menu::Draw( GC );
     
     // Draw portrait
