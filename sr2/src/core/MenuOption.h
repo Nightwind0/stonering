@@ -18,7 +18,10 @@ namespace StoneRing
         MenuOption(int level=0);
         virtual ~MenuOption();
         virtual eElement WhichElement() const { return EMENUOPTION; }
-
+        bool HasChildren() const;
+        MenuOption* GetParent() const { return m_parent; }
+        std::vector<MenuOption*>::const_iterator GetChildrenBegin()const;
+        std::vector<MenuOption*>::const_iterator GetChildrenEnd()const;
         std::string GetName() const;
         CL_Image GetIcon() const { return m_icon; }
         bool Enabled(const ParameterList &params) const;
@@ -28,12 +31,12 @@ namespace StoneRing
         virtual void load_attributes(CL_DomNamedNodeMap );
         virtual void load_finished();
     protected:
-
         std::string m_name;
+        std::vector<MenuOption*> m_children;
         ScriptElement *m_pConditionScript;
         ScriptElement *m_pScript;
+        MenuOption* m_parent;
         CL_Image m_icon;
-
     };
 }
 

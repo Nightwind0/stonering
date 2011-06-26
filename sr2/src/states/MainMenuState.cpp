@@ -30,7 +30,17 @@ bool StoneRing::MainMenuState::IsDone() const
 	    Menu::Choose();
 	    break;
 	case IApplication::BUTTON_CANCEL:
-	    m_bDone = true;
+            if(m_option_parent){
+                Menu::PopMenu();
+                m_option_parent = m_option_parent->GetParent();
+                if(m_option_parent)
+                    fill_choices(m_option_parent->GetChildrenBegin(),
+                                 m_option_parent->GetChildrenEnd());
+                else
+                    fill_choices(m_root_choices.begin(),m_root_choices.end());
+            }else{
+                m_bDone = true;
+            }
 	    break;
     }
  }
@@ -133,8 +143,8 @@ void StoneRing::MainMenuState::draw_party(CL_GraphicContext& GC)
 	levelstream <<  "Level " << pCharacter->GetLevel();
 	m_CharacterFont.draw_text(GC,spacing + portraitPoint.x + portrait.get_width(), portraitPoint.y, pCharacter->GetName(), Font::TOP_LEFT);
 	m_ClassFont.draw_text(GC,spacing + portraitPoint.x + portrait.get_width() + m_CharacterFont.get_text_size(GC, pCharacter->GetName()).width + spacing,
-			      portraitPoint.y + m_CharacterFont.get_font_metrics(GC).get_height(), pCharacter->GetClass()->GetName(),
-			      Font::BOTTOM_LEFT
+			      portraitPoint.y, pCharacter->GetClass()->GetName(),
+			      Font::TOP_LEFT
  			    );
 	m_LevelFont.draw_text(GC,spacing + spacing + portraitPoint.x + portrait.get_width(), portraitPoint.y + m_CharacterFont.get_font_metrics(GC).get_height(),
 			      levelstream.str(),Font::TOP_LEFT);
@@ -155,14 +165,25 @@ void StoneRing::MainMenuState::draw_party(CL_GraphicContext& GC)
 		 << " / "
 		 << std::setw(9)
 		 << std::setfill(' ')
-		 << pCharacter->GetAttribute(ICharacter::CA_MAXMP);		 
+		 << pCharacter->GetAttribute(ICharacter::CA_MAXMP);	
+        std::ostringstream spstream;
+        spstream << "SP "
+                 << std::setw(9)
+                 << std::setfill(' ')
+                 << pCharacter->GetSP();
+                 
+       const float baseY = portraitPoint.y + m_CharacterFont.get_font_metrics(GC).get_height();
+                 
 	m_HPFont.draw_text(GC,spacing + spacing + portraitPoint.x + portrait.get_width(),
-			   portraitPoint.y + m_CharacterFont.get_font_metrics(GC).get_height() + m_LevelFont.get_font_metrics(GC).get_height(),
+			   baseY + m_LevelFont.get_font_metrics(GC).get_height(),
 			   hpstream.str(),Font::TOP_LEFT);
 	m_MPFont.draw_text(GC,spacing + spacing + portraitPoint.x + portrait.get_width(),
-			   portraitPoint.y + m_CharacterFont.get_font_metrics(GC).get_height()
-			   + m_LevelFont.get_font_metrics(GC).get_height() + m_HPFont.get_font_metrics(GC).get_height(),
-			   mpstream.str(),Font::TOP_LEFT);	
+			   baseY + m_LevelFont.get_font_metrics(GC).get_height() + m_HPFont.get_font_metrics(GC).get_height(),
+			   mpstream.str(),Font::TOP_LEFT);
+        m_SPFont.draw_text(GC,spacing + spacing + portraitPoint.x + portrait.get_width(),
+                           baseY +  m_LevelFont.get_font_metrics(GC).get_height() + m_HPFont.get_font_metrics(GC).get_height() 
+                           + m_MPFont.get_font_metrics(GC).get_height(),
+                           spstream.str(),Font::TOP_LEFT);
     }
 }
 
@@ -200,6 +221,8 @@ void StoneRing::MainMenuState::Start()
     m_menu_rect = GraphicsManager::GetRect(GraphicsManager::MAIN_MENU,"menu");
     m_party_rect = GraphicsManager::GetRect(GraphicsManager::MAIN_MENU,"party");
     m_character_rect = GraphicsManager::GetRect(GraphicsManager::MAIN_MENU,"character");
+    m_option_parent = NULL;
+    fill_choices(m_root_choices.begin(),m_root_choices.end());
     SelectionFinish();
 }
 
@@ -243,6 +266,12 @@ int StoneRing::MainMenuState::height_for_option(CL_GraphicContext& gc)
 void StoneRing::MainMenuState::process_choice(int selection)
 {
     m_choices[selection]->Select(ParameterList());
+    if(m_choices[selection]->HasChildren()){
+        Menu::PushMenu();
+        m_option_parent = m_choices[selection];
+        fill_choices(m_choices[selection]->GetChildrenBegin(),m_choices[selection]->GetChildrenEnd());
+    }
+    
 }
 
 int StoneRing::MainMenuState::get_option_count()
@@ -250,9 +279,17 @@ int StoneRing::MainMenuState::get_option_count()
     return m_choices.size();
 }
 
+void StoneRing::MainMenuState::fill_choices ( std::vector< StoneRing::MenuOption* >::const_iterator begin, std::vector< StoneRing::MenuOption* >::const_iterator end )
+{
+    m_choices.clear();
+    for(std::vector<StoneRing::MenuOption*>::const_iterator iter = begin; iter != end; iter++)
+        m_choices.push_back(*iter);
+}
+
+
 void StoneRing::MainMenuState::AddOption(MenuOption* pOption)
 {
-    m_choices.push_back(pOption);
+    m_root_choices.push_back(pOption);
 }
 
 SteelType StoneRing::MainMenuState::selectTargets(bool group)

@@ -128,15 +128,15 @@
             <skillRef skillName="Throw"/>
             <skillTreeNode sp="40">
                 <skillRef skillName="Super Throw"/>
-                <skillTreeNode sp="80">
+                <skillTreeNode sp="280">
                     <skillRef skillName="Mega Throw"/>
                 </skillTreeNode>
-                <skillTreeNode sp="80">
+                <skillTreeNode sp="280">
                     <skillRef skillName="Fast Throw"/>
                 </skillTreeNode>
             </skillTreeNode>
         </skillTreeNode>
-        <skillTreeNode sp="20" reqs="Must be awesome.">
+        <skillTreeNode sp="120" reqs="Must be awesome.">
             <skillRef skillName="Heal"/>
             <conditionScript id="WarHealSTCond">
                 <![CDATA[
