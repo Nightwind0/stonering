@@ -67,6 +67,7 @@ namespace StoneRing
         virtual CL_ResourceManager&  GetResources()=0;
         virtual CL_DisplayWindow& GetApplicationWindow()=0;
         virtual IParty * GetParty() const=0;
+       // virtual IParty * GetReserveParty() const=0;
         virtual AbilityManager * GetAbilityManager() = 0;
         virtual ItemManager * GetItemManager() = 0;
         virtual IFactory * GetElementFactory() = 0;
