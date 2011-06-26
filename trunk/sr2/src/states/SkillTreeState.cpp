@@ -82,7 +82,8 @@ void SkillTreeState::Init ( StoneRing::Character* pCharacter )
     m_overlay = GraphicsManager::GetOverlay(GraphicsManager::SKILL_TREE);
     
     m_portrait_shadow = GraphicsManager::CreateImage("Overlays/MainMenu/portrait_shadow");
-    
+
+	Menu::Init();    
 }
 
 void SkillTreeState::fill_vector ( std::list< StoneRing::SkillTreeNode* >::const_iterator begin, std::list< StoneRing::SkillTreeNode* >::const_iterator end )
