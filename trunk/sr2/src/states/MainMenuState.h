@@ -54,9 +54,13 @@ namespace StoneRing
 	virtual int get_option_count();
 	virtual void draw_party(CL_GraphicContext& gc);
 	
+        void fill_choices(std::vector<MenuOption*>::const_iterator begin,
+                          std::vector<MenuOption*>::const_iterator end);
+        
 	CL_Pointf calc_player_position(int player)const;
 	
 	SteelType selectTargets(bool group);
+        
 	
 	int m_nSelectedChar;
 	bool m_bSelectAll;
@@ -77,7 +81,10 @@ namespace StoneRing
 	CL_Rectf m_party_rect;
 	CL_Image m_portrait_shadow;
 	CL_Sprite m_target_sprite;
+        MenuOption* m_option_parent;
+        std::vector<MenuOption*> m_root_choices;
 	std::vector<MenuOption*> m_choices;
+    
 	MainMenuTargetingState m_targetingState;
         bool m_bDone;
     };

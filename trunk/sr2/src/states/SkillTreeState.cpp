@@ -174,7 +174,7 @@ void SkillTreeState::draw_option ( int option, bool selected, float x, float y, 
     if(!has_skill)
     {
         std::ostringstream cost_stream;
-            cost_stream << std::setw(4) << m_skills[option]->GetSPCost() << ' ' << "SP";
+            cost_stream << std::setw(5) << m_skills[option]->GetSPCost() << ' ' << "SP";
         if(!can_afford)
             costFont = m_not_enough_points_font;
         else

@@ -26,7 +26,7 @@
                 <string name="LevelPath" value="Media/Levels/" />
                 <string name="StartLevel" value="examplelevel" />
                 <string name="DefaultPlayerSprite" value="Sprites/Party/Valyn" />
-                <string name="Currency" value="Drops"/>
+                <string name="Currency" value="Gold"/>
                 <float name="DefaultEncounterRate" value="0.10"/>
         </section>
 
@@ -45,8 +45,8 @@
                 <freetype name="sb_green" size="24" color="#00A000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
                 <freetype name="sb_purple" size="24" color="#680090" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
                 <freetype name="sb_red" size="24" color="#FF0000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-                <freetype name="sb_cyan" size="24" color="#00FFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-                <freetype name="sm_cyan" size="14" color="#00FFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="sb_cyan" size="24" color="#00DDDD" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+                <freetype name="sm_cyan" size="14" color="#00DDDD" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
                 <freetype name="sm_blue" size="14" color="#000080" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
                 <freetype name="mm_white" size="22" color="#FFFFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
                 <freetype name="mm_black" size="22" color="#000000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>   
@@ -138,11 +138,14 @@
                 <image name="omegas">
                     <image-file file="Images/Icons/I_Saphire.png"/>
                 </image>
+                <image name="party">
+                    <image-file file="Images/Icons/Present.png"/>
+                </image>
                 <image name="config">
                     <image-file file="Images/Icons/I_Book.png"/>
                 </image>		
                 <image name="status">
-                    <image-file file="Images/Icons/I_Scroll.png"/>
+                    <image-file file="Images/Icons/Page.png"/>
                 </image>	
                 
                 <image name="flee">
@@ -217,12 +220,12 @@
                         <string name="Option" value="BoldGray"/>
                         <string name="Choice" value="BoldWhite"/>
                         <string name="Selection" value="BoldWhite"/>
-                        <string name="Character" value="BoldWhite"/>
-                        <string name="Class"     value="CharacterClass"/>
+                        <string name="Character" value="sb_white"/>
+                        <string name="Class"     value="sb_gray"/>
                         <string name="Level" value = "mono_cyan"/>
                         <string name="HP"    value = "mono_green"/>
                         <string name="MP"    value = "mono_purple"/>
-                        <string name="SP"    value = "mono_cyan"/>
+                        <string name="SP"    value = "mono_blue"/>
                 </section>
                 <section name="rects">
                     <rect name="menu" left="479" right="752" top="43" bottom="363"/>
@@ -393,7 +396,7 @@
                     </section>
                     <section name="points">
                         <point name="icon" x="12" y="12"/>
-                        <point name="points" x="350" y="4"/>
+                        <point name="points" x="340" y="4"/>
                         <point name="arrow" x="378" y="40"/>
                         <point name="lock"  x="378" y="40"/>
                         <point name="skill_size" x="400" y="60"/>

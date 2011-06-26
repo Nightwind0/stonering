@@ -48,9 +48,10 @@
 	</script>
     </menuOption>
     
-    <menuOption name="Omegas" icon="omegas">
-	<script id="MainMenuOmegas">
+    <menuOption name="Party" icon="party">
+	<script id="MainMenuParty">
 	</script>
+        <menuOption name="Omegas" icon="omegas" />
     </menuOption>
     <menuOption name="Config" icon="config">
 	<script id="MainMenuConfig">
