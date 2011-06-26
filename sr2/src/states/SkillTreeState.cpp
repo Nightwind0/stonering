@@ -208,9 +208,7 @@ void SkillTreeState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
     CL_Rectf box = m_menu;
     box.expand(2,2);
     CL_Draw::box(GC,box,CL_Colorf::white);
-    box = m_path_rect;
-    box.expand(2,2);
-    CL_Draw::box(GC,box,CL_Colorf::white);
+
     
     std::deque<SkillTreeNode*> skillStack;
     std::ostringstream pathDesc;
