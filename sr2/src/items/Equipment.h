@@ -2,7 +2,11 @@
 #define SR_EQUIPMENT_H
 
 #include "Item.h"
+#ifdef WIN32
+#include "SteelInterpreter.h"
+#else
 #include "steel/SteelInterpreter.h"
+#endif
 #include <list>
 #include <map>
 

@@ -45,9 +45,9 @@ void ExperienceState::Init()
 
     
     m_characterFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::EXPERIENCE,"Character"));
-    m_xpFont = GraphicsManager::GetFont(GraphicsManager::GraphicsManager::EXPERIENCE,"XP");
-    m_oldlevelFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::EXPERIENCE,"OldLevel"));
-    m_levelFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::EXPERIENCE,"Level"));
+    m_xpFont = GraphicsManager::GetFont(GraphicsManager::EXPERIENCE,"XP");
+    m_oldlevelFont = GraphicsManager::GetFont(GraphicsManager::EXPERIENCE,"OldLevel");
+    m_levelFont = GraphicsManager::GetFont(GraphicsManager::EXPERIENCE,"Level");
     m_spFont = GraphicsManager::GetFont(GraphicsManager::EXPERIENCE,"SP");
 
     
