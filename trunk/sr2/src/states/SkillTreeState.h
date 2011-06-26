@@ -29,7 +29,7 @@ class SkillTreeState : public State, public Menu
 public:
     SkillTreeState();
     virtual ~SkillTreeState();
-    void Init(Character* pCharacter);
+    void Init(Character* pCharacter, bool buy);
     virtual bool IsDone() const;
     // Handle joystick / key events that are processed according to mappings
     virtual void HandleButtonUp(const IApplication::Button& button);
@@ -43,6 +43,7 @@ public:
     virtual bool DisableMappableObjects() { return true; }; // Should the app move the MOs?
     virtual void Start();
     virtual void Finish(); // Hook to clean up or whatever after being popped
+    SkillTreeNode* GetSelectedSkillNode() const;
 protected:
     virtual CL_Rectf get_rect();
     virtual void draw_option(int option, bool selected, float x, float y, CL_GraphicContext& gc);
@@ -50,6 +51,11 @@ protected:
     virtual void process_choice(int selection);
     virtual int get_option_count();
 private:
+    enum eUseMode 
+    {
+        BUY,
+        USE,
+    };
     void fill_vector(std::list<SkillTreeNode*>::const_iterator begin, std::list<SkillTreeNode*>::const_iterator end);
     CL_Sprite m_arrow;
     CL_Sprite m_lock;
@@ -85,8 +91,10 @@ private:
     Font   m_reqs_font;
     Font   m_path_font;
     bool   m_bDone;
+    eUseMode m_eUse;
     Character* m_pChar;
     SkillTreeNode* m_pNode;
+    SkillTreeNode* m_pSelectedNode;
     std::vector<SkillTreeNode*> m_skills;
 };
 

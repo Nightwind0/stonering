@@ -1082,19 +1082,30 @@ SteelType Application::menu ( const SteelArray& array )
     return val;
 }
 
-SteelType Application::skilltree ( SteelType::Handle hCharacter )
+SteelType Application::skilltree ( SteelType::Handle hCharacter, bool buy )
 {
     Character * pChar = GrabHandle<Character*>(hCharacter);
     
-    mSkillTreeState.Init(pChar);
+    mSkillTreeState.Init(pChar,buy);
     
     mStates.push_back ( &mSkillTreeState );
     run();
     
-    // TODO: Get selected skill
+    SteelType var;
+    var.set( mSkillTreeState.GetSelectedSkillNode() );
+    return var;
+}
+
+SteelType Application::doSkill ( SteelType::Handle hSkill, SteelType::Handle hICharacter )
+{
+    Skill * pSkill = GrabHandle<Skill*>(hSkill);
+    ICharacter * pChar = GrabHandle<ICharacter*>(hICharacter);
+    
+    pSkill->Invoke(pChar,ParameterList());
     
     return SteelType();
 }
+
 
 
 void Application::LoadMainMenu ( CL_DomDocument& doc )
@@ -1676,7 +1687,7 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "kill", new SteelFunctor1Arg<Application,SteelType::Handle>( this, &Application::kill ));
     mInterpreter.addFunction ( "raise", new SteelFunctor1Arg<Application,SteelType::Handle>( this, &Application::raise ));
 
-    mInterpreter.addFunction ( "skilltree", new SteelFunctor1Arg<Application,SteelType::Handle>( this, &Application::skilltree ));
+    mInterpreter.addFunction ( "skilltree", new SteelFunctor2Arg<Application,SteelType::Handle,bool>( this, &Application::skilltree ));
     
     mInterpreter.addFunction ( "getCharacterSP", new SteelFunctor1Arg<Application,SteelType::Handle>( this, &Application::getCharacterSP) );
     mInterpreter.addFunction ( "setCharacterSP", new SteelFunctor2Arg<Application,SteelType::Handle,int>( this, &Application::setCharacterSP) );

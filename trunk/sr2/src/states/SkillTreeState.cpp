@@ -37,11 +37,13 @@ SkillTreeState::~SkillTreeState()
 }
 
 
-void SkillTreeState::Init ( StoneRing::Character* pCharacter )
+void SkillTreeState::Init ( StoneRing::Character* pCharacter, bool buy )
 {
     m_pChar = pCharacter;
     m_pNode = NULL;
 
+    if(buy) m_eUse = BUY;
+    else m_eUse = USE;
     
     m_arrow = GraphicsManager::GetSprite(GraphicsManager::SKILL_TREE,"arrow");
     m_lock = GraphicsManager::GetSprite(GraphicsManager::SKILL_TREE,"lock");
@@ -125,47 +127,27 @@ void SkillTreeState::draw_option ( int option, bool selected, float x, float y, 
     bool has_skill = m_pChar->HasSkill(*pSkillRef);
     bool can_afford = m_pChar->GetSP() >= m_skills[option]->GetSPCost();
     bool met_reqs = m_skills[option]->CanLearn(m_pChar) && ! has_skill;
+    
 
     if(has_skill)
         font = m_obtained_font;
     else if(can_afford && met_reqs)
         font = m_option_font;
-    else if(!met_reqs)
+    else if(!met_reqs){
         font = m_unmet_reqs_font;
-    else if(!can_afford)
+    }else if(!can_afford)
         font = m_unavailable_font;
            
-   
-   if(selected)
+    if(selected){
         gradient = m_selected_gradient;
-   else
-        gradient = m_available_gradient;
-
-    if((!m_skills[option]->CanLearn(m_pChar) && ! has_skill))
-    {
-        if(selected){
-            CL_Rectf box = m_reqs;
-            box.expand(2,2);
-            std::ostringstream reqs;
-            if(m_skills[option]->GetParent() && !m_pChar->HasSkill(*m_skills[option]->GetParent()->GetRef()))
-            {
-                reqs << "Requires " << m_skills[option]->GetParent()->GetRef()->GetRef() << '\n';
-            }
-            if(m_skills[option]->GetMinLevel() > m_pChar->GetLevel())
-            {
-                reqs << "Minimum level " << m_skills[option]->GetMinLevel() << '\n';
-            }
-            reqs << m_skills[option]->GetRequirements();
-            
-            CL_Draw::gradient_fill(gc,m_reqs,m_req_gradient);
-            CL_Draw::box(gc,box,CL_Colorf::white);
-            draw_text(gc,m_reqs_font,m_reqs,reqs.str(), Font::DEFAULT);
-        }else { 
+    }else{
+        if(met_reqs)
+            gradient = m_available_gradient;
+        else
             gradient = m_unavilable_gradient;
-        }
     }
-    
-
+        
+   
     
     CL_Rectf option_rect(x,y,x+m_menu.get_width(),y + height_for_option(gc));
     CL_Draw::gradient_fill(gc,option_rect,gradient);
@@ -245,11 +227,42 @@ void SkillTreeState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
     // Now draw description
     SkillTreeNode * pNode = m_skills[ get_current_choice() ];
     Skill * pSkill = pNode->GetRef()->GetSkill();
+    SkillRef* pSkillRef = pNode->GetRef();
     
     draw_text(GC, m_desc_font, m_description, pSkill->GetDescription()); 
     
     m_char_name_font.draw_text(GC,m_char_name_pt.x,m_char_name_pt.y, m_pChar->GetName());
     m_char_sp_font.draw_text(GC,m_char_sp_pt.x,m_char_sp_pt.y, "SP " +IntToString(m_pChar->GetSP()));
+    
+    bool has_skill = m_pChar->HasSkill(*pSkillRef);
+    bool can_afford = m_pChar->GetSP() >= pNode->GetSPCost();
+    bool met_reqs = pNode->CanLearn(m_pChar);
+    
+    CL_Rectf req_box = m_reqs;
+    req_box.expand(2,2);
+    std::ostringstream reqs;
+    if(pNode->GetParent() && !m_pChar->HasSkill(*pNode->GetParent()->GetRef()))
+    {
+        reqs << "Requires " << pNode->GetParent()->GetRef()->GetRef() << '\n';
+    }
+    if(pNode->GetMinLevel() > m_pChar->GetLevel())
+    {
+        reqs << "Minimum level " << pNode->GetMinLevel() << '\n';
+    }
+    reqs << pNode->GetRequirements();
+
+    if(!met_reqs){       
+        CL_Draw::gradient_fill(GC,m_reqs,m_req_gradient);
+        CL_Draw::box(GC,req_box,CL_Colorf::white);
+        draw_text(GC,m_reqs_font,m_reqs,reqs.str());
+    }else { 
+        CL_Draw::gradient_fill(GC,m_reqs,m_available_gradient);
+        CL_Draw::box(GC,req_box,CL_Colorf::white);
+        draw_text(GC,m_reqs_font,m_reqs,reqs.str());
+    }
+    
+
+    
 }
 
 bool SkillTreeState::IsDone() const
@@ -265,7 +278,7 @@ void SkillTreeState::HandleButtonUp ( const StoneRing::IApplication::Button& but
             m_bDone = true;
             break;
         case IApplication::BUTTON_CONFIRM:
-            // TODO
+            Menu::Choose();
             break;
         case IApplication::BUTTON_R:
             // TODO: Load the children of selected node if any
@@ -333,7 +346,41 @@ void SkillTreeState::HandleButtonDown ( const StoneRing::IApplication::Button& b
 
 void SkillTreeState::process_choice ( int selection )
 {
-
+    SkillTreeNode* node = m_skills[selection];
+    SkillRef* pSkillRef = m_skills[selection]->GetRef();
+    bool has_skill = m_pChar->HasSkill(*pSkillRef);
+    bool can_afford = m_pChar->GetSP() >= node->GetSPCost();
+    bool met_reqs = node->CanLearn(m_pChar) && ! has_skill;      
+    
+    if(m_eUse == BUY)
+    {
+        if(!has_skill && can_afford && met_reqs)
+        {
+            m_pChar->SetSP ( m_pChar->GetSP() - node->GetSPCost() );
+            m_pChar->LearnSkill(*pSkillRef);
+        }
+        else
+        {
+            // play sound bbzzzt
+        }
+    }else if(m_eUse == USE)
+    {
+        if(has_skill && (pSkillRef->GetSkill()->GetType() == Skill::WORLD ||
+            pSkillRef->GetSkill()->GetType() == Skill::BOTH))
+        {
+            m_pSelectedNode = node;
+            m_bDone = true;
+        }
+        else
+        {
+            // play sound bbzzzt
+        }
+    }
+    
 }
 
+SkillTreeNode* SkillTreeState::GetSelectedSkillNode() const
+{
+    return m_pSelectedNode;
+}
 

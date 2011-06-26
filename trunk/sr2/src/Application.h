@@ -172,7 +172,8 @@ namespace StoneRing
 	SteelType showExperience(const SteelArray&  characters, const SteelArray& xp_gained,
 				 const SteelArray& oldLevels, const SteelArray& sp_gained);
         SteelType menu(const SteelArray& options);
-        SteelType skilltree(SteelType::Handle hCharacter);
+        SteelType skilltree(SteelType::Handle hCharacter, bool buy);
+        SteelType doSkill(SteelType::Handle hSkill, SteelType::Handle hCharacter);
 
 
 
