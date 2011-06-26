@@ -38,9 +38,17 @@
     </menuOption>
     <menuOption name="Skills" icon="skills">
 	<script id="MainMenuSkills">
-            declare @targets  = menu::selectTargets(false);
-            if(len(@targets) ==0) return; // they hit back
-            skilltree(@targets[0]);
+            declare $choice = menu(array("Learn","Use"));
+            if($choice == 0){
+                declare @targets  = menu::selectTargets(false);
+                if(len(@targets) ==0) return; // they hit back
+                skilltree(@targets[0],true);
+            }else{
+                declare @targets = menu::selectTargets(false);
+                if(len(@targets)==0) return;
+                declare $skill = skilltree(@targets[0],false);
+                doSkill($skill,@targets[0]);
+            }
 	</script>
     </menuOption>
     <menuOption name="Equip" icon="equip">
