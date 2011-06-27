@@ -1092,9 +1092,27 @@ SteelType Application::skilltree ( SteelType::Handle hCharacter, bool buy )
     run();
     
     SteelType var;
-    var.set( mSkillTreeState.GetSelectedSkillNode() );
+    if(mSkillTreeState.GetSelectedSkillNode())
+        var.set( mSkillTreeState.GetSelectedSkillNode()->GetRef()->GetSkill() );
     return var;
 }
+
+SteelType Application::getSkill(const std::string& whichskill)
+{
+    AbilityManager * AbilityManager = IApplication::GetInstance()->GetAbilityManager();
+
+    if(!AbilityManager->SkillExists(whichskill)){
+        throw CL_Exception("(getSkill) Skill doesn't exist: " + whichskill);
+    }
+
+    Skill * pSkill = AbilityManager->GetSkill(whichskill);
+
+    SteelType var;
+    var.set(pSkill);
+    return var;
+}
+
+
 
 SteelType Application::doSkill ( SteelType::Handle hSkill, SteelType::Handle hICharacter )
 {
@@ -1692,6 +1710,8 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "getCharacterSP", new SteelFunctor1Arg<Application,SteelType::Handle>( this, &Application::getCharacterSP) );
     mInterpreter.addFunction ( "setCharacterSP", new SteelFunctor2Arg<Application,SteelType::Handle,int>( this, &Application::setCharacterSP) );
     mInterpreter.addFunction ( "getMonsterSPReward", new SteelFunctor1Arg<Application, SteelType::Handle>( this, &Application::getMonsterSPReward) );
+    mInterpreter.addFunction ( "doSkill", new SteelFunctor2Arg<Application,SteelType::Handle,SteelType::Handle>( this, &Application::doSkill) );
+    mInterpreter.addFunction ( "getSkill", new SteelFunctor1Arg<Application,const std::string&>(this,&Application::getSkill) );
 }
 
 void Application::queryJoystick()

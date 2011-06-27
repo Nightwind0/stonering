@@ -1,6 +1,7 @@
 <menu>
     <menuOption name="Items" icon="item">
 	<script id="MainMenuItems">
+            <![CDATA[
             declare $choice = menu(array("Use Item","Drop Item"));
             declare $drop = ($choice == 1);
 	    declare $item = selectItem(false,$drop);
@@ -34,10 +35,12 @@
                 }
                 
 	    }
+                ]]>
 	</script>
     </menuOption>
     <menuOption name="Skills" icon="skills">
 	<script id="MainMenuSkills">
+            <![CDATA[
             declare $choice = menu(array("Learn","Use"));
             if($choice == 0){
                 declare @targets  = menu::selectTargets(false);
@@ -47,8 +50,11 @@
                 declare @targets = menu::selectTargets(false);
                 if(len(@targets)==0) return;
                 declare $skill = skilltree(@targets[0],false);
-                doSkill($skill,@targets[0]);
+                if(is_valid($skill)){
+                    doSkill($skill,@targets[0]);
+                }
             }
+                ]]>
 	</script>
     </menuOption>
     <menuOption name="Equip" icon="equip">

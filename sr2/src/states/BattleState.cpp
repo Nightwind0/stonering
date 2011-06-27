@@ -1081,7 +1081,7 @@ void BattleState::SteelInit(SteelInterpreter* pInterpreter)
     static SteelFunctor1Arg<BattleState,bool> fn_getCharacterGroup(this,&BattleState::getCharacterGroup);
     static SteelFunctorNoArgs<BattleState> fn_getAllCharacters(this,&BattleState::getAllCharacters);
     static SteelFunctor1Arg<BattleState,SteelType::Handle> fn_getMonsterDamageCategory(this,&BattleState::getMonsterDamageCategory);
-    static SteelFunctor2Arg<BattleState,SteelType::Handle,const std::string&> fn_doSkill(this,&BattleState::doSkill);
+
     static SteelFunctorNoArgs<BattleState> fn_flee(this,&BattleState::flee);
     static SteelFunctorNoArgs<BattleState> fn_isBossBattle(this,&BattleState::isBossBattle);
     static SteelFunctor1Arg<BattleState,int> fn_darkMode(this, &BattleState::darkMode);
@@ -1112,7 +1112,7 @@ void BattleState::SteelInit(SteelInterpreter* pInterpreter)
     pInterpreter->addFunction("getCharacterGroup","battle",new SteelFunctor1Arg<BattleState,bool>(this,&BattleState::getCharacterGroup));
     pInterpreter->addFunction("getAllCharacters","battle",new SteelFunctorNoArgs<BattleState>(this,&BattleState::getAllCharacters));
     pInterpreter->addFunction("getMonsterDamageCategory","battle",new SteelFunctor1Arg<BattleState,SteelType::Handle>(this,&BattleState::getMonsterDamageCategory));
-    pInterpreter->addFunction("doSkill","battle",new SteelFunctor2Arg<BattleState,SteelType::Handle,const std::string&>(this,&BattleState::doSkill));
+    //pInterpreter->addFunction("getSkill","battle",new SteelFunctor2Arg<BattleState,SteelType::Handle,const std::string&>(this,&BattleState::getSkill));
     pInterpreter->addFunction("flee","battle",new SteelFunctorNoArgs<BattleState>(this,&BattleState::flee));
     pInterpreter->addFunction("isBossBattle","battle",new SteelFunctorNoArgs<BattleState>(this,&BattleState::isBossBattle));
     pInterpreter->addFunction("darkMode","battle",new SteelFunctor1Arg<BattleState,int>(this,&BattleState::darkMode));
@@ -1546,27 +1546,6 @@ SteelType BattleState::isBossBattle()
     val.set(m_bBossBattle);
     
     return val;
-}
-
-SteelType BattleState::doSkill(SteelType::Handle pICharacter, const std::string& whichskill)
-{
-    AbilityManager * AbilityManager = IApplication::GetInstance()->GetAbilityManager();
-    ICharacter* iChar = GrabHandle<ICharacter*>(pICharacter);
-    if(!AbilityManager->SkillExists(whichskill)){
-        throw CL_Exception("(doSkill) Skill doesn't exist: " + whichskill);
-    }
-
-    ParameterList params;
-    // Supply a handle to the character in question;
-    params.push_back ( ParameterListItem("$Character", pICharacter ) );
-    params.push_back ( ParameterListItem("$Round", static_cast<int>(m_nRound) ) );
-
-
-    Skill * pSkill = AbilityManager->GetSkill(whichskill);
-
-    pSkill->Invoke(iChar, params);
-
-    return SteelType();
 }
 
 

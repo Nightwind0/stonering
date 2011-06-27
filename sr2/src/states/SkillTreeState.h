@@ -74,6 +74,7 @@ private:
     CL_Pointf m_portrait_offset;
     CL_Pointf m_char_name_pt;
     CL_Pointf m_char_sp_pt;
+    CL_Pointf m_use_cost_pt;
     CL_Gradient m_available_gradient;
     CL_Gradient m_unavilable_gradient;
     CL_Gradient m_selected_gradient;
@@ -82,6 +83,8 @@ private:
     Font   m_option_font;
     Font   m_char_name_font;
     Font   m_char_sp_font;
+    Font   m_char_mp_font;
+    Font   m_char_bp_font;
     Font   m_selection_font;
     Font   m_obtained_font;
     Font   m_points_font;
@@ -90,6 +93,8 @@ private:
     Font   m_unmet_reqs_font;
     Font   m_reqs_font;
     Font   m_path_font;
+    Font   m_mp_cost;
+    Font   m_bp_cost;
     bool   m_bDone;
     eUseMode m_eUse;
     Character* m_pChar;

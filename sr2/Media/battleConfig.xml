@@ -32,7 +32,7 @@
 	    println ( "{getCharacterName($character)} got {$total_xp}" );
 	    @xp_gain += $total_xp;
 	    @original_level += getCharacterLevel($character); 
-            @sp_gain += getCharacterSP($character)+$total_sp;
+            @sp_gain += $total_sp;
 	    addExperience($character,$total_xp);
             setCharacterSP($character,getCharacterSP($character)+$total_sp);
 	}

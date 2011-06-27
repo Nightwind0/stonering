@@ -173,6 +173,7 @@ namespace StoneRing
 				 const SteelArray& oldLevels, const SteelArray& sp_gained);
         SteelType menu(const SteelArray& options);
         SteelType skilltree(SteelType::Handle hCharacter, bool buy);
+        SteelType getSkill(const std::string& name);
         SteelType doSkill(SteelType::Handle hSkill, SteelType::Handle hCharacter);
 
 

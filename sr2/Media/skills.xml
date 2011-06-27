@@ -245,7 +245,7 @@
             </script>
         </onInvoke>
     </skill>
-    <skill bp="100" name="Heal" sp="12" icon="heal">
+    <skill bp="100" name="Heal" sp="12" icon="heal" type="both">
         <description>Regain some strength.</description>
         <onInvoke>
             <script id="HealScript">
