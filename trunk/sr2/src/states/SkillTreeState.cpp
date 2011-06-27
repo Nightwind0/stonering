@@ -60,6 +60,7 @@ void SkillTreeState::Init ( StoneRing::Character* pCharacter, bool buy )
     m_portrait_offset = GraphicsManager::GetPoint(GraphicsManager::SKILL_TREE,"portrait");
     m_char_name_pt = GraphicsManager::GetPoint(GraphicsManager::SKILL_TREE,"char_name");
     m_char_sp_pt =   GraphicsManager::GetPoint(GraphicsManager::SKILL_TREE,"char_sp");
+    m_use_cost_pt = GraphicsManager::GetPoint(GraphicsManager::SKILL_TREE,"use_cost");
     
     
     m_desc_font = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"desc");
@@ -74,6 +75,10 @@ void SkillTreeState::Init ( StoneRing::Character* pCharacter, bool buy )
     m_path_font = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"Path");
     m_char_name_font = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"char_name");
     m_char_sp_font = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"char_sp");
+    m_char_bp_font = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"char_bp");
+    m_char_mp_font = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"char_mp");
+    m_mp_cost = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"MPCost");
+    m_bp_cost = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"BPCost");
     
     m_available_gradient = GraphicsManager::GetGradient(GraphicsManager::SKILL_TREE,"available");
     m_unavilable_gradient = GraphicsManager::GetGradient(GraphicsManager::SKILL_TREE,"unavailable");
@@ -112,6 +117,7 @@ void SkillTreeState::Start()
 {
     m_bDone = false;
     m_pNode = NULL;
+    m_pSelectedNode = NULL;
     // Start with the base skills
     fill_vector(m_pChar->GetClass()->GetSkillTreeNodesBegin(),
                 m_pChar->GetClass()->GetSkillTreeNodesEnd());
@@ -123,21 +129,14 @@ void SkillTreeState::draw_option ( int option, bool selected, float x, float y, 
     StoneRing::Font font;
     StoneRing::Font costFont;
     CL_Gradient gradient;
-
+        
     bool has_skill = m_pChar->HasSkill(*pSkillRef);
     bool can_afford = m_pChar->GetSP() >= m_skills[option]->GetSPCost();
     bool met_reqs = m_skills[option]->CanLearn(m_pChar) && ! has_skill;
     
-
-    if(has_skill)
-        font = m_obtained_font;
-    else if(can_afford && met_reqs)
-        font = m_option_font;
-    else if(!met_reqs){
-        font = m_unmet_reqs_font;
-    }else if(!can_afford)
-        font = m_unavailable_font;
-           
+    bool can_use = (pSkillRef->GetSkill()->GetType() == Skill::WORLD ||
+            pSkillRef->GetSkill()->GetType() == Skill::BOTH);
+    
     if(selected){
         gradient = m_selected_gradient;
     }else{
@@ -146,11 +145,52 @@ void SkillTreeState::draw_option ( int option, bool selected, float x, float y, 
         else
             gradient = m_unavilable_gradient;
     }
-        
-   
     
     CL_Rectf option_rect(x,y,x+m_menu.get_width(),y + height_for_option(gc));
     CL_Draw::gradient_fill(gc,option_rect,gradient);
+     
+
+    std::ostringstream cost_stream;
+    
+    if(pSkillRef->GetSkill()->GetBPCost()){
+        cost_stream << std::setw(5) << pSkillRef->GetSkill()->GetBPCost() << ' ' << "BP";
+        if(m_eUse != USE || m_pChar->GetAttribute(ICharacter::CA_BP) > pSkillRef->GetSkill()->GetBPCost()){
+            m_bp_cost.draw_text(gc,x + m_use_cost_pt.x,y + m_use_cost_pt.y, cost_stream.str(),Font::TOP_LEFT);
+        }else{
+            m_not_enough_points_font.draw_text(gc,x + m_use_cost_pt.x,y + m_use_cost_pt.y, cost_stream.str(),Font::TOP_LEFT);
+            can_use = false;
+        }
+    }else if(pSkillRef->GetSkill()->GetMPCost()){
+        cost_stream << std::setw(5) << pSkillRef->GetSkill()->GetMPCost() << ' ' << "MP";
+        if(m_eUse != USE || m_pChar->GetAttribute(ICharacter::CA_MP) > pSkillRef->GetSkill()->GetMPCost()){       
+            m_mp_cost.draw_text(gc,x + m_use_cost_pt.x,y + m_use_cost_pt.y, cost_stream.str(), Font::TOP_LEFT);
+        }else{
+            m_not_enough_points_font.draw_text(gc,x + m_use_cost_pt.x,y + m_use_cost_pt.y, cost_stream.str(), Font::TOP_LEFT);
+            can_use = false;
+        }
+    }
+ 
+ 
+    if(m_eUse == BUY){
+        if(has_skill){
+            font = m_obtained_font;
+        }else if(can_afford && met_reqs){
+            font = m_option_font;
+        }else if(!met_reqs){
+            font = m_unmet_reqs_font;
+        }else if(!can_afford)
+            font = m_unavailable_font;  
+    }else if(m_eUse == USE){
+        if(has_skill){
+            if(can_use){
+                font = m_obtained_font;
+            }else{
+                font = m_unavailable_font;
+            }
+        }else {
+            font = m_unavailable_font;
+        }
+    }
     
     pSkillRef->GetSkill()->GetIcon().draw(gc,x+m_icon_point.x,y+m_icon_point.y);
     
@@ -164,6 +204,8 @@ void SkillTreeState::draw_option ( int option, bool selected, float x, float y, 
             costFont = m_points_font;
         costFont.draw_text(gc,x + m_cost_point.x,y + m_cost_point.y, cost_stream.str(), Font::TOP_LEFT);
     }
+    
+
 
     if(m_skills[option]->GetSubSkillsBegin() != m_skills[option]->GetSubSkillsEnd())
     {
@@ -233,6 +275,13 @@ void SkillTreeState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
     
     m_char_name_font.draw_text(GC,m_char_name_pt.x,m_char_name_pt.y, m_pChar->GetName());
     m_char_sp_font.draw_text(GC,m_char_sp_pt.x,m_char_sp_pt.y, "SP " +IntToString(m_pChar->GetSP()));
+    if(m_eUse == USE){
+        m_char_mp_font.draw_text(GC,m_char_sp_pt.x,m_char_sp_pt.y + m_char_sp_font.get_font_metrics(GC).get_height(),
+                             "MP " + IntToString(m_pChar->GetAttribute(ICharacter::CA_MP)));
+        m_char_bp_font.draw_text(GC,m_char_sp_pt.x,m_char_sp_pt.y + m_char_sp_font.get_font_metrics(GC).get_height() 
+                            + m_char_mp_font.get_font_metrics(GC).get_height(),
+                             "BP " + IntToString(m_pChar->GetAttribute(ICharacter::CA_BP)));
+    }
     
     bool has_skill = m_pChar->HasSkill(*pSkillRef);
     bool can_afford = m_pChar->GetSP() >= pNode->GetSPCost();
@@ -241,11 +290,11 @@ void SkillTreeState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
     CL_Rectf req_box = m_reqs;
     req_box.expand(2,2);
     std::ostringstream reqs;
-    if(pNode->GetParent() && !m_pChar->HasSkill(*pNode->GetParent()->GetRef()))
+    if(pNode->GetParent())
     {
         reqs << "Requires " << pNode->GetParent()->GetRef()->GetRef() << '\n';
     }
-    if(pNode->GetMinLevel() > m_pChar->GetLevel())
+    if(pNode->GetMinLevel())
     {
         reqs << "Minimum level " << pNode->GetMinLevel() << '\n';
     }
@@ -368,8 +417,15 @@ void SkillTreeState::process_choice ( int selection )
         if(has_skill && (pSkillRef->GetSkill()->GetType() == Skill::WORLD ||
             pSkillRef->GetSkill()->GetType() == Skill::BOTH))
         {
-            m_pSelectedNode = node;
-            m_bDone = true;
+            if(pSkillRef->GetSkill()->GetMPCost() <= m_pChar->GetAttribute(ICharacter::CA_MP) 
+                && pSkillRef->GetSkill()->GetBPCost() <= m_pChar->GetAttribute(ICharacter::CA_BP))
+            {
+                m_pSelectedNode = node;
+                m_bDone = true;
+            }
+            else {
+                // Play sound bbzt
+            }
         }
         else
         {

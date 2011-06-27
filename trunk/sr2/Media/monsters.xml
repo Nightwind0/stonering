@@ -2,7 +2,7 @@
     <monster name="Endospore" mode="class" spriteResources="endospore" class="Warrior" level="1">
         <onRound>
             <script id="Endospore_round">
-                battle::doSkill($Character,"MonsterBasicAttack");
+                doSkill($Character,getSkill("MonsterBasicAttack"));
             </script>
         </onRound>
 	<onRemove>
@@ -29,7 +29,7 @@
         <onRound>
             <script id="GreenTeaMochi_round">
                 <![CDATA[
-                battle::doSkill($Character,"MonsterBasicAttack");
+                doSkill($Character,getSkill("MonsterBasicAttack"));
                     ]]>
             </script>
         </onRound>
@@ -56,7 +56,7 @@
     <monster name="Stoked Green Tea Mochi" mode="class" spriteResources="Stoked Green Tea Mochi" class="Warrior" level="1">
         <onRound>
             <script id="StokedGreenTeaMochi_round">
-                    battle::doSkill($Character,"MonsterBasicAttack");
+                    doSkill($Character,getSkill("MonsterBasicAttack"));
             </script>
         </onRound>
 	<onRemove>
@@ -76,7 +76,7 @@
     <monster name="Megaspore" mode="class" spriteResources="endospore" class="Warrior" level="3">
         <onRound>
             <script id="Megaspore_round">
-            battle::doSkill($Character,"MonsterBasicAttack");
+            doSkill($Character,getSkill("MonsterBasicAttack"));
             </script>
         </onRound>
 	<onRemove>
@@ -103,7 +103,7 @@
     <monster name="Grass Wolf" mode="manual" spriteResources="wolf" level="5">
         <onRound>
             <script id="Grass Wolf_round">
-                battle::doSkill($Character,"MonsterBasicAttack");  // Monsters are allowed to use any skill they want.
+                doSkill($Character,getSkill("MonsterBasicAttack"));  // Monsters are allowed to use any skill they want.
             </script>
         </onRound>
 	<onRemove>
@@ -124,7 +124,7 @@
      <monster name="Black Cat" mode="manual" spriteResources="Black Cat" level="3">
         <onRound>
             <script id="Black_cat_round">
-                battle::doSkill($Character,"MonsterBasicAttack");  // Monsters are allowed to use any skill they want.
+                doSkill($Character,getSkill("MonsterBasicAttack"));  // Monsters are allowed to use any skill they want.
             </script>
         </onRound>
 	<onRemove>

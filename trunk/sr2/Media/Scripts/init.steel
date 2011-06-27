@@ -4,3 +4,5 @@ equip($char,$_OFFHAND,"Kid Shield");
 var $torriq = addCharacter("Torriq",1,false);
 equip($torriq,$_HAND,"Kid Bow");
 equip($torriq,$_OFFHAND,"Kid Vest");
+setCharacterSP($char,120);
+

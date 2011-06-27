@@ -237,7 +237,6 @@ namespace StoneRing{
 
         SteelType getMonsterDamageCategory(SteelType::Handle hMonster);
 
-        SteelType doSkill(SteelType::Handle pICharacter,const std::string& whichskill);
 
 	SteelType flee();	
 	SteelType isBossBattle();

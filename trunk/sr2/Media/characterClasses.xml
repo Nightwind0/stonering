@@ -24,7 +24,7 @@
                         ]]>
                 </conditionScript>
                 <battleMenu type="popup">
-                    <battleMenuOption name="Easy Throw" icon="hurl">
+                    <battleMenuOption name="Throw" icon="hurl">
                         <conditionScript id="WarriorThrow1Condition">
                             return true;
                         </conditionScript>
@@ -55,7 +55,11 @@
                 </conditionScript>
                 <skillRef skillName="Flee"/>
             </battleMenuOption>
+          <battleMenuOption name="Heal" icon="heal">
+            <skillRef skillName="Heal"/>
+          </battleMenuOption>
         </battleMenu>
+
         <weaponTypeRef name="Sword"/>
         <weaponTypeRef name="Broadsword"/>
         <weaponTypeRef name="Greatsword"/>
@@ -140,7 +144,7 @@
             <skillRef skillName="Heal"/>
             <conditionScript id="WarHealSTCond">
                 <![CDATA[
-                return false;
+                return true;
                     ]]>
             </conditionScript>
         </skillTreeNode>
