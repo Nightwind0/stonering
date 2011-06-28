@@ -659,10 +659,7 @@ void AnimationState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
                     iter != (*m_phase_iterator)->GetSpriteAnimationsEnd(); iter++)
             {
                 SpriteAnimation* anim = *iter;
-                if(!anim->ShouldSkip() && anim->HasAlterSprite())
-                {
-                    apply_alter_sprite(anim->GetAlterSprite());
-                }
+
                 if (!anim->ShouldSkip() && anim->HasSpriteMovement())
                 {
                     SpriteMovement * movement = anim->GetSpriteMovement();
@@ -678,6 +675,10 @@ void AnimationState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
                         move_sprite(m_pCaster,m_pTarget,anim,movement,percentage);
                     }    
                 }
+                if(!anim->ShouldSkip() && anim->HasAlterSprite())
+                {
+                    apply_alter_sprite(anim->GetAlterSprite());
+                }                
              
             }
         }
@@ -773,16 +774,16 @@ void AnimationState::apply_alter_sprite(AlterSprite* pAlterSprite)
             // TODO:
             break;
         case AlterSprite::GRAYSCALE:
-            sprite.set_color(CL_Colorf(0.7f,0.7f,0.7f));
+            sprite.set_color(color * CL_Colorf(0.7f,0.7f,0.7f));
             break;
         case AlterSprite::GREENSCALE:
-            sprite.set_color(CL_Colorf(0.0f,1.0f,0.0f));
+            sprite.set_color(color * CL_Colorf(0.0f,1.0f,0.0f));
             break;
         case AlterSprite::REDSCALE:
-            sprite.set_color(CL_Colorf(1.0f,0.0f,0.0f));
+            sprite.set_color(color * CL_Colorf(1.0f,0.0f,0.0f));
             break;
         case AlterSprite::BLUESCALE:
-            sprite.set_color(CL_Colorf(0.0f,0.0f,1.0f));
+            sprite.set_color(color * CL_Colorf(0.0f,0.0f,1.0f));
             break;
         case AlterSprite::RESET:
             sprite.set_color(CL_Colorf(1.0f,1.0f,1.0f));
