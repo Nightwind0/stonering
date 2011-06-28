@@ -9,7 +9,7 @@ namespace StoneRing{
     public:
     enum eDamageCategory{
         BASH=1,
-        JAB=2,
+        PIERCE=2,
         SLASH=4,
         HOLY=8,
         DARK=16,

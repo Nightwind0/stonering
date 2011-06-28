@@ -110,6 +110,9 @@
 			return 1.0 - $P;
 			    ]]>
 		</spriteMovementScript>
+                <!--spriteMovementScript id="StandardMonsterDeathAnimation_Scale" type="spriteScale">
+                    return 1.0 + $P*2.0;
+                </spriteMovementScript-->
 	    </spriteMovement>
 	</spriteAnimation>
 	<spriteAnimation name="red_for_death">

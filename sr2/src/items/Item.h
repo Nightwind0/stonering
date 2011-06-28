@@ -41,7 +41,8 @@ namespace StoneRing{
     public:
         Item();
         virtual ~Item();
-        enum eItemType { REGULAR_ITEM = 1,
+        enum eItemType {
+                        REGULAR_ITEM = 1,
 			WEAPON = 2,
 			ARMOR = 4,
 			RUNE = 8,

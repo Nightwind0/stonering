@@ -8,7 +8,7 @@ bool StoneRing::DamageCategory::DamageCategoryIsPhysical(eDamageCategory categor
 {
     switch(category)
     {
-        case JAB:
+        case PIERCE:
         case BASH:
         case SLASH:
             return true;
@@ -50,7 +50,7 @@ bool StoneRing::DamageCategory::DamageCategoryIsElemental(eDamageCategory catego
 DamageCategory::eDamageCategory StoneRing::DamageCategory::DamageCategoryFromString(const std::string& string)
 {
     if(string == "bash") return BASH;
-    else if(string == "jab") return JAB;
+    else if(string == "pierce") return PIERCE;
     else if(string == "slash") return SLASH;
     else if(string == "holy") return HOLY;
     else if(string == "dark") return DARK;
