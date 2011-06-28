@@ -863,31 +863,7 @@ void BattleState::draw_monsters(const CL_Rectf &monsterRect, CL_GraphicContext& 
 
 CL_Sprite BattleState::current_sprite ( ICharacter* iCharacter )
 {
-        CL_Sprite  sprite = iCharacter->GetCurrentSprite();
-        
-        sprite.set_color(CL_Colorf::white);
-        sprite.set_scale(1.0,1.0);
-        sprite.set_alpha(1.0);
-        
-        if(iCharacter->GetToggle(ICharacter::CA_DRAW_ILL))
-            sprite.set_color(CL_Colorf::palegreen);
-        if(iCharacter->GetToggle(ICharacter::CA_DRAW_BERSERK))
-            sprite.set_color(CL_Colorf::red);
-        if(iCharacter->GetToggle(ICharacter::CA_DRAW_MINI))
-            sprite.set_scale(0.5,0.5);
-        if(iCharacter->GetToggle(ICharacter::CA_DRAW_FLIPPED))
-            sprite.set_scale(-1.0,-1.0);
-        if(iCharacter->GetToggle(ICharacter::CA_DRAW_MINI) &&
-            iCharacter->GetToggle(ICharacter::CA_DRAW_FLIPPED))
-            sprite.set_scale(-0.5,0.5);
-        if(iCharacter->GetToggle(ICharacter::CA_DRAW_TRANSLUCENT))
-            sprite.set_alpha(0.25);
-        if(iCharacter->GetToggle(ICharacter::CA_DRAW_STONE))
-            sprite.set_color(CL_Colorf::gray40);
-        if(iCharacter->GetToggle(ICharacter::CA_DRAW_PARALYZED))
-            sprite.set_color(CL_Colorf::purple);
-        
-
+        CL_Sprite  sprite = iCharacter->GetCurrentSprite(true);
         return sprite;
 }
 
@@ -952,7 +928,7 @@ CL_Pointf BattleState::get_monster_locus(const Monster * pMonster)const
     CL_Pointf point;
     const uint cellWidth = m_monster_rect.get_width() / m_nColumns;
     const uint cellHeight = m_monster_rect.get_height() / m_nRows;
-    CL_Sprite  sprite = pMonster->GetCurrentSprite();
+    CL_Sprite  sprite = const_cast<Monster*>(pMonster)->GetCurrentSprite();
 
 
     point.x = m_monster_rect.left + pMonster->GetCellX() * cellWidth + (cellWidth  /2);
@@ -996,7 +972,7 @@ CL_Sizef  BattleState::get_character_size(const ICharacter* pCharacter) const
 {
     const Monster * pMonster = dynamic_cast<const Monster*>(pCharacter);
     if(pMonster != NULL){
-        return pMonster->GetCurrentSprite().get_size();
+        return const_cast<Monster*>(pMonster)->GetCurrentSprite().get_size();
     }else{
         return CL_Sizef(64,128);
     }

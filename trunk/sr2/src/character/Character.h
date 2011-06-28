@@ -76,7 +76,7 @@ namespace StoneRing{
 	***************************************************************************/
 	CL_Sprite  GetPortrait(ePortrait portrait);
         CL_Sprite  GetMapSprite() const { return m_mapSprite; }
-        CL_Sprite  GetCurrentSprite() const { return m_currentSprite; }
+        CL_Sprite  GetCurrentSprite(bool pure=true);
         void       SetCurrentSprite(CL_Sprite sprite) { m_currentSprite = sprite; }
 
 	/**************************************************************************

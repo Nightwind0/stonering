@@ -326,52 +326,54 @@ void AnimationState::move_sprite(ICharacter* pActor, ICharacter* pTarget, Sprite
         switch(anim->GetBattleSprite()->GetWho())
         {
             case CASTER:
-                sprite = m_pCaster->GetCurrentSprite();
+                sprite = m_pCaster->GetCurrentSprite(false);
                 break;
             case TARGET:
-                sprite = m_pTarget->GetCurrentSprite();
+                sprite = m_pTarget->GetCurrentSprite(false);
                 break;
         }
     }
     
 // 	enum eMovementScriptType { SPRITE_ROTATION, SPRITE_SCALE, SPRITE_PITCH, SPRITE_YAW, CIRCLE_RADIUS, AMPLITUDE };
 
-float rotation = movement->Rotation();
-float scale = 1.0f;
-float pitch = 0.0f;
-float yaw = 0.0f;
-float radius = movement->circleRadius();
-float amplitude = movement->Amplitude();
-double alpha = 1.0f;
+    float rotation = movement->Rotation();
+    float scale;
+    float scale_y;
+    sprite.get_scale(scale,scale_y);
+    float pitch = 0.0f;
+    float yaw = 0.0f;
+    float radius = movement->circleRadius();
+    float amplitude = movement->Amplitude();
+    double alpha = sprite.get_alpha();
 
-if(movement->hasMovementScript(SpriteMovement::SPRITE_ROTATION))
-{
-    rotation = (double)movement->executeMovementScript(SpriteMovement::SPRITE_ROTATION, percentage);
-}
-if(movement->hasMovementScript(SpriteMovement::SPRITE_SCALE))
-{
-    scale = (double)movement->executeMovementScript(SpriteMovement::SPRITE_SCALE,percentage);
-}
-if(movement->hasMovementScript(SpriteMovement::SPRITE_PITCH))
-{
-    pitch = (double)movement->executeMovementScript(SpriteMovement::SPRITE_PITCH,percentage);
-}
-if(movement->hasMovementScript(SpriteMovement::SPRITE_YAW))
-{
-    yaw = (double)movement->executeMovementScript(SpriteMovement::SPRITE_YAW,percentage);
-}
-if(movement->hasMovementScript(SpriteMovement::CIRCLE_RADIUS))
-{
-    radius = (double)movement->executeMovementScript(SpriteMovement::CIRCLE_RADIUS,percentage);
-}
-if(movement->hasMovementScript(SpriteMovement::AMPLITUDE))
-{
-    amplitude = (double)movement->executeMovementScript(SpriteMovement::AMPLITUDE,percentage);
-}
-if(movement->hasMovementScript(SpriteMovement::ALPHA))
-{
-    alpha = (double)movement->executeMovementScript(SpriteMovement::ALPHA,percentage);
-}
+    if(movement->hasMovementScript(SpriteMovement::SPRITE_ROTATION))
+    {
+        rotation = (double)movement->executeMovementScript(SpriteMovement::SPRITE_ROTATION, percentage);
+    }
+    if(movement->hasMovementScript(SpriteMovement::SPRITE_SCALE))
+    {
+        scale *= (double)movement->executeMovementScript(SpriteMovement::SPRITE_SCALE,percentage);
+    }
+    if(movement->hasMovementScript(SpriteMovement::SPRITE_PITCH))
+    {
+        pitch = (double)movement->executeMovementScript(SpriteMovement::SPRITE_PITCH,percentage);
+    }
+    if(movement->hasMovementScript(SpriteMovement::SPRITE_YAW))
+    {
+        yaw = (double)movement->executeMovementScript(SpriteMovement::SPRITE_YAW,percentage);
+    }
+    if(movement->hasMovementScript(SpriteMovement::CIRCLE_RADIUS))
+    {
+        radius = (double)movement->executeMovementScript(SpriteMovement::CIRCLE_RADIUS,percentage);
+    }
+    if(movement->hasMovementScript(SpriteMovement::AMPLITUDE))
+    {
+        amplitude = (double)movement->executeMovementScript(SpriteMovement::AMPLITUDE,percentage);
+    }
+    if(movement->hasMovementScript(SpriteMovement::ALPHA))
+    {
+        alpha *= (double)movement->executeMovementScript(SpriteMovement::ALPHA,percentage);
+    }
 
 
     // Rotation
@@ -737,32 +739,38 @@ void AnimationState::StartPhase()
             switch(animation->GetAlterSprite()->GetWho())
             {
             case CASTER:
-                sprite = m_pCaster->GetCurrentSprite();
+                sprite = m_pCaster->GetCurrentSprite(false);
                 break;
             case TARGET:
-                sprite = m_pTarget->GetCurrentSprite();
+                sprite = m_pTarget->GetCurrentSprite(false);
                 break;
             }
             
+            float scale;
+            float alpha;
+            sprite.get_scale(scale,scale);
+            alpha = sprite.get_alpha();
+            CL_Colorf color = sprite.get_color();
             switch(animation->GetAlterSprite()->GetAlter())
             {
                 case AlterSprite::HIDE:
                     sprite.set_alpha(0.0f);
                     break;
                 case AlterSprite::SMALLER_SIZE:
-                    sprite.set_scale(1.0f/1.5f,1.0/1.5f);
+                    sprite.set_scale(1.0f/1.5f * scale,1.0/1.5f * scale);
                     break;
                 case AlterSprite::LARGER_SIZE:
-                    sprite.set_scale(1.5f,1.5f);
+                    sprite.set_scale(1.5f*scale,1.5f*scale);
                     break;
                 case AlterSprite::HALF_SIZE:
-                    sprite.set_scale(0.5f,0.5f);
+                    sprite.set_scale(0.5f*scale,0.5f*scale);
                     break;
                 case AlterSprite::DOUBLE_SIZE:
-                    sprite.set_scale(2.0f,2.0f);
+                    sprite.set_scale(2.0f*scale,2.0f*scale);
                     break;
                 case AlterSprite::NEGATIVE:
                 // TODO:
+                    //sprite.set_color(color * CL_Colorf(0.5f,0.5f,0.5f));
                     break;
                 case AlterSprite::X_FLIP:
                     // TODO:
@@ -770,16 +778,16 @@ void AnimationState::StartPhase()
                     // TODO:
                     break;
                 case AlterSprite::GRAYSCALE:
-                    sprite.set_color(CL_Colorf(0.7f,0.7f,0.7f));
+                    sprite.set_color(color * CL_Colorf(0.7f,0.7f,0.7f));
                     break;
                 case AlterSprite::GREENSCALE:
-                    sprite.set_color(CL_Colorf(0.0f,1.0f,0.0f));
+                    sprite.set_color(color * CL_Colorf(0.0f,1.0f,0.0f));
                     break;
                 case AlterSprite::REDSCALE:
-                    sprite.set_color(CL_Colorf(1.0f,0.0f,0.0f));
+                    sprite.set_color(color * CL_Colorf(1.0f,0.0f,0.0f));
                     break;
                 case AlterSprite::BLUESCALE:
-                    sprite.set_color(CL_Colorf(0.0f,0.0f,1.0f));
+                    sprite.set_color(color * CL_Colorf(0.0f,0.0f,1.0f));
                     break;
                 case AlterSprite::RESET:
                     sprite.set_color(CL_Colorf(1.0f,1.0f,1.0f));

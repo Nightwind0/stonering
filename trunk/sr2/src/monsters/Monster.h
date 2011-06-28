@@ -70,7 +70,7 @@ namespace StoneRing
 
         void SetCurrentSprite(CL_Sprite sprite);
 
-        CL_Sprite GetCurrentSprite() const;
+        CL_Sprite GetCurrentSprite(bool pure=true);
 
         /**
         * ICharacter interface

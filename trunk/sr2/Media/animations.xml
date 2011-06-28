@@ -39,6 +39,7 @@
 	<phase parallel="false" duration="300">
 	    <spriteAnimation name="recoil2">
 		<battleSprite who="caster" which="idle"/>
+                <alterSprite who="caster" how="reset"/>
 		<spriteMovement initialFocus="caster" endFocus="locus"   movementStyle="xonly"  movementCompletion="1.0"/>
 	    </spriteAnimation>
 	</phase>

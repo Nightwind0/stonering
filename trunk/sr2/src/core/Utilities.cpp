@@ -149,3 +149,9 @@ CL_Vec2<T> operator*(const T& t, const CL_Vec2<T> &v)
 {
     return operator*(v,t);
 }
+
+CL_Colorf operator*(CL_Colorf a, CL_Colorf b)
+{
+    CL_Colorf color(a.r*b.r,a.g*b.g,a.b*b.b);
+    return color;
+}

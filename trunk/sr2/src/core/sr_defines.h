@@ -180,6 +180,9 @@ public:
     virtual void Visit(T)=0;    
 };
 
+
+CL_Colorf operator*(CL_Colorf a, CL_Colorf);
+
 #endif
 
 
