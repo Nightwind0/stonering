@@ -454,8 +454,8 @@ void ItemManager::dumpItemList()
 
             switch ( pWDC->getType() )
             {
-            case WeaponDamageCategory::JAB:
-                std::cout << "\t[JAB]";
+            case WeaponDamageCategory::pierce:
+                std::cout << "\t[pierce]";
                 break;
             case WeaponDamageCategory::BASH:
                 std::cout << "\t[BASH]";

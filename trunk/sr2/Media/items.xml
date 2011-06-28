@@ -165,19 +165,19 @@
             <weaponType basePrice="205" name="Scimitar" baseAttack="15" hitAdd="0"  damageCategory="slash">
                 <iconRef>Weapons/scimitar</iconRef>
             </weaponType>
-            <weaponType baseAttack="10" hitAdd="-0.04" basePrice="100" name="Bow" ranged="true" baseCritical = "0.03" damageCategory="jab" animationRef="fire_arrow">
+            <weaponType baseAttack="10" hitAdd="-0.04" basePrice="100" name="Bow" ranged="true" baseCritical = "0.03" damageCategory="pierce" animationRef="fire_arrow">
                 <iconRef>Weapons/bow</iconRef>
             </weaponType>
-            <weaponType baseAttack="10" hitAdd="0" basePrice="300" name="Precise Bow" ranged="true"  damageCategory="jab">
+            <weaponType baseAttack="10" hitAdd="0" basePrice="300" name="Precise Bow" ranged="true"  damageCategory="pierce">
                 <iconRef>Weapons/precisebow</iconRef>
             </weaponType>
-            <weaponType baseAttack="15" hitAdd="-0.04" basePrice="200" name="Long Bow" ranged="true" baseCritical = "0.03" damageCategory="jab">
+            <weaponType baseAttack="15" hitAdd="-0.04" basePrice="200" name="Long Bow" ranged="true" baseCritical = "0.03" damageCategory="pierce">
                 <iconRef>Weapons/longbow</iconRef>
             </weaponType>
-            <weaponType baseAttack="50" hitAdd="-0.03" basePrice="600" name="Great Bow" ranged="true"  damageCategory="jab">
+            <weaponType baseAttack="50" hitAdd="-0.03" basePrice="600" name="Great Bow" ranged="true"  damageCategory="pierce">
                 <iconRef>Weapons/greatbow</iconRef>
             </weaponType>
-            <weaponType baseAttack="100" hitAdd="0" basePrice="1200" name="Master Bow" ranged="true"  damageCategory="jab">
+            <weaponType baseAttack="100" hitAdd="0" basePrice="1200" name="Master Bow" ranged="true"  damageCategory="pierce">
                 <iconRef>Weapons/masterbow</iconRef>
             </weaponType>
             <weaponType baseAttack="3" hitAdd="-0.03" basePrice="35" name="Rod" damageCategory="bash"  >

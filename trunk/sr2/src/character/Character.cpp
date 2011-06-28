@@ -306,7 +306,7 @@ double StoneRing::Character::GetDamageCategoryResistance(DamageCategory::eDamage
             return GetAttribute(CA_FIRE_RST);
         case DamageCategory::BASH:
             return GetAttribute(CA_BASH_DEF);
-        case DamageCategory::JAB:
+        case DamageCategory::PIERCE:
             return GetAttribute(CA_JAB_DEF);
         case DamageCategory::SLASH:
             return GetAttribute(CA_SLASH_DEF);

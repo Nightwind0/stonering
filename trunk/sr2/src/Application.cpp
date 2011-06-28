@@ -1609,7 +1609,7 @@ void Application::registerSteelFunctions()
     steelConst ( "$_MAXMP", Character::CA_MAXMP );
 
     steelConst ( "$_BASH", DamageCategory::BASH );
-    steelConst ( "$_JAB", DamageCategory::JAB );
+    steelConst ( "$_JAB", DamageCategory::PIERCE );
     steelConst ( "$_SLASH", DamageCategory::SLASH );
     steelConst ( "$_HOLY", DamageCategory::HOLY );
     steelConst ( "$_DARK", DamageCategory::DARK );
