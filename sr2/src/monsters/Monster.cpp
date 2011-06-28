@@ -290,6 +290,8 @@ CL_Sprite Monster::GetCurrentSprite(bool pure)
         m_sprite.set_scale(1.0,1.0);
         m_sprite.set_alpha(1.0);
     }
+    // Setting the color overwrites the alpha?
+    float alpha = m_sprite.get_alpha();
     if(GetToggle(ICharacter::CA_DRAW_ILL))
         m_sprite.set_color(CL_Colorf::palegreen);
     if(GetToggle(ICharacter::CA_DRAW_BERSERK))
@@ -311,7 +313,7 @@ CL_Sprite Monster::GetCurrentSprite(bool pure)
         m_sprite.set_color(CL_Colorf::gray40);
     if(GetToggle(ICharacter::CA_DRAW_PARALYZED))
         m_sprite.set_color(CL_Colorf::purple);
-    
+    m_sprite.set_alpha(alpha);
     return m_sprite;
 }
 

@@ -60,7 +60,8 @@
         </statusEffect>
         <statusEffect last="round_count" roundCount="5" name="Tangled">
             <attributeModifier attribute="can_fight" type="toggle" value="false"/>
-            <attributeModifier attribute="draw_paralyzed" type="toggle" value="true"/>
+            <attributeModifier attribute="draw_stone" type="toggle" value="true"/>
+            <attributeModifier attribute="draw_still" type="toggle" value="true"/>
             <spriteRef ref="StatusEffect/Tangled"/>
         </statusEffect>
         <statusEffect last="permanent" name="Stone">

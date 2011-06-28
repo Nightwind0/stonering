@@ -835,8 +835,9 @@ void BattleState::draw_monsters(const CL_Rectf &monsterRect, CL_GraphicContext& 
 	//rect.translate ( rect.get_width() / 2.0f,  rect.get_height() / 2.0f);
 
         CL_Sprite  sprite = current_sprite(pMonster);
-        //
-        sprite.update();
+        
+        if(!pMonster->GetToggle(ICharacter::CA_DRAW_STILL))
+            sprite.update();
 
         if (m_combat_state == TARGETING)
         {
@@ -883,7 +884,8 @@ void BattleState::draw_players(const CL_Rectf &playerRect, CL_GraphicContext& GC
 	CL_Pointf center = pCharacter->GetBattlePos();
 	//rect.translate (  rect.get_width() / 2.0f,  rect.get_height() / 2.0f );
 
-        sprite.update();
+        if(!pCharacter->GetToggle(ICharacter::CA_DRAW_STILL))
+            sprite.update();
 
         // Need to get the spacing from game config
         if (!pCharacter->GetToggle(ICharacter::CA_VISIBLE))

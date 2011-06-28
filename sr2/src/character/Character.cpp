@@ -53,6 +53,7 @@ const stat_entry statXMLLookup[] =
     {"draw_translucent",ICharacter::CA_DRAW_TRANSLUCENT},
     {"draw_mini",ICharacter::CA_DRAW_MINI},
     {"draw_flipped",ICharacter::CA_DRAW_FLIPPED},
+    {"draw_still",ICharacter::CA_DRAW_STILL},
     {"visible", ICharacter::CA_VISIBLE},
     {"can_act", ICharacter::CA_CAN_ACT}, //   CA_CAN_ACT,
     {"can_fight",ICharacter::CA_CAN_FIGHT}, // CA_CAN_FIGHT,
@@ -652,28 +653,32 @@ CL_Sprite StoneRing::Character::GetCurrentSprite(bool pure)
        // m_currentSprite.set_color(CL_Colorf::white);
         m_currentSprite.set_scale(1.0,1.0);
         m_currentSprite.set_alpha(1.0);
-        if(GetToggle(ICharacter::CA_DRAW_ILL))
-            m_currentSprite.set_color(CL_Colorf::palegreen);
-        if(GetToggle(ICharacter::CA_DRAW_BERSERK))
-            m_currentSprite.set_color(CL_Colorf::red);
-        if(GetToggle(ICharacter::CA_DRAW_MINI)){
-            m_currentSprite.set_scale(0.5,0.5);
-        }
-        if(GetToggle(ICharacter::CA_DRAW_FLIPPED)){
-            m_currentSprite.set_scale(-1.0,0.5);
-        }
-        if(GetToggle(ICharacter::CA_DRAW_MINI) &&
-            GetToggle(ICharacter::CA_DRAW_FLIPPED)){
-            m_currentSprite.set_scale(-0.5,0.5);
-        }
-        if(GetToggle(ICharacter::CA_DRAW_TRANSLUCENT)){
-            m_currentSprite.set_alpha(0.25);
-        }
-        if(GetToggle(ICharacter::CA_DRAW_STONE))
-            m_currentSprite.set_color(CL_Colorf::gray40);
-        if(GetToggle(ICharacter::CA_DRAW_PARALYZED))
-            m_currentSprite.set_color(CL_Colorf::purple);
     }
+    // preserve alpha, in case we set the color
+    float alpha = m_currentSprite.get_alpha();
+    if(GetToggle(ICharacter::CA_DRAW_ILL))
+        m_currentSprite.set_color(CL_Colorf::palegreen);
+    if(GetToggle(ICharacter::CA_DRAW_BERSERK))
+        m_currentSprite.set_color(CL_Colorf::red);
+    if(GetToggle(ICharacter::CA_DRAW_MINI)){
+        m_currentSprite.set_scale(0.5,0.5);
+    }
+    if(GetToggle(ICharacter::CA_DRAW_FLIPPED)){
+        m_currentSprite.set_scale(-1.0,0.5);
+    }
+    if(GetToggle(ICharacter::CA_DRAW_MINI) &&
+        GetToggle(ICharacter::CA_DRAW_FLIPPED)){
+        m_currentSprite.set_scale(-0.5,0.5);
+    }
+    if(GetToggle(ICharacter::CA_DRAW_TRANSLUCENT)){
+        m_currentSprite.set_alpha(0.25);
+    }
+    if(GetToggle(ICharacter::CA_DRAW_STONE))
+        m_currentSprite.set_color(CL_Colorf::gray40);
+    if(GetToggle(ICharacter::CA_DRAW_PARALYZED))
+        m_currentSprite.set_color(CL_Colorf::purple);
+
+    m_currentSprite.set_alpha(alpha);
     return m_currentSprite;
 }
 
