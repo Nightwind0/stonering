@@ -659,6 +659,10 @@ void AnimationState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
                     iter != (*m_phase_iterator)->GetSpriteAnimationsEnd(); iter++)
             {
                 SpriteAnimation* anim = *iter;
+                if(!anim->ShouldSkip() && anim->HasAlterSprite())
+                {
+                    apply_alter_sprite(anim->GetAlterSprite());
+                }
                 if (!anim->ShouldSkip() && anim->HasSpriteMovement())
                 {
                     SpriteMovement * movement = anim->GetSpriteMovement();
@@ -672,8 +676,9 @@ void AnimationState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
 
                     }else{
                         move_sprite(m_pCaster,m_pTarget,anim,movement,percentage);
-                    }
+                    }    
                 }
+             
             }
         }
     }
@@ -722,6 +727,73 @@ void AnimationState::EndPhase()
     }
 }
 
+void AnimationState::apply_alter_sprite(AlterSprite* pAlterSprite)
+{
+     CL_Sprite sprite;
+    // Alter any sprites on the parent now
+    switch(pAlterSprite->GetWho())
+    {
+    case CASTER:
+        sprite = m_pCaster->GetCurrentSprite(true);
+        break;
+    case TARGET:
+        sprite = m_pTarget->GetCurrentSprite(true);
+        break;
+    }
+    
+    float scale;
+    float alpha;
+    sprite.get_scale(scale,scale);
+    alpha = sprite.get_alpha();
+    CL_Colorf color = sprite.get_color();
+    switch(pAlterSprite->GetAlter())
+    {
+        case AlterSprite::HIDE:
+            alpha = 0.0f;
+            break;
+        case AlterSprite::SMALLER_SIZE:
+            sprite.set_scale(1.0f/1.5f * scale,1.0/1.5f * scale);
+            break;
+        case AlterSprite::LARGER_SIZE:
+            sprite.set_scale(1.5f*scale,1.5f*scale);
+            break;
+        case AlterSprite::HALF_SIZE:
+            sprite.set_scale(0.5f*scale,0.5f*scale);
+            break;
+        case AlterSprite::DOUBLE_SIZE:
+            sprite.set_scale(2.0f*scale,2.0f*scale);
+            break;
+        case AlterSprite::NEGATIVE:
+        // TODO:
+            //sprite.set_color(color * CL_Colorf(0.5f,0.5f,0.5f));
+            break;
+        case AlterSprite::X_FLIP:
+            // TODO:
+        case AlterSprite::Y_FLIP:
+            // TODO:
+            break;
+        case AlterSprite::GRAYSCALE:
+            sprite.set_color(CL_Colorf(0.7f,0.7f,0.7f));
+            break;
+        case AlterSprite::GREENSCALE:
+            sprite.set_color(CL_Colorf(0.0f,1.0f,0.0f));
+            break;
+        case AlterSprite::REDSCALE:
+            sprite.set_color(CL_Colorf(1.0f,0.0f,0.0f));
+            break;
+        case AlterSprite::BLUESCALE:
+            sprite.set_color(CL_Colorf(0.0f,0.0f,1.0f));
+            break;
+        case AlterSprite::RESET:
+            sprite.set_color(CL_Colorf(1.0f,1.0f,1.0f));
+            sprite.set_scale(1.0f,1.0f);
+            alpha = 1.0f;
+            break;
+    }
+    
+    sprite.set_alpha(alpha);
+}
+
 void AnimationState::StartPhase()
 {
     Phase * phase = *m_phase_iterator;
@@ -734,67 +806,7 @@ void AnimationState::StartPhase()
         SpriteAnimation* animation = *iter;
         if (animation->HasAlterSprite())
         {
-            CL_Sprite sprite;
-            // Alter any sprites on the parent now
-            switch(animation->GetAlterSprite()->GetWho())
-            {
-            case CASTER:
-                sprite = m_pCaster->GetCurrentSprite(false);
-                break;
-            case TARGET:
-                sprite = m_pTarget->GetCurrentSprite(false);
-                break;
-            }
-            
-            float scale;
-            float alpha;
-            sprite.get_scale(scale,scale);
-            alpha = sprite.get_alpha();
-            CL_Colorf color = sprite.get_color();
-            switch(animation->GetAlterSprite()->GetAlter())
-            {
-                case AlterSprite::HIDE:
-                    sprite.set_alpha(0.0f);
-                    break;
-                case AlterSprite::SMALLER_SIZE:
-                    sprite.set_scale(1.0f/1.5f * scale,1.0/1.5f * scale);
-                    break;
-                case AlterSprite::LARGER_SIZE:
-                    sprite.set_scale(1.5f*scale,1.5f*scale);
-                    break;
-                case AlterSprite::HALF_SIZE:
-                    sprite.set_scale(0.5f*scale,0.5f*scale);
-                    break;
-                case AlterSprite::DOUBLE_SIZE:
-                    sprite.set_scale(2.0f*scale,2.0f*scale);
-                    break;
-                case AlterSprite::NEGATIVE:
-                // TODO:
-                    //sprite.set_color(color * CL_Colorf(0.5f,0.5f,0.5f));
-                    break;
-                case AlterSprite::X_FLIP:
-                    // TODO:
-                case AlterSprite::Y_FLIP:
-                    // TODO:
-                    break;
-                case AlterSprite::GRAYSCALE:
-                    sprite.set_color(CL_Colorf(0.7f,0.7f,0.7f));
-                    break;
-                case AlterSprite::GREENSCALE:
-                    sprite.set_color(CL_Colorf(0.0f,1.0f,0.0f));
-                    break;
-                case AlterSprite::REDSCALE:
-                    sprite.set_color(CL_Colorf(1.0f,0.0f,0.0f));
-                    break;
-                case AlterSprite::BLUESCALE:
-                    sprite.set_color(CL_Colorf(0.0f,0.0f,1.0f));
-                    break;
-                case AlterSprite::RESET:
-                    sprite.set_color(CL_Colorf(1.0f,1.0f,1.0f));
-                    sprite.set_scale(1.0f,1.0f);
-                    sprite.set_alpha(1.0f);
-                    break;
-            }
+           apply_alter_sprite(animation->GetAlterSprite());
         }
 
         if (animation->HasBattleSprite())

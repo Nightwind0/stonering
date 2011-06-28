@@ -1,20 +1,10 @@
 <statusEffectList>
             <statusEffect last="round_count" roundCount="8"  name="Paralyzed">
             <spriteRef ref="StatusEffect/Tangled"/>
-            <onInvoke>
-                <script id="SE_TangledInv">
-                    <![CDATA[
-                setCharacterToggle($_Character,$_CAN_FIGHT,false);
-                setCharacterToggle($_Character,$_DRAW_PARALYZED,true);
-                    ]]>
-                </script>
-            </onInvoke>
-            <onRemove>
-                <script id="SE_TangledRem">
-                setCharacterToggle($_Character,$_CAN_FIGHT,true);
-                setCharacterToggle($_Character,$_DRAW_PARALYZED,false);
-                </script>
-            </onRemove>
+            <attributeModifier attribute="can_fight" type="toggle" value="false"/>
+            <attributeModifier attribute="draw_paralyzed" type="toggle" value="true"/>
+            <attributeModifier attribute="draw_still" type="toggle" value="true"/>
+            
         </statusEffect>
         <statusEffect last="permanent"  name="Poison">
             <spriteRef ref="StatusEffect/Poisoned"/>
@@ -58,15 +48,16 @@
                         </script>
                 </onRound>
         </statusEffect>
-        <statusEffect last="round_count" roundCount="5" name="Tangled">
+        <statusEffect last="round_count" roundCount="2" name="Tangled">
             <attributeModifier attribute="can_fight" type="toggle" value="false"/>
-            <attributeModifier attribute="draw_stone" type="toggle" value="true"/>
+            <attributeModifier attribute="draw_paralyzed" type="toggle" value="true"/>
             <attributeModifier attribute="draw_still" type="toggle" value="true"/>
             <spriteRef ref="StatusEffect/Tangled"/>
         </statusEffect>
-        <statusEffect last="permanent" name="Stone">
+        <statusEffect last="permanent" roundCount="5" name="Stone">
             <attributeModifier attribute="can_act" type="toggle" value="false"/>
             <attributeModifier attribute="draw_stone" type="toggle" value="true"/>
+            <attributeModifier attribute="draw_still" type="toggle" value="true"/>
             <spriteRef ref="StatusEffect/Stone"/>
                 <onInvoke>
                         <script id="SE_Stone">

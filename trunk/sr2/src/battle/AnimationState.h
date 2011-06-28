@@ -44,6 +44,7 @@ namespace StoneRing
         bool NextPhase();
         void StartPhase();
 	void move_sprite(ICharacter *pActor, ICharacter* pTarget, SpriteAnimation* anim, SpriteMovement* movement, float percentage);
+        void apply_alter_sprite(AlterSprite* pSprite);
         //void move_character(ICharacter* character, SpriteAnimation* anim, SpriteMovement* movement, float percentage);
 	/*
 	SteelType getSpritePoint(SteelType::Handle hSprite);
