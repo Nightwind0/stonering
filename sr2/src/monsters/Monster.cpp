@@ -286,7 +286,7 @@ void Monster::SetCurrentSprite(CL_Sprite sprite)
 CL_Sprite Monster::GetCurrentSprite(bool pure)
 {
     if(!pure){
-      //  m_sprite.set_color(CL_Colorf::white);
+        m_sprite.set_color(CL_Colorf::white);
         m_sprite.set_scale(1.0,1.0);
         m_sprite.set_alpha(1.0);
     }
