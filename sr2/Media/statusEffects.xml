@@ -3,8 +3,10 @@
             <spriteRef ref="StatusEffect/Tangled"/>
             <onInvoke>
                 <script id="SE_TangledInv">
+                    <![CDATA[
                 setCharacterToggle($_Character,$_CAN_FIGHT,false);
-                setCharacterToggle($_Character,$_DRAW_PARALYZED,true);            
+                setCharacterToggle($_Character,$_DRAW_PARALYZED,true);
+                    ]]>
                 </script>
             </onInvoke>
             <onRemove>
@@ -58,6 +60,7 @@
         </statusEffect>
         <statusEffect last="round_count" roundCount="5" name="Tangled">
             <attributeModifier attribute="can_fight" type="toggle" value="false"/>
+            <attributeModifier attribute="draw_paralyzed" type="toggle" value="true"/>
             <spriteRef ref="StatusEffect/Tangled"/>
         </statusEffect>
         <statusEffect last="permanent" name="Stone">

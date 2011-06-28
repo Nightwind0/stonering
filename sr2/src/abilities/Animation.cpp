@@ -112,6 +112,7 @@ AlterSprite::eAlter AlterSprite::alter_from_string(const std::string &str)
     else if (str == "greenscale") return GREENSCALE;
     else if (str == "redscale") return REDSCALE;
     else if (str == "bluescale") return BLUESCALE;
+    else if (str == "reset") return RESET;
     else throw CL_Exception("Bad alter: " + str);
 }
 

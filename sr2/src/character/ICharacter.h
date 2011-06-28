@@ -120,7 +120,7 @@ namespace StoneRing{
         virtual void   Attacked()=0;
         virtual CL_Pointf       GetBattlePos()const=0;
         virtual void           SetBattlePos(CL_Pointf point)=0;
-	virtual CL_Sprite GetCurrentSprite() const=0;
+	virtual CL_Sprite GetCurrentSprite(bool pure=true)=0;
         
         virtual void   IterateStatusEffects(Visitor<StatusEffect*> &)=0;
 

@@ -645,3 +645,35 @@ StoneRing::BattleMenu * StoneRing::Character::GetBattleMenu() const
 {
     return m_pClass->GetBattleMenu();
 }
+
+CL_Sprite StoneRing::Character::GetCurrentSprite(bool pure)
+{
+    if(!pure){
+       // m_currentSprite.set_color(CL_Colorf::white);
+        m_currentSprite.set_scale(1.0,1.0);
+        m_currentSprite.set_alpha(1.0);
+        if(GetToggle(ICharacter::CA_DRAW_ILL))
+            m_currentSprite.set_color(CL_Colorf::palegreen);
+        if(GetToggle(ICharacter::CA_DRAW_BERSERK))
+            m_currentSprite.set_color(CL_Colorf::red);
+        if(GetToggle(ICharacter::CA_DRAW_MINI)){
+            m_currentSprite.set_scale(0.5,0.5);
+        }
+        if(GetToggle(ICharacter::CA_DRAW_FLIPPED)){
+            m_currentSprite.set_scale(-1.0,0.5);
+        }
+        if(GetToggle(ICharacter::CA_DRAW_MINI) &&
+            GetToggle(ICharacter::CA_DRAW_FLIPPED)){
+            m_currentSprite.set_scale(-0.5,0.5);
+        }
+        if(GetToggle(ICharacter::CA_DRAW_TRANSLUCENT)){
+            m_currentSprite.set_alpha(0.25);
+        }
+        if(GetToggle(ICharacter::CA_DRAW_STONE))
+            m_currentSprite.set_color(CL_Colorf::gray40);
+        if(GetToggle(ICharacter::CA_DRAW_PARALYZED))
+            m_currentSprite.set_color(CL_Colorf::purple);
+    }
+    return m_currentSprite;
+}
+

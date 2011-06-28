@@ -283,8 +283,35 @@ void Monster::SetCurrentSprite(CL_Sprite sprite)
     m_sprite.set_alignment(origin_center);
 }
 
-CL_Sprite Monster::GetCurrentSprite() const
+CL_Sprite Monster::GetCurrentSprite(bool pure)
 {
+    if(!pure){
+      //  m_sprite.set_color(CL_Colorf::white);
+        m_sprite.set_scale(1.0,1.0);
+        m_sprite.set_alpha(1.0);
+    }
+    if(GetToggle(ICharacter::CA_DRAW_ILL))
+        m_sprite.set_color(CL_Colorf::palegreen);
+    if(GetToggle(ICharacter::CA_DRAW_BERSERK))
+        m_sprite.set_color(CL_Colorf::red);
+    if(GetToggle(ICharacter::CA_DRAW_MINI)){
+        m_sprite.set_scale(0.5,0.5);
+    }
+    if(GetToggle(ICharacter::CA_DRAW_FLIPPED)){
+        m_sprite.set_scale(-1.0,0.5);
+    }
+    if(GetToggle(ICharacter::CA_DRAW_MINI) &&
+        GetToggle(ICharacter::CA_DRAW_FLIPPED)){
+        m_sprite.set_scale(-0.5,0.5);
+    }
+    if(GetToggle(ICharacter::CA_DRAW_TRANSLUCENT)){
+        m_sprite.set_alpha(0.25);
+    }
+    if(GetToggle(ICharacter::CA_DRAW_STONE))
+        m_sprite.set_color(CL_Colorf::gray40);
+    if(GetToggle(ICharacter::CA_DRAW_PARALYZED))
+        m_sprite.set_color(CL_Colorf::purple);
+    
     return m_sprite;
 }
 
