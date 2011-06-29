@@ -133,7 +133,7 @@ void Monster::Raise()
     SetToggle(CA_ALIVE,true);
 }
 
-void Monster::Attacked()
+void Monster::Attacked(ICharacter *pAttacer, DamageCategory::eDamageCategory category, int amount)
 {
     // TODO: What do I call here?
 }

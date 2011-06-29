@@ -200,7 +200,7 @@ bool SkillTreeNode::CanLearn ( Character* pCharacter )
     if(m_parent)
     {
         // They have to have the parent skill. That's how trees work, you see.
-        if(!pCharacter->HasSkill(*m_parent->GetRef()))
+        if(!pCharacter->HasSkill(m_parent->GetRef()->GetRef()))
             return false;
     }
     

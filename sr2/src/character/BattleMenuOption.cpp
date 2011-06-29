@@ -86,7 +86,7 @@ bool BattleMenuOption::Visible ( StoneRing::Character* pCharacter )
     if(m_action_type == SKILLREF)
     {
         assert(m_action.m_pSkillRef);
-        if(!pCharacter->HasSkill(*m_action.m_pSkillRef))
+        if(!pCharacter->HasSkill(m_action.m_pSkillRef->GetRef()))
             return false;
     }
     

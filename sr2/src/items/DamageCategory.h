@@ -17,7 +17,9 @@ namespace StoneRing{
         WATER=64,
         WIND=128,
         EARTH=256,
-        _LAST_DAMAGE_CATEGORY=512
+        GRAVITY=512,
+        ELECTRIC=1024,
+        _LAST_DAMAGE_CATEGORY=2048
     };
 
     static bool DamageCategoryIsPhysical(eDamageCategory category);

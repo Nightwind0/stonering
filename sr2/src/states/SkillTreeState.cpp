@@ -130,7 +130,7 @@ void SkillTreeState::draw_option ( int option, bool selected, float x, float y, 
     StoneRing::Font costFont;
     CL_Gradient gradient;
         
-    bool has_skill = m_pChar->HasSkill(*pSkillRef);
+    bool has_skill = m_pChar->HasSkill(pSkillRef->GetRef());
     bool can_afford = m_pChar->GetSP() >= m_skills[option]->GetSPCost();
     bool met_reqs = m_skills[option]->CanLearn(m_pChar) && ! has_skill;
     
@@ -283,7 +283,7 @@ void SkillTreeState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
                              "BP " + IntToString(m_pChar->GetAttribute(ICharacter::CA_BP)));
     }
     
-    bool has_skill = m_pChar->HasSkill(*pSkillRef);
+    bool has_skill = m_pChar->HasSkill(pSkillRef->GetRef());
     bool can_afford = m_pChar->GetSP() >= pNode->GetSPCost();
     bool met_reqs = pNode->CanLearn(m_pChar);
     
@@ -397,7 +397,7 @@ void SkillTreeState::process_choice ( int selection )
 {
     SkillTreeNode* node = m_skills[selection];
     SkillRef* pSkillRef = m_skills[selection]->GetRef();
-    bool has_skill = m_pChar->HasSkill(*pSkillRef);
+    bool has_skill = m_pChar->HasSkill(pSkillRef->GetRef());
     bool can_afford = m_pChar->GetSP() >= node->GetSPCost();
     bool met_reqs = node->CanLearn(m_pChar) && ! has_skill;      
     
@@ -406,7 +406,7 @@ void SkillTreeState::process_choice ( int selection )
         if(!has_skill && can_afford && met_reqs)
         {
             m_pChar->SetSP ( m_pChar->GetSP() - node->GetSPCost() );
-            m_pChar->LearnSkill(*pSkillRef);
+            m_pChar->LearnSkill(pSkillRef->GetRef());
         }
         else
         {

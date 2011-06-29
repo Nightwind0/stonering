@@ -37,6 +37,10 @@ Magic::eMagicType Magic::TypeOf(const std::string &str)
         return ELEMENTAL;
     else if(str == "divine")
         return DIVINE;
+    else if(str == "gravity")
+        return GRAVITY;
+    else if(str == "electric")
+        return ELECTRIC;
     else if(str == "all")
         return ALL;
     else return UNKNOWN;

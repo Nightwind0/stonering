@@ -45,6 +45,8 @@ const stat_entry statXMLLookup[] =
     {"earth_rst",ICharacter::CA_EARTH_RST},
     {"dark_rst",ICharacter::CA_DARK_RST},
     {"holy_rst",ICharacter::CA_HOLY_RST},
+    {"gravity_rst",ICharacter::CA_GRAVITY_RST},
+    {"electric_rst",ICharacter::CA_ELECTRIC_RST},
     {"draw_ill",ICharacter::CA_DRAW_ILL},   //    CA_DRAW_ILL,
     {"draw_stone",ICharacter::CA_DRAW_STONE}, //    CA_DRAW_STONE,
     {"draw_berserk",ICharacter::CA_DRAW_BERSERK}, //  CA_DRAW_BERSERK,
@@ -195,12 +197,12 @@ StoneRing::Character::Character():m_pClass(NULL)
 }
 
 
-void StoneRing::Character::LearnSkill(const SkillRef& skill)
+void StoneRing::Character::LearnSkill(const std::string& skill)
 {
-    m_skillset.insert ( skill.GetRef() );
+    m_skillset.insert ( skill );
 }
 
-bool StoneRing::Character::HasSkill(const SkillRef& skill)
+bool StoneRing::Character::HasSkill(const std::string& skill)
 {
     for(std::list<SkillTreeNode*>::const_iterator iter = m_pClass->GetSkillTreeNodesBegin();
         iter != m_pClass->GetSkillTreeNodesEnd(); iter++)
@@ -209,11 +211,11 @@ bool StoneRing::Character::HasSkill(const SkillRef& skill)
             // If this skill is a top-level skill (no pre-reqs),
             // and has no special restrictions (by, level, etc),
             // then we are considered to have it, regardless of it being in our explicit list
-            if(*pNode->GetRef() == skill && pNode->GetParent() == NULL 
+            if(pNode->GetRef()->GetRef() == skill && pNode->GetParent() == NULL 
                 && pNode->CanLearn(this) && pNode->GetSPCost() == 0)
                 return true;
         }
-    return m_skillset.count(skill.GetRef());
+    return m_skillset.count(skill);
 }
 
 void StoneRing::Character::set_toggle_defaults()
@@ -286,9 +288,29 @@ void StoneRing::Character::Raise()
     SetCurrentSprite(GraphicsManager::CreateCharacterSprite(m_name,"idle"));
 }
 
-void StoneRing::Character::Attacked()
+void StoneRing::Character::Attacked(ICharacter* pAttacker, DamageCategory::eDamageCategory category, int amount)
 {
+    ParameterList params;
+    params.push_back(ParameterListItem("$_Character",this));
+    params.push_back(ParameterListItem("$_Attacker",pAttacker));
+    params.push_back(ParameterListItem("$_Category",static_cast<int>(category)));
+    params.push_back(ParameterListItem("$_Amount",amount));
     // Go through armors calling Invoke on them
+    for(std::map<Equipment::eSlot,Equipment*>::const_iterator iter = m_equipment.begin();
+        iter != m_equipment.end(); iter++)
+    {
+        Armor * pArmor = dynamic_cast<Armor*>(iter->second);
+        if(pArmor != NULL)
+        {
+            pArmor->Invoke(params);
+        }
+    }
+    
+    AstScript * pScript = IApplication::GetInstance()->GetUtility(IApplication::ON_ATTACK);
+    if(pScript)
+    {
+        IApplication::GetInstance()->RunScript(pScript,params);
+    }
 }
 
 
