@@ -106,7 +106,7 @@ namespace StoneRing
         virtual uint GetInitiative(void)const;
         virtual void Kill();
         virtual void Raise();
-        virtual void Attacked();
+        virtual void Attacked(ICharacter *pAttacker, DamageCategory::eDamageCategory category, int amount);
 
         virtual CL_Pointf GetBattlePos() const;
         virtual void     SetBattlePos(CL_Pointf pos);

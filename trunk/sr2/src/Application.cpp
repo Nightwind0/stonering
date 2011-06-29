@@ -687,6 +687,16 @@ SteelType Application::getCharacterAttribute ( const SteelType::Handle hICharact
     return result;
 }
 
+SteelType Application::augmentCharacterAttribute(const SteelType::Handle hICharacter, uint i_attr, double augment)
+{
+    ICharacter * pCharacter = GrabHandle<ICharacter*>(hICharacter);
+    ICharacter::eCharacterAttribute attr = static_cast<ICharacter::eCharacterAttribute>(i_attr);
+    
+    pCharacter->PermanentAugment(attr,augment);
+    
+    return SteelType();
+}
+
 SteelType Application::getCharacterToggle ( const SteelType::Handle hICharacter, uint attr )
 {
     SteelType result;
@@ -826,10 +836,13 @@ SteelType Application::invokeWeapon ( SteelType::Handle pICharacter, SteelType::
 }
 
 
-SteelType Application::attackCharacter ( SteelType::Handle hICharacter )
+SteelType Application::attackCharacter ( SteelType::Handle hICharacter, SteelType::Handle hIAttacker, int i_category, int amount )
 {
     ICharacter* iCharacter = GrabHandle<ICharacter*> ( hICharacter );
-    iCharacter->Attacked();
+    ICharacter* pAttacker = GrabHandle<ICharacter*> ( hIAttacker );
+    DamageCategory::eDamageCategory category = static_cast<DamageCategory::eDamageCategory>(i_category);
+    iCharacter->Attacked(pAttacker,category,amount);
+    doDamage(hICharacter,amount);
 
     return SteelType();
 }
@@ -1096,6 +1109,27 @@ SteelType Application::skilltree ( SteelType::Handle hCharacter, bool buy )
         var.set( mSkillTreeState.GetSelectedSkillNode()->GetRef()->GetSkill() );
     return var;
 }
+
+SteelType Application::learnSkill ( SteelType::Handle hCharacter, SteelType::Handle skill )
+{
+    Character * pChar = GrabHandle<Character*>(hCharacter);
+    Skill * pSkill = GrabHandle<Skill*>(skill);
+    
+    pChar->LearnSkill(pSkill->GetName());
+    
+    return SteelType();
+}
+
+SteelType Application::hasSkill ( SteelType::Handle hCharacter, const std::string& skillName )
+{
+    Character * pChar = GrabHandle<Character*>(hCharacter);
+
+    SteelType var;
+    var.set(pChar->HasSkill(skillName));
+    
+    return var;
+}
+
 
 SteelType Application::getSkill(const std::string& whichskill)
 {
@@ -1515,7 +1549,8 @@ void Application::registerSteelFunctions()
     SteelFunctor*  fn_weaponTypeHasAnimation = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::weaponTypeHasAnimation );
     SteelFunctor*  fn_invokeWeapon = new SteelFunctor3Arg<Application, const SteelType::Handle, const SteelType::Handle, uint> ( this, &Application::invokeWeapon );
     SteelFunctor*  fn_invokeArmor = new SteelFunctor2Arg<Application, const SteelType::Handle, const SteelType::Handle> ( this, &Application::invokeArmor );
-    SteelFunctor*  fn_attackCharacter = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::attackCharacter );
+    SteelFunctor*  fn_attackCharacter = new SteelFunctor4Arg<Application, const SteelType::Handle,
+                                                              const SteelType::Handle,int,int> ( this, &Application::attackCharacter );
 
     SteelFunctor*  fn_getDamageCategoryResistance = new SteelFunctor2Arg<Application, const SteelType::Handle, int> ( this, &Application::getDamageCategoryResistance );
     SteelFunctor*  fn_getHitSound = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getHitSound );
@@ -1573,6 +1608,7 @@ void Application::registerSteelFunctions()
 
     steelConst ( "$_HP", Character::CA_HP );
     steelConst ( "$_MP", Character::CA_MP );
+    steelConst ( "$_BP", Character::CA_BP );
     steelConst ( "$_STR", Character::CA_STR );
     steelConst ( "$_DEF", Character::CA_DEF );
     steelConst ( "$_DEX", Character::CA_DEX );
@@ -1607,6 +1643,7 @@ void Application::registerSteelFunctions()
 
     steelConst ( "$_MAXHP", Character::CA_MAXHP );
     steelConst ( "$_MAXMP", Character::CA_MAXMP );
+    steelConst ( "$_MAXBP", Character::CA_MAXBP );
 
     steelConst ( "$_BASH", DamageCategory::BASH );
     steelConst ( "$_JAB", DamageCategory::PIERCE );
@@ -1617,7 +1654,8 @@ void Application::registerSteelFunctions()
     steelConst ( "$_WATER", DamageCategory::WATER );
     steelConst ( "$_WIND", DamageCategory::WIND );
     steelConst ( "$_EARTH", DamageCategory::EARTH );
-
+    steelConst ( "$_GRAVITY", DamageCategory::GRAVITY );
+    steelConst ( "$_ELECTRIC", DamageCategory::ELECTRIC );
 
     mInterpreter.addFunction ( "normal_random", fn_gaussian );
     mInterpreter.addFunction ( "log", fn_log );
@@ -1712,6 +1750,11 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "getMonsterSPReward", new SteelFunctor1Arg<Application, SteelType::Handle>( this, &Application::getMonsterSPReward) );
     mInterpreter.addFunction ( "doSkill", new SteelFunctor2Arg<Application,SteelType::Handle,SteelType::Handle>( this, &Application::doSkill) );
     mInterpreter.addFunction ( "getSkill", new SteelFunctor1Arg<Application,const std::string&>(this,&Application::getSkill) );
+    mInterpreter.addFunction ( "learnSkill", new SteelFunctor2Arg<Application,SteelType::Handle,SteelType::Handle>(this,&Application::learnSkill) );
+    mInterpreter.addFunction ( "hasSkill", new SteelFunctor2Arg<Application,SteelType::Handle,const std::string&>(this,&Application::hasSkill) );
+
+    mInterpreter.addFunction ( "augmentCharacterAttribute", new SteelFunctor3Arg<Application,SteelType::Handle,uint,double>(this,&Application::augmentCharacterAttribute) );
+    
 }
 
 void Application::queryJoystick()
@@ -1986,6 +2029,8 @@ AstScript* Application::GetUtility ( Utility util ) const
             return mUtilityScripts.GetScript ( "tnl" );
         case LEVEL_FOR_XP:
             return mUtilityScripts.GetScript ( "lnt" );
+        case ON_ATTACK:
+            return mUtilityScripts.GetScript ( "on_attack" );
     }
 
     assert ( 0 );

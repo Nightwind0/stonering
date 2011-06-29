@@ -256,9 +256,16 @@ namespace StoneRing{
         CL_Rectf m_popup_rect;
         CL_Rectf m_monster_rect;
         CL_Rectf m_player_rect;
+        CL_Rectf m_bp_box;
         CL_Pointf m_status_effect_spacing;
+        CL_Gradient m_bp_gradient;
 	CL_Colorf m_darkColor;
         CL_Colorf m_status_effect_shadow_color;
+        CL_Colorf m_bp_border;
+        Font m_mpFont;
+        Font m_bpFont;
+        Font m_hpFont;
+        Font m_generalFont;
 	uint m_ndarkMode;
 
         eCombatState m_combat_state;

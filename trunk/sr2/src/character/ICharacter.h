@@ -55,6 +55,8 @@ namespace StoneRing{
             CA_WATER_RST,
             CA_WIND_RST,
             CA_EARTH_RST,
+            CA_GRAVITY_RST,
+            CA_ELECTRIC_RST,
             _END_OF_DAMAGE_CATEGORIES,
             _END_OF_REALS,
             _START_OF_TOGGLES,
@@ -118,10 +120,10 @@ namespace StoneRing{
         virtual uint   GetInitiative(void)const=0;
         virtual void   Kill()=0;
         virtual void   Raise()=0;
-        virtual void   Attacked()=0;
-        virtual CL_Pointf       GetBattlePos()const=0;
-        virtual void           SetBattlePos(CL_Pointf point)=0;
-	virtual CL_Sprite GetCurrentSprite(bool pure=true)=0;
+        virtual void   Attacked(ICharacter* pAttacker, DamageCategory::eDamageCategory category, int amount)=0;
+        virtual CL_Pointf  GetBattlePos()const=0;
+        virtual void       SetBattlePos(CL_Pointf point)=0;
+	virtual CL_Sprite  GetCurrentSprite(bool pure=true)=0;
         
         virtual void   IterateStatusEffects(Visitor<StatusEffect*> &)=0;
 

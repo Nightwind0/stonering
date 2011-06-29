@@ -380,6 +380,14 @@ void BattleState::Start()
     m_pStatusBadFont = pGraphicsManager->GetFont(GraphicsManager::BATTLE_STATUS, GraphicsManager::BAD);
 #endif
 
+    m_generalFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_STATUS,"general");
+    m_hpFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_STATUS,"hp");
+    m_mpFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_STATUS,"mp");
+    m_bpFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_STATUS,"bp");
+    
+    m_bp_gradient = GraphicsManager::GetGradient(GraphicsManager::BATTLE_STATUS,"bp_bar");
+    m_bp_box = GraphicsManager::GetRect(GraphicsManager::BATTLE_STATUS,"bp_box");
+
     CL_Pointf statusBar = GraphicsManager::GetPoint(GraphicsManager::BATTLE_STATUS,"origin");
     m_nStatusBarX = statusBar.x;
     m_nStatusBarY = statusBar.y;
@@ -387,6 +395,7 @@ void BattleState::Start()
     m_nPopupX = popupOrigin.x;
     m_nPopupY = popupOrigin.y;
 
+    m_bp_border = GraphicsManager::GetColor(GraphicsManager::BATTLE_STATUS,"bp_border");
     /**
      * TODO:
      * Refactor this resource shit so that you can just pull everything by state enum
@@ -400,8 +409,8 @@ void BattleState::Start()
 
     m_status_rect = GraphicsManager::GetRect(GraphicsManager::BATTLE_STATUS,"text");
 
-    m_status_rect.top += m_nStatusBarY;
-    m_status_rect.left += m_nStatusBarX;
+    //m_status_rect.top += m_nStatusBarY;
+    //m_status_rect.left += m_nStatusBarX;
 
 
     m_popup_rect = GraphicsManager::GetRect(GraphicsManager::BATTLE_POPUP_MENU,"text");
@@ -415,7 +424,7 @@ void BattleState::Start()
     m_battlePopup = GraphicsManager::GetOverlay(GraphicsManager::BATTLE_POPUP_MENU);
     m_status_effect_shadow_color = GraphicsManager::GetColor(GraphicsManager::BATTLE_STATUS, "status_effect_shadow");
     m_status_effect_spacing = GraphicsManager::GetPoint(GraphicsManager::BATTLE_STATUS,"status_effect_spacing");
-    
+    m_bp_gradient = GraphicsManager::GetGradient(GraphicsManager::BATTLE_STATUS,"bp_bar");
     init_or_release_players(false);
 
     m_bDone = false;
@@ -474,6 +483,9 @@ void BattleState::draw_status(const CL_Rectf &screenRect, CL_GraphicContext& GC)
 {
     IParty * pParty = IApplication::GetInstance()->GetParty();
     m_statusBar.draw(GC,(int)m_nStatusBarX,(int)m_nStatusBarY);
+    
+    //CL_Draw::box(GC,m_status_rect,CL_Colorf::red);
+    int height_per_character = m_status_rect.get_height() / pParty->GetCharacterCount();
 
     for (uint p = 0; p < pParty->GetCharacterCount(); p++)
     {
@@ -483,26 +495,28 @@ void BattleState::draw_status(const CL_Rectf &screenRect, CL_GraphicContext& GC)
         std::ostringstream hp;
         hp << std::setw(6) << pChar->GetAttribute(ICharacter::CA_HP) << '/'
         << pChar->GetAttribute(ICharacter::CA_MAXHP);
-        Font generalFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_STATUS,"general");
-        Font  hpFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_STATUS,"hp");
-        Font  mpFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_STATUS,"mp");
-
-
-        generalFont.draw_text(GC,m_status_rect.left,
-                              m_status_rect.top + generalFont.get_font_metrics(GC).get_height() +(p *
-                                               generalFont.get_font_metrics(GC).get_height())
-                                              ,
-                              name.str());
-        hpFont.draw_text(GC,m_status_rect.get_width() / 3 + m_status_rect.left,
-                         m_status_rect.top + hpFont.get_font_metrics(GC).get_height()+(p* hpFont.get_font_metrics(GC).get_height())
-                         ,hp.str());
+        
+        m_generalFont.draw_text(GC,m_status_rect.left,
+                              m_status_rect.top +(p * height_per_character),
+                              name.str(),Font::TOP_LEFT);
+        m_hpFont.draw_text(GC,m_status_rect.get_width() / 3 + m_status_rect.left,
+                         m_status_rect.top +(p* height_per_character)
+                         ,hp.str(),Font::TOP_LEFT);
         std::ostringstream mp;
         mp << std::setw(6) << pChar->GetAttribute(ICharacter::CA_MP) << '/'
         << pChar->GetAttribute(ICharacter::CA_MAXMP);
-        mpFont.draw_text(GC,(m_status_rect.get_width() / 3) * 2 + m_status_rect.left,
-                         m_status_rect.top + mpFont.get_font_metrics(GC).get_height() + (p*mpFont.get_font_metrics(GC).get_height()),mp.str()
+        m_mpFont.draw_text(GC,(m_status_rect.get_width() / 3) * 2 + m_status_rect.left,
+                         m_status_rect.top +  (p*height_per_character),mp.str(),Font::TOP_LEFT
 			);
-
+        
+        CL_Rectf bp_box = m_bp_box;
+        bp_box.top += m_status_rect.top + (p*height_per_character);
+        bp_box.bottom += m_status_rect.top + (p*height_per_character);
+        CL_Rectf bp_fill = bp_box;
+        float percentage = pChar->GetAttribute(ICharacter::CA_BP) / pChar->GetAttribute(ICharacter::CA_MAXBP);
+        bp_fill.right = bp_fill.left + (percentage * bp_fill.get_width());
+        CL_Draw::gradient_fill(GC,bp_fill,m_bp_gradient);
+        CL_Draw::box(GC,bp_box,m_bp_border);
     }
 }
 

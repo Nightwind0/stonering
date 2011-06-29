@@ -116,6 +116,7 @@ namespace StoneRing
 	SteelType getExperience(const SteelType::Handle hICharacter);
         //
         SteelType getCharacterAttribute(const SteelType::Handle hICharacter, uint attr);
+        SteelType augmentCharacterAttribute(const SteelType::Handle hICharacter, uint attr, double augment);
 
         SteelType getCharacterToggle(const SteelType::Handle hICharacter, uint attr);
         SteelType setCharacterToggle(const SteelType::Handle hICharacter, uint attr, bool toggle);
@@ -146,10 +147,7 @@ namespace StoneRing
 
         SteelType invokeArmor(SteelType::Handle hCharacter, SteelType::Handle hArmor);
         SteelType invokeWeapon(SteelType::Handle hCharacter, SteelType::Handle hWeapon, uint invokeTime);
-        SteelType attackCharacter(SteelType::Handle hICharacter);
-	SteelType attackCharacter1(ICharacter* pChar){
-	    return SteelType();
-	}
+        SteelType attackCharacter(SteelType::Handle hICharacter, SteelType::Handle hIAttacker, int category, int amount);
 	
 	// Item Steel API
 	SteelType getItemType(SteelType::Handle hItem);
@@ -174,6 +172,8 @@ namespace StoneRing
         SteelType menu(const SteelArray& options);
         SteelType skilltree(SteelType::Handle hCharacter, bool buy);
         SteelType getSkill(const std::string& name);
+        SteelType learnSkill(SteelType::Handle hCharacter, SteelType::Handle skill);
+        SteelType hasSkill(SteelType::Handle hCharacter, const std::string&);
         SteelType doSkill(SteelType::Handle hSkill, SteelType::Handle hCharacter);
 
 

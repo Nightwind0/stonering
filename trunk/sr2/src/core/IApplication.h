@@ -59,7 +59,8 @@ namespace StoneRing
 	
 	enum Utility {
 	    XP_FOR_LEVEL,
-	    LEVEL_FOR_XP
+	    LEVEL_FOR_XP,
+            ON_ATTACK
 	};
 
 	static IApplication * GetInstance();

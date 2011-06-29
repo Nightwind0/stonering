@@ -22,11 +22,13 @@ public:
         WATER=DamageCategory::WATER,
         WIND=DamageCategory::WIND,
         EARTH=DamageCategory::EARTH,
-        STATUS=(EARTH <<1),
-        OTHER=(EARTH <<2),
-        ELEMENTAL = (FIRE | WATER | WIND | EARTH),
+        GRAVITY=DamageCategory::GRAVITY,
+        ELECTRIC=DamageCategory::ELECTRIC,
+        STATUS=(ELECTRIC <<1),
+        OTHER=(ELECTRIC <<2),
+        ELEMENTAL = (FIRE | WATER | WIND | EARTH | ELECTRIC),
         DIVINE = (DARK | HOLY),
-        ALL = (ELEMENTAL | DIVINE | STATUS | OTHER)
+        ALL = (ELEMENTAL | DIVINE | STATUS | GRAVITY | OTHER)
     };
 
     static eMagicType TypeOf(const std::string &);

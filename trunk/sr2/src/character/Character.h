@@ -54,7 +54,7 @@ namespace StoneRing{
         virtual bool   GetToggle(eCharacterAttribute attr) const;
         virtual void   SetToggle(eCharacterAttribute attr, bool state);
         virtual void   PermanentAugment(eCharacterAttribute attr, double augment);
-        virtual void   Attacked();
+        virtual void   Attacked(ICharacter* pAttack, DamageCategory::eDamageCategory category, int amount);
         virtual void   Kill();
         virtual void   Raise();
         virtual void   AddStatusEffect(StatusEffect *);
@@ -103,8 +103,8 @@ namespace StoneRing{
         /*************************************************************************
          * Skills
          * ***********************************************************************/
-        void LearnSkill(const SkillRef& skill);
-        bool HasSkill(const SkillRef& skill);
+        void LearnSkill(const std::string& skill);
+        bool HasSkill(const std::string& skill);
         
         
         // Element API
