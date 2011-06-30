@@ -3601,6 +3601,12 @@
 			    giveNamedItem("Sun Seed",1);
                             giveNamedItem("Star Chip",1);
                             giveNamedItem("Antidote",1);
+                            declare $weapon = generateRandomWeapon(1000,20000);
+                            if(is_valid($weapon)){
+                                log("Got a weapon called {getItemName($weapon)}");
+                                giveItem($weapon,1,false);
+                            }
+                            else log("NO WEAPON!");
 			]]>
 			</script>
 		    </event>

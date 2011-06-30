@@ -20,17 +20,21 @@ namespace StoneRing
 
         void LoadItemFile ( CL_DomDocument &doc );
 
-        WeaponType *GetWeaponType( const WeaponTypeRef &ref ) const;
-        ArmorType  *GetArmorType ( const ArmorTypeRef &ref ) const;
-        WeaponType *GetWeaponType( const std::string &name ) const;
-        ArmorType  *GetArmorType ( const std::string &name ) const;
+        WeaponType*  GetWeaponType( const WeaponTypeRef &ref ) const;
+        ArmorType*   GetArmorType ( const ArmorTypeRef &ref ) const;
+        WeaponType*  GetWeaponType( const std::string &name ) const;
+        ArmorType*   GetArmorType ( const std::string &name ) const;
 
-        WeaponClass *GetWeaponClass ( const WeaponClassRef & ref ) const;
-        ArmorClass  *GetArmorClass ( const ArmorClassRef & ref ) const;
-        WeaponClass *GetWeaponClass ( const std::string &name ) const;
-        ArmorClass *GetArmorClass ( const std::string &name ) const;
-        WeaponClass * GetWeaponImbuement ( const WeaponImbuementRef & ref ) const;
-        ArmorClass *  GetArmorImbuement ( const ArmorImbuementRef & ref ) const;
+        WeaponClass* GetWeaponClass ( const WeaponClassRef & ref ) const;
+        ArmorClass * GetArmorClass  ( const ArmorClassRef & ref ) const;
+        WeaponClass* GetWeaponClass ( const std::string &name ) const;
+        ArmorClass * GetArmorClass  ( const std::string &name ) const;
+        WeaponClass* GetWeaponImbuement ( const WeaponImbuementRef & ref ) const;
+        ArmorClass * GetArmorImbuement  ( const ArmorImbuementRef & ref ) const;
+        
+        Armor*       GenerateRandomGeneratedArmor     ( Item::eDropRarity rarity, int min_value, int max_value )const;
+        Weapon*      GenerateRandomGeneratedWeapon    ( Item::eDropRarity rarity, double min_value, double max_value )const;
+        Item*        GenerateRandomItem      ( Item::eDropRarity rarity, int min_value, int max_value )const;
 
         Item * GetNamedItem( const std::string &name ) const;
         virtual Item * GetItem( const ItemRef & ref );
@@ -46,12 +50,12 @@ namespace StoneRing
         Weapon * createWeapon(WeaponRef *pRef)const;
         Armor * createArmor(ArmorRef *pRef)const;
 
-        std::list<WeaponClass*> m_weapon_classes;
-        std::list<ArmorClass*> m_armor_classes;
+        std::vector<WeaponClass*> m_weapon_classes;
+        std::vector<ArmorClass*> m_armor_classes;
         std::list<WeaponType*> m_weapon_types;
         std::list<ArmorType*> m_armor_types;
-        std::list<WeaponClass*> m_weapon_imbuements;
-        std::list<ArmorClass*> m_armor_imbuements;
+        std::vector<WeaponClass*> m_weapon_imbuements;
+        std::vector<ArmorClass*> m_armor_imbuements;
         ItemMap m_items;
         NamedItemMap m_named_items;
     };

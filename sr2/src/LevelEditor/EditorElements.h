@@ -155,11 +155,11 @@ class ArmorTypeRef : public StoneRing::ArmorTypeRef, public WriteableElement
 };
 
 
-class AttributeEnhancer : public StoneRing::AttributeEnhancer, public WriteableElement
+class attributeModifier : public StoneRing::attributeModifier, public WriteableElement
 {
  public:
-	AttributeEnhancer();
-	virtual ~AttributeEnhancer();
+	attributeModifier();
+	virtual ~attributeModifier();
     virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
  private:
 };

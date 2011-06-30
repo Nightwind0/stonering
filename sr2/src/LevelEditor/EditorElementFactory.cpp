@@ -50,7 +50,7 @@ Element * EditorElementFactory::createArmorTypeRef()const
 
 Element * EditorElementFactory::createAttributeEnhancer()const
 {
-  return new Editor::AttributeEnhancer();
+  return new Editor::attributeModifier();
 }
 
 Element * EditorElementFactory::createBattleMenu() const

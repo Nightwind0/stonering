@@ -37,7 +37,7 @@ const stat_entry statXMLLookup[] =
     {"lck",ICharacter::CA_LCK},
     {"joy",ICharacter::CA_JOY},
     {"bash_def",ICharacter::CA_BASH_DEF},
-    {"jab_def",ICharacter::CA_JAB_DEF},
+    {"pierce_def",ICharacter::CA_PIERCE_DEF},
     {"slash_def",ICharacter::CA_SLASH_DEF},
     {"wind_rst",ICharacter::CA_WIND_RST},
     {"fire_rst",ICharacter::CA_FIRE_RST},
@@ -64,6 +64,7 @@ const stat_entry statXMLLookup[] =
     {"can_item", ICharacter::CA_CAN_ITEM},
     {"can_run", ICharacter::CA_CAN_RUN}, //   CA_CAN_RUN,
     {"alive", ICharacter::CA_ALIVE},
+    {"still",ICharacter::CA_DRAW_STILL},
     {"encounterRate", ICharacter::CA_ENCOUNTER_RATE},
     {"goldDropRate", ICharacter::CA_GOLD_DROP_RATE},
     {"itemDropRate", ICharacter::CA_ITEM_DROP_RATE},
@@ -113,7 +114,7 @@ StoneRing::ICharacter::eCommonAttribute StoneRing::ICharacter::CommonAttributeFr
 uint StoneRing::ICharacter::CAFromString(const std::string &str)
 {
 
-    for(int i =0; i < _LAST_COMMON_ATTR_; i++)
+    for(int i =0; i < sizeof(statXMLLookup) / sizeof(stat_entry); i++)
     {
         if(str == statXMLLookup[i].string)
         {
@@ -329,7 +330,7 @@ double StoneRing::Character::GetDamageCategoryResistance(DamageCategory::eDamage
         case DamageCategory::BASH:
             return GetAttribute(CA_BASH_DEF);
         case DamageCategory::PIERCE:
-            return GetAttribute(CA_JAB_DEF);
+            return GetAttribute(CA_PIERCE_DEF);
         case DamageCategory::SLASH:
             return GetAttribute(CA_SLASH_DEF);
         case DamageCategory::DARK:

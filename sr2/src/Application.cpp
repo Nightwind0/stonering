@@ -16,6 +16,7 @@
 #include "Monster.h"
 #include "Weapon.h"
 #include "WeaponType.h"
+#include "GeneratedWeapon.h"
 #include "Armor.h"
 #ifndef _WINDOWS_
 #include <steel/SteelType.h>
@@ -303,14 +304,8 @@ SteelType Application::giveNamedItem ( const std::string &item, uint count )
     std::ostringstream os;
     ItemManager * pMgr = IApplication::GetInstance()->GetItemManager();
     assert ( pMgr );
-    mpParty->GiveItem ( pMgr->GetNamedItem ( item ), count );
 
-    os << "You received " << item;
-
-    if ( count > 1 )
-        os << " x" << count;
-
-    say ( "Inventory", os.str() );
+    giveItem(pMgr->GetNamedItem(item),count, false);
 
     return SteelType();
 }
@@ -1030,6 +1025,32 @@ SteelType Application::getMonsterSPReward ( const SteelType::Handle hMonster )
 }
 
 
+SteelType Application::generateRandomWeapon ( double min_value, double max_value )
+{
+    Weapon * pWeapon = mItemManager.GenerateRandomGeneratedWeapon(Item::UNCOMMON, min_value,max_value);
+    SteelType var;
+    var.set(pWeapon);
+    
+    return var;
+}
+
+SteelType Application::giveItem( SteelType::Handle hItem, int count, bool silent )
+{
+    Item * pItem = GrabHandle<Item*>(hItem);
+    
+    mpParty->GiveItem ( pItem , count );
+    if(!silent){
+        std::ostringstream os;
+        os << "You received " << pItem->GetName();
+
+        if ( count > 1 )
+            os << " x" << count;
+
+        say ( "Inventory", os.str() );    
+    }
+    return SteelType();
+}
+
 
 SteelType Application::log ( const std::string& str )
 {
@@ -1597,7 +1618,7 @@ void Application::registerSteelFunctions()
     steelConst ( "$_FORGO_ATTACK", Weapon::FORGO_ATTACK );
 
     steelConst ( "$_BASH_DEF", Character::CA_BASH_DEF );
-    steelConst ( "$_JAB_DEF", Character::CA_JAB_DEF );
+    steelConst ( "$_PIERCE_DEF", Character::CA_PIERCE_DEF );
     steelConst ( "$_SLASH_DEF", Character::CA_SLASH_DEF );
     steelConst ( "$_HOLY_RST", Character::CA_HOLY_RST );
     steelConst ( "$_DARK_RST", Character::CA_DARK_RST );
@@ -1754,7 +1775,9 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "hasSkill", new SteelFunctor2Arg<Application,SteelType::Handle,const std::string&>(this,&Application::hasSkill) );
 
     mInterpreter.addFunction ( "augmentCharacterAttribute", new SteelFunctor3Arg<Application,SteelType::Handle,uint,double>(this,&Application::augmentCharacterAttribute) );
-    
+    mInterpreter.addFunction ( "generateRandomWeapon", new SteelFunctor2Arg<Application,double,double>(this,&Application::generateRandomWeapon));
+        
+    mInterpreter.addFunction ( "giveItem", new SteelFunctor3Arg<Application,SteelType::Handle,int,bool>(this,&Application::giveItem) );
 }
 
 void Application::queryJoystick()

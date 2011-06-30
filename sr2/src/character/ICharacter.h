@@ -47,7 +47,7 @@ namespace StoneRing{
             CA_EVD,              // Chances of evading an attack(0-1)
             _START_OF_DAMAGE_CATEGORIES,
             CA_BASH_DEF,
-            CA_JAB_DEF,
+            CA_PIERCE_DEF,
             CA_SLASH_DEF,
             CA_HOLY_RST,
             CA_DARK_RST,

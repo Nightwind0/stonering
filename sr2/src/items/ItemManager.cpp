@@ -20,14 +20,46 @@
 #include "StatusEffectModifier.h"
 #include <cassert>
 
-#ifndef NDEBUG
+
 #include <algorithm>
 #include <iomanip>
-#endif
-
+#include <functional>
 
 
 using namespace StoneRing;
+
+
+
+class CompareWeaponClasses: public std::binary_function<WeaponClass*, WeaponClass*, bool>
+{
+public:
+    CompareWeaponClasses(double basePrice):m_base_price(basePrice){}
+    ~CompareWeaponClasses(){}
+    
+    bool operator()(const WeaponClass *a, const WeaponClass *b)
+    {
+        return (a->GetValueMultiplier() * m_base_price + a->GetValueAdd()) <
+                (b->GetValueMultiplier() * m_base_price + b->GetValueAdd());
+    }
+    
+    bool operator()(const WeaponClass *a, double b)
+    {
+        return (a->GetValueMultiplier() * m_base_price + a->GetValueAdd()) < b;
+    }
+    
+    bool operator()(double a, WeaponClass *b)
+    {
+        return a <     (b->GetValueMultiplier() * m_base_price + b->GetValueAdd());
+    }
+    
+ private:
+    double m_base_price;
+};
+
+
+
+
+
 
 ItemManager::ItemManager()
 {
@@ -58,6 +90,10 @@ void ItemManager::LoadItemFile ( CL_DomDocument &doc )
             m_weapon_classes.push_back ( pWeaponClass );
         weaponClassNode = weaponClassNode.get_next_sibling().to_element();
     }
+    
+    // Sort classes & imbuements
+    //std::sort(m_weapon_classes.begin(),m_weapon_classes.end(),compare_weapons);
+    //std::sort(m_weapon_imbuements.begin(),m_weapon_imbuements.end(),compare_weapons);
 
     CL_DomElement weaponTypesNode = itemsNode.named_item("weaponTypes").to_element();
     CL_DomElement weaponTypeNode = weaponTypesNode.get_first_child().to_element();
@@ -87,6 +123,10 @@ void ItemManager::LoadItemFile ( CL_DomDocument &doc )
         armorClassNode = armorClassNode.get_next_sibling().to_element();
     }
 
+    // Sort classes & imbuements
+   // std::sort(m_armor_classes.begin(),m_armor_classes.end(),compare_armor);
+   // std::sort(m_armor_imbuements.begin(),m_armor_imbuements.end(),compare_armor);
+    
     CL_DomElement armorTypesNode = itemsNode.named_item("armorTypes").to_element();
     CL_DomElement armorTypeNode = armorTypesNode.get_first_child().to_element();
 
@@ -298,7 +338,7 @@ ArmorType  * ItemManager::GetArmorType ( const ArmorTypeRef &ref) const
 
 WeaponClass * ItemManager::GetWeaponClass ( const WeaponClassRef & ref ) const
 {
-    for(std::list<WeaponClass*>::const_iterator iter = m_weapon_classes.begin();
+    for(std::vector<WeaponClass*>::const_iterator iter = m_weapon_classes.begin();
         iter != m_weapon_classes.end();
         iter++)
     {
@@ -311,7 +351,7 @@ WeaponClass * ItemManager::GetWeaponClass ( const WeaponClassRef & ref ) const
 
 ArmorClass  * ItemManager::GetArmorClass ( const ArmorClassRef & ref ) const
 {
-    for(std::list<ArmorClass*>::const_iterator iter = m_armor_classes.begin();
+    for(std::vector<ArmorClass*>::const_iterator iter = m_armor_classes.begin();
         iter != m_armor_classes.end();
         iter++)
     {
@@ -325,7 +365,7 @@ ArmorClass  * ItemManager::GetArmorClass ( const ArmorClassRef & ref ) const
 
 WeaponClass * ItemManager::GetWeaponImbuement ( const WeaponImbuementRef & ref ) const
 {
-    for(std::list<WeaponClass*>::const_iterator iter = m_weapon_imbuements.begin();
+    for(std::vector<WeaponClass*>::const_iterator iter = m_weapon_imbuements.begin();
         iter != m_weapon_imbuements.end();
         iter++)
     {
@@ -338,7 +378,7 @@ WeaponClass * ItemManager::GetWeaponImbuement ( const WeaponImbuementRef & ref )
 
 ArmorClass  * ItemManager::GetArmorImbuement ( const ArmorImbuementRef & ref ) const
 {
-    for(std::list<ArmorClass*>::const_iterator iter = m_armor_imbuements.begin();
+    for(std::vector<ArmorClass*>::const_iterator iter = m_armor_imbuements.begin();
         iter != m_armor_imbuements.end();
         iter++)
     {
@@ -415,7 +455,7 @@ Weapon * ItemManager::createWeapon(WeaponRef *pRef) const
 Armor * ItemManager::createArmor(ArmorRef *pRef) const
 {
     GeneratedArmor * pArmor = new GeneratedArmor();
-    pArmor->generate(pRef->GetArmorType(),pRef->GetArmorClass(),
+    pArmor->Generate(pRef->GetArmorType(),pRef->GetArmorClass(),
         pRef->GetArmorImbuement(),pRef->GetRuneType());
     return pArmor;
 }
@@ -526,11 +566,11 @@ void ItemManager::printAttributeEnhancers(Equipment * pItem )
     {
         std::cout << "\tAttribute Enhancers:"  << std::endl;
 
-        for(std::list<AttributeEnhancer*>::const_iterator iter = pItem->getAttributeEnhancersBegin();
+        for(std::list<attributeModifier*>::const_iterator iter = pItem->getAttributeEnhancersBegin();
             iter != pItem->getAttributeEnhancersEnd();
             iter++)
         {
-            AttributeEnhancer * pEnhancer = *iter;
+            attributeModifier * pEnhancer = *iter;
             std::cout << "\t\t" << pEnhancer->getAttribute() << ' ';
             if(pEnhancer->getMultiplier() != 1)
             {
@@ -565,9 +605,93 @@ void ItemManager::printStatusModifiers(Equipment *pItem)
 
 }
 
-
 #endif
 
 
+Armor* ItemManager::GenerateRandomGeneratedArmor(Item::eDropRarity rarity, int min_value, int max_value ) const
+{
+    return NULL;
+}
+
+Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, double min_value, double max_value ) const
+{
+    std::vector<WeaponType*> type_list;
+    std::vector<WeaponClass*> classes;
+    
+    std::copy(m_weapon_types.begin(),m_weapon_types.end(),std::back_inserter(type_list)); 
+    std::copy(m_weapon_classes.begin(),m_weapon_classes.end(),std::back_inserter(classes));
+    std::random_shuffle(type_list.begin(),type_list.end());    
+    
+    WeaponClass * selectedClass = NULL;
+    WeaponType * pType = NULL;
+    for(std::vector<WeaponType*>::const_iterator iter = type_list.begin();
+        iter != type_list.end() && selectedClass == NULL;
+        iter++)
+    {
+        pType = *iter;
+        double value = pType->GetBasePrice();
+        CompareWeaponClasses comparator(value);
+        std::sort(classes.begin(),classes.end(),comparator);
+        // Use binary search to find class that close to, but above, min_value, but no more than max_value.
+        std::vector<WeaponClass*>::const_iterator min_bound = 
+            std::upper_bound(classes.begin(),classes.end(), min_value, comparator );
+        std::vector<WeaponClass*>::const_iterator max_bound = 
+            std::upper_bound(classes.begin(),classes.end(), max_value, comparator );
+            
+        if(min_bound == max_bound) continue;
+        
+        if(max_bound == classes.end())
+        {   
+            // If the max is the (one past the) last class that means we can give them the best class.
+            --max_bound;
+            if(max_bound != classes.end())
+            {
+                selectedClass = *max_bound;
+                break;
+            }
+        }
+        else 
+        {
+           if(min_bound == classes.end())
+           {
+               // Back up from the max bound because it's too high in value (we used upper_bound to find it)
+               // but, the one before it might be too low...
+               std::vector<WeaponClass*>::const_iterator iiter = --max_bound;
+               if(iiter != classes.end() && (*iiter)->GetValueMultiplier() * value + (*iiter)->GetValueAdd() 
+                   > min_value)
+               {
+                    selectedClass = *iiter;
+                    break;
+               }
+               else 
+                   continue; // didn't work out, keep trying.
+           }
+           
+           std::vector<WeaponClass*> class_options;
+           // Multiple options
+           std::copy(min_bound,max_bound,std::back_inserter(class_options));
+           std::random_shuffle(class_options.begin(),class_options.end());
+           
+           selectedClass = class_options[0];
+           
+        }
+        
+    }
+    
+    if(selectedClass)
+    {
+        GeneratedWeapon * pWeapon = new GeneratedWeapon();
+        pWeapon->Generate(pType,selectedClass,NULL,NULL);
+        return pWeapon;
+    }
+    
+    
+    return NULL;
+}
+
+Item* ItemManager::GenerateRandomItem(Item::eDropRarity rarity, int min_value, int max_value ) const
+{
+    return NULL;
+}
 
 

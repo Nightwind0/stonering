@@ -15,7 +15,7 @@
 
 namespace StoneRing{
     class RuneType;
-    class AttributeEnhancer;
+    class attributeModifier;
     class WeaponEnhancer;
     class ArmorEnhancer;
     class WeaponTypeRef;
