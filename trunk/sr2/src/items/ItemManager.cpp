@@ -638,42 +638,13 @@ Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, dou
         std::vector<WeaponClass*>::const_iterator max_bound = 
             std::upper_bound(classes.begin(),classes.end(), max_value, comparator );
             
-        if(min_bound == max_bound) continue;
-        
-        if(max_bound == classes.end())
-        {   
-            // If the max is the (one past the) last class that means we can give them the best class.
-            --max_bound;
-            if(max_bound != classes.end())
-            {
-                selectedClass = *max_bound;
-                break;
-            }
-        }
-        else 
+           
+        std::vector<WeaponClass*> class_options;
+        std::copy(min_bound,max_bound,std::back_inserter(class_options));
+        if(class_options.size())
         {
-           if(min_bound == classes.end())
-           {
-               // Back up from the max bound because it's too high in value (we used upper_bound to find it)
-               // but, the one before it might be too low...
-               std::vector<WeaponClass*>::const_iterator iiter = --max_bound;
-               if(iiter != classes.end() && (*iiter)->GetValueMultiplier() * value + (*iiter)->GetValueAdd() 
-                   > min_value)
-               {
-                    selectedClass = *iiter;
-                    break;
-               }
-               else 
-                   continue; // didn't work out, keep trying.
-           }
-           
-           std::vector<WeaponClass*> class_options;
-           // Multiple options
-           std::copy(min_bound,max_bound,std::back_inserter(class_options));
-           std::random_shuffle(class_options.begin(),class_options.end());
-           
-           selectedClass = class_options[0];
-           
+            std::random_shuffle(class_options.begin(),class_options.end());
+            selectedClass = class_options[0];           
         }
         
     }
