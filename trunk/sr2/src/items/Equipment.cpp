@@ -23,8 +23,7 @@ RuneType * Equipment::GetRuneType() const
 
 bool Equipment::HasRuneType() const
 {
-    if( m_eMagic == RUNE ) return true;
-    else return false;
+    return false; // No runes for now
 }
 
 // Apply any attribute enhancements 

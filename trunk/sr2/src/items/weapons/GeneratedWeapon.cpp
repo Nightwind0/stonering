@@ -108,7 +108,7 @@ uint GeneratedWeapon::GetValue() const
         value += m_pImbuement->GetValueAdd();
     }
     
-    value += m_pImbuement->GetValueAdd();
+    value += m_pClass->GetValueAdd();
 
     if(HasRuneType())
     {
