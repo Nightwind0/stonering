@@ -90,6 +90,17 @@
         <weaponClass name="Shoddy" valueMultiplier="0.3">
             <weaponEnhancer multiplier="0.3" attribute="ATK"/>
         </weaponClass>
+        <weaponClass name="Common" valueMultiplier="0.2">
+            <weaponEnhancer multiplier="0.2" attribute="ATK"/>
+        </weaponClass>
+        <weaponClass name="Shabby" valueMultiplier="0.1">
+            <weaponEnhancer multiplier="0.1" attribute="ATK"/>
+            <weaponEnhancer add="-0.1" attribute="HIT"/>
+        </weaponClass>
+        <weaponClass name="Disfunctional" valueMultiplier="0.05">
+            <weaponEnhancer multiplier="0.06" attribute="ATK"/>
+            <weaponEnhancer add="-0.2" attribute="HIT"/>
+        </weaponClass>
         <weaponClass name="Adamantine" valueMultiplier="4">
             <weaponEnhancer multiplier="3.5" attribute="ATK"/>
         </weaponClass>
@@ -105,8 +116,18 @@
             <statusEffectModifier statusRef="Poison" modifier="0.33"/>
         </weaponClass>
         <weaponClass name="Deadly" valueMultiplier="2.2" valueAdd="7000">
-            <weaponEnhancer multiplier="2" attribute="ATK"/>
-            
+            <weaponEnhancer multiplier="2" attribute="ATK"/>            
+        </weaponClass>
+        <weaponClass name="Superior" valueMultiplier="3.5">
+            <weaponEnhancer multiplier="4" attribute="ATK"/>
+            <weaponEnhancer add="0.1" attribute="HIT"/>                
+        </weaponClass>
+        <weaponClass name="Excellent" valueMultiplier="4.5">
+            <weaponEnhancer multiplier="4.25" attribute="ATK"/>
+            <weaponEnhancer add="0.1" attribute="HIT"/>
+        </weaponClass>
+        <weaponClass name="Exceptional" valueMultiplier="5.5">
+            <weaponEnhancer multiplier="5.5" attribute="ATK"/>
         </weaponClass>
         <weaponClass name="Medusa" valueMultiplier="4" valueAdd="12000">
             <weaponEnhancer attribute="ATK" multiplier="2"/>
@@ -115,6 +136,20 @@
         <weaponClass name="Erebus" valueMultiplier="4" valueAdd="1000">
             <weaponEnhancer attribute="ATK" multiplier="3"/>
             <weaponEnhancer attribute="Critical%" add = "0.10"/>
+        </weaponClass>
+        
+        <!-- Imbuements -->
+        <weaponClass imbuement="true" name="of Glory" valueMultiplier="2.0">
+            <attributeModifier attribute="joy" type="add" value="0.1"/>
+        </weaponClass> 
+        <weaponClass imbuement="true" name="of the Leprechaun" valueMultiplier="1.25">
+            <attributeModifier attribute="lck" type="add" value="0.25"/> 
+        </weaponClass>
+        <weaponClass imbuement="true" name="of the Ox" valueMultiplier="1.5">
+            <attributeModifier attribute="hp_max" type="multiply" value="1.15"/>
+        </weaponClass>
+        <weaponClass imbuement="true" name="of Merlin" valueMultiplier="1.5">
+            <attributeModifier attribute="mp_max" type="multiply" value="1.15"/>
         </weaponClass>
     </weaponClasses>
     <weaponTypes>
@@ -242,6 +277,20 @@
             <armorClass name="Divine" valueMultiplier = "4.5">
                 <armorEnhancer multiplier="3" attribute="AC"/>
                 <armorEnhancer multiplier="3" attribute="RST"/>
+            </armorClass>
+            
+            <!-- Imbuements -->
+            <armorClass imbuement="true" name="of Glory" valueMultiplier="2.0">
+                <attributeModifier attribute="joy" type="add" value="0.1"/>
+            </armorClass> 
+            <armorClass imbuement="true" name="of the Leprechaun" valueMultiplier="1.25">
+                <attributeModifier attribute="lck" type="add" value="0.25"/> 
+            </armorClass>
+            <armorClass imbuement="true" name="of the Ox" valueMultiplier="1.5">
+                <attributeModifier attribute="hp_max" type="multiply" value="1.15"/>
+            </armorClass>
+            <armorClass imbuement="true" name="of Merlin" valueMultiplier="1.5">
+                <attributeModifier attribute="mp_max" type="multiply" value="1.15"/>
             </armorClass>
         </armorClasses>
         <armorTypes>

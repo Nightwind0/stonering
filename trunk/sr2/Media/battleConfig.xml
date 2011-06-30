@@ -23,6 +23,7 @@
                     declare $monster_level = getCharacterLevel($monster);
 	
                     declare $xp = ((tnl($char_level + 1) - tnl($char_level)) /  $B) * ($b ^ ($monster_level - $char_level));
+                    $xp *= getCharacterAttribute($character,$_JOY);
                     $total_xp = $total_xp + $xp;
                     $total_sp += getMonsterSPReward($monster);
                 }

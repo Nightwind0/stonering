@@ -182,15 +182,15 @@ CL_DomElement Editor::ArmorTypeRef::createDomElement(CL_DomDocument &doc)const
 }
 
 
-Editor::AttributeEnhancer::AttributeEnhancer()
+Editor::attributeModifier::attributeModifier()
 {
 }
-Editor::AttributeEnhancer::~AttributeEnhancer()
+Editor::attributeModifier::~attributeModifier()
 {
 }
-CL_DomElement Editor::AttributeEnhancer::createDomElement(CL_DomDocument &doc)const
+CL_DomElement Editor::attributeModifier::createDomElement(CL_DomDocument &doc)const
 {
-    return CL_DomElement(doc,"attributeEnhancer");
+    return CL_DomElement(doc,"attributeModifier");
 }
 
 

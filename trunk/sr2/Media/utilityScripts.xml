@@ -12,7 +12,9 @@
 </script>
 <script id="on_attack">
     <![CDATA[
-        declare $raw_bp = 100 * ($_Amount / getCharacterAttribute($_Character,$_MAXHP));
-        augmentCharacterAttribute($_Character,$_BP,$raw_bp);    
+        if($_Amount > 0){
+            declare $raw_bp = 100 * ($_Amount / getCharacterAttribute($_Character,$_MAXHP));
+            augmentCharacterAttribute($_Character,$_BP,$raw_bp);   
+        }
         ]]>
 </script>

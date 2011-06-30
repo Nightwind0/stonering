@@ -88,6 +88,7 @@ namespace StoneRing
         SteelType choice(const std::string &choiceText, const SteelType::Container &choices);
         SteelType pop_(bool bAll);
         SteelType giveNamedItem(const std::string &item, uint count);
+        SteelType giveItem(SteelType::Handle hItem, int count, bool silent);
         SteelType getGold();
         SteelType hasItem(const std::string &name, uint count);
         SteelType hasGeneratedWeapon(const std::string &wepclass, const std::string &weptype);
@@ -175,6 +176,9 @@ namespace StoneRing
         SteelType learnSkill(SteelType::Handle hCharacter, SteelType::Handle skill);
         SteelType hasSkill(SteelType::Handle hCharacter, const std::string&);
         SteelType doSkill(SteelType::Handle hSkill, SteelType::Handle hCharacter);
+        
+        
+        SteelType generateRandomWeapon(double min_value, double max_value);
 
 
 
