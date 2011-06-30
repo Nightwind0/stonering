@@ -8,7 +8,7 @@
         </weaponClass>
         <weaponClass name="Quaoar" valueMultiplier="10">
             <weaponEnhancer attribute="ATK" multiplier="7"/>
-            <weaponEnhancer attribute="HIT" add="0.03"/>
+            <weaponEnhancer attribute="HIT" add="0.3"/>
             <weaponEnhancer attribute="Critical%" add="0.15"/>
         </weaponClass>
         <weaponClass name="Europa" valueMultiplier="7.35">
@@ -58,20 +58,20 @@
         <weaponClass name="Black" valueMultiplier="12">
             <attributeModifier attribute="hp_max" type="multiply" value="1.1"/>
             <weaponEnhancer attribute="ATK" multiplier="8"/>
-            <weaponEnhancer attribute="HIT" add="0.02"/>
+            <weaponEnhancer attribute="HIT" add="0.2"/>
         </weaponClass>
-        <weaponClass name="Wondrous" valueMultiplier="6.2">
+        <weaponClass name="Wondrous" valueMultiplier="6.5">
             <attributeModifier attribute="hp_max" type="multiply"  value="1.1"/>
             <weaponEnhancer attribute="ATK" multiplier="5"/>
-            <weaponEnhancer attribute="HIT" add="0.03"/>
+            <weaponEnhancer attribute="HIT" add="0.3"/>
         </weaponClass>
         <weaponClass name="King" valueMultiplier="5">
             <weaponEnhancer attribute="ATK" multiplier="4"/>
             <weaponEnhancer attribute="HIT" add="0.015" />
         </weaponClass>
-        <weaponClass name="Royal" valueMultiplier="5">
-            <weaponEnhancer attribute="ATK" multiplier="4"/>
-            <weaponEnhancer attribute="Critical%" add="0.015" />
+        <weaponClass name="Royal" valueMultiplier="8.5">
+            <weaponEnhancer attribute="ATK" multiplier="7.5"/>
+            <weaponEnhancer attribute="Critical%" add="0.15" />
         </weaponClass>
         <weaponClass name="Knight" valueMultiplier="1.75">
             <weaponEnhancer attribute="ATK" multiplier="1.5"/>
@@ -82,7 +82,7 @@
         <weaponClass name="Iron" valueMultiplier="1">
         </weaponClass>
         <weaponClass name="Masterwork" valueMultiplier="1.8" >
-            <weaponEnhancer add="0.020" attribute="HIT"/>
+            <weaponEnhancer add="0.20" attribute="HIT"/>
         </weaponClass>
         <weaponClass name="Steel" valueMultiplier="1.4">
             <weaponEnhancer multiplier="1.3" attribute="ATK"/>
@@ -106,28 +106,29 @@
         </weaponClass>
         <weaponClass name="Mithral" valueMultiplier="4.75">
             <weaponEnhancer multiplier="3.5" attribute="ATK"/>
-            <weaponEnhancer add="0.010" attribute="HIT"/>
+            <weaponEnhancer add="0.1" attribute="HIT"/>
         </weaponClass>
         <weaponClass name="War" valueMultiplier="5">
             <weaponEnhancer multiplier="3.75" attribute="ATK"/>
-            <weaponEnhancer add="0.020" attribute="HIT"/>
+            <weaponEnhancer add="0.2" attribute="HIT"/>
         </weaponClass>
         <weaponClass name="Poison" valueMultiplier="1.5" valueAdd="5000">
             <statusEffectModifier statusRef="Poison" modifier="0.33"/>
         </weaponClass>
         <weaponClass name="Deadly" valueMultiplier="2.2" valueAdd="7000">
-            <weaponEnhancer multiplier="2" attribute="ATK"/>            
+            <weaponEnhancer multiplier="2" attribute="ATK"/>    
+            <attributeModifier attribute="dex" type="add" value="0.2"/>
         </weaponClass>
         <weaponClass name="Superior" valueMultiplier="3.5">
             <weaponEnhancer multiplier="4" attribute="ATK"/>
             <weaponEnhancer add="0.1" attribute="HIT"/>                
         </weaponClass>
-        <weaponClass name="Excellent" valueMultiplier="4.5">
-            <weaponEnhancer multiplier="4.25" attribute="ATK"/>
+        <weaponClass name="Excellent" valueMultiplier="7.5">
+            <weaponEnhancer multiplier="7" attribute="ATK"/>
             <weaponEnhancer add="0.1" attribute="HIT"/>
         </weaponClass>
-        <weaponClass name="Exceptional" valueMultiplier="5.5">
-            <weaponEnhancer multiplier="5.5" attribute="ATK"/>
+        <weaponClass name="Exceptional" valueMultiplier="10">
+            <weaponEnhancer multiplier="9.5" attribute="ATK"/>
         </weaponClass>
         <weaponClass name="Medusa" valueMultiplier="4" valueAdd="12000">
             <weaponEnhancer attribute="ATK" multiplier="2"/>

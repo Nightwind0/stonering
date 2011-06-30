@@ -1034,6 +1034,7 @@ SteelType Application::generateRandomWeapon ( double min_value, double max_value
     return var;
 }
 
+
 SteelType Application::giveItem( SteelType::Handle hItem, int count, bool silent )
 {
     Item * pItem = GrabHandle<Item*>(hItem);

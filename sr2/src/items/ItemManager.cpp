@@ -634,9 +634,9 @@ Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, dou
         std::sort(classes.begin(),classes.end(),comparator);
         // Use binary search to find class that close to, but above, min_value, but no more than max_value.
         std::vector<WeaponClass*>::const_iterator min_bound = 
-            std::upper_bound(classes.begin(),classes.end(), min_value, comparator );
+            std::lower_bound(classes.begin(),classes.end(), min_value, comparator );
         std::vector<WeaponClass*>::const_iterator max_bound = 
-            std::upper_bound(classes.begin(),classes.end(), max_value, comparator );
+            std::lower_bound(classes.begin(),classes.end(), max_value, comparator );
             
            
         std::vector<WeaponClass*> class_options;
