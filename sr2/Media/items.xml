@@ -342,7 +342,6 @@
                     <armorTypeRef name="Shield"/>
                     <armorEnhancer multiplier="0.2" attribute="AC"/>
                     <attributeModifier type="add" value="-0.2" attribute="dark_rst"/>
-                    <statusEffectInfliction statusRef="Poison" modifier="0.5"/>
                 </uniqueArmor>
                 <uniqueArmor name="Kid Vest" dropRarity="rare" valueMultiplier = "0.25">
                     <iconRef>Armor/basic_shield</iconRef>                     
@@ -361,6 +360,7 @@
                 <iconRef>Weapon/basic_sword</iconRef>		       
                     <weaponTypeRef name="Sword"/>
                     <weaponEnhancer multiplier="0.5" attribute="ATK"/>
+                    <statusEffectInfliction statusRef="Poison" modifier="0.25"/>
                 </uniqueWeapon>
                 <uniqueWeapon name = "Kid Bow" dropRarity="rare" valueMultiplier="0.25">
                 <iconRef>Weapon/basic_bow</iconRef>                  

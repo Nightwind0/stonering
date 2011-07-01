@@ -154,7 +154,7 @@ WeaponClass::GetWeaponEnhancersEnd()
     return m_weapon_enhancers.end();
 }
 
-bool WeaponClass::IsExcluded ( const WeaponTypeRef &weaponType )
+bool WeaponClass::IsExcluded ( const std::string& type_name )
 {
     for(std::list<WeaponTypeRef*>::const_iterator iter = m_excluded_types.begin();
         iter != m_excluded_types.end();
@@ -162,12 +162,15 @@ bool WeaponClass::IsExcluded ( const WeaponTypeRef &weaponType )
     {
         WeaponTypeRef * pRef = *iter;
 
-        if( pRef->GetName() == weaponType.GetName() )
+        if( pRef->GetName() == type_name )
             return true;
     }
-
     return false;
+}
 
+bool WeaponClass::IsExcluded ( const WeaponTypeRef &weaponType )
+{
+    return IsExcluded ( weaponType.GetName() );
 }
 
 

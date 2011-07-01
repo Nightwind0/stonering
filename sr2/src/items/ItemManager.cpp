@@ -89,6 +89,19 @@ private:
 };
 
 
+class WeaponTypeClassFilter { 
+public:
+    WeaponTypeClassFilter(WeaponType* pType):m_type(pType){}
+    ~WeaponTypeClassFilter(){}
+    
+    bool operator()(WeaponClass* pClass)
+    {
+        return pClass->IsExcluded(m_type->GetName());
+    }
+private:
+    WeaponType* m_type;
+};
+
 
 
 
@@ -652,7 +665,6 @@ Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, dou
     std::vector<WeaponClass*> imbuements;
     
     std::copy(m_weapon_types.begin(),m_weapon_types.end(),std::back_inserter(type_list)); 
-    std::copy(m_weapon_classes.begin(),m_weapon_classes.end(),std::back_inserter(classes));
     if(rarity == Item::RARE)
     {
         std::copy(m_weapon_imbuements.begin(),m_weapon_imbuements.end(),std::back_inserter(imbuements));
@@ -669,6 +681,14 @@ Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, dou
     {
         pType = *iter;
         double value = pType->GetBasePrice();
+        WeaponTypeClassFilter filter(pType);
+        
+        // Only consider classes that can go with this type
+        classes.clear();
+        std::remove_copy_if(m_weapon_classes.begin(),m_weapon_classes.end(),
+                            std::back_inserter(classes), filter);
+        
+        
         CompareWeaponClasses comparator(value);
         std::sort(classes.begin(),classes.end(),comparator);
         // Use binary search to find class that close to, but above, min_value, but no more than max_value.

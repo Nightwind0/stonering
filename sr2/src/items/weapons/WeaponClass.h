@@ -39,10 +39,10 @@ namespace StoneRing{
         void OnUnequipScript(const ParameterList& params);
 
         bool IsExcluded ( const WeaponTypeRef &weaponType );
+        bool IsExcluded ( const std::string &type_name );        
         bool operator==(const WeaponClass &lhs);
 
     private:
-
         virtual bool handle_element(eElement element, Element * pElement );
         virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
         void add_status_effect_modifier(StatusEffectModifier *pModifier ){ m_status_effect_modifiers.push_back ( pModifier ); }
