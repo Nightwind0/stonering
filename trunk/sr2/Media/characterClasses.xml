@@ -104,6 +104,11 @@
                 return 1 - math::pow((1/$_CL),0.05);
             </script>
         </statScript>
+        <statScript stat="joy">
+            <script id="WarJOY">
+                return 1.0;
+            </script>
+        </statScript>
         <statScript stat="mag">
             <script id="WarMAG">
                 return 0;
@@ -119,6 +124,7 @@
                 return  math::pow(1.06,$_CL) * 4.25;
             </script>
         </statScript>
+        
         <skillTreeNode>
             <skillRef skillName="Attack"/>
         </skillTreeNode>
@@ -236,7 +242,12 @@
             <script id="RngLCK">
                 return  math::pow(1.06,$_CL) * 4.3;
             </script>
-        </statScript>        
+        </statScript>     
+        <statScript stat="joy">
+            <script id="RngJOY">
+                return 1;
+            </script>
+        </statScript>
         <skillTreeNode>
             <skillRef skillName="Attack"/>
         </skillTreeNode>

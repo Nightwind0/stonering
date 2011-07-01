@@ -144,6 +144,7 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["statScript"] = &ElementFactory::CreateElement<StatScript>;
     mCreateMethods["statusEffect"] = &ElementFactory::CreateElement<StatusEffect>;
     mCreateMethods["statusEffectModifier"] = &ElementFactory::CreateElement<StatusEffectModifier>;
+    mCreateMethods["statusEffectInfliction"] = &ElementFactory::CreateElement<StatusEffectInfliction>;
     mCreateMethods["systemItem"] = &ElementFactory::CreateElement<SystemItem>;
     mCreateMethods["tile"] = &ElementFactory::CreateElement<Tile>;
     mCreateMethods["tilemap"] = &ElementFactory::CreateElement<Tilemap>;

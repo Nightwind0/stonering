@@ -8,6 +8,7 @@
 #include "SpriteDefinition.h"
 #include "StatusEffect.h"
 #include "Equipment.h"
+#include "StatusEffectModifier.h"
 #include <functional>
 #include <ClanLib/core.h>
 
@@ -296,16 +297,6 @@ void StoneRing::Character::Attacked(ICharacter* pAttacker, DamageCategory::eDama
     params.push_back(ParameterListItem("$_Attacker",pAttacker));
     params.push_back(ParameterListItem("$_Category",static_cast<int>(category)));
     params.push_back(ParameterListItem("$_Amount",amount));
-    // Go through armors calling Invoke on them
-    for(std::map<Equipment::eSlot,Equipment*>::const_iterator iter = m_equipment.begin();
-        iter != m_equipment.end(); iter++)
-    {
-        Armor * pArmor = dynamic_cast<Armor*>(iter->second);
-        if(pArmor != NULL)
-        {
-            pArmor->Invoke(params);
-        }
-    }
     
     AstScript * pScript = IApplication::GetInstance()->GetUtility(IApplication::ON_ATTACK);
     if(pScript)

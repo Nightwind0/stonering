@@ -145,6 +145,7 @@ namespace StoneRing
 	SteelType getWeaponTypeAnimation(SteelType::Handle hWeaponType);
 	SteelType weaponTypeHasAnimation(SteelType::Handle hWeaponType);
         SteelType getDamageCategoryResistance(SteelType::Handle hICharacter, int damage_category);
+        SteelType isArmor(SteelType::Handle hEquipment);
 
         SteelType invokeArmor(SteelType::Handle hCharacter, SteelType::Handle hArmor);
         SteelType invokeWeapon(SteelType::Handle hCharacter, SteelType::Handle hWeapon, uint invokeTime);
@@ -177,10 +178,8 @@ namespace StoneRing
         SteelType hasSkill(SteelType::Handle hCharacter, const std::string&);
         SteelType doSkill(SteelType::Handle hSkill, SteelType::Handle hCharacter);
         
-        
         SteelType generateRandomWeapon(double min_value, double max_value);
-
-
+        SteelType tryEquipmentStatusEffectInflictions(SteelType::Handle hEquipment, SteelType::Handle hTarget);
 
         void steelConst(const std::string &name, int value);
         void steelConst(const std::string &name, double value);

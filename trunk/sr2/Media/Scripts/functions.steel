@@ -25,6 +25,43 @@ function tryStatusEffect(declare $hTarget, declare $status_name)
     }
 }
 
+function getEquippedArmor(declare $character)
+{
+    declare @armor;
+    if(hasEquipment($character,$_HAND))
+    {
+        declare $hand =  getEquipment($character,$_HAND);
+        if(isArmor($hand))
+            @armor += $hand;
+    }
+
+    if(hasEquipment($character,$_OFFHAND))
+    {
+        declare $offhand = getEquipment($character,$_OFFHAND);
+        if(isArmor($offhand))
+            @armor += $offhand;
+    }
+
+    if(hasEquipment($character,$_HEAD))
+        @armor += getEquipment($character,$_HEAD);
+     
+    if(hasEquipment($character,$_HANDS))
+        @armor += getEquipment($character,$_HANDS);
+       
+    if(hasEquipment($character,$_BODY))
+        @armor += getEquipment($character,$_BODY);
+   
+    if(hasEquipment($character,$_FEET))
+        @armor += getEquipment($character,$_FEET);
+    if(hasEquipment($character,$_FINGER1))
+        @armor += getEquipment($character,$_FINGER1);
+    if(hasEquipment($character,$_FINGER2))
+        @armor += getEquipment($character,$_FINGER2);
+
+    return @armor;
+}
+
+
 function shuffle(declare @array)
 {
     declare @result[len(@array)];

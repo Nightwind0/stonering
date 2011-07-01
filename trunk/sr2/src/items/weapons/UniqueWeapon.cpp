@@ -110,6 +110,9 @@ bool UniqueWeapon::handle_element(eElement element, Element * pElement)
     case ESTATUSEFFECTMODIFIER:
         Add_StatusEffect_Modifier( dynamic_cast<StatusEffectModifier*>(pElement) );
         break;
+    case ESTATUSEFFECTINFLICTION:
+        Add_StatusEffect_Infliction( dynamic_cast<StatusEffectInfliction*>(pElement) );
+        break;
     case ESCRIPT:
         m_pScript = dynamic_cast<ScriptElement*>(pElement);
         break;

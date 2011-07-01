@@ -729,7 +729,7 @@ Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, dou
     return NULL;
 }
 
-Item* ItemManager::GenerateRandomItem(Item::eDropRarity rarity, int min_value, int max_value ) const
+Item* ItemManager::GenerateRandomItem(Item::eDropRarity rarity, double min_value, double max_value ) const
 {
     return NULL;
 }
