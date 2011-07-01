@@ -363,7 +363,11 @@
             attackCharacter($pTarget,$Character,getWeaponTypeDamageCategory(getWeaponType($pWeapon)),$modDamage);
             battle::doTargetedAnimation($pTarget,$pC,getAnimation("recoil"));
             battle::createDisplay($modDamage,$pTarget,$_DISP_DAMAGE);
-            
+          
+            declare @status_effects = tryEquipmentStatusEffectInflictions($pWeapon,$pTarget);
+            foreach (declare $effect) in @status_effects {
+                addStatusEffect($pTarget,$effect);
+            }
             // TODO: If the weapon has a spell on it, cast it on the target now
 
 
