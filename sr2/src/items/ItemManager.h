@@ -33,8 +33,8 @@ namespace StoneRing
         ArmorClass * GetArmorImbuement  ( const ArmorImbuementRef & ref ) const;
         
         Armor*       GenerateRandomGeneratedArmor     ( Item::eDropRarity rarity, int min_value, int max_value )const;
-        Weapon*      GenerateRandomGeneratedWeapon    ( Item::eDropRarity rarity, double min_value, double max_value )const;
-        Item*        GenerateRandomItem               ( Item::eDropRarity rarity, double min_value, double max_value )const;
+        Weapon*      GenerateRandomGeneratedWeapon    ( Item::eDropRarity rarity, int min_value, int max_value )const;
+        Item*        GenerateRandomItem               ( Item::eDropRarity rarity, int in_value, int max_value )const;
 
         Item * GetNamedItem( const std::string &name ) const;
         virtual Item * GetItem( const ItemRef & ref );
