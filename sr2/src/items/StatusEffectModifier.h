@@ -14,11 +14,19 @@ namespace StoneRing{
         virtual eElement WhichElement() const{ return ESTATUSEFFECTMODIFIER; }
         StatusEffect * GetStatusEffect() const;
         float GetModifier() const;
-
     private:
         virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
         StatusEffect *m_pStatusEffect;
         float m_fModifier;
+    };
+    
+    class StatusEffectInfliction : public StatusEffectModifier 
+    {
+    public:
+        StatusEffectInfliction(){}
+        virtual ~StatusEffectInfliction(){}
+        
+        virtual eElement WhichElement() const { return ESTATUSEFFECTINFLICTION; }
     };
 };
 

@@ -66,6 +66,9 @@ bool WeaponClass::handle_element(eElement element, Element * pElement)
     case ESTATUSEFFECTMODIFIER:
         add_status_effect_modifier (dynamic_cast<StatusEffectModifier*>(pElement));
         break;
+    case ESTATUSEFFECTINFLICTION:
+        add_status_effect_infliction(dynamic_cast<StatusEffectInfliction*>(pElement));
+        break;
     default:
         return false;
     }

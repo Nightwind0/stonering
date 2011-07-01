@@ -27,6 +27,8 @@ namespace StoneRing{
 
         std::list<StatusEffectModifier*>::const_iterator GetStatusEffectModifiersBegin() { return m_status_effect_modifiers.begin(); }
         std::list<StatusEffectModifier*>::const_iterator GetStatusEffectModifiersEnd() { return m_status_effect_modifiers.end(); }
+        std::list<StatusEffectInfliction*>::const_iterator GetStatusEffectInflictionsBegin() { return m_status_effect_inflictions.begin(); }
+        std::list<StatusEffectInfliction*>::const_iterator GetStatusEffectInflictionsEnd() { return m_status_effect_inflictions.end(); }
 
         void ExecuteScript(const ParameterList& params);
         bool EquipCondition(const ParameterList& params);
@@ -45,12 +47,14 @@ namespace StoneRing{
         int m_nValueAdd;
         float m_fValueMultiplier;
         bool m_bImbuement;
-        void AddStatusEffectModifier(StatusEffectModifier *pModifier ) { m_status_effect_modifiers.push_back ( pModifier ); }
+        void AddStatusEffectModifier(StatusEffectModifier* pModifier ) { m_status_effect_modifiers.push_back ( pModifier ); }
+        void AddStatusEffectInfliction(StatusEffectInfliction* pInfliction ) { m_status_effect_inflictions.push_back (pInfliction); } 
         ScriptElement *m_pScript;
         std::list<AttributeModifier*> m_attribute_modifiers;
         std::list<ArmorEnhancer*> m_armor_enhancers;
         std::list<ArmorTypeRef*> m_excluded_types;
         std::list<StatusEffectModifier*> m_status_effect_modifiers;
+        std::list<StatusEffectInfliction*> m_status_effect_inflictions;
         NamedScript *m_pEquipScript;
         NamedScript *m_pUnequipScript;
         ScriptElement *m_pConditionScript;

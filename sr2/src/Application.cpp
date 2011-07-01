@@ -18,6 +18,7 @@
 #include "WeaponType.h"
 #include "GeneratedWeapon.h"
 #include "Armor.h"
+#include "StatusEffectModifier.h"
 #ifndef _WINDOWS_
 #include <steel/SteelType.h>
 #else
@@ -842,6 +843,14 @@ SteelType Application::attackCharacter ( SteelType::Handle hICharacter, SteelTyp
     return SteelType();
 }
 
+SteelType Application::isArmor ( SteelType::Handle hEquipment )
+{
+    Equipment* pEquipment = GrabHandle<Equipment*>(hEquipment);
+    SteelType var;
+    var.set( pEquipment->IsArmor() );
+    return var;
+}
+
 SteelType Application::getItemType ( SteelType::Handle hItem )
 {
     SteelType val;
@@ -1027,13 +1036,38 @@ SteelType Application::getMonsterSPReward ( const SteelType::Handle hMonster )
 
 SteelType Application::generateRandomWeapon ( double min_value, double max_value )
 {
-    Weapon * pWeapon = mItemManager.GenerateRandomGeneratedWeapon(Item::RARE, min_value,max_value);
+    Weapon * pWeapon = mItemManager.GenerateRandomGeneratedWeapon(Item::UNCOMMON, min_value,max_value);
     SteelType var;
     var.set(pWeapon);
     
     return var;
 }
 
+SteelType Application::tryEquipmentStatusEffectInflictions ( SteelType::Handle hEquipment, SteelType::Handle hTarget )
+{
+    // Return an array of status effects 
+    SteelType effects;
+    effects.set(SteelType::Container());
+    Equipment* pEquipment = GrabHandle<Equipment*>(hEquipment);
+    ICharacter* pTarget = GrabHandle<ICharacter*>(hTarget);
+    // Now see if this armor is goign to inflict any status effects
+    for(Equipment::StatusEffectInflictionSet::const_iterator iter = pEquipment->GetStatusEffectInflictionsBegin();
+        iter != pEquipment->GetStatusEffectInflictionsEnd(); iter++)
+    {
+        double r = ranf();
+        if (r < iter->second->GetModifier())
+        {
+            double block = ranf();
+            if(block < pTarget->StatusEffectChance(iter->second->GetStatusEffect())){
+                SteelType var;
+                var.set(iter->second->GetStatusEffect());
+                effects.add ( var );
+            }
+        }
+    }
+
+    return effects;
+}
 
 SteelType Application::giveItem( SteelType::Handle hItem, int count, bool silent )
 {
@@ -1779,6 +1813,8 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "generateRandomWeapon", new SteelFunctor2Arg<Application,double,double>(this,&Application::generateRandomWeapon));
         
     mInterpreter.addFunction ( "giveItem", new SteelFunctor3Arg<Application,SteelType::Handle,int,bool>(this,&Application::giveItem) );
+    mInterpreter.addFunction ( "tryEquipmentStatusEffectInflictions", new SteelFunctor2Arg<Application,SteelType::Handle,SteelType::Handle>(this,&Application::tryEquipmentStatusEffectInflictions) );
+    mInterpreter.addFunction ( "isArmor", new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::isArmor) );
 }
 
 void Application::queryJoystick()

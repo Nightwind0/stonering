@@ -97,6 +97,7 @@ namespace StoneRing
             ESTAT,
             ESTATSCRIPT,
             ESTATUSEFFECT,
+            ESTATUSEFFECTINFLICTION,
             ESTATUSEFFECTMODIFIER,
             ESYSTEMITEM,
             ETILE,

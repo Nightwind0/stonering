@@ -69,6 +69,9 @@ bool ArmorClass::handle_element(eElement element, Element * pElement)
     case ESTATUSEFFECTMODIFIER:
         AddStatusEffectModifier (dynamic_cast<StatusEffectModifier*>(pElement));
         break;
+    case ESTATUSEFFECTINFLICTION:
+        AddStatusEffectInfliction (dynamic_cast<StatusEffectInfliction*>(pElement));
+        break;
     default:
         return false;
     }

@@ -113,7 +113,7 @@
             <weaponEnhancer add="0.2" attribute="HIT"/>
         </weaponClass>
         <weaponClass name="Poison" valueMultiplier="1.5" valueAdd="5000">
-            <statusEffectModifier statusRef="Poison" modifier="0.33"/>
+            <statusEffectInfliction statusRef="Poison" modifier="0.33"/>
         </weaponClass>
         <weaponClass name="Deadly" valueMultiplier="2.2" valueAdd="7000">
             <weaponEnhancer multiplier="2" attribute="ATK"/>    
@@ -132,7 +132,7 @@
         </weaponClass>
         <weaponClass name="Medusa" valueMultiplier="4" valueAdd="12000">
             <weaponEnhancer attribute="ATK" multiplier="2"/>
-            <statusEffectModifier statusRef="Stone" modifier="0.30"/>
+            <statusEffectInfliction statusRef="Stone" modifier="0.30"/>
         </weaponClass>
         <weaponClass name="Erebus" valueMultiplier="4" valueAdd="1000">
             <weaponEnhancer attribute="ATK" multiplier="3"/>
@@ -151,6 +151,12 @@
         </weaponClass>
         <weaponClass imbuement="true" name="of Merlin" valueMultiplier="1.5">
             <attributeModifier attribute="mp_max" type="multiply" value="1.15"/>
+        </weaponClass>
+        <weaponClass imbuement="true" name="of Failure" valueMultiplier="0.5">
+            <attributeModifier attribute="str" type="multiply" value="0.75"/>
+        </weaponClass>  
+        <weaponClass imbuement="true" name="of Doom" valueMultiplier="2.0">
+            <attributeModifier attribute="str" type="multiply" value="1.25"/>
         </weaponClass>
     </weaponClasses>
     <weaponTypes>
@@ -293,6 +299,9 @@
             <armorClass imbuement="true" name="of Merlin" valueMultiplier="1.5">
                 <attributeModifier attribute="mp_max" type="multiply" value="1.15"/>
             </armorClass>
+            <armorClass imbuement="true" name="of Failure" valueMultiplier="0.5">
+                <attributeModifier attribute="str" type="multiply" value="0.75"/>
+            </armorClass>
         </armorClasses>
         <armorTypes>
             <armorType baseArmorClass="20" baseResist="10" basePrice="300" name="Shield" slot="shield">
@@ -333,6 +342,7 @@
                     <armorTypeRef name="Shield"/>
                     <armorEnhancer multiplier="0.2" attribute="AC"/>
                     <attributeModifier type="add" value="-0.2" attribute="dark_rst"/>
+                    <statusEffectInfliction statusRef="Poison" modifier="0.5"/>
                 </uniqueArmor>
                 <uniqueArmor name="Kid Vest" dropRarity="rare" valueMultiplier = "0.25">
                     <iconRef>Armor/basic_shield</iconRef>                     

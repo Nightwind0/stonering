@@ -115,16 +115,34 @@ void Equipment::Clear_StatusEffect_Modifiers()
     m_statuseffect_modifiers.clear();
 }
 
+void Equipment::Clear_StatusEffect_Inflictions()
+{
+    m_statuseffect_inflictions.clear();
+}
+
+
 void Equipment::Add_StatusEffect_Modifier( StatusEffectModifier * pModifier )
 {
     m_statuseffect_modifiers.insert ( StatusEffectModifierSet::value_type(pModifier->GetStatusEffect()->GetName(),pModifier) );
 }
 
+void Equipment::Add_StatusEffect_Infliction( StatusEffectInfliction *pInfliction )
+{
+    m_statuseffect_inflictions.insert ( StatusEffectInflictionSet::value_type(pInfliction->GetStatusEffect()->GetName(),pInfliction) );
+}
+
 double Equipment::GetStatusEffectModifier(const std::string &statuseffect)const
 {
-    StatusEffectModifierSet::const_iterator iter = m_statuseffect_modifiers.find(statuseffect);
-    if(iter == m_statuseffect_modifiers.end()) return 0.0;
-    else return iter->second->GetModifier();   
+    std::pair<StatusEffectModifierSet::const_iterator, 
+                StatusEffectModifierSet::const_iterator> bounds = m_statuseffect_modifiers.equal_range(statuseffect);
+    double modifier = 0.0;
+    for(StatusEffectModifierSet::const_iterator iter = bounds.first; 
+        iter != bounds.second; iter++)
+    {
+        modifier += iter->second->GetModifier();
+    }
+
+    return modifier;
 }
 
 
