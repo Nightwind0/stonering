@@ -36,7 +36,7 @@ std::string StoneRing::Weapon::CreateWeaponName(WeaponType *pType, WeaponClass *
 
     if (pImbuement)
     {
-        os << pImbuement->GetName();
+        os << ' ' << pImbuement->GetName();
     }
 
     return os.str();

@@ -1027,7 +1027,7 @@ SteelType Application::getMonsterSPReward ( const SteelType::Handle hMonster )
 
 SteelType Application::generateRandomWeapon ( double min_value, double max_value )
 {
-    Weapon * pWeapon = mItemManager.GenerateRandomGeneratedWeapon(Item::UNCOMMON, min_value,max_value);
+    Weapon * pWeapon = mItemManager.GenerateRandomGeneratedWeapon(Item::RARE, min_value,max_value);
     SteelType var;
     var.set(pWeapon);
     

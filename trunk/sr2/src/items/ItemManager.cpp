@@ -56,6 +56,38 @@ public:
     double m_base_price;
 };
 
+class CompareWeaponClassWithChosenClass: public std::binary_function<WeaponClass*,WeaponClass*,bool>
+{
+public:
+    CompareWeaponClassWithChosenClass(double basePrice, WeaponClass* pClass):
+    m_base_price(basePrice),m_pClass(pClass){}
+    ~CompareWeaponClassWithChosenClass(){}
+    bool operator()(const WeaponClass *a, const WeaponClass *b)
+    {
+        return (a->GetValueMultiplier() * m_pClass->GetValueMultiplier() 
+                * m_base_price + a->GetValueAdd() + m_pClass->GetValueAdd()) <
+                (b->GetValueMultiplier() * m_pClass->GetValueMultiplier()
+                * m_base_price + b->GetValueAdd() + m_pClass->GetValueAdd());
+    }
+    
+    bool operator()(const WeaponClass *a, double b)
+    {
+        return (a->GetValueMultiplier() * m_pClass->GetValueMultiplier() 
+                * m_base_price + a->GetValueAdd() + m_pClass->GetValueAdd())  < b;
+    }
+    
+    bool operator()(double a, WeaponClass *b)
+    {
+        return a <  (b->GetValueMultiplier() * m_pClass->GetValueMultiplier()
+                * m_base_price + b->GetValueAdd() + m_pClass->GetValueAdd());
+    }
+private:
+    double m_base_price;
+    WeaponClass *m_pClass;
+
+    
+};
+
 
 
 
@@ -617,15 +649,22 @@ Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, dou
 {
     std::vector<WeaponType*> type_list;
     std::vector<WeaponClass*> classes;
+    std::vector<WeaponClass*> imbuements;
     
     std::copy(m_weapon_types.begin(),m_weapon_types.end(),std::back_inserter(type_list)); 
     std::copy(m_weapon_classes.begin(),m_weapon_classes.end(),std::back_inserter(classes));
+    if(rarity == Item::RARE)
+    {
+        std::copy(m_weapon_imbuements.begin(),m_weapon_imbuements.end(),std::back_inserter(imbuements));
+    }
     std::random_shuffle(type_list.begin(),type_list.end());    
     
     WeaponClass * selectedClass = NULL;
+    WeaponClass * selectedImbuement = NULL;
     WeaponType * pType = NULL;
     for(std::vector<WeaponType*>::const_iterator iter = type_list.begin();
-        iter != type_list.end() && selectedClass == NULL;
+        iter != type_list.end() 
+        && (selectedClass == NULL || ((rarity==Item::RARE)?selectedImbuement==NULL:true));
         iter++)
     {
         pType = *iter;
@@ -644,7 +683,37 @@ Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, dou
         if(class_options.size())
         {
             std::random_shuffle(class_options.begin(),class_options.end());
-            selectedClass = class_options[0];           
+            uint selected_class = 0;
+            do{
+                selectedClass = class_options[selected_class++];           
+                        
+                if(rarity == Item::RARE)
+                {
+                    // Do some mojo to see if there are any imbuements we can stick on this 
+                    // that will still fit in our range
+                    CompareWeaponClassWithChosenClass classComparator(value,selectedClass);
+                    std::sort(imbuements.begin(),imbuements.end(),classComparator);
+                    
+                    std::vector<WeaponClass*>::const_iterator min_bound_imb = 
+                        std::lower_bound(imbuements.begin(),imbuements.end(), min_value, classComparator );
+                    std::vector<WeaponClass*>::const_iterator max_bound_imb = 
+                        std::lower_bound(imbuements.begin(),imbuements.end(), max_value, classComparator );
+                    
+                    
+                    std::vector<WeaponClass*> imbuement_options;
+                    std::copy(min_bound_imb,max_bound_imb,std::back_inserter(imbuement_options));
+                    if(imbuement_options.size())
+                    {
+                        //std::random_shuffle(imbuement_options.begin(),imbuement_options.end());
+                        selectedImbuement = imbuement_options[rand() % imbuement_options.size()];
+                    }
+                }
+                
+            }while(rarity == Item::RARE && selectedImbuement == NULL
+                && selected_class < class_options.size());
+            
+
+            
         }
         
     }
@@ -652,8 +721,8 @@ Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, dou
     if(selectedClass)
     {
         GeneratedWeapon * pWeapon = new GeneratedWeapon();
-        pWeapon->Generate(pType,selectedClass,NULL,NULL);
-        return pWeapon;
+        pWeapon->Generate(pType,selectedClass,selectedImbuement,NULL);
+        return pWeapon;        
     }
     
     
