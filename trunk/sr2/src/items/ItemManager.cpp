@@ -29,25 +29,25 @@
 using namespace StoneRing;
 
 
-
-class CompareWeaponClasses: public std::binary_function<WeaponClass*, WeaponClass*, bool>
+template <class Class>
+class CompareEquipmentClasses: public std::binary_function<Class*, Class*, bool>
 {
 public:
-    CompareWeaponClasses(double basePrice):m_base_price(basePrice){}
-    ~CompareWeaponClasses(){}
+    CompareEquipmentClasses(double basePrice):m_base_price(basePrice){}
+    ~CompareEquipmentClasses(){}
     
-    bool operator()(const WeaponClass *a, const WeaponClass *b)
+    bool operator()(const Class *a, const Class *b)
     {
         return (a->GetValueMultiplier() * m_base_price + a->GetValueAdd()) <
                 (b->GetValueMultiplier() * m_base_price + b->GetValueAdd());
     }
     
-    bool operator()(const WeaponClass *a, double b)
+    bool operator()(const Class *a, double b)
     {
         return (a->GetValueMultiplier() * m_base_price + a->GetValueAdd()) < b;
     }
     
-    bool operator()(double a, WeaponClass *b)
+    bool operator()(double a, Class *b)
     {
         return a <     (b->GetValueMultiplier() * m_base_price + b->GetValueAdd());
     }
@@ -55,14 +55,14 @@ public:
  private:
     double m_base_price;
 };
-
-class CompareWeaponClassWithChosenClass: public std::binary_function<WeaponClass*,WeaponClass*,bool>
+template <class Class>
+class CompareEquipmentClassWithChosenClass: public std::binary_function<Class*,Class*,bool>
 {
 public:
-    CompareWeaponClassWithChosenClass(double basePrice, WeaponClass* pClass):
+    CompareEquipmentClassWithChosenClass(double basePrice, Class* pClass):
     m_base_price(basePrice),m_pClass(pClass){}
-    ~CompareWeaponClassWithChosenClass(){}
-    bool operator()(const WeaponClass *a, const WeaponClass *b)
+    ~CompareEquipmentClassWithChosenClass(){}
+    bool operator()(const Class *a, const Class *b)
     {
         return (a->GetValueMultiplier() * m_pClass->GetValueMultiplier() 
                 * m_base_price + a->GetValueAdd() + m_pClass->GetValueAdd()) <
@@ -70,36 +70,35 @@ public:
                 * m_base_price + b->GetValueAdd() + m_pClass->GetValueAdd());
     }
     
-    bool operator()(const WeaponClass *a, double b)
+    bool operator()(const Class *a, double b)
     {
         return (a->GetValueMultiplier() * m_pClass->GetValueMultiplier() 
                 * m_base_price + a->GetValueAdd() + m_pClass->GetValueAdd())  < b;
     }
     
-    bool operator()(double a, WeaponClass *b)
+    bool operator()(double a, Class *b)
     {
         return a <  (b->GetValueMultiplier() * m_pClass->GetValueMultiplier()
                 * m_base_price + b->GetValueAdd() + m_pClass->GetValueAdd());
     }
 private:
     double m_base_price;
-    WeaponClass *m_pClass;
-
-    
+    Class *m_pClass;
 };
 
 
-class WeaponTypeClassFilter { 
+template <class Type, class Class>
+class EquipmentTypeClassFilter { 
 public:
-    WeaponTypeClassFilter(WeaponType* pType):m_type(pType){}
-    ~WeaponTypeClassFilter(){}
+    EquipmentTypeClassFilter(Type* pType):m_type(pType){}
+    ~EquipmentTypeClassFilter(){}
     
-    bool operator()(WeaponClass* pClass)
+    bool operator()(Class* pClass)
     {
         return pClass->IsExcluded(m_type->GetName());
     }
 private:
-    WeaponType* m_type;
+    Type* m_type;
 };
 
 
@@ -655,10 +654,95 @@ void ItemManager::printStatusModifiers(Equipment *pItem)
 
 Armor* ItemManager::GenerateRandomGeneratedArmor(Item::eDropRarity rarity, int min_value, int max_value ) const
 {
+    std::vector<ArmorType*> type_list;
+    std::vector<ArmorClass*> classes;
+    std::vector<ArmorClass*> imbuements;
+    
+    std::copy(m_armor_types.begin(),m_armor_types.end(),std::back_inserter(type_list)); 
+    if(rarity == Item::RARE)
+    {
+        std::copy(m_armor_imbuements.begin(),m_armor_imbuements.end(),std::back_inserter(imbuements));
+    }
+    std::random_shuffle(type_list.begin(),type_list.end());    
+    
+    ArmorClass * selectedClass = NULL;
+    ArmorClass * selectedImbuement = NULL;
+    ArmorType * pType = NULL;
+    for(std::vector<ArmorType*>::const_iterator iter = type_list.begin();
+        iter != type_list.end() 
+        && (selectedClass == NULL || ((rarity==Item::RARE)?selectedImbuement==NULL:true));
+        iter++)
+    {
+        pType = *iter;
+        double value = pType->GetBasePrice();
+        EquipmentTypeClassFilter<ArmorType,ArmorClass> filter(pType);
+        
+        // Only consider classes that can go with this type
+        classes.clear();
+        std::remove_copy_if(m_armor_classes.begin(),m_armor_classes.end(),
+                            std::back_inserter(classes), filter);
+        
+        
+        CompareEquipmentClasses<ArmorClass> comparator(value);
+        std::sort(classes.begin(),classes.end(),comparator);
+        // Use binary search to find class that close to, but above, min_value, but no more than max_value.
+        std::vector<ArmorClass*>::const_iterator min_bound = 
+            std::lower_bound(classes.begin(),classes.end(), min_value, comparator );
+        std::vector<ArmorClass*>::const_iterator max_bound = 
+            std::lower_bound(classes.begin(),classes.end(), max_value, comparator );
+            
+           
+        std::vector<ArmorClass*> class_options;
+        std::copy(min_bound,max_bound,std::back_inserter(class_options));
+        if(class_options.size())
+        {
+            std::random_shuffle(class_options.begin(),class_options.end());
+            uint selected_class = 0;
+            do{
+                selectedClass = class_options[selected_class++];           
+                        
+                if(rarity == Item::RARE)
+                {
+                    // Do some mojo to see if there are any imbuements we can stick on this 
+                    // that will still fit in our range
+                    CompareEquipmentClassWithChosenClass<ArmorClass> classComparator(value,selectedClass);
+                    std::sort(imbuements.begin(),imbuements.end(),classComparator);
+                    
+                    std::vector<ArmorClass*>::const_iterator min_bound_imb = 
+                        std::lower_bound(imbuements.begin(),imbuements.end(), min_value, classComparator );
+                    std::vector<ArmorClass*>::const_iterator max_bound_imb = 
+                        std::lower_bound(imbuements.begin(),imbuements.end(), max_value, classComparator );
+                    
+                    
+                    std::vector<ArmorClass*> imbuement_options;
+                    std::copy(min_bound_imb,max_bound_imb,std::back_inserter(imbuement_options));
+                    if(imbuement_options.size())
+                    {
+                        //std::random_shuffle(imbuement_options.begin(),imbuement_options.end());
+                        selectedImbuement = imbuement_options[rand() % imbuement_options.size()];
+                    }
+                }
+                
+            }while(rarity == Item::RARE && selectedImbuement == NULL
+                && selected_class < class_options.size());
+            
+
+            
+        }
+        
+    }
+    
+    if(selectedClass)
+    {
+        GeneratedArmor * pArmor = new GeneratedArmor();
+        pArmor->Generate(pType,selectedClass,selectedImbuement,NULL);
+        return pArmor;        
+    }
+    
     return NULL;
 }
 
-Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, double min_value, double max_value ) const
+Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, int min_value, int max_value ) const
 {
     std::vector<WeaponType*> type_list;
     std::vector<WeaponClass*> classes;
@@ -681,7 +765,7 @@ Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, dou
     {
         pType = *iter;
         double value = pType->GetBasePrice();
-        WeaponTypeClassFilter filter(pType);
+        EquipmentTypeClassFilter<WeaponType,WeaponClass> filter(pType);
         
         // Only consider classes that can go with this type
         classes.clear();
@@ -689,7 +773,7 @@ Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, dou
                             std::back_inserter(classes), filter);
         
         
-        CompareWeaponClasses comparator(value);
+        CompareEquipmentClasses<WeaponClass> comparator(value);
         std::sort(classes.begin(),classes.end(),comparator);
         // Use binary search to find class that close to, but above, min_value, but no more than max_value.
         std::vector<WeaponClass*>::const_iterator min_bound = 
@@ -711,7 +795,7 @@ Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, dou
                 {
                     // Do some mojo to see if there are any imbuements we can stick on this 
                     // that will still fit in our range
-                    CompareWeaponClassWithChosenClass classComparator(value,selectedClass);
+                    CompareEquipmentClassWithChosenClass<WeaponClass> classComparator(value,selectedClass);
                     std::sort(imbuements.begin(),imbuements.end(),classComparator);
                     
                     std::vector<WeaponClass*>::const_iterator min_bound_imb = 
@@ -749,7 +833,7 @@ Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, dou
     return NULL;
 }
 
-Item* ItemManager::GenerateRandomItem(Item::eDropRarity rarity, double min_value, double max_value ) const
+Item* ItemManager::GenerateRandomItem(Item::eDropRarity rarity, int min_value, int max_value ) const
 {
     return NULL;
 }

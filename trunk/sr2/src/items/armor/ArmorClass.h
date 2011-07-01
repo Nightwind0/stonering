@@ -35,7 +35,8 @@ namespace StoneRing{
         void OnEquipScript(const ParameterList& params);
         void OnUnequipScript(const ParameterList& params);
 
-        bool IsExcluded ( const ArmorTypeRef &weaponType );
+        bool IsExcluded ( const std::string& armorType );
+        bool IsExcluded ( const ArmorTypeRef& armorType );
         bool operator==(const ArmorClass &lhs );
 
     private:

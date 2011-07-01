@@ -3607,6 +3607,12 @@
                                 giveItem($weapon,1,false);
                             }
                             else log("NO WEAPON!");
+                            declare $armor = generateRandomArmor(1,2000);
+                            if(is_valid($armor)){
+                                log("Got an armor called {getItemName($armor)} worth {getItemValue($armor)}");
+                                giveItem($armor,1,false);
+                            }
+                            else log("NO ARMOR!");                            
 			]]>
 			</script>
 		    </event>

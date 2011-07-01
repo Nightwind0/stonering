@@ -1034,7 +1034,7 @@ SteelType Application::getMonsterSPReward ( const SteelType::Handle hMonster )
 }
 
 
-SteelType Application::generateRandomWeapon ( double min_value, double max_value )
+SteelType Application::generateRandomWeapon ( int min_value, int max_value )
 {
     Weapon * pWeapon = mItemManager.GenerateRandomGeneratedWeapon(Item::UNCOMMON, min_value,max_value);
     SteelType var;
@@ -1042,6 +1042,16 @@ SteelType Application::generateRandomWeapon ( double min_value, double max_value
     
     return var;
 }
+
+SteelType Application::generateRandomArmor ( int min_value, int max_value )
+{
+    Armor * pArmor = mItemManager.GenerateRandomGeneratedArmor(Item::UNCOMMON, min_value,max_value);
+    SteelType var;
+    var.set(pArmor);
+    
+    return var;
+}
+
 
 SteelType Application::tryEquipmentStatusEffectInflictions ( SteelType::Handle hEquipment, SteelType::Handle hTarget )
 {
@@ -1810,8 +1820,8 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "hasSkill", new SteelFunctor2Arg<Application,SteelType::Handle,const std::string&>(this,&Application::hasSkill) );
 
     mInterpreter.addFunction ( "augmentCharacterAttribute", new SteelFunctor3Arg<Application,SteelType::Handle,uint,double>(this,&Application::augmentCharacterAttribute) );
-    mInterpreter.addFunction ( "generateRandomWeapon", new SteelFunctor2Arg<Application,double,double>(this,&Application::generateRandomWeapon));
-        
+    mInterpreter.addFunction ( "generateRandomWeapon", new SteelFunctor2Arg<Application,int,int>(this,&Application::generateRandomWeapon));
+    mInterpreter.addFunction ( "generateRandomArmor", new SteelFunctor2Arg<Application,int,int>(this,&Application::generateRandomArmor));      
     mInterpreter.addFunction ( "giveItem", new SteelFunctor3Arg<Application,SteelType::Handle,int,bool>(this,&Application::giveItem) );
     mInterpreter.addFunction ( "tryEquipmentStatusEffectInflictions", new SteelFunctor2Arg<Application,SteelType::Handle,SteelType::Handle>(this,&Application::tryEquipmentStatusEffectInflictions) );
     mInterpreter.addFunction ( "isArmor", new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::isArmor) );

@@ -153,7 +153,7 @@ ArmorClass::GetArmorEnhancersEnd()
     return m_armor_enhancers.end();
 }
 
-bool ArmorClass::IsExcluded ( const ArmorTypeRef &armorType )
+bool ArmorClass::IsExcluded ( const std::string& armorType )
 {
     for(std::list<ArmorTypeRef*>::const_iterator iter = m_excluded_types.begin();
         iter != m_excluded_types.end();
@@ -161,11 +161,17 @@ bool ArmorClass::IsExcluded ( const ArmorTypeRef &armorType )
     {
         ArmorTypeRef * pRef = *iter;
 
-        if( pRef->GetName() == armorType.GetName() )
+        if( pRef->GetName() == armorType )
             return true;
     }
 
     return false;
+}
+
+
+bool ArmorClass::IsExcluded ( const ArmorTypeRef &armorType )
+{
+    return IsExcluded (armorType.GetName() );
 }
 
 

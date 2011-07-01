@@ -178,7 +178,8 @@ namespace StoneRing
         SteelType hasSkill(SteelType::Handle hCharacter, const std::string&);
         SteelType doSkill(SteelType::Handle hSkill, SteelType::Handle hCharacter);
         
-        SteelType generateRandomWeapon(double min_value, double max_value);
+        SteelType generateRandomWeapon(int min_value, int max_value);
+        SteelType generateRandomArmor(int min_value, int max_value);
         SteelType tryEquipmentStatusEffectInflictions(SteelType::Handle hEquipment, SteelType::Handle hTarget);
 
         void steelConst(const std::string &name, int value);
