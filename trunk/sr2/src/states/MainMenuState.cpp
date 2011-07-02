@@ -91,8 +91,8 @@ void StoneRing::MainMenuState::HandleKeyUp(const CL_InputEvent &key)
 void StoneRing::MainMenuState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
 {
     MenuBox::Draw(GC,screenRect);
-    MenuBox::Draw(GC,m_menu_rect);
-    MenuBox::Draw(GC,m_status_rect);
+    MenuBox::Draw(GC,m_menu_rect,false);
+    MenuBox::Draw(GC,m_status_rect,false);
     Menu::Draw(GC);
     
     draw_party(GC);

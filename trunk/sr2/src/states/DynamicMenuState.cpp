@@ -19,6 +19,7 @@
 
 #include "DynamicMenuState.h"
 #include "GraphicsManager.h"
+#include "MenuBox.h"
 
 
 using namespace StoneRing;
@@ -118,13 +119,7 @@ void DynamicMenuState::Start()
 
 void DynamicMenuState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
 {
-    CL_Rect shadowRect = m_rect;
-    shadowRect.translate(CL_Vec2f(8,8));
-    CL_Draw::fill(GC,shadowRect,m_shadowColor);
-    CL_Draw::gradient_fill(GC,m_rect,m_bgGradient);
-    //CL_Draw::box(GC,m_optionsRect, CL_Colorf::red);
-    CL_Draw::box(GC,m_rect,m_borderColor);
-   
+    MenuBox::Draw(GC,m_rect,false);   
     Menu::Draw(GC);
 }
 
