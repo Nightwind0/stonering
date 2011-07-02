@@ -158,6 +158,9 @@
            <weaponClass imbuement="true" name="of Doom" valueMultiplier="2.0">
                <attributeModifier attribute="str" type="multiply" value="1.25"/>
            </weaponClass>
+           <weaponClass imbuement="true" name="of Supremity" valueMultiplier="5.0">
+               <attributeModifier attribute="str" type="multiply" value="4"/>
+           </weaponClass>
        </weaponClasses>
        <weaponTypes>
            <weaponType basePrice="100" name="Sword" baseAttack="10" hitAdd="0.01" damageCategory="slash">

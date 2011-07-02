@@ -236,13 +236,13 @@
                         <image-file file="Images/Icons/PoisonShield.png"/>
                     </image>
                     <image name="shield">
-                        <image-file file="Images/Icons/E_Wood01.png"/>
+                        <image-file file="Images/Icons/E_Metal01.png"/>
                     </image>
                     <image name="vest">
                         <image-file file="Images/Icons/A_Clothing02.png"/>
                     </image>
                     <image name="plate">
-                        <image-file file="Images/Icons/A_Armor02.png"/>
+                        <image-file file="Images/Icons/A_Armour02.png"/>
                     </image>
                     <image name="robe">
                         <image-file file="Images/Icons/A_Clothing01.png"/>
@@ -250,11 +250,29 @@
                     <image name="buckler">
                         <image-file file="Images/Icons/E_Wood01.png"/>
                     </image>
+                    <image name="sabaton">
+                        <image-filo file="Images/Icons/A_Shoes04.png"/>
+                    </image>
+                    <image name="shoe">
+                        <image-file file="Images/Icons/A_Shoes02.png"/>
+                    </image>
+                    <image name="helm">
+                        <image-file file="Images/Icons/C_Elm03.png"/>
+                    </image>
                     <image name="boot">
                         <image-file file="Images/Icons/A_Shoes01.png"/>
                     </image>
                     <image name="hat">
-                        <image-file file="Images/Icons/C_Hat03.png"/>
+                        <image-file file="Images/Icons/C_Elm01.png"/>
+                    </image>
+                    <image name="cap">
+                        <image-file file="Images/Icons/C_Elm02.png"/>
+                    </image>
+                    <image name="gauntlet">
+                        <image-file file="Images/Icons/Ac_Gloves06.png"/>
+                    </image>
+                    <image name="gloves">
+                        <image-file file="Images/Icons/Ac_Gloves03.png"/>
                     </image>
                 
                 </section>
