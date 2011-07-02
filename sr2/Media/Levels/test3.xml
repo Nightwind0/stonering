@@ -3554,7 +3554,7 @@
 					{
 					    case 0:
 						say("Leroy","Thank you! Take this key.");
-						giveNamedItem("Octavia Key",1);
+						giveItem(getNamedItem("Octavia Key"),1,false);
 						break;
 					    default:
 						say("Leroy", "No, not " + @options[$decision]);
@@ -3597,10 +3597,10 @@
 				print(getCharacterName($character) + " HP = " + getCharacterAttribute($character,$_HP));
 				setCharacterToggle($character,$_ALIVE,true);
 			    }
-			    giveNamedItem("Moon Seed",1);
-			    giveNamedItem("Sun Seed",1);
-                            giveNamedItem("Star Chip",1);
-                            giveNamedItem("Antidote",1);
+			    giveItem(getNamedItem("Moon Seed"),1,true);
+			    giveItem(getNamedItem("Sun Seed"),1,true);
+                            giveItem(getNamedItem("Star Chip"),1,true);
+                            giveItem(getNamedItem("Antidote"),1,true);
                             declare $weapon = generateRandomWeapon(1,2000);
                             if(is_valid($weapon)){
                                 log("Got a weapon called {getItemName($weapon)} worth {getItemValue($weapon)}");

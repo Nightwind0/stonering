@@ -300,16 +300,17 @@ SteelType Application::doEvent ( const std::string &event, bool bRemember )
     return SteelType();
 }
 
-SteelType Application::giveNamedItem ( const std::string &item, uint count )
+SteelType Application::getNamedItem ( const std::string &item ) 
 {
-    std::ostringstream os;
-    ItemManager * pMgr = IApplication::GetInstance()->GetItemManager();
-    assert ( pMgr );
-
-    giveItem(pMgr->GetNamedItem(item),count, false);
-
-    return SteelType();
+    Item * pItem = mItemManager.GetNamedItem(item);
+    
+    SteelType var;
+    var.set(pItem);
+    
+    return var;
 }
+
+
 
 SteelType Application::disposeItem ( SteelType::Handle iItem, uint count )
 {
@@ -319,20 +320,22 @@ SteelType Application::disposeItem ( SteelType::Handle iItem, uint count )
     return SteelType();
 }
 
-SteelType Application::takeNamedItem ( const std::string  &item, uint count )
+SteelType Application::takeItem ( SteelType::Handle hItem , uint count, bool silent )
 {
     std::ostringstream os;
-    ItemManager * pMgr = IApplication::GetInstance()->GetItemManager();
+    Item* pItem = GrabHandle<Item*>(hItem);
     SteelType val;
-    val.set ( mpParty->GiveItem ( pMgr->GetNamedItem ( item ), count ) );
+    val.set ( mpParty->TakeItem ( pItem, count ) );
 
-    os << "Gave up " << item;
+    if(!silent){
+        os << "Gave up " << pItem->GetName();
 
-    if ( count > 1 )
-        os << " x" << count;
+        if ( count > 1 )
+            os << " x" << count;
 
-    say ( "Inventory", os.str() );
+        say ( "Inventory", os.str() );
 
+    }
     return val;
 }
 
@@ -1585,8 +1588,9 @@ void Application::registerSteelFunctions()
     SteelFunctor* fn_pause = new  SteelFunctor1Arg<Application, uint> ( this, &Application::pause );
     SteelFunctor* fn_choice = new SteelFunctor2Arg<Application, const std::string&, const SteelType::Container &> ( this, &Application::choice );
     SteelFunctor* fn_pop = new SteelFunctor1Arg<Application, bool> ( this, &Application::pop_ );
-    SteelFunctor* fn_giveNamedItem = new SteelFunctor2Arg<Application, const std::string &, uint> ( this, &Application::giveNamedItem );
-    SteelFunctor*  fn_takeNamedItem = new SteelFunctor2Arg<Application, const std::string &, uint> ( this, &Application::takeNamedItem );
+   // SteelFunctor* fn_giveItem = new SteelFunctor2Arg<Application, const std::string &, uint> ( this, &Application::giveItem );
+    
+    SteelFunctor*  fn_takeItem = new SteelFunctor3Arg<Application, const SteelType::Handle, uint, bool> ( this, &Application::takeItem );
     SteelFunctor*  fn_getGold = new SteelFunctorNoArgs<Application> ( this, &Application::getGold );
     SteelFunctor*  fn_hasItem = new SteelFunctor2Arg<Application, const std::string &, uint> ( this, &Application::hasItem );
     SteelFunctor*  fn_useItem = new SteelFunctor2Arg<Application, bool, bool> ( this, &Application::selectItem );
@@ -1745,8 +1749,7 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "pause", fn_pause );
     mInterpreter.addFunction ( "choice", fn_choice );
     mInterpreter.addFunction ( "pop", fn_pop );
-    mInterpreter.addFunction ( "giveNamedItem", fn_giveNamedItem );
-    mInterpreter.addFunction ( "takeNamedItem", fn_takeNamedItem );
+    mInterpreter.addFunction ( "takeItem", fn_takeItem );
     mInterpreter.addFunction ( "getGold", fn_getGold );
     mInterpreter.addFunction ( "selectItem", fn_useItem );
     mInterpreter.addFunction ( "hasItem", fn_hasItem );
@@ -1837,6 +1840,7 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "doEquipmentStatusEffectInflictions", new SteelFunctor2Arg<Application,SteelType::Handle,SteelType::Handle>(this,&Application::doEquipmentStatusEffectInflictions) );
     mInterpreter.addFunction ( "isArmor", new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::isArmor) );
     mInterpreter.addFunction ( "weaponTypeIsRanged", new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::weaponTypeIsRanged) );
+    mInterpreter.addFunction ( "getNamedItem", new SteelFunctor1Arg<Application,const std::string&>(this,&Application::getNamedItem) );
 }
 
 void Application::queryJoystick()

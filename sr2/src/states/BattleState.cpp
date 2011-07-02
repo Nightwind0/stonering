@@ -853,7 +853,7 @@ void BattleState::draw_monsters(const CL_Rectf &monsterRect, CL_GraphicContext& 
 
         CL_Sprite  sprite = current_sprite(pMonster);
         
-        if(!pMonster->GetToggle(ICharacter::CA_DRAW_STILL))
+        if(!pMonster->GetToggle(ICharacter::CA_DRAW_STILL) &&  pMonster->GetToggle(ICharacter::CA_ALIVE))
             sprite.update();
 
         if (m_combat_state == TARGETING)
@@ -1326,10 +1326,12 @@ void BattleState::check_for_death()
         }
     }
     // BRING OUT YOUR DEAD!
+    // Ok. We don't do this because we need to leave the dead actually in the initiative, to do status effect rounds on them
+    /*
     m_initiative.erase(std::remove_if(m_initiative.begin(), m_initiative.end(),
 				      std::not1(std::bind2nd(std::mem_fun(&ICharacter::GetToggle),ICharacter::CA_ALIVE)))
 				    ,m_initiative.end());
-    
+    */
 }
 
 void BattleState::death_animation(Monster* pMonster)
