@@ -56,7 +56,6 @@ namespace StoneRing
 	CL_Rectf m_rect;
 	CL_Rectf m_header_rect;
         CL_Rectf m_text_rect;
-        CL_Image m_overlay;
 	int m_typemask;
 	bool m_battle;
 	Item* m_selected_item;

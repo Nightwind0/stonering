@@ -76,7 +76,8 @@ namespace StoneRing
         static CL_Rectf GetRect ( Overlay overlay, const std::string& name );
         static CL_Gradient GetGradient ( Overlay overlay, const std::string& name );
         static CL_Sprite GetSprite ( Overlay overlay, const std::string& name );
-
+        static CL_Gradient GetMenuGradient();
+        static CL_Pointf   GetMenuInset();
     private:
 
         static std::string NameOfOverlay(Overlay overlay);

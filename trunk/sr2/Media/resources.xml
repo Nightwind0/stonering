@@ -28,6 +28,9 @@
                 <string name="DefaultPlayerSprite" value="Sprites/Party/Valyn" />
                 <string name="Currency" value="Gold"/>
                 <float name="DefaultEncounterRate" value="0.10"/>
+                <gradient name="MenuGradient" top_left="#0057ff" top_right="#0057ff" bottom_right="#003397" bottom_left="#003397"/>
+                <point name="MenuInset" x="8" y="8"/>
+                <!--gradient name="MenuGradient"--> 
         </section>
 
         <section name="Fonts">
@@ -361,9 +364,10 @@
                         <string name="SP"    value = "mono_blue"/>
                 </section>
                 <section name="rects">
-                    <rect name="menu" left="479" right="752" top="43" bottom="363"/>
+                    <rect name="menu" left="479" right="752" top="24" bottom="390"/>
                     <rect name="party" left="12" right="484" top="24" bottom="191"/>
                     <rect name="character" left="30" right="484" top="30" bottom="570"/>
+                    <rect name="status" left="479" right="752" top="390" bottom="570"/>
                 </section>
             </section>
             <section name="ItemSelect">
@@ -444,15 +448,10 @@
                         </section>
                 </section>
                 <section name="Say">
-                        <image name="overlay">
-                                <image-file file="Images/Overlays/say_overlay10.png"/>
-                        </image>
-                        <section name="points">
-                            <point name="origin" x="0" y="320"/>
-                        </section>
                         <section name="rects">
                             <rect name="header" left="24" top="340" right="783" bottom="369"/>
                             <rect name="text" left="24" top="388" right="783" bottom="580"/>
+                            <rect name="rect" left="0" top="320" right="800" bottom="600"/> 
                         </section>
                         <section name="fonts">
                                 <string name="Speaker" value="BoldBlack"/>
@@ -483,20 +482,9 @@
                         </section>
                 </section>
                 <section name="Choice">
-                        <image name="overlay">
-                                <image-file file="Images/Overlays/choice_overlay.png"/>
-                        </image>
-                        <sprite name="cursor" hint="alpha">
-                                <image file="Sprites/valyn.png">
-                                        <grid pos="0,0" size="32,48" array="4,4"></grid>
-                                </image>
-                        </sprite>
-                        <section name="points">
-                            <point name="origin" x="0" y="200"/>
-                        </section>
                         <section name="rects">
-                            <rect name="header" left="24" top="224" right="783" bottom="319"/>
-                            <rect name="text" left="24" top="352" right="783" bottom="580"/>                
+                            <rect name="header" left="0" top="300" right="800" bottom="360"/>
+                            <rect name="text" left="0" top="360" right="800" bottom="600"/>                
                         </section>
                         <section name="fonts">
                                 <string name="Option" value="BoldGray"/>
