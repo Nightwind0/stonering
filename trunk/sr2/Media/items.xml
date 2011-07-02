@@ -341,7 +341,7 @@
                     <iconRef>Armor/basic_shield</iconRef>		      
                     <armorTypeRef name="Shield"/>
                     <armorEnhancer multiplier="0.2" attribute="AC"/>
-                    <attributeModifier type="add" value="-0.2" attribute="dark_rst"/>
+                    <attributeModifier type="add" value="0.1" attribute="dark_rst"/>
                 </uniqueArmor>
                 <uniqueArmor name="Kid Vest" dropRarity="rare" valueMultiplier = "0.25">
                     <iconRef>Armor/basic_shield</iconRef>                     

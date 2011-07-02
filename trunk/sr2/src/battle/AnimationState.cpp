@@ -774,16 +774,16 @@ void AnimationState::apply_alter_sprite(AlterSprite* pAlterSprite)
             // TODO:
             break;
         case AlterSprite::GRAYSCALE:
-            sprite.set_color(color * CL_Colorf(0.7f,0.7f,0.7f));
+            sprite.set_color(CL_Colorf(0.7f,0.7f,0.7f));
             break;
         case AlterSprite::GREENSCALE:
-            sprite.set_color(color * CL_Colorf(0.0f,1.0f,0.0f));
+            sprite.set_color(CL_Colorf(0.0f,1.0f,0.0f));
             break;
         case AlterSprite::REDSCALE:
-            sprite.set_color(color * CL_Colorf(1.0f,0.0f,0.0f));
+            sprite.set_color(CL_Colorf(1.0f,0.0f,0.0f));
             break;
         case AlterSprite::BLUESCALE:
-            sprite.set_color(color * CL_Colorf(0.0f,0.0f,1.0f));
+            sprite.set_color(CL_Colorf(0.0f,0.0f,1.0f));
             break;
         case AlterSprite::RESET:
             sprite.set_color(CL_Colorf(1.0f,1.0f,1.0f));

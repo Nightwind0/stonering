@@ -87,7 +87,7 @@ namespace StoneRing
         SteelType invokeShop(const std::string &shoptype);
         SteelType choice(const std::string &choiceText, const SteelType::Container &choices);
         SteelType pop_(bool bAll);
-        SteelType giveNamedItem(const std::string &item, uint count);
+        SteelType getNamedItem(const std::string &item);
         SteelType giveItem(SteelType::Handle hItem, int count, bool silent);
         SteelType getGold();
         SteelType hasItem(const std::string &name, uint count);
@@ -95,7 +95,7 @@ namespace StoneRing
         SteelType hasGeneratedArmor(const std::string &armclass, const std::string &armtype);
         SteelType didEvent(const std::string &event);
         SteelType doEvent(const std::string &event, bool bRemember);
-        SteelType takeNamedItem(const std::string &item, uint count);
+        SteelType takeItem(SteelType::Handle hItem, uint count, bool silent);
         SteelType selectItem(bool battle, bool dispose);
         SteelType addCharacter(const std::string &character, int level, bool announce);
 	SteelType inBattle();
