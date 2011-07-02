@@ -130,12 +130,6 @@ int Armor::GetResistanceAdd( DamageCategory::eDamageCategory category )
 
 void Armor::Clear_Armor_Enhancers()
 {
-    for(std::list<ArmorEnhancer*>::iterator iter = m_armor_enhancers.begin();
-        iter != m_armor_enhancers.end();
-        iter++)
-    {
-        delete *iter;
-    }
     m_armor_enhancers.clear();
 }
 

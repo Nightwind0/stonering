@@ -654,96 +654,79 @@ void ItemManager::printStatusModifiers(Equipment *pItem)
 
 Armor* ItemManager::GenerateRandomGeneratedArmor(Item::eDropRarity rarity, int min_value, int max_value ) const
 {
-    std::vector<ArmorType*> type_list;
-    std::vector<ArmorClass*> classes;
-    std::vector<ArmorClass*> imbuements;
-    
-    std::copy(m_armor_types.begin(),m_armor_types.end(),std::back_inserter(type_list)); 
-    if(rarity == Item::RARE)
-    {
-        std::copy(m_armor_imbuements.begin(),m_armor_imbuements.end(),std::back_inserter(imbuements));
-    }
-    std::random_shuffle(type_list.begin(),type_list.end());    
-    
-    ArmorClass * selectedClass = NULL;
-    ArmorClass * selectedImbuement = NULL;
-    ArmorType * pType = NULL;
-    for(std::vector<ArmorType*>::const_iterator iter = type_list.begin();
-        iter != type_list.end() 
-        && (selectedClass == NULL || ((rarity==Item::RARE)?selectedImbuement==NULL:true));
-        iter++)
-    {
-        pType = *iter;
-        double value = pType->GetBasePrice();
-        EquipmentTypeClassFilter<ArmorType,ArmorClass> filter(pType);
-        
-        // Only consider classes that can go with this type
-        classes.clear();
-        std::remove_copy_if(m_armor_classes.begin(),m_armor_classes.end(),
-                            std::back_inserter(classes), filter);
-        
-        
-        CompareEquipmentClasses<ArmorClass> comparator(value);
-        std::sort(classes.begin(),classes.end(),comparator);
-        // Use binary search to find class that close to, but above, min_value, but no more than max_value.
-        std::vector<ArmorClass*>::const_iterator min_bound = 
-            std::lower_bound(classes.begin(),classes.end(), min_value, comparator );
-        std::vector<ArmorClass*>::const_iterator max_bound = 
-            std::lower_bound(classes.begin(),classes.end(), max_value, comparator );
-            
-           
-        std::vector<ArmorClass*> class_options;
-        std::copy(min_bound,max_bound,std::back_inserter(class_options));
-        if(class_options.size())
-        {
-            std::random_shuffle(class_options.begin(),class_options.end());
-            uint selected_class = 0;
-            do{
-                selectedClass = class_options[selected_class++];           
-                        
-                if(rarity == Item::RARE)
-                {
-                    // Do some mojo to see if there are any imbuements we can stick on this 
-                    // that will still fit in our range
-                    CompareEquipmentClassWithChosenClass<ArmorClass> classComparator(value,selectedClass);
-                    std::sort(imbuements.begin(),imbuements.end(),classComparator);
-                    
-                    std::vector<ArmorClass*>::const_iterator min_bound_imb = 
-                        std::lower_bound(imbuements.begin(),imbuements.end(), min_value, classComparator );
-                    std::vector<ArmorClass*>::const_iterator max_bound_imb = 
-                        std::lower_bound(imbuements.begin(),imbuements.end(), max_value, classComparator );
-                    
-                    
-                    std::vector<ArmorClass*> imbuement_options;
-                    std::copy(min_bound_imb,max_bound_imb,std::back_inserter(imbuement_options));
-                    if(imbuement_options.size())
-                    {
-                        //std::random_shuffle(imbuement_options.begin(),imbuement_options.end());
-                        selectedImbuement = imbuement_options[rand() % imbuement_options.size()];
-                    }
-                }
-                
-            }while(rarity == Item::RARE && selectedImbuement == NULL
-                && selected_class < class_options.size());
-            
+    // Here is the full blown algorithm that comes up with all the possible options.
+    // Could get slow if there are lots of types, classes and imbuements....
+    // In which case, maybe pick random classes and imbuements at the same time,
+    // then look for any fitting types, if none, try again.
+#ifndef NDEBUG
+    std::cout << std::endl << (m_armor_types.size() * m_armor_classes.size() * m_armor_imbuements.size())
+        << " total possible armor" << std::endl;
+#endif    
+    std::vector<Armor*> m_options;
 
-            
+    for(std::list<ArmorType*>::const_iterator type_iter = m_armor_types.begin();
+        type_iter != m_armor_types.end(); 
+        type_iter++) {
+    
+        for(std::vector<ArmorClass*>::const_iterator class_iter = m_armor_classes.begin();
+            class_iter != m_armor_classes.end(); 
+            class_iter++) {
+            if((*class_iter)->IsExcluded((*type_iter)->GetName()))
+                continue;            
+            if(rarity == Item::UNCOMMON){
+                int value = (*type_iter)->GetBasePrice() * (*class_iter)->GetValueMultiplier() + 
+                                (*class_iter)->GetValueAdd();
+                if(value >= min_value && value <= max_value){
+                    GeneratedArmor *pArmor = new GeneratedArmor();
+                    pArmor->Generate(*type_iter,*class_iter,NULL,NULL);
+                    m_options.push_back(pArmor);
+                }
+            }else if(rarity == Item::RARE){
+                for(std::vector<ArmorClass*>::const_iterator imbuement_iter = m_armor_imbuements.begin();
+                    imbuement_iter != m_armor_imbuements.end();
+                    imbuement_iter++){
+                    if((*imbuement_iter)->IsExcluded((*type_iter)->GetName()))
+                        continue;                    
+                    int value = (*type_iter)->GetBasePrice() * (*class_iter)->GetValueMultiplier() * (*imbuement_iter)->GetValueMultiplier()
+                                + (*class_iter)->GetValueAdd() + (*imbuement_iter)->GetValueAdd();
+                    if(value >= min_value && value <= max_value){
+                        GeneratedArmor *pArmor = new GeneratedArmor();
+                        pArmor->Generate(*type_iter,*class_iter,*imbuement_iter,NULL);
+                        m_options.push_back(pArmor);
+                    }                                
+                }
+            }
+        }
+    }
+    
+    if(m_options.size()){
+        uint selection = rand() % m_options.size();
+        for(uint i=0;i<m_options.size();i++){
+            if(selection != i)
+                delete m_options[i];
         }
         
+        return m_options[selection];
     }
     
-    if(selectedClass)
-    {
-        GeneratedArmor * pArmor = new GeneratedArmor();
-        pArmor->Generate(pType,selectedClass,selectedImbuement,NULL);
-        return pArmor;        
-    }
-    
+#ifndef NDEBUG
+    std::cout << m_options.size() 
+        << " options applied" << std::endl;
+#endif
+
     return NULL;
 }
 
 Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, int min_value, int max_value ) const
 {
+    // Here is the full blown algorithm that comes up with all the possible options.
+    // Could get slow if there are lots of types, classes and imbuements....
+    // In which case, maybe pick random classes and imbuements at the same time,
+    // then look for any fitting types, if none, try again.
+#ifndef NDEBUG
+    std::cout << std::endl << (m_weapon_types.size() * m_weapon_classes.size() * m_weapon_imbuements.size())
+        << " total possible weapons" << std::endl;
+#endif
     std::vector<Weapon*> m_options;
 
     for(std::list<WeaponType*>::const_iterator type_iter = m_weapon_types.begin();
@@ -753,6 +736,8 @@ Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, int
         for(std::vector<WeaponClass*>::const_iterator class_iter = m_weapon_classes.begin();
             class_iter != m_weapon_classes.end(); 
             class_iter++) {
+            if((*class_iter)->IsExcluded((*type_iter)->GetName()))
+                continue;
             if(rarity == Item::UNCOMMON){
                 int value = (*type_iter)->GetBasePrice() * (*class_iter)->GetValueMultiplier() + 
                                 (*class_iter)->GetValueAdd();
@@ -765,6 +750,8 @@ Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, int
                 for(std::vector<WeaponClass*>::const_iterator imbuement_iter = m_weapon_imbuements.begin();
                     imbuement_iter != m_weapon_imbuements.end();
                     imbuement_iter++){
+                    if((*imbuement_iter)->IsExcluded((*type_iter)->GetName()))
+                        continue;
                     int value = (*type_iter)->GetBasePrice() * (*class_iter)->GetValueMultiplier() * (*imbuement_iter)->GetValueMultiplier()
                                 + (*class_iter)->GetValueAdd() + (*imbuement_iter)->GetValueAdd();
                     if(value >= min_value && value <= max_value){
@@ -777,8 +764,19 @@ Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, int
         }
     }
     
+#ifndef NDEBUG
+    std::cout << m_options.size() 
+        << " options applied" << std::endl;
+#endif
+    
     if(m_options.size()){
-        return m_options[ rand() % m_options.size() ];
+        uint selection = rand() % m_options.size();
+        for(uint i=0;i<m_options.size();i++){
+            if(selection != i)
+                delete m_options[i];
+        }
+        
+        return m_options[selection];
     }
     
     

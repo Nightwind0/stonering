@@ -224,12 +224,48 @@
                     <image name="bow">
                         <image-file file="Images/Icons/W_Bow01.png"/>
                     </image>
+                    <image name="powerbow">
+                        <image-file file="Images/Icons/W_Bow06.png"/>
+                    </image>
                     <image name="rod">
                         <image-file file="Images/Icons/W_Mace008.png"/>
+                    </image>
+                    <image name="staff">
+                        <image-file file="Images/Icons/W_Mace007.png"/>
+                    </image>
+                    <image name="wand">
+                        <image-file file="Images/Icons/W_Mace014.png"/>
                     </image>
                     <image name="shillelagh">
                         <image-file file="Images/Icons/W_Mace012.png"/>
                     </image>
+                    <image name="club">
+                        <image-file file="Images/Icons/W_Mace002.png"/>
+                    </image>
+                    <image name="cudgel">
+                        <image-file file="Images/Icons/W_Mace001.png"/>
+                    </image>
+                    <image name="knuckles">
+                        <image-file file="Images/Icons/W_Fist001.png"/>
+                    </image>
+                    <image name="spikefist">
+                        <image-file file="Images/Icons/W_Fist002.png"/>
+                    </image>
+                    <image name="stabfist">
+                        <image-file file="Images/Icons/W_Fist003.png"/>
+                    </image>
+                    <image name="slashfist">
+                        <image-file file="Images/Icons/W_Fist004.png"/>
+                    </image>
+                    <image name="smasher">
+                        <image-file file="Images/Icons/W_Fist005.png"/>
+                    </image>
+                    <image name="claws">
+                        <image-file file="Images/Icons/W_Dagger011.png"/>
+                    </image>                   
+                    <image name="handdagger">
+                        <image-file file="Images/Icons/W_Dagger012.png"/>
+                    </image>                        
                 </section>
                 <section name="Armor">
                     <image name="poisonshield">

@@ -55,14 +55,13 @@
                         </script>
                 </onInvoke>
         </statusEffect>
-        <statusEffect last="round_count" roundCount="8" name="Dragon Rage">
+        <statusEffect last="round_count" roundCount="4" name="Dragon Rage">
             <spriteRef ref="StatusEffect/DragonRage"/>
             <attributeModifier attribute="str" type="multiply" value="1.25"/>
             <attributeModifier attribute="def" type="multiply" value="0.75"/>	    
-                <onInvoke>
-                        <script id = "SE_Enraged">
-                        </script>
-                </onInvoke>
+            <attributeModifier attribute="draw_berserk" type="toggle" value="true"/>
+            <attributeModifier attribute="can_cast" type="toggle" value="false"/>
+            <attributeModifier attribute="can_item" type="toggle" value="false"/>
         </statusEffect>
         <statusEffect last="round_count" roundCount="8" name="Focused">
             <spriteRef ref="StatusEffect/Focused"/>

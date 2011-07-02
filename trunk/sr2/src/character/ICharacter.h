@@ -38,9 +38,9 @@ namespace StoneRing{
             CA_DEF,              // Physical defense
             CA_MAG,              // Magic power
             CA_RST,              // Magic resistance
+            CA_LCK,              // Similar to initiative. Also helps in other aspects of the game...
             _END_OF_INTS,
             _START_OF_REALS,
-            CA_LCK,              // Similar to initiative. Also helps in other aspects of the game...
             CA_JOY,              // Increases experience gained (Multiplier)
             CA_DEX,              // Chances of a hit connecting (0-1)
             CA_EVD,              // Chances of evading an attack(0-1)

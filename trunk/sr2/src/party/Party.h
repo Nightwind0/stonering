@@ -48,10 +48,19 @@ namespace StoneRing{
 
 
       private:
+          
+          struct ItemEntry {
+              ItemEntry() {
+                  m_pItem = NULL;
+                  m_count = 0;
+              }
+              Item* m_pItem;
+              int m_count;
+          };
 
           std::vector<Character*> m_characters;
           std::set<std::string> m_events;
-          std::map<Item*,int> m_items;
+          std::map<std::string,ItemEntry> m_items;
           uint m_nGold;
 
     };
