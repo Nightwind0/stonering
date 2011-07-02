@@ -2,6 +2,7 @@
 #include "IApplication.h"
 #include "GraphicsManager.h"
 #include "Level.h"
+#include "MenuBox.h"
 
 using std::min;
 using std::max;
@@ -82,8 +83,14 @@ void StoneRing::ChoiceState::Draw(const CL_Rect &screenRect,CL_GraphicContext& G
 {
     if(!m_bDraw) return;
 
-    m_choiceOverlay.draw(GC,static_cast<float>(m_X),static_cast<float>(m_Y));
-    m_choiceFont.draw_text(GC,m_question_rect.left,m_question_rect.top + m_choiceFont.get_font_metrics(GC).get_height(),
+    MenuBox::Draw(GC,m_question_rect);
+    MenuBox::Draw(GC,m_text_rect);
+    
+    CL_Rectf question_rect = m_question_rect;
+    question_rect.shrink ( GraphicsManager::GetMenuInset().x, GraphicsManager::GetMenuInset().y );
+    question_rect.translate ( GraphicsManager::GetMenuInset() );
+    
+    m_choiceFont.draw_text(GC,question_rect.left,question_rect.top + m_choiceFont.get_font_metrics(GC).get_height(),
 			   m_text
   			);
 
@@ -112,14 +119,9 @@ void StoneRing::ChoiceState::Start()
     m_optionFont = GraphicsManager::GetFont(GraphicsManager::CHOICE,"Option");
     m_currentOptionFont = GraphicsManager::GetFont(GraphicsManager::CHOICE,"Selection");
 
-    m_choiceOverlay = GraphicsManager::GetOverlay(GraphicsManager::CHOICE);
-
     m_question_rect = GraphicsManager::GetRect(GraphicsManager::CHOICE,"header");
     m_text_rect = GraphicsManager::GetRect(GraphicsManager::CHOICE,"text");
 
-    CL_Pointf origin = GraphicsManager::GetPoint(GraphicsManager::CHOICE,"origin");
-    m_X = origin.x;
-    m_Y = origin.y;
 /*
   if(!mpChoiceOverlay)
   mpChoiceOverlay = new CL_Surface("Overlays/choice_overlay", IApplication::getInstance()->getResources() );
@@ -140,7 +142,10 @@ void StoneRing::ChoiceState::Init(const std::string &choiceText, const std::vect
 
 CL_Rectf StoneRing::ChoiceState::get_rect()
 {
-    return m_text_rect;
+    CL_Rectf text_rect = m_text_rect;
+    text_rect.shrink ( GraphicsManager::GetMenuInset().x, GraphicsManager::GetMenuInset().y  );
+    text_rect.translate ( GraphicsManager::GetMenuInset() );
+    return text_rect;
 }
 
 void StoneRing::ChoiceState::draw_option(int option, bool selected, float x, float y, CL_GraphicContext& gc)

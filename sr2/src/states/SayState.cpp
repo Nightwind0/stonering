@@ -1,6 +1,7 @@
 #include "SayState.h"
 #include "IApplication.h"
 #include "GraphicsManager.h"
+#include "MenuBox.h"
 
 StoneRing::SayState::SayState()
 :m_bDone(false)
@@ -68,10 +69,8 @@ void StoneRing::SayState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
     speakerTextRect.top += ( m_speaker_rect.get_height() - speakerFont.get_font_metrics(GC).get_height()) /2;
     speakerTextRect.bottom += ( m_speaker_rect.get_height() - speakerFont.get_font_metrics(GC).get_height()) /2;
 
-    CL_Draw::fill(GC,m_speaker_rect, CL_Colorf(m_speaker_BGColor) );
-    CL_Draw::fill(GC, m_text_rect, CL_Colorf(m_text_BGColor)) ;
-
-    m_sayOverlay.draw(GC,static_cast<float>(m_X),static_cast<float>(m_Y));
+    MenuBox::Draw(GC,m_rect);
+   
     speakerFont.draw_text(GC,(float)speakerTextRect.left, speakerTextRect.top + speakerFont.get_font_metrics(GC).get_height(),m_speaker);
 
 
@@ -104,16 +103,10 @@ void StoneRing::SayState::Start()
     m_speakerFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::SAY,"Speaker"));
     m_speechFont = GraphicsManager::GetFont(GraphicsManager::GetFontName(GraphicsManager::SAY,"Speech"));
 
-
-    m_sayOverlay = GraphicsManager::GetOverlay(GraphicsManager::SAY);
  
     m_speaker_rect = GraphicsManager::GetRect(GraphicsManager::SAY,"header");
     m_text_rect = GraphicsManager::GetRect(GraphicsManager::SAY,"text");
-  
-    CL_Pointf origin = GraphicsManager::GetPoint(GraphicsManager::SAY,"origin");
-  
-    m_X = origin.x;
-    m_Y = origin.y;
+    m_rect =      GraphicsManager::GetRect(GraphicsManager::SAY,"rect");
 }
 
 void StoneRing::SayState::Finish()

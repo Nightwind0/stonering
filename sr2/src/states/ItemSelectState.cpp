@@ -2,6 +2,7 @@
 #include "GraphicsManager.h"
 #include "Item.h"
 #include "RegularItem.h"
+#include "MenuBox.h"
 #include <iomanip>
 
 using StoneRing::ItemSelectState;
@@ -150,7 +151,10 @@ void ItemSelectState::HandleAxisMove(const IApplication::Axis& axis, IApplicatio
 	
 void ItemSelectState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
 {
-    m_overlay.draw(GC,0.0f,0.0f);
+    //m_overlay.draw(GC,0.0f,0.0f);
+    CL_Rectf bgRect = screenRect;
+    //bgRect.shrink(2);
+    MenuBox::Draw(GC,bgRect);
     Menu::Draw(GC);
     float header_width = m_header_rect.get_width();
     float each_width = header_width / m_type_icons.size();
@@ -206,7 +210,6 @@ void ItemSelectState::Start()
     m_unavailableOption = GraphicsManager::GetFont(GraphicsManager::ITEMS,"Unavailable");
     m_descriptionFont = GraphicsManager::GetFont(GraphicsManager::ITEMS,"Description");
     
-    m_overlay = GraphicsManager::GetOverlay(GraphicsManager::ITEMS);
     
     m_type_icons[ Item::REGULAR_ITEM ] = GraphicsManager::GetIcon("regular_items");
     m_type_icons[ Item::SPECIAL ] = GraphicsManager::GetIcon("special_items");    

@@ -2,6 +2,7 @@
 #include "IApplication.h"
 #include "GraphicsManager.h"
 #include "Level.h"
+#include "MenuBox.h"
 #include <iomanip>
 
 using std::min;
@@ -89,7 +90,9 @@ void StoneRing::MainMenuState::HandleKeyUp(const CL_InputEvent &key)
 
 void StoneRing::MainMenuState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
 {
-    m_overlay.draw(GC,0,0);
+    MenuBox::Draw(GC,screenRect);
+    MenuBox::Draw(GC,m_menu_rect);
+    MenuBox::Draw(GC,m_status_rect);
     Menu::Draw(GC);
     
     draw_party(GC);
@@ -216,11 +219,11 @@ void StoneRing::MainMenuState::Start()
     m_LevelFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"Level");
     m_CharacterFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"Character");
 
-    m_overlay = GraphicsManager::GetOverlay(GraphicsManager::MAIN_MENU);
     
     m_menu_rect = GraphicsManager::GetRect(GraphicsManager::MAIN_MENU,"menu");
     m_party_rect = GraphicsManager::GetRect(GraphicsManager::MAIN_MENU,"party");
     m_character_rect = GraphicsManager::GetRect(GraphicsManager::MAIN_MENU,"character");
+    m_status_rect = GraphicsManager::GetRect(GraphicsManager::MAIN_MENU,"status");
     m_option_parent = NULL;
     fill_choices(m_root_choices.begin(),m_root_choices.end());
     SelectionFinish();
@@ -238,7 +241,10 @@ void StoneRing::MainMenuState::Init()
 
 CL_Rectf StoneRing::MainMenuState::get_rect()
 {
-    return m_menu_rect;
+    CL_Rectf menu_rect = m_menu_rect;
+    menu_rect.shrink(GraphicsManager::GetMenuInset().x,GraphicsManager::GetMenuInset().y);
+    menu_rect.translate(GraphicsManager::GetMenuInset());
+    return menu_rect;
 }
 
 void StoneRing::MainMenuState::draw_option(int option, bool selected, float x, float y, CL_GraphicContext& gc)
@@ -260,7 +266,7 @@ void StoneRing::MainMenuState::draw_option(int option, bool selected, float x, f
 int StoneRing::MainMenuState::height_for_option(CL_GraphicContext& gc)
 {
     //return cl_max(m_optionFont.get_font_metrics(gc).get_height(),m_selectionFont.get_font_metrics(gc).get_height());
-    return m_menu_rect.get_height() / (get_option_count());
+    return get_rect().get_height() / (get_option_count());
 }
 
 void StoneRing::MainMenuState::process_choice(int selection)

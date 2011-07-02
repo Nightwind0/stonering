@@ -67,7 +67,6 @@ namespace StoneRing
 	bool m_bSelectingTarget;
 
         std::string m_text;
-	CL_Image m_overlay;
 	Font m_optionFont;
 	Font m_selectionFont;
 	Font m_ClassFont;
@@ -79,6 +78,7 @@ namespace StoneRing
         CL_Rectf m_menu_rect;
 	CL_Rectf m_character_rect;
 	CL_Rectf m_party_rect;
+        CL_Rectf m_status_rect;
 	CL_Image m_portrait_shadow;
 	CL_Sprite m_target_sprite;
         MenuOption* m_option_parent;

@@ -43,9 +43,6 @@ namespace StoneRing
         std::string m_text;
         CL_Rectf m_question_rect;
         CL_Rectf m_text_rect;
-        CL_Image m_choiceOverlay;
-        uint m_X;
-        uint m_Y;
         bool m_bDone;
         std::vector<std::string> m_choices;
         StoneRing::Font m_choiceFont;

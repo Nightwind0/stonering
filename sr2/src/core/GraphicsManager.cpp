@@ -22,6 +22,40 @@ void GraphicsManager::initialize()
     }
 }
 
+CL_Gradient GraphicsManager::GetMenuGradient()
+{
+    CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
+    CL_String gradientname = CL_String("Game/MenuGradient");
+    
+    CL_Resource resource = resources.get_resource(gradientname);
+    
+    if(resource.get_type() != "gradient")
+        throw CL_Exception("Gradient resource element was not 'gradient' type");
+    
+    CL_Colorf top_left(resource.get_element().get_attribute("top_left"));
+    CL_Colorf top_right(resource.get_element().get_attribute("top_right"));
+    CL_Colorf bottom_left(resource.get_element().get_attribute("bottom_left"));
+    CL_Colorf bottom_right(resource.get_element().get_attribute("bottom_right"));
+    
+    return CL_Gradient(top_left,top_right,bottom_left,bottom_right);
+}
+
+CL_Pointf GraphicsManager::GetMenuInset()
+{
+    CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
+    CL_Resource resource = resources.get_resource("Game/MenuInset");
+    
+    if(resource.get_type() != "point")
+        throw CL_Exception("Point resource element was not 'point' type");
+    
+    
+    float x = atof(resource.get_element().get_attribute("x").c_str());
+    float y = atof(resource.get_element().get_attribute("y").c_str());
+    
+    return CL_Pointf(x,y);        
+}
+
+
 CL_Sprite GraphicsManager::GetPortraits ( const std::string& character)
 {
     CL_ResourceManager& resources  = IApplication::GetInstance()->GetResources();

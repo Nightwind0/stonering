@@ -36,11 +36,7 @@ namespace StoneRing
         StoneRing::Font m_speechFont;
         CL_Rectf m_speaker_rect;
         CL_Rectf m_text_rect;
-        CL_Color m_speaker_BGColor;
-        CL_Color m_text_BGColor;
-        CL_Image m_sayOverlay;
-        uint m_X;
-        uint m_Y;
+        CL_Rectf m_rect;
         std::string::iterator m_iText;
         bool m_bDone;
         uint m_nDrawnThisFrame;
