@@ -13,7 +13,7 @@ void ArmorEnhancer::load_attributes(CL_DomNamedNodeMap attributes)
     m_eAttribute = Armor::AttributeForString ( strAttr );
     
     m_fMultiplier = get_implied_float("multiplier",attributes,1);
-    m_nAdd = get_implied_int("add",attributes,0);
+    m_fAdd = get_implied_float("add",attributes,0);
 }
 
 
@@ -27,9 +27,9 @@ ArmorEnhancer::GetAttribute() const
     return m_eAttribute;
 }
 
-int ArmorEnhancer::GetAdd() const
+float ArmorEnhancer::GetAdd() const
 {
-    return m_nAdd;
+    return m_fAdd;
 }
 
 float ArmorEnhancer::GetMultiplier() const

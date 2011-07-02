@@ -92,6 +92,11 @@
                 return math::pow(1.06, $_CL) * 5;
             </script>
         </statScript>
+        <statScript stat="def">
+            <script id="WarDEF">
+                return math::pow(1.06, $_CL) * 2;
+            </script>
+        </statScript>        
         <statScript stat="dex">
             <script id="WarDEX">
                 //return math::pow(1.06, $_CL) * 4.5;
@@ -216,6 +221,11 @@
                 return math::pow(1.06, $_CL) * 4;
             </script>
         </statScript>
+        <statScript stat="def">
+            <script id="RngSTR">
+                return math::pow(1.06, $_CL) * 2;
+            </script>
+        </statScript>        
         <statScript stat="dex">
             <script id="RngDEX">
                 //return math::pow(1.06, $_CL) * 5.5;

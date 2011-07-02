@@ -12,14 +12,14 @@ namespace StoneRing{
         ~WeaponEnhancer();
         virtual eElement WhichElement() const{ return EWEAPONENHANCER; }
         Weapon::eAttribute GetAttribute() const;
-        int GetAdd() const;
+        float GetAdd() const;
         float GetMultiplier() const;
 
     private:
         virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
         Weapon::eAttribute m_eAttribute;
         float m_fMultiplier;
-        int m_nAdd;
+        float m_fAdd;
 
     };
 };

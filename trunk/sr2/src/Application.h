@@ -138,6 +138,7 @@ namespace StoneRing
         SteelType getEquipment(SteelType::Handle hCharacter, int slot);
         SteelType equip(SteelType::Handle hCharacter, int slot, const std::string &);
 
+        SteelType weaponTypeIsRanged(SteelType::Handle hWeaponType);
         SteelType forgoAttack(SteelType::Handle hWeapon);
         SteelType getWeaponType(SteelType::Handle hWeapon);
         SteelType getArmorType(SteelType::Handle hArmor);
@@ -148,8 +149,8 @@ namespace StoneRing
         SteelType isArmor(SteelType::Handle hEquipment);
 
         SteelType invokeArmor(SteelType::Handle hCharacter, SteelType::Handle hArmor);
-        SteelType invokeWeapon(SteelType::Handle hCharacter, SteelType::Handle hWeapon, uint invokeTime);
-        SteelType attackCharacter(SteelType::Handle hICharacter, SteelType::Handle hIAttacker, int category, int amount);
+        SteelType invokeWeapon(SteelType::Handle hCharacter, SteelType::Handle hTarget, SteelType::Handle hWeapon, uint invokeTime);
+        SteelType attackCharacter(SteelType::Handle hICharacter, SteelType::Handle hIAttacker, uint category, bool melee, int amount);
 	
 	// Item Steel API
 	SteelType getItemType(SteelType::Handle hItem);
@@ -180,7 +181,7 @@ namespace StoneRing
         
         SteelType generateRandomWeapon(int min_value, int max_value);
         SteelType generateRandomArmor(int min_value, int max_value);
-        SteelType tryEquipmentStatusEffectInflictions(SteelType::Handle hEquipment, SteelType::Handle hTarget);
+        SteelType doEquipmentStatusEffectInflictions(SteelType::Handle hEquipment, SteelType::Handle hTarget);
 
         void steelConst(const std::string &name, int value);
         void steelConst(const std::string &name, double value);

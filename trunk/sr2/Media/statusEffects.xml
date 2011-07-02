@@ -8,21 +8,12 @@
         </statusEffect>
         <statusEffect last="permanent"  name="Poison">
             <spriteRef ref="StatusEffect/Poisoned"/>
-            <onInvoke>
-                <script id="SE_PoisonInv">
-                setCharacterToggle($_Character,$_DRAW_ILL,true);            
-                </script>
-            </onInvoke>
-            <onRemove>
-                <script id="SE_PoisonRem">
-                setCharacterToggle($_Character,$_DRAW_ILL,false);
-                </script>
-            </onRemove>
-                <onRound>
+            <attributeModifier attribute="draw_ill" type="toggle" value="true"/>
+            <onRound>
                         <script id="SE_Poison">
                             <![CDATA[
-                            const $kMaxHp = getCharacterAttribute($_Character,$_MAXHP);
-                            declare $damage = normal_random($kMaxHp * 0.025, $kMaxHp * 0.01); 
+                            const $kLevel = getCharacterLevel($_Character);
+                            declare $damage = math::pow($kLevel, 1.07) * 3.0;
                             if($damage <1) $damage = 1;
                             doDamage($_Character,$damage);
                             if(inBattle()){

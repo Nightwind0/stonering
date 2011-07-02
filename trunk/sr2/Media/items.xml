@@ -360,7 +360,8 @@
                 <iconRef>Weapon/basic_sword</iconRef>		       
                     <weaponTypeRef name="Sword"/>
                     <weaponEnhancer multiplier="0.5" attribute="ATK"/>
-                    <statusEffectInfliction statusRef="Poison" modifier="0.25"/>
+                    <!--weaponEnhancer add="0.2" attribute="Critical%"/-->
+                    <!--statusEffectInfliction statusRef="Poison" modifier="0.25"/-->
                 </uniqueWeapon>
                 <uniqueWeapon name = "Kid Bow" dropRarity="rare" valueMultiplier="0.25">
                 <iconRef>Weapon/basic_bow</iconRef>                  
