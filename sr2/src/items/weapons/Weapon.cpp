@@ -98,12 +98,6 @@ double Weapon::GetWeaponAttribute ( eAttribute attr )
 
 void Weapon::Clear_Weapon_Enhancers()
 {
-    for (std::list<WeaponEnhancer*>::iterator iter = m_weapon_enhancers.begin();
-            iter != m_weapon_enhancers.end();
-            iter++)
-    {
-        delete *iter;
-    }
     m_weapon_enhancers.clear();
 }
 

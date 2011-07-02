@@ -64,55 +64,46 @@ void Party::TakeItem(ItemRef *pItemRef, uint count)
 
 bool Party::HasItem(Item * pItem,uint count) const
 {
-    if( m_items.count ( pItem ) && m_items.find( pItem )->second >= count)
+    std::map<std::string,ItemEntry>::const_iterator iter = m_items.find(pItem->GetName());    
+    if(iter != m_items.end() && iter->second.m_count >= count)
         return true;
     else return false;
-
 }
 
 bool Party::GiveItem(Item *pItem, uint count)
 {
+    std::map<std::string,ItemEntry>::iterator iter = m_items.find(pItem->GetName());
+    if(iter == m_items.end()){
+        ItemEntry entry;
+        entry.m_pItem = pItem;
+        entry.m_count = count;
+        m_items[pItem->GetName()] = entry;
+    }else {
+        iter->second.m_count += count;
+    }  
 
-    if( !m_items.count(pItem) )
+    if( iter->second.m_count > pItem->GetMaxInventory())
     {
-        m_items [ pItem ] = 0;
+        iter->second.m_count = pItem->GetMaxInventory();
+        return false;
     }
-
-
-    if( m_items [ pItem ] + count <= pItem->GetMaxInventory())
-    {
-        m_items [ pItem ] += count;
-    }
-    else
-    {
-        count = pItem->GetMaxInventory() - m_items[ pItem ];
-
-        if( count < 1 )
-        {
-            return false;
-        }
-        else
-        {
-            m_items [ pItem ] += count;
-
-        }
-    }
-
+    
     return true;
 
 }
 
 bool Party::TakeItem(Item *pItem, uint count)
 {
-    if( m_items.count(pItem ))
+    std::map<std::string,ItemEntry>::iterator iter = m_items.find(pItem->GetName());
+    if( iter != m_items.end() )
     {
-        if ( m_items [ pItem ] <= count )
+        if ( iter->second.m_count <= count )
         {
-            m_items.erase( pItem );
+            m_items.erase( iter );
 	    return true;
         }
 
-        m_items[ pItem ] -= count;
+        iter->second.m_count -= count;
 
     }
     else
@@ -173,10 +164,10 @@ Character * Party::GetMapCharacter()const
 
 void Party::IterateItems( StoneRing::ItemVisitor& func )
 {
-    for(std::map<Item*,int>::const_iterator iter= m_items.begin();
+    for(std::map<std::string,ItemEntry>::const_iterator iter= m_items.begin();
 	iter != m_items.end(); iter++)
 	{
-	    func(iter->first,iter->second);
+	    func(iter->second.m_pItem,iter->second.m_count);
 	}
 }
 
