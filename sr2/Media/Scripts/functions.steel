@@ -86,3 +86,13 @@ function pickTarget(declare @enemies)
         }
         return $pTarget;
 }
+
+
+function randomlyCritical(declare $pC) 
+{
+    declare $crit_chance = (1.0 - 1 / getCharacterAttribute($pC,$_LCK) ^ 0.03)  + getEquippedWeaponAttribute($pC,$_CRITICAL); 
+    log("Critical chance was {$crit_chance}");
+    return math::randf() < $crit_chance;
+}
+
+

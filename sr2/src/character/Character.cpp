@@ -290,13 +290,23 @@ void StoneRing::Character::Raise()
     SetCurrentSprite(GraphicsManager::CreateCharacterSprite(m_name,"idle"));
 }
 
-void StoneRing::Character::Attacked(ICharacter* pAttacker, DamageCategory::eDamageCategory category, int amount)
+void StoneRing::Character::Attacked(ICharacter* pAttacker, DamageCategory::eDamageCategory category, bool melee, int amount)
 {
     ParameterList params;
     params.push_back(ParameterListItem("$_Character",this));
     params.push_back(ParameterListItem("$_Attacker",pAttacker));
     params.push_back(ParameterListItem("$_Category",static_cast<int>(category)));
     params.push_back(ParameterListItem("$_Amount",amount));
+    params.push_back(ParameterListItem("$_Melee",melee));
+    
+    for(std::map<Equipment::eSlot,Equipment*>::const_iterator iter = m_equipment.begin();
+        iter != m_equipment.end(); iter++)
+    {
+        Armor * pArmor = dynamic_cast<Armor*>(iter->second);
+        if(pArmor){
+            pArmor->Invoke(params);
+        }
+    }
     
     AstScript * pScript = IApplication::GetInstance()->GetUtility(IApplication::ON_ATTACK);
     if(pScript)

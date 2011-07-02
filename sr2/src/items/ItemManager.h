@@ -44,7 +44,6 @@ namespace StoneRing
         void PrintStatusModifiers(Equipment * pItem);
 #endif
     private:
-     
         typedef std::map<ItemRef,Item*> ItemMap;
         typedef std::map<std::string,Item*> NamedItemMap;
 

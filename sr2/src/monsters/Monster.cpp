@@ -133,7 +133,7 @@ void Monster::Raise()
     SetToggle(CA_ALIVE,true);
 }
 
-void Monster::Attacked(ICharacter *pAttacker, DamageCategory::eDamageCategory category, int amount)
+void Monster::Attacked(ICharacter *pAttacker, DamageCategory::eDamageCategory category, bool melee, int amount)
 {
     // TODO: What do I call here?
     // have to call the utility to gather BP
@@ -142,6 +142,7 @@ void Monster::Attacked(ICharacter *pAttacker, DamageCategory::eDamageCategory ca
     params.push_back(ParameterListItem("$_Attacker",pAttacker));
     params.push_back(ParameterListItem("$_Category",static_cast<int>(category)));
     params.push_back(ParameterListItem("$_Amount",amount));
+    params.push_back(ParameterListItem("$_Melee",melee));
     AstScript * pScript = IApplication::GetInstance()->GetUtility(IApplication::ON_ATTACK);
     if(pScript)
     {

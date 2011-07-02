@@ -14,13 +14,13 @@ namespace StoneRing{
         virtual eElement WhichElement() const{ return EARMORENHANCER; }
 
         Armor::eAttribute GetAttribute() const;
-        int GetAdd() const;
+        float GetAdd() const;
         float GetMultiplier() const;
     private:
         virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
 
         Armor::eAttribute m_eAttribute;
-        int m_nAdd;
+        float m_fAdd;
         float m_fMultiplier;
     };
 };

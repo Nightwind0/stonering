@@ -133,7 +133,8 @@ namespace StoneRing{
             enum eDisplayType{
                 DISPLAY_DAMAGE,
                 DISPLAY_MP,
-                DISPLAY_MISS
+                DISPLAY_MISS,
+                DISPLAY_CRITICAL
             };
 
             Display(BattleState& parent,eDisplayType type,int damage,ICharacter* pICharacter);

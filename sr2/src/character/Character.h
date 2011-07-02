@@ -54,7 +54,7 @@ namespace StoneRing{
         virtual bool   GetToggle(eCharacterAttribute attr) const;
         virtual void   SetToggle(eCharacterAttribute attr, bool state);
         virtual void   PermanentAugment(eCharacterAttribute attr, double augment);
-        virtual void   Attacked(ICharacter* pAttack, DamageCategory::eDamageCategory category, int amount);
+        virtual void   Attacked(ICharacter* pAttack, DamageCategory::eDamageCategory category, bool melee, int amount);
         virtual void   Kill();
         virtual void   Raise();
         virtual void   AddStatusEffect(StatusEffect *);

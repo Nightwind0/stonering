@@ -819,7 +819,7 @@ SteelType Application::invokeArmor ( SteelType::Handle pICharacter, SteelType::H
     return SteelType();
 }
 
-SteelType Application::invokeWeapon ( SteelType::Handle pICharacter, SteelType::Handle hWeapon, uint invokeTime )
+SteelType Application::invokeWeapon ( SteelType::Handle pICharacter, SteelType::Handle pTargetChar, SteelType::Handle hWeapon, uint invokeTime )
 {
     Weapon *pWeapon = GrabHandle<Weapon*> ( hWeapon );
     ICharacter* iCharacter = GrabHandle<ICharacter*> ( pICharacter );
@@ -832,12 +832,12 @@ SteelType Application::invokeWeapon ( SteelType::Handle pICharacter, SteelType::
 }
 
 
-SteelType Application::attackCharacter ( SteelType::Handle hICharacter, SteelType::Handle hIAttacker, int i_category, int amount )
+SteelType Application::attackCharacter ( SteelType::Handle hICharacter, SteelType::Handle hIAttacker, uint i_category, bool melee, int amount )
 {
     ICharacter* iCharacter = GrabHandle<ICharacter*> ( hICharacter );
     ICharacter* pAttacker = GrabHandle<ICharacter*> ( hIAttacker );
     DamageCategory::eDamageCategory category = static_cast<DamageCategory::eDamageCategory>(i_category);
-    iCharacter->Attacked(pAttacker,category,amount);
+    iCharacter->Attacked(pAttacker,category,melee,amount);
     doDamage(hICharacter,amount);
 
     return SteelType();
@@ -886,6 +886,16 @@ SteelType Application::forgoAttack ( SteelType::Handle hWeapon )
 
     return val;
 }
+
+SteelType Application::weaponTypeIsRanged ( SteelType::Handle hWeaponType )
+{
+    WeaponType * pWeaponType = GrabHandle<WeaponType*>(hWeaponType);
+    SteelType val;
+    val.set ( pWeaponType->IsRanged() );
+    
+    return val;
+}
+
 
 SteelType Application::isWorldItem ( SteelType::Handle hItem )
 {
@@ -1053,7 +1063,7 @@ SteelType Application::generateRandomArmor ( int min_value, int max_value )
 }
 
 
-SteelType Application::tryEquipmentStatusEffectInflictions ( SteelType::Handle hEquipment, SteelType::Handle hTarget )
+SteelType Application::doEquipmentStatusEffectInflictions ( SteelType::Handle hEquipment, SteelType::Handle hTarget )
 {
     // Return an array of status effects 
     SteelType effects;
@@ -1072,6 +1082,7 @@ SteelType Application::tryEquipmentStatusEffectInflictions ( SteelType::Handle h
                 SteelType var;
                 var.set(iter->second->GetStatusEffect());
                 effects.add ( var );
+                pTarget->AddStatusEffect(iter->second->GetStatusEffect());
             }
         }
     }
@@ -1613,10 +1624,10 @@ void Application::registerSteelFunctions()
     SteelFunctor*  fn_getWeaponTypeDamageCategory = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getWeaponTypeDamageCategory );
     SteelFunctor*  fn_getWeaponTypeAnimation = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getWeaponTypeAnimation );
     SteelFunctor*  fn_weaponTypeHasAnimation = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::weaponTypeHasAnimation );
-    SteelFunctor*  fn_invokeWeapon = new SteelFunctor3Arg<Application, const SteelType::Handle, const SteelType::Handle, uint> ( this, &Application::invokeWeapon );
+    SteelFunctor*  fn_invokeWeapon = new SteelFunctor4Arg<Application, const SteelType::Handle, const SteelType::Handle, const SteelType::Handle, uint> ( this, &Application::invokeWeapon );
     SteelFunctor*  fn_invokeArmor = new SteelFunctor2Arg<Application, const SteelType::Handle, const SteelType::Handle> ( this, &Application::invokeArmor );
-    SteelFunctor*  fn_attackCharacter = new SteelFunctor4Arg<Application, const SteelType::Handle,
-                                                              const SteelType::Handle,int,int> ( this, &Application::attackCharacter );
+    SteelFunctor*  fn_attackCharacter = new SteelFunctor5Arg<Application, const SteelType::Handle,
+                                                              const SteelType::Handle,uint,bool,int> ( this, &Application::attackCharacter );
 
     SteelFunctor*  fn_getDamageCategoryResistance = new SteelFunctor2Arg<Application, const SteelType::Handle, int> ( this, &Application::getDamageCategoryResistance );
     SteelFunctor*  fn_getHitSound = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getHitSound );
@@ -1823,8 +1834,9 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "generateRandomWeapon", new SteelFunctor2Arg<Application,int,int>(this,&Application::generateRandomWeapon));
     mInterpreter.addFunction ( "generateRandomArmor", new SteelFunctor2Arg<Application,int,int>(this,&Application::generateRandomArmor));      
     mInterpreter.addFunction ( "giveItem", new SteelFunctor3Arg<Application,SteelType::Handle,int,bool>(this,&Application::giveItem) );
-    mInterpreter.addFunction ( "tryEquipmentStatusEffectInflictions", new SteelFunctor2Arg<Application,SteelType::Handle,SteelType::Handle>(this,&Application::tryEquipmentStatusEffectInflictions) );
+    mInterpreter.addFunction ( "doEquipmentStatusEffectInflictions", new SteelFunctor2Arg<Application,SteelType::Handle,SteelType::Handle>(this,&Application::doEquipmentStatusEffectInflictions) );
     mInterpreter.addFunction ( "isArmor", new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::isArmor) );
+    mInterpreter.addFunction ( "weaponTypeIsRanged", new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::weaponTypeIsRanged) );
 }
 
 void Application::queryJoystick()

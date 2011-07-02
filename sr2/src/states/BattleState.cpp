@@ -638,6 +638,9 @@ void BattleState::Display::draw(CL_GraphicContext& GC)
 
     switch (m_eDisplayType)
     {
+    case DISPLAY_CRITICAL:
+        stream << "CRITICAL ";
+        // fallthrough
     case DISPLAY_DAMAGE:
         if (m_amount >= 0)
         {
@@ -1082,6 +1085,7 @@ void BattleState::SteelInit(SteelInterpreter* pInterpreter)
     SteelConst(pInterpreter,"$_DISP_DAMAGE", Display::DISPLAY_DAMAGE);
     SteelConst(pInterpreter,"$_DISP_MP", Display::DISPLAY_MP);
     SteelConst(pInterpreter,"$_DISP_MISS", Display::DISPLAY_MISS);
+    SteelConst(pInterpreter,"$_DISP_CRITICAL",Display::DISPLAY_CRITICAL);
     SteelConst(pInterpreter,"$_POST_BACKDROP", DISPLAY_ORDER_POSTBACKDROP);
     SteelConst(pInterpreter,"$_PRE_MONSTERS", DISPLAY_ORDER_PREMONSTERS);
     SteelConst(pInterpreter,"$_POST_MONSTERS", DISPLAY_ORDER_POSTMONSTERS);

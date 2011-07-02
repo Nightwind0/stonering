@@ -18,15 +18,12 @@
             augmentCharacterAttribute($_Character,$_BP,$raw_bp);   
         }
         // Now, let's do the status effect inflictions on armor
-        // TODO: Distinguish between ranged and melee attacks!!!!
-        declare @status_effects;
-        declare @armor = getEquippedArmor($_Character); // This will return empty for monsters.
-        foreach (declare $armor) in @armor {
-            invokeArmor($_Character,$armor);
-            @status_effects += tryEquipmentStatusEffectInflictions($armor,$_Attacker);
-        }
-        foreach (declare $effect) in @status_effects {
-            addStatusEffect($_Attacker,$effect);
+        if($_Melee){
+            declare @status_effects;
+            declare @armor = getEquippedArmor($_Character); // This will return empty for monsters.
+            foreach (declare $armor) in @armor {
+                @status_effects += doEquipmentStatusEffectInflictions($armor,$_Attacker);
+            }
         }
         
         ]]>
