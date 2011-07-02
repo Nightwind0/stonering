@@ -163,21 +163,99 @@
                         <image-file file="Images/Icons/I_Key01.png"/>
                     </image>
                 </section>
-                <section name="Weapon">
-                    <image name="basic_sword">
+                <section name="Weapons">
+                    <image name="sword">
                         <image-file file="Images/Icons/W_Sword001.png"/>
                     </image>
-                    <image name="basic_bow">
+                    <image name="broadsword">
+                        <image-file file="Images/Icons/W_Sword012.png"/>
+                    </image>
+                    <image name="greatsword">
+                        <image-file file="Images/Icons/W_Sword004.png"/>
+                    </image>
+                    <image name="gladius">
+                        <image-file file="Images/Icons/W_Dagger002.png"/>
+                    </image>
+                    <image name="dagger">
+                        <image-file file="Images/Icons/W_Dagger006.png"/>
+                    </image>
+                    <image name="longsword">
+                        <image-file file="Images/Icons/W_Sword008.png"/>
+                    </image>
+                    <image name="knife">
+                        <image-file file="Images/Icons/W_Dagger004.png"/>
+                    </image>
+                    <image name="axe">
+                        <image-file file="Images/Icons/W_Axe006.png"/>
+                    </image>
+                    <image name="greataxe">
+                        <image-file file="Images/Icons/W_Axe009.png"/>
+                    </image>
+                    <image name="poleaxe">
+                        <image-file file="Images/Icons/W_Spear010.png"/>
+                    </image>
+                    <image name="mace">
+                        <image-file file="Images/Icons/W_Mace004.png"/>
+                    </image>
+                    <image name="flail">
+                        <image-file file="Images/Icons/W_Mace006.png"/>
+                    </image>
+                    <image name="morning_star">
+                        <image-file file="Images/Icons/W_Mace005.png"/>
+                    </image>
+                    <image name="halberd">
+                        <image-file file="Images/Icons/W_Spear013.png"/>
+                    </image>
+                    <image name="scimitar">
+                        <image-file file="Images/Icons/W_Sword013.png"/>
+                    </image>
+                    <image name="compoundbow">
+                        <image-file file="Images/Icons/W_Bow11.png"/>
+                    </image>
+                    <image name="longbow">
+                        <image-file file="Images/Icons/W_Bow02.png"/>
+                    </image>
+                    <image name="masterbow">
+                        <image-file file="Images/Icons/W_Bow04.png"/>
+                    </image>
+                    <image name="greatbow">
+                        <image-file file="Images/Icons/W_Bow03.png"/>
+                    </image>
+                    <image name="bow">
                         <image-file file="Images/Icons/W_Bow01.png"/>
+                    </image>
+                    <image name="rod">
+                        <image-file file="Images/Icons/W_Mace008.png"/>
+                    </image>
+                    <image name="shillelagh">
+                        <image-file file="Images/Icons/W_Mace012.png"/>
                     </image>
                 </section>
                 <section name="Armor">
                     <image name="poisonshield">
                         <image-file file="Images/Icons/PoisonShield.png"/>
                     </image>
-                    <image name="basic_shield">
+                    <image name="shield">
                         <image-file file="Images/Icons/E_Wood01.png"/>
-                    </image>	
+                    </image>
+                    <image name="vest">
+                        <image-file file="Images/Icons/A_Clothing02.png"/>
+                    </image>
+                    <image name="plate">
+                        <image-file file="Images/Icons/A_Armor02.png"/>
+                    </image>
+                    <image name="robe">
+                        <image-file file="Images/Icons/A_Clothing01.png"/>
+                    </image>
+                    <image name="buckler">
+                        <image-file file="Images/Icons/E_Wood01.png"/>
+                    </image>
+                    <image name="boot">
+                        <image-file file="Images/Icons/A_Shoes01.png"/>
+                    </image>
+                    <image name="hat">
+                        <image-file file="Images/Icons/C_Hat03.png"/>
+                    </image>
                 
                 </section>
                 <section name="Items">

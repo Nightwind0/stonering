@@ -21,7 +21,7 @@ std::string StoneRing::Armor::CreateArmorName(ArmorType *pType, ArmorClass *pCla
 
     if(pImbuement)
     {
-        os << pImbuement->GetName();
+        os << ' ' << pImbuement->GetName();
     }
 
     return os.str();
