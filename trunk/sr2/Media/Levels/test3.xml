@@ -3601,13 +3601,17 @@
 			    giveItem(getNamedItem("Sun Seed"),1,true);
                             giveItem(getNamedItem("Star Chip"),1,true);
                             giveItem(getNamedItem("Antidote"),1,true);
-                            declare $weapon = generateRandomWeapon(1,2000);
+                            declare $rarity = $_DROP_UNCOMMON;
+                            if(math::randf() < 0.10)
+                                $rarity = $_DROP_RARE;
+                                
+                            declare $weapon = generateRandomWeapon($rarity, 1,2000);
                             if(is_valid($weapon)){
                                 log("Got a weapon called {getItemName($weapon)} worth {getItemValue($weapon)}");
                                 giveItem($weapon,1,false);
                             }
                             else log("NO WEAPON!");
-                            declare $armor = generateRandomArmor(1,2000);
+                            declare $armor = generateRandomArmor($rarity,1,2000);
                             if(is_valid($armor)){
                                 log("Got an armor called {getItemName($armor)} worth {getItemValue($armor)}");
                                 giveItem($armor,1,false);
