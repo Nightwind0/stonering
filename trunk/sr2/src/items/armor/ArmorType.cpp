@@ -1,5 +1,5 @@
 #include "ArmorType.h"
-
+#include "IconRef.h"
 
 using namespace StoneRing;
 
@@ -42,7 +42,7 @@ bool ArmorType::handle_element(eElement element, Element * pElement)
 {
     if(element == EICONREF)
     {
-        //@todo
+        m_icon_ref = dynamic_cast<IconRef*>(pElement)->GetIcon();
         return true;
     }
     else return false;
