@@ -21,6 +21,7 @@
 #include "GraphicsManager.h"
 #include <sstream>
 #include <iomanip>
+#include "MenuBox.h"
 
 using StoneRing::ExperienceState;
 using StoneRing::IApplication;
@@ -38,7 +39,8 @@ ExperienceState::~ExperienceState()
 void ExperienceState::Init()
 {
     m_characters.clear();
-    m_overlay = GraphicsManager::GetOverlay(GraphicsManager::EXPERIENCE);
+    m_xpbar = GraphicsManager::GetImage(GraphicsManager::EXPERIENCE,"xp_bar");
+    m_portraitShadow = GraphicsManager::GetImage(GraphicsManager::EXPERIENCE, "portrait_shadow");
     m_portraitOffset = GraphicsManager::GetPoint(GraphicsManager::EXPERIENCE,"portrait");
     m_offset = GraphicsManager::GetPoint(GraphicsManager::EXPERIENCE,"origin");
     m_textOffset = GraphicsManager::GetPoint(GraphicsManager::EXPERIENCE,"text");
@@ -50,9 +52,10 @@ void ExperienceState::Init()
     m_levelFont = GraphicsManager::GetFont(GraphicsManager::EXPERIENCE,"Level");
     m_spFont = GraphicsManager::GetFont(GraphicsManager::EXPERIENCE,"SP");
 
-    
+    m_barPoint = GraphicsManager::GetPoint(GraphicsManager::EXPERIENCE,"xp_bar");
     m_barGradient = GraphicsManager::GetGradient(GraphicsManager::EXPERIENCE,"xp_bar");
     m_barRect = GraphicsManager::GetRect(GraphicsManager::EXPERIENCE,"xp_bar");
+    m_charRect = GraphicsManager::GetRect(GraphicsManager::EXPERIENCE,"char");
 
     m_pTNL = IApplication::GetInstance()->GetUtility(IApplication::XP_FOR_LEVEL); 
     m_pLNT = IApplication::GetInstance()->GetUtility(IApplication::LEVEL_FOR_XP);
@@ -102,17 +105,22 @@ void ExperienceState::Draw(const CL_Rect& screenRect, CL_GraphicContext& GC)
     float draw_percentage = (float)(current_time - m_start_time) / (float)1000.0f;
     if(draw_percentage > 1.0f) draw_percentage = 1.0f;
     const int total_characters = m_characters.size();
-    const int height_per_char = m_overlay.get_height();
+    const int height_per_char = m_charRect.get_height();
     CL_Pointf offset = m_offset;
-    offset.x += (IApplication::GetInstance()->GetDisplayRect().get_width() - m_overlay.get_width()) / 2.0;
-    offset.y += (IApplication::GetInstance()->GetDisplayRect().get_height() - (height_per_char * total_characters)) / 2.0;
+    offset.x += (screenRect.get_width() - m_charRect.get_width()) / 2.0;
+    offset.y += (screenRect.get_height() - (height_per_char * total_characters)) / 2.0;
     for(int i=0;i<m_characters.size();i++)
     {
         CL_Pointf point = offset;
         point.y += height_per_char * i;
-        m_overlay.draw(GC,point.x,point.y);
+        CL_Rectf rect = m_charRect;
+        rect.translate(point);
+        MenuBox::Draw(GC,rect,false);
+        
         CL_Pointf portraitPoint = point + m_portraitOffset;  
         Character * pCharacter = m_characters[i].m_pCharacter;
+      //  m_portraitShadow.draw(GC,portraitPoint.x + m_portraitOffset.x, portraitPoint.y + m_portraitOffset.y);
+        m_xpbar.draw(GC,point.x + m_barPoint.x,point.y + m_barPoint.y);
         pCharacter->GetPortrait(Character::PORTRAIT_HAPPY).draw(GC,portraitPoint.x,portraitPoint.y);
         m_characterFont.draw_text(GC,point + m_textOffset,pCharacter->GetName(), StoneRing::Font::TOP_LEFT);
         CL_Pointf xp_point = point + m_textOffset;

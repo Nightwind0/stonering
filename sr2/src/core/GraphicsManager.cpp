@@ -428,6 +428,17 @@ CL_Pointf GraphicsManager::GetPoint ( Overlay overlay, const std::string& name )
     return CL_Pointf(x,y);    
 }
 
+CL_Image GraphicsManager::GetImage ( GraphicsManager::Overlay overlay, const std::string& i_name )
+{
+    CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
+    CL_String name = CL_String("Overlays/" + NameOfOverlay(overlay) + '/' + i_name);
+    
+    CL_Image image(GET_MAIN_GC(),name,&resources);
+
+    return image;
+}
+
+
 CL_Rectf GraphicsManager::GetRect ( Overlay overlay, const std::string& name )
 {
     CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
