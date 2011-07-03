@@ -246,23 +246,23 @@
             </script>
         </onInvoke>
     </skill>
-    <skill bp="100" name="Heal" sp="12" icon="heal" type="both">
+    <skill bp="10" name="Heal" sp="12" icon="heal" type="both">
         <description>Regain some strength.</description>
         <onInvoke>
             <script id="HealScript">
                 <![CDATA[ 
-                declare @targets = battle::selectTargets(true,false,false);
                 
-                if(!len(@targets)) return battle::cancelOption();
-                
-                battle::doTargetedAnimation($Character,@targets[0],getAnimation("heal"));
-                declare $damageMean = -20;
+                if(inBattle())
+                    battle::doTargetedAnimation($Character,$Character,getAnimation("heal"));
+                declare $damageMean = -20 + getCharacterLevel($Character) * 2;
                 declare $baseDamage = normal_random($damageMean,$damageMean * 0.15);
                 if($baseDamage > 0)
                         $baseDamage = 0;
-                declare $actualDamage = doDamage(@targets[0],$baseDamage);
-                battle::createDisplay($actualDamage,@targets[0],$_DISP_DAMAGE);
-                battle::finishTurn();
+                declare $actualDamage = doDamage($Character,$baseDamage);
+                if(inBattle()){
+                    battle::createDisplay($actualDamage,$Character,$_DISP_DAMAGE);
+                    battle::finishTurn();
+                }
                     ]]>
             </script>
         </onInvoke>

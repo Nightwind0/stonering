@@ -53,8 +53,6 @@ void StoneRing::Skill::Invoke(ICharacter* pCharacter,const ParameterList& params
     if(m_pOnInvoke)
     {
         m_pOnInvoke->ExecuteScript(params);
-        pCharacter->PermanentAugment(ICharacter::CA_BP, -static_cast<double>(m_nBp));
-        pCharacter->PermanentAugment(ICharacter::CA_MP, -static_cast<double>(m_nMp));
     }
     else
     {
