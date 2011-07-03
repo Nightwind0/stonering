@@ -3,6 +3,7 @@
 #include "ArmorEnhancer.h"
 #include "ArmorTypeExclusionList.h"
 #include "StatusEffectModifier.h"
+#include "Description.h"
 #include <algorithm>
 #include <iterator>
 
@@ -71,6 +72,10 @@ bool ArmorClass::handle_element(eElement element, Element * pElement)
         break;
     case ESTATUSEFFECTINFLICTION:
         AddStatusEffectInfliction (dynamic_cast<StatusEffectInfliction*>(pElement));
+        break;
+    case EDESCRIPTION:
+        m_desc = dynamic_cast<Description*>(pElement)->GetText();
+        delete pElement;
         break;
     default:
         return false;

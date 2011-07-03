@@ -1,5 +1,5 @@
 <statusEffectList>
-            <statusEffect last="round_count" roundCount="8"  name="Paralyzed">
+        <statusEffect last="round_count" roundCount="8"  name="Paralyzed">
             <spriteRef ref="StatusEffect/Tangled"/>
             <attributeModifier attribute="can_fight" type="toggle" value="false"/>
             <attributeModifier attribute="draw_paralyzed" type="toggle" value="true"/>
@@ -62,14 +62,16 @@
             <attributeModifier attribute="draw_berserk" type="toggle" value="true"/>
             <attributeModifier attribute="can_cast" type="toggle" value="false"/>
             <attributeModifier attribute="can_item" type="toggle" value="false"/>
+            <!-- TODO: Maybe this one should turn off can_act and onRound do a random attack -->
         </statusEffect>
         <statusEffect last="round_count" roundCount="8" name="Focused">
             <spriteRef ref="StatusEffect/Focused"/>
             <attributeModifier attribute="dex" type="multiply" value="1.25"/>
-                <onInvoke>
-                        <script id="SE_Focused">
-                        </script>
-                </onInvoke>
+        </statusEffect>
+        <statusEffect name="Shrunk" roundCount="4" last="round_count">
+            <spriteRef ref="StatusEffect/Shrunk"/>
+            <attributeModifier attribute="str" type="multiply" value="0.25"/>
+            <attributeModifier attribute="draw_mini" type="toggle" value="true"/>
         </statusEffect>
                 
 </statusEffectList>

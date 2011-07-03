@@ -97,7 +97,7 @@
                <weaponEnhancer multiplier="0.1" attribute="ATK"/>
                <weaponEnhancer add="-0.1" attribute="HIT"/>
            </weaponClass>
-           <weaponClass name="Disfunctional" valueMultiplier="0.05">
+           <weaponClass name="Dysfunctional" valueMultiplier="0.05">
                <weaponEnhancer multiplier="0.06" attribute="ATK"/>
                <weaponEnhancer add="-0.2" attribute="HIT"/>
            </weaponClass>
@@ -148,6 +148,7 @@
            <weaponClass name="Outrageous" valueMultiplier="2">
                <statusEffectInfliction statusRef="Dragon Rage" modifier="0.2"/>
            </weaponClass>
+           <!--weaponClass name="" -->
            
            <!-- Imbuements -->
            <weaponClass imbuement="true" name="of Glory" valueMultiplier="1.75">
@@ -199,6 +200,16 @@
            </weaponClass>
            <weaponClass imbuement="true" name="of Sadness" valueMultiplier="0.8">
                <attributeModifier attribute="joy" type="add" value="-0.15"/>
+           </weaponClass>
+           <weaponClass imbuement="true" name="of Greatness" valueMultiplier="3.5">
+               <attributeModifier attribute="str" type="multiply" value="3"/>
+               <attributeModifier attribute="dex" type="add" value="0.1"/>
+           </weaponClass>
+           <weaponClass imbuement="true" name="of the Meek" valueMultiplier="2.0">
+               <description>Grants defense and magic resistance at the cost of strength.</description>
+               <attributeModifier attribute="str" type="multiply" value="0.5"/>
+               <attributeModifier attribute="def" type="multiply" value="1.5"/>
+               <attributeModifier attribute="rst" type="multiply" value="1.5"/>
            </weaponClass>
            
            
@@ -383,13 +394,13 @@
                <attributeModifier attribute="joy" type="add" value="0.1"/>
            </armorClass> 
            <armorClass imbuement="true" name="of the Leprechaun" valueMultiplier="1.25">
-               <attributeModifier attribute="lck" type="add" value="0.25"/> 
+               <attributeModifier attribute="lck" type="multiply" value="1.1"/> 
            </armorClass>
            <armorClass imbuement="true" name="of the Ox" valueMultiplier="1.5">
-               <attributeModifier attribute="hp_max" type="multiply" value="1.15"/>
+               <attributeModifier attribute="hp_max" type="multiply" value="1.1"/>
            </armorClass>
            <armorClass imbuement="true" name="of Merlin" valueMultiplier="1.5">
-               <attributeModifier attribute="mp_max" type="multiply" value="1.15"/>
+               <attributeModifier attribute="mp_max" type="multiply" value="1.1"/>
            </armorClass>
            <armorClass imbuement="true" name="of Failure" valueMultiplier="0.5">
                <attributeModifier attribute="str" type="multiply" value="0.75"/>
@@ -453,13 +464,13 @@
                <weaponTypeRef name="Sword"/>
                <weaponEnhancer multiplier="0.5" attribute="ATK"/>
                <!--weaponEnhancer add="0.2" attribute="Critical%"/-->
-               <!--statusEffectInfliction statusRef="Poison" modifier="0.25"/-->
-               </uniqueWeapon>
-               <uniqueWeapon name = "Kid Bow" dropRarity="rare" valueMultiplier="0.25">
+               <!--statusEffectInfliction statusRef="Shrunk" modifier="0.75"/-->
+           </uniqueWeapon>
+           <uniqueWeapon name = "Kid Bow" dropRarity="rare" valueMultiplier="0.25">
                    <iconRef>Weapons/bow</iconRef>                  
                    <weaponTypeRef name="Bow"/>
                    <weaponEnhancer multiplier="0.5" attribute="ATK"/>
-               </uniqueWeapon>                
+           </uniqueWeapon>                
                
                
                

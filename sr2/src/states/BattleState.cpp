@@ -33,6 +33,7 @@ public:
     
     virtual void Visit(StatusEffect* pEffect) {
         CL_Sprite sprite = pEffect->GetIcon();
+        sprite.update();
         sprite.set_alpha(0.5f);
         int sprites_per_col = m_height / (sprite.get_height() + m_spacing.y);
         int col = m_i / sprites_per_col;
@@ -570,6 +571,10 @@ void BattleState::draw_status_effects ( CL_GraphicContext& GC )
             }
             else
             {
+                // Monster
+                if(!pICharacter->GetToggle(ICharacter::CA_ALIVE) || 
+                    !pICharacter->GetToggle(ICharacter::CA_VISIBLE))
+                    continue;
                 CL_Rectf rectf = get_character_rect(pICharacter);
                 painter.SetHeight(rectf.get_height());
                 painter.SetStart ( rectf.get_top_left());
