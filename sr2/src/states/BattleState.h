@@ -253,6 +253,7 @@ namespace StoneRing{
         CL_Rectf m_monster_rect;
         CL_Rectf m_player_rect;
         CL_Rectf m_bp_box;
+        CL_Rect m_status_text_rect;
         CL_Pointf m_status_effect_spacing;
         CL_Gradient m_bp_gradient;
 	CL_Colorf m_darkColor;
