@@ -19,6 +19,7 @@
 
 #include "SkillTreeState.h"
 #include "GraphicsManager.h"
+#include "MenuBox.h"
 #include <sstream>
 #include <iomanip>
 #include <Graphic.h>
@@ -85,8 +86,6 @@ void SkillTreeState::Init ( StoneRing::Character* pCharacter, bool buy )
     m_selected_gradient = GraphicsManager::GetGradient(GraphicsManager::SKILL_TREE,"selected");
     m_req_gradient = GraphicsManager::GetGradient(GraphicsManager::SKILL_TREE,"reqs");
     
-    
-    m_overlay = GraphicsManager::GetOverlay(GraphicsManager::SKILL_TREE);
     
     m_portrait_shadow = GraphicsManager::CreateImage("Overlays/MainMenu/portrait_shadow");
 
@@ -228,11 +227,10 @@ CL_Rectf SkillTreeState::get_rect()
 
 void SkillTreeState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
 {
-    m_overlay.draw(GC,0,0);
+    MenuBox::Draw(GC,screenRect);
     CL_Rectf box = m_menu;
     box.expand(2,2);
     CL_Draw::box(GC,box,CL_Colorf::white);
-
     
     std::deque<SkillTreeNode*> skillStack;
     std::ostringstream pathDesc;
@@ -288,7 +286,9 @@ void SkillTreeState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
     bool met_reqs = pNode->CanLearn(m_pChar);
     
     CL_Rectf req_box = m_reqs;
-    req_box.expand(2,2);
+
+    req_box.shrink(GraphicsManager::GetMenuInset().x,GraphicsManager::GetMenuInset().y);
+    req_box.translate(GraphicsManager::GetMenuInset());
     std::ostringstream reqs;
     if(pNode->GetParent())
     {
@@ -300,14 +300,12 @@ void SkillTreeState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
     }
     reqs << pNode->GetRequirements();
 
+    MenuBox::Draw(GC,m_reqs,false);
+ 
     if(!met_reqs){       
-        CL_Draw::gradient_fill(GC,m_reqs,m_req_gradient);
-        CL_Draw::box(GC,req_box,CL_Colorf::white);
-        draw_text(GC,m_reqs_font,m_reqs,reqs.str());
+        draw_text(GC,m_unmet_reqs_font,req_box,reqs.str());
     }else { 
-        CL_Draw::gradient_fill(GC,m_reqs,m_available_gradient);
-        CL_Draw::box(GC,req_box,CL_Colorf::white);
-        draw_text(GC,m_reqs_font,m_reqs,reqs.str());
+        draw_text(GC,m_reqs_font,req_box,reqs.str());
     }
     
 
