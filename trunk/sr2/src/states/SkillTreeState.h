@@ -60,7 +60,7 @@ private:
     CL_Sprite m_arrow;
     CL_Sprite m_lock;
     CL_Image m_portrait_shadow;
-    CL_Image  m_overlay;
+
     CL_Rectf m_description;
     CL_Rectf m_menu;
     CL_Rectf m_reqs;
