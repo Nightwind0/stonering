@@ -520,6 +520,7 @@
                
                <specialItem name="Octavia Key" dropRarity="never">
                    <iconRef>Item/key</iconRef>
+                   <description>This key goes to the Octavia Inn.</description>
                </specialItem>
                <specialItem name="Barn Key" dropRarity="never">
                    <iconRef>Item/key</iconRef>

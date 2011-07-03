@@ -272,9 +272,13 @@ CL_Image GraphicsManager::GetIcon(const std::string& icon)
     else
     {
         CL_ResourceManager& resources  = IApplication::GetInstance()->GetResources();
-
-        CL_Image surface( GET_MAIN_GC(), std::string("Icons/") + icon, &resources );
-
+        CL_Image surface;
+        try {
+            surface =  CL_Image( GET_MAIN_GC(), std::string("Icons/") + icon, &resources );
+        }
+        catch(CL_Exception e){
+            surface = CL_Image( GET_MAIN_GC(), std::string("Icons/no_icon"), &resources );
+        }
         m_pInstance->m_icon_map [ icon ] = surface;
 
         return surface;

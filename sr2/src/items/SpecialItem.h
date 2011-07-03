@@ -22,6 +22,7 @@ namespace StoneRing{
         
         virtual bool operator==(const ItemRef&);
     private:
+        virtual bool handle_element(eElement element, Element * pElement );        
         std::string m_description;
     };
 };

@@ -1,5 +1,6 @@
 #include "RegularItem.h"
 #include "IconRef.h"
+#include "Description.h"
 
 using namespace StoneRing;
 
@@ -137,11 +138,15 @@ bool RegularItem::handle_element(eElement element, Element * pElement)
 {
     if(NamedItemElement::handle_element(element,pElement))
 	return true;
-    if(element == Element::ESCRIPT)
-    {
+    if(element == Element::ESCRIPT){
         m_pScript = dynamic_cast<ScriptElement*>(pElement);
         return true;
+    }else if(element == Element::EDESCRIPTION){
+        m_description = dynamic_cast<Description*>(pElement)->GetText();
+        delete pElement;
+        return true;
     }
+   
     else return false;
 }
 

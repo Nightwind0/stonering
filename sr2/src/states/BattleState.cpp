@@ -385,6 +385,7 @@ void BattleState::Start()
     m_hpFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_STATUS,"hp");
     m_mpFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_STATUS,"mp");
     m_bpFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_STATUS,"bp");
+    m_charNameFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_STATUS,"name");
     
     m_bp_gradient = GraphicsManager::GetGradient(GraphicsManager::BATTLE_STATUS,"bp_bar");
     m_bp_box = GraphicsManager::GetRect(GraphicsManager::BATTLE_STATUS,"bp_box");
@@ -841,7 +842,17 @@ void BattleState::draw_monsters(const CL_Rectf &monsterRect, CL_GraphicContext& 
             if ((m_targets.m_bSelectedGroup && m_targets.selected.m_pGroup == m_monsters)
                     || (!m_targets.m_bSelectedGroup && pMonster == m_targets.selected.m_pTarget))
             {
-		//sprite.set_alpha(1.0f);
+                CL_FontMetrics metrics = m_charNameFont.get_font_metrics(GC);
+		CL_Sizef textSize = m_charNameFont.get_text_size(GC,pMonster->GetName());
+                CL_Pointf textPoint = CL_Pointf(center.x - textSize.width/2, get_character_rect(pMonster).get_top_left().y);
+                
+                if(textPoint.y - metrics.get_height() < 0){
+                    // Gonna have to draw below the monster
+                    textPoint = CL_Pointf(center.x - textSize.width/2, 
+                                          get_character_rect(pMonster).get_bottom_left().y + metrics.get_height());
+                }
+                
+                m_charNameFont.draw_text(GC, textPoint, pMonster->GetName(), Font::DEFAULT);
                 sprite.draw(GC,center.x,center.y);
             }
             else
