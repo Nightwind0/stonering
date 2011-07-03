@@ -28,7 +28,11 @@
                 <string name="DefaultPlayerSprite" value="Sprites/Party/Valyn" />
                 <string name="Currency" value="Gold"/>
                 <float name="DefaultEncounterRate" value="0.10"/>
-                <gradient name="MenuGradient" top_left="#0057ff" top_right="#0057ff" bottom_right="#003397" bottom_left="#003397"/>
+                <!--FF6 purple 783a53  010005-->
+                <!-- 6764c7  000025-->
+                <!--gradient name="MenuGradient" top_left="#e30000" top_right="#e30000" bottom_right="#250000" bottom_left="#250000"/-->
+                <gradient name="MenuGradient" top_left="#783a53" top_right="#783a53" bottom_right="#010005" bottom_left="#010005"/>                
+                <!--gradient name="MenuGradient" top_left="#0057ff" top_right="#0057ff" bottom_right="#003397" bottom_left="#003397"/-->
                 <point name="MenuInset" x="8" y="8"/>
                 <!--gradient name="MenuGradient"--> 
         </section>
@@ -404,7 +408,7 @@
                             <gradient name="bp_bar" top_right="#b21cbf" top_left="#b21cbf" bottom_right="#5f0f66" bottom_left="#5f0f66"/>
                         </section>
                         <section name="rects">
-                            <!--rect name="text" left="24" right="476" bottom="580" top="410"/-->
+                            <rect name="text" left="24" right="476" bottom="580" top="410"/>
                             <rect name="monster" left="0" top="0" right="528" bottom="396"/>
                             <rect name="player" left="564" top="128" right="800" bottom="440"/>
                             <rect name="bp_box" left="30" top="20" right="130" bottom="30"/>
@@ -514,8 +518,8 @@
                     </section>
                     <section name="rects">
                         <rect name="reqs" left="50" top="482" right="750" bottom="572"/>
-                        <rect name="menu" left="50" top="72" right="464" bottom="372"/>
-                        <rect name="desc" left="50" top="382" right="750" bottom="470"/>
+                        <rect name="menu" left="50" top="72" right="464" bottom="388"/>
+                        <rect name="desc" left="50" top="390" right="750" bottom="470"/>
                         <rect name="path" left="50" top="20" right="750" bottom="68"/>
                     </section>
                     <section name="gradients">
@@ -527,26 +531,27 @@
                     </section>
                     <section name="points">
                         <point name="icon" x="12" y="12"/>
-                        <point name="points" x="340" y="0"/>
-                        <point name="arrow" x="400" y="32"/>
+                        <point name="points" x="326" y="0"/>
+                        <point name="arrow" x="388" y="32"/>
                         <point name="lock"  x="400" y="32"/>
                         <point name="skill_size" x="400" y="60"/>
                         <point name="name" x="62" y="12"/>
                         <point name="portrait" x="550" y="80"/>
                         <point name="char_name" x="550" y="260"/>
                         <point name="char_sp"  x="550" y="290"/>
-                        <point name="use_cost" x="340" y="41"/>
+                        <point name="use_cost" x="326" y="41"/>
                     </section>
                     <section name="fonts">
                         <string name="desc" value="sb_white"/>
                         <string name="reqs" value="sb_white"/>
+                        <string name="unmet_reqs_desc" value="sb_black"/>
                         <string name="char_name" value="BoldWhite"/>
                         <string name="char_sp" value="mm_white"/>
                         <string name="char_mp" value="mm_cyan"/>
                         <string name="char_bp" value="mm_purple"/>
                         <string name="Path" value="sb_white"/>
                         <string name="Option" value="BoldWhite"/>
-                        <string name="Selection" value="BoldWhite"/>
+                        <string name="Selection" value="BoldCyan"/>
                         <string name="Obtained"  value="BoldPowderBlue"/>
                         <string name="Unavailable" value="BoldGray"/>
                         <string name="UnmetReqs"   value="BoldBlack"/>

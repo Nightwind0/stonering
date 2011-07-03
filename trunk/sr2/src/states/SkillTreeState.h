@@ -75,10 +75,6 @@ private:
     CL_Pointf m_char_name_pt;
     CL_Pointf m_char_sp_pt;
     CL_Pointf m_use_cost_pt;
-    CL_Gradient m_available_gradient;
-    CL_Gradient m_unavilable_gradient;
-    CL_Gradient m_selected_gradient;
-    CL_Gradient m_req_gradient;
     Font   m_desc_font;
     Font   m_option_font;
     Font   m_char_name_font;
@@ -92,6 +88,7 @@ private:
     Font   m_not_enough_points_font;
     Font   m_unmet_reqs_font;
     Font   m_reqs_font;
+    Font   m_unmet_reqs_desc_font;
     Font   m_path_font;
     Font   m_mp_cost;
     Font   m_bp_cost;

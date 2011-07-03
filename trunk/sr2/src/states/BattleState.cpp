@@ -396,6 +396,7 @@ void BattleState::Start()
     m_monster_rect = GraphicsManager::GetRect(GraphicsManager::BATTLE_STATUS,"monster");
     m_statusRect = GraphicsManager::GetRect(GraphicsManager::BATTLE_STATUS,"status");
     m_popupRect = GraphicsManager::GetRect(GraphicsManager::BATTLE_POPUP_MENU,"popup");
+    m_status_text_rect = GraphicsManager::GetRect(GraphicsManager::BATTLE_STATUS, "text");
 
 
     m_status_effect_shadow_color = GraphicsManager::GetColor(GraphicsManager::BATTLE_STATUS, "status_effect_shadow");
@@ -461,9 +462,7 @@ void BattleState::draw_status(const CL_Rectf &screenRect, CL_GraphicContext& GC)
     
     MenuBox::Draw(GC,m_statusRect);
     
-    CL_Rectf textRect = m_statusRect;
-    textRect.shrink(GraphicsManager::GetMenuInset().x, GraphicsManager::GetMenuInset().y);
-    textRect.translate(GraphicsManager::GetMenuInset());
+    CL_Rectf textRect = m_status_text_rect;
     
     //CL_Draw::box(GC,m_status_rect,CL_Colorf::red);
     int height_per_character = textRect.get_height() / pParty->GetCharacterCount();

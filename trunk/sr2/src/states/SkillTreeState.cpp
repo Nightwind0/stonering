@@ -80,16 +80,13 @@ void SkillTreeState::Init ( StoneRing::Character* pCharacter, bool buy )
     m_char_mp_font = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"char_mp");
     m_mp_cost = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"MPCost");
     m_bp_cost = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"BPCost");
-    
-    m_available_gradient = GraphicsManager::GetGradient(GraphicsManager::SKILL_TREE,"available");
-    m_unavilable_gradient = GraphicsManager::GetGradient(GraphicsManager::SKILL_TREE,"unavailable");
-    m_selected_gradient = GraphicsManager::GetGradient(GraphicsManager::SKILL_TREE,"selected");
-    m_req_gradient = GraphicsManager::GetGradient(GraphicsManager::SKILL_TREE,"reqs");
+    m_unmet_reqs_desc_font = GraphicsManager::GetFont(GraphicsManager::SKILL_TREE,"unmet_reqs_desc");
+   
     
     
     m_portrait_shadow = GraphicsManager::CreateImage("Overlays/MainMenu/portrait_shadow");
 
-	Menu::Init();    
+    Menu::Init();    
 }
 
 void SkillTreeState::fill_vector ( std::list< StoneRing::SkillTreeNode* >::const_iterator begin, std::list< StoneRing::SkillTreeNode* >::const_iterator end )
@@ -136,19 +133,14 @@ void SkillTreeState::draw_option ( int option, bool selected, float x, float y, 
     bool can_use = (pSkillRef->GetSkill()->GetType() == Skill::WORLD ||
             pSkillRef->GetSkill()->GetType() == Skill::BOTH);
     
-    if(selected){
-        gradient = m_selected_gradient;
-    }else{
-        if(met_reqs)
-            gradient = m_available_gradient;
-        else
-            gradient = m_unavilable_gradient;
-    }
-    
-    CL_Rectf option_rect(x,y,x+m_menu.get_width(),y + height_for_option(gc));
-    CL_Draw::gradient_fill(gc,option_rect,gradient);
-     
 
+    
+    CL_Rectf option_rect(x,y,x+get_rect().get_width(),y + height_for_option(gc));     
+   // CL_Draw::box(gc,option_rect,CL_Colorf(0.0f,0.0f,0.0f,0.1f));
+    CL_Rectf gradient_rect = option_rect;
+    //gradient_rect.shrink(GraphicsManager::GetMenuInset().x,0);
+    //gradient_rect.translate(GraphicsManager::GetMenuInset());
+    CL_Draw::gradient_fill(gc,gradient_rect,GraphicsManager::GetMenuGradient());
     std::ostringstream cost_stream;
     
     if(pSkillRef->GetSkill()->GetBPCost()){
@@ -191,6 +183,9 @@ void SkillTreeState::draw_option ( int option, bool selected, float x, float y, 
         }
     }
     
+    if(selected)
+        font = m_selection_font;
+    
     pSkillRef->GetSkill()->GetIcon().draw(gc,x+m_icon_point.x,y+m_icon_point.y);
     
     if(!has_skill)
@@ -222,16 +217,18 @@ void SkillTreeState::draw_option ( int option, bool selected, float x, float y, 
 
 CL_Rectf SkillTreeState::get_rect()
 {
-    return m_menu;
+    CL_Rect menu = m_menu;
+    menu.set_width( menu.get_width() - (GraphicsManager::GetMenuInset().x * 2) );
+    menu.set_height ( menu.get_height() - (GraphicsManager::GetMenuInset().y * 2) );
+    menu.translate(GraphicsManager::GetMenuInset());
+    return menu;
 }
 
 void SkillTreeState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
 {
     MenuBox::Draw(GC,screenRect);
     CL_Rectf box = m_menu;
-    box.expand(2,2);
-    CL_Draw::box(GC,box,CL_Colorf::white);
-    
+    MenuBox::Draw(GC,m_menu,false);
     std::deque<SkillTreeNode*> skillStack;
     std::ostringstream pathDesc;
     
@@ -261,7 +258,7 @@ void SkillTreeState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
     
     // Draw portrait
     // shadow first
-    m_portrait_shadow.draw(GC,m_portrait_offset.x + 4, m_portrait_offset.y + 4);
+    m_portrait_shadow.draw(GC,m_portrait_offset.x, m_portrait_offset.y);
     m_pChar->GetPortrait(Character::PORTRAIT_DEFAULT).draw(GC,m_portrait_offset.x,m_portrait_offset.y);
     
     // Now draw description
@@ -303,7 +300,7 @@ void SkillTreeState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
     MenuBox::Draw(GC,m_reqs,false);
  
     if(!met_reqs){       
-        draw_text(GC,m_unmet_reqs_font,req_box,reqs.str());
+        draw_text(GC,m_unmet_reqs_desc_font,req_box,reqs.str());
     }else { 
         draw_text(GC,m_reqs_font,req_box,reqs.str());
     }
