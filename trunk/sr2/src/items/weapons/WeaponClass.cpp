@@ -3,7 +3,7 @@
 #include "WeaponEnhancer.h"
 #include "StatusEffectModifier.h"
 #include "WeaponTypeExclusionList.h"
-
+#include "Description.h"
 #include <algorithm>
 #include <iterator>
 
@@ -68,6 +68,10 @@ bool WeaponClass::handle_element(eElement element, Element * pElement)
         break;
     case ESTATUSEFFECTINFLICTION:
         add_status_effect_infliction(dynamic_cast<StatusEffectInfliction*>(pElement));
+        break;
+    case EDESCRIPTION:
+        m_desc = dynamic_cast<Description*>(pElement)->GetText();
+        delete pElement;
         break;
     default:
         return false;
