@@ -459,16 +459,21 @@
                         </section>
                 </section>
                 <section name="Experience">
-                        <image name="overlay">
-                                <image-file file="Images/Overlays/xp_overlay.png"/>
-                        </image>
                         <section name="points">
                             <point name="origin" x="0" y="0"/>
                             <point name="portrait" x="36" y="9"/>
                             <point name="text" x="180" y="9"/>
+                            <point name="xp_bar" x="186" y="101"/>
                         </section>
+                        <image name="portrait_shadow">
+                            <image-file file="Images/Portrait/PortraitShadow.png"/>
+                        </image>  
+                        <image name="xp_bar">
+                            <image-file file="Images/Overlays/xp_bar.png"/>
+                        </image>
                         <section name="rects">
-                            <rect name="xp_bar" left="190" top="104" right="488" bottom="129"/>
+                            <rect name="xp_bar" left="190" top="104" right="488" bottom="130"/>
+                            <rect name="char" left="0" right="600" top="0" bottom="150"/>
                         </section>
                         <section name="gradients">
                             <gradient name="xp_bar" top_left="#FFFFFFFF" top_right="#FF00FFFF" bottom_left="#00FF00FF" bottom_right="#F0F0F0FF"/>

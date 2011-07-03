@@ -58,9 +58,13 @@ private:
     CL_Pointf m_offset;
     CL_Pointf m_portraitOffset;
     CL_Pointf m_textOffset;
-    CL_Image m_overlay;
+
+ 
+    CL_Image m_portraitShadow;
     CL_Image m_xpbar;
+ 
     CL_Rectf m_barRect;
+    CL_Rectf m_charRect;
     CL_Pointf m_barPoint;
     CL_Gradient m_barGradient;
     StoneRing::Font m_characterFont;
