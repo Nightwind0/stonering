@@ -250,11 +250,6 @@ namespace StoneRing{
         DrawMethod m_draw_method;
         MonsterParty* m_monsters;
         CL_Image m_backdrop;
-        CL_Image m_statusBar;
-        CL_Image m_battleMenu;
-        CL_Image m_battlePopup;
-        CL_Rectf m_status_rect;
-        CL_Rectf m_popup_rect;
         CL_Rectf m_monster_rect;
         CL_Rectf m_player_rect;
         CL_Rectf m_bp_box;
@@ -281,10 +276,8 @@ namespace StoneRing{
         }m_targets;
         bool m_bDone;
 	bool m_bDoneAfterRound;
-        uint m_nStatusBarX;
-        uint m_nStatusBarY;
-        uint m_nPopupX;
-        uint m_nPopupY;
+        CL_Rectf m_statusRect;
+        CL_Rectf m_popupRect;
         uint m_nRows;
         uint m_nColumns;
         std::deque<ICharacter*> m_initiative;

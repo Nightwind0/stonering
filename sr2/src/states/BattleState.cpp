@@ -9,6 +9,7 @@
 #include "BattleMenu.h"
 #include "AnimationState.h"
 #include "BattleConfig.h"
+#include "MenuBox.h"
 #include <sstream>
 #include <iomanip>
 #include <algorithm>
@@ -388,40 +389,15 @@ void BattleState::Start()
     m_bp_gradient = GraphicsManager::GetGradient(GraphicsManager::BATTLE_STATUS,"bp_bar");
     m_bp_box = GraphicsManager::GetRect(GraphicsManager::BATTLE_STATUS,"bp_box");
 
-    CL_Pointf statusBar = GraphicsManager::GetPoint(GraphicsManager::BATTLE_STATUS,"origin");
-    m_nStatusBarX = statusBar.x;
-    m_nStatusBarY = statusBar.y;
-    CL_Pointf popupOrigin = GraphicsManager::GetPoint(GraphicsManager::BATTLE_POPUP_MENU,"origin");
-    m_nPopupX = popupOrigin.x;
-    m_nPopupY = popupOrigin.y;
-
     m_bp_border = GraphicsManager::GetColor(GraphicsManager::BATTLE_STATUS,"bp_border");
-    /**
-     * TODO:
-     * Refactor this resource shit so that you can just pull everything by state enum
-     * from the graphics manager, and plan for future versions which allow the user to
-     * select from themes like in FF games.
-     * These states shouldn't have to know about the stupid resource manager and especially
-     * the resource paths. They just go "Hey. I'm this state, and I want the font for this thing"
-     * and the same with these rectangles
-     */
-
-
-    m_status_rect = GraphicsManager::GetRect(GraphicsManager::BATTLE_STATUS,"text");
-
-    //m_status_rect.top += m_nStatusBarY;
-    //m_status_rect.left += m_nStatusBarX;
-
-
-    m_popup_rect = GraphicsManager::GetRect(GraphicsManager::BATTLE_POPUP_MENU,"text");
+;
 
     m_player_rect = GraphicsManager::GetRect(GraphicsManager::BATTLE_STATUS,"player");
     m_monster_rect = GraphicsManager::GetRect(GraphicsManager::BATTLE_STATUS,"monster");
+    m_statusRect = GraphicsManager::GetRect(GraphicsManager::BATTLE_STATUS,"status");
+    m_popupRect = GraphicsManager::GetRect(GraphicsManager::BATTLE_POPUP_MENU,"popup");
 
 
-    m_statusBar = GraphicsManager::GetOverlay(GraphicsManager::BATTLE_STATUS);
-    m_battleMenu = GraphicsManager::GetOverlay(GraphicsManager::BATTLE_MENU);
-    m_battlePopup = GraphicsManager::GetOverlay(GraphicsManager::BATTLE_POPUP_MENU);
     m_status_effect_shadow_color = GraphicsManager::GetColor(GraphicsManager::BATTLE_STATUS, "status_effect_shadow");
     m_status_effect_spacing = GraphicsManager::GetPoint(GraphicsManager::BATTLE_STATUS,"status_effect_spacing");
     m_bp_gradient = GraphicsManager::GetGradient(GraphicsManager::BATTLE_STATUS,"bp_bar");
@@ -482,10 +458,15 @@ void BattleState::draw_start(const CL_Rectf &screenRect, CL_GraphicContext& GC)
 void BattleState::draw_status(const CL_Rectf &screenRect, CL_GraphicContext& GC)
 {
     IParty * pParty = IApplication::GetInstance()->GetParty();
-    m_statusBar.draw(GC,(int)m_nStatusBarX,(int)m_nStatusBarY);
+    
+    MenuBox::Draw(GC,m_statusRect);
+    
+    CL_Rectf textRect = m_statusRect;
+    textRect.shrink(GraphicsManager::GetMenuInset().x, GraphicsManager::GetMenuInset().y);
+    textRect.translate(GraphicsManager::GetMenuInset());
     
     //CL_Draw::box(GC,m_status_rect,CL_Colorf::red);
-    int height_per_character = m_status_rect.get_height() / pParty->GetCharacterCount();
+    int height_per_character = textRect.get_height() / pParty->GetCharacterCount();
 
     for (uint p = 0; p < pParty->GetCharacterCount(); p++)
     {
@@ -496,22 +477,22 @@ void BattleState::draw_status(const CL_Rectf &screenRect, CL_GraphicContext& GC)
         hp << std::setw(6) << pChar->GetAttribute(ICharacter::CA_HP) << '/'
         << pChar->GetAttribute(ICharacter::CA_MAXHP);
         
-        m_generalFont.draw_text(GC,m_status_rect.left,
-                              m_status_rect.top +(p * height_per_character),
+        m_generalFont.draw_text(GC,textRect.left,
+                              textRect.top +(p * height_per_character),
                               name.str(),Font::TOP_LEFT);
-        m_hpFont.draw_text(GC,m_status_rect.get_width() / 3 + m_status_rect.left,
-                         m_status_rect.top +(p* height_per_character)
+        m_hpFont.draw_text(GC,textRect.get_width() / 3 + textRect.left,
+                         textRect.top +(p* height_per_character)
                          ,hp.str(),Font::TOP_LEFT);
         std::ostringstream mp;
         mp << std::setw(6) << pChar->GetAttribute(ICharacter::CA_MP) << '/'
         << pChar->GetAttribute(ICharacter::CA_MAXMP);
-        m_mpFont.draw_text(GC,(m_status_rect.get_width() / 3) * 2 + m_status_rect.left,
-                         m_status_rect.top +  (p*height_per_character),mp.str(),Font::TOP_LEFT
+        m_mpFont.draw_text(GC,(textRect.get_width() / 3) * 2 + textRect.left,
+                         textRect.top +  (p*height_per_character),mp.str(),Font::TOP_LEFT
 			);
         
         CL_Rectf bp_box = m_bp_box;
-        bp_box.top += m_status_rect.top + (p*height_per_character);
-        bp_box.bottom += m_status_rect.top + (p*height_per_character);
+        bp_box.top += textRect.top + (p*height_per_character);
+        bp_box.bottom += textRect.top + (p*height_per_character);
         CL_Rectf bp_fill = bp_box;
         float percentage = pChar->GetAttribute(ICharacter::CA_BP) / pChar->GetAttribute(ICharacter::CA_MAXBP);
         bp_fill.right = bp_fill.left + (percentage * bp_fill.get_width());
@@ -1049,18 +1030,16 @@ void BattleState::draw_displays(CL_GraphicContext& GC)
 void BattleState::draw_menus(const CL_Rectf &screenrect, CL_GraphicContext& GC)
 {
     BattleMenu * pMenu = m_menu_stack.top();
-    CL_Rectf menu_rect = m_popup_rect;
-    menu_rect.translate(m_nPopupX,m_nPopupY);
+    CL_Rectf menu_rect = m_popupRect;
+    menu_rect.translate(GraphicsManager::GetMenuInset());
+    menu_rect.shrink(GraphicsManager::GetMenuInset().x,GraphicsManager::GetMenuInset().y);
+
     pMenu->SetRect(menu_rect);
 
     if (pMenu->GetType() == BattleMenu::POPUP)
     {
-        m_battlePopup.draw(GC,(int)m_nPopupX,(int)m_nPopupY);
+        MenuBox::Draw(GC,m_popupRect,false);
         pMenu->Draw(GC);
-    }
-    else
-    {
-        m_battleMenu.draw(GC,screenrect.left,screenrect.top);
     }
 }
 void BattleState::SteelInit(SteelInterpreter* pInterpreter)
