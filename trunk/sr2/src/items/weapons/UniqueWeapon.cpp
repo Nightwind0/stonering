@@ -6,6 +6,7 @@
 #include "AttributeModifier.h"
 #include "RuneType.h"
 #include "StatusEffectModifier.h"
+#include "Description.h"
 
 using namespace StoneRing;
 
@@ -124,6 +125,10 @@ bool UniqueWeapon::handle_element(eElement element, Element * pElement)
         break;
     case ECONDITIONSCRIPT:
         m_pConditionScript = dynamic_cast<ScriptElement*>(pElement);
+        break;
+    case EDESCRIPTION:
+        m_description = dynamic_cast<Description*>(pElement)->GetText();
+        delete pElement;
         break;
     default:
         return false;

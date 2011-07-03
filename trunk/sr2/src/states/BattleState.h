@@ -263,6 +263,7 @@ namespace StoneRing{
         Font m_bpFont;
         Font m_hpFont;
         Font m_generalFont;
+        Font m_charNameFont;
 	uint m_ndarkMode;
 
         eCombatState m_combat_state;

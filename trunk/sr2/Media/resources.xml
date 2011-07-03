@@ -387,7 +387,7 @@
                         <string name="Option" value="BoldMonoGray"/>
                         <string name="Selection" value="BoldMonoWhite"/>
                         <string name="Unavailable" value="BoldMonoDark"/>
-                        <string name="Description" value="BoldWhite"/>
+                        <string name="Description" value="sb_white"/>
                 </section>		
             </section>
                 <section name="BattleStatus">
@@ -400,6 +400,7 @@
                                 <string name="bp" value="mm_purple"/>
                                 <string name="general" value="sb_black"/>
                                 <string name="bad" value="sb_red"/>
+                                <string name="name" value="sb_white"/>
                         </section>
                         <section name="points">
                             <point name="status_effect_spacing" x="8" y="8"/>
