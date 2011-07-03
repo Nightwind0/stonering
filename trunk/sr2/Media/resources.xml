@@ -398,17 +398,17 @@
                                 <string name="bad" value="sb_red"/>
                         </section>
                         <section name="points">
-                            <point name="origin" x="0" y="396"/>
                             <point name="status_effect_spacing" x="8" y="8"/>
                         </section>
                         <section name="gradients">
                             <gradient name="bp_bar" top_right="#b21cbf" top_left="#b21cbf" bottom_right="#5f0f66" bottom_left="#5f0f66"/>
                         </section>
                         <section name="rects">
-                            <rect name="text" left="24" right="476" bottom="580" top="410"/>
+                            <!--rect name="text" left="24" right="476" bottom="580" top="410"/-->
                             <rect name="monster" left="0" top="0" right="528" bottom="396"/>
                             <rect name="player" left="564" top="128" right="800" bottom="440"/>
                             <rect name="bp_box" left="30" top="20" right="130" bottom="30"/>
+                            <rect name="status" left="0" right="800" top="400" bottom="600"/>
                         </section>
                         <section name="colors">
                             <string name="status_effect_shadow" value="#00000070"/>
@@ -420,11 +420,11 @@
                                 <image-file file="Images/Overlays/battle_popup.png"/>
                         </image>
                         <section name="points">
-                            <point name="origin" x="476" y="396"/>
                             <point name="cost_spacing" x="20" y="0"/>
                         </section>
                         <section name="rects">
-                            <rect name="text" left="14" right="290" top="20" bottom="192"/>
+                            <!--rect name="text" left="14" right="290" top="20" bottom="192"/-->
+                            <rect name="popup" left="476" right="800" top="400" bottom="600"/>
                         </section>
                         <section name="fonts">
                                 <string name="on" value="BoldGray"/>
