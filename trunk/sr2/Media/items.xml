@@ -262,22 +262,22 @@
            <weaponType basePrice="205" name="Scimitar" baseAttack="15" hitAdd="0"  damageCategory="slash">
                <iconRef>Weapons/scimitar</iconRef>
            </weaponType>
-           <weaponType baseAttack="10" hitAdd="-0.04" basePrice="100" name="Bow" ranged="true" baseCritical = "0.03" damageCategory="pierce" animationRef="fire_arrow">
+           <weaponType baseAttack="10" hitAdd="-0.04" basePrice="100" name="Bow" twoHanded="true" ranged="true" baseCritical = "0.03" damageCategory="pierce" animationRef="fire_arrow">
                <iconRef>Weapons/bow</iconRef>
            </weaponType>
-           <weaponType baseAttack="220" hitAdd="0.1" basePrice="2600" name="Compound Bow" ranged="true"  damageCategory="pierce">
+           <weaponType baseAttack="220" hitAdd="0.1" basePrice="2600" name="Compound Bow" twoHanded="true" ranged="true"  damageCategory="pierce">
                <iconRef>Weapons/compoundbow</iconRef>
            </weaponType>
-           <weaponType baseAttack="15" hitAdd="0.05" basePrice="200" name="Long Bow" ranged="true" baseCritical = "0.03" damageCategory="pierce">
+           <weaponType baseAttack="15" hitAdd="0.05" basePrice="200" name="Long Bow" ranged="true" twoHanded="true" baseCritical = "0.03" damageCategory="pierce">
                <iconRef>Weapons/longbow</iconRef>
            </weaponType>
-           <weaponType baseAttack="50" hitAdd="-0.03" basePrice="600" name="Great Bow" ranged="true"  damageCategory="pierce">
+           <weaponType baseAttack="50" hitAdd="-0.03" basePrice="600" name="Great Bow" ranged="true" twoHanded="true"  damageCategory="pierce">
                <iconRef>Weapons/greatbow</iconRef>
            </weaponType>
-           <weaponType baseAttack="100" hitAdd="0" basePrice="1200" name="Master Bow" ranged="true"  damageCategory="pierce">
+           <weaponType baseAttack="100" hitAdd="0" basePrice="1200" name="Master Bow" ranged="true" twoHanded="true" damageCategory="pierce">
                <iconRef>Weapons/masterbow</iconRef>
            </weaponType>
-           <weaponType baseAttack="200" hitAdd="-0.02" basePrice="1900" name="Power Bow" ranged="true" damageCategory="pierce">
+           <weaponType baseAttack="200" hitAdd="-0.02" basePrice="1900" name="Power Bow" ranged="true" twoHanded="true" damageCategory="pierce">
                <iconRef>Weapons/powerbow</iconRef>
            </weaponType>
            <weaponType baseAttack="3" hitAdd="-0.03" basePrice="35" name="Rod" damageCategory="bash"  >
@@ -447,7 +447,7 @@
                <attributeModifier type="add" value="0.1" attribute="dark_rst"/>
            </uniqueArmor>
            <uniqueArmor name="Kid Vest" dropRarity="rare" valueMultiplier = "0.25">
-               <iconRef>Armor/shield</iconRef>                     
+               <iconRef>Armor/vest</iconRef>                     
                <armorTypeRef name="Vest"/>
                <armorEnhancer multiplier="0.2" attribute="AC"/>
                <attributeModifier type="add" value="-0.2" attribute="dark_rst"/>

@@ -32,6 +32,10 @@ namespace StoneRing
         double    GetStat(ICharacter::eCharacterAttribute attr, int level);
 	int	  GetExperienceToLevel(int level);
 	int       GetLevelForExperience(int xp);
+        
+        bool CanEquip(WeaponType* pWeaponType) const;
+        bool CanEquip(ArmorType* pArmorType) const;
+        bool CanEquip(Equipment* pEquipment) const;
 
         std::list<SkillTreeNode*>::const_iterator GetSkillTreeNodesBegin() const;
         std::list<SkillTreeNode*>::const_iterator GetSkillTreeNodesEnd() const;

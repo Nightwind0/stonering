@@ -45,6 +45,10 @@
                 <freetype name="Font_mp_plus" file="Images/Fonts/cwisdom.ttf" size="32" color="#FF00FFFF" font_name="Conventional Wisdom"/>
                 <freetype name="Font_mp_minus" file="Images/Fonts/cwisdom.ttf" size="32" color="#00FFFFFF" font_name="Conventional Wisdom"/>
                 <freetype name="Font_display_shadow" file="Images/Fonts/cwisdom.ttf" size="32" color="#00000080" font_name="Conventional Wisdom"/>
+                <freetype name="tb_black" size="20" color="#000000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+                <freetype name="tb_white" size="20" color="#FFFFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+                <freetype name="tb_gray" size="20" color="#636363" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+                <freetype name="tb_cyan" size="20" color="#00FFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>                                  
                 <freetype name="sb_black" size="24" color="#000000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
                 <freetype name="sb_gray" size="24" color="#636363" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>		
                 <freetype name="sb_white" size="24" color="#FFFFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>			
@@ -61,6 +65,8 @@
                 <freetype name="mm_cyan" size="22" color="#00FFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
                 <freetype name="mm_purple" size="22" color="#980090" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/> 
                 <freetype name="mm_green" size="22" color="#00FF00" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="mm_red" size="22" color="#FF0000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="mm_blue" size="22" color="#0000CC" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
                 <freetype name="mono_green" size="24" color="#00A000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
                 <freetype name="mono_black" size="24" color="#000000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
                 <freetype name="mono_gray" size="24" color="#636363" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>		
@@ -451,6 +457,32 @@
                                 <string name="off" value="BoldGray"/>
                                 <string name="Selection" value="BoldWhite"/>
                         </section>
+                </section>
+                <section name="Equip">
+                    <image name="no_equipment">
+                        <image-file file="Images/Icons/icon_border.png"/>
+                    </image>
+                    <section name="rects">
+                        <rect name="slots" left="0" right="800" top="0" bottom="168"/>
+                        <rect name="equipment" left="0" right="500" top="168" bottom="500"/>
+                        <rect name="stats" left="500" right="800" top="168" bottom="500"/>
+                        <rect name="desc" left="0" right="800" top="500" bottom="600"/>
+                    </section>
+                    <section name="points">
+                        <point name="slot_size" x="400" y="36"/>
+                    </section>
+                    <section name="fonts">
+                        <string name="slots" value="sb_white"/>
+                        <string name="slot_name" value="tb_gray"/>
+                        <string name="slot_name_selected" value="tb_cyan"/>
+                        <string name="equipment" value="tb_gray"/>
+                        <string name="equipment_selected" value="tb_white"/>
+                        <string name="stat" value="mm_white"/>
+                        <string name="stat_name" value="mm_blue"/>
+                        <string name="stat_down" value="mm_red"/>
+                        <string name="stat_up"   value="mm_cyan"/>
+                        <string name="desc"      value="sb_white"/>
+                    </section>
                 </section>
                 <section name="Say">
                         <section name="rects">

@@ -58,7 +58,7 @@ void StoneRing::Skill::Invoke(ICharacter* pCharacter,const ParameterList& params
     {
         // Default implementation
         /*
-        //selectTarget(true,true,true);
+        //selectTarget(true,true,true);                    
         if(mbGroup && groupSelection(mbDefaultToEnemies))
         {
            ICharacterGroup *pGroup = selectGroup();

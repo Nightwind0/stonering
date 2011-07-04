@@ -180,7 +180,10 @@ stonering_SOURCES =	src/Application.cpp \
 			src/states/SkilltreeState.h \
 			src/core/Description.cpp \
 			src/core/Description.h \
-			src/core/MenuBox.cpp
+			src/core/MenuBox.cpp \
+			src/core/MenuBox.h \
+			src/states/EquipState.cpp \
+			src/states/EquipState.h
 
 
 

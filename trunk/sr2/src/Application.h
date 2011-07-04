@@ -28,6 +28,7 @@
 #include "ItemSelectState.h"
 #include "DynamicMenuState.h"
 #include "SkillTreeState.h"
+#include "EquipState.h"
 
 namespace StoneRing
 {
@@ -182,6 +183,7 @@ namespace StoneRing
         SteelType generateRandomWeapon(uint rarity, int min_value, int max_value);
         SteelType generateRandomArmor(uint rarity, int min_value, int max_value);
         SteelType doEquipmentStatusEffectInflictions(SteelType::Handle hEquipment, SteelType::Handle hTarget);
+        SteelType equipScreen(SteelType::Handle hCharacter);
 
         void steelConst(const std::string &name, int value);
         void steelConst(const std::string &name, double value);
@@ -230,6 +232,7 @@ namespace StoneRing
 	MainMenuState  mMainMenuState;
 	ItemSelectState mItemSelectState;
         SkillTreeState mSkillTreeState;
+        EquipState mEquipState;
         std::vector<State*> mStates;
         std::vector<IFactory*> mFactories;
 	BattleConfig mBattleConfig;

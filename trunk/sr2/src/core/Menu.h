@@ -51,6 +51,7 @@ protected:
     virtual int get_option_count()=0;
     virtual void draw_more_down_indicator(){}
     virtual void draw_more_up_indicator(){}
+    virtual bool roll_over(){ return true; }
     virtual uint get_columns() const { return 1; }
     void reset_menu();
     int get_current_choice() const { return m_stack.front(); }

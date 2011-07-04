@@ -13,6 +13,7 @@ namespace StoneRing{
         virtual ~Armor();
 
         virtual ArmorType *GetArmorType() const = 0;
+        virtual eSlot GetSlot() const;
 
         enum eAttribute
         {

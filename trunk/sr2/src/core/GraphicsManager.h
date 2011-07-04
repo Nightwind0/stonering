@@ -30,7 +30,8 @@ namespace StoneRing
             SHOP,
             DYNAMIC_MENU,
 	    ITEMS,
-            SKILL_TREE
+            SKILL_TREE,
+            EQUIP,
         };
 
         enum DisplayFont

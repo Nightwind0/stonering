@@ -17,6 +17,13 @@ Weapon::~Weapon()
     Clear_Weapon_Enhancers();
 }
 
+Equipment::eSlot Weapon::GetSlot() const
+{
+    if(IsTwoHanded()) return EHAND;
+    else return EANYHAND;
+}
+
+
 bool Weapon::ForgoAttack() const
 {
     return m_eScriptMode & FORGO_ATTACK;

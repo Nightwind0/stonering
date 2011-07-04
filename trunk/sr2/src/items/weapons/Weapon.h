@@ -14,6 +14,8 @@ namespace StoneRing{
         virtual WeaponType * GetWeaponType() const = 0;
         virtual bool IsRanged() const = 0;
         virtual bool IsTwoHanded() const = 0;
+        
+        virtual eSlot GetSlot() const;
 
         virtual bool IsArmor() const { return false; }
         // TODO Plumb the weapon type animation through here, so that UniqueWeapons can have their own animations
