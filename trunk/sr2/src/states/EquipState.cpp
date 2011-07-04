@@ -25,6 +25,7 @@
 #include <iomanip>
 
 
+
 using namespace StoneRing;
 
 
@@ -34,8 +35,13 @@ void EquipState::EquipmentCollector::operator()(Item* pItem, int nCount)
     if(pItem->GetItemType() == Item::ARMOR ||
         pItem->GetItemType() == Item::WEAPON){
         Equipment * pEquipment = dynamic_cast<Equipment*>(pItem);
+        ParameterList params;
+        params.push_back ( ParameterListItem("$_Character",m_char) );
         if(pEquipment->GetSlot() & m_slot && 
-            m_char->GetClass()->CanEquip(pEquipment)){
+            m_char->GetClass()->CanEquip(pEquipment)
+            && pEquipment->EquipCondition(params)
+          )
+        {
             for(int i=0;i<nCount;i++)
                 m_menu.AddOption(pEquipment);
         }
@@ -107,6 +113,7 @@ void EquipState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
     draw_slots(GC);
     m_equipment_menu.Draw(GC);
     draw_stats(GC);
+    draw_description(GC);
 }
 
 int EquipState::options_per_column() const
@@ -150,10 +157,19 @@ bool EquipState::offhand_available() const
     return true;
 }
 
-void EquipState::draw_stat ( CL_GraphicContext& gc, ICharacter::eCharacterAttribute stat, const CL_Pointf& point, float left )
+void EquipState::draw_description ( CL_GraphicContext& gc )
 {
-    
-}
+    CL_Rectf rect = m_desc_rect;
+    rect.shrink(GraphicsManager::GetMenuInset().x,GraphicsManager::GetMenuInset().y);
+    if(m_eState == SELECT_EQUIPMENT){
+        m_equipment_menu.Choose();
+        Equipment * pEquipment = m_equipment_menu.GetSelection();
+        if(pEquipment)
+            draw_text(gc,m_desc_font,rect,pEquipment->GetDescription());
+        else
+            draw_text(gc,m_desc_font,rect,"Remove equipment");
+    }
+} 
 
 
 void EquipState::draw_stats ( CL_GraphicContext& gc )
