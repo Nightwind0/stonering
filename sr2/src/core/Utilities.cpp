@@ -1,22 +1,23 @@
 #include "sr_defines.h"
 #include "GraphicsManager.h"
+#include <iomanip>
 
-std::string IntToString(const int &i)
+std::string IntToString(const int &i, int width)
 {
     std::ostringstream os;
 
-    os << i;
+    os << std::setw(width) << i;
 
 
     return os.str();
 
 }
 
-std::string FloatToString(const float &f)
+std::string FloatToString(const float &f, int width, int precision)
 {
     std::ostringstream os;
 
-    os << f;
+    os << std::setprecision(precision) << std::setw(width) << f;
 
     return os.str();
 }

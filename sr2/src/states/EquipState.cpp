@@ -20,6 +20,9 @@
 #include "EquipState.h"
 #include "GraphicsManager.h"
 #include "MenuBox.h"
+#include "Weapon.h"
+#include "Armor.h"
+#include <iomanip>
 
 
 using namespace StoneRing;
@@ -103,6 +106,7 @@ void EquipState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
     
     draw_slots(GC);
     m_equipment_menu.Draw(GC);
+    draw_stats(GC);
 }
 
 int EquipState::options_per_column() const
@@ -144,6 +148,141 @@ bool EquipState::offhand_available() const
     }    
     
     return true;
+}
+
+void EquipState::draw_stat ( CL_GraphicContext& gc, ICharacter::eCharacterAttribute stat, const CL_Pointf& point, float left )
+{
+    
+}
+
+
+void EquipState::draw_stats ( CL_GraphicContext& gc )
+{
+    CL_Rectf rect = m_stats_rect;
+    rect.shrink(GraphicsManager::GetMenuInset().x*2,GraphicsManager::GetMenuInset().y*2);
+    CL_FontMetrics metrics = m_stat_name_font.get_font_metrics(gc);
+    CL_Pointf offset(0,metrics.get_height());
+    
+       
+    CL_Sizef statSize = m_stat_font.get_text_size(gc,"000000");
+
+    m_equipment_menu.Choose(); // Doesn't equip it or anything
+ 
+    Equipment * pOldEquipment = NULL;
+    if(m_pChar->HasEquipment(m_slots[m_nSlot]))
+        pOldEquipment = m_pChar->GetEquipment(m_slots[m_nSlot]);
+    Equipment * pSelectedEquipment = m_equipment_menu.GetSelection();
+    CL_Pointf point = rect.get_top_left();
+    CL_Pointf statPoint = point;
+
+    
+    for(int i=Weapon::_FIRST_ATTR+1;i<Weapon::_LAST_ATTR;i++){
+        Weapon::eAttribute attr = static_cast<Weapon::eAttribute>(i);
+        statPoint = point;
+        statPoint.x = rect.get_top_right().x - statSize.width * 3;       
+        double old_value = m_pChar->GetEquippedWeaponAttribute(attr);        
+        m_stat_name_font.draw_text(gc,point,Weapon::StringForAttribute(attr),Font::TOP_LEFT);
+        m_stat_font.draw_text(gc,statPoint,FloatToString(old_value,6,2),Font::TOP_LEFT);
+        if(m_eState == SELECT_EQUIPMENT){
+            statPoint.x += statSize.width*2;
+            std::ostringstream os;
+            Weapon * pOldWeapon = dynamic_cast<Weapon*>(pOldEquipment);
+            double new_value = old_value;//pOldWeapon?(old_value-pOldWeapon->GetWeaponAttribute(attr)):0.0;                
+            if(pSelectedEquipment != NULL){ // Remove
+                Weapon * pWeapon = dynamic_cast<Weapon*>(pSelectedEquipment);
+                if(pWeapon){
+                    new_value = old_value + pWeapon->GetWeaponAttribute(attr);
+                }
+            }
+            if(pOldWeapon)
+                new_value -= pOldWeapon->GetWeaponAttribute(attr);
+            
+            
+            Font newStatFont = m_stat_font;
+            if(new_value > old_value)
+                newStatFont = m_stat_up_font;
+            else if(new_value < old_value)
+                newStatFont = m_stat_down_font;
+            os << std::setw(6) << std::setprecision(2) << new_value;
+
+            newStatFont.draw_text(gc,statPoint,os.str(), Font::TOP_LEFT);
+        }
+        point += offset;
+    }
+  
+    for(int i=Armor::_FIRST_ATTR+1;i<Armor::_LAST_ATTR;i++){
+        Armor::eAttribute attr = static_cast<Armor::eAttribute>(i);
+        statPoint = point;
+        statPoint.x = rect.get_top_right().x - statSize.width * 3;       
+        double old_value = m_pChar->GetEquippedArmorAttribute(attr);        
+        m_stat_name_font.draw_text(gc,point,Armor::StringForAttribute(attr),Font::TOP_LEFT);
+        m_stat_font.draw_text(gc,statPoint,FloatToString(old_value,6,2),Font::TOP_LEFT);
+        if(m_eState == SELECT_EQUIPMENT){
+            statPoint.x += statSize.width*2;
+            std::ostringstream os;
+            Armor * pOldArmor = dynamic_cast<Armor*>(pOldEquipment);
+            double new_value = old_value;//pOldWeapon?(old_value-pOldWeapon->GetWeaponAttribute(attr)):0.0;                
+            if(pSelectedEquipment != NULL){ // Remove
+                Armor * pArmor = dynamic_cast<Armor*>(pSelectedEquipment);
+                if(pArmor){
+                    new_value = old_value + pArmor->GetArmorAttribute(attr);
+                }
+            }
+            if(pOldArmor)
+                new_value -= pOldArmor->GetArmorAttribute(attr);
+            
+            
+            Font newStatFont = m_stat_font;
+            if(new_value > old_value)
+                newStatFont = m_stat_up_font;
+            else if(new_value < old_value)
+                newStatFont = m_stat_down_font;
+            os << std::setw(6) << std::setprecision(2) << new_value;
+
+            newStatFont.draw_text(gc,statPoint,os.str(), Font::TOP_LEFT);
+        }
+        point += offset;
+    }
+
+    
+    for(std::vector<ICharacter::eCharacterAttribute>::const_iterator iter = m_stats.begin();
+        iter != m_stats.end(); iter++,point += offset)
+        {
+            m_stat_name_font.draw_text(gc,point,ICharacter::CAToLabel(*iter), Font::TOP_LEFT);
+            CL_Pointf statPoint = point;
+            statPoint.x = rect.get_top_right().x - statSize.width*3;
+            std::ostringstream os;
+            if(ICharacter::IsInteger(*iter))
+                os << std::setw(6) << m_pChar->GetAttribute(*iter);
+            else
+                os << std::setw(6) << std::setprecision(2) << m_pChar->GetAttribute(*iter);
+            m_stat_font.draw_text(gc,statPoint,os.str(),Font::TOP_LEFT);
+            
+            if(m_eState == SELECT_EQUIPMENT){
+                std::ostringstream os;
+                statPoint.x += statSize.width*2;
+                Equipment * pEquipment = m_equipment_menu.GetSelection();
+                double old_value = m_pChar->GetAttribute(*iter);
+                double new_value = m_pChar->GetBaseAttribute(*iter);
+                if(pEquipment){
+                    new_value *= pEquipment->GetAttributeMultiplier(*iter);
+                    new_value += pEquipment->GetAttributeAdd(*iter);
+                }
+                Font newStatFont = m_stat_font;
+                if(new_value > old_value)
+                    newStatFont = m_stat_up_font;
+                else if(new_value < old_value)
+                    newStatFont = m_stat_down_font;
+                if(ICharacter::IsInteger(*iter))
+                    os << std::setw(6) << (int)new_value;
+                else
+                    os << std::setw(6) << std::setprecision(2) << new_value;
+
+                newStatFont.draw_text(gc,statPoint,os.str(), Font::TOP_LEFT);                
+            }
+        }
+    
+        
 }
 
 
@@ -271,9 +410,19 @@ void EquipState::HandleButtonUp ( const StoneRing::IApplication::Button& button 
         if(button == IApplication::BUTTON_CANCEL){
             m_eState = SELECT_SLOT;
             m_equipment_menu.DisableSelection();
+        }else if(button == IApplication::BUTTON_CONFIRM){
+            m_equipment_menu.Choose();
+            Equipment * pEquipment = m_equipment_menu.GetSelection();
+            if(pEquipment == NULL){
+                IApplication::GetInstance()->GetParty()->GiveItem(m_pChar->GetEquipment(m_slots[m_nSlot]),1);
+                m_pChar->Unequip(m_slots[m_nSlot]);                
+            }else{
+                IApplication::GetInstance()->GetParty()->TakeItem(pEquipment,1);
+                m_pChar->Equip(m_slots[m_nSlot],pEquipment);
+            }
         }
         
-        // TODO: If confirm, equip the selected equipment
+        
     }
     
 }
@@ -307,6 +456,19 @@ void EquipState::Start()
     m_slots.push_back(Equipment::EFEET);
     m_slots.push_back(Equipment::EFINGER1);
     m_slots.push_back(Equipment::EFINGER2);
+    
+    m_stats.clear();
+    m_stats.push_back(ICharacter::CA_MAXHP);
+    m_stats.push_back(ICharacter::CA_MAXMP);
+    m_stats.push_back(ICharacter::CA_STR);
+    m_stats.push_back(ICharacter::CA_DEF);
+    m_stats.push_back(ICharacter::CA_DEX);
+    m_stats.push_back(ICharacter::CA_EVD);
+    m_stats.push_back(ICharacter::CA_MAG);
+    m_stats.push_back(ICharacter::CA_RST);
+    m_stats.push_back(ICharacter::CA_LCK);
+    m_stats.push_back(ICharacter::CA_JOY);
+
 
     fill_equipment_menu();
     m_equipment_menu.DisableSelection();

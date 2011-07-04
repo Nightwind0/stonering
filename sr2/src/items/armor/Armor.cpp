@@ -14,6 +14,19 @@ Equipment::eSlot Armor::GetSlot() const
     return GetArmorType()->GetSlot();
 }
 
+std::string Armor::StringForAttribute ( Armor::eAttribute attr )
+{
+    switch(attr){
+        case AC:
+            return "A.Ac";
+        case RST:
+            return "A.Rst";
+        default:
+            assert(0);
+            return "";
+    }
+}
+
 
 std::string StoneRing::Armor::CreateArmorName(ArmorType *pType, ArmorClass *pClass, ArmorClass* pImbuement, RuneType *pRune)
 {
@@ -40,10 +53,6 @@ Armor::AttributeForString ( const std::string str )
 {
     if(str == "AC") return AC;
     else if(str == "RST") return RST;
-    else if(str == "Change_BP") return CHANGE_BP;
-    else if (str == "Steal_MP%") return STEAL_MP;
-    else if (str == "Steal_HP%") return STEAL_HP;
-    else if (str == "Status%") return STATUS;
     else throw CL_Exception("Bad Armor enhancer attribute.");
 }
 
@@ -77,9 +86,11 @@ double Armor::GetArmorAttribute ( eAttribute attr )
         case AC:
             current = GetArmorType()->GetBaseAC();
             break;
+            
          case RST:
             current = GetArmorType()->GetBaseRST();
             break;
+            
         default:
             break;
     }

@@ -131,6 +131,7 @@ namespace StoneRing{
         static eCommonAttribute CommonAttributeFromString(const std::string &str);
         static uint CAFromString(const std::string &str);
         static std::string CAToString(uint);
+        static std::string CAToLabel(uint);
         static bool IsDamageCategoryAttribute(eCharacterAttribute attr);
         static bool IsInteger(eCharacterAttribute attr);
         static bool IsReal(eCharacterAttribute attr);

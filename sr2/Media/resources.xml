@@ -464,9 +464,9 @@
                     </image>
                     <section name="rects">
                         <rect name="slots" left="0" right="800" top="0" bottom="168"/>
-                        <rect name="equipment" left="0" right="500" top="168" bottom="500"/>
-                        <rect name="stats" left="500" right="800" top="168" bottom="500"/>
-                        <rect name="desc" left="0" right="800" top="500" bottom="600"/>
+                        <rect name="equipment" left="0" right="500" top="168" bottom="520"/>
+                        <rect name="stats" left="500" right="800" top="168" bottom="520"/>
+                        <rect name="desc" left="0" right="800" top="520" bottom="600"/>
                     </section>
                     <section name="points">
                         <point name="slot_size" x="400" y="36"/>
@@ -478,7 +478,7 @@
                         <string name="equipment" value="tb_gray"/>
                         <string name="equipment_selected" value="tb_white"/>
                         <string name="stat" value="mm_white"/>
-                        <string name="stat_name" value="mm_blue"/>
+                        <string name="stat_name" value="mm_white"/>
                         <string name="stat_down" value="mm_red"/>
                         <string name="stat_up"   value="mm_cyan"/>
                         <string name="desc"      value="sb_white"/>
@@ -650,6 +650,9 @@
                                 </sprite>
                                 <sprite name="Bow">
                                     <image file="Images/Items/Weapons/basic_bow.png"></image>
+                                </sprite>
+                                <sprite name="Axe">
+                                    
                                 </sprite>
                         </section>
                         <section name="Ammo">

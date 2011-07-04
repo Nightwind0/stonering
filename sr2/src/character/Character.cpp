@@ -125,6 +125,24 @@ uint StoneRing::ICharacter::CAFromString(const std::string &str)
     return CA_INVALID;
 }
 
+std::string StoneRing::ICharacter::CAToLabel(uint a)
+{
+    switch(a)
+    {
+        case CA_MAXHP:
+            return "MaxHP";
+        case CA_MAXMP:
+            return "MaxMP";
+        default:
+            std::string str = CAToString(a);
+            str[0] = toupper(str[0]);
+            if(IsReal(static_cast<eCharacterAttribute>(a)))
+                str += "%";
+            return str;
+    }
+}
+
+
 std::string StoneRing::ICharacter::CAToString(uint v)
 {
     for(int i =0; i < _LAST_COMMON_ATTR_; i++)

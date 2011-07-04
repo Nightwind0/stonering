@@ -100,6 +100,8 @@ private:
     bool offhand_available() const;
     int options_per_column() const;
     void draw_slots(CL_GraphicContext& gc);
+    void draw_stats(CL_GraphicContext& gc);
+    void draw_stat(CL_GraphicContext& gc, ICharacter::eCharacterAttribute stat, const CL_Pointf& point, float left ); 
     void slot_selected();
     void equipment_selected();
     void fill_equipment_menu();
@@ -128,6 +130,7 @@ private:
     uint m_nSlot;
     Character* m_pChar;
     std::vector<Equipment::eSlot> m_slots;
+    std::vector<ICharacter::eCharacterAttribute> m_stats;
     EquipmentMenu m_equipment_menu;
     bool m_bDone;
 
