@@ -101,7 +101,7 @@ private:
     int options_per_column() const;
     void draw_slots(CL_GraphicContext& gc);
     void draw_stats(CL_GraphicContext& gc);
-    void draw_stat(CL_GraphicContext& gc, ICharacter::eCharacterAttribute stat, const CL_Pointf& point, float left ); 
+    void draw_description(CL_GraphicContext& gc);
     void slot_selected();
     void equipment_selected();
     void fill_equipment_menu();

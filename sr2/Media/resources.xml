@@ -651,9 +651,74 @@
                                 <sprite name="Bow">
                                     <image file="Images/Items/Weapons/basic_bow.png"></image>
                                 </sprite>
-                                <sprite name="Axe">
-                                    
+                                <sprite name="Long Bow">
+                                    <image file="Images/Items/Weapons/basic_bow.png"></image>
                                 </sprite>
+                                <sprite name="Great Bow">
+                                    <image file="Images/Items/Weapons/basic_bow.png"></image>
+                                </sprite>
+                                <sprite name="Power Bow">
+                                    <image file="Images/Items/Weapons/basic_bow.png"></image>
+                                </sprite>               
+                                <sprite name="Master Bow">
+                                    <image file="Images/Items/Weapons/basic_bow.png"></image>
+                                </sprite>      
+                                <sprite name="Compound Bow">
+                                    <image file="Images/Items/Weapons/basic_bow.png"></image>
+                                </sprite>                                 
+                                <sprite name="Axe">
+                                    <image file="Images/Items/Weapons/basix_axe.png"></image>
+                                </sprite>
+                                <sprite name="Great Axe">
+                                    <image file="Images/Items/Weapons/GreatAxe.png"></image>
+                                </sprite>
+                                <sprite name="Poleaxe">
+                                    <image file="Images/Items/Weapons/basic_poleaxe.png"></image>
+                                </sprite>
+                                <sprite name="Broadsword">
+                                    <image file="Images/Items/Weapons/Broadsword.png"></image>
+                                </sprite>
+                                <sprite name="Longsword">
+                                    <image file="Images/Items/Weapons/Longsword.png"></image>
+                                </sprite>
+                                <sprite name="Greatsword">
+                                    <image file="Images/Items/Weapons/Longsword.png"></image>
+                                </sprite>
+                                <sprite name="Gladius">
+                                    <image file="Images/Items/Weapons/Gladius.png"></image>
+                                </sprite>
+                                <sprite name="Dagger">
+                                    <image file="Images/Items/Weapons/dagger.png"></image>
+                                </sprite>
+                                <sprite name="Knife">
+                                    <image file="Images/Items/Weapons/MercenaryKnife.png"></image>
+                                </sprite>
+                                <sprite name="Mace">
+                                    <image file="Images/Items/Weapons/DarkMace.png"></image>
+                                </sprite>
+                                <sprite name="Flail">
+                                    <image file="Images/Items/Weapons/DarkMace.png"></image>
+                                </sprite>
+                                <sprite name="Morning Star">
+                                    <image file="Images/Items/Weapons/DarkMace.png"></image>
+                                </sprite>
+                                <sprite name="Scimitar">
+                                    <image file="Images/Items/Weapons/basic_scimitar.png"></image>
+                                </sprite>
+                                <sprite name="Halberd">
+                                    <image file="Images/Items/Weapons/SteelHalberd.png"></image>
+                                </sprite>
+                                <sprite name="Rod">
+                                    <image file="Images/Items/Weapons/DarkScepter.png"></image>
+                                </sprite>
+                                <sprite name="Staff">
+                                    <image file="Images/Items/Weapons/DarkScepter.png"></image>
+                                </sprite>     
+                                <sprite name="Wand">
+                                    <image file="Images/Items/Weapons/DarkScepter.png"></image>
+                                </sprite>                                  
+                                
+                                
                         </section>
                         <section name="Ammo">
                                 <sprite name="Balloon_cyan">
