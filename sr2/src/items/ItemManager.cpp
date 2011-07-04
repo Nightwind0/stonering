@@ -790,7 +790,10 @@ Item* ItemManager::GenerateRandomItem(Item::eDropRarity rarity, int min_value, i
         for(NamedItemMap::const_iterator iter = m_named_items.begin(); 
             iter != m_named_items.end(); iter++)
             {
-                if(iter->second->GetDropRarity() == rarity)
+                if(iter->second->GetDropRarity() == rarity && iter->second->GetValue() > min_value 
+                    && iter->second->GetValue() < max_value
+                  )
+                
                     options.push_back(iter->second);
             }
             if(options.size())
@@ -803,10 +806,13 @@ Item* ItemManager::GenerateRandomItem(Item::eDropRarity rarity, int min_value, i
             for(NamedItemMap::const_iterator iter = m_named_items.begin(); 
                 iter != m_named_items.end(); iter++)
                 {
-                    if(iter->second->GetDropRarity() == rarity)
+                    if(iter->second->GetDropRarity() == rarity && iter->second->GetValue() > min_value
+                        && iter->second->GetValue() < max_value
+                      )
                         options.push_back(iter->second);
                 }
-                return options[rand() % options.size()];            
+                if(options.size())
+                    return options[rand() % options.size()];            
         }else{
             // Pick a random equipment
             Item * pItem = NULL;
@@ -823,7 +829,9 @@ Item* ItemManager::GenerateRandomItem(Item::eDropRarity rarity, int min_value, i
                 for(NamedItemMap::const_iterator iter = m_named_items.begin(); 
                     iter != m_named_items.end(); iter++)
                 {
-                    if(iter->second->GetDropRarity() == rarity)
+                    if(iter->second->GetDropRarity() == rarity && iter->second->GetValue() > min_value && 
+                        iter->second->GetValue() < max_value
+                    )
                         options.push_back(iter->second);
                 }
                 if(options.size())
