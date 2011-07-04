@@ -17,16 +17,15 @@ namespace StoneRing{
 
         enum eAttribute
         {
+            _FIRST_ATTR,
             AC,
-            RST,
-            STEAL_MP,
-            STEAL_HP,
-            CHANGE_BP,
-            STATUS // Chance of failure for a particular status effect
+            _LAST_ATTR,
+            RST
         };
 
         virtual bool IsArmor() const { return true; }
 
+        static std::string StringForAttribute(eAttribute attr);
         /*
         * These are based on the armor type, and any enhancers added by the class
         * or the unique enhancements.

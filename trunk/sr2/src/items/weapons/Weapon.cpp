@@ -29,6 +29,22 @@ bool Weapon::ForgoAttack() const
     return m_eScriptMode & FORGO_ATTACK;
 }
 
+std::string Weapon::StringForAttribute ( Weapon::eAttribute attr )
+{
+    switch(attr)
+    {
+        case ATTACK:
+            return "W.Atk";
+        case HIT:
+            return "W.Hit%";
+        case CRITICAL:
+            return "W.Crit%";
+        default:
+            assert(0);
+            return "";
+    }
+}
+
 
 std::string StoneRing::Weapon::CreateWeaponName(WeaponType *pType, WeaponClass *pClass, WeaponClass *pImbuement, RuneType *pRune)
 {
@@ -145,9 +161,6 @@ Weapon::AttributeForString(const std::string& str)
 
     if (str == "ATK") return ATTACK;
     else if(str == "HIT") return HIT;
-    else if (str == "Change_BP") return CHANGE_BP;
-    else if (str == "Steal_HP%") return STEAL_HP;
-    else if (str == "Steal_MP%") return STEAL_MP;
     else if (str == "Critical%") return CRITICAL;
     else throw CL_Exception("Bad Weapon Enhancer Attribute : " + str );
 

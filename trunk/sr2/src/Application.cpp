@@ -1717,7 +1717,7 @@ void Application::registerSteelFunctions()
     steelConst ( "$_CRITICAL", Weapon::CRITICAL );
 
     steelConst ( "$_AC", Armor::AC );
-    steelConst ( "$_ARMOR_RST", Armor::RST );
+    //steelConst ( "$_ARMOR_RST", Armor::RST );
 
     steelConst ( "$_DRAW_ILL", Character::CA_DRAW_ILL );
     steelConst ( "$_DRAW_STONE", Character::CA_DRAW_STONE );

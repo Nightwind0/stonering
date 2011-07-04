@@ -26,12 +26,11 @@ namespace StoneRing{
 #if 1 // Disabling weapon attribute, why not just have them modify the characters attributes?
         enum eAttribute
         {
+            _FIRST_ATTR,
             ATTACK,
             HIT,
-            STEAL_HP, // Needs some other way to do this
-            STEAL_MP,
-            CHANGE_BP,
-            CRITICAL
+            CRITICAL,
+            _LAST_ATTR
         };
 
         enum eScriptMode{
@@ -44,6 +43,7 @@ namespace StoneRing{
 
         static eAttribute AttributeForString(const std::string& str);
         static eScriptMode ScriptModeForString(const std::string& str);
+        static std::string StringForAttribute(eAttribute attr);
         
         virtual void Invoke(eScriptMode invokeTime, const ParameterList& params)=0;
         bool ForgoAttack() const;
