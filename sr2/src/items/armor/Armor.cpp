@@ -8,6 +8,13 @@
 
 using namespace StoneRing;
 
+
+Equipment::eSlot Armor::GetSlot() const
+{
+    return GetArmorType()->GetSlot();
+}
+
+
 std::string StoneRing::Armor::CreateArmorName(ArmorType *pType, ArmorClass *pClass, ArmorClass* pImbuement, RuneType *pRune)
 {
     std::ostringstream os;

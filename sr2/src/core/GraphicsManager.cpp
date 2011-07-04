@@ -158,6 +158,8 @@ std::string GraphicsManager::NameOfOverlay(Overlay overlay)
         return "DynamicMenu";
     case SKILL_TREE:
         return "SkillTree";
+    case EQUIP:
+        return "Equip";
     default:
         assert(0);
     }

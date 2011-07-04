@@ -1240,6 +1240,17 @@ SteelType Application::doSkill ( SteelType::Handle hSkill, SteelType::Handle hIC
     return SteelType();
 }
 
+SteelType Application::equipScreen ( SteelType::Handle hCharacter )
+{
+    Character * pChar = GrabHandle<Character*>(hCharacter);
+    
+    mEquipState.Init(pChar);
+     
+    mStates.push_back ( &mEquipState );
+    run();
+     
+    return SteelType();
+}
 
 
 void Application::LoadMainMenu ( CL_DomDocument& doc )
@@ -1849,6 +1860,7 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "isArmor", new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::isArmor) );
     mInterpreter.addFunction ( "weaponTypeIsRanged", new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::weaponTypeIsRanged) );
     mInterpreter.addFunction ( "getNamedItem", new SteelFunctor1Arg<Application,const std::string&>(this,&Application::getNamedItem) );
+    mInterpreter.addFunction ( "equipScreen", new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::equipScreen) );
 }
 
 void Application::queryJoystick()

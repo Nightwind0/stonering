@@ -41,6 +41,7 @@ namespace StoneRing
 	virtual int height_for_option(CL_GraphicContext& gc);
 	virtual void process_choice(int selection);
 	virtual int get_option_count();
+        virtual bool roll_over();
 	void addItem(Item*,int count);
 	Item * GetSelectedItem()const { return m_selected_item; }
     private:

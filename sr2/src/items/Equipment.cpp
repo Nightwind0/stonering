@@ -14,6 +14,39 @@ Equipment::~Equipment()
 {
 }
 
+std::string Equipment::GetSlotName ( Equipment::eSlot slot )
+{
+    switch(slot)
+    {
+        case EBODY:
+            return "Body";
+        case EFEET:
+            return "Feet";
+        case EFINGER1:
+            return "Ring";
+        case EFINGER2:
+            return "Ring";
+        case EHAND:
+            return "Hand";
+        case EOFFHAND:
+            return "Off Hand";
+        case EHANDS:
+            return "Gloves";
+        case EHEAD:
+            return "Head";
+        case EANY:
+            return "Any";
+        case EANYARMOR:
+            return "Any Armor";
+        case EANYHAND:
+            return "Any Hand";
+        default:
+            assert(0);
+            return "Unknown";
+    }
+}
+
+
 
 RuneType * Equipment::GetRuneType() const
 {

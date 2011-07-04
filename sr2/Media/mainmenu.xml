@@ -59,6 +59,8 @@
     </menuOption>
     <menuOption name="Equip" icon="equip">
 	<script id="MainMenuEquip">
+            declare @targets = menu::selectTargets(false);
+            equipScreen(@targets[0]);
 	</script>
     </menuOption>
     

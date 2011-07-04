@@ -64,7 +64,7 @@ bool Menu::SelectUp()
     int cursor = m_stack.front();
     if(cursor > 0)
 	cursor--;
-    else
+    else if(roll_over())
 	cursor = get_option_count() - 1;
     
     m_stack.front() = cursor;
@@ -76,7 +76,7 @@ bool Menu::SelectDown()
     int cursor = m_stack.front();
     if(cursor + 1 < get_option_count())
 	cursor++;
-    else
+    else if(roll_over())
 	cursor = 0;
     m_stack.front() = cursor;
     return true;

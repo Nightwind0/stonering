@@ -38,6 +38,8 @@ namespace StoneRing{
             EANYARMOR = (EHEAD | EHANDS | EBODY | EANYFINGER | EFEET),
             EANY = (EANYHAND | EANYARMOR)
         };
+        
+        static std::string GetSlotName(eSlot slot);
 
         RuneType * GetRuneType() const;
         bool HasRuneType() const;
@@ -46,6 +48,7 @@ namespace StoneRing{
         virtual bool IsArmor() const=0;
         bool IsWeapon() const { return !IsArmor(); }
 
+        virtual eSlot GetSlot() const=0;
         virtual void Equip(ICharacter *);
         virtual void Unequip(ICharacter *);
         virtual bool EquipCondition(const ParameterList& params)=0;

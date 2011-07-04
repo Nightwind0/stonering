@@ -5,6 +5,8 @@
 #include "ArmorTypeRef.h"
 #include "BattleMenu.h"
 #include <algorithm>
+#include "WeaponType.h"
+#include "ArmorType.h"
 
 using namespace StoneRing;
 
@@ -141,6 +143,42 @@ std::string CharacterClass::GetName() const
 {
     return m_name;
 }
+
+bool CharacterClass::CanEquip ( WeaponType* pWeaponType ) const
+{
+    for(std::list<WeaponTypeRef*>::const_iterator iter = m_weapon_types.begin();
+        iter != m_weapon_types.end(); iter++)
+        {
+            if(pWeaponType->GetName() == (*iter)->GetName())
+                return true;
+        }
+        
+        return false;
+}
+
+bool CharacterClass::CanEquip ( ArmorType* pArmorType ) const
+{
+    for(std::list<ArmorTypeRef*>::const_iterator iter = m_armor_types.begin();
+        iter != m_armor_types.end(); iter++)
+    {
+        if(pArmorType->GetName() == (*iter)->GetName())
+            return true;
+    }
+        
+    return false;
+}
+
+bool CharacterClass::CanEquip ( Equipment* pEquipment ) const
+{
+    if(pEquipment->GetItemType() == Item::WEAPON) {
+        Weapon * pWeapon = dynamic_cast<Weapon*>(pEquipment);
+        return CanEquip(pWeapon->GetWeaponType());    
+    }else {
+        Armor * pArmor = dynamic_cast<Armor*>(pEquipment);
+        return CanEquip(pArmor->GetArmorType());
+    }
+}
+
 
 StoneRing::BattleMenu * StoneRing::CharacterClass::GetBattleMenu() const{
     return m_pMenu;

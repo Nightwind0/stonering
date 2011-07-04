@@ -307,6 +307,11 @@ int ItemSelectState::get_option_count()
     return m_items [ m_itemType ].size();
 }
 
+bool ItemSelectState::roll_over() 
+{
+    return false;
+}
+
 
 void ItemSelectState::draw_categories()
 {
