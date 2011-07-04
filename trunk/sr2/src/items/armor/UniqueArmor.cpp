@@ -11,7 +11,7 @@
 using namespace StoneRing;
 
 UniqueArmor::UniqueArmor():m_pArmorType(NULL),m_pScript(NULL),
-m_pEquipScript(NULL),m_pUnequipScript(NULL)
+m_pEquipScript(NULL),m_pUnequipScript(NULL),m_pConditionScript(NULL)
 {
 
 }

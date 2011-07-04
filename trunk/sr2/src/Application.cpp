@@ -810,6 +810,25 @@ SteelType Application::getAnimation ( const std::string& name )
     return val;
 }
 
+SteelType Application::getMonsterDrops ( const SteelType::Handle hMonster )
+{
+    SteelArray array;
+    Monster * pMonster = GrabHandle<Monster*>(hMonster);
+    
+    for(std::list<ItemRef*>::const_iterator iter = pMonster->GetDropsBegin();
+        iter != pMonster->GetDropsEnd(); iter++)
+    {
+        SteelType var;
+        var.set ( (*iter)->GetItem() );
+        array.push_back(var);
+    }
+    
+    SteelType var;
+    var.set(array);
+    return var;    
+}
+
+
 
 SteelType Application::invokeArmor ( SteelType::Handle pICharacter, SteelType::Handle hArmor )
 {
@@ -1046,6 +1065,14 @@ SteelType Application::getMonsterSPReward ( const SteelType::Handle hMonster )
     return var;
 }
 
+SteelType Application::randomItem ( uint i_rarity, int min_value, int max_value )
+{
+    Item::eDropRarity rarity = static_cast<Item::eDropRarity>(i_rarity);
+    SteelType var;
+    var.set ( mItemManager.GenerateRandomItem(rarity, min_value, max_value) );
+    
+    return var;    
+}
 
 SteelType Application::generateRandomWeapon ( uint i_rarity,  int min_value, int max_value )
 {
@@ -1861,6 +1888,8 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "weaponTypeIsRanged", new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::weaponTypeIsRanged) );
     mInterpreter.addFunction ( "getNamedItem", new SteelFunctor1Arg<Application,const std::string&>(this,&Application::getNamedItem) );
     mInterpreter.addFunction ( "equipScreen", new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::equipScreen) );
+    mInterpreter.addFunction ( "randomItem", new SteelFunctor3Arg<Application,uint,int,int>(this,&Application::randomItem) );
+    mInterpreter.addFunction ( "getMonsterDrops", new SteelFunctor1Arg<Application,const SteelType::Handle>(this,&Application::getMonsterDrops) );
 }
 
 void Application::queryJoystick()

@@ -345,10 +345,11 @@ void AnimationState::move_sprite(ICharacter* pActor, ICharacter* pTarget, Sprite
     float radius = movement->circleRadius();
     float amplitude = movement->Amplitude();
     double alpha = sprite.get_alpha();
+    float scriptRotation = 0.0f;
 
     if(movement->hasMovementScript(SpriteMovement::SPRITE_ROTATION))
     {
-        rotation = (double)movement->executeMovementScript(SpriteMovement::SPRITE_ROTATION, percentage);
+        scriptRotation = (double)movement->executeMovementScript(SpriteMovement::SPRITE_ROTATION, percentage);
     }
     if(movement->hasMovementScript(SpriteMovement::SPRITE_SCALE))
     {
@@ -382,6 +383,10 @@ void AnimationState::move_sprite(ICharacter* pActor, ICharacter* pTarget, Sprite
     bool clockwise = true;
     
     double degrees = percentage * movement->Rotation();
+        
+    if(scriptRotation != 0.0f)
+        degrees = scriptRotation;  
+
     if((!pActor->IsMonster() && m_parent.MonstersOnLeft()) || 
         pActor->IsMonster() && !m_parent.MonstersOnLeft()){    
         degrees = 0 - degrees;
@@ -390,6 +395,7 @@ void AnimationState::move_sprite(ICharacter* pActor, ICharacter* pTarget, Sprite
             clockwise = false;
 
     }
+  
     
     if(movement->circleDirection() == SpriteMovement::COUNTERCLOCKWISE)
         clockwise = false;

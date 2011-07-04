@@ -41,12 +41,34 @@
 	battle::darkMode($_FINAL_DRAW);
 	showExperience(@characters,@xp_gain,@original_level, @sp_gain);
 	declare $winnings = 0;
+        declare @drops;
 	const $winningsPerLevel = 5;
 	const $winningsGrowth = 1.15;
 	foreach (declare $monster) in @monsters {
-	    $winnings += $winningsPerLevel * ($b ^ getCharacterLevel($monster));
+            declare @these_drops = getMonsterDrops($monster);
+            if(len(@these_drops)){
+                @drops += @these_drops;
+            }else {
+                $winnings += $winningsPerLevel * ($b ^ getCharacterLevel($monster));                    
+            }
 	}
-	giveGold($winnings);
+        // Give money, or extra drops?
+        if(math::randf() > 0.5)
+            giveGold($winnings);
+        else{
+            declare $rarity = $_DROP_COMMON;
+            declare $r = math::randf();
+            if($rarity > 0.9)
+                $rarity = $_DROP_RARE;
+            else if($rarity > 0.7)
+                $rarity = $_DROP_UNCOMMON;
+            declare $item = randomItem($rarity,$winnings,$winnings * (0.5 + $r));
+            if(is_valid($item))
+                push @drops, $item;
+        }
+        foreach (declare $drop) in @drops {
+            giveItem($drop,1,false);
+        }
 	]]>
 </onWon>
 <onLost>

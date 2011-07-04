@@ -5,4 +5,8 @@ var $torriq = addCharacter("Torriq",1,false);
 equip($torriq,$_HAND,"Kid Bow");
 equip($torriq,$_BODY,"Kid Vest");
 setCharacterSP($char,120);
+giveItem(getNamedItem("Moon Seed"),1,true);
+giveItem(getNamedItem("Sun Seed"),3,true);
+giveItem(getNamedItem("Star Chip"),1,true);
+giveItem(getNamedItem("Antidote"),3,true);
 
