@@ -112,8 +112,9 @@
                <weaponEnhancer multiplier="3.75" attribute="ATK"/>
                <weaponEnhancer add="0.2" attribute="HIT"/>
            </weaponClass>
-           <weaponClass name="Poison" valueMultiplier="1.5" valueAdd="5000">
-               <statusEffectInfliction statusRef="Poison" modifier="0.33"/>
+           <weaponClass name="Poison" valueMultiplier="1.5" valueAdd="0">
+               <description>15% chance of inflicting Poison on a hit.</description>
+               <statusEffectInfliction statusRef="Poison" modifier="0.15"/>
            </weaponClass>
            <weaponClass name="Deadly" valueMultiplier="2.2" valueAdd="7000">
                <weaponEnhancer multiplier="2" attribute="ATK"/>    
@@ -131,6 +132,7 @@
                <weaponEnhancer multiplier="9.5" attribute="ATK"/>
            </weaponClass>
            <weaponClass name="Medusa" valueMultiplier="4" valueAdd="12000">
+               <description>30% chance of inflicting Stone on a hit.</description>
                <weaponEnhancer attribute="ATK" multiplier="2"/>
                <statusEffectInfliction statusRef="Stone" modifier="0.30"/>
            </weaponClass>
@@ -142,10 +144,15 @@
                <weaponEnhancer attribute="ATK" multiplier="0.5"/>
                <weaponEnhancer attribute="HIT" add="0.25"/>
            </weaponClass>
+           <weaponClass name="Awful" valueMultiplier="0.1">
+               <weaponEnhancer attribute="ATK" multiplier="0.1"/>
+           </weaponClass>
            <weaponClass name="Virulent" valueMultiplier="1.3">
+               <description>20% chance of inflicting Poison on a hit.</description>
                <statusEffectInfliction statusRef="Poison" modifier="0.2"/>
            </weaponClass>
            <weaponClass name="Outrageous" valueMultiplier="2">
+               <description>20% chance of inflicting Dragon Rage on a hit.</description>
                <statusEffectInfliction statusRef="Dragon Rage" modifier="0.2"/>
            </weaponClass>
            <!--weaponClass name="" -->
@@ -227,7 +234,7 @@
            <weaponType basePrice="75" name="Gladius" baseAttack="7" hitAdd="0" baseCritical="0.07" damageCategory="slash">
                <iconRef>Weapons/gladius</iconRef>
            </weaponType>
-           <weaponType basePrice="50" name="Dagger" baseAttack="5" hitAdd="-0.03"  damageCategory="slash">
+           <weaponType basePrice="50" name="Dagger" baseAttack="5" hitAdd="-0.03"  damageCategory="slash" animationRef="stab">
                <iconRef>Weapons/dagger</iconRef>
            </weaponType>
            <weaponType basePrice="500" name="Longsword" baseAttack="60" hitAdd = "-0.05"  damageCategory="slash">
@@ -474,7 +481,7 @@
                
                
                
-               <regularItem name="Moon Seed" dropRarity="common" value = "60" reusable="false" targetable="single" use="both"  defaultTarget="party" description="Restores 25 MP.">
+               <regularItem name="Moon Seed" dropRarity="common" value = "50" reusable="false" targetable="single" use="both"  defaultTarget="party" description="Restores 25 MP.">
                    <iconRef>Items/moonseed</iconRef>
                    <script id="Moonseed">
                        doMPDamage(@_Targets[0],-25);
@@ -486,7 +493,7 @@
                        //play some sound
                    </script>
                </regularItem>
-               <regularItem name="Sun Seed" dropRarity="common" value = "50" reusable="false" targetable="single" use="both"  defaultTarget="party" description="Restores 25 HP.">
+               <regularItem name="Sun Seed" dropRarity="common" value = "20" reusable="false" targetable="single" use="both"  defaultTarget="party" description="Restores 25 HP.">
                    <iconRef>Items/sunseed</iconRef>
                    <script id="Sunseed">
                        doDamage(@_Targets[0],-25);
@@ -503,7 +510,7 @@
                        
                    </script>
                </regularItem>	
-               <regularItem name="Star Chip" dropRarity="common" value = "1200" reusable="false" targetable="single" use="both"  defaultTarget="party" description="Restore life to the deceased.">
+               <regularItem name="Star Chip" dropRarity="common" value = "200" reusable="false" targetable="single" use="both"  defaultTarget="party" description="Restore life to the deceased.">
                    <iconRef>Items/sunseed</iconRef>
                    <script id="Starchip">
                        raise(@_Targets[0]);
@@ -515,7 +522,7 @@
                        }
                    </script>
                </regularItem>
-               <regularItem name="Antidote" dropRarity="common" value="65" reusable="false" targetable="single" use="both" defaultTarget="party" description="Cures Poison.">
+               <regularItem name="Antidote" dropRarity="common" value="25" reusable="false" targetable="single" use="both" defaultTarget="party" description="Cures Poison.">
                    <iconRef>Items/antidote</iconRef>
                    <script id="Antidote">
                        removeStatusEffect(@_Targets[0],getStatusEffect("Poison"));

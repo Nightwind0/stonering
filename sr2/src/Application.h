@@ -119,6 +119,8 @@ namespace StoneRing
         //
         SteelType getCharacterAttribute(const SteelType::Handle hICharacter, uint attr);
         SteelType augmentCharacterAttribute(const SteelType::Handle hICharacter, uint attr, double augment);
+        
+        SteelType getMonsterDrops(const SteelType::Handle hMonster);
 
         SteelType getCharacterToggle(const SteelType::Handle hICharacter, uint attr);
         SteelType setCharacterToggle(const SteelType::Handle hICharacter, uint attr, bool toggle);
@@ -182,6 +184,7 @@ namespace StoneRing
         
         SteelType generateRandomWeapon(uint rarity, int min_value, int max_value);
         SteelType generateRandomArmor(uint rarity, int min_value, int max_value);
+        SteelType randomItem(uint rarity, int min_value, int max_value);
         SteelType doEquipmentStatusEffectInflictions(SteelType::Handle hEquipment, SteelType::Handle hTarget);
         SteelType equipScreen(SteelType::Handle hCharacter);
 

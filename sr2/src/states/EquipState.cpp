@@ -436,6 +436,7 @@ void EquipState::HandleButtonUp ( const StoneRing::IApplication::Button& button 
                 IApplication::GetInstance()->GetParty()->TakeItem(pEquipment,1);
                 m_pChar->Equip(m_slots[m_nSlot],pEquipment);
             }
+            m_eState = SELECT_SLOT;
         }
         
         
@@ -486,9 +487,10 @@ void EquipState::Start()
     m_stats.push_back(ICharacter::CA_JOY);
 
 
+    m_nSlot = 0;
     fill_equipment_menu();
     m_equipment_menu.DisableSelection();
-    m_nSlot = 0;
+
 }
 
 void EquipState::SteelCleanup ( SteelInterpreter* )

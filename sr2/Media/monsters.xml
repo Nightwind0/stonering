@@ -38,12 +38,6 @@
 		battle::doCharacterAnimation($Character,getAnimation("standard_monster_death"));
 	    </script>
 	</onRemove>
-        <itemRef>
-            <weaponRef>
-                <weaponTypeRef name="Knife"/>
-                <weaponClassRef name="Poor" />
-            </weaponRef>
-        </itemRef>
         <stat id="hp_max"   value="32"/>
         <stat id="mp_max" value="0"/>
         <stat id="str" value="5"/>
@@ -84,12 +78,6 @@
 		battle::doCharacterAnimation($Character,getAnimation("standard_monster_death"));
 	    </script>
 	</onRemove>
-        <itemRef>
-            <weaponRef>
-                <weaponTypeRef name="Knife"/>
-                <weaponClassRef name="Poor" />
-            </weaponRef>
-        </itemRef>
         <stat id="hp_max"   value="38"/>
         <stat id="mp_max" value="5"/>
         <stat id="str" value="8"/>

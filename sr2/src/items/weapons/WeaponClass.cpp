@@ -28,7 +28,7 @@ void WeaponClass::load_attributes(CL_DomNamedNodeMap attributes)
     m_nValueAdd = get_implied_int("valueAdd",attributes,0);
     std::string script_mode = get_implied_string("scriptMode",attributes,"attackBefore");
     m_eScriptMode = Weapon::ScriptModeForString(script_mode);
-    m_desc = get_implied_string("desc",attributes,"Description missing");
+    m_desc = get_implied_string("desc",attributes,"");
     m_bImbuement = get_implied_bool("imbuement",attributes,false);
 }
 

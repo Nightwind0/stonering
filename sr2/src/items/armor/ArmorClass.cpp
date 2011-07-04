@@ -26,7 +26,7 @@ void ArmorClass::load_attributes(CL_DomNamedNodeMap attributes)
     m_name = get_required_string("name",attributes );
     m_fValueMultiplier = get_implied_float("valueMultiplier",attributes,1);
     m_nValueAdd = get_implied_int("valueAdd",attributes,0);
-    m_desc = get_implied_string("desc",attributes,"Description Missing");
+    m_desc = get_implied_string("desc",attributes,"");
     m_bImbuement = get_implied_bool("imbuement",attributes,false);
 }
 
