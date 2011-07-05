@@ -15,6 +15,7 @@
 #include <algorithm>
 
 
+
 using namespace StoneRing;
 
 
@@ -351,12 +352,16 @@ void BattleState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
             (this->*m_draw_method)(screenRect,GC);
             GC.reset_frame_buffer();
             
-            CL_Image image(GC,texture,screenRect);
+            CL_SpriteDescription desc;
+            desc.add_frame(texture);
+            CL_Sprite sprite(GC,desc);
             CL_Rectf destRect((screenRect.get_width() - (screenRect.get_width() * passed))/2.0,
                               (screenRect.get_height() - (screenRect.get_height() * passed))/2.0,
                               (screenRect.get_width() *passed),(screenRect.get_height() * passed));
             //image.set_scale(passed,passed);
-            image.draw(GC,destRect);
+            if(m_transition == FLIP_ZOOM_SPIN)
+                sprite.set_angle(CL_Angle::from_degrees(passed * 360.0f));
+            sprite.draw(GC,destRect);
         }
     }else {
         (this->*m_draw_method)(screenRect,GC);
@@ -394,6 +399,10 @@ void BattleState::Start()
     m_draw_method = &BattleState::draw_battle;
     m_eState = TRANSITION_IN;
   
+    if(ranf() > 0.5) 
+        m_transition = FLIP_ZOOM;
+    else
+        m_transition = FLIP_ZOOM_SPIN;
 
     m_bDone = false;
 
