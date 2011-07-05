@@ -137,7 +137,11 @@
         <phase parallel="false" duration="200">
             <spriteAnimation name="pull">
                 <spriteStub who="caster" which="main"/>
-                <spriteMovement initialFocus="caster" initialFocusX="left" initialFocusY="center" endFocus="caster" endFocusX="towards" endFocusY="center" movementDierction="still"/>
+                <spriteMovement initialFocus="caster" initialFocusX="left" initialFocusY="center" endFocus="caster" endFocusX="towards" endFocusY="center" movementDierction="still">
+                    <spriteMovementScript type="spriteRotation" id="fire_arrow_rotation">
+                        return -45; // to compensate for the rotated icons
+                    </spriteMovementScript>
+                </spriteMovement>
             </spriteAnimation>
         </phase>
         <phase parallel="false" duration="200">

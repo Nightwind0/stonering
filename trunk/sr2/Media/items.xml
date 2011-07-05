@@ -513,14 +513,17 @@
                <regularItem name="Star Chip" dropRarity="common" value = "200" reusable="false" targetable="single" use="both"  defaultTarget="party" description="Restore life to the deceased.">
                    <iconRef>Items/sunseed</iconRef>
                    <script id="Starchip">
+                       <![CDATA[
                        raise(@_Targets[0]);
-                       declare $heal = getCharacterAttribute(@_Targets[0],$_MAX_HP) * 0.05;
+                       declare $heal = getCharacterAttribute(@_Targets[0],$_MAXHP) * 0.05;
+                       if($heal < 1) $heal = 1;
                        doDamage(@_Targets[0],$heal);
                        if(inBattle())
                        {
                        battle::doCharacterAnimation(@_Targets[0],getAnimation("heal"));
                        battle::createDisplay($heal,@_Targets[0],$_DISP_DAMAGE);                            
                        }
+                           ]]>
                    </script>
                </regularItem>
                <regularItem name="Antidote" dropRarity="common" value="25" reusable="false" targetable="single" use="both" defaultTarget="party" description="Cures Poison.">
