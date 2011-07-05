@@ -9,16 +9,28 @@
       </phase>
     </animation>
     <animation name="attack" type="battle">
-	<phase parallel="true" duration="300">
+	<phase parallel="true" duration="100">
 	    <spriteAnimation name="attack">
 		<battleSprite who="caster" which="attack"/>
 	    </spriteAnimation>
 	    <spriteAnimation name="attack_swing">
 		<spriteStub who="caster" which="main"/>
-		<spriteMovement initialFocus="locus" endFocus="locus" movementStyle="circle" circleStartAngle="270" rotation="90" circleDegrees="90" circleRadius="196" circleDirection="towards">
+		<!--spriteMovement initialFocus="locus" initalFocusX="left" initialFocusY="top" endFocus="locus" movementStyle="circle" circleStartAngle="290" rotation="45" circleDegrees="45" circleRadius="34" circleDirection="towards"-->
+                <spriteMovement initialFocus="caster" endFocus="caster" initialFocusX="towards" initialFocusY="top" rotation="45" movementStyle="circle" circleStartAngle="225" circleDegrees="45" circleRadius="100" circleDirection="towards">
 		</spriteMovement>
 	    </spriteAnimation>
 	</phase>
+        <phase parallel="true" duration="100">
+            <spriteAnimation name="attack">
+                <battleSprite who="caster" which="attack"/>
+            </spriteAnimation>
+            <spriteAnimation name="attack_swing">
+                <spriteStub who="caster" which="main"/>
+                <!--spriteMovement initialFocus="locus" initalFocusX="left" initialFocusY="top" endFocus="locus" movementStyle="circle" circleStartAngle="290" rotation="45" circleDegrees="45" circleRadius="34" circleDirection="towards"-->
+                <spriteMovement initialFocus="caster" endFocus="caster" initialFocusX="towards" initialFocusY="top" rotation="45" movementStyle="circle" circleStartAngle="225" circleDegrees="45" circleRadius="100" circleDirection="towards">
+                </spriteMovement>
+            </spriteAnimation>
+        </phase>        
     </animation>
     <animation name="return_from_attack" type="battle">
 	<phase parallel="false" duration="600">
