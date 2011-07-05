@@ -989,7 +989,7 @@ CL_Sizef  BattleState::get_character_size(const ICharacter* pCharacter) const
     if(pMonster != NULL){
         return const_cast<Monster*>(pMonster)->GetCurrentSprite().get_size();
     }else{
-        return CL_Sizef(64,128);
+        return CL_Sizef(60,120);
     }
 }
 

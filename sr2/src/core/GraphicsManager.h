@@ -62,6 +62,7 @@ namespace StoneRing
         static CL_Image  GetBackdrop (const std::string& name );
         static CL_Image  GetIcon ( const std::string& icon );
 	static CL_Sprite GetPortraits ( const std::string& character);
+        static CL_Sprite  GetSpriteWithImage(const CL_Image image);
 
 
         // Returns the name associated with this surface

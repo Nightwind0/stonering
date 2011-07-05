@@ -491,6 +491,26 @@ CL_Sprite GraphicsManager::GetSprite ( GraphicsManager::Overlay overlay, const s
     return sprite;
 }
 
+CL_Sprite GraphicsManager::GetSpriteWithImage ( const CL_Image image )
+{
+    // TODO: Is there a better way to do this? Such as loading the spriate frame directly from the resource manager?
+    CL_Texture texture(GET_MAIN_GC(), image.get_width(), image.get_height(), cl_rgba8);
+    CL_FrameBuffer framebuffer(GET_MAIN_GC());  
+    framebuffer.attach_color_buffer(0, texture);
+    GET_MAIN_GC().set_frame_buffer(framebuffer);
+    image.draw(GET_MAIN_GC(),0,0);
+    GET_MAIN_GC().reset_frame_buffer();
+    
+    // Okay. Now the text should have the image on it..
+    CL_SpriteDescription desc;
+    desc.add_frame(texture);
+    
+    CL_Sprite sprite(GET_MAIN_GC(),desc);
+    sprite.set_alignment(origin_center);
+    
+    return sprite;
+}
+
 
 GraphicsManager::GraphicsManager()
 {

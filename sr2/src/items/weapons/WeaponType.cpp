@@ -36,7 +36,8 @@ void WeaponType::load_attributes(CL_DomNamedNodeMap attributes)
 void WeaponType::load_finished()
 {
     try {
-	m_sprite = GraphicsManager::CreateEquipmentSprite(GraphicsManager::EQUIPMENT_SPRITE_WEAPON,m_name);
+        // TODO: Instead of this garbage, change icons into sprites everywhere...
+	m_sprite = GraphicsManager::GetSpriteWithImage(GraphicsManager::GetIcon(m_icon_ref));
     }catch(CL_Exception err)
     {
 	std::cerr << "Warning: Missing graphic for weapon type : " << m_name << std::endl;
