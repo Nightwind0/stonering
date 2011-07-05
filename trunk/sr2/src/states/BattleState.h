@@ -76,7 +76,8 @@ namespace StoneRing{
         enum eTransition 
         {
             FLIP_ZOOM,
-            FLIP_ZOOM_SPIN
+            FLIP_ZOOM_SPIN,
+            FADE_IN
         };
 
         enum eCombatState

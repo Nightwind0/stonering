@@ -343,25 +343,36 @@ void BattleState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
         if(passed >= 1.0f) {
             m_eState = COMBAT;
             next_turn();
+            (this->*m_draw_method)(screenRect,GC);            
         }else {
-          //  CL_Sizef screenSize = screenRect.get_size() * passed;
-            CL_Texture texture(GC,screenRect.get_width(),screenRect.get_height(),cl_rgba);
-            CL_FrameBuffer framebuffer(GC);
-            framebuffer.attach_color_buffer(0,texture);
-            GC.set_frame_buffer(framebuffer);
-            (this->*m_draw_method)(screenRect,GC);
-            GC.reset_frame_buffer();
-            
-            CL_SpriteDescription desc;
-            desc.add_frame(texture);
-            CL_Sprite sprite(GC,desc);
-            CL_Rectf destRect((screenRect.get_width() - (screenRect.get_width() * passed))/2.0,
-                              (screenRect.get_height() - (screenRect.get_height() * passed))/2.0,
-                              (screenRect.get_width() *passed),(screenRect.get_height() * passed));
-            //image.set_scale(passed,passed);
-            if(m_transition == FLIP_ZOOM_SPIN)
-                sprite.set_angle(CL_Angle::from_degrees(passed * 360.0f));
-            sprite.draw(GC,destRect);
+            if(m_transition == FLIP_ZOOM || 
+                m_transition == FLIP_ZOOM_SPIN ||
+                m_transition == FADE_IN
+            ){
+            //  CL_Sizef screenSize = screenRect.get_size() * passed;
+                CL_Texture texture(GC,screenRect.get_width(),screenRect.get_height(),cl_rgba);
+                CL_FrameBuffer framebuffer(GC);
+                framebuffer.attach_color_buffer(0,texture);
+                GC.set_frame_buffer(framebuffer);
+                (this->*m_draw_method)(screenRect,GC);
+                GC.reset_frame_buffer();
+                
+                CL_SpriteDescription desc;
+                desc.add_frame(texture);
+                CL_Sprite sprite(GC,desc);
+                if(m_transition == FLIP_ZOOM || m_transition == FLIP_ZOOM_SPIN){
+                    CL_Rectf destRect((screenRect.get_width() - (screenRect.get_width() * passed))/2.0,
+                                    (screenRect.get_height() - (screenRect.get_height() * passed))/2.0,
+                                    (screenRect.get_width() *passed),(screenRect.get_height() * passed));
+                    //image.set_scale(passed,passed);
+                    if(m_transition == FLIP_ZOOM_SPIN)
+                        sprite.set_angle(CL_Angle::from_degrees(passed * 360.0f));
+                    sprite.draw(GC,destRect);
+                }else if(m_transition == FADE_IN){
+                    sprite.set_alpha(passed);
+                    sprite.draw(GC,0,0);
+                }
+            }
         }
     }else {
         (this->*m_draw_method)(screenRect,GC);
@@ -399,10 +410,13 @@ void BattleState::Start()
     m_draw_method = &BattleState::draw_battle;
     m_eState = TRANSITION_IN;
   
-    if(ranf() > 0.5) 
+    float r = ranf();
+    if(r > 0.66f) 
         m_transition = FLIP_ZOOM;
-    else
+    else if(r > 0.33f)
         m_transition = FLIP_ZOOM_SPIN;
+    else
+        m_transition = FADE_IN;
 
     m_bDone = false;
 
