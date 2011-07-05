@@ -72,6 +72,12 @@ namespace StoneRing{
             BATTLE_REWARDS,
             TRANSITION_OUT
         };
+        
+        enum eTransition 
+        {
+            FLIP_ZOOM,
+            FLIP_ZOOM_SPIN
+        };
 
         enum eCombatState
         {
@@ -259,13 +265,14 @@ namespace StoneRing{
 	CL_Colorf m_darkColor;
         CL_Colorf m_status_effect_shadow_color;
         CL_Colorf m_bp_border;
+        uint m_startup_time;
         Font m_mpFont;
         Font m_bpFont;
         Font m_hpFont;
         Font m_generalFont;
         Font m_charNameFont;
 	uint m_ndarkMode;
-
+        eTransition m_transition;
         eCombatState m_combat_state;
         BattleMenuStack m_menu_stack;
         TargetingState m_targeting_state;

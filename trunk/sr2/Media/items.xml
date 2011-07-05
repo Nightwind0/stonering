@@ -514,11 +514,12 @@
                    <iconRef>Items/sunseed</iconRef>
                    <script id="Starchip">
                        raise(@_Targets[0]);
-                       doDamage(@_Targets[0],-1);
+                       declare $heal = getCharacterAttribute(@_Targets[0],$_MAX_HP) * 0.05;
+                       doDamage(@_Targets[0],$heal);
                        if(inBattle())
                        {
                        battle::doCharacterAnimation(@_Targets[0],getAnimation("heal"));
-                       battle::createDisplay(-1,@_Targets[0],$_DISP_DAMAGE);                            
+                       battle::createDisplay($heal,@_Targets[0],$_DISP_DAMAGE);                            
                        }
                    </script>
                </regularItem>

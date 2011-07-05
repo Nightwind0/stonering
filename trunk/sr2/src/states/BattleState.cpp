@@ -337,7 +337,30 @@ void BattleState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
 {
     assert(m_draw_method != NULL);
 
-    (this->*m_draw_method)(screenRect,GC);
+    if(m_eState == TRANSITION_IN){
+        float passed = (float)(CL_System::get_time() - m_startup_time) / 1000.0f;
+        if(passed >= 1.0f) {
+            m_eState = COMBAT;
+            next_turn();
+        }else {
+          //  CL_Sizef screenSize = screenRect.get_size() * passed;
+            CL_Texture texture(GC,screenRect.get_width(),screenRect.get_height(),cl_rgba);
+            CL_FrameBuffer framebuffer(GC);
+            framebuffer.attach_color_buffer(0,texture);
+            GC.set_frame_buffer(framebuffer);
+            (this->*m_draw_method)(screenRect,GC);
+            GC.reset_frame_buffer();
+            
+            CL_Image image(GC,texture,screenRect);
+            CL_Rectf destRect((screenRect.get_width() - (screenRect.get_width() * passed))/2.0,
+                              (screenRect.get_height() - (screenRect.get_height() * passed))/2.0,
+                              (screenRect.get_width() *passed),(screenRect.get_height() * passed));
+            //image.set_scale(passed,passed);
+            image.draw(GC,destRect);
+        }
+    }else {
+        (this->*m_draw_method)(screenRect,GC);
+    }
 }
 
 bool BattleState::LastToDraw() const
@@ -369,7 +392,7 @@ void BattleState::FinishTargeting()
 void BattleState::Start()
 {
     m_draw_method = &BattleState::draw_battle;
-    m_eState = COMBAT;
+    m_eState = TRANSITION_IN;
   
 
     m_bDone = false;
@@ -409,7 +432,8 @@ void BattleState::Start()
     m_bDone = false;
     roll_initiative();
     set_positions_to_loci();
-    next_turn();
+    m_startup_time = CL_System::get_time();
+    //next_turn();
 }
 
 void BattleState::init_or_release_players(bool bRelease)
@@ -504,6 +528,7 @@ void BattleState::draw_status(const CL_Rectf &screenRect, CL_GraphicContext& GC)
 
 void BattleState::draw_battle(const CL_Rectf &screenRect, CL_GraphicContext& GC)
 {
+
     m_backdrop.draw(GC,screenRect);
 
     if(m_ndarkMode == DISPLAY_ORDER_PRE_PLAYERS)
@@ -536,7 +561,7 @@ void BattleState::draw_battle(const CL_Rectf &screenRect, CL_GraphicContext& GC)
 
     if(m_ndarkMode == DISPLAY_ORDER_PRE_MENUS)
 	draw_darkness(screenRect,GC);
-    if (m_combat_state == BATTLE_MENU)
+    if (m_eState == COMBAT &&  m_combat_state == BATTLE_MENU)
     {
         draw_menus(screenRect,GC);
     }
