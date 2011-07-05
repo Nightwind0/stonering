@@ -488,7 +488,7 @@
                         <section name="rects">
                             <rect name="header" left="24" top="340" right="783" bottom="369"/>
                             <rect name="text" left="24" top="388" right="783" bottom="580"/>
-                            <rect name="rect" left="12" top="320" right="788" bottom="600"/> 
+                            <rect name="rect" left="0" top="320" right="800" bottom="600"/> 
                         </section>
                         <section name="fonts">
                                 <string name="Speaker" value="BoldBlack"/>
