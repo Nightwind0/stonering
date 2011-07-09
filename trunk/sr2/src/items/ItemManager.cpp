@@ -801,7 +801,7 @@ Item* ItemManager::GenerateRandomItem(Item::eDropRarity rarity, int min_value, i
     }else{
         float r = ranf();
         
-        if(r > 0.5f){
+        if(r > 0.8f){
             std::vector<Item*> options;
             for(NamedItemMap::const_iterator iter = m_named_items.begin(); 
                 iter != m_named_items.end(); iter++)
@@ -813,31 +813,34 @@ Item* ItemManager::GenerateRandomItem(Item::eDropRarity rarity, int min_value, i
                 }
                 if(options.size())
                     return options[rand() % options.size()];            
-        }else{
-            // Pick a random equipment
-            Item * pItem = NULL;
-            r = ranf();
-            if(r > 0.5f){
-                // Pick a random weapon
-                pItem = GenerateRandomGeneratedWeapon(rarity,min_value,max_value);
-            }else{
-                pItem = GenerateRandomGeneratedArmor(rarity,min_value,max_value);
-            }
-
-            if(pItem == NULL){
-                std::vector<Item*> options;
-                for(NamedItemMap::const_iterator iter = m_named_items.begin(); 
-                    iter != m_named_items.end(); iter++)
-                {
-                    if(iter->second->GetDropRarity() == rarity && iter->second->GetValue() > min_value && 
-                        iter->second->GetValue() < max_value
-                    )
-                        options.push_back(iter->second);
-                }
-                if(options.size())
-                    return options[rand() % options.size()];            
-            }
         }
+    
+        // Pick a random equipment
+        Item * pItem = NULL;
+        r = ranf();
+        if(r > 0.5f){
+            // Pick a random weapon
+            pItem = GenerateRandomGeneratedWeapon(rarity,min_value,max_value);
+        }else{
+            pItem = GenerateRandomGeneratedArmor(rarity,min_value,max_value);
+        }
+
+        if(pItem == NULL){
+            std::vector<Item*> options;
+            for(NamedItemMap::const_iterator iter = m_named_items.begin(); 
+                iter != m_named_items.end(); iter++)
+            {
+                if(iter->second->GetDropRarity() == rarity && iter->second->GetValue() > min_value && 
+                    iter->second->GetValue() < max_value
+                )
+                    options.push_back(iter->second);
+            }
+            if(options.size())
+                return options[rand() % options.size()];            
+        }else{
+            return pItem;
+        }
+        
     }
     
     return NULL;

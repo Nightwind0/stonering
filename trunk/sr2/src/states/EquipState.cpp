@@ -94,6 +94,11 @@ void EquipState::Init ( Character* pCharacter )
     m_equipment_menu.SetSelectedFont( m_equipment_selected_font );
     m_equipment_menu.SetRemoveIcon( m_no_equipment_icon );
     m_equipment_menu.SetHeightPerOption( m_no_equipment_icon.get_height() + 4);
+    
+    CL_Rectf stats_rect = m_stats_rect;
+    stats_rect.shrink(GraphicsManager::GetMenuInset().x*2,GraphicsManager::GetMenuInset().y*2);
+    
+    m_pStatusBox = new StatusBox(stats_rect,m_stat_font,m_stat_up_font,m_stat_down_font,m_stat_name_font);
 }
 
 
@@ -174,6 +179,13 @@ void EquipState::draw_description ( CL_GraphicContext& gc )
 
 void EquipState::draw_stats ( CL_GraphicContext& gc )
 {
+    if(m_eState == SELECT_EQUIPMENT){
+        m_equipment_menu.Choose();
+        m_pStatusBox->Draw(gc, true, m_pChar,m_pChar->GetEquipment(m_slots[m_nSlot]),m_equipment_menu.GetSelection());
+    }else{
+        m_pStatusBox->Draw(gc,false, m_pChar,NULL,NULL);
+    }
+#if 0
     CL_Rectf rect = m_stats_rect;
     rect.shrink(GraphicsManager::GetMenuInset().x*2,GraphicsManager::GetMenuInset().y*2);
     CL_FontMetrics metrics = m_stat_name_font.get_font_metrics(gc);
@@ -297,7 +309,7 @@ void EquipState::draw_stats ( CL_GraphicContext& gc )
                 newStatFont.draw_text(gc,statPoint,os.str(), Font::TOP_LEFT);                
             }
         }
-    
+#endif
         
 }
 
@@ -351,7 +363,7 @@ void EquipState::draw_slots(CL_GraphicContext& gc)
 
 void EquipState::Finish()
 {
-
+    delete m_pStatusBox;
 }
 
 void EquipState::equipment_selected()
@@ -473,20 +485,6 @@ void EquipState::Start()
     m_slots.push_back(Equipment::EFEET);
     m_slots.push_back(Equipment::EFINGER1);
     m_slots.push_back(Equipment::EFINGER2);
-    
-    m_stats.clear();
-    m_stats.push_back(ICharacter::CA_MAXHP);
-    m_stats.push_back(ICharacter::CA_MAXMP);
-    m_stats.push_back(ICharacter::CA_STR);
-    m_stats.push_back(ICharacter::CA_DEF);
-    m_stats.push_back(ICharacter::CA_DEX);
-    m_stats.push_back(ICharacter::CA_EVD);
-    m_stats.push_back(ICharacter::CA_MAG);
-    m_stats.push_back(ICharacter::CA_RST);
-    m_stats.push_back(ICharacter::CA_LCK);
-    m_stats.push_back(ICharacter::CA_JOY);
-
-
     m_nSlot = 0;
     fill_equipment_menu();
     m_equipment_menu.DisableSelection();

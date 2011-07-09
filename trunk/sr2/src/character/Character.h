@@ -69,6 +69,7 @@ namespace StoneRing{
         virtual void   IterateStatusEffects(Visitor<StatusEffect*> &);
         // Includes permanent augments
         double         GetBaseAttribute(eCharacterAttribute attr)const;
+        double         GetAttributeWithoutEquipment(eCharacterAttribute attr, Equipment * pExclude) const;
         uint   GetSP()const;
         void   SetSP(uint amount);     
 	/***************************************************************************
