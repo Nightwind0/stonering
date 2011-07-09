@@ -435,6 +435,60 @@ void StoneRing::Character::load_finished()
     // TODO: Make sure the battle sprites exist in the resources
 }
 
+double StoneRing::Character::GetAttributeWithoutEquipment ( ICharacter::eCharacterAttribute attr, StoneRing::Equipment* pExclude ) const
+{
+    double base = 0.0;
+     
+    if(!IsTransient(attr))
+    {
+        if(ICharacter::IsDamageCategoryAttribute(attr))
+        {
+            base = 1.0;
+            if(attr == ICharacter::CA_HOLY_RST)
+                base = -1.0;
+        }
+        else 
+        {
+            base = m_pClass->GetStat(attr,GetLevel());
+        }
+        // Go through all equipment, multiplying by the AMs that are mults
+        for(std::map<Equipment::eSlot,Equipment*>::const_iterator iter= m_equipment.begin();
+            iter != m_equipment.end();iter++)
+        {
+            if(pExclude != iter->second)
+                base *=  iter->second->GetAttributeMultiplier(attr);
+        }
+        for(StatusEffectMap::const_iterator iter= m_status_effects.begin();
+            iter != m_status_effects.end();iter++)
+        {
+            base *=  iter->second->GetAttributeMultiplier(attr);
+        }
+        // Same with the status effects
+        // Then do it with the adders
+        for(std::map<Equipment::eSlot,Equipment*>::const_iterator iter= m_equipment.begin();
+            iter != m_equipment.end();iter++)
+        {
+            if(pExclude != iter->second)
+                base += iter->second->GetAttributeAdd(attr);
+        }
+        for(StatusEffectMap::const_iterator iter= m_status_effects.begin();
+            iter != m_status_effects.end();iter++)
+        {
+            base += iter->second->GetAttributeAdd(attr);
+        }
+    }
+    double augment  = 0.0;
+    std::map<eCharacterAttribute,double>::const_iterator aug = m_augments.find(attr);
+    if(aug != m_augments.end())
+        augment = aug->second;
+
+    if(IsInteger(attr))
+        return static_cast<int>( base + augment );
+    else
+        return base + augment;
+}
+
+
 double StoneRing::Character::GetBaseAttribute(eCharacterAttribute attr)const
 {
     double augment  = 0.0;
@@ -456,54 +510,7 @@ double StoneRing::Character::GetBaseAttribute(eCharacterAttribute attr)const
 // this requires remembering which AM goes with which equipment/status effect
 double StoneRing::Character::GetAttribute(eCharacterAttribute attr) const
 {
-    double base = 0.0;
-     
-    if(!IsTransient(attr))
-    {
-        if(ICharacter::IsDamageCategoryAttribute(attr))
-        {
-            base = 1.0;
-            if(attr == ICharacter::CA_HOLY_RST)
-                base = -1.0;
-        }
-        else 
-        {
-            base = m_pClass->GetStat(attr,GetLevel());
-        }
-        // Go through all equipment, multiplying by the AMs that are mults
-        for(std::map<Equipment::eSlot,Equipment*>::const_iterator iter= m_equipment.begin();
-            iter != m_equipment.end();iter++)
-        {
-            base *=  iter->second->GetAttributeMultiplier(attr);
-        }
-        for(StatusEffectMap::const_iterator iter= m_status_effects.begin();
-            iter != m_status_effects.end();iter++)
-        {
-            base *=  iter->second->GetAttributeMultiplier(attr);
-        }
-        // Same with the status effects
-        // Then do it with the adders
-        for(std::map<Equipment::eSlot,Equipment*>::const_iterator iter= m_equipment.begin();
-            iter != m_equipment.end();iter++)
-        {
-            base += iter->second->GetAttributeAdd(attr);
-        }
-        for(StatusEffectMap::const_iterator iter= m_status_effects.begin();
-            iter != m_status_effects.end();iter++)
-        {
-            base += iter->second->GetAttributeAdd(attr);
-        }
-    }
-    double augment  = 0.0;
-    std::map<eCharacterAttribute,double>::const_iterator aug = m_augments.find(attr);
-    if(aug != m_augments.end())
-        augment = aug->second;
-
-    if(IsInteger(attr))
-        return static_cast<int>( base + augment );
-    else
-        return base + augment;
-
+    return GetAttributeWithoutEquipment(attr,NULL);
 }
 
 

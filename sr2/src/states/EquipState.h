@@ -21,6 +21,7 @@
 #define EQUIPSTATE_H
 #include "State.h"
 #include "Menu.h"
+#include "StatusBox.h"
 
 namespace StoneRing {
     
@@ -130,7 +131,7 @@ private:
     uint m_nSlot;
     Character* m_pChar;
     std::vector<Equipment::eSlot> m_slots;
-    std::vector<ICharacter::eCharacterAttribute> m_stats;
+    StatusBox* m_pStatusBox;
     EquipmentMenu m_equipment_menu;
     bool m_bDone;
 

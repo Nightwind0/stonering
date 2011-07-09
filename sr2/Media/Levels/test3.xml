@@ -3597,6 +3597,9 @@
                                 print(getCharacterName($character) + " HP = " + getCharacterAttribute($character,$_HP));
                                 setCharacterToggle($character,$_ALIVE,true);
                             }
+                            declare $item = randomItem($_DROP_RARE,100,4000);
+                            if(is_valid($item))
+                                giveItem($item,1,false);
                         
                         ]]>
                         </script>
