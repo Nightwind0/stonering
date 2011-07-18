@@ -24,7 +24,7 @@ namespace StoneRing{
     public:
         virtual ~IParty(){}
 
-        virtual bool GetGold() const=0;
+        virtual uint GetGold() const=0;
         virtual bool HasItem(ItemRef *pItemRef, uint count =1 )const=0;
 	virtual bool DidEvent(const std::string &event) const=0;
         virtual void DoEvent(const std::string &name, bool bRemember)=0;

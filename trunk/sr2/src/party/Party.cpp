@@ -23,7 +23,7 @@ Party::~Party()
 }
 
 
-bool Party::GetGold() const
+uint Party::GetGold() const
 {
     return m_nGold;
 }
@@ -119,7 +119,7 @@ void Party::GiveGold(int amount)
     if(amount <0 )
     {
         // They are taking..
-        if(m_nGold < amount)
+        if(m_nGold + amount < 0)
             throw CL_Exception("Attempt to take more gold than we had.");
     }
 

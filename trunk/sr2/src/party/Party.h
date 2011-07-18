@@ -27,7 +27,7 @@ namespace StoneRing{
         Party();
         ~Party();
 
-        virtual bool GetGold() const;
+        virtual uint GetGold() const;
         virtual bool HasItem(ItemRef *pItemRef, uint count = 1 )const;
         virtual bool DidEvent(const std::string &event) const;
         virtual void DoEvent(const std::string &event, bool bRemember);

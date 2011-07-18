@@ -53,9 +53,10 @@
             }
 	}
         // Give money, or extra drops?
-        if(math::randf() > 0.5)
+        if(math::randf() > 0.5){
             giveGold($winnings);
-        else{
+            say("Gold", "You find {$winnings} Gold.");
+        }else{
             declare $rarity = $_DROP_COMMON;
             declare $r = math::randf();
             if($rarity > 0.9)

@@ -84,6 +84,7 @@ namespace StoneRing
         virtual SteelType RunScript(AstScript * pScript)=0;
         virtual SteelType RunScript(AstScript *pScript, const ParameterList &params)=0;
 	virtual AstScript * GetUtility(Utility util)const=0;
+        virtual std::string GetCurrencyName()const=0;
 
     };
 

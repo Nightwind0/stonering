@@ -29,6 +29,7 @@
 #include "DynamicMenuState.h"
 #include "SkillTreeState.h"
 #include "EquipState.h"
+#include "ShopState.h"
 
 namespace StoneRing
 {
@@ -61,7 +62,7 @@ namespace StoneRing
         virtual SteelType RunScript(AstScript * pScript);
         virtual SteelType RunScript(AstScript *pScript, const ParameterList &params);
 	virtual AstScript* GetUtility(Utility util)const;
-	
+	virtual std::string GetCurrencyName() const;
 	virtual void MainMenu();
     int frameRate();
     protected:
@@ -100,7 +101,8 @@ namespace StoneRing
         SteelType selectItem(bool battle, bool dispose);
         SteelType addCharacter(const std::string &character, int level, bool announce);
 	SteelType inBattle();
-
+        SteelType shop(const SteelArray& items); // only for buying
+        
 	SteelType getPartyArray(void);
         SteelType getItemName(const SteelType::Handle hItem);
         SteelType getWeaponAttribute(const SteelType::Handle hWeapon, uint attr);
@@ -231,6 +233,7 @@ namespace StoneRing
         MapState mMapState;
         SayState mSayState;
         BattleState mBattleState;
+        ShopState mShopState;
 	ExperienceState mExperienceState;
 	MainMenuState  mMainMenuState;
 	ItemSelectState mItemSelectState;

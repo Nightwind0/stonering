@@ -455,6 +455,7 @@ double StoneRing::Character::GetAttributeWithoutEquipment ( ICharacter::eCharact
         for(std::map<Equipment::eSlot,Equipment*>::const_iterator iter= m_equipment.begin();
             iter != m_equipment.end();iter++)
         {
+            assert(iter->second);
             if(pExclude != iter->second)
                 base *=  iter->second->GetAttributeMultiplier(attr);
         }
@@ -468,6 +469,7 @@ double StoneRing::Character::GetAttributeWithoutEquipment ( ICharacter::eCharact
         for(std::map<Equipment::eSlot,Equipment*>::const_iterator iter= m_equipment.begin();
             iter != m_equipment.end();iter++)
         {
+            assert(iter->second);
             if(pExclude != iter->second)
                 base += iter->second->GetAttributeAdd(attr);
         }
@@ -557,6 +559,7 @@ bool StoneRing::Character::HasEquipment(Equipment::eSlot slot)
 // this overwrites it.
 void StoneRing::Character::Equip(Equipment::eSlot slot, Equipment *pEquip)
 {
+    assert(pEquip);
     m_equipment[slot] = pEquip;
 }
 
@@ -594,7 +597,8 @@ double StoneRing::Character::GetEquippedWeaponAttribute(Weapon::eAttribute attr)
     double v = 0.0;
     for(std::map<Equipment::eSlot,Equipment*>::const_iterator it=m_equipment.begin();
         it!=m_equipment.end();it++)
-    {
+    {      
+        assert(it->second);
         if(it->second->IsWeapon()){
             Weapon* weapon = dynamic_cast<Weapon*>(it->second);
             v += weapon->GetWeaponAttribute(attr);
@@ -609,6 +613,7 @@ double StoneRing::Character::GetEquippedArmorAttribute(Armor::eAttribute attr) c
     for(std::map<Equipment::eSlot,Equipment*>::const_iterator it=m_equipment.begin();
         it!=m_equipment.end();it++)
     {
+        assert(it->second);
         if(it->second->IsArmor()){
             Armor* armor = dynamic_cast<Armor*>(it->second);
             v += armor->GetArmorAttribute(attr);
