@@ -181,7 +181,9 @@ void EquipState::draw_stats ( CL_GraphicContext& gc )
 {
     if(m_eState == SELECT_EQUIPMENT){
         m_equipment_menu.Choose();
-        m_pStatusBox->Draw(gc, true, m_pChar,m_pChar->GetEquipment(m_slots[m_nSlot]),m_equipment_menu.GetSelection());
+        m_pStatusBox->Draw(gc, true, m_pChar,m_pChar->HasEquipment(m_slots[m_nSlot])?m_pChar->GetEquipment(m_slots[m_nSlot]):NULL,
+                           m_equipment_menu.GetSelection()
+                          );
     }else{
         m_pStatusBox->Draw(gc,false, m_pChar,NULL,NULL);
     }

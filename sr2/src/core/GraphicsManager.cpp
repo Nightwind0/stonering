@@ -160,6 +160,8 @@ std::string GraphicsManager::NameOfOverlay(Overlay overlay)
         return "SkillTree";
     case EQUIP:
         return "Equip";
+    case SHOP:
+        return "Shop";
     default:
         assert(0);
     }

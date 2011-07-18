@@ -458,6 +458,31 @@
                                 <string name="Selection" value="BoldWhite"/>
                         </section>
                 </section>
+                <section name="Shop">
+                    <section name="rects">
+                        <rect name="character" left="0" right="800" top="0" bottom="168"/>
+                        <rect name="items" left="0" right="500" top="168" bottom="520"/>
+                        <rect name="stats" left="500" right="800" top="168" bottom="520"/>
+                        <rect name="desc" left="0" right="500" top="520" bottom="600"/>
+                        <rect name="gold" left="500" right="800" top="520" bottom="600"/>
+                    </section>
+                    <section name="points">
+                        <point name="item_box" y="38" x= "0"/>
+                        
+                    </section>
+                    <section name="fonts">
+                        <string name="item" value="tb_gray"/>
+                        <string name="item_selected" value="tb_white"/>
+                        <string name="item_unavailable" value="tb_black"/>
+                        <string name="gold" value="mm_white"/>
+                        <string name="price" value="mm_white"/>
+                        <string name="stat" value="mm_white"/>
+                        <string name="stat_name" value="mm_white"/>
+                        <string name="stat_down" value="mm_red"/>
+                        <string name="stat_up"   value="mm_cyan"/>
+                        <string name="desc"      value="sb_white"/>
+                    </section>
+                </section>                
                 <section name="Equip">
                     <image name="no_equipment">
                         <image-file file="Images/Icons/icon_border.png"/>

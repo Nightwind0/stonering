@@ -77,6 +77,12 @@ int Application::GetScreenHeight() const
     return WINDOW_HEIGHT;
 }
 
+string Application::GetCurrencyName() const
+{
+    return mGold;
+}
+
+
 
 SteelType Application::playScene ( const std::string &animation )
 {
@@ -272,7 +278,7 @@ SteelType Application::invokeShop ( const std::string &shoptype )
 SteelType Application::getGold()
 {
     SteelType val;
-    val.set ( mpParty->GetGold() );
+    val.set ( (int)mpParty->GetGold() );
     return val;
 }
 
@@ -341,19 +347,7 @@ SteelType Application::takeItem ( SteelType::Handle hItem , uint count, bool sil
 
 SteelType Application::giveGold ( int amount )
 {
-    std::ostringstream os;
     mpParty->GiveGold ( amount );
-
-    if ( amount > 0 )
-    {
-        os << "You received " << amount << ' ' << mGold << '.';
-        say ( mGold, os.str() );
-    }
-    else if ( amount > 0 )
-    {
-        os << "Lost " << amount << ' ' << mGold << '.';
-        say ( mGold, os.str() );
-    }
 
     return SteelType();
 }
@@ -1279,6 +1273,15 @@ SteelType Application::equipScreen ( SteelType::Handle hCharacter )
     return SteelType();
 }
 
+SteelType Application::shop ( const SteelArray& hItems )
+{
+    mShopState.Init ( hItems );
+    
+    mStates.push_back ( &mShopState );
+    run();
+    
+    return SteelType();
+}
 
 void Application::LoadMainMenu ( CL_DomDocument& doc )
 {
@@ -1890,6 +1893,7 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "equipScreen", new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::equipScreen) );
     mInterpreter.addFunction ( "randomItem", new SteelFunctor3Arg<Application,uint,int,int>(this,&Application::randomItem) );
     mInterpreter.addFunction ( "getMonsterDrops", new SteelFunctor1Arg<Application,const SteelType::Handle>(this,&Application::getMonsterDrops) );
+    mInterpreter.addFunction ( "shop", new SteelFunctor1Arg<Application,const SteelArray&>(this,&Application::shop) );
 }
 
 void Application::queryJoystick()
