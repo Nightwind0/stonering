@@ -26,10 +26,39 @@
 using namespace StoneRing;
 
 
+namespace StoneRing{ 
+    class ItemCollector : public StoneRing::ItemVisitor
+    {
+    public:
+        ItemCollector(ShopState::ItemMenu& items):m_items(items)
+        {
+        }
+        ~ItemCollector(){}
+        void operator()(Item* pItem, int nCount)
+        {
+            // Can only sell certain types of items
+            if(pItem->GetItemType() == Item::REGULAR_ITEM ||
+                pItem->GetItemType() == Item::WEAPON ||
+                pItem->GetItemType() == Item::ARMOR)
+                m_items.AddOption(pItem,nCount);
+        }
+    private:
+        struct ItemEntry {
+            Item* m_pItem;
+            int m_count;
+        };
+        ShopState::ItemMenu& m_items;
+    };
 
-void ShopState::ItemMenu::AddOption ( Item* pOption )
+}
+
+
+void ShopState::ItemMenu::AddOption ( Item* pOption, int nCount )
 {
-    m_options.push_back ( pOption );
+    ItemEntry entry;
+    entry.m_pItem = pOption;
+    entry.m_count = nCount;
+    m_options.push_back ( entry );
 }
 
 void ShopState::ItemMenu::ClearOptions()
@@ -44,9 +73,9 @@ void ShopState::ItemMenu::DisableSelection()
 
 void ShopState::ItemMenu::draw_option ( int option, bool selected, float x, float y, CL_GraphicContext& gc )
 {
-    Item * pItem = m_options[option];
+    Item * pItem = m_options[option].m_pItem;
     Font font = m_option_font;
-    if(IApplication::GetInstance()->GetParty()->GetGold() < pItem->GetValue()){
+    if(!m_bSell && IApplication::GetInstance()->GetParty()->GetGold() < pItem->GetValue()){
         font = m_unavailable_font;
     }
     
@@ -57,9 +86,14 @@ void ShopState::ItemMenu::draw_option ( int option, bool selected, float x, floa
     CL_Image icon;
     icon = pItem->GetIcon();
     icon.draw(gc,x,y);
-    font.draw_text(gc,x + icon.get_width() + 2,y + (height_for_option(gc) - metrics.get_height())/2,pItem->GetName(), Font::TOP_LEFT);
+    std::ostringstream name_stream;
+    name_stream << pItem->GetName();
+    if(m_options[option].m_count > 1)
+        name_stream << ' ' << 'x' << m_options[option].m_count;
+    font.draw_text(gc,x + icon.get_width() + 2,y + (height_for_option(gc) - metrics.get_height())/2,name_stream.str(), Font::TOP_LEFT);
     std::ostringstream stream;
-    stream << std::setw(7) << pItem->GetValue();
+    int value = m_bSell?pItem->GetSellValue():pItem->GetValue();
+    stream << std::setw(7) << value;
     float point_x = m_rect.get_top_right().x - font.get_text_size(gc,"0000000").width;
     m_price_font.draw_text(gc,point_x,y + (height_for_option(gc) - metrics.get_height())/2,stream.str(),Font::TOP_LEFT);
 }
@@ -81,7 +115,7 @@ CL_Rectf ShopState::ItemMenu::get_rect()
 
 Item* ShopState::ItemMenu::GetSelection() const
 {
-    return m_options[m_selection];
+    return m_options[m_selection].m_pItem;
 }
 
 int ShopState::ItemMenu::height_for_option ( CL_GraphicContext& gc )
@@ -125,6 +159,11 @@ void ShopState::ItemMenu::SetPriceFont ( Font font )
     m_price_font = font;
 }
 
+void ShopState::ItemMenu::SetSellMode ( bool Sell )
+{
+    m_bSell = Sell;
+}
+
 
 void ShopState::Init ( const SteelArray& items )
 {
@@ -140,7 +179,19 @@ void ShopState::Init ( const SteelArray& items )
             m_item_menu.AddOption(pItem);
         }
    }
+   
+   m_bSell = false;
 }
+
+void ShopState::Init()
+{
+    m_bSell = true;
+    m_item_menu.ClearOptions();
+    ItemCollector collector(m_item_menu);
+    IApplication::GetInstance()->GetParty()->IterateItems(collector);
+    
+}
+
 
 
 bool ShopState::LastToDraw() const
@@ -153,7 +204,7 @@ void ShopState::MappableObjectMoveHook()
 
 }
 
-ShopState::ItemMenu::ItemMenu()
+ShopState::ItemMenu::ItemMenu():m_bSell(false)
 {
 }
 
@@ -210,6 +261,8 @@ void ShopState::Start()
     CL_Rectf stats_rect = m_stats_rect;
     stats_rect.shrink ( GraphicsManager::GetMenuInset().x, GraphicsManager::GetMenuInset().y ) ;
     m_pStatusBox = new StatusBox(stats_rect,m_stat_font,m_stat_up_font,m_stat_down_font,m_stat_name_font);
+    
+    m_item_menu.SetSellMode(m_bSell);
 
 }
 
@@ -378,12 +431,20 @@ void ShopState::HandleButtonUp ( const StoneRing::IApplication::Button& button )
             m_item_menu.Choose();
             Item * pItem = m_item_menu.GetSelection();
             int gold = IApplication::GetInstance()->GetParty()->GetGold();
-            if(gold >= pItem->GetValue()){
-                //TODO: Play ka-ching
-                IApplication::GetInstance()->GetParty()->GiveGold( - pItem->GetValue() );
-                IApplication::GetInstance()->GetParty()->GiveItem(pItem,1);
+            if(!m_bSell){
+                if(gold >= pItem->GetValue()){
+                    //TODO: Play ka-ching
+                    IApplication::GetInstance()->GetParty()->GiveGold( - pItem->GetValue() );
+                    IApplication::GetInstance()->GetParty()->GiveItem(pItem,1);
+                }else{
+                    //TODO: play bbzzt
+                }
             }else{
-                //TODO: play bbzzt
+                IApplication::GetInstance()->GetParty()->TakeItem(pItem,1);
+                IApplication::GetInstance()->GetParty()->GiveGold( pItem->GetSellValue() );
+                m_item_menu.ClearOptions();
+                ItemCollector collector(m_item_menu);
+                IApplication::GetInstance()->GetParty()->IterateItems(collector);
             }
             break;
     }
