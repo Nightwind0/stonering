@@ -3519,7 +3519,7 @@
                         <script id="useBattlePodium">
                             <![CDATA[
                                 var $decision = choice("Make your choice:", 
-                                    array("Mochi Team!","One Mochi","Shop","Nevermind"));
+                                    array("Mochi Team!","One Mochi","Shop","Sell","Nevermind"));
                                 switch($decision){
                                     case 0:
                                         startBattle("Green Tea Mochi",3,false,"grasslands");
@@ -3530,6 +3530,9 @@
                                     case 2:
                                         var @items = array(getNamedItem("Moon Seed"), getNamedItem("Sun Seed"), randomItem($_DROP_UNCOMMON,100,400));
                                         shop(@items);
+                                    break;
+                                    case 3:
+                                        sell();
                                     break;
                                     default:
                                         say("Podium","Very well.");

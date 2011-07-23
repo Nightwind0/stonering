@@ -102,7 +102,7 @@ namespace StoneRing
         SteelType addCharacter(const std::string &character, int level, bool announce);
 	SteelType inBattle();
         SteelType shop(const SteelArray& items); // only for buying
-        
+        SteelType sell();
 	SteelType getPartyArray(void);
         SteelType getItemName(const SteelType::Handle hItem);
         SteelType getWeaponAttribute(const SteelType::Handle hWeapon, uint attr);

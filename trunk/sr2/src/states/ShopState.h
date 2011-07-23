@@ -32,6 +32,7 @@ public:
     virtual ~ShopState();
 
     void Init(const SteelArray& items);
+    void Init(); // sell mode
     virtual bool IsDone() const;
     // Handle joystick / key events that are processed according to mappings
     virtual void HandleButtonUp(const IApplication::Button& button);
@@ -64,11 +65,15 @@ private:
         virtual int height_for_option(CL_GraphicContext& gc);
         virtual void process_choice(int selection);
         virtual int get_option_count();
-        
+        void SetSellMode(bool Sell);
         Item* GetSelection() const;
         void ClearOptions();
-        void AddOption(Item* pOption);
+        void AddOption(Item* pOption, int count = -1);
     private:
+        struct ItemEntry {
+            Item* m_pItem;
+            int   m_count;
+        };
         CL_Rectf m_rect;
         uint m_height_per_option;
         Font m_option_font;
@@ -77,7 +82,8 @@ private:
         Font m_unavailable_font;
         uint m_selection;
         bool m_enable_selection;
-        std::vector<Item*> m_options;        
+        bool m_bSell;
+        std::vector<ItemEntry> m_options;        
     };
     
     void draw_description(CL_GraphicContext& gc);
@@ -105,7 +111,9 @@ private:
     std::vector<Item*> m_items;
     StatusBox* m_pStatusBox;
     ItemMenu m_item_menu;
+    bool m_bSell;
     bool m_bDone;   
+    friend class ItemCollector;
 };
 }
 

@@ -1283,6 +1283,16 @@ SteelType Application::shop ( const SteelArray& hItems )
     return SteelType();
 }
 
+SteelType Application::sell ( ) 
+{
+    mShopState.Init();
+    
+    mStates.push_back( &mShopState );
+    run();
+    
+    return SteelType();
+}
+
 void Application::LoadMainMenu ( CL_DomDocument& doc )
 {
     IFactory * pFactory = IApplication::GetInstance()->GetElementFactory();
@@ -1894,6 +1904,7 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "randomItem", new SteelFunctor3Arg<Application,uint,int,int>(this,&Application::randomItem) );
     mInterpreter.addFunction ( "getMonsterDrops", new SteelFunctor1Arg<Application,const SteelType::Handle>(this,&Application::getMonsterDrops) );
     mInterpreter.addFunction ( "shop", new SteelFunctor1Arg<Application,const SteelArray&>(this,&Application::shop) );
+    mInterpreter.addFunction ( "sell", new SteelFunctorNoArgs<Application>(this,&Application::sell) );
 }
 
 void Application::queryJoystick()
