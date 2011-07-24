@@ -5,6 +5,14 @@
 #include "ItemManager.h"
 #include <sstream>
 #include "IParty.h"
+#include "GeneratedWeapon.h"
+#include "GeneratedArmor.h"
+#include "UniqueWeapon.h"
+#include "UniqueArmor.h"
+#include "WeaponType.h"
+#include "ArmorType.h"
+#include "WeaponClass.h"
+#include "ArmorClass.h"
 
 
 using StoneRing::Party;
@@ -172,7 +180,46 @@ void Party::IterateItems( StoneRing::ItemVisitor& func )
 }
 
 
+void Party::Serialize ( std::ostream& out )
+{
+    uint event_count = m_events.size();
+    out.write((char*)&event_count,sizeof(event_count));
+    for(std::set<std::string>::const_iterator iter = m_events.begin();
+        iter != m_events.end(); iter++)
+        {
+            WriteString(out,*iter);
+        }
+    uint items_size = m_items.size();
+    out.write((char*)&items_size,sizeof(uint));
+    for(std::map<std::string,ItemEntry>::const_iterator iter = m_items.begin();
+        iter != m_items.end(); iter++)
+        {
+            out.write((char*)&iter->second.m_count,sizeof(int));
+            ItemManager::SerializeItem(out,iter->second.m_pItem);
+       }
+        
+       out.write((char*)&m_nGold,sizeof(uint));
+}
 
+void Party::Deserialize ( std::istream& in )
+{
+    m_events.clear();
+    m_items.clear();
+    uint event_size;
+    in.read((char*)&event_size,sizeof(uint));
+    for(int i=0;i<event_size;i++){
+        std::string event_name = ReadString(in);
+        DoEvent(event_name,true);
+    }
+    uint item_size;
+    in.read((char*)&item_size,sizeof(uint));
+    for(int i=0;i<item_size;i++){
+        int item_count;
+        in.read((char*)&item_count,sizeof(int));
+        GiveItem(ItemManager::DeserializeItem(in),item_count);
+    }    
+    in.read((char*)&m_nGold,sizeof(uint));
+}
 
 
 

@@ -69,7 +69,8 @@ namespace StoneRing{
         double GetAttributeAdd(uint attr)const;
         bool   GetAttributeToggle(uint attr, bool current)const;
         
-        double GetStatusEffectModifier(const std::string &statuseffect)const;      
+        double GetStatusEffectModifier(const std::string &statuseffect)const;   
+        
     protected:
         virtual void OnEquipScript(const ParameterList& params)=0;
         virtual void OnUnequipScript(const ParameterList& params)=0;

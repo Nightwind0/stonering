@@ -108,6 +108,12 @@ namespace StoneRing{
         bool HasSkill(const std::string& skill);
         
         
+        /*************************************************************************
+         *  Save & Load
+         * **********************************************************************/
+        void Serialize(std::ostream& out);
+        void Deserialize(std::istream& in);
+        
         // Element API
         virtual eElement WhichElement() const { return ECHARACTER; }
     private:

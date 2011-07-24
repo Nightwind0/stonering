@@ -736,3 +736,53 @@ CL_Sprite StoneRing::Character::GetCurrentSprite(bool pure)
     return m_currentSprite;
 }
 
+void StoneRing::Character::Serialize ( std::ostream& out )
+{
+    WriteString(out,m_name);
+    out.write((char*)&m_nLevel,sizeof(uint));
+    out.write((char*)&m_nXP,sizeof(uint));
+    out.write((char*)&m_nSP,sizeof(uint));
+    out.write((char*)&m_nBP,sizeof(uint));
+    
+    uint augment_count = m_augments.size();
+    out.write((char*)&augment_count,sizeof(uint));
+    for(std::map<eCharacterAttribute,double>::const_iterator iter = m_augments.begin();
+        iter != m_augments.end(); iter++){
+            out.write((char*)&iter->first,sizeof(eCharacterAttribute));
+            out.write((char*)&iter->second,sizeof(double));
+    }
+    
+    uint toggle_count = m_toggles.size();
+    out.write((char*)&toggle_count,sizeof(uint));
+    for(std::map<eCharacterAttribute,bool>::const_iterator iter = m_toggles.begin();
+        iter != m_toggles.end(); iter++){
+        out.write((char*)&iter->first,sizeof(eCharacterAttribute));
+        out.write((char*)&iter->second,sizeof(bool));
+    }
+    
+    uint skill_size = m_skillset.size();
+    out.write((char*)&skill_size,sizeof(uint));
+    for(std::set<std::string>::const_iterator iter = m_skillset.begin();
+        iter != m_skillset.end(); iter++){
+        WriteString(out,*iter);
+    }
+    uint equipment_count =  m_equipment.size();
+    for(std::map<Equipment::eSlot,Equipment*>::const_iterator iter = m_equipment.begin();
+        iter != m_equipment.end(); iter++){
+        out.write((char*)&iter->first,sizeof(uint));
+        Equipment* pEquip = iter->second;
+        ItemManager::SerializeItem(out,pEquip);        
+    }
+}
+
+void StoneRing::Character::Deserialize ( std::istream& in )
+{
+    m_name = ReadString(in);
+}
+
+
+
+
+
+
+

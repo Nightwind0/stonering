@@ -42,14 +42,13 @@ void StoneRing::ItemRef::load_attributes(CL_DomNamedNodeMap attributes)
 
 void StoneRing::ItemRef::load_finished()
 {
-    ItemManager * pItemManager = IApplication::GetInstance()->GetItemManager();
 
     if(m_eType == INVALID)
     {
         throw CL_Exception("Item Ref with no child");
     }
 
-    m_pItem = pItemManager->GetItem ( *this );
+    m_pItem = ItemManager::GetItem ( *this );
 
 }
 

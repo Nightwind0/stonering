@@ -26,20 +26,19 @@ std::string ArmorRef::GetName() const
 
 bool ArmorRef::handle_element(eElement element, Element * pElement)
 {
-    const ItemManager * pItemManager = IApplication::GetInstance()->GetItemManager();
 
     switch(element)
     {
     case EARMORTYPEREF:
         m_pType = (dynamic_cast<ArmorTypeRef*>(pElement));
-        m_pArmorType = pItemManager->GetArmorType(*m_pType);
+        m_pArmorType = ItemManager::GetArmorType(*m_pType);
         break;
     case EARMORCLASSREF:
         m_pClass =  (dynamic_cast<ArmorClassRef*>(pElement));
-        m_pArmorClass = pItemManager->GetArmorClass (*m_pClass);
+        m_pArmorClass = ItemManager::GetArmorClass (*m_pClass);
         break;
     case EARMORIMBUEMENTREF:
-        m_pImbuement = pItemManager->GetArmorImbuement(* dynamic_cast<ArmorImbuementRef*>(pElement));
+        m_pImbuement = ItemManager::GetArmorImbuement(* dynamic_cast<ArmorImbuementRef*>(pElement));
         break;
     case ERUNETYPE:
         m_pRuneType = dynamic_cast<RuneType*>(pElement);

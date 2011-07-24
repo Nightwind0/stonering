@@ -50,7 +50,6 @@ namespace StoneRing
         virtual void PopLevelStack(bool);
         virtual IParty * GetParty() const;
         virtual AbilityManager * GetAbilityManager();
-        virtual ItemManager * GetItemManager();
         virtual IFactory * GetElementFactory() { return &mElementFactory; }
         virtual CharacterManager * GetCharacterManager() { return &mCharacterManager; }
         virtual CL_Rect GetDisplayRect() const;
@@ -189,6 +188,8 @@ namespace StoneRing
         SteelType randomItem(uint rarity, int min_value, int max_value);
         SteelType doEquipmentStatusEffectInflictions(SteelType::Handle hEquipment, SteelType::Handle hTarget);
         SteelType equipScreen(SteelType::Handle hCharacter);
+        SteelType save(int slot);
+        SteelType load(int slot);
 
         void steelConst(const std::string &name, int value);
         void steelConst(const std::string &name, double value);
@@ -218,7 +219,6 @@ namespace StoneRing
         int calc_fps(int);
 
         Party *mpParty;
-        ItemManager mItemManager;
         AbilityManager mAbilityManager;
         CharacterManager mCharacterManager;
         SteelInterpreter mInterpreter;

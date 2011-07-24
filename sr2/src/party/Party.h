@@ -7,6 +7,7 @@
 #include <string>
 #include <set>
 #include <map>
+#include <fstream>
 #ifdef _WIN32
 #include "SteelType.h"
 #else
@@ -46,7 +47,9 @@ namespace StoneRing{
         virtual uint GetCharacterCount() const ;
         virtual ICharacter * GetCharacter(uint index) const ;
 
-
+        void Serialize(std::ostream & out);
+        void Deserialize(std::istream & in);
+        
       private:
           
           struct ItemEntry {

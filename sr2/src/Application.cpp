@@ -284,10 +284,8 @@ SteelType Application::getGold()
 
 SteelType Application::hasItem ( const std::string &item, uint count )
 {
-    ItemManager * pMgr = IApplication::GetInstance()->GetItemManager();
-    assert ( pMgr );
     SteelType var;
-    var.set ( mpParty->HasItem ( pMgr->GetNamedItem ( item ), count ) );
+    var.set ( mpParty->HasItem ( ItemManager::GetNamedItem ( item ), count ) );
 
     return var;
 }
@@ -308,7 +306,7 @@ SteelType Application::doEvent ( const std::string &event, bool bRemember )
 
 SteelType Application::getNamedItem ( const std::string &item ) 
 {
-    Item * pItem = mItemManager.GetNamedItem(item);
+    Item * pItem = ItemManager::GetNamedItem(item);
     
     SteelType var;
     var.set(pItem);
@@ -542,7 +540,7 @@ SteelType Application::equip ( SteelType::Handle hCharacter, int slot, const std
 
     if ( !pCharacter ) throw TypeMismatch();
 
-    Equipment * pEquipment = dynamic_cast<Equipment*> ( mItemManager.GetNamedItem ( equipment ) );
+    Equipment * pEquipment = dynamic_cast<Equipment*> ( ItemManager::GetNamedItem ( equipment ) );
 
     SteelType result;
 
@@ -1063,7 +1061,7 @@ SteelType Application::randomItem ( uint i_rarity, int min_value, int max_value 
 {
     Item::eDropRarity rarity = static_cast<Item::eDropRarity>(i_rarity);
     SteelType var;
-    var.set ( mItemManager.GenerateRandomItem(rarity, min_value, max_value) );
+    var.set ( ItemManager::GenerateRandomItem(rarity, min_value, max_value) );
     
     return var;    
 }
@@ -1071,7 +1069,7 @@ SteelType Application::randomItem ( uint i_rarity, int min_value, int max_value 
 SteelType Application::generateRandomWeapon ( uint i_rarity,  int min_value, int max_value )
 {
     Item::eDropRarity rarity = static_cast<Item::eDropRarity>(i_rarity);
-    Weapon * pWeapon = mItemManager.GenerateRandomGeneratedWeapon(rarity, min_value,max_value);
+    Weapon * pWeapon = ItemManager::GenerateRandomGeneratedWeapon(rarity, min_value,max_value);
     SteelType var;
     var.set(pWeapon);
     
@@ -1081,7 +1079,7 @@ SteelType Application::generateRandomWeapon ( uint i_rarity,  int min_value, int
 SteelType Application::generateRandomArmor ( uint i_rarity, int min_value, int max_value )
 {
     Item::eDropRarity rarity = static_cast<Item::eDropRarity>(i_rarity);    
-    Armor * pArmor = mItemManager.GenerateRandomGeneratedArmor(rarity, min_value,max_value);
+    Armor * pArmor = ItemManager::GenerateRandomGeneratedArmor(rarity, min_value,max_value);
     SteelType var;
     var.set(pArmor);
     
@@ -1293,6 +1291,22 @@ SteelType Application::sell ( )
     return SteelType();
 }
 
+SteelType Application::save(int slot)
+{
+    std::ofstream out("save.sr2s",std::ios::binary);
+    mpParty->Serialize(out);
+    out.close();
+    return SteelType();
+}
+
+SteelType Application::load(int slot)
+{
+    std::ifstream in("save.sr2s",std::ios::binary);
+    mpParty->Deserialize(in);
+    in.close();
+    return SteelType();
+}
+
 void Application::LoadMainMenu ( CL_DomDocument& doc )
 {
     IFactory * pFactory = IApplication::GetInstance()->GetElementFactory();
@@ -1323,10 +1337,6 @@ IParty * Application::GetParty() const
 }
 
 
-ItemManager * Application::GetItemManager()
-{
-    return &mItemManager;
-}
 
 AbilityManager * Application::GetAbilityManager()
 {
@@ -1905,6 +1915,8 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "getMonsterDrops", new SteelFunctor1Arg<Application,const SteelType::Handle>(this,&Application::getMonsterDrops) );
     mInterpreter.addFunction ( "shop", new SteelFunctor1Arg<Application,const SteelArray&>(this,&Application::shop) );
     mInterpreter.addFunction ( "sell", new SteelFunctorNoArgs<Application>(this,&Application::sell) );
+    mInterpreter.addFunction ( "save", new SteelFunctor1Arg<Application,int>(this,&Application::save) );
+    mInterpreter.addFunction ( "load", new SteelFunctor1Arg<Application,int>(this,&Application::load) );
 }
 
 void Application::queryJoystick()
@@ -2012,6 +2024,7 @@ void Application::loadscript ( std::string &o_str, const std::string & filename 
 int Application::main ( const std::vector<CL_String> &args )
 {
     GraphicsManager::initialize();
+    ItemManager::initialize();
 
 #ifndef NDEBUG
 

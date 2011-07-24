@@ -47,6 +47,7 @@ namespace StoneRing{
         
         virtual void Invoke(eScriptMode invokeTime, const ParameterList& params)=0;
         bool ForgoAttack() const;
+        
 
         /*
         * These are based on the weapon type, and any enhancers added by the class
@@ -59,8 +60,6 @@ namespace StoneRing{
         bool ScriptModeApplies(eScriptMode mode) const { return m_eScriptMode & mode; }
 
 #endif
-
-
         static std::string CreateWeaponName(WeaponType *pType, WeaponClass *pClass,
             WeaponClass* pImbuement, RuneType *pRune);
 

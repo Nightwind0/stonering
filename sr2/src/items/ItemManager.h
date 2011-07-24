@@ -15,29 +15,34 @@ namespace StoneRing
     class ItemManager
     {
     public:
-        ItemManager();
-        ~ItemManager();
 
-        void LoadItemFile ( CL_DomDocument &doc );
+        static void initialize();
 
-        WeaponType*  GetWeaponType( const WeaponTypeRef &ref ) const;
-        ArmorType*   GetArmorType ( const ArmorTypeRef &ref ) const;
-        WeaponType*  GetWeaponType( const std::string &name ) const;
-        ArmorType*   GetArmorType ( const std::string &name ) const;
+        static void LoadItemFile ( CL_DomDocument &doc );
 
-        WeaponClass* GetWeaponClass ( const WeaponClassRef & ref ) const;
-        ArmorClass * GetArmorClass  ( const ArmorClassRef & ref ) const;
-        WeaponClass* GetWeaponClass ( const std::string &name ) const;
-        ArmorClass * GetArmorClass  ( const std::string &name ) const;
-        WeaponClass* GetWeaponImbuement ( const WeaponImbuementRef & ref ) const;
-        ArmorClass * GetArmorImbuement  ( const ArmorImbuementRef & ref ) const;
+        static WeaponType*  GetWeaponType( const WeaponTypeRef &ref );
+        static ArmorType*   GetArmorType ( const ArmorTypeRef &ref );
+        static WeaponType*  GetWeaponType( const std::string &name );
+        static ArmorType*   GetArmorType ( const std::string &name );
+
+        static WeaponClass* GetWeaponClass ( const WeaponClassRef & ref );
+        static ArmorClass * GetArmorClass  ( const ArmorClassRef & ref );
+        static WeaponClass* GetWeaponClass ( const std::string &name );
+        static ArmorClass * GetArmorClass  ( const std::string &name );
+        static WeaponClass* GetWeaponImbuement ( const WeaponImbuementRef & ref );
+        static ArmorClass * GetArmorImbuement  ( const ArmorImbuementRef & ref );
+        static WeaponClass* GetWeaponImbuement ( const std::string& name );
+        static ArmorClass* GetArmorImbuement  ( const std::string& name );
         
-        Armor*       GenerateRandomGeneratedArmor     ( Item::eDropRarity rarity, int min_value, int max_value )const;
-        Weapon*      GenerateRandomGeneratedWeapon    ( Item::eDropRarity rarity, int min_value, int max_value )const;
-        Item*        GenerateRandomItem               ( Item::eDropRarity rarity, int in_value, int max_value )const;
+        static Armor*       GenerateRandomGeneratedArmor     ( Item::eDropRarity rarity, int min_value, int max_value );
+        static Weapon*      GenerateRandomGeneratedWeapon    ( Item::eDropRarity rarity, int min_value, int max_value );
+        static Item*        GenerateRandomItem               ( Item::eDropRarity rarity, int in_value, int max_value );
 
-        Item * GetNamedItem( const std::string &name ) const;
-        virtual Item * GetItem( const ItemRef & ref );
+        static Item * GetNamedItem( const std::string &name );
+        static Item * GetItem( const ItemRef & ref );
+        
+        static void SerializeItem(std::ostream& out, Item* pItem);
+        static Item* DeserializeItem(std::istream& in);
 #ifndef NDEBUG
         void DumpItemList();
         void PrintAttributeEnhancers(Equipment * pItem );
@@ -47,8 +52,8 @@ namespace StoneRing
         typedef std::map<ItemRef,Item*> ItemMap;
         typedef std::map<std::string,Item*> NamedItemMap;
 
-        Weapon * createWeapon(WeaponRef *pRef)const;
-        Armor * createArmor(ArmorRef *pRef)const;
+        static Weapon * createWeapon(WeaponRef *pRef);
+        static Armor * createArmor(ArmorRef *pRef);
 
         std::vector<WeaponClass*> m_weapon_classes;
         std::vector<ArmorClass*> m_armor_classes;
@@ -58,6 +63,11 @@ namespace StoneRing
         std::vector<ArmorClass*> m_armor_imbuements;
         ItemMap m_items;
         NamedItemMap m_named_items;
+        
+        static ItemManager * m_pInstance;
+        ItemManager();
+        ~ItemManager();
+        
     };
 }
 #endif

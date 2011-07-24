@@ -65,7 +65,6 @@ namespace StoneRing{
         virtual uint GetSellValue() const = 0;
         static std::string ItemTypeAsString ( Item::eItemType type );
         static eDropRarity DropRarityFromString(const std::string &str);
-
         virtual bool operator == ( const ItemRef &ref )=0;
 
     private:

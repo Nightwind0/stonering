@@ -81,9 +81,8 @@ bool UniqueArmor::handle_element(eElement element, Element * pElement)
     {
     case EARMORTYPEREF:
     {
-        const ItemManager * pItemManager = IApplication::GetInstance()->GetItemManager();
         ArmorTypeRef * pType = dynamic_cast<ArmorTypeRef*>(pElement);
-        m_pArmorType = pItemManager->GetArmorType( *pType );
+        m_pArmorType = ItemManager::GetArmorType( *pType );
         break;
     }
     case EARMORENHANCER:

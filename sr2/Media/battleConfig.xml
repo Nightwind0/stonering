@@ -52,6 +52,7 @@
                 $winnings += $winningsPerLevel * ($b ^ getCharacterLevel($monster));                    
             }
 	}
+        $winnings = integer($winnings);
         // Give money, or extra drops?
         if(math::randf() > 0.5){
             giveGold($winnings);

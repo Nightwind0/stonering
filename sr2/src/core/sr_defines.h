@@ -184,6 +184,9 @@ const CL_Pointf kEmptyPoint(0.0f,0.0f);
 
 CL_Colorf operator*(CL_Colorf a, CL_Colorf);
 
+void WriteString(std::ostream& stream, const std::string&);
+std::string ReadString(std::istream& stream);
+
 #endif
 
 

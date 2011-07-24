@@ -19,20 +19,19 @@ std::string WeaponRef::GetName() const
 
 bool WeaponRef::handle_element(eElement element, Element * pElement)
 {
-    const ItemManager * pItemManager = IApplication::GetInstance()->GetItemManager();
 
     switch(element)
     {
     case EWEAPONTYPEREF:
         m_pType =  dynamic_cast<WeaponTypeRef*>(pElement);
-        m_pWeaponType = pItemManager->GetWeaponType(*m_pType);
+        m_pWeaponType = ItemManager::GetWeaponType(*m_pType);
         break;
     case EWEAPONCLASSREF:
         m_pClass = dynamic_cast<WeaponClassRef*>(pElement);
-        m_pWeaponClass = pItemManager->GetWeaponClass ( *m_pClass );
+        m_pWeaponClass = ItemManager::GetWeaponClass ( *m_pClass );
         break;
     case EWEAPONIMBUEMENTREF:
-        m_pImbuement = pItemManager->GetWeaponImbuement(*dynamic_cast<WeaponImbuementRef*>(pElement));
+        m_pImbuement = ItemManager::GetWeaponImbuement(*dynamic_cast<WeaponImbuementRef*>(pElement));
         break;
     case ERUNETYPE:
         m_pRuneType = dynamic_cast<RuneType*>(pElement);
