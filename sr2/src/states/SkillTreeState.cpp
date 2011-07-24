@@ -51,6 +51,7 @@ void SkillTreeState::Init ( StoneRing::Character* pCharacter, bool buy )
     m_description = GraphicsManager::GetRect(GraphicsManager::SKILL_TREE,"desc");
     m_menu = GraphicsManager::GetRect(GraphicsManager::SKILL_TREE,"menu");
     m_reqs = GraphicsManager::GetRect(GraphicsManager::SKILL_TREE,"reqs");
+    m_char_rect = GraphicsManager::GetRect(GraphicsManager::SKILL_TREE,"char");
     m_path_rect = GraphicsManager::GetRect(GraphicsManager::SKILL_TREE,"path");
     m_icon_point = GraphicsManager::GetPoint(GraphicsManager::SKILL_TREE,"icon");
     m_cost_point = GraphicsManager::GetPoint(GraphicsManager::SKILL_TREE,"points");
@@ -226,9 +227,13 @@ CL_Rectf SkillTreeState::get_rect()
 
 void SkillTreeState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
 {
-    MenuBox::Draw(GC,screenRect);
+    //MenuBox::Draw(GC,screenRect);
+    CL_Draw::fill(GC,screenRect,CL_Colorf::black);
     CL_Rectf box = m_menu;
-    MenuBox::Draw(GC,m_menu,false);
+    MenuBox::Draw(GC,m_menu,false, kEmptyPoint);
+    MenuBox::Draw(GC,m_path_rect,false, kEmptyPoint);
+    MenuBox::Draw(GC,m_description,false, kEmptyPoint);
+    MenuBox::Draw(GC,m_char_rect,false,kEmptyPoint);
     std::deque<SkillTreeNode*> skillStack;
     std::ostringstream pathDesc;
     
@@ -252,8 +257,9 @@ void SkillTreeState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
             pathDesc << " > ";
     }
     
-    
-    draw_text(GC, m_path_font, m_path_rect, pathDesc.str());  
+    CL_Rect path_rect = m_path_rect;
+    path_rect.shrink ( GraphicsManager::GetMenuInset().x, GraphicsManager::GetMenuInset().y );
+    draw_text(GC, m_path_font, path_rect, pathDesc.str());  
     Menu::Draw( GC );
     
     // Draw portrait
@@ -266,7 +272,9 @@ void SkillTreeState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
     Skill * pSkill = pNode->GetRef()->GetSkill();
     SkillRef* pSkillRef = pNode->GetRef();
     
-    draw_text(GC, m_desc_font, m_description, pSkill->GetDescription()); 
+    CL_Rect desc_rect = m_description;
+    desc_rect.shrink ( GraphicsManager::GetMenuInset().x, GraphicsManager::GetMenuInset().y );
+    draw_text(GC, m_desc_font, desc_rect, pSkill->GetDescription()); 
     
     m_char_name_font.draw_text(GC,m_char_name_pt.x,m_char_name_pt.y, m_pChar->GetName());
     m_char_sp_font.draw_text(GC,m_char_sp_pt.x,m_char_sp_pt.y, "SP " +IntToString(m_pChar->GetSP()));
@@ -285,7 +293,7 @@ void SkillTreeState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
     CL_Rectf req_box = m_reqs;
 
     req_box.shrink(GraphicsManager::GetMenuInset().x,GraphicsManager::GetMenuInset().y);
-    req_box.translate(GraphicsManager::GetMenuInset());
+    //req_box.translate(GraphicsManager::GetMenuInset());
     std::ostringstream reqs;
     if(pNode->GetParent())
     {

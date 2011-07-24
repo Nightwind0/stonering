@@ -575,10 +575,11 @@
                         </sprite>
                     </section>
                     <section name="rects">
-                        <rect name="reqs" left="50" top="482" right="750" bottom="572"/>
-                        <rect name="menu" left="50" top="72" right="464" bottom="388"/>
-                        <rect name="desc" left="50" top="390" right="750" bottom="470"/>
-                        <rect name="path" left="50" top="20" right="750" bottom="68"/>
+                        <rect name="reqs" left="0" top="470" right="800" bottom="600"/>
+                        <rect name="menu" left="0" top="50" right="464" bottom="370"/>
+                        <rect name="desc" left="0" top="370" right="800" bottom="470"/>
+                        <rect name="path" left="0" top="0" right="800" bottom="50"/>
+                        <rect name="char" left="464" right="800" top="50" bottom="370"/>
                     </section>
                     <section name="gradients">
                         <!--gradient name="unavailable" top_left="#808080" top_right="#808080" bottom_left="#303030" bottom_right="#303030"/-->

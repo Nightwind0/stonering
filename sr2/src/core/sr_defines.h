@@ -180,6 +180,7 @@ public:
     virtual void Visit(T)=0;    
 };
 
+const CL_Pointf kEmptyPoint(0.0f,0.0f);
 
 CL_Colorf operator*(CL_Colorf a, CL_Colorf);
 
