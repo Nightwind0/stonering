@@ -516,8 +516,10 @@
                        <![CDATA[
                        raise(@_Targets[0]);
                        declare $heal = getCharacterAttribute(@_Targets[0],$_MAXHP) * 0.05;
-                       if($heal < 1) $heal = 1;
-                       doDamage(@_Targets[0],$heal);
+                       if($heal < 6){ 
+                            $heal = 6;
+                       }
+                       doDamage(@_Targets[0],0-$heal);
                        if(inBattle())
                        {
                        battle::doCharacterAnimation(@_Targets[0],getAnimation("heal"));

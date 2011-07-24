@@ -70,7 +70,6 @@ namespace StoneRing
         virtual IParty * GetParty() const=0;
        // virtual IParty * GetReserveParty() const=0;
         virtual AbilityManager * GetAbilityManager() = 0;
-        virtual ItemManager * GetItemManager() = 0;
         virtual IFactory * GetElementFactory() = 0;
         virtual CharacterManager * GetCharacterManager() = 0;
         virtual void StartBattle(const MonsterGroup &group, const std::string &backdrop)=0;

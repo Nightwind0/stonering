@@ -127,7 +127,7 @@ void AppUtils::LoadItems(const std::string &filename)
     CL_DomDocument document;
 
     document.load(file);
-    GetItemManager()->LoadItemFile ( document );
+    ItemManager::LoadItemFile ( document );
 }
 
 void AppUtils::LoadMainMenu(const std::string &filename)
@@ -143,15 +143,6 @@ void AppUtils::LoadMainMenu(const std::string &filename)
     IApplication::GetInstance()->LoadMainMenu(document);
 }
 
-
-
-StoneRing::ItemManager * AppUtils::GetItemManager()
-{
-    IApplication *pApp = IApplication::GetInstance();
-    assert ( NULL != pApp );
-
-    return pApp->GetItemManager();
-}
 
 StoneRing::CharacterManager * AppUtils::GetCharacterManager()
 {

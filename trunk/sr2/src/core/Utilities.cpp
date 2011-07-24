@@ -2,6 +2,26 @@
 #include "GraphicsManager.h"
 #include <iomanip>
 
+
+void WriteString(std::ostream& stream, const std::string& str)
+{
+    int size = str.size();
+    stream.write((char*)&size,sizeof(int));
+    stream.write(str.c_str(),size);
+}
+
+std::string ReadString(std::istream& stream)
+{
+    int size;
+    stream.read((char*)&size,sizeof(int));
+    char *buffer = new char[size+1];
+    memset(buffer,0,size+1*sizeof(char));
+    stream.read(buffer,size * sizeof(char));
+   
+    return std::string(buffer);
+}
+
+
 std::string IntToString(const int &i, int width)
 {
     std::ostringstream os;

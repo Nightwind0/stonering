@@ -102,7 +102,7 @@ private:
 };
 
 
-
+ItemManager * ItemManager::m_pInstance = NULL;
 
 
 ItemManager::ItemManager()
@@ -113,6 +113,12 @@ ItemManager::~ItemManager()
 {
     // Clean up items..
 }
+
+void ItemManager::initialize()
+{
+    m_pInstance = new ItemManager();
+}
+
 
 
 void ItemManager::LoadItemFile ( CL_DomDocument &doc )
@@ -129,9 +135,9 @@ void ItemManager::LoadItemFile ( CL_DomDocument &doc )
         WeaponClass * pWeaponClass = dynamic_cast<WeaponClass*>( pItemFactory->createElement("weaponClass") );
         pWeaponClass->Load(weaponClassNode);
         if(pWeaponClass->Imbuement())
-            m_weapon_imbuements.push_back( pWeaponClass );
+            m_pInstance->m_weapon_imbuements.push_back( pWeaponClass );
         else
-            m_weapon_classes.push_back ( pWeaponClass );
+            m_pInstance->m_weapon_classes.push_back ( pWeaponClass );
         weaponClassNode = weaponClassNode.get_next_sibling().to_element();
     }
     
@@ -146,7 +152,7 @@ void ItemManager::LoadItemFile ( CL_DomDocument &doc )
     {
         WeaponType * pWeaponType = dynamic_cast<WeaponType*>( pItemFactory->createElement("weaponType") );
         pWeaponType->Load(weaponTypeNode);
-        m_weapon_types.push_back ( pWeaponType );
+        m_pInstance->m_weapon_types.push_back ( pWeaponType );
 
         weaponTypeNode = weaponTypeNode.get_next_sibling().to_element();
     }
@@ -160,9 +166,9 @@ void ItemManager::LoadItemFile ( CL_DomDocument &doc )
         ArmorClass * pArmorClass = dynamic_cast<ArmorClass*>( pItemFactory->createElement("armorClass") );
         pArmorClass->Load(armorClassNode);
         if(pArmorClass->Imbuement())
-            m_armor_imbuements.push_back ( pArmorClass );
+            m_pInstance->m_armor_imbuements.push_back ( pArmorClass );
         else 
-            m_armor_classes.push_back ( pArmorClass);
+            m_pInstance->m_armor_classes.push_back ( pArmorClass);
 
         armorClassNode = armorClassNode.get_next_sibling().to_element();
     }
@@ -178,7 +184,7 @@ void ItemManager::LoadItemFile ( CL_DomDocument &doc )
     {
         ArmorType * pArmorType = dynamic_cast<ArmorType*>( pItemFactory->createElement("armorType") );
         pArmorType->Load(armorTypeNode);
-        m_armor_types.push_back ( pArmorType);
+        m_pInstance->m_armor_types.push_back ( pArmorType);
 
         armorTypeNode = armorTypeNode.get_next_sibling().to_element();
     }
@@ -207,7 +213,7 @@ void ItemManager::LoadItemFile ( CL_DomDocument &doc )
 	    case Element::EUNIQUEARMOR:
 	    case Element::EUNIQUEWEAPON:
 		Item * pItem = dynamic_cast<Item*>(pElement);
-		m_named_items[pItem->GetName()] = pItem;
+		m_pInstance->m_named_items[pItem->GetName()] = pItem;
 		break;
 	}
 
@@ -352,10 +358,10 @@ void ItemManager::generateArmor()
 
 #endif
 
-WeaponType * ItemManager::GetWeaponType(const WeaponTypeRef &ref) const
+WeaponType * ItemManager::GetWeaponType(const WeaponTypeRef &ref)
 {
-    for(std::list<WeaponType*>::const_iterator iter = m_weapon_types.begin();
-        iter != m_weapon_types.end();
+    for(std::list<WeaponType*>::const_iterator iter = m_pInstance->m_weapon_types.begin();
+        iter != m_pInstance->m_weapon_types.end();
         iter++)
     {
         if( ref.GetName() == (*iter)->GetName())
@@ -366,10 +372,10 @@ WeaponType * ItemManager::GetWeaponType(const WeaponTypeRef &ref) const
     return NULL;
 }
 
-ArmorType  * ItemManager::GetArmorType ( const ArmorTypeRef &ref) const
+ArmorType  * ItemManager::GetArmorType ( const ArmorTypeRef &ref)
 {
-    for(std::list<ArmorType*>::const_iterator iter = m_armor_types.begin();
-        iter != m_armor_types.end();
+    for(std::list<ArmorType*>::const_iterator iter = m_pInstance->m_armor_types.begin();
+        iter != m_pInstance->m_armor_types.end();
         iter++)
     {
         if( ref.GetName() == (*iter)->GetName())
@@ -380,10 +386,10 @@ ArmorType  * ItemManager::GetArmorType ( const ArmorTypeRef &ref) const
     return NULL;
 }
 
-WeaponClass * ItemManager::GetWeaponClass ( const WeaponClassRef & ref ) const
+WeaponClass * ItemManager::GetWeaponClass ( const WeaponClassRef & ref )
 {
-    for(std::vector<WeaponClass*>::const_iterator iter = m_weapon_classes.begin();
-        iter != m_weapon_classes.end();
+    for(std::vector<WeaponClass*>::const_iterator iter = m_pInstance->m_weapon_classes.begin();
+        iter != m_pInstance->m_weapon_classes.end();
         iter++)
     {
         if( ref.GetName() == (*iter)->GetName())
@@ -393,10 +399,10 @@ WeaponClass * ItemManager::GetWeaponClass ( const WeaponClassRef & ref ) const
     return NULL;
 }
 
-ArmorClass  * ItemManager::GetArmorClass ( const ArmorClassRef & ref ) const
+ArmorClass  * ItemManager::GetArmorClass ( const ArmorClassRef & ref )
 {
-    for(std::vector<ArmorClass*>::const_iterator iter = m_armor_classes.begin();
-        iter != m_armor_classes.end();
+    for(std::vector<ArmorClass*>::const_iterator iter = m_pInstance->m_armor_classes.begin();
+        iter != m_pInstance->m_armor_classes.end();
         iter++)
     {
         if( ref.GetName() == (*iter)->GetName())
@@ -407,10 +413,10 @@ ArmorClass  * ItemManager::GetArmorClass ( const ArmorClassRef & ref ) const
     return NULL;
 }
 
-WeaponClass * ItemManager::GetWeaponImbuement ( const WeaponImbuementRef & ref ) const
+WeaponClass * ItemManager::GetWeaponImbuement ( const WeaponImbuementRef & ref )
 {
-    for(std::vector<WeaponClass*>::const_iterator iter = m_weapon_imbuements.begin();
-        iter != m_weapon_imbuements.end();
+    for(std::vector<WeaponClass*>::const_iterator iter = m_pInstance->m_weapon_imbuements.begin();
+        iter != m_pInstance->m_weapon_imbuements.end();
         iter++)
     {
         if( ref.GetName() == (*iter)->GetName())
@@ -420,10 +426,10 @@ WeaponClass * ItemManager::GetWeaponImbuement ( const WeaponImbuementRef & ref )
     return NULL;
 }
 
-ArmorClass  * ItemManager::GetArmorImbuement ( const ArmorImbuementRef & ref ) const
+ArmorClass  * ItemManager::GetArmorImbuement ( const ArmorImbuementRef & ref ) 
 {
-    for(std::vector<ArmorClass*>::const_iterator iter = m_armor_imbuements.begin();
-        iter != m_armor_imbuements.end();
+    for(std::vector<ArmorClass*>::const_iterator iter = m_pInstance->m_armor_imbuements.begin();
+        iter != m_pInstance->m_armor_imbuements.end();
         iter++)
     {
         if( ref.GetName() == (*iter)->GetName())
@@ -434,11 +440,11 @@ ArmorClass  * ItemManager::GetArmorImbuement ( const ArmorImbuementRef & ref ) c
     return NULL;
 }
 
-Item * ItemManager::GetNamedItem( const std::string &name ) const
+Item * ItemManager::GetNamedItem( const std::string &name )
 {
-    NamedItemMap::const_iterator iter = m_named_items.find(name);
+    NamedItemMap::const_iterator iter = m_pInstance->m_named_items.find(name);
 
-    if(iter != m_named_items.end())
+    if(iter != m_pInstance->m_named_items.end())
     {
         return iter->second;
     }
@@ -449,9 +455,9 @@ Item * ItemManager::GetNamedItem( const std::string &name ) const
 
 Item * ItemManager::GetItem( const ItemRef & ref )
 {
-    ItemMap::const_iterator iter = m_items.find(ref);
+    ItemMap::const_iterator iter = m_pInstance->m_items.find(ref);
 
-    if(iter != m_items.end())
+    if(iter != m_pInstance->m_items.end())
     {
         // Already have this one created.
         return iter->second;
@@ -469,14 +475,14 @@ Item * ItemManager::GetItem( const ItemRef & ref )
             {
                 WeaponRef *pRef = ref.GetWeaponRef();
                 Weapon *pWeapon = createWeapon(pRef);
-                m_items[ref] = pWeapon;
+                m_pInstance->m_items[ref] = pWeapon;
                 return pWeapon;
             }
         case ItemRef::ARMOR_REF:
             {
                 ArmorRef *pRef = ref.GetArmorRef();
                 Armor *pArmor = createArmor(pRef);
-                m_items[ref] = pArmor;
+                m_pInstance->m_items[ref] = pArmor;
                 return pArmor;
             }
         default:
@@ -488,7 +494,7 @@ Item * ItemManager::GetItem( const ItemRef & ref )
     return NULL;
 }
 
-Weapon * ItemManager::createWeapon(WeaponRef *pRef) const
+Weapon * ItemManager::createWeapon(WeaponRef *pRef) 
 {
     GeneratedWeapon * pWeapon = new GeneratedWeapon();
     pWeapon->Generate(pRef->GetWeaponType(), pRef->GetWeaponClass(),
@@ -496,7 +502,7 @@ Weapon * ItemManager::createWeapon(WeaponRef *pRef) const
     return pWeapon;
 }
 
-Armor * ItemManager::createArmor(ArmorRef *pRef) const
+Armor * ItemManager::createArmor(ArmorRef *pRef) 
 {
     GeneratedArmor * pArmor = new GeneratedArmor();
     pArmor->Generate(pRef->GetArmorType(),pRef->GetArmorClass(),
@@ -652,24 +658,24 @@ void ItemManager::printStatusModifiers(Equipment *pItem)
 #endif
 
 
-Armor* ItemManager::GenerateRandomGeneratedArmor(Item::eDropRarity rarity, int min_value, int max_value ) const
+Armor* ItemManager::GenerateRandomGeneratedArmor(Item::eDropRarity rarity, int min_value, int max_value ) 
 {
     // Here is the full blown algorithm that comes up with all the possible options.
     // Could get slow if there are lots of types, classes and imbuements....
     // In which case, maybe pick random classes and imbuements at the same time,
     // then look for any fitting types, if none, try again.
 #ifndef NDEBUG
-    std::cout << std::endl << (m_armor_types.size() * m_armor_classes.size() * m_armor_imbuements.size())
+    std::cout << std::endl << (m_pInstance->m_armor_types.size() * m_pInstance->m_armor_classes.size() * m_pInstance->m_armor_imbuements.size())
         << " total possible armor" << std::endl;
 #endif    
     std::vector<Armor*> m_options;
 
-    for(std::list<ArmorType*>::const_iterator type_iter = m_armor_types.begin();
-        type_iter != m_armor_types.end(); 
+    for(std::list<ArmorType*>::const_iterator type_iter = m_pInstance->m_armor_types.begin();
+        type_iter != m_pInstance->m_armor_types.end(); 
         type_iter++) {
     
-        for(std::vector<ArmorClass*>::const_iterator class_iter = m_armor_classes.begin();
-            class_iter != m_armor_classes.end(); 
+        for(std::vector<ArmorClass*>::const_iterator class_iter = m_pInstance->m_armor_classes.begin();
+            class_iter != m_pInstance->m_armor_classes.end(); 
             class_iter++) {
             if((*class_iter)->IsExcluded((*type_iter)->GetName()))
                 continue;            
@@ -682,8 +688,8 @@ Armor* ItemManager::GenerateRandomGeneratedArmor(Item::eDropRarity rarity, int m
                     m_options.push_back(pArmor);
                 }
             }else if(rarity == Item::RARE){
-                for(std::vector<ArmorClass*>::const_iterator imbuement_iter = m_armor_imbuements.begin();
-                    imbuement_iter != m_armor_imbuements.end();
+                for(std::vector<ArmorClass*>::const_iterator imbuement_iter = m_pInstance->m_armor_imbuements.begin();
+                    imbuement_iter != m_pInstance->m_armor_imbuements.end();
                     imbuement_iter++){
                     if((*imbuement_iter)->IsExcluded((*type_iter)->GetName()))
                         continue;                    
@@ -717,24 +723,25 @@ Armor* ItemManager::GenerateRandomGeneratedArmor(Item::eDropRarity rarity, int m
     return NULL;
 }
 
-Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, int min_value, int max_value ) const
+Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, int min_value, int max_value ) 
 {
     // Here is the full blown algorithm that comes up with all the possible options.
     // Could get slow if there are lots of types, classes and imbuements....
     // In which case, maybe pick random classes and imbuements at the same time,
     // then look for any fitting types, if none, try again.
 #ifndef NDEBUG
-    std::cout << std::endl << (m_weapon_types.size() * m_weapon_classes.size() * m_weapon_imbuements.size())
+    std::cout << std::endl << (m_pInstance->m_weapon_types.size() * m_pInstance->m_weapon_classes.size() 
+                                * m_pInstance->m_weapon_imbuements.size())
         << " total possible weapons" << std::endl;
 #endif
     std::vector<Weapon*> m_options;
 
-    for(std::list<WeaponType*>::const_iterator type_iter = m_weapon_types.begin();
-        type_iter != m_weapon_types.end(); 
+    for(std::list<WeaponType*>::const_iterator type_iter = m_pInstance->m_weapon_types.begin();
+        type_iter != m_pInstance->m_weapon_types.end(); 
         type_iter++) {
     
-        for(std::vector<WeaponClass*>::const_iterator class_iter = m_weapon_classes.begin();
-            class_iter != m_weapon_classes.end(); 
+        for(std::vector<WeaponClass*>::const_iterator class_iter = m_pInstance->m_weapon_classes.begin();
+            class_iter != m_pInstance->m_weapon_classes.end(); 
             class_iter++) {
             if((*class_iter)->IsExcluded((*type_iter)->GetName()))
                 continue;
@@ -747,8 +754,8 @@ Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, int
                     m_options.push_back(pWeapon);
                 }
             }else if(rarity == Item::RARE){
-                for(std::vector<WeaponClass*>::const_iterator imbuement_iter = m_weapon_imbuements.begin();
-                    imbuement_iter != m_weapon_imbuements.end();
+                for(std::vector<WeaponClass*>::const_iterator imbuement_iter = m_pInstance->m_weapon_imbuements.begin();
+                    imbuement_iter != m_pInstance->m_weapon_imbuements.end();
                     imbuement_iter++){
                     if((*imbuement_iter)->IsExcluded((*type_iter)->GetName()))
                         continue;
@@ -783,12 +790,12 @@ Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, int
     return NULL;
 }
 
-Item* ItemManager::GenerateRandomItem(Item::eDropRarity rarity, int min_value, int max_value ) const
+Item* ItemManager::GenerateRandomItem(Item::eDropRarity rarity, int min_value, int max_value )
 {
     if(rarity == Item::COMMON){
         std::vector<Item*> options;
-        for(NamedItemMap::const_iterator iter = m_named_items.begin(); 
-            iter != m_named_items.end(); iter++)
+        for(NamedItemMap::const_iterator iter = m_pInstance->m_named_items.begin(); 
+            iter != m_pInstance->m_named_items.end(); iter++)
             {
                 if(iter->second->GetDropRarity() == rarity && iter->second->GetValue() > min_value 
                     && iter->second->GetValue() < max_value
@@ -803,8 +810,8 @@ Item* ItemManager::GenerateRandomItem(Item::eDropRarity rarity, int min_value, i
         
         if(r > 0.8f){
             std::vector<Item*> options;
-            for(NamedItemMap::const_iterator iter = m_named_items.begin(); 
-                iter != m_named_items.end(); iter++)
+            for(NamedItemMap::const_iterator iter = m_pInstance->m_named_items.begin(); 
+                iter != m_pInstance->m_named_items.end(); iter++)
                 {
                     if(iter->second->GetDropRarity() == rarity && iter->second->GetValue() > min_value
                         && iter->second->GetValue() < max_value
@@ -827,8 +834,8 @@ Item* ItemManager::GenerateRandomItem(Item::eDropRarity rarity, int min_value, i
 
         if(pItem == NULL){
             std::vector<Item*> options;
-            for(NamedItemMap::const_iterator iter = m_named_items.begin(); 
-                iter != m_named_items.end(); iter++)
+            for(NamedItemMap::const_iterator iter = m_pInstance->m_named_items.begin(); 
+                iter != m_pInstance->m_named_items.end(); iter++)
             {
                 if(iter->second->GetDropRarity() == rarity && iter->second->GetValue() > min_value && 
                     iter->second->GetValue() < max_value
@@ -847,3 +854,184 @@ Item* ItemManager::GenerateRandomItem(Item::eDropRarity rarity, int min_value, i
 }
 
 
+WeaponType * ItemManager::GetWeaponType(const std::string& name)
+{
+    for(std::list<WeaponType*>::const_iterator iter = m_pInstance->m_weapon_types.begin();
+        iter != m_pInstance->m_weapon_types.end(); iter++)
+        {
+            if((*iter)->GetName() == name)
+                return *iter;
+        }
+        
+        return NULL;
+}
+
+ArmorType * ItemManager::GetArmorType(const std::string& name)
+{
+    for(std::list<ArmorType*>::const_iterator iter = m_pInstance->m_armor_types.begin();
+        iter != m_pInstance->m_armor_types.end(); iter++)
+        {
+            if((*iter)->GetName() == name)
+                return *iter;
+        }
+        
+        return NULL;
+}
+
+WeaponClass * ItemManager::GetWeaponClass(const std::string& name)
+{
+    for(std::vector<WeaponClass*>::const_iterator iter = m_pInstance->m_weapon_classes.begin();
+        iter != m_pInstance->m_weapon_classes.end(); iter++)
+        {
+            if((*iter)->GetName() == name)
+                return *iter;
+        }
+        
+        return NULL;
+        
+}
+
+ArmorClass * ItemManager::GetArmorClass(const std::string& name)
+{
+    for(std::vector<ArmorClass*>::const_iterator iter = m_pInstance->m_armor_classes.begin();
+        iter != m_pInstance->m_armor_classes.end(); iter++)
+        {
+            if((*iter)->GetName() == name)
+                return *iter;
+        }
+        
+        return NULL;
+        
+}
+
+WeaponClass * ItemManager::GetWeaponImbuement(const std::string& name)
+{
+    for(std::vector<WeaponClass*>::const_iterator iter = m_pInstance->m_weapon_imbuements.begin();
+        iter != m_pInstance->m_weapon_imbuements.end(); iter++)
+        {
+            if((*iter)->GetName() == name)
+                return *iter;
+        }
+        
+        return NULL;
+        
+}
+
+ArmorClass * ItemManager::GetArmorImbuement(const std::string& name)
+{
+    for(std::vector<ArmorClass*>::const_iterator iter = m_pInstance->m_armor_imbuements.begin();
+        iter != m_pInstance->m_armor_imbuements.end(); iter++)
+        {
+            if((*iter)->GetName() == name)
+                return *iter;
+        }
+        
+        return NULL;
+        
+}
+
+
+void ItemManager::SerializeItem(std::ostream& out, Item* pItem)
+{
+    uint item_type = pItem->GetItemType();
+    out.write((char*)&item_type,sizeof(uint));
+    if(pItem->GetItemType() == Item::WEAPON){
+        GeneratedWeapon * pGenWeapon = dynamic_cast<GeneratedWeapon*>(pItem);
+        bool generated_weapon = (pGenWeapon != NULL);
+        out.write((char*)&generated_weapon,sizeof(bool));
+        if(pGenWeapon){
+            WriteString(out,pGenWeapon->GetWeaponType()->GetName());
+            WriteString(out,pGenWeapon->GetWeaponClass()->GetName());
+            bool imbuement = (pGenWeapon->GetImbuement() != NULL);
+            out.write((char*)&imbuement,sizeof(bool));
+            if(pGenWeapon->GetImbuement()){
+                WriteString(out,pGenWeapon->GetImbuement()->GetName());
+            }
+        }else{
+            WriteString(out,pItem->GetName());
+        }
+    }else if(pItem->GetItemType() == Item::ARMOR){
+        GeneratedArmor * pGenArmor = dynamic_cast<GeneratedArmor*>(pItem);
+        bool generated_armor = (pGenArmor != NULL);
+        out.write((char*)&generated_armor,sizeof(bool));
+        if(generated_armor){
+            WriteString(out,pGenArmor->GetArmorType()->GetName());
+            WriteString(out,pGenArmor->GetArmorClass()->GetName());
+            bool imbuement = (pGenArmor != NULL);
+            out.write((char*)&imbuement,sizeof(bool));
+            if(pGenArmor->GetImbuement()){
+                WriteString(out,pGenArmor->GetImbuement()->GetName());
+            }
+        }else{
+            WriteString(out,pItem->GetName());
+        }
+    }else{
+        WriteString(out,pItem->GetName());
+    }
+ 
+}
+
+Item* ItemManager::DeserializeItem(std::istream& in)
+{
+    uint item_type;
+    in.read((char*)&item_type,sizeof(uint));
+    Item::eItemType type = (Item::eItemType)item_type;
+    if(type == Item::WEAPON){
+        bool generated;
+        in.read((char*)&generated,sizeof(bool));
+        if(generated){
+            std::string type_name = ReadString(in);
+            std::string class_name = ReadString(in);
+            std::string imbuement_name;
+            bool has_imbuement;
+            in.read((char*)&has_imbuement,sizeof(bool));
+            if(has_imbuement){
+                imbuement_name = ReadString(in);
+            }
+            WeaponType * pType = ItemManager::GetWeaponType(type_name);
+            WeaponClass * pClass = ItemManager::GetWeaponClass(class_name);
+            WeaponClass * pImbuement = NULL;
+            if(has_imbuement)
+                pImbuement = ItemManager::GetWeaponImbuement(imbuement_name);
+            GeneratedWeapon * pWeapon = new GeneratedWeapon();
+            pWeapon->Generate(pType,pClass,pImbuement,NULL);
+            return pWeapon;
+        }else{
+            std::string item_name = ReadString(in);
+            Item* pItem = ItemManager::GetNamedItem(item_name);
+            return pItem;
+        }
+    }else if(type == Item::ARMOR){
+        bool generated;
+        in.read((char*)&generated,sizeof(bool));
+        if(generated){
+            std::string type_name = ReadString(in);
+            std::string class_name = ReadString(in);
+            std::string imbuement_name;
+            bool has_imbuement;
+            in.read((char*)&has_imbuement,sizeof(bool));
+            if(has_imbuement){
+                imbuement_name = ReadString(in);
+            }
+            ArmorType * pType = ItemManager::GetArmorType(type_name);
+            ArmorClass * pClass = ItemManager::GetArmorClass(class_name);
+            ArmorClass * pImbuement = NULL;
+            if(has_imbuement)
+                pImbuement = ItemManager::GetArmorImbuement(imbuement_name);
+            GeneratedArmor * pArmor = new GeneratedArmor();
+            pArmor->Generate(pType,pClass,pImbuement,NULL); 
+            return pArmor;
+        }else{
+            std::string item_name = ReadString(in);
+            Item * pItem = ItemManager::GetNamedItem(item_name);
+            return pItem;
+        }
+    }else{
+        std::string item_name = ReadString(in);
+        Item * pItem = ItemManager::GetNamedItem(item_name);
+        return pItem;
+    }
+
+    assert(0);
+    return NULL;
+}
