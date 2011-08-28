@@ -37,10 +37,11 @@ namespace StoneRing
         void SetDimensions(const CL_Rect &screenRect);
         void PushLevel(Level *pLevel, uint startX, uint startY);
         void SetPlayerSprite(CL_Sprite player);
-
         void MoveMappableObjects();
-
         void Pop(bool bAll);
+        
+        void SerializeState(std::ostream& out);
+        void DeserializeState(std::istream& in);
 
     private:
         void recalculate_player_position();
@@ -53,7 +54,7 @@ namespace StoneRing
 	bool m_horizontal_idle;
 	bool m_vertical_idle;
         CL_Rect m_screen_rect;
-        std::stack<Level*> m_levels;
+        std::deque<Level*> m_levels;
         Level * m_pLevel;
         CL_Sprite  m_playerSprite;
         bool m_bShowDebug;

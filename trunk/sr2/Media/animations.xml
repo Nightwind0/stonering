@@ -8,6 +8,10 @@
 	</spriteAnimation>
       </phase>
     </animation>
+    <animation name="std_monster_attack" type="battle">
+        <phase parallel="false" duration="200">
+        </phase>
+    </animation>
     <animation name="attack" type="battle">
 	<phase parallel="true" duration="100">
 	    <spriteAnimation name="attack">
@@ -19,6 +23,7 @@
                 <spriteMovement initialFocus="caster" endFocus="caster" initialFocusX="towards" initialFocusY="top" rotation="45" movementStyle="circle" circleStartAngle="225" circleDegrees="45" circleRadius="100" circleDirection="towards">
 		</spriteMovement>
 	    </spriteAnimation>
+            <soundPlay sound="Sound/Swish"/>
 	</phase>
         <phase parallel="true" duration="100">
             <spriteAnimation name="attack">
@@ -30,6 +35,7 @@
                 <spriteMovement initialFocus="caster" endFocus="caster" initialFocusX="towards" initialFocusY="top" rotation="45" movementStyle="circle" circleStartAngle="225" circleDegrees="45" circleRadius="100" circleDirection="towards">
                 </spriteMovement>
             </spriteAnimation>
+            <soundPlay sound="Sound/Swish"/>
         </phase>        
     </animation>
     <animation name="return_from_attack" type="battle">
@@ -42,6 +48,7 @@
     </animation>
     <animation name="recoil" type="battle">
 	<phase parallel="false" duration="100">
+            <soundPlay sound="Sound/FleshHit"/>
 	    <spriteAnimation name="recoil">
 		<battleSprite who="caster" which="recoil"/>
 		<alterSprite who="caster" how="negative"/>
@@ -135,6 +142,7 @@
     </animation>
     <animation name="fire_arrow" type="battle">
         <phase parallel="false" duration="200">
+            <soundPlay sound="Sound/Arrow"/>
             <spriteAnimation name="pull">
                 <spriteStub who="caster" which="main"/>
                 <spriteMovement initialFocus="caster" initialFocusX="left" initialFocusY="center" endFocus="caster" endFocusX="towards" endFocusY="center" movementDierction="still">

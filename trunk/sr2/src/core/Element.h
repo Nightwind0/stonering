@@ -87,6 +87,7 @@ namespace StoneRing
             ESKILL,
             ESKILLREF,
             ESKILLTREENODE,
+            ESOUNDPLAY,
             ESPECIALITEM,
             ESPRITEANIMATION,
             ESPRITEDEFINITION,

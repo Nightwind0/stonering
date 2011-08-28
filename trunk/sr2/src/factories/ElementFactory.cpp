@@ -38,6 +38,7 @@
 #include "AttributeModifier.h"
 #include "MenuOption.h"
 #include "Description.h"
+#include "SoundPlay.h"
 
 using namespace StoneRing;
 
@@ -134,6 +135,7 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["skill"] = &ElementFactory::CreateElement<Skill>;
     mCreateMethods["skillRef"] = &ElementFactory::CreateElement<SkillRef>;
     mCreateMethods["skillTreeNode"] = &ElementFactory::CreateElement<SkillTreeNode>;
+    mCreateMethods["soundPlay"] = &ElementFactory::CreateElement<SoundPlay>;
     mCreateMethods["specialItem"] = &ElementFactory::CreateElement<SpecialItem>;
     mCreateMethods["spriteAnimation"] = &ElementFactory::CreateElement<SpriteAnimation>;
     mCreateMethods["spriteMovement"] = &ElementFactory::CreateElement<SpriteMovement>;

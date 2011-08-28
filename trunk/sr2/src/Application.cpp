@@ -1,6 +1,7 @@
 #include <ClanLib/display.h>
 #include <ClanLib/core.h>
 #include <ClanLib/gl.h>
+#include <ClanLib/sound.h>
 #include <iostream>
 #include <sstream>
 #include <vector>
@@ -24,7 +25,7 @@
 #else
 #include <SteelType.h>
 #endif
-
+#include "SoundManager.h"
 #include "BattleConfig.h"
 #include "Animation.h"
 #include "RegularItem.h"
@@ -98,6 +99,7 @@ SteelType Application::playSound ( const std::string &sound )
 #ifndef NDEBUG
     std::cout << "Playing sound " << sound << std::endl;
 #endif
+    SoundManager::PlaySound(sound);
 
     return SteelType();
 }
@@ -768,16 +770,7 @@ SteelType Application::getDamageCategoryResistance ( SteelType::Handle hICharact
     return val;
 }
 
-SteelType Application::getHitSound ( SteelType::Handle hWeaponType )
-{
 
-    return SteelType();
-}
-
-SteelType Application::getMissSound ( SteelType::Handle hWeaponType )
-{
-    return SteelType();
-}
 
 SteelType Application::getUnarmedHitSound ( SteelType::Handle hICharacter )
 {
@@ -1294,6 +1287,7 @@ SteelType Application::sell ( )
 SteelType Application::save(int slot)
 {
     std::ofstream out("save.sr2s",std::ios::binary);
+    mMapState.SerializeState(out);
     mpParty->Serialize(out);
     out.close();
     return SteelType();
@@ -1302,6 +1296,7 @@ SteelType Application::save(int slot)
 SteelType Application::load(int slot)
 {
     std::ifstream in("save.sr2s",std::ios::binary);
+    mMapState.DeserializeState(in);
     mpParty->Deserialize(in);
     in.close();
     return SteelType();
@@ -1697,8 +1692,6 @@ void Application::registerSteelFunctions()
                                                               const SteelType::Handle,uint,bool,int> ( this, &Application::attackCharacter );
 
     SteelFunctor*  fn_getDamageCategoryResistance = new SteelFunctor2Arg<Application, const SteelType::Handle, int> ( this, &Application::getDamageCategoryResistance );
-    SteelFunctor*  fn_getHitSound = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getHitSound );
-    SteelFunctor*  fn_getMissSound = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getMissSound );
     SteelFunctor*  fn_getUnarmedHitSound = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getUnarmedHitSound );
     SteelFunctor*  fn_getUnarmedMissSound = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getUnarmedMissSound );
 
@@ -1858,8 +1851,8 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "getDamageCategoryResistance", fn_getDamageCategoryResistance );
     mInterpreter.addFunction ( "invokeArmor", fn_invokeArmor );
     mInterpreter.addFunction ( "invokeWeapon", fn_invokeWeapon );
-    mInterpreter.addFunction ( "getHitSound", fn_getHitSound );
-    mInterpreter.addFunction ( "getMissSound", fn_getMissSound );
+    //mInterpreter.addFunction ( "getHitSound", fn_getHitSound );
+    //mInterpreter.addFunction ( "getMissSound", fn_getMissSound );
     mInterpreter.addFunction ( "getUnarmedHitSound", fn_getUnarmedHitSound );
     mInterpreter.addFunction ( "getUnarmedMissSound", fn_getUnarmedMissSound );
 
@@ -2025,6 +2018,7 @@ int Application::main ( const std::vector<CL_String> &args )
 {
     GraphicsManager::initialize();
     ItemManager::initialize();
+    SoundManager::initialize();
 
 #ifndef NDEBUG
 
@@ -2274,6 +2268,8 @@ public:
         CL_SetupCore setup_core;
         CL_SetupDisplay setup_display;
         CL_SetupGL setup_gl;
+        CL_SetupSound setup_sound;
+        CL_SoundOutput output(44100);
 
         Application app;
         pApp = &app;

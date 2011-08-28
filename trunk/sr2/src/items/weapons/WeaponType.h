@@ -52,7 +52,6 @@ namespace StoneRing{
         bool m_bRanged;
         bool m_bTwoHanded;
 	Animation* m_pAnimation;
-
     };
 };
 
