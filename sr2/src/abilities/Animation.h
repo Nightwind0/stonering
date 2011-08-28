@@ -9,6 +9,7 @@
 #include "ScriptElement.h"
 #include "SpriteRef.h"
 #include "BattleState.h"
+#include "SoundPlay.h"
 
 namespace StoneRing
 {
@@ -285,17 +286,24 @@ namespace StoneRing
         {
             return EPHASE;
         }
-        CL_DomElement CreateDomElement(CL_DomDocument &) const;
+        
+        struct PhaseComponent {
+            union  {
+                SpriteAnimation* m_animation;
+                SoundPlay*       m_soundplay;
+            };
+            bool m_bAnimation;
+        };
+
 
         bool InParallel()const{
             return m_bParallel;
         }
         uint GetDurationMs() const;
-
         void Execute();
 
-        std::list<SpriteAnimation*>::const_iterator GetSpriteAnimationsBegin() const ;
-        std::list<SpriteAnimation*>::const_iterator GetSpriteAnimationsEnd() const;
+        std::list<PhaseComponent>::const_iterator GetPhaseComponentsBegin() const ;
+        std::list<PhaseComponent>::const_iterator GetPhaseComponentsEnd() const;
 
     private:
         virtual bool handle_element(eElement element, Element * pElement );
@@ -304,7 +312,7 @@ namespace StoneRing
         uint m_nDuration;
 
         ScriptElement *m_pScript;
-        std::list<SpriteAnimation*> m_sprite_animations;
+        std::list<PhaseComponent> m_phase_components;
     };
 
 

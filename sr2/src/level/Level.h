@@ -264,6 +264,8 @@ namespace StoneRing {
 
         void MarkForDeath() { m_bMarkedForDeath = true; }
 
+        void SerializeState(std::ostream& out);
+        void DeserializeState(std::istream& in);
 #ifndef NDEBUG
         void DumpMappableObjects() const;
 #endif

@@ -987,6 +987,16 @@ void Level::Load_Tile ( Tile * tile)
     }
 }
 
+void Level::SerializeState ( std::ostream& out )
+{
+    m_player.SerializeState(out);   
+}
+
+void Level::DeserializeState ( std::istream& in )
+{
+    m_player.DeserializeState(in);
+}
+
 
 
 

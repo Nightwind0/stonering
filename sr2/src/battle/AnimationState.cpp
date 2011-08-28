@@ -3,6 +3,7 @@
 #include "IApplication.h"
 #include "BattleState.h"
 #include "WeaponType.h"
+#include "SoundManager.h"
 
 using namespace StoneRing;
 
@@ -661,31 +662,33 @@ void AnimationState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
 
         if (draw)
         {
-            for (std::list<SpriteAnimation*>::const_iterator iter = (*m_phase_iterator)->GetSpriteAnimationsBegin();
-                    iter != (*m_phase_iterator)->GetSpriteAnimationsEnd(); iter++)
+            for (std::list<Phase::PhaseComponent>::const_iterator iter = (*m_phase_iterator)->GetPhaseComponentsBegin();
+                    iter != (*m_phase_iterator)->GetPhaseComponentsEnd(); iter++)
             {
-                SpriteAnimation* anim = *iter;
+                if(iter->m_bAnimation){                        
+                    SpriteAnimation* anim = iter->m_animation;
 
-                if (!anim->ShouldSkip() && anim->HasSpriteMovement())
-                {
-                    SpriteMovement * movement = anim->GetSpriteMovement();
-                    if (movement->ForEachTarget() && (*m_phase_iterator)->InParallel())
+                    if (!anim->ShouldSkip() && anim->HasSpriteMovement())
                     {
-                        for (uint i=0;i<m_pTargetGroup->GetCharacterCount();i++)
+                        SpriteMovement * movement = anim->GetSpriteMovement();
+                        if (movement->ForEachTarget() && (*m_phase_iterator)->InParallel())
                         {
-                            ICharacter * pTarget = m_pTargetGroup->GetCharacter(i);
-                            move_sprite(pTarget, m_pCaster,anim,movement,percentage);
-                        }
+                            for (uint i=0;i<m_pTargetGroup->GetCharacterCount();i++)
+                            {
+                                ICharacter * pTarget = m_pTargetGroup->GetCharacter(i);
+                                move_sprite(pTarget, m_pCaster,anim,movement,percentage);
+                            }
 
-                    }else{
-                        move_sprite(m_pCaster,m_pTarget,anim,movement,percentage);
-                    }    
+                        }else{
+                            move_sprite(m_pCaster,m_pTarget,anim,movement,percentage);
+                        }    
+                    }
+                    if(!anim->ShouldSkip() && anim->HasAlterSprite())
+                    {
+                        apply_alter_sprite(anim->GetAlterSprite());
+                    }                
+                    
                 }
-                if(!anim->ShouldSkip() && anim->HasAlterSprite())
-                {
-                    apply_alter_sprite(anim->GetAlterSprite());
-                }                
-             
             }
         }
     }
@@ -722,14 +725,16 @@ bool AnimationState::NextPhase()
 
 void AnimationState::EndPhase()
 {
-    for (std::list<SpriteAnimation*>::const_iterator iter = (*m_phase_iterator)->GetSpriteAnimationsBegin();
-            iter != (*m_phase_iterator)->GetSpriteAnimationsEnd(); iter++)
+    for (std::list<Phase::PhaseComponent>::const_iterator iter = (*m_phase_iterator)->GetPhaseComponentsBegin();
+            iter != (*m_phase_iterator)->GetPhaseComponentsEnd(); iter++)
     {
-        SpriteAnimation* animation = *iter;
-        if(animation->GetSpriteTicket() != BattleState::UNDEFINED_SPRITE_TICKET)
-        {
-            m_parent.remove_sprite(animation->GetSpriteTicket());
-            animation->SetSpriteTicket(BattleState::UNDEFINED_SPRITE_TICKET);
+        if(iter->m_bAnimation){
+            SpriteAnimation* animation = iter->m_animation;
+            if(animation->GetSpriteTicket() != BattleState::UNDEFINED_SPRITE_TICKET)
+            {
+                m_parent.remove_sprite(animation->GetSpriteTicket());
+                animation->SetSpriteTicket(BattleState::UNDEFINED_SPRITE_TICKET);
+            }
         }
     }
 }
@@ -807,53 +812,57 @@ void AnimationState::StartPhase()
     phase->Execute();
     m_phase_start_time = CL_System::get_time();
 
-    for (std::list<SpriteAnimation*>::const_iterator iter = (*m_phase_iterator)->GetSpriteAnimationsBegin();
-            iter != (*m_phase_iterator)->GetSpriteAnimationsEnd(); iter++)
+    for (std::list<Phase::PhaseComponent>::const_iterator iter = (*m_phase_iterator)->GetPhaseComponentsBegin();
+            iter != (*m_phase_iterator)->GetPhaseComponentsEnd(); iter++)
     {
-        SpriteAnimation* animation = *iter;
-        if (animation->HasAlterSprite())
-        {
-           apply_alter_sprite(animation->GetAlterSprite());
-        }
-
-        if (animation->HasBattleSprite())
-        {
-            // Change battle sprite using the parent now
-            // to GetWhich
-        }
-        
-        if(animation->HasSpriteStub())
-        {
-            // Create sprite on parent state
-            // keep pointer to it around
-            SpriteStub* stub = animation->GetSpriteStub();
-                    // Monsters don't have weapons for now. TODO: Don't assume this
-            if(!m_pCaster->IsMonster())
+        if(iter->m_bAnimation){
+            SpriteAnimation* animation = iter->m_animation;
+            if (animation->HasAlterSprite())
             {
-                Character * pCharacter = dynamic_cast<Character*>(m_pCaster);
-                Equipment* equipment = pCharacter->GetEquipment(stub->Which() == SpriteStub::MAIN? Equipment::EHAND:Equipment::EOFFHAND);
-                Weapon* pWeapon = dynamic_cast<Weapon*>(equipment);
-                if(pWeapon)
+            apply_alter_sprite(animation->GetAlterSprite());
+            }
+
+            if (animation->HasBattleSprite())
+            {
+                // Change battle sprite using the parent now
+                // to GetWhich
+            }
+            
+            if(animation->HasSpriteStub())
+            {
+                // Create sprite on parent state
+                // keep pointer to it around
+                SpriteStub* stub = animation->GetSpriteStub();
+                        // Monsters don't have weapons for now. TODO: Don't assume this
+                if(!m_pCaster->IsMonster())
                 {
-                    animation->Unskip();
-                    WeaponType* pType = pWeapon->GetWeaponType();
-                    animation->SetSpriteTicket(m_parent.add_sprite(pType->GetSprite()));
+                    Character * pCharacter = dynamic_cast<Character*>(m_pCaster);
+                    Equipment* equipment = pCharacter->GetEquipment(stub->Which() == SpriteStub::MAIN? Equipment::EHAND:Equipment::EOFFHAND);
+                    Weapon* pWeapon = dynamic_cast<Weapon*>(equipment);
+                    if(pWeapon)
+                    {
+                        animation->Unskip();
+                        WeaponType* pType = pWeapon->GetWeaponType();
+                        animation->SetSpriteTicket(m_parent.add_sprite(pType->GetSprite()));
+                    }
+                    else
+                    {
+                        animation->Skip();
+                    }
                 }
                 else
                 {
                     animation->Skip();
                 }
-            }
-            else
-            {
-                animation->Skip();
-            }
 
-        }
-        
-        if(animation->HasSpriteRef())
-        {
-            animation->SetSpriteTicket(m_parent.add_sprite(animation->GetSpriteRef()->CreateSprite()));
+            }
+            
+            if(animation->HasSpriteRef())
+            {
+                animation->SetSpriteTicket(m_parent.add_sprite(animation->GetSpriteRef()->CreateSprite()));
+            }
+        }else{
+            SoundManager::PlaySound(iter->m_soundplay->GetSound());
         }
     }
 

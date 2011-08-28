@@ -65,7 +65,7 @@
 <!ELEMENT animations(animation+)>
 <!ELEMENT animation (phase+)>
 <!ELEMENT animationRef EMPTY>
-<!ELEMENT phase (spriteAnimation)*> <!-- If there are no animationSprites then its treated like a pause -->
+<!ELEMENT phase (spriteAnimation|soundPlay)*> <!-- If there are no animationSprites then its treated like a pause -->
 <!ELEMENT spriteAnimation ((spriteStub|spriteRef|battleSprite),spriteMovement?,alterSprite?, hide?)>
 <!ELEMENT spriteStub EMPTY>
 <!ELEMENT battleSprite EMPTY>
@@ -115,6 +115,7 @@
 
 <!ELEMENT monsterRegion (monsterGroup+)>
 <!ELEMENT monsterGroup (monsterRef+)>
+<!ELEMENT soundPlay EMPTY>
 
 <!-- Attributes -->
 <!ATTLIST menuOption name CDATA #REQUIRED>
@@ -325,3 +326,5 @@
 <!ATTLIST stat id CDATA #REQUIRED>
 <!ATTLIST stat value CDATA #IMPLIED> <!-- Either this, or toggle -->
 <!ATTLIST stat toggle (true|false) #IMPLIED> <!-- Either this or value -->
+
+<!ATTLIST soundPlay sound CDATA #REQUIRED>

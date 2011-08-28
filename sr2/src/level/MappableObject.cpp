@@ -803,6 +803,27 @@ void StoneRing::MappablePlayer::set_frame_for_direction()
     }
 }
 
+void StoneRing::MappablePlayer::SerializeState ( std::ostream& out )
+{
+    out.write((char*)&m_X,sizeof(m_X));
+    out.write((char*)&m_Y,sizeof(m_Y));
+    out.write((char*)&m_eDirection,sizeof(eDirection));
+    out.write((char*)&m_eFacingDirection,sizeof(m_eFacingDirection));
+    out.write((char*)&m_eNextDirection,sizeof(m_eNextDirection));
+    out.write((char*)&m_bHasNextDirection,sizeof(bool));
+}
+
+void StoneRing::MappablePlayer::DeserializeState ( std::istream& in )
+{
+    in.read((char*)&m_X,sizeof(m_X));
+    in.read((char*)&m_Y,sizeof(m_Y));
+    in.read((char*)&m_eDirection,sizeof(eDirection));
+    in.read((char*)&m_eFacingDirection,sizeof(m_eFacingDirection));
+    in.read((char*)&m_eNextDirection,sizeof(m_eNextDirection));
+    in.read((char*)&m_bHasNextDirection,sizeof(bool));
+}
+
+
 
 
 

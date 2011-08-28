@@ -88,8 +88,7 @@ namespace StoneRing {
         eSize m_eSize;
         eDirection m_eDirection;
         eDirection m_eFacingDirection;
-
-
+        
         uint m_nStep; // step frame alternator
         ushort m_StartX;
         ushort m_StartY;
@@ -134,14 +133,14 @@ namespace StoneRing {
         virtual void ResetLevelX(uint x) { m_X = x * 32;}
         virtual void ResetLevelY(uint y) { m_Y = y * 32;}
         virtual bool Step() const { return true; }
+        void SerializeState(std::ostream& out);
+        void DeserializeState(std::istream& in);
     private:
         virtual bool handle_element(eElement, Element* ){ return false;}
         virtual void load_attributes(CL_DomNamedNodeMap){}
         virtual void load_finished(){}
         virtual void set_frame_for_direction();
         virtual bool delete_sprite() const { return false; }
-
-
 
         eDirection m_eNextDirection;
         bool m_bHasNextDirection;

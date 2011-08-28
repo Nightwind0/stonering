@@ -11,6 +11,7 @@
 #include "StatusEffectModifier.h"
 #include <functional>
 #include <ClanLib/core.h>
+#include "ItemManager.h"
 
 
 using StoneRing::ICharacter;
@@ -738,7 +739,7 @@ CL_Sprite StoneRing::Character::GetCurrentSprite(bool pure)
 
 void StoneRing::Character::Serialize ( std::ostream& out )
 {
-    WriteString(out,m_name);
+    //WriteString(out,m_name);
     out.write((char*)&m_nLevel,sizeof(uint));
     out.write((char*)&m_nXP,sizeof(uint));
     out.write((char*)&m_nSP,sizeof(uint));
@@ -767,9 +768,10 @@ void StoneRing::Character::Serialize ( std::ostream& out )
         WriteString(out,*iter);
     }
     uint equipment_count =  m_equipment.size();
+    out.write((char*)&equipment_count,sizeof(uint));
     for(std::map<Equipment::eSlot,Equipment*>::const_iterator iter = m_equipment.begin();
         iter != m_equipment.end(); iter++){
-        out.write((char*)&iter->first,sizeof(uint));
+        out.write((char*)&iter->first,sizeof(Equipment::eSlot));
         Equipment* pEquip = iter->second;
         ItemManager::SerializeItem(out,pEquip);        
     }
@@ -777,7 +779,46 @@ void StoneRing::Character::Serialize ( std::ostream& out )
 
 void StoneRing::Character::Deserialize ( std::istream& in )
 {
-    m_name = ReadString(in);
+   // m_name = ReadString(in);
+    in.read((char*)&m_nLevel,sizeof(uint));
+    in.read((char*)&m_nXP,sizeof(uint));
+    in.read((char*)&m_nSP,sizeof(uint));
+    in.read((char*)&m_nBP,sizeof(uint));
+    
+    uint augment_count;
+    in.read((char*)&augment_count,sizeof(uint));
+    for(int i=0;i<augment_count;i++){
+        eCharacterAttribute attr;
+        in.read((char*)&attr,sizeof(eCharacterAttribute));
+        double value;
+        in.read((char*)&value,sizeof(double));
+        PermanentAugment(attr,value);
+    }
+    uint toggle_count;
+    in.read((char*)&toggle_count,sizeof(uint));
+    for(int i=0;i<toggle_count;i++){
+        eCharacterAttribute attr;
+        in.read((char*)&attr,sizeof(attr));
+        bool toggle;
+        in.read((char*)&toggle,sizeof(bool));
+        SetToggle(attr,toggle);
+    }
+    uint skill_count;
+    in.read((char*)&skill_count,sizeof(skill_count));
+    for(int i=0;i<skill_count;i++){
+        std::string skill = ReadString(in);
+        LearnSkill(skill);
+    }
+    
+    uint equip_count;
+    in.read((char*)&equip_count,sizeof(uint));
+    for(int i=0;i<equip_count;i++){
+        Equipment::eSlot slot;
+        in.read((char*)&slot,sizeof(slot));
+        Item * pItem = ItemManager::DeserializeItem(in);
+        Equipment* pEquip = dynamic_cast<Equipment*>(pItem);
+        Equip(slot,pEquip);
+    }
 }
 
 

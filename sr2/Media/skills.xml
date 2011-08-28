@@ -338,10 +338,6 @@
                 $bHit = true;
 
         if($bHit){
-            if($hasWeapon)
-                playSound(getHitSound(getWeaponType($pWeapon)));
-            else
-                playSound(getUnarmedHitSound($pC));
 
             declare $damageMean = getCharacterAttribute($pC, $_STR) + getEquippedWeaponAttribute($pC,$_ATTACK);
             // TODO: Account for ranged attacks and rows
@@ -378,10 +374,6 @@
 
             log("Mean damage was " + $damageMean + " and base damage was " + $baseDamage + " and actual damage was " + $actualDamage);
         }else{
-            if($hasWeapon)
-                playSound(getMissSound(getWeaponType($pWeapon)));
-            else
-                playSound(getUnarmedMissSound($pC));
             battle::createDisplay(0,$pTarget,$_DISP_MISS);
         }
         
@@ -410,7 +402,7 @@
                 }
                 var $name = getCharacterName($Character);
                 battle::doTargetedAnimation($Character,$pTarget,getAnimation("move_to_attack"));
-                battle::doTargetedAnimation($Character,$pTarget,getAnimation("attack"));
+                battle::doTargetedAnimation($Character,$pTarget,getAnimation("std_monster_attack"));
                 log($name + " attacks " + getCharacterName($pTarget));
 
                 var $hit = getCharacterAttribute($Character, $_DEX) + getEquippedWeaponAttribute($Character,$_HIT);
@@ -430,8 +422,6 @@
 
                 if($bHit){
                     log($name + " hit!");
-
-                    playSound(getUnarmedHitSound($Character));
                     var $damageMean = getCharacterAttribute($Character, $_STR);
                     // Random about the damageMean, standard deviation is 15% of the mean, so 68% of attacks fall within 10% deviation of the mean
                     var $baseDamage = normal_random($damageMean,$damageMean * 0.15);
@@ -455,8 +445,6 @@
                     log("Mean damage was " + $damageMean + " and base damage was " + $baseDamage + " and actual damage was " + $actualDamage);
                 }else{
                     log("You missed.");
-
-                    playSound(getUnarmedMissSound($Character));
                     battle::createDisplay(0,$pTarget,$_DISP_MISS);
                 }
                 battle::doTargetedAnimation($Character,$pTarget,getAnimation("return_from_attack"));

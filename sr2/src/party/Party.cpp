@@ -13,6 +13,7 @@
 #include "ArmorType.h"
 #include "WeaponClass.h"
 #include "ArmorClass.h"
+#include "CharacterManager.h"
 
 
 using StoneRing::Party;
@@ -198,13 +199,21 @@ void Party::Serialize ( std::ostream& out )
             ItemManager::SerializeItem(out,iter->second.m_pItem);
        }
         
-       out.write((char*)&m_nGold,sizeof(uint));
+    out.write((char*)&m_nGold,sizeof(uint));
+    
+    uint char_count = m_characters.size();
+    out.write((char*)&char_count,sizeof(uint));
+    for(int i=0;i<m_characters.size();i++){
+        WriteString(out,m_characters[i]->GetName());
+        m_characters[i]->Serialize(out);
+    }
 }
 
 void Party::Deserialize ( std::istream& in )
 {
     m_events.clear();
     m_items.clear();
+    m_characters.clear();
     uint event_size;
     in.read((char*)&event_size,sizeof(uint));
     for(int i=0;i<event_size;i++){
@@ -219,6 +228,15 @@ void Party::Deserialize ( std::istream& in )
         GiveItem(ItemManager::DeserializeItem(in),item_count);
     }    
     in.read((char*)&m_nGold,sizeof(uint));
+    
+    uint char_count;
+    in.read((char*)&char_count,sizeof(uint));
+    for(int i=0;i<char_count;i++){
+        std::string character = ReadString(in);
+        Character * pChar = IApplication::GetInstance()->GetCharacterManager()->GetCharacter(character);
+        pChar->Deserialize(in);
+        m_characters.push_back(pChar);
+    }
 }
 
 

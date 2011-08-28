@@ -168,8 +168,6 @@ namespace StoneRing
         SteelType disposeItem(SteelType::Handle hItem,  uint count); // Call multiple times to take multiple of this item
 	SteelType useItem(SteelType::Handle hItem, const SteelType& targets);
 
-        SteelType getHitSound(SteelType::Handle hWeaponType);
-        SteelType getMissSound(SteelType::Handle hWeaponType);
         SteelType getUnarmedHitSound(SteelType::Handle hICharacter);
         SteelType getUnarmedMissSound(SteelType::Handle hICharacter);
 	

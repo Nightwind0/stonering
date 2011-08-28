@@ -247,8 +247,8 @@ void StoneRing::MapState::PushLevel(Level * pLevel, uint x, uint y)
     CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
     Character *pMapCharacter = IApplication::GetInstance()->GetParty()->GetMapCharacter();
 
-    m_levels.push( pLevel );
-    m_pLevel = m_levels.top();
+    m_levels.push_back( pLevel );
+    m_pLevel = m_levels.back();
 
     if(pMapCharacter)
     {
@@ -277,8 +277,8 @@ void StoneRing::MapState::Pop(bool bAll)
     {
         while(m_levels.size() > 1)
         {
-            m_levels.top()->MarkForDeath();
-            m_levels.pop();
+            m_levels.back()->MarkForDeath();
+            m_levels.pop_back();
         }
     }
     else
@@ -286,12 +286,12 @@ void StoneRing::MapState::Pop(bool bAll)
 
         if(m_levels.size())
         {
-            m_levels.top()->MarkForDeath();
-            m_levels.pop();
+            m_levels.back()->MarkForDeath();
+            m_levels.pop_back();
         }
     }
 
-    m_pLevel = m_levels.top();
+    m_pLevel = m_levels.back();
     MappablePlayer * pNewPlayer = m_pLevel->GetPlayer();
 
     pNewPlayer->SetNextDirection(oldDir);
@@ -394,6 +394,40 @@ void StoneRing::MapState::switch_from_player(MappablePlayer * pPlayer)
     pPlayer->ClearNextDirection();
 }
 
+void StoneRing::MapState::SerializeState ( std::ostream& out )
+{
+    uint level_count = m_levels.size();
+    out.write((char*)&level_count,sizeof(uint));
+    for(int i=0;i<level_count;i++){
+        WriteString(out, m_levels[i]->GetName());
+        m_levels[i]->SerializeState(out);
+    }
+}
+
+void StoneRing::MapState::DeserializeState ( std::istream& in )
+{
+    uint level_count;
+    in.read((char*)&level_count,sizeof(uint));
+    for(int i=0;i<level_count;i++){
+        std::string name = ReadString(in);
+        Level * pLevel = new Level();
+        pLevel->Load(name,IApplication::GetInstance()->GetResources());
+        pLevel->Invoke();
+        pLevel->DeserializeState(in);
+        MappablePlayer* pPlayer = pLevel->GetPlayer();
+        Character *pMapCharacter = IApplication::GetInstance()->GetParty()->GetMapCharacter();    
+        if(pMapCharacter)
+        {
+            pPlayer->SetSprite ( pMapCharacter->GetMapSprite() );
+            pLevel->SetPlayerPos(pPlayer->GetPosition());
+            recalculate_player_position();
+        }        
+        m_levels.push_back(pLevel);
+    }
+
+    m_pLevel = m_levels.back();
+  
+}
 
 
 

@@ -493,9 +493,18 @@ bool Phase::handle_element(eElement element, Element * pElement)
     case ESCRIPT:
         m_pScript = dynamic_cast<ScriptElement*>(pElement);
         break;
-    case ESPRITEANIMATION:
-        m_sprite_animations.push_back( dynamic_cast<SpriteAnimation*>(pElement));
-        break;
+    case ESPRITEANIMATION:{
+        PhaseComponent component;
+        component.m_animation = dynamic_cast<SpriteAnimation*>(pElement);
+        component.m_bAnimation = true;
+        m_phase_components.push_back ( component );
+        break;}
+    case ESOUNDPLAY:{
+        PhaseComponent component;
+        component.m_soundplay = dynamic_cast<SoundPlay*>(pElement);
+        component.m_bAnimation = false;
+        m_phase_components.push_back ( component );
+        break;}
 
     default:
         return false;
@@ -520,15 +529,9 @@ Phase::~Phase()
 {
     delete m_pScript;
 
-    std::for_each(m_sprite_animations.begin(),m_sprite_animations.end(),del_fun<SpriteAnimation>());
+    //std::for_each(m_sprite_animations.begin(),m_sprite_animations.end(),del_fun<SpriteAnimation>());
 }
 
-
-CL_DomElement
-Phase::CreateDomElement(CL_DomDocument &doc) const
-{
-    return CL_DomElement(doc, "Phase");
-}
 
 uint Phase::GetDurationMs() const
 {
@@ -541,16 +544,14 @@ void Phase::Execute()
         m_pScript->ExecuteScript();
 }
 
-std::list<SpriteAnimation*>::const_iterator
-Phase::GetSpriteAnimationsBegin() const
+std::list< Phase::PhaseComponent >::const_iterator Phase::GetPhaseComponentsBegin() const
 {
-    return m_sprite_animations.begin();
+    return m_phase_components.begin();
 }
 
-std::list<SpriteAnimation*>::const_iterator
-Phase::GetSpriteAnimationsEnd() const
+std::list< Phase::PhaseComponent >::const_iterator Phase::GetPhaseComponentsEnd() const
 {
-    return m_sprite_animations.end();
+    return m_phase_components.end();
 }
 
 
