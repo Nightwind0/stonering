@@ -21,6 +21,10 @@
 #define SOUNDMANAGER_H
 
 #include <string>
+#include <ClanLib/sound.h>
+#include <ClanLib/vorbis.h>
+#include <ClanLib/core.h>
+#include <deque>
 
 namespace StoneRing {
 
@@ -28,13 +32,34 @@ class SoundManager
 {
 
 public:
+    
+    enum Effect {
+        EFFECT_CHANGE_OPTION,
+        EFFECT_SELECT_OPTION,
+        EFFECT_BAD_OPTION,
+        EFFECT_REWARD,
+        EFFECT_CANCEL
+    };
+    
     static void initialize();
+    static void PlayEffect(Effect effect);
     static void PlaySound(const std::string&);
     static void SetMusic(const std::string&);
+    static void SetMusicVolume(float vol);
+    static void SetMusicMaxVolume(float vol);
+    static void PushMusic();
+    static void PopMusic();
 private:
     static SoundManager * m_pInstance;
+    void set_music(CL_SoundBuffer song);
+    void onTransitionTimer();
     SoundManager();
     virtual ~SoundManager();
+    CL_SoundBuffer m_buffer;
+    CL_SoundBuffer_Session m_session;
+    CL_Timer m_transition_timer;
+    float m_music_max;
+    std::deque<CL_SoundBuffer> m_song_stack;
 };
 
 

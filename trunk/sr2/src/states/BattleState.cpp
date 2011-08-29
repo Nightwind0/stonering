@@ -13,7 +13,7 @@
 #include <sstream>
 #include <iomanip>
 #include <algorithm>
-
+#include "SoundManager.h"
 
 
 using namespace StoneRing;
@@ -278,13 +278,15 @@ void BattleState::HandleButtonUp(const IApplication::Button& button)
                     }
                     else
                     {
-                    // Play bbzt sound
+                        // Play bbzt sound
+                        SoundManager::PlayEffect(SoundManager::EFFECT_BAD_OPTION);
                     }
                 }
             }
             else 
             {
                 // Play bbzt sound
+                SoundManager::PlayEffect(SoundManager::EFFECT_BAD_OPTION);
             }
             break;
         case IApplication::BUTTON_CANCEL:
@@ -292,6 +294,7 @@ void BattleState::HandleButtonUp(const IApplication::Button& button)
             {
                 if(m_menu_stack.size() > 1)
                 {
+                    SoundManager::PlayEffect(SoundManager::EFFECT_CANCEL);
                     m_menu_stack.pop();
                     // TODO: Should I "Deselect" here??
                 }
@@ -457,6 +460,12 @@ void BattleState::Start()
     set_positions_to_loci();
     m_startup_time = CL_System::get_time();
     //next_turn();
+    
+    std::string music = "Battle";
+    if(isBossBattle()) music = "Boss";
+    // TODO: Is final boss?
+    SoundManager::PushMusic();
+    SoundManager::SetMusic(music);   
 }
 
 void BattleState::init_or_release_players(bool bRelease)
@@ -490,6 +499,7 @@ void BattleState::Finish()
     m_initiative.clear();
 
     init_or_release_players(true);
+    SoundManager::PopMusic();
 }
 
 void BattleState::draw_darkness(const CL_Rectf &screenRect, CL_GraphicContext& GC)
@@ -1297,6 +1307,7 @@ void BattleState::FinishTurn()
 // Go back to menu, they decided not to proceed with this option
 void BattleState::CancelTargeting()
 {
+    SoundManager::PlayEffect(SoundManager::EFFECT_CANCEL);
     m_targets.m_bSelectedGroup = false;
     m_targets.selected.m_pTarget = NULL;
 }
@@ -1392,6 +1403,7 @@ void BattleState::lose()
 
 void BattleState::win()
 {
+    SoundManager::SetMusic("Fanfare");
     m_bDone = true;
     ParameterList params;
     // All battle methods remain valid here

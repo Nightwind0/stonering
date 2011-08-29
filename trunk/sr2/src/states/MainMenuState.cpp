@@ -2,6 +2,7 @@
 #include "IApplication.h"
 #include "GraphicsManager.h"
 #include "Level.h"
+#include "SoundManager.h"
 #include "MenuBox.h"
 #include <iomanip>
 
@@ -28,9 +29,11 @@ bool StoneRing::MainMenuState::IsDone() const
     {
 	case IApplication::BUTTON_CONFIRM:
 	    // Select current option.
+	    SoundManager::PlayEffect(SoundManager::EFFECT_SELECT_OPTION);
 	    Menu::Choose();
 	    break;
 	case IApplication::BUTTON_CANCEL:
+            SoundManager::PlayEffect(SoundManager::EFFECT_CANCEL);
             if(m_option_parent){
                 Menu::PopMenu();
                 m_option_parent = m_option_parent->GetParent();

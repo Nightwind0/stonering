@@ -91,11 +91,23 @@
                 <freetype name="BoldGreen" size="40" color="#00DD20FF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
                 <freetype name="BoldPurple" size="40" color="#6A1172FF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
         </section>
+        <section name="Music">
+            <sample name="Walk" file="Sounds/NoSleep.ogg"/>
+            <sample name="Wheel" file="Sounds/Wheel.ogg"/>
+            <sample name="Battle" file="Sounds/Fight.ogg"/>
+            <sample name="Boss" file="Sounds/Boss.ogg"/>
+            <sample name="Fanfare" file="Sounds/RechargeableOnion.ogg"/>
+        </section>
         <section name="Sound">
             <sample name="Swish" file="Sounds/swish-10.wav"/>
             <sample name="MonsterAttack" file="Sounds/hit18.wav"/>
             <sample name="FleshHit" file="Sounds/hit29.wav"/>
             <sample name="Arrow" file="Sounds/arrow.wav"/>
+            <sample name="Buzz" file="Sounds/Buzz.wav"/>
+            <sample name="Option" file="Sounds/Blip.wav"/>
+            <sample name="Select" file="Sounds/Select.wav"/>
+            <sample name="Reward" file="Sounds/Reward.wav"/>
+            <sample name="Cancel" file="Sounds/Cancel.wav"/>
         </section>
         <section name="Levels">
                 <string name="examplelevel" value="test3.xml" />

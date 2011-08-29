@@ -20,6 +20,7 @@
 #include "ShopState.h"
 #include "GraphicsManager.h"
 #include "MenuBox.h"
+#include "SoundManager.h"
 #include <iomanip>
 
 
@@ -401,11 +402,13 @@ void ShopState::HandleAxisMove ( const StoneRing::IApplication::Axis& axis, cons
             m_item_menu.SelectUp();
             break;
         case IApplication::AXIS_LEFT:
+            SoundManager::PlayEffect(SoundManager::EFFECT_CHANGE_OPTION);
             m_current_character++;
             if(m_current_character >= IApplication::GetInstance()->GetParty()->GetCharacterCount())
                 m_current_character = 0;
             break;
         case IApplication::AXIS_RIGHT:
+            SoundManager::PlayEffect(SoundManager::EFFECT_CHANGE_OPTION);
             if(m_current_character == 0){
                 m_current_character = IApplication::GetInstance()->GetParty()->GetCharacterCount() - 1;
             } else {
@@ -425,6 +428,7 @@ void ShopState::HandleButtonUp ( const StoneRing::IApplication::Button& button )
     StoneRing::State::HandleButtonUp ( button );
     switch(button){
         case IApplication::BUTTON_CANCEL:
+            SoundManager::PlayEffect(SoundManager::EFFECT_CANCEL);
             m_bDone = true;
             break;
         case IApplication::BUTTON_CONFIRM:{
@@ -434,10 +438,12 @@ void ShopState::HandleButtonUp ( const StoneRing::IApplication::Button& button )
             if(!m_bSell){
                 if(gold >= pItem->GetValue()){
                     //TODO: Play ka-ching
+                    SoundManager::PlayEffect(SoundManager::EFFECT_SELECT_OPTION);
                     IApplication::GetInstance()->GetParty()->GiveGold( - pItem->GetValue() );
                     IApplication::GetInstance()->GetParty()->GiveItem(pItem,1);
                 }else{
-                    //TODO: play bbzzt
+                    //play bbzzt
+                    SoundManager::PlayEffect(SoundManager::EFFECT_BAD_OPTION);
                 }
             }else{
                 IApplication::GetInstance()->GetParty()->TakeItem(pItem,1);

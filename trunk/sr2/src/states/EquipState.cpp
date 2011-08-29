@@ -18,6 +18,7 @@
 
 
 #include "EquipState.h"
+#include "SoundManager.h"
 #include "GraphicsManager.h"
 #include "MenuBox.h"
 #include "Weapon.h"
@@ -167,6 +168,7 @@ void EquipState::draw_description ( CL_GraphicContext& gc )
     CL_Rectf rect = m_desc_rect;
     rect.shrink(GraphicsManager::GetMenuInset().x,GraphicsManager::GetMenuInset().y);
     if(m_eState == SELECT_EQUIPMENT){
+        SoundManager::PlayEffect(SoundManager::EFFECT_SELECT_OPTION);
         m_equipment_menu.Choose();
         Equipment * pEquipment = m_equipment_menu.GetSelection();
         if(pEquipment)
@@ -181,6 +183,7 @@ void EquipState::draw_stats ( CL_GraphicContext& gc )
 {
     if(m_eState == SELECT_EQUIPMENT){
         m_equipment_menu.Choose();
+        SoundManager::PlayEffect(SoundManager::EFFECT_SELECT_OPTION);
         m_pStatusBox->Draw(gc, true, m_pChar,m_pChar->HasEquipment(m_slots[m_nSlot])?m_pChar->GetEquipment(m_slots[m_nSlot]):NULL,
                            m_equipment_menu.GetSelection()
                           );
@@ -429,18 +432,22 @@ void EquipState::HandleButtonUp ( const StoneRing::IApplication::Button& button 
 {
     StoneRing::State::HandleButtonUp ( button );
     if(m_eState == SELECT_SLOT){
-        if(button == IApplication::BUTTON_CANCEL)
+        if(button == IApplication::BUTTON_CANCEL){
             m_bDone = true;
-        else if(button == IApplication::BUTTON_CONFIRM){
+            SoundManager::PlayEffect(SoundManager::EFFECT_CANCEL);
+        }else if(button == IApplication::BUTTON_CONFIRM){
             m_eState = SELECT_EQUIPMENT;
+            SoundManager::PlayEffect(SoundManager::EFFECT_SELECT_OPTION);
             m_equipment_menu.EnableSelection();
         }
         
     }else if(m_eState == SELECT_EQUIPMENT){
         if(button == IApplication::BUTTON_CANCEL){
+            SoundManager::PlayEffect(SoundManager::EFFECT_CANCEL);
             m_eState = SELECT_SLOT;
             m_equipment_menu.DisableSelection();
         }else if(button == IApplication::BUTTON_CONFIRM){
+            SoundManager::PlayEffect(SoundManager::EFFECT_SELECT_OPTION);
             m_equipment_menu.Choose();
             Equipment * pEquipment = m_equipment_menu.GetSelection();
             if(pEquipment == NULL){

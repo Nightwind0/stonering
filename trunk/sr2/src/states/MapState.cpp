@@ -2,6 +2,7 @@
 #include "Level.h"
 #include "MappableObject.h"
 #include "IParty.h"
+#include "SoundManager.h"
 
 using std::min;
 using StoneRing::IParty;
@@ -259,6 +260,8 @@ void StoneRing::MapState::PushLevel(Level * pLevel, uint x, uint y)
         pLevel->SetPlayerPos(CL_Point(x,y));
         recalculate_player_position();
     }
+    
+    SoundManager::SetMusic(m_pLevel->GetMusic());
 }
 
 void StoneRing::MapState::SetPlayerSprite(CL_Sprite  player)
@@ -292,6 +295,7 @@ void StoneRing::MapState::Pop(bool bAll)
     }
 
     m_pLevel = m_levels.back();
+    SoundManager::SetMusic(m_pLevel->GetMusic());
     MappablePlayer * pNewPlayer = m_pLevel->GetPlayer();
 
     pNewPlayer->SetNextDirection(oldDir);
@@ -426,7 +430,7 @@ void StoneRing::MapState::DeserializeState ( std::istream& in )
     }
 
     m_pLevel = m_levels.back();
-  
+    SoundManager::SetMusic(m_pLevel->GetMusic());
 }
 
 

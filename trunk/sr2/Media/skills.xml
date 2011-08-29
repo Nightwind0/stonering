@@ -64,7 +64,7 @@
                     declare $actualDamage = $baseDamage *  getDamageCategoryResistance($pTarget,$_BASH);
                     declare $modDamage = integer($actualDamage - getEquippedArmorAttribute($pTarget,$_AC));
 
-                    if($modDamage < 0 and $actualDamage >0) $modDamage = 0;
+                    if($modDamage < 0 and $actualDamage >0) $modDamage = 1;
 
                     attackCharacter($pTarget,$Character,$_WATER,false,$modDamage);
 
@@ -112,7 +112,7 @@
                     declare $actualDamage = $baseDamage *  getDamageCategoryResistance($pTarget,$_BASH);
                     declare $modDamage = integer($actualDamage - getEquippedArmorAttribute($pTarget,$_AC));
 
-                    if($modDamage < 0 and $actualDamage >0) $modDamage = 0;
+                    if($modDamage < 0 and $actualDamage >0) $modDamage = 1;
 
                     attackCharacter($pTarget,$Character,$_WATER,false,$modDamage);
                     
@@ -160,7 +160,7 @@
                     declare $actualDamage = $baseDamage *  getDamageCategoryResistance($pTarget,$_BASH);
                     declare $modDamage = integer($actualDamage - getEquippedArmorAttribute($pTarget,$_AC));
 
-                    if($modDamage < 0 and $actualDamage >0) $modDamage = 0;
+                    if($modDamage < 0 and $actualDamage >0) $modDamage = 1;
 
                     attackCharacter($pTarget,$Character,$_WATER,false,$modDamage);
                     battle::doTargetedAnimation($pTarget,$Character,getAnimation("recoil"));
@@ -208,7 +208,7 @@
                     declare $actualDamage = $baseDamage *  getDamageCategoryResistance($pTarget,$_BASH);
                     declare $modDamage = integer($actualDamage - getEquippedArmorAttribute($pTarget,$_AC));
 
-                    if($modDamage < 0 and $actualDamage >0) $modDamage = 0;
+                    if($modDamage < 0 and $actualDamage >0) $modDamage = 1;
 
                     attackCharacter($pTarget,$Character,$_WATER,false,$modDamage);    
              
@@ -435,7 +435,7 @@
                         $display_type = $_DISP_CRITICAL;
                     }
 
-                    if($modDamage <0 and $actualDamage >0) $modDamage = 0;
+                    if($modDamage <0 and $actualDamage >0) $modDamage = 1;
 
 
                     attackCharacter($pTarget,$Character,battle::getMonsterDamageCategory($Character),true,$modDamage);

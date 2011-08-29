@@ -2,6 +2,7 @@
 #include <ClanLib/core.h>
 #include <ClanLib/gl.h>
 #include <ClanLib/sound.h>
+#include <ClanLib/vorbis.h>
 #include <iostream>
 #include <sstream>
 #include <vector>
@@ -1111,8 +1112,10 @@ SteelType Application::giveItem( SteelType::Handle hItem, int count, bool silent
 {
     Item * pItem = GrabHandle<Item*>(hItem);
     
+
     mpParty->GiveItem ( pItem , count );
     if(!silent){
+        SoundManager::PlayEffect(SoundManager::EFFECT_REWARD);
         std::ostringstream os;
         os << "You received " << pItem->GetName();
 
@@ -2134,7 +2137,6 @@ int Application::main ( const std::vector<CL_String> &args )
     }
 
 
-
     try
     {
 
@@ -2269,6 +2271,7 @@ public:
         CL_SetupDisplay setup_display;
         CL_SetupGL setup_gl;
         CL_SetupSound setup_sound;
+        CL_SetupVorbis setup_vorbis;
         CL_SoundOutput output(44100);
 
         Application app;

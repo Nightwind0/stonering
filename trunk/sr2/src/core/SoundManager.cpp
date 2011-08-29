@@ -20,6 +20,7 @@
 #include "SoundManager.h"
 #include "IApplication.h"
 #include <ClanLib/sound.h>
+#include <ClanLib/vorbis.h> 
 
 using namespace StoneRing;
 
@@ -27,7 +28,7 @@ SoundManager* SoundManager::m_pInstance = NULL;
 
 SoundManager::SoundManager()
 {
-
+    m_music_max = 0.8f;
 }
 
 SoundManager::~SoundManager()
@@ -49,9 +50,78 @@ void SoundManager::PlaySound ( const std::string& sound_name )
     sound.play();
 }
 
-void SoundManager::SetMusic ( const std::string& )
-{
 
+void SoundManager::set_music ( CL_SoundBuffer song )
+{
+    if(!m_pInstance->m_session.is_null()){
+        CL_FadeFilter fade(1.0f);
+        fade.fade_to_volume(0.0f,500);
+        m_pInstance->m_session.add_filter(fade);
+    }
+    m_buffer = song;
+    
+    m_pInstance->m_transition_timer.func_expired().set(m_pInstance,&SoundManager::onTransitionTimer);
+    m_pInstance->m_transition_timer.start(500,false);
 }
+
+void SoundManager::SetMusic ( const std::string& music )
+{
+    CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
+    m_pInstance->set_music(CL_SoundBuffer("Music/" + music, &resources));
+}
+
+void SoundManager::onTransitionTimer ( ) 
+{
+    if(!m_session.is_null())
+        m_session.stop();
+    m_session = m_buffer.prepare();
+    CL_FadeFilter fade(0.0f);
+    fade.fade_to_volume(1.0f,500);
+    m_session.add_filter(fade);
+    m_session.set_looping(true);
+    m_session.set_volume(m_music_max);
+    m_session.play();
+}
+
+void SoundManager::SetMusicVolume(float vol)
+{
+    m_pInstance->m_session.set_volume(vol * m_pInstance->m_music_max);
+}
+
+
+void SoundManager::PushMusic()
+{
+    m_pInstance->m_song_stack.push_front(m_pInstance->m_buffer);
+}
+
+void SoundManager::PopMusic()
+{
+   m_pInstance->set_music ( m_pInstance->m_song_stack.front() );
+   m_pInstance->m_song_stack.pop_front();
+}
+
+
+void SoundManager::PlayEffect ( SoundManager::Effect effect )
+{
+    switch(effect){
+        case EFFECT_CHANGE_OPTION:
+            PlaySound("Sound/Option");
+            break;
+        case EFFECT_BAD_OPTION:
+            PlaySound("Sound/Buzz");
+            break;
+        case EFFECT_SELECT_OPTION:
+            PlaySound("Sound/Select");
+            break;
+        case EFFECT_REWARD:
+            PlaySound("Sound/Reward");
+            break;
+        case EFFECT_CANCEL:
+            PlaySound("Sound/Cancel");
+            break;
+            
+    }
+}
+
 
 

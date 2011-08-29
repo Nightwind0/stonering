@@ -19,6 +19,7 @@
 
 #include "MainMenuTargetingState.h"
 #include "MainMenuState.h"
+#include "SoundManager.h"
 
 using StoneRing::MainMenuTargetingState;
 using StoneRing::MainMenuState;
@@ -50,11 +51,13 @@ void MainMenuTargetingState::HandleButtonUp(const StoneRing::IApplication::Butto
 {
     if(button == IApplication::BUTTON_CONFIRM)
     {
+        SoundManager::PlayEffect(SoundManager::EFFECT_SELECT_OPTION);
 	m_parent.SelectionFinish();
 	m_bDone = true;
     }
     else if(button == IApplication::BUTTON_CANCEL)
     {
+        SoundManager::PlayEffect(SoundManager::EFFECT_CANCEL);
 	m_parent.SelectionCancel();
 	m_bDone = true;
     }
@@ -65,10 +68,12 @@ void MainMenuTargetingState::HandleAxisMove(const IApplication::Axis& axis, IApp
     
     if(dir == IApplication::AXIS_UP)
     {
+        SoundManager::PlayEffect(SoundManager::EFFECT_CHANGE_OPTION);
 	m_parent.SelectCharacterUp();
     }
     else if(dir == IApplication::AXIS_DOWN)
     {
+        SoundManager::PlayEffect(SoundManager::EFFECT_CHANGE_OPTION);
 	m_parent.SelectCharacterDown();
     }
 }

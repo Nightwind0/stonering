@@ -82,6 +82,7 @@ void ExperienceState::Start()
 {
     m_bDone = false;
     m_start_time = CL_System::get_time();
+    // TODO: Play "xp" sound
 }
 
 void ExperienceState::MappableObjectMoveHook()

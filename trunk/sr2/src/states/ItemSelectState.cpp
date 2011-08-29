@@ -3,6 +3,7 @@
 #include "Item.h"
 #include "RegularItem.h"
 #include "MenuBox.h"
+#include "SoundManager.h"
 #include <iomanip>
 
 using StoneRing::ItemSelectState;
@@ -45,18 +46,20 @@ void ItemSelectState::HandleButtonUp(const IApplication::Button& button)
     switch(button)
     {
     case IApplication::BUTTON_CANCEL:
+        SoundManager::PlayEffect(SoundManager::EFFECT_CANCEL);
 	m_bDone = true;
     break;
     case IApplication::BUTTON_CONFIRM:
 	Choose();
 	if(selection_applies(m_selected_item))
 	{
+            SoundManager::PlayEffect(SoundManager::EFFECT_SELECT_OPTION);
 	    m_bDone = true;
 	}
 	else
 	{
 	    // Play sound
-	    
+	    SoundManager::PlayEffect(SoundManager::EFFECT_BAD_OPTION);
 	}
 	break;
     	case IApplication::BUTTON_R:

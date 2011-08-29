@@ -257,6 +257,7 @@ namespace StoneRing {
         uint GetHeight() const { return m_LevelHeight; }
         bool AllowsRunning() const { return m_bAllowsRunning; }
         std::string GetName() const { return m_name; }
+        std::string GetMusic() const { return m_pHeader->GetMusic(); }
 
         // Player interfaces
         MappablePlayer * GetPlayer() { return &m_player; }

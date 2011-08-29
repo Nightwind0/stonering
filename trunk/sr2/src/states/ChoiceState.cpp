@@ -3,6 +3,7 @@
 #include "GraphicsManager.h"
 #include "Level.h"
 #include "MenuBox.h"
+#include "SoundManager.h"
 
 using std::min;
 using std::max;
@@ -29,6 +30,7 @@ bool StoneRing::ChoiceState::IsDone() const
 	    // Select current option.
 	    m_bDraw = false;
 	    // mpChoice->chooseOption(mnCurrentOption);
+            SoundManager::PlayEffect(SoundManager::EFFECT_SELECT_OPTION);
 	    m_nSelection = get_current_choice();
 	    m_bDone = true;
 	    break;

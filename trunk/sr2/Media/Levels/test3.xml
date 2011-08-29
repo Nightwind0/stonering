@@ -1,5 +1,5 @@
 <level name="TestLevel">
-        <levelHeader music="Main" width="30" height="24" allowsRunning="true">
+        <levelHeader music="Walk" width="30" height="24" allowsRunning="true">
         </levelHeader>
         <tiles>
                 <tile xpos="0" ypos="0">
@@ -3508,7 +3508,7 @@
                         <event name="CatMeow" triggerType="talk" remember="true">
                                 <script id="catmeow">
                                     say("Karate Cat","Do you want karate?");
-                                    startBattle("Black Cat",1,false,"grasslands");
+                                    startBattle("Black Cat",1,true,"grasslands");
                                 </script>
                                 
                         </event>
