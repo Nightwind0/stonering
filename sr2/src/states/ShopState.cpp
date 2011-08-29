@@ -169,10 +169,10 @@ void ShopState::ItemMenu::SetSellMode ( bool Sell )
 void ShopState::Init ( const SteelArray& items )
 {
 	m_item_menu.Init();
-   // Put items into array 
-   m_item_menu.ClearOptions();
-   for(SteelArray::const_iterator iter = items.begin(); iter != items.end(); iter++)
-   {
+	// Put items into array 
+	m_item_menu.ClearOptions();
+	for(SteelArray::const_iterator iter = items.begin(); iter != items.end(); iter++)
+	{
         SteelType type = *iter;
         if(type.isHandle() && type.isValidHandle()){
             SteelType::Handle handle = type;
@@ -180,9 +180,9 @@ void ShopState::Init ( const SteelArray& items )
             //m_items.push_back(pItem);
             m_item_menu.AddOption(pItem);
         }
-   }
+	}
    
-   m_bSell = false;
+	m_bSell = false;
 }
 
 void ShopState::Init()

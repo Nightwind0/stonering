@@ -11,9 +11,7 @@ using StoneRing::IParty;
 StoneRing::MapState::MapState():m_bDone(false),m_LevelX(0),
                                 m_LevelY(0)
 {
-#ifndef NDEBUG
-    m_bShowDebug = false;
-#endif
+	m_bShowDebug = false;
     m_horizontal_idle = true;
     m_vertical_idle = true;
 }

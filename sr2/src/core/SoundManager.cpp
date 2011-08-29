@@ -28,7 +28,7 @@ SoundManager* SoundManager::m_pInstance = NULL;
 
 SoundManager::SoundManager()
 {
-    m_music_max = 0.8f;
+    m_music_max = 0.9f;
 }
 
 SoundManager::~SoundManager()
