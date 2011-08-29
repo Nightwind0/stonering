@@ -170,6 +170,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\abilities\SoundPlay.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\abilities\SoundPlay.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\abilities\StatusEffect.cpp"
 					>
 				</File>
@@ -442,6 +450,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\states\EquipState.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\EquipState.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\states\ExperienceState.cpp"
 					>
 				</File>
@@ -463,6 +479,14 @@
 				</File>
 				<File
 					RelativePath="..\src\states\SayState.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\ShopState.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\ShopState.h"
 					>
 				</File>
 				<File
@@ -552,7 +576,31 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\src\core\MenuBox.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\core\MenuBox.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\core\SoundManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\core\SoundManager.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\core\SpriteRef.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\core\StatusBox.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\core\StatusBox.h"
 					>
 				</File>
 				<File

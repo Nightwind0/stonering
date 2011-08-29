@@ -168,6 +168,7 @@ void ShopState::ItemMenu::SetSellMode ( bool Sell )
 
 void ShopState::Init ( const SteelArray& items )
 {
+	m_item_menu.Init();
    // Put items into array 
    m_item_menu.ClearOptions();
    for(SteelArray::const_iterator iter = items.begin(); iter != items.end(); iter++)
@@ -187,6 +188,7 @@ void ShopState::Init ( const SteelArray& items )
 void ShopState::Init()
 {
     m_bSell = true;
+	m_item_menu.Init();
     m_item_menu.ClearOptions();
     ItemCollector collector(m_item_menu);
     IApplication::GetInstance()->GetParty()->IterateItems(collector);
@@ -197,7 +199,7 @@ void ShopState::Init()
 
 bool ShopState::LastToDraw() const
 {
-
+	return false;
 }
 
 void ShopState::MappableObjectMoveHook()
