@@ -87,6 +87,7 @@ bool Party::GiveItem(Item *pItem, uint count)
         entry.m_pItem = pItem;
         entry.m_count = count;
         m_items[pItem->GetName()] = entry;
+		iter = m_items.find(pItem->GetName());
     }else {
         iter->second.m_count += count;
     }  
