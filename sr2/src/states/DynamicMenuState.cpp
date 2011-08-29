@@ -19,6 +19,7 @@
 
 #include "DynamicMenuState.h"
 #include "GraphicsManager.h"
+#include "SoundManager.h"
 #include "MenuBox.h"
 
 
@@ -90,9 +91,10 @@ void DynamicMenuState::Init ( const std::vector< std::string >& choices )
     // Handle joystick / key events that are processed according to mappings
 void DynamicMenuState::HandleButtonUp(const IApplication::Button& button)
 {
-    if(button == IApplication::BUTTON_CANCEL)
+    if(button == IApplication::BUTTON_CANCEL){
         m_bDone = true;
-    else if(button == IApplication::BUTTON_CONFIRM)
+        SoundManager::PlayEffect(SoundManager::EFFECT_CANCEL);
+    }else if(button == IApplication::BUTTON_CONFIRM)
         Menu::Choose();
 }
 
@@ -206,6 +208,7 @@ int DynamicMenuState::height_for_option ( CL_GraphicContext& gc )
 
 void DynamicMenuState::process_choice ( int selection )
 {
+    SoundManager::PlayEffect(SoundManager::EFFECT_SELECT_OPTION);
     m_nSelection = selection;
     m_bDone = true;
 }

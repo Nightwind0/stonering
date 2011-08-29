@@ -18,6 +18,7 @@
 */
 
 #include "Menu.h"
+#include "SoundManager.h"
 
 using StoneRing::Menu;
 
@@ -61,6 +62,7 @@ void Menu::Draw(CL_GraphicContext& gc)
 
 bool Menu::SelectUp()
 {
+    SoundManager::PlayEffect(SoundManager::EFFECT_CHANGE_OPTION);
     int cursor = m_stack.front();
     if(cursor > 0)
 	cursor--;
@@ -73,6 +75,7 @@ bool Menu::SelectUp()
 
 bool Menu::SelectDown()
 {
+    SoundManager::PlayEffect(SoundManager::EFFECT_CHANGE_OPTION);
     int cursor = m_stack.front();
     if(cursor + 1 < get_option_count())
 	cursor++;

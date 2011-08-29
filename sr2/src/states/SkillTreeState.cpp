@@ -19,6 +19,7 @@
 
 #include "SkillTreeState.h"
 #include "GraphicsManager.h"
+#include "SoundManager.h"
 #include "MenuBox.h"
 #include <sstream>
 #include <iomanip>
@@ -327,6 +328,7 @@ void SkillTreeState::HandleButtonUp ( const StoneRing::IApplication::Button& but
     switch(button) 
     {
         case IApplication::BUTTON_CANCEL:
+            SoundManager::PlayEffect(SoundManager::EFFECT_CANCEL);
             m_bDone = true;
             break;
         case IApplication::BUTTON_CONFIRM:
@@ -370,6 +372,9 @@ void SkillTreeState::HandleAxisMove ( const StoneRing::IApplication::Axis& axis,
                 fill_vector(m_skills[get_current_choice()]->GetSubSkillsBegin(),
                     m_skills[get_current_choice()]->GetSubSkillsEnd());
                 PushMenu();
+                SoundManager::PlayEffect(StoneRing::SoundManager::EFFECT_CHANGE_OPTION);
+            }else {
+                SoundManager::PlayEffect(StoneRing::SoundManager::EFFECT_BAD_OPTION);
             }
         }
         else if(dir == IApplication::AXIS_LEFT)
@@ -410,10 +415,13 @@ void SkillTreeState::process_choice ( int selection )
         {
             m_pChar->SetSP ( m_pChar->GetSP() - node->GetSPCost() );
             m_pChar->LearnSkill(pSkillRef->GetRef());
+            // TODO: Play learn skill sound
+            SoundManager::PlayEffect(SoundManager::EFFECT_SELECT_OPTION);
         }
         else
         {
             // play sound bbzzzt
+            SoundManager::PlayEffect(SoundManager::EFFECT_BAD_OPTION);
         }
     }else if(m_eUse == USE)
     {
@@ -425,14 +433,17 @@ void SkillTreeState::process_choice ( int selection )
             {
                 m_pSelectedNode = node;
                 m_bDone = true;
+                SoundManager::PlayEffect(SoundManager::EFFECT_SELECT_OPTION);
             }
             else {
                 // Play sound bbzt
+                SoundManager::PlayEffect(SoundManager::EFFECT_BAD_OPTION);
             }
         }
         else
         {
             // play sound bbzzzt
+            SoundManager::PlayEffect(SoundManager::EFFECT_BAD_OPTION);
         }
     }
     

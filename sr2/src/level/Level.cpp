@@ -14,7 +14,7 @@
 #include "ItemManager.h"
 #include "MonsterRegion.h"
 #include "MonsterGroup.h"
-
+#include "SoundManager.h"
 
 typedef unsigned int uint;
 
