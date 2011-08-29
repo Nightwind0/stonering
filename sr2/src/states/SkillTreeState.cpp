@@ -416,7 +416,7 @@ void SkillTreeState::process_choice ( int selection )
             m_pChar->SetSP ( m_pChar->GetSP() - node->GetSPCost() );
             m_pChar->LearnSkill(pSkillRef->GetRef());
             // TODO: Play learn skill sound
-            SoundManager::PlayEffect(SoundManager::EFFECT_SELECT_OPTION);
+            SoundManager::PlayEffect(SoundManager::EFFECT_REWARD);
         }
         else
         {

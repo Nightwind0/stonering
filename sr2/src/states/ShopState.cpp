@@ -437,8 +437,8 @@ void ShopState::HandleButtonUp ( const StoneRing::IApplication::Button& button )
             int gold = IApplication::GetInstance()->GetParty()->GetGold();
             if(!m_bSell){
                 if(gold >= pItem->GetValue()){
-                    //TODO: Play ka-ching
-                    SoundManager::PlayEffect(SoundManager::EFFECT_SELECT_OPTION);
+                    
+                    SoundManager::PlayEffect(SoundManager::EFFECT_REWARD);
                     IApplication::GetInstance()->GetParty()->GiveGold( - pItem->GetValue() );
                     IApplication::GetInstance()->GetParty()->GiveItem(pItem,1);
                 }else{
@@ -446,6 +446,7 @@ void ShopState::HandleButtonUp ( const StoneRing::IApplication::Button& button )
                     SoundManager::PlayEffect(SoundManager::EFFECT_BAD_OPTION);
                 }
             }else{
+                SoundManager::PlayEffect(SoundManager::EFFECT_GOLD);
                 IApplication::GetInstance()->GetParty()->TakeItem(pItem,1);
                 IApplication::GetInstance()->GetParty()->GiveGold( pItem->GetSellValue() );
                 m_item_menu.ClearOptions();

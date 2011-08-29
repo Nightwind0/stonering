@@ -168,7 +168,6 @@ void EquipState::draw_description ( CL_GraphicContext& gc )
     CL_Rectf rect = m_desc_rect;
     rect.shrink(GraphicsManager::GetMenuInset().x,GraphicsManager::GetMenuInset().y);
     if(m_eState == SELECT_EQUIPMENT){
-        SoundManager::PlayEffect(SoundManager::EFFECT_SELECT_OPTION);
         m_equipment_menu.Choose();
         Equipment * pEquipment = m_equipment_menu.GetSelection();
         if(pEquipment)
@@ -183,7 +182,6 @@ void EquipState::draw_stats ( CL_GraphicContext& gc )
 {
     if(m_eState == SELECT_EQUIPMENT){
         m_equipment_menu.Choose();
-        SoundManager::PlayEffect(SoundManager::EFFECT_SELECT_OPTION);
         m_pStatusBox->Draw(gc, true, m_pChar,m_pChar->HasEquipment(m_slots[m_nSlot])?m_pChar->GetEquipment(m_slots[m_nSlot]):NULL,
                            m_equipment_menu.GetSelection()
                           );
@@ -391,17 +389,21 @@ void EquipState::HandleAxisMove ( const StoneRing::IApplication::Axis& axis, con
             m_nSlot++;
             if(m_nSlot == m_slots.size())
                 m_nSlot = m_slots.size()-1;
+            SoundManager::PlayEffect(SoundManager::EFFECT_CHANGE_OPTION);            
         }else if(dir == IApplication::AXIS_UP){
             if(m_nSlot >0)
                 m_nSlot--;           
             skip_offset = -1;
+            SoundManager::PlayEffect(SoundManager::EFFECT_CHANGE_OPTION);    
         }else if(dir == IApplication::AXIS_LEFT){
             if(m_nSlot >= options_per_column())
                 m_nSlot -= options_per_column();
             skip_offset = -1;
+            SoundManager::PlayEffect(SoundManager::EFFECT_CHANGE_OPTION);
         }else if(dir == IApplication::AXIS_RIGHT){
             if(m_nSlot + options_per_column() < m_slots.size())
                 m_nSlot += options_per_column();
+            SoundManager::PlayEffect(SoundManager::EFFECT_CHANGE_OPTION);
         }
         // You can't select OFFHAND to equip if you're wielding a two-handed weapon
         if(m_slots[m_nSlot] == Equipment::EOFFHAND && !offhand_available()){
@@ -437,7 +439,6 @@ void EquipState::HandleButtonUp ( const StoneRing::IApplication::Button& button 
             SoundManager::PlayEffect(SoundManager::EFFECT_CANCEL);
         }else if(button == IApplication::BUTTON_CONFIRM){
             m_eState = SELECT_EQUIPMENT;
-            SoundManager::PlayEffect(SoundManager::EFFECT_SELECT_OPTION);
             m_equipment_menu.EnableSelection();
         }
         
@@ -451,8 +452,11 @@ void EquipState::HandleButtonUp ( const StoneRing::IApplication::Button& button 
             m_equipment_menu.Choose();
             Equipment * pEquipment = m_equipment_menu.GetSelection();
             if(pEquipment == NULL){
-                IApplication::GetInstance()->GetParty()->GiveItem(m_pChar->GetEquipment(m_slots[m_nSlot]),1);
-                m_pChar->Unequip(m_slots[m_nSlot]);                
+                if(m_pChar->HasEquipment(m_slots[m_nSlot])){
+                    Equipment * pEquip = m_pChar->GetEquipment(m_slots[m_nSlot]);
+                    IApplication::GetInstance()->GetParty()->GiveItem(pEquip,1);
+                    m_pChar->Unequip(m_slots[m_nSlot]);
+                }
             }else{
                 IApplication::GetInstance()->GetParty()->TakeItem(pEquipment,1);
                 m_pChar->Equip(m_slots[m_nSlot],pEquipment);
