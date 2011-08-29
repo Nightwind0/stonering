@@ -1,5 +1,5 @@
 <level name="TestLevel">
-        <levelHeader music="Walk" width="30" height="24" allowsRunning="true">
+        <levelHeader music="Town" width="30" height="24" allowsRunning="true">
         </levelHeader>
         <tiles>
                 <tile xpos="0" ypos="0">

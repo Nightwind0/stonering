@@ -38,7 +38,8 @@ public:
         EFFECT_SELECT_OPTION,
         EFFECT_BAD_OPTION,
         EFFECT_REWARD,
-        EFFECT_CANCEL
+        EFFECT_CANCEL,
+        EFFECT_GOLD
     };
     
     static void initialize();

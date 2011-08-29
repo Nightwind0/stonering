@@ -92,9 +92,10 @@
                 <freetype name="BoldPurple" size="40" color="#6A1172FF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
         </section>
         <section name="Music">
+            <sample name="Town" file="Sounds/Harbor.ogg"/>
             <sample name="Walk" file="Sounds/NoSleep.ogg"/>
             <sample name="Wheel" file="Sounds/Wheel.ogg"/>
-            <sample name="Battle" file="Sounds/Fight.ogg"/>
+            <sample name="Battle" file="Sounds/Boss2.ogg"/>
             <sample name="Boss" file="Sounds/Boss.ogg"/>
             <sample name="Fanfare" file="Sounds/RechargeableOnion.ogg"/>
         </section>
@@ -108,6 +109,7 @@
             <sample name="Select" file="Sounds/Select.wav"/>
             <sample name="Reward" file="Sounds/Reward.wav"/>
             <sample name="Cancel" file="Sounds/Cancel.wav"/>
+            <sample name="Gold" file="Sounds/coin3.wav"/>
         </section>
         <section name="Levels">
                 <string name="examplelevel" value="test3.xml" />

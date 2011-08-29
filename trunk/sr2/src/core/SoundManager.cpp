@@ -119,6 +119,9 @@ void SoundManager::PlayEffect ( SoundManager::Effect effect )
         case EFFECT_CANCEL:
             PlaySound("Sound/Cancel");
             break;
+        case EFFECT_GOLD:
+            PlaySound("Sound/Gold");
+            break;
             
     }
 }
