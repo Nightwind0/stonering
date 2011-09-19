@@ -703,7 +703,7 @@ void StoneRing::MappablePlayer::ClearNextDirection ()
     m_eDirection = NONE; 
 }
 
-void StoneRing::MappablePlayer::RandomNewDirection()
+void StoneRing::MappablePlayer::Random_New_Direction()
 {
     m_eDirection = NONE;
     m_bHasNextDirection = false;

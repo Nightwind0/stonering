@@ -121,7 +121,6 @@ namespace StoneRing {
         virtual void SetNextDirection(eDirection newDir);
 	virtual void StopMovement();
         virtual void ClearNextDirection();
-        virtual void RandomNewDirection();
         virtual eDirection GetDirection();
         virtual void MovedOneCell();
         virtual void Idle();
@@ -142,7 +141,7 @@ namespace StoneRing {
         virtual void load_finished(){}
         virtual void set_frame_for_direction();
         virtual bool delete_sprite() const { return false; }
-
+        virtual void Random_New_Direction();
         eDirection m_eNextDirection;
         bool m_bHasNextDirection;
         bool m_bRunning;
