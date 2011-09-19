@@ -21,6 +21,8 @@ CL_Vec2<int> StoneRing::MappableObject::DirectionToVector ( MappableObject::eDir
             return CL_Vec2<int>(CL_Point(0,-1));
         case SOUTH:
             return CL_Vec2<int>(CL_Point(0,1));
+        default:
+            return CL_Vec2<int>(CL_Point(0,0));
     }
 }
 
@@ -43,8 +45,6 @@ StoneRing::MappableObject::eSize StoneRing::MappableObject::GetSize() const
 
 bool StoneRing::MappableObject::single_move ( StoneRing::Level& level )
 {
-    bool keepMoving = true;
-    CL_Rect oldRect = GetTileRect();
     switch(m_eDirection)
     {
     case NORTH:
@@ -60,39 +60,10 @@ bool StoneRing::MappableObject::single_move ( StoneRing::Level& level )
         m_X--;
         break;
     default:
-        MovedOneCell();
-        return false;
-    }
-    
-    CL_Rect newRect = GetTileRect();
-    if(newRect != oldRect){
-        // Uh oh. Can't do that. Go back
-        if(!level.Move(this,oldRect,newRect)){
-            switch(m_eDirection)
-            {
-            case NORTH:
-                m_Y++;
-                break;
-            case SOUTH:
-                m_Y--;
-                break;
-            case EAST:
-                m_X--;
-                break;
-            case WEST:
-                 m_X++;
-                break;
-            default:
-                break;
-            }
-            StopMovement();
-            keepMoving = false;
-        }
-        
-        MovedOneCell();      
-        
-    }
-    return keepMoving;
+        break;
+    };
+
+    return true;
 }
 
 void StoneRing::MappableObject::StopMovement()
@@ -104,11 +75,27 @@ void StoneRing::MappableObject::StopMovement()
 
 void StoneRing::MappableObject::Move(Level& level)
 {
-    uint moves = get_moves_per_draw();
-    for(int i=0;i<moves;i++){
-        if(!single_move(level))
-            break;
+    if(IsAligned()){
+        CL_Rect rect = GetTileRect();
+        rect.translate ( DirectionToVector(m_eDirection) );
+        
+        while(!level.Move(this,GetTileRect(),rect) && m_eDirection != NONE){
+            Random_New_Direction();
+            CL_Rect rect = GetTileRect();
+            rect.translate ( DirectionToVector(m_eDirection) );            
+        }
     }
+        
+    if(m_pMovement){ 
+        for(int i=0;i<get_moves_per_draw(); i++){
+            single_move(level);
+            if(IsAligned()){
+                MovedOneCell();
+                break;
+            }
+        }
+    }
+
     Update();
 }
 
@@ -238,8 +225,6 @@ void StoneRing::MappableObject::load_finished()
     CL_Point dimensions = calcTileDimensions(m_eSize);
     m_nWidth = dimensions.x;
     m_nHeight = dimensions.y;
-    Random_New_Direction();
-    Set_Frame_For_Direction();
 }
 
 StoneRing::MappableObject::MappableObject():m_eDirection(NONE),m_nStep(0),m_pMovement(NULL),
