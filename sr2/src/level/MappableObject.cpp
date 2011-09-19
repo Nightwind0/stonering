@@ -75,24 +75,24 @@ void StoneRing::MappableObject::StopMovement()
 
 void StoneRing::MappableObject::Move(Level& level)
 {
-    if(IsAligned()){
-        CL_Rect rect = GetTileRect();
-        rect.translate ( DirectionToVector(m_eDirection) );
-        
-        while(!level.Move(this,GetTileRect(),rect) && m_eDirection != NONE){
-            Random_New_Direction();
+    for(int i=0;i<get_moves_per_draw(); i++){
+        if(IsAligned()){
+            MovedOneCell();
             CL_Rect rect = GetTileRect();
-            rect.translate ( DirectionToVector(m_eDirection) );            
-        }
-    }
-        
-    if(m_pMovement){ 
-        for(int i=0;i<get_moves_per_draw(); i++){
-            single_move(level);
-            if(IsAligned()){
-                MovedOneCell();
-                break;
+            rect.translate ( DirectionToVector(m_eDirection) );
+            
+            while(m_eDirection != NONE && !level.Move(this,GetTileRect(),rect)){
+                Random_New_Direction();
+                CL_Rect rect = GetTileRect();
+                rect.translate ( DirectionToVector(m_eDirection) );            
             }
+
+        }
+        
+
+            
+        if(m_pMovement){ 
+            single_move(level);
         }
     }
 
