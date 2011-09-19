@@ -2,6 +2,7 @@
 #include "IApplication.h"
 #include "GraphicsManager.h"
 #include "MenuBox.h"
+#include "SoundManager.h"
 
 StoneRing::SayState::SayState()
 :m_bDone(false)
@@ -31,12 +32,14 @@ void StoneRing::SayState::HandleButtonUp(const IApplication::Button& button)
 	    }
 	    else
 	    {
+                SoundManager::PlayEffect(SoundManager::EFFECT_CHANGE_OPTION);
 		m_nTotalDrawn += m_nDrawnThisFrame;
 		m_nDrawnThisFrame = 0;
 		CL_System::sleep(100);
 	    }
         break;
 	case IApplication::BUTTON_CANCEL:
+            SoundManager::PlayEffect(SoundManager::EFFECT_CANCEL);
 	    m_bDone = true;
 	    break;
     }
@@ -107,6 +110,7 @@ void StoneRing::SayState::Start()
     m_speaker_rect = GraphicsManager::GetRect(GraphicsManager::SAY,"header");
     m_text_rect = GraphicsManager::GetRect(GraphicsManager::SAY,"text");
     m_rect =      GraphicsManager::GetRect(GraphicsManager::SAY,"rect");
+    //SoundManager::PlayEffect(SoundManager::EFFECT_SELECT_OPTION);
 }
 
 void StoneRing::SayState::Finish()

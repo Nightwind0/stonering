@@ -12,6 +12,7 @@
 #include "ItemRef.h"
 #include "sr_defines.h"
 #include "MappableObject.h"
+#include "Node.hxx"
 
 using std::string;
 
@@ -121,10 +122,10 @@ namespace StoneRing {
 
         void Activate(); // Call any attributemodifier
 
-        inline uint GetX() const { return m_X; }
-        inline uint GetY() const { return m_Y; }
+        inline int GetX() const { return m_X; }
+        inline int GetY() const { return m_Y; }
 
-        CL_Rect GetRect();
+        CL_Rect GetRect() const;
 
         inline bool IsSprite() const { return (cFlags & SPRITE) != 0; }
 
@@ -231,10 +232,11 @@ namespace StoneRing {
         virtual void DrawFloaters(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC);
 
         void MoveMappableObjects(const CL_Rect &src);
+        
 
         // Checks relevant tile and MO direction block information
         // And mark occupied and unoccupied if move is successful
-        bool TryMove(const CL_Point &currently, const CL_Point & destination );
+        bool Move(MappableObject* pMO, const CL_Rect &tiles_currently, const CL_Rect& tiles_destination);
 
         // Any talk events fire (assuming they meet conditions)
         // "target" describes the region which the player is talking to.
@@ -269,14 +271,16 @@ namespace StoneRing {
         void DeserializeState(std::istream& in);
 #ifndef NDEBUG
         void DumpMappableObjects() const;
+        void DrawMOQuadtree(CL_GraphicContext gc, const CL_Point& offset) const;
+        void DrawDebugBox(CL_GraphicContext gc, const CL_Rect& rect)const;
 #endif
+    typedef Quadtree::RootNode<MappableObject*,4,float> MOQuadtree;
     protected:
 
-        typedef MOMap::value_type MOMapValueType;
         std::vector<std::vector<std::list<Tile*> > > m_tiles;
         // Needs to be a multimap
         std::map<CL_Point, std::list<Tile*> > m_floater_map;
-        MOMap m_MO_map;
+       
         MonsterRegions *m_pMonsterRegions;
 
         // Element virtuals
@@ -287,9 +291,10 @@ namespace StoneRing {
         // MO related operations
         bool Contains_Mappable_Objects(const CL_Point &point) const;
         bool Contains_Solid_Mappable_Object(const CL_Point &point) const;
-        void Set_Mappable_Object_At(const CL_Point &point, MappableObject*  pMO);
-        void Put_Mappable_Object_At_Current_Position(MappableObject *pMO);
-        void Remove_Mappable_Object_At(const CL_Point &point, MappableObject * pMO);
+        bool Check_Direction_Block(MappableObject* pMO,MappableObject::eDirection dir,const CL_Point &tile, const CL_Point &dest_tile);
+        
+        void Move_Mappable_Object(MappableObject* pMO, const CL_Rect& from, const CL_Rect& to);
+        void Add_Mappable_Object(MappableObject* pMO);
 
         // Sort tiles on zOrder
         static bool Tile_Sort_Criterion ( const Tile * p1, const Tile * p2 );
@@ -305,6 +310,7 @@ namespace StoneRing {
         void Activate_Tiles_At ( uint x, uint y );
         int Get_Cumulative_Direction_Block_At_Point(const CL_Point &point) const;
         bool Get_Cumulative_Hotness_At_Point(const CL_Point &point) const;
+        void Create_MOQuadtree();
 
         CL_DomDocument  m_document;
         ScriptElement *m_pScript;
@@ -318,7 +324,7 @@ namespace StoneRing {
         uint m_nMoveCount;
         MappablePlayer m_player;
         bool m_bMarkedForDeath;
-
+        MOQuadtree *m_mo_quadtree;
     };
 
 

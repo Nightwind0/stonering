@@ -16,6 +16,7 @@
 #include "MonsterGroup.h"
 #include "SoundManager.h"
 
+
 typedef unsigned int uint;
 
 
@@ -70,6 +71,102 @@ void Tiles::load_attributes(CL_DomNamedNodeMap attributes)
 ///////////////////////////////////////////////////////////////////////////
 // MappableObjects
 ///////////////////////////////////////////////////////////////////////////
+
+class QTNodeDrawer : public Level::MOQuadtree::OurNodeVisitor {
+public:
+    QTNodeDrawer(CL_GraphicContext gc, const CL_Point& offset, const Level& level):m_gc(gc),m_offset(offset),m_level(level){
+    }
+    virtual ~QTNodeDrawer(){
+    }
+    
+    virtual bool Visit ( const Level::MOQuadtree::OurNode* pNode ){
+        Quadtree::Geometry::Square<float> nodeSquare = pNode->GetSquare();
+        CL_Rect rect(32*(nodeSquare.GetCenter().GetX() - nodeSquare.GetSize() / 2),
+                     32*(nodeSquare.GetCenter().GetY() - nodeSquare.GetSize() / 2),
+                     32*(nodeSquare.GetCenter().GetX() + nodeSquare.GetSize() / 2),
+                     32*(nodeSquare.GetCenter().GetY() + nodeSquare.GetSize() / 2));
+        rect.translate(m_offset);
+        m_level.DrawDebugBox(m_gc,rect);
+        return true;
+    }
+private:
+    CL_GraphicContext m_gc;
+    CL_Point m_offset;
+    const Level &m_level;
+};
+
+class FindMappableObjects: public Level::MOQuadtree::OurVisitor{
+public:
+    FindMappableObjects(){
+    }
+    virtual ~FindMappableObjects(){
+    }
+    
+    virtual bool Visit(MappableObject* pMO, const Level::MOQuadtree::Node* pNode){
+        m_mos.push_back(pMO);
+        return true;
+    }
+    std::list<MappableObject*>::const_iterator begin() const {
+        return m_mos.begin();
+    }
+    std::list<MappableObject*>::const_iterator end() const {
+        return m_mos.end();
+    }
+    
+private:
+    std::list<MappableObject*> m_mos;
+};
+
+class MappableObjectsPrinter: public Level::MOQuadtree::OurVisitor {
+public:
+    MappableObjectsPrinter(){}
+    virtual ~MappableObjectsPrinter(){}
+    virtual bool Visit(MappableObject* pMO, const Level::MOQuadtree::Node* pNode){
+        std::cout << '\t' << pMO->GetName();
+
+        std::cout << " @ " << (pMO->GetX() / 32) << '(' << pMO->GetX() << ')'
+                  <<','
+                  << (pMO->GetY() / 32) << '(' << pMO->GetY() << ')';
+        std::cout << std::endl;
+        return true;
+    }
+};
+
+class ContainsSolidMappableObjects: public Level::MOQuadtree::OurVisitor{
+public:
+    ContainsSolidMappableObjects(const CL_Point& point):m_point(point),m_contains(false){}
+    virtual ~ContainsSolidMappableObjects(){}
+    
+    virtual bool Visit(MappableObject* pMO, const Level::MOQuadtree::Node* pNode){
+        // TODO is this contains right?
+        if(pMO->GetTileRect().contains(m_point) && pMO->IsSolid()){
+            m_contains = true;
+            return true;
+        }else return false;
+    }    
+    bool DidContainSolidMO() const { return m_contains; }
+private:
+    CL_Point m_point;
+    bool m_contains;
+};
+
+
+class MappableObjectDrawer: public Level::MOQuadtree::OurVisitor {
+public:
+    MappableObjectDrawer(const CL_GraphicContext& gc, const CL_Point& offset):m_gc(gc),m_offset(offset){
+    }
+    virtual ~MappableObjectDrawer(){}
+    bool Visit(MappableObject* pMO, const Level::MOQuadtree::Node* pNode){
+        if(pMO->EvaluateCondition()){
+            pMO->Draw(m_gc,m_offset);
+        }
+        return true;
+    }
+private:
+    CL_GraphicContext m_gc;
+    CL_Point m_offset;
+};
+
 MappableObjects::MappableObjects()
 {
 }
@@ -150,8 +247,9 @@ void LevelHeader::load_attributes(CL_DomNamedNodeMap attributes)
 
 
 Level::Level():m_pMonsterRegions(NULL),m_LevelWidth(0),m_LevelHeight(0),m_pScript(NULL)
-,m_pHeader(NULL),m_player(0,0)
+,m_pHeader(NULL),m_player(0,0),m_mo_quadtree(NULL)
 {
+
 }
 
 void Level::Invoke()
@@ -162,14 +260,6 @@ void Level::Invoke()
     }
 }
 
-bool Level::Contains_Mappable_Objects(const CL_Point &point) const
-{
-    if(m_MO_map.find(point) != m_MO_map.end())
-    {
-        return true;
-    }
-    else return false;
-}
 
 bool activeSolidMappableObject(const std::multimap<CL_Point,MappableObject*>::value_type &value)
 {
@@ -185,57 +275,9 @@ bool matchesMappableObject(const std::multimap<CL_Point,MappableObject*>::value_
 
 bool Level::Contains_Solid_Mappable_Object(const CL_Point &point) const
 {
-
-//  MOMap::const_iterator i = std::find_if(m_MO_map.lower_bound(point),m_MO_map.upper_bound(point),activeSolidMappableObject);
-    MOMap::const_iterator lower = m_MO_map.lower_bound(point);
-    MOMap::const_iterator upper = m_MO_map.upper_bound(point);
-
-    for(MOMap::const_iterator iter = lower; iter != upper; iter++)
-    {
-        if(iter->second && iter->second->IsSolid() && iter->second->EvaluateCondition())
-            return true;
-    }
-
-    return false;
-
-}
-
-void Level::Set_Mappable_Object_At(const CL_Point &point, MappableObject*  pMO)
-{
-
-    std::pair<CL_Point,MappableObject*> thePair(point,pMO);
-    m_MO_map.insert(thePair);
-
-}
-
-void Level::Remove_Mappable_Object_At(const CL_Point &point, MappableObject *pMO)
-{
-    MOMapIter lower = m_MO_map.lower_bound(point);
-    MOMapIter upper = m_MO_map.upper_bound(point);
-
-#ifndef NDEBUG
-    if(lower == upper)
-    {
-        // This means it wasnt found
-        std::cout << "We didn't find our guy where we expected." << std::endl;
-    }
-#endif
-
-    std::list<MOMapIter> removals;
-
-    for(MOMapIter findit = lower; findit != upper; findit++)
-    {
-        if ( findit->second == pMO)
-        {
-            removals.push_back (findit);
-        }
-    }
-
-    for(std::list<MOMapIter>::const_iterator iter = removals.begin();
-        iter != removals.end(); iter++)
-    {
-        m_MO_map.erase( *iter );
-    }
+        ContainsSolidMappableObjects contains(point);
+        //m_mappleObjects.Traverse(
+    
 }
 
 
@@ -456,233 +498,120 @@ void Level::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, 
     }
 
 
-
-
-
-
+#ifndef NDEBUG
+    if(indicateBlocks)
+        DrawMOQuadtree(GC, dst.get_top_left() - src.get_top_left());
+#endif
 }
 
 
 void Level::DrawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC)
 {
-    int cornerx = static_cast<int>(src.left / 32);
-    int cornery = static_cast<int>(src.top / 32);
-
-    int width = static_cast<int>((int)ceil((double)src.right/32.0)) - cornerx;
-    int height = static_cast<int>((int)ceil((double)src.bottom/32.0)) - cornery;
+    CL_Point offset(dst.left-src.left,dst.bottom-src.bottom);
+    Quadtree::Geometry::Vector<float> center(src.get_center().x,src.get_center().y);
+    Quadtree::Geometry::Rect<float> rect(center,src.get_width(),src.get_height());
+    MappableObjectDrawer drawVisitor(GC,offset);
+    
+    m_mo_quadtree->Traverse(drawVisitor,rect);
 
     ++m_nFrameCount;
-
-#if(!defined NDEBUG) && 0
-    if(m_nFrameCount %2000 == 0)
-    {
-        std::cout << "X: " << cornerx <<  " Y: "  << cornery << std::endl;
-        std::cout << "Width = " << width << " Height = " << height << std::endl;
-        std::cout << "Right = " << cornerx + width << " Bottom = " << cornery + height << std::endl;
-    }
-#endif
-
-    for(int y = 0;y<height;y++)
-    {
-        for(int x=0;x<width;x++)
-        {
-            CL_Point point(cornerx + x, cornery+ y);
-
-            MOMapIter lower = m_MO_map.lower_bound(point);
-            MOMapIter upper = m_MO_map.upper_bound(point);
-
-            for(MOMapIter iter = lower; iter != upper; iter++)
-            {
-                MappableObject * pMO = iter->second;
-                assert ( pMO != NULL );
-#if 0
-
-                GC.draw_rect(CL_Rect(point.x * 32 - src.left + dst.left,
-                                       point.y * 32 + dst.top - src.top,
-                                       point.x * 32 + 32 - src.left + dst.left,
-                                       point.y * 32 + 32 - src.top + dst.top),CL_Color::beige);
-
-#endif
-
-                if(m_nFrameCount > pMO->GetFrameMarks()
-                   && pMO->EvaluateCondition())
-                {
-                    assert(pMO != NULL);
-                    pMO->MarkFrame();
-                    CL_Rect moRect = pMO->GetPixelRect();
-                    CL_Rect dstRect( moRect.left - src.left + dst.left, moRect.top + dst.top - src.top,
-                                     moRect.left - src.left + dst.left +moRect.get_width(), moRect.top - src.top + dst.top + moRect.get_height());
-
-                    pMO->Draw( moRect, dstRect, GC );
-                }
-            }
-        }
-    }
 }
 
 
 void Level::SetPlayerPos(const CL_Point &target)
 {
-    Set_Mappable_Object_At(target, &m_player);
+    Add_Mappable_Object(&m_player);
 }
 
 
 
-void Level::Put_Mappable_Object_At_Current_Position(MappableObject *pMO)
+void Level::Move_Mappable_Object(MappableObject *pMO, const CL_Rect& pixel_from, const CL_Rect& pixel_to)
 {
     assert ( pMO != NULL );
-    CL_Point cur_pos = pMO->GetPosition();
-    uint width = pMO->GetCellWidth();
-    uint height = pMO->GetCellHeight();
+    Quadtree::Geometry::Vector<float> from_center(pixel_from.get_center().x,pixel_from.get_center().y);
+    Quadtree::Geometry::Rect<float> from_rect(from_center,pixel_from.get_width(),pixel_from.get_height());
+    
+    Quadtree::Geometry::Vector<float> to_center(pixel_to.get_center().x,pixel_to.get_center().y);
+    Quadtree::Geometry::Rect<float> to_rect(to_center,pixel_to.get_width(),pixel_to.get_height());
+    m_mo_quadtree->MoveObject(pMO,from_rect,to_rect);
+}
 
-    for(uint x = cur_pos.x; x< width + cur_pos.x;x++)
-    {
-        for(uint y=cur_pos.y;y<height + cur_pos.y;y++)
-        {
-            Set_Mappable_Object_At(CL_Point(x,y),pMO);
+void Level::Add_Mappable_Object ( MappableObject* pMO)
+{
+    assert ( pMO );
+    CL_Rect rect = pMO->GetTileRect();
+    Quadtree::Geometry::Rect<float> location(
+        Quadtree::Geometry::Vector<float>(rect.get_center().x,rect.get_center().y),
+                                          rect.get_width(),rect.get_height());
+    
+    m_mo_quadtree->Add(location,pMO);
+}
+
+
+bool Level::Move(MappableObject* pObject, const CL_Rect& tiles_currently, const CL_Rect& tiles_destination)
+{
+    MappableObject::eDirection dir;
+    CL_Point topleft = tiles_currently.get_top_left();
+    CL_Point dest_topleft = tiles_destination.get_top_left();
+    CL_Vec2<float> vector;
+    if(topleft.x < dest_topleft.x){
+        dir = MappableObject::EAST;
+    }else if(topleft.x > dest_topleft.x){
+        dir = MappableObject::WEST;
+    }else if(topleft.y < dest_topleft.y){
+        dir = MappableObject::SOUTH;
+    }else{
+        dir = MappableObject::NORTH;
+    }
+    vector = MappableObject::DirectionToVector(dir);
+    
+    std::list<CL_Point> edge;
+    MappableObject::CalculateEdgePoints(topleft,dir,pObject->GetSize(),&edge);
+    for(std::list<CL_Point>::const_iterator iter = edge.begin();
+        iter != edge.end(); iter++){
+        CL_Point tile = *iter;
+        CL_Point newtile = tile + vector;
+        if(!Check_Direction_Block(pObject,dir,tile,newtile)){
+            return false;
         }
     }
+
+    Move_Mappable_Object(pObject,tiles_currently,tiles_destination);    
+    return true;
 }
+
+// TODO: Move the MO collision stuff out of this, and do it with one quadtree lookup
+bool Level::Check_Direction_Block ( MappableObject * pMo, MappableObject::eDirection dir, const CL_Point& tile, const CL_Point& dest_tile )
+{
+    if(dest_tile.x <0 || dest_tile.y <0 || dest_tile.x >= m_LevelWidth || dest_tile.y >= m_LevelHeight
+        || Contains_Solid_Mappable_Object(dest_tile)
+        ||
+        (Get_Cumulative_Direction_Block_At_Point(dest_tile) & MappableObject::ConvertDirectionToDirectionBlock(dir))
+        || (pMo->RespectsHotness() && Get_Cumulative_Hotness_At_Point(dest_tile))
+        ){
+        return false;
+    }
+    
+    return true;
+}
+
 
 
 void Level::MoveMappableObjects(const CL_Rect &src)
 {
-
-    // They can't change direction unless they are aligned.
-    // They can't stop unless they are aligned.
-    // Otherwise they can move as much as they want.
-    // The timer should go off at the lowest time (the fastest mover)
-
-    int cornerx = static_cast<int>(src.left / 32.0);
-    int cornery = static_cast<int>(src.top / 32.0);
-
-    int width = static_cast<int>(ceil((double)src.right/32.0)) - cornerx;
-    int height = static_cast<int>(ceil((double)src.bottom/32.0)) - cornery;
-
-    m_nMoveCount++;
-
-    std::set<MOMapIter,LessMOMapIter> MOIters;
-
-    for(int x = 0;x<width;x++)
-    {
-        for(int y=0;y<height;y++)
-        {
-            CL_Point point(cornerx + x, cornery+ y);
-
-            MOMapIter lower = m_MO_map.lower_bound(point);
-            MOMapIter upper = m_MO_map.upper_bound(point);
-
-            // No list here.... move along
-            for(MOMapIter iter = lower; iter!= upper; iter++)
-            {
-                MappableObject * pMo = iter->second;
-                if(! pMo->EvaluateCondition()) continue; // Skip 'em
-
-                MOIters.insert( iter );
-            }
-        }
+    Quadtree::Geometry::Vector<float> center(src.get_center().x,src.get_center().y);
+    Quadtree::Geometry::Rect<float> rect(center,src.get_width(),src.get_height());
+    
+    // Oh yeah. I can't move them with a visitor because you can't traverse and move
+    // at the same time.
+    FindMappableObjects finder;
+    
+    m_mo_quadtree->Traverse(finder,rect);
+    
+    for(std::list<MappableObject*>::const_iterator iter = finder.begin();
+        iter != finder.end(); iter++){
+        (*iter)->Move(*this);
     }
-
-#ifndef NDEBUG
-    bool playerFound = false;
-
-#endif
-
-    for(std::set<MOMapIter,LessMOMapIter>::iterator iMo = MOIters.begin();
-        iMo != MOIters.end();iMo++)
-    {
-        MappableObject * pMo = (*iMo)->second;
-
-#if 0
-        if(pMo->getName() == "Player" && pMo->getDirection() != MappableObject::NONE)
-            playerFound = true;
-#endif
-
-        CL_Point curPos = pMo->GetPosition();
-
-        // Clear the MO from the map altogether, to be reinserted later
-        pMo->SetOccupiedPoints(this, &Level::Remove_Mappable_Object_At);
-
-
-        for(uint d=0;d<pMo->GetMovesPerDraw();d++)
-        {
-            if(pMo->GetDirection() != MappableObject::NONE)
-            {
-                if(pMo->IsAligned())
-                {
-                    std::list<CL_Point> intoPoints ;
-                    MappableObject::CalculateEdgePoints(pMo->GetPositionAfterMove(), pMo->GetDirection(),
-                                                        pMo->GetSize(), &intoPoints);
-
-                    bool bPathBlocked = false;
-
-                    // Make sure none of these points is occupied.
-                    // Break this into a method so I can if() off it
-                    for(std::list<CL_Point>::iterator iter = intoPoints.begin();
-                        iter != intoPoints.end();
-                        iter++)
-                    {
-                        if((*iter).x < cornerx || (*iter).y <cornery || (*iter).x >= cornerx+width || (*iter).y >= cornery+height
-                           || (*iter).x <0 || (*iter).y <0 || (*iter).x >= m_LevelWidth || (*iter).y >= m_LevelHeight
-                           || Contains_Solid_Mappable_Object(*iter)
-                           ||
-                           (Get_Cumulative_Direction_Block_At_Point(*iter) & MappableObject::ConvertDirectionToDirectionBlock(pMo->GetDirection()))
-                           || (pMo->RespectsHotness() && Get_Cumulative_Hotness_At_Point(*iter))
-                            )
-                        {
-#ifndef NDEBUG
-                            if(pMo->GetName() == "Player" && gbDebugStop)
-                            {
-                                playerFound = true;
-                            }
-#endif
-                            // No go. Change direction, so we can try again.
-                            pMo->RandomNewDirection();
-                            bPathBlocked = true;
-                            break;
-                        } // if blocked
-
-                        // Not blocked!
-
-                    }// all points
-
-                    if(bPathBlocked) continue;
-
-
-
-
-                }// Aligned
-
-                pMo->Move();
-
-                // We may have just become aligned
-                if(pMo->IsAligned())
-                {
-                    pMo->MovedOneCell();
-
-                    // If we wanted to step on every point that the player was stepping on, we could...
-                    // In fact we could use setOccupiedPoints.
-                    // But we're assuming that we take up only one square
-                    if(pMo->Step())
-                        Step(pMo->GetPosition());
-
-                }
-
-            }// if direction != NONE
-            else
-            {
-
-
-                if(m_nMoveCount % 32 == 0)
-                    pMo->MovedOneCell();
-                else pMo->Idle();
-            }
-        }// For d
-
-        pMo->SetOccupiedPoints(this, &Level::Set_Mappable_Object_At);
-
-    }// for iMo
-
 }
 
 
@@ -691,15 +620,6 @@ void Level::DrawFloaters(const CL_Rect &src, const CL_Rect &dst, CL_GraphicConte
     Draw(src,dst,GC, true);
 }
 
-
-
-// Checks relevant tile and MO direction block information
-// Rects are in cells
-bool Level::TryMove(const CL_Point &currently, const CL_Point & destination)
-{
-    //deprecated very soon...
-    return true;
-}
 
 // All AM's from tiles fire, as do any step events
 void Level::Step(const CL_Point &target)
@@ -724,15 +644,17 @@ void Level::Step(const CL_Point &target)
         }
     }
     // Second, process any MO step events you may have triggered
-    MOMap::const_iterator lower = m_MO_map.lower_bound(target);
-    MOMap::const_iterator upper = m_MO_map.upper_bound(target);
+    Quadtree::Geometry::Vector<float> center(target.x,target.y);
+    Quadtree::Geometry::Square<float> square(center,1);
+    FindMappableObjects finder;
+    m_mo_quadtree->Traverse(finder,square);
 
 
-    for(MOMap::const_iterator iter = lower;
-        iter != upper;
+    for(std::list<MappableObject*>::const_iterator iter = finder.begin();
+        iter != finder.end();
         iter++)
     {
-        MappableObject * pMo = iter->second;
+        MappableObject * pMo = *iter;
 
         if((pMo)->EvaluateCondition())
         {
@@ -780,17 +702,16 @@ void Level::Activate_Tiles_At ( uint x, uint y )
 // Any talk events fire (assuming they meet conditions)
 void Level::Talk(const CL_Point &target, bool prod)
 {
+    Quadtree::Geometry::Vector<float> center(target.x,target.y);
+    Quadtree::Geometry::Square<float> square(center,1);
+    FindMappableObjects finder;
+    m_mo_quadtree->Traverse(finder,square);
 
-
-    MOMap::const_iterator lower = m_MO_map.lower_bound(target);
-    MOMap::const_iterator upper = m_MO_map.upper_bound(target);
-
-
-    for(MOMap::const_iterator iter = lower;
-        iter != upper;
+    for(std::list<MappableObject*>::const_iterator iter = finder.begin();
+        iter != finder.end();
         iter++)
     {
-        MappableObject * pMo = iter->second;
+        MappableObject * pMo = *iter;
 
         if((pMo)->EvaluateCondition())
         {
@@ -804,7 +725,7 @@ void Level::Talk(const CL_Point &target, bool prod)
                 // Prod!
                 // (Can't prod things that aren't solid. They aren't in your way anyways)
                 // And if it has no movement, prodding it does nothing.
-                if((pMo)->IsSolid() && (pMo)->GetMovement() != NULL)
+                if((pMo)->IsSolid())
                 {
                     (pMo)->Prod();
                 }
@@ -827,33 +748,28 @@ void Level::Update(const CL_Rect & updateRect)
 }
 
 
-#ifndef NDEBUG
+#if  !defined(NDEBUG) 
 void Level::DumpMappableObjects() const
 {
-
-    std::cout << "=== Mappable Objects ===" << std::endl;
-
-    for(MOMap::const_iterator iList = m_MO_map.begin();
-        iList != m_MO_map.end();
-        iList++)
-    {
-
-        std::cout << '{' << iList->first.x <<',' << iList->first.y << '}' << std::endl;
-
-        MappableObject * pMO = iList->second;
-
-        std::cout << '\t' << pMO->GetName();
-
-        std::cout << " @ " << (pMO->GetX() / 32) << '(' << pMO->GetX() << ')'
-                  <<','
-                  << (pMO->GetY() / 32) << '(' << pMO->GetY() << ')';
-        std::cout << std::endl;
-
-
-    }
-
-
+    MappableObjectsPrinter printVisitor;
+    
+    m_mo_quadtree->TraverseAll(printVisitor);    
 }
+
+
+void Level::DrawDebugBox ( CL_GraphicContext gc, const CL_Rect& pixelRect ) const
+{
+    CL_Draw::box(gc,pixelRect,CL_Colorf(1.0f,1.0f,1.0f,0.5f));
+}
+
+void Level::DrawMOQuadtree(CL_GraphicContext gc, const CL_Point& offset) const
+{
+    QTNodeDrawer drawer(gc,offset,*this);    
+    m_mo_quadtree->TraverseNodes(
+        drawer);
+}
+
+
 #endif
 
 
@@ -891,6 +807,9 @@ bool Level::handle_element(Element::eElement element, Element * pElement)
         // Based on the header, lets preallocate our tiles.
         m_LevelWidth = m_pHeader->GetLevelWidth();
         m_LevelHeight = m_pHeader->GetLevelHeight();
+        
+        Create_MOQuadtree();
+        
         m_bAllowsRunning = m_pHeader->AllowsRunning();
         m_music = m_pHeader->GetMusic();
         m_tiles.resize( m_LevelWidth );
@@ -945,11 +864,21 @@ void Level::load_finished()
     m_bMarkedForDeath = false;
 }
 
+void Level::Create_MOQuadtree()
+{
+    // m_mappleObjects(Quadtree::Geometry::Square<int>(Quadtree::Geometry::Vector<int>(m_LevelWidth/2,m_LevelHeight/2), 
+    //m_LevelWidth > m_LevelHeight?m_LevelWidth:m_LevelHeight)    
+    if(m_mo_quadtree) delete m_mo_quadtree;
+    m_mo_quadtree = new MOQuadtree(Quadtree::Geometry::Square<float>(Quadtree::Geometry::Vector<float>(m_LevelWidth/2,m_LevelHeight/2),
+                                                                     (m_LevelWidth > m_LevelHeight?m_LevelWidth:m_LevelHeight)));
+}
+
+
 
 
 void Level::Load_Mo ( MappableObject * moElement )
 {
-    Put_Mappable_Object_At_Current_Position(moElement);
+    Add_Mappable_Object(moElement);
 }
 
 

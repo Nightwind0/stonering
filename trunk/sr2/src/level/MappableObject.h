@@ -14,72 +14,75 @@ namespace StoneRing {
     class MappableObject : public Graphic
     {
     public:
-        enum eMappableObjectType { NPC, SQUARE, CONTAINER, DOOR, WARP, PLAYER };
-        enum eSize { MO_SMALL, MO_MEDIUM, MO_LARGE, MO_TALL, MO_WIDE };
-        enum eDirection { NONE, NORTH, SOUTH, EAST, WEST };
+        enum eMappableObjectType 
+        { 
+            NPC, SQUARE, CONTAINER, DOOR, WARP, PLAYER 
+        };
+        enum eSize 
+        { 
+            MO_SMALL, MO_MEDIUM, MO_LARGE, MO_TALL, MO_WIDE             
+        };
+        enum eDirection 
+        { 
+            NONE, NORTH, SOUTH, EAST, WEST             
+        };
 
         MappableObject();
         virtual ~MappableObject();
+        
         virtual eElement WhichElement() const{ return EMAPPABLEOBJECT; }
-        virtual uint GetX() const { return m_X; }
-        virtual uint GetY() const { return m_Y; }
 
-        virtual CL_Rect GetRect() { return GetPixelRect(); }
-
-        CL_Point GetStartPoint() const; // In cells
-        CL_Point GetPosition() const { return CL_Point(m_X / 32, m_Y / 32); }  // In cells
-
+        virtual CL_Rect GetTileRect() const; 
+        virtual void Draw(CL_GraphicContext& GC, const CL_Point& offset);
+        virtual void Move(Level& level);
         virtual bool IsSolid() const;
         virtual eSize GetSize() const;
-        Movement * GetMovement() const;
-        std::string GetName() const;
-        bool IsAligned() const; // Is aligned on cells (not moving between them)
-        virtual CL_Rect GetPixelRect() const; // In pixels
+        virtual std::string GetName() const;
         virtual bool IsSprite() const;
-        virtual uint GetCellHeight() const;
-        virtual uint GetCellWidth() const;
-        virtual uint GetMovesPerDraw() const; // a factor of speed
-        virtual bool RespectsHotness() const{ return true; }
-
-        typedef void (Level::*LevelPointMethod)(const CL_Point&,MappableObject*);
-
-        void SetOccupiedPoints(Level * pLevel, LevelPointMethod method);
-        CL_Point GetPositionAfterMove() const;
-        virtual eDirection GetDirection() const { return m_eDirection; }
-        virtual int GetDirectionBlock() const;
-        virtual void Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC);
-
-        // Move along in the current direction
-        virtual void Move();
-
-        //Update is for drawing..
-        virtual void Update();
         virtual bool IsTile() const;
+        virtual int GetDirectionBlock() const;        
+        // Update sprite, etc
+        virtual void Update();
         virtual void ProvokeEvents ( Event::eTriggerType trigger );
-        bool EvaluateCondition() const;
-
-        void Prod();
         virtual bool Step() const { return false; }
+        
+        bool EvaluateCondition() const;
+        void Prod();
 
-        static void CalculateEdgePoints(const CL_Point &topleft, eDirection dir, eSize size, std::list<CL_Point> *pList);
-        //  static eDirection OppositeDirection(eDirection current_dir);
-        static int ConvertDirectionToDirectionBlock(eDirection dir);
-        virtual void RandomNewDirection();
-        virtual void MovedOneCell();
-        virtual void Idle(); // Wait while direction is none.
+        CL_Point GetPosition() const { return CL_Point(m_X / 32, m_Y / 32); }  // In tiles
+        bool IsAligned() const; // Is aligned on cells (not moving between them)
 
-        uint GetFrameMarks() const{return m_nFrameMarks;}
-        void MarkFrame()  { ++m_nFrameMarks; }
+        virtual bool RespectsHotness() const{ return true; }
+        // Graphic api
+        virtual int GetX() const { return m_X; }
+        virtual int GetY() const { return m_Y; }
+        // In pixels
+        virtual CL_Rect GetRect() const ;
+        static void CalculateEdgePoints(const CL_Point &topleft, eDirection dir, eSize size, std::list<CL_Point> *pList);        
+        static CL_Vec2<int> DirectionToVector(eDirection dir);
+        static int ConvertDirectionToDirectionBlock(MappableObject::eDirection dir);        
     protected:
         virtual bool handle_element(eElement element, Element * pElement );
         virtual void load_attributes(CL_DomNamedNodeMap attributes);
         virtual void load_finished();
+
         void Pick_Opposite_Direction();
         virtual void Set_Frame_For_Direction();
         virtual bool Delete_Sprite() const { return true; }
-        static CL_Point calcCellDimensions(eSize size);
-        enum eFlags { SPRITE = 1, TILEMAP = 2, SOLID = 4 };
+        virtual void Random_New_Direction();
+        uint get_moves_per_draw()const;
+        // returns whether to keep moving
+        bool single_move(Level& level);
+        
 
+
+
+        //  static eDirection OppositeDirection(eDirection current_dir);
+        virtual void StopMovement();
+        virtual void MovedOneCell();
+        virtual void Idle(); // Wait while direction is none.
+        static CL_Point calcTileDimensions(eSize size);
+        enum eFlags { SPRITE = 1, TILEMAP = 2, SOLID = 4 };
         std::string m_name;
         CL_Sprite  m_sprite;
         SpriteRefOrTilemap m_graphic;
@@ -92,20 +95,17 @@ namespace StoneRing {
         uint m_nStep; // step frame alternator
         ushort m_StartX;
         ushort m_StartY;
-        uint m_X;
-        uint m_Y;
+        int m_X; // pixels
+        int m_Y; // pixels
+        uint m_nHeight; // in tiles
+        uint m_nWidth; // in tiles
         Movement *m_pMovement;
         ScriptElement *m_pCondition;
         eMappableObjectType m_eType;
         char cFlags;
-        ushort m_nCellsMoved;
-        uint m_nFrameMarks;
+        ushort m_nTilesMoved;
         ushort m_nStepsUntilChange;
     };
-
-
-    typedef std::multimap<CL_Point,MappableObject*> MOMap;
-    typedef MOMap::iterator MOMapIter;
 
 
     class MappablePlayer : public MappableObject
@@ -122,6 +122,7 @@ namespace StoneRing {
 	virtual void StopMovement();
         virtual void ClearNextDirection();
         virtual void RandomNewDirection();
+        virtual eDirection GetDirection();
         virtual void MovedOneCell();
         virtual void Idle();
         void SetSprite(CL_Sprite sprite) { m_sprite = sprite; }
@@ -147,15 +148,6 @@ namespace StoneRing {
         bool m_bRunning;
     };
 
-
-
-    struct LessMOMapIter : public std::binary_function<const MOMapIter&,const MOMapIter&,bool>
-    {
-        bool operator()(const MOMapIter &i1, const MOMapIter &i2)
-            {
-                return i1->second < i2->second;
-            }
-    };
 }
 
 #endif

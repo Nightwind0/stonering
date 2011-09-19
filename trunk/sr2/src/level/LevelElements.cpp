@@ -316,7 +316,7 @@ bool StoneRing::Tile::EvaluateCondition() const
 }
 
 
-CL_Rect StoneRing::Tile::GetRect()
+CL_Rect StoneRing::Tile::GetRect() const
 {
     return CL_Rect(m_X , m_Y , m_X + 1, m_Y +1);
 }
