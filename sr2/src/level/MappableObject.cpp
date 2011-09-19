@@ -4,10 +4,26 @@
 #include "Graphic.h"
 #include "SpriteRef.h"
 #include "IParty.h"
-
+#include <ClanLib/core.h>
 
 
 using StoneRing::IParty;
+
+
+CL_Vec2<int> StoneRing::MappableObject::DirectionToVector ( MappableObject::eDirection dir )
+{
+    switch(dir){
+        case EAST:
+            return CL_Vec2<int>(CL_Point(1,0));
+        case WEST:
+            return CL_Vec2<int>(CL_Point(-1,0));
+        case NORTH:
+            return CL_Vec2<int>(CL_Point(0,-1));
+        case SOUTH:
+            return CL_Vec2<int>(CL_Point(0,1));
+    }
+}
+
 
 bool StoneRing::MappableObject::EvaluateCondition() const
 {
@@ -24,8 +40,11 @@ StoneRing::MappableObject::eSize StoneRing::MappableObject::GetSize() const
     return m_eSize;
 }
 
-void StoneRing::MappableObject::Move()
+
+bool StoneRing::MappableObject::single_move ( StoneRing::Level& level )
 {
+    bool keepMoving = true;
+    CL_Rect oldRect = GetTileRect();
     switch(m_eDirection)
     {
     case NORTH:
@@ -41,9 +60,56 @@ void StoneRing::MappableObject::Move()
         m_X--;
         break;
     default:
-        break;
-
+        MovedOneCell();
+        return false;
     }
+    
+    CL_Rect newRect = GetTileRect();
+    if(newRect != oldRect){
+        // Uh oh. Can't do that. Go back
+        if(!level.Move(this,oldRect,newRect)){
+            switch(m_eDirection)
+            {
+            case NORTH:
+                m_Y++;
+                break;
+            case SOUTH:
+                m_Y--;
+                break;
+            case EAST:
+                m_X--;
+                break;
+            case WEST:
+                 m_X++;
+                break;
+            default:
+                break;
+            }
+            StopMovement();
+            keepMoving = false;
+        }
+        
+        MovedOneCell();      
+        
+    }
+    return keepMoving;
+}
+
+void StoneRing::MappableObject::StopMovement()
+{
+
+}
+
+
+
+void StoneRing::MappableObject::Move(Level& level)
+{
+    uint moves = get_moves_per_draw();
+    for(int i=0;i<moves;i++){
+        if(!single_move(level))
+            break;
+    }
+    Update();
 }
 
 void StoneRing::MappableObject::load_attributes(CL_DomNamedNodeMap attributes)
@@ -169,25 +235,19 @@ bool StoneRing::MappableObject::handle_element(Element::eElement element, Elemen
 
 void StoneRing::MappableObject::load_finished()
 {
+    CL_Point dimensions = calcTileDimensions(m_eSize);
+    m_nWidth = dimensions.x;
+    m_nHeight = dimensions.y;
+    Random_New_Direction();
     Set_Frame_For_Direction();
 }
 
 StoneRing::MappableObject::MappableObject():m_eDirection(NONE),m_nStep(0),m_pMovement(NULL),
-                                            m_pCondition(0),cFlags(0),m_nCellsMoved(0),
-                                            m_nFrameMarks(0),m_nStepsUntilChange(0)
+                                            m_pCondition(0),cFlags(0),
+                                            m_nStepsUntilChange(0),m_nTilesMoved(0)
 {
 }
 
-
-uint StoneRing::MappableObject::GetCellHeight() const
-{
-    return calcCellDimensions(m_eSize).x;
-}
-
-uint StoneRing::MappableObject::GetCellWidth() const
-{
-    return calcCellDimensions(m_eSize).y;
-}
 StoneRing::MappableObject::~MappableObject()
 {
     for( std::list<Event*>::iterator i = m_events.begin();
@@ -202,22 +262,13 @@ StoneRing::MappableObject::~MappableObject()
 
 
 
-
-StoneRing::Movement* StoneRing::MappableObject::GetMovement() const
-{
-    return m_pMovement;
-}
-
-
-
-
 std::string StoneRing::MappableObject::GetName() const
 {
     return m_name;
 }
 
 
-CL_Point StoneRing::MappableObject::calcCellDimensions(eSize size)
+CL_Point StoneRing::MappableObject::calcTileDimensions(eSize size)
 {
     uint width,height = 0;
 
@@ -244,10 +295,10 @@ CL_Point StoneRing::MappableObject::calcCellDimensions(eSize size)
     return CL_Point(width,height);
 }
 
-CL_Rect StoneRing::MappableObject::GetPixelRect() const
+CL_Rect StoneRing::MappableObject::GetRect() const
 {
     CL_Rect pixelRect;
-    CL_Point myDimensions = calcCellDimensions(m_eSize);
+    CL_Point myDimensions = calcTileDimensions(m_eSize);
     myDimensions.x *= 32;
     myDimensions.y *= 32;
 
@@ -275,23 +326,24 @@ bool StoneRing::MappableObject::IsSprite() const
     return cFlags & SPRITE;
 }
 
-void StoneRing::MappableObject::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC)
+void StoneRing::MappableObject::Draw(CL_GraphicContext& GC, const CL_Point& offset)
 {
+    CL_Rect dstRect = GetRect();
+    dstRect.translate(offset);
     if(IsSprite())
     {
         Set_Frame_For_Direction();
-        m_sprite.draw(GC,dst);
+        m_sprite.draw(GC,dstRect);
     }
     else if( cFlags & TILEMAP )
     {
 #ifndef NDEBUG
         std::cout << "Mappable Object is tilemap?" << std::endl;
 #endif
+        CL_Rect srcRect(m_graphic.asTilemap->GetMapX() * 32, m_graphic.asTilemap->GetMapY() * 32,
+                        (m_graphic.asTilemap->GetMapX() * 32), (m_graphic.asTilemap->GetMapY() * 32));
 
-        CL_Rect srcRect(m_graphic.asTilemap->GetMapX() * 32 + src.left, m_graphic.asTilemap->GetMapY() * 32 + src.top,
-                        (m_graphic.asTilemap->GetMapX() * 32) + src.right, (m_graphic.asTilemap->GetMapY() * 32) + src.bottom);
-
-        m_graphic.asTilemap->GetTileMap().draw(GC,srcRect, dst);
+        m_graphic.asTilemap->GetTileMap().draw(GC,srcRect, dstRect);
     }
 }
 
@@ -318,7 +370,7 @@ void StoneRing::MappableObject::Pick_Opposite_Direction()
 }
 
 
-void StoneRing::MappableObject::RandomNewDirection()
+void StoneRing::MappableObject::Random_New_Direction()
 {
     if(!m_pMovement) return;
 
@@ -355,11 +407,10 @@ void StoneRing::MappableObject::RandomNewDirection()
         }
     }
 
-    m_nCellsMoved = 0;
     m_nStepsUntilChange = rand() % 20;
+    m_nTilesMoved = 0;
 
     Set_Frame_For_Direction();
-
 }
 
 void StoneRing::MappableObject::Idle()
@@ -451,9 +502,6 @@ void StoneRing::MappableObject::Update()
 }
 
 
-
-
-
 bool StoneRing::MappableObject::IsSolid() const
 {
     return cFlags & StoneRing::MappableObject::SOLID;
@@ -472,31 +520,9 @@ bool StoneRing::MappableObject::IsTile() const
 
 void StoneRing::MappableObject::Prod()
 {
-    RandomNewDirection();
+    Random_New_Direction();
 }
 
-
-
-void StoneRing::MappableObject::SetOccupiedPoints(Level * pLevel,LevelPointMethod method)
-{
-    CL_Point dimensions = calcCellDimensions(m_eSize);
-    CL_Point position = GetPosition();
-
-    uint effectiveWidth = dimensions.x ;
-    uint effectiveHeight = dimensions.y ;
-
-    if(m_X % 32) ++effectiveWidth;
-    if(m_Y % 32) ++effectiveHeight;
-
-    for(uint x = position.x; x < position.x + effectiveWidth; x++)
-    {
-        for(uint y = position.y; y<position.y + effectiveHeight; y++)
-        {
-            (pLevel->*method)(CL_Point(x,y),this);
-        }
-    }
-
-}
 
 void StoneRing::MappableObject::ProvokeEvents ( Event::eTriggerType trigger )
 {
@@ -546,7 +572,7 @@ int StoneRing::MappableObject::ConvertDirectionToDirectionBlock(eDirection dir)
 void StoneRing::MappableObject::CalculateEdgePoints(const CL_Point &topleft, eDirection dir, eSize size, std::list<CL_Point> *pList)
 {
     uint points = 0;
-    CL_Point dimensions = calcCellDimensions(size);
+    CL_Point dimensions = calcTileDimensions(size);
     pList->clear();
 
     switch(dir)
@@ -570,7 +596,7 @@ void StoneRing::MappableObject::CalculateEdgePoints(const CL_Point &topleft, eDi
 
         return;
     case EAST:
-        points = calcCellDimensions(size).y;
+        points = calcTileDimensions(size).y;
         for(uint i=0;i<points;i++)
         {
             pList->push_back ( CL_Point(topleft.x+ (dimensions.x-1),topleft.y + i ));
@@ -578,7 +604,7 @@ void StoneRing::MappableObject::CalculateEdgePoints(const CL_Point &topleft, eDi
 
         break;
     case WEST:
-        points = calcCellDimensions(size).y;
+        points = calcTileDimensions(size).y;
         for(uint i=0;i<points;i++)
         {
             pList->push_back ( CL_Point(topleft.x,topleft.y + i ));
@@ -610,15 +636,13 @@ StoneRing::MappableObject::eDirection StoneRing::MappableObject::OppositeDirecti
 
 void StoneRing::MappableObject::MovedOneCell()
 {
-    if(++m_nCellsMoved)
+    if(++m_nTilesMoved)
     {
-        if(m_nCellsMoved == m_nStepsUntilChange) ///@todo: get from somewhere
+        if(m_nTilesMoved == m_nStepsUntilChange) ///@todo: get from somewhere
         {
-            RandomNewDirection();
+            Random_New_Direction();
         }
     }
-
-    Update();
 
 }
 bool StoneRing::MappableObject::IsAligned() const
@@ -626,7 +650,7 @@ bool StoneRing::MappableObject::IsAligned() const
     return (m_X % 32 == 0 )&& (m_Y  %32 == 0);
 }
 
-uint StoneRing::MappableObject::GetMovesPerDraw() const
+uint StoneRing::MappableObject::get_moves_per_draw() const
 {
     if(m_pMovement)
     {
@@ -645,34 +669,12 @@ uint StoneRing::MappableObject::GetMovesPerDraw() const
     else return 0;
 }
 
-CL_Point StoneRing::MappableObject::GetPositionAfterMove() const
+
+CL_Rect StoneRing::MappableObject::GetTileRect() const 
 {
-    CL_Point point = GetPosition();
-
-    switch(m_eDirection)
-    {
-    case SOUTH:
-        point.y += 1;
-        break;
-    case NORTH:
-        point.y -= 1;
-        break;
-    case EAST:
-        point.x +=1;
-        break;
-    case WEST:
-        point.x -=1;
-        break;
-    default:
-        break;
-    }
-
-    return point;
+    CL_Point position = GetPosition();
+    return CL_Rect(position.x,position.y,position.x+m_nWidth-1,position.y+m_nHeight-1);
 }
-
-
-
-
 
 StoneRing::MappablePlayer::MappablePlayer(uint startX, uint startY):m_bHasNextDirection(false)
 {
@@ -685,7 +687,9 @@ StoneRing::MappablePlayer::MappablePlayer(uint startX, uint startY):m_bHasNextDi
     m_eType = PLAYER;
     m_eDirection = NONE;
     m_eFacingDirection = SOUTH; // Should come in like the startX, startY
-    m_pMovement = new PlayerMovement;
+    m_nHeight  =1;
+    m_nWidth = 1;
+    m_pMovement = new PlayerMovement();
 }
 
 StoneRing::MappablePlayer::~MappablePlayer()
@@ -736,7 +740,6 @@ void StoneRing::MappablePlayer::Idle()
 
 void StoneRing::MappablePlayer::StopMovement()
 {
-   // m_eDirection = NONE;
     m_nStep = 0;
     Set_Frame_For_Direction();
     m_bHasNextDirection = false;
@@ -746,7 +749,7 @@ void StoneRing::MappablePlayer::StopMovement()
 void StoneRing::MappablePlayer::MovedOneCell()
 {
     Idle();
-    Update();
+   // Update();
 }
 
 void StoneRing::MappablePlayer::SetRunning(bool running)
@@ -822,6 +825,12 @@ void StoneRing::MappablePlayer::DeserializeState ( std::istream& in )
     in.read((char*)&m_eNextDirection,sizeof(m_eNextDirection));
     in.read((char*)&m_bHasNextDirection,sizeof(bool));
 }
+
+StoneRing::MappableObject::eDirection StoneRing::MappablePlayer::GetDirection()
+{
+    return m_eDirection;
+}
+
 
 
 
