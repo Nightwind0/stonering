@@ -96,7 +96,6 @@ void StoneRing::MappableObject::Move(Level& level)
         }
     }
 
-    Update();
 }
 
 void StoneRing::MappableObject::load_attributes(CL_DomNamedNodeMap attributes)
@@ -509,8 +508,9 @@ void StoneRing::MappableObject::Prod()
 }
 
 
-void StoneRing::MappableObject::ProvokeEvents ( Event::eTriggerType trigger )
+bool StoneRing::MappableObject::ProvokeEvents ( Event::eTriggerType trigger )
 {
+    bool provoked = false;
     IParty *party = IApplication::GetInstance()->GetParty();
 
     for(std::list<Event*>::iterator i = m_events.begin();
@@ -523,14 +523,16 @@ void StoneRing::MappableObject::ProvokeEvents ( Event::eTriggerType trigger )
         // And the event is either repeatable or
         // Hasn't been done yet, invoke
         if( pEvent->GetTriggerType() == trigger
-            && (pEvent->Repeatable()
-			|| ! party->DidEvent ( pEvent->GetName() ))
+            && (pEvent->Repeatable() || !party->DidEvent ( pEvent->GetName() ))
             )
         {
             pEvent->Invoke();
+            provoked = true;
         }
 
     }
+    
+    return provoked;
 }
 
 int StoneRing::MappableObject::ConvertDirectionToDirectionBlock(eDirection dir)
@@ -681,7 +683,7 @@ StoneRing::MappablePlayer::~MappablePlayer()
 {
 }
 
-uint StoneRing::MappablePlayer::GetMovesPerDraw() const
+uint StoneRing::MappablePlayer::get_moves_per_draw() const
 {
     if(m_bRunning) return 6;
     else return 3;
@@ -734,7 +736,7 @@ void StoneRing::MappablePlayer::StopMovement()
 void StoneRing::MappablePlayer::MovedOneCell()
 {
     Idle();
-   // Update();
+    Update();
 }
 
 void StoneRing::MappablePlayer::SetRunning(bool running)

@@ -134,19 +134,19 @@ public:
 
 class ContainsSolidMappableObjects: public Level::MOQuadtree::OurVisitor{
 public:
-    ContainsSolidMappableObjects(const CL_Point& point):m_point(point),m_contains(false){}
+    ContainsSolidMappableObjects(const CL_Rect& destRect):m_destRect(destRect),m_contains(false){}
     virtual ~ContainsSolidMappableObjects(){}
     
     virtual bool Visit(MappableObject* pMO, const Level::MOQuadtree::Node* pNode){
         // TODO is this contains right?
-        if(pMO->GetTileRect().contains(m_point) && pMO->IsSolid()){
+        if((pMO->GetTileRect() == m_destRect || pMO->GetTileRect().is_overlapped(m_destRect)) && pMO->IsSolid()){
             m_contains = true;
-            return true;
-        }else return false;
+            return false;
+        }else return true;
     }    
     bool DidContainSolidMO() const { return m_contains; }
 private:
-    CL_Point m_point;
+    CL_Rect m_destRect;
     bool m_contains;
 };
 
@@ -166,6 +166,19 @@ private:
     CL_GraphicContext m_gc;
     CL_Point m_offset;
 };
+
+class MappableObjectUpdater: public Level::MOQuadtree::OurVisitor {
+public:
+    MappableObjectUpdater(){}
+    virtual ~MappableObjectUpdater(){}
+    bool Visit(MappableObject* pMO, const Level::MOQuadtree::Node* pNode){
+        if(pMO->EvaluateCondition()){
+            pMO->Update();
+        }
+        return true;
+    }
+};
+
 
 MappableObjects::MappableObjects()
 {
@@ -273,12 +286,16 @@ bool matchesMappableObject(const std::multimap<CL_Point,MappableObject*>::value_
     return value.second == pMo;
 }
 
+#if 0
 bool Level::Contains_Solid_Mappable_Object(const CL_Point &point) const
 {
         ContainsSolidMappableObjects contains(point);
+        Quadtree::Geometry::Vector<float> center(
         //m_mappleObjects.Traverse(
+        m_mo_quadtree->Traverse(
     
 }
+#endif
 
 
 #if 0
@@ -525,7 +542,7 @@ void Level::SetPlayerPos(const CL_Point &target)
 
 
 
-void Level::Move_Mappable_Object(MappableObject *pMO, const CL_Rect& pixel_from, const CL_Rect& pixel_to)
+void Level::Move_Mappable_Object(MappableObject *pMO, MappableObject::eDirection dir, const CL_Rect& pixel_from, const CL_Rect& pixel_to)
 {
     assert ( pMO != NULL );
     Quadtree::Geometry::Vector<float> from_center(pixel_from.get_center().x,pixel_from.get_center().y);
@@ -534,6 +551,8 @@ void Level::Move_Mappable_Object(MappableObject *pMO, const CL_Rect& pixel_from,
     Quadtree::Geometry::Vector<float> to_center(pixel_to.get_center().x,pixel_to.get_center().y);
     Quadtree::Geometry::Rect<float> to_rect(to_center,pixel_to.get_width(),pixel_to.get_height());
     m_mo_quadtree->MoveObject(pMO,from_rect,to_rect);
+    if(pMO->Step())
+        Step(pMO->GetPosition() + MappableObject::DirectionToVector(dir));
 }
 
 void Level::Add_Mappable_Object ( MappableObject* pMO)
@@ -575,16 +594,24 @@ bool Level::Move(MappableObject* pObject, const CL_Rect& tiles_currently, const 
             return false;
         }
     }
+    
+    Quadtree::Geometry::Vector<float> center(tiles_destination.get_center().x,tiles_destination.get_center().y);
+    Quadtree::Geometry::Rect<float>  rect(center,tiles_destination.get_width(),tiles_destination.get_height());
+    
+    ContainsSolidMappableObjects solidmos(tiles_destination);
+    m_mo_quadtree->Traverse(solidmos,rect);
+    
+    if(solidmos.DidContainSolidMO())
+        return false;
 
-    Move_Mappable_Object(pObject,tiles_currently,tiles_destination);    
+    Move_Mappable_Object(pObject,dir,tiles_currently,tiles_destination);    
     return true;
 }
 
-// TODO: Move the MO collision stuff out of this, and do it with one quadtree lookup
+
 bool Level::Check_Direction_Block ( MappableObject * pMo, MappableObject::eDirection dir, const CL_Point& tile, const CL_Point& dest_tile )
 {
     if(dest_tile.x <0 || dest_tile.y <0 || dest_tile.x >= m_LevelWidth || dest_tile.y >= m_LevelHeight
-        || Contains_Solid_Mappable_Object(dest_tile)
         ||
         (Get_Cumulative_Direction_Block_At_Point(dest_tile) & MappableObject::ConvertDirectionToDirectionBlock(dir))
         || (pMo->RespectsHotness() && Get_Cumulative_Hotness_At_Point(dest_tile))
@@ -655,6 +682,9 @@ void Level::Step(const CL_Point &target)
         iter++)
     {
         MappableObject * pMo = *iter;
+        
+        if(!pMo->GetTileRect().contains(target))
+            continue;
 
         if((pMo)->EvaluateCondition())
         {
@@ -712,13 +742,16 @@ void Level::Talk(const CL_Point &target, bool prod)
         iter++)
     {
         MappableObject * pMo = *iter;
+        if(!pMo->GetTileRect().contains(target))
+            continue;        
 
         if((pMo)->EvaluateCondition())
         {
             if(!prod)
             {
                 // This MO needs to be talked to
-                (pMo)->ProvokeEvents ( Event::TALK );
+                if((pMo)->ProvokeEvents ( Event::TALK ))
+                    break; // we only do one
             }
             else
             {
@@ -733,7 +766,6 @@ void Level::Talk(const CL_Point &target, bool prod)
 
             }
 
-            return; // We only do the first one.
 
         }
     }
@@ -745,6 +777,11 @@ void Level::Talk(const CL_Point &target, bool prod)
 // Propagate updates to any MO's in view. Provides as a level coordinate based rectangle
 void Level::Update(const CL_Rect & updateRect)
 {
+    Quadtree::Geometry::Vector<float> center(updateRect.get_center().x,updateRect.get_center().y);
+    Quadtree::Geometry::Rect<float> rect(center,updateRect.get_width(),updateRect.get_height());
+    
+    MappableObjectUpdater updater;
+    m_mo_quadtree->Traverse(updater,rect);    
 }
 
 

@@ -43,7 +43,8 @@ namespace StoneRing {
         virtual int GetDirectionBlock() const;        
         // Update sprite, etc
         virtual void Update();
-        virtual void ProvokeEvents ( Event::eTriggerType trigger );
+        // Returns if any events were provoked
+        virtual bool ProvokeEvents ( Event::eTriggerType trigger );
         virtual bool Step() const { return false; }
         
         bool EvaluateCondition() const;
@@ -70,7 +71,7 @@ namespace StoneRing {
         virtual void Set_Frame_For_Direction();
         virtual bool Delete_Sprite() const { return true; }
         virtual void Random_New_Direction();
-        uint get_moves_per_draw()const;
+        virtual uint get_moves_per_draw()const;
         // returns whether to keep moving
         bool single_move(Level& level);
         
@@ -115,7 +116,6 @@ namespace StoneRing {
         virtual ~MappablePlayer();
         virtual bool IsSolid() const { return true; }
         virtual bool IsSprite() const { return true; }
-        virtual uint GetMovesPerDraw() const;
         CL_Point GetPointInFront() const;
         virtual bool IsTile() const { return false; }
         virtual void SetNextDirection(eDirection newDir);
@@ -142,6 +142,7 @@ namespace StoneRing {
         virtual void set_frame_for_direction();
         virtual bool delete_sprite() const { return false; }
         virtual void Random_New_Direction();
+        virtual uint get_moves_per_draw() const;
         eDirection m_eNextDirection;
         bool m_bHasNextDirection;
         bool m_bRunning;
