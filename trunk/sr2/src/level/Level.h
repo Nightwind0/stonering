@@ -293,7 +293,7 @@ namespace StoneRing {
         bool Contains_Solid_Mappable_Object(const CL_Point &point) const;
         bool Check_Direction_Block(MappableObject* pMO,MappableObject::eDirection dir,const CL_Point &tile, const CL_Point &dest_tile);
         
-        void Move_Mappable_Object(MappableObject* pMO, const CL_Rect& from, const CL_Rect& to);
+        void Move_Mappable_Object(MappableObject* pMO,MappableObject::eDirection dir, const CL_Rect& from, const CL_Rect& to);
         void Add_Mappable_Object(MappableObject* pMO);
 
         // Sort tiles on zOrder
