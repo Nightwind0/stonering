@@ -210,7 +210,7 @@ void StoneRing::MapState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
         GC.clear();
 
     m_pLevel->Draw(src,dst, GC, false,m_bShowDebug,m_bShowDebug);
-    m_pLevel->DrawMappableObjects(src,dst,GC);
+    m_pLevel->DrawMappableObjects(src,dst,GC,m_bShowDebug);
     m_pLevel->DrawFloaters(src,dst,GC);
 }
 
@@ -305,7 +305,6 @@ void StoneRing::MapState::recalculate_player_position()
 {
     MappablePlayer *pPlayer = m_pLevel->GetPlayer();
     assert(pPlayer);
-
     int X = pPlayer->GetLevelX();
     int Y = pPlayer->GetLevelY();
 

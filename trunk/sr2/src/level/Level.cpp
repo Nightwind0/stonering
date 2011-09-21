@@ -17,6 +17,7 @@
 #include "SoundManager.h"
 
 
+
 typedef unsigned int uint;
 
 
@@ -72,6 +73,12 @@ void Tiles::load_attributes(CL_DomNamedNodeMap attributes)
 // MappableObjects
 ///////////////////////////////////////////////////////////////////////////
 
+bool MappableObjectDrawSort(MappableObject* pObj1, MappableObject* pObj2){
+    CL_Rect spriteRect1 = pObj1->GetSpriteRect();
+    CL_Rect spriteRect2 = pObj2->GetSpriteRect();
+    return spriteRect1.get_top_left().y < spriteRect2.get_top_left().y;
+}
+
 class QTNodeDrawer : public Level::MOQuadtree::OurNodeVisitor {
 public:
     QTNodeDrawer(CL_GraphicContext gc, const CL_Point& offset, const Level& level):m_gc(gc),m_offset(offset),m_level(level){
@@ -113,6 +120,11 @@ public:
         return m_mos.end();
     }
     
+    template <class Compare>
+    void sort(Compare cmp){
+        m_mos.sort(cmp);
+    }
+    
 private:
     std::list<MappableObject*> m_mos;
 };
@@ -122,11 +134,13 @@ public:
     MappableObjectsPrinter(){}
     virtual ~MappableObjectsPrinter(){}
     virtual bool Visit(MappableObject* pMO, const Level::MOQuadtree::Node* pNode){
+        CL_Rect spriteRect = pMO->GetSpriteRect();
+        CL_Rect tileRect = pMO->GetTileRect();
         std::cout << '\t' << pMO->GetName();
 
-        std::cout << " @ " << (pMO->GetX() / 32) << '(' << pMO->GetX() << ')'
-                  <<','
-                  << (pMO->GetY() / 32) << '(' << pMO->GetY() << ')';
+        std::cout << " @ " << tileRect.get_top_left().x << ',' << tileRect.get_top_left().y 
+                  <<' '
+                  << tileRect.get_width() << 'x' << tileRect.get_height();
         std::cout << std::endl;
         return true;
     }
@@ -158,7 +172,12 @@ public:
     virtual ~MappableObjectDrawer(){}
     bool Visit(MappableObject* pMO, const Level::MOQuadtree::Node* pNode){
         if(pMO->EvaluateCondition()){
-            pMO->Draw(m_gc,m_offset);
+            // Magically make a circle from a square
+            Quadtree::Geometry::Circle<float> circle = pNode->GetSquare();
+            CL_Draw::circle(m_gc,circle.GetCenter().GetX() * 32 + m_offset.x,
+                            circle.GetCenter().GetY()*32 + m_offset.y,
+                            circle.GetRadius()*32,
+                            CL_Colorf(0.5f+ (1.05 * float(pNode->GetDepth())),1.0f,0.0f,0.1f));
         }
         return true;
     }
@@ -495,7 +514,7 @@ void Level::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, 
                                     CL_Draw::fill(GC,CL_Rectf(tileDst.left,tileDst.bottom -8, tileDst.right, tileDst.bottom), CL_Colorf(0.0f,1.0f,1.0f,(float)120/255.0f));
                                 }
                             }
-                        }
+                        } 
 
 
 
@@ -522,14 +541,36 @@ void Level::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, 
 }
 
 
-void Level::DrawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC)
+void Level::DrawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, bool bDrawDebug)
 {
     CL_Point offset(dst.left-src.left,dst.bottom-src.bottom);
     Quadtree::Geometry::Vector<float> center(src.get_center().x,src.get_center().y);
     Quadtree::Geometry::Rect<float> rect(center,src.get_width(),src.get_height());
-    MappableObjectDrawer drawVisitor(GC,offset);
+    FindMappableObjects finder;
     
-    m_mo_quadtree->Traverse(drawVisitor,rect);
+    m_mo_quadtree->Traverse(finder,rect);    
+    finder.sort(MappableObjectDrawSort);
+    
+    for(std::list<MappableObject*>::const_iterator iter = finder.begin();
+        iter != finder.end(); iter++){
+        (*iter)->Draw(GC,offset);
+#if !defined(NDEBUG)
+        if(bDrawDebug){
+            CL_Rect tileRect = (*iter)->GetTileRect();
+            CL_Rect spriteRect(tileRect.get_top_left() * 32, tileRect.get_size() * 32);
+       
+            spriteRect.translate(offset);
+            CL_Draw::box(GC,spriteRect,CL_Colorf(1.0f,1.0f,0.0f,0.5f));
+        }
+#endif
+    }
+    
+#if !defined(NDEBUG)
+    if(bDrawDebug){
+        MappableObjectDrawer drawer(GC,offset);
+        m_mo_quadtree->Traverse(drawer,rect);
+    }
+#endif
 
     ++m_nFrameCount;
 }
@@ -585,7 +626,7 @@ bool Level::Move(MappableObject* pObject, const CL_Rect& tiles_currently, const 
     vector = MappableObject::DirectionToVector(dir);
     
     std::list<CL_Point> edge;
-    MappableObject::CalculateEdgePoints(topleft,dir,pObject->GetSize(),&edge);
+    pObject->CalculateEdgePoints(topleft,dir,pObject->GetSize(),&edge);
     for(std::list<CL_Point>::const_iterator iter = edge.begin();
         iter != edge.end(); iter++){
         CL_Point tile = *iter;

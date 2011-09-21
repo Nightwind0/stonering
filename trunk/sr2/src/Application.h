@@ -36,6 +36,7 @@ namespace StoneRing
     class Level;
     class Choice;
 
+    // camelCase
 
     class Application : public IApplication
     {

@@ -154,7 +154,14 @@ namespace Quadtree
         */
         void Clear(NodePtr pParent, const Square &quad);
 		
-		Square GetSquare() const{return m_quad;}
+	Square GetSquare() const{return m_quad;}
+	
+	/**
+         * @brief Get the depth of this node
+         * 
+         * @note For debugging purposes
+         */
+	int GetDepth() const { return m_depth; }
     protected:
         virtual OurNodePool * Get_Node_Pool()
         {

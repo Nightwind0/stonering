@@ -11,7 +11,7 @@ namespace StoneRing {
     class Movement;
     class Level;
 
-    class MappableObject : public Graphic
+    class MappableObject : public Element
     {
     public:
         enum eMappableObjectType 
@@ -54,14 +54,12 @@ namespace StoneRing {
         bool IsAligned() const; // Is aligned on cells (not moving between them)
 
         virtual bool RespectsHotness() const{ return true; }
-        // Graphic api
-        virtual int GetX() const { return m_X; }
-        virtual int GetY() const { return m_Y; }
         // In pixels
-        virtual CL_Rect GetRect() const ;
-        static void CalculateEdgePoints(const CL_Point &topleft, eDirection dir, eSize size, std::list<CL_Point> *pList);        
+        virtual CL_Rect GetSpriteRect() const ;
+        void CalculateEdgePoints(const CL_Point &topleft, eDirection dir, eSize size, std::list<CL_Point> *pList);        
         static CL_Vec2<int> DirectionToVector(eDirection dir);
         static int ConvertDirectionToDirectionBlock(MappableObject::eDirection dir);        
+        static eDirection OppositeDirection (eDirection dir);
     protected:
         virtual bool handle_element(eElement element, Element * pElement );
         virtual void load_attributes(CL_DomNamedNodeMap attributes);
@@ -71,18 +69,14 @@ namespace StoneRing {
         virtual void Set_Frame_For_Direction();
         virtual bool Delete_Sprite() const { return true; }
         virtual void Random_New_Direction();
-        virtual uint get_moves_per_draw()const;
+        virtual uint Get_Moves_Per_Draw()const;
         // returns whether to keep moving
-        bool single_move(Level& level);
-        
-
-
-
+        bool Single_Move(Level& level);
         //  static eDirection OppositeDirection(eDirection current_dir);
-        virtual void StopMovement();
-        virtual void MovedOneCell();
+        virtual void Stop_Movement();
+        virtual void Moved_One_Cell();
         virtual void Idle(); // Wait while direction is none.
-        static CL_Point calcTileDimensions(eSize size);
+        virtual CL_Size Calc_Tile_Dimensions()const;
         enum eFlags { SPRITE = 1, TILEMAP = 2, SOLID = 4 };
         std::string m_name;
         CL_Sprite  m_sprite;
@@ -122,17 +116,17 @@ namespace StoneRing {
 	virtual void StopMovement();
         virtual void ClearNextDirection();
         virtual eDirection GetDirection();
-        virtual void MovedOneCell();
+        virtual void Moved_One_Cell();
         virtual void Idle();
         void SetSprite(CL_Sprite sprite) { m_sprite = sprite; }
         void SetRunning(bool running);
         virtual bool RespectsHotness()const{ return false; }
-        virtual uint GetLevelX() const { return m_X;}
-        virtual uint GetLevelY() const { return m_Y;}
         virtual void MatchFacingDirection(MappablePlayer * pOther) { m_eFacingDirection = pOther->m_eFacingDirection; }
         virtual void ResetLevelX(uint x) { m_X = x * 32;}
         virtual void ResetLevelY(uint y) { m_Y = y * 32;}
         virtual bool Step() const { return true; }
+        uint GetLevelX() const { return m_X; }
+        uint GetLevelY() const { return m_Y; }
         void SerializeState(std::ostream& out);
         void DeserializeState(std::istream& in);
     private:
@@ -142,7 +136,7 @@ namespace StoneRing {
         virtual void set_frame_for_direction();
         virtual bool delete_sprite() const { return false; }
         virtual void Random_New_Direction();
-        virtual uint get_moves_per_draw() const;
+        virtual uint Get_Moves_Per_Draw() const;
         eDirection m_eNextDirection;
         bool m_bHasNextDirection;
         bool m_bRunning;
