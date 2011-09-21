@@ -254,6 +254,8 @@ void StoneRing::MapState::PushLevel(Level * pLevel, uint x, uint y)
         pPlayer->SetSprite ( pMapCharacter->GetMapSprite() );
         pPlayer->ResetLevelX(x);
         pPlayer->ResetLevelY(y);
+        m_LevelX = 0;
+        m_LevelY = 0;
 
         pLevel->SetPlayerPos(CL_Point(x,y));
         recalculate_player_position();
@@ -305,6 +307,7 @@ void StoneRing::MapState::recalculate_player_position()
 {
     MappablePlayer *pPlayer = m_pLevel->GetPlayer();
     assert(pPlayer);
+    CL_Rect spriteRect = pPlayer->GetSpriteRect();
     int X = pPlayer->GetLevelX();
     int Y = pPlayer->GetLevelY();
 
