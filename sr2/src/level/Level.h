@@ -228,7 +228,7 @@ namespace StoneRing {
         virtual void Draw(const CL_Rect &src, const CL_Rect &dst,
                           CL_GraphicContext& GC , bool floaters = false,
                           bool highlightHot=false,bool indicateBlocks = false);
-        virtual void DrawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC);
+        virtual void DrawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, bool bDrawDebug);
         virtual void DrawFloaters(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC);
 
         void MoveMappableObjects(const CL_Rect &src);
