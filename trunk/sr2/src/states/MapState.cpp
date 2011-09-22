@@ -393,9 +393,8 @@ void StoneRing::MapState::do_talk(bool prod)
     assert(pPlayer);
     CL_Point talkPoint = pPlayer->GetPointInFront();
 
-    if(talkPoint.x >=0 && talkPoint.x < m_pLevel->GetWidth() &&
-       talkPoint.y >=0 && talkPoint.y < m_pLevel->GetHeight())
-        m_pLevel->Talk ( talkPoint, prod );
+ 
+    m_pLevel->Talk ( talkPoint, prod );
 }
 
 void StoneRing::MapState::switch_from_player(MappablePlayer * pPlayer)
