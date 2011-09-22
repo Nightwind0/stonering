@@ -153,7 +153,7 @@ public:
     
     virtual bool Visit(MappableObject* pMO, const Level::MOQuadtree::Node* pNode){
         // TODO is this contains right?
-        if((pMO->GetTileRect() == m_destRect || pMO->GetTileRect().is_overlapped(m_destRect)) && pMO->IsSolid()){
+        if(pMO->EvaluateCondition() && (pMO->GetTileRect() == m_destRect || pMO->GetTileRect().is_overlapped(m_destRect)) && pMO->IsSolid()){
             m_contains = true;
             return false;
         }else return true;
@@ -712,7 +712,7 @@ void Level::Step(const CL_Point &target)
         }
     }
     // Second, process any MO step events you may have triggered
-    Quadtree::Geometry::Vector<float> center(target.x,target.y);
+    Quadtree::Geometry::Vector<float> center(0.5f + float(target.x),0.5f + float(target.y));
     Quadtree::Geometry::Square<float> square(center,1);
     FindMappableObjects finder;
     m_mo_quadtree->Traverse(finder,square);
@@ -723,8 +723,7 @@ void Level::Step(const CL_Point &target)
         iter++)
     {
         MappableObject * pMo = *iter;
-        
-        if(!pMo->GetTileRect().contains(target))
+        if(!RectContains(pMo->GetTileRect(),target))
             continue;
 
         if((pMo)->EvaluateCondition())
@@ -773,7 +772,7 @@ void Level::Activate_Tiles_At ( uint x, uint y )
 // Any talk events fire (assuming they meet conditions)
 void Level::Talk(const CL_Point &target, bool prod)
 {
-    Quadtree::Geometry::Vector<float> center(target.x,target.y);
+    Quadtree::Geometry::Vector<float> center(0.5f + float(target.x),0.5f + float(target.y));
     Quadtree::Geometry::Square<float> square(center,1);
     FindMappableObjects finder;
     m_mo_quadtree->Traverse(finder,square);

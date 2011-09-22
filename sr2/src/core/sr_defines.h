@@ -187,6 +187,13 @@ CL_Colorf operator*(CL_Colorf a, CL_Colorf);
 void WriteString(std::ostream& stream, const std::string&);
 std::string ReadString(std::istream& stream);
 
+// Clanlib's rect::contains is broken
+template <class T>
+bool RectContains(const CL_Rectx<T>& rect, const CL_Vec2<T>& p){
+     return ((p.x >= rect.left && p.x < rect.right) || (p.x < rect.left && p.x >= rect.right))
+                    && ((p.y >= rect.top && p.y < rect.bottom) || (p.y < rect.top && p.y >= rect.bottom));
+}
+
 #endif
 
 
