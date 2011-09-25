@@ -112,7 +112,7 @@ namespace StoneRing {
         virtual bool IsSprite() const { return true; }
         CL_Point GetPointInFront() const;
         virtual bool IsTile() const { return false; }
-        virtual void SetNextDirection(eDirection newDir);
+        virtual void SetNextDirection(eDirection newDir, bool force=false);
 	virtual void StopMovement();
         virtual void ClearNextDirection();
         virtual eDirection GetDirection();
@@ -133,10 +133,10 @@ namespace StoneRing {
         virtual bool handle_element(eElement, Element* ){ return false;}
         virtual void load_attributes(CL_DomNamedNodeMap){}
         virtual void load_finished(){}
-        virtual void set_frame_for_direction();
         virtual bool delete_sprite() const { return false; }
         virtual void Random_New_Direction();
         virtual uint Get_Moves_Per_Draw() const;
+        virtual void Set_Frame_For_Direction();
         eDirection m_eNextDirection;
         bool m_bHasNextDirection;
         bool m_bRunning;

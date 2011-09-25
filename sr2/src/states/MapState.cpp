@@ -298,7 +298,7 @@ void StoneRing::MapState::Pop(bool bAll)
     SoundManager::SetMusic(m_pLevel->GetMusic());
     MappablePlayer * pNewPlayer = m_pLevel->GetPlayer();
 
-    pNewPlayer->SetNextDirection(oldDir);
+    pNewPlayer->SetNextDirection(oldDir,true);
 }
 
 
