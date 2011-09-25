@@ -487,7 +487,7 @@ void StoneRing::MappableObject::Update()
 
     if(IsSprite())
     {
-       if(++m_nStep > 3)
+       if(m_eDirection != NONE && ++m_nStep > 3)
 	   m_nStep = 0;
     }
 }
@@ -720,10 +720,14 @@ uint StoneRing::MappablePlayer::Get_Moves_Per_Draw() const
 
 
 
-void StoneRing::MappablePlayer::SetNextDirection(eDirection newDir)
+void StoneRing::MappablePlayer::SetNextDirection(eDirection newDir, bool force)
 {
     m_bHasNextDirection = true;
     m_eNextDirection = newDir;
+    if(force){
+        m_eDirection = newDir;
+        m_eFacingDirection = newDir;
+    }
 }
 
 void StoneRing::MappablePlayer::ClearNextDirection ()
@@ -744,7 +748,7 @@ void StoneRing::MappablePlayer::Idle()
         m_eDirection = m_eNextDirection;
         m_eFacingDirection = m_eDirection;
        // m_bHasNextDirection = false;
-	set_frame_for_direction();
+	Set_Frame_For_Direction();
     }
     else
     {
@@ -798,7 +802,7 @@ CL_Point StoneRing::MappablePlayer::GetPointInFront() const
     return point;
 }
 
-void StoneRing::MappablePlayer::set_frame_for_direction()
+void StoneRing::MappablePlayer::Set_Frame_For_Direction()
 {
     switch( m_eFacingDirection ) // SWEN
     {
