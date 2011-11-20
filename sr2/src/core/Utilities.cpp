@@ -176,3 +176,5 @@ CL_Colorf operator*(CL_Colorf a, CL_Colorf b)
     CL_Colorf color(a.r*b.r,a.g*b.g,a.b*b.b);
     return color;
 }
+
+

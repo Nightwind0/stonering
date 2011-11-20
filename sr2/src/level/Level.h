@@ -32,10 +32,10 @@ namespace StoneRing {
 
     enum eDirectionBlock
     {
-        DIR_NORTH = 1,
-        DIR_SOUTH = 2,
-        DIR_WEST = 4,
-        DIR_EAST = 8
+        BLK_NORTH = 1,
+        BLK_SOUTH = 2,
+        BLK_WEST = 4,
+        BLK_EAST = 8
     };
 
     class DirectionBlock : public Element
@@ -95,28 +95,18 @@ namespace StoneRing {
         ScriptElement* m_pScript;
     };
 
-    class PlayerMovement : public Movement
-    {
-    public:
-        PlayerMovement(){}
-        ~PlayerMovement(){}
-
-        virtual eMovementType GetMovementType() const { return MOVEMENT_WANDER; }
-        virtual eMovementSpeed GetMovementSpeed() const { return MEDIUM; }
-    private:
-    };
 
     class Tile : public Graphic
     {
     protected:
-        enum eFlags { SPRITE = 1, FLOATER = 2, HOT = 4, BLK_NORTH = 8, BLK_SOUTH = 16, BLK_EAST = 32, BLK_WEST = 64, POPS = 128};
+        enum eFlags { TIL_SPRITE = 1, TIL_FLOATER = 2, TIL_HOT = 4, TIL_BLK_NORTH = 8, TIL_BLK_SOUTH = 16, TIL_BLK_EAST = 32, TIL_BLK_WEST = 64, TIL_POPS = 128};
     public:
         Tile();
         virtual ~Tile();
         virtual eElement WhichElement() const{ return ETILE; }
         inline ushort GetZOrder() const { return m_ZOrder; }
 
-        inline bool IsFloater() const { return (cFlags & FLOATER) != 0; }
+        inline bool IsFloater() const { return (cFlags & TIL_FLOATER) != 0; }
         bool EvaluateCondition() const;
         inline bool HasScript() const { return m_pScript != NULL; }
 
@@ -127,11 +117,11 @@ namespace StoneRing {
 
         CL_Rect GetRect() const;
 
-        inline bool IsSprite() const { return (cFlags & SPRITE) != 0; }
+        inline bool IsSprite() const { return (cFlags & TIL_SPRITE) != 0; }
 
-        inline bool IsHot() const { return (cFlags & HOT) != 0; }
+        inline bool IsHot() const { return (cFlags & TIL_HOT) != 0; }
 
-        inline bool Pops() const { return (cFlags & POPS) != 0; }
+        inline bool Pops() const { return (cFlags & TIL_POPS) != 0; }
 
         void Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC);
         virtual void Update();
@@ -291,9 +281,9 @@ namespace StoneRing {
         // MO related operations
         bool Contains_Mappable_Objects(const CL_Point &point) const;
         bool Contains_Solid_Mappable_Object(const CL_Point &point) const;
-        bool Check_Direction_Block(MappableObject* pMO,MappableObject::eDirection dir,const CL_Point &tile, const CL_Point &dest_tile);
+        bool Check_Direction_Block(MappableObject* pMO, Direction dir,const CL_Point &tile, const CL_Point &dest_tile);
         
-        void Move_Mappable_Object(MappableObject* pMO,MappableObject::eDirection dir, const CL_Rect& from, const CL_Rect& to);
+        void Move_Mappable_Object(MappableObject* pMO, Direction dir, const CL_Rect& from, const CL_Rect& to);
         void Add_Mappable_Object(MappableObject* pMO);
 
         // Sort tiles on zOrder

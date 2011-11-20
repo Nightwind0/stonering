@@ -223,7 +223,7 @@ void EditableTile::setIsHot()
 void EditableTile::setDirectionBlock (int dirBlock )
 {
     if(dirBlock & StoneRing::DIR_NORTH)
-        cFlags |= BLK_NORTH;
+        cFlags |= TBK_NORTH;
     if(dirBlock & StoneRing::DIR_SOUTH)
         cFlags |= DIR_SOUTH;
     if(dirBlock & StoneRing::DIR_WEST)
@@ -242,11 +242,11 @@ void EditableTile::setNorthBlock(bool bOn)
 {
     if(bOn)
     {
-        cFlags |= BLK_NORTH;
+        cFlags |= TBK_NORTH;
     }
     else
     {
-        cFlags &= ~BLK_NORTH;
+        cFlags &= ~TBK_NORTH;
     }
 }
 

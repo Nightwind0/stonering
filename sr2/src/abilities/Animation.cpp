@@ -12,12 +12,12 @@ using namespace StoneRing;
 
 eWho who_from_string ( const std::string &str )
 {
-    if (str == "none") return NONE;
-    else if (str == "caster") return CASTER;
-    else if (str == "caster_group") return CASTER_GROUP;
-    else if (str == "target") return TARGET;
-    else if (str == "target_group") return TARGET_GROUP;
-    else if (str == "all") return ALL;
+    if (str == "none") return WHO_NONE;
+    else if (str == "caster") return WHO_CASTER;
+    else if (str == "caster_group") return WHO_CASTER_GROUP;
+    else if (str == "target") return WHO_TARGET;
+    else if (str == "target_group") return WHO_TARGET_GROUP;
+    else if (str == "all") return WHO_ALL;
     else throw CL_Exception("Bad Who = " + str );
 
 }

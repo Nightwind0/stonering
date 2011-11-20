@@ -326,10 +326,10 @@ void AnimationState::move_sprite(ICharacter* pActor, ICharacter* pTarget, Sprite
     {
         switch(anim->GetBattleSprite()->GetWho())
         {
-            case CASTER:
+            case WHO_CASTER:
                 sprite = m_pCaster->GetCurrentSprite(false);
                 break;
-            case TARGET:
+            case WHO_TARGET:
                 sprite = m_pTarget->GetCurrentSprite(false);
                 break;
         }
@@ -600,10 +600,10 @@ void AnimationState::move_sprite(ICharacter* pActor, ICharacter* pTarget, Sprite
         point.y = current.y;
         switch (anim->GetBattleSprite()->GetWho())
         {
-        case CASTER:
+        case WHO_CASTER:
             m_pCaster->SetBattlePos ( point );
             break;
-        case TARGET:
+        case WHO_TARGET:
             m_pTarget->SetBattlePos ( point );
             break;
         }
@@ -745,10 +745,10 @@ void AnimationState::apply_alter_sprite(AlterSprite* pAlterSprite)
     // Alter any sprites on the parent now
     switch(pAlterSprite->GetWho())
     {
-    case CASTER:
+    case WHO_CASTER:
         sprite = m_pCaster->GetCurrentSprite(true);
         break;
-    case TARGET:
+    case WHO_TARGET:
         sprite = m_pTarget->GetCurrentSprite(true);
         break;
     }
