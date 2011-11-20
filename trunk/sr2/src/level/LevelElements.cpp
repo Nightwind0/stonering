@@ -61,10 +61,6 @@ bool operator < (const CL_Point &p1, const CL_Point &p2)
     return p1value < p2value;
 }
 
-bool operator < (const StoneRing::MappableObject::eDirection dir1, const StoneRing::MappableObject::eDirection dir2)
-{
-    return (int)dir1 < (int)dir2;
-}
 
 
 bool StoneRing::Tilemap::handle_element(Element::eElement element, Element * pElement)
@@ -196,10 +192,10 @@ void StoneRing::DirectionBlock::load_attributes(CL_DomNamedNodeMap attributes)
     bool east =  get_required_bool("east",attributes);
     bool west =  get_required_bool("west",attributes);
 
-    if (north) m_eDirectionBlock |= DIR_NORTH;
-    if (south) m_eDirectionBlock |= DIR_SOUTH;
-    if (east) m_eDirectionBlock |= DIR_EAST;
-    if (west) m_eDirectionBlock |= DIR_WEST;
+    if (north) m_eDirectionBlock |= BLK_NORTH;
+    if (south) m_eDirectionBlock |= BLK_SOUTH;
+    if (east) m_eDirectionBlock |= BLK_EAST;
+    if (west) m_eDirectionBlock |= BLK_WEST;
 }
 
 
@@ -229,9 +225,9 @@ void StoneRing::Tile::load_attributes(CL_DomNamedNodeMap attributes)
     bool hot = get_implied_bool("hot",attributes,false);
     bool pops = get_implied_bool("pops",attributes,false);
 
-    if (floater) cFlags |= FLOATER;
-    if (hot) cFlags |= HOT;
-    if (pops) cFlags |= POPS;
+    if (floater) cFlags |= TIL_FLOATER;
+    if (hot) cFlags |= TIL_HOT;
+    if (pops) cFlags |= TIL_POPS;
 
 }
 
@@ -249,7 +245,7 @@ bool StoneRing::Tile::handle_element(Element::eElement element, Element * pEleme
     case ESPRITEREF:
     {
         m_Graphic.asSpriteRef = dynamic_cast<SpriteRef*>(pElement);
-        cFlags |= SPRITE;
+        cFlags |= TIL_SPRITE;
 
         // Actually create the ref'd sprite here.
         // And assign to mpSprite
@@ -267,14 +263,14 @@ bool StoneRing::Tile::handle_element(Element::eElement element, Element * pEleme
 
         // This is all done to make tile's take up less space in memory
 
-        if (db & DIR_NORTH)
-            cFlags |= BLK_NORTH;
-        if (db & DIR_SOUTH)
-            cFlags |= BLK_SOUTH;
-        if (db & DIR_EAST)
-            cFlags |= BLK_EAST;
-        if (db & DIR_WEST)
-            cFlags |= BLK_WEST;
+        if (db & BLK_NORTH)
+            cFlags |= TIL_BLK_NORTH;
+        if (db & BLK_SOUTH)
+            cFlags |= TIL_BLK_SOUTH;
+        if (db & BLK_EAST)
+            cFlags |= TIL_BLK_EAST;
+        if (db & BLK_WEST)
+            cFlags |= TIL_BLK_WEST;
 
         delete block;
 
@@ -364,14 +360,14 @@ int StoneRing::Tile::GetDirectionBlock() const
 
     int block = 0;
 
-    if ( cFlags & BLK_NORTH)
-        block |= DIR_NORTH;
-    if ( cFlags & BLK_SOUTH)
-        block |= DIR_SOUTH;
-    if ( cFlags & BLK_EAST)
-        block |= DIR_EAST;
-    if ( cFlags & BLK_WEST)
-        block |= DIR_WEST;
+    if ( cFlags & TIL_BLK_NORTH)
+        block |= BLK_NORTH;
+    if ( cFlags & TIL_BLK_SOUTH)
+        block |= BLK_SOUTH;
+    if ( cFlags & TIL_BLK_EAST)
+        block |= BLK_EAST;
+    if ( cFlags & TIL_BLK_WEST)
+        block |= BLK_WEST;
 
     return block;
 }

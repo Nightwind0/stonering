@@ -5,11 +5,17 @@
 #include "sr_defines.h"
 #include "Graphic.h"
 #include "Event.h"
+#include "Direction.h"
+#include "Navigator.h"
+#include <tr1/shared_ptr.h>
+
+using std::tr1::shared_ptr;
 
 namespace StoneRing {
 
     class Movement;
     class Level;
+    class Director;
 
     class MappableObject : public Element
     {
@@ -22,16 +28,14 @@ namespace StoneRing {
         { 
             MO_SMALL, MO_MEDIUM, MO_LARGE, MO_TALL, MO_WIDE             
         };
-        enum eDirection 
-        { 
-            NONE, NORTH, SOUTH, EAST, WEST             
-        };
 
         MappableObject();
         virtual ~MappableObject();
         
+        /* Element API */
         virtual eElement WhichElement() const{ return EMAPPABLEOBJECT; }
-
+        
+        /* Level API */
         virtual CL_Rect GetTileRect() const; 
         virtual void Draw(CL_GraphicContext& GC, const CL_Point& offset);
         virtual void Move(Level& level);
@@ -45,38 +49,37 @@ namespace StoneRing {
         virtual void Update();
         // Returns if any events were provoked
         virtual bool ProvokeEvents ( Event::eTriggerType trigger );
-        virtual bool Step() const { return false; }
+        virtual bool DoesStep() const { return false; }
+        virtual void OnStep() { m_nStep++; Set_Frame_For_Direction();}
+        virtual void Stop() { m_nStep = 0; Set_Frame_For_Direction(); }
+        virtual bool RespectsHotness() const{ return true; }
+        virtual CL_Rect GetSpriteRect() const ;
+        bool IsAligned() const; // Is aligned on cells (not moving between them)
+        CL_Point GetPosition() const { return m_pos / 32; }  // In tiles        
         
         bool EvaluateCondition() const;
         void Prod();
+        
+        /* Navigator API */
+        void SetNavigator(Navigator* pNav) { m_pNavigator = pNav; }
+        void SetPixelPosition(const CL_Point& pixel_pos);
+        void SetFacingDirection(Direction edir) { m_eFacingDirection = edir; }
+        CL_Point GetPixelPosition() const { return m_pos; }
+        Movement * GetMovement() const { return m_pMovement; }
 
-        CL_Point GetPosition() const { return CL_Point(m_X / 32, m_Y / 32); }  // In tiles
-        bool IsAligned() const; // Is aligned on cells (not moving between them)
-
-        virtual bool RespectsHotness() const{ return true; }
         // In pixels
-        virtual CL_Rect GetSpriteRect() const ;
-        void CalculateEdgePoints(const CL_Point &topleft, eDirection dir, eSize size, std::list<CL_Point> *pList);        
-        static CL_Vec2<int> DirectionToVector(eDirection dir);
-        static int ConvertDirectionToDirectionBlock(MappableObject::eDirection dir);        
-        static eDirection OppositeDirection (eDirection dir);
+        void CalculateEdgePoints(const CL_Point &topleft, Direction dir, eSize size, std::list<CL_Point> *pList);        
+        static int ConvertDirectionToDirectionBlock(Direction dir);        
     protected:
         virtual bool handle_element(eElement element, Element * pElement );
         virtual void load_attributes(CL_DomNamedNodeMap attributes);
         virtual void load_finished();
 
-        void Pick_Opposite_Direction();
-        virtual void Set_Frame_For_Direction();
         virtual bool Delete_Sprite() const { return true; }
-        virtual void Random_New_Direction();
-        virtual uint Get_Moves_Per_Draw()const;
-        // returns whether to keep moving
-        bool Single_Move(Level& level);
-        //  static eDirection OppositeDirection(eDirection current_dir);
-        virtual void Stop_Movement();
+
         virtual void Moved_One_Cell();
-        virtual void Idle(); // Wait while direction is none.
         virtual CL_Size Calc_Tile_Dimensions()const;
+        virtual void Set_Frame_For_Direction();
         enum eFlags { SPRITE = 1, TILEMAP = 2, SOLID = 4 };
         std::string m_name;
         CL_Sprite  m_sprite;
@@ -84,14 +87,12 @@ namespace StoneRing {
         std::list<Event*> m_events;
 
         eSize m_eSize;
-        eDirection m_eDirection;
-        eDirection m_eFacingDirection;
+        Direction m_eFacingDirection;
         
         uint m_nStep; // step frame alternator
         ushort m_StartX;
         ushort m_StartY;
-        int m_X; // pixels
-        int m_Y; // pixels
+        CL_Point m_pos;
         uint m_nHeight; // in tiles
         uint m_nWidth; // in tiles
         Movement *m_pMovement;
@@ -99,8 +100,9 @@ namespace StoneRing {
         eMappableObjectType m_eType;
         char cFlags;
         ushort m_nTilesMoved;
-        ushort m_nStepsUntilChange;
+        Navigator*  m_pNavigator;
     };
+
 
 
     class MappablePlayer : public MappableObject
@@ -112,21 +114,17 @@ namespace StoneRing {
         virtual bool IsSprite() const { return true; }
         CL_Point GetPointInFront() const;
         virtual bool IsTile() const { return false; }
-        virtual void SetNextDirection(eDirection newDir, bool force=false);
-	virtual void StopMovement();
-        virtual void ClearNextDirection();
-        virtual eDirection GetDirection();
-        virtual void Moved_One_Cell();
-        virtual void Idle();
+ 	virtual void StopMovement();
+       // virtual void Moved_One_Cell();
         void SetSprite(CL_Sprite sprite) { m_sprite = sprite; }
-        void SetRunning(bool running);
         virtual bool RespectsHotness()const{ return false; }
-        virtual void MatchFacingDirection(MappablePlayer * pOther) { m_eFacingDirection = pOther->m_eFacingDirection; }
-        virtual void ResetLevelX(uint x) { m_X = x * 32;}
-        virtual void ResetLevelY(uint y) { m_Y = y * 32;}
+        virtual void ResetLevelX(uint x) { m_pos.x = x * 32;}
+        virtual void ResetLevelY(uint y) { m_pos.y = y * 32;}
         virtual bool Step() const { return true; }
-        uint GetLevelX() const { return m_X; }
-        uint GetLevelY() const { return m_Y; }
+        uint GetLevelX() const { return m_pos.x; }
+        uint GetLevelY() const { return m_pos.y; }
+        Direction GetDirection() const { return m_direction; }
+        void SetDirection(const Direction& dir);
         void SerializeState(std::ostream& out);
         void DeserializeState(std::istream& in);
     private:
@@ -134,14 +132,9 @@ namespace StoneRing {
         virtual void load_attributes(CL_DomNamedNodeMap){}
         virtual void load_finished(){}
         virtual bool delete_sprite() const { return false; }
-        virtual void Random_New_Direction();
-        virtual uint Get_Moves_Per_Draw() const;
         virtual void Set_Frame_For_Direction();
-        eDirection m_eNextDirection;
-        bool m_bHasNextDirection;
-        bool m_bRunning;
+        Direction m_direction;
     };
-
 }
 
 #endif

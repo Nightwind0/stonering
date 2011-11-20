@@ -4,13 +4,14 @@
 #include "State.h"
 #include "Level.h"
 #include "sr_defines.h"
+#include "Navigator.h"
 #include <stack>
 
 
 namespace StoneRing
 {
 
-    class MappablePlayer;
+    class ControlNavigator;
     class Level;
 
     class MapState : public State
@@ -46,13 +47,14 @@ namespace StoneRing
     private:
         void recalculate_player_position();
         void do_talk(bool prod=false);
-        void switch_from_player(MappablePlayer * pPlayer);
 
         bool m_bDone;
         int m_LevelX; // Offset into level. TopLeft corner of our view into level
         int m_LevelY;
 	bool m_horizontal_idle;
 	bool m_vertical_idle;
+        ControlNavigator m_playerNavigator;
+        MappablePlayer * m_player;
         CL_Rect m_screen_rect;
         std::deque<Level*> m_levels;
         Level * m_pLevel;

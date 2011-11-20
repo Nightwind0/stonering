@@ -139,16 +139,30 @@ inline double normal_random(double m, double sigma)
 //
 //       Enums
 //
-enum eWho {NONE, CASTER, CASTER_GROUP, TARGET, TARGET_GROUP, ALL };
+namespace StoneRing{
+enum eWho {
+    WHO_NONE, 
+    WHO_CASTER, 
+    WHO_CASTER_GROUP, 
+    WHO_TARGET, 
+    WHO_TARGET_GROUP, 
+    WHO_ALL 
+};
 
-enum eBattleSprite  {
-            IDLE,
-            ATTACK,
-            USE,
-            RECOIL,
-            WEAK,
-            DEAD
-        };
+enum eBattleSprite  
+{
+    IDLE,
+    ATTACK,
+    USE,
+    RECOIL,
+    WEAK,
+    DEAD
+};
+
+}
+
+        
+
 
 #ifndef NDEBUG
 extern bool gbDebugStop;

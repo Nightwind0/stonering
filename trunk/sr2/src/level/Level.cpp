@@ -497,19 +497,19 @@ void Level::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, 
                             {
                                 int block = pTile->GetDirectionBlock();
 
-                                if(block & DIR_WEST)
+                                if(block & BLK_WEST)
                                 {
                                     CL_Draw::fill(GC,CL_Rectf(tileDst.left,tileDst.top,tileDst.left + 8, tileDst.bottom), CL_Colorf(0.0f,1.0f,1.0f,(float)120/255.0f));
                                 }
-                                if(block & DIR_EAST)
+                                if(block & BLK_EAST)
                                 {
                                     CL_Draw::fill(GC,CL_Rectf(tileDst.right - 8, tileDst.top, tileDst.right,tileDst.bottom),CL_Colorf(0.0f,1.0f,1.0f,(float)120/255.0f));
                                 }
-                                if(block & DIR_NORTH)
+                                if(block & BLK_NORTH)
                                 {
                                     CL_Draw::fill(GC,CL_Rectf(tileDst.left, tileDst.top, tileDst.right, tileDst.top +8), CL_Colorf(0.0f,1.0f,1.0f,(float)120/255.0f));
                                 }
-                                if(block & DIR_SOUTH)
+                                if(block & BLK_SOUTH)
                                 {
                                     CL_Draw::fill(GC,CL_Rectf(tileDst.left,tileDst.bottom -8, tileDst.right, tileDst.bottom), CL_Colorf(0.0f,1.0f,1.0f,(float)120/255.0f));
                                 }
@@ -583,7 +583,7 @@ void Level::SetPlayerPos(const CL_Point &target)
 
 
 
-void Level::Move_Mappable_Object(MappableObject *pMO, MappableObject::eDirection dir, const CL_Rect& pixel_from, const CL_Rect& pixel_to)
+void Level::Move_Mappable_Object(MappableObject *pMO, Direction dir, const CL_Rect& pixel_from, const CL_Rect& pixel_to)
 {
     assert ( pMO != NULL );
     Quadtree::Geometry::Vector<float> from_center(pixel_from.get_center().x,pixel_from.get_center().y);
@@ -592,8 +592,8 @@ void Level::Move_Mappable_Object(MappableObject *pMO, MappableObject::eDirection
     Quadtree::Geometry::Vector<float> to_center(pixel_to.get_center().x,pixel_to.get_center().y);
     Quadtree::Geometry::Rect<float> to_rect(to_center,pixel_to.get_width(),pixel_to.get_height());
     m_mo_quadtree->MoveObject(pMO,from_rect,to_rect);
-    if(pMO->Step())
-        Step(pMO->GetPosition() + MappableObject::DirectionToVector(dir));
+    if(pMO->DoesStep())
+        Step(pMO->GetPosition() + dir.ToScreenVector());
 }
 
 void Level::Add_Mappable_Object ( MappableObject* pMO)
@@ -610,20 +610,20 @@ void Level::Add_Mappable_Object ( MappableObject* pMO)
 
 bool Level::Move(MappableObject* pObject, const CL_Rect& tiles_currently, const CL_Rect& tiles_destination)
 {
-    MappableObject::eDirection dir;
+    Direction dir;
     CL_Point topleft = tiles_currently.get_top_left();
     CL_Point dest_topleft = tiles_destination.get_top_left();
     CL_Vec2<float> vector;
     if(topleft.x < dest_topleft.x){
-        dir = MappableObject::EAST;
+        dir = Direction::EAST;
     }else if(topleft.x > dest_topleft.x){
-        dir = MappableObject::WEST;
+        dir = Direction::WEST;
     }else if(topleft.y < dest_topleft.y){
-        dir = MappableObject::SOUTH;
+        dir = Direction::SOUTH;
     }else{
-        dir = MappableObject::NORTH;
+        dir = Direction::NORTH;
     }
-    vector = MappableObject::DirectionToVector(dir);
+    vector = dir.ToScreenVector();
     
     std::list<CL_Point> edge;
     pObject->CalculateEdgePoints(topleft,dir,pObject->GetSize(),&edge);
@@ -650,7 +650,7 @@ bool Level::Move(MappableObject* pObject, const CL_Rect& tiles_currently, const 
 }
 
 
-bool Level::Check_Direction_Block ( MappableObject * pMo, MappableObject::eDirection dir, const CL_Point& tile, const CL_Point& dest_tile )
+bool Level::Check_Direction_Block ( MappableObject * pMo, Direction dir, const CL_Point& tile, const CL_Point& dest_tile )
 {
     if(dest_tile.x <0 || dest_tile.y <0 || dest_tile.x >= m_LevelWidth || dest_tile.y >= m_LevelHeight
         ||

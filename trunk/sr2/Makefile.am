@@ -138,6 +138,8 @@ stonering_SOURCES =	src/Application.cpp \
 			src/level/Level.h \
 			src/level/MappableObject.h \
 			src/level/ScriptElement.h \
+			src/level/Direction.h \
+			src/level/Direction.cpp \
 			src/monsters/Monster.cpp \
 			src/monsters/MonsterElement.cpp \
 			src/monsters/MonsterGroup.cpp \
@@ -191,7 +193,9 @@ stonering_SOURCES =	src/Application.cpp \
 			src/core/SoundManager.cpp \
 			src/core/SoundManager.h \
 			src/abilities/SoundPlay.cpp \
-			src/abilities/SoundPlay.h
+			src/abilities/SoundPlay.h \
+			src/level/Navigator.h \
+			src/level/Navigator.cpp
 
 
 
