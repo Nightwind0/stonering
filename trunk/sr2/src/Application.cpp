@@ -1456,6 +1456,7 @@ void Application::onSignalKeyDown ( const CL_InputEvent &key, const CL_InputStat
             mStates.back()->HandleAxisMove ( IApplication::AXIS_HORIZONTAL, AXIS_RIGHT, get_value_for_axis_direction ( AXIS_RIGHT ) );
             break;
         case CL_KEY_SPACE:
+        case CL_KEY_T:
             mStates.back()->HandleButtonDown ( BUTTON_CONFIRM );
             break;
         case CL_KEY_TAB:
@@ -1500,6 +1501,7 @@ void Application::onSignalKeyUp ( const CL_InputEvent &key, const CL_InputState&
             mStates.back()->HandleAxisMove ( IApplication::AXIS_HORIZONTAL, AXIS_NEUTRAL, 0.0 );
             break;
         case CL_KEY_SPACE:
+        case CL_KEY_T:
             mStates.back()->HandleButtonUp ( BUTTON_CONFIRM );
             break;
         case CL_KEY_TAB:
@@ -1962,13 +1964,6 @@ void Application::run()
     {
         queryJoystick();
 
-
-#if 0
-
-        if ( count++ % 50 == 0 )
-            std::cout << "FPS " <<  frameRate.get_fps() << std::endl;
-
-#endif
         unsigned int now = CL_System::get_time();
 
         if ( now - then > MS_BETWEEN_MOVES )

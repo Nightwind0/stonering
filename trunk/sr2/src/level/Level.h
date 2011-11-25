@@ -315,6 +315,13 @@ namespace StoneRing {
         MappablePlayer m_player;
         bool m_bMarkedForDeath;
         MOQuadtree *m_mo_quadtree;
+#ifndef NDEBUG
+        struct InteractPoint{
+            CL_Point m_point;
+            uint m_creationTime;
+        };
+        std::list<InteractPoint> m_interactPoints;
+#endif
     };
 
 
