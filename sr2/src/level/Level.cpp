@@ -772,7 +772,7 @@ void Level::Activate_Tiles_At ( uint x, uint y )
 // Any talk events fire (assuming they meet conditions)
 void Level::Talk(const CL_Point &target, bool prod)
 {
-    Quadtree::Geometry::Vector<float> center(0.5f + float(target.x),0.5f + float(target.y));
+    Quadtree::Geometry::Vector<float> center(0.0f + float(target.x),0.0f + float(target.y));
     Quadtree::Geometry::Square<float> square(center,1);
     FindMappableObjects finder;
     m_mo_quadtree->Traverse(finder,square);
@@ -782,8 +782,17 @@ void Level::Talk(const CL_Point &target, bool prod)
         iter++)
     {
         MappableObject * pMo = *iter;
-        if(!pMo->GetTileRect().contains(target))
-            continue;        
+        if(!RectContains<int>(pMo->GetTileRect(),target)){
+#ifndef NDEBUG
+            CL_Rect rect = pMo->GetTileRect();
+            std::cout << '(' << rect.get_top_left().x << ',' << rect.get_top_left().y << "),"
+                        << '(' << rect.get_width() << 'x' << rect.get_height() << ')'
+                        << " Point: " << target.x << ',' << target.y
+                        << std::endl;
+#endif
+            continue;
+        }
+       
 
         if((pMo)->EvaluateCondition())
         {

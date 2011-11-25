@@ -195,7 +195,9 @@ stonering_SOURCES =	src/Application.cpp \
 			src/abilities/SoundPlay.cpp \
 			src/abilities/SoundPlay.h \
 			src/level/Navigator.h \
-			src/level/Navigator.cpp
+			src/level/Navigator.cpp \
+			src/states/CutSceneState.cpp \
+			src/states/CutSceneState.h
 
 
 

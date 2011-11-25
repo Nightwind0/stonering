@@ -453,7 +453,7 @@ CL_Rect MappableObject::GetTileRect() const
     CL_Size size = Calc_Tile_Dimensions();
     CL_Point position = GetPosition();
     if(!IsAligned()){
-        position += m_pNavigator->GetCurrentDirection().ToScreenVector();
+     //  position += m_pNavigator->GetCurrentDirection().ToScreenVector();
     }
     return CL_Rect(position,size);
 }

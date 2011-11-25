@@ -115,6 +115,7 @@ namespace StoneRing {
         CL_Point GetPointInFront() const;
         virtual bool IsTile() const { return false; }
  	virtual void StopMovement();
+        virtual bool DoesStep() const { return true; }
        // virtual void Moved_One_Cell();
         void SetSprite(CL_Sprite sprite) { m_sprite = sprite; }
         virtual bool RespectsHotness()const{ return false; }
