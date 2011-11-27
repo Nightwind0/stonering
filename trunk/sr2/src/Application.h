@@ -58,6 +58,7 @@ namespace StoneRing
         virtual void RequestRedraw(const State *pState);
 	virtual void RunState(State *pState);
 	virtual void LoadMainMenu(CL_DomDocument& doc);
+        virtual Level * GetCurrentLevel() const;
         virtual AstScript * LoadScript(const std::string &name, const std::string &script);
         virtual SteelType RunScript(AstScript * pScript);
         virtual SteelType RunScript(AstScript *pScript, const ParameterList &params);
@@ -189,6 +190,7 @@ namespace StoneRing
         SteelType equipScreen(SteelType::Handle hCharacter);
         SteelType save(int slot);
         SteelType load(int slot);
+ 
 
         void steelConst(const std::string &name, int value);
         void steelConst(const std::string &name, double value);

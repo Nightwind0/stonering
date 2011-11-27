@@ -7,6 +7,7 @@
 #include "Event.h"
 #include "Direction.h"
 #include "Navigator.h"
+#include <stack>
 #include <tr1/shared_ptr.h>
 
 using std::tr1::shared_ptr;
@@ -61,7 +62,8 @@ namespace StoneRing {
         void Prod();
         
         /* Navigator API */
-        void SetNavigator(Navigator* pNav) { m_pNavigator = pNav; }
+        void PushNavigator(Navigator* pNav) { m_navStack.push( pNav ); }
+        Navigator* PopNavigator();
         void SetPixelPosition(const CL_Point& pixel_pos);
         void SetFacingDirection(Direction edir) { m_eFacingDirection = edir; }
         CL_Point GetPixelPosition() const { return m_pos; }
@@ -100,7 +102,7 @@ namespace StoneRing {
         eMappableObjectType m_eType;
         char cFlags;
         ushort m_nTilesMoved;
-        Navigator*  m_pNavigator;
+        std::stack<Navigator*>  m_navStack;
     };
 
 

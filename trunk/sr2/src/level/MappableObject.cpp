@@ -33,8 +33,8 @@ void MappableObject::SetPixelPosition ( const CL_Point& pixel_pos )
 
 void MappableObject::Move(Level& level)
 {
-    if(m_pNavigator){
-        m_pNavigator->MoveObject(*this,level);
+    if(!m_navStack.empty()){
+        m_navStack.top()->MoveObject(*this,level);
     }
 }
 
@@ -128,8 +128,8 @@ bool MappableObject::handle_element(Element::eElement element, Element * pElemen
     {
         m_pMovement = dynamic_cast<Movement*>(pElement);
         // Make sure the proper sprites are around for the movement type
-        SetNavigator(new NPCNavigator());
-        m_pNavigator->Prod(*this); // Get it going
+        PushNavigator(new NPCNavigator());
+        Prod(); // Get it going
         break;
     }
     default:
@@ -148,7 +148,7 @@ void MappableObject::load_finished()
 
 MappableObject::MappableObject():m_nStep(0),m_pMovement(NULL),
                                             m_pCondition(0),cFlags(0),
-                                            m_nTilesMoved(0),m_pNavigator(NULL)
+                                            m_nTilesMoved(0)
 {
 }
 
@@ -337,8 +337,8 @@ bool MappableObject::IsTile() const
 
 void MappableObject::Prod()
 {
-    if(m_pNavigator)
-        m_pNavigator->Prod(*this);
+    if(!m_navStack.empty())
+        m_navStack.top()->Prod(*this);
 }
 
 
@@ -458,6 +458,18 @@ CL_Rect MappableObject::GetTileRect() const
     return CL_Rect(position,size);
 }
 
+Navigator* MappableObject::PopNavigator()
+{
+    if(!m_navStack.empty()){
+        Navigator * pNav = m_navStack.top();
+        m_navStack.pop();
+        return pNav;
+    }else{
+        return NULL;
+    }
+}
+
+
 
 MappablePlayer::MappablePlayer(uint startX, uint startY)
 {
@@ -471,7 +483,6 @@ MappablePlayer::MappablePlayer(uint startX, uint startY)
     m_eFacingDirection = Direction::SOUTH; // Should come in like the startX, startY
     m_nHeight  =1;
     m_nWidth = 1;
-    m_pNavigator = NULL;
 }
 
 MappablePlayer::~MappablePlayer()
@@ -482,7 +493,8 @@ MappablePlayer::~MappablePlayer()
 void MappablePlayer::StopMovement()
 {
     Stop();
-    m_pNavigator->Idle(*this);
+    if(!m_navStack.empty())
+        m_navStack.top()->Idle(*this);
    // Update();
 }
 

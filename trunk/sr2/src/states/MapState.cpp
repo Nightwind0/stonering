@@ -165,6 +165,16 @@ void StoneRing::MapState::HandleKeyUp(const CL_InputEvent &key)
     case CL_KEY_P:
         std::cout << "Player location:" << pPlayer->GetPosition().x << ',' << pPlayer->GetPosition().y << std::endl;
         break;
+    case CL_KEY_X:
+        break;
+    case CL_KEY_F:
+        static bool frozen = false;
+        if(frozen)
+            m_pLevel->UnfreezeMappableObjects();
+        else
+            m_pLevel->FreezeMappableObjects();
+        frozen = !frozen;
+        break;
 
     case CL_KEY_D:
         m_bShowDebug = m_bShowDebug?false:true;
@@ -239,12 +249,17 @@ void StoneRing::MapState::Finish() // Hook to clean up or whatever after being p
 {
 }
 
+StoneRing::Level* StoneRing::MapState::GetCurrentLevel() const 
+{
+    return m_pLevel;
+}
+
 
 void StoneRing::MapState::PushLevel(Level * pLevel, uint x, uint y)
 {
     MappablePlayer *pPlayer = pLevel->GetPlayer();
     assert(pPlayer);
-    pPlayer->SetNavigator(&m_playerNavigator);
+    pPlayer->PushNavigator(&m_playerNavigator);
     CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
     Character *pMapCharacter = IApplication::GetInstance()->GetParty()->GetMapCharacter();
 
