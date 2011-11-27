@@ -2011,6 +2011,12 @@ void Application::loadscript ( std::string &o_str, const std::string & filename 
     in.close();
 }
 
+Level* Application::GetCurrentLevel() const
+{
+    return mMapState.GetCurrentLevel();
+}
+
+
 
 int Application::main ( const std::vector<CL_String> &args )
 {

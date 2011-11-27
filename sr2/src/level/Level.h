@@ -218,7 +218,7 @@ namespace StoneRing {
         virtual void Draw(const CL_Rect &src, const CL_Rect &dst,
                           CL_GraphicContext& GC , bool floaters = false,
                           bool highlightHot=false,bool indicateBlocks = false);
-        virtual void DrawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, bool bDrawDebug);
+        virtual void DrawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, bool bDrawDebug=false);
         virtual void DrawFloaters(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC);
 
         void MoveMappableObjects(const CL_Rect &src);
@@ -259,6 +259,9 @@ namespace StoneRing {
 
         void SerializeState(std::ostream& out);
         void DeserializeState(std::istream& in);
+        void FreezeMappableObjects();
+        void UnfreezeMappableObjects();
+        MappableObject* GetMappableObjectByName(const std::string& name) const;
 #ifndef NDEBUG
         void DumpMappableObjects() const;
         void DrawMOQuadtree(CL_GraphicContext gc, const CL_Point& offset) const;

@@ -18,6 +18,7 @@
 
 
 
+
 typedef unsigned int uint;
 
 
@@ -198,6 +199,46 @@ public:
     }
 };
 
+class MappableObjectFreezer: public Level::MOQuadtree::OurVisitor {
+public:
+    MappableObjectFreezer(){}
+    virtual ~MappableObjectFreezer(){}
+    bool Visit(MappableObject* pMO, const Level::MOQuadtree::Node* pNode){
+        if(pMO->GetMovement()){
+            pMO->PushNavigator(new StillNavigator());
+        }
+        return true;
+    }
+};
+
+class MappableObjectNavigatorPopper: public Level::MOQuadtree::OurVisitor {
+public:
+    MappableObjectNavigatorPopper(){}
+    virtual ~MappableObjectNavigatorPopper(){}
+    bool Visit(MappableObject* pMO, const Level::MOQuadtree::Node* pNode){
+        if(pMO->GetMovement()){
+            delete pMO->PopNavigator();
+        }
+        return true;
+    }    
+};
+
+class MappableObjectFindByName: public Level::MOQuadtree::OurVisitor{
+public:
+    MappableObjectFindByName(const std::string& name):m_pObject(NULL){}
+    virtual ~MappableObjectFindByName(){}
+    bool Visit(MappableObject* pMO, const Level::MOQuadtree::Node* pNode){
+        if(pMO->GetName() == m_name){
+            m_pObject = pMO;
+            return false;
+        }
+        return true;
+    }
+    MappableObject* GetObject() const { return m_pObject; }
+private:
+    MappableObject* m_pObject;
+    std::string m_name;
+};
 
 MappableObjects::MappableObjects()
 {
@@ -832,6 +873,26 @@ void Level::Update(const CL_Rect & updateRect)
     MappableObjectUpdater updater;
     m_mo_quadtree->Traverse(updater,rect);    
 }
+
+void Level::FreezeMappableObjects()
+{
+    MappableObjectFreezer freezer;
+    m_mo_quadtree->TraverseAll(freezer);
+}
+
+void Level::UnfreezeMappableObjects()
+{
+    MappableObjectNavigatorPopper popper;
+    m_mo_quadtree->TraverseAll(popper);
+}
+
+MappableObject* Level::GetMappableObjectByName(const std::string &name) const
+{
+    MappableObjectFindByName finder(name);
+    m_mo_quadtree->TraverseAll(finder);
+    return finder.GetObject();
+}
+
 
 
 #if  !defined(NDEBUG) 

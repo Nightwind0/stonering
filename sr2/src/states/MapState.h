@@ -40,6 +40,7 @@ namespace StoneRing
         void SetPlayerSprite(CL_Sprite player);
         void MoveMappableObjects();
         void Pop(bool bAll);
+        Level * GetCurrentLevel()const;
         
         void SerializeState(std::ostream& out);
         void DeserializeState(std::istream& in);
