@@ -94,7 +94,9 @@ public:
                      32*(nodeSquare.GetCenter().GetX() + nodeSquare.GetSize() / 2),
                      32*(nodeSquare.GetCenter().GetY() + nodeSquare.GetSize() / 2));
         rect.translate(m_offset);
+#if !defined(NDEBUG)
         m_level.DrawDebugBox(m_gc,rect);
+#endif
         return true;
     }
 private:
@@ -902,7 +904,6 @@ void Level::DumpMappableObjects() const
     
     m_mo_quadtree->TraverseAll(printVisitor);    
 }
-
 
 void Level::DrawDebugBox ( CL_GraphicContext gc, const CL_Rect& pixelRect ) const
 {

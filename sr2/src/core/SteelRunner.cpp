@@ -21,30 +21,6 @@
 
 namespace StoneRing{
 
-SteelRunner::SteelRunner(SteelInterpreter* pInterpreter):m_pInterpreter(pInterpreter)
-{
 
-}
-
-SteelRunner::~SteelRunner()
-{
-
-}
-
-void SteelRunner::run()
-{
-    m_result = m_pInterpreter->runAst(m_pScript,m_params);
-}
-
-void SteelRunner::setScript(AstScript* pScript, const ParameterList& params)
-{
-    m_pScript = pScript;
-    m_params = params;
-}
-
-SteelType SteelRunner::getResult() const
-{
-    return m_result;
-}
 
 }

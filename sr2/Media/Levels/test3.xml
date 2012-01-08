@@ -3519,7 +3519,7 @@
                         <script id="useBattlePodium">
                             <![CDATA[
                                 var $decision = choice("Make your choice:", 
-                                    array("Mochi Team!","One Mochi","Shop","Sell","Nevermind"));
+                                    array("Mochi Team!","One Mochi","Shop","Sell","Event","Nevermind"));
                                 switch($decision){
                                     case 0:
                                         startBattle("Green Tea Mochi",3,false,"grasslands");
@@ -3533,6 +3533,13 @@
                                     break;
                                     case 3:
                                         sell();
+                                    break;
+                                    case 4:
+                                        playScene(function(){
+                                            scene::panTo(20,20,2);
+                                            scene::fadeOut(2);
+                                            }
+                                        );
                                     break;
   
                                     default:

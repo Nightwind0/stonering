@@ -30,6 +30,7 @@
 #include "SkillTreeState.h"
 #include "EquipState.h"
 #include "ShopState.h"
+#include "CutSceneState.h"
 
 namespace StoneRing
 {
@@ -79,7 +80,7 @@ namespace StoneRing
         SteelType gaussian(double mean, double sigma);
 	SteelType log(const std::string &string);
 
-        SteelType playScene(const std::string &animation);
+        SteelType playScene(const SteelType& functor);
         SteelType playSound(const std::string &sound);
         SteelType loadLevel(const std::string &level, uint startX, uint startY);
 	SteelType mainMenu();

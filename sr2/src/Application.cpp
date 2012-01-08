@@ -86,12 +86,16 @@ string Application::GetCurrencyName() const
 
 
 
-SteelType Application::playScene ( const std::string &animation )
+SteelType Application::playScene ( const SteelType &functor )
 {
 #ifndef NDEBUG
-    std::cout << "Playing scene " << animation << std::endl;
+    //std::cout << "Playing scene " << animation << std::endl;
 #endif
 
+    if(!functor.isFunctor()) throw CL_Exception("playScene argument wasn't a functor");
+    CutSceneState cutSceneState;
+    cutSceneState.Init(functor.getFunctor());
+    RunState(&cutSceneState);
     return SteelType();
 }
 
@@ -1644,7 +1648,7 @@ SteelType Application::RunScript ( AstScript *pScript, const ParameterList &para
 void Application::registerSteelFunctions()
 {
     SteelFunctor* fn_say = new SteelFunctor2Arg<Application, const std::string&, const std::string&> ( this, &Application::say );
-    SteelFunctor* fn_playScene = new SteelFunctor1Arg<Application, const std::string&> ( this, &Application::playScene );
+    SteelFunctor* fn_playScene = new SteelFunctor1Arg<Application, const SteelType&> ( this, &Application::playScene );
     SteelFunctor* fn_playSound  = new SteelFunctor1Arg<Application, const std::string&> ( this, &Application::playSound );
     SteelFunctor* fn_loadLevel = new SteelFunctor3Arg<Application, const std::string&, uint, uint> ( this, &Application::loadLevel );
     SteelFunctor* fn_startBattle = new SteelFunctor4Arg<Application, const std::string &, uint, bool, const std::string&> ( this, &Application::startBattle );
@@ -2114,6 +2118,7 @@ int Application::main ( const std::vector<CL_String> &args )
 #endif
         return 1;
     }
+  
 
 
     CL_InputDevice keyboard = m_window.get_ic().get_keyboard();
@@ -2171,6 +2176,9 @@ int Application::main ( const std::vector<CL_String> &args )
         
         std::cerr << "Exception caught" << std::endl;
         std::cerr << error.message.c_str() << std::endl;
+    }
+    catch( AlreadyDefined ad ){
+        std::cerr << "Already defined: " << ad.GetName() << std::endl;
     }
 
     mInterpreter.popScope();
