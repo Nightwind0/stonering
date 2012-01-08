@@ -22,6 +22,26 @@
 #include "Navigator.h"
 
 namespace StoneRing {
+    
+    class CutSceneRunner: public SteelRunner<CutSceneState> {
+    public:
+        CutSceneRunner(SteelInterpreter* pInterpreter,CutSceneState* pState)
+        :SteelRunner<CutSceneState>(pInterpreter,pState,&CutSceneState::Completed){
+        }
+        virtual ~CutSceneRunner(){
+        }
+        virtual void run(){
+            // TODO: Should I support an AstScript here too, like the normal runner does?
+            if(m_pFunctor)
+                m_result = m_pFunctor->Call(m_pInterpreter,SteelType::Container());
+            
+            // wait for all tasks to finish
+            while(m_callee->HasTasks());
+            
+            (m_callee->*m_callback)();
+        }
+        
+    };
 
 CutSceneState::CutSceneState():m_pRunner(NULL),m_pLevel(NULL)
 {
@@ -60,7 +80,9 @@ void CutSceneState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
         if((*_it)->finished()){
             (*_it)->cleanup();
             // Do something with waitFor?
+            m_task_mutex.lock();
             m_tasks.erase(_it);
+            m_task_mutex.unlock();
         }
     }
     
@@ -69,11 +91,7 @@ void CutSceneState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
     if(m_fade_level != 0.0f){
         CL_Draw::fill(GC,screenRect,CL_Colorf(0.0f,0.0f,0.0f,m_fade_level));
     }
-#if 1
-    if(m_tasks.empty()){
-        m_bDone = true;
-    }
-#endif
+
 }
 
 void CutSceneState::HandleAxisMove ( const StoneRing::IApplication::Axis& axis, const StoneRing::IApplication::AxisDirection dir, float pos )
@@ -110,23 +128,25 @@ void CutSceneState::Start()
     uncolorize();
     // Run script in Runner
     m_pRunner->setFunctor(m_functor);
-    m_pRunner->run();
+    m_steel_thread.start(m_pRunner);
 }
 
 void CutSceneState::Finish()
 {
     //m_functor.reset();
+    
 }
 
 void CutSceneState::Completed()
 {
-    //m_bDone = true;
+    m_bDone = true;
+    m_steel_thread.join();
 }
 
 
 void CutSceneState::SteelInit ( SteelInterpreter* pInterpreter )
 {
-    m_pRunner = new SteelRunner<CutSceneState>(pInterpreter,this,&CutSceneState::Completed);
+    m_pRunner = new CutSceneRunner(pInterpreter,this);
     // Add BIFs
     pInterpreter->addFunction("gotoLevel","scene",new SteelFunctor3Arg<CutSceneState,const std::string&,int,int>(this,&CutSceneState::gotoLevel));
     pInterpreter->addFunction("hideCharacter","scene",new SteelFunctor1Arg<CutSceneState,SteelType::Handle>(this,&CutSceneState::hideCharacter));
@@ -143,7 +163,7 @@ void CutSceneState::SteelInit ( SteelInterpreter* pInterpreter )
     pInterpreter->addFunction("moveCharacter","scene",new SteelFunctor4Arg<CutSceneState,SteelType::Handle,int,int,int>(this,&CutSceneState::moveCharacter));
     pInterpreter->addFunction("changeFaceDirection","scene",new SteelFunctor2Arg<CutSceneState,SteelType::Handle,int>(this,&CutSceneState::changeFaceDirection));
     pInterpreter->addFunction("addCharacter","scene",new SteelFunctor4Arg<CutSceneState,const std::string&,int,int,int>(this,&CutSceneState::addCharacter));
-    pInterpreter->addFunction("waitFor","scene",new SteelFunctor1Arg<CutSceneState,const SteelType&>(this,&CutSceneState::waitFor));
+    pInterpreter->addFunction("waitFor","scene",new SteelFunctor1Arg<CutSceneState,const SteelType::Handle&>(this,&CutSceneState::waitFor));
     
 }
 
@@ -225,7 +245,14 @@ SteelType CutSceneState::changeFaceDirection ( SteelType::Handle hHandle, int di
 
 SteelType CutSceneState::fadeIn ( double seconds )
 {
-    return SteelType();
+    FadeTask * task = new FadeTask(*this,false,uint(seconds*1000));
+    SteelType taskhandle;
+    taskhandle.set(task);
+    m_task_mutex.lock();
+    m_tasks.push_back(task);
+    m_task_mutex.unlock();
+    task->start();
+    return taskhandle;
 }
 
 SteelType CutSceneState::fadeOut ( double seconds )
@@ -233,7 +260,9 @@ SteelType CutSceneState::fadeOut ( double seconds )
     FadeTask * task = new FadeTask(*this,true,uint(seconds*1000));
     SteelType taskhandle;
     taskhandle.set(task);
+    m_task_mutex.lock();
     m_tasks.push_back(task);
+    m_task_mutex.unlock();
     task->start();
     return taskhandle;
 }
@@ -276,7 +305,9 @@ SteelType CutSceneState::moveCharacter ( SteelType::Handle hHandle, int x, int y
 SteelType CutSceneState::panTo ( int x, int y, double seconds )
 {
     PanTask *pTask = new PanTask(*this,x,y,uint(seconds*1000));
+    m_task_mutex.lock();
     m_tasks.push_back(pTask);
+    m_task_mutex.unlock();
     pTask->start();
     SteelType taskhandle;
     taskhandle.set(pTask);
@@ -311,9 +342,22 @@ SteelType CutSceneState::getPlayer()
     return val;
 }
 
-SteelType CutSceneState::waitFor ( const SteelType& waitOn )
+SteelType CutSceneState::waitFor ( const SteelType::Handle& waitOn )
 {
-
+    Task * pTask = GrabHandle<Task*>(waitOn);
+    while(true){
+       m_task_mutex.lock();
+        bool found = false;
+        for(std::list<Task*>::const_iterator it=m_tasks.begin();
+            it != m_tasks.end(); it++){
+            if(*it == pTask){
+                found = true;
+            }
+        }
+        m_task_mutex.unlock();
+        if(!found)
+            break; // The task is gone, so we can leave the while loop.
+    }
 }
 
 
@@ -341,7 +385,7 @@ void CutSceneState::FadeTask::start()
 void CutSceneState::FadeTask::update()
 {
     const float p = float(CL_System::get_time() - m_start_time)/float(m_duration);
-    m_state.SetFadeLevel(p);
+    m_state.SetFadeLevel(m_fade_out?p:1-p);
     ++m_updateCount;
 }
 
@@ -386,8 +430,8 @@ void CutSceneState::PanTask::update()
     CL_Vec2<float> origin = m_origin;
     CL_Vec2<float> target(m_target.x * 32, m_target.y * 32);
     CL_Vec2<float> current;
-    current.x = p*(origin.x + target.x);
-    current.y = p*(origin.y + target.y);
+    current.x = origin.x + p*target.x;
+    current.y = origin.y + p*target.y;
     m_state.PanTo(current.x,current.y);
 }
 

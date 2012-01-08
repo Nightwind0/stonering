@@ -38,7 +38,7 @@ public:
     void setScript(AstScript* pScript, const ParameterList& params);
     void setFunctor(SteelType::Functor pFunctor);
     SteelType getResult() const;
-private:
+protected:
     SteelInterpreter * m_pInterpreter;
     T*m_callee;
     void (T::*m_callback)(void);
