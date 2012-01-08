@@ -55,6 +55,7 @@ CutSceneState::~CutSceneState()
 
 bool CutSceneState::DisableMappableObjects() const
 {
+    
     return false;
 }
 
@@ -64,8 +65,8 @@ void CutSceneState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
     // TODO Center around the center of the middle tile instead of the top-left of it?
     CL_Rect levelRect = CL_Rect(m_center.x - screenRect.get_width() /2,
                                 m_center.y - screenRect.get_height() /2,
-                                screenRect.get_width() + m_center.x - screenRect.get_width() /2,
-                                screenRect.get_height() + m_center.y - screenRect.get_height() /2);
+                                m_center.x + screenRect.get_width() /2,
+                                m_center.y + screenRect.get_height() /2);
     GC.clear();
     if(m_pLevel){
         m_pLevel->Draw(levelRect,screenRect,GC);
@@ -118,6 +119,7 @@ Level* CutSceneState::grabMapStateLevel()
 
 
 
+
 void CutSceneState::Start()
 {
     m_bDone = false;
@@ -134,13 +136,13 @@ void CutSceneState::Start()
 void CutSceneState::Finish()
 {
     //m_functor.reset();
-    
+    m_steel_thread.join();
 }
 
 void CutSceneState::Completed()
 {
     m_bDone = true;
-    m_steel_thread.join();
+    //m_steel_thread.join();
 }
 
 
@@ -185,14 +187,25 @@ bool CutSceneState::LastToDraw() const
 
 void CutSceneState::MappableObjectMoveHook()
 {
-
+    static uint ticks = 0;
+    CL_Rect displayRect = IApplication::GetInstance()->GetDisplayRect();
+    CL_Rect rect(m_center.x - displayRect.get_width()/2,
+                           m_center.y - displayRect.get_height()/2,
+                           m_center.x + displayRect.get_width()/2,
+                           m_center.y + displayRect.get_height()/2);
+    // If we have the current level, then we don't move the MOs because
+    // the map state will be doing that.
+    if(m_pLevel != IApplication::GetInstance()->GetCurrentLevel())
+        m_pLevel->MoveMappableObjects(rect);
+    
+    if(ticks++ % 4 == 0)
+        m_pLevel->Update(rect);
 }
 
 void CutSceneState::MoveCharacterTo ( MappableObject* pMO, int x, int y, int speed )
 {
     // Create navigator and assign it to the MO
-    ScriptedNavigator * pNavigator = new ScriptedNavigator(CL_Point(x,y),speed);
-    pMO->PushNavigator(pNavigator);
+
     // then we just go until the navigator says it's reached its destination
     
 }
@@ -403,17 +416,24 @@ void CutSceneState::FadeTask::cleanup()
 /*  Move */
 void CutSceneState::MoveTask::start()
 {
+    ScriptedNavigator * pNavigator = new ScriptedNavigator(m_target,m_movementSpeed);
+    m_pMO->PushNavigator(pNavigator);  
 
+}
+
+void CutSceneState::MoveTask::cleanup()
+{
+    m_pMO->PopNavigator();
 }
 
 void CutSceneState::MoveTask::update()
 {
-
+    // nothing to do here. the 
 }
 
 bool CutSceneState::MoveTask::finished()
 {
-
+    return m_pMO->GetPosition() == m_target;
 }
 
 

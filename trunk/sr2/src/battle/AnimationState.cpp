@@ -702,7 +702,7 @@ bool AnimationState::LastToDraw() const // Should we continue drawing more state
 
 bool AnimationState::DisableMappableObjects() const // Should the app move the MOs?
 {
-    return false;
+    return true;
 }
 
 void AnimationState::MappableObjectMoveHook() // Do stuff right after the mappable object movement

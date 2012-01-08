@@ -116,6 +116,7 @@ private:
         virtual void start();
         virtual void update();
         virtual bool finished();
+        virtual void cleanup();
     private:
         MappableObject* m_pMO;
         CL_Point m_target;

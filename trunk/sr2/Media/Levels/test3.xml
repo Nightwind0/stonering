@@ -3536,11 +3536,17 @@
                                     break;
                                     case 4:
                                         playScene(function(){
-                                            declare $pan = scene::panTo(10,10,2);
-                                            scene::fadeOut(2);
-                                            scene::waitFor($pan);
-                                            scene::panTo(-10,-10,2);
-                                            scene::fadeIn(2);
+                                            using "scene";
+                                            declare $pan = panTo(10,10,2);
+                                            fadeOut(2);
+                                            waitFor($pan);
+                                            $pan = panTo(-10,-10,2);
+                                            fadeIn(2);
+                                            waitFor($pan);
+                                            $pan = panTo(10,-10,4);
+                                            waitFor($pan);
+                                            waitFor(panTo(10,20,2));
+                                            fadeOut(2);
                                             }
                                         );
                                     break;
