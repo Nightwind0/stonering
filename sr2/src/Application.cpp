@@ -56,7 +56,7 @@ using std::max;
 
 const unsigned int WINDOW_WIDTH = 800 ;
 const unsigned int WINDOW_HEIGHT = 600 ;
-const unsigned int MS_BETWEEN_MOVES = 20;
+const unsigned int MS_BETWEEN_MOVES = 15;
 
 
 bool gbDebugStop;
@@ -1972,7 +1972,14 @@ void Application::run()
 
         if ( now - then > MS_BETWEEN_MOVES )
         {
-            if ( !backState->DisableMappableObjects() )
+            bool disableMOs = false;
+            for(int i=0;i<mStates.size();i++){
+                if(mStates[i]->DisableMappableObjects()){
+                    disableMOs = true;
+                    break;
+                }
+            }
+            if ( !disableMOs )
             {
                 mMapState.MoveMappableObjects();
                 mStates.back()->MappableObjectMoveHook();
