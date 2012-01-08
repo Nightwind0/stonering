@@ -50,6 +50,7 @@ public:
     virtual void SteelCleanup   (SteelInterpreter *);
     virtual void Finish(); // Hook to clean up or whatever after being popped
     
+    bool HasTasks() const { return !m_tasks.empty(); }
     void SetFadeLevel(float level);
     void MoveCharacterTo(MappableObject* pMO,int x, int y, int speed);
     void PanTo(int x, int y);
@@ -73,7 +74,7 @@ private:
     SteelType moveCharacter(SteelType::Handle hHandle, int x, int y, int speed);
     SteelType changeFaceDirection(SteelType::Handle hHandle, int dir);
     SteelType addCharacter(const std::string& spriteRef, int x, int y, int face_dir);
-    SteelType waitFor(const SteelType& waitOn);
+    SteelType waitFor(const SteelType::Handle& waitOn);
     
     class Task : public SteelType::IHandle {
     public:
@@ -146,6 +147,8 @@ private:
     CL_Point m_center;
     CL_Colorf m_color;
     float m_fade_level;
+    CL_Thread m_steel_thread;
+    CL_Mutex m_task_mutex;
 };
 
 
