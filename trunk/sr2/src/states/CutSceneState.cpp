@@ -40,22 +40,40 @@ bool CutSceneState::DisableMappableObjects() const
 
 void CutSceneState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
 {
+
     // TODO Center around the center of the middle tile instead of the top-left of it?
-    CL_Rect levelRect = CL_Rect((m_center.x*32) - screenRect.get_width()/2,
-                                (m_center.y*32) - screenRect.get_height()/2,
-                               screenRect.get_width(),
-                               screenRect.get_height());
+    CL_Rect levelRect = CL_Rect(m_center.x - screenRect.get_width() /2,
+                                m_center.y - screenRect.get_height() /2,
+                                screenRect.get_width() + m_center.x - screenRect.get_width() /2,
+                                screenRect.get_height() + m_center.y - screenRect.get_height() /2);
+    GC.clear();
     if(m_pLevel){
         m_pLevel->Draw(levelRect,screenRect,GC);
         if(m_bDrawMOs)
             m_pLevel->DrawMappableObjects(levelRect,screenRect,GC);
     }
+    for(std::list<Task*>::iterator it = m_tasks.begin(); it != m_tasks.end();
+        /* */){
+        std::list<Task*>::iterator _it = it++;
+        (*_it)->update();
+        (*_it)->draw(screenRect,GC);     
+        if((*_it)->finished()){
+            (*_it)->cleanup();
+            // Do something with waitFor?
+            m_tasks.erase(_it);
+        }
+    }
     
     CL_Draw::box(GC,screenRect,m_color);
     
     if(m_fade_level != 0.0f){
-        CL_Draw::box(GC,screenRect,CL_Colorf(0.0f,0.0f,0.0f,m_fade_level));
+        CL_Draw::fill(GC,screenRect,CL_Colorf(0.0f,0.0f,0.0f,m_fade_level));
     }
+#if 1
+    if(m_tasks.empty()){
+        m_bDone = true;
+    }
+#endif
 }
 
 void CutSceneState::HandleAxisMove ( const StoneRing::IApplication::Axis& axis, const StoneRing::IApplication::AxisDirection dir, float pos )
@@ -70,9 +88,9 @@ void CutSceneState::HandleButtonUp ( const StoneRing::IApplication::Button& butt
 {
 }
 
-void CutSceneState::Init ( SteelFunctor* pFunctor )
+void CutSceneState::Init ( const SteelType::Functor& pFunctor )
 {
-    m_functor = shared_ptr<SteelFunctor>(pFunctor);
+    m_functor = pFunctor;
 }
 
 Level* CutSceneState::grabMapStateLevel()
@@ -88,25 +106,51 @@ void CutSceneState::Start()
     m_bDrawMOs = true;
     m_bFrozen = false;
     m_pLevel = grabMapStateLevel();
-    m_center = m_pLevel->GetPlayer()->GetPosition();    
-    // TODO: Need to get X,Y from MapState too..
+    m_center = CL_Point(m_pLevel->GetWidth() / 2 * 32, m_pLevel->GetHeight() / 2 * 32);   
     uncolorize();
     // Run script in Runner
+    m_pRunner->setFunctor(m_functor);
+    m_pRunner->run();
 }
 
 void CutSceneState::Finish()
 {
-
+    //m_functor.reset();
 }
+
+void CutSceneState::Completed()
+{
+    //m_bDone = true;
+}
+
 
 void CutSceneState::SteelInit ( SteelInterpreter* pInterpreter )
 {
-    m_pRunner = new SteelRunner(pInterpreter);
+    m_pRunner = new SteelRunner<CutSceneState>(pInterpreter,this,&CutSceneState::Completed);
     // Add BIFs
+    pInterpreter->addFunction("gotoLevel","scene",new SteelFunctor3Arg<CutSceneState,const std::string&,int,int>(this,&CutSceneState::gotoLevel));
+    pInterpreter->addFunction("hideCharacter","scene",new SteelFunctor1Arg<CutSceneState,SteelType::Handle>(this,&CutSceneState::hideCharacter));
+    pInterpreter->addFunction("unhideCharacter","scene", new SteelFunctor1Arg<CutSceneState,SteelType::Handle>(this,&CutSceneState::unhideCharacter));
+    pInterpreter->addFunction("freezeCharacters","scene",new SteelFunctorNoArgs<CutSceneState>(this,&CutSceneState::freezeCharacters));
+    pInterpreter->addFunction("unfreezeCharacters","scene",new SteelFunctorNoArgs<CutSceneState>(this,&CutSceneState::unfreezeCharacters));
+    pInterpreter->addFunction("fadeIn","scene",new SteelFunctor1Arg<CutSceneState,double>(this,&CutSceneState::fadeIn));
+    pInterpreter->addFunction("fadeOut","scene",new SteelFunctor1Arg<CutSceneState,double>(this,&CutSceneState::fadeOut));
+    pInterpreter->addFunction("panTo","scene",new SteelFunctor3Arg<CutSceneState,int,int,double>(this,&CutSceneState::panTo));
+    pInterpreter->addFunction("colorize","scene",new SteelFunctor3Arg<CutSceneState,double,double,double>(this,&CutSceneState::colorize));
+    pInterpreter->addFunction("uncolorize","scene",new SteelFunctorNoArgs<CutSceneState>(this,&CutSceneState::uncolorize));
+    pInterpreter->addFunction("getCharacter","scene",new SteelFunctor1Arg<CutSceneState,const std::string&>(this,&CutSceneState::getCharacter));
+    pInterpreter->addFunction("getPlayer","scene",new SteelFunctorNoArgs<CutSceneState>(this,&CutSceneState::getPlayer));
+    pInterpreter->addFunction("moveCharacter","scene",new SteelFunctor4Arg<CutSceneState,SteelType::Handle,int,int,int>(this,&CutSceneState::moveCharacter));
+    pInterpreter->addFunction("changeFaceDirection","scene",new SteelFunctor2Arg<CutSceneState,SteelType::Handle,int>(this,&CutSceneState::changeFaceDirection));
+    pInterpreter->addFunction("addCharacter","scene",new SteelFunctor4Arg<CutSceneState,const std::string&,int,int,int>(this,&CutSceneState::addCharacter));
+    pInterpreter->addFunction("waitFor","scene",new SteelFunctor1Arg<CutSceneState,const SteelType&>(this,&CutSceneState::waitFor));
+    
 }
 
-void CutSceneState::SteelCleanup ( SteelInterpreter* )
+void CutSceneState::SteelCleanup ( SteelInterpreter* pInterpreter )
 {
+    pInterpreter->removeFunctions("scene");
+    delete m_pRunner;
 }
 
 bool CutSceneState::IsDone() const
@@ -116,7 +160,7 @@ bool CutSceneState::IsDone() const
 
 bool CutSceneState::LastToDraw() const
 {
-    return false;
+    return true;
 }
 
 void CutSceneState::MappableObjectMoveHook()
@@ -157,32 +201,41 @@ void CutSceneState::verifyLevel()
 SteelType CutSceneState::addCharacter ( const std::string& spriteRef, int x, int y, int face_dir )
 {
     verifyLevel();
+    return SteelType();
 }
 
-SteelType CutSceneState::colorize ( float r, float g, float b )
+SteelType CutSceneState::colorize ( double r, double g, double b )
 {
     m_color = CL_Colorf(r,g,b,0.75f);
+    return SteelType();
 }
 
 SteelType CutSceneState::uncolorize()
 {
     m_color = CL_Colorf(1.0f,1.0f,1.0f,1.0f);
+    return SteelType();
 }
 
 
-SteelType CutSceneState::faceCharacter ( SteelType::Handle hHandle, int dir )
+SteelType CutSceneState::changeFaceDirection ( SteelType::Handle hHandle, int dir )
 {
     verifyLevel();
+    return SteelType();
 }
 
-SteelType CutSceneState::fadeIn ( float seconds )
+SteelType CutSceneState::fadeIn ( double seconds )
 {
-
+    return SteelType();
 }
 
-SteelType CutSceneState::fadeOut ( float seconds )
+SteelType CutSceneState::fadeOut ( double seconds )
 {
-
+    FadeTask * task = new FadeTask(*this,true,uint(seconds*1000));
+    SteelType taskhandle;
+    taskhandle.set(task);
+    m_tasks.push_back(task);
+    task->start();
+    return taskhandle;
 }
 
 SteelType CutSceneState::freezeCharacters()
@@ -190,6 +243,7 @@ SteelType CutSceneState::freezeCharacters()
     verifyLevel();
     m_pLevel->FreezeMappableObjects();
     m_bFrozen = true;
+    return SteelType();
 }
 
 SteelType CutSceneState::unfreezeCharacters()
@@ -198,26 +252,35 @@ SteelType CutSceneState::unfreezeCharacters()
     if(m_bFrozen)
         m_pLevel->UnfreezeMappableObjects();
     m_bFrozen = false;
+    return SteelType();
 }
 
 SteelType CutSceneState::hideCharacter ( SteelType::Handle hHandle )
 {
     verifyLevel();
+    return SteelType();
 }
 
 SteelType CutSceneState::unhideCharacter ( SteelType::Handle hHandle )
 {
     verifyLevel();
+    return SteelType();
 }
 
 SteelType CutSceneState::moveCharacter ( SteelType::Handle hHandle, int x, int y, int speed )
 {
     verifyLevel();
+    return SteelType();
 }
 
-SteelType CutSceneState::panTo ( int x, int y, float seconds )
+SteelType CutSceneState::panTo ( int x, int y, double seconds )
 {
-
+    PanTask *pTask = new PanTask(*this,x,y,uint(seconds*1000));
+    m_tasks.push_back(pTask);
+    pTask->start();
+    SteelType taskhandle;
+    taskhandle.set(pTask);
+    return taskhandle;
 }
 
 SteelType CutSceneState::gotoLevel ( const std::string& level, int x, int y )
@@ -243,7 +306,16 @@ SteelType CutSceneState::getCharacter ( const  std::string& name )
 SteelType CutSceneState::getPlayer()
 {
     verifyLevel();
+    SteelType val;
+    val.set(m_pLevel->GetPlayer());
+    return val;
 }
+
+SteelType CutSceneState::waitFor ( const SteelType& waitOn )
+{
+
+}
+
 
 
 
@@ -263,18 +335,26 @@ SteelType CutSceneState::getPlayer()
 /*  Fade */
 void CutSceneState::FadeTask::start()
 {
-
+    m_start_time = CL_System::get_time();
 }
 
 void CutSceneState::FadeTask::update()
 {
-    
+    const float p = float(CL_System::get_time() - m_start_time)/float(m_duration);
+    m_state.SetFadeLevel(p);
+    ++m_updateCount;
 }
 
 bool CutSceneState::FadeTask::finished()
 {
-
+    return (CL_System::get_time() >= (m_start_time + m_duration));
 }
+
+void CutSceneState::FadeTask::cleanup()
+{
+    StoneRing::CutSceneState::Task::cleanup();
+}
+
 
 /*  Move */
 void CutSceneState::MoveTask::start()
@@ -284,24 +364,36 @@ void CutSceneState::MoveTask::start()
 
 void CutSceneState::MoveTask::update()
 {
+
 }
 
 bool CutSceneState::MoveTask::finished()
 {
+
 }
 
 
 /* Pan */
 void CutSceneState::PanTask::start()
 {
+    m_start_time = CL_System::get_time();
+    m_origin = m_state.GetOrigin();
 }
 
 void CutSceneState::PanTask::update()
 {
+    const float p = float(CL_System::get_time() - m_start_time)/float(m_duration);
+    CL_Vec2<float> origin = m_origin;
+    CL_Vec2<float> target(m_target.x * 32, m_target.y * 32);
+    CL_Vec2<float> current;
+    current.x = p*(origin.x + target.x);
+    current.y = p*(origin.y + target.y);
+    m_state.PanTo(current.x,current.y);
 }
 
 bool CutSceneState::PanTask::finished()
 {
+    return (CL_System::get_time() - m_start_time > m_duration);
 }
 
 }

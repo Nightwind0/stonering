@@ -33,7 +33,7 @@ class CutSceneState : public State
 public:
     CutSceneState();
     virtual ~CutSceneState();
-    void Init(SteelFunctor* pFunctor);
+    void Init(const SteelType::Functor& pFunctor);
     virtual bool IsDone() const;
     // Handle raw key events
     // Handle joystick / key events that are processed according to mappings
@@ -54,6 +54,7 @@ public:
     void MoveCharacterTo(MappableObject* pMO,int x, int y, int speed);
     void PanTo(int x, int y);
     CL_Point GetOrigin()const;
+    void Completed();
 private:
     void verifyLevel();
     Level * grabMapStateLevel();
@@ -62,39 +63,48 @@ private:
     SteelType unhideCharacter(SteelType::Handle hHandle);
     SteelType freezeCharacters(); // Stop automatic NPC movement
     SteelType unfreezeCharacters();
-    SteelType fadeIn(float seconds);
-    SteelType fadeOut(float seconds);
-    SteelType panTo(int x, int y,float seconds);
-    SteelType colorize(float r, float g, float b);
+    SteelType fadeIn(double seconds);
+    SteelType fadeOut(double seconds);
+    SteelType panTo(int x, int y,double seconds);
+    SteelType colorize(double r, double g, double b);
     SteelType uncolorize();
     SteelType getCharacter(const std::string& str);
     SteelType getPlayer();
     SteelType moveCharacter(SteelType::Handle hHandle, int x, int y, int speed);
-    SteelType faceCharacter(SteelType::Handle hHandle, int dir);
+    SteelType changeFaceDirection(SteelType::Handle hHandle, int dir);
     SteelType addCharacter(const std::string& spriteRef, int x, int y, int face_dir);
+    SteelType waitFor(const SteelType& waitOn);
     
-    class Task {
+    class Task : public SteelType::IHandle {
     public:
         Task(CutSceneState& state):m_state(state){
         }
         virtual ~Task(){}
         virtual void start()=0;
         virtual void update()=0;
+        virtual void draw(const CL_Rect& screenRect, CL_GraphicContext &gc){}
         virtual bool finished()=0;
+        virtual void cleanup(){}
     protected:   
         CutSceneState& m_state;
     };
     
     class FadeTask : public Task {
     public:
-        FadeTask(CutSceneState& state, bool out):Task(state),m_fade_out(out){
+        FadeTask(CutSceneState& state, bool out, uint duration):Task(state),m_fade_out(out),m_duration(duration){
+            m_updateCount = 0;
         }
         virtual ~FadeTask(){}
         virtual void start();
         virtual void update();
+        virtual void draw(const CL_Rect& screenRect, CL_GraphicContext &gc){}
         virtual bool finished();
+        virtual void cleanup();
     private:
+        int m_updateCount;
         bool m_fade_out;
+        uint m_start_time;
+        uint m_duration;        
     };
     
     class MoveTask : public Task {
@@ -113,7 +123,7 @@ private:
     
     class PanTask : public Task {
     public:
-        PanTask(CutSceneState& state, MappableObject*,int x, int y,float duration):Task(state){
+        PanTask(CutSceneState& state,int x, int y,uint ms_duration):Task(state),m_target(x,y),m_duration(ms_duration){
         }
         virtual ~PanTask(){}
         virtual void start();
@@ -121,14 +131,14 @@ private:
         virtual bool finished();
     private:
         CL_Point m_target;
-        MappableObject* m_pMO;
         CL_Point m_origin;
-        float m_duration;
+        uint m_start_time;
+        uint m_duration;
     };
     
     Level * m_pLevel;
-    SteelRunner* m_pRunner;
-    shared_ptr<SteelFunctor> m_functor;
+    SteelRunner<CutSceneState>* m_pRunner;
+    SteelType::Functor m_functor;
     std::list<Task*> m_tasks;
     bool m_bDone;
     bool m_bDrawMOs;

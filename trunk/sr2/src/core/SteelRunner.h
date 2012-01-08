@@ -25,21 +25,70 @@
 #include "steel/SteelInterpreter.h"
 
 namespace StoneRing {
+    
+
+template <class T>
 class SteelRunner : public CL_Runnable
 {
 
 public:
-    SteelRunner(SteelInterpreter* pInterpreter);
+    SteelRunner(SteelInterpreter* pInterpreter,T* callee,void (T::*MemFunPtr)(void));
     virtual ~SteelRunner();
     virtual void run();
     void setScript(AstScript* pScript, const ParameterList& params);
+    void setFunctor(SteelType::Functor pFunctor);
     SteelType getResult() const;
 private:
     SteelInterpreter * m_pInterpreter;
+    T*m_callee;
+    void (T::*m_callback)(void);
     AstScript* m_pScript;
+    SteelType::Functor m_pFunctor;
     ParameterList m_params;
     SteelType m_result;
 };
+
+
+template <class T>
+SteelRunner<T>::SteelRunner(SteelInterpreter* pInterpreter,T* callee,void (T::*functor)(void))
+:m_pInterpreter(pInterpreter),m_callee(callee),m_callback(functor),m_pScript(NULL){
+
+}
+
+template <class T>
+SteelRunner<T>::~SteelRunner()
+{
+
+}
+
+template <class T>
+void SteelRunner<T>::run()
+{
+    if(m_pScript)
+        m_result = m_pInterpreter->runAst(m_pScript,m_params);
+    if(m_pFunctor)
+        m_result = m_pFunctor->Call(m_pInterpreter,SteelType::Container());
+    (m_callee->*m_callback)();
+}
+template <class T>
+void SteelRunner<T>::setScript(AstScript* pScript, const ParameterList& params)
+{
+    m_pScript = pScript;
+    m_params = params;
+}
+
+template <class T>
+void SteelRunner<T>::setFunctor ( SteelType::Functor pFunctor )
+{
+    m_pFunctor = pFunctor;
+}
+
+template <class T>
+SteelType SteelRunner<T>::getResult() const
+{
+    return m_result;
+}
+
 
 }
 #endif // STEELRUNNER_H
