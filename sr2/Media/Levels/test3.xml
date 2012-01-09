@@ -3502,12 +3502,12 @@
                                 </script>
                         </event>
                 </mo>
-                <mo name="Samantha" size="small" type="npc" xpos="0" ypos="5" solid="true">
+                <mo name="Karate Cat" size="small" type="npc" xpos="0" ypos="5" solid="true">
                         <spriteRef type="fourway" ref="Animals/Cat">
                         </spriteRef>
                         <event name="CatMeow" triggerType="talk" remember="true">
                                 <script id="catmeow">
-                                    say("Karate Cat","Do you want karate?");
+                                    say($_Name,"Do you want karate?");
                                     startBattle("Black Cat",1,true,"grasslands");
                                 </script>
                                 
@@ -3540,8 +3540,8 @@
                                             declare $pan = panTo(10,10,2);
                                             fadeOut(2);
                                             waitFor($pan);
-                                            $pan = panTo(-10,-10,2);
-                                            fadeIn(2);
+                                            panTo(-10,-10,2);
+                                            waitFor(fadeIn(2));
                                             waitFor($pan);
                                             $pan = panTo(10,-10,4);
                                             waitFor($pan);
@@ -3560,7 +3560,7 @@
                         </script>
                     </event>    
                 </mo>
-                <mo name="Leroy" size="small" type="npc" xpos="2" ypos="8" solid="true">
+                <mo name="Samara" size="small" type="npc" xpos="2" ypos="8" solid="true">
                         <spriteRef type="fourway" ref="Animals/Cat2">
                         </spriteRef>
                         <event name="Cat3Go" triggerType="talk" >
@@ -3568,7 +3568,7 @@
                                 return hasItem("Octavia Key",1);
                                 </conditionScript>
                                 <script id="cat3go">
-                                say("Leroy","I like you.");
+                                say($_Name,"I like you.");
                                 </script>
                         </event>
                         <event name="CatChoice" triggerType="talk" repeatable="false" remember="true">
@@ -3578,11 +3578,11 @@
                                         switch($decision)
                                         {
                                             case 0:
-                                                say("Leroy","Thank you! Take this key.");
+                                                say($_Name,"Thank you! Take this key.");
                                                 giveItem(getNamedItem("Octavia Key"),1,false);
                                                 break;
                                             default:
-                                                say("Leroy", "No, not " + @options[$decision]);
+                                                say($_Name, "No, not " + @options[$decision]);
                                                 break;
                                         }
                                         
