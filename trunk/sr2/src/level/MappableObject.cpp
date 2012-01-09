@@ -8,6 +8,7 @@
 
 
 
+
 namespace StoneRing { 
 
 
@@ -360,7 +361,9 @@ bool MappableObject::ProvokeEvents ( Event::eTriggerType trigger )
             && (pEvent->Repeatable() || !party->DidEvent ( pEvent->GetName() ))
             )
         {
-            pEvent->Invoke();
+            ParameterList params;
+            params.push_back(ParameterListItem("$_Name",m_name));
+            pEvent->Invoke(params);
             provoked = true;
         }
 

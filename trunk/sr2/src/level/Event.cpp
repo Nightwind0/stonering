@@ -85,4 +85,18 @@ bool StoneRing::Event::Invoke()
     return true;
 }
 
+bool StoneRing::Event::Invoke(const ParameterList& params)
+{
+
+    if(m_pCondition && !m_pCondition->EvaluateCondition() )
+        return false;
+
+    StoneRing::IApplication::GetInstance()->GetParty()->DoEvent ( m_name, m_bRemember );
+
+    if(m_pScript)
+        m_pScript->ExecuteScript(params);
+
+    return true;
+}
+
 

@@ -46,8 +46,8 @@ void StoneRing::Skill::Invoke(ICharacter* pCharacter,const ParameterList& params
     assert(pCharacter->GetAttribute(ICharacter::CA_BP) >= m_nBp &&
         pCharacter->GetAttribute(ICharacter::CA_MP) >= m_nMp  &&
         "Assure BP and MP before calling Invoke on a skill");
-    pCharacter->PermanentAugment(ICharacter::CA_BP,-m_nBp);
-    pCharacter->PermanentAugment(ICharacter::CA_MP,-m_nMp);
+    pCharacter->PermanentAugment(ICharacter::CA_BP,-double(m_nBp));
+    pCharacter->PermanentAugment(ICharacter::CA_MP,-double(m_nMp));
     
     
     if(m_pOnInvoke)
