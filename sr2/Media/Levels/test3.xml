@@ -3542,7 +3542,6 @@
                                             waitFor($pan);
                                             panTo(-10,-10,2);
                                             waitFor(fadeIn(2));
-                                            waitFor($pan);
                                             $pan = panTo(10,-10,4);
                                             waitFor($pan);
                                             waitFor(panTo(10,20,2));
