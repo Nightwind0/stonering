@@ -34,9 +34,14 @@ namespace StoneRing {
             // TODO: Should I support an AstScript here too, like the normal runner does?
             if(m_pFunctor)
                 m_result = m_pFunctor->Call(m_pInterpreter,SteelType::Container());
+#if 1
+                std::cerr << "Cut scene functor finished. Waiting for tasks to finish." << std::endl;
+#endif
             
             // wait for all tasks to finish
-            while(m_callee->HasTasks());
+            while(m_callee->HasTasks()){
+                CL_System::sleep(10);
+            }
             
             (m_callee->*m_callback)();
         }
@@ -359,18 +364,21 @@ SteelType CutSceneState::waitFor ( const SteelType::Handle& waitOn )
 {
     Task * pTask = GrabHandle<Task*>(waitOn);
     while(true){
-       m_task_mutex.lock();
+        m_task_mutex.lock();
         bool found = false;
-        for(std::list<Task*>::const_iterator it=m_tasks.begin();
-            it != m_tasks.end(); it++){
-            if(*it == pTask){
+
+        for ( std::list<Task*>::const_iterator it = m_tasks.begin();
+            it != m_tasks.end(); it++ ) {
+            if ( *it == pTask ) {
                 found = true;
             }
         }
         m_task_mutex.unlock();
-        if(!found)
-            break; // The task is gone, so we can leave the while loop.
+        if(!found) 
+            break;
+        CL_System::sleep(5);
     }
+  
 }
 
 
