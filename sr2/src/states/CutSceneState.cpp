@@ -424,9 +424,8 @@ void CutSceneState::FadeTask::cleanup()
 /*  Move */
 void CutSceneState::MoveTask::start()
 {
-    ScriptedNavigator * pNavigator = new ScriptedNavigator(m_target,m_movementSpeed);
+    ScriptedNavigator * pNavigator = new ScriptedNavigator(*m_pMO,m_target,m_movementSpeed);
     m_pMO->PushNavigator(pNavigator);  
-
 }
 
 void CutSceneState::MoveTask::cleanup()

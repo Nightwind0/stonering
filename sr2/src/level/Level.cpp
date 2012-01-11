@@ -207,7 +207,7 @@ public:
     virtual ~MappableObjectFreezer(){}
     bool Visit(MappableObject* pMO, const Level::MOQuadtree::Node* pNode){
         if(pMO->GetMovement()){
-            pMO->PushNavigator(new StillNavigator());
+            pMO->PushNavigator(new StillNavigator(*pMO));
         }
         return true;
     }
@@ -651,7 +651,7 @@ void Level::Add_Mappable_Object ( MappableObject* pMO)
 }
 
 
-bool Level::Move(MappableObject* pObject, const CL_Rect& tiles_currently, const CL_Rect& tiles_destination)
+bool Level::CanMove ( MappableObject* pObject, const CL_Rect& tiles_currently, const CL_Rect& tiles_destination )
 {
     Direction dir;
     CL_Point topleft = tiles_currently.get_top_left();
@@ -687,8 +687,29 @@ bool Level::Move(MappableObject* pObject, const CL_Rect& tiles_currently, const 
     
     if(solidmos.DidContainSolidMO())
         return false;
+}
 
-    Move_Mappable_Object(pObject,dir,tiles_currently,tiles_destination);    
+
+bool Level::Move(MappableObject* pObject, const CL_Rect& tiles_currently, const CL_Rect& tiles_destination)
+{
+    Direction dir;
+    CL_Point topleft = tiles_currently.get_top_left();
+    CL_Point dest_topleft = tiles_destination.get_top_left();
+    CL_Vec2<float> vector;
+    if(topleft.x < dest_topleft.x){
+        dir = Direction::EAST;
+    }else if(topleft.x > dest_topleft.x){
+        dir = Direction::WEST;
+    }else if(topleft.y < dest_topleft.y){
+        dir = Direction::SOUTH;
+    }else{
+        dir = Direction::NORTH;
+    }
+    
+    if(CanMove(pObject,tiles_currently,tiles_destination))
+        Move_Mappable_Object(pObject,dir,tiles_currently,tiles_destination); 
+    else return false;
+    
     return true;
 }
 
