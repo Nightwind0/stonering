@@ -13,6 +13,7 @@
 #include "sr_defines.h"
 #include "MappableObject.h"
 #include "Node.hxx"
+#include <ClanLib-2.2/ClanLib/Core/Math/rect.h>
 
 using std::string;
 
@@ -224,6 +225,7 @@ namespace StoneRing {
         void MoveMappableObjects(const CL_Rect &src);
         
 
+        bool CanMove(MappableObject* pMO, const CL_Rect& tiles_currently, const CL_Rect& tiles_destination);
         // Checks relevant tile and MO direction block information
         // And mark occupied and unoccupied if move is successful
         bool Move(MappableObject* pMO, const CL_Rect &tiles_currently, const CL_Rect& tiles_destination);

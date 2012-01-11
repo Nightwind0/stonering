@@ -35,7 +35,40 @@ void MappableObject::SetPixelPosition ( const CL_Point& pixel_pos )
 void MappableObject::Move(Level& level)
 {
     if(!m_navStack.empty()){
-        m_navStack.top()->MoveObject(*this,level);
+        Direction dir = m_navStack.top()->GetCurrentDirection();
+        if(m_navStack.top()->GetFacingDirection() != Direction::NONE)
+            m_eFacingDirection =  m_navStack.top()->GetFacingDirection();        
+        for(uint i=0;i<m_navStack.top()->GetSpeed();i++){
+            if(IsAligned()){
+                m_navStack.top()->OnMove(level);
+                dir = m_navStack.top()->GetCurrentDirection();
+                CL_Rect rect = GetTileRect();
+                rect.translate ( dir.ToScreenVector() );
+                if(m_navStack.top()->GetFacingDirection() != Direction::NONE)
+                    m_eFacingDirection =  m_navStack.top()->GetFacingDirection();
+                
+                if(!level.Move(this,GetTileRect(),rect)){
+                    m_navStack.top()->Blocked();
+                    break;
+                }
+
+            }            
+            CL_Point pt = GetPixelPosition();
+            if(dir == Direction::NORTH)
+                pt.y--;
+            else if(dir == Direction::SOUTH)
+                pt.y++;
+            else if(dir == Direction::EAST)
+                pt.x++;
+            else if(dir == Direction::WEST)
+                pt.x--;
+            
+            if(dir != Direction::NONE){
+                SetPixelPosition(pt);
+            }
+        }
+        if(dir != Direction::NONE)
+            OnStep();
     }
 }
 
@@ -129,7 +162,7 @@ bool MappableObject::handle_element(Element::eElement element, Element * pElemen
     {
         m_pMovement = dynamic_cast<Movement*>(pElement);
         // Make sure the proper sprites are around for the movement type
-        PushNavigator(new NPCNavigator());
+        PushNavigator(new NPCNavigator(*this));
         Prod(); // Get it going
         break;
     }
@@ -339,7 +372,7 @@ bool MappableObject::IsTile() const
 void MappableObject::Prod()
 {
     if(!m_navStack.empty())
-        m_navStack.top()->Prod(*this);
+        m_navStack.top()->Prod();
 }
 
 
@@ -474,7 +507,7 @@ Navigator* MappableObject::PopNavigator()
 
 
 
-MappablePlayer::MappablePlayer(uint startX, uint startY)
+MappablePlayer::MappablePlayer(uint startX, uint startY):m_navigator(*this)
 {
     m_eSize = MO_SMALL;
     m_StartX = startX;
@@ -486,6 +519,7 @@ MappablePlayer::MappablePlayer(uint startX, uint startY)
     m_eFacingDirection = Direction::SOUTH; // Should come in like the startX, startY
     m_nHeight  =1;
     m_nWidth = 1;
+    PushNavigator(&m_navigator);
 }
 
 MappablePlayer::~MappablePlayer()
@@ -497,7 +531,7 @@ void MappablePlayer::StopMovement()
 {
     Stop();
     if(!m_navStack.empty())
-        m_navStack.top()->Idle(*this);
+        m_navStack.top()->Idle();
    // Update();
 }
 

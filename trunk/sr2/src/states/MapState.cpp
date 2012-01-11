@@ -8,7 +8,7 @@ using std::min;
 using StoneRing::IParty;
 
 
-StoneRing::MapState::MapState():m_bDone(false),m_LevelX(0),
+StoneRing::MapState::MapState():m_LevelX(0),
                                 m_LevelY(0)
 {
 	m_bShowDebug = false;
@@ -41,7 +41,7 @@ void StoneRing::MapState::HandleButtonUp(const IApplication::Button& button)
     switch(button)
     {
 	case IApplication::BUTTON_CANCEL:
-	    m_playerNavigator.SetRunning(false);
+	    pPlayer->GetNavigator().SetRunning(false);
 	    break;
 	case IApplication::BUTTON_CONFIRM:
 	    do_talk();
@@ -63,7 +63,7 @@ void StoneRing::MapState::HandleButtonDown(const IApplication::Button& button)
      {
 	 case IApplication::BUTTON_CANCEL:
              if(m_pLevel->AllowsRunning())
-                m_playerNavigator.SetRunning(true);
+                 pPlayer->GetNavigator().SetRunning(true);
 	     break;
      }
 }
@@ -78,11 +78,11 @@ void StoneRing::MapState::HandleAxisMove(const IApplication::Axis& axis, IApplic
 	m_horizontal_idle = false;
 	if(dir == IApplication::AXIS_RIGHT)
 	{
-            m_playerNavigator.SetNextDirection(Direction::EAST);
+            pPlayer->GetNavigator().SetNextDirection(Direction::EAST);
 	}
 	else if(dir == IApplication::AXIS_LEFT)
 	{
-	    m_playerNavigator.SetNextDirection(Direction::WEST);
+	    pPlayer->GetNavigator().SetNextDirection(Direction::WEST);
 	}
 	else // neutral
 	{
@@ -94,11 +94,11 @@ void StoneRing::MapState::HandleAxisMove(const IApplication::Axis& axis, IApplic
 	m_vertical_idle = false;
 	if(dir == IApplication::AXIS_DOWN)
 	{
-	    m_playerNavigator.SetNextDirection(Direction::SOUTH);
+	    pPlayer->GetNavigator().SetNextDirection(Direction::SOUTH);
 	}
 	else if(dir == IApplication::AXIS_UP)
 	{
-	    m_playerNavigator.SetNextDirection(Direction::NORTH);
+	    pPlayer->GetNavigator().SetNextDirection(Direction::NORTH);
 	}
 	else // neutral
 	{
@@ -117,7 +117,7 @@ void StoneRing::MapState::HandleKeyDown(const CL_InputEvent &key)
     MappablePlayer *pPlayer = m_pLevel->GetPlayer();
     assert(pPlayer);
     if(key.shift && m_pLevel->AllowsRunning())
-        m_playerNavigator.SetRunning(true);
+       pPlayer->GetNavigator().SetRunning(true);
 
     switch(key.id)
     {
@@ -159,7 +159,7 @@ void StoneRing::MapState::HandleKeyUp(const CL_InputEvent &key)
         break;
 	*/
     case CL_KEY_SHIFT:
-        m_playerNavigator.SetRunning(false);
+        pPlayer->GetNavigator().SetRunning(false);
         break;
 #ifndef NDEBUG
     case CL_KEY_P:
@@ -259,7 +259,6 @@ void StoneRing::MapState::PushLevel(Level * pLevel, uint x, uint y)
 {
     MappablePlayer *pPlayer = pLevel->GetPlayer();
     assert(pPlayer);
-    pPlayer->PushNavigator(&m_playerNavigator);
     CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
     Character *pMapCharacter = IApplication::GetInstance()->GetParty()->GetMapCharacter();
 
@@ -316,7 +315,7 @@ void StoneRing::MapState::Pop(bool bAll)
     SoundManager::SetMusic(m_pLevel->GetMusic());
     MappablePlayer * pNewPlayer = m_pLevel->GetPlayer();
 
-    m_playerNavigator.SetNextDirection(oldDir);
+    pNewPlayer->GetNavigator().SetNextDirection(oldDir);
 }
 
 

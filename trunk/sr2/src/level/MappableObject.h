@@ -65,7 +65,6 @@ namespace StoneRing {
         void PushNavigator(Navigator* pNav) { m_navStack.push( pNav ); }
         Navigator* PopNavigator();
         void SetPixelPosition(const CL_Point& pixel_pos);
-        void SetFacingDirection(Direction edir) { m_eFacingDirection = edir; }
         CL_Point GetPixelPosition() const { return m_pos; }
         Movement * GetMovement() const { return m_pMovement; }
 
@@ -127,6 +126,7 @@ namespace StoneRing {
         uint GetLevelX() const { return m_pos.x; }
         uint GetLevelY() const { return m_pos.y; }
         Direction GetDirection() const { return m_direction; }
+        ControlNavigator& GetNavigator()  { return m_navigator; }
         void SetDirection(const Direction& dir);
         void SerializeState(std::ostream& out);
         void DeserializeState(std::istream& in);
@@ -137,6 +137,7 @@ namespace StoneRing {
         virtual bool delete_sprite() const { return false; }
         virtual void Set_Frame_For_Direction();
         Direction m_direction;
+        ControlNavigator m_navigator;
     };
 }
 

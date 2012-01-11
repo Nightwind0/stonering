@@ -54,7 +54,6 @@ namespace StoneRing
         int m_LevelY;
 	bool m_horizontal_idle;
 	bool m_vertical_idle;
-        ControlNavigator m_playerNavigator;
         MappablePlayer * m_player;
         CL_Rect m_screen_rect;
         std::deque<Level*> m_levels;
