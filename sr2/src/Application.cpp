@@ -56,7 +56,7 @@ using std::max;
 
 const unsigned int WINDOW_WIDTH = 800 ;
 const unsigned int WINDOW_HEIGHT = 600 ;
-const unsigned int MS_BETWEEN_MOVES = 60;
+const unsigned int MS_BETWEEN_MOVES = 30;
 
 
 bool gbDebugStop;
@@ -2173,7 +2173,6 @@ int Application::main ( const std::vector<CL_String> &args )
             mStates.pop_back();
 
         showError ( ex.getLine(), ex.getScript(), ex.getMessage() );
-
 
     }
     catch ( CL_Exception error )

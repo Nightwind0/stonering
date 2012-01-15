@@ -22,10 +22,6 @@ bool MappableObject::EvaluateCondition() const
     return true;
 }
 
-MappableObject::eSize MappableObject::GetSize() const
-{
-    return m_eSize;
-}
 
 void MappableObject::SetPixelPosition ( const CL_Point& pixel_pos )
 {
@@ -35,18 +31,14 @@ void MappableObject::SetPixelPosition ( const CL_Point& pixel_pos )
 void MappableObject::Move(Level& level)
 {
     if(!m_navStack.empty()){
-        Direction dir = m_navStack.top()->GetCurrentDirection();
-        if(m_navStack.top()->GetFacingDirection() != Direction::NONE)
-            m_eFacingDirection =  m_navStack.top()->GetFacingDirection();        
+        //uint speed = m_navStack.top()->GetSpeed();
         for(uint i=0;i<m_navStack.top()->GetSpeed();i++){
             if(IsAligned()){
+                // TODO: Should probably make the new direction erturn from OnMove
                 m_navStack.top()->OnMove(level);
-                dir = m_navStack.top()->GetCurrentDirection();
+                m_direction = m_navStack.top()->GetCurrentDirection();
                 CL_Rect rect = GetTileRect();
-                rect.translate ( dir.ToScreenVector() );
-                if(m_navStack.top()->GetFacingDirection() != Direction::NONE)
-                    m_eFacingDirection =  m_navStack.top()->GetFacingDirection();
-                
+                rect.translate ( m_direction.ToScreenVector() );                
                 if(!level.Move(this,GetTileRect(),rect)){
                     m_navStack.top()->Blocked();
                     break;
@@ -54,22 +46,26 @@ void MappableObject::Move(Level& level)
 
             }            
             CL_Point pt = GetPixelPosition();
-            if(dir == Direction::NORTH)
+            if(m_direction == Direction::NORTH)
                 pt.y--;
-            else if(dir == Direction::SOUTH)
+            else if(m_direction == Direction::SOUTH)
                 pt.y++;
-            else if(dir == Direction::EAST)
+            else if(m_direction == Direction::EAST)
                 pt.x++;
-            else if(dir == Direction::WEST)
+            else if(m_direction == Direction::WEST)
                 pt.x--;
             
-            if(dir != Direction::NONE){
+            if(m_direction != Direction::NONE){
                 SetPixelPosition(pt);
             }
         }
-        if(dir != Direction::NONE)
+        if(m_direction == Direction::NONE)
+            Stop();
+        else
             OnStep();
+
     }
+    Set_Frame_For_Direction();
 }
 
 void MappableObject::load_attributes(CL_DomNamedNodeMap attributes)
@@ -205,10 +201,26 @@ std::string MappableObject::GetName() const
     return m_name;
 }
 
+CL_Size MappableObject::DimensionsFromSizeType ( ) const
+{
+  switch ( m_eSize )
+    {
+    case MO_SMALL:
+        return CL_Size(1,1);
+    case MO_MEDIUM:
+        return CL_Size(2,2);
+    case MO_LARGE:
+        return CL_Size(3,3);
+    case MO_TALL:
+        return CL_Size(1,2);
+    case MO_WIDE:
+        return CL_Size(2,1);
+    }
+}
+
 
 CL_Size MappableObject::Calc_Tile_Dimensions() const
 {
-    uint width,height = 0;
     int movement_x, movement_y;
     movement_x = movement_y = 0;
     
@@ -216,28 +228,11 @@ CL_Size MappableObject::Calc_Tile_Dimensions() const
         movement_x = 1;
     if(m_pos.y % 32 != 0)
         movement_y = 1;
+    
+    CL_Size size = DimensionsFromSizeType();
 
-    switch ( m_eSize )
-    {
-    case MO_SMALL:
-        width = height = 1;
-        break;
-    case MO_MEDIUM:
-        width = height = 2;
-        break;
-    case MO_LARGE:
-        width = height = 4;
-        break;
-    case MO_TALL:
-        width = 1;
-        height = 2;
-        break;
-    case MO_WIDE:
-        width = 2;
-        height = 1;
-        break;
-    }
-    return CL_Size(width+movement_x,height+movement_y);
+
+    return CL_Size(size.width+movement_x,size.height+movement_y);
 }
 
 CL_Rect MappableObject::GetSpriteRect() const
@@ -299,6 +294,10 @@ void MappableObject::Set_Frame_For_Direction()
     if(m_sprite.is_null()) return;
     if(!m_pMovement) 
         m_sprite.set_frame(0);
+    
+    Direction facing = Direction::SOUTH;
+    if(!m_navStack.empty())
+        facing = m_navStack.top()->GetFacingDirection();
 
     switch(m_pMovement->GetMovementType())
     {
@@ -310,35 +309,32 @@ void MappableObject::Set_Frame_For_Direction()
     case Movement::MOVEMENT_WANDER:
     {
         int step = m_nStep % 4;
-        if(m_eFacingDirection == Direction::NORTH)
+        if(facing == Direction::NORTH)
             m_sprite.set_frame(12 + step);
-        else if(m_eFacingDirection == Direction::EAST)
+        else if(facing == Direction::EAST)
             m_sprite.set_frame(8 + step);            
-        else if(m_eFacingDirection == Direction::WEST)
+        else if(facing == Direction::WEST)
             m_sprite.set_frame(4 + step);
-        else if(m_eFacingDirection == Direction::SOUTH)
+        else if(facing == Direction::SOUTH)
             m_sprite.set_frame(step);
-        else assert(0);    
         break;
     }
     case Movement::MOVEMENT_PACE_NS:
     {
         int step = m_nStep % 4;
-        if(m_eFacingDirection == Direction::NORTH)
+        if(facing == Direction::NORTH)
             m_sprite.set_frame ( 4 + step );
-        else if(m_eFacingDirection == Direction::SOUTH)
+        else if(facing == Direction::SOUTH)
             m_sprite.set_frame ( step);
-        else assert(0);
         break;
     }
     case Movement::MOVEMENT_PACE_EW:
     {
         int step = m_nStep % 4;
-        if(m_eFacingDirection == Direction::EAST)
+        if(facing == Direction::EAST)
             m_sprite.set_frame ( 4 + step  );    
-        else if(m_eFacingDirection == Direction::WEST)
+        else if(facing == Direction::WEST)
             m_sprite.set_frame ( step );
-        else assert(0);
         break;
     }
     }
@@ -421,7 +417,7 @@ int MappableObject::ConvertDirectionToDirectionBlock(Direction dir)
 
 }
 
-void MappableObject::CalculateEdgePoints(const CL_Point &topleft, Direction dir, eSize size, std::list<CL_Point> *pList)
+void MappableObject::CalculateEdgePoints(const CL_Point &topleft, Direction dir, std::list<CL_Point> *pList)
 {
     uint points = 0;
     CL_Size dimensions = Calc_Tile_Dimensions();
@@ -499,6 +495,8 @@ Navigator* MappableObject::PopNavigator()
     if(!m_navStack.empty()){
         Navigator * pNav = m_navStack.top();
         m_navStack.pop();
+        if(!m_navStack.empty())
+            m_navStack.top()->Prod();
         return pNav;
     }else{
         return NULL;
@@ -516,7 +514,6 @@ MappablePlayer::MappablePlayer(uint startX, uint startY):m_navigator(*this)
     m_pos.y=startY * 32;
     m_name = "Player";
     m_eType = PLAYER;
-    m_eFacingDirection = Direction::SOUTH; // Should come in like the startX, startY
     m_nHeight  =1;
     m_nWidth = 1;
     PushNavigator(&m_navigator);
@@ -542,30 +539,41 @@ CL_Point MappablePlayer::GetPointInFront() const
 {
     CL_Point point = GetPosition();
 
-    if(m_eFacingDirection == Direction::NORTH)
+    
+    Direction facing;
+    if(!m_navStack.empty())      
+       facing = m_navStack.top()->GetFacingDirection();
+    else
+        facing = Direction::SOUTH;
+    
+    if(facing == Direction::NORTH)
         point.y--;
-    else if(m_eFacingDirection == Direction::SOUTH)
+    else if(facing == Direction::SOUTH)
         point.y++;
-    else if(m_eFacingDirection == Direction::EAST)
+    else if(facing == Direction::EAST)
         point.x++;
-    else if(m_eFacingDirection == Direction::WEST)
+    else if(facing == Direction::WEST)
         point.x--;
 
     return point;
 }
 
 void MappablePlayer::Set_Frame_For_Direction()
-{
-    if(m_eFacingDirection == Direction::NONE)
+{    
+    Direction facing = Direction::SOUTH;
+    if(!m_navStack.empty())      
+        facing = m_navStack.top()->GetFacingDirection();
+    
+    if(facing == Direction::NONE)
         m_nStep = 0;
     
-    if(m_eFacingDirection ==  Direction::NORTH)
+    if(facing ==  Direction::NORTH)
         m_sprite.set_frame(12 + (m_nStep / 2)  % 4);
-    else if(m_eFacingDirection == Direction::EAST)
+    else if(facing == Direction::EAST)
         m_sprite.set_frame(8 + (m_nStep/2) % 4);
-    else if(m_eFacingDirection == Direction::WEST)
+    else if(facing == Direction::WEST)
         m_sprite.set_frame(4 + (m_nStep/2) % 4);
-    else if(m_eFacingDirection == Direction::SOUTH)
+    else if(facing == Direction::SOUTH)
         m_sprite.set_frame((m_nStep/2) % 4);
 
 }
@@ -573,14 +581,11 @@ void MappablePlayer::Set_Frame_For_Direction()
 void MappablePlayer::SerializeState ( std::ostream& out )
 {
     out.write((char*)&m_pos,sizeof(m_pos));
-    out.write((char*)&m_eFacingDirection,sizeof(m_eFacingDirection));
 }
 
 void MappablePlayer::DeserializeState ( std::istream& in )
 {
     in.read((char*)&m_pos,sizeof(m_pos));
-    in.read((char*)&m_eFacingDirection,sizeof(m_eFacingDirection));
-
 }
 
 

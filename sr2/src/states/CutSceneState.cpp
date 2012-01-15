@@ -32,15 +32,19 @@ namespace StoneRing {
         }
         virtual void run(){
             // TODO: Should I support an AstScript here too, like the normal runner does?
+            try {
             if(m_pFunctor)
-                m_result = m_pFunctor->Call(m_pInterpreter,SteelType::Container());
-#if 1
-                std::cerr << "Cut scene functor finished. Waiting for tasks to finish." << std::endl;
-#endif
-            
-            // wait for all tasks to finish
-            while(m_callee->HasTasks()){
-                CL_System::sleep(10);
+                    m_result = m_pFunctor->Call(m_pInterpreter,SteelType::Container());
+    #if 1
+                    std::cerr << "Cut scene functor finished. Waiting for tasks to finish." << std::endl;
+    #endif
+                
+                // wait for all tasks to finish
+                while(m_callee->HasTasks()){
+                    CL_System::sleep(10);
+                }
+            }catch(SteelException ex){
+               std::cerr << "Exception in cut scene: " << ex.getMessage() << " on line " << ex.getLine() << std::endl;
             }
             
             (m_callee->*m_callback)();
@@ -171,6 +175,7 @@ void CutSceneState::SteelInit ( SteelInterpreter* pInterpreter )
     pInterpreter->addFunction("changeFaceDirection","scene",new SteelFunctor2Arg<CutSceneState,SteelType::Handle,int>(this,&CutSceneState::changeFaceDirection));
     pInterpreter->addFunction("addCharacter","scene",new SteelFunctor4Arg<CutSceneState,const std::string&,int,int,int>(this,&CutSceneState::addCharacter));
     pInterpreter->addFunction("waitFor","scene",new SteelFunctor1Arg<CutSceneState,const SteelType::Handle&>(this,&CutSceneState::waitFor));
+    pInterpreter->addFunction("pause","scene", new SteelFunctor1Arg<CutSceneState,double>(this,&CutSceneState::pause));
     
 }
 
@@ -317,7 +322,15 @@ SteelType CutSceneState::unhideCharacter ( SteelType::Handle hHandle )
 SteelType CutSceneState::moveCharacter ( SteelType::Handle hHandle, int x, int y, int speed )
 {
     verifyLevel();
-    return SteelType();
+    MappableObject * pMO = GrabHandle<MappableObject*>(hHandle);
+    MoveTask * pTask = new MoveTask(*this,*m_pLevel,pMO,x,y,speed);
+    m_task_mutex.lock();
+    m_tasks.push_back(pTask);
+    m_task_mutex.unlock();
+    pTask->start();
+    SteelType taskhandle;
+    taskhandle.set(pTask);
+    return taskhandle;
 }
 
 SteelType CutSceneState::panTo ( int x, int y, double seconds )
@@ -381,6 +394,12 @@ SteelType CutSceneState::waitFor ( const SteelType::Handle& waitOn )
   
 }
 
+SteelType CutSceneState::pause ( double seconds )
+{
+    CL_System::sleep(seconds * 1000.0);
+}
+
+
 
 
 
@@ -424,23 +443,24 @@ void CutSceneState::FadeTask::cleanup()
 /*  Move */
 void CutSceneState::MoveTask::start()
 {
-    ScriptedNavigator * pNavigator = new ScriptedNavigator(*m_pMO,m_target,m_movementSpeed);
-    m_pMO->PushNavigator(pNavigator);  
+    m_pNav = new ScriptedNavigator(m_level,*m_pMO,m_target,m_movementSpeed);
+    m_pMO->PushNavigator(m_pNav);  
 }
 
 void CutSceneState::MoveTask::cleanup()
 {
-    m_pMO->PopNavigator();
+    m_pNav = NULL;
+    delete m_pMO->PopNavigator();
 }
 
 void CutSceneState::MoveTask::update()
 {
-    // nothing to do here. the 
+    // nothing to do here. the movement code actually moves the guy
 }
 
 bool CutSceneState::MoveTask::finished()
-{
-    return m_pMO->GetPosition() == m_target;
+{ 
+    return m_pMO->GetPosition() == m_target || (m_pNav && m_pNav->Complete());
 }
 
 

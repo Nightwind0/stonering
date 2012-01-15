@@ -27,6 +27,7 @@ namespace StoneRing {
     
 class MappableObject;
 class Level;
+class ScriptedNavigator;
 
 class CutSceneState : public State
 {
@@ -75,6 +76,7 @@ private:
     SteelType changeFaceDirection(SteelType::Handle hHandle, int dir);
     SteelType addCharacter(const std::string& spriteRef, int x, int y, int face_dir);
     SteelType waitFor(const SteelType::Handle& waitOn);
+    SteelType pause(double seconds);
     
     class Task : public SteelType::IHandle {
     public:
@@ -110,7 +112,8 @@ private:
     
     class MoveTask : public Task {
     public:
-        MoveTask(CutSceneState& state,MappableObject*,int x, int y, int speed):Task(state){
+        MoveTask(CutSceneState& state,Level& level,MappableObject* pMo,int x, int y, int speed):Task(state),m_level(level),m_pMO(pMo),m_pNav(NULL),m_movementSpeed(speed){
+            m_target = CL_Point(x,y);
         }
         virtual ~MoveTask(){}
         virtual void start();
@@ -119,6 +122,8 @@ private:
         virtual void cleanup();
     private:
         MappableObject* m_pMO;
+        Level& m_level;
+        ScriptedNavigator* m_pNav;
         CL_Point m_target;
         int m_movementSpeed;
     };
