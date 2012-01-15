@@ -227,7 +227,7 @@ public:
 
 class MappableObjectFindByName: public Level::MOQuadtree::OurVisitor{
 public:
-    MappableObjectFindByName(const std::string& name):m_pObject(NULL){}
+    MappableObjectFindByName(const std::string& name):m_pObject(NULL),m_name(name){}
     virtual ~MappableObjectFindByName(){}
     bool Visit(MappableObject* pMO, const Level::MOQuadtree::Node* pNode){
         if(pMO->GetName() == m_name){
@@ -530,14 +530,22 @@ void Level::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, 
                         {
                             pTile->Draw(tileSrc, tileDst , GC );
 
+#ifndef NDEBUG
+                            if(m_pathPoints.count(CL_Point(tileX,tileY))){
+                                CL_Draw::fill(GC,tileDst,CL_Colorf(0.8f,0.0f,0.8f,0.25f));
+                            }
+#endif
 
                             // Extra code for level editing
                             if(highlightHot && pTile->IsHot())
                             {
-                                CL_Draw::fill(GC,tileDst, CL_Colorf(1.0,0.0f,0.0f,0.4));
-                            }
+                                CL_Rect rect = tileDst;
+                                rect.translate(dst.get_top_left());
+                                CL_Draw::fill(GC,rect, CL_Colorf(1.0,0.0f,0.0f,0.4));
+                            }                            
                             if(indicateBlocks)
                             {
+
                                 int block = pTile->GetDirectionBlock();
 
                                 if(block & BLK_WEST)
@@ -578,8 +586,9 @@ void Level::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, 
 
 
 #ifndef NDEBUG
-    if(indicateBlocks)
+    if(indicateBlocks){
         DrawMOQuadtree(GC, dst.get_top_left() - src.get_top_left());
+    }
 #endif
 }
 
@@ -651,7 +660,7 @@ void Level::Add_Mappable_Object ( MappableObject* pMO)
 }
 
 
-bool Level::CanMove ( MappableObject* pObject, const CL_Rect& tiles_currently, const CL_Rect& tiles_destination )
+bool Level::CanMove ( MappableObject* pObject, const CL_Rect& tiles_currently, const CL_Rect& tiles_destination ) const
 {
     Direction dir;
     CL_Point topleft = tiles_currently.get_top_left();
@@ -669,7 +678,7 @@ bool Level::CanMove ( MappableObject* pObject, const CL_Rect& tiles_currently, c
     vector = dir.ToScreenVector();
     
     std::list<CL_Point> edge;
-    pObject->CalculateEdgePoints(topleft,dir,pObject->GetSize(),&edge);
+    pObject->CalculateEdgePoints(topleft,dir,&edge);
     for(std::list<CL_Point>::const_iterator iter = edge.begin();
         iter != edge.end(); iter++){
         CL_Point tile = *iter;
@@ -714,7 +723,7 @@ bool Level::Move(MappableObject* pObject, const CL_Rect& tiles_currently, const 
 }
 
 
-bool Level::Check_Direction_Block ( MappableObject * pMo, Direction dir, const CL_Point& tile, const CL_Point& dest_tile )
+bool Level::Check_Direction_Block ( MappableObject * pMo, Direction dir, const CL_Point& tile, const CL_Point& dest_tile )const
 {
     if(dest_tile.x <0 || dest_tile.y <0 || dest_tile.x >= m_LevelWidth || dest_tile.y >= m_LevelHeight
         ||
@@ -937,6 +946,18 @@ void Level::DrawMOQuadtree(CL_GraphicContext gc, const CL_Point& offset) const
     m_mo_quadtree->TraverseNodes(
         drawer);
 }
+
+void Level::AddPathTile ( const CL_Point& pt )
+{
+    m_pathPoints.insert(pt);
+}
+
+void Level::ClearPath()
+{
+    m_pathPoints.clear();
+}
+
+
 
 
 #endif

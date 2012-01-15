@@ -18,17 +18,14 @@ namespace StoneRing {
     class Level;
     class Director;
 
-    class MappableObject : public Element
+    class MappableObject : public Element, public SteelType::IHandle
     {
     public:
         enum eMappableObjectType 
         { 
             NPC, SQUARE, CONTAINER, DOOR, WARP, PLAYER 
         };
-        enum eSize 
-        { 
-            MO_SMALL, MO_MEDIUM, MO_LARGE, MO_TALL, MO_WIDE             
-        };
+
 
         MappableObject();
         virtual ~MappableObject();
@@ -41,7 +38,6 @@ namespace StoneRing {
         virtual void Draw(CL_GraphicContext& GC, const CL_Point& offset);
         virtual void Move(Level& level);
         virtual bool IsSolid() const;
-        virtual eSize GetSize() const;
         virtual std::string GetName() const;
         virtual bool IsSprite() const;
         virtual bool IsTile() const;
@@ -69,9 +65,16 @@ namespace StoneRing {
         Movement * GetMovement() const { return m_pMovement; }
 
         // In pixels
-        void CalculateEdgePoints(const CL_Point &topleft, Direction dir, eSize size, std::list<CL_Point> *pList);        
-        static int ConvertDirectionToDirectionBlock(Direction dir);        
+        void CalculateEdgePoints(const CL_Point &topleft, Direction dir, std::list<CL_Point> *pList);        
+        static int ConvertDirectionToDirectionBlock(Direction dir);     
+        // In cells
+        CL_Size DimensionsFromSizeType() const;
     protected:
+        enum eSize 
+        { 
+            MO_SMALL, MO_MEDIUM, MO_LARGE, MO_TALL, MO_WIDE             
+        };        
+        
         virtual bool handle_element(eElement element, Element * pElement );
         virtual void load_attributes(CL_DomNamedNodeMap attributes);
         virtual void load_finished();
@@ -88,7 +91,8 @@ namespace StoneRing {
         std::list<Event*> m_events;
 
         eSize m_eSize;
-        Direction m_eFacingDirection;
+        //Direction m_eFacingDirection;
+        Direction m_direction;
         
         uint m_nStep; // step frame alternator
         ushort m_StartX;

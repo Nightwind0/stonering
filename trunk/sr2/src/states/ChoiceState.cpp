@@ -103,7 +103,7 @@ void StoneRing::ChoiceState::Draw(const CL_Rect &screenRect,CL_GraphicContext& G
 
 bool StoneRing::ChoiceState::DisableMappableObjects() const
 {
-    return true;
+    return false;
 }
 
 

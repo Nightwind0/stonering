@@ -225,7 +225,7 @@ namespace StoneRing {
         void MoveMappableObjects(const CL_Rect &src);
         
 
-        bool CanMove(MappableObject* pMO, const CL_Rect& tiles_currently, const CL_Rect& tiles_destination);
+        bool CanMove(MappableObject* pMO, const CL_Rect& tiles_currently, const CL_Rect& tiles_destination)const;
         // Checks relevant tile and MO direction block information
         // And mark occupied and unoccupied if move is successful
         bool Move(MappableObject* pMO, const CL_Rect &tiles_currently, const CL_Rect& tiles_destination);
@@ -268,6 +268,8 @@ namespace StoneRing {
         void DumpMappableObjects() const;
         void DrawMOQuadtree(CL_GraphicContext gc, const CL_Point& offset) const;
         void DrawDebugBox(CL_GraphicContext gc, const CL_Rect& rect)const;
+        void AddPathTile(const CL_Point& pt);
+        void ClearPath();
 #endif
     typedef Quadtree::RootNode<MappableObject*,4,float> MOQuadtree;
     protected:
@@ -286,7 +288,7 @@ namespace StoneRing {
         // MO related operations
         bool Contains_Mappable_Objects(const CL_Point &point) const;
         bool Contains_Solid_Mappable_Object(const CL_Point &point) const;
-        bool Check_Direction_Block(MappableObject* pMO, Direction dir,const CL_Point &tile, const CL_Point &dest_tile);
+        bool Check_Direction_Block(MappableObject* pMO, Direction dir,const CL_Point &tile, const CL_Point &dest_tile)const;
         
         void Move_Mappable_Object(MappableObject* pMO, Direction dir, const CL_Rect& from, const CL_Rect& to);
         void Add_Mappable_Object(MappableObject* pMO);
@@ -326,6 +328,7 @@ namespace StoneRing {
             uint m_creationTime;
         };
         std::list<InteractPoint> m_interactPoints;
+        std::set<CL_Point> m_pathPoints;
 #endif
     };
 
