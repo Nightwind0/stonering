@@ -420,7 +420,9 @@ int MappableObject::ConvertDirectionToDirectionBlock(Direction dir)
 void MappableObject::CalculateEdgePoints(const CL_Point &topleft, Direction dir, std::list<CL_Point> *pList)
 {
     uint points = 0;
-    CL_Size dimensions = Calc_Tile_Dimensions();
+    //CL_Size dimensions = Calc_Tile_Dimensions();
+    // We don't count the movement dimensions, only their normal dimensions
+    CL_Size dimensions = DimensionsFromSizeType();
     pList->clear();
 
     if(dir == Direction::NORTH){
@@ -436,13 +438,13 @@ void MappableObject::CalculateEdgePoints(const CL_Point &topleft, Direction dir,
             pList->push_back ( CL_Point(topleft.x+i,topleft.y + (dimensions.height-1) ));
         }
     }else if(dir == Direction::EAST){
-        points = Calc_Tile_Dimensions().height;
+        points = dimensions.height;
         for(uint i=0;i<points;i++)
         {
             pList->push_back ( CL_Point(topleft.x+ (dimensions.width-1),topleft.y + i ));
         }
     }else if(dir == Direction::WEST){
-        points = Calc_Tile_Dimensions().height;
+        points = dimensions.height;
         for(uint i=0;i<points;i++)
         {
             pList->push_back ( CL_Point(topleft.x,topleft.y + i ));
