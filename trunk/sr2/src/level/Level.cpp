@@ -696,6 +696,7 @@ bool Level::CanMove ( MappableObject* pObject, const CL_Rect& tiles_currently, c
     
     if(solidmos.DidContainSolidMO())
         return false;
+    return true;
 }
 
 
