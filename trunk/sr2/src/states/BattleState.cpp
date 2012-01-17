@@ -18,7 +18,7 @@
 
 using namespace StoneRing;
 
-
+// 
 namespace StoneRing{
 class StatusEffectPainter : public Visitor<StatusEffect*>
 {

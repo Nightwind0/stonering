@@ -61,7 +61,18 @@ const unsigned int MS_BETWEEN_MOVES = 30;
 
 bool gbDebugStop;
 
-
+#if 0 
+class DrawThread: public CL_Runnable {
+public:
+    DrawThread(Application& app):m_app(app){
+    }
+    virtual void run(){
+        m_app.draw();
+    }
+private:
+    Application m_app;
+};
+#endif
 
 CL_DisplayWindow& Application::GetApplicationWindow()
 {
@@ -1938,7 +1949,7 @@ void Application::queryJoystick()
 void Application::draw()
 {
     CL_Rect dst = GetDisplayRect();
-
+    
     m_window.get_gc().push_cliprect ( dst );
 
     std::vector<State*>::iterator end = mStates.end();
@@ -1947,8 +1958,9 @@ void Application::draw()
             iState != end; iState++ )
     {
         State * pState = *iState;
+        mDrawMutex.lock();
         pState->Draw ( dst, m_window.get_gc() );
-
+        mDrawMutex.unlock();
         if ( pState->LastToDraw() ) break; // Don't draw any further.
 
     }
@@ -1988,9 +2000,11 @@ void Application::run()
             then = now;
         }
 
+
         draw();
 
         m_window.flip();
+
 
         CL_KeepAlive::process();
         CL_System::sleep ( 1 );
