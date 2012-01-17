@@ -3538,14 +3538,17 @@
                                     playScene(function(){
                                         using "scene";
                                         var $moveSam = moveCharacter(getCharacter("Karate Cat"),13,3,12);
-                                        //var $moveSam2 = moveCharacter(getCharacter("Samara"),1,0,12);
+                                        var $moveSam2 = moveCharacter(getCharacter("Samara"),13,4,12);
+                                        waitFor($moveSam);
+                                        waitFor($moveSam2);
+                                        say("Karate Cat", "Here I go!");
+                                        waitFor(moveCharacter(getCharacter("Karate Cat"),0,0,12));                                        
                                     });
                                     break;
                                     case 5:
                                         playScene(function(){
                                             using "scene";
-                                            var $sam = scene::getCharacter("Karate Cat");
-                                            waitFor(moveCharacter($sam,13,3,6));
+                                            //waitFor(moveCharacter(getPlayer(),21,16,12));
                                             declare $pan = panTo(10,10,2);
                                             fadeOut(2);
                                             waitFor($pan);

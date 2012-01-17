@@ -32,6 +32,9 @@
 #include "ShopState.h"
 #include "CutSceneState.h"
 
+
+class DrawThread; 
+
 namespace StoneRing
 {
     class Level;
@@ -232,6 +235,7 @@ namespace StoneRing
         std::string mGold;
 
         /* STATES */
+        CL_Mutex mDrawMutex;
         MapState mMapState;
         SayState mSayState;
         BattleState mBattleState;

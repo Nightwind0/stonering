@@ -531,7 +531,7 @@ void Level::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, 
                             pTile->Draw(tileSrc, tileDst , GC );
 
 #ifndef NDEBUG
-                            if(m_pathPoints.count(CL_Point(tileX,tileY))){
+                            if(indicateBlocks && m_pathPoints.count(CL_Point(tileX,tileY))){
                                 CL_Draw::fill(GC,tileDst,CL_Colorf(0.8f,0.0f,0.8f,0.25f));
                             }
 #endif
