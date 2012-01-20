@@ -20,6 +20,7 @@
 #include "CutSceneState.h"
 #include "Level.h"
 #include "Navigator.h"
+#include "SayState.h"
 
 namespace StoneRing {
     
@@ -176,6 +177,7 @@ void CutSceneState::SteelInit ( SteelInterpreter* pInterpreter )
     pInterpreter->addFunction("addCharacter","scene",new SteelFunctor4Arg<CutSceneState,const std::string&,int,int,int>(this,&CutSceneState::addCharacter));
     pInterpreter->addFunction("waitFor","scene",new SteelFunctor1Arg<CutSceneState,const SteelType::Handle&>(this,&CutSceneState::waitFor));
     pInterpreter->addFunction("pause","scene", new SteelFunctor1Arg<CutSceneState,double>(this,&CutSceneState::pause));
+    pInterpreter->addFunction("say","scene",new SteelFunctor2Arg<CutSceneState,const std::string&,const std::string&>(this,&CutSceneState::say));
     
 }
 
@@ -192,7 +194,7 @@ bool CutSceneState::IsDone() const
 
 bool CutSceneState::LastToDraw() const
 {
-    return true;
+    return false;
 }
 
 void CutSceneState::MappableObjectMoveHook()
@@ -397,6 +399,14 @@ SteelType CutSceneState::waitFor ( const SteelType::Handle& waitOn )
 SteelType CutSceneState::pause ( double seconds )
 {
     CL_System::sleep(seconds * 1000.0);
+}
+
+SteelType CutSceneState::say ( const string& who, const string& what )
+{
+    SayState state;
+    state.Init(who,what);
+    IApplication::GetInstance()->RunState(&state,true);
+    return SteelType();
 }
 
 

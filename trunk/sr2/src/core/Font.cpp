@@ -39,17 +39,17 @@ void Font::draw_text(CL_GraphicContext &  	gc,
     switch(alignment)
     {
 	case TOP_LEFT:
-	    offset = CL_Pointf(0.0f,m_font.get_font_metrics(gc).get_ascent() - m_font.get_font_metrics(gc).get_internal_leading());
+	    offset = CL_Pointf(0.0f,m_font.get_font_metrics().get_ascent() - m_font.get_font_metrics().get_internal_leading());
 	    break;
 	case CENTER:
-	    offset = CL_Pointf(0.0f,m_font.get_font_metrics(gc).get_ascent() / 2.0f);
+	    offset = CL_Pointf(0.0f,m_font.get_font_metrics().get_ascent() / 2.0f);
 	    break;
         case DEFAULT:
 	case ABOVE:
 	    offset = CL_Pointf(0.0f,calc_offset(gc));
 	    break;
 	case BOTTOM_LEFT:
-	    offset = CL_Pointf(0.0f, - m_font.get_font_metrics(gc).get_ascent() + m_font.get_font_metrics(gc).get_internal_leading() - m_font.get_font_metrics(gc).get_external_leading());
+	    offset = CL_Pointf(0.0f, - m_font.get_font_metrics().get_ascent() + m_font.get_font_metrics().get_internal_leading() - m_font.get_font_metrics().get_external_leading());
 	    break;
 	default:
 	    break;
@@ -71,7 +71,7 @@ void Font::draw_text(CL_GraphicContext & gc,
 
 float Font::calc_offset(CL_GraphicContext& gc) 
 {
-    	return  0.0f - ((m_font.get_font_metrics(gc).get_height() - 
-				    m_font.get_font_metrics(gc).get_descent() -  
-				    m_font.get_font_metrics(gc).get_internal_leading())/ 2.0f);
+    	return  0.0f - ((m_font.get_font_metrics().get_height() - 
+				    m_font.get_font_metrics().get_descent() -  
+				    m_font.get_font_metrics().get_internal_leading())/ 2.0f);
 }

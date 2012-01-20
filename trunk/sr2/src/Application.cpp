@@ -171,10 +171,8 @@ void Application::StartBattle ( const MonsterGroup &group, const std::string &ba
 
 #endif
     mBattleState.init ( group, backdrop );
-
-    mStates.push_back ( &mBattleState );
-
-    run();
+    
+    RunState(&mBattleState);
 }
 
 SteelType Application::startBattle ( const std::string &monster, uint count, bool isBoss, const std::string& backdrop )
@@ -203,9 +201,7 @@ SteelType Application::startBattle ( const std::string &monster, uint count, boo
                         isBoss,
                         backdrop );
 
-    mStates.push_back ( &mBattleState );
-
-    run();
+    RunState(&mBattleState);
 
 
     // TODO: Return false if you lose, true if you win.
@@ -224,10 +220,9 @@ SteelType Application::choice ( const std::string &choiceText,
 
     choiceState.Init ( choiceText, choices );
 
-    mStates.push_back ( &choiceState );
 
-    run(); // Run pops for us.
-
+    RunState(&choiceState);
+    
     SteelType selection;
 
     selection.set ( choiceState.GetSelection() );
@@ -248,18 +243,41 @@ SteelType Application::say ( const std::string &speaker, const std::string &text
 {
     mSayState.Init ( speaker, text );
 
-    mStates.push_back ( &mSayState );
-
-    run();
+    RunState(&mSayState);
 
     return SteelType();
 }
 
-void Application::RunState ( State * pState )
+void Application::run_on_mainthread ( CL_Event& event, Application::Functor* functor )
+{
+    ThreadFunctor thread_functor(event,functor);
+    mFunctorMutex.lock();
+    m_mainthread_functors.push(thread_functor);
+    mFunctorMutex.unlock();
+}
+
+
+void Application::RunState ( State * pState, bool threaded )
 {
     mStates.push_back ( pState );
-
-    run();
+    if(threaded){
+        class RunFunctor : public Functor {
+        public:
+            RunFunctor(Application& app):m_app(app){
+            }
+            void operator()(){
+                m_app.run(false);
+            }
+        private:
+            Application& m_app;
+        };
+        CL_Event event;
+        RunFunctor functor(*this);
+        run_on_mainthread(event,&functor);
+        event.wait();
+    }else{
+        run();
+    }
 }
 
 void Application::showError ( int line, const std::string &script, const std::string &message )
@@ -1179,10 +1197,9 @@ SteelType Application::showExperience ( const SteelArray&  characters, const Ste
         Character* c = GrabHandle<Character*> ( characters[i] );
         mExperienceState.AddCharacter ( c, xp_gained[i], oldLevels[i], sp_gained[i] );
     }
+    
+    RunState(&mExperienceState);
 
-    mStates.push_back ( &mExperienceState );
-
-    run();
     return SteelType();
 }
 
@@ -1197,9 +1214,9 @@ SteelType Application::menu ( const SteelArray& array )
     }
 
     pState->Init ( options );
+    
+    RunState(pState);
 
-    mStates.push_back ( pState );
-    run();
     int selection = pState->GetSelection();
     SteelType val;
     val.set ( selection );
@@ -1213,8 +1230,7 @@ SteelType Application::skilltree ( SteelType::Handle hCharacter, bool buy )
     
     mSkillTreeState.Init(pChar,buy);
     
-    mStates.push_back ( &mSkillTreeState );
-    run();
+    RunState(&mSkillTreeState);
     
     SteelType var;
     if(mSkillTreeState.GetSelectedSkillNode())
@@ -1276,9 +1292,8 @@ SteelType Application::equipScreen ( SteelType::Handle hCharacter )
     
     mEquipState.Init(pChar);
      
-    mStates.push_back ( &mEquipState );
-    run();
-     
+    RunState(&mEquipState);
+    
     return SteelType();
 }
 
@@ -1286,8 +1301,7 @@ SteelType Application::shop ( const SteelArray& hItems )
 {
     mShopState.Init ( hItems );
     
-    mStates.push_back ( &mShopState );
-    run();
+    RunState(&mShopState);
     
     return SteelType();
 }
@@ -1296,8 +1310,7 @@ SteelType Application::sell ( )
 {
     mShopState.Init();
     
-    mStates.push_back( &mShopState );
-    run();
+    RunState(&mShopState);
     
     return SteelType();
 }
@@ -1958,9 +1971,7 @@ void Application::draw()
             iState != end; iState++ )
     {
         State * pState = *iState;
-        mDrawMutex.lock();
         pState->Draw ( dst, m_window.get_gc() );
-        mDrawMutex.unlock();
         if ( pState->LastToDraw() ) break; // Don't draw any further.
 
     }
@@ -1968,7 +1979,7 @@ void Application::draw()
     m_window.get_gc().pop_cliprect();
 }
 
-void Application::run()
+void Application::run(bool process_functors)
 {
     State * backState = mStates.back();
 
@@ -1979,6 +1990,15 @@ void Application::run()
     while ( !backState->IsDone() )
     {
         queryJoystick();
+        
+        if(process_functors && !m_mainthread_functors.empty()){
+            Functor * pFunctor = m_mainthread_functors.front().m_pFunctor;
+            pFunctor->operator()();
+            m_mainthread_functors.front().m_event.set();
+            mFunctorMutex.lock();
+            m_mainthread_functors.pop();
+            mFunctorMutex.unlock();
+        }
 
         unsigned int now = CL_System::get_time();
 

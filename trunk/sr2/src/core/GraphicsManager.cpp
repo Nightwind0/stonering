@@ -62,7 +62,7 @@ CL_Sprite GraphicsManager::GetPortraits ( const std::string& character)
 
     CL_Sprite  sprite(GET_MAIN_GC(),"Sprites/Portraits/" +  character, &resources);
     
-    CL_Sprite clone(GET_MAIN_GC());
+    CL_Sprite clone;
     clone.clone(sprite); 
     
     sprite.set_alignment(origin_center);
@@ -85,7 +85,7 @@ CL_Sprite GraphicsManager::CreateSprite ( const std::string & name )
 
     CL_Sprite  sprite(GET_MAIN_GC(),"Sprites/" +  name, &resources);
     
-    CL_Sprite clone(GET_MAIN_GC());
+    CL_Sprite clone;
     clone.clone(sprite); 
     
     sprite.set_alignment(origin_center);
@@ -334,8 +334,7 @@ StoneRing::Font GraphicsManager::LoadFont(const std::string& name)
         int size = atoi(size_str.c_str());
 
         CL_IODevice file = resources.get_directory(font_resource).open_file_read(filename);
-        CL_Font_Freetype thefont(GET_MAIN_GC(),
-                                 filename,
+        CL_Font_Freetype thefont(filename,
                                  size,
                                  file);
 	font = thefont;
