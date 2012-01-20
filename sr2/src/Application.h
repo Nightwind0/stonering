@@ -60,7 +60,7 @@ namespace StoneRing
         virtual CL_Rect GetDisplayRect() const;
         virtual void StartBattle(const MonsterGroup &group,const std::string &backdrop);
         virtual void RequestRedraw(const State *pState);
-	virtual void RunState(State *pState);
+	virtual void RunState(State *pState, bool threaded=false);
 	virtual void LoadMainMenu(CL_DomDocument& doc);
         virtual Level * GetCurrentLevel() const;
         virtual AstScript * LoadScript(const std::string &name, const std::string &script);
@@ -74,10 +74,27 @@ namespace StoneRing
         virtual int GetScreenWidth()const;
         virtual int GetScreenHeight()const;
     private:
+        
+        class Functor {
+        public:
+            Functor(){}
+            virtual ~Functor(){}
+            virtual void operator()(){
+            }
+        };
+        
+        struct ThreadFunctor {
+            ThreadFunctor(CL_Event& event,Functor *pFunctor):m_event(event),m_pFunctor(pFunctor){
+            }
+            Functor *m_pFunctor;
+            CL_Event& m_event;
+        };
 	
 	void queryJoystick();
 	double get_value_for_axis_direction(IApplication::AxisDirection dir) const;
 	AxisDirection get_direction_for_value(IApplication::Axis axis, double value) const;
+
+        void run_on_mainthread(CL_Event& event, Functor * functor);
 	
         // Steel functions.
         SteelType gaussian(double mean, double sigma);
@@ -207,7 +224,7 @@ namespace StoneRing
         void registerSteelFunctions();
 
         void draw();
-        void run();
+        void run(bool process_functors=true);
         void loadscript(std::string &o_str, const std::string & filename);
 
         void startKeyUpQueue();
@@ -231,11 +248,13 @@ namespace StoneRing
         bool mbDone;
         CL_ResourceManager m_resources;
         CL_DisplayWindow m_window;
+        
+        std::queue<ThreadFunctor> m_mainthread_functors;
 
         std::string mGold;
 
         /* STATES */
-        CL_Mutex mDrawMutex;
+        CL_Mutex mFunctorMutex;
         MapState mMapState;
         SayState mSayState;
         BattleState mBattleState;

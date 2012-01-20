@@ -77,6 +77,7 @@ private:
     SteelType addCharacter(const std::string& spriteRef, int x, int y, int face_dir);
     SteelType waitFor(const SteelType::Handle& waitOn);
     SteelType pause(double seconds);
+    SteelType say(const std::string& who, const std::string& what);
     
     class Task : public SteelType::IHandle {
     public:

@@ -25,7 +25,7 @@ using StoneRing::SpriteDefinition;
  
  
 Monster::Monster(MonsterElement *pDefinition)
-        :m_pMonsterDefinition(pDefinition),m_name(pDefinition->GetName()),m_sprite(GET_MAIN_GC()),m_nLevel(0)
+        :m_pMonsterDefinition(pDefinition),m_name(pDefinition->GetName()),m_sprite(),m_nLevel(0)
 {
  
 }

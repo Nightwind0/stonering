@@ -13,7 +13,7 @@
 #include "sr_defines.h"
 #include "MappableObject.h"
 #include "Node.hxx"
-#include <ClanLib-2.2/ClanLib/Core/Math/rect.h>
+#include <ClanLib/core.h>
 
 using std::string;
 
