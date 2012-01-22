@@ -23,6 +23,9 @@
 #include "State.h"
 #include "SteelRunner.h"
 
+#define SEPARATE_INTERPRETER 1
+#define COPY_INTERPRETER 1
+
 namespace StoneRing {
     
 class MappableObject;
@@ -158,7 +161,9 @@ private:
     CL_Event m_wait_event;
     CL_Thread m_steel_thread;
     CL_Mutex m_task_mutex;
+#if SEPARATE_INTERPRETER
     SteelInterpreter m_interpreter;
+#endif
 };
 
 
