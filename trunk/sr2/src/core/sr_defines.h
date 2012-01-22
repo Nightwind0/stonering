@@ -16,6 +16,7 @@ typedef unsigned short ushort;
 
 #ifdef WIN32
 #pragma warning (disable : 4250 )
+#else
 #endif
 
 template<class T>

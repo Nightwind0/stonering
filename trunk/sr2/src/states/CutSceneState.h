@@ -155,8 +155,10 @@ private:
     CL_Point m_center;
     CL_Colorf m_color;
     float m_fade_level;
+    CL_Event m_wait_event;
     CL_Thread m_steel_thread;
     CL_Mutex m_task_mutex;
+    SteelInterpreter m_interpreter;
 };
 
 
