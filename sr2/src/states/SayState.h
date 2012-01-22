@@ -26,7 +26,7 @@ namespace StoneRing
         virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
         virtual void Start();
         virtual void Finish(); // Hook to clean up or whatever after being popped
-        virtual void Init(const std::string &speaker, const std::string &text);
+        virtual void Init(const std::string &speaker, const std::string &text, int ms_per_page=-1,bool disable_mos=true);
 
     private:
 
@@ -41,7 +41,9 @@ namespace StoneRing
         bool m_bDone;
         uint m_nDrawnThisFrame;
         uint m_nTotalDrawn;
-
+        int m_ms_per_page;
+        uint m_page_start_time;
+        bool m_bDisableMos;
     };
 }
 

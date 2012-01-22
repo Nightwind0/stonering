@@ -259,8 +259,9 @@ void Application::run_on_mainthread ( CL_Event& event, Application::Functor* fun
 
 void Application::RunState ( State * pState, bool threaded )
 {
+    State * runningState = mStates.back();
     mStates.push_back ( pState );
-    if(threaded){
+    if(runningState->Threaded() || threaded){
         class RunFunctor : public Functor {
         public:
             RunFunctor(Application& app):m_app(app){

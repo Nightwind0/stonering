@@ -3541,8 +3541,8 @@
                                         var $moveSam2 = moveCharacter(getCharacter("Samara"),13,4,12);
                                         waitFor($moveSam);
                                         waitFor($moveSam2);
-                                        say("Karate Cat", "Here I go!");
-                                        waitFor(moveCharacter(getCharacter("Karate Cat"),0,0,12));                                        
+                                        dialog("Karate Cat", "Here I go!",2.0);
+                                        waitFor(moveCharacter(scene::getCharacter("Karate Cat"),0,0,12));                                        
                                     });
                                     break;
                                     case 5:

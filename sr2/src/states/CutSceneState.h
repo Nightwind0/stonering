@@ -41,7 +41,8 @@ public:
     virtual void HandleButtonUp(const IApplication::Button& button);
     virtual void HandleButtonDown(const IApplication::Button& button);
     virtual void HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos);
-        
+    
+    virtual bool Threaded() const { return true; }
     virtual void Draw(const CL_Rect &screenRect,CL_GraphicContext& GC);
     virtual bool LastToDraw() const; // Should we continue drawing more states?
     virtual bool DisableMappableObjects() const; // Should the app move the MOs?
@@ -77,7 +78,7 @@ private:
     SteelType addCharacter(const std::string& spriteRef, int x, int y, int face_dir);
     SteelType waitFor(const SteelType::Handle& waitOn);
     SteelType pause(double seconds);
-    SteelType say(const std::string& who, const std::string& what);
+    SteelType dialog(const std::string& who, const std::string& what, double seconds);
     
     class Task : public SteelType::IHandle {
     public:

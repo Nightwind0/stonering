@@ -32,7 +32,8 @@ void StoneRing::SayState::HandleButtonUp(const IApplication::Button& button)
 	    }
 	    else
 	    {
-                SoundManager::PlayEffect(SoundManager::EFFECT_CHANGE_OPTION);
+                if(m_ms_per_page == -1)
+                    SoundManager::PlayEffect(SoundManager::EFFECT_CHANGE_OPTION);
 		m_nTotalDrawn += m_nDrawnThisFrame;
 		m_nDrawnThisFrame = 0;
 		CL_System::sleep(100);
@@ -83,6 +84,14 @@ void StoneRing::SayState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
         // Draw a little "Theres more" doodad
         CL_Draw::fill(GC,CL_Rectf(screenRect.get_width() - 20, screenRect.get_height() - 20, screenRect.get_width() - 10, screenRect.get_height() - 10), CL_Colorf::black );
     }
+    
+    if(m_ms_per_page != -1){
+        if(CL_System::get_time() >= m_page_start_time + m_ms_per_page){
+            m_page_start_time = CL_System::get_time();
+            HandleButtonUp(IApplication::BUTTON_CONFIRM);
+        }
+    }
+    
 
 }
 
@@ -90,7 +99,7 @@ void StoneRing::SayState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
 
 bool StoneRing::SayState::DisableMappableObjects() const
 {
-    return true;
+    return m_bDisableMos;
 }
 
 
@@ -111,6 +120,7 @@ void StoneRing::SayState::Start()
     m_text_rect = GraphicsManager::GetRect(GraphicsManager::SAY,"text");
     m_rect =      GraphicsManager::GetRect(GraphicsManager::SAY,"rect");
     //SoundManager::PlayEffect(SoundManager::EFFECT_SELECT_OPTION);
+    m_page_start_time = CL_System::get_time();
 }
 
 void StoneRing::SayState::Finish()
@@ -118,12 +128,14 @@ void StoneRing::SayState::Finish()
 }
 
 
-void StoneRing::SayState::Init(const std::string &speaker, const std::string &text)
+void StoneRing::SayState::Init(const std::string &speaker, const std::string &text, int ms_per_page, bool disableMOs)
 {
     m_speaker = speaker;
     m_text = text;
     m_nTotalDrawn = 0;
     m_iText = m_text.begin();
+    m_ms_per_page = ms_per_page;
+    m_bDisableMos = disableMOs;
 }
 
 
