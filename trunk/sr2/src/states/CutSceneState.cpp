@@ -34,8 +34,10 @@ namespace StoneRing {
         virtual void run(){
             // TODO: Should I support an AstScript here too, like the normal runner does?
             try {
-            if(m_pFunctor)
+            if(m_pFunctor){
+                
                     m_result = m_pFunctor->Call(m_pInterpreter,SteelType::Container());
+            }
     #if 1
                     std::cerr << "Cut scene functor finished. Waiting for tasks to finish." << std::endl;
     #endif
@@ -177,8 +179,7 @@ void CutSceneState::SteelInit ( SteelInterpreter* pInterpreter )
     pInterpreter->addFunction("addCharacter","scene",new SteelFunctor4Arg<CutSceneState,const std::string&,int,int,int>(this,&CutSceneState::addCharacter));
     pInterpreter->addFunction("waitFor","scene",new SteelFunctor1Arg<CutSceneState,const SteelType::Handle&>(this,&CutSceneState::waitFor));
     pInterpreter->addFunction("pause","scene", new SteelFunctor1Arg<CutSceneState,double>(this,&CutSceneState::pause));
-    pInterpreter->addFunction("say","scene",new SteelFunctor2Arg<CutSceneState,const std::string&,const std::string&>(this,&CutSceneState::say));
-    
+    pInterpreter->addFunction("dialog","scene",new SteelFunctor3Arg<CutSceneState,const std::string&,const std::string&, double>(this,&CutSceneState::dialog));   
 }
 
 void CutSceneState::SteelCleanup ( SteelInterpreter* pInterpreter )
@@ -401,10 +402,10 @@ SteelType CutSceneState::pause ( double seconds )
     CL_System::sleep(seconds * 1000.0);
 }
 
-SteelType CutSceneState::say ( const string& who, const string& what )
+SteelType CutSceneState::dialog ( const string& who, const string& what, double seconds )
 {
     SayState state;
-    state.Init(who,what);
+    state.Init(who,what, int(seconds * 1000),false);
     IApplication::GetInstance()->RunState(&state,true);
     return SteelType();
 }
