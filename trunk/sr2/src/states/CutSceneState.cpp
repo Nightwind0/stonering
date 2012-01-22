@@ -159,9 +159,21 @@ void CutSceneState::Completed()
 }
 
 
-void CutSceneState::SteelInit ( SteelInterpreter* /*pInterpreter*/ )
+void CutSceneState::SteelInit ( 
+#if SEPARATE_INTERPRETER
+    SteelInterpreter* pMainInterpreter
+#else
+    SteelInterpreter* pInterpreter 
+#endif
+)
 {
+#if SEPARATE_INTERPRETER
+#if COPY_INTERPRETER
+    m_interpreter = *pMainInterpreter;
+#endif
     SteelInterpreter * pInterpreter = &m_interpreter;
+#endif
+    
     m_pRunner = new CutSceneRunner(pInterpreter,this);
     // Add BIFs
     pInterpreter->addFunction("gotoLevel","scene",new SteelFunctor3Arg<CutSceneState,const std::string&,int,int>(this,&CutSceneState::gotoLevel));
@@ -184,10 +196,14 @@ void CutSceneState::SteelInit ( SteelInterpreter* /*pInterpreter*/ )
     pInterpreter->addFunction("dialog","scene",new SteelFunctor3Arg<CutSceneState,const std::string&,const std::string&, double>(this,&CutSceneState::dialog));   
 }
 
-void CutSceneState::SteelCleanup ( SteelInterpreter* /*pInterpreter*/ )
+void CutSceneState::SteelCleanup ( SteelInterpreter* pInterpreter )
 {
-    
+#if SEPARATE_INTERPRETER
     m_interpreter.removeFunctions("scene");
+#else
+    pInterpreter->removeFunctions("scene");
+#endif
+    
     delete m_pRunner;
 }
 
