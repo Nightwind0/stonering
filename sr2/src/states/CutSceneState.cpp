@@ -95,6 +95,7 @@ void CutSceneState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
             // Do something with waitFor?
             m_task_mutex.lock();
             m_tasks.erase(_it);
+            m_wait_event.set();
             m_task_mutex.unlock();
         }
     }
@@ -158,8 +159,9 @@ void CutSceneState::Completed()
 }
 
 
-void CutSceneState::SteelInit ( SteelInterpreter* pInterpreter )
+void CutSceneState::SteelInit ( SteelInterpreter* /*pInterpreter*/ )
 {
+    SteelInterpreter * pInterpreter = &m_interpreter;
     m_pRunner = new CutSceneRunner(pInterpreter,this);
     // Add BIFs
     pInterpreter->addFunction("gotoLevel","scene",new SteelFunctor3Arg<CutSceneState,const std::string&,int,int>(this,&CutSceneState::gotoLevel));
@@ -182,9 +184,10 @@ void CutSceneState::SteelInit ( SteelInterpreter* pInterpreter )
     pInterpreter->addFunction("dialog","scene",new SteelFunctor3Arg<CutSceneState,const std::string&,const std::string&, double>(this,&CutSceneState::dialog));   
 }
 
-void CutSceneState::SteelCleanup ( SteelInterpreter* pInterpreter )
+void CutSceneState::SteelCleanup ( SteelInterpreter* /*pInterpreter*/ )
 {
-    pInterpreter->removeFunctions("scene");
+    
+    m_interpreter.removeFunctions("scene");
     delete m_pRunner;
 }
 
@@ -380,6 +383,7 @@ SteelType CutSceneState::waitFor ( const SteelType::Handle& waitOn )
 {
     Task * pTask = GrabHandle<Task*>(waitOn);
     while(true){
+        m_wait_event.wait();
         m_task_mutex.lock();
         bool found = false;
 
@@ -392,7 +396,6 @@ SteelType CutSceneState::waitFor ( const SteelType::Handle& waitOn )
         m_task_mutex.unlock();
         if(!found) 
             break;
-        CL_System::sleep(5);
     }
   
 }
