@@ -17,6 +17,10 @@ public:
     Direction(){
         *this = NONE;
     }
+    Direction(const Direction& other){
+        m_none = other.m_none;
+        m_value = other.m_value;
+    }
     Direction(const int i):m_value(i%360),m_none(false){
     }
     Direction(bool none){

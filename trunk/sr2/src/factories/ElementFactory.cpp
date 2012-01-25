@@ -107,8 +107,7 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["level"] = &ElementFactory::CreateElement<Level>;
     mCreateMethods["levelHeader"] = &ElementFactory::CreateElement<LevelHeader>;
     mCreateMethods["mappableObjects"] = &ElementFactory::CreateElement<MappableObjects>;
-    mCreateMethods["mo"] = &ElementFactory::CreateElement<MappableObject>;
-    mCreateMethods["movement"] = &ElementFactory::CreateElement<Movement>;
+    mCreateMethods["mo"] = &ElementFactory::CreateElement<MappableObjectElement>;
     mCreateMethods["monster"] = &ElementFactory::CreateElement<MonsterElement>;
     mCreateMethods["monsterRegion"] = &ElementFactory::CreateElement<MonsterRegion>;
     mCreateMethods["monsterRegions"] = &ElementFactory::CreateElement<MonsterRegions>;

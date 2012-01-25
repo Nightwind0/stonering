@@ -3502,7 +3502,7 @@
                                 </script>
                         </event>
                 </mo>
-                <mo name="Karate Cat" size="small" type="npc" xpos="0" ypos="5" solid="true">
+                <mo name="Karate Cat" size="small" type="npc" xpos="0" ypos="5" solid="true" movementType="wander" speed="medium">
                         <spriteRef type="fourway" ref="Animals/Cat">
                         </spriteRef>
                         <event name="CatMeow" triggerType="talk" remember="true">
@@ -3512,7 +3512,6 @@
                                 </script>
                                 
                         </event>
-                        <movement movementType="wander" speed="medium"/>
                 </mo>
                 <mo name="BattlePodium" size="small" type="npc" xpos="3" ypos="2" solid="true">
                     <event name="podium" triggerType="talk">
@@ -3573,7 +3572,7 @@
                         </script>
                     </event>    
                 </mo>
-                <mo name="Samara" size="small" type="npc" xpos="2" ypos="8" solid="true">
+                <mo name="Samara" size="small" type="npc" xpos="2" ypos="8" solid="true"  movementType="wander" speed="slow">
                         <spriteRef type="fourway" ref="Animals/Cat2">
                         </spriteRef>
                         <event name="Cat3Go" triggerType="talk" >
@@ -3601,7 +3600,6 @@
                                         
                                 </script>
                         </event>
-                        <movement movementType="wander" speed="slow"/>
                 </mo>
                 <mo name="DoorRLock" size="medium" type="square" xpos="8" ypos="9" solid="true">
                         <conditionScript id="hasKey">

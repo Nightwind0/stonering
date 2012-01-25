@@ -206,9 +206,7 @@ public:
     MappableObjectFreezer(){}
     virtual ~MappableObjectFreezer(){}
     bool Visit(MappableObject* pMO, const Level::MOQuadtree::Node* pNode){
-        if(pMO->GetMovement()){
-            pMO->PushNavigator(new StillNavigator(*pMO));
-        }
+        pMO->PushNavigator(new StillNavigator(*pMO));
         return true;
     }
 };
@@ -217,10 +215,8 @@ class MappableObjectNavigatorPopper: public Level::MOQuadtree::OurVisitor {
 public:
     MappableObjectNavigatorPopper(){}
     virtual ~MappableObjectNavigatorPopper(){}
-    bool Visit(MappableObject* pMO, const Level::MOQuadtree::Node* pNode){
-        if(pMO->GetMovement()){
-            delete pMO->PopNavigator();
-        }
+    bool Visit(MappableObject* pMO, const Level::MOQuadtree::Node* pNode) {
+        delete pMO->PopNavigator();
         return true;
     }    
 };

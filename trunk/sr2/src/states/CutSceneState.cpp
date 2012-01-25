@@ -190,7 +190,7 @@ void CutSceneState::SteelInit (
     pInterpreter->addFunction("getPlayer","scene",new SteelFunctorNoArgs<CutSceneState>(this,&CutSceneState::getPlayer));
     pInterpreter->addFunction("moveCharacter","scene",new SteelFunctor4Arg<CutSceneState,SteelType::Handle,int,int,int>(this,&CutSceneState::moveCharacter));
     pInterpreter->addFunction("changeFaceDirection","scene",new SteelFunctor2Arg<CutSceneState,SteelType::Handle,int>(this,&CutSceneState::changeFaceDirection));
-    pInterpreter->addFunction("addCharacter","scene",new SteelFunctor4Arg<CutSceneState,const std::string&,int,int,int>(this,&CutSceneState::addCharacter));
+    pInterpreter->addFunction("addCharacter","scene",new SteelFunctor5Arg<CutSceneState,const std::string&,uint,int,int,int>(this,&CutSceneState::addCharacter));
     pInterpreter->addFunction("waitFor","scene",new SteelFunctor1Arg<CutSceneState,const SteelType::Handle&>(this,&CutSceneState::waitFor));
     pInterpreter->addFunction("pause","scene", new SteelFunctor1Arg<CutSceneState,double>(this,&CutSceneState::pause));
     pInterpreter->addFunction("dialog","scene",new SteelFunctor3Arg<CutSceneState,const std::string&,const std::string&, double>(this,&CutSceneState::dialog));   
@@ -263,7 +263,7 @@ void CutSceneState::verifyLevel()
         throw CL_Exception("gotoLevel must be called first.");
 }
 
-SteelType CutSceneState::addCharacter ( const std::string& spriteRef, int x, int y, int face_dir )
+SteelType CutSceneState::addCharacter ( const std::string& spriteRef, uint dir_count, int x, int y, int face_dir )
 {
     verifyLevel();
     return SteelType();
