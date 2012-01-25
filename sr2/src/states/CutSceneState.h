@@ -78,7 +78,7 @@ private:
     SteelType getPlayer();
     SteelType moveCharacter(SteelType::Handle hHandle, int x, int y, int speed);
     SteelType changeFaceDirection(SteelType::Handle hHandle, int dir);
-    SteelType addCharacter(const std::string& spriteRef, int x, int y, int face_dir);
+    SteelType addCharacter(const std::string& spriteRef, uint direction_count, int x, int y, int face_dir);
     SteelType waitFor(const SteelType::Handle& waitOn);
     SteelType pause(double seconds);
     SteelType dialog(const std::string& who, const std::string& what, double seconds);

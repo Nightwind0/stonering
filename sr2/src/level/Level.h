@@ -76,27 +76,6 @@ namespace StoneRing {
         ushort m_Y;
     };
 
-    class Movement : public Element
-    {
-    public:
-        Movement();
-        virtual ~Movement();
-        virtual eElement WhichElement() const{ return EMOVEMENT; }
-        enum eMovementType { MOVEMENT_NONE, MOVEMENT_WANDER, MOVEMENT_PACE_NS, MOVEMENT_PACE_EW, MOVEMENT_SCRIPT};
-        enum eMovementSpeed { SLOW, MEDIUM, FAST };
-
-        virtual eMovementType GetMovementType() const;
-        virtual eMovementSpeed GetMovementSpeed() const;
-
-    protected:
-        virtual bool handle_element(eElement element,Element *pElement);
-        virtual void load_attributes(CL_DomNamedNodeMap  attributes);
-        eMovementType m_eType;
-        eMovementSpeed m_eSpeed;
-        ScriptElement* m_pScript;
-    };
-
-
     class Tile : public Graphic
     {
     protected:

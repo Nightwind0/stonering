@@ -12,15 +12,6 @@
 namespace StoneRing { 
 
 
-bool MappableObject::EvaluateCondition() const
-{
-    if(m_pCondition)
-    {
-        return m_pCondition->EvaluateCondition();
-    }
-
-    return true;
-}
 
 
 void MappableObject::SetPixelPosition ( const CL_Point& pixel_pos )
@@ -68,131 +59,14 @@ void MappableObject::Move(Level& level)
     Set_Frame_For_Direction();
 }
 
-void MappableObject::load_attributes(CL_DomNamedNodeMap attributes)
-{
-    m_name = get_required_string("name",attributes);
-    std::string motype = get_required_string("type",attributes);
-    std::string size = get_required_string("size",attributes);
-
-    m_StartX= get_required_int("xpos",attributes);
-    m_StartY = get_required_int("ypos",attributes);
-
-    m_pos.x = m_StartX *32;
-    m_pos.y = m_StartY *32;
-
-    if(size == "small") m_eSize = MO_SMALL;
-    else if(size == "medium") m_eSize = MO_MEDIUM;
-    else if(size == "large") m_eSize = MO_LARGE;
-    else if(size == "wide") m_eSize = MO_WIDE;
-    else if(size == "tall") m_eSize = MO_TALL;
-    else throw CL_Exception("MO size wasnt small, medium, or large.");
-
-    if(motype == "npc") m_eType = NPC;
-    else if (motype == "square") m_eType = SQUARE;
-    else if (motype == "container") m_eType = CONTAINER;
-    else if (motype == "door") m_eType = DOOR;
-    else if (motype == "warp") m_eType = WARP;
-
-    bool solid = get_implied_bool("solid",attributes,false);
-
-    if(solid) cFlags |= SOLID;
-
-}
-
-bool MappableObject::handle_element(Element::eElement element, Element * pElement)
-{
-    switch(element)
-    {
-    case ETILEMAP:
-    {
-        if( m_eSize != MO_SMALL) throw CL_Exception("Mappable objects using tilemaps MUST be size small.");
-        cFlags |= TILEMAP;
-        m_graphic.asTilemap = dynamic_cast<Tilemap*>(pElement);
-        break;
-    }
-    case ESPRITEREF:
-    {
-        SpriteRef * pRef = dynamic_cast<SpriteRef*>(pElement);
-
-        if(pRef->GetType() >= SpriteRef::_END_MO_TYPES)
-        {
-            throw CL_Exception("spriteRef on mappable object must have direction type, not battle type");
-        }
-
-        m_graphic.asSpriteRef = pRef;
-        cFlags |= SPRITE;
-
-        m_sprite = GraphicsManager::CreateSprite ( pRef->GetRef() );
-
-        int swidth = m_sprite.get_width();
-        int sheight = m_sprite.get_height();
-
-        switch( m_eSize )
-        {
-        case MO_SMALL:
-            if( swidth != 32 && sheight !=32) throw CL_Exception("Sprite size doesn't match MO size (SMALL)");
-            break;
-        case MO_MEDIUM:
-            if( swidth != 64 && sheight != 64) throw CL_Exception("Sprite size doesn't match MO size (MEDIUM).");
-            break;
-        case MO_LARGE:
-            if( swidth != 128 && sheight != 128) throw CL_Exception("Sprite size doesnt match MO size (LARGE)");
-            break;
-        case MO_TALL:
-            if( swidth != 32 && sheight != 64) throw CL_Exception("Sprite size does not match MO size(TALL)");
-            break;
-        case MO_WIDE:
-            if( swidth != 64 && sheight != 32) throw CL_Exception("Sprite size does not match MO size(TALL)");
-            break;
-        }
-
-        break;
-    }
-    case ECONDITIONSCRIPT:
-        m_pCondition = dynamic_cast<ScriptElement*>(pElement);
-        break;
-    case EEVENT:
-        m_events.push_back ( dynamic_cast<Event*>(pElement));
-        break;
-    case EMOVEMENT:
-    {
-        m_pMovement = dynamic_cast<Movement*>(pElement);
-        // Make sure the proper sprites are around for the movement type
-        PushNavigator(new NPCNavigator(*this));
-        Prod(); // Get it going
-        break;
-    }
-    default:
-        return false;
-    }
-
-    return true;
-}
-
-void MappableObject::load_finished()
-{
-    CL_Size dimensions = Calc_Tile_Dimensions();
-    m_nWidth = dimensions.width;
-    m_nHeight = dimensions.height;
-}
-
-MappableObject::MappableObject():m_nStep(0),m_pMovement(NULL),
-                                            m_pCondition(0),cFlags(0),
+MappableObject::MappableObject():m_nStep(0),m_cFlags(0),
                                             m_nTilesMoved(0)
 {
 }
 
-MappableObject::~MappableObject()
-{
-    for( std::list<Event*>::iterator i = m_events.begin();
-         i != m_events.end();
-         i++)
-    {
-        delete *i;
-    }
-
-    delete m_pMovement;
+MappableObject::~MappableObject(){
 }
+
 
 
 
@@ -251,7 +125,7 @@ CL_Rect MappableObject::GetSpriteRect() const
 
         return pixelRect;
     }
-    else if (cFlags & TILEMAP)
+    else if (m_cFlags & TILEMAP)
     {
         return CL_Rect(m_pos.x*32,m_pos.y*32, m_pos.x*32 + 32, m_pos.y *32 +32);
     }
@@ -263,7 +137,7 @@ CL_Rect MappableObject::GetSpriteRect() const
 
 bool MappableObject::IsSprite() const
 {
-    return cFlags & SPRITE;
+    return m_cFlags & SPRITE;
 }
 
 void MappableObject::Draw(CL_GraphicContext& GC, const CL_Point& offset)
@@ -274,7 +148,7 @@ void MappableObject::Draw(CL_GraphicContext& GC, const CL_Point& offset)
     {
         m_sprite.draw(GC,dstRect);
     }
-    else if( cFlags & TILEMAP )
+    else if( m_cFlags & TILEMAP )
     {
 #ifndef NDEBUG
         std::cout << "Mappable Object is tilemap?" << std::endl;
@@ -292,53 +166,53 @@ void MappableObject::Draw(CL_GraphicContext& GC, const CL_Point& offset)
 void MappableObject::Set_Frame_For_Direction()
 {
     if(m_sprite.is_null()) return;
-    if(!m_pMovement) 
-        m_sprite.set_frame(0);
+
+    m_sprite.set_frame(0);
     
     Direction facing = Direction::SOUTH;
     if(!m_navStack.empty())
         facing = m_navStack.top()->GetFacingDirection();
 
-    switch(m_pMovement->GetMovementType())
-    {
-    case Movement::MOVEMENT_NONE:
+        switch(GetMovementType())
+        {
+        case MOVEMENT_NONE:
+            
+            m_sprite.set_frame(0);
+
+            break;
+        case MOVEMENT_WANDER:
+        {
+            int step = m_nStep % 4;
+            if(facing == Direction::NORTH)
+                m_sprite.set_frame(12 + step);
+            else if(facing == Direction::EAST)
+                m_sprite.set_frame(8 + step);            
+            else if(facing == Direction::WEST)
+                m_sprite.set_frame(4 + step);
+            else if(facing == Direction::SOUTH)
+                m_sprite.set_frame(step);
+            break;
+        }
+        case MOVEMENT_PACE_NS:
+        {
+            int step = m_nStep % 4;
+            if(facing == Direction::NORTH)
+                m_sprite.set_frame ( 4 + step );
+            else if(facing == Direction::SOUTH)
+                m_sprite.set_frame ( step);
+            break;
+        }
+        case MOVEMENT_PACE_EW:
+        {
+            int step = m_nStep % 4;
+            if(facing == Direction::EAST)
+                m_sprite.set_frame ( 4 + step  );    
+            else if(facing == Direction::WEST)
+                m_sprite.set_frame ( step );
+            break;
+        }
         
-        m_sprite.set_frame(0);
-
-        break;
-    case Movement::MOVEMENT_WANDER:
-    {
-        int step = m_nStep % 4;
-        if(facing == Direction::NORTH)
-            m_sprite.set_frame(12 + step);
-        else if(facing == Direction::EAST)
-            m_sprite.set_frame(8 + step);            
-        else if(facing == Direction::WEST)
-            m_sprite.set_frame(4 + step);
-        else if(facing == Direction::SOUTH)
-            m_sprite.set_frame(step);
-        break;
     }
-    case Movement::MOVEMENT_PACE_NS:
-    {
-        int step = m_nStep % 4;
-        if(facing == Direction::NORTH)
-            m_sprite.set_frame ( 4 + step );
-        else if(facing == Direction::SOUTH)
-            m_sprite.set_frame ( step);
-        break;
-    }
-    case Movement::MOVEMENT_PACE_EW:
-    {
-        int step = m_nStep % 4;
-        if(facing == Direction::EAST)
-            m_sprite.set_frame ( 4 + step  );    
-        else if(facing == Direction::WEST)
-            m_sprite.set_frame ( step );
-        break;
-    }
-    }
-
     
 }
 
@@ -351,7 +225,7 @@ void MappableObject::Update()
 
 bool MappableObject::IsSolid() const
 {
-    return cFlags & MappableObject::SOLID;
+    return m_cFlags & MappableObject::SOLID;
 }
 
 int MappableObject::GetDirectionBlock() const
@@ -372,34 +246,18 @@ void MappableObject::Prod()
 }
 
 
+bool MappableObject::EvaluateCondition() const
+{
+    return true;
+}
+
 bool MappableObject::ProvokeEvents ( Event::eTriggerType trigger )
 {
-    bool provoked = false;
-    IParty *party = IApplication::GetInstance()->GetParty();
-
-    for(std::list<Event*>::iterator i = m_events.begin();
-        i != m_events.end();
-        i++)
-    {
-        Event * pEvent = *i;
-
-        // If this is the correct trigger,
-        // And the event is either repeatable or
-        // Hasn't been done yet, invoke
-        if( pEvent->GetTriggerType() == trigger
-            && (pEvent->Repeatable() || !party->DidEvent ( pEvent->GetName() ))
-            )
-        {
-            ParameterList params;
-            params.push_back(ParameterListItem("$_Name",m_name));
-            pEvent->Invoke(params);
-            provoked = true;
-        }
-
-    }
-    
-    return provoked;
+    return false;
 }
+
+
+
 
 int MappableObject::ConvertDirectionToDirectionBlock(Direction dir)
 {
@@ -503,6 +361,250 @@ Navigator* MappableObject::PopNavigator()
     }else{
         return NULL;
     }
+}
+
+
+
+MappableObjectElement::MappableObjectElement():m_pCondition(NULL),m_navigator(*this)
+{
+
+}
+
+
+MappableObjectElement::~MappableObjectElement()
+{
+    for( std::list<Event*>::iterator i = m_events.begin();
+         i != m_events.end();
+         i++)
+    {
+        delete *i;
+    }
+}
+
+
+
+
+bool MappableObjectElement::EvaluateCondition() const
+{
+    if(m_pCondition)
+    {
+        return m_pCondition->EvaluateCondition();
+    }
+
+    return true;
+}
+
+
+
+
+bool MappableObjectElement::ProvokeEvents ( Event::eTriggerType trigger )
+{
+    bool provoked = false;
+    IParty *party = IApplication::GetInstance()->GetParty();
+
+    for(std::list<Event*>::iterator i = m_events.begin();
+        i != m_events.end();
+        i++)
+    {
+        Event * pEvent = *i;
+
+        // If this is the correct trigger,
+        // And the event is either repeatable or
+        // Hasn't been done yet, invoke
+        if( pEvent->GetTriggerType() == trigger
+            && (pEvent->Repeatable() || !party->DidEvent ( pEvent->GetName() ))
+            )
+        {
+            ParameterList params;
+            params.push_back(ParameterListItem("$_Name",m_name));
+            pEvent->Invoke(params);
+            provoked = true;
+        }
+
+    }
+    
+    return provoked;
+}
+
+
+
+void MappableObjectElement::load_attributes(CL_DomNamedNodeMap attributes)
+{
+    m_name = get_required_string("name",attributes);
+    std::string motype = get_required_string("type",attributes);
+    std::string size = get_required_string("size",attributes);
+    
+
+    m_speed = SLOW;
+    if (has_attribute("speed",attributes))
+    {
+        std::string speed = get_string("speed",attributes);
+
+        if (speed == "medium")
+        {
+            m_speed = MEDIUM;
+        }
+        else if (speed == "slow")
+        {
+            m_speed = SLOW;
+        }
+        else if (speed == "fast")
+        {
+            m_speed = FAST;
+        }
+        else throw CL_Exception("Error, movement speed must be fast, medium or slow.");
+
+    }
+
+    std::string type = get_implied_string("movementType",attributes,"none");
+
+    if (type == "wander")
+    {
+        m_move_type = MOVEMENT_WANDER;
+    }
+    else if (type == "paceNS")
+    {
+        m_move_type = MOVEMENT_PACE_NS;
+    }
+    else if (type == "paceEW")
+    {
+        m_move_type = MOVEMENT_PACE_EW;
+    }
+    else if (type == "script")
+    {
+        m_move_type = MOVEMENT_SCRIPT;
+    }
+    else if (type == "none")
+    {
+        m_move_type = MOVEMENT_NONE;
+    }
+  
+    
+
+    m_StartX= get_required_int("xpos",attributes);
+    m_StartY = get_required_int("ypos",attributes);
+
+    m_pos.x = m_StartX *32;
+    m_pos.y = m_StartY *32;
+
+    if(size == "small") m_eSize = MO_SMALL;
+    else if(size == "medium") m_eSize = MO_MEDIUM;
+    else if(size == "large") m_eSize = MO_LARGE;
+    else if(size == "wide") m_eSize = MO_WIDE;
+    else if(size == "tall") m_eSize = MO_TALL;
+    else throw CL_Exception("MO size wasnt small, medium, or large.");
+
+    if(motype == "npc") m_eType = NPC;
+    else if (motype == "square") m_eType = SQUARE;
+    else if (motype == "container") m_eType = CONTAINER;
+    else if (motype == "door") m_eType = DOOR;
+    else if (motype == "warp") m_eType = WARP;
+
+    bool solid = get_implied_bool("solid",attributes,false);
+
+    if(solid) m_cFlags |= SOLID;
+
+}
+
+bool MappableObjectElement::handle_element(Element::eElement element, Element * pElement)
+{
+    switch(element)
+    {
+    case ETILEMAP:
+    {
+        if( m_eSize != MO_SMALL) throw CL_Exception("Mappable objects using tilemaps MUST be size small.");
+        m_cFlags |= TILEMAP;
+        m_graphic.asTilemap = dynamic_cast<Tilemap*>(pElement);
+        break;
+    }
+    case ESPRITEREF:
+    {
+        SpriteRef * pRef = dynamic_cast<SpriteRef*>(pElement);
+
+        if(pRef->GetType() >= SpriteRef::_END_MO_TYPES)
+        {
+            throw CL_Exception("spriteRef on mappable object must have direction type, not battle type");
+        }
+
+        m_graphic.asSpriteRef = pRef;
+        m_cFlags |= SPRITE;
+
+        m_sprite = GraphicsManager::CreateSprite ( pRef->GetRef() );
+
+        int swidth = m_sprite.get_width();
+        int sheight = m_sprite.get_height();
+
+        switch( m_eSize )
+        {
+        case MO_SMALL:
+            if( swidth != 32 && sheight !=32) throw CL_Exception("Sprite size doesn't match MO size (SMALL)");
+            break;
+        case MO_MEDIUM:
+            if( swidth != 64 && sheight != 64) throw CL_Exception("Sprite size doesn't match MO size (MEDIUM).");
+            break;
+        case MO_LARGE:
+            if( swidth != 128 && sheight != 128) throw CL_Exception("Sprite size doesnt match MO size (LARGE)");
+            break;
+        case MO_TALL:
+            if( swidth != 32 && sheight != 64) throw CL_Exception("Sprite size does not match MO size(TALL)");
+            break;
+        case MO_WIDE:
+            if( swidth != 64 && sheight != 32) throw CL_Exception("Sprite size does not match MO size(TALL)");
+            break;
+        }
+
+        break;
+    }
+    case ECONDITIONSCRIPT:
+        m_pCondition = dynamic_cast<ScriptElement*>(pElement);
+        break;
+    case EEVENT:
+        m_events.push_back ( dynamic_cast<Event*>(pElement));
+        break;
+    default:
+        return false;
+    }
+
+    return true;
+}
+
+void MappableObjectElement::load_finished()
+{
+    CL_Size dimensions = Calc_Tile_Dimensions();
+    m_nWidth = dimensions.width;
+    m_nHeight = dimensions.height;
+    PushNavigator(&m_navigator);
+}
+
+MappableObjectDynamic::MappableObjectDynamic ( MappableObject::eMappableObjectType type, MappableObject::eMovementType move_type, MappableObject::eMovementSpeed speed )
+:m_move_type(move_type),m_move_speed(speed)
+{
+    m_eType = type;
+}
+
+MappableObjectDynamic::~MappableObjectDynamic()
+{
+
+}
+
+
+void MappableObjectDynamic::SetSolid ( bool solid )
+{
+    m_cFlags |= SOLID;
+}
+
+void MappableObjectDynamic::SetSprite ( CL_Sprite sprite, MappableObject::eSize size )
+{
+    m_sprite = sprite;
+    m_eSize = size;
+    m_cFlags |= SPRITE;
+}
+
+void MappableObjectDynamic::Draw ( CL_GraphicContext& GC, const CL_Point& offset )
+{
+    CL_Rect dstRect = GetSpriteRect();
+    dstRect.translate(offset);
+    m_sprite.draw(GC,dstRect);
 }
 
 

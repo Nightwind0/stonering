@@ -66,14 +66,14 @@ Direction NPCNavigator::GetFacingDirection() const
 uint NPCNavigator::GetSpeed() const
 {
     uint nMoves;
-    switch(m_mo.GetMovement()->GetMovementSpeed()){
-        case Movement::SLOW:
+    switch(m_mo.GetMovementSpeed()){
+        case MappableObject::SLOW:
             nMoves = 1;
             break;
-        case Movement::MEDIUM:
+        case MappableObject::MEDIUM:
             nMoves = 3;
             break;
-        case Movement::FAST:
+        case MappableObject::FAST:
             nMoves = 5;
             break;
     }
@@ -99,11 +99,11 @@ void NPCNavigator::random_new_direction ( )
     {
         int r= rand() % 5;
 
-        switch (m_mo.GetMovement()->GetMovementType())
+        switch (m_mo.GetMovementType())
         {
-        case Movement::MOVEMENT_NONE:
-            break;
-        case Movement::MOVEMENT_WANDER:
+        case MappableObject::MOVEMENT_NONE:
+            return;
+        case MappableObject::MOVEMENT_WANDER:
             if(r == 0)
                 m_eDirection = Direction::NORTH;
             else if(r == 1)
@@ -115,8 +115,8 @@ void NPCNavigator::random_new_direction ( )
             else if(r == 4)
                 m_eDirection = Direction::NONE;
             break;
-        case Movement::MOVEMENT_PACE_NS:
-        case Movement::MOVEMENT_PACE_EW:
+        case MappableObject::MOVEMENT_PACE_NS:
+        case MappableObject::MOVEMENT_PACE_EW:
             if(r > 2)
                 pick_opposite_direction();
             break;

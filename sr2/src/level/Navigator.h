@@ -29,7 +29,6 @@ namespace StoneRing{
     
 class MappableObject;
 class Level;
-class Movement;
 
 class Navigator
 {
