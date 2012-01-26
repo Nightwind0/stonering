@@ -78,7 +78,7 @@ private:
     SteelType getPlayer();
     SteelType moveCharacter(SteelType::Handle hHandle, int x, int y, int speed);
     SteelType changeFaceDirection(SteelType::Handle hHandle, int dir);
-    SteelType addCharacter(const std::string& spriteRef, uint direction_count, int x, int y, int face_dir);
+    SteelType addSprite(const std::string& spriteRef, uint sprite_size, uint move_type, int x, int y, int face_dir);
     SteelType waitFor(const SteelType::Handle& waitOn);
     SteelType pause(double seconds);
     SteelType dialog(const std::string& who, const std::string& what, double seconds);
@@ -161,6 +161,7 @@ private:
     CL_Event m_wait_event;
     CL_Thread m_steel_thread;
     CL_Mutex m_task_mutex;
+    std::list<MappableObject*> m_temp_mos;
 #if SEPARATE_INTERPRETER
     SteelInterpreter m_interpreter;
 #endif

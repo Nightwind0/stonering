@@ -3548,7 +3548,8 @@
                                     case 5:
                                         playScene(function(){
                                             using "scene";
-                                            //waitFor(moveCharacter(getPlayer(),21,16,12));
+                                            declare $newguy = addSprite("Animals/Cat2",$_SIZE_SMALL,$_MOVE_NSEW,0,0,$_SOUTH);
+                                            waitFor(moveCharacter($newguy,20,20,$_MOVE_FAST));
                                             declare $pan = panTo(10,10,2);
                                             fadeOut(2);
                                             waitFor($pan);

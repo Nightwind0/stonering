@@ -14,6 +14,7 @@ public:
     static const Direction EAST;
     static const Direction WEST;
     
+    
     Direction(){
         *this = NONE;
     }
@@ -49,6 +50,9 @@ public:
         else if(m_value == WEST.m_value)
             return CL_Vec2<int>(-1,0);
         else return CL_Vec2<int>(0,0);
+    }
+    operator int() const {
+        return m_value;
     }
 private:
     int m_value;

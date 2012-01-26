@@ -160,6 +160,10 @@ void MappableObject::Draw(CL_GraphicContext& GC, const CL_Point& offset)
     }
 }
 
+Direction MappableObject::Get_Default_Facing() const
+{
+    return Direction::SOUTH;
+}
 
 
 
@@ -169,7 +173,7 @@ void MappableObject::Set_Frame_For_Direction()
 
     m_sprite.set_frame(0);
     
-    Direction facing = Direction::SOUTH;
+    Direction facing = Get_Default_Facing();
     if(!m_navStack.empty())
         facing = m_navStack.top()->GetFacingDirection();
 
@@ -587,6 +591,11 @@ MappableObjectDynamic::~MappableObjectDynamic()
 
 }
 
+Direction MappableObjectDynamic::Get_Default_Facing() const
+{
+    return m_default_facing;
+}
+
 
 void MappableObjectDynamic::SetSolid ( bool solid )
 {
@@ -606,6 +615,13 @@ void MappableObjectDynamic::Draw ( CL_GraphicContext& GC, const CL_Point& offset
     dstRect.translate(offset);
     m_sprite.draw(GC,dstRect);
 }
+
+void MappableObjectDynamic::Set_Frame_For_Direction()
+{
+    
+    StoneRing::MappableObject::Set_Frame_For_Direction();
+}
+
 
 
 
@@ -664,7 +680,7 @@ CL_Point MappablePlayer::GetPointInFront() const
 
 void MappablePlayer::Set_Frame_For_Direction()
 {    
-    Direction facing = Direction::SOUTH;
+    Direction facing = Get_Default_Facing();
     if(!m_navStack.empty())      
         facing = m_navStack.top()->GetFacingDirection();
     

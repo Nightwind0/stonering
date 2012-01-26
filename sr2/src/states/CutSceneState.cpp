@@ -148,6 +148,12 @@ void CutSceneState::Start()
 
 void CutSceneState::Finish()
 {
+    for(std::list<MappableObject*>::iterator it = m_temp_mos.begin();
+        it != m_temp_mos.end(); it++)
+        {
+            IApplication::GetInstance()->GetCurrentLevel()->RemoveMappableObject(*it);
+            delete *it;
+        }
     //m_functor.reset();
     m_steel_thread.join();
 }
@@ -190,10 +196,24 @@ void CutSceneState::SteelInit (
     pInterpreter->addFunction("getPlayer","scene",new SteelFunctorNoArgs<CutSceneState>(this,&CutSceneState::getPlayer));
     pInterpreter->addFunction("moveCharacter","scene",new SteelFunctor4Arg<CutSceneState,SteelType::Handle,int,int,int>(this,&CutSceneState::moveCharacter));
     pInterpreter->addFunction("changeFaceDirection","scene",new SteelFunctor2Arg<CutSceneState,SteelType::Handle,int>(this,&CutSceneState::changeFaceDirection));
-    pInterpreter->addFunction("addCharacter","scene",new SteelFunctor5Arg<CutSceneState,const std::string&,uint,int,int,int>(this,&CutSceneState::addCharacter));
+    pInterpreter->addFunction("addSprite","scene",new SteelFunctor6Arg<CutSceneState,const std::string&,uint,uint,int,int,int>(this,&CutSceneState::addSprite));
     pInterpreter->addFunction("waitFor","scene",new SteelFunctor1Arg<CutSceneState,const SteelType::Handle&>(this,&CutSceneState::waitFor));
     pInterpreter->addFunction("pause","scene", new SteelFunctor1Arg<CutSceneState,double>(this,&CutSceneState::pause));
     pInterpreter->addFunction("dialog","scene",new SteelFunctor3Arg<CutSceneState,const std::string&,const std::string&, double>(this,&CutSceneState::dialog));   
+    
+    
+    SteelConst(pInterpreter,"$_MOVE_SLOW", (int)MappableObject::SLOW);
+    SteelConst(pInterpreter,"$_MOVE_MEDIUM",(int)MappableObject::MEDIUM);
+    SteelConst(pInterpreter,"$_MOVE_FAST",(int)MappableObject::FAST);
+    SteelConst(pInterpreter,"$_MOVE_NSEW",(int)MappableObject::MOVEMENT_WANDER);
+    SteelConst(pInterpreter,"$_MOVE_NS",(int)MappableObject::MOVEMENT_PACE_NS);
+    SteelConst(pInterpreter,"$_MOVE_EW",(int)MappableObject::MOVEMENT_PACE_EW);
+    SteelConst(pInterpreter,"$_MOVE_NONE",(int)MappableObject::MOVEMENT_NONE);
+    SteelConst(pInterpreter,"$_SIZE_SMALL",(int)MappableObject::MO_SMALL);
+    SteelConst(pInterpreter,"$_SIZE_MEDIUM",(int)MappableObject::MO_MEDIUM);
+    SteelConst(pInterpreter,"$_SIZE_LARGE",(int)MappableObject::MO_LARGE);
+    SteelConst(pInterpreter,"$_SIZE_WIDE",(int)MappableObject::MO_WIDE);
+    SteelConst(pInterpreter,"$_SIZE_TALL",(int)MappableObject::MO_TALL);
 }
 
 void CutSceneState::SteelCleanup ( SteelInterpreter* pInterpreter )
@@ -263,10 +283,42 @@ void CutSceneState::verifyLevel()
         throw CL_Exception("gotoLevel must be called first.");
 }
 
-SteelType CutSceneState::addCharacter ( const std::string& spriteRef, uint dir_count, int x, int y, int face_dir )
+SteelType CutSceneState::addSprite ( const std::string& spriteRef, uint sprite_size, uint move_type, int x, int y, int face_dir )
 {
     verifyLevel();
-    return SteelType();
+    
+    MappableObjectDynamic * pMO = new MappableObjectDynamic(MappableObject::NPC,static_cast<MappableObject::eMovementType>(move_type),
+        MappableObject::SLOW
+    );
+    
+    class SpriteFunctor : public IApplication::Functor{
+    public:
+        SpriteFunctor(const std::string& spriteRef):m_spriteRef(spriteRef){
+        }
+        virtual void operator()(){
+            m_sprite = GraphicsManager::CreateSprite(m_spriteRef);
+        }
+        std::string m_spriteRef;
+        CL_Sprite m_sprite;
+    };
+    CL_Event event;
+    SpriteFunctor functor(spriteRef);
+    IApplication::GetInstance()->RunOnMainThread(event,&functor);
+    event.wait();
+    pMO->SetSolid(true);
+    pMO->SetSprite(functor.m_sprite, static_cast<MappableObject::eSize>(sprite_size));
+    pMO->SetDefaultFacing(face_dir);
+    m_pLevel->AddMappableObject(pMO);
+    
+    // Anything we add in a cut scene to the actual level, we have to remove it
+    // at the end of the cut scene.
+    if(m_pLevel == IApplication::GetInstance()->GetCurrentLevel()){
+        m_temp_mos.push_back(pMO);
+    }
+    SteelType ret;
+    ret.set(pMO);
+    
+    return ret;
 }
 
 SteelType CutSceneState::colorize ( double r, double g, double b )
@@ -428,7 +480,6 @@ SteelType CutSceneState::dialog ( const string& who, const string& what, double 
     IApplication::GetInstance()->RunState(&state,true);
     return SteelType();
 }
-
 
 
 

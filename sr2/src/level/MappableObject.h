@@ -32,6 +32,10 @@ namespace StoneRing {
         enum eMovementSpeed {
             SLOW, MEDIUM, FAST            
         };        
+        enum eSize { 
+            MO_SMALL, MO_MEDIUM, MO_LARGE, MO_TALL, MO_WIDE             
+        };        
+        
 
 
         MappableObject();
@@ -77,10 +81,6 @@ namespace StoneRing {
         CL_Size         DimensionsFromSizeType() const;
         
     protected:
-        enum eSize 
-        { 
-            MO_SMALL, MO_MEDIUM, MO_LARGE, MO_TALL, MO_WIDE             
-        };        
         enum eFlags 
         { 
             SPRITE = 1, TILEMAP = 2, SOLID = 4  
@@ -89,6 +89,8 @@ namespace StoneRing {
         virtual void    Moved_One_Cell();
         virtual CL_Size Calc_Tile_Dimensions()const;
         virtual void    Set_Frame_For_Direction();
+        virtual Direction Get_Default_Facing()const;
+        void            Set_Size(eSize size);
         
         std::string     m_name;
         CL_Sprite       m_sprite;
@@ -142,11 +144,15 @@ namespace StoneRing {
         void            SetSprite(CL_Sprite sprite, eSize size);
         void            SetSolid(bool solid);        
         virtual eMovementType  GetMovementType() const { return m_move_type; }
-        virtual eMovementSpeed GetMovementSpeed() const { return m_move_speed; }        
+        virtual eMovementSpeed GetMovementSpeed() const { return m_move_speed; }    
+        void SetDefaultFacing(const Direction& dir) { m_default_facing = dir; }
+    protected:
+        virtual void Set_Frame_For_Direction();
+        virtual Direction Get_Default_Facing()const;
     private:     
-        CL_Sprite       m_sprite;
         eMovementType   m_move_type;
         eMovementSpeed  m_move_speed;
+        Direction       m_default_facing;
     };
 
 
