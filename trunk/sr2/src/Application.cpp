@@ -30,6 +30,7 @@
 #include "BattleConfig.h"
 #include "Animation.h"
 #include "RegularItem.h"
+#include "Direction.h"
 
 //
 //
@@ -248,7 +249,7 @@ SteelType Application::say ( const std::string &speaker, const std::string &text
     return SteelType();
 }
 
-void Application::run_on_mainthread ( CL_Event& event, Application::Functor* functor )
+void Application::RunOnMainThread ( CL_Event& event, Application::Functor* functor )
 {
     ThreadFunctor thread_functor(event,functor);
     mFunctorMutex.lock();
@@ -274,7 +275,7 @@ void Application::RunState ( State * pState, bool threaded )
         };
         CL_Event event;
         RunFunctor functor(*this);
-        run_on_mainthread(event,&functor);
+        RunOnMainThread(event,&functor);
         event.wait();
     }else{
         run();
@@ -1833,6 +1834,11 @@ void Application::registerSteelFunctions()
     steelConst ( "$_DROP_RARE", Item::RARE );
     steelConst ( "$_DROP_NEVER", Item::NEVER );
     
+    
+    steelConst ( "$_NORTH", Direction::NORTH );
+    steelConst ( "$_SOUTH", Direction::SOUTH );
+    steelConst ( "$_WEST",  Direction::WEST );
+    steelConst ( "$_EAST",  Direction::EAST );
 
     mInterpreter.addFunction ( "normal_random", fn_gaussian );
     mInterpreter.addFunction ( "log", fn_log );

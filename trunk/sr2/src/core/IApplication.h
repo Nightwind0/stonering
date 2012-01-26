@@ -63,6 +63,15 @@ namespace StoneRing
 	    LEVEL_FOR_XP,
             ON_ATTACK
 	};
+        
+        // Functor for running code on main thread
+        class Functor {
+        public:
+            Functor(){}
+            virtual ~Functor(){}
+            virtual void operator()(){
+            }
+        };       
 
 	static IApplication * GetInstance();
         virtual ~IApplication(){}
@@ -86,7 +95,7 @@ namespace StoneRing
         virtual SteelType RunScript(AstScript *pScript, const ParameterList &params)=0;
 	virtual AstScript * GetUtility(Utility util)const=0;
         virtual std::string GetCurrencyName()const=0;
-
+        virtual void RunOnMainThread(CL_Event& event, Functor* functor)=0; 
     };
 
 }

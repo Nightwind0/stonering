@@ -591,6 +591,7 @@ void Level::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, 
 
 void Level::DrawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, bool bDrawDebug)
 {
+    m_mo_mutex.lock();
     CL_Point offset(dst.left-src.left,dst.bottom-src.bottom);
     Quadtree::Geometry::Vector<float> center(src.get_center().x,src.get_center().y);
     Quadtree::Geometry::Rect<float> rect(center,src.get_width(),src.get_height());
@@ -621,6 +622,7 @@ void Level::DrawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_Graph
 #endif
 
     ++m_nFrameCount;
+    m_mo_mutex.unlock();
 }
 
 
@@ -646,6 +648,7 @@ void Level::Move_Mappable_Object(MappableObject *pMO, Direction dir, const CL_Re
 
 void Level::Add_Mappable_Object ( MappableObject* pMO)
 {
+    m_mo_mutex.lock();
     assert ( pMO );
     CL_Rect rect = pMO->GetTileRect();
     Quadtree::Geometry::Rect<float> location(
@@ -653,6 +656,7 @@ void Level::Add_Mappable_Object ( MappableObject* pMO)
                                           rect.get_width(),rect.get_height());
     
     m_mo_quadtree->Add(location,pMO);
+    m_mo_mutex.unlock();
 }
 
 
@@ -687,8 +691,10 @@ bool Level::CanMove ( MappableObject* pObject, const CL_Rect& tiles_currently, c
     Quadtree::Geometry::Vector<float> center(tiles_destination.get_center().x,tiles_destination.get_center().y);
     Quadtree::Geometry::Rect<float>  rect(center,tiles_destination.get_width(),tiles_destination.get_height());
     
+    m_mo_mutex.lock();
     ContainsSolidMappableObjects solidmos(tiles_destination);
     m_mo_quadtree->Traverse(solidmos,rect);
+    m_mo_mutex.unlock();
     
     if(solidmos.DidContainSolidMO())
         return false;
@@ -737,6 +743,7 @@ bool Level::Check_Direction_Block ( MappableObject * pMo, Direction dir, const C
 
 void Level::MoveMappableObjects(const CL_Rect &src)
 {
+    m_mo_mutex.lock();
     Quadtree::Geometry::Vector<float> center(src.get_center().x,src.get_center().y);
     Quadtree::Geometry::Rect<float> rect(center,src.get_width(),src.get_height());
     
@@ -750,6 +757,7 @@ void Level::MoveMappableObjects(const CL_Rect &src)
         iter != finder.end(); iter++){
         (*iter)->Move(*this);
     }
+    m_mo_mutex.unlock();
 }
 
 
@@ -1060,6 +1068,23 @@ void Level::Create_MOQuadtree()
                                                                      (m_LevelWidth > m_LevelHeight?m_LevelWidth:m_LevelHeight)));
 }
 
+
+void Level::AddMappableObject ( MappableObject* pMO )
+{
+    Add_Mappable_Object(pMO);
+}
+
+void Level::RemoveMappableObject ( MappableObject* pMO )
+{
+    m_mo_mutex.lock();
+    CL_Rect rect = pMO->GetTileRect();
+    Quadtree::Geometry::Rect<float> location(
+        Quadtree::Geometry::Vector<float>(rect.get_center().x,rect.get_center().y),
+                                          rect.get_width(),rect.get_height());    
+    
+    m_mo_quadtree->Remove(location,pMO);   
+    m_mo_mutex.unlock();
+}
 
 
 

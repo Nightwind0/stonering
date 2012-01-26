@@ -69,32 +69,25 @@ namespace StoneRing
 	virtual AstScript* GetUtility(Utility util)const;
 	virtual std::string GetCurrencyName() const;
 	virtual void MainMenu();
-    int frameRate();
+        virtual void RunOnMainThread(CL_Event& event, Functor* functor); 
+        int frameRate();
     protected:
         virtual int GetScreenWidth()const;
         virtual int GetScreenHeight()const;
     private:
-        
-        class Functor {
-        public:
-            Functor(){}
-            virtual ~Functor(){}
-            virtual void operator()(){
-            }
-        };
         
         struct ThreadFunctor {
             ThreadFunctor(CL_Event& event,Functor *pFunctor):m_event(event),m_pFunctor(pFunctor){
             }
             Functor *m_pFunctor;
             CL_Event& m_event;
-        };
+        };         
+
 	
 	void queryJoystick();
 	double get_value_for_axis_direction(IApplication::AxisDirection dir) const;
 	AxisDirection get_direction_for_value(IApplication::Axis axis, double value) const;
 
-        void run_on_mainthread(CL_Event& event, Functor * functor);
 	
         // Steel functions.
         SteelType gaussian(double mean, double sigma);

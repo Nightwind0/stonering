@@ -203,6 +203,8 @@ namespace StoneRing {
 
         void MoveMappableObjects(const CL_Rect &src);
         
+        void AddMappableObject(MappableObject* pMO);
+        void RemoveMappableObject(MappableObject* pMO);        
 
         bool CanMove(MappableObject* pMO, const CL_Rect& tiles_currently, const CL_Rect& tiles_destination)const;
         // Checks relevant tile and MO direction block information
@@ -309,6 +311,7 @@ namespace StoneRing {
         std::list<InteractPoint> m_interactPoints;
         std::set<CL_Point> m_pathPoints;
 #endif
+        mutable CL_Mutex m_mo_mutex;
     };
 
 
