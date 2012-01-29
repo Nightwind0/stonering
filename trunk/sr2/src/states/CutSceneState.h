@@ -57,7 +57,6 @@ public:
     
     bool HasTasks() const { return !m_tasks.empty(); }
     void SetFadeLevel(float level);
-    void MoveCharacterTo(MappableObject* pMO,int x, int y, int speed);
     void PanTo(int x, int y);
     CL_Point GetOrigin()const;
     void Completed();
@@ -65,23 +64,24 @@ private:
     void verifyLevel();
     Level * grabMapStateLevel();
     SteelType gotoLevel(const std::string&,int x, int y);
-    SteelType hideCharacter(SteelType::Handle hHandle);
-    SteelType unhideCharacter(SteelType::Handle hHandle);
-    SteelType freezeCharacters(); // Stop automatic NPC movement
-    SteelType unfreezeCharacters();
+    SteelType hideObject(SteelType::Handle hHandle);
+    SteelType unhideObject(SteelType::Handle hHandle);
+    SteelType freezeObjects(); // Stop automatic NPC movement
+    SteelType unfreezeObjects();
     SteelType fadeIn(double seconds);
     SteelType fadeOut(double seconds);
     SteelType panTo(int x, int y,double seconds);
     SteelType colorize(double r, double g, double b);
     SteelType uncolorize();
-    SteelType getCharacter(const std::string& str);
+    SteelType getObject(const std::string& str);
     SteelType getPlayer();
-    SteelType moveCharacter(SteelType::Handle hHandle, int x, int y, int speed);
+    SteelType moveObject(SteelType::Handle hHandle, int x, int y, int speed);
     SteelType changeFaceDirection(SteelType::Handle hHandle, int dir);
     SteelType addSprite(const std::string& spriteRef, uint sprite_size, uint move_type, int x, int y, int face_dir);
     SteelType waitFor(const SteelType::Handle& waitOn);
     SteelType pause(double seconds);
     SteelType dialog(const std::string& who, const std::string& what, double seconds);
+    SteelType fadeObject(SteelType::Handle hHandle, bool in, double seconds);
     
     class Task : public SteelType::IHandle {
     public:
@@ -148,6 +148,21 @@ private:
         uint m_duration;
     };
     
+    class FadeMOTask : public Task { 
+    public:
+        FadeMOTask(CutSceneState& state, MappableObject* pObject, bool in, uint ms_duration):Task(state),m_pObject(pObject),m_fade_in(in),m_duration(ms_duration){
+        }
+        virtual ~FadeMOTask() {}
+        virtual void start();
+        virtual void update();
+        virtual bool finished();
+    private:
+        MappableObject * m_pObject;
+        bool m_fade_in;
+        uint m_duration;
+        uint m_start_time;
+    };
+    
     Level * m_pLevel;
     SteelRunner<CutSceneState>* m_pRunner;
     SteelType::Functor m_functor;
@@ -162,9 +177,11 @@ private:
     CL_Thread m_steel_thread;
     CL_Mutex m_task_mutex;
     std::list<MappableObject*> m_temp_mos;
+    std::list<MappableObject*> m_faded_mos;
 #if SEPARATE_INTERPRETER
     SteelInterpreter m_interpreter;
 #endif
+    bool m_showDebug;
 };
 
 

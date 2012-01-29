@@ -3536,30 +3536,27 @@
                                     case 4:
                                     playScene(function(){
                                         using "scene";
-                                        var $moveSam = moveCharacter(getCharacter("Karate Cat"),13,3,12);
-                                        var $moveSam2 = moveCharacter(getCharacter("Samara"),13,4,12);
+                                        var $moveSam = moveObject(getObject("Karate Cat"),13,3,12);
+                                        var $moveSam2 = moveObject(getObject("Samara"),13,4,12);
                                         waitFor($moveSam);
                                         waitFor($moveSam2);
                                         dialog("Karate Cat", "Here I go!",2.0);
                                         //say("Karate Cat", "Here I go!");
-                                        waitFor(moveCharacter(scene::getCharacter("Karate Cat"),0,0,12));                                        
+                                        //waitFor(moveObject(scene::getObject("Karate Cat"),0,0,12));
+                                        waitFor(fadeObject(getObject("Karate Cat"),false,1.0));
                                     });
                                     break;
                                     case 5:
                                         playScene(function(){
                                             using "scene";
-                                            declare $newguy = addSprite("Animals/Cat2",$_SIZE_SMALL,$_MOVE_NSEW,0,0,$_SOUTH);
-                                            waitFor(moveCharacter($newguy,20,20,$_MOVE_FAST));
+                                            panTo(-4,-4,1);
+                                            declare $newguy = addSprite("Animals/Cat2",$_SIZE_SMALL,$_MOVE_NSEW,4,4,$_SOUTH);
+                                            hideObject($newguy);
+                                            fadeObject($newguy,true,4.0);
+                                            waitFor(moveObject($newguy,20,20,$_MOVE_FAST*3));
                                             declare $pan = panTo(10,10,2);
                                             fadeOut(2);
-                                            waitFor($pan);
-                                            panTo(-10,-10,2);
-                                            waitFor(fadeIn(2));
-                                            $pan = panTo(10,-10,4);
-                                            waitFor($pan);
-                                            waitFor(panTo(10,20,2));
-                                            fadeOut(2);
-                                           
+                                            
                                             }
                                         );
                                     break;

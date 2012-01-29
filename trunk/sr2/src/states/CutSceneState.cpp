@@ -38,7 +38,7 @@ namespace StoneRing {
                 
                     m_result = m_pFunctor->Call(m_pInterpreter,SteelType::Container());
             }
-    #if 1
+    #if 0
                     std::cerr << "Cut scene functor finished. Waiting for tasks to finish." << std::endl;
     #endif
                 
@@ -57,7 +57,7 @@ namespace StoneRing {
 
 CutSceneState::CutSceneState():m_pRunner(NULL),m_pLevel(NULL)
 {
-
+    m_showDebug = false;
 }
 
 CutSceneState::~CutSceneState()
@@ -81,9 +81,9 @@ void CutSceneState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
                                 m_center.y + screenRect.get_height() /2);
     GC.clear();
     if(m_pLevel){
-        m_pLevel->Draw(levelRect,screenRect,GC);
+        m_pLevel->Draw(levelRect,screenRect,GC,false,m_showDebug,m_showDebug);
         if(m_bDrawMOs)
-            m_pLevel->DrawMappableObjects(levelRect,screenRect,GC);
+            m_pLevel->DrawMappableObjects(levelRect,screenRect,GC,m_showDebug);
     }
     for(std::list<Task*>::iterator it = m_tasks.begin(); it != m_tasks.end();
         /* */){
@@ -118,6 +118,10 @@ void CutSceneState::HandleButtonDown ( const StoneRing::IApplication::Button& bu
 
 void CutSceneState::HandleButtonUp ( const StoneRing::IApplication::Button& button )
 {
+#ifndef NDEBUG
+    if(button == IApplication::BUTTON_ALT)
+        m_showDebug = !m_showDebug;
+#endif
 }
 
 void CutSceneState::Init ( const SteelType::Functor& pFunctor )
@@ -148,12 +152,18 @@ void CutSceneState::Start()
 
 void CutSceneState::Finish()
 {
+
+   for(std::list<MappableObject*>::iterator it = m_faded_mos.begin();
+            it != m_faded_mos.end(); it++){
+            (*it)->SetAlpha(1.0f);
+        }
+        
     for(std::list<MappableObject*>::iterator it = m_temp_mos.begin();
         it != m_temp_mos.end(); it++)
         {
             IApplication::GetInstance()->GetCurrentLevel()->RemoveMappableObject(*it);
             delete *it;
-        }
+        }        
     //m_functor.reset();
     m_steel_thread.join();
 }
@@ -183,24 +193,24 @@ void CutSceneState::SteelInit (
     m_pRunner = new CutSceneRunner(pInterpreter,this);
     // Add BIFs
     pInterpreter->addFunction("gotoLevel","scene",new SteelFunctor3Arg<CutSceneState,const std::string&,int,int>(this,&CutSceneState::gotoLevel));
-    pInterpreter->addFunction("hideCharacter","scene",new SteelFunctor1Arg<CutSceneState,SteelType::Handle>(this,&CutSceneState::hideCharacter));
-    pInterpreter->addFunction("unhideCharacter","scene", new SteelFunctor1Arg<CutSceneState,SteelType::Handle>(this,&CutSceneState::unhideCharacter));
-    pInterpreter->addFunction("freezeCharacters","scene",new SteelFunctorNoArgs<CutSceneState>(this,&CutSceneState::freezeCharacters));
-    pInterpreter->addFunction("unfreezeCharacters","scene",new SteelFunctorNoArgs<CutSceneState>(this,&CutSceneState::unfreezeCharacters));
+    pInterpreter->addFunction("hideObject","scene",new SteelFunctor1Arg<CutSceneState,SteelType::Handle>(this,&CutSceneState::hideObject));
+    pInterpreter->addFunction("unhideObject","scene", new SteelFunctor1Arg<CutSceneState,SteelType::Handle>(this,&CutSceneState::unhideObject));
+    pInterpreter->addFunction("freezeObjects","scene",new SteelFunctorNoArgs<CutSceneState>(this,&CutSceneState::freezeObjects));
+    pInterpreter->addFunction("unfreezeObjects","scene",new SteelFunctorNoArgs<CutSceneState>(this,&CutSceneState::unfreezeObjects));
     pInterpreter->addFunction("fadeIn","scene",new SteelFunctor1Arg<CutSceneState,double>(this,&CutSceneState::fadeIn));
     pInterpreter->addFunction("fadeOut","scene",new SteelFunctor1Arg<CutSceneState,double>(this,&CutSceneState::fadeOut));
     pInterpreter->addFunction("panTo","scene",new SteelFunctor3Arg<CutSceneState,int,int,double>(this,&CutSceneState::panTo));
     pInterpreter->addFunction("colorize","scene",new SteelFunctor3Arg<CutSceneState,double,double,double>(this,&CutSceneState::colorize));
     pInterpreter->addFunction("uncolorize","scene",new SteelFunctorNoArgs<CutSceneState>(this,&CutSceneState::uncolorize));
-    pInterpreter->addFunction("getCharacter","scene",new SteelFunctor1Arg<CutSceneState,const std::string&>(this,&CutSceneState::getCharacter));
+    pInterpreter->addFunction("getObject","scene",new SteelFunctor1Arg<CutSceneState,const std::string&>(this,&CutSceneState::getObject));
     pInterpreter->addFunction("getPlayer","scene",new SteelFunctorNoArgs<CutSceneState>(this,&CutSceneState::getPlayer));
-    pInterpreter->addFunction("moveCharacter","scene",new SteelFunctor4Arg<CutSceneState,SteelType::Handle,int,int,int>(this,&CutSceneState::moveCharacter));
+    pInterpreter->addFunction("moveObject","scene",new SteelFunctor4Arg<CutSceneState,SteelType::Handle,int,int,int>(this,&CutSceneState::moveObject));
     pInterpreter->addFunction("changeFaceDirection","scene",new SteelFunctor2Arg<CutSceneState,SteelType::Handle,int>(this,&CutSceneState::changeFaceDirection));
     pInterpreter->addFunction("addSprite","scene",new SteelFunctor6Arg<CutSceneState,const std::string&,uint,uint,int,int,int>(this,&CutSceneState::addSprite));
     pInterpreter->addFunction("waitFor","scene",new SteelFunctor1Arg<CutSceneState,const SteelType::Handle&>(this,&CutSceneState::waitFor));
     pInterpreter->addFunction("pause","scene", new SteelFunctor1Arg<CutSceneState,double>(this,&CutSceneState::pause));
     pInterpreter->addFunction("dialog","scene",new SteelFunctor3Arg<CutSceneState,const std::string&,const std::string&, double>(this,&CutSceneState::dialog));   
-    
+    pInterpreter->addFunction("fadeObject","scene",new SteelFunctor3Arg<CutSceneState,SteelType::Handle,bool,double>(this,&CutSceneState::fadeObject));
     
     SteelConst(pInterpreter,"$_MOVE_SLOW", (int)MappableObject::SLOW);
     SteelConst(pInterpreter,"$_MOVE_MEDIUM",(int)MappableObject::MEDIUM);
@@ -254,13 +264,7 @@ void CutSceneState::MappableObjectMoveHook()
         m_pLevel->Update(rect);
 }
 
-void CutSceneState::MoveCharacterTo ( MappableObject* pMO, int x, int y, int speed )
-{
-    // Create navigator and assign it to the MO
 
-    // then we just go until the navigator says it's reached its destination
-    
-}
 
 void CutSceneState::PanTo ( int x, int y )
 {
@@ -293,22 +297,31 @@ SteelType CutSceneState::addSprite ( const std::string& spriteRef, uint sprite_s
     
     class SpriteFunctor : public IApplication::Functor{
     public:
-        SpriteFunctor(const std::string& spriteRef):m_spriteRef(spriteRef){
+        SpriteFunctor(MappableObjectDynamic* pMO,Level * pLevel,const std::string& spriteRef, MappableObject::eSize size)
+        :m_pMO(pMO),m_level(pLevel),m_spriteRef(spriteRef),m_size(size){
         }
         virtual void operator()(){
             m_sprite = GraphicsManager::CreateSprite(m_spriteRef);
+            m_pMO->SetSprite(m_sprite, static_cast<MappableObject::eSize>(m_size));
+            m_level->AddMappableObject(m_pMO);
         }
-        std::string m_spriteRef;
-        CL_Sprite m_sprite;
+        MappableObjectDynamic *m_pMO;
+        Level*          m_level;
+        std::string     m_spriteRef;
+        CL_Sprite       m_sprite;
+        MappableObject::eSize m_size;        
     };
     CL_Event event;
-    SpriteFunctor functor(spriteRef);
+    pMO->SetSolid(true);
+    pMO->SetAlpha(1.0f);
+    pMO->SetDefaultFacing(face_dir);
+    pMO->SetPixelPosition(CL_Point(x*32,y*32));
+    SpriteFunctor functor(pMO,m_pLevel,spriteRef,static_cast<MappableObject::eSize>(sprite_size));
     IApplication::GetInstance()->RunOnMainThread(event,&functor);
     event.wait();
-    pMO->SetSolid(true);
-    pMO->SetSprite(functor.m_sprite, static_cast<MappableObject::eSize>(sprite_size));
-    pMO->SetDefaultFacing(face_dir);
-    m_pLevel->AddMappableObject(pMO);
+ 
+    
+
     
     // Anything we add in a cut scene to the actual level, we have to remove it
     // at the end of the cut scene.
@@ -364,7 +377,7 @@ SteelType CutSceneState::fadeOut ( double seconds )
     return taskhandle;
 }
 
-SteelType CutSceneState::freezeCharacters()
+SteelType CutSceneState::freezeObjects()
 {
     verifyLevel();
     m_pLevel->FreezeMappableObjects();
@@ -372,7 +385,7 @@ SteelType CutSceneState::freezeCharacters()
     return SteelType();
 }
 
-SteelType CutSceneState::unfreezeCharacters()
+SteelType CutSceneState::unfreezeObjects()
 {
     verifyLevel();
     if(m_bFrozen)
@@ -381,19 +394,23 @@ SteelType CutSceneState::unfreezeCharacters()
     return SteelType();
 }
 
-SteelType CutSceneState::hideCharacter ( SteelType::Handle hHandle )
+SteelType CutSceneState::hideObject ( SteelType::Handle hHandle )
 {
     verifyLevel();
+    MappableObject * pObject = GrabHandle<MappableObject*>(hHandle);
+    pObject->SetAlpha(0.0f);
     return SteelType();
 }
 
-SteelType CutSceneState::unhideCharacter ( SteelType::Handle hHandle )
+SteelType CutSceneState::unhideObject ( SteelType::Handle hHandle )
 {
     verifyLevel();
+    MappableObject * pObject = GrabHandle<MappableObject*>(hHandle);
+    pObject->SetAlpha(1.0f);    
     return SteelType();
 }
 
-SteelType CutSceneState::moveCharacter ( SteelType::Handle hHandle, int x, int y, int speed )
+SteelType CutSceneState::moveObject ( SteelType::Handle hHandle, int x, int y, int speed )
 {
     verifyLevel();
     MappableObject * pMO = GrabHandle<MappableObject*>(hHandle);
@@ -431,7 +448,7 @@ SteelType CutSceneState::gotoLevel ( const std::string& level, int x, int y )
    return SteelType();
 }
 
-SteelType CutSceneState::getCharacter ( const  std::string& name )
+SteelType CutSceneState::getObject ( const  std::string& name )
 {
     verifyLevel();
     SteelType val;
@@ -465,7 +482,7 @@ SteelType CutSceneState::waitFor ( const SteelType::Handle& waitOn )
         if(!found) 
             break;
     }
-  
+    return SteelType();
 }
 
 SteelType CutSceneState::pause ( double seconds )
@@ -481,6 +498,23 @@ SteelType CutSceneState::dialog ( const string& who, const string& what, double 
     return SteelType();
 }
 
+SteelType CutSceneState::fadeObject ( SteelType::Handle hHandle, bool in, double seconds )
+{
+    MappableObject * pObject = GrabHandle<MappableObject*>(hHandle);
+    FadeMOTask *pTask = new FadeMOTask(*this,pObject,in,int(seconds * 1000));
+    m_task_mutex.lock();
+    m_tasks.push_back(pTask);
+    m_task_mutex.unlock();
+    pTask->start();
+    SteelType taskhandle;
+    taskhandle.set(pTask);
+    
+    if(m_pLevel == IApplication::GetInstance()->GetCurrentLevel()){
+        m_faded_mos.push_back(pObject);
+    }
+    
+    return taskhandle;
+}
 
 
 
@@ -567,5 +601,26 @@ bool CutSceneState::PanTask::finished()
 {
     return (CL_System::get_time() - m_start_time > m_duration);
 }
+
+void CutSceneState::FadeMOTask::start()
+{
+    m_start_time = CL_System::get_time();
+}
+
+void CutSceneState::FadeMOTask::update()
+{
+    const float p = float(CL_System::get_time() - m_start_time)/float(m_duration);
+    float f = m_fade_in?p:1.0f-p;
+    if(f > 1.0f) f = 1.0f;
+    if(f < 0.0f) f = 0.0f;
+    m_pObject->SetAlpha(f);
+}
+
+bool CutSceneState::FadeMOTask::finished()
+{
+    return (CL_System::get_time() - m_start_time > m_duration);
+}
+
+
 
 }

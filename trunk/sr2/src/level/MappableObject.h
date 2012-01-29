@@ -61,7 +61,8 @@ namespace StoneRing {
         virtual bool    RespectsHotness() const{ return true; }
         virtual CL_Rect GetSpriteRect() const ;
         bool            IsAligned() const; // Is aligned on cells (not moving between them)
-        CL_Point        GetPosition() const { return m_pos / 32; }  // In tiles        
+        CL_Point        GetPosition() const { return m_pos / 32; }  // In tiles     
+        void            SetAlpha(float f) { m_alpha = f; }
         
         virtual bool    EvaluateCondition() const;
         virtual void    Prod();
@@ -103,9 +104,8 @@ namespace StoneRing {
         uint            m_nStep; // step frame alternator
         ushort          m_StartX;
         ushort          m_StartY;
-        uint            m_nWidth;
-        uint            m_nHeight;
         CL_Point        m_pos;
+        float           m_alpha;
 
         eMappableObjectType m_eType;
         char            m_cFlags;
