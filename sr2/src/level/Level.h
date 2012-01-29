@@ -311,7 +311,7 @@ namespace StoneRing {
         std::list<InteractPoint> m_interactPoints;
         std::set<CL_Point> m_pathPoints;
 #endif
-        mutable CL_Mutex m_mo_mutex;
+        //mutable CL_Mutex m_mo_mutex;
     };
 
 

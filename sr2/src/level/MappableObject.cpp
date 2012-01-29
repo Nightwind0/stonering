@@ -60,7 +60,7 @@ void MappableObject::Move(Level& level)
 }
 
 MappableObject::MappableObject():m_nStep(0),m_cFlags(0),
-                                            m_nTilesMoved(0)
+                                            m_nTilesMoved(0),m_alpha(1.0f)
 {
 }
 
@@ -112,14 +112,13 @@ CL_Size MappableObject::Calc_Tile_Dimensions() const
 CL_Rect MappableObject::GetSpriteRect() const
 {
     CL_Rect pixelRect;
-    CL_Point myDimensions(m_nWidth,m_nHeight);
-    myDimensions.x *= 32;
-    myDimensions.y *= 32;
-
+    CL_Size mySize = DimensionsFromSizeType();
+    CL_Size myDimensions = mySize * 32;
+ 
     if(IsSprite())
     {
-        pixelRect.top = m_pos.y - (m_sprite.get_height() - myDimensions.y);
-        pixelRect.left = m_pos.x - (m_sprite.get_width() - myDimensions.x);
+        pixelRect.top = m_pos.y - (m_sprite.get_height() - myDimensions.height);
+        pixelRect.left = m_pos.x - (m_sprite.get_width() - myDimensions.width);
         pixelRect.right = pixelRect.left + m_sprite.get_width();
         pixelRect.bottom = pixelRect.top + m_sprite.get_height();
 
@@ -131,7 +130,7 @@ CL_Rect MappableObject::GetSpriteRect() const
     }
     else
     {
-        return CL_Rect(m_pos.x*32,m_pos.y*32,m_pos.x * 32 + myDimensions.x, m_pos.y* 32 + myDimensions.y);
+        return CL_Rect(m_pos.x*32,m_pos.y*32,m_pos.x * 32 + myDimensions.width, m_pos.y* 32 + myDimensions.height);
     }
 }
 
@@ -146,7 +145,10 @@ void MappableObject::Draw(CL_GraphicContext& GC, const CL_Point& offset)
     dstRect.translate(offset);
     if(IsSprite())
     {
+        float alpha = m_sprite.get_alpha();
+        m_sprite.set_alpha(m_alpha);
         m_sprite.draw(GC,dstRect);
+        m_sprite.set_alpha(alpha);
     }
     else if( m_cFlags & TILEMAP )
     {
@@ -575,8 +577,7 @@ bool MappableObjectElement::handle_element(Element::eElement element, Element * 
 void MappableObjectElement::load_finished()
 {
     CL_Size dimensions = Calc_Tile_Dimensions();
-    m_nWidth = dimensions.width;
-    m_nHeight = dimensions.height;
+
     PushNavigator(&m_navigator);
 }
 
@@ -607,6 +608,7 @@ void MappableObjectDynamic::SetSprite ( CL_Sprite sprite, MappableObject::eSize 
     m_sprite = sprite;
     m_eSize = size;
     m_cFlags |= SPRITE;
+    Calc_Tile_Dimensions();
 }
 
 void MappableObjectDynamic::Draw ( CL_GraphicContext& GC, const CL_Point& offset )
@@ -634,8 +636,6 @@ MappablePlayer::MappablePlayer(uint startX, uint startY):m_navigator(*this)
     m_pos.y=startY * 32;
     m_name = "Player";
     m_eType = PLAYER;
-    m_nHeight  =1;
-    m_nWidth = 1;
     PushNavigator(&m_navigator);
 }
 
