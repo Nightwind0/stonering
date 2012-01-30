@@ -20,6 +20,7 @@
 #ifndef MENUBOX_H
 #define MENUBOX_H
 
+#include <ClanLib/core.h>
 #include <ClanLib/display.h>
 #include "sr_defines.h"
 

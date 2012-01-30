@@ -488,6 +488,7 @@ SteelType CutSceneState::waitFor ( const SteelType::Handle& waitOn )
 SteelType CutSceneState::pause ( double seconds )
 {
     CL_System::sleep(seconds * 1000.0);
+	return SteelType();
 }
 
 SteelType CutSceneState::dialog ( const string& who, const string& what, double seconds )

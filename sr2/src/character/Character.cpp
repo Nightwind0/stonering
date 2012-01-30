@@ -359,7 +359,8 @@ double StoneRing::Character::GetDamageCategoryResistance(DamageCategory::eDamage
             return GetAttribute(CA_HOLY_RST);
     }
 
-
+	assert(0);
+	return 0.0;
 }
 
 

@@ -16,7 +16,9 @@ typedef unsigned short ushort;
 
 #ifdef WIN32
 #pragma warning (disable : 4250 )
+#include <memory>
 #else
+#include <tr1/shared_ptr.h>
 #endif
 
 template<class T>
