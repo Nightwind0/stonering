@@ -90,6 +90,8 @@ CL_Size MappableObject::DimensionsFromSizeType ( ) const
     case MO_WIDE:
         return CL_Size(2,1);
     }
+	assert(0);
+	return CL_Size(0,0);
 }
 
 
@@ -278,7 +280,7 @@ int MappableObject::ConvertDirectionToDirectionBlock(Direction dir)
     else if(dir == Direction::NONE)
         return 0;
     else assert(0);
-
+	return 0;
 }
 
 void MappableObject::CalculateEdgePoints(const CL_Point &topleft, Direction dir, std::list<CL_Point> *pList)

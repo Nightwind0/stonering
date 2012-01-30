@@ -386,6 +386,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\level\Navigator.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\src\level\ScriptElement.cpp"
 					>
 				</File>
@@ -443,6 +447,10 @@
 				</File>
 				<File
 					RelativePath="..\src\states\ChoiceState.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\CutSceneState.cpp"
 					>
 				</File>
 				<File
@@ -529,6 +537,10 @@
 				</File>
 				<File
 					RelativePath="..\src\core\Description.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\level\Direction.cpp"
 					>
 				</File>
 				<File
@@ -957,6 +969,10 @@
 				</File>
 				<File
 					RelativePath="..\src\states\ChoiceState.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\CutSceneState.h"
 					>
 				</File>
 				<File

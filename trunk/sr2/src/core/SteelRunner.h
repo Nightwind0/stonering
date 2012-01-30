@@ -22,8 +22,11 @@
 
 #include <ClanLib/core.h>
 #include "sr_defines.h"
+#ifdef WIN32
+#include "SteelInterpreter.h"
+#else
 #include "steel/SteelInterpreter.h"
-
+#endif
 namespace StoneRing {
     
 

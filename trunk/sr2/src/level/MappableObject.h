@@ -8,7 +8,6 @@
 #include "Direction.h"
 #include "Navigator.h"
 #include <stack>
-#include <tr1/shared_ptr.h>
 
 using std::tr1::shared_ptr;
 

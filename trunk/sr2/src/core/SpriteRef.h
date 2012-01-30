@@ -1,6 +1,7 @@
 #ifndef SR2_SPRITE_REF_H
 #define SR2_SPRITE_REF_H
 
+#include <ClanLib/core.h>
 #include <ClanLib/display.h>
 #include "Element.h"
 

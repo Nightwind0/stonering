@@ -167,7 +167,7 @@ void StoneRing::MapState::HandleKeyUp(const CL_InputEvent &key)
         break;
     case CL_KEY_X:
         break;
-    case CL_KEY_F:
+	case CL_KEY_F:{
         static bool frozen = false;
         if(frozen)
             m_pLevel->UnfreezeMappableObjects();
@@ -175,7 +175,7 @@ void StoneRing::MapState::HandleKeyUp(const CL_InputEvent &key)
             m_pLevel->FreezeMappableObjects();
         frozen = !frozen;
         break;
-
+				  }
     case CL_KEY_D:
         m_bShowDebug = m_bShowDebug?false:true;
         break;
@@ -243,6 +243,7 @@ void StoneRing::MapState::MappableObjectMoveHook() // Do stuff right after the m
 
 void StoneRing::MapState::Start()
 {
+	m_bDone = false;
 }
 
 void StoneRing::MapState::Finish() // Hook to clean up or whatever after being poppe

@@ -5,7 +5,6 @@
 #include <list>
 #include <cassert>
 #include "Definitions.hxx"
-#include "Iterator.hxx"
 #include "Visitor.hxx"
 #include "Geometry.hxx"
 #include <algorithm>

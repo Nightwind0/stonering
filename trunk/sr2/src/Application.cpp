@@ -1,5 +1,5 @@
-#include <ClanLib/display.h>
 #include <ClanLib/core.h>
+#include <ClanLib/display.h>
 #include <ClanLib/gl.h>
 #include <ClanLib/sound.h>
 #include <ClanLib/vorbis.h>
@@ -2142,6 +2142,7 @@ int Application::main ( const std::vector<CL_String> &args )
         pLevel->Load ( startinglevel, m_resources );
         pLevel->Invoke();
 
+		mMapState.Start();
         mMapState.SetDimensions ( GetDisplayRect() );
         mMapState.PushLevel ( pLevel, 1, 1 );
 
@@ -2201,8 +2202,8 @@ int Application::main ( const std::vector<CL_String> &args )
             run();
 
 #ifndef NDEBUG
-        console.wait_for_key();
-
+		console.display_close_message();
+		console.wait_for_key();
 #endif
 
 
@@ -2287,8 +2288,12 @@ void Application::showIntro()
                       static_cast<float> ( displayY ) );
 
         m_window.flip();
-        CL_KeepAlive::process();
+		CL_KeepAlive::process(1);
+		CL_System::sleep(10);
     }
+#ifndef NDEBUG
+	std::cout << "Finished, now release enter..." << std::endl;
+#endif
 
     // Wait for them to release the key before moving on.
     while ( keyboard.get_keycode ( CL_KEY_ENTER ) ) CL_KeepAlive::process();
