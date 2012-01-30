@@ -44,7 +44,7 @@ namespace StoneRing {
                 
                 // wait for all tasks to finish
                 while(m_callee->HasTasks()){
-                    CL_System::sleep(10);
+                    m_callee->WaitTaskEvent();
                 }
             }catch(SteelException ex){
                std::cerr << "Exception in cut scene: " << ex.getMessage() << " on line " << ex.getLine() << std::endl;
@@ -483,6 +483,11 @@ SteelType CutSceneState::waitFor ( const SteelType::Handle& waitOn )
             break;
     }
     return SteelType();
+}
+
+void CutSceneState::WaitTaskEvent()
+{
+	m_wait_event.wait();
 }
 
 SteelType CutSceneState::pause ( double seconds )
