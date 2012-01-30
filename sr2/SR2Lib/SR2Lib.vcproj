@@ -94,6 +94,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				FavorSizeOrSpeed="1"
+				WholeProgramOptimization="true"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)\src\party&quot;;&quot;$(SolutionDir)\src\character&quot;;&quot;$(SolutionDir)src\core&quot;;&quot;$(SolutionDir)\src&quot;;&quot;$(SolutionDir)\..\steel\src&quot;;&quot;$(SolutionDir)\src\level&quot;;&quot;$(SolutionDir)\src\states&quot;;&quot;$(SolutionDir)\src\monsters&quot;;&quot;$(SolutionDir)\src\items\armor&quot;;&quot;$(SolutionDir)\src\items\weapons&quot;;&quot;$(SolutionDir)\src\items&quot;;&quot;$(SolutionDir)\src\factories&quot;;&quot;$(SolutionDir)\src\battle&quot;;&quot;$(SolutionDir)\src\abilities&quot;"
 				PreprocessorDefinitions="_WINDOWS;WIN32;NDEBUG"
 			/>

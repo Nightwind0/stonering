@@ -60,6 +60,7 @@ public:
     void PanTo(int x, int y);
     CL_Point GetOrigin()const;
     void Completed();
+	void WaitTaskEvent();
 private:
     void verifyLevel();
     Level * grabMapStateLevel();
