@@ -427,7 +427,7 @@ void StoneRing::MapState::SerializeState ( std::ostream& out )
     uint level_count = m_levels.size();
     out.write((char*)&level_count,sizeof(uint));
     for(int i=0;i<level_count;i++){
-        WriteString(out, m_levels[i]->GetName());
+        WriteString(out, m_levels[i]->GetResourceName());
         m_levels[i]->SerializeState(out);
     }
 }

@@ -3518,7 +3518,7 @@
                         <script id="useBattlePodium">
                             <![CDATA[
                                 var $decision = choice("Make your choice:", 
-                                    array("Mochi Team!","One Mochi","Shop","Sell","Walk","Event","Nevermind"));
+                                    array("Mochi Team!","One Mochi","Shop","Sell","Walk","Event","Load","Save","Nevermind"));
                                 switch($decision){
                                     case 0:
                                         startBattle("Green Tea Mochi",3,false,"grasslands");
@@ -3538,6 +3538,10 @@
                                         using "scene";
                                         var $moveSam = moveObject(getObject("Karate Cat"),13,3,12);
                                         var $moveSam2 = moveObject(getObject("Samara"),13,4,12);
+                                        waitFor(fadeObject(getObject("Samara"),false,1));
+                                        waitFor(fadeObject(getObject("Samara"),true,1));
+                                        
+                                        fadeObject(getObject("Samara"),false,4);                                        
                                         waitFor($moveSam);
                                         waitFor($moveSam2);
                                         dialog("Karate Cat", "Here I go!",2.0);
@@ -3559,6 +3563,12 @@
                                             
                                             }
                                         );
+                                    break;
+                                    case 6:
+                                        load();                                       
+                                    break;
+                                    case 7:
+                                        save();
                                     break;
   
                                     default:

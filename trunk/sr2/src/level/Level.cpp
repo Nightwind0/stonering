@@ -967,7 +967,7 @@ bool Level::Tile_Sort_Criterion ( const Tile * p1, const Tile * p2)
     return p1->GetZOrder() < p2->GetZOrder();
 }
 
-void Level::LoadFromFile(const std::string &filename)
+void Level::load_from_file(const std::string &filename)
 {
     CL_DomDocument doc;
     CL_File file(filename);
@@ -982,7 +982,8 @@ void Level::Load(const std::string &name, CL_ResourceManager& resources)
     std::string path = CL_String_load("Game/LevelPath", resources);
     std::string filename = CL_String_load("Levels/" + name, resources);
 
-    LoadFromFile(path + filename);
+    m_resource_name = name;
+    load_from_file(path + filename);
 }
 
 bool Level::handle_element(Element::eElement element, Element * pElement)

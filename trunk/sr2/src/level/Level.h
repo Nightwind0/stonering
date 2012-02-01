@@ -190,7 +190,6 @@ namespace StoneRing {
     public:
         Level();
         virtual ~Level();
-        void LoadFromFile(const std::string &filename);
         void Load(const std::string &name, CL_ResourceManager& resources);
         void Invoke(); // run invoke script if any
         eElement WhichElement() const { return ELEVEL; }
@@ -233,7 +232,7 @@ namespace StoneRing {
         bool AllowsRunning() const { return m_bAllowsRunning; }
         std::string GetName() const { return m_name; }
         std::string GetMusic() const { return m_pHeader->GetMusic(); }
-
+        std::string GetResourceName() const { return m_resource_name; }
         // Player interfaces
         MappablePlayer * GetPlayer() { return &m_player; }
         void SetPlayerPos(const CL_Point &target);
@@ -252,8 +251,9 @@ namespace StoneRing {
         void AddPathTile(const CL_Point& pt);
         void ClearPath();
 #endif
-    typedef Quadtree::RootNode<MappableObject*,4,float> MOQuadtree;
+        typedef Quadtree::RootNode<MappableObject*,4,float> MOQuadtree;
     protected:
+        
 
         std::vector<std::vector<std::list<Tile*> > > m_tiles;
         // Needs to be a multimap
@@ -265,6 +265,7 @@ namespace StoneRing {
         virtual bool handle_element(eElement element, Element * pElement);
         virtual void load_attributes(CL_DomNamedNodeMap attributes);
         virtual void load_finished();
+        void load_from_file(const std::string &path);
 
         // MO related operations
         bool Contains_Mappable_Objects(const CL_Point &point) const;
@@ -303,6 +304,7 @@ namespace StoneRing {
         MappablePlayer m_player;
         bool m_bMarkedForDeath;
         MOQuadtree *m_mo_quadtree;
+        std::string m_resource_name;
 #ifndef NDEBUG
         struct InteractPoint{
             CL_Point m_point;

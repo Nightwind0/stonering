@@ -96,6 +96,8 @@ namespace StoneRing
 	virtual AstScript * GetUtility(Utility util)const=0;
         virtual std::string GetCurrencyName()const=0;
         virtual void RunOnMainThread(CL_Event& event, Functor* functor)=0; 
+        virtual bool Serialize(std::ostream& stream)=0;
+        virtual bool Deserialize(std::istream& stream)=0;
     };
 
 }

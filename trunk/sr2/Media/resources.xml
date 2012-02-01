@@ -640,6 +640,21 @@
                         <string name="BPCost"          value="mm_purple"/>
                     </section>
                 </section>
+                <section name="SaveLoad">
+                    <section name="points">
+                        <point name="number" x="16" y="10"/>
+                        <point name="datetime" x="340" y="10"/>
+                        <point name="empty"  x="340" y="40"/>
+                    </section>
+                    <section name="fonts">
+                        <string name="Number" value="BoldGray"/>
+                        <string name="Number_Selected" value="BoldWhite"/>
+                        <string name="DateTime" value="BoldWhite"/>
+                        <string name="Hours" value="BoldMonoWhite"/>
+                        <string name="Empty" value="BoldGray"/>
+                        <string name="Empty_Selected" value="BoldWhite"/>
+                    </section>
+                </section>
         </section>
 
 <!-- Can be moved off to a separate resource xml -->

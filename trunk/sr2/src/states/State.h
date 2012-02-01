@@ -19,8 +19,6 @@ namespace StoneRing
     class State
     {
     public:
-	
-
         virtual bool IsDone() const = 0;
 	// Handle raw key events
         virtual void HandleKeyDown(const CL_InputEvent &key){}
