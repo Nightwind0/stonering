@@ -31,7 +31,7 @@
 #include "Animation.h"
 #include "RegularItem.h"
 #include "Direction.h"
-
+#include "SaveLoadState.h"
 //
 //
 //
@@ -1317,21 +1317,35 @@ SteelType Application::sell ( )
     return SteelType();
 }
 
-SteelType Application::save(int slot)
+
+bool Application::Serialize ( std::ostream& out )
 {
-    std::ofstream out("save.sr2s",std::ios::binary);
     mMapState.SerializeState(out);
     mpParty->Serialize(out);
-    out.close();
+    return true;
+}
+
+bool Application::Deserialize( std::istream& in ) 
+{
+    mMapState.DeserializeState(in);
+    mpParty->Deserialize(in);
+    return true;
+}
+
+SteelType Application::save()
+{
+    // TODO: Put up SaveLoadState
+    SaveLoadState state;
+    state.Init(true);
+    RunState(&state);
     return SteelType();
 }
 
-SteelType Application::load(int slot)
+SteelType Application::load()
 {
-    std::ifstream in("save.sr2s",std::ios::binary);
-    mMapState.DeserializeState(in);
-    mpParty->Deserialize(in);
-    in.close();
+    SaveLoadState state;
+    state.Init(false);
+    RunState(&state);
     return SteelType();
 }
 
@@ -1948,8 +1962,8 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "getMonsterDrops", new SteelFunctor1Arg<Application,const SteelType::Handle>(this,&Application::getMonsterDrops) );
     mInterpreter.addFunction ( "shop", new SteelFunctor1Arg<Application,const SteelArray&>(this,&Application::shop) );
     mInterpreter.addFunction ( "sell", new SteelFunctorNoArgs<Application>(this,&Application::sell) );
-    mInterpreter.addFunction ( "save", new SteelFunctor1Arg<Application,int>(this,&Application::save) );
-    mInterpreter.addFunction ( "load", new SteelFunctor1Arg<Application,int>(this,&Application::load) );
+    mInterpreter.addFunction ( "save", new SteelFunctorNoArgs<Application>(this,&Application::save) );
+    mInterpreter.addFunction ( "load", new SteelFunctorNoArgs<Application>(this,&Application::load) );
 }
 
 void Application::queryJoystick()

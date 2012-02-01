@@ -2,6 +2,14 @@
 #ifndef SR_DEFINES_H
 #define SR_DEFINES_H
 
+#ifdef WIN32
+#pragma warning (disable : 4250 )
+#include <memory>
+#else
+#include <tr1/memory>
+#endif
+
+
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
 
@@ -12,14 +20,10 @@
 #include <stdlib.h>
 typedef unsigned int uint;
 typedef unsigned short ushort;
+typedef long long int64;
+typedef unsigned long long uint64;
 #include "Font.h"
 
-#ifdef WIN32
-#pragma warning (disable : 4250 )
-#include <memory>
-#else
-#include <tr1/shared_ptr.h>
-#endif
 
 template<class T>
 struct del_fun_t
