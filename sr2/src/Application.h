@@ -67,6 +67,7 @@ namespace StoneRing
         virtual SteelType               RunScript(AstScript * pScript);
         virtual SteelType               RunScript(AstScript *pScript, const ParameterList &params);
 	virtual AstScript*              GetUtility(Utility util)const;
+        virtual uint                    GetMinutesPlayed()const;
 	virtual std::string             GetCurrencyName() const;
         virtual bool                    Serialize(std::ostream& stream);
         virtual bool                    Deserialize(std::istream& stream); 
@@ -247,6 +248,7 @@ namespace StoneRing
         std::queue<ThreadFunctor> m_mainthread_functors;
 
         std::string mGold;
+        uint m_startTime;
 
         /* STATES */
         CL_Mutex mFunctorMutex;

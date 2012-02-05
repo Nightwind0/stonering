@@ -41,7 +41,8 @@ namespace StoneRing{
         virtual void AddCharacter(Character *pCharacter);
         virtual void RemoveCharacter(const std::string &name);
         virtual Character * GetMapCharacter()const;
-	virtual void IterateItems( ItemVisitor & f);	
+	virtual void IterateItems( ItemVisitor & f);
+        virtual uint GetMinutesPlayed()const;
 
         // ICharacterGroup interface
         virtual uint GetCharacterCount() const ;
@@ -65,6 +66,7 @@ namespace StoneRing{
           std::set<std::string> m_events;
           std::map<std::string,ItemEntry> m_items;
           uint m_nGold;
+          uint m_nMinutes;
 
     };
 

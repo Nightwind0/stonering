@@ -75,29 +75,30 @@ namespace StoneRing
 
 	static IApplication * GetInstance();
         virtual ~IApplication(){}
-        virtual CL_ResourceManager&  GetResources()=0;
-        virtual CL_DisplayWindow& GetApplicationWindow()=0;
-        virtual IParty * GetParty() const=0;
+        virtual CL_ResourceManager&GetResources()=0;
+        virtual CL_DisplayWindow&  GetApplicationWindow()=0;
+        virtual IParty *        GetParty() const=0;
        // virtual IParty * GetReserveParty() const=0;
-        virtual AbilityManager * GetAbilityManager() = 0;
-        virtual IFactory * GetElementFactory() = 0;
+        virtual AbilityManager *GetAbilityManager() = 0;
+        virtual IFactory *      GetElementFactory() = 0;
         virtual CharacterManager * GetCharacterManager() = 0;
-        virtual void StartBattle(const MonsterGroup &group, const std::string &backdrop)=0;
-	virtual void PopLevelStack(bool popAll)=0;
-        virtual Level* GetCurrentLevel()const=0;
-	virtual void MainMenu()=0;
-	virtual void LoadMainMenu(CL_DomDocument&)=0;
-        virtual CL_Rect GetDisplayRect() const=0;
-        virtual void RequestRedraw(const State *pState)=0;
-        virtual void RunState(State *pState, bool threaded=false)=0;
-        virtual AstScript * LoadScript(const std::string &name, const std::string &script)=0;
-        virtual SteelType RunScript(AstScript * pScript)=0;
-        virtual SteelType RunScript(AstScript *pScript, const ParameterList &params)=0;
-	virtual AstScript * GetUtility(Utility util)const=0;
-        virtual std::string GetCurrencyName()const=0;
-        virtual void RunOnMainThread(CL_Event& event, Functor* functor)=0; 
-        virtual bool Serialize(std::ostream& stream)=0;
-        virtual bool Deserialize(std::istream& stream)=0;
+        virtual void            StartBattle(const MonsterGroup &group, const std::string &backdrop)=0;
+	virtual void            PopLevelStack(bool popAll)=0;
+        virtual Level*          GetCurrentLevel()const=0;
+	virtual void            MainMenu()=0;
+	virtual void            LoadMainMenu(CL_DomDocument&)=0;
+        virtual CL_Rect         GetDisplayRect() const=0;
+        virtual uint            GetMinutesPlayed()const=0;
+        virtual void            RequestRedraw(const State *pState)=0;
+        virtual void            RunState(State *pState, bool threaded=false)=0;
+        virtual AstScript *     LoadScript(const std::string &name, const std::string &script)=0;
+        virtual SteelType       RunScript(AstScript * pScript)=0;
+        virtual SteelType       RunScript(AstScript *pScript, const ParameterList &params)=0;
+	virtual AstScript *     GetUtility(Utility util)const=0;
+        virtual std::string     GetCurrencyName()const=0;
+        virtual void            RunOnMainThread(CL_Event& event, Functor* functor)=0; 
+        virtual bool            Serialize(std::ostream& stream)=0;
+        virtual bool            Deserialize(std::istream& stream)=0;
     };
 
 }

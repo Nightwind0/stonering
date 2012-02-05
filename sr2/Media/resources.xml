@@ -59,6 +59,7 @@
                 <freetype name="sb_cyan" size="24" color="#00DDDD" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
                 <freetype name="sm_cyan" size="14" color="#00DDDD" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
                 <freetype name="sm_blue" size="14" color="#000080" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="sm_white" size="14" color="#FFFFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>                
                 <freetype name="mm_white" size="22" color="#FFFFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
                 <freetype name="mm_black" size="22" color="#000000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>   
                 <freetype name="mm_gray" size="22" color="#636363" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>   
@@ -392,6 +393,7 @@
                         <string name="HP"    value = "mono_green"/>
                         <string name="MP"    value = "mono_purple"/>
                         <string name="SP"    value = "mono_blue"/>
+                        <string name="PartyStat" value = "sb_white"/>
                 </section>
                 <section name="rects">
                     <rect name="menu" left="479" right="752" top="24" bottom="390"/>
@@ -645,12 +647,13 @@
                         <point name="number" x="16" y="10"/>
                         <point name="datetime" x="340" y="10"/>
                         <point name="empty"  x="340" y="40"/>
+                        <point name="portrait" x="20" y="40"/>
                     </section>
                     <section name="fonts">
                         <string name="Number" value="BoldGray"/>
                         <string name="Number_Selected" value="BoldWhite"/>
                         <string name="DateTime" value="BoldWhite"/>
-                        <string name="Hours" value="BoldMonoWhite"/>
+                        <string name="Hours" value="BoldWhite"/>
                         <string name="Empty" value="BoldGray"/>
                         <string name="Empty_Selected" value="BoldWhite"/>
                     </section>
