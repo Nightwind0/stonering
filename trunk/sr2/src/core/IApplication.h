@@ -91,6 +91,7 @@ namespace StoneRing
         virtual uint            GetMinutesPlayed()const=0;
         virtual void            RequestRedraw(const State *pState)=0;
         virtual void            RunState(State *pState, bool threaded=false)=0;
+        virtual void            StartGame(bool load)=0;
         virtual AstScript *     LoadScript(const std::string &name, const std::string &script)=0;
         virtual SteelType       RunScript(AstScript * pScript)=0;
         virtual SteelType       RunScript(AstScript *pScript, const ParameterList &params)=0;

@@ -1,0 +1,158 @@
+/*
+    <one line to give the program's name and a brief idea of what it does.>
+    Copyright (C) 2012  <copyright holder> <email>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+
+#include "StartupState.h"
+#include "GraphicsManager.h"
+#include "DynamicMenuState.h"
+
+namespace StoneRing { 
+
+StartupState::StartupState()
+{
+
+}
+
+StartupState::~StartupState()
+{
+
+}
+
+bool StartupState::DisableMappableObjects() const
+{
+    return false;
+}
+
+bool StartupState::LastToDraw() const
+{
+    return false;
+}
+
+bool StartupState::IsDone() const
+{
+    return m_bDone;
+}
+
+void StartupState::Start()
+{
+    m_bDone = false;
+    m_overlay = GraphicsManager::GetOverlay(GraphicsManager::STARTUP);
+    m_menu_rect = GraphicsManager::GetRect(GraphicsManager::STARTUP,"menu");
+    m_option_font = GraphicsManager::GetFont(GraphicsManager::STARTUP,"option");
+    m_selection_font = GraphicsManager::GetFont(GraphicsManager::STARTUP,"selection");
+}
+
+void StartupState::HandleButtonUp ( const StoneRing::IApplication::Button& button )
+{
+        if(button == IApplication::BUTTON_CANCEL)
+            m_bDone = true;
+        
+        if(button == IApplication::BUTTON_CONFIRM)
+            Menu::Choose();
+}
+
+
+void StartupState::HandleButtonDown ( const StoneRing::IApplication::Button& button )
+{
+    StoneRing::State::HandleButtonDown ( button );
+}
+
+void StartupState::HandleAxisMove ( const StoneRing::IApplication::Axis& axis, const StoneRing::IApplication::AxisDirection dir, float pos )
+{
+    if(dir == IApplication::AXIS_DOWN)
+        Menu::SelectDown();
+    else if(dir == IApplication::AXIS_UP)
+        Menu::SelectUp();
+}
+
+
+void StartupState::SteelCleanup ( SteelInterpreter* )
+{
+}
+
+void StartupState::SteelInit ( SteelInterpreter* )
+{
+}
+
+void StartupState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
+{
+    m_overlay.draw(GC,0,0);   
+    Menu::Draw(GC);
+}
+
+
+void StartupState::MappableObjectMoveHook()
+{
+
+}
+
+void StartupState::Finish()
+{
+
+}
+
+CL_Rectf StartupState::get_rect()
+{
+    return m_menu_rect;
+}
+
+
+void StartupState::draw_option ( int option, bool selected, float x, float y, CL_GraphicContext& gc )
+{
+    std::string option_str;
+    if(option == 0)
+        option_str = "Continue";
+    else if(option == 1)
+        option_str = "New Game";
+    else if(option == 2)
+        option_str = "Quit";
+    
+    Font font = selected?m_selection_font:m_option_font;
+    font.draw_text(gc,x,y,option_str,Font::TOP_LEFT);
+}
+
+int StartupState::get_option_count()
+{
+    return 3;
+}
+
+int StartupState::height_for_option ( CL_GraphicContext& gc )
+{
+    return m_option_font.get_font_metrics(gc).get_height();
+}
+
+void StartupState::process_choice ( int selection )
+{
+    switch(selection){
+        case 0:
+            IApplication::GetInstance()->StartGame(true);
+            break;
+        case 1:
+            IApplication::GetInstance()->StartGame(false);
+            break;
+        case 2:
+            m_bDone = true;
+            break;
+        default:
+            break;
+    }
+}
+
+
+
+}

@@ -32,7 +32,8 @@ namespace StoneRing
 	    ITEMS,
             SKILL_TREE,
             EQUIP,
-            SAVE_LOAD
+            SAVE_LOAD,
+            STARTUP
         };
 
         enum DisplayFont

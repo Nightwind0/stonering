@@ -16,7 +16,6 @@ AppUtils::~AppUtils()
 
 void AppUtils::LoadGameplayAssets(const std::string &path, CL_ResourceManager& resources)
 {
-    std::string startinglevel = CL_String_load("Game/StartLevel",resources);
     std::string itemdefinition = CL_String_load("Game/ItemDefinitions", resources );
     std::string statusEffectDefinition = CL_String_load("Game/StatusEffectDefinitions",resources);
     std::string skilldefinition = CL_String_load("Game/SkillDefinitions",resources);

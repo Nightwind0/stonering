@@ -2,12 +2,6 @@
 <resources>
         <section name="Configuration">
                 <string name="name" value="Stone Ring: Reign of Mordus" />
-                <image name="splash">
-                        <image-file file="Images/Screens/splash.png" />
-                </image>
-                <image name="splashbg">
-                        <image-file file="Images/Screens/splash_bg.png" />
-                </image>
                 <string name="BattleConfig" value="Media/battleConfig.xml"/>
                 <string name="UtilityScripts" value="Media/utilityScripts.xml"/>
 <!-- integer name="width" value="640" / -->
@@ -24,7 +18,6 @@
                 <string name="AnimationDefinitions" value="Media/animations.xml"/>
                 <string name="MainMenuDefinitions" value="Media/mainmenu.xml"/>
                 <string name="LevelPath" value="Media/Levels/" />
-                <string name="StartLevel" value="examplelevel" />
                 <string name="DefaultPlayerSprite" value="Sprites/Party/Valyn" />
                 <string name="Currency" value="Gold"/>
                 <float name="DefaultEncounterRate" value="0.10"/>
@@ -360,6 +353,18 @@
         </section>
 
         <section name="Overlays">
+            <section name="Startup">
+                <image name="overlay">
+                    <image-file file="Images/Overlays/startup.png"/>                    
+                </image>
+                <section name="rects">
+                    <rect name="menu" left="200" right="400" top="500" bottom="580"/>
+                </section>
+                <section name="fonts">
+                    <string name = "option" value="BoldGray"/>
+                    <string name = "selection" value="BoldWhite"/>
+                </section>
+            </section>
             <section name="DynamicMenu">
                 <section name="points">
                     <point name="margins" x="20" y="20"/>
