@@ -24,6 +24,7 @@ namespace StoneRing
 	virtual void HandleButtonUp(const IApplication::Button& button);
 	virtual void HandleButtonDown(const IApplication::Button& button);
 	virtual void HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir,float pos);
+        virtual void HandleQuit() { m_bDone = true; }
         virtual void HandleKeyDown(const CL_InputEvent &key);
         virtual void HandleKeyUp(const CL_InputEvent &key);
         virtual void Draw(const CL_Rect &screenRect,CL_GraphicContext& GC);

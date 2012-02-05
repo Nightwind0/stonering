@@ -192,6 +192,8 @@ stonering_SOURCES =	src/Application.cpp \
 			src/core/StatusBox.cpp \
 			src/states/ShopState.cpp \
 			src/states/ShopState.h \
+			src/states/StartupState.cpp \
+			src/states/StartupState.h \
 			src/core/SoundManager.cpp \
 			src/core/SoundManager.h \
 			src/abilities/SoundPlay.cpp \

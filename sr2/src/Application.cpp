@@ -32,6 +32,8 @@
 #include "RegularItem.h"
 #include "Direction.h"
 #include "SaveLoadState.h"
+#include "StartupState.h"
+#include <ClanLib-2.3/ClanLib/Core/System/cl_platform.h>
 //
 //
 //
@@ -126,6 +128,23 @@ SteelType Application::loadLevel ( const std::string &level, uint startX, uint s
     Level * pLevel = new Level();
     pLevel->Load ( level, m_resources );
     pLevel->Invoke();
+    
+    bool mapstaterunning = false;
+    for(std::vector<State*>::const_iterator it = mStates.begin();
+        it != mStates.end(); it++){
+        if(*it == &mMapState){
+            mapstaterunning = true;
+            break;
+        }
+    }
+    
+    if(!mapstaterunning){
+        mMapState.SetDimensions(GetDisplayRect());
+        mMapState.Start();
+        mStates.push_back(&mMapState);
+    }
+    
+    
     mMapState.PushLevel ( pLevel, static_cast<uint> ( startX ), static_cast<uint> ( startY ) );
 
     return SteelType();
@@ -249,6 +268,22 @@ SteelType Application::say ( const std::string &speaker, const std::string &text
     return SteelType();
 }
 
+
+void Application::StartGame(bool load)
+{
+    if(load){
+        mMapState.Start();
+        mMapState.SetDimensions ( GetDisplayRect() );
+        mStates.push_back ( &mMapState );         
+        this->load();        
+    }else{   
+        std::string startscript;
+        loadscript ( startscript, CL_String_load ( "Game/StartupScript", m_resources ) );
+        mInterpreter.run ( "Startup", startscript );
+    }
+}
+
+
 void Application::RunOnMainThread ( CL_Event& event, Application::Functor* functor )
 {
     ThreadFunctor thread_functor(event,functor);
@@ -260,9 +295,11 @@ void Application::RunOnMainThread ( CL_Event& event, Application::Functor* funct
 
 void Application::RunState ( State * pState, bool threaded )
 {
-    State * runningState = mStates.back();
+    State * runningState = NULL;
+    if(!mStates.empty())
+        runningState = mStates.back();
     mStates.push_back ( pState );
-    if(runningState->Threaded() || threaded){
+    if((runningState && runningState->Threaded()) || threaded){
         class RunFunctor : public Functor {
         public:
             RunFunctor(Application& app):m_app(app){
@@ -1320,15 +1357,15 @@ SteelType Application::sell ( )
 
 bool Application::Serialize ( std::ostream& out )
 {
+    mpParty->Serialize(out);    
     mMapState.SerializeState(out);
-    mpParty->Serialize(out);
     return true;
 }
 
 bool Application::Deserialize( std::istream& in ) 
 {
+    mpParty->Deserialize(in);    
     mMapState.DeserializeState(in);
-    mpParty->Deserialize(in);
     return true;
 }
 
@@ -1656,7 +1693,15 @@ void Application::onSignalJoystickAxisMove ( const CL_InputEvent &event, const C
 
 void Application::onSignalQuit()
 {
-
+    DynamicMenuState menu;
+    std::vector<std::string> options;
+    options.push_back("Cancel");
+    options.push_back("Quit");
+    menu.Init(options);
+    RunState(&menu);
+    if(menu.GetSelection() == 1){
+        mbDone = true;
+    }
 }
 
 void Application::RequestRedraw ( const State * /*pState*/ )
@@ -2008,7 +2053,7 @@ void Application::run(bool process_functors)
     backState->Start();
     unsigned int then = CL_System::get_time();
 
-    while ( !backState->IsDone() )
+    while ( !mbDone &&  !backState->IsDone() )
     {
         queryJoystick();
         
@@ -2129,7 +2174,7 @@ int Application::main ( const std::vector<CL_String> &args )
 
 
         m_window = CL_DisplayWindow ( desc );
-
+        
 
         std::string battleConfig = CL_String_load ( "Configuration/BattleConfig", m_resources );
         mBattleConfig.Load ( battleConfig );
@@ -2144,23 +2189,11 @@ int Application::main ( const std::vector<CL_String> &args )
         mAppUtils.LoadGameplayAssets ( "", m_resources );
         std::string utilityConfig = CL_String_load ( "Configuration/UtilityScripts", m_resources );
         mUtilityScripts.Load ( utilityConfig );
-        std::string startinglevel = CL_String_load ( "Game/StartLevel", m_resources );
-        std::string initscript;
-        loadscript ( initscript, CL_String_load ( "Game/StartupScript", m_resources ) );
-        mInterpreter.run ( "Init", initscript );
 
         showRechargeableOnionSplash();
-        showIntro();
 
-        Level * pLevel = new Level();
-        pLevel->Load ( startinglevel, m_resources );
-        pLevel->Invoke();
-
-		mMapState.Start();
-        mMapState.SetDimensions ( GetDisplayRect() );
-        mMapState.PushLevel ( pLevel, 1, 1 );
-
-        mStates.push_back ( &mMapState );
+        mStartupState.Start();
+        mStates.push_back ( &mStartupState );       
     }
     catch ( CL_Exception error )
     {
@@ -2183,37 +2216,35 @@ int Application::main ( const std::vector<CL_String> &args )
     }
   
 
-
-    CL_InputDevice keyboard = m_window.get_ic().get_keyboard();
-
-    CL_Slot slot_quit = m_window.sig_window_close().connect ( this, &Application::onSignalQuit );
-    CL_Slot slot_key_down = keyboard.sig_key_down().connect ( this, &Application::onSignalKeyDown );
-    CL_Slot slot_key_up  = keyboard.sig_key_up().connect ( this, &Application::onSignalKeyUp );
-
-    CL_Slot joystickDown;
-    CL_Slot joystickUp;
-    CL_Slot joystickAxis;
-
-    if ( njoystick > 0 &&  njoystick < m_window.get_ic().get_joystick_count() )
-    {
-        std::cout << "Joystick count = " << m_window.get_ic().get_joystick_count();
-#if 1
-        CL_InputDevice& joystick = m_window.get_ic().get_joystick ( njoystick );
-        joystickDown = joystick.sig_key_down().connect ( this, &Application::onSignalJoystickButtonDown );
-        joystickUp = joystick.sig_key_up().connect ( this, &Application::onSignalJoystickButtonUp );
-        joystickAxis = joystick.sig_axis_move().connect ( this, &Application::onSignalJoystickAxisMove );
-#endif
-    }
-
     m_startTime = CL_System::get_time();
 
     try
     {
+        CL_InputDevice keyboard = m_window.get_ic().get_keyboard();
+
+        CL_Slot slot_quit = m_window.sig_window_close().connect ( this, &Application::onSignalQuit );
+        CL_Slot slot_key_down = keyboard.sig_key_down().connect ( this, &Application::onSignalKeyDown );
+        CL_Slot slot_key_up  = keyboard.sig_key_up().connect ( this, &Application::onSignalKeyUp );
+
+        CL_Slot joystickDown;
+        CL_Slot joystickUp;
+        CL_Slot joystickAxis;
+
+        if ( njoystick > 0 &&  njoystick < m_window.get_ic().get_joystick_count() )
+        {
+            std::cout << "Joystick count = " << m_window.get_ic().get_joystick_count();
+    #if 1
+            CL_InputDevice& joystick = m_window.get_ic().get_joystick ( njoystick );
+            joystickDown = joystick.sig_key_down().connect ( this, &Application::onSignalJoystickButtonDown );
+            joystickUp = joystick.sig_key_up().connect ( this, &Application::onSignalJoystickButtonUp );
+            joystickAxis = joystick.sig_axis_move().connect ( this, &Application::onSignalJoystickAxisMove );
+    #endif
+        }
 
         m_window.get_gc().clear ( CL_Colorf ( 0.0f, 0.0f, 0.0f ) );
 
 
-        while ( mStates.size() )
+        while ( !mbDone && mStates.size() )
             run();
 
 #ifndef NDEBUG

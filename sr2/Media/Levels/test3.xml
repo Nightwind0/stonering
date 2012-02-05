@@ -3518,7 +3518,7 @@
                         <script id="useBattlePodium">
                             <![CDATA[
                                 var $decision = choice("Make your choice:", 
-                                    array("Mochi Team!","One Mochi","Shop","Sell","Walk","Event","Load","Save","Nevermind"));
+                                    array("Mochi Team!","One Mochi","Shop","Sell","Walk","Event","Save","Nevermind"));
                                 switch($decision){
                                     case 0:
                                         startBattle("Green Tea Mochi",3,false,"grasslands");
@@ -3565,9 +3565,6 @@
                                         );
                                     break;
                                     case 6:
-                                        load();                                       
-                                    break;
-                                    case 7:
                                         save();
                                     break;
   

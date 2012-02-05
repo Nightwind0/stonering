@@ -31,6 +31,7 @@
 #include "EquipState.h"
 #include "ShopState.h"
 #include "CutSceneState.h"
+#include "StartupState.h"
 
 
 class DrawThread; 
@@ -69,6 +70,7 @@ namespace StoneRing
 	virtual AstScript*              GetUtility(Utility util)const;
         virtual uint                    GetMinutesPlayed()const;
 	virtual std::string             GetCurrencyName() const;
+        virtual void                    StartGame(bool load);
         virtual bool                    Serialize(std::ostream& stream);
         virtual bool                    Deserialize(std::istream& stream); 
 	virtual void                    MainMenu();
@@ -252,6 +254,7 @@ namespace StoneRing
 
         /* STATES */
         CL_Mutex mFunctorMutex;
+        StartupState mStartupState;
         MapState mMapState;
         SayState mSayState;
         BattleState mBattleState;

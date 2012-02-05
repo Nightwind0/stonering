@@ -31,7 +31,7 @@
 
 namespace StoneRing {
     
-    const int kVersion = 2;
+    const int kVersion = 3;
 
 SaveLoadState::SaveLoadState()
 {

@@ -11,7 +11,7 @@ using StoneRing::IParty;
 StoneRing::MapState::MapState():m_LevelX(0),
                                 m_LevelY(0)
 {
-	m_bShowDebug = false;
+    m_bShowDebug = false;
     m_horizontal_idle = true;
     m_vertical_idle = true;
 }
@@ -37,6 +37,8 @@ void StoneRing::MapState::RegisterSteelFunctions(SteelInterpreter* pInterpreter)
 
 void StoneRing::MapState::HandleButtonUp(const IApplication::Button& button)
 {
+    if(!m_pLevel) return;
+    
     MappablePlayer *pPlayer = m_pLevel->GetPlayer();
     switch(button)
     {
@@ -57,6 +59,7 @@ void StoneRing::MapState::HandleButtonUp(const IApplication::Button& button)
 
 void StoneRing::MapState::HandleButtonDown(const IApplication::Button& button)
 {
+     if(!m_pLevel) return;
      MappablePlayer *pPlayer = m_pLevel->GetPlayer();
      
      switch(button)
@@ -70,6 +73,7 @@ void StoneRing::MapState::HandleButtonDown(const IApplication::Button& button)
 
 void StoneRing::MapState::HandleAxisMove(const IApplication::Axis& axis, IApplication::AxisDirection dir, float pos)
 {
+    if(!m_pLevel) return;
     MappablePlayer *pPlayer = m_pLevel->GetPlayer();
     IApplication* pApp = IApplication::GetInstance();
 
@@ -114,6 +118,7 @@ void StoneRing::MapState::HandleAxisMove(const IApplication::Axis& axis, IApplic
 
 void StoneRing::MapState::HandleKeyDown(const CL_InputEvent &key)
 {
+    if(!m_pLevel) return;
     MappablePlayer *pPlayer = m_pLevel->GetPlayer();
     assert(pPlayer);
     if(key.shift && m_pLevel->AllowsRunning())
@@ -146,6 +151,7 @@ void StoneRing::MapState::HandleKeyDown(const CL_InputEvent &key)
 
 void StoneRing::MapState::HandleKeyUp(const CL_InputEvent &key)
 {
+    if(!m_pLevel) return;
     MappablePlayer *pPlayer = m_pLevel->GetPlayer();
     assert(pPlayer);
     switch(key.id)
@@ -193,6 +199,7 @@ void StoneRing::MapState::HandleKeyUp(const CL_InputEvent &key)
 
 void StoneRing::MapState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
 {
+    if(!m_pLevel) return;
     bool clearBg = false;
     uint width = min( (unsigned int)screenRect.get_width(), m_pLevel->GetWidth() * 32);
     uint height = min((unsigned int)screenRect.get_height(), m_pLevel->GetHeight() * 32);
@@ -323,6 +330,7 @@ void StoneRing::MapState::Pop(bool bAll)
 
 void StoneRing::MapState::recalculate_player_position()
 {
+    if(!m_pLevel) return;
     MappablePlayer *pPlayer = m_pLevel->GetPlayer();
     assert(pPlayer);
     CL_Rect spriteRect = pPlayer->GetSpriteRect();
@@ -394,6 +402,7 @@ void StoneRing::MapState::recalculate_player_position()
 
 void StoneRing::MapState::MoveMappableObjects()
 {
+    if(!m_pLevel) return;
     static uint ticks = 0;
     CL_Rect rect = CL_Rect(m_LevelX, m_LevelY,
                                          m_LevelX + m_screen_rect.get_width(),
