@@ -208,6 +208,9 @@ void Party::Serialize ( std::ostream& out )
         WriteString(out,m_characters[i]->GetName());
         m_characters[i]->Serialize(out);
     }
+    
+    uint minutes = GetMinutesPlayed();
+    out.write((char*)&minutes,sizeof(uint));
 }
 
 void Party::Deserialize ( std::istream& in )
@@ -238,7 +241,15 @@ void Party::Deserialize ( std::istream& in )
         pChar->Deserialize(in);
         m_characters.push_back(pChar);
     }
+    
+    in.read((char*)&m_nMinutes,sizeof(uint));
 }
+
+uint Party::GetMinutesPlayed() const
+{
+    return m_nMinutes + IApplication::GetInstance()->GetMinutesPlayed();
+}
+
 
 
 

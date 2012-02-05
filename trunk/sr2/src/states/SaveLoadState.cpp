@@ -22,14 +22,16 @@
 #include "GraphicsManager.h"
 #include "DynamicMenuState.h"
 #include "SoundManager.h"
+#include "CharacterManager.h"
 #include <sstream>
 #include <fstream>
+#include <iomanip>
 
 
 
 namespace StoneRing {
     
-    const int kVersion = 1;
+    const int kVersion = 2;
 
 SaveLoadState::SaveLoadState()
 {
@@ -52,6 +54,8 @@ void SaveLoadState::Init ( bool bSave, bool cancelable )
     m_number_pt = GraphicsManager::GetPoint(GraphicsManager::SAVE_LOAD,"number");
     m_datetime_pt = GraphicsManager::GetPoint(GraphicsManager::SAVE_LOAD,"datetime");
     m_empty_pt = GraphicsManager::GetPoint(GraphicsManager::SAVE_LOAD,"empty");
+    m_portrait_pt = GraphicsManager::GetPoint(GraphicsManager::SAVE_LOAD,"portrait");
+    m_hours_font = GraphicsManager::GetFont(GraphicsManager::SAVE_LOAD,"Hours");
 }
 
 void SaveLoadState::Start()
@@ -137,9 +141,11 @@ void SaveLoadState::load_file_previews()
 
 bool SaveLoadState::verify_file ( std::istream& in )
 {
-    char magic[4];
+    char magic[5];
+    magic[4] = '\0';
     in.read(magic,4);
-    if(std::string(magic) != "SR2S"){
+    std::string magic_str(magic);
+    if(magic_str != "SR2S"){
         return false;
     }
     
@@ -209,16 +215,36 @@ void SaveLoadState::draw_option ( int option, bool selected, float x, float y, C
     
     std::map<uint,FilePreview>::const_iterator iter = m_previews.find(option);
     if(iter != m_previews.end()){
+#if 0 
         std::ostringstream strDate;
         strDate << (int)iter->second.m_datetime.get_hour() << ':' << (int)iter->second.m_datetime.get_minutes() << ' ' 
             << (int)iter->second.m_datetime.get_month() << '/' << (int)iter->second.m_datetime.get_day();
         m_datetime_font.draw_text(gc,x+m_datetime_pt.x,y+m_datetime_pt.y,strDate.str(),Font::TOP_LEFT);
+#endif
+        std::ostringstream strTime;
+        strTime << std::setfill('0') << std::setw(2) << iter->second.m_minutes / 60 << ':'
+                << std::setfill('0') << std::setw(2) << iter->second.m_minutes % 60 << 'm';
+        m_hours_font.draw_text(gc,x+m_datetime_pt.x,y+m_datetime_pt.y,strTime.str(),Font::TOP_LEFT);
+        
+        float alpha = selected?1.0f:0.5f;
+        uint i = 0;
+        for(std::list<FilePreview::CharInfo>::const_iterator char_iter = iter->second.m_characters.begin();
+            char_iter != iter->second.m_characters.end(); char_iter++){
+            Character * pChar = IApplication::GetInstance()->GetCharacterManager()->GetCharacter (char_iter->m_name);
+            CL_Sprite portrait = pChar->GetPortrait(Character::PORTRAIT_DEFAULT);
+            
+            CL_Point point(m_portrait_pt.x+x+i*(portrait.get_width()+m_portrait_pt.x),y+m_portrait_pt.y);
+            portrait.draw (gc,point.x,point.y);
+            i++;
+        }
+
     }else{
         if(option == Menu::get_current_choice())
             m_empty_selected_font.draw_text(gc,x + m_empty_pt.x, y + m_empty_pt.y,"No Data");
         else
             m_empty_font.draw_text(gc,x + m_empty_pt.x,y+m_empty_pt.y,"No Data");
     }
+    
 }
 
 CL_Rectf SaveLoadState::get_rect()
@@ -266,7 +292,7 @@ std::string SaveLoadState::filename_for_slot ( uint slot )
 
 int SaveLoadState::height_for_option ( CL_GraphicContext& gc )
 {
-    return IApplication::GetInstance()->GetDisplayRect().get_height() / 4; // Hard-code 4 per screen per now
+    return IApplication::GetInstance()->GetDisplayRect().get_height() / 3; // Hard-code 4 per screen per now
 }
 
 void SaveLoadState::save ( uint slot )
@@ -277,7 +303,7 @@ void SaveLoadState::save ( uint slot )
     out_file.write((char*)&kVersion,sizeof(kVersion));
     IParty * party = IApplication::GetInstance()->GetParty();
     int gold = party->GetGold();
-    int minutes = 0;
+    int minutes = party->GetMinutesPlayed();
     cl_byte64 ticks = CL_DateTime::get_current_utc_time().to_ticks();
     uint num_chars = party->GetCharacterCount();
     out_file.write((char*)&gold,sizeof(gold));

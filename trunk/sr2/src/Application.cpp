@@ -2205,6 +2205,7 @@ int Application::main ( const std::vector<CL_String> &args )
 #endif
     }
 
+    m_startTime = CL_System::get_time();
 
     try
     {
@@ -2267,6 +2268,12 @@ AstScript* Application::GetUtility ( Utility util ) const
 
     return NULL;
 }
+
+uint Application::GetMinutesPlayed() const
+{
+    return (CL_System::get_time() - m_startTime) / 60000;
+}
+
 
 void Application::showRechargeableOnionSplash()
 {

@@ -117,6 +117,7 @@ void StoneRing::MainMenuState::Draw(const CL_Rect &screenRect,CL_GraphicContext&
 	    m_target_sprite.draw(GC,point.x,point.y);
 	}
     }
+    draw_party_stats(GC);
 }
 
 CL_Pointf StoneRing::MainMenuState::calc_player_position(int player)const
@@ -129,6 +130,32 @@ CL_Pointf StoneRing::MainMenuState::calc_player_position(int player)const
     
     return portraitPoint;
 }
+
+void StoneRing::MainMenuState::draw_party_stats ( CL_GraphicContext& gc )
+{
+    const uint kTextWidth = 30;
+    std::ostringstream os;
+    os << "Time:";
+    uint minutes = IApplication::GetInstance()->GetParty()->GetMinutesPlayed();
+    if(minutes > 60){
+        os << std::setw(kTextWidth) << minutes/60 << ':' << minutes%60 << 'm';
+    }else{
+        os << std::setw(kTextWidth) << minutes << 'm';
+    }
+    
+    std::string min_str = os.str();
+    
+    os.clear();
+    os.str("");
+    os << "Gold:" << std::setw(kTextWidth) << IApplication::GetInstance()->GetParty()->GetGold();
+
+ 
+    std::string gold_str = os.str();
+       
+    m_partyStatFont.draw_text(gc,m_status_rect.get_top_left().x+20,m_status_rect.get_top_left().y+20,min_str,Font::TOP_LEFT);
+    m_partyStatFont.draw_text(gc,m_status_rect.get_top_left().x+20,m_status_rect.get_top_left().y+40,gold_str,Font::TOP_LEFT); 
+}
+
 
 void StoneRing::MainMenuState::draw_party(CL_GraphicContext& GC)
 {
@@ -221,6 +248,7 @@ void StoneRing::MainMenuState::Start()
     m_HPFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"HP");
     m_LevelFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"Level");
     m_CharacterFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"Character");
+    m_partyStatFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"PartyStat");
 
     
     m_menu_rect = GraphicsManager::GetRect(GraphicsManager::MAIN_MENU,"menu");

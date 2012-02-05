@@ -53,6 +53,7 @@ namespace StoneRing
 	virtual void process_choice(int selection);
 	virtual int get_option_count();
 	virtual void draw_party(CL_GraphicContext& gc);
+        virtual void draw_party_stats(CL_GraphicContext& gc);
 	
         void fill_choices(std::vector<MenuOption*>::const_iterator begin,
                           std::vector<MenuOption*>::const_iterator end);
@@ -75,6 +76,7 @@ namespace StoneRing
 	Font m_LevelFont;
 	Font m_SPFont;
 	Font m_CharacterFont;
+        Font m_partyStatFont;
         CL_Rectf m_menu_rect;
 	CL_Rectf m_character_rect;
 	CL_Rectf m_party_rect;

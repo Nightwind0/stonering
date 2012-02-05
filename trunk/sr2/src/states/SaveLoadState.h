@@ -80,6 +80,8 @@ private:
     CL_Pointf           m_number_pt;
     CL_Pointf           m_datetime_pt;
     CL_Pointf           m_empty_pt;
+    CL_Pointf           m_portrait_pt;
+    CL_Pointf           m_minutes_pt;
     bool                m_bSave;
     bool                m_bDone;
     bool                m_cancelable;

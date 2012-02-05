@@ -37,6 +37,7 @@ namespace StoneRing{
         virtual void RemoveCharacter(const std::string &name)=0;
         virtual Character * GetMapCharacter()const=0;
 	virtual void IterateItems( ItemVisitor & f)=0;
+        virtual uint GetMinutesPlayed()const=0;
 
         // ICharacterGroup interface
         virtual uint GetCharacterCount() const = 0;
