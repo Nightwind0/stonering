@@ -468,10 +468,15 @@ void EquipState::HandleButtonUp ( const StoneRing::IApplication::Button& button 
                 m_pChar->Equip(m_slots[m_nSlot],pEquipment);
             }
             m_eState = SELECT_SLOT;
-        }
-        
+        }        
         
     }
+    
+    if(button == IApplication::BUTTON_SELECT){
+        SoundManager::PlayEffect(SoundManager::EFFECT_CHANGE_OPTION);            
+        m_pStatusBox->switchPage();
+    }
+
     
 }
 

@@ -29,16 +29,27 @@ const StoneRing::Font& stat_up_font, const StoneRing::Font& stat_down_font,
 const StoneRing::Font& stat_name_font ):m_rect(rect),m_stat_font(stat_font),
 m_stat_up_font(stat_up_font),m_stat_down_font(stat_down_font),m_stat_name_font(stat_name_font)
 {
-    m_stats.push_back(ICharacter::CA_MAXHP);
-    m_stats.push_back(ICharacter::CA_MAXMP);
-    m_stats.push_back(ICharacter::CA_STR);
-    m_stats.push_back(ICharacter::CA_DEF);
-    m_stats.push_back(ICharacter::CA_DEX);
-    m_stats.push_back(ICharacter::CA_EVD);
-    m_stats.push_back(ICharacter::CA_MAG);
-    m_stats.push_back(ICharacter::CA_RST);
-    m_stats.push_back(ICharacter::CA_LCK);
-    m_stats.push_back(ICharacter::CA_JOY);    
+    m_nPage = 0;
+    m_stats[0].push_back(ICharacter::CA_MAXHP);
+    m_stats[0].push_back(ICharacter::CA_MAXMP);
+    m_stats[0].push_back(ICharacter::CA_STR);
+    m_stats[0].push_back(ICharacter::CA_DEF);
+    m_stats[0].push_back(ICharacter::CA_DEX);
+    m_stats[0].push_back(ICharacter::CA_EVD);
+    m_stats[0].push_back(ICharacter::CA_MAG);
+    m_stats[0].push_back(ICharacter::CA_RST);
+    m_stats[0].push_back(ICharacter::CA_LCK);
+    m_stats[0].push_back(ICharacter::CA_JOY);
+    
+    m_stats[1].push_back(ICharacter::CA_PIERCE_DEF);
+    m_stats[1].push_back(ICharacter::CA_SLASH_DEF);
+    m_stats[1].push_back(ICharacter::CA_BASH_DEF);
+    m_stats[1].push_back(ICharacter::CA_FIRE_RST);
+    m_stats[1].push_back(ICharacter::CA_WATER_RST);
+    m_stats[1].push_back(ICharacter::CA_WIND_RST);
+    m_stats[1].push_back(ICharacter::CA_EARTH_RST);
+    m_stats[1].push_back(ICharacter::CA_HOLY_RST);
+    m_stats[1].push_back(ICharacter::CA_DARK_RST);
 }
 
 
@@ -133,8 +144,8 @@ void StatusBox::Draw ( CL_GraphicContext& gc, bool draw_comparison, Character* p
     }
 
     
-    for(std::vector<ICharacter::eCharacterAttribute>::const_iterator iter = m_stats.begin();
-        iter != m_stats.end(); iter++,point += offset)
+    for(std::vector<ICharacter::eCharacterAttribute>::const_iterator iter = m_stats[m_nPage].begin();
+        iter != m_stats[m_nPage].end(); iter++,point += offset)
         {
             m_stat_name_font.draw_text(gc,point,ICharacter::CAToLabel(*iter), Font::TOP_LEFT);
             CL_Pointf statPoint = point;
@@ -143,7 +154,7 @@ void StatusBox::Draw ( CL_GraphicContext& gc, bool draw_comparison, Character* p
             if(ICharacter::IsInteger(*iter))
                 os << std::setw(6) << pChar->GetAttribute(*iter);
             else
-                os << std::setw(6) << std::setprecision(2) << pChar->GetAttribute(*iter);
+                os << std::setw(6) << std::setprecision(0) << int(100.0 * pChar->GetAttribute(*iter));
             m_stat_font.draw_text(gc,statPoint,os.str(),Font::TOP_LEFT);
             
             if(draw_comparison){
@@ -163,7 +174,7 @@ void StatusBox::Draw ( CL_GraphicContext& gc, bool draw_comparison, Character* p
                 if(ICharacter::IsInteger(*iter))
                     os << std::setw(6) << (int)new_value;
                 else
-                    os << std::setw(6) << std::setprecision(2) << new_value;
+                    os << std::setw(6) << std::setprecision(0) <<  int(100.0 * new_value);
 
                 newStatFont.draw_text(gc,statPoint,os.str(), Font::TOP_LEFT);                
             }
@@ -171,4 +182,8 @@ void StatusBox::Draw ( CL_GraphicContext& gc, bool draw_comparison, Character* p
     
 }
 
+void StatusBox::switchPage()
+{
+    m_nPage = m_nPage==0?1:0;
+}
 

@@ -92,6 +92,7 @@ void SaveLoadState::HandleButtonUp ( const StoneRing::IApplication::Button& butt
             m_bDone = true;
             break;
         case IApplication::BUTTON_CONFIRM:
+            SoundManager::PlayEffect(SoundManager::EFFECT_SELECT_OPTION);
             Menu::Choose();
             break;
     }
