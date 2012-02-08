@@ -137,6 +137,11 @@ std::string StoneRing::ICharacter::CAToLabel(uint a)
         default:
             std::string str = CAToString(a);
             str[0] = toupper(str[0]);
+            size_t underscore = str.find_first_of('_');
+            if(underscore != std::string::npos){
+                str[underscore] = ' ';
+                str[underscore+1] = toupper(str[underscore+1]);
+            }
             if(IsReal(static_cast<eCharacterAttribute>(a)))
                 str += "%";
             return str;

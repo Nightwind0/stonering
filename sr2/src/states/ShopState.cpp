@@ -429,6 +429,10 @@ void ShopState::HandleButtonUp ( const StoneRing::IApplication::Button& button )
 {
     StoneRing::State::HandleButtonUp ( button );
     switch(button){
+        case IApplication::BUTTON_SELECT:
+            SoundManager::PlayEffect(SoundManager::EFFECT_CHANGE_OPTION);
+            m_pStatusBox->switchPage();
+            break;
         case IApplication::BUTTON_CANCEL:
             SoundManager::PlayEffect(SoundManager::EFFECT_CANCEL);
             m_bDone = true;

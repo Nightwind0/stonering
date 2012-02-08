@@ -36,15 +36,19 @@ public:
              );
     virtual ~StatusBox();
     
+    void switchPage();
+    
     void Draw(CL_GraphicContext& gc, bool draw_comparison,  Character * pChar, Equipment* pOldEquipment, Equipment * pEquipment);
 private:
+    typedef std::vector<ICharacter::eCharacterAttribute> StatList;
     Equipment::eSlot slot_for_equipment(Equipment* pEquipment);
     CL_Rectf m_rect;
     Font  m_stat_font;
     Font  m_stat_up_font;
     Font  m_stat_down_font;
     Font  m_stat_name_font;
-    std::vector<ICharacter::eCharacterAttribute> m_stats;    
+    uint  m_nPage;
+    std::map<uint,StatList> m_stats;    
 };
 
 }

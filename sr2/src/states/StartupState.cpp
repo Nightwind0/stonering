@@ -20,6 +20,7 @@
 #include "StartupState.h"
 #include "GraphicsManager.h"
 #include "DynamicMenuState.h"
+#include "SoundManager.h"
 
 namespace StoneRing { 
 
@@ -62,8 +63,10 @@ void StartupState::HandleButtonUp ( const StoneRing::IApplication::Button& butto
         if(button == IApplication::BUTTON_CANCEL)
             m_bDone = true;
         
-        if(button == IApplication::BUTTON_CONFIRM)
+        if(button == IApplication::BUTTON_CONFIRM){
+            SoundManager::PlayEffect(SoundManager::EFFECT_SELECT_OPTION);
             Menu::Choose();
+        }
 }
 
 
@@ -74,10 +77,14 @@ void StartupState::HandleButtonDown ( const StoneRing::IApplication::Button& but
 
 void StartupState::HandleAxisMove ( const StoneRing::IApplication::Axis& axis, const StoneRing::IApplication::AxisDirection dir, float pos )
 {
-    if(dir == IApplication::AXIS_DOWN)
+    if(dir == IApplication::AXIS_DOWN){
+        SoundManager::PlayEffect(SoundManager::EFFECT_CHANGE_OPTION);
         Menu::SelectDown();
-    else if(dir == IApplication::AXIS_UP)
+    }
+    else if(dir == IApplication::AXIS_UP){
+        SoundManager::PlayEffect(SoundManager::EFFECT_CHANGE_OPTION);        
         Menu::SelectUp();
+    }
 }
 
 

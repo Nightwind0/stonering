@@ -1603,6 +1603,9 @@ void Application::onSignalKeyUp ( const CL_InputEvent &key, const CL_InputState&
         case CL_KEY_N:
             mStates.back()->HandleButtonUp ( BUTTON_L );
             break;
+        case CL_KEY_S:
+            mStates.back()->HandleButtonUp ( BUTTON_SELECT );
+            break;
     }
 
 }
