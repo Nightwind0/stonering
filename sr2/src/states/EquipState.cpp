@@ -70,6 +70,8 @@ void EquipState::Init ( Character* pCharacter )
     m_equipment_rect = GraphicsManager::GetRect(GraphicsManager::EQUIP, "equipment");
     m_slots_rect = GraphicsManager::GetRect(GraphicsManager::EQUIP, "slots");
     m_stats_rect = GraphicsManager::GetRect(GraphicsManager::EQUIP, "stats");
+    m_stats_header = GraphicsManager::GetRect(GraphicsManager::EQUIP,"stats_header");
+    m_stat_box = GraphicsManager::GetRect(GraphicsManager::EQUIP,"stat_box");
     CL_Pointf slotSize  = GraphicsManager::GetPoint(GraphicsManager::EQUIP, "slot_size");
     m_slot_size = CL_Sizef(slotSize.x,slotSize.y);
     
@@ -84,6 +86,7 @@ void EquipState::Init ( Character* pCharacter )
     m_stat_down_font = GraphicsManager::GetFont(GraphicsManager::EQUIP,"stat_down");
     m_stat_name_font = GraphicsManager::GetFont(GraphicsManager::EQUIP,"stat_name");
     m_desc_font = GraphicsManager::GetFont(GraphicsManager::EQUIP,"desc");
+    m_stat_header_font = GraphicsManager::GetFont(GraphicsManager::EQUIP,"stat_header");
     
     m_no_equipment_icon = GraphicsManager::GetImage(GraphicsManager::EQUIP,"no_equipment");
     
@@ -96,10 +99,10 @@ void EquipState::Init ( Character* pCharacter )
     m_equipment_menu.SetRemoveIcon( m_no_equipment_icon );
     m_equipment_menu.SetHeightPerOption( m_no_equipment_icon.get_height() + 4);
     
-    CL_Rectf stats_rect = m_stats_rect;
-    stats_rect.shrink(GraphicsManager::GetMenuInset().x*2,GraphicsManager::GetMenuInset().y*2);
     
-    m_pStatusBox = new StatusBox(stats_rect,m_stat_font,m_stat_up_font,m_stat_down_font,m_stat_name_font);
+    
+    m_pStatusBox = new StatusBox(m_stats_rect,m_stats_header,m_stat_header_font,m_stat_font, m_stat_up_font,m_stat_down_font,m_stat_name_font);
+   
 }
 
 
@@ -114,7 +117,7 @@ void EquipState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
     MenuBox::Draw( GC, m_desc_rect, false );
     MenuBox::Draw( GC, m_slots_rect, false, CL_Pointf(0.0,0.0) );
     MenuBox::Draw( GC, m_equipment_rect, true, CL_Pointf(0.0,0.0) );
-    MenuBox::Draw( GC, m_stats_rect, true, CL_Pointf(0.0,0.0) );
+    MenuBox::Draw( GC, m_stat_box, true, CL_Pointf(0.0,0.0) );
     
     draw_slots(GC);
     m_equipment_menu.Draw(GC);

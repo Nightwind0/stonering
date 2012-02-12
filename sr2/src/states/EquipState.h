@@ -116,6 +116,8 @@ private:
     CL_Rectf m_equipment_rect;
     CL_Rectf m_stats_rect;
     CL_Rectf m_desc_rect;
+    CL_Rectf m_stats_header;
+    CL_Rectf m_stat_box;
     CL_Sizef m_slot_size;
     Font  m_slot_name_font;
     Font  m_slot_name_selected_font;
@@ -126,6 +128,7 @@ private:
     Font  m_stat_up_font;
     Font  m_stat_down_font;
     Font  m_stat_name_font;
+    Font  m_stat_header_font;
     Font  m_desc_font;
     CL_Image m_no_equipment_icon;
     uint m_nSlot;

@@ -237,16 +237,20 @@ void ShopState::Start()
     m_stats_rect = GraphicsManager::GetRect(GraphicsManager::SHOP,"stats");
     m_desc_rect = GraphicsManager::GetRect(GraphicsManager::SHOP,"desc");
     m_gold_rect = GraphicsManager::GetRect(GraphicsManager::SHOP,"gold");
+    m_stat_header_rect = GraphicsManager::GetRect(GraphicsManager::SHOP,"stat_header");
+    m_stat_box = GraphicsManager::GetRect(GraphicsManager::SHOP,"stat_box");
     m_item_font = GraphicsManager::GetFont(GraphicsManager::SHOP,"item");
     m_item_selected_font = GraphicsManager::GetFont(GraphicsManager::SHOP,"item_selected");
     m_price_font = GraphicsManager::GetFont(GraphicsManager::SHOP,"price");
     m_desc_font = GraphicsManager::GetFont(GraphicsManager::SHOP,"desc");
+    m_stat_header_font = GraphicsManager::GetFont(GraphicsManager::SHOP,"stat_header");
     
     m_stat_font = GraphicsManager::GetFont(GraphicsManager::SHOP,"stat");
     m_stat_up_font = GraphicsManager::GetFont(GraphicsManager::SHOP,"stat_up");
     m_stat_down_font = GraphicsManager::GetFont(GraphicsManager::SHOP,"stat_down");
     m_stat_name_font = GraphicsManager::GetFont(GraphicsManager::SHOP,"stat_name");    
     m_gold_font = GraphicsManager::GetFont(GraphicsManager::SHOP, "gold");
+    
     m_item_unavailable_font = GraphicsManager::GetFont(GraphicsManager::SHOP,"item_unavailable");
     
     CL_Pointf item_point = GraphicsManager::GetPoint(GraphicsManager::SHOP,"item_box");
@@ -260,10 +264,7 @@ void ShopState::Start()
     m_item_menu.SetPriceFont(m_price_font);
     m_item_menu.SetHeightPerOption(item_point.y);
     
-   
-    CL_Rectf stats_rect = m_stats_rect;
-    stats_rect.shrink ( GraphicsManager::GetMenuInset().x, GraphicsManager::GetMenuInset().y ) ;
-    m_pStatusBox = new StatusBox(stats_rect,m_stat_font,m_stat_up_font,m_stat_down_font,m_stat_name_font);
+    m_pStatusBox = new StatusBox(m_stats_rect,m_stat_header_rect, m_stat_header_font,  m_stat_font,m_stat_up_font,m_stat_down_font,m_stat_name_font);
     
     m_item_menu.SetSellMode(m_bSell);
 
@@ -290,7 +291,7 @@ void ShopState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
 {
     MenuBox::Draw(GC,m_character_rect,false);
     MenuBox::Draw(GC,m_items_rect,false);
-    MenuBox::Draw(GC,m_stats_rect,false);
+    MenuBox::Draw(GC,m_stat_box,false);
     MenuBox::Draw(GC,m_desc_rect,false);
     MenuBox::Draw(GC,m_gold_rect,false);    
     m_item_menu.Draw(GC);
