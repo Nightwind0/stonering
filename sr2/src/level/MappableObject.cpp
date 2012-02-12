@@ -59,7 +59,7 @@ void MappableObject::Move(Level& level)
     Set_Frame_For_Direction();
 }
 
-MappableObject::MappableObject():m_nStep(0),m_cFlags(0),
+MappableObject::MappableObject():m_nStepLoop(0),m_cFlags(0),
                                             m_nTilesMoved(0),m_alpha(1.0f)
 {
 }
@@ -68,6 +68,12 @@ MappableObject::~MappableObject(){
 }
 
 
+
+void MappableObject::OnStep()
+{
+    m_nStepLoop = m_nStep++ / 4; // Change the step frame every 4 pixels of movement
+    Set_Frame_For_Direction();
+}
 
 
 std::string MappableObject::GetName() const
@@ -178,9 +184,13 @@ void MappableObject::Set_Frame_For_Direction()
     m_sprite.set_frame(0);
     
     Direction facing = Get_Default_Facing();
+    
+    if(facing == Direction::NONE)
+        m_nStepLoop = 0;
+    
     if(!m_navStack.empty())
         facing = m_navStack.top()->GetFacingDirection();
-
+    
         switch(GetMovementType())
         {
         case MOVEMENT_NONE:
@@ -190,31 +200,40 @@ void MappableObject::Set_Frame_For_Direction()
             break;
         case MOVEMENT_WANDER:
         {
-            int step = m_nStep % 4;
+            int step = m_nStepLoop % (m_sprite.get_frame_count()/4 * 2 - 1);
+            if(step > m_sprite.get_frame_count()/4 - 1){
+                step = m_sprite.get_frame_count()/4 * 2 - step - 2;   
+            }            
             if(facing == Direction::NORTH)
-                m_sprite.set_frame(12 + step);
-            else if(facing == Direction::EAST)
-                m_sprite.set_frame(8 + step);            
-            else if(facing == Direction::WEST)
-                m_sprite.set_frame(4 + step);
-            else if(facing == Direction::SOUTH)
                 m_sprite.set_frame(step);
+            else if(facing == Direction::EAST)
+                m_sprite.set_frame(3 + step);            
+            else if(facing == Direction::WEST)
+                m_sprite.set_frame(9 + step);
+            else if(facing == Direction::SOUTH)
+                m_sprite.set_frame(6 + step);
             break;
         }
         case MOVEMENT_PACE_NS:
         {
-            int step = m_nStep % 4;
+            int step = m_nStepLoop % (m_sprite.get_frame_count()/2 * 2 - 1);
+            if(step > m_sprite.get_frame_count()/2 - 1){
+                step = m_sprite.get_frame_count()/2 * 2 - step - 2;   
+            }            
             if(facing == Direction::NORTH)
-                m_sprite.set_frame ( 4 + step );
+                m_sprite.set_frame ( 3 + step );
             else if(facing == Direction::SOUTH)
                 m_sprite.set_frame ( step);
             break;
         }
         case MOVEMENT_PACE_EW:
         {
-            int step = m_nStep % 4;
+            int step = m_nStepLoop % (m_sprite.get_frame_count()/2 * 2 - 1);
+            if(step > m_sprite.get_frame_count()/2 - 1){
+                step = m_sprite.get_frame_count()/2 * 2 - step - 2;   
+            }             
             if(facing == Direction::EAST)
-                m_sprite.set_frame ( 4 + step  );    
+                m_sprite.set_frame ( 3 + step  );    
             else if(facing == Direction::WEST)
                 m_sprite.set_frame ( step );
             break;
@@ -542,6 +561,7 @@ bool MappableObjectElement::handle_element(Element::eElement element, Element * 
         int swidth = m_sprite.get_width();
         int sheight = m_sprite.get_height();
 
+        /* Don't care. The actual size of the sprite doesn't have to do with the size of the creature
         switch( m_eSize )
         {
         case MO_SMALL:
@@ -559,7 +579,7 @@ bool MappableObjectElement::handle_element(Element::eElement element, Element * 
         case MO_WIDE:
             if( swidth != 64 && sheight != 32) throw CL_Exception("Sprite size does not match MO size(TALL)");
             break;
-        }
+        }*/
 
         break;
     }
@@ -581,6 +601,7 @@ void MappableObjectElement::load_finished()
     CL_Size dimensions = Calc_Tile_Dimensions();
 
     PushNavigator(&m_navigator);
+    Prod();
 }
 
 MappableObjectDynamic::MappableObjectDynamic ( MappableObject::eMappableObjectType type, MappableObject::eMovementType move_type, MappableObject::eMovementSpeed speed )
@@ -682,22 +703,7 @@ CL_Point MappablePlayer::GetPointInFront() const
 
 void MappablePlayer::Set_Frame_For_Direction()
 {    
-    Direction facing = Get_Default_Facing();
-    if(!m_navStack.empty())      
-        facing = m_navStack.top()->GetFacingDirection();
-    
-    if(facing == Direction::NONE)
-        m_nStep = 0;
-    
-    if(facing ==  Direction::NORTH)
-        m_sprite.set_frame(12 + (m_nStep / 2)  % 4);
-    else if(facing == Direction::EAST)
-        m_sprite.set_frame(8 + (m_nStep/2) % 4);
-    else if(facing == Direction::WEST)
-        m_sprite.set_frame(4 + (m_nStep/2) % 4);
-    else if(facing == Direction::SOUTH)
-        m_sprite.set_frame((m_nStep/2) % 4);
-
+    MappableObject::Set_Frame_For_Direction();
 }
 
 void MappablePlayer::SerializeState ( std::ostream& out )
