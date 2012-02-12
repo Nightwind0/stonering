@@ -343,7 +343,7 @@ std::list<int> ScriptedNavigator::neighbors ( const int& id, const Level& level 
 {
     std::list<int> neighbors;
     CL_Point point = to_point(id);
-    CL_Size size = m_mo.DimensionsFromSizeType();
+    CL_Size size = m_mo.GetSize();
 
     CL_Rect origin(point,size);
     CL_Point up,down,left,right;

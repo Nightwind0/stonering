@@ -12,7 +12,10 @@
 namespace StoneRing { 
 
 
-
+bool MappableObject::IsFlying() const
+{
+    return m_cFlags & FLYING;
+}
 
 void MappableObject::SetPixelPosition ( const CL_Point& pixel_pos )
 {
@@ -81,9 +84,9 @@ std::string MappableObject::GetName() const
     return m_name;
 }
 
-CL_Size MappableObject::DimensionsFromSizeType ( ) const
+CL_Size MappableObject::DimensionsFromSizeType ( eSize size )
 {
-  switch ( m_eSize )
+  switch ( size )
     {
     case MO_SMALL:
         return CL_Size(1,1);
@@ -111,7 +114,7 @@ CL_Size MappableObject::Calc_Tile_Dimensions() const
     if(m_pos.y % 32 != 0)
         movement_y = 1;
     
-    CL_Size size = DimensionsFromSizeType();
+    CL_Size size = m_size;
 
 
     return CL_Size(size.width+movement_x,size.height+movement_y);
@@ -120,13 +123,13 @@ CL_Size MappableObject::Calc_Tile_Dimensions() const
 CL_Rect MappableObject::GetSpriteRect() const
 {
     CL_Rect pixelRect;
-    CL_Size mySize = DimensionsFromSizeType();
+    CL_Size mySize = m_size;
     CL_Size myDimensions = mySize * 32;
  
     if(IsSprite())
     {
-        pixelRect.top = m_pos.y - (m_sprite.get_height() - myDimensions.height);
-        pixelRect.left = m_pos.x - (m_sprite.get_width() - myDimensions.width);
+        pixelRect.top = m_pos.y + (myDimensions.height - m_sprite.get_height());
+        pixelRect.left = m_pos.x + (myDimensions.width - m_sprite.get_width());
         pixelRect.right = pixelRect.left + m_sprite.get_width();
         pixelRect.bottom = pixelRect.top + m_sprite.get_height();
 
@@ -307,7 +310,7 @@ void MappableObject::CalculateEdgePoints(const CL_Point &topleft, Direction dir,
     uint points = 0;
     //CL_Size dimensions = Calc_Tile_Dimensions();
     // We don't count the movement dimensions, only their normal dimensions
-    CL_Size dimensions = DimensionsFromSizeType();
+    CL_Size dimensions = m_size;
     pList->clear();
 
     if(dir == Direction::NORTH){
@@ -514,13 +517,22 @@ void MappableObjectElement::load_attributes(CL_DomNamedNodeMap attributes)
     m_pos.x = m_StartX *32;
     m_pos.y = m_StartY *32;
 
-    if(size == "small") m_eSize = MO_SMALL;
-    else if(size == "medium") m_eSize = MO_MEDIUM;
-    else if(size == "large") m_eSize = MO_LARGE;
-    else if(size == "wide") m_eSize = MO_WIDE;
-    else if(size == "tall") m_eSize = MO_TALL;
-    else throw CL_Exception("MO size wasnt small, medium, or large.");
-
+    if(size == "small") m_size = DimensionsFromSizeType(MO_SMALL);
+    else if(size == "medium") m_size = DimensionsFromSizeType(MO_MEDIUM);
+    else if(size == "large") m_size = DimensionsFromSizeType(MO_LARGE);
+    else if(size == "wide") m_size = DimensionsFromSizeType(MO_WIDE);
+    else if(size == "tall") m_size = DimensionsFromSizeType(MO_TALL);
+    else {
+            size_t pos = size.find_first_of('x');
+            if(pos == string::npos){
+                throw CL_Exception("Bad MO size");
+            }
+            std::string width_str = size.substr(0,pos);
+            std::string height_str = size.substr(pos+1,size.size()-1);
+            m_size.width = atoi(width_str.c_str());
+            m_size.height = atoi(height_str.c_str());            
+    }
+ 
     if(motype == "npc") m_eType = NPC;
     else if (motype == "square") m_eType = SQUARE;
     else if (motype == "container") m_eType = CONTAINER;
@@ -528,8 +540,11 @@ void MappableObjectElement::load_attributes(CL_DomNamedNodeMap attributes)
     else if (motype == "warp") m_eType = WARP;
 
     bool solid = get_implied_bool("solid",attributes,false);
+    
+    bool flying = get_implied_bool("flying",attributes,false);
 
     if(solid) m_cFlags |= SOLID;
+    if(flying) m_cFlags |= FLYING;
 
 }
 
@@ -539,7 +554,7 @@ bool MappableObjectElement::handle_element(Element::eElement element, Element * 
     {
     case ETILEMAP:
     {
-        if( m_eSize != MO_SMALL) throw CL_Exception("Mappable objects using tilemaps MUST be size small.");
+        if( m_size != DimensionsFromSizeType(MO_SMALL)) throw CL_Exception("Mappable objects using tilemaps MUST be size small.");
         m_cFlags |= TILEMAP;
         m_graphic.asTilemap = dynamic_cast<Tilemap*>(pElement);
         break;
@@ -629,7 +644,7 @@ void MappableObjectDynamic::SetSolid ( bool solid )
 void MappableObjectDynamic::SetSprite ( CL_Sprite sprite, MappableObject::eSize size )
 {
     m_sprite = sprite;
-    m_eSize = size;
+    m_size = DimensionsFromSizeType(size);
     m_cFlags |= SPRITE;
     Calc_Tile_Dimensions();
 }
@@ -652,7 +667,7 @@ void MappableObjectDynamic::Set_Frame_For_Direction()
 
 MappablePlayer::MappablePlayer(uint startX, uint startY):m_navigator(*this)
 {
-    m_eSize = MO_SMALL;
+    m_size = CL_Size(1,1);
     m_StartX = startX;
     m_StartY = startY;
     m_pos.x=startX * 32;

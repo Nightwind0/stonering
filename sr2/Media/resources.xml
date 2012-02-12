@@ -855,7 +855,7 @@
                         </sprite>
                         <sprite name="Seagull">
                             <image file="Sprites/seagull.png">
-                                <grid pos="0,0" size="48,64" array="3,4"/>
+                                <grid pos="0,0" size="64,64" array="3,4"/>
                             </image>
                         </sprite>                        
                 </section>
@@ -863,6 +863,16 @@
                     <sprite name="TwilightSlime" hint="alpha">
                         <image file="Sprites/twilight_slime.png">
                             <grid pos="0,0" size="48,64" array="3,4"></grid>
+                        </image>
+                    </sprite>
+                    <sprite name="GreenDragon">
+                        <image file="Sprites/green_dragon.png">
+                            <grid pos="0,0" size="96,128" array="3,4"/>
+                        </image>
+                    </sprite>
+                    <sprite name="BlackDragon">
+                        <image file="Sprites/black_dragon_med.png">
+                            <grid pos="0,0" size="96,128" array="3,4"/>
                         </image>
                     </sprite>
                 </section>

@@ -32,7 +32,7 @@ namespace StoneRing {
             SLOW, MEDIUM, FAST            
         };        
         enum eSize { 
-            MO_SMALL, MO_MEDIUM, MO_LARGE, MO_TALL, MO_WIDE             
+            MO_SMALL, MO_MEDIUM, MO_LARGE, MO_TALL, MO_WIDE, MO_CUSTOM             
         };        
         
 
@@ -59,9 +59,11 @@ namespace StoneRing {
         virtual void    Stop() { m_nStepLoop = 0; Set_Frame_For_Direction(); }
         virtual bool    RespectsHotness() const{ return true; }
         virtual CL_Rect GetSpriteRect() const ;
+        virtual bool    IsFlying() const;
         bool            IsAligned() const; // Is aligned on cells (not moving between them)
         CL_Point        GetPosition() const { return m_pos / 32; }  // In tiles     
         void            SetAlpha(float f) { m_alpha = f; }
+        CL_Size         GetSize() const { return m_size; }
         
         virtual bool    EvaluateCondition() const;
         virtual void    Prod();
@@ -77,15 +79,16 @@ namespace StoneRing {
         // In pixels
         void            CalculateEdgePoints(const CL_Point &topleft, Direction dir, std::list<CL_Point> *pList);        
         static int      ConvertDirectionToDirectionBlock(Direction dir);     
-        // In cells
-        CL_Size         DimensionsFromSizeType() const;
         
     protected:
         enum eFlags 
         { 
-            SPRITE = 1, TILEMAP = 2, SOLID = 4  
+            SPRITE = 1, TILEMAP = 2, SOLID = 4, FLYING = 8  
         };
 
+        // In cells
+        static CL_Size  DimensionsFromSizeType(eSize size);
+        
         virtual void    Moved_One_Cell();
         virtual CL_Size Calc_Tile_Dimensions()const;
         virtual void    Set_Frame_For_Direction();
@@ -96,7 +99,7 @@ namespace StoneRing {
         CL_Sprite       m_sprite;
         SpriteRefOrTilemap m_graphic;
 
-        eSize           m_eSize;
+        CL_Size         m_size;
         //Direction m_eFacingDirection;
         Direction       m_direction;
         
