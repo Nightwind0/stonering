@@ -75,9 +75,14 @@ void Tiles::load_attributes(CL_DomNamedNodeMap attributes)
 ///////////////////////////////////////////////////////////////////////////
 
 bool MappableObjectDrawSort(MappableObject* pObj1, MappableObject* pObj2){
-    CL_Rect spriteRect1 = pObj1->GetSpriteRect();
-    CL_Rect spriteRect2 = pObj2->GetSpriteRect();
-    return spriteRect1.get_top_left().y < spriteRect2.get_top_left().y;
+    int y1 = pObj1->GetPixelPosition().y;
+    int y2 = pObj2->GetPixelPosition().y;
+    if(pObj1->IsFlying())
+        y1 += IApplication::GetInstance()->GetDisplayRect().get_height();
+    if(pObj2->IsFlying())
+        y2 += IApplication::GetInstance()->GetDisplayRect().get_height();
+    
+    return y1 < y2;
 }
 
 class QTNodeDrawer : public Level::MOQuadtree::OurNodeVisitor {
@@ -686,14 +691,18 @@ bool Level::CanMove ( MappableObject* pObject, const CL_Rect& tiles_currently, c
         }
     }
     
-    Quadtree::Geometry::Vector<float> center(tiles_destination.get_center().x,tiles_destination.get_center().y);
-    Quadtree::Geometry::Rect<float>  rect(center,tiles_destination.get_width(),tiles_destination.get_height());
     
-    ContainsSolidMappableObjects solidmos(pObject,tiles_destination);
-    m_mo_quadtree->Traverse(solidmos,rect);
-    
-    if(solidmos.DidContainSolidMO())
-        return false;
+    if(pObject->IsSolid()){    
+        Quadtree::Geometry::Vector<float> center(tiles_destination.get_center().x,tiles_destination.get_center().y);
+        Quadtree::Geometry::Rect<float>  rect(center,tiles_destination.get_width(),tiles_destination.get_height());
+        
+        ContainsSolidMappableObjects solidmos(pObject,tiles_destination);
+        m_mo_quadtree->Traverse(solidmos,rect);
+        
+        if(solidmos.DidContainSolidMO()){
+            return false;
+        }
+    }
     return true;
 }
 
@@ -724,8 +733,10 @@ bool Level::Move(MappableObject* pObject, const CL_Rect& tiles_currently, const 
 
 bool Level::Check_Direction_Block ( MappableObject * pMo, Direction dir, const CL_Point& tile, const CL_Point& dest_tile )const
 {
-    if(dest_tile.x <0 || dest_tile.y <0 || dest_tile.x >= m_LevelWidth || dest_tile.y >= m_LevelHeight
-        ||
+    if(dest_tile.x <0 || dest_tile.y <0 || dest_tile.x >= m_LevelWidth || dest_tile.y >= m_LevelHeight)
+        return false;
+    if(!pMo->IsFlying()
+        &&
         (Get_Cumulative_Direction_Block_At_Point(dest_tile) & MappableObject::ConvertDirectionToDirectionBlock(dir))
         || (pMo->RespectsHotness() && Get_Cumulative_Hotness_At_Point(dest_tile))
         ){

@@ -3513,11 +3513,14 @@
                                 
                         </event>
                 </mo>
-                <mo name="Slimey" size="wide" type="npc" xpos="4" ypos="4" solid="true" movementType="wander" speed="medium">
-                    <spriteRef type="fourway" ref="Mob/TwilightSlime"/>
+                <mo name="Bosco" size="wide" type="npc" xpos="4" ypos="4" solid="true" movementType="wander" speed="medium">
+                    <spriteRef type="fourway" ref="Animals/Bear"/>
                 </mo>
-                <mo name="Bosco" size="small" type="npc" xpos="4" ypos="15" solid="true" movementType="wander" speed="slow">
-                    <spriteRef type="fourway" ref="Animals/Piglet"/>
+                <mo name="Jeremy" size="2x2" type="npc" xpos="4" ypos="15" solid="false" movementType="wander" flying="true" speed="slow">
+                    <spriteRef type="fourway" ref="Animals/Seagull"/>
+                </mo>
+                <mo name="Bzzor" size="3x2" type="npc" xpos="12" ypos="16" solid="true" movementType="wander" speed="slow">
+                    <spriteRef type="fourway" ref="Mob/GreenDragon"/>
                 </mo>
                 <mo name="BattlePodium" size="small" type="npc" xpos="3" ypos="2" solid="true">
                     <event name="podium" triggerType="talk">
