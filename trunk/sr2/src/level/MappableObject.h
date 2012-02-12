@@ -55,8 +55,8 @@ namespace StoneRing {
         // Returns if any events were provoked
         virtual bool    ProvokeEvents ( Event::eTriggerType trigger );
         virtual bool    DoesStep() const { return false; }
-        virtual void    OnStep() { m_nStep++; Set_Frame_For_Direction();}
-        virtual void    Stop() { m_nStep = 0; Set_Frame_For_Direction(); }
+        virtual void    OnStep();
+        virtual void    Stop() { m_nStepLoop = 0; Set_Frame_For_Direction(); }
         virtual bool    RespectsHotness() const{ return true; }
         virtual CL_Rect GetSpriteRect() const ;
         bool            IsAligned() const; // Is aligned on cells (not moving between them)
@@ -100,7 +100,8 @@ namespace StoneRing {
         //Direction m_eFacingDirection;
         Direction       m_direction;
         
-        uint            m_nStep; // step frame alternator
+        uint            m_nStep;
+        uint            m_nStepLoop; // step frame alternator
         ushort          m_StartX;
         ushort          m_StartY;
         CL_Point        m_pos;
@@ -174,6 +175,8 @@ namespace StoneRing {
         virtual bool Step() const { return true; }
         uint         GetLevelX() const { return m_pos.x; }
         uint         GetLevelY() const { return m_pos.y; }
+        virtual eMovementType
+                    GetMovementType() const { return MOVEMENT_WANDER; }        
         Direction    GetDirection() const { return m_direction; }
         ControlNavigator& GetNavigator()  { return m_navigator; }
         void         SetDirection(const Direction& dir);

@@ -3513,6 +3513,12 @@
                                 
                         </event>
                 </mo>
+                <mo name="Slimey" size="wide" type="npc" xpos="4" ypos="4" solid="true" movementType="wander" speed="medium">
+                    <spriteRef type="fourway" ref="Mob/TwilightSlime"/>
+                </mo>
+                <mo name="Bosco" size="small" type="npc" xpos="4" ypos="15" solid="true" movementType="wander" speed="slow">
+                    <spriteRef type="fourway" ref="Animals/Piglet"/>
+                </mo>
                 <mo name="BattlePodium" size="small" type="npc" xpos="3" ypos="2" solid="true">
                     <event name="podium" triggerType="talk">
                         <script id="useBattlePodium">

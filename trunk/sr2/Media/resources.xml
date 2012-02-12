@@ -24,8 +24,9 @@
                 <!--FF6 purple 783a53  010005-->
                 <!-- 6764c7  000025-->
                 <!--gradient name="MenuGradient" top_left="#e30000" top_right="#e30000" bottom_right="#250000" bottom_left="#250000"/-->
-                <gradient name="MenuGradient" top_left="#783a53" top_right="#783a53" bottom_right="#010005" bottom_left="#010005"/>                
-                <!--gradient name="MenuGradient" top_left="#0057ff" top_right="#0057ff" bottom_right="#003397" bottom_left="#003397"/-->
+                <!--gradient name="MenuGradient" top_left="#783a53" top_right="#783a53" bottom_right="#010005" bottom_left="#010005"/-->                
+                <!--gradient name="MenuGradient" top_left="#0057ff" top_right="#0057ff" bottom_right="#003397" bottom_left="#003397"/--> <!-- blue -->
+                <gradient name="MenuGradient" top_left="#3ea1a8" top_right="#3ea1a8" bottom_right="#185053" bottom_left="#185053"/> 
                 <point name="MenuInset" x="8" y="8"/>
                 <!--gradient name="MenuGradient"--> 
         </section>
@@ -46,7 +47,7 @@
                 <freetype name="sb_gray" size="24" color="#636363" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>		
                 <freetype name="sb_white" size="24" color="#FFFFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>			
                 <freetype name="sb_blue" size="24" color="#000080"  shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-                <freetype name="sb_green" size="24" color="#00A000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+                <freetype name="sb_green" size="24" color="#48c86e" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
                 <freetype name="sb_purple" size="24" color="#680090" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
                 <freetype name="sb_red" size="24" color="#FF0000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
                 <freetype name="sb_cyan" size="24" color="#00DDDD" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
@@ -61,12 +62,19 @@
                 <freetype name="mm_green" size="22" color="#00FF00" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
                 <freetype name="mm_red" size="22" color="#FF0000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
                 <freetype name="mm_blue" size="22" color="#0000CC" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
-                <freetype name="mono_green" size="24" color="#00A000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="mm_hp" size="22" color="#48c86e" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="mm_mp" size="22" color="#be5c83" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="mm_bp" size="22" color="#f1cd7f" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>                
+                <freetype name="mono_hp" size="24" color="#48c86e" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="mono_mp" size="24" color="#be5c83" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="mono_sp" size="24" color="#f1cd7f" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="mono_level" size="24" color="#00FFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>              
+                <freetype name="mono_green" size="24" color="#48c86e" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
                 <freetype name="mono_black" size="24" color="#000000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
                 <freetype name="mono_gray" size="24" color="#636363" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>		
                 <freetype name="mono_white" size="24" color="#000000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>			
                 <freetype name="mono_blue" size="24" color="#000080"  shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
-                <freetype name="mono_green" size="24" color="#00A000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="mono_green" size="24" color="#48c86e" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
                 <freetype name="mono_purple" size="24" color="#980090" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
                 <freetype name="mono_red" size="24" color="#FF0000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
                 <freetype name="mono_cyan" size="24" color="#00FFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
@@ -394,10 +402,10 @@
                         <string name="Selection" value="BoldWhite"/>
                         <string name="Character" value="sb_white"/>
                         <string name="Class"     value="sb_gray"/>
-                        <string name="Level" value = "mono_cyan"/>
-                        <string name="HP"    value = "mono_green"/>
-                        <string name="MP"    value = "mono_purple"/>
-                        <string name="SP"    value = "mono_blue"/>
+                        <string name="Level" value = "mono_level"/>
+                        <string name="HP"    value = "mono_hp"/>
+                        <string name="MP"    value = "mono_mp"/>
+                        <string name="SP"    value = "mono_sp"/>
                         <string name="PartyStat" value = "sb_white"/>
                 </section>
                 <section name="rects">
@@ -428,9 +436,9 @@
                                 <image-file file="Images/Overlays/battle_status_overlay_s.png"/>
                         </image>
                         <section name="fonts">
-                                <string name="hp" value="mm_green"/>
-                                <string name="mp" value="mm_cyan"/>
-                                <string name="bp" value="mm_purple"/>
+                                <string name="hp" value="mm_hp"/>
+                                <string name="mp" value="mm_mp"/>
+                                <string name="bp" value="mm_bp"/>
                                 <string name="general" value="sb_black"/>
                                 <string name="bad" value="sb_red"/>
                                 <string name="name" value="sb_white"/>
@@ -736,8 +744,8 @@
                 </section>
                 <section name="Party">
                         <sprite name="Valyn" hint="alpha">
-                                <image file="Sprites/valyn.png">
-                                        <grid pos="0,0" size="32,48" array="4,4"></grid>
+                                <image file="Sprites/valyn2.png">
+                                        <grid pos="0,0" size="32,48" array="3,4"></grid>
                                 </image>
                         </sprite>
                 </section>
@@ -822,14 +830,41 @@
                 <section name="Animals">
                         <sprite name="Cat2" hint="alpha">
                                 <image file="Sprites/cat2.png">
-                                        <grid pos="0,0" size="32,32" array="4,4"></grid>
+                                        <grid pos="0,0" size="32,32" array="3,4"></grid>
                                 </image>
                         </sprite>
                         <sprite name="Cat" hint="alpha">
                                 <image file="Sprites/cat.png">
-                                        <grid pos="0,0" size="32,32" array="4,4"></grid>
+                                        <grid pos="0,0" size="32,32" array="3,4"></grid>
                                 </image>
                         </sprite>
+                        <sprite name="Fox" hint="alpha">
+                            <image file="Sprites/Fox.png">
+                                <grid pos="0,0" size="48,64" array="3,4"></grid>
+                            </image>
+                        </sprite>
+                        <sprite name="Bear">
+                            <image file="Sprites/bear.png">
+                                <grid pos="0,0" size="48,64" array="3,4"></grid>
+                            </image>
+                        </sprite>
+                        <sprite name="Piglet">
+                            <image file="Sprites/piglet.png">
+                                <grid pos="0,0" size="64,64" array="3,4"/>
+                            </image>
+                        </sprite>
+                        <sprite name="Seagull">
+                            <image file="Sprites/seagull.png">
+                                <grid pos="0,0" size="48,64" array="3,4"/>
+                            </image>
+                        </sprite>                        
+                </section>
+                <section name="Mob"> <!-- Monsters for the map -->
+                    <sprite name="TwilightSlime" hint="alpha">
+                        <image file="Sprites/twilight_slime.png">
+                            <grid pos="0,0" size="48,64" array="3,4"></grid>
+                        </image>
+                    </sprite>
                 </section>
                 <section name="Monsters">
                         <section name="Endospore">

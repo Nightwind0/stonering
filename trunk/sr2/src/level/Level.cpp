@@ -151,18 +151,19 @@ public:
 
 class ContainsSolidMappableObjects: public Level::MOQuadtree::OurVisitor{
 public:
-    ContainsSolidMappableObjects(const CL_Rect& destRect):m_destRect(destRect),m_contains(false){}
+    ContainsSolidMappableObjects(MappableObject* pMO,const CL_Rect& destRect):m_pMO(pMO),m_destRect(destRect),m_contains(false){}
     virtual ~ContainsSolidMappableObjects(){}
     
     virtual bool Visit(MappableObject* pMO, const Level::MOQuadtree::Node* pNode){
         // TODO is this contains right?
-        if(pMO->EvaluateCondition() && (pMO->GetTileRect() == m_destRect || pMO->GetTileRect().is_overlapped(m_destRect)) && pMO->IsSolid()){
+        if(pMO != m_pMO && pMO->EvaluateCondition() && (pMO->GetTileRect() == m_destRect || pMO->GetTileRect().is_overlapped(m_destRect)) && pMO->IsSolid()){
             m_contains = true;
             return false;
         }else return true;
     }    
     bool DidContainSolidMO() const { return m_contains; }
 private:
+    MappableObject* m_pMO;
     CL_Rect m_destRect;
     bool m_contains;
 };
@@ -688,7 +689,7 @@ bool Level::CanMove ( MappableObject* pObject, const CL_Rect& tiles_currently, c
     Quadtree::Geometry::Vector<float> center(tiles_destination.get_center().x,tiles_destination.get_center().y);
     Quadtree::Geometry::Rect<float>  rect(center,tiles_destination.get_width(),tiles_destination.get_height());
     
-    ContainsSolidMappableObjects solidmos(tiles_destination);
+    ContainsSolidMappableObjects solidmos(pObject,tiles_destination);
     m_mo_quadtree->Traverse(solidmos,rect);
     
     if(solidmos.DidContainSolidMO())
