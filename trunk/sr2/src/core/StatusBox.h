@@ -30,7 +30,9 @@ class StatusBox
 {
 
 public:
-    StatusBox(const CL_Rectf& rect, const Font& stat_font, 
+    StatusBox(const CL_Rectf& rect, const CL_Rectf& headerRect,
+              const Font& header_font,
+              const Font& stat_font, 
               const Font& stat_up_font, const Font& stat_down_font,
               const Font& stat_name_font
              );
@@ -43,10 +45,12 @@ private:
     typedef std::vector<ICharacter::eCharacterAttribute> StatList;
     Equipment::eSlot slot_for_equipment(Equipment* pEquipment);
     CL_Rectf m_rect;
+    CL_Rectf m_header_rect;
     Font  m_stat_font;
     Font  m_stat_up_font;
     Font  m_stat_down_font;
     Font  m_stat_name_font;
+    Font  m_header_font;
     uint  m_nPage;
     std::map<uint,StatList> m_stats;    
 };

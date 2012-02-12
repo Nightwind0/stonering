@@ -24,10 +24,13 @@
 using namespace StoneRing;
 
 
-StatusBox::StatusBox ( const CL_Rectf& rect, const StoneRing::Font& stat_font, 
-const StoneRing::Font& stat_up_font, const StoneRing::Font& stat_down_font,
-const StoneRing::Font& stat_name_font ):m_rect(rect),m_stat_font(stat_font),
-m_stat_up_font(stat_up_font),m_stat_down_font(stat_down_font),m_stat_name_font(stat_name_font)
+StatusBox::StatusBox ( const CL_Rectf& rect, const CL_Rectf& headerRect,
+                       const StoneRing::Font& headerFont,
+                       const StoneRing::Font& stat_font, 
+                       const StoneRing::Font& stat_up_font, const StoneRing::Font& stat_down_font,
+                        const StoneRing::Font& stat_name_font )
+                        :m_rect(rect),m_header_rect(headerRect),m_header_font(headerFont),m_stat_font(stat_font),
+                            m_stat_up_font(stat_up_font),m_stat_down_font(stat_down_font),m_stat_name_font(stat_name_font)
 {
     m_nPage = 0;
     m_stats[0].push_back(ICharacter::CA_MAXHP);
@@ -179,7 +182,9 @@ void StatusBox::Draw ( CL_GraphicContext& gc, bool draw_comparison, Character* p
                 newStatFont.draw_text(gc,statPoint,os.str(), Font::TOP_LEFT);                
             }
         }
-    
+        
+        draw_text(gc,m_header_font,m_header_rect,"Press [Select] to switch view");
+   
 }
 
 void StatusBox::switchPage()

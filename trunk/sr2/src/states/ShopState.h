@@ -101,12 +101,15 @@ private:
     Font  m_desc_font;
     Font  m_price_font;
     Font  m_gold_font;
+    Font  m_stat_header_font;
     
     CL_Rectf m_character_rect;
     CL_Rectf m_items_rect;
     CL_Rectf m_stats_rect;
     CL_Rectf m_desc_rect;
     CL_Rectf m_gold_rect;
+    CL_Rectf m_stat_header_rect;
+    CL_Rectf m_stat_box;
     uint     m_current_character;
     std::vector<Item*> m_items;
     StatusBox* m_pStatusBox;
