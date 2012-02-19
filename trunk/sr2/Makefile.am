@@ -203,7 +203,9 @@ stonering_SOURCES =	src/Application.cpp \
 			src/states/CutSceneState.cpp \
 			src/states/CutSceneState.h \
 			src/core/SteelRunner.cpp \
-			src/core/SteelRunner.h
+			src/core/SteelRunner.h \
+			src/states/StatusState.cpp \
+			src/states/StatusState.h
 
 
 

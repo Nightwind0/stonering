@@ -33,7 +33,7 @@
 #include "Direction.h"
 #include "SaveLoadState.h"
 #include "StartupState.h"
-#include <ClanLib-2.3/ClanLib/Core/System/cl_platform.h>
+#include "StatusState.h"
 //
 //
 //
@@ -1386,6 +1386,14 @@ SteelType Application::load()
     return SteelType();
 }
 
+SteelType Application::statusScreen()
+{
+    StatusState state;
+    RunState(&state);
+    return SteelType();
+}
+
+
 void Application::LoadMainMenu ( CL_DomDocument& doc )
 {
     IFactory * pFactory = IApplication::GetInstance()->GetElementFactory();
@@ -2012,6 +2020,7 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "sell", new SteelFunctorNoArgs<Application>(this,&Application::sell) );
     mInterpreter.addFunction ( "save", new SteelFunctorNoArgs<Application>(this,&Application::save) );
     mInterpreter.addFunction ( "load", new SteelFunctorNoArgs<Application>(this,&Application::load) );
+    mInterpreter.addFunction ( "statusScreen", new SteelFunctorNoArgs<Application>(this,&Application::statusScreen) );
 }
 
 void Application::queryJoystick()

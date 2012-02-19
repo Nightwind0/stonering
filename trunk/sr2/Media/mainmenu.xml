@@ -76,6 +76,7 @@
     </menuOption>
     <menuOption name="Status" icon="status">
 	<script id="MainMenuStatus">
+            statusScreen();
 	</script>
     </menuOption>  
 </menu>

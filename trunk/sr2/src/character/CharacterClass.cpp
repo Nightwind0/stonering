@@ -77,6 +77,13 @@ void CharacterClass::load_finished()
         throw CL_Exception("No skill tree on class " + m_name);
 }
 
+bool CharacterClass::HasStat ( ICharacter::eCharacterAttribute attr )
+{
+    StatMap::iterator it = m_stat_scripts.find(attr);
+    return it != m_stat_scripts.end();
+}
+
+
 double CharacterClass::GetStat(ICharacter::eCharacterAttribute attr, int level)
 {
     StatMap::iterator it = m_stat_scripts.find(attr);
