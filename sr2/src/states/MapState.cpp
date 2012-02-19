@@ -14,6 +14,7 @@ StoneRing::MapState::MapState():m_LevelX(0),
     m_bShowDebug = false;
     m_horizontal_idle = true;
     m_vertical_idle = true;
+    m_pLevel = NULL;
 }
 
 StoneRing::MapState::~MapState()

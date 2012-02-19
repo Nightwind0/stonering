@@ -32,7 +32,8 @@ Font::~Font()
 void Font::draw_text(CL_GraphicContext &  	gc,
 		const CL_Pointf &  	position,
 		const CL_StringRef &  	text,
-		Alignment alignment
+		Alignment alignment,
+                float mult
 		    )
 {
     CL_Pointf offset(0.0f,0.0f);
@@ -58,15 +59,20 @@ void Font::draw_text(CL_GraphicContext &  	gc,
     {
 	m_font.draw_text(gc,position + offset + m_shadow_offset, text, CL_Colorf(0.0f,0.0f,0.0f,0.5f));
     }
+    
+    CL_Colorf color = m_color;
+    color.r *= mult;
+    color.b *= mult;
+    color.g *= mult;
 
-    m_font.draw_text(gc,position + offset,text,m_color);
+    m_font.draw_text(gc,position + offset,text,color);
 }
 
 void Font::draw_text(CL_GraphicContext & gc,
 		       float x, float y,
-		       const CL_StringRef & text, Alignment alignment)
+		       const CL_StringRef & text, Alignment alignment, float mult)
 {
-    draw_text(gc, CL_Pointf(x,y),text, alignment);
+    draw_text(gc, CL_Pointf(x,y),text, alignment,mult);
 }
 
 float Font::calc_offset(CL_GraphicContext& gc) 
@@ -75,3 +81,7 @@ float Font::calc_offset(CL_GraphicContext& gc)
 				    m_font.get_font_metrics().get_descent() -  
 				    m_font.get_font_metrics().get_internal_leading())/ 2.0f);
 }
+
+
+
+

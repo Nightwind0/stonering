@@ -689,7 +689,7 @@
                         <point name="number" x="16" y="10"/>
                         <point name="datetime" x="340" y="10"/>
                         <point name="empty"  x="340" y="40"/>
-                        <point name="portrait" x="20" y="40"/>
+                        <point name="portrait" x="40" y="40"/>
                     </section>
                     <section name="fonts">
                         <string name="Number" value="BoldGray"/>
