@@ -40,13 +40,14 @@ namespace StoneRing{
 	~Font();
 	void draw_text(CL_GraphicContext &  	gc,
 		const CL_Pointf &  	position,
-		const CL_StringRef &  	text, Alignment = DEFAULT);
+		const CL_StringRef &  	text, Alignment = DEFAULT, float multiply = 1.0f);
 	void draw_text(CL_GraphicContext & gc,
 		       float x, float y,
-		       const CL_StringRef & text, Alignment = DEFAULT);
+		       const CL_StringRef & text, Alignment = DEFAULT, float multiply = 1.0f);
 	bool is_null()  { return m_font.is_null(); }
 	void set_alpha(float alpha) { m_color.set_alpha(alpha); }
 	float get_alpha() const { return m_color.get_alpha(); }
+	
 	CL_FontMetrics get_font_metrics(CL_GraphicContext& gc)
 	{
 	    return m_font.get_font_metrics();
@@ -59,6 +60,7 @@ namespace StoneRing{
 	friend class GraphicsManager;
 	friend int draw_text(CL_GraphicContext&, const Font &, CL_Rectf, CL_StringRef, uint);
 	float calc_offset(CL_GraphicContext&);
+        CL_Colorf m_orig_color;
 	CL_Colorf m_color;
 	CL_Font   m_font;
 	CL_Pointf m_shadow_offset;

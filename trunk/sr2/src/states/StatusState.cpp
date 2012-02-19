@@ -160,6 +160,9 @@ void StatusState::draw_stats ( CL_GraphicContext& gc, Character* pChar )
     for(uint i=0;i<m_stats.size();i++){
             int base = 0;
             int bonus = 0;
+            // Fade every other line
+            float mult  = (i%2 == 1)?0.75f:1.0;
+            
             if(ICharacter::IsInteger(m_stats[i])){
                 base = int(pChar->GetBaseAttribute(m_stats[i]));
                 bonus = int(pChar->GetAttribute(m_stats[i]) - pChar->GetBaseAttribute(m_stats[i]));
@@ -167,20 +170,20 @@ void StatusState::draw_stats ( CL_GraphicContext& gc, Character* pChar )
                 base = int(100.0 * pChar->GetBaseAttribute(m_stats[i]));
                 bonus = int(100.0 * (pChar->GetAttribute(m_stats[i]) - pChar->GetBaseAttribute(m_stats[i])));
             }
-            m_stat_name_font.draw_text(gc,tl.x + m_name_x.x,tl.y + m_name_x.y + i*height_each,ICharacter::CAToLabel(m_stats[i]), Font::TOP_LEFT);
+            m_stat_name_font.draw_text(gc,tl.x + m_name_x.x,tl.y + m_name_x.y + i*height_each,ICharacter::CAToLabel(m_stats[i]), Font::TOP_LEFT,mult);
             std::ostringstream os;
             os << std::setw(6) << base + bonus;
             
-            m_stat_font.draw_text(gc,tl.x + m_stat_x.x , tl.y + m_stat_x.y + i*height_each,os.str(), Font::TOP_LEFT);
+            m_stat_font.draw_text(gc,tl.x + m_stat_x.x , tl.y + m_stat_x.y + i*height_each,os.str(), Font::TOP_LEFT,mult);
             os.str("");
             os << std::setw(6) << base;
-            m_stat_font.draw_text(gc,tl.x + m_base_x.x, tl.y + m_base_x.y + i*height_each,os.str(),Font::TOP_LEFT);
+            m_stat_font.draw_text(gc,tl.x + m_base_x.x, tl.y + m_base_x.y + i*height_each,os.str(),Font::TOP_LEFT,mult);
             os.str("");
             os << std::setw(6) << std::showpos <<  bonus;
             if(bonus > 0){
-                m_plus_font.draw_text(gc,tl.x + m_mod_x.x,tl.y + m_mod_x.y + i*height_each,os.str(), Font::TOP_LEFT);
+                m_plus_font.draw_text(gc,tl.x + m_mod_x.x,tl.y + m_mod_x.y + i*height_each,os.str(), Font::TOP_LEFT,mult);
             }else if(bonus <0){
-                m_minus_font.draw_text(gc,tl.x + m_mod_x.x,tl.y + m_mod_x.y + i*height_each,os.str(), Font::TOP_LEFT);
+                m_minus_font.draw_text(gc,tl.x + m_mod_x.x,tl.y + m_mod_x.y + i*height_each,os.str(), Font::TOP_LEFT,mult);
             }
     }
 }
