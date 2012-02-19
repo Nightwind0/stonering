@@ -28,7 +28,9 @@ namespace StoneRing
 
         std::list<ArmorTypeRef*>::const_iterator GetArmorTypeRefsBegin() const;
         std::list<ArmorTypeRef*>::const_iterator GetArmorTypeRefsEnd() const;
-
+        
+        
+        bool      HasStat(ICharacter::eCharacterAttribute attr);
         double    GetStat(ICharacter::eCharacterAttribute attr, int level);
 	int	  GetExperienceToLevel(int level);
 	int       GetLevelForExperience(int xp);

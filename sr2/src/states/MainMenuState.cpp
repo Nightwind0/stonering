@@ -171,6 +171,7 @@ void StoneRing::MainMenuState::draw_party(CL_GraphicContext& GC)
 	Character * pCharacter = dynamic_cast<Character*>(party->GetCharacter(i));
 	// TODO: Which portrait should change, and depend on status effects
 	CL_Sprite portrait = pCharacter->GetPortrait(Character::PORTRAIT_DEFAULT);
+        portrait.set_alpha(1.0f);
 	portrait.draw(GC,portraitPoint.x,portraitPoint.y);
 	std::ostringstream levelstream;
 	levelstream <<  "Level " << pCharacter->GetLevel();

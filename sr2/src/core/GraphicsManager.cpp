@@ -166,6 +166,8 @@ std::string GraphicsManager::NameOfOverlay(Overlay overlay)
         return "SaveLoad";
     case STARTUP:
         return "Startup";
+    case STATUS:
+        return "Status";
     default:
         assert(0);
     }

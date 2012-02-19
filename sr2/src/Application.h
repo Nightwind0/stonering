@@ -209,6 +209,7 @@ namespace StoneRing
         SteelType                       equipScreen(SteelType::Handle hCharacter);
         SteelType                       save();
         SteelType                       load();
+        SteelType                       statusScreen();
  
 
         void steelConst(const std::string &name, int value);

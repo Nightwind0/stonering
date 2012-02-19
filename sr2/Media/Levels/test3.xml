@@ -3513,7 +3513,7 @@
                                 
                         </event>
                 </mo>
-                <mo name="Bosco" size="wide" type="npc" xpos="4" ypos="4" solid="true" movementType="wander" speed="medium">
+                <mo name="Bosco" size="wide" type="npc" xpos="4" ypos="4" solid="true" movementType="wander" speed="slow">
                     <spriteRef type="fourway" ref="Animals/Bear"/>
                 </mo>
                 <mo name="Jeremy" size="2x2" type="npc" xpos="4" ypos="15" solid="false" movementType="wander" flying="true" speed="slow">

@@ -448,16 +448,8 @@ double StoneRing::Character::GetAttributeWithoutEquipment ( ICharacter::eCharact
      
     if(!IsTransient(attr))
     {
-        if(ICharacter::IsDamageCategoryAttribute(attr))
-        {
-            base = 1.0;
-            if(attr == ICharacter::CA_HOLY_RST)
-                base = -1.0;
-        }
-        else 
-        {
-            base = m_pClass->GetStat(attr,GetLevel());
-        }
+        base = GetBaseAttribute(attr);
+
         // Go through all equipment, multiplying by the AMs that are mults
         for(std::map<Equipment::eSlot,Equipment*>::const_iterator iter= m_equipment.begin();
             iter != m_equipment.end();iter++)
@@ -500,15 +492,26 @@ double StoneRing::Character::GetAttributeWithoutEquipment ( ICharacter::eCharact
 
 double StoneRing::Character::GetBaseAttribute(eCharacterAttribute attr)const
 {
-    double augment  = 0.0;
-    double base = m_pClass->GetStat(attr,GetLevel());
-    std::map<eCharacterAttribute,double>::const_iterator aug = m_augments.find(attr);
+    double base = 0.0;
+    if(ICharacter::IsDamageCategoryAttribute(attr) && !m_pClass->HasStat(attr))
+    {
+        base = 1.0;
+        if(attr == ICharacter::CA_HOLY_RST)
+            base = -1.0;
+    }
+    else 
+    {
+        base = m_pClass->GetStat(attr,GetLevel());
+    }    
+
+/*    std::map<eCharacterAttribute,double>::const_iterator aug = m_augments.find(attr);
     if(aug != m_augments.end())
         augment = aug->second;
 
     if(IsInteger(attr))
         return static_cast<int>(base + augment);
-    else return base + augment;
+    else return base + augment;*/
+    return base;
 }
 
 // Note:
