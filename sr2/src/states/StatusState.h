@@ -50,16 +50,20 @@ public:
 private:
     void        draw_party(CL_GraphicContext& gc);
     void        draw_stats(CL_GraphicContext& gc, Character * pChar);
+    void        draw_header(CL_GraphicContext& gc);
     std::vector<ICharacter::eCharacterAttribute> m_stats;
     CL_Rectf    m_party_rect;
     CL_Rectf    m_status_rect;
+    CL_Rectf    m_header_rect;
     Font        m_stat_name_font;
     Font        m_stat_font;
     Font        m_plus_font;
     Font        m_minus_font;
+    Font        m_header_font;
     CL_Pointf   m_name_x;
     CL_Pointf   m_stat_x;
     CL_Pointf   m_mod_x;
+    CL_Pointf   m_base_x;
     int         m_current_character;
     bool        m_bDone;
 };

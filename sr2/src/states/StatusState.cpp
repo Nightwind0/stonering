@@ -60,12 +60,15 @@ void StatusState::Start()
     m_party_rect = GraphicsManager::GetRect(GraphicsManager::STATUS,"party");
     m_status_rect = GraphicsManager::GetRect(GraphicsManager::STATUS,"status_box");
     m_stat_name_font = GraphicsManager::GetFont(GraphicsManager::STATUS,"stat_name");
+    m_header_rect = GraphicsManager::GetRect(GraphicsManager::STATUS,"header");
     m_stat_font = GraphicsManager::GetFont(GraphicsManager::STATUS,"stat");
     m_plus_font = GraphicsManager::GetFont(GraphicsManager::STATUS,"plus");
     m_minus_font = GraphicsManager::GetFont(GraphicsManager::STATUS,"minus");
+    m_header_font = GraphicsManager::GetFont(GraphicsManager::STATUS,"header");
     m_name_x = GraphicsManager::GetPoint(GraphicsManager::STATUS,"name");
     m_stat_x = GraphicsManager::GetPoint(GraphicsManager::STATUS,"stat");
     m_mod_x = GraphicsManager::GetPoint(GraphicsManager::STATUS,"mod");
+    m_base_x = GraphicsManager::GetPoint(GraphicsManager::STATUS,"base");
     
     m_current_character = 0;
     m_bDone = false;
@@ -113,6 +116,7 @@ void StatusState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
     MenuBox::Draw ( GC, m_party_rect, false );
     MenuBox::Draw ( GC, m_status_rect, false );
     draw_party(GC);
+    draw_header(GC);
     draw_stats(GC, dynamic_cast<Character*>(IApplication::GetInstance()->GetParty()->GetCharacter(m_current_character)));
 }
 void StatusState::draw_party( CL_GraphicContext& gc ){
@@ -138,10 +142,21 @@ void StatusState::draw_party( CL_GraphicContext& gc ){
     } 
 }
 
+void StatusState::draw_header ( CL_GraphicContext& gc )
+{
+    int y = m_header_rect.get_center().y;
+    m_header_font.draw_text(gc,m_name_x.x,y,"Stat", Font::TOP_LEFT);
+    m_header_font.draw_text(gc,m_stat_x.x,y,"Total", Font::TOP_LEFT);
+    m_header_font.draw_text(gc,m_base_x.x,y,"Base", Font::TOP_LEFT);
+    m_header_font.draw_text(gc,m_mod_x.x,y,"Modifier", Font::TOP_LEFT);
+}
+
+
 void StatusState::draw_stats ( CL_GraphicContext& gc, Character* pChar )
 {
-    const uint height_each = m_status_rect.get_height() / m_stats.size();
-    const CL_Pointf tl = m_status_rect.get_top_left();
+    const uint height_each = (m_status_rect.get_height()-m_header_rect.get_height()) / m_stats.size();
+    CL_Pointf tl = m_status_rect.get_top_left();
+    tl.y += m_header_rect.get_height();
     for(uint i=0;i<m_stats.size();i++){
             int base = 0;
             int bonus = 0;
@@ -154,9 +169,12 @@ void StatusState::draw_stats ( CL_GraphicContext& gc, Character* pChar )
             }
             m_stat_name_font.draw_text(gc,tl.x + m_name_x.x,tl.y + m_name_x.y + i*height_each,ICharacter::CAToLabel(m_stats[i]), Font::TOP_LEFT);
             std::ostringstream os;
-            os << std::setw(6) << base;
+            os << std::setw(6) << base + bonus;
             
-            m_stat_font.draw_text(gc,tl.x + m_stat_x.x , tl.y + m_stat_x.y + i*height_each,os.str(), Font::TOP_LEFT); 
+            m_stat_font.draw_text(gc,tl.x + m_stat_x.x , tl.y + m_stat_x.y + i*height_each,os.str(), Font::TOP_LEFT);
+            os.str("");
+            os << std::setw(6) << base;
+            m_stat_font.draw_text(gc,tl.x + m_base_x.x, tl.y + m_base_x.y + i*height_each,os.str(),Font::TOP_LEFT);
             os.str("");
             os << std::setw(6) << std::showpos <<  bonus;
             if(bonus > 0){

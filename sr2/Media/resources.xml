@@ -378,19 +378,22 @@
             </section>
             <section name="Status">
                 <section name="rects">
-                    <rect name="party" top="0" left="0" right="800" bottom="168"/>
-                    <rect name="status_box" top="168" left="0" right="800" bottom="600"/>
+                    <rect name="party" top="0" left="0" right="800" bottom="150"/>
+                    <rect name="status_box" top="150" left="0" right="800" bottom="600"/>
+                    <rect name="header" top="150" left="0" right="800" bottom="168"/>
                 </section>
                 <section name="points">
                     <point name="name" x="20" y="10"/>
                     <point name="stat" x="300" y="12"/>
-                    <point name="mod" x="500" y="12"/>
+                    <point name="base" x="500" y="12"/>
+                    <point name="mod" x="700" y="12"/>
                 </section>
                 <section name="fonts">
                     <string name="stat_name" value="sb_white"/>
                     <string name="stat" value="mm_white"/>
                     <string name="plus" value="mm_cyan"/>
                     <string name="minus" value="mm_red"/>
+                    <string name="header" value="sb_green"/>
                 </section>
             </section>
             <section name="DynamicMenu">
