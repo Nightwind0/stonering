@@ -77,7 +77,7 @@
         <menuOption name="Theme" icon="theme">
             <script id="MainMenuConfigTheme">
                 // getThemes() is broken
-            declare @themes = array("LightBlue","Thunder","Fire");
+            declare @themes = array("RPG Blue","Light Blue","Thunder","Fire");
             declare $theme = menu(@themes);
             setTheme(@themes[$theme]);
             menu::reload();
