@@ -7,6 +7,7 @@
 #include <ClanLib/display.h>
 #include <string>
 #include <map>
+#include <list>
 #include "Font.h"
 
 namespace StoneRing
@@ -53,6 +54,7 @@ namespace StoneRing
 	    EQUIPMENT_SPRITE_ARMOR
 	};
 	static void       initialize();
+        static void       SetTheme(const std::string & theme);
         static CL_Sprite  CreateSprite ( const std::string& name );
 	static CL_Image   CreateImage ( const std::string& name );
         static CL_Image   GetOverlay( Overlay overlay );
@@ -84,16 +86,31 @@ namespace StoneRing
         static CL_Image    GetImage ( Overlay overlay, const std::string& name );
         static CL_Gradient GetMenuGradient();
         static CL_Pointf   GetMenuInset();
+        static std::string GetThemeName();
+        static void        GetAvailableThemes(std::list<std::string>& o_themes);
     private:
+        
+        struct Theme {
+            enum ColorRef { COLOR_MAIN, COLOR_HP, COLOR_MP, COLOR_SP, COLOR_ACCENT, COLOR_SHADOW, COLOR_COUNT };
+            CL_Gradient m_menu_gradient;
+            CL_Colorf   m_colors[COLOR_COUNT];
+        };
 
-        static std::string NameOfOverlay(Overlay overlay);
-        static std::string NameOfDisplayFont(DisplayFont font);
-        Font               LoadFont(const std::string& name);
+        static std::string        NameOfOverlay(Overlay overlay);
+        static std::string        NameOfDisplayFont(DisplayFont font);
+        static Theme::ColorRef    GetColorRef(const std::string& color_name);        
+        Font                      LoadFont(const std::string& name);
+        Theme                     LoadTheme(const std::string& name);
+        static CL_Colorf          LoadColor(CL_ResourceManager& resources, const std::string& path);
+
         std::map<Overlay,CL_Image>      m_overlay_map;
         std::map<std::string,CL_Sprite> m_tile_map;
         std::map<std::string,Font>      m_font_map;
         std::map<std::string,CL_Image>  m_icon_map;
         std::map<Overlay,std::map<std::string,std::string> > m_overlay_font_map;
+        std::map<std::string,Theme>     m_theme_map;
+        Theme                           m_theme;
+        std::string                     m_theme_name;
 
         static GraphicsManager          *m_pInstance;
         GraphicsManager();

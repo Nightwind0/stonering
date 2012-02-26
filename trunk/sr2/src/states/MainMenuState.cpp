@@ -237,27 +237,7 @@ void StoneRing::MainMenuState::Start()
     CL_GraphicContext& GC = GET_MAIN_GC();
     m_bDone = false;
 
-    m_target_sprite = GraphicsManager::CreateSprite("Menu/Target");
-
-    m_portrait_shadow = GraphicsManager::CreateImage("Overlays/MainMenu/portrait_shadow");
-
-    m_optionFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"Option");
-    m_selectionFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"Selection");
-    m_ClassFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"Class");
-    m_MPFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"MP");
-    m_SPFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"SP");
-    m_HPFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"HP");
-    m_LevelFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"Level");
-    m_CharacterFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"Character");
-    m_partyStatFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"PartyStat");
-
-    
-    m_menu_rect = GraphicsManager::GetRect(GraphicsManager::MAIN_MENU,"menu");
-    m_party_rect = GraphicsManager::GetRect(GraphicsManager::MAIN_MENU,"party");
-    m_character_rect = GraphicsManager::GetRect(GraphicsManager::MAIN_MENU,"character");
-    m_status_rect = GraphicsManager::GetRect(GraphicsManager::MAIN_MENU,"status");
-    m_option_parent = NULL;
-    fill_choices(m_root_choices.begin(),m_root_choices.end());
+    reload();
     SelectionFinish();
 }
 
@@ -368,9 +348,38 @@ SteelType StoneRing::MainMenuState::selectTargets(bool group)
     }
 }
 
+SteelType StoneRing::MainMenuState::reload()
+{
+    m_target_sprite = GraphicsManager::CreateSprite("Menu/Target");
+
+    m_portrait_shadow = GraphicsManager::CreateImage("Overlays/MainMenu/portrait_shadow");
+
+    m_optionFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"Option");
+    m_selectionFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"Selection");
+    m_ClassFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"Class");
+    m_MPFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"MP");
+    m_SPFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"SP");
+    m_HPFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"HP");
+    m_LevelFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"Level");
+    m_CharacterFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"Character");
+    m_partyStatFont = GraphicsManager::GetFont(GraphicsManager::MAIN_MENU,"PartyStat");
+
+    
+    m_menu_rect = GraphicsManager::GetRect(GraphicsManager::MAIN_MENU,"menu");
+    m_party_rect = GraphicsManager::GetRect(GraphicsManager::MAIN_MENU,"party");
+    m_character_rect = GraphicsManager::GetRect(GraphicsManager::MAIN_MENU,"character");
+    m_status_rect = GraphicsManager::GetRect(GraphicsManager::MAIN_MENU,"status");
+    m_option_parent = NULL;
+    fill_choices(m_root_choices.begin(),m_root_choices.end());
+    
+    return SteelType();
+}
+
+
 void StoneRing::MainMenuState::SteelInit      (SteelInterpreter *pInterpreter)
 {
     pInterpreter->addFunction("selectTargets","menu",new SteelFunctor1Arg<MainMenuState,bool>(this,&MainMenuState::selectTargets));
+    pInterpreter->addFunction("reload","menu", new SteelFunctorNoArgs<MainMenuState>(this,&MainMenuState::reload));
 }
 
 void StoneRing::MainMenuState::SteelCleanup   (SteelInterpreter *pInterpreter)

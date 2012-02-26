@@ -17,7 +17,6 @@ public:
 
     void LoadGameplayAssets(const std::string &path,CL_ResourceManager& resources);
 private:
-
     void LoadItems(const std::string &filename);
     void LoadSkills(const std::string &filename);
     void LoadStatusEffects(const std::string &filename);

@@ -60,8 +60,8 @@ namespace StoneRing{
 	friend class GraphicsManager;
 	friend int draw_text(CL_GraphicContext&, const Font &, CL_Rectf, CL_StringRef, uint);
 	float calc_offset(CL_GraphicContext&);
-        CL_Colorf m_orig_color;
 	CL_Colorf m_color;
+        CL_Colorf m_shadow_color;
 	CL_Font   m_font;
 	CL_Pointf m_shadow_offset;
     };

@@ -72,7 +72,17 @@
     </menuOption>
     <menuOption name="Config" icon="config">
 	<script id="MainMenuConfig">
+            
 	</script>
+        <menuOption name="Theme" icon="theme">
+            <script id="MainMenuConfigTheme">
+                // getThemes() is broken
+            declare @themes = array("LightBlue","Thunder","Fire");
+            declare $theme = menu(@themes);
+            setTheme(@themes[$theme]);
+            menu::reload();
+            </script>
+        </menuOption>
     </menuOption>
     <menuOption name="Status" icon="status">
 	<script id="MainMenuStatus">

@@ -210,6 +210,8 @@ namespace StoneRing
         SteelType                       save();
         SteelType                       load();
         SteelType                       statusScreen();
+        SteelType                       getThemes();
+        SteelType                       setTheme(const std::string&);
  
 
         void steelConst(const std::string &name, int value);

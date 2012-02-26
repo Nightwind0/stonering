@@ -137,13 +137,21 @@ std::string StoneRing::ICharacter::CAToLabel(uint a)
         default:
             std::string str = CAToString(a);
             str[0] = toupper(str[0]);
+
+            if(IsReal(static_cast<eCharacterAttribute>(a))){
+                // These RST/DMG can be confusing when displayed
+                size_t rst_n = str.find("rst");
+                if(rst_n == std::string::npos)
+                    rst_n = str.find("def");
+                if(rst_n != std::string::npos)
+                    str.erase(rst_n,3); // Maybe str.replace(rst_n,3,"dmg");
+                str += "%";
+            }
             size_t underscore = str.find_first_of('_');
             if(underscore != std::string::npos){
                 str[underscore] = ' ';
                 str[underscore+1] = toupper(str[underscore+1]);
             }
-            if(IsReal(static_cast<eCharacterAttribute>(a)))
-                str += "%";
             return str;
     }
 }
