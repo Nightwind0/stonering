@@ -24,20 +24,7 @@ void GraphicsManager::initialize()
 
 CL_Gradient GraphicsManager::GetMenuGradient()
 {
-    CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
-    CL_String gradientname = CL_String("Game/MenuGradient");
-    
-    CL_Resource resource = resources.get_resource(gradientname);
-    
-    if(resource.get_type() != "gradient")
-        throw CL_Exception("Gradient resource element was not 'gradient' type");
-    
-    CL_Colorf top_left(resource.get_element().get_attribute("top_left"));
-    CL_Colorf top_right(resource.get_element().get_attribute("top_right"));
-    CL_Colorf bottom_left(resource.get_element().get_attribute("bottom_left"));
-    CL_Colorf bottom_right(resource.get_element().get_attribute("bottom_right"));
-    
-    return CL_Gradient(top_left,top_right,bottom_left,bottom_right);
+    return m_pInstance->m_theme.m_menu_gradient;
 }
 
 CL_Pointf GraphicsManager::GetMenuInset()
@@ -309,6 +296,22 @@ StoneRing::Font  GraphicsManager::GetFont(const std::string &name)
     }
 }
 
+GraphicsManager::Theme::ColorRef GraphicsManager::GetColorRef ( const std::string& color_name )
+{
+    if(color_name == "color_hp")
+        return Theme::COLOR_HP;
+    else if(color_name == "color_mp")
+        return Theme::COLOR_MP;
+    else if(color_name == "color_sp")
+        return Theme::COLOR_SP;
+    else if(color_name == "color_main")
+        return Theme::COLOR_MAIN;
+    else if(color_name == "color_accent")
+        return Theme::COLOR_ACCENT;
+    else return Theme::COLOR_COUNT;
+}
+
+
 StoneRing::Font GraphicsManager::LoadFont(const std::string& name)
 {
     CL_ResourceManager& resources  = IApplication::GetInstance()->GetResources();
@@ -329,6 +332,12 @@ StoneRing::Font GraphicsManager::LoadFont(const std::string& name)
         CL_String fontname = font_resource.get_element().get_attribute("font_name");
         CL_String size_str = font_resource.get_element().get_attribute("size");
         CL_String color_str =  font_resource.get_element().get_attribute("color");
+        Theme::ColorRef color_ref = GetColorRef(color_str);
+        if(color_ref != Theme::COLOR_COUNT){
+            color = m_theme.m_colors[color_ref];
+        }else{
+            color = CL_Colorf(color_str);
+        }
 	float shadowx, shadowy;
 	if(font_resource.get_element().has_attribute("shadowx"))
 	    shadowx = atof(font_resource.get_element().get_attribute("shadowx").c_str());
@@ -336,7 +345,6 @@ StoneRing::Font GraphicsManager::LoadFont(const std::string& name)
 	    shadowy = atof(font_resource.get_element().get_attribute("shadowy").c_str());	
 	
 	shadow_offset = CL_Pointf(shadowx,shadowy);
-	CL_Colorf thecolor(color_str);
         int size = atoi(size_str.c_str());
 
         CL_IODevice file = resources.get_directory(font_resource).open_file_read(filename);
@@ -344,25 +352,29 @@ StoneRing::Font GraphicsManager::LoadFont(const std::string& name)
                                  size,
                                  file);
 	font = thefont;
-	color = thecolor;
     }
     else if(font_resource.get_type() == "systemfont")
     {
 	CL_String fontname = font_resource.get_element().get_attribute("font_name");
 	CL_String size_str = font_resource.get_element().get_attribute("size");
 	CL_String color_str = font_resource.get_element().get_attribute("color");
-	CL_Colorf thecolor(color_str);
+        Theme::ColorRef color_ref = GetColorRef(color_str);
+        if(color_ref != Theme::COLOR_COUNT){
+            color = m_theme.m_colors[color_ref];
+        }else{
+            color = CL_Colorf(color_str);
+        }
 	
 	CL_Font_System thefont(GET_MAIN_GC(), fontname, atoi(size_str.c_str()));
 	
 	font = thefont;
-	color = thecolor;
     }
     
     Font thefont;
     thefont.m_font = font;
     thefont.m_color = color;
     thefont.m_shadow_offset = shadow_offset;
+    thefont.m_shadow_color = m_theme.m_colors[Theme::COLOR_SHADOW];
     m_pInstance->m_font_map[name] = thefont;;
     
     return thefont;
@@ -517,6 +529,74 @@ CL_Sprite GraphicsManager::GetSpriteWithImage ( const CL_Image image )
     
     return sprite;
 }
+
+CL_Colorf GraphicsManager::LoadColor ( CL_ResourceManager& resources, const std::string& path )
+{
+    CL_Resource resource = resources.get_resource(path);
+    CL_String color_str= CL_String_load(path,resources);
+    return CL_Colorf(color_str);
+}
+
+
+GraphicsManager::Theme GraphicsManager::LoadTheme ( const std::string& name )
+{
+    Theme theme;
+    CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
+    
+    CL_String theme_path = CL_String("Themes/" + name + "/");    
+    CL_String gradientname = CL_String(theme_path + "MenuGradient");
+    
+    CL_Resource resource = resources.get_resource(gradientname);
+    
+    if(resource.get_type() != "gradient")
+        throw CL_Exception("Gradient resource element was not 'gradient' type");
+    
+    CL_Colorf top_left(resource.get_element().get_attribute("top_left"));
+    CL_Colorf top_right(resource.get_element().get_attribute("top_right"));
+    CL_Colorf bottom_left(resource.get_element().get_attribute("bottom_left"));
+    CL_Colorf bottom_right(resource.get_element().get_attribute("bottom_right"));
+    
+    theme.m_menu_gradient = CL_Gradient(top_left,top_right,bottom_left,bottom_right);
+    
+    
+    theme.m_colors[Theme::COLOR_MAIN] = LoadColor(resources, theme_path + "color_main");
+    theme.m_colors[Theme::COLOR_HP] = LoadColor(resources, theme_path + "color_hp");
+    theme.m_colors[Theme::COLOR_MP] = LoadColor(resources, theme_path + "color_mp");
+    theme.m_colors[Theme::COLOR_SP] = LoadColor(resources, theme_path + "color_sp");
+    theme.m_colors[Theme::COLOR_ACCENT] = LoadColor(resources, theme_path + "color_accent");   
+    theme.m_colors[Theme::COLOR_SHADOW] = LoadColor(resources, theme_path + "color_shadow");
+    return theme;
+}
+
+
+void GraphicsManager::SetTheme ( const std::string& theme )
+{
+    if(theme !=m_pInstance->m_theme_name){
+        const std::map<std::string,Theme>::const_iterator it = m_pInstance->m_theme_map.find(theme);
+        if(it == m_pInstance->m_theme_map.end()){
+            m_pInstance->m_theme_map[theme] = m_pInstance->LoadTheme(theme);
+        }
+        m_pInstance->m_theme = m_pInstance->m_theme_map[theme];
+        m_pInstance->m_font_map.clear(); // Dump font cache
+        m_pInstance->m_theme_name = theme;
+    }
+}
+
+std::string GraphicsManager::GetThemeName()
+{
+    return m_pInstance->m_theme_name;
+}
+
+
+void GraphicsManager::GetAvailableThemes ( std::list< std::string >& o_themes )
+{
+    CL_ResourceManager & resources = IApplication::GetInstance()->GetResources();
+    std::vector<CL_String> sections = resources.get_resource_names("Themes");
+    for(std::vector<CL_String>::const_iterator it = sections.begin(); it != sections.end(); it++){
+        o_themes.push_back ( *it );
+    }
+}
+
 
 
 GraphicsManager::GraphicsManager()

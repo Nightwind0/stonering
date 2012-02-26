@@ -65,7 +65,6 @@ namespace StoneRing{
 
         // Getters for weapon enhancers. need 'em.
     protected:
-
         void Clear_Weapon_Enhancers();
         void Add_Weapon_Enhancer (WeaponEnhancer * pEnhancer);
         void Add_Script_Mode(eScriptMode script_mode);

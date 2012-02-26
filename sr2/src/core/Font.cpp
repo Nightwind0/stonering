@@ -57,7 +57,7 @@ void Font::draw_text(CL_GraphicContext &  	gc,
     }
     if(m_shadow_offset != CL_Pointf(0.0f,0.0f))
     {
-	m_font.draw_text(gc,position + offset + m_shadow_offset, text, CL_Colorf(0.0f,0.0f,0.0f,0.5f));
+	m_font.draw_text(gc,position + offset + m_shadow_offset, text, m_shadow_color);
     }
     
     CL_Colorf color = m_color;

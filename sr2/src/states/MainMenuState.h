@@ -61,6 +61,7 @@ namespace StoneRing
 	CL_Pointf calc_player_position(int player)const;
 	
 	SteelType selectTargets(bool group);
+        SteelType reload();
         
 	
 	int m_nSelectedChar;

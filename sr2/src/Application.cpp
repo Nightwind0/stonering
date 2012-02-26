@@ -1359,6 +1359,7 @@ bool Application::Serialize ( std::ostream& out )
 {
     mpParty->Serialize(out);    
     mMapState.SerializeState(out);
+    WriteString(out,GraphicsManager::GetThemeName());
     return true;
 }
 
@@ -1366,6 +1367,8 @@ bool Application::Deserialize( std::istream& in )
 {
     mpParty->Deserialize(in);    
     mMapState.DeserializeState(in);
+    std::string theme_name = ReadString(in);
+    GraphicsManager::SetTheme(theme_name);
     return true;
 }
 
@@ -1390,6 +1393,28 @@ SteelType Application::statusScreen()
 {
     StatusState state;
     RunState(&state);
+    return SteelType();
+}
+
+SteelType Application::getThemes() 
+{
+    SteelType val;
+    SteelArray array;
+    std::list<std::string> theme_list;
+    GraphicsManager::GetAvailableThemes(theme_list);
+    for(std::list<std::string>::const_iterator it = theme_list.begin();
+        it != theme_list.end(); it++){
+        SteelType entry;
+        entry.set(*it);
+        array.push_back(entry);
+    }
+    val.set(array);
+    return val;
+}
+
+SteelType Application::setTheme(const std::string& theme_name)
+{
+    GraphicsManager::SetTheme(theme_name);
     return SteelType();
 }
 
@@ -2021,6 +2046,8 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "save", new SteelFunctorNoArgs<Application>(this,&Application::save) );
     mInterpreter.addFunction ( "load", new SteelFunctorNoArgs<Application>(this,&Application::load) );
     mInterpreter.addFunction ( "statusScreen", new SteelFunctorNoArgs<Application>(this,&Application::statusScreen) );
+    mInterpreter.addFunction ( "getThemes", new SteelFunctorNoArgs<Application>(this,&Application::getThemes) );
+    mInterpreter.addFunction ( "setTheme", new SteelFunctor1Arg<Application,const std::string&>(this,&Application::setTheme ) );
 }
 
 void Application::queryJoystick()
@@ -2191,6 +2218,9 @@ int Application::main ( const std::vector<CL_String> &args )
         std::string battleConfig = CL_String_load ( "Configuration/BattleConfig", m_resources );
         mBattleConfig.Load ( battleConfig );
         mBattleState.SetConfig ( &mBattleConfig );
+        
+        std::string defaultTheme = CL_String_load ("Game/DefaultTheme", m_resources );
+        GraphicsManager::SetTheme(defaultTheme);
 
         //for(int i =0; i < m_window.get_buffer_count(); i++)
         //  m_window.get_buffer(i).to_format(CL_PixelFormat(24,0,0,0,0,false,0,pixelformat_rgba));

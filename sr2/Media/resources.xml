@@ -24,12 +24,45 @@
                 <!--FF6 purple 783a53  010005-->
                 <!-- 6764c7  000025-->
                 <!--gradient name="MenuGradient" top_left="#e30000" top_right="#e30000" bottom_right="#250000" bottom_left="#250000"/-->
-                <!--gradient name="MenuGradient" top_left="#783a53" top_right="#783a53" bottom_right="#010005" bottom_left="#010005"/-->                
                 <!--gradient name="MenuGradient" top_left="#0057ff" top_right="#0057ff" bottom_right="#003397" bottom_left="#003397"/--> <!-- blue -->
                 <!-- #185053 -->
-                <gradient name="MenuGradient" top_left="#3ea1a8" top_right="#3ea1a8" bottom_right="#000000" bottom_left="#000000"/> 
+                <!--gradient name="MenuGradient" top_left="#3ea1a8" top_right="#3ea1a8" bottom_right="#000000" bottom_left="#000000"/--> 
                 <point name="MenuInset" x="8" y="8"/>
-                <!--gradient name="MenuGradient"--> 
+                <string name="DefaultTheme" value="LightBlue"/> 
+        </section>                                  
+        <section name="Themes">
+            <section name="LightBlue">
+                <gradient name="MenuGradient" top_left="#3ea1a8" top_right="#3ea1a8" bottom_right="#000000" bottom_left="#000000"/> 
+                <string name="color_hp" value="#3E7DA8"/>
+                <string name="color_mp" value="#A83E6C"/>
+                <string name="color_sp" value="#A87A3E"/>
+                <string name="color_main" value="#FFFFFF"/>
+                <string name="color_accent" value="#00FFFF"/>
+                <string name="color_shadow" value="#00000033"/>
+            </section>
+            <section name="Thunder">
+                <gradient name="MenuGradient" top_left="#783a53" top_right="#783a53" bottom_right="#010005" bottom_left="#010005"/>    
+                <string name="color_hp" value="#397940"/>
+                <string name="color_mp" value="#397279"/>
+                <string name="color_sp" value="#79393E"/>
+                <string name="color_main" value="#FFFFFF"/>
+                <string name="color_accent" value="#00FFFF"/>
+                <string name="color_shadow" value="#00000033"/>                
+            </section>
+            <section name="Fire">
+                <gradient name="MenuGradient" top_left="#BF0000" top_right="#BF0000" bottom_right="#000000" bottom_left="#000000"/>
+                <!--<string name="color_hp" value="#5FbF00"/>
+               
+                <string name="color_mp" value="#5f00bf"/>
+                <string name="color_sp" value="#00BEBF"/>
+                -->
+                    <string name="color_hp" value="#00BF5F"/>
+                    <string name="color_mp" value="#005FbF"/>
+                    <string name="color_sp" value="#BF3F00"/>
+                <string name="color_main" value="#FFFFFF"/>
+                <string name="color_accent" value="#5f5f5f"/>
+                <string name="color_shadow" value="#00000033"/>
+            </section>
         </section>
 
         <section name="Fonts">
@@ -48,7 +81,7 @@
                 <freetype name="sb_gray" size="24" color="#636363" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>		
                 <freetype name="sb_white" size="24" color="#FFFFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>			
                 <freetype name="sb_blue" size="24" color="#000080"  shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-                <freetype name="sb_green" size="24" color="#48c86e" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+                <freetype name="sb_green" size="24" color="#color_hp" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
                 <freetype name="sb_purple" size="24" color="#680090" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
                 <freetype name="sb_red" size="24" color="#FF0000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
                 <freetype name="sb_cyan" size="24" color="#00DDDD" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
@@ -63,19 +96,19 @@
                 <freetype name="mm_green" size="22" color="#00FF00" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
                 <freetype name="mm_red" size="22" color="#FF0000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
                 <freetype name="mm_blue" size="22" color="#0000CC" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
-                <freetype name="mm_hp" size="22" color="#48c86e" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
-                <freetype name="mm_mp" size="22" color="#be5c83" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
-                <freetype name="mm_bp" size="22" color="#f1cd7f" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>                
-                <freetype name="mono_hp" size="24" color="#48c86e" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
-                <freetype name="mono_mp" size="24" color="#be5c83" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
-                <freetype name="mono_sp" size="24" color="#f1cd7f" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
-                <freetype name="mono_level" size="24" color="#00FFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>              
-                <freetype name="mono_green" size="24" color="#48c86e" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="mm_hp" size="22" color="color_hp" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="mm_mp" size="22" color="color_mp" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="mm_bp" size="22" color="color_sp" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>                
+                <freetype name="mono_hp" size="24" color="color_hp" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="mono_mp" size="24" color="color_mp" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="mono_sp" size="24" color="color_sp" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="mono_level" size="24" color="color_accent" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>              
+                <freetype name="mono_green" size="24" color="color_hp" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
                 <freetype name="mono_black" size="24" color="#000000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
                 <freetype name="mono_gray" size="24" color="#636363" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>		
                 <freetype name="mono_white" size="24" color="#000000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>			
                 <freetype name="mono_blue" size="24" color="#000080"  shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
-                <freetype name="mono_green" size="24" color="#48c86e" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
+                <freetype name="mono_green" size="24" color="color_hp" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
                 <freetype name="mono_purple" size="24" color="#980090" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
                 <freetype name="mono_red" size="24" color="#FF0000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
                 <freetype name="mono_cyan" size="24" color="#00FFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/MONOFONT.TTF"/>
@@ -148,6 +181,9 @@
         <section name="Icons">
                 <image name="no_icon">
                         <image-file file="Images/Icons/no_icon.png"/>
+                </image>
+                <image name="theme">
+                    <image-file file="Images/Icons/theme.png"/>
                 </image>
                 <image name="attack">
                         <image-file file="Images/Icons/attack.png"/>
