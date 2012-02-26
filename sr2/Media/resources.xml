@@ -28,10 +28,19 @@
                 <!-- #185053 -->
                 <!--gradient name="MenuGradient" top_left="#3ea1a8" top_right="#3ea1a8" bottom_right="#000000" bottom_left="#000000"/--> 
                 <point name="MenuInset" x="8" y="8"/>
-                <string name="DefaultTheme" value="LightBlue"/> 
+                <string name="DefaultTheme" value="RPG Blue"/> 
         </section>                                  
         <section name="Themes">
-            <section name="LightBlue">
+            <section name="RPG Blue">
+                <gradient name="MenuGradient" top_left="#0054F5" top_right="#0054F5" bottom_right="#000000" bottom_left="#000000"/> 
+                <string name="color_hp" value="#00F526"/>
+                <string name="color_mp" value="#F500CE"/>
+                <string name="color_sp" value="#F5A100"/>
+                <string name="color_main" value="#FFFFFF"/>
+                <string name="color_accent" value="#00FFFF"/>
+                <string name="color_shadow" value="#00000033"/>                
+            </section>
+            <section name="Light Blue">
                 <gradient name="MenuGradient" top_left="#3ea1a8" top_right="#3ea1a8" bottom_right="#000000" bottom_left="#000000"/> 
                 <string name="color_hp" value="#3E7DA8"/>
                 <string name="color_mp" value="#A83E6C"/>
@@ -63,6 +72,7 @@
                 <string name="color_accent" value="#5f5f5f"/>
                 <string name="color_shadow" value="#00000033"/>
             </section>
+ 
         </section>
 
         <section name="Fonts">
