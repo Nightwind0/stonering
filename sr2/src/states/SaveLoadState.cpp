@@ -23,6 +23,7 @@
 #include "DynamicMenuState.h"
 #include "SoundManager.h"
 #include "CharacterManager.h"
+#include "Party.h"
 #include <sstream>
 #include <fstream>
 #include <iomanip>
@@ -31,7 +32,7 @@
 
 namespace StoneRing {
     
-    const int kVersion = 4;
+    const int kVersion = 5;
 
 SaveLoadState::SaveLoadState()
 {
@@ -302,7 +303,7 @@ void SaveLoadState::save ( uint slot )
     std::ofstream out_file(filename_for_slot(slot),std::ios::out|std::ios::binary);
     out_file.write(sig,4);
     out_file.write((char*)&kVersion,sizeof(kVersion));
-    IParty * party = IApplication::GetInstance()->GetParty();
+    Party * party = IApplication::GetInstance()->GetParty();
     int gold = party->GetGold();
     int minutes = party->GetMinutesPlayed();
     cl_byte64 ticks = CL_DateTime::get_current_utc_time().to_ticks();

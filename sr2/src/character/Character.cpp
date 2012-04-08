@@ -471,6 +471,7 @@ double StoneRing::Character::GetAttributeWithoutEquipment ( ICharacter::eCharact
         {
             base *=  iter->second->GetAttributeMultiplier(attr);
         }
+        base *= IApplication::GetInstance()->GetParty()->GetCharacterAttributeMultiplier(attr);
         // Same with the status effects
         // Then do it with the adders
         for(std::map<Equipment::eSlot,Equipment*>::const_iterator iter= m_equipment.begin();
@@ -485,6 +486,7 @@ double StoneRing::Character::GetAttributeWithoutEquipment ( ICharacter::eCharact
         {
             base += iter->second->GetAttributeAdd(attr);
         }
+        base += IApplication::GetInstance()->GetParty()->GetCharacterAttributeAdd(attr);
     }
     double augment  = 0.0;
     std::map<eCharacterAttribute,double>::const_iterator aug = m_augments.find(attr);
@@ -559,6 +561,11 @@ bool StoneRing::Character::GetToggle(eCharacterAttribute attr) const
             else
                 base = base || iter->second->GetAttributeToggle(attr, base);              
         }
+    if(ToggleDefaultTrue(attr)){
+        base = base && IApplication::GetInstance()->GetParty()->GetCharacterAttributeToggle(attr,base);
+    }else{
+        base = base || IApplication::GetInstance()->GetParty()->GetCharacterAttributeToggle(attr,base);
+    }
     return base;
 }
 

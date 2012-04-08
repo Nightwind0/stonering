@@ -5,6 +5,7 @@
 #include "SoundManager.h"
 #include "MenuBox.h"
 #include <iomanip>
+#include "Party.h"
 
 using std::min;
 using std::max;
@@ -101,7 +102,7 @@ void StoneRing::MainMenuState::Draw(const CL_Rect &screenRect,CL_GraphicContext&
     draw_party(GC);
     
     if(m_bSelectingTarget){
-	IParty * party = IApplication::GetInstance()->GetParty();
+	Party * party = IApplication::GetInstance()->GetParty();
 	const int player_count = party->GetCharacterCount();
 	if(m_bSelectAll)
 	{
@@ -159,7 +160,7 @@ void StoneRing::MainMenuState::draw_party_stats ( CL_GraphicContext& gc )
 
 void StoneRing::MainMenuState::draw_party(CL_GraphicContext& GC)
 {
-    IParty * party = IApplication::GetInstance()->GetParty();
+    Party * party = IApplication::GetInstance()->GetParty();
     float height = m_character_rect.get_height() / 4;
     const float spacing = 12.0f;
     for(int i=0;i<party->GetCharacterCount();i++){
@@ -314,7 +315,7 @@ SteelType StoneRing::MainMenuState::selectTargets(bool group)
 {
     m_targetingState.Init(group);
     IApplication::GetInstance()->RunState(&m_targetingState);
-    IParty * party = IApplication::GetInstance()->GetParty();
+    Party * party = IApplication::GetInstance()->GetParty();
     SteelType targets;
     if(m_nSelectedChar >= 0)
     {
@@ -389,7 +390,7 @@ void StoneRing::MainMenuState::SteelCleanup   (SteelInterpreter *pInterpreter)
 
 void StoneRing::MainMenuState::SelectCharacterUp()
 {
-    IParty * party = IApplication::GetInstance()->GetParty();
+    Party * party = IApplication::GetInstance()->GetParty();
     if(--m_nSelectedChar < 0){
 	m_nSelectedChar = party->GetCharacterCount() - 1;
     }
@@ -397,7 +398,7 @@ void StoneRing::MainMenuState::SelectCharacterUp()
 
 void StoneRing::MainMenuState::SelectCharacterDown()
 {
-    IParty * party = IApplication::GetInstance()->GetParty();
+    Party * party = IApplication::GetInstance()->GetParty();
     if(++m_nSelectedChar >= party->GetCharacterCount()){
 	m_nSelectedChar = 0;
     }    

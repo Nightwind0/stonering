@@ -69,6 +69,7 @@ namespace StoneRing
             EMOVEMENT,
 	    EMENUOPTION,
             ENAMEDITEMREF,
+            EOMEGA,
             EONCOUNTDOWN,
             EONDESELECT,
             EONEQUIP,

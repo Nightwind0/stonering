@@ -53,6 +53,7 @@ namespace StoneRing{
         virtual void Unequip(ICharacter *);
         virtual bool EquipCondition(const ParameterList& params)=0;
      
+        // TODO: Get these from some base that Omegas can share with Equipment
         typedef std::multimap<uint,AttributeModifier*> AttributeModifierSet;
         typedef std::multimap<std::string,StatusEffectModifier*> StatusEffectModifierSet;
         typedef std::multimap<std::string,StatusEffectInfliction*> StatusEffectInflictionSet;

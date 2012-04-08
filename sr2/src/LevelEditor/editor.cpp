@@ -48,7 +48,7 @@ CL_ResourceManager * EditorMain::getResources()const
 }
 
 
-StoneRing::IParty * EditorMain::getParty() const
+StoneRing::Party * EditorMain::getParty() const
 {
     return mpParty;
 }

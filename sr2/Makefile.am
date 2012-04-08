@@ -205,7 +205,9 @@ stonering_SOURCES =	src/Application.cpp \
 			src/core/SteelRunner.cpp \
 			src/core/SteelRunner.h \
 			src/states/StatusState.cpp \
-			src/states/StatusState.h
+			src/states/StatusState.h \
+			src/items/Omega.cpp \
+			src/items/Omega.h
 
 
 

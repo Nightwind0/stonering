@@ -60,11 +60,7 @@
             </section>
             <section name="Fire">
                 <gradient name="MenuGradient" top_left="#BF0000" top_right="#BF0000" bottom_right="#000000" bottom_left="#000000"/>
-                <!--<string name="color_hp" value="#5FbF00"/>
-               
-                <string name="color_mp" value="#5f00bf"/>
-                <string name="color_sp" value="#00BEBF"/>
-                -->
+
                     <string name="color_hp" value="#00BF5F"/>
                     <string name="color_mp" value="#005FbF"/>
                     <string name="color_sp" value="#BF3F00"/>
@@ -72,11 +68,20 @@
                 <string name="color_accent" value="#5f5f5f"/>
                 <string name="color_shadow" value="#00000033"/>
             </section>
+            <section name="Eighties">
+                <gradient name="MenuGradient" top_left="#000000" top_right="#000000" bottom_right="#000000" bottom_left="#000000"/>
+                <string name="color_hp" value="#00FF00"/>
+                <string name="color_mp" value="#FF00FF"/>
+                <string name="color_sp" value="#FFFF00"/>
+                <string name="color_main" value="#FFFFFF"/>
+                <string name="color_accent" value="#00FFFF"/>
+                <string name="color_shadow" value="#66666633"/>
+            </section>
  
         </section>
 
         <section name="Fonts">
-<!-- 1234567890-=\+/`~!@#$%^&*()[]{};:'",.<>?AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw -->
+<!-- 1234567890-=\+/`~!@#$%^&*()[]{};:'",.<>?AaBbCcDdEeFfGgjKkLlMmNnOoPpQqRrSsTtUuVvXxYyZzWw -->
 
                 <freetype name="Font_hp_plus" file="Images/Fonts/cwisdom.ttf" size="32" color="#00FF00FF" font_name="Conventional Wisdom"/>
                 <freetype name="Font_hp_minus" file="Images/Fonts/cwisdom.ttf" size="32" color="#FF0000FF" font_name="Conventional Wisdom"/>
@@ -219,9 +224,10 @@
                 <image name="weapons">
                     <image-file file="Images/Icons/W_Sword001.png"/>
                 </image>
+
                 
                 <image name="omegas">
-                    <image-file file="Images/Icons/I_Saphire.png"/>
+                    <image-file file="Images/Icons/Crystal7.png"/>
                 </image>
                 <image name="party">
                     <image-file file="Images/Icons/Present.png"/>
@@ -405,6 +411,15 @@
                     </image>
                     <image name="antidote">
                         <image-file file="Images/Icons/P_Blue03.png"/>
+                    </image>
+                    <image name="mythical_egg">
+                        <image-file file="Images/Icons/mythical_egg.png"/>
+                    </image>
+                    <image name="marbles">
+                        <image-file file="Images/Icons/marbles.png"/>
+                    </image>
+                    <image name="mushroom">
+                        <image-file file="Images/Icons/mushroom.png"/>
                     </image>
                 </section>
         </section>

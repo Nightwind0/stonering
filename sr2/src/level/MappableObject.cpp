@@ -3,7 +3,7 @@
 #include "GraphicsManager.h"
 #include "Graphic.h"
 #include "SpriteRef.h"
-#include "IParty.h"
+#include "Party.h"
 #include <ClanLib/core.h>
 
 
@@ -430,7 +430,7 @@ bool MappableObjectElement::EvaluateCondition() const
 bool MappableObjectElement::ProvokeEvents ( Event::eTriggerType trigger )
 {
     bool provoked = false;
-    IParty *party = IApplication::GetInstance()->GetParty();
+    Party *party = IApplication::GetInstance()->GetParty();
 
     for(std::list<Event*>::iterator i = m_events.begin();
         i != m_events.end();

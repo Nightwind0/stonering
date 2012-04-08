@@ -222,7 +222,7 @@ bool characterInitiativeSort(const ICharacter* pChar1, const ICharacter* pChar2)
 
 void BattleState::roll_initiative()
 {
-    IParty * party = IApplication::GetInstance()->GetParty();
+    Party * party = IApplication::GetInstance()->GetParty();
 
     for (uint i=0;i<party->GetCharacterCount();i++)
     {
@@ -470,7 +470,7 @@ void BattleState::Start()
 
 void BattleState::init_or_release_players(bool bRelease)
 {
-    IParty * pParty = IApplication::GetInstance()->GetParty();
+    Party * pParty = IApplication::GetInstance()->GetParty();
 
     uint count = pParty->GetCharacterCount();
     for (uint nPlayer = 0;nPlayer < count; nPlayer++)
@@ -517,7 +517,7 @@ void BattleState::draw_start(const CL_Rectf &screenRect, CL_GraphicContext& GC)
 
 void BattleState::draw_status(const CL_Rectf &screenRect, CL_GraphicContext& GC)
 {
-    IParty * pParty = IApplication::GetInstance()->GetParty();
+    Party * pParty = IApplication::GetInstance()->GetParty();
     
     MenuBox::Draw(GC,m_statusRect);
     
@@ -731,7 +731,7 @@ void BattleState::Display::draw(CL_GraphicContext& GC)
     }
     else
     {
-        IParty * pParty = IApplication::GetInstance()->GetParty();
+        Party * pParty = IApplication::GetInstance()->GetParty();
         for (uint n=0;n<pParty->GetCharacterCount();n++)
         {
             if (m_pTarget == pParty->GetCharacter(n))
@@ -942,7 +942,7 @@ CL_Sprite BattleState::current_sprite ( ICharacter* iCharacter )
 
 void BattleState::draw_players(const CL_Rectf &playerRect, CL_GraphicContext& GC)
 {
-    IParty * pParty = IApplication::GetInstance()->GetParty();
+    Party * pParty = IApplication::GetInstance()->GetParty();
 
     uint playercount = pParty->GetCharacterCount();
     for (uint nPlayer = 0; nPlayer < playercount; nPlayer++)
@@ -1027,7 +1027,7 @@ CL_Pointf BattleState::get_character_locus(const ICharacter* pCharacter) const
     if(pMonster != NULL){
         return get_monster_locus(pMonster);
     }else{
-        IParty * pParty = IApplication::GetInstance()->GetParty();
+        Party * pParty = IApplication::GetInstance()->GetParty();
         uint playercount = pParty->GetCharacterCount();
         for(uint i=0;i<playercount;i++){
             ICharacter * iCharacter = pParty->GetCharacter(i);
@@ -1314,7 +1314,7 @@ void BattleState::CancelTargeting()
 
 bool BattleState::end_conditions()
 {
-    IParty * party = IApplication::GetInstance()->GetParty();
+    Party * party = IApplication::GetInstance()->GetParty();
        // Now, see if the monsters are all dead
     bool anyAlive = false;
     for(int i=0;i<m_monsters->GetCharacterCount();i++)
@@ -1408,7 +1408,7 @@ void BattleState::win()
     ParameterList params;
     // All battle methods remain valid here
     m_config->OnBattleWon(params);
-    IParty * pParty = IApplication::GetInstance()->GetParty();
+    Party * pParty = IApplication::GetInstance()->GetParty();
     
     // TODO: Maybe this should just be steel in OnBattleWon? 
     for(int i=0;i<pParty->GetCharacterCount(); i++)

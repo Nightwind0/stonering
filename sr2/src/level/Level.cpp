@@ -15,7 +15,7 @@
 #include "MonsterRegion.h"
 #include "MonsterGroup.h"
 #include "SoundManager.h"
-
+#include "Party.h"
 
 
 
@@ -817,7 +817,7 @@ void Level::Step(const CL_Point &target)
         }
     }
     
-    IParty * pParty = IApplication::GetInstance()->GetParty();
+    Party * pParty = IApplication::GetInstance()->GetParty();
     for(int i=0;i<pParty->GetCharacterCount();i++)
     {
         Character *pChar = dynamic_cast<Character*>(pParty->GetCharacter(i));

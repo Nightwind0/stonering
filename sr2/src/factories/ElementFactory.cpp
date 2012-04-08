@@ -39,6 +39,7 @@
 #include "MenuOption.h"
 #include "Description.h"
 #include "SoundPlay.h"
+#include "Omega.h"
 
 using namespace StoneRing;
 
@@ -115,6 +116,7 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["monsterGroup"] = &ElementFactory::CreateElement<MonsterGroup>;
     mCreateMethods["menuOption"] = &ElementFactory::CreateElement<MenuOption>;
     mCreateMethods["namedItemRef"] = &ElementFactory::CreateElement<NamedItemRef>;
+    mCreateMethods["omega"] = &ElementFactory::CreateElement<Omega>;
     mCreateMethods["onCountdown"] = &ElementFactory::CreateElement<OnCountdown>;
     mCreateMethods["onDeselect"] = &ElementFactory::CreateElement<OnDeselect>;
     mCreateMethods["onInvoke"] = &ElementFactory::CreateElement<OnInvoke>;

@@ -23,6 +23,7 @@
 #include "MenuBox.h"
 #include "Weapon.h"
 #include "Armor.h"
+#include "Party.h"
 #include <iomanip>
 
 
@@ -139,7 +140,7 @@ void EquipState::fill_equipment_menu()
 {
     m_equipment_menu.ClearOptions();
     
-    IParty * party = IApplication::GetInstance()->GetParty();    
+    Party * party = IApplication::GetInstance()->GetParty();    
     EquipmentCollector collector(m_equipment_menu,m_pChar, m_slots[m_nSlot]);
     party->IterateItems(collector);
 }

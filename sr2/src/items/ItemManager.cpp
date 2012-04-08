@@ -212,6 +212,7 @@ void ItemManager::LoadItemFile ( CL_DomDocument &doc )
 	    case Element::ESPECIALITEM:
 	    case Element::EUNIQUEARMOR:
 	    case Element::EUNIQUEWEAPON:
+            case Element::EOMEGA:
 		Item * pItem = dynamic_cast<Item*>(pElement);
 		m_pInstance->m_named_items[pItem->GetName()] = pItem;
 		break;

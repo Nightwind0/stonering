@@ -54,7 +54,7 @@ namespace StoneRing
         virtual CL_ResourceManager&     GetResources();
         virtual CL_DisplayWindow&       GetApplicationWindow();
         virtual void                    PopLevelStack(bool);
-        virtual IParty*                 GetParty() const;
+        virtual Party*                  GetParty() const;
         virtual AbilityManager *        GetAbilityManager();
         virtual IFactory *              GetElementFactory() { return &mElementFactory; }
         virtual CharacterManager *      GetCharacterManager() { return &mCharacterManager; }
@@ -119,6 +119,7 @@ namespace StoneRing
         SteelType                       doEvent(const std::string &event, bool bRemember);
         SteelType                       takeItem(SteelType::Handle hItem, uint count, bool silent);
         SteelType                       selectItem(bool battle, bool dispose);
+        SteelType                       selectItemAdv(uint filter);
         SteelType                       addCharacter(const std::string &character, int level, bool announce);
 	SteelType                       inBattle();
         SteelType                       shop(const SteelArray& items); // only for buying

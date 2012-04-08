@@ -10,4 +10,5 @@ giveItem(getNamedItem("Moon Seed"),1,true);
 giveItem(getNamedItem("Sun Seed"),3,true);
 giveItem(getNamedItem("Star Chip"),1,true);
 giveItem(getNamedItem("Antidote"),3,true);
+giveItem(getNamedItem("Joy Egg"),1,true);
 loadLevel("examplelevel",4,4);

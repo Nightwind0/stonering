@@ -531,6 +531,14 @@ SteelType Application::doMPDamage ( SteelType::Handle hICharacter, int damage )
     return newmp;
 }
 
+SteelType Application::selectItemAdv( uint filter ) 
+{
+    mItemSelectState.Init ( false, filter );
+    RunState ( &mItemSelectState );
+    SteelType val;
+    val.set ( mItemSelectState.GetSelectedItem() );
+    return val;    
+}
 
 SteelType Application::selectItem ( bool battle, bool dispose )
 {
@@ -1073,7 +1081,7 @@ SteelType Application::isReusableItem ( SteelType::Handle hItem )
 SteelType Application::useItem ( SteelType::Handle hItem, const SteelType& targets )
 {
     Item* pItem = GrabHandle<Item*> ( hItem );
-    IParty * party = IApplication::GetInstance()->GetParty();
+    Party * party = IApplication::GetInstance()->GetParty();
     RegularItem * pRegularItem = dynamic_cast<RegularItem*> ( pItem );
     SteelType used;
 
@@ -1443,7 +1451,7 @@ IApplication * IApplication::GetInstance()
 }
 
 
-IParty * Application::GetParty() const
+Party * Application::GetParty() const
 {
     return mpParty;
 }
@@ -1829,6 +1837,7 @@ void Application::registerSteelFunctions()
     SteelFunctor*  fn_log = new SteelFunctor1Arg<Application, const std::string&> ( this, &Application::log );
     SteelFunctor*  fn_showExperience = new SteelFunctor4Arg<Application, const SteelArray&, const SteelArray&, const SteelArray&, const SteelArray&> 
                                             ( this, &Application::showExperience );
+    SteelFunctor*  fn_selectItemAdv = new SteelFunctor1Arg<Application,uint> ( this, &Application::selectItemAdv );
 
 
     mInterpreter.pushScope();
@@ -2048,6 +2057,7 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "statusScreen", new SteelFunctorNoArgs<Application>(this,&Application::statusScreen) );
     mInterpreter.addFunction ( "getThemes", new SteelFunctorNoArgs<Application>(this,&Application::getThemes) );
     mInterpreter.addFunction ( "setTheme", new SteelFunctor1Arg<Application,const std::string&>(this,&Application::setTheme ) );
+    mInterpreter.addFunction ( "selectItemAdv", new SteelFunctor1Arg<Application,uint>(this,&Application::selectItemAdv) );
 }
 
 void Application::queryJoystick()

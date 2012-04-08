@@ -1,6 +1,6 @@
 #include "Event.h"
 #include "IApplication.h"
-#include "IParty.h"
+#include "Party.h"
 
 
 StoneRing::Event::Event():m_bRepeatable(true),m_bRemember(false),m_pCondition(NULL),m_pScript(NULL)
