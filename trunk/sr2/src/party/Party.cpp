@@ -4,7 +4,7 @@
 #include "Character.h"
 #include "ItemManager.h"
 #include <sstream>
-#include "IParty.h"
+#include "Party.h"
 #include "GeneratedWeapon.h"
 #include "GeneratedArmor.h"
 #include "UniqueWeapon.h"
@@ -14,14 +14,14 @@
 #include "WeaponClass.h"
 #include "ArmorClass.h"
 #include "CharacterManager.h"
-
+#include "Omega.h"
 
 using StoneRing::Party;
-using StoneRing::IParty;
 using StoneRing::ICharacter;
 using StoneRing::ItemRef;
 using StoneRing::Item;
 using StoneRing::Character;
+using StoneRing::Omega;
 
 Party::Party():m_nGold(0)
 {
@@ -181,6 +181,98 @@ void Party::IterateItems( StoneRing::ItemVisitor& func )
 	}
 }
 
+bool Party::EquipOmega ( uint slot, StoneRing::Omega* pOmega)
+{
+    std::map<uint,Omega*>::const_iterator it = m_omegas.find(slot);
+    if(it != m_omegas.end()){
+        // They already have somethign in this slot, move it into items
+        GiveItem(it->second,1);
+    }else{
+        if(m_omegas.size() >= GetCommonAttribute(ICharacter::CA_IDOL_SLOTS))
+            return false;
+    }
+    m_omegas[slot] = pOmega;
+    return true;
+}
+
+double Party::GetCommonAttribute ( ICharacter::eCommonAttribute attr ) const
+{
+    double value = 1.0;
+    for(std::map<uint,Omega*>::const_iterator iter = m_omegas.begin();
+        iter != m_omegas.end(); iter++){
+        value *= iter->second->GetAttributeMultiplier(iter->first);
+    }
+    for(std::map<uint,Omega*>::const_iterator iter = m_omegas.end();
+        iter != m_omegas.end(); iter++){
+        value += iter->second->GetAttributeAdd(iter->first);
+    }
+    // TODO: eventually have Characters be able to modify common attributes, then process those as well
+    return value;
+}
+
+bool Party::GetCommonToggle ( ICharacter::eCommonAttribute attr ) const
+{
+    return false; // TODO: This
+}
+
+double Party::GetCharacterAttributeAdd ( ICharacter::eCharacterAttribute attr ) const
+{
+    double value = 0.0;
+    for(std::map<uint,Omega*>::const_iterator iter = m_omegas.end();
+        iter != m_omegas.end(); iter++){
+        value += iter->second->GetAttributeAdd(iter->first);
+    }
+    return value;
+}
+
+double Party::GetCharacterAttributeMultiplier ( ICharacter::eCharacterAttribute attr ) const
+{
+    double value = 1.0;
+    for(std::map<uint,Omega*>::const_iterator iter = m_omegas.begin();
+        iter != m_omegas.end(); iter++){
+        value *= iter->second->GetAttributeMultiplier(iter->first);
+    }
+    return value;
+}
+
+bool Party::GetCharacterAttributeToggle ( ICharacter::eCharacterAttribute attr, bool current ) const
+{
+    bool value = current;
+    for(std::map<uint,Omega*>::const_iterator iter = m_omegas.begin();
+        iter != m_omegas.end(); iter++){
+        value = iter->second->GetAttributeToggle(attr,value);        
+    }
+    return value;
+}
+
+
+StoneRing::Omega* Party::GetOmega ( uint slot )
+{
+    std::map<uint,Omega*>::const_iterator it = m_omegas.find(slot);
+    if(it != m_omegas.end())
+        return it->second;
+    else return NULL;
+}
+
+double Party::GetStatusEffectModifier ( const std::string& statuseffect ) const
+{
+    double chance = 1.0;
+    for(std::map<uint,Omega*>::const_iterator iter = m_omegas.begin();
+        iter != m_omegas.end(); iter++){
+        chance += iter->second->GetStatusEffectModifier(statuseffect);
+    }
+    return chance;
+}
+
+void Party::UnequipOmega ( uint slot )
+{
+    std::map<uint,Omega*>::iterator it = m_omegas.find(slot);
+    if(it != m_omegas.end()){
+        GiveItem(it->second,1);
+        m_omegas.erase(it);
+    }
+}
+
 
 void Party::Serialize ( std::ostream& out )
 {
@@ -211,6 +303,12 @@ void Party::Serialize ( std::ostream& out )
     
     uint minutes = GetMinutesPlayed();
     out.write((char*)&minutes,sizeof(uint));
+    
+    uint omega_count = m_omegas.size();
+    out.write((char*)&omega_count,sizeof(uint));
+    for(std::map<uint,Omega*>::const_iterator iter = m_omegas.begin(); iter != m_omegas.end(); iter++){
+        ItemManager::SerializeItem(out,iter->second);
+    }
 }
 
 void Party::Deserialize ( std::istream& in )
@@ -243,14 +341,21 @@ void Party::Deserialize ( std::istream& in )
     }
     
     in.read((char*)&m_nMinutes,sizeof(uint));
+    
+    uint omega_count;
+    in.read((char*)&omega_count,sizeof(uint));
+    for(int i=0;i<omega_count;i++){
+        Omega* pOmega = dynamic_cast<Omega*>(ItemManager::DeserializeItem(in));
+        if(pOmega){
+            m_omegas[i] = pOmega;
+        }
+    }
 }
 
 uint Party::GetMinutesPlayed() const
 {
     return m_nMinutes + IApplication::GetInstance()->GetMinutesPlayed();
 }
-
-
 
 
 

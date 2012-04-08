@@ -19,7 +19,7 @@
 #include "GridPoint.h"
 #include "Infobar.h"
 #include "IApplication.h"
-#include "IParty.h"
+#include "Party.h"
 #include "Item.h"
 #include "AppUtils.h"
 //#include "SteelInterpreter.h"
@@ -32,7 +32,7 @@ class StoneRing::ICharacter;
 
 namespace Editor{
 
-class EditorParty : public StoneRing::IParty
+class EditorParty : public StoneRing::Party
 {
 public:
     virtual bool getGold() const { return true;}
@@ -75,7 +75,7 @@ public:
     // IApplication Interface
     virtual void requestRedraw(const StoneRing::State *){on_paint();}
     virtual CL_ResourceManager * getResources()const;
-    virtual StoneRing::IParty * getParty() const;
+    virtual StoneRing::Party * getParty() const;
     
     StoneRing::ICharacterGroup *getSelectedCharacterGroup() const { return NULL; }
     StoneRing::CharacterFactory * getCharacterFactory() const { return NULL; }

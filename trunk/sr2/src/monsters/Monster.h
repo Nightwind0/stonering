@@ -9,7 +9,7 @@
 #include <map>
 #include <list>
 #include "DamageCategory.h"
-
+#include "ICharacterGroup.h"
 
 
 

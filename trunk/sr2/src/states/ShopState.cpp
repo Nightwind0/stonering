@@ -21,6 +21,7 @@
 #include "GraphicsManager.h"
 #include "MenuBox.h"
 #include "SoundManager.h"
+#include "Party.h"
 #include <iomanip>
 
 
@@ -355,7 +356,7 @@ void ShopState::draw_characters ( CL_GraphicContext& gc )
     rect.shrink(GraphicsManager::GetMenuInset().x, GraphicsManager::GetMenuInset().y);
     //rect.translate(GraphicsManager::GetMenuInset());
     //CL_Draw::fill(gc,rect,CL_Colorf(1.0f,1.0f,1.0f,0.5f));
-    IParty * party = IApplication::GetInstance()->GetParty();
+    Party * party = IApplication::GetInstance()->GetParty();
     for(uint i =0;i<party->GetCharacterCount(); i++)
     {
         CL_Sprite pSprite = dynamic_cast<Character*>(party->GetCharacter(i))

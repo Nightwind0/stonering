@@ -63,7 +63,7 @@ namespace StoneRing
 
       void ChangeState(State newState);
       BattleState *m_pParent;
-      IParty * m_pParty;
+      Party * m_pParty;
       State m_state;
       Targetable m_targetable;
       bool m_bDefaultMonsters;

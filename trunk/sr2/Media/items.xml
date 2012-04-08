@@ -540,7 +540,10 @@
                        // TODO: Sound
                    </script>    
                </regularItem>
-               
+               <omega name="Joy Egg" value="2000" dropRarity="never">
+                   <iconRef>Items/mythical_egg</iconRef>
+                   <description>An egg that makes things more fun</description>
+               </omega>
                
                <specialItem name="Octavia Key" dropRarity="never">
                    <iconRef>Item/key</iconRef>

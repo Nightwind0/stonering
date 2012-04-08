@@ -4,6 +4,7 @@
 #include "RegularItem.h"
 #include "MenuBox.h"
 #include "SoundManager.h"
+#include "Party.h"
 #include <iomanip>
 
 using StoneRing::ItemSelectState;
@@ -43,6 +44,15 @@ bool ItemSelectState::IsDone() const
 	// Handle joystick / key events that are processed according to mappings
 void ItemSelectState::HandleButtonUp(const IApplication::Button& button)
 {
+    static const Item::eItemType order[] = {Item::REGULAR_ITEM,Item::WEAPON,Item::ARMOR,Item::OMEGA,Item::SPECIAL};
+    int cur_index = 0;
+    int order_count = sizeof(order) / sizeof(Item::eItemType);
+    for(int i=0;i<order_count;i++){
+        if(m_itemType == order[i]){
+            cur_index = i;
+            break;
+        }            
+    }
     switch(button)
     {
     case IApplication::BUTTON_CANCEL:
@@ -63,40 +73,22 @@ void ItemSelectState::HandleButtonUp(const IApplication::Button& button)
 	}
 	break;
     	case IApplication::BUTTON_R:
-	     switch(m_itemType)
-	     {
-		 case Item::REGULAR_ITEM:
-		     m_itemType = Item::WEAPON;
-		     break;
-		 case Item::WEAPON:
-		     m_itemType = Item::ARMOR;
-		     break;
-		 case Item::ARMOR:
-		     m_itemType = Item::SPECIAL;
-		     break;
-		 case Item::SPECIAL:
-		     m_itemType = Item::REGULAR_ITEM;
-		     break;
-	     }
-	     reset_menu();
+            if(cur_index == order_count-1){
+                cur_index = 0;
+            }else{
+                cur_index++;
+            }
+            m_itemType = order[cur_index];
+	    reset_menu();
 	    break;
 	case IApplication::BUTTON_L:
-	     switch(m_itemType)
-	     {
-		 case Item::REGULAR_ITEM:
-		     m_itemType = Item::SPECIAL;
-		     break;
-		 case Item::WEAPON:
-		     m_itemType = Item::REGULAR_ITEM;
-		     break;
-		 case Item::ARMOR:
-		     m_itemType = Item::WEAPON;
-		     break;
-		 case Item::SPECIAL:
-		     m_itemType = Item::ARMOR;
-		     break;
-	     }
-	     reset_menu();
+            if(cur_index == 0){
+                cur_index = order_count-1;
+            }else{
+                cur_index--;
+            }
+            m_itemType = order[cur_index];
+	    reset_menu();
 	    break;
  
     }
@@ -215,13 +207,23 @@ void ItemSelectState::Start()
     
     
     m_type_icons[ Item::REGULAR_ITEM ] = GraphicsManager::GetIcon("regular_items");
-    m_type_icons[ Item::SPECIAL ] = GraphicsManager::GetIcon("special_items");    
+    m_type_icons[ Item::SPECIAL ] = GraphicsManager::GetIcon("special_items");
+
     m_type_icons [ Item::WEAPON ] = GraphicsManager::GetIcon("weapons");
     m_type_icons [ Item::ARMOR ] = GraphicsManager::GetIcon("armor");
+    m_type_icons[ Item::OMEGA ] = GraphicsManager::GetIcon("omegas");
     
+    static const Item::eItemType order[] = {Item::REGULAR_ITEM,Item::WEAPON,Item::ARMOR,Item::OMEGA,Item::SPECIAL};    
     m_itemType = Item::REGULAR_ITEM;
+    for(uint i=0;i<sizeof(order)/sizeof(Item::eItemType);i++){
+        if(order[i] & m_typemask){
+            m_itemType = order[i];
+            break;
+        }
+    }
     
-    IParty * party = IApplication::GetInstance()->GetParty();
+    
+    Party * party = IApplication::GetInstance()->GetParty();
     ItemCollector collector(*this);
     
     party->IterateItems(collector); 

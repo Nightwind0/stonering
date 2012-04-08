@@ -1,11 +1,11 @@
 #include "MapState.h"
 #include "Level.h"
 #include "MappableObject.h"
-#include "IParty.h"
+#include "Party.h"
 #include "SoundManager.h"
 
 using std::min;
-using StoneRing::IParty;
+using StoneRing::Party;
 
 
 StoneRing::MapState::MapState():m_LevelX(0),

@@ -68,7 +68,11 @@
     <menuOption name="Party" icon="party">
 	<script id="MainMenuParty">
 	</script>
-        <menuOption name="Omegas" icon="omegas" />
+        <menuOption name="Omegas" icon="omegas">
+            <script id="MainMenuOmegas">
+                declare $item = selectItemAdv($_ITEM_OMEGA);
+            </script>
+        </menuOption>
     </menuOption>
     <menuOption name="Config" icon="config">
 	<script id="MainMenuConfig">
@@ -77,7 +81,7 @@
         <menuOption name="Theme" icon="theme">
             <script id="MainMenuConfigTheme">
                 // getThemes() is broken
-            declare @themes = array("RPG Blue","Light Blue","Thunder","Fire");
+            declare @themes = array("RPG Blue","Light Blue","Thunder","Fire", "Eighties");
             declare $theme = menu(@themes);
             setTheme(@themes[$theme]);
             menu::reload();

@@ -88,6 +88,8 @@ namespace StoneRing
         static CL_Pointf   GetMenuInset();
         static std::string GetThemeName();
         static void        GetAvailableThemes(std::list<std::string>& o_themes);
+        
+        static void        GetComplementaryColors(const CL_Colorf& color, CL_Colorf& one, CL_Colorf& two);
     private:
         
         struct Theme {
@@ -95,10 +97,24 @@ namespace StoneRing
             CL_Gradient m_menu_gradient;
             CL_Colorf   m_colors[COLOR_COUNT];
         };
+        
+        struct HSVColor {
+            float h;
+            float s;
+            float v;
+        };
 
         static std::string        NameOfOverlay(Overlay overlay);
         static std::string        NameOfDisplayFont(DisplayFont font);
-        static Theme::ColorRef    GetColorRef(const std::string& color_name);        
+        static Theme::ColorRef    GetColorRef(const std::string& color_name);      
+        static HSVColor           RGBToHSV(const CL_Colorf&);
+        static CL_Colorf          HSVToRGB(const HSVColor&);
+        static float              RotateHue(const float hue, const float angle_rads);
+        static CL_Colorf          GetOppositeColor(const CL_Colorf&);
+        static CL_Colorf          GetTriadic(const CL_Colorf&, bool left);
+        static CL_Colorf          GetSplit(const CL_Colorf&, bool left);
+        static CL_Colorf          GetAnalog(const CL_Colorf&, bool left);
+        static CL_Colorf          GetComplement(const CL_Colorf&, float degs);
         Font                      LoadFont(const std::string& name);
         Theme                     LoadTheme(const std::string& name);
         static CL_Colorf          LoadColor(CL_ResourceManager& resources, const std::string& path);

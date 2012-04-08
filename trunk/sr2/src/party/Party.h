@@ -13,16 +13,17 @@
 #else
 #include "steel/SteelType.h"
 #endif
-#include "IParty.h"
 #include "sr_defines.h"
-
+#include "ICharacter.h"
+#include "ICharacterGroup.h"
 
 namespace StoneRing{
 
     class ItemRef;
     class Character;
+    class Omega;
 
-    class Party : public IParty
+    class Party : public ICharacterGroup
     {
     public:
         Party();
@@ -43,7 +44,15 @@ namespace StoneRing{
         virtual Character * GetMapCharacter()const;
 	virtual void IterateItems( ItemVisitor & f);
         virtual uint GetMinutesPlayed()const;
-
+        virtual bool EquipOmega(uint slot, Omega*);
+        virtual void UnequipOmega(uint slot);
+        virtual Omega* GetOmega(uint slot);
+        virtual double GetCommonAttribute(ICharacter::eCommonAttribute attr)const;
+        virtual bool   GetCommonToggle(ICharacter::eCommonAttribute attr)const;
+        virtual double GetStatusEffectModifier(const std::string &statuseffect)const;         
+        virtual double GetCharacterAttributeAdd(ICharacter::eCharacterAttribute attr)const;
+        virtual double GetCharacterAttributeMultiplier(ICharacter::eCharacterAttribute attr)const;
+        virtual bool   GetCharacterAttributeToggle(ICharacter::eCharacterAttribute attr, bool current)const;
         // ICharacterGroup interface
         virtual uint GetCharacterCount() const ;
         virtual ICharacter * GetCharacter(uint index) const ;
@@ -65,6 +74,7 @@ namespace StoneRing{
           std::vector<Character*> m_characters;
           std::set<std::string> m_events;
           std::map<std::string,ItemEntry> m_items;
+          std::map<uint,Omega*> m_omegas;
           uint m_nGold;
           uint m_nMinutes;
 

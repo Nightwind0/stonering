@@ -9,7 +9,6 @@
 #else
 #include <steel/SteelType.h>
 #endif
-#include "IParty.h"
 #include "AbilityManager.h"
 #include "MonsterGroup.h"
 #include "ElementFactory.h"
@@ -29,6 +28,7 @@ namespace StoneRing
     class Level;
     class MonsterRef;
     class BattleConfig;
+    class Party;
 
     class IApplication
     {
@@ -77,8 +77,8 @@ namespace StoneRing
         virtual ~IApplication(){}
         virtual CL_ResourceManager&GetResources()=0;
         virtual CL_DisplayWindow&  GetApplicationWindow()=0;
-        virtual IParty *        GetParty() const=0;
-       // virtual IParty * GetReserveParty() const=0;
+        virtual Party *        GetParty() const=0;
+       // virtual Party * GetReserveParty() const=0;
         virtual AbilityManager *GetAbilityManager() = 0;
         virtual IFactory *      GetElementFactory() = 0;
         virtual CharacterManager * GetCharacterManager() = 0;

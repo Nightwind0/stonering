@@ -146,14 +146,5 @@ namespace StoneRing{
     };
 
 
-    class ICharacterGroup: public SteelType::IHandle
-    {
-    public:
-        virtual ~ICharacterGroup(){}
-        virtual uint GetCharacterCount() const = 0;
-        virtual ICharacter * GetCharacter(uint index) const = 0;
-    private:
-    };
-
 }
 #endif // __ICHARACTER_H_INCLUDED

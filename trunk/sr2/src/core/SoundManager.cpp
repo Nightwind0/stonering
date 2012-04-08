@@ -28,7 +28,9 @@ SoundManager* SoundManager::m_pInstance = NULL;
 
 SoundManager::SoundManager()
 {
-    m_music_max = 1.0f;
+    m_music_max = 0.5f;
+    m_sound_vol = 0.5f;
+    
 }
 
 SoundManager::~SoundManager()
@@ -47,6 +49,7 @@ void SoundManager::PlaySound ( const std::string& sound_name )
 {
     CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
     CL_SoundBuffer sound(sound_name,&resources);
+    sound.set_volume(m_pInstance->m_sound_vol);
     sound.play();
 }
 
@@ -69,6 +72,19 @@ void SoundManager::SetMusic ( const std::string& music )
     CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
     m_pInstance->set_music(CL_SoundBuffer("Music/" + music, &resources));
 }
+
+float SoundManager::GetSoundVolume()
+{
+    return m_pInstance->m_sound_vol;
+}
+
+
+void SoundManager::SetSoundVolume ( float vol )
+{
+    m_pInstance->m_sound_vol = vol;
+}
+
+
 
 void SoundManager::onTransitionTimer ( ) 
 {

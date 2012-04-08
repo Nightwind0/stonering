@@ -3,6 +3,7 @@
 #include <ClanLib/display.h>
 #include <string>
 #include <map>
+#include <cmath>
 #include "GraphicsManager.h"
 
 
@@ -596,6 +597,121 @@ void GraphicsManager::GetAvailableThemes ( std::list< std::string >& o_themes )
         o_themes.push_back ( *it );
     }
 }
+
+
+
+CL_Colorf GraphicsManager::HSVToRGB ( const StoneRing::GraphicsManager::HSVColor& color )
+{
+    CL_Colorf rgb_color;
+    if ( color.s == 0.0f )                       //HSV from 0 to 1
+    {
+        rgb_color.set_red(color.v);
+        rgb_color.set_green(color.v);
+        rgb_color.set_blue(color.v);
+    }
+    else
+    {
+        float var_h = color.h * 6.0f;
+        if ( var_h == 6.0f ) 
+            var_h = 0.0f;      //H must be < 1
+        float var_i = int( var_h );  
+        float var_1 = color.h * ( 1.0f - color.s );
+        float var_2 = color.h * ( 1.0f - color.s * ( var_h - var_i ) );
+        float var_3 = color.v * ( 1.0f - color.s * ( 1.0 - ( var_h - var_i ) ) );
+
+        float var_r, var_g, var_b;
+        if      ( var_i == 0 ) { var_r = color.v     ; var_g = var_3 ; var_b = var_1; }
+        else if ( var_i == 1 ) { var_r = var_2 ; var_g = color.v     ; var_b = var_1; }
+        else if ( var_i == 2 ) { var_r = var_1 ; var_g = color.v     ; var_b = var_3; }
+        else if ( var_i == 3 ) { var_r = var_1 ; var_g = var_2 ; var_b = color.v;     }
+        else if ( var_i == 4 ) { var_r = var_3 ; var_g = var_1 ; var_b = color.v;     }
+        else                   { var_r = color.v     ; var_g = var_1 ; var_b = var_2; }
+
+         rgb_color.set_red(var_r);
+         rgb_color.set_green(var_g);
+         rgb_color.set_blue(var_b);
+    }
+
+    return rgb_color;
+}
+
+GraphicsManager::HSVColor GraphicsManager::RGBToHSV ( const CL_Colorf& color)
+{
+    HSVColor hsv_color;
+    float var_Min = std::min( color.get_red(), std::min( color.get_green(), color.get_blue() ) );    //Min. value of RGB
+    float var_Max = std::max( color.get_red(), std::max( color.get_green(), color.get_blue() ) );   //Max. value of RGB
+    float del_Max = var_Max - var_Min;             //Delta RGB value
+
+    hsv_color.v = var_Max;
+
+    if ( del_Max == 0.0 )                     //This is a gray, no chroma...
+    {
+        hsv_color.h = 0.0;                                //HSV results from 0 to 1
+        hsv_color.s = 0.0;
+    }
+    else                                    //Chromatic data...
+    {
+        hsv_color.s = del_Max / var_Max;
+
+        float del_R = ( ( ( var_Max - color.get_red() ) / 6.0f ) + ( del_Max / 2.0f ) ) / del_Max;
+        float del_G = ( ( ( var_Max - color.get_green() ) / 6.0f ) + ( del_Max / 2.0f ) ) / del_Max;
+        float del_B = ( ( ( var_Max - color.get_blue() ) / 6.0f ) + ( del_Max / 2.0f ) ) / del_Max;
+
+        if      ( color.get_red() == var_Max ) hsv_color.h = del_B - del_G;
+        else if ( color.get_green() == var_Max ) hsv_color.h = ( 1.0 / 3.0 ) + del_R - del_B;
+        else if ( color.get_blue() == var_Max ) hsv_color.h = ( 2.0 / 3.0 ) + del_G - del_R;
+
+        if ( hsv_color.h < 0.0f ) hsv_color.h += 1.0f;
+        if ( hsv_color.h > 1.0f ) hsv_color.h -= 1.0f;
+    }
+    return hsv_color;
+}
+
+float GraphicsManager::RotateHue ( const float hue, const float angle_rads  )
+{
+    float radians = hue * M_PI * 2.0;
+    return radians + angle_rads;
+}
+
+CL_Colorf GraphicsManager::GetAnalog ( const CL_Colorf& color, bool left )
+{
+    float degs = left?30.0:-30.0;
+    return GetComplement(color,degs);
+}
+
+CL_Colorf GraphicsManager::GetOppositeColor ( const CL_Colorf& color )
+{
+    return GetComplement(color,180.0f);
+}
+
+CL_Colorf GraphicsManager::GetSplit ( const CL_Colorf& color, bool left )
+{
+    return GetComplement(color,left?150.0f:-150.0f);
+}
+
+CL_Colorf GraphicsManager::GetTriadic ( const CL_Colorf& color, bool left )
+{
+    return GetComplement(color,left?120.0f:-120.f);
+}
+
+
+CL_Colorf GraphicsManager::GetComplement ( const CL_Colorf& color, float degs )
+{
+    const float deg_per_rad = 57.29577951f;
+    const float radians = degs * deg_per_rad;
+    HSVColor hsv = RGBToHSV(color);
+    hsv.v = RotateHue(hsv.v,radians);
+    return HSVToRGB(hsv);
+}
+
+void GraphicsManager::GetComplementaryColors ( const CL_Colorf& color, CL_Colorf& one, CL_Colorf& two )
+{
+    // For now, use triadic
+    one = GetTriadic(color,true);
+    two = GetTriadic(color,false);
+}
+
+
 
 
 

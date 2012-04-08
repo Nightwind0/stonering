@@ -48,7 +48,7 @@ namespace StoneRing{
 			RUNE = 8,
 			OMEGA = 16,
 			SPECIAL = 32,
-			SYSTEM  = 64	    
+			SYSTEM  = 64    
 			};
         enum eDropRarity { NEVER, COMMON, UNCOMMON, RARE };
 

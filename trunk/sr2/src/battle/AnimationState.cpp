@@ -4,6 +4,7 @@
 #include "BattleState.h"
 #include "WeaponType.h"
 #include "SoundManager.h"
+#include "ICharacterGroup.h"
 
 using namespace StoneRing;
 
