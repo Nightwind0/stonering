@@ -497,6 +497,7 @@
                     <rect name="party" left="12" right="484" top="24" bottom="191"/>
                     <rect name="character" left="30" right="484" top="30" bottom="570"/>
                     <rect name="status" left="479" right="752" top="390" bottom="570"/>
+                    <rect name="omegas" left="499" right="732" top="470" bottom="570"/>
                 </section>
             </section>
             <section name="ItemSelect">

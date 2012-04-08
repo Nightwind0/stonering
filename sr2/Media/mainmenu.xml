@@ -70,7 +70,55 @@
 	</script>
         <menuOption name="Omegas" icon="omegas">
             <script id="MainMenuOmegas">
-                declare $item = selectItemAdv($_ITEM_OMEGA);
+                <![CDATA[
+                declare $slots = omegaSlotCount();                
+                declare $mode = menu(array("Equip","Unequip"));
+                if($mode == 0){
+                    declare $item = selectItemAdv($_ITEM_OMEGA);
+                    if(is_valid($item)){
+                        declare @array;
+                        var $s = 0;
+                        for($s=0;$s<$slots;$s++){
+                            if(omegaSlotIsEmpty($s)){
+                                pushb @array, "Empty Slot";
+                            }else{
+                                pushb @aray, getItemName(getOmega($s));
+                            }
+                        }
+                        declare $slot = 0;
+                        if(len(@array) > 1){
+                            $slot = menu(@array);
+                        }else{
+                            $slot = @array[0];
+                        }
+                                
+                        equipOmega($slot,$item);
+                        
+                    }
+                }else if($mode == 1){
+                    if($slots > 1){
+                        declare @array;
+                        declare @slot_array;
+                        var $s=0;
+                        for($s=0;$s<$slots;$s++){
+                            if(!omegaSlotIsEmpty($s)){
+                                pushb @array, getItemName(getOmega($s));
+                                pushb @slot_array,$s;
+                            }
+                        }
+                        if(len(@array) > 1){
+                            declare $selection = menu(@array);
+                            unequipOmega(@slot_array[$selection]);
+                        }else if(len(@array) == 1){
+                            unequipOmega(@slot_array[0]);
+                        }
+                    }else{
+                        if(!omegaSlotIsEmpty(0)){
+                            unequipOmega(0);
+                        }
+                    }
+                }
+                    ]]>
             </script>
         </menuOption>
     </menuOption>

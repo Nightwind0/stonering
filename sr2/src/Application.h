@@ -203,6 +203,12 @@ namespace StoneRing
         SteelType                       hasSkill(SteelType::Handle hCharacter, const std::string&);
         SteelType                       doSkill(SteelType::Handle hSkill, SteelType::Handle hCharacter);
         
+        SteelType                       equipOmega(uint slot, const SteelType::Handle &hOmega);
+        SteelType                       unequipOmega(uint slot);
+        SteelType                       omegaSlotCount();
+        SteelType                       getOmega(uint slot);
+        SteelType                       omegaSlotIsEmpty(uint slot);
+        
         SteelType                       generateRandomWeapon(uint rarity, int min_value, int max_value);
         SteelType                       generateRandomArmor(uint rarity, int min_value, int max_value);
         SteelType                       randomItem(uint rarity, int min_value, int max_value);

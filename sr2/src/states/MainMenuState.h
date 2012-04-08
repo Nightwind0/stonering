@@ -54,6 +54,7 @@ namespace StoneRing
 	virtual int get_option_count();
 	virtual void draw_party(CL_GraphicContext& gc);
         virtual void draw_party_stats(CL_GraphicContext& gc);
+        virtual void draw_omegas(CL_GraphicContext& gc);
 	
         void fill_choices(std::vector<MenuOption*>::const_iterator begin,
                           std::vector<MenuOption*>::const_iterator end);
@@ -61,6 +62,7 @@ namespace StoneRing
 	CL_Pointf calc_player_position(int player)const;
 	
 	SteelType selectTargets(bool group);
+        SteelType selectOmegaSlot();
         SteelType reload();
         
 	
@@ -82,6 +84,7 @@ namespace StoneRing
 	CL_Rectf m_character_rect;
 	CL_Rectf m_party_rect;
         CL_Rectf m_status_rect;
+        CL_Rectf m_omega_rect;
 	CL_Image m_portrait_shadow;
 	CL_Sprite m_target_sprite;
         MenuOption* m_option_parent;

@@ -543,6 +543,7 @@
                <omega name="Joy Egg" value="2000" dropRarity="never">
                    <iconRef>Items/mythical_egg</iconRef>
                    <description>An egg that makes things more fun</description>
+                   <attributeModifier type="multiply" value="2.0" attribute="hp_max"/>
                </omega>
                
                <specialItem name="Octavia Key" dropRarity="never">
