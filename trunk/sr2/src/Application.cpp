@@ -34,6 +34,7 @@
 #include "SaveLoadState.h"
 #include "StartupState.h"
 #include "StatusState.h"
+#include "Omega.h"
 //
 //
 //
@@ -1426,6 +1427,45 @@ SteelType Application::setTheme(const std::string& theme_name)
     return SteelType();
 }
 
+SteelType Application::omegaSlotCount()
+{
+    Party * pParty = GetParty();
+    SteelType var;
+    var.set(pParty->GetCommonAttribute(ICharacter::CA_IDOL_SLOTS));
+    return var;    
+}
+
+SteelType Application::equipOmega(uint slot, const SteelType::Handle& omega){
+    Party * pParty = GetParty();
+    Omega * pOmega = GrabHandle<Omega*>(omega);
+    pParty->EquipOmega(slot,pOmega);
+    return SteelType();
+}
+
+SteelType Application::unequipOmega ( uint slot )
+{
+    Party * pParty = GetParty();
+    pParty->UnequipOmega(slot);
+    return SteelType();
+}
+
+SteelType Application::getOmega ( uint slot )
+{
+    Party * pParty = GetParty();
+    SteelType var;
+    var.set(pParty->GetOmega(slot));
+    return var;
+}
+
+SteelType Application::omegaSlotIsEmpty( uint slot ) {
+   Party * pParty = GetParty();
+   SteelType var;
+   var.set(pParty->GetOmega(slot) == NULL);
+   return var;
+}
+
+
+
 
 void Application::LoadMainMenu ( CL_DomDocument& doc )
 {
@@ -2058,6 +2098,11 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "getThemes", new SteelFunctorNoArgs<Application>(this,&Application::getThemes) );
     mInterpreter.addFunction ( "setTheme", new SteelFunctor1Arg<Application,const std::string&>(this,&Application::setTheme ) );
     mInterpreter.addFunction ( "selectItemAdv", new SteelFunctor1Arg<Application,uint>(this,&Application::selectItemAdv) );
+    mInterpreter.addFunction ( "equipOmega", new SteelFunctor2Arg<Application,uint,const SteelType::Handle&>(this,&Application::equipOmega) );
+    mInterpreter.addFunction ( "unequipOmega", new SteelFunctor1Arg<Application,uint>(this,&Application::unequipOmega) );
+    mInterpreter.addFunction ( "omegaSlotCount", new SteelFunctorNoArgs<Application>(this,&Application::omegaSlotCount) );
+    mInterpreter.addFunction ( "getOmega", new SteelFunctor1Arg<Application,uint>(this,&Application::getOmega ) );
+    mInterpreter.addFunction ( "omegaSlotIsEmpty", new SteelFunctor1Arg<Application,uint>(this,&Application::omegaSlotIsEmpty) );
 }
 
 void Application::queryJoystick()

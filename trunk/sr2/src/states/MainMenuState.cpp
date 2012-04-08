@@ -6,6 +6,7 @@
 #include "MenuBox.h"
 #include <iomanip>
 #include "Party.h"
+#include "Omega.h"
 
 using std::min;
 using std::max;
@@ -155,7 +156,25 @@ void StoneRing::MainMenuState::draw_party_stats ( CL_GraphicContext& gc )
        
     m_partyStatFont.draw_text(gc,m_status_rect.get_top_left().x+20,m_status_rect.get_top_left().y+20,min_str,Font::TOP_LEFT);
     m_partyStatFont.draw_text(gc,m_status_rect.get_top_left().x+20,m_status_rect.get_top_left().y+40,gold_str,Font::TOP_LEFT); 
+    draw_omegas(gc);
 }
+
+void StoneRing::MainMenuState::draw_omegas ( CL_GraphicContext& gc )
+{
+    Party * pParty = IApplication::GetInstance()->GetParty();
+    CL_Pointf top_left = m_omega_rect.get_top_left();
+    
+    const uint slots_per_row = m_omega_rect.get_width() / 40;
+    for(uint i=0;i<pParty->GetCommonAttribute(ICharacter::CA_IDOL_SLOTS);i++){
+        Omega * pOmega = pParty->GetOmega(i);
+        CL_Pointf point( i % slots_per_row + top_left.x, top_left.y + i /  slots_per_row );
+        if(pOmega){            
+            pOmega->GetIcon().draw(gc,point.x,point.y);
+        }
+    }
+    
+}
+
 
 
 void StoneRing::MainMenuState::draw_party(CL_GraphicContext& GC)
@@ -370,6 +389,7 @@ SteelType StoneRing::MainMenuState::reload()
     m_party_rect = GraphicsManager::GetRect(GraphicsManager::MAIN_MENU,"party");
     m_character_rect = GraphicsManager::GetRect(GraphicsManager::MAIN_MENU,"character");
     m_status_rect = GraphicsManager::GetRect(GraphicsManager::MAIN_MENU,"status");
+    m_omega_rect = GraphicsManager::GetRect(GraphicsManager::MAIN_MENU,"omegas");
     m_option_parent = NULL;
     fill_choices(m_root_choices.begin(),m_root_choices.end());
     

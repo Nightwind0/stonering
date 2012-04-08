@@ -192,6 +192,7 @@ bool Party::EquipOmega ( uint slot, StoneRing::Omega* pOmega)
             return false;
     }
     m_omegas[slot] = pOmega;
+    TakeItem(pOmega,1);
     return true;
 }
 
@@ -220,7 +221,7 @@ double Party::GetCharacterAttributeAdd ( ICharacter::eCharacterAttribute attr ) 
     double value = 0.0;
     for(std::map<uint,Omega*>::const_iterator iter = m_omegas.end();
         iter != m_omegas.end(); iter++){
-        value += iter->second->GetAttributeAdd(iter->first);
+        value += iter->second->GetAttributeAdd(attr);
     }
     return value;
 }
@@ -230,7 +231,7 @@ double Party::GetCharacterAttributeMultiplier ( ICharacter::eCharacterAttribute 
     double value = 1.0;
     for(std::map<uint,Omega*>::const_iterator iter = m_omegas.begin();
         iter != m_omegas.end(); iter++){
-        value *= iter->second->GetAttributeMultiplier(iter->first);
+        value *= iter->second->GetAttributeMultiplier(attr);
     }
     return value;
 }
