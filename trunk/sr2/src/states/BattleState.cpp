@@ -71,8 +71,6 @@ void BattleState::SetConfig(BattleConfig* config)
 
 void BattleState::init(const std::vector<MonsterRef*>& monsters, int cellRows, int cellColumns, bool isBoss, const std::string & backdrop)
 {
-    CharacterManager * pCharManager = IApplication::GetInstance()->GetCharacterManager();
-
     m_monsters = new MonsterParty();
 
     m_nRows = cellRows;
@@ -98,7 +96,7 @@ void BattleState::init(const std::vector<MonsterRef*>& monsters, int cellRows, i
             {
                 if (count>0)
                 {
-                    Monster * pMonster = pCharManager->CreateMonster(pRef->GetName());
+                    Monster * pMonster = CharacterManager::CreateMonster(pRef->GetName());
                     pMonster->SetCellX( pRef->GetCellX() + x );
                     pMonster->SetCellY( pRef->GetCellY() + y );
 

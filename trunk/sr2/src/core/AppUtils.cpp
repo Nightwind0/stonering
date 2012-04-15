@@ -74,7 +74,7 @@ void AppUtils::LoadCharacterClasses(const std::string &filename)
     CL_DomDocument document;
     document.load(file);
 
-    GetCharacterManager()->LoadCharacterClassFile( document );
+    CharacterManager::LoadCharacterClassFile( document );
 }
 
 void AppUtils::LoadAnimations(const std::string &filename)
@@ -100,7 +100,7 @@ void AppUtils::LoadCharacters(const std::string &filename)
     CL_DomDocument document;
     document.load(file);
 
-    GetCharacterManager()->LoadCharacters(document);
+    CharacterManager::LoadCharacters(document);
 }
 
 void AppUtils::LoadMonsters(const std::string &filename)
@@ -113,7 +113,7 @@ void AppUtils::LoadMonsters(const std::string &filename)
     CL_DomDocument document;
     document.load(file);
 
-    GetCharacterManager()->LoadMonsterFile(document);
+    CharacterManager::LoadMonsterFile(document);
 }
 
 void AppUtils::LoadItems(const std::string &filename)
@@ -143,10 +143,3 @@ void AppUtils::LoadMainMenu(const std::string &filename)
 }
 
 
-StoneRing::CharacterManager * AppUtils::GetCharacterManager()
-{
-    IApplication *pApp = IApplication::GetInstance();
-    assert ( NULL != pApp );
-
-    return pApp->GetCharacterManager();
-}

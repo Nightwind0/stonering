@@ -14,7 +14,7 @@
 #include "ItemManager.h"
 
 
-using StoneRing::ICharacter;
+namespace StoneRing { 
 
 struct stat_entry
 {
@@ -76,15 +76,15 @@ const stat_entry statXMLLookup[] =
 };
 
 
-bool StoneRing::ICharacter::IsDamageCategoryAttribute(StoneRing::ICharacter::eCharacterAttribute attr)
+bool ICharacter::IsDamageCategoryAttribute(ICharacter::eCharacterAttribute attr)
 {
-    if(attr > StoneRing::ICharacter::_START_OF_DAMAGE_CATEGORIES && attr < StoneRing::ICharacter::_END_OF_DAMAGE_CATEGORIES)
+    if(attr > ICharacter::_START_OF_DAMAGE_CATEGORIES && attr < ICharacter::_END_OF_DAMAGE_CATEGORIES)
         return true;
     else return false;
 }
 
 
-StoneRing::ICharacter::eCharacterAttribute StoneRing::ICharacter::CharAttributeFromString(const std::string &str)
+ICharacter::eCharacterAttribute ICharacter::CharAttributeFromString(const std::string &str)
 {
     uint numberStats = sizeof(statXMLLookup) / sizeof(stat_entry);
 
@@ -95,10 +95,10 @@ StoneRing::ICharacter::eCharacterAttribute StoneRing::ICharacter::CharAttributeF
             return static_cast<eCharacterAttribute>(statXMLLookup[i].attr);
         }
     }
-    return static_cast<StoneRing::ICharacter::eCharacterAttribute>(CA_INVALID);
+    return static_cast<ICharacter::eCharacterAttribute>(CA_INVALID);
 }
 
-StoneRing::ICharacter::eCommonAttribute StoneRing::ICharacter::CommonAttributeFromString(const std::string &str)
+ICharacter::eCommonAttribute ICharacter::CommonAttributeFromString(const std::string &str)
 {
     uint numberStats = sizeof(statXMLLookup) / sizeof(stat_entry);
 
@@ -113,7 +113,7 @@ StoneRing::ICharacter::eCommonAttribute StoneRing::ICharacter::CommonAttributeFr
 }
 
 
-uint StoneRing::ICharacter::CAFromString(const std::string &str)
+uint ICharacter::CAFromString(const std::string &str)
 {
 
     for(int i =0; i < sizeof(statXMLLookup) / sizeof(stat_entry); i++)
@@ -126,7 +126,7 @@ uint StoneRing::ICharacter::CAFromString(const std::string &str)
     return CA_INVALID;
 }
 
-std::string StoneRing::ICharacter::CAToLabel(uint a)
+std::string ICharacter::CAToLabel(uint a)
 {
     switch(a)
     {
@@ -157,7 +157,7 @@ std::string StoneRing::ICharacter::CAToLabel(uint a)
 }
 
 
-std::string StoneRing::ICharacter::CAToString(uint v)
+std::string ICharacter::CAToString(uint v)
 {
     for(int i =0; i < _LAST_COMMON_ATTR_; i++)
     {
@@ -171,28 +171,28 @@ std::string StoneRing::ICharacter::CAToString(uint v)
 }
 
 
-bool StoneRing::ICharacter::IsInteger(eCharacterAttribute attr)
+bool ICharacter::IsInteger(eCharacterAttribute attr)
 {
     return (attr > ICharacter::_START_OF_INTS && attr < ICharacter::_START_OF_REALS) ||
         (attr > ICharacter::_MAXIMA_BASE && attr < ICharacter::_LAST_CHARACTER_ATTR_);
 }
 
-bool StoneRing::ICharacter::IsTransient(eCharacterAttribute attr)
+bool ICharacter::IsTransient(eCharacterAttribute attr)
 {
     return (attr > ICharacter::_START_OF_TRANSIENTS && attr < ICharacter::_START_OF_INTS);
 }
 
-bool StoneRing::ICharacter::IsReal(eCharacterAttribute attr)
+bool ICharacter::IsReal(eCharacterAttribute attr)
 {
     return (attr > ICharacter::_START_OF_REALS && attr < ICharacter::_START_OF_TOGGLES);
 }
 
-bool StoneRing::ICharacter::IsToggle(eCharacterAttribute attr)
+bool ICharacter::IsToggle(eCharacterAttribute attr)
 {
     return (attr > ICharacter::_START_OF_TOGGLES && attr < ICharacter::_LAST_CHARACTER_ATTR_);
 }
 
-bool StoneRing::ICharacter::ToggleDefaultTrue(eCharacterAttribute attr)
+bool ICharacter::ToggleDefaultTrue(eCharacterAttribute attr)
 {
     assert ( IsToggle ( attr ) );
     
@@ -212,7 +212,7 @@ bool StoneRing::ICharacter::ToggleDefaultTrue(eCharacterAttribute attr)
     }
 }
 
-ICharacter::eCharacterAttribute StoneRing::ICharacter::GetMaximumAttribute(eCharacterAttribute attr)
+ICharacter::eCharacterAttribute ICharacter::GetMaximumAttribute(eCharacterAttribute attr)
 {
     if(ICharacter::_MAXIMA_BASE + attr < ICharacter::_LAST_CHARACTER_ATTR_)
     {
@@ -224,19 +224,19 @@ ICharacter::eCharacterAttribute StoneRing::ICharacter::GetMaximumAttribute(eChar
 }
 
 
-StoneRing::Character::Character():m_pClass(NULL)
+Character::Character():m_pClass(NULL)
 {
     m_nSP = 0;
     set_toggle_defaults();
 }
 
 
-void StoneRing::Character::LearnSkill(const std::string& skill)
+void Character::LearnSkill(const std::string& skill)
 {
     m_skillset.insert ( skill );
 }
 
-bool StoneRing::Character::HasSkill(const std::string& skill)
+bool Character::HasSkill(const std::string& skill)
 {
     for(std::list<SkillTreeNode*>::const_iterator iter = m_pClass->GetSkillTreeNodesBegin();
         iter != m_pClass->GetSkillTreeNodesEnd(); iter++)
@@ -252,7 +252,7 @@ bool StoneRing::Character::HasSkill(const std::string& skill)
     return m_skillset.count(skill);
 }
 
-void StoneRing::Character::set_toggle_defaults()
+void Character::set_toggle_defaults()
 {
     for(uint toggle=_START_OF_TOGGLES+1;toggle<_END_OF_TOGGLES;toggle++)
     {
@@ -260,7 +260,7 @@ void StoneRing::Character::set_toggle_defaults()
     }
 }
 
-void StoneRing::Character::RemoveBattleStatusEffects()
+void Character::RemoveBattleStatusEffects()
 {
     for(StatusEffectMap::iterator iter = m_status_effects.begin();
         iter != m_status_effects.end(); iter++)
@@ -270,22 +270,22 @@ void StoneRing::Character::RemoveBattleStatusEffects()
         }
 }
 
-uint StoneRing::Character::GetLevel(void)const
+uint Character::GetLevel(void)const
 {
     return m_nLevel;
 }
 
-void StoneRing::Character::SetLevel(uint level)
+void Character::SetLevel(uint level)
 {
     
 }
 
-uint   StoneRing::Character::GetXP()const
+uint   Character::GetXP()const
 {
     return m_nXP;
 }
 
-void   StoneRing::Character::SetXP(uint amount)
+void   Character::SetXP(uint amount)
 {
     m_nXP = amount;
     static AstScript * LNT = IApplication::GetInstance()->GetUtility(IApplication::LEVEL_FOR_XP);
@@ -294,35 +294,35 @@ void   StoneRing::Character::SetXP(uint amount)
     m_nLevel = IApplication::GetInstance()->RunScript(LNT,params);
 }
 
-uint StoneRing::Character::GetSP() const
+uint Character::GetSP() const
 {
     return m_nSP;
 }
 
-void StoneRing::Character::SetSP(uint amount)
+void Character::SetSP(uint amount)
 {
     m_nSP = amount;
 }
 
-StoneRing::ICharacter::eGender StoneRing::Character::GetGender() const
+ICharacter::eGender Character::GetGender() const
 {
     return NEUTER;
 }
 
-void StoneRing::Character::Kill()
+void Character::Kill()
 {
     SetToggle(CA_ALIVE,false);
     SetCurrentSprite(GraphicsManager::CreateCharacterSprite(m_name,"dead"));
 }
 
-void StoneRing::Character::Raise()
+void Character::Raise()
 {
     SetToggle(CA_ALIVE,true);
     // TODO: Maybe draw weak
     SetCurrentSprite(GraphicsManager::CreateCharacterSprite(m_name,"idle"));
 }
 
-void StoneRing::Character::Attacked(ICharacter* pAttacker, DamageCategory::eDamageCategory category, bool melee, int amount)
+void Character::Attacked(ICharacter* pAttacker, DamageCategory::eDamageCategory category, bool melee, int amount)
 {
     ParameterList params;
     params.push_back(ParameterListItem("$_Character",this));
@@ -348,7 +348,7 @@ void StoneRing::Character::Attacked(ICharacter* pAttacker, DamageCategory::eDama
 }
 
 
-double StoneRing::Character::GetDamageCategoryResistance(DamageCategory::eDamageCategory type) const
+double Character::GetDamageCategoryResistance(DamageCategory::eDamageCategory type) const
 {
     switch(type)
     {
@@ -377,7 +377,7 @@ double StoneRing::Character::GetDamageCategoryResistance(DamageCategory::eDamage
 }
 
 
-void StoneRing::Character::PermanentAugment(eCharacterAttribute attr, double augment)
+void Character::PermanentAugment(eCharacterAttribute attr, double augment)
 {
     std::map<eCharacterAttribute,double>::iterator aug = m_augments.find(attr);
     if(aug == m_augments.end())
@@ -394,7 +394,7 @@ void StoneRing::Character::PermanentAugment(eCharacterAttribute attr, double aug
 }
 
 
-bool StoneRing::Character::handle_element(eElement element, StoneRing::Element * pElement)
+bool Character::handle_element(eElement element, Element * pElement)
 {
     switch(element)
     {
@@ -411,10 +411,9 @@ bool StoneRing::Character::handle_element(eElement element, StoneRing::Element *
     return true;
 }
 
-void StoneRing::Character::load_attributes(CL_DomNamedNodeMap attributes)
+void Character::load_attributes(CL_DomNamedNodeMap attributes)
 {
 
-    const CharacterManager * pCharacterManager = IApplication::GetInstance()->GetCharacterManager();
     m_name = get_required_string("name",attributes);
     std::string spriteRef = get_required_string("spriteResource",attributes);
     std::string className = get_required_string("class",attributes);
@@ -438,19 +437,19 @@ void StoneRing::Character::load_attributes(CL_DomNamedNodeMap attributes)
     }
 
     // Get the class pointer
-    m_pClass = pCharacterManager->GetClass(className);
+    m_pClass = CharacterManager::GetClass(className);
 
     CL_ResourceManager&  resources = IApplication::GetInstance()->GetResources();
     m_mapSprite = CL_Sprite(GET_MAIN_GC(),spriteRef, &resources);
 
 }
 
-void StoneRing::Character::load_finished()
+void Character::load_finished()
 {
     // TODO: Make sure the battle sprites exist in the resources
 }
 
-double StoneRing::Character::GetAttributeWithoutEquipment ( ICharacter::eCharacterAttribute attr, StoneRing::Equipment* pExclude ) const
+double Character::GetAttributeWithoutEquipment ( ICharacter::eCharacterAttribute attr, Equipment* pExclude ) const
 {
     double base = 0.0;
      
@@ -500,7 +499,7 @@ double StoneRing::Character::GetAttributeWithoutEquipment ( ICharacter::eCharact
 }
 
 
-double StoneRing::Character::GetBaseAttribute(eCharacterAttribute attr)const
+double Character::GetBaseAttribute(eCharacterAttribute attr)const
 {
     double base = 0.0;
     if(ICharacter::IsDamageCategoryAttribute(attr) && !m_pClass->HasStat(attr))
@@ -530,14 +529,14 @@ double StoneRing::Character::GetBaseAttribute(eCharacterAttribute attr)const
 // we will stick in a multimap by attr. Alternatively, we can register/unregister
 // them ourselves when we equip/unequip or are affected/unaffected. But
 // this requires remembering which AM goes with which equipment/status effect
-double StoneRing::Character::GetAttribute(eCharacterAttribute attr) const
+double Character::GetAttribute(eCharacterAttribute attr) const
 {
     return GetAttributeWithoutEquipment(attr,NULL);
 }
 
 
 
-bool StoneRing::Character::GetToggle(eCharacterAttribute attr) const
+bool Character::GetToggle(eCharacterAttribute attr) const
 {
     bool base = ToggleDefaultTrue(attr);
     std::map<eCharacterAttribute,bool>::const_iterator iter = m_toggles.find(attr);
@@ -570,30 +569,30 @@ bool StoneRing::Character::GetToggle(eCharacterAttribute attr) const
 }
 
 
-void StoneRing::Character::SetToggle(eCharacterAttribute attr, bool value)
+void Character::SetToggle(eCharacterAttribute attr, bool value)
 {
     m_toggles[attr] = value;
 }
 
-bool StoneRing::Character::HasEquipment(Equipment::eSlot slot)
+bool Character::HasEquipment(Equipment::eSlot slot)
 {
     return m_equipment.find(slot) != m_equipment.end();
 }
 
 // Equipment. If theres equipment in this slot already,
 // this overwrites it.
-void StoneRing::Character::Equip(Equipment::eSlot slot, Equipment *pEquip)
+void Character::Equip(Equipment::eSlot slot, Equipment *pEquip)
 {
     assert(pEquip);
     m_equipment[slot] = pEquip;
 }
 
-StoneRing::Equipment* StoneRing::Character::GetEquipment(Equipment::eSlot slot)
+Equipment* Character::GetEquipment(Equipment::eSlot slot)
 {
     return m_equipment[slot];
 }
 
-CL_Sprite StoneRing::Character::GetPortrait(ePortrait portrait)
+CL_Sprite Character::GetPortrait(ePortrait portrait)
 {
     if(m_portrait.is_null())
     {
@@ -604,7 +603,7 @@ CL_Sprite StoneRing::Character::GetPortrait(ePortrait portrait)
 }
 
 // Returns a pointer to the equipment that was in that slot
-StoneRing::Equipment* StoneRing::Character::Unequip(Equipment::eSlot slot)
+Equipment* Character::Unequip(Equipment::eSlot slot)
 {
     Equipment * there = NULL;
     std::map<Equipment::eSlot,Equipment*>::iterator it = m_equipment.find(slot);
@@ -617,7 +616,7 @@ StoneRing::Equipment* StoneRing::Character::Unequip(Equipment::eSlot slot)
     return there;
 }
 
-double StoneRing::Character::GetEquippedWeaponAttribute(Weapon::eAttribute attr) const
+double Character::GetEquippedWeaponAttribute(Weapon::eAttribute attr) const
 {
     double v = 0.0;
     for(std::map<Equipment::eSlot,Equipment*>::const_iterator it=m_equipment.begin();
@@ -632,7 +631,7 @@ double StoneRing::Character::GetEquippedWeaponAttribute(Weapon::eAttribute attr)
 
     return v;
 }
-double StoneRing::Character::GetEquippedArmorAttribute(Armor::eAttribute attr) const
+double Character::GetEquippedArmorAttribute(Armor::eAttribute attr) const
 {
     double v = 0.0;
     for(std::map<Equipment::eSlot,Equipment*>::const_iterator it=m_equipment.begin();
@@ -649,7 +648,7 @@ double StoneRing::Character::GetEquippedArmorAttribute(Armor::eAttribute attr) c
 }
 
 
-void StoneRing::Character::AddStatusEffect(StoneRing::StatusEffect *pEffect)
+void Character::AddStatusEffect(StatusEffect *pEffect)
 {
     //RemoveEffect(pEffect);
     m_status_effect_rounds[pEffect->GetName()] = 0;
@@ -659,7 +658,7 @@ void StoneRing::Character::AddStatusEffect(StoneRing::StatusEffect *pEffect)
     pEffect->Invoke(params);
 }
 
-void StoneRing::Character::RemoveEffect(StoneRing::StatusEffect *pEffect)
+void Character::RemoveEffect(StatusEffect *pEffect)
 {
     m_status_effects.erase(pEffect->GetName());
     m_status_effect_rounds.erase(pEffect->GetName());
@@ -668,7 +667,7 @@ void StoneRing::Character::RemoveEffect(StoneRing::StatusEffect *pEffect)
     pEffect->Remove(params);
 }
 
-double StoneRing::Character::StatusEffectChance(StoneRing::StatusEffect *pEffect) const
+double Character::StatusEffectChance(StatusEffect *pEffect) const
 {
         double chance = 1.0;
         for(std::map<Equipment::eSlot,Equipment*>::const_iterator iter= m_equipment.begin();
@@ -685,7 +684,7 @@ double StoneRing::Character::StatusEffectChance(StoneRing::StatusEffect *pEffect
         return chance;
 }
 
-void StoneRing::Character::StatusEffectRound()
+void Character::StatusEffectRound()
 {   
     for(StatusEffectMap::iterator iter = m_status_effects.begin();
         iter != m_status_effects.end(); iter++)
@@ -709,7 +708,7 @@ void StoneRing::Character::StatusEffectRound()
         }
 }
 
-void StoneRing::Character::IterateStatusEffects ( Visitor< StoneRing::StatusEffect* >& visitor)
+void Character::IterateStatusEffects ( Visitor< StatusEffect* >& visitor)
 {
     for(StatusEffectMap::iterator iter = m_status_effects.begin();
         iter != m_status_effects.end();
@@ -719,14 +718,27 @@ void StoneRing::Character::IterateStatusEffects ( Visitor< StoneRing::StatusEffe
         }
 }
 
+void Character::ChangeClass ( CharacterClass* pClass )
+{
+    // Unequip anything not compatible with the new class
+    for(std::map<Equipment::eSlot,Equipment*>::const_iterator iter= m_equipment.begin();
+        iter != m_equipment.end();iter++)
+    {
+        if(!pClass->CanEquip(iter->second)){
+            Unequip(iter->first);
+        }
+    }
+    m_pClass = pClass;
+}
 
 
-StoneRing::BattleMenu * StoneRing::Character::GetBattleMenu() const
+
+BattleMenu * Character::GetBattleMenu() const
 {
     return m_pClass->GetBattleMenu();
 }
 
-CL_Sprite StoneRing::Character::GetCurrentSprite(bool pure)
+CL_Sprite Character::GetCurrentSprite(bool pure)
 {
     if(!pure){
        // m_currentSprite.set_color(CL_Colorf::white);
@@ -761,7 +773,9 @@ CL_Sprite StoneRing::Character::GetCurrentSprite(bool pure)
     return m_currentSprite;
 }
 
-void StoneRing::Character::Serialize ( std::ostream& out )
+
+
+void Character::Serialize ( std::ostream& out )
 {
     //WriteString(out,m_name);
     out.write((char*)&m_nLevel,sizeof(uint));
@@ -801,7 +815,7 @@ void StoneRing::Character::Serialize ( std::ostream& out )
     }
 }
 
-void StoneRing::Character::Deserialize ( std::istream& in )
+void Character::Deserialize ( std::istream& in )
 {
    // m_name = ReadString(in);
     in.read((char*)&m_nLevel,sizeof(uint));
@@ -846,7 +860,7 @@ void StoneRing::Character::Deserialize ( std::istream& in )
 }
 
 
-
+}
 
 
 

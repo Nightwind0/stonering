@@ -7,7 +7,10 @@
 #include "Monster.h"
 #include <algorithm>
 
-using StoneRing::CharacterManager;
+namespace StoneRing {
+
+    
+CharacterManager* CharacterManager::m_pInstance = NULL;
 
 CharacterManager::~CharacterManager()
 {
@@ -17,14 +20,23 @@ CharacterManager::~CharacterManager()
         );
 }
 
-StoneRing::MonsterElement * CharacterManager::GetMonsterElement(const std::string &name)const
+void StoneRing::CharacterManager::initialize()
 {
-    MonsterMap::const_iterator it = m_monsters.find(name);
-    if(it == m_monsters.end()) throw CL_Exception("Monster " + name + " not found in manager");
+    if(m_pInstance == NULL){
+        m_pInstance = new CharacterManager();
+    }
+}
+
+
+
+MonsterElement * CharacterManager::GetMonsterElement(const std::string &name)
+{
+    MonsterMap::const_iterator it = m_pInstance->m_monsters.find(name);
+    if(it == m_pInstance->m_monsters.end()) throw CL_Exception("Monster " + name + " not found in manager");
     return it->second;
 }
 
-StoneRing::Monster * CharacterManager::CreateMonster(const std::string &name)const
+Monster * CharacterManager::CreateMonster(const std::string &name)
 {
     MonsterElement * pElement = GetMonsterElement(name);
     if(pElement == NULL) return NULL;
@@ -44,7 +56,7 @@ void CharacterManager::LoadCharacterClassFile ( CL_DomDocument &doc )
             (pFactory->createElement("characterClass"));
 
         pCharacterClass->Load(classNode);
-        m_character_classes [ pCharacterClass->GetName() ] = pCharacterClass;
+        m_pInstance->m_character_classes [ pCharacterClass->GetName() ] = pCharacterClass;
         classNode = classNode.get_next_sibling().to_element();
 
 #ifndef NDEBUG
@@ -70,7 +82,7 @@ void CharacterManager::LoadMonsterFile ( CL_DomDocument &doc )
             (pFactory->createElement("monster"));
 
         pMonster->Load(monsterNode);
-        m_monsters [ pMonster->GetName() ] = pMonster;
+        m_pInstance->m_monsters [ pMonster->GetName() ] = pMonster;
         monsterNode = monsterNode.get_next_sibling().to_element();
 
 #ifndef NDEBUG
@@ -99,7 +111,7 @@ void CharacterManager::LoadCharacters(CL_DomDocument &doc)
         assert(pCharacter);
         assert(pCharacter->WhichElement() == Element::ECHARACTER);
         pCharacter->Load(characterNode);
-        m_characters [ pCharacter->GetName() ] = pCharacter;
+        m_pInstance->m_characters [ pCharacter->GetName() ] = pCharacter;
         characterNode = characterNode.get_next_sibling().to_element();
 
 #ifndef NDEBUG
@@ -109,15 +121,15 @@ void CharacterManager::LoadCharacters(CL_DomDocument &doc)
 
 }
 
-StoneRing::Character * CharacterManager::GetCharacter(const std::string &name)const
+Character * CharacterManager::GetCharacter(const std::string &name)
 {
-    return m_characters.find(name)->second;
+    return m_pInstance->m_characters.find(name)->second;
 }
 
-StoneRing::CharacterClass * CharacterManager::GetClass ( const std::string &cls ) const
+CharacterClass * CharacterManager::GetClass ( const std::string &cls )
 {
-    return m_character_classes.find(cls)->second;
+    return m_pInstance->m_character_classes.find(cls)->second;
 }
 
-
+}
 

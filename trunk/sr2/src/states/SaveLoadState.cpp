@@ -232,7 +232,7 @@ void SaveLoadState::draw_option ( int option, bool selected, float x, float y, C
         uint i = 0;
         for(std::list<FilePreview::CharInfo>::const_iterator char_iter = iter->second.m_characters.begin();
             char_iter != iter->second.m_characters.end(); char_iter++){
-            Character * pChar = IApplication::GetInstance()->GetCharacterManager()->GetCharacter (char_iter->m_name);
+            Character * pChar = CharacterManager::GetCharacter (char_iter->m_name);
             CL_Sprite portrait = pChar->GetPortrait(Character::PORTRAIT_DEFAULT);
             
             CL_Point point(m_portrait_pt.x+x+i*(portrait.get_width()+m_portrait_pt.x),y+m_portrait_pt.y);

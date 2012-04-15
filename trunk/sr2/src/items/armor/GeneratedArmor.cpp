@@ -169,6 +169,7 @@ ArmorRef GeneratedArmor::GenerateArmorRef() const
     return ArmorRef ( GetArmorType(), GetArmorClass(), GetImbuement(), GetRuneType() );
 }
 
+
 void GeneratedArmor::Generate( ArmorType * pType, ArmorClass * pClass,
                                ArmorClass* pImbuement , RuneType *pRune)
 {

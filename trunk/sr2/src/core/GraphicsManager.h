@@ -21,6 +21,7 @@ namespace StoneRing
         enum Overlay
         {
             CHOICE,
+            BANNER,
             BATTLE_STATUS,
             BATTLE_MENU,
             BATTLE_POPUP_MENU,

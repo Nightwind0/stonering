@@ -45,6 +45,9 @@ namespace StoneRing
 	void SelectionStart();
 	void SelectionFinish();
 	void SelectionCancel();
+        
+        void SelectNextOmega();
+        void SelectPrevOmega();
 	
     private:
 	virtual CL_Rectf get_rect();

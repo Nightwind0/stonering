@@ -27,7 +27,6 @@ private:
     void LoadMainMenu(const std::string &filename);
     
     ItemManager * GetItemManager();
-    CharacterManager * GetCharacterManager();
 };
 }
 

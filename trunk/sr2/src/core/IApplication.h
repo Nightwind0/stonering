@@ -81,7 +81,6 @@ namespace StoneRing
        // virtual Party * GetReserveParty() const=0;
         virtual AbilityManager *GetAbilityManager() = 0;
         virtual IFactory *      GetElementFactory() = 0;
-        virtual CharacterManager * GetCharacterManager() = 0;
         virtual void            StartBattle(const MonsterGroup &group, const std::string &backdrop)=0;
 	virtual void            PopLevelStack(bool popAll)=0;
         virtual Level*          GetCurrentLevel()const=0;
@@ -100,6 +99,7 @@ namespace StoneRing
         virtual void            RunOnMainThread(CL_Event& event, Functor* functor)=0; 
         virtual bool            Serialize(std::ostream& stream)=0;
         virtual bool            Deserialize(std::istream& stream)=0;
+        virtual void            Banner(const std::string& str, int time)=0;
     };
 
 }
