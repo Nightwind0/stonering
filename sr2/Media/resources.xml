@@ -437,6 +437,17 @@
                     <string name = "selection" value="BoldWhite"/>
                 </section>
             </section>
+            <section name="Banner">
+                <section name="rects">
+                    <rect name="banner" top="0" left="0" right="800" bottom="120"/>
+                </section>
+                <section name="points">
+                    <rect name="inset" x="20" y="10"/>
+                </section>
+                <section name="fonts">
+                    <string name="font" value="BoldWhite"/>
+                </section>
+            </section>
             <section name="Status">
                 <section name="rects">
                     <rect name="party" top="0" left="0" right="800" bottom="150"/>
@@ -497,7 +508,7 @@
                     <rect name="party" left="12" right="484" top="24" bottom="191"/>
                     <rect name="character" left="30" right="484" top="30" bottom="570"/>
                     <rect name="status" left="479" right="752" top="390" bottom="570"/>
-                    <rect name="omegas" left="499" right="732" top="470" bottom="570"/>
+                    <rect name="omegas" left="499" right="732" top="470" bottom="570"/>                    
                 </section>
             </section>
             <section name="ItemSelect">

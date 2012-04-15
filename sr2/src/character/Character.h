@@ -107,6 +107,9 @@ namespace StoneRing{
         void LearnSkill(const std::string& skill);
         bool HasSkill(const std::string& skill);
         
+        // This will unequip anything thats not applicable
+        void ChangeClass(CharacterClass * pClass);
+        
         
         /*************************************************************************
          *  Save & Load

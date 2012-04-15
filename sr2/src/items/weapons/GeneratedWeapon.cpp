@@ -177,6 +177,8 @@ void GeneratedWeapon::OnUnequipScript(const ParameterList& params)
         m_pImbuement->OnUnequipScript(params);
 }
 
+
+
 void GeneratedWeapon::Generate( WeaponType* pType, WeaponClass * pClass,
                                 WeaponClass* pImbuement , RuneType *pRune)
 {

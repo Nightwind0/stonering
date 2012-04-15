@@ -336,7 +336,7 @@ void Party::Deserialize ( std::istream& in )
     in.read((char*)&char_count,sizeof(uint));
     for(int i=0;i<char_count;i++){
         std::string character = ReadString(in);
-        Character * pChar = IApplication::GetInstance()->GetCharacterManager()->GetCharacter(character);
+        Character * pChar = CharacterManager::GetCharacter(character);
         pChar->Deserialize(in);
         m_characters.push_back(pChar);
     }

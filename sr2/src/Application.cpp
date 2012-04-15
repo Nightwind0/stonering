@@ -35,6 +35,7 @@
 #include "StartupState.h"
 #include "StatusState.h"
 #include "Omega.h"
+#include "BannerState.h"
 //
 //
 //
@@ -428,7 +429,7 @@ SteelType Application::giveGold ( int amount )
 
 SteelType Application::addCharacter ( const std::string &character, int level, bool announce )
 {
-    Character * pCharacter = mCharacterManager.GetCharacter ( character );
+    Character * pCharacter = CharacterManager::GetCharacter ( character );
     AstScript * pTNL = GetUtility ( XP_FOR_LEVEL );
     ParameterList params;
     params.push_back ( ParameterListItem ( "$_LEVEL", level ) );
@@ -454,6 +455,19 @@ SteelType Application::addCharacter ( const std::string &character, int level, b
 
     return returnPointer;
 }
+
+SteelType Application::changeCharacterClass ( SteelType::Handle hCharacter, const std::string& chr_class )
+{
+    Character * pCharacter = GrabHandle<Character*>(hCharacter);
+    CharacterClass * pNewClass = CharacterManager::GetClass(chr_class);
+    if(!pNewClass){
+        throw CL_Exception("changeCharacterClass with bad class name");
+    }
+    pCharacter->ChangeClass(pNewClass);
+    
+    return SteelType();
+}
+
 
 SteelType Application::kill(SteelType::Handle hICharacter)
 {
@@ -1464,7 +1478,19 @@ SteelType Application::omegaSlotIsEmpty( uint slot ) {
    return var;
 }
 
+SteelType Application::banner ( const std::string& str, int time )
+{
+    Banner(str,time);
+    return SteelType();
+}
 
+
+void Application::Banner ( const std::string& str, int time )
+{
+    BannerState state;
+    state.Init(str,time);
+    RunState(&state);
+}
 
 
 void Application::LoadMainMenu ( CL_DomDocument& doc )
@@ -2103,6 +2129,7 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "omegaSlotCount", new SteelFunctorNoArgs<Application>(this,&Application::omegaSlotCount) );
     mInterpreter.addFunction ( "getOmega", new SteelFunctor1Arg<Application,uint>(this,&Application::getOmega ) );
     mInterpreter.addFunction ( "omegaSlotIsEmpty", new SteelFunctor1Arg<Application,uint>(this,&Application::omegaSlotIsEmpty) );
+    mInterpreter.addFunction ( "banner", new SteelFunctor2Arg<Application,const std::string&,int>(this,&Application::banner) );
 }
 
 void Application::queryJoystick()
@@ -2228,6 +2255,7 @@ int Application::main ( const std::vector<CL_String> &args )
     GraphicsManager::initialize();
     ItemManager::initialize();
     SoundManager::initialize();
+    CharacterManager::initialize();
 
 #ifndef NDEBUG
 

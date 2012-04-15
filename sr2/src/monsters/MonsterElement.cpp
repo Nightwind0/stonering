@@ -149,7 +149,7 @@ void MonsterElement::load_attributes(CL_DomNamedNodeMap attr)
     if(m_bClass)
     {
         std::string classname = get_required_string("class",attr);
-        m_pClass = IApplication::GetInstance()->GetCharacterManager()->GetClass(classname);
+        m_pClass = CharacterManager::GetClass(classname);
     }
 
 }

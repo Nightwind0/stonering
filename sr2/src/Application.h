@@ -57,7 +57,6 @@ namespace StoneRing
         virtual Party*                  GetParty() const;
         virtual AbilityManager *        GetAbilityManager();
         virtual IFactory *              GetElementFactory() { return &mElementFactory; }
-        virtual CharacterManager *      GetCharacterManager() { return &mCharacterManager; }
         virtual CL_Rect                 GetDisplayRect() const;
         virtual void                    StartBattle(const MonsterGroup &group,const std::string &backdrop);
         virtual void                    RequestRedraw(const State *pState);
@@ -75,6 +74,7 @@ namespace StoneRing
         virtual bool                    Deserialize(std::istream& stream); 
 	virtual void                    MainMenu();
         virtual void                    RunOnMainThread(CL_Event& event, Functor* functor); 
+        virtual void                    Banner(const std::string&, int time);
         int                             frameRate();
     protected:
         virtual int                     GetScreenWidth()const;
@@ -139,6 +139,7 @@ namespace StoneRing
         SteelType                       getMonsterSPReward(const SteelType::Handle hMonster);
 	SteelType                       addExperience(const SteelType::Handle hICharacter, int xp);
 	SteelType                       getExperience(const SteelType::Handle hICharacter);
+        SteelType                       changeCharacterClass(SteelType::Handle hCharacter, const std::string& chr_class);
         //
         SteelType                       getCharacterAttribute(const SteelType::Handle hICharacter, uint attr);
         SteelType                       augmentCharacterAttribute(const SteelType::Handle hICharacter, uint attr, double augment);
@@ -173,6 +174,7 @@ namespace StoneRing
 	SteelType                       weaponTypeHasAnimation(SteelType::Handle hWeaponType);
         SteelType                       getDamageCategoryResistance(SteelType::Handle hICharacter, int damage_category);
         SteelType                       isArmor(SteelType::Handle hEquipment);
+
 
         SteelType                       invokeArmor(SteelType::Handle hCharacter, SteelType::Handle hArmor);
         SteelType                       invokeWeapon(SteelType::Handle hCharacter, SteelType::Handle hTarget, SteelType::Handle hWeapon, uint invokeTime);
@@ -219,6 +221,7 @@ namespace StoneRing
         SteelType                       statusScreen();
         SteelType                       getThemes();
         SteelType                       setTheme(const std::string&);
+        SteelType                       banner(const std::string&, int time);
  
 
         void steelConst(const std::string &name, int value);
@@ -250,7 +253,6 @@ namespace StoneRing
 
         Party *mpParty;
         AbilityManager mAbilityManager;
-        CharacterManager mCharacterManager;
         SteelInterpreter mInterpreter;
         ElementFactory mElementFactory;
         bool mbDone;
