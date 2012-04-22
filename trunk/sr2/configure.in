@@ -38,10 +38,24 @@ AC_ARG_ENABLE(debug,[--enable-debug enables debug build],
 if test "$debugmode" != false 
 then
      CXXFLAGS="${CXXFLAGS} -g3 -O0 -DDEBUG"
-     AC_MSG_RESULT(on)
+     CPPFLAGS="${CXXFLAGS} -g3 -O0 -DDEBUG"
+     AC_MSG_RESULT(Debug Build)
 else
-     CXXFLAGS="${CXXFLAGS} -DNDEBUG -O3" 
-     AC_MSG_RESULT(off)
+     CXXFLAGS="${CXXFLAGS} -DNDEBUG -O2" 
+     CPPFLAGS="${CXXFLAGS} -DNDEBUG -O2"
+     AC_MSG_RESULT(Non-debug Build)
+fi
+
+AC_ARG_ENABLE(editor, [--enable-editor creates an editor build],
+		      editor=$enableval,editor=no)
+if test "$editor" != no
+then
+	CFLAGS="-DSR2_EDITOR=1 ${CFLAGS}"
+	CPPFLAGS="-DSR2_EDITOR=1 ${CPPFLAGS}"
+	CXXFLAGS="${CPPFLAGS}"
+	AC_MSG_RESULT(Editor Build)
+else
+	AC_MSG_RESULT(Non-editor Build)
 fi
 
 AC_ARG_ENABLE(gprof,
@@ -53,9 +67,9 @@ then
     CPPFLAGS="-pg $CPPFLAGS"
     CXXFLAGS="-pg $CXXFLAGS"
     AC_CHECK_LIB(gmon, main,[LIBS="$LIBS -lgmon"])
-    AC_MSG_RESULT(enabled)
+    AC_MSG_RESULT(gprof enabled)
 else
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT(gprof disabled)
 fi
 				     
 # Checks for header files.
