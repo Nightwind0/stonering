@@ -2380,7 +2380,9 @@ int Application::main ( const std::vector<CL_String> &args )
         mAppUtils.LoadGameplayAssets ( "", m_resources );
         std::string utilityConfig = CL_String_load ( "Configuration/UtilityScripts", m_resources );
         mUtilityScripts.Load ( utilityConfig );
-
+#if SR2_EDITOR        
+        mEditorTestState.Init();
+#endif
         showRechargeableOnionSplash();
 
         mStartupState.Start();
