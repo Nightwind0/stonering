@@ -33,15 +33,47 @@ EditorTestState::~EditorTestState()
 
 }
 
+void EditorTestState::Init() 
+{
+        m_resources = CL_ResourceManager("Media/Editor/GUIThemeBasic/resources.xml");
+        m_theme.set_resources(m_resources);
+        m_gui_manager.set_css_document("Media/Editor/GUIThemeBasic/theme.css");
+        // TODO: CSS
+        m_gui_manager.set_theme(m_theme);
+        //m_gui_manager.add_resources(m_resources);
+        //gui_manager.set_css_document(css_document);
+        m_gui_manager.set_window_manager(m_window_manager);
+        m_gui_manager.set_accelerator_table(m_accelerator_table);
+}
+
 void EditorTestState::Start()
 {
+#if 0 
         CL_DisplayWindowDescription desc_window_2;
         desc_window_2.set_title("MultiWindow Example - Window 2");
         desc_window_2.set_allow_resize(true);
         desc_window_2.set_position(CL_Rect(50 + 350, 50, CL_Size(350, 350)), false);
 
         m_subwindow = new CL_DisplayWindow(desc_window_2);
+#endif
+        CL_GUITopLevelDescription desc;
+        desc.set_title("ClanLib GUI");
+        m_pWindow = new CL_Window(&m_gui_manager, desc);
+        m_pWindow->func_close().set(this,&EditorTestState::on_close,m_pWindow);
+        m_pButton =  new CL_PushButton(m_pWindow);
+        m_pButton->set_geometry(CL_Rect(100, 100, 200, 120));
+        m_pButton->set_text("Okay!");
+        m_pButton->func_clicked().set(this,&EditorTestState::on_button_clicked, m_pButton);
         m_bDone = false;
+}
+
+void EditorTestState::on_button_clicked(CL_PushButton* pButton){
+    m_bDone = true;
+}
+
+bool EditorTestState::on_close(CL_Window*){
+   m_bDone = true;
+   return true;
 }
 
 void EditorTestState::HandleButtonUp(const IApplication::Button& button){
@@ -66,15 +98,24 @@ void EditorTestState::HandleMouseMove(const CL_Point& pos, uint key_state ){
 }
 
 void EditorTestState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC){
+#if 0 
     static int counter = 0;
     ++counter;
     CL_GraphicContext& gc = m_subwindow->get_gc();
     gc.clear(CL_Colorf(0.0f,0.0f,(counter%255)/255.0f, 1.0f));
     m_subwindow->flip(1);
+#endif
+
+    m_gui_manager.process_messages(10);
+    m_gui_manager.render_windows();
 }
 
 void EditorTestState::Finish(){
+#if 0 
     delete m_subwindow;
+#endif
+    delete m_pButton;
+    delete m_pWindow;
 }
 
 bool EditorTestState::LastToDraw() const {
@@ -90,7 +131,7 @@ void EditorTestState::MappableObjectMoveHook(){
 
 
 bool EditorTestState::IsDone() const {
-    return m_bDone;
+    return m_bDone || m_gui_manager.get_exit_flag();
 }
 
 }

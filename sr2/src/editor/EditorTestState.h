@@ -21,6 +21,7 @@
 #define EDITORTESTSTATE_H
 
 #include "State.h"
+#include <ClanLib/gui.h>
 
 #if SR2_EDITOR
 
@@ -33,6 +34,7 @@ namespace StoneRing {
     public:
         EditorTestState();
         virtual ~EditorTestState();
+        void Init();
         virtual void HandleButtonUp(const IApplication::Button& button);
         virtual void HandleButtonDown(const IApplication::Button& button);
         virtual void HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos);
@@ -47,9 +49,21 @@ namespace StoneRing {
         virtual void Start();
         virtual void Finish(); // Hook to clean up or whatever after being popped     
         virtual bool IsDone()const;
+        
+        void on_button_clicked(CL_PushButton*);
+        bool on_close(CL_Window*);
     private:
         bool m_bDone;
-        CL_DisplayWindow* m_subwindow;
+        // GUI stuff
+        CL_AcceleratorTable m_accelerator_table;
+        CL_ResourceManager m_resources;
+        CL_GUIThemeDefault m_theme;
+        CL_CSSDocument m_css_document;
+        CL_GUIWindowManagerSystem m_window_manager;
+        CL_GUIManager m_gui_manager;        
+        CL_Window* m_pWindow;
+        CL_PushButton* m_pButton;
+        //CL_DisplayWindow* m_subwindow;
     };
 
 }
