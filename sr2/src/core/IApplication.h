@@ -56,6 +56,19 @@ namespace StoneRing
 	    AXIS_UP,
 	    AXIS_DOWN
 	};
+        
+        enum MouseButton {
+            MOUSE_LEFT,
+            MOUSE_RIGHT,
+            MOUSE_MIDDLE,
+            MOUSE_UNKNOWN
+        };
+        
+        enum KeyState {
+            KEY_SHIFT = 1,
+            KEY_ALT = (1<<1),
+            KEY_CTRL = (1<<2)            
+        };
 	
 	
 	enum Utility {

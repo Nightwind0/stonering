@@ -16,6 +16,7 @@
 #include "BattleState.h"
 #include "MainMenuState.h"
 #include "ChoiceState.h"
+#include "EditorTestState.h"
 #include "State.h"
 #ifdef _WINDOWS_
 #include <SteelInterpreter.h>
@@ -174,6 +175,10 @@ namespace StoneRing
 	SteelType                       weaponTypeHasAnimation(SteelType::Handle hWeaponType);
         SteelType                       getDamageCategoryResistance(SteelType::Handle hICharacter, int damage_category);
         SteelType                       isArmor(SteelType::Handle hEquipment);
+        SteelType                       changeArmorClass(SteelType::Handle hArmor, const std::string& arm_class);
+        SteelType                       changeArmorImbuement(SteelType::Handle hArmor, const std::string& imbuement);
+        SteelType                       changeWeaponClass(SteelType::Handle hArmor, const std::string& weapon_class);
+        SteelType                       changeWeaponImbuement(SteelType::Handle hWeapon, const std::string& imbuement);
 
 
         SteelType                       invokeArmor(SteelType::Handle hCharacter, SteelType::Handle hArmor);
@@ -222,6 +227,9 @@ namespace StoneRing
         SteelType                       getThemes();
         SteelType                       setTheme(const std::string&);
         SteelType                       banner(const std::string&, int time);
+        
+        SteelType                       editing();
+        SteelType                       testEdit();
  
 
         void steelConst(const std::string &name, int value);
@@ -245,6 +253,10 @@ namespace StoneRing
         void onSignalQuit();
         void onSignalKeyDown(const CL_InputEvent &key,const CL_InputState& state);
         void onSignalKeyUp(const CL_InputEvent &key, const CL_InputState& state);
+        void onSignalMouseDown(const CL_InputEvent &event, const CL_InputState& state);
+        void onSignalMouseUp(const CL_InputEvent &event, const CL_InputState& state);
+        void onSignalDoubleClick(const CL_InputEvent& event, const CL_InputState& state);
+        void onSignalMouseMove(const CL_InputEvent& event, const CL_InputState& state);
 	void onSignalJoystickButtonDown(const CL_InputEvent &event, const CL_InputState& state);
 	void onSignalJoystickButtonUp(const CL_InputEvent &event, const CL_InputState& state);
 	void onSignalJoystickAxisMove(const CL_InputEvent &event, const CL_InputState& state);
@@ -276,6 +288,7 @@ namespace StoneRing
 	ItemSelectState mItemSelectState;
         SkillTreeState mSkillTreeState;
         EquipState mEquipState;
+        EditorTestState mEditorTestState;
         std::vector<State*> mStates;
         std::vector<IFactory*> mFactories;
 	BattleConfig mBattleConfig;

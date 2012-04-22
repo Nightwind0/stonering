@@ -27,6 +27,10 @@ namespace StoneRing
 	virtual void HandleButtonUp(const IApplication::Button& button){}
 	virtual void HandleButtonDown(const IApplication::Button& button){}
 	virtual void HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos){}
+	virtual void HandleMouseUp(const IApplication::MouseButton& button, const CL_Point& pos, uint key_state ){}
+        virtual void HandleMouseDown(const IApplication::MouseButton& button, const CL_Point& pos, uint key_state ){}
+        virtual void HandleDoubleClick(const IApplication::MouseButton& button, const CL_Point& pos, uint key_state ){}
+        virtual void HandleMouseMove(const CL_Point& pos, uint key_state ){}
 	
 	virtual bool Threaded() const { return false; }
         virtual void Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)=0;

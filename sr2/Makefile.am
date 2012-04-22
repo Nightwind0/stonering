@@ -209,7 +209,9 @@ stonering_SOURCES =	src/Application.cpp \
 			src/states/BannerState.cpp \
 			src/states/BannerState.h \
 			src/items/Omega.cpp \
-			src/items/Omega.h
+			src/items/Omega.h \
+			src/editor/EditorTestState.cpp \
+			src/editor/EditorTestState.h
 
 
 
@@ -235,6 +237,7 @@ INCLUDES = \
 		-I@top_srcdir@/src/character \
 		-I@top_srcdir@/src/monsters \
 		-I@top_srcdir@/src/abilities \
-		-I@top_srcdir@/src/battle
+		-I@top_srcdir@/src/battle \
+		-I@top_srcdir@/src/editor 
 
  

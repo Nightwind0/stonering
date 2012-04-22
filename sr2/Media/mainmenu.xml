@@ -141,4 +141,12 @@
             statusScreen();
 	</script>
     </menuOption>  
+    <menuOption name="Edit" icon="edit">
+        <conditionScript id="MainMenuEditCond">
+            return editing();
+        </conditionScript>
+        <script id="MainMenuEdit">
+            testEdit();
+        </script>
+    </menuOption>
 </menu>

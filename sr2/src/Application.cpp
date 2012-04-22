@@ -469,6 +469,7 @@ SteelType Application::changeCharacterClass ( SteelType::Handle hCharacter, cons
 }
 
 
+
 SteelType Application::kill(SteelType::Handle hICharacter)
 {
     ICharacter * iCharacter = GrabHandle<ICharacter*>(hICharacter);
@@ -1478,6 +1479,22 @@ SteelType Application::omegaSlotIsEmpty( uint slot ) {
    return var;
 }
 
+SteelType Application::editing() {
+    SteelType result;
+#if SR2_EDITOR
+    result.set(true);
+#else
+    result.set(false);
+#endif
+    return result;
+}
+
+SteelType Application::testEdit() 
+{
+    RunState(&mEditorTestState);
+    return SteelType();
+}
+
 SteelType Application::banner ( const std::string& str, int time )
 {
     Banner(str,time);
@@ -1799,6 +1816,52 @@ void Application::onSignalJoystickAxisMove ( const CL_InputEvent &event, const C
         mStates.back()->HandleAxisMove ( AXIS_VERTICAL, get_direction_for_value ( AXIS_VERTICAL, event.axis_pos ), event.axis_pos );
     }
 }
+
+static IApplication::MouseButton CLMouseToMouseButton(int id){
+    switch(id){
+        case CL_MOUSE_LEFT:
+            return IApplication::MOUSE_LEFT;
+        case CL_MOUSE_RIGHT:
+            return IApplication::MOUSE_RIGHT;
+        case CL_MOUSE_MIDDLE:
+            return IApplication::MOUSE_MIDDLE;
+        default:
+            return IApplication::MOUSE_UNKNOWN;
+    }
+}
+
+static uint CLKeyStatesToKeyState(bool shift, bool alt, bool ctrl){
+        uint result = 0;
+        if(shift) result |= IApplication::KEY_SHIFT;
+        if(alt) result |= IApplication::KEY_ALT;
+        if(ctrl) result |= IApplication::KEY_CTRL;
+        return result;
+}
+
+void Application::onSignalMouseDown ( const CL_InputEvent& event, const CL_InputState& state ){
+    if(!mStates.empty()){
+        mStates.back()->HandleMouseDown(CLMouseToMouseButton(event.id),event.mouse_pos,CLKeyStatesToKeyState(event.shift,event.alt,event.ctrl));
+    }
+}
+
+void Application::onSignalMouseUp ( const CL_InputEvent& event, const CL_InputState& state ){
+    if(!mStates.empty()){
+        mStates.back()->HandleMouseUp(CLMouseToMouseButton(event.id),event.mouse_pos,CLKeyStatesToKeyState(event.shift,event.alt,event.ctrl));
+    }    
+}
+
+void Application::onSignalDoubleClick ( const CL_InputEvent& event, const CL_InputState& state ){
+    if(!mStates.empty()){
+        mStates.back()->HandleDoubleClick(CLMouseToMouseButton(event.id),event.mouse_pos,CLKeyStatesToKeyState(event.shift,event.alt,event.ctrl));
+    }    
+}
+
+void Application::onSignalMouseMove ( const CL_InputEvent& event, const CL_InputState& state ){
+    if(!mStates.empty()){
+        mStates.back()->HandleMouseMove(event.mouse_pos,CLKeyStatesToKeyState(event.shift,event.alt,event.ctrl));
+    }
+}
+
 
 
 void Application::onSignalQuit()
@@ -2130,6 +2193,9 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "getOmega", new SteelFunctor1Arg<Application,uint>(this,&Application::getOmega ) );
     mInterpreter.addFunction ( "omegaSlotIsEmpty", new SteelFunctor1Arg<Application,uint>(this,&Application::omegaSlotIsEmpty) );
     mInterpreter.addFunction ( "banner", new SteelFunctor2Arg<Application,const std::string&,int>(this,&Application::banner) );
+    
+    mInterpreter.addFunction ( "editing", new SteelFunctorNoArgs<Application>(this,&Application::editing) );
+    mInterpreter.addFunction ( "testEdit", new SteelFunctorNoArgs<Application>(this,&Application::testEdit) );
 }
 
 void Application::queryJoystick()
@@ -2346,10 +2412,16 @@ int Application::main ( const std::vector<CL_String> &args )
     try
     {
         CL_InputDevice keyboard = m_window.get_ic().get_keyboard();
+        CL_InputDevice mouse = m_window.get_ic().get_mouse();
 
         CL_Slot slot_quit = m_window.sig_window_close().connect ( this, &Application::onSignalQuit );
         CL_Slot slot_key_down = keyboard.sig_key_down().connect ( this, &Application::onSignalKeyDown );
         CL_Slot slot_key_up  = keyboard.sig_key_up().connect ( this, &Application::onSignalKeyUp );
+        
+        CL_Slot slot_mouse_up = mouse.sig_key_up().connect ( this, &Application::onSignalMouseUp  );
+        CL_Slot slot_mouse_down = mouse.sig_key_down().connect ( this, &Application::onSignalMouseDown  );
+        CL_Slot slot_dbl_click = mouse.sig_key_dblclk().connect ( this, &Application::onSignalDoubleClick  );
+        CL_Slot slot_mouse_move = mouse.sig_pointer_move().connect ( this, &Application::onSignalMouseMove  );
 
         CL_Slot joystickDown;
         CL_Slot joystickUp;
