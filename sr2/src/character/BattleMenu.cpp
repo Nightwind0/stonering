@@ -34,20 +34,7 @@ void BattleMenu::Init()
         m_bpFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_POPUP_MENU,"bp");
         m_cost_spacing = GraphicsManager::GetPoint(GraphicsManager::BATTLE_POPUP_MENU,"cost_spacing");
     }
-    build_visible_list();
     Menu::Init();    
-}
-
-void BattleMenu::build_visible_list()
-{
-    assert(m_pCharacter);
-    m_visible_options.clear();
-    for(std::vector<BattleMenuOption*>::iterator iter = m_options.begin(); 
-        iter != m_options.end(); iter++)
-        {
-            if((*iter)->Visible(m_pCharacter))
-                m_visible_options.push_back(*iter);
-        }
 }
 
 
@@ -94,13 +81,13 @@ CL_Rectf BattleMenu::get_rect()
 
 BattleMenuOption* BattleMenu::GetSelectedOption() const
 {
-    if(m_visible_options.size() == 0) return NULL;
-    else return m_visible_options[get_current_choice()];
+    if(m_options.size() == 0) return NULL;
+    else return m_options[get_current_choice()];
 }
 
 void BattleMenu::draw_option(int option, bool selected, float x, float y, CL_GraphicContext& gc)
 {
-    BattleMenuOption * pOption = m_visible_options[option];
+    BattleMenuOption * pOption = m_options[option];
     
     Font font;
     CL_Image icon = pOption->GetIcon();
@@ -172,8 +159,14 @@ int BattleMenu::height_for_option(CL_GraphicContext& gc)
 
 int BattleMenu::get_option_count()
 {
-    return m_visible_options.size();
+    return m_options.size();
 }
+
+bool BattleMenu::hide_option ( int selection )
+{
+    return !m_options[selection]->Visible(m_pCharacter);        
+}
+
 
 void BattleMenu::SetRect(CL_Rectf& rect)
 {

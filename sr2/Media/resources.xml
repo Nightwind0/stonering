@@ -714,10 +714,11 @@
                     </section>
                     <section name="rects">
                         <rect name="reqs" left="0" top="470" right="800" bottom="600"/>
-                        <rect name="menu" left="0" top="50" right="464" bottom="370"/>
+                        <rect name="menu" left="0" top="50" right="464" bottom="270"/>
                         <rect name="desc" left="0" top="370" right="800" bottom="470"/>
                         <rect name="path" left="0" top="0" right="800" bottom="50"/>
                         <rect name="char" left="464" right="800" top="50" bottom="370"/>
+                        <rect name="cost" left="0" right="464" top="270" bottom="370"/>
                     </section>
                     <section name="gradients">
                         <!--gradient name="unavailable" top_left="#808080" top_right="#808080" bottom_left="#303030" bottom_right="#303030"/-->
@@ -728,7 +729,7 @@
                     </section>
                     <section name="points">
                         <point name="icon" x="12" y="12"/>
-                        <point name="points" x="326" y="0"/>
+                        <point name="points" x="20" y="280"/>
                         <point name="arrow" x="388" y="32"/>
                         <point name="lock"  x="400" y="32"/>
                         <point name="skill_size" x="400" y="60"/>
@@ -736,7 +737,7 @@
                         <point name="portrait" x="550" y="80"/>
                         <point name="char_name" x="550" y="260"/>
                         <point name="char_sp"  x="550" y="290"/>
-                        <point name="use_cost" x="326" y="41"/>
+                        <point name="use_cost" x="20" y="300"/>
                     </section>
                     <section name="fonts">
                         <string name="desc" value="sb_white"/>

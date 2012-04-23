@@ -1491,7 +1491,7 @@ SteelType Application::editing() {
 SteelType Application::testEdit() 
 {
 #if SR2_EDITOR
-    RunState(&mEditorTestState);
+    RunState(&mEditorState);
 #endif
     return SteelType();
 }
@@ -2382,7 +2382,7 @@ int Application::main ( const std::vector<CL_String> &args )
         std::string utilityConfig = CL_String_load ( "Configuration/UtilityScripts", m_resources );
         mUtilityScripts.Load ( utilityConfig );
 #if SR2_EDITOR        
-        mEditorTestState.Init();
+        mEditorState.Init();
 #endif
         showRechargeableOnionSplash();
 
