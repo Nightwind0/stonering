@@ -58,6 +58,7 @@ namespace StoneRing
 	virtual void draw_party(CL_GraphicContext& gc);
         virtual void draw_party_stats(CL_GraphicContext& gc);
         virtual void draw_omegas(CL_GraphicContext& gc);
+        virtual bool hide_option(int option)const;
 	
         void fill_choices(std::vector<MenuOption*>::const_iterator begin,
                           std::vector<MenuOption*>::const_iterator end);

@@ -210,8 +210,8 @@ stonering_SOURCES =	src/Application.cpp \
 			src/states/BannerState.h \
 			src/items/Omega.cpp \
 			src/items/Omega.h \
-			src/editor/EditorTestState.cpp \
-			src/editor/EditorTestState.h
+			src/editor/EditorState.cpp \
+			src/editor/EditorState.h
 
 
 

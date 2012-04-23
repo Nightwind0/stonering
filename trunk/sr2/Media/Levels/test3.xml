@@ -3546,13 +3546,13 @@
                                     playScene(function(){
                                         using "scene";
                                         var $moveSam = moveObject(getObject("Karate Cat"),0,0,12);
-                                        //var $moveSam2 = moveObject(getObject("Samara"),13,4,12);
+                                        var $moveSam2 = moveObject(getObject("Samara"),13,4,12);
                                         waitFor(fadeObject(getObject("Karate Cat"),false,1));
                                         waitFor(fadeObject(getObject("Karate Cat"),true,1));
                                         
                                         fadeObject(getObject("Samara"),false,4);                                        
                                         waitFor($moveSam);
-                                        //waitFor($moveSam2);
+                                        waitFor($moveSam2);
                                         dialog("Karate Cat", "Here I go!",2.0);
                                         //say("Karate Cat", "Here I go!");
                                         waitFor(moveObject(scene::getObject("Karate Cat"),2,10,12));

@@ -47,14 +47,13 @@ namespace StoneRing
         virtual int height_for_option(CL_GraphicContext& gc);
         virtual void process_choice(int selection){}
         virtual int get_option_count();
-        void build_visible_list();
+        virtual bool hide_option(int selection);
         
         virtual bool handle_element(eElement, Element *);
         virtual void load_attributes(CL_DomNamedNodeMap );
         virtual void load_finished();
 
         std::vector<BattleMenuOption*> m_options;
-        std::vector<BattleMenuOption*> m_visible_options;
         eType m_eType;
         Font m_onFont;
         Font m_offFont;

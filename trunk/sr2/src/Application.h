@@ -16,7 +16,7 @@
 #include "BattleState.h"
 #include "MainMenuState.h"
 #include "ChoiceState.h"
-#include "EditorTestState.h"
+#include "EditorState.h"
 #include "State.h"
 #ifdef _WINDOWS_
 #include <SteelInterpreter.h>
@@ -289,7 +289,7 @@ namespace StoneRing
         SkillTreeState mSkillTreeState;
         EquipState mEquipState;
 #if SR2_EDITOR
-        EditorTestState mEditorTestState;
+        EditorState mEditorState;
 #endif
         std::vector<State*> mStates;
         std::vector<IFactory*> mFactories;

@@ -66,6 +66,7 @@ private:
     CL_Rectf m_reqs;
     CL_Rectf m_path_rect;
     CL_Rectf m_char_rect;
+    CL_Rectf m_cost_rect;
     CL_Pointf m_icon_point;
     CL_Pointf m_cost_point;
     CL_Pointf m_arrow_point;

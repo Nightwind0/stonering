@@ -11,21 +11,23 @@
 using std::min;
 using std::max;
 
-StoneRing::MainMenuState::MainMenuState():m_targetingState(*this),m_bDone(false)
+namespace StoneRing { 
+
+MainMenuState::MainMenuState():m_targetingState(*this),m_bDone(false)
 {
 
 }
 
-StoneRing::MainMenuState::~MainMenuState()
+MainMenuState::~MainMenuState()
 {
 }
 
-bool StoneRing::MainMenuState::IsDone() const
+bool MainMenuState::IsDone() const
 {
     return m_bDone;
 }
 
- void StoneRing::MainMenuState::HandleButtonUp(const IApplication::Button& button)
+ void MainMenuState::HandleButtonUp(const IApplication::Button& button)
  {
     switch(button)
     {
@@ -50,11 +52,11 @@ bool StoneRing::MainMenuState::IsDone() const
 	    break;
     }
  }
- void StoneRing::MainMenuState::HandleButtonDown(const IApplication::Button& button)
+ void MainMenuState::HandleButtonDown(const IApplication::Button& button)
  {
  }
  
- void StoneRing::MainMenuState::HandleAxisMove(const IApplication::Axis& axis, IApplication::AxisDirection dir, float pos)
+ void MainMenuState::HandleAxisMove(const IApplication::Axis& axis, IApplication::AxisDirection dir, float pos)
  {
      if(axis == IApplication::AXIS_VERTICAL)
      {
@@ -69,11 +71,11 @@ bool StoneRing::MainMenuState::IsDone() const
      }
  }
 
-void StoneRing::MainMenuState::HandleKeyDown(const CL_InputEvent &key)
+void MainMenuState::HandleKeyDown(const CL_InputEvent &key)
 {
 }
 
-void StoneRing::MainMenuState::HandleKeyUp(const CL_InputEvent &key)
+void MainMenuState::HandleKeyUp(const CL_InputEvent &key)
 {
     switch(key.id)
     {
@@ -93,7 +95,7 @@ void StoneRing::MainMenuState::HandleKeyUp(const CL_InputEvent &key)
     }
 }
 
-void StoneRing::MainMenuState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
+void MainMenuState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
 {
     MenuBox::Draw(GC,screenRect);
     MenuBox::Draw(GC,m_menu_rect,false);
@@ -122,7 +124,7 @@ void StoneRing::MainMenuState::Draw(const CL_Rect &screenRect,CL_GraphicContext&
     draw_party_stats(GC);
 }
 
-CL_Pointf StoneRing::MainMenuState::calc_player_position(int player)const
+CL_Pointf MainMenuState::calc_player_position(int player)const
 {
     float height = m_character_rect.get_height() / 4;
 
@@ -133,7 +135,7 @@ CL_Pointf StoneRing::MainMenuState::calc_player_position(int player)const
     return portraitPoint;
 }
 
-void StoneRing::MainMenuState::draw_party_stats ( CL_GraphicContext& gc )
+void MainMenuState::draw_party_stats ( CL_GraphicContext& gc )
 {
     const uint kTextWidth = 30;
     std::ostringstream os;
@@ -159,7 +161,7 @@ void StoneRing::MainMenuState::draw_party_stats ( CL_GraphicContext& gc )
     draw_omegas(gc);
 }
 
-void StoneRing::MainMenuState::draw_omegas ( CL_GraphicContext& gc )
+void MainMenuState::draw_omegas ( CL_GraphicContext& gc )
 {
     Party * pParty = IApplication::GetInstance()->GetParty();
     CL_Pointf top_left = m_omega_rect.get_top_left();
@@ -177,7 +179,7 @@ void StoneRing::MainMenuState::draw_omegas ( CL_GraphicContext& gc )
 
 
 
-void StoneRing::MainMenuState::draw_party(CL_GraphicContext& GC)
+void MainMenuState::draw_party(CL_GraphicContext& GC)
 {
     Party * party = IApplication::GetInstance()->GetParty();
     float height = m_character_rect.get_height() / 4;
@@ -241,17 +243,24 @@ void StoneRing::MainMenuState::draw_party(CL_GraphicContext& GC)
     }
 }
 
-bool StoneRing::MainMenuState::DisableMappableObjects() const
+bool MainMenuState::hide_option ( int option ) const
+{
+    ParameterList params;
+    return !m_choices[option]->Enabled(params);
+}
+
+
+bool MainMenuState::DisableMappableObjects() const
 {
     return true;
 }
 
 
-void StoneRing::MainMenuState::MappableObjectMoveHook()
+void MainMenuState::MappableObjectMoveHook()
 {
 }
 
-void StoneRing::MainMenuState::Start()
+void MainMenuState::Start()
 {
 
     CL_GraphicContext& GC = GET_MAIN_GC();
@@ -261,17 +270,17 @@ void StoneRing::MainMenuState::Start()
     SelectionFinish();
 }
 
-void StoneRing::MainMenuState::Finish()
+void MainMenuState::Finish()
 {
 }
 
 
-void StoneRing::MainMenuState::Init()
+void MainMenuState::Init()
 {
     Menu::Init();
 }
 
-CL_Rectf StoneRing::MainMenuState::get_rect()
+CL_Rectf MainMenuState::get_rect()
 {
     CL_Rectf menu_rect = m_menu_rect;
     menu_rect.shrink(GraphicsManager::GetMenuInset().x,GraphicsManager::GetMenuInset().y);
@@ -279,7 +288,7 @@ CL_Rectf StoneRing::MainMenuState::get_rect()
     return menu_rect;
 }
 
-void StoneRing::MainMenuState::draw_option(int option, bool selected, float x, float y, CL_GraphicContext& gc)
+void MainMenuState::draw_option(int option, bool selected, float x, float y, CL_GraphicContext& gc)
 {
         Font  lineFont;
 	
@@ -295,13 +304,13 @@ void StoneRing::MainMenuState::draw_option(int option, bool selected, float x, f
                          m_choices[option]->GetName(), Font::DEFAULT);
 }
 
-int StoneRing::MainMenuState::height_for_option(CL_GraphicContext& gc)
+int MainMenuState::height_for_option(CL_GraphicContext& gc)
 {
     //return cl_max(m_optionFont.get_font_metrics(gc).get_height(),m_selectionFont.get_font_metrics(gc).get_height());
     return get_rect().get_height() / (get_option_count());
 }
 
-void StoneRing::MainMenuState::process_choice(int selection)
+void MainMenuState::process_choice(int selection)
 {
     m_choices[selection]->Select(ParameterList());
     if(m_choices[selection]->HasChildren()){
@@ -312,25 +321,31 @@ void StoneRing::MainMenuState::process_choice(int selection)
     
 }
 
-int StoneRing::MainMenuState::get_option_count()
+int MainMenuState::get_option_count()
 {
-    return m_choices.size();
+    ParameterList params;
+    int skip = 0;
+    for(int i=0;i<m_choices.size();i++){
+        if(!m_choices[i]->Enabled(params))
+            ++skip;
+    }
+    return m_choices.size() - skip;
 }
 
-void StoneRing::MainMenuState::fill_choices ( std::vector< StoneRing::MenuOption* >::const_iterator begin, std::vector< StoneRing::MenuOption* >::const_iterator end )
+void MainMenuState::fill_choices ( std::vector< MenuOption* >::const_iterator begin, std::vector< MenuOption* >::const_iterator end )
 {
     m_choices.clear();
-    for(std::vector<StoneRing::MenuOption*>::const_iterator iter = begin; iter != end; iter++)
+    for(std::vector<MenuOption*>::const_iterator iter = begin; iter != end; iter++)
         m_choices.push_back(*iter);
 }
 
 
-void StoneRing::MainMenuState::AddOption(MenuOption* pOption)
+void MainMenuState::AddOption(MenuOption* pOption)
 {
     m_root_choices.push_back(pOption);
 }
 
-SteelType StoneRing::MainMenuState::selectTargets(bool group)
+SteelType MainMenuState::selectTargets(bool group)
 {
     m_targetingState.Init(group);
     IApplication::GetInstance()->RunState(&m_targetingState);
@@ -368,7 +383,7 @@ SteelType StoneRing::MainMenuState::selectTargets(bool group)
     }
 }
 
-SteelType StoneRing::MainMenuState::reload()
+SteelType MainMenuState::reload()
 {
     m_target_sprite = GraphicsManager::CreateSprite("Menu/Target");
 
@@ -397,18 +412,18 @@ SteelType StoneRing::MainMenuState::reload()
 }
 
 
-void StoneRing::MainMenuState::SteelInit      (SteelInterpreter *pInterpreter)
+void MainMenuState::SteelInit      (SteelInterpreter *pInterpreter)
 {
     pInterpreter->addFunction("selectTargets","menu",new SteelFunctor1Arg<MainMenuState,bool>(this,&MainMenuState::selectTargets));
     pInterpreter->addFunction("reload","menu", new SteelFunctorNoArgs<MainMenuState>(this,&MainMenuState::reload));
 }
 
-void StoneRing::MainMenuState::SteelCleanup   (SteelInterpreter *pInterpreter)
+void MainMenuState::SteelCleanup   (SteelInterpreter *pInterpreter)
 {
     pInterpreter->removeFunctions("menu");
 }
 
-void StoneRing::MainMenuState::SelectCharacterUp()
+void MainMenuState::SelectCharacterUp()
 {
     Party * party = IApplication::GetInstance()->GetParty();
     if(--m_nSelectedChar < 0){
@@ -416,7 +431,7 @@ void StoneRing::MainMenuState::SelectCharacterUp()
     }
 }
 
-void StoneRing::MainMenuState::SelectCharacterDown()
+void MainMenuState::SelectCharacterDown()
 {
     Party * party = IApplication::GetInstance()->GetParty();
     if(++m_nSelectedChar >= party->GetCharacterCount()){
@@ -424,26 +439,28 @@ void StoneRing::MainMenuState::SelectCharacterDown()
     }    
 }
 
-void StoneRing::MainMenuState::SelectAllCharacters()
+void MainMenuState::SelectAllCharacters()
 {
     m_nSelectedChar = 0;
     m_bSelectAll = true;
 }
 
-void StoneRing::MainMenuState::SelectionStart()
+void MainMenuState::SelectionStart()
 {
     m_bSelectAll = false;
     m_bSelectingTarget = true;
     m_nSelectedChar = 0;
 }
-void StoneRing::MainMenuState::SelectionFinish()
+void MainMenuState::SelectionFinish()
 {
     m_bSelectingTarget = false;
 }
 
-void StoneRing::MainMenuState::SelectionCancel()
+void MainMenuState::SelectionCancel()
 {
     m_nSelectedChar = -1;
     m_bSelectAll = false;
     m_bSelectingTarget = false;
+}
+
 }

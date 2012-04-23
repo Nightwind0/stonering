@@ -54,6 +54,7 @@ void SkillTreeState::Init ( StoneRing::Character* pCharacter, bool buy )
     m_reqs = GraphicsManager::GetRect(GraphicsManager::SKILL_TREE,"reqs");
     m_char_rect = GraphicsManager::GetRect(GraphicsManager::SKILL_TREE,"char");
     m_path_rect = GraphicsManager::GetRect(GraphicsManager::SKILL_TREE,"path");
+    m_cost_rect = GraphicsManager::GetRect(GraphicsManager::SKILL_TREE,"cost");
     m_icon_point = GraphicsManager::GetPoint(GraphicsManager::SKILL_TREE,"icon");
     m_cost_point = GraphicsManager::GetPoint(GraphicsManager::SKILL_TREE,"points");
     m_arrow_point = GraphicsManager::GetPoint(GraphicsManager::SKILL_TREE,"arrow");
@@ -108,7 +109,7 @@ int SkillTreeState::get_option_count()
 
 int SkillTreeState::height_for_option ( CL_GraphicContext& gc )
 {
-    return m_skill_size.y;
+    return 38;
 }
 
 void SkillTreeState::Start()
@@ -126,7 +127,6 @@ void SkillTreeState::draw_option ( int option, bool selected, float x, float y, 
     SkillRef* pSkillRef = m_skills[option]->GetRef();
     StoneRing::Font font;
     StoneRing::Font costFont;
-    CL_Gradient gradient;
         
     bool has_skill = m_pChar->HasSkill(pSkillRef->GetRef());
     bool can_afford = m_pChar->GetSP() >= m_skills[option]->GetSPCost();
@@ -139,29 +139,8 @@ void SkillTreeState::draw_option ( int option, bool selected, float x, float y, 
     
     CL_Rectf option_rect(x,y,x+get_rect().get_width(),y + height_for_option(gc));     
    // CL_Draw::box(gc,option_rect,CL_Colorf(0.0f,0.0f,0.0f,0.1f));
-    CL_Rectf gradient_rect = option_rect;
     //gradient_rect.shrink(GraphicsManager::GetMenuInset().x,0);
     //gradient_rect.translate(GraphicsManager::GetMenuInset());
-    CL_Draw::gradient_fill(gc,gradient_rect,GraphicsManager::GetMenuGradient());
-    std::ostringstream cost_stream;
-    
-    if(pSkillRef->GetSkill()->GetBPCost()){
-        cost_stream << std::setw(5) << pSkillRef->GetSkill()->GetBPCost() << ' ' << "BP";
-        if(m_eUse != USE || m_pChar->GetAttribute(ICharacter::CA_BP) > pSkillRef->GetSkill()->GetBPCost()){
-            m_bp_cost.draw_text(gc,x + m_use_cost_pt.x,y + m_use_cost_pt.y, cost_stream.str(),Font::TOP_LEFT);
-        }else{
-            m_not_enough_points_font.draw_text(gc,x + m_use_cost_pt.x,y + m_use_cost_pt.y, cost_stream.str(),Font::TOP_LEFT);
-            can_use = false;
-        }
-    }else if(pSkillRef->GetSkill()->GetMPCost()){
-        cost_stream << std::setw(5) << pSkillRef->GetSkill()->GetMPCost() << ' ' << "MP";
-        if(m_eUse != USE || m_pChar->GetAttribute(ICharacter::CA_MP) > pSkillRef->GetSkill()->GetMPCost()){       
-            m_mp_cost.draw_text(gc,x + m_use_cost_pt.x,y + m_use_cost_pt.y, cost_stream.str(), Font::TOP_LEFT);
-        }else{
-            m_not_enough_points_font.draw_text(gc,x + m_use_cost_pt.x,y + m_use_cost_pt.y, cost_stream.str(), Font::TOP_LEFT);
-            can_use = false;
-        }
-    }
  
  
     if(m_eUse == BUY){
@@ -188,19 +167,7 @@ void SkillTreeState::draw_option ( int option, bool selected, float x, float y, 
     if(selected)
         font = m_selection_font;
     
-    pSkillRef->GetSkill()->GetIcon().draw(gc,x+m_icon_point.x,y+m_icon_point.y);
-    
-    if(!has_skill)
-    {
-        std::ostringstream cost_stream;
-            cost_stream << std::setw(5) << m_skills[option]->GetSPCost() << ' ' << "SP";
-        if(!can_afford)
-            costFont = m_not_enough_points_font;
-        else
-            costFont = m_points_font;
-        costFont.draw_text(gc,x + m_cost_point.x,y + m_cost_point.y, cost_stream.str(), Font::TOP_LEFT);
-    }
-    
+    pSkillRef->GetSkill()->GetIcon().draw(gc,x+m_icon_point.x,y+m_icon_point.y);   
 
 
     if(m_skills[option]->GetSubSkillsBegin() != m_skills[option]->GetSubSkillsEnd())
@@ -208,7 +175,7 @@ void SkillTreeState::draw_option ( int option, bool selected, float x, float y, 
         // There are subskills, so draw the arrow
         m_arrow.draw(gc, x + m_arrow_point.x, y + m_arrow_point.y);
     }
-    
+
 
     
     font.draw_text(gc, x + m_name_offset.x, 
@@ -235,6 +202,9 @@ void SkillTreeState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
     MenuBox::Draw(GC,m_path_rect,false, kEmptyPoint);
     MenuBox::Draw(GC,m_description,false, kEmptyPoint);
     MenuBox::Draw(GC,m_char_rect,false,kEmptyPoint);
+    MenuBox::Draw(GC,m_cost_rect,false,kEmptyPoint);
+    
+    
     std::deque<SkillTreeNode*> skillStack;
     std::ostringstream pathDesc;
     
@@ -272,10 +242,49 @@ void SkillTreeState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
     SkillTreeNode * pNode = m_skills[ get_current_choice() ];
     Skill * pSkill = pNode->GetRef()->GetSkill();
     SkillRef* pSkillRef = pNode->GetRef();
+    bool has_skill = m_pChar->HasSkill(pSkillRef->GetRef());    
+    bool met_reqs = pNode->CanLearn(m_pChar) && ! has_skill;
+    bool can_afford = m_pChar->GetSP() >= pNode->GetSPCost();
+    
+    bool can_use = (pSkillRef->GetSkill()->GetType() == Skill::WORLD ||
+            pSkillRef->GetSkill()->GetType() == Skill::BOTH);    
     
     CL_Rect desc_rect = m_description;
     desc_rect.shrink ( GraphicsManager::GetMenuInset().x, GraphicsManager::GetMenuInset().y );
     draw_text(GC, m_desc_font, desc_rect, pSkill->GetDescription()); 
+    
+    std::ostringstream cost_stream;
+    cost_stream << "Uses: ";
+    
+    if(pSkillRef->GetSkill()->GetBPCost()){
+        cost_stream << std::setw(5) << pSkillRef->GetSkill()->GetBPCost() << ' ' << "BP";
+        if(m_eUse != USE || m_pChar->GetAttribute(ICharacter::CA_BP) > pSkillRef->GetSkill()->GetBPCost()){
+            m_bp_cost.draw_text(GC,m_use_cost_pt.x,m_use_cost_pt.y, cost_stream.str(),Font::TOP_LEFT);
+        }else{
+            m_not_enough_points_font.draw_text(GC,m_use_cost_pt.x,m_use_cost_pt.y, cost_stream.str(),Font::TOP_LEFT);
+        }
+    }else if(pSkillRef->GetSkill()->GetMPCost()){
+        cost_stream << std::setw(5) << pSkillRef->GetSkill()->GetMPCost() << ' ' << "MP";
+        if(m_eUse != USE || m_pChar->GetAttribute(ICharacter::CA_MP) > pSkillRef->GetSkill()->GetMPCost()){       
+            m_mp_cost.draw_text(GC,m_use_cost_pt.x,m_use_cost_pt.y, cost_stream.str(), Font::TOP_LEFT);
+        }else{
+            m_not_enough_points_font.draw_text(GC,m_use_cost_pt.x,m_use_cost_pt.y, cost_stream.str(), Font::TOP_LEFT);
+        }
+    }
+    
+    if(has_skill){
+        m_points_font.draw_text(GC,m_cost_point.x,m_cost_point.y,"Learned",Font::TOP_LEFT);
+    }else{
+        Font costFont;
+        std::ostringstream cost_stream;
+        cost_stream << "Cost: " << std::setw(5) << pNode->GetSPCost() << ' ' << "SP";
+        if(!can_afford)
+            costFont = m_not_enough_points_font;
+        else
+            costFont = m_points_font;
+        costFont.draw_text(GC,m_cost_point.x,m_cost_point.y, cost_stream.str(), Font::TOP_LEFT);
+    }    
+    
     
     m_char_name_font.draw_text(GC,m_char_name_pt.x,m_char_name_pt.y, m_pChar->GetName());
     m_char_sp_font.draw_text(GC,m_char_sp_pt.x,m_char_sp_pt.y, "SP " +IntToString(m_pChar->GetSP()));
@@ -287,9 +296,6 @@ void SkillTreeState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
                              "BP " + IntToString(m_pChar->GetAttribute(ICharacter::CA_BP)));
     }
     
-    bool has_skill = m_pChar->HasSkill(pSkillRef->GetRef());
-    bool can_afford = m_pChar->GetSP() >= pNode->GetSPCost();
-    bool met_reqs = pNode->CanLearn(m_pChar);
     
     CL_Rectf req_box = m_reqs;
 
