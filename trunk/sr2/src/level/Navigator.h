@@ -138,7 +138,6 @@ private:
     int m_speed;
     Direction m_dir;
     Direction m_face_dir;
-    bool m_no_path;
     bool m_complete;
     std::deque<CL_Point> m_path;
     Level& m_level;

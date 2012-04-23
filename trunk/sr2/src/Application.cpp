@@ -1488,10 +1488,11 @@ SteelType Application::editing() {
 #endif
     return result;
 }
-
 SteelType Application::testEdit() 
 {
+#if SR2_EDITOR
     RunState(&mEditorTestState);
+#endif
     return SteelType();
 }
 

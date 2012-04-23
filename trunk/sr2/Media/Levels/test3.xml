@@ -3513,15 +3513,15 @@
                                 
                         </event>
                 </mo>
-                <mo name="Bosco" size="wide" type="npc" xpos="4" ypos="4" solid="true" movementType="wander" speed="slow">
+                <!--mo name="Bosco" size="wide" type="npc" xpos="4" ypos="4" solid="true" movementType="wander" speed="slow">
                     <spriteRef type="fourway" ref="Animals/Bear"/>
-                </mo>
+                </mo-->
                 <mo name="Jeremy" size="2x2" type="npc" xpos="4" ypos="15" solid="false" movementType="wander" flying="true" speed="slow">
                     <spriteRef type="fourway" ref="Animals/Seagull"/>
                 </mo>
-                <mo name="Bzzor" size="3x2" type="npc" xpos="12" ypos="16" solid="true" movementType="wander" speed="slow">
+                <!--mo name="Bzzor" size="3x2" type="npc" xpos="12" ypos="16" solid="true" movementType="wander" speed="slow">
                     <spriteRef type="fourway" ref="Mob/GreenDragon"/>
-                </mo>
+                </mo-->
                 <mo name="BattlePodium" size="small" type="npc" xpos="3" ypos="2" solid="true">
                     <event name="podium" triggerType="talk">
                         <script id="useBattlePodium">
@@ -3545,17 +3545,17 @@
                                     case 4:
                                     playScene(function(){
                                         using "scene";
-                                        var $moveSam = moveObject(getObject("Karate Cat"),13,3,12);
-                                        var $moveSam2 = moveObject(getObject("Samara"),13,4,12);
-                                        waitFor(fadeObject(getObject("Samara"),false,1));
-                                        waitFor(fadeObject(getObject("Samara"),true,1));
+                                        var $moveSam = moveObject(getObject("Karate Cat"),0,0,12);
+                                        //var $moveSam2 = moveObject(getObject("Samara"),13,4,12);
+                                        waitFor(fadeObject(getObject("Karate Cat"),false,1));
+                                        waitFor(fadeObject(getObject("Karate Cat"),true,1));
                                         
                                         fadeObject(getObject("Samara"),false,4);                                        
                                         waitFor($moveSam);
-                                        waitFor($moveSam2);
+                                        //waitFor($moveSam2);
                                         dialog("Karate Cat", "Here I go!",2.0);
                                         //say("Karate Cat", "Here I go!");
-                                        //waitFor(moveObject(scene::getObject("Karate Cat"),0,0,12));
+                                        waitFor(moveObject(scene::getObject("Karate Cat"),2,10,12));
                                         waitFor(fadeObject(getObject("Karate Cat"),false,1.0));
                                     });
                                     break;

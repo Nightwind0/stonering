@@ -20,6 +20,7 @@
 #include "Navigator.h"
 #include "MappableObject.h"
 #include "Level.h"
+#include "SoundManager.h"
 #include <deque>
 #include <vector>
 #include <set>
@@ -288,7 +289,6 @@ ScriptedNavigator::ScriptedNavigator ( Level& level, MappableObject& mo, const C
     m_change_face = false;
     m_speed = speed;
     m_complete = false;
-    m_no_path = true;
 }
 
 ScriptedNavigator::ScriptedNavigator ( Level& level, MappableObject& mo, const StoneRing::Direction& dir ):Navigator(mo),m_level(level)
@@ -296,7 +296,6 @@ ScriptedNavigator::ScriptedNavigator ( Level& level, MappableObject& mo, const S
     m_face_dir = dir;
     m_change_face = true;
     m_complete = false;
-    m_no_path = true;
 }
 
 ScriptedNavigator::~ScriptedNavigator()
@@ -395,6 +394,7 @@ float ScriptedNavigator::heuristic_cost_estimate ( const CL_Point& a, const CL_P
 
 bool ScriptedNavigator::compute_astar(const Level &level)
 {
+    //SoundManager::PlayEffect(SoundManager::EFFECT_CHANGE_OPTION);
     CL_Point start = m_mo.GetPosition();
     const int start_id = point_id(start);
     const int dest_id = point_id(m_dest);
@@ -482,11 +482,13 @@ bool ScriptedNavigator::compute_astar(const Level &level)
 void ScriptedNavigator::set_direction_to_next(bool f)
 {
     CL_Point start = m_mo.GetPosition();
-    
+
+#if 0 // What is this for??
     if(!f){
         if(start != m_next_step)
             return;
     }
+#endif
 
     if(!m_path.empty()){
         m_next_step = m_path.back();
@@ -512,9 +514,10 @@ void ScriptedNavigator::set_direction_to_next(bool f)
 
 void ScriptedNavigator::OnMove ( Level& level )
 {
-    if(m_no_path){
-        if(compute_astar(m_level))
+    if(!m_complete && m_path.empty()){
+        if(compute_astar(m_level)){
             set_direction_to_next();
+        }
     }else{
         set_direction_to_next();
     }
