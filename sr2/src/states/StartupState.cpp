@@ -52,6 +52,7 @@ bool StartupState::IsDone() const
 void StartupState::Start()
 {
     m_bDone = false;
+    Menu::Init();
     m_overlay = GraphicsManager::GetOverlay(GraphicsManager::STARTUP);
     m_menu_rect = GraphicsManager::GetRect(GraphicsManager::STARTUP,"menu");
     m_option_font = GraphicsManager::GetFont(GraphicsManager::STARTUP,"option");

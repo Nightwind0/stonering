@@ -288,7 +288,9 @@ namespace StoneRing
 	ItemSelectState mItemSelectState;
         SkillTreeState mSkillTreeState;
         EquipState mEquipState;
+#if SR2_EDITOR
         EditorTestState mEditorTestState;
+#endif
         std::vector<State*> mStates;
         std::vector<IFactory*> mFactories;
 	BattleConfig mBattleConfig;
