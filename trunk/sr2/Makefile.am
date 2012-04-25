@@ -211,7 +211,11 @@ stonering_SOURCES =	src/Application.cpp \
 			src/items/Omega.cpp \
 			src/items/Omega.h \
 			src/editor/EditorState.cpp \
-			src/editor/EditorState.h
+			src/editor/EditorState.h \
+			src/editor/MapEditorState.h \
+			src/editor/MapEditorState.cpp \
+			src/editor/MapComponent.cpp \
+			src/editor/MapComponent.h
 
 
 

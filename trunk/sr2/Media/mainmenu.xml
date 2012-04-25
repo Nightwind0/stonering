@@ -145,8 +145,11 @@
         <conditionScript id="MainMenuEditCond">
             return editing();
         </conditionScript>
-        <script id="MainMenuEdit">
-            testEdit();
-        </script>
+        <menuOption name="Maps" icon="map">
+            <script id="MainMenuEditMap">
+            editMap();
+            </script>
+        </menuOption>
+
     </menuOption>
 </menu>

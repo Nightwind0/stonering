@@ -16,7 +16,7 @@
 #include "BattleState.h"
 #include "MainMenuState.h"
 #include "ChoiceState.h"
-#include "EditorState.h"
+#include "MapEditorState.h"
 #include "State.h"
 #ifdef _WINDOWS_
 #include <SteelInterpreter.h>
@@ -229,7 +229,7 @@ namespace StoneRing
         SteelType                       banner(const std::string&, int time);
         
         SteelType                       editing();
-        SteelType                       testEdit();
+        SteelType                       editMap();
  
 
         void steelConst(const std::string &name, int value);
@@ -289,7 +289,7 @@ namespace StoneRing
         SkillTreeState mSkillTreeState;
         EquipState mEquipState;
 #if SR2_EDITOR
-        EditorState mEditorState;
+        MapEditorState mMapEditorState;
 #endif
         std::vector<State*> mStates;
         std::vector<IFactory*> mFactories;

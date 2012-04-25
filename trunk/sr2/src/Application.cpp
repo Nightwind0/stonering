@@ -1488,10 +1488,10 @@ SteelType Application::editing() {
 #endif
     return result;
 }
-SteelType Application::testEdit() 
+SteelType Application::editMap() 
 {
 #if SR2_EDITOR
-    RunState(&mEditorState);
+    RunState(&mMapEditorState);
 #endif
     return SteelType();
 }
@@ -2196,7 +2196,7 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "banner", new SteelFunctor2Arg<Application,const std::string&,int>(this,&Application::banner) );
     
     mInterpreter.addFunction ( "editing", new SteelFunctorNoArgs<Application>(this,&Application::editing) );
-    mInterpreter.addFunction ( "testEdit", new SteelFunctorNoArgs<Application>(this,&Application::testEdit) );
+    mInterpreter.addFunction ( "editMap", new SteelFunctorNoArgs<Application>(this,&Application::editMap) );
 }
 
 void Application::queryJoystick()
@@ -2382,7 +2382,7 @@ int Application::main ( const std::vector<CL_String> &args )
         std::string utilityConfig = CL_String_load ( "Configuration/UtilityScripts", m_resources );
         mUtilityScripts.Load ( utilityConfig );
 #if SR2_EDITOR        
-        mEditorState.Init();
+        mMapEditorState.Init(m_window);
 #endif
         showRechargeableOnionSplash();
 

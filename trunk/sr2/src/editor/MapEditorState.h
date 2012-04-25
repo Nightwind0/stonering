@@ -17,11 +17,12 @@
 */
 
 
-#ifndef EDITORTESTSTATE_H
-#define EDITORTESTSTATE_H
+#ifndef MAPEDITORTESTSTATE_H
+#define MAPEDITORTESTSTATE_H
 
-#include "State.h"
+#include "EditorState.h"
 #include <ClanLib/gui.h>
+#include "MapComponent.h"
 
 #if SR2_EDITOR
 
@@ -29,12 +30,12 @@ class CL_DisplayWindow;
 
 namespace StoneRing { 
 
-    class EditorState : public State
+    class MapEditorState : public EditorState
     {
     public:
-        EditorState();
-        virtual ~EditorState();
-        virtual void Init(CL_DisplayWindow& window);
+        MapEditorState();
+        virtual ~MapEditorState();
+        virtual void Init(CL_DisplayWindow & window);
         virtual void HandleButtonUp(const IApplication::Button& button);
         virtual void HandleButtonDown(const IApplication::Button& button);
         virtual void HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos);
@@ -48,25 +49,62 @@ namespace StoneRing {
         virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
         virtual void Start();
         virtual void Finish(); // Hook to clean up or whatever after being popped     
-        virtual bool IsDone()const;
         
-        virtual void on_button_clicked(CL_PushButton*)=0;
-        virtual bool on_close(CL_Window*);        
-    protected:
-        //virtual CL_Window* create_main_window()=0;
-        void finish();
-        CL_GUIManager* get_gui() { return &m_gui_manager; }
+        virtual void on_button_clicked(CL_PushButton*);
+        virtual bool on_close(CL_Window*);
     private:
+        
+        enum Modifier {
+            ALT=1,
+            SHIFT=2,
+            CTRL=4
+        };
+        
+        enum MouseButton {
+            MOUSE_LEFT,
+            MOUSE_RIGHT
+        }m_drag_button;
+        
+        enum Menu {
+            FILE_MENU
+        };
+        
+        enum MouseState {
+            MOUSE_IDLE,
+            MOUSE_DOWN,
+            MOUSE_DRAG
+        }m_mouse_state;
+        
+        int  mod_value(bool shift,bool ctrl,bool alt)const;
+        void on_file_open();
+        void on_file_new();
+        void on_zoom_changed();
+        bool on_mouse_moved(const CL_InputEvent&);
+        bool on_mouse_pressed(const CL_InputEvent&);
+        bool on_mouse_released(const CL_InputEvent&);
+        void on_mouse_double_click(const CL_InputEvent&);
+        bool on_pointer_entered();
+        bool on_pointer_exit();
+        
+        // mouse 
+        void start_drag(const CL_Point&, MouseButton button, int mod_state);
+        void update_drag(const CL_Point& start,const CL_Point& prev_point,const CL_Point& point,MouseButton button, int mod_state);
+        void cancel_drag();
+        void end_drag(const CL_Point& start,const CL_Point& prev_point, const CL_Point& point,MouseButton button, int mod_state);
+        
+        
+        void construct_menu();
         bool m_bDone;
-        // GUI stuff
-        CL_AcceleratorTable m_accelerator_table;
-        CL_ResourceManager m_resources;
-        CL_GUIThemeDefault m_theme;
-        CL_CSSDocument m_css_document;
-        CL_GUIWindowManagerSystem m_window_manager;
-        CL_GUIManager m_gui_manager;  
-        CL_Window* m_pMainWindow;
- 
+        // GUI stuff      
+        CL_Window * m_pWindow;
+        CL_PopupMenu m_menu;
+        CL_MenuBar * m_pMenuBar;
+        CL_PushButton* m_pButton;
+        CL_Slider* m_pZoomSlider;
+        MapComponent* m_pMap;
+        int m_mod_state;
+        CL_Point m_drag_start;
+        CL_Point m_last_drag_point;
         //CL_DisplayWindow* m_subwindow;
     };
 
