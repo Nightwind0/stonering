@@ -27,7 +27,7 @@
                 <!--gradient name="MenuGradient" top_left="#0057ff" top_right="#0057ff" bottom_right="#003397" bottom_left="#003397"/--> <!-- blue -->
                 <!-- #185053 -->
                 <!--gradient name="MenuGradient" top_left="#3ea1a8" top_right="#3ea1a8" bottom_right="#000000" bottom_left="#000000"/--> 
-                <point name="MenuInset" x="8" y="8"/>
+                <point name="MenuInset" x="16" y="8"/>
                 <string name="DefaultTheme" value="RPG Blue"/> 
         </section>                                  
         <section name="Themes">
@@ -94,9 +94,11 @@
                 <freetype name="tb_cyan" size="20" color="#00FFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>                                  
                 <freetype name="sb_black" size="24" color="#000000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
                 <freetype name="sb_gray" size="24" color="#636363" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>		
-                <freetype name="sb_white" size="24" color="#FFFFFF" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>			
+                <freetype name="sb_white" size="24" color="color_main" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+                <freetype name="mb_accent" size="30" color="color_accent" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>   
+                <freetype name="mb_main" size="30" color="color_main" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>                  
                 <freetype name="sb_blue" size="24" color="#000080"  shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
-                <freetype name="sb_green" size="24" color="#color_hp" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
+                <freetype name="sb_green" size="24" color="color_hp" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
                 <freetype name="sb_purple" size="24" color="#680090" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
                 <freetype name="sb_red" size="24" color="#FF0000" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
                 <freetype name="sb_cyan" size="24" color="#00DDDD" shadowx="2.0" shadowy="2.0" file="Images/Fonts/BorisBlackBloxx.ttf"/>
@@ -239,6 +241,9 @@
                 <image name="status">
                     <image-file file="Images/Icons/Page.png"/>
                 </image>	
+                <image name="map">
+                    <image-file file="Images/Icons/map.png"/>
+                </image>
                 
                 <image name="flee">
                         <image-file file="Images/Icons/run.png"/>
@@ -740,9 +745,9 @@
                         <point name="use_cost" x="20" y="300"/>
                     </section>
                     <section name="fonts">
-                        <string name="desc" value="sb_white"/>
-                        <string name="reqs" value="sb_white"/>
-                        <string name="unmet_reqs_desc" value="sb_black"/>
+                        <string name="desc" value="mb_main"/>
+                        <string name="reqs" value="mb_main"/>
+                        <string name="unmet_reqs_desc" value="mb_accent"/>
                         <string name="char_name" value="BoldWhite"/>
                         <string name="char_sp" value="mm_white"/>
                         <string name="char_mp" value="mm_cyan"/>
