@@ -82,3 +82,18 @@ void DynamicMonsterRef::SetRows(int rows)
 {
     m_nRows = rows;
 }
+
+#if SR2_EDITOR
+CL_DomElement MonsterRef::CreateDomElement(CL_DomDocument& doc) const 
+{
+    CL_DomElement element(doc,"monsterRef");
+    element.set_attribute("name",m_name);
+    element.set_attribute("count",IntToString(m_nCount));
+    element.set_attribute("cellX",IntToString(m_nCellX));
+    element.set_attribute("cellY",IntToString(m_nCellY));
+    element.set_attribute("cols",IntToString(m_nColumns));
+    element.set_attribute("rows",IntToString(m_nRows));
+ 
+    return element;
+}
+#endif

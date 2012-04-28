@@ -38,3 +38,19 @@ void MonsterGroup::load_finished()
     if(m_monsters.empty()) throw CL_Exception("At least one MonsterRef is required on a MonsterGroup");
 }
 
+
+#if SR2_EDITOR
+CL_DomElement MonsterGroup::CreateDomElement(CL_DomDocument &doc) const 
+{
+    CL_DomElement element(doc,"monsterGroup");
+    element.set_attribute("weight",FloatToString(m_nWeight));
+    element.set_attribute("cellColumns",IntToString(m_nCellCols));
+    element.set_attribute("cellRows",IntToString(m_nCellRows));
+    
+    for(std::vector<MonsterRef*>::const_iterator iter = m_monsters.begin();
+        iter != m_monsters.end(); iter++){
+        element.append_child((*iter)->CreateDomElement(doc));
+    }
+    return element;
+}
+#endif

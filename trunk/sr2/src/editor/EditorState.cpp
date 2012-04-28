@@ -18,6 +18,7 @@
 
 
 #include "EditorState.h"
+#include "SoundManager.h"
 
 #if SR2_EDITOR
 
@@ -35,22 +36,28 @@ EditorState::~EditorState()
 
 void EditorState::Init(CL_DisplayWindow &window) 
 {
-        m_resources = CL_ResourceManager("Media/Editor/GUIThemeBasic/resources.xml");
-        m_theme.set_resources(m_resources);
-        m_gui_manager.set_css_document("Media/Editor/GUIThemeBasic/theme.css");
-        
-        //m_window_manager = CL_GUIWindowManagerTexture(window);
-        // TODO: CSS
-        m_gui_manager.set_theme(m_theme);
-        //m_gui_manager.add_resources(m_resources);
-        //gui_manager.set_css_document(css_document);
-        m_gui_manager.set_window_manager(m_window_manager);
-        m_gui_manager.set_accelerator_table(m_accelerator_table);
+    // TODO: Call the derived classes to get the name and sizes
+    m_display_window = CL_DisplayWindow("Editor",800,600);
+    m_display_window.hide();
+    m_resources = CL_ResourceManager("Media/Editor/GUIThemeBasic/resources.xml");
+    m_theme.set_resources(m_resources);
+    m_gui_manager.set_css_document("Media/Editor/GUIThemeBasic/theme.css");
+    
+    m_window_manager = CL_GUIWindowManagerTexture(m_display_window);
+    // TODO: CSS
+    m_gui_manager.set_theme(m_theme);
+    //m_gui_manager.add_resources(m_resources);
+    //gui_manager.set_css_document(css_document);
+    m_gui_manager.set_window_manager(m_window_manager);
+    m_gui_manager.set_accelerator_table(m_accelerator_table);     
 }
 
 void EditorState::Start()
 {
         m_bDone = false;
+   m_display_window.show();
+   m_latch_vol = SoundManager::GetMusicVolume();
+   SoundManager::SetMusicVolume(0.0f);
 }
 
 void EditorState::finish(){
@@ -59,7 +66,7 @@ void EditorState::finish(){
 
 bool EditorState::on_close(CL_Window*){
    m_bDone = true;
-   return true;
+   return false;
 }
 
 void EditorState::HandleButtonUp(const IApplication::Button& button){
@@ -97,7 +104,8 @@ void EditorState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC){
 }
 
 void EditorState::Finish(){
-
+    m_display_window.hide();
+    SoundManager::SetMusicVolume(m_latch_vol);
 }
 
 bool EditorState::LastToDraw() const {

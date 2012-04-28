@@ -19,6 +19,7 @@
 
 
 
+
 typedef unsigned int uint;
 
 
@@ -108,6 +109,22 @@ private:
     CL_GraphicContext m_gc;
     CL_Point m_offset;
     const Level &m_level;
+};
+
+class FindFloaters: public Level::TileQuadtree::OurVisitor { 
+public:
+    FindFloaters(){
+    }
+    virtual ~FindFloaters(){
+    }
+    virtual bool Visit(Tile *pTile, const Level::TileQuadtree::Node* pNode){
+        m_tiles.push_back(pTile);
+        return true;
+    }
+    std::list<Tile*>::const_iterator begin() const { return m_tiles.begin(); }
+    std::list<Tile*>::const_iterator end() const { return m_tiles.end(); }
+private:
+    std::list<Tile*> m_tiles;
 };
 
 class FindMappableObjects: public Level::MOQuadtree::OurVisitor{
@@ -329,6 +346,7 @@ Level::Level():m_pMonsterRegions(NULL),m_LevelWidth(0),m_LevelHeight(0),m_pScrip
 
 }
 
+
 void Level::Invoke()
 {
     if(m_pHeader)
@@ -464,38 +482,35 @@ void Level::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, 
 
     if(floaters)
     {
-
-        for(std::map<CL_Point,std::list<Tile*> >::iterator f = m_floater_map.begin();
-            f != m_floater_map.end();
+        CL_Point offset(dst.left-src.left,dst.bottom-src.bottom);
+        Quadtree::Geometry::Vector<float> center(src.get_center().x,src.get_center().y);
+        Quadtree::Geometry::Rect<float> rect(center,src.get_width(),src.get_height());
+        FindFloaters finder;
+        m_floater_quadtree->Traverse(finder,rect);
+        for(std::list<Tile*>::const_iterator f = finder.begin();
+            f != finder.end();
             f++)
         {
-
+            Tile * floater = *f;
             // Possible optimization... instead of using is_overlapped, do a couple quick comparisons
-            CL_Rect floaterRect(f->first.x,f->first.y,f->first.x + 32, f->first.y + 32);
+            CL_Rect floaterRect(floater->GetX(),floater->GetY(),floater->GetX() + 32, floater->GetY() + 32);
 
 
             // Is this floater even on screen
-            if(src.is_overlapped( floaterRect))
+            if(src.is_overlapped(floaterRect)){
+                CL_Rect tileSrc(0,0,32,32);
+                CL_Rect tileDst ( exDst.left  + floater->GetX() * 32,
+                                    exDst.top + floater->GetY() * 32,
+                                    exDst.left + floater->GetX() * 32 + 32,
+                                    exDst.top + floater->GetY() * 32 + 32);
 
-                for(std::list<Tile*>::iterator i = f->second.begin();
-                    i != f->second.end();
-                    i++)
+                if(floater->EvaluateCondition())
                 {
-                    CL_Rect tileSrc(0,0,32,32);
-                    CL_Rect tileDst ( exDst.left  + f->first.x * 32,
-                                      exDst.top + f->first.y * 32,
-                                      exDst.left + f->first.x * 32 + 32,
-                                      exDst.top + f->first.y * 32 + 32);
-
-                    Tile * pTile = *i;
-                    if(pTile->EvaluateCondition())
-                    {
-                        pTile->Draw(tileSrc, tileDst , GC );
-
-                    }
-
+                    floater->Draw(tileSrc, tileDst , GC );
 
                 }
+            }
+
         }
 
     }
@@ -957,6 +972,12 @@ void Level::DrawMOQuadtree(CL_GraphicContext gc, const CL_Point& offset) const
         drawer);
 }
 
+void Level::Create_Floater_Quadtree()
+{
+    m_floater_quadtree = new  TileQuadtree(Quadtree::Geometry::Square<float>(Quadtree::Geometry::Vector<float>(m_LevelWidth/2,m_LevelHeight/2),
+                                                                     (m_LevelWidth > m_LevelHeight?m_LevelWidth:m_LevelHeight)));
+}
+
 void Level::AddPathTile ( const CL_Point& pt )
 {
     m_pathPoints.insert(pt);
@@ -1010,6 +1031,7 @@ bool Level::handle_element(Element::eElement element, Element * pElement)
         m_LevelHeight = m_pHeader->GetLevelHeight();
         
         Create_MOQuadtree();
+        Create_Floater_Quadtree();
         
         m_bAllowsRunning = m_pHeader->AllowsRunning();
         m_music = m_pHeader->GetMusic();
@@ -1120,8 +1142,12 @@ void Level::Load_Tile ( Tile * tile)
 #ifndef NDEBUG
         std::cout << "Placing floater at: " << point.x << ',' << point.y << std::endl;
 #endif
-        m_floater_map[ point ].push_back ( tile );
-        m_floater_map[ point ].sort( &Tile_Sort_Criterion );
+        CL_Rect rect = CL_Rect(point.x*32,point.y*32,(point.x+1)*32,(point.y+1)*32);
+        Quadtree::Geometry::Rect<float> location(
+        Quadtree::Geometry::Vector<float>(rect.get_center().x,rect.get_center().y),
+                                          rect.get_width(),rect.get_height());
+        m_floater_quadtree->Add(location,tile);
+        //m_floater_map[ point ].sort( &Tile_Sort_Criterion );
 
     }
     else
@@ -1143,5 +1169,129 @@ void Level::DeserializeState ( std::istream& in )
 }
 
 
+#ifdef SR2_EDITOR
+
+class MappableObjectXMLWriter: public Level::MOQuadtree::OurVisitor {
+public:
+    MappableObjectXMLWriter(CL_DomElement& parent,CL_DomDocument& doc):m_parent(parent),m_doc(doc){}
+    virtual ~MappableObjectXMLWriter(){}
+    bool Visit(MappableObject* pMO, const Level::MOQuadtree::Node* pNode){
+        MappableObjectElement * pMo = dynamic_cast<MappableObjectElement*>(pMO);
+        if(pMo)
+            m_parent.append_child(pMo->CreateDomElement(m_doc));
+        return true;
+    }
+private:
+    CL_DomElement& m_parent;
+    CL_DomDocument& m_doc;
+};
 
 
+Level::Level(uint width, uint height):m_pMonsterRegions(NULL),m_LevelWidth(width),m_LevelHeight(height),m_pScript(NULL),
+m_pHeader(NULL),m_player(0,0),m_mo_quadtree(NULL){
+    m_tiles.resize( m_LevelWidth );
+
+    for(uint x=0;x< m_LevelWidth; x++)
+    {
+        m_tiles[x].resize ( m_LevelHeight );
+    }
+}
+
+void Level::GrowLevelTo(uint width, uint height)
+{
+    m_LevelWidth = std::max(width,m_LevelWidth);
+    m_LevelHeight = std::max(height,m_LevelHeight);
+    
+    m_tiles.resize( m_LevelWidth );
+
+    for(uint x=0;x< m_LevelWidth; x++)
+    {
+        m_tiles[x].resize ( m_LevelHeight );
+    }
+}
+
+void Level::AddTile ( Tile* pTile )
+{
+    if(pTile->GetX() >= m_LevelWidth || pTile->GetY() >= m_LevelHeight )
+        return;
+
+    if( pTile->IsFloater())
+    {
+        CL_Rect rect = CL_Rect(pTile->GetX()*32,pTile->GetY()*32,(pTile->GetX()+1)*32,(pTile->GetY()+1)*32);
+        Quadtree::Geometry::Rect<float> location(
+        Quadtree::Geometry::Vector<float>(rect.get_center().x,rect.get_center().y),
+                                          rect.get_width(),rect.get_height());
+        m_floater_quadtree->Add(location,pTile);
+    }
+    else
+    {
+        m_tiles[ pTile->GetX() ][ pTile->GetY()].push_back ( pTile );  
+    }
+
+}
+
+CL_DomElement Level::CreateDomElement(CL_DomDocument& doc) const 
+{
+    CL_DomElement element(doc,"level");
+    element.set_attribute("name",m_name);
+
+    CL_DomElement mappableObjects(doc,"mappableObjects");
+
+    element.append_child( m_pHeader->CreateDomElement(doc) );
+    
+    
+    CL_DomElement tiles(doc,"tiles");
+    for(int x=0;x<m_tiles.size();x++){
+        for(int y=0;y<m_tiles[x].size();y++){
+            for(std::list<Tile*>::const_iterator it = m_tiles[x][y].begin(); it != m_tiles[x][y].end(); it++)
+            {
+                tiles.append_child((*it)->CreateDomElement(doc));
+            }
+        }
+    }
+    
+    FindFloaters finder;
+    m_floater_quadtree->TraverseAll(finder);
+
+    for(std::list<StoneRing::Tile*>::const_iterator jj = finder.begin();
+            jj != finder.end();
+            jj++)
+    {
+        CL_DomElement floaterEl = (*jj)->CreateDomElement(doc);
+        tiles.append_child ( floaterEl );
+    }
+    
+
+    
+    MappableObjectXMLWriter mo_writer(mappableObjects,doc);
+    m_mo_quadtree->TraverseAll(mo_writer);
+    
+    element.append_child(mappableObjects);
+    if(m_pMonsterRegions)
+        element.append_child(m_pMonsterRegions->CreateDomElement(doc));    
+    element.append_child(tiles);
+    
+    return element;
+}
+
+bool Level::WriteXML(const std::string& filename, bool force)const{
+    CL_DomDocument newdoc;
+    CL_File  os;
+
+    if(!force && !os.open(filename,CL_File::create_new,CL_File::access_write)){
+        return false;
+    }else if(force){
+        os.open(filename,CL_File::create_always,CL_File::access_write);
+    }
+
+
+    newdoc.append_child ( CreateDomElement(newdoc) );
+
+    newdoc.save( os, true );
+
+    os.close();
+    
+    return true;
+}
+
+#endif

@@ -79,7 +79,7 @@ namespace StoneRing {
         // In pixels
         void            CalculateEdgePoints(const CL_Point &topleft, Direction dir, std::list<CL_Point> *pList);        
         static int      ConvertDirectionToDirectionBlock(Direction dir);     
-        
+    
     protected:
         enum eFlags 
         { 
@@ -125,7 +125,10 @@ namespace StoneRing {
         virtual bool    EvaluateCondition() const;   
         virtual bool    ProvokeEvents ( Event::eTriggerType trigger );     
         virtual eMovementType  GetMovementType() const { return m_move_type; }
-        virtual eMovementSpeed GetMovementSpeed() const { return m_speed; }        
+        virtual eMovementSpeed GetMovementSpeed() const { return m_speed; }      
+#if SR2_EDITOR
+        CL_DomElement   CreateDomElement(CL_DomDocument&)const;
+#endif            
     protected:
         virtual bool    handle_element(eElement element, Element * pElement );
         virtual void    load_attributes(CL_DomNamedNodeMap attributes);
@@ -136,6 +139,9 @@ namespace StoneRing {
         eMovementSpeed m_speed;
         eMovementType m_move_type;
         NPCNavigator m_navigator;
+#if SR2_EDITOR
+        eSize m_eSize;
+#endif
     };
     
     class MappableObjectDynamic: public MappableObject {

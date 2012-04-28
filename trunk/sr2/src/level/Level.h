@@ -18,8 +18,7 @@
 using std::string;
 
 
-// For the multimap of points
-bool operator < (const CL_Point &p1, const CL_Point &p2);
+
 
 namespace StoneRing {
 
@@ -47,7 +46,9 @@ namespace StoneRing {
         virtual ~DirectionBlock();
         virtual eElement WhichElement() const{ return EDIRECTIONBLOCK; }
         int GetDirectionBlock() const;
-
+#if SR2_EDITOR
+        CL_DomElement CreateDomElement(CL_DomDocument&)const;
+#endif
     protected:
         virtual void load_attributes(CL_DomNamedNodeMap attributes);
 
@@ -67,7 +68,11 @@ namespace StoneRing {
         inline ushort GetMapY() const { return m_Y; }
 
         inline CL_Sprite  GetTileMap() const { return m_sprite; }
-
+#if SR2_EDITOR
+        CL_DomElement CreateDomElement(CL_DomDocument&)const;
+    private:
+        CL_String m_sprite_string;
+#endif
     protected:
         virtual bool handle_element(eElement element, Element * pElement );
         virtual void load_attributes(CL_DomNamedNodeMap attributes);
@@ -107,6 +112,9 @@ namespace StoneRing {
         virtual void Update();
         int GetDirectionBlock() const;
         inline bool IsTile() const { return true; }
+#if SR2_EDITOR
+        CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
+#endif
 
     protected:
         virtual bool handle_element(eElement element, Element * pElement);
@@ -137,6 +145,9 @@ namespace StoneRing {
         bool AllowsRunning() const { return m_bAllowsRunning; }
         eElement WhichElement() const { return ELEVELHEADER; }
         void ExecuteScript() const;
+#if SR2_EDITOR
+        CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
+#endif
     private:
         virtual bool handle_element(eElement element, Element * pElement);
         virtual void load_attributes(CL_DomNamedNodeMap attributes);
@@ -251,13 +262,28 @@ namespace StoneRing {
         void AddPathTile(const CL_Point& pt);
         void ClearPath();
 #endif
+#ifdef SR2_EDITOR
+        Level(uint width, uint height);        
+        void GrowLevelTo(uint width, uint height);
+        void AddTile(Tile * pTile);
+        std::list<Tile*> GetTilesAt(const CL_Point& loc) const;
+
+
+        // Operates on ALL tiles at a location. For finer control, one must operate on the tiles individually.
+        // bOn of true turns the direction block on for the specified direction,
+        // false will turn it off.
+        void SetDirectionBlockAt(uint levelX, uint levelY, eDirectionBlock dir, bool bOn);
+
+        void SetHotAt(uint levelX, uint levelY, bool bHot);        
+        bool WriteXML(const std::string& filename, bool force)const;
+        CL_DomElement CreateDomElement(CL_DomDocument& doc) const;
+#endif
         typedef Quadtree::RootNode<MappableObject*,4,float> MOQuadtree;
+        typedef Quadtree::RootNode<Tile*,4,float> TileQuadtree;
     protected:
         
 
         std::vector<std::vector<std::list<Tile*> > > m_tiles;
-        // Needs to be a multimap
-        std::map<CL_Point, std::list<Tile*> > m_floater_map;
        
         MonsterRegions *m_pMonsterRegions;
 
@@ -290,6 +316,7 @@ namespace StoneRing {
         int Get_Cumulative_Direction_Block_At_Point(const CL_Point &point) const;
         bool Get_Cumulative_Hotness_At_Point(const CL_Point &point) const;
         void Create_MOQuadtree();
+        void Create_Floater_Quadtree();
 
         CL_DomDocument  m_document;
         ScriptElement *m_pScript;
@@ -304,6 +331,7 @@ namespace StoneRing {
         MappablePlayer m_player;
         bool m_bMarkedForDeath;
         MOQuadtree *m_mo_quadtree;
+        TileQuadtree * m_floater_quadtree;
         std::string m_resource_name;
 #ifndef NDEBUG
         struct InteractPoint{

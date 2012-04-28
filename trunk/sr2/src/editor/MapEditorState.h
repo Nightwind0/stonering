@@ -78,6 +78,13 @@ namespace StoneRing {
         int  mod_value(bool shift,bool ctrl,bool alt)const;
         void on_file_open();
         void on_file_new();
+        void on_file_save();
+        void on_file_quit();
+        
+        void on_edit_grow_column();
+        void on_edit_grow_row();
+        void on_edit_grow_column5();
+        void on_edit_grow_row5();
         void on_zoom_changed();
         bool on_mouse_moved(const CL_InputEvent&);
         bool on_mouse_pressed(const CL_InputEvent&);
@@ -97,10 +104,13 @@ namespace StoneRing {
         bool m_bDone;
         // GUI stuff      
         CL_Window * m_pWindow;
-        CL_PopupMenu m_menu;
+        CL_PopupMenu m_file_menu;
+        CL_PopupMenu m_edit_menu;
+        CL_PopupMenu m_grow_submenu;
         CL_MenuBar * m_pMenuBar;
         CL_PushButton* m_pButton;
         CL_Slider* m_pZoomSlider;
+   
         MapComponent* m_pMap;
         int m_mod_state;
         CL_Point m_drag_start;

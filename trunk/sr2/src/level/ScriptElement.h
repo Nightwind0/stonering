@@ -29,13 +29,16 @@ namespace StoneRing{
         SteelType ExecuteScript(const ParameterList &params);
 
         bool IsConditionScript() const { return m_bIsCondition; }
+#if SR2_EDITOR
+        CL_DomElement CreateDomElement(CL_DomDocument&)const;
+        std::string m_script;        
+#endif
     protected:
         virtual void load_attributes(CL_DomNamedNodeMap);
         virtual void handle_text(const std::string &);
         AstScript * mp_script;
         std::string m_id;
         bool m_bIsCondition;
-
     };
 }
 

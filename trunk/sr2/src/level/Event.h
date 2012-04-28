@@ -20,6 +20,9 @@ namespace StoneRing{
         inline bool Remember();
         bool Invoke();
         bool Invoke(const ParameterList& params);
+#if SR2_EDITOR
+        CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
+#endif
     protected:
         virtual bool handle_element(eElement element, Element * pElement );
         virtual void load_attributes(CL_DomNamedNodeMap  attributes);

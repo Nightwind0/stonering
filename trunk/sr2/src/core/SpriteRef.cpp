@@ -1,13 +1,15 @@
 #include "SpriteRef.h"
 #include "GraphicsManager.h"
+#include <ClanLib-2.3/ClanLib/Core/System/cl_platform.h>
 
+namespace StoneRing { 
 
-bool StoneRing::SpriteRef::handle_element(Element::eElement element, Element * pElement)
+bool SpriteRef::handle_element(Element::eElement element, Element * pElement)
 {
     return false;
 }
 
-void StoneRing::SpriteRef::load_attributes(CL_DomNamedNodeMap attributes)
+void SpriteRef::load_attributes(CL_DomNamedNodeMap attributes)
 {
     if(has_attribute("type",attributes))
     {
@@ -29,33 +31,71 @@ void StoneRing::SpriteRef::load_attributes(CL_DomNamedNodeMap attributes)
     m_ref = get_string("ref",attributes);
 }
 
-void StoneRing::SpriteRef::handle_text(const std::string &text)
+void SpriteRef::handle_text(const std::string &text)
 {
 }
 
+std::string SpriteRef::TypeName(SpriteRef::eType type)
+{
+    switch(type){
+        case SPR_STILL:
+            return "still";
+        case SPR_TWO_WAY:
+            return "twoway";
+        case SPR_FOUR_WAY:
+            return "fourway";
+        case SPR_BATTLE_IDLE:
+            return "idle";
+        case SPR_BATTLE_RECOIL:
+            return "recoil";
+        case SPR_BATTLE_WEAK:
+            return "weak";
+        case SPR_BATTLE_ATTACK:
+            return "attack";
+        case SPR_BATTLE_USE:
+            return "use";
+        case SPR_BATTLE_DEAD:
+            return "dead";
+            
+    }
+}
 
-StoneRing::SpriteRef::SpriteRef( ):m_eType(SPR_NONE)
+
+
+SpriteRef::SpriteRef( ):m_eType(SPR_NONE)
 {
 
 }
 
-StoneRing::SpriteRef::~SpriteRef()
+SpriteRef::~SpriteRef()
 {
 }
 
-std::string StoneRing::SpriteRef::GetRef() const
+std::string SpriteRef::GetRef() const
 {
     return m_ref;
 }
 
-StoneRing::SpriteRef::eType
-StoneRing::SpriteRef::GetType() const
+SpriteRef::eType
+SpriteRef::GetType() const
 {
     return m_eType;
 }
 
-CL_Sprite StoneRing::SpriteRef::CreateSprite() const
+CL_Sprite SpriteRef::CreateSprite() const
 {
     return GraphicsManager::CreateSprite( m_ref );
 }
 
+
+#if SR2_EDITOR
+CL_DomElement SpriteRef::CreateDomElement(CL_DomDocument& doc)const
+{
+    CL_DomElement element(doc,"spriteRef");
+    if(m_eType != SPR_NONE)
+        element.set_attribute("type",TypeName(m_eType));
+    element.set_attribute("ref",m_ref);
+    return element;
+}
+#endif
+}

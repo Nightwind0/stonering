@@ -5,6 +5,7 @@
 #include "Ast.h"
 #else
 #include <steel/Ast.h>
+#include <ClanLib-2.3/ClanLib/Core/System/cl_platform.h>
 #endif
 
 
@@ -68,7 +69,27 @@ void ScriptElement::handle_text(const std::string &text)
 {
     IApplication *pApp = IApplication::GetInstance();
     mp_script = pApp->LoadScript(m_id, text);
-    m_id.clear(); // The script will remember it.. I don't want to.
+    //m_id.clear(); // The script will remember it.. I don't want to.
+#if SR2_EDITOR
+    m_script = text;
+#endif
 }
+
+#if SR2_EDITOR
+CL_DomElement ScriptElement::CreateDomElement(CL_DomDocument &doc)const
+{
+    std::string name = "script";
+    if(IsConditionScript()){
+        name = "conditionScript";
+    }
+    CL_DomElement element(doc,name);
+    
+    element.set_attribute("id",m_id);
+    CL_DomCDATASection text(doc,m_script);
+    //text.set_node_value(m_script)
+    element.append_child(text);
+    return element;
+}
+#endif
 
 
