@@ -18,6 +18,9 @@ namespace StoneRing
         int GetColumns() const { return m_nColumns; }
         int GetRows() const { return m_nRows; }
         virtual eElement WhichElement() const { return EMONSTERREF; }
+#if SR2_EDITOR
+        CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
+#endif
     private:
         virtual void load_attributes(CL_DomNamedNodeMap);
         virtual void load_finished();

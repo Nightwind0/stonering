@@ -63,9 +63,11 @@ namespace StoneRing {
         CL_ResourceManager m_resources;
         CL_GUIThemeDefault m_theme;
         CL_CSSDocument m_css_document;
-        CL_GUIWindowManagerSystem m_window_manager;
+        CL_GUIWindowManagerTexture m_window_manager;
         CL_GUIManager m_gui_manager;  
         CL_Window* m_pMainWindow;
+        CL_DisplayWindow m_display_window;
+        float m_latch_vol;
  
         //CL_DisplayWindow* m_subwindow;
     };

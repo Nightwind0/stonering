@@ -50,6 +50,7 @@ public:
     static void         SetMusicMaxVolume(float vol);
     static void         SetSoundVolume(float vol);
     static float        GetSoundVolume();
+    static float        GetMusicVolume();
     static void         PushMusic();
     static void         PopMusic();
 private:

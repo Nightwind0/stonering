@@ -16,7 +16,7 @@
 #include "IApplication.h"
 #include "Level.h"
 
-using StoneRing::Element;
+namespace StoneRing { 
 
 
 template<typename MapType,
@@ -55,59 +55,62 @@ std::string BoolToString( const bool &b)
 // For the multimap of points
 bool operator < (const CL_Point &p1, const CL_Point &p2)
 {
-    uint p1value = (p1.y  *  StoneRing::IApplication::GetInstance()->GetDisplayRect().get_width()) + p1.x;
-    uint p2value = (p2.y  * StoneRing::IApplication::GetInstance()->GetDisplayRect().get_width()) + p2.x;
+    uint p1value = (p1.y  *  IApplication::GetInstance()->GetDisplayRect().get_width()) + p1.x;
+    uint p2value = (p2.y  * IApplication::GetInstance()->GetDisplayRect().get_width()) + p2.x;
 
     return p1value < p2value;
 }
 
 
 
-bool StoneRing::Tilemap::handle_element(Element::eElement element, Element * pElement)
+bool Tilemap::handle_element(Element::eElement element, Element * pElement)
 {
     return false;
 }
 
-void StoneRing::Tilemap::load_attributes(CL_DomNamedNodeMap attributes)
+void Tilemap::load_attributes(CL_DomNamedNodeMap attributes)
 {
     std::string name = get_required_string("mapname",attributes);
     m_sprite = GraphicsManager::GetTileMap(name);
     m_X = get_required_int("mapx",attributes);
     m_Y = get_required_int("mapy",attributes);
+#if SR2_EDITOR
+    m_sprite_string = name;
+#endif
 }
 
 
-StoneRing::Tilemap::Tilemap()
+Tilemap::Tilemap()
 {
 
 
 }
 
-StoneRing::Tilemap::~Tilemap()
+Tilemap::~Tilemap()
 {
 }
 
-StoneRing::Graphic::Graphic()
+Graphic::Graphic()
 {
 }
 
-StoneRing::Graphic::~Graphic()
+Graphic::~Graphic()
 {
 }
 
 
-StoneRing::DirectionBlock::DirectionBlock():m_eDirectionBlock(0)
+DirectionBlock::DirectionBlock():m_eDirectionBlock(0)
 {
 }
 
-StoneRing::DirectionBlock::DirectionBlock(int i )
+DirectionBlock::DirectionBlock(int i )
 {
     m_eDirectionBlock = i;
 }
 
 
 
-void StoneRing::DirectionBlock::load_attributes(CL_DomNamedNodeMap attributes)
+void DirectionBlock::load_attributes(CL_DomNamedNodeMap attributes)
 {
     bool north = get_required_bool("north",attributes);
     bool south = get_required_bool("south",attributes);
@@ -121,22 +124,22 @@ void StoneRing::DirectionBlock::load_attributes(CL_DomNamedNodeMap attributes)
 }
 
 
-StoneRing::DirectionBlock::~DirectionBlock()
+DirectionBlock::~DirectionBlock()
 {
 }
 
-int StoneRing::DirectionBlock::GetDirectionBlock() const
+int DirectionBlock::GetDirectionBlock() const
 {
     return m_eDirectionBlock;
 }
 
 
-StoneRing::Tile::Tile():m_pCondition(NULL),m_pScript(NULL),m_ZOrder(0),cFlags(0)
+Tile::Tile():m_pCondition(NULL),m_pScript(NULL),m_ZOrder(0),cFlags(0)
 {
 }
 
 
-void StoneRing::Tile::load_attributes(CL_DomNamedNodeMap attributes)
+void Tile::load_attributes(CL_DomNamedNodeMap attributes)
 {
     m_X = get_required_int("xpos",attributes);
     m_Y = get_required_int("ypos",attributes);
@@ -154,7 +157,7 @@ void StoneRing::Tile::load_attributes(CL_DomNamedNodeMap attributes)
 }
 
 
-bool StoneRing::Tile::handle_element(Element::eElement element, Element * pElement)
+bool Tile::handle_element(Element::eElement element, Element * pElement)
 {
     switch (element)
     {
@@ -205,19 +208,19 @@ bool StoneRing::Tile::handle_element(Element::eElement element, Element * pEleme
     return true;
 }
 
-void StoneRing::Tile::load_finished()
+void Tile::load_finished()
 {
     if (m_Graphic.asSpriteRef == NULL) throw CL_Exception("Tile didn't have tilemap or sprite ref.");
 }
 
-void StoneRing::Tile::Activate() // Call any attributemodifier
+void Tile::Activate() // Call any attributemodifier
 {
     // Run script
     if (m_pScript)
         m_pScript->ExecuteScript();
 }
 
-StoneRing::Tile::~Tile()
+Tile::~Tile()
 {
     delete m_pScript;
     delete m_pCondition;
@@ -226,7 +229,7 @@ StoneRing::Tile::~Tile()
     else delete m_Graphic.asTilemap;
 }
 
-bool StoneRing::Tile::EvaluateCondition() const
+bool Tile::EvaluateCondition() const
 {
     if ( m_pCondition )
         return m_pCondition->EvaluateCondition();
@@ -234,14 +237,14 @@ bool StoneRing::Tile::EvaluateCondition() const
 }
 
 
-CL_Rect StoneRing::Tile::GetRect() const
+CL_Rect Tile::GetRect() const
 {
     return CL_Rect(m_X , m_Y , m_X + 1, m_Y +1);
 }
 
 
 
-void StoneRing::Tile::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC)
+void Tile::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC)
 {
     // Get the graphic guy
     // Get our tilemap or sprite
@@ -272,12 +275,12 @@ void StoneRing::Tile::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicCon
 
 }
 
-void StoneRing::Tile::Update()
+void Tile::Update()
 {
     if (IsSprite()) m_sprite.update();
 }
 
-int StoneRing::Tile::GetDirectionBlock() const
+int Tile::GetDirectionBlock() const
 {
 
     int block = 0;
@@ -296,7 +299,77 @@ int StoneRing::Tile::GetDirectionBlock() const
 
 
 
+#if SR2_EDITOR
+
+CL_DomElement Tile::CreateDomElement(CL_DomDocument& doc)const
+{
+    CL_DomElement element(doc,"tile");
+
+    element.set_attribute("xpos", IntToString ( m_X ) );
+    element.set_attribute("ypos", IntToString ( m_Y ) );
+    if(m_ZOrder >0 ) element.set_attribute("zorder", IntToString (m_ZOrder ) );
+    if(IsFloater()) element.set_attribute("floater", "true");
+    if(IsHot())     element.set_attribute("hot", "true");
+    if(Pops())      element.set_attribute("pops","true");
+
+    if(IsSprite())
+    {
+        element.append_child(m_Graphic.asSpriteRef->CreateDomElement(doc));
+    }
+    else
+    {
+       element.append_child(m_Graphic.asTilemap->CreateDomElement(doc));
+    }
+
+    if(m_pCondition)
+    {
+        element.append_child(m_pCondition->CreateDomElement(doc));
+    }
+    if( GetDirectionBlock() > 0)
+    {
+        DirectionBlock block( GetDirectionBlock() );
+        CL_DomElement dirEl = block.CreateDomElement(doc);
+
+        element.append_child( dirEl );
+    }
+    
+
+    return element;
+}
 
 
+CL_DomElement DirectionBlock::CreateDomElement(CL_DomDocument& doc)const
+{
+    CL_DomElement element(doc,"directionBlock");
+    element.set_attribute("north", (m_eDirectionBlock & BLK_NORTH )?"true":"false");
+    element.set_attribute("south", (m_eDirectionBlock & BLK_SOUTH)?"true":"false");
+    element.set_attribute("east",  (m_eDirectionBlock & BLK_EAST )?"true":"false" );
+    element.set_attribute("west",  (m_eDirectionBlock & BLK_WEST )?"true":"false" );
 
+    return element;
+}
+
+CL_DomElement Tilemap::CreateDomElement(CL_DomDocument& doc)const
+{
+    CL_DomElement element(doc,"tilemap");
+    element.set_attribute("mapname",m_sprite_string);
+    element.set_attribute("mapx",IntToString(m_X));
+    element.set_attribute("mapy",IntToString(m_Y));
+    return element;
+}
+
+CL_DomElement LevelHeader::CreateDomElement(CL_DomDocument& doc)const
+{
+    CL_DomElement levelHeader(doc,"levelHeader");
+    levelHeader.set_attribute("music", m_music );
+    levelHeader.set_attribute("width", IntToString(m_nLevelWidth) );
+    levelHeader.set_attribute("height", IntToString(m_nLevelHeight) );
+    levelHeader.set_attribute("allowsRunning", m_bAllowsRunning? "true" : "false"); 
+    if(m_pScript){
+        levelHeader.append_child(m_pScript->CreateDomElement(doc));
+    }
+    return levelHeader;
+}
+}
+#endif
 

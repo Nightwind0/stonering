@@ -74,18 +74,65 @@ void MapEditorState::Start()
 
 void MapEditorState::construct_menu()
 {
-    m_menu.insert_item("Open").func_clicked().set(this,&MapEditorState::on_file_open);
-    m_menu.insert_item("New").func_clicked().set(this,&MapEditorState::on_file_new);
-    m_pMenuBar->add_menu("File",m_menu);
+    m_file_menu.clear();
+    m_file_menu.insert_item("Open").func_clicked().set(this,&MapEditorState::on_file_open);
+    m_file_menu.insert_item("New").func_clicked().set(this,&MapEditorState::on_file_new);
+    m_file_menu.insert_item("Save").func_clicked().set(this,&MapEditorState::on_file_save);
+    m_file_menu.insert_separator();
+    m_file_menu.insert_item("Quit").func_clicked().set(this,&MapEditorState::on_file_quit);
+
+    
+    m_edit_menu.clear();
+    m_grow_submenu.clear();
+    CL_PopupMenu add_columns_sub, add_rows_sub;
+    add_columns_sub.insert_item("Add 1").func_clicked().set(this,&MapEditorState::on_edit_grow_column);
+    add_columns_sub.insert_item("Add 5").func_clicked().set(this,&MapEditorState::on_edit_grow_column5);
+    add_rows_sub.insert_item("Add 1").func_clicked().set(this,&MapEditorState::on_edit_grow_row);
+    add_rows_sub.insert_item("Add 5").func_clicked().set(this,&MapEditorState::on_edit_grow_row5);    
+    CL_PopupMenuItem add_columns = m_grow_submenu.insert_item("Add Columns");
+    add_columns.set_submenu(add_columns_sub);
+    CL_PopupMenuItem add_rows = m_grow_submenu.insert_item("Add Rows");
+    add_rows.set_submenu(add_rows_sub);
+    CL_PopupMenuItem grow_item = m_edit_menu.insert_item("Grow");
+    grow_item.set_submenu(m_grow_submenu);
+    m_pMenuBar->add_menu("File",m_file_menu);
+    m_pMenuBar->add_menu("Edit",m_edit_menu);
 }
 
 void MapEditorState::on_file_new()
 {
+    // TODO: Check if they want to save
+    m_pMap->create_level(5,5);
+    m_pMap->request_repaint();
 }
 
 void MapEditorState::on_file_open()
 {
     
+}
+
+void MapEditorState::on_edit_grow_column()
+{
+    m_pMap->get_level().GrowLevelTo(m_pMap->get_level().GetWidth()+1,m_pMap->get_level().GetHeight());
+    m_pMap->request_repaint();
+}
+
+void MapEditorState::on_edit_grow_column5()
+{    
+    m_pMap->get_level().GrowLevelTo(m_pMap->get_level().GetWidth()+5,m_pMap->get_level().GetHeight());
+    m_pMap->request_repaint();    
+}
+
+void MapEditorState::on_edit_grow_row()
+{
+    m_pMap->get_level().GrowLevelTo(m_pMap->get_level().GetWidth(),m_pMap->get_level().GetHeight()+1);
+    m_pMap->request_repaint();    
+}
+
+void MapEditorState::on_edit_grow_row5()
+{
+    m_pMap->get_level().GrowLevelTo(m_pMap->get_level().GetWidth(),m_pMap->get_level().GetHeight()+5);
+    m_pMap->request_repaint();    
 }
 
 void MapEditorState::on_zoom_changed()
@@ -106,6 +153,18 @@ void MapEditorState::on_button_clicked(CL_PushButton* pButton){
     }
     large = !large;
     m_pMap->request_repaint();
+}
+
+void MapEditorState::on_file_save()
+{
+    CL_SaveFileDialog dialog(m_pWindow);
+    dialog.show();
+    m_pMap->get_level().WriteXML("junk.xml",false);
+}
+
+void MapEditorState::on_file_quit()
+{
+    on_close(m_pWindow);
 }
 
 bool MapEditorState::on_close(CL_Window* pWindow){  
@@ -196,8 +255,10 @@ void MapEditorState::update_drag(const CL_Point& start,const CL_Point& prev, con
     if(mod == 0 &&  button == MOUSE_LEFT){
         // Pan
         CL_Pointf delta = CL_Pointf(point.x,point.y) - CL_Pointf(prev.x,prev.y);
-        delta *= 1.0f/m_pMap->get_scale();
-        m_pMap->set_origin(m_pMap->get_origin() - CL_Point(delta.x,delta.y));
+        //delta *= m_pMap->get_scale();
+        CL_Point map_offset = m_pMap->get_geometry().get_top_left();
+        CL_Point level = m_pMap->screen_to_level(point-map_offset,m_pMap->get_geometry().get_center()-map_offset);
+        m_pMap->set_origin(m_pMap->get_origin() + CL_Point(delta.x,delta.y));
         m_pMap->request_repaint();
     }else{
         // invoke on current tool

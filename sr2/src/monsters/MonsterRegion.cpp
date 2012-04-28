@@ -142,3 +142,31 @@ void MonsterRegions::load_finished()
 {
 }
 
+#if SR2_EDITOR
+CL_DomElement MonsterRegion::CreateDomElement(CL_DomDocument& doc)const
+{
+    CL_DomElement element(doc,"monsterRegion");
+    element.set_attribute("levelX",IntToString(m_LevelX));
+    element.set_attribute("levelY",IntToString(m_LevelY));
+    element.set_attribute("width",IntToString(m_Width));
+    element.set_attribute("height",IntToString(m_Height));
+    element.set_attribute("backdrop",m_backdrop);
+    element.set_attribute("encounterRate",FloatToString(m_encounter_rate));
+
+    for(std::list<MonsterGroup*>::const_iterator it = m_monster_groups.begin();
+        it != m_monster_groups.end(); it++) {
+            element.append_child((*it)->CreateDomElement(doc));
+    }
+    return element;
+}
+CL_DomElement MonsterRegions::CreateDomElement(CL_DomDocument &doc)const
+{
+    CL_DomElement element(doc,"monsterRegions");
+    for(std::list<MonsterRegion*>::const_iterator it = m_monster_regions.begin();
+        it != m_monster_regions.end(); it++){
+        element.append_child((*it)->CreateDomElement(doc));
+    }
+    return element;
+}
+#endif
+

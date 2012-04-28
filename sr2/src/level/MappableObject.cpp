@@ -5,6 +5,8 @@
 #include "SpriteRef.h"
 #include "Party.h"
 #include <ClanLib/core.h>
+#include <ClanLib-2.3/ClanLib/Core/System/cl_platform.h>
+
 
 
 
@@ -730,6 +732,105 @@ void MappablePlayer::DeserializeState ( std::istream& in )
 {
     in.read((char*)&m_pos,sizeof(m_pos));
 }
+
+#if SR2_EDITOR
+CL_DomElement MappableObjectElement::CreateDomElement(CL_DomDocument& doc)const
+{
+    CL_DomElement element(doc,"mo");
+    element.set_attribute( "name", m_name );
+    
+    std::string motype;
+    std::string speed;
+    std::string movetype;
+
+
+    std::string size;
+    size += m_size.width + 'x' + m_size.height;
+
+
+    switch ( m_eType )
+    {
+    case NPC:
+        motype = "npc";
+        break;
+    case SQUARE:
+        motype = "square";
+        break;
+    case CONTAINER:
+        motype = "container";
+        break;
+    case DOOR:
+        motype = "door";
+        break;
+    case WARP:
+        motype = "warp";
+        break;
+    }
+    
+    switch(m_speed)
+    {
+        case SLOW:
+            speed = "slow";
+            break;
+        case MEDIUM:
+            speed = "medium";
+            break;
+        case FAST:
+            speed = "fast";
+            break;
+    }
+    
+    switch(m_move_type)
+    {
+        case MOVEMENT_NONE:
+            movetype = "none";
+            break;
+        case MOVEMENT_PACE_EW:
+            movetype = "paceEW";
+            break;
+        case MOVEMENT_PACE_NS:
+            movetype = "paceNS";
+            break;
+        case MOVEMENT_WANDER:
+            movetype = "wander";
+            break;
+        case MOVEMENT_SCRIPT:
+            movetype = "script";
+            break;
+    }
+
+    element.set_attribute("movementType",movetype);
+    element.set_attribute("speed",speed);
+    element.set_attribute("size", size);
+    element.set_attribute("type", motype );
+    element.set_attribute("xpos", IntToString(m_StartX) );
+    element.set_attribute("ypos", IntToString(m_StartY) );
+ 
+
+    if(IsSolid()) element.set_attribute("solid", "true" );
+
+    if(m_cFlags & TILEMAP){
+        element.append_child(m_graphic.asTilemap->CreateDomElement(doc));
+    }
+
+    if(IsSprite()){
+        element.append_child(m_graphic.asSpriteRef->CreateDomElement(doc));
+    }
+
+    if(m_pCondition){
+        element.append_child(m_pCondition->CreateDomElement(doc));
+    }
+
+    for(std::list<StoneRing::Event*>::const_iterator h = m_events.begin();
+        h != m_events.end(); h++) {
+        element.append_child((*h)->CreateDomElement(doc));
+    }
+
+
+    return element;  
+}
+#endif
+
 
 
 } // namespace StoneRing

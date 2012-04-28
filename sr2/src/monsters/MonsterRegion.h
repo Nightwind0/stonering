@@ -25,6 +25,9 @@ namespace StoneRing
             int GetHeight() const {return m_Height;}
             float GetEncounterRate() const {return m_encounter_rate;}
             std::string GetBackdrop() const { return m_backdrop; }
+#if SR2_EDITOR
+            CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
+#endif
         private:
             virtual bool handle_element(eElement, Element * );
             virtual void load_attributes(CL_DomNamedNodeMap);
@@ -50,6 +53,9 @@ namespace StoneRing
         MonsterRegion * GetApplicableRegion(uint levelx, uint levely) const ;
 
         virtual eElement WhichElement() const { return EMONSTERREGIONS; }
+#if SR2_EDITOR
+        CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
+#endif
     private:
         virtual bool handle_element(eElement, Element * );
         virtual void load_finished();

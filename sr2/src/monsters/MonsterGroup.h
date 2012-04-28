@@ -19,6 +19,9 @@ namespace StoneRing{
         int GetCellColumns() const { return m_nCellCols; }
         int GetCellRows() const { return m_nCellRows; }
         const std::vector<MonsterRef*> & GetMonsters() const { return m_monsters; }
+#if SR2_EDITOR
+        CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
+#endif
     private:
         virtual bool handle_element(eElement, Element * );
         virtual void load_attributes(CL_DomNamedNodeMap);
