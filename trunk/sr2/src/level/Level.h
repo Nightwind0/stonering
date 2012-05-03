@@ -255,6 +255,7 @@ namespace StoneRing {
         void FreezeMappableObjects();
         void UnfreezeMappableObjects();
         MappableObject* GetMappableObjectByName(const std::string& name) const;
+        void LoadFromFile(const std::string &path);        
 #ifndef NDEBUG
         void DumpMappableObjects() const;
         void DrawMOQuadtree(CL_GraphicContext gc, const CL_Point& offset) const;
@@ -276,6 +277,8 @@ namespace StoneRing {
 
         void SetHotAt(uint levelX, uint levelY, bool bHot);        
         bool WriteXML(const std::string& filename, bool force)const;
+        void resize_mo_quadtree();
+        void resize_floater_quadtree();
         CL_DomElement CreateDomElement(CL_DomDocument& doc) const;
 #endif
         typedef Quadtree::RootNode<MappableObject*,4,float> MOQuadtree;
@@ -291,7 +294,7 @@ namespace StoneRing {
         virtual bool handle_element(eElement element, Element * pElement);
         virtual void load_attributes(CL_DomNamedNodeMap attributes);
         virtual void load_finished();
-        void load_from_file(const std::string &path);
+
 
         // MO related operations
         bool Contains_Mappable_Objects(const CL_Point &point) const;

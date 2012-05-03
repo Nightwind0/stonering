@@ -215,7 +215,9 @@ stonering_SOURCES =	src/Application.cpp \
 			src/editor/MapEditorState.h \
 			src/editor/MapEditorState.cpp \
 			src/editor/MapComponent.cpp \
-			src/editor/MapComponent.h
+			src/editor/MapComponent.h \
+			src/editor/Operation.h \
+			src/editor/Operation.cpp
 
 
 

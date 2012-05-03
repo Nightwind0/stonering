@@ -38,10 +38,12 @@ public:
     float get_scale()const{return m_scale;}
     void load_level(const std::string& name);    
     void create_level(uint width, uint height);
+    void close_level();
+    void writeXML(const std::string&);
     CL_Size get_draw_size()const;
     CL_Point screen_to_level(const CL_Point& screen, const CL_Point& screen_center)const;
     CL_Point level_to_screen(const CL_Point& level, const CL_Point& screen_center)const;
-    Level& get_level() { return *m_pLevel; }
+    shared_ptr<Level> get_level() { return m_pLevel; }
 private:
     void on_render(CL_GraphicContext &gc, const CL_Rect &clip_rect);
     void on_process_message(CL_GUIMessage &message);
