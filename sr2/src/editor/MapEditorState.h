@@ -23,6 +23,7 @@
 #include "EditorState.h"
 #include <ClanLib/gui.h>
 #include "MapComponent.h"
+#include "Callback.h"
 
 #if SR2_EDITOR
 
@@ -30,11 +31,15 @@ class CL_DisplayWindow;
 
 namespace StoneRing { 
 
+    class Operation;
+    
     class MapEditorState : public EditorState
     {
     public:
         MapEditorState();
         virtual ~MapEditorState();
+        template <class T>
+        void SetDoubleClickOperation(Callback<Operation*>* callback);
         virtual void Init(CL_DisplayWindow & window);
         virtual void HandleButtonUp(const IApplication::Button& button);
         virtual void HandleButtonDown(const IApplication::Button& button);
@@ -77,6 +82,7 @@ namespace StoneRing {
         
         int  mod_value(bool shift,bool ctrl,bool alt)const;
         void on_file_open();
+        void on_file_close();
         void on_file_new();
         void on_file_save();
         void on_file_quit();
@@ -115,6 +121,7 @@ namespace StoneRing {
         int m_mod_state;
         CL_Point m_drag_start;
         CL_Point m_last_drag_point;
+        Callback<Operation*>* m_dbl_clk_functor;
         //CL_DisplayWindow* m_subwindow;
     };
 

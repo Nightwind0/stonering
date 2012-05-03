@@ -745,7 +745,7 @@ CL_DomElement MappableObjectElement::CreateDomElement(CL_DomDocument& doc)const
 
 
     std::string size;
-    size += m_size.width + 'x' + m_size.height;
+    size += IntToString(m_size.width) + 'x' + IntToString(m_size.height);
 
 
     switch ( m_eType )

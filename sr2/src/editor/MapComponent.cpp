@@ -39,14 +39,23 @@ void MapComponent::create_level ( uint width, uint height )
 {
     m_pLevel.reset(new Level(width,height));
     m_origin = CL_Point(0,0);
+    request_repaint();
+}
+
+void MapComponent::close_level()
+{
+    m_pLevel = shared_ptr<Level>();
+    m_origin = CL_Point(0,0);
+    request_repaint();
 }
 
 
 void MapComponent::load_level ( const std::string& name )
 {
    m_pLevel.reset(new Level());
-   m_pLevel->Load ( name, IApplication::GetInstance()->GetResources() );
+   m_pLevel->LoadFromFile ( name );
    m_origin = CL_Point(0,0);
+   request_repaint();
    //m_pLevel->Invoke();
 }
 
@@ -136,6 +145,14 @@ CL_Pointf MapComponent::to_float(const CL_Point& pt) const
 CL_Size MapComponent::get_draw_size() const
 {
     return CL_Size(m_pLevel->GetWidth() * 32 * m_scale,m_pLevel->GetHeight() * 32 * m_scale);
+}
+
+
+void MapComponent::writeXML ( const std::string& filename)
+{
+    if(m_pLevel){
+        m_pLevel->WriteXML(filename,true);
+    }
 }
 
 

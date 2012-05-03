@@ -68,8 +68,6 @@ void MapEditorState::Start()
     construct_menu();    
     
     m_mouse_state = MOUSE_IDLE;
-    
-    m_pMap->load_level("examplelevel");
 }
 
 void MapEditorState::construct_menu()
@@ -78,8 +76,6 @@ void MapEditorState::construct_menu()
     m_file_menu.insert_item("Open").func_clicked().set(this,&MapEditorState::on_file_open);
     m_file_menu.insert_item("New").func_clicked().set(this,&MapEditorState::on_file_new);
     m_file_menu.insert_item("Save").func_clicked().set(this,&MapEditorState::on_file_save);
-    m_file_menu.insert_separator();
-    m_file_menu.insert_item("Quit").func_clicked().set(this,&MapEditorState::on_file_quit);
 
     
     m_edit_menu.clear();
@@ -94,9 +90,18 @@ void MapEditorState::construct_menu()
     CL_PopupMenuItem add_rows = m_grow_submenu.insert_item("Add Rows");
     add_rows.set_submenu(add_rows_sub);
     CL_PopupMenuItem grow_item = m_edit_menu.insert_item("Grow");
+    m_file_menu.insert_separator();
+    m_file_menu.insert_item("Close").func_clicked().set(this,&MapEditorState::on_file_close);
+    m_file_menu.insert_separator();
+    m_file_menu.insert_item("Quit").func_clicked().set(this,&MapEditorState::on_file_quit);    
     grow_item.set_submenu(m_grow_submenu);
     m_pMenuBar->add_menu("File",m_file_menu);
     m_pMenuBar->add_menu("Edit",m_edit_menu);
+}
+
+void MapEditorState::on_file_close()
+{
+    m_pMap->close_level();
 }
 
 void MapEditorState::on_file_new()
@@ -108,31 +113,45 @@ void MapEditorState::on_file_new()
 
 void MapEditorState::on_file_open()
 {
-    
+    CL_OpenFileDialog dialog(m_pWindow);
+  //  dialog.set_geometry(CL_Rect(0,0,400,400);
+    dialog.set_title("Open Level");
+    if(dialog.show()){
+        std::string name = dialog.get_filename();
+        m_pMap->load_level(name);
+    }
 }
 
 void MapEditorState::on_edit_grow_column()
 {
-    m_pMap->get_level().GrowLevelTo(m_pMap->get_level().GetWidth()+1,m_pMap->get_level().GetHeight());
-    m_pMap->request_repaint();
+    if(m_pMap->get_level()){
+        m_pMap->get_level()->GrowLevelTo(m_pMap->get_level()->GetWidth()+1,m_pMap->get_level()->GetHeight());
+        m_pMap->request_repaint();
+    }
 }
 
 void MapEditorState::on_edit_grow_column5()
 {    
-    m_pMap->get_level().GrowLevelTo(m_pMap->get_level().GetWidth()+5,m_pMap->get_level().GetHeight());
-    m_pMap->request_repaint();    
+    if(m_pMap->get_level()){
+        m_pMap->get_level()->GrowLevelTo(m_pMap->get_level()->GetWidth()+5,m_pMap->get_level()->GetHeight());
+        m_pMap->request_repaint();    
+    }
 }
 
 void MapEditorState::on_edit_grow_row()
 {
-    m_pMap->get_level().GrowLevelTo(m_pMap->get_level().GetWidth(),m_pMap->get_level().GetHeight()+1);
-    m_pMap->request_repaint();    
+    if(m_pMap->get_level()){
+        m_pMap->get_level()->GrowLevelTo(m_pMap->get_level()->GetWidth(),m_pMap->get_level()->GetHeight()+1);
+        m_pMap->request_repaint();    
+    }
 }
 
 void MapEditorState::on_edit_grow_row5()
 {
-    m_pMap->get_level().GrowLevelTo(m_pMap->get_level().GetWidth(),m_pMap->get_level().GetHeight()+5);
-    m_pMap->request_repaint();    
+    if(m_pMap->get_level()){
+        m_pMap->get_level()->GrowLevelTo(m_pMap->get_level()->GetWidth(),m_pMap->get_level()->GetHeight()+5);
+        m_pMap->request_repaint();    
+    }
 }
 
 void MapEditorState::on_zoom_changed()
@@ -158,8 +177,12 @@ void MapEditorState::on_button_clicked(CL_PushButton* pButton){
 void MapEditorState::on_file_save()
 {
     CL_SaveFileDialog dialog(m_pWindow);
-    dialog.show();
-    m_pMap->get_level().WriteXML("junk.xml",false);
+  //  dialog.set_geometry(CL_Rect(0,0,400,400);
+    dialog.set_title("Save Level");
+    if(dialog.show()){
+        std::string name = dialog.get_filename();
+        m_pMap->writeXML(name);
+    }
 }
 
 void MapEditorState::on_file_quit()

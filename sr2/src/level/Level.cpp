@@ -341,7 +341,7 @@ void LevelHeader::load_attributes(CL_DomNamedNodeMap attributes)
 
 
 Level::Level():m_pMonsterRegions(NULL),m_LevelWidth(0),m_LevelHeight(0),m_pScript(NULL)
-,m_pHeader(NULL),m_player(0,0),m_mo_quadtree(NULL)
+,m_pHeader(NULL),m_player(0,0),m_mo_quadtree(NULL),m_floater_quadtree(NULL)
 {
 
 }
@@ -410,6 +410,8 @@ Level::~Level()
         }
 
     }
+    delete m_mo_quadtree;
+    delete m_floater_quadtree;
 }
 
 int Level::Get_Cumulative_Direction_Block_At_Point(const CL_Point &point) const
@@ -1000,7 +1002,7 @@ bool Level::Tile_Sort_Criterion ( const Tile * p1, const Tile * p2)
     return p1->GetZOrder() < p2->GetZOrder();
 }
 
-void Level::load_from_file(const std::string &filename)
+void Level::LoadFromFile(const std::string &filename)
 {
     CL_DomDocument doc;
     CL_File file(filename);
@@ -1016,7 +1018,7 @@ void Level::Load(const std::string &name, CL_ResourceManager& resources)
     std::string filename = CL_String_load("Levels/" + name, resources);
 
     m_resource_name = name;
-    load_from_file(path + filename);
+    LoadFromFile(path + filename);
 }
 
 bool Level::handle_element(Element::eElement element, Element * pElement)
@@ -1195,6 +1197,9 @@ m_pHeader(NULL),m_player(0,0),m_mo_quadtree(NULL){
     {
         m_tiles[x].resize ( m_LevelHeight );
     }
+    
+    Create_MOQuadtree();
+    Create_Floater_Quadtree();
 }
 
 void Level::GrowLevelTo(uint width, uint height)
@@ -1208,6 +1213,9 @@ void Level::GrowLevelTo(uint width, uint height)
     {
         m_tiles[x].resize ( m_LevelHeight );
     }
+    
+    resize_mo_quadtree();
+    resize_floater_quadtree();
 }
 
 void Level::AddTile ( Tile* pTile )
@@ -1230,15 +1238,49 @@ void Level::AddTile ( Tile* pTile )
 
 }
 
+void Level::resize_mo_quadtree()
+{
+    FindMappableObjects finder;
+    m_mo_quadtree->TraverseAll(finder);
+    
+    Create_MOQuadtree();
+    
+    for(std::list<MappableObject*>::const_iterator it = finder.begin();
+        it != finder.end(); it++){
+        AddMappableObject(*it);
+    }
+}
+
+void Level::resize_floater_quadtree()
+{
+   FindFloaters finder;
+   m_floater_quadtree->TraverseAll(finder);
+   
+   Create_Floater_Quadtree();
+   
+   for(std::list<Tile*>::const_iterator it = finder.begin();
+       it != finder.end(); it++){
+       AddTile(*it);
+   }
+}
+
 CL_DomElement Level::CreateDomElement(CL_DomDocument& doc) const 
 {
     CL_DomElement element(doc,"level");
     element.set_attribute("name",m_name);
 
     CL_DomElement mappableObjects(doc,"mappableObjects");
-
-    element.append_child( m_pHeader->CreateDomElement(doc) );
     
+    if(!m_pHeader){
+        CL_DomElement levelHeader(doc,"levelHeader");
+        levelHeader.set_attribute("width",IntToString(m_LevelWidth));
+        levelHeader.set_attribute("height",IntToString(m_LevelHeight));
+        levelHeader.set_attribute("music",m_music);
+        levelHeader.set_attribute("allowsRunning",m_bAllowsRunning?"true":"false");
+        element.append_child(levelHeader);
+    }else{
+        element.append_child( m_pHeader->CreateDomElement(doc) );
+    }
     
     CL_DomElement tiles(doc,"tiles");
     for(int x=0;x<m_tiles.size();x++){
