@@ -18,6 +18,7 @@
 
 
 #include "MapEditorState.h"
+#include "Operation.h"
 #include <cmath>
 #if SR2_EDITOR
 
@@ -51,6 +52,7 @@ void MapEditorState::Start()
     m_pWindow->func_input_released().set(this,&MapEditorState::on_mouse_released);
     m_pWindow->func_focus_gained().set(this,&MapEditorState::on_pointer_entered);
     m_pWindow->func_focus_lost().set(this,&MapEditorState::on_pointer_exit);
+    m_pWindow->func_input_doubleclick().set(this,&MapEditorState::on_mouse_double_click);
 
     m_pZoomSlider = new CL_Slider(m_pWindow);
     m_pZoomSlider->set_geometry(CL_Rect(0,32,10,600));
@@ -67,6 +69,14 @@ void MapEditorState::Start()
     m_pMap->set_geometry(CL_Rect(20,32,800,600));
     construct_menu();    
     
+    CL_GUITopLevelDescription tooldesc;
+    tooldesc.set_title("Tools");
+    tooldesc.set_size(CL_Size(300,400),true);
+    tooldesc.set_tool_window(true);
+    tooldesc.set_decorations(true);
+    m_pToolWindow = new CL_Window(get_gui(),tooldesc);
+    m_pToolWindow->set_draggable(true);
+    //m_pToolWindow->set_geometry(CL_Rect(0,0,300,400));
     m_mouse_state = MOUSE_IDLE;
 }
 
@@ -97,6 +107,12 @@ void MapEditorState::construct_menu()
     grow_item.set_submenu(m_grow_submenu);
     m_pMenuBar->add_menu("File",m_file_menu);
     m_pMenuBar->add_menu("Edit",m_edit_menu);
+    
+    CL_PopupMenu view;
+    view.insert_item_accel("Tools","Ctrl+T").func_clicked().set(this,&MapEditorState::on_view_tools);
+    
+    m_pMenuBar->add_menu("View",view);
+    
 }
 
 void MapEditorState::on_file_close()
@@ -120,6 +136,11 @@ void MapEditorState::on_file_open()
         std::string name = dialog.get_filename();
         m_pMap->load_level(name);
     }
+}
+
+void MapEditorState::on_view_tools()
+{
+    m_pToolWindow->bring_to_front();
 }
 
 void MapEditorState::on_edit_grow_column()
@@ -203,6 +224,10 @@ bool MapEditorState::on_mouse_moved(const CL_InputEvent& event){
             update_drag(m_drag_start,m_last_drag_point,event.mouse_pos,m_drag_button,mod);
             m_last_drag_point = event.mouse_pos;
         }
+    }else if(m_mouse_state == MOUSE_DOWN){
+        if(mod == m_mod_state){
+            m_mouse_state = MOUSE_DRAG;
+        }
     }
 }
 
@@ -210,13 +235,14 @@ bool MapEditorState::on_mouse_pressed(const CL_InputEvent& event){
     if(event.id == CL_MOUSE_RIGHT || event.id == CL_MOUSE_LEFT){
         switch(m_mouse_state){
             case MOUSE_IDLE:
-                m_mouse_state = MOUSE_DRAG;
+                m_mouse_state = MOUSE_DOWN;
                 m_drag_start = event.mouse_pos;
                 m_drag_button = (event.id == CL_MOUSE_LEFT)?MOUSE_LEFT:MOUSE_RIGHT;
                 m_last_drag_point = m_drag_start;
                 m_mod_state = mod_value(event.shift,event.ctrl,event.alt);
                 start_drag(event.mouse_pos,m_drag_button,m_mod_state);
                 break;
+                
             case MOUSE_DRAG:
                 cancel_drag();
                 break;
@@ -246,12 +272,19 @@ bool MapEditorState::on_mouse_released(const CL_InputEvent& event){
                 cancel_drag();
             }
             m_mouse_state = MOUSE_IDLE;
+        }else if(m_mouse_state == MOUSE_DOWN){
+            if(event.type != CL_InputEvent::Type::doubleclick)
+                click(event.mouse_pos,event.id==CL_MOUSE_LEFT?MOUSE_LEFT:MOUSE_RIGHT, mod_value(event.shift,event.ctrl,event.alt));
+            m_mouse_state = MOUSE_IDLE;
         }
     }
     return true;
 }
 
-void MapEditorState::on_mouse_double_click(const CL_InputEvent& event){
+bool MapEditorState::on_mouse_double_click(const CL_InputEvent& event)
+{
+    
+    return true;
 }
 
 bool MapEditorState::on_pointer_entered(){
@@ -272,6 +305,7 @@ void MapEditorState::start_drag(const CL_Point& point, MouseButton button, int m
         // Pan
     }else{
         // invoke on current tool
+
     }
 }
 void MapEditorState::update_drag(const CL_Point& start,const CL_Point& prev, const CL_Point& point, MouseButton button, int mod){
@@ -304,7 +338,35 @@ void MapEditorState::end_drag(const CL_Point& start,const CL_Point& prev, const 
     if(mod == 0 && MOUSE_LEFT){
     }else{
         // current tool
+        int tool = mod | DRAG | button;
+        std::map<int,Operation*>::iterator it = m_operations.find(tool);
+        if(it != m_operations.end()){
+            Operation::Data data;
+            data.m_mod_state = tool;
+            data.m_level_pt = m_pMap->screen_to_level(start,m_pMap->get_geometry().get_center());
+            data.m_level_end_pt = m_pMap->screen_to_level(point,m_pMap->get_geometry().get_center());
+            Operation * op = it->second->clone();
+            op->SetData(data);
+            op->Execute();
+            m_undo_stack.push_front(op);
+        }
     }  
+}
+
+void MapEditorState::click(const CL_Point& point,MouseButton button, int mod)
+{
+    int tool = mod | CLICK | button;
+    std::map<int,Operation*>::iterator it = m_operations.find(tool);
+    if(it != m_operations.end()){
+        Operation::Data data;
+        data.m_mod_state = tool;
+        data.m_level_pt = m_pMap->screen_to_level(point,m_pMap->get_geometry().get_center());
+        data.m_level_end_pt = m_pMap->screen_to_level(point,m_pMap->get_geometry().get_center());
+        Operation * op = it->second->clone();
+        op->SetData(data);
+        op->Execute();
+        m_undo_stack.push_front(op);
+    }
 }
         
 
@@ -337,6 +399,7 @@ void MapEditorState::Finish(){
     delete m_pZoomSlider;
     delete m_pMap;
     delete m_pWindow;
+    delete m_pToolWindow;
  
     EditorState::Finish();
 }

@@ -24,6 +24,7 @@
 #include <ClanLib/gui.h>
 #include "MapComponent.h"
 #include "Callback.h"
+#include <deque>
 
 #if SR2_EDITOR
 
@@ -36,10 +37,18 @@ namespace StoneRing {
     class MapEditorState : public EditorState
     {
     public:
+        enum Modifier {
+            ALT=1,
+            SHIFT=2,
+            CTRL=4,
+            CLICK=8,
+            DOUBLE_CLICK=16,
+            DRAG=32,
+            RIGHT=64 // as opposed to left mouse button
+        };
+        
         MapEditorState();
         virtual ~MapEditorState();
-        template <class T>
-        void SetDoubleClickOperation(Callback<Operation*>* callback);
         virtual void Init(CL_DisplayWindow & window);
         virtual void HandleButtonUp(const IApplication::Button& button);
         virtual void HandleButtonDown(const IApplication::Button& button);
@@ -54,20 +63,18 @@ namespace StoneRing {
         virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
         virtual void Start();
         virtual void Finish(); // Hook to clean up or whatever after being popped     
+        void SetDoubleClickOperation(int mods, Operation*);
+        void SetDragOperation(int mods,Operation*);
+        void SetClickOperation(int mods,Operation*);        
         
         virtual void on_button_clicked(CL_PushButton*);
         virtual bool on_close(CL_Window*);
     private:
         
-        enum Modifier {
-            ALT=1,
-            SHIFT=2,
-            CTRL=4
-        };
         
         enum MouseButton {
-            MOUSE_LEFT,
-            MOUSE_RIGHT
+            MOUSE_LEFT=0,
+            MOUSE_RIGHT=Modifier::RIGHT
         }m_drag_button;
         
         enum Menu {
@@ -87,6 +94,8 @@ namespace StoneRing {
         void on_file_save();
         void on_file_quit();
         
+        void on_view_tools();
+        
         void on_edit_grow_column();
         void on_edit_grow_row();
         void on_edit_grow_column5();
@@ -95,7 +104,7 @@ namespace StoneRing {
         bool on_mouse_moved(const CL_InputEvent&);
         bool on_mouse_pressed(const CL_InputEvent&);
         bool on_mouse_released(const CL_InputEvent&);
-        void on_mouse_double_click(const CL_InputEvent&);
+        bool on_mouse_double_click(const CL_InputEvent&);
         bool on_pointer_entered();
         bool on_pointer_exit();
         
@@ -104,12 +113,13 @@ namespace StoneRing {
         void update_drag(const CL_Point& start,const CL_Point& prev_point,const CL_Point& point,MouseButton button, int mod_state);
         void cancel_drag();
         void end_drag(const CL_Point& start,const CL_Point& prev_point, const CL_Point& point,MouseButton button, int mod_state);
-        
+        void click(const CL_Point& point,MouseButton button, int mod_state);
         
         void construct_menu();
         bool m_bDone;
         // GUI stuff      
         CL_Window * m_pWindow;
+        CL_Window * m_pToolWindow;
         CL_PopupMenu m_file_menu;
         CL_PopupMenu m_edit_menu;
         CL_PopupMenu m_grow_submenu;
@@ -121,7 +131,8 @@ namespace StoneRing {
         int m_mod_state;
         CL_Point m_drag_start;
         CL_Point m_last_drag_point;
-        Callback<Operation*>* m_dbl_clk_functor;
+        std::map<int,Operation*> m_operations;
+        std::deque<Operation*> m_undo_stack;
         //CL_DisplayWindow* m_subwindow;
     };
 
