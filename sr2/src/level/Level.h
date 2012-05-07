@@ -70,6 +70,9 @@ namespace StoneRing {
         inline CL_Sprite  GetTileMap() const { return m_sprite; }
 #if SR2_EDITOR
         CL_DomElement CreateDomElement(CL_DomDocument&)const;
+        void SetTilemap(CL_Sprite sprite,const CL_String& name, ushort X, ushort Y){
+            m_sprite = sprite; m_sprite_string = name; m_X = X; m_Y = Y; 
+        }
     private:
         CL_String m_sprite_string;
 #endif
@@ -114,6 +117,9 @@ namespace StoneRing {
         inline bool IsTile() const { return true; }
 #if SR2_EDITOR
         CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
+        void SetTileMap(Tilemap* pTileMap) { m_Graphic.asTilemap = pTileMap; }
+        void SetPos(ushort x, ushort y) { m_X = x; m_Y = y; }
+        void SetFloater(){ cFlags |= TIL_FLOATER; }  
 #endif
 
     protected:
@@ -267,9 +273,9 @@ namespace StoneRing {
         Level(uint width, uint height);        
         void GrowLevelTo(uint width, uint height);
         void AddTile(Tile * pTile);
+        Tile* PopTileAtPos(const CL_Point& loc);
+        void RemoveFloater(const CL_Point& loc, Tile* pFloater);
         std::list<Tile*> GetTilesAt(const CL_Point& loc) const;
-
-
         // Operates on ALL tiles at a location. For finer control, one must operate on the tiles individually.
         // bOn of true turns the direction block on for the specified direction,
         // false will turn it off.

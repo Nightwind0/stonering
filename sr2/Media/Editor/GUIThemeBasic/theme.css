@@ -1659,6 +1659,7 @@ toolbar
 {
 	bg-color:transparent;
 	text-color:black;
+	bg-image:MenuBarBackgroundActive; 
 }
 
 toolbar.disabled

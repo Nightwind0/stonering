@@ -55,6 +55,7 @@ namespace StoneRing {
     protected:
         //virtual CL_Window* create_main_window()=0;
         void finish();
+        virtual CL_Size get_window_size()const=0;
         CL_GUIManager* get_gui() { return &m_gui_manager; }
     private:
         bool m_bDone;

@@ -121,9 +121,10 @@ void MapComponent::on_render(CL_GraphicContext &gc, const CL_Rect &clip_rect)
     //gc.push_cliprect(clip_rect);
     // Draw a backdrop
    // CL_Draw::fill(gc,get_geometry(),CL_Colorf(0.5f,0.5f,0.5f));
+    gc.push_cliprect(component_to_window_coords(clip_rect));
     if(m_pLevel)
         draw_level(gc,clip_rect);
-    //gc.pop_cliprect();
+    gc.pop_cliprect();
 #endif
 }
 
@@ -173,7 +174,7 @@ CL_Point MapComponent::level_to_screen ( const CL_Point& level, const CL_Point& 
 CL_Point MapComponent::screen_to_level ( const CL_Point& screen, const CL_Point& screen_center ) const
 {
     
-    CL_Pointf v = to_float(screen) - to_float(m_origin);
+    CL_Pointf v = to_float(screen) - to_float(component_to_window_coords(m_origin));
     return CL_Point(v.x/m_scale,v.y/m_scale);
     /*CL_Pointf s = to_float((screen) - (screen_center));
     s -= to_float(m_origin);

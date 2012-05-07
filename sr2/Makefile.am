@@ -217,7 +217,11 @@ stonering_SOURCES =	src/Application.cpp \
 			src/editor/MapComponent.cpp \
 			src/editor/MapComponent.h \
 			src/editor/Operation.h \
-			src/editor/Operation.cpp
+			src/editor/Operation.cpp \
+			src/editor/TileSelectorWindow.cpp \
+			src/editor/TileSelectorWindow.h \
+			src/editor/TileSelector.cpp \
+			src/editor/TileSelector.h
 
 
 

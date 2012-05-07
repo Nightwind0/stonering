@@ -33,6 +33,7 @@ class CL_DisplayWindow;
 namespace StoneRing { 
 
     class Operation;
+    class TileSelectorWindow;
     
     class MapEditorState : public EditorState
     {
@@ -63,14 +64,13 @@ namespace StoneRing {
         virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
         virtual void Start();
         virtual void Finish(); // Hook to clean up or whatever after being popped     
-        void SetDoubleClickOperation(int mods, Operation*);
-        void SetDragOperation(int mods,Operation*);
-        void SetClickOperation(int mods,Operation*);        
+        void SetOperation(int mods,Operation*);        
         
         virtual void on_button_clicked(CL_PushButton*);
-        virtual bool on_close(CL_Window*);
+        virtual void on_close();
     private:
         
+        CL_Size get_window_size()const{ return CL_Size(1024,700); }
         
         enum MouseButton {
             MOUSE_LEFT=0,
@@ -87,6 +87,16 @@ namespace StoneRing {
             MOUSE_DRAG
         }m_mouse_state;
         
+        enum ToolBarItem {
+            ADD_TILE,
+            DELETE_TILE,
+            ADD_OBJECT,
+            DELETE_OBJECT,
+            EDIT_TILE,
+            EDIT_OBJECT,
+            EDIT_LEVEL
+        };
+        
         int  mod_value(bool shift,bool ctrl,bool alt)const;
         void on_file_open();
         void on_file_close();
@@ -94,8 +104,12 @@ namespace StoneRing {
         void on_file_save();
         void on_file_quit();
         
-        void on_view_tools();
+        void on_view_unzoom();
+        void on_view_recenter();
         
+        void on_toolbar_item(CL_ToolBarItem);
+        
+        void on_edit_undo();
         void on_edit_grow_column();
         void on_edit_grow_row();
         void on_edit_grow_column5();
@@ -116,23 +130,25 @@ namespace StoneRing {
         void click(const CL_Point& point,MouseButton button, int mod_state);
         
         void construct_menu();
+        void construct_toolbar();
         bool m_bDone;
         // GUI stuff      
-        CL_Window * m_pWindow;
-        CL_Window * m_pToolWindow;
-        CL_PopupMenu m_file_menu;
-        CL_PopupMenu m_edit_menu;
-        CL_PopupMenu m_grow_submenu;
-        CL_MenuBar * m_pMenuBar;
-        CL_PushButton* m_pButton;
-        CL_Slider* m_pZoomSlider;
+        CL_MainWindow *         m_pWindow;
+        TileSelectorWindow*     m_pTileWindow;
+        CL_PopupMenu            m_file_menu;
+        CL_PopupMenu            m_edit_menu;
+        CL_PopupMenu            m_grow_submenu;
+        CL_MenuBar *            m_pMenuBar;
+        CL_PushButton*          m_pButton;
+        CL_Slider*              m_pZoomSlider;
+        CL_ToolBar*             m_toolbar;
    
-        MapComponent* m_pMap;
-        int m_mod_state;
-        CL_Point m_drag_start;
-        CL_Point m_last_drag_point;
+        MapComponent*           m_pMap;
+        int                     m_mod_state;
+        CL_Point                m_drag_start;
+        CL_Point                m_last_drag_point;
         std::map<int,Operation*> m_operations;
-        std::deque<Operation*> m_undo_stack;
+        std::deque<Operation*>  m_undo_stack;
         //CL_DisplayWindow* m_subwindow;
     };
 

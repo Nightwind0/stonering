@@ -1238,6 +1238,34 @@ void Level::AddTile ( Tile* pTile )
 
 }
 
+Tile* Level::PopTileAtPos(const CL_Point& pos)
+{
+    if(pos.x >= m_LevelWidth || pos.y >= m_LevelHeight )
+        return NULL;
+    
+    if(m_tiles[pos.x][pos.y].empty()) 
+        return NULL;
+    
+    Tile * pTile = m_tiles[pos.x][pos.y].back();
+    m_tiles[pos.x][pos.y].pop_back();
+    return pTile;
+}
+
+std::list<Tile*> Level::GetTilesAt(const CL_Point& pos) const
+{
+    return m_tiles[pos.x][pos.y];
+}
+
+void Level::RemoveFloater(const CL_Point& pos, Tile* pFloater)
+{
+    CL_Rect rect = CL_Rect(pos.x*32,pos.y*32,(pos.x+1)*32,(pos.y+1)*32);
+    Quadtree::Geometry::Rect<float> location(
+    Quadtree::Geometry::Vector<float>(rect.get_center().x,rect.get_center().y),
+                                          rect.get_width(),rect.get_height());
+    m_floater_quadtree->Add(location,pFloater);
+}
+
+
 void Level::resize_mo_quadtree()
 {
     FindMappableObjects finder;

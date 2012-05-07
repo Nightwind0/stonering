@@ -20,6 +20,8 @@
 #include "MapEditorState.h"
 #include "Operation.h"
 #include <cmath>
+#include <vector>
+#include "TileSelectorWindow.h"
 #if SR2_EDITOR
 
 namespace StoneRing {
@@ -43,10 +45,12 @@ void MapEditorState::Start()
 {
     EditorState::Start();
     CL_GUITopLevelDescription desc;
+    CL_Size size = get_window_size();  
     desc.set_title("Map Editor");
-    m_pWindow = new CL_Window(get_gui(), desc);
-    m_pWindow->set_geometry(CL_Rect(0,0,800,600));
-    m_pWindow->func_close().set(this,&MapEditorState::on_close,m_pWindow);
+    desc.set_size(size,true);
+    m_pWindow = new CL_MainWindow(get_gui(), desc);
+    m_pWindow->set_geometry(CL_Rect(CL_Point(0,0),size));
+    m_pWindow->func_close().set(this,&MapEditorState::on_close);
     m_pWindow->func_input_pointer_moved().set(this,&MapEditorState::on_mouse_moved);
     m_pWindow->func_input_pressed().set(this,&MapEditorState::on_mouse_pressed);
     m_pWindow->func_input_released().set(this,&MapEditorState::on_mouse_released);
@@ -55,7 +59,7 @@ void MapEditorState::Start()
     m_pWindow->func_input_doubleclick().set(this,&MapEditorState::on_mouse_double_click);
 
     m_pZoomSlider = new CL_Slider(m_pWindow);
-    m_pZoomSlider->set_geometry(CL_Rect(0,32,10,600));
+    m_pZoomSlider->set_geometry(CL_Rect(0,64,10,size.height));
     m_pZoomSlider->set_vertical(true);
     m_pZoomSlider->set_min(1);
     m_pZoomSlider->set_max(12);
@@ -63,19 +67,30 @@ void MapEditorState::Start()
     //m_pZoomSlider->set_tick_count(15-2);
     //m_pZoomSlider->set_lock_to_ticks(true);
     m_pZoomSlider->func_value_changed().set(this,&MapEditorState::on_zoom_changed);
-    m_pMenuBar = new CL_MenuBar(m_pWindow);
-    m_pMenuBar->set_geometry(CL_Rect(0,0,800,32));
+
     m_pMap = new MapComponent(m_pWindow);
-    m_pMap->set_geometry(CL_Rect(20,32,800,600));
-    construct_menu();    
-    
+    m_pMap->set_geometry(CL_Rect(CL_Point(20,64),size));
+
     CL_GUITopLevelDescription tooldesc;
-    tooldesc.set_title("Tools");
+    tooldesc.set_title("Tiles");
     tooldesc.set_size(CL_Size(300,400),true);
+    tooldesc.set_position(CL_Rect(CL_Point(size.width-300,64),CL_Size(300,400)),true);
     tooldesc.set_tool_window(true);
     tooldesc.set_decorations(true);
-    m_pToolWindow = new CL_Window(get_gui(),tooldesc);
-    m_pToolWindow->set_draggable(true);
+    m_pTileWindow = new TileSelectorWindow(m_pWindow,tooldesc);
+    m_pTileWindow->set_draggable(true);
+    m_pTileWindow->SetMapEditor(this);
+    
+    m_toolbar = new CL_ToolBar(m_pWindow);
+    m_toolbar->set_geometry(CL_Rect(CL_Point(0,32),CL_Size(size.width,36)));
+
+    m_toolbar->func_item_clicked().set(this,&MapEditorState::on_toolbar_item);
+
+    m_pMenuBar = m_pWindow->get_menubar();//new CL_MenuBar(m_pWindow);
+    m_pMenuBar->set_geometry(CL_Rect(0,0,size.width,32));
+  
+    construct_menu();
+    construct_toolbar();
     //m_pToolWindow->set_geometry(CL_Rect(0,0,300,400));
     m_mouse_state = MOUSE_IDLE;
 }
@@ -100,6 +115,8 @@ void MapEditorState::construct_menu()
     CL_PopupMenuItem add_rows = m_grow_submenu.insert_item("Add Rows");
     add_rows.set_submenu(add_rows_sub);
     CL_PopupMenuItem grow_item = m_edit_menu.insert_item("Grow");
+    m_edit_menu.insert_separator();
+    m_edit_menu.insert_item_accel("Undo", "C-z").func_clicked().set(this,&MapEditorState::on_edit_undo);
     m_file_menu.insert_separator();
     m_file_menu.insert_item("Close").func_clicked().set(this,&MapEditorState::on_file_close);
     m_file_menu.insert_separator();
@@ -109,10 +126,34 @@ void MapEditorState::construct_menu()
     m_pMenuBar->add_menu("Edit",m_edit_menu);
     
     CL_PopupMenu view;
-    view.insert_item_accel("Tools","Ctrl+T").func_clicked().set(this,&MapEditorState::on_view_tools);
+    view.insert_item("Unzoom").func_clicked().set(this,&MapEditorState::on_view_unzoom);
+    view.insert_item("Recenter").func_clicked().set(this,&MapEditorState::on_view_recenter);
     
     m_pMenuBar->add_menu("View",view);
     
+}
+
+void MapEditorState::construct_toolbar()
+{
+    struct Tool {
+        std::string icon;
+        std::string name;
+        ToolBarItem item;
+        //bool toggle;
+    };
+    Tool tools[] = {
+        {"Media/Editor/Images/map_add.png","Add Tiles",ADD_TILE},
+        {"Media/Editor/Images/map_delete.png","Erase Tiles",DELETE_TILE},
+        {"Media/Editor/Images/map_edit.png","Edit Tiles",EDIT_TILE},
+        {"Media/Editor/Images/user_add.png", "Add Object",ADD_OBJECT},
+        {"Media/Editor/Images/user_delete.png","Erase Object",DELETE_OBJECT},
+        {"Media/Editor/Images/user_edit.png","Edit Object",EDIT_OBJECT},
+        {"Media/Editor/Images/world_edit.png","Level Data",EDIT_LEVEL}
+    };
+    
+    for(int i=0;i<sizeof(tools)/sizeof(Tool);i++){
+        m_toolbar->insert_item(CL_Sprite(m_pWindow->get_gc(),tools[i].icon),0,tools[i].name).set_id(tools[i].item);
+    }
 }
 
 void MapEditorState::on_file_close()
@@ -138,9 +179,17 @@ void MapEditorState::on_file_open()
     }
 }
 
-void MapEditorState::on_view_tools()
+void MapEditorState::on_view_unzoom()
 {
-    m_pToolWindow->bring_to_front();
+    m_pZoomSlider->set_position(10);
+    on_zoom_changed();
+}
+
+void MapEditorState::on_view_recenter()
+{
+    m_pMap->set_origin(CL_Point(0,0));
+    m_pMap->request_repaint();
+    m_pWindow->request_repaint();
 }
 
 void MapEditorState::on_edit_grow_column()
@@ -175,6 +224,16 @@ void MapEditorState::on_edit_grow_row5()
     }
 }
 
+void MapEditorState::on_edit_undo()
+{
+    if(!m_undo_stack.empty()){
+        Operation * pOp = m_undo_stack.front();
+        m_undo_stack.pop_front();
+        pOp->Undo(m_pMap->get_level());
+        m_pMap->request_repaint();
+    }
+}
+
 void MapEditorState::on_zoom_changed()
 {
     int pos = m_pZoomSlider->get_position();
@@ -182,6 +241,7 @@ void MapEditorState::on_zoom_changed()
     //float zoom = float(pos) / 10.0f;
     m_pMap->set_scale(zoom);
     m_pMap->request_repaint();
+    m_pWindow->request_repaint();
 }
 
 void MapEditorState::on_button_clicked(CL_PushButton* pButton){
@@ -208,11 +268,11 @@ void MapEditorState::on_file_save()
 
 void MapEditorState::on_file_quit()
 {
-    on_close(m_pWindow);
+    on_close();
 }
 
-bool MapEditorState::on_close(CL_Window* pWindow){  
-   return EditorState::on_close(pWindow);
+void MapEditorState::on_close(){  
+   EditorState::on_close(NULL);
 }
 
 bool MapEditorState::on_mouse_moved(const CL_InputEvent& event){
@@ -316,7 +376,7 @@ void MapEditorState::update_drag(const CL_Point& start,const CL_Point& prev, con
         CL_Point map_offset = m_pMap->get_geometry().get_top_left();
         CL_Point level = m_pMap->screen_to_level(point-map_offset,m_pMap->get_geometry().get_center()-map_offset);
         m_pMap->set_origin(m_pMap->get_origin() + CL_Point(delta.x,delta.y));
-        m_pMap->request_repaint();
+        m_pWindow->request_repaint();
     }else{
         // invoke on current tool
     }
@@ -338,35 +398,66 @@ void MapEditorState::end_drag(const CL_Point& start,const CL_Point& prev, const 
     if(mod == 0 && MOUSE_LEFT){
     }else{
         // current tool
-        int tool = mod | DRAG | button;
-        std::map<int,Operation*>::iterator it = m_operations.find(tool);
-        if(it != m_operations.end()){
-            Operation::Data data;
-            data.m_mod_state = tool;
-            data.m_level_pt = m_pMap->screen_to_level(start,m_pMap->get_geometry().get_center());
-            data.m_level_end_pt = m_pMap->screen_to_level(point,m_pMap->get_geometry().get_center());
-            Operation * op = it->second->clone();
-            op->SetData(data);
-            op->Execute();
-            m_undo_stack.push_front(op);
+        if(m_pMap->get_level()){
+            int tool = mod | DRAG | button;
+            std::map<int,Operation*>::iterator it = m_operations.find(tool);
+            if(it != m_operations.end()){
+                Operation::Data data;
+                data.m_mod_state = tool;
+                data.m_level_pt = m_pMap->screen_to_level(start,m_pMap->get_geometry().get_center());
+                data.m_level_end_pt = m_pMap->screen_to_level(point,m_pMap->get_geometry().get_center());
+                Operation * op = it->second->clone();
+                op->SetData(data);
+                if(op->Execute(m_pMap->get_level())){
+                    m_undo_stack.push_front(op);
+                    m_pWindow->request_repaint();
+                }else{
+                    delete op;
+                }
+            }
         }
     }  
 }
 
 void MapEditorState::click(const CL_Point& point,MouseButton button, int mod)
 {
-    int tool = mod | CLICK | button;
-    std::map<int,Operation*>::iterator it = m_operations.find(tool);
-    if(it != m_operations.end()){
-        Operation::Data data;
-        data.m_mod_state = tool;
-        data.m_level_pt = m_pMap->screen_to_level(point,m_pMap->get_geometry().get_center());
-        data.m_level_end_pt = m_pMap->screen_to_level(point,m_pMap->get_geometry().get_center());
-        Operation * op = it->second->clone();
-        op->SetData(data);
-        op->Execute();
-        m_undo_stack.push_front(op);
+    if(m_pMap->get_level()){
+        int tool = mod | CLICK | button;
+        std::map<int,Operation*>::iterator it = m_operations.find(tool);
+        if(it != m_operations.end()){
+            Operation::Data data;
+            data.m_mod_state = tool;
+            data.m_level_pt = m_pMap->screen_to_level(point,m_pMap->get_geometry().get_center());
+            data.m_level_end_pt = data.m_level_pt;
+            Operation * op = it->second->clone();
+            op->SetData(data);
+            if(op->Execute(m_pMap->get_level())){
+                m_undo_stack.push_front(op);
+                m_pWindow->request_repaint();
+            }else{
+                delete op;
+            }
+        }
     }
+}
+
+void MapEditorState::on_toolbar_item(CL_ToolBarItem item)
+{
+    switch(item.get_id()){
+        case ADD_TILE:{
+            CL_Rect rect = m_pTileWindow->get_geometry();
+            m_pTileWindow->bring_to_front();
+            
+            m_pTileWindow->set_geometry(CL_Rect(CL_Point(800-rect.get_width(),64),rect.get_size()));
+            m_pWindow->request_repaint();
+            break;
+        }
+    }
+}
+
+void MapEditorState::SetOperation(int mods, Operation* pOp)
+{
+    m_operations[mods] = pOp;
 }
         
 
@@ -395,11 +486,11 @@ void MapEditorState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC){
 }
 
 void MapEditorState::Finish(){
-    delete m_pMenuBar;
+    //delete m_pMenuBar;
     delete m_pZoomSlider;
     delete m_pMap;
+    delete m_pTileWindow;    
     delete m_pWindow;
-    delete m_pToolWindow;
  
     EditorState::Finish();
 }
