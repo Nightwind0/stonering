@@ -272,6 +272,7 @@ namespace StoneRing {
 #ifdef SR2_EDITOR
         Level(uint width, uint height);        
         void GrowLevelTo(uint width, uint height);
+        bool TilesAt(const CL_Point& loc)const;
         void AddTile(Tile * pTile);
         Tile* PopTileAtPos(const CL_Point& loc);
         void RemoveFloater(const CL_Point& loc, Tile* pFloater);

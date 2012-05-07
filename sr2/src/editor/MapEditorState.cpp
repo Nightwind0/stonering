@@ -25,6 +25,42 @@
 #if SR2_EDITOR
 
 namespace StoneRing {
+    
+    
+    class DeleteTileOperation: public Operation {
+    public:
+        DeleteTileOperation(){}
+        virtual ~DeleteTileOperation(){}
+        virtual Operation* clone(){
+            return new DeleteTileOperation;
+        }
+        virtual bool Execute(shared_ptr<Level> level){
+            if(m_data.m_level_end_pt.x < 0 || m_data.m_level_end_pt.y < 0 ||
+                m_data.m_level_end_pt.x > level->GetWidth() || m_data.m_level_end_pt.y > level->GetHeight()){
+                return false;
+            }
+            if(m_data.m_mod_state & MapEditorState::SHIFT){
+                if(level->TilesAt(m_data.m_level_end_pt)){
+                    m_removed_tiles.push_back(level->PopTileAtPos(m_data.m_level_end_pt));
+                }else{
+                    return false;
+                }
+            }else{
+                m_removed_tiles = level->GetTilesAt(m_data.m_level_end_pt);
+                while(level->PopTileAtPos(m_data.m_level_end_pt));
+            }
+            return true;
+        }
+        virtual void Undo(shared_ptr<Level> level){
+            for(std::list<Tile*>::const_iterator it = m_removed_tiles.begin();
+                it != m_removed_tiles.end(); it++){
+                level->AddTile(*it);
+            }
+        }
+    private:
+        std::list<Tile*> m_removed_tiles;
+    };
+    
 
 MapEditorState::MapEditorState()
 {
@@ -231,6 +267,7 @@ void MapEditorState::on_edit_undo()
         m_undo_stack.pop_front();
         pOp->Undo(m_pMap->get_level());
         m_pMap->request_repaint();
+        delete pOp;
     }
 }
 
@@ -460,6 +497,16 @@ void MapEditorState::on_toolbar_item(CL_ToolBarItem item)
             m_pWindow->request_repaint();
             break;
         }
+        case DELETE_TILE:{
+            static DeleteTileOperation op;
+            static BasicOperationGroup<DeleteTileOperation> group_op;
+            SetOperation(CLICK,&op);
+            SetOperation(CLICK|SHIFT,&op);
+            SetOperation(DRAG,&group_op);
+            SetOperation(DRAG|SHIFT,&group_op);
+            break;
+        }
+        
     }
 }
 

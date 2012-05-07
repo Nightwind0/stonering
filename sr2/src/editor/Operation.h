@@ -62,6 +62,21 @@ protected:
     std::list<Operation*> m_ops;
 };
 
+template <class T>
+class BasicOperationGroup : public OperationGroup {
+public:
+    BasicOperationGroup(){}
+    virtual ~BasicOperationGroup(){}
+    virtual Operation* clone(){
+        return new BasicOperationGroup<T>;
+    }
+protected:
+    virtual Operation* create_suboperation()const{
+        return new T;
+    }
+    
+};
+
 }
 
 #endif // OPERATION_H
