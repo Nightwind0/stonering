@@ -361,15 +361,15 @@ bool MapEditorState::on_pointer_exit(){
 
 void MapEditorState::start_drag(const CL_Point& point, MouseButton button, int mod){
     std::cout << "Start drag " << point.x << ',' << point.y << std::endl;
-    if(mod == 0 && button == MOUSE_LEFT){
+    if(mod == 0 && button == MOUSE_RIGHT){
         // Pan
     }else{
         // invoke on current tool
-
+        m_mod_state = mod;
     }
 }
 void MapEditorState::update_drag(const CL_Point& start,const CL_Point& prev, const CL_Point& point, MouseButton button, int mod){
-    if(mod == 0 &&  button == MOUSE_LEFT){
+    if(mod == 0 && button == MOUSE_RIGHT){
         // Pan
         CL_Pointf delta = CL_Pointf(point.x,point.y) - CL_Pointf(prev.x,prev.y);
         //delta *= m_pMap->get_scale();
@@ -379,33 +379,38 @@ void MapEditorState::update_drag(const CL_Point& start,const CL_Point& prev, con
         m_pWindow->request_repaint();
     }else{
         // invoke on current tool
+        m_pMap->set_rubber_band(CL_Rect(start.x,start.y,point.x,point.y));     
+        m_pWindow->request_repaint();        
     }
 }
 
 void MapEditorState::cancel_drag(){
     m_mouse_state = MOUSE_IDLE;
     std::cout << "Cancel drag" << std::endl;
-    if(m_mod_state == 0){
+    if(m_mod_state == RIGHT){
         // pan
     }else{
         // current tool
+        m_pMap->cancel_rubber_band();
     }
 }
 
 void MapEditorState::end_drag(const CL_Point& start,const CL_Point& prev, const CL_Point& point, MouseButton button, int mod){
     m_mouse_state = MOUSE_IDLE;
     std::cout << "End drag " << std::endl;
-    if(mod == 0 && MOUSE_LEFT){
+    if(mod == 0 && button == MOUSE_RIGHT){
     }else{
         // current tool
         if(m_pMap->get_level()){
-            int tool = mod | DRAG | button;
+            int tool = mod | DRAG;
+            if(button == MOUSE_RIGHT)
+                tool |= RIGHT;
             std::map<int,Operation*>::iterator it = m_operations.find(tool);
             if(it != m_operations.end()){
                 Operation::Data data;
                 data.m_mod_state = tool;
-                data.m_level_pt = m_pMap->screen_to_level(start,m_pMap->get_geometry().get_center());
-                data.m_level_end_pt = m_pMap->screen_to_level(point,m_pMap->get_geometry().get_center());
+                data.m_level_pt = m_pMap->screen_to_level(start,m_pMap->get_geometry().get_center()) / 32;
+                data.m_level_end_pt = m_pMap->screen_to_level(point,m_pMap->get_geometry().get_center()) / 32;
                 Operation * op = it->second->clone();
                 op->SetData(data);
                 if(op->Execute(m_pMap->get_level())){
@@ -416,18 +421,21 @@ void MapEditorState::end_drag(const CL_Point& start,const CL_Point& prev, const 
                 }
             }
         }
+        m_pMap->cancel_rubber_band();
     }  
 }
 
 void MapEditorState::click(const CL_Point& point,MouseButton button, int mod)
 {
     if(m_pMap->get_level()){
-        int tool = mod | CLICK | button;
+        int tool = mod | CLICK;
+        if(button == MOUSE_RIGHT)
+            tool |= RIGHT;
         std::map<int,Operation*>::iterator it = m_operations.find(tool);
         if(it != m_operations.end()){
             Operation::Data data;
             data.m_mod_state = tool;
-            data.m_level_pt = m_pMap->screen_to_level(point,m_pMap->get_geometry().get_center());
+            data.m_level_pt = m_pMap->screen_to_level(point,m_pMap->get_geometry().get_center()) / 32;
             data.m_level_end_pt = data.m_level_pt;
             Operation * op = it->second->clone();
             op->SetData(data);
