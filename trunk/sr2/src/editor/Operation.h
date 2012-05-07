@@ -21,8 +21,11 @@
 #define OPERATION_H
 
 #include <ClanLib/display.h>
+#include "sr_defines.h"
 
 namespace StoneRing {
+    
+    class Level;
 
 class Operation
 {
@@ -30,10 +33,10 @@ public:
     Operation();
     virtual ~Operation();
     enum OperationType {
-        CLICK,
-        DRAG,
-        RUBBER_BAND,
-        DOUBLE_CLICK
+        CLICK=1,
+        DRAG=2,
+        RUBBER_BAND=4,
+        DOUBLE_CLICK=8
     };
     struct Data {
         int      m_mod_state;
@@ -44,9 +47,9 @@ public:
         m_data = data;
     }
     virtual Operation* clone()=0;
-    virtual OperationType Type()const=0;
-    virtual void Execute()=0;
-    virtual void Undo()=0;
+    virtual int Type()const=0;
+    virtual bool Execute(shared_ptr<Level> level)=0;
+    virtual void Undo(shared_ptr<Level> level)=0;
 protected:
     Data m_data;
 };

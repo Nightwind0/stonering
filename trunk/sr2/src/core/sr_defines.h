@@ -215,6 +215,12 @@ bool RectContains(const CL_Rectx<T>& rect, const CL_Vec2<T>& p){
                     && ((p.y >= rect.top && p.y < rect.bottom) || (p.y < rect.top && p.y >= rect.bottom));
 }
 
+#ifndef WIN32
+#include <tr1/memory>
+using std::tr1::shared_ptr;
+#else
+#endif
+
 #endif
 
 

@@ -22,7 +22,6 @@
 
 #include <ClanLib/gui.h>
 #include "Level.h"
-#include <ClanLib-2.3/ClanLib/Core/System/cl_platform.h>
 
 namespace StoneRing { 
 
