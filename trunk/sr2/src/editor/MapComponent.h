@@ -42,18 +42,22 @@ public:
     CL_Size get_draw_size()const;
     CL_Point screen_to_level(const CL_Point& screen, const CL_Point& screen_center)const;
     CL_Point level_to_screen(const CL_Point& level, const CL_Point& screen_center)const;
+    void set_rubber_band(const CL_Rect& rect);
+    void cancel_rubber_band();
     shared_ptr<Level> get_level() { return m_pLevel; }
 private:
     void on_render(CL_GraphicContext &gc, const CL_Rect &clip_rect);
     void on_process_message(CL_GUIMessage &message);
     void draw_grid(CL_GraphicContext&, const CL_Rect&);
     void draw_level(CL_GraphicContext &gc, const CL_Rect &rect);
+    void draw_rubber_band(CL_GraphicContext &gc);
     CL_Point get_center()const;
     CL_Pointf to_float(const CL_Point&)const;
     CL_Point m_origin;
     float m_scale;
     CL_Gradient m_gradient;
-    
+    bool m_show_band;
+    CL_Rect m_rubber_band;
     shared_ptr<Level>  m_pLevel;
 };
 

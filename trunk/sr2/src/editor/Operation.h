@@ -21,6 +21,7 @@
 #define OPERATION_H
 
 #include <ClanLib/display.h>
+#include <list>
 #include "sr_defines.h"
 
 namespace StoneRing {
@@ -32,26 +33,33 @@ class Operation
 public:
     Operation();
     virtual ~Operation();
-    enum OperationType {
-        CLICK=1,
-        DRAG=2,
-        RUBBER_BAND=4,
-        DOUBLE_CLICK=8
-    };
     struct Data {
         int      m_mod_state;
         CL_Point m_level_pt;
         CL_Point m_level_end_pt;
     };
-    void SetData(const Data& data){
+    virtual void SetData(const Data& data){
         m_data = data;
     }
     virtual Operation* clone()=0;
-    virtual int Type()const=0;
     virtual bool Execute(shared_ptr<Level> level)=0;
     virtual void Undo(shared_ptr<Level> level)=0;
 protected:
     Data m_data;
+};
+
+class OperationGroup : public Operation{
+public:
+    OperationGroup();
+    virtual ~OperationGroup();
+    virtual void SetData(const Data& data);
+    virtual bool Execute(shared_ptr<Level> level);
+    virtual void Undo(shared_ptr<Level> level);
+    void AddOperation(const Operation::Data &data);
+protected:
+    virtual Operation* create_suboperation()const=0;
+protected:
+    std::list<Operation*> m_ops;
 };
 
 }

@@ -37,7 +37,6 @@ public:
     public:
         void operator=(const AddTileOperation& other);
         virtual Operation* clone();
-        virtual int Type()const;
         virtual bool Execute(shared_ptr<Level>);
         virtual void Undo(shared_ptr<Level>);      
         void SetPoint(const CL_Point& point) { m_tile_pos = point; }
@@ -49,6 +48,32 @@ public:
         Tile *      m_tile;
         std::list<Tile*> m_removed_tiles;
     };
+    class AddTilesOperation: public OperationGroup {
+    public:
+        AddTilesOperation(){}
+        virtual ~AddTilesOperation(){}
+        void SetPoint(const CL_Point& point) { m_tile_pos = point; }
+        void SetName(const std::string& name) { m_tilemap = name; }
+        Operation* clone() {
+            AddTilesOperation * pOp = new AddTilesOperation;
+            pOp->SetPoint(m_tile_pos);
+            pOp->SetName(m_tilemap);
+            return pOp;
+        }
+        CL_Point GetPoint() const { return m_tile_pos; }        
+    protected:
+        virtual Operation* create_suboperation() const { 
+            AddTileOperation * pOp =  new AddTileOperation;
+            pOp->SetPoint(m_tile_pos);
+            pOp->SetName(m_tilemap);
+            return pOp;
+        }
+    protected:
+        std::string m_tilemap;
+        CL_Point    m_tile_pos;        
+    };
+    
+    
     TileSelector(CL_GUIComponent* parent);
     virtual ~TileSelector();
     CL_Size get_image_size() const { return m_image.get_size(); }
@@ -64,6 +89,7 @@ private:
     CL_Point m_offset;
     std::string m_name;
     AddTileOperation m_op;
+    AddTilesOperation m_group_op;
     MapEditorState* m_state;
     bool m_selection;
 };

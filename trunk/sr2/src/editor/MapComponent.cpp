@@ -28,6 +28,7 @@ m_gradient(CL_Colorf(0.5f,0.5f,0.5f),CL_Colorf(1.0f,1.0f,1.0f),CL_Colorf(1.0f,1.
     func_render().set(this, &MapComponent::on_render);
     func_process_message().set(this, &MapComponent::on_process_message);
     m_scale = 1.0f;
+    m_show_band = false;
 }
 
 MapComponent::~MapComponent()
@@ -90,6 +91,11 @@ void MapComponent::draw_level(CL_GraphicContext &gc, const CL_Rect& screen_rect)
 }
 
 
+void MapComponent::draw_rubber_band(CL_GraphicContext& gc)
+{
+    CL_Draw::fill(gc,m_rubber_band,CL_Colorf(0.0f,1.0f,0.0f,0.6f));
+}
+
 void MapComponent::on_render(CL_GraphicContext &gc, const CL_Rect &clip_rect)
 {
 #if 0 
@@ -124,6 +130,8 @@ void MapComponent::on_render(CL_GraphicContext &gc, const CL_Rect &clip_rect)
     gc.push_cliprect(component_to_window_coords(clip_rect));
     if(m_pLevel)
         draw_level(gc,clip_rect);
+    if(m_show_band)
+        draw_rubber_band(gc);
     gc.pop_cliprect();
 #endif
 }
@@ -181,6 +189,20 @@ CL_Point MapComponent::screen_to_level ( const CL_Point& screen, const CL_Point&
     s *= m_scale;
     s += to_float(get_center());
     return CL_Point(s.x,s.y);*/
+}
+
+void MapComponent::set_rubber_band ( const CL_Rect& rect )
+{
+    m_rubber_band = rect;
+    m_rubber_band.translate(-get_geometry().get_top_left());
+    m_show_band = true;
+}
+
+
+void MapComponent::cancel_rubber_band()
+{
+    m_show_band = false;
+    request_repaint();
 }
 
 

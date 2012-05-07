@@ -41,14 +41,14 @@ Operation* TileSelector::AddTileOperation::clone()
 
 bool TileSelector::AddTileOperation::Execute(shared_ptr<Level>  pLevel)
 {
-    CL_Point tilePos = m_data.m_level_end_pt / 32;
+    CL_Point tilePos = m_data.m_level_end_pt;
     if(tilePos.x >= 0 && tilePos.y >= 0 && tilePos.x < pLevel->GetWidth() 
         && tilePos.y < pLevel->GetHeight()){
         Tile * pTile = new Tile;
         Tilemap * pTilemap =  new Tilemap;
         pTilemap->SetTilemap(GraphicsManager::GetTileMap(m_tilemap),m_tilemap,m_tile_pos.x,m_tile_pos.y);
         pTile->SetTileMap(pTilemap);
-        pTile->SetPos(m_data.m_level_end_pt.x/32,m_data.m_level_end_pt.y/32);
+        pTile->SetPos(m_data.m_level_end_pt.x,m_data.m_level_end_pt.y);
 
         // Shift means add, without it means to replace
         if(m_data.m_mod_state & MapEditorState::SHIFT){
@@ -57,8 +57,8 @@ bool TileSelector::AddTileOperation::Execute(shared_ptr<Level>  pLevel)
             pTile->SetFloater();
             pLevel->AddTile(pTile);
         }else{
-            m_removed_tiles = pLevel->GetTilesAt(m_data.m_level_end_pt/32);
-            while(NULL != pLevel->PopTileAtPos(m_data.m_level_end_pt/32));
+            m_removed_tiles = pLevel->GetTilesAt(m_data.m_level_end_pt);
+            while(NULL != pLevel->PopTileAtPos(m_data.m_level_end_pt));
             pLevel->AddTile(pTile);         
         }
         m_tile = pTile;
@@ -68,21 +68,17 @@ bool TileSelector::AddTileOperation::Execute(shared_ptr<Level>  pLevel)
     }
 }
 
-int TileSelector::AddTileOperation::Type() const
-{
-    return OperationType::CLICK | OperationType::RUBBER_BAND;
-}
 
 void TileSelector::AddTileOperation::Undo(shared_ptr<Level> pLevel)
 {
     if(m_data.m_mod_state & MapEditorState::SHIFT){
-        Tile * pTile = pLevel->PopTileAtPos(m_data.m_level_end_pt/32);
+        Tile * pTile = pLevel->PopTileAtPos(m_data.m_level_end_pt);
         if(pTile) delete pTile;        
     }else if(m_data.m_mod_state & MapEditorState::ALT){
-        pLevel->RemoveFloater(m_data.m_level_end_pt/32,m_tile);       
+        pLevel->RemoveFloater(m_data.m_level_end_pt,m_tile);       
     }else{
         // First, delete the one we just added
-        delete pLevel->PopTileAtPos(m_data.m_level_end_pt/32);
+        delete pLevel->PopTileAtPos(m_data.m_level_end_pt);
         // Then, put everything back
         for(std::list<Tile*>::const_iterator it = m_removed_tiles.begin(); it!= m_removed_tiles.end();
             it++){
@@ -150,9 +146,16 @@ bool TileSelector::on_click(const CL_InputEvent& event)
             pt.y > m_image.get_size().height / 32)){
             m_op.SetPoint(pt);
             m_op.SetName(m_name);
+            m_group_op.SetPoint(pt);
+            m_group_op.SetName(m_name);
+        
             m_state->SetOperation(MapEditorState::CLICK,&m_op);
-            m_state->SetOperation(MapEditorState::DRAG,&m_op);
             m_state->SetOperation(MapEditorState::CLICK | MapEditorState::SHIFT,&m_op); // For adding instead of replacing
+            m_state->SetOperation(MapEditorState::CLICK | MapEditorState::ALT,&m_op); // For adding a floater
+
+            m_state->SetOperation(MapEditorState::DRAG,&m_group_op);
+            m_state->SetOperation(MapEditorState::DRAG | MapEditorState::SHIFT,&m_group_op);
+            m_state->SetOperation(MapEditorState::DRAG | MapEditorState::ALT,&m_group_op);
             m_selection = true;
             request_repaint();
         }
