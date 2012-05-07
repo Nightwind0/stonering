@@ -1256,6 +1256,11 @@ std::list<Tile*> Level::GetTilesAt(const CL_Point& pos) const
     return m_tiles[pos.x][pos.y];
 }
 
+bool Level::TilesAt(const CL_Point& pos) const 
+{
+    return !m_tiles[pos.x][pos.y].empty();
+}
+
 void Level::RemoveFloater(const CL_Point& pos, Tile* pFloater)
 {
     CL_Rect rect = CL_Rect(pos.x*32,pos.y*32,(pos.x+1)*32,(pos.y+1)*32);
@@ -1299,17 +1304,14 @@ CL_DomElement Level::CreateDomElement(CL_DomDocument& doc) const
 
     CL_DomElement mappableObjects(doc,"mappableObjects");
     
-    if(!m_pHeader){
-        CL_DomElement levelHeader(doc,"levelHeader");
-        levelHeader.set_attribute("width",IntToString(m_LevelWidth));
-        levelHeader.set_attribute("height",IntToString(m_LevelHeight));
-        levelHeader.set_attribute("music",m_music);
-        levelHeader.set_attribute("allowsRunning",m_bAllowsRunning?"true":"false");
-        element.append_child(levelHeader);
-    }else{
-        element.append_child( m_pHeader->CreateDomElement(doc) );
-    }
-    
+
+    CL_DomElement levelHeader(doc,"levelHeader");
+    levelHeader.set_attribute("width",IntToString(m_LevelWidth));
+    levelHeader.set_attribute("height",IntToString(m_LevelHeight));
+    levelHeader.set_attribute("music",m_music);
+    levelHeader.set_attribute("allowsRunning",m_bAllowsRunning?"true":"false");
+    element.append_child(levelHeader);
+  
     CL_DomElement tiles(doc,"tiles");
     for(int x=0;x<m_tiles.size();x++){
         for(int y=0;y<m_tiles[x].size();y++){
