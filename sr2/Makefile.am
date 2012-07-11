@@ -221,7 +221,11 @@ stonering_SOURCES =	src/Application.cpp \
 			src/editor/TileSelectorWindow.cpp \
 			src/editor/TileSelectorWindow.h \
 			src/editor/TileSelector.cpp \
-			src/editor/TileSelector.h
+			src/editor/TileSelector.h \
+			src/editor/MOEditWindow.h \
+			src/editor/MOEditWindow.cpp \
+			src/editor/MOView.cpp \
+			src/editor/MOView.h
 
 
 

@@ -24,6 +24,7 @@
 #include <ClanLib/gui.h>
 #include "MapComponent.h"
 #include "Callback.h"
+#include "MOEditWindow.h"
 #include <deque>
 
 #if SR2_EDITOR
@@ -94,7 +95,12 @@ namespace StoneRing {
             DELETE_OBJECT,
             EDIT_TILE,
             EDIT_OBJECT,
-            EDIT_LEVEL
+            EDIT_LEVEL,
+            BLOCK_WEST,
+            BLOCK_NORTH,
+            BLOCK_EAST,
+            BLOCK_SOUTH,
+            HOT
         };
         
         int  mod_value(bool shift,bool ctrl,bool alt)const;
@@ -114,6 +120,8 @@ namespace StoneRing {
         void on_edit_grow_row();
         void on_edit_grow_column5();
         void on_edit_grow_row5();
+        void on_mo_create();
+        void on_mo_place();
         void on_zoom_changed();
         bool on_mouse_moved(const CL_InputEvent&);
         bool on_mouse_pressed(const CL_InputEvent&);
@@ -129,15 +137,18 @@ namespace StoneRing {
         void end_drag(const CL_Point& start,const CL_Point& prev_point, const CL_Point& point,MouseButton button, int mod_state);
         void click(const CL_Point& point,MouseButton button, int mod_state);
         
+        void construct_accels();
         void construct_menu();
         void construct_toolbar();
         bool m_bDone;
         // GUI stuff      
         CL_MainWindow *         m_pWindow;
         TileSelectorWindow*     m_pTileWindow;
+        MOEditWindow*           m_pMOEditWindow;
         CL_PopupMenu            m_file_menu;
         CL_PopupMenu            m_edit_menu;
         CL_PopupMenu            m_grow_submenu;
+        CL_PopupMenu            m_mo_menu;
         CL_MenuBar *            m_pMenuBar;
         CL_PushButton*          m_pButton;
         CL_Slider*              m_pZoomSlider;
@@ -149,6 +160,7 @@ namespace StoneRing {
         CL_Point                m_last_drag_point;
         std::map<int,Operation*> m_operations;
         std::deque<Operation*>  m_undo_stack;
+        CL_AcceleratorTable     m_accels;
         //CL_DisplayWindow* m_subwindow;
     };
 

@@ -71,7 +71,7 @@
                     battle::doTargetedAnimation($pTarget,$Character,getAnimation("recoil"));
                     battle::createDisplay($modDamage,$pTarget,$_DISP_DAMAGE);
                     require("Media/Scripts/functions.steel");
-                    if(math::randf() > 0.8) 
+                    if(math::randf() > 0.2) 
                         tryStatusEffect($pTarget,"Tangled");
                 }else{
                     log("You missed.");

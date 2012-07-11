@@ -67,11 +67,11 @@ CL_Image GraphicsManager::CreateImage ( const std::string& name )
 }
 
 
-CL_Sprite GraphicsManager::CreateSprite ( const std::string & name )
+CL_Sprite GraphicsManager::CreateSprite ( const std::string & name, bool add_category )
 {
     CL_ResourceManager& resources  = IApplication::GetInstance()->GetResources();
 
-    CL_Sprite  sprite(GET_MAIN_GC(),"Sprites/" +  name, &resources);
+    CL_Sprite  sprite(GET_MAIN_GC(), (add_category?"Sprites/":"") +  name, &resources);
     
     CL_Sprite clone;
     clone.clone(sprite); 

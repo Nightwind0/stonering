@@ -450,7 +450,7 @@ bool Level::Get_Cumulative_Hotness_At_Point(const CL_Point &point) const
 
 
 void Level::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, bool floaters,
-                 bool highlightHot, bool indicateBlocks)
+                 bool highlightHot, bool indicateBlocks, bool indicateQuadtree)
 {
     //    int maxSrcX = max( ceil(dst.get_width() / 32.0), mLevelWidth );
     //    int maxSrcY = max( ceil(dst.get_height() / 32.0), mLevelHeight);
@@ -605,7 +605,7 @@ void Level::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, 
 
 
 #ifndef NDEBUG
-    if(indicateBlocks){
+    if(indicateQuadtree){
         DrawMOQuadtree(GC, dst.get_top_left() - src.get_top_left());
     }
 #endif
