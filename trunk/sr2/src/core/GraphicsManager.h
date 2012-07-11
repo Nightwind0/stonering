@@ -56,7 +56,7 @@ namespace StoneRing
 	};
 	static void       initialize();
         static void       SetTheme(const std::string & theme);
-        static CL_Sprite  CreateSprite ( const std::string& name );
+        static CL_Sprite  CreateSprite ( const std::string& name, bool add_category = true );
 	static CL_Image   CreateImage ( const std::string& name );
         static CL_Image   GetOverlay( Overlay overlay );
 

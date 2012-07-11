@@ -54,7 +54,7 @@
                                         playScene(function(){
                                             using "scene";
                                             panTo(-4,-4,1);
-                                            declare $newguy = addSprite("Animals/Cat2",$_SIZE_SMALL,$_MOVE_NSEW,4,4,$_SOUTH);
+                                            declare $newguy = addSprite("Npc/Cat2",$_SIZE_SMALL,$_MOVE_NSEW,4,4,$_SOUTH);
                                             hideObject($newguy);
                                             fadeObject($newguy,true,4.0);
                                             waitFor(moveObject($newguy,20,20,$_MOVE_FAST*3));
@@ -109,7 +109,7 @@
 			</event>
 		</mo>
 		<mo name="Karate Cat" movementType="wander" speed="medium" size="1x1" type="npc" xpos="0" ypos="5" solid="true">
-			<spriteRef type="fourway" ref="Animals/Cat"/>
+			<spriteRef type="fourway" ref="Npc/Cat"/>
 			<event name="CatMeow" triggerType="talk" remember="true">
 				<script id="catmeow">
 					<![CDATA[say($_Name,"Do you want karate?");
@@ -119,7 +119,7 @@
 			</event>
 		</mo>
 		<mo name="Samara" movementType="wander" speed="slow" size="1x1" type="npc" xpos="2" ypos="8" solid="true">
-			<spriteRef type="fourway" ref="Animals/Cat2"/>
+			<spriteRef type="fourway" ref="Npc/Cat2"/>
 			<event name="Cat3Go" triggerType="talk">
 				<conditionScript id="Cat3Go_c">
 					<![CDATA[return hasItem("Octavia Key",1);
@@ -174,7 +174,7 @@
 			</event>
 		</mo>
 		<mo name="Jeremy" movementType="wander" speed="slow" size="2x2" type="npc" xpos="4" ypos="15">
-			<spriteRef type="fourway" ref="Animals/Seagull"/>
+			<spriteRef type="fourway" ref="Npc/Seagull"/>
 		</mo>
 	</mappableObjects>
 	<tiles>

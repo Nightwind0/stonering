@@ -36,7 +36,7 @@ namespace StoneRing {
         }
         virtual bool Execute(shared_ptr<Level> level){
             if(m_data.m_level_end_pt.x < 0 || m_data.m_level_end_pt.y < 0 ||
-                m_data.m_level_end_pt.x > level->GetWidth() || m_data.m_level_end_pt.y > level->GetHeight()){
+                m_data.m_level_end_pt.x >= level->GetWidth() || m_data.m_level_end_pt.y >= level->GetHeight()){
                 return false;
             }
             if(m_data.m_mod_state & MapEditorState::SHIFT){
@@ -60,6 +60,68 @@ namespace StoneRing {
     private:
         std::list<Tile*> m_removed_tiles;
     };
+    
+    
+    class BlockOperation : public Operation {
+    public:
+        BlockOperation(){}
+        virtual ~BlockOperation(){}
+        virtual Operation* clone(){
+            BlockOperation * op = new BlockOperation();
+            op->m_flag = m_flag;
+            return op;
+        }
+        virtual bool Execute(shared_ptr<Level> level){
+            if(m_data.m_level_end_pt.x < 0 || m_data.m_level_end_pt.y < 0 ||
+                m_data.m_level_end_pt.x >= level->GetWidth() || m_data.m_level_end_pt.y >= level->GetHeight()){
+                return false;
+            }
+            std::list<Tile*> tiles = level->GetTilesAt(m_data.m_level_end_pt);
+            if(tiles.empty())
+                return false;
+            if(m_data.m_mod_state & MapEditorState::CTRL){
+                tiles.back()->UnsetFlag(m_flag);
+            }else{
+                tiles.back()->SetFlag(m_flag);
+            }
+            return true;
+        }
+        virtual void Undo(shared_ptr<Level> level){
+            std::list<Tile*> tiles = level->GetTilesAt(m_data.m_level_end_pt);
+            if(m_data.m_mod_state & MapEditorState::CTRL){
+                tiles.back()->SetFlag(m_flag);
+            }else{
+                tiles.back()->UnsetFlag(m_flag);        
+            }
+        }
+        void SetBlock(int flag){
+            m_flag = flag;
+        }
+    private:
+        int m_flag;
+    };
+    
+    class BlockOperations : public OperationGroup {
+    public:
+        BlockOperations(){}
+        virtual ~BlockOperations(){}
+        void SetBlock(int flag){m_flag = flag;}
+        Operation* clone() {
+            BlockOperations * pOP = new BlockOperations;
+            pOP->SetBlock(m_flag);
+            return pOP;
+        }
+    protected:
+        Operation* create_suboperation()const{
+            BlockOperation * op = new BlockOperation;
+            op->SetBlock(m_flag);
+            return op;
+        }
+    private:
+        int m_flag;
+    };
+    
+    
     
 
 MapEditorState::MapEditorState()
@@ -117,6 +179,16 @@ void MapEditorState::Start()
     m_pTileWindow->set_draggable(true);
     m_pTileWindow->SetMapEditor(this);
     
+    CL_GUITopLevelDescription mo_edit_desc;
+    mo_edit_desc.set_title("Create Mappable Object");
+    mo_edit_desc.set_size(CL_Size(400,400),true);
+    mo_edit_desc.set_position(CL_Rect(CL_Point(size.width-400,64),CL_Size(400,400)),true);
+    mo_edit_desc.set_dialog_window(true);
+    mo_edit_desc.set_decorations(true);
+    m_pMOEditWindow = new MOEditWindow(get_gui(), mo_edit_desc);
+    m_pMOEditWindow->set_draggable(true);
+    
+    
     m_toolbar = new CL_ToolBar(m_pWindow);
     m_toolbar->set_geometry(CL_Rect(CL_Point(0,32),CL_Size(size.width,36)));
 
@@ -127,6 +199,8 @@ void MapEditorState::Start()
   
     construct_menu();
     construct_toolbar();
+    construct_accels();
+    get_gui()->set_accelerator_table(m_accels);
     //m_pToolWindow->set_geometry(CL_Rect(0,0,300,400));
     m_mouse_state = MOUSE_IDLE;
 }
@@ -152,7 +226,7 @@ void MapEditorState::construct_menu()
     add_rows.set_submenu(add_rows_sub);
     CL_PopupMenuItem grow_item = m_edit_menu.insert_item("Grow");
     m_edit_menu.insert_separator();
-    m_edit_menu.insert_item_accel("Undo", "C-z").func_clicked().set(this,&MapEditorState::on_edit_undo);
+    m_edit_menu.insert_item_accel("Undo", "Ctrl-Z").func_clicked().set(this,&MapEditorState::on_edit_undo);
     m_file_menu.insert_separator();
     m_file_menu.insert_item("Close").func_clicked().set(this,&MapEditorState::on_file_close);
     m_file_menu.insert_separator();
@@ -165,8 +239,11 @@ void MapEditorState::construct_menu()
     view.insert_item("Unzoom").func_clicked().set(this,&MapEditorState::on_view_unzoom);
     view.insert_item("Recenter").func_clicked().set(this,&MapEditorState::on_view_recenter);
     
-    m_pMenuBar->add_menu("View",view);
+    m_mo_menu.clear();
+    m_mo_menu.insert_item("Create").func_clicked().set(this,&MapEditorState::on_mo_create);
     
+    m_pMenuBar->add_menu("View",view);
+    m_pMenuBar->add_menu("Mappable Objects",m_mo_menu);
 }
 
 void MapEditorState::construct_toolbar()
@@ -184,12 +261,22 @@ void MapEditorState::construct_toolbar()
         {"Media/Editor/Images/user_add.png", "Add Object",ADD_OBJECT},
         {"Media/Editor/Images/user_delete.png","Erase Object",DELETE_OBJECT},
         {"Media/Editor/Images/user_edit.png","Edit Object",EDIT_OBJECT},
-        {"Media/Editor/Images/world_edit.png","Level Data",EDIT_LEVEL}
+        {"Media/Editor/Images/world_edit.png","Level Data",EDIT_LEVEL},
+        {"Media/Editor/Images/block_west.png","",BLOCK_WEST},
+        {"Media/Editor/Images/block_north.png","",BLOCK_NORTH},
+        {"Media/Editor/Images/block_east.png","",BLOCK_EAST},
+        {"Media/Editor/Images/block_south.png","",BLOCK_SOUTH},
+        {"Media/Editor/Images/hot.png","",HOT}
     };
     
     for(int i=0;i<sizeof(tools)/sizeof(Tool);i++){
         m_toolbar->insert_item(CL_Sprite(m_pWindow->get_gc(),tools[i].icon),0,tools[i].name).set_id(tools[i].item);
     }
+}
+
+void MapEditorState::construct_accels()
+{
+
 }
 
 void MapEditorState::on_file_close()
@@ -269,6 +356,12 @@ void MapEditorState::on_edit_undo()
         m_pMap->request_repaint();
         delete pOp;
     }
+}
+
+void MapEditorState::on_mo_create()
+{
+    m_pMOEditWindow->set_visible(true);
+    m_pMOEditWindow->bring_to_front();
 }
 
 void MapEditorState::on_zoom_changed()
@@ -374,6 +467,8 @@ bool MapEditorState::on_mouse_released(const CL_InputEvent& event){
                 click(event.mouse_pos,event.id==CL_MOUSE_LEFT?MOUSE_LEFT:MOUSE_RIGHT, mod_value(event.shift,event.ctrl,event.alt));
             m_mouse_state = MOUSE_IDLE;
         }
+    }else if(event.id == CL_KEY_Z && event.ctrl){
+        on_edit_undo();
     }
     return true;
 }
@@ -488,6 +583,8 @@ void MapEditorState::click(const CL_Point& point,MouseButton button, int mod)
 
 void MapEditorState::on_toolbar_item(CL_ToolBarItem item)
 {
+    static BlockOperation block_op;
+    static BlockOperations block_ops;
     switch(item.get_id()){
         case ADD_TILE:{
             CL_Rect rect = m_pTileWindow->get_geometry();
@@ -504,6 +601,36 @@ void MapEditorState::on_toolbar_item(CL_ToolBarItem item)
             SetOperation(CLICK|SHIFT,&op);
             SetOperation(DRAG,&group_op);
             SetOperation(DRAG|SHIFT,&group_op);
+            break;
+        }
+        case BLOCK_WEST:{
+        case BLOCK_SOUTH:
+        case BLOCK_NORTH:
+        case BLOCK_EAST:
+        case HOT:
+            int flag = Tile::TIL_HOT;
+            if(item.get_id() == BLOCK_WEST)
+                flag = Tile::TIL_BLK_WEST;
+            else if(item.get_id() == BLOCK_EAST)
+                flag = Tile::TIL_BLK_EAST;
+            else if(item.get_id() == BLOCK_SOUTH)
+                flag = Tile::TIL_BLK_SOUTH;
+            else if(item.get_id() == BLOCK_NORTH)
+                flag = Tile::TIL_BLK_NORTH;
+      
+            block_op.SetBlock( flag );
+            block_ops.SetBlock( flag );
+            SetOperation(CLICK,&block_op);
+            SetOperation(CLICK|CTRL,&block_op);
+            SetOperation(DRAG,&block_ops);
+            SetOperation(DRAG|CTRL,&block_ops);
+            if(flag != Tile::TIL_HOT){
+                m_pMap->show_direction_blocks(true);
+                m_pMap->show_hot(false);
+            }else{
+                m_pMap->show_direction_blocks(false);
+                m_pMap->show_hot(true);
+            }
             break;
         }
         

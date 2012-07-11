@@ -930,7 +930,7 @@
                         </section>
 
                 </section>
-                <section name="Animals">
+                <section name="Npc">
                         <sprite name="Cat2" hint="alpha">
                                 <image file="Sprites/cat2.png">
                                         <grid pos="0,0" size="32,32" array="3,4"></grid>

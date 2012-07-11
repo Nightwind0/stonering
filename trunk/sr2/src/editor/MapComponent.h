@@ -45,6 +45,9 @@ public:
     void set_rubber_band(const CL_Rect& rect);
     void cancel_rubber_band();
     shared_ptr<Level> get_level() { return m_pLevel; }
+    void show_direction_blocks(bool on);
+    void show_hot(bool on);
+    void show_mos(bool on);
 private:
     void on_render(CL_GraphicContext &gc, const CL_Rect &clip_rect);
     void on_process_message(CL_GUIMessage &message);
@@ -57,6 +60,8 @@ private:
     float m_scale;
     CL_Gradient m_gradient;
     bool m_show_band;
+    bool m_show_direction_blocks;
+    bool m_show_hot;
     CL_Rect m_rubber_band;
     shared_ptr<Level>  m_pLevel;
 };

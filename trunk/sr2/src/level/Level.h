@@ -86,7 +86,7 @@ namespace StoneRing {
 
     class Tile : public Graphic
     {
-    protected:
+    public:
         enum eFlags { TIL_SPRITE = 1, TIL_FLOATER = 2, TIL_HOT = 4, TIL_BLK_NORTH = 8, TIL_BLK_SOUTH = 16, TIL_BLK_EAST = 32, TIL_BLK_WEST = 64, TIL_POPS = 128};
     public:
         Tile();
@@ -120,6 +120,8 @@ namespace StoneRing {
         void SetTileMap(Tilemap* pTileMap) { m_Graphic.asTilemap = pTileMap; }
         void SetPos(ushort x, ushort y) { m_X = x; m_Y = y; }
         void SetFloater(){ cFlags |= TIL_FLOATER; }  
+        void SetFlag(int flag) { cFlags |= flag; }
+        void UnsetFlag(int flag) { cFlags &= (~flag); }
 #endif
 
     protected:
@@ -213,7 +215,8 @@ namespace StoneRing {
 
         virtual void Draw(const CL_Rect &src, const CL_Rect &dst,
                           CL_GraphicContext& GC , bool floaters = false,
-                          bool highlightHot=false,bool indicateBlocks = false);
+                          bool highlightHot=false,bool indicateBlocks = false,
+                          bool indicateQuadtree=false);
         virtual void DrawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, bool bDrawDebug=false);
         virtual void DrawFloaters(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC);
 
@@ -277,10 +280,7 @@ namespace StoneRing {
         Tile* PopTileAtPos(const CL_Point& loc);
         void RemoveFloater(const CL_Point& loc, Tile* pFloater);
         std::list<Tile*> GetTilesAt(const CL_Point& loc) const;
-        // Operates on ALL tiles at a location. For finer control, one must operate on the tiles individually.
-        // bOn of true turns the direction block on for the specified direction,
-        // false will turn it off.
-        void SetDirectionBlockAt(uint levelX, uint levelY, eDirectionBlock dir, bool bOn);
+ 
 
         void SetHotAt(uint levelX, uint levelY, bool bHot);        
         bool WriteXML(const std::string& filename, bool force)const;
