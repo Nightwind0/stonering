@@ -20,13 +20,12 @@
 #ifndef OPERATION_H
 #define OPERATION_H
 
-#include <ClanLib/display.h>
 #include <list>
 #include "sr_defines.h"
 
 namespace StoneRing {
     
-    class Level;
+class Level;
 
 class Operation
 {
@@ -77,6 +76,6 @@ protected:
     
 };
 
-}
+};
 
 #endif // OPERATION_H

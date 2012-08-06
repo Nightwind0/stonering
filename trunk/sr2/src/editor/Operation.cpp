@@ -89,3 +89,4 @@ void OperationGroup::SetData ( const StoneRing::Operation::Data& data )
 
 
 }
+

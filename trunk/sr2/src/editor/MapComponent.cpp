@@ -19,6 +19,7 @@
 
 #include "MapComponent.h"
 
+#ifdef SR2_EDITOR
 namespace StoneRing { 
 
 MapComponent::MapComponent(CL_GUIComponent* parent):CL_GUIComponent(parent),
@@ -259,3 +260,5 @@ std::list<MappableObject*> MapComponent::get_mos_at( const CL_Point& point )
 
 
 }
+
+#endif

@@ -10,8 +10,9 @@
 using namespace StoneRing;
 using StoneRing::Font;
 
-
-
+#ifndef M_PI
+#define M_PI 3.1415926
+#endif
 
 GraphicsManager * GraphicsManager::m_pInstance=NULL;
 
@@ -640,8 +641,8 @@ CL_Colorf GraphicsManager::HSVToRGB ( const StoneRing::GraphicsManager::HSVColor
 GraphicsManager::HSVColor GraphicsManager::RGBToHSV ( const CL_Colorf& color)
 {
     HSVColor hsv_color;
-    float var_Min = std::min( color.get_red(), std::min( color.get_green(), color.get_blue() ) );    //Min. value of RGB
-    float var_Max = std::max( color.get_red(), std::max( color.get_green(), color.get_blue() ) );   //Max. value of RGB
+    float var_Min = min( color.get_red(), min( color.get_green(), color.get_blue() ) );    //Min. value of RGB
+    float var_Max = max( color.get_red(), max( color.get_green(), color.get_blue() ) );   //Max. value of RGB
     float del_Max = var_Max - var_Min;             //Delta RGB value
 
     hsv_color.v = var_Max;

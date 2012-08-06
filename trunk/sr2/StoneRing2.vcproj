@@ -52,7 +52,7 @@
 				Optimization="3"
 				InlineFunctionExpansion="1"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\src\party&quot;;&quot;$(SolutionDir)\src\character&quot;;&quot;$(SolutionDir)src\core&quot;;&quot;$(SolutionDir)\src&quot;;&quot;$(SolutionDir)\..\steel\src&quot;;&quot;$(SolutionDir)\src\level&quot;;&quot;$(SolutionDir)\src\states&quot;;&quot;$(SolutionDir)\src\monsters&quot;;&quot;$(SolutionDir)\src\items\armor&quot;;&quot;$(SolutionDir)\src\items\weapons&quot;;&quot;$(SolutionDir)\src\items&quot;;&quot;$(SolutionDir)\src\factories&quot;;&quot;$(SolutionDir)\src\battle&quot;;&quot;$(SolutionDir)\src\abilities&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\src\party&quot;;&quot;$(SolutionDir)\src\character&quot;;&quot;$(SolutionDir)src\core&quot;;&quot;$(SolutionDir)\src&quot;;&quot;$(SolutionDir)\..\steel\src&quot;;&quot;$(SolutionDir)\src\level&quot;;&quot;$(SolutionDir)\src\states&quot;;&quot;$(SolutionDir)\src\monsters&quot;;&quot;$(SolutionDir)\src\items\armor&quot;;&quot;$(SolutionDir)\src\items\weapons&quot;;&quot;$(SolutionDir)\src\items&quot;;&quot;$(SolutionDir)\src\factories&quot;;&quot;$(SolutionDir)\src\battle&quot;;&quot;$(SolutionDir)\src\abilities&quot;;&quot;$(SolutionDir)\src\editor&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -144,8 +144,105 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\src\party&quot;;&quot;$(SolutionDir)\src\character&quot;;&quot;$(SolutionDir)src\core&quot;;&quot;$(SolutionDir)\src&quot;;&quot;$(SolutionDir)\..\steel\src&quot;;&quot;$(SolutionDir)\src\level&quot;;&quot;$(SolutionDir)\src\states&quot;;&quot;$(SolutionDir)\src\monsters&quot;;&quot;$(SolutionDir)\src\items\armor&quot;;&quot;$(SolutionDir)\src\items\weapons&quot;;&quot;$(SolutionDir)\src\items&quot;;&quot;$(SolutionDir)\src\factories&quot;;&quot;$(SolutionDir)\src\battle&quot;;&quot;$(SolutionDir)\src\abilities&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\src\party&quot;;&quot;$(SolutionDir)\src\character&quot;;&quot;$(SolutionDir)src\core&quot;;&quot;$(SolutionDir)\src&quot;;&quot;$(SolutionDir)\..\steel\src&quot;;&quot;$(SolutionDir)\src\level&quot;;&quot;$(SolutionDir)\src\states&quot;;&quot;$(SolutionDir)\src\monsters&quot;;&quot;$(SolutionDir)\src\items\armor&quot;;&quot;$(SolutionDir)\src\items\weapons&quot;;&quot;$(SolutionDir)\src\items&quot;;&quot;$(SolutionDir)\src\factories&quot;;&quot;$(SolutionDir)\src\battle&quot;;&quot;$(SolutionDir)\src\abilities&quot;;&quot;$(SolutionDir)\src\editor&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="1"
+				RuntimeTypeInfo="true"
+				PrecompiledHeaderFile=".\Debug/StoneRing2.pch"
+				AssemblerListingLocation=".\Debug/"
+				ObjectFile=".\Debug/"
+				ProgramDataBaseFileName=".\Debug/"
+				WarningLevel="3"
+				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="$(OutDir)\SR2Lib.lib"
+				OutputFile="$(SolutionDir)\StoneRing2.exe"
+				LinkIncremental="2"
+				SuppressStartupBanner="true"
+				IgnoreDefaultLibraryNames="libcmt"
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile=".\Debug/StoneRing2.pdb"
+				SubSystem="2"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+				SuppressStartupBanner="true"
+				OutputFile=".\Debug/StoneRing2.bsc"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Editor|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="1"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="true"
+				SuppressStartupBanner="true"
+				TargetEnvironment="1"
+				TypeLibraryName=".\Debug/StoneRing2.tlb"
+				HeaderFileName=""
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)\src\party&quot;;&quot;$(SolutionDir)\src\character&quot;;&quot;$(SolutionDir)src\core&quot;;&quot;$(SolutionDir)\src&quot;;&quot;$(SolutionDir)\..\steel\src&quot;;&quot;$(SolutionDir)\src\level&quot;;&quot;$(SolutionDir)\src\states&quot;;&quot;$(SolutionDir)\src\monsters&quot;;&quot;$(SolutionDir)\src\items\armor&quot;;&quot;$(SolutionDir)\src\items\weapons&quot;;&quot;$(SolutionDir)\src\items&quot;;&quot;$(SolutionDir)\src\factories&quot;;&quot;$(SolutionDir)\src\battle&quot;;&quot;$(SolutionDir)\src\editor&quot;;&quot;$(SolutionDir)\src\abilities&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;SR2_EDITOR"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"

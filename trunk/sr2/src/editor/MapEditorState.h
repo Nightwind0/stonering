@@ -27,7 +27,7 @@
 #include "MOEditWindow.h"
 #include <deque>
 
-#if SR2_EDITOR
+#ifdef SR2_EDITOR
 
 class CL_DisplayWindow;
 
@@ -44,7 +44,7 @@ namespace StoneRing {
             SHIFT=2,
             CTRL=4,
             CLICK=8,
-            DOUBLE_CLICK=16,
+            DOUBLECLICK=16,
             DRAG=32,
             RIGHT=64 // as opposed to left mouse button
         };
@@ -80,7 +80,7 @@ namespace StoneRing {
         
         enum MouseButton {
             MOUSE_LEFT=0,
-            MOUSE_RIGHT=Modifier::RIGHT
+            MOUSE_RIGHT=64
         }m_drag_button;
         
         enum Menu {

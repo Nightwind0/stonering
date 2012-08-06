@@ -61,8 +61,8 @@ TileSelectorWindow::~TileSelectorWindow()
 
 void TileSelectorWindow::on_tilemap_change(CL_Sprite image)
 {
-    m_pVertScroll->set_max(std::max(0,image.get_size().height-get_geometry().get_size().height));
-    m_pHorizScroll->set_max(std::max(0,image.get_size().width-get_geometry().get_size().width));    
+    m_pVertScroll->set_max(max(0,image.get_size().height-get_geometry().get_size().height));
+    m_pHorizScroll->set_max(max(0,image.get_size().width-get_geometry().get_size().width));    
     request_repaint();
 }
 

@@ -14,19 +14,26 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
+		Editor|Win32 = Editor|Win32
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{FC272BF0-BB24-4D05-840F-8E65552E7271}.Debug|Win32.ActiveCfg = Debug|Win32
 		{FC272BF0-BB24-4D05-840F-8E65552E7271}.Debug|Win32.Build.0 = Debug|Win32
+		{FC272BF0-BB24-4D05-840F-8E65552E7271}.Editor|Win32.ActiveCfg = Editor|Win32
+		{FC272BF0-BB24-4D05-840F-8E65552E7271}.Editor|Win32.Build.0 = Editor|Win32
 		{FC272BF0-BB24-4D05-840F-8E65552E7271}.Release|Win32.ActiveCfg = Release|Win32
 		{FC272BF0-BB24-4D05-840F-8E65552E7271}.Release|Win32.Build.0 = Release|Win32
 		{F5425C27-97C9-4DEF-8A52-246D6A3D2923}.Debug|Win32.ActiveCfg = Debug|Win32
 		{F5425C27-97C9-4DEF-8A52-246D6A3D2923}.Debug|Win32.Build.0 = Debug|Win32
+		{F5425C27-97C9-4DEF-8A52-246D6A3D2923}.Editor|Win32.ActiveCfg = Editor|Win32
+		{F5425C27-97C9-4DEF-8A52-246D6A3D2923}.Editor|Win32.Build.0 = Editor|Win32
 		{F5425C27-97C9-4DEF-8A52-246D6A3D2923}.Release|Win32.ActiveCfg = Release|Win32
 		{F5425C27-97C9-4DEF-8A52-246D6A3D2923}.Release|Win32.Build.0 = Release|Win32
 		{E143424A-1AA3-49FF-B9DE-79A97E33C816}.Debug|Win32.ActiveCfg = Debug|Win32
 		{E143424A-1AA3-49FF-B9DE-79A97E33C816}.Debug|Win32.Build.0 = Debug|Win32
+		{E143424A-1AA3-49FF-B9DE-79A97E33C816}.Editor|Win32.ActiveCfg = Editor|Win32
+		{E143424A-1AA3-49FF-B9DE-79A97E33C816}.Editor|Win32.Build.0 = Editor|Win32
 		{E143424A-1AA3-49FF-B9DE-79A97E33C816}.Release|Win32.ActiveCfg = Release|Win32
 		{E143424A-1AA3-49FF-B9DE-79A97E33C816}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection

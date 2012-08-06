@@ -219,6 +219,7 @@ bool RectContains(const CL_Rectx<T>& rect, const CL_Vec2<T>& p){
 #include <tr1/memory>
 using std::tr1::shared_ptr;
 #else
+using std::tr1::shared_ptr;
 #endif
 
 #endif
