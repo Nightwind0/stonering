@@ -633,8 +633,9 @@ void MapEditorState::end_drag(const CL_Point& start,const CL_Point& prev, const 
             if(it != m_operations.end()){
                 Operation::Data data;
                 data.m_mod_state = tool;
-                data.m_level_pt = m_pMap->screen_to_level(start,m_pMap->get_geometry().get_center()) / 32;
-                data.m_level_end_pt = m_pMap->screen_to_level(point,m_pMap->get_geometry().get_center()) / 32;
+                CL_Point map_offset = m_pMap->get_geometry().get_top_left();                
+                data.m_level_pt = m_pMap->screen_to_level(start-map_offset,m_pMap->get_geometry().get_center()-map_offset) / 32;
+                data.m_level_end_pt = m_pMap->screen_to_level(point-map_offset,m_pMap->get_geometry().get_center()-map_offset) / 32;
                 Operation * op = it->second->clone();
                 op->SetData(data);
                 if(op->Execute(m_pMap->get_level())){
@@ -659,7 +660,8 @@ void MapEditorState::click(const CL_Point& point,MouseButton button, int mod)
         if(it != m_operations.end()){
             Operation::Data data;
             data.m_mod_state = tool;
-            data.m_level_pt = m_pMap->screen_to_level(point,m_pMap->get_geometry().get_center()) / 32;
+            CL_Point map_offset = m_pMap->get_geometry().get_top_left();             
+            data.m_level_pt = m_pMap->screen_to_level(point-map_offset,m_pMap->get_geometry().get_center()-map_offset) / 32;
             data.m_level_end_pt = data.m_level_pt;
             Operation * op = it->second->clone();
             op->SetData(data);
