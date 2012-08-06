@@ -117,7 +117,7 @@ namespace StoneRing {
         inline bool IsTile() const { return true; }
 #if SR2_EDITOR
         CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
-        void SetTileMap(Tilemap* pTileMap) { m_Graphic.asTilemap = pTileMap; }
+        void SetTileMap(Tilemap* pTileMap) { m_tilemap = pTileMap; cFlags &= ~TIL_SPRITE; }
         void SetPos(ushort x, ushort y) { m_X = x; m_Y = y; }
         void SetFloater(){ cFlags |= TIL_FLOATER; }  
         void SetFlag(int flag) { cFlags |= flag; }
@@ -130,7 +130,7 @@ namespace StoneRing {
         virtual void load_finished();
 
         CL_Sprite m_sprite;
-        SpriteRefOrTilemap m_Graphic;
+        Tilemap* m_tilemap;
 
         ScriptElement *m_pCondition;
         ScriptElement *m_pScript;
@@ -139,7 +139,9 @@ namespace StoneRing {
         ushort m_Y;
 
         unsigned char cFlags;
-
+#ifdef SR2_EDITOR
+        std::string m_sprite_name;
+#endif
     };
 
     class LevelHeader : public Element
@@ -280,7 +282,8 @@ namespace StoneRing {
         Tile* PopTileAtPos(const CL_Point& loc);
         void RemoveFloater(const CL_Point& loc, Tile* pFloater);
         std::list<Tile*> GetTilesAt(const CL_Point& loc) const;
- 
+        std::list<MappableObject*> GetMappableObjectsAt(const CL_Point& loc)const;
+
 
         void SetHotAt(uint levelX, uint levelY, bool bHot);        
         bool WriteXML(const std::string& filename, bool force)const;

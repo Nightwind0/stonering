@@ -165,16 +165,20 @@ bool Tile::handle_element(Element::eElement element, Element * pElement)
         m_pScript = dynamic_cast<ScriptElement*>(pElement);
         break;
     case ETILEMAP:
-        m_Graphic.asTilemap = dynamic_cast<Tilemap*>(pElement);
+        m_tilemap = dynamic_cast<Tilemap*>(pElement);
+        cFlags &= ~TIL_SPRITE;
         break;
     case ESPRITEREF:
     {
-        m_Graphic.asSpriteRef = dynamic_cast<SpriteRef*>(pElement);
+        SpriteRef* ref = dynamic_cast<SpriteRef*>(pElement);
         cFlags |= TIL_SPRITE;
 
         // Actually create the ref'd sprite here.
         // And assign to mpSprite
-        m_sprite = GraphicsManager::CreateSprite( m_Graphic.asSpriteRef->GetRef() );
+        m_sprite = GraphicsManager::CreateSprite( ref->GetRef() );
+#ifdef SR2_EDITOR
+        m_sprite_name = ref->GetRef();
+#endif
         break;
     }//ESPRITEREF
     case ECONDITIONSCRIPT:
@@ -210,7 +214,7 @@ bool Tile::handle_element(Element::eElement element, Element * pElement)
 
 void Tile::load_finished()
 {
-    if (m_Graphic.asSpriteRef == NULL) throw CL_Exception("Tile didn't have tilemap or sprite ref.");
+    if (m_tilemap == NULL && m_sprite.is_null()) throw CL_Exception("Tile didn't have tilemap or sprite ref.");
 }
 
 void Tile::Activate() // Call any attributemodifier
@@ -223,10 +227,8 @@ void Tile::Activate() // Call any attributemodifier
 Tile::~Tile()
 {
     delete m_pScript;
-    delete m_pCondition;
-    if ( IsSprite() )
-        delete m_Graphic.asSpriteRef;
-    else delete m_Graphic.asTilemap;
+    delete m_pCondition;;
+    if(!IsSprite()) delete m_tilemap;
 }
 
 bool Tile::EvaluateCondition() const
@@ -254,12 +256,12 @@ void Tile::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC)
 
     if ( !IsSprite() )
     {
-        CL_Sprite tilemap = m_Graphic.asTilemap->GetTileMap();
+        CL_Sprite tilemap = m_tilemap->GetTileMap();
 
         //        void draw(  const CL_Rect& src, const CL_Rect& dest, CL_GraphicContext* context = 0);
         int mapx, mapy;
-        mapx = m_Graphic.asTilemap->GetMapX();
-        mapy = m_Graphic.asTilemap->GetMapY();
+        mapx = m_tilemap->GetMapX();
+        mapy = m_tilemap->GetMapY();
         CL_Rect srcRect((mapx << 5) + src.left, (mapy << 5) + src.top,
                         (mapx << 5) + src.right, (mapy << 5) + src.bottom);
 
@@ -314,11 +316,11 @@ CL_DomElement Tile::CreateDomElement(CL_DomDocument& doc)const
 
     if(IsSprite())
     {
-        element.append_child(m_Graphic.asSpriteRef->CreateDomElement(doc));
+        element.set_attribute("sprite",m_sprite_name);
     }
     else
     {
-       element.append_child(m_Graphic.asTilemap->CreateDomElement(doc));
+       element.append_child(m_tilemap->CreateDomElement(doc));
     }
 
     if(m_pCondition)

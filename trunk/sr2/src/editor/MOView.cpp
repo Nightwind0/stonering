@@ -39,6 +39,18 @@ void MOView::SetSprite ( CL_Sprite sprite )
     request_repaint();
 }
 
+CL_Sprite MOView::GetSprite() const
+{
+    return m_sprite;
+}
+
+
+void MOView::SetSize ( const CL_Size& size )
+{
+    m_sprite_size = size;
+}
+
+
 
 void MOView::render_background(CL_GraphicContext &gc, const CL_Rect& clip)
 {
@@ -72,6 +84,11 @@ void MOView::on_render(CL_GraphicContext &gc, const CL_Rect &clip_rect)
                         (clip_rect.get_height()-m_sprite.get_height())/2.0);
         point += clip_rect.get_top_left();
         m_sprite.draw(gc,point.x,point.y);
+        
+        CL_Rectf square(CL_Pointf(clip_rect.get_top_left().x + (clip_rect.get_width()-m_sprite_size.width*32)/2.0,
+                                   clip_rect.get_top_left().y +   (clip_rect.get_height()-m_sprite_size.height*32)/2.0 + m_sprite.get_height() - (m_sprite_size.height*32)),
+                       CL_Sizef(m_sprite_size.width*32,m_sprite_size.height*32));
+        CL_Draw::box(gc,square,CL_Colorf::yellow);
     }
 }
 

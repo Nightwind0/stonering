@@ -30,12 +30,15 @@ public:
     MOView(CL_GUIComponent* parent);
     virtual ~MOView();
     void SetSprite(CL_Sprite sprite);
+    void SetSize(const CL_Size& size);
+    CL_Sprite GetSprite() const;
 private:
     void on_render(CL_GraphicContext &gc, const CL_Rect &clip_rect);
     void on_process_message(CL_GUIMessage &message);    
     void render_background(CL_GraphicContext &gc, const CL_Rect& clip);
     
     CL_Sprite m_sprite;
+    CL_Size m_sprite_size;
 };
 
 }

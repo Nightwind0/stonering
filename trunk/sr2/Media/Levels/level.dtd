@@ -13,7 +13,7 @@
 <!ELEMENT onUnequip (script)>
 <!ELEMENT itemRef (namedItemRef|weaponRef|armorRef)>
 <!ELEMENT namedItemRef (#PCDATA)>
-<!ELEMENT mo ((tilemap|spriteRef*)?,conditionScript?, event*, movement?)>
+<!ELEMENT mo ((tilemap)?,conditionScript?, event*, movement?)>
 <!ELEMENT event (conditionScript?, script?)>
 <!ELEMENT movement (script?)>
 
@@ -138,11 +138,14 @@
 <!ATTLIST tilemap mapx CDATA #REQUIRED>
 <!ATTLIST tilemap mapy CDATA #REQUIRED>
 <!ATTLIST mo name CDATA #REQUIRED>
-<!ATTLIST mo type (npc|square|container|warp|door) #REQUIRED>
+<!--ATTLIST mo type (npc|square|container|warp|door) #REQUIRED-->
 <!ATTLIST mo xpos CDATA #REQUIRED>
 <!ATTLIST mo ypos CDATA #REQUIRED>
 <!ATTLIST mo size (small|medium|large|tall|wide) #REQUIRED>
 <!ATTLIST mo solid (true|false) #IMPLIED>
+<!ATTLIST mo flying (true|false) #IMPLIED>
+<!ATTLIST mo sprite (CDATA) #IMPLIED>
+<!ATTLIST mo facing (north|south|east|west) #IMPLIED> <!-- default is south -->
 <!ATTLIST movement movementType (none|wander|paceNS|paceEW|script) #REQUIRED>
 <!ATTLIST movement speed (slow|medium|fast) #IMPLIED>
 <!ATTLIST event name CDATA #REQUIRED>

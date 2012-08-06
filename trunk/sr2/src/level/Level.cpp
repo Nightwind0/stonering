@@ -261,6 +261,20 @@ private:
     std::string m_name;
 };
 
+class MappableObjectCollector: public Level::MOQuadtree::OurVisitor{
+public:
+    MappableObjectCollector(std::list<MappableObject*>& list, const CL_Point& point):m_list(list),m_point(point){
+    }
+    virtual ~MappableObjectCollector(){}
+    bool Visit(MappableObject * pMO, const Level::MOQuadtree::Node* pNode){
+        if(pMO->GetTileRect().contains(m_point))
+            m_list.push_back(pMO);
+        return true;
+    }
+private:
+    CL_Point m_point;
+    std::list<MappableObject*>& m_list;
+};
 MappableObjects::MappableObjects()
 {
 }
@@ -676,7 +690,7 @@ void Level::Add_Mappable_Object ( MappableObject* pMO)
                                           rect.get_width(),rect.get_height());
     
     m_mo_quadtree->Add(location,pMO);
-    
+    pMO->Placed();    
 }
 
 
@@ -1178,7 +1192,7 @@ public:
     MappableObjectXMLWriter(CL_DomElement& parent,CL_DomDocument& doc):m_parent(parent),m_doc(doc){}
     virtual ~MappableObjectXMLWriter(){}
     bool Visit(MappableObject* pMO, const Level::MOQuadtree::Node* pNode){
-        MappableObjectElement * pMo = dynamic_cast<MappableObjectElement*>(pMO);
+        MappableObject * pMo = dynamic_cast<MappableObject*>(pMO);
         if(pMo)
             m_parent.append_child(pMo->CreateDomElement(m_doc));
         return true;
@@ -1295,6 +1309,18 @@ void Level::resize_floater_quadtree()
        it != finder.end(); it++){
        AddTile(*it);
    }
+}
+
+std::list<MappableObject*> Level::GetMappableObjectsAt(const CL_Point& point) const 
+{
+    std::list<MappableObject*> list;
+    MappableObjectCollector collector(list,point);
+    Quadtree::Geometry::Rect<float> location(
+        Quadtree::Geometry::Vector<float>(point.x,point.y),1.0f,1.0f);    
+    m_mo_quadtree->Traverse(collector,location);
+   
+    
+    return list;
 }
 
 CL_DomElement Level::CreateDomElement(CL_DomDocument& doc) const 

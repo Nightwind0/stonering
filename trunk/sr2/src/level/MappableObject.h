@@ -73,13 +73,20 @@ namespace StoneRing {
         Navigator*      PopNavigator();
         void            SetPixelPosition(const CL_Point& pixel_pos);
         CL_Point        GetPixelPosition() const { return m_pos; }
-        virtual eMovementType GetMovementType() const { return MOVEMENT_NONE; }
+        virtual void    Placed(){}; // notify that they've been added to a level
+        virtual eMovementType  GetMovementType() const { return MOVEMENT_NONE; }
         virtual eMovementSpeed GetMovementSpeed() const { return SLOW; }
 
         // In pixels
         void            CalculateEdgePoints(const CL_Point &topleft, Direction dir, std::list<CL_Point> *pList);        
         static int      ConvertDirectionToDirectionBlock(Direction dir);     
-    
+#if SR2_EDITOR
+        virtual CL_DomElement   CreateDomElement(CL_DomDocument& doc)const {
+                return CL_DomElement(doc,"mappableObject");
+        }
+        CL_Sprite       GetSprite() const { return m_sprite; }
+        int             GetFlags() const { return m_cFlags; }        
+#endif      
     protected:
         enum eFlags 
         { 
@@ -94,10 +101,11 @@ namespace StoneRing {
         virtual void    Set_Frame_For_Direction();
         virtual Direction Get_Default_Facing()const;
         void            Set_Size(eSize size);
+
         
         std::string     m_name;
         CL_Sprite       m_sprite;
-        SpriteRefOrTilemap m_graphic;
+        Tilemap*        m_tilemap;
 
         CL_Size         m_size;
         //Direction m_eFacingDirection;
@@ -125,22 +133,34 @@ namespace StoneRing {
         virtual bool    EvaluateCondition() const;   
         virtual bool    ProvokeEvents ( Event::eTriggerType trigger );     
         virtual eMovementType  GetMovementType() const { return m_move_type; }
-        virtual eMovementSpeed GetMovementSpeed() const { return m_speed; }      
+        virtual eMovementSpeed GetMovementSpeed() const { return m_speed; }     
+        virtual void    Placed();
 #if SR2_EDITOR
-        CL_DomElement   CreateDomElement(CL_DomDocument&)const;
+        virtual CL_DomElement   CreateDomElement(CL_DomDocument&)const;
+        std::list<Event*>::const_iterator EventsBegin()const { return m_events.begin(); }
+        std::list<Event*>::const_iterator EventsEnd()const { return m_events.end(); }
+        ScriptElement*          GetCondition()const { return m_pCondition; }
+        CL_Sprite               GetSprite()const{ return m_sprite; }
+        Direction               GetFacing()const{ return m_start_facing; }
+        std::string             GetSpriteName()const{ return m_sprite_name; }
 #endif            
     protected:
-        virtual bool    handle_element(eElement element, Element * pElement );
-        virtual void    load_attributes(CL_DomNamedNodeMap attributes);
-        virtual void    load_finished();
-    private:        
+        virtual bool            handle_element(eElement element, Element * pElement );
+        virtual void            load_attributes(CL_DomNamedNodeMap attributes);
+        virtual void            load_finished();
+        virtual Direction       Get_Default_Facing()const;
+#if SR2_EDITOR
+        virtual void            create_dom_element_hook(CL_DomElement& element)const;
+#endif       
         ScriptElement*  m_pCondition;    
         std::list<Event*> m_events;  
-        eMovementSpeed m_speed;
-        eMovementType m_move_type;
-        NPCNavigator m_navigator;
+        eMovementSpeed  m_speed;
+        eMovementType   m_move_type;
+        NPCNavigator    m_navigator;
+        Direction       m_start_facing;
 #if SR2_EDITOR
-        eSize m_eSize;
+        eSize           m_eSize;
+        std::string     m_sprite_name;
 #endif
     };
     
@@ -154,10 +174,10 @@ namespace StoneRing {
         void            SetSolid(bool solid);        
         virtual eMovementType  GetMovementType() const { return m_move_type; }
         virtual eMovementSpeed GetMovementSpeed() const { return m_move_speed; }    
-        void SetDefaultFacing(const Direction& dir) { m_default_facing = dir; }
+        void            SetDefaultFacing(const Direction& dir) { m_default_facing = dir; }
     protected:
-        virtual void Set_Frame_For_Direction();
-        virtual Direction Get_Default_Facing()const;
+        virtual void            Set_Frame_For_Direction();
+        virtual Direction       Get_Default_Facing()const;
     private:     
         eMovementType   m_move_type;
         eMovementSpeed  m_move_speed;

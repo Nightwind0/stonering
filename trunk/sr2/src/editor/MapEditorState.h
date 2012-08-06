@@ -64,8 +64,13 @@ namespace StoneRing {
         virtual bool DisableMappableObjects() const ; // Should the app move the MOs?
         virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
         virtual void Start();
-        virtual void Finish(); // Hook to clean up or whatever after being popped     
-        void SetOperation(int mods,Operation*);        
+        virtual void Finish(); // Hook to clean up or whatever after being popped   
+        
+        // Sets an operation to be performed by click
+        void SetOperation(int mods,Operation*); 
+        
+        // Directly perfporm this and add it to the undo stack
+        void PerformOperation(Operation*);
         
         virtual void on_button_clicked(CL_PushButton*);
         virtual void on_close();
@@ -130,6 +135,14 @@ namespace StoneRing {
         bool on_pointer_entered();
         bool on_pointer_exit();
         
+        // Map context menu
+        void on_edit_tile();
+        void on_add_mo();
+        void on_edit_mo();
+        void on_move_mo();
+        
+        std::string create_unique_mo_name();
+        
         // mouse 
         void start_drag(const CL_Point&, MouseButton button, int mod_state);
         void update_drag(const CL_Point& start,const CL_Point& prev_point,const CL_Point& point,MouseButton button, int mod_state);
@@ -137,6 +150,7 @@ namespace StoneRing {
         void end_drag(const CL_Point& start,const CL_Point& prev_point, const CL_Point& point,MouseButton button, int mod_state);
         void click(const CL_Point& point,MouseButton button, int mod_state);
         
+        void construct_map_context_menu();
         void construct_accels();
         void construct_menu();
         void construct_toolbar();
@@ -153,11 +167,13 @@ namespace StoneRing {
         CL_PushButton*          m_pButton;
         CL_Slider*              m_pZoomSlider;
         CL_ToolBar*             m_toolbar;
+        CL_PopupMenu            m_map_context_menu;
    
         MapComponent*           m_pMap;
         int                     m_mod_state;
         CL_Point                m_drag_start;
         CL_Point                m_last_drag_point;
+        CL_Point                m_map_context_point;
         std::map<int,Operation*> m_operations;
         std::deque<Operation*>  m_undo_stack;
         CL_AcceleratorTable     m_accels;

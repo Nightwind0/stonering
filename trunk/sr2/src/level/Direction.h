@@ -28,6 +28,7 @@ public:
         m_none = true;
         m_value = 0;
     }
+    Direction(const std::string& str);
     bool operator<(const Direction& other)const{
         return m_value < other.m_value;
     }
@@ -54,6 +55,7 @@ public:
     operator int() const {
         return m_value;
     }
+    operator std::string() const;
 private:
     int m_value;
     bool m_none;

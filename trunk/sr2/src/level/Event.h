@@ -32,7 +32,6 @@ namespace StoneRing{
         eTriggerType m_eTriggerType;
         ScriptElement *m_pCondition;
         ScriptElement *m_pScript;
-
     };
 
 

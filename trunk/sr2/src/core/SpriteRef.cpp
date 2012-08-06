@@ -15,16 +15,13 @@ void SpriteRef::load_attributes(CL_DomNamedNodeMap attributes)
     {
         std::string type = get_string("type",attributes);
 
-        if(type == "still") m_eType = SPR_STILL;
-        else if(type == "twoway") m_eType = SPR_TWO_WAY;
-        else if(type == "fourway")  m_eType = SPR_FOUR_WAY;
-        else if(type == "idle") m_eType = SPR_BATTLE_IDLE;
+        if(type == "idle") m_eType = SPR_BATTLE_IDLE;
         else if(type == "recoil") m_eType = SPR_BATTLE_RECOIL;
         else if(type == "weak") m_eType = SPR_BATTLE_WEAK;
         else if(type == "attack") m_eType = SPR_BATTLE_ATTACK;
         else if(type == "use") m_eType = SPR_BATTLE_USE;
         else if(type == "dead") m_eType = SPR_BATTLE_DEAD;
-        else throw CL_Exception("Bad type on spriteRef");
+        //else throw CL_Exception("Bad type on spriteRef");
 
     }
 
@@ -38,12 +35,6 @@ void SpriteRef::handle_text(const std::string &text)
 std::string SpriteRef::TypeName(SpriteRef::eType type)
 {
     switch(type){
-        case SPR_STILL:
-            return "still";
-        case SPR_TWO_WAY:
-            return "twoway";
-        case SPR_FOUR_WAY:
-            return "fourway";
         case SPR_BATTLE_IDLE:
             return "idle";
         case SPR_BATTLE_RECOIL:
@@ -62,7 +53,7 @@ std::string SpriteRef::TypeName(SpriteRef::eType type)
 
 
 
-SpriteRef::SpriteRef( ):m_eType(SPR_NONE)
+SpriteRef::SpriteRef( )
 {
 
 }
@@ -76,11 +67,13 @@ std::string SpriteRef::GetRef() const
     return m_ref;
 }
 
+/*
 SpriteRef::eType
 SpriteRef::GetType() const
 {
     return m_eType;
 }
+*/
 
 CL_Sprite SpriteRef::CreateSprite() const
 {
@@ -92,8 +85,7 @@ CL_Sprite SpriteRef::CreateSprite() const
 CL_DomElement SpriteRef::CreateDomElement(CL_DomDocument& doc)const
 {
     CL_DomElement element(doc,"spriteRef");
-    if(m_eType != SPR_NONE)
-        element.set_attribute("type",TypeName(m_eType));
+    element.set_attribute("type",TypeName(m_eType));
     element.set_attribute("ref",m_ref);
     return element;
 }

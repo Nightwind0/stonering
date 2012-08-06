@@ -20,8 +20,127 @@
 #include "MOEditWindow.h"
 #include "IApplication.h"
 #include "GraphicsManager.h"
+#include "Operation.h"
+#include "Level.h"
+#include "MapEditorState.h"
 
 namespace StoneRing { 
+    
+class EditorMappableObject : public MappableObjectElement {
+public:
+    EditorMappableObject(){
+    }
+    virtual ~EditorMappableObject(){
+    }
+    
+    void copy(MappableObject* other){
+        SetMovementSpeed(other->GetMovementSpeed());
+        SetMovementType(other->GetMovementType());
+        SetName(other->GetName());
+        SetSize(other->GetSize()); 
+        SetSprite(other->GetSprite());
+        m_cFlags = other->GetFlags();
+        
+        MappableObjectElement* element = dynamic_cast<MappableObjectElement*>(other);
+        if(element != NULL){
+            for(std::list<Event*>::const_iterator it = element->EventsBegin(); it != element->EventsEnd();
+                it++){
+                m_events.push_back(*it);
+            }
+            m_pCondition = element->GetCondition();
+            m_start_facing = element->GetFacing(); 
+            SetSpriteName(element->GetSpriteName());
+        }
+        EditorMappableObject * editor = dynamic_cast<EditorMappableObject*>(other);
+        if(editor != NULL){
+            m_condition_string = editor->m_condition_string;
+            m_proto_events = editor->m_proto_events;
+        }
+    };
+    
+    void SetName(const std::string& name){
+        m_name = name;
+    }
+    void SetSize(const CL_Size& size){
+        m_size = size;
+    }
+    void SetSprite(CL_Sprite sprite){
+        if(!sprite.is_null()){
+            m_sprite.clone(sprite);
+            m_cFlags |= SPRITE;
+        }
+    }
+    void SetSpriteName(const std::string& name){
+        m_sprite_name = name;
+    }
+    std::string GetSpriteName() const { 
+        return m_sprite_name;
+    }
+    void SetStartPos(const CL_Point& point){
+        m_StartX = point.x;
+        m_StartY = point.y;
+        m_pos.x = m_StartX * 32;
+        m_pos.y = m_StartY * 32;
+    }
+    void SetMovementType(MappableObject::eMovementType move_type){
+        m_move_type = move_type;
+    }
+    void SetMovementSpeed(MappableObject::eMovementSpeed move_speed){
+        m_speed = move_speed;
+    }
+    void SetCondition(const std::string& condition){
+    }
+    void SetCondition(ScriptElement * pCondition){
+        m_pCondition = pCondition;
+    }
+    void SetSolid(bool solid){
+        if(solid)
+            m_cFlags |= SOLID;
+        else
+            m_cFlags &= ~SOLID;
+    }
+    void SetFacing(const Direction& dir){
+        m_start_facing = dir;
+    }
+
+
+protected:
+    // void AddEvent
+    virtual void create_dom_element_hook(CL_DomElement& element)const{
+        // TODO: Need to write out our events and conditions here
+    }
+private:
+    struct ProtoEvent {
+    };
+    std::string m_condition_string;
+    std::list<ProtoEvent> m_proto_events;
+};    
+    
+
+class CreateMOOperation : public Operation {
+public:
+    CreateMOOperation(){
+    }
+    virtual ~CreateMOOperation(){
+    }
+    virtual Operation* clone(){
+        return new CreateMOOperation();
+    }
+    virtual bool Execute(shared_ptr<Level> level){
+        m_pMo->SetStartPos(m_data.m_level_pt);
+        level->AddMappableObject(m_pMo.get());
+        return true;
+    }
+    virtual void Undo(shared_ptr<Level> level){
+        level->RemoveMappableObject(m_pMo.get());
+    }
+    void SetMappableObject(shared_ptr<EditorMappableObject> mo){
+        m_pMo = mo;
+    }
+private:
+    shared_ptr<EditorMappableObject>  m_pMo;
+};
+    
 
 MOEditWindow::MOEditWindow(CL_GUIManager* owner, const CL_GUITopLevelDescription &desc)
     :CL_Window(owner,desc)
@@ -46,13 +165,51 @@ MOEditWindow::MOEditWindow(CL_GUIManager* owner, const CL_GUITopLevelDescription
     m_width_spin->set_ranges(1,5);
     m_width_spin->set_value(1);
     m_width_spin->set_step_size(1);
-    m_width_spin->set_geometry(CL_Rect(12,400,68,448));
+    m_width_spin->set_geometry(CL_Rect(12,400,68,428));
 
     m_height_spin = new CL_Spin(this);
     m_height_spin->set_ranges(1,5);
     m_height_spin->set_value(1);
     m_height_spin->set_step_size(1);
-    m_height_spin->set_geometry(CL_Rect(72,400,128,448));    
+    m_height_spin->set_geometry(CL_Rect(72,400,128,428));    
+    
+    m_movement = new CL_ComboBox(this);
+    m_movement->set_geometry(CL_Rect(12,310,128,334));
+    
+    m_move_speed = new CL_ComboBox(this);
+    m_move_speed->set_geometry(CL_Rect(12,340,128,364));
+    
+    m_solid = new CL_CheckBox(this);
+    m_solid->set_geometry(CL_Rect(12,370,128,394));
+    m_solid->set_text("Solid");
+    m_solid->set_checked(true);
+    
+    m_event_list = new CL_ComboBox(this);
+    m_event_list->set_geometry(CL_Rect(132,310,264,334));
+    
+    m_open_event_button = new CL_PushButton(this);
+    m_open_event_button->set_geometry(CL_Rect(270,310,380,334));
+    m_open_event_button->set_text("Open Event");
+    
+    m_add_event_button = new CL_PushButton(this);
+    m_add_event_button->set_geometry(CL_Rect(270,340,380,364));
+    m_add_event_button->set_text("Add Event");
+
+    
+    m_face_dir = new CL_ComboBox(this);
+    m_face_dir->set_geometry(CL_Rect(132,400,264,420));
+ 
+    
+    m_save_button = new CL_PushButton(this);
+    m_save_button->set_geometry(CL_Rect(270,430,380,454));
+    m_save_button->set_text("Save");
+    m_save_button->func_clicked().set(this,&MOEditWindow::on_save);
+    
+    populate_movement_combo();
+    populate_move_speed_combo();
+    populate_event_list();
+    populate_facing_combo();
+    m_movement->set_selected_item(0);    
     //m_sprite_view->set_scale_to_fit();
     populate_sprite_list();
 }
@@ -64,7 +221,50 @@ MOEditWindow::~MOEditWindow()
     delete m_sprite_list;
     delete m_sprite_view;
     delete m_width_spin;
+    delete m_movement;
+    delete m_move_speed;
+    delete m_event_list;
+    delete m_open_event_button;
+    delete m_add_event_button;
+    delete m_save_button;
+    delete m_face_dir;
 }
+
+void MOEditWindow::SetMappableObject ( MappableObject* pObject )
+{
+    // Create EditorMappableObject that is a copy of pObject
+    // TODO: Have to remove this pObject from the level when
+    // "save" is hit
+    m_pMo = shared_ptr<EditorMappableObject>(new EditorMappableObject());
+    m_pMo->copy(pObject);
+    m_edit_mode = true;
+    sync_from_mo();
+}
+
+void MOEditWindow::SetCreate()
+{
+    m_edit_mode = false;
+    m_pMo = shared_ptr<EditorMappableObject>(new EditorMappableObject());
+}
+
+
+
+void MOEditWindow::populate_event_list()
+{
+
+}
+
+void MOEditWindow::populate_facing_combo()
+{
+    CL_PopupMenu menu;
+    const char* dirs[] = {"south","north","east","west"};
+    for(int i =0;i<sizeof(dirs)/sizeof(const char*); i++){
+        menu.insert_item(dirs[i]);
+    }
+    m_face_dir->set_popup_menu(menu);
+    m_face_dir->set_selected_item(0);
+}
+
 
 void MOEditWindow::populate_sprite_list()
 {
@@ -74,29 +274,87 @@ void MOEditWindow::populate_sprite_list()
     CL_ListViewItem doc = m_sprite_list->get_document_item();
     
     CL_ResourceManager & resources =  IApplication::GetInstance()->GetResources();
-    std::vector<CL_String> sprites = resources.get_resource_names_of_type("sprite");
-    for(std::vector<CL_String>::const_iterator it = sprites.begin(); it != sprites.end(); it++){
-        CL_ListViewItem item = m_sprite_list->create_item();
-        item.set_column_text("Main",*it);
+    const char * SubSections[] = {"Npc","Mob"};
+    for(int sub = 0; sub < sizeof(SubSections) / sizeof(const char*); sub++){
+        std::string section_name = "Sprites/" + std::string(SubSections[sub]) + '/';
+        std::vector<CL_String> sprites = resources.get_resource_names(section_name);
+        for(std::vector<CL_String>::const_iterator it = sprites.begin(); it != sprites.end(); it++){
+            CL_ListViewItem item = m_sprite_list->create_item();
+            std::string name = std::string(SubSections[sub]) + '/' + std::string(*it);
+            item.set_column_text("Main",name);
   //      item.set_userdata(*it);
-        doc.append_child(item);
+            doc.append_child(item);
+        }
     }
 }
+
+void MOEditWindow::populate_movement_combo()
+{
+    CL_PopupMenu menu;
+    const char* movements[] = {"none","wander","paceNS","paceEW"};
+    for(int i=0;i<sizeof(movements)/sizeof(const char*);i++){
+        CL_PopupMenuItem item = menu.insert_item(movements[i]);
+    }
+    m_movement->set_popup_menu(menu);
+    m_movement->set_selected_item(0);
+}
+
+void MOEditWindow::populate_move_speed_combo()
+{
+    CL_PopupMenu menu;
+    const char* movements[] = {"slow","medium","fast"};
+    for(int i=0;i<sizeof(movements)/sizeof(const char*);i++){
+        CL_PopupMenuItem item = menu.insert_item(movements[i]);
+    }
+    m_move_speed->set_popup_menu(menu);
+    m_move_speed->set_selected_item(0);
+}
+
+
+
 
 void MOEditWindow::on_list_selection ( CL_ListViewSelection selection )
 {
     CL_ListViewItem item = selection.get_first().get_item();
-    std::string sprite = item.get_column("Main").get_text();
+    m_sprite_name = item.get_column("Main").get_text();
+    CL_Size sprite_size;
     try {
-        m_sprite_view->SetSprite(GraphicsManager::CreateSprite(sprite,false));
+        CL_Sprite sprite = GraphicsManager::CreateSprite(m_sprite_name,true);
+        m_sprite_view->SetSprite(sprite);
+        sprite_size = CL_Size(std::max(sprite.get_width() / 32,1), std::max(sprite.get_height() / 64,1));
+        m_height_spin->set_value(sprite_size.height);
+        m_width_spin->set_value(sprite_size.width);
+        m_sprite_view->SetSize(sprite_size);
     }catch(...){
     }
 }
+
+void MOEditWindow::on_cancel()
+{
+
+}
+
+void MOEditWindow::on_save()
+{
+    sync_to_mo();
+    
+    CreateMOOperation* pOp = new CreateMOOperation();
+    pOp->SetMappableObject(m_pMo);
+    Operation::Data data;
+    data.m_level_pt = data.m_level_end_pt = m_point;
+    data.m_mod_state = 0;
+    pOp->SetData(data);
+    
+    m_map_editor_state->PerformOperation(pOp);    
+    set_visible(false);
+}
+
 
 
 void MOEditWindow::SetName ( const char* pName )
 {
     m_name = pName;
+    m_name_field->set_text(m_name);
 }
 
 void MOEditWindow::SetPoint ( const CL_Point& i_pt )
@@ -104,10 +362,58 @@ void MOEditWindow::SetPoint ( const CL_Point& i_pt )
     m_point = i_pt;
 }
 
+void MOEditWindow::SetMapEditorState ( MapEditorState* pState )
+{
+    m_map_editor_state = pState;
+}
+
+
 bool MOEditWindow::on_window_close()
 {
     set_visible(false);
 }
+
+void MOEditWindow::sync_from_mo()
+{
+    m_name_field->set_text(m_pMo->GetName());
+    m_height_spin->set_value(m_pMo->GetSize().height);
+    m_width_spin->set_value(m_pMo->GetSize().width);
+    m_movement->set_selected_item(m_pMo->GetMovementType());
+    m_move_speed->set_selected_item(m_pMo->GetMovementSpeed());
+    
+    std::string face_dir = m_pMo->GetFacing();
+    
+    if(face_dir == "south") 
+        m_face_dir->set_selected_item(0);
+    else if(face_dir == "north")
+        m_face_dir->set_selected_item(1);
+    else if(face_dir == "west")
+        m_face_dir->set_selected_item(2);
+    else if(face_dir == "east")
+        m_face_dir->set_selected_item(3);
+    
+    // TODO: How do I pick the right sprite? fuck
+     CL_ListViewItem item = m_sprite_list->find("Main",m_pMo->GetSpriteName());
+     if(!item.is_null())
+        m_sprite_list->set_selected(item,true);
+
+    // TODO: Load conditions and events
+    // Gets tricky when you have Event* and ScriptElement*
+}
+
+void MOEditWindow::sync_to_mo()
+{
+    m_pMo->SetName(m_name_field->get_text());
+    m_pMo->SetSize(CL_Size(m_width_spin->get_value(),m_height_spin->get_value()));
+    m_pMo->SetMovementType((MappableObject::eMovementType)m_movement->get_selected_item());
+    m_pMo->SetMovementSpeed((MappableObject::eMovementSpeed)m_move_speed->get_selected_item());
+    m_pMo->SetSprite(m_sprite_view->GetSprite());
+    m_pMo->SetSolid(m_solid->is_checked());
+    m_pMo->SetSpriteName(m_sprite_name);
+    m_pMo->SetFacing((std::string)m_face_dir->get_text());
+    // Add conditions and events
+}
+
 
 
 }
