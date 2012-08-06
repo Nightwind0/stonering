@@ -321,7 +321,7 @@ void MOEditWindow::on_list_selection ( CL_ListViewSelection selection )
     try {
         CL_Sprite sprite = GraphicsManager::CreateSprite(m_sprite_name,true);
         m_sprite_view->SetSprite(sprite);
-        sprite_size = CL_Size(std::max(sprite.get_width() / 32,1), std::max(sprite.get_height() / 64,1));
+        sprite_size = CL_Size(max(sprite.get_width() / 32,1), max(sprite.get_height() / 64,1));
         m_height_spin->set_value(sprite_size.height);
         m_width_spin->set_value(sprite_size.width);
         m_sprite_view->SetSize(sprite_size);
@@ -371,6 +371,8 @@ void MOEditWindow::SetMapEditorState ( MapEditorState* pState )
 bool MOEditWindow::on_window_close()
 {
     set_visible(false);
+
+	return true;
 }
 
 void MOEditWindow::sync_from_mo()

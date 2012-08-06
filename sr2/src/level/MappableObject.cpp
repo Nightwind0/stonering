@@ -5,7 +5,6 @@
 #include "SpriteRef.h"
 #include "Party.h"
 #include <ClanLib/core.h>
-#include <ClanLib-2.3/ClanLib/Core/System/cl_platform.h>
 
 
 
@@ -581,7 +580,7 @@ bool MappableObjectElement::handle_element(Element::eElement element, Element * 
         m_sprite_name = ref->GetRef();
 #endif        
         m_cFlags |= SPRITE;
-        m_sprite = GraphicsManager::CreateSprite(m_sprite_name);
+        m_sprite = GraphicsManager::CreateSprite(ref->GetRef());
         break;
     }default:
         return false;

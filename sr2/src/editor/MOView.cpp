@@ -16,8 +16,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <ClanLib/display.h>
 #include "MOView.h"
+#include <ClanLib/core.h>
+#include <ClanLib/display.h>
 
 namespace StoneRing  { 
 

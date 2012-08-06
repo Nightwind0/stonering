@@ -301,7 +301,7 @@ int Tile::GetDirectionBlock() const
 
 
 
-#if SR2_EDITOR
+#ifdef SR2_EDITOR
 
 CL_DomElement Tile::CreateDomElement(CL_DomDocument& doc)const
 {
@@ -372,6 +372,7 @@ CL_DomElement LevelHeader::CreateDomElement(CL_DomDocument& doc)const
     }
     return levelHeader;
 }
-}
 #endif
+}
+
 

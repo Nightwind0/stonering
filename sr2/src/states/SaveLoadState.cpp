@@ -130,7 +130,8 @@ void SaveLoadState::load_file_previews()
     clear_previews();
     for(int i=0;i<get_option_count();i++){
         std::ifstream in_file;
-        in_file.open(filename_for_slot(i), std::ios::in | std::ios::binary);
+		std::string filename = filename_for_slot(i);
+        in_file.open(filename.c_str(), std::ios::in | std::ios::binary);
         if(in_file.is_open()){
             if(verify_file(in_file)){
                 FilePreview preview = load_file_header(in_file);
@@ -300,7 +301,8 @@ int SaveLoadState::height_for_option ( CL_GraphicContext& gc )
 void SaveLoadState::save ( uint slot )
 {
     char sig[] = "SR2S";
-    std::ofstream out_file(filename_for_slot(slot),std::ios::out|std::ios::binary);
+	std::string filename = filename_for_slot(slot);
+    std::ofstream out_file(filename.c_str(),std::ios::out|std::ios::binary);
     out_file.write(sig,4);
     out_file.write((char*)&kVersion,sizeof(kVersion));
     Party * party = IApplication::GetInstance()->GetParty();
@@ -323,7 +325,8 @@ void SaveLoadState::save ( uint slot )
 
 bool SaveLoadState::load ( uint slot )
 {
-    std::ifstream in_file(filename_for_slot(slot),std::ios::in|std::ios::binary);
+	std::string filename = filename_for_slot(slot);
+    std::ifstream in_file(filename.c_str(),std::ios::in|std::ios::binary);
     if(!verify_file(in_file))
         return false;
     load_file_header(in_file); // load and drop on the floor. don't care now

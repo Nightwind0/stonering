@@ -1,6 +1,6 @@
 #include "SpriteRef.h"
 #include "GraphicsManager.h"
-#include <ClanLib-2.3/ClanLib/Core/System/cl_platform.h>
+
 
 namespace StoneRing { 
 
@@ -49,6 +49,8 @@ std::string SpriteRef::TypeName(SpriteRef::eType type)
             return "dead";
             
     }
+	//assert(0);
+	return "";
 }
 
 

@@ -1,5 +1,5 @@
 #include "Direction.h"
-#include <ClanLib-2.3/ClanLib/Core/System/cl_platform.h>
+
 
 const StoneRing::Direction StoneRing::Direction::NORTH(270);
 const StoneRing::Direction StoneRing::Direction::SOUTH(90);

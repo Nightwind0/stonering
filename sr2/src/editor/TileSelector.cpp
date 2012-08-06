@@ -23,6 +23,8 @@
 #include <ClanLib/display.h>
 #include <Level.h>
 
+#ifdef SR2_EDITOR
+
 namespace StoneRing { 
 
 void TileSelector::AddTileOperation::operator= ( const StoneRing::TileSelector::AddTileOperation& other )
@@ -166,3 +168,4 @@ bool TileSelector::on_click(const CL_InputEvent& event)
 
 
 }
+#endif

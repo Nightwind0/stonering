@@ -27,7 +27,7 @@ using namespace StoneRing;
 using std::string;
 
 
-#ifndef _MSC_VER
+#ifndef _WIN32
 using std::max;
 using std::min;
 using std::abs;
@@ -1218,8 +1218,8 @@ m_pHeader(NULL),m_player(0,0),m_mo_quadtree(NULL){
 
 void Level::GrowLevelTo(uint width, uint height)
 {
-    m_LevelWidth = std::max(width,m_LevelWidth);
-    m_LevelHeight = std::max(height,m_LevelHeight);
+    m_LevelWidth = max(width,m_LevelWidth);
+    m_LevelHeight = max(height,m_LevelHeight);
     
     m_tiles.resize( m_LevelWidth );
 

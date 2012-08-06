@@ -16,7 +16,9 @@
 #include "BattleState.h"
 #include "MainMenuState.h"
 #include "ChoiceState.h"
+#ifdef SR2_EDITOR
 #include "MapEditorState.h"
+#endif
 #include "State.h"
 #ifdef _WINDOWS_
 #include <SteelInterpreter.h>

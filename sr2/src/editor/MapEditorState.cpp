@@ -438,6 +438,7 @@ bool MapEditorState::on_mouse_moved(const CL_InputEvent& event){
             m_mouse_state = MOUSE_DRAG;
         }
     }
+	return true;
 }
 
 bool MapEditorState::on_mouse_pressed(const CL_InputEvent& event){ 
@@ -457,6 +458,7 @@ bool MapEditorState::on_mouse_pressed(const CL_InputEvent& event){
                 break;
         }
     }
+	return true;
 }
 
 int MapEditorState::mod_value(bool shift, bool ctrl, bool alt)const
