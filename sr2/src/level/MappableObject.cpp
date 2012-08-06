@@ -168,10 +168,10 @@ void MappableObject::Draw(CL_GraphicContext& GC, const CL_Point& offset)
 #ifndef NDEBUG
         std::cout << "Mappable Object is tilemap?" << std::endl;
 #endif
-        CL_Rect srcRect(m_graphic.asTilemap->GetMapX() * 32, m_graphic.asTilemap->GetMapY() * 32,
-                        (m_graphic.asTilemap->GetMapX() * 32), (m_graphic.asTilemap->GetMapY() * 32));
+        CL_Rect srcRect(m_tilemap->GetMapX() * 32, m_tilemap->GetMapY() * 32,
+                        (m_tilemap->GetMapX() * 32), (m_tilemap->GetMapY() * 32));
 
-        m_graphic.asTilemap->GetTileMap().draw(GC,srcRect, dstRect);
+        m_tilemap->GetTileMap().draw(GC,srcRect, dstRect);
     }
 }
 
@@ -193,58 +193,48 @@ void MappableObject::Set_Frame_For_Direction()
     if(facing == Direction::NONE)
         m_nStepLoop = 0;
     
+    int step = 0;
+    
     if(!m_navStack.empty())
         facing = m_navStack.top()->GetFacingDirection();
     
-        switch(GetMovementType())
-        {
-        case MOVEMENT_NONE:
-            
-            m_sprite.set_frame(0);
-
-            break;
-        case MOVEMENT_WANDER:
-        {
-            int step = m_nStepLoop % (m_sprite.get_frame_count()/4 * 2 - 1);
-            if(step > m_sprite.get_frame_count()/4 - 1){
-                step = m_sprite.get_frame_count()/4 * 2 - step - 2;   
-            }            
-            if(facing == Direction::NORTH)
-                m_sprite.set_frame(step);
-            else if(facing == Direction::EAST)
-                m_sprite.set_frame(3 + step);            
-            else if(facing == Direction::WEST)
-                m_sprite.set_frame(9 + step);
-            else if(facing == Direction::SOUTH)
-                m_sprite.set_frame(6 + step);
-            break;
+    switch(GetMovementType())
+    {
+    case MOVEMENT_WANDER:
+    {
+        step = m_nStepLoop % (m_sprite.get_frame_count()/4 * 2 - 1);
+        if(step > m_sprite.get_frame_count()/4 - 1){
+            step = m_sprite.get_frame_count()/4 * 2 - step - 2;   
         }
-        case MOVEMENT_PACE_NS:
-        {
-            int step = m_nStepLoop % (m_sprite.get_frame_count()/2 * 2 - 1);
-            if(step > m_sprite.get_frame_count()/2 - 1){
-                step = m_sprite.get_frame_count()/2 * 2 - step - 2;   
-            }            
-            if(facing == Direction::NORTH)
-                m_sprite.set_frame ( 3 + step );
-            else if(facing == Direction::SOUTH)
-                m_sprite.set_frame ( step);
-            break;
-        }
-        case MOVEMENT_PACE_EW:
-        {
-            int step = m_nStepLoop % (m_sprite.get_frame_count()/2 * 2 - 1);
-            if(step > m_sprite.get_frame_count()/2 - 1){
-                step = m_sprite.get_frame_count()/2 * 2 - step - 2;   
-            }             
-            if(facing == Direction::EAST)
-                m_sprite.set_frame ( 3 + step  );    
-            else if(facing == Direction::WEST)
-                m_sprite.set_frame ( step );
-            break;
-        }
-        
+        break;
     }
+    case MOVEMENT_PACE_NS:
+    {
+        step = m_nStepLoop % (m_sprite.get_frame_count()/2 * 2 - 1);
+        if(step > m_sprite.get_frame_count()/2 - 1){
+            step = m_sprite.get_frame_count()/2 * 2 - step - 2;   
+        }            
+    }
+    case MOVEMENT_PACE_EW:
+    {
+        step = m_nStepLoop % (m_sprite.get_frame_count()/2 * 2 - 1);
+        if(step > m_sprite.get_frame_count()/2 - 1){
+            step = m_sprite.get_frame_count()/2 * 2 - step - 2;   
+        }             
+    }
+    break;
+    }
+
+    // TODO: Have to handle sprites that only have steps in NS or EW directions
+    
+    if(facing == Direction::NORTH)
+        m_sprite.set_frame(step);
+    else if(facing == Direction::EAST)
+        m_sprite.set_frame(3 + step);            
+    else if(facing == Direction::WEST)
+        m_sprite.set_frame(9 + step);
+    else if(facing == Direction::SOUTH)
+        m_sprite.set_frame(6 + step);
     
 }
 
@@ -466,6 +456,16 @@ void MappableObjectElement::load_attributes(CL_DomNamedNodeMap attributes)
     std::string motype = get_required_string("type",attributes);
     std::string size = get_required_string("size",attributes);
     
+    
+    if(has_attribute("sprite",attributes)){
+        m_sprite.clone( GraphicsManager::CreateSprite(get_string("sprite",attributes),true) );
+        m_cFlags |= SPRITE;
+#ifdef SR2_EDITOR
+        m_sprite_name = get_string("sprite",attributes);
+#endif
+    }
+    
+    m_start_facing = Direction(get_implied_string("facing",attributes,"south")); 
 
     m_speed = SLOW;
     if (has_attribute("speed",attributes))
@@ -497,10 +497,19 @@ void MappableObjectElement::load_attributes(CL_DomNamedNodeMap attributes)
     else if (type == "paceNS")
     {
         m_move_type = MOVEMENT_PACE_NS;
+        if(m_start_facing != Direction::NORTH &&
+            m_start_facing != Direction::SOUTH){
+            m_start_facing = Direction::SOUTH;
+        }
+            
     }
     else if (type == "paceEW")
     {
         m_move_type = MOVEMENT_PACE_EW;
+        if(m_start_facing != Direction::EAST && 
+            m_start_facing != Direction::WEST){
+            m_start_facing = Direction::EAST;
+        }
     }
     else if (type == "script")
     {
@@ -511,7 +520,6 @@ void MappableObjectElement::load_attributes(CL_DomNamedNodeMap attributes)
         m_move_type = MOVEMENT_NONE;
     }
   
-    
 
     m_StartX= get_required_int("xpos",attributes);
     m_StartY = get_required_int("ypos",attributes);
@@ -558,46 +566,7 @@ bool MappableObjectElement::handle_element(Element::eElement element, Element * 
     {
         if( m_size != DimensionsFromSizeType(MO_SMALL)) throw CL_Exception("Mappable objects using tilemaps MUST be size small.");
         m_cFlags |= TILEMAP;
-        m_graphic.asTilemap = dynamic_cast<Tilemap*>(pElement);
-        break;
-    }
-    case ESPRITEREF:
-    {
-        SpriteRef * pRef = dynamic_cast<SpriteRef*>(pElement);
-
-        if(pRef->GetType() >= SpriteRef::_END_MO_TYPES)
-        {
-            throw CL_Exception("spriteRef on mappable object must have direction type, not battle type");
-        }
-
-        m_graphic.asSpriteRef = pRef;
-        m_cFlags |= SPRITE;
-
-        m_sprite = GraphicsManager::CreateSprite ( pRef->GetRef() );
-
-        int swidth = m_sprite.get_width();
-        int sheight = m_sprite.get_height();
-
-        /* Don't care. The actual size of the sprite doesn't have to do with the size of the creature
-        switch( m_eSize )
-        {
-        case MO_SMALL:
-            if( swidth != 32 && sheight !=32) throw CL_Exception("Sprite size doesn't match MO size (SMALL)");
-            break;
-        case MO_MEDIUM:
-            if( swidth != 64 && sheight != 64) throw CL_Exception("Sprite size doesn't match MO size (MEDIUM).");
-            break;
-        case MO_LARGE:
-            if( swidth != 128 && sheight != 128) throw CL_Exception("Sprite size doesnt match MO size (LARGE)");
-            break;
-        case MO_TALL:
-            if( swidth != 32 && sheight != 64) throw CL_Exception("Sprite size does not match MO size(TALL)");
-            break;
-        case MO_WIDE:
-            if( swidth != 64 && sheight != 32) throw CL_Exception("Sprite size does not match MO size(TALL)");
-            break;
-        }*/
-
+        m_tilemap = dynamic_cast<Tilemap*>(pElement);
         break;
     }
     case ECONDITIONSCRIPT:
@@ -606,7 +575,15 @@ bool MappableObjectElement::handle_element(Element::eElement element, Element * 
     case EEVENT:
         m_events.push_back ( dynamic_cast<Event*>(pElement));
         break;
-    default:
+    case ESPRITEREF:{
+        SpriteRef* ref = dynamic_cast<SpriteRef*>(pElement);
+#ifdef SR2_EDITOR
+        m_sprite_name = ref->GetRef();
+#endif        
+        m_cFlags |= SPRITE;
+        m_sprite = GraphicsManager::CreateSprite(m_sprite_name);
+        break;
+    }default:
         return false;
     }
 
@@ -620,6 +597,18 @@ void MappableObjectElement::load_finished()
     PushNavigator(&m_navigator);
     Prod();
 }
+
+void MappableObjectElement::Placed()
+{
+    Set_Frame_For_Direction();
+}
+
+
+Direction MappableObjectElement::Get_Default_Facing() const
+{
+    return m_start_facing;
+}
+
 
 MappableObjectDynamic::MappableObjectDynamic ( MappableObject::eMappableObjectType type, MappableObject::eMovementType move_type, MappableObject::eMovementSpeed speed )
 :m_move_type(move_type),m_move_speed(speed)
@@ -743,6 +732,10 @@ CL_DomElement MappableObjectElement::CreateDomElement(CL_DomDocument& doc)const
     std::string speed;
     std::string movetype;
 
+    
+    if(IsSprite()){
+        element.set_attribute("sprite",m_sprite_name);
+    }
 
     std::string size;
     size += IntToString(m_size.width) + 'x' + IntToString(m_size.height);
@@ -805,16 +798,14 @@ CL_DomElement MappableObjectElement::CreateDomElement(CL_DomDocument& doc)const
     element.set_attribute("type", motype );
     element.set_attribute("xpos", IntToString(m_StartX) );
     element.set_attribute("ypos", IntToString(m_StartY) );
+    
+    element.set_attribute("facing",(std::string)m_start_facing);
  
 
     if(IsSolid()) element.set_attribute("solid", "true" );
 
     if(m_cFlags & TILEMAP){
-        element.append_child(m_graphic.asTilemap->CreateDomElement(doc));
-    }
-
-    if(IsSprite()){
-        element.append_child(m_graphic.asSpriteRef->CreateDomElement(doc));
+        element.append_child(m_tilemap->CreateDomElement(doc));
     }
 
     if(m_pCondition){
@@ -825,10 +816,17 @@ CL_DomElement MappableObjectElement::CreateDomElement(CL_DomDocument& doc)const
         h != m_events.end(); h++) {
         element.append_child((*h)->CreateDomElement(doc));
     }
-
+    
+    create_dom_element_hook(element);
 
     return element;  
 }
+
+void MappableObjectElement::create_dom_element_hook(CL_DomElement& element)const
+{
+        
+}
+
 #endif
 
 

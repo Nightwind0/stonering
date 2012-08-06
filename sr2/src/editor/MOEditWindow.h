@@ -21,35 +21,62 @@
 #define MOEDITWINDOW_H
 
 #include <ClanLib/gui.h>
+#include "MappableObject.h"
 #include "MOView.h"
 
 namespace StoneRing { 
+
+class EditorMappableObject;
+class MapEditorState;
 
 class MOEditWindow : public CL_Window
 {
 public:
     MOEditWindow(CL_GUIManager* owner, const CL_GUITopLevelDescription &desc);
     virtual ~MOEditWindow();
+    void SetMapEditorState(MapEditorState* pState);
+    void SetMappableObject(MappableObject* pObject);
+    void SetCreate();
     void SetName(const char* pName);
     void SetPoint(const CL_Point& i_pt);
 private:
     bool on_window_close();
     void populate_sprite_list();
+    void populate_move_speed_combo();
+    void populate_movement_combo();
+    void populate_event_list();
+    void populate_facing_combo();
     void on_list_selection(CL_ListViewSelection selection);
+    void on_save();
+    void on_cancel();
+    void sync_to_mo();
+    void sync_from_mo();
+    
     std::string m_name;
     std::string m_sprite_ref;
     CL_ListView *        m_sprite_list;
     MOView *             m_sprite_view;
+    std::string          m_sprite_name;
     //CL_ComboBox*         m_type_list;
     CL_Spin *            m_width_spin;
     CL_Spin *            m_height_spin;
     CL_ComboBox*         m_movement;
+    CL_ComboBox*         m_move_speed;
+    CL_ComboBox*         m_face_dir;
     CL_LineEdit*         m_name_field;
     CL_Label*            m_name_label;
+    CL_PushButton*       m_condition_button;
+    CL_ComboBox*         m_event_list;
+    CL_PushButton*       m_add_event_button;
+    CL_PushButton*       m_open_event_button;
+    CL_PushButton*       m_save_button;
     // TODO: Events, opens up event editor
     // TODO: Condition script, goes to script editor
     CL_CheckBox*         m_solid;
     CL_Point             m_point;
+    shared_ptr<EditorMappableObject> m_pMo;
+    bool                 m_edit_mode;
+    MapEditorState*      m_map_editor_state;
 };
 
 

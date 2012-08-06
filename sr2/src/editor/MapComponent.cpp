@@ -87,6 +87,9 @@ void MapComponent::draw_level(CL_GraphicContext &gc, const CL_Rect& screen_rect)
     CL_Rectf source(to_float(-m_origin)/m_scale,CL_Sizef(screen_rect.get_width()/m_scale,screen_rect.get_height()/m_scale));
     if(m_pLevel){
         m_pLevel->Draw(source,screen,gc,false,m_show_hot,m_show_direction_blocks);
+        if(m_show_mos){
+            m_pLevel->DrawMappableObjects(source,screen,gc);
+        }
     }
    gc.pop_modelview();
 }
@@ -183,7 +186,7 @@ CL_Point MapComponent::level_to_screen ( const CL_Point& level, const CL_Point& 
 CL_Point MapComponent::screen_to_level ( const CL_Point& screen, const CL_Point& screen_center ) const
 {
     
-    CL_Pointf v = to_float(screen) - to_float(component_to_window_coords(m_origin));
+    CL_Pointf v = to_float(component_to_window_coords(screen)) - to_float(component_to_window_coords(m_origin));
     return CL_Point(v.x/m_scale,v.y/m_scale);
     /*CL_Pointf s = to_float((screen) - (screen_center));
     s -= to_float(m_origin);
@@ -191,6 +194,21 @@ CL_Point MapComponent::screen_to_level ( const CL_Point& screen, const CL_Point&
     s += to_float(get_center());
     return CL_Point(s.x,s.y);*/
 }
+
+bool MapComponent::valid_location ( const CL_Point& screen, const CL_Point& screen_center ) const
+{
+    if(m_pLevel == NULL) return false;
+    
+    CL_Point level = screen_to_level(screen,screen_center);
+    CL_Point tile = level / 32;
+    if(tile.x < 0 || tile.y < 0 ||
+        tile.x >= m_pLevel->GetWidth() || tile.y >= m_pLevel->GetHeight()){
+        return false;
+    }
+    
+    return true;
+}
+
 
 void MapComponent::set_rubber_band ( const CL_Rect& rect )
 {
@@ -218,7 +236,23 @@ void MapComponent::show_hot ( bool on )
 
 void MapComponent::show_mos ( bool on )
 {
+    m_show_mos = on;
+}
 
+void MapComponent::show_pop ( bool on )
+{
+    m_show_pop = on;
+}
+
+
+MappableObject* MapComponent::get_mo_named ( const std::string& name )
+{
+    return m_pLevel->GetMappableObjectByName(name);
+}
+
+std::list<MappableObject*> MapComponent::get_mos_at( const CL_Point& point )
+{
+    return m_pLevel->GetMappableObjectsAt(point);
 }
 
 

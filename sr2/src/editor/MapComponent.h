@@ -42,12 +42,16 @@ public:
     CL_Size get_draw_size()const;
     CL_Point screen_to_level(const CL_Point& screen, const CL_Point& screen_center)const;
     CL_Point level_to_screen(const CL_Point& level, const CL_Point& screen_center)const;
+    bool valid_location(const CL_Point& screen, const CL_Point& screen_center)const;
     void set_rubber_band(const CL_Rect& rect);
     void cancel_rubber_band();
     shared_ptr<Level> get_level() { return m_pLevel; }
     void show_direction_blocks(bool on);
     void show_hot(bool on);
     void show_mos(bool on);
+    void show_pop(bool on);
+    MappableObject* get_mo_named(const std::string& name);
+    std::list<MappableObject*> get_mos_at(const CL_Point& level_pt);
 private:
     void on_render(CL_GraphicContext &gc, const CL_Rect &clip_rect);
     void on_process_message(CL_GUIMessage &message);
@@ -62,6 +66,8 @@ private:
     bool m_show_band;
     bool m_show_direction_blocks;
     bool m_show_hot;
+    bool m_show_mos;
+    bool m_show_pop;
     CL_Rect m_rubber_band;
     shared_ptr<Level>  m_pLevel;
 };

@@ -1,5 +1,5 @@
 <level name="TestLevel">
-	<levelHeader music="Town" width="35" height="29" allowsRunning="true"/>
+	<levelHeader width="35" height="29" music="Town" allowsRunning="true"/>
 	<mappableObjects>
 		<mo name="Action" movementType="none" speed="slow" size="1x1" type="square" xpos="2" ypos="0">
 			<event name="mordusDances" triggerType="step" remember="true">
@@ -77,17 +77,6 @@
 				</script>
 			</event>
 		</mo>
-		<mo name="Presence" movementType="none" speed="slow" size="1x1" type="square" xpos="3" ypos="3">
-			<event name="sensePresence" triggerType="talk" remember="true">
-				<script id="presence_">
-					<![CDATA[say("????", "You sense a presence. It is as though you can feel the watching eyes of someone.
-                                Perhaps someone you once knew. You are frozen in your tracks. You wonder about the sky. What color is it?
-                                What does it mean to you? What will you do if it ever goes away? Why? What is it with monkeys, anyway.
-                                Do they really come in barrels? What else comes in barrels besides monkeys and pickles?");
-                                ]]>
-				</script>
-			</event>
-		</mo>
 		<mo name="Podium" movementType="none" speed="slow" size="1x1" type="square" xpos="2" ypos="2">
 			<event name="podium" triggerType="talk">
 				<script id="usePodium">
@@ -108,8 +97,7 @@
 				</script>
 			</event>
 		</mo>
-		<mo name="Karate Cat" movementType="wander" speed="medium" size="1x1" type="npc" xpos="0" ypos="5" solid="true">
-			<spriteRef type="fourway" ref="Npc/Cat"/>
+		<mo name="Karate Cat" sprite="Npc/Cat" movementType="wander" speed="medium" size="1x1" type="npc" xpos="0" ypos="5" solid="true">
 			<event name="CatMeow" triggerType="talk" remember="true">
 				<script id="catmeow">
 					<![CDATA[say($_Name,"Do you want karate?");
@@ -118,8 +106,18 @@
 				</script>
 			</event>
 		</mo>
-		<mo name="Samara" movementType="wander" speed="slow" size="1x1" type="npc" xpos="2" ypos="8" solid="true">
-			<spriteRef type="fourway" ref="Npc/Cat2"/>
+		<mo name="Presence" movementType="none" speed="slow" size="1x1" type="square" xpos="3" ypos="3">
+			<event name="sensePresence" triggerType="talk" remember="true">
+				<script id="presence_">
+					<![CDATA[say("????", "You sense a presence. It is as though you can feel the watching eyes of someone.
+                                Perhaps someone you once knew. You are frozen in your tracks. You wonder about the sky. What color is it?
+                                What does it mean to you? What will you do if it ever goes away? Why? What is it with monkeys, anyway.
+                                Do they really come in barrels? What else comes in barrels besides monkeys and pickles?");
+                                ]]>
+				</script>
+			</event>
+		</mo>
+		<mo name="Samara" sprite="Npc/Cat2" movementType="wander" speed="slow" size="1x1" type="npc" xpos="2" ypos="8" solid="true">
 			<event name="Cat3Go" triggerType="talk">
 				<conditionScript id="Cat3Go_c">
 					<![CDATA[return hasItem("Octavia Key",1);
@@ -173,9 +171,8 @@
 				</script>
 			</event>
 		</mo>
-		<mo name="Jeremy" movementType="wander" speed="slow" size="2x2" type="npc" xpos="4" ypos="15">
-			<spriteRef type="fourway" ref="Npc/Seagull"/>
-		</mo>
+		<mo name="Object 1" sprite="Mob/TwilightSlime" movementType="paceNS" speed="fast" size="1x1" type="" xpos="16" ypos="10" solid="true"/>
+		<mo name="Jeremy" sprite="Npc/Seagull" movementType="wander" speed="slow" size="2x2" type="npc" xpos="4" ypos="15" solid="false" flying="true"/>
 	</mappableObjects>
 	<tiles>
 		<tile xpos="0" ypos="0">
@@ -1744,10 +1741,6 @@
 			<tilemap mapname="roofs" mapx="0" mapy="3"/>
 			<directionBlock north="true" south="false" east="false" west="false"/>
 		</tile>
-		<tile xpos="11" ypos="4" zorder="1">
-			<tilemap mapname="roofs" mapx="6" mapy="2"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
-		</tile>
 		<tile xpos="11" ypos="4">
 			<tilemap mapname="roofs" mapx="2" mapy="13"/>
 		</tile>
@@ -1759,6 +1752,10 @@
 		</tile>
 		<tile xpos="11" ypos="4">
 			<tilemap mapname="roofs" mapx="6" mapy="2"/>
+		</tile>
+		<tile xpos="11" ypos="4" zorder="1">
+			<tilemap mapname="roofs" mapx="6" mapy="2"/>
+			<directionBlock north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="11" ypos="5" hot="true">
 			<tilemap mapname="roofs" mapx="0" mapy="13"/>
@@ -3393,11 +3390,11 @@
 		<tile xpos="23" ypos="3">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
-		<tile xpos="23" ypos="3" zorder="1">
-			<tilemap mapname="grass" mapx="1" mapy="10"/>
-		</tile>
 		<tile xpos="23" ypos="3">
 			<tilemap mapname="grass" mapx="4" mapy="11"/>
+		</tile>
+		<tile xpos="23" ypos="3" zorder="1">
+			<tilemap mapname="grass" mapx="1" mapy="10"/>
 		</tile>
 		<tile xpos="23" ypos="4">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>

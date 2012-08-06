@@ -16,11 +16,6 @@ namespace StoneRing
         virtual ~SpriteRef();
         virtual eElement WhichElement() const{ return ESPRITEREF; }
         enum eType {
-            SPR_NONE,
-            SPR_STILL,
-            SPR_TWO_WAY,
-            SPR_FOUR_WAY,
-            _END_MO_TYPES,
             SPR_BATTLE_IDLE,
             SPR_BATTLE_ATTACK,
             SPR_BATTLE_RECOIL,

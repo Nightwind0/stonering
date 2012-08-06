@@ -117,7 +117,13 @@ void NPCNavigator::random_new_direction ( )
                 m_eDirection = Direction::NONE;
             break;
         case MappableObject::MOVEMENT_PACE_NS:
+            if(m_eDirection == Direction::NONE)
+                m_eDirection = Direction::SOUTH;
+            if(r > 2) pick_opposite_direction();
+            break;
         case MappableObject::MOVEMENT_PACE_EW:
+            if(m_eDirection == Direction::NONE)
+                m_eDirection = Direction::EAST;
             if(r > 2)
                 pick_opposite_direction();
             break;

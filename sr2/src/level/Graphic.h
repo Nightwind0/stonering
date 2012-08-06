@@ -25,13 +25,6 @@ namespace StoneRing{
     class SpriteRef;
     class Tilemap;
 
-    union SpriteRefOrTilemap
-    {
-        SpriteRef* asSpriteRef;
-        Tilemap * asTilemap;
-    };
-
-
 }
 
 #endif

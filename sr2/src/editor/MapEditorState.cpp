@@ -21,6 +21,7 @@
 #include "Operation.h"
 #include <cmath>
 #include <vector>
+#include <sstream>
 #include "TileSelectorWindow.h"
 #if SR2_EDITOR
 
@@ -187,6 +188,8 @@ void MapEditorState::Start()
     mo_edit_desc.set_decorations(true);
     m_pMOEditWindow = new MOEditWindow(get_gui(), mo_edit_desc);
     m_pMOEditWindow->set_draggable(true);
+    m_pMOEditWindow->set_visible(false);
+    m_pMOEditWindow->SetMapEditorState(this);
     
     
     m_toolbar = new CL_ToolBar(m_pWindow);
@@ -197,12 +200,30 @@ void MapEditorState::Start()
     m_pMenuBar = m_pWindow->get_menubar();//new CL_MenuBar(m_pWindow);
     m_pMenuBar->set_geometry(CL_Rect(0,0,size.width,32));
   
+    construct_map_context_menu();
     construct_menu();
     construct_toolbar();
     construct_accels();
     get_gui()->set_accelerator_table(m_accels);
     //m_pToolWindow->set_geometry(CL_Rect(0,0,300,400));
     m_mouse_state = MOUSE_IDLE;
+}
+
+void MapEditorState::construct_map_context_menu()
+{
+    m_map_context_menu.clear();
+    CL_PopupMenuItem edit_tile_item = m_map_context_menu.insert_item("Edit Tiles");
+    m_map_context_menu.insert_separator();
+    CL_PopupMenuItem add_mo_item = m_map_context_menu.insert_item("Add Object");
+    CL_PopupMenuItem edit_mo_item = m_map_context_menu.insert_item("Edit Object");
+    CL_PopupMenuItem move_mo_item = m_map_context_menu.insert_item("Move Object");
+    CL_PopupMenuItem delete_mo_item = m_map_context_menu.insert_item("Delete Object");
+    
+    edit_tile_item.func_clicked().set(this,&MapEditorState::on_edit_tile);
+    add_mo_item.func_clicked().set(this,&MapEditorState::on_add_mo);
+    edit_mo_item.func_clicked().set(this,&MapEditorState::on_edit_mo);    
+    move_mo_item.func_clicked().set(this,&MapEditorState::on_move_mo);
+    
 }
 
 void MapEditorState::construct_menu()
@@ -240,7 +261,7 @@ void MapEditorState::construct_menu()
     view.insert_item("Recenter").func_clicked().set(this,&MapEditorState::on_view_recenter);
     
     m_mo_menu.clear();
-    m_mo_menu.insert_item("Create").func_clicked().set(this,&MapEditorState::on_mo_create);
+    //m_mo_menu.insert_item("Create").func_clicked().set(this,&MapEditorState::on_mo_create);
     
     m_pMenuBar->add_menu("View",view);
     m_pMenuBar->add_menu("Mappable Objects",m_mo_menu);
@@ -258,9 +279,6 @@ void MapEditorState::construct_toolbar()
         {"Media/Editor/Images/map_add.png","Add Tiles",ADD_TILE},
         {"Media/Editor/Images/map_delete.png","Erase Tiles",DELETE_TILE},
         {"Media/Editor/Images/map_edit.png","Edit Tiles",EDIT_TILE},
-        {"Media/Editor/Images/user_add.png", "Add Object",ADD_OBJECT},
-        {"Media/Editor/Images/user_delete.png","Erase Object",DELETE_OBJECT},
-        {"Media/Editor/Images/user_edit.png","Edit Object",EDIT_OBJECT},
         {"Media/Editor/Images/world_edit.png","Level Data",EDIT_LEVEL},
         {"Media/Editor/Images/block_west.png","",BLOCK_WEST},
         {"Media/Editor/Images/block_north.png","",BLOCK_NORTH},
@@ -362,6 +380,7 @@ void MapEditorState::on_mo_create()
 {
     m_pMOEditWindow->set_visible(true);
     m_pMOEditWindow->bring_to_front();
+    m_pMap->show_mos(true);
 }
 
 void MapEditorState::on_zoom_changed()
@@ -475,7 +494,19 @@ bool MapEditorState::on_mouse_released(const CL_InputEvent& event){
 
 bool MapEditorState::on_mouse_double_click(const CL_InputEvent& event)
 {
-    
+    if(event.id == CL_MOUSE_RIGHT){
+        // Popup menu (but only when clicking on the level itself)
+        CL_Point map_offset = m_pMap->get_geometry().get_top_left();     
+        if(m_pMap->valid_location(event.mouse_pos, m_pMap->get_geometry().get_center()-map_offset)){
+            m_map_context_point = event.mouse_pos;
+            m_map_context_menu.start(m_pMap,event.mouse_pos);    
+        }
+    }else{
+        CL_Point map_offset = m_pMap->get_geometry().get_top_left();
+        CL_Point level_pt = m_pMap->screen_to_level(event.mouse_pos-map_offset,m_pMap->get_geometry().get_center()-map_offset);
+        level_pt /= 32;  
+        std::cerr << "Edit: " << level_pt.x << ',' << level_pt.y << std::endl;        
+    }
     return true;
 }
 
@@ -490,6 +521,66 @@ bool MapEditorState::on_pointer_exit(){
         cancel_drag();
     return true;
 }
+
+void MapEditorState::on_add_mo()
+{
+    CL_Point map_offset = m_pMap->get_geometry().get_top_left();
+    CL_Point level_pt = m_pMap->screen_to_level(m_map_context_point-map_offset,m_pMap->get_geometry().get_center()-map_offset);
+    level_pt /= 32;
+    
+    std::string name = create_unique_mo_name();
+    m_pMOEditWindow->SetName(name.c_str());
+    m_pMOEditWindow->SetCreate();
+    m_pMOEditWindow->SetPoint(level_pt);
+    m_pMOEditWindow->set_visible(true);
+    m_pMOEditWindow->bring_to_front();    
+    
+    m_pMap->show_mos(true);
+}
+
+void MapEditorState::on_edit_mo()
+{
+    CL_Point map_offset = m_pMap->get_geometry().get_top_left();
+    CL_Point level_pt = m_pMap->screen_to_level(m_map_context_point-map_offset,m_pMap->get_geometry().get_center());
+    level_pt /= 32;    
+    
+
+    
+    // Find the MO at this point
+    std::list<MappableObject*> objects = m_pMap->get_mos_at(level_pt);
+    if(objects.size() > 0){
+        m_pMOEditWindow->SetMappableObject(*objects.begin());
+        m_pMOEditWindow->set_visible(true);
+        m_pMOEditWindow->bring_to_front();
+        m_pMap->show_mos(true);        
+    }
+
+}
+
+void MapEditorState::on_move_mo()
+{
+}
+
+void MapEditorState::on_edit_tile()
+{
+}
+
+std::string MapEditorState::create_unique_mo_name()
+{
+    std::ostringstream stream;
+    int num = 0;
+    do{
+        stream.clear();
+        stream.str("");
+        stream << "Object " << num;
+        if(NULL == m_pMap->get_mo_named(stream.str())){
+            return stream.str();
+        }else{
+            ++num;
+        }
+    }while(true);
+}
+
 
 void MapEditorState::start_drag(const CL_Point& point, MouseButton button, int mod){
     std::cout << "Start drag " << point.x << ',' << point.y << std::endl;
@@ -531,6 +622,7 @@ void MapEditorState::end_drag(const CL_Point& start,const CL_Point& prev, const 
     m_mouse_state = MOUSE_IDLE;
     std::cout << "End drag " << std::endl;
     if(mod == 0 && button == MOUSE_RIGHT){
+
     }else{
         // current tool
         if(m_pMap->get_level()){
@@ -686,6 +778,12 @@ bool MapEditorState::DisableMappableObjects() const {
 }
 
 void MapEditorState::MappableObjectMoveHook(){
+}
+
+void MapEditorState::PerformOperation(Operation* pOp){
+    pOp->Execute(m_pMap->get_level());
+    m_undo_stack.push_front(pOp);
+    m_pMap->request_repaint();
 }
 
 
