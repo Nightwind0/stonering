@@ -218,6 +218,8 @@ bool RectContains(const CL_Rectx<T>& rect, const CL_Vec2<T>& p){
 #ifndef WIN32
 #include <tr1/memory>
 using std::tr1::shared_ptr;
+using std::max;
+using std::min;
 #else
 using std::tr1::shared_ptr;
 #endif

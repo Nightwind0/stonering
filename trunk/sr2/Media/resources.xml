@@ -784,6 +784,11 @@
 
 <!-- Can be moved off to a separate resource xml -->
         <section name="Sprites">
+            <section name="System">
+                <sprite name="Pops" hint="alpha">
+                    <image file="Sprites/pop.png"/>
+                </sprite>
+            </section>
                 <section name="Battle">
                         <sprite name="Target" hint="alpha">
                                 <image file="Sprites/target.png"/>
