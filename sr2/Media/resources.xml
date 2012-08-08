@@ -864,7 +864,7 @@
                         </image>
                     </sprite>
                     <sprite name="Torriq" hint="alpha">
-                        <image file="Images/Portrait/Valyn.png">
+                        <image file="Images/Portrait/Torriq.png">
                             <grid pos="0,0" size="128,128" array="3,2"/>
                         </image>
                     </sprite>                    
