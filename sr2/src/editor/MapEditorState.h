@@ -80,7 +80,7 @@ namespace StoneRing {
         
         enum MouseButton {
             MOUSE_LEFT=0,
-            MOUSE_RIGHT=64
+            MOUSE_RIGHT=Modifier::RIGHT
         }m_drag_button;
         
         enum Menu {
@@ -105,7 +105,9 @@ namespace StoneRing {
             BLOCK_NORTH,
             BLOCK_EAST,
             BLOCK_SOUTH,
-            HOT
+            BLOCK_ALL,
+            HOT,
+            POPS
         };
         
         int  mod_value(bool shift,bool ctrl,bool alt)const;

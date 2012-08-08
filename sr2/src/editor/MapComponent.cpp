@@ -87,9 +87,10 @@ void MapComponent::draw_level(CL_GraphicContext &gc, const CL_Rect& screen_rect)
     draw_grid(gc,area);
     CL_Rectf source(to_float(-m_origin)/m_scale,CL_Sizef(screen_rect.get_width()/m_scale,screen_rect.get_height()/m_scale));
     if(m_pLevel){
-        m_pLevel->Draw(source,screen,gc,false,m_show_hot,m_show_direction_blocks);
+        m_pLevel->Draw(source,screen,gc,false,m_show_hot,m_show_direction_blocks,false,m_show_pop);
         if(m_show_mos){
             m_pLevel->DrawMappableObjects(source,screen,gc);
+        m_pLevel->Draw(source,screen,gc,true,m_show_hot,m_show_direction_blocks,false,m_show_pop);            
         }
     }
    gc.pop_modelview();

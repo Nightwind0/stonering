@@ -464,7 +464,7 @@ bool Level::Get_Cumulative_Hotness_At_Point(const CL_Point &point) const
 
 
 void Level::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, bool floaters,
-                 bool highlightHot, bool indicateBlocks, bool indicateQuadtree)
+                 bool highlightHot, bool indicateBlocks, bool indicateQuadtree, bool indicatePops)
 {
     //    int maxSrcX = max( ceil(dst.get_width() / 32.0), mLevelWidth );
     //    int maxSrcY = max( ceil(dst.get_height() / 32.0), mLevelHeight);
@@ -567,7 +567,12 @@ void Level::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, 
                             if(indicateBlocks && m_pathPoints.count(CL_Point(tileX,tileY))){
                                 CL_Draw::fill(GC,tileDst,CL_Colorf(0.8f,0.0f,0.8f,0.25f));
                             }
-#endif
+                            
+                            if(indicatePops && pTile->Pops())
+                            {
+                                CL_Sprite indicator = GraphicsManager::CreateSprite("Sprites/System/Pops",false);
+                                indicator.draw(GC,tileDst.get_top_left().x,tileDst.get_top_left().y);
+                            }
 
                             // Extra code for level editing
                             if(highlightHot && pTile->IsHot())
@@ -599,7 +604,7 @@ void Level::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, 
                                 }
                             }
                         } 
-
+#endif
 
 
 

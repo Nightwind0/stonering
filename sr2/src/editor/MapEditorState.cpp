@@ -284,7 +284,9 @@ void MapEditorState::construct_toolbar()
         {"Media/Editor/Images/block_north.png","",BLOCK_NORTH},
         {"Media/Editor/Images/block_east.png","",BLOCK_EAST},
         {"Media/Editor/Images/block_south.png","",BLOCK_SOUTH},
-        {"Media/Editor/Images/hot.png","",HOT}
+        {"Media/Editor/Images/surround.png","",BLOCK_ALL},
+        {"Media/Editor/Images/hot.png","",HOT},
+        {"Media/Editor/Images/pop.png","",POPS}
     };
     
     for(int i=0;i<sizeof(tools)/sizeof(Tool);i++){
@@ -538,7 +540,7 @@ void MapEditorState::on_add_mo()
     m_pMOEditWindow->bring_to_front();    
     
     m_pMap->show_mos(true);
-}
+} 
 
 void MapEditorState::on_edit_mo()
 {
@@ -703,7 +705,9 @@ void MapEditorState::on_toolbar_item(CL_ToolBarItem item)
         case BLOCK_SOUTH:
         case BLOCK_NORTH:
         case BLOCK_EAST:
+        case BLOCK_ALL:
         case HOT:
+        case POPS:
             int flag = Tile::TIL_HOT;
             if(item.get_id() == BLOCK_WEST)
                 flag = Tile::TIL_BLK_WEST;
@@ -713,6 +717,14 @@ void MapEditorState::on_toolbar_item(CL_ToolBarItem item)
                 flag = Tile::TIL_BLK_SOUTH;
             else if(item.get_id() == BLOCK_NORTH)
                 flag = Tile::TIL_BLK_NORTH;
+            else if(item.get_id() == BLOCK_ALL)
+                flag = Tile::TIL_BLK_NORTH | Tile::TIL_BLK_SOUTH | Tile::TIL_BLK_WEST | Tile::TIL_BLK_EAST;
+            else if(item.get_id() == POPS)
+                flag = Tile::TIL_POPS;
+            
+            m_pMap->show_pop(false);
+            m_pMap->show_hot(false);
+            m_pMap->show_direction_blocks(false);
       
             block_op.SetBlock( flag );
             block_ops.SetBlock( flag );
@@ -720,12 +732,12 @@ void MapEditorState::on_toolbar_item(CL_ToolBarItem item)
             SetOperation(CLICK|CTRL,&block_op);
             SetOperation(DRAG,&block_ops);
             SetOperation(DRAG|CTRL,&block_ops);
-            if(flag != Tile::TIL_HOT){
-                m_pMap->show_direction_blocks(true);
-                m_pMap->show_hot(false);
-            }else{
-                m_pMap->show_direction_blocks(false);
+            if(flag == Tile::TIL_POPS){
+                m_pMap->show_pop(true);
+            }else if(flag == Tile::TIL_HOT){
                 m_pMap->show_hot(true);
+            }else if(flag != Tile::TIL_HOT){
+                m_pMap->show_direction_blocks(true);
             }
             break;
         }
