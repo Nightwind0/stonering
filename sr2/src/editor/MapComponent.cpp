@@ -30,7 +30,7 @@ m_gradient(CL_Colorf(0.5f,0.5f,0.5f),CL_Colorf(1.0f,1.0f,1.0f),CL_Colorf(1.0f,1.
     func_process_message().set(this, &MapComponent::on_process_message);
     m_scale = 1.0f;
     m_show_band = false;
-    m_show_direction_blocks = m_show_hot = false;
+    m_show_mos = false;
 }
 
 MapComponent::~MapComponent()
@@ -87,11 +87,11 @@ void MapComponent::draw_level(CL_GraphicContext &gc, const CL_Rect& screen_rect)
     draw_grid(gc,area);
     CL_Rectf source(to_float(-m_origin)/m_scale,CL_Sizef(screen_rect.get_width()/m_scale,screen_rect.get_height()/m_scale));
     if(m_pLevel){
-        m_pLevel->Draw(source,screen,gc,false,m_show_hot,m_show_direction_blocks,false,m_show_pop);
+        m_pLevel->Draw(source,screen,gc,false);
         if(m_show_mos){
-            m_pLevel->DrawMappableObjects(source,screen,gc);
-        m_pLevel->Draw(source,screen,gc,true,m_show_hot,m_show_direction_blocks,false,m_show_pop);            
+            m_pLevel->DrawMappableObjects(source,screen,gc,false,true);          
         }
+        m_pLevel->Draw(source,screen,gc,true);          
     }
    gc.pop_modelview();
 }
@@ -228,12 +228,22 @@ void MapComponent::cancel_rubber_band()
 
 void MapComponent::show_direction_blocks ( bool on )
 {
-    m_show_direction_blocks = on;
+    if(m_pLevel){
+        if(on)
+            m_pLevel->AddTileVisitor(&m_block_drawer);
+        else
+            m_pLevel->RemoveTileVisitor(&m_block_drawer);
+    }
 }
 
 void MapComponent::show_hot ( bool on )
 {
-    m_show_hot = on;
+    if(m_pLevel){
+        if(on)
+            m_pLevel->AddTileVisitor (&m_hot_drawer);
+        else
+            m_pLevel->RemoveTileVisitor (&m_hot_drawer);
+    }
 }
 
 void MapComponent::show_mos ( bool on )
@@ -243,7 +253,22 @@ void MapComponent::show_mos ( bool on )
 
 void MapComponent::show_pop ( bool on )
 {
-    m_show_pop = on;
+    if(m_pLevel){
+        if(on)
+            m_pLevel->AddTileVisitor(&m_pops_drawer);
+        else
+            m_pLevel->RemoveTileVisitor(&m_pops_drawer);
+    }
+}
+
+void MapComponent::show_floaters ( bool on )
+{
+    if(m_pLevel){
+        if(on)
+            m_pLevel->AddTileVisitor(&m_floater_drawer);
+        else
+            m_pLevel->RemoveTileVisitor(&m_floater_drawer);
+    }
 }
 
 

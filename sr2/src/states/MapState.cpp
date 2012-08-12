@@ -184,7 +184,18 @@ void StoneRing::MapState::HandleKeyUp(const CL_InputEvent &key)
         break;
 				  }
     case CL_KEY_D:
-        m_bShowDebug = m_bShowDebug?false:true;
+        m_bShowDebug = !m_bShowDebug;
+        if(m_bShowDebug){
+            m_pLevel->AddTileVisitor(&m_block_drawer);
+            m_pLevel->AddTileVisitor(&m_hot_drawer);
+            m_pLevel->AddTileVisitor(&m_pops_drawer);
+            m_pLevel->AddTileVisitor(&m_floater_drawer);
+        }else{
+            m_pLevel->RemoveTileVisitor(&m_block_drawer);
+            m_pLevel->RemoveTileVisitor(&m_hot_drawer);
+            m_pLevel->RemoveTileVisitor(&m_pops_drawer);
+            m_pLevel->RemoveTileVisitor(&m_floater_drawer);
+        }
         break;
     case CL_KEY_M:
          m_pLevel->DumpMappableObjects();
@@ -228,7 +239,7 @@ void StoneRing::MapState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
     if(clearBg)
         GC.clear();
 
-    m_pLevel->Draw(src,dst, GC, false,m_bShowDebug,m_bShowDebug);
+    m_pLevel->Draw(src,dst, GC, false);
     m_pLevel->DrawMappableObjects(src,dst,GC,m_bShowDebug);
     m_pLevel->DrawFloaters(src,dst,GC);
 }

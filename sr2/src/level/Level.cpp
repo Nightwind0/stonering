@@ -355,7 +355,7 @@ void LevelHeader::load_attributes(CL_DomNamedNodeMap attributes)
 
 
 Level::Level():m_pMonsterRegions(NULL),m_LevelWidth(0),m_LevelHeight(0),m_pScript(NULL)
-,m_pHeader(NULL),m_player(0,0),m_mo_quadtree(NULL),m_floater_quadtree(NULL)
+,m_pHeader(NULL),m_player(0,0),m_mo_quadtree(NULL)
 {
 
 }
@@ -425,7 +425,6 @@ Level::~Level()
 
     }
     delete m_mo_quadtree;
-    delete m_floater_quadtree;
 }
 
 int Level::Get_Cumulative_Direction_Block_At_Point(const CL_Point &point) const
@@ -463,8 +462,7 @@ bool Level::Get_Cumulative_Hotness_At_Point(const CL_Point &point) const
 }
 
 
-void Level::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, bool floaters,
-                 bool highlightHot, bool indicateBlocks, bool indicateQuadtree, bool indicatePops)
+void Level::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, bool floaters)
 {
     //    int maxSrcX = max( ceil(dst.get_width() / 32.0), mLevelWidth );
     //    int maxSrcY = max( ceil(dst.get_height() / 32.0), mLevelHeight);
@@ -495,143 +493,64 @@ void Level::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, 
     exDst.bottom -= newtopDelta;
 
 
-
-    if(floaters)
+    // Regular tiles, not floaters
+    for(uint tileX = 0; tileX < widthInTiles; tileX++)
     {
-        CL_Point offset(dst.left-src.left,dst.bottom-src.bottom);
-        Quadtree::Geometry::Vector<float> center(src.get_center().x,src.get_center().y);
-        Quadtree::Geometry::Rect<float> rect(center,src.get_width(),src.get_height());
-        FindFloaters finder;
-        m_floater_quadtree->Traverse(finder,rect);
-        for(std::list<Tile*>::const_iterator f = finder.begin();
-            f != finder.end();
-            f++)
+        for(uint tileY =0; tileY < heightInTiles; tileY++)
         {
-            Tile * floater = *f;
-            // Possible optimization... instead of using is_overlapped, do a couple quick comparisons
-            CL_Rect floaterRect(floater->GetX(),floater->GetY(),floater->GetX() + 32, floater->GetY() + 32);
+
+            CL_Point p( src.left / 32 + tileX, src.top /32 + tileY);
 
 
-            // Is this floater even on screen
-            if(src.is_overlapped(floaterRect)){
-                CL_Rect tileSrc(0,0,32,32);
-                CL_Rect tileDst ( exDst.left  + floater->GetX() * 32,
-                                    exDst.top + floater->GetY() * 32,
-                                    exDst.left + floater->GetX() * 32 + 32,
-                                    exDst.top + floater->GetY() * 32 + 32);
-
-                if(floater->EvaluateCondition())
-                {
-                    floater->Draw(tileSrc, tileDst , GC );
-
-                }
-            }
-
-        }
-
-    }
-    else
-    {
-        // Regular tiles, not floaters
-
-        for(uint tileX = 0; tileX < widthInTiles; tileX++)
-        {
-            for(uint tileY =0; tileY < heightInTiles; tileY++)
+            if(p.x >=0 && p.y >=0 && p.x < m_LevelWidth && p.y < m_LevelHeight)
             {
+                CL_Rect tileSrc(0,0,32,32);
+                CL_Rect tileDst ( exDst.left  + (tileX << 5),
+                                    exDst.top + (tileY << 5),
+                                    exDst.left + (tileX << 5) + 32,
+                                    exDst.top + (tileY << 5) + 32);
 
-                CL_Point p( src.left / 32 + tileX, src.top /32 + tileY);
 
-
-                if(p.x >=0 && p.y >=0 && p.x < m_LevelWidth && p.y < m_LevelHeight)
+                std::list<Tile*>::iterator end = m_tiles[p.x][p.y].end();
+                for(std::list<Tile*>::iterator i = m_tiles[p.x][p.y].begin();
+                    i != end;
+                    i++)
                 {
-                    CL_Rect tileSrc(0,0,32,32);
-                    CL_Rect tileDst ( exDst.left  + (tileX << 5),
-                                      exDst.top + (tileY << 5),
-                                      exDst.left + (tileX << 5) + 32,
-                                      exDst.top + (tileY << 5) + 32);
-
-
-                    std::list<Tile*>::iterator end = m_tiles[p.x][p.y].end();
-                    for(std::list<Tile*>::iterator i = m_tiles[p.x][p.y].begin();
-                        i != end;
-                        i++)
+                    Tile * pTile = *i;
+                    if(pTile->IsFloater() != floaters)
+                        continue;                    
+                    if(pTile->EvaluateCondition())
                     {
-
-
-                        Tile * pTile = *i;
-                        if(pTile->EvaluateCondition())
-                        {
-                            pTile->Draw(tileSrc, tileDst , GC );
-
-#ifndef NDEBUG
-                            if(indicateBlocks && m_pathPoints.count(CL_Point(tileX,tileY))){
-                                CL_Draw::fill(GC,tileDst,CL_Colorf(0.8f,0.0f,0.8f,0.25f));
-                            }
-                            
-                            if(indicatePops && pTile->Pops())
-                            {
-                                CL_Sprite indicator = GraphicsManager::CreateSprite("Sprites/System/Pops",false);
-                                indicator.draw(GC,tileDst.get_top_left().x,tileDst.get_top_left().y);
-                            }
-
-                            // Extra code for level editing
-                            if(highlightHot && pTile->IsHot())
-                            {
-                                CL_Rect rect = tileDst;
-                                rect.translate(dst.get_top_left());
-                                CL_Draw::fill(GC,rect, CL_Colorf(1.0,0.0f,0.0f,0.4));
-                            }                            
-                            if(indicateBlocks)
-                            {
-
-                                int block = pTile->GetDirectionBlock();
-
-                                if(block & BLK_WEST)
-                                {
-                                    CL_Draw::fill(GC,CL_Rectf(tileDst.left,tileDst.top,tileDst.left + 8, tileDst.bottom), CL_Colorf(0.0f,1.0f,1.0f,(float)120/255.0f));
-                                }
-                                if(block & BLK_EAST)
-                                {
-                                    CL_Draw::fill(GC,CL_Rectf(tileDst.right - 8, tileDst.top, tileDst.right,tileDst.bottom),CL_Colorf(0.0f,1.0f,1.0f,(float)120/255.0f));
-                                }
-                                if(block & BLK_NORTH)
-                                {
-                                    CL_Draw::fill(GC,CL_Rectf(tileDst.left, tileDst.top, tileDst.right, tileDst.top +8), CL_Colorf(0.0f,1.0f,1.0f,(float)120/255.0f));
-                                }
-                                if(block & BLK_SOUTH)
-                                {
-                                    CL_Draw::fill(GC,CL_Rectf(tileDst.left,tileDst.bottom -8, tileDst.right, tileDst.bottom), CL_Colorf(0.0f,1.0f,1.0f,(float)120/255.0f));
-                                }
-                            }
-                        } 
-#endif
-
-
-
-
-
+                        pTile->Draw(tileSrc, tileDst , GC );
+                        for(std::set<Tile::Visitor*>::const_iterator iter = m_tile_visitors.begin();
+                            iter != m_tile_visitors.end();iter++){
+                            pTile->Visit(*iter,GC,tileDst.get_top_left());
+                        }
                     }
                 }
-
-
-
-
-
             }
         }
-
     }
 
+    
 
-#ifndef NDEBUG
-    if(indicateQuadtree){
-        DrawMOQuadtree(GC, dst.get_top_left() - src.get_top_left());
-    }
-#endif
+}
+
+void Level::AddTileVisitor ( Tile::Visitor* pVisitor )
+{
+    m_tile_visitors.insert(pVisitor);
+}
+
+void Level::RemoveTileVisitor ( Tile::Visitor* pVisitor )
+{
+    m_tile_visitors.erase(pVisitor);
 }
 
 
-void Level::DrawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, bool bDrawDebug)
+
+
+
+void Level::DrawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, bool bDrawDebug, bool bDrawBorders)
 {
     CL_Point offset(dst.left-src.left,dst.bottom-src.bottom);
     Quadtree::Geometry::Vector<float> center(src.get_center().x,src.get_center().y);
@@ -645,7 +564,7 @@ void Level::DrawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_Graph
         iter != finder.end(); iter++){
         (*iter)->Draw(GC,offset);
 #if !defined(NDEBUG)
-        if(bDrawDebug){
+        if(bDrawBorders){
             CL_Rect tileRect = (*iter)->GetTileRect();
             CL_Rect spriteRect(tileRect.get_top_left() * 32, tileRect.get_size() * 32);
        
@@ -993,11 +912,6 @@ void Level::DrawMOQuadtree(CL_GraphicContext gc, const CL_Point& offset) const
         drawer);
 }
 
-void Level::Create_Floater_Quadtree()
-{
-    m_floater_quadtree = new  TileQuadtree(Quadtree::Geometry::Square<float>(Quadtree::Geometry::Vector<float>(m_LevelWidth/2,m_LevelHeight/2),
-                                                                     (m_LevelWidth > m_LevelHeight?m_LevelWidth:m_LevelHeight)));
-}
 
 void Level::AddPathTile ( const CL_Point& pt )
 {
@@ -1052,7 +966,6 @@ bool Level::handle_element(Element::eElement element, Element * pElement)
         m_LevelHeight = m_pHeader->GetLevelHeight();
         
         Create_MOQuadtree();
-        Create_Floater_Quadtree();
         
         m_bAllowsRunning = m_pHeader->AllowsRunning();
         m_music = m_pHeader->GetMusic();
@@ -1158,25 +1071,9 @@ void Level::Load_Tile ( Tile * tile)
     point.x = tile->GetX();
     point.y = tile->GetY();
 
-    if( tile->IsFloater() )
-    {
-#ifndef NDEBUG
-        std::cout << "Placing floater at: " << point.x << ',' << point.y << std::endl;
-#endif
-        CL_Rect rect = CL_Rect(point.x*32,point.y*32,(point.x+1)*32,(point.y+1)*32);
-        Quadtree::Geometry::Rect<float> location(
-        Quadtree::Geometry::Vector<float>(rect.get_center().x,rect.get_center().y),
-                                          rect.get_width(),rect.get_height());
-        m_floater_quadtree->Add(location,tile);
-        //m_floater_map[ point ].sort( &Tile_Sort_Criterion );
-
-    }
-    else
-    {
-        m_tiles[ point.x ][point.y].push_back ( tile );
+    m_tiles[ point.x ][point.y].push_back ( tile );
         // Sort by ZOrder, so that they display correctly
-        m_tiles[ point.x ][point.y].sort( &Tile_Sort_Criterion );
-    }
+    m_tiles[ point.x ][point.y].sort( &Tile_Sort_Criterion );
 }
 
 void Level::SerializeState ( std::ostream& out )
@@ -1218,7 +1115,6 @@ m_pHeader(NULL),m_player(0,0),m_mo_quadtree(NULL){
     }
     
     Create_MOQuadtree();
-    Create_Floater_Quadtree();
 }
 
 void Level::GrowLevelTo(uint width, uint height)
@@ -1234,7 +1130,6 @@ void Level::GrowLevelTo(uint width, uint height)
     }
     
     resize_mo_quadtree();
-    resize_floater_quadtree();
 }
 
 void Level::AddTile ( Tile* pTile )
@@ -1242,19 +1137,7 @@ void Level::AddTile ( Tile* pTile )
     if(pTile->GetX() >= m_LevelWidth || pTile->GetY() >= m_LevelHeight )
         return;
 
-    if( pTile->IsFloater())
-    {
-        CL_Rect rect = CL_Rect(pTile->GetX()*32,pTile->GetY()*32,(pTile->GetX()+1)*32,(pTile->GetY()+1)*32);
-        Quadtree::Geometry::Rect<float> location(
-        Quadtree::Geometry::Vector<float>(rect.get_center().x,rect.get_center().y),
-                                          rect.get_width(),rect.get_height());
-        m_floater_quadtree->Add(location,pTile);
-    }
-    else
-    {
-        m_tiles[ pTile->GetX() ][ pTile->GetY()].push_back ( pTile );  
-    }
-
+    m_tiles[ pTile->GetX() ][ pTile->GetY()].push_back ( pTile );      
 }
 
 Tile* Level::PopTileAtPos(const CL_Point& pos)
@@ -1280,14 +1163,6 @@ bool Level::TilesAt(const CL_Point& pos) const
     return !m_tiles[pos.x][pos.y].empty();
 }
 
-void Level::RemoveFloater(const CL_Point& pos, Tile* pFloater)
-{
-    CL_Rect rect = CL_Rect(pos.x*32,pos.y*32,(pos.x+1)*32,(pos.y+1)*32);
-    Quadtree::Geometry::Rect<float> location(
-    Quadtree::Geometry::Vector<float>(rect.get_center().x,rect.get_center().y),
-                                          rect.get_width(),rect.get_height());
-    m_floater_quadtree->Add(location,pFloater);
-}
 
 
 void Level::resize_mo_quadtree()
@@ -1303,18 +1178,6 @@ void Level::resize_mo_quadtree()
     }
 }
 
-void Level::resize_floater_quadtree()
-{
-   FindFloaters finder;
-   m_floater_quadtree->TraverseAll(finder);
-   
-   Create_Floater_Quadtree();
-   
-   for(std::list<Tile*>::const_iterator it = finder.begin();
-       it != finder.end(); it++){
-       AddTile(*it);
-   }
-}
 
 std::list<MappableObject*> Level::GetMappableObjectsAt(const CL_Point& point) const 
 {
@@ -1353,17 +1216,7 @@ CL_DomElement Level::CreateDomElement(CL_DomDocument& doc) const
         }
     }
     
-    FindFloaters finder;
-    m_floater_quadtree->TraverseAll(finder);
-
-    for(std::list<StoneRing::Tile*>::const_iterator jj = finder.begin();
-            jj != finder.end();
-            jj++)
-    {
-        CL_DomElement floaterEl = (*jj)->CreateDomElement(doc);
-        tiles.append_child ( floaterEl );
-    }
-    
+  
 
     
     MappableObjectXMLWriter mo_writer(mappableObjects,doc);

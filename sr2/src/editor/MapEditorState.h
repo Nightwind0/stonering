@@ -98,7 +98,8 @@ namespace StoneRing {
             DELETE_TILE,
             ADD_OBJECT,
             DELETE_OBJECT,
-            EDIT_TILE,
+            SHOW_OBJECTS,
+            SHOW_ALL,
             EDIT_OBJECT,
             EDIT_LEVEL,
             BLOCK_WEST,
@@ -107,7 +108,9 @@ namespace StoneRing {
             BLOCK_SOUTH,
             BLOCK_ALL,
             HOT,
-            POPS
+            POPS,
+            FLOATER,
+            WATER
         };
         
         int  mod_value(bool shift,bool ctrl,bool alt)const;
@@ -142,6 +145,7 @@ namespace StoneRing {
         void on_add_mo();
         void on_edit_mo();
         void on_move_mo();
+        void on_delete_mo();
         
         std::string create_unique_mo_name();
         
@@ -156,6 +160,7 @@ namespace StoneRing {
         void construct_accels();
         void construct_menu();
         void construct_toolbar();
+        void reset_toolbar_toggles(CL_ToolBarItem exception);        
         bool m_bDone;
         // GUI stuff      
         CL_MainWindow *         m_pWindow;

@@ -33,11 +33,13 @@ TileSelectorWindow::TileSelectorWindow(CL_GUIComponent* owner, const CL_GUITopLe
     m_pVertScroll->set_vertical();
     m_pVertScroll->set_min(0);
     m_pVertScroll->set_max(1);
+    m_pVertScroll->set_line_step(16);
     m_pVertScroll->set_geometry(CL_Rect(CL_Point(get_geometry().get_size().width-16,48),CL_Size(16,get_geometry().get_size().height-60)));
     m_pHorizScroll = new CL_ScrollBar(this);
     m_pHorizScroll->set_horizontal();
     m_pHorizScroll->set_min(0);
     m_pHorizScroll->set_max(1);
+    m_pHorizScroll->set_line_step(16);
     m_pHorizScroll->set_geometry(CL_Rect(CL_Point(0,get_geometry().get_size().height-16),
                                          CL_Size(get_geometry().get_size().width,16)));
     

@@ -74,9 +74,11 @@ private:
     // TODO: Condition script, goes to script editor
     CL_CheckBox*         m_solid;
     CL_Point             m_point;
-    shared_ptr<EditorMappableObject> m_pMo;
-    bool                 m_edit_mode;
-    MapEditorState*      m_map_editor_state;
+    EditorMappableObject* m_pMo;
+    MappableObject*       m_pOriginalObject;
+    bool                  m_edit_mode;
+    MapEditorState*       m_map_editor_state;
+    
 };
 
 

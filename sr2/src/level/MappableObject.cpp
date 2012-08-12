@@ -151,7 +151,7 @@ bool MappableObject::IsSprite() const
     return m_cFlags & SPRITE;
 }
 
-void MappableObject::Draw(CL_GraphicContext& GC, const CL_Point& offset)
+void MappableObject::Draw(CL_GraphicContext& GC, const CL_Point& offset, bool indicate_invisible)
 {
     CL_Rect dstRect = GetSpriteRect();
     dstRect.translate(offset);
@@ -164,13 +164,13 @@ void MappableObject::Draw(CL_GraphicContext& GC, const CL_Point& offset)
     }
     else if( m_cFlags & TILEMAP )
     {
-#ifndef NDEBUG
-        std::cout << "Mappable Object is tilemap?" << std::endl;
-#endif
         CL_Rect srcRect(m_tilemap->GetMapX() * 32, m_tilemap->GetMapY() * 32,
                         (m_tilemap->GetMapX() * 32), (m_tilemap->GetMapY() * 32));
 
         m_tilemap->GetTileMap().draw(GC,srcRect, dstRect);
+    }else if(indicate_invisible){
+        CL_Sprite sprite = GraphicsManager::CreateSprite("Sprites/System/Object",false);
+        sprite.draw(GC,dstRect);       
     }
 }
 
@@ -797,6 +797,9 @@ CL_DomElement MappableObjectElement::CreateDomElement(CL_DomDocument& doc)const
     element.set_attribute("type", motype );
     element.set_attribute("xpos", IntToString(m_StartX) );
     element.set_attribute("ypos", IntToString(m_StartY) );
+    
+    if(IsFlying())
+        element.set_attribute("flying","true");
     
     element.set_attribute("facing",(std::string)m_start_facing);
  

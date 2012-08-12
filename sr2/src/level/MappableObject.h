@@ -43,7 +43,7 @@ public:
 
     /* Level API */
     virtual CL_Rect GetTileRect() const;
-    virtual void    Draw(CL_GraphicContext& GC, const CL_Point& offset);
+    virtual void    Draw(CL_GraphicContext& GC, const CL_Point& offset, bool indicate_invisible=false);
     virtual void    Move(Level& level);
     virtual bool    IsSolid() const;
     virtual std::string GetName() const;
@@ -110,6 +110,15 @@ public:
     }
     int             GetFlags() const {
         return m_cFlags;
+    }
+    CL_Point        GetStartPos() const {
+        return CL_Point(m_StartX,m_StartY);
+    }
+    void            SetStartPos(const CL_Point& start) {
+        m_StartX = start.x;
+        m_StartY = start.y;
+        m_pos.x = m_StartX * 32;
+        m_pos.y = m_StartY * 32;
     }
 #endif
 protected:
