@@ -49,6 +49,8 @@ private:
     void on_list_selection(CL_ListViewSelection selection);
     void on_save();
     void on_cancel();
+	void on_edit_event();
+	void on_condition_edit();
     void sync_to_mo();
     void sync_from_mo();
     
@@ -73,8 +75,9 @@ private:
     CL_ListViewItem      m_no_sprite_item;
     // TODO: Events, opens up event editor
     // TODO: Condition script, goes to script editor
-    CL_CheckBox*         m_solid;
-    CL_Point             m_point;
+    CL_CheckBox*          m_solid;
+    CL_CheckBox*          m_flying;
+    CL_Point              m_point;
     EditorMappableObject* m_pMo;
     MappableObject*       m_pOriginalObject;
     bool                  m_edit_mode;

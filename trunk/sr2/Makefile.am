@@ -226,6 +226,7 @@ stonering_SOURCES =	src/Application.cpp \
 			src/editor/MOEditWindow.cpp \
 			src/editor/MOView.cpp \
 			src/editor/MOView.h \
+			src/editor/ScriptEditWindow.cpp \
 			src/level/DebugTileVisitors.cpp
 
 
