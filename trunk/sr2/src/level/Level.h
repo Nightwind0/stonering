@@ -101,6 +101,10 @@ class Tile : public Graphic
 {
 public:
     enum eFlags { TIL_SPRITE = 1, TIL_FLOATER = 2, TIL_HOT = 4, TIL_BLK_NORTH = 8, TIL_BLK_SOUTH = 16, TIL_BLK_EAST = 32, TIL_BLK_WEST = 64, TIL_POPS = 128};
+    class Visitor { 
+    public:
+        virtual void accept(CL_GraphicContext& gc, const CL_Point& top_left, Tile*) = 0;
+    };
 public:
     Tile();
     virtual ~Tile();
@@ -119,7 +123,11 @@ public:
         return m_pScript != NULL;
     }
 
-    void Activate(); // Call any attributemodifier
+    void Activate(); // Call any script
+    
+    void Visit(Visitor* pVisitor, CL_GraphicContext& gc, const CL_Point& top_left) {
+        pVisitor->accept(gc,top_left,this);
+    }
 
     inline int GetX() const {
         return m_X;
@@ -277,12 +285,11 @@ public:
     }
 
     virtual void Draw(const CL_Rect &src, const CL_Rect &dst,
-                      CL_GraphicContext& GC , bool floaters = false,
-                      bool highlightHot=false,bool indicateBlocks = false,
-                      bool indicateQuadtree=false, bool indicatePops=false);
-    virtual void DrawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, bool bDrawDebug=false);
+                      CL_GraphicContext& GC , bool floaters = false);
+    virtual void DrawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, bool bDrawDebug=false, bool bDrawInvis=false);
     virtual void DrawFloaters(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC);
-
+    virtual void AddTileVisitor(Tile::Visitor * pVisitor);
+    virtual void RemoveTileVisitor(Tile::Visitor * pVisitor);
     void MoveMappableObjects(const CL_Rect &src);
 
     void AddMappableObject(MappableObject* pMO);
@@ -357,7 +364,6 @@ public:
     bool TilesAt(const CL_Point& loc)const;
     void AddTile(Tile * pTile);
     Tile* PopTileAtPos(const CL_Point& loc);
-    void RemoveFloater(const CL_Point& loc, Tile* pFloater);
     std::list<Tile*> GetTilesAt(const CL_Point& loc) const;
     std::list<MappableObject*> GetMappableObjectsAt(const CL_Point& loc)const;
 
@@ -365,7 +371,6 @@ public:
     void SetHotAt(uint levelX, uint levelY, bool bHot);
     bool WriteXML(const std::string& filename, bool force)const;
     void resize_mo_quadtree();
-    void resize_floater_quadtree();
     CL_DomElement CreateDomElement(CL_DomDocument& doc) const;
 #endif
     typedef Quadtree::RootNode<MappableObject*,4,float> MOQuadtree;
@@ -406,7 +411,6 @@ protected:
     int Get_Cumulative_Direction_Block_At_Point(const CL_Point &point) const;
     bool Get_Cumulative_Hotness_At_Point(const CL_Point &point) const;
     void Create_MOQuadtree();
-    void Create_Floater_Quadtree();
 
     CL_DomDocument  m_document;
     ScriptElement *m_pScript;
@@ -421,8 +425,8 @@ protected:
     MappablePlayer m_player;
     bool m_bMarkedForDeath;
     MOQuadtree *m_mo_quadtree;
-    TileQuadtree * m_floater_quadtree;
     std::string m_resource_name;
+    std::set<Tile::Visitor*> m_tile_visitors;
 #ifndef NDEBUG
     struct InteractPoint {
         CL_Point m_point;

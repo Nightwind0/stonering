@@ -1,7 +1,7 @@
 <level name="TestLevel">
 	<levelHeader width="35" height="29" music="Town" allowsRunning="true"/>
 	<mappableObjects>
-		<mo name="Action" movementType="none" speed="slow" size="1x1" type="square" xpos="2" ypos="0">
+		<mo name="Action" movementType="none" speed="slow" size="1x1" type="square" xpos="2" ypos="0" facing="south">
 			<event name="mordusDances" triggerType="step" remember="true">
 				<conditionScript id="_mordusDance">
 					<![CDATA[return didEvent("Awesome") and (hasItem("Awesome Sword",1) or hasGold(50000));
@@ -13,7 +13,7 @@
 				</script>
 			</event>
 		</mo>
-		<mo name="BattlePodium" movementType="none" speed="slow" size="1x1" type="npc" xpos="3" ypos="2" solid="true">
+		<mo name="BattlePodium" movementType="none" speed="slow" size="1x1" type="npc" xpos="3" ypos="2" facing="south" solid="true">
 			<event name="podium" triggerType="talk">
 				<script id="useBattlePodium">
 					<![CDATA[
@@ -77,7 +77,27 @@
 				</script>
 			</event>
 		</mo>
-		<mo name="Podium" movementType="none" speed="slow" size="1x1" type="square" xpos="2" ypos="2">
+		<mo name="Karate Cat" sprite="Npc/Cat" movementType="wander" speed="medium" size="1x1" type="npc" xpos="0" ypos="5" facing="south" solid="true">
+			<event name="CatMeow" triggerType="talk" remember="true">
+				<script id="catmeow">
+					<![CDATA[say($_Name,"Do you want karate?");
+                                    startBattle("Black Cat",1,true,"grasslands");
+                                ]]>
+				</script>
+			</event>
+		</mo>
+		<mo name="Presence" movementType="none" speed="slow" size="1x1" type="square" xpos="3" ypos="3" facing="south">
+			<event name="sensePresence" triggerType="talk" remember="true">
+				<script id="presence_">
+					<![CDATA[say("????", "You sense a presence. It is as though you can feel the watching eyes of someone.
+                                Perhaps someone you once knew. You are frozen in your tracks. You wonder about the sky. What color is it?
+                                What does it mean to you? What will you do if it ever goes away? Why? What is it with monkeys, anyway.
+                                Do they really come in barrels? What else comes in barrels besides monkeys and pickles?");
+                                ]]>
+				</script>
+			</event>
+		</mo>
+		<mo name="Podium" movementType="none" speed="slow" size="1x1" type="square" xpos="2" ypos="2" facing="south">
 			<event name="podium" triggerType="talk">
 				<script id="usePodium">
 					<![CDATA[
@@ -97,27 +117,7 @@
 				</script>
 			</event>
 		</mo>
-		<mo name="Karate Cat" sprite="Npc/Cat" movementType="wander" speed="medium" size="1x1" type="npc" xpos="0" ypos="5" solid="true">
-			<event name="CatMeow" triggerType="talk" remember="true">
-				<script id="catmeow">
-					<![CDATA[say($_Name,"Do you want karate?");
-                                    startBattle("Black Cat",1,true,"grasslands");
-                                ]]>
-				</script>
-			</event>
-		</mo>
-		<mo name="Presence" movementType="none" speed="slow" size="1x1" type="square" xpos="3" ypos="3">
-			<event name="sensePresence" triggerType="talk" remember="true">
-				<script id="presence_">
-					<![CDATA[say("????", "You sense a presence. It is as though you can feel the watching eyes of someone.
-                                Perhaps someone you once knew. You are frozen in your tracks. You wonder about the sky. What color is it?
-                                What does it mean to you? What will you do if it ever goes away? Why? What is it with monkeys, anyway.
-                                Do they really come in barrels? What else comes in barrels besides monkeys and pickles?");
-                                ]]>
-				</script>
-			</event>
-		</mo>
-		<mo name="Samara" sprite="Npc/Cat2" movementType="wander" speed="slow" size="1x1" type="npc" xpos="2" ypos="8" solid="true">
+		<mo name="Samara" sprite="Npc/Cat2" movementType="wander" speed="slow" size="1x1" type="npc" xpos="2" ypos="8" facing="south" solid="true">
 			<event name="Cat3Go" triggerType="talk">
 				<conditionScript id="Cat3Go_c">
 					<![CDATA[return hasItem("Octavia Key",1);
@@ -147,19 +147,7 @@
 				</script>
 			</event>
 		</mo>
-		<mo name="DoorRLock" movementType="none" speed="slow" size="2x2" type="square" xpos="8" ypos="9" solid="true">
-			<conditionScript id="hasKey">
-				<![CDATA[return not hasItem("Octavia Key",1);
-                        ]]>
-			</conditionScript>
-			<event name="octaviaLock" triggerType="talk">
-				<script id="talkLock">
-					<![CDATA[say("Note","This door is locked. It needs a key.");
-                                ]]>
-				</script>
-			</event>
-		</mo>
-		<mo name="DoorR" movementType="none" speed="slow" size="2x2" type="door" xpos="8" ypos="9">
+		<mo name="DoorR" movementType="none" speed="slow" size="2x2" type="door" xpos="8" ypos="9" facing="south">
 			<event name="octaviaLock" triggerType="step">
 				<conditionScript id="unlock">
 					<![CDATA[return hasItem("Octavia Key",1);
@@ -171,8 +159,19 @@
 				</script>
 			</event>
 		</mo>
-		<mo name="Object 1" sprite="Mob/TwilightSlime" movementType="paceNS" speed="fast" size="1x1" type="" xpos="16" ypos="10" solid="true"/>
-		<mo name="Jeremy" sprite="Npc/Seagull" movementType="wander" speed="slow" size="2x2" type="npc" xpos="4" ypos="15" solid="false" flying="true"/>
+		<mo name="DoorRLock" movementType="none" speed="slow" size="2x2" type="square" xpos="8" ypos="9" facing="south" solid="true">
+			<conditionScript id="hasKey">
+				<![CDATA[return not hasItem("Octavia Key",1);
+                        ]]>
+			</conditionScript>
+			<event name="octaviaLock" triggerType="talk">
+				<script id="talkLock">
+					<![CDATA[say("Note","This door is locked. It needs a key.");
+                                ]]>
+				</script>
+			</event>
+		</mo>
+		<mo name="Jeremy" sprite="Npc/Seagull" movementType="wander" speed="fast" size="2x1" type="npc" xpos="16" ypos="7" flying="true" facing="west" solid="true"/>
 	</mappableObjects>
 	<tiles>
 		<tile xpos="0" ypos="0">
@@ -911,6 +910,7 @@
 		</tile>
 		<tile xpos="6" ypos="4">
 			<tilemap mapname="roofs" mapx="3" mapy="4"/>
+			<directionBlock north="true" south="false" east="false" west="true"/>
 		</tile>
 		<tile xpos="6" ypos="5">
 			<tilemap mapname="roofs" mapx="1" mapy="13"/>
@@ -970,13 +970,8 @@
 		<tile xpos="6" ypos="13" zorder="1">
 			<tilemap mapname="grass" mapx="1" mapy="5"/>
 		</tile>
-		<tile xpos="6" ypos="14">
-			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="true"/>
-		</tile>
-		<tile xpos="6" ypos="14" zorder="1">
+		<tile xpos="6" ypos="14" floater="true">
 			<tilemap mapname="wall1" mapx="9" mapy="12"/>
-			<directionBlock north="true" south="false" east="false" west="true"/>
 		</tile>
 		<tile xpos="6" ypos="15">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -984,7 +979,7 @@
 		</tile>
 		<tile xpos="6" ypos="15" zorder="1">
 			<tilemap mapname="wall1" mapx="9" mapy="13"/>
-			<directionBlock north="false" south="true" east="false" west="true"/>
+			<directionBlock north="true" south="true" east="false" west="true"/>
 		</tile>
 		<tile xpos="6" ypos="16">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1080,6 +1075,7 @@
 		</tile>
 		<tile xpos="7" ypos="4">
 			<tilemap mapname="roofs" mapx="3" mapy="4"/>
+			<directionBlock north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="7" ypos="5">
 			<tilemap mapname="roofs" mapx="0" mapy="13"/>
@@ -1136,13 +1132,8 @@
 		<tile xpos="7" ypos="13" zorder="1">
 			<tilemap mapname="grass" mapx="1" mapy="5"/>
 		</tile>
-		<tile xpos="7" ypos="14">
-			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
-		</tile>
-		<tile xpos="7" ypos="14" zorder="1">
+		<tile xpos="7" ypos="14" floater="true">
 			<tilemap mapname="wall1" mapx="8" mapy="12"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="7" ypos="15">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1150,7 +1141,7 @@
 		</tile>
 		<tile xpos="7" ypos="15" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="13"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<directionBlock north="true" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="7" ypos="16">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1243,6 +1234,7 @@
 		</tile>
 		<tile xpos="8" ypos="4">
 			<tilemap mapname="roofs" mapx="3" mapy="4"/>
+			<directionBlock north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="8" ypos="5">
 			<tilemap mapname="roofs" mapx="0" mapy="13"/>
@@ -1306,13 +1298,8 @@
 		<tile xpos="8" ypos="13" zorder="1">
 			<tilemap mapname="grass" mapx="1" mapy="5"/>
 		</tile>
-		<tile xpos="8" ypos="14">
-			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
-		</tile>
-		<tile xpos="8" ypos="14" zorder="1">
+		<tile xpos="8" ypos="14" floater="true">
 			<tilemap mapname="wall1" mapx="8" mapy="12"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="8" ypos="15">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1320,7 +1307,7 @@
 		</tile>
 		<tile xpos="8" ypos="15" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="13"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<directionBlock north="true" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="8" ypos="16">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1413,6 +1400,7 @@
 		</tile>
 		<tile xpos="9" ypos="4">
 			<tilemap mapname="roofs" mapx="3" mapy="4"/>
+			<directionBlock north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="9" ypos="5">
 			<tilemap mapname="roofs" mapx="0" mapy="13"/>
@@ -1479,13 +1467,8 @@
 		<tile xpos="9" ypos="13" zorder="1">
 			<tilemap mapname="grass" mapx="1" mapy="5"/>
 		</tile>
-		<tile xpos="9" ypos="14">
-			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
-		</tile>
-		<tile xpos="9" ypos="14" zorder="1">
+		<tile xpos="9" ypos="14" floater="true">
 			<tilemap mapname="wall1" mapx="8" mapy="12"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="9" ypos="15">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1493,7 +1476,7 @@
 		</tile>
 		<tile xpos="9" ypos="15" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="13"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<directionBlock north="true" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="9" ypos="16">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1586,6 +1569,7 @@
 		</tile>
 		<tile xpos="10" ypos="4">
 			<tilemap mapname="roofs" mapx="3" mapy="4"/>
+			<directionBlock north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="10" ypos="5">
 			<tilemap mapname="roofs" mapx="0" mapy="13"/>
@@ -1639,13 +1623,8 @@
 		<tile xpos="10" ypos="13" zorder="1">
 			<tilemap mapname="grass" mapx="1" mapy="5"/>
 		</tile>
-		<tile xpos="10" ypos="14">
-			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
-		</tile>
-		<tile xpos="10" ypos="14" zorder="1">
+		<tile xpos="10" ypos="14" floater="true">
 			<tilemap mapname="wall1" mapx="8" mapy="12"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="10" ypos="15">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1653,7 +1632,7 @@
 		</tile>
 		<tile xpos="10" ypos="15" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="13"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<directionBlock north="true" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="10" ypos="16">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1815,13 +1794,8 @@
 		<tile xpos="11" ypos="13" zorder="1">
 			<tilemap mapname="grass" mapx="1" mapy="5"/>
 		</tile>
-		<tile xpos="11" ypos="14">
-			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
-		</tile>
-		<tile xpos="11" ypos="14" zorder="1">
+		<tile xpos="11" ypos="14" floater="true">
 			<tilemap mapname="wall1" mapx="8" mapy="12"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="11" ypos="15">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1829,7 +1803,7 @@
 		</tile>
 		<tile xpos="11" ypos="15" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="13"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<directionBlock north="true" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="11" ypos="16">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1916,6 +1890,7 @@
 		</tile>
 		<tile xpos="12" ypos="4">
 			<tilemap mapname="roofs" mapx="3" mapy="4"/>
+			<directionBlock north="true" south="false" east="true" west="false"/>
 		</tile>
 		<tile xpos="12" ypos="5">
 			<tilemap mapname="roofs" mapx="2" mapy="13"/>
@@ -1975,13 +1950,8 @@
 		<tile xpos="12" ypos="13" zorder="1">
 			<tilemap mapname="grass" mapx="2" mapy="5"/>
 		</tile>
-		<tile xpos="12" ypos="14">
-			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
-		</tile>
-		<tile xpos="12" ypos="14" zorder="1">
+		<tile xpos="12" ypos="14" floater="true">
 			<tilemap mapname="wall1" mapx="8" mapy="12"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="12" ypos="15">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1989,7 +1959,7 @@
 		</tile>
 		<tile xpos="12" ypos="15" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="13"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<directionBlock north="true" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="12" ypos="16">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -2124,13 +2094,8 @@
 		<tile xpos="13" ypos="13" zorder="1">
 			<tilemap mapname="grass" mapx="4" mapy="9"/>
 		</tile>
-		<tile xpos="13" ypos="14">
-			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
-		</tile>
-		<tile xpos="13" ypos="14" zorder="1">
+		<tile xpos="13" ypos="14" floater="true">
 			<tilemap mapname="wall1" mapx="8" mapy="12"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="13" ypos="15">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -2138,7 +2103,7 @@
 		</tile>
 		<tile xpos="13" ypos="15" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="13"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<directionBlock north="true" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="13" ypos="16">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -2301,7 +2266,7 @@
 		</tile>
 		<tile xpos="14" ypos="14" zorder="1">
 			<tilemap mapname="wall1" mapx="10" mapy="12"/>
-			<directionBlock north="false" south="false" east="true" west="false"/>
+			<directionBlock north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="14" ypos="15">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -2309,7 +2274,7 @@
 		</tile>
 		<tile xpos="14" ypos="15" zorder="1">
 			<tilemap mapname="wall1" mapx="10" mapy="13"/>
-			<directionBlock north="false" south="true" east="true" west="false"/>
+			<directionBlock north="false" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="14" ypos="16">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>

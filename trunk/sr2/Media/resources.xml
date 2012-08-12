@@ -788,6 +788,12 @@
                 <sprite name="Pops" hint="alpha">
                     <image file="Sprites/pop.png"/>
                 </sprite>
+                <sprite name="Floater" hint="alpha">
+                    <image file="Sprites/floater_icon.png"/>
+                </sprite>
+                <sprite name="Object">
+                    <image file="Sprites/object.png"/>
+                </sprite>
             </section>
                 <section name="Battle">
                         <sprite name="Target" hint="alpha">

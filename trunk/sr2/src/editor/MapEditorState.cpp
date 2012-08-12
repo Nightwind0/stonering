@@ -122,7 +122,61 @@ namespace StoneRing {
         int m_flag;
     };
     
+    class MoveObjectOperation: public Operation {
+    public:
+        MoveObjectOperation():m_pMo(NULL){
+        }
+        virtual ~MoveObjectOperation(){
+        }
+        void SetMappableObject(MappableObject* pMo){
+            m_pMo = pMo;
+            m_original_pos = pMo->GetStartPos();
+        }
+        virtual bool Execute(shared_ptr<Level> level){
+            level->RemoveMappableObject(m_pMo);            
+            m_pMo->SetStartPos(m_data.m_level_pt);
+            level->AddMappableObject(m_pMo);
+            return true;
+        }
+        virtual void Undo(shared_ptr<Level> level){
+            level->RemoveMappableObject(m_pMo);
+            m_pMo->SetStartPos(m_original_pos);
+            level->AddMappableObject(m_pMo);
+        }
+        virtual Operation* clone() {
+            MoveObjectOperation* op =  new MoveObjectOperation();
+            op->m_pMo = m_pMo;
+            op->m_original_pos = m_original_pos;
+            return op;
+        }
+    private:
+        MappableObject* m_pMo;
+        CL_Point        m_original_pos;
+    };
     
+    class DeleteObjectOperation: public Operation {
+    public:
+        DeleteObjectOperation(){
+        }
+        virtual ~DeleteObjectOperation(){
+            
+        }
+        void SetMappableObject(MappableObject* pMo){
+            m_pMo = pMo;
+        }
+        virtual bool Execute(shared_ptr<Level> level){
+            level->RemoveMappableObject(m_pMo);
+            return true;
+        }
+        virtual void Undo(shared_ptr<Level> level){
+            level->AddMappableObject(m_pMo);
+        }
+        virtual Operation* clone() {
+            return new DeleteObjectOperation();
+        }
+    private:
+        MappableObject*  m_pMo;
+    };
     
 
 MapEditorState::MapEditorState()
@@ -181,7 +235,7 @@ void MapEditorState::Start()
     m_pTileWindow->SetMapEditor(this);
     
     CL_GUITopLevelDescription mo_edit_desc;
-    mo_edit_desc.set_title("Create Mappable Object");
+    mo_edit_desc.set_title("Edit Mappable Object");
     mo_edit_desc.set_size(CL_Size(400,400),true);
     mo_edit_desc.set_position(CL_Rect(CL_Point(size.width-400,64),CL_Size(400,400)),true);
     mo_edit_desc.set_dialog_window(true);
@@ -223,6 +277,7 @@ void MapEditorState::construct_map_context_menu()
     add_mo_item.func_clicked().set(this,&MapEditorState::on_add_mo);
     edit_mo_item.func_clicked().set(this,&MapEditorState::on_edit_mo);    
     move_mo_item.func_clicked().set(this,&MapEditorState::on_move_mo);
+    delete_mo_item.func_clicked().set(this,&MapEditorState::on_delete_mo);
     
 }
 
@@ -264,7 +319,6 @@ void MapEditorState::construct_menu()
     //m_mo_menu.insert_item("Create").func_clicked().set(this,&MapEditorState::on_mo_create);
     
     m_pMenuBar->add_menu("View",view);
-    m_pMenuBar->add_menu("Mappable Objects",m_mo_menu);
 }
 
 void MapEditorState::construct_toolbar()
@@ -273,24 +327,28 @@ void MapEditorState::construct_toolbar()
         std::string icon;
         std::string name;
         ToolBarItem item;
-        //bool toggle;
+        bool toggle;
     };
     Tool tools[] = {
-        {"Media/Editor/Images/map_add.png","Add Tiles",ADD_TILE},
-        {"Media/Editor/Images/map_delete.png","Erase Tiles",DELETE_TILE},
-        {"Media/Editor/Images/map_edit.png","Edit Tiles",EDIT_TILE},
-        {"Media/Editor/Images/world_edit.png","Level Data",EDIT_LEVEL},
-        {"Media/Editor/Images/block_west.png","",BLOCK_WEST},
-        {"Media/Editor/Images/block_north.png","",BLOCK_NORTH},
-        {"Media/Editor/Images/block_east.png","",BLOCK_EAST},
-        {"Media/Editor/Images/block_south.png","",BLOCK_SOUTH},
-        {"Media/Editor/Images/surround.png","",BLOCK_ALL},
-        {"Media/Editor/Images/hot.png","",HOT},
-        {"Media/Editor/Images/pop.png","",POPS}
+        {"Media/Editor/Images/map_add.png","Add Tiles",ADD_TILE,false},
+        {"Media/Editor/Images/map_delete.png","Erase Tiles",DELETE_TILE,true},
+        {"Media/Editor/Images/view.png","Show Data",SHOW_ALL,true},
+        {"Media/Editor/Images/eye.png","Show Objects",SHOW_OBJECTS,true},
+        {"Media/Editor/Images/world_edit.png","Level Data",EDIT_LEVEL,false},
+        {"Media/Editor/Images/block_west.png","",BLOCK_WEST,true},
+        {"Media/Editor/Images/block_north.png","",BLOCK_NORTH,true},
+        {"Media/Editor/Images/block_east.png","",BLOCK_EAST,true},
+        {"Media/Editor/Images/block_south.png","",BLOCK_SOUTH,true},
+        {"Media/Editor/Images/surround.png","",BLOCK_ALL,true},
+        {"Media/Editor/Images/hot.png","",HOT,true},
+        {"Media/Editor/Images/pop.png","",POPS,true},
+        {"Media/Editor/Images/floater.png","",FLOATER,true}
     };
     
     for(int i=0;i<sizeof(tools)/sizeof(Tool);i++){
-        m_toolbar->insert_item(CL_Sprite(m_pWindow->get_gc(),tools[i].icon),0,tools[i].name).set_id(tools[i].item);
+        CL_ToolBarItem item = m_toolbar->insert_item(CL_Sprite(m_pWindow->get_gc(),tools[i].icon),0,tools[i].name);
+        item.set_id(tools[i].item);
+        item.set_toggling(tools[i].toggle);
     }
 }
 
@@ -302,6 +360,11 @@ void MapEditorState::construct_accels()
 void MapEditorState::on_file_close()
 {
     m_pMap->close_level();
+    for(std::deque<Operation*>::iterator it = m_undo_stack.begin();
+        it != m_undo_stack.end(); it++){
+        delete *it;
+    }
+    m_undo_stack.clear();
 }
 
 void MapEditorState::on_file_new()
@@ -561,8 +624,38 @@ void MapEditorState::on_edit_mo()
 
 }
 
+void MapEditorState::on_delete_mo()
+{
+    CL_Point map_offset = m_pMap->get_geometry().get_top_left();
+    CL_Point level_pt = m_pMap->screen_to_level(m_map_context_point-map_offset,m_pMap->get_geometry().get_center());
+    level_pt /= 32;    
+
+    
+    // Find the MO at this point
+    std::list<MappableObject*> objects = m_pMap->get_mos_at(level_pt);  
+    if(objects.size() > 0){
+          DeleteObjectOperation *op = new DeleteObjectOperation();
+          op->SetMappableObject(*objects.begin());
+          PerformOperation(op);
+          m_pMap->request_repaint();
+          
+    }
+}
+
 void MapEditorState::on_move_mo()
 {
+    CL_Point map_offset = m_pMap->get_geometry().get_top_left();
+    CL_Point level_pt = m_pMap->screen_to_level(m_map_context_point-map_offset,m_pMap->get_geometry().get_center());
+    level_pt /= 32;    
+
+    
+    // Find the MO at this point
+    std::list<MappableObject*> objects = m_pMap->get_mos_at(level_pt);
+    if(objects.size() > 0){
+        MoveObjectOperation * op = new MoveObjectOperation();
+        op->SetMappableObject(*objects.begin());
+        SetOperation(CLICK,op);
+    }    
 }
 
 void MapEditorState::on_edit_tile()
@@ -587,7 +680,6 @@ std::string MapEditorState::create_unique_mo_name()
 
 
 void MapEditorState::start_drag(const CL_Point& point, MouseButton button, int mod){
-    std::cout << "Start drag " << point.x << ',' << point.y << std::endl;
     if(mod == 0 && button == MOUSE_RIGHT){
         // Pan
     }else{
@@ -624,7 +716,6 @@ void MapEditorState::cancel_drag(){
 
 void MapEditorState::end_drag(const CL_Point& start,const CL_Point& prev, const CL_Point& point, MouseButton button, int mod){
     m_mouse_state = MOUSE_IDLE;
-    std::cout << "End drag " << std::endl;
     if(mod == 0 && button == MOUSE_RIGHT){
 
     }else{
@@ -679,10 +770,23 @@ void MapEditorState::click(const CL_Point& point,MouseButton button, int mod)
     }
 }
 
+void MapEditorState::reset_toolbar_toggles(CL_ToolBarItem exception)
+{
+    for(int i=0;i<m_toolbar->get_item_count();i++){
+        CL_ToolBarItem item = m_toolbar->get_item(i);
+        if(item.get_id() != exception.get_id()){
+            item.set_pressed(false);
+        }
+    }
+}
+
 void MapEditorState::on_toolbar_item(CL_ToolBarItem item)
 {
     static BlockOperation block_op;
     static BlockOperations block_ops;
+    
+    reset_toolbar_toggles(item);
+    
     switch(item.get_id()){
         case ADD_TILE:{
             CL_Rect rect = m_pTileWindow->get_geometry();
@@ -701,13 +805,31 @@ void MapEditorState::on_toolbar_item(CL_ToolBarItem item)
             SetOperation(DRAG|SHIFT,&group_op);
             break;
         }
-        case BLOCK_WEST:{
+        case SHOW_OBJECTS:{
+            static bool toggled = false;
+            toggled = !toggled;
+            m_pMap->show_mos(toggled);
+            m_pMap->request_repaint();
+            break;
+        }
+        case SHOW_ALL:{
+            static bool toggled = false;
+            toggled = !toggled;
+            m_pMap->show_hot(toggled);
+            m_pMap->show_pop(toggled);
+            m_pMap->show_direction_blocks(toggled);
+            m_pMap->show_floaters(toggled);
+            m_pMap->request_repaint();
+            
+            break;
+        }case BLOCK_WEST:{
         case BLOCK_SOUTH:
         case BLOCK_NORTH:
         case BLOCK_EAST:
         case BLOCK_ALL:
         case HOT:
         case POPS:
+        case FLOATER:
             int flag = Tile::TIL_HOT;
             if(item.get_id() == BLOCK_WEST)
                 flag = Tile::TIL_BLK_WEST;
@@ -721,10 +843,9 @@ void MapEditorState::on_toolbar_item(CL_ToolBarItem item)
                 flag = Tile::TIL_BLK_NORTH | Tile::TIL_BLK_SOUTH | Tile::TIL_BLK_WEST | Tile::TIL_BLK_EAST;
             else if(item.get_id() == POPS)
                 flag = Tile::TIL_POPS;
-            
-            m_pMap->show_pop(false);
-            m_pMap->show_hot(false);
-            m_pMap->show_direction_blocks(false);
+            else if(item.get_id() == FLOATER)
+                flag = Tile::TIL_FLOATER;
+          
       
             block_op.SetBlock( flag );
             block_ops.SetBlock( flag );
@@ -736,9 +857,12 @@ void MapEditorState::on_toolbar_item(CL_ToolBarItem item)
                 m_pMap->show_pop(true);
             }else if(flag == Tile::TIL_HOT){
                 m_pMap->show_hot(true);
+            }else if(flag == Tile::TIL_FLOATER){
+                m_pMap->show_floaters(true);
             }else if(flag != Tile::TIL_HOT){
                 m_pMap->show_direction_blocks(true);
             }
+            m_pMap->request_repaint();
             break;
         }
         

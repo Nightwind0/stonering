@@ -21,6 +21,7 @@
 #define MAPCOMPONENT_H
 
 #include <ClanLib/gui.h>
+#include "DebugTileVisitors.h"
 #include "Level.h"
 
 namespace StoneRing { 
@@ -50,6 +51,7 @@ public:
     void show_hot(bool on);
     void show_mos(bool on);
     void show_pop(bool on);
+    void show_floaters(bool on);
     MappableObject* get_mo_named(const std::string& name);
     std::list<MappableObject*> get_mos_at(const CL_Point& level_pt);
 private:
@@ -61,13 +63,14 @@ private:
     CL_Point get_center()const;
     CL_Pointf to_float(const CL_Point&)const;
     CL_Point m_origin;
+    TileDirectionBlockDrawer m_block_drawer;
+    TileHotDrawer m_hot_drawer;
+    TilePopsDrawer m_pops_drawer;
+    TileFloaterDrawer m_floater_drawer;
+    bool m_show_mos;
     float m_scale;
     CL_Gradient m_gradient;
     bool m_show_band;
-    bool m_show_direction_blocks;
-    bool m_show_hot;
-    bool m_show_mos;
-    bool m_show_pop;
     CL_Rect m_rubber_band;
     shared_ptr<Level>  m_pLevel;
 };

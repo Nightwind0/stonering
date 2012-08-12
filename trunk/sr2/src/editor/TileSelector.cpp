@@ -55,10 +55,7 @@ bool TileSelector::AddTileOperation::Execute(shared_ptr<Level>  pLevel)
         // Shift means add, without it means to replace
         if(m_data.m_mod_state & MapEditorState::SHIFT){
             pLevel->AddTile(pTile);        
-        }else if(m_data.m_mod_state & MapEditorState::ALT){
-            pTile->SetFloater();
-            pLevel->AddTile(pTile);
-        }else{
+        }else {
             m_removed_tiles = pLevel->GetTilesAt(m_data.m_level_end_pt);
             while(NULL != pLevel->PopTileAtPos(m_data.m_level_end_pt));
             pLevel->AddTile(pTile);         
@@ -76,8 +73,6 @@ void TileSelector::AddTileOperation::Undo(shared_ptr<Level> pLevel)
     if(m_data.m_mod_state & MapEditorState::SHIFT){
         Tile * pTile = pLevel->PopTileAtPos(m_data.m_level_end_pt);
         if(pTile) delete pTile;        
-    }else if(m_data.m_mod_state & MapEditorState::ALT){
-        pLevel->RemoveFloater(m_data.m_level_end_pt,m_tile);       
     }else{
         // First, delete the one we just added
         delete pLevel->PopTileAtPos(m_data.m_level_end_pt);

@@ -39,6 +39,8 @@ public:
         SetName(other->GetName());
         SetSize(other->GetSize()); 
         SetSprite(other->GetSprite());
+        SetPixelPosition(other->GetPixelPosition());
+        SetStartPos(other->GetStartPos());
         m_cFlags = other->GetFlags();
         
         MappableObjectElement* element = dynamic_cast<MappableObjectElement*>(other);
@@ -75,12 +77,6 @@ public:
     }
     std::string GetSpriteName() const { 
         return m_sprite_name;
-    }
-    void SetStartPos(const CL_Point& point){
-        m_StartX = point.x;
-        m_StartY = point.y;
-        m_pos.x = m_StartX * 32;
-        m_pos.y = m_StartY * 32;
     }
     void SetMovementType(MappableObject::eMovementType move_type){
         m_move_type = move_type;
@@ -128,17 +124,45 @@ public:
     }
     virtual bool Execute(shared_ptr<Level> level){
         m_pMo->SetStartPos(m_data.m_level_pt);
-        level->AddMappableObject(m_pMo.get());
+        level->AddMappableObject(m_pMo);
         return true;
     }
     virtual void Undo(shared_ptr<Level> level){
-        level->RemoveMappableObject(m_pMo.get());
+        level->RemoveMappableObject(m_pMo);
     }
-    void SetMappableObject(shared_ptr<EditorMappableObject> mo){
+    void SetMappableObject(EditorMappableObject* mo){
         m_pMo = mo;
     }
 private:
-    shared_ptr<EditorMappableObject>  m_pMo;
+    EditorMappableObject*  m_pMo;
+};
+
+class EditMOOperation : public Operation { 
+public:
+    EditMOOperation(){
+    }
+    virtual ~EditMOOperation(){
+    }
+    virtual Operation* clone(){
+        return new EditMOOperation();
+    }
+    virtual bool Execute(shared_ptr<Level> level){
+        level->RemoveMappableObject(m_original_mo);
+        level->AddMappableObject(m_new_mo);
+    }
+    virtual void Undo(shared_ptr<Level> level){
+        level->RemoveMappableObject(m_new_mo);
+        level->AddMappableObject(m_original_mo);
+    }
+    void SetOriginalMappableObject(MappableObject* mo){
+        m_original_mo = mo;
+    }
+    void SetNewMappableObject(MappableObject* mo){
+        m_new_mo = mo;
+    }
+private:
+    MappableObject* m_original_mo;
+    MappableObject* m_new_mo;
 };
     
 
@@ -235,7 +259,8 @@ void MOEditWindow::SetMappableObject ( MappableObject* pObject )
     // Create EditorMappableObject that is a copy of pObject
     // TODO: Have to remove this pObject from the level when
     // "save" is hit
-    m_pMo = shared_ptr<EditorMappableObject>(new EditorMappableObject());
+    m_pOriginalObject = pObject;
+    m_pMo = new EditorMappableObject();
     m_pMo->copy(pObject);
     m_edit_mode = true;
     sync_from_mo();
@@ -244,7 +269,7 @@ void MOEditWindow::SetMappableObject ( MappableObject* pObject )
 void MOEditWindow::SetCreate()
 {
     m_edit_mode = false;
-    m_pMo = shared_ptr<EditorMappableObject>(new EditorMappableObject());
+    m_pMo = new EditorMappableObject();
 }
 
 
@@ -338,14 +363,25 @@ void MOEditWindow::on_save()
 {
     sync_to_mo();
     
-    CreateMOOperation* pOp = new CreateMOOperation();
-    pOp->SetMappableObject(m_pMo);
     Operation::Data data;
     data.m_level_pt = data.m_level_end_pt = m_point;
-    data.m_mod_state = 0;
-    pOp->SetData(data);
+    data.m_mod_state = 0;    
     
-    m_map_editor_state->PerformOperation(pOp);    
+    if(m_edit_mode){
+        EditMOOperation *pOp = new EditMOOperation();
+        pOp->SetNewMappableObject(m_pMo);
+        pOp->SetOriginalMappableObject(m_pOriginalObject);
+
+        pOp->SetData(data);
+        
+        m_map_editor_state->PerformOperation(pOp);
+    }else{    
+        CreateMOOperation* pOp = new CreateMOOperation();
+        pOp->SetMappableObject(m_pMo);
+        pOp->SetData(data);
+    
+        m_map_editor_state->PerformOperation(pOp);    
+    }
     set_visible(false);
 }
 
@@ -398,6 +434,8 @@ void MOEditWindow::sync_from_mo()
      CL_ListViewItem item = m_sprite_list->find("Main",m_pMo->GetSpriteName());
      if(!item.is_null())
         m_sprite_list->set_selected(item,true);
+     else
+         m_sprite_list->clear_selection();
 
     // TODO: Load conditions and events
     // Gets tricky when you have Event* and ScriptElement*
