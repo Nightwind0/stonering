@@ -70,6 +70,7 @@ private:
     CL_PushButton*       m_add_event_button;
     CL_PushButton*       m_open_event_button;
     CL_PushButton*       m_save_button;
+    CL_ListViewItem      m_no_sprite_item;
     // TODO: Events, opens up event editor
     // TODO: Condition script, goes to script editor
     CL_CheckBox*         m_solid;
