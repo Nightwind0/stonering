@@ -70,6 +70,9 @@ public:
         if(!sprite.is_null()){
             m_sprite.clone(sprite);
             m_cFlags |= SPRITE;
+        }else{
+            m_sprite = CL_Sprite();
+            m_cFlags &= ~SPRITE;
         }
     }
     void SetSpriteName(const std::string& name){
@@ -298,6 +301,10 @@ void MOEditWindow::populate_sprite_list()
     
     CL_ListViewItem doc = m_sprite_list->get_document_item();
     
+    m_no_sprite_item = m_sprite_list->create_item();
+    m_no_sprite_item.set_column_text("Main","None");
+    doc.append_child(m_no_sprite_item);
+    
     CL_ResourceManager & resources =  IApplication::GetInstance()->GetResources();
     const char * SubSections[] = {"Npc","Mob"};
     for(int sub = 0; sub < sizeof(SubSections) / sizeof(const char*); sub++){
@@ -341,16 +348,21 @@ void MOEditWindow::populate_move_speed_combo()
 void MOEditWindow::on_list_selection ( CL_ListViewSelection selection )
 {
     CL_ListViewItem item = selection.get_first().get_item();
-    m_sprite_name = item.get_column("Main").get_text();
-    CL_Size sprite_size;
-    try {
-        CL_Sprite sprite = GraphicsManager::CreateSprite(m_sprite_name,true);
-        m_sprite_view->SetSprite(sprite);
-        sprite_size = CL_Size(max(sprite.get_width() / 32,1), max(sprite.get_height() / 64,1));
-        m_height_spin->set_value(sprite_size.height);
-        m_width_spin->set_value(sprite_size.width);
-        m_sprite_view->SetSize(sprite_size);
-    }catch(...){
+    if(item == m_no_sprite_item){
+        m_sprite_view->Clear();
+        m_sprite_name.clear();
+    }else{
+        m_sprite_name = item.get_column("Main").get_text();
+        CL_Size sprite_size;
+        try {
+            CL_Sprite sprite = GraphicsManager::CreateSprite(m_sprite_name,true);
+            m_sprite_view->SetSprite(sprite);
+            sprite_size = CL_Size(max(sprite.get_width() / 32,1), max(sprite.get_height() / 64,1));
+            m_height_spin->set_value(sprite_size.height);
+            m_width_spin->set_value(sprite_size.width);
+            m_sprite_view->SetSize(sprite_size);
+        }catch(...){
+        }
     }
 }
 
@@ -435,7 +447,7 @@ void MOEditWindow::sync_from_mo()
      if(!item.is_null())
         m_sprite_list->set_selected(item,true);
      else
-         m_sprite_list->clear_selection();
+         m_sprite_list->set_selected(m_no_sprite_item);
 
     // TODO: Load conditions and events
     // Gets tricky when you have Event* and ScriptElement*
@@ -449,6 +461,7 @@ void MOEditWindow::sync_to_mo()
     m_pMo->SetMovementSpeed((MappableObject::eMovementSpeed)m_move_speed->get_selected_item());
     m_pMo->SetSprite(m_sprite_view->GetSprite());
     m_pMo->SetSolid(m_solid->is_checked());
+    
     m_pMo->SetSpriteName(m_sprite_name);
     m_pMo->SetFacing((std::string)m_face_dir->get_text());
     // Add conditions and events

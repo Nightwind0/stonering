@@ -31,6 +31,7 @@ namespace StoneRing{
         bool IsConditionScript() const { return m_bIsCondition; }
 #if SR2_EDITOR
         CL_DomElement CreateDomElement(CL_DomDocument&)const;
+    private:
         std::string m_script;        
 #endif
     protected:

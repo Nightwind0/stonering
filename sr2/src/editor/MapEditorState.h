@@ -113,6 +113,14 @@ namespace StoneRing {
             WATER
         };
         
+        enum ContextMenu {
+            CON_EDIT_TILE,
+            CON_ADD_OBJECT,
+            CON_EDIT_OBJECT,
+            CON_MOVE_OBJECT,
+            CON_DELETE_OBJECT
+        };
+        
         int  mod_value(bool shift,bool ctrl,bool alt)const;
         void on_file_open();
         void on_file_close();
@@ -143,9 +151,9 @@ namespace StoneRing {
         // Map context menu
         void on_edit_tile();
         void on_add_mo();
-        void on_edit_mo();
-        void on_move_mo();
-        void on_delete_mo();
+        void on_edit_mo(MappableObject* pObj);
+        void on_move_mo(MappableObject* pObj);
+        void on_delete_mo(MappableObject* pObj);
         
         std::string create_unique_mo_name();
         
@@ -160,7 +168,8 @@ namespace StoneRing {
         void construct_accels();
         void construct_menu();
         void construct_toolbar();
-        void reset_toolbar_toggles(CL_ToolBarItem exception);        
+        void reset_toolbar_toggles(CL_ToolBarItem exception);     
+        bool construct_object_submenu(CL_PopupMenuItem menu_item, const CL_Point & level_pt);
         bool m_bDone;
         // GUI stuff      
         CL_MainWindow *         m_pWindow;
@@ -169,7 +178,7 @@ namespace StoneRing {
         CL_PopupMenu            m_file_menu;
         CL_PopupMenu            m_edit_menu;
         CL_PopupMenu            m_grow_submenu;
-        CL_PopupMenu            m_mo_menu;
+        CL_PopupMenu            m_mo_menu; 
         CL_MenuBar *            m_pMenuBar;
         CL_PushButton*          m_pButton;
         CL_Slider*              m_pZoomSlider;

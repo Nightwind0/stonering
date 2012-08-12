@@ -32,6 +32,7 @@ public:
     void SetSprite(CL_Sprite sprite);
     void SetSize(const CL_Size& size);
     CL_Sprite GetSprite() const;
+    void Clear();
 private:
     void on_render(CL_GraphicContext &gc, const CL_Rect &clip_rect);
     void on_process_message(CL_GUIMessage &message);    

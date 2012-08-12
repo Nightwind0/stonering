@@ -266,19 +266,15 @@ void MapEditorState::Start()
 void MapEditorState::construct_map_context_menu()
 {
     m_map_context_menu.clear();
-    CL_PopupMenuItem edit_tile_item = m_map_context_menu.insert_item("Edit Tiles");
+    CL_PopupMenuItem edit_tile_item = m_map_context_menu.insert_item("Edit Tiles",CON_EDIT_TILE);
     m_map_context_menu.insert_separator();
-    CL_PopupMenuItem add_mo_item = m_map_context_menu.insert_item("Add Object");
-    CL_PopupMenuItem edit_mo_item = m_map_context_menu.insert_item("Edit Object");
-    CL_PopupMenuItem move_mo_item = m_map_context_menu.insert_item("Move Object");
-    CL_PopupMenuItem delete_mo_item = m_map_context_menu.insert_item("Delete Object");
+    CL_PopupMenuItem add_mo_item = m_map_context_menu.insert_item("Add Object",CON_ADD_OBJECT);
+    CL_PopupMenuItem edit_mo_item = m_map_context_menu.insert_item("Edit Object",CON_EDIT_OBJECT);
+    CL_PopupMenuItem move_mo_item = m_map_context_menu.insert_item("Move Object",CON_MOVE_OBJECT);
+    CL_PopupMenuItem delete_mo_item = m_map_context_menu.insert_item("Delete Object",CON_DELETE_OBJECT);
     
-    edit_tile_item.func_clicked().set(this,&MapEditorState::on_edit_tile);
+    edit_tile_item.func_clicked().set(this,&MapEditorState::on_edit_tile);    
     add_mo_item.func_clicked().set(this,&MapEditorState::on_add_mo);
-    edit_mo_item.func_clicked().set(this,&MapEditorState::on_edit_mo);    
-    move_mo_item.func_clicked().set(this,&MapEditorState::on_move_mo);
-    delete_mo_item.func_clicked().set(this,&MapEditorState::on_delete_mo);
-    
 }
 
 void MapEditorState::construct_menu()
@@ -350,6 +346,31 @@ void MapEditorState::construct_toolbar()
         item.set_id(tools[i].item);
         item.set_toggling(tools[i].toggle);
     }
+}
+
+bool MapEditorState::construct_object_submenu(CL_PopupMenuItem item, const CL_Point& level_pt)
+{
+        // Find the MO at this point
+    std::list<MappableObject*> objects = m_pMap->get_mos_at(level_pt);
+    if(!objects.empty()){
+        CL_PopupMenu submenu;
+
+        for(std::list<MappableObject*>::const_iterator it = objects.begin();
+            it != objects.end(); it++){
+            CL_PopupMenuItem subitem = submenu.insert_item((*it)->GetName());
+            if(item.get_id() == CON_EDIT_OBJECT){
+                subitem.func_clicked().set(this,&MapEditorState::on_edit_mo,*it);
+            }else if(item.get_id() == CON_MOVE_OBJECT){
+                subitem.func_clicked().set(this,&MapEditorState::on_move_mo,*it);
+            }else if(item.get_id() == CON_DELETE_OBJECT){
+                subitem.func_clicked().set(this,&MapEditorState::on_delete_mo,*it);
+            }
+        }
+        
+        item.set_submenu(submenu);  
+        return true;
+    }
+    return false;
 }
 
 void MapEditorState::construct_accels()
@@ -565,6 +586,16 @@ bool MapEditorState::on_mouse_double_click(const CL_InputEvent& event)
         // Popup menu (but only when clicking on the level itself)
         CL_Point map_offset = m_pMap->get_geometry().get_top_left();     
         if(m_pMap->valid_location(event.mouse_pos, m_pMap->get_geometry().get_center()-map_offset)){
+            
+            CL_Point map_offset = m_pMap->get_geometry().get_top_left();
+            CL_Point level_pt = m_pMap->screen_to_level(event.mouse_pos-map_offset,m_pMap->get_geometry().get_center());
+            level_pt /= 32;  
+            
+            for(int id=CON_EDIT_OBJECT;id<=CON_DELETE_OBJECT;id++){
+                CL_PopupMenuItem item = m_map_context_menu.get_item(id);
+                construct_object_submenu(item,level_pt);                
+            }
+            
             m_map_context_point = event.mouse_pos;
             m_map_context_menu.start(m_pMap,event.mouse_pos);    
         }
@@ -605,57 +636,27 @@ void MapEditorState::on_add_mo()
     m_pMap->show_mos(true);
 } 
 
-void MapEditorState::on_edit_mo()
+void MapEditorState::on_edit_mo(MappableObject* pMo)
 {
-    CL_Point map_offset = m_pMap->get_geometry().get_top_left();
-    CL_Point level_pt = m_pMap->screen_to_level(m_map_context_point-map_offset,m_pMap->get_geometry().get_center());
-    level_pt /= 32;    
-    
-
-    
-    // Find the MO at this point
-    std::list<MappableObject*> objects = m_pMap->get_mos_at(level_pt);
-    if(objects.size() > 0){
-        m_pMOEditWindow->SetMappableObject(*objects.begin());
-        m_pMOEditWindow->set_visible(true);
-        m_pMOEditWindow->bring_to_front();
-        m_pMap->show_mos(true);        
-    }
-
+    m_pMOEditWindow->SetMappableObject(pMo);
+    m_pMOEditWindow->set_visible(true);
+    m_pMOEditWindow->bring_to_front();
+    m_pMap->show_mos(true);        
 }
 
-void MapEditorState::on_delete_mo()
+void MapEditorState::on_delete_mo(MappableObject* pMo)
 {
-    CL_Point map_offset = m_pMap->get_geometry().get_top_left();
-    CL_Point level_pt = m_pMap->screen_to_level(m_map_context_point-map_offset,m_pMap->get_geometry().get_center());
-    level_pt /= 32;    
-
-    
-    // Find the MO at this point
-    std::list<MappableObject*> objects = m_pMap->get_mos_at(level_pt);  
-    if(objects.size() > 0){
-          DeleteObjectOperation *op = new DeleteObjectOperation();
-          op->SetMappableObject(*objects.begin());
-          PerformOperation(op);
-          m_pMap->request_repaint();
-          
-    }
+    DeleteObjectOperation *op = new DeleteObjectOperation();
+    op->SetMappableObject(pMo);
+    PerformOperation(op);
+    m_pMap->request_repaint();
 }
 
-void MapEditorState::on_move_mo()
+void MapEditorState::on_move_mo(MappableObject* pMo)
 {
-    CL_Point map_offset = m_pMap->get_geometry().get_top_left();
-    CL_Point level_pt = m_pMap->screen_to_level(m_map_context_point-map_offset,m_pMap->get_geometry().get_center());
-    level_pt /= 32;    
-
-    
-    // Find the MO at this point
-    std::list<MappableObject*> objects = m_pMap->get_mos_at(level_pt);
-    if(objects.size() > 0){
-        MoveObjectOperation * op = new MoveObjectOperation();
-        op->SetMappableObject(*objects.begin());
-        SetOperation(CLICK,op);
-    }    
+    MoveObjectOperation * op = new MoveObjectOperation();
+    op->SetMappableObject(pMo);
+    SetOperation(CLICK,op); 
 }
 
 void MapEditorState::on_edit_tile()

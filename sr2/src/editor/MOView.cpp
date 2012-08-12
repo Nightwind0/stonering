@@ -97,4 +97,11 @@ void MOView::on_process_message(CL_GUIMessage &message)
 {
 }
 
+void MOView::Clear()
+{
+    m_sprite = CL_Sprite();
+    request_repaint();
+}
+
+
 }
