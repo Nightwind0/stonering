@@ -234,16 +234,7 @@ void MapEditorState::Start()
     m_pTileWindow->set_draggable(true);
     m_pTileWindow->SetMapEditor(this);
     
-    CL_GUITopLevelDescription mo_edit_desc;
-    mo_edit_desc.set_title("Edit Mappable Object");
-    mo_edit_desc.set_size(CL_Size(400,400),true);
-    mo_edit_desc.set_position(CL_Rect(CL_Point(size.width-400,64),CL_Size(400,400)),true);
-    mo_edit_desc.set_dialog_window(true);
-    mo_edit_desc.set_decorations(true);
-    m_pMOEditWindow = new MOEditWindow(get_gui(), mo_edit_desc);
-    m_pMOEditWindow->set_draggable(true);
-    m_pMOEditWindow->set_visible(false);
-    m_pMOEditWindow->SetMapEditorState(this);
+
     
     
     m_toolbar = new CL_ToolBar(m_pWindow);
@@ -464,9 +455,6 @@ void MapEditorState::on_edit_undo()
 
 void MapEditorState::on_mo_create()
 {
-    m_pMOEditWindow->set_visible(true);
-    m_pMOEditWindow->bring_to_front();
-    m_pMap->show_mos(true);
 }
 
 void MapEditorState::on_zoom_changed()
@@ -621,27 +609,46 @@ bool MapEditorState::on_pointer_exit(){
 }
 
 void MapEditorState::on_add_mo()
-{
-    CL_Point map_offset = m_pMap->get_geometry().get_top_left();
-    CL_Point level_pt = m_pMap->screen_to_level(m_map_context_point-map_offset,m_pMap->get_geometry().get_center()-map_offset);
-    level_pt /= 32;
-    
+{	
+    CL_Size size = get_window_size(); 	
+    CL_GUITopLevelDescription mo_edit_desc;
+    mo_edit_desc.set_title("Create Mappable Object");
+    mo_edit_desc.set_size(CL_Size(400,400),true);
+    mo_edit_desc.set_position(CL_Rect(CL_Point(size.width-400,64),CL_Size(400,400)),true);
+    mo_edit_desc.set_dialog_window(true);
+    mo_edit_desc.set_decorations(true);
+    MOEditWindow edit_window(get_gui(), mo_edit_desc);
+    edit_window.set_draggable(true);
+    edit_window.set_visible(false);
+    edit_window.SetMapEditorState(this);	
+    edit_window.set_visible(true);
     std::string name = create_unique_mo_name();
-    m_pMOEditWindow->SetName(name.c_str());
-    m_pMOEditWindow->SetCreate();
-    m_pMOEditWindow->SetPoint(level_pt);
-    m_pMOEditWindow->set_visible(true);
-    m_pMOEditWindow->bring_to_front();    
-    
-    m_pMap->show_mos(true);
+    edit_window.SetName(name.c_str());
+    edit_window.SetCreate();
+    CL_Point map_offset = m_pMap->get_geometry().get_top_left();
+    CL_Point level_pt = m_pMap->screen_to_level(m_map_context_point-map_offset,m_pMap->get_geometry().get_center());
+    level_pt /= 32;  	
+	
+    edit_window.SetPoint(level_pt);
+	edit_window.exec();
 } 
 
 void MapEditorState::on_edit_mo(MappableObject* pMo)
 {
-    m_pMOEditWindow->SetMappableObject(pMo);
-    m_pMOEditWindow->set_visible(true);
-    m_pMOEditWindow->bring_to_front();
-    m_pMap->show_mos(true);        
+    CL_Size size = get_window_size(); 	
+    CL_GUITopLevelDescription mo_edit_desc;
+    mo_edit_desc.set_title("Edit Mappable Object");
+    mo_edit_desc.set_size(CL_Size(400,400),true);
+    mo_edit_desc.set_position(CL_Rect(CL_Point(size.width-400,64),CL_Size(400,400)),true);
+    mo_edit_desc.set_dialog_window(true);
+    mo_edit_desc.set_decorations(true);
+    MOEditWindow edit_window(get_gui(), mo_edit_desc);
+    edit_window.set_draggable(true);
+    edit_window.set_visible(false);
+    edit_window.SetMapEditorState(this);	
+    edit_window.SetMappableObject(pMo);
+    edit_window.set_visible(true);
+	edit_window.exec();
 }
 
 void MapEditorState::on_delete_mo(MappableObject* pMo)

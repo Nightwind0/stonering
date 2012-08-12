@@ -174,7 +174,6 @@ namespace StoneRing {
         // GUI stuff      
         CL_MainWindow *         m_pWindow;
         TileSelectorWindow*     m_pTileWindow;
-        MOEditWindow*           m_pMOEditWindow;
         CL_PopupMenu            m_file_menu;
         CL_PopupMenu            m_edit_menu;
         CL_PopupMenu            m_grow_submenu;

@@ -23,6 +23,7 @@
 #include "Operation.h"
 #include "Level.h"
 #include "MapEditorState.h"
+#include "ScriptEditWindow.h"
 
 namespace StoneRing { 
     
@@ -97,6 +98,12 @@ public:
             m_cFlags |= SOLID;
         else
             m_cFlags &= ~SOLID;
+    }
+    void SetFlying(bool flying){
+        if(flying)
+            m_cFlags |= FLYING;
+        else
+            m_cFlags &= ~FLYING;
     }
     void SetFacing(const Direction& dir){
         m_start_facing = dir;
@@ -211,8 +218,18 @@ MOEditWindow::MOEditWindow(CL_GUIManager* owner, const CL_GUITopLevelDescription
     m_solid->set_text("Solid");
     m_solid->set_checked(true);
     
+    m_flying = new CL_CheckBox(this);
+    m_flying->set_geometry(CL_Rect(136,370,256,394));
+    m_flying->set_text("Flying");
+    m_flying->set_checked(false);
+    
     m_event_list = new CL_ComboBox(this);
     m_event_list->set_geometry(CL_Rect(132,310,264,334));
+	
+	m_condition_button = new CL_PushButton(this);
+	m_condition_button->set_geometry(CL_Rect(132,340,264,364));
+	m_condition_button->set_text("Create Condition");
+	m_condition_button->func_clicked().set(this,&MOEditWindow::on_condition_edit);
     
     m_open_event_button = new CL_PushButton(this);
     m_open_event_button->set_geometry(CL_Rect(270,310,380,334));
@@ -248,6 +265,7 @@ MOEditWindow::~MOEditWindow()
     delete m_sprite_list;
     delete m_sprite_view;
     delete m_width_spin;
+	delete m_height_spin;
     delete m_movement;
     delete m_move_speed;
     delete m_event_list;
@@ -255,6 +273,9 @@ MOEditWindow::~MOEditWindow()
     delete m_add_event_button;
     delete m_save_button;
     delete m_face_dir;
+    delete m_flying;
+	delete m_solid;
+	delete m_condition_button;
 }
 
 void MOEditWindow::SetMappableObject ( MappableObject* pObject )
@@ -366,6 +387,17 @@ void MOEditWindow::on_list_selection ( CL_ListViewSelection selection )
     }
 }
 
+void MOEditWindow::on_condition_edit()
+{
+	CL_GUIManager mgr = get_gui_manager();
+	CL_GUITopLevelDescription desc("Condition",CL_Size(500,500), false);
+	desc.set_dialog_window(true);
+	ScriptEditWindow script_window(&mgr,desc);
+	script_window.set_draggable(true);
+	script_window.exec();
+}
+
+
 void MOEditWindow::on_cancel()
 {
 
@@ -394,7 +426,7 @@ void MOEditWindow::on_save()
     
         m_map_editor_state->PerformOperation(pOp);    
     }
-    set_visible(false);
+    exit_with_code(0);
 }
 
 
@@ -418,7 +450,7 @@ void MOEditWindow::SetMapEditorState ( MapEditorState* pState )
 
 bool MOEditWindow::on_window_close()
 {
-    set_visible(false);
+    exit_with_code(1);
 
 	return true;
 }
@@ -431,6 +463,9 @@ void MOEditWindow::sync_from_mo()
     m_movement->set_selected_item(m_pMo->GetMovementType());
     m_move_speed->set_selected_item(m_pMo->GetMovementSpeed());
     
+    m_flying->set_checked(m_pMo->IsFlying());
+    m_solid->set_checked(m_pMo->IsSolid());
+    
     std::string face_dir = m_pMo->GetFacing();
     
     if(face_dir == "south") 
@@ -442,7 +477,6 @@ void MOEditWindow::sync_from_mo()
     else if(face_dir == "east")
         m_face_dir->set_selected_item(3);
     
-    // TODO: How do I pick the right sprite? fuck
      CL_ListViewItem item = m_sprite_list->find("Main",m_pMo->GetSpriteName());
      if(!item.is_null())
         m_sprite_list->set_selected(item,true);
@@ -451,6 +485,8 @@ void MOEditWindow::sync_from_mo()
 
     // TODO: Load conditions and events
     // Gets tricky when you have Event* and ScriptElement*
+	// TODO: If there is a condition, change the button to "Edit Condition",
+	// if not, change to "Create Condition"
 }
 
 void MOEditWindow::sync_to_mo()
@@ -461,6 +497,7 @@ void MOEditWindow::sync_to_mo()
     m_pMo->SetMovementSpeed((MappableObject::eMovementSpeed)m_move_speed->get_selected_item());
     m_pMo->SetSprite(m_sprite_view->GetSprite());
     m_pMo->SetSolid(m_solid->is_checked());
+    m_pMo->SetFlying(m_flying->is_checked());
     
     m_pMo->SetSpriteName(m_sprite_name);
     m_pMo->SetFacing((std::string)m_face_dir->get_text());
