@@ -24,6 +24,7 @@
 #include "Level.h"
 #include "MapEditorState.h"
 #include "ScriptEditWindow.h"
+#include "EventEditWindow.h"
 
 namespace StoneRing { 
     
@@ -190,6 +191,7 @@ MOEditWindow::MOEditWindow(CL_GUIManager* owner, const CL_GUITopLevelDescription
     m_sprite_list = new CL_ListView(this);
     m_sprite_list->set_geometry(CL_Rect(12,50,380,300));
     m_sprite_list->set_multi_select(false);
+	m_sprite_list->set_select_whole_row(true);
     m_sprite_list->func_selection_changed().set(this,&MOEditWindow::on_list_selection);
     
     m_sprite_view = new MOView(this);
@@ -234,10 +236,12 @@ MOEditWindow::MOEditWindow(CL_GUIManager* owner, const CL_GUITopLevelDescription
     m_open_event_button = new CL_PushButton(this);
     m_open_event_button->set_geometry(CL_Rect(270,310,380,334));
     m_open_event_button->set_text("Open Event");
+	m_open_event_button->func_clicked().set(this,&MOEditWindow::on_edit_event);
     
     m_add_event_button = new CL_PushButton(this);
     m_add_event_button->set_geometry(CL_Rect(270,340,380,364));
     m_add_event_button->set_text("Add Event");
+	m_add_event_button->func_clicked().set(this,&MOEditWindow::on_add_event);
 
     
     m_face_dir = new CL_ComboBox(this);
@@ -251,7 +255,6 @@ MOEditWindow::MOEditWindow(CL_GUIManager* owner, const CL_GUITopLevelDescription
     
     populate_movement_combo();
     populate_move_speed_combo();
-    populate_event_list();
     populate_facing_combo();
     m_movement->set_selected_item(0);    
     //m_sprite_view->set_scale_to_fit();
@@ -288,6 +291,7 @@ void MOEditWindow::SetMappableObject ( MappableObject* pObject )
     m_pMo->copy(pObject);
     m_edit_mode = true;
     sync_from_mo();
+	populate_event_list();
 }
 
 void MOEditWindow::SetCreate()
@@ -300,7 +304,14 @@ void MOEditWindow::SetCreate()
 
 void MOEditWindow::populate_event_list()
 {
-
+	CL_PopupMenu menu;
+	for(std::list<Event*>::const_iterator it = m_pMo->EventsBegin();
+		it != m_pMo->EventsEnd(); it++){
+		menu.insert_item((*it)->GetName());
+	}
+	m_event_list->set_popup_menu(menu);
+	if(menu.get_item_count() > 0)
+		m_event_list->set_selected_item(0);
 }
 
 void MOEditWindow::populate_facing_combo()
@@ -387,14 +398,73 @@ void MOEditWindow::on_list_selection ( CL_ListViewSelection selection )
     }
 }
 
+void MOEditWindow::on_add_event()
+{
+	CL_GUIManager mgr = get_gui_manager();
+	CL_GUITopLevelDescription desc("Create Event",CL_Size(250,250), false);		
+	desc.set_dialog_window(true);
+	EventEditWindow window(&mgr,desc);
+	window.CreateEvent();
+	window.set_draggable(true);
+	if(0 == window.exec()){
+		Event * pEvent = window.GetEvent();
+		if(pEvent->GetName().empty()){
+			std::string event_name;
+			int i = 0;
+			do{
+				event_name = m_pMo->GetName() + " Event " +IntToString(i++);
+			}while(m_pMo->GetEventByName(event_name) != NULL);
+			pEvent->SetName(event_name);
+		}		
+		m_pMo->AddEvent(pEvent);
+		populate_event_list();
+	}
+}
+
+void MOEditWindow::on_edit_event()
+{
+	Event * pEvent = m_pMo->GetEventByName(m_event_list->get_text());
+	if(pEvent){
+		CL_GUIManager mgr = get_gui_manager();
+		CL_GUITopLevelDescription desc("Edit Event",CL_Size(250,250), false);		
+		desc.set_dialog_window(true);
+		EventEditWindow window(&mgr,desc);
+		window.SetEvent(pEvent);
+		window.set_draggable(true);
+		if(0 == window.exec()){
+			if(pEvent->GetName().empty()){
+				std::string event_name;
+				int i = 0;
+				do{
+					event_name = m_pMo->GetName() + " Event " +IntToString(i++);
+				}while(m_pMo->GetEventByName(event_name) != NULL);
+				pEvent->SetName(event_name);
+			}
+		}else{
+			//m_pMo->AddEvent(window.GetEvent());
+			// TODO: Cancel changes somehow
+		}
+		populate_event_list();
+	}
+}
+
+
 void MOEditWindow::on_condition_edit()
 {
 	CL_GUIManager mgr = get_gui_manager();
-	CL_GUITopLevelDescription desc("Condition",CL_Size(500,500), false);
+	CL_GUITopLevelDescription desc("Condition",CL_Size(800,650),false);
 	desc.set_dialog_window(true);
 	ScriptEditWindow script_window(&mgr,desc);
+	script_window.SetIsCondition(true);
 	script_window.set_draggable(true);
-	script_window.exec();
+	if(0 == script_window.exec()){
+		// Create and associate a condition
+		m_pMo->SetCondition(script_window.CreateScript());
+		if(m_pMo->GetCondition()->GetScriptId().empty()){
+			std::string id = m_pMo->GetName() + "Condition";
+			m_pMo->GetCondition()->SetId(id);
+		}
+	}
 }
 
 

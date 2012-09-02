@@ -50,6 +50,7 @@ private:
     void on_save();
     void on_cancel();
 	void on_edit_event();
+	void on_add_event();
 	void on_condition_edit();
     void sync_to_mo();
     void sync_from_mo();

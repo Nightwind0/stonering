@@ -105,31 +105,6 @@ public:
 	// In pixels
 	void            CalculateEdgePoints( const CL_Point &topleft, Direction dir, std::list<CL_Point> *pList );
 	static int      ConvertDirectionToDirectionBlock( Direction dir );
-#ifdef SR2_EDITOR
-	virtual CL_DomElement   CreateDomElement( CL_DomDocument& doc ) const {
-		return CL_DomElement( doc, "mappableObject" );
-	}
-
-	CL_Sprite       GetSprite() const {
-		return m_sprite;
-	}
-
-	int             GetFlags() const {
-		return m_cFlags;
-	}
-
-	CL_Point        GetStartPos() const {
-		return CL_Point( m_StartX, m_StartY );
-	}
-
-	void            SetStartPos( const CL_Point& start ) {
-		m_StartX = start.x;
-		m_StartY = start.y;
-		m_pos.x = m_StartX * 32;
-		m_pos.y = m_StartY * 32;
-	}
-
-#endif
 protected:
 	enum eFlags {
 		SPRITE = 1, TILEMAP = 2, SOLID = 4, FLYING = 8
@@ -164,6 +139,31 @@ protected:
 	char            m_cFlags;
 	ushort          m_nTilesMoved;
 	std::stack<Navigator*>  m_navStack;
+#ifdef SR2_EDITOR
+public:
+	virtual CL_DomElement   CreateDomElement( CL_DomDocument& doc ) const {
+		return CL_DomElement( doc, "mappableObject" );
+	}
+
+	CL_Sprite       GetSprite() const {
+		return m_sprite;
+	}
+
+	int             GetFlags() const {
+		return m_cFlags;
+	}
+
+	CL_Point        GetStartPos() const {
+		return CL_Point( m_StartX, m_StartY );
+	}
+
+	void            SetStartPos( const CL_Point& start ) {
+		m_StartX = start.x;
+		m_StartY = start.y;
+		m_pos.x = m_StartX * 32;
+		m_pos.y = m_StartY * 32;
+	}
+#endif	
 };
 
 class MappableObjectElement : public MappableObject, public Element {
@@ -186,7 +186,21 @@ public:
 	}
 
 	virtual void    Placed();
+
+protected:
+	virtual bool            handle_element( eElement element, Element * pElement );
+	virtual void            load_attributes( CL_DomNamedNodeMap attributes );
+	virtual void            load_finished();
+	virtual Direction       Get_Default_Facing() const;
+
+	ScriptElement*  m_pCondition;
+	std::list<Event*> m_events;
+	eMovementSpeed  m_speed;
+	eMovementType   m_move_type;
+	NPCNavigator    m_navigator;
+	Direction       m_start_facing;
 #if SR2_EDITOR
+public:
 	virtual CL_DomElement   CreateDomElement( CL_DomDocument& ) const;
 	std::list<Event*>::const_iterator EventsBegin() const {
 		return m_events.begin();
@@ -211,25 +225,23 @@ public:
 	std::string             GetSpriteName() const {
 		return m_sprite_name;
 	}
-
-#endif
+	void 					AddEvent(Event* pEvent){
+		m_events.push_back(pEvent);
+	}
+	Event * 				GetEventByName(const std::string& name){
+		for(std::list<Event*>::const_iterator it = m_events.begin();
+			it != m_events.end(); it++){
+			if((*it)->GetName() == name){
+				return *it;
+			}
+		}
+		return NULL;
+	}
 protected:
-	virtual bool            handle_element( eElement element, Element * pElement );
-	virtual void            load_attributes( CL_DomNamedNodeMap attributes );
-	virtual void            load_finished();
-	virtual Direction       Get_Default_Facing() const;
-#if SR2_EDITOR
-	virtual void            create_dom_element_hook( CL_DomElement& element ) const;
-#endif
-	ScriptElement*  m_pCondition;
-	std::list<Event*> m_events;
-	eMovementSpeed  m_speed;
-	eMovementType   m_move_type;
-	NPCNavigator    m_navigator;
-	Direction       m_start_facing;
-#if SR2_EDITOR
+	virtual void            create_dom_element_hook( CL_DomElement& element ) const;	
+	
 	eSize           m_eSize;
-	std::string     m_sprite_name;
+	std::string     m_sprite_name;	
 #endif
 };
 

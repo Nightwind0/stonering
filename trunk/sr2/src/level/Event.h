@@ -17,12 +17,9 @@ namespace StoneRing{
         std::string GetName() const;
         eTriggerType GetTriggerType();
         bool Repeatable();
-        inline bool Remember();
+        inline bool Remember() { return m_bRemember; }
         bool Invoke();
         bool Invoke(const ParameterList& params);
-#if SR2_EDITOR
-        CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
-#endif
     protected:
         virtual bool handle_element(eElement element, Element * pElement );
         virtual void load_attributes(CL_DomNamedNodeMap  attributes);
@@ -32,6 +29,18 @@ namespace StoneRing{
         eTriggerType m_eTriggerType;
         ScriptElement *m_pCondition;
         ScriptElement *m_pScript;
+#if SR2_EDITOR
+	public:
+        CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
+		void SetCondition(ScriptElement * pElement);
+		void SetScript(ScriptElement* pElement);
+		void SetRepeatable(bool repeatable);
+		void SetRemember(bool remember);
+		void SetTrigger(eTriggerType trigger);
+		void SetName(const std::string& name);
+		ScriptElement * GetCondition() { return m_pCondition; } 
+		ScriptElement * GetScript() { return m_pScript; }
+#endif		
     };
 
 

@@ -13,6 +13,40 @@
 				</script>
 			</event>
 		</mo>
+		<mo name="Podium" movementType="none" speed="slow" size="1x1" type="" xpos="2" ypos="2" facing="south">
+			<event name="podium" triggerType="talk">
+				<script id="usePodium">
+					<![CDATA[
+                            var @array = getPartyArray();
+                            
+                            foreach (declare $character) in @array
+                            {
+                                doDamage($character,0-getCharacterAttribute($character,$_MAXHP)-getCharacterAttribute($character,$_HP));
+                                print(getCharacterName($character) + " HP = " + getCharacterAttribute($character,$_HP));
+                                setCharacterToggle($character,$_ALIVE,true);
+                            }
+                            declare $item = randomItem($_DROP_RARE,100,4000);
+                            if(is_valid($item))
+                                giveItem($item,1,false);
+                        
+                        ]]>
+				</script>
+			</event>
+			<event name="Podium Event 0" triggerType="act" repeatable="false">
+				<script id="">
+					<![CDATA[say("Podium","Don't touch me!");]]>
+				</script>
+			</event>
+		</mo>
+		<mo name="Karate Cat" sprite="Npc/Cat" movementType="wander" speed="medium" size="1x1" type="" xpos="0" ypos="5" facing="south" solid="true">
+			<event name="CatMeow" triggerType="talk">
+				<script id="catmeow">
+					<![CDATA[say($_Name,"Do you want karate?");
+startBattle("Black Cat",1,true,"grasslands");
+                                ]]>
+				</script>
+			</event>
+		</mo>
 		<mo name="BattlePodium" movementType="none" speed="slow" size="1x1" type="npc" xpos="3" ypos="2" facing="south" solid="true">
 			<event name="podium" triggerType="talk">
 				<script id="useBattlePodium">
@@ -77,15 +111,6 @@
 				</script>
 			</event>
 		</mo>
-		<mo name="Karate Cat" sprite="Npc/Cat" movementType="wander" speed="medium" size="1x1" type="npc" xpos="0" ypos="5" facing="south" solid="true">
-			<event name="CatMeow" triggerType="talk" remember="true">
-				<script id="catmeow">
-					<![CDATA[say($_Name,"Do you want karate?");
-                                    startBattle("Black Cat",1,true,"grasslands");
-                                ]]>
-				</script>
-			</event>
-		</mo>
 		<mo name="Presence" movementType="none" speed="slow" size="1x1" type="square" xpos="3" ypos="3" facing="south">
 			<event name="sensePresence" triggerType="talk" remember="true">
 				<script id="presence_">
@@ -94,26 +119,6 @@
                                 What does it mean to you? What will you do if it ever goes away? Why? What is it with monkeys, anyway.
                                 Do they really come in barrels? What else comes in barrels besides monkeys and pickles?");
                                 ]]>
-				</script>
-			</event>
-		</mo>
-		<mo name="Podium" movementType="none" speed="slow" size="1x1" type="square" xpos="2" ypos="2" facing="south">
-			<event name="podium" triggerType="talk">
-				<script id="usePodium">
-					<![CDATA[
-                            var @array = getPartyArray();
-                            
-                            foreach (declare $character) in @array
-                            {
-                                doDamage($character,0-getCharacterAttribute($character,$_MAXHP)-getCharacterAttribute($character,$_HP));
-                                print(getCharacterName($character) + " HP = " + getCharacterAttribute($character,$_HP));
-                                setCharacterToggle($character,$_ALIVE,true);
-                            }
-                            declare $item = randomItem($_DROP_RARE,100,4000);
-                            if(is_valid($item))
-                                giveItem($item,1,false);
-                        
-                        ]]>
 				</script>
 			</event>
 		</mo>
@@ -171,7 +176,13 @@
 				</script>
 			</event>
 		</mo>
-		<mo name="Jeremy" sprite="Npc/Seagull" movementType="wander" speed="fast" size="2x1" type="npc" xpos="16" ypos="7" flying="true" facing="west" solid="true"/>
+		<mo name="Jeremy" sprite="Npc/Seagull" movementType="wander" speed="fast" size="2x1" type="" xpos="16" ypos="7" flying="true" facing="east" solid="true">
+			<event name="" triggerType="step">
+				<script id="Hi">
+					<![CDATA[say("Jeremy","Hello! I can see everything from here!");]]>
+				</script>
+			</event>
+		</mo>
 	</mappableObjects>
 	<tiles>
 		<tile xpos="0" ypos="0">

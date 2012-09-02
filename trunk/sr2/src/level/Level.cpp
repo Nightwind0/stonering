@@ -849,7 +849,9 @@ void Level::Talk(const CL_Point &target, bool prod)
                 {
                     (pMo)->Prod();
                 }
-
+                
+                if((pMo)->ProvokeEvents ( Event::ACT ))
+					break; // policy is to only do the first one with a true condition
 
             }
 

@@ -68,10 +68,6 @@ bool Event::Repeatable()
     return m_bRepeatable;
 }
 
-bool Event::Remember()
-{
-    return m_bRemember;
-}
 
 bool Event::Invoke()
 {
@@ -140,6 +136,35 @@ CL_DomElement Event::CreateDomElement(CL_DomDocument& doc)const
     
     return element;
 }
+
+void Event::SetCondition(ScriptElement * pElement)
+{
+	if(m_pCondition) delete m_pCondition;
+	m_pCondition = pElement;
+}
+void Event::SetScript(ScriptElement* pElement)
+{
+	if(m_pScript) delete m_pScript;
+	m_pScript = pElement;
+}
+void Event::SetRepeatable(bool repeatable)
+{
+	m_bRepeatable = repeatable;
+}
+void Event::SetRemember(bool remember)
+{
+	m_bRemember = remember;
+}
+void Event::SetTrigger(eTriggerType trigger)
+{
+	m_eTriggerType = trigger;
+}
+void Event::SetName(const std::string& name)
+{
+	m_name = name;
+}
+
+
 #endif
 
 
