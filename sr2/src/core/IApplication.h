@@ -16,104 +16,102 @@
 
 class AstScript;
 
-namespace StoneRing
-{
+namespace StoneRing {
 
-    class LevelFactory;
-    class ItemFactory;
-    class ItemManager;
-    class CharacterManager;
-    class Choice;
-    class State;
-    class Level;
-    class MonsterRef;
-    class BattleConfig;
-    class Party;
+class LevelFactory;
+class ItemFactory;
+class ItemManager;
+class CharacterManager;
+class Choice;
+class State;
+class Level;
+class MonsterRef;
+class BattleConfig;
+class Party;
 
-    class IApplication
-    {
-    public:
-	enum Button{
-	    BUTTON_CONFIRM,
-	    BUTTON_CANCEL,
-	    BUTTON_MENU,
-	    BUTTON_ALT,
-	    BUTTON_SELECT,
-	    BUTTON_START,
-	    BUTTON_R,
-	    BUTTON_L
+class IApplication {
+public:
+	enum Button {
+		BUTTON_CONFIRM,
+		BUTTON_CANCEL,
+		BUTTON_MENU,
+		BUTTON_ALT,
+		BUTTON_SELECT,
+		BUTTON_START,
+		BUTTON_R,
+		BUTTON_L
 	};
-	
+
 	enum Axis {
-	    AXIS_HORIZONTAL,
-	    AXIS_VERTICAL
+		AXIS_HORIZONTAL,
+		AXIS_VERTICAL
 	};
-	
+
 	enum AxisDirection {
-	    AXIS_NEUTRAL,
-	    AXIS_LEFT,
-	    AXIS_RIGHT,
-	    AXIS_UP,
-	    AXIS_DOWN
+		AXIS_NEUTRAL,
+		AXIS_LEFT,
+		AXIS_RIGHT,
+		AXIS_UP,
+		AXIS_DOWN
 	};
-        
-        enum MouseButton {
-            MOUSE_LEFT,
-            MOUSE_RIGHT,
-            MOUSE_MIDDLE,
-            MOUSE_UNKNOWN
-        };
-        
-        enum KeyState {
-            KEY_SHIFT = 1,
-            KEY_ALT = (1<<1),
-            KEY_CTRL = (1<<2)            
-        };
-	
-	
+
+	enum MouseButton {
+		MOUSE_LEFT,
+		MOUSE_RIGHT,
+		MOUSE_MIDDLE,
+		MOUSE_UNKNOWN
+	};
+
+	enum KeyState {
+		KEY_SHIFT = 1,
+		KEY_ALT = ( 1 << 1 ),
+		KEY_CTRL = ( 1 << 2 )
+	};
+
+
 	enum Utility {
-	    XP_FOR_LEVEL,
-	    LEVEL_FOR_XP,
-            ON_ATTACK
+		XP_FOR_LEVEL,
+		LEVEL_FOR_XP,
+		ON_ATTACK
 	};
-        
-        // Functor for running code on main thread
-        class Functor {
-        public:
-            Functor(){}
-            virtual ~Functor(){}
-            virtual void operator()(){
-            }
-        };       
+
+	// Functor for running code on main thread
+	class Functor {
+	public:
+		Functor() {}
+		virtual ~Functor() {}
+		virtual void operator()() {
+		}
+	};
 
 	static IApplication * GetInstance();
-        virtual ~IApplication(){}
-        virtual CL_ResourceManager&GetResources()=0;
-        virtual CL_DisplayWindow&  GetApplicationWindow()=0;
-        virtual Party *        GetParty() const=0;
-       // virtual Party * GetReserveParty() const=0;
-        virtual AbilityManager *GetAbilityManager() = 0;
-        virtual IFactory *      GetElementFactory() = 0;
-        virtual void            StartBattle(const MonsterGroup &group, const std::string &backdrop)=0;
-	virtual void            PopLevelStack(bool popAll)=0;
-        virtual Level*          GetCurrentLevel()const=0;
-	virtual void            MainMenu()=0;
-	virtual void            LoadMainMenu(CL_DomDocument&)=0;
-        virtual CL_Rect         GetDisplayRect() const=0;
-        virtual uint            GetMinutesPlayed()const=0;
-        virtual void            RequestRedraw(const State *pState)=0;
-        virtual void            RunState(State *pState, bool threaded=false)=0;
-        virtual void            StartGame(bool load)=0;
-        virtual AstScript *     LoadScript(const std::string &name, const std::string &script)=0;
-        virtual SteelType       RunScript(AstScript * pScript)=0;
-        virtual SteelType       RunScript(AstScript *pScript, const ParameterList &params)=0;
-	virtual AstScript *     GetUtility(Utility util)const=0;
-        virtual std::string     GetCurrencyName()const=0;
-        virtual void            RunOnMainThread(CL_Event& event, Functor* functor)=0; 
-        virtual bool            Serialize(std::ostream& stream)=0;
-        virtual bool            Deserialize(std::istream& stream)=0;
-        virtual void            Banner(const std::string& str, int time)=0;
-    };
+	virtual ~IApplication() {}
+	virtual CL_ResourceManager&GetResources() = 0;
+	virtual CL_DisplayWindow&  GetApplicationWindow() = 0;
+	virtual Party *        GetParty() const = 0;
+	// virtual Party * GetReserveParty() const=0;
+	virtual AbilityManager *GetAbilityManager() = 0;
+	virtual IFactory *      GetElementFactory() = 0;
+	virtual void            StartBattle( const MonsterGroup &group, const std::string &backdrop ) = 0;
+	virtual void            PopLevelStack( bool popAll ) = 0;
+	virtual Level*          GetCurrentLevel()const = 0;
+	virtual void            MainMenu() = 0;
+	virtual void            LoadMainMenu( CL_DomDocument& ) = 0;
+	virtual CL_Rect         GetDisplayRect() const = 0;
+	virtual uint            GetMinutesPlayed()const = 0;
+	virtual void            RequestRedraw( const State *pState ) = 0;
+	virtual void            RunState( State *pState, bool threaded = false ) = 0;
+	virtual void            StartGame( bool load ) = 0;
+	virtual AstScript *     LoadScript( const std::string &name, const std::string &script ) = 0;
+	virtual SteelType       RunScript( AstScript * pScript ) = 0;
+	virtual SteelType       RunScript( AstScript *pScript, const ParameterList &params ) = 0;
+	virtual AstScript *     GetUtility( Utility util )const = 0;
+	virtual std::string     GetCurrencyName()const = 0;
+	virtual void            RunOnMainThread( CL_Event& event, Functor* functor ) = 0;
+	virtual bool            Serialize( std::ostream& stream ) = 0;
+	virtual bool            Deserialize( std::istream& stream ) = 0;
+	virtual void            Banner( const std::string& str, int time ) = 0;
+};
 
 }
 

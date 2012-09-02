@@ -156,26 +156,6 @@ public:
     inline bool IsTile() const {
         return true;
     }
-#if SR2_EDITOR
-    CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
-    void SetTileMap(Tilemap* pTileMap) {
-        m_tilemap = pTileMap;
-        cFlags &= ~TIL_SPRITE;
-    }
-    void SetPos(ushort x, ushort y) {
-        m_X = x;
-        m_Y = y;
-    }
-    void SetFloater() {
-        cFlags |= TIL_FLOATER;
-    }
-    void SetFlag(int flag) {
-        cFlags |= flag;
-    }
-    void UnsetFlag(int flag) {
-        cFlags &= (~flag);
-    }
-#endif
 
 protected:
     virtual bool handle_element(eElement element, Element * pElement);
@@ -194,6 +174,25 @@ protected:
     unsigned char cFlags;
 #ifdef SR2_EDITOR
     std::string m_sprite_name;
+public:
+	CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
+    void SetTileMap(Tilemap* pTileMap) {
+        m_tilemap = pTileMap;
+        cFlags &= ~TIL_SPRITE;
+    }
+    void SetPos(ushort x, ushort y) {
+        m_X = x;
+        m_Y = y;
+    }
+    void SetFloater() {
+        cFlags |= TIL_FLOATER;
+    }
+    void SetFlag(int flag) {
+        cFlags |= flag;
+    }
+    void UnsetFlag(int flag) {
+        cFlags &= (~flag);
+    }
 #endif
 };
 
@@ -358,21 +357,6 @@ public:
     void AddPathTile(const CL_Point& pt);
     void ClearPath();
 #endif
-#ifdef SR2_EDITOR
-    Level(uint width, uint height);
-    void GrowLevelTo(uint width, uint height);
-    bool TilesAt(const CL_Point& loc)const;
-    void AddTile(Tile * pTile);
-    Tile* PopTileAtPos(const CL_Point& loc);
-    std::list<Tile*> GetTilesAt(const CL_Point& loc) const;
-    std::list<MappableObject*> GetMappableObjectsAt(const CL_Point& loc)const;
-
-
-    void SetHotAt(uint levelX, uint levelY, bool bHot);
-    bool WriteXML(const std::string& filename, bool force)const;
-    void resize_mo_quadtree();
-    CL_DomElement CreateDomElement(CL_DomDocument& doc) const;
-#endif
     typedef Quadtree::RootNode<MappableObject*,4,float> MOQuadtree;
     typedef Quadtree::RootNode<Tile*,4,float> TileQuadtree;
 protected:
@@ -436,6 +420,22 @@ protected:
     std::set<CL_Point> m_pathPoints;
 #endif
     //mutable CL_Mutex m_mo_mutex;
+#ifdef SR2_EDITOR
+public:
+    Level(uint width, uint height);
+    void GrowLevelTo(uint width, uint height);
+    bool TilesAt(const CL_Point& loc)const;
+    void AddTile(Tile * pTile);
+    Tile* PopTileAtPos(const CL_Point& loc);
+    std::list<Tile*> GetTilesAt(const CL_Point& loc) const;
+    std::list<MappableObject*> GetMappableObjectsAt(const CL_Point& loc)const;
+
+
+    void SetHotAt(uint levelX, uint levelY, bool bHot);
+    bool WriteXML(const std::string& filename, bool force)const;
+    void resize_mo_quadtree();
+    CL_DomElement CreateDomElement(CL_DomDocument& doc) const;
+#endif	
 };
 
 

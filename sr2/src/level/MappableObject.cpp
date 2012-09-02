@@ -424,6 +424,8 @@ bool MappableObjectElement::ProvokeEvents( Event::eTriggerType trigger ) {
 			params.push_back( ParameterListItem( "$_Name", m_name ) );
 			pEvent->Invoke( params );
 			provoked = true;
+			
+			party->DoEvent(pEvent->GetName(),pEvent->Remember());
 		}
 
 	}

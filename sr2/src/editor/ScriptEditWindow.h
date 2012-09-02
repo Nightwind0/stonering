@@ -22,6 +22,7 @@
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
 #include <ClanLib/gui.h>
+#include "ScriptElement.h"
 
 namespace StoneRing { 
 
@@ -29,13 +30,22 @@ class ScriptEditWindow : public CL_Window {
 public:
 	ScriptEditWindow(CL_GUIManager* owner, const CL_GUITopLevelDescription &desc);
 	virtual ~ScriptEditWindow();
+	void SetIsCondition(bool is_condition) { m_is_condition = is_condition; }
+	void SetScript(ScriptElement * pElement);
+	std::string GetName()const;
+	std::string GetScriptText()const;
+	ScriptElement * CreateScript()const;
+	virtual CL_Size get_preferred_size() const { return CL_Size(800,750); }
 private:
 	bool on_close();
+	void on_save();
+	void on_parse();
 	CL_LineEdit*    m_script_name;
 	CL_TextEdit*	m_script_text;
 	CL_TextEdit*    m_script_errors;
 	CL_PushButton*  m_build_button;
 	CL_PushButton*  m_save_button;
+	bool 			m_is_condition;
 };
 
 }
