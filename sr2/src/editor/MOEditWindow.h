@@ -23,6 +23,7 @@
 #include <ClanLib/gui.h>
 #include "MappableObject.h"
 #include "MOView.h"
+#include "MapWindow.h"
 
 namespace StoneRing { 
 
@@ -34,7 +35,7 @@ class MOEditWindow : public CL_Window
 public:
     MOEditWindow(CL_GUIManager* owner, const CL_GUITopLevelDescription &desc);
     virtual ~MOEditWindow();
-    void SetMapEditorState(MapEditorState* pState);
+    void SetMapWindow(MapWindow * window);
     void SetMappableObject(MappableObject* pObject);
     void SetCreate();
     void SetName(const char* pName);
@@ -82,7 +83,7 @@ private:
     EditorMappableObject* m_pMo;
     MappableObject*       m_pOriginalObject;
     bool                  m_edit_mode;
-    MapEditorState*       m_map_editor_state;
+    MapWindow*            m_map_window;
     
 };
 

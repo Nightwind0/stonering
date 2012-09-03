@@ -50,8 +50,8 @@ namespace StoneRing {
         virtual void Finish(); // Hook to clean up or whatever after being popped     
         virtual bool IsDone()const;
         
-        virtual void on_button_clicked(CL_PushButton*)=0;
         virtual bool on_close(CL_Window*);        
+		virtual void on_display_resize(CL_Rect& rect){}
     protected:
         //virtual CL_Window* create_main_window()=0;
         void finish();

@@ -21,6 +21,7 @@
 #define OPERATION_H
 
 #include <list>
+#include <deque>
 #include "sr_defines.h"
 
 namespace StoneRing {
@@ -32,6 +33,15 @@ class Operation
 public:
     Operation();
     virtual ~Operation();
+	enum Modifier {
+		ALT=1,
+		SHIFT=2,
+		CTRL=4,
+		CLICK=8,
+		DOUBLECLICK=16,
+		DRAG=32,
+		RIGHT=64 // as opposed to left mouse button
+	};		
     struct Data {
         int      m_mod_state;
         CL_Point m_level_pt;
@@ -75,6 +85,8 @@ protected:
     }
     
 };
+
+typedef std::deque<Operation*> UndoStack;
 
 };
 

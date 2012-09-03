@@ -488,13 +488,13 @@ void MOEditWindow::on_save()
 
         pOp->SetData(data);
         
-        m_map_editor_state->PerformOperation(pOp);
+        m_map_window->PerformOperation(pOp);
     }else{    
         CreateMOOperation* pOp = new CreateMOOperation();
         pOp->SetMappableObject(m_pMo);
         pOp->SetData(data);
     
-        m_map_editor_state->PerformOperation(pOp);    
+        m_map_window->PerformOperation(pOp);    
     }
     exit_with_code(0);
 }
@@ -512,9 +512,9 @@ void MOEditWindow::SetPoint ( const CL_Point& i_pt )
     m_point = i_pt;
 }
 
-void MOEditWindow::SetMapEditorState ( MapEditorState* pState )
+void MOEditWindow::SetMapWindow ( MapWindow* pWindow )
 {
-    m_map_editor_state = pState;
+    m_map_window = pWindow;
 }
 
 

@@ -228,6 +228,8 @@ stonering_SOURCES =	src/Application.cpp \
 			src/editor/MOView.h \
 			src/editor/ScriptEditWindow.cpp \
 			src/editor/EventEditWindow.cpp \
+			src/editor/MapWindow.cpp \
+			src/editor/MapWindow.h \
 			src/level/DebugTileVisitors.cpp
 
 
