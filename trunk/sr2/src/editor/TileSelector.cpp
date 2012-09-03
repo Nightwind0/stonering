@@ -18,9 +18,10 @@
 
 
 #include "TileSelector.h"
-#include "MapEditorState.h"
+#include "Operation.h"
 #include "GraphicsManager.h"
 #include <ClanLib/display.h>
+#include "MapEditorState.h"
 #include <Level.h>
 
 #ifdef SR2_EDITOR
@@ -53,7 +54,7 @@ bool TileSelector::AddTileOperation::Execute(shared_ptr<Level>  pLevel)
         pTile->SetPos(m_data.m_level_end_pt.x,m_data.m_level_end_pt.y);
 
         // Shift means add, without it means to replace
-        if(m_data.m_mod_state & MapEditorState::SHIFT){
+        if(m_data.m_mod_state & Operation::SHIFT){
             pLevel->AddTile(pTile);        
         }else {
             m_removed_tiles = pLevel->GetTilesAt(m_data.m_level_end_pt);
@@ -70,7 +71,7 @@ bool TileSelector::AddTileOperation::Execute(shared_ptr<Level>  pLevel)
 
 void TileSelector::AddTileOperation::Undo(shared_ptr<Level> pLevel)
 {
-    if(m_data.m_mod_state & MapEditorState::SHIFT){
+    if(m_data.m_mod_state & Operation::SHIFT){
         Tile * pTile = pLevel->PopTileAtPos(m_data.m_level_end_pt);
         if(pTile) delete pTile;        
     }else{
@@ -146,13 +147,13 @@ bool TileSelector::on_click(const CL_InputEvent& event)
             m_group_op.SetPoint(pt);
             m_group_op.SetName(m_name);
         
-            m_state->SetOperation(MapEditorState::CLICK,&m_op);
-            m_state->SetOperation(MapEditorState::CLICK | MapEditorState::SHIFT,&m_op); // For adding instead of replacing
-            m_state->SetOperation(MapEditorState::CLICK | MapEditorState::ALT,&m_op); // For adding a floater
+            m_state->SetOperation(Operation::CLICK,&m_op);
+            m_state->SetOperation(Operation::CLICK | Operation::SHIFT,&m_op); // For adding instead of replacing
+            m_state->SetOperation(Operation::CLICK | Operation::ALT,&m_op); // For adding a floater
 
-            m_state->SetOperation(MapEditorState::DRAG,&m_group_op);
-            m_state->SetOperation(MapEditorState::DRAG | MapEditorState::SHIFT,&m_group_op);
-            m_state->SetOperation(MapEditorState::DRAG | MapEditorState::ALT,&m_group_op);
+            m_state->SetOperation(Operation::DRAG,&m_group_op);
+            m_state->SetOperation(Operation::DRAG | Operation::SHIFT,&m_group_op);
+            m_state->SetOperation(Operation::DRAG | Operation::ALT,&m_group_op);
             m_selection = true;
             request_repaint();
         }

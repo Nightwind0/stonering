@@ -55,10 +55,10 @@ void MapComponent::close_level()
 
 void MapComponent::load_level ( const std::string& name )
 {
-   m_pLevel.reset(new Level());
-   m_pLevel->LoadFromFile ( name );
-   m_origin = CL_Point(0,0);
-   request_repaint();
+	m_pLevel = shared_ptr<Level>(new Level());
+	m_pLevel->LoadFromFile ( name );
+    m_origin = CL_Point(0,0);
+    request_repaint();
    //m_pLevel->Invoke();
 }
 

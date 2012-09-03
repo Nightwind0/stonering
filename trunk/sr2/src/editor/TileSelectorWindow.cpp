@@ -27,6 +27,7 @@ namespace StoneRing {
 
 TileSelectorWindow::TileSelectorWindow(CL_GUIComponent* owner, const CL_GUITopLevelDescription& desc):CL_Window(owner,desc)
 {
+	// TODO: Live within the get_client_area()
     m_pMenuBar = new CL_MenuBar(this);
     m_pMenuBar->set_geometry(CL_Rect(CL_Point(0,24),CL_Size(get_geometry().get_size().width,24)));
     m_pVertScroll = new CL_ScrollBar(this);

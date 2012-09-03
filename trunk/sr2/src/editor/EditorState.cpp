@@ -38,8 +38,9 @@ void EditorState::Init(CL_DisplayWindow &window)
 {
     // TODO: Call the derived classes to get the name and sizes
     CL_Size size = get_window_size();
-    m_display_window = CL_DisplayWindow("Editor",size.width,size.height);
+    m_display_window = CL_DisplayWindow("Editor",size.width,size.height,false,true);
     m_display_window.hide();
+	m_display_window.func_window_resize().set(this,&EditorState::on_display_resize);
     m_resources = CL_ResourceManager("Media/Editor/GUIThemeBasic/resources.xml");
     m_theme.set_resources(m_resources);
     m_gui_manager.set_css_document("Media/Editor/GUIThemeBasic/theme.css");
