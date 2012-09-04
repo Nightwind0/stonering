@@ -340,6 +340,7 @@ bool MapWindow::construct_object_submenu(CL_PopupMenuItem item, const CL_Point& 
         item.set_submenu(submenu);  
         return true;
     }
+    
     return false;
 }
 
@@ -546,9 +547,8 @@ bool MapWindow::on_mouse_double_click(const CL_InputEvent& event)
     if(event.id == CL_MOUSE_RIGHT){
         // Popup menu (but only when clicking on the level itself)
         CL_Point map_offset = m_pMap->get_geometry().get_top_left();     
-        if(m_pMap->valid_location(event.mouse_pos, m_pMap->get_geometry().get_center()-map_offset)){
+        if(m_pMap->valid_location(event.mouse_pos-map_offset, m_pMap->get_geometry().get_center()-map_offset)){
             
-            CL_Point map_offset = m_pMap->get_geometry().get_top_left();
             CL_Point level_pt = m_pMap->screen_to_level(event.mouse_pos-map_offset,m_pMap->get_geometry().get_center());
             level_pt /= 32;  
             
