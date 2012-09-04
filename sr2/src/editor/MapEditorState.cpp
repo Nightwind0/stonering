@@ -63,6 +63,11 @@ void MapEditorState::Init(CL_DisplayWindow &window)
     m_pTileWindow = new TileSelectorWindow(m_pWindow,tooldesc);
     m_pTileWindow->set_draggable(true);
     m_pTileWindow->SetMapEditor(this);
+	
+	tooldesc.set_allow_resize(true);
+	tooldesc.set_tool_window(false);
+	CL_Window * foo = new CL_Window(m_pWindow,tooldesc);
+	foo->set_draggable(true);
 
     m_pMenuBar = m_pWindow->get_menubar();//new CL_MenuBar(m_pWindow);
 	construct_menu();	

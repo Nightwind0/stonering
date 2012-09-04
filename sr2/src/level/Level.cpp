@@ -553,6 +553,7 @@ void Level::RemoveTileVisitor ( Tile::Visitor* pVisitor )
 void Level::DrawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, bool bDrawDebug, bool bDrawBorders)
 {
     CL_Point offset(dst.left-src.left,dst.bottom-src.bottom);
+
     Quadtree::Geometry::Vector<float> center(src.get_center().x,src.get_center().y);
     Quadtree::Geometry::Rect<float> rect(center,src.get_width(),src.get_height());
     FindMappableObjects finder;

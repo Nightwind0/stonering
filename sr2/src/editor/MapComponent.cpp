@@ -80,12 +80,13 @@ void MapComponent::draw_grid(CL_GraphicContext &gc, const CL_Rect& rect)
 void MapComponent::draw_level(CL_GraphicContext &gc, const CL_Rect& screen_rect)
 {
     gc.push_scale(m_scale,m_scale);
-    CL_Rect screen(CL_Point(0,0),CL_Size(screen_rect.get_width(),screen_rect.get_height()));
-    CL_Rect area = CL_Rectf(to_float(m_origin)/m_scale,CL_Sizef(m_pLevel->GetWidth()*32,m_pLevel->GetHeight()*32));
+    CL_Rect screen(CL_Point(0,0),CL_Size(screen_rect.get_width()/m_scale,screen_rect.get_height()/m_scale));
+    CL_Rect area = CL_Rectf(to_float(m_origin),CL_Sizef(m_pLevel->GetWidth()*32,m_pLevel->GetHeight()*32));
     CL_Draw::gradient_fill(gc,area,m_gradient);   
     CL_Draw::box(gc,area,CL_Colorf(0,0,0));
     draw_grid(gc,area);
-    CL_Rectf source(to_float(-m_origin)/m_scale,CL_Sizef(screen_rect.get_width()/m_scale,screen_rect.get_height()/m_scale));
+    //CL_Rectf source(to_float(-m_origin)/m_scale,CL_Sizef(screen_rect.get_width()/m_scale,screen_rect.get_height()/m_scale));
+	CL_Rectf source(to_float(-m_origin),CL_Sizef(screen_rect.get_width()/m_scale,screen_rect.get_height()/m_scale));
     if(m_pLevel){
         m_pLevel->Draw(source,screen,gc,false);
         if(m_show_mos){
@@ -188,8 +189,9 @@ CL_Point MapComponent::level_to_screen ( const CL_Point& level, const CL_Point& 
 CL_Point MapComponent::screen_to_level ( const CL_Point& screen, const CL_Point& screen_center ) const
 {
     
-    CL_Pointf v = to_float(component_to_window_coords(screen)) - to_float(component_to_window_coords(m_origin));
-    return CL_Point(v.x/m_scale,v.y/m_scale);
+    //CL_Pointf v = to_float(screen) - to_float(m_origin);
+    //return CL_Point(v.x / m_scale,v.y / m_scale);
+    return CL_Point(screen.x/m_scale,screen.y/m_scale) - m_origin;
     /*CL_Pointf s = to_float((screen) - (screen_center));
     s -= to_float(m_origin);
     s *= m_scale;
