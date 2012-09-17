@@ -102,6 +102,8 @@ private:
         bool on_pointer_exit();
 		void on_resize();
         
+		void on_create_monster_region();
+		
         // Map context menu
         void on_edit_tile();
         void on_add_mo();

@@ -20,6 +20,7 @@
 #include "MapWindow.h"
 #include "MOEditWindow.h"
 #include "MapEditorState.h"
+#include "MonsterRegionEditWindow.h"
 
 namespace StoneRing { 
 	
@@ -280,11 +281,15 @@ void MapWindow::construct_menu()
     CL_PopupMenu view;
     view.insert_item("Unzoom").func_clicked().set(this,&MapWindow::on_view_unzoom);
     view.insert_item("Recenter").func_clicked().set(this,&MapWindow::on_view_recenter);
+	
+	CL_PopupMenu monster_regions;
+	monster_regions.insert_item("Create Region").func_clicked().set(this,&MapWindow::on_create_monster_region);
     
     m_mo_menu.clear();
     //m_mo_menu.insert_item("Create").func_clicked().set(this,&MapWindow::on_mo_create);
     
     m_pMenuBar->add_menu("View",view);
+	m_pMenuBar->add_menu("Monster Regions",monster_regions);
 }
 
 void MapWindow::construct_toolbar()
@@ -452,6 +457,15 @@ void MapWindow::on_edit_undo()
 void MapWindow::on_mo_create()
 {
 }
+
+void MapWindow::on_create_monster_region()
+{
+	CL_GUITopLevelDescription desc("Monster Region",CL_Size(424,424),true);
+	MonsterRegionEditWindow window(this,desc);
+	window.set_draggable(true);
+	window.exec();
+}
+
 
 void MapWindow::on_zoom_changed()
 {
