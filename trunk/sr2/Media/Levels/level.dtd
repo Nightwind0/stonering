@@ -303,10 +303,7 @@
 <!ATTLIST monster class CDATA #IMPLIED> <!-- Allows the use of a character class -->
 <!ATTLIST monster level CDATA #IMPLIED>
 
-<!ATTLIST monsterRegion levelX CDATA #REQUIRED>
-<!ATTLIST monsterRegion levelY CDATA #REQUIRED>
-<!ATTLIST monsterRegion width CDATA #REQUIRED>
-<!ATTLIST monsterRegion height CDATA #REQUIRED>
+<!ATTLIST monsterRegion id CDATA #REQUIRED>
 <!ATTLIST monsterRegion encounterRate CDATA #IMPLIED> <!-- 0.0 - 1.0 ,Game settings supply default -->
 <!ATTLIST monsterRegion backdrop CDATA #REQUIRED>
 

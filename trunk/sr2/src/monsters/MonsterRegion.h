@@ -25,9 +25,6 @@ namespace StoneRing
             int GetHeight() const {return m_Height;}
             float GetEncounterRate() const {return m_encounter_rate;}
             std::string GetBackdrop() const { return m_backdrop; }
-#if SR2_EDITOR
-            CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
-#endif
         private:
             virtual bool handle_element(eElement, Element * );
             virtual void load_attributes(CL_DomNamedNodeMap);
@@ -41,7 +38,18 @@ namespace StoneRing
             int m_nTotalWeight;
             std::string m_backdrop;
             std::list<MonsterGroup*> m_monster_groups;
-
+#if SR2_EDITOR
+	public:
+			std::list<MonsterGroup*>::const_iterator GetMonsterGroupsBegin() const{
+				return m_monster_groups.begin();
+			}
+			std::list<MonsterGroup*>::const_iterator GetMonsterGroupsEnd() const{
+				return m_monster_groups.end();
+			}
+            CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
+			void SetEncounterRate(float rate){ m_encounter_rate = rate; }
+			void SetBackdrop(const std::string& backdrop){ m_backdrop = backdrop; }
+#endif
     };
 
     class MonsterRegions : public Element
