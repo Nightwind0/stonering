@@ -7,6 +7,9 @@ using StoneRing::MonsterGroup;
 
 MonsterGroup::MonsterGroup()
 {
+	m_nWeight = 0;
+	m_nCellCols = 1;
+	m_nCellRows = 1;
 }
 
 MonsterGroup::~MonsterGroup()
@@ -43,7 +46,7 @@ void MonsterGroup::load_finished()
 CL_DomElement MonsterGroup::CreateDomElement(CL_DomDocument &doc) const 
 {
     CL_DomElement element(doc,"monsterGroup");
-    element.set_attribute("weight",FloatToString(m_nWeight));
+    element.set_attribute("weight",IntToString(m_nWeight));
     element.set_attribute("cellColumns",IntToString(m_nCellCols));
     element.set_attribute("cellRows",IntToString(m_nCellRows));
     

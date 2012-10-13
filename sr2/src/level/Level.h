@@ -29,6 +29,7 @@ class StartingEquipmentRef;
 class ScriptElement;
 class Action;
 class MonsterRegions;
+class MonsterRegion;
 
 enum eDirectionBlock
 {
@@ -429,8 +430,10 @@ public:
     Tile* PopTileAtPos(const CL_Point& loc);
     std::list<Tile*> GetTilesAt(const CL_Point& loc) const;
     std::list<MappableObject*> GetMappableObjectsAt(const CL_Point& loc)const;
+	const MonsterRegions* GetMonsterRegions() const {return m_pMonsterRegions;}
+	void RemoveMonsterRegion(MonsterRegion* pRegion);
 
-
+	void AddMonsterRegion(MonsterRegion* region);
     void SetHotAt(uint levelX, uint levelY, bool bHot);
     bool WriteXML(const std::string& filename, bool force)const;
     void resize_mo_quadtree();

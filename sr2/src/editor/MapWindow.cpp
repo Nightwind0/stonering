@@ -21,6 +21,9 @@
 #include "MOEditWindow.h"
 #include "MapEditorState.h"
 #include "MonsterRegionEditWindow.h"
+#include "MonsterRegion.h"
+
+#if SR2_EDITOR
 
 namespace StoneRing { 
 	
@@ -282,14 +285,35 @@ void MapWindow::construct_menu()
     view.insert_item("Unzoom").func_clicked().set(this,&MapWindow::on_view_unzoom);
     view.insert_item("Recenter").func_clicked().set(this,&MapWindow::on_view_recenter);
 	
-	CL_PopupMenu monster_regions;
-	monster_regions.insert_item("Create Region").func_clicked().set(this,&MapWindow::on_create_monster_region);
     
     m_mo_menu.clear();
     //m_mo_menu.insert_item("Create").func_clicked().set(this,&MapWindow::on_mo_create);
     
     m_pMenuBar->add_menu("View",view);
-	m_pMenuBar->add_menu("Monster Regions",monster_regions);
+	m_pMenuBar->add_menu("Monster Regions",m_monster_region_menu);
+}
+
+void MapWindow::construct_region_menu()
+{
+	m_monster_region_menu.clear();
+	m_monster_region_menu.insert_item("Create Region").func_clicked().set(this,&MapWindow::on_create_monster_region);
+	CL_PopupMenu edit_menu;
+	CL_PopupMenu delete_menu;
+	const MonsterRegions* regions = m_pMap->get_level()->GetMonsterRegions();
+	if(regions){
+		int i = 0;
+		for(std::list<MonsterRegion*>::const_iterator it = regions->GetRegionsBegin();
+				it != regions->GetRegionsEnd();it++){
+			CL_PopupMenuItem edit_item = edit_menu.insert_item(IntToString(i));
+			CL_PopupMenuItem delete_item = delete_menu.insert_item(IntToString(i++));
+			edit_item.func_clicked().set(this,&MapWindow::on_edit_region,*it);
+			delete_item.func_clicked().set(this,&MapWindow::on_delete_region,*it);
+		}	
+	}
+	CL_PopupMenuItem item =  m_monster_region_menu.insert_item("Edit Region");
+	item.set_submenu(edit_menu);
+	CL_PopupMenuItem delete_item = m_monster_region_menu.insert_item("Delete Region");
+	delete_item.set_submenu(delete_menu);
 }
 
 void MapWindow::construct_toolbar()
@@ -353,6 +377,7 @@ void MapWindow::New()
 {
 	assert(m_pMap);
 	m_pMap->create_level(5,5);
+	construct_region_menu();
 	request_repaint();
 }
 
@@ -360,6 +385,7 @@ void MapWindow::Open( const std::string& filename )
 {
 	assert(m_pMap);
 	m_pMap->load_level(filename);
+	construct_region_menu();
 	request_repaint();
 }
 
@@ -462,8 +488,12 @@ void MapWindow::on_create_monster_region()
 {
 	CL_GUITopLevelDescription desc("Monster Region",CL_Size(424,424),true);
 	MonsterRegionEditWindow window(this,desc);
+	window.CreateRegion();
 	window.set_draggable(true);
-	window.exec();
+	if(0 == window.exec()){
+		m_pMap->get_level()->AddMonsterRegion(window.GetRegion());
+		construct_region_menu();
+	}
 }
 
 
@@ -657,6 +687,23 @@ void MapWindow::on_move_mo(MappableObject* pMo)
 
 void MapWindow::on_edit_tile()
 {
+}
+
+void MapWindow::on_edit_region(MonsterRegion* pRegion)
+{
+	CL_GUITopLevelDescription desc("Monster Region",CL_Size(424,424),true);
+	MonsterRegionEditWindow window(this,desc);
+	window.SetRegion(pRegion);
+	window.set_draggable(true);
+	if(0 == window.exec()){
+		
+	}
+}
+
+void MapWindow::on_delete_region(MonsterRegion* pRegion)
+{
+	m_pMap->get_level()->RemoveMonsterRegion(pRegion);
+	construct_region_menu();
 }
 
 std::string MapWindow::create_unique_mo_name()
@@ -876,3 +923,5 @@ void MapWindow::on_toolbar_item(CL_ToolBarItem item)
 
 
 }
+
+#endif

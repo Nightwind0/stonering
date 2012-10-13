@@ -3,6 +3,7 @@
 
 #include <string>
 #include <map>
+#include <list>
 #include <ClanLib/core.h>
 
 namespace StoneRing{
@@ -21,7 +22,8 @@ namespace StoneRing{
         static MonsterElement * GetMonsterElement(const std::string &name);
         static Character * GetCharacter(const std::string &name);
         static Monster * CreateMonster(const std::string &name);
-
+		
+		static void GetMonsterList(std::list<MonsterElement*>& o_list);
         static void LoadCharacterClassFile (CL_DomDocument  &doc);
         static void LoadCharacters(CL_DomDocument &doc);
         static void LoadMonsterFile(CL_DomDocument &doc);

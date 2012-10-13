@@ -49,6 +49,7 @@ namespace StoneRing
             CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
 			void SetEncounterRate(float rate){ m_encounter_rate = rate; }
 			void SetBackdrop(const std::string& backdrop){ m_backdrop = backdrop; }
+			void AddMonsterGroup(MonsterGroup* group){ m_monster_groups.push_back(group); }
 #endif
     };
 
@@ -63,13 +64,24 @@ namespace StoneRing
         virtual eElement WhichElement() const { return EMONSTERREGIONS; }
 #if SR2_EDITOR
         CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
+		std::list<MonsterRegion*>::const_iterator GetRegionsBegin() const{
+			return m_monster_regions.begin();
+		}
+		std::list<MonsterRegion*>::const_iterator GetRegionsEnd() const{
+			return m_monster_regions.end();
+		}
+		void AddMonsterRegion(MonsterRegion* region){
+			m_monster_regions.push_back(region);
+		}
+		void RemoveMonsterRegion(MonsterRegion* region){
+			m_monster_regions.remove(region);
+		}
 #endif
     private:
         virtual bool handle_element(eElement, Element * );
         virtual void load_finished();
 
         std::list<MonsterRegion *> m_monster_regions;
-        int m_nTotalWeight;
     };
 
 

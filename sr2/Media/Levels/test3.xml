@@ -13,36 +13,22 @@
 				</script>
 			</event>
 		</mo>
-		<mo name="Podium" movementType="none" speed="slow" size="1x1" type="" xpos="2" ypos="2" facing="south">
-			<event name="podium" triggerType="talk">
-				<script id="usePodium">
-					<![CDATA[
-                            var @array = getPartyArray();
-                            
-                            foreach (declare $character) in @array
-                            {
-                                doDamage($character,0-getCharacterAttribute($character,$_MAXHP)-getCharacterAttribute($character,$_HP));
-                                print(getCharacterName($character) + " HP = " + getCharacterAttribute($character,$_HP));
-                                setCharacterToggle($character,$_ALIVE,true);
-                            }
-                            declare $item = randomItem($_DROP_RARE,100,4000);
-                            if(is_valid($item))
-                                giveItem($item,1,false);
-                        
-                        ]]>
-				</script>
-			</event>
-			<event name="Podium Event 0" triggerType="act" repeatable="false">
-				<script id="">
-					<![CDATA[say("Podium","Don't touch me!");]]>
-				</script>
-			</event>
-		</mo>
 		<mo name="Karate Cat" sprite="Npc/Cat" movementType="wander" speed="medium" size="1x1" type="" xpos="0" ypos="5" facing="south" solid="true">
 			<event name="CatMeow" triggerType="talk">
 				<script id="catmeow">
 					<![CDATA[say($_Name,"Do you want karate?");
 startBattle("Black Cat",1,true,"grasslands");
+                                ]]>
+				</script>
+			</event>
+		</mo>
+		<mo name="Presence" movementType="none" speed="slow" size="1x1" type="square" xpos="3" ypos="3" facing="south">
+			<event name="sensePresence" triggerType="talk" remember="true">
+				<script id="presence_">
+					<![CDATA[say("????", "You sense a presence. It is as though you can feel the watching eyes of someone.
+                                Perhaps someone you once knew. You are frozen in your tracks. You wonder about the sky. What color is it?
+                                What does it mean to you? What will you do if it ever goes away? Why? What is it with monkeys, anyway.
+                                Do they really come in barrels? What else comes in barrels besides monkeys and pickles?");
                                 ]]>
 				</script>
 			</event>
@@ -111,14 +97,28 @@ startBattle("Black Cat",1,true,"grasslands");
 				</script>
 			</event>
 		</mo>
-		<mo name="Presence" movementType="none" speed="slow" size="1x1" type="square" xpos="3" ypos="3" facing="south">
-			<event name="sensePresence" triggerType="talk" remember="true">
-				<script id="presence_">
-					<![CDATA[say("????", "You sense a presence. It is as though you can feel the watching eyes of someone.
-                                Perhaps someone you once knew. You are frozen in your tracks. You wonder about the sky. What color is it?
-                                What does it mean to you? What will you do if it ever goes away? Why? What is it with monkeys, anyway.
-                                Do they really come in barrels? What else comes in barrels besides monkeys and pickles?");
-                                ]]>
+		<mo name="Podium" movementType="none" speed="slow" size="1x1" type="" xpos="2" ypos="2" facing="south">
+			<event name="podium" triggerType="talk">
+				<script id="usePodium">
+					<![CDATA[
+                            var @array = getPartyArray();
+                            
+                            foreach (declare $character) in @array
+                            {
+                                doDamage($character,0-getCharacterAttribute($character,$_MAXHP)-getCharacterAttribute($character,$_HP));
+                                print(getCharacterName($character) + " HP = " + getCharacterAttribute($character,$_HP));
+                                setCharacterToggle($character,$_ALIVE,true);
+                            }
+                            declare $item = randomItem($_DROP_RARE,100,4000);
+                            if(is_valid($item))
+                                giveItem($item,1,false);
+                        
+                        ]]>
+				</script>
+			</event>
+			<event name="Podium Event 0" triggerType="act" repeatable="false">
+				<script id="">
+					<![CDATA[say("Podium","Don't touch me!");]]>
 				</script>
 			</event>
 		</mo>
@@ -152,18 +152,6 @@ startBattle("Black Cat",1,true,"grasslands");
 				</script>
 			</event>
 		</mo>
-		<mo name="DoorR" movementType="none" speed="slow" size="2x2" type="door" xpos="8" ypos="9" facing="south">
-			<event name="octaviaLock" triggerType="step">
-				<conditionScript id="unlock">
-					<![CDATA[return hasItem("Octavia Key",1);
-                                ]]>
-				</conditionScript>
-				<script id="opendoor">
-					<![CDATA[loadLevel("octaviaInn",4,8);
-                                ]]>
-				</script>
-			</event>
-		</mo>
 		<mo name="DoorRLock" movementType="none" speed="slow" size="2x2" type="square" xpos="8" ypos="9" facing="south" solid="true">
 			<conditionScript id="hasKey">
 				<![CDATA[return not hasItem("Octavia Key",1);
@@ -176,7 +164,19 @@ startBattle("Black Cat",1,true,"grasslands");
 				</script>
 			</event>
 		</mo>
-		<mo name="Jeremy" sprite="Npc/Seagull" movementType="wander" speed="fast" size="2x1" type="" xpos="16" ypos="7" flying="true" facing="east" solid="true">
+		<mo name="DoorR" movementType="none" speed="slow" size="2x2" type="door" xpos="8" ypos="9" facing="south">
+			<event name="octaviaLock" triggerType="step">
+				<conditionScript id="unlock">
+					<![CDATA[return hasItem("Octavia Key",1);
+                                ]]>
+				</conditionScript>
+				<script id="opendoor">
+					<![CDATA[loadLevel("octaviaInn",4,8);
+                                ]]>
+				</script>
+			</event>
+		</mo>
+		<mo name="Jeremy" sprite="Npc/Seagull" movementType="wander" speed="fast" size="2x1" type="npc" xpos="16" ypos="7" flying="true" facing="east" solid="true">
 			<event name="" triggerType="step">
 				<script id="Hi">
 					<![CDATA[say("Jeremy","Hello! I can see everything from here!");]]>
@@ -184,6 +184,16 @@ startBattle("Black Cat",1,true,"grasslands");
 			</event>
 		</mo>
 	</mappableObjects>
+	<monsterRegions>
+		<monsterRegion levelX="0" levelY="0" width="0" height="0" backdrop="" encounterRate="  0">
+			<monsterGroup weight="  9" cellColumns="1" cellRows="1">
+				<monsterRef name="Green Tea Mochi" count="1" cellX="0" cellY="0" cols="1" rows="1"/>
+			</monsterGroup>
+			<monsterGroup weight="  1" cellColumns="1" cellRows="1">
+				<monsterRef name="Stoked Green Tea Mochi" count="1" cellX="0" cellY="0" cols="1" rows="1"/>
+			</monsterGroup>
+		</monsterRegion>
+	</monsterRegions>
 	<tiles>
 		<tile xpos="0" ypos="0">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>

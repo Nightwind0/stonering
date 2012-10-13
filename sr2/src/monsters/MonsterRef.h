@@ -20,6 +20,8 @@ namespace StoneRing
         virtual eElement WhichElement() const { return EMONSTERREF; }
 #if SR2_EDITOR
         CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
+		void SetCellX(int x){m_nCellX = x;}
+		void SetCellY(int y){m_nCellY = y;}
 #endif
     private:
         virtual void load_attributes(CL_DomNamedNodeMap);

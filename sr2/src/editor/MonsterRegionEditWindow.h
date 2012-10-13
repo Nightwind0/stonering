@@ -34,6 +34,7 @@ public:
     MonsterRegionEditWindow(CL_GUIComponent* parent, const CL_GUITopLevelDescription& desc);
     virtual ~MonsterRegionEditWindow();
 	void CreateRegion();
+	void SetRegion(MonsterRegion* pRegion);
 	MonsterRegion* GetRegion()const{ return m_region; }
 private:
 	void populate_group_list();
@@ -42,6 +43,11 @@ private:
 	void on_delete_group();
 	void on_edit_group();
 	void on_save();
+	void on_group_weight_changed();
+	void on_select_group(CL_ListViewSelection);
+	void sync_to_region();
+	void sync_from_region();
+	bool on_close();
 	CL_ComboBox*   m_backdrops;
 	CL_ListView*   m_monster_groups;
 	CL_PushButton* m_add_group;
@@ -49,6 +55,7 @@ private:
 	CL_PushButton* m_edit_group;
 	CL_Spin*       m_encounter_rate;
 	CL_PushButton* m_save;
+	CL_Spin*       m_group_weight;
 	
 	MonsterRegion* m_region;
 };
