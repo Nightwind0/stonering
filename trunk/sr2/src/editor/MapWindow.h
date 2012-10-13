@@ -110,6 +110,8 @@ private:
         void on_edit_mo(MappableObject* pObj);
         void on_move_mo(MappableObject* pObj);
         void on_delete_mo(MappableObject* pObj);
+		void on_edit_region(MonsterRegion* pRegion);
+		void on_delete_region(MonsterRegion* pRegion);
         
 		void on_view_unzoom();
         void on_view_recenter();
@@ -128,6 +130,7 @@ private:
         void construct_map_context_menu();
         void construct_accels();
         void construct_menu();
+		void construct_region_menu();
         void construct_toolbar();
         void reset_toolbar_toggles(CL_ToolBarItem exception);     
         bool construct_object_submenu(CL_PopupMenuItem menu_item, const CL_Point & level_pt);
@@ -145,6 +148,7 @@ private:
         CL_Slider*              m_pZoomSlider;
         CL_ToolBar*             m_toolbar;
         CL_PopupMenu            m_map_context_menu;
+		CL_PopupMenu 			m_monster_region_menu;
    
         MapComponent*           m_pMap;
         int                     m_mod_state;

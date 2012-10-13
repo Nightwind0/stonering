@@ -66,6 +66,15 @@ void CharacterManager::LoadCharacterClassFile ( CL_DomDocument &doc )
 
 
 }
+
+void CharacterManager::GetMonsterList( std::list< MonsterElement* >& o_list )
+{
+	for(MonsterMap::const_iterator it = m_pInstance->m_monsters.begin(); it!=m_pInstance->m_monsters.end(); it++){
+		o_list.push_back(it->second);
+	}
+}
+
+
 void CharacterManager::LoadMonsterFile ( CL_DomDocument &doc )
 {
     IFactory * pFactory = IApplication::GetInstance()->GetElementFactory();

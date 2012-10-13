@@ -1253,4 +1253,18 @@ bool Level::WriteXML(const std::string& filename, bool force)const{
     return true;
 }
 
+void Level::AddMonsterRegion(MonsterRegion* region)
+{
+	if(!m_pMonsterRegions)
+		m_pMonsterRegions = new MonsterRegions();
+	m_pMonsterRegions->AddMonsterRegion(region);
+}
+
+void Level::RemoveMonsterRegion(MonsterRegion* region)
+{
+	assert(m_pMonsterRegions);
+	m_pMonsterRegions->RemoveMonsterRegion(region);
+}
+
+
 #endif

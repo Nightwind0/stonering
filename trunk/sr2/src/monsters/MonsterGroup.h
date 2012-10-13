@@ -19,9 +19,7 @@ namespace StoneRing{
         int GetCellColumns() const { return m_nCellCols; }
         int GetCellRows() const { return m_nCellRows; }
         const std::vector<MonsterRef*> & GetMonsters() const { return m_monsters; }
-#if SR2_EDITOR
-        CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
-#endif
+
     private:
         virtual bool handle_element(eElement, Element * );
         virtual void load_attributes(CL_DomNamedNodeMap);
@@ -31,6 +29,16 @@ namespace StoneRing{
         int m_nCellCols;
         int m_nCellRows;
         std::vector<MonsterRef*> m_monsters;
+#if SR2_EDITOR
+	public:
+        CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
+		void SetCellColumns(int cols){m_nCellCols = cols;}
+		void SetCellRows(int rows){m_nCellRows = rows;}
+		void SetWeight(int weight){m_nWeight = weight;}
+		void AddMonster(MonsterRef* pRef){m_monsters.push_back(pRef);}
+		void SetEncounterWeight(int weight){ m_nWeight = weight; } 
+		void RemoveMonsters(int index){m_monsters.erase(m_monsters.begin()+index);}
+#endif		
     };
 }
 #endif
