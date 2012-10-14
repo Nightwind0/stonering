@@ -273,6 +273,15 @@ void MapComponent::show_floaters ( bool on )
     }
 }
 
+void MapComponent::show_monster_region ( bool on )
+{
+	if(m_pLevel){
+		if(on)
+			m_pLevel->AddTileVisitor(&m_region_drawer);
+		else
+			m_pLevel->RemoveTileVisitor(&m_region_drawer);
+	}
+}
 
 MappableObject* MapComponent::get_mo_named ( const std::string& name )
 {

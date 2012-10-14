@@ -25,6 +25,7 @@
 #include "MapComponent.h"
 #include "Callback.h"
 #include <deque>
+#include <list>
 
 #ifdef SR2_EDITOR
 
@@ -59,7 +60,7 @@ namespace StoneRing {
 			
 		// Sets an operation to be performed by click
 		void SetOperation(int mods,Operation*); 
-		Operation* GetOperation(int mods);
+		void CloseMapWindow(MapWindow* pWindow);
         virtual void on_close();
 		virtual void on_display_resize(CL_Rect&);
     private:
@@ -80,7 +81,7 @@ namespace StoneRing {
         CL_MainWindow *         m_pWindow;
         TileSelectorWindow*     m_pTileWindow;
         CL_MenuBar *            m_pMenuBar;		
-        std::map<int,Operation*> m_operations;		
+		std::list<MapWindow*>   m_map_windows;
 		bool m_bDone;
         //CL_DisplayWindow* m_subwindow;
     };

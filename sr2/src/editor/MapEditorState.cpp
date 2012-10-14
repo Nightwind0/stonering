@@ -98,23 +98,23 @@ MapWindow* MapEditorState::new_map_window(const std::string& title)
 	desc.set_decorations(true);			
 	MapWindow * window = new MapWindow(m_pWindow,desc);
 	window->set_draggable(true);
+	m_map_windows.push_back(window);
 	return window;
+}
+
+void MapEditorState::CloseMapWindow(MapWindow* window)
+{
+	m_map_windows.remove(window);
 }
 
 
 void MapEditorState::SetOperation(int mods, Operation* pOp)
 {
-    m_operations[mods] = pOp;
-}  
-
-Operation * MapEditorState::GetOperation(int mods)
-{
-	std::map<int,Operation*>::iterator it = m_operations.find(mods);
-	if(it!=m_operations.end()){
-		return it->second;
+	for(std::list<MapWindow*>::iterator iter = m_map_windows.begin();
+		iter != m_map_windows.end(); iter++){
+		(*iter)->SetOperation(mods,pOp);
 	}
-	return NULL;
-}
+}  
 
 
 

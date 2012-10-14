@@ -42,7 +42,7 @@ namespace StoneRing{
         virtual void AddCharacter(Character *pCharacter);
         virtual void RemoveCharacter(const std::string &name);
         virtual Character * GetMapCharacter()const;
-	virtual void IterateItems( ItemVisitor & f);
+		virtual void IterateItems( ItemVisitor & f);
         virtual uint GetMinutesPlayed()const;
         virtual bool EquipOmega(uint slot, Omega*);
         virtual void UnequipOmega(uint slot);
@@ -56,6 +56,8 @@ namespace StoneRing{
         // ICharacterGroup interface
         virtual uint GetCharacterCount() const ;
         virtual ICharacter * GetCharacter(uint index) const ;
+		
+		void Clear(); // Start fresh, as in after a game over
 
         void Serialize(std::ostream & out);
         void Deserialize(std::istream & in);

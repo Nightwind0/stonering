@@ -263,7 +263,7 @@ SteelType Application::message ( const std::string& text )
 
 SteelType Application::say ( const std::string &speaker, const std::string &text )
 {
-    mSayState.Init ( speaker, text );
+    mSayState.Init ( speaker, text, -1, true );
 
     RunState(&mSayState);
 

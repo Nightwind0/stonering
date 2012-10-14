@@ -125,6 +125,10 @@ public:
     }
 
     void Activate(); // Call any script
+	
+	char GetMonsterRegion() const {
+		return m_monster_region;
+	}
     
     void Visit(Visitor* pVisitor, CL_GraphicContext& gc, const CL_Point& top_left) {
         pVisitor->accept(gc,top_left,this);
@@ -171,6 +175,7 @@ protected:
     ushort m_ZOrder;
     ushort m_X;
     ushort m_Y;
+	char   m_monster_region;
 
     unsigned char cFlags;
 #ifdef SR2_EDITOR
@@ -181,6 +186,9 @@ public:
         m_tilemap = pTileMap;
         cFlags &= ~TIL_SPRITE;
     }
+    void SetMonsterRegion(char monster_region){
+		m_monster_region = monster_region;
+	}
     void SetPos(ushort x, ushort y) {
         m_X = x;
         m_Y = y;

@@ -24,47 +24,51 @@
 #ifndef uint
 typedef unsigned int uint;
 #endif
-namespace StoneRing{
-    class GraphicsManager;
-    class Font
-    {
-    public:
+namespace StoneRing {
+class GraphicsManager;
+class Font {
+public:
 	enum Alignment {
-	    DEFAULT,
-	    CENTER,
-	    BOTTOM_LEFT,
-	    TOP_LEFT,
-	    ABOVE
+		DEFAULT,
+		CENTER,
+		BOTTOM_LEFT,
+		TOP_LEFT,
+		ABOVE
 	};
 	Font();
 	~Font();
-	void draw_text(CL_GraphicContext &  	gc,
+	void draw_text( CL_GraphicContext &  	gc,
 		const CL_Pointf &  	position,
-		const CL_StringRef &  	text, Alignment = DEFAULT, float multiply = 1.0f);
-	void draw_text(CL_GraphicContext & gc,
-		       float x, float y,
-		       const CL_StringRef & text, Alignment = DEFAULT, float multiply = 1.0f);
-	bool is_null()  { return m_font.is_null(); }
-	void set_alpha(float alpha) { m_color.set_alpha(alpha); }
-	float get_alpha() const { return m_color.get_alpha(); }
-	
-	CL_FontMetrics get_font_metrics(CL_GraphicContext& gc)
-	{
-	    return m_font.get_font_metrics();
+		const CL_StringRef &  	text, Alignment = DEFAULT, float multiply = 1.0f );
+	void draw_text( CL_GraphicContext & gc,
+		float x, float y,
+		const CL_StringRef & text, Alignment = DEFAULT, float multiply = 1.0f );
+	bool is_null()  {
+		return m_font.is_null();
 	}
-	CL_Size get_text_size(CL_GraphicContext& gc, const CL_StringRef& text)
-	{
-	    return m_font.get_text_size(gc,text);
+	void set_alpha( float alpha ) {
+		m_color.set_alpha( alpha );
 	}
-    private:
+	float get_alpha() const {
+		return m_color.get_alpha();
+	}
+
+	CL_FontMetrics get_font_metrics( CL_GraphicContext& gc ) {
+		return m_font.get_font_metrics();
+	}
+	CL_Size get_text_size( CL_GraphicContext& gc, const CL_StringRef& text ) {
+		return m_font.get_text_size( gc, text );
+	}
+	void set_color(CL_Colorf color){m_color=color;}
+private:
 	friend class GraphicsManager;
-	friend int draw_text(CL_GraphicContext&, const Font &, CL_Rectf, CL_StringRef, uint);
-	float calc_offset(CL_GraphicContext&);
+	friend int draw_text( CL_GraphicContext&, const Font &, CL_Rectf, CL_StringRef, uint );
+	float calc_offset( CL_GraphicContext& );
 	CL_Colorf m_color;
-        CL_Colorf m_shadow_color;
+	CL_Colorf m_shadow_color;
 	CL_Font   m_font;
 	CL_Pointf m_shadow_offset;
-    };
+};
 
 }
 #endif // FONT_H
