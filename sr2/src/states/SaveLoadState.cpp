@@ -57,6 +57,8 @@ void SaveLoadState::Init ( bool bSave, bool cancelable )
     m_empty_pt = GraphicsManager::GetPoint(GraphicsManager::SAVE_LOAD,"empty");
     m_portrait_pt = GraphicsManager::GetPoint(GraphicsManager::SAVE_LOAD,"portrait");
     m_hours_font = GraphicsManager::GetFont(GraphicsManager::SAVE_LOAD,"Hours");
+
+	m_portrait_shadow = GraphicsManager::CreateImage("Overlays/MainMenu/portrait_shadow");
 }
 
 void SaveLoadState::Start()
@@ -237,6 +239,7 @@ void SaveLoadState::draw_option ( int option, bool selected, float x, float y, C
             CL_Sprite portrait = pChar->GetPortrait(Character::PORTRAIT_DEFAULT);
             
             CL_Point point(m_portrait_pt.x+x+i*(portrait.get_width()+m_portrait_pt.x),y+m_portrait_pt.y);
+			m_portrait_shadow.draw(gc,point.x,point.y);
             portrait.draw (gc,point.x,point.y);
             i++;
         }

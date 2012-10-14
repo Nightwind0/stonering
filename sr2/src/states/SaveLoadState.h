@@ -77,6 +77,7 @@ private:
     Font                m_datetime_font;
     Font                m_empty_font;
     Font                m_empty_selected_font;
+	CL_Image  			m_portrait_shadow;
     CL_Pointf           m_number_pt;
     CL_Pointf           m_datetime_pt;
     CL_Pointf           m_empty_pt;

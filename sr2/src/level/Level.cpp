@@ -178,7 +178,9 @@ public:
     
     virtual bool Visit(MappableObject* pMO, const Level::MOQuadtree::Node* pNode){
         // TODO is this contains right?
-        if(pMO != m_pMO && pMO->EvaluateCondition() && (pMO->GetTileRect() == m_destRect || pMO->GetTileRect().is_overlapped(m_destRect)) && pMO->IsSolid()){
+        if(pMO != m_pMO && pMO->EvaluateCondition() && 
+				(pMO->GetTileRect() == m_destRect || pMO->GetTileRect().is_overlapped(m_destRect))
+				&& pMO->IsSolid() && m_pMO->IsFlying() == pMO->IsFlying()){
             m_contains = true;
             return false;
         }else return true;
@@ -1260,6 +1262,16 @@ void Level::RemoveMonsterRegion(MonsterRegion* region)
 {
 	assert(m_pMonsterRegions);
 	m_pMonsterRegions->RemoveMonsterRegion(region);
+}
+
+void Level::SetMusic(const std::string& music)
+{
+	m_music = music;
+}
+
+void Level::SetAllowsRunning(bool allowed)
+{
+	m_bAllowsRunning = allowed;
 }
 
 

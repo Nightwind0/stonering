@@ -69,8 +69,10 @@ void SoundManager::set_music ( CL_SoundBuffer song )
 
 void SoundManager::SetMusic ( const std::string& music )
 {
-    CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
-    m_pInstance->set_music(CL_SoundBuffer("Music/" + music, &resources));
+	if(!music.empty()){
+		CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
+		m_pInstance->set_music(CL_SoundBuffer(music, &resources));
+	}
 }
 
 float SoundManager::GetSoundVolume()

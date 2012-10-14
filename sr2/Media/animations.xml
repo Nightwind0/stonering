@@ -165,7 +165,7 @@
                 <spriteStub who="caster" which="main"/>
                 <spriteMovement initialFocus="caster" initialFocusY="center" initialFocusX="left" movementDirection="towards" movementStyle="straight" distance="30">
                     <spriteMovementScript type="spriteRotation" id="stab1_rotation">
-                        return 90.0;
+                        return 45.0;
                     </spriteMovementScript>
                 </spriteMovement>    
             </spriteAnimation>    
@@ -176,7 +176,7 @@
                 <spriteStub who="caster" which="main"/>
                 <spriteMovement initialFocus="caster" initialFocusY="center" initialFocusX="left" movementDirection="towards" movementStyle="straight" distance="30">
                     <spriteMovementScript type="spriteRotation" id="stab2_rotation">
-                        return 90.0;
+                        return 45.0;
                     </spriteMovementScript>
                 </spriteMovement>    
             </spriteAnimation>                
