@@ -1,10 +1,12 @@
 <level name="Octavia Inn">
-	<levelHeader width="10" height="10" music="Wheel" allowsRunning="true"/>
+	<levelHeader width="10" height="10" music="Music/Wheel" allowsRunning="false"/>
 	<mappableObjects/>
 	<monsterRegions>
 		<monsterRegion backdrop="grasslands" encounterRate="0.076" id="0">
 			<monsterGroup weight="10" cellColumns="3" cellRows="3">
-				<monsterRef name="Green Tea Mochi" count="9" cellX="0" cellY="0" cols="3" rows="3"/>
+				<monsterRef name="Green Tea Mochi" count="1" cellX="2" cellY="2" cols="1" rows="1"/>
+				<monsterRef name="Green Tea Mochi" count="1" cellX="0" cellY="1" cols="1" rows="1"/>
+				<monsterRef name="Green Tea Mochi" count="1" cellX="2" cellY="0" cols="1" rows="1"/>
 			</monsterGroup>
 			<monsterGroup weight="10" cellColumns="1" cellRows="3">
 				<monsterRef name="Stoked Green Tea Mochi" count="3" cellX="0" cellY="0" cols="1" rows="3"/>

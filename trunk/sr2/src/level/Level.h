@@ -442,6 +442,8 @@ public:
 	void RemoveMonsterRegion(MonsterRegion* pRegion);
 
 	void AddMonsterRegion(MonsterRegion* region);
+	void SetMusic(const std::string& music);
+	void SetAllowsRunning(bool);
     void SetHotAt(uint levelX, uint levelY, bool bHot);
     bool WriteXML(const std::string& filename, bool force)const;
     void resize_mo_quadtree();

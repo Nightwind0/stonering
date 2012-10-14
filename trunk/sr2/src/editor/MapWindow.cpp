@@ -349,6 +349,8 @@ void MapWindow::construct_menu()
     
     m_pMenuBar->add_menu("View",view);
 	m_pMenuBar->add_menu("Monster Regions",m_monster_region_menu);
+	
+	construct_level_data_menu();
 }
 
 void MapWindow::construct_region_menu()
@@ -392,7 +394,6 @@ void MapWindow::construct_toolbar()
         {"Media/Editor/Images/map_delete.png","Erase Tiles",DELETE_TILE,true},
         {"Media/Editor/Images/view.png","View",SHOW_ALL,true},
         {"Media/Editor/Images/eye.png","Objects",SHOW_OBJECTS,true},
-        {"Media/Editor/Images/world_edit.png","Level Data",EDIT_LEVEL,false},
         {"Media/Editor/Images/block_west.png","",BLOCK_WEST,true},
         {"Media/Editor/Images/block_north.png","",BLOCK_NORTH,true},
         {"Media/Editor/Images/block_east.png","",BLOCK_EAST,true},
@@ -436,12 +437,64 @@ bool MapWindow::construct_object_submenu(CL_PopupMenuItem item, const CL_Point& 
     return false;
 }
 
+void MapWindow::construct_level_data_menu()
+{
+	CL_PopupMenu level_data_menu;
+	m_level_allow_run_item = level_data_menu.insert_item("Allow Running");
+	m_level_allow_run_item.set_checkable(true);
+	m_level_allow_run_item.func_clicked().set(this,&MapWindow::on_allows_running_clicked);
+
+	CL_PopupMenuItem level_music_item = level_data_menu.insert_item("Music");
+	construct_level_music_menu(level_music_item);
+	m_pMenuBar->add_menu("Settings",level_data_menu);
+}
+
+void MapWindow::construct_level_music_menu(CL_PopupMenuItem menu_parent)
+{
+	CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
+    m_music = resources.get_resource_names_of_type("sample","Music");    
+    for(int i=0;i<m_music.size();i++){
+        CL_PopupMenuItem item = m_level_music_menu.insert_item(m_music[i]);
+        item.func_clicked().set(this,&MapWindow::on_music_clicked,i);
+        item.set_checkable(true);
+        item.set_checked(false);
+    }
+    menu_parent.set_submenu(m_level_music_menu);
+}
+
+void MapWindow::on_music_clicked(int index)
+{
+	m_pMap->get_level()->SetMusic(m_music[index]);
+	for(int i=0;i<m_level_music_menu.get_item_count();i++){
+		CL_PopupMenuItem item = m_level_music_menu.get_item_at(i);
+		item.set_checked(i==index);
+	}	
+}
+
+void MapWindow::on_allows_running_clicked()
+{
+	m_pMap->get_level()->SetAllowsRunning(m_level_allow_run_item.is_checked());
+}
+
+void MapWindow::sync_from_level()
+{
+	m_level_allow_run_item.set_checked(m_pMap->get_level()->AllowsRunning());
+	for(int i=0;i<m_music.size();i++){
+		if(std::string(m_music[i]) == m_pMap->get_level()->GetMusic()){
+			m_level_music_menu.get_item_at(i).set_checked(true);
+		}else{
+			m_level_music_menu.get_item_at(i).set_checked(false);
+		}
+	}
+}
+
 void MapWindow::New()
 {
 	assert(m_pMap);
 	m_pMap->create_level(5,5);
 	construct_region_menu();
 	request_repaint();
+	sync_from_level();
 }
 
 void MapWindow::Open( const std::string& filename )
@@ -450,6 +503,7 @@ void MapWindow::Open( const std::string& filename )
 	m_pMap->load_level(filename);
 	construct_region_menu();
 	request_repaint();
+	sync_from_level();
 }
 
 void MapWindow::PerformOperation( Operation* pOp )

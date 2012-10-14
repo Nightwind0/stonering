@@ -1,5 +1,5 @@
 <level name="TestLevel">
-	<levelHeader width="35" height="29" music="Town" allowsRunning="true"/>
+	<levelHeader width="35" height="29" music="Music/Town" allowsRunning="true"/>
 	<mappableObjects>
 		<mo name="Action" movementType="none" speed="slow" size="1x1" type="square" xpos="2" ypos="0" facing="south">
 			<event name="mordusDances" triggerType="step" remember="true">
@@ -10,6 +10,42 @@
 				<script id="mordusDancing">
 					<![CDATA[playScene("Mordus Dancing.");
                                 ]]>
+				</script>
+			</event>
+		</mo>
+		<mo name="Presence" movementType="none" speed="slow" size="1x1" type="square" xpos="3" ypos="3" facing="south">
+			<event name="sensePresence" triggerType="talk" remember="true">
+				<script id="presence_">
+					<![CDATA[say("????", "You sense a presence. It is as though you can feel the watching eyes of someone.
+                                Perhaps someone you once knew. You are frozen in your tracks. You wonder about the sky. What color is it?
+                                What does it mean to you? What will you do if it ever goes away? Why? What is it with monkeys, anyway.
+                                Do they really come in barrels? What else comes in barrels besides monkeys and pickles?");
+                                ]]>
+				</script>
+			</event>
+		</mo>
+		<mo name="Podium" movementType="none" speed="slow" size="1x1" type="npc" xpos="2" ypos="2" facing="south">
+			<event name="podium" triggerType="talk">
+				<script id="usePodium">
+					<![CDATA[
+                            var @array = getPartyArray();
+                            
+                            foreach (declare $character) in @array
+                            {
+                                doDamage($character,0-getCharacterAttribute($character,$_MAXHP)-getCharacterAttribute($character,$_HP));
+                                print(getCharacterName($character) + " HP = " + getCharacterAttribute($character,$_HP));
+                                setCharacterToggle($character,$_ALIVE,true);
+                            }
+                            declare $item = randomItem($_DROP_RARE,100,4000);
+                            if(is_valid($item))
+                                giveItem($item,1,false);
+                        
+                        ]]>
+				</script>
+			</event>
+			<event name="Podium Event 0" triggerType="act" repeatable="false">
+				<script id="">
+					<![CDATA[say("Podium","Don't touch me!");]]>
 				</script>
 			</event>
 		</mo>
@@ -86,42 +122,6 @@ startBattle("Black Cat",1,true,"grasslands");
 				</script>
 			</event>
 		</mo>
-		<mo name="Presence" movementType="none" speed="slow" size="1x1" type="square" xpos="3" ypos="3" facing="south">
-			<event name="sensePresence" triggerType="talk" remember="true">
-				<script id="presence_">
-					<![CDATA[say("????", "You sense a presence. It is as though you can feel the watching eyes of someone.
-                                Perhaps someone you once knew. You are frozen in your tracks. You wonder about the sky. What color is it?
-                                What does it mean to you? What will you do if it ever goes away? Why? What is it with monkeys, anyway.
-                                Do they really come in barrels? What else comes in barrels besides monkeys and pickles?");
-                                ]]>
-				</script>
-			</event>
-		</mo>
-		<mo name="Podium" movementType="none" speed="slow" size="1x1" type="npc" xpos="2" ypos="2" facing="south">
-			<event name="podium" triggerType="talk">
-				<script id="usePodium">
-					<![CDATA[
-                            var @array = getPartyArray();
-                            
-                            foreach (declare $character) in @array
-                            {
-                                doDamage($character,0-getCharacterAttribute($character,$_MAXHP)-getCharacterAttribute($character,$_HP));
-                                print(getCharacterName($character) + " HP = " + getCharacterAttribute($character,$_HP));
-                                setCharacterToggle($character,$_ALIVE,true);
-                            }
-                            declare $item = randomItem($_DROP_RARE,100,4000);
-                            if(is_valid($item))
-                                giveItem($item,1,false);
-                        
-                        ]]>
-				</script>
-			</event>
-			<event name="Podium Event 0" triggerType="act" repeatable="false">
-				<script id="">
-					<![CDATA[say("Podium","Don't touch me!");]]>
-				</script>
-			</event>
-		</mo>
 		<mo name="Samara" sprite="Npc/Cat2" movementType="wander" speed="slow" size="1x1" type="npc" xpos="2" ypos="8" facing="south" solid="true">
 			<event name="Cat3Go" triggerType="talk">
 				<conditionScript id="Cat3Go_c">
@@ -176,8 +176,8 @@ startBattle("Black Cat",1,true,"grasslands");
 				</script>
 			</event>
 		</mo>
-		<mo name="Jeremy" sprite="Npc/Seagull" movementType="wander" speed="fast" size="2x1" type="npc" xpos="16" ypos="7" flying="true" facing="east" solid="true">
-			<event name="" triggerType="step">
+		<mo name="Jeremy" sprite="Npc/Seagull" movementType="wander" speed="fast" size="2x1" type="" xpos="16" ypos="7" flying="true" facing="west" solid="true">
+			<event name="Jeremy Event 0" triggerType="talk">
 				<script id="Hi">
 					<![CDATA[say("Jeremy","Hello! I can see everything from here!");]]>
 				</script>
@@ -982,7 +982,7 @@ startBattle("Black Cat",1,true,"grasslands");
 		<tile xpos="6" ypos="13" zorder="1">
 			<tilemap mapname="grass" mapx="1" mapy="5"/>
 		</tile>
-		<tile xpos="6" ypos="14" floater="true">
+		<tile xpos="6" ypos="14">
 			<tilemap mapname="wall1" mapx="9" mapy="12"/>
 		</tile>
 		<tile xpos="6" ypos="15">
@@ -1144,7 +1144,7 @@ startBattle("Black Cat",1,true,"grasslands");
 		<tile xpos="7" ypos="13" zorder="1">
 			<tilemap mapname="grass" mapx="1" mapy="5"/>
 		</tile>
-		<tile xpos="7" ypos="14" floater="true">
+		<tile xpos="7" ypos="14">
 			<tilemap mapname="wall1" mapx="8" mapy="12"/>
 		</tile>
 		<tile xpos="7" ypos="15">
@@ -1310,7 +1310,7 @@ startBattle("Black Cat",1,true,"grasslands");
 		<tile xpos="8" ypos="13" zorder="1">
 			<tilemap mapname="grass" mapx="1" mapy="5"/>
 		</tile>
-		<tile xpos="8" ypos="14" floater="true">
+		<tile xpos="8" ypos="14">
 			<tilemap mapname="wall1" mapx="8" mapy="12"/>
 		</tile>
 		<tile xpos="8" ypos="15">
@@ -1479,7 +1479,7 @@ startBattle("Black Cat",1,true,"grasslands");
 		<tile xpos="9" ypos="13" zorder="1">
 			<tilemap mapname="grass" mapx="1" mapy="5"/>
 		</tile>
-		<tile xpos="9" ypos="14" floater="true">
+		<tile xpos="9" ypos="14">
 			<tilemap mapname="wall1" mapx="8" mapy="12"/>
 		</tile>
 		<tile xpos="9" ypos="15">
@@ -1635,7 +1635,7 @@ startBattle("Black Cat",1,true,"grasslands");
 		<tile xpos="10" ypos="13" zorder="1">
 			<tilemap mapname="grass" mapx="1" mapy="5"/>
 		</tile>
-		<tile xpos="10" ypos="14" floater="true">
+		<tile xpos="10" ypos="14">
 			<tilemap mapname="wall1" mapx="8" mapy="12"/>
 		</tile>
 		<tile xpos="10" ypos="15">
@@ -1806,7 +1806,7 @@ startBattle("Black Cat",1,true,"grasslands");
 		<tile xpos="11" ypos="13" zorder="1">
 			<tilemap mapname="grass" mapx="1" mapy="5"/>
 		</tile>
-		<tile xpos="11" ypos="14" floater="true">
+		<tile xpos="11" ypos="14">
 			<tilemap mapname="wall1" mapx="8" mapy="12"/>
 		</tile>
 		<tile xpos="11" ypos="15">
@@ -1962,7 +1962,7 @@ startBattle("Black Cat",1,true,"grasslands");
 		<tile xpos="12" ypos="13" zorder="1">
 			<tilemap mapname="grass" mapx="2" mapy="5"/>
 		</tile>
-		<tile xpos="12" ypos="14" floater="true">
+		<tile xpos="12" ypos="14">
 			<tilemap mapname="wall1" mapx="8" mapy="12"/>
 		</tile>
 		<tile xpos="12" ypos="15">
@@ -2106,7 +2106,7 @@ startBattle("Black Cat",1,true,"grasslands");
 		<tile xpos="13" ypos="13" zorder="1">
 			<tilemap mapname="grass" mapx="4" mapy="9"/>
 		</tile>
-		<tile xpos="13" ypos="14" floater="true">
+		<tile xpos="13" ypos="14">
 			<tilemap mapname="wall1" mapx="8" mapy="12"/>
 		</tile>
 		<tile xpos="13" ypos="15">

@@ -448,8 +448,8 @@ void BattleState::Start() {
 	m_startup_time = CL_System::get_time();
 	//next_turn();
 
-	std::string music = "Battle";
-	if ( isBossBattle() ) music = "Boss";
+	std::string music = "Music/Battle";
+	if ( isBossBattle() ) music = "Music/Boss";
 	// TODO: Is final boss?
 	SoundManager::PushMusic();
 	SoundManager::SetMusic( music );

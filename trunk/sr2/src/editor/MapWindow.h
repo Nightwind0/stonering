@@ -119,6 +119,9 @@ private:
         void on_view_recenter();
         
         void on_toolbar_item(CL_ToolBarItem);
+		void on_music_clicked(int i);
+		void on_allows_running_clicked();
+		void sync_from_level();
 		
         std::string create_unique_mo_name();
         
@@ -133,6 +136,8 @@ private:
         void construct_accels();
         void construct_menu();
 		void construct_region_menu();
+		void construct_level_data_menu();
+		void construct_level_music_menu(CL_PopupMenuItem menu_parent);
         void construct_toolbar();
         void reset_toolbar_toggles(CL_ToolBarItem exception);     
         bool construct_object_submenu(CL_PopupMenuItem menu_item, const CL_Point & level_pt);
@@ -151,6 +156,8 @@ private:
         CL_ToolBar*             m_toolbar;
         CL_PopupMenu            m_map_context_menu;
 		CL_PopupMenu 			m_monster_region_menu;
+		CL_PopupMenu            m_level_music_menu;
+		CL_PopupMenuItem        m_level_allow_run_item;
    
         MapComponent*           m_pMap;
         int                     m_mod_state;
@@ -159,6 +166,7 @@ private:
         CL_Point                m_map_context_point;
         std::map<int,Operation*> m_operations;
         std::deque<Operation*>  m_undo_stack;
+		std::vector<CL_String>  m_music;
         CL_AcceleratorTable     m_accels;	
 		MapEditorState*         m_state;
 };
