@@ -20,10 +20,6 @@ namespace StoneRing
 
             MonsterGroup * GetMonsterGroup() const;
 
-            int GetLevelX() const {return m_LevelX;}
-            int GetLevelY() const {return m_LevelY;}
-            int GetWidth() const {return m_Width;}
-            int GetHeight() const {return m_Height;}
             float GetEncounterRate() const {return m_encounter_rate;}
             std::string GetBackdrop() const { return m_backdrop; }
         private:
@@ -31,10 +27,6 @@ namespace StoneRing
             virtual void load_attributes(CL_DomNamedNodeMap);
             virtual void load_finished();
 
-            int m_LevelX;
-            int m_LevelY;
-            int m_Width;
-            int m_Height;
             float m_encounter_rate;
             int m_nTotalWeight;
 			uchar m_id;
@@ -62,19 +54,18 @@ namespace StoneRing
     public:
         MonsterRegions();
         virtual ~MonsterRegions();
-
-        MonsterRegion * GetApplicableRegion(uint levelx, uint levely) const ;
-		MonsterRegion * GetMonsterRegion(uchar id){
+		MonsterRegion * GetMonsterRegion(char id){
+			if(id < 0) return NULL;
 			return m_monster_regions[id];
 		}
 
         virtual eElement WhichElement() const { return EMONSTERREGIONS; }
 #if SR2_EDITOR
         CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
-		std::map<uchar,MonsterRegion*>::const_iterator GetRegionsBegin() const{
+		std::map<char,MonsterRegion*>::const_iterator GetRegionsBegin() const{
 			return m_monster_regions.begin();
 		}
-		std::map<uchar,MonsterRegion*>::const_iterator GetRegionsEnd() const{
+		std::map<char,MonsterRegion*>::const_iterator GetRegionsEnd() const{
 			return m_monster_regions.end();
 		}
 		void AddMonsterRegion(MonsterRegion* region){
@@ -88,9 +79,9 @@ namespace StoneRing
     private:
         virtual bool handle_element(eElement, Element * );
         virtual void load_finished();
-		uchar get_next_id() const;
+		char get_next_id() const;
 
-        std::map<uchar,MonsterRegion *> m_monster_regions;
+        std::map<char,MonsterRegion *> m_monster_regions;
     };
 
 

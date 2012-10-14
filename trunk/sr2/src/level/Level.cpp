@@ -734,21 +734,14 @@ void Level::Step(const CL_Point &target)
     // First, check for a battle here (events come after)
     if(m_pMonsterRegions != NULL)
     {
-        MonsterRegion *pRegion = m_pMonsterRegions->GetApplicableRegion(target.x,target.y);
-        if(pRegion != NULL)
-        {
-            float rate = pRegion->GetEncounterRate();
-            float value = ((float)rand() / ((float)RAND_MAX + 1)); // Generate number between 0 and 1.0
-
-            if(value < rate)
-            {
-                // Then we have an encounter.
-                // Let the region pick a group for us to battle
-                MonsterGroup * pGroup = pRegion->GetMonsterGroup();
-
-                IApplication::GetInstance()->StartBattle (*pGroup, pRegion->GetBackdrop());
-            }
-        }
+		if(!m_tiles[target.x][target.y].empty()){
+			MonsterRegion * pRegion = m_pMonsterRegions->GetMonsterRegion(m_tiles[target.x][target.y].back()->GetMonsterRegion());
+			if(pRegion){
+				MonsterGroup * pGroup = pRegion->GetMonsterGroup();
+				IApplication::GetInstance()->StartBattle (*pGroup, pRegion->GetBackdrop());		
+			}
+		}
+        
     }
     // Second, process any MO step events you may have triggered
     Quadtree::Geometry::Vector<float> center(0.5f + float(target.x),0.5f + float(target.y));
