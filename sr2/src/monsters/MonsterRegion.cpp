@@ -7,7 +7,7 @@ using StoneRing::MonsterRegions;
 using StoneRing::MonsterGroup;
 
 
-MonsterRegion::MonsterRegion():m_LevelX(0), m_LevelY(0), m_Width(0), m_Height(0),m_nTotalWeight(0)
+MonsterRegion::MonsterRegion():m_nTotalWeight(0)
 {
 
 }
@@ -39,10 +39,6 @@ bool MonsterRegion::handle_element(eElement element, Element * pElement)
 
 void MonsterRegion::load_attributes(CL_DomNamedNodeMap attr)
 {
-    m_LevelX = get_required_int("levelX", attr);
-    m_LevelY = get_required_int("levelY", attr);
-    m_Width = get_required_int("width", attr);
-    m_Height = get_required_int("height", attr);
     m_backdrop = get_required_string("backdrop", attr);
 	m_id = get_required_int("id",attr);
 
@@ -105,12 +101,6 @@ MonsterRegions::~MonsterRegions()
 }
 
 
-MonsterRegion * MonsterRegions::GetApplicableRegion(uint x, uint y) const
-{
-
-
-    return NULL;
-}
 
 
 bool MonsterRegions::handle_element(StoneRing::Element::eElement element, StoneRing::Element * pElement)
@@ -137,10 +127,6 @@ void MonsterRegions::load_finished()
 CL_DomElement MonsterRegion::CreateDomElement(CL_DomDocument& doc)const
 {
     CL_DomElement element(doc,"monsterRegion");
-    element.set_attribute("levelX",IntToString(m_LevelX));
-    element.set_attribute("levelY",IntToString(m_LevelY));
-    element.set_attribute("width",IntToString(m_Width));
-    element.set_attribute("height",IntToString(m_Height));
     element.set_attribute("backdrop",m_backdrop);
     element.set_attribute("encounterRate",FloatToString(m_encounter_rate));
 	element.set_attribute("id",IntToString(m_id));
@@ -154,16 +140,16 @@ CL_DomElement MonsterRegion::CreateDomElement(CL_DomDocument& doc)const
 CL_DomElement MonsterRegions::CreateDomElement(CL_DomDocument &doc)const
 {
     CL_DomElement element(doc,"monsterRegions");
-    for(std::map<uchar,MonsterRegion*>::const_iterator it = m_monster_regions.begin();
+    for(std::map<char,MonsterRegion*>::const_iterator it = m_monster_regions.begin();
         it != m_monster_regions.end(); it++){
         element.append_child((it->second)->CreateDomElement(doc));
     }
     return element;
 }
 
-uchar MonsterRegions::get_next_id() const
+char MonsterRegions::get_next_id() const
 {
-	uchar id = 0;
+	char id = 0;
 	while(0 != m_monster_regions.count(id)){
 		++id;
 	}

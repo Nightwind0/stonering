@@ -360,7 +360,7 @@ void MapWindow::construct_region_menu()
 	CL_PopupMenu delete_menu;
 	const MonsterRegions* regions = m_pMap->get_level()->GetMonsterRegions();
 	if(regions){
-		for(std::map<uchar,MonsterRegion*>::const_iterator it = regions->GetRegionsBegin();
+		for(std::map<char,MonsterRegion*>::const_iterator it = regions->GetRegionsBegin();
 				it != regions->GetRegionsEnd();it++){
 			CL_PopupMenuItem edit_item = edit_menu.insert_item(IntToString((it->second)->GetId()));
 			CL_PopupMenuItem delete_item = delete_menu.insert_item(IntToString((it->second)->GetId()));
