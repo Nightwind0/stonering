@@ -1,104 +1,353 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE level SYSTEM "level.dtd">
-<level name="TestLevel">
-<!-- comments -->
-	<levelHeader music="Main" width="3" height="3"/>
+<level name="Octavia Inn">
+	<levelHeader width="10" height="10" music="Wheel" allowsRunning="true"/>
+	<mappableObjects/>
+	<monsterRegions>
+		<monsterRegion backdrop="grasslands" encounterRate="0.076" id="0">
+			<monsterGroup weight="10" cellColumns="3" cellRows="3">
+				<monsterRef name="Green Tea Mochi" count="9" cellX="0" cellY="0" cols="3" rows="3"/>
+			</monsterGroup>
+			<monsterGroup weight="10" cellColumns="1" cellRows="3">
+				<monsterRef name="Stoked Green Tea Mochi" count="3" cellX="0" cellY="0" cols="1" rows="3"/>
+			</monsterGroup>
+			<monsterGroup weight="1" cellColumns="1" cellRows="1">
+				<monsterRef name="Grass Wolf" count="1" cellX="0" cellY="0" cols="1" rows="1"/>
+			</monsterGroup>
+		</monsterRegion>
+	</monsterRegions>
 	<tiles>
-		<tile name="1" xpos="0" ypos="0" zorder="1">
-			<tilemap mapname="grass" mapx="4" mapy="12"/>
+		<tile xpos="0" ypos="0">
+			<tilemap mapname="roofs" mapx="4" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
 		</tile>
-		<tile name="2" xpos="0" ypos="1">
-			<tilemap mapname="rock" mapx="1" mapy="2"/>
-			<directionBlock east="true" north="true" south="true" west="true"/>
+		<tile xpos="0" ypos="1">
+			<tilemap mapname="roofs" mapx="0" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
 		</tile>
-		<tile name="3" xpos="0" ypos="2">
-			<tilemap mapname="path" mapx="1" mapy="2"/>
+		<tile xpos="0" ypos="2">
+			<tilemap mapname="roofs" mapx="0" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
 		</tile>
-		<tile name="4" xpos="1" ypos="0">
-			<tilemap mapname="path" mapx="1" mapy="2"/>
+		<tile xpos="0" ypos="3">
+			<tilemap mapname="roofs" mapx="0" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
 		</tile>
-		<tile name="5" xpos="1" ypos="1">
-			<!-- Here's an animated sprite tile instead of a regular tile -->
-			<spriteRef>tiles/Lava</spriteRef>
-			<!-- Your primary character loses 10 hp for stepping here -->
-			<attributeModifier add="-10" attribute="HP" target="primary">
-				<condition>
-					<hasItem not="true">
-						<itemRef itemType="special">AsbestosFeet</itemRef>
-					</hasItem>
-					<hasGold operator = "gte">3</hasGold>
-						
-				</condition>
-			</attributeModifier>
-	
+		<tile xpos="0" ypos="4">
+			<tilemap mapname="roofs" mapx="0" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
 		</tile>
-		<tile name="6" xpos="1" ypos="2">
-			<tilemap mapname="water" mapx="1" mapy="6"/>
+		<tile xpos="0" ypos="5">
+			<tilemap mapname="roofs" mapx="0" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
 		</tile>
-		<tile name="7" xpos="2" ypos="0">
-			<tilemap mapname="path" mapx="1" mapy="2"/>
+		<tile xpos="0" ypos="6">
+			<tilemap mapname="roofs" mapx="0" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
 		</tile>
-		<tile name="8" xpos="2" ypos="1">
-			<tilemap mapname="path" mapx="1" mapy="2"/>
+		<tile xpos="0" ypos="7">
+			<tilemap mapname="roofs" mapx="0" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
 		</tile>
-		<tile name="9" xpos="2" ypos="2">
-			<tilemap mapname="door" mapx="0" mapy="4"/>
+		<tile xpos="0" ypos="8">
+			<tilemap mapname="roofs" mapx="0" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
 		</tile>
-		
-		<!-- This tile only appears after the player made the bridge -->
-		<!-- It replaces the previously specified water tile -->
-		<tile name="bridge" xpos="1" ypos="2">
-			<tilemap mapname="bridge" mapx="0" mapy="0"/>
-			<condition>
-				<didEvent>madeBridge</didEvent>
-			</condition>
+		<tile xpos="0" ypos="9">
+			<tilemap mapname="roofs" mapx="6" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
+		</tile>
+		<tile xpos="1" ypos="0">
+			<tilemap mapname="roofs" mapx="1" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
+		</tile>
+		<tile xpos="1" ypos="1" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="1" ypos="2" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="1" ypos="3" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="1" ypos="4" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="1" ypos="5" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="1" ypos="6" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="1" ypos="7" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="1" ypos="8" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="1" ypos="9">
+			<tilemap mapname="roofs" mapx="1" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
+		</tile>
+		<tile xpos="2" ypos="0">
+			<tilemap mapname="roofs" mapx="1" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
+		</tile>
+		<tile xpos="2" ypos="1" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="2" ypos="2" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="2" ypos="3" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="2" ypos="4" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="2" ypos="5" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="2" ypos="6" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="2" ypos="7" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="2" ypos="8" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="2" ypos="9">
+			<tilemap mapname="roofs" mapx="1" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
+		</tile>
+		<tile xpos="3" ypos="0">
+			<tilemap mapname="roofs" mapx="1" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
+		</tile>
+		<tile xpos="3" ypos="1" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="3" ypos="2" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="3" ypos="3" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="3" ypos="4" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="3" ypos="5" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="3" ypos="6" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="3" ypos="7" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="3" ypos="8" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="3" ypos="9">
+			<tilemap mapname="roofs" mapx="8" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
+		</tile>
+		<tile xpos="4" ypos="0">
+			<tilemap mapname="roofs" mapx="1" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
+		</tile>
+		<tile xpos="4" ypos="1" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="4" ypos="2" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="4" ypos="3" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="4" ypos="4" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="4" ypos="5" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="4" ypos="6" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="4" ypos="7" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="4" ypos="8" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="4" ypos="9" pops="true">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="5" ypos="0">
+			<tilemap mapname="roofs" mapx="1" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
+		</tile>
+		<tile xpos="5" ypos="1" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="5" ypos="2" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="5" ypos="3" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="5" ypos="4" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="5" ypos="5" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="5" ypos="6" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="5" ypos="7" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="5" ypos="8" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="5" ypos="9" pops="true">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="6" ypos="0">
+			<tilemap mapname="roofs" mapx="1" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
+		</tile>
+		<tile xpos="6" ypos="1" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="6" ypos="2" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="6" ypos="3" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="6" ypos="4" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="6" ypos="5" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="6" ypos="6" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="6" ypos="7" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="6" ypos="8" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="6" ypos="9">
+			<tilemap mapname="roofs" mapx="9" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
+		</tile>
+		<tile xpos="7" ypos="0">
+			<tilemap mapname="roofs" mapx="1" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
+		</tile>
+		<tile xpos="7" ypos="1" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="7" ypos="2" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="7" ypos="3" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="7" ypos="4" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="7" ypos="5" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="7" ypos="6" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="7" ypos="7" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="7" ypos="8" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="7" ypos="9">
+			<tilemap mapname="roofs" mapx="1" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
+		</tile>
+		<tile xpos="8" ypos="0">
+			<tilemap mapname="roofs" mapx="1" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
+		</tile>
+		<tile xpos="8" ypos="1" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="8" ypos="2" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="8" ypos="3" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="8" ypos="4" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="8" ypos="5" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="8" ypos="6" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="8" ypos="7" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="8" ypos="8" monster_region="0">
+			<tilemap mapname="roofs" mapx="2" mapy="3"/>
+		</tile>
+		<tile xpos="8" ypos="9">
+			<tilemap mapname="roofs" mapx="1" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
+		</tile>
+		<tile xpos="9" ypos="0">
+			<tilemap mapname="roofs" mapx="5" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
+		</tile>
+		<tile xpos="9" ypos="1">
+			<tilemap mapname="roofs" mapx="0" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
+		</tile>
+		<tile xpos="9" ypos="2">
+			<tilemap mapname="roofs" mapx="0" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
+		</tile>
+		<tile xpos="9" ypos="3">
+			<tilemap mapname="roofs" mapx="0" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
+		</tile>
+		<tile xpos="9" ypos="4">
+			<tilemap mapname="roofs" mapx="0" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
+		</tile>
+		<tile xpos="9" ypos="5">
+			<tilemap mapname="roofs" mapx="0" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
+		</tile>
+		<tile xpos="9" ypos="6">
+			<tilemap mapname="roofs" mapx="0" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
+		</tile>
+		<tile xpos="9" ypos="7">
+			<tilemap mapname="roofs" mapx="0" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
+		</tile>
+		<tile xpos="9" ypos="8">
+			<tilemap mapname="roofs" mapx="0" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
+		</tile>
+		<tile xpos="9" ypos="9">
+			<tilemap mapname="roofs" mapx="7" mapy="11"/>
+			<directionBlock north="true" south="true" east="true" west="true"/>
 		</tile>
 	</tiles>
-	<mappableObjects>
-	
-		<mo name="Dog" type="npc" xpos="2" ypos="0">
-			<spriteRef>animals/Dog1</spriteRef>
-			<event name="DogBark" triggerType="talk">
-				<say speaker="Dog">Woof!</say>
-			</event>
-			<directionBlock east="true" north="true" south="true" west="true"/>
-		</mo>
-		
-	
-		<mo name="Door" type="door" xpos="2" ypos="2" movementType="wander">
-			<event name="enterOctaviaInn" triggerType="step">
-				<loadLevel name="ocataviaInn" startx="4" starty="3"/>
-			</event>
-		</mo>
-		<mo name="Action" type="square" xpos="2" ypos="0">
-			<!-- When you step on this square, -->
-			<event name="mordusDances" triggerType="step">
-			
-			<!-- If you have completed the "foundMordus" event and you either have >= 50000 gold or the golden staff -->
-				<condition>
-					<operator>
-						<and>
-							<didEvent>foundMordus</didEvent>
-							<operator>
-								<or>
-									<hasGold operator="gte">50000</hasGold>
-									<hasItem>
-										<itemRef itemType="weapon">GoldenStaff</itemRef>
-									</hasItem>
-								</or>
-							</operator>
-					
-						</and>
-					
-				
-					</operator>
-				</condition>
-				<!-- then mordus dances -->
-				<playAnimation>mordusDances</playAnimation>
-				<say speaker="Mordus">Weee, that was great</say>
-			</event>
-		</mo>
-	</mappableObjects>
 </level>
-		
-

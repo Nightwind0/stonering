@@ -168,7 +168,7 @@
         </section>
         <section name="Levels">
                 <string name="examplelevel" value="test3.xml" />
-                <string name="octaviaInn" value="foo.xml" />
+                <string name="octaviaInn" value="examplelevel.xml" />
                 <string name="monster_test" value="monster_test.xml" />
         </section>
         <section name="Tilemaps">
