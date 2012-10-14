@@ -98,7 +98,7 @@ void MonsterGroupEditWindow::BattleWindow::on_render( CL_GraphicContext& gc, con
 MonsterGroupEditWindow::MonsterGroupEditWindow(CL_GUIManager* manager, const CL_GUITopLevelDescription& desc):CL_Window(manager,desc){
 	m_battle_window = new BattleWindow(this);
 	m_battle_window->set_geometry(CL_Rect(CL_Point(24,24),CL_Size(256,256)));
-	m_battle_window->SetScale(1.0f/8.0f);
+	m_battle_window->SetScale(1.0f/2.0f);
 	m_monster_ref_list = new CL_ListView(this);
 	m_monster_ref_list->set_geometry(CL_Rect(CL_Point(256+24+60,24),CL_Size(300,256)));
 	m_monster_ref_list->func_selection_changed().set(this,&MonsterGroupEditWindow::on_monster_list_selection);

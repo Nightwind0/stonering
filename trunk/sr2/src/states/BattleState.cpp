@@ -20,6 +20,33 @@ using namespace StoneRing;
 
 //
 namespace StoneRing {
+	
+	class MonsterSort: public std::binary_function<ICharacter*, ICharacter*, bool> {
+	public:
+		MonsterSort(BattleState& state):m_state(state){
+		}
+		virtual ~MonsterSort(){}
+		bool operator()(ICharacter* a, ICharacter* b) const {
+			int a_value = a->GetBattlePos().y * m_state.m_monster_rect.get_width() + a->GetBattlePos().x;
+			int b_value = b->GetBattlePos().y * m_state.m_monster_rect.get_width() + b->GetBattlePos().x;
+			if(m_state.m_combat_state == BattleState::TARGETING && !m_state.m_targets.m_bSelectedGroup){
+				if(m_state.m_targets.selected.m_pTarget == a){
+					return false;
+				}else if(m_state.m_targets.selected.m_pTarget == b){
+					return true;
+				}
+			}else if(a == m_state.m_initiative[m_state.m_cur_char]){
+				a_value = (a->GetBattlePos().y + 1) * m_state.m_monster_rect.get_width();
+			}else if(b == m_state.m_initiative[m_state.m_cur_char]){
+				b_value = (b->GetBattlePos().y + 1) * m_state.m_monster_rect.get_width();
+			}
+			return a_value < b_value;
+		}
+	private:
+		BattleState& m_state;
+	};
+	
+	
 class StatusEffectPainter : public Visitor<StatusEffect*> {
 public:
 	StatusEffectPainter( CL_GraphicContext& gc ): m_i( 0 ), m_gc( gc ) {}
@@ -283,13 +310,15 @@ void BattleState::HandleButtonDown( const IApplication::Button& button ) {
 }
 
 void BattleState::HandleAxisMove( const IApplication::Axis& axis, IApplication::AxisDirection dir, float pos ) {
-	if ( axis == IApplication::AXIS_VERTICAL ) {
-		if ( dir == IApplication::AXIS_DOWN ) {
-			if ( m_combat_state == BATTLE_MENU )
-				m_menu_stack.top()->SelectDown();
-		} else if ( dir == IApplication::AXIS_UP ) {
-			if ( m_combat_state == BATTLE_MENU )
-				m_menu_stack.top()->SelectUp();
+	if(m_eState == COMBAT){
+		if ( axis == IApplication::AXIS_VERTICAL ) {
+			if ( dir == IApplication::AXIS_DOWN ) {
+				if ( m_combat_state == BATTLE_MENU )
+					m_menu_stack.top()->SelectDown();
+			} else if ( dir == IApplication::AXIS_UP ) {
+				if ( m_combat_state == BATTLE_MENU )
+					m_menu_stack.top()->SelectUp();
+			}
 		}
 	}
 }
@@ -779,8 +808,10 @@ void BattleState::draw_monsters( const CL_Rectf &monsterRect, CL_GraphicContext&
 		Monster *pMonster = dynamic_cast<Monster*>( m_monsters->GetCharacter( i ) );
 		sortedList.push_back( pMonster );
 	}
+	
+	
 
-	std::sort( sortedList.begin(), sortedList.end(), SortByBattlePos );
+	std::sort( sortedList.begin(), sortedList.end(), MonsterSort(*this) );
 
 
 

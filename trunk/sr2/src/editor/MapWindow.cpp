@@ -359,7 +359,7 @@ void MapWindow::construct_region_menu()
 	CL_PopupMenu edit_menu;
 	CL_PopupMenu delete_menu;
 	const MonsterRegions* regions = m_pMap->get_level()->GetMonsterRegions();
-	if(regions){
+	if(regions && regions->GetRegionsBegin() != regions->GetRegionsEnd()){
 		for(std::map<char,MonsterRegion*>::const_iterator it = regions->GetRegionsBegin();
 				it != regions->GetRegionsEnd();it++){
 			CL_PopupMenuItem edit_item = edit_menu.insert_item(IntToString((it->second)->GetId()));
@@ -369,13 +369,13 @@ void MapWindow::construct_region_menu()
 			delete_item.func_clicked().set(this,&MapWindow::on_delete_region,it->second);
 			place_item.func_clicked().set(this,&MapWindow::on_place_region,it->second);
 		}	
+		CL_PopupMenuItem place_item = m_monster_region_menu.insert_item("Place Region");
+		place_item.set_submenu(place_menu);
+		CL_PopupMenuItem item =  m_monster_region_menu.insert_item("Edit Region");
+		item.set_submenu(edit_menu);
+		CL_PopupMenuItem delete_item = m_monster_region_menu.insert_item("Delete Region");
+		delete_item.set_submenu(delete_menu);	
 	}
-	CL_PopupMenuItem place_item = m_monster_region_menu.insert_item("Place Region");
-	place_item.set_submenu(place_menu);
-	CL_PopupMenuItem item =  m_monster_region_menu.insert_item("Edit Region");
-	item.set_submenu(edit_menu);
-	CL_PopupMenuItem delete_item = m_monster_region_menu.insert_item("Delete Region");
-	delete_item.set_submenu(delete_menu);
 	CL_PopupMenuItem clear_item = m_monster_region_menu.insert_item("Clear Region");
 	clear_item.func_clicked().set(this,&MapWindow::on_clear_regions);
 }

@@ -32,7 +32,7 @@ void MappableObject::Move( Level& level ) {
 				CL_Rect rect = GetTileRect();
 				rect.translate( m_direction.ToScreenVector() );
 
-				if ( !level.Move( this, GetTileRect(), rect ) ) {
+				if ( m_direction != Direction::NONE &&  !level.Move( this, GetTileRect(), rect ) ) {
 					m_navStack.top()->Blocked();
 					break;
 				}
@@ -52,14 +52,16 @@ void MappableObject::Move( Level& level ) {
 
 			if ( m_direction != Direction::NONE ) {
 				SetPixelPosition( pt );
+			}else{
+				break;
 			}
 		}
 
-		if ( m_direction == Direction::NONE )
+		if ( m_direction == Direction::NONE ){
 			Stop();
-		else
+		}else{
 			OnStep();
-
+		}
 	}
 
 	Set_Frame_For_Direction();

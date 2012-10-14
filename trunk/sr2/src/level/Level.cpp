@@ -737,8 +737,11 @@ void Level::Step(const CL_Point &target)
 		if(!m_tiles[target.x][target.y].empty()){
 			MonsterRegion * pRegion = m_pMonsterRegions->GetMonsterRegion(m_tiles[target.x][target.y].back()->GetMonsterRegion());
 			if(pRegion){
-				MonsterGroup * pGroup = pRegion->GetMonsterGroup();
-				IApplication::GetInstance()->StartBattle (*pGroup, pRegion->GetBackdrop());		
+				float r = ranf();
+				if(r < pRegion->GetEncounterRate()){
+					MonsterGroup * pGroup = pRegion->GetMonsterGroup();
+					IApplication::GetInstance()->StartBattle (*pGroup, pRegion->GetBackdrop());		
+				}
 			}
 		}
         
