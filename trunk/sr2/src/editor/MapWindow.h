@@ -112,6 +112,8 @@ private:
         void on_delete_mo(MappableObject* pObj);
 		void on_edit_region(MonsterRegion* pRegion);
 		void on_delete_region(MonsterRegion* pRegion);
+		void on_place_region(MonsterRegion* pRegion);
+		void on_clear_regions();
         
 		void on_view_unzoom();
         void on_view_recenter();

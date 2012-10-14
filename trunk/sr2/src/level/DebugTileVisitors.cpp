@@ -91,6 +91,70 @@ void TileHotDrawer::accept ( CL_GraphicContext& gc, const CL_Point& top_left, Ti
     }
 }
 
+TileMonsterRegionDrawer::TileMonsterRegionDrawer()
+{
+	m_font = GraphicsManager::GetFont("sm_white");
+}
+
+TileMonsterRegionDrawer::~TileMonsterRegionDrawer()
+{
+
+}
+
+CL_Colorf TileMonsterRegionDrawer::get_color( char id ) const
+{
+	struct RGB {
+		float r;
+		float g;
+		float b;
+	};
+	const RGB colors[] =  {
+		{0.0f,0.0f,0.0f},
+		{1.0f,0.0f,0.0f},
+		{0.0f,1.0f,0.0f},
+		{0.0f,0.0f,1.0f},
+		{0.0f,1.0f,1.0f},
+		{1.0f,1.0f,0.0f},
+		{1.0f,0.0f,1.0f},
+		{1.0f,1.0f,1.0f},
+		{0.5f,0.0f,0.0f},
+		{0.0f,0.5f,0.0f},
+		{0.0f,0.0f,0.5f},
+		{0.0f,0.5f,0.5f},
+		{0.5f,0.5f,0.0f},
+		{0.5f,0.0f,0.5f},
+		{0.5f,0.5f,0.5f},
+		{0.25f,0.0f,0.0f},
+		{0.0f,0.25f,0.0f},
+		{0.0f,0.0f,0.25f},
+		{0.0f,0.25f,0.25f},
+		{0.25f,0.25f,0.0f},
+		{0.25f,0.0f,0.25f},
+		{0.25f,0.25f,0.25f},		
+		{1.0f,0.25f,0.25f},
+		{0.25f,1.0f,0.25f},
+		{0.25f,0.25f,1.0f},
+		{0.25f,1.0f,1.0f},
+		{1.0f,1.0f,0.25f},
+		{1.0f,0.25f,1.0f}		
+	};
+	
+	int index = id % (sizeof(colors) / sizeof(RGB));
+	return CL_Colorf(colors[index].r, colors[index].g,colors[index].b);
+}
+
+
+void TileMonsterRegionDrawer::accept( CL_GraphicContext& gc, const CL_Point& top_left, Tile* pTile )
+{
+	if(pTile->GetMonsterRegion() >= 0){
+		CL_Pointf point(top_left.x,top_left.y);
+		point += CL_Point(16,24);
+		m_font.set_color(get_color(pTile->GetMonsterRegion()));
+		m_font.draw_text(gc,point, IntToString(pTile->GetMonsterRegion()));
+	}
+}
+
+
 
 
 

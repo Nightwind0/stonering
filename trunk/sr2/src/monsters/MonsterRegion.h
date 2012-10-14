@@ -1,6 +1,7 @@
 #ifndef MONSTER_REGION_H
 #define MONSTER_REGION_H
 
+#include "sr_defines.h"
 #include "Element.h"
 #include <list>
 
@@ -36,6 +37,7 @@ namespace StoneRing
             int m_Height;
             float m_encounter_rate;
             int m_nTotalWeight;
+			uchar m_id;
             std::string m_backdrop;
             std::list<MonsterGroup*> m_monster_groups;
 #if SR2_EDITOR
@@ -50,6 +52,8 @@ namespace StoneRing
 			void SetEncounterRate(float rate){ m_encounter_rate = rate; }
 			void SetBackdrop(const std::string& backdrop){ m_backdrop = backdrop; }
 			void AddMonsterGroup(MonsterGroup* group){ m_monster_groups.push_back(group); }
+			void SetId(uchar id){ m_id = id; }
+			uchar GetId() const { return m_id; }
 #endif
     };
 
@@ -60,28 +64,33 @@ namespace StoneRing
         virtual ~MonsterRegions();
 
         MonsterRegion * GetApplicableRegion(uint levelx, uint levely) const ;
+		MonsterRegion * GetMonsterRegion(uchar id){
+			return m_monster_regions[id];
+		}
 
         virtual eElement WhichElement() const { return EMONSTERREGIONS; }
 #if SR2_EDITOR
         CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
-		std::list<MonsterRegion*>::const_iterator GetRegionsBegin() const{
+		std::map<uchar,MonsterRegion*>::const_iterator GetRegionsBegin() const{
 			return m_monster_regions.begin();
 		}
-		std::list<MonsterRegion*>::const_iterator GetRegionsEnd() const{
+		std::map<uchar,MonsterRegion*>::const_iterator GetRegionsEnd() const{
 			return m_monster_regions.end();
 		}
 		void AddMonsterRegion(MonsterRegion* region){
-			m_monster_regions.push_back(region);
+			region->SetId(get_next_id());
+			m_monster_regions[region->GetId()] = region;
 		}
 		void RemoveMonsterRegion(MonsterRegion* region){
-			m_monster_regions.remove(region);
+			m_monster_regions.erase(region->GetId());
 		}
 #endif
     private:
         virtual bool handle_element(eElement, Element * );
         virtual void load_finished();
+		uchar get_next_id() const;
 
-        std::list<MonsterRegion *> m_monster_regions;
+        std::map<uchar,MonsterRegion *> m_monster_regions;
     };
 
 

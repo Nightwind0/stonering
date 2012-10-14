@@ -178,6 +178,64 @@ namespace StoneRing {
         MappableObject*  m_pMo;
     };
 	
+	class PlaceMonsterRegionOperation: public Operation {
+	public:
+		PlaceMonsterRegionOperation(){
+		}
+		virtual ~PlaceMonsterRegionOperation(){
+		}
+		void SetRegionId(char id){
+			m_id = id;
+		}
+		virtual bool Execute(shared_ptr<Level> level){
+			std::list<Tile*> tiles =  level->GetTilesAt(m_data.m_level_pt);
+			if(!tiles.empty()){
+				m_prev_id = tiles.back()->GetMonsterRegion();
+				tiles.back()->SetMonsterRegion(m_id);
+			}
+			return true;
+		}
+		virtual void Undo(shared_ptr<Level> level){
+			std::list<Tile*> tiles =  level->GetTilesAt(m_data.m_level_pt);
+			if(!tiles.empty()){
+				tiles.back()->SetMonsterRegion(m_prev_id);
+			}			
+		}
+		virtual Operation* clone() {
+			PlaceMonsterRegionOperation* op =  new PlaceMonsterRegionOperation();
+			op->SetRegionId(m_id);
+			op->m_prev_id = m_prev_id;
+			return op;
+		}
+	private:
+		char m_id;
+		char m_prev_id;
+	};
+	
+	class PlaceMonsterRegionOperationGroup : public OperationGroup {
+	public:
+		PlaceMonsterRegionOperationGroup(){
+		}
+		virtual ~PlaceMonsterRegionOperationGroup(){
+		}
+		void SetRegionId(char id){
+			m_id = id;
+		};
+		virtual Operation* clone() {
+			PlaceMonsterRegionOperationGroup * pOp = new PlaceMonsterRegionOperationGroup();
+			pOp->SetRegionId(m_id);
+			return pOp;
+		}
+	protected:
+		virtual Operation* create_suboperation() const { 
+            PlaceMonsterRegionOperation * pOp =  new PlaceMonsterRegionOperation();
+            pOp->SetRegionId(m_id);
+            return pOp;
+        }
+	private:
+		char m_id;
+	};
+	
 
 MapWindow::MapWindow(CL_GUIComponent *parent, const CL_GUITopLevelDescription& desc):CL_Window(parent,desc) {
 	set_draggable(true);
@@ -297,23 +355,29 @@ void MapWindow::construct_region_menu()
 {
 	m_monster_region_menu.clear();
 	m_monster_region_menu.insert_item("Create Region").func_clicked().set(this,&MapWindow::on_create_monster_region);
+	CL_PopupMenu place_menu;
 	CL_PopupMenu edit_menu;
 	CL_PopupMenu delete_menu;
 	const MonsterRegions* regions = m_pMap->get_level()->GetMonsterRegions();
 	if(regions){
-		int i = 0;
-		for(std::list<MonsterRegion*>::const_iterator it = regions->GetRegionsBegin();
+		for(std::map<uchar,MonsterRegion*>::const_iterator it = regions->GetRegionsBegin();
 				it != regions->GetRegionsEnd();it++){
-			CL_PopupMenuItem edit_item = edit_menu.insert_item(IntToString(i));
-			CL_PopupMenuItem delete_item = delete_menu.insert_item(IntToString(i++));
-			edit_item.func_clicked().set(this,&MapWindow::on_edit_region,*it);
-			delete_item.func_clicked().set(this,&MapWindow::on_delete_region,*it);
+			CL_PopupMenuItem edit_item = edit_menu.insert_item(IntToString((it->second)->GetId()));
+			CL_PopupMenuItem delete_item = delete_menu.insert_item(IntToString((it->second)->GetId()));
+			CL_PopupMenuItem place_item = place_menu.insert_item(IntToString((it->second)->GetId()));
+			edit_item.func_clicked().set(this,&MapWindow::on_edit_region,it->second);
+			delete_item.func_clicked().set(this,&MapWindow::on_delete_region,it->second);
+			place_item.func_clicked().set(this,&MapWindow::on_place_region,it->second);
 		}	
 	}
+	CL_PopupMenuItem place_item = m_monster_region_menu.insert_item("Place Region");
+	place_item.set_submenu(place_menu);
 	CL_PopupMenuItem item =  m_monster_region_menu.insert_item("Edit Region");
 	item.set_submenu(edit_menu);
 	CL_PopupMenuItem delete_item = m_monster_region_menu.insert_item("Delete Region");
 	delete_item.set_submenu(delete_menu);
+	CL_PopupMenuItem clear_item = m_monster_region_menu.insert_item("Clear Region");
+	clear_item.func_clicked().set(this,&MapWindow::on_clear_regions);
 }
 
 void MapWindow::construct_toolbar()
@@ -325,10 +389,9 @@ void MapWindow::construct_toolbar()
         bool toggle;
     };
     Tool tools[] = {
-        {"Media/Editor/Images/map_add.png","Add Tiles",ADD_TILE,false},
         {"Media/Editor/Images/map_delete.png","Erase Tiles",DELETE_TILE,true},
-        {"Media/Editor/Images/view.png","Show Data",SHOW_ALL,true},
-        {"Media/Editor/Images/eye.png","Show Objects",SHOW_OBJECTS,true},
+        {"Media/Editor/Images/view.png","View",SHOW_ALL,true},
+        {"Media/Editor/Images/eye.png","Objects",SHOW_OBJECTS,true},
         {"Media/Editor/Images/world_edit.png","Level Data",EDIT_LEVEL,false},
         {"Media/Editor/Images/block_west.png","",BLOCK_WEST,true},
         {"Media/Editor/Images/block_north.png","",BLOCK_NORTH,true},
@@ -421,6 +484,7 @@ void MapWindow::on_file_close()
     }
     m_undo_stack.clear();
 	set_parent_component(NULL);
+	m_state->CloseMapWindow(this);
 	delete this;
 }
 
@@ -706,6 +770,32 @@ void MapWindow::on_delete_region(MonsterRegion* pRegion)
 	construct_region_menu();
 }
 
+void MapWindow::on_place_region(MonsterRegion* pRegion)
+{
+	PlaceMonsterRegionOperation * op = new PlaceMonsterRegionOperation();
+	op->SetRegionId(pRegion->GetId());
+	SetOperation(Operation::CLICK, op);
+
+	PlaceMonsterRegionOperationGroup * group_op = new PlaceMonsterRegionOperationGroup();
+	group_op->SetRegionId(pRegion->GetId());
+    SetOperation(Operation::DRAG,group_op);
+  
+	m_pMap->show_monster_region(true);
+}
+
+void MapWindow::on_clear_regions()
+{
+	PlaceMonsterRegionOperation * op = new PlaceMonsterRegionOperation();
+	op->SetRegionId(-1);
+	SetOperation(Operation::CLICK, op);
+
+	PlaceMonsterRegionOperationGroup * group_op = new PlaceMonsterRegionOperationGroup();
+	group_op->SetRegionId(-1);
+    SetOperation(Operation::DRAG,group_op);
+  
+	m_pMap->show_monster_region(true);	
+}
+
 std::string MapWindow::create_unique_mo_name()
 {
     std::ostringstream stream;
@@ -772,8 +862,6 @@ void MapWindow::end_drag(const CL_Point& start,const CL_Point& prev, const CL_Po
             std::map<int,Operation*>::iterator it = m_operations.find(tool);
 			if(it != m_operations.end()){
 				orig_op = it->second;
-			}else{
-				orig_op = m_state->GetOperation(tool);
 			}
             if(orig_op != NULL){
                 Operation::Data data;
@@ -805,8 +893,6 @@ void MapWindow::click(const CL_Point& point,MouseButton button, int mod)
         std::map<int,Operation*>::iterator it = m_operations.find(tool);
 		if(it != m_operations.end()){
 			orig_op = it->second;
-		}else{
-			orig_op = m_state->GetOperation(tool);
 		}
         if(orig_op != NULL){
             Operation::Data data;
@@ -871,6 +957,7 @@ void MapWindow::on_toolbar_item(CL_ToolBarItem item)
             m_pMap->show_pop(toggled);
             m_pMap->show_direction_blocks(toggled);
             m_pMap->show_floaters(toggled);
+			m_pMap->show_monster_region(toggled);
             m_pMap->request_repaint();
             
             break;

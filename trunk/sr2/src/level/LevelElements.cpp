@@ -134,7 +134,7 @@ int DirectionBlock::GetDirectionBlock() const
 }
 
 
-Tile::Tile():m_pCondition(NULL),m_pScript(NULL),m_ZOrder(0),cFlags(0)
+Tile::Tile():m_pCondition(NULL),m_pScript(NULL),m_ZOrder(0),cFlags(0),m_monster_region(-1)
 {
 }
 
@@ -149,6 +149,8 @@ void Tile::load_attributes(CL_DomNamedNodeMap attributes)
     bool floater = get_implied_bool("floater",attributes,false);
     bool hot = get_implied_bool("hot",attributes,false);
     bool pops = get_implied_bool("pops",attributes,false);
+	
+	m_monster_region = get_implied_int("monster_region",attributes,-1);
 
     if (floater) cFlags |= TIL_FLOATER;
     if (hot) cFlags |= TIL_HOT;
@@ -313,6 +315,10 @@ CL_DomElement Tile::CreateDomElement(CL_DomDocument& doc)const
     if(IsFloater()) element.set_attribute("floater", "true");
     if(IsHot())     element.set_attribute("hot", "true");
     if(Pops())      element.set_attribute("pops","true");
+	
+	if(m_monster_region >= 0){
+		element.set_attribute("monster_region",IntToString(m_monster_region));
+	}
 
     if(IsSprite())
     {

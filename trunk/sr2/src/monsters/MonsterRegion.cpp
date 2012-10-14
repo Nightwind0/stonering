@@ -44,6 +44,7 @@ void MonsterRegion::load_attributes(CL_DomNamedNodeMap attr)
     m_Width = get_required_int("width", attr);
     m_Height = get_required_int("height", attr);
     m_backdrop = get_required_string("backdrop", attr);
+	m_id = get_required_int("id",attr);
 
     //TODO: Make sure this backdrop exists.
 
@@ -106,17 +107,7 @@ MonsterRegions::~MonsterRegions()
 
 MonsterRegion * MonsterRegions::GetApplicableRegion(uint x, uint y) const
 {
-    for(std::list<MonsterRegion*>::const_iterator it = m_monster_regions.begin();
-        it != m_monster_regions.end();
-        it++)
-    {
-        MonsterRegion * pRegion = *it;
-        if(x >= pRegion->GetLevelX() && x <= pRegion->GetLevelX() + pRegion->GetWidth()
-            && y >= pRegion->GetLevelY() && y <= pRegion->GetLevelY() + pRegion->GetHeight())
-        {
-            return pRegion;
-        }
-    }
+
 
     return NULL;
 }
@@ -130,7 +121,7 @@ bool MonsterRegions::handle_element(StoneRing::Element::eElement element, StoneR
         {
             MonsterRegion *pRegion = dynamic_cast<MonsterRegion*>(pElement);
             assert(pRegion);
-            m_monster_regions.push_back ( pRegion);
+            m_monster_regions[pRegion->GetId()] =  pRegion;
             return true;
         }
     default:
@@ -152,6 +143,7 @@ CL_DomElement MonsterRegion::CreateDomElement(CL_DomDocument& doc)const
     element.set_attribute("height",IntToString(m_Height));
     element.set_attribute("backdrop",m_backdrop);
     element.set_attribute("encounterRate",FloatToString(m_encounter_rate));
+	element.set_attribute("id",IntToString(m_id));
 
     for(std::list<MonsterGroup*>::const_iterator it = m_monster_groups.begin();
         it != m_monster_groups.end(); it++) {
@@ -162,11 +154,21 @@ CL_DomElement MonsterRegion::CreateDomElement(CL_DomDocument& doc)const
 CL_DomElement MonsterRegions::CreateDomElement(CL_DomDocument &doc)const
 {
     CL_DomElement element(doc,"monsterRegions");
-    for(std::list<MonsterRegion*>::const_iterator it = m_monster_regions.begin();
+    for(std::map<uchar,MonsterRegion*>::const_iterator it = m_monster_regions.begin();
         it != m_monster_regions.end(); it++){
-        element.append_child((*it)->CreateDomElement(doc));
+        element.append_child((it->second)->CreateDomElement(doc));
     }
     return element;
 }
+
+uchar MonsterRegions::get_next_id() const
+{
+	uchar id = 0;
+	while(0 != m_monster_regions.count(id)){
+		++id;
+	}
+	return id;
+}
+
 #endif
 

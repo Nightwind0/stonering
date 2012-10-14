@@ -359,6 +359,16 @@ uint Party::GetMinutesPlayed() const
 }
 
 
+void Party::Clear()
+{
+	m_characters.clear();
+	m_events.clear();
+	m_items.clear();
+	m_omegas.clear();
+	m_nGold = 0;
+	m_nMinutes = 0;
+}
+
 
 
 

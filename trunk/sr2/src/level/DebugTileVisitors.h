@@ -38,6 +38,16 @@ namespace StoneRing {
 		CL_Sprite m_indicator;
 	};
 	
+	class TileMonsterRegionDrawer : public Tile::Visitor { 
+	public:
+		TileMonsterRegionDrawer( );
+		virtual ~TileMonsterRegionDrawer ( );
+		virtual void accept(CL_GraphicContext& gc, const CL_Point& top_left, Tile* pTile);
+	private:
+		CL_Colorf get_color(char id)const;
+		Font m_font;
+	};
+	
 		
 };
 

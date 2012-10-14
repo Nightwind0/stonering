@@ -52,6 +52,7 @@ public:
     void show_mos(bool on);
     void show_pop(bool on);
     void show_floaters(bool on);
+	void show_monster_region(bool on);
     MappableObject* get_mo_named(const std::string& name);
     std::list<MappableObject*> get_mos_at(const CL_Point& level_pt);
 private:
@@ -67,6 +68,7 @@ private:
     TileHotDrawer m_hot_drawer;
     TilePopsDrawer m_pops_drawer;
     TileFloaterDrawer m_floater_drawer;
+	TileMonsterRegionDrawer m_region_drawer;
     bool m_show_mos;
     float m_scale;
     CL_Gradient m_gradient;
