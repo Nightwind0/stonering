@@ -244,21 +244,28 @@ namespace StoneRing {
 			// TODO: Delete orig tiles?
 		}
 		virtual bool Execute(shared_ptr<Level> level){
+			// If click (as opposed to drag)
+			// then we want to just plop the whole thing down
+			if(m_data.m_mod_state & Operation::CLICK){
+				m_data.m_level_end_pt = m_data.m_level_pt + CL_Point(m_source_tiles.size()-1,m_source_tiles[0].size()-1);
+			}
 			CL_Point tile_start = m_data.m_level_pt;
-			CL_Point tile_end = tile_start + CL_Point(m_source_tiles.size()-1,m_source_tiles[0].size()-1);
+			CL_Point tile_end = m_data.m_level_end_pt;
 			
-			// TODO: Repeat the pattern if they drag a big square area.
-					
+			// Repeat the pattern if they drag a big square area.
+			m_orig_tiles.resize(tile_end.x - tile_start.x + 1);		
 			for(int x=tile_start.x;x<=tile_end.x;x++){
 				for(int y=tile_start.y;y<=tile_end.y;y++){
-						int source_x = x - tile_start.x;
-						int source_y = y - tile_start.y;
+						m_orig_tiles[x-tile_start.x].resize(tile_end.y - tile_start.y+1); 
+						int source_x = (x - tile_start.x) % m_source_tiles.size();
+						int source_y = (y - tile_start.y) % m_source_tiles[source_x].size();
 						assert(source_x < m_source_tiles.size());
 						assert(source_y < m_source_tiles[0].size());
+						
 						if(x < level->GetWidth() && y < level->GetHeight()){
 							std::list<Tile*> orig_tiles = level->GetTilesAt(CL_Point(x,y));
 							for(std::list<Tile*>::const_iterator it = orig_tiles.begin(); it != orig_tiles.end(); it++){
-								m_orig_tiles[source_x][source_y].push_back((*it)->clone());
+								m_orig_tiles[(x-tile_start.x)][(y-tile_start.y)].push_back((*it)->clone());
 							}
 							level->AddTilesAt(CL_Point(x,y),m_source_tiles[source_x][source_y],!(m_data.m_mod_state & Operation::CTRL));
 						}
@@ -268,14 +275,14 @@ namespace StoneRing {
 		}
 		virtual void Undo(shared_ptr<Level> level){
 			CL_Point tile_start = m_data.m_level_pt;
-			CL_Point tile_end = tile_start + CL_Point(m_source_tiles.size()-1,m_source_tiles[0].size()-1);
+			CL_Point tile_end = m_data.m_level_end_pt;
 					
 			for(int x=tile_start.x;x<=tile_end.x;x++){
 				for(int y=tile_start.y;y<=tile_end.y;y++){
 						int source_x = x - tile_start.x;
 						int source_y = y - tile_start.y;
-						assert(source_x < m_source_tiles.size());
-						assert(source_y < m_source_tiles[0].size());
+						assert(source_x < m_orig_tiles.size());
+						assert(source_y < m_orig_tiles[0].size());
 						if(x < level->GetWidth() && y < level->GetHeight()){
 							level->AddTilesAt(CL_Point(x,y),m_orig_tiles[source_x][source_y],true);
 						}
@@ -290,10 +297,6 @@ namespace StoneRing {
 		}
 		void SetSourceTiles(const std::vector<std::vector<std::list<Tile*> > >& source_tiles){
 			m_source_tiles = source_tiles;
-			m_orig_tiles.resize(m_source_tiles.size());
-			for(int i=0;i<m_source_tiles.size();i++){
-				m_orig_tiles[i].resize(m_source_tiles[i].size());
-			}
 		}
 	private:
 		std::vector<std::vector<std::list<Tile*> > > m_orig_tiles;
