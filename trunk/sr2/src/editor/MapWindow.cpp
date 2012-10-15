@@ -1026,9 +1026,18 @@ void MapWindow::end_drag(const CL_Point& start,const CL_Point& prev, const CL_Po
     if(mod == 0 && button == MOUSE_RIGHT){
 
     }else{
-        // current tool
+        // current tool  
         if(m_pMap->get_level()){
-            int tool = mod | Operation::DRAG;
+            Operation::Data data;			
+            CL_Point map_offset = m_pMap->get_geometry().get_top_left();   			
+            data.m_level_pt = m_pMap->screen_to_level(start-map_offset,m_pMap->get_geometry().get_center()-map_offset) / 32;
+            data.m_level_end_pt = m_pMap->screen_to_level(point-map_offset,m_pMap->get_geometry().get_center()-map_offset) / 32;			
+            int tool = mod;
+			if(data.m_level_pt != data.m_level_end_pt){
+				tool |= Operation::DRAG;
+			}else{
+				tool |= Operation::CLICK;
+			}
             if(button == MOUSE_RIGHT)
                 tool |= Operation::RIGHT;
 			Operation * orig_op = NULL;
@@ -1037,12 +1046,9 @@ void MapWindow::end_drag(const CL_Point& start,const CL_Point& prev, const CL_Po
 				orig_op = it->second;
 			}
             if(orig_op != NULL){
-                Operation::Data data;
-                data.m_mod_state = tool;
-                CL_Point map_offset = m_pMap->get_geometry().get_top_left();            
+
+                data.m_mod_state = tool;         
 				CL_Point min_pt, max_pt;
-                data.m_level_pt = m_pMap->screen_to_level(start-map_offset,m_pMap->get_geometry().get_center()-map_offset) / 32;
-                data.m_level_end_pt = m_pMap->screen_to_level(point-map_offset,m_pMap->get_geometry().get_center()-map_offset) / 32;
 				
 				min_pt = CL_Point ( min(data.m_level_pt.x,data.m_level_end_pt.x), min(data.m_level_pt.y, data.m_level_end_pt.y ) );
 				max_pt = CL_Point ( max(data.m_level_pt.x,data.m_level_end_pt.x), max(data.m_level_pt.y, data.m_level_end_pt.y ) );
@@ -1050,13 +1056,7 @@ void MapWindow::end_drag(const CL_Point& start,const CL_Point& prev, const CL_Po
 				data.m_level_pt = min_pt;
 				data.m_level_end_pt = max_pt;
 				
-				// If the drag doesn't cross tiles
-				// then turn it into a click
-				if(data.m_level_pt == data.m_level_end_pt){
-					data.m_mod_state |= ~Operation::DRAG;
-					data.m_mod_state &= Operation::CLICK;
-				}
-				
+			
 				
                 Operation * op = orig_op->clone();
                 op->SetData(data);
