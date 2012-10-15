@@ -1264,6 +1264,24 @@ void Level::RemoveMonsterRegion(MonsterRegion* region)
 	m_pMonsterRegions->RemoveMonsterRegion(region);
 }
 
+void Level::AddTilesAt(const CL_Point& point, const std::list<Tile*>& tiles, bool overwrite)
+{
+	if(point.x < GetWidth() && point.y < GetHeight()){
+		if(overwrite) {
+			for(std::list<Tile*>::iterator it = m_tiles[point.x][point.y].begin(); 
+				it != m_tiles[point.x][point.y].end();it++){
+				delete *it;
+			}
+			m_tiles[point.x][point.y].clear();
+		}
+		for(std::list<Tile*>::const_iterator it = tiles.begin(); it != tiles.end(); it++){
+			Tile * pTile = (*it)->clone();
+			pTile->SetPos(point.x,point.y);
+			AddTile(pTile);
+		}		
+	}
+}
+
 void Level::SetMusic(const std::string& music)
 {
 	m_music = music;

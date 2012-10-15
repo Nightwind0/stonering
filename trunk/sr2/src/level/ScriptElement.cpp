@@ -90,6 +90,13 @@ CL_DomElement ScriptElement::CreateDomElement(CL_DomDocument &doc)const
     element.append_child(text);
     return element;
 }
+ScriptElement::ScriptElement(const ScriptElement& other)
+{
+	m_id = other.m_id;
+	m_script = other.m_script;
+}
+
+
 #endif
 
 

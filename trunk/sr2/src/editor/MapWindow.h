@@ -56,6 +56,7 @@ private:
         }m_mouse_state;
         
         enum ToolBarItem {
+			COPY_TILE,
             ADD_TILE,
             DELETE_TILE,
             ADD_OBJECT,

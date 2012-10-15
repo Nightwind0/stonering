@@ -43,6 +43,7 @@ namespace StoneRing{
         virtual CL_DomElement CreateDomElement(CL_DomDocument&)const;
 		std::string GetScriptText() const { return m_script; }
 		std::string GetScriptId() const { return m_id; }
+		ScriptElement(const ScriptElement& copy);
     protected:
         std::string m_script;        
 #endif		
