@@ -780,6 +780,11 @@
                         <string name="Empty_Selected" value="BoldWhite"/>
                     </section>
                 </section>
+				<section name="Gameover">
+					<image name ="overlay">
+						<image-file file="Images/Overlays/game_over.png"/>
+					</image>
+				</section>
         </section>
 
 <!-- Can be moved off to a separate resource xml -->

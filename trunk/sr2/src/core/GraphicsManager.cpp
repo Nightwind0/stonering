@@ -159,6 +159,8 @@ std::string GraphicsManager::NameOfOverlay(Overlay overlay)
         return "Status";
     case BANNER:
         return "Banner";
+	case GAMEOVER:
+		return "Gameover";
     default:
         assert(0);
     }
