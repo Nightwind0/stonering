@@ -61,6 +61,11 @@ namespace StoneRing {
 		// Sets an operation to be performed by click
 		void SetOperation(int mods,Operation*); 
 		void CloseMapWindow(MapWindow* pWindow);
+		void SetCopyTiles(const std::vector<std::vector<std::list<Tile*> > >& tiles);
+		std::vector<std::vector<std::list<Tile*> > > GetCopyTiles() const{
+			return m_copy_tiles;
+		}
+		
         virtual void on_close();
 		virtual void on_display_resize(CL_Rect&);
     private:
@@ -82,6 +87,7 @@ namespace StoneRing {
         TileSelectorWindow*     m_pTileWindow;
         CL_MenuBar *            m_pMenuBar;		
 		std::list<MapWindow*>   m_map_windows;
+		std::vector<std::vector<std::list<Tile*> > > m_copy_tiles;
 		bool m_bDone;
         //CL_DisplayWindow* m_subwindow;
     };

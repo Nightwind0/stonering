@@ -236,6 +236,121 @@ namespace StoneRing {
 		char m_id;
 	};
 	
+	class PasteTilesOperation : public Operation {
+	public:
+		PasteTilesOperation(){
+		}
+		virtual ~PasteTilesOperation(){
+			// TODO: Delete orig tiles?
+		}
+		virtual bool Execute(shared_ptr<Level> level){
+			CL_Point tile_start = m_data.m_level_pt;
+			CL_Point tile_end = tile_start + CL_Point(m_source_tiles.size()-1,m_source_tiles[0].size()-1);
+			
+			// TODO: Repeat the pattern if they drag a big square area.
+					
+			for(int x=tile_start.x;x<=tile_end.x;x++){
+				for(int y=tile_start.y;y<=tile_end.y;y++){
+						int source_x = x - tile_start.x;
+						int source_y = y - tile_start.y;
+						assert(source_x < m_source_tiles.size());
+						assert(source_y < m_source_tiles[0].size());
+						if(x < level->GetWidth() && y < level->GetHeight()){
+							std::list<Tile*> orig_tiles = level->GetTilesAt(CL_Point(x,y));
+							for(std::list<Tile*>::const_iterator it = orig_tiles.begin(); it != orig_tiles.end(); it++){
+								m_orig_tiles[source_x][source_y].push_back((*it)->clone());
+							}
+							level->AddTilesAt(CL_Point(x,y),m_source_tiles[source_x][source_y],!(m_data.m_mod_state & Operation::CTRL));
+						}
+				}
+			}
+			return true;
+		}
+		virtual void Undo(shared_ptr<Level> level){
+			CL_Point tile_start = m_data.m_level_pt;
+			CL_Point tile_end = tile_start + CL_Point(m_source_tiles.size()-1,m_source_tiles[0].size()-1);
+					
+			for(int x=tile_start.x;x<=tile_end.x;x++){
+				for(int y=tile_start.y;y<=tile_end.y;y++){
+						int source_x = x - tile_start.x;
+						int source_y = y - tile_start.y;
+						assert(source_x < m_source_tiles.size());
+						assert(source_y < m_source_tiles[0].size());
+						if(x < level->GetWidth() && y < level->GetHeight()){
+							level->AddTilesAt(CL_Point(x,y),m_orig_tiles[source_x][source_y],true);
+						}
+				}
+			}			
+		}
+		virtual Operation* clone(){
+			PasteTilesOperation * pOp = new PasteTilesOperation();
+			pOp->m_orig_tiles = m_orig_tiles;
+			pOp->SetSourceTiles(m_source_tiles);
+			return pOp;
+		}
+		void SetSourceTiles(const std::vector<std::vector<std::list<Tile*> > >& source_tiles){
+			m_source_tiles = source_tiles;
+			m_orig_tiles.resize(m_source_tiles.size());
+			for(int i=0;i<m_source_tiles.size();i++){
+				m_orig_tiles[i].resize(m_source_tiles[i].size());
+			}
+		}
+	private:
+		std::vector<std::vector<std::list<Tile*> > > m_orig_tiles;
+		std::vector<std::vector<std::list<Tile*> > > m_source_tiles;
+	};
+	
+	class CopyTileOperation : public Operation {
+	public:
+		CopyTileOperation(MapEditorState& parent):m_parent(parent){
+		}
+		virtual ~CopyTileOperation(){
+			
+		}
+		
+		virtual bool Execute(shared_ptr<Level> level){
+			CL_Point tile_start = m_data.m_level_pt;
+			CL_Point tile_end = m_data.m_level_end_pt;
+			tile_end.x = min(int(level->GetWidth())-1,tile_end.x);
+			tile_end.y = min(int(level->GetHeight())-1,tile_end.y);
+			m_source_tiles.resize((tile_end.x-tile_start.x) + 1);
+			
+			for(int x=tile_start.x;x<=tile_end.x;x++){
+				m_source_tiles[x - tile_start.x].resize((tile_end.y-tile_start.y) + 1);
+				for(int y=tile_start.y;y<=tile_end.y;y++){
+					int source_x = x - tile_start.x;
+					int source_y = y - tile_start.y;
+					assert(x < level->GetWidth() && y < level->GetHeight());
+					std::list<Tile*> tiles = level->GetTilesAt(CL_Point(x,y));
+					for(std::list<Tile*>::const_iterator it = tiles.begin(); it != tiles.end(); it++){
+						m_source_tiles[source_x][source_y].push_back ( (*it)->clone() );
+					}
+				}
+			}
+			PasteTilesOperation * pOp = new PasteTilesOperation();
+			pOp->SetSourceTiles(m_source_tiles);
+			m_parent.SetOperation(Operation::CLICK,pOp);
+			m_parent.SetOperation(Operation::CLICK|Operation::CTRL,pOp);
+			m_parent.SetOperation(Operation::DRAG,pOp);
+			m_parent.SetOperation(Operation::DRAG|Operation::CTRL,pOp);
+	
+			//m_parent.SetCopyTiles(m_source_tiles);
+			return false; // don't put us on the undo stack
+		}
+		virtual void Undo(shared_ptr<Level> level){
+			
+		}
+		virtual Operation* clone(){
+			CopyTileOperation * pOp = new CopyTileOperation(m_parent);
+			pOp->m_source_tiles = m_source_tiles;
+			return pOp;
+		}
+	
+	private:
+		std::vector<std::vector<std::list<Tile*> > > m_source_tiles;
+		MapEditorState& m_parent;
+	};
+	
 
 MapWindow::MapWindow(CL_GUIComponent *parent, const CL_GUITopLevelDescription& desc):CL_Window(parent,desc) {
 	set_draggable(true);
@@ -391,6 +506,7 @@ void MapWindow::construct_toolbar()
         bool toggle;
     };
     Tool tools[] = {
+		{"Media/Editor/Images/add.png","Copy Tiles",COPY_TILE,true},
         {"Media/Editor/Images/map_delete.png","Erase Tiles",DELETE_TILE,true},
         {"Media/Editor/Images/view.png","View",SHOW_ALL,true},
         {"Media/Editor/Images/eye.png","Objects",SHOW_OBJECTS,true},
@@ -720,7 +836,7 @@ bool MapWindow::on_mouse_double_click(const CL_InputEvent& event)
             }
             
             m_map_context_point = event.mouse_pos;
-            m_map_context_menu.start(m_pMap,event.mouse_pos);    
+            m_map_context_menu.start(m_pMap, component_to_screen_coords(event.mouse_pos));    
         }
     }else{
         CL_Point map_offset = m_pMap->get_geometry().get_top_left();
@@ -920,14 +1036,24 @@ void MapWindow::end_drag(const CL_Point& start,const CL_Point& prev, const CL_Po
             if(orig_op != NULL){
                 Operation::Data data;
                 data.m_mod_state = tool;
-                CL_Point map_offset = m_pMap->get_geometry().get_top_left();                
+                CL_Point map_offset = m_pMap->get_geometry().get_top_left();            
+				CL_Point min_pt, max_pt;
                 data.m_level_pt = m_pMap->screen_to_level(start-map_offset,m_pMap->get_geometry().get_center()-map_offset) / 32;
                 data.m_level_end_pt = m_pMap->screen_to_level(point-map_offset,m_pMap->get_geometry().get_center()-map_offset) / 32;
+				
+				min_pt = CL_Point ( min(data.m_level_pt.x,data.m_level_end_pt.x), min(data.m_level_pt.y, data.m_level_end_pt.y ) );
+				max_pt = CL_Point ( max(data.m_level_pt.x,data.m_level_end_pt.x), max(data.m_level_pt.y, data.m_level_end_pt.y ) );
+				
+				data.m_level_pt = min_pt;
+				data.m_level_end_pt = max_pt;
+				
+				
                 Operation * op = orig_op->clone();
                 op->SetData(data);
                 if(op->Execute(m_pMap->get_level())){
                     m_undo_stack.push_front(op);
                     this->request_repaint();
+					m_pMap->request_repaint();
                 }else{
                     delete op;
                 }
@@ -959,6 +1085,7 @@ void MapWindow::click(const CL_Point& point,MouseButton button, int mod)
             if(op->Execute(m_pMap->get_level())){
                 m_undo_stack.push_front(op);
                 this->request_repaint();
+				m_pMap->request_repaint();
             }else{
                 delete op;
             }
@@ -984,8 +1111,10 @@ void MapWindow::on_toolbar_item(CL_ToolBarItem item)
     reset_toolbar_toggles(item);
     
     switch(item.get_id()){
-        case ADD_TILE:{
-
+        case COPY_TILE:{
+			CopyTileOperation * op = new CopyTileOperation(*m_state);
+			SetOperation(Operation::CLICK,op);
+			SetOperation(Operation::DRAG,op);
             break;
         }
         case DELETE_TILE:{
