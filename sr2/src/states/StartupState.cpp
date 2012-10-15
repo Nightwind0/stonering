@@ -61,13 +61,13 @@ void StartupState::Start()
 
 void StartupState::HandleButtonUp ( const StoneRing::IApplication::Button& button )
 {
-        if(button == IApplication::BUTTON_CANCEL)
-            m_bDone = true;
-        
-        if(button == IApplication::BUTTON_CONFIRM){
-            SoundManager::PlayEffect(SoundManager::EFFECT_SELECT_OPTION);
-            Menu::Choose();
-        }
+	if(button == IApplication::BUTTON_CANCEL)
+		m_bDone = true;
+	
+	if(button == IApplication::BUTTON_CONFIRM){
+		SoundManager::PlayEffect(SoundManager::EFFECT_SELECT_OPTION);
+		Menu::Choose();
+	}
 }
 
 

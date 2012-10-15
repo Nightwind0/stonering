@@ -1263,7 +1263,7 @@ void BattleState::lose() {
 }
 
 void BattleState::win() {
-	SoundManager::SetMusic( "Fanfare" );
+	SoundManager::SetMusic( "Music/Fanfare" );
 	m_bDone = true;
 	ParameterList params;
 	// All battle methods remain valid here

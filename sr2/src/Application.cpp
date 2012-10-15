@@ -36,6 +36,7 @@
 #include "StatusState.h"
 #include "Omega.h"
 #include "BannerState.h"
+#include "GameoverState.h"
 //
 //
 //
@@ -273,16 +274,16 @@ SteelType Application::say ( const std::string &speaker, const std::string &text
 
 void Application::StartGame(bool load)
 {
+	mMapState.SetDimensions ( GetDisplayRect() );	
+	mpParty->Clear();
     if(load){
-        mMapState.Start();
-        mMapState.SetDimensions ( GetDisplayRect() );
-        mStates.push_back ( &mMapState );         
         this->load();        
     }else{   
         std::string startscript;
         loadscript ( startscript, CL_String_load ( "Game/StartupScript", m_resources ) );
         mInterpreter.run ( "Startup", startscript );
     }
+    RunState(&mMapState);    
 }
 
 
@@ -1510,6 +1511,19 @@ void Application::Banner ( const std::string& str, int time )
     RunState(&state);
 }
 
+SteelType Application::closeMap ()
+{
+	mMapState.BringDown();
+	return SteelType();
+}
+
+SteelType Application::gameoverScreen()
+{
+	GameoverState state;
+	RunState(&state);
+	return SteelType();
+}
+
 
 void Application::LoadMainMenu ( CL_DomDocument& doc )
 {
@@ -1968,6 +1982,9 @@ void Application::registerSteelFunctions()
     SteelFunctor*  fn_showExperience = new SteelFunctor4Arg<Application, const SteelArray&, const SteelArray&, const SteelArray&, const SteelArray&> 
                                             ( this, &Application::showExperience );
     SteelFunctor*  fn_selectItemAdv = new SteelFunctor1Arg<Application,uint> ( this, &Application::selectItemAdv );
+	
+	SteelFunctor*  fn_closeMap = new SteelFunctorNoArgs<Application>(this,&Application::closeMap);
+	SteelFunctor*  fn_gameoverScreen = new SteelFunctorNoArgs<Application>(this,&Application::gameoverScreen);
 
 
     mInterpreter.pushScope();
@@ -2194,6 +2211,9 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "getOmega", new SteelFunctor1Arg<Application,uint>(this,&Application::getOmega ) );
     mInterpreter.addFunction ( "omegaSlotIsEmpty", new SteelFunctor1Arg<Application,uint>(this,&Application::omegaSlotIsEmpty) );
     mInterpreter.addFunction ( "banner", new SteelFunctor2Arg<Application,const std::string&,int>(this,&Application::banner) );
+	mInterpreter.addFunction ( "closeMap", fn_closeMap );
+	mInterpreter.addFunction ( "gameoverScreen", fn_gameoverScreen );
+	
     
     mInterpreter.addFunction ( "editing", new SteelFunctorNoArgs<Application>(this,&Application::editing) );
     mInterpreter.addFunction ( "editMap", new SteelFunctorNoArgs<Application>(this,&Application::editMap) );

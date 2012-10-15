@@ -76,5 +76,7 @@
 <onLost>
     <![CDATA[
     println("Lost");
+	gameoverScreen();
+	closeMap();
 	]]>
 </onLost>

@@ -36,6 +36,12 @@ void StoneRing::MapState::RegisterSteelFunctions(SteelInterpreter* pInterpreter)
 
 }
 
+void StoneRing::MapState::BringDown()
+{
+	m_bDone = true;
+}
+
+
 void StoneRing::MapState::HandleButtonUp(const IApplication::Button& button)
 {
     if(!m_pLevel) return;
@@ -127,10 +133,11 @@ void StoneRing::MapState::HandleKeyDown(const CL_InputEvent &key)
 
     switch(key.id)
     {
+#if 0
     case CL_KEY_ESCAPE:
         m_bDone = true;
         break;
-#if 0
+
     case CL_KEY_DOWN:
         pPlayer->SetNextDirection(StoneRing::MappableObject::SOUTH);
         break;

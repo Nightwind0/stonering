@@ -188,6 +188,8 @@ stonering_SOURCES =	src/Application.cpp \
 			src/core/MenuBox.h \
 			src/states/EquipState.cpp \
 			src/states/EquipState.h \
+			src/states/GameoverState.cpp \
+			src/states/GameoverState.h \
 			src/core/StatusBox.h \
 			src/core/StatusBox.cpp \
 			src/states/ShopState.cpp \
