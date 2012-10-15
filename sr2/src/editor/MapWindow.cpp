@@ -1050,6 +1050,13 @@ void MapWindow::end_drag(const CL_Point& start,const CL_Point& prev, const CL_Po
 				data.m_level_pt = min_pt;
 				data.m_level_end_pt = max_pt;
 				
+				// If the drag doesn't cross tiles
+				// then turn it into a click
+				if(data.m_level_pt == data.m_level_end_pt){
+					data.m_mod_state |= ~Operation::DRAG;
+					data.m_mod_state &= Operation::CLICK;
+				}
+				
 				
                 Operation * op = orig_op->clone();
                 op->SetData(data);
