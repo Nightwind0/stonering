@@ -4,12 +4,13 @@
 #include "Party.h"
 #include "SoundManager.h"
 
+
 using std::min;
 using StoneRing::Party;
 
 
 StoneRing::MapState::MapState():m_LevelX(0),
-                                m_LevelY(0)
+                                m_LevelY(0),m_player(0,0)
 {
     m_bShowDebug = false;
     m_horizontal_idle = true;
@@ -46,7 +47,7 @@ void StoneRing::MapState::HandleButtonUp(const IApplication::Button& button)
 {
     if(!m_pLevel) return;
     
-    MappablePlayer *pPlayer = m_pLevel->GetPlayer();
+    MappablePlayer *pPlayer = &m_player;
     switch(button)
     {
 	case IApplication::BUTTON_CANCEL:
@@ -67,7 +68,7 @@ void StoneRing::MapState::HandleButtonUp(const IApplication::Button& button)
 void StoneRing::MapState::HandleButtonDown(const IApplication::Button& button)
 {
      if(!m_pLevel) return;
-     MappablePlayer *pPlayer = m_pLevel->GetPlayer();
+     MappablePlayer *pPlayer = &m_player;
      
      switch(button)
      {
@@ -81,7 +82,7 @@ void StoneRing::MapState::HandleButtonDown(const IApplication::Button& button)
 void StoneRing::MapState::HandleAxisMove(const IApplication::Axis& axis, IApplication::AxisDirection dir, float pos)
 {
     if(!m_pLevel) return;
-    MappablePlayer *pPlayer = m_pLevel->GetPlayer();
+    MappablePlayer *pPlayer = &m_player;
     IApplication* pApp = IApplication::GetInstance();
 
     if(axis == IApplication::AXIS_HORIZONTAL)
@@ -126,7 +127,7 @@ void StoneRing::MapState::HandleAxisMove(const IApplication::Axis& axis, IApplic
 void StoneRing::MapState::HandleKeyDown(const CL_InputEvent &key)
 {
     if(!m_pLevel) return;
-    MappablePlayer *pPlayer = m_pLevel->GetPlayer();
+    MappablePlayer *pPlayer = &m_player;
     assert(pPlayer);
     if(key.shift && m_pLevel->AllowsRunning())
        pPlayer->GetNavigator().SetRunning(true);
@@ -160,7 +161,7 @@ void StoneRing::MapState::HandleKeyDown(const CL_InputEvent &key)
 void StoneRing::MapState::HandleKeyUp(const CL_InputEvent &key)
 {
     if(!m_pLevel) return;
-    MappablePlayer *pPlayer = m_pLevel->GetPlayer();
+    MappablePlayer *pPlayer = &m_player;
     assert(pPlayer);
     switch(key.id)
     {
@@ -284,8 +285,10 @@ StoneRing::Level* StoneRing::MapState::GetCurrentLevel() const
 
 void StoneRing::MapState::PushLevel(Level * pLevel, uint x, uint y)
 {
-    MappablePlayer *pPlayer = pLevel->GetPlayer();
-    assert(pPlayer);
+	if(m_pLevel){
+		m_pLevel->RemoveMappableObject(&m_player);	
+	}
+	m_position_stack.push_back(m_player.GetPosition());	
     CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
     Character *pMapCharacter = IApplication::GetInstance()->GetParty()->GetMapCharacter();
 
@@ -294,15 +297,15 @@ void StoneRing::MapState::PushLevel(Level * pLevel, uint x, uint y)
 
     if(pMapCharacter)
     {
-        pPlayer->SetSprite ( pMapCharacter->GetMapSprite() );
-        pPlayer->ResetLevelX(x);
-        pPlayer->ResetLevelY(y);
+		// TODO: Move this line
+        m_player.SetSprite ( pMapCharacter->GetMapSprite() );
+        m_player.ResetLevelX(x);
+        m_player.ResetLevelY(y);
         m_LevelX = 0;
         m_LevelY = 0;
 
-        pLevel->SetPlayerPos(CL_Point(x,y));
-        recalculate_player_position();
-        
+        pLevel->AddMappableObject(&m_player);
+        recalculate_player_position();        
     }
     
     SoundManager::SetMusic(m_pLevel->GetMusic());
@@ -315,17 +318,15 @@ void StoneRing::MapState::SetPlayerSprite(CL_Sprite  player)
 
 void StoneRing::MapState::Pop(bool bAll)
 {
-    MappablePlayer *pPlayer = m_pLevel->GetPlayer();
-    assert(pPlayer);
-
-    Direction oldDir = pPlayer->GetDirection();
-
+	CL_Point point;
     if(bAll)
     {
         while(m_levels.size() > 1)
         {
             m_levels.back()->MarkForDeath();
             m_levels.pop_back();
+			point = m_position_stack.back();
+			m_position_stack.pop_back();
         }
     }
     else
@@ -335,14 +336,17 @@ void StoneRing::MapState::Pop(bool bAll)
         {
             m_levels.back()->MarkForDeath();
             m_levels.pop_back();
+			point = m_position_stack.back();
+			m_position_stack.pop_back();
         }
     }
 
     m_pLevel = m_levels.back();
+	m_player.ResetLevelX(point.x);
+	m_player.ResetLevelY(point.y);
+	m_pLevel->AddMappableObject(&m_player);
+	recalculate_player_position();
     SoundManager::SetMusic(m_pLevel->GetMusic());
-    MappablePlayer * pNewPlayer = m_pLevel->GetPlayer();
-
-    pNewPlayer->GetNavigator().SetNextDirection(oldDir);
 }
 
 
@@ -350,7 +354,7 @@ void StoneRing::MapState::Pop(bool bAll)
 void StoneRing::MapState::recalculate_player_position()
 {
     if(!m_pLevel) return;
-    MappablePlayer *pPlayer = m_pLevel->GetPlayer();
+    MappablePlayer *pPlayer = &m_player;
     assert(pPlayer);
     CL_Rect spriteRect = pPlayer->GetSpriteRect();
     int X = pPlayer->GetLevelX();
@@ -435,7 +439,7 @@ void StoneRing::MapState::MoveMappableObjects()
 
 void StoneRing::MapState::do_talk(bool prod)
 {
-    MappablePlayer *pPlayer = m_pLevel->GetPlayer();
+    MappablePlayer *pPlayer = &m_player;
     assert(pPlayer);
     CL_Point talkPoint = pPlayer->GetPointInFront();
 
@@ -452,16 +456,25 @@ void StoneRing::MapState::switch_from_player(MappablePlayer * pPlayer)
 
 void StoneRing::MapState::SerializeState ( std::ostream& out )
 {
+	m_player.SerializeState(out);
     uint level_count = m_levels.size();
     out.write((char*)&level_count,sizeof(uint));
     for(int i=0;i<level_count;i++){
         WriteString(out, m_levels[i]->GetResourceName());
         m_levels[i]->SerializeState(out);
-    }
+	}
+	uint pos_size = m_position_stack.size();
+	out.write((char*)&pos_size,sizeof(uint));
+	for(int i=0;i<m_position_stack.size();i++){
+		CL_Point pt = m_position_stack[i];
+		out.write((char*)&pt.x,sizeof(pt.x));
+		out.write((char*)&pt.y,sizeof(pt.y));
+	}
 }
 
 void StoneRing::MapState::DeserializeState ( std::istream& in )
 {
+	m_player.DeserializeState(in);
     uint level_count;
     in.read((char*)&level_count,sizeof(uint));
     for(int i=0;i<level_count;i++){
@@ -470,18 +483,27 @@ void StoneRing::MapState::DeserializeState ( std::istream& in )
         pLevel->Load(name,IApplication::GetInstance()->GetResources());
         pLevel->Invoke();
         pLevel->DeserializeState(in);
-        MappablePlayer* pPlayer = pLevel->GetPlayer();
-        Character *pMapCharacter = IApplication::GetInstance()->GetParty()->GetMapCharacter();    
-        if(pMapCharacter)
-        {
-            pPlayer->SetSprite ( pMapCharacter->GetMapSprite() );
-            pLevel->SetPlayerPos(pPlayer->GetPosition());
-            recalculate_player_position();
-        }        
         m_levels.push_back(pLevel);
     }
+    uint pos_count;
+	in.read((char*)&pos_count,sizeof(uint));
+	for(int i=0;i<pos_count;i++){
+		CL_Point pt;
+		in.read((char*)&pt.x,sizeof(pt.x));
+		in.read((char*)&pt.y,sizeof(pt.y));
+		m_position_stack.push_back(pt);
+	}
 
     m_pLevel = m_levels.back();
+    Character *pMapCharacter = IApplication::GetInstance()->GetParty()->GetMapCharacter();    
+	
+	if(pMapCharacter)
+    {
+		m_player.SetSprite ( pMapCharacter->GetMapSprite() );
+		m_pLevel->AddMappableObject(&m_player);
+		recalculate_player_position();
+    }        
+	
     SoundManager::SetMusic(m_pLevel->GetMusic());
 }
 

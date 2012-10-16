@@ -6,7 +6,8 @@
 #include "sr_defines.h"
 #include "Navigator.h"
 #include "DebugTileVisitors.h"
-#include <stack>
+#include "MappableObject.h"
+#include <deque>
 
 
 namespace StoneRing
@@ -61,12 +62,13 @@ private:
     int m_LevelY;
     bool m_horizontal_idle;
     bool m_vertical_idle;
-    MappablePlayer * m_player;
+    MappablePlayer  m_player;
     CL_Rect m_screen_rect;
     std::deque<Level*> m_levels;
     Level * m_pLevel;
     CL_Sprite  m_playerSprite;
     bool m_bShowDebug;
+	std::deque<CL_Point> m_position_stack;
 #ifndef NDEBUG
     void add_debug_drawers();
     void remove_debug_drawers();

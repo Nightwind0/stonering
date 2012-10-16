@@ -362,11 +362,9 @@ public:
     std::string GetResourceName() const {
         return m_resource_name;
     }
-    // Player interfaces
-    MappablePlayer * GetPlayer() {
-        return &m_player;
-    }
-    void SetPlayerPos(const CL_Point &target);
+    
+    MappablePlayer* GetPlayer() const;
+    
 
     void MarkForDeath() {
         m_bMarkedForDeath = true;
@@ -434,7 +432,6 @@ protected:
     bool m_bAllowsRunning;
     mutable uint m_nFrameCount;
     uint m_nMoveCount;
-    MappablePlayer m_player;
     bool m_bMarkedForDeath;
     MOQuadtree *m_mo_quadtree;
     std::string m_resource_name;

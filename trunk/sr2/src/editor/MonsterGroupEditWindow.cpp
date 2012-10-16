@@ -301,7 +301,7 @@ void MonsterGroupEditWindow::on_move_left()
 	CL_ListViewItem item = m_monster_ref_list->get_selected_item();
 	if(!item.is_null()){
 		MonsterRef* ref = (MonsterRef*)m_group->GetMonsters()[item.get_id()];
-		ref->SetCellX(ref->GetCellY()-1);
+		ref->SetCellX(ref->GetCellX()-1);
 	}		
 	sync_move_buttons();
 	m_battle_window->request_repaint();
@@ -312,7 +312,7 @@ void MonsterGroupEditWindow::on_move_right()
 	CL_ListViewItem item = m_monster_ref_list->get_selected_item();
 	if(!item.is_null()){
 		MonsterRef* ref = (MonsterRef*)m_group->GetMonsters()[item.get_id()];
-		ref->SetCellX(ref->GetCellY()+1);
+		ref->SetCellX(ref->GetCellX()+1);
 	}			
 	sync_move_buttons();
 	m_battle_window->request_repaint();
@@ -333,6 +333,7 @@ void MonsterGroupEditWindow::on_group_grid_changed()
 	m_group->SetCellColumns(m_group_col_count->get_value());
 	m_group->SetCellRows(m_group_row_count->get_value());
 	m_battle_window->request_repaint();
+	sync_move_buttons();
 }
 
 void MonsterGroupEditWindow::on_delete_monsters()

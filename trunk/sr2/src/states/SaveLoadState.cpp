@@ -47,6 +47,7 @@ void SaveLoadState::Init ( bool bSave, bool cancelable )
 {
     m_bSave = bSave;
     m_cancelable = cancelable;
+	m_cancelled = false;
     m_num_selected_font = GraphicsManager::GetFont(GraphicsManager::SAVE_LOAD,"Number_Selected");
     m_number_font = GraphicsManager::GetFont(GraphicsManager::SAVE_LOAD,"Number");
     m_empty_font = GraphicsManager::GetFont(GraphicsManager::SAVE_LOAD,"Empty");
@@ -92,7 +93,10 @@ void SaveLoadState::HandleButtonUp ( const StoneRing::IApplication::Button& butt
 {
     switch(button){
         case IApplication::BUTTON_CANCEL:
-            m_bDone = true;
+			if(m_cancelable){
+				m_cancelled = true;
+				m_bDone = true;
+			}
             break;
         case IApplication::BUTTON_CONFIRM:
             SoundManager::PlayEffect(SoundManager::EFFECT_SELECT_OPTION);

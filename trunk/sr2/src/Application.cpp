@@ -277,7 +277,8 @@ void Application::StartGame(bool load)
 	mMapState.SetDimensions ( GetDisplayRect() );	
 	mpParty->Clear();
     if(load){
-        this->load();        
+        if(!this->load())
+			return;
     }else{   
         std::string startscript;
         loadscript ( startscript, CL_String_load ( "Game/StartupScript", m_resources ) );
@@ -1411,7 +1412,9 @@ SteelType Application::load()
     SaveLoadState state;
     state.Init(false);
     RunState(&state);
-    return SteelType();
+	SteelType cancelled;
+	cancelled.set(!state.Cancelled());
+	return cancelled;
 }
 
 SteelType Application::statusScreen()

@@ -127,6 +127,23 @@ private:
     std::list<Tile*> m_tiles;
 };
 
+class FindPlayer : public Level::MOQuadtree::OurVisitor{
+public:
+	FindPlayer():m_player(NULL){}
+	virtual ~FindPlayer(){}
+    virtual bool Visit(MappableObject* pMO, const Level::MOQuadtree::Node* pNode){
+		MappablePlayer * player = dynamic_cast<MappablePlayer*>(pMO);
+		if(player != NULL){
+			m_player = player;
+			return false;
+		}else{
+			return true;
+		}
+    }    
+   	MappablePlayer* m_player;
+};
+
+
 class FindMappableObjects: public Level::MOQuadtree::OurVisitor{
 public:
     FindMappableObjects(){
@@ -357,7 +374,7 @@ void LevelHeader::load_attributes(CL_DomNamedNodeMap attributes)
 
 
 Level::Level():m_pMonsterRegions(NULL),m_LevelWidth(0),m_LevelHeight(0),m_pScript(NULL)
-,m_pHeader(NULL),m_player(0,0),m_mo_quadtree(NULL)
+,m_pHeader(NULL),m_mo_quadtree(NULL)
 {
 
 }
@@ -587,11 +604,6 @@ void Level::DrawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_Graph
     ++m_nFrameCount;
 }
 
-
-void Level::SetPlayerPos(const CL_Point &target)
-{
-    Add_Mappable_Object(&m_player);
-}
 
 
 
@@ -1078,13 +1090,12 @@ void Level::Load_Tile ( Tile * tile)
 }
 
 void Level::SerializeState ( std::ostream& out )
-{
-    m_player.SerializeState(out);   
+{ 
 }
 
 void Level::DeserializeState ( std::istream& in )
 {
-    m_player.DeserializeState(in);
+
 }
 
 
@@ -1107,7 +1118,7 @@ private:
 
 
 Level::Level(uint width, uint height):m_pMonsterRegions(NULL),m_LevelWidth(width),m_LevelHeight(height),m_pScript(NULL),
-m_pHeader(NULL),m_player(0,0),m_mo_quadtree(NULL){
+m_pHeader(NULL),m_mo_quadtree(NULL){
     m_tiles.resize( m_LevelWidth );
 
     for(uint x=0;x< m_LevelWidth; x++)
@@ -1162,6 +1173,14 @@ std::list<Tile*> Level::GetTilesAt(const CL_Point& pos) const
 bool Level::TilesAt(const CL_Point& pos) const 
 {
     return !m_tiles[pos.x][pos.y].empty();
+}
+
+
+MappablePlayer* Level::GetPlayer() const
+{
+	FindPlayer finder;
+	m_mo_quadtree->TraverseAll(finder);
+	return finder.m_player;
 }
 
 
