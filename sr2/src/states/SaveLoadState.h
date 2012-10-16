@@ -45,6 +45,7 @@ public:
     virtual void        MappableObjectMoveHook(); // Do stuff right after the mappable object movement
     virtual void        Start();
     virtual void        Finish(); // Hook to clean up or whatever after being popped
+	bool 				Cancelled() const { return m_cancelled; }
 protected:
     virtual CL_Rectf    get_rect();
     virtual void        draw_option(int option, bool selected, float x, float y, CL_GraphicContext& gc);
@@ -86,6 +87,7 @@ private:
     bool                m_bSave;
     bool                m_bDone;
     bool                m_cancelable;
+	bool 				m_cancelled;
 };
 
 }
