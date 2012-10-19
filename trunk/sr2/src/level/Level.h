@@ -357,7 +357,7 @@ public:
         return m_name;
     }
     std::string GetMusic() const {
-        return m_pHeader->GetMusic();
+        return m_music;
     }
     std::string GetResourceName() const {
         return m_resource_name;

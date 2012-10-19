@@ -156,6 +156,8 @@ void StartupState::process_choice ( int selection )
         case 2:
             m_bDone = true;
             break;
+#ifdef SR2_EDITOR
+#endif
         default:
             break;
     }
