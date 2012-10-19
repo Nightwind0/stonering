@@ -255,26 +255,26 @@ CL_DomElement Editor::ConditionScript::createDomElement(CL_DomDocument &doc)cons
 }
 
 
-Editor::DirectionBlock::DirectionBlock()
+Editor::SideBlock::SideBlock()
 {
 }
 
-Editor::DirectionBlock::DirectionBlock(int i)
-:StoneRing::DirectionBlock(i)
+Editor::SideBlock::SideBlock(int i)
+:StoneRing::SideBlock(i)
 {
 }
 
-Editor::DirectionBlock::~DirectionBlock()
+Editor::SideBlock::~SideBlock()
 {
 }
-CL_DomElement Editor::DirectionBlock::createDomElement(CL_DomDocument &doc)const
+CL_DomElement Editor::SideBlock::createDomElement(CL_DomDocument &doc)const
 {
-    CL_DomElement element(doc,"directionBlock");
+    CL_DomElement element(doc,"block");
 
-    element.set_attribute("north", (meDirectionBlock & StoneRing::DIR_NORTH )?"true":"false");
-    element.set_attribute("south", (meDirectionBlock & StoneRing::DIR_SOUTH)?"true":"false");
-    element.set_attribute("east",  (meDirectionBlock & StoneRing::DIR_EAST )?"true":"false" );
-    element.set_attribute("west",  (meDirectionBlock & StoneRing::DIR_WEST )?"true":"false" );
+    element.set_attribute("north", (meSideBlock & StoneRing::DIR_NORTH )?"true":"false");
+    element.set_attribute("south", (meSideBlock & StoneRing::DIR_SOUTH)?"true":"false");
+    element.set_attribute("east",  (meSideBlock & StoneRing::DIR_EAST )?"true":"false" );
+    element.set_attribute("west",  (meSideBlock & StoneRing::DIR_WEST )?"true":"false" );
 
     return element;
 }
@@ -548,7 +548,7 @@ std::list<StoneRing::Tile*> Editor::Level::getTilesAt(uint levelX, uint levelY) 
 // Operates on ALL tiles at a location. For finer control, one must operate on the tiles individually.
 // bOn of true turns the direction block on for the specified direction,
 // false will turn it off.
-void Editor::Level::setDirectionBlockAt(uint levelX, uint levelY, StoneRing::eDirectionBlock dir, bool bOn)
+void Editor::Level::setSideBlockAt(uint levelX, uint levelY, StoneRing::eSideBlock dir, bool bOn)
 {
     
     std::list<StoneRing::Tile*> tiles = getTilesAt(levelX,levelY);
@@ -1211,9 +1211,9 @@ CL_DomElement Editor::Tile::createDomElement(CL_DomDocument &doc)const
     {
         WRITE_CHILD(element,mpCondition,doc);
     }
-    if( getDirectionBlock() > 0)
+    if( getSideBlock() > 0)
     {
-        Editor::DirectionBlock block( getDirectionBlock() );
+        Editor::SideBlock block( getSideBlock() );
         CL_DomElement dirEl = block.createDomElement(doc);
 
         element.append_child( dirEl );
@@ -1271,7 +1271,7 @@ void Editor::Tile::setIsHot()
     cFlags |= HOT;
 }
 
-void Editor::Tile::setDirectionBlock (int dirBlock )
+void Editor::Tile::setSideBlock (int dirBlock )
 {
     if(dirBlock & StoneRing::DIR_NORTH)
         cFlags |= TBK_NORTH;

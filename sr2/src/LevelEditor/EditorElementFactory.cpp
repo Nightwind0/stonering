@@ -78,9 +78,9 @@ Element * EditorElementFactory::createConditionScript() const
   return new Editor::ConditionScript();
 }
 
-Element * EditorElementFactory::createDirectionBlock()const
+Element * EditorElementFactory::createSideBlock()const
 {
-  return new Editor::DirectionBlock();
+  return new Editor::SideBlock();
 }
 
 Element * EditorElementFactory::createEvent()const

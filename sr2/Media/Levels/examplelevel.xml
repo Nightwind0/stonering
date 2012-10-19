@@ -19,47 +19,47 @@
 	<tiles>
 		<tile xpos="0" ypos="0">
 			<tilemap mapname="roofs" mapx="4" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="0" ypos="1">
 			<tilemap mapname="roofs" mapx="0" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="0" ypos="2">
 			<tilemap mapname="roofs" mapx="0" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="0" ypos="3">
 			<tilemap mapname="roofs" mapx="0" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="0" ypos="4">
 			<tilemap mapname="roofs" mapx="0" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="0" ypos="5">
 			<tilemap mapname="roofs" mapx="0" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="0" ypos="6">
 			<tilemap mapname="roofs" mapx="0" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="0" ypos="7">
 			<tilemap mapname="roofs" mapx="0" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="0" ypos="8">
 			<tilemap mapname="roofs" mapx="0" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="0" ypos="9">
 			<tilemap mapname="roofs" mapx="6" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="1" ypos="0">
 			<tilemap mapname="roofs" mapx="1" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="1" ypos="1" monster_region="0">
 			<tilemap mapname="roofs" mapx="2" mapy="3"/>
@@ -87,11 +87,11 @@
 		</tile>
 		<tile xpos="1" ypos="9">
 			<tilemap mapname="roofs" mapx="1" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="2" ypos="0">
 			<tilemap mapname="roofs" mapx="1" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="2" ypos="1" monster_region="0">
 			<tilemap mapname="roofs" mapx="2" mapy="3"/>
@@ -119,11 +119,11 @@
 		</tile>
 		<tile xpos="2" ypos="9">
 			<tilemap mapname="roofs" mapx="1" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="3" ypos="0">
 			<tilemap mapname="roofs" mapx="1" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="3" ypos="1" monster_region="0">
 			<tilemap mapname="roofs" mapx="2" mapy="3"/>
@@ -151,11 +151,11 @@
 		</tile>
 		<tile xpos="3" ypos="9">
 			<tilemap mapname="roofs" mapx="8" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="4" ypos="0">
 			<tilemap mapname="roofs" mapx="1" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="4" ypos="1" monster_region="0">
 			<tilemap mapname="roofs" mapx="2" mapy="3"/>
@@ -186,7 +186,7 @@
 		</tile>
 		<tile xpos="5" ypos="0">
 			<tilemap mapname="roofs" mapx="1" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="5" ypos="1" monster_region="0">
 			<tilemap mapname="roofs" mapx="2" mapy="3"/>
@@ -217,7 +217,7 @@
 		</tile>
 		<tile xpos="6" ypos="0">
 			<tilemap mapname="roofs" mapx="1" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="6" ypos="1" monster_region="0">
 			<tilemap mapname="roofs" mapx="2" mapy="3"/>
@@ -245,11 +245,11 @@
 		</tile>
 		<tile xpos="6" ypos="9">
 			<tilemap mapname="roofs" mapx="9" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="7" ypos="0">
 			<tilemap mapname="roofs" mapx="1" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="7" ypos="1" monster_region="0">
 			<tilemap mapname="roofs" mapx="2" mapy="3"/>
@@ -277,11 +277,11 @@
 		</tile>
 		<tile xpos="7" ypos="9">
 			<tilemap mapname="roofs" mapx="1" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="8" ypos="0">
 			<tilemap mapname="roofs" mapx="1" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="8" ypos="1" monster_region="0">
 			<tilemap mapname="roofs" mapx="2" mapy="3"/>
@@ -309,47 +309,47 @@
 		</tile>
 		<tile xpos="8" ypos="9">
 			<tilemap mapname="roofs" mapx="1" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="9" ypos="0">
 			<tilemap mapname="roofs" mapx="5" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="9" ypos="1">
 			<tilemap mapname="roofs" mapx="0" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="9" ypos="2">
 			<tilemap mapname="roofs" mapx="0" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="9" ypos="3">
 			<tilemap mapname="roofs" mapx="0" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="9" ypos="4">
 			<tilemap mapname="roofs" mapx="0" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="9" ypos="5">
 			<tilemap mapname="roofs" mapx="0" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="9" ypos="6">
 			<tilemap mapname="roofs" mapx="0" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="9" ypos="7">
 			<tilemap mapname="roofs" mapx="0" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="9" ypos="8">
 			<tilemap mapname="roofs" mapx="0" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="9" ypos="9">
 			<tilemap mapname="roofs" mapx="7" mapy="11"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 	</tiles>
 </level>

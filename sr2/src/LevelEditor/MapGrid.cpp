@@ -350,13 +350,13 @@ void MapGrid::on_setNorth(const CL_InputEvent &event)
                 // Anti-Mode.  UNset the value if its set.
                 //std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
 
-                mgLevel->setDirectionBlockAt(mgX, mgY, StoneRing::DIR_NORTH, false);
+                mgLevel->setSideBlockAt(mgX, mgY, StoneRing::DIR_NORTH, false);
                 
             }
             else
             {
                 // Default mode is set mode
-                mgLevel->setDirectionBlockAt(mgX, mgY, StoneRing::DIR_NORTH, true);
+                mgLevel->setSideBlockAt(mgX, mgY, StoneRing::DIR_NORTH, true);
                 
             }
 
@@ -386,13 +386,13 @@ void MapGrid::on_setSouth(const CL_InputEvent &event)
                 // Anti-Mode.  UNset the value if its set.
                 //std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
 
-                mgLevel->setDirectionBlockAt(mgX, mgY, StoneRing::DIR_SOUTH, false);
+                mgLevel->setSideBlockAt(mgX, mgY, StoneRing::DIR_SOUTH, false);
                 
             }
             else
             {
                 // Default mode is set mode
-                mgLevel->setDirectionBlockAt(mgX, mgY, StoneRing::DIR_SOUTH, true);
+                mgLevel->setSideBlockAt(mgX, mgY, StoneRing::DIR_SOUTH, true);
             }
 
         }
@@ -421,13 +421,13 @@ void MapGrid::on_setEast(const CL_InputEvent &event)
                 // Anti-Mode.  UNset the value if its set.
                 //std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
 
-                mgLevel->setDirectionBlockAt(mgX, mgY, StoneRing::DIR_EAST, false);
+                mgLevel->setSideBlockAt(mgX, mgY, StoneRing::DIR_EAST, false);
         
             }
             else
             {
                 // Default mode is set mode
-                mgLevel->setDirectionBlockAt(mgX, mgY, StoneRing::DIR_EAST, true);
+                mgLevel->setSideBlockAt(mgX, mgY, StoneRing::DIR_EAST, true);
             }
 
         }
@@ -456,13 +456,13 @@ void MapGrid::on_setWest(const CL_InputEvent &event)
                 // Anti-Mode.  UNset the value if its set.
                 //std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
 
-                mgLevel->setDirectionBlockAt(mgX, mgY, StoneRing::DIR_WEST, false);
+                mgLevel->setSideBlockAt(mgX, mgY, StoneRing::DIR_WEST, false);
                 
             }
             else
             {
                 // Default mode is set mode
-                mgLevel->setDirectionBlockAt(mgX, mgY, StoneRing::DIR_WEST, true);
+                mgLevel->setSideBlockAt(mgX, mgY, StoneRing::DIR_WEST, true);
             }
 
         }

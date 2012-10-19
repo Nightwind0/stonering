@@ -220,7 +220,7 @@ void EditableTile::setIsHot()
     cFlags |= HOT;
 }
 
-void EditableTile::setDirectionBlock (int dirBlock )
+void EditableTile::setSideBlock (int dirBlock )
 {
     if(dirBlock & StoneRing::DIR_NORTH)
         cFlags |= TBK_NORTH;
@@ -399,7 +399,7 @@ std::list<Tile*> EditableLevel::getTilesAt(uint levelX, uint levelY) const
 // Operates on ALL tiles at a location. For finer control, one must operate on the tiles individually.
 // bOn of true turns the direction block on for the specified direction,
 // false will turn it off.
-void EditableLevel::setDirectionBlockAt(uint levelX, uint levelY, eDirectionBlock dir, bool bOn)
+void EditableLevel::setSideBlockAt(uint levelX, uint levelY, eSideBlock dir, bool bOn)
 {
     
     std::list<Tile*> tiles = getTilesAt(levelX,levelY);

@@ -203,12 +203,12 @@ class ConditionScript : public StoneRing::ScriptElement, public WriteableElement
     virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
  private:
 };
-class DirectionBlock : public StoneRing::DirectionBlock, public WriteableElement
+class SideBlock : public StoneRing::SideBlock, public WriteableElement
 {
  public:
-	DirectionBlock();
-    DirectionBlock(int);
-	virtual ~DirectionBlock();
+	SideBlock();
+    SideBlock(int);
+	virtual ~SideBlock();
     virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
  private:
 };
@@ -248,7 +248,7 @@ class Level : public StoneRing::Level, public WriteableElement
     // Operates on ALL tiles at a location. For finer control, one must operate on the tiles individually.
     // bOn of true turns the direction block on for the specified direction,
     // false will turn it off.
-    void setDirectionBlockAt(uint levelX, uint levelY, StoneRing::eDirectionBlock dir, bool bOn);
+    void setSideBlockAt(uint levelX, uint levelY, StoneRing::eSideBlock dir, bool bOn);
     void setHotAt(uint levelX, uint levelY, bool bHot);
     void addTile ( StoneRing::Tile * pTile );
     void removeTile ( StoneRing::Tile * pTile );
@@ -541,7 +541,7 @@ class Tile : public StoneRing::Tile, public WriteableElement
     void setSpriteRef ( const std::string &spriteRef, StoneRing::SpriteRef::eType direction );
     void setIsFloater();
     void setIsHot();
-    void setDirectionBlock (int dirBlock );
+    void setSideBlock (int dirBlock );
 
     void setNorthBlock(bool bOn);
     void setSouthBlock(bool bOn);

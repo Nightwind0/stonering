@@ -47,7 +47,7 @@ public:
 	virtual std::string GetName() const;
 	virtual bool    IsSprite() const;
 	virtual bool    IsTile() const;
-	virtual int     GetDirectionBlock() const;
+	virtual int     GetSideBlock() const;
 	// Update sprite, etc
 	virtual void    Update();
 	// Returns if any events were provoked
@@ -104,7 +104,7 @@ public:
 
 	// In pixels
 	void            CalculateEdgePoints( const CL_Point &topleft, Direction dir, std::list<CL_Point> *pList );
-	static int      ConvertDirectionToDirectionBlock( Direction dir );
+	static int      ConvertDirectionToSideBlock( Direction dir );
 protected:
 	enum eFlags {
 		SPRITE = 1, TILEMAP = 2, SOLID = 4, FLYING = 8

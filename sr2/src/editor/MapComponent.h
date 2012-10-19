@@ -64,7 +64,7 @@ private:
     CL_Point get_center()const;
     CL_Pointf to_float(const CL_Point&)const;
     CL_Point m_origin;
-    TileDirectionBlockDrawer m_block_drawer;
+    TileSideBlockDrawer m_block_drawer;
     TileHotDrawer m_hot_drawer;
     TilePopsDrawer m_pops_drawer;
     TileFloaterDrawer m_floater_drawer;

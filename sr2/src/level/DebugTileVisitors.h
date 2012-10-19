@@ -4,10 +4,10 @@
 
 namespace StoneRing {
 
-	class TileDirectionBlockDrawer : public Tile::Visitor {
+	class TileSideBlockDrawer : public Tile::Visitor {
 	public:
-		TileDirectionBlockDrawer ( );
-		virtual ~TileDirectionBlockDrawer ( );
+		TileSideBlockDrawer ( );
+		virtual ~TileSideBlockDrawer ( );
 		virtual void accept(CL_GraphicContext& gc, const CL_Point& top_left, Tile* pTile);
 	private:
 	};

@@ -30,7 +30,7 @@ private:
     virtual Element * createCharacterClass() const;
     virtual Element * createCharacterDefinition() const;
     virtual Element * createConditionScript() const;
-    virtual Element * createDirectionBlock()const;
+    virtual Element * createSideBlock()const;
     virtual Element * createEvent()const;
     virtual Element * createIconRef() const;
     virtual Element * createItemRef()const;
