@@ -100,7 +100,7 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["character"] = &ElementFactory::CreateElement<Character>;
     mCreateMethods["characterClass"] = &ElementFactory::CreateElement<CharacterClass>;
     mCreateMethods["conditionScript"] = &ElementFactory::createConditionScript;
-    mCreateMethods["directionBlock"] = &ElementFactory::CreateElement<DirectionBlock>;
+    mCreateMethods["block"] = &ElementFactory::CreateElement<SideBlock>;
     mCreateMethods["description"] = &ElementFactory::CreateElement<Description>;
     mCreateMethods["event"] = &ElementFactory::CreateElement<Event>;
     mCreateMethods["iconRef"] = &ElementFactory::CreateElement<IconRef>;

@@ -446,9 +446,10 @@ Level::~Level()
     delete m_mo_quadtree;
 }
 
-int Level::Get_Cumulative_Direction_Block_At_Point(const CL_Point &point) const
+int Level::Get_Cumulative_Side_Block_At_Point
+(const CL_Point &point) const
 {
-    int directionBlock =0;
+    int block =0;
 
     std::list<Tile*> tileList = m_tiles[point.x][point.y];
 
@@ -457,10 +458,10 @@ int Level::Get_Cumulative_Direction_Block_At_Point(const CL_Point &point) const
         iter++)
     {
         if((*iter)->EvaluateCondition())
-            directionBlock |= (*iter)->GetDirectionBlock();
+            block |= (*iter)->GetSideBlock();
     }
 
-    return directionBlock;
+    return block;
 }
 
 bool Level::Get_Cumulative_Hotness_At_Point(const CL_Point &point) const
@@ -707,7 +708,9 @@ bool Level::Check_Direction_Block ( MappableObject * pMo, Direction dir, const C
         return false;
     if(!pMo->IsFlying()
         &&
-        (Get_Cumulative_Direction_Block_At_Point(dest_tile) & MappableObject::ConvertDirectionToDirectionBlock(dir))
+        (Get_Cumulative_Side_Block_At_Point(tile) & MappableObject::ConvertDirectionToSideBlock(dir.opposite()))
+        ||
+        (Get_Cumulative_Side_Block_At_Point(dest_tile) & MappableObject::ConvertDirectionToSideBlock(dir))
         || (pMo->RespectsHotness() && Get_Cumulative_Hotness_At_Point(dest_tile))
         ){
         return false;

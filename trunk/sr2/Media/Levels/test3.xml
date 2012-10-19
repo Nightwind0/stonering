@@ -251,19 +251,19 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="0" ypos="21">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="0" ypos="21" zorder="1">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="0" ypos="21" zorder="2">
 			<tilemap mapname="wall1" mapx="1" mapy="7"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="0" ypos="22">
 			<tilemap mapname="wall1" mapx="1" mapy="8"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="0" ypos="23">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -348,15 +348,15 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="1" ypos="21">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="1" ypos="21" zorder="1">
 			<tilemap mapname="wall1" mapx="0" mapy="7"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="1" ypos="22">
 			<tilemap mapname="wall1" mapx="0" mapy="8"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="1" ypos="23">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -390,7 +390,7 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="2" ypos="2">
 			<tilemap mapname="rocks" mapx="5" mapy="1"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="2" ypos="3">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -448,15 +448,15 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="2" ypos="21">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="2" ypos="21" zorder="1">
 			<tilemap mapname="wall1" mapx="0" mapy="7"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="2" ypos="22">
 			<tilemap mapname="wall1" mapx="0" mapy="8"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="2" ypos="23">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -487,7 +487,7 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="3" ypos="2">
 			<tilemap mapname="rocks" mapx="6" mapy="1"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="3" ypos="3">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -593,15 +593,15 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="3" ypos="21">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="3" ypos="21" zorder="1">
 			<tilemap mapname="wall1" mapx="0" mapy="7"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="3" ypos="22">
 			<tilemap mapname="wall1" mapx="0" mapy="8"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="3" ypos="23">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -734,15 +734,15 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="4" ypos="21">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="4" ypos="21" zorder="1">
 			<tilemap mapname="wall1" mapx="0" mapy="7"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="4" ypos="22">
 			<tilemap mapname="wall1" mapx="0" mapy="8"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="4" ypos="23">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -857,15 +857,15 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="5" ypos="21">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="5" ypos="21" zorder="1">
 			<tilemap mapname="wall1" mapx="0" mapy="7"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="5" ypos="22">
 			<tilemap mapname="wall1" mapx="0" mapy="8"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="5" ypos="23">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -890,19 +890,19 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="6" ypos="1">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="true"/>
+			<block north="true" south="false" east="false" west="true"/>
 		</tile>
 		<tile xpos="6" ypos="1" zorder="1">
 			<tilemap mapname="wall1" mapx="9" mapy="12"/>
-			<directionBlock north="true" south="false" east="false" west="true"/>
+			<block north="true" south="false" east="false" west="true"/>
 		</tile>
 		<tile xpos="6" ypos="2">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="true"/>
+			<block north="false" south="true" east="false" west="true"/>
 		</tile>
 		<tile xpos="6" ypos="2" zorder="1">
 			<tilemap mapname="wall1" mapx="9" mapy="13"/>
-			<directionBlock north="false" south="true" east="false" west="true"/>
+			<block north="false" south="true" east="false" west="true"/>
 		</tile>
 		<tile xpos="6" ypos="3">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -912,7 +912,7 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="6" ypos="4">
 			<tilemap mapname="roofs" mapx="0" mapy="3"/>
-			<directionBlock north="true" south="false" east="false" west="true"/>
+			<block north="true" south="false" east="false" west="true"/>
 		</tile>
 		<tile xpos="6" ypos="4">
 			<tilemap mapname="roofs" mapx="1" mapy="13"/>
@@ -922,47 +922,47 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="6" ypos="4">
 			<tilemap mapname="roofs" mapx="3" mapy="4"/>
-			<directionBlock north="true" south="false" east="false" west="true"/>
+			<block north="true" south="false" east="false" west="true"/>
 		</tile>
 		<tile xpos="6" ypos="5">
 			<tilemap mapname="roofs" mapx="1" mapy="13"/>
-			<directionBlock north="false" south="false" east="false" west="true"/>
+			<block north="false" south="false" east="false" west="true"/>
 		</tile>
 		<tile xpos="6" ypos="6">
 			<tilemap mapname="roofs" mapx="1" mapy="13"/>
-			<directionBlock north="false" south="false" east="false" west="true"/>
+			<block north="false" south="false" east="false" west="true"/>
 		</tile>
 		<tile xpos="6" ypos="7" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="true"/>
+			<block north="true" south="false" east="false" west="true"/>
 		</tile>
 		<tile xpos="6" ypos="7" zorder="1" hot="true">
 			<tilemap mapname="wall1" mapx="1" mapy="11"/>
-			<directionBlock north="true" south="false" east="false" west="true"/>
+			<block north="true" south="false" east="false" west="true"/>
 		</tile>
 		<tile xpos="6" ypos="8" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="false" west="true"/>
+			<block north="false" south="false" east="false" west="true"/>
 		</tile>
 		<tile xpos="6" ypos="8" zorder="1" hot="true">
 			<tilemap mapname="wall1" mapx="1" mapy="11"/>
-			<directionBlock north="false" south="false" east="false" west="true"/>
+			<block north="false" south="false" east="false" west="true"/>
 		</tile>
 		<tile xpos="6" ypos="9" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="false" west="true"/>
+			<block north="false" south="false" east="false" west="true"/>
 		</tile>
 		<tile xpos="6" ypos="9" zorder="1" hot="true">
 			<tilemap mapname="wall1" mapx="1" mapy="11"/>
-			<directionBlock north="false" south="false" east="false" west="true"/>
+			<block north="false" south="false" east="false" west="true"/>
 		</tile>
 		<tile xpos="6" ypos="10" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="true"/>
+			<block north="false" south="true" east="false" west="true"/>
 		</tile>
 		<tile xpos="6" ypos="10" zorder="1" hot="true">
 			<tilemap mapname="wall1" mapx="1" mapy="11"/>
-			<directionBlock north="false" south="true" east="false" west="true"/>
+			<block north="false" south="true" east="false" west="true"/>
 		</tile>
 		<tile xpos="6" ypos="11">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -987,11 +987,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="6" ypos="15">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="true"/>
+			<block north="false" south="true" east="false" west="true"/>
 		</tile>
 		<tile xpos="6" ypos="15" zorder="1">
 			<tilemap mapname="wall1" mapx="9" mapy="13"/>
-			<directionBlock north="true" south="true" east="false" west="true"/>
+			<block north="true" south="true" east="false" west="true"/>
 		</tile>
 		<tile xpos="6" ypos="16">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1019,15 +1019,15 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="6" ypos="21">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="6" ypos="21" zorder="1">
 			<tilemap mapname="wall1" mapx="0" mapy="7"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="6" ypos="22">
 			<tilemap mapname="wall1" mapx="0" mapy="8"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="6" ypos="23">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1055,19 +1055,19 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="7" ypos="1">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="7" ypos="1" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="12"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="7" ypos="2">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="7" ypos="2" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="13"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="7" ypos="3">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1077,7 +1077,7 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="7" ypos="4">
 			<tilemap mapname="roofs" mapx="0" mapy="3"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="7" ypos="4">
 			<tilemap mapname="roofs" mapx="2" mapy="13"/>
@@ -1087,7 +1087,7 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="7" ypos="4">
 			<tilemap mapname="roofs" mapx="3" mapy="4"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="7" ypos="5">
 			<tilemap mapname="roofs" mapx="0" mapy="13"/>
@@ -1097,11 +1097,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="7" ypos="7" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="7" ypos="7" zorder="1" hot="true">
 			<tilemap mapname="wall1" mapx="0" mapy="11"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="7" ypos="8" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1120,11 +1120,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="7" ypos="10" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="true" west="false"/>
+			<block north="false" south="true" east="true" west="false"/>
 		</tile>
 		<tile xpos="7" ypos="10" zorder="1" hot="true">
 			<tilemap mapname="wall1" mapx="0" mapy="11"/>
-			<directionBlock north="false" south="true" east="true" west="false"/>
+			<block north="false" south="true" east="true" west="false"/>
 		</tile>
 		<tile xpos="7" ypos="11">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1149,11 +1149,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="7" ypos="15">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="7" ypos="15" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="13"/>
-			<directionBlock north="true" south="true" east="false" west="false"/>
+			<block north="true" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="7" ypos="16">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1181,15 +1181,15 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="7" ypos="21">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="7" ypos="21" zorder="1">
 			<tilemap mapname="wall1" mapx="0" mapy="7"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="7" ypos="22">
 			<tilemap mapname="wall1" mapx="0" mapy="8"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="7" ypos="23">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1214,19 +1214,19 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="8" ypos="1">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="8" ypos="1" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="12"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="8" ypos="2">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="8" ypos="2" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="13"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="8" ypos="3">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1236,7 +1236,7 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="8" ypos="4">
 			<tilemap mapname="roofs" mapx="0" mapy="3"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="8" ypos="4">
 			<tilemap mapname="roofs" mapx="2" mapy="13"/>
@@ -1246,7 +1246,7 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="8" ypos="4">
 			<tilemap mapname="roofs" mapx="3" mapy="4"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="8" ypos="5">
 			<tilemap mapname="roofs" mapx="0" mapy="13"/>
@@ -1256,11 +1256,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="8" ypos="7" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="8" ypos="7" zorder="1" hot="true">
 			<tilemap mapname="wall1" mapx="0" mapy="11"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="8" ypos="8" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1270,27 +1270,27 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="8" ypos="9" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="8" ypos="9" zorder="1" hot="true">
 			<tilemap mapname="wall1" mapx="0" mapy="11"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="8" ypos="9" zorder="2" hot="true">
 			<tilemap mapname="wall1" mapx="4" mapy="0"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="8" ypos="10" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="false" west="true"/>
+			<block north="false" south="false" east="false" west="true"/>
 		</tile>
 		<tile xpos="8" ypos="10" zorder="1" hot="true">
 			<tilemap mapname="wall1" mapx="0" mapy="11"/>
-			<directionBlock north="false" south="false" east="false" west="true"/>
+			<block north="false" south="false" east="false" west="true"/>
 		</tile>
 		<tile xpos="8" ypos="10" zorder="2" hot="true">
 			<tilemap mapname="wall1" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="false" west="true"/>
+			<block north="false" south="false" east="false" west="true"/>
 		</tile>
 		<tile xpos="8" ypos="11">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1315,11 +1315,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="8" ypos="15">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="8" ypos="15" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="13"/>
-			<directionBlock north="true" south="true" east="false" west="false"/>
+			<block north="true" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="8" ypos="16">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1347,15 +1347,15 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="8" ypos="21">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="8" ypos="21" zorder="1">
 			<tilemap mapname="wall1" mapx="0" mapy="7"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="8" ypos="22">
 			<tilemap mapname="wall1" mapx="0" mapy="8"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="8" ypos="23">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1380,19 +1380,19 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="9" ypos="1">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="9" ypos="1" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="12"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="9" ypos="2">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="9" ypos="2" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="13"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="9" ypos="3">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1402,7 +1402,7 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="9" ypos="4">
 			<tilemap mapname="roofs" mapx="0" mapy="3"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="9" ypos="4">
 			<tilemap mapname="roofs" mapx="2" mapy="13"/>
@@ -1412,7 +1412,7 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="9" ypos="4">
 			<tilemap mapname="roofs" mapx="3" mapy="4"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="9" ypos="5">
 			<tilemap mapname="roofs" mapx="0" mapy="13"/>
@@ -1422,11 +1422,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="9" ypos="7" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="9" ypos="7" zorder="1" hot="true">
 			<tilemap mapname="wall1" mapx="0" mapy="11"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="9" ypos="8" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1439,27 +1439,27 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="9" ypos="9" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="9" ypos="9" zorder="1" hot="true">
 			<tilemap mapname="wall1" mapx="0" mapy="11"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="9" ypos="9" zorder="2" hot="true">
 			<tilemap mapname="wall1" mapx="5" mapy="0"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="9" ypos="10" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="true" west="false"/>
+			<block north="false" south="false" east="true" west="false"/>
 		</tile>
 		<tile xpos="9" ypos="10" zorder="1" hot="true">
 			<tilemap mapname="wall1" mapx="0" mapy="11"/>
-			<directionBlock north="false" south="false" east="true" west="false"/>
+			<block north="false" south="false" east="true" west="false"/>
 		</tile>
 		<tile xpos="9" ypos="10" zorder="2" hot="true">
 			<tilemap mapname="wall1" mapx="5" mapy="1"/>
-			<directionBlock north="false" south="false" east="true" west="false"/>
+			<block north="false" south="false" east="true" west="false"/>
 		</tile>
 		<tile xpos="9" ypos="11">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1484,11 +1484,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="9" ypos="15">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="9" ypos="15" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="13"/>
-			<directionBlock north="true" south="true" east="false" west="false"/>
+			<block north="true" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="9" ypos="16">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1516,15 +1516,15 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="9" ypos="21">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="9" ypos="21" zorder="1">
 			<tilemap mapname="wall1" mapx="0" mapy="7"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="9" ypos="22">
 			<tilemap mapname="wall1" mapx="0" mapy="8"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="9" ypos="23">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1549,19 +1549,19 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="10" ypos="1">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="10" ypos="1" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="12"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="10" ypos="2">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="10" ypos="2" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="13"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="10" ypos="3">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1571,7 +1571,7 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="10" ypos="4">
 			<tilemap mapname="roofs" mapx="0" mapy="3"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="10" ypos="4">
 			<tilemap mapname="roofs" mapx="2" mapy="13"/>
@@ -1581,7 +1581,7 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="10" ypos="4">
 			<tilemap mapname="roofs" mapx="3" mapy="4"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="10" ypos="5">
 			<tilemap mapname="roofs" mapx="0" mapy="13"/>
@@ -1591,11 +1591,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="10" ypos="7" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="10" ypos="7" zorder="1" hot="true">
 			<tilemap mapname="wall1" mapx="0" mapy="11"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="10" ypos="8" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1611,11 +1611,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="10" ypos="10" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="true"/>
+			<block north="false" south="true" east="false" west="true"/>
 		</tile>
 		<tile xpos="10" ypos="10" zorder="1" hot="true">
 			<tilemap mapname="wall1" mapx="0" mapy="11"/>
-			<directionBlock north="false" south="true" east="false" west="true"/>
+			<block north="false" south="true" east="false" west="true"/>
 		</tile>
 		<tile xpos="10" ypos="11">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1640,11 +1640,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="10" ypos="15">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="10" ypos="15" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="13"/>
-			<directionBlock north="true" south="true" east="false" west="false"/>
+			<block north="true" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="10" ypos="16">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1672,15 +1672,15 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="10" ypos="21">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="true" west="false"/>
+			<block north="true" south="false" east="true" west="false"/>
 		</tile>
 		<tile xpos="10" ypos="21" zorder="1">
 			<tilemap mapname="wall1" mapx="2" mapy="7"/>
-			<directionBlock north="true" south="false" east="true" west="false"/>
+			<block north="true" south="false" east="true" west="false"/>
 		</tile>
 		<tile xpos="10" ypos="22">
 			<tilemap mapname="wall1" mapx="2" mapy="8"/>
-			<directionBlock north="false" south="true" east="true" west="false"/>
+			<block north="false" south="true" east="true" west="false"/>
 		</tile>
 		<tile xpos="10" ypos="23">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1708,19 +1708,19 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="11" ypos="1">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="11" ypos="1" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="12"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="11" ypos="2">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="11" ypos="2" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="13"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="11" ypos="3">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1730,7 +1730,7 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="11" ypos="4">
 			<tilemap mapname="roofs" mapx="0" mapy="3"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="11" ypos="4">
 			<tilemap mapname="roofs" mapx="2" mapy="13"/>
@@ -1746,7 +1746,7 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="11" ypos="4" zorder="1">
 			<tilemap mapname="roofs" mapx="6" mapy="2"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="11" ypos="5" hot="true">
 			<tilemap mapname="roofs" mapx="0" mapy="13"/>
@@ -1759,11 +1759,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="11" ypos="7" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="11" ypos="7" zorder="1" hot="true">
 			<tilemap mapname="wall1" mapx="0" mapy="11"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="11" ypos="8" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1782,11 +1782,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="11" ypos="10" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="11" ypos="10" zorder="1" hot="true">
 			<tilemap mapname="wall1" mapx="0" mapy="11"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="11" ypos="11">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1811,11 +1811,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="11" ypos="15">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="11" ypos="15" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="13"/>
-			<directionBlock north="true" south="true" east="false" west="false"/>
+			<block north="true" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="11" ypos="16">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1870,19 +1870,19 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="12" ypos="1">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="12" ypos="1" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="12"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="12" ypos="2">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="12" ypos="2" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="13"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="12" ypos="3">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1892,7 +1892,7 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="12" ypos="4">
 			<tilemap mapname="roofs" mapx="2" mapy="3"/>
-			<directionBlock north="true" south="false" east="true" west="false"/>
+			<block north="true" south="false" east="true" west="false"/>
 		</tile>
 		<tile xpos="12" ypos="4">
 			<tilemap mapname="roofs" mapx="3" mapy="13"/>
@@ -1902,47 +1902,47 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="12" ypos="4">
 			<tilemap mapname="roofs" mapx="3" mapy="4"/>
-			<directionBlock north="true" south="false" east="true" west="false"/>
+			<block north="true" south="false" east="true" west="false"/>
 		</tile>
 		<tile xpos="12" ypos="5">
 			<tilemap mapname="roofs" mapx="2" mapy="13"/>
-			<directionBlock north="false" south="false" east="true" west="false"/>
+			<block north="false" south="false" east="true" west="false"/>
 		</tile>
 		<tile xpos="12" ypos="6">
 			<tilemap mapname="roofs" mapx="2" mapy="13"/>
-			<directionBlock north="false" south="false" east="true" west="false"/>
+			<block north="false" south="false" east="true" west="false"/>
 		</tile>
 		<tile xpos="12" ypos="7" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="true" west="false"/>
+			<block north="true" south="false" east="true" west="false"/>
 		</tile>
 		<tile xpos="12" ypos="7" zorder="1" hot="true">
 			<tilemap mapname="wall1" mapx="2" mapy="11"/>
-			<directionBlock north="true" south="false" east="true" west="false"/>
+			<block north="true" south="false" east="true" west="false"/>
 		</tile>
 		<tile xpos="12" ypos="8" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="true" west="false"/>
+			<block north="false" south="false" east="true" west="false"/>
 		</tile>
 		<tile xpos="12" ypos="8" zorder="1" hot="true">
 			<tilemap mapname="wall1" mapx="2" mapy="11"/>
-			<directionBlock north="false" south="false" east="true" west="false"/>
+			<block north="false" south="false" east="true" west="false"/>
 		</tile>
 		<tile xpos="12" ypos="9" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="true" west="false"/>
+			<block north="false" south="false" east="true" west="false"/>
 		</tile>
 		<tile xpos="12" ypos="9" zorder="1" hot="true">
 			<tilemap mapname="wall1" mapx="2" mapy="11"/>
-			<directionBlock north="false" south="false" east="true" west="false"/>
+			<block north="false" south="false" east="true" west="false"/>
 		</tile>
 		<tile xpos="12" ypos="10" hot="true">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="true" west="false"/>
+			<block north="false" south="true" east="true" west="false"/>
 		</tile>
 		<tile xpos="12" ypos="10" zorder="1" hot="true">
 			<tilemap mapname="wall1" mapx="2" mapy="11"/>
-			<directionBlock north="false" south="true" east="true" west="false"/>
+			<block north="false" south="true" east="true" west="false"/>
 		</tile>
 		<tile xpos="12" ypos="11">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -1967,11 +1967,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="12" ypos="15">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="12" ypos="15" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="13"/>
-			<directionBlock north="true" south="true" east="false" west="false"/>
+			<block north="true" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="12" ypos="16">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -2026,19 +2026,19 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="13" ypos="1">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="13" ypos="1" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="12"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="13" ypos="2">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="13" ypos="2" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="13"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="13" ypos="3">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -2111,11 +2111,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="13" ypos="15">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="13" ypos="15" zorder="1">
 			<tilemap mapname="wall1" mapx="8" mapy="13"/>
-			<directionBlock north="true" south="true" east="false" west="false"/>
+			<block north="true" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="13" ypos="16">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -2170,123 +2170,123 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="14" ypos="1">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="true" west="false"/>
+			<block north="true" south="false" east="true" west="false"/>
 		</tile>
 		<tile xpos="14" ypos="1" zorder="1">
 			<tilemap mapname="wall1" mapx="10" mapy="12"/>
-			<directionBlock north="true" south="false" east="true" west="false"/>
+			<block north="true" south="false" east="true" west="false"/>
 		</tile>
 		<tile xpos="14" ypos="2">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="true" west="false"/>
+			<block north="false" south="false" east="true" west="false"/>
 		</tile>
 		<tile xpos="14" ypos="2" zorder="1">
 			<tilemap mapname="wall1" mapx="10" mapy="12"/>
-			<directionBlock north="false" south="false" east="true" west="false"/>
+			<block north="false" south="false" east="true" west="false"/>
 		</tile>
 		<tile xpos="14" ypos="3">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="14" ypos="3" zorder="1">
 			<tilemap mapname="wall1" mapx="10" mapy="12"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="14" ypos="4">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="14" ypos="4" zorder="1">
 			<tilemap mapname="wall1" mapx="10" mapy="12"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="14" ypos="5">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="14" ypos="5" zorder="1">
 			<tilemap mapname="wall1" mapx="10" mapy="12"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="14" ypos="6">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="14" ypos="6" zorder="1">
 			<tilemap mapname="wall1" mapx="10" mapy="12"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="14" ypos="7">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="14" ypos="7" zorder="1">
 			<tilemap mapname="wall1" mapx="10" mapy="12"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="14" ypos="8">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="14" ypos="8" zorder="1">
 			<tilemap mapname="wall1" mapx="10" mapy="12"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="14" ypos="9">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="14" ypos="9" zorder="1">
 			<tilemap mapname="wall1" mapx="10" mapy="12"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="14" ypos="10">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="14" ypos="10" zorder="1">
 			<tilemap mapname="wall1" mapx="10" mapy="12"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="14" ypos="11">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="14" ypos="11" zorder="1">
 			<tilemap mapname="wall1" mapx="10" mapy="12"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="14" ypos="12">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="14" ypos="12" zorder="1">
 			<tilemap mapname="wall1" mapx="10" mapy="12"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="14" ypos="13">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="14" ypos="13" zorder="1">
 			<tilemap mapname="wall1" mapx="10" mapy="12"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="14" ypos="14">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="true" west="false"/>
+			<block north="false" south="false" east="true" west="false"/>
 		</tile>
 		<tile xpos="14" ypos="14" zorder="1">
 			<tilemap mapname="wall1" mapx="10" mapy="12"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="14" ypos="15">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="true" west="false"/>
+			<block north="false" south="true" east="true" west="false"/>
 		</tile>
 		<tile xpos="14" ypos="15" zorder="1">
 			<tilemap mapname="wall1" mapx="10" mapy="13"/>
-			<directionBlock north="false" south="true" east="true" west="true"/>
+			<block north="false" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="14" ypos="16">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -2956,91 +2956,91 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="20" ypos="8">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="true"/>
+			<block north="true" south="false" east="false" west="true"/>
 		</tile>
 		<tile xpos="20" ypos="8" zorder="1">
 			<tilemap mapname="roofs" mapx="4" mapy="5"/>
-			<directionBlock north="true" south="false" east="false" west="true"/>
+			<block north="true" south="false" east="false" west="true"/>
 		</tile>
 		<tile xpos="20" ypos="9">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="20" ypos="9" zorder="1">
 			<tilemap mapname="roofs" mapx="0" mapy="5"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="20" ypos="10">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="20" ypos="10" zorder="1">
 			<tilemap mapname="roofs" mapx="0" mapy="5"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="20" ypos="11">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="20" ypos="11" zorder="1">
 			<tilemap mapname="roofs" mapx="0" mapy="5"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="20" ypos="12">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="20" ypos="12" zorder="1">
 			<tilemap mapname="roofs" mapx="0" mapy="5"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="20" ypos="13">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="20" ypos="13" zorder="1">
 			<tilemap mapname="roofs" mapx="0" mapy="5"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="20" ypos="14">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="20" ypos="14" zorder="1">
 			<tilemap mapname="roofs" mapx="0" mapy="5"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="20" ypos="15">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="20" ypos="15" zorder="1">
 			<tilemap mapname="roofs" mapx="0" mapy="5"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="20" ypos="16">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="20" ypos="16" zorder="1">
 			<tilemap mapname="roofs" mapx="0" mapy="5"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="20" ypos="17">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="false" west="true"/>
+			<block north="false" south="false" east="false" west="true"/>
 		</tile>
 		<tile xpos="20" ypos="17" zorder="1">
 			<tilemap mapname="roofs" mapx="6" mapy="5"/>
-			<directionBlock north="false" south="false" east="false" west="true"/>
+			<block north="false" south="false" east="false" west="true"/>
 		</tile>
 		<tile xpos="20" ypos="18">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="true"/>
+			<block north="false" south="true" east="false" west="true"/>
 		</tile>
 		<tile xpos="20" ypos="18" zorder="1">
 			<tilemap mapname="wall1" mapx="1" mapy="2"/>
-			<directionBlock north="false" south="true" east="false" west="true"/>
+			<block north="false" south="true" east="false" west="true"/>
 		</tile>
 		<tile xpos="20" ypos="19">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -3098,19 +3098,19 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="21" ypos="8">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="true" east="false" west="false"/>
+			<block north="true" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="21" ypos="8" zorder="1">
 			<tilemap mapname="roofs" mapx="1" mapy="5"/>
-			<directionBlock north="true" south="true" east="false" west="false"/>
+			<block north="true" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="21" ypos="9">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="21" ypos="9" zorder="1">
 			<tilemap mapname="wall1" mapx="0" mapy="2"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="21" ypos="10">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -3156,19 +3156,19 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="21" ypos="17">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="21" ypos="17" zorder="1">
 			<tilemap mapname="roofs" mapx="1" mapy="5"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="21" ypos="18">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="21" ypos="18" zorder="1">
 			<tilemap mapname="wall1" mapx="0" mapy="2"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="21" ypos="19">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -3226,43 +3226,43 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="22" ypos="5">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="true"/>
+			<block north="true" south="false" east="false" west="true"/>
 		</tile>
 		<tile xpos="22" ypos="5" zorder="1">
 			<tilemap mapname="roofs" mapx="4" mapy="5"/>
-			<directionBlock north="true" south="false" east="false" west="true"/>
+			<block north="true" south="false" east="false" west="true"/>
 		</tile>
 		<tile xpos="22" ypos="6">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="22" ypos="6" zorder="1">
 			<tilemap mapname="roofs" mapx="0" mapy="5"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="22" ypos="7">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="22" ypos="7" zorder="1">
 			<tilemap mapname="roofs" mapx="0" mapy="5"/>
-			<directionBlock north="false" south="false" east="true" west="true"/>
+			<block north="false" south="false" east="true" west="true"/>
 		</tile>
 		<tile xpos="22" ypos="8">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="true" west="false"/>
+			<block north="false" south="true" east="true" west="false"/>
 		</tile>
 		<tile xpos="22" ypos="8" zorder="1">
 			<tilemap mapname="roofs" mapx="7" mapy="5"/>
-			<directionBlock north="false" south="true" east="true" west="false"/>
+			<block north="false" south="true" east="true" west="false"/>
 		</tile>
 		<tile xpos="22" ypos="9">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="true" west="false"/>
+			<block north="false" south="true" east="true" west="false"/>
 		</tile>
 		<tile xpos="22" ypos="9" zorder="1">
 			<tilemap mapname="wall1" mapx="2" mapy="2"/>
-			<directionBlock north="false" south="true" east="true" west="false"/>
+			<block north="false" south="true" east="true" west="false"/>
 		</tile>
 		<tile xpos="22" ypos="10">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -3308,19 +3308,19 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="22" ypos="17">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="22" ypos="17" zorder="1">
 			<tilemap mapname="roofs" mapx="1" mapy="5"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="22" ypos="18">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="22" ypos="18" zorder="1">
 			<tilemap mapname="wall1" mapx="0" mapy="2"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="22" ypos="19">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -3381,19 +3381,19 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="23" ypos="5">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="23" ypos="5" zorder="1">
 			<tilemap mapname="roofs" mapx="1" mapy="5"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="23" ypos="6">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="23" ypos="6" zorder="1">
 			<tilemap mapname="wall1" mapx="0" mapy="2"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="23" ypos="7">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -3454,19 +3454,19 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="23" ypos="17">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="23" ypos="17" zorder="1">
 			<tilemap mapname="roofs" mapx="1" mapy="5"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="23" ypos="18">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="23" ypos="18" zorder="1">
 			<tilemap mapname="wall1" mapx="0" mapy="2"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="23" ypos="19">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -3524,19 +3524,19 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="24" ypos="5">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="24" ypos="5" zorder="1">
 			<tilemap mapname="roofs" mapx="1" mapy="5"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="24" ypos="6">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="24" ypos="6" zorder="1">
 			<tilemap mapname="wall1" mapx="0" mapy="2"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="24" ypos="7">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -3597,19 +3597,19 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="24" ypos="17">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="24" ypos="17" zorder="1">
 			<tilemap mapname="roofs" mapx="1" mapy="5"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="24" ypos="18">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="24" ypos="18" zorder="1">
 			<tilemap mapname="wall1" mapx="0" mapy="2"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="24" ypos="19">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -3625,26 +3625,26 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="24" ypos="23">
 			<tilemap mapname="wall1" mapx="1" mapy="12"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="24" ypos="24">
 			<tilemap mapname="wall1" mapx="3" mapy="12"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="24" ypos="25">
 			<tilemap mapname="wall1" mapx="3" mapy="13"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="24" ypos="26">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
 		<tile xpos="24" ypos="27">
 			<tilemap mapname="wall1" mapx="3" mapy="12"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="24" ypos="28">
 			<tilemap mapname="wall1" mapx="1" mapy="12"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="25" ypos="0">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -3663,11 +3663,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="25" ypos="5">
 			<tilemap mapname="roofs" mapx="1" mapy="5"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="25" ypos="6">
 			<tilemap mapname="wall1" mapx="0" mapy="2"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="25" ypos="7">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -3731,11 +3731,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="25" ypos="17">
 			<tilemap mapname="roofs" mapx="1" mapy="5"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="25" ypos="18">
 			<tilemap mapname="wall1" mapx="0" mapy="2"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="25" ypos="19">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -3751,11 +3751,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="25" ypos="23">
 			<tilemap mapname="wall1" mapx="0" mapy="12"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="25" ypos="24">
 			<tilemap mapname="wall1" mapx="0" mapy="13"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="25" ypos="25">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -3768,7 +3768,7 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="25" ypos="28">
 			<tilemap mapname="wall1" mapx="0" mapy="12"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="26" ypos="0">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -3787,11 +3787,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="26" ypos="5">
 			<tilemap mapname="roofs" mapx="8" mapy="5"/>
-			<directionBlock north="true" south="false" east="true" west="false"/>
+			<block north="true" south="false" east="true" west="false"/>
 		</tile>
 		<tile xpos="26" ypos="6">
 			<tilemap mapname="wall1" mapx="2" mapy="2"/>
-			<directionBlock north="false" south="true" east="true" west="false"/>
+			<block north="false" south="true" east="true" west="false"/>
 		</tile>
 		<tile xpos="26" ypos="7">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -3855,11 +3855,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="26" ypos="17">
 			<tilemap mapname="roofs" mapx="1" mapy="5"/>
-			<directionBlock north="true" south="false" east="false" west="false"/>
+			<block north="true" south="false" east="false" west="false"/>
 		</tile>
 		<tile xpos="26" ypos="18">
 			<tilemap mapname="wall1" mapx="0" mapy="2"/>
-			<directionBlock north="false" south="true" east="false" west="false"/>
+			<block north="false" south="true" east="false" west="false"/>
 		</tile>
 		<tile xpos="26" ypos="19">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -3875,11 +3875,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="26" ypos="23">
 			<tilemap mapname="wall1" mapx="0" mapy="12"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="26" ypos="24">
 			<tilemap mapname="wall1" mapx="0" mapy="13"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="26" ypos="25">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -3892,7 +3892,7 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="26" ypos="28">
 			<tilemap mapname="wall1" mapx="0" mapy="12"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="27" ypos="0">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -3947,11 +3947,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="27" ypos="17">
 			<tilemap mapname="roofs" mapx="8" mapy="5"/>
-			<directionBlock north="true" south="false" east="true" west="false"/>
+			<block north="true" south="false" east="true" west="false"/>
 		</tile>
 		<tile xpos="27" ypos="18">
 			<tilemap mapname="wall1" mapx="2" mapy="2"/>
-			<directionBlock north="false" south="true" east="true" west="false"/>
+			<block north="false" south="true" east="true" west="false"/>
 		</tile>
 		<tile xpos="27" ypos="19">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -3967,11 +3967,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="27" ypos="23">
 			<tilemap mapname="wall1" mapx="0" mapy="12"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="27" ypos="24">
 			<tilemap mapname="wall1" mapx="0" mapy="13"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="27" ypos="25">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -3984,7 +3984,7 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="27" ypos="28">
 			<tilemap mapname="wall1" mapx="0" mapy="12"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="28" ypos="0">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -4060,11 +4060,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="28" ypos="23">
 			<tilemap mapname="wall1" mapx="0" mapy="12"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="28" ypos="24">
 			<tilemap mapname="wall1" mapx="0" mapy="13"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="28" ypos="25">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -4080,7 +4080,7 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="28" ypos="28">
 			<tilemap mapname="wall1" mapx="0" mapy="12"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="29" ypos="0">
 			<tilemap mapname="grass" mapx="4" mapy="4"/>
@@ -4153,18 +4153,18 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="29" ypos="23">
 			<tilemap mapname="wall1" mapx="0" mapy="12"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="29" ypos="24">
 			<tilemap mapname="wall1" mapx="0" mapy="13"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="29" ypos="25">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
 		<tile xpos="29" ypos="25">
 			<tilemap mapname="rocks" mapx="3" mapy="0"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="29" ypos="26">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -4174,11 +4174,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="29" ypos="27">
 			<tilemap mapname="rocks" mapx="3" mapy="0"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="29" ypos="28">
 			<tilemap mapname="wall1" mapx="0" mapy="12"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="30" ypos="0">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -4251,18 +4251,18 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="30" ypos="23">
 			<tilemap mapname="wall1" mapx="0" mapy="12"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="30" ypos="24">
 			<tilemap mapname="wall1" mapx="0" mapy="13"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="30" ypos="25">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
 		<tile xpos="30" ypos="25">
 			<tilemap mapname="rocks" mapx="3" mapy="0"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="30" ypos="26">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -4272,11 +4272,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="30" ypos="27">
 			<tilemap mapname="rocks" mapx="3" mapy="0"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="30" ypos="28">
 			<tilemap mapname="wall1" mapx="0" mapy="12"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="31" ypos="0">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -4349,18 +4349,18 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="31" ypos="23">
 			<tilemap mapname="wall1" mapx="0" mapy="12"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="31" ypos="24">
 			<tilemap mapname="wall1" mapx="0" mapy="13"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="31" ypos="25">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
 		<tile xpos="31" ypos="25">
 			<tilemap mapname="rocks" mapx="3" mapy="0"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="31" ypos="26">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -4370,11 +4370,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="31" ypos="27">
 			<tilemap mapname="rocks" mapx="3" mapy="0"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="31" ypos="28">
 			<tilemap mapname="wall1" mapx="0" mapy="12"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="32" ypos="0">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -4450,11 +4450,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="32" ypos="23">
 			<tilemap mapname="wall1" mapx="0" mapy="12"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="32" ypos="24">
 			<tilemap mapname="wall1" mapx="0" mapy="13"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="32" ypos="25">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -4470,11 +4470,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="32" ypos="27">
 			<tilemap mapname="rocks" mapx="3" mapy="0"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="32" ypos="28">
 			<tilemap mapname="wall1" mapx="0" mapy="12"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="33" ypos="0">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -4547,18 +4547,18 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="33" ypos="23">
 			<tilemap mapname="wall1" mapx="0" mapy="12"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="33" ypos="24">
 			<tilemap mapname="wall1" mapx="0" mapy="13"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="33" ypos="25">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
 		</tile>
 		<tile xpos="33" ypos="25">
 			<tilemap mapname="rocks" mapx="3" mapy="0"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="33" ypos="26">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -4568,11 +4568,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="33" ypos="27">
 			<tilemap mapname="rocks" mapx="3" mapy="0"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="33" ypos="28">
 			<tilemap mapname="wall1" mapx="0" mapy="12"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="34" ypos="0">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -4645,11 +4645,11 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="34" ypos="23">
 			<tilemap mapname="wall1" mapx="2" mapy="12"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="34" ypos="24">
 			<tilemap mapname="wall1" mapx="2" mapy="13"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="34" ypos="25">
 			<tilemap mapname="grass" mapx="4" mapy="1"/>
@@ -4662,7 +4662,7 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="34" ypos="28">
 			<tilemap mapname="wall1" mapx="0" mapy="12"/>
-			<directionBlock north="true" south="true" east="true" west="true"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 	</tiles>
 </level>

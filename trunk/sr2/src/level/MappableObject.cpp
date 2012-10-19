@@ -245,7 +245,7 @@ bool MappableObject::IsSolid() const {
 	return m_cFlags & MappableObject::SOLID;
 }
 
-int MappableObject::GetDirectionBlock() const {
+int MappableObject::GetSideBlock() const {
 	if ( IsSolid() )
 		return ( BLK_NORTH | BLK_SOUTH | BLK_EAST | BLK_WEST );
 	else
@@ -273,7 +273,7 @@ bool MappableObject::ProvokeEvents( Event::eTriggerType trigger ) {
 
 
 
-int MappableObject::ConvertDirectionToDirectionBlock( Direction dir ) {
+int MappableObject::ConvertDirectionToSideBlock( Direction dir ) {
 	if ( dir == Direction::NORTH )
 		return BLK_SOUTH;
 	else if ( dir == Direction::SOUTH )

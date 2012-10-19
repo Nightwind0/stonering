@@ -31,7 +31,7 @@ class Action;
 class MonsterRegions;
 class MonsterRegion;
 
-enum eDirectionBlock
+enum eSideBlock
 {
     BLK_NORTH = 1,
     BLK_SOUTH = 2,
@@ -39,23 +39,23 @@ enum eDirectionBlock
     BLK_EAST = 8
 };
 
-class DirectionBlock : public Element
+class SideBlock : public Element
 {
 public:
-    DirectionBlock();
-    explicit DirectionBlock(int);
-    virtual ~DirectionBlock();
+    SideBlock();
+    explicit SideBlock(int);
+    virtual ~SideBlock();
     virtual eElement WhichElement() const {
         return EDIRECTIONBLOCK;
     }
-    int GetDirectionBlock() const;
+    int GetSideBlock() const;
 #if SR2_EDITOR
     CL_DomElement CreateDomElement(CL_DomDocument&)const;
 #endif
 protected:
     virtual void load_attributes(CL_DomNamedNodeMap attributes);
 
-    int m_eDirectionBlock;
+    int m_eSideBlock;
 private:
 
 };
@@ -157,7 +157,7 @@ public:
 
     void Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC);
     virtual void Update();
-    int GetDirectionBlock() const;
+    int GetSideBlock() const;
     inline bool IsTile() const {
         return true;
     }
@@ -418,7 +418,8 @@ protected:
     // Tile related operations
     // Call attribute modifiers on tiles at this location
     void Activate_Tiles_At ( uint x, uint y );
-    int Get_Cumulative_Direction_Block_At_Point(const CL_Point &point) const;
+    int Get_Cumulative_Side_Block_At_Point
+(const CL_Point &point) const;
     bool Get_Cumulative_Hotness_At_Point(const CL_Point &point) const;
     void Create_MOQuadtree();
 

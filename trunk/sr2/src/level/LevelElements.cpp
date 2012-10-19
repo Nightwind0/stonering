@@ -99,38 +99,38 @@ Graphic::~Graphic()
 }
 
 
-DirectionBlock::DirectionBlock():m_eDirectionBlock(0)
+SideBlock::SideBlock():m_eSideBlock(0)
 {
 }
 
-DirectionBlock::DirectionBlock(int i )
+SideBlock::SideBlock(int i )
 {
-    m_eDirectionBlock = i;
+    m_eSideBlock = i;
 }
 
 
 
-void DirectionBlock::load_attributes(CL_DomNamedNodeMap attributes)
+void SideBlock::load_attributes(CL_DomNamedNodeMap attributes)
 {
     bool north = get_required_bool("north",attributes);
     bool south = get_required_bool("south",attributes);
     bool east =  get_required_bool("east",attributes);
     bool west =  get_required_bool("west",attributes);
 
-    if (north) m_eDirectionBlock |= BLK_NORTH;
-    if (south) m_eDirectionBlock |= BLK_SOUTH;
-    if (east) m_eDirectionBlock |= BLK_EAST;
-    if (west) m_eDirectionBlock |= BLK_WEST;
+    if (north) m_eSideBlock |= BLK_NORTH;
+    if (south) m_eSideBlock |= BLK_SOUTH;
+    if (east) m_eSideBlock |= BLK_EAST;
+    if (west) m_eSideBlock |= BLK_WEST;
 }
 
 
-DirectionBlock::~DirectionBlock()
+SideBlock::~SideBlock()
 {
 }
 
-int DirectionBlock::GetDirectionBlock() const
+int SideBlock::GetSideBlock() const
 {
-    return m_eDirectionBlock;
+    return m_eSideBlock;
 }
 
 
@@ -188,9 +188,9 @@ bool Tile::handle_element(Element::eElement element, Element * pElement)
         break;
     case EDIRECTIONBLOCK:
     {
-        DirectionBlock *block = dynamic_cast<DirectionBlock*>(pElement);
+        SideBlock *block = dynamic_cast<SideBlock*>(pElement);
 
-        int db = block->GetDirectionBlock();
+        int db = block->GetSideBlock();
 
         // This is all done to make tile's take up less space in memory
 
@@ -284,7 +284,7 @@ void Tile::Update()
     if (IsSprite()) m_sprite.update();
 }
 
-int Tile::GetDirectionBlock() const
+int Tile::GetSideBlock() const
 {
 
     int block = 0;
@@ -333,9 +333,9 @@ CL_DomElement Tile::CreateDomElement(CL_DomDocument& doc)const
     {
         element.append_child(m_pCondition->CreateDomElement(doc));
     }
-    if( GetDirectionBlock() > 0)
+    if( GetSideBlock() > 0)
     {
-        DirectionBlock block( GetDirectionBlock() );
+        SideBlock block( GetSideBlock() );
         CL_DomElement dirEl = block.CreateDomElement(doc);
 
         element.append_child( dirEl );
@@ -346,13 +346,13 @@ CL_DomElement Tile::CreateDomElement(CL_DomDocument& doc)const
 }
 
 
-CL_DomElement DirectionBlock::CreateDomElement(CL_DomDocument& doc)const
+CL_DomElement SideBlock::CreateDomElement(CL_DomDocument& doc)const
 {
-    CL_DomElement element(doc,"directionBlock");
-    element.set_attribute("north", (m_eDirectionBlock & BLK_NORTH )?"true":"false");
-    element.set_attribute("south", (m_eDirectionBlock & BLK_SOUTH)?"true":"false");
-    element.set_attribute("east",  (m_eDirectionBlock & BLK_EAST )?"true":"false" );
-    element.set_attribute("west",  (m_eDirectionBlock & BLK_WEST )?"true":"false" );
+    CL_DomElement element(doc,"block");
+    element.set_attribute("north", (m_eSideBlock & BLK_NORTH )?"true":"false");
+    element.set_attribute("south", (m_eSideBlock & BLK_SOUTH)?"true":"false");
+    element.set_attribute("east",  (m_eSideBlock & BLK_EAST )?"true":"false" );
+    element.set_attribute("west",  (m_eSideBlock & BLK_WEST )?"true":"false" );
 
     return element;
 }

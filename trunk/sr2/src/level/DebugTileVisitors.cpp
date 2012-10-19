@@ -3,19 +3,19 @@
 
 namespace StoneRing  {
     
-TileDirectionBlockDrawer::TileDirectionBlockDrawer()
+TileSideBlockDrawer::TileSideBlockDrawer()
 {
 
 }
 
-TileDirectionBlockDrawer::~TileDirectionBlockDrawer()
+TileSideBlockDrawer::~TileSideBlockDrawer()
 {
 
 }
 
-void TileDirectionBlockDrawer::accept ( CL_GraphicContext& GC, const CL_Point& tileDst, Tile* pTile )
+void TileSideBlockDrawer::accept ( CL_GraphicContext& GC, const CL_Point& tileDst, Tile* pTile )
 {
-    int block = pTile->GetDirectionBlock();
+    int block = pTile->GetSideBlock();
 
     if(block & BLK_WEST)
     {

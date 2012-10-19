@@ -72,7 +72,7 @@ private:
 #ifndef NDEBUG
     void add_debug_drawers();
     void remove_debug_drawers();
-    TileDirectionBlockDrawer m_block_drawer;
+    TileSideBlockDrawer m_block_drawer;
     TileHotDrawer            m_hot_drawer;
     TilePopsDrawer           m_pops_drawer;
     TileFloaterDrawer        m_floater_drawer;
