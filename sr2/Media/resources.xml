@@ -167,11 +167,14 @@
             <sample name="Gold" file="Sounds/coin3.wav"/>
         </section>
         <section name="Levels">
-                <string name="examplelevel" value="test3.xml" />
+                <string name="examplelevel" value="town1.xml" />
                 <string name="octaviaInn" value="examplelevel.xml" />
                 <string name="monster_test" value="monster_test.xml" />
         </section>
         <section name="Tilemaps">
+			<sprite name="inq_town">
+				<image file="Tiles/inq_town1.png"/>
+			</sprite>
                 <sprite name="roofs">
                         <image file="Tiles/roofs.png"/>
                 </sprite>
