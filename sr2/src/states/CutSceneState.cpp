@@ -81,9 +81,7 @@ void CutSceneState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
                                 m_center.y + screenRect.get_height() /2);
     GC.clear();
     if(m_pLevel){
-        m_pLevel->Draw(levelRect,screenRect,GC,false);
-        if(m_bDrawMOs)
-            m_pLevel->DrawMappableObjects(levelRect,screenRect,GC,m_showDebug);
+        m_pLevel->Draw(levelRect,screenRect,GC,m_bDrawMOs,m_showDebug);
     }
     for(std::list<Task*>::iterator it = m_tasks.begin(); it != m_tasks.end();
         /* */){

@@ -88,11 +88,7 @@ void MapComponent::draw_level(CL_GraphicContext &gc, const CL_Rect& screen_rect)
     //CL_Rectf source(to_float(-m_origin)/m_scale,CL_Sizef(screen_rect.get_width()/m_scale,screen_rect.get_height()/m_scale));
 	CL_Rectf source(to_float(-m_origin),CL_Sizef(screen_rect.get_width()/m_scale,screen_rect.get_height()/m_scale));
     if(m_pLevel){
-        m_pLevel->Draw(source,screen,gc,false);
-        if(m_show_mos){
-            m_pLevel->DrawMappableObjects(source,screen,gc,false,true);          
-        }
-        m_pLevel->Draw(source,screen,gc,true);          
+        m_pLevel->Draw(source,screen,gc);      
     }
    gc.pop_modelview();
 }
@@ -272,6 +268,17 @@ void MapComponent::show_floaters ( bool on )
             m_pLevel->RemoveTileVisitor(&m_floater_drawer);
     }
 }
+
+void MapComponent::show_fence ( bool on )
+{
+    if(m_pLevel){
+        if(on)
+            m_pLevel->AddTileVisitor(&m_fence_drawer);
+        else
+            m_pLevel->RemoveTileVisitor(&m_fence_drawer);
+    }
+}
+
 
 void MapComponent::show_monster_region ( bool on )
 {

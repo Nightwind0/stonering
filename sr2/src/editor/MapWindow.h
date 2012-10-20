@@ -73,6 +73,7 @@ private:
             HOT,
             POPS,
             FLOATER,
+			FENCE,
             WATER
         };
         

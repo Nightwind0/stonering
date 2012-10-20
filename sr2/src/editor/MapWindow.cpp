@@ -520,7 +520,8 @@ void MapWindow::construct_toolbar()
         {"Media/Editor/Images/surround.png","",BLOCK_ALL,true},
         {"Media/Editor/Images/hot.png","",HOT,true},
         {"Media/Editor/Images/pop.png","",POPS,true},
-        {"Media/Editor/Images/floater.png","",FLOATER,true}
+        {"Media/Editor/Images/floater.png","",FLOATER,true},
+		{"Media/Editor/Images/fence.png","",FENCE,true}
     };
     
     for(int i=0;i<sizeof(tools)/sizeof(Tool);i++){
@@ -1151,6 +1152,7 @@ void MapWindow::on_toolbar_item(CL_ToolBarItem item)
             m_pMap->show_direction_blocks(toggled);
             m_pMap->show_floaters(toggled);
 			m_pMap->show_monster_region(toggled);
+			m_pMap->show_fence(toggled);
             m_pMap->request_repaint();
             
             break;
@@ -1162,6 +1164,7 @@ void MapWindow::on_toolbar_item(CL_ToolBarItem item)
         case HOT:
         case POPS:
         case FLOATER:
+		case FENCE:
             int flag = Tile::TIL_HOT;
             if(item.get_id() == BLOCK_WEST)
                 flag = Tile::TIL_BLK_WEST;
@@ -1177,6 +1180,8 @@ void MapWindow::on_toolbar_item(CL_ToolBarItem item)
                 flag = Tile::TIL_POPS;
             else if(item.get_id() == FLOATER)
                 flag = Tile::TIL_FLOATER;
+			else if(item.get_id() == FENCE)
+				flag = Tile::TIL_FENCE;
           
       
             block_op.SetBlock( flag );
@@ -1193,7 +1198,9 @@ void MapWindow::on_toolbar_item(CL_ToolBarItem item)
                 m_pMap->show_floaters(true);
             }else if(flag != Tile::TIL_HOT){
                 m_pMap->show_direction_blocks(true);
-            }
+            }else if(flag != Tile::TIL_FENCE){
+				m_pMap->show_fence(true);
+			}
             m_pMap->request_repaint();
             break;
         }

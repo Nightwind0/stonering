@@ -247,9 +247,7 @@ void StoneRing::MapState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
     if(clearBg)
         GC.clear();
 
-    m_pLevel->Draw(src,dst, GC, false);
-    m_pLevel->DrawMappableObjects(src,dst,GC,m_bShowDebug);
-    m_pLevel->DrawFloaters(src,dst,GC);
+    m_pLevel->Draw(src,dst, GC);
 }
 
 

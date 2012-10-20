@@ -37,6 +37,16 @@ namespace StoneRing {
 	private:
 		CL_Sprite m_indicator;
 	};
+
+	class TileFenceDrawer : public Tile::Visitor {
+	public:
+		TileFenceDrawer ( );
+		virtual ~TileFenceDrawer ( );
+		virtual void accept(CL_GraphicContext& gc, const CL_Point& top_left, Tile* pTile);
+	private:
+		CL_Sprite m_indicator;
+	};
+		
 	
 	class TileMonsterRegionDrawer : public Tile::Visitor { 
 	public:

@@ -11,6 +11,12 @@
 
 
 namespace StoneRing {
+	
+CL_Rect MappableObject::GetRect() const
+{
+	return CL_Rect(m_pos,CL_Size(m_size));
+}
+
 
 
 bool MappableObject::IsFlying() const {
@@ -145,7 +151,7 @@ bool MappableObject::IsSprite() const {
 	return m_cFlags & SPRITE;
 }
 
-void MappableObject::Draw( CL_GraphicContext& GC, const CL_Point& offset, bool indicate_invisible ) {
+void MappableObject::Draw( CL_GraphicContext& GC, const CL_Point& offset ) {
 	CL_Rect dstRect = GetSpriteRect();
 	dstRect.translate( offset );
 
@@ -159,9 +165,6 @@ void MappableObject::Draw( CL_GraphicContext& GC, const CL_Point& offset, bool i
 						( m_tilemap->GetMapX() * 32 ), ( m_tilemap->GetMapY() * 32 ) );
 
 		m_tilemap->GetTileMap().draw( GC, srcRect, dstRect );
-	} else if ( indicate_invisible ) {
-		CL_Sprite sprite = GraphicsManager::CreateSprite( "Sprites/System/Object", false );
-		sprite.draw( GC, dstRect );
 	}
 }
 

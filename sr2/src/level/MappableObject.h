@@ -19,7 +19,7 @@ class Director;
 
 
 
-class MappableObject : public SteelType::IHandle {
+class MappableObject : public SteelType::IHandle, public Graphic {
 public:
 	enum eMappableObjectType {
 		NPC, SQUARE, CONTAINER, DOOR, WARP, PLAYER
@@ -41,7 +41,7 @@ public:
 
 	/* Level API */
 	virtual CL_Rect GetTileRect() const;
-	virtual void    Draw( CL_GraphicContext& GC, const CL_Point& offset, bool indicate_invisible = false );
+	virtual void    Draw( CL_GraphicContext& GC, const CL_Point& offset ); 
 	virtual void    Move( Level& level );
 	virtual bool    IsSolid() const;
 	virtual std::string GetName() const;
@@ -55,6 +55,8 @@ public:
 	virtual bool    DoesStep() const {
 		return false;
 	}
+	virtual CL_Rect GetRect() const;
+	virtual short 	GetZOrder() const { return -1; }
 
 	virtual void    OnStep();
 	virtual void    Stop();
@@ -88,7 +90,7 @@ public:
 
 	Navigator*      PopNavigator();
 	void            SetPixelPosition( const CL_Point& pixel_pos );
-	CL_Point        GetPixelPosition() const {
+	virtual CL_Point        GetPixelPosition() const {
 		return m_pos;
 	}
 
