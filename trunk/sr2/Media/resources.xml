@@ -168,7 +168,7 @@
         </section>
         <section name="Levels">
                 <string name="examplelevel" value="town1.xml" />
-                <string name="octaviaInn" value="examplelevel.xml" />
+                <string name="octaviaInn" value="town1.xml" />
                 <string name="monster_test" value="monster_test.xml" />
         </section>
         <section name="Tilemaps">
@@ -799,6 +799,9 @@
                 <sprite name="Floater" hint="alpha">
                     <image file="Sprites/floater_icon.png"/>
                 </sprite>
+                <sprite name="Fence" hint="alpha">
+                    <image file="Sprites/fence.png"/>
+                </sprite>				
                 <sprite name="Object">
                     <image file="Sprites/object.png"/>
                 </sprite>

@@ -98,10 +98,20 @@ protected:
     ushort m_Y;
 };
 
-class Tile : public Graphic
+class Tile : public Graphic, public Element
 {
 public:
-    enum eFlags { TIL_SPRITE = 1, TIL_FLOATER = 2, TIL_HOT = 4, TIL_BLK_NORTH = 8, TIL_BLK_SOUTH = 16, TIL_BLK_EAST = 32, TIL_BLK_WEST = 64, TIL_POPS = 128};
+    enum eFlags { 
+		TIL_SPRITE = 1, 
+		TIL_FLOATER = (1<<1),
+		TIL_FENCE = (1<<2),
+		TIL_HOT = (1<<3), 
+		TIL_BLK_NORTH = (1<<4), 
+		TIL_BLK_SOUTH = (1<<5),
+		TIL_BLK_EAST = (1<<6),
+		TIL_BLK_WEST = (1<<7),
+		TIL_POPS = (1<<8)
+	};
     class Visitor { 
     public:
         virtual void accept(CL_GraphicContext& gc, const CL_Point& top_left, Tile*) = 0;
@@ -112,13 +122,16 @@ public:
     virtual eElement WhichElement() const {
         return ETILE;
     }
-    inline ushort GetZOrder() const {
+    inline short GetZOrder() const {
         return m_ZOrder;
     }
 
     inline bool IsFloater() const {
         return (cFlags & TIL_FLOATER) != 0;
     }
+    inline bool IsFence() const  {
+		return cFlags & TIL_FENCE;
+	}
     bool EvaluateCondition() const;
     inline bool HasScript() const {
         return m_pScript != NULL;
@@ -141,7 +154,7 @@ public:
         return m_Y;
     }
 
-    CL_Rect GetRect() const;
+    virtual CL_Rect GetRect() const;
 
     inline bool IsSprite() const {
         return (cFlags & TIL_SPRITE) != 0;
@@ -155,7 +168,9 @@ public:
         return (cFlags & TIL_POPS) != 0;
     }
 
-    void Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC);
+
+	void Draw(CL_GraphicContext& gc, const CL_Point& dst);
+    
     virtual void Update();
     int GetSideBlock() const;
     inline bool IsTile() const {
@@ -166,6 +181,7 @@ protected:
     virtual bool handle_element(eElement element, Element * pElement);
     virtual void load_attributes(CL_DomNamedNodeMap attributes);
     virtual void load_finished();
+    void draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC);	
 
     CL_Sprite m_sprite;
     Tilemap* m_tilemap;
@@ -217,6 +233,10 @@ public:
     }
     void SetFlag(int flag) {
         cFlags |= flag;
+		if(flag == TIL_FLOATER)
+			UnsetFlag(TIL_FENCE);
+		else if(flag == TIL_FENCE)
+			UnsetFlag(TIL_FLOATER);
     }
     void UnsetFlag(int flag) {
         cFlags &= (~flag);
@@ -312,9 +332,7 @@ public:
     }
 
     virtual void Draw(const CL_Rect &src, const CL_Rect &dst,
-                      CL_GraphicContext& GC , bool floaters = false);
-    virtual void DrawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, bool bDrawDebug=false, bool bDrawInvis=false);
-    virtual void DrawFloaters(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC);
+                      CL_GraphicContext& GC , bool mappable_objects = true,  bool floaters = true, bool draw_borders=false, bool draw_debug=false);
     virtual void AddTileVisitor(Tile::Visitor * pVisitor);
     virtual void RemoveTileVisitor(Tile::Visitor * pVisitor);
     void MoveMappableObjects(const CL_Rect &src);
@@ -396,6 +414,9 @@ protected:
     virtual bool handle_element(eElement element, Element * pElement);
     virtual void load_attributes(CL_DomNamedNodeMap attributes);
     virtual void load_finished();
+	
+	void draw_tiles(CL_GraphicContext& gc, const CL_Rect& src, const CL_Rect& dst, bool draw_floaters);
+	void draw_object_layer(CL_GraphicContext& gc, const CL_Rect& src, const CL_Rect& dst, bool draw_mos, bool draw_debug, bool draw_borders);
 
 
     // MO related operations
@@ -408,6 +429,9 @@ protected:
 
     // Sort tiles on zOrder
     static bool Tile_Sort_Criterion ( const Tile * p1, const Tile * p2 );
+	
+	// returns rect in tiles, not pixels
+	CL_Rect calc_tile_bounds(const CL_Rect& src_pixels, const CL_Rect& dst_pixels) const;
 
     void Load_Tile ( Tile * tileElement );
     void Load_Mo ( MappableObject * moElement );

@@ -149,12 +149,14 @@ void Tile::load_attributes(CL_DomNamedNodeMap attributes)
     bool floater = get_implied_bool("floater",attributes,false);
     bool hot = get_implied_bool("hot",attributes,false);
     bool pops = get_implied_bool("pops",attributes,false);
+	bool fence = get_implied_bool("fence",attributes,false);
 	
 	m_monster_region = get_implied_int("monster_region",attributes,-1);
 
     if (floater) cFlags |= TIL_FLOATER;
     if (hot) cFlags |= TIL_HOT;
     if (pops) cFlags |= TIL_POPS;
+	if (fence) cFlags |= TIL_FENCE;
 
 }
 
@@ -217,6 +219,7 @@ bool Tile::handle_element(Element::eElement element, Element * pElement)
 void Tile::load_finished()
 {
     if (m_tilemap == NULL && m_sprite.is_null()) throw CL_Exception("Tile didn't have tilemap or sprite ref.");
+	if (IsFloater() && IsFence()) throw CL_Exception("Tile can't be both a floater and a fence");
 }
 
 void Tile::Activate() // Call any attributemodifier
@@ -243,12 +246,17 @@ bool Tile::EvaluateCondition() const
 
 CL_Rect Tile::GetRect() const
 {
-    return CL_Rect(m_X , m_Y , m_X + 1, m_Y +1);
+    return CL_Rect(CL_Point(m_X*32,m_Y*32),CL_Size(32,32));
 }
 
 
+void Tile::Draw(CL_GraphicContext& gc, const CL_Point& dst)
+{
+	draw(CL_Rect(0,0,32,32),CL_Rect(dst + CL_Point(m_X*32,m_Y*32),CL_Size(32,32)),gc);
+}
 
-void Tile::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC)
+
+void Tile::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC)
 {
     // Get the graphic guy
     // Get our tilemap or sprite
@@ -264,12 +272,10 @@ void Tile::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC)
         int mapx, mapy;
         mapx = m_tilemap->GetMapX();
         mapy = m_tilemap->GetMapY();
-        CL_Rect srcRect((mapx << 5) + src.left, (mapy << 5) + src.top,
-                        (mapx << 5) + src.right, (mapy << 5) + src.bottom);
+		CL_Rect srcRect(CL_Point(mapx*32,mapy*32),CL_Size(32,32));
 
 
-        tilemap.draw(GC,srcRect, dst);
-
+        tilemap.draw(GC,srcRect,dst);
     }
     else
     {
@@ -315,6 +321,7 @@ CL_DomElement Tile::CreateDomElement(CL_DomDocument& doc)const
     if(IsFloater()) element.set_attribute("floater", "true");
     if(IsHot())     element.set_attribute("hot", "true");
     if(Pops())      element.set_attribute("pops","true");
+	if(IsFence())   element.set_attribute("fence","true");
 	
 	if(m_monster_region >= 0){
 		element.set_attribute("monster_region",IntToString(m_monster_region));

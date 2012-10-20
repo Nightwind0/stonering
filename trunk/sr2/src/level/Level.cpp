@@ -20,6 +20,7 @@
 
 
 
+
 typedef unsigned int uint;
 
 
@@ -75,13 +76,12 @@ void Tiles::load_attributes(CL_DomNamedNodeMap attributes)
 // MappableObjects
 ///////////////////////////////////////////////////////////////////////////
 
-bool MappableObjectDrawSort(MappableObject* pObj1, MappableObject* pObj2){
-    int y1 = pObj1->GetPixelPosition().y;
-    int y2 = pObj2->GetPixelPosition().y;
-    if(pObj1->IsFlying())
-        y1 += IApplication::GetInstance()->GetDisplayRect().get_height();
-    if(pObj2->IsFlying())
-        y2 += IApplication::GetInstance()->GetDisplayRect().get_height();
+bool GraphicDrawSort(Graphic* pObj1, Graphic* pObj2){
+    int y1 = pObj1->GetRect().bottom;
+    int y2 = pObj2->GetRect().bottom;
+	
+	if(y1 == y2) 
+		return pObj1->GetZOrder() < pObj2->GetZOrder();
     
     return y1 < y2;
 }
@@ -152,7 +152,7 @@ public:
     }
     
     virtual bool Visit(MappableObject* pMO, const Level::MOQuadtree::Node* pNode){
-        m_mos.push_back(pMO);
+		m_mos.push_back(pMO);
         return true;
     }
     std::list<MappableObject*>::const_iterator begin() const {
@@ -162,10 +162,11 @@ public:
         return m_mos.end();
     }
     
+    
     template <class Compare>
     void sort(Compare cmp){
         m_mos.sort(cmp);
-    }
+	}
     
 private:
     std::list<MappableObject*> m_mos;
@@ -481,70 +482,49 @@ bool Level::Get_Cumulative_Hotness_At_Point(const CL_Point &point) const
 
 }
 
-
-void Level::Draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, bool floaters)
+CL_Rect Level::calc_tile_bounds( const CL_Rect& src_pixels, const CL_Rect& dst_pixels ) const
 {
-    //    int maxSrcX = max( ceil(dst.get_width() / 32.0), mLevelWidth );
-    //    int maxSrcY = max( ceil(dst.get_height() / 32.0), mLevelHeight);
-    int cornerx = static_cast<int>(src.left / 32);
-    int cornery = static_cast<int>(src.top / 32);
+	return CL_Rect(CL_Point(src_pixels.get_top_left().x/32,src_pixels.get_top_left().y/32),CL_Size(src_pixels.get_width()/32+1,src_pixels.get_height()/32+1));
+}
 
-    uint widthInTiles = static_cast<int>((int)ceil((double)src.right/32.0)) - cornerx;
-    uint heightInTiles = static_cast<int>((int)ceil((double)src.bottom/32.0)) - cornery;
+void Level::Draw(const CL_Rect& src, const CL_Rect& dst, CL_GraphicContext& GC, bool draw_mos, bool draw_floaters, bool draw_borders, bool draw_debug)
+{
+	draw_tiles(GC,src,dst,false);
+	draw_object_layer(GC,src,dst,draw_mos,draw_borders, draw_debug);
+	draw_tiles(GC,src,dst,true);
+	//draw_flying_layer(GC,src,dst,
+}
 
-    uint widthInPx = widthInTiles * 32;
-    uint heightInPx = heightInTiles * 32;
-
-
-    CL_Rect exDst = dst; // expanded Dest
-
-    // Make it as big as the full source tiles
-    // (It maintains the top/left position when you do this)
-    exDst.set_size(CL_Size( widthInPx, heightInPx ));
-
-    // Move the top and left position out
-
-    int newleftDelta = src.left - ((src.left / 32) * 32);
-    int newtopDelta = src.top - ((src.top / 32) * 32);
-
-    exDst.left -= newleftDelta;
-    exDst.right -= newleftDelta;
-    exDst.top -= newtopDelta;
-    exDst.bottom -= newtopDelta;
-
+void Level::draw_tiles(CL_GraphicContext& gc, const CL_Rect &src, const CL_Rect &dst, bool floaters)
+{
+    CL_Point offset(dst.left-src.left,dst.bottom-src.bottom);    
+	CL_Rect tile_bounds = calc_tile_bounds(src,dst);
 
     // Regular tiles, not floaters
-    for(uint tileX = 0; tileX < widthInTiles; tileX++)
+    for(int tileX = tile_bounds.left; tileX <= tile_bounds.right; tileX++)
     {
-        for(uint tileY =0; tileY < heightInTiles; tileY++)
+        for(int tileY =tile_bounds.top; tileY <= tile_bounds.bottom; tileY++)
         {
-
-            CL_Point p( src.left / 32 + tileX, src.top /32 + tileY);
-
+            CL_Point p(tileX,tileY);
 
             if(p.x >=0 && p.y >=0 && p.x < m_LevelWidth && p.y < m_LevelHeight)
             {
-                CL_Rect tileSrc(0,0,32,32);
-                CL_Rect tileDst ( exDst.left  + (tileX << 5),
-                                    exDst.top + (tileY << 5),
-                                    exDst.left + (tileX << 5) + 32,
-                                    exDst.top + (tileY << 5) + 32);
-
-
                 std::list<Tile*>::iterator end = m_tiles[p.x][p.y].end();
                 for(std::list<Tile*>::iterator i = m_tiles[p.x][p.y].begin();
                     i != end;
                     i++)
                 {
                     Tile * pTile = *i;
+					if(pTile->IsFence())
+						continue;
                     if(pTile->IsFloater() != floaters)
                         continue;                    
                     if(pTile->EvaluateCondition())
                     {
-                        pTile->Draw(tileSrc, tileDst , GC );
+						pTile->Draw(gc,offset);
                         for(std::set<Tile::Visitor*>::const_iterator iter = m_tile_visitors.begin();
                             iter != m_tile_visitors.end();iter++){
-                            pTile->Visit(*iter,GC,tileDst.get_top_left());
+                            pTile->Visit(*iter,gc,offset);
                         }
                     }
                 }
@@ -570,34 +550,83 @@ void Level::RemoveTileVisitor ( Tile::Visitor* pVisitor )
 
 
 
-void Level::DrawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC, bool bDrawDebug, bool bDrawBorders)
+void Level::draw_object_layer(CL_GraphicContext& gc, const CL_Rect &src, const CL_Rect &dst, bool bDrawMos, bool bDrawDebug, bool bDrawBorders)
 {
     CL_Point offset(dst.left-src.left,dst.bottom-src.bottom);
 
     Quadtree::Geometry::Vector<float> center(src.get_center().x,src.get_center().y);
     Quadtree::Geometry::Rect<float> rect(center,src.get_width(),src.get_height());
     FindMappableObjects finder;
+	
+	std::list<Graphic*> graphics;
+	// Add any fence tiles here
+	CL_Rect tile_bounds = calc_tile_bounds(src,dst);
+	for(int x=tile_bounds.left;x<=tile_bounds.right;x++){
+		for(int y=tile_bounds.top;y<=tile_bounds.bottom;y++){
+			if(x >=0 && y >= 0 && x < m_LevelWidth && y < m_LevelHeight){ 
+				for(std::list<Tile*>::const_iterator it = m_tiles[x][y].begin(); it != m_tiles[x][y].end(); it++){
+					if((*it)->IsFence() && (*it)->EvaluateCondition()){
+						graphics.push_back(*it);
+					}
+				}
+			}
+		}
+	}
     
-    m_mo_quadtree->Traverse(finder,rect);    
-    finder.sort(MappableObjectDrawSort);
+    if(bDrawMos){
+		m_mo_quadtree->Traverse(finder,rect);
+		for(std::list<MappableObject*>::const_iterator it = finder.begin(); it != finder.end(); it++){
+			if(!(*it)->IsFlying())
+				graphics.push_back(*it);
+		}
+	}
+	// Add any fence tile graphics
+    graphics.sort(GraphicDrawSort);
     
-    for(std::list<MappableObject*>::const_iterator iter = finder.begin();
-        iter != finder.end(); iter++){
-        (*iter)->Draw(GC,offset);
+    for(std::list<Graphic*>::const_iterator iter = graphics.begin();
+        iter != graphics.end(); iter++){
+
+		(*iter)->Draw(gc,offset);
 #if !defined(NDEBUG)
-        if(bDrawBorders){
-            CL_Rect tileRect = (*iter)->GetTileRect();
+        if(bDrawBorders && !(*iter)->IsTile()){
+            CL_Rect tileRect = (*iter)->GetRect();
             CL_Rect spriteRect(tileRect.get_top_left() * 32, tileRect.get_size() * 32);
        
             spriteRect.translate(offset);
-            CL_Draw::box(GC,spriteRect,CL_Colorf(1.0f,1.0f,0.0f,0.5f));
-        }
+            CL_Draw::box(gc,spriteRect,CL_Colorf(1.0f,1.0f,0.0f,0.5f));
+        }else if((*iter)->IsTile()){
+			Tile* pTile = dynamic_cast<Tile*>(*iter);
+			if(pTile){
+				for(std::set<Tile::Visitor*>::const_iterator iter = m_tile_visitors.begin();
+					iter != m_tile_visitors.end();iter++){
+					pTile->Visit(*iter,gc,offset);
+				}				
+			}
+		}
 #endif
+		
+    }
+    
+    /* Draw flyers */
+    for(std::list<MappableObject*>::const_iterator iter = finder.begin();
+        iter != finder.end(); iter++){
+		if((*iter)->IsFlying()){
+			(*iter)->Draw(gc,offset);
+#if !defined(NDEBUG)
+			if(bDrawBorders){
+				CL_Rect tileRect = (*iter)->GetTileRect();
+				CL_Rect spriteRect(tileRect.get_top_left() * 32, tileRect.get_size() * 32);
+		
+				spriteRect.translate(offset);
+				CL_Draw::box(gc,spriteRect,CL_Colorf(1.0f,0.0f,1.0f,0.5f));
+			}
+#endif
+		}
     }
     
 #if !defined(NDEBUG)
     if(bDrawDebug){
-        MappableObjectDrawer drawer(GC,offset);
+        MappableObjectDrawer drawer(gc,offset);
         m_mo_quadtree->Traverse(drawer,rect);
     }
 #endif
@@ -736,12 +765,6 @@ void Level::MoveMappableObjects(const CL_Rect &src)
         iter != finder.end(); iter++){
         (*iter)->Move(*this);
     }
-}
-
-
-void Level::DrawFloaters(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC)
-{
-    Draw(src,dst,GC, true);
 }
 
 
