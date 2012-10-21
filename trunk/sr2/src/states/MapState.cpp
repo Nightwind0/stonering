@@ -248,6 +248,9 @@ void StoneRing::MapState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
         GC.clear();
 
     m_pLevel->Draw(src,dst, GC);
+	
+	if(m_bShowDebug)
+		m_pLevel->DrawMOQuadtree(GC,dst.get_top_left()-src.get_top_left());
 }
 
 
@@ -425,9 +428,9 @@ void StoneRing::MapState::MoveMappableObjects()
 {
     if(!m_pLevel) return;
     static uint ticks = 0;
-    CL_Rect rect = CL_Rect(m_LevelX, m_LevelY,
-                                         m_LevelX + m_screen_rect.get_width(),
-                                         m_LevelY + m_screen_rect.get_height());
+    CL_Rect rect = CL_Rect(m_LevelX/32, m_LevelY/32,
+                                         (m_LevelX + m_screen_rect.get_width()/32),
+                                         (m_LevelY + m_screen_rect.get_height())/32);
     m_pLevel->MoveMappableObjects(rect);
     
     if(ticks++ % 4 == 0)

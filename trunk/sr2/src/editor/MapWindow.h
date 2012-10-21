@@ -73,8 +73,8 @@ private:
             HOT,
             POPS,
             FLOATER,
-			FENCE,
-            WATER
+            WATER,
+			ALTER_ZORDER
         };
         
         enum ContextMenu {

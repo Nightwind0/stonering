@@ -269,13 +269,13 @@ void MapComponent::show_floaters ( bool on )
     }
 }
 
-void MapComponent::show_fence ( bool on )
+void MapComponent::show_zorder ( bool on )
 {
     if(m_pLevel){
         if(on)
-            m_pLevel->AddTileVisitor(&m_fence_drawer);
+            m_pLevel->AddTileVisitor(&m_zorder_drawer);
         else
-            m_pLevel->RemoveTileVisitor(&m_fence_drawer);
+            m_pLevel->RemoveTileVisitor(&m_zorder_drawer);
     }
 }
 

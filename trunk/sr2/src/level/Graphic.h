@@ -15,7 +15,7 @@ namespace StoneRing{
         virtual void Update()=0;
         virtual int GetSideBlock() const=0;
         virtual bool IsTile() const=0;
-		virtual short GetZOrder() const = 0;
+		virtual int GetZOrder() const = 0;
 		virtual void Draw(CL_GraphicContext& gc, const CL_Point& offset)=0;
     private:
     };

@@ -44,13 +44,14 @@ OperationGroup::~OperationGroup()
 
 bool OperationGroup::Execute ( shared_ptr< Level > level )
 {
+	bool any_true = false;
     for(std::list<Operation*>::iterator it = m_ops.begin();
         it != m_ops.end(); it++){
-        if(!(*it)->Execute(level))
-            return false;
+        if((*it)->Execute(level))
+            any_true = true;
     }
     
-    return true;
+    return any_true;
 }
 
 void OperationGroup::Undo ( std::tr1::shared_ptr< Level > level )

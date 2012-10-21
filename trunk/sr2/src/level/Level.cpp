@@ -77,13 +77,24 @@ void Tiles::load_attributes(CL_DomNamedNodeMap attributes)
 ///////////////////////////////////////////////////////////////////////////
 
 bool GraphicDrawSort(Graphic* pObj1, Graphic* pObj2){
-    int y1 = pObj1->GetRect().bottom;
-    int y2 = pObj2->GetRect().bottom;
-	
-	if(y1 == y2) 
-		return pObj1->GetZOrder() < pObj2->GetZOrder();
-    
-    return y1 < y2;
+	short z1 = pObj1->GetZOrder();
+	short z2 = pObj2->GetZOrder();
+	if(z1 == z2){
+		if(pObj1->GetRect().get_top_left().x == pObj2->GetRect().get_top_left().x){
+			if(pObj1->IsTile() && pObj2->IsTile()){
+				Tile* pTile1 = dynamic_cast<Tile*>(pObj1);
+				Tile* pTile2 = dynamic_cast<Tile*>(pObj2);
+				return pTile1->GetStackOrder() < pTile2->GetStackOrder();
+			}else{
+				// Compare by pointer, just for consistency
+				return pObj1 < pObj2;
+			}
+		}else{
+			return pObj1->GetRect().get_top_left().x < pObj2->GetRect().get_top_left().x;
+		}
+	}else{
+		return z1 < z2;
+	}
 }
 
 class QTNodeDrawer : public Level::MOQuadtree::OurNodeVisitor {
@@ -487,15 +498,14 @@ CL_Rect Level::calc_tile_bounds( const CL_Rect& src_pixels, const CL_Rect& dst_p
 	return CL_Rect(CL_Point(src_pixels.get_top_left().x/32,src_pixels.get_top_left().y/32),CL_Size(src_pixels.get_width()/32+1,src_pixels.get_height()/32+1));
 }
 
-void Level::Draw(const CL_Rect& src, const CL_Rect& dst, CL_GraphicContext& GC, bool draw_mos, bool draw_floaters, bool draw_borders, bool draw_debug)
+void Level::Draw(const CL_Rect& src, const CL_Rect& dst, CL_GraphicContext& GC, bool draw_mos, bool draw_borders, bool draw_debug)
 {
-	draw_tiles(GC,src,dst,false);
+	draw_floor_tiles(GC,src,dst);
 	draw_object_layer(GC,src,dst,draw_mos,draw_borders, draw_debug);
-	draw_tiles(GC,src,dst,true);
 	//draw_flying_layer(GC,src,dst,
 }
 
-void Level::draw_tiles(CL_GraphicContext& gc, const CL_Rect &src, const CL_Rect &dst, bool floaters)
+void Level::draw_floor_tiles(CL_GraphicContext& gc, const CL_Rect &src, const CL_Rect &dst)
 {
     CL_Point offset(dst.left-src.left,dst.bottom-src.bottom);    
 	CL_Rect tile_bounds = calc_tile_bounds(src,dst);
@@ -515,9 +525,9 @@ void Level::draw_tiles(CL_GraphicContext& gc, const CL_Rect &src, const CL_Rect 
                     i++)
                 {
                     Tile * pTile = *i;
-					if(pTile->IsFence())
+					if(pTile->GetZOffset() != 0)
 						continue;
-                    if(pTile->IsFloater() != floaters)
+                    if(pTile->IsFloater())
                         continue;                    
                     if(pTile->EvaluateCondition())
                     {
@@ -554,8 +564,8 @@ void Level::draw_object_layer(CL_GraphicContext& gc, const CL_Rect &src, const C
 {
     CL_Point offset(dst.left-src.left,dst.bottom-src.bottom);
 
-    Quadtree::Geometry::Vector<float> center(src.get_center().x,src.get_center().y);
-    Quadtree::Geometry::Rect<float> rect(center,src.get_width(),src.get_height());
+    Quadtree::Geometry::Vector<float> center(src.get_center().x/32,src.get_center().y/32);
+    Quadtree::Geometry::Rect<float> rect(center,src.get_width()/32,src.get_height()/32);
     FindMappableObjects finder;
 	
 	std::list<Graphic*> graphics;
@@ -565,7 +575,7 @@ void Level::draw_object_layer(CL_GraphicContext& gc, const CL_Rect &src, const C
 		for(int y=tile_bounds.top;y<=tile_bounds.bottom;y++){
 			if(x >=0 && y >= 0 && x < m_LevelWidth && y < m_LevelHeight){ 
 				for(std::list<Tile*>::const_iterator it = m_tiles[x][y].begin(); it != m_tiles[x][y].end(); it++){
-					if((*it)->IsFence() && (*it)->EvaluateCondition()){
+					if(((*it)->GetZOffset() || (*it)->IsFloater()) && (*it)->EvaluateCondition()){
 						graphics.push_back(*it);
 					}
 				}
@@ -637,14 +647,14 @@ void Level::draw_object_layer(CL_GraphicContext& gc, const CL_Rect &src, const C
 
 
 
-void Level::Move_Mappable_Object(MappableObject *pMO, Direction dir, const CL_Rect& pixel_from, const CL_Rect& pixel_to)
+void Level::Move_Mappable_Object(MappableObject *pMO, Direction dir, const CL_Rect& tiles_from, const CL_Rect& tiles_to)
 {
     assert ( pMO != NULL );
-    Quadtree::Geometry::Vector<float> from_center(pixel_from.get_center().x,pixel_from.get_center().y);
-    Quadtree::Geometry::Rect<float> from_rect(from_center,pixel_from.get_width(),pixel_from.get_height());
+    Quadtree::Geometry::Vector<float> from_center(tiles_from.get_center().x,tiles_from.get_center().y);
+    Quadtree::Geometry::Rect<float> from_rect(from_center,tiles_from.get_width(),tiles_from.get_height());
     
-    Quadtree::Geometry::Vector<float> to_center(pixel_to.get_center().x,pixel_to.get_center().y);
-    Quadtree::Geometry::Rect<float> to_rect(to_center,pixel_to.get_width(),pixel_to.get_height());
+    Quadtree::Geometry::Vector<float> to_center(tiles_to.get_center().x,tiles_to.get_center().y);
+    Quadtree::Geometry::Rect<float> to_rect(to_center,tiles_to.get_width(),tiles_to.get_height());
     m_mo_quadtree->MoveObject(pMO,from_rect,to_rect);
     if(pMO->DoesStep())
         Step(pMO->GetPosition() + dir.ToScreenVector());
@@ -1109,10 +1119,11 @@ void Level::Load_Tile ( Tile * tile)
 
     point.x = tile->GetX();
     point.y = tile->GetY();
+	
+	tile->SetStackOrder(m_tiles[point.x][point.y].size());
 
     m_tiles[ point.x ][point.y].push_back ( tile );
-        // Sort by ZOrder, so that they display correctly
-    m_tiles[ point.x ][point.y].sort( &Tile_Sort_Criterion );
+
 }
 
 void Level::SerializeState ( std::ostream& out )

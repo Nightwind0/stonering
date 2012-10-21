@@ -76,25 +76,6 @@ void TileFloaterDrawer::accept ( CL_GraphicContext& gc, const CL_Point& top_left
 
 
 
-TileFenceDrawer::TileFenceDrawer()
-{
-
-}
-
-TileFenceDrawer::~TileFenceDrawer()
-{
-
-}
-
-void TileFenceDrawer::accept ( CL_GraphicContext& gc, const CL_Point& top_left, Tile* pTile )
-{
-	CL_Rect rect = pTile->GetRect();
-    if(m_indicator.is_null())
-        m_indicator = GraphicsManager::CreateSprite("Sprites/System/Fence",false);
-    if(pTile->IsFence())
-        m_indicator.draw(gc,top_left.x+rect.get_top_left().x,top_left.y + 16 +rect.get_top_left().y);
-}
-
 
 TileHotDrawer::TileHotDrawer()
 {
@@ -108,9 +89,9 @@ TileHotDrawer::~TileHotDrawer()
 
 void TileHotDrawer::accept ( CL_GraphicContext& gc, const CL_Point& top_left, Tile* pTile )
 {
-	CL_Rect rect = pTile->GetRect();
+	CL_Point tile_pt = pTile->GetRect().get_top_left();
     if(pTile->IsHot()){
-        CL_Rect rect = CL_Rect(top_left+rect.get_top_left(),CL_Size(32,32));
+        CL_Rect rect = CL_Rect(top_left+tile_pt,CL_Size(32,32));
         CL_Draw::fill(gc,rect,CL_Colorf(1.0,0.0f,0.0f,0.4));
     }
 }
@@ -176,6 +157,26 @@ void TileMonsterRegionDrawer::accept( CL_GraphicContext& gc, const CL_Point& top
 		point += CL_Point(16,24);
 		m_font.set_color(get_color(pTile->GetMonsterRegion()));
 		m_font.draw_text(gc,point, IntToString(pTile->GetMonsterRegion()));
+	}
+}
+
+TileZOrderDrawer::TileZOrderDrawer()
+{
+	m_font = GraphicsManager::GetFont("mm_white");
+}
+
+TileZOrderDrawer::~TileZOrderDrawer()
+{
+
+}
+
+void TileZOrderDrawer::accept( CL_GraphicContext& gc, const CL_Point& top_left, Tile* pTile )
+{
+	if(pTile->GetZOffset() != 0){
+		CL_Pointf point(top_left.x,top_left.y);
+		point += pTile->GetRect().get_top_left();
+		std::string zorder = "+" + IntToString(pTile->GetZOffset());
+		m_font.draw_text(gc,point, zorder,Font::TOP_LEFT);
 	}
 }
 

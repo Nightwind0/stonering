@@ -56,7 +56,7 @@ public:
 		return false;
 	}
 	virtual CL_Rect GetRect() const;
-	virtual short 	GetZOrder() const { return -1; }
+	virtual int 	GetZOrder() const { return m_pos.y * 2 + 1; }
 
 	virtual void    OnStep();
 	virtual void    Stop();
