@@ -362,7 +362,7 @@ namespace Quadtree
     template <class T,unsigned int max_depth, class Scalar, int max_object_radius, bool delete_empty_nodes>
     Node<T,max_depth,Scalar,max_object_radius,delete_empty_nodes>::~Node()
     {
-	if(m_pTopleft) delete m_pTopleft;
+		if(m_pTopleft) delete m_pTopleft;
         if(m_pTopright) delete m_pTopright;
         if(m_pBottomleft) delete m_pBottomleft;
         if(m_pBottomright) delete m_pBottomright;
@@ -633,7 +633,7 @@ namespace Quadtree
     {
         AutoSetter<bool> setter(m_bNoRemovals,true,false);
 		
-	visitor.Visit(this);
+		visitor.Visit(this);
 		
         if (m_pTopleft != NULL) m_pTopleft->TraverseNodes(visitor);
         if (m_pTopright != NULL) m_pTopright->TraverseNodes(visitor);
@@ -796,7 +796,7 @@ namespace Quadtree
 
         m_pParent = pParent;
         m_quad = quad;
-	m_depth = calculate_depth();
+		m_depth = calculate_depth();
 
         m_objects.clear();
     }

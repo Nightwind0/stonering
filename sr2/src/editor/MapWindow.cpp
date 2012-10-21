@@ -27,7 +27,39 @@
 
 namespace StoneRing { 
 	
-	    
+	
+	class AlterZOffsetOperation : public Operation {
+	public:
+		AlterZOffsetOperation(){}
+		virtual ~AlterZOffsetOperation(){}
+		virtual Operation* clone() {
+			return new AlterZOffsetOperation();
+		}
+		virtual bool Execute(shared_ptr<Level> level){
+			const std::list<Tile*>& tiles = level->GetTilesAt(m_data.m_level_pt);
+			if(!tiles.empty()){
+				Tile* pTile = tiles.back(); 
+				if(m_data.m_mod_state&Operation::SHIFT)
+					pTile->SetZOffset(pTile->GetZOffset() -1);
+				else
+					pTile->SetZOffset(pTile->GetZOffset() + 1);
+				return true;
+			}
+			return false;
+		}
+		virtual void Undo(shared_ptr<Level> level){
+			const std::list<Tile*>& tiles = level->GetTilesAt(m_data.m_level_pt);
+			if(!tiles.empty()){
+				Tile* pTile = tiles.back(); 
+				if(m_data.m_mod_state&Operation::SHIFT)
+					pTile->SetZOffset(pTile->GetZOffset() + 1);
+				else
+					pTile->SetZOffset(pTile->GetZOffset() - 1);				
+			
+			}
+		}
+	};
+	
     class DeleteTileOperation: public Operation {
     public:
         DeleteTileOperation(){}
@@ -521,7 +553,7 @@ void MapWindow::construct_toolbar()
         {"Media/Editor/Images/hot.png","",HOT,true},
         {"Media/Editor/Images/pop.png","",POPS,true},
         {"Media/Editor/Images/floater.png","",FLOATER,true},
-		{"Media/Editor/Images/fence.png","",FENCE,true}
+		{"Media/Editor/Images/fence.png","",ALTER_ZORDER,true}
     };
     
     for(int i=0;i<sizeof(tools)/sizeof(Tool);i++){
@@ -1122,6 +1154,16 @@ void MapWindow::on_toolbar_item(CL_ToolBarItem item)
     reset_toolbar_toggles(item);
     
     switch(item.get_id()){
+		case ALTER_ZORDER:{
+			static AlterZOffsetOperation op;
+			static BasicOperationGroup<AlterZOffsetOperation>  group_op;
+			SetOperation(Operation::CLICK,&op);
+			SetOperation(Operation::DRAG,&group_op);
+			SetOperation(Operation::CLICK|Operation::SHIFT,&op);
+			SetOperation(Operation::DRAG|Operation::SHIFT,&group_op);
+			m_pMap->show_zorder(true);
+			break;
+		}
         case COPY_TILE:{
 			CopyTileOperation * op = new CopyTileOperation(*m_state);
 			SetOperation(Operation::CLICK,op);
@@ -1152,7 +1194,7 @@ void MapWindow::on_toolbar_item(CL_ToolBarItem item)
             m_pMap->show_direction_blocks(toggled);
             m_pMap->show_floaters(toggled);
 			m_pMap->show_monster_region(toggled);
-			m_pMap->show_fence(toggled);
+			m_pMap->show_zorder(toggled);
             m_pMap->request_repaint();
             
             break;
@@ -1164,7 +1206,6 @@ void MapWindow::on_toolbar_item(CL_ToolBarItem item)
         case HOT:
         case POPS:
         case FLOATER:
-		case FENCE:
             int flag = Tile::TIL_HOT;
             if(item.get_id() == BLOCK_WEST)
                 flag = Tile::TIL_BLK_WEST;
@@ -1180,8 +1221,6 @@ void MapWindow::on_toolbar_item(CL_ToolBarItem item)
                 flag = Tile::TIL_POPS;
             else if(item.get_id() == FLOATER)
                 flag = Tile::TIL_FLOATER;
-			else if(item.get_id() == FENCE)
-				flag = Tile::TIL_FENCE;
           
       
             block_op.SetBlock( flag );
@@ -1198,9 +1237,7 @@ void MapWindow::on_toolbar_item(CL_ToolBarItem item)
                 m_pMap->show_floaters(true);
             }else if(flag != Tile::TIL_HOT){
                 m_pMap->show_direction_blocks(true);
-            }else if(flag != Tile::TIL_FENCE){
-				m_pMap->show_fence(true);
-			}
+            }
             m_pMap->request_repaint();
             break;
         }

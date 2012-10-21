@@ -38,13 +38,13 @@ namespace StoneRing {
 		CL_Sprite m_indicator;
 	};
 
-	class TileFenceDrawer : public Tile::Visitor {
+	class TileZOrderDrawer : public Tile::Visitor {
 	public:
-		TileFenceDrawer ( );
-		virtual ~TileFenceDrawer ( );
+		TileZOrderDrawer ( );
+		virtual ~TileZOrderDrawer ( );
 		virtual void accept(CL_GraphicContext& gc, const CL_Point& top_left, Tile* pTile);
 	private:
-		CL_Sprite m_indicator;
+		Font m_font;
 	};
 		
 	

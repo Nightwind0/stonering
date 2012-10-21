@@ -134,7 +134,7 @@ int SideBlock::GetSideBlock() const
 }
 
 
-Tile::Tile():m_pCondition(NULL),m_pScript(NULL),m_ZOrder(0),cFlags(0),m_monster_region(-1)
+Tile::Tile():m_pCondition(NULL),m_pScript(NULL),m_ZOffset(0),cFlags(0),m_monster_region(-1)
 {
 }
 
@@ -144,20 +144,20 @@ void Tile::load_attributes(CL_DomNamedNodeMap attributes)
     m_X = get_required_int("xpos",attributes);
     m_Y = get_required_int("ypos",attributes);
 
-    m_ZOrder = get_implied_int("zorder",attributes,0);
+    m_ZOffset = get_implied_int("zoffset",attributes,0);
 
     bool floater = get_implied_bool("floater",attributes,false);
     bool hot = get_implied_bool("hot",attributes,false);
     bool pops = get_implied_bool("pops",attributes,false);
 	bool fence = get_implied_bool("fence",attributes,false);
 	
+	if(fence) m_ZOffset = 1;
+	
 	m_monster_region = get_implied_int("monster_region",attributes,-1);
 
     if (floater) cFlags |= TIL_FLOATER;
     if (hot) cFlags |= TIL_HOT;
     if (pops) cFlags |= TIL_POPS;
-	if (fence) cFlags |= TIL_FENCE;
-
 }
 
 
@@ -219,7 +219,6 @@ bool Tile::handle_element(Element::eElement element, Element * pElement)
 void Tile::load_finished()
 {
     if (m_tilemap == NULL && m_sprite.is_null()) throw CL_Exception("Tile didn't have tilemap or sprite ref.");
-	if (IsFloater() && IsFence()) throw CL_Exception("Tile can't be both a floater and a fence");
 }
 
 void Tile::Activate() // Call any attributemodifier
@@ -317,11 +316,10 @@ CL_DomElement Tile::CreateDomElement(CL_DomDocument& doc)const
 
     element.set_attribute("xpos", IntToString ( m_X ) );
     element.set_attribute("ypos", IntToString ( m_Y ) );
-    if(m_ZOrder >0 ) element.set_attribute("zorder", IntToString (m_ZOrder ) );
+    if(m_ZOffset >0 ) element.set_attribute("zoffset", IntToString (m_ZOffset ) );
     if(IsFloater()) element.set_attribute("floater", "true");
     if(IsHot())     element.set_attribute("hot", "true");
     if(Pops())      element.set_attribute("pops","true");
-	if(IsFence())   element.set_attribute("fence","true");
 	
 	if(m_monster_region >= 0){
 		element.set_attribute("monster_region",IntToString(m_monster_region));

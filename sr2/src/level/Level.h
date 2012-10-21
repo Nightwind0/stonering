@@ -104,7 +104,7 @@ public:
     enum eFlags { 
 		TIL_SPRITE = 1, 
 		TIL_FLOATER = (1<<1),
-		TIL_FENCE = (1<<2),
+		TIL_WATER = (1<<2),
 		TIL_HOT = (1<<3), 
 		TIL_BLK_NORTH = (1<<4), 
 		TIL_BLK_SOUTH = (1<<5),
@@ -122,16 +122,13 @@ public:
     virtual eElement WhichElement() const {
         return ETILE;
     }
-    inline short GetZOrder() const {
-        return m_ZOrder;
+    inline int GetZOrder() const {
+        return (int(m_Y+m_ZOffset) * 2)*32 + (IsFloater()*100000);
     }
 
     inline bool IsFloater() const {
         return (cFlags & TIL_FLOATER) != 0;
     }
-    inline bool IsFence() const  {
-		return cFlags & TIL_FENCE;
-	}
     bool EvaluateCondition() const;
     inline bool HasScript() const {
         return m_pScript != NULL;
@@ -167,8 +164,6 @@ public:
     inline bool Pops() const {
         return (cFlags & TIL_POPS) != 0;
     }
-
-
 	void Draw(CL_GraphicContext& gc, const CL_Point& dst);
     
     virtual void Update();
@@ -176,6 +171,13 @@ public:
     inline bool IsTile() const {
         return true;
     }
+    void SetStackOrder(ushort order){
+		m_stack_order = order;
+	}
+	
+    short GetZOffset() const { return m_ZOffset; }	
+	
+	ushort GetStackOrder() const { return m_stack_order; }
 
 protected:
     virtual bool handle_element(eElement element, Element * pElement);
@@ -188,9 +190,10 @@ protected:
 
     ScriptElement *m_pCondition;
     ScriptElement *m_pScript;
-    ushort m_ZOrder;
+    ushort m_ZOffset;
     ushort m_X;
     ushort m_Y;
+	ushort m_stack_order;
 	char   m_monster_region;
 
     unsigned char cFlags;
@@ -209,7 +212,7 @@ public:
 			*pTile->m_pCondition = *m_pCondition;
 		if(m_pScript)
 			*pTile->m_pScript = *m_pScript;
-		pTile->m_ZOrder = m_ZOrder;
+		pTile->m_ZOffset = m_ZOffset;
 		pTile->m_X = m_X;
 		pTile->m_Y = m_Y;
 		pTile->m_monster_region = m_monster_region;
@@ -233,14 +236,13 @@ public:
     }
     void SetFlag(int flag) {
         cFlags |= flag;
-		if(flag == TIL_FLOATER)
-			UnsetFlag(TIL_FENCE);
-		else if(flag == TIL_FENCE)
-			UnsetFlag(TIL_FLOATER);
     }
     void UnsetFlag(int flag) {
         cFlags &= (~flag);
     }
+    void SetZOffset(short z){
+		if(z >= 0) m_ZOffset = z;
+	}
 #endif
 };
 
@@ -332,7 +334,7 @@ public:
     }
 
     virtual void Draw(const CL_Rect &src, const CL_Rect &dst,
-                      CL_GraphicContext& GC , bool mappable_objects = true,  bool floaters = true, bool draw_borders=false, bool draw_debug=false);
+                      CL_GraphicContext& GC , bool mappable_objects = true,  bool draw_borders=false, bool draw_debug=false);
     virtual void AddTileVisitor(Tile::Visitor * pVisitor);
     virtual void RemoveTileVisitor(Tile::Visitor * pVisitor);
     void MoveMappableObjects(const CL_Rect &src);
@@ -415,7 +417,7 @@ protected:
     virtual void load_attributes(CL_DomNamedNodeMap attributes);
     virtual void load_finished();
 	
-	void draw_tiles(CL_GraphicContext& gc, const CL_Rect& src, const CL_Rect& dst, bool draw_floaters);
+	void draw_floor_tiles(CL_GraphicContext& gc, const CL_Rect& src, const CL_Rect& dst);
 	void draw_object_layer(CL_GraphicContext& gc, const CL_Rect& src, const CL_Rect& dst, bool draw_mos, bool draw_debug, bool draw_borders);
 
 
@@ -423,6 +425,7 @@ protected:
     bool Contains_Mappable_Objects(const CL_Point &point) const;
     bool Contains_Solid_Mappable_Object(const CL_Point &point) const;
     bool Check_Direction_Block(MappableObject* pMO, Direction dir,const CL_Point &tile, const CL_Point &dest_tile)const;
+	MOQuadtree::Vector Translate_Point(const MOQuadtree::Vector& vec);
 
     void Move_Mappable_Object(MappableObject* pMO, Direction dir, const CL_Rect& from, const CL_Rect& to);
     void Add_Mappable_Object(MappableObject* pMO);

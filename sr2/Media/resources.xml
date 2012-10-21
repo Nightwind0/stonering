@@ -167,7 +167,7 @@
             <sample name="Gold" file="Sounds/coin3.wav"/>
         </section>
         <section name="Levels">
-                <string name="examplelevel" value="town1.xml" />
+                <string name="examplelevel" value="town2.xml" />
                 <string name="octaviaInn" value="town1.xml" />
                 <string name="monster_test" value="monster_test.xml" />
         </section>
@@ -175,6 +175,37 @@
 			<sprite name="inq_town">
 				<image file="Tiles/inq_town1.png"/>
 			</sprite>
+			<sprite name="inq_town2">
+				<image file="Tiles/inq_town2.png"/>
+			</sprite>
+			<sprite name="inq_town3">
+				<image file="Tiles/inq_town3.png"/>
+			</sprite>
+			<sprite name="inq_town4">
+				<image file="Tiles/inq_town4.png"/>
+			</sprite>
+			<sprite name="inq_town5">
+				<image file="Tiles/inq_town5.png"/>
+			</sprite>			
+			<sprite name="inq_ruins">
+				<image file="Tiles/inq_ruins.png"/>
+			</sprite>			
+			<sprite name="doors">
+				<image file="Tiles/doors.png"/>
+			</sprite>
+			<sprite name="dirt">
+				<image file="Tiles/dirt.png"/>
+			</sprite>			
+			<sprite name="mud">
+				<image file="Tiles/mud.png"/>
+			</sprite>			
+			<sprite name="road">
+				<image file="Tiles/road.png"/>
+			</sprite>
+			<sprite name="road">
+				<image file="Tiles/road2.png"/>
+			</sprite>			
+			<!--
                 <sprite name="roofs">
                         <image file="Tiles/roofs.png"/>
                 </sprite>
@@ -184,10 +215,13 @@
                 <sprite name="grass">
                         <image file="Tiles/grass.png"/>
                 </sprite>
+                <sprite name="grass2">
+                        <image file="Tiles/grass2.png"/>
+                </sprite>				
                 <sprite name="rocks">
                         <image file="Tiles/rock.png"/>
                 </sprite>
-
+				-->
         </section>
         <section name="Backdrops">
                 <image name="grasslands">
