@@ -39,7 +39,7 @@ public:
 private:
     void create_menu();
     void on_tilemap_clicked(int tilemap);
-    void on_tilemap_change(CL_Sprite sprite);
+    void on_tilemap_change(CL_Image sprite);
     void on_vert_scroll();
     void on_horiz_scroll();
     

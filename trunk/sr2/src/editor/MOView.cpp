@@ -20,6 +20,8 @@
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
 
+#ifdef SR2_EDITOR
+
 namespace StoneRing  { 
 
 MOView::MOView(CL_GUIComponent* parent):CL_GUIComponent(parent)
@@ -105,3 +107,5 @@ void MOView::Clear()
 
 
 }
+
+#endif

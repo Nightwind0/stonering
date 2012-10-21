@@ -24,6 +24,8 @@
 #include "MonsterRef.h"
 #include "MonsterGroupEditWindow.h"
 
+#ifdef SR2_EDITOR
+
 namespace StoneRing { 
 
 MonsterRegionEditWindow::MonsterRegionEditWindow(CL_GUIComponent* component, const CL_GUITopLevelDescription& desc):CL_Window(component,desc) {
@@ -261,4 +263,8 @@ bool MonsterRegionEditWindow::on_close()
 
 
 
+
+	
 }
+
+#endif

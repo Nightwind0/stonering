@@ -99,11 +99,12 @@ TileSelector::~TileSelector()
 
 }
 
-void TileSelector::SetTilemap ( CL_Sprite image, const std::string& name )
+void TileSelector::SetTilemap ( CL_Image image, const std::string& name )
 {
     m_name = name;
     m_image = image;    
     m_selection = false;
+	request_repaint();
 }
 
 CL_Point TileSelector::get_offset() const 

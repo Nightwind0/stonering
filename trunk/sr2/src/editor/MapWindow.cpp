@@ -39,7 +39,7 @@ namespace StoneRing {
 			const std::list<Tile*>& tiles = level->GetTilesAt(m_data.m_level_pt);
 			if(!tiles.empty()){
 				Tile* pTile = tiles.back(); 
-				if(m_data.m_mod_state&Operation::SHIFT)
+				if(m_data.m_mod_state&Operation::CTRL)
 					pTile->SetZOffset(pTile->GetZOffset() -1);
 				else
 					pTile->SetZOffset(pTile->GetZOffset() + 1);
@@ -51,7 +51,7 @@ namespace StoneRing {
 			const std::list<Tile*>& tiles = level->GetTilesAt(m_data.m_level_pt);
 			if(!tiles.empty()){
 				Tile* pTile = tiles.back(); 
-				if(m_data.m_mod_state&Operation::SHIFT)
+				if(m_data.m_mod_state&Operation::CTRL)
 					pTile->SetZOffset(pTile->GetZOffset() + 1);
 				else
 					pTile->SetZOffset(pTile->GetZOffset() - 1);				
@@ -1159,8 +1159,8 @@ void MapWindow::on_toolbar_item(CL_ToolBarItem item)
 			static BasicOperationGroup<AlterZOffsetOperation>  group_op;
 			SetOperation(Operation::CLICK,&op);
 			SetOperation(Operation::DRAG,&group_op);
-			SetOperation(Operation::CLICK|Operation::SHIFT,&op);
-			SetOperation(Operation::DRAG|Operation::SHIFT,&group_op);
+			SetOperation(Operation::CLICK|Operation::CTRL,&op);
+			SetOperation(Operation::DRAG|Operation::CTRL,&group_op);
 			m_pMap->show_zorder(true);
 			break;
 		}

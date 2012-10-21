@@ -24,6 +24,8 @@
 #include "MonsterElement.h"
 #include <Monster.h>
 
+#ifdef SR2_EDITOR
+
 namespace StoneRing  {
 	
 void MonsterGroupEditWindow::BattleWindow::SetMonsterGroup( MonsterGroup* group )
@@ -459,3 +461,5 @@ void MonsterGroupEditWindow::on_done()
 
 
 }
+
+#endif

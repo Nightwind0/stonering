@@ -71,7 +71,7 @@ bool Tilemap::handle_element(Element::eElement element, Element * pElement)
 void Tilemap::load_attributes(CL_DomNamedNodeMap attributes)
 {
     std::string name = get_required_string("mapname",attributes);
-    m_sprite = GraphicsManager::GetTileMap(name);
+    m_image = GraphicsManager::GetTileMap(name);
     m_X = get_required_int("mapx",attributes);
     m_Y = get_required_int("mapy",attributes);
 #if SR2_EDITOR
@@ -265,7 +265,7 @@ void Tile::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC)
 
     if ( !IsSprite() )
     {
-        CL_Sprite tilemap = m_tilemap->GetTileMap();
+        CL_Image tilemap = m_tilemap->GetTileMap();
 
         //        void draw(  const CL_Rect& src, const CL_Rect& dest, CL_GraphicContext* context = 0);
         int mapx, mapy;
