@@ -19,6 +19,8 @@
 
 #include "Operation.h"
 
+#ifdef SR2_EDITOR
+
 namespace StoneRing  {
 
 Operation::Operation()
@@ -91,3 +93,5 @@ void OperationGroup::SetData ( const StoneRing::Operation::Data& data )
 
 }
 
+
+#endif

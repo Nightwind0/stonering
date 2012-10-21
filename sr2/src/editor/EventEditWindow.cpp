@@ -20,7 +20,8 @@
 #include "EventEditWindow.h"
 #include "Event.h"
 #include "ScriptEditWindow.h"
-#include <../src/ClanLib-2.3.4/Sources/API/Core/System/cl_platform.h>
+
+#ifdef SR2_EDITOR
 
 namespace StoneRing { 
 
@@ -213,3 +214,5 @@ Event* EventEditWindow::GetEvent() const
 
 
 }
+
+#endif

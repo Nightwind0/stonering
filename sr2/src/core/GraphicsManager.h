@@ -65,7 +65,7 @@ namespace StoneRing
 		static CL_Sprite  CreateMonsterSprite ( const std::string& monster, const std::string& sprite);
 		static CL_Sprite  CreateCharacterSprite ( const std::string& player, const std::string& sprite);
 		static CL_Sprite  CreateEquipmentSprite ( EquipmentSpriteType type, const std::string& sprite_name); 
-		static CL_Sprite  GetTileMap ( const std::string& name );
+		static CL_Image   GetTileMap ( const std::string& name );
 		static CL_Image   GetBackdrop (const std::string& name );
 		static CL_Image   GetIcon ( const std::string& icon );
 		static CL_Sprite  GetPortraits ( const std::string& character);
@@ -73,7 +73,7 @@ namespace StoneRing
 		
 		
 		// Returns the name associated with this surface
-		static std::string LookUpMapWithSprite( CL_Sprite );
+		static std::string LookUpMapWithImage( CL_Image );
 		
 		static Font        GetFont(const std::string& name);
 		static Font        GetFont( Overlay overlay, const std::string& type );
@@ -122,7 +122,7 @@ namespace StoneRing
 		static CL_Colorf          LoadColor(CL_ResourceManager& resources, const std::string& path);
 		
 		std::map<Overlay,CL_Image>      m_overlay_map;
-		std::map<std::string,CL_Sprite> m_tile_map;
+		std::map<std::string,CL_Image>  m_tile_map;
 		std::map<std::string,Font>      m_font_map;
 		std::map<std::string,CL_Image>  m_icon_map;
 		std::map<Overlay,std::map<std::string,std::string> > m_overlay_font_map;

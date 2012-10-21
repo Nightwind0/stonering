@@ -1136,6 +1136,13 @@ void Level::DeserializeState ( std::istream& in )
 }
 
 
+MappablePlayer* Level::GetPlayer() const
+{
+	FindPlayer finder;
+	m_mo_quadtree->TraverseAll(finder);
+	return finder.m_player;
+}
+
 #ifdef SR2_EDITOR
 
 class MappableObjectXMLWriter: public Level::MOQuadtree::OurVisitor {
@@ -1213,12 +1220,7 @@ bool Level::TilesAt(const CL_Point& pos) const
 }
 
 
-MappablePlayer* Level::GetPlayer() const
-{
-	FindPlayer finder;
-	m_mo_quadtree->TraverseAll(finder);
-	return finder.m_player;
-}
+
 
 
 

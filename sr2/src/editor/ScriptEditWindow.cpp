@@ -20,6 +20,8 @@
 #include "ScriptEditWindow.h"
 #include "IApplication.h"
 
+#ifdef SR2_EDITOR
+
 namespace StoneRing { 
 
 ScriptEditWindow::ScriptEditWindow(CL_GUIManager* parent,const CL_GUITopLevelDescription &desc):CL_Window(parent,desc) {
@@ -103,3 +105,5 @@ std::string ScriptEditWindow::GetScriptText() const
 
 
 }
+
+#endif

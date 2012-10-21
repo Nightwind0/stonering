@@ -77,7 +77,7 @@ public:
     TileSelector(CL_GUIComponent* parent);
     virtual ~TileSelector();
     CL_Size get_image_size() const { return m_image.get_size(); }
-    void SetTilemap(CL_Sprite image, const std::string& name);
+    void SetTilemap(CL_Image image, const std::string& name);
     CL_Point get_offset() const;
     void set_offset(const CL_Point& pt);
     void SetMapEditor(MapEditorState* state) { m_state = state; }
@@ -85,7 +85,7 @@ private:
     void on_render(CL_GraphicContext& gc, const CL_Rect& rect);
     bool on_click(const CL_InputEvent& event);
     
-    CL_Sprite m_image;
+    CL_Image m_image;
     CL_Point m_offset;
     std::string m_name;
     AddTileOperation m_op;

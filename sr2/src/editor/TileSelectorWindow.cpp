@@ -23,6 +23,8 @@
 #include "GraphicsManager.h"
 #include <Level.h>
 
+#ifdef SR2_EDITOR
+
 namespace StoneRing { 
 
 TileSelectorWindow::TileSelectorWindow(CL_GUIComponent* owner, const CL_GUITopLevelDescription& desc):CL_Window(owner,desc)
@@ -60,7 +62,7 @@ TileSelectorWindow::~TileSelectorWindow()
 }
 
 
-void TileSelectorWindow::on_tilemap_change(CL_Sprite image)
+void TileSelectorWindow::on_tilemap_change(CL_Image image)
 {
 	// TODO: Save and restore positions when switching around
 	m_pVertScroll->set_position(0);
@@ -83,9 +85,10 @@ void TileSelectorWindow::on_tilemap_clicked ( int tilemap )
     
     size_t slash = tilename.find_first_of('/',0);
     tilename.erase(0,slash+1);
-    CL_Sprite sprite = GraphicsManager::GetTileMap(tilename);
-    m_pTileSelector->SetTilemap(sprite,tilename);    
-    on_tilemap_change(sprite);
+    CL_Image image = GraphicsManager::GetTileMap(tilename);
+    m_pTileSelector->SetTilemap(image,tilename);    
+    on_tilemap_change(image);
+	m_pTileSelector->request_repaint();
 }
 
 void TileSelectorWindow::on_horiz_scroll()
@@ -129,3 +132,5 @@ void TileSelectorWindow::create_menu()
 
 
 }
+
+#endif

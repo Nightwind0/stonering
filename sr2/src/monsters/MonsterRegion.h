@@ -22,6 +22,7 @@ namespace StoneRing
 
             float GetEncounterRate() const {return m_encounter_rate;}
             std::string GetBackdrop() const { return m_backdrop; }
+			uchar GetId() const { return m_id; }            
         private:
             virtual bool handle_element(eElement, Element * );
             virtual void load_attributes(CL_DomNamedNodeMap);
@@ -45,7 +46,6 @@ namespace StoneRing
 			void SetBackdrop(const std::string& backdrop){ m_backdrop = backdrop; }
 			void AddMonsterGroup(MonsterGroup* group){ m_monster_groups.push_back(group); }
 			void SetId(uchar id){ m_id = id; }
-			uchar GetId() const { return m_id; }
 #endif
     };
 

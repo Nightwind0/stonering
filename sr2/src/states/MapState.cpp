@@ -248,9 +248,10 @@ void StoneRing::MapState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
         GC.clear();
 
     m_pLevel->Draw(src,dst, GC);
-	
+#ifndef NDEBUG
 	if(m_bShowDebug)
 		m_pLevel->DrawMOQuadtree(GC,dst.get_top_left()-src.get_top_left());
+#endif
 }
 
 

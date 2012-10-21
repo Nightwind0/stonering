@@ -76,13 +76,13 @@ public:
         return m_Y;
     }
 
-    inline CL_Sprite  GetTileMap() const {
-        return m_sprite;
+    inline CL_Image GetTileMap() const {
+        return m_image;
     }
 #if SR2_EDITOR
     CL_DomElement CreateDomElement(CL_DomDocument&)const;
-    void SetTilemap(CL_Sprite sprite,const CL_String& name, ushort X, ushort Y) {
-        m_sprite = sprite;
+    void SetTilemap(CL_Image image,const CL_String& name, ushort X, ushort Y) {
+        m_image = image;
         m_sprite_string = name;
         m_X = X;
         m_Y = Y;
@@ -93,7 +93,7 @@ private:
 protected:
     virtual bool handle_element(eElement element, Element * pElement );
     virtual void load_attributes(CL_DomNamedNodeMap attributes);
-    CL_Sprite m_sprite;
+    CL_Image m_image;
     ushort m_X;
     ushort m_Y;
 };

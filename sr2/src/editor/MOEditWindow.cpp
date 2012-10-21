@@ -26,6 +26,8 @@
 #include "ScriptEditWindow.h"
 #include "EventEditWindow.h"
 
+#ifdef SR2_EDITOR
+
 namespace StoneRing { 
     
 class EditorMappableObject : public MappableObjectElement {
@@ -577,3 +579,5 @@ void MOEditWindow::sync_to_mo()
 
 
 }
+
+#endif

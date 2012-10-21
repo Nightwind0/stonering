@@ -172,39 +172,39 @@
                 <string name="monster_test" value="monster_test.xml" />
         </section>
         <section name="Tilemaps">
-			<sprite name="inq_town">
-				<image file="Tiles/inq_town1.png"/>
-			</sprite>
-			<sprite name="inq_town2">
-				<image file="Tiles/inq_town2.png"/>
-			</sprite>
-			<sprite name="inq_town3">
-				<image file="Tiles/inq_town3.png"/>
-			</sprite>
-			<sprite name="inq_town4">
-				<image file="Tiles/inq_town4.png"/>
-			</sprite>
-			<sprite name="inq_town5">
-				<image file="Tiles/inq_town5.png"/>
-			</sprite>			
-			<sprite name="inq_ruins">
-				<image file="Tiles/inq_ruins.png"/>
-			</sprite>			
-			<sprite name="doors">
-				<image file="Tiles/doors.png"/>
-			</sprite>
-			<sprite name="dirt">
-				<image file="Tiles/dirt.png"/>
-			</sprite>			
-			<sprite name="mud">
-				<image file="Tiles/mud.png"/>
-			</sprite>			
-			<sprite name="road">
-				<image file="Tiles/road.png"/>
-			</sprite>
-			<sprite name="road">
-				<image file="Tiles/road2.png"/>
-			</sprite>			
+			<image name="inq_town">
+				<image-file file="Tiles/inq_town1.png"/>
+			</image>
+			<image name="inq_town2">
+				<image-file file="Tiles/inq_town2.png"/>
+			</image>
+			<image name="inq_town3">
+				<image-file file="Tiles/inq_town3.png"/>
+			</image>
+			<image name="inq_town4">
+				<image-file file="Tiles/inq_town4.png"/>
+			</image>
+			<image name="inq_town5">
+				<image-file file="Tiles/inq_town5.png"/>
+			</image>			
+			<image name="inq_ruins">
+				<image-file file="Tiles/inq_ruins.png"/>
+			</image>			
+			<image name="doors">
+				<image-file file="Tiles/doors.png"/>
+			</image>
+			<image name="dirt">
+				<image-file file="Tiles/dirt.png"/>
+			</image>			
+			<image name="mud">
+				<image-file file="Tiles/mud.png"/>
+			</image>			
+			<image name="road">
+				<image-file file="Tiles/road.png"/>
+			</image>
+			<image name="road">
+				<image-file file="Tiles/road2.png"/>
+			</image>			
 			<!--
                 <sprite name="roofs">
                         <image file="Tiles/roofs.png"/>
