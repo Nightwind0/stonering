@@ -324,7 +324,7 @@ void MonsterGroupEditWindow::on_move_right()
 void MonsterGroupEditWindow::on_monster_count_changed()
 {
 	// Calc square root and set cells and rows
-	float sqr = sqrt(m_monster_count->get_value());
+	float sqr = sqrt((float)m_monster_count->get_value());
 	int cols = ceil(sqr);
 	m_col_count->set_value(cols);
 	m_row_count->set_value(ceil(float(m_monster_count->get_value()) / float(cols)));

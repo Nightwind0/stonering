@@ -162,6 +162,7 @@ public:
     virtual bool Execute(shared_ptr<Level> level){
         level->RemoveMappableObject(m_original_mo);
         level->AddMappableObject(m_new_mo);
+		return true;
     }
     virtual void Undo(shared_ptr<Level> level){
         level->RemoveMappableObject(m_new_mo);
