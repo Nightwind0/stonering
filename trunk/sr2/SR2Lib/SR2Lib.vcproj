@@ -432,6 +432,10 @@
 				Name="Level"
 				>
 				<File
+					RelativePath="..\src\level\DebugTileVisitors.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\src\level\Event.cpp"
 					>
 				</File>
@@ -541,6 +545,14 @@
 				</File>
 				<File
 					RelativePath="..\src\states\ExperienceState.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\GameoverState.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\GameoverState.h"
 					>
 				</File>
 				<File
@@ -856,6 +868,30 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\src\editor\EventEditWindow.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\src\editor\EventEditWindow.h"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\src\editor\MapComponent.cpp"
 					>
 					<FileConfiguration
@@ -936,6 +972,30 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\src\editor\MapWindow.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\src\editor\MapWindow.h"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath="..\src\editor\MOEditWindow.cpp"
 					>
 					<FileConfiguration
@@ -966,6 +1026,54 @@
 							Name="VCCustomBuildTool"
 						/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\src\editor\MonsterGroupEditWindow.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\src\editor\MonsterGroupEditWindow.h"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\src\editor\MonsterRegionEditWindow.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\src\editor\MonsterRegionEditWindow.h"
+					>
 					<FileConfiguration
 						Name="Release|Win32"
 						ExcludedFromBuild="true"
@@ -1046,6 +1154,30 @@
 							Name="VCCustomBuildTool"
 						/>
 					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\src\editor\ScriptEditWindow.cpp"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\src\editor\ScriptEditWindow.h"
+					>
 					<FileConfiguration
 						Name="Release|Win32"
 						ExcludedFromBuild="true"
