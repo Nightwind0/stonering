@@ -236,6 +236,8 @@ stonering_SOURCES =	src/Application.cpp \
 			src/editor/MonsterRegionEditWindow.h \
 			src/editor/MonsterGroupEditWindow.h \
 			src/editor/MonsterGroupEditWindow.cpp \
+			src/editor/TileEditor.cpp \
+			src/editor/TileEditor.h \
 			src/level/DebugTileVisitors.cpp
 
 

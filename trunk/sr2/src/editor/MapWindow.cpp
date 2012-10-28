@@ -22,6 +22,7 @@
 #include "MapEditorState.h"
 #include "MonsterRegionEditWindow.h"
 #include "MonsterRegion.h"
+#include "TileEditor.h"
 
 #if SR2_EDITOR
 
@@ -474,8 +475,12 @@ void MapWindow::construct_menu()
     CL_PopupMenu add_columns_sub, add_rows_sub;
     add_columns_sub.insert_item("Add 1").func_clicked().set(this,&MapWindow::on_edit_grow_column);
     add_columns_sub.insert_item("Add 5").func_clicked().set(this,&MapWindow::on_edit_grow_column5);
+    add_columns_sub.insert_item("Add 10").func_clicked().set(this,&MapWindow::on_edit_grow_column10);
+    add_columns_sub.insert_item("Add 25").func_clicked().set(this,&MapWindow::on_edit_grow_column25);	
     add_rows_sub.insert_item("Add 1").func_clicked().set(this,&MapWindow::on_edit_grow_row);
-    add_rows_sub.insert_item("Add 5").func_clicked().set(this,&MapWindow::on_edit_grow_row5);    
+    add_rows_sub.insert_item("Add 5").func_clicked().set(this,&MapWindow::on_edit_grow_row5);   
+    add_rows_sub.insert_item("Add 10").func_clicked().set(this,&MapWindow::on_edit_grow_row10);   
+    add_rows_sub.insert_item("Add 25").func_clicked().set(this,&MapWindow::on_edit_grow_row25);   	
     CL_PopupMenuItem add_columns = m_grow_submenu.insert_item("Add Columns");
     add_columns.set_submenu(add_columns_sub);
     CL_PopupMenuItem add_rows = m_grow_submenu.insert_item("Add Rows");
@@ -552,8 +557,8 @@ void MapWindow::construct_toolbar()
         {"Media/Editor/Images/surround.png","",BLOCK_ALL,true},
         {"Media/Editor/Images/hot.png","",HOT,true},
         {"Media/Editor/Images/pop.png","",POPS,true},
-        {"Media/Editor/Images/floater.png","",FLOATER,true},
-		{"Media/Editor/Images/fence.png","",ALTER_ZORDER,true}
+        {"Media/Editor/Images/floater.png","",ALTER_ZORDER,true},
+		{"Media/Sprites/floater_icon.png","",FLOATER,true}
     };
     
     for(int i=0;i<sizeof(tools)/sizeof(Tool);i++){
@@ -723,6 +728,22 @@ void MapWindow::on_edit_grow_column5()
     }
 }
 
+void MapWindow::on_edit_grow_column10()
+{    
+    if(m_pMap->get_level()){
+        m_pMap->get_level()->GrowLevelTo(m_pMap->get_level()->GetWidth()+10,m_pMap->get_level()->GetHeight());
+        m_pMap->request_repaint();    
+    }
+}
+
+void MapWindow::on_edit_grow_column25()
+{    
+    if(m_pMap->get_level()){
+        m_pMap->get_level()->GrowLevelTo(m_pMap->get_level()->GetWidth()+25,m_pMap->get_level()->GetHeight());
+        m_pMap->request_repaint();    
+    }
+}
+
 void MapWindow::on_edit_grow_row()
 {
     if(m_pMap->get_level()){
@@ -738,6 +759,23 @@ void MapWindow::on_edit_grow_row5()
         m_pMap->request_repaint();    
     }
 }
+
+void MapWindow::on_edit_grow_row10()
+{
+    if(m_pMap->get_level()){
+        m_pMap->get_level()->GrowLevelTo(m_pMap->get_level()->GetWidth(),m_pMap->get_level()->GetHeight()+10);
+        m_pMap->request_repaint();    
+    }
+}
+
+void MapWindow::on_edit_grow_row25()
+{
+    if(m_pMap->get_level()){
+        m_pMap->get_level()->GrowLevelTo(m_pMap->get_level()->GetWidth(),m_pMap->get_level()->GetHeight()+25);
+        m_pMap->request_repaint();    
+    }
+}
+
 
 void MapWindow::on_edit_undo()
 {
@@ -957,6 +995,25 @@ void MapWindow::on_move_mo(MappableObject* pMo)
 
 void MapWindow::on_edit_tile()
 {
+    CL_Point map_offset = m_pMap->get_geometry().get_top_left();	
+	CL_Point level_pt = m_pMap->screen_to_level(m_map_context_point-map_offset,m_pMap->get_geometry().get_center());
+    level_pt /= 32;  
+	CL_GUITopLevelDescription desc("Edit Tile",CL_Size(424,424),true);	
+	TileEditorWindow window(this,desc);
+	window.set_tiles(m_pMap->get_level()->GetTilesAt(level_pt));
+	window.set_draggable(true);
+	const MonsterRegions * regions = m_pMap->get_level()->GetMonsterRegions();
+	if(regions){
+		for(std::map<char,MonsterRegion*>::const_iterator it = regions->GetRegionsBegin();
+			it != regions->GetRegionsEnd(); it++){
+			window.add_monster_region((it->second)->GetId());
+		}
+	}
+	window.populate_monster_region_list();
+	
+	if(0 == window.exec()){
+		m_pMap->get_level()->AddTilesAt(level_pt,window.get_tiles(),true);
+	}
 }
 
 void MapWindow::on_edit_region(MonsterRegion* pRegion)

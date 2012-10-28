@@ -1,7 +1,7 @@
 #include "sr_defines.h"
 #include "GraphicsManager.h"
 #include <iomanip>
-
+#include <stdlib.h>
 
 void WriteString(std::ostream& stream, const std::string& str)
 {
@@ -21,6 +21,11 @@ std::string ReadString(std::istream& stream)
     return std::string(buffer);
 }
 
+
+int StringToInt(const std::string& str)
+{
+	return atoi(str.c_str());
+}
 
 std::string IntToString(const int &i, int width)
 {

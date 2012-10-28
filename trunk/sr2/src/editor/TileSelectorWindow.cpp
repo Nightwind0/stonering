@@ -118,7 +118,7 @@ void TileSelectorWindow::create_menu()
 {
     CL_PopupMenu menu;
     CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
-    m_tilemaps = resources.get_resource_names_of_type("sprite","Tilemaps");    
+    m_tilemaps = resources.get_resource_names_of_type("image","Tilemaps");    
     for(int i=0;i<m_tilemaps.size();i++){
         CL_PopupMenuItem item = menu.insert_item(m_tilemaps[i]);
         item.func_clicked().set(this,&TileSelectorWindow::on_tilemap_clicked,i);

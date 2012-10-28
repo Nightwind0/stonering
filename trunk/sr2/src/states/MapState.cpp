@@ -334,13 +334,15 @@ void StoneRing::MapState::Pop(bool bAll)
     else
     {
 
-        if(m_levels.size())
+        if(m_levels.size() > 1)
         {
             m_levels.back()->MarkForDeath();
             m_levels.pop_back();
 			point = m_position_stack.back();
 			m_position_stack.pop_back();
-        }
+        }else{
+			return;
+		}
     }
 
     m_pLevel = m_levels.back();
