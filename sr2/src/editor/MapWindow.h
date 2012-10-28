@@ -93,6 +93,10 @@ private:
         void on_edit_grow_row();
         void on_edit_grow_column5();
         void on_edit_grow_row5();
+        void on_edit_grow_column10();
+        void on_edit_grow_row10();
+        void on_edit_grow_column25();
+        void on_edit_grow_row25();		
         void on_mo_create();
         void on_mo_place();
         void on_zoom_changed();

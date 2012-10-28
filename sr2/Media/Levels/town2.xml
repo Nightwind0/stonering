@@ -1,5 +1,5 @@
 <level name="">
-	<levelHeader width="50" height="35" music="Music/Town" allowsRunning="true"/>
+	<levelHeader width="50" height="45" music="Music/Town" allowsRunning="true"/>
 	<mappableObjects>
 		<mo name="Samantha" sprite="Npc/Cat" movementType="wander" speed="slow" size="1x1" type="npc" xpos="28" ypos="19" facing="west" solid="true"/>
 	</mappableObjects>
@@ -17,13 +17,13 @@
 		<tile xpos="0" ypos="1">
 			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
-		<tile xpos="0" ypos="1">
+		<tile xpos="0" ypos="1" pops="true">
 			<tilemap mapname="inq_town3" mapx="2" mapy="13"/>
 		</tile>
 		<tile xpos="0" ypos="2">
 			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
-		<tile xpos="0" ypos="2">
+		<tile xpos="0" ypos="2" pops="true">
 			<tilemap mapname="inq_town3" mapx="2" mapy="13"/>
 		</tile>
 		<tile xpos="0" ypos="3">
@@ -129,10 +129,10 @@
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="0" ypos="14">
-			<tilemap mapname="inq_town3" mapx="0" mapy="43"/>
+			<tilemap mapname="inq_town3" mapx="1" mapy="12"/>
 		</tile>
 		<tile xpos="0" ypos="14">
-			<tilemap mapname="inq_town3" mapx="1" mapy="12"/>
+			<tilemap mapname="inq_town3" mapx="0" mapy="43"/>
 		</tile>
 		<tile xpos="0" ypos="15">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
@@ -251,8 +251,35 @@
 		<tile xpos="0" ypos="34">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="0" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="0" mapy="44"/>
+		<tile xpos="0" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="0" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="0" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="0" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="0" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="0" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="0" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="0" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="0" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="0" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="1" ypos="0">
 			<tilemap mapname="inq_town" mapx="5" mapy="1"/>
@@ -384,8 +411,35 @@
 		<tile xpos="1" ypos="34">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="1" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="1" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="1" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="1" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="1" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="1" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="1" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="1" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="1" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="1" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="1" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="2" ypos="0">
 			<tilemap mapname="inq_town" mapx="5" mapy="1"/>
@@ -526,8 +580,35 @@
 		<tile xpos="2" ypos="34">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="2" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="2" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="2" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="2" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="2" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="2" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="2" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="2" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="2" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="2" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="2" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="3" ypos="0">
 			<tilemap mapname="inq_town" mapx="5" mapy="1"/>
@@ -689,8 +770,35 @@
 		<tile xpos="3" ypos="34">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="3" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="3" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="3" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="3" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="3" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="3" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="3" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="3" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="3" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="3" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="3" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="4" ypos="0">
 			<tilemap mapname="inq_town" mapx="4" mapy="82"/>
@@ -856,8 +964,35 @@
 		<tile xpos="4" ypos="34">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="4" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="4" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="4" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="4" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="4" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="4" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="4" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="4" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="4" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="4" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="4" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="5" ypos="0">
 			<tilemap mapname="inq_town" mapx="0" mapy="82"/>
@@ -1019,8 +1154,35 @@
 		<tile xpos="5" ypos="34">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="5" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="5" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="5" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="5" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="5" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="5" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="5" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="5" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="5" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="5" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="5" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="6" ypos="0">
 			<tilemap mapname="inq_town" mapx="1" mapy="82"/>
@@ -1123,9 +1285,6 @@
 			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="6" ypos="20">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
-		</tile>
-		<tile xpos="6" ypos="20">
 			<tilemap mapname="inq_town" mapx="0" mapy="80"/>
 			<block north="true" south="true" east="true" west="true"/>
 		</tile>
@@ -1190,8 +1349,35 @@
 		<tile xpos="6" ypos="34">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="6" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="6" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="6" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="6" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="6" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="6" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="6" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="6" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="6" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="6" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="6" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="7" ypos="0">
 			<tilemap mapname="inq_town" mapx="2" mapy="85"/>
@@ -1294,9 +1480,6 @@
 		<tile xpos="7" ypos="17" zoffset="2">
 			<tilemap mapname="inq_town" mapx="1" mapy="78"/>
 		</tile>
-		<tile xpos="7" ypos="18">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
-		</tile>
 		<tile xpos="7" ypos="18" zoffset="1">
 			<tilemap mapname="inq_town" mapx="1" mapy="79"/>
 		</tile>
@@ -1393,8 +1576,35 @@
 		<tile xpos="7" ypos="34">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="7" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="7" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="7" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="7" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="7" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="7" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="7" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="7" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="7" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="7" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="7" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="8" ypos="0">
 			<tilemap mapname="inq_town" mapx="3" mapy="82"/>
@@ -1565,8 +1775,35 @@
 		<tile xpos="8" ypos="34">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="8" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="8" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="8" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="8" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="8" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="8" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="8" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="8" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="8" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="8" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="8" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="9" ypos="0">
 			<tilemap mapname="inq_town" mapx="4" mapy="82"/>
@@ -1648,9 +1885,6 @@
 		<tile xpos="9" ypos="17" zoffset="2">
 			<tilemap mapname="inq_town" mapx="3" mapy="78"/>
 		</tile>
-		<tile xpos="9" ypos="18">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
-		</tile>
 		<tile xpos="9" ypos="18" zoffset="1">
 			<tilemap mapname="inq_town" mapx="3" mapy="79"/>
 		</tile>
@@ -1660,9 +1894,6 @@
 		<tile xpos="9" ypos="19">
 			<tilemap mapname="inq_town" mapx="3" mapy="79"/>
 			<block north="true" south="true" east="true" west="true"/>
-		</tile>
-		<tile xpos="9" ypos="20">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="9" ypos="20">
 			<tilemap mapname="inq_town" mapx="3" mapy="80"/>
@@ -1741,8 +1972,35 @@
 		<tile xpos="9" ypos="34">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="9" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="9" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="9" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="9" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="9" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="9" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="9" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="9" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="9" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="9" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="9" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="10" ypos="0">
 			<tilemap mapname="inq_town" mapx="4" mapy="83"/>
@@ -1849,9 +2107,6 @@
 			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="10" ypos="20">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
-		</tile>
-		<tile xpos="10" ypos="20">
 			<tilemap mapname="inq_town" mapx="4" mapy="80"/>
 			<block north="true" south="true" east="true" west="true"/>
 		</tile>
@@ -1916,8 +2171,35 @@
 		<tile xpos="10" ypos="34">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="10" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="10" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="10" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="10" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="10" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="10" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="10" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="10" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="10" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="10" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="10" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="11" ypos="0">
 			<tilemap mapname="inq_town" mapx="4" mapy="83"/>
@@ -2064,8 +2346,35 @@
 		<tile xpos="11" ypos="34">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="11" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="11" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="11" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="11" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="11" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="11" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="11" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="11" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="11" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="11" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="11" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="12" ypos="0">
 			<tilemap mapname="inq_town" mapx="4" mapy="82"/>
@@ -2263,8 +2572,35 @@
 		<tile xpos="12" ypos="34">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="12" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="12" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="12" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="12" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="12" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="12" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="12" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="12" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="12" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="12" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="12" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="13" ypos="0">
 			<tilemap mapname="inq_town" mapx="4" mapy="82"/>
@@ -2462,8 +2798,35 @@
 		<tile xpos="13" ypos="34">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="13" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="13" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="13" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="13" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="13" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="13" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="13" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="13" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="13" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="13" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="13" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="14" ypos="0">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
@@ -2596,8 +2959,35 @@
 		<tile xpos="14" ypos="34">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="14" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="14" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="14" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="14" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="14" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="14" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="14" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="14" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="14" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="14" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="14" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="15" ypos="0">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
@@ -2689,11 +3079,17 @@
 		<tile xpos="15" ypos="24">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
+		<tile xpos="15" ypos="24">
+			<tilemap mapname="inq_town4" mapx="0" mapy="19"/>
+		</tile>
 		<tile xpos="15" ypos="25">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="15" ypos="25">
 			<tilemap mapname="inq_town3" mapx="1" mapy="65"/>
+		</tile>
+		<tile xpos="15" ypos="25">
+			<tilemap mapname="inq_town4" mapx="0" mapy="20"/>
 		</tile>
 		<tile xpos="15" ypos="26">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
@@ -2722,8 +3118,35 @@
 		<tile xpos="15" ypos="34">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="15" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="15" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="15" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="15" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="15" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="15" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="15" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="15" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="15" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="15" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="15" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="16" ypos="0">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
@@ -2824,8 +3247,14 @@
 		<tile xpos="16" ypos="24">
 			<tilemap mapname="inq_town" mapx="5" mapy="1"/>
 		</tile>
+		<tile xpos="16" ypos="24">
+			<tilemap mapname="inq_town4" mapx="1" mapy="19"/>
+		</tile>
 		<tile xpos="16" ypos="25">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="16" ypos="25">
+			<tilemap mapname="inq_town4" mapx="1" mapy="20"/>
 		</tile>
 		<tile xpos="16" ypos="26">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
@@ -2854,8 +3283,35 @@
 		<tile xpos="16" ypos="34">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="16" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="16" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="16" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="16" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="16" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="16" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="16" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="16" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="16" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="16" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="16" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="17" ypos="0">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
@@ -3019,8 +3475,35 @@
 		<tile xpos="17" ypos="34">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="17" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="17" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="17" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="17" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="17" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="17" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="17" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="17" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="17" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="17" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="17" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="18" ypos="0">
 			<tilemap mapname="inq_town4" mapx="5" mapy="20"/>
@@ -3205,8 +3688,35 @@
 		<tile xpos="18" ypos="34">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="18" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="18" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="18" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="18" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="18" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="18" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="18" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="18" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="18" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="18" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="18" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="19" ypos="0">
 			<tilemap mapname="inq_town4" mapx="5" mapy="20"/>
@@ -3381,8 +3891,35 @@
 		<tile xpos="19" ypos="34">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="19" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="19" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="19" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="19" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="19" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="19" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="19" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="19" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="19" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="19" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="19" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="20" ypos="0">
 			<tilemap mapname="inq_town4" mapx="5" mapy="20"/>
@@ -3560,8 +4097,35 @@
 		<tile xpos="20" ypos="34">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="20" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="20" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="20" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="20" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="20" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="20" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="20" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="20" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="20" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="20" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="20" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="21" ypos="0">
 			<tilemap mapname="inq_town4" mapx="5" mapy="20"/>
@@ -3716,8 +4280,35 @@
 		<tile xpos="21" ypos="34">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="21" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="21" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="21" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="21" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="21" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="21" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="21" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="21" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="21" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="21" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="21" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="22" ypos="0">
 			<tilemap mapname="inq_town4" mapx="5" mapy="20"/>
@@ -3893,8 +4484,35 @@
 		<tile xpos="22" ypos="34">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="22" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="22" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="22" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="22" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="22" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="22" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="22" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="22" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="22" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="22" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="22" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="23" ypos="0">
 			<tilemap mapname="inq_town4" mapx="5" mapy="20"/>
@@ -4004,9 +4622,6 @@
 		<tile xpos="23" ypos="23">
 			<tilemap mapname="inq_town4" mapx="2" mapy="23"/>
 		</tile>
-		<tile xpos="23" ypos="23" zoffset="3">
-			<tilemap mapname="inq_town4" mapx="2" mapy="23"/>
-		</tile>
 		<tile xpos="23" ypos="24">
 			<tilemap mapname="inq_town" mapx="2" mapy="80"/>
 			<block north="true" south="true" east="true" west="true"/>
@@ -4070,13 +4685,40 @@
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="23" ypos="33">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="5" mapy="1"/>
 		</tile>
 		<tile xpos="23" ypos="34">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="23" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="23" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="23" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="23" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="23" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="23" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="23" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="23" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="23" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="23" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="23" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="24" ypos="0">
 			<tilemap mapname="inq_town4" mapx="5" mapy="20"/>
@@ -4252,8 +4894,35 @@
 		<tile xpos="24" ypos="34">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="24" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="24" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="24" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="24" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="24" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="24" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="24" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="24" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="24" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="24" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="24" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="25" ypos="0">
 			<tilemap mapname="inq_town4" mapx="5" mapy="20"/>
@@ -4390,8 +5059,35 @@
 		<tile xpos="25" ypos="34">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="25" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="25" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="25" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="25" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="25" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="25" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="25" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="25" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="25" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="25" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="25" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="26" ypos="0">
 			<tilemap mapname="inq_town4" mapx="5" mapy="20"/>
@@ -4477,50 +5173,116 @@
 		<tile xpos="26" ypos="21">
 			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
-		<tile xpos="26" ypos="21">
-			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
+		<tile xpos="26" ypos="22">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
 		<tile xpos="26" ypos="22">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town3" mapx="0" mapy="13"/>
 		</tile>
 		<tile xpos="26" ypos="23">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="26" ypos="23">
+			<tilemap mapname="inq_town3" mapx="0" mapy="13"/>
 		</tile>
 		<tile xpos="26" ypos="24">
-			<tilemap mapname="inq_town" mapx="5" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="26" ypos="24">
+			<tilemap mapname="inq_town3" mapx="0" mapy="13"/>
 		</tile>
 		<tile xpos="26" ypos="25">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="26" ypos="25">
+			<tilemap mapname="inq_town3" mapx="0" mapy="13"/>
 		</tile>
 		<tile xpos="26" ypos="26">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="26" ypos="26">
+			<tilemap mapname="inq_town3" mapx="0" mapy="13"/>
 		</tile>
 		<tile xpos="26" ypos="27">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="26" ypos="27">
+			<tilemap mapname="inq_town3" mapx="0" mapy="13"/>
 		</tile>
 		<tile xpos="26" ypos="28">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="26" ypos="28">
+			<tilemap mapname="inq_town3" mapx="0" mapy="13"/>
 		</tile>
 		<tile xpos="26" ypos="29">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="26" ypos="29">
+			<tilemap mapname="inq_town3" mapx="0" mapy="13"/>
 		</tile>
 		<tile xpos="26" ypos="30">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="26" ypos="30">
+			<tilemap mapname="inq_town3" mapx="0" mapy="13"/>
 		</tile>
 		<tile xpos="26" ypos="31">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="26" ypos="31">
+			<tilemap mapname="inq_town3" mapx="0" mapy="13"/>
 		</tile>
 		<tile xpos="26" ypos="32">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="26" ypos="32">
+			<tilemap mapname="inq_town3" mapx="0" mapy="13"/>
 		</tile>
 		<tile xpos="26" ypos="33">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="26" ypos="33">
+			<tilemap mapname="inq_town3" mapx="0" mapy="13"/>
 		</tile>
 		<tile xpos="26" ypos="34">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="26" ypos="34">
+			<tilemap mapname="inq_town3" mapx="0" mapy="13"/>
+		</tile>
+		<tile xpos="26" ypos="35">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="26" ypos="35">
+			<tilemap mapname="inq_town3" mapx="0" mapy="14"/>
+		</tile>
+		<tile xpos="26" ypos="36">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="26" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="26" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="26" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="26" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="26" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="26" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="26" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="26" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="26" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="27" ypos="0">
 			<tilemap mapname="inq_town4" mapx="5" mapy="20"/>
@@ -4603,50 +5365,77 @@
 		<tile xpos="27" ypos="21">
 			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
-		<tile xpos="27" ypos="21">
-			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
-		</tile>
 		<tile xpos="27" ypos="22">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
 		<tile xpos="27" ypos="23">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
 		<tile xpos="27" ypos="24">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
 		<tile xpos="27" ypos="25">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
 		<tile xpos="27" ypos="26">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
 		<tile xpos="27" ypos="27">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
 		<tile xpos="27" ypos="28">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
 		<tile xpos="27" ypos="29">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
 		<tile xpos="27" ypos="30">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
 		<tile xpos="27" ypos="31">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
 		<tile xpos="27" ypos="32">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
 		<tile xpos="27" ypos="33">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
 		<tile xpos="27" ypos="34">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="27" ypos="35">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="27" ypos="35">
+			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
+		</tile>
+		<tile xpos="27" ypos="36">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="27" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="27" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="27" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="27" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="27" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="27" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="27" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="27" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="27" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="28" ypos="0">
 			<tilemap mapname="inq_town4" mapx="5" mapy="20"/>
@@ -4733,52 +5522,118 @@
 			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
 		<tile xpos="28" ypos="21">
-			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
+			<tilemap mapname="inq_town3" mapx="0" mapy="15"/>
 		</tile>
 		<tile xpos="28" ypos="22">
-			<tilemap mapname="inq_town" mapx="5" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="28" ypos="22">
+			<tilemap mapname="inq_town3" mapx="2" mapy="13"/>
 		</tile>
 		<tile xpos="28" ypos="23">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="28" ypos="23">
+			<tilemap mapname="inq_town3" mapx="2" mapy="13"/>
 		</tile>
 		<tile xpos="28" ypos="24">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="28" ypos="24">
+			<tilemap mapname="inq_town3" mapx="2" mapy="13"/>
 		</tile>
 		<tile xpos="28" ypos="25">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="28" ypos="25">
+			<tilemap mapname="inq_town3" mapx="2" mapy="13"/>
 		</tile>
 		<tile xpos="28" ypos="26">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="28" ypos="26">
+			<tilemap mapname="inq_town3" mapx="2" mapy="13"/>
 		</tile>
 		<tile xpos="28" ypos="27">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="28" ypos="27">
+			<tilemap mapname="inq_town3" mapx="2" mapy="13"/>
 		</tile>
 		<tile xpos="28" ypos="28">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="28" ypos="28">
+			<tilemap mapname="inq_town3" mapx="2" mapy="13"/>
 		</tile>
 		<tile xpos="28" ypos="29">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="28" ypos="29">
+			<tilemap mapname="inq_town3" mapx="2" mapy="13"/>
 		</tile>
 		<tile xpos="28" ypos="30">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="28" ypos="30">
+			<tilemap mapname="inq_town3" mapx="2" mapy="13"/>
 		</tile>
 		<tile xpos="28" ypos="31">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
 		<tile xpos="28" ypos="31">
-			<tilemap mapname="inq_town3" mapx="2" mapy="65"/>
+			<tilemap mapname="inq_town3" mapx="2" mapy="13"/>
 		</tile>
 		<tile xpos="28" ypos="32">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="28" ypos="32">
+			<tilemap mapname="inq_town3" mapx="2" mapy="13"/>
 		</tile>
 		<tile xpos="28" ypos="33">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="28" ypos="33">
+			<tilemap mapname="inq_town3" mapx="0" mapy="16"/>
 		</tile>
 		<tile xpos="28" ypos="34">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="28" ypos="34">
+			<tilemap mapname="inq_town3" mapx="4" mapy="63"/>
+		</tile>
+		<tile xpos="28" ypos="35">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="28" ypos="35">
+			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
+		</tile>
+		<tile xpos="28" ypos="36">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="28" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="28" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="28" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="28" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="28" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="28" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="28" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="28" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="28" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="29" ypos="0">
 			<tilemap mapname="inq_town4" mapx="5" mapy="20"/>
@@ -4934,13 +5789,46 @@
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="29" ypos="33">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="29" ypos="33">
+			<tilemap mapname="inq_town3" mapx="1" mapy="12"/>
 		</tile>
 		<tile xpos="29" ypos="34">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="29" ypos="35">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="29" ypos="35">
+			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
+		</tile>
+		<tile xpos="29" ypos="36">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="29" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="29" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="29" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="29" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="29" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="29" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="29" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="29" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="29" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="30" ypos="0">
 			<tilemap mapname="inq_town4" mapx="5" mapy="20"/>
@@ -5020,6 +5908,9 @@
 		<tile xpos="30" ypos="20">
 			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
+		<tile xpos="30" ypos="20">
+			<tilemap mapname="inq_town3" mapx="2" mapy="65"/>
+		</tile>
 		<tile xpos="30" ypos="21">
 			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
@@ -5084,13 +5975,46 @@
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="30" ypos="33">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="30" ypos="33">
+			<tilemap mapname="inq_town3" mapx="1" mapy="12"/>
 		</tile>
 		<tile xpos="30" ypos="34">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="30" ypos="35">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="30" ypos="35">
+			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
+		</tile>
+		<tile xpos="30" ypos="36">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="30" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="30" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="30" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="30" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="30" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="30" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="30" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="30" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="30" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="31" ypos="0">
 			<tilemap mapname="inq_town4" mapx="5" mapy="20"/>
@@ -5244,13 +6168,46 @@
 			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="31" ypos="33">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="31" ypos="33">
+			<tilemap mapname="inq_town3" mapx="1" mapy="12"/>
 		</tile>
 		<tile xpos="31" ypos="34">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="31" ypos="35">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="31" ypos="35">
+			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
+		</tile>
+		<tile xpos="31" ypos="36">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="31" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="31" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="31" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="31" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="31" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="31" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="31" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="31" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="31" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="32" ypos="0">
 			<tilemap mapname="inq_town4" mapx="5" mapy="20"/>
@@ -5407,13 +6364,46 @@
 			<tilemap mapname="inq_town2" mapx="0" mapy="68"/>
 		</tile>
 		<tile xpos="32" ypos="33">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="32" ypos="33">
+			<tilemap mapname="inq_town3" mapx="1" mapy="12"/>
 		</tile>
 		<tile xpos="32" ypos="34">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="32" ypos="35">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="32" ypos="35">
+			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
+		</tile>
+		<tile xpos="32" ypos="36">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="32" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="32" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="32" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="32" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="32" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="32" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="32" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="32" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="32" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="33" ypos="0">
 			<tilemap mapname="inq_town4" mapx="5" mapy="20"/>
@@ -5573,16 +6563,49 @@
 			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="33" ypos="32">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="5" mapy="1"/>
 		</tile>
 		<tile xpos="33" ypos="33">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="33" ypos="33">
+			<tilemap mapname="inq_town3" mapx="1" mapy="12"/>
 		</tile>
 		<tile xpos="33" ypos="34">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="33" ypos="35">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="33" ypos="35">
+			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
+		</tile>
+		<tile xpos="33" ypos="36">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="33" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="33" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="33" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="33" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="33" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="33" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="33" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="33" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="33" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="34" ypos="0">
 			<tilemap mapname="inq_town4" mapx="5" mapy="20"/>
@@ -5745,13 +6768,46 @@
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="34" ypos="33">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="34" ypos="33">
+			<tilemap mapname="inq_town3" mapx="1" mapy="12"/>
 		</tile>
 		<tile xpos="34" ypos="34">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="34" ypos="35">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="34" ypos="35">
+			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
+		</tile>
+		<tile xpos="34" ypos="36">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="34" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="34" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="34" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="34" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="34" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="34" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="34" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="34" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="34" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="35" ypos="0">
 			<tilemap mapname="inq_town4" mapx="5" mapy="20"/>
@@ -5904,16 +6960,49 @@
 			<tilemap mapname="doors" mapx="3" mapy="1"/>
 		</tile>
 		<tile xpos="35" ypos="32">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="5" mapy="1"/>
 		</tile>
 		<tile xpos="35" ypos="33">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="35" ypos="33">
+			<tilemap mapname="inq_town3" mapx="1" mapy="12"/>
 		</tile>
 		<tile xpos="35" ypos="34">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="35" ypos="35">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="35" ypos="35">
+			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
+		</tile>
+		<tile xpos="35" ypos="36">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="35" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="35" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="35" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="35" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="35" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="35" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="35" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="35" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="35" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="36" ypos="0">
 			<tilemap mapname="inq_town4" mapx="5" mapy="20"/>
@@ -6070,16 +7159,49 @@
 			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="36" ypos="32">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="5" mapy="1"/>
 		</tile>
 		<tile xpos="36" ypos="33">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="36" ypos="33">
+			<tilemap mapname="inq_town3" mapx="1" mapy="12"/>
 		</tile>
 		<tile xpos="36" ypos="34">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="36" ypos="35">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="36" ypos="35">
+			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
+		</tile>
+		<tile xpos="36" ypos="36">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="36" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="36" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="36" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="36" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="36" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="36" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="36" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="36" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="36" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="37" ypos="0">
 			<tilemap mapname="inq_town4" mapx="5" mapy="20"/>
@@ -6232,16 +7354,49 @@
 			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="37" ypos="32">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="5" mapy="1"/>
 		</tile>
 		<tile xpos="37" ypos="33">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="37" ypos="33">
+			<tilemap mapname="inq_town3" mapx="1" mapy="12"/>
 		</tile>
 		<tile xpos="37" ypos="34">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="37" ypos="35">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="37" ypos="35">
+			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
+		</tile>
+		<tile xpos="37" ypos="36">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="37" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="37" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="37" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="37" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="37" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="37" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="37" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="37" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="37" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="38" ypos="0">
 			<tilemap mapname="inq_town4" mapx="0" mapy="0"/>
@@ -6413,13 +7568,46 @@
 			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="38" ypos="33">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="38" ypos="33">
+			<tilemap mapname="inq_town3" mapx="1" mapy="12"/>
 		</tile>
 		<tile xpos="38" ypos="34">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="38" ypos="35">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="38" ypos="35">
+			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
+		</tile>
+		<tile xpos="38" ypos="36">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="38" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="38" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="38" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="38" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="38" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="38" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="38" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="38" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="38" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="39" ypos="0">
 			<tilemap mapname="inq_town4" mapx="0" mapy="0"/>
@@ -6513,6 +7701,9 @@
 		</tile>
 		<tile xpos="39" ypos="14">
 			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
+		</tile>
+		<tile xpos="39" ypos="14">
+			<tilemap mapname="inq_town3" mapx="2" mapy="13"/>
 		</tile>
 		<tile xpos="39" ypos="15">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
@@ -6615,16 +7806,46 @@
 			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="39" ypos="33">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
 		<tile xpos="39" ypos="33">
-			<tilemap mapname="inq_town3" mapx="2" mapy="65"/>
+			<tilemap mapname="inq_town3" mapx="1" mapy="12"/>
 		</tile>
 		<tile xpos="39" ypos="34">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="39" ypos="35">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="39" ypos="35">
+			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
+		</tile>
+		<tile xpos="39" ypos="36">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="39" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="39" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="39" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="39" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="39" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="39" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="39" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="39" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="39" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="40" ypos="0">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
@@ -6690,16 +7911,22 @@
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="40" ypos="18">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="40" ypos="18">
+			<tilemap mapname="inq_town3" mapx="1" mapy="12"/>
 		</tile>
 		<tile xpos="40" ypos="19">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
 		<tile xpos="40" ypos="20">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
 		<tile xpos="40" ypos="21">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="40" ypos="21">
+			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
 		</tile>
 		<tile xpos="40" ypos="22">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
@@ -6763,13 +7990,46 @@
 			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="40" ypos="33">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="40" ypos="33">
+			<tilemap mapname="inq_town3" mapx="1" mapy="12"/>
 		</tile>
 		<tile xpos="40" ypos="34">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="40" ypos="35">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="40" ypos="35">
+			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
+		</tile>
+		<tile xpos="40" ypos="36">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="40" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="40" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="40" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="40" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="40" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="40" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="40" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="40" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="40" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="41" ypos="0">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
@@ -6847,16 +8107,22 @@
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="41" ypos="18">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="41" ypos="18">
+			<tilemap mapname="inq_town3" mapx="1" mapy="12"/>
 		</tile>
 		<tile xpos="41" ypos="19">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
 		<tile xpos="41" ypos="20">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
 		<tile xpos="41" ypos="21">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="41" ypos="21">
+			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
 		</tile>
 		<tile xpos="41" ypos="22">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
@@ -6916,13 +8182,46 @@
 			<tilemap mapname="inq_town2" mapx="4" mapy="77"/>
 		</tile>
 		<tile xpos="41" ypos="33">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="41" ypos="33">
+			<tilemap mapname="inq_town3" mapx="1" mapy="12"/>
 		</tile>
 		<tile xpos="41" ypos="34">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="41" ypos="35">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="41" ypos="35">
+			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
+		</tile>
+		<tile xpos="41" ypos="36">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="41" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="41" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="41" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="41" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="41" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="41" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="41" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="41" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="41" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="42" ypos="0">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
@@ -7007,16 +8306,22 @@
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="42" ypos="18">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="42" ypos="18">
+			<tilemap mapname="inq_town3" mapx="1" mapy="12"/>
 		</tile>
 		<tile xpos="42" ypos="19">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
 		<tile xpos="42" ypos="20">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
 		<tile xpos="42" ypos="21">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="42" ypos="21">
+			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
 		</tile>
 		<tile xpos="42" ypos="22">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
@@ -7039,8 +8344,14 @@
 		<tile xpos="42" ypos="28">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
+		<tile xpos="42" ypos="28" zoffset="3">
+			<tilemap mapname="inq_town3" mapx="0" mapy="6"/>
+		</tile>
 		<tile xpos="42" ypos="29">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="42" ypos="29" zoffset="2">
+			<tilemap mapname="inq_town3" mapx="0" mapy="7"/>
 		</tile>
 		<tile xpos="42" ypos="30">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
@@ -7052,13 +8363,46 @@
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="42" ypos="33">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="42" ypos="33">
+			<tilemap mapname="inq_town3" mapx="1" mapy="12"/>
 		</tile>
 		<tile xpos="42" ypos="34">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="42" ypos="35">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="42" ypos="35">
+			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
+		</tile>
+		<tile xpos="42" ypos="36">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="42" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="42" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="42" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="42" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="42" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="42" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="42" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="42" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="42" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="43" ypos="0">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
@@ -7133,19 +8477,22 @@
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="43" ypos="18">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
 		<tile xpos="43" ypos="18">
-			<tilemap mapname="inq_town3" mapx="4" mapy="61"/>
+			<tilemap mapname="inq_town3" mapx="1" mapy="12"/>
 		</tile>
 		<tile xpos="43" ypos="19">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
 		<tile xpos="43" ypos="20">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
 		<tile xpos="43" ypos="21">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="43" ypos="21">
+			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
 		</tile>
 		<tile xpos="43" ypos="22">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
@@ -7171,8 +8518,14 @@
 		<tile xpos="43" ypos="28">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
+		<tile xpos="43" ypos="28" zoffset="3">
+			<tilemap mapname="inq_town3" mapx="1" mapy="6"/>
+		</tile>
 		<tile xpos="43" ypos="29">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="43" ypos="29" zoffset="2">
+			<tilemap mapname="inq_town3" mapx="1" mapy="7"/>
 		</tile>
 		<tile xpos="43" ypos="30">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
@@ -7184,13 +8537,46 @@
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="43" ypos="33">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="43" ypos="33">
+			<tilemap mapname="inq_town3" mapx="1" mapy="12"/>
 		</tile>
 		<tile xpos="43" ypos="34">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="43" ypos="35">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="43" ypos="35">
+			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
+		</tile>
+		<tile xpos="43" ypos="36">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="43" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="43" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="43" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="43" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="43" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="43" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="43" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="43" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="43" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="44" ypos="0">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
@@ -7253,16 +8639,22 @@
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="44" ypos="18">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="44" ypos="18">
+			<tilemap mapname="inq_town3" mapx="1" mapy="12"/>
 		</tile>
 		<tile xpos="44" ypos="19">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
 		<tile xpos="44" ypos="20">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
 		<tile xpos="44" ypos="21">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="44" ypos="21">
+			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
 		</tile>
 		<tile xpos="44" ypos="22">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
@@ -7295,16 +8687,724 @@
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="44" ypos="32">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="5" mapy="1"/>
 		</tile>
 		<tile xpos="44" ypos="33">
-			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="44" ypos="33">
+			<tilemap mapname="inq_town3" mapx="1" mapy="12"/>
 		</tile>
 		<tile xpos="44" ypos="34">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="44" ypos="35">
+			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
+		</tile>
+		<tile xpos="44" ypos="35">
+			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
+		</tile>
+		<tile xpos="44" ypos="36">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="44" ypos="34" zoffset="1">
-			<tilemap mapname="inq_town3" mapx="1" mapy="44"/>
+		<tile xpos="44" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="44" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="44" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="44" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="44" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="44" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="44" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="44" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="0">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="1">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="2">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="3">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="4">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="5">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="6">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="7">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="8">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="9">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="10">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="11">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="12">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="13">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="14">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="15">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="16">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="17">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="18">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="19">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="20">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="21">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="22">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="23">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="24">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="25">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="26">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="27">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="28">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="29">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="30">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="31">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="32">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="33">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="34">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="45" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="0">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="1">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="2">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="3">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="4">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="5">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="6">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="7">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="8">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="9">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="10">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="11">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="12">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="13">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="14">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="15">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="16">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="17">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="18">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="19">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="20">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="21">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="22">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="23">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="24">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="25">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="26">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="27">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="28">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="29">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="30">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="31">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="32">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="33">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="34">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="46" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="0">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="1">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="2">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="3">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="4">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="5">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="6">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="7">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="8">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="9">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="10">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="11">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="12">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="13">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="14">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="15">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="16">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="17">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="18">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="19">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="20">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="21">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="22">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="23">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="24">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="25">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="26">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="27">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="28">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="29">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="30">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="31">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="32">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="33">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="34">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="47" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="0">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="1">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="2">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="3">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="4">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="5">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="6">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="7">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="8">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="9">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="10">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="11">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="12">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="13">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="14">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="15">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="16">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="17">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="18">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="19">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="20">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="21">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="22">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="23">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="24">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="25">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="26">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="27">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="28">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="29">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="30">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="31">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="32">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="33">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="34">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="48" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="0">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="1">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="2">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="3">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="4">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="5">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="6">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="7">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="8">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="9">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="10">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="11">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="12">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="13">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="14">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="15">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="16">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="17">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="18">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="19">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="20">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="21">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="22">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="23">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="24">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="25">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="26">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="27">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="28">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="29">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="30">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="31">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="32">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="33">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="34">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="35">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="36">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="37">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="38">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="39">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="40">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="41">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="42">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="43">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="49" ypos="44">
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 	</tiles>
 </level>

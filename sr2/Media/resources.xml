@@ -205,6 +205,9 @@
 			<image name="road">
 				<image-file file="Tiles/road2.png"/>
 			</image>			
+			<image name="cave">
+				<image-file file="Tiles/cave2.png"/>
+			</image>	
 			<!--
                 <sprite name="roofs">
                         <image file="Tiles/roofs.png"/>

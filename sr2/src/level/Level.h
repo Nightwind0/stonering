@@ -196,7 +196,7 @@ protected:
 	ushort m_stack_order;
 	char   m_monster_region;
 
-    unsigned char cFlags;
+    ushort cFlags;
 #ifdef SR2_EDITOR
     std::string m_sprite_name;
 public:
@@ -242,6 +242,18 @@ public:
     }
     void SetZOffset(short z){
 		if(z >= 0) m_ZOffset = z;
+	}
+	ushort GetFlags() const {
+		return cFlags;
+	}
+	bool HasCondition() const { 
+		return m_pCondition != NULL;
+	}
+	ScriptElement * GetCondition() const {
+		return m_pCondition;
+	}
+	ScriptElement * GetScript() const {
+		return m_pScript;
 	}
 #endif
 };
