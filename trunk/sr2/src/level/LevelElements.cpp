@@ -15,6 +15,7 @@
 #include "ArmorRef.h"
 #include "IApplication.h"
 #include "Level.h"
+#include "GraphicsManager.h"
 
 namespace StoneRing { 
 
@@ -348,6 +349,28 @@ CL_DomElement Tile::CreateDomElement(CL_DomDocument& doc)const
     
 
     return element;
+}
+
+
+Tile* Tile::clone() const {
+	Tile * pTile = new Tile();
+	if(IsSprite())
+		pTile->m_sprite = GraphicsManager::CreateSprite(m_sprite_name,false);
+	if(m_tilemap){
+		pTile->m_tilemap = new Tilemap();
+		*pTile->m_tilemap = *m_tilemap;
+	}
+	if(m_pCondition)
+		*pTile->m_pCondition = *m_pCondition;
+	if(m_pScript)
+		*pTile->m_pScript = *m_pScript;
+	pTile->m_ZOffset = m_ZOffset;
+	pTile->m_X = m_X;
+	pTile->m_Y = m_Y;
+	pTile->m_monster_region = m_monster_region;
+	pTile->cFlags = cFlags;
+	pTile->m_sprite_name = m_sprite_name;
+	return pTile;
 }
 
 
