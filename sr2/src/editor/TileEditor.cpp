@@ -210,6 +210,7 @@ TileEditorWindow::TileEditorWindow(CL_GUIComponent* owner, const CL_GUITopLevelD
 	m_zorder = new CL_Spin(this);
 	m_zorder->set_geometry(CL_Rect(CL_Point(248+64,232+100),CL_Size(64,24)));
 	m_zorder->set_ranges(0,100);
+	m_zorder->func_value_changed().set(this,&TileEditorWindow::on_zorder_change);
 	
 	m_zorder_label = new CL_Label(this);
 	m_zorder_label->set_geometry(CL_Rect(CL_Point(264,232+100),CL_Size(64,24)));
@@ -333,6 +334,8 @@ void TileEditorWindow::sync_from_selected()
 			m_edit_condition->set_text("Edit Condition");
 		else
 			m_edit_condition->set_text("Add Condition");
+		
+		m_zorder->set_value(pTile->GetZOffset());
 		
 		m_monster_region->set_text(IntToString(pTile->GetMonsterRegion()));
 	}
@@ -459,6 +462,16 @@ void TileEditorWindow::on_water_changed()
 }
 
 
+void TileEditorWindow::on_zorder_change()
+{
+	Tile * pTile = m_grid.get_selected_tile();
+	if(pTile){
+		pTile->SetZOffset(m_zorder->get_value());
+	}
+	m_grid.request_repaint();
+}
+
+
 void TileEditorWindow::add_monster_region( int id )
 {
 	m_monster_regions.push_back(id);
@@ -467,7 +480,11 @@ void TileEditorWindow::add_monster_region( int id )
 std::list< Tile* > TileEditorWindow::get_tiles() const
 {
 	std::list<Tile*> tiles;
-	m_grid.get_tiles(tiles);
+	std::list<Tile*> grid_tiles;
+	m_grid.get_tiles(grid_tiles);
+	for(std::list<Tile*>::const_iterator it = grid_tiles.begin(); it != grid_tiles.end(); it++){
+		tiles.push_back ( (*it)->clone() );
+	}
 	return tiles;
 }
 

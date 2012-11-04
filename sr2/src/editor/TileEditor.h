@@ -77,6 +77,7 @@ private:
 	void on_delete_tile();
 	void on_move_up();
 	void on_move_down();
+	void on_zorder_change();
 	
 	void on_select_monster_region(int selection);
 	

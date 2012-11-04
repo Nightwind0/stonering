@@ -387,6 +387,36 @@ namespace StoneRing {
 		MapEditorState& m_parent;
 	};
 	
+	class TileEditOperation : public Operation {
+	public:
+		TileEditOperation ( ){
+		}
+		virtual ~TileEditOperation ( ){
+		}
+		void SetEditedTiles ( const std::list<Tile*> &tiles ){
+			m_edited_tiles = tiles;
+		}
+		virtual bool Execute(shared_ptr<Level> level){
+			m_original_tiles.clear();
+			std::list<Tile*> original_tiles = level->GetTilesAt(m_data.m_level_pt);
+			for(std::list<Tile*>::const_iterator it = original_tiles.begin(); it != original_tiles.end(); it++){
+				m_original_tiles.push_back ( (*it)->clone() );
+			}
+			level->AddTilesAt(m_data.m_level_pt,m_edited_tiles,true);
+			return true;
+		}
+		virtual void Undo(shared_ptr<Level> level){
+			level->AddTilesAt(m_data.m_level_pt,m_original_tiles,true);
+		}
+		virtual Operation* clone(){
+			TileEditOperation * pOp = new TileEditOperation;
+			return pOp;
+		}
+	private:
+		std::list<Tile*> m_edited_tiles;	
+		std::list<Tile*> m_original_tiles;
+	};
+	
 
 MapWindow::MapWindow(CL_GUIComponent *parent, const CL_GUITopLevelDescription& desc):CL_Window(parent,desc) {
 	set_draggable(true);
@@ -1012,7 +1042,13 @@ void MapWindow::on_edit_tile()
 	window.populate_monster_region_list();
 	
 	if(0 == window.exec()){
-		m_pMap->get_level()->AddTilesAt(level_pt,window.get_tiles(),true);
+		TileEditOperation * pOp = new TileEditOperation();
+		Operation::Data data;
+		data.m_level_pt = data.m_level_end_pt = level_pt;
+		data.m_mod_state = 0;
+		pOp->SetEditedTiles(window.get_tiles());
+		pOp->SetData(data);
+		PerformOperation(pOp);
 	}
 }
 
