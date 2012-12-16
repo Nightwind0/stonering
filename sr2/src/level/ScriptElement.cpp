@@ -5,7 +5,6 @@
 #include "Ast.h"
 #else
 #include <steel/Ast.h>
-#include <ClanLib-2.3/ClanLib/Core/System/cl_platform.h>
 #endif
 
 

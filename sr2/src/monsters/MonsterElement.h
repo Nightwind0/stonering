@@ -8,7 +8,11 @@
 #else
 #include "steel/SteelInterpreter.h"
 #endif
+
 using StoneRing::ICharacter;
+
+using Steel::ParameterList;
+using Steel::ParameterListItem;
 
 namespace StoneRing{
 

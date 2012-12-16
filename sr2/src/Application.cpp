@@ -1,4 +1,4 @@
-#include <ClanLib/core.h>
+	#include <ClanLib/core.h>
 #include <ClanLib/display.h>
 #include <ClanLib/gl.h>
 #include <ClanLib/sound.h>
@@ -64,6 +64,8 @@ const unsigned int WINDOW_WIDTH = 800 ;
 const unsigned int WINDOW_HEIGHT = 600 ;
 const unsigned int MS_BETWEEN_MOVES = 30;
 
+
+using namespace Steel;
 
 bool gbDebugStop;
 
@@ -255,8 +257,8 @@ SteelType Application::choice ( const std::string &choiceText,
 
 SteelType Application::message ( const std::string& text )
 {
-    SteelArray array;
-    SteelType type;
+    Steel::SteelArray array;
+    Steel::SteelType type;
     type.set ( text );
     array.push_back ( type );
     return menu ( array );
@@ -432,7 +434,7 @@ SteelType Application::giveGold ( int amount )
 SteelType Application::addCharacter ( const std::string &character, int level, bool announce )
 {
     Character * pCharacter = CharacterManager::GetCharacter ( character );
-    AstScript * pTNL = GetUtility ( XP_FOR_LEVEL );
+    Steel::AstScript * pTNL = GetUtility ( XP_FOR_LEVEL );
     ParameterList params;
     params.push_back ( ParameterListItem ( "$_LEVEL", level ) );
     pCharacter->SetXP ( RunScript ( pTNL, params ) );
@@ -1902,7 +1904,7 @@ void Application::RequestRedraw ( const State * /*pState*/ )
 
 
 
-AstScript * Application::LoadScript ( const std::string &name, const std::string &script )
+Steel::AstScript * Application::LoadScript ( const std::string &name, const std::string &script )
 {
     return mInterpreter.prebuildAst ( name, script );
 }
@@ -2338,7 +2340,10 @@ Level* Application::GetCurrentLevel() const
     return mMapState.GetCurrentLevel();
 }
 
-
+CL_IODevice Application::OpenResource(const std::string& str)
+{
+	return m_resource_dir.open_file(str);
+}
 
 int Application::main ( const std::vector<CL_String> &args )
 {
@@ -2369,8 +2374,16 @@ int Application::main ( const std::vector<CL_String> &args )
     try
     {
         registerSteelFunctions();
+		
+		// TODO: Get the package from the command line
+		CL_VirtualFileSystem vfs("stone_ring2.sr2", true);
+		
+		m_resource_dir = CL_VirtualDirectory(vfs, "./");
+		
+		m_zip_provider.SetVirtualDirectory(m_resource_dir);
+		mInterpreter.setFileProvider(&m_zip_provider);
 
-        m_resources = CL_ResourceManager ( "Media/resources.xml" );
+        m_resources = CL_ResourceManager ( "Media/resources.xml", m_resource_dir );
 
 #ifdef NDEBUG
         std::string name = CL_String_load ( "Configuration/name", m_resources );

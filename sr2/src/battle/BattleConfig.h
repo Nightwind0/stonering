@@ -26,7 +26,10 @@
 #else
 #include "steel/SteelInterpreter.h"
 #endif
-class AstScript;
+
+
+
+using Steel::ParameterList;
 
 namespace StoneRing {
     class BattleConfig 
@@ -43,10 +46,10 @@ namespace StoneRing {
 	void OnBattleWon(ParameterList& params); // player won
 	void TeardownForBattle();
     private:
-	AstScript* m_setupScript;
-	AstScript* m_teardownScript;
-	AstScript* m_lostScript;
-	AstScript* m_wonScript;
+	Steel::AstScript* m_setupScript;
+	Steel::AstScript* m_teardownScript;
+	Steel::AstScript* m_lostScript;
+	Steel::AstScript* m_wonScript;
     };
 }
 #endif // BATTLECONFIG_H

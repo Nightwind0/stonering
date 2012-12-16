@@ -13,6 +13,9 @@
 #endif
 #include "IApplication.h"
 
+
+using Steel::SteelInterpreter;
+
 namespace StoneRing {
 
 class State {

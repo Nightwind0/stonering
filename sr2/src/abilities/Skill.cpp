@@ -205,7 +205,7 @@ bool SkillTreeNode::CanLearn ( Character* pCharacter )
     if(m_pCondition)
     {
         ParameterList params;
-        params.push_back(ParameterListItem("$_Character",pCharacter));
+        params.push_back(Steel::ParameterListItem("$_Character",pCharacter));
         return m_pCondition->EvaluateCondition(params);
     } 
     

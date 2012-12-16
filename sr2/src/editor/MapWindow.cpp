@@ -397,7 +397,7 @@ namespace StoneRing {
 			m_edited_tiles = tiles;
 		}
 		virtual bool Execute(shared_ptr<Level> level){
-			m_original_tiles.clear();
+			m_original_tiles.clear();	
 			std::list<Tile*> original_tiles = level->GetTilesAt(m_data.m_level_pt);
 			for(std::list<Tile*>::const_iterator it = original_tiles.begin(); it != original_tiles.end(); it++){
 				m_original_tiles.push_back ( (*it)->clone() );
@@ -576,19 +576,19 @@ void MapWindow::construct_toolbar()
         bool toggle;
     };
     Tool tools[] = {
-		{"Media/Editor/Images/add.png","Copy Tiles",COPY_TILE,true},
-        {"Media/Editor/Images/map_delete.png","Erase Tiles",DELETE_TILE,true},
-        {"Media/Editor/Images/view.png","View",SHOW_ALL,true},
-        {"Media/Editor/Images/eye.png","Objects",SHOW_OBJECTS,true},
-        {"Media/Editor/Images/block_west.png","",BLOCK_WEST,true},
-        {"Media/Editor/Images/block_north.png","",BLOCK_NORTH,true},
-        {"Media/Editor/Images/block_east.png","",BLOCK_EAST,true},
-        {"Media/Editor/Images/block_south.png","",BLOCK_SOUTH,true},
-        {"Media/Editor/Images/surround.png","",BLOCK_ALL,true},
-        {"Media/Editor/Images/hot.png","",HOT,true},
-        {"Media/Editor/Images/pop.png","",POPS,true},
-        {"Media/Editor/Images/floater.png","",ALTER_ZORDER,true},
-		{"Media/Sprites/floater_icon.png","",FLOATER,true}
+		{"Editor/Images/add.png","Copy Tiles",COPY_TILE,true},
+        {"Editor/Images/map_delete.png","Erase Tiles",DELETE_TILE,true},
+        {"Editor/Images/view.png","View",SHOW_ALL,true},
+        {"Editor/Images/eye.png","Objects",SHOW_OBJECTS,true},
+        {"Editor/Images/block_west.png","",BLOCK_WEST,true},
+        {"Editor/Images/block_north.png","",BLOCK_NORTH,true},
+        {"Editor/Images/block_east.png","",BLOCK_EAST,true},
+        {"Editor/Images/block_south.png","",BLOCK_SOUTH,true},
+        {"Editor/Images/surround.png","",BLOCK_ALL,true},
+        {"Editor/Images/hot.png","",HOT,true},
+        {"Editor/Images/pop.png","",POPS,true},
+        {"Editor/Images/floater.png","",ALTER_ZORDER,true},
+		{"Editor/Images/floater_icon.png","",FLOATER,true}
     };
     
     for(int i=0;i<sizeof(tools)/sizeof(Tool);i++){

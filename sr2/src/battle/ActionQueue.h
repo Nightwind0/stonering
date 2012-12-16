@@ -26,7 +26,7 @@ class IBattleAction;
 
         void ExecuteFront();
         void PopFront();
-        void Enqueue(IBattleAction *pAction, ICharacter *pActor, ICharacter *pTarget, bool group,const SteelType &var);
+        void Enqueue(IBattleAction *pAction, ICharacter *pActor, ICharacter *pTarget, bool group,const Steel::SteelType &var);
         void RemoveActionForCharacter (ICharacter *pActor);
     private:
         struct Action

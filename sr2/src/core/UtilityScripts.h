@@ -28,7 +28,11 @@
 #endif
 #include <map>
 
-class AstScript;
+namespace Steel { 
+	class AstScript;
+}
+
+using Steel::AstScript;
 
 namespace StoneRing {
     class UtilityScripts

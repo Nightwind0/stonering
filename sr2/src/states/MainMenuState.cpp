@@ -11,6 +11,8 @@
 using std::min;
 using std::max;
 
+using namespace Steel;
+
 namespace StoneRing { 
 
 MainMenuState::MainMenuState():m_targetingState(*this),m_bDone(false)

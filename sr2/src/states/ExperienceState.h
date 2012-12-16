@@ -74,8 +74,8 @@ private:
     StoneRing::Font m_levelFont;
 
     uint m_start_time;
-    AstScript* m_pTNL;
-    AstScript* m_pLNT;
+    Steel::AstScript* m_pTNL;
+    Steel::AstScript* m_pLNT;
     bool m_bDone;
     std::vector<Char> m_characters;
 };

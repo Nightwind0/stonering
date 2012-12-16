@@ -22,6 +22,8 @@
 #include "Navigator.h"
 #include "SayState.h"
 
+using namespace Steel;
+
 namespace StoneRing {
     
     class CutSceneRunner: public SteelRunner<CutSceneState> {

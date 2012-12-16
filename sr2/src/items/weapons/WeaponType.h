@@ -6,7 +6,7 @@
 #include "Element.h"
 #include "DamageCategory.h"
 
-
+using Steel::SteelType;
 class CL_Sprite;
 
 namespace StoneRing{
@@ -44,14 +44,14 @@ namespace StoneRing{
         DamageCategory::eDamageCategory m_damageCategory;
         std::string m_name;
         std::string m_icon_ref;
-	CL_Sprite m_sprite;
+		CL_Sprite m_sprite;
         uint m_nBasePrice;
         uint m_nBaseAttack;
         float m_fBaseHit;
         float m_fBaseCritical;
         bool m_bRanged;
         bool m_bTwoHanded;
-	Animation* m_pAnimation;
+		Animation* m_pAnimation;
     };
 };
 

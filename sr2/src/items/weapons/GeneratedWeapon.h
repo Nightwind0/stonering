@@ -6,6 +6,9 @@
 #include "Item.h"
 #include "Weapon.h"
 
+using Steel::ParameterList;
+using Steel::ParameterListItem;
+
 namespace StoneRing{
     class GeneratedWeapon : public virtual Item, public Weapon
     {

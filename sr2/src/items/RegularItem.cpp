@@ -19,7 +19,7 @@ RegularItem::~RegularItem()
 void RegularItem::Invoke(const SteelType& array)
 {
     ParameterList params;
-    params.push_back ( ParameterListItem("@_Targets",array) );
+    params.push_back ( Steel::ParameterListItem("@_Targets",array) );
     if(m_pScript)
         m_pScript->ExecuteScript(params);
 }

@@ -13,8 +13,9 @@
 #include "MonsterGroup.h"
 #include "ElementFactory.h"
 
+//using Steel::AstScript;
 
-class AstScript;
+
 
 namespace StoneRing {
 
@@ -102,15 +103,16 @@ public:
 	virtual void            RequestRedraw( const State *pState ) = 0;
 	virtual void            RunState( State *pState, bool threaded = false ) = 0;
 	virtual void            StartGame( bool load ) = 0;
-	virtual AstScript *     LoadScript( const std::string &name, const std::string &script ) = 0;
-	virtual SteelType       RunScript( AstScript * pScript ) = 0;
-	virtual SteelType       RunScript( AstScript *pScript, const ParameterList &params ) = 0;
-	virtual AstScript *     GetUtility( Utility util )const = 0;
+	virtual Steel::AstScript * LoadScript( const std::string &name, const std::string &script ) = 0;
+	virtual SteelType       RunScript( Steel::AstScript * pScript ) = 0;
+	virtual SteelType       RunScript( Steel::AstScript *pScript, const ParameterList &params ) = 0;
+	virtual Steel::AstScript *     GetUtility( Utility util )const = 0;
 	virtual std::string     GetCurrencyName()const = 0;
 	virtual void            RunOnMainThread( CL_Event& event, Functor* functor ) = 0;
 	virtual bool            Serialize( std::ostream& stream ) = 0;
 	virtual bool            Deserialize( std::istream& stream ) = 0;
 	virtual void            Banner( const std::string& str, int time ) = 0;
+	virtual CL_IODevice     OpenResource(const std::string& str)=0;
 };
 
 }

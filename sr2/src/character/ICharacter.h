@@ -19,7 +19,7 @@
 namespace StoneRing{
     class StatusEffect;
 
-    class ICharacter: public SteelType::IHandle
+    class ICharacter: public Steel::SteelType::IHandle
     {
     public:
         enum eGender { NEUTER = 0, MALE=0x1, FEMALE=0x2, HERMAPHRODITE = MALE | FEMALE };

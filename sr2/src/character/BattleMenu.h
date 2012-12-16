@@ -39,7 +39,7 @@ namespace StoneRing
 
         eType GetType ( void ) const;
         void SetRect(CL_Rectf& rect);
-        void SetEnableConditionParams(const ParameterList& params, Character* pChar);
+        void SetEnableConditionParams(const Steel::ParameterList& params, Character* pChar);
         void Init();
     private:
         virtual CL_Rectf get_rect();
@@ -64,7 +64,7 @@ namespace StoneRing
         CL_Rectf m_rect;
         CL_Pointf m_cost_spacing;
         int m_font_height;
-        ParameterList m_params;
+        Steel::ParameterList m_params;
     };
 };
 

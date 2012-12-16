@@ -11,7 +11,10 @@
 #include <steel/SteelInterpreter.h>
 #endif
 
-class AstScript;
+
+using Steel::ParameterList;
+using Steel::SteelType;
+
 
 namespace StoneRing{
 
@@ -32,7 +35,7 @@ namespace StoneRing{
     protected:
         virtual void load_attributes(CL_DomNamedNodeMap);
         virtual void handle_text(const std::string &);
-        AstScript * mp_script;
+        Steel::AstScript * mp_script;
         std::string m_id;
         bool m_bIsCondition;
 #if SR2_EDITOR

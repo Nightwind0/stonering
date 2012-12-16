@@ -20,7 +20,7 @@
             if(getCharacterToggle($character,$_ALIVE)){
                 foreach (declare $monster) in @monsters {
                     declare $char_level = getCharacterLevel($character);
-                    declare $monster_level = getCharacterLevel($monster);
+                    declare $monster_level = getCharacterLevel($monster); 
 	
                     declare $xp = ((tnl($char_level + 1) - tnl($char_level)) /  $B) * ($b ^ ($monster_level - $char_level));
                     $xp *= getCharacterAttribute($character,$_JOY);

@@ -268,8 +268,8 @@ bool SpriteMovement::hasMovementScript(eMovementScriptType type)const
 SteelType SpriteMovement::executeMovementScript(eMovementScriptType type, float percentage)
 {
     SpriteMovementScript * script = m_movementScripts[type];
-    ParameterListItem p("$P",percentage);
-    ParameterList params;
+    Steel::ParameterListItem p("$P",percentage);
+    Steel::ParameterList params;
     params.push_back(p);
     return script->ExecuteScript(params);
 }

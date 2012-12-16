@@ -2,6 +2,7 @@
 #include "ItemManager.h"
 #include "AbilityManager.h"
 #include "CharacterManager.h"
+#include "IApplication.h"
 #include <cassert>
 
 using StoneRing::AppUtils;
@@ -43,7 +44,7 @@ void AppUtils::LoadSkills(const std::string &filename)
     std::cout << "Loading skills..." << std::endl;
 #endif
 
-    CL_File file(filename);
+    CL_IODevice file = IApplication::GetInstance()->OpenResource(filename);
     CL_DomDocument document;
     document.load(file);
 
@@ -56,7 +57,7 @@ void AppUtils::LoadStatusEffects(const std::string &filename)
     std::cout << "Loading status effects...." << std::endl;
 #endif
 
-    CL_File file(filename);
+    CL_IODevice file = IApplication::GetInstance()->OpenResource(filename);
     CL_DomDocument document;
 
     document.load(file);
@@ -69,8 +70,7 @@ void AppUtils::LoadCharacterClasses(const std::string &filename)
 #ifndef NDEBUG
     std::cout << "Loading character classes..." << std::endl;
 #endif
-
-    CL_File file(filename);
+    CL_IODevice file = IApplication::GetInstance()->OpenResource(filename);	
     CL_DomDocument document;
     document.load(file);
 
@@ -83,7 +83,7 @@ void AppUtils::LoadAnimations(const std::string &filename)
     std::cout << "Loading animationss..." << std::endl;
 #endif
 
-    CL_File file(filename);
+    CL_IODevice file = IApplication::GetInstance()->OpenResource(filename);
     CL_DomDocument document;
     document.load(file);
 
@@ -96,7 +96,7 @@ void AppUtils::LoadCharacters(const std::string &filename)
     std::cout << "Loading characters from " << filename << std::endl;
 #endif
 
-    CL_File file(filename);
+    CL_IODevice file = IApplication::GetInstance()->OpenResource(filename);
     CL_DomDocument document;
     document.load(file);
 
@@ -109,7 +109,7 @@ void AppUtils::LoadMonsters(const std::string &filename)
     std::cout << "Loading monsters..." << std::endl;
 #endif
 
-    CL_File file(filename);
+    CL_IODevice file = IApplication::GetInstance()->OpenResource(filename);
     CL_DomDocument document;
     document.load(file);
 
@@ -122,7 +122,7 @@ void AppUtils::LoadItems(const std::string &filename)
     std::cout << "Loading items..." << std::endl;
 #endif
 
-    CL_File file(filename);
+    CL_IODevice file = IApplication::GetInstance()->OpenResource(filename);
     CL_DomDocument document;
 
     document.load(file);
@@ -135,7 +135,7 @@ void AppUtils::LoadMainMenu(const std::string &filename)
     std::cout << "Loading main menu..." << std::endl;
 #endif
 
-    CL_File file(filename);
+    CL_IODevice file = IApplication::GetInstance()->OpenResource(filename);
     CL_DomDocument document;
 
     document.load(file);

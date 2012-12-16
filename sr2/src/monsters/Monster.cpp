@@ -20,8 +20,9 @@ using StoneRing::StatusEffect;
 using StoneRing::SpriteDefinition;
 
 
-
- 
+using Steel::ParameterList;
+using Steel::ParameterListItem;
+using Steel::AstScript; 
  
  
 Monster::Monster(MonsterElement *pDefinition)

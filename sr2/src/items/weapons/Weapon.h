@@ -45,7 +45,7 @@ namespace StoneRing{
         static eScriptMode ScriptModeForString(const std::string& str);
         static std::string StringForAttribute(eAttribute attr);
         
-        virtual void Invoke(eScriptMode invokeTime, const ParameterList& params)=0;
+        virtual void Invoke(eScriptMode invokeTime, const Steel::ParameterList& params)=0;
         bool ForgoAttack() const;
         
 

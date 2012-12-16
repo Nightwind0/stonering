@@ -4,6 +4,7 @@
 #include "StatusEffectModifier.h"
 
 using namespace StoneRing;
+using namespace Steel;
 
 Equipment::Equipment():m_eMagic(NONE)
 {
