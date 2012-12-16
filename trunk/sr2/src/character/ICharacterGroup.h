@@ -11,7 +11,7 @@ namespace StoneRing {
     
     class ICharacter;
 
-    class ICharacterGroup: public SteelType::IHandle
+    class ICharacterGroup: public Steel::SteelType::IHandle
     {
     public:
         virtual ~ICharacterGroup(){}

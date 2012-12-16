@@ -26,7 +26,7 @@
 
 
 using namespace StoneRing;
-
+using namespace Steel;
 
 namespace StoneRing{ 
     class ItemCollector : public StoneRing::ItemVisitor

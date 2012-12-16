@@ -20,6 +20,8 @@
 #include "ScriptEditWindow.h"
 #include "IApplication.h"
 
+using namespace Steel;
+
 #ifdef SR2_EDITOR
 
 namespace StoneRing { 

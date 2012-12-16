@@ -34,7 +34,7 @@ namespace StoneRing{
         */
         double GetArmorAttribute ( eAttribute attr );
         
-        virtual void Invoke(const ParameterList& params)=0;
+        virtual void Invoke(const Steel::ParameterList& params)=0;
   
 
         static eAttribute AttributeForString ( const std::string str );

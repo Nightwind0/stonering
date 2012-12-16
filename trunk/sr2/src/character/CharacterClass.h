@@ -16,7 +16,7 @@ namespace StoneRing
     class ScriptElement;
     class SkillTreeNode;
 
-    class CharacterClass : public Element, public SteelType::IHandle
+    class CharacterClass : public Element, public Steel::SteelType::IHandle
     {
     public:
         CharacterClass();

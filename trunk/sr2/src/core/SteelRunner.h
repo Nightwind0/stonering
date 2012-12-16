@@ -30,30 +30,31 @@
 namespace StoneRing {
     
 
+
 template <class T>
 class SteelRunner : public CL_Runnable
 {
 
 public:
-    SteelRunner(SteelInterpreter* pInterpreter,T* callee,void (T::*MemFunPtr)(void));
+    SteelRunner(Steel::SteelInterpreter* pInterpreter,T* callee,void (T::*MemFunPtr)(void));
     virtual ~SteelRunner();
     virtual void run();
-    void setScript(AstScript* pScript, const ParameterList& params);
-    void setFunctor(SteelType::Functor pFunctor);
-    SteelType getResult() const;
+    void setScript(Steel::AstScript* pScript, const Steel::ParameterList& params);
+    void setFunctor(Steel::SteelType::Functor pFunctor);
+    Steel::SteelType getResult() const;
 protected:
-    SteelInterpreter * m_pInterpreter;
+    Steel::SteelInterpreter * m_pInterpreter;
     T*m_callee;
     void (T::*m_callback)(void);
-    AstScript* m_pScript;
-    SteelType::Functor m_pFunctor;
-    ParameterList m_params;
-    SteelType m_result;
+    Steel::AstScript* m_pScript;
+    Steel::SteelType::Functor m_pFunctor;
+    Steel::ParameterList m_params;
+    Steel::SteelType m_result;
 };
 
 
 template <class T>
-SteelRunner<T>::SteelRunner(SteelInterpreter* pInterpreter,T* callee,void (T::*functor)(void))
+SteelRunner<T>::SteelRunner(Steel::SteelInterpreter* pInterpreter,T* callee,void (T::*functor)(void))
 :m_pInterpreter(pInterpreter),m_callee(callee),m_callback(functor),m_pScript(NULL){
 
 }
@@ -70,24 +71,24 @@ void SteelRunner<T>::run()
     if(m_pScript)
         m_result = m_pInterpreter->runAst(m_pScript,m_params);
     if(m_pFunctor)
-        m_result = m_pFunctor->Call(m_pInterpreter,SteelType::Container());
+        m_result = m_pFunctor->Call(m_pInterpreter,Steel::SteelType::Container());
     (m_callee->*m_callback)();
 }
 template <class T>
-void SteelRunner<T>::setScript(AstScript* pScript, const ParameterList& params)
+void SteelRunner<T>::setScript(Steel::AstScript* pScript, const Steel::ParameterList& params)
 {
     m_pScript = pScript;
     m_params = params;
 }
 
 template <class T>
-void SteelRunner<T>::setFunctor ( SteelType::Functor pFunctor )
+void SteelRunner<T>::setFunctor ( Steel::SteelType::Functor pFunctor )
 {
     m_pFunctor = pFunctor;
 }
 
 template <class T>
-SteelType SteelRunner<T>::getResult() const
+Steel::SteelType SteelRunner<T>::getResult() const
 {
     return m_result;
 }

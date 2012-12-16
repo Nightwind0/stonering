@@ -17,6 +17,7 @@
 
 
 using namespace StoneRing;
+using namespace Steel;
 
 //
 namespace StoneRing {

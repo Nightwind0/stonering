@@ -239,8 +239,8 @@ StatScript::GetCharacterStat() const
 double StatScript::GetStat(int level)
 {
     // Magic conversion to double
-    ParameterList params;
-    params.push_back ( ParameterListItem("$_CL",level) );
+    Steel::ParameterList params;
+    params.push_back ( Steel::ParameterListItem("$_CL",level) );
 
     return m_pScript->ExecuteScript(params);
 }

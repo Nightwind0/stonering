@@ -29,7 +29,7 @@
 
 
 using namespace StoneRing;
-
+using namespace Steel;
 
 
 void EquipState::EquipmentCollector::operator()(Item* pItem, int nCount)

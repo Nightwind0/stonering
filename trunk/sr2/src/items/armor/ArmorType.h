@@ -5,7 +5,7 @@
 #include "Equipment.h"
 
 namespace StoneRing{
-    class ArmorType: public Element, public SteelType::IHandle
+    class ArmorType: public Element, public Steel::SteelType::IHandle
     {
     public:
         ArmorType();

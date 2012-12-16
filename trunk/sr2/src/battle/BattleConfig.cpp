@@ -21,6 +21,7 @@
 #include "IApplication.h"
 
 using StoneRing::BattleConfig;
+using namespace Steel;
 
 
 BattleConfig::BattleConfig():m_setupScript(NULL),m_teardownScript(NULL),m_lostScript(NULL),m_wonScript(NULL)
@@ -35,7 +36,7 @@ BattleConfig::~BattleConfig()
 
 void BattleConfig::Load(const std::string& filename)
 {
-    CL_File file(filename);
+    CL_IODevice file = IApplication::GetInstance()->OpenResource(filename);
     CL_DomDocument document;
     document.load(file);
     

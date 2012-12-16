@@ -987,7 +987,7 @@ bool Level::Tile_Sort_Criterion ( const Tile * p1, const Tile * p2)
 void Level::LoadFromFile(const std::string &filename)
 {
     CL_DomDocument doc;
-    CL_File file(filename);
+    CL_IODevice file = IApplication::GetInstance()->OpenResource(filename);
     doc.load(file);
 
     CL_DomElement levelNode = doc.named_item("level").to_element();

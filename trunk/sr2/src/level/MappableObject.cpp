@@ -426,7 +426,7 @@ bool MappableObjectElement::ProvokeEvents( Event::eTriggerType trigger ) {
 			&& ( pEvent->Repeatable() || !party->DidEvent( pEvent->GetName() ) )
 		) {
 			ParameterList params;
-			params.push_back( ParameterListItem( "$_Name", m_name ) );
+			params.push_back( Steel::ParameterListItem( "$_Name", m_name ) );
 			pEvent->Invoke( params );
 			provoked = true;
 			

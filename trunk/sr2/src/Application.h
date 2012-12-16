@@ -35,8 +35,11 @@
 #include "ShopState.h"
 #include "CutSceneState.h"
 #include "StartupState.h"
+#include "ZipFileProvider.h"
 
 
+
+using Steel::SteelType;
 class DrawThread;
 
 namespace StoneRing
@@ -80,6 +83,7 @@ public:
     virtual void                    MainMenu();
     virtual void                    RunOnMainThread(CL_Event& event, Functor* functor);
     virtual void                    Banner(const std::string&, int time);
+	virtual CL_IODevice     		OpenResource(const std::string& str);	
     int                             frameRate();
 protected:
     virtual int                     GetScreenWidth()const;
@@ -127,7 +131,7 @@ private:
     SteelType                       selectItemAdv(uint filter);
     SteelType                       addCharacter(const std::string &character, int level, bool announce);
     SteelType                       inBattle();
-    SteelType                       shop(const SteelArray& items); // only for buying
+    SteelType                       shop(const Steel::SteelArray& items); // only for buying
     SteelType                       sell();
     SteelType                       getPartyArray(void);
     SteelType                       getItemName(const SteelType::Handle hItem);
@@ -205,9 +209,9 @@ private:
     SteelType                       getUnarmedMissSound(SteelType::Handle hICharacter);
 
     SteelType                       getAnimation(const std::string& name);
-    SteelType                       showExperience(const SteelArray&  characters, const SteelArray& xp_gained,
-            const SteelArray& oldLevels, const SteelArray& sp_gained);
-    SteelType                       menu(const SteelArray& options);
+    SteelType                       showExperience(const Steel::SteelArray&  characters, const Steel::SteelArray& xp_gained,
+            const Steel::SteelArray& oldLevels, const Steel::SteelArray& sp_gained);
+    SteelType                       menu(const Steel::SteelArray& options);
     SteelType                       skilltree(SteelType::Handle hCharacter, bool buy);
     SteelType                       getSkill(const std::string& name);
     SteelType                       learnSkill(SteelType::Handle hCharacter, SteelType::Handle skill);
@@ -302,6 +306,8 @@ private:
     BattleConfig mBattleConfig;
     AppUtils mAppUtils;
     UtilityScripts mUtilityScripts;
+	CL_VirtualDirectory m_resource_dir;
+	ZipFileProvider m_zip_provider;
 };
 
 inline void Application::steelConst(const std::string &name, int value)

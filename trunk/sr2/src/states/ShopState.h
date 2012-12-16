@@ -31,7 +31,7 @@ public:
     ShopState();
     virtual ~ShopState();
 
-    void Init(const SteelArray& items);
+    void Init(const Steel::SteelArray& items);
     void Init(); // sell mode
     virtual bool IsDone() const;
     // Handle joystick / key events that are processed according to mappings

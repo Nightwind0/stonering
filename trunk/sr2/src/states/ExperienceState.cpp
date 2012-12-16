@@ -26,6 +26,8 @@
 using StoneRing::ExperienceState;
 using StoneRing::IApplication;
 
+using namespace Steel;
+
 ExperienceState::ExperienceState()
 {
 

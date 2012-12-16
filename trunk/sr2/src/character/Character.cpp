@@ -14,6 +14,8 @@
 #include "ItemManager.h"
 
 
+using namespace Steel;
+
 namespace StoneRing { 
 
 struct stat_entry
@@ -290,7 +292,7 @@ void   Character::SetXP(uint amount)
     m_nXP = amount;
     static AstScript * LNT = IApplication::GetInstance()->GetUtility(IApplication::LEVEL_FOR_XP);
     ParameterList params;
-    params.push_back(ParameterListItem("$_XP",(int)m_nXP));
+    params.push_back(Steel::ParameterListItem("$_XP",(int)m_nXP));
     m_nLevel = IApplication::GetInstance()->RunScript(LNT,params);
 }
 

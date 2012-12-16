@@ -36,7 +36,7 @@ namespace StoneRing{
     class StatusEffect;
     class StatusEffectModifier;
 
-    class Item: public SteelType::IHandle
+    class Item: public Steel::SteelType::IHandle
     {
     public:
         Item();

@@ -51,7 +51,7 @@ namespace StoneRing{
         virtual eSlot GetSlot() const=0;
         virtual void Equip(ICharacter *);
         virtual void Unequip(ICharacter *);
-        virtual bool EquipCondition(const ParameterList& params)=0;
+        virtual bool EquipCondition(const Steel::ParameterList& params)=0;
      
         // TODO: Get these from some base that Omegas can share with Equipment
         typedef std::multimap<uint,AttributeModifier*> AttributeModifierSet;
@@ -73,8 +73,8 @@ namespace StoneRing{
         double GetStatusEffectModifier(const std::string &statuseffect)const;   
         
     protected:
-        virtual void OnEquipScript(const ParameterList& params)=0;
-        virtual void OnUnequipScript(const ParameterList& params)=0;
+        virtual void OnEquipScript(const Steel::ParameterList& params)=0;
+        virtual void OnUnequipScript(const Steel::ParameterList& params)=0;
 
         void Clear_Attribute_Modifiers();
         void Add_Attribute_Modifier( AttributeModifier * pAttr );

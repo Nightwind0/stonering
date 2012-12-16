@@ -35,7 +35,7 @@ UtilityScripts::~UtilityScripts()
 
 void UtilityScripts::Load(const std::string& filename)
 {
-    CL_File file(filename);
+    CL_IODevice file = IApplication::GetInstance()->OpenResource(filename);
     CL_DomDocument document;
     document.load(file);
     

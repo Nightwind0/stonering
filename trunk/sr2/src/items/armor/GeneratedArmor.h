@@ -4,6 +4,7 @@
 #include "Item.h"
 #include "Armor.h"
 
+using Steel::ParameterList;
 
 namespace StoneRing{
     class GeneratedArmor : public virtual Item, public Armor
