@@ -984,10 +984,14 @@ bool Level::Tile_Sort_Criterion ( const Tile * p1, const Tile * p2)
     return p1->GetZOrder() < p2->GetZOrder();
 }
 
-void Level::LoadFromFile(const std::string &filename)
+void Level::LoadFromFile(const std::string &filename, bool resource)
 {
     CL_DomDocument doc;
-    CL_IODevice file = IApplication::GetInstance()->OpenResource(filename);
+    CL_IODevice file;
+	if(resource) file = IApplication::GetInstance()->OpenResource(filename);
+	else {	
+		file = CL_File(filename);
+	}
     doc.load(file);
 
     CL_DomElement levelNode = doc.named_item("level").to_element();

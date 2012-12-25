@@ -2358,6 +2358,9 @@ int Application::main ( const std::vector<CL_String> &args )
 #endif
     int njoystick = -1;
     setupClanLib();
+	
+	std::string data_file = "stone_ring2.sr2";
+	bool data_dir=false; 
 
     for ( int i = 0;i < args.size();i++ )
     {
@@ -2367,6 +2370,20 @@ int Application::main ( const std::vector<CL_String> &args )
         {
             njoystick = atoi ( string.substr ( 5 ).c_str() );
         }
+        else if(string.substr( 0, 2) == "-f" )
+		{
+			data_dir = false;
+			if(args.size() > i+1)
+				data_file = args[i+1];
+		}else if(string.substr( 0, 2) == "-d")
+		{
+			if(args.size() > i+1){
+				data_dir = true;
+				data_file = args[i+1];
+				std::cerr << data_file << " used as package" << std::endl;
+			}
+		}
+			
     }
 
 
@@ -2376,7 +2393,7 @@ int Application::main ( const std::vector<CL_String> &args )
         registerSteelFunctions();
 		
 		// TODO: Get the package from the command line
-		CL_VirtualFileSystem vfs("stone_ring2.sr2", true);
+		CL_VirtualFileSystem vfs(data_file, !data_dir);
 		
 		m_resource_dir = CL_VirtualDirectory(vfs, "./");
 		

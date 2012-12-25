@@ -389,7 +389,7 @@ public:
     void FreezeMappableObjects();
     void UnfreezeMappableObjects();
     MappableObject* GetMappableObjectByName(const std::string& name) const;
-    void LoadFromFile(const std::string &path);
+    void LoadFromFile(const std::string &path, bool resource=true);
 #ifndef NDEBUG
     void DumpMappableObjects() const;
     void DrawMOQuadtree(CL_GraphicContext gc, const CL_Point& offset) const;

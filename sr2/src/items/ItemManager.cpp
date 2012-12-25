@@ -134,9 +134,11 @@ void ItemManager::LoadItemFile ( CL_DomDocument &doc )
     {
         WeaponClass * pWeaponClass = dynamic_cast<WeaponClass*>( pItemFactory->createElement("weaponClass") );
         pWeaponClass->Load(weaponClassNode);
-        if(pWeaponClass->Imbuement())
+		std::cout << "Loaded weapon class " << pWeaponClass->GetName() << std::endl;
+        if(pWeaponClass->Imbuement()){
+			std::cout << "Imbuement: " << pWeaponClass->GetName() << std::endl;
             m_pInstance->m_weapon_imbuements.push_back( pWeaponClass );
-        else
+		}else
             m_pInstance->m_weapon_classes.push_back ( pWeaponClass );
         weaponClassNode = weaponClassNode.get_next_sibling().to_element();
     }
@@ -863,7 +865,7 @@ WeaponType * ItemManager::GetWeaponType(const std::string& name)
             if((*iter)->GetName() == name)
                 return *iter;
         }
-        
+        assert(0);
         return NULL;
 }
 
@@ -875,7 +877,7 @@ ArmorType * ItemManager::GetArmorType(const std::string& name)
             if((*iter)->GetName() == name)
                 return *iter;
         }
-        
+        assert(0);
         return NULL;
 }
 
@@ -887,9 +889,8 @@ WeaponClass * ItemManager::GetWeaponClass(const std::string& name)
             if((*iter)->GetName() == name)
                 return *iter;
         }
-        
-        return NULL;
-        
+        assert(0);
+        return NULL;        
 }
 
 ArmorClass * ItemManager::GetArmorClass(const std::string& name)
@@ -900,9 +901,8 @@ ArmorClass * ItemManager::GetArmorClass(const std::string& name)
             if((*iter)->GetName() == name)
                 return *iter;
         }
-        
-        return NULL;
-        
+        assert(0);
+        return NULL;        
 }
 
 WeaponClass * ItemManager::GetWeaponImbuement(const std::string& name)
@@ -913,9 +913,8 @@ WeaponClass * ItemManager::GetWeaponImbuement(const std::string& name)
             if((*iter)->GetName() == name)
                 return *iter;
         }
-        
+        assert(0);
         return NULL;
-        
 }
 
 ArmorClass * ItemManager::GetArmorImbuement(const std::string& name)
@@ -926,9 +925,8 @@ ArmorClass * ItemManager::GetArmorImbuement(const std::string& name)
             if((*iter)->GetName() == name)
                 return *iter;
         }
-        
-        return NULL;
-        
+        assert(0);
+        return NULL;        
 }
 
 
