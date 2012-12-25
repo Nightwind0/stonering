@@ -155,9 +155,6 @@
                <description>20% chance of inflicting Dragon Rage on a hit.</description>
                <statusEffectInfliction statusRef="Dragon Rage" modifier="0.2"/>
            </weaponClass>
-           <!--weaponClass name="" -->
-           
-           <!-- Imbuements -->
            <weaponClass imbuement="true" name="of Glory" valueMultiplier="1.75">
                <attributeModifier attribute="joy" type="add" value="0.15"/>
                <attributeModifier attribute="hp_max" type="multiply" value="1.25"/>
@@ -305,7 +302,7 @@
            <weaponType baseAttack="300" hitAdd="0" basePrice="3000" name="Shillelagh" ranged="false" damageCategory="bash">
                <iconRef>Weapons/shillelagh</iconRef>
            </weaponType>           
-           <!-- Monk stuff -->
+
            <weaponType baseAttack="15" hitAdd="0" basePrice="200" name="Knuckles" ranged="false" damageCategory="bash">
                <iconRef>Weapons/knuckles</iconRef>
            </weaponType>
@@ -332,8 +329,6 @@
            
            
            
-           <!--weaponType baseAttack="3" basePrice="20" name="Balloon" damageCategory="bash">
-           </weaponType-->
        </weaponTypes>
        <armorClasses>
            <armorClass name="Wooden" valueMultiplier="0.5">
@@ -395,8 +390,7 @@
                <armorEnhancer multiplier="3" attribute="AC"/>
                <armorEnhancer multiplier="3" attribute="RST"/>
            </armorClass>
-           
-           <!-- Imbuements -->
+          
            <armorClass imbuement="true" name="of Glory" valueMultiplier="2.0">
                <attributeModifier attribute="joy" type="add" value="0.1"/>
            </armorClass> 
@@ -470,8 +464,7 @@
                <iconRef>Weapons/sword</iconRef>		       
                <weaponTypeRef name="Sword"/>
                <weaponEnhancer multiplier="0.5" attribute="ATK"/>
-               <!--weaponEnhancer add="0.2" attribute="Critical%"/-->
-               <!--statusEffectInfliction statusRef="Shrunk" modifier="0.75"/-->
+
            </uniqueWeapon>
            <uniqueWeapon name = "Kid Bow" dropRarity="rare" valueMultiplier="0.25">
                    <iconRef>Weapons/bow</iconRef>                  

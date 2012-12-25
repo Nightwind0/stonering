@@ -25,6 +25,7 @@ AC_CHECK_LIB(steel,main)
 
 #PKG_CHECK_MODULES(CLANLIB, clanCore-2.1 clanApp-2.1 clanDisplay-2.1 clanGL-2.1 clanSound-2.1 clanGUI-2.1)
 PKG_CHECK_MODULES(CLANLIB, clanCore-2.3 clanApp-2.3 clanDisplay-2.3 clanGL-2.3 clanSound-2.3 clanGUI-2.3 clanVorbis-2.3)
+#PKG_CHECK_MODULES(CLANLIB, clanCore-2.4 clanApp-2.4 clanDisplay-2.4 clanGL-2.4 clanSound-2.4 clanGUI-2.4 clanVorbis-2.4)
 
 AC_SUBST([CLANLIB_LIBS]) 
 AC_SUBST([CLANLIB_CFLAGS])
