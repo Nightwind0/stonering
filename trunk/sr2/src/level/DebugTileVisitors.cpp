@@ -36,24 +36,6 @@ void TileSideBlockDrawer::accept ( CL_GraphicContext& GC, const CL_Point& tileDs
     } 
 }
 
-TilePopsDrawer::TilePopsDrawer()
-{
-
-}
-
-TilePopsDrawer::~TilePopsDrawer()
-{
-
-}
-
-void TilePopsDrawer::accept ( CL_GraphicContext& GC, const CL_Point& top_left, Tile* pTile )
-{
-    if(m_indicator.is_null())
-        m_indicator = GraphicsManager::CreateSprite("Sprites/System/Pops",false);    
-    if(pTile->Pops())
-        m_indicator.draw(GC,pTile->GetRect().get_top_left().x + top_left.x,
-						 pTile->GetRect().get_top_left().y+top_left.y);
-}
 
 TileFloaterDrawer::TileFloaterDrawer()
 {

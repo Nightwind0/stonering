@@ -128,7 +128,7 @@ SteelType Application::playSound ( const std::string &sound )
     return SteelType();
 }
 
-SteelType Application::loadLevel ( const std::string &level, uint startX, uint startY )
+SteelType Application::pushLevel ( const std::string &level, uint startX, uint startY )
 {
     Level * pLevel = new Level();
     pLevel->Load ( level, m_resources );
@@ -155,12 +155,40 @@ SteelType Application::loadLevel ( const std::string &level, uint startX, uint s
     return SteelType();
 }
 
+SteelType Application::loadLevel ( const std::string &level, uint startX, uint startY )
+{
+    Level * pLevel = new Level();
+    pLevel->Load ( level, m_resources );
+    pLevel->Invoke();
+    
+    bool mapstaterunning = false;
+    for(std::vector<State*>::const_iterator it = mStates.begin();
+        it != mStates.end(); it++){
+        if(*it == &mMapState){
+            mapstaterunning = true;
+            break;
+        }
+    }
+    
+    if(!mapstaterunning){
+        mMapState.SetDimensions(GetDisplayRect());
+        mMapState.Start();
+        mStates.push_back(&mMapState);
+    }
+    
+    
+    mMapState.LoadLevel ( pLevel, static_cast<uint> ( startX ), static_cast<uint> ( startY ) );
+
+    return SteelType();
+}
+
+
 void Application::PopLevelStack ( bool bAll )
 {
     mMapState.Pop ( bAll );
 }
 
-SteelType Application::pop_ ( bool bAll )
+SteelType Application::popLevel ( bool bAll )
 {
     PopLevelStack ( bAll );
 
@@ -1929,10 +1957,12 @@ void Application::registerSteelFunctions()
     SteelFunctor* fn_playScene = new SteelFunctor1Arg<Application, const SteelType&> ( this, &Application::playScene );
     SteelFunctor* fn_playSound  = new SteelFunctor1Arg<Application, const std::string&> ( this, &Application::playSound );
     SteelFunctor* fn_loadLevel = new SteelFunctor3Arg<Application, const std::string&, uint, uint> ( this, &Application::loadLevel );
+	SteelFunctor* fn_pushLevel = new SteelFunctor3Arg<Application, const std::string&, uint, uint> ( this, &Application::pushLevel );
+    	
     SteelFunctor* fn_startBattle = new SteelFunctor4Arg<Application, const std::string &, uint, bool, const std::string&> ( this, &Application::startBattle );
     SteelFunctor* fn_pause = new  SteelFunctor1Arg<Application, uint> ( this, &Application::pause );
     SteelFunctor* fn_choice = new SteelFunctor2Arg<Application, const std::string&, const SteelType::Container &> ( this, &Application::choice );
-    SteelFunctor* fn_pop = new SteelFunctor1Arg<Application, bool> ( this, &Application::pop_ );
+    SteelFunctor* fn_pop = new SteelFunctor1Arg<Application, bool> ( this, &Application::popLevel );
    // SteelFunctor* fn_giveItem = new SteelFunctor2Arg<Application, const std::string &, uint> ( this, &Application::giveItem );
     
     SteelFunctor*  fn_takeItem = new SteelFunctor3Arg<Application, const SteelType::Handle, uint, bool> ( this, &Application::takeItem );
@@ -2106,7 +2136,8 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "startBattle", fn_startBattle );
     mInterpreter.addFunction ( "pause", fn_pause );
     mInterpreter.addFunction ( "choice", fn_choice );
-    mInterpreter.addFunction ( "pop", fn_pop );
+	mInterpreter.addFunction ( "pushLevel", fn_pushLevel );
+    mInterpreter.addFunction ( "popLevel", fn_pop );
     mInterpreter.addFunction ( "takeItem", fn_takeItem );
     mInterpreter.addFunction ( "getGold", fn_getGold );
     mInterpreter.addFunction ( "selectItem", fn_useItem );

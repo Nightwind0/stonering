@@ -1283,7 +1283,6 @@ void MapWindow::on_toolbar_item(CL_ToolBarItem item)
             static bool toggled = false;
             toggled = !toggled;
             m_pMap->show_hot(toggled);
-            m_pMap->show_pop(toggled);
             m_pMap->show_direction_blocks(toggled);
             m_pMap->show_floaters(toggled);
 			m_pMap->show_monster_region(toggled);
@@ -1310,8 +1309,6 @@ void MapWindow::on_toolbar_item(CL_ToolBarItem item)
                 flag = Tile::TIL_BLK_NORTH;
             else if(item.get_id() == BLOCK_ALL)
                 flag = Tile::TIL_BLK_NORTH | Tile::TIL_BLK_SOUTH | Tile::TIL_BLK_WEST | Tile::TIL_BLK_EAST;
-            else if(item.get_id() == POPS)
-                flag = Tile::TIL_POPS;
             else if(item.get_id() == FLOATER)
                 flag = Tile::TIL_FLOATER;
           
@@ -1322,9 +1319,7 @@ void MapWindow::on_toolbar_item(CL_ToolBarItem item)
             SetOperation(Operation::CLICK|Operation::CTRL,&block_op);
             SetOperation(Operation::DRAG,&block_ops);
             SetOperation(Operation::DRAG|Operation::CTRL,&block_ops);
-            if(flag == Tile::TIL_POPS){
-                m_pMap->show_pop(true);
-            }else if(flag == Tile::TIL_HOT){
+			if(flag == Tile::TIL_HOT){
                 m_pMap->show_hot(true);
             }else if(flag == Tile::TIL_FLOATER){
                 m_pMap->show_floaters(true);

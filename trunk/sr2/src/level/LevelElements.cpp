@@ -158,7 +158,6 @@ void Tile::load_attributes(CL_DomNamedNodeMap attributes)
 
     if (floater) cFlags |= TIL_FLOATER;
     if (hot) cFlags |= TIL_HOT;
-    if (pops) cFlags |= TIL_POPS;
 }
 
 
@@ -320,7 +319,6 @@ CL_DomElement Tile::CreateDomElement(CL_DomDocument& doc)const
     if(m_ZOffset >0 ) element.set_attribute("zoffset", IntToString (m_ZOffset ) );
     if(IsFloater()) element.set_attribute("floater", "true");
     if(IsHot())     element.set_attribute("hot", "true");
-    if(Pops())      element.set_attribute("pops","true");
 	
 	if(m_monster_region >= 0){
 		element.set_attribute("monster_region",IntToString(m_monster_region));

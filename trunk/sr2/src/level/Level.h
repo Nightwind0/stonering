@@ -109,8 +109,7 @@ public:
 		TIL_BLK_NORTH = (1<<4), 
 		TIL_BLK_SOUTH = (1<<5),
 		TIL_BLK_EAST = (1<<6),
-		TIL_BLK_WEST = (1<<7),
-		TIL_POPS = (1<<8)
+		TIL_BLK_WEST = (1<<7)
 	};
     class Visitor { 
     public:
@@ -160,17 +159,17 @@ public:
     inline bool IsHot() const {
         return (cFlags & TIL_HOT) != 0;
     }
-
-    inline bool Pops() const {
-        return (cFlags & TIL_POPS) != 0;
-    }
+    
 	void Draw(CL_GraphicContext& gc, const CL_Point& dst);
     
     virtual void Update();
+	
     int GetSideBlock() const;
+	
     inline bool IsTile() const {
         return true;
     }
+    
     void SetStackOrder(ushort order){
 		m_stack_order = order;
 	}
