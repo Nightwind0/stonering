@@ -110,6 +110,7 @@ private:
     SteelType                       playScene(const SteelType& functor);
     SteelType                       playSound(const std::string &sound);
     SteelType                       loadLevel(const std::string &level, uint startX, uint startY);
+	SteelType  						 pushLevel(const std::string &level, uint startX, uint startY);
     SteelType                       mainMenu();
     SteelType                       startBattle(const std::string &monster, uint count, bool isBoss, const std::string &backdrop);
     SteelType                       say(const std::string &speaker, const std::string &text);
@@ -117,7 +118,7 @@ private:
     SteelType                       pause(uint time);
     SteelType                       invokeShop(const std::string &shoptype);
     SteelType                       choice(const std::string &choiceText, const SteelType::Container &choices);
-    SteelType                       pop_(bool bAll);
+    SteelType                       popLevel(bool bAll);
     SteelType                       getNamedItem(const std::string &item);
     SteelType                       giveItem(SteelType::Handle hItem, int count, bool silent);
     SteelType                       getGold();

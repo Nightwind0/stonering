@@ -249,15 +249,6 @@ void MapComponent::show_mos ( bool on )
     m_show_mos = on;
 }
 
-void MapComponent::show_pop ( bool on )
-{
-    if(m_pLevel){
-        if(on)
-            m_pLevel->AddTileVisitor(&m_pops_drawer);
-        else
-            m_pLevel->RemoveTileVisitor(&m_pops_drawer);
-    }
-}
 
 void MapComponent::show_floaters ( bool on )
 {

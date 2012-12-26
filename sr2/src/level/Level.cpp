@@ -845,10 +845,6 @@ void Level::Activate_Tiles_At ( uint x, uint y )
             {
                 (*iter)->Activate();
             }
-            else if ((*iter)->Pops() )
-            {
-                IApplication::GetInstance()->PopLevelStack(false);
-            }
         }
     }
 

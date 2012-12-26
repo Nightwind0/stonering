@@ -50,7 +50,6 @@ public:
     void show_direction_blocks(bool on);
     void show_hot(bool on);
     void show_mos(bool on);
-    void show_pop(bool on);
     void show_floaters(bool on);
 	void show_zorder(bool on);
 	void show_monster_region(bool on);
@@ -67,7 +66,6 @@ private:
     CL_Point m_origin;
     TileSideBlockDrawer m_block_drawer;
     TileHotDrawer m_hot_drawer;
-    TilePopsDrawer m_pops_drawer;
     TileFloaterDrawer m_floater_drawer;
 	TileZOrderDrawer m_zorder_drawer;
 	TileMonsterRegionDrawer m_region_drawer;

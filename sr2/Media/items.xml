@@ -1,4 +1,4 @@
-
+<!-- don't like comments -->
    <items>
        <weaponClasses>
            <weaponClass name="Sublime" valueMultiplier="6.75">
@@ -155,6 +155,9 @@
                <description>20% chance of inflicting Dragon Rage on a hit.</description>
                <statusEffectInfliction statusRef="Dragon Rage" modifier="0.2"/>
            </weaponClass>
+		   
+		   
+		   <!-- Imbuements -->
            <weaponClass imbuement="true" name="of Glory" valueMultiplier="1.75">
                <attributeModifier attribute="joy" type="add" value="0.15"/>
                <attributeModifier attribute="hp_max" type="multiply" value="1.25"/>

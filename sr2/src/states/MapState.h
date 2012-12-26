@@ -44,6 +44,7 @@ public:
 
     void SetDimensions(const CL_Rect &screenRect);
     void PushLevel(Level *pLevel, uint startX, uint startY);
+	void LoadLevel(Level *pLevel, uint startX, uint startY);
     void SetPlayerSprite(CL_Sprite player);
     void MoveMappableObjects();
     void Pop(bool bAll);
@@ -74,7 +75,6 @@ private:
     void remove_debug_drawers();
     TileSideBlockDrawer m_block_drawer;
     TileHotDrawer            m_hot_drawer;
-    TilePopsDrawer           m_pops_drawer;
     TileFloaterDrawer        m_floater_drawer;
 #endif
 };
