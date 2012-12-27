@@ -1236,21 +1236,23 @@ SteelType Application::doEquipmentStatusEffectInflictions ( SteelType::Handle hE
     return effects;
 }
 
-SteelType Application::giveItem( SteelType::Handle hItem, int count, bool silent )
+SteelType Application::giveItems( const Steel::SteelArray& items, const Steel::SteelArray& counts, bool silent )
 {
-    Item * pItem = GrabHandle<Item*>(hItem);
-    
-
-    mpParty->GiveItem ( pItem , count );
+	if(items.size() != counts.size()){
+		throw Steel::ParamMismatch();
+	}
+	std::vector<Item*> items_array;
+	std::vector<uint> counts_array;
+	for(int i = 0;i < items.size(); i++){
+		Item * pItem = GrabHandle<Item*>(items[i]);
+		items_array.push_back(pItem);
+		counts_array.push_back( (int) counts[i] );
+		mpParty->GiveItem( pItem, (int) counts[i] );
+	}
+  
     if(!silent){
-        SoundManager::PlayEffect(SoundManager::EFFECT_REWARD);
-        std::ostringstream os;
-        os << "You received " << pItem->GetName();
-
-        if ( count > 1 )
-            os << " x" << count;
-
-        say ( "Inventory", os.str() );    
+		mItemGetState.SetItems(items_array,counts_array);
+		RunState(&mItemGetState);
     }
     return SteelType();
 }
@@ -2225,7 +2227,7 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "augmentCharacterAttribute", new SteelFunctor3Arg<Application,SteelType::Handle,uint,double>(this,&Application::augmentCharacterAttribute) );
     mInterpreter.addFunction ( "generateRandomWeapon", new SteelFunctor3Arg<Application,uint,int,int>(this,&Application::generateRandomWeapon));
     mInterpreter.addFunction ( "generateRandomArmor", new SteelFunctor3Arg<Application,uint,int,int>(this,&Application::generateRandomArmor));      
-    mInterpreter.addFunction ( "giveItem", new SteelFunctor3Arg<Application,SteelType::Handle,int,bool>(this,&Application::giveItem) );
+    mInterpreter.addFunction ( "giveItems", new SteelFunctor3Arg<Application,const Steel::SteelArray&, const Steel::SteelArray&,bool>(this,&Application::giveItems) );
     mInterpreter.addFunction ( "doEquipmentStatusEffectInflictions", new SteelFunctor2Arg<Application,SteelType::Handle,SteelType::Handle>(this,&Application::doEquipmentStatusEffectInflictions) );
     mInterpreter.addFunction ( "isArmor", new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::isArmor) );
     mInterpreter.addFunction ( "weaponTypeIsRanged", new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::weaponTypeIsRanged) );

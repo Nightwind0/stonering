@@ -42,12 +42,14 @@
 	showExperience(@characters,@xp_gain,@original_level, @sp_gain);
 	declare $winnings = 0;
         declare @drops;
+		declare @counts;
 	const $winningsPerLevel = 5;
 	const $winningsGrowth = 1.15;
 	foreach (declare $monster) in @monsters {
             declare @these_drops = getMonsterDrops($monster);
             if(len(@these_drops)){
                 @drops += @these_drops;
+				@drops += 1;
             }else {
                 $winnings += $winningsPerLevel * ($b ^ getCharacterLevel($monster));                    
             }
@@ -65,12 +67,12 @@
             else if($rarity > 0.7)
                 $rarity = $_DROP_UNCOMMON;
             declare $item = randomItem($rarity,$winnings,$winnings * (0.5 + $r));
-            if(is_valid($item))
+            if(is_valid($item)){
                 push @drops, $item;
+				push @counts, 1;
+			}
         }
-        foreach (declare $drop) in @drops {
-            giveItem($drop,1,false);
-        }
+		giveItems(@drops, @counts, false);
 	]]>
 </onWon>
 <onLost>
