@@ -239,6 +239,9 @@
                 <image name="no_icon">
                         <image-file file="Images/Icons/no_icon.png"/>
                 </image>
+				<image name="gamepad">
+					<image-file file="Images/Icons/GamePad.png"/>
+				</image>
                 <image name="theme">
                     <image-file file="Images/Icons/theme.png"/>
                 </image>

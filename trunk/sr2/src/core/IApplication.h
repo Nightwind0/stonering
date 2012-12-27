@@ -94,11 +94,11 @@ public:
 	virtual AbilityManager *GetAbilityManager() = 0;
 	virtual IFactory *      GetElementFactory() = 0;
 	virtual void            StartBattle( const MonsterGroup &group, const std::string &backdrop ) = 0;
-	virtual void            PopLevelStack( bool popAll ) = 0;
 	virtual Level*          GetCurrentLevel()const = 0;
 	virtual void            MainMenu() = 0;
 	virtual void            LoadMainMenu( CL_DomDocument& ) = 0;
 	virtual CL_Rect         GetDisplayRect() const = 0;
+	// TODO: Shouldn't this be on the Party ??
 	virtual uint            GetMinutesPlayed()const = 0;
 	virtual void            RequestRedraw( const State *pState ) = 0;
 	virtual void            RunState( State *pState, bool threaded = false ) = 0;

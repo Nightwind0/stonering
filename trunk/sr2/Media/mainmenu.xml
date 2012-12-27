@@ -135,6 +135,14 @@
             menu::reload();
             </script>
         </menuOption>
+		<menuOption name="Game Pad" icon="gamepad">
+			<script id="MainMenuConfigGamePad">
+			<![CDATA[ declare $chose = menu(array("Configure Game Pad","Cancel"));
+			if($chose == 0)
+				configJoystick();
+					]]>
+			</script>
+		</menuOption>
     </menuOption>
     <menuOption name="Status" icon="status">
 	<script id="MainMenuStatus">

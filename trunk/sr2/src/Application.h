@@ -37,7 +37,8 @@
 #include "StartupState.h"
 #include "ZipFileProvider.h"
 #include "ItemGetState.h"
-
+#include "JoystickConfig.h"
+#include "BannerState.h"
 
 
 using Steel::SteelType;
@@ -240,6 +241,8 @@ private:
     SteelType                       banner(const std::string&, int time);
 	SteelType                       closeMap();
 	SteelType                       gameoverScreen();
+	
+	SteelType  						 configJoystick();
 
     SteelType                       editing();
     SteelType                       editMap();
@@ -288,6 +291,20 @@ private:
 
     std::string mGold;
     uint m_startTime;
+	
+	/* Joystick config */
+	enum JoystickTrainState {
+		JS_TRAIN_IDLE,
+		JS_TRAIN_AXIS,
+		JS_TRAIN_BUTTON
+	}m_joystick_train_state;
+	
+	union JoystickTrainComponent {
+		IApplication::AxisDirection m_dir;
+		IApplication::Button m_button;
+	}m_joystick_train_component;
+	
+	JoystickConfig m_joystick_config;
 
     /* STATES */
     CL_Mutex mFunctorMutex;
@@ -302,6 +319,7 @@ private:
     SkillTreeState mSkillTreeState;
 	ItemGetState mItemGetState;
     EquipState mEquipState;
+	BannerState mBannerState;
 #if SR2_EDITOR
     MapEditorState mMapEditorState;
 #endif
