@@ -1,6 +1,19 @@
 <level name="">
 	<levelHeader width="50" height="45" music="Music/Town" allowsRunning="true"/>
 	<mappableObjects>
+		<mo name="Kitty" sprite="Npc/Cat" movementType="none" speed="slow" size="1x1" type="npc" xpos="12" ypos="10" facing="south" solid="true">
+			<event name="Kitty Event 0" triggerType="talk">
+				<script id="CatTalk">
+					<![CDATA[declare @items;
+declare @counts;
+pushb @items, getNamedItem("Moon Seed");
+pushb @items, getNamedItem("Sun Seed");
+pushb @counts, 1;
+pushb @counts, 2;
+giveItems(@items,@counts,false);]]>
+				</script>
+			</event>
+		</mo>
 		<mo name="Samantha" sprite="Npc/Cat" movementType="wander" speed="slow" size="1x1" type="npc" xpos="28" ypos="19" facing="west" solid="true"/>
 	</mappableObjects>
 	<tiles>
@@ -17,13 +30,13 @@
 		<tile xpos="0" ypos="1">
 			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
-		<tile xpos="0" ypos="1" pops="true">
+		<tile xpos="0" ypos="1">
 			<tilemap mapname="inq_town3" mapx="2" mapy="13"/>
 		</tile>
 		<tile xpos="0" ypos="2">
 			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
 		</tile>
-		<tile xpos="0" ypos="2" pops="true">
+		<tile xpos="0" ypos="2">
 			<tilemap mapname="inq_town3" mapx="2" mapy="13"/>
 		</tile>
 		<tile xpos="0" ypos="3">

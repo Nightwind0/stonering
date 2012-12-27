@@ -483,6 +483,17 @@
                     <string name = "selection" value="BoldWhite"/>
                 </section>
             </section>
+			<section name="ItemGet">
+				<section name="rects">
+					<rect name="main" left="0" right="800" top="0" bottom="600"/>
+				</section>
+				<section name="fonts">
+					<string name = "item" value="BoldWhite"/>
+				</section>
+				<section name="points">
+					<point name="offset" x="20" y="36"/>
+				</section>					
+			</section>
             <section name="Banner">
                 <section name="rects">
                     <rect name="banner" top="0" left="0" right="800" bottom="120"/>

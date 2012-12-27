@@ -36,6 +36,7 @@
 #include "CutSceneState.h"
 #include "StartupState.h"
 #include "ZipFileProvider.h"
+#include "ItemGetState.h"
 
 
 
@@ -120,7 +121,7 @@ private:
     SteelType                       choice(const std::string &choiceText, const SteelType::Container &choices);
     SteelType                       popLevel(bool bAll);
     SteelType                       getNamedItem(const std::string &item);
-    SteelType                       giveItem(SteelType::Handle hItem, int count, bool silent);
+    SteelType                       giveItems(const Steel::SteelArray& items, const Steel::SteelArray& counts, bool silent);
     SteelType                       getGold();
     SteelType                       hasItem(const std::string &name, uint count);
     SteelType                       hasGeneratedWeapon(const std::string &wepclass, const std::string &weptype);
@@ -298,6 +299,7 @@ private:
     MainMenuState  mMainMenuState;
     ItemSelectState mItemSelectState;
     SkillTreeState mSkillTreeState;
+	ItemGetState mItemGetState;
     EquipState mEquipState;
 #if SR2_EDITOR
     MapEditorState mMapEditorState;

@@ -47,10 +47,10 @@ public:
 		return m_font.is_null();
 	}
 	void set_alpha( float alpha ) {
-		m_color.set_alpha( alpha );
+		m_alpha = alpha;
 	}
 	float get_alpha() const {
-		return m_color.get_alpha();
+		return m_alpha;
 	}
 
 	CL_FontMetrics get_font_metrics( CL_GraphicContext& gc ) {
@@ -68,6 +68,7 @@ private:
 	CL_Colorf m_shadow_color;
 	CL_Font   m_font;
 	CL_Pointf m_shadow_offset;
+	float m_alpha;
 };
 
 }
