@@ -499,7 +499,7 @@
                     <rect name="banner" top="0" left="0" right="800" bottom="120"/>
                 </section>
                 <section name="points">
-                    <rect name="inset" x="20" y="10"/>
+                    <point name="inset" x="20" y="10"/>
                 </section>
                 <section name="fonts">
                     <string name="font" value="BoldWhite"/>

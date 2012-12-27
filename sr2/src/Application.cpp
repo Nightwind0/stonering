@@ -1257,6 +1257,20 @@ SteelType Application::giveItems( const Steel::SteelArray& items, const Steel::S
     return SteelType();
 }
 
+SteelType Application::giveItem( const SteelType::Handle hItem, int count, bool silent )
+{
+	std::vector<Item*> items_array;
+	std::vector<uint> counts_array;
+	items_array.push_back ( GrabHandle<Item*>(hItem) );
+	counts_array.push_back ( count );
+	mpParty->GiveItem(items_array[0],count);
+    if(!silent){
+		mItemGetState.SetItems(items_array,counts_array);
+		RunState(&mItemGetState);
+    }
+    return SteelType();
+}
+
 
 SteelType Application::log ( const std::string& str )
 {
@@ -2251,6 +2265,7 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "banner", new SteelFunctor2Arg<Application,const std::string&,int>(this,&Application::banner) );
 	mInterpreter.addFunction ( "closeMap", fn_closeMap );
 	mInterpreter.addFunction ( "gameoverScreen", fn_gameoverScreen );
+	mInterpreter.addFunction ( "giveItem", new SteelFunctor3Arg<Application,SteelType::Handle,int,bool>(this,&Application::giveItem) );
 	
     
     mInterpreter.addFunction ( "editing", new SteelFunctorNoArgs<Application>(this,&Application::editing) );
