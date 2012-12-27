@@ -121,6 +121,7 @@ private:
     SteelType                       choice(const std::string &choiceText, const SteelType::Container &choices);
     SteelType                       popLevel(bool bAll);
     SteelType                       getNamedItem(const std::string &item);
+	SteelType 						 giveItem(const SteelType::Handle hItem, int count, bool silent);
     SteelType                       giveItems(const Steel::SteelArray& items, const Steel::SteelArray& counts, bool silent);
     SteelType                       getGold();
     SteelType                       hasItem(const std::string &name, uint count);

@@ -1,5 +1,9 @@
 <level name="">
-	<levelHeader width="50" height="45" music="Music/Town" allowsRunning="true"/>
+	<levelHeader width="50" height="45" music="Music/Town" allowsRunning="true">
+		<script id="LevelInit">
+			<![CDATA[banner("Welcome!",2000); ]]>
+		</script>	
+	</levelHeader>
 	<mappableObjects>
 		<mo name="Kitty" sprite="Npc/Cat" movementType="none" speed="slow" size="1x1" type="npc" xpos="12" ypos="10" facing="south" solid="true">
 			<event name="Kitty Event 0" triggerType="talk">

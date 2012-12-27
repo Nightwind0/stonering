@@ -62,7 +62,7 @@ bool BannerState::IsDone() const
 void BannerState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
 {
     MenuBox::Draw(GC,m_banner_rect);
-    m_font.draw_text(GC,m_text_inset,m_text);
+    m_font.draw_text(GC,m_text_inset,m_text, Font::TOP_LEFT);
 }
 
 void BannerState::HandleAxisMove ( const StoneRing::IApplication::Axis& axis, const StoneRing::IApplication::AxisDirection dir, float pos )

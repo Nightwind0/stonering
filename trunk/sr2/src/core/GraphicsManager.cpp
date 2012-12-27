@@ -403,7 +403,7 @@ CL_Pointf GraphicsManager::GetPoint( Overlay overlay, const std::string& name ) 
 	CL_Resource resource = resources.get_resource( pointname );
 
 	if( resource.get_type() != "point" )
-		throw CL_Exception( "Point resource element was not 'point' type" );
+		throw CL_Exception( "Point resource element was not 'point' type " +  NameOfOverlay(overlay) + name.c_str());
 
 
 	float x = atof( resource.get_element().get_attribute( "x" ).c_str() );

@@ -1043,7 +1043,8 @@ bool Level::handle_element(Element::eElement element, Element * pElement)
         }
     case EMONSTERREGIONS:
         {
-            if(m_pMonsterRegions != NULL) throw CL_Exception("Already have monster regions on this level");
+            if(m_pMonsterRegions != NULL) 
+				throw CL_Exception("Already have monster regions on this level");
 
             m_pMonsterRegions = dynamic_cast<MonsterRegions*>(pElement);
             break;
@@ -1258,12 +1259,7 @@ CL_DomElement Level::CreateDomElement(CL_DomDocument& doc) const
     CL_DomElement mappableObjects(doc,"mappableObjects");
     
 
-    CL_DomElement levelHeader(doc,"levelHeader");
-    levelHeader.set_attribute("width",IntToString(m_LevelWidth));
-    levelHeader.set_attribute("height",IntToString(m_LevelHeight));
-    levelHeader.set_attribute("music",m_music);
-    levelHeader.set_attribute("allowsRunning",m_bAllowsRunning?"true":"false");
-    element.append_child(levelHeader);
+    element.append_child(m_pHeader->CreateDomElement(doc));
   
     CL_DomElement tiles(doc,"tiles");
     for(int x=0;x<m_tiles.size();x++){
