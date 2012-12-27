@@ -31,6 +31,10 @@
 namespace StoneRing {
 
 
+NPCNavigator::NPCNavigator( MappableObject& mo ): Navigator( mo ) {
+	m_eDirection = Direction::NONE;
+}
+
 
 void NPCNavigator::OnMove(StoneRing::Level&)
 {
@@ -61,7 +65,7 @@ Direction NPCNavigator::GetCurrentDirection() const
 
 Direction NPCNavigator::GetFacingDirection() const
 {
-    return m_eDirection;
+    return (m_eDirection == Direction::NONE)?m_mo.GetDefaultFacing():m_eDirection;
 }
 
 uint NPCNavigator::GetSpeed() const
@@ -163,8 +167,8 @@ void NPCNavigator::changed_direction()
 
 ControlNavigator::ControlNavigator(MappableObject& mo):Navigator(mo)
 {
-    m_dir = Direction::SOUTH;
-    m_facingDir = Direction::SOUTH;
+    m_dir = mo.GetDefaultFacing();
+    m_facingDir = m_dir;
 }
 
 ControlNavigator::~ControlNavigator()
