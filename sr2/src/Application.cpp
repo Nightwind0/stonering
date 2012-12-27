@@ -1432,6 +1432,11 @@ bool Application::Serialize ( std::ostream& out )
     mpParty->Serialize(out);    
     mMapState.SerializeState(out);
     WriteString(out,GraphicsManager::GetThemeName());
+	bool joystick_setup = m_joystick_config.IsSetup();
+	out.write((char*)&joystick_setup,sizeof(bool));
+	if(joystick_setup){
+		m_joystick_config.Write(out);
+	}
     return true;
 }
 
@@ -1441,6 +1446,11 @@ bool Application::Deserialize( std::istream& in )
     mMapState.DeserializeState(in);
     std::string theme_name = ReadString(in);
     GraphicsManager::SetTheme(theme_name);
+	bool joystick_setup = false;
+	in.read((char*)&joystick_setup,sizeof(bool));
+	if(joystick_setup){
+		m_joystick_config.Read(in);
+	}
     return true;
 }
 
@@ -1555,9 +1565,8 @@ SteelType Application::banner ( const std::string& str, int time )
 
 void Application::Banner ( const std::string& str, int time )
 {
-    BannerState state;
-    state.Init(str,time);
-    RunState(&state);
+    mBannerState.Init(str,time);
+    RunState(&mBannerState);
 }
 
 SteelType Application::closeMap ()
@@ -1570,6 +1579,39 @@ SteelType Application::gameoverScreen()
 {
 	GameoverState state;
 	RunState(&state);
+	return SteelType();
+}
+
+SteelType Application::configJoystick() 
+{
+	m_joystick_train_state = JS_TRAIN_AXIS;
+	m_joystick_train_component.m_dir = IApplication::AXIS_UP;
+	Banner("Press Up on Joystick",-1);
+	m_joystick_train_component.m_dir = IApplication::AXIS_DOWN;
+	Banner("Press Down on Joystick",-1);
+	m_joystick_train_component.m_dir = IApplication::AXIS_RIGHT;
+	Banner("Press Right on Joystick",-1);
+	m_joystick_train_component.m_dir = IApplication::AXIS_LEFT;
+	Banner("Press Left on Joystick",-1);
+	
+	m_joystick_train_state = JS_TRAIN_BUTTON;
+	m_joystick_train_component.m_button = IApplication::BUTTON_CONFIRM;
+	Banner("Press Confirm Button on Joystick",-1);
+	m_joystick_train_component.m_button = IApplication::BUTTON_CANCEL;
+	Banner("Press Cancel Button on Joystick",-1);
+	m_joystick_train_component.m_button = IApplication::BUTTON_ALT;
+	Banner("Press Prod Button on Joystick",-1);
+	m_joystick_train_component.m_button = IApplication::BUTTON_MENU;
+	Banner("Press Menu Button on Joystick",-1);
+	m_joystick_train_component.m_button = IApplication::BUTTON_L;
+	Banner("Press L Button on Joystick",-1);
+	m_joystick_train_component.m_button = IApplication::BUTTON_R;
+	Banner("Press R Button on Joystick", -1);
+	m_joystick_train_component.m_button = IApplication::BUTTON_START;
+	Banner("Press Start Button on Joystick",-1);
+	
+	m_joystick_train_state = JS_TRAIN_IDLE;
+	m_joystick_config.FinishedSetup();
 	return SteelType();
 }
 
@@ -1649,22 +1691,12 @@ void Application::teardownClanLib()
 }
 
 
+
 double Application::get_value_for_axis_direction ( IApplication::AxisDirection dir ) const
 {
-    // TODO: Make these dynamic, some joysticks are different
-    switch ( dir )
-    {
-        case AXIS_LEFT:
-            return -1.0;
-        case AXIS_RIGHT:
-            return 1.0;
-        case AXIS_UP:
-            return -1.0;
-        case AXIS_DOWN:
-            return 1.0;
-    }
-
-    return 0;
+	if(!m_joystick_config.IsSetup())
+		return 0.0;
+	return m_joystick_config.GetValueFor(dir);
 }
 
 IApplication::AxisDirection Application::get_direction_for_value ( IApplication::Axis axis, double value ) const
@@ -1709,7 +1741,6 @@ void Application::onSignalKeyDown ( const CL_InputEvent &key, const CL_InputStat
     mStates.back()->HandleKeyDown ( key );
 
     // Do mappings now
-
     switch ( key.id )
     {
         case CL_KEY_DOWN:
@@ -1802,83 +1833,60 @@ void Application::onSignalJoystickButtonDown ( const CL_InputEvent &event, const
 {
 
     if ( !mStates.size() ) return;
+	
+	if(!m_joystick_config.IsSetup()){
+		// Possibly set it up now
 
-    switch ( event.id )
-    {
-            // Do mappings now
-
-        case 5:
-            mStates.back()->HandleButtonDown ( BUTTON_CONFIRM );
-            break;
-        case 0:
-            mStates.back()->HandleButtonDown ( BUTTON_ALT );
-            break;
-        case 1:
-            mStates.back()->HandleButtonDown ( BUTTON_CANCEL );
-            break;
-        case 2:
-            mStates.back()->HandleButtonDown ( BUTTON_START );
-            break;
-        case 4:
-            mStates.back()->HandleButtonDown ( BUTTON_MENU );
-            break;
-        case 6:
-            mStates.back()->HandleButtonDown ( BUTTON_R );
-            break;
-        case 7:
-            mStates.back()->HandleButtonDown ( BUTTON_L );
-            break;
-    }
-
+	}else{
+		mStates.back()->HandleButtonDown(m_joystick_config.GetButtonForId(event.id));
+	}
 
 }
 
 void Application::onSignalJoystickButtonUp ( const CL_InputEvent &event, const CL_InputState& state )
 {
-
     if ( !mStates.size() ) return;
 
-    switch ( event.id )
-    {
-            // Do mappings now
-
-        case 5:
-            mStates.back()->HandleButtonUp ( BUTTON_CONFIRM );
-            break;
-        case 0:
-            mStates.back()->HandleButtonUp ( BUTTON_ALT );
-            break;
-        case 1:
-            mStates.back()->HandleButtonUp ( BUTTON_CANCEL );
-            break;
-        case 2:
-            mStates.back()->HandleButtonUp ( BUTTON_START );
-            break;
-        case 4:
-            mStates.back()->HandleButtonUp ( BUTTON_MENU );
-            break;
-        case 6:
-            mStates.back()->HandleButtonUp ( BUTTON_R );
-            break;
-        case 7:
-            mStates.back()->HandleButtonUp ( BUTTON_L );
-            break;
-    }
-
+	if(!m_joystick_config.IsSetup()){
+		if(m_joystick_train_state == JS_TRAIN_BUTTON){
+			m_joystick_config.MapButton(m_joystick_train_component.m_button,event.id);
+			mBannerState.BringDown();
+		}		
+	}else{
+		mStates.back()->HandleButtonUp(m_joystick_config.GetButtonForId(event.id));
+	}
 
 }
 
 void Application::onSignalJoystickAxisMove ( const CL_InputEvent &event, const CL_InputState& state )
 {
-
-    if ( event.id == 0 )
-    {
-        mStates.back()->HandleAxisMove ( AXIS_HORIZONTAL, get_direction_for_value ( AXIS_HORIZONTAL, event.axis_pos ), event.axis_pos );
-    }
-    else
-    {
-        mStates.back()->HandleAxisMove ( AXIS_VERTICAL, get_direction_for_value ( AXIS_VERTICAL, event.axis_pos ), event.axis_pos );
-    }
+	if(!m_joystick_config.IsSetup()){
+		if(abs(event.axis_pos) > 0.5f){
+			if(m_joystick_train_state == JS_TRAIN_AXIS){
+				switch(m_joystick_train_component.m_dir){
+					case IApplication::AXIS_UP:
+					case IApplication::AXIS_DOWN:
+						m_joystick_config.MapAxis(IApplication::AXIS_VERTICAL, event.id);
+						break;
+					case IApplication::AXIS_LEFT:
+					case IApplication::AXIS_RIGHT:
+						m_joystick_config.MapAxis(IApplication::AXIS_HORIZONTAL,event.id);
+						break;
+				}
+				m_joystick_config.MapAxisValue(m_joystick_train_component.m_dir,event.axis_pos);		
+				mBannerState.BringDown();
+			}
+		}
+	}else{
+		if ( event.id == m_joystick_config.GetAxis(AXIS_HORIZONTAL) )
+		{
+			mStates.back()->HandleAxisMove ( AXIS_HORIZONTAL, get_direction_for_value ( AXIS_HORIZONTAL, event.axis_pos ), event.axis_pos );
+		}
+		else if ( event.id == m_joystick_config.GetAxis(AXIS_VERTICAL) )
+		{
+			mStates.back()->HandleAxisMove ( AXIS_VERTICAL, get_direction_for_value ( AXIS_VERTICAL, event.axis_pos ), event.axis_pos );
+		}
+	}
 }
 
 static IApplication::MouseButton CLMouseToMouseButton(int id){
@@ -2266,7 +2274,7 @@ void Application::registerSteelFunctions()
 	mInterpreter.addFunction ( "closeMap", fn_closeMap );
 	mInterpreter.addFunction ( "gameoverScreen", fn_gameoverScreen );
 	mInterpreter.addFunction ( "giveItem", new SteelFunctor3Arg<Application,SteelType::Handle,int,bool>(this,&Application::giveItem) );
-	
+	mInterpreter.addFunction ( "configJoystick", new SteelFunctorNoArgs<Application>(this,&Application::configJoystick));
     
     mInterpreter.addFunction ( "editing", new SteelFunctorNoArgs<Application>(this,&Application::editing) );
     mInterpreter.addFunction ( "editMap", new SteelFunctorNoArgs<Application>(this,&Application::editMap) );
@@ -2530,6 +2538,8 @@ int Application::main ( const std::vector<CL_String> &args )
         CL_Slot joystickDown;
         CL_Slot joystickUp;
         CL_Slot joystickAxis;
+		
+		m_joystick_train_state = JS_TRAIN_IDLE;
 
         if ( njoystick > 0 &&  njoystick < m_window.get_ic().get_joystick_count() )
         {

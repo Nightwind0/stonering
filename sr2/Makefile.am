@@ -41,6 +41,8 @@ stonering_SOURCES =	src/Application.cpp \
 			src/character/ICharacter.h \
 			src/character/SpriteDefinition.h \
 			src/core/AppUtils.cpp \
+			src/core/JoystickConfig.cpp \
+			src/core/JoystickConfig.h \
 			src/core/AttributeModifier.cpp \
 			src/core/Element.cpp \
 			src/core/GraphicsManager.cpp \

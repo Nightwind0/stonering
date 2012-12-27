@@ -92,6 +92,11 @@ void BannerState::Finish()
 
 }
 
+void BannerState::BringDown() {
+	m_done = true;
+}
+
+
 
 
 

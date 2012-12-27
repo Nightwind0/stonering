@@ -40,6 +40,7 @@ public:
     virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
     virtual void Start();
     virtual void Finish(); // Hook to clean up or whatever after being popped
+	void BringDown();
 private:
     CL_Rect m_banner_rect;
     CL_Pointf m_text_inset;    
