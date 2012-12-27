@@ -267,7 +267,7 @@ void Character::RemoveBattleStatusEffects()
     for(StatusEffectMap::iterator iter = m_status_effects.begin();
         iter != m_status_effects.end(); iter++)
         {
-            if(iter->second->GetLast() == StatusEffect::PERMANENT)
+            if(iter->second->GetLast() != StatusEffect::PERMANENT)
                 RemoveEffect(iter->second);
         }
 }
