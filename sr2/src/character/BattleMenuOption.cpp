@@ -52,6 +52,11 @@ bool BattleMenuOption::Enabled(const ParameterList &params, Character * pCharact
             return false;
         }
     }
+    else if(m_action_type == SUBMENU)
+	{
+		// Be enabled iff submenu options are available
+		return m_action.m_pSubMenu->HasEnabledOptions();
+	}
     
     
     if(m_pConditionScript)

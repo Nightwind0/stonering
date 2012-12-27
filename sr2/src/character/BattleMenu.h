@@ -40,6 +40,8 @@ namespace StoneRing
         eType GetType ( void ) const;
         void SetRect(CL_Rectf& rect);
         void SetEnableConditionParams(const Steel::ParameterList& params, Character* pChar);
+		// Must call SetEnableConditionParams before calling this
+		bool HasEnabledOptions() const;
         void Init();
     private:
         virtual CL_Rectf get_rect();
