@@ -27,9 +27,9 @@ BattleMenu::eType BattleMenu::GetType ( void ) const
 void BattleMenu::Init() 
 {
     if(m_onFont.is_null()){
-	m_onFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_POPUP_MENU,"on");
-	m_offFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_POPUP_MENU,"off");
-	m_selectedFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_POPUP_MENU,"Selection");
+		m_onFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_POPUP_MENU,"on");
+		m_offFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_POPUP_MENU,"off");
+		m_selectedFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_POPUP_MENU,"Selection");
         m_mpFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_POPUP_MENU,"mp");
         m_bpFont = GraphicsManager::GetFont(GraphicsManager::BATTLE_POPUP_MENU,"bp");
         m_cost_spacing = GraphicsManager::GetPoint(GraphicsManager::BATTLE_POPUP_MENU,"cost_spacing");
@@ -43,6 +43,18 @@ void BattleMenu::SetEnableConditionParams(const ParameterList& params, Character
     m_params = params;
     m_pCharacter = pChar;
 }
+
+bool BattleMenu::HasEnabledOptions() const {
+	assert( m_pCharacter );
+	for(std::vector<BattleMenuOption*>::const_iterator it = m_options.begin();
+		it != m_options.end(); it++){
+		if((*it)->Enabled(m_params,m_pCharacter))
+			return true;
+	}
+	
+	return false;
+}
+
 
 std::vector<BattleMenuOption*>::iterator
 BattleMenu::GetOptionsBegin()

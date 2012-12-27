@@ -194,16 +194,13 @@ void BattleState::next_turn() {
 			params.push_back( ParameterListItem( "$Round", static_cast<int>( m_nRound ) ) );
 
 			pCharacter->GetBattleMenu()->SetEnableConditionParams( params, pChar );
-			pCharacter->GetBattleMenu()->Init();
+			//pCharacter->GetBattleMenu()->Init();
 
-			// TODO: This check is wrong... maybe I should just add a
-			// "Skip" option that just calls finish...
-			if ( pCharacter->GetBattleMenu()->GetOptionsBegin() ==
-								pCharacter->GetBattleMenu()->GetOptionsEnd() ) {
-				// No options.. skip this guy
+			if(!pCharacter->GetBattleMenu()->HasEnabledOptions()){
 				pick_next_character();
 				continue;
 			}
+			pCharacter->GetBattleMenu()->Init();
 			m_combat_state = BATTLE_MENU;
 			m_menu_stack.push( pCharacter->GetBattleMenu() );
 			break;

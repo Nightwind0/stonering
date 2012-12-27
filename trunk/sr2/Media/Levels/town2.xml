@@ -5,7 +5,7 @@
 		</script>	
 	</levelHeader>
 	<mappableObjects>
-		<mo name="Kitty" sprite="Npc/Cat" movementType="none" speed="slow" size="1x1" type="npc" xpos="12" ypos="10" facing="south" solid="true">
+		<mo name="Kitty" sprite="Npc/Cat" movementType="none" speed="slow" size="1x1" type="npc" xpos="12" ypos="10" facing="east" solid="true">
 			<event name="Kitty Event 0" triggerType="talk">
 				<script id="CatTalk">
 					<![CDATA[declare @items;
