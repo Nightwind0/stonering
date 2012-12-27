@@ -49,7 +49,7 @@ protected:
 class NPCNavigator : public Navigator
 {
 public:
-    NPCNavigator(MappableObject& mo):Navigator(mo),m_nStepsInDirection(0){}
+    NPCNavigator(MappableObject& mo);
     virtual ~NPCNavigator(){}
     virtual void OnMove(Level& level);
     virtual void Blocked();

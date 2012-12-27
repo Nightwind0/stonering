@@ -173,7 +173,7 @@ void MappableObject::Stop() {
 	Set_Frame_For_Direction();
 }
 
-Direction MappableObject::Get_Default_Facing() const {
+Direction MappableObject::GetDefaultFacing() const {
 	return Direction::SOUTH;
 }
 
@@ -185,7 +185,7 @@ void MappableObject::Set_Frame_For_Direction() {
 
 	m_sprite.set_frame( 0 );
 
-	Direction facing = Get_Default_Facing();
+	Direction facing = GetDefaultFacing();
 
 	if ( facing == Direction::NONE )
 		m_nStepLoop = 0;
@@ -549,7 +549,6 @@ void MappableObjectElement::load_attributes( CL_DomNamedNodeMap attributes ) {
 
 	if ( flying )
 		m_cFlags |= FLYING;
-
 }
 
 bool MappableObjectElement::handle_element( Element::eElement element, Element * pElement ) {
@@ -600,7 +599,7 @@ void MappableObjectElement::Placed() {
 }
 
 
-Direction MappableObjectElement::Get_Default_Facing() const {
+Direction MappableObjectElement::GetDefaultFacing() const {
 	return m_start_facing;
 }
 
@@ -614,7 +613,7 @@ MappableObjectDynamic::~MappableObjectDynamic() {
 
 }
 
-Direction MappableObjectDynamic::Get_Default_Facing() const {
+Direction MappableObjectDynamic::GetDefaultFacing() const {
 	return m_default_facing;
 }
 

@@ -93,7 +93,8 @@ public:
 	virtual CL_Point        GetPixelPosition() const {
 		return m_pos;
 	}
-
+	virtual Direction GetDefaultFacing() const;
+	
 	virtual void    Placed() {}; // notify that they've been added to a level
 
 	virtual eMovementType  GetMovementType() const {
@@ -118,7 +119,6 @@ protected:
 	virtual void    Moved_One_Cell();
 	virtual CL_Size Calc_Tile_Dimensions() const;
 	virtual void    Set_Frame_For_Direction();
-	virtual Direction Get_Default_Facing() const;
 	void            Set_Size( eSize size );
 
 
@@ -193,7 +193,7 @@ protected:
 	virtual bool            handle_element( eElement element, Element * pElement );
 	virtual void            load_attributes( CL_DomNamedNodeMap attributes );
 	virtual void            load_finished();
-	virtual Direction       Get_Default_Facing() const;
+	virtual Direction       GetDefaultFacing() const;
 
 	ScriptElement*  m_pCondition;
 	std::list<Event*> m_events;
@@ -269,7 +269,7 @@ public:
 
 protected:
 	virtual void            Set_Frame_For_Direction();
-	virtual Direction       Get_Default_Facing() const;
+	virtual Direction       GetDefaultFacing() const;
 private:
 	eMovementType   m_move_type;
 	eMovementSpeed  m_move_speed;
