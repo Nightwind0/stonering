@@ -68,6 +68,12 @@
             <spriteRef ref="StatusEffect/Focused"/>
             <attributeModifier attribute="dex" type="multiply" value="1.25"/>
         </statusEffect>
+		<!-- for Defend, a roundCount of 0 may seem weird, but is correct -->
+        <statusEffect last="round_count" roundCount="0" name="Defend">
+            <spriteRef ref="StatusEffect/Defend"/>
+            <attributeModifier attribute="def" type="multiply" value="1.5"/>
+			<attributeModifier attribute="res" type="multiply" value="1.5"/>
+        </statusEffect>		
         <statusEffect name="Shrunk" roundCount="4" last="round_count">
             <spriteRef ref="StatusEffect/Shrunk"/>
             <attributeModifier attribute="str" type="multiply" value="0.25"/>

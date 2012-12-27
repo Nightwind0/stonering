@@ -39,13 +39,15 @@ ItemGetState::~ItemGetState() {
 void ItemGetState::Start() {
     m_rect = GraphicsManager::GetRect(GraphicsManager::ITEM_GET,"main");
     m_item_font = GraphicsManager::GetFont(GraphicsManager::ITEM_GET,"item");
+    m_header_rect = GraphicsManager::GetRect(GraphicsManager::ITEM_GET,"header");
+    m_header_font = GraphicsManager::GetFont(GraphicsManager::ITEM_GET,"header");	
 	m_offset = GraphicsManager::GetPoint(GraphicsManager::ITEM_GET,"offset");
 	
 	m_sound_timer.func_expired().set(this,&ItemGetState::on_sound_timer);
 	m_sound_timer.start(TIME_PER_ITEM,true);
 	m_item_cursor = 0;
 	m_sound_count = 0;
-	m_done = false;
+	m_done = m_items.empty();
 	m_done_display = false;
 	Menu::Init();
 	m_start_time = CL_System::get_time();
@@ -58,8 +60,9 @@ void ItemGetState::SetItems( const std::vector< Item* >& items, const std::vecto
 
 
 void ItemGetState::Draw( const CL_Rect& screenRect, CL_GraphicContext& GC ) {
+	MenuBox::Draw(GC,m_header_rect);
 	MenuBox::Draw(GC,m_rect);
-	
+	m_header_font.draw_text(GC,12.0f, m_header_rect.get_height() / 2.0f, "Received", Font::CENTER);
 	uint time_passed = CL_System::get_time() - m_start_time;
 	m_item_cursor = min((size_t)time_passed / TIME_PER_ITEM, m_items.size());
 	Menu::Draw(GC);

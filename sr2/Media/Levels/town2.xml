@@ -18,7 +18,15 @@ giveItems(@items,@counts,false);]]>
 				</script>
 			</event>
 		</mo>
-		<mo name="Samantha" sprite="Npc/Cat" movementType="wander" speed="slow" size="1x1" type="npc" xpos="28" ypos="19" facing="west" solid="true"/>
+		<mo name="Samantha" sprite="Npc/Cat" movementType="wander" speed="slow" size="1x1" type="npc" xpos="28" ypos="19" facing="west" solid="true">
+						<event name="CatMeow" triggerType="talk">
+				<script id="catmeow">
+					<![CDATA[say($_Name,"Do you want karate?");
+startBattle("Black Cat",1,true,"grasslands");
+                                ]]>
+				</script>
+			</event>
+		</mo>
 	</mappableObjects>
 	<tiles>
 		<tile xpos="0" ypos="0">

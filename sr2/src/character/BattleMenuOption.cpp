@@ -55,6 +55,7 @@ bool BattleMenuOption::Enabled(const ParameterList &params, Character * pCharact
     else if(m_action_type == SUBMENU)
 	{
 		// Be enabled iff submenu options are available
+		m_action.m_pSubMenu->SetEnableConditionParams(params,pCharacter);
 		return m_action.m_pSubMenu->HasEnabledOptions();
 	}
     

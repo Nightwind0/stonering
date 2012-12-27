@@ -58,6 +58,9 @@
           <battleMenuOption name="Heal" icon="heal">
             <skillRef skillName="Heal"/>
           </battleMenuOption>
+			<battleMenuOption name="Defend" icon="defend">
+				<skillRef skillName="Defend"/>
+			</battleMenuOption>		  
         </battleMenu>
 
         <weaponTypeRef name="Sword"/>
@@ -187,7 +190,10 @@
                         ]]>
                 </conditionScript>
                 <skillRef skillName="Flee"/>
-            </battleMenuOption>            
+            </battleMenuOption>      
+			<battleMenuOption name="Defend" icon="defend">
+				<skillRef skillName="Defend"/>
+			</battleMenuOption>
         </battleMenu>
                 <weaponTypeRef name="Bow"/>
                 <weaponTypeRef name="Precise Bow"/>

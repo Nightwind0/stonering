@@ -72,7 +72,8 @@
 				push @counts, 1;
 			}
         }
-		giveItems(@drops, @counts, false);
+			if(len(@drops) > 0)
+				giveItems(@drops, @counts, false);
 	]]>
 </onWon>
 <onLost>

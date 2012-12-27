@@ -64,7 +64,9 @@ private:
 	CL_Pointf m_offset;
 	uint m_start_time;
 	CL_Rect m_rect;
+	CL_Rect m_header_rect;
 	Font m_item_font;
+	Font m_header_font;
 };
 
 

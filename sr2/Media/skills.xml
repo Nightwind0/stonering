@@ -482,17 +482,13 @@
                         </script>
                 </onRemove>
         </skill>
-        <skill bp="0" name="Caution" sp="60" type="world">
+        <skill bp="0" name="Defend" sp="0" type="battle">
                 <onInvoke>
-                        <script id="onCaution">
-                        modifyCommonAttribute("encounterRate",getCommonAttribute("encounterRate") * 0.75);
+                        <script id="onDefend">
+							addStatusEffect($Character, getStatusEffect("Defend"));
+							battle::finishTurn();
                         </script>
                 </onInvoke>
-                <onRemove>
-                        <script id="rmCaution">
-                        modifyCommonAttribute("encounterRate",getCommonAttribute("encounterRate") * 10/7.5);
-                        </script>
-                </onRemove>
         </skill>
         <!--
         <spell mp="2" name="Torch" targetable="either" type="elemental" use="battle" appliesToArmor="true" appliesToWeapons="true" value="2200">

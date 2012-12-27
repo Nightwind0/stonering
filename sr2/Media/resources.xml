@@ -288,6 +288,9 @@
                 <image name="flee">
                         <image-file file="Images/Icons/run.png"/>
                 </image>
+				<image name="defend">
+					<image-file file="Images/Icons/E_Metal01.png"/>
+				</image>
                 <image name="hurl">
                         <image-file file="Images/Icons/Balloon.png"/>
                 </image>
@@ -485,10 +488,12 @@
             </section>
 			<section name="ItemGet">
 				<section name="rects">
-					<rect name="main" left="0" right="800" top="0" bottom="600"/>
+					<rect name="header" left=0" right="800" top="0" bottom="100"/>
+					<rect name="main" left="0" right="800" top="100" bottom="600"/>
 				</section>
 				<section name="fonts">
 					<string name = "item" value="BoldWhite"/>
+					<string name = "header" value="BoldWhite"/>
 				</section>
 				<section name="points">
 					<point name="offset" x="20" y="36"/>
@@ -874,6 +879,9 @@
                     <sprite name="DragonRage">
                         <image file="Sprites/Status Effects/DragonRage.png"/>
                     </sprite>
+					<sprite name="Defend">
+						<image file="Sprites/Status Effects/ArmorUp.png"/>
+					</sprite>
                     <sprite name="Focused">
                         <image file="Sprites/Status Effects/AimUp.png"/>
                     </sprite>
