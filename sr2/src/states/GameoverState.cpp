@@ -43,6 +43,8 @@ bool GameoverState::DisableMappableObjects() const
 
 void GameoverState::Draw( const CL_Rect& screenRect, CL_GraphicContext& GC )
 {
+	float percentage = min(1.0, float(CL_System::get_time() - m_start_time) / 3000.0);
+	m_background.set_alpha(percentage);
 	m_background.draw(GC,0,0);
 }
 
