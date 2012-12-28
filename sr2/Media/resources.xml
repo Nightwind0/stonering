@@ -252,7 +252,7 @@
                         <image-file file="Images/Icons/I_Chest02.png"/>
                 </image>
                 <image name="skills">
-                    <image-file file="Images/Icons/W_Book02.png"/>
+                    <image-file file="Images/Icons/Skills.png"/>
                 </image>
                 <image name="equip">
                     <image-file file="Images/Icons/A_Armour02.png"/>
@@ -276,14 +276,17 @@
                     <image-file file="Images/Icons/Crystal7.png"/>
                 </image>
                 <image name="party">
-                    <image-file file="Images/Icons/Present.png"/>
+                    <image-file file="Images/Icons/Party0.png"/>
                 </image>
                 <image name="config">
-                    <image-file file="Images/Icons/I_Book.png"/>
+                    <image-file file="Images/Icons/gears01.png"/>
                 </image>		
                 <image name="status">
-                    <image-file file="Images/Icons/Page.png"/>
+                    <image-file file="Images/Icons/W_Book02.png"/>
                 </image>	
+				<image name="save">
+					<image-file file="Images/Icons/Save.png"/>
+				</image>
                 <image name="map">
                     <image-file file="Images/Icons/map.png"/>
                 </image>
@@ -569,11 +572,11 @@
                         <string name="PartyStat" value = "sb_white"/>
                 </section>
                 <section name="rects">
-                    <rect name="menu" left="479" right="752" top="24" bottom="390"/>
+                    <rect name="menu" left="479" right="752" top="24" bottom="342"/>
                     <rect name="party" left="12" right="484" top="24" bottom="191"/>
                     <rect name="character" left="30" right="484" top="30" bottom="570"/>
-                    <rect name="status" left="479" right="752" top="390" bottom="570"/>
-                    <rect name="omegas" left="499" right="732" top="470" bottom="570"/>                    
+                    <rect name="status" left="479" right="752" top="342" bottom="510"/>
+                    <rect name="omegas" left="499" right="732" top="470" bottom="510"/>                    
                 </section>
             </section>
             <section name="ItemSelect">
