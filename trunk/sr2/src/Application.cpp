@@ -1609,6 +1609,8 @@ SteelType Application::configJoystick()
 	Banner("Press R Button on Joystick", -1);
 	m_joystick_train_component.m_button = IApplication::BUTTON_START;
 	Banner("Press Start Button on Joystick",-1);
+	m_joystick_train_component.m_button = IApplication::BUTTON_SELECT;
+	Banner("Press Select Button on Joystick",-1);
 	
 	m_joystick_train_state = JS_TRAIN_IDLE;
 	m_joystick_config.FinishedSetup();

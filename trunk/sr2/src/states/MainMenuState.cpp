@@ -306,10 +306,15 @@ void MainMenuState::draw_option(int option, bool selected, float x, float y, CL_
                          m_choices[option]->GetName(), Font::DEFAULT);
 }
 
-int MainMenuState::height_for_option(CL_GraphicContext& gc)
-{
-    //return cl_max(m_optionFont.get_font_metrics(gc).get_height(),m_selectionFont.get_font_metrics(gc).get_height());
-    return get_rect().get_height() / (get_option_count());
+int MainMenuState::height_for_option(CL_GraphicContext& gc){
+#if 1 
+    if(!m_choices.empty()){
+		return 12 + max(m_selectionFont.get_font_metrics(gc).get_height(),max((float)m_choices[0]->GetIcon().get_height(), m_optionFont.get_font_metrics(gc).get_height()));
+	}
+	return 0;
+#else
+	return 42; // TODO: Make this a resource 
+#endif
 }
 
 void MainMenuState::process_choice(int selection)
