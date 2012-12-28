@@ -313,29 +313,12 @@ void StoneRing::MapState::PushLevel(Level * pLevel, uint x, uint y)
 
 void StoneRing::MapState::LoadLevel(Level * pLevel, uint x, uint y)
 {
-	if(m_pLevel){
-		m_pLevel->RemoveMappableObject(&m_player);	
-	}	
-    CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
-    Character *pMapCharacter = IApplication::GetInstance()->GetParty()->GetMapCharacter();
-
-	// TODO: Delete old level?
-    m_pLevel = pLevel;
-
-    if(pMapCharacter)
-    {
-		// TODO: Move this line
-        m_player.SetSprite ( pMapCharacter->GetMapSprite() );
-        m_player.ResetLevelX(x);
-        m_player.ResetLevelY(y);
-        m_LevelX = 0;
-        m_LevelY = 0;
-
-        pLevel->AddMappableObject(&m_player);
-        recalculate_player_position();        
-    }
-    
-    SoundManager::SetMusic(m_pLevel->GetMusic());
+	if(!m_levels.empty()){
+		Level * oldLevel = m_levels.back();
+		// TODO: delete oldLevel ?
+		m_levels.pop_back();
+	}
+	PushLevel(pLevel,x,y);
 }
 
 

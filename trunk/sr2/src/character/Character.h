@@ -47,8 +47,8 @@ namespace StoneRing{
         //  virtual ICharacterGroup * GetGroup() const;
         virtual uint   GetLevel(void)const;
         virtual void   SetLevel(uint);
-	virtual uint   GetXP()const;
-	virtual void   SetXP(uint amount);
+		virtual uint   GetXP()const;
+		virtual void   SetXP(uint amount);
         virtual double GetDamageCategoryResistance(DamageCategory::eDamageCategory type) const;
         virtual double GetAttribute(eCharacterAttribute attr) const;
         virtual bool   GetToggle(eCharacterAttribute attr) const;

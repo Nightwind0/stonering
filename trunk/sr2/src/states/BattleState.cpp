@@ -461,8 +461,13 @@ void BattleState::init_or_release_players( bool bRelease ) {
 		Character * pCharacter = dynamic_cast<Character*>( pParty->GetCharacter( nPlayer ) );
 		assert( pCharacter );
 		std::string name = pCharacter->GetName();
-		if ( !bRelease ) // TODO: If they're dead, their sprite should be dead.
-			pCharacter->SetCurrentSprite( GraphicsManager::CreateCharacterSprite( name, "idle" ) ); // bullshit
+		if ( !bRelease ) { 
+			// TODO: Should have the character set its own sprite based on its state
+			std::string state = "idle";
+			if(!pCharacter->GetToggle(ICharacter::CA_ALIVE))
+				state = "dead";
+			pCharacter->SetCurrentSprite( GraphicsManager::CreateCharacterSprite( name, state ) ); // bullshit
+		}
 	}
 }
 

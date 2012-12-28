@@ -1,29 +1,32 @@
 <level name="">
-	<levelHeader width="50" height="45" music="Music/Town" allowsRunning="true">
+	<levelHeader music="Music/Town" width="50" height="45" allowsRunning="true">
 		<script id="LevelInit">
 			<![CDATA[banner("Welcome!",2000); ]]>
-		</script>	
+		</script>
 	</levelHeader>
 	<mappableObjects>
-		<mo name="Kitty" sprite="Npc/Cat" movementType="none" speed="slow" size="1x1" type="npc" xpos="12" ypos="10" facing="east" solid="true">
-			<event name="Kitty Event 0" triggerType="talk">
-				<script id="CatTalk">
-					<![CDATA[declare @items;
-declare @counts;
-pushb @items, getNamedItem("Moon Seed");
-pushb @items, getNamedItem("Sun Seed");
-pushb @counts, 1;
-pushb @counts, 2;
-giveItems(@items,@counts,false);]]>
+		<mo name="SaveSpot" movementType="none" speed="slow" size="1x1" type="npc" xpos="10" ypos="10" facing="south" solid="true">
+			<event name=" Event 0" triggerType="talk">
+				<script id="savescript">
+					<![CDATA[declare $choice = choice("Save Podium",array("Save Game", "Cancel"));
+if($choice == 0)
+  save();]]>
 				</script>
 			</event>
 		</mo>
 		<mo name="Samantha" sprite="Npc/Cat" movementType="wander" speed="slow" size="1x1" type="npc" xpos="28" ypos="19" facing="west" solid="true">
-						<event name="CatMeow" triggerType="talk">
+			<event name="CatMeow" triggerType="talk">
 				<script id="catmeow">
 					<![CDATA[say($_Name,"Do you want karate?");
 startBattle("Black Cat",1,true,"grasslands");
                                 ]]>
+				</script>
+			</event>
+		</mo>
+		<mo name="Gold Knight" sprite="Npc/GoldKnight" movementType="wander" speed="slow" size="1x1" type="npc" xpos="9" ypos="32" facing="west" solid="true">
+			<event name=" Event 0" triggerType="talk" remember="true">
+				<script id="GoldKnightTalkScript">
+					<![CDATA[say($_Name, "Out of my way!");]]>
 				</script>
 			</event>
 		</mo>
@@ -2082,8 +2085,15 @@ startBattle("Black Cat",1,true,"grasslands");
 			<tilemap mapname="inq_town2" mapx="4" mapy="13"/>
 			<block north="true" south="true" east="true" west="true"/>
 		</tile>
+		<tile xpos="10" ypos="9">
+			<tilemap mapname="inq_town5" mapx="7" mapy="79"/>
+		</tile>
 		<tile xpos="10" ypos="10">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
+		</tile>
+		<tile xpos="10" ypos="10">
+			<tilemap mapname="inq_town5" mapx="7" mapy="80"/>
+			<block north="true" south="true" east="true" west="true"/>
 		</tile>
 		<tile xpos="10" ypos="11">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>

@@ -1432,11 +1432,6 @@ bool Application::Serialize ( std::ostream& out )
     mpParty->Serialize(out);    
     mMapState.SerializeState(out);
     WriteString(out,GraphicsManager::GetThemeName());
-	bool joystick_setup = m_joystick_config.IsSetup();
-	out.write((char*)&joystick_setup,sizeof(bool));
-	if(joystick_setup){
-		m_joystick_config.Write(out);
-	}
     return true;
 }
 
@@ -1446,11 +1441,6 @@ bool Application::Deserialize( std::istream& in )
     mMapState.DeserializeState(in);
     std::string theme_name = ReadString(in);
     GraphicsManager::SetTheme(theme_name);
-	bool joystick_setup = false;
-	in.read((char*)&joystick_setup,sizeof(bool));
-	if(joystick_setup){
-		m_joystick_config.Read(in);
-	}
     return true;
 }
 
@@ -1614,6 +1604,10 @@ SteelType Application::configJoystick()
 	
 	m_joystick_train_state = JS_TRAIN_IDLE;
 	m_joystick_config.FinishedSetup();
+	
+	std::ofstream out("joystick.set");
+	m_joystick_config.Write(out);
+	out.close();
 	return SteelType();
 }
 
@@ -1840,7 +1834,11 @@ void Application::onSignalJoystickButtonDown ( const CL_InputEvent &event, const
 		// Possibly set it up now
 
 	}else{
-		mStates.back()->HandleButtonDown(m_joystick_config.GetButtonForId(event.id));
+		IApplication::Button button = m_joystick_config.GetButtonForId(event.id);
+		if(button != IApplication::BUTTON_INVALID){
+			m_button_down[button] = true;
+			mStates.back()->HandleButtonDown(button);			
+		}		
 	}
 
 }
@@ -1855,7 +1853,11 @@ void Application::onSignalJoystickButtonUp ( const CL_InputEvent &event, const C
 			mBannerState.BringDown();
 		}		
 	}else{
-		mStates.back()->HandleButtonUp(m_joystick_config.GetButtonForId(event.id));
+		IApplication::Button button = m_joystick_config.GetButtonForId(event.id);
+		if(button != IApplication::BUTTON_INVALID && m_button_down[button]){
+			m_button_down[button] = false;
+			mStates.back()->HandleButtonUp(button);			
+		}
 	}
 
 }
@@ -2440,14 +2442,31 @@ int Application::main ( const std::vector<CL_String> &args )
 				data_file = args[i+1];
 				std::cerr << data_file << " used as package" << std::endl;
 			}
+		}else if(string.substr( 0, 2) == "-m"){
+			SoundManager::SetMusicMaxVolume(0.0);
+			SoundManager::SetSoundVolume(0.0);
 		}
 			
     }
 
-
+	m_button_down[IApplication::BUTTON_ALT] = false;
+	m_button_down[IApplication::BUTTON_CONFIRM] = false;
+	m_button_down[IApplication::BUTTON_CANCEL] = false;
+	m_button_down[IApplication::BUTTON_L] = false;
+	m_button_down[IApplication::BUTTON_R] = false;
+	m_button_down[IApplication::BUTTON_SELECT] = false;
+	m_button_down[IApplication::BUTTON_START] = false;
+	m_button_down[IApplication::BUTTON_MENU] = false;	
+    
     //CL_Display::get_buffer()
     try
     {
+		std::ifstream joystick_in("joystick.set", std::ios::in);
+		if(joystick_in.good()){
+			m_joystick_config.Read(joystick_in);
+		}
+		
+		
         registerSteelFunctions();
 		
 		// TODO: Get the package from the command line
@@ -2494,11 +2513,7 @@ int Application::main ( const std::vector<CL_String> &args )
         mUtilityScripts.Load ( utilityConfig );
 #if SR2_EDITOR        
         mMapEditorState.Init(m_window);
-#endif
-        showRechargeableOnionSplash();
-
-        mStartupState.Start();
-        mStates.push_back ( &mStartupState );       
+#endif     
     }
     catch ( CL_Exception error )
     {
@@ -2556,6 +2571,12 @@ int Application::main ( const std::vector<CL_String> &args )
 
         m_window.get_gc().clear ( CL_Colorf ( 0.0f, 0.0f, 0.0f ) );
 
+				
+        showRechargeableOnionSplash();
+
+        mStartupState.Start();
+        mStates.push_back ( &mStartupState );  
+		
 
         while ( !mbDone && mStates.size() )
             run();

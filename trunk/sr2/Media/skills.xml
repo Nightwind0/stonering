@@ -354,7 +354,7 @@
                 $damageCategory = $_BASH; //punch
             }
             declare $actualDamage = $baseDamage *  getDamageCategoryResistance($pTarget,$damageCategory);
-            declare $modDamage = integer($actualDamage - getEquippedArmorAttribute($pTarget,$_AC) + getCharacterAttribute($pTarget,$_DEF));
+            declare $modDamage = integer($actualDamage - (getEquippedArmorAttribute($pTarget,$_AC) + getCharacterAttribute($pTarget,$_DEF)));
 
             declare $critical = randomlyCritical($pC);
             declare $display_type = $_DISP_DAMAGE;
@@ -427,7 +427,7 @@
                     // Random about the damageMean, standard deviation is 15% of the mean, so 68% of attacks fall within 10% deviation of the mean
                     var $baseDamage = normal_random($damageMean,$damageMean * 0.15);
                     var $actualDamage = $baseDamage *  getDamageCategoryResistance($pTarget,battle::getMonsterDamageCategory($Character));
-                    var $modDamage = integer($actualDamage - getEquippedArmorAttribute($pTarget,$_AC));
+                    var $modDamage = integer($actualDamage - (getEquippedArmorAttribute($pTarget,$_AC) + getCharacterAttribute($pTarget,$_DEF)));
 
                     declare $display_type = $_DISP_DAMAGE;
                     if(randomlyCritical($Character))
