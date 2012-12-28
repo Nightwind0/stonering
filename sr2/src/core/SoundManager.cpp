@@ -106,6 +106,11 @@ void SoundManager::SetMusicVolume(float vol)
     m_pInstance->m_session.set_volume(vol * m_pInstance->m_music_max);
 }
 
+void SoundManager::SetMusicMaxVolume( float vol ) {
+	m_pInstance->m_music_max = vol;
+}
+
+
 float SoundManager::GetMusicVolume()
 {
    return m_pInstance->m_session.get_volume();

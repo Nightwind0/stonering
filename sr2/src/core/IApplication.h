@@ -33,6 +33,7 @@ class Party;
 class IApplication {
 public:
 	enum Button {
+		BUTTON_INVALID,
 		BUTTON_CONFIRM,
 		BUTTON_CANCEL,
 		BUTTON_MENU,

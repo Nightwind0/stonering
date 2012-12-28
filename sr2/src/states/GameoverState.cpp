@@ -23,7 +23,7 @@
 
 namespace StoneRing { 
 
-GameoverState::GameoverState() {
+GameoverState::GameoverState():m_done(false) {
 
 }
 
@@ -72,6 +72,7 @@ void GameoverState::Start()
 	m_background = GraphicsManager::GetOverlay(GraphicsManager::GAMEOVER);
 	m_start_time = CL_System::get_time();
 	
+	m_done = false;
 	// TODO: Play game over music
 }
 

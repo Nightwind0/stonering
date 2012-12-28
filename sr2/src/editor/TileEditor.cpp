@@ -20,6 +20,8 @@
 #include "TileEditor.h"
 #include "ScriptEditWindow.h"
 
+#ifdef SR2_EDITOR
+
 namespace StoneRing { 
 	
 TileEditorWindow::TileSelectGrid::TileSelectGrid(CL_GUIComponent* parent):CL_GUIComponent(parent),m_pWindow(NULL)
@@ -490,3 +492,5 @@ std::list< Tile* > TileEditorWindow::get_tiles() const
 
 
 }
+
+#endif

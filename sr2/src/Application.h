@@ -330,6 +330,7 @@ private:
     UtilityScripts mUtilityScripts;
 	CL_VirtualDirectory m_resource_dir;
 	ZipFileProvider m_zip_provider;
+	std::map<IApplication::Button,bool> m_button_down;
 };
 
 inline void Application::steelConst(const std::string &name, int value)
