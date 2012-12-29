@@ -107,7 +107,7 @@ void EventEditWindow::sync_button_names()
 void EventEditWindow::populate_trigger_types()
 {
 	CL_PopupMenu menu;
-    const char* triggers[] = {"step", "talk", "act"};
+    const char* triggers[] = {"step", "talk", "act", "collide"};
     for(int i=0;i<sizeof(triggers)/sizeof(const char*);i++){
         CL_PopupMenuItem item = menu.insert_item(triggers[i]);
     }

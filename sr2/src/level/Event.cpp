@@ -22,6 +22,8 @@ void Event::load_attributes(CL_DomNamedNodeMap attributes)
         m_eTriggerType = TALK;
     else if (triggertype == "act")
         m_eTriggerType = ACT;
+	else if (triggertype == "collide")
+		m_eTriggerType = COLLIDE;
     else throw CL_Exception(" Bad trigger type on event " + m_name );
 
     m_bRepeatable = get_implied_bool("repeatable",attributes,true);
@@ -116,6 +118,9 @@ CL_DomElement Event::CreateDomElement(CL_DomDocument& doc)const
     case ACT:
         triggertype = "act";
         break;
+	case COLLIDE:
+		triggertype = "collide";
+		break;
     }
 
     element.set_attribute("triggerType", triggertype);
