@@ -40,6 +40,7 @@ public:
     virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
     virtual void Start();
     virtual void Finish(); // Hook to clean up or whatever after being popped
+	virtual bool AcceptInput() const;
 	void BringDown();
 private:
     CL_Rect m_banner_rect;

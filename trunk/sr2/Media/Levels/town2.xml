@@ -1,9 +1,5 @@
 <level name="">
-	<levelHeader music="Music/Town" width="50" height="45" allowsRunning="true">
-		<script id="LevelInit">
-			<![CDATA[banner("Welcome!",2000); ]]>
-		</script>
-	</levelHeader>
+	<levelHeader music="Music/Town" width="50" height="45" allowsRunning="true"/>
 	<mappableObjects>
 		<mo name="SaveSpot" movementType="none" speed="slow" size="1x1" type="npc" xpos="10" ypos="10" facing="south" solid="true">
 			<event name=" Event 0" triggerType="talk">
@@ -20,6 +16,13 @@ if($choice == 0)
 					<![CDATA[say($_Name,"Do you want karate?");
 startBattle("Black Cat",1,true,"grasslands");
                                 ]]>
+				</script>
+			</event>
+		</mo>
+		<mo name="InnDoor" movementType="none" speed="slow" size="1x1" type="npc" xpos="8" ypos="30" facing="south">
+			<event name=" Event 0" triggerType="step" repeatable="true">
+				<script id="InnDoorStep">
+					<![CDATA[pushLevel("inn",5,8);]]>
 				</script>
 			</event>
 		</mo>
@@ -418,9 +421,6 @@ startBattle("Black Cat",1,true,"grasslands");
 		<tile xpos="1" ypos="28">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="1" ypos="28">
-			<tilemap mapname="inq_town3" mapx="4" mapy="62"/>
-		</tile>
 		<tile xpos="1" ypos="29">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
@@ -724,9 +724,6 @@ startBattle("Black Cat",1,true,"grasslands");
 		<tile xpos="3" ypos="17">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="3" ypos="17">
-			<tilemap mapname="inq_town3" mapx="4" mapy="61"/>
-		</tile>
 		<tile xpos="3" ypos="18">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
@@ -788,9 +785,6 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="3" ypos="32">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
-		</tile>
-		<tile xpos="3" ypos="32">
-			<tilemap mapname="inq_town3" mapx="4" mapy="62"/>
 		</tile>
 		<tile xpos="3" ypos="33">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
@@ -1495,9 +1489,6 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="7" ypos="15">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
-		</tile>
-		<tile xpos="7" ypos="15">
-			<tilemap mapname="inq_town3" mapx="3" mapy="65"/>
 		</tile>
 		<tile xpos="7" ypos="16">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
@@ -2684,7 +2675,7 @@ startBattle("Black Cat",1,true,"grasslands");
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="13" ypos="11">
-			<tilemap mapname="inq_town" mapx="5" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="13" ypos="12">
 			<tilemap mapname="inq_town" mapx="5" mapy="1"/>
@@ -3235,7 +3226,7 @@ startBattle("Black Cat",1,true,"grasslands");
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="16" ypos="13">
-			<tilemap mapname="inq_town" mapx="5" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="16" ypos="14">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
@@ -4309,9 +4300,6 @@ startBattle("Black Cat",1,true,"grasslands");
 		<tile xpos="21" ypos="33">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
-		<tile xpos="21" ypos="33">
-			<tilemap mapname="inq_town3" mapx="2" mapy="65"/>
-		</tile>
 		<tile xpos="21" ypos="34">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
@@ -4385,10 +4373,7 @@ startBattle("Black Cat",1,true,"grasslands");
 			<tilemap mapname="dirt" mapx="1" mapy="2"/>
 		</tile>
 		<tile xpos="22" ypos="10">
-			<tilemap mapname="dirt" mapx="1" mapy="2"/>
-		</tile>
-		<tile xpos="22" ypos="10">
-			<tilemap mapname="inq_town4" mapx="4" mapy="51"/>
+			<tilemap mapname="inq_town" mapx="1" mapy="0"/>
 		</tile>
 		<tile xpos="22" ypos="11">
 			<tilemap mapname="dirt" mapx="1" mapy="2"/>
@@ -4586,7 +4571,7 @@ startBattle("Black Cat",1,true,"grasslands");
 			<tilemap mapname="dirt" mapx="1" mapy="1"/>
 		</tile>
 		<tile xpos="23" ypos="8">
-			<tilemap mapname="inq_town4" mapx="3" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="1" mapy="0"/>
 		</tile>
 		<tile xpos="23" ypos="9">
 			<tilemap mapname="dirt" mapx="1" mapy="2"/>
@@ -4795,10 +4780,7 @@ startBattle("Black Cat",1,true,"grasslands");
 			<tilemap mapname="dirt" mapx="1" mapy="2"/>
 		</tile>
 		<tile xpos="24" ypos="10">
-			<tilemap mapname="dirt" mapx="1" mapy="2"/>
-		</tile>
-		<tile xpos="24" ypos="10">
-			<tilemap mapname="inq_town4" mapx="5" mapy="18"/>
+			<tilemap mapname="inq_town" mapx="1" mapy="0"/>
 		</tile>
 		<tile xpos="24" ypos="11">
 			<tilemap mapname="dirt" mapx="1" mapy="2"/>
@@ -5162,9 +5144,6 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="26" ypos="9">
 			<tilemap mapname="inq_town" mapx="0" mapy="0"/>
-		</tile>
-		<tile xpos="26" ypos="9">
-			<tilemap mapname="inq_town4" mapx="7" mapy="18"/>
 		</tile>
 		<tile xpos="26" ypos="10">
 			<tilemap mapname="inq_town" mapx="0" mapy="0"/>
@@ -5715,9 +5694,6 @@ startBattle("Black Cat",1,true,"grasslands");
 		<tile xpos="29" ypos="11">
 			<tilemap mapname="inq_town" mapx="0" mapy="0"/>
 		</tile>
-		<tile xpos="29" ypos="11">
-			<tilemap mapname="inq_town4" mapx="2" mapy="23"/>
-		</tile>
 		<tile xpos="29" ypos="12">
 			<tilemap mapname="inq_town" mapx="0" mapy="0"/>
 		</tile>
@@ -6105,9 +6081,6 @@ startBattle("Black Cat",1,true,"grasslands");
 		<tile xpos="31" ypos="13">
 			<tilemap mapname="inq_town" mapx="0" mapy="0"/>
 		</tile>
-		<tile xpos="31" ypos="13">
-			<tilemap mapname="inq_town4" mapx="7" mapy="20"/>
-		</tile>
 		<tile xpos="31" ypos="14">
 			<tilemap mapname="inq_town" mapx="0" mapy="0"/>
 		</tile>
@@ -6309,7 +6282,7 @@ startBattle("Black Cat",1,true,"grasslands");
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="32" ypos="17">
-			<tilemap mapname="inq_town" mapx="5" mapy="1"/>
+			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
 		</tile>
 		<tile xpos="32" ypos="18">
 			<tilemap mapname="inq_town" mapx="4" mapy="0"/>
@@ -6483,9 +6456,6 @@ startBattle("Black Cat",1,true,"grasslands");
 		<tile xpos="33" ypos="9">
 			<tilemap mapname="inq_town" mapx="0" mapy="0"/>
 		</tile>
-		<tile xpos="33" ypos="9">
-			<tilemap mapname="inq_town4" mapx="7" mapy="20"/>
-		</tile>
 		<tile xpos="33" ypos="10">
 			<tilemap mapname="inq_town" mapx="0" mapy="0"/>
 		</tile>
@@ -6509,9 +6479,6 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="33" ypos="16">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
-		</tile>
-		<tile xpos="33" ypos="16">
-			<tilemap mapname="inq_town3" mapx="2" mapy="65"/>
 		</tile>
 		<tile xpos="33" ypos="17">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
@@ -6889,9 +6856,6 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="35" ypos="11">
 			<tilemap mapname="inq_town" mapx="0" mapy="0"/>
-		</tile>
-		<tile xpos="35" ypos="11">
-			<tilemap mapname="inq_town4" mapx="2" mapy="23"/>
 		</tile>
 		<tile xpos="35" ypos="12">
 			<tilemap mapname="inq_town" mapx="0" mapy="0"/>
@@ -7293,16 +7257,10 @@ startBattle("Black Cat",1,true,"grasslands");
 			<tilemap mapname="inq_town" mapx="0" mapy="0"/>
 		</tile>
 		<tile xpos="37" ypos="14">
-			<tilemap mapname="inq_town4" mapx="7" mapy="51"/>
-		</tile>
-		<tile xpos="37" ypos="14">
 			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
 		</tile>
 		<tile xpos="37" ypos="15">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
-		</tile>
-		<tile xpos="37" ypos="15">
-			<tilemap mapname="inq_town4" mapx="5" mapy="18"/>
 		</tile>
 		<tile xpos="37" ypos="16">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
@@ -7487,9 +7445,6 @@ startBattle("Black Cat",1,true,"grasslands");
 		<tile xpos="38" ypos="12">
 			<tilemap mapname="inq_town" mapx="0" mapy="0"/>
 		</tile>
-		<tile xpos="38" ypos="12">
-			<tilemap mapname="inq_town4" mapx="2" mapy="18"/>
-		</tile>
 		<tile xpos="38" ypos="13">
 			<tilemap mapname="inq_town" mapx="0" mapy="0"/>
 		</tile>
@@ -7501,9 +7456,6 @@ startBattle("Black Cat",1,true,"grasslands");
 		</tile>
 		<tile xpos="38" ypos="15">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
-		</tile>
-		<tile xpos="38" ypos="15">
-			<tilemap mapname="inq_town4" mapx="5" mapy="18"/>
 		</tile>
 		<tile xpos="38" ypos="16">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
@@ -7735,16 +7687,10 @@ startBattle("Black Cat",1,true,"grasslands");
 			<tilemap mapname="inq_town" mapx="0" mapy="0"/>
 		</tile>
 		<tile xpos="39" ypos="14">
-			<tilemap mapname="inq_town3" mapx="1" mapy="14"/>
-		</tile>
-		<tile xpos="39" ypos="14">
-			<tilemap mapname="inq_town3" mapx="2" mapy="13"/>
+			<tilemap mapname="inq_town3" mapx="2" mapy="14"/>
 		</tile>
 		<tile xpos="39" ypos="15">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>
-		</tile>
-		<tile xpos="39" ypos="15">
-			<tilemap mapname="inq_town4" mapx="5" mapy="18"/>
 		</tile>
 		<tile xpos="39" ypos="16">
 			<tilemap mapname="inq_town" mapx="6" mapy="1"/>

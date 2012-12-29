@@ -28,7 +28,8 @@ void MappableObject::SetPixelPosition( const CL_Point& pixel_pos ) {
 }
 
 void MappableObject::Move( Level& level ) {
-	if ( !m_navStack.empty() ) {
+	m_placed = false;
+	if ( !m_navStack.empty() && m_navStack.top()->InMotion() ) {
 		//uint speed = m_navStack.top()->GetSpeed();
 		for ( uint i = 0;i < m_navStack.top()->GetSpeed();i++ ) {
 			if ( IsAligned() ) {
@@ -42,7 +43,9 @@ void MappableObject::Move( Level& level ) {
 					m_navStack.top()->Blocked();
 					break;
 				}
-
+				// If we got moved (popped, transported, whatever, then we have to get out of this loop
+				if(m_placed) 
+					break;
 			}
 
 			CL_Point pt = GetPixelPosition();
@@ -595,6 +598,7 @@ void MappableObjectElement::load_finished() {
 }
 
 void MappableObjectElement::Placed() {
+	MappableObject::Placed();
 	Set_Frame_For_Direction();
 }
 

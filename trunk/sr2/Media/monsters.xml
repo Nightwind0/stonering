@@ -109,7 +109,7 @@
         <stat id="lck" value="3"/>
         <stat id="rst" value="6"/>
     </monster>
-     <monster name="Black Cat" mode="manual" spriteResources="Black Cat" level="3">
+     <monster name="Black Cat" mode="manual" spriteResources="Black Cat" level="4">
         <onRound>
             <script id="Black_cat_round">
                 doSkill(getSkill("MonsterBasicAttack"),$Character);  // Monsters are allowed to use any skill they want.
@@ -123,7 +123,7 @@
         <stat id="hp_max"   value="70"/>
         <stat id="mp_max" value="0"/>
         <stat id="str" value="10"/>
-        <stat id="def" value="8"/>
+        <stat id="def" value="6"/>
         <stat id="dex" value="0.95"/>
         <stat id="evd" value="0.09"/>
         <stat id="mag" value="0"/>

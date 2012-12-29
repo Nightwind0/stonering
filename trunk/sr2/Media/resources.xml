@@ -168,10 +168,38 @@
         </section>
         <section name="Levels">
                 <string name="examplelevel" value="town2.xml" />
-                <string name="octaviaInn" value="town1.xml" />
+                <string name="inn" value="inn1.xml" />
                 <string name="monster_test" value="monster_test.xml" />
         </section>
         <section name="Tilemaps">
+			<image name="inq_indoors1">
+				<image-file file="Tiles/inq_indoors1.png"/>
+			</image>
+			<image name="inq_indoors2">
+				<image-file file="Tiles/inq_indoors2.png"/>
+			</image>
+			
+			<image name="inq_indoors3">
+				<image-file file="Tiles/inq_indoors3.png"/>
+			</image>
+			<image name="inq_indoors4">
+				<image-file file="Tiles/inq_indoors4.png"/>
+			</image>
+			<image name="inq_indoors5">
+				<image-file file="Tiles/inq_indoors5.png"/>
+			</image>			
+			<image name="inq_carpet1">
+				<image-file file="Tiles/inq_carpet.png"/>
+			</image>
+			<image name="inq_carpet2">
+				<image-file file="Tiles/inq_carpet2.png"/>
+			</image>
+			<image name="inq_water1">
+				<image-file file="Tiles/inq_water1.png"/>
+			</image>
+			<image name="inq_water2">
+				<image-file file="Tiles/inq_water2.png"/>
+			</image>			
 			<image name="inq_town">
 				<image-file file="Tiles/inq_town1.png"/>
 			</image>
@@ -208,6 +236,12 @@
 			<image name="cave">
 				<image-file file="Tiles/cave2.png"/>
 			</image>	
+			<image name="red_cave">
+				<image-file file="Tiles/goblin_cave_red.png"/>
+			</image>
+			<image name="thermin-cave">
+				<image-file file="Tiles/thermin-cave.png"/>
+			</image>				
 			<!--
                 <sprite name="roofs">
                         <image file="Tiles/roofs.png"/>

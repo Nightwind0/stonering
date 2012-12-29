@@ -1574,6 +1574,7 @@ SteelType Application::gameoverScreen()
 
 SteelType Application::configJoystick() 
 {
+	m_joystick_config.Reset();
 	m_joystick_train_state = JS_TRAIN_AXIS;
 	m_joystick_train_component.m_dir = IApplication::AXIS_UP;
 	Banner("Press Up on Joystick",-1);
@@ -1628,6 +1629,16 @@ void Application::LoadMainMenu ( CL_DomDocument& doc )
 
         menuoptionNode = menuoptionNode.get_next_sibling().to_element();
     }
+}
+
+State* Application::getInputState() const
+{
+	for(int s = mStates.size()-1; s>=0;s--){
+		if(mStates[s]->AcceptInput())
+			return mStates[s];
+	}
+	assert(0);
+	return NULL;
 }
 
 IApplication * IApplication::GetInstance()
@@ -1734,44 +1745,44 @@ void Application::onSignalKeyDown ( const CL_InputEvent &key, const CL_InputStat
 {
 
     // Handle raw key press
-    mStates.back()->HandleKeyDown ( key );
+    getInputState()->HandleKeyDown ( key );
 
     // Do mappings now
     switch ( key.id )
     {
         case CL_KEY_DOWN:
-            mStates.back()->HandleAxisMove ( IApplication::AXIS_VERTICAL, AXIS_DOWN, get_value_for_axis_direction ( AXIS_DOWN ) );
+            getInputState()->HandleAxisMove ( IApplication::AXIS_VERTICAL, AXIS_DOWN, get_value_for_axis_direction ( AXIS_DOWN ) );
             break;
         case CL_KEY_UP:
-            mStates.back()->HandleAxisMove ( IApplication::AXIS_VERTICAL, AXIS_UP, get_value_for_axis_direction ( AXIS_UP ) );
+            getInputState()->HandleAxisMove ( IApplication::AXIS_VERTICAL, AXIS_UP, get_value_for_axis_direction ( AXIS_UP ) );
             break;
         case CL_KEY_LEFT:
-            mStates.back()->HandleAxisMove ( IApplication::AXIS_HORIZONTAL, AXIS_LEFT, get_value_for_axis_direction ( AXIS_LEFT ) );
+            getInputState()->HandleAxisMove ( IApplication::AXIS_HORIZONTAL, AXIS_LEFT, get_value_for_axis_direction ( AXIS_LEFT ) );
             break;
         case CL_KEY_RIGHT:
-            mStates.back()->HandleAxisMove ( IApplication::AXIS_HORIZONTAL, AXIS_RIGHT, get_value_for_axis_direction ( AXIS_RIGHT ) );
+            getInputState()->HandleAxisMove ( IApplication::AXIS_HORIZONTAL, AXIS_RIGHT, get_value_for_axis_direction ( AXIS_RIGHT ) );
             break;
         case CL_KEY_SPACE:
         case CL_KEY_T:
-            mStates.back()->HandleButtonDown ( BUTTON_CONFIRM );
+            getInputState()->HandleButtonDown ( BUTTON_CONFIRM );
             break;
         case CL_KEY_TAB:
-            mStates.back()->HandleButtonDown ( BUTTON_ALT );
+            getInputState()->HandleButtonDown ( BUTTON_ALT );
             break;
         case CL_KEY_ESCAPE:
-            mStates.back()->HandleButtonDown ( BUTTON_CANCEL );
+            getInputState()->HandleButtonDown ( BUTTON_CANCEL );
             break;
         case CL_KEY_ENTER:
-            mStates.back()->HandleButtonDown ( BUTTON_START );
+            getInputState()->HandleButtonDown ( BUTTON_START );
             break;
         case CL_KEY_HOME:
-            mStates.back()->HandleButtonDown ( BUTTON_MENU );
+            getInputState()->HandleButtonDown ( BUTTON_MENU );
             break;
         case CL_KEY_M:
-            mStates.back()->HandleButtonDown ( BUTTON_R );
+            getInputState()->HandleButtonDown ( BUTTON_R );
             break;
         case CL_KEY_N:
-            mStates.back()->HandleButtonDown ( BUTTON_L );
+            getInputState()->HandleButtonDown ( BUTTON_L );
             break;
     }
 
@@ -1780,46 +1791,46 @@ void Application::onSignalKeyDown ( const CL_InputEvent &key, const CL_InputStat
 
 void Application::onSignalKeyUp ( const CL_InputEvent &key, const CL_InputState& )
 {
-    mStates.back()->HandleKeyUp ( key );
+    getInputState()->HandleKeyUp ( key );
 
     // Do mappings now
 
     switch ( key.id )
     {
         case CL_KEY_DOWN:
-            mStates.back()->HandleAxisMove ( IApplication::AXIS_VERTICAL, AXIS_NEUTRAL, 0.0 );
+            getInputState()->HandleAxisMove ( IApplication::AXIS_VERTICAL, AXIS_NEUTRAL, 0.0 );
             break;
         case CL_KEY_UP:
-            mStates.back()->HandleAxisMove ( IApplication::AXIS_VERTICAL, AXIS_NEUTRAL, 0.0 );
+            getInputState()->HandleAxisMove ( IApplication::AXIS_VERTICAL, AXIS_NEUTRAL, 0.0 );
             break;
         case CL_KEY_LEFT:
         case CL_KEY_RIGHT:
-            mStates.back()->HandleAxisMove ( IApplication::AXIS_HORIZONTAL, AXIS_NEUTRAL, 0.0 );
+            getInputState()->HandleAxisMove ( IApplication::AXIS_HORIZONTAL, AXIS_NEUTRAL, 0.0 );
             break;
         case CL_KEY_SPACE:
         case CL_KEY_T:
-            mStates.back()->HandleButtonUp ( BUTTON_CONFIRM );
+            getInputState()->HandleButtonUp ( BUTTON_CONFIRM );
             break;
         case CL_KEY_TAB:
-            mStates.back()->HandleButtonUp ( BUTTON_ALT );
+            getInputState()->HandleButtonUp ( BUTTON_ALT );
             break;
         case CL_KEY_ESCAPE:
-            mStates.back()->HandleButtonUp ( BUTTON_CANCEL );
+            getInputState()->HandleButtonUp ( BUTTON_CANCEL );
             break;
         case CL_KEY_ENTER:
-            mStates.back()->HandleButtonUp ( BUTTON_START );
+            getInputState()->HandleButtonUp ( BUTTON_START );
             break;
         case CL_KEY_HOME:
-            mStates.back()->HandleButtonUp ( BUTTON_MENU );
+            getInputState()->HandleButtonUp ( BUTTON_MENU );
             break;
         case CL_KEY_M:
-            mStates.back()->HandleButtonUp ( BUTTON_R );
+            getInputState()->HandleButtonUp ( BUTTON_R );
             break;
         case CL_KEY_N:
-            mStates.back()->HandleButtonUp ( BUTTON_L );
+            getInputState()->HandleButtonUp ( BUTTON_L );
             break;
         case CL_KEY_S:
-            mStates.back()->HandleButtonUp ( BUTTON_SELECT );
+            getInputState()->HandleButtonUp ( BUTTON_SELECT );
             break;
     }
 
@@ -1837,7 +1848,7 @@ void Application::onSignalJoystickButtonDown ( const CL_InputEvent &event, const
 		IApplication::Button button = m_joystick_config.GetButtonForId(event.id);
 		if(button != IApplication::BUTTON_INVALID){
 			m_button_down[button] = true;
-			mStates.back()->HandleButtonDown(button);			
+			getInputState()->HandleButtonDown(button);			
 		}		
 	}
 
@@ -1856,7 +1867,7 @@ void Application::onSignalJoystickButtonUp ( const CL_InputEvent &event, const C
 		IApplication::Button button = m_joystick_config.GetButtonForId(event.id);
 		if(button != IApplication::BUTTON_INVALID && m_button_down[button]){
 			m_button_down[button] = false;
-			mStates.back()->HandleButtonUp(button);			
+			getInputState()->HandleButtonUp(button);			
 		}
 	}
 
@@ -1884,11 +1895,11 @@ void Application::onSignalJoystickAxisMove ( const CL_InputEvent &event, const C
 	}else{
 		if ( event.id == m_joystick_config.GetAxis(AXIS_HORIZONTAL) )
 		{
-			mStates.back()->HandleAxisMove ( AXIS_HORIZONTAL, get_direction_for_value ( AXIS_HORIZONTAL, event.axis_pos ), event.axis_pos );
+			getInputState()->HandleAxisMove ( AXIS_HORIZONTAL, get_direction_for_value ( AXIS_HORIZONTAL, event.axis_pos ), event.axis_pos );
 		}
 		else if ( event.id == m_joystick_config.GetAxis(AXIS_VERTICAL) )
 		{
-			mStates.back()->HandleAxisMove ( AXIS_VERTICAL, get_direction_for_value ( AXIS_VERTICAL, event.axis_pos ), event.axis_pos );
+			getInputState()->HandleAxisMove ( AXIS_VERTICAL, get_direction_for_value ( AXIS_VERTICAL, event.axis_pos ), event.axis_pos );
 		}
 	}
 }
@@ -1916,25 +1927,25 @@ static uint CLKeyStatesToKeyState(bool shift, bool alt, bool ctrl){
 
 void Application::onSignalMouseDown ( const CL_InputEvent& event, const CL_InputState& state ){
     if(!mStates.empty()){
-        mStates.back()->HandleMouseDown(CLMouseToMouseButton(event.id),event.mouse_pos,CLKeyStatesToKeyState(event.shift,event.alt,event.ctrl));
+        getInputState()->HandleMouseDown(CLMouseToMouseButton(event.id),event.mouse_pos,CLKeyStatesToKeyState(event.shift,event.alt,event.ctrl));
     }
 }
 
 void Application::onSignalMouseUp ( const CL_InputEvent& event, const CL_InputState& state ){
     if(!mStates.empty()){
-        mStates.back()->HandleMouseUp(CLMouseToMouseButton(event.id),event.mouse_pos,CLKeyStatesToKeyState(event.shift,event.alt,event.ctrl));
+        getInputState()->HandleMouseUp(CLMouseToMouseButton(event.id),event.mouse_pos,CLKeyStatesToKeyState(event.shift,event.alt,event.ctrl));
     }    
 }
 
 void Application::onSignalDoubleClick ( const CL_InputEvent& event, const CL_InputState& state ){
     if(!mStates.empty()){
-        mStates.back()->HandleDoubleClick(CLMouseToMouseButton(event.id),event.mouse_pos,CLKeyStatesToKeyState(event.shift,event.alt,event.ctrl));
+        getInputState()->HandleDoubleClick(CLMouseToMouseButton(event.id),event.mouse_pos,CLKeyStatesToKeyState(event.shift,event.alt,event.ctrl));
     }    
 }
 
 void Application::onSignalMouseMove ( const CL_InputEvent& event, const CL_InputState& state ){
     if(!mStates.empty()){
-        mStates.back()->HandleMouseMove(event.mouse_pos,CLKeyStatesToKeyState(event.shift,event.alt,event.ctrl));
+        getInputState()->HandleMouseMove(event.mouse_pos,CLKeyStatesToKeyState(event.shift,event.alt,event.ctrl));
     }
 }
 
@@ -1978,6 +1989,11 @@ SteelType Application::RunScript ( AstScript *pScript, const ParameterList &para
     return mInterpreter.runAst ( pScript, params );
 }
 
+
+void Application::EditMaps()
+{
+	editMap();
+}
 
 void Application::registerSteelFunctions()
 {

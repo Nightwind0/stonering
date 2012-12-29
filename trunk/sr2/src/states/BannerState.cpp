@@ -58,6 +58,10 @@ bool BannerState::IsDone() const
     return m_done || (m_time> 0 && CL_System::get_time() >= (m_start_time + m_time)); 
 }
 
+bool BannerState::AcceptInput() const {
+	return m_time <= 0;
+}
+
 
 void BannerState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
 {

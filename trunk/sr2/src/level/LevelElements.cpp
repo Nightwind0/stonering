@@ -392,6 +392,26 @@ CL_DomElement Tilemap::CreateDomElement(CL_DomDocument& doc)const
     return element;
 }
 
+void LevelHeader::SetLevelHeight(uint height)
+{
+	m_nLevelHeight = height;
+}
+
+void LevelHeader::SetLevelWidth(uint width)
+{
+	m_nLevelWidth = width;
+}
+
+void LevelHeader::SetAllowsRunning(bool allowed)
+{
+	m_bAllowsRunning = allowed;
+}
+
+void LevelHeader::SetMusic(const std::string& music)
+{
+	m_music = music;
+}
+
 CL_DomElement LevelHeader::CreateDomElement(CL_DomDocument& doc)const
 {
     CL_DomElement levelHeader(doc,"levelHeader");

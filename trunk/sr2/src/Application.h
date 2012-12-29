@@ -85,8 +85,11 @@ public:
     virtual void                    MainMenu();
     virtual void                    RunOnMainThread(CL_Event& event, Functor* functor);
     virtual void                    Banner(const std::string&, int time);
-	virtual CL_IODevice     		OpenResource(const std::string& str);	
+	virtual CL_IODevice     		 OpenResource(const std::string& str);	
     int                             frameRate();
+#ifdef SR2_EDITOR
+	virtual void  			 EditMaps();
+#endif	
 protected:
     virtual int                     GetScreenWidth()const;
     virtual int                     GetScreenHeight()const;
@@ -257,6 +260,8 @@ private:
     void showIntro();
     void showError(int line, const std::string &script, const std::string &message);
     void registerSteelFunctions();
+	
+	State* getInputState() const;
 
     void draw();
     void run(bool process_functors=true);
