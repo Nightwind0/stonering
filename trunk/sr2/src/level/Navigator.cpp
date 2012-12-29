@@ -216,7 +216,9 @@ void ControlNavigator::Prod ( )
 
 void ControlNavigator::Blocked()
 {
-    //m_dir = Direction::NONE;
+	// Without this line, after colliding with an MO, it tries repeatedly to go through it, 
+	// causing tons of repeated collide type Events to fire (if any)	
+    m_dir = Direction::NONE; 
 }
 
 Direction ControlNavigator::GetFacingDirection() const

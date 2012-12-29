@@ -210,6 +210,8 @@ public:
         if(pMO != m_pMO && pMO->EvaluateCondition() && 
 				(pMO->GetTileRect() == m_destRect || pMO->GetTileRect().is_overlapped(m_destRect))
 				&& pMO->IsSolid() && m_pMO->IsFlying() == pMO->IsFlying()){
+			// Note: You only collide with one object at a time
+			pMO->ProvokeEvents(Event::COLLIDE);
             m_contains = true;
             return false;
         }else return true;
@@ -396,7 +398,7 @@ void Level::Invoke()
 {
     if(m_pHeader)
     {
-        m_pHeader->ExecuteScript();
+         m_pHeader->ExecuteScript();
     }
 }
 
@@ -1255,16 +1257,17 @@ CL_DomElement Level::CreateDomElement(CL_DomDocument& doc) const
 {
     CL_DomElement element(doc,"level");
     element.set_attribute("name",m_name);
+	
 
     CL_DomElement mappableObjects(doc,"mappableObjects");
     if(!m_pHeader){
 		const_cast<Level*>(this)->m_pHeader = new LevelHeader();
-		m_pHeader->SetLevelWidth(m_LevelWidth);
-		m_pHeader->SetLevelHeight(m_LevelHeight);
 		m_pHeader->SetMusic(m_music);
 		m_pHeader->SetAllowsRunning(m_bAllowsRunning);
 	}
-    element.append_child(m_pHeader->CreateDomElement(doc));
+	m_pHeader->SetLevelWidth(m_LevelWidth);
+	m_pHeader->SetLevelHeight(m_LevelHeight);	
+	element.append_child(m_pHeader->CreateDomElement(doc));
   
     CL_DomElement tiles(doc,"tiles");
     for(int x=0;x<m_tiles.size();x++){

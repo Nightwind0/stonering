@@ -172,6 +172,9 @@
                 <string name="monster_test" value="monster_test.xml" />
         </section>
         <section name="Tilemaps">
+			<image name="inq_roof">
+				<image-file file="Tiles/inq_roof.png"/>
+			</image>
 			<image name="inq_indoors1">
 				<image-file file="Tiles/inq_indoors1.png"/>
 			</image>

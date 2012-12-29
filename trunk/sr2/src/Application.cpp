@@ -132,7 +132,6 @@ SteelType Application::pushLevel ( const std::string &level, uint startX, uint s
 {
     Level * pLevel = new Level();
     pLevel->Load ( level, m_resources );
-    pLevel->Invoke();
     
     bool mapstaterunning = false;
     for(std::vector<State*>::const_iterator it = mStates.begin();
@@ -151,6 +150,7 @@ SteelType Application::pushLevel ( const std::string &level, uint startX, uint s
     
     
     mMapState.PushLevel ( pLevel, static_cast<uint> ( startX ), static_cast<uint> ( startY ) );
+	pLevel->Invoke();
 
     return SteelType();
 }
@@ -1989,11 +1989,12 @@ SteelType Application::RunScript ( AstScript *pScript, const ParameterList &para
     return mInterpreter.runAst ( pScript, params );
 }
 
-
+#ifdef SR2_EDITOR
 void Application::EditMaps()
 {
 	editMap();
 }
+#endif
 
 void Application::registerSteelFunctions()
 {

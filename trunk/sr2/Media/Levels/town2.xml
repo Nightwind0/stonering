@@ -27,8 +27,8 @@ startBattle("Black Cat",1,true,"grasslands");
 			</event>
 		</mo>
 		<mo name="Gold Knight" sprite="Npc/GoldKnight" movementType="wander" speed="slow" size="1x1" type="npc" xpos="9" ypos="32" facing="west" solid="true">
-			<event name=" Event 0" triggerType="talk" remember="true">
-				<script id="GoldKnightTalkScript">
+			<event name="GoldKnightBump" triggerType="collide" remember="true">
+				<script id="GoldKnightBumpScript">
 					<![CDATA[say($_Name, "Out of my way!");]]>
 				</script>
 			</event>

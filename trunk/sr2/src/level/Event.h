@@ -12,7 +12,7 @@ namespace StoneRing{
         Event();
         virtual ~Event();
 
-        enum eTriggerType { STEP, TALK, ACT };
+        enum eTriggerType { STEP, TALK, ACT, COLLIDE };
         virtual eElement WhichElement() const{ return EEVENT; }
         std::string GetName() const;
         eTriggerType GetTriggerType();
