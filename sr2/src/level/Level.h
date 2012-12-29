@@ -261,6 +261,10 @@ public:
     }
     void ExecuteScript() const;
 #if SR2_EDITOR
+	void SetLevelHeight(uint height);
+	void SetLevelWidth(uint width);
+	void SetAllowsRunning(bool allowed);
+	void SetMusic(const std::string& music);
     CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
 #endif
 private:

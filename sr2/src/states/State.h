@@ -38,6 +38,7 @@ public:
 	}
 	virtual void Draw( const CL_Rect &screenRect, CL_GraphicContext& GC ) = 0;
 	virtual bool LastToDraw() const = 0; // Should we continue drawing more states?
+	virtual bool AcceptInput() const { return true; }
 	virtual bool DisableMappableObjects() const = 0; // Should the app move the MOs?
 	virtual void MappableObjectMoveHook() = 0; // Do stuff right after the mappable object movement
 	virtual void Start() = 0;

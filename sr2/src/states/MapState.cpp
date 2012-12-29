@@ -90,7 +90,7 @@ void StoneRing::MapState::HandleAxisMove(const IApplication::Axis& axis, IApplic
 	m_horizontal_idle = false;
 	if(dir == IApplication::AXIS_RIGHT)
 	{
-            pPlayer->GetNavigator().SetNextDirection(Direction::EAST);
+        pPlayer->GetNavigator().SetNextDirection(Direction::EAST);
 	}
 	else if(dir == IApplication::AXIS_LEFT)
 	{
@@ -287,23 +287,23 @@ void StoneRing::MapState::PushLevel(Level * pLevel, uint x, uint y)
 {
 	if(m_pLevel){
 		m_pLevel->RemoveMappableObject(&m_player);	
+		m_levels.push_back(m_pLevel);
+		m_position_stack.push_back(m_player.GetPosition());			
 	}
-	m_position_stack.push_back(m_player.GetPosition());	
     CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
     Character *pMapCharacter = IApplication::GetInstance()->GetParty()->GetMapCharacter();
 
-    m_levels.push_back( pLevel );
-    m_pLevel = m_levels.back();
+    m_pLevel = pLevel;
 
     if(pMapCharacter)
     {
 		// TODO: Move this line
         m_player.SetSprite ( pMapCharacter->GetMapSprite() );
-        m_player.ResetLevelX(x);
-        m_player.ResetLevelY(y);
         m_LevelX = 0;
         m_LevelY = 0;
-
+        m_player.ResetLevelX(x);
+        m_player.ResetLevelY(y);		
+		m_player.Placed();
         pLevel->AddMappableObject(&m_player);
         recalculate_player_position();        
     }
@@ -313,12 +313,23 @@ void StoneRing::MapState::PushLevel(Level * pLevel, uint x, uint y)
 
 void StoneRing::MapState::LoadLevel(Level * pLevel, uint x, uint y)
 {
-	if(!m_levels.empty()){
-		Level * oldLevel = m_levels.back();
-		// TODO: delete oldLevel ?
-		m_levels.pop_back();
+	if(m_pLevel){
+		m_pLevel->RemoveMappableObject(&m_player);
+		m_pLevel->MarkForDeath();
 	}
-	PushLevel(pLevel,x,y);
+    CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
+    Character *pMapCharacter = IApplication::GetInstance()->GetParty()->GetMapCharacter();
+	if(pMapCharacter){
+		m_player.SetSprite(pMapCharacter->GetMapSprite());
+	}
+	m_pLevel = pLevel;
+	m_player.ResetLevelX(x);
+	m_player.ResetLevelY(y);
+	m_player.Placed();
+	m_pLevel->AddMappableObject(&m_player);
+	m_LevelX = m_LevelY = 0;
+	recalculate_player_position();
+    SoundManager::SetMusic(m_pLevel->GetMusic());	
 }
 
 
@@ -332,9 +343,12 @@ void StoneRing::MapState::Pop(bool bAll)
 	CL_Point point;
     if(bAll)
     {
-        while(m_levels.size() > 1)
+		m_pLevel->MarkForDeath();
+        while(!m_levels.empty())
         {
             m_levels.back()->MarkForDeath();
+			m_pLevel = m_levels.back();
+			//m_levels.back()->RemoveMappableObject(&m_player);
             m_levels.pop_back();
 			point = m_position_stack.back();
 			m_position_stack.pop_back();
@@ -342,10 +356,12 @@ void StoneRing::MapState::Pop(bool bAll)
     }
     else
     {
-
-        if(m_levels.size() > 1)
+		m_pLevel->MarkForDeath();
+        if(!m_levels.empty())
         {
-            m_levels.back()->MarkForDeath();
+			m_pLevel = m_levels.back();
+            //m_levels.back()->MarkForDeath();
+			//m_levels.back()->RemoveMappableObject(&m_player);
             m_levels.pop_back();
 			point = m_position_stack.back();
 			m_position_stack.pop_back();
@@ -353,10 +369,10 @@ void StoneRing::MapState::Pop(bool bAll)
 			return;
 		}
     }
-
-    m_pLevel = m_levels.back();
+	//m_pLevel->RemoveMappableObject(&m_player);
 	m_player.ResetLevelX(point.x);
-	m_player.ResetLevelY(point.y);
+	m_player.ResetLevelY(point.y);	
+	m_player.Placed();
 	m_pLevel->AddMappableObject(&m_player);
 	recalculate_player_position();
     SoundManager::SetMusic(m_pLevel->GetMusic());
@@ -470,6 +486,8 @@ void StoneRing::MapState::switch_from_player(MappablePlayer * pPlayer)
 void StoneRing::MapState::SerializeState ( std::ostream& out )
 {
 	m_player.SerializeState(out);
+	WriteString(out,m_pLevel->GetResourceName());
+	m_pLevel->SerializeState(out);
     uint level_count = m_levels.size();
     out.write((char*)&level_count,sizeof(uint));
     for(int i=0;i<level_count;i++){
@@ -488,6 +506,11 @@ void StoneRing::MapState::SerializeState ( std::ostream& out )
 void StoneRing::MapState::DeserializeState ( std::istream& in )
 {
 	m_player.DeserializeState(in);
+	std::string name = ReadString(in);
+	m_pLevel = new Level();
+	m_pLevel->Load(name,IApplication::GetInstance()->GetResources());
+	m_pLevel->Invoke();
+	m_pLevel->DeserializeState(in);
     uint level_count;
     in.read((char*)&level_count,sizeof(uint));
     for(int i=0;i<level_count;i++){
@@ -507,13 +530,13 @@ void StoneRing::MapState::DeserializeState ( std::istream& in )
 		m_position_stack.push_back(pt);
 	}
 
-    m_pLevel = m_levels.back();
     Character *pMapCharacter = IApplication::GetInstance()->GetParty()->GetMapCharacter();    
 	
 	if(pMapCharacter)
     {
 		m_player.SetSprite ( pMapCharacter->GetMapSprite() );
 		m_pLevel->AddMappableObject(&m_player);
+		m_player.Placed();
 		recalculate_player_position();
     }        
 	

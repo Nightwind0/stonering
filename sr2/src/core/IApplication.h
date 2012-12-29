@@ -114,6 +114,9 @@ public:
 	virtual bool            Deserialize( std::istream& stream ) = 0;
 	virtual void            Banner( const std::string& str, int time ) = 0;
 	virtual CL_IODevice     OpenResource(const std::string& str)=0;
+#ifdef SR2_EDITOR
+	virtual void  			 EditMaps()=0;
+#endif
 };
 
 }

@@ -129,6 +129,10 @@ void StartupState::draw_option ( int option, bool selected, float x, float y, CL
         option_str = "New Game";
     else if(option == 2)
         option_str = "Quit";
+#ifdef SR2_EDITOR
+	else if(option == 3)
+		option_str = "Edit Maps";
+#endif
     
     Font font = selected?m_selection_font:m_option_font;
     font.draw_text(gc,x,y,option_str,Font::TOP_LEFT);
@@ -136,7 +140,11 @@ void StartupState::draw_option ( int option, bool selected, float x, float y, CL
 
 int StartupState::get_option_count()
 {
+#ifdef SR2_EDITOR
+	return 4;
+#else
     return 3;
+#endif
 }
 
 int StartupState::height_for_option ( CL_GraphicContext& gc )
@@ -157,6 +165,9 @@ void StartupState::process_choice ( int selection )
             m_bDone = true;
             break;
 #ifdef SR2_EDITOR
+		case 3:
+			IApplication::GetInstance()->EditMaps();
+			break;
 #endif
         default:
             break;

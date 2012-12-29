@@ -1257,8 +1257,13 @@ CL_DomElement Level::CreateDomElement(CL_DomDocument& doc) const
     element.set_attribute("name",m_name);
 
     CL_DomElement mappableObjects(doc,"mappableObjects");
-    
-
+    if(!m_pHeader){
+		const_cast<Level*>(this)->m_pHeader = new LevelHeader();
+		m_pHeader->SetLevelWidth(m_LevelWidth);
+		m_pHeader->SetLevelHeight(m_LevelHeight);
+		m_pHeader->SetMusic(m_music);
+		m_pHeader->SetAllowsRunning(m_bAllowsRunning);
+	}
     element.append_child(m_pHeader->CreateDomElement(doc));
   
     CL_DomElement tiles(doc,"tiles");

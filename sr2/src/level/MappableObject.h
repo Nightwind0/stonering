@@ -95,7 +95,7 @@ public:
 	}
 	virtual Direction GetDefaultFacing() const;
 	
-	virtual void    Placed() {}; // notify that they've been added to a level
+	virtual void    Placed() { m_placed = true; }; // notify that they've been added to a level
 
 	virtual eMovementType  GetMovementType() const {
 		return MOVEMENT_NONE;
@@ -140,6 +140,7 @@ protected:
 	eMappableObjectType m_eType;
 	char            m_cFlags;
 	ushort          m_nTilesMoved;
+	bool 			m_placed;
 	std::stack<Navigator*>  m_navStack;
 #ifdef SR2_EDITOR
 public:

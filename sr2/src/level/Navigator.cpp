@@ -164,6 +164,10 @@ void NPCNavigator::changed_direction()
     set_frame_direction();
 }
 
+bool NPCNavigator::InMotion() const {
+	return m_eDirection != Direction::NONE;
+}
+
 
 ControlNavigator::ControlNavigator(MappableObject& mo):Navigator(mo)
 {
@@ -239,6 +243,10 @@ void ControlNavigator::SetRunning ( bool running )
     m_isRunning = running;
 }
 
+
+bool ControlNavigator::InMotion() const {
+	return m_dir != Direction::NONE;
+}
 
 
 StillNavigator::StillNavigator(MappableObject& mo):Navigator(mo)
@@ -569,6 +577,9 @@ void ScriptedNavigator::Prod (  )
         set_direction_to_next(true);
 }
 
+bool ScriptedNavigator::InMotion() const {
+	return !m_complete && m_dir != Direction::NONE;
+}
 
 
 

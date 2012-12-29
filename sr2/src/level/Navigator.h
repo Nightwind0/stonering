@@ -42,6 +42,7 @@ public:
     virtual Direction GetCurrentDirection()const=0;
     virtual Direction GetFacingDirection()const=0;
     virtual uint GetSpeed()const=0;
+	virtual bool InMotion() const=0;
 protected:
     MappableObject& m_mo;
 };
@@ -58,6 +59,7 @@ public:
     virtual Direction GetCurrentDirection()const;
     virtual Direction GetFacingDirection()const;
     virtual uint GetSpeed()const;
+	virtual bool InMotion() const;
 private:
     bool single_move(MappableObject& mo, Level& level);
     void moved_one_cell();
@@ -84,6 +86,7 @@ public:
     virtual uint GetSpeed()const;
     void SetRunning(bool running);
     void SetNextDirection(const Direction& next);
+	virtual bool InMotion() const;
 private:
     void moved_one_cell();
     bool single_move();
@@ -105,6 +108,7 @@ public:
     virtual Direction GetCurrentDirection()const;    
     virtual Direction GetFacingDirection()const;
     virtual uint GetSpeed()const;
+	virtual bool InMotion()const { return false; }
 private:
 };
 
@@ -122,6 +126,7 @@ public:
     virtual Direction GetCurrentDirection()const;   
     virtual Direction GetFacingDirection()const;
     virtual uint GetSpeed()const;
+	virtual bool InMotion()const;
     bool Complete() const { return m_complete; }
 private:
     float heuristic_cost_estimate(const CL_Point& a, const CL_Point& b)const;
