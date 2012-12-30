@@ -38,7 +38,8 @@ namespace StoneRing
 			STARTUP,
 			STATUS,
 			GAMEOVER,
-			ITEM_GET
+			ITEM_GET,
+			GOLD_GET
 		};
 		
 		enum DisplayFont

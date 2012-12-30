@@ -186,6 +186,8 @@ stonering_SOURCES =	src/Application.cpp \
 			src/states/SaveLoadState.h \
 			src/states/ItemGetState.cpp \
 			src/states/ItemGetState.h \
+			src/states/GoldGetState.cpp \
+			src/states/GoldGetState.h \
 			src/core/Description.cpp \
 			src/core/Description.h \
 			src/core/MenuBox.cpp \

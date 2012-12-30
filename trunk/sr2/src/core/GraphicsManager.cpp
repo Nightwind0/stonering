@@ -150,6 +150,8 @@ std::string GraphicsManager::NameOfOverlay( Overlay overlay ) {
 			return "Gameover";
 		case ITEM_GET:
 			return "ItemGet";
+		case GOLD_GET:
+			return "GoldGet";
 		default:
 			assert( 0 );
 	}

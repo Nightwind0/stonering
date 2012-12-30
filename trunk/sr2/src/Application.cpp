@@ -37,6 +37,7 @@
 #include "Omega.h"
 #include "BannerState.h"
 #include "GameoverState.h"
+#include "GoldGetState.h"
 //
 //
 //
@@ -455,7 +456,9 @@ SteelType Application::takeItem ( SteelType::Handle hItem , uint count, bool sil
 SteelType Application::giveGold ( int amount )
 {
     mpParty->GiveGold ( amount );
-
+	GoldGetState state;
+	state.SetGold(amount);
+	RunState(&state);
     return SteelType();
 }
 
