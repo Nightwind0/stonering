@@ -69,10 +69,10 @@ public:
     }
     virtual CL_Rect                 GetDisplayRect() const;
     virtual void                    StartBattle(const MonsterGroup &group,const std::string &backdrop);
-    virtual void                    RequestRedraw(const State *pState);
     virtual void                    RunState(State *pState, bool threaded=false);
     virtual void                    LoadMainMenu(CL_DomDocument& doc);
     virtual Level *                 GetCurrentLevel() const;
+	virtual CL_Point  				 GetCurrentLevelCenter() const;
     virtual AstScript *             LoadScript(const std::string &name, const std::string &script);
     virtual SteelType               RunScript(AstScript * pScript);
     virtual SteelType               RunScript(AstScript *pScript, const ParameterList &params);
@@ -245,6 +245,10 @@ private:
 	SteelType                       closeMap();
 	SteelType                       gameoverScreen();
 	
+	SteelType 						 pushMusic(const std::string&);
+	SteelType 						 popMusic();
+	SteelType 						 stopMusic();
+	SteelType 						 startMusic();
 	SteelType  						 configJoystick();
 
     SteelType                       editing();

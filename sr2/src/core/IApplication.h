@@ -92,16 +92,17 @@ public:
 	virtual CL_DisplayWindow&  GetApplicationWindow() = 0;
 	virtual Party *        GetParty() const = 0;
 	// virtual Party * GetReserveParty() const=0;
+	// TODO: Make Ability Manager a static singleton
 	virtual AbilityManager *GetAbilityManager() = 0;
 	virtual IFactory *      GetElementFactory() = 0;
 	virtual void            StartBattle( const MonsterGroup &group, const std::string &backdrop ) = 0;
 	virtual Level*          GetCurrentLevel()const = 0;
+	virtual CL_Point        GetCurrentLevelCenter()const=0; // In Pixels
 	virtual void            MainMenu() = 0;
 	virtual void            LoadMainMenu( CL_DomDocument& ) = 0;
 	virtual CL_Rect         GetDisplayRect() const = 0;
 	// TODO: Shouldn't this be on the Party ??
 	virtual uint            GetMinutesPlayed()const = 0;
-	virtual void            RequestRedraw( const State *pState ) = 0;
 	virtual void            RunState( State *pState, bool threaded = false ) = 0;
 	virtual void            StartGame( bool load ) = 0;
 	virtual Steel::AstScript * LoadScript( const std::string &name, const std::string &script ) = 0;

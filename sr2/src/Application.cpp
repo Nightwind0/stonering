@@ -462,6 +462,32 @@ SteelType Application::giveGold ( int amount )
     return SteelType();
 }
 
+SteelType Application::stopMusic()
+{
+	SoundManager::StopMusic();
+	return SteelType();
+}
+
+SteelType Application::startMusic()
+{
+	SoundManager::StartMusic();
+	return SteelType();
+}
+
+SteelType Application::pushMusic(const std::string& music)
+{
+	SoundManager::PushMusic();
+	SoundManager::SetMusic(music);
+	return SteelType();
+}
+
+SteelType Application::popMusic()
+{
+	SoundManager::PopMusic();
+	return SteelType();
+}
+
+
 SteelType Application::addCharacter ( const std::string &character, int level, bool announce )
 {
     Character * pCharacter = CharacterManager::GetCharacter ( character );
@@ -1275,6 +1301,7 @@ SteelType Application::giveItem( const SteelType::Handle hItem, int count, bool 
 }
 
 
+
 SteelType Application::log ( const std::string& str )
 {
     CL_Console::write_line ( str );
@@ -1967,11 +1994,6 @@ void Application::onSignalQuit()
     }
 }
 
-void Application::RequestRedraw ( const State * /*pState*/ )
-{
-    draw();
-}
-
 
 
 Steel::AstScript * Application::LoadScript ( const std::string &name, const std::string &script )
@@ -2299,6 +2321,11 @@ void Application::registerSteelFunctions()
 	mInterpreter.addFunction ( "gameoverScreen", fn_gameoverScreen );
 	mInterpreter.addFunction ( "giveItem", new SteelFunctor3Arg<Application,SteelType::Handle,int,bool>(this,&Application::giveItem) );
 	mInterpreter.addFunction ( "configJoystick", new SteelFunctorNoArgs<Application>(this,&Application::configJoystick));
+	
+	mInterpreter.addFunction ( "stopMusic", new SteelFunctorNoArgs<Application>(this,&Application::stopMusic));
+	mInterpreter.addFunction ( "startMusic", new SteelFunctorNoArgs<Application>(this,&Application::startMusic));
+	mInterpreter.addFunction ( "pushMusic", new SteelFunctor1Arg<Application, const std::string&>(this,&Application::pushMusic));
+	mInterpreter.addFunction ( "popMusic", new SteelFunctorNoArgs<Application>(this,&Application::popMusic));	
     
     mInterpreter.addFunction ( "editing", new SteelFunctorNoArgs<Application>(this,&Application::editing) );
     mInterpreter.addFunction ( "editMap", new SteelFunctorNoArgs<Application>(this,&Application::editMap) );
@@ -2420,6 +2447,11 @@ Level* Application::GetCurrentLevel() const
     return mMapState.GetCurrentLevel();
 }
 
+CL_Point Application::GetCurrentLevelCenter() const
+{
+	return mMapState.GetCurrentCenter();
+}
+
 CL_IODevice Application::OpenResource(const std::string& str)
 {
 	return m_resource_dir.open_file(str);
@@ -2495,6 +2527,7 @@ int Application::main ( const std::vector<CL_String> &args )
 		m_resource_dir = CL_VirtualDirectory(vfs, "./");
 		
 		m_zip_provider.SetVirtualDirectory(m_resource_dir);
+
 		mInterpreter.setFileProvider(&m_zip_provider);
 
         m_resources = CL_ResourceManager ( "Media/resources.xml", m_resource_dir );
