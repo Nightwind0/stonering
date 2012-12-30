@@ -444,8 +444,7 @@ void ShopState::HandleButtonUp ( const StoneRing::IApplication::Button& button )
             Item * pItem = m_item_menu.GetSelection();
             int gold = IApplication::GetInstance()->GetParty()->GetGold();
             if(!m_bSell){
-                if(gold >= pItem->GetValue()){
-                    
+                if(gold >= pItem->GetValue()){                    
                     SoundManager::PlayEffect(SoundManager::EFFECT_REWARD);
                     IApplication::GetInstance()->GetParty()->GiveGold( - pItem->GetValue() );
                     IApplication::GetInstance()->GetParty()->GiveItem(pItem,1);
