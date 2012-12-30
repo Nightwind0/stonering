@@ -127,6 +127,14 @@ void SoundManager::PopMusic()
    m_pInstance->m_song_stack.pop_front();
 }
 
+void SoundManager::StartMusic() {
+	m_pInstance->m_session.play();
+}
+
+void SoundManager::StopMusic() {
+	m_pInstance->m_session.stop();
+}
+
 
 void SoundManager::PlayEffect ( SoundManager::Effect effect )
 {

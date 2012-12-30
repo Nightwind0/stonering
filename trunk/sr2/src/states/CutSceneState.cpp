@@ -134,6 +134,10 @@ Level* CutSceneState::grabMapStateLevel()
     return IApplication::GetInstance()->GetCurrentLevel();
 }
 
+CL_Point CutSceneState::grabMapStateCenter()
+{
+	return IApplication::GetInstance()->GetCurrentLevelCenter();
+}
 
 
 
@@ -143,7 +147,7 @@ void CutSceneState::Start()
     m_bDrawMOs = true;
     m_bFrozen = false;
     m_pLevel = grabMapStateLevel();
-    m_center = CL_Point(m_pLevel->GetWidth() / 2 * 32, m_pLevel->GetHeight() / 2 * 32);   
+    m_center = grabMapStateCenter();  
     uncolorize();
     // Run script in Runner
     m_pRunner->setFunctor(m_functor);

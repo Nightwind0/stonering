@@ -64,6 +64,7 @@ public:
 private:
     void verifyLevel();
     Level * grabMapStateLevel();
+	CL_Point grabMapStateCenter();
     SteelType gotoLevel(const std::string&,int x, int y);
     SteelType hideObject(SteelType::Handle hHandle);
     SteelType unhideObject(SteelType::Handle hHandle);

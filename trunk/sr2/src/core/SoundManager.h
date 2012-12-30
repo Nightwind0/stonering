@@ -48,6 +48,8 @@ public:
     static void         SetMusic(const std::string&);
     static void         SetMusicVolume(float vol);
     static void         SetMusicMaxVolume(float vol);
+	static void 		 StopMusic();
+	static void         StartMusic();
     static void         SetSoundVolume(float vol);
     static float        GetSoundVolume();
     static float        GetMusicVolume();
@@ -57,6 +59,8 @@ private:
     static SoundManager * m_pInstance;
     void set_music(CL_SoundBuffer song);
     void onTransitionTimer();
+	void onStopTimer();
+	void onStartTimer();
     SoundManager();
     virtual ~SoundManager();
     CL_SoundBuffer m_buffer;

@@ -314,6 +314,7 @@ ICharacter::eGender Character::GetGender() const
 void Character::Kill()
 {
     SetToggle(CA_ALIVE,false);
+	RemoveBattleStatusEffects();
     SetCurrentSprite(GraphicsManager::CreateCharacterSprite(m_name,"dead"));
 }
 
