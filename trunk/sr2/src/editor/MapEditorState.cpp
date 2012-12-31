@@ -189,7 +189,7 @@ void MapEditorState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC){
 
 void MapEditorState::Finish(){
     //delete m_pMenuBar;
-    delete m_pTileWindow;    
+    delete m_pTileWindow;
     delete m_pWindow;
  
     EditorState::Finish();

@@ -111,7 +111,6 @@ SteelType Application::playScene ( const SteelType &functor )
 #ifndef NDEBUG
     //std::cout << "Playing scene " << animation << std::endl;
 #endif
-
     if(!functor.isFunctor()) throw CL_Exception("playScene argument wasn't a functor");
     CutSceneState cutSceneState;
     cutSceneState.Init(functor.getFunctor());
@@ -280,6 +279,8 @@ SteelType Application::choice ( const std::string &choiceText,
     SteelType selection;
 
     selection.set ( choiceState.GetSelection() );
+	
+	//std::cout << "Selected " << choiceState.GetSelection() << std::endl;
 
     return selection;
 }
@@ -330,11 +331,18 @@ void Application::RunOnMainThread ( CL_Event& event, Application::Functor* funct
 
 void Application::RunState ( State * pState, bool threaded )
 {
-    State * runningState = NULL;
-    if(!mStates.empty())
-        runningState = mStates.back();
-    mStates.push_back ( pState );
-    if((runningState && runningState->Threaded()) || threaded){
+	// Bug is this... basically finding the calling state by
+	// looking at the back state is wrong. 
+	// if you call this on the main thread and it thinks
+	// its threaded, you get a deadlock and you're boned
+	
+	if(!mStates.empty()){
+		mStates.back()->Covered();
+	}
+	
+	threaded = threaded || m_threaded_mode;
+	mStates.push_back ( pState );
+    if(threaded){
         class RunFunctor : public Functor {
         public:
             RunFunctor(Application& app):m_app(app){
@@ -1701,6 +1709,7 @@ Application::Application() : mpParty ( 0 ),
 
 {
     mpParty = new Party();
+	m_threaded_mode = false;
 }
 
 Application::~Application()
@@ -1933,6 +1942,12 @@ void Application::onSignalJoystickAxisMove ( const CL_InputEvent &event, const C
 		}
 	}
 }
+
+bool Application::IsCutsceneRunning() const {
+	return m_threaded_mode; // TODO: SOmething better. 
+	// Also, see notes in CutSceneState about maybe a better solution?
+}
+
 
 static IApplication::MouseButton CLMouseToMouseButton(int id){
     switch(id){
@@ -2368,6 +2383,8 @@ void Application::draw()
 void Application::run(bool process_functors)
 {
     State * backState = mStates.back();
+	
+	if(backState->Threaded()) m_threaded_mode = true;
 
     backState->SteelInit ( &mInterpreter );
     backState->Start();
@@ -2421,6 +2438,9 @@ void Application::run(bool process_functors)
     mStates.back()->Finish();
 
     mStates.back()->SteelCleanup ( &mInterpreter );
+	// TODO: Or is this backState->Threaded()? Is it any different?
+	if(mStates.back()->Threaded())
+		m_threaded_mode = false;
 
     mStates.pop_back();
 

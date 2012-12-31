@@ -195,6 +195,7 @@ void ControlNavigator::moved_one_cell ( )
     if(m_dir != Direction::NONE){
         m_facingDir = m_dir;
     }
+   // m_nextDir = Direction::NONE; // this fixes problems but because we don't get multiple DOWN events... you have to hit the d-pad repeatedly
 }
 
 

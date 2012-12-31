@@ -211,7 +211,8 @@ public:
 				(pMO->GetTileRect() == m_destRect || pMO->GetTileRect().is_overlapped(m_destRect))
 				&& pMO->IsSolid() && m_pMO->IsFlying() == pMO->IsFlying()){
 			// Note: You only collide with one object at a time
-			pMO->ProvokeEvents(Event::COLLIDE);
+			if(m_pMO->DoesStep()) // Only if the collider (not collidee) is the player
+				pMO->ProvokeEvents(Event::COLLIDE);
             m_contains = true;
             return false;
         }else return true;
@@ -562,7 +563,7 @@ void Level::RemoveTileVisitor ( Tile::Visitor* pVisitor )
 
 
 
-void Level::draw_object_layer(CL_GraphicContext& gc, const CL_Rect &src, const CL_Rect &dst, bool bDrawMos, bool bDrawDebug, bool bDrawBorders)
+void Level::draw_object_layer(CL_GraphicContext& gc, const CL_Rect &src, const CL_Rect &dst, bool bDrawMos, bool bDrawBorders, bool bDrawDebug)
 {
     CL_Point offset(dst.left-src.left,dst.bottom-src.bottom);
 
@@ -602,10 +603,9 @@ void Level::draw_object_layer(CL_GraphicContext& gc, const CL_Rect &src, const C
 #if !defined(NDEBUG)
         if(bDrawBorders && !(*iter)->IsTile()){
             CL_Rect tileRect = (*iter)->GetRect();
-            CL_Rect spriteRect(tileRect.get_top_left() * 32, tileRect.get_size() * 32);
        
-            spriteRect.translate(offset);
-            CL_Draw::box(gc,spriteRect,CL_Colorf(1.0f,1.0f,0.0f,0.5f));
+            tileRect.translate(offset);
+            CL_Draw::box(gc,tileRect,CL_Colorf(1.0f,1.0f,0.0f,0.5f));
         }else if((*iter)->IsTile()){
 			Tile* pTile = dynamic_cast<Tile*>(*iter);
 			if(pTile){

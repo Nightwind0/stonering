@@ -71,7 +71,6 @@ private:
             BLOCK_SOUTH,
             BLOCK_ALL,
             HOT,
-            POPS,
             FLOATER,
             WATER,
 			ALTER_ZORDER
