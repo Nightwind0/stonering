@@ -76,13 +76,36 @@ bool CutSceneState::DisableMappableObjects() const
 void CutSceneState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
 {
     // TODO Center around the center of the middle tile instead of the top-left of it?
-    CL_Rect levelRect = CL_Rect(m_center.x - screenRect.get_width() /2,
-                                m_center.y - screenRect.get_height() /2,
-                                m_center.x + screenRect.get_width() /2,
-                                m_center.y + screenRect.get_height() /2);
+
+    uint width = min( (unsigned int)screenRect.get_width(), m_pLevel->GetWidth() * 32);
+    uint height = min((unsigned int)screenRect.get_height(), m_pLevel->GetHeight() * 32);
+    CL_Rect src(m_center.x - width /2,
+                                m_center.y - height /2,
+                                m_center.x + width /2,
+                                m_center.y + height /2);	
+
+
+    CL_Rect dst = screenRect;
+    // Center
+    if(screenRect.get_width() > src.get_width())
+    {
+        uint amount = (screenRect.get_width() - src.get_width()) /2;
+        dst.left += amount;
+        dst.right -= amount;
+    }
+
+    if(screenRect.get_height() > src.get_height())
+    {
+        uint amount = (screenRect.get_height() - src.get_height()) /2;
+        dst.top += amount;
+        dst.bottom -= amount;
+    }	
+	
+	
+	
     GC.clear();
     if(m_pLevel){
-        m_pLevel->Draw(levelRect,screenRect,GC,m_bDrawMOs,m_showDebug);
+        m_pLevel->Draw(src,dst,GC,m_bDrawMOs,m_showDebug);
     }
     for(std::list<Task*>::iterator it = m_tasks.begin(); it != m_tasks.end();
         /* */){

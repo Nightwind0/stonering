@@ -277,6 +277,7 @@ private:
     void stopKeyUpQueue();
 
     /* SIGNALS */
+	void onSignalLostFocus();
     void onSignalQuit();
     void onSignalKeyDown(const CL_InputEvent &key,const CL_InputState& state);
     void onSignalKeyUp(const CL_InputEvent &key, const CL_InputState& state);
