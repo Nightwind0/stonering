@@ -41,6 +41,7 @@ public:
     virtual void Start();
     virtual void RegisterSteelFunctions(SteelInterpreter *);
     virtual void Finish(); // Hook to clean up or whatever after being popped
+	virtual void Covered();
 	CL_Point GetCurrentCenter() const;
     void SetDimensions(const CL_Rect &screenRect);
     void PushLevel(Level *pLevel, uint startX, uint startY);

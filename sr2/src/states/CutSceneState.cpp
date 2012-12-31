@@ -75,7 +75,6 @@ bool CutSceneState::DisableMappableObjects() const
 
 void CutSceneState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
 {
-
     // TODO Center around the center of the middle tile instead of the top-left of it?
     CL_Rect levelRect = CL_Rect(m_center.x - screenRect.get_width() /2,
                                 m_center.y - screenRect.get_height() /2,
@@ -91,12 +90,22 @@ void CutSceneState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
         (*_it)->update();
         (*_it)->draw(screenRect,GC);     
         if((*_it)->finished()){
+#ifndef NDEBUG
+			std::cout << "CutSceneState::Draw finished task. cleaning up" << std::endl;
+#endif
             (*_it)->cleanup();
             // Do something with waitFor?
+#ifndef NDEBUG
+			std::cout << "CutSceneState::Draw locking task mutex" << std::endl;
+			std::cout.flush();
+#endif
             m_task_mutex.lock();
             m_tasks.erase(_it);
-            m_wait_event.set();
             m_task_mutex.unlock();
+#ifndef NDEBUG
+			std::cout << "CutSceneState::Draw unlocked task mutex" << std::endl;
+#endif
+            m_wait_event.set();			
         }
     }
     
@@ -473,7 +482,7 @@ SteelType CutSceneState::waitFor ( const SteelType::Handle& waitOn )
     Task * pTask = GrabHandle<Task*>(waitOn);
     while(true){
         m_wait_event.wait();
-        m_task_mutex.lock();
+        //m_task_mutex.lock();
         bool found = false;
 
         for ( std::list<Task*>::const_iterator it = m_tasks.begin();
@@ -482,7 +491,7 @@ SteelType CutSceneState::waitFor ( const SteelType::Handle& waitOn )
                 found = true;
             }
         }
-        m_task_mutex.unlock();
+        //m_task_mutex.unlock();
         if(!found) 
             break;
     }

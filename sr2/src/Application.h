@@ -86,6 +86,7 @@ public:
     virtual void                    RunOnMainThread(CL_Event& event, Functor* functor);
     virtual void                    Banner(const std::string&, int time);
 	virtual CL_IODevice     		 OpenResource(const std::string& str);	
+	virtual bool 					 IsCutsceneRunning() const; // Too much of a hack?
     int                             frameRate();
 #ifdef SR2_EDITOR
 	virtual void  			 EditMaps();
@@ -250,6 +251,7 @@ private:
 	SteelType 						 stopMusic();
 	SteelType 						 startMusic();
 	SteelType  						 configJoystick();
+			 
 
     SteelType                       editing();
     SteelType                       editMap();
@@ -332,6 +334,7 @@ private:
 #if SR2_EDITOR
     MapEditorState mMapEditorState;
 #endif
+	bool m_threaded_mode;
     std::vector<State*> mStates;
     std::vector<IFactory*> mFactories;
     BattleConfig mBattleConfig;

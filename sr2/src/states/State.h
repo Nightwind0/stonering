@@ -32,6 +32,7 @@ public:
 	virtual void HandleMouseDown( const IApplication::MouseButton& button, const CL_Point& pos, uint key_state ) {}
 	virtual void HandleDoubleClick( const IApplication::MouseButton& button, const CL_Point& pos, uint key_state ) {}
 	virtual void HandleMouseMove( const CL_Point& pos, uint key_state ) {}
+	virtual void Covered() {} // called when another state is pushed over this one
 
 	virtual bool Threaded() const {
 		return false;

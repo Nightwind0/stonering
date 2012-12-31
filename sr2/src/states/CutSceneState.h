@@ -84,6 +84,10 @@ private:
     SteelType pause(double seconds);
     SteelType dialog(const std::string& who, const std::string& what, double seconds);
     SteelType fadeObject(SteelType::Handle hHandle, bool in, double seconds);
+	
+	// TODO: it may make sense to make special versions of the Application's bifs here
+	// for all bifs that use another state, and explicitly call some RunOnThread
+	// instead of the goofy hack thats there for detecing when calls come from a thread
     
     class Task : public SteelType::IHandle {
     public:

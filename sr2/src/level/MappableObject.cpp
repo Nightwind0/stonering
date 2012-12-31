@@ -14,7 +14,7 @@ namespace StoneRing {
 	
 CL_Rect MappableObject::GetRect() const
 {
-	return CL_Rect(m_pos,CL_Size(m_size));
+	return CL_Rect(m_pos,CL_Size(m_size.width*32, m_size.height*32));
 }
 
 
@@ -413,6 +413,9 @@ bool MappableObjectElement::EvaluateCondition() const {
 
 
 bool MappableObjectElement::ProvokeEvents( Event::eTriggerType trigger ) {
+	// TODO: Does this suck?
+	if (IApplication::GetInstance()->IsCutsceneRunning()) return false;
+	
 	bool provoked = false;
 	Party *party = IApplication::GetInstance()->GetParty();
 

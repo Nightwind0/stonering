@@ -215,6 +215,12 @@ void StoneRing::MapState::HandleKeyUp(const CL_InputEvent &key)
 
 }
 
+void StoneRing::MapState::Covered() {
+	m_vertical_idle = m_horizontal_idle = true;
+	m_player.StopMovement();
+}
+
+
 void StoneRing::MapState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
 {
     if(!m_pLevel) return;

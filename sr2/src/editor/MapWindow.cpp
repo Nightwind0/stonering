@@ -586,7 +586,6 @@ void MapWindow::construct_toolbar()
         {"Editor/Images/block_south.png","",BLOCK_SOUTH,true},
         {"Editor/Images/surround.png","",BLOCK_ALL,true},
         {"Editor/Images/hot.png","",HOT,true},
-        {"Editor/Images/pop.png","",POPS,true},
         {"Editor/Images/floater.png","",ALTER_ZORDER,true},
 		{"Editor/Images/floater_icon.png","",FLOATER,true}
     };
@@ -1296,7 +1295,6 @@ void MapWindow::on_toolbar_item(CL_ToolBarItem item)
         case BLOCK_EAST:
         case BLOCK_ALL:
         case HOT:
-        case POPS:
         case FLOATER:
             int flag = Tile::TIL_HOT;
             if(item.get_id() == BLOCK_WEST)
