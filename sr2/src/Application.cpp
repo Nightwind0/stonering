@@ -1995,6 +1995,12 @@ void Application::onSignalMouseMove ( const CL_InputEvent& event, const CL_Input
 }
 
 
+void Application::onSignalLostFocus()
+{
+	if(!mStates.empty()){
+		mStates.back()->Covered();
+	}
+}
 
 void Application::onSignalQuit()
 {
@@ -2624,6 +2630,9 @@ int Application::main ( const std::vector<CL_String> &args )
         CL_Slot slot_mouse_down = mouse.sig_key_down().connect ( this, &Application::onSignalMouseDown  );
         CL_Slot slot_dbl_click = mouse.sig_key_dblclk().connect ( this, &Application::onSignalDoubleClick  );
         CL_Slot slot_mouse_move = mouse.sig_pointer_move().connect ( this, &Application::onSignalMouseMove  );
+		
+		m_window.sig_lost_focus().connect ( this, &Application::onSignalLostFocus );
+		m_window.sig_window_minimized().connect( this, &Application::onSignalLostFocus );
 
         CL_Slot joystickDown;
         CL_Slot joystickUp;

@@ -290,9 +290,11 @@ StoneRing::Level* StoneRing::MapState::GetCurrentLevel() const
 
 CL_Point StoneRing::MapState::GetCurrentCenter() const 
 {
+	uint width = min( (unsigned int)m_screen_rect.get_width(), m_pLevel->GetWidth() * 32);
+    uint height = min((unsigned int)m_screen_rect.get_height(), m_pLevel->GetHeight() * 32);
     CL_Rect rect = CL_Rect(m_LevelX, m_LevelY,
-                                         (m_LevelX + m_screen_rect.get_width()),
-                                         (m_LevelY + m_screen_rect.get_height()));
+                                         (m_LevelX + width),
+                                         (m_LevelY + height));
 	return rect.get_center();
 }
 
