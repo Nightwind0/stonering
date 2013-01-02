@@ -516,10 +516,16 @@ void BattleState::draw_status( const CL_Rectf &screenRect, CL_GraphicContext& GC
 		std::ostringstream hp;
 		hp << std::setw( 6 ) << pChar->GetAttribute( ICharacter::CA_HP ) << '/'
 		<< pChar->GetAttribute( ICharacter::CA_MAXHP );
+		
+		if(m_combat_state == BATTLE_MENU && pChar == m_initiative[m_cur_char]){
+			float percentage = float(CL_System::get_time() % 1000) / 1000.0f;
+			m_generalFont.set_alpha(percentage);
+		}
 
 		m_generalFont.draw_text( GC, textRect.left,
 																											textRect.top + ( p * height_per_character ),
 																											name.str(), Font::TOP_LEFT );
+		m_generalFont.set_alpha(1.0f);
 		m_hpFont.draw_text( GC, textRect.get_width() / 3 + textRect.left,
 																						textRect.top + ( p* height_per_character )
 																						, hp.str(), Font::TOP_LEFT );

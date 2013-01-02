@@ -64,18 +64,21 @@ void Menu::Draw(CL_GraphicContext& gc)
     int page = cursor / options_per_page;
     
     int skip_count = 0;
-    for(int i = options_per_page * page; i < cl_min(get_option_count(),options_per_page * (page+1)); i++)
+    int options = 0;	
+	int option = 0;
+    for(int i = options_per_page * page;  i  < get_option_count() && option < options_per_page; i++)
     {
             if(hide_option(i))
                 ++skip_count;
+			else ++options;
     }   
     
-    int option = 0;
+	option = 0;
     
-    for(int i = options_per_page * page; option < cl_min(get_option_count()-skip_count,options_per_page * (page+1)); i++)
+    for(int i = options_per_page * page; i < get_option_count() && option < options_per_page; i++)
     {
         if(!hide_option(i)){
-            draw_option(i,i==cursor,rect.get_top_left().x,rect.get_top_left().y + (option-options_per_page * page) * height_for_option(gc),gc);
+            draw_option(i,i==cursor,rect.get_top_left().x,rect.get_top_left().y + option * height_for_option(gc),gc);
 			++option;
 		}
     }
