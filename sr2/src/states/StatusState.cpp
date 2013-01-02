@@ -70,6 +70,8 @@ void StatusState::Start()
     m_stat_x = GraphicsManager::GetPoint(GraphicsManager::STATUS,"stat");
     m_mod_x = GraphicsManager::GetPoint(GraphicsManager::STATUS,"mod");
     m_base_x = GraphicsManager::GetPoint(GraphicsManager::STATUS,"base");
+	
+	assert(m_party);
     
     m_current_character = 0;
     m_bDone = false;
@@ -125,14 +127,14 @@ void StatusState::draw_party( CL_GraphicContext& gc ){
     rect.shrink(GraphicsManager::GetMenuInset().x, GraphicsManager::GetMenuInset().y);
     //rect.translate(GraphicsManager::GetMenuInset());
     //CL_Draw::fill(gc,rect,CL_Colorf(1.0f,1.0f,1.0f,0.5f));
-    Party * party = IApplication::GetInstance()->GetParty();
-    for(uint i =0;i<party->GetCharacterCount(); i++)
+
+    for(uint i =0;i<m_party->GetCharacterCount(); i++)
     {
-        CL_Sprite pSprite = dynamic_cast<Character*>(party->GetCharacter(i))
+        CL_Sprite pSprite = dynamic_cast<Character*>(m_party->GetCharacter(i))
                         ->GetPortrait(Character::PORTRAIT_DEFAULT);        
         CL_Pointf point;
         point.y = rect.get_top_left().y +  (rect.get_height() - pSprite.get_height()) / 2.0f;
-        float x_space =(rect.get_width() / party->GetCharacterCount());
+        float x_space =(rect.get_width() / m_party->GetCharacterCount());
         float center =  (x_space*i) + (x_space - pSprite.get_width()) / 2.0f; 
         point.x =  center;
         if(i != m_current_character)

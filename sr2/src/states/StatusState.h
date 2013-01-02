@@ -34,6 +34,10 @@ public:
     StatusState();
     virtual ~StatusState();
     virtual bool IsDone() const;
+	
+	void SetParty(ICharacterGroup* party) {
+		m_party = party;
+	}
 
     // Handle joystick / key events that are processed according to mappings
     virtual void HandleButtonUp(const IApplication::Button& button);
@@ -51,6 +55,7 @@ private:
     void        draw_party(CL_GraphicContext& gc);
     void        draw_stats(CL_GraphicContext& gc, Character * pChar);
     void        draw_header(CL_GraphicContext& gc);
+	ICharacterGroup * m_party;
     std::vector<ICharacter::eCharacterAttribute> m_stats;
     CL_Rectf    m_party_rect;
     CL_Rectf    m_status_rect;
