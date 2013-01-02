@@ -42,7 +42,17 @@ void Menu::PopMenu()
 
 void Menu::PushMenu()
 {
-    m_stack.push_front(0);
+	int start = 0;
+	while(hide_option(start)){
+		if(start + 1 < get_option_count()){
+			start++;
+		}else{
+			// Couldn't find any non-hidden options... 
+			start = 0;
+			break;
+		}
+	}
+    m_stack.push_front(start);
 }
 
 
@@ -60,10 +70,14 @@ void Menu::Draw(CL_GraphicContext& gc)
                 ++skip_count;
     }   
     
-    for(int i = options_per_page * page; i < cl_min(get_option_count()-skip_count,options_per_page * (page+1)); i++)
+    int option = 0;
+    
+    for(int i = options_per_page * page; option < cl_min(get_option_count()-skip_count,options_per_page * (page+1)); i++)
     {
-        if(!hide_option(i))
-            draw_option(i,i==cursor,rect.get_top_left().x,rect.get_top_left().y + (i-options_per_page * page) * height_for_option(gc),gc) ;
+        if(!hide_option(i)){
+            draw_option(i,i==cursor,rect.get_top_left().x,rect.get_top_left().y + (option-options_per_page * page) * height_for_option(gc),gc);
+			++option;
+		}
     }
 }
 
@@ -71,12 +85,14 @@ bool Menu::SelectUp()
 {
     SoundManager::PlayEffect(SoundManager::EFFECT_CHANGE_OPTION);
     int cursor = m_stack.front();
-    if(cursor > 0)
-	cursor--;
-    else if(roll_over())
-	cursor = get_option_count() - 1;
-    
-    m_stack.front() = cursor;
+	const int original = cursor;
+	do{
+	if(cursor > 0)
+		cursor--;
+	else if(roll_over())
+		cursor = get_option_count() - 1;
+	}while(cursor != original && hide_option(cursor));
+	m_stack.front() = cursor;	
     return true;
 }
 
@@ -84,10 +100,13 @@ bool Menu::SelectDown()
 {
     SoundManager::PlayEffect(SoundManager::EFFECT_CHANGE_OPTION);
     int cursor = m_stack.front();
-    if(cursor + 1 < get_option_count())
-	cursor++;
-    else if(roll_over())
-	cursor = 0;
+	const int original = cursor;
+	do{
+		if(cursor + 1 < get_option_count())
+			cursor++;
+		else if(roll_over())
+			cursor = 0;
+	} while(cursor != original && hide_option(cursor));
     m_stack.front() = cursor;
     return true;
 }
@@ -101,5 +120,5 @@ int Menu::Choose()
 void Menu::reset_menu()
 {
     m_stack.clear();
-    m_stack.push_front(0);
+    PushMenu();
 }

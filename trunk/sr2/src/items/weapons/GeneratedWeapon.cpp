@@ -97,7 +97,6 @@ GeneratedWeapon::GetDropRarity() const
 
 uint GeneratedWeapon::GetValue() const
 {
-    const AbilityManager * pManager = IApplication::GetInstance()->GetAbilityManager();
 
     uint value= (int)((float)m_pType->GetBasePrice() *
                       m_pClass->GetValueMultiplier());

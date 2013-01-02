@@ -9,8 +9,10 @@
 #include "Animation.h"
 
 using namespace StoneRing;
-#define     INSTANCE() IApplication::GetInstance()->GetAbilityManager();
+#define     INSTANCE() AbilityManager::m_pInstance
 
+
+AbilityManager* AbilityManager::m_pInstance = NULL;
 
 AbilityManager::~AbilityManager()
 {
@@ -21,6 +23,13 @@ AbilityManager::~AbilityManager()
                  );
 
 }
+
+void AbilityManager::initialize() {
+	if(AbilityManager::m_pInstance == NULL){
+		AbilityManager::m_pInstance = new AbilityManager();
+	}
+}
+
 
 
 

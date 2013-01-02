@@ -104,6 +104,7 @@ namespace StoneRing
         virtual bool handle_element(eElement element, Element * pElement);
         virtual void load_attributes(CL_DomNamedNodeMap attributes);
         ScriptElement* m_pCondition;
+		ScriptElement* m_pVisibilityCondition;
         std::list<SkillTreeNode*> m_sub_skills;
         SkillRef* m_ref;
         std::string m_requirements;
