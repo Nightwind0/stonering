@@ -155,8 +155,9 @@ stonering_SOURCES =	src/Application.cpp \
 			src/monsters/MonsterRegion.h \
 			src/monsters/Stat.h \
 			src/party/Party.cpp \
-			src/party/IParty.h \
-			src/party/Party.h \
+			src/party/Party.h \ \
+			src/party/ReserveParty.cpp \
+			src/party/ReserveParty.h \
 			src/states/BattleState.cpp \
 			src/states/ChoiceState.cpp \
 			src/states/MapState.cpp \

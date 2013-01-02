@@ -16,6 +16,8 @@ namespace StoneRing
     public:
         AbilityManager(){}
         ~AbilityManager();
+		
+		static void initialize();
 
         static void LoadStatusEffectFile ( CL_DomDocument &doc );
         static void LoadSkillFile(CL_DomDocument &doc);
@@ -44,6 +46,7 @@ namespace StoneRing
         SkillMap m_skills;
         StatusEffectMap m_status_effects;
         AnimationMap m_animations;
+		static AbilityManager* m_pInstance;
     };
 
 

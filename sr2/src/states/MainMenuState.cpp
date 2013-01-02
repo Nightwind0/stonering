@@ -264,11 +264,10 @@ void MainMenuState::MappableObjectMoveHook()
 
 void MainMenuState::Start()
 {
-
-    CL_GraphicContext& GC = GET_MAIN_GC();
     m_bDone = false;
 
     reload();
+	Menu::Init();
     SelectionFinish();
 }
 
@@ -279,7 +278,6 @@ void MainMenuState::Finish()
 
 void MainMenuState::Init()
 {
-    Menu::Init();
 }
 
 CL_Rectf MainMenuState::get_rect()
@@ -321,22 +319,16 @@ void MainMenuState::process_choice(int selection)
 {
     m_choices[selection]->Select(ParameterList());
     if(m_choices[selection]->HasChildren()){
-        Menu::PushMenu();
         m_option_parent = m_choices[selection];
         fill_choices(m_choices[selection]->GetChildrenBegin(),m_choices[selection]->GetChildrenEnd());
+        Menu::PushMenu();		
     }
     
 }
 
 int MainMenuState::get_option_count()
 {
-    ParameterList params;
-    int skip = 0;
-    for(int i=0;i<m_choices.size();i++){
-        if(!m_choices[i]->Enabled(params))
-            ++skip;
-    }
-    return m_choices.size() - skip;
+    return m_choices.size();
 }
 
 void MainMenuState::fill_choices ( std::vector< MenuOption* >::const_iterator begin, std::vector< MenuOption* >::const_iterator end )

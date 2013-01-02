@@ -7,6 +7,8 @@
 #include "steel/SteelType.h"
 #endif
 
+#include "sr_defines.h"
+
 namespace StoneRing { 
     
     class ICharacter;

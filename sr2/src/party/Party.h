@@ -40,8 +40,8 @@ namespace StoneRing{
         virtual bool GiveItem(Item *pItem, uint count);
         virtual bool TakeItem(Item *pItem, uint count);
         virtual void AddCharacter(Character *pCharacter);
-        virtual void RemoveCharacter(const std::string &name);
-        virtual Character * GetMapCharacter()const;
+        virtual Character*  RemoveCharacter(const std::string &name);
+        virtual Character*  GetMapCharacter()const;
 		virtual void IterateItems( ItemVisitor & f);
         virtual uint GetMinutesPlayed()const;
         virtual bool EquipOmega(uint slot, Omega*);

@@ -507,13 +507,23 @@ SteelType Application::addCharacter ( const std::string &character, int level, b
     // TODO: This is kind of a hack... probably ought to do this via steel API
     pCharacter->PermanentAugment ( ICharacter::CA_HP, pCharacter->GetAttribute ( ICharacter::CA_MAXHP ) );
     pCharacter->PermanentAugment ( ICharacter::CA_MP, pCharacter->GetAttribute ( ICharacter::CA_MAXMP ) );
-
-    mpParty->AddCharacter ( pCharacter );
+	
+	bool reserves = false;
+	
+	if(mpParty->GetCharacterCount() >= m_max_party_size){
+		reserves = true;
+		m_reserve_party.AddCharacter(pCharacter);
+	}else{
+	    mpParty->AddCharacter ( pCharacter );
+	}
 
     if ( announce )
     {
         std::ostringstream os;
-        os << character << " joined the party!";
+        os << character;
+		if( reserves )
+			os << " joined the reserve party!";
+		else os << " joined the party!";
 
         say ( "", os.str() );
     }
@@ -688,6 +698,47 @@ SteelType Application::getPartyArray()
 
     return array;
 }
+
+SteelType Application::getReservePartyArray()
+{
+    SteelType array;
+    SteelType::Container vector;
+
+    for ( int i = 0;i < m_reserve_party.GetCharacterCount();i++ )
+    {
+        SteelType ptr;
+        ptr.set ( m_reserve_party.GetCharacter ( i ) );
+        vector.push_back ( ptr );
+    }
+
+    array.set ( vector );
+
+    return array;
+}
+
+SteelType Application::reserveCharacter( const std::string& name)
+{
+	Character * c = mpParty->RemoveCharacter(name);
+	if(c == NULL) throw CL_Exception("reserveCharacter: " + name + " not in party");
+	
+	m_reserve_party.AddCharacter(c);
+	SteelType val;
+	val.set(c);
+	return val;
+}
+
+SteelType Application::deployCharacter( const std::string& name ) 
+{
+	Character * c = m_reserve_party.RemoveCharacter(name);
+	if(c == NULL) throw CL_Exception("deployCharacter: " + name + " not in reserve party");
+	
+	mpParty->AddCharacter(c);
+	SteelType val;
+	val.set(c);
+	return val;
+}
+
+
 
 SteelType Application::getCharacterLevel ( const SteelType::Handle hCharacter )
 {
@@ -1410,13 +1461,12 @@ SteelType Application::hasSkill ( SteelType::Handle hCharacter, const std::strin
 
 SteelType Application::getSkill(const std::string& whichskill)
 {
-    AbilityManager * AbilityManager = IApplication::GetInstance()->GetAbilityManager();
 
-    if(!AbilityManager->SkillExists(whichskill)){
+    if(!AbilityManager::SkillExists(whichskill)){
         throw CL_Exception("(getSkill) Skill doesn't exist: " + whichskill);
     }
 
-    Skill * pSkill = AbilityManager->GetSkill(whichskill);
+    Skill * pSkill = AbilityManager::GetSkill(whichskill);
 
     SteelType var;
     var.set(pSkill);
@@ -2347,6 +2397,11 @@ void Application::registerSteelFunctions()
 	mInterpreter.addFunction ( "startMusic", new SteelFunctorNoArgs<Application>(this,&Application::startMusic));
 	mInterpreter.addFunction ( "pushMusic", new SteelFunctor1Arg<Application, const std::string&>(this,&Application::pushMusic));
 	mInterpreter.addFunction ( "popMusic", new SteelFunctorNoArgs<Application>(this,&Application::popMusic));	
+	
+	mInterpreter.addFunction ( "deployCharacter", new SteelFunctor1Arg<Application,const std::string&>(this,&Application::deployCharacter) );
+	mInterpreter.addFunction ( "reserveCharacter", new SteelFunctor1Arg<Application,const std::string&>(this,&Application::reserveCharacter) );
+	
+	mInterpreter.addFunction ( "getReservePartyArray", new SteelFunctorNoArgs<Application>(this,&Application::getReservePartyArray) );
     
     mInterpreter.addFunction ( "editing", new SteelFunctorNoArgs<Application>(this,&Application::editing) );
     mInterpreter.addFunction ( "editMap", new SteelFunctorNoArgs<Application>(this,&Application::editMap) );
@@ -2489,6 +2544,7 @@ int Application::main ( const std::vector<CL_String> &args )
     ItemManager::initialize();
     SoundManager::initialize();
     CharacterManager::initialize();
+	AbilityManager::initialize();
 
 #ifndef NDEBUG
 
@@ -2580,6 +2636,8 @@ int Application::main ( const std::vector<CL_String> &args )
         
         std::string defaultTheme = CL_String_load ("Game/DefaultTheme", m_resources );
         GraphicsManager::SetTheme(defaultTheme);
+		
+		m_max_party_size = m_resources.get_integer_resource("Game/ActivePartyMaximumCharacters",4);
 
         //for(int i =0; i < m_window.get_buffer_count(); i++)
         //  m_window.get_buffer(i).to_format(CL_PixelFormat(24,0,0,0,0,false,0,pixelformat_rgba));

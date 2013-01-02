@@ -155,9 +155,16 @@ void Party::AddCharacter(Character *pCharacter)
     m_characters.push_back(pCharacter);
 }
 
-void Party::RemoveCharacter(const std::string &name)
+Character* Party::RemoveCharacter(const std::string &name)
 {
-
+	for(int i=0;i<m_characters.size();i++){
+		if(m_characters[i]->GetName() == name){
+			Character * c = m_characters[i];
+			m_characters.erase(m_characters.begin() + i);
+			return c;
+		}
+	}
+	return NULL;
 }
 
 Character * Party::GetMapCharacter()const

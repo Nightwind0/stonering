@@ -90,10 +90,7 @@ public:
 	virtual ~IApplication() {}
 	virtual CL_ResourceManager&GetResources() = 0;
 	virtual CL_DisplayWindow&  GetApplicationWindow() = 0;
-	virtual Party *        GetParty() const = 0;
-	// virtual Party * GetReserveParty() const=0;
-	// TODO: Make Ability Manager a static singleton
-	virtual AbilityManager *GetAbilityManager() = 0;
+	virtual Party *         GetParty() const = 0;
 	virtual IFactory *      GetElementFactory() = 0;
 	virtual void            StartBattle( const MonsterGroup &group, const std::string &backdrop ) = 0;
 	virtual Level*          GetCurrentLevel()const = 0;

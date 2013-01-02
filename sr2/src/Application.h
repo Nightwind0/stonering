@@ -39,6 +39,7 @@
 #include "ItemGetState.h"
 #include "JoystickConfig.h"
 #include "BannerState.h"
+#include "ReserveParty.h"
 
 
 using Steel::SteelType;
@@ -142,6 +143,13 @@ private:
     SteelType                       shop(const Steel::SteelArray& items); // only for buying
     SteelType                       sell();
     SteelType                       getPartyArray(void);
+	SteelType 						 getReservePartyArray(void);
+	SteelType 						 reserveCharacter(const std::string& name);
+	SteelType 						 deployCharacter(const std::string& name);
+	//SteelType 						 getParty(void);
+	//SteelType 						 getReserveParty(void);
+	
+	
     SteelType                       getItemName(const SteelType::Handle hItem);
     SteelType                       getWeaponAttribute(const SteelType::Handle hWeapon, uint attr);
     SteelType                       getArmorAttribute(const SteelType::Handle hArmor, uint attr);
@@ -336,6 +344,8 @@ private:
     MapEditorState mMapEditorState;
 #endif
 	bool m_threaded_mode;
+	uint m_max_party_size;
+	ReserveParty m_reserve_party;
     std::vector<State*> mStates;
     std::vector<IFactory*> mFactories;
     BattleConfig mBattleConfig;
