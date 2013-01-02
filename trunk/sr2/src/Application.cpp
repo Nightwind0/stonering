@@ -1551,9 +1551,14 @@ SteelType Application::load()
 	return cancelled;
 }
 
-SteelType Application::statusScreen()
+SteelType Application::statusScreen(bool party)
 {
     StatusState state;
+	if(!party){
+		state.SetParty(&m_reserve_party);
+	}else{
+		state.SetParty(mpParty);
+	}
     RunState(&state);
     return SteelType();
 }
@@ -2378,7 +2383,7 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "sell", new SteelFunctorNoArgs<Application>(this,&Application::sell) );
     mInterpreter.addFunction ( "save", new SteelFunctorNoArgs<Application>(this,&Application::save) );
     mInterpreter.addFunction ( "load", new SteelFunctorNoArgs<Application>(this,&Application::load) );
-    mInterpreter.addFunction ( "statusScreen", new SteelFunctorNoArgs<Application>(this,&Application::statusScreen) );
+    mInterpreter.addFunction ( "statusScreen", new SteelFunctor1Arg<Application,bool>(this,&Application::statusScreen) );
     mInterpreter.addFunction ( "getThemes", new SteelFunctorNoArgs<Application>(this,&Application::getThemes) );
     mInterpreter.addFunction ( "setTheme", new SteelFunctor1Arg<Application,const std::string&>(this,&Application::setTheme ) );
     mInterpreter.addFunction ( "selectItemAdv", new SteelFunctor1Arg<Application,uint>(this,&Application::selectItemAdv) );

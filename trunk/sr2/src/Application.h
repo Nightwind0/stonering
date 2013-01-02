@@ -247,7 +247,7 @@ private:
     SteelType                       equipScreen(SteelType::Handle hCharacter);
     SteelType                       save();
     SteelType                       load();
-    SteelType                       statusScreen();
+    SteelType                       statusScreen(bool party);
     SteelType                       getThemes();
     SteelType                       setTheme(const std::string&);
     SteelType                       banner(const std::string&, int time);
