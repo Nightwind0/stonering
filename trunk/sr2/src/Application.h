@@ -40,7 +40,7 @@
 #include "JoystickConfig.h"
 #include "BannerState.h"
 #include "ReserveParty.h"
-
+#include "SkillGetState.h"
 
 using Steel::SteelType;
 class DrawThread;
@@ -230,7 +230,7 @@ private:
     SteelType                       menu(const Steel::SteelArray& options);
     SteelType                       skilltree(SteelType::Handle hCharacter, bool buy);
     SteelType                       getSkill(const std::string& name);
-    SteelType                       learnSkill(SteelType::Handle hCharacter, SteelType::Handle skill);
+    SteelType                       learnSkill(SteelType::Handle hCharacter, SteelType::Handle skill, bool silent=true);
     SteelType                       hasSkill(SteelType::Handle hCharacter, const std::string&);
     SteelType                       doSkill(SteelType::Handle hSkill, SteelType::Handle hCharacter);
 
@@ -338,6 +338,7 @@ private:
     ItemSelectState mItemSelectState;
     SkillTreeState mSkillTreeState;
 	ItemGetState mItemGetState;
+	SkillGetState mSkillGetState;
     EquipState mEquipState;
 	BannerState mBannerState;
 #if SR2_EDITOR

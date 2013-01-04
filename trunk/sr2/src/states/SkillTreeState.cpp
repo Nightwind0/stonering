@@ -24,7 +24,7 @@
 #include <sstream>
 #include <iomanip>
 #include <Graphic.h>
-
+#include "SkillGetState.h"
 
 using namespace StoneRing;
 
@@ -421,8 +421,9 @@ void SkillTreeState::process_choice ( int selection )
         {
             m_pChar->SetSP ( m_pChar->GetSP() - node->GetSPCost() );
             m_pChar->LearnSkill(pSkillRef->GetRef());
-            // TODO: Play learn skill sound
-            SoundManager::PlayEffect(SoundManager::EFFECT_REWARD);
+			SkillGetState state;
+			state.SetSkill(pSkillRef->GetSkill());
+			IApplication::GetInstance()->RunState(&state);
         }
         else
         {

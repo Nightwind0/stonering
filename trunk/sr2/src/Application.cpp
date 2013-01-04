@@ -1438,12 +1438,17 @@ SteelType Application::skilltree ( SteelType::Handle hCharacter, bool buy )
     return var;
 }
 
-SteelType Application::learnSkill ( SteelType::Handle hCharacter, SteelType::Handle skill )
+SteelType Application::learnSkill ( SteelType::Handle hCharacter, SteelType::Handle skill, bool silent )
 {
     Character * pChar = GrabHandle<Character*>(hCharacter);
     Skill * pSkill = GrabHandle<Skill*>(skill);
     
     pChar->LearnSkill(pSkill->GetName());
+	
+	if(!silent){
+		mSkillGetState.SetSkill(pSkill);
+		RunState(&mSkillGetState);
+	}
     
     return SteelType();
 }
@@ -2365,7 +2370,7 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "getMonsterSPReward", new SteelFunctor1Arg<Application, SteelType::Handle>( this, &Application::getMonsterSPReward) );
     mInterpreter.addFunction ( "doSkill", new SteelFunctor2Arg<Application,SteelType::Handle,SteelType::Handle>( this, &Application::doSkill) );
     mInterpreter.addFunction ( "getSkill", new SteelFunctor1Arg<Application,const std::string&>(this,&Application::getSkill) );
-    mInterpreter.addFunction ( "learnSkill", new SteelFunctor2Arg<Application,SteelType::Handle,SteelType::Handle>(this,&Application::learnSkill) );
+    mInterpreter.addFunction ( "learnSkill", new SteelFunctor3Arg<Application,SteelType::Handle,SteelType::Handle,bool>(this,&Application::learnSkill) );
     mInterpreter.addFunction ( "hasSkill", new SteelFunctor2Arg<Application,SteelType::Handle,const std::string&>(this,&Application::hasSkill) );
 
     mInterpreter.addFunction ( "augmentCharacterAttribute", new SteelFunctor3Arg<Application,SteelType::Handle,uint,double>(this,&Application::augmentCharacterAttribute) );

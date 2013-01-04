@@ -17,7 +17,7 @@
 */
 
 
-#include "GoldGetState.h"
+#include "SkillGetState.h"
 #include "GraphicsManager.h"
 #include "MenuBox.h"
 #include "SoundManager.h"
@@ -27,41 +27,41 @@
 
 namespace StoneRing { 
 
-GoldGetState::GoldGetState() {
+SkillGetState::SkillGetState() {
 
 }
 
-GoldGetState::~GoldGetState() {
+SkillGetState::~SkillGetState() {
 
 }
 
 
 
-void GoldGetState::SetGold(int gold) {
-	m_gold = gold;
+void SkillGetState::SetSkill( Skill* pSkill ) {
+	m_skill = pSkill;
 	std::ostringstream os;
-	os << m_gold << ' ' << IApplication::GetInstance()->GetCurrencyName() <<" Recieved.";
+	os << "Learned " << pSkill->GetName() << '!';
 	m_text = os.str();
 }
 
-GraphicsManager::Overlay GoldGetState::get_overlay() const {
-	return GraphicsManager::GOLD_GET;
+GraphicsManager::Overlay SkillGetState::get_overlay() const {
+	return GraphicsManager::SKILL_GET;
 }
 
-SoundManager::Effect GoldGetState::get_sound_effect() const {
-	return SoundManager::EFFECT_GOLD;
+SoundManager::Effect SkillGetState::get_sound_effect() const {
+	return SoundManager::EFFECT_LEARNED_SKILL;
 }
 
-CL_Image GoldGetState::get_icon() const{
-	return m_icon;
+CL_Image SkillGetState::get_icon() const{
+	assert(m_skill);
+	return m_skill->GetIcon();
 }
 
-std::string GoldGetState::get_text() const {
+std::string SkillGetState::get_text() const {
 	return m_text;
 }
 
-void GoldGetState::load() {
-	m_icon = GraphicsManager::GetIcon("gold");
+void SkillGetState::load() {
 }
 
 
