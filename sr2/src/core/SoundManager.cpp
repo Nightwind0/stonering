@@ -157,6 +157,9 @@ void SoundManager::PlayEffect ( SoundManager::Effect effect )
         case EFFECT_GOLD:
             PlaySound("Sound/Gold");
             break;
+		case EFFECT_LEARNED_SKILL:
+			PlaySound("Sound/Skill");
+			break;
             
     }
 }

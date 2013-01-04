@@ -17,8 +17,8 @@
 */
 
 
-#ifndef GOLDGETSTATE_H
-#define GOLDGETSTATE_H
+#ifndef SKILLGETSTATE_H
+#define SKILLGETSTATE_H
 
 #include "GetState.h"
 #include "Menu.h"
@@ -27,12 +27,12 @@
 
 namespace StoneRing { 
 
-class GoldGetState : public GetState
+class SkillGetState : public GetState
 {
 public:
-    GoldGetState();
-    virtual ~GoldGetState();
-	void SetGold(int gold);
+    SkillGetState();
+    virtual ~SkillGetState();
+	void SetSkill(Skill* pSkill);
 protected:
 	virtual void load();
 	virtual SoundManager::Effect get_sound_effect()const;
@@ -40,8 +40,7 @@ protected:
 	virtual GraphicsManager::Overlay get_overlay()const;
 	virtual CL_Image get_icon()const;
 private:
-	CL_Image m_icon;
-	uint m_gold;
+	Skill* m_skill;
 	std::string m_text;
 };
 

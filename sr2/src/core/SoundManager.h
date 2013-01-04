@@ -39,7 +39,8 @@ public:
         EFFECT_BAD_OPTION,
         EFFECT_REWARD,
         EFFECT_CANCEL,
-        EFFECT_GOLD
+        EFFECT_GOLD,
+		EFFECT_LEARNED_SKILL
     };
     
     static void         initialize();

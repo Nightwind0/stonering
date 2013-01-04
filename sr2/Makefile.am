@@ -246,7 +246,11 @@ stonering_SOURCES =	src/Application.cpp \
 			src/editor/TileEditor.cpp \
 			src/editor/TileEditor.h \
 			src/level/DebugTileVisitors.cpp \
-			src/core/ZipFileProvider.cpp
+			src/core/ZipFileProvider.cpp \
+			src/states/GetState.cpp \
+			src/states/GetState.h \
+			src/states/SkillGetState.cpp \
+			src/states/SkillGetState.h
 
 
 
