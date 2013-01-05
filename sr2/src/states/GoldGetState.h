@@ -41,7 +41,7 @@ protected:
 	virtual CL_Image get_icon()const;
 private:
 	CL_Image m_icon;
-	uint m_gold;
+	int m_gold;
 	std::string m_text;
 };
 

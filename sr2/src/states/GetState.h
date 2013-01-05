@@ -33,6 +33,8 @@ class GetState : public State
 public:
     GetState();
     virtual ~GetState();
+	void SetInverse(bool inverse);
+	bool IsInverse()const { return m_inverse; }
 	virtual bool IsDone() const;	
 	virtual void HandleButtonUp( const IApplication::Button& button );
 	virtual void HandleButtonDown( const IApplication::Button& button ) ;
@@ -61,6 +63,7 @@ private:
 	uint m_start_time;
 	CL_Rect m_rect;
 	Font m_font;
+	bool m_inverse;
 };
 
 

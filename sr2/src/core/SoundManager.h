@@ -40,7 +40,8 @@ public:
         EFFECT_REWARD,
         EFFECT_CANCEL,
         EFFECT_GOLD,
-		EFFECT_LEARNED_SKILL
+		EFFECT_LEARNED_SKILL,
+		EFFECT_LOST
     };
     
     static void         initialize();
