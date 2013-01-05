@@ -49,7 +49,7 @@ namespace StoneRing
         virtual int height_for_option(CL_GraphicContext& gc);
         virtual void process_choice(int selection){}
         virtual int get_option_count();
-        virtual bool hide_option(int selection);
+        virtual bool hide_option(int selection)const;
         
         virtual bool handle_element(eElement, Element *);
         virtual void load_attributes(CL_DomNamedNodeMap );

@@ -48,7 +48,7 @@ bool BattleMenu::HasEnabledOptions() const {
 	assert( m_pCharacter );
 	for(std::vector<BattleMenuOption*>::const_iterator it = m_options.begin();
 		it != m_options.end(); it++){
-		if((*it)->Enabled(m_params,m_pCharacter))
+		if((*it)->Enabled(m_params,m_pCharacter) && (*it)->Visible(m_pCharacter))
 			return true;
 	}
 	
@@ -174,7 +174,7 @@ int BattleMenu::get_option_count()
     return m_options.size();
 }
 
-bool BattleMenu::hide_option ( int selection )
+bool BattleMenu::hide_option ( int selection ) const
 {
     return !m_options[selection]->Visible(m_pCharacter);        
 }
