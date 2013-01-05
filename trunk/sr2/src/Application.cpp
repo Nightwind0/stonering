@@ -465,6 +465,8 @@ SteelType Application::giveGold ( int amount )
 {
     mpParty->GiveGold ( amount );
 	GoldGetState state;
+	if(amount <0)
+		state.SetInverse(true);
 	state.SetGold(amount);
 	RunState(&state);
     return SteelType();

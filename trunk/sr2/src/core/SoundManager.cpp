@@ -160,6 +160,9 @@ void SoundManager::PlayEffect ( SoundManager::Effect effect )
 		case EFFECT_LEARNED_SKILL:
 			PlaySound("Sound/Skill");
 			break;
+		case EFFECT_LOST:
+			PlaySound("Sound/Lost");
+			break;
             
     }
 }
