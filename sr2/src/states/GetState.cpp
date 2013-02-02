@@ -28,7 +28,7 @@
 namespace StoneRing { 
 
 GetState::GetState() {
-
+	m_inverse = false;
 }
 
 GetState::~GetState() {
@@ -38,7 +38,6 @@ GetState::~GetState() {
 
 void GetState::Start() {
 	load();
-	m_inverse = false;
     m_rect = GraphicsManager::GetRect(get_overlay(),"main");
     m_font = GraphicsManager::GetFont(get_overlay(),"main");
 	m_icon_offset = GraphicsManager::GetPoint(GraphicsManager::GOLD_GET,"icon_offset");
@@ -59,10 +58,8 @@ void GetState::Draw( const CL_Rect& screenRect, CL_GraphicContext& GC ) {
 	MenuBox::Draw(GC,m_rect);
 	uint time_passed = CL_System::get_time() - m_start_time;
 	float percentage = (float)time_passed / (float)TIME_PER_ITEM;
-	if(m_inverse)
-		percentage = (1.0f - percentage);
 	CL_Image icon = get_icon();
-	icon.set_alpha(percentage);
+	icon.set_alpha(m_inverse?(1.0-percentage):percentage);
 	icon.draw(GC,m_icon_offset.x + m_rect.get_top_left().x,m_icon_offset.y + m_rect.get_top_left().y);
 	icon.set_alpha(1.0f);
 	std::string text = get_text();

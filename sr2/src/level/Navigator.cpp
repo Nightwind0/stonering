@@ -173,6 +173,7 @@ ControlNavigator::ControlNavigator(MappableObject& mo):Navigator(mo)
 {
     m_dir = mo.GetDefaultFacing();
     m_facingDir = m_dir;
+	m_isRunning = false;
 }
 
 ControlNavigator::~ControlNavigator()

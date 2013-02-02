@@ -154,6 +154,8 @@ std::string GraphicsManager::NameOfOverlay( Overlay overlay ) {
 			return "GoldGet";
 		case SKILL_GET:
 			return "SkillGet";
+		case ITEM_GET_SINGLE:
+			return "ItemGetSingle";
 		default:
 			assert( 0 );
 	}

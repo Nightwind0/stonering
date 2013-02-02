@@ -80,10 +80,11 @@ void AppUtils::LoadCharacterClasses(const std::string &filename)
 void AppUtils::LoadAnimations(const std::string &filename)
 {
 #ifndef NDEBUG
-    std::cout << "Loading animationss..." << std::endl;
+    std::cout << "Loading animations..." << std::endl;
 #endif
 
     CL_IODevice file = IApplication::GetInstance()->OpenResource(filename);
+	file.throw_if_null();
     CL_DomDocument document;
     document.load(file);
 

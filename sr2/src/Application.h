@@ -58,7 +58,7 @@ public:
     Application() ;
     virtual ~Application();
 
-    virtual int main(const std::vector<CL_String> &args);
+    virtual int main(const std::vector<std::string> args);
 
     virtual CL_ResourceManager&     GetResources();
     virtual CL_DisplayWindow&       GetApplicationWindow();
@@ -128,7 +128,7 @@ private:
     SteelType                       popLevel(bool bAll);
     SteelType                       getNamedItem(const std::string &item);
 	SteelType 						 giveItem(const SteelType::Handle hItem, int count, bool silent);
-    SteelType                       giveItems(const Steel::SteelArray& items, const Steel::SteelArray& counts, bool silent);
+    SteelType                       giveItems(const Steel::SteelArray& items, bool silent);
     SteelType                       getGold();
     SteelType                       hasItem(const std::string &name, uint count);
     SteelType                       hasGeneratedWeapon(const std::string &wepclass, const std::string &weptype);
@@ -301,7 +301,6 @@ private:
 
     Party *mpParty;
     AbilityManager mAbilityManager;
-    SteelInterpreter mInterpreter;
     ElementFactory mElementFactory;
     bool mbDone;
     CL_ResourceManager m_resources;
@@ -337,7 +336,6 @@ private:
     MainMenuState  mMainMenuState;
     ItemSelectState mItemSelectState;
     SkillTreeState mSkillTreeState;
-	ItemGetState mItemGetState;
 	SkillGetState mSkillGetState;
     EquipState mEquipState;
 	BannerState mBannerState;
@@ -355,6 +353,7 @@ private:
 	CL_VirtualDirectory m_resource_dir;
 	ZipFileProvider m_zip_provider;
 	std::map<IApplication::Button,bool> m_button_down;
+	SteelInterpreter mInterpreter;
 };
 
 inline void Application::steelConst(const std::string &name, int value)

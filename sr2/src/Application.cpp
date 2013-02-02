@@ -38,6 +38,7 @@
 #include "BannerState.h"
 #include "GameoverState.h"
 #include "GoldGetState.h"
+#include "ItemGetSingleState.h"
 //
 //
 //
@@ -450,13 +451,10 @@ SteelType Application::takeItem ( SteelType::Handle hItem , uint count, bool sil
     val.set ( mpParty->TakeItem ( pItem, count ) );
 
     if(!silent){
-        os << "Gave up " << pItem->GetName();
-
-        if ( count > 1 )
-            os << " x" << count;
-
-        say ( "Inventory", os.str() );
-
+		ItemGetSingleState state;
+		state.SetInverse(true);
+		state.SetItem(pItem,count);
+		RunState(&state);
     }
     return val;
 }
@@ -1326,8 +1324,30 @@ SteelType Application::doEquipmentStatusEffectInflictions ( SteelType::Handle hE
     return effects;
 }
 
-SteelType Application::giveItems( const Steel::SteelArray& items, const Steel::SteelArray& counts, bool silent )
+SteelType Application::giveItems( const Steel::SteelArray& i_items, bool silent )
 {
+	std::map<Item*,int> items;
+	for(Steel::SteelArray::const_iterator it = i_items.begin(); it != i_items.end(); it++){
+		if(!(it->isHandle() && it->isValidHandle()))
+			throw Steel::TypeMismatch();
+		Item * pItem = GrabHandle<Item*>(*it);
+		std::map<Item*,int>::iterator find_it = items.find(pItem);
+		if(find_it == items.end()){
+			items[pItem] = 1;
+		}else{
+			++find_it->second;
+		}
+	}
+	for(std::map<Item*,int>::const_iterator it = items.begin(); it != items.end(); it++){
+		mpParty->GiveItem(it->first,it->second);
+		if(!silent){
+			ItemGetSingleState state;
+			state.SetInverse(false);
+			state.SetItem(it->first,it->second);
+			RunState(&state);		
+		}
+	}
+#if 0 
 	if(items.size() != counts.size()){
 		throw Steel::ParamMismatch();
 	}
@@ -1344,19 +1364,19 @@ SteelType Application::giveItems( const Steel::SteelArray& items, const Steel::S
 		mItemGetState.SetItems(items_array,counts_array);
 		RunState(&mItemGetState);
     }
+#endif
     return SteelType();
 }
 
 SteelType Application::giveItem( const SteelType::Handle hItem, int count, bool silent )
 {
-	std::vector<Item*> items_array;
-	std::vector<uint> counts_array;
-	items_array.push_back ( GrabHandle<Item*>(hItem) );
-	counts_array.push_back ( count );
-	mpParty->GiveItem(items_array[0],count);
+	Item * pItem = GrabHandle<Item*>(hItem);
+	mpParty->GiveItem(pItem,count);
     if(!silent){
-		mItemGetState.SetItems(items_array,counts_array);
-		RunState(&mItemGetState);
+		ItemGetSingleState state;
+		state.SetInverse(false);
+		state.SetItem(pItem,count);
+		RunState(&state);
     }
     return SteelType();
 }
@@ -2106,6 +2126,7 @@ void Application::EditMaps()
 
 void Application::registerSteelFunctions()
 {
+    mInterpreter.pushScope();	
     SteelFunctor* fn_say = new SteelFunctor2Arg<Application, const std::string&, const std::string&> ( this, &Application::say );
     SteelFunctor* fn_playScene = new SteelFunctor1Arg<Application, const SteelType&> ( this, &Application::playScene );
     SteelFunctor* fn_playSound  = new SteelFunctor1Arg<Application, const std::string&> ( this, &Application::playSound );
@@ -2131,8 +2152,8 @@ void Application::registerSteelFunctions()
     SteelFunctor*  fn_getItemName = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getItemName );
     SteelFunctor* fn_getWeaponAttribute = new  SteelFunctor2Arg<Application, const SteelType::Handle, uint> ( this, &Application::getWeaponAttribute );
     SteelFunctor*  fn_getArmorAttribute = new SteelFunctor2Arg<Application, const SteelType::Handle, uint> ( this, &Application::getArmorAttribute );
-    SteelFunctor*  fn_gaussian =  new SteelFunctor2Arg<Application, double, double> ( this, &Application::gaussian );
-
+    
+	mInterpreter.addFunction("normal_random",new SteelFunctor2Arg<Application, double, double> ( this, &Application::gaussian ));
     SteelFunctor*  fn_getCharacterName = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getCharacterName );
     SteelFunctor*  fn_getCharacterAttribute = new SteelFunctor2Arg<Application, const SteelType::Handle, uint> ( this, &Application::getCharacterAttribute );
     SteelFunctor*  fn_addExperience = new SteelFunctor2Arg<Application, const SteelType::Handle, int> ( this, &Application::addExperience );
@@ -2175,7 +2196,7 @@ void Application::registerSteelFunctions()
 	SteelFunctor*  fn_gameoverScreen = new SteelFunctorNoArgs<Application>(this,&Application::gameoverScreen);
 
 
-    mInterpreter.pushScope();
+
 
     steelConst ( "$_ITEM_REGULAR", Item::REGULAR_ITEM );
     steelConst ( "$_ITEM_SPECIAL", Item::SPECIAL );
@@ -2279,7 +2300,7 @@ void Application::registerSteelFunctions()
     steelConst ( "$_WEST",  Direction::WEST );
     steelConst ( "$_EAST",  Direction::EAST );
 
-    mInterpreter.addFunction ( "normal_random", fn_gaussian );
+    //mInterpreter.addFunction ( "normal_random", fn_gaussian );
     mInterpreter.addFunction ( "log", fn_log );
 
     mInterpreter.addFunction ( "say", fn_say );
@@ -2378,7 +2399,7 @@ void Application::registerSteelFunctions()
     mInterpreter.addFunction ( "augmentCharacterAttribute", new SteelFunctor3Arg<Application,SteelType::Handle,uint,double>(this,&Application::augmentCharacterAttribute) );
     mInterpreter.addFunction ( "generateRandomWeapon", new SteelFunctor3Arg<Application,uint,int,int>(this,&Application::generateRandomWeapon));
     mInterpreter.addFunction ( "generateRandomArmor", new SteelFunctor3Arg<Application,uint,int,int>(this,&Application::generateRandomArmor));      
-    mInterpreter.addFunction ( "giveItems", new SteelFunctor3Arg<Application,const Steel::SteelArray&, const Steel::SteelArray&,bool>(this,&Application::giveItems) );
+    mInterpreter.addFunction ( "giveItems", new SteelFunctor2Arg<Application,const Steel::SteelArray&,bool>(this,&Application::giveItems) );
     mInterpreter.addFunction ( "doEquipmentStatusEffectInflictions", new SteelFunctor2Arg<Application,SteelType::Handle,SteelType::Handle>(this,&Application::doEquipmentStatusEffectInflictions) );
     mInterpreter.addFunction ( "isArmor", new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::isArmor) );
     mInterpreter.addFunction ( "weaponTypeIsRanged", new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::weaponTypeIsRanged) );
@@ -2550,7 +2571,7 @@ CL_IODevice Application::OpenResource(const std::string& str)
 	return m_resource_dir.open_file(str);
 }
 
-int Application::main ( const std::vector<CL_String> &args )
+int Application::main ( const std::vector<std::string> args )
 {
     GraphicsManager::initialize();
     ItemManager::initialize();
@@ -2570,7 +2591,7 @@ int Application::main ( const std::vector<CL_String> &args )
 
     for ( int i = 0;i < args.size();i++ )
     {
-        std::string string = args[i];
+ 		std::string string = args[i];
 
         if ( string.substr ( 0, 5 ) == "--js=" )
         {
@@ -2603,6 +2624,9 @@ int Application::main ( const std::vector<CL_String> &args )
 	m_button_down[IApplication::BUTTON_SELECT] = false;
 	m_button_down[IApplication::BUTTON_START] = false;
 	m_button_down[IApplication::BUTTON_MENU] = false;	
+	
+	
+	mbDone = false;
     
     //CL_Display::get_buffer()
     try
@@ -2729,6 +2753,8 @@ int Application::main ( const std::vector<CL_String> &args )
         mStartupState.Start();
         mStates.push_back ( &mStartupState );  
 		
+		mbDone = false;
+		
 
         while ( !mbDone && mStates.size() )
             run();
@@ -2762,7 +2788,7 @@ int Application::main ( const std::vector<CL_String> &args )
     }
 
     mInterpreter.popScope();
-
+	
     return 0;
 
 }
@@ -2837,7 +2863,6 @@ void Application::showIntro()
     while ( keyboard.get_keycode ( CL_KEY_ENTER ) ) CL_KeepAlive::process();
 
 
-
 }
 
 int Application::calc_fps ( int frame_time )
@@ -2872,10 +2897,14 @@ public:
         CL_SetupSound setup_sound;
         CL_SetupVorbis setup_vorbis;
         CL_SoundOutput output(44100);
+		
+		std::vector<std::string> nargs;
+		for(int i=0;i<args.size();i++)
+			nargs.push_back(args[i]);
 
         Application app;
         pApp = &app;
-        return app.main ( args );
+        return app.main ( nargs );
     }
 };
 

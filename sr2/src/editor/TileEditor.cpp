@@ -51,6 +51,7 @@ bool TileEditorWindow::TileSelectGrid::on_click( const CL_InputEvent& event )
 		m_pWindow->selection_changed();
 		request_repaint();
 	}
+	return true;
 }
 
 void TileEditorWindow::TileSelectGrid::delete_selected()

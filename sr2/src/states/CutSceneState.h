@@ -23,8 +23,8 @@
 #include "State.h"
 #include "SteelRunner.h"
 
-#define SEPARATE_INTERPRETER 1
-#define COPY_INTERPRETER 1
+#define SEPARATE_INTERPRETER 0
+#define COPY_INTERPRETER 0
 
 namespace StoneRing {
     
@@ -73,10 +73,12 @@ private:
     SteelType fadeIn(double seconds);
     SteelType fadeOut(double seconds);
     SteelType panTo(int x, int y,double seconds);
+	SteelType panToObject(SteelType::Handle hObject, double seconds);
     SteelType colorize(double r, double g, double b);
     SteelType uncolorize();
     SteelType getObject(const std::string& str);
     SteelType getPlayer();
+	// TODO: Right now an object that is offscreen won't move... so we probably need to get around that or do it differently
     SteelType moveObject(SteelType::Handle hHandle, int x, int y, int speed);
     SteelType changeFaceDirection(SteelType::Handle hHandle, int dir);
     SteelType addSprite(const std::string& spriteRef, uint sprite_size, uint move_type, int x, int y, int face_dir);
@@ -85,9 +87,6 @@ private:
     SteelType dialog(const std::string& who, const std::string& what, double seconds);
     SteelType fadeObject(SteelType::Handle hHandle, bool in, double seconds);
 	
-	// TODO: it may make sense to make special versions of the Application's bifs here
-	// for all bifs that use another state, and explicitly call some RunOnThread
-	// instead of the goofy hack thats there for detecing when calls come from a thread
     
     class Task : public SteelType::IHandle {
     public:

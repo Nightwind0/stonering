@@ -7,9 +7,11 @@
 #include <ClanLib/core.h>
 #include <deque>
 #include <stack>
+#include <map>
 #include "BattleMenuOption.h"
 #include "TargetingState.h"
 #include "BattleConfig.h"
+
 
 namespace StoneRing {
 
@@ -18,12 +20,14 @@ class Monster;
 class MonsterParty;
 class IBattleAction;
 class ICharacter;
-class AnimationState;
 class MonsterSort;
+class AnimationState;
 
 
 class BattleState : public State {
 public:
+	BattleState();
+	virtual ~BattleState();
 	void init( const MonsterGroup& monsters, const std::string &backdrop );
 	void init( const std::vector<MonsterRef*>& monsters, int cellRows, int cellColumns, bool isBoss, const std::string & backdrop );
 	virtual bool IsDone() const;
@@ -41,7 +45,8 @@ public:
 	virtual void SteelCleanup( SteelInterpreter * );
 	virtual void Finish(); // Hook to clean up or whatever after being popped
 	
-
+	void SetDarkMode(int mode, float r, float g, float b, float a);
+	void ClearDarkMode(int mode);
 	void SetConfig( BattleConfig* config );
 	typedef int SpriteTicket;
 	static const SpriteTicket UNDEFINED_SPRITE_TICKET;
@@ -86,19 +91,19 @@ private:
 	};
 
 	enum eDisplayOrder {
-		DISPLAY_ORDER_NO_DISPLAY,
-		DISPLAY_ORDER_POSTBACKDROP,
-		DISPLAY_ORDER_PREMONSTERS,
-		DISPLAY_ORDER_POSTMONSTERS,
-		DISPLAY_ORDER_PRE_PLAYERS,
-		DISPLAY_ORDER_POST_PLAYERS,
-		DISPLAY_ORDER_PRE_SPRITES,
-		DISPLAY_ORDER_POST_SPRITES,
-		DISPLAY_ORDER_PRE_DISPLAYS,
-		DISPLAY_ORDER_POST_DISPLAYS,
-		DISPLAY_ORDER_PRE_MENUS,
-		DISPLAY_ORDER_POST_MENUS,
-		DISPLAY_ORDER_FINAL
+		DISPLAY_ORDER_NO_DISPLAY=0,
+		DISPLAY_ORDER_POSTBACKDROP=1,
+		DISPLAY_ORDER_PREMONSTERS=2,
+		DISPLAY_ORDER_POSTMONSTERS=4,
+		DISPLAY_ORDER_PRE_PLAYERS=8,
+		DISPLAY_ORDER_POST_PLAYERS=16,
+		DISPLAY_ORDER_PRE_SPRITES=32,
+		DISPLAY_ORDER_POST_SPRITES=64,
+		DISPLAY_ORDER_PRE_DISPLAYS=128,
+		DISPLAY_ORDER_POST_DISPLAYS=256,
+		DISPLAY_ORDER_PRE_MENUS=512,
+		DISPLAY_ORDER_POST_MENUS=1024,
+		DISPLAY_ORDER_FINAL=2048
 	};
 
 	class Command {
@@ -167,6 +172,7 @@ private:
 		void Draw( CL_GraphicContext& gc );
 		bool Enabled() const;
 		void SetEnabled( bool enabled );
+		CL_Rectf Rect()const;
 		CL_Sprite GetSprite() const;
 	private:
 		CL_Sprite m_sprite;
@@ -189,18 +195,22 @@ private:
 	void draw_targets( const CL_Rectf &screenrect, CL_GraphicContext& GC );
 	void draw_displays( CL_GraphicContext& GC );
 	void draw_sprites( int z, CL_GraphicContext& GC );
-	void draw_darkness( const CL_Rectf &screenRect, CL_GraphicContext& GC );
+	void draw_darkness( eDisplayOrder mode,  const CL_Rectf &screenRect, CL_GraphicContext& GC );
 	void draw_status_effects( CL_GraphicContext& GC );
 
-	CL_Sprite current_sprite( ICharacter *pCharacter );
+	CL_Sprite current_sprite( ICharacter *pCharacter ) const;
 
 	// int is a handle
 
 	SpriteTicket add_sprite( CL_Sprite sprite );
+	CL_Sprite get_char_sprite ( SpriteTicket )const;
+	ICharacter*  get_char_with_sprite ( SpriteTicket nSprite )const;
 	void set_sprite_pos( SpriteTicket nSprite, CL_Pointf pos );
 	CL_Sprite get_sprite( SpriteTicket nSprite ) const;
 	void remove_sprite( SpriteTicket nSprite );
-
+	SpriteTicket get_sprite_for_char( ICharacter* i_char ) const;	
+	CL_Rectf get_sprite_rect( SpriteTicket nSprite );
+	
 	void init_or_release_players( bool bRelease = false );
 	void set_positions_to_loci();
 	void roll_initiative();
@@ -229,6 +239,7 @@ private:
 	SteelType finishTurn();
 	// if they back out and want to go back to the battle menu
 	SteelType cancelOption();
+	SteelType animation(SteelType::Functor functor);
 	SteelType doTargetedAnimation( SteelType::Handle pIActor,  SteelType::Handle pITarget, SteelType::Handle hAnim );
 	SteelType doCharacterAnimation( SteelType::Handle pIActor, SteelType::Handle hAnim );
 	SteelType createDisplay( int damage, SteelType::Handle pICharacter, int display_type );
@@ -241,8 +252,8 @@ private:
 
 	SteelType flee();
 	SteelType isBossBattle();
-	SteelType darkMode( int order );
-	SteelType darkColor( double r, double g, double b, double a );
+	SteelType darkMode( int order, double r, double g, double b, double a );
+	SteelType clearDarkMode(int order);
 
 
 
@@ -256,7 +267,7 @@ private:
 	CL_Rect m_status_text_rect;
 	CL_Pointf m_status_effect_spacing;
 	CL_Gradient m_bp_gradient;
-	CL_Colorf m_darkColor;
+	std::map<int,CL_Colorf> m_darkModes;
 	CL_Colorf m_status_effect_shadow_color;
 	CL_Colorf m_bp_border;
 	uint m_startup_time;
@@ -265,7 +276,6 @@ private:
 	Font m_hpFont;
 	Font m_generalFont;
 	Font m_charNameFont;
-	uint m_ndarkMode;
 	eTransition m_transition;
 	eCombatState m_combat_state;
 	BattleMenuStack m_menu_stack;
@@ -289,8 +299,9 @@ private:
 	bool m_bBossBattle;
 	std::list<Display> m_displays;
 	std::vector<Sprite> m_sprites;
+	CL_Mutex m_sprite_mutex;
 	BattleConfig * m_config;
-
+	AnimationState * m_anim_state;
 
 	friend class BattleState::Display;
 	friend class TargetingState;
@@ -300,4 +311,4 @@ private:
 };
 
 }
-#endif
+	#endif
