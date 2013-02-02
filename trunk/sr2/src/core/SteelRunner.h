@@ -24,8 +24,10 @@
 #include "sr_defines.h"
 #ifdef WIN32
 #include "SteelInterpreter.h"
+#include "SteelException.h"
 #else
 #include "steel/SteelInterpreter.h"
+#include "steel/SteelException.h"
 #endif
 namespace StoneRing {
     

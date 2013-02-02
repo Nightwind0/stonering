@@ -8,8 +8,9 @@
 #include "sr_defines.h"
 #include "ScriptElement.h"
 #include "SpriteRef.h"
-#include "BattleState.h"
 #include "SoundPlay.h"
+#include "BattleState.h"
+
 
 namespace StoneRing
 {
@@ -19,6 +20,7 @@ namespace StoneRing
     class AlterSprite;
     class AnimationMask;
     class PlaySound;
+	class BattleState;
 
 
     class AlterSprite : public Element
@@ -202,8 +204,8 @@ namespace StoneRing
 
         enum eMovementDirection { STILL, N, E, S, W, NE, NW, SE, SW, MOVE_AWAY, MOVE_TOWARDS, END_FOCUS };
         enum eMovementStyle {STRAIGHT, ARC_OVER, ARC_UNDER, SINE, XONLY, YONLY, CIRCLE };
-	enum eMovementCircleDir { CLOCKWISE, COUNTERCLOCKWISE, ROTATE_AWAY, ROTATE_TOWARDS };
-	enum eMovementScriptType { SPRITE_ROTATION, SPRITE_SCALE, SPRITE_PITCH, SPRITE_YAW, CIRCLE_RADIUS, AMPLITUDE, CIRCLE_ANGLE, ALPHA };
+		enum eMovementCircleDir { CLOCKWISE, COUNTERCLOCKWISE, ROTATE_AWAY, ROTATE_TOWARDS };
+		enum eMovementScriptType { SPRITE_ROTATION, SPRITE_SCALE, SPRITE_PITCH, SPRITE_YAW, CIRCLE_RADIUS, AMPLITUDE, CIRCLE_ANGLE, ALPHA };
 
         Focus GetInitialFocus() const;
         bool HasEndFocus() const;

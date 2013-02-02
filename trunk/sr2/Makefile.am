@@ -250,7 +250,9 @@ stonering_SOURCES =	src/Application.cpp \
 			src/states/GetState.cpp \
 			src/states/GetState.h \
 			src/states/SkillGetState.cpp \
-			src/states/SkillGetState.h
+			src/states/SkillGetState.h \
+			src/states/ItemGetSingleState.cpp \
+			src/states/ItemGetSingleState.h
 
 
 

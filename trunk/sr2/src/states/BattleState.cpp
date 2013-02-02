@@ -99,7 +99,14 @@ private:
 };
 }
 
-const BattleState::SpriteTicket BattleState::UNDEFINED_SPRITE_TICKET = -1;
+const BattleState::SpriteTicket BattleState::UNDEFINED_SPRITE_TICKET = std::numeric_limits<int>::min();
+
+BattleState::BattleState(){
+	m_anim_state = new AnimationState(*this);
+}
+BattleState::~BattleState(){
+	delete m_anim_state;
+}
 
 void BattleState::SetConfig( BattleConfig* config ) {
 	m_config = config;
@@ -148,8 +155,7 @@ void BattleState::init( const std::vector<MonsterRef*>& monsters, int cellRows, 
 	m_backdrop = GraphicsManager::GetBackdrop( backdrop );
 
 
-	m_ndarkMode = DISPLAY_ORDER_NO_DISPLAY;
-
+	m_darkModes.clear();
 }
 
 void BattleState::init( const MonsterGroup &group, const std::string &backdrop ) {
@@ -157,6 +163,14 @@ void BattleState::init( const MonsterGroup &group, const std::string &backdrop )
 	const std::vector<MonsterRef*> & monsters = group.GetMonsters();
 
 	init( monsters, group.GetCellRows(), group.GetCellColumns(), false, backdrop );
+}
+
+void BattleState::ClearDarkMode(int mode){
+	m_darkModes.erase(mode);
+}
+
+void BattleState::SetDarkMode(int mode,float r, float g, float b, float a){
+	m_darkModes[mode] = CL_Colorf(r,g,b,a);
 }
 
 void BattleState::set_positions_to_loci() {
@@ -489,8 +503,11 @@ void BattleState::Finish() {
 	SoundManager::PopMusic();
 }
 
-void BattleState::draw_darkness( const CL_Rectf &screenRect, CL_GraphicContext& GC ) {
-	CL_Draw::fill( GC, screenRect, m_darkColor );
+void BattleState::draw_darkness( eDisplayOrder mode, const CL_Rectf &screenRect, CL_GraphicContext& GC ) {
+	std::map<int,CL_Colorf>::const_iterator findIt = m_darkModes.find(mode);
+	if(findIt != m_darkModes.end()){
+		CL_Draw::fill( GC, screenRect, findIt->second );
+	}
 }
 
 void BattleState::draw_transition_in( const CL_Rectf &screenRect, CL_GraphicContext& GC ) {
@@ -551,45 +568,34 @@ void BattleState::draw_battle( const CL_Rectf &screenRect, CL_GraphicContext& GC
 
 	m_backdrop.draw( GC, screenRect );
 
-	if ( m_ndarkMode == DISPLAY_ORDER_PRE_PLAYERS )
-		draw_darkness( screenRect, GC );
-	draw_players( m_player_rect, GC );
-	if ( m_ndarkMode == DISPLAY_ORDER_POST_PLAYERS )
-		draw_darkness( screenRect, GC );
 
-	if ( m_ndarkMode == DISPLAY_ORDER_PREMONSTERS )
-		draw_darkness( screenRect, GC );
+	draw_darkness( DISPLAY_ORDER_PRE_PLAYERS, screenRect, GC );
+	draw_players( m_player_rect, GC );
+	draw_darkness(DISPLAY_ORDER_POST_PLAYERS, screenRect, GC );
+	draw_darkness( DISPLAY_ORDER_PREMONSTERS, screenRect, GC );
 	draw_monsters( m_monster_rect, GC );
-	if ( m_ndarkMode == DISPLAY_ORDER_POSTMONSTERS )
-		draw_darkness( screenRect, GC );
+	draw_darkness( DISPLAY_ORDER_POSTMONSTERS, screenRect, GC );
 
 	draw_status( screenRect, GC );
 
-	if ( m_ndarkMode == DISPLAY_ORDER_PRE_SPRITES )
-		draw_darkness( screenRect, GC );
+	draw_darkness( DISPLAY_ORDER_PRE_SPRITES,screenRect, GC );
 	draw_sprites( 0, GC );
 	draw_status_effects( GC );
-	if ( m_ndarkMode == DISPLAY_ORDER_POST_SPRITES )
-		draw_darkness( screenRect, GC );
+	draw_darkness( DISPLAY_ORDER_POST_SPRITES,screenRect, GC );
 
-	if ( m_ndarkMode == DISPLAY_ORDER_PRE_DISPLAYS )
-		draw_darkness( screenRect, GC );
+
+	draw_darkness( DISPLAY_ORDER_PRE_DISPLAYS, screenRect, GC );
 	draw_displays( GC );
-	if ( m_ndarkMode == DISPLAY_ORDER_POST_DISPLAYS )
-		draw_darkness( screenRect, GC );
+	draw_darkness( DISPLAY_ORDER_POST_DISPLAYS, screenRect, GC );
 
-
-	if ( m_ndarkMode == DISPLAY_ORDER_PRE_MENUS )
-		draw_darkness( screenRect, GC );
+	draw_darkness( DISPLAY_ORDER_PRE_MENUS,screenRect, GC );
 	if ( m_eState == COMBAT &&  m_combat_state == BATTLE_MENU ) {
 		draw_menus( screenRect, GC );
 	}
 
-	if ( m_ndarkMode == DISPLAY_ORDER_POST_MENUS )
-		draw_darkness( screenRect, GC );
+	draw_darkness( DISPLAY_ORDER_POST_MENUS,screenRect, GC );
 
-	if ( m_ndarkMode == DISPLAY_ORDER_FINAL )
-		draw_darkness( screenRect, GC );
+	draw_darkness( DISPLAY_ORDER_FINAL, screenRect, GC );
 
 }
 
@@ -728,6 +734,11 @@ void BattleState::Sprite::SetPosition( const CL_Pointf& pos ) {
 	m_pos = pos;
 }
 
+CL_Rectf BattleState::Sprite::Rect() const { 
+	CL_Sizef size(m_sprite.get_size().width,m_sprite.get_size().height);
+	return CL_Rectf(m_pos,size);
+}
+
 CL_Pointf BattleState::Sprite::Position()const {
 	return m_pos;
 }
@@ -757,6 +768,7 @@ CL_Sprite BattleState::Sprite::GetSprite() const {
 }
 
 int BattleState::add_sprite( CL_Sprite sprite ) {
+	m_sprite_mutex.lock();
 	int index = m_sprites.size();
 	sprite.set_alignment( origin_center );
 	Sprite mysprite( sprite );
@@ -766,36 +778,70 @@ int BattleState::add_sprite( CL_Sprite sprite ) {
 		if ( !m_sprites[i].Enabled() ) {
 			m_sprites[i] = mysprite;
 			m_sprites[i].SetEnabled( true );
+			m_sprite_mutex.unlock();
 			return i;
 		}
 	}
 	m_sprites.push_back( mysprite );
 	m_sprites.back().SetEnabled( true );
+	m_sprite_mutex.unlock();
 	return index;
 }
 
-void BattleState::set_sprite_pos( int nSprite, CL_Pointf pos ) {
-	m_sprites[nSprite].SetPosition( pos );
-}
-
-
-CL_Sprite BattleState::get_sprite( int nSprite ) const {
-	return m_sprites[nSprite].GetSprite();
-}
-
-void BattleState::remove_sprite( int nSprite ) {
-	if ( nSprite <  m_sprites.size() ) {
-		m_sprites[nSprite].SetEnabled( false );
+void BattleState::set_sprite_pos( SpriteTicket nSprite, CL_Pointf pos ) {
+	if(nSprite < 0){
+		get_char_with_sprite(nSprite)->SetBattlePos(pos);
+	}else{
+		m_sprites[nSprite].SetPosition( pos );
 	}
 }
 
+CL_Sprite BattleState::get_char_sprite( BattleState::SpriteTicket sprite ) const {
+	return current_sprite( get_char_with_sprite(sprite) );
+}
+
+
+ICharacter* BattleState::get_char_with_sprite( BattleState::SpriteTicket nSprite )  const  {
+	int init = 0 - nSprite;
+	return m_initiative[init];
+}
+
+
+CL_Sprite BattleState::get_sprite( SpriteTicket nSprite ) const {
+	if(nSprite <0){
+		return get_char_sprite(nSprite);
+	}
+	assert(nSprite < m_sprites.size());
+	return m_sprites[nSprite].GetSprite();
+}
+
+void BattleState::remove_sprite( SpriteTicket nSprite ) {
+	if(nSprite <0) return; // Can't remove char sprites.... set alpha to full instead
+	if ( nSprite <  m_sprites.size() ) {
+		m_sprite_mutex.lock();
+		m_sprites[nSprite].SetEnabled( false );
+		m_sprite_mutex.unlock();
+	}
+}
+
+CL_Rectf BattleState::get_sprite_rect( BattleState::SpriteTicket nSprite ) {
+	if(nSprite <0){
+		return get_character_rect(get_char_with_sprite(nSprite));
+	}else{
+		return m_sprites[nSprite].Rect();
+	}
+}
+
+
 void BattleState::draw_sprites( int z, CL_GraphicContext& GC ) {
+	m_sprite_mutex.lock();
 	for ( int i = 0;i < m_sprites.size();i++ ) {
 		if ( m_sprites[i].Enabled() ) {
 			m_sprites[i].GetSprite().update();
 			m_sprites[i].Draw( GC );
 		}
 	}
+	m_sprite_mutex.unlock();
 }
 
 bool SortByBattlePos( const ICharacter* d1, const ICharacter* d2 ) {
@@ -868,7 +914,7 @@ void BattleState::draw_monsters( const CL_Rectf &monsterRect, CL_GraphicContext&
 	}
 }
 
-CL_Sprite BattleState::current_sprite( ICharacter* iCharacter ) {
+CL_Sprite BattleState::current_sprite( ICharacter* iCharacter ) const {
 	CL_Sprite  sprite = iCharacter->GetCurrentSprite( true );
 	return sprite;
 }
@@ -1045,9 +1091,11 @@ void BattleState::SteelInit( SteelInterpreter* pInterpreter ) {
 
 	static SteelFunctorNoArgs<BattleState> fn_flee( this, &BattleState::flee );
 	static SteelFunctorNoArgs<BattleState> fn_isBossBattle( this, &BattleState::isBossBattle );
-	static SteelFunctor1Arg<BattleState, int> fn_darkMode( this, &BattleState::darkMode );
-	static SteelFunctor4Arg<BattleState, double, double, double, double> fn_darkColor( this, &BattleState::darkColor );
+	static SteelFunctor1Arg<BattleState, int> fn_clearDarkMode( this, &BattleState::clearDarkMode );
+	static SteelFunctor5Arg<BattleState, int, double, double, double, double> fn_darkColor( this, &BattleState::darkMode );
 
+	pInterpreter->addFunction("animation","battle",new SteelFunctor1Arg<BattleState,SteelType::Functor>(this,&BattleState::animation));
+	
 	SteelConst( pInterpreter, "$_DISP_DAMAGE", Display::DISPLAY_DAMAGE );
 	SteelConst( pInterpreter, "$_DISP_MP", Display::DISPLAY_MP );
 	SteelConst( pInterpreter, "$_DISP_MISS", Display::DISPLAY_MISS );
@@ -1077,10 +1125,9 @@ void BattleState::SteelInit( SteelInterpreter* pInterpreter ) {
 	//pInterpreter->addFunction("getSkill","battle",new SteelFunctor2Arg<BattleState,SteelType::Handle,const std::string&>(this,&BattleState::getSkill));
 	pInterpreter->addFunction( "flee", "battle", new SteelFunctorNoArgs<BattleState>( this, &BattleState::flee ) );
 	pInterpreter->addFunction( "isBossBattle", "battle", new SteelFunctorNoArgs<BattleState>( this, &BattleState::isBossBattle ) );
-	pInterpreter->addFunction( "darkMode", "battle", new SteelFunctor1Arg<BattleState, int>( this, &BattleState::darkMode ) );
-	pInterpreter->addFunction( "darkColor", "battle", new SteelFunctor4Arg<BattleState, double, double, double, double>( this, &BattleState::darkColor ) );
+	pInterpreter->addFunction( "clearDarkMode", "battle", new SteelFunctor1Arg<BattleState, int>( this, &BattleState::clearDarkMode ) );
+	pInterpreter->addFunction( "darkMode", "battle", new SteelFunctor5Arg<BattleState, int, double, double, double, double>( this, &BattleState::darkMode ) );
 	m_config->SetupForBattle();
-
 }
 
 void BattleState::SteelCleanup( SteelInterpreter* pInterpreter ) {
@@ -1332,15 +1379,22 @@ SteelType BattleState::cancelOption() {
 	return SteelType();
 }
 
-SteelType BattleState::darkMode( int nOrder ) {
-	m_ndarkMode = nOrder;
+SteelType BattleState::clearDarkMode( int nOrder ) {
+	ClearDarkMode(nOrder);
 	return SteelType();
 }
 
-SteelType BattleState::darkColor( double r, double g, double b, double a ) {
-	m_darkColor = CL_Colorf(( float )r, ( float )g, ( float )b, ( float )a );
+SteelType BattleState::darkMode( int nOrder, double r, double g, double b, double a ) {
+	SetDarkMode(nOrder,r,g,b,a);
 	return SteelType();
 }
+
+SteelType BattleState::animation( SteelType::Functor functor ) {
+	m_anim_state->Init(functor);
+	IApplication::GetInstance()->RunState(m_anim_state);
+	return SteelType();
+}
+
 
 
 SteelType BattleState::doTargetedAnimation( SteelType::Handle pICharacter, SteelType::Handle pITarget, SteelType::Handle hAnim ) {
@@ -1352,10 +1406,9 @@ SteelType BattleState::doTargetedAnimation( SteelType::Handle pICharacter, Steel
 	}
 	if ( !target ) throw TypeMismatch();
 	if ( !character ) throw TypeMismatch();
-	StoneRing::AnimationState state( *this, group_for_character( character ), group_for_character( target ), character, target );
-	state.Init( anim );
+	m_anim_state->Init( anim, group_for_character( character ), group_for_character( target ), character, target );
 
-	IApplication::GetInstance()->RunState( &state );
+	IApplication::GetInstance()->RunState( m_anim_state );
 
 	return SteelType();
 }
@@ -1370,10 +1423,9 @@ SteelType BattleState::doCharacterAnimation( SteelType::Handle pICharacter, Stee
 		throw TypeMismatch();
 	}
 	if ( !character ) throw TypeMismatch();
-	StoneRing::AnimationState state( *this, group_for_character( character ), NULL, character, NULL );
-	state.Init( anim );
+	m_anim_state->Init( anim, group_for_character( character ), NULL, character, NULL );
 
-	IApplication::GetInstance()->RunState( &state );
+	IApplication::GetInstance()->RunState( m_anim_state );
 
 	return SteelType();
 }
@@ -1443,6 +1495,19 @@ SteelType BattleState::isBossBattle() {
 	val.set( m_bBossBattle );
 
 	return val;
+}
+
+
+BattleState::SpriteTicket BattleState::get_sprite_for_char( ICharacter* i_char ) const {
+	int pos = -1;
+	for(int i=0;i<m_initiative.size();i++){
+		if(m_initiative[i] == i_char){
+			pos = i;
+		}
+	}
+	if(pos == -1)
+		return UNDEFINED_SPRITE_TICKET;
+	return 0 - pos; // Negative sprite tickets are character's sprites
 }
 
 
