@@ -322,7 +322,7 @@ private:
 		IApplication::AxisDirection m_dir;
 		IApplication::Button m_button;
 	}m_joystick_train_component;
-	SteelInterpreter mInterpreter;	
+
 	JoystickConfig m_joystick_config;
 
     /* STATES */
@@ -339,6 +339,7 @@ private:
 	SkillGetState mSkillGetState;
     EquipState mEquipState;
 	BannerState mBannerState;
+	SteelInterpreter* mInterpreter;
 #if SR2_EDITOR
     MapEditorState mMapEditorState;
 #endif
@@ -360,14 +361,14 @@ inline void Application::steelConst(const std::string &name, int value)
 {
     SteelType val;
     val.set(value);
-    mInterpreter.declare_const(name,val);
+    mInterpreter->declare_const(name,val);
 }
 
 inline void Application::steelConst(const std::string &name, double value)
 {
     SteelType val;
     val.set(value);
-    mInterpreter.declare_const(name,val);
+    mInterpreter->declare_const(name,val);
 }
 
 

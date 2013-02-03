@@ -9,6 +9,7 @@
 #include <string>
 #include <fstream>
 #include <cmath>
+#include <malloc.h>
 #include "Application.h"
 #include "Level.h"
 #include "Party.h"
@@ -315,7 +316,7 @@ void Application::StartGame(bool load)
     }else{   
         std::string startscript;
         loadscript ( startscript, CL_String_load ( "Game/StartupScript", m_resources ) );
-        mInterpreter.run ( "Startup", startscript );
+        mInterpreter->run ( "Startup", startscript );
     }
     RunState(&mMapState);    
 }
@@ -2101,20 +2102,20 @@ void Application::onSignalQuit()
 
 Steel::AstScript * Application::LoadScript ( const std::string &name, const std::string &script )
 {
-    return mInterpreter.prebuildAst ( name, script );
+    return mInterpreter->prebuildAst ( name, script );
 }
 
 SteelType Application::RunScript ( AstScript * pScript )
 {
     // Intentionally letting steel exceptions
     // Get caught by a higher layer
-    return mInterpreter.runAst ( pScript );
+    return mInterpreter->runAst ( pScript );
 
 }
 
 SteelType Application::RunScript ( AstScript *pScript, const ParameterList &params )
 {
-    return mInterpreter.runAst ( pScript, params );
+    return mInterpreter->runAst ( pScript, params );
 }
 
 #ifdef SR2_EDITOR
@@ -2126,7 +2127,7 @@ void Application::EditMaps()
 
 void Application::registerSteelFunctions()
 {
-    mInterpreter.pushScope();	
+    mInterpreter->pushScope();
     SteelFunctor* fn_say = new SteelFunctor2Arg<Application, const std::string&, const std::string&> ( this, &Application::say );
     SteelFunctor* fn_playScene = new SteelFunctor1Arg<Application, const SteelType&> ( this, &Application::playScene );
     SteelFunctor* fn_playSound  = new SteelFunctor1Arg<Application, const std::string&> ( this, &Application::playSound );
@@ -2153,7 +2154,7 @@ void Application::registerSteelFunctions()
     SteelFunctor* fn_getWeaponAttribute = new  SteelFunctor2Arg<Application, const SteelType::Handle, uint> ( this, &Application::getWeaponAttribute );
     SteelFunctor*  fn_getArmorAttribute = new SteelFunctor2Arg<Application, const SteelType::Handle, uint> ( this, &Application::getArmorAttribute );
     
-	mInterpreter.addFunction("normal_random",new SteelFunctor2Arg<Application, double, double> ( this, &Application::gaussian ));
+	mInterpreter->addFunction("normal_random",new SteelFunctor2Arg<Application, double, double> ( this, &Application::gaussian ));
     SteelFunctor*  fn_getCharacterName = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getCharacterName );
     SteelFunctor*  fn_getCharacterAttribute = new SteelFunctor2Arg<Application, const SteelType::Handle, uint> ( this, &Application::getCharacterAttribute );
     SteelFunctor*  fn_addExperience = new SteelFunctor2Arg<Application, const SteelType::Handle, int> ( this, &Application::addExperience );
@@ -2300,144 +2301,144 @@ void Application::registerSteelFunctions()
     steelConst ( "$_WEST",  Direction::WEST );
     steelConst ( "$_EAST",  Direction::EAST );
 
-    //mInterpreter.addFunction ( "normal_random", fn_gaussian );
-    mInterpreter.addFunction ( "log", fn_log );
+    //mInterpreter->addFunction ( "normal_random", fn_gaussian );
+    mInterpreter->addFunction ( "log", fn_log );
 
-    mInterpreter.addFunction ( "say", fn_say );
-    mInterpreter.addFunction ( "playScene", fn_playScene );
-    mInterpreter.addFunction ( "playSound", fn_playSound );
-    mInterpreter.addFunction ( "loadLevel", fn_loadLevel );
-    mInterpreter.addFunction ( "startBattle", fn_startBattle );
-    mInterpreter.addFunction ( "pause", fn_pause );
-    mInterpreter.addFunction ( "choice", fn_choice );
-	mInterpreter.addFunction ( "pushLevel", fn_pushLevel );
-    mInterpreter.addFunction ( "popLevel", fn_pop );
-    mInterpreter.addFunction ( "takeItem", fn_takeItem );
-    mInterpreter.addFunction ( "getGold", fn_getGold );
-    mInterpreter.addFunction ( "selectItem", fn_useItem );
-    mInterpreter.addFunction ( "hasItem", fn_hasItem );
-    mInterpreter.addFunction ( "getItemName", fn_getItemName );
-    mInterpreter.addFunction ( "didEvent", fn_didEvent );
-    mInterpreter.addFunction ( "doEvent", fn_doEvent );
-    mInterpreter.addFunction ( "giveGold", fn_giveGold );
-    mInterpreter.addFunction ( "addCharacter", fn_addCharacter );
+    mInterpreter->addFunction ( "say", fn_say );
+    mInterpreter->addFunction ( "playScene", fn_playScene );
+    mInterpreter->addFunction ( "playSound", fn_playSound );
+    mInterpreter->addFunction ( "loadLevel", fn_loadLevel );
+    mInterpreter->addFunction ( "startBattle", fn_startBattle );
+    mInterpreter->addFunction ( "pause", fn_pause );
+    mInterpreter->addFunction ( "choice", fn_choice );
+	mInterpreter->addFunction ( "pushLevel", fn_pushLevel );
+    mInterpreter->addFunction ( "popLevel", fn_pop );
+    mInterpreter->addFunction ( "takeItem", fn_takeItem );
+    mInterpreter->addFunction ( "getGold", fn_getGold );
+    mInterpreter->addFunction ( "selectItem", fn_useItem );
+    mInterpreter->addFunction ( "hasItem", fn_hasItem );
+    mInterpreter->addFunction ( "getItemName", fn_getItemName );
+    mInterpreter->addFunction ( "didEvent", fn_didEvent );
+    mInterpreter->addFunction ( "doEvent", fn_doEvent );
+    mInterpreter->addFunction ( "giveGold", fn_giveGold );
+    mInterpreter->addFunction ( "addCharacter", fn_addCharacter );
 
-    mInterpreter.addFunction ( "getPartyArray", fn_getPartyArray );
-    mInterpreter.addFunction ( "attackCharacter", fn_attackCharacter );
-    mInterpreter.addFunction ( "getWeaponAttribute", fn_getWeaponAttribute );
-    mInterpreter.addFunction ( "getArmorAttribute", fn_getArmorAttribute );
+    mInterpreter->addFunction ( "getPartyArray", fn_getPartyArray );
+    mInterpreter->addFunction ( "attackCharacter", fn_attackCharacter );
+    mInterpreter->addFunction ( "getWeaponAttribute", fn_getWeaponAttribute );
+    mInterpreter->addFunction ( "getArmorAttribute", fn_getArmorAttribute );
 
-    mInterpreter.addFunction ( "getCharacterAttribute", fn_getCharacterAttribute );
-    mInterpreter.addFunction ( "getCharacterLevel", fn_getCharacterLevel );
-    mInterpreter.addFunction ( "getExperience", fn_getExperience );
-    mInterpreter.addFunction ( "addExperience", fn_addExperience );
-    mInterpreter.addFunction ( "getCharacterToggle", fn_getCharacterToggle );
-    mInterpreter.addFunction ( "setCharacterToggle", fn_setCharacterToggle );
-    mInterpreter.addFunction ( "getCharacterName", fn_getCharacterName );
-    mInterpreter.addFunction ( "getEquippedWeaponAttribute", fn_getEquippedWeaponAttribute );
-    mInterpreter.addFunction ( "getEquippedArmorAttribute", fn_getEquippedArmorAttribute );
-    mInterpreter.addFunction ( "addStatusEffect", fn_addStatusEffect );
-    mInterpreter.addFunction ( "removeStatusEffect", fn_removeStatusEffect );
-    mInterpreter.addFunction ( "doDamage", fn_doDamage );
-    mInterpreter.addFunction ( "hasEquipment", fn_hasEquipment );
-    mInterpreter.addFunction ( "getEquipment", fn_getEquipment );
-    mInterpreter.addFunction ( "equip", fn_equip );
+    mInterpreter->addFunction ( "getCharacterAttribute", fn_getCharacterAttribute );
+    mInterpreter->addFunction ( "getCharacterLevel", fn_getCharacterLevel );
+    mInterpreter->addFunction ( "getExperience", fn_getExperience );
+    mInterpreter->addFunction ( "addExperience", fn_addExperience );
+    mInterpreter->addFunction ( "getCharacterToggle", fn_getCharacterToggle );
+    mInterpreter->addFunction ( "setCharacterToggle", fn_setCharacterToggle );
+    mInterpreter->addFunction ( "getCharacterName", fn_getCharacterName );
+    mInterpreter->addFunction ( "getEquippedWeaponAttribute", fn_getEquippedWeaponAttribute );
+    mInterpreter->addFunction ( "getEquippedArmorAttribute", fn_getEquippedArmorAttribute );
+    mInterpreter->addFunction ( "addStatusEffect", fn_addStatusEffect );
+    mInterpreter->addFunction ( "removeStatusEffect", fn_removeStatusEffect );
+    mInterpreter->addFunction ( "doDamage", fn_doDamage );
+    mInterpreter->addFunction ( "hasEquipment", fn_hasEquipment );
+    mInterpreter->addFunction ( "getEquipment", fn_getEquipment );
+    mInterpreter->addFunction ( "equip", fn_equip );
 
 
-    mInterpreter.addFunction ( "getWeaponType", fn_getWeaponType );
-    mInterpreter.addFunction ( "getArmorType", fn_getArmorType );
-    mInterpreter.addFunction ( "getWeaponTypeDamageCategory", fn_getWeaponTypeDamageCategory );
-    mInterpreter.addFunction ( "getWeaponTypeAnimation", fn_getWeaponTypeAnimation );
-    mInterpreter.addFunction ( "weaponTypeHasAnimation", fn_weaponTypeHasAnimation );
-    mInterpreter.addFunction ( "getDamageCategoryResistance", fn_getDamageCategoryResistance );
-    mInterpreter.addFunction ( "invokeArmor", fn_invokeArmor );
-    mInterpreter.addFunction ( "invokeWeapon", fn_invokeWeapon );
-    //mInterpreter.addFunction ( "getHitSound", fn_getHitSound );
-    //mInterpreter.addFunction ( "getMissSound", fn_getMissSound );
-    mInterpreter.addFunction ( "getUnarmedHitSound", fn_getUnarmedHitSound );
-    mInterpreter.addFunction ( "getUnarmedMissSound", fn_getUnarmedMissSound );
+    mInterpreter->addFunction ( "getWeaponType", fn_getWeaponType );
+    mInterpreter->addFunction ( "getArmorType", fn_getArmorType );
+    mInterpreter->addFunction ( "getWeaponTypeDamageCategory", fn_getWeaponTypeDamageCategory );
+    mInterpreter->addFunction ( "getWeaponTypeAnimation", fn_getWeaponTypeAnimation );
+    mInterpreter->addFunction ( "weaponTypeHasAnimation", fn_weaponTypeHasAnimation );
+    mInterpreter->addFunction ( "getDamageCategoryResistance", fn_getDamageCategoryResistance );
+    mInterpreter->addFunction ( "invokeArmor", fn_invokeArmor );
+    mInterpreter->addFunction ( "invokeWeapon", fn_invokeWeapon );
+    //mInterpreter->addFunction ( "getHitSound", fn_getHitSound );
+    //mInterpreter->addFunction ( "getMissSound", fn_getMissSound );
+    mInterpreter->addFunction ( "getUnarmedHitSound", fn_getUnarmedHitSound );
+    mInterpreter->addFunction ( "getUnarmedMissSound", fn_getUnarmedMissSound );
 
-    mInterpreter.addFunction ( "getAnimation", fn_getAnimation );
-    mInterpreter.addFunction ( "showExperience", fn_showExperience );
+    mInterpreter->addFunction ( "getAnimation", fn_getAnimation );
+    mInterpreter->addFunction ( "showExperience", fn_showExperience );
 
-    mInterpreter.addFunction ( "mainMenu", new SteelFunctorNoArgs<Application> ( this, &Application::mainMenu ) );
+    mInterpreter->addFunction ( "mainMenu", new SteelFunctorNoArgs<Application> ( this, &Application::mainMenu ) );
 
-    mInterpreter.addFunction ( "getItemType", new SteelFunctor1Arg<Application, SteelType::Handle> ( this, &Application::getItemType ) );
-    mInterpreter.addFunction ( "getItemValue", new SteelFunctor1Arg<Application, SteelType::Handle> ( this, &Application::getItemValue ) );
-    mInterpreter.addFunction ( "getItemSellValue", new SteelFunctor1Arg<Application, SteelType::Handle> ( this, &Application::getItemSellValue ) );
-    mInterpreter.addFunction ( "isBattleItem", new SteelFunctor1Arg<Application, SteelType::Handle> ( this, &Application::isBattleItem ) );
-    mInterpreter.addFunction ( "isWorldItem", new SteelFunctor1Arg<Application, SteelType::Handle> ( this, &Application::isWorldItem ) );
-    mInterpreter.addFunction ( "isReusableItem", new SteelFunctor1Arg<Application, SteelType::Handle> ( this, &Application::isReusableItem ) );
-    mInterpreter.addFunction ( "getItemTargetable", new SteelFunctor1Arg<Application, SteelType::Handle> ( this, &Application::getItemTargetable ) );
-    mInterpreter.addFunction ( "getItemDefaultTarget", new SteelFunctor1Arg<Application, SteelType::Handle> ( this, &Application::getItemDefaultTarget ) );
-    mInterpreter.addFunction ( "useItem", new SteelFunctor2Arg<Application, SteelType::Handle, const SteelType&> ( this, &Application::useItem ) );
-    mInterpreter.addFunction ( "disposeItem", new SteelFunctor2Arg<Application, SteelType::Handle, uint> ( this, &Application::disposeItem ) );
-    mInterpreter.addFunction ( "inBattle", new SteelFunctorNoArgs<Application> ( this, &Application::inBattle ) );
+    mInterpreter->addFunction ( "getItemType", new SteelFunctor1Arg<Application, SteelType::Handle> ( this, &Application::getItemType ) );
+    mInterpreter->addFunction ( "getItemValue", new SteelFunctor1Arg<Application, SteelType::Handle> ( this, &Application::getItemValue ) );
+    mInterpreter->addFunction ( "getItemSellValue", new SteelFunctor1Arg<Application, SteelType::Handle> ( this, &Application::getItemSellValue ) );
+    mInterpreter->addFunction ( "isBattleItem", new SteelFunctor1Arg<Application, SteelType::Handle> ( this, &Application::isBattleItem ) );
+    mInterpreter->addFunction ( "isWorldItem", new SteelFunctor1Arg<Application, SteelType::Handle> ( this, &Application::isWorldItem ) );
+    mInterpreter->addFunction ( "isReusableItem", new SteelFunctor1Arg<Application, SteelType::Handle> ( this, &Application::isReusableItem ) );
+    mInterpreter->addFunction ( "getItemTargetable", new SteelFunctor1Arg<Application, SteelType::Handle> ( this, &Application::getItemTargetable ) );
+    mInterpreter->addFunction ( "getItemDefaultTarget", new SteelFunctor1Arg<Application, SteelType::Handle> ( this, &Application::getItemDefaultTarget ) );
+    mInterpreter->addFunction ( "useItem", new SteelFunctor2Arg<Application, SteelType::Handle, const SteelType&> ( this, &Application::useItem ) );
+    mInterpreter->addFunction ( "disposeItem", new SteelFunctor2Arg<Application, SteelType::Handle, uint> ( this, &Application::disposeItem ) );
+    mInterpreter->addFunction ( "inBattle", new SteelFunctorNoArgs<Application> ( this, &Application::inBattle ) );
 
-    mInterpreter.addFunction ( "doMPDamage", new SteelFunctor2Arg<Application, SteelType::Handle, int> ( this, &Application::doMPDamage ) );
-    mInterpreter.addFunction ( "menu", new SteelFunctor1Arg<Application, const SteelArray&> ( this, &Application::menu ) );
-    mInterpreter.addFunction ( "message", new SteelFunctor1Arg<Application, const std::string&> ( this, &Application::message ) );
-    mInterpreter.addFunction ( "forgoAttack", new SteelFunctor1Arg<Application, SteelType::Handle> ( this, &Application::forgoAttack ) );
+    mInterpreter->addFunction ( "doMPDamage", new SteelFunctor2Arg<Application, SteelType::Handle, int> ( this, &Application::doMPDamage ) );
+    mInterpreter->addFunction ( "menu", new SteelFunctor1Arg<Application, const SteelArray&> ( this, &Application::menu ) );
+    mInterpreter->addFunction ( "message", new SteelFunctor1Arg<Application, const std::string&> ( this, &Application::message ) );
+    mInterpreter->addFunction ( "forgoAttack", new SteelFunctor1Arg<Application, SteelType::Handle> ( this, &Application::forgoAttack ) );
 
-    mInterpreter.addFunction ( "getStatusEffect", new SteelFunctor1Arg<Application,const std::string&> (this, &Application::getStatusEffect));
-    mInterpreter.addFunction ( "statusEffectChance", new SteelFunctor2Arg<Application,SteelType::Handle,SteelType::Handle>( this, &Application::statusEffectChance ) );;
+    mInterpreter->addFunction ( "getStatusEffect", new SteelFunctor1Arg<Application,const std::string&> (this, &Application::getStatusEffect));
+    mInterpreter->addFunction ( "statusEffectChance", new SteelFunctor2Arg<Application,SteelType::Handle,SteelType::Handle>( this, &Application::statusEffectChance ) );;
 //        SteelType hasGeneratedWeapon(const std::string &wepclass, const std::string &webtype);
 //       SteelType hasGeneratedArmor(const std::string &armclass, const std::string &armtype);
-    mInterpreter.addFunction ( "kill", new SteelFunctor1Arg<Application,SteelType::Handle>( this, &Application::kill ));
-    mInterpreter.addFunction ( "raise", new SteelFunctor1Arg<Application,SteelType::Handle>( this, &Application::raise ));
+    mInterpreter->addFunction ( "kill", new SteelFunctor1Arg<Application,SteelType::Handle>( this, &Application::kill ));
+    mInterpreter->addFunction ( "raise", new SteelFunctor1Arg<Application,SteelType::Handle>( this, &Application::raise ));
 
-    mInterpreter.addFunction ( "skilltree", new SteelFunctor2Arg<Application,SteelType::Handle,bool>( this, &Application::skilltree ));
+    mInterpreter->addFunction ( "skilltree", new SteelFunctor2Arg<Application,SteelType::Handle,bool>( this, &Application::skilltree ));
     
-    mInterpreter.addFunction ( "getCharacterSP", new SteelFunctor1Arg<Application,SteelType::Handle>( this, &Application::getCharacterSP) );
-    mInterpreter.addFunction ( "setCharacterSP", new SteelFunctor2Arg<Application,SteelType::Handle,int>( this, &Application::setCharacterSP) );
-    mInterpreter.addFunction ( "getMonsterSPReward", new SteelFunctor1Arg<Application, SteelType::Handle>( this, &Application::getMonsterSPReward) );
-    mInterpreter.addFunction ( "doSkill", new SteelFunctor2Arg<Application,SteelType::Handle,SteelType::Handle>( this, &Application::doSkill) );
-    mInterpreter.addFunction ( "getSkill", new SteelFunctor1Arg<Application,const std::string&>(this,&Application::getSkill) );
-    mInterpreter.addFunction ( "learnSkill", new SteelFunctor3Arg<Application,SteelType::Handle,SteelType::Handle,bool>(this,&Application::learnSkill) );
-    mInterpreter.addFunction ( "hasSkill", new SteelFunctor2Arg<Application,SteelType::Handle,const std::string&>(this,&Application::hasSkill) );
+    mInterpreter->addFunction ( "getCharacterSP", new SteelFunctor1Arg<Application,SteelType::Handle>( this, &Application::getCharacterSP) );
+    mInterpreter->addFunction ( "setCharacterSP", new SteelFunctor2Arg<Application,SteelType::Handle,int>( this, &Application::setCharacterSP) );
+    mInterpreter->addFunction ( "getMonsterSPReward", new SteelFunctor1Arg<Application, SteelType::Handle>( this, &Application::getMonsterSPReward) );
+    mInterpreter->addFunction ( "doSkill", new SteelFunctor2Arg<Application,SteelType::Handle,SteelType::Handle>( this, &Application::doSkill) );
+    mInterpreter->addFunction ( "getSkill", new SteelFunctor1Arg<Application,const std::string&>(this,&Application::getSkill) );
+    mInterpreter->addFunction ( "learnSkill", new SteelFunctor3Arg<Application,SteelType::Handle,SteelType::Handle,bool>(this,&Application::learnSkill) );
+    mInterpreter->addFunction ( "hasSkill", new SteelFunctor2Arg<Application,SteelType::Handle,const std::string&>(this,&Application::hasSkill) );
 
-    mInterpreter.addFunction ( "augmentCharacterAttribute", new SteelFunctor3Arg<Application,SteelType::Handle,uint,double>(this,&Application::augmentCharacterAttribute) );
-    mInterpreter.addFunction ( "generateRandomWeapon", new SteelFunctor3Arg<Application,uint,int,int>(this,&Application::generateRandomWeapon));
-    mInterpreter.addFunction ( "generateRandomArmor", new SteelFunctor3Arg<Application,uint,int,int>(this,&Application::generateRandomArmor));      
-    mInterpreter.addFunction ( "giveItems", new SteelFunctor2Arg<Application,const Steel::SteelArray&,bool>(this,&Application::giveItems) );
-    mInterpreter.addFunction ( "doEquipmentStatusEffectInflictions", new SteelFunctor2Arg<Application,SteelType::Handle,SteelType::Handle>(this,&Application::doEquipmentStatusEffectInflictions) );
-    mInterpreter.addFunction ( "isArmor", new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::isArmor) );
-    mInterpreter.addFunction ( "weaponTypeIsRanged", new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::weaponTypeIsRanged) );
-    mInterpreter.addFunction ( "getNamedItem", new SteelFunctor1Arg<Application,const std::string&>(this,&Application::getNamedItem) );
-    mInterpreter.addFunction ( "equipScreen", new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::equipScreen) );
-    mInterpreter.addFunction ( "randomItem", new SteelFunctor3Arg<Application,uint,int,int>(this,&Application::randomItem) );
-    mInterpreter.addFunction ( "getMonsterDrops", new SteelFunctor1Arg<Application,const SteelType::Handle>(this,&Application::getMonsterDrops) );
-    mInterpreter.addFunction ( "shop", new SteelFunctor1Arg<Application,const SteelArray&>(this,&Application::shop) );
-    mInterpreter.addFunction ( "sell", new SteelFunctorNoArgs<Application>(this,&Application::sell) );
-    mInterpreter.addFunction ( "save", new SteelFunctorNoArgs<Application>(this,&Application::save) );
-    mInterpreter.addFunction ( "load", new SteelFunctorNoArgs<Application>(this,&Application::load) );
-    mInterpreter.addFunction ( "statusScreen", new SteelFunctor1Arg<Application,bool>(this,&Application::statusScreen) );
-    mInterpreter.addFunction ( "getThemes", new SteelFunctorNoArgs<Application>(this,&Application::getThemes) );
-    mInterpreter.addFunction ( "setTheme", new SteelFunctor1Arg<Application,const std::string&>(this,&Application::setTheme ) );
-    mInterpreter.addFunction ( "selectItemAdv", new SteelFunctor1Arg<Application,uint>(this,&Application::selectItemAdv) );
-    mInterpreter.addFunction ( "equipOmega", new SteelFunctor2Arg<Application,uint,const SteelType::Handle&>(this,&Application::equipOmega) );
-    mInterpreter.addFunction ( "unequipOmega", new SteelFunctor1Arg<Application,uint>(this,&Application::unequipOmega) );
-    mInterpreter.addFunction ( "omegaSlotCount", new SteelFunctorNoArgs<Application>(this,&Application::omegaSlotCount) );
-    mInterpreter.addFunction ( "getOmega", new SteelFunctor1Arg<Application,uint>(this,&Application::getOmega ) );
-    mInterpreter.addFunction ( "omegaSlotIsEmpty", new SteelFunctor1Arg<Application,uint>(this,&Application::omegaSlotIsEmpty) );
-    mInterpreter.addFunction ( "banner", new SteelFunctor2Arg<Application,const std::string&,int>(this,&Application::banner) );
-	mInterpreter.addFunction ( "closeMap", fn_closeMap );
-	mInterpreter.addFunction ( "gameoverScreen", fn_gameoverScreen );
-	mInterpreter.addFunction ( "giveItem", new SteelFunctor3Arg<Application,SteelType::Handle,int,bool>(this,&Application::giveItem) );
-	mInterpreter.addFunction ( "configJoystick", new SteelFunctorNoArgs<Application>(this,&Application::configJoystick));
+    mInterpreter->addFunction ( "augmentCharacterAttribute", new SteelFunctor3Arg<Application,SteelType::Handle,uint,double>(this,&Application::augmentCharacterAttribute) );
+    mInterpreter->addFunction ( "generateRandomWeapon", new SteelFunctor3Arg<Application,uint,int,int>(this,&Application::generateRandomWeapon));
+    mInterpreter->addFunction ( "generateRandomArmor", new SteelFunctor3Arg<Application,uint,int,int>(this,&Application::generateRandomArmor));
+    mInterpreter->addFunction ( "giveItems", new SteelFunctor2Arg<Application,const Steel::SteelArray&,bool>(this,&Application::giveItems) );
+    mInterpreter->addFunction ( "doEquipmentStatusEffectInflictions", new SteelFunctor2Arg<Application,SteelType::Handle,SteelType::Handle>(this,&Application::doEquipmentStatusEffectInflictions) );
+    mInterpreter->addFunction ( "isArmor", new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::isArmor) );
+    mInterpreter->addFunction ( "weaponTypeIsRanged", new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::weaponTypeIsRanged) );
+    mInterpreter->addFunction ( "getNamedItem", new SteelFunctor1Arg<Application,const std::string&>(this,&Application::getNamedItem) );
+    mInterpreter->addFunction ( "equipScreen", new SteelFunctor1Arg<Application,SteelType::Handle>(this,&Application::equipScreen) );
+    mInterpreter->addFunction ( "randomItem", new SteelFunctor3Arg<Application,uint,int,int>(this,&Application::randomItem) );
+    mInterpreter->addFunction ( "getMonsterDrops", new SteelFunctor1Arg<Application,const SteelType::Handle>(this,&Application::getMonsterDrops) );
+    mInterpreter->addFunction ( "shop", new SteelFunctor1Arg<Application,const SteelArray&>(this,&Application::shop) );
+    mInterpreter->addFunction ( "sell", new SteelFunctorNoArgs<Application>(this,&Application::sell) );
+    mInterpreter->addFunction ( "save", new SteelFunctorNoArgs<Application>(this,&Application::save) );
+    mInterpreter->addFunction ( "load", new SteelFunctorNoArgs<Application>(this,&Application::load) );
+    mInterpreter->addFunction ( "statusScreen", new SteelFunctor1Arg<Application,bool>(this,&Application::statusScreen) );
+    mInterpreter->addFunction ( "getThemes", new SteelFunctorNoArgs<Application>(this,&Application::getThemes) );
+    mInterpreter->addFunction ( "setTheme", new SteelFunctor1Arg<Application,const std::string&>(this,&Application::setTheme ) );
+    mInterpreter->addFunction ( "selectItemAdv", new SteelFunctor1Arg<Application,uint>(this,&Application::selectItemAdv) );
+    mInterpreter->addFunction ( "equipOmega", new SteelFunctor2Arg<Application,uint,const SteelType::Handle&>(this,&Application::equipOmega) );
+    mInterpreter->addFunction ( "unequipOmega", new SteelFunctor1Arg<Application,uint>(this,&Application::unequipOmega) );
+    mInterpreter->addFunction ( "omegaSlotCount", new SteelFunctorNoArgs<Application>(this,&Application::omegaSlotCount) );
+    mInterpreter->addFunction ( "getOmega", new SteelFunctor1Arg<Application,uint>(this,&Application::getOmega ) );
+    mInterpreter->addFunction ( "omegaSlotIsEmpty", new SteelFunctor1Arg<Application,uint>(this,&Application::omegaSlotIsEmpty) );
+    mInterpreter->addFunction ( "banner", new SteelFunctor2Arg<Application,const std::string&,int>(this,&Application::banner) );
+	mInterpreter->addFunction ( "closeMap", fn_closeMap );
+	mInterpreter->addFunction ( "gameoverScreen", fn_gameoverScreen );
+	mInterpreter->addFunction ( "giveItem", new SteelFunctor3Arg<Application,SteelType::Handle,int,bool>(this,&Application::giveItem) );
+	mInterpreter->addFunction ( "configJoystick", new SteelFunctorNoArgs<Application>(this,&Application::configJoystick));
 	
-	mInterpreter.addFunction ( "stopMusic", new SteelFunctorNoArgs<Application>(this,&Application::stopMusic));
-	mInterpreter.addFunction ( "startMusic", new SteelFunctorNoArgs<Application>(this,&Application::startMusic));
-	mInterpreter.addFunction ( "pushMusic", new SteelFunctor1Arg<Application, const std::string&>(this,&Application::pushMusic));
-	mInterpreter.addFunction ( "popMusic", new SteelFunctorNoArgs<Application>(this,&Application::popMusic));	
+	mInterpreter->addFunction ( "stopMusic", new SteelFunctorNoArgs<Application>(this,&Application::stopMusic));
+	mInterpreter->addFunction ( "startMusic", new SteelFunctorNoArgs<Application>(this,&Application::startMusic));
+	mInterpreter->addFunction ( "pushMusic", new SteelFunctor1Arg<Application, const std::string&>(this,&Application::pushMusic));
+	mInterpreter->addFunction ( "popMusic", new SteelFunctorNoArgs<Application>(this,&Application::popMusic));
 	
-	mInterpreter.addFunction ( "deployCharacter", new SteelFunctor1Arg<Application,const std::string&>(this,&Application::deployCharacter) );
-	mInterpreter.addFunction ( "reserveCharacter", new SteelFunctor1Arg<Application,const std::string&>(this,&Application::reserveCharacter) );
+	mInterpreter->addFunction ( "deployCharacter", new SteelFunctor1Arg<Application,const std::string&>(this,&Application::deployCharacter) );
+	mInterpreter->addFunction ( "reserveCharacter", new SteelFunctor1Arg<Application,const std::string&>(this,&Application::reserveCharacter) );
 	
-	mInterpreter.addFunction ( "getReservePartyArray", new SteelFunctorNoArgs<Application>(this,&Application::getReservePartyArray) );
+	mInterpreter->addFunction ( "getReservePartyArray", new SteelFunctorNoArgs<Application>(this,&Application::getReservePartyArray) );
     
-    mInterpreter.addFunction ( "editing", new SteelFunctorNoArgs<Application>(this,&Application::editing) );
-    mInterpreter.addFunction ( "editMap", new SteelFunctorNoArgs<Application>(this,&Application::editMap) );
+    mInterpreter->addFunction ( "editing", new SteelFunctorNoArgs<Application>(this,&Application::editing) );
+    mInterpreter->addFunction ( "editMap", new SteelFunctorNoArgs<Application>(this,&Application::editMap) );
 }
 
 void Application::queryJoystick()
@@ -2480,7 +2481,7 @@ void Application::run(bool process_functors)
 	
 	if(backState->Threaded()) m_threaded_mode = true;
 
-    backState->SteelInit ( &mInterpreter );
+    backState->SteelInit ( mInterpreter );
     backState->Start();
     unsigned int then = CL_System::get_time();
 
@@ -2531,7 +2532,7 @@ void Application::run(bool process_functors)
 
     mStates.back()->Finish();
 
-    mStates.back()->SteelCleanup ( &mInterpreter );
+    mStates.back()->SteelCleanup ( mInterpreter );
 	// TODO: Or is this backState->Threaded()? Is it any different?
 	if(mStates.back()->Threaded())
 		m_threaded_mode = false;
@@ -2573,11 +2574,15 @@ CL_IODevice Application::OpenResource(const std::string& str)
 
 int Application::main ( const std::vector<std::string> args )
 {
+	//SteelInterpreter interpreter;
+	mInterpreter = new SteelInterpreter();
+
     GraphicsManager::initialize();
     ItemManager::initialize();
     SoundManager::initialize();
     CharacterManager::initialize();
 	AbilityManager::initialize();
+
 
 #ifndef NDEBUG
 
@@ -2636,9 +2641,11 @@ int Application::main ( const std::vector<std::string> args )
 			m_joystick_config.Read(joystick_in);
 		}
 		
-		
+
+
+		//mInterpreter = &interpreter;
         registerSteelFunctions();
-		
+
 		// TODO: Get the package from the command line
 		CL_VirtualFileSystem vfs(data_file, !data_dir);
 		
@@ -2646,7 +2653,7 @@ int Application::main ( const std::vector<std::string> args )
 		
 		m_zip_provider.SetVirtualDirectory(m_resource_dir);
 
-		mInterpreter.setFileProvider(&m_zip_provider);
+		//mInterpreter->setFileProvider(&m_zip_provider);
 
         m_resources = CL_ResourceManager ( "Media/resources.xml", m_resource_dir );
 
@@ -2787,7 +2794,7 @@ int Application::main ( const std::vector<std::string> args )
         std::cerr << "Already defined: " << ad.GetName() << std::endl;
     }
 
-    mInterpreter.popScope();
+    mInterpreter->popScope();
 	
     return 0;
 
@@ -2891,6 +2898,9 @@ class Program
 public:
     static int main ( const std::vector<CL_String> &args )
     {
+
+    	//std::cout << "Usable space: " << malloc_usable_size() << std::endl;
+    	std::cout << sizeof(Application) << std::endl;
         CL_SetupCore setup_core;
         CL_SetupDisplay setup_display;
         CL_SetupGL setup_gl;
