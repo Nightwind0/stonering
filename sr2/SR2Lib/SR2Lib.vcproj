@@ -201,6 +201,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\party\ReserveParty.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\party\ReserveParty.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\core\UtilityScripts.cpp"
 				>
 			</File>
@@ -556,6 +564,38 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\states\GetState.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\GetState.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\GoldGetState.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\GoldGetState.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\ItemGetSingleState.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\ItemGetSingleState.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\ItemGetState.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\ItemGetState.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\states\ItemSelectState.cpp"
 					>
 				</File>
@@ -589,6 +629,14 @@
 				</File>
 				<File
 					RelativePath="..\src\states\ShopState.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\SkillGetState.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\states\SkillGetState.h"
 					>
 				</File>
 				<File
@@ -725,6 +773,14 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath="..\src\core\JoystickConfig.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\core\JoystickConfig.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\core\MenuBox.cpp"
 					>
 				</File>
@@ -782,6 +838,14 @@
 							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
 						/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\src\core\ZipFileProvider.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\core\ZipFileProvider.h"
+					>
 				</File>
 			</Filter>
 			<Filter
@@ -1186,6 +1250,14 @@
 							Name="VCCustomBuildTool"
 						/>
 					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\src\editor\TileEditor.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\editor\TileEditor.h"
+					>
 				</File>
 				<File
 					RelativePath="..\src\editor\TileSelector.cpp"

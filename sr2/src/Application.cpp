@@ -2460,10 +2460,10 @@ void Application::draw()
     
     m_window.get_gc().push_cliprect ( dst );
 
-    std::vector<State*>::iterator end = mStates.end();
+    //std::vector<State*>::iterator end = mStates.end();
 
     for ( std::vector<State*>::iterator iState = mStates.begin();
-            iState != end; iState++ )
+            iState != mStates.end(); iState++ )
     {
         State * pState = *iState;
         pState->Draw ( dst, m_window.get_gc() );

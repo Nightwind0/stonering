@@ -13,6 +13,7 @@
 #include <sstream>
 #include <iomanip>
 #include <algorithm>
+#include <limits>
 #include "SoundManager.h"
 
 
@@ -98,8 +99,11 @@ private:
 	CL_GraphicContext & m_gc;
 };
 }
-
+#ifdef WIN32
+const BattleState::SpriteTicket BattleState::UNDEFINED_SPRITE_TICKET = 0xBEEFBEEF;
+#else
 const BattleState::SpriteTicket BattleState::UNDEFINED_SPRITE_TICKET = std::numeric_limits<int>::min();
+#endif
 
 BattleState::BattleState(){
 	m_anim_state = new AnimationState(*this);
@@ -1390,14 +1394,17 @@ SteelType BattleState::darkMode( int nOrder, double r, double g, double b, doubl
 }
 
 SteelType BattleState::animation( SteelType::Functor functor ) {
+#if ENABLE_ANIMATIONS
 	m_anim_state->Init(functor);
 	IApplication::GetInstance()->RunState(m_anim_state);
+#endif
 	return SteelType();
 }
 
 
 
 SteelType BattleState::doTargetedAnimation( SteelType::Handle pICharacter, SteelType::Handle pITarget, SteelType::Handle hAnim ) {
+#if ENABLE_ANIMATIONS
 	ICharacter * character = GrabHandle<ICharacter*>( pICharacter );
 	ICharacter * target = GrabHandle<ICharacter*>( pITarget );
 	Animation * anim = GrabHandle<Animation*>( hAnim );
@@ -1409,7 +1416,7 @@ SteelType BattleState::doTargetedAnimation( SteelType::Handle pICharacter, Steel
 	m_anim_state->Init( anim, group_for_character( character ), group_for_character( target ), character, target );
 
 	IApplication::GetInstance()->RunState( m_anim_state );
-
+#endif
 	return SteelType();
 }
 
@@ -1417,6 +1424,7 @@ SteelType BattleState::doTargetedAnimation( SteelType::Handle pICharacter, Steel
 
 
 SteelType BattleState::doCharacterAnimation( SteelType::Handle pICharacter, SteelType::Handle hAnim ) {
+#if ENABLE_ANIMATIONS
 	ICharacter * character = GrabHandle<ICharacter*>( pICharacter );
 	Animation * anim = GrabHandle<Animation*>( hAnim );
 	if ( anim == NULL ) {
@@ -1426,7 +1434,7 @@ SteelType BattleState::doCharacterAnimation( SteelType::Handle pICharacter, Stee
 	m_anim_state->Init( anim, group_for_character( character ), NULL, character, NULL );
 
 	IApplication::GetInstance()->RunState( m_anim_state );
-
+#endif
 	return SteelType();
 }
 
