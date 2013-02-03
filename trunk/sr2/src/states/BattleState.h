@@ -301,7 +301,6 @@ private:
 	std::vector<Sprite> m_sprites;
 	CL_Mutex m_sprite_mutex;
 	BattleConfig * m_config;
-	AnimationState * m_anim_state;
 
 	friend class BattleState::Display;
 	friend class TargetingState;

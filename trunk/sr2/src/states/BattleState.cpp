@@ -17,6 +17,8 @@
 #include "SoundManager.h"
 
 
+#define ENABLE_ANIMATIONS 1
+
 using namespace StoneRing;
 using namespace Steel;
 
@@ -106,10 +108,9 @@ const BattleState::SpriteTicket BattleState::UNDEFINED_SPRITE_TICKET = std::nume
 #endif
 
 BattleState::BattleState(){
-	m_anim_state = new AnimationState(*this);
+
 }
 BattleState::~BattleState(){
-	delete m_anim_state;
 }
 
 void BattleState::SetConfig( BattleConfig* config ) {
@@ -1395,8 +1396,9 @@ SteelType BattleState::darkMode( int nOrder, double r, double g, double b, doubl
 
 SteelType BattleState::animation( SteelType::Functor functor ) {
 #if ENABLE_ANIMATIONS
-	m_anim_state->Init(functor);
-	IApplication::GetInstance()->RunState(m_anim_state);
+	AnimationState state(*this);
+	state.Init(functor);
+	IApplication::GetInstance()->RunState(&state);
 #endif
 	return SteelType();
 }
@@ -1413,9 +1415,10 @@ SteelType BattleState::doTargetedAnimation( SteelType::Handle pICharacter, Steel
 	}
 	if ( !target ) throw TypeMismatch();
 	if ( !character ) throw TypeMismatch();
-	m_anim_state->Init( anim, group_for_character( character ), group_for_character( target ), character, target );
+	AnimationState state(*this);
+	state.Init( anim, group_for_character( character ), group_for_character( target ), character, target );
 
-	IApplication::GetInstance()->RunState( m_anim_state );
+	IApplication::GetInstance()->RunState( &state );
 #endif
 	return SteelType();
 }
@@ -1431,9 +1434,10 @@ SteelType BattleState::doCharacterAnimation( SteelType::Handle pICharacter, Stee
 		throw TypeMismatch();
 	}
 	if ( !character ) throw TypeMismatch();
-	m_anim_state->Init( anim, group_for_character( character ), NULL, character, NULL );
+	AnimationState state(*this);
+	state.Init( anim, group_for_character( character ), NULL, character, NULL );
 
-	IApplication::GetInstance()->RunState( m_anim_state );
+	IApplication::GetInstance()->RunState( &state );
 #endif
 	return SteelType();
 }
