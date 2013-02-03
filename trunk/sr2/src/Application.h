@@ -322,7 +322,7 @@ private:
 		IApplication::AxisDirection m_dir;
 		IApplication::Button m_button;
 	}m_joystick_train_component;
-	
+	SteelInterpreter mInterpreter;	
 	JoystickConfig m_joystick_config;
 
     /* STATES */
@@ -353,7 +353,7 @@ private:
 	CL_VirtualDirectory m_resource_dir;
 	ZipFileProvider m_zip_provider;
 	std::map<IApplication::Button,bool> m_button_down;
-	SteelInterpreter mInterpreter;
+
 };
 
 inline void Application::steelConst(const std::string &name, int value)
