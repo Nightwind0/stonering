@@ -504,6 +504,7 @@ void TargetingState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
         if ((m_pParent->m_targets.m_bSelectedGroup && m_pParent->m_targets.selected.m_pGroup == m_pParent->m_monsters)
                 || m_pParent->m_targets.selected.m_pTarget == pMonster)
         {
+        	if(!pMonster->GetToggle(ICharacter::CA_ALIVE)) continue;
             CL_Rectf rect = m_pParent->get_character_rect(pMonster);
             CL_Sprite sprite = pMonster->GetCurrentSprite();
             m_target_sprite.set_scale(1.0,1.0);

@@ -1356,6 +1356,8 @@ SteelType BattleState::selectTargets( bool single, bool group, bool defaultMonst
 	if ( m_targets.m_bSelectedGroup ) {
 
 		for ( uint i = 0;i < m_targets.selected.m_pGroup->GetCharacterCount();i++ ) {
+			if(!m_targets.selected.m_pGroup->GetCharacter(i)->GetToggle(ICharacter::CA_ALIVE))
+				continue;
 			SteelType ref;
 			ref.set( m_targets.selected.m_pGroup->GetCharacter( i ) );
 			targets.push_back( ref );
