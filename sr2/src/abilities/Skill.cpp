@@ -46,13 +46,15 @@ void StoneRing::Skill::Invoke(ICharacter* pCharacter,const ParameterList& params
     assert(pCharacter->GetAttribute(ICharacter::CA_BP) >= m_nBp &&
         pCharacter->GetAttribute(ICharacter::CA_MP) >= m_nMp  &&
         "Assure BP and MP before calling Invoke on a skill");
-    pCharacter->PermanentAugment(ICharacter::CA_BP,-double(m_nBp));
-    pCharacter->PermanentAugment(ICharacter::CA_MP,-double(m_nMp));
     
+    bool charge = true;
     
     if(m_pOnInvoke)
     {
-        m_pOnInvoke->ExecuteScript(params);
+        SteelType res =  m_pOnInvoke->ExecuteScript(params);
+        charge = (int)res >= 0; // TODO: This cast right here causes an exception when there is no "return" from a skill. why?
+								// also note... even if you don't return, but you call a bunch of shit, then it's okay. why??
+								// what's on the stack that doesn't want to be cast into an int... something that shouldn't be there?
     }
     else
     {
@@ -70,6 +72,12 @@ void StoneRing::Skill::Invoke(ICharacter* pCharacter,const ParameterList& params
             pQueue->enqueueAction(mpScript,pChar,pTarget,0);
         }
         */
+    }
+    if(charge){
+    	pCharacter->PermanentAugment(ICharacter::CA_BP,-double(m_nBp));
+    	pCharacter->PermanentAugment(ICharacter::CA_MP,-double(m_nMp));
+    }else{
+    	std::cout << "Cancelled charge";
     }
 }
 

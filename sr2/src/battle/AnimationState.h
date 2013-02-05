@@ -52,7 +52,12 @@ namespace StoneRing
 		CL_Rectf GetSpriteRect(BattleState::SpriteTicket sprite);
 		CL_Sprite GetSprite(BattleState::SpriteTicket sprite);
 		BattleState::SpriteTicket AddSprite(CL_Sprite sprite);
-		void SetSpritePos(BattleState::SpriteTicket sprite,const CL_Pointf& pt);	
+		void SetSpritePos(BattleState::SpriteTicket sprite,const CL_Pointf& pt);
+		void SetSpriteOffset(BattleState::SpriteTicket sprite, const CL_Pointf& pt);
+		CL_Pointf GetSpriteOffset(BattleState::SpriteTicket sprite)const;
+		void SetGroupOffset(ICharacterGroup* igroup, const CL_Pointf& pt);
+		CL_Pointf GetGroupOffset(ICharacterGroup* igroup)const;
+		BattleState::SpriteTicket GetSpriteForChar(ICharacter* iChar);
 		void Darken(int mode, float r,float g, float b, float a);
 		void ClearDark(int mode);
     private:
@@ -67,8 +72,7 @@ namespace StoneRing
         //void move_character(ICharacter* character, SpriteAnimation* anim, SpriteMovement* movement, float percentage);
 		
 		class Locale: public SteelType::IHandle {
-		public:
-			
+		public:			
 			enum Type {
 				CHARACTER,
 				GROUP,
@@ -144,7 +148,7 @@ namespace StoneRing
 			virtual void draw(const CL_Rect& screenRect, CL_GraphicContext &gc){}
 			virtual bool finished()=0;
 			// Finish will be called when the task is finished
-			virtual void finish(){
+			virtual void finish(SteelInterpreter* pInterpreter){
 				m_started = false;
 				if(m_start_after){
 					m_state.AddTask(m_start_after);
@@ -184,6 +188,8 @@ namespace StoneRing
 			}
 			virtual bool finished() {
 				return percentage() >= 1.0f;
+			}
+			virtual void update(){
 			}
 		protected:
 			virtual float _percentage()const{
@@ -344,14 +350,13 @@ namespace StoneRing
 			void SetDuration(float duration);
 			virtual void start(SteelInterpreter*);
 			virtual void update(SteelInterpreter*);
-			virtual void finish();
+			virtual void finish(SteelInterpreter*);
 		private:
 			void pick_rand_dir();
 			bool dir_legal()const;
 			Direction m_dir;
 			Shaker m_shaker;
 			Locale m_locale;
-			float m_duration;
 		};
 		
 		class FadeTask: public TimedTask {
@@ -401,6 +406,20 @@ namespace StoneRing
 			SteelType::Functor m_blue;
 			SteelType::Functor m_alpha;
 			int m_mode;
+		};
+		
+		class FunctionTask : public TimedTask { 
+		public:
+			FunctionTask(AnimationState& state):TimedTask(state){
+			}
+			virtual ~FunctionTask(){}
+			virtual std::string GetName() const { return "FunctionTask"; }
+			void init(double duration, SteelType::Functor f);
+			virtual void start(SteelInterpreter*);
+			virtual void update(SteelInterpreter*);
+			virtual void finish(SteelInterpreter*);
+			virtual void cleanup();						
+		private:
 		};
 		
 		
@@ -453,6 +472,8 @@ namespace StoneRing
 		SteelType colorizeSprite(int sprite, SteelType::Handle, double seconds);
 		SteelType startAfter(SteelType::Handle htask, SteelType::Handle hnexttask);
 		SteelType pause(double seconds);
+		SteelType doAfter(double after, SteelType::Functor f); // Executes f at finish
+		SteelType doFunction(SteelType::Functor f);
 		// sets each task in the array to start after the prior task
 		SteelType chainTasks(const Steel::SteelArray& array);
 		SteelType waitFor(SteelType::Handle hTask); // automatically starts the task if not started
