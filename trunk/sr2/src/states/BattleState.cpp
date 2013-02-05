@@ -186,66 +186,68 @@ void BattleState::set_positions_to_loci() {
 	}
 }
 
-void BattleState::next_turn() {
-	if ( m_bDoneAfterRound ) {
-		m_bDone = true;
-		return;
+void BattleState::run_turn(){
+	ICharacter * iCharacter = m_initiative[m_cur_char];
+	Character * pChar = dynamic_cast<Character*>( iCharacter );
+
+	set_positions_to_loci();
+	iCharacter->StatusEffectRound();
+
+	if ( pChar != NULL ) {
+		ParameterList params;
+		params.push_back( ParameterListItem( "$Character", pChar ) );
+		params.push_back( ParameterListItem( "$Round", static_cast<int>( m_nRound ) ) );
+
+		pChar->GetBattleMenu()->SetEnableConditionParams( params, pChar );
+					
+		pChar->GetBattleMenu()->Init();
+		m_combat_state = BATTLE_MENU;
+		m_menu_stack.push( pChar->GetBattleMenu() );
+	} else {
+		Monster * pMonster = dynamic_cast<Monster*>( m_initiative[m_cur_char] );
+		assert( pMonster != NULL ); // has to be a monster...
+		// Figure out what the monster will do here.
+		m_combat_state = DISPLAY_ACTION;
+		ParameterList params;
+		// Supply a handle to the character in question;
+		params.push_back( ParameterListItem( "$Character", pMonster ) );
+		params.push_back( ParameterListItem( "$Round", static_cast<int>( m_nRound ) ) );
+		pMonster->Round( params );
 	}
-
-	while ( true ) {
-		ICharacter * iCharacter = m_initiative[m_cur_char];
-		Character * pCharacter = dynamic_cast<Character*>( iCharacter );
-
-		if ( !iCharacter->GetToggle( ICharacter::CA_CAN_ACT )
-							|| !iCharacter->GetToggle( ICharacter::CA_ALIVE ) ) {
-			pick_next_character();
-			continue;
-		}
-
-		set_positions_to_loci();
-		iCharacter->StatusEffectRound();
-
-		if ( pCharacter != NULL ) {
-			ParameterList params;
-			// Supply a handle to the character in question
-			Character *pChar = dynamic_cast<Character*>( m_initiative[m_cur_char] );
-			params.push_back( ParameterListItem( "$Character", pChar ) );
-			params.push_back( ParameterListItem( "$Round", static_cast<int>( m_nRound ) ) );
-
-			pCharacter->GetBattleMenu()->SetEnableConditionParams( params, pChar );
-			//pCharacter->GetBattleMenu()->Init();
-
-			if(!pCharacter->GetBattleMenu()->HasEnabledOptions()){
-				pick_next_character();
-				continue;
-			}
-			pCharacter->GetBattleMenu()->Init();
-			m_combat_state = BATTLE_MENU;
-			m_menu_stack.push( pCharacter->GetBattleMenu() );
-			break;
-		} else {
-			Monster * pMonster = dynamic_cast<Monster*>( m_initiative[m_cur_char] );
-			assert( pMonster != NULL ); // has to be a monster...
-			// Figure out what the monster will do here.
-			m_combat_state = DISPLAY_ACTION;
-			ParameterList params;
-			// Supply a handle to the character in question;
-			params.push_back( ParameterListItem( "$Character", pMonster ) );
-			params.push_back( ParameterListItem( "$Round", static_cast<int>( m_nRound ) ) );
-			pMonster->Round( params );
-			break;
-		}
-
-	}
-
 
 }
 
-void BattleState::pick_next_character() {
-	if ( ++m_cur_char >= m_initiative.size() ) {
-		m_cur_char = 0;
-		m_nRound++;
+void BattleState::next_turn() {
+	if ( m_bDoneAfterRound ) {
+		m_bDone = true;
 	}
+
+	m_combat_state = NEXT_TURN;
+}
+
+void BattleState::pick_next_character() {
+	ICharacter * iChar;
+	do{
+		++m_cur_char;
+		if(m_cur_char >= m_initiative.size()){
+			m_cur_char = 0;
+			m_nRound++;
+		}
+		iChar = m_initiative[m_cur_char];
+		Character *pChar = dynamic_cast<Character*>( iChar );
+		if(pChar){
+			ParameterList params;
+			params.push_back( ParameterListItem( "$Character", pChar ) );
+			params.push_back( ParameterListItem( "$Round", static_cast<int>( m_nRound ) ) );
+
+			pChar->GetBattleMenu()->SetEnableConditionParams( params, pChar );
+			//pCharacter->GetBattleMenu()->Init();
+			if(!pChar->GetBattleMenu()->HasEnabledOptions())
+				continue;
+		}
+	}while(!iChar->GetToggle( ICharacter::CA_CAN_ACT )
+							|| !iChar->GetToggle( ICharacter::CA_ALIVE ) );
+
 }
 
 bool characterInitiativeSort( const ICharacter* pChar1, const ICharacter* pChar2 ) {
@@ -298,6 +300,8 @@ void BattleState::HandleButtonUp( const IApplication::Button& button ) {
 
 					if ( pOption->Enabled( params, pChar ) ) {
 						pOption->Select( m_menu_stack, params, pChar );
+						// TODO: If we can detect that the command went through (was not cancelled)
+						// then we could just call FinishTurn right here and not make the scripts call it...
 					} else {
 						// Play bbzt sound
 						SoundManager::PlayEffect( SoundManager::EFFECT_BAD_OPTION );
@@ -356,6 +360,7 @@ void BattleState::Draw( const CL_Rect &screenRect, CL_GraphicContext& GC ) {
 		if ( passed >= 1.0f ) {
 			m_eState = COMBAT;
 			next_turn();
+			run_turn();
 			( this->*m_draw_method )( screenRect, GC );
 		} else {
 			if ( m_transition == FLIP_ZOOM ||
@@ -387,8 +392,12 @@ void BattleState::Draw( const CL_Rect &screenRect, CL_GraphicContext& GC ) {
 				}
 			}
 		}
-	} else {
+	}else{
 		( this->*m_draw_method )( screenRect, GC );
+	}
+	if(m_eState == COMBAT && m_combat_state == NEXT_TURN){
+		m_combat_state = BEGIN_TURN;
+		run_turn();	
 	}
 }
 
@@ -747,9 +756,9 @@ CL_Rectf BattleState::Sprite::Rect() const {
 CL_Pointf BattleState::Sprite::Position()const {
 	return m_pos;
 }
-void BattleState::Sprite::Draw( CL_GraphicContext& gc ) {
+void BattleState::Sprite::Draw( CL_GraphicContext& gc, const CL_Pointf& pos ) {
 	m_sprite.set_alignment( origin_center );
-	m_sprite.draw( gc, m_pos.x, m_pos.y );
+	m_sprite.draw( gc, m_pos.x + pos.x, m_pos.y + pos.y );
 }
 
 int BattleState::Sprite::ZOrder() const {
@@ -793,7 +802,7 @@ int BattleState::add_sprite( CL_Sprite sprite ) {
 	return index;
 }
 
-void BattleState::set_sprite_pos( SpriteTicket nSprite, CL_Pointf pos ) {
+void BattleState::set_sprite_pos( SpriteTicket nSprite, const CL_Pointf& pos ) {
 	if(nSprite < 0){
 		get_char_with_sprite(nSprite)->SetBattlePos(pos);
 	}else{
@@ -843,7 +852,7 @@ void BattleState::draw_sprites( int z, CL_GraphicContext& GC ) {
 	for ( int i = 0;i < m_sprites.size();i++ ) {
 		if ( m_sprites[i].Enabled() ) {
 			m_sprites[i].GetSprite().update();
-			m_sprites[i].Draw( GC );
+			m_sprites[i].Draw( GC, m_offsets[i] );
 		}
 	}
 	m_sprite_mutex.unlock();
@@ -873,7 +882,7 @@ void BattleState::draw_monsters( const CL_Rectf &monsterRect, CL_GraphicContext&
 
 	std::sort( sortedList.begin(), sortedList.end(), MonsterSort(*this) );
 
-
+	const CL_Pointf group_offset = m_group_offsets[m_monsters];
 
 	for ( uint i = 0; i < sortedList.size(); i++ ) {
 		Monster *pMonster = sortedList[i];
@@ -884,6 +893,8 @@ void BattleState::draw_monsters( const CL_Rectf &monsterRect, CL_GraphicContext&
 
 		// CL_Rectf rect = get_character_rect(pMonster);
 		CL_Pointf center = pMonster->GetBattlePos();
+		center += m_offsets[get_sprite_for_char(pMonster)];
+		center += group_offset;
 		//std::cout << pMonster->GetName() << '@' << rect.top << ',' << rect.left << std::endl;
 		//rect.translate ( rect.get_width() / 2.0f,  rect.get_height() / 2.0f);
 
@@ -927,6 +938,8 @@ CL_Sprite BattleState::current_sprite( ICharacter* iCharacter ) const {
 
 void BattleState::draw_players( const CL_Rectf &playerRect, CL_GraphicContext& GC ) {
 	Party * pParty = IApplication::GetInstance()->GetParty();
+	
+	const CL_Pointf group_offset = m_group_offsets[pParty];
 
 	uint playercount = pParty->GetCharacterCount();
 	for ( uint nPlayer = 0; nPlayer < playercount; nPlayer++ ) {
@@ -936,6 +949,8 @@ void BattleState::draw_players( const CL_Rectf &playerRect, CL_GraphicContext& G
 		CL_Sprite sprite = current_sprite( iCharacter );
 		// CL_Rect rect = get_character_rect(iCharacter);
 		CL_Pointf center = pCharacter->GetBattlePos();
+		center += m_offsets[get_sprite_for_char(iCharacter)];
+		center += group_offset;
 		//rect.translate (  rect.get_width() / 2.0f,  rect.get_height() / 2.0f );
 
 		if ( !pCharacter->GetToggle( ICharacter::CA_DRAW_STILL ) )
@@ -1377,13 +1392,15 @@ SteelType BattleState::selectTargets( bool single, bool group, bool defaultMonst
 }
 
 SteelType BattleState::finishTurn() {
-	FinishTurn();
+	FinishTurn(); 
 	return SteelType();
 }
 // if they back out and want to go back to the battle menu
 SteelType BattleState::cancelOption() {
 	m_combat_state = BATTLE_MENU;
-	return SteelType();
+	SteelType var;
+	var.set(-1);
+	return var;
 }
 
 SteelType BattleState::clearDarkMode( int nOrder ) {
@@ -1397,11 +1414,9 @@ SteelType BattleState::darkMode( int nOrder, double r, double g, double b, doubl
 }
 
 SteelType BattleState::animation( SteelType::Functor functor ) {
-#if ENABLE_ANIMATIONS
 	AnimationState state(*this);
 	state.Init(functor);
 	IApplication::GetInstance()->RunState(&state);
-#endif
 	return SteelType();
 }
 
@@ -1447,7 +1462,9 @@ SteelType BattleState::doCharacterAnimation( SteelType::Handle pICharacter, Stee
 SteelType BattleState::createDisplay( int damage, SteelType::Handle hICharacter, int display_type ) {
 	//            Display(BattleState& parent,eDisplayType type,int damage,SteelType::Handle pICharacter);
 	ICharacter* iChar = GrabHandle<ICharacter*>( hICharacter );
-	if ( !iChar ) throw TypeMismatch();
+	if ( !iChar ) {
+		throw TypeMismatch();
+	}
 	Display display( *this, static_cast<Display::eDisplayType>( display_type ), damage, iChar );
 	display.start();
 	m_displays.push_back( display );
@@ -1523,5 +1540,23 @@ BattleState::SpriteTicket BattleState::get_sprite_for_char( ICharacter* i_char )
 		return UNDEFINED_SPRITE_TICKET;
 	return 0 - pos; // Negative sprite tickets are character's sprites
 }
+
+void BattleState::set_offset( BattleState::SpriteTicket sprite, const CL_Pointf& offset ) {
+	m_offsets[sprite] = offset;
+}
+
+CL_Pointf BattleState::get_offset( BattleState::SpriteTicket sprite ) {
+	return m_offsets[sprite];
+}
+
+
+void BattleState::set_offset( ICharacterGroup* pGroup, const CL_Pointf& offset ) {
+	m_group_offsets[pGroup] = offset;
+}
+
+CL_Pointf BattleState::get_offset( ICharacterGroup* pGroup ) {
+	return m_group_offsets[pGroup];
+}
+
 
 

@@ -85,9 +85,11 @@ private:
 	};
 
 	enum eCombatState {
+		BEGIN_TURN,
 		BATTLE_MENU,
 		TARGETING,
-		DISPLAY_ACTION
+		DISPLAY_ACTION,
+		NEXT_TURN
 	};
 
 	enum eDisplayOrder {
@@ -169,7 +171,7 @@ private:
 		void SetPosition( const CL_Pointf& pos );
 		CL_Pointf Position()const;
 		void SetZOrder( int z );
-		void Draw( CL_GraphicContext& gc );
+		void Draw( CL_GraphicContext& gc, const CL_Pointf& pos );
 		bool Enabled() const;
 		void SetEnabled( bool enabled );
 		CL_Rectf Rect()const;
@@ -205,16 +207,20 @@ private:
 	SpriteTicket add_sprite( CL_Sprite sprite );
 	CL_Sprite get_char_sprite ( SpriteTicket )const;
 	ICharacter*  get_char_with_sprite ( SpriteTicket nSprite )const;
-	void set_sprite_pos( SpriteTicket nSprite, CL_Pointf pos );
+	void set_sprite_pos( SpriteTicket nSprite, const CL_Pointf& pos );
 	CL_Sprite get_sprite( SpriteTicket nSprite ) const;
 	void remove_sprite( SpriteTicket nSprite );
 	SpriteTicket get_sprite_for_char( ICharacter* i_char ) const;	
 	CL_Rectf get_sprite_rect( SpriteTicket nSprite );
-	
+	void set_offset(SpriteTicket sprite, const CL_Pointf& offset);
+	CL_Pointf get_offset(SpriteTicket sprite);
+	void set_offset(ICharacterGroup* pGroup,const CL_Pointf& offset);
+	CL_Pointf get_offset(ICharacterGroup* pGroup);
 	void init_or_release_players( bool bRelease = false );
 	void set_positions_to_loci();
 	void roll_initiative();
 	void next_turn();
+	void run_turn();
 	void pick_next_character();
 	void check_for_death();
 	bool end_conditions();
@@ -299,6 +305,8 @@ private:
 	bool m_bBossBattle;
 	std::list<Display> m_displays;
 	std::vector<Sprite> m_sprites;
+	std::map<SpriteTicket,CL_Pointf> m_offsets;
+	std::map<ICharacterGroup*,CL_Pointf> m_group_offsets;
 	CL_Mutex m_sprite_mutex;
 	BattleConfig * m_config;
 

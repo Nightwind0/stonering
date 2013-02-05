@@ -1495,6 +1495,7 @@ SteelType Application::getSkill(const std::string& whichskill)
     }
 
     Skill * pSkill = AbilityManager::GetSkill(whichskill);
+	assert(pSkill);
 
     SteelType var;
     var.set(pSkill);
@@ -1505,7 +1506,9 @@ SteelType Application::getSkill(const std::string& whichskill)
 
 SteelType Application::doSkill ( SteelType::Handle hSkill, SteelType::Handle hICharacter )
 {
+	std::cout << "Going to grab skill handle" << std::endl;
     Skill * pSkill = GrabHandle<Skill*>(hSkill);
+	std::cout << "Skill was okay, now for character" << std::endl;
     ICharacter * pChar = GrabHandle<ICharacter*>(hICharacter);
     
     pSkill->Invoke(pChar,ParameterList());
