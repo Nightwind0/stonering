@@ -98,10 +98,10 @@ protected:
 private:
 
     struct ThreadFunctor {
-        ThreadFunctor(CL_Event& event,Functor *pFunctor):m_event(event),m_pFunctor(pFunctor) {
+        ThreadFunctor(const CL_Event& event,Functor *pFunctor):m_event(event),m_pFunctor(pFunctor) {
         }
         Functor *m_pFunctor;
-        CL_Event& m_event;
+        CL_Event m_event;
     };
 
 

@@ -152,6 +152,7 @@ namespace StoneRing
 				m_started = false;
 				if(m_start_after){
 					m_state.AddTask(m_start_after);
+					m_start_after->start(pInterpreter);
 					m_start_after = NULL;
 				}
 			}
@@ -351,12 +352,15 @@ namespace StoneRing
 			virtual void start(SteelInterpreter*);
 			virtual void update(SteelInterpreter*);
 			virtual void finish(SteelInterpreter*);
+			virtual void cleanup();
 		private:
+			void pick_opposite_dir();
 			void pick_rand_dir();
 			bool dir_legal()const;
 			Direction m_dir;
 			Shaker m_shaker;
 			Locale m_locale;
+			bool m_osc;
 		};
 		
 		class FadeTask: public TimedTask {
