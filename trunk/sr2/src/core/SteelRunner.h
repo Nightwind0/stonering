@@ -70,10 +70,16 @@ SteelRunner<T>::~SteelRunner()
 template <class T>
 void SteelRunner<T>::run()
 {
+	try{
     if(m_pScript)
         m_result = m_pInterpreter->runAst(m_pScript,m_params);
     if(m_pFunctor)
         m_result = m_pFunctor->Call(m_pInterpreter,Steel::SteelType::Container());
+	}catch(Steel::SteelException e){
+		std::cerr << e.getMessage() << " in " << e.getLine() << " of " << e.getScript() << std::endl;
+	}catch(...){
+		std::cerr << "Some kind of exception occured." << std::endl;
+	}
     (m_callee->*m_callback)();
 }
 template <class T>

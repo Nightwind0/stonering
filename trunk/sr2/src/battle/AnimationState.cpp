@@ -360,7 +360,8 @@ void AnimationState::WaitFinishedEvent() {
 		start( m_tasks.front() );
 		waitFor( m_tasks.front() );
 		m_task_mutex.lock();
-		m_tasks.erase( m_tasks.begin() );
+		if(!m_tasks.empty())
+			m_tasks.erase( m_tasks.begin() );
 		m_task_mutex.unlock();
 	}
 }
@@ -1540,7 +1541,11 @@ float AnimationState::Task::percentage() const {
 	}
 	// Multiplying a vector by zero moves it to the corner..
 	if( perc == 0.0f ) {
-		perc = 0.0000001f;
+		perc = 0.000001f;
+	}
+	
+	if( perc > 1.0f){
+		perc = 1.0f;
 	}
 
 	return perc;
@@ -1904,14 +1909,13 @@ bool AnimationState::ShakerTask::dir_legal() const {
 
 void AnimationState::ShakerTask::update( SteelInterpreter* pInterpreter ) {
 	float motion = 0.0f;
-	if( m_functor ) {
+	if( m_shaker.m_functor ) {
 		SteelType::Container params;
 		SteelType p;
 		p.set( percentage() ); // or _percentage?
 		params.push_back( p );
-		motion = ( double )m_functor->Call( pInterpreter, params );
+		motion = ( double )m_shaker.m_functor->Call( pInterpreter, params );
 	}
-
 	// TODO: Call a method which calls a method on the battle state
 	// that sets an offset to either a sprite, a group, or the screen.
 	CL_Vec2<float> dir = m_dir.ToScreenVector() * motion;
@@ -1929,13 +1933,36 @@ void AnimationState::ShakerTask::update( SteelInterpreter* pInterpreter ) {
 			break;
 	}
 
-
-	pick_rand_dir();
+	if(m_osc){
+		pick_opposite_dir();
+	}else{
+		pick_rand_dir();
+	}
+	m_osc = !m_osc;
 }
+
+void AnimationState::ShakerTask::pick_opposite_dir() {
+	m_dir = m_dir.opposite();
+}
+
 
 void AnimationState::ShakerTask::finish( SteelInterpreter* pInterpreter ) {
 	TimedTask::finish( pInterpreter );
 	// TODO: Return battle state to zero offsets
+}
+
+void AnimationState::ShakerTask::cleanup(){
+	switch( m_locale.GetType() ) {
+		case Locale::SPRITE:
+			m_state.SetSpriteOffset( m_locale.GetSprite(), CL_Pointf(0.0f,0.0f) );
+			break;
+		case Locale::CHARACTER:
+			m_state.SetSpriteOffset( m_state.GetSpriteForChar(m_locale.GetChar()),CL_Pointf(0.0f,0.0f) );
+			break;
+		case Locale::GROUP:
+			m_state.SetGroupOffset( m_locale.GetGroup(), CL_Pointf(0.0f,0.0f) );
+			break;
+	}	
 }
 
 void AnimationState::FadeTask::SetDuration( float duration ) {

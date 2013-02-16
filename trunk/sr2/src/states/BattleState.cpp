@@ -184,6 +184,8 @@ void BattleState::set_positions_to_loci() {
 		CL_Pointf pos = get_character_locus_rect( *iter ).get_center();
 		( *iter )->SetBattlePos( pos );
 	}
+	m_offsets.clear();
+	m_group_offsets.clear();
 }
 
 void BattleState::run_turn(){

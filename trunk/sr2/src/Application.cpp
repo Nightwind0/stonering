@@ -2495,7 +2495,7 @@ void Application::run(bool process_functors)
         if(process_functors && !m_mainthread_functors.empty()){
             Functor * pFunctor = m_mainthread_functors.front().m_pFunctor;
             pFunctor->operator()();
-            m_mainthread_functors.front().m_event.set();
+            m_mainthread_functors.front().m_event.set();			
             mFunctorMutex.lock();
             m_mainthread_functors.pop();
             mFunctorMutex.unlock();
