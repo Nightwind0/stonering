@@ -158,8 +158,7 @@ void BattleState::init( const std::vector<MonsterRef*>& monsters, int cellRows, 
 		if ( count > 0 ) throw CL_Exception( "Couldn't fit all monsters in their rows and columns" );
 	}
 	m_backdrop = GraphicsManager::GetBackdrop( backdrop );
-
-
+	
 	m_darkModes.clear();
 }
 
@@ -439,7 +438,7 @@ void BattleState::Start() {
 	m_bDone = false;
 
 #if 0
-	m_pStatusHPFont = pGraphicsManager->GetFont( GraphicsManager::BATTLE_STATUS, GraphicsManager::HP );
+	m_pStatuFont = pGraphicsManager->GetFont( GraphicsManager::BATTLE_STATUS, GraphicsManager::HP );
 	m_pStatusMPFont =  pGraphicsManager->GetFont( GraphicsManager::BATTLE_STATUS, GraphicsManager::MP );
 	m_pStatusBPFont =  pGraphicsManager->GetFont( GraphicsManager::BATTLE_STATUS, GraphicsManager::BP );
 	m_pStatusGeneralFont =  pGraphicsManager->GetFont( GraphicsManager::BATTLE_STATUS, GraphicsManager::GENERAL );
@@ -547,7 +546,7 @@ void BattleState::draw_status( const CL_Rectf &screenRect, CL_GraphicContext& GC
 		std::ostringstream name;
 		name << std::setw( 16 ) << std::left << pChar->GetName();
 		std::ostringstream hp;
-		hp << std::setw( 6 ) << pChar->GetAttribute( ICharacter::CA_HP ) << '/'
+		hp << std::setw( 6 ) << (int)pChar->GetLerpAttribute( ICharacter::CA_HP ) << '/'
 		<< pChar->GetAttribute( ICharacter::CA_MAXHP );
 		
 		if(m_combat_state == BATTLE_MENU && pChar == m_initiative[m_cur_char]){
@@ -563,7 +562,7 @@ void BattleState::draw_status( const CL_Rectf &screenRect, CL_GraphicContext& GC
 																						textRect.top + ( p* height_per_character )
 																						, hp.str(), Font::TOP_LEFT );
 		std::ostringstream mp;
-		mp << std::setw( 6 ) << pChar->GetAttribute( ICharacter::CA_MP ) << '/'
+		mp << std::setw( 6 ) << (int)pChar->GetLerpAttribute( ICharacter::CA_MP ) << '/'
 		<< pChar->GetAttribute( ICharacter::CA_MAXMP );
 		m_mpFont.draw_text( GC, ( textRect.get_width() / 3 ) * 2 + textRect.left,
 																						textRect.top + ( p*height_per_character ), mp.str(), Font::TOP_LEFT
@@ -573,7 +572,7 @@ void BattleState::draw_status( const CL_Rectf &screenRect, CL_GraphicContext& GC
 		bp_box.top += textRect.top + ( p * height_per_character );
 		bp_box.bottom += textRect.top + ( p * height_per_character );
 		CL_Rectf bp_fill = bp_box;
-		float percentage = pChar->GetAttribute( ICharacter::CA_BP ) / pChar->GetAttribute( ICharacter::CA_MAXBP );
+		float percentage = pChar->GetLerpAttribute( ICharacter::CA_BP ) / pChar->GetAttribute( ICharacter::CA_MAXBP );
 		bp_fill.right = bp_fill.left + ( percentage * bp_fill.get_width() );
 		CL_Draw::gradient_fill( GC, bp_fill, m_bp_gradient );
 		CL_Draw::box( GC, bp_box, m_bp_border );

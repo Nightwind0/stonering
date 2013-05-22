@@ -38,6 +38,7 @@ uint Party::GetGold() const
 }
 
 
+
 bool Party::HasItem(ItemRef *pItemRef, uint count) const
 {
     Item * pItem = pItemRef->GetItem();
@@ -125,7 +126,7 @@ bool Party::TakeItem(Item *pItem, uint count)
 
 void Party::GiveGold(int amount)
 {
-
+	uint old_value = m_nGold;
     if(amount <0 )
     {
         // They are taking..
@@ -134,6 +135,8 @@ void Party::GiveGold(int amount)
     }
 
     m_nGold += amount;
+	
+	m_lerp_gold.SetRange(old_value, m_nGold);
 }
 
 
@@ -217,6 +220,13 @@ double Party::GetCommonAttribute ( ICharacter::eCommonAttribute attr ) const
     // TODO: eventually have Characters be able to modify common attributes, then process those as well
     return value;
 }
+
+
+uint Party::GetLerpGold() const {
+	return m_lerp_gold.GetValue();
+}
+
+
 
 bool Party::GetCommonToggle ( ICharacter::eCommonAttribute attr ) const
 {
@@ -338,6 +348,8 @@ void Party::Deserialize ( std::istream& in )
         GiveItem(ItemManager::DeserializeItem(in),item_count);
     }    
     in.read((char*)&m_nGold,sizeof(uint));
+	
+	m_lerp_gold.SetStaticValue(m_nGold);
     
     uint char_count;
     in.read((char*)&char_count,sizeof(uint));

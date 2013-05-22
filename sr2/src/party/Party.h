@@ -16,6 +16,7 @@
 #include "sr_defines.h"
 #include "ICharacter.h"
 #include "ICharacterGroup.h"
+#include "TimedInterpolator.h"
 
 namespace StoneRing{
 
@@ -30,6 +31,7 @@ namespace StoneRing{
         ~Party();
 
         virtual uint GetGold() const;
+		virtual uint GetLerpGold() const;
         virtual bool HasItem(ItemRef *pItemRef, uint count = 1 )const;
         virtual bool DidEvent(const std::string &event) const;
         virtual void DoEvent(const std::string &event, bool bRemember);
@@ -78,8 +80,8 @@ namespace StoneRing{
           std::map<std::string,ItemEntry> m_items;
           std::map<uint,Omega*> m_omegas;
           uint m_nGold;
+		  TimedInterpolator<int> m_lerp_gold;
           uint m_nMinutes;
-
     };
 
 

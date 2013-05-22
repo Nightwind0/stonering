@@ -738,6 +738,12 @@ Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, int
         << " total possible weapons" << std::endl;
 #endif
     std::vector<Weapon*> m_options;
+	
+	// TODO: If this gets to be too slow with all the permutations, here's one way to speed it up:
+	// have some minimum number of options, say, 100 or whatever. It could even be just one. Then, randomly shuffle the types,
+	// classes and imbuements before iterating them. Then, you can just stop iterating after you've
+	// hit your minimum number. The only downside is if you ask for a range that just doesn't have
+	// minimum possibilities, it'll keep searching exhaustively.
 
     for(std::list<WeaponType*>::const_iterator type_iter = m_pInstance->m_weapon_types.begin();
         type_iter != m_pInstance->m_weapon_types.end(); 
@@ -827,9 +833,9 @@ Item* ItemManager::GenerateRandomItem(Item::eDropRarity rarity, int min_value, i
     
         // Pick a random equipment
         Item * pItem = NULL;
-        r = ranf();
-        if(r > 0.5f){
-            // Pick a random weapon
+        //r = ranf();
+        if(rand() %4 == 1){
+            // Pick a random weapon, else armor
             pItem = GenerateRandomGeneratedWeapon(rarity,min_value,max_value);
         }else{
             pItem = GenerateRandomGeneratedArmor(rarity,min_value,max_value);
@@ -956,9 +962,9 @@ void ItemManager::SerializeItem(std::ostream& out, Item* pItem)
         if(generated_armor){
             WriteString(out,pGenArmor->GetArmorType()->GetName());
             WriteString(out,pGenArmor->GetArmorClass()->GetName());
-            bool imbuement = (pGenArmor != NULL);
+            bool imbuement = pGenArmor->GetImbuement() != NULL;
             out.write((char*)&imbuement,sizeof(bool));
-            if(pGenArmor->GetImbuement()){
+            if(imbuement){
                 WriteString(out,pGenArmor->GetImbuement()->GetName());
             }
         }else{

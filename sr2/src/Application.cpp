@@ -19,6 +19,7 @@
 #include "Monster.h"
 #include "Weapon.h"
 #include "WeaponType.h"
+#include "WeaponClass.h"
 #include "GeneratedWeapon.h"
 #include "Armor.h"
 #include "StatusEffectModifier.h"
@@ -957,6 +958,8 @@ SteelType Application::getWeaponTypeDamageCategory ( SteelType::Handle hWeaponTy
     return val;
 }
 
+
+
 SteelType Application::getWeaponTypeAnimation ( SteelType::Handle hWeaponType )
 {
     SteelType val;
@@ -1051,6 +1054,10 @@ SteelType Application::invokeWeapon ( SteelType::Handle pICharacter, SteelType::
     Weapon::eScriptMode mode = static_cast<Weapon::eScriptMode> ( invokeTime );
     ParameterList params;
     params.push_back ( ParameterListItem ( "$_Character", iCharacter ) );
+	params.push_back ( ParameterListItem ( "$_Target", pTargetChar ) );
+	params.push_back ( ParameterListItem ( "$_Weapon", hWeapon ) );
+	params.push_back ( ParameterListItem ( "$_When", (int)invokeTime ) );
+	
     pWeapon->Invoke ( mode, params );
 
     return SteelType();
@@ -1258,15 +1265,6 @@ SteelType Application::setCharacterSP ( const SteelType::Handle hCharacter, int 
 }
 
 
-SteelType Application::getMonsterSPReward ( const SteelType::Handle hMonster )
-{
-    Monster * pMonster = GrabHandle<Monster*>(hMonster);
-    
-    SteelType var;
-    var.set(pMonster->GetSPReward());
-    
-    return var;
-}
 
 SteelType Application::randomItem ( uint i_rarity, int min_value, int max_value )
 {
@@ -2178,6 +2176,7 @@ void Application::registerSteelFunctions()
 
     SteelFunctor*  fn_getWeaponType = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getWeaponType );
     SteelFunctor*  fn_getArmorType = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getArmorType );
+	
     SteelFunctor*  fn_getWeaponTypeDamageCategory = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getWeaponTypeDamageCategory );
     SteelFunctor*  fn_getWeaponTypeAnimation = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getWeaponTypeAnimation );
     SteelFunctor*  fn_weaponTypeHasAnimation = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::weaponTypeHasAnimation );
@@ -2350,6 +2349,7 @@ void Application::registerSteelFunctions()
 
     mInterpreter->addFunction ( "getWeaponType", fn_getWeaponType );
     mInterpreter->addFunction ( "getArmorType", fn_getArmorType );
+
     mInterpreter->addFunction ( "getWeaponTypeDamageCategory", fn_getWeaponTypeDamageCategory );
     mInterpreter->addFunction ( "getWeaponTypeAnimation", fn_getWeaponTypeAnimation );
     mInterpreter->addFunction ( "weaponTypeHasAnimation", fn_weaponTypeHasAnimation );
@@ -2394,7 +2394,6 @@ void Application::registerSteelFunctions()
     
     mInterpreter->addFunction ( "getCharacterSP", new SteelFunctor1Arg<Application,SteelType::Handle>( this, &Application::getCharacterSP) );
     mInterpreter->addFunction ( "setCharacterSP", new SteelFunctor2Arg<Application,SteelType::Handle,int>( this, &Application::setCharacterSP) );
-    mInterpreter->addFunction ( "getMonsterSPReward", new SteelFunctor1Arg<Application, SteelType::Handle>( this, &Application::getMonsterSPReward) );
     mInterpreter->addFunction ( "doSkill", new SteelFunctor2Arg<Application,SteelType::Handle,SteelType::Handle>( this, &Application::doSkill) );
     mInterpreter->addFunction ( "getSkill", new SteelFunctor1Arg<Application,const std::string&>(this,&Application::getSkill) );
     mInterpreter->addFunction ( "learnSkill", new SteelFunctor3Arg<Application,SteelType::Handle,SteelType::Handle,bool>(this,&Application::learnSkill) );

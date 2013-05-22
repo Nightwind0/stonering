@@ -151,6 +151,8 @@ private:
 	
 	
     SteelType                       getItemName(const SteelType::Handle hItem);
+	SteelType 						 getWeaponClass(const SteelType::Handle hWeapon);
+	SteelType 						 getWeaponImbuement(const SteelType::Handle hWeapon);
     SteelType                       getWeaponAttribute(const SteelType::Handle hWeapon, uint attr);
     SteelType                       getArmorAttribute(const SteelType::Handle hArmor, uint attr);
     // You can also take
@@ -161,7 +163,6 @@ private:
     SteelType                       getCharacterLevel(const SteelType::Handle hICharacter);
     SteelType                       getCharacterSP(const SteelType::Handle hCharacter);
     SteelType                       setCharacterSP(const SteelType::Handle hCharacter, int sp);
-    SteelType                       getMonsterSPReward(const SteelType::Handle hMonster);
     SteelType                       addExperience(const SteelType::Handle hICharacter, int xp);
     SteelType                       getExperience(const SteelType::Handle hICharacter);
     SteelType                       changeCharacterClass(SteelType::Handle hCharacter, const std::string& chr_class);

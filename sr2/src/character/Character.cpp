@@ -383,9 +383,13 @@ double Character::GetDamageCategoryResistance(DamageCategory::eDamageCategory ty
 void Character::PermanentAugment(eCharacterAttribute attr, double augment)
 {
     std::map<eCharacterAttribute,double>::iterator aug = m_augments.find(attr);
-    if(aug == m_augments.end())
+	double old_value = 0.0;	
+    if(aug == m_augments.end()){
         m_augments[attr] = augment;
-    else  aug->second += augment;
+	}else {
+		old_value = aug->second;
+		aug->second += augment;
+	}
 
     if(IsTransient(attr))
     {
@@ -393,6 +397,9 @@ void Character::PermanentAugment(eCharacterAttribute attr, double augment)
         {
             m_augments[attr] = GetAttribute ( GetMaximumAttribute(attr) );
         }
+        
+        m_lerped_attrs[attr].SetRange(old_value, m_augments[attr]);
+		//m_lerped_attrs[attr].Start();
     }
 }
 
@@ -444,7 +451,6 @@ void Character::load_attributes(CL_DomNamedNodeMap attributes)
 
     CL_ResourceManager&  resources = IApplication::GetInstance()->GetResources();
     m_mapSprite = CL_Sprite(GET_MAIN_GC(),spriteRef, &resources);
-
 }
 
 void Character::load_finished()
@@ -535,6 +541,20 @@ double Character::GetBaseAttribute(eCharacterAttribute attr)const
 double Character::GetAttribute(eCharacterAttribute attr) const
 {
     return GetAttributeWithoutEquipment(attr,NULL);
+}
+
+
+
+double Character::GetLerpAttribute( ICharacter::eCharacterAttribute attr ) const {
+	// We don't bother to lerp non-trasients. that would be odd, wouldn't it?
+	if(ICharacter::IsTransient(attr)){
+		std::map<eCharacterAttribute,TimedInterpolator<double> >::const_iterator iter = m_lerped_attrs.find(attr);
+		if(iter == m_lerped_attrs.end()){
+			return 0.0;
+		}
+		return iter->second.GetValue();
+	}else
+		return GetAttribute(attr);
 }
 
 

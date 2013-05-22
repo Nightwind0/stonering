@@ -21,7 +21,7 @@ namespace StoneRing{
 
         virtual eElement WhichElement() const{ return EWEAPONTYPE; }
 
-	CL_Sprite GetSprite() const;
+		CL_Sprite GetSprite() const;
         std::string GetName() const;
         std::string GetIconRef() const;
 
@@ -31,14 +31,14 @@ namespace StoneRing{
         uint GetBasePrice() const;
         bool IsRanged() const;
         bool IsTwoHanded() const;
-	Animation* GetAnimation() const;
+		Animation* GetAnimation() const;
 
         DamageCategory::eDamageCategory GetDamageCategory () const { return m_damageCategory; }
 
         bool operator==(const WeaponType &lhs);
 
     private:
-	virtual void load_finished();
+		virtual void load_finished();
         virtual bool handle_element(eElement element, Element * pElement );
         virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
         DamageCategory::eDamageCategory m_damageCategory;

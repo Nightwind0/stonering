@@ -510,7 +510,7 @@ SteelType CutSceneState::waitFor ( const SteelType::Handle& waitOn )
 
         for ( std::list<Task*>::const_iterator it = m_tasks.begin();
             it != m_tasks.end(); it++ ) {
-            if ( *it == pTask ) {
+             if ( *it == pTask ) {
                 found = true;
             }
         }

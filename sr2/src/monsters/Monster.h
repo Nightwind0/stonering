@@ -86,16 +86,22 @@ namespace StoneRing
         virtual void SetLevel(uint);
 		virtual bool IsMonster()const { return true; }
         virtual double GetDamageCategoryResistance(DamageCategory::eDamageCategory type) const;
-        virtual double  GetAttribute(eCharacterAttribute attr) const;
+        virtual double GetAttribute(eCharacterAttribute attr) const;
+		virtual double GetLerpAttribute(eCharacterAttribute attr) const;
         virtual bool GetToggle(eCharacterAttribute attr) const;
         virtual void SetToggle(eCharacterAttribute attr, bool state);
-        virtual double GetEquippedWeaponAttribute(Weapon::eAttribute) const
+        virtual double GetEquippedWeaponAttribute(Weapon::eAttribute attr) const
         {
-            return 0.0;
+			if(attr == Weapon::ATTACK)
+				return 0.75 * GetAttribute(ICharacter::CA_STR); // Weapon equal to  75% of str is considered built-in
+				
+			return 0.0;
         }
-        virtual double GetEquippedArmorAttribute(Armor::eAttribute) const
+        virtual double GetEquippedArmorAttribute(Armor::eAttribute attr) const
         {
-            return 0.0;
+			if(attr == Armor::AC)
+				return 0.75 * GetAttribute(ICharacter::CA_DEF); // Monsters have built-in armor equal 75% of def
+			return 0.0;
         }
         virtual void PermanentAugment(eCharacterAttribute attr, double augment);
         virtual void AddStatusEffect(StatusEffect *);
@@ -128,7 +134,6 @@ namespace StoneRing
             return m_bDeathAnimated;
         }
         
-        int GetSPReward() const;
         
     private:
 

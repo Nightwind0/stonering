@@ -388,7 +388,7 @@ void ShopState::draw_gold ( CL_GraphicContext& gc )
     CL_Rectf rect = m_gold_rect;
     rect.shrink ( GraphicsManager::GetMenuInset().x, GraphicsManager::GetMenuInset().y );
     std::ostringstream stream;
-    int gold = IApplication::GetInstance()->GetParty()->GetGold();
+    int gold = IApplication::GetInstance()->GetParty()->GetLerpGold();
     stream << gold << ' '  
             << IApplication::GetInstance()->GetCurrencyName();
     
