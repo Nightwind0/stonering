@@ -99,7 +99,7 @@ std::string CL_String_load(const std::string& id, CL_ResourceManager& resources)
 
 inline double ranf()
 {
-  return (double)rand() / ((double)RAND_MAX + 1.0);
+  return (double)rand() / ((double)RAND_MAX);
 }
 
 /* boxmuller.c           Implements the Polar form of the Box-Muller

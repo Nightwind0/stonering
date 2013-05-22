@@ -374,9 +374,9 @@ void StoneRing::Monster::IterateStatusEffects ( Visitor< StoneRing::StatusEffect
         }
 }
 
-
-int Monster::GetSPReward() const
-{
-    return m_nLevel;
+double Monster::GetLerpAttribute( ICharacter::eCharacterAttribute attr ) const {
+	return GetAttribute(attr); // We don't bother to lerp monster stats because they aren't displayed
 }
+
+
 

@@ -102,8 +102,9 @@ namespace StoneRing{
         //   virtual ICharacterGroup* GetGroup() const=0;
         virtual uint GetLevel()const=0;
         virtual void SetLevel(uint level)=0;
-	virtual bool IsMonster() const { return false; }
+		virtual bool IsMonster() const { return false; }
         virtual double GetAttribute    (eCharacterAttribute attr) const = 0;
+		virtual double GetLerpAttribute (eCharacterAttribute attr) const = 0;
         virtual double GetDamageCategoryResistance(DamageCategory::eDamageCategory type) const = 0;
 
         virtual bool   GetToggle(eCharacterAttribute attr) const = 0;
@@ -122,7 +123,7 @@ namespace StoneRing{
         virtual void   Attacked(ICharacter* pAttacker, DamageCategory::eDamageCategory category, bool melee, int amount)=0;
         virtual CL_Pointf  GetBattlePos()const=0;
         virtual void       SetBattlePos(CL_Pointf point)=0;
-	virtual CL_Sprite  GetCurrentSprite(bool pure=true)=0;
+		virtual CL_Sprite  GetCurrentSprite(bool pure=true)=0;
         
         virtual void   IterateStatusEffects(Visitor<StatusEffect*> &)=0;
 

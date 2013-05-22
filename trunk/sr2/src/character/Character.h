@@ -11,6 +11,7 @@
 #include "Armor.h"
 #include "DamageCategory.h"
 #include "ICharacter.h"
+#include "TimedInterpolator.h"
 
 class CL_Sprite;
 
@@ -51,6 +52,7 @@ namespace StoneRing{
 		virtual void   SetXP(uint amount);
         virtual double GetDamageCategoryResistance(DamageCategory::eDamageCategory type) const;
         virtual double GetAttribute(eCharacterAttribute attr) const;
+		virtual double GetLerpAttribute(eCharacterAttribute attr) const;
         virtual bool   GetToggle(eCharacterAttribute attr) const;
         virtual void   SetToggle(eCharacterAttribute attr, bool state);
         virtual void   PermanentAugment(eCharacterAttribute attr, double augment);
@@ -72,26 +74,26 @@ namespace StoneRing{
         double         GetAttributeWithoutEquipment(eCharacterAttribute attr, Equipment * pExclude) const;
         uint   GetSP()const;
         void   SetSP(uint amount);     
-	/***************************************************************************
-	* Sprites and images
-	***************************************************************************/
-	CL_Sprite  GetPortrait(ePortrait portrait);
+		/***************************************************************************
+		* Sprites and images
+		***************************************************************************/
+		CL_Sprite  GetPortrait(ePortrait portrait);
         CL_Sprite  GetMapSprite() const { return m_mapSprite; }
         CL_Sprite  GetCurrentSprite(bool pure=true);
         void       SetCurrentSprite(CL_Sprite sprite) { m_currentSprite = sprite; }
 
-	/**************************************************************************
-	* Battle stuff
-	***************************************************************************/
+		/**************************************************************************
+		* Battle stuff
+		***************************************************************************/
         virtual CL_Pointf      GetBattlePos()const;
         virtual void           SetBattlePos(CL_Pointf point);
         // Shortcuts to class data
         BattleMenu *           GetBattleMenu() const;
         CharacterClass *       GetClass() const { return m_pClass; }
 
-	/**************************************************************************
-	* Equipment
-	***************************************************************************/
+		/**************************************************************************
+		* Equipment
+		***************************************************************************/
         // Equipment. If theres equipment in this slot already,
         // this overwrites it.
         void       Equip(Equipment::eSlot slot, Equipment *pEquip);
@@ -133,23 +135,23 @@ namespace StoneRing{
         std::map<eCharacterAttribute,double> m_augments;
         std::map<eCharacterAttribute,bool> m_toggles;
         std::map<Equipment::eSlot,Equipment*> m_equipment;
+		std::map<eCharacterAttribute,TimedInterpolator<double> > m_lerped_attrs;
         std::set<std::string> m_skillset;
-	CL_Sprite m_portraits;
+		CL_Sprite m_portraits;
         SpriteDefinitionMap m_sprite_definition_map;
         CharacterClass * m_pClass;
-	uint m_nLevel;
+		uint m_nLevel;
         uint m_nInitiative;
-	uint m_nXP;
+		uint m_nXP;
         uint m_nSP;
         uint m_nBP;
         CL_Sprite m_mapSprite;
         CL_Sprite m_currentSprite;
-	CL_Sprite m_portrait;
+		CL_Sprite m_portrait;
         StatusEffectMap m_status_effects;
         StatusEffectRounds m_status_effect_rounds;
         eType m_eType;
         CL_Pointf m_battle_pos;
-        
     };
 
     inline void Character::RollInitiative(void)
