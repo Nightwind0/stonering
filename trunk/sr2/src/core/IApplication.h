@@ -113,6 +113,7 @@ public:
 	virtual void            Banner( const std::string& str, int time ) = 0;
 	virtual CL_IODevice     OpenResource(const std::string& str)=0;
 	virtual bool 			 IsCutsceneRunning() const=0; 
+	virtual int 			 DynamicMenu(const std::vector<std::string>& options)=0;
 #ifdef SR2_EDITOR
 	virtual void  			 EditMaps()=0;
 #endif

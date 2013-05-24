@@ -88,6 +88,7 @@ public:
     virtual void                    Banner(const std::string&, int time);
 	virtual CL_IODevice     		 OpenResource(const std::string& str);	
 	virtual bool 					 IsCutsceneRunning() const; // Too much of a hack?
+	virtual int 			 		 DynamicMenu(const std::vector<std::string>& options);	
     int                             frameRate();
 #ifdef SR2_EDITOR
 	virtual void  			 EditMaps();

@@ -444,10 +444,49 @@ void ShopState::HandleButtonUp ( const StoneRing::IApplication::Button& button )
             Item * pItem = m_item_menu.GetSelection();
             int gold = IApplication::GetInstance()->GetParty()->GetGold();
             if(!m_bSell){
-                if(gold >= pItem->GetValue()){                    
+                if(gold >= pItem->GetValue()){          
+					Party * party = IApplication::GetInstance()->GetParty();		
+					Character * pChar = dynamic_cast<Character*>(party->GetCharacter(m_current_character));
                     SoundManager::PlayEffect(SoundManager::EFFECT_REWARD);
                     IApplication::GetInstance()->GetParty()->GiveGold( - pItem->GetValue() );
-                    IApplication::GetInstance()->GetParty()->GiveItem(pItem,1);
+				if(pItem->GetItemType() == Item::WEAPON || pItem->GetItemType() == Item::ARMOR){
+						Equipment * pEquipment = dynamic_cast<Equipment*>(pItem);
+						if(pChar->CanEquip(pEquipment)){
+							std::vector<std::string> options;
+							options.push_back("Not Now");
+							options.push_back("Equip Now");
+							if(1 == IApplication::GetInstance()->DynamicMenu(options)){
+								// First, try to find an empty slot that is compatible with pItem
+								bool equipped = false;
+								for(int i=0;i<7;i++){
+									// TODO: Make a method on Equipment that gives me an iterator to the slots or something
+									Equipment::eSlot slot = (Equipment::eSlot)std::pow(2,i);
+									if(pEquipment->GetSlot() & slot  && !pChar->HasEquipment(slot)){
+										pChar->Equip(slot,pEquipment);
+										equipped = true;
+										break;
+									}
+								}
+								if(!equipped){
+									for(int i=0;i<7;i++){
+										// TODO: Make a method on Equipment that gives me an iterator to the slots or something
+										Equipment::eSlot slot = (Equipment::eSlot)std::pow(2,i);
+										if(pEquipment->GetSlot() & slot){
+											if(pChar->HasEquipment(slot)){
+												party->GiveItem(pChar->GetEquipment(slot),1);
+											}
+											pChar->Equip(slot,pEquipment);
+											break;
+										}
+									}				
+							   }
+							}else{
+								party->GiveItem(pItem,1);							
+							}
+						}else{
+							party->GiveItem(pItem,1);						
+						}	
+					}
                 }else{
                     //play bbzzt
                     SoundManager::PlayEffect(SoundManager::EFFECT_BAD_OPTION);
