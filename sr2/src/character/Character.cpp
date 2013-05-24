@@ -616,6 +616,13 @@ void Character::Equip(Equipment::eSlot slot, Equipment *pEquip)
     m_equipment[slot] = pEquip;
 }
 
+bool Character::CanEquip( Equipment* pEquip ) const {
+    ParameterList params;
+    params.push_back ( ParameterListItem("$_Character",this) );	
+	return m_pClass->CanEquip(pEquip) && pEquip->EquipCondition(params);
+}
+
+
 Equipment* Character::GetEquipment(Equipment::eSlot slot)const
 {
     std::map<Equipment::eSlot,Equipment*>::const_iterator iter = m_equipment.find(slot);

@@ -104,6 +104,7 @@ namespace StoneRing{
         // Whether the slot is in use
         bool       HasEquipment(Equipment::eSlot)const;
         Equipment* GetEquipment(Equipment::eSlot)const;
+		bool       CanEquip(Equipment * pEquip)const;
         
         /*************************************************************************
          * Skills

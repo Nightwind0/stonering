@@ -1424,6 +1424,14 @@ SteelType Application::showExperience ( const SteelArray&  characters, const Ste
     return SteelType();
 }
 
+int Application::DynamicMenu(const std::vector<std::string>& options)
+{
+	DynamicMenuState state;
+	state.Init( options );
+	RunState(&state);
+	return state.GetSelection();
+}
+
 SteelType Application::menu ( const SteelArray& array )
 {
     DynamicMenuState* pState = new DynamicMenuState();
