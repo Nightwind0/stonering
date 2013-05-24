@@ -58,7 +58,7 @@ namespace StoneRing
 		{
 			return ESPRITESTUB;
 		}
-		enum eWhich { MAIN, OFF };
+		enum eWhich { DEFAULT, MAIN, OFF };
 		
 		eWhich Which() const;
 		

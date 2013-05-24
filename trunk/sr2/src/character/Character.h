@@ -3,6 +3,7 @@
 
 #include <ClanLib/core.h>
 #include <set>
+#include <X11/X.h>
 #include "sr_defines.h"
 #include "Equipment.h"
 #include "Magic.h"
@@ -66,14 +67,15 @@ namespace StoneRing{
         virtual void   RemoveBattleStatusEffects();
         virtual void   RollInitiative(void);
         virtual uint   GetInitiative(void)const;
-        virtual double GetEquippedWeaponAttribute(Weapon::eAttribute) const;
+        virtual double GetEquippedWeaponAttribute(Weapon::eAttribute, Equipment::eSlot slot) const;
         virtual double GetEquippedArmorAttribute(Armor::eAttribute) const;
         virtual void   IterateStatusEffects(Visitor<StatusEffect*> &);
         // Includes permanent augments
         double         GetBaseAttribute(eCharacterAttribute attr)const;
         double         GetAttributeWithoutEquipment(eCharacterAttribute attr, Equipment * pExclude) const;
         uint   GetSP()const;
-        void   SetSP(uint amount);     
+        void   SetSP(uint amount);  
+		uint   GetLerpSP()const;
 		/***************************************************************************
 		* Sprites and images
 		***************************************************************************/
@@ -100,8 +102,8 @@ namespace StoneRing{
         // Returns a pointer to the equipment that was in that slot
         Equipment* Unequip(Equipment::eSlot);
         // Whether the slot is in use
-        bool       HasEquipment(Equipment::eSlot);
-        Equipment* GetEquipment(Equipment::eSlot);
+        bool       HasEquipment(Equipment::eSlot)const;
+        Equipment* GetEquipment(Equipment::eSlot)const;
         
         /*************************************************************************
          * Skills
@@ -144,7 +146,7 @@ namespace StoneRing{
         uint m_nInitiative;
 		uint m_nXP;
         uint m_nSP;
-        uint m_nBP;
+		TimedInterpolator<int> m_lerped_sp;
         CL_Sprite m_mapSprite;
         CL_Sprite m_currentSprite;
 		CL_Sprite m_portrait;

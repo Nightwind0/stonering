@@ -29,7 +29,7 @@ namespace StoneRing
 		
         virtual ~AnimationState();
 
-        void Init(Animation* pAnimation, ICharacterGroup* pCasterGroup, ICharacterGroup* pTargetGroup, ICharacter* pCaster, ICharacter* pTarget);
+        void Init(Animation* pAnimation, ICharacterGroup* pCasterGroup, ICharacterGroup* pTargetGroup, ICharacter* pCaster, ICharacter* pTarget, Equipment::eSlot hand);
 		void Init(SteelType::Functor pFunctor);
 
         virtual bool IsDone() const;
@@ -509,6 +509,7 @@ namespace StoneRing
         uint m_phase_start_time;
 		bool m_functor_mode;
         bool m_bDone;
+		Equipment::eSlot m_hand;
 	public:
 		void AddTask(Task* task);
     uint& get_time();

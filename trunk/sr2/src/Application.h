@@ -174,7 +174,7 @@ private:
 
     SteelType                       getCharacterToggle(const SteelType::Handle hICharacter, uint attr);
     SteelType                       setCharacterToggle(const SteelType::Handle hICharacter, uint attr, bool toggle);
-    SteelType                       getEquippedWeaponAttribute(const SteelType::Handle hICharacter, uint attr);
+    SteelType                       getEquippedWeaponAttribute(const SteelType::Handle hICharacter, uint attr, int slot);
     SteelType                       getEquippedArmorAttribute(const SteelType::Handle hICharacter, uint attr);
     SteelType                       getStatusEffect(const std::string &effect);
     SteelType                       addStatusEffect(SteelType::Handle hCharacter, SteelType::Handle hStatusEffect);

@@ -43,8 +43,11 @@ void SpriteStub::load_attributes(CL_DomNamedNodeMap attributes)
   
     std::string which = get_required_string("which",attributes);
     if(which == "main")
-	m_eWhich = MAIN;
-    else m_eWhich = OFF;
+		m_eWhich = MAIN;
+    else if(which == "offhand")
+		m_eWhich = OFF;
+	else
+		m_eWhich = DEFAULT;
 }
   
 
