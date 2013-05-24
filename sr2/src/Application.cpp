@@ -842,11 +842,11 @@ SteelType Application::getEquipment ( SteelType::Handle hCharacter, int slot )
     return result;
 }
 
-SteelType Application::getEquippedWeaponAttribute ( const SteelType::Handle hICharacter, uint attr )
+SteelType Application::getEquippedWeaponAttribute ( const SteelType::Handle hICharacter, uint attr, int slot )
 {
     SteelType result;
     ICharacter * pCharacter = GrabHandle<ICharacter*> ( hICharacter );
-    result.set ( pCharacter->GetEquippedWeaponAttribute ( static_cast<Weapon::eAttribute> ( attr ) ) );
+    result.set ( pCharacter->GetEquippedWeaponAttribute ( static_cast<Weapon::eAttribute> ( attr ), (Equipment::eSlot)slot ) );
 
     return result;
 }
@@ -2163,7 +2163,7 @@ void Application::registerSteelFunctions()
     SteelFunctor*  fn_getCharacterLevel = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getCharacterLevel );
     SteelFunctor*  fn_getCharacterToggle = new SteelFunctor2Arg<Application, const SteelType::Handle, uint> ( this, &Application::getCharacterToggle );
     SteelFunctor*  fn_setCharacterToggle = new SteelFunctor3Arg<Application, const SteelType::Handle, uint, bool> ( this, &Application::setCharacterToggle );
-    SteelFunctor*  fn_getEquippedWeaponAttribute = new SteelFunctor2Arg<Application, const SteelType::Handle, uint> ( this, &Application::getEquippedWeaponAttribute );
+    SteelFunctor*  fn_getEquippedWeaponAttribute = new SteelFunctor3Arg<Application, const SteelType::Handle, uint, int> ( this, &Application::getEquippedWeaponAttribute );
     SteelFunctor*  fn_getEquippedArmorAttribute = new SteelFunctor2Arg<Application, const SteelType::Handle, uint> ( this, &Application::getEquippedArmorAttribute );
     SteelFunctor*  fn_addStatusEffect = new SteelFunctor2Arg<Application, const SteelType::Handle, const SteelType::Handle> ( this, &Application::addStatusEffect );
     SteelFunctor*  fn_removeStatusEffect = new SteelFunctor2Arg<Application, const SteelType::Handle, const SteelType::Handle> ( this, &Application::removeStatusEffect );

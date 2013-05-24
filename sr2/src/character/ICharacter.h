@@ -112,7 +112,7 @@ namespace StoneRing{
         virtual void   AddStatusEffect(StatusEffect *)=0;
         virtual void   RemoveEffect(StatusEffect *)=0; // Removes by name
         virtual double StatusEffectChance(StatusEffect *)const=0;
-        virtual double GetEquippedWeaponAttribute(Weapon::eAttribute) const = 0;
+        virtual double GetEquippedWeaponAttribute(Weapon::eAttribute, Equipment::eSlot slot) const = 0;
         virtual double GetEquippedArmorAttribute(Armor::eAttribute) const = 0;
         virtual void   StatusEffectRound()=0;
         virtual void   PermanentAugment(eCharacterAttribute attr, double augment)=0;

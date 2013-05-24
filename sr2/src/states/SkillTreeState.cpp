@@ -287,7 +287,7 @@ void SkillTreeState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
     
     
     m_char_name_font.draw_text(GC,m_char_name_pt.x,m_char_name_pt.y, m_pChar->GetName());
-    m_char_sp_font.draw_text(GC,m_char_sp_pt.x,m_char_sp_pt.y, "SP " +IntToString(m_pChar->GetSP()));
+    m_char_sp_font.draw_text(GC,m_char_sp_pt.x,m_char_sp_pt.y, "SP " +IntToString(m_pChar->GetLerpSP()));
     if(m_eUse == USE){
         m_char_mp_font.draw_text(GC,m_char_sp_pt.x,m_char_sp_pt.y + m_char_sp_font.get_font_metrics(GC).get_height(),
                              "MP " + IntToString(m_pChar->GetAttribute(ICharacter::CA_MP)));

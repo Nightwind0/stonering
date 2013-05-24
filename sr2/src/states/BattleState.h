@@ -246,7 +246,7 @@ private:
 	// if they back out and want to go back to the battle menu
 	SteelType cancelOption();
 	SteelType animation(SteelType::Functor functor);
-	SteelType doTargetedAnimation( SteelType::Handle pIActor,  SteelType::Handle pITarget, SteelType::Handle hAnim );
+	SteelType doTargetedAnimation( SteelType::Handle pIActor,  SteelType::Handle pITarget, int hand, SteelType::Handle hAnim );
 	SteelType doCharacterAnimation( SteelType::Handle pIActor, SteelType::Handle hAnim );
 	SteelType createDisplay( int damage, SteelType::Handle pICharacter, int display_type );
 	// returns monster group or party as array of character handles

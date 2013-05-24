@@ -90,7 +90,7 @@ namespace StoneRing
 		virtual double GetLerpAttribute(eCharacterAttribute attr) const;
         virtual bool GetToggle(eCharacterAttribute attr) const;
         virtual void SetToggle(eCharacterAttribute attr, bool state);
-        virtual double GetEquippedWeaponAttribute(Weapon::eAttribute attr) const
+        virtual double GetEquippedWeaponAttribute(Weapon::eAttribute attr, Equipment::eSlot) const
         {
 			if(attr == Weapon::ATTACK)
 				return 0.75 * GetAttribute(ICharacter::CA_STR); // Weapon equal to  75% of str is considered built-in

@@ -303,8 +303,14 @@ uint Character::GetSP() const
 
 void Character::SetSP(uint amount)
 {
+	m_lerped_sp.SetRange(m_nSP,amount);
     m_nSP = amount;
 }
+
+uint Character::GetLerpSP() const {
+	return m_lerped_sp.GetValue();
+}
+
 
 ICharacter::eGender Character::GetGender() const
 {
@@ -597,7 +603,7 @@ void Character::SetToggle(eCharacterAttribute attr, bool value)
     m_toggles[attr] = value;
 }
 
-bool Character::HasEquipment(Equipment::eSlot slot)
+bool Character::HasEquipment(Equipment::eSlot slot) const
 {
     return m_equipment.find(slot) != m_equipment.end();
 }
@@ -610,9 +616,12 @@ void Character::Equip(Equipment::eSlot slot, Equipment *pEquip)
     m_equipment[slot] = pEquip;
 }
 
-Equipment* Character::GetEquipment(Equipment::eSlot slot)
+Equipment* Character::GetEquipment(Equipment::eSlot slot)const
 {
-    return m_equipment[slot];
+    std::map<Equipment::eSlot,Equipment*>::const_iterator iter = m_equipment.find(slot);
+	if(iter != m_equipment.end())
+		return iter->second;
+	else return NULL;
 }
 
 CL_Sprite Character::GetPortrait(ePortrait portrait)
@@ -639,20 +648,12 @@ Equipment* Character::Unequip(Equipment::eSlot slot)
     return there;
 }
 
-double Character::GetEquippedWeaponAttribute(Weapon::eAttribute attr) const
+double Character::GetEquippedWeaponAttribute(Weapon::eAttribute attr, Equipment::eSlot slot) const
 {
-    double v = 0.0;
-    for(std::map<Equipment::eSlot,Equipment*>::const_iterator it=m_equipment.begin();
-        it!=m_equipment.end();it++)
-    {      
-        assert(it->second);
-        if(it->second->IsWeapon()){
-            Weapon* weapon = dynamic_cast<Weapon*>(it->second);
-            v += weapon->GetWeaponAttribute(attr);
-        }
-    }
-
-    return v;
+    Weapon * pWeapon = dynamic_cast<Weapon*>(GetEquipment(slot));
+	if(pWeapon) 
+		return pWeapon->GetWeaponAttribute(attr);
+    return 0.0;
 }
 double Character::GetEquippedArmorAttribute(Armor::eAttribute attr) const
 {
@@ -804,7 +805,8 @@ void Character::Serialize ( std::ostream& out )
     out.write((char*)&m_nLevel,sizeof(uint));
     out.write((char*)&m_nXP,sizeof(uint));
     out.write((char*)&m_nSP,sizeof(uint));
-    out.write((char*)&m_nBP,sizeof(uint));
+	int bp = 0;
+    out.write((char*)&bp,sizeof(uint));
     
     uint augment_count = m_augments.size();
     out.write((char*)&augment_count,sizeof(uint));
@@ -844,7 +846,9 @@ void Character::Deserialize ( std::istream& in )
     in.read((char*)&m_nLevel,sizeof(uint));
     in.read((char*)&m_nXP,sizeof(uint));
     in.read((char*)&m_nSP,sizeof(uint));
-    in.read((char*)&m_nBP,sizeof(uint));
+	m_lerped_sp.SetStaticValue(m_nSP);
+	int bp;
+    in.read((char*)&bp,sizeof(uint));
     
     uint augment_count;
     in.read((char*)&augment_count,sizeof(uint));

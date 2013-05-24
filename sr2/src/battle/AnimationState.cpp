@@ -55,10 +55,13 @@ AnimationState::AnimationState( BattleState& parent ):
 AnimationState::~AnimationState() {
 }
 
-void AnimationState::Init( Animation* pAnimation, ICharacterGroup* casterGroup,
-																											ICharacterGroup* targetGroup,
-																											ICharacter* caster,
-																											ICharacter* target ) {
+void AnimationState::Init( Animation* pAnimation,
+						   ICharacterGroup* casterGroup,  
+							ICharacterGroup* targetGroup,
+							ICharacter* caster,
+							ICharacter* target,
+							Equipment::eSlot hand
+ 						) {
 	m_pAnim = pAnimation;
 	m_functor_mode = false;
 	m_bDone = false;
@@ -66,6 +69,7 @@ void AnimationState::Init( Animation* pAnimation, ICharacterGroup* casterGroup,
 	m_pCasterGroup = casterGroup;
 	m_pCaster = caster;
 	m_pTarget = target;
+	m_hand = hand;
 	if( m_pTarget == NULL ) m_pTarget = m_pCaster;
 }
 
@@ -876,7 +880,19 @@ void AnimationState::StartPhase() {
 				// Monsters don't have weapons for now. TODO: Don't assume this
 				if( !m_pCaster->IsMonster() ) {
 					Character * pCharacter = dynamic_cast<Character*>( m_pCaster );
-					Equipment* equipment = pCharacter->GetEquipment( stub->Which() == SpriteStub::MAIN ? Equipment::EHAND : Equipment::EOFFHAND );
+					Equipment::eSlot slot = Equipment::EHAND;
+					switch(stub->Which()){
+						case SpriteStub::MAIN:
+							slot = Equipment::EHAND;
+							break;
+						case SpriteStub::OFF:
+							slot = Equipment::EOFFHAND;
+							break;
+						case SpriteStub::DEFAULT:
+							slot = m_hand;
+							break;
+					}
+					Equipment* equipment = pCharacter->GetEquipment( slot );
 					Weapon* pWeapon = dynamic_cast<Weapon*>( equipment );
 					if( pWeapon ) {
 						animation->Unskip();

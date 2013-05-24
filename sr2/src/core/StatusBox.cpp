@@ -82,7 +82,7 @@ void StatusBox::Draw ( CL_GraphicContext& gc, bool draw_comparison, Character* p
         Weapon::eAttribute attr = static_cast<Weapon::eAttribute>(i);
         statPoint = point;
         statPoint.x = m_rect.get_top_right().x - statSize.width * 3;       
-        double old_value = pChar->GetEquippedWeaponAttribute(attr);        
+        double old_value = pChar->GetEquippedWeaponAttribute(attr, Equipment::EHAND);        
         m_stat_name_font.draw_text(gc,point,Weapon::StringForAttribute(attr),Font::TOP_LEFT);
         m_stat_font.draw_text(gc,statPoint,FloatToString(old_value,6,2),Font::TOP_LEFT);
         if(draw_comparison){
