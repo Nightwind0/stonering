@@ -1047,7 +1047,7 @@ SteelType Application::invokeArmor ( SteelType::Handle pICharacter, SteelType::H
     return SteelType();
 }
 
-SteelType Application::invokeWeapon ( SteelType::Handle pICharacter, SteelType::Handle pTargetChar, SteelType::Handle hWeapon, uint invokeTime )
+SteelType Application::invokeWeapon ( SteelType::Handle pICharacter, SteelType::Handle pTargetChar, SteelType::Handle hWeapon, uint hand, uint invokeTime )
 {
     Weapon *pWeapon = GrabHandle<Weapon*> ( hWeapon );
     ICharacter* iCharacter = GrabHandle<ICharacter*> ( pICharacter );
@@ -1056,6 +1056,7 @@ SteelType Application::invokeWeapon ( SteelType::Handle pICharacter, SteelType::
     params.push_back ( ParameterListItem ( "$_Character", iCharacter ) );
 	params.push_back ( ParameterListItem ( "$_Target", pTargetChar ) );
 	params.push_back ( ParameterListItem ( "$_Weapon", hWeapon ) );
+	params.push_back ( ParameterListItem ( "$_Hand", (int)hand ) );
 	params.push_back ( ParameterListItem ( "$_When", (int)invokeTime ) );
 	
     pWeapon->Invoke ( mode, params );
@@ -2188,7 +2189,7 @@ void Application::registerSteelFunctions()
     SteelFunctor*  fn_getWeaponTypeDamageCategory = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getWeaponTypeDamageCategory );
     SteelFunctor*  fn_getWeaponTypeAnimation = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getWeaponTypeAnimation );
     SteelFunctor*  fn_weaponTypeHasAnimation = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::weaponTypeHasAnimation );
-    SteelFunctor*  fn_invokeWeapon = new SteelFunctor4Arg<Application, const SteelType::Handle, const SteelType::Handle, const SteelType::Handle, uint> ( this, &Application::invokeWeapon );
+    SteelFunctor*  fn_invokeWeapon = new SteelFunctor5Arg<Application, const SteelType::Handle, const SteelType::Handle, const SteelType::Handle, uint, uint> ( this, &Application::invokeWeapon );
     SteelFunctor*  fn_invokeArmor = new SteelFunctor2Arg<Application, const SteelType::Handle, const SteelType::Handle> ( this, &Application::invokeArmor );
     SteelFunctor*  fn_attackCharacter = new SteelFunctor5Arg<Application, const SteelType::Handle,
                                                               const SteelType::Handle,uint,bool,int> ( this, &Application::attackCharacter );
@@ -2260,6 +2261,9 @@ void Application::registerSteelFunctions()
     steelConst ( "$_RST", Character::CA_RST );
     steelConst ( "$_LCK", Character::CA_LCK );
     steelConst ( "$_JOY", Character::CA_JOY );
+	
+	steelConst ( "$_MP_COST", Character::CA_MP_COST );
+	steelConst ( "$_BP_COST", Character::CA_BP_COST );
 
     steelConst ( "$_HIT", Weapon::HIT );
     steelConst ( "$_ATTACK", Weapon::ATTACK );
