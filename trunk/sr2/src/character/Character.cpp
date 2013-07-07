@@ -793,7 +793,7 @@ CL_Sprite Character::GetCurrentSprite(bool pure)
         m_currentSprite.set_scale(0.5,0.5);
     }
     if(GetToggle(ICharacter::CA_DRAW_FLIPPED)){
-        m_currentSprite.set_scale(-1.0,0.5);
+        m_currentSprite.set_scale(-1.0,1.0);
     }
     if(GetToggle(ICharacter::CA_DRAW_MINI) &&
         GetToggle(ICharacter::CA_DRAW_FLIPPED)){

@@ -76,8 +76,8 @@ CL_Sprite GraphicsManager::CreateSprite( const std::string & name, bool add_cate
 	return clone;
 }
 
-std::string GraphicsManager::LookUpMapWithImage( CL_Image surface ) {
-	for( std::map<std::string, CL_Image>::iterator i = m_pInstance->m_tile_map.begin();
+std::string GraphicsManager::LookUpMapWithImage( CL_Texture surface ) {
+	for( std::map<std::string, CL_Texture>::iterator i = m_pInstance->m_tile_map.begin();
 						i != m_pInstance->m_tile_map.end();
 						i++ ) {
 		if( i->second == surface ) {
@@ -91,17 +91,17 @@ std::string GraphicsManager::LookUpMapWithImage( CL_Image surface ) {
 
 }
 
-CL_Image GraphicsManager::GetTileMap( const std::string & name ) {
+CL_Texture GraphicsManager::GetTileMap( const std::string & name ) {
 	CL_ResourceManager& resources  = IApplication::GetInstance()->GetResources();
 
-	CL_Image surface;
+	CL_Texture surface;
 
 
 	if( m_pInstance->m_tile_map.find( name ) == m_pInstance->m_tile_map.end() ) {
 #ifndef NDEBUG
 		std::cout << "TileMap now loading: " << name << std::endl;
 #endif
-		surface = CL_Image( GET_MAIN_GC(), "Tilemaps/" + name, &resources );
+		surface = CL_Texture( GET_MAIN_GC(), "Tilemaps/" + name, &resources);
 
 		m_pInstance->m_tile_map[ name ] = surface;
 		return surface;

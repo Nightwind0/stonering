@@ -1798,7 +1798,7 @@ CL_ResourceManager& Application::GetResources()
 
 
 Application::Application() : mpParty ( 0 ),
-        mbDone ( false )
+        mbDone ( false ),m_draws_total(0)
 
 {
     mpParty = new Party();
@@ -2498,6 +2498,9 @@ void Application::run(bool process_functors)
     backState->SteelInit ( mInterpreter );
     backState->Start();
     unsigned int then = CL_System::get_time();
+#ifndef NDEBUG
+	m_draw_start_time = CL_System::get_time();
+#endif
 
     while ( !mbDone &&  !backState->IsDone() )
     {
@@ -2506,7 +2509,7 @@ void Application::run(bool process_functors)
         if(process_functors && !m_mainthread_functors.empty()){
             Functor * pFunctor = m_mainthread_functors.front().m_pFunctor;
             pFunctor->operator()();
-            m_mainthread_functors.front().m_event.set();			
+            m_mainthread_functors.front().m_event.set();						
             mFunctorMutex.lock();
             m_mainthread_functors.pop();
             mFunctorMutex.unlock();
@@ -2535,12 +2538,22 @@ void Application::run(bool process_functors)
 
         draw();
 
-        m_window.flip();
+        m_window.flip(0);
 
 
         CL_KeepAlive::process();
-        CL_System::sleep ( 1 );
-
+#if SHOW_FPS
+		m_draws_total++;
+		//long  = CL_System::get_time();
+		if(now - m_draw_start_time > 3000){
+			float fps = float(m_draws_total) / (float(now - m_draw_start_time) / 1000.0);
+			std::cout << "FPS : " << fps << std::endl;
+			m_draw_start_time = now;
+			m_draws_total = 0;
+		}
+#endif
+		
+        CL_System::sleep ( 10 );
     }
 
 

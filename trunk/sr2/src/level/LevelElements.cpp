@@ -170,6 +170,7 @@ bool Tile::handle_element(Element::eElement element, Element * pElement)
         break;
     case ETILEMAP:
         m_tilemap = dynamic_cast<Tilemap*>(pElement);
+		m_image =  CL_Subtexture(m_tilemap->GetTileMap(), CL_Rect(CL_Point(m_tilemap->GetMapX()*32,m_tilemap->GetMapY()*32),CL_Size(32,32)));
         cFlags &= ~TIL_SPRITE;
         break;
     case ESPRITEREF:
@@ -218,7 +219,7 @@ bool Tile::handle_element(Element::eElement element, Element * pElement)
 
 void Tile::load_finished()
 {
-    if (m_tilemap == NULL && m_sprite.is_null()) throw CL_Exception("Tile didn't have tilemap or sprite ref.");
+    if (m_image.is_null() && m_sprite.is_null()) throw CL_Exception("Tile didn't have tilemap or sprite ref.");
 }
 
 void Tile::Activate() // Call any attributemodifier
@@ -232,7 +233,7 @@ Tile::~Tile()
 {
     delete m_pScript;
     delete m_pCondition;;
-    if(!IsSprite()) delete m_tilemap;
+    //if(!IsSprite()) delete m_tilemap;
 }
 
 bool Tile::EvaluateCondition() const
@@ -265,7 +266,7 @@ void Tile::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC)
 
     if ( !IsSprite() )
     {
-        CL_Image tilemap = m_tilemap->GetTileMap();
+        /*CL_Subtexture tilemap = m_tilemap->GetTileMap();
 
         //        void draw(  const CL_Rect& src, const CL_Rect& dest, CL_GraphicContext* context = 0);
         int mapx, mapy;
@@ -275,6 +276,9 @@ void Tile::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC)
 
 
         tilemap.draw(GC,srcRect,dst);
+        */
+		CL_Image image(GC,m_image);
+		image.draw(GC, dst);
     }
     else
     {
