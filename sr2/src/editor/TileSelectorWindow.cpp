@@ -85,7 +85,8 @@ void TileSelectorWindow::on_tilemap_clicked ( int tilemap )
     
     size_t slash = tilename.find_first_of('/',0);
     tilename.erase(0,slash+1);
-    CL_Image image = GraphicsManager::GetTileMap(tilename);
+    CL_Texture texture = GraphicsManager::GetTileMap(tilename);
+	CL_Image image(GET_MAIN_GC(),texture, CL_Rect(CL_Point(0,0),texture.get_size()));
     m_pTileSelector->SetTilemap(image,tilename);    
     on_tilemap_change(image);
 	m_pTileSelector->request_repaint();
@@ -118,7 +119,7 @@ void TileSelectorWindow::create_menu()
 {
     CL_PopupMenu menu;
     CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
-    m_tilemaps = resources.get_resource_names_of_type("image","Tilemaps");    
+    m_tilemaps = resources.get_resource_names_of_type("texture","Tilemaps");    
     for(int i=0;i<m_tilemaps.size();i++){
         CL_PopupMenuItem item = menu.insert_item(m_tilemaps[i]);
         item.func_clicked().set(this,&TileSelectorWindow::on_tilemap_clicked,i);

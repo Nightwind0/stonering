@@ -45,6 +45,8 @@
 using Steel::SteelType;
 class DrawThread;
 
+#define SHOW_FPS 1
+
 namespace StoneRing
 {
 class Level;
@@ -356,6 +358,11 @@ private:
 	CL_VirtualDirectory m_resource_dir;
 	ZipFileProvider m_zip_provider;
 	std::map<IApplication::Button,bool> m_button_down;
+	
+#if SHOW_FPS
+	int m_draws_total;
+	long m_draw_start_time;
+#endif
 
 };
 

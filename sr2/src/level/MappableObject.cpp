@@ -167,7 +167,7 @@ void MappableObject::Draw( CL_GraphicContext& GC, const CL_Point& offset ) {
 		CL_Rect srcRect( m_tilemap->GetMapX() * 32, m_tilemap->GetMapY() * 32,
 						( m_tilemap->GetMapX() * 32 ), ( m_tilemap->GetMapY() * 32 ) );
 
-		m_tilemap->GetTileMap().draw( GC, srcRect, dstRect );
+		//m_tilemap->GetTileMap().draw( GC, srcRect, dstRect ); // TODO: Re-enable tile based MOs
 	}
 }
 

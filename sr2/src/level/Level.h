@@ -76,12 +76,12 @@ public:
         return m_Y;
     }
 
-    inline CL_Image GetTileMap() const {
+    inline CL_Texture GetTileMap() const {
         return m_image;
     }
 #if SR2_EDITOR
     CL_DomElement CreateDomElement(CL_DomDocument&)const;
-    void SetTilemap(CL_Image image,const CL_String& name, ushort X, ushort Y) {
+    void SetTilemap(CL_Texture image,const CL_String& name, ushort X, ushort Y) {
         m_image = image;
         m_sprite_string = name;
         m_X = X;
@@ -93,7 +93,7 @@ private:
 protected:
     virtual bool handle_element(eElement element, Element * pElement );
     virtual void load_attributes(CL_DomNamedNodeMap attributes);
-    CL_Image m_image;
+    CL_Texture m_image;
     ushort m_X;
     ushort m_Y;
 };
@@ -185,8 +185,8 @@ protected:
     void draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC);	
 
     CL_Sprite m_sprite;
-    Tilemap* m_tilemap;
-
+    CL_Subtexture m_image;
+	Tilemap* m_tilemap;
     ScriptElement *m_pCondition;
     ScriptElement *m_pScript;
     ushort m_ZOffset;
@@ -201,8 +201,10 @@ protected:
 public:
 	CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
 	Tile* clone() const;
+
     void SetTileMap(Tilemap* pTileMap) {
         m_tilemap = pTileMap;
+		m_image =  CL_Subtexture(m_tilemap->GetTileMap(), CL_Rect(CL_Point(m_tilemap->GetMapX()*32,m_tilemap->GetMapY()*32),CL_Size(32,32)));
         cFlags &= ~TIL_SPRITE;
     }
     void SetMonsterRegion(char monster_region){
