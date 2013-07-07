@@ -40,6 +40,8 @@ const stat_entry statXMLLookup[] =
     {"rst",ICharacter::CA_RST},
     {"lck",ICharacter::CA_LCK},
     {"joy",ICharacter::CA_JOY},
+	{"mp_cost", ICharacter::CA_MP_COST},
+	{"bp_cost", ICharacter::CA_BP_COST},
     {"bash_def",ICharacter::CA_BASH_DEF},
     {"pierce_def",ICharacter::CA_PIERCE_DEF},
     {"slash_def",ICharacter::CA_SLASH_DEF},
@@ -192,6 +194,11 @@ bool ICharacter::IsReal(eCharacterAttribute attr)
 bool ICharacter::IsToggle(eCharacterAttribute attr)
 {
     return (attr > ICharacter::_START_OF_TOGGLES && attr < ICharacter::_LAST_CHARACTER_ATTR_);
+}
+
+bool ICharacter::IsCostMultiplier(eCharacterAttribute attr)
+{
+	return (attr == ICharacter::CA_MP_COST || attr == ICharacter::CA_BP_COST);
 }
 
 bool ICharacter::ToggleDefaultTrue(eCharacterAttribute attr)
@@ -517,7 +524,7 @@ double Character::GetAttributeWithoutEquipment ( ICharacter::eCharacterAttribute
 double Character::GetBaseAttribute(eCharacterAttribute attr)const
 {
     double base = 0.0;
-    if(ICharacter::IsDamageCategoryAttribute(attr) && !m_pClass->HasStat(attr))
+    if((ICharacter::IsCostMultiplier(attr) || ICharacter::IsDamageCategoryAttribute(attr)) && !m_pClass->HasStat(attr))
     {
         base = 1.0;
         if(attr == ICharacter::CA_HOLY_RST)

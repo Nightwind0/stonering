@@ -44,6 +44,8 @@ namespace StoneRing{
             CA_JOY,              // Increases experience gained (Multiplier)
             CA_DEX,              // Chances of a hit connecting (0-1)
             CA_EVD,              // Chances of evading an attack(0-1)
+            CA_MP_COST,
+			CA_BP_COST,
             _START_OF_DAMAGE_CATEGORIES,
             CA_BASH_DEF,
             CA_PIERCE_DEF,
@@ -134,6 +136,7 @@ namespace StoneRing{
         static std::string CAToString(uint);
         static std::string CAToLabel(uint);
         static bool IsDamageCategoryAttribute(eCharacterAttribute attr);
+		static bool IsCostMultiplier(eCharacterAttribute attr);
         static bool IsInteger(eCharacterAttribute attr);
         static bool IsReal(eCharacterAttribute attr);
         static bool IsToggle(eCharacterAttribute attr);

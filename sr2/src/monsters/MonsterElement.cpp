@@ -191,6 +191,10 @@ double MonsterElement::GetStat(ICharacter::eCharacterAttribute attr) const{
 		return m_pClass->GetStat(attr,m_nLevel);
 	}
 	
+	// TODO: Implement BP?
+	if(attr = ICharacter::CA_BP)
+		return 0;
+	
 	assert(0);
 	return 0.0;
    

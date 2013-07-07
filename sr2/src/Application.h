@@ -208,7 +208,7 @@ private:
 
 
     SteelType                       invokeArmor(SteelType::Handle hCharacter, SteelType::Handle hArmor);
-    SteelType                       invokeWeapon(SteelType::Handle hCharacter, SteelType::Handle hTarget, SteelType::Handle hWeapon, uint invokeTime);
+    SteelType                       invokeWeapon(SteelType::Handle hCharacter, SteelType::Handle hTarget, SteelType::Handle hWeapon, uint hand, uint invokeTime);
     SteelType                       attackCharacter(SteelType::Handle hICharacter, SteelType::Handle hIAttacker, uint category, bool melee, int amount);
 
     // Item Steel API

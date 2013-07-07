@@ -43,8 +43,10 @@ uint Skill::GetMPCost() const
 void StoneRing::Skill::Invoke(ICharacter* pCharacter,const ParameterList& params)
 {
     // Take the BP and MP cost here
-    assert(pCharacter->GetAttribute(ICharacter::CA_BP) >= m_nBp &&
-        pCharacter->GetAttribute(ICharacter::CA_MP) >= m_nMp  &&
+    double mp_mult = pCharacter->GetAttribute(ICharacter::CA_MP_COST);
+	double bp_mult = pCharacter->GetAttribute(ICharacter::CA_BP_COST);
+    assert(bp_mult * pCharacter->GetAttribute(ICharacter::CA_BP) >= m_nBp &&
+        mp_mult * pCharacter->GetAttribute(ICharacter::CA_MP) >= m_nMp  &&
         "Assure BP and MP before calling Invoke on a skill");
     
     bool charge = true;
@@ -74,8 +76,8 @@ void StoneRing::Skill::Invoke(ICharacter* pCharacter,const ParameterList& params
         */
     }
     if(charge){
-    	pCharacter->PermanentAugment(ICharacter::CA_BP,-double(m_nBp));
-    	pCharacter->PermanentAugment(ICharacter::CA_MP,-double(m_nMp));
+    	pCharacter->PermanentAugment(ICharacter::CA_BP,-double(m_nBp * pCharacter->GetAttribute(ICharacter::CA_BP_COST)));
+    	pCharacter->PermanentAugment(ICharacter::CA_MP,-double(m_nMp * pCharacter->GetAttribute(ICharacter::CA_MP_COST)));
     }else{
     	std::cout << "Cancelled charge";
     }
