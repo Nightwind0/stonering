@@ -234,6 +234,14 @@ namespace StoneRing
 			double m_degrees;
 		};
 		
+		class Stretch: public SteelType::IHandle{
+		public:
+			virtual ~Stretch(){}
+			SteelType::Functor m_width_functor;
+			SteelType::Functor m_height_functor;
+			double m_duration;
+		};
+		
 		class Shaker: public SteelType::IHandle{
 		public:
 			virtual ~Shaker(){}
@@ -363,6 +371,22 @@ namespace StoneRing
 			bool m_osc;
 		};
 		
+		class TimedStretchTask : public TimedTask { 
+		public:
+			TimedStretchTask(AnimationState& state):TimedTask(state){
+			}
+			virtual ~TimedStretchTask(){}
+			virtual std::string GetName() const { return "StretchTask"; }
+			void init(const Stretch&);
+			void SetDuration(float duration);
+			virtual void start(SteelInterpreter*);
+			virtual void update(SteelInterpreter*);
+			virtual void cleanup();			
+		private:
+			Stretch m_stretch;
+			float m_duration;
+		};
+		
 		class FadeTask: public TimedTask {
 		public:
 			FadeTask(AnimationState& state):TimedTask(state){
@@ -460,6 +484,8 @@ namespace StoneRing
 		SteelType moveSprite(int sprite, SteelType::Handle hpath);
 		SteelType moveSpriteTimed(int sprite, SteelType::Handle hpath, double seconds);
 		SteelType createRotation(SteelType::Functor functor, double degrees, int axis);
+		SteelType createStretch(SteelType::Functor width_functor, SteelType::Functor height_functor);
+		SteelType stretchSpriteTimed(int sprite, SteelType::Handle hStretch, double seconds);
 		// This causes the percentage (p) of hWithTask to be used as the p of hTask
 		// So, for example you can have a rotation coordinated with a speed based path movement
 		// where you don't know the right amount of time for the rotation. or a fade, etc.

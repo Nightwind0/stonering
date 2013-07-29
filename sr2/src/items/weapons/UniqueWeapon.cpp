@@ -7,6 +7,8 @@
 #include "RuneType.h"
 #include "StatusEffectModifier.h"
 #include "Description.h"
+#include "Animation.h"
+
 
 using namespace StoneRing;
 
@@ -77,7 +79,15 @@ void UniqueWeapon::load_attributes(CL_DomNamedNodeMap attributes)
     NamedItemElement::load_attributes(attributes);
     m_value_multiplier = get_implied_float("valueMultiplier",attributes,1);
     Add_Script_Mode( ScriptModeForString( get_implied_string("scriptMode",attributes,"attackBefore") ) );
+    if(has_attribute("animationRef",attributes)){
+        std::string animation = get_implied_string("animationRef",attributes,"");
+        SetAnimation(AbilityManager::GetAnimation(animation));
+    }	
+    if(has_attribute("damageCategory",attributes)){
+		SetDamageCategory(DamageCategory::DamageCategoryFromString(get_required_string("damageCategory",attributes)));
+	}
 }
+
 
 void UniqueWeapon::load_finished()
 {
@@ -112,6 +122,10 @@ bool UniqueWeapon::handle_element(eElement element, Element * pElement)
     case ESTATUSEFFECTINFLICTION:
         Add_StatusEffect_Infliction( dynamic_cast<StatusEffectInfliction*>(pElement) );
         break;
+	case EANIMATION:
+        if(GetAnimation()) 
+            throw CL_Exception("Unique Weapon can have either animationRef or animation element, not both: " + GetName());
+		SetAnimation(dynamic_cast<Animation*>(pElement));		
     case ESCRIPT:
         m_pScript = dynamic_cast<ScriptElement*>(pElement);
         break;

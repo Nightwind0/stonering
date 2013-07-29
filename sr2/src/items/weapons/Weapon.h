@@ -2,9 +2,11 @@
 #define SR_WEAPON_H
 
 #include "Equipment.h"
+#include "DamageCategory.h"
 
 namespace StoneRing{
     
+	class Animation;
     
     class Weapon : public Equipment
     {
@@ -47,6 +49,10 @@ namespace StoneRing{
         
         virtual void Invoke(eScriptMode invokeTime, const Steel::ParameterList& params)=0;
         bool ForgoAttack() const;
+		
+		virtual Animation* GetAnimation() const;
+		
+		virtual DamageCategory::eDamageCategory GetDamageCategory() const;
         
 
         /*
@@ -68,7 +74,12 @@ namespace StoneRing{
         void Clear_Weapon_Enhancers();
         void Add_Weapon_Enhancer (WeaponEnhancer * pEnhancer);
         void Add_Script_Mode(eScriptMode script_mode);
+		void SetAnimation(Animation* anim);
+		void SetDamageCategory(DamageCategory::eDamageCategory dmgCategory);
     private:
+		Animation* m_animation;
+		DamageCategory::eDamageCategory m_dmgCategory;
+		bool m_bHasDmgCategory;
         uint m_eScriptMode;
         std::list<WeaponEnhancer*> m_weapon_enhancers;
     };

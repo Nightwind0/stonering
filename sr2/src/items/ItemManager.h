@@ -34,9 +34,12 @@ namespace StoneRing
         static WeaponClass* GetWeaponImbuement ( const std::string& name );
         static ArmorClass* GetArmorImbuement  ( const std::string& name );
         
-        static Armor*       GenerateRandomGeneratedArmor     ( Item::eDropRarity rarity, int min_value, int max_value );
-        static Weapon*      GenerateRandomGeneratedWeapon    ( Item::eDropRarity rarity, int min_value, int max_value );
-        static Item*        GenerateRandomItem               ( Item::eDropRarity rarity, int in_value, int max_value );
+        static void       GenerateRandomGeneratedArmors     ( Item::eDropRarity rarity, int min_value, int max_value, std::vector<Item*>& o_armors );
+        static void       GenerateRandomGeneratedWeapons    ( Item::eDropRarity rarity, int min_value, int max_value, std::vector<Item*>& o_weapons );
+        static void       GetRandomItems                    ( Item::eDropRarity rarity, int min_value, int max_value, std::vector<Item*>& o_items );
+		static Item* 	   GetRandomItem 					  ( Item::eDropRarity rarity, int min_value, int max_value );
+		static Weapon*     GetRandomWeapon 				      ( Item::eDropRarity rarity, int min_value, int max_value );
+		static Armor*      GetRandomArmor 					  ( Item::eDropRarity rarity, int min_value, int max_value );		
 
         static Item * GetNamedItem( const std::string &name );
         static Item * GetItem( const ItemRef & ref );

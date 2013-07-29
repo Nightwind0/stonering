@@ -199,8 +199,8 @@ private:
     SteelType                       getWeaponType(SteelType::Handle hWeapon);
     SteelType                       getArmorType(SteelType::Handle hArmor);
     SteelType                       getWeaponTypeDamageCategory(SteelType::Handle hWeaponType);
-    SteelType                       getWeaponTypeAnimation(SteelType::Handle hWeaponType);
-    SteelType                       weaponTypeHasAnimation(SteelType::Handle hWeaponType);
+    SteelType                       getWeaponAnimation(SteelType::Handle hWeapon);
+    SteelType                       weaponHasAnimation(SteelType::Handle hWeapon);
     SteelType                       getDamageCategoryResistance(SteelType::Handle hICharacter, int damage_category);
     SteelType                       isArmor(SteelType::Handle hEquipment);
     SteelType                       changeArmorClass(SteelType::Handle hArmor, const std::string& arm_class);
