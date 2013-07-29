@@ -7,7 +7,7 @@
 
 using namespace StoneRing;
 
-Weapon::Weapon()
+Weapon::Weapon():m_animation(NULL),m_bHasDmgCategory(false)
 {
     m_eScriptMode = 0;
 }
@@ -16,6 +16,33 @@ Weapon::~Weapon()
 {
     Clear_Weapon_Enhancers();
 }
+
+DamageCategory::eDamageCategory Weapon::GetDamageCategory() const {
+	if(m_bHasDmgCategory){
+		return m_dmgCategory;
+	}else{
+		return GetWeaponType()->GetDamageCategory();
+	}
+}
+
+void Weapon::SetDamageCategory( DamageCategory::eDamageCategory dmgCategory ) {
+	m_dmgCategory = dmgCategory;
+	m_bHasDmgCategory = true;
+}
+
+
+
+void Weapon::SetAnimation( Animation* anim ) {
+	m_animation = anim;
+}
+
+Animation* Weapon::GetAnimation() const {
+	if(m_animation) 
+		return m_animation;
+	else
+		return GetWeaponType()->GetAnimation();
+}
+
 
 Equipment::eSlot Weapon::GetSlot() const
 {

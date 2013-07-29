@@ -23,10 +23,10 @@ namespace StoneRing{
         WeaponType *GetWeaponType() const ;
         bool IsRanged() const ;
         bool IsTwoHanded() const;
-	virtual std::string GetName() const { return NamedItemElement::GetName(); }
-	virtual CL_Image GetIcon() const { return NamedItemElement::GetIcon(); }
-	virtual uint GetMaxInventory() const { return NamedItemElement::GetMaxInventory(); }
-	virtual eDropRarity GetDropRarity() const { return NamedItemElement::GetDropRarity(); }
+		virtual std::string GetName() const { return NamedItemElement::GetName(); }
+		virtual CL_Image GetIcon() const { return NamedItemElement::GetIcon(); }
+		virtual uint GetMaxInventory() const { return NamedItemElement::GetMaxInventory(); }
+		virtual eDropRarity GetDropRarity() const { return NamedItemElement::GetDropRarity(); }
         virtual std::string GetDescription() const { return m_description; }
 
         virtual eItemType GetItemType() const { return WEAPON ; }

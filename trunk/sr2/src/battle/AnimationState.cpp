@@ -962,6 +962,9 @@ void AnimationState::SteelInit( SteelInterpreter *pInterpreter ) {
 
 		pInterpreter->addFunction( "moveSprite", "anim", new SteelFunctor2Arg<AnimationState, int, SteelType::Handle>( this, &AnimationState::moveSprite ) );
 		pInterpreter->addFunction( "createRotation", "anim", new SteelFunctor3Arg<AnimationState, SteelType::Functor, double, int>( this, &AnimationState::createRotation ) );
+		pInterpreter->addFunction( "createStretch", "anim", new SteelFunctor2Arg<AnimationState, SteelType::Functor, SteelType::Functor>( this, &AnimationState::createStretch ) );
+		pInterpreter->addFunction( "stretchSpriteTimed", "anim", new SteelFunctor3Arg<AnimationState, int, SteelType::Handle, double>( this, &AnimationState::stretchSpriteTimed ) );
+
 		pInterpreter->addFunction( "rotateSpriteTimed", "anim", new SteelFunctor3Arg<AnimationState, int, SteelType::Handle, double>( this, &AnimationState::rotateSpriteTimed ) );
 		pInterpreter->addFunction( "movePathTimed", "anim", new SteelFunctor3Arg<AnimationState, int, SteelType::Handle, double>( this, &AnimationState::moveSpriteTimed ) );
 
@@ -1227,6 +1230,17 @@ SteelType AnimationState::createRotation( SteelType::Functor functor, double deg
 	return var;
 }
 
+SteelType AnimationState::createStretch( SteelType::Functor width_f, SteelType::Functor height_f) {
+	Stretch* stretch = new Stretch();
+	stretch->m_width_functor = width_f;
+	stretch->m_height_functor = height_f;
+
+	m_handles.push_back( stretch );
+	SteelType var;
+	var.set( stretch );
+	return var;
+}
+
 SteelType AnimationState::syncTo( SteelType::Handle hTask, SteelType::Handle hWithTask ) {
 	Task* task = Steel::GrabHandle<Task*>( hTask );
 	Task* withTask = Steel::GrabHandle<Task*>( hWithTask );
@@ -1275,6 +1289,21 @@ SteelType AnimationState::rotateSpriteTimed( int sprite, SteelType::Handle hRota
 	m_handles.push_back( task );
 	return var;
 }
+
+SteelType AnimationState::stretchSpriteTimed( int sprite, SteelType::Handle hStretch, double seconds ) {
+	Stretch * stretch  = Steel::GrabHandle<Stretch*>( hStretch );
+	stretch->m_duration = seconds;
+	TimedStretchTask * task = new TimedStretchTask( *this );
+	std::cout << "TimedStretchTask created: " << std::hex << task << std::endl;
+	task->init( *stretch );
+	task->SetSprite( sprite );
+	SteelType var;
+	var.set( task );
+	m_handles.push_back( task );
+	return var;
+}
+
+
 
 SteelType AnimationState::createShaker( SteelType::Functor magnitude, int flags ) {
 	Shaker * shaker = new Shaker();
@@ -1778,6 +1807,31 @@ void AnimationState::TimedPathTask::SetFlags( int flags ) {
 
 void AnimationState::TimedPathTask::SetEnd( const Locale& end ) {
 	m_path->m_end = end;
+}
+
+void AnimationState::TimedStretchTask::init( const Stretch& stretch ) {
+	m_stretch = stretch;
+}
+
+void AnimationState::TimedStretchTask::start( SteelInterpreter* ) {
+	m_start_time = CL_System::get_time();
+}
+
+void AnimationState::TimedStretchTask::update( SteelInterpreter* pInterpreter ) {
+	SteelType::Container params;
+	SteelType p;
+	p.set( percentage() ); // or _percentage?
+	params.push_back( p );
+	float width = ( double )m_stretch.m_width_functor->Call( pInterpreter, params );
+	float height = ( double )m_stretch.m_height_functor->Call ( pInterpreter, params );
+	CL_Sprite sprite = m_state.GetSprite( m_sprite );
+	sprite.set_scale(width,height);
+}
+
+
+
+void AnimationState::TimedStretchTask::cleanup() {
+	m_state.GetSprite( m_sprite ).set_scale(1.0,1.0);
 }
 
 void AnimationState::RotationTask::init( const Rotation& rot ) {

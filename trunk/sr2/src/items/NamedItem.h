@@ -28,7 +28,7 @@ namespace StoneRing{
 	
     private:
         std::string m_name;
-	CL_Image m_icon;
+		CL_Image m_icon;
         uint m_nMaxInventory;
         Item::eDropRarity m_eDropRarity;
     };

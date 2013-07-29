@@ -960,20 +960,20 @@ SteelType Application::getWeaponTypeDamageCategory ( SteelType::Handle hWeaponTy
 
 
 
-SteelType Application::getWeaponTypeAnimation ( SteelType::Handle hWeaponType )
+SteelType Application::getWeaponAnimation ( SteelType::Handle hWeapon )
 {
     SteelType val;
-    WeaponType* pWeaponType = GrabHandle<WeaponType*> ( hWeaponType );
-    val.set ( pWeaponType->GetAnimation() );
+    Weapon* pWeapon = GrabHandle<Weapon*> ( hWeapon );
+    val.set ( pWeapon->GetAnimation() );
 
     return val;
 }
 
-SteelType Application::weaponTypeHasAnimation ( SteelType::Handle hWeaponType )
+SteelType Application::weaponHasAnimation ( SteelType::Handle hWeapon )
 {
     SteelType val;
-    WeaponType* pWeaponType = GrabHandle<WeaponType*> ( hWeaponType );
-    val.set ( pWeaponType->GetAnimation() != NULL );
+    Weapon* pWeapon = GrabHandle<Weapon*> ( hWeapon );
+    val.set ( pWeapon->GetAnimation() != NULL );
 
     return val;
 }
@@ -1271,7 +1271,7 @@ SteelType Application::randomItem ( uint i_rarity, int min_value, int max_value 
 {
     Item::eDropRarity rarity = static_cast<Item::eDropRarity>(i_rarity);
     SteelType var;
-    var.set ( ItemManager::GenerateRandomItem(rarity, min_value, max_value) );
+    var.set ( ItemManager::GetRandomItem(rarity, min_value, max_value) );
     
     return var;    
 }
@@ -1279,7 +1279,7 @@ SteelType Application::randomItem ( uint i_rarity, int min_value, int max_value 
 SteelType Application::generateRandomWeapon ( uint i_rarity,  int min_value, int max_value )
 {
     Item::eDropRarity rarity = static_cast<Item::eDropRarity>(i_rarity);
-    Weapon * pWeapon = ItemManager::GenerateRandomGeneratedWeapon(rarity, min_value,max_value);
+    Weapon * pWeapon = ItemManager::GetRandomWeapon(rarity, min_value,max_value);
     SteelType var;
     var.set(pWeapon);
     
@@ -1289,7 +1289,7 @@ SteelType Application::generateRandomWeapon ( uint i_rarity,  int min_value, int
 SteelType Application::generateRandomArmor ( uint i_rarity, int min_value, int max_value )
 {
     Item::eDropRarity rarity = static_cast<Item::eDropRarity>(i_rarity);    
-    Armor * pArmor = ItemManager::GenerateRandomGeneratedArmor(rarity, min_value,max_value);
+    Armor * pArmor = ItemManager::GetRandomArmor(rarity, min_value,max_value);
     SteelType var;
     var.set(pArmor);
     
@@ -2187,8 +2187,8 @@ void Application::registerSteelFunctions()
     SteelFunctor*  fn_getArmorType = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getArmorType );
 	
     SteelFunctor*  fn_getWeaponTypeDamageCategory = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getWeaponTypeDamageCategory );
-    SteelFunctor*  fn_getWeaponTypeAnimation = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getWeaponTypeAnimation );
-    SteelFunctor*  fn_weaponTypeHasAnimation = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::weaponTypeHasAnimation );
+    SteelFunctor*  fn_getWeaponAnimation = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getWeaponAnimation );
+    SteelFunctor*  fn_weaponHasAnimation = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::weaponHasAnimation );
     SteelFunctor*  fn_invokeWeapon = new SteelFunctor5Arg<Application, const SteelType::Handle, const SteelType::Handle, const SteelType::Handle, uint, uint> ( this, &Application::invokeWeapon );
     SteelFunctor*  fn_invokeArmor = new SteelFunctor2Arg<Application, const SteelType::Handle, const SteelType::Handle> ( this, &Application::invokeArmor );
     SteelFunctor*  fn_attackCharacter = new SteelFunctor5Arg<Application, const SteelType::Handle,
@@ -2363,8 +2363,8 @@ void Application::registerSteelFunctions()
     mInterpreter->addFunction ( "getArmorType", fn_getArmorType );
 
     mInterpreter->addFunction ( "getWeaponTypeDamageCategory", fn_getWeaponTypeDamageCategory );
-    mInterpreter->addFunction ( "getWeaponTypeAnimation", fn_getWeaponTypeAnimation );
-    mInterpreter->addFunction ( "weaponTypeHasAnimation", fn_weaponTypeHasAnimation );
+    mInterpreter->addFunction ( "getWeaponAnimation", fn_getWeaponAnimation );
+    mInterpreter->addFunction ( "weaponHasAnimation", fn_weaponHasAnimation );
     mInterpreter->addFunction ( "getDamageCategoryResistance", fn_getDamageCategoryResistance );
     mInterpreter->addFunction ( "invokeArmor", fn_invokeArmor );
     mInterpreter->addFunction ( "invokeWeapon", fn_invokeWeapon );
@@ -2887,7 +2887,7 @@ void Application::showIntro()
 
         m_window.flip();
 		CL_KeepAlive::process(1);
-		CL_System::sleep(10);
+		CL_System::sleep(0);
     }
 #ifndef NDEBUG
 	std::cout << "Finished, now release enter..." << std::endl;

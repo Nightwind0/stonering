@@ -661,7 +661,7 @@ void ItemManager::printStatusModifiers(Equipment *pItem)
 #endif
 
 
-Armor* ItemManager::GenerateRandomGeneratedArmor(Item::eDropRarity rarity, int min_value, int max_value ) 
+void ItemManager::GenerateRandomGeneratedArmors(Item::eDropRarity rarity, int min_value, int max_value, std::vector<Item*>& o_options ) 
 {
     // Here is the full blown algorithm that comes up with all the possible options.
     // Could get slow if there are lots of types, classes and imbuements....
@@ -671,8 +671,7 @@ Armor* ItemManager::GenerateRandomGeneratedArmor(Item::eDropRarity rarity, int m
     std::cout << std::endl << (m_pInstance->m_armor_types.size() * m_pInstance->m_armor_classes.size() * m_pInstance->m_armor_imbuements.size())
         << " total possible armor" << std::endl;
 #endif    
-    std::vector<Armor*> m_options;
-
+  
     for(std::list<ArmorType*>::const_iterator type_iter = m_pInstance->m_armor_types.begin();
         type_iter != m_pInstance->m_armor_types.end(); 
         type_iter++) {
@@ -688,7 +687,7 @@ Armor* ItemManager::GenerateRandomGeneratedArmor(Item::eDropRarity rarity, int m
                 if(value >= min_value && value <= max_value){
                     GeneratedArmor *pArmor = new GeneratedArmor();
                     pArmor->Generate(*type_iter,*class_iter,NULL,NULL);
-                    m_options.push_back(pArmor);
+                    o_options.push_back(pArmor);
                 }
             }else if(rarity == Item::RARE){
                 for(std::vector<ArmorClass*>::const_iterator imbuement_iter = m_pInstance->m_armor_imbuements.begin();
@@ -701,32 +700,18 @@ Armor* ItemManager::GenerateRandomGeneratedArmor(Item::eDropRarity rarity, int m
                     if(value >= min_value && value <= max_value){
                         GeneratedArmor *pArmor = new GeneratedArmor();
                         pArmor->Generate(*type_iter,*class_iter,*imbuement_iter,NULL);
-                        m_options.push_back(pArmor);
+                        o_options.push_back(pArmor);
                     }                                
                 }
             }
         }
     }
     
-    if(m_options.size()){
-        uint selection = rand() % m_options.size();
-        for(uint i=0;i<m_options.size();i++){
-            if(selection != i)
-                delete m_options[i];
-        }
-        
-        return m_options[selection];
-    }
-    
-#ifndef NDEBUG
-    std::cout << m_options.size() 
-        << " options applied" << std::endl;
-#endif
-
-    return NULL;
+   
+    return;
 }
 
-Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, int min_value, int max_value ) 
+void ItemManager::GenerateRandomGeneratedWeapons(Item::eDropRarity rarity, int min_value, int max_value, std::vector<Item*>& o_options ) 
 {
     // Here is the full blown algorithm that comes up with all the possible options.
     // Could get slow if there are lots of types, classes and imbuements....
@@ -737,8 +722,6 @@ Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, int
                                 * m_pInstance->m_weapon_imbuements.size())
         << " total possible weapons" << std::endl;
 #endif
-    std::vector<Weapon*> m_options;
-	
 	// TODO: If this gets to be too slow with all the permutations, here's one way to speed it up:
 	// have some minimum number of options, say, 100 or whatever. It could even be just one. Then, randomly shuffle the types,
 	// classes and imbuements before iterating them. Then, you can just stop iterating after you've
@@ -760,7 +743,7 @@ Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, int
                 if(value >= min_value && value <= max_value){
                     GeneratedWeapon *pWeapon = new GeneratedWeapon();
                     pWeapon->Generate(*type_iter,*class_iter,NULL,NULL);
-                    m_options.push_back(pWeapon);
+                    o_options.push_back(pWeapon);
                 }
             }else if(rarity == Item::RARE){
                 for(std::vector<WeaponClass*>::const_iterator imbuement_iter = m_pInstance->m_weapon_imbuements.begin();
@@ -773,7 +756,7 @@ Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, int
                     if(value >= min_value && value <= max_value){
                         GeneratedWeapon *pWeapon = new GeneratedWeapon();
                         pWeapon->Generate(*type_iter,*class_iter,*imbuement_iter,NULL);
-                        m_options.push_back(pWeapon);
+                        o_options.push_back(pWeapon);
                     }                                
                 }
             }
@@ -781,28 +764,29 @@ Weapon* ItemManager::GenerateRandomGeneratedWeapon(Item::eDropRarity rarity, int
     }
     
 #ifndef NDEBUG
-    std::cout << m_options.size() 
+    std::cout << o_options.size() 
         << " options applied" << std::endl;
 #endif
     
-    if(m_options.size()){
-        uint selection = rand() % m_options.size();
-        for(uint i=0;i<m_options.size();i++){
-            if(selection != i)
-                delete m_options[i];
-        }
-        
-        return m_options[selection];
-    }
     
-    
-    return NULL;
+    return;
 }
 
-Item* ItemManager::GenerateRandomItem(Item::eDropRarity rarity, int min_value, int max_value )
+
+void ItemManager::GetRandomItems(Item::eDropRarity rarity, int min_value, int max_value, std::vector<Item*>& o_options )
 {
+    for(NamedItemMap::const_iterator iter = m_pInstance->m_named_items.begin(); 
+            iter != m_pInstance->m_named_items.end(); iter++)
+            {
+                if(iter->second->GetDropRarity() == rarity && iter->second->GetValue() > min_value 
+                    && iter->second->GetValue() < max_value
+                  )
+                
+                    o_options.push_back(iter->second);
+            }
+    	
+#if 0 
     if(rarity == Item::COMMON){
-        std::vector<Item*> options;
         for(NamedItemMap::const_iterator iter = m_pInstance->m_named_items.begin(); 
             iter != m_pInstance->m_named_items.end(); iter++)
             {
@@ -858,8 +842,90 @@ Item* ItemManager::GenerateRandomItem(Item::eDropRarity rarity, int min_value, i
         }
         
     }
+#endif
+    return;
+}
+
+
+Item* 		 ItemManager::GetRandomItem ( Item::eDropRarity rarity, int min_value, int max_value )
+{
+		std::vector<Item*> options;
+		GetRandomItems(rarity,min_value,max_value,options);
+		GenerateRandomGeneratedArmors(rarity,min_value,max_value,options);
+		GenerateRandomGeneratedWeapons(rarity,min_value,max_value,options);
+		
+		if(options.size()){
+			uint selection = rand() % options.size();
+			for(uint i=0;i< options.size();i++){
+				if(selection != i)
+					delete options[i];
+			}
+        
+			return options[selection];
+		}	
+		return NULL;		
+}
+
+Weapon*      ItemManager::GetRandomWeapon ( Item::eDropRarity rarity, int min_value, int max_value )
+{
+	std::vector<Item*> options;
     
-    return NULL;
+	for(NamedItemMap::const_iterator iter = m_pInstance->m_named_items.begin(); 
+		iter != m_pInstance->m_named_items.end(); iter++)
+		{
+			if(iter->second->GetDropRarity() == rarity && iter->second->GetValue() > min_value 
+				&& iter->second->GetValue() < max_value && iter->second->GetItemType() == Item::WEAPON
+				){
+				
+					Weapon * pWeapon = dynamic_cast<Weapon*>(iter->second);
+					assert(pWeapon);
+					options.push_back(pWeapon);
+				}
+		}
+	
+		GenerateRandomGeneratedWeapons(rarity,min_value,max_value,options);
+		
+		if(options.size()){
+			uint selection = rand() % options.size();
+			for(uint i=0;i< options.size();i++){
+				if(selection != i)
+					delete options[i];
+			}
+        
+			return dynamic_cast<Weapon*>(options[selection]);
+		}	
+		return NULL;			
+  
+}
+
+Armor*      ItemManager::GetRandomArmor ( Item::eDropRarity rarity, int min_value, int max_value )
+{
+	std::vector<Item*> options;
+    
+	for(NamedItemMap::const_iterator iter = m_pInstance->m_named_items.begin(); 
+		iter != m_pInstance->m_named_items.end(); iter++)
+		{
+			if(iter->second->GetDropRarity() == rarity && iter->second->GetValue() > min_value 
+				&& iter->second->GetValue() < max_value && iter->second->GetItemType() == Item::ARMOR
+				){			
+					Armor * armor = dynamic_cast<Armor*>(iter->second);
+					assert(armor);
+					options.push_back(armor);
+				}
+		}
+		
+		GenerateRandomGeneratedArmors(rarity,min_value,max_value,options);
+		
+		if(options.size()){
+			uint selection = rand() % options.size();
+			for(uint i=0;i< options.size();i++){
+				if(selection != i)
+					delete options[i];
+			}
+        
+			return dynamic_cast<Armor*>(options[selection]);
+		}	
+		return NULL;				
 }
 
 
