@@ -26,7 +26,7 @@ namespace StoneRing{
         virtual uint GetValue() const ;
         virtual uint GetSellValue() const ;
         virtual eItemType GetItemType() const { return WEAPON ; }
-
+		virtual CL_Sprite GetSprite() const;
         virtual void Invoke(eScriptMode invokeTime, const ParameterList& param);
         virtual bool EquipCondition(const ParameterList& param);
         virtual std::string GetDescription()const;

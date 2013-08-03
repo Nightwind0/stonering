@@ -43,7 +43,7 @@ void GoldGetState::SetGold(int gold) {
 	if(gold < 0)
 			os << 0-m_gold << ' ' << IApplication::GetInstance()->GetCurrencyName() << " Was Taken.";
 		else
-			os << m_gold << ' ' << IApplication::GetInstance()->GetCurrencyName() <<" Recieved.";
+			os << m_gold << ' ' << IApplication::GetInstance()->GetCurrencyName() <<" Received.";
 	m_text = os.str();
 }
 

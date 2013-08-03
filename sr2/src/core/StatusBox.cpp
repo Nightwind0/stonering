@@ -82,9 +82,12 @@ void StatusBox::Draw ( CL_GraphicContext& gc, bool draw_comparison, Character* p
         Weapon::eAttribute attr = static_cast<Weapon::eAttribute>(i);
         statPoint = point;
         statPoint.x = m_rect.get_top_right().x - statSize.width * 3;       
-        double old_value = pChar->GetEquippedWeaponAttribute(attr, Equipment::EHAND);        
+        double old_value = pChar->GetEquippedWeaponAttribute(attr, Equipment::EHAND);
+		int prec = 2;
+		if(Weapon::AttributeIsInteger(attr))
+			prec = 0;
         m_stat_name_font.draw_text(gc,point,Weapon::StringForAttribute(attr),Font::TOP_LEFT);
-        m_stat_font.draw_text(gc,statPoint,FloatToString(old_value,6,2),Font::TOP_LEFT);
+        m_stat_font.draw_text(gc,statPoint,FloatToString(old_value,6,prec),Font::TOP_LEFT);
         if(draw_comparison){
             statPoint.x += statSize.width*2;
             std::ostringstream os;
@@ -105,7 +108,10 @@ void StatusBox::Draw ( CL_GraphicContext& gc, bool draw_comparison, Character* p
                 newStatFont = m_stat_up_font;
             else if(new_value < old_value)
                 newStatFont = m_stat_down_font;
-            os << std::setw(6) << std::setprecision(2) << new_value;
+            os << std::setw(6);
+			if(prec)
+				os << std::setprecision(prec) ;
+			os << new_value;
 
             newStatFont.draw_text(gc,statPoint,os.str(), Font::TOP_LEFT);
         }
@@ -114,11 +120,14 @@ void StatusBox::Draw ( CL_GraphicContext& gc, bool draw_comparison, Character* p
   
     for(int i=Armor::_FIRST_ATTR+1;i<Armor::_LAST_ATTR;i++){
         Armor::eAttribute attr = static_cast<Armor::eAttribute>(i);
+		int prec = 2;
+		if(Armor::AttributeIsInteger(attr))
+			prec = 0;
         statPoint = point;
         statPoint.x = m_rect.get_top_right().x - statSize.width * 3;       
         double old_value = pChar->GetEquippedArmorAttribute(attr);        
         m_stat_name_font.draw_text(gc,point,Armor::StringForAttribute(attr),Font::TOP_LEFT);
-        m_stat_font.draw_text(gc,statPoint,FloatToString(old_value,6,2),Font::TOP_LEFT);
+        m_stat_font.draw_text(gc,statPoint,FloatToString(old_value,6,prec),Font::TOP_LEFT);
         if(draw_comparison){
             statPoint.x += statSize.width*2;
             std::ostringstream os;
@@ -139,7 +148,10 @@ void StatusBox::Draw ( CL_GraphicContext& gc, bool draw_comparison, Character* p
                 newStatFont = m_stat_up_font;
             else if(new_value < old_value)
                 newStatFont = m_stat_down_font;
-            os << std::setw(6) << std::setprecision(2) << new_value;
+            os << std::setw(6);
+			if(prec)
+				os << std::setprecision(prec);
+			os << new_value;
 
             newStatFont.draw_text(gc,statPoint,os.str(), Font::TOP_LEFT);
         }
@@ -153,10 +165,11 @@ void StatusBox::Draw ( CL_GraphicContext& gc, bool draw_comparison, Character* p
             m_stat_name_font.draw_text(gc,point,ICharacter::CAToLabel(*iter), Font::TOP_LEFT);
             CL_Pointf statPoint = point;
             statPoint.x = m_rect.get_top_right().x - statSize.width*3;
+			int prec = 0;
             std::ostringstream os;
-            if(ICharacter::IsInteger(*iter))
+            if(ICharacter::IsInteger(*iter)){
                 os << std::setw(6) << pChar->GetAttribute(*iter);
-            else
+			}else
                 os << std::setw(6) << std::setprecision(0) << int(100.0 * pChar->GetAttribute(*iter));
             m_stat_font.draw_text(gc,statPoint,os.str(),Font::TOP_LEFT);
             

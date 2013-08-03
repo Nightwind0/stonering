@@ -41,8 +41,9 @@ std::string IntToString(const int &i, int width)
 std::string FloatToString(const float &f, int width, int precision)
 {
     std::ostringstream os;
-
-    os << std::setprecision(precision) << std::setw(width) << f;
+	if(precision)
+		os << std::setprecision(precision);
+    os << std::setw(width) << f;
 
     return os.str();
 }

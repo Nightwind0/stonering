@@ -45,7 +45,7 @@ namespace StoneRing{
             CA_DEX,              // Chances of a hit connecting (0-1)
             CA_EVD,              // Chances of evading an attack(0-1)
             CA_MP_COST,
-			CA_BP_COST,
+		    CA_BP_COST,
             _START_OF_DAMAGE_CATEGORIES,
             CA_BASH_DEF,
             CA_PIERCE_DEF,

@@ -144,6 +144,11 @@ double Weapon::GetWeaponAttribute ( eAttribute attr )
 
 
 
+bool Weapon::AttributeIsInteger( Weapon::eAttribute attr ) {
+	return attr == Weapon::ATTACK;
+}
+
+
 //todo: Getters for weapon enhancers. need 'em.
 
 void Weapon::Clear_Weapon_Enhancers()

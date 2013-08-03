@@ -8,7 +8,7 @@
 #include "StatusEffectModifier.h"
 #include "Description.h"
 #include "Animation.h"
-
+#include "GraphicsManager.h"
 
 using namespace StoneRing;
 
@@ -48,6 +48,15 @@ void UniqueWeapon::OnUnequipScript(const ParameterList& params)
 	if(m_pUnequipScript)
 		m_pUnequipScript->ExecuteScript(params);
 }
+
+CL_Sprite UniqueWeapon::GetSprite() const 
+{
+	if(m_sprite.is_null()){
+		return GetWeaponType()->GetSprite();
+	}
+	return m_sprite;
+}
+
 
 uint UniqueWeapon::GetValue() const
 {
@@ -93,6 +102,7 @@ void UniqueWeapon::load_finished()
 {
     assert ( m_pWeaponType );
     NamedItemElement::load_finished();
+	m_sprite = GraphicsManager::GetSpriteWithImage(GetIcon());
     m_nValue = (int)(m_pWeaponType->GetBasePrice() * m_value_multiplier);
 }
 bool UniqueWeapon::handle_element(eElement element, Element * pElement)

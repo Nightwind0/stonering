@@ -46,6 +46,7 @@ namespace StoneRing{
         static eAttribute AttributeForString(const std::string& str);
         static eScriptMode ScriptModeForString(const std::string& str);
         static std::string StringForAttribute(eAttribute attr);
+		static bool       AttributeIsInteger(eAttribute attr);
         
         virtual void Invoke(eScriptMode invokeTime, const Steel::ParameterList& params)=0;
         bool ForgoAttack() const;
@@ -53,6 +54,9 @@ namespace StoneRing{
 		virtual Animation* GetAnimation() const;
 		
 		virtual DamageCategory::eDamageCategory GetDamageCategory() const;
+		
+		
+		virtual CL_Sprite GetSprite() const=0;
         
 
         /*
