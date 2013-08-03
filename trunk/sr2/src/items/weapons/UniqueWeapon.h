@@ -20,6 +20,7 @@ namespace StoneRing{
 
         virtual void Invoke(eScriptMode invokeTime, const ParameterList& params);
         virtual bool EquipCondition(const ParameterList& params);
+		virtual CL_Sprite GetSprite() const; 
         WeaponType *GetWeaponType() const ;
         bool IsRanged() const ;
         bool IsTwoHanded() const;
@@ -38,6 +39,7 @@ namespace StoneRing{
         virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
         virtual void load_finished();
         WeaponType * m_pWeaponType;
+		CL_Sprite m_sprite;
         float m_value_multiplier;
         uint m_nValue;
         std::string m_description;

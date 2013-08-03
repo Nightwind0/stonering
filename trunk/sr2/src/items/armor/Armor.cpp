@@ -28,6 +28,11 @@ std::string Armor::StringForAttribute ( Armor::eAttribute attr )
 }
 
 
+bool Armor::AttributeIsInteger( Armor::eAttribute attr ) {
+	return attr == Armor::AC || attr == Armor::RST;
+}
+
+
 std::string StoneRing::Armor::CreateArmorName(ArmorType *pType, ArmorClass *pClass, ArmorClass* pImbuement, RuneType *pRune)
 {
     std::ostringstream os;

@@ -896,8 +896,7 @@ void AnimationState::StartPhase() {
 					Weapon* pWeapon = dynamic_cast<Weapon*>( equipment );
 					if( pWeapon ) {
 						animation->Unskip();
-						WeaponType* pType = pWeapon->GetWeaponType();
-						animation->SetSpriteTicket( m_parent.add_sprite( pType->GetSprite() ) );
+						animation->SetSpriteTicket( m_parent.add_sprite( pWeapon->GetSprite() ) );
 					} else {
 						animation->Skip();
 					}
@@ -1094,8 +1093,7 @@ SteelType AnimationState::getWeaponSprite( SteelType::Handle iCharacter, int han
 	Equipment* equipment = pCharacter->GetEquipment( hand == SpriteStub::MAIN ? Equipment::EHAND : Equipment::EOFFHAND );
 	Weapon* pWeapon = dynamic_cast<Weapon*>( equipment );
 	if( pWeapon ) {
-		WeaponType* pType = pWeapon->GetWeaponType();
-		var.set( m_parent.add_sprite( pType->GetSprite() ) );
+		var.set( m_parent.add_sprite( pWeapon->GetSprite() ) );
 	} else {
 		var.set( BattleState::UNDEFINED_SPRITE_TICKET );
 	}

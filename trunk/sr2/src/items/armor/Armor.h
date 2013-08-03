@@ -19,8 +19,8 @@ namespace StoneRing{
         {
             _FIRST_ATTR,
             AC,
+            RST,
             _LAST_ATTR,
-            RST
         };
 
         virtual bool IsArmor() const { return true; }
@@ -36,7 +36,7 @@ namespace StoneRing{
         
         virtual void Invoke(const Steel::ParameterList& params)=0;
   
-
+		static bool       AttributeIsInteger( eAttribute attr );
         static eAttribute AttributeForString ( const std::string str );
         static std::string CreateArmorName(ArmorType *pType, ArmorClass *pClass,
             ArmorClass* pImbuement, RuneType *pRune);

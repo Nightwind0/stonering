@@ -93,7 +93,7 @@ compose_f_gx (const OP1& o1, const OP2& o2) {
 
 int StringToInt(const std::string& str);
 std::string IntToString(const int &i, int width=1);
-std::string FloatToString(const float &f, int width=3,int precision=2);
+std::string FloatToString(const float &f, int width=4,int precision=2);
 std::string CL_String_load(const std::string& id, CL_ResourceManager& resources);
 
 

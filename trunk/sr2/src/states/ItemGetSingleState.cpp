@@ -48,7 +48,7 @@ void ItemGetSingleState::SetItem(Item * pItem, int count) {
 	if(IsInverse())
 			os << " Was Taken.";
 		else
-			os <<" Recieved.";
+			os <<" Received.";
 	m_text = os.str();
 }
 

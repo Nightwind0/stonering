@@ -176,6 +176,9 @@ void GeneratedWeapon::OnUnequipScript(const ParameterList& params)
         m_pImbuement->OnUnequipScript(params);
 }
 
+CL_Sprite GeneratedWeapon::GetSprite() const {
+	return GetWeaponType()->GetSprite();
+}
 
 
 void GeneratedWeapon::Generate( WeaponType* pType, WeaponClass * pClass,
