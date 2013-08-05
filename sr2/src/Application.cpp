@@ -2236,8 +2236,8 @@ void Application::registerSteelFunctions()
     steelConst ( "$_FINGER2", Equipment::EFINGER2 );
     steelConst ( "$_FEET", Equipment::EFEET );
 
-    steelConst ( "$_PRE_ATTACK", Weapon::ATTACK_BEFORE );
-    steelConst ( "$_POST_ATTACK", Weapon::ATTACK_AFTER );
+    steelConst ( "$_PRE_ATTACK", Weapon::ATTACK_AFTER );
+    steelConst ( "$_POST_ATTACK", Weapon::ATTACK_BEFORE );
     steelConst ( "$_FORGO_ATTACK", Weapon::FORGO_ATTACK );
 
     steelConst ( "$_BASH_DEF", Character::CA_BASH_DEF );

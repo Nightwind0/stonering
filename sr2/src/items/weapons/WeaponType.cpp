@@ -22,7 +22,7 @@ void WeaponType::load_attributes(CL_DomNamedNodeMap attributes)
     m_name = get_required_string("name",attributes);
     m_nBasePrice = get_required_int("basePrice",attributes);
     m_nBaseAttack = get_required_int("baseAttack",attributes);
-    m_fBaseHit = get_required_float("hitAdd",attributes);
+    m_fBaseHit = get_implied_float("hitAdd",attributes,0.0);
     m_fBaseCritical = get_implied_float("baseCritical",attributes,0.05);
     m_bRanged = get_implied_bool("ranged",attributes,false);
     m_bTwoHanded  = get_implied_bool("twoHanded",attributes,false);

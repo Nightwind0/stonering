@@ -620,6 +620,47 @@ bool Character::HasEquipment(Equipment::eSlot slot) const
 void Character::Equip(Equipment::eSlot slot, Equipment *pEquip)
 {
     assert(pEquip);
+	
+	if(HasEquipment(slot)){
+		Unequip(slot);
+	}
+	
+	Weapon * pWeapon = dynamic_cast<Weapon*>(pEquip);
+	if(pWeapon){
+		if(pWeapon->IsTwoHanded()){
+			if(HasEquipment(Equipment::EHAND)){
+				Unequip(Equipment::EHAND);
+			}
+			if(HasEquipment(Equipment::EOFFHAND)){
+				Unequip(Equipment::EOFFHAND);
+			}
+		}
+	}
+	
+	// Unequip any two-handed weapons if need be
+    if(slot == Equipment::EHAND){
+		if(HasEquipment(Equipment::EOFFHAND)){
+			if(GetEquipment(Equipment::EOFFHAND)->IsWeapon()){
+				Weapon* pWeapon = dynamic_cast<Weapon*>(GetEquipment(Equipment::EOFFHAND));
+				if(pWeapon){
+					if(pWeapon->IsTwoHanded()){
+						Unequip(Equipment::EOFFHAND);
+					}
+				}
+			}
+		}
+	}else if(slot == Equipment::EOFFHAND){
+		if(HasEquipment(Equipment::EHAND)){
+			if(GetEquipment(Equipment::EHAND)->IsWeapon()){
+				Weapon* pWeapon = dynamic_cast<Weapon*>(GetEquipment(Equipment::EHAND));
+				if(pWeapon){
+					if(pWeapon->IsTwoHanded()){
+						Unequip(Equipment::EHAND);
+					}
+				}
+			}
+		}		
+	}
     m_equipment[slot] = pEquip;
 }
 
@@ -642,7 +683,7 @@ CL_Sprite Character::GetPortrait(ePortrait portrait)
 {
     if(m_portrait.is_null())
     {
-	m_portrait = GraphicsManager::GetPortraits(GetName());
+		m_portrait = GraphicsManager::GetPortraits(GetName());
     }
     m_portrait.set_frame(static_cast<int>(portrait));
     return m_portrait;
@@ -657,6 +698,7 @@ Equipment* Character::Unequip(Equipment::eSlot slot)
     if(it != m_equipment.end()){
         there = it->second;
         m_equipment.erase(it);
+		IApplication::GetInstance()->GetParty()->GiveItem(it->second,1);			
     }
 
     return there;
