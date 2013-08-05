@@ -472,9 +472,6 @@ void ShopState::HandleButtonUp ( const StoneRing::IApplication::Button& button )
 										// TODO: Make a method on Equipment that gives me an iterator to the slots or something
 										Equipment::eSlot slot = (Equipment::eSlot)std::pow(2,i);
 										if(pEquipment->GetSlot() & slot){
-											if(pChar->HasEquipment(slot)){
-												party->GiveItem(pChar->GetEquipment(slot),1);
-											}
 											pChar->Equip(slot,pEquipment);
 											break;
 										}

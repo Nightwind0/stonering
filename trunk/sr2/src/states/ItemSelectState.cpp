@@ -268,25 +268,25 @@ void ItemSelectState::draw_option(int option, bool selected, float x, float y, C
     CL_Image icon = pItem->GetIcon();
     //icon.set_alignment(origin_top_left);
     if(available)
-	icon.set_alpha(1.0f);
+		icon.set_alpha(1.0f);
     else
-	icon.set_alpha(0.5f);
+		icon.set_alpha(0.5f);
     icon.draw(gc,x,y);
     const float icon_width = icon.get_width();
     std::ostringstream text;
     if(count > 1)
-	text << std::setw(40) << std::left << pItem->GetName() << ' ' << std::setw(3) << std::right << count;
+		text << std::setw(40) << std::left << pItem->GetName() << ' ' << std::setw(3) << std::right << count;
     else
-	text << std::setw(40) << std::left << pItem->GetName();
+		text << std::setw(40) << std::left << pItem->GetName();
     
     if(selected)
-	m_currentOptionFont.draw_text(gc,x + icon_width + 12,y,text.str(), Font::TOP_LEFT);
+		m_currentOptionFont.draw_text(gc,x + icon_width + 12,y,text.str(), Font::TOP_LEFT);
     else{
-	if(!available){
-	    m_unavailableOption.draw_text(gc,x + icon_width + 12, y, text.str(),Font::TOP_LEFT);
-	}else{
-	    m_optionFont.draw_text(gc,x + icon_width+12,y,text.str(), Font::TOP_LEFT);
-	}
+		if(!available){
+			m_unavailableOption.draw_text(gc,x + icon_width + 12, y, text.str(),Font::TOP_LEFT);
+		}else{
+			m_optionFont.draw_text(gc,x + icon_width+12,y,text.str(), Font::TOP_LEFT);
+		}
     }
 
     if(selected)

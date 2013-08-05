@@ -458,16 +458,16 @@ void EquipState::HandleButtonUp ( const StoneRing::IApplication::Button& button 
             if(pEquipment == NULL){
                 if(m_pChar->HasEquipment(m_slots[m_nSlot])){
                     Equipment * pEquip = m_pChar->GetEquipment(m_slots[m_nSlot]);
-                    IApplication::GetInstance()->GetParty()->GiveItem(pEquip,1);
+                    //IApplication::GetInstance()->GetParty()->GiveItem(pEquip,1);
                     m_pChar->Unequip(m_slots[m_nSlot]);
                 }
             }else{
                 // First, take the item being equipped out of party inventory
                 IApplication::GetInstance()->GetParty()->TakeItem(pEquipment,1);
                 // Then, if there is already something in this slot, add it to party inventory
-                if(m_pChar->HasEquipment(m_slots[m_nSlot])){
-                    IApplication::GetInstance()->GetParty()->GiveItem(m_pChar->GetEquipment(m_slots[m_nSlot]),1);
-                }
+                //if(m_pChar->HasEquipment(m_slots[m_nSlot])){
+                //    IApplication::GetInstance()->GetParty()->GiveItem(m_pChar->GetEquipment(m_slots[m_nSlot]),1);
+                //}
                 // Then, put the item into the slot
                 m_pChar->Equip(m_slots[m_nSlot],pEquipment);
             }

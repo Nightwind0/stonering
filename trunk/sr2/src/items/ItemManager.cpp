@@ -856,11 +856,6 @@ Item* 		 ItemManager::GetRandomItem ( Item::eDropRarity rarity, int min_value, i
 		
 		if(options.size()){
 			uint selection = rand() % options.size();
-			for(uint i=0;i< options.size();i++){
-				if(selection != i)
-					delete options[i];
-			}
-        
 			return options[selection];
 		}	
 		return NULL;		
@@ -888,8 +883,10 @@ Weapon*      ItemManager::GetRandomWeapon ( Item::eDropRarity rarity, int min_va
 		if(options.size()){
 			uint selection = rand() % options.size();
 			for(uint i=0;i< options.size();i++){
-				if(selection != i)
-					delete options[i];
+				if(selection != i){					
+					GeneratedWeapon * pWeapon = dynamic_cast<GeneratedWeapon*>(options[i]);
+					delete pWeapon;;
+				}
 			}
         
 			return dynamic_cast<Weapon*>(options[selection]);
@@ -919,8 +916,10 @@ Armor*      ItemManager::GetRandomArmor ( Item::eDropRarity rarity, int min_valu
 		if(options.size()){
 			uint selection = rand() % options.size();
 			for(uint i=0;i< options.size();i++){
-				if(selection != i)
-					delete options[i];
+				if(selection != i){
+					GeneratedArmor* genArmor = dynamic_cast<GeneratedArmor*>(options[i]);
+					delete genArmor;
+				}
 			}
         
 			return dynamic_cast<Armor*>(options[selection]);
