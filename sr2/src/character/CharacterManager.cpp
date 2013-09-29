@@ -54,8 +54,12 @@ void CharacterManager::LoadCharacterClassFile ( CL_DomDocument &doc )
     {
         CharacterClass * pCharacterClass = dynamic_cast<CharacterClass*>
             (pFactory->createElement("characterClass"));
-
-        pCharacterClass->Load(classNode);
+		try {
+			pCharacterClass->Load(classNode);
+		}catch(XMLException &e){
+			e.push_error("characterClass: " + pCharacterClass->GetDebugId());
+			throw e;
+		}
         m_pInstance->m_character_classes [ pCharacterClass->GetName() ] = pCharacterClass;
         classNode = classNode.get_next_sibling().to_element();
 
@@ -89,8 +93,12 @@ void CharacterManager::LoadMonsterFile ( CL_DomDocument &doc )
     {
         MonsterElement * pMonster = dynamic_cast<MonsterElement*>
             (pFactory->createElement("monster"));
-
-        pMonster->Load(monsterNode);
+		try {
+			pMonster->Load(monsterNode);
+		}catch(XMLException& e){
+			e.push_error("monster: " + pMonster->GetDebugId());
+			throw e;
+		}
         m_pInstance->m_monsters [ pMonster->GetName() ] = pMonster;
         monsterNode = monsterNode.get_next_sibling().to_element();
 
@@ -119,7 +127,12 @@ void CharacterManager::LoadCharacters(CL_DomDocument &doc)
 
         assert(pCharacter);
         assert(pCharacter->WhichElement() == Element::ECHARACTER);
-        pCharacter->Load(characterNode);
+		try {
+			pCharacter->Load(characterNode);
+		}catch(XMLException& e){
+			e.push_error("Character : " + pCharacter->GetDebugId());
+			throw e;
+		}
         m_pInstance->m_characters [ pCharacter->GetName() ] = pCharacter;
         characterNode = characterNode.get_next_sibling().to_element();
 

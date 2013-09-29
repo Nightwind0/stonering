@@ -44,8 +44,12 @@ void AbilityManager::LoadSkillFile ( CL_DomDocument &doc )
     while (!spellNode.is_null())
     {
         Skill * pSkill = dynamic_cast<Skill*>(pAbilityFactory->createElement("skill"));
-
-        pSkill->Load(spellNode);
+		try { 
+			pSkill->Load(spellNode);
+		}catch(XMLException& e){
+			e.push_error("skill: " + pSkill->GetDebugId());
+			throw e;
+		}
         instance->m_skills [ pSkill->GetName() ] = pSkill;
         spellNode = spellNode.get_next_sibling().to_element();
     }
@@ -63,9 +67,14 @@ void AbilityManager::LoadStatusEffectFile ( CL_DomDocument &doc )
     while (!statusEffectNode.is_null())
     {
         StatusEffect * pStatusEffect = dynamic_cast<StatusEffect*>(pAbilityFactory->createElement("statusEffect"));
-        pStatusEffect->Load(statusEffectNode);
+        try { 
+			pStatusEffect->Load(statusEffectNode);
+		}catch(XMLException& e){
+			e.push_error("statusEffect: " + pStatusEffect->GetDebugId());
+			throw e;
+		}
         if(instance->m_status_effects.find(pStatusEffect->GetName()) != instance->m_status_effects.end())
-            throw CL_Exception("Duplicate Status Effect named " + pStatusEffect->GetName() + " found");
+            throw XMLException("Duplicate Status Effect named " + pStatusEffect->GetName() + " found");
         instance->m_status_effects[pStatusEffect->GetName()] = pStatusEffect;
         statusEffectNode = statusEffectNode.get_next_sibling().to_element();
     }
@@ -84,7 +93,13 @@ void AbilityManager::LoadAnimationFile ( CL_DomDocument &doc )
     while (!animationNode.is_null())
     {
         Animation * pAnimation = dynamic_cast<Animation*>(pAbilityFactory->createElement("animation"));
-        pAnimation->Load(animationNode);
+		try {
+			pAnimation->Load(animationNode);
+		}catch(XMLException& e){
+			e.push_error("animation: " + pAnimation->GetDebugId());
+			throw e;
+		}
+		
         instance->m_animations[ pAnimation->GetName() ] =  pAnimation ;
         animationNode = animationNode.get_next_sibling().to_element();
     }
