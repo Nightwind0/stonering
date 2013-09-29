@@ -8,6 +8,7 @@
     #include "SteelType.h"
 #endif
 #include <sstream>
+#include <list>
 #include <ClanLib/core.h>
 //#include "IFactory.h"
 //#include "IApplication.h"
@@ -149,6 +150,7 @@ namespace StoneRing
         float get_implied_float(const std::string &attrname, CL_DomNamedNodeMap attributes, float defaultValue);
 #ifndef NDEBUG
         std::string get_element_name() const;
+		virtual std::string GetDebugId() const =0;
 #else
         std::string get_element_name() const {
             std::ostringstream os;
@@ -182,7 +184,23 @@ namespace StoneRing
 
 
 
-
+class XMLException {
+public:
+	XMLException(const std::string& str){
+		push_error(str);
+	}
+	~XMLException(){}
+	void push_error(const std::string& str){
+		m_err_stack.push_back(str);
+	}
+	void dump(std::ostream& out){
+		for(std::list<std::string>::const_iterator it = m_err_stack.begin(); it!= m_err_stack.end(); it++){
+			out << *it << std::endl;
+		}
+	}
+private:
+	std::list<std::string> m_err_stack;
+};
 
 
 

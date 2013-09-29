@@ -2732,6 +2732,11 @@ int Application::main ( const std::vector<std::string> args )
 #endif
         return 1;
     }
+    catch( XMLException& e )
+	{
+		e.dump(std::cerr);
+		return 1;
+	}
     catch ( SteelException ex )
     {
         std::cerr << "Steel Exception on line " << ex.getLine()

@@ -24,7 +24,7 @@ bool StoneRing::SpriteDefinition::handle_element(eElement element, Element * pEl
     switch(element)
     {
     case ESPRITEREF:
-        if(m_pSpriteRef) throw CL_Exception("Sprite Ref already defined for Sprite Definition");
+        if(m_pSpriteRef) throw XMLException("Sprite Ref already defined for Sprite Definition");
         m_pSpriteRef = dynamic_cast<SpriteRef*>(pElement);
     default:
         return false;

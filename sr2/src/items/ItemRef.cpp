@@ -45,7 +45,7 @@ void StoneRing::ItemRef::load_finished()
 
     if(m_eType == INVALID)
     {
-        throw CL_Exception("Item Ref with no child");
+        throw XMLException("Item Ref with no child");
     }
 
     m_pItem = ItemManager::GetItem ( *this );

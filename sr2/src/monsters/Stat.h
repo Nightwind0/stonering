@@ -17,6 +17,8 @@ namespace StoneRing
         ICharacter::eCharacterAttribute GetAttribute() const;
 
         eElement WhichElement()const { return ESTAT; }
+		virtual std::string GetDebugId() const { return IntToString(m_eAttr); }				
+        
     private:
         virtual void load_attributes(CL_DomNamedNodeMap);
         ICharacter::eCharacterAttribute m_eAttr;

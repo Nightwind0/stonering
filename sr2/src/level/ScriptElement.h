@@ -32,6 +32,8 @@ namespace StoneRing{
         SteelType ExecuteScript(const ParameterList &params);
 
         bool IsConditionScript() const { return m_bIsCondition; }
+		virtual std::string GetDebugId() const { return m_id; }				
+        
     protected:
         virtual void load_attributes(CL_DomNamedNodeMap);
         virtual void handle_text(const std::string &);

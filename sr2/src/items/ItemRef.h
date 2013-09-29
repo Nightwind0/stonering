@@ -30,6 +30,8 @@ namespace StoneRing
         ArmorRef * GetArmorRef() const;
 
         inline Item * GetItem() const { return m_pItem; }
+		virtual std::string GetDebugId() const { return GetItemName(); }				
+        
     protected:
         virtual bool handle_element(Element::eElement,Element *);
         virtual void load_attributes(CL_DomNamedNodeMap attributes);
@@ -55,6 +57,8 @@ namespace StoneRing
         virtual ~NamedItemRef();
         virtual eElement WhichElement() const{ return ENAMEDITEMREF; }
         std::string GetItemName();
+		virtual std::string GetDebugId() const { return m_name; }				
+		
     protected:
         virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
         std::string m_name;

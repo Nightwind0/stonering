@@ -38,7 +38,7 @@ namespace StoneRing{
         bool IsExcluded ( const std::string& armorType );
         bool IsExcluded ( const ArmorTypeRef& armorType );
         bool operator==(const ArmorClass &lhs );
-
+		virtual std::string GetDebugId() const { return m_name; }		
     private:
 
         virtual bool handle_element(eElement element, Element * pElement );

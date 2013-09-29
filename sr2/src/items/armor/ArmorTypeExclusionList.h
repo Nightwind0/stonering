@@ -15,7 +15,7 @@ namespace StoneRing{
 
         std::list<ArmorTypeRef*>::const_iterator GetArmorTypeRefsBegin();
         std::list<ArmorTypeRef*>::const_iterator GetArmorTypeRefsEnd();
-
+		virtual std::string GetDebugId() const { return ""; }		
     private:
         virtual bool handle_element(eElement element, Element * pElement);
         std::list<ArmorTypeRef*> m_ArmorTypes;

@@ -25,7 +25,7 @@ namespace StoneRing{
         RuneType * GetRuneType() const;
         std::string GetName() const;
         bool operator==(const ArmorRef&);
-
+		virtual std::string GetDebugId() const { return m_name; }		
     private:
         virtual bool handle_element(eElement element, Element * pElement );
         virtual void load_finished();

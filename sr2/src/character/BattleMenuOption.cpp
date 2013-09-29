@@ -131,9 +131,9 @@ bool BattleMenuOption::handle_element(Element::eElement element, Element *pEleme
 void BattleMenuOption::load_finished()
 {
     if(m_icon.is_null()) 
-        throw CL_Exception("Battle menu option needs either an icon or a skill ref");
+        throw XMLException("Battle menu option needs either an icon or a skill ref");
     if(m_action_type == INVALID)
-        throw CL_Exception("Battle menu needs a skill ref or a script or submenu");
+        throw XMLException("Battle menu needs a skill ref or a script or submenu");
 }
 
 void BattleMenuOption::load_attributes(CL_DomNamedNodeMap attributes)

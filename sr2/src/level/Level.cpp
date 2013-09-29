@@ -1046,7 +1046,7 @@ bool Level::handle_element(Element::eElement element, Element * pElement)
     case EMONSTERREGIONS:
         {
             if(m_pMonsterRegions != NULL) 
-				throw CL_Exception("Already have monster regions on this level");
+				throw XMLException("Already have monster regions on this level");
 
             m_pMonsterRegions = dynamic_cast<MonsterRegions*>(pElement);
             break;
@@ -1067,7 +1067,7 @@ void Level::load_attributes(CL_DomNamedNodeMap attributes)
 
 void Level::load_finished()
 {
-    if(m_pHeader == NULL) throw CL_Exception("Level was missing levelHeader.");
+    if(m_pHeader == NULL) throw XMLException("Level was missing levelHeader.");
 
     m_nFrameCount = m_nMoveCount = 0 ;
     m_bMarkedForDeath = false;
@@ -1112,12 +1112,12 @@ void Level::Load_Tile ( Tile * tile)
     if(tile->GetX() >= m_LevelWidth)
     {
         delete tile;
-        throw CL_Exception("Tile found beyond range of indicated level width.");
+        throw XMLException("Tile found beyond range of indicated level width.");
     }
     else if (tile->GetY() >= m_LevelHeight)
     {
         delete tile;
-        throw CL_Exception("Tile found beyond range of indicated level height.");
+        throw XMLException("Tile found beyond range of indicated level height.");
     }
 
     point.x = tile->GetX();

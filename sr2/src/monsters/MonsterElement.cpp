@@ -137,7 +137,7 @@ void MonsterElement::load_attributes(CL_DomNamedNodeMap attr)
     {
         m_bClass = true;
     }
-    else throw CL_Exception("Unknown monster mode");
+    else throw XMLException("Unknown monster mode");
 
     if(type == "living")
         m_eType = ICharacter::LIVING;
@@ -160,7 +160,7 @@ void MonsterElement::handle_text(const std::string &)
 
 void MonsterElement::load_finished()
 {
-    if(!m_pOnRound) throw CL_Exception("Missing onRound on monster " + m_name);
+    if(!m_pOnRound) throw XMLException("Missing onRound on monster " + m_name);
 
     // Check for all the required stats
     if(!m_bClass)

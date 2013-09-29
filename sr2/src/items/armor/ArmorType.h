@@ -22,7 +22,7 @@ namespace StoneRing{
         Equipment::eSlot GetSlot() const;
 
         bool operator==(const ArmorType &lhs );
-
+		virtual std::string GetDebugId() const { return m_name; }		
     private:
         virtual bool handle_element(eElement element, Element * pElement );
         virtual void load_attributes(CL_DomNamedNodeMap attributes) ;

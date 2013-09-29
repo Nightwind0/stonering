@@ -20,6 +20,8 @@ namespace StoneRing{
         inline bool Remember() { return m_bRemember; }
         bool Invoke();
         bool Invoke(const ParameterList& params);
+		virtual std::string GetDebugId() const { return m_name; }				
+		
     protected:
         virtual bool handle_element(eElement element, Element * pElement );
         virtual void load_attributes(CL_DomNamedNodeMap  attributes);

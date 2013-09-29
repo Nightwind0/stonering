@@ -32,12 +32,12 @@ namespace StoneRing{
         eTargetable GetTargetable() const;
         eDefaultTarget GetDefaultTarget() const;
         bool IsReusable() const;
-	virtual uint GetValue() const ; // Price to buy, and worth when calculating drops.
+		virtual uint GetValue() const ; // Price to buy, and worth when calculating drops.
         virtual uint GetSellValue() const ;
         virtual void LoadItem ( CL_DomElement * pElement );
         static eUseType UseTypeFromString ( const std::string &str );
         static eTargetable TargetableFromString ( const std::string &str );
-	virtual std::string GetDescription() const { return m_description; }
+		virtual std::string GetDescription() const { return m_description; }
         virtual bool operator == ( const ItemRef &ref );	
     private:
         virtual bool handle_element(eElement element, Element * pElement );

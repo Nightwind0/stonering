@@ -72,9 +72,9 @@ void CharacterClass::verify_menu_options ( BattleMenu* pMenu )
 void CharacterClass::load_finished()
 {
     if(m_pMenu == NULL)
-        throw CL_Exception("Missing battle menu on class " + m_name);
+        throw XMLException("Missing battle menu on class " + m_name);
     if(m_skill_tree.empty())
-        throw CL_Exception("No skill tree on class " + m_name);
+        throw XMLException("No skill tree on class " + m_name);
 }
 
 bool CharacterClass::HasStat ( ICharacter::eCharacterAttribute attr )
@@ -88,7 +88,7 @@ double CharacterClass::GetStat(ICharacter::eCharacterAttribute attr, int level)
 {
     StatMap::iterator it = m_stat_scripts.find(attr);
     if(it == m_stat_scripts.end())
-        throw CL_Exception("Missing stat: " + ICharacter::CAToString(attr) +  " on character class: " + m_name );
+        throw XMLException("Missing stat: " + ICharacter::CAToString(attr) +  " on character class: " + m_name );
 
     StatScript *pScript = it->second;
     return pScript->GetStat(level);
@@ -218,7 +218,7 @@ bool StatScript::handle_element(Element::eElement element, StoneRing::Element *p
 
 void StatScript::load_finished()
 {
-    if(m_pScript == NULL) throw CL_Exception("No script defined for scriptElement");
+    if(m_pScript == NULL) throw XMLException("No script defined for scriptElement");
 }
 
 StatScript::StatScript( )

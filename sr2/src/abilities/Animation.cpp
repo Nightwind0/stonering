@@ -18,7 +18,7 @@ eWho who_from_string ( const std::string &str )
     else if (str == "target") return WHO_TARGET;
     else if (str == "target_group") return WHO_TARGET_GROUP;
     else if (str == "all") return WHO_ALL;
-    else throw CL_Exception("Bad Who = " + str );
+    else throw XMLException("Bad Who = " + str );
 
 }
 
@@ -82,7 +82,7 @@ void BattleSprite::load_attributes(CL_DomNamedNodeMap attributes)
     else if (which == "recoil") m_eWhich = RECOIL;
     else if (which == "weak") m_eWhich = WEAK;
     else if (which == "dead") m_eWhich = DEAD;
-    else throw CL_Exception("Bad which on battleSprite");
+    else throw XMLException("Bad which on battleSprite");
 }
 
 
@@ -116,7 +116,7 @@ AlterSprite::eAlter AlterSprite::alter_from_string(const std::string &str)
     else if (str == "redscale") return REDSCALE;
     else if (str == "bluescale") return BLUESCALE;
     else if (str == "reset") return RESET;
-    else throw CL_Exception("Bad alter: " + str);
+    else throw XMLException("Bad alter: " + str);
 }
 
 
@@ -170,7 +170,7 @@ bool SpriteAnimation::handle_element(eElement element, Element * pElement)
 void SpriteAnimation::load_finished()
 {
     if (!m_pStub && !m_pSpriteRef && !m_pBattleSprite)
-        throw CL_Exception("Missing sprite stub or sprite ref or battle sprite on spriteAnimation");
+        throw XMLException("Missing sprite stub or sprite ref or battle sprite on spriteAnimation");
 }
 
 BattleState::SpriteTicket SpriteAnimation::GetSpriteTicket() const
@@ -297,7 +297,7 @@ SpriteMovement::focusTypeFromString(const std::string &str)
     else if (str == "caster_group") return CASTER_GROUP;
     else if (str == "target_group") return TARGET_GROUP;
     else if (str == "locus") return CASTER_LOCUS;
-    else throw CL_Exception("Bad focus: " + str );
+    else throw XMLException("Bad focus: " + str );
 }
 
 SpriteMovement::eFocusX
@@ -308,7 +308,7 @@ SpriteMovement::focusXFromString ( const std::string &str )
     else if (str == "away") return AWAY;
     else if (str == "left")  return LEFT;
     else if (str == "right") return RIGHT;
-    else throw CL_Exception("Bad focus x type: " + str );
+    else throw XMLException("Bad focus x type: " + str );
 }
 
 SpriteMovement::eFocusY
@@ -317,7 +317,7 @@ SpriteMovement::focusYFromString ( const std::string &str )
     if (str == "center") return Y_CENTER;
     else if (str == "top") return TOP;
     else if (str == "bottom") return BOTTOM;
-    else throw CL_Exception("Bad focus y type: " + str );
+    else throw XMLException("Bad focus y type: " + str );
 }
 
 SpriteMovement::eFocusZ
@@ -325,7 +325,7 @@ SpriteMovement::focusZFromString ( const std::string &str )
 {
     if (str == "front") return FRONT;
     else if (str == "back") return BACK;
-    else throw CL_Exception("Bad focus z type: " + str );
+    else throw XMLException("Bad focus z type: " + str );
 }
 
 SpriteMovement::eMovementCircleDir SpriteMovement::circleMovementFromString( const std::string &str )
@@ -334,7 +334,7 @@ SpriteMovement::eMovementCircleDir SpriteMovement::circleMovementFromString( con
     else if(str == "away") return ROTATE_AWAY;
     else if(str == "clockwise") return CLOCKWISE;
     else if(str == "counterclockwise") return COUNTERCLOCKWISE;
-    else throw CL_Exception("Bad circleDirection on " + str);
+    else throw XMLException("Bad circleDirection on " + str);
     
 }
 
@@ -354,7 +354,7 @@ SpriteMovement::movementDirectionFromString ( const std::string &str )
     else if (str == "towards") return MOVE_TOWARDS;
     else if (str == "endFocus") return END_FOCUS;
 
-    throw CL_Exception("Bad movement Direction: " + str);
+    throw XMLException("Bad movement Direction: " + str);
     return STILL;
 }
 
@@ -368,7 +368,7 @@ SpriteMovement::movementStyleFromString( const std::string &str )
     else if (str == "xonly") return XONLY;
     else if (str == "yonly") return YONLY;
     else if (str == "circle") return CIRCLE;
-    else throw CL_Exception("Bad movementStyle " + str );
+    else throw XMLException("Bad movementStyle " + str );
 }
 
 SpriteMovement::~SpriteMovement()
@@ -481,7 +481,7 @@ void SpriteMovementScript::load_attributes(CL_DomNamedNodeMap attributes)
     else if(type=="spriteYaw") m_eType = SpriteMovement::SPRITE_YAW;
     else if(type=="circleAngle") m_eType = SpriteMovement::CIRCLE_ANGLE;
     else if(type=="alpha") m_eType = SpriteMovement::ALPHA;
-    else throw CL_Exception("Unrecognized sprite movement script: " + type);
+    else throw XMLException("Unrecognized sprite movement script: " + type);
     ScriptElement::load_attributes(attributes);
 }
 	
@@ -574,7 +574,7 @@ void Animation::load_attributes(CL_DomNamedNodeMap attributes)
 
     if (type == "battle") m_eType = BATTLE;
     else if (type == "world") m_eType = WORLD;
-    else throw CL_Exception("Bogus animation type: " + type );
+    else throw XMLException("Bogus animation type: " + type );
 
 }
 

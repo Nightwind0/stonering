@@ -26,6 +26,7 @@ namespace StoneRing
         CL_Image GetIcon() const { return m_icon; }
         bool Enabled(const ParameterList &params) const;
         void Select(const ParameterList& params);
+		virtual std::string GetDebugId() const { return m_name; }				
     private:
         virtual bool handle_element(eElement, Element *);
         virtual void load_attributes(CL_DomNamedNodeMap );

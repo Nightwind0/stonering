@@ -30,7 +30,7 @@ void Stat::load_attributes(CL_DomNamedNodeMap attr)
 {
     m_eAttr = ICharacter::CharAttributeFromString( get_required_string("id",attr) );
     if(m_eAttr == ICharacter::CA_INVALID)
-        throw CL_Exception("Unknown stat type in monster stat");
+        throw XMLException("Unknown stat type in monster stat");
 
     if(m_eAttr > ICharacter::_START_OF_TOGGLES && m_eAttr < ICharacter::_MAXIMA_BASE)
         m_bToggle = get_required_bool("toggle",attr);

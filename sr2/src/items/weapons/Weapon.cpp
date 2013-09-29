@@ -194,7 +194,7 @@ Weapon::AttributeForString(const std::string& str)
     if (str == "ATK") return ATTACK;
     else if(str == "HIT") return HIT;
     else if (str == "Critical%") return CRITICAL;
-    else throw CL_Exception("Bad Weapon Enhancer Attribute : " + str );
+    else throw XMLException("Bad Weapon Enhancer Attribute : " + str );
 
 
 }
@@ -206,6 +206,6 @@ Weapon::ScriptModeForString(const std::string& str)
     else if(str == "attackAfter") return ATTACK_AFTER;
     else if(str == "forgoAttack") return FORGO_ATTACK;
     else if(str == "world") return WORLD_ONLY;
-    else throw CL_Exception("Bad scriptMode : " + str );
+    else throw XMLException("Bad scriptMode : " + str );
 }
 

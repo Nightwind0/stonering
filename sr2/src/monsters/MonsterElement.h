@@ -55,6 +55,8 @@ public:
     * Element interface
     */
     virtual eElement WhichElement() const { return EMONSTER; }
+	virtual std::string GetDebugId() const { return m_name; }				
+    
 private:
     /* Element stuff */
     virtual bool handle_element(eElement, Element * );

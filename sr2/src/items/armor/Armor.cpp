@@ -58,7 +58,7 @@ Armor::AttributeForString ( const std::string str )
 {
     if(str == "AC") return AC;
     else if(str == "RST") return RST;
-    else throw CL_Exception("Bad Armor enhancer attribute.");
+    else throw XMLException("Bad Armor enhancer attribute.");
 }
 
 

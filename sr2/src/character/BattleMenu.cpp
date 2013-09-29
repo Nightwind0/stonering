@@ -199,6 +199,6 @@ void BattleMenu::load_attributes(CL_DomNamedNodeMap attr)
         m_eType = ITEMS;
     else if(type == "custom")
         m_eType = CUSTOM;
-    else throw CL_Exception("Bad BattleMenu type of " + type);
+    else throw XMLException("Bad BattleMenu type of " + type);
 }
 

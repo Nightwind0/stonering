@@ -46,20 +46,24 @@ void WeaponType::load_finished()
 
 bool WeaponType::handle_element(eElement element, Element * pElement)
 {
-    switch(element)
-    {
-    case EICONREF:
-        m_icon_ref = dynamic_cast<IconRef*>(pElement)->GetIcon();
-        break;
-    case EANIMATION:
-        if(m_pAnimation) 
-            throw CL_Exception("WeaponType can have either animationRef or animation element, not both: " + m_name);
-	m_pAnimation = dynamic_cast<Animation*>(pElement);
-	break;
-	
-    default:
-        return false;
-    }
+	try {
+		switch(element)
+		{
+		case EICONREF:
+			m_icon_ref = dynamic_cast<IconRef*>(pElement)->GetIcon();
+			break;
+		case EANIMATION:
+			if(m_pAnimation) 
+				throw XMLException("WeaponType can have either animationRef or animation element, not both: " + m_name);
+			m_pAnimation = dynamic_cast<Animation*>(pElement);
+		break;
+		
+		default:
+			return false;
+		}
+	}catch(XMLException e){
+		throw e;
+	}
 
     return true;
 }

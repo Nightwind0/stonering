@@ -474,7 +474,7 @@ void MappableObjectElement::load_attributes( CL_DomNamedNodeMap attributes ) {
 		} else if ( speed == "fast" ) {
 			m_speed = FAST;
 		} else
-			throw CL_Exception( "Error, movement speed must be fast, medium or slow." );
+			throw XMLException( "Error, movement speed must be fast, medium or slow." );
 
 	}
 
@@ -525,7 +525,7 @@ void MappableObjectElement::load_attributes( CL_DomNamedNodeMap attributes ) {
 		size_t pos = size.find_first_of( 'x' );
 
 		if ( pos == string::npos ) {
-				throw CL_Exception( "Bad MO size" );
+				throw XMLException( "Bad MO size" );
 		}
 
 		std::string width_str = size.substr( 0, pos );
@@ -561,7 +561,7 @@ bool MappableObjectElement::handle_element( Element::eElement element, Element *
 	switch ( element ) {
 		case ETILEMAP: {
 			if ( m_size != DimensionsFromSizeType( MO_SMALL ) )
-				throw CL_Exception( "Mappable objects using tilemaps MUST be size small." );
+				throw XMLException( "Mappable objects using tilemaps MUST be size small." );
 
 			m_cFlags |= TILEMAP;
 

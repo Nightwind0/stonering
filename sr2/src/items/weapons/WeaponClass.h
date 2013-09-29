@@ -41,6 +41,7 @@ namespace StoneRing{
         bool IsExcluded ( const WeaponTypeRef &weaponType );
         bool IsExcluded ( const std::string &type_name );        
         bool operator==(const WeaponClass &lhs);
+		virtual std::string GetDebugId() const { return m_name; }				
 
     private:
         virtual bool handle_element(eElement element, Element * pElement );

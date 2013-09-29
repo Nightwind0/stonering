@@ -35,7 +35,7 @@ namespace StoneRing{
 
         void Generate( ArmorType * pType, ArmorClass * pClass,
                        ArmorClass *pImbuement = NULL, RuneType *pRune = NULL);
-
+		virtual std::string GetDebugId() const { return m_name; }		
     private:
         virtual void OnEquipScript(const ParameterList& params);
         virtual void OnUnequipScript(const ParameterList& params);

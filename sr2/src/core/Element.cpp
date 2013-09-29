@@ -29,7 +29,7 @@ uint Element::get_required_uint(const std::string &attrname, CL_DomNamedNodeMap 
     }
     else
     {
-        throw CL_Exception("Missing attribute " + attrname + " on " + get_element_name() );
+        throw XMLException("Missing attribute " + attrname + " on " + get_element_name() );
     }
 }
 
@@ -41,7 +41,7 @@ int Element:: get_required_int(const std::string &attrname, CL_DomNamedNodeMap a
     }
     else
     {
-        throw CL_Exception("Missing attribute " + attrname + " on " + get_element_name() );
+        throw XMLException("Missing attribute " + attrname + " on " + get_element_name() );
     }
 
 }
@@ -55,7 +55,7 @@ float Element::get_required_float(const std::string &attrname, CL_DomNamedNodeMa
     }
     else
     {
-        throw CL_Exception("Missing attribute " + attrname + " on " + get_element_name() );
+        throw XMLException("Missing attribute " + attrname + " on " + get_element_name() );
     }
 
 }
@@ -69,7 +69,7 @@ std::string Element::get_required_string (const std::string &attrname, CL_DomNam
     else
     {
 
-        throw CL_Exception("Missing attribute '" + attrname + "' on " + get_element_name() );
+        throw XMLException("Missing attribute '" + attrname + "' on " + get_element_name() );
     }
 
     return "";
@@ -83,7 +83,7 @@ bool Element::get_required_bool (const std::string &attrname, CL_DomNamedNodeMap
     }
     else
     {
-        throw CL_Exception("Missing attribute " + attrname + " on " + get_element_name() );
+        throw XMLException("Missing attribute " + attrname + " on " + get_element_name() );
     }
 
     return false;
@@ -203,8 +203,12 @@ void Element::Load(CL_DomElement domElement)
 #ifndef NDEBUG
         pElement->SetElementName(element_name);
 #endif
-        pElement->Load( child );
-
+		try {
+			pElement->Load( child );
+		}catch(XMLException& e){
+			e.push_error(element_name + ": " + pElement->GetDebugId());
+			throw e;
+		}
         if(!handle_element(pElement->WhichElement(), pElement ))
         {
             // They didn't handle it. So lets get rid of it

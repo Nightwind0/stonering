@@ -16,6 +16,7 @@ namespace StoneRing{
         virtual std::string GetName() const;
         virtual uint GetMaxInventory() const ;
         virtual Item::eDropRarity GetDropRarity() const;
+		virtual std::string GetDebugId() const { return m_name; }				
 
     protected:
 	virtual bool handle_element(eElement element, Element * pElement );

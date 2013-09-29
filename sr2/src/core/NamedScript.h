@@ -13,9 +13,11 @@ namespace StoneRing{
 
         SteelType ExecuteScript();
         SteelType ExecuteScript(const ParameterList &params);
+		virtual std::string GetDebugId() const { return ""; }				
+		
     private:
         virtual bool handle_element(eElement element, Element * pElement );
-	virtual void load_finished();
+		virtual void load_finished();
         ScriptElement *m_pScript;
     };
 

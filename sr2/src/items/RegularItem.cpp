@@ -67,7 +67,7 @@ RegularItem::UseTypeFromString ( const std::string &str )
     if(str == "battle") type = BATTLE;
     else if (str == "world") type = WORLD;
     else if (str == "both") type = BOTH;
-    else throw CL_Exception("Bad targetable on regular item. " + str);
+    else throw XMLException("Bad targetable on regular item. " + str);
 
     return type;
 
@@ -86,7 +86,7 @@ RegularItem::TargetableFromString ( const std::string &str )
     else if (str == "group") targetable = GROUP;
     else if (str == "self_only") targetable = SELF_ONLY;
     else if (str == "no_target") targetable = NO_TARGET;
-    else throw CL_Exception("Bad targetable on regular item. " + str);
+    else throw XMLException("Bad targetable on regular item. " + str);
 
 
     return targetable;
@@ -124,7 +124,7 @@ void RegularItem::load_attributes(CL_DomNamedNodeMap attributes)
             m_eDefaultTarget = PARTY;
         else if (str == "monsters")
             m_eDefaultTarget = MONSTERS;
-        else throw CL_Exception("Bogus default target on regular item.");
+        else throw XMLException("Bogus default target on regular item.");
 
     }
     else
