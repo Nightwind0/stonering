@@ -51,7 +51,7 @@ namespace StoneRing
         std::string GetDescription() const { return m_description; }
 
         eType GetType() const { return m_eType; }
-        
+		virtual std::string GetDebugId() const { return m_name; }		        
     private:
         virtual bool handle_element(eElement element, Element * pElement );
         virtual void load_attributes(CL_DomNamedNodeMap attributes);
@@ -79,7 +79,8 @@ namespace StoneRing
         virtual ~SkillRef();
         virtual eElement WhichElement() const{ return ESKILLREF; }
         std::string GetRef() const;
-        Skill * GetSkill() const; 
+        Skill * GetSkill() const;
+		virtual std::string GetDebugId() const { return m_ref; }				
     private:
         virtual void load_attributes(CL_DomNamedNodeMap attributes);
         
@@ -100,6 +101,7 @@ namespace StoneRing
         SkillTreeNode* GetParent() const;
         std::list<SkillTreeNode*>::const_iterator GetSubSkillsBegin() const;
         std::list<SkillTreeNode*>::const_iterator GetSubSkillsEnd() const;
+		virtual std::string GetDebugId() const { return m_ref->GetDebugId(); }				
     private:
         virtual bool handle_element(eElement element, Element * pElement);
         virtual void load_attributes(CL_DomNamedNodeMap attributes);

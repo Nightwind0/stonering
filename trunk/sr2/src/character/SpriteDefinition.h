@@ -22,7 +22,7 @@ namespace StoneRing
         int GetBindPoint1() const { return m_nBindPoint1; }
         int GetBindPoint2() const { return m_nBindPoint2; }
         SpriteRef * GetSpriteRef() const { return m_pSpriteRef; }
-
+		virtual std::string GetDebugId() const { return m_name; }		
     private:
         virtual bool handle_element(eElement, Element * );
         virtual void load_attributes(CL_DomNamedNodeMap);

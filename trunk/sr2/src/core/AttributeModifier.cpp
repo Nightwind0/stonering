@@ -87,7 +87,7 @@ void AttributeModifierElement::load_attributes(CL_DomNamedNodeMap attributes)
         m_eType = EMULTIPLY;
     else if(type == "toggle")
         m_eType = ETOGGLE;
-    else throw CL_Exception("Bad Attribute Modifier type: " + type);
+    else throw XMLException("Bad Attribute Modifier type: " + type);
     
     if(has_attribute("value",attributes))
     {
@@ -114,7 +114,7 @@ void AttributeModifierElement::load_finished()
 {
     if(m_pScript == NULL && !m_has_value)
     {
-        throw CL_Exception("AttributeModifier needs value or script");
+        throw XMLException("AttributeModifier needs value or script");
     }
 }
 

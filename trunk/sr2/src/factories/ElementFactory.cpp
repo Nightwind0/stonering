@@ -67,7 +67,7 @@ Element * ElementFactory::createElement( const std::string & element )
     MethodMap::iterator it = mCreateMethods.find(element);
     if( it == mCreateMethods.end() )
     {
-        throw CL_Exception ( "Element '" + element + "' is not recognized" );
+        throw XMLException ( "Element '" + element + "' is not recognized" );
     }
 
     CreateMethod method = it->second;

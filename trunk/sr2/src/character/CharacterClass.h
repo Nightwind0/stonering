@@ -32,8 +32,8 @@ namespace StoneRing
         
         bool      HasStat(ICharacter::eCharacterAttribute attr);
         double    GetStat(ICharacter::eCharacterAttribute attr, int level);
-	int	  GetExperienceToLevel(int level);
-	int       GetLevelForExperience(int xp);
+		int	  GetExperienceToLevel(int level);
+		int       GetLevelForExperience(int xp);
         
         bool CanEquip(WeaponType* pWeaponType) const;
         bool CanEquip(ArmorType* pArmorType) const;
@@ -45,6 +45,7 @@ namespace StoneRing
         BattleMenu * GetBattleMenu() const;
         std::string GetName() const;
         ICharacter::eGender GetGender() const;
+		virtual std::string GetDebugId() const { return m_name; }				
     private:
         virtual bool handle_element(eElement element, Element * pElement );
         virtual void load_attributes(CL_DomNamedNodeMap attributes);
@@ -69,6 +70,8 @@ namespace StoneRing
         virtual eElement WhichElement() const{ return ESTATSCRIPT; }
         ICharacter::eCharacterAttribute GetCharacterStat() const;
         double GetStat(int level);
+		virtual std::string GetDebugId() const { return IntToString(m_eStat); }				
+		
     private:
         virtual void load_attributes(CL_DomNamedNodeMap attributes);
         virtual bool handle_element(Element::eElement, Element * pElement);

@@ -19,6 +19,7 @@ namespace StoneRing{
         int GetCellColumns() const { return m_nCellCols; }
         int GetCellRows() const { return m_nCellRows; }
         const std::vector<MonsterRef*> & GetMonsters() const { return m_monsters; }
+		virtual std::string GetDebugId() const { return ""; }				
 
     private:
         virtual bool handle_element(eElement, Element * );

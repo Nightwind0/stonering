@@ -21,7 +21,7 @@ namespace StoneRing{
         virtual eDropRarity GetDropRarity() const { return NEVER; }
         virtual eItemType GetItemType() const { return RUNE ; }
 	
-	virtual bool operator==(const StoneRing::ItemRef&);
+		virtual bool operator==(const StoneRing::ItemRef&);
     private:
         virtual bool handle_element(eElement element, Element * pElement );
         virtual void load_finished();

@@ -219,7 +219,7 @@ bool Tile::handle_element(Element::eElement element, Element * pElement)
 
 void Tile::load_finished()
 {
-    if (m_image.is_null() && m_sprite.is_null()) throw CL_Exception("Tile didn't have tilemap or sprite ref.");
+    if (m_image.is_null() && m_sprite.is_null()) throw XMLException("Tile didn't have tilemap or sprite ref.");
 }
 
 void Tile::Activate() // Call any attributemodifier

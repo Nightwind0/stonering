@@ -133,6 +133,7 @@ void ItemManager::LoadItemFile ( CL_DomDocument &doc )
     while(!weaponClassNode.is_null())
     {
         WeaponClass * pWeaponClass = dynamic_cast<WeaponClass*>( pItemFactory->createElement("weaponClass") );
+		try {
         pWeaponClass->Load(weaponClassNode);
 		std::cout << "Loaded weapon class " << pWeaponClass->GetName() << std::endl;
         if(pWeaponClass->Imbuement()){
@@ -140,6 +141,9 @@ void ItemManager::LoadItemFile ( CL_DomDocument &doc )
             m_pInstance->m_weapon_imbuements.push_back( pWeaponClass );
 		}else
             m_pInstance->m_weapon_classes.push_back ( pWeaponClass );
+		}catch(XMLException& e){
+			e.push_error("weaponClass: " + pWeaponClass->GetDebugId());
+		}
         weaponClassNode = weaponClassNode.get_next_sibling().to_element();
     }
     
@@ -153,9 +157,13 @@ void ItemManager::LoadItemFile ( CL_DomDocument &doc )
     while(!weaponTypeNode.is_null())
     {
         WeaponType * pWeaponType = dynamic_cast<WeaponType*>( pItemFactory->createElement("weaponType") );
+		try {
         pWeaponType->Load(weaponTypeNode);
         m_pInstance->m_weapon_types.push_back ( pWeaponType );
-
+		}catch(XMLException& e){
+			e.push_error( "weaponType: " + pWeaponType->GetDebugId() );
+			throw e;
+		}
         weaponTypeNode = weaponTypeNode.get_next_sibling().to_element();
     }
 
@@ -166,11 +174,16 @@ void ItemManager::LoadItemFile ( CL_DomDocument &doc )
     while(!armorClassNode.is_null())
     {
         ArmorClass * pArmorClass = dynamic_cast<ArmorClass*>( pItemFactory->createElement("armorClass") );
-        pArmorClass->Load(armorClassNode);
-        if(pArmorClass->Imbuement())
-            m_pInstance->m_armor_imbuements.push_back ( pArmorClass );
-        else 
-            m_pInstance->m_armor_classes.push_back ( pArmorClass);
+		try {
+			pArmorClass->Load(armorClassNode);
+			if(pArmorClass->Imbuement())
+				m_pInstance->m_armor_imbuements.push_back ( pArmorClass );
+			else 
+				m_pInstance->m_armor_classes.push_back ( pArmorClass);
+		}catch(XMLException& e){
+			e.push_error("armorClass: " + pArmorClass->GetName());
+			throw e;
+		}
 
         armorClassNode = armorClassNode.get_next_sibling().to_element();
     }
@@ -185,9 +198,13 @@ void ItemManager::LoadItemFile ( CL_DomDocument &doc )
     while(!armorTypeNode.is_null())
     {
         ArmorType * pArmorType = dynamic_cast<ArmorType*>( pItemFactory->createElement("armorType") );
+		try {
         pArmorType->Load(armorTypeNode);
         m_pInstance->m_armor_types.push_back ( pArmorType);
-
+		}catch(XMLException& e){
+			e.push_error("armorType: " + pArmorType->GetDebugId());
+			throw e;
+		}
         armorTypeNode = armorTypeNode.get_next_sibling().to_element();
     }
 
@@ -203,9 +220,13 @@ void ItemManager::LoadItemFile ( CL_DomDocument &doc )
 #ifndef NDEBUG
         namedItemCount++;
 #endif
-        NamedItemElement* pElement = dynamic_cast<NamedItemElement*>(pItemFactory->createElement ( namedItemNode.get_node_name() ));
-
+        NamedItemElement* pElement = dynamic_cast<NamedItemElement*>(pItemFactory->createElement ( namedItemNode.get_node_name() ));	
+	try {
         pElement->Load(namedItemNode);
+	}catch(XMLException& e){
+		e.push_error("named item : " + pElement->GetDebugId());
+		throw e;
+	}
 	
 	switch(pElement->WhichElement())
 	{

@@ -32,6 +32,7 @@ namespace StoneRing{
 
         virtual eItemType GetItemType() const { return WEAPON ; }
         virtual bool operator == ( const ItemRef &ref );
+		
     private:
         virtual void OnEquipScript(const ParameterList& params);
         virtual void OnUnequipScript(const ParameterList& params);

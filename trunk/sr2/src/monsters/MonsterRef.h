@@ -18,6 +18,8 @@ namespace StoneRing
         int GetColumns() const { return m_nColumns; }
         int GetRows() const { return m_nRows; }
         virtual eElement WhichElement() const { return EMONSTERREF; }
+		virtual std::string GetDebugId() const { return m_name; }				
+        
 #if SR2_EDITOR
         CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
 		void SetCellX(int x){m_nCellX = x;}

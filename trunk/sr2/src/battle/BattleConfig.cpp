@@ -69,7 +69,7 @@ void BattleConfig::Load(const std::string& filename)
 	}
 	
 	if(!grandchild.is_text() && !grandchild.is_cdata_section())
-	    throw CL_Exception("Child of battle configuration element wasn't text.");
+	    throw XMLException("Child of battle configuration element wasn't text.");
 	
 	std::string script_text;
 	if(grandchild.is_cdata_section())

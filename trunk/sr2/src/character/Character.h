@@ -124,6 +124,7 @@ namespace StoneRing{
         
         // Element API
         virtual eElement WhichElement() const { return ECHARACTER; }
+		virtual std::string GetDebugId() const { return m_name; }		        
     private:
         typedef std::map<std::string,StatusEffect*> StatusEffectMap;
         typedef std::map<std::string,SpriteDefinition*> SpriteDefinitionMap;

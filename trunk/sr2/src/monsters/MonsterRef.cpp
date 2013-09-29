@@ -37,7 +37,7 @@ void MonsterRef::load_attributes(CL_DomNamedNodeMap attributes)
 #endif
 
     if(m_nColumns * m_nRows < m_nCount)
-        throw CL_Exception("MonsterRef: " + m_name + " has too few rows and columns for count.");
+        throw XMLException("MonsterRef: " + m_name + " has too few rows and columns for count.");
 }
 
 void MonsterRef::load_finished()

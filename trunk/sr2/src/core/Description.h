@@ -30,6 +30,8 @@ public:
     virtual ~Description();
     virtual eElement WhichElement() const { return EDESCRIPTION; }
     std::string GetText() const{ return m_text; }
+	virtual std::string GetDebugId() const { return ""; }				
+
 private:
     virtual void handle_text(const std::string &);
     std::string m_text;

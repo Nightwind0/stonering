@@ -49,6 +49,8 @@ public:
         return EDIRECTIONBLOCK;
     }
     int GetSideBlock() const;
+	virtual std::string GetDebugId() const { return IntToString(m_eSideBlock); }				
+	
 #if SR2_EDITOR
     CL_DomElement CreateDomElement(CL_DomDocument&)const;
 #endif
@@ -90,6 +92,8 @@ public:
 private:
     CL_String m_sprite_string;
 #endif
+		virtual std::string GetDebugId() const { return ""; }				
+	
 protected:
     virtual bool handle_element(eElement element, Element * pElement );
     virtual void load_attributes(CL_DomNamedNodeMap attributes);
@@ -177,6 +181,7 @@ public:
     short GetZOffset() const { return m_ZOffset; }	
 	
 	ushort GetStackOrder() const { return m_stack_order; }
+	virtual std::string GetDebugId() const { return ""; }				
 
 protected:
     virtual bool handle_element(eElement element, Element * pElement);
@@ -269,6 +274,8 @@ public:
 	void SetMusic(const std::string& music);
     CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
 #endif
+	virtual std::string GetDebugId() const { return ""; }				
+	
 private:
     virtual bool handle_element(eElement element, Element * pElement);
     virtual void load_attributes(CL_DomNamedNodeMap attributes);
@@ -292,6 +299,9 @@ public:
     eElement WhichElement() const {
         return ETILES;
     }
+    
+	virtual std::string GetDebugId() const { return ""; }				
+    
 private:
     virtual bool handle_element(eElement element, Element * pElement);
     virtual void load_attributes(CL_DomNamedNodeMap attributes);
@@ -313,6 +323,8 @@ public:
     eElement WhichElement() const {
         return EMAPPABLEOBJECTS;
     }
+    
+	virtual std::string GetDebugId() const { return ""; }				
 
 private:
     virtual bool handle_element(eElement element, Element * pElement);
@@ -404,6 +416,8 @@ public:
 #endif
     typedef Quadtree::RootNode<MappableObject*,4,float> MOQuadtree;
     typedef Quadtree::RootNode<Tile*,4,float> TileQuadtree;
+	virtual std::string GetDebugId() const { return ""; }				
+	
 protected:
 
 

@@ -456,7 +456,7 @@ void Character::load_attributes(CL_DomNamedNodeMap attributes)
     }
     else
     {
-        throw CL_Exception("Character type is invalid.");
+        throw XMLException("Character type is invalid.");
     }
 
     // Get the class pointer

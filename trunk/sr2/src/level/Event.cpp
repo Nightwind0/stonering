@@ -24,7 +24,7 @@ void Event::load_attributes(CL_DomNamedNodeMap attributes)
         m_eTriggerType = ACT;
 	else if (triggertype == "collide")
 		m_eTriggerType = COLLIDE;
-    else throw CL_Exception(" Bad trigger type on event " + m_name );
+    else throw XMLException(" Bad trigger type on event " + m_name );
 
     m_bRepeatable = get_implied_bool("repeatable",attributes,true);
     m_bRemember = get_implied_bool("remember",attributes,false);

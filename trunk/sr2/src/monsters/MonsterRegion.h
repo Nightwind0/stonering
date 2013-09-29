@@ -22,7 +22,9 @@ namespace StoneRing
 
             float GetEncounterRate() const {return m_encounter_rate;}
             std::string GetBackdrop() const { return m_backdrop; }
-			uchar GetId() const { return m_id; }            
+			uchar GetId() const { return m_id; }         
+			virtual std::string GetDebugId() const { char a[2] = {(char)m_id, 0}; return std::string(a); }				
+			
         private:
             virtual bool handle_element(eElement, Element * );
             virtual void load_attributes(CL_DomNamedNodeMap);
@@ -76,6 +78,8 @@ namespace StoneRing
 			m_monster_regions.erase(region->GetId());
 		}
 #endif
+		virtual std::string GetDebugId() const { return ""; }				
+
     private:
         virtual bool handle_element(eElement, Element * );
         virtual void load_finished();

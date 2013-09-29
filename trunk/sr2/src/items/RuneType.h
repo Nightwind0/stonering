@@ -18,6 +18,8 @@ namespace StoneRing{
         std::string GetRuneTypeAsString() const;
         void SetRuneType ( eRuneType type) { m_eRuneType = type; }
         bool operator==(const RuneType &lhs);
+		virtual std::string GetDebugId() const { return IntToString(m_eRuneType); }				
+		
     private:
         virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
     protected:

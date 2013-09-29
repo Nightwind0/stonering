@@ -15,6 +15,8 @@ namespace StoneRing{
 
         void SetName(const std::string &name){ m_name = name; }
         bool operator== (const WeaponClassRef &lhs );
+		virtual std::string GetDebugId() const { return m_name; }				
+		
     private:
         virtual void load_attributes(CL_DomNamedNodeMap attributes);
     protected:

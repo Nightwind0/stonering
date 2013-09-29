@@ -56,6 +56,7 @@ namespace StoneRing{
         double GetAdd() const;
         double GetMultiplier() const;
         bool GetToggle() const;
+		virtual std::string GetDebugId() const { return ""; }						
     private:
         virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
         virtual bool handle_element(eElement, Element * );

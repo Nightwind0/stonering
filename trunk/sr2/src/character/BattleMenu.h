@@ -43,6 +43,7 @@ namespace StoneRing
 		// Must call SetEnableConditionParams before calling this
 		bool HasEnabledOptions() const;
         void Init();
+		virtual std::string GetDebugId() const { return ""; }				
     private:
         virtual CL_Rectf get_rect();
         virtual void draw_option(int option, bool selected,  float x, float y, CL_GraphicContext& gc);

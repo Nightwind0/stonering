@@ -38,7 +38,7 @@ void MonsterGroup::load_attributes(CL_DomNamedNodeMap attributes)
 
 void MonsterGroup::load_finished()
 {
-    if(m_monsters.empty()) throw CL_Exception("At least one MonsterRef is required on a MonsterGroup");
+    if(m_monsters.empty()) throw XMLException("At least one MonsterRef is required on a MonsterGroup");
 }
 
 

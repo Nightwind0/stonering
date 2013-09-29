@@ -16,7 +16,7 @@ void RuneType::load_attributes(CL_DomNamedNodeMap attributes)
         m_eRuneType = RUNE;
     else if (runeType == "ultraRune")
         m_eRuneType = ULTRA_RUNE;
-    else throw CL_Exception("Bogus runetype supplied.");
+    else throw XMLException("Bogus runetype supplied.");
 
 }
 

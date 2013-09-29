@@ -189,6 +189,7 @@ public:
 	}
 
 	virtual void    Placed();
+	virtual std::string GetDebugId() const { return GetName(); }				
 
 protected:
 	virtual bool            handle_element( eElement element, Element * pElement );

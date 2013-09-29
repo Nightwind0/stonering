@@ -1,4 +1,5 @@
 #include "DamageCategory.h"
+#include "Element.h"
 #include <ClanLib/core.h>
 
 using StoneRing::DamageCategory;
@@ -59,7 +60,7 @@ DamageCategory::eDamageCategory StoneRing::DamageCategory::DamageCategoryFromStr
     else if(string == "water") return WATER;
     else if(string == "earth") return EARTH;
 
-    throw CL_Exception("Damage Category unknown: " + string);
+    throw XMLException("Damage Category unknown: " + string);
     return BASH;
 }
 

@@ -31,6 +31,7 @@ namespace StoneRing
         CL_DomElement CreateDomElement(CL_DomDocument&)const;
 #endif
         static std::string TypeName(eType);
+		virtual std::string GetDebugId() const { return m_ref; }				
     protected:
         virtual bool handle_element(eElement element, Element * pElement );
         virtual void load_attributes(CL_DomNamedNodeMap attributes);

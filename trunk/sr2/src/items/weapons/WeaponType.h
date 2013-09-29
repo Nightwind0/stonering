@@ -36,6 +36,7 @@ namespace StoneRing{
         DamageCategory::eDamageCategory GetDamageCategory () const { return m_damageCategory; }
 
         bool operator==(const WeaponType &lhs);
+		virtual std::string GetDebugId() const { return m_name; }				
 
     private:
 		virtual void load_finished();

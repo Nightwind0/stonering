@@ -41,6 +41,7 @@ namespace StoneRing{
         
         //StatusEffectModifiers
         double GetStatusEffectModifier(const std::string &statuseffect)const;
+		virtual std::string GetDebugId() const { return m_name; }				
     private:
         virtual bool handle_element(eElement element, Element * pElement );
         virtual void load_attributes(CL_DomNamedNodeMap attributes) ;

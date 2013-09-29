@@ -41,7 +41,7 @@ namespace StoneRing
 		
 		eAlter GetAlter() const { return m_eAlter; }
 		eWho GetWho() const { return m_eWho; }
-		
+		virtual std::string GetDebugId() const { return ""; }		
 	private:
 		static eAlter alter_from_string(const std::string &str);
 		virtual void load_attributes(CL_DomNamedNodeMap attributes);
@@ -61,7 +61,7 @@ namespace StoneRing
 		enum eWhich { DEFAULT, MAIN, OFF };
 		
 		eWhich Which() const;
-		
+		virtual std::string GetDebugId() const { return IntToString(m_eWhich); }				
 	private:
 		virtual void load_attributes(CL_DomNamedNodeMap attributes);
 		eWhich m_eWhich;
@@ -75,7 +75,7 @@ namespace StoneRing
 		virtual ~BattleSprite();
 		
 		virtual eElement WhichElement() const { return EBATTLESPRITE; }
-		
+		virtual std::string GetDebugId() const { return ""; }			
 		
 		eWho GetWho() const;
 		eBattleSprite GetWhich() const;
@@ -160,7 +160,7 @@ namespace StoneRing
 		{
 			m_bSkip = false;
 		}
-		
+		virtual std::string GetDebugId() const { return m_name; }				
 	private:
 		virtual void load_attributes(CL_DomNamedNodeMap attributes);
 		virtual bool handle_element(eElement element, Element *pElement);
@@ -230,7 +230,7 @@ namespace StoneRing
 		eMovementDirection GetMovementDirection() const;
 		eMovementStyle GetMovementStyle() const;
 		CL_DomElement CreateDomElement(CL_DomDocument &doc) const;
-		
+		virtual std::string GetDebugId() const { return ""; }				
 	private:
 		virtual void load_attributes(CL_DomNamedNodeMap attributes);
 		virtual bool handle_element(eElement element, Element * pElement);
@@ -306,7 +306,7 @@ namespace StoneRing
 		
 		std::list<PhaseComponent>::const_iterator GetPhaseComponentsBegin() const ;
 		std::list<PhaseComponent>::const_iterator GetPhaseComponentsEnd() const;
-		
+		virtual std::string GetDebugId() const { return ""; }				
 	private:
 		virtual bool handle_element(eElement element, Element * pElement );
 		virtual void load_attributes(CL_DomNamedNodeMap attributes);
@@ -335,7 +335,7 @@ namespace StoneRing
 		
 		std::list<Phase*>::const_iterator GetPhasesBegin() const;
 		std::list<Phase*>::const_iterator GetPhasesEnd() const;
-		
+		virtual std::string GetDebugId() const { return m_name; }				
 	private:
 		virtual bool handle_element(eElement element, Element * pElement );
 		virtual void load_attributes(CL_DomNamedNodeMap attributes);

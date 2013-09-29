@@ -61,7 +61,7 @@ void MonsterRegion::load_finished()
     //if monster groups is empty throw an error
     if(m_monster_groups.empty())
     {
-        throw CL_Exception("Didn't provide a MonsterGroup");
+        throw XMLException("Didn't provide a MonsterGroup");
     }
 
 }

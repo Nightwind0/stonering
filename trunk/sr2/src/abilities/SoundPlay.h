@@ -32,6 +32,7 @@ public:
     
     virtual eElement WhichElement() const { return ESOUNDPLAY; }
     std::string GetSound() const;
+	virtual std::string GetDebugId() const { return  m_sound; }			
 private:
     virtual void load_attributes(CL_DomNamedNodeMap attr);
     
