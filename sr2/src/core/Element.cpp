@@ -69,7 +69,7 @@ std::string Element::get_required_string (const std::string &attrname, CL_DomNam
     else
     {
 
-        throw CL_Exception("Missing attribute " + attrname + " on " + get_element_name() );
+        throw CL_Exception("Missing attribute '" + attrname + "' on " + get_element_name() );
     }
 
     return "";

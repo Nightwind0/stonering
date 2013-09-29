@@ -34,14 +34,14 @@ namespace StoneRing{
     public:
         Character();
 	
-	enum ePortrait {
-	    PORTRAIT_DEFAULT=0,
-	    PORTRAIT_HAPPY=1,
-	    PORTRAIT_SAD=2,
-	    PORTRAIT_ANGRY=3,
-	    PORTRAIT_SCARED=4,
-	    PORTRAIT_SURPRISED=5
-	};
+		enum ePortrait {
+			PORTRAIT_DEFAULT=0,
+			PORTRAIT_HAPPY=1,
+			PORTRAIT_SAD=2,
+			PORTRAIT_ANGRY=3,
+			PORTRAIT_SCARED=4,
+			PORTRAIT_SURPRISED=5
+		};
 
         virtual eGender GetGender() const;
         virtual std::string GetName() const { return m_name; }
