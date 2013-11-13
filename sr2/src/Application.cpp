@@ -2611,10 +2611,8 @@ int Application::main ( const std::vector<std::string> args )
 	AbilityManager::initialize();
 
 
-#ifndef NDEBUG
-
     CL_ConsoleWindow console ( "Stone Ring Debug", 80, 100 );
-#endif
+
     int njoystick = -1;
     setupClanLib();
 	
