@@ -361,11 +361,9 @@ bool AnimationState::IsDone() const {
 void AnimationState::WaitFinishedEvent() {
 	bool empty = false;
 	m_task_mutex.lock();
-	while( !m_tasks.empty() ) {
-		start( m_tasks.front() );
-		waitFor( m_tasks.front() );
-		if(!m_tasks.empty())
-			m_tasks.erase( m_tasks.begin() );
+	while( active_tasks_left() ) {
+		start( get_top_task() );
+		waitFor( get_top_task() );
 	}
 	m_task_mutex.unlock();	
 }
@@ -797,6 +795,16 @@ void AnimationState::EndPhase() {
 	}
 }
 
+bool AnimationState::active_tasks_left() const {
+	std::unique_lock<std::recursive_mutex> lock(m_task_mutex);
+	for(auto it = std::begin(m_tasks); it != std::end(m_tasks); it++){
+		if((*it)->started() && !(*it)->expired())
+			return true;
+	}
+	return false;
+}
+
+
 void AnimationState::apply_alter_sprite( AlterSprite* pAlterSprite ) {
 	clan::Sprite sprite;
 	// Alter any sprites on the parent now
@@ -950,7 +958,7 @@ void AnimationState::SteelInit( SteelInterpreter *pInterpreter ) {
 		pInterpreter->addFunction( "arc_under", "anim", new SteelFunctor1Arg<AnimationState, double>( this, &AnimationState::arc_under ) );
 		pInterpreter->addFunction( "createSprite", "anim", new SteelFunctor1Arg<AnimationState, const std::string&>( this, &AnimationState::createSprite ) );
 		pInterpreter->addFunction( "getCharacterSprite", "anim", new SteelFunctor1Arg<AnimationState, SteelType::Handle>( this, &AnimationState::getCharacterSprite ) );
-		pInterpreter->addFunction( "getWeaponSprite", "anim", new SteelFunctor2Arg<AnimationState, SteelType::Handle, int>( this, &AnimationState::getWeaponSprite ) );
+		pInterpreter->addFunction( "addWeaponSprite", "anim", new SteelFunctor2Arg<AnimationState, SteelType::Handle, int>( this, &AnimationState::addWeaponSprite ) );
 		pInterpreter->addFunction( "removeSprite", "anim", new SteelFunctor1Arg<AnimationState, int>( this, &AnimationState::removeSprite ) );
 		pInterpreter->addFunction( "getCharacterLocale", "anim", new SteelFunctor2Arg<AnimationState, SteelType::Handle, int>( this, &AnimationState::getCharacterLocale ) );
 		pInterpreter->addFunction( "getGroupLocale", "anim", new SteelFunctor2Arg<AnimationState, SteelType::Handle, int>( this, &AnimationState::getGroupLocale ) );
@@ -1114,7 +1122,7 @@ SteelType AnimationState::getCharacterSprite( SteelType::Handle iCharacter ) {
 	return var;
 }
 
-SteelType AnimationState::getWeaponSprite( SteelType::Handle iCharacter, int hand ) {
+SteelType AnimationState::addWeaponSprite( SteelType::Handle iCharacter, int hand ) {
 	SteelType var;
 	Character * pCharacter = Steel::GrabHandle<Character*>(iCharacter);
 	assert(pCharacter);
@@ -1616,12 +1624,19 @@ SteelType AnimationState::waitFor( SteelType::Handle waitOn ) {
 	return val;
 }
 
+AnimationState::Task* AnimationState::get_top_task() const {
+	std::unique_lock<std::recursive_mutex> lock(m_task_mutex);
+	for(auto it = std::begin(m_tasks); it != std::end(m_tasks); it++){
+		if((*it)->started() && ! (*it)->expired())
+			return *it;
+	}
+	return nullptr;
+}
+
 SteelType AnimationState::waitForAll( const Steel::SteelArray& alltasks ) {
 	startAll( alltasks ); // start in case some aren't started
-	Steel::SteelArray remaining = alltasks;
-	while( !remaining.empty() ) {
-		waitFor( remaining.front() );
-		remaining.pop_front();
+	while( active_tasks_left() ) {
+		waitFor( get_top_task() );
 	}
 	return SteelType();
 }
@@ -1640,8 +1655,8 @@ void AnimationState::add_task( AnimationState::Task* task ) {
 	m_task_mutex.lock();
 	if(!task->expired() && !task->started()){
 		std::cout << "Adding task: " << task->GetName() << '@' << std::hex << task <<" to " << std::dec << m_tasks.size() << " existing tasks" << std::endl;
-		m_tasks.push_back(task);
 		task->start( m_pInterpreter );
+		m_tasks.push_back(task);
 	}
 	m_task_mutex.unlock();
 }
@@ -2000,7 +2015,8 @@ void AnimationState::TimedStretchTask::init( const Stretch& stretch ) {
 	m_stretch = stretch;
 }
 
-void AnimationState::TimedStretchTask::start( SteelInterpreter* ) {
+void AnimationState::TimedStretchTask::start( SteelInterpreter* pInterpreter ) {
+	AnimationState::Task::start(pInterpreter);
 	m_start_time = clan::System::get_time();
 }
 
@@ -2026,7 +2042,8 @@ void AnimationState::RotationTask::init( const Rotation& rot ) {
 	m_completion_degrees = m_rotation.m_degrees;
 }
 
-void AnimationState::RotationTask::start( SteelInterpreter* ) {
+void AnimationState::RotationTask::start( SteelInterpreter* pInterpreter ) {
+	Task::start(pInterpreter);
 	m_degrees = m_rotation.m_start_degrees;
 	m_last_time = clan::System::get_time();
 }
@@ -2143,6 +2160,7 @@ void AnimationState::OrbitTask::init(const Orbit & orbit, const Locale& locale){
 	m_origin = locale;
 }
 void AnimationState::OrbitTask::start(SteelInterpreter* pInterpreter){
+	Task::start(pInterpreter);
 	m_degrees = m_start_degrees;
 	m_last_time = clan::System::get_time();	
 }
