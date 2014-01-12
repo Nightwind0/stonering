@@ -123,8 +123,6 @@ namespace StoneRing{
         virtual void   Kill()=0;
         virtual void   Raise()=0;
         virtual void   Attacked(ICharacter* pAttacker, DamageCategory::eDamageCategory category, bool melee, int amount)=0;
-        virtual clan::Pointf  GetBattlePos()const=0;
-        virtual void       SetBattlePos(clan::Pointf point)=0;
 		virtual clan::Sprite  GetCurrentSprite(bool pure=true)=0;
         
         virtual void   IterateStatusEffects(Visitor<StatusEffect*> &)=0;

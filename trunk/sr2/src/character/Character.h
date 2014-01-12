@@ -88,8 +88,6 @@ namespace StoneRing{
 		/**************************************************************************
 		* Battle stuff
 		***************************************************************************/
-        virtual clan::Pointf      GetBattlePos()const;
-        virtual void           SetBattlePos(clan::Pointf point);
         // Shortcuts to class data
         BattleMenu *           GetBattleMenu() const;
         CharacterClass *       GetClass() const { return m_pClass; }
@@ -171,19 +169,6 @@ namespace StoneRing{
         return m_nInitiative;
     }
 
-
-    inline clan::Pointf  Character::GetBattlePos()const
-    {
-        return m_battle_pos;
-    }
-
-    inline void      Character::SetBattlePos(clan::Pointf point)
-    {
-        m_battle_pos = point;
-#if 0
-		std::cout << m_name << ' ' << point.x << ',' << point.y << std::endl;
-#endif
-    }
 
 }
 #endif
