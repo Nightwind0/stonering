@@ -80,9 +80,8 @@ void AnimationState::Init( SteelType::Functor pFunctor ) {
 }
 
 void AnimationState::AddTask( AnimationState::Task* task ) {
-	std::cout << "Adding task: " << task->GetName() << std::endl;
 	m_task_mutex.lock();
-	m_tasks.push_back( task );
+	add_task(task);
 	m_task_mutex.unlock();
 }
 
@@ -734,10 +733,19 @@ void AnimationState::draw( const clan::Rect &screenRect, clan::Canvas& GC ) {
 
 void AnimationState::draw_functor( const clan::Rect& screenRect, clan::Canvas& GC ) {
 	bool notasks = false;
+	bool emergency = false;
 	for( int i = m_tasks.size() - 1; i >= 0; i-- ) {
 		Task * pTask = m_tasks[i];
-		pTask->update( m_pInterpreter );
-		if( pTask->finished() ) {
+		try{
+			pTask->update( m_pInterpreter );
+		}catch(Steel::SteelException ex){
+			emergency = true;
+			std::cerr << "Quitting task " << pTask->GetName() <<  " after SteelException: " << ex.getScript() << ':' << ex.getMessage() << std::endl;
+		}catch(Steel::ParamMismatch pm){
+			emergency = true;
+			std::cerr << "Param mismatch within animation task update" << std::endl;
+		}
+		if( pTask->finished() || emergency ) {
 
 			pTask->finish( m_pInterpreter );
 			// Do something with waitFor?
@@ -749,6 +757,7 @@ void AnimationState::draw_functor( const clan::Rect& screenRect, clan::Canvas& G
 			m_finished_task_mutex.lock();
 			m_finished_tasks.insert( pTask );
 			m_finished_task_mutex.unlock();
+			std::cout << "Tasks left = " << m_tasks.size() << std::endl;
 			//m_wait_event.set();
 		}
 	}
@@ -1602,7 +1611,6 @@ SteelType AnimationState::waitFor( SteelType::Handle waitOn ) {
 	std::cout << "Unlocked ftm after initial check" << std::endl;
 #endif
 	if( !pTask->started() ) {
-		pTask->start( m_pInterpreter );
 		AddTask( pTask );
 	}
 	while( true ) {
@@ -1631,21 +1639,27 @@ SteelType AnimationState::start( SteelType::Handle hTask ) {
 	Task * task = Steel::GrabHandle<Task*>( hTask );
 	if( !task->started() ) {
 		AddTask( task );
-		task->start( m_pInterpreter );
 	}
 	SteelType var;
 	var.set( task );
 	return var;
 }
 
+void AnimationState::add_task( AnimationState::Task* task ) {
+	if(m_finished_tasks.find(task) == m_finished_tasks.end()){
+		std::cout << "Adding task: " << task->GetName() << '@' << std::hex << task <<" to " << std::dec << m_tasks.size() << " existing tasks" << std::endl;
+		m_tasks.push_back(task);
+		task->start( m_pInterpreter );
+	}
+}
+
+
 SteelType AnimationState::startAll( const Steel::SteelArray& alltasks ) {
 	m_task_mutex.lock();
 	for( int i = 0; i < alltasks.size(); i++ ) {
 		Task * task = Steel::GrabHandle<Task*>( alltasks[i] );
 		if( !task->started() ) {
-			std::cout << "Starting task:" << task->GetName() << " @ " << std::hex << task << std::endl;
-			m_tasks.push_back( task );
-			task->start( m_pInterpreter );
+			add_task(task);
 		}
 	}
 	m_task_mutex.unlock();
@@ -2035,11 +2049,11 @@ void AnimationState::RotationTask::update( SteelInterpreter* pInterpreter ) {
 	SteelType p;
 	p.set( percentage() ); // or _percentage?
 	params.push_back( p );
-	float speed = ( double )m_functor->Call( pInterpreter, params );
+	float speed = ( double )m_rotation.m_functor->Call( pInterpreter, params );
 	float delta = speed * float( clan::System::get_time() - m_last_time );
-	m_degrees += abs( delta );
-	if( m_degrees > m_completion_degrees )
-		delta -=  m_degrees - m_completion_degrees; // lessen the delta by how much we overshot
+	m_degrees += fabs( delta );
+	if( m_degrees > m_rotation.m_degrees )
+		delta -=  m_degrees - m_rotation.m_degrees; // lessen the delta by how much we overshot
 	clan::Sprite sprite = m_state.GetSprite( m_sprite );
 	switch( m_rotation.m_axis ) {
 		case Rotation::PITCH:
@@ -2052,6 +2066,7 @@ void AnimationState::RotationTask::update( SteelInterpreter* pInterpreter ) {
 			sprite.rotate( clan::Angle::from_degrees( delta ) );
 			break;
 	}
+	m_last_time = clan::System::get_time();
 }
 
 bool AnimationState::RotationTask::finished() {
@@ -2060,7 +2075,7 @@ bool AnimationState::RotationTask::finished() {
 
 
 float AnimationState::RotationTask::_percentage() const {
-	return  m_degrees / m_completion_degrees;
+	return  m_degrees / m_rotation.m_degrees;
 }
 
 void AnimationState::RotationTask::cleanup() {
@@ -2150,16 +2165,19 @@ void AnimationState::OrbitTask::update(SteelInterpreter* pInterpreter){
 	SteelType p;
 	p.set( percentage() ); // or _percentage?
 	params.push_back( p );
-	float radius = ( double ) m_functor->Call(pInterpreter, params );
-	float speed = ( double )m_functor->Call( pInterpreter, params );
+	assert(m_orbit.m_radius_functor);
+	assert(m_orbit.m_speed_functor);
+	float radius = ( double ) m_orbit.m_radius_functor->Call(pInterpreter, params );
+	float speed = ( double )m_orbit.m_speed_functor->Call( pInterpreter, params );
 	float delta = speed * float( clan::System::get_time() - m_last_time );
-	m_degrees += abs( delta );
+	m_degrees += fabs( delta );
 	if( m_degrees > m_orbit.m_degrees )
 		delta -=  m_degrees - m_orbit.m_degrees; // lessen the delta by how much we overshot	
 	float angle = ( clan::PI / 180.0f ) * m_degrees;
 	clan::Pointf cpoint( cos( angle ), sin( angle ) );
 	clan::Pointf current = origin +  cpoint * radius; // C + R * (cos A, sin A)		
 	m_state.SetSpritePos(m_sprite,current);
+	m_last_time =  clan::System::get_time();
 }
 float AnimationState::OrbitTask::_percentage() const {
 	return m_degrees / m_orbit.m_degrees;
@@ -2187,6 +2205,8 @@ void AnimationState::TimedOrbitTask::update( SteelInterpreter* pInterpreter ) {
 	SteelType p;
 	p.set( percentage() ); // or _percentage?
 	params.push_back( p );
+	assert(m_orbit.m_speed_functor);
+	assert(m_orbit.m_radius_functor);
 	speed = ( double )m_orbit.m_speed_functor->Call( pInterpreter, params );
 	
 	float radius = (double)m_orbit.m_radius_functor->Call( pInterpreter, params );
