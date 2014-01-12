@@ -639,10 +639,10 @@ void AnimationState::move_sprite( ICharacter* pActor, ICharacter* pTarget, Sprit
 		point.y = current.y;
 		switch( anim->GetBattleSprite()->GetWho() ) {
 			case WHO_CASTER:
-				m_pCaster->SetBattlePos( point );
+				m_parent.set_sprite_pos(m_parent.get_sprite_for_char(m_pCaster), point);
 				break;
 			case WHO_TARGET:
-				m_pTarget->SetBattlePos( point );
+				m_parent.set_sprite_pos(m_parent.get_sprite_for_char(m_pTarget), point);				
 				break;
 		}
 	}

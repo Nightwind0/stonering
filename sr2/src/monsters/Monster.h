@@ -114,8 +114,6 @@ namespace StoneRing
         virtual void Raise();
         virtual void Attacked(ICharacter *pAttacker, DamageCategory::eDamageCategory category, bool melee, int amount);
 
-        virtual clan::Pointf GetBattlePos() const;
-        virtual void     SetBattlePos(clan::Pointf pos);
         
         virtual void   IterateStatusEffects(Visitor<StatusEffect*> &);        
 
@@ -155,7 +153,6 @@ namespace StoneRing
         uint m_nInitiative;
         clan::Sprite m_sprite;
         bool m_bDeathAnimated;
-        clan::Pointf m_battle_pos;
     };
 
 
@@ -170,15 +167,6 @@ namespace StoneRing
         return m_nInitiative;
     }
 
-    inline clan::Pointf Monster::GetBattlePos() const
-    {
-        return m_battle_pos;
-    }
-
-    inline void     Monster::SetBattlePos(clan::Pointf pos)
-    {
-        m_battle_pos = pos;
-    }
 
 
     class MonsterParty : public ICharacterGroup

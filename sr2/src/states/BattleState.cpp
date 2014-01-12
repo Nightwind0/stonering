@@ -178,7 +178,6 @@ void BattleState::add_participant_sprites() {
 	m_sprites.clear();
 	for(auto it = m_initiative.begin(); it != m_initiative.end(); it++){
 		Sprite sprite((*it)->GetCurrentSprite());
-		sprite.SetPosition((*it)->GetBattlePos());
 		sprite.SetEnabled(true);
 		m_sprites.push_back(sprite);
 	}
@@ -199,10 +198,9 @@ bool BattleState::playerWon() const{
 }
 
 void BattleState::set_positions_to_loci() {
-	for ( std::deque<ICharacter*>::iterator iter = m_initiative.begin();
-							iter != m_initiative.end(); iter++ ) {
-		clan::Pointf pos = get_character_locus_rect( *iter ).get_center();
-		( *iter )->SetBattlePos( pos );
+	for ( int i=0;i<m_initiative.size();i++) {
+		clan::Pointf pos = get_character_locus_rect( m_initiative[i] ).get_center();
+		m_sprites[i].SetPosition(pos);
 	}
 	m_group_offsets.clear();
 }
@@ -211,8 +209,9 @@ void BattleState::run_turn(){
 	ICharacter * iCharacter = m_initiative[m_cur_char];
 	Character * pChar = dynamic_cast<Character*>( iCharacter );
 
-	set_positions_to_loci();
 	add_participant_sprites();
+	set_positions_to_loci();
+
 	iCharacter->StatusEffectRound();
 
 	if ( pChar != NULL ) {
@@ -508,8 +507,10 @@ void BattleState::Start() {
 
 	m_bDone = false;
 	roll_initiative();
-	add_participant_sprites();
-	set_positions_to_loci();
+	add_participant_sprites();	
+	set_positions_to_loci();	
+
+
 
 	//next_turn();
 
@@ -902,6 +903,7 @@ void BattleState::draw_sprites( clan::Canvas& GC ) {
 	}
 }
 
+# if 0 
 bool SortByBattlePos( const ICharacter* d1, const ICharacter* d2 ) {
 
 	clan::Pointf pos1, pos2;
@@ -912,7 +914,7 @@ bool SortByBattlePos( const ICharacter* d1, const ICharacter* d2 ) {
 	return pos1.y * IApplication::GetInstance()->GetDisplayRect().get_width() + pos1.x <
 								pos2.y * IApplication::GetInstance()->GetDisplayRect().get_width() + pos2.x;
 }
-
+#endif
 
 
 void BattleState::update_character_sprites(){
@@ -944,7 +946,6 @@ void BattleState::update_character_sprites(){
 				m_sprites[i].SetOffset(player_group_offset);
 			}			
 		}
-		m_sprites[i].SetPosition(pChar->GetBattlePos()); // TODO: Get rid of battlepos altogether
 		m_sprites[i].SetSprite(current_sprite(m_initiative[i]));
 
 		clan::Sprite sprite = m_sprites[i].GetSprite();
@@ -964,7 +965,7 @@ void BattleState::draw_monsters( const clan::Rectf &monsterRect, clan::Canvas& G
 		Monster *pMonster = dynamic_cast<Monster*>(m_initiative[i]);
 		assert(pMonster);
 
-		clan::Pointf center = pMonster->GetBattlePos();
+		clan::Pointf center = m_sprites[i].Position();
 
 		if ( m_combat_state == TARGETING ) {
 			if (( m_targets.m_bSelectedGroup && m_targets.selected.m_pGroup == m_monsters )
@@ -1061,7 +1062,14 @@ clan::Sizef  BattleState::get_character_size( const ICharacter* pCharacter ) con
 
 clan::Rectf BattleState::get_character_rect( const ICharacter* pCharacter )const {
 	clan::Rectf rect;
-	clan::Pointf point = pCharacter->GetBattlePos();
+	int n = 0;
+	for(int i=0;i<m_initiative.size();i++){
+		if(m_initiative[i] == pCharacter){
+			n = i;
+			break;
+		}
+	}
+	clan::Pointf point = m_sprites[n].Position();
 	clan::Sizef size = get_character_size( pCharacter );
 
 	rect.set_top_left( clan::Pointf( point.x - size.width / 2.0f, point.y - size.height / 2.0f ) );
