@@ -62,13 +62,13 @@ TimedInterpolator<T>::~TimedInterpolator() {
 
 template<class T>
 void TimedInterpolator<T>::Start() {
-	m_start_time = CL_System::get_time();
+	m_start_time = clan::System::get_time();
 }
 
 
 template<class T>
 T TimedInterpolator<T>::GetValue() const {
-	double p = (CL_System::get_time() - m_start_time) / (m_time*1000.0);
+	double p = (clan::System::get_time() - m_start_time) / (m_time*1000.0);
 	if(std::abs(p) < 1.0)
 		return m_start + (m_end-m_start) * p;
 	else return m_end;

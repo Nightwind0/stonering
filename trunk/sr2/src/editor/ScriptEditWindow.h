@@ -26,25 +26,25 @@
 
 namespace StoneRing { 
 
-class ScriptEditWindow : public CL_Window {
+class ScriptEditWindow : public clan::Window {
 public:
-	ScriptEditWindow(CL_GUIManager* owner, const CL_GUITopLevelDescription &desc);
+	ScriptEditWindow(clan::GUIManager* owner, const clan::GUITopLevelDescription &desc);
 	virtual ~ScriptEditWindow();
 	void SetIsCondition(bool is_condition) { m_is_condition = is_condition; }
 	void SetScript(ScriptElement * pElement);
 	std::string GetName()const;
 	std::string GetScriptText()const;
 	ScriptElement * CreateScript()const;
-	virtual CL_Size get_preferred_size() const { return CL_Size(800,750); }
+	virtual clan::Size get_preferred_size() const { return clan::Size(800,750); }
 private:
 	bool on_close();
 	void on_save();
 	void on_parse();
-	CL_LineEdit*    m_script_name;
-	CL_TextEdit*	m_script_text;
-	CL_TextEdit*    m_script_errors;
-	CL_PushButton*  m_build_button;
-	CL_PushButton*  m_save_button;
+	clan::LineEdit*    m_script_name;
+	clan::TextEdit*	m_script_text;
+	clan::TextEdit*    m_script_errors;
+	clan::PushButton*  m_build_button;
+	clan::PushButton*  m_save_button;
 	bool 			m_is_condition;
 };
 

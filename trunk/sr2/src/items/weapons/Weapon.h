@@ -56,7 +56,7 @@ namespace StoneRing{
 		virtual DamageCategory::eDamageCategory GetDamageCategory() const;
 		
 		
-		virtual CL_Sprite GetSprite() const=0;
+		virtual clan::Sprite GetSprite() const=0;
         
 
         /*

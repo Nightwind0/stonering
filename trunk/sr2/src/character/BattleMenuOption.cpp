@@ -136,7 +136,7 @@ void BattleMenuOption::load_finished()
         throw XMLException("Battle menu needs a skill ref or a script or submenu");
 }
 
-void BattleMenuOption::load_attributes(CL_DomNamedNodeMap attributes)
+void BattleMenuOption::load_attributes(clan::DomNamedNodeMap attributes)
 {
     m_name = get_required_string("name",attributes);
     if(has_attribute("icon",attributes))

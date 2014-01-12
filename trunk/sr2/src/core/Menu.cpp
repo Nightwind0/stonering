@@ -19,6 +19,7 @@
 
 #include "Menu.h"
 #include "SoundManager.h"
+#include <algorithm>
 
 using StoneRing::Menu;
 
@@ -56,11 +57,11 @@ void Menu::PushMenu()
 }
 
 
-void Menu::Draw(CL_GraphicContext& gc)
+void Menu::Draw(clan::Canvas& gc)
 {
-    CL_Rectf rect = get_rect();
+    clan::Rectf rect = get_rect();
     int cursor = m_stack.front();
-    int options_per_page = cl_max(1,rect.get_height() / height_for_option(gc));
+    int options_per_page = std::max(1,int(rect.get_height() / height_for_option(gc)));
     int page = cursor / options_per_page;
     
     int skip_count = 0;

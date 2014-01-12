@@ -97,7 +97,7 @@ void StartupState::SteelInit ( SteelInterpreter* )
 {
 }
 
-void StartupState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
+void StartupState::Draw ( const clan::Rect& screenRect, clan::Canvas& GC )
 {
     m_overlay.draw(GC,0,0);   
     Menu::Draw(GC);
@@ -114,13 +114,13 @@ void StartupState::Finish()
 
 }
 
-CL_Rectf StartupState::get_rect()
+clan::Rectf StartupState::get_rect()
 {
     return m_menu_rect;
 }
 
 
-void StartupState::draw_option ( int option, bool selected, float x, float y, CL_GraphicContext& gc )
+void StartupState::draw_option ( int option, bool selected, float x, float y, clan::Canvas& gc )
 {
     std::string option_str;
     if(option == 0)
@@ -147,7 +147,7 @@ int StartupState::get_option_count()
 #endif
 }
 
-int StartupState::height_for_option ( CL_GraphicContext& gc )
+int StartupState::height_for_option ( clan::Canvas& gc )
 {
     return m_option_font.get_font_metrics(gc).get_height();
 }

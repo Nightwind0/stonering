@@ -22,22 +22,22 @@ class State {
 public:
 	virtual bool IsDone() const = 0;
 	// Handle raw key events
-	virtual void HandleKeyDown( const CL_InputEvent &key ) {}
-	virtual void HandleKeyUp( const CL_InputEvent &key ) {}
+	virtual void HandleKeyDown( const clan::InputEvent &key ) {}
+	virtual void HandleKeyUp( const clan::InputEvent &key ) {}
 	// Handle joystick / key events that are processed according to mappings
 	virtual void HandleButtonUp( const IApplication::Button& button ) {}
 	virtual void HandleButtonDown( const IApplication::Button& button ) {}
 	virtual void HandleAxisMove( const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos ) {}
-	virtual void HandleMouseUp( const IApplication::MouseButton& button, const CL_Point& pos, uint key_state ) {}
-	virtual void HandleMouseDown( const IApplication::MouseButton& button, const CL_Point& pos, uint key_state ) {}
-	virtual void HandleDoubleClick( const IApplication::MouseButton& button, const CL_Point& pos, uint key_state ) {}
-	virtual void HandleMouseMove( const CL_Point& pos, uint key_state ) {}
+	virtual void HandleMouseUp( const IApplication::MouseButton& button, const clan::Point& pos, uint key_state ) {}
+	virtual void HandleMouseDown( const IApplication::MouseButton& button, const clan::Point& pos, uint key_state ) {}
+	virtual void HandleDoubleClick( const IApplication::MouseButton& button, const clan::Point& pos, uint key_state ) {}
+	virtual void HandleMouseMove( const clan::Point& pos, uint key_state ) {}
 	virtual void Covered() {} // called when another state is pushed over this one
 
 	virtual bool Threaded() const {
 		return false;
 	}
-	virtual void Draw( const CL_Rect &screenRect, CL_GraphicContext& GC ) = 0;
+	virtual void Draw( const clan::Rect &screenRect, clan::Canvas& GC ) = 0;
 	virtual bool LastToDraw() const = 0; // Should we continue drawing more states?
 	virtual bool AcceptInput() const { return true; }
 	virtual bool DisableMappableObjects() const = 0; // Should the app move the MOs?

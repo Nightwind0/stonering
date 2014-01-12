@@ -45,30 +45,30 @@ public:
     virtual void HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos);
     
     virtual bool Threaded() const { return false; }
-    virtual void Draw(const CL_Rect &screenRect,CL_GraphicContext& GC);
+    virtual void Draw(const clan::Rect &screenRect,clan::Canvas& GC);
     virtual bool LastToDraw() const; // Should we continue drawing more states?
     virtual bool DisableMappableObjects() const; // Should the app move the MOs?
     virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
     virtual void Start();
     virtual void Finish(); // Hook to clean up or whatever after being popped    
 private:
-    void        draw_party(CL_GraphicContext& gc);
-    void        draw_stats(CL_GraphicContext& gc, Character * pChar);
-    void        draw_header(CL_GraphicContext& gc);
+    void        draw_party(clan::Canvas& gc);
+    void        draw_stats(clan::Canvas& gc, Character * pChar);
+    void        draw_header(clan::Canvas& gc);
 	ICharacterGroup * m_party;
     std::vector<ICharacter::eCharacterAttribute> m_stats;
-    CL_Rectf    m_party_rect;
-    CL_Rectf    m_status_rect;
-    CL_Rectf    m_header_rect;
+    clan::Rectf    m_party_rect;
+    clan::Rectf    m_status_rect;
+    clan::Rectf    m_header_rect;
     Font        m_stat_name_font;
     Font        m_stat_font;
     Font        m_plus_font;
     Font        m_minus_font;
     Font        m_header_font;
-    CL_Pointf   m_name_x;
-    CL_Pointf   m_stat_x;
-    CL_Pointf   m_mod_x;
-    CL_Pointf   m_base_x;
+    clan::Pointf   m_name_x;
+    clan::Pointf   m_stat_x;
+    clan::Pointf   m_mod_x;
+    clan::Pointf   m_base_x;
     int         m_current_character;
     bool        m_bDone;
 };

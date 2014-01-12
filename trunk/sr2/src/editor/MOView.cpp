@@ -24,11 +24,11 @@
 
 namespace StoneRing  { 
 
-MOView::MOView(CL_GUIComponent* parent):CL_GUIComponent(parent)
+MOView::MOView(clan::GUIComponent* parent):clan::GUIComponent(parent)
 {
-    set_type_name("MOView");
+    //set_type_name("MOView");
     func_render().set(this, &MOView::on_render);
-    func_process_message().set(this, &MOView::on_process_message);
+    //func_process_message().set(this, &MOView::on_process_message);
 }
 
 MOView::~MOView()
@@ -36,72 +36,72 @@ MOView::~MOView()
 
 }
 
-void MOView::SetSprite ( CL_Sprite sprite )
+void MOView::SetSprite ( clan::Sprite sprite )
 {
     m_sprite = sprite;
     request_repaint();
 }
 
-CL_Sprite MOView::GetSprite() const
+clan::Sprite MOView::GetSprite() const
 {
     return m_sprite;
 }
 
 
-void MOView::SetSize ( const CL_Size& size )
+void MOView::SetSize ( const clan::Size& size )
 {
     m_sprite_size = size;
 }
 
 
 
-void MOView::render_background(CL_GraphicContext &gc, const CL_Rect& clip)
+void MOView::render_background(clan::Canvas &gc, const clan::Rect& clip)
 {
-    CL_Colorf dark(0.5f,0.5f,0.5f);
-    CL_Colorf light(0.9f,0.9f,0.9f);
-    CL_Point top_left = clip.get_top_left();
+    clan::Colorf dark(0.5f,0.5f,0.5f);
+    clan::Colorf light(0.9f,0.9f,0.9f);
+    clan::Point top_left = clip.get_top_left();
     int tilesx,tilesy;
     tilesx = clip.get_width() / 8;
     tilesy = clip.get_height() / 8;
     
     for(int x=0;x<tilesx;x++){
         for(int y=0;y<tilesy;y++){
-            CL_Pointf point(top_left.x + x * 8, top_left.y + y * 8);
-            CL_Sizef size(8.0,8.0);
-            CL_Rectf rect(point,size);
-            CL_Colorf color;
+            clan::Pointf point(top_left.x + x * 8, top_left.y + y * 8);
+            clan::Sizef size(8.0,8.0);
+            clan::Rectf rect(point,size);
+            clan::Colorf color;
             if((y * tilesx + x + y) %2)
                 color = dark;
             else
                 color = light;
-            CL_Draw::fill(gc,rect,color);
+            gc.fill_rect(rect,color);
         }
     }
 }
 
-void MOView::on_render(CL_GraphicContext &gc, const CL_Rect &clip_rect)
+void MOView::on_render(clan::Canvas &gc, const clan::Rect &clip_rect)
 {
     render_background(gc,clip_rect);
     if(!m_sprite.is_null()){
-        CL_Pointf point((clip_rect.get_width()-m_sprite.get_width())/2.0,
+        clan::Pointf point((clip_rect.get_width()-m_sprite.get_width())/2.0,
                         (clip_rect.get_height()-m_sprite.get_height())/2.0);
         point += clip_rect.get_top_left();
         m_sprite.draw(gc,point.x,point.y);
         
-        CL_Rectf square(CL_Pointf(clip_rect.get_top_left().x + (clip_rect.get_width()-m_sprite_size.width*32)/2.0,
+        clan::Rectf square(clan::Pointf(clip_rect.get_top_left().x + (clip_rect.get_width()-m_sprite_size.width*32)/2.0,
                                    clip_rect.get_top_left().y +   (clip_rect.get_height()-m_sprite_size.height*32)/2.0 + m_sprite.get_height() - (m_sprite_size.height*32)),
-                       CL_Sizef(m_sprite_size.width*32,m_sprite_size.height*32));
-        CL_Draw::box(gc,square,CL_Colorf::yellow);
+                       clan::Sizef(m_sprite_size.width*32,m_sprite_size.height*32));
+        gc.draw_box(square,clan::Colorf::yellow);
     }
 }
 
-void MOView::on_process_message(CL_GUIMessage &message)
+void MOView::on_process_message(clan::GUIMessage &message)
 {
 }
 
 void MOView::Clear()
 {
-    m_sprite = CL_Sprite();
+    m_sprite = clan::Sprite();
     request_repaint();
 }
 

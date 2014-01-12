@@ -28,18 +28,18 @@
 
 namespace StoneRing { 
 
-class MonsterGroupEditWindow : public CL_Window
+class MonsterGroupEditWindow : public clan::Window
 {
 public:
-    MonsterGroupEditWindow(CL_GUIManager* manager, const CL_GUITopLevelDescription& desc);
+    MonsterGroupEditWindow(clan::GUIManager* manager, const clan::GUITopLevelDescription& desc);
     virtual ~MonsterGroupEditWindow();
 	void CreateGroup();
 	void SetGroup(MonsterGroup* pGroup);
 	MonsterGroup* GetGroup() const{ return m_group; }
 public:
-	class BattleWindow : public CL_GUIComponent {
+	class BattleWindow : public clan::GUIComponent {
 	public:
-		BattleWindow ( CL_GUIComponent* parent ) : CL_GUIComponent(parent) {
+		BattleWindow ( clan::GUIComponent* parent ) : clan::GUIComponent(parent) {
 			func_render().set(this,&BattleWindow::on_render);
 			m_selected_item = -1;
 		}
@@ -47,7 +47,7 @@ public:
 		void SetScale(float scale);
 		void SetSelectedItem(int item){ m_selected_item = item; request_repaint(); }
 	private:
-		void on_render(CL_GraphicContext &gc, const CL_Rect &clip_rect); 
+		void on_render(clan::Canvas &gc, const clan::Rect &clip_rect); 
 		int m_cols;
 		int m_rows;
 		float m_scale;
@@ -69,27 +69,27 @@ public:
 	void on_move_up();
 	void on_move_left();
 	void on_move_right();
-	void on_monster_list_selection(CL_ListViewSelection);
-	bool can_place(const CL_Rect& rect, MonsterRef* ignore=NULL);
+	void on_monster_list_selection(clan::ListViewSelection);
+	bool can_place(const clan::Rect& rect, MonsterRef* ignore=NULL);
 	
 	
-	CL_ListView* m_monster_ref_list;
-	CL_ComboBox* m_monsters;
-	CL_Label* m_monster_count_label;
-	CL_Label* m_col_count_label;
-	CL_Label* m_row_count_label;
-	CL_Spin* m_monster_count;
-	CL_Spin* m_col_count;
-	CL_Spin* m_row_count;
-	CL_Spin* m_group_col_count;
-	CL_Spin* m_group_row_count;
-	CL_PushButton* m_add_monsters;
-	CL_PushButton* m_delete_monsters;
-	CL_PushButton* m_move_up;
-	CL_PushButton* m_move_down;
-	CL_PushButton* m_move_left;
-	CL_PushButton* m_move_right;
-	CL_PushButton* m_done_button;	
+	clan::ListView* m_monster_ref_list;
+	clan::ComboBox* m_monsters;
+	clan::Label* m_monster_count_label;
+	clan::Label* m_col_count_label;
+	clan::Label* m_row_count_label;
+	clan::Spin* m_monster_count;
+	clan::Spin* m_col_count;
+	clan::Spin* m_row_count;
+	clan::Spin* m_group_col_count;
+	clan::Spin* m_group_row_count;
+	clan::PushButton* m_add_monsters;
+	clan::PushButton* m_delete_monsters;
+	clan::PushButton* m_move_up;
+	clan::PushButton* m_move_down;
+	clan::PushButton* m_move_left;
+	clan::PushButton* m_move_right;
+	clan::PushButton* m_done_button;	
 	MonsterGroup* m_group;
 };
 

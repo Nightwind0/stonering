@@ -45,7 +45,7 @@ public:
     virtual std::string GetDescription() const { return m_desc; }
     virtual std::string GetName() const;
     virtual uint GetMaxInventory() const;
-    CL_Image GetIcon() const;
+    clan::Image GetIcon() const;
 
 
     // These next two do not apply to special or system items.
@@ -60,7 +60,7 @@ public:
     virtual bool operator == ( const ItemRef &ref );    
 private:
     virtual bool handle_element(eElement element, Element * pElement );
-    virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
+    virtual void load_attributes(clan::DomNamedNodeMap attributes) ;
     virtual void load_finished();
     
     AttributeModifierSet m_attr_mods;

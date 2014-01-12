@@ -68,7 +68,7 @@ bool Tiles::handle_element(eElement element, Element * pElement)
     return false;
 }
 
-void Tiles::load_attributes(CL_DomNamedNodeMap attributes)
+void Tiles::load_attributes(clan::DomNamedNodeMap attributes)
 {
 }
 
@@ -99,14 +99,14 @@ bool GraphicDrawSort(Graphic* pObj1, Graphic* pObj2){
 
 class QTNodeDrawer : public Level::MOQuadtree::OurNodeVisitor {
 public:
-    QTNodeDrawer(CL_GraphicContext gc, const CL_Point& offset, const Level& level):m_gc(gc),m_offset(offset),m_level(level){
+    QTNodeDrawer(clan::Canvas gc, const clan::Point& offset, const Level& level):m_gc(gc),m_offset(offset),m_level(level){
     }
     virtual ~QTNodeDrawer(){
     }
     
     virtual bool Visit ( const Level::MOQuadtree::OurNode* pNode ){
         Quadtree::Geometry::Square<float> nodeSquare = pNode->GetSquare();
-        CL_Rect rect(32*(nodeSquare.GetCenter().GetX() - nodeSquare.GetSize() / 2),
+        clan::Rect rect(32*(nodeSquare.GetCenter().GetX() - nodeSquare.GetSize() / 2),
                      32*(nodeSquare.GetCenter().GetY() - nodeSquare.GetSize() / 2),
                      32*(nodeSquare.GetCenter().GetX() + nodeSquare.GetSize() / 2),
                      32*(nodeSquare.GetCenter().GetY() + nodeSquare.GetSize() / 2));
@@ -117,8 +117,8 @@ public:
         return true;
     }
 private:
-    CL_GraphicContext m_gc;
-    CL_Point m_offset;
+    clan::Canvas m_gc;
+    clan::Point m_offset;
     const Level &m_level;
 };
 
@@ -188,8 +188,8 @@ public:
     MappableObjectsPrinter(){}
     virtual ~MappableObjectsPrinter(){}
     virtual bool Visit(MappableObject* pMO, const Level::MOQuadtree::Node* pNode){
-        CL_Rect spriteRect = pMO->GetSpriteRect();
-        CL_Rect tileRect = pMO->GetTileRect();
+        clan::Rect spriteRect = pMO->GetSpriteRect();
+        clan::Rect tileRect = pMO->GetTileRect();
         std::cout << '\t' << pMO->GetName();
 
         std::cout << " @ " << tileRect.get_top_left().x << ',' << tileRect.get_top_left().y 
@@ -202,7 +202,7 @@ public:
 
 class ContainsSolidMappableObjects: public Level::MOQuadtree::OurVisitor{
 public:
-    ContainsSolidMappableObjects(MappableObject* pMO,const CL_Rect& destRect):m_pMO(pMO),m_destRect(destRect),m_contains(false){}
+    ContainsSolidMappableObjects(MappableObject* pMO,const clan::Rect& destRect):m_pMO(pMO),m_destRect(destRect),m_contains(false){}
     virtual ~ContainsSolidMappableObjects(){}
     
     virtual bool Visit(MappableObject* pMO, const Level::MOQuadtree::Node* pNode){
@@ -220,30 +220,30 @@ public:
     bool DidContainSolidMO() const { return m_contains; }
 private:
     MappableObject* m_pMO;
-    CL_Rect m_destRect;
+    clan::Rect m_destRect;
     bool m_contains;
 };
 
 
 class MappableObjectDrawer: public Level::MOQuadtree::OurVisitor {
 public:
-    MappableObjectDrawer(const CL_GraphicContext& gc, const CL_Point& offset):m_gc(gc),m_offset(offset){
+    MappableObjectDrawer(const clan::Canvas& gc, const clan::Point& offset):m_gc(gc),m_offset(offset){
     }
     virtual ~MappableObjectDrawer(){}
     bool Visit(MappableObject* pMO, const Level::MOQuadtree::Node* pNode){
         if(pMO->EvaluateCondition()){
             // Magically make a circle from a square
             Quadtree::Geometry::Circle<float> circle = pNode->GetSquare();
-            CL_Draw::circle(m_gc,circle.GetCenter().GetX() * 32 + m_offset.x,
+            m_gc.fill_circle(circle.GetCenter().GetX() * 32 + m_offset.x,
                             circle.GetCenter().GetY()*32 + m_offset.y,
                             circle.GetRadius()*32,
-                            CL_Colorf(0.5f+ (1.05 * float(pNode->GetDepth())),1.0f,0.0f,0.1f));
+                            clan::Colorf(0.5f+ (1.05 * float(pNode->GetDepth())),1.0f,0.0f,0.1f));
         }
         return true;
     }
 private:
-    CL_GraphicContext m_gc;
-    CL_Point m_offset;
+    clan::Canvas m_gc;
+    clan::Point m_offset;
 };
 
 class MappableObjectUpdater: public Level::MOQuadtree::OurVisitor {
@@ -297,7 +297,7 @@ private:
 
 class MappableObjectCollector: public Level::MOQuadtree::OurVisitor{
 public:
-    MappableObjectCollector(std::list<MappableObject*>& list, const CL_Point& point):m_list(list),m_point(point){
+    MappableObjectCollector(std::list<MappableObject*>& list, const clan::Point& point):m_list(list),m_point(point){
     }
     virtual ~MappableObjectCollector(){}
     bool Visit(MappableObject * pMO, const Level::MOQuadtree::Node* pNode){
@@ -306,7 +306,7 @@ public:
         return true;
     }
 private:
-    CL_Point m_point;
+    clan::Point m_point;
     std::list<MappableObject*>& m_list;
 };
 MappableObjects::MappableObjects()
@@ -338,7 +338,7 @@ bool MappableObjects::handle_element(Element::eElement element, Element * pEleme
     return false;
 }
 
-void MappableObjects::load_attributes(CL_DomNamedNodeMap attributes)
+void MappableObjects::load_attributes(clan::DomNamedNodeMap attributes)
 {
 
 }
@@ -374,7 +374,7 @@ bool LevelHeader::handle_element(eElement element, Element * pElement)
     return false;
 }
 
-void LevelHeader::load_attributes(CL_DomNamedNodeMap attributes)
+void LevelHeader::load_attributes(clan::DomNamedNodeMap attributes)
 {
     m_nLevelWidth = get_required_uint("width",attributes);
     m_nLevelHeight = get_required_uint("height",attributes);
@@ -404,20 +404,20 @@ void Level::Invoke()
 }
 
 
-bool activeSolidMappableObject(const std::multimap<CL_Point,MappableObject*>::value_type &value)
+bool activeSolidMappableObject(const std::multimap<clan::Point,MappableObject*>::value_type &value)
 {
     MappableObject * pMO = value.second;
 
     return pMO && pMO->IsSolid() && pMO->EvaluateCondition();
 }
 
-bool matchesMappableObject(const std::multimap<CL_Point,MappableObject*>::value_type &value,MappableObject *pMo)
+bool matchesMappableObject(const std::multimap<clan::Point,MappableObject*>::value_type &value,MappableObject *pMo)
 {
     return value.second == pMo;
 }
 
 #if 0
-bool Level::Contains_Solid_Mappable_Object(const CL_Point &point) const
+bool Level::Contains_Solid_Mappable_Object(const clan::Point &point) const
 {
         ContainsSolidMappableObjects contains(point);
         Quadtree::Geometry::Vector<float> center(
@@ -429,13 +429,13 @@ bool Level::Contains_Solid_Mappable_Object(const CL_Point &point) const
 
 
 #if 0
-Level::Level(const std::string &name,CL_ResourceManager * pResources): mpDocument(NULL)
+Level::Level(const std::string &name,clan::ResourceManager * pResources): mpDocument(NULL)
 {
     srand(time(0));
     // Get the level file name from resources
 
-    std::string path = CL_String::load("Game/LevelPath", pResources);
-    std::string filename = CL_String::load("Levels/" + name, pResources);
+    std::string path = clan::String::load("Game/LevelPath", pResources);
+    std::string filename = clan::String::load("Levels/" + name, pResources);
 
     // Load the level
     LoadLevel ( path + filename );
@@ -462,7 +462,7 @@ Level::~Level()
 }
 
 int Level::Get_Cumulative_Side_Block_At_Point
-(const CL_Point &point) const
+(const clan::Point &point) const
 {
     int block =0;
 
@@ -479,7 +479,7 @@ int Level::Get_Cumulative_Side_Block_At_Point
     return block;
 }
 
-bool Level::Get_Cumulative_Hotness_At_Point(const CL_Point &point) const
+bool Level::Get_Cumulative_Hotness_At_Point(const clan::Point &point) const
 {
 
     std::list<Tile*> tileList = m_tiles[point.x][point.y];
@@ -496,29 +496,29 @@ bool Level::Get_Cumulative_Hotness_At_Point(const CL_Point &point) const
 
 }
 
-CL_Rect Level::calc_tile_bounds( const CL_Rect& src_pixels, const CL_Rect& dst_pixels ) const
+clan::Rect Level::calc_tile_bounds( const clan::Rect& src_pixels, const clan::Rect& dst_pixels ) const
 {
-	return CL_Rect(CL_Point(src_pixels.get_top_left().x/32,src_pixels.get_top_left().y/32),CL_Size(src_pixels.get_width()/32+1,src_pixels.get_height()/32+1));
+	return clan::Rect(clan::Point(src_pixels.get_top_left().x/32,src_pixels.get_top_left().y/32),clan::Size(src_pixels.get_width()/32+1,src_pixels.get_height()/32+1));
 }
 
-void Level::Draw(const CL_Rect& src, const CL_Rect& dst, CL_GraphicContext& GC, bool draw_mos, bool draw_borders, bool draw_debug)
+void Level::Draw(const clan::Rect& src, const clan::Rect& dst, clan::Canvas& GC, bool draw_mos, bool draw_borders, bool draw_debug)
 {
 	draw_floor_tiles(GC,src,dst);
 	draw_object_layer(GC,src,dst,draw_mos,draw_borders, draw_debug);
 	//draw_flying_layer(GC,src,dst,
 }
 
-void Level::draw_floor_tiles(CL_GraphicContext& gc, const CL_Rect &src, const CL_Rect &dst)
+void Level::draw_floor_tiles(clan::Canvas& gc, const clan::Rect &src, const clan::Rect &dst)
 {
-    CL_Point offset(dst.left-src.left,dst.bottom-src.bottom);    
-	CL_Rect tile_bounds = calc_tile_bounds(src,dst);
+    clan::Point offset(dst.left-src.left,dst.bottom-src.bottom);    
+	clan::Rect tile_bounds = calc_tile_bounds(src,dst);
 
     // Regular tiles, not floaters
     for(int tileX = tile_bounds.left; tileX <= tile_bounds.right; tileX++)
     {
         for(int tileY =tile_bounds.top; tileY <= tile_bounds.bottom; tileY++)
         {
-            CL_Point p(tileX,tileY);
+            clan::Point p(tileX,tileY);
 
             if(p.x >=0 && p.y >=0 && p.x < m_LevelWidth && p.y < m_LevelHeight)
             {
@@ -563,9 +563,9 @@ void Level::RemoveTileVisitor ( Tile::Visitor* pVisitor )
 
 
 
-void Level::draw_object_layer(CL_GraphicContext& gc, const CL_Rect &src, const CL_Rect &dst, bool bDrawMos, bool bDrawBorders, bool bDrawDebug)
+void Level::draw_object_layer(clan::Canvas& gc, const clan::Rect &src, const clan::Rect &dst, bool bDrawMos, bool bDrawBorders, bool bDrawDebug)
 {
-    CL_Point offset(dst.left-src.left,dst.bottom-src.bottom);
+    clan::Point offset(dst.left-src.left,dst.bottom-src.bottom);
 
     Quadtree::Geometry::Vector<float> center(src.get_center().x/32,src.get_center().y/32);
     Quadtree::Geometry::Rect<float> rect(center,src.get_width()/32,src.get_height()/32);
@@ -573,7 +573,7 @@ void Level::draw_object_layer(CL_GraphicContext& gc, const CL_Rect &src, const C
 	
 	std::list<Graphic*> graphics;
 	// Add any fence tiles here
-	CL_Rect tile_bounds = calc_tile_bounds(src,dst);
+	clan::Rect tile_bounds = calc_tile_bounds(src,dst);
 	for(int x=tile_bounds.left;x<=tile_bounds.right;x++){
 		for(int y=tile_bounds.top;y<=tile_bounds.bottom;y++){
 			if(x >=0 && y >= 0 && x < m_LevelWidth && y < m_LevelHeight){ 
@@ -602,10 +602,10 @@ void Level::draw_object_layer(CL_GraphicContext& gc, const CL_Rect &src, const C
 		(*iter)->Draw(gc,offset);
 #if !defined(NDEBUG)
         if(bDrawBorders && !(*iter)->IsTile()){
-            CL_Rect tileRect = (*iter)->GetRect();
+            clan::Rect tileRect = (*iter)->GetRect();
        
             tileRect.translate(offset);
-            CL_Draw::box(gc,tileRect,CL_Colorf(1.0f,1.0f,0.0f,0.5f));
+            gc.draw_box(tileRect,clan::Colorf(1.0f,1.0f,0.0f,0.5f));
         }else if((*iter)->IsTile()){
 			Tile* pTile = dynamic_cast<Tile*>(*iter);
 			if(pTile){
@@ -626,11 +626,11 @@ void Level::draw_object_layer(CL_GraphicContext& gc, const CL_Rect &src, const C
 			(*iter)->Draw(gc,offset);
 #if !defined(NDEBUG)
 			if(bDrawBorders){
-				CL_Rect tileRect = (*iter)->GetTileRect();
-				CL_Rect spriteRect(tileRect.get_top_left() * 32, tileRect.get_size() * 32);
+				clan::Rect tileRect = (*iter)->GetTileRect();
+				clan::Rect spriteRect(tileRect.get_top_left() * 32, tileRect.get_size() * 32);
 		
 				spriteRect.translate(offset);
-				CL_Draw::box(gc,spriteRect,CL_Colorf(1.0f,0.0f,1.0f,0.5f));
+				gc.draw_box(spriteRect,clan::Colorf(1.0f,0.0f,1.0f,0.5f));
 			}
 #endif
 		}
@@ -649,7 +649,7 @@ void Level::draw_object_layer(CL_GraphicContext& gc, const CL_Rect &src, const C
 
 
 
-void Level::Move_Mappable_Object(MappableObject *pMO, Direction dir, const CL_Rect& tiles_from, const CL_Rect& tiles_to)
+void Level::Move_Mappable_Object(MappableObject *pMO, Direction dir, const clan::Rect& tiles_from, const clan::Rect& tiles_to)
 {
     assert ( pMO != NULL );
     Quadtree::Geometry::Vector<float> from_center(tiles_from.get_center().x,tiles_from.get_center().y);
@@ -665,7 +665,7 @@ void Level::Move_Mappable_Object(MappableObject *pMO, Direction dir, const CL_Re
 void Level::Add_Mappable_Object ( MappableObject* pMO)
 {
     assert ( pMO );
-    CL_Rect rect = pMO->GetTileRect();
+    clan::Rect rect = pMO->GetTileRect();
     Quadtree::Geometry::Rect<float> location(
         Quadtree::Geometry::Vector<float>(rect.get_center().x,rect.get_center().y),
                                           rect.get_width(),rect.get_height());
@@ -675,12 +675,12 @@ void Level::Add_Mappable_Object ( MappableObject* pMO)
 }
 
 
-bool Level::CanMove ( MappableObject* pObject, const CL_Rect& tiles_currently, const CL_Rect& tiles_destination ) const
+bool Level::CanMove ( MappableObject* pObject, const clan::Rect& tiles_currently, const clan::Rect& tiles_destination ) const
 {
     Direction dir;
-    CL_Point topleft = tiles_currently.get_top_left();
-    CL_Point dest_topleft = tiles_destination.get_top_left();
-    CL_Vec2<float> vector;
+    clan::Point topleft = tiles_currently.get_top_left();
+    clan::Point dest_topleft = tiles_destination.get_top_left();
+    clan::Vec2<int> vector;
     if(topleft.x < dest_topleft.x){
         dir = Direction::EAST;
     }else if(topleft.x > dest_topleft.x){
@@ -690,14 +690,15 @@ bool Level::CanMove ( MappableObject* pObject, const CL_Rect& tiles_currently, c
     }else{
         dir = Direction::NORTH;
     }
+    
     vector = dir.ToScreenVector();
     
-    std::list<CL_Point> edge;
+    std::list<clan::Point> edge;
     pObject->CalculateEdgePoints(topleft,dir,&edge);
-    for(std::list<CL_Point>::const_iterator iter = edge.begin();
+    for(std::list<clan::Point>::const_iterator iter = edge.begin();
         iter != edge.end(); iter++){
-        CL_Point tile = *iter;
-        CL_Point newtile = tile + vector;
+        clan::Point tile = *iter;
+        clan::Point newtile = tile + vector;
         if(!Check_Direction_Block(pObject,dir,tile,newtile)){
             return false;
         }
@@ -719,12 +720,12 @@ bool Level::CanMove ( MappableObject* pObject, const CL_Rect& tiles_currently, c
 }
 
 
-bool Level::Move(MappableObject* pObject, const CL_Rect& tiles_currently, const CL_Rect& tiles_destination)
+bool Level::Move(MappableObject* pObject, const clan::Rect& tiles_currently, const clan::Rect& tiles_destination)
 {
     Direction dir;
-    CL_Point topleft = tiles_currently.get_top_left();
-    CL_Point dest_topleft = tiles_destination.get_top_left();
-    CL_Vec2<float> vector;
+    clan::Point topleft = tiles_currently.get_top_left();
+    clan::Point dest_topleft = tiles_destination.get_top_left();
+    clan::Vec2<float> vector;
     if(topleft.x < dest_topleft.x){
         dir = Direction::EAST;
     }else if(topleft.x > dest_topleft.x){
@@ -743,7 +744,7 @@ bool Level::Move(MappableObject* pObject, const CL_Rect& tiles_currently, const 
 }
 
 
-bool Level::Check_Direction_Block ( MappableObject * pMo, Direction dir, const CL_Point& tile, const CL_Point& dest_tile )const
+bool Level::Check_Direction_Block ( MappableObject * pMo, Direction dir, const clan::Point& tile, const clan::Point& dest_tile )const
 {
     if(dest_tile.x <0 || dest_tile.y <0 || dest_tile.x >= m_LevelWidth || dest_tile.y >= m_LevelHeight)
         return false;
@@ -762,7 +763,7 @@ bool Level::Check_Direction_Block ( MappableObject * pMo, Direction dir, const C
 
 
 
-void Level::MoveMappableObjects(const CL_Rect &src)
+void Level::MoveMappableObjects(const clan::Rect &src)
 {
     Quadtree::Geometry::Vector<float> center(src.get_center().x,src.get_center().y);
     Quadtree::Geometry::Rect<float> rect(center,src.get_width(),src.get_height());
@@ -781,7 +782,7 @@ void Level::MoveMappableObjects(const CL_Rect &src)
 
 
 // All AM's from tiles fire, as do any step events
-void Level::Step(const CL_Point &target)
+void Level::Step(const clan::Point &target)
 {
     // First, check for a battle here (events come after)
     if(m_pMonsterRegions != NULL)
@@ -853,7 +854,7 @@ void Level::Activate_Tiles_At ( uint x, uint y )
 }
 
 // Any talk events fire (assuming they meet conditions)
-void Level::Talk(const CL_Point &target, bool prod)
+void Level::Talk(const clan::Point &target, bool prod)
 {
     Quadtree::Geometry::Vector<float> center(0.0f + float(target.x),0.0f + float(target.y));
     Quadtree::Geometry::Square<float> square(center,1);
@@ -867,7 +868,7 @@ void Level::Talk(const CL_Point &target, bool prod)
         MappableObject * pMo = *iter;
         if(!RectContains<int>(pMo->GetTileRect(),target)){
 #ifndef NDEBUG
-            CL_Rect rect = pMo->GetTileRect();
+            clan::Rect rect = pMo->GetTileRect();
             std::cout << '(' << rect.get_top_left().x << ',' << rect.get_top_left().y << "),"
                         << '(' << rect.get_width() << 'x' << rect.get_height() << ')'
                         << " Point: " << target.x << ',' << target.y
@@ -909,7 +910,7 @@ void Level::Talk(const CL_Point &target, bool prod)
 }
 
 // Propagate updates to any MO's in view. Provides as a level coordinate based rectangle
-void Level::Update(const CL_Rect & updateRect)
+void Level::Update(const clan::Rect & updateRect)
 {
     Quadtree::Geometry::Vector<float> center(updateRect.get_center().x,updateRect.get_center().y);
     Quadtree::Geometry::Rect<float> rect(center,updateRect.get_width(),updateRect.get_height());
@@ -947,12 +948,12 @@ void Level::DumpMappableObjects() const
     m_mo_quadtree->TraverseAll(printVisitor);    
 }
 
-void Level::DrawDebugBox ( CL_GraphicContext gc, const CL_Rect& pixelRect ) const
+void Level::DrawDebugBox ( clan::Canvas gc, const clan::Rect& pixelRect ) const
 {
-    CL_Draw::box(gc,pixelRect,CL_Colorf(1.0f,1.0f,1.0f,0.5f));
+    gc.draw_box(pixelRect,clan::Colorf(1.0f,1.0f,1.0f,0.5f));
 }
 
-void Level::DrawMOQuadtree(CL_GraphicContext gc, const CL_Point& offset) const
+void Level::DrawMOQuadtree(clan::Canvas gc, const clan::Point& offset) const
 {
     QTNodeDrawer drawer(gc,offset,*this);    
     m_mo_quadtree->TraverseNodes(
@@ -960,7 +961,7 @@ void Level::DrawMOQuadtree(CL_GraphicContext gc, const CL_Point& offset) const
 }
 
 
-void Level::AddPathTile ( const CL_Point& pt )
+void Level::AddPathTile ( const clan::Point& pt )
 {
     m_pathPoints.insert(pt);
 }
@@ -984,22 +985,22 @@ bool Level::Tile_Sort_Criterion ( const Tile * p1, const Tile * p2)
 
 void Level::LoadFromFile(const std::string &filename, bool resource)
 {
-    CL_DomDocument doc;
-    CL_IODevice file;
+    clan::DomDocument doc;
+    clan::IODevice file;
 	if(resource) file = IApplication::GetInstance()->OpenResource(filename);
 	else {	
-		file = CL_File(filename);
+		file = clan::File(filename);
 	}
     doc.load(file);
 
-    CL_DomElement levelNode = doc.named_item("level").to_element();
+    clan::DomElement levelNode = doc.named_item("level").to_element();
     Element::Load(levelNode);
 }
 
-void Level::Load(const std::string &name, CL_ResourceManager& resources)
+void Level::Load(const std::string &name, clan::ResourceManager& resources)
 {
-    std::string path = CL_String_load("Game/LevelPath", resources);
-    std::string filename = CL_String_load("Levels/" + name, resources);
+    std::string path = String_load("Game/LevelPath", resources);
+    std::string filename = String_load("Levels/" + name, resources);
 
     m_resource_name = name;
     LoadFromFile(path + filename);
@@ -1057,7 +1058,7 @@ bool Level::handle_element(Element::eElement element, Element * pElement)
     return true;
 }
 
-void Level::load_attributes(CL_DomNamedNodeMap attributes)
+void Level::load_attributes(clan::DomNamedNodeMap attributes)
 {
     m_name = get_required_string("name",attributes);
 #ifndef NDEBUG
@@ -1090,7 +1091,7 @@ void Level::AddMappableObject ( MappableObject* pMO )
 
 void Level::RemoveMappableObject ( MappableObject* pMO )
 {
-    CL_Rect rect = pMO->GetTileRect();
+    clan::Rect rect = pMO->GetTileRect();
     Quadtree::Geometry::Rect<float> location(
         Quadtree::Geometry::Vector<float>(rect.get_center().x,rect.get_center().y),
                                           rect.get_width(),rect.get_height());    
@@ -1108,7 +1109,7 @@ void Level::Load_Mo ( MappableObject * moElement )
 
 void Level::Load_Tile ( Tile * tile)
 {
-    CL_Point point;
+    clan::Point point;
     if(tile->GetX() >= m_LevelWidth)
     {
         delete tile;
@@ -1150,7 +1151,7 @@ MappablePlayer* Level::GetPlayer() const
 
 class MappableObjectXMLWriter: public Level::MOQuadtree::OurVisitor {
 public:
-    MappableObjectXMLWriter(CL_DomElement& parent,CL_DomDocument& doc):m_parent(parent),m_doc(doc){}
+    MappableObjectXMLWriter(clan::DomElement& parent,clan::DomDocument& doc):m_parent(parent),m_doc(doc){}
     virtual ~MappableObjectXMLWriter(){}
     bool Visit(MappableObject* pMO, const Level::MOQuadtree::Node* pNode){
         MappableObject * pMo = dynamic_cast<MappableObject*>(pMO);
@@ -1159,8 +1160,8 @@ public:
         return true;
     }
 private:
-    CL_DomElement& m_parent;
-    CL_DomDocument& m_doc;
+    clan::DomElement& m_parent;
+    clan::DomDocument& m_doc;
 };
 
 
@@ -1199,7 +1200,7 @@ void Level::AddTile ( Tile* pTile )
     m_tiles[ pTile->GetX() ][ pTile->GetY()].push_back ( pTile );      
 }
 
-Tile* Level::PopTileAtPos(const CL_Point& pos)
+Tile* Level::PopTileAtPos(const clan::Point& pos)
 {
     if(pos.x >= m_LevelWidth || pos.y >= m_LevelHeight )
         return NULL;
@@ -1212,12 +1213,12 @@ Tile* Level::PopTileAtPos(const CL_Point& pos)
     return pTile;
 }
 
-std::list<Tile*> Level::GetTilesAt(const CL_Point& pos) const
+std::list<Tile*> Level::GetTilesAt(const clan::Point& pos) const
 {
     return m_tiles[pos.x][pos.y];
 }
 
-bool Level::TilesAt(const CL_Point& pos) const 
+bool Level::TilesAt(const clan::Point& pos) const 
 {
     return !m_tiles[pos.x][pos.y].empty();
 }
@@ -1241,7 +1242,7 @@ void Level::resize_mo_quadtree()
 }
 
 
-std::list<MappableObject*> Level::GetMappableObjectsAt(const CL_Point& point) const 
+std::list<MappableObject*> Level::GetMappableObjectsAt(const clan::Point& point) const 
 {
     std::list<MappableObject*> list;
     MappableObjectCollector collector(list,point);
@@ -1253,13 +1254,13 @@ std::list<MappableObject*> Level::GetMappableObjectsAt(const CL_Point& point) co
     return list;
 }
 
-CL_DomElement Level::CreateDomElement(CL_DomDocument& doc) const 
+clan::DomElement Level::CreateDomElement(clan::DomDocument& doc) const 
 {
-    CL_DomElement element(doc,"level");
+    clan::DomElement element(doc,"level");
     element.set_attribute("name",m_name);
 	
 
-    CL_DomElement mappableObjects(doc,"mappableObjects");
+    clan::DomElement mappableObjects(doc,"mappableObjects");
     if(!m_pHeader){
 		const_cast<Level*>(this)->m_pHeader = new LevelHeader();
 		m_pHeader->SetMusic(m_music);
@@ -1269,7 +1270,7 @@ CL_DomElement Level::CreateDomElement(CL_DomDocument& doc) const
 	m_pHeader->SetLevelHeight(m_LevelHeight);	
 	element.append_child(m_pHeader->CreateDomElement(doc));
   
-    CL_DomElement tiles(doc,"tiles");
+    clan::DomElement tiles(doc,"tiles");
     for(int x=0;x<m_tiles.size();x++){
         for(int y=0;y<m_tiles[x].size();y++){
             for(std::list<Tile*>::const_iterator it = m_tiles[x][y].begin(); it != m_tiles[x][y].end(); it++)
@@ -1294,13 +1295,13 @@ CL_DomElement Level::CreateDomElement(CL_DomDocument& doc) const
 }
 
 bool Level::WriteXML(const std::string& filename, bool force)const{
-    CL_DomDocument newdoc;
-    CL_File  os;
+    clan::DomDocument newdoc;
+    clan::File  os;
 
-    if(!force && !os.open(filename,CL_File::create_new,CL_File::access_write)){
+    if(!force && !os.open(filename,clan::File::create_new,clan::File::access_write)){
         return false;
     }else if(force){
-        os.open(filename,CL_File::create_always,CL_File::access_write);
+        os.open(filename,clan::File::create_always,clan::File::access_write);
     }
 
 
@@ -1326,7 +1327,7 @@ void Level::RemoveMonsterRegion(MonsterRegion* region)
 	m_pMonsterRegions->RemoveMonsterRegion(region);
 }
 
-void Level::AddTilesAt(const CL_Point& point, const std::list<Tile*>& tiles, bool overwrite)
+void Level::AddTilesAt(const clan::Point& point, const std::list<Tile*>& tiles, bool overwrite)
 {
 	if(point.x < GetWidth() && point.y < GetHeight()){
 		if(overwrite) {

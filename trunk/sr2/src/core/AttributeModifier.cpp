@@ -75,7 +75,7 @@ AttributeModifierElement::AttributeModifierElement():m_pScript(NULL)
 {
 }
 
-void AttributeModifierElement::load_attributes(CL_DomNamedNodeMap attributes)
+void AttributeModifierElement::load_attributes(clan::DomNamedNodeMap attributes)
 {
     m_nAttribute = ICharacter::CAFromString(get_required_string("attribute", attributes));
     

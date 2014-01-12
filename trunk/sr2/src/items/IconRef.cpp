@@ -20,7 +20,7 @@ bool IconRef::handle_element(eElement element, Element * pElement )
     return false;
 }
 
-void IconRef::load_attributes(CL_DomNamedNodeMap attributes)
+void IconRef::load_attributes(clan::DomNamedNodeMap attributes)
 {
 
 }

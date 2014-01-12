@@ -41,16 +41,16 @@ bool GameoverState::DisableMappableObjects() const
 	return true;
 }
 
-void GameoverState::Draw( const CL_Rect& screenRect, CL_GraphicContext& GC )
+void GameoverState::Draw( const clan::Rect& screenRect, clan::Canvas& GC )
 {
-	float percentage = min(1.0, float(CL_System::get_time() - m_start_time) / 3000.0);
+	float percentage = std::min(1.0, float(clan::System::get_time() - m_start_time) / 3000.0);
 	m_background.set_alpha(percentage);
 	m_background.draw(GC,0,0);
 }
 
 void GameoverState::HandleButtonUp( const StoneRing::IApplication::Button& button )
 {
-	if(CL_System::get_time() - m_start_time > 3000)
+	if(clan::System::get_time() - m_start_time > 3000)
 		m_done = true;
 }
 
@@ -72,7 +72,7 @@ void GameoverState::MappableObjectMoveHook()
 void GameoverState::Start()
 {
 	m_background = GraphicsManager::GetOverlay(GraphicsManager::GAMEOVER);
-	m_start_time = CL_System::get_time();
+	m_start_time = clan::System::get_time();
 	
 	m_done = false;
 	// TODO: Play game over music

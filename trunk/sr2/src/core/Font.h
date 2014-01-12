@@ -37,12 +37,12 @@ public:
 	};
 	Font();
 	~Font();
-	void draw_text( CL_GraphicContext &  	gc,
-		const CL_Pointf &  	position,
-		const CL_StringRef &  	text, Alignment = DEFAULT, float multiply = 1.0f );
-	void draw_text( CL_GraphicContext & gc,
+	void draw_text( clan::Canvas &  	gc,
+		const clan::Pointf &  	position,
+			const std::string &  	text, Alignment = DEFAULT, float multiply = 1.0f );
+	void draw_text( clan::Canvas & gc,
 		float x, float y,
-		const CL_StringRef & text, Alignment = DEFAULT, float multiply = 1.0f );
+			const std::string & text, Alignment = DEFAULT, float multiply = 1.0f );
 	bool is_null()  {
 		return m_font.is_null();
 	}
@@ -53,21 +53,21 @@ public:
 		return m_alpha;
 	}
 
-	CL_FontMetrics get_font_metrics( CL_GraphicContext& gc ) {
+	clan::FontMetrics get_font_metrics( clan::Canvas& gc ) {
 		return m_font.get_font_metrics();
 	}
-	CL_Size get_text_size( CL_GraphicContext& gc, const CL_StringRef& text ) {
+	clan::Size get_text_size( clan::Canvas& gc, const std::string& text ) {
 		return m_font.get_text_size( gc, text );
 	}
-	void set_color(CL_Colorf color){m_color=color;}
+	void set_color(clan::Colorf color){m_color=color;}
 private:
 	friend class GraphicsManager;
-	friend int draw_text( CL_GraphicContext&, const Font &, CL_Rectf, CL_StringRef, uint );
-	float calc_offset( CL_GraphicContext& );
-	CL_Colorf m_color;
-	CL_Colorf m_shadow_color;
-	CL_Font   m_font;
-	CL_Pointf m_shadow_offset;
+	friend int draw_text( clan::Canvas&, const Font &, clan::Rectf, const std::string&, uint );
+	float calc_offset( clan::Canvas& );
+	clan::Colorf m_color;
+	clan::Colorf m_shadow_color;
+	clan::Font   m_font;
+	clan::Pointf m_shadow_offset;
 	float m_alpha;
 };
 

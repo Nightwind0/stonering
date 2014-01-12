@@ -9,7 +9,7 @@ namespace StoneRing{
     {
     public:
         ArmorType();
-        ArmorType(CL_DomElement * pElement );
+        ArmorType(clan::DomElement * pElement );
         ~ArmorType();
         virtual eElement WhichElement() const{ return EARMORTYPE; }
 
@@ -25,7 +25,7 @@ namespace StoneRing{
 		virtual std::string GetDebugId() const { return m_name; }		
     private:
         virtual bool handle_element(eElement element, Element * pElement );
-        virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
+        virtual void load_attributes(clan::DomNamedNodeMap attributes) ;
         std::string m_name;
         std::string m_icon_ref;
         uint m_nBasePrice;

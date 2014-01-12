@@ -87,28 +87,28 @@ void AnimationState::AddTask( AnimationState::Task* task ) {
 }
 
 
-BattleState::SpriteTicket AnimationState::AddSprite( CL_Sprite sprite ) {
+BattleState::SpriteTicket AnimationState::AddSprite( clan::Sprite sprite ) {
 	return m_parent.add_sprite( sprite );
 }
 
 
-CL_Rectf AnimationState::GetCharacterRect( ICharacter* ichar ) {
+clan::Rectf AnimationState::GetCharacterRect( ICharacter* ichar ) const {
 	return m_parent.get_character_rect( ichar );
 }
-CL_Rectf AnimationState::GetGroupRect( ICharacterGroup* igroup ) {
+clan::Rectf AnimationState::GetGroupRect( ICharacterGroup* igroup ) const {
 	return m_parent.get_group_rect( igroup );
 }
-CL_Rectf AnimationState::GetSpriteRect( BattleState::SpriteTicket sprite ) {
+clan::Rectf AnimationState::GetSpriteRect( BattleState::SpriteTicket sprite ) const {
 	return m_parent.get_sprite_rect( sprite );
 }
-void AnimationState::SetSpritePos( BattleState::SpriteTicket sprite, const CL_Pointf& pt ) {
+void AnimationState::SetSpritePos( BattleState::SpriteTicket sprite, const clan::Pointf& pt ) {
 	m_parent.set_sprite_pos( sprite, pt );
 }
 
 
 
-CL_Pointf AnimationState::GetFocusOrigin( const SpriteMovement::Focus& focus, ICharacter * pTarget ) {
-	CL_Pointf point( 0, 0 );
+clan::Pointf AnimationState::GetFocusOrigin( const SpriteMovement::Focus& focus, ICharacter * pTarget ) {
+	clan::Pointf point( 0, 0 );
 	switch( focus.meFocusType ) {
 		case SpriteMovement::SCREEN:
 			switch( focus.meFocusX ) {
@@ -142,7 +142,7 @@ CL_Pointf AnimationState::GetFocusOrigin( const SpriteMovement::Focus& focus, IC
 			}
 			break;
 		case SpriteMovement::CASTER: {
-			CL_Rectf rect =  m_parent.get_character_rect( m_pCaster );
+			clan::Rectf rect =  m_parent.get_character_rect( m_pCaster );
 			switch( focus.meFocusX ) {
 				default:
 				case SpriteMovement::X_CENTER:
@@ -177,7 +177,7 @@ CL_Pointf AnimationState::GetFocusOrigin( const SpriteMovement::Focus& focus, IC
 			break;
 		}
 		case SpriteMovement::TARGET: {
-			CL_Rectf rect = m_parent.get_character_rect( m_pTarget );
+			clan::Rectf rect = m_parent.get_character_rect( m_pTarget );
 			switch( focus.meFocusX ) {
 				default:
 				case SpriteMovement::X_CENTER:
@@ -212,7 +212,7 @@ CL_Pointf AnimationState::GetFocusOrigin( const SpriteMovement::Focus& focus, IC
 			break;
 		}
 		case SpriteMovement::CASTER_GROUP: {
-			CL_Rectf rect = m_parent.get_group_rect( m_pCasterGroup );
+			clan::Rectf rect = m_parent.get_group_rect( m_pCasterGroup );
 			switch( focus.meFocusX ) {
 				default:
 				case SpriteMovement::X_CENTER:
@@ -245,7 +245,7 @@ CL_Pointf AnimationState::GetFocusOrigin( const SpriteMovement::Focus& focus, IC
 			break;
 		}
 		case SpriteMovement::TARGET_GROUP: {
-			CL_Rectf rect = m_parent.get_group_rect( m_pTargetGroup );
+			clan::Rectf rect = m_parent.get_group_rect( m_pTargetGroup );
 			switch( focus.meFocusX ) {
 				default:
 				case SpriteMovement::X_CENTER:
@@ -278,7 +278,7 @@ CL_Pointf AnimationState::GetFocusOrigin( const SpriteMovement::Focus& focus, IC
 			break;
 		}
 		case SpriteMovement::CASTER_LOCUS: {
-			CL_Rectf rect =  m_parent.get_character_locus_rect( m_pCaster );
+			clan::Rectf rect =  m_parent.get_character_locus_rect( m_pCaster );
 			switch( focus.meFocusX ) {
 				default:
 				case SpriteMovement::X_CENTER:
@@ -313,7 +313,7 @@ CL_Pointf AnimationState::GetFocusOrigin( const SpriteMovement::Focus& focus, IC
 			break;
 		}
 		case SpriteMovement::TARGET_LOCUS: {
-			CL_Rectf rect =  m_parent.get_character_locus_rect( m_pTarget );
+			clan::Rectf rect =  m_parent.get_character_locus_rect( m_pTarget );
 			switch( focus.meFocusX ) {
 
 				case SpriteMovement::X_CENTER:
@@ -372,21 +372,21 @@ void AnimationState::WaitFinishedEvent() {
 
 
 
-void AnimationState::HandleKeyDown( const CL_InputEvent &key ) {
+void AnimationState::HandleKeyDown( const clan::InputEvent &key ) {
 }
 
-void AnimationState::HandleKeyUp( const CL_InputEvent &key ) {
+void AnimationState::HandleKeyUp( const clan::InputEvent &key ) {
 }
 
 void AnimationState::move_sprite( ICharacter* pActor, ICharacter* pTarget, SpriteAnimation* anim, SpriteMovement* movement, float percentage ) {
 	if( percentage > 1.0f ) percentage = 1.0f;
 	if( percentage == 0.0f ) percentage = 0.000001f;
-	CL_Pointf origin = GetFocusOrigin( movement->GetInitialFocus(), pActor );
+	clan::Pointf origin = GetFocusOrigin( movement->GetInitialFocus(), pActor );
 // std::cout << "Origin is " << origin_i.x << ',' << origin_i.y << std::endl;
 
-	CL_Pointf current = origin;
+	clan::Pointf current = origin;
 
-	CL_Sprite sprite;
+	clan::Sprite sprite;
 
 	// TODO: Now take whatever it is, and display it at 'current'
 
@@ -465,13 +465,13 @@ void AnimationState::move_sprite( ICharacter* pActor, ICharacter* pTarget, Sprit
 		clockwise = false;
 
 
-	CL_Angle angle = CL_Angle::from_degrees( degrees );
-	CL_Angle yaw_angle = CL_Angle::from_radians( yaw );
-	CL_Angle pitch_angle = CL_Angle::from_radians( pitch );
+	clan::Angle angle = clan::Angle::from_degrees( degrees );
+	clan::Angle yaw_angle = clan::Angle::from_radians( yaw );
+	clan::Angle pitch_angle = clan::Angle::from_radians( pitch );
 	// TODO: Mechanism to affect ALL this character's sprites in case it changes
 	sprite.set_angle( angle );
-	sprite.set_angle_yaw( yaw_angle );
-	sprite.set_angle_pitch( pitch_angle );
+	//sprite.set_angle_yaw( yaw_angle );
+	//sprite.set_angle_pitch( pitch_angle );
 	sprite.set_alpha( alpha );
 	sprite.set_scale( scale, scale );
 
@@ -479,7 +479,7 @@ void AnimationState::move_sprite( ICharacter* pActor, ICharacter* pTarget, Sprit
 	percentage *= completion;
 
 	if( movement->HasEndFocus() ) {
-		CL_Pointf dest = GetFocusOrigin( movement->GetEndFocus(), pActor );
+		clan::Pointf dest = GetFocusOrigin( movement->GetEndFocus(), pActor );
 		//(1-p)*A + p*B
 		//current = (1.0f - percentage) * origin + percentage * dest;
 		switch( movement->GetMovementStyle() ) {
@@ -504,45 +504,45 @@ void AnimationState::move_sprite( ICharacter* pActor, ICharacter* pTarget, Sprit
 				if( !movement->hasMovementScript( SpriteMovement::CIRCLE_RADIUS ) ) {
 					radius = movement->circleRadius() + percentage * movement->circleGrowth(); // spiral powers
 				}
-				float angle = ( CL_PI / 180.0f ) * angle_deg;
-				CL_Pointf cpoint( cos( angle ), sin( angle ) );
+				float angle = ( clan::PI / 180.0f ) * angle_deg;
+				clan::Pointf cpoint( cos( angle ), sin( angle ) );
 				current = dest +  cpoint * radius; // C + R * (cos A, sin A)
 				break;
 			}
 			case SpriteMovement::SINE: {
-				CL_Pointf d, c;
+				clan::Pointf d, c;
 				d.x = dest.x - origin.x;
 				d.y = dest.y - origin.y;
 				float l = sqrt( ( double )d.x * d.x + d.y + d.y );
 				d.x /=  l;
 				d.y /= l;
-				float w = 2.0f * CL_PI * movement->Periods(); // make this 1/2 to arc up
+				float w = 2.0f * clan::PI * movement->Periods(); // make this 1/2 to arc up
 
 				current.x = percentage * dest.x + ( 1.0f - percentage ) * origin.x + amplitude * d.y * sin( w * percentage );
 				current.y = percentage * dest.y + ( 1.0f - percentage ) * origin.y - amplitude * d.x * sin( w * percentage );
 				break;
 			}
 			case SpriteMovement::ARC_OVER: {
-				CL_Pointf d, c;
+				clan::Pointf d, c;
 				d.x = dest.x - origin.x;
 				d.y = dest.y - origin.y;
 				float l = sqrt( ( double )d.x * d.x + d.y + d.y );
 				d.x /=  l;
 				d.y /= l;
-				float w = 2.0f * CL_PI * 0.5f; // make this 1/2 to arc up
+				float w = 2.0f * clan::PI * 0.5f; // make this 1/2 to arc up
 
 				current.x = percentage * dest.x + ( 1.0f - percentage ) * origin.x + amplitude * d.y * sin( w * percentage );
 				current.y = percentage * dest.y + ( 1.0f - percentage ) * origin.y + amplitude * d.x * sin( w * percentage );
 				break;
 			}
 			case SpriteMovement::ARC_UNDER: {
-				CL_Pointf d, c;
+				clan::Pointf d, c;
 				d.x = dest.x - origin.x;
 				d.y = dest.y - origin.y;
 				float l = sqrt( ( double )d.x * d.x + d.y + d.y );
 				d.x /=  l;
 				d.y /= l;
-				float w = 2.0f * CL_PI * 0.5f; // make this 1/2 to arc up
+				float w = 2.0f * clan::PI * 0.5f; // make this 1/2 to arc up
 
 				current.x = percentage * dest.x + ( 1.0f - percentage ) * origin.x + amplitude * d.y * sin( w * percentage );
 				current.y = percentage * dest.y + ( 1.0f - percentage ) * origin.y - amplitude * d.x * sin( w * percentage );
@@ -553,7 +553,7 @@ void AnimationState::move_sprite( ICharacter* pActor, ICharacter* pTarget, Sprit
 		}
 	} else {
 		// move a set distance in direction
-		CL_Pointf direction;
+		clan::Pointf direction;
 		SpriteMovement::eMovementDirection dir = movement->GetMovementDirection();
 
 		if( dir == SpriteMovement::MOVE_AWAY ) {
@@ -634,7 +634,7 @@ void AnimationState::move_sprite( ICharacter* pActor, ICharacter* pTarget, Sprit
 
 	if( anim->HasBattleSprite() ) {
 		// Have parent move this thing
-		CL_Pointf point;
+		clan::Pointf point;
 		point.x = current.x;
 		point.y = current.y;
 		switch( anim->GetBattleSprite()->GetWho() ) {
@@ -653,11 +653,11 @@ void AnimationState::move_sprite( ICharacter* pActor, ICharacter* pTarget, Sprit
 void AnimationState::move_character(ICharacter* character, SpriteAnimation* anim, SpriteMovement* movement, float percentage)
 {
     if(percentage > 1.0f) percentage = 1.0f;
-    CL_Point origin_i = GetFocusOrigin(movement->GetInitialFocus(), character);
+    clan::Point origin_i = GetFocusOrigin(movement->GetInitialFocus(), character);
 // std::cout << "Origin is " << origin_i.x << ',' << origin_i.y << std::endl;
-    CL_Pointf origin(origin_i.x,origin_i.y);
-    CL_Point dest_i;
-    CL_Pointf current = origin;
+    clan::Pointf origin(origin_i.x,origin_i.y);
+    clan::Point dest_i;
+    clan::Pointf current = origin;
 
     // Rotation
     // TODO: Switch to away/toward
@@ -667,9 +667,9 @@ void AnimationState::move_character(ICharacter* character, SpriteAnimation* anim
         degrees = 0 - degrees;
 
 
-    CL_Angle angle = CL_Angle::from_degrees(degrees);
+    clan::Angle angle = clan::Angle::from_degrees(degrees);
     // TODO: Mechanism to affect ALL this character's sprites in case it changes
-    CL_Sprite sprite = character->GetCurrentSprite();
+    clan::Sprite sprite = character->GetCurrentSprite();
     sprite.set_angle(angle);
 
     float completion = movement->Completion();
@@ -679,7 +679,7 @@ void AnimationState::move_character(ICharacter* character, SpriteAnimation* anim
 }
 */
 
-void AnimationState::Draw( const CL_Rect& screenRect, CL_GraphicContext& GC ) {
+void AnimationState::Draw( const clan::Rect& screenRect, clan::Canvas& GC ) {
 	if( m_functor_mode ) {
 		draw_functor( screenRect, GC );
 	} else {
@@ -688,9 +688,9 @@ void AnimationState::Draw( const CL_Rect& screenRect, CL_GraphicContext& GC ) {
 }
 
 
-void AnimationState::draw( const CL_Rect &screenRect, CL_GraphicContext& GC ) {
+void AnimationState::draw( const clan::Rect &screenRect, clan::Canvas& GC ) {
 	if( !m_bDone ) {
-		uint passed = CL_System::get_time() - m_phase_start_time;
+		uint64_t passed = clan::System::get_time() - m_phase_start_time;
 		float percentage = ( float )passed / ( float )( *m_phase_iterator )->GetDurationMs();
 		bool draw = true;
 		if( percentage >= 1.0f ) {
@@ -729,10 +729,10 @@ void AnimationState::draw( const CL_Rect &screenRect, CL_GraphicContext& GC ) {
 			}
 		}
 	}
-	CL_System::sleep( 10 );
+	clan::System::sleep( 10 );
 }
 
-void AnimationState::draw_functor( const CL_Rect& screenRect, CL_GraphicContext& GC ) {
+void AnimationState::draw_functor( const clan::Rect& screenRect, clan::Canvas& GC ) {
 	bool notasks = false;
 	for( int i = m_tasks.size() - 1; i >= 0; i-- ) {
 		Task * pTask = m_tasks[i];
@@ -792,7 +792,7 @@ void AnimationState::EndPhase() {
 }
 
 void AnimationState::apply_alter_sprite( AlterSprite* pAlterSprite ) {
-	CL_Sprite sprite;
+	clan::Sprite sprite;
 	// Alter any sprites on the parent now
 	switch( pAlterSprite->GetWho() ) {
 		case WHO_CASTER:
@@ -807,7 +807,7 @@ void AnimationState::apply_alter_sprite( AlterSprite* pAlterSprite ) {
 	float alpha;
 	sprite.get_scale( scale, scale );
 	alpha = sprite.get_alpha();
-	CL_Colorf color = sprite.get_color();
+	clan::Colorf color = sprite.get_color();
 	switch( pAlterSprite->GetAlter() ) {
 		case AlterSprite::HIDE:
 			alpha = 0.0f;
@@ -826,7 +826,7 @@ void AnimationState::apply_alter_sprite( AlterSprite* pAlterSprite ) {
 			break;
 		case AlterSprite::NEGATIVE:
 			// TODO:
-			//sprite.set_color(color * CL_Colorf(0.5f,0.5f,0.5f));
+			//sprite.set_color(color * clan::Colorf(0.5f,0.5f,0.5f));
 			break;
 		case AlterSprite::X_FLIP:
 			// TODO:
@@ -834,19 +834,19 @@ void AnimationState::apply_alter_sprite( AlterSprite* pAlterSprite ) {
 			// TODO:
 			break;
 		case AlterSprite::GRAYSCALE:
-			sprite.set_color( CL_Colorf( 0.7f, 0.7f, 0.7f ) );
+			sprite.set_color( clan::Colorf( 0.7f, 0.7f, 0.7f ) );
 			break;
 		case AlterSprite::GREENSCALE:
-			sprite.set_color( CL_Colorf( 0.0f, 1.0f, 0.0f ) );
+			sprite.set_color( clan::Colorf( 0.0f, 1.0f, 0.0f ) );
 			break;
 		case AlterSprite::REDSCALE:
-			sprite.set_color( CL_Colorf( 1.0f, 0.0f, 0.0f ) );
+			sprite.set_color( clan::Colorf( 1.0f, 0.0f, 0.0f ) );
 			break;
 		case AlterSprite::BLUESCALE:
-			sprite.set_color( CL_Colorf( 0.0f, 0.0f, 1.0f ) );
+			sprite.set_color( clan::Colorf( 0.0f, 0.0f, 1.0f ) );
 			break;
 		case AlterSprite::RESET:
-			sprite.set_color( CL_Colorf( 1.0f, 1.0f, 1.0f ) );
+			sprite.set_color( clan::Colorf( 1.0f, 1.0f, 1.0f ) );
 			sprite.set_scale( 1.0f, 1.0f );
 			alpha = 1.0f;
 			break;
@@ -858,7 +858,7 @@ void AnimationState::apply_alter_sprite( AlterSprite* pAlterSprite ) {
 void AnimationState::StartPhase() {
 	Phase * phase = *m_phase_iterator;
 	phase->Execute();
-	m_phase_start_time = CL_System::get_time();
+	m_phase_start_time = clan::System::get_time();
 
 	for( std::list<Phase::PhaseComponent>::const_iterator iter = ( *m_phase_iterator )->GetPhaseComponentsBegin();
 						iter != ( *m_phase_iterator )->GetPhaseComponentsEnd(); iter++ ) {
@@ -954,13 +954,16 @@ void AnimationState::SteelInit( SteelInterpreter *pInterpreter ) {
 		pInterpreter->addFunction( "createPath", "anim", new SteelFunctor4Arg<AnimationState, SteelType::Handle, SteelType::Handle, SteelType::Functor, double>( this, &AnimationState::createPath ) );
 		pInterpreter->addFunction( "changePathStart", "anim", new SteelFunctor2Arg<AnimationState, SteelType::Handle, SteelType::Handle>( this, &AnimationState::changePathStart ) );
 		pInterpreter->addFunction( "changePathEnd", "anim", new SteelFunctor2Arg<AnimationState, SteelType::Handle, SteelType::Handle>( this, &AnimationState::changePathEnd ) );
+		pInterpreter->addFunction( "getCharacterLocus", "anim", new SteelFunctor2Arg<AnimationState, SteelType::Handle, int>( this, &AnimationState::getCharacterLocus ) );
+
+
 
 		pInterpreter->addFunction( "setPathSpeedFunction", "anim", new SteelFunctor2Arg<AnimationState, SteelType::Handle, SteelType::Functor>( this, &AnimationState::setPathSpeedFunction ) );
 		pInterpreter->addFunction( "setPathCompletion", "anim", new SteelFunctor2Arg<AnimationState, SteelType::Handle, double>( this, &AnimationState::setPathCompletion ) );
 		pInterpreter->addFunction( "setPathFlags", "anim", new SteelFunctor2Arg<AnimationState, SteelType::Handle, int>( this, &AnimationState::setPathFlags ) );
 
 		pInterpreter->addFunction( "moveSprite", "anim", new SteelFunctor2Arg<AnimationState, int, SteelType::Handle>( this, &AnimationState::moveSprite ) );
-		pInterpreter->addFunction( "createRotation", "anim", new SteelFunctor3Arg<AnimationState, SteelType::Functor, double, int>( this, &AnimationState::createRotation ) );
+		pInterpreter->addFunction( "createRotation", "anim", new SteelFunctor4Arg<AnimationState, SteelType::Functor, double,double, int>( this, &AnimationState::createRotation ) );
 		pInterpreter->addFunction( "createStretch", "anim", new SteelFunctor2Arg<AnimationState, SteelType::Functor, SteelType::Functor>( this, &AnimationState::createStretch ) );
 		pInterpreter->addFunction( "stretchSpriteTimed", "anim", new SteelFunctor3Arg<AnimationState, int, SteelType::Handle, double>( this, &AnimationState::stretchSpriteTimed ) );
 
@@ -968,9 +971,23 @@ void AnimationState::SteelInit( SteelInterpreter *pInterpreter ) {
 		pInterpreter->addFunction( "movePathTimed", "anim", new SteelFunctor3Arg<AnimationState, int, SteelType::Handle, double>( this, &AnimationState::moveSpriteTimed ) );
 
 		pInterpreter->addFunction( "moveSpriteTimed", "anim", new SteelFunctor3Arg<AnimationState, int, SteelType::Handle, double>( this, &AnimationState::moveSpriteTimed ) );
-
-
-
+/*
+ * 		SteelType setSpriteRotation(int sprite, double radians);
+		SteelType flipSprite(int sprite, bool flip_x, bool flip_y);
+		SteelType scaleSprite(int sprite, double scale_x, double scale_y);
+		SteelType setSpriteLocation(int sprite, SteelType::Handle hLocale);
+		SteelType closestCorner(SteelType::Handle iReferenceLocale, SteelType::Handle iTarget);
+		SteelType nearCorner(SteelType::Handle iReferenceLocale, SteelType::Handle iTargetLocale, int corner);
+		SteelType farCorner(SteelType::Handle iReferenceLocale, SteelType::Handle iTargetLocale, int corner); 		
+		*/
+		pInterpreter->addFunction( "setSpriteRotation", "anim", new SteelFunctor2Arg<AnimationState,int,double>(this, &AnimationState::setSpriteRotation) );
+		pInterpreter->addFunction( "flipSprite", "anim", new SteelFunctor3Arg<AnimationState,int,bool,bool>(this,&AnimationState::flipSprite) );
+		pInterpreter->addFunction( "scaleSprite","anim", new SteelFunctor3Arg<AnimationState,int,double,double>(this,&AnimationState::scaleSprite) );
+		pInterpreter->addFunction( "setSpriteLocation", "anim", new SteelFunctor2Arg<AnimationState,int,SteelType::Handle>(this,&AnimationState::setSpriteLocation) );
+		pInterpreter->addFunction( "closestCorner", "anim", new SteelFunctor2Arg<AnimationState,SteelType::Handle,SteelType::Handle>(this,&AnimationState::closestCorner) );
+		pInterpreter->addFunction( "nearCorner", "anim", new SteelFunctor3Arg<AnimationState,SteelType::Handle, SteelType::Handle,int>(this,&AnimationState::nearCorner) );
+		pInterpreter->addFunction( "farCorner", "anim", new SteelFunctor3Arg<AnimationState,SteelType::Handle, SteelType::Handle,int>(this,&AnimationState::farCorner) );
+		
 		pInterpreter->addFunction( "syncTo", "anim", new SteelFunctor2Arg<AnimationState, SteelType::Handle, SteelType::Handle>( this, &AnimationState::syncTo ) );
 		pInterpreter->addFunction( "rotateSprite", "anim", new SteelFunctor2Arg<AnimationState, int, SteelType::Handle>( this, &AnimationState::rotateSprite ) );
 		pInterpreter->addFunction( "createShaker", "anim", new SteelFunctor2Arg<AnimationState, SteelType::Functor, int>( this, &AnimationState::createShaker ) );
@@ -990,6 +1007,10 @@ void AnimationState::SteelInit( SteelInterpreter *pInterpreter ) {
 		pInterpreter->addFunction( "start", "anim", new SteelFunctor1Arg<AnimationState, SteelType::Handle>( this, &AnimationState::start ) );
 		pInterpreter->addFunction( "startAll", "anim", new SteelFunctor1Arg<AnimationState, const Steel::SteelArray&>( this, &AnimationState::startAll ) );
 
+		pInterpreter->addFunction( "createOrbit", "anim", new SteelFunctor5Arg<AnimationState, SteelType::Functor, SteelType::Functor,double, double, bool>(this, &AnimationState::createOrbit) );
+		pInterpreter->addFunction( "orbitSprite", "anim", new SteelFunctor3Arg<AnimationState,int,SteelType::Handle,SteelType::Handle>(this, &AnimationState::orbitSprite) );
+		pInterpreter->addFunction( "orbitSpriteTimed", "anim", new SteelFunctor4Arg<AnimationState,int,SteelType::Handle,SteelType::Handle,double>(this, &AnimationState::orbitSpriteTimed) );
+		
 		SteelConst( pInterpreter, "$_TOP_LEFT", ( int )Locale::TOP_LEFT );
 		SteelConst( pInterpreter, "$_TOP_RIGHT", ( int )Locale::TOP_RIGHT );
 		SteelConst( pInterpreter, "$_TOP_CENTER", ( int )Locale::TOP_CENTER );
@@ -1012,12 +1033,13 @@ void AnimationState::SteelInit( SteelInterpreter *pInterpreter ) {
 
 void AnimationState::SteelCleanup( SteelInterpreter *pInterpreter ) {
 	if( m_functor_mode ) {
-		pInterpreter->removeFunctions( "anim" );
 		pInterpreter->popScope();
+		delete m_pRunner;
+		m_pRunner = nullptr;
 	}
 }
 
-CL_Pointf AnimationState::GetGroupOffset( ICharacterGroup* igroup ) const {
+clan::Pointf AnimationState::GetGroupOffset( ICharacterGroup* igroup ) const {
 	return m_parent.get_offset( igroup );
 }
 
@@ -1025,15 +1047,15 @@ BattleState::SpriteTicket AnimationState::GetSpriteForChar( ICharacter* iChar ) 
 	return m_parent.get_sprite_for_char( iChar );
 }
 
-CL_Pointf AnimationState::GetSpriteOffset( BattleState::SpriteTicket sprite ) const {
+clan::Pointf AnimationState::GetSpriteOffset( BattleState::SpriteTicket sprite ) const {
 	return m_parent.get_offset( sprite );
 }
 
-void AnimationState::SetGroupOffset( ICharacterGroup* igroup, const CL_Pointf& pt ) {
+void AnimationState::SetGroupOffset( ICharacterGroup* igroup, const clan::Pointf& pt ) {
 	m_parent.set_offset( igroup, pt );
 }
 
-void AnimationState::SetSpriteOffset( BattleState::SpriteTicket sprite, const CL_Pointf& pt ) {
+void AnimationState::SetSpriteOffset( BattleState::SpriteTicket sprite, const clan::Pointf& pt ) {
 	m_parent.set_offset( sprite, pt );
 }
 
@@ -1068,14 +1090,13 @@ SteelType AnimationState::createSprite( const std::string& sprite_ref ) {
 		}
 		std::string     m_spriteRef;
 		BattleState::SpriteTicket m_ticket;
-		CL_Sprite       m_sprite;
+		clan::Sprite       m_sprite;
 		AnimationState& m_state;
 	} functor( sprite_ref, *this );
-	CL_Event event;
+	clan::Event event;
 	IApplication::GetInstance()->RunOnMainThread( event, &functor );
 	event.wait();
 	SteelType var;
-	m_added_sprites.insert( functor.m_ticket );
 	var.set( functor.m_ticket );
 	return var;
 }
@@ -1089,11 +1110,13 @@ SteelType AnimationState::getCharacterSprite( SteelType::Handle iCharacter ) {
 
 SteelType AnimationState::getWeaponSprite( SteelType::Handle iCharacter, int hand ) {
 	SteelType var;
-	Character * pCharacter = dynamic_cast<Character*>( m_pCaster );
-	Equipment* equipment = pCharacter->GetEquipment( hand == SpriteStub::MAIN ? Equipment::EHAND : Equipment::EOFFHAND );
+	Character * pCharacter = Steel::GrabHandle<Character*>(iCharacter);
+	assert(pCharacter);
+	Equipment* equipment = pCharacter->GetEquipment( static_cast<Equipment::eSlot>(hand) );
 	Weapon* pWeapon = dynamic_cast<Weapon*>( equipment );
-	if( pWeapon ) {
-		var.set( m_parent.add_sprite( pWeapon->GetSprite() ) );
+	if( pWeapon ) { // TODO: Cache this and don't add it twice.
+		int sprite = m_parent.add_sprite( pWeapon->GetSprite() );
+		var.set( sprite );	
 	} else {
 		var.set( BattleState::UNDEFINED_SPRITE_TICKET );
 	}
@@ -1108,6 +1131,15 @@ SteelType AnimationState::removeSprite( int sprite ) {
 
 SteelType AnimationState::getCharacterLocale( SteelType::Handle iCharacter, int corner ) {
 	Locale* locale = new Locale( Locale::CHARACTER, ( Locale::Corner )corner );
+	locale->SetIChar( Steel::GrabHandle<ICharacter*>( iCharacter ) );
+	SteelType var;
+	var.set( locale );
+	m_handles.push_back( locale );
+	return var;
+}
+
+SteelType AnimationState::getCharacterLocus( SteelType::Handle iCharacter, int corner ) {
+	Locale* locale = new Locale( Locale::CHARACTER_LOCUS, ( Locale::Corner )corner );
 	locale->SetIChar( Steel::GrabHandle<ICharacter*>( iCharacter ) );
 	SteelType var;
 	var.set( locale );
@@ -1142,7 +1174,7 @@ SteelType AnimationState::getSpriteLocale( int sprite, int corner ) {
 
 SteelType AnimationState::setLocaleOffset( SteelType::Handle hLocale, int x, int y ) {
 	Locale * locale = Steel::GrabHandle<Locale*>( hLocale );
-	locale->SetOffset( CL_Point( x, y ) );
+	locale->SetOffset( clan::Point( x, y ) );
 	return SteelType();
 }
 
@@ -1217,10 +1249,11 @@ SteelType AnimationState::moveSpriteTimed( int sprite, SteelType::Handle hpath, 
 	return var;
 }
 
-SteelType AnimationState::createRotation( SteelType::Functor functor, double degrees, int axis ) {
+SteelType AnimationState::createRotation( SteelType::Functor functor, double degrees, double start_deg, int axis ) {
 	Rotation* rotation = new Rotation();
 	rotation->m_axis = ( Rotation::Axis )axis;
 	rotation->m_degrees = degrees;
+	rotation->m_start_degrees = start_deg;
 	rotation->m_functor = functor;
 	m_handles.push_back( rotation );
 	SteelType var;
@@ -1261,6 +1294,120 @@ SteelType AnimationState::doFunction( SteelType::Functor f ) {
 	return doAfter( 0, f );
 }
 
+SteelType AnimationState::closestCorner(SteelType::Handle iReferenceLocale, SteelType::Handle iTargetLocale){
+	Locale* reference = Steel::GrabHandle<Locale*>(iReferenceLocale);
+	Locale* target = Steel::GrabHandle<Locale*>(iTargetLocale);
+	clan::Pointf refPt = GetPosition(*reference);
+	clan::Pointf targetPt = GetPosition(*target);
+	SteelType ret;
+		
+	
+	// This isn't a true "closest" as it doesn't consider the middle points
+	bool targetOnLeft = false;
+	bool targetAbove = false;
+	
+	if(targetPt.x < refPt.x)
+		targetOnLeft = true;
+	
+	if(targetPt.y < refPt.y)
+		targetAbove = true;
+	
+	if(targetOnLeft && targetAbove)
+		ret.set(Locale::BOTTOM_LEFT);
+	else if(targetOnLeft && !targetAbove)
+		ret.set(Locale::TOP_LEFT);
+	else if(targetAbove)
+		ret.set(Locale::BOTTOM_RIGHT);
+	else{
+		ret.set(Locale::TOP_RIGHT);
+	}
+	
+	return ret;
+}
+
+SteelType AnimationState::nearCorner(SteelType::Handle iReferenceLocale, SteelType::Handle iTargetLocale, int corner){
+	Locale* reference = Steel::GrabHandle<Locale*>(iReferenceLocale);
+	Locale* target = Steel::GrabHandle<Locale*>(iTargetLocale);
+	clan::Pointf refPt = GetPosition(*reference);
+	clan::Pointf targetPt = GetPosition(*target);
+	SteelType ret;
+	
+	
+	bool targetOnLeft = false;
+	
+	if(targetPt.x < refPt.x)
+		targetOnLeft = true;
+	
+	switch(corner){
+		case Locale::BOTTOM_LEFT:
+			ret.set(Locale::BOTTOM_RIGHT);
+			break;
+		case Locale::MIDDLE_LEFT:
+			ret.set(Locale::MIDDLE_RIGHT);
+			break;
+		case Locale::TOP_LEFT:
+			ret.set(Locale::TOP_RIGHT);
+			break;
+	}
+	
+	return ret;
+}
+
+SteelType AnimationState::farCorner(SteelType::Handle iReferenceLocale, SteelType::Handle iTargetLocale, int corner){
+	Locale* reference = Steel::GrabHandle<Locale*>(iReferenceLocale);
+	Locale* target = Steel::GrabHandle<Locale*>(iTargetLocale);
+	clan::Pointf refPt = GetPosition(*reference);
+	clan::Pointf targetPt = GetPosition(*target);
+	SteelType ret;
+	
+	
+	bool targetOnLeft = false;
+	
+	if(targetPt.x < refPt.x)
+		targetOnLeft = true;
+	
+	switch(corner){
+		case Locale::BOTTOM_RIGHT:
+			ret.set(Locale::BOTTOM_LEFT);
+			break;
+		case Locale::MIDDLE_RIGHT:
+			ret.set(Locale::MIDDLE_LEFT);
+			break;
+		case Locale::TOP_RIGHT:
+			ret.set(Locale::TOP_LEFT);
+			break;
+	}
+	
+	return ret;	
+}// Returns the corner on the opposite
+	
+
+
+SteelType AnimationState::setSpriteRotation(int sprite, double radians){
+	GetSprite(sprite).set_angle(clan::Angle::from_radians(radians));
+	return SteelType();
+}
+SteelType AnimationState::flipSprite(int sprite,bool flip_x, bool flip_y){
+	float cur_x, cur_y;
+	GetSprite(sprite).get_scale(cur_x,cur_y);
+	
+	if(flip_x)
+		cur_x = -cur_x;
+	if(flip_y)
+		cur_y = -cur_y;
+	
+	GetSprite(sprite).set_scale(cur_x,cur_y);
+	return SteelType();
+}
+SteelType AnimationState::scaleSprite(int sprite, double x, double y){
+	GetSprite(sprite).set_scale(x,y);
+	return SteelType();
+}
+SteelType AnimationState::setSpriteLocation(int sprite, SteelType::Handle hLocale){
+	Locale * pLoc = Steel::GrabHandle<Locale*>( hLocale );
+	m_parent.set_sprite_pos( sprite, GetPosition(*pLoc) );
+	return SteelType();
+}
 
 
 SteelType AnimationState::rotateSprite( int sprite, SteelType::Handle hRotation ) {
@@ -1274,6 +1421,43 @@ SteelType AnimationState::rotateSprite( int sprite, SteelType::Handle hRotation 
 	m_handles.push_back( task );
 	return var;
 }
+
+SteelType AnimationState::createOrbit(SteelType::Functor radius_functor, SteelType::Functor speed_functor, double start_degrees, double deg, bool clockwise){
+	Orbit * orb = new Orbit();
+	orb->m_radius_functor = radius_functor;
+	orb->m_speed_functor = speed_functor;
+	orb->m_degrees = deg;
+	orb->m_start_angle = start_degrees;
+	orb->m_clockwise = clockwise;
+	SteelType var;
+	var.set(orb);
+	m_handles.push_back(orb);
+	return var;
+}
+SteelType AnimationState::orbitSprite(int sprite,SteelType::Handle hOrbit, SteelType::Handle hLocale){
+	Orbit * orb = Steel::GrabHandle<Orbit*>( hOrbit );
+	Locale * locale = Steel::GrabHandle<Locale*> ( hLocale );
+	OrbitTask * task = new OrbitTask ( *this );
+	task->init(*orb, *locale);
+	task->SetSprite(sprite);
+	SteelType var;
+	var.set ( task );
+	m_handles.push_back ( task );
+	return var;
+}
+SteelType AnimationState::orbitSpriteTimed(int sprite, SteelType::Handle hOrbit, SteelType::Handle hLocale, double seconds){
+	Orbit * orb = Steel::GrabHandle<Orbit*>( hOrbit );
+	Locale * locale = Steel::GrabHandle<Locale*> ( hLocale );
+	orb->m_duration = seconds;
+	TimedOrbitTask * task = new TimedOrbitTask( *this );
+	task->init(*orb, *locale);
+	task->SetSprite( sprite );
+	SteelType var;
+	var.set ( task );
+	m_handles.push_back(task);
+	return var;
+}
+
 
 SteelType AnimationState::rotateSpriteTimed( int sprite, SteelType::Handle hRotation, double seconds ) {
 	Rotation * rot = Steel::GrabHandle<Rotation*>( hRotation );
@@ -1380,7 +1564,7 @@ SteelType AnimationState::startAfter( SteelType::Handle htask, SteelType::Handle
 }
 
 SteelType AnimationState::pause( double seconds ) {
-	CL_System::sleep( seconds * 1000.0 );
+	clan::System::sleep( seconds * 1000.0 );
 	return SteelType();
 }
 
@@ -1491,9 +1675,6 @@ void AnimationState::Finish() { // Hook to clean up or whatever after being popp
 		delete *it;
 	}
 	m_handles.clear();
-	for( std::set<BattleState::SpriteTicket>::const_iterator it = m_added_sprites.begin(); it != m_added_sprites.end(); it++ ) {
-		m_parent.remove_sprite( *it );
-	}
 	m_task_mutex.unlock();
 }
 
@@ -1544,7 +1725,7 @@ void AnimationState::Locale::SetSprite( BattleState::SpriteTicket sprite ) {
 	m_target.as_sprite = sprite;
 }
 
-void AnimationState::Locale::SetOffset( const CL_Point& offset ) {
+void AnimationState::Locale::SetOffset( const clan::Point& offset ) {
 	m_offset = offset;
 }
 
@@ -1571,7 +1752,7 @@ BattleState::SpriteTicket AnimationState::Locale::GetSprite() const {
 	return m_target.as_sprite;
 }
 
-CL_Sprite AnimationState::GetSprite( BattleState::SpriteTicket sprite ) {
+clan::Sprite AnimationState::GetSprite( BattleState::SpriteTicket sprite ) {
 	return m_parent.get_sprite( sprite );
 }
 
@@ -1594,7 +1775,11 @@ float AnimationState::Task::percentage() const {
 	return perc;
 }
 
-CL_Pointf AnimationState::Task::get_mid_point( const CL_Pointf& start, const CL_Pointf& end, float p ) {
+
+clan::Pointf AnimationState::Task::get_position( const AnimationState::Locale& locale) const {
+		return m_state.GetPosition(locale);
+}
+clan::Pointf AnimationState::Task::get_mid_point( const clan::Pointf& start, const clan::Pointf& end, float p ) {
 	return start * ( 1.0f - p ) + end * p;
 }
 
@@ -1602,24 +1787,27 @@ CL_Pointf AnimationState::Task::get_mid_point( const CL_Pointf& start, const CL_
 // Solve for p
 // M / E
 
-CL_Pointf AnimationState::Task::get_position( const AnimationState::Locale& locale ) const {
-	CL_Rectf rect;
+clan::Pointf AnimationState::GetPosition( const AnimationState::Locale& locale ) const {
+	clan::Rectf rect;
 	switch( locale.GetType() ) {
 		case Locale::CHARACTER:
-			rect = m_state.GetCharacterRect( locale.GetChar() );
+			rect = GetCharacterRect( locale.GetChar() );
+			break;
+		case Locale::CHARACTER_LOCUS:
+			rect = m_parent.get_character_locus_rect( locale.GetChar() );
 			break;
 		case Locale::SPRITE:
-			rect = m_state.GetSpriteRect( locale.GetSprite() );
+			rect = GetSpriteRect( locale.GetSprite() );
 			break;
 		case Locale::SCREEN:
 			rect = IApplication::GetInstance()->GetDisplayRect();
 			break;
 		case Locale::GROUP:
-			rect = m_state.GetGroupRect( locale.GetGroup() );
+			rect = GetGroupRect( locale.GetGroup() );
 			break;
 	}
 
-	CL_Pointf point;
+	clan::Pointf point;
 
 	switch( locale.GetCorner() ) {
 		case Locale::TOP_LEFT:
@@ -1700,7 +1888,7 @@ void AnimationState::PathTask::start( SteelInterpreter* pInterpreter ) {
 	Task::start( pInterpreter );
 	m_cur_pos = get_position( m_path->m_start );
 	m_percentage_so_far = 0.0f;
-	m_start_time = CL_System::get_time();
+	m_start_time = clan::System::get_time();
 }
 
 void AnimationState::PathTask::update( SteelInterpreter* pInterpreter ) {
@@ -1713,11 +1901,11 @@ void AnimationState::PathTask::update( SteelInterpreter* pInterpreter ) {
 		params.push_back( p );
 		speed = ( double )m_path->m_speed_functor->Call( pInterpreter, params );
 	}
-	CL_Pointf start = get_position( m_path->m_start );
-	CL_Pointf true_end = get_position( m_path->m_end );
+	clan::Pointf start = get_position( m_path->m_start );
+	clan::Pointf true_end = get_position( m_path->m_end );
 
-	//CL_Pointf end = (start + true_end) * m_completion;
-	CL_Pointf end = get_mid_point( start, true_end, m_path->m_completion );
+	//clan::Pointf end = (start + true_end) * m_completion;
+	clan::Pointf end = get_mid_point( start, true_end, m_path->m_completion );
 
 
 	if( m_path->m_flags & Path::NO_HORIZONTAL ) {
@@ -1729,7 +1917,7 @@ void AnimationState::PathTask::update( SteelInterpreter* pInterpreter ) {
 	}
 
 	float p = percentage();
-	float elapsed = float( CL_System::get_time() - m_start_time );
+	float elapsed = float( clan::System::get_time() - m_start_time );
 	int pixels = int( speed * elapsed );
 	float full_pixel_dist = start.distance( end );
 	float increment_percent = 0.0f;
@@ -1753,8 +1941,8 @@ void AnimationState::PathTask::update( SteelInterpreter* pInterpreter ) {
 		dis += ( double )m_path->m_functor->Call( pInterpreter, params );
 	}
 	// TODO: Adjust Y component by function output
-	CL_Pointf adj_pos = m_cur_pos;
-	adj_pos += CL_Pointf( -( end.y - start.y ), ( end.x - start.x ) ).normalize() * dis;
+	clan::Pointf adj_pos = m_cur_pos;
+	adj_pos += clan::Pointf( -( end.y - start.y ), ( end.x - start.x ) ).normalize() * float(dis);
 	m_state.SetSpritePos( m_sprite, adj_pos );
 
 
@@ -1781,8 +1969,8 @@ void AnimationState::TimedPathTask::start( SteelInterpreter* pInterpreter ) {
 
 void AnimationState::TimedPathTask::update( SteelInterpreter* pInterpreter ) {
 	assert( m_path );
-	CL_Pointf start = get_position( m_path->m_start );
-	CL_Pointf end = get_position( m_path->m_end );
+	clan::Pointf start = get_position( m_path->m_start );
+	clan::Pointf end = get_position( m_path->m_end );
 	if( m_path->m_flags & Path::NO_HORIZONTAL ) {
 		end.x = start.x;
 	}
@@ -1791,7 +1979,7 @@ void AnimationState::TimedPathTask::update( SteelInterpreter* pInterpreter ) {
 		end.y = start.y;
 	}
 
-	CL_Pointf pos = get_mid_point( start, end, percentage() );
+	clan::Pointf pos = get_mid_point( start, end, percentage() );
 	m_state.SetSpritePos( m_sprite, pos );
 }
 
@@ -1812,7 +2000,7 @@ void AnimationState::TimedStretchTask::init( const Stretch& stretch ) {
 }
 
 void AnimationState::TimedStretchTask::start( SteelInterpreter* ) {
-	m_start_time = CL_System::get_time();
+	m_start_time = clan::System::get_time();
 }
 
 void AnimationState::TimedStretchTask::update( SteelInterpreter* pInterpreter ) {
@@ -1822,7 +2010,7 @@ void AnimationState::TimedStretchTask::update( SteelInterpreter* pInterpreter ) 
 	params.push_back( p );
 	float width = ( double )m_stretch.m_width_functor->Call( pInterpreter, params );
 	float height = ( double )m_stretch.m_height_functor->Call ( pInterpreter, params );
-	CL_Sprite sprite = m_state.GetSprite( m_sprite );
+	clan::Sprite sprite = m_state.GetSprite( m_sprite );
 	sprite.set_scale(width,height);
 }
 
@@ -1834,11 +2022,12 @@ void AnimationState::TimedStretchTask::cleanup() {
 
 void AnimationState::RotationTask::init( const Rotation& rot ) {
 	m_rotation = rot;
+	m_completion_degrees = m_rotation.m_degrees;
 }
 
 void AnimationState::RotationTask::start( SteelInterpreter* ) {
-	m_degrees = 0.0f;
-	m_last_time = CL_System::get_time();
+	m_degrees = m_rotation.m_start_degrees;
+	m_last_time = clan::System::get_time();
 }
 
 void AnimationState::RotationTask::update( SteelInterpreter* pInterpreter ) {
@@ -1847,20 +2036,20 @@ void AnimationState::RotationTask::update( SteelInterpreter* pInterpreter ) {
 	p.set( percentage() ); // or _percentage?
 	params.push_back( p );
 	float speed = ( double )m_functor->Call( pInterpreter, params );
-	float delta = speed * float( CL_System::get_time() - m_last_time );
+	float delta = speed * float( clan::System::get_time() - m_last_time );
 	m_degrees += abs( delta );
-	if( m_degrees > 1.0f )
-		delta -=  m_degrees - 1.0f; // lessen the delta by how much we overshot
-	CL_Sprite sprite = m_state.GetSprite( m_sprite );
+	if( m_degrees > m_completion_degrees )
+		delta -=  m_degrees - m_completion_degrees; // lessen the delta by how much we overshot
+	clan::Sprite sprite = m_state.GetSprite( m_sprite );
 	switch( m_rotation.m_axis ) {
 		case Rotation::PITCH:
-			sprite.rotate_pitch( CL_Angle::from_degrees( delta ) );
+			//sprite.rotate_pitch( clan::Angle::from_degrees( delta ) );
 			break;
 		case Rotation::YAW:
-			sprite.rotate_yaw( CL_Angle::from_degrees( delta ) );
+			//sprite.rotate_yaw( clan::Angle::from_degrees( delta ) );
 			break;
 		case Rotation::ROLL:
-			sprite.rotate( CL_Angle::from_degrees( delta ) );
+			sprite.rotate( clan::Angle::from_degrees( delta ) );
 			break;
 	}
 }
@@ -1878,13 +2067,13 @@ void AnimationState::RotationTask::cleanup() {
 
 	switch( m_rotation.m_axis ) {
 		case Rotation::ROLL:
-			m_state.GetSprite( m_sprite ).set_angle( CL_Angle::from_degrees( 0.0f ) );
+			m_state.GetSprite( m_sprite ).set_angle( clan::Angle::from_degrees( 0.0f ) );
 			break;
 		case Rotation::YAW:
-			m_state.GetSprite( m_sprite ).set_angle_yaw( CL_Angle::from_degrees( 0.0f ) );
+			//m_state.GetSprite( m_sprite ).set_angle_yaw( clan::Angle::from_degrees( 0.0f ) );
 			break;
 		case Rotation::PITCH:
-			m_state.GetSprite( m_sprite ).set_angle_pitch( CL_Angle::from_degrees( 0.0f ) );
+			//m_state.GetSprite( m_sprite ).set_angle_pitch( clan::Angle::from_degrees( 0.0f ) );
 			break;
 	}
 }
@@ -1896,28 +2085,35 @@ void AnimationState::TimedRotationTask::init( const Rotation& rot ) {
 
 void AnimationState::TimedRotationTask::start( SteelInterpreter* pInterpreter ) {
 	TimedTask::start( pInterpreter );
+	m_degrees = 0;
 }
 void AnimationState::TimedRotationTask::update( SteelInterpreter* pInterpreter ) {
-	float angle = 0.0f;
+	float speed = 0.1f;
 	if( m_rotation.m_functor ) {
 		SteelType::Container params;
 		SteelType p;
 		p.set( percentage() ); // or _percentage?
 		params.push_back( p );
-		angle = ( double )m_rotation.m_functor->Call( pInterpreter, params );
+		speed = ( double )m_rotation.m_functor->Call( pInterpreter, params );
 	}
+	
+	float delta = speed * float( clan::System::get_time() - m_last_time );
+	m_degrees += abs( delta );
+	if( m_degrees > m_rotation.m_degrees )
+		delta -=  m_degrees - m_rotation.m_degrees; // lessen the delta by how much we overshot
+	
 #ifndef NDEBUG
 	//std::cout << "Angle is " << angle << std::endl;
 #endif
 	switch( m_rotation.m_axis ) {
 		case Rotation::YAW:
-			m_state.GetSprite( m_sprite ).set_angle_yaw( CL_Angle::from_degrees( angle ) );
+			//m_state.GetSprite( m_sprite ).set_angle_yaw( clan::Angle::from_degrees( angle ) );
 			break;
 		case Rotation::ROLL:
-			m_state.GetSprite( m_sprite ).set_angle( CL_Angle::from_degrees( angle ) );
+			m_state.GetSprite( m_sprite ).set_angle( clan::Angle::from_degrees( m_degrees ) );
 			break;
 		case Rotation::PITCH:
-			m_state.GetSprite( m_sprite ).set_angle_pitch( CL_Angle::from_degrees( angle ) );
+			//m_state.GetSprite( m_sprite ).set_angle_pitch( clan::Angle::from_degrees( angle ) );
 			break;
 	}
 }
@@ -1928,16 +2124,94 @@ bool AnimationState::TimedRotationTask::finished() {
 void AnimationState::TimedRotationTask::cleanup() {
 	switch( m_rotation.m_axis ) {
 		case Rotation::ROLL:
-			m_state.GetSprite( m_sprite ).set_angle( CL_Angle::from_degrees( 0.0f ) );
+			m_state.GetSprite( m_sprite ).set_angle( clan::Angle::from_degrees( 0.0f ) );
 			break;
 		case Rotation::YAW:
-			m_state.GetSprite( m_sprite ).set_angle_yaw( CL_Angle::from_degrees( 0.0f ) );
+			//m_state.GetSprite( m_sprite ).set_angle_yaw( clan::Angle::from_degrees( 0.0f ) );
 			break;
 		case Rotation::PITCH:
-			m_state.GetSprite( m_sprite ).set_angle_pitch( CL_Angle::from_degrees( 0.0f ) );
+			//m_state.GetSprite( m_sprite ).set_angle_pitch( clan::Angle::from_degrees( 0.0f ) );
 			break;
 	}
 }
+
+
+void AnimationState::OrbitTask::init(const Orbit & orbit, const Locale& locale){
+	m_orbit = orbit;
+	m_origin = locale;
+}
+void AnimationState::OrbitTask::start(SteelInterpreter* pInterpreter){
+	m_degrees = m_start_degrees;
+	m_last_time = clan::System::get_time();	
+}
+void AnimationState::OrbitTask::update(SteelInterpreter* pInterpreter){
+	const clan::Pointf origin = m_state.GetPosition(m_origin);
+	SteelType::Container params;
+	SteelType p;
+	p.set( percentage() ); // or _percentage?
+	params.push_back( p );
+	float radius = ( double ) m_functor->Call(pInterpreter, params );
+	float speed = ( double )m_functor->Call( pInterpreter, params );
+	float delta = speed * float( clan::System::get_time() - m_last_time );
+	m_degrees += abs( delta );
+	if( m_degrees > m_orbit.m_degrees )
+		delta -=  m_degrees - m_orbit.m_degrees; // lessen the delta by how much we overshot	
+	float angle = ( clan::PI / 180.0f ) * m_degrees;
+	clan::Pointf cpoint( cos( angle ), sin( angle ) );
+	clan::Pointf current = origin +  cpoint * radius; // C + R * (cos A, sin A)		
+	m_state.SetSpritePos(m_sprite,current);
+}
+float AnimationState::OrbitTask::_percentage() const {
+	return m_degrees / m_orbit.m_degrees;
+}
+bool AnimationState::OrbitTask::finished(){
+	return (m_degrees >= m_orbit.m_degrees);
+}
+void AnimationState::OrbitTask::cleanup(){
+}
+void AnimationState::TimedOrbitTask::init( const AnimationState::Orbit& rot, const AnimationState::Locale& origin ) {
+	m_orbit = rot;
+	m_locale = origin;
+}
+
+void AnimationState::TimedOrbitTask::start( SteelInterpreter* pInterpreter) {
+	StoneRing::AnimationState::TimedTask::start(pInterpreter);
+	m_degrees = m_orbit.m_start_angle;
+}
+
+void AnimationState::TimedOrbitTask::update( SteelInterpreter* pInterpreter ) {
+	float speed = 0.1f;
+	const clan::Pointf origin = m_state.GetPosition(m_locale);	
+
+	SteelType::Container params;
+	SteelType p;
+	p.set( percentage() ); // or _percentage?
+	params.push_back( p );
+	speed = ( double )m_orbit.m_speed_functor->Call( pInterpreter, params );
+	
+	float radius = (double)m_orbit.m_radius_functor->Call( pInterpreter, params );
+	
+	float delta = speed * float( clan::System::get_time() - m_last_time );
+	m_degrees += abs( delta );
+
+	float angle = ( clan::PI / 180.0f ) * m_degrees;
+	clan::Pointf cpoint( cos( angle ), sin( angle ) );
+	clan::Pointf current = origin +  cpoint * radius; // C + R * (cos A, sin A)		
+	m_state.SetSpritePos(m_sprite,current);		
+}
+
+void AnimationState::TimedOrbitTask::cleanup() {
+	StoneRing::AnimationState::Task::cleanup();
+}
+
+bool AnimationState::TimedOrbitTask::finished() {
+	return percentage() >= 1.0;
+}
+
+void AnimationState::TimedStretchTask::SetDuration( float duration ) {
+	m_duration = duration;
+}
+
 
 
 void AnimationState::ShakerTask::init( const Shaker& shaker, const Locale& locale ) {
@@ -1986,8 +2260,8 @@ void AnimationState::ShakerTask::update( SteelInterpreter* pInterpreter ) {
 	}
 	// TODO: Call a method which calls a method on the battle state
 	// that sets an offset to either a sprite, a group, or the screen.
-	CL_Vec2<float> dir = m_dir.ToScreenVector() * motion;
-	CL_Pointf dir_pt( dir.x, dir.y );
+	clan::Vec2<float> dir = clan::Vec2<float>(m_dir.ToScreenVector()) * motion;
+	clan::Pointf dir_pt( dir.x, dir.y );
 	switch( m_locale.GetType() ) {
 		case Locale::SPRITE:
 			m_state.SetSpriteOffset( m_locale.GetSprite(), m_state.GetSpriteOffset( m_locale.GetSprite() ) + dir_pt );
@@ -2022,13 +2296,13 @@ void AnimationState::ShakerTask::finish( SteelInterpreter* pInterpreter ) {
 void AnimationState::ShakerTask::cleanup(){
 	switch( m_locale.GetType() ) {
 		case Locale::SPRITE:
-			m_state.SetSpriteOffset( m_locale.GetSprite(), CL_Pointf(0.0f,0.0f) );
+			m_state.SetSpriteOffset( m_locale.GetSprite(), clan::Pointf(0.0f,0.0f) );
 			break;
 		case Locale::CHARACTER:
-			m_state.SetSpriteOffset( m_state.GetSpriteForChar(m_locale.GetChar()),CL_Pointf(0.0f,0.0f) );
+			m_state.SetSpriteOffset( m_state.GetSpriteForChar(m_locale.GetChar()),clan::Pointf(0.0f,0.0f) );
 			break;
 		case Locale::GROUP:
-			m_state.SetGroupOffset( m_locale.GetGroup(), CL_Pointf(0.0f,0.0f) );
+			m_state.SetGroupOffset( m_locale.GetGroup(), clan::Pointf(0.0f,0.0f) );
 			break;
 	}	
 }
@@ -2081,13 +2355,13 @@ void AnimationState::ColorizeTask::update( SteelInterpreter* pInterpreter ) {
 	float g = ( double )m_colorizer.m_green->Call( pInterpreter, params );
 	float b = ( double )m_colorizer.m_blue->Call( pInterpreter, params );
 
-	m_state.GetSprite( m_sprite ).set_color( CL_Colorf( r, g, b,
+	m_state.GetSprite( m_sprite ).set_color( clan::Colorf( r, g, b,
 																																																					m_state.GetSprite( m_sprite ).get_alpha()
 																																																			) );
 }
 
 void AnimationState::ColorizeTask::cleanup() {
-	m_state.GetSprite( m_sprite ).set_color( CL_Colorf( 1.0f, 1.0f, 1.0f ) );
+	m_state.GetSprite( m_sprite ).set_color( clan::Colorf( 1.0f, 1.0f, 1.0f ) );
 }
 
 void AnimationState::DarkenTask::init( int mode, float duration, SteelType::Functor r,

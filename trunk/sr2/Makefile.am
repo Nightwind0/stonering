@@ -253,13 +253,16 @@ stonering_SOURCES =	src/Application.cpp \
 			src/states/SkillGetState.cpp \
 			src/states/SkillGetState.h \
 			src/states/ItemGetSingleState.cpp \
-			src/states/ItemGetSingleState.h
+			src/states/ItemGetSingleState.h \
+			src/core/DebugControl.cpp \
+			src/core/DebugControl.h
 
 
 
 
 stonering_CPPFLAGS = $(CPPFLAGS) \
-		$(CLANLIB_CFLAGS) 
+		$(CLANLIB_CFLAGS) \
+		-std=c++11
 
 stonering_CFLAGS = $(CPPFLAGS) \
 		$(CLANLIB_CFLAGS)

@@ -6,7 +6,7 @@ RuneType::RuneType()
 {
 }
 
-void RuneType::load_attributes(CL_DomNamedNodeMap attributes)
+void RuneType::load_attributes(clan::DomNamedNodeMap attributes)
 {
     std::string runeType = get_required_string("runeType",attributes);
 

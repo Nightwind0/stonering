@@ -71,6 +71,6 @@ std::string Magic::ToString(eMagicType type)
     case ALL:
         return "all";
     default:
-        throw CL_Exception("Bad magic");
+        throw clan::Exception("Bad magic");
     }
 }

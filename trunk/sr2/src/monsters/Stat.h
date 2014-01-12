@@ -20,7 +20,7 @@ namespace StoneRing
 		virtual std::string GetDebugId() const { return IntToString(m_eAttr); }				
         
     private:
-        virtual void load_attributes(CL_DomNamedNodeMap);
+        virtual void load_attributes(clan::DomNamedNodeMap);
         ICharacter::eCharacterAttribute m_eAttr;
         double m_fValue;
         bool m_bToggle;

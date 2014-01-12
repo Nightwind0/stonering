@@ -14,7 +14,7 @@ namespace StoneRing{
         virtual uint GetSellValue() const ;
         virtual std::string GetName() const { return NamedItemElement::GetName(); }
         virtual uint GetMaxInventory() const { return NamedItemElement::GetMaxInventory(); }
-        virtual CL_Image GetIcon() const { return NamedItemElement::GetIcon(); }
+        virtual clan::Image GetIcon() const { return NamedItemElement::GetIcon(); }
         virtual std::string GetDescription() const { return GetName(); }
 
         // We're overriding whatever was specified in the XML. Never drop a rune unless specified by the monster

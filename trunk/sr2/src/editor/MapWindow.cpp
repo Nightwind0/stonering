@@ -184,7 +184,7 @@ namespace StoneRing {
         }
     private:
         MappableObject* m_pMo;
-        CL_Point        m_original_pos;
+        clan::Point        m_original_pos;
     };
     
     class DeleteObjectOperation: public Operation {
@@ -280,10 +280,10 @@ namespace StoneRing {
 			// If click (as opposed to drag)
 			// then we want to just plop the whole thing down
 			if(m_data.m_mod_state & Operation::CLICK){
-				m_data.m_level_end_pt = m_data.m_level_pt + CL_Point(m_source_tiles.size()-1,m_source_tiles[0].size()-1);
+				m_data.m_level_end_pt = m_data.m_level_pt + clan::Point(m_source_tiles.size()-1,m_source_tiles[0].size()-1);
 			}
-			CL_Point tile_start = m_data.m_level_pt;
-			CL_Point tile_end = m_data.m_level_end_pt;
+			clan::Point tile_start = m_data.m_level_pt;
+			clan::Point tile_end = m_data.m_level_end_pt;
 			
 			// Repeat the pattern if they drag a big square area.
 			m_orig_tiles.resize(tile_end.x - tile_start.x + 1);		
@@ -296,19 +296,19 @@ namespace StoneRing {
 						assert(source_y < m_source_tiles[0].size());
 						
 						if(x < level->GetWidth() && y < level->GetHeight()){
-							std::list<Tile*> orig_tiles = level->GetTilesAt(CL_Point(x,y));
+							std::list<Tile*> orig_tiles = level->GetTilesAt(clan::Point(x,y));
 							for(std::list<Tile*>::const_iterator it = orig_tiles.begin(); it != orig_tiles.end(); it++){
 								m_orig_tiles[(x-tile_start.x)][(y-tile_start.y)].push_back((*it)->clone());
 							}
-							level->AddTilesAt(CL_Point(x,y),m_source_tiles[source_x][source_y],!(m_data.m_mod_state & Operation::CTRL));
+							level->AddTilesAt(clan::Point(x,y),m_source_tiles[source_x][source_y],!(m_data.m_mod_state & Operation::CTRL));
 						}
 				}
 			}
 			return true;
 		}
 		virtual void Undo(shared_ptr<Level> level){
-			CL_Point tile_start = m_data.m_level_pt;
-			CL_Point tile_end = m_data.m_level_end_pt;
+			clan::Point tile_start = m_data.m_level_pt;
+			clan::Point tile_end = m_data.m_level_end_pt;
 					
 			for(int x=tile_start.x;x<=tile_end.x;x++){
 				for(int y=tile_start.y;y<=tile_end.y;y++){
@@ -317,7 +317,7 @@ namespace StoneRing {
 						assert(source_x < m_orig_tiles.size());
 						assert(source_y < m_orig_tiles[0].size());
 						if(x < level->GetWidth() && y < level->GetHeight()){
-							level->AddTilesAt(CL_Point(x,y),m_orig_tiles[source_x][source_y],true);
+							level->AddTilesAt(clan::Point(x,y),m_orig_tiles[source_x][source_y],true);
 						}
 				}
 			}			
@@ -345,8 +345,8 @@ namespace StoneRing {
 		}
 		
 		virtual bool Execute(shared_ptr<Level> level){
-			CL_Point tile_start = m_data.m_level_pt;
-			CL_Point tile_end = m_data.m_level_end_pt;
+			clan::Point tile_start = m_data.m_level_pt;
+			clan::Point tile_end = m_data.m_level_end_pt;
 			tile_end.x = min(int(level->GetWidth())-1,tile_end.x);
 			tile_end.y = min(int(level->GetHeight())-1,tile_end.y);
 			m_source_tiles.resize((tile_end.x-tile_start.x) + 1);
@@ -357,7 +357,7 @@ namespace StoneRing {
 					int source_x = x - tile_start.x;
 					int source_y = y - tile_start.y;
 					assert(x < level->GetWidth() && y < level->GetHeight());
-					std::list<Tile*> tiles = level->GetTilesAt(CL_Point(x,y));
+					std::list<Tile*> tiles = level->GetTilesAt(clan::Point(x,y));
 					for(std::list<Tile*>::const_iterator it = tiles.begin(); it != tiles.end(); it++){
 						m_source_tiles[source_x][source_y].push_back ( (*it)->clone() );
 					}
@@ -418,7 +418,7 @@ namespace StoneRing {
 	};
 	
 
-MapWindow::MapWindow(CL_GUIComponent *parent, const CL_GUITopLevelDescription& desc):CL_Window(parent,desc) {
+MapWindow::MapWindow(clan::GUIComponent *parent, const clan::GUITopLevelDescription& desc):clan::Window(parent,desc) {
 	set_draggable(true);
 	set_clip_children(true);
     func_input_pointer_moved().set(this,&MapWindow::on_mouse_moved);
@@ -429,7 +429,7 @@ MapWindow::MapWindow(CL_GUIComponent *parent, const CL_GUITopLevelDescription& d
     func_input_doubleclick().set(this,&MapWindow::on_mouse_double_click);
 	func_resized().set(this,&MapWindow::on_resize);
 
-    m_pZoomSlider = new CL_Slider(this);
+    m_pZoomSlider = new clan::Slider(this);
     m_pZoomSlider->set_vertical(true);
     m_pZoomSlider->set_min(1);
     m_pZoomSlider->set_max(12);
@@ -440,10 +440,10 @@ MapWindow::MapWindow(CL_GUIComponent *parent, const CL_GUITopLevelDescription& d
 
     m_pMap = new MapComponent(this);
    
-    m_toolbar = new CL_ToolBar(this); 
+    m_toolbar = new clan::ToolBar(this); 
     m_toolbar->func_item_clicked().set(this,&MapWindow::on_toolbar_item);
 
-    m_pMenuBar = new CL_MenuBar(this);
+    m_pMenuBar = new clan::MenuBar(this);
   
     construct_map_context_menu();
     construct_menu();
@@ -451,7 +451,7 @@ MapWindow::MapWindow(CL_GUIComponent *parent, const CL_GUITopLevelDescription& d
 	
 	on_resize();
 
-    //m_pToolWindow->set_geometry(CL_Rect(0,0,300,400));
+    //m_pToolWindow->set_geometry(clan::Rect(0,0,300,400));
     m_mouse_state = MOUSE_IDLE;	
 }
 
@@ -464,13 +464,13 @@ MapWindow::~MapWindow() {
 
 void MapWindow::on_resize()
 {	
-	CL_Rect client = get_client_area();
-	CL_Size size = client.get_size();
-	CL_Point top_left = client.get_top_left();	
-	m_pMap->set_geometry(CL_Rect(CL_Point(32,64),CL_Size(size.width-32,size.height-64)).translate(client));
-	m_toolbar->set_geometry(CL_Rect(CL_Point(0,32),CL_Size(size.width,32)).translate(client));	
-    m_pMenuBar->set_geometry(CL_Rect(0,0,size.width,32).translate(client));  
-    m_pZoomSlider->set_geometry(CL_Rect(0,64,10,size.height).translate(client));	
+	clan::Rect client = get_client_area();
+	clan::Size size = client.get_size();
+	clan::Point top_left = client.get_top_left();	
+	m_pMap->set_geometry(clan::Rect(clan::Point(32,64),clan::Size(size.width-32,size.height-64)).translate(client));
+	m_toolbar->set_geometry(clan::Rect(clan::Point(0,32),clan::Size(size.width,32)).translate(client));	
+    m_pMenuBar->set_geometry(clan::Rect(0,0,size.width,32).translate(client));  
+    m_pZoomSlider->set_geometry(clan::Rect(0,64,10,size.height).translate(client));	
 }
 
 
@@ -482,12 +482,12 @@ void MapWindow::Init(MapEditorState * state)
 void MapWindow::construct_map_context_menu()
 {
     m_map_context_menu.clear();
-    CL_PopupMenuItem edit_tile_item = m_map_context_menu.insert_item("Edit Tiles",CON_EDIT_TILE);
+    clan::PopupMenuItem edit_tile_item = m_map_context_menu.insert_item("Edit Tiles",CON_EDIT_TILE);
     m_map_context_menu.insert_separator();
-    CL_PopupMenuItem add_mo_item = m_map_context_menu.insert_item("Add Object",CON_ADD_OBJECT);
-    CL_PopupMenuItem edit_mo_item = m_map_context_menu.insert_item("Edit Object",CON_EDIT_OBJECT);
-    CL_PopupMenuItem move_mo_item = m_map_context_menu.insert_item("Move Object",CON_MOVE_OBJECT);
-    CL_PopupMenuItem delete_mo_item = m_map_context_menu.insert_item("Delete Object",CON_DELETE_OBJECT);
+    clan::PopupMenuItem add_mo_item = m_map_context_menu.insert_item("Add Object",CON_ADD_OBJECT);
+    clan::PopupMenuItem edit_mo_item = m_map_context_menu.insert_item("Edit Object",CON_EDIT_OBJECT);
+    clan::PopupMenuItem move_mo_item = m_map_context_menu.insert_item("Move Object",CON_MOVE_OBJECT);
+    clan::PopupMenuItem delete_mo_item = m_map_context_menu.insert_item("Delete Object",CON_DELETE_OBJECT);
     
     edit_tile_item.func_clicked().set(this,&MapWindow::on_edit_tile);    
     add_mo_item.func_clicked().set(this,&MapWindow::on_add_mo);
@@ -502,7 +502,7 @@ void MapWindow::construct_menu()
     
     m_edit_menu.clear();
     m_grow_submenu.clear();
-    CL_PopupMenu add_columns_sub, add_rows_sub;
+    clan::PopupMenu add_columns_sub, add_rows_sub;
     add_columns_sub.insert_item("Add 1").func_clicked().set(this,&MapWindow::on_edit_grow_column);
     add_columns_sub.insert_item("Add 5").func_clicked().set(this,&MapWindow::on_edit_grow_column5);
     add_columns_sub.insert_item("Add 10").func_clicked().set(this,&MapWindow::on_edit_grow_column10);
@@ -511,11 +511,11 @@ void MapWindow::construct_menu()
     add_rows_sub.insert_item("Add 5").func_clicked().set(this,&MapWindow::on_edit_grow_row5);   
     add_rows_sub.insert_item("Add 10").func_clicked().set(this,&MapWindow::on_edit_grow_row10);   
     add_rows_sub.insert_item("Add 25").func_clicked().set(this,&MapWindow::on_edit_grow_row25);   	
-    CL_PopupMenuItem add_columns = m_grow_submenu.insert_item("Add Columns");
+    clan::PopupMenuItem add_columns = m_grow_submenu.insert_item("Add Columns");
     add_columns.set_submenu(add_columns_sub);
-    CL_PopupMenuItem add_rows = m_grow_submenu.insert_item("Add Rows");
+    clan::PopupMenuItem add_rows = m_grow_submenu.insert_item("Add Rows");
     add_rows.set_submenu(add_rows_sub);
-    CL_PopupMenuItem grow_item = m_edit_menu.insert_item("Grow");
+    clan::PopupMenuItem grow_item = m_edit_menu.insert_item("Grow");
     m_edit_menu.insert_separator();
     m_edit_menu.insert_item_accel("Undo", "Ctrl-Z").func_clicked().set(this,&MapWindow::on_edit_undo);
     m_file_menu.insert_separator();
@@ -524,7 +524,7 @@ void MapWindow::construct_menu()
     m_pMenuBar->add_menu("File",m_file_menu);
     m_pMenuBar->add_menu("Edit",m_edit_menu);
     
-    CL_PopupMenu view;
+    clan::PopupMenu view;
     view.insert_item("Unzoom").func_clicked().set(this,&MapWindow::on_view_unzoom);
     view.insert_item("Recenter").func_clicked().set(this,&MapWindow::on_view_recenter);
 	
@@ -542,28 +542,28 @@ void MapWindow::construct_region_menu()
 {
 	m_monster_region_menu.clear();
 	m_monster_region_menu.insert_item("Create Region").func_clicked().set(this,&MapWindow::on_create_monster_region);
-	CL_PopupMenu place_menu;
-	CL_PopupMenu edit_menu;
-	CL_PopupMenu delete_menu;
+	clan::PopupMenu place_menu;
+	clan::PopupMenu edit_menu;
+	clan::PopupMenu delete_menu;
 	const MonsterRegions* regions = m_pMap->get_level()->GetMonsterRegions();
 	if(regions && regions->GetRegionsBegin() != regions->GetRegionsEnd()){
 		for(std::map<char,MonsterRegion*>::const_iterator it = regions->GetRegionsBegin();
 				it != regions->GetRegionsEnd();it++){
-			CL_PopupMenuItem edit_item = edit_menu.insert_item(IntToString((it->second)->GetId()));
-			CL_PopupMenuItem delete_item = delete_menu.insert_item(IntToString((it->second)->GetId()));
-			CL_PopupMenuItem place_item = place_menu.insert_item(IntToString((it->second)->GetId()));
+			clan::PopupMenuItem edit_item = edit_menu.insert_item(IntToString((it->second)->GetId()));
+			clan::PopupMenuItem delete_item = delete_menu.insert_item(IntToString((it->second)->GetId()));
+			clan::PopupMenuItem place_item = place_menu.insert_item(IntToString((it->second)->GetId()));
 			edit_item.func_clicked().set(this,&MapWindow::on_edit_region,it->second);
 			delete_item.func_clicked().set(this,&MapWindow::on_delete_region,it->second);
 			place_item.func_clicked().set(this,&MapWindow::on_place_region,it->second);
 		}	
-		CL_PopupMenuItem place_item = m_monster_region_menu.insert_item("Place Region");
+		clan::PopupMenuItem place_item = m_monster_region_menu.insert_item("Place Region");
 		place_item.set_submenu(place_menu);
-		CL_PopupMenuItem item =  m_monster_region_menu.insert_item("Edit Region");
+		clan::PopupMenuItem item =  m_monster_region_menu.insert_item("Edit Region");
 		item.set_submenu(edit_menu);
-		CL_PopupMenuItem delete_item = m_monster_region_menu.insert_item("Delete Region");
+		clan::PopupMenuItem delete_item = m_monster_region_menu.insert_item("Delete Region");
 		delete_item.set_submenu(delete_menu);	
 	}
-	CL_PopupMenuItem clear_item = m_monster_region_menu.insert_item("Clear Region");
+	clan::PopupMenuItem clear_item = m_monster_region_menu.insert_item("Clear Region");
 	clear_item.func_clicked().set(this,&MapWindow::on_clear_regions);
 }
 
@@ -589,24 +589,25 @@ void MapWindow::construct_toolbar()
         {"Editor/Images/floater.png","",ALTER_ZORDER,true},
 		{"Editor/Images/floater_icon.png","",FLOATER,true}
     };
-    
+	clan::FileSystem files(".");
+    clan::Canvas canvas(GET_MAIN_CANVAS());
     for(int i=0;i<sizeof(tools)/sizeof(Tool);i++){
-        CL_ToolBarItem item = m_toolbar->insert_item(CL_Sprite(this->get_gc(),tools[i].icon),0,tools[i].name);
+        clan::ToolBarItem item = m_toolbar->insert_item(clan::Sprite(canvas,tools[i].icon,files),0,tools[i].name);
         item.set_id(tools[i].item);
         item.set_toggling(tools[i].toggle);
     }
 }
 
-bool MapWindow::construct_object_submenu(CL_PopupMenuItem item, const CL_Point& level_pt)
+bool MapWindow::construct_object_submenu(clan::PopupMenuItem item, const clan::Point& level_pt)
 {
         // Find the MO at this point
     std::list<MappableObject*> objects = m_pMap->get_mos_at(level_pt);
     if(!objects.empty()){
-        CL_PopupMenu submenu;
+        clan::PopupMenu submenu;
 
         for(std::list<MappableObject*>::const_iterator it = objects.begin();
             it != objects.end(); it++){
-            CL_PopupMenuItem subitem = submenu.insert_item((*it)->GetName());
+            clan::PopupMenuItem subitem = submenu.insert_item((*it)->GetName());
             if(item.get_id() == CON_EDIT_OBJECT){
                 subitem.func_clicked().set(this,&MapWindow::on_edit_mo,*it);
             }else if(item.get_id() == CON_MOVE_OBJECT){
@@ -625,22 +626,22 @@ bool MapWindow::construct_object_submenu(CL_PopupMenuItem item, const CL_Point& 
 
 void MapWindow::construct_level_data_menu()
 {
-	CL_PopupMenu level_data_menu;
+	clan::PopupMenu level_data_menu;
 	m_level_allow_run_item = level_data_menu.insert_item("Allow Running");
 	m_level_allow_run_item.set_checkable(true);
 	m_level_allow_run_item.func_clicked().set(this,&MapWindow::on_allows_running_clicked);
 
-	CL_PopupMenuItem level_music_item = level_data_menu.insert_item("Music");
+	clan::PopupMenuItem level_music_item = level_data_menu.insert_item("Music");
 	construct_level_music_menu(level_music_item);
 	m_pMenuBar->add_menu("Settings",level_data_menu);
 }
 
-void MapWindow::construct_level_music_menu(CL_PopupMenuItem menu_parent)
+void MapWindow::construct_level_music_menu(clan::PopupMenuItem menu_parent)
 {
-	CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
+	clan::XMLResourceDocument& resources = clan::XMLResourceManager::get_doc(IApplication::GetInstance()->GetResources());
     m_music = resources.get_resource_names_of_type("sample","Music");    
     for(int i=0;i<m_music.size();i++){
-        CL_PopupMenuItem item = m_level_music_menu.insert_item(m_music[i]);
+        clan::PopupMenuItem item = m_level_music_menu.insert_item(m_music[i]);
         item.func_clicked().set(this,&MapWindow::on_music_clicked,i);
         item.set_checkable(true);
         item.set_checked(false);
@@ -652,7 +653,7 @@ void MapWindow::on_music_clicked(int index)
 {
 	m_pMap->get_level()->SetMusic(m_music[index]);
 	for(int i=0;i<m_level_music_menu.get_item_count();i++){
-		CL_PopupMenuItem item = m_level_music_menu.get_item_at(i);
+		clan::PopupMenuItem item = m_level_music_menu.get_item_at(i);
 		item.set_checked(i==index);
 	}	
 }
@@ -705,8 +706,8 @@ void MapWindow::PerformOperation( Operation* pOp )
 
 void MapWindow::on_file_save()
 {
-    CL_SaveFileDialog dialog(this);
-  //  dialog.set_geometry(CL_Rect(0,0,400,400);
+    clan::SaveFileDialog dialog(this);
+  //  dialog.set_geometry(clan::Rect(0,0,400,400);
     dialog.set_title("Save Level");
     if(dialog.show()){
         std::string name = dialog.get_filename();
@@ -737,7 +738,7 @@ void MapWindow::on_view_unzoom()
 
 void MapWindow::on_view_recenter()
 {
-    m_pMap->set_origin(CL_Point(0,0));
+    m_pMap->set_origin(clan::Point(0,0));
     m_pMap->request_repaint();
 }
 
@@ -823,7 +824,7 @@ void MapWindow::on_mo_create()
 
 void MapWindow::on_create_monster_region()
 {
-	CL_GUITopLevelDescription desc("Monster Region",CL_Size(424,424),true);
+	clan::GUITopLevelDescription desc("Monster Region",clan::Size(424,424),true);
 	MonsterRegionEditWindow window(this,desc);
 	window.CreateRegion();
 	window.set_draggable(true);
@@ -850,7 +851,7 @@ void MapWindow::SetOperation(int mods, Operation* pOp)
 }  
 
 
-bool MapWindow::on_mouse_moved(const CL_InputEvent& event){
+bool MapWindow::on_mouse_moved(const clan::InputEvent& event){
     int mod = mod_value(event.shift,event.ctrl,event.alt);
     if(m_mouse_state == MOUSE_DRAG){
         if(mod != m_mod_state){
@@ -867,14 +868,14 @@ bool MapWindow::on_mouse_moved(const CL_InputEvent& event){
 	return true;
 }
 
-bool MapWindow::on_mouse_pressed(const CL_InputEvent& event){ 
-    if(event.id == CL_MOUSE_RIGHT || event.id == CL_MOUSE_LEFT && 
+bool MapWindow::on_mouse_pressed(const clan::InputEvent& event){ 
+    if(event.id == clan::mouse_right || event.id == clan::mouse_left && 
 		m_pMap->get_geometry().contains(event.mouse_pos)){
         switch(m_mouse_state){
             case MOUSE_IDLE:
                 m_mouse_state = MOUSE_DOWN;
                 m_drag_start = event.mouse_pos;
-                m_drag_button = (event.id == CL_MOUSE_LEFT)?MOUSE_LEFT:MOUSE_RIGHT;
+                m_drag_button = (event.id == clan::mouse_left)?MOUSE_LEFT:MOUSE_RIGHT;
                 m_last_drag_point = m_drag_start;
                 m_mod_state = mod_value(event.shift,event.ctrl,event.alt);
                 start_drag(event.mouse_pos,m_drag_button,m_mod_state);
@@ -902,39 +903,39 @@ int MapWindow::mod_value(bool shift, bool ctrl, bool alt)const
     return value;
 }
 
-bool MapWindow::on_mouse_released(const CL_InputEvent& event){
-    if(event.id == CL_MOUSE_RIGHT || event.id == CL_MOUSE_LEFT){
+bool MapWindow::on_mouse_released(const clan::InputEvent& event){
+    if(event.id == clan::mouse_right || event.id == clan::mouse_left){
         if(m_mouse_state == MOUSE_DRAG){
             int mod = mod_value(event.shift,event.ctrl,event.alt);
             if(mod == m_mod_state){
-                end_drag(m_drag_start,m_last_drag_point,event.mouse_pos,(event.id==CL_MOUSE_LEFT)?MOUSE_LEFT:MOUSE_RIGHT,mod);
+                end_drag(m_drag_start,m_last_drag_point,event.mouse_pos,(event.id==clan::mouse_left)?MOUSE_LEFT:MOUSE_RIGHT,mod);
             }else{
                 cancel_drag();
             }
             m_mouse_state = MOUSE_IDLE;
         }else if(m_mouse_state == MOUSE_DOWN){
-            if(event.type != CL_InputEvent::Type::doubleclick)
-                click(event.mouse_pos,event.id==CL_MOUSE_LEFT?MOUSE_LEFT:MOUSE_RIGHT, mod_value(event.shift,event.ctrl,event.alt));
+            if(event.type != clan::InputEvent::Type::doubleclick)
+                click(event.mouse_pos,event.id==clan::mouse_left?MOUSE_LEFT:MOUSE_RIGHT, mod_value(event.shift,event.ctrl,event.alt));
             m_mouse_state = MOUSE_IDLE;
         }
-    }else if(event.id == CL_KEY_Z && event.ctrl){
+    }else if(event.id == clan::keycode_z && event.ctrl){
         on_edit_undo();
     }
     return true;
 }
 
-bool MapWindow::on_mouse_double_click(const CL_InputEvent& event)
+bool MapWindow::on_mouse_double_click(const clan::InputEvent& event)
 {
-    if(event.id == CL_MOUSE_RIGHT){
+    if(event.id == clan::mouse_right){
         // Popup menu (but only when clicking on the level itself)
-        CL_Point map_offset = m_pMap->get_geometry().get_top_left();     
+        clan::Point map_offset = m_pMap->get_geometry().get_top_left();     
         if(m_pMap->valid_location(event.mouse_pos-map_offset, m_pMap->get_geometry().get_center()-map_offset)){
             
-            CL_Point level_pt = m_pMap->screen_to_level(event.mouse_pos-map_offset,m_pMap->get_geometry().get_center());
+            clan::Point level_pt = m_pMap->screen_to_level(event.mouse_pos-map_offset,m_pMap->get_geometry().get_center());
             level_pt /= 32;  
             
             for(int id=CON_EDIT_OBJECT;id<=CON_DELETE_OBJECT;id++){
-                CL_PopupMenuItem item = m_map_context_menu.get_item(id);
+                clan::PopupMenuItem item = m_map_context_menu.get_item(id);
                 construct_object_submenu(item,level_pt);                
             }
             
@@ -942,8 +943,8 @@ bool MapWindow::on_mouse_double_click(const CL_InputEvent& event)
             m_map_context_menu.start(m_pMap, component_to_screen_coords(event.mouse_pos));    
         }
     }else{
-        CL_Point map_offset = m_pMap->get_geometry().get_top_left();
-        CL_Point level_pt = m_pMap->screen_to_level(event.mouse_pos-map_offset,m_pMap->get_geometry().get_center()-map_offset);
+        clan::Point map_offset = m_pMap->get_geometry().get_top_left();
+        clan::Point level_pt = m_pMap->screen_to_level(event.mouse_pos-map_offset,m_pMap->get_geometry().get_center()-map_offset);
         level_pt /= 32;  
         std::cerr << "Edit: " << level_pt.x << ',' << level_pt.y << std::endl;        
     }
@@ -964,14 +965,14 @@ bool MapWindow::on_pointer_exit(){
 
 void MapWindow::on_add_mo()
 {	
-    CL_Size size = get_size(); 	
-    CL_GUITopLevelDescription mo_edit_desc;
+    clan::Size size = get_size(); 	
+    clan::GUITopLevelDescription mo_edit_desc;
     mo_edit_desc.set_title("Create Mappable Object");
-    mo_edit_desc.set_size(CL_Size(400,400),true);
-    mo_edit_desc.set_position(CL_Rect(CL_Point(size.width-400,64),CL_Size(400,400)),true);
+    mo_edit_desc.set_size(clan::Size(400,400),true);
+    mo_edit_desc.set_position(clan::Rect(clan::Point(size.width-400,64),clan::Size(400,400)),true);
     mo_edit_desc.set_dialog_window(true);
-    mo_edit_desc.set_decorations(true);
-	CL_GUIManager manager = get_gui_manager();
+    //mo_edit_desc.set_decorations(true);
+	clan::GUIManager manager = get_gui_manager();
     MOEditWindow edit_window(&manager, mo_edit_desc);
     edit_window.set_draggable(true);
     edit_window.set_visible(false);
@@ -980,8 +981,8 @@ void MapWindow::on_add_mo()
     std::string name = create_unique_mo_name();
     edit_window.SetName(name.c_str());
     edit_window.SetCreate();
-    CL_Point map_offset = m_pMap->get_geometry().get_top_left();
-    CL_Point level_pt = m_pMap->screen_to_level(m_map_context_point-map_offset,m_pMap->get_geometry().get_center());
+    clan::Point map_offset = m_pMap->get_geometry().get_top_left();
+    clan::Point level_pt = m_pMap->screen_to_level(m_map_context_point-map_offset,m_pMap->get_geometry().get_center());
     level_pt /= 32;  	
 	
     edit_window.SetPoint(level_pt);
@@ -990,14 +991,14 @@ void MapWindow::on_add_mo()
 
 void MapWindow::on_edit_mo(MappableObject* pMo)
 {
-    CL_Size size = get_size(); 	
-    CL_GUITopLevelDescription mo_edit_desc;
+    clan::Size size = get_size(); 	
+    clan::GUITopLevelDescription mo_edit_desc;
     mo_edit_desc.set_title("Edit Mappable Object");
-    mo_edit_desc.set_size(CL_Size(400,400),true);
-    mo_edit_desc.set_position(CL_Rect(CL_Point(size.width-400,64),CL_Size(400,400)),true);
+    mo_edit_desc.set_size(clan::Size(400,400),true);
+    mo_edit_desc.set_position(clan::Rect(clan::Point(size.width-400,64),clan::Size(400,400)),true);
     mo_edit_desc.set_dialog_window(true);
-    mo_edit_desc.set_decorations(true);
-	CL_GUIManager  manager = get_gui_manager();
+    //mo_edit_desc.set_decorations(true);
+	clan::GUIManager  manager = get_gui_manager();
     MOEditWindow edit_window(&manager, mo_edit_desc);
     edit_window.set_draggable(true);
     edit_window.set_visible(false);
@@ -1024,10 +1025,10 @@ void MapWindow::on_move_mo(MappableObject* pMo)
 
 void MapWindow::on_edit_tile()
 {
-    CL_Point map_offset = m_pMap->get_geometry().get_top_left();	
-	CL_Point level_pt = m_pMap->screen_to_level(m_map_context_point-map_offset,m_pMap->get_geometry().get_center());
+    clan::Point map_offset = m_pMap->get_geometry().get_top_left();	
+	clan::Point level_pt = m_pMap->screen_to_level(m_map_context_point-map_offset,m_pMap->get_geometry().get_center());
     level_pt /= 32;  
-	CL_GUITopLevelDescription desc("Edit Tile",CL_Size(424,424),true);	
+	clan::GUITopLevelDescription desc("Edit Tile",clan::Size(424,424),true);	
 	TileEditorWindow window(this,desc);
 	window.set_tiles(m_pMap->get_level()->GetTilesAt(level_pt));
 	window.set_draggable(true);
@@ -1053,7 +1054,7 @@ void MapWindow::on_edit_tile()
 
 void MapWindow::on_edit_region(MonsterRegion* pRegion)
 {
-	CL_GUITopLevelDescription desc("Monster Region",CL_Size(424,424),true);
+	clan::GUITopLevelDescription desc("Monster Region",clan::Size(424,424),true);
 	MonsterRegionEditWindow window(this,desc);
 	window.SetRegion(pRegion);
 	window.set_draggable(true);
@@ -1111,7 +1112,7 @@ std::string MapWindow::create_unique_mo_name()
 }
 
 
-void MapWindow::start_drag(const CL_Point& point, MouseButton button, int mod){
+void MapWindow::start_drag(const clan::Point& point, MouseButton button, int mod){
     if(mod == 0 && button == MOUSE_RIGHT){
         // Pan
     }else{
@@ -1119,18 +1120,18 @@ void MapWindow::start_drag(const CL_Point& point, MouseButton button, int mod){
         m_mod_state = mod;
     }
 }
-void MapWindow::update_drag(const CL_Point& start,const CL_Point& prev, const CL_Point& point, MouseButton button, int mod){
+void MapWindow::update_drag(const clan::Point& start,const clan::Point& prev, const clan::Point& point, MouseButton button, int mod){
     if(mod == 0 && button == MOUSE_RIGHT){
         // Pan
-        CL_Pointf delta = CL_Pointf(point.x,point.y) - CL_Pointf(prev.x,prev.y);
+        clan::Pointf delta = clan::Pointf(point.x,point.y) - clan::Pointf(prev.x,prev.y);
         //delta *= m_pMap->get_scale();
-        CL_Point map_offset = m_pMap->get_geometry().get_top_left();
-        CL_Point level = m_pMap->screen_to_level(point-map_offset,m_pMap->get_geometry().get_center()-map_offset);
-        m_pMap->set_origin(m_pMap->get_origin() + CL_Point(delta.x,delta.y));
+        clan::Point map_offset = m_pMap->get_geometry().get_top_left();
+        clan::Point level = m_pMap->screen_to_level(point-map_offset,m_pMap->get_geometry().get_center()-map_offset);
+        m_pMap->set_origin(m_pMap->get_origin() + clan::Point(delta.x,delta.y));
         this->request_repaint();
     }else{
         // invoke on current tool
-        m_pMap->set_rubber_band(CL_Rect(start.x,start.y,point.x,point.y));     
+        m_pMap->set_rubber_band(clan::Rect(start.x,start.y,point.x,point.y));     
         this->request_repaint();        
     }
 }
@@ -1146,7 +1147,7 @@ void MapWindow::cancel_drag(){
     }
 }
 
-void MapWindow::end_drag(const CL_Point& start,const CL_Point& prev, const CL_Point& point, MouseButton button, int mod){
+void MapWindow::end_drag(const clan::Point& start,const clan::Point& prev, const clan::Point& point, MouseButton button, int mod){
     m_mouse_state = MOUSE_IDLE;
     if(mod == 0 && button == MOUSE_RIGHT){
 
@@ -1154,7 +1155,7 @@ void MapWindow::end_drag(const CL_Point& start,const CL_Point& prev, const CL_Po
         // current tool  
         if(m_pMap->get_level()){
             Operation::Data data;			
-            CL_Point map_offset = m_pMap->get_geometry().get_top_left();   			
+            clan::Point map_offset = m_pMap->get_geometry().get_top_left();   			
             data.m_level_pt = m_pMap->screen_to_level(start-map_offset,m_pMap->get_geometry().get_center()-map_offset) / 32;
             data.m_level_end_pt = m_pMap->screen_to_level(point-map_offset,m_pMap->get_geometry().get_center()-map_offset) / 32;			
             int tool = mod;
@@ -1173,10 +1174,10 @@ void MapWindow::end_drag(const CL_Point& start,const CL_Point& prev, const CL_Po
             if(orig_op != NULL){
 
                 data.m_mod_state = tool;         
-				CL_Point min_pt, max_pt;
+				clan::Point min_pt, max_pt;
 				
-				min_pt = CL_Point ( min(data.m_level_pt.x,data.m_level_end_pt.x), min(data.m_level_pt.y, data.m_level_end_pt.y ) );
-				max_pt = CL_Point ( max(data.m_level_pt.x,data.m_level_end_pt.x), max(data.m_level_pt.y, data.m_level_end_pt.y ) );
+				min_pt = clan::Point ( min(data.m_level_pt.x,data.m_level_end_pt.x), min(data.m_level_pt.y, data.m_level_end_pt.y ) );
+				max_pt = clan::Point ( max(data.m_level_pt.x,data.m_level_end_pt.x), max(data.m_level_pt.y, data.m_level_end_pt.y ) );
 				
 				data.m_level_pt = min_pt;
 				data.m_level_end_pt = max_pt;
@@ -1198,7 +1199,7 @@ void MapWindow::end_drag(const CL_Point& start,const CL_Point& prev, const CL_Po
     }  
 }
 
-void MapWindow::click(const CL_Point& point,MouseButton button, int mod)
+void MapWindow::click(const clan::Point& point,MouseButton button, int mod)
 {
     if(m_pMap->get_level()){
         int tool = mod | Operation::CLICK;
@@ -1212,7 +1213,7 @@ void MapWindow::click(const CL_Point& point,MouseButton button, int mod)
         if(orig_op != NULL){
             Operation::Data data;
             data.m_mod_state = tool;
-            CL_Point map_offset = m_pMap->get_geometry().get_top_left();             
+            clan::Point map_offset = m_pMap->get_geometry().get_top_left();             
             data.m_level_pt = m_pMap->screen_to_level(point-map_offset,m_pMap->get_geometry().get_center()-map_offset) / 32;
             data.m_level_end_pt = data.m_level_pt;
             Operation * op = orig_op->clone();
@@ -1228,17 +1229,17 @@ void MapWindow::click(const CL_Point& point,MouseButton button, int mod)
     }
 }
 
-void MapWindow::reset_toolbar_toggles(CL_ToolBarItem exception)
+void MapWindow::reset_toolbar_toggles(clan::ToolBarItem exception)
 {
     for(int i=0;i<m_toolbar->get_item_count();i++){
-        CL_ToolBarItem item = m_toolbar->get_item(i);
+        clan::ToolBarItem item = m_toolbar->get_item(i);
         if(item.get_id() != exception.get_id()){
             item.set_pressed(false);
         }
     }
 }
 
-void MapWindow::on_toolbar_item(CL_ToolBarItem item)
+void MapWindow::on_toolbar_item(clan::ToolBarItem item)
 {
     static BlockOperation block_op;
     static BlockOperations block_ops;

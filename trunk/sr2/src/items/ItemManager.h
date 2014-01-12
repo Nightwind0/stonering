@@ -18,7 +18,7 @@ namespace StoneRing
 
         static void initialize();
 
-        static void LoadItemFile ( CL_DomDocument &doc );
+        static void LoadItemFile ( clan::DomDocument &doc );
 
         static WeaponType*  GetWeaponType( const WeaponTypeRef &ref );
         static ArmorType*   GetArmorType ( const ArmorTypeRef &ref );
@@ -50,6 +50,10 @@ namespace StoneRing
         void DumpItemList();
         void PrintAttributeEnhancers(Equipment * pItem );
         void PrintStatusModifiers(Equipment * pItem);
+		static void DumpItemCSV();
+	private:
+		void DumpWeapon(std::ofstream& out, Weapon* pWeapon);
+		void DumpArmor(std::ofstream& out, Armor* pArmor);
 #endif
     private:
         typedef std::map<ItemRef,Item*> ItemMap;

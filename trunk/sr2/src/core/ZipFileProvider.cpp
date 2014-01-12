@@ -23,7 +23,7 @@ using namespace Steel;
 
 namespace StoneRing { 
 	
-ZipFile::ZipFile( CL_VirtualDirectory vd ): m_vd(vd)
+ZipFile::ZipFile( clan::FileSystem vd ): m_vd(vd)
 {
 
 }
@@ -37,7 +37,7 @@ ZipFile::~ZipFile()
 	
 bool ZipFile::open( const char* path )
 {
-	m_io = m_vd.open_file_read(path);
+	m_io = m_vd.open_file(path);
 	m_eof = false;
 	return !m_io.is_null();
 }
@@ -69,7 +69,7 @@ ZipFileProvider::~ZipFileProvider() {
 
 }
 
-void ZipFileProvider::SetVirtualDirectory( CL_VirtualDirectory vd )
+void ZipFileProvider::SetVirtualDirectory( clan::FileSystem vd )
 {
 	m_vd = vd;
 }

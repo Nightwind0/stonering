@@ -61,7 +61,7 @@ bool GeneratedWeapon::operator== ( const ItemRef &ref )
 
 
 // Item interface
-CL_Image GeneratedWeapon::GetIcon() const
+clan::Image GeneratedWeapon::GetIcon() const
 {
     return GraphicsManager::GetIcon(m_pType->GetIconRef());
 }
@@ -176,7 +176,7 @@ void GeneratedWeapon::OnUnequipScript(const ParameterList& params)
         m_pImbuement->OnUnequipScript(params);
 }
 
-CL_Sprite GeneratedWeapon::GetSprite() const {
+clan::Sprite GeneratedWeapon::GetSprite() const {
 	return GetWeaponType()->GetSprite();
 }
 

@@ -75,12 +75,12 @@ void OperationGroup::AddOperation ( const StoneRing::Operation::Data& data )
 void OperationGroup::SetData ( const StoneRing::Operation::Data& data )
 {
     StoneRing::Operation::SetData ( data );
-    CL_Point tile_start = data.m_level_pt;
-    CL_Point tile_end = data.m_level_end_pt;
+    clan::Point tile_start = data.m_level_pt;
+    clan::Point tile_end = data.m_level_end_pt;
     for(int x = tile_start.x; x <= tile_end.x; x++){
         for(int y = tile_start.y; y <= tile_end.y; y++){
             Operation::Data innerdata;
-            innerdata.m_level_pt = innerdata.m_level_end_pt = CL_Point(x,y);
+            innerdata.m_level_pt = innerdata.m_level_end_pt = clan::Point(x,y);
             innerdata.m_mod_state = data.m_mod_state;
             AddOperation(innerdata);
         }

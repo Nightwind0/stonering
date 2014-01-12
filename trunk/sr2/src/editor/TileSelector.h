@@ -30,7 +30,7 @@ namespace StoneRing  {
     class MapEditorState;
     class Tile;
     
-class TileSelector : public CL_GUIComponent
+class TileSelector : public clan::GUIComponent
 {
 public:
     class AddTileOperation : public Operation {
@@ -39,12 +39,12 @@ public:
         virtual Operation* clone();
         virtual bool Execute(shared_ptr<Level>);
         virtual void Undo(shared_ptr<Level>);      
-        void SetPoint(const CL_Point& point) { m_tile_pos = point; }
+        void SetPoint(const clan::Point& point) { m_tile_pos = point; }
         void SetName(const std::string& name) { m_tilemap = name; }
-        CL_Point GetPoint() const { return m_tile_pos; }
+        clan::Point GetPoint() const { return m_tile_pos; }
     private:
         std::string m_tilemap;
-        CL_Point    m_tile_pos;
+        clan::Point    m_tile_pos;
         Tile *      m_tile;
         std::list<Tile*> m_removed_tiles;
     };
@@ -52,7 +52,7 @@ public:
     public:
         AddTilesOperation(){}
         virtual ~AddTilesOperation(){}
-        void SetPoint(const CL_Point& point) { m_tile_pos = point; }
+        void SetPoint(const clan::Point& point) { m_tile_pos = point; }
         void SetName(const std::string& name) { m_tilemap = name; }
         Operation* clone() {
             AddTilesOperation * pOp = new AddTilesOperation;
@@ -60,7 +60,7 @@ public:
             pOp->SetName(m_tilemap);
             return pOp;
         }
-        CL_Point GetPoint() const { return m_tile_pos; }        
+        clan::Point GetPoint() const { return m_tile_pos; }        
     protected:
         virtual Operation* create_suboperation() const { 
             AddTileOperation * pOp =  new AddTileOperation;
@@ -70,23 +70,23 @@ public:
         }
     protected:
         std::string m_tilemap;
-        CL_Point    m_tile_pos;        
+        clan::Point    m_tile_pos;        
     };
     
     
-    TileSelector(CL_GUIComponent* parent);
+    TileSelector(clan::GUIComponent* parent);
     virtual ~TileSelector();
-    CL_Size get_image_size() const { return m_image.get_size(); }
-    void SetTilemap(CL_Image image, const std::string& name);
-    CL_Point get_offset() const;
-    void set_offset(const CL_Point& pt);
+    clan::Size get_image_size() const { return m_image.get_size(); }
+    void SetTilemap(clan::Image image, const std::string& name);
+    clan::Point get_offset() const;
+    void set_offset(const clan::Point& pt);
     void SetMapEditor(MapEditorState* state) { m_state = state; }
 private:
-    void on_render(CL_GraphicContext& gc, const CL_Rect& rect);
-    bool on_click(const CL_InputEvent& event);
+    void on_render(clan::Canvas& gc, const clan::Rect& rect);
+    bool on_click(const clan::InputEvent& event);
     
-    CL_Image m_image;
-    CL_Point m_offset;
+    clan::Image m_image;
+    clan::Point m_offset;
     std::string m_name;
     AddTileOperation m_op;
     AddTilesOperation m_group_op;

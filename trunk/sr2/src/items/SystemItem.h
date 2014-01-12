@@ -13,7 +13,7 @@ namespace StoneRing{
         virtual uint GetValue() const { return 0;} // No value to system items. cant sell 'em.
         virtual uint GetSellValue() const { return 0; }
         virtual std::string GetName() const { return NamedItemElement::GetName(); }
-        virtual CL_Image GetIcon() const { return NamedItemElement::GetIcon(); }
+        virtual clan::Image GetIcon() const { return NamedItemElement::GetIcon(); }
         virtual uint GetMaxInventory() const { return 999; }
         virtual std::string GetDescription() const { return "System use"; }
         

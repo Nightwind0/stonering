@@ -21,12 +21,12 @@ namespace StoneRing
 		virtual std::string GetDebugId() const { return m_name; }				
         
 #if SR2_EDITOR
-        CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
+        clan::DomElement CreateDomElement(clan::DomDocument& doc)const;
 		void SetCellX(int x){m_nCellX = x;}
 		void SetCellY(int y){m_nCellY = y;}
 #endif
     private:
-        virtual void load_attributes(CL_DomNamedNodeMap);
+        virtual void load_attributes(clan::DomNamedNodeMap);
         virtual void load_finished();
     protected:
         std::string m_name;

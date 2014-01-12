@@ -23,61 +23,62 @@ void GraphicsManager::initialize() {
 	}
 }
 
-CL_Gradient GraphicsManager::GetMenuGradient() {
+clan::Gradient GraphicsManager::GetMenuGradient() {
 	return m_pInstance->m_theme.m_menu_gradient;
 }
 
-CL_Pointf GraphicsManager::GetMenuInset() {
-	CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
-	CL_Resource resource = resources.get_resource( "Game/MenuInset" );
+clan::Pointf GraphicsManager::GetMenuInset() {
+	clan::ResourceManager& resources = IApplication::GetInstance()->GetResources();
+	clan::XMLResourceNode node = clan::XMLResourceManager::get_doc(resources).get_resource( "Game/MenuInset" );
 
-	if( resource.get_type() != "point" )
-		throw CL_Exception( "Point resource element was not 'point' type" );
+	if( node.get_type() != "point" )
+		throw clan::Exception( "Point resource element was not 'point' type" );
 
 
-	float x = atof( resource.get_element().get_attribute( "x" ).c_str() );
-	float y = atof( resource.get_element().get_attribute( "y" ).c_str() );
+	float x = atof( node.get_element().get_attribute( "x" ).c_str() );
+	float y = atof( node.get_element().get_attribute( "y" ).c_str() );
 
-	return CL_Pointf( x, y );
+	return clan::Pointf( x, y );
 }
 
 
-CL_Sprite GraphicsManager::GetPortraits( const std::string& character ) {
-	CL_ResourceManager& resources  = IApplication::GetInstance()->GetResources();
+clan::Sprite GraphicsManager::GetPortraits( const std::string& character ) {
+	clan::ResourceManager& resources  = IApplication::GetInstance()->GetResources();
+	clan::Canvas canvas( GET_MAIN_CANVAS() );
+	clan::Sprite  sprite = clan::Sprite::resource( canvas, "Sprites/Portraits/" +  character, resources );
 
-	CL_Sprite  sprite( GET_MAIN_GC(), "Sprites/Portraits/" +  character, &resources );
+	clan::Sprite clone = sprite.clone();
 
-	CL_Sprite clone;
-	clone.clone( sprite );
-
-	sprite.set_alignment( origin_center );
+	sprite.set_alignment( clan::origin_center );
 	return clone;
 }
 
-CL_Image GraphicsManager::CreateImage( const std::string& name ) {
-	CL_ResourceManager& resources  = IApplication::GetInstance()->GetResources();
+clan::Image GraphicsManager::CreateImage( const std::string& name ) {
+	clan::ResourceManager& resources  = IApplication::GetInstance()->GetResources();
 
-	CL_Image image( GET_MAIN_GC(), name, &resources );
+	clan::Canvas canvas(GET_MAIN_CANVAS());
+	
+	clan::Image image = clan::Image::resource( canvas, name, resources );
 
 	return image;
 }
 
 
-CL_Sprite GraphicsManager::CreateSprite( const std::string & name, bool add_category ) {
-	CL_ResourceManager& resources  = IApplication::GetInstance()->GetResources();
+clan::Sprite GraphicsManager::CreateSprite( const std::string & name, bool add_category ) {
+	clan::ResourceManager& resources  = IApplication::GetInstance()->GetResources();
 
-	CL_Sprite  sprite( GET_MAIN_GC(), ( add_category ? "Sprites/" : "" ) +  name, &resources );
+	clan::Canvas canvas(GET_MAIN_CANVAS());
+	clan::Sprite  sprite = clan::Sprite::resource( canvas, ( add_category ? "Sprites/" : "" ) +  name, resources );
 
-	CL_Sprite clone;
-	clone.clone( sprite );
+	clan::Sprite clone = sprite.clone();
 
-	sprite.set_alignment( origin_center );
+	sprite.set_alignment( clan::origin_center );
 
 	return clone;
 }
 
-std::string GraphicsManager::LookUpMapWithImage( CL_Texture surface ) {
-	for( std::map<std::string, CL_Texture>::iterator i = m_pInstance->m_tile_map.begin();
+std::string GraphicsManager::LookUpMapWithImage( clan::Texture surface ) {
+	for( std::map<std::string, clan::Texture2D>::iterator i = m_pInstance->m_tile_map.begin();
 						i != m_pInstance->m_tile_map.end();
 						i++ ) {
 		if( i->second == surface ) {
@@ -85,23 +86,24 @@ std::string GraphicsManager::LookUpMapWithImage( CL_Texture surface ) {
 		}
 	}
 
-	throw CL_Exception( "BAD! TILEMAP NOT FOUND IN lookupMapWithSurface" );
+	throw clan::Exception( "BAD! TILEMAP NOT FOUND IN lookupMapWithSurface" );
 
 	return "die";
 
 }
 
-CL_Texture GraphicsManager::GetTileMap( const std::string & name ) {
-	CL_ResourceManager& resources  = IApplication::GetInstance()->GetResources();
+clan::Texture2D GraphicsManager::GetTileMap( const std::string & name ) {
+	clan::ResourceManager& resources  = IApplication::GetInstance()->GetResources();
 
-	CL_Texture surface;
+	clan::Texture2D surface;
 
 
 	if( m_pInstance->m_tile_map.find( name ) == m_pInstance->m_tile_map.end() ) {
 #ifndef NDEBUG
 		std::cout << "TileMap now loading: " << name << std::endl;
 #endif
-		surface = CL_Texture( GET_MAIN_GC(), "Tilemaps/" + name, &resources);
+		clan::Canvas canvas(GET_MAIN_CANVAS());
+		surface = clan::Texture2D::resource( canvas, "Tilemaps/" + name, resources).get().to_texture_2d();
 
 		m_pInstance->m_tile_map[ name ] = surface;
 		return surface;
@@ -185,27 +187,29 @@ std::string GraphicsManager::NameOfDisplayFont( DisplayFont font ) {
 
 }
 
-CL_Sprite  GraphicsManager::CreateMonsterSprite( const std::string &monster, const std::string &sprite_id ) {
-	CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
-	CL_Sprite  sprite( GET_MAIN_GC(), "Sprites/Monsters/" + monster + '/' + sprite_id, &resources );
+clan::Sprite  GraphicsManager::CreateMonsterSprite( const std::string &monster, const std::string &sprite_id ) {
+	clan::ResourceManager& resources = IApplication::GetInstance()->GetResources();
+	clan::Canvas canvas(GET_MAIN_CANVAS());
+	clan::Sprite  sprite = clan::Sprite::resource( canvas, "Sprites/Monsters/" + monster + '/' + sprite_id, resources );
 
 
-	sprite.set_alignment( origin_center );
+	sprite.set_alignment( clan::origin_center );
 
 	return sprite;
 }
 
-CL_Sprite GraphicsManager::CreateCharacterSprite( const std::string &player, const std::string &sprite_id ) {
-	CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
-	CL_Sprite sprite = CL_Sprite( GET_MAIN_GC(), "Sprites/BattleSprites/" + player + '/' + sprite_id, &resources );
+clan::Sprite GraphicsManager::CreateCharacterSprite( const std::string &player, const std::string &sprite_id ) {
+	clan::ResourceManager& resources = IApplication::GetInstance()->GetResources();
+	clan::Canvas canvas(GET_MAIN_CANVAS());
+	clan::Sprite sprite = clan::Sprite::resource( canvas, "Sprites/BattleSprites/" + player + '/' + sprite_id, resources );
 
 
-	sprite.set_alignment( origin_center );
+	sprite.set_alignment( clan::origin_center );
 	return sprite;
 }
 
-CL_Sprite  GraphicsManager::CreateEquipmentSprite( EquipmentSpriteType type, const std::string& sprite_name ) {
-	CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
+clan::Sprite  GraphicsManager::CreateEquipmentSprite( EquipmentSpriteType type, const std::string& sprite_name ) {
+	clan::ResourceManager& resources = IApplication::GetInstance()->GetResources();
 	std::string item_type;
 	switch( type ) {
 		case EQUIPMENT_SPRITE_WEAPON:
@@ -216,30 +220,32 @@ CL_Sprite  GraphicsManager::CreateEquipmentSprite( EquipmentSpriteType type, con
 			break;
 	}
 
-	CL_Sprite sprite = CL_Sprite( GET_MAIN_GC(), "Sprites/Equipment/" + item_type + '/' + sprite_name, &resources );
+	clan::Canvas canvas(GET_MAIN_CANVAS());
+	clan::Sprite sprite = clan::Sprite::resource( canvas, "Sprites/Equipment/" + item_type + '/' + sprite_name, resources );
 
 
-	sprite.set_alignment( origin_center );
+	sprite.set_alignment( clan::origin_center );
 	return sprite;
 }
 
 
-CL_Image  GraphicsManager::GetBackdrop( const std::string &name ) {
-	CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
-	CL_Image surface = CL_Image( GET_MAIN_GC(), "Backdrops/" + name, &resources );
+clan::Image  GraphicsManager::GetBackdrop( const std::string &name ) {
+	clan::ResourceManager& resources = IApplication::GetInstance()->GetResources();
+	clan::Canvas canvas(GET_MAIN_CANVAS());
+	clan::Image surface = clan::Image::resource( canvas, "Backdrops/" + name, resources );
 
 	return surface;
 }
 
-CL_Image GraphicsManager::GetOverlay( GraphicsManager::Overlay overlay ) {
-	std::map<Overlay, CL_Image>::iterator foundIt = m_pInstance->m_overlay_map.find( overlay );
+clan::Image GraphicsManager::GetOverlay( GraphicsManager::Overlay overlay ) {
+	std::map<Overlay, clan::Image>::iterator foundIt = m_pInstance->m_overlay_map.find( overlay );
 
 	if( foundIt != m_pInstance->m_overlay_map.end() ) {
 		return foundIt->second;
 	} else {
-		CL_ResourceManager& resources  = IApplication::GetInstance()->GetResources();
-
-		CL_Image surface( GET_MAIN_GC(), std::string( "Overlays/" ) + NameOfOverlay( overlay ) + "/overlay", &resources );
+		clan::ResourceManager& resources  = IApplication::GetInstance()->GetResources();
+		clan::Canvas canvas(GET_MAIN_CANVAS());
+		clan::Image surface = clan::Image::resource( canvas, std::string( "Overlays/" ) + NameOfOverlay( overlay ) + "/overlay", resources );
 
 		m_pInstance->m_overlay_map [ overlay ] = surface;
 
@@ -248,18 +254,19 @@ CL_Image GraphicsManager::GetOverlay( GraphicsManager::Overlay overlay ) {
 }
 
 
-CL_Image GraphicsManager::GetIcon( const std::string& icon ) {
-	std::map<std::string, CL_Image>::iterator foundIt = m_pInstance->m_icon_map.find( icon );
+clan::Image GraphicsManager::GetIcon( const std::string& icon ) {
+	clan::Canvas canvas(GET_MAIN_CANVAS());
+	std::map<std::string, clan::Image>::iterator foundIt = m_pInstance->m_icon_map.find( icon );
 
 	if( foundIt != m_pInstance->m_icon_map.end() ) {
 		return foundIt->second;
 	} else {
-		CL_ResourceManager& resources  = IApplication::GetInstance()->GetResources();
-		CL_Image surface;
+		clan::ResourceManager& resources  = IApplication::GetInstance()->GetResources();
+		clan::Image surface;
 		try {
-			surface =  CL_Image( GET_MAIN_GC(), std::string( "Icons/" ) + icon, &resources );
-		} catch( CL_Exception e ) {
-			surface = CL_Image( GET_MAIN_GC(), std::string( "Icons/no_icon" ), &resources );
+			surface =  clan::Image::resource( canvas, std::string( "Icons/" ) + icon, resources );
+		} catch( clan::Exception e ) {
+			surface = clan::Image::resource( canvas, std::string( "Icons/no_icon" ), resources );
 		}
 		m_pInstance->m_icon_map [ icon ] = surface;
 
@@ -293,58 +300,35 @@ GraphicsManager::Theme::ColorRef GraphicsManager::GetColorRef( const std::string
 
 
 StoneRing::Font GraphicsManager::LoadFont( const std::string& name ) {
-	CL_ResourceManager& resources  = IApplication::GetInstance()->GetResources();
-	const std::string fontname = "Fonts/" + name;
-	CL_Resource font_resource = resources.get_resource( fontname );
+	clan::ResourceManager& resources  = IApplication::GetInstance()->GetResources();
+	clan::Canvas canvas(GET_MAIN_CANVAS());
+	const std::string fontname =  name;
+	clan::XMLResourceNode font_resource = clan::XMLResourceManager::get_doc(resources).get_resource( fontname );
+	
+	clan::FontDescription desc;
+	desc.set_typeface_name(name);
+	desc.set_height(24);
 
-	CL_Font font;
-	CL_Pointf shadow_offset;
-	CL_Colorf color = CL_Colorf::white;
-	if( font_resource.get_type() == "font" ) {
-		CL_Font_Sprite spritefont( GET_MAIN_GC(), fontname, &resources );
-		font = spritefont;
-	} else if( font_resource.get_type() == "freetype" ) {
-		CL_String filename = font_resource.get_element().get_attribute( "file" );
-		CL_String fontname = font_resource.get_element().get_attribute( "font_name" );
-		CL_String size_str = font_resource.get_element().get_attribute( "size" );
-		CL_String color_str =  font_resource.get_element().get_attribute( "color" );
-		Theme::ColorRef color_ref = GetColorRef( color_str );
-		if( color_ref != Theme::COLOR_COUNT ) {
-			color = m_theme.m_colors[color_ref];
-		} else {
-			color = CL_Colorf( color_str );
-		}
-		float shadowx, shadowy;
-		if( font_resource.get_element().has_attribute( "shadowx" ) )
-			shadowx = atof( font_resource.get_element().get_attribute( "shadowx" ).c_str() );
-		if( font_resource.get_element().has_attribute( "shadowy" ) )
-			shadowy = atof( font_resource.get_element().get_attribute( "shadowy" ).c_str() );
+	clan::Font font = clan::Font::resource(canvas,desc,resources);
+	clan::Pointf shadow_offset;
+	clan::Colorf color = clan::Colorf::white;
 
-		shadow_offset = CL_Pointf( shadowx, shadowy );
-		int size = atoi( size_str.c_str() );
 
-		CL_IODevice file = resources.get_directory( font_resource ).open_file_read( filename );
-		CL_FontDescription desc;
-		desc.set_height(size);
-		desc.set_typeface_name(filename);
-		desc.set_subpixel(false);
-		CL_Font_Freetype thefont( desc, file );
-		font = thefont;
-	} else if( font_resource.get_type() == "systemfont" ) {
-		CL_String fontname = font_resource.get_element().get_attribute( "font_name" );
-		CL_String size_str = font_resource.get_element().get_attribute( "size" );
-		CL_String color_str = font_resource.get_element().get_attribute( "color" );
-		Theme::ColorRef color_ref = GetColorRef( color_str );
-		if( color_ref != Theme::COLOR_COUNT ) {
-			color = m_theme.m_colors[color_ref];
-		} else {
-			color = CL_Colorf( color_str );
-		}
+	 std::string color_str =  font_resource.get_element().get_attribute( "color" );
+     Theme::ColorRef color_ref = GetColorRef( color_str );
+     if( color_ref != Theme::COLOR_COUNT ) {
+		color = m_theme.m_colors[color_ref];
+     } else {
+        color = clan::Colorf( color_str );
+     }
+	float shadowx, shadowy;
+	if( font_resource.get_element().has_attribute( "shadowx" ) )
+		shadowx = atof( font_resource.get_element().get_attribute( "shadowx" ).c_str() );
+	if( font_resource.get_element().has_attribute( "shadowy" ) )
+		shadowy = atof( font_resource.get_element().get_attribute( "shadowy" ).c_str() );
 
-		CL_Font_System thefont( GET_MAIN_GC(), fontname, atoi( size_str.c_str() ) );
+	shadow_offset = clan::Pointf( shadowx, shadowy );
 
-		font = thefont;
-	}
 
 	Font thefont;
 	thefont.m_font = font;
@@ -358,7 +342,7 @@ StoneRing::Font GraphicsManager::LoadFont( const std::string& name ) {
 
 std::string  GraphicsManager::GetFontName( Overlay overlay, const std::string& type ) {
 	std::map<Overlay, std::map<std::string, std::string> >::iterator mapIt = m_pInstance->m_overlay_font_map.find( overlay );
-	CL_ResourceManager & resources  = IApplication::GetInstance()->GetResources();
+	clan::ResourceManager & resources  = IApplication::GetInstance()->GetResources();
 	std::string fontname;
 
 	if( mapIt != m_pInstance->m_overlay_font_map.end() ) {
@@ -367,13 +351,13 @@ std::string  GraphicsManager::GetFontName( Overlay overlay, const std::string& t
 			fontname = foundIt->second;
 		} else {
 			// This overlay has an entry, but not this font yet
-			fontname =  CL_String_load( std::string( "Overlays/" + NameOfOverlay( overlay )
+			fontname =  String_load( std::string( "Overlays/" + NameOfOverlay( overlay )
 																																												+ "/fonts/" + type ), resources );
 			mapIt->second[type] = fontname;
 		}
 	} else {
 		// Overlay doesnt have an entry yet
-		fontname = CL_String_load( std::string( "Overlays/" + NameOfOverlay( overlay )
+		fontname = String_load( std::string( "Overlays/" + NameOfOverlay( overlay )
 																																										+ "/fonts/" + type ), resources );
 
 		m_pInstance->m_overlay_font_map[overlay][type] = fontname;
@@ -383,11 +367,11 @@ std::string  GraphicsManager::GetFontName( Overlay overlay, const std::string& t
 	return fontname;
 }
 
-CL_Colorf GraphicsManager::GetColor( Overlay overlay, const std::string& name ) {
-	CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
-	CL_String colorStr = CL_String_load( std::string( "Overlays/" + NameOfOverlay( overlay ) + "/colors/" + name ), resources );
+clan::Colorf GraphicsManager::GetColor( Overlay overlay, const std::string& name ) {
+	clan::ResourceManager& resources = IApplication::GetInstance()->GetResources();
+	std::string colorStr = String_load( std::string( "Overlays/" + NameOfOverlay( overlay ) + "/colors/" + name ), resources );
 
-	return CL_Colorf( colorStr );
+	return clan::Colorf( colorStr );
 }
 
 
@@ -402,119 +386,114 @@ StoneRing::Font GraphicsManager::GetFont( Overlay overlay, const std::string& ty
 }
 
 
-CL_Pointf GraphicsManager::GetPoint( Overlay overlay, const std::string& name ) {
-	CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
-	CL_String pointname = CL_String( "Overlays/" + NameOfOverlay( overlay ) + "/points/" + name );
+clan::Pointf GraphicsManager::GetPoint( Overlay overlay, const std::string& name ) {
+	clan::ResourceManager& resources = IApplication::GetInstance()->GetResources();
+	std::string pointname = std::string( "Overlays/" + NameOfOverlay( overlay ) + "/points/" + name );
 
-	CL_Resource resource = resources.get_resource( pointname );
+	clan::XMLResourceNode resource = clan::XMLResourceManager::get_doc(resources).get_resource( pointname );
 
 	if( resource.get_type() != "point" )
-		throw CL_Exception( "Point resource element was not 'point' type " +  NameOfOverlay(overlay) + name.c_str());
+		throw clan::Exception( "Point resource element was not 'point' type " +  NameOfOverlay(overlay) + name.c_str());
 
 
 	float x = atof( resource.get_element().get_attribute( "x" ).c_str() );
 	float y = atof( resource.get_element().get_attribute( "y" ).c_str() );
 
-	return CL_Pointf( x, y );
+	return clan::Pointf( x, y );
 }
 
-CL_Image GraphicsManager::GetImage( GraphicsManager::Overlay overlay, const std::string& i_name ) {
-	CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
-	CL_String name = CL_String( "Overlays/" + NameOfOverlay( overlay ) + '/' + i_name );
+clan::Image GraphicsManager::GetImage( GraphicsManager::Overlay overlay, const std::string& i_name ) {
+	clan::ResourceManager& resources = IApplication::GetInstance()->GetResources();
+	std::string name = std::string( "Overlays/" + NameOfOverlay( overlay ) + '/' + i_name );
 
-	CL_Image image( GET_MAIN_GC(), name, &resources );
+	clan::Canvas canvas ( GET_MAIN_CANVAS() );
+	clan::Image image = clan::Image::resource( canvas, name, resources );
 
 	return image;
 }
 
 
-CL_Rectf GraphicsManager::GetRect( Overlay overlay, const std::string& name ) {
-	CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
-	CL_String pointname = CL_String( "Overlays/" + NameOfOverlay( overlay ) + "/rects/" + name );
+clan::Rectf GraphicsManager::GetRect( Overlay overlay, const std::string& name ) {
+	clan::ResourceManager& resources = IApplication::GetInstance()->GetResources();
+	std::string pointname = std::string( "Overlays/" + NameOfOverlay( overlay ) + "/rects/" + name );
 
-	CL_Resource resource = resources.get_resource( pointname );
+	clan::XMLResourceNode resource = clan::XMLResourceManager::get_doc(resources).get_resource( pointname );
 
 	if( resource.get_type() != "rect" )
-		throw CL_Exception( "Rect resource element was not 'rect' type" );
+		throw clan::Exception( "Rect resource element was not 'rect' type" );
 
 
 	float top = atof( resource.get_element().get_attribute( "top" ).c_str() );
 	float left = atof( resource.get_element().get_attribute( "left" ).c_str() );
 	float right = atof( resource.get_element().get_attribute( "right" ).c_str() );
 	float bottom = atof( resource.get_element().get_attribute( "bottom" ).c_str() );
-	return CL_Rectf( left, top, right, bottom );
+	return clan::Rectf( left, top, right, bottom );
 }
 
-CL_Gradient GraphicsManager::GetGradient( Overlay overlay, const std::string& name ) {
-	CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
-	CL_String gradientname = CL_String( "Overlays/" + NameOfOverlay( overlay ) + "/gradients/" + name );
+clan::Gradient GraphicsManager::GetGradient( Overlay overlay, const std::string& name ) {
+	clan::ResourceManager& resources = IApplication::GetInstance()->GetResources();
+	std::string gradientname = std::string( "Overlays/" + NameOfOverlay( overlay ) + "/gradients/" + name );
 
-	CL_Resource resource = resources.get_resource( gradientname );
+	clan::XMLResourceNode resource = clan::XMLResourceManager::get_doc(resources).get_resource( gradientname );
 
 	if( resource.get_type() != "gradient" )
-		throw CL_Exception( "Gradient resource element was not 'gradient' type" );
+		throw clan::Exception( "Gradient resource element was not 'gradient' type" );
 
-	CL_Colorf top_left( resource.get_element().get_attribute( "top_left" ) );
-	CL_Colorf top_right( resource.get_element().get_attribute( "top_right" ) );
-	CL_Colorf bottom_left( resource.get_element().get_attribute( "bottom_left" ) );
-	CL_Colorf bottom_right( resource.get_element().get_attribute( "bottom_right" ) );
+	clan::Colorf top_left( resource.get_element().get_attribute( "top_left" ) );
+	clan::Colorf top_right( resource.get_element().get_attribute( "top_right" ) );
+	clan::Colorf bottom_left( resource.get_element().get_attribute( "bottom_left" ) );
+	clan::Colorf bottom_right( resource.get_element().get_attribute( "bottom_right" ) );
 
-	return CL_Gradient( top_left, top_right, bottom_left, bottom_right );
+	return clan::Gradient( top_left, top_right, bottom_left, bottom_right );
 }
 
-CL_Sprite GraphicsManager::GetSprite( GraphicsManager::Overlay overlay, const std::string& name ) {
-	CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
-	CL_Sprite sprite = CL_Sprite( GET_MAIN_GC(), "Overlays/" + NameOfOverlay( overlay ) + "/sprites/" + name, &resources );
+clan::Sprite GraphicsManager::GetSprite( GraphicsManager::Overlay overlay, const std::string& name ) {
+	clan::ResourceManager& resources = IApplication::GetInstance()->GetResources();
+	clan::Canvas canvas(GET_MAIN_CANVAS());
+	clan::Sprite sprite = clan::Sprite::resource( canvas, "Overlays/" + NameOfOverlay( overlay ) + "/sprites/" + name, resources );
 
 
-	sprite.set_alignment( origin_center );
+	sprite.set_alignment( clan::origin_center );
 	return sprite;
 }
 
-CL_Sprite GraphicsManager::GetSpriteWithImage( const CL_Image image ) {
+clan::Sprite GraphicsManager::GetSpriteWithImage( const clan::Image image ) {
 	// TODO: Is there a better way to do this? Such as loading the spriate frame directly from the resource manager?
-	CL_Texture texture( GET_MAIN_GC(), image.get_width(), image.get_height(), cl_rgba8 );
-	CL_FrameBuffer framebuffer( GET_MAIN_GC() );
-	framebuffer.attach_color_buffer( 0, texture );
-	GET_MAIN_GC().set_frame_buffer( framebuffer );
-	image.draw( GET_MAIN_GC(), 0, 0 );
-	GET_MAIN_GC().reset_frame_buffer();
 
+	clan::Canvas canvas(GET_MAIN_CANVAS());
 	// Okay. Now the text should have the image on it..
-	CL_SpriteDescription desc;
-	desc.add_frame( texture );
 
-	CL_Sprite sprite( GET_MAIN_GC(), desc );
-	sprite.set_alignment( origin_center );
+	clan::Sprite sprite( canvas );
+	sprite.add_frame( image.get_texture().get_texture().to_texture_2d() );	
+	sprite.set_alignment( clan::origin_center );
 
 	return sprite;
 }
 
-CL_Colorf GraphicsManager::LoadColor( CL_ResourceManager& resources, const std::string& path ) {
-	CL_Resource resource = resources.get_resource( path );
-	CL_String color_str = CL_String_load( path, resources );
-	return CL_Colorf( color_str );
+clan::Colorf GraphicsManager::LoadColor( clan::ResourceManager& resources, const std::string& path ) {
+	std::string color_str = String_load( path, resources );
+	return clan::Colorf( color_str );
 }
 
 
 GraphicsManager::Theme GraphicsManager::LoadTheme( const std::string& name ) {
 	Theme theme;
-	CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
+	clan::ResourceManager& resources = IApplication::GetInstance()->GetResources();
 
-	CL_String theme_path = CL_String( "Themes/" + name + "/" );
-	CL_String gradientname = CL_String( theme_path + "MenuGradient" );
+	std::string theme_path = std::string( "Themes/" + name + "/" );
+	std::string gradientname = std::string( theme_path + "MenuGradient" );
 
-	CL_Resource resource = resources.get_resource( gradientname );
+	clan::XMLResourceNode resource = clan::XMLResourceManager::get_doc(resources).get_resource( gradientname );
 
 	if( resource.get_type() != "gradient" )
-		throw CL_Exception( "Gradient resource element was not 'gradient' type" );
+		throw clan::Exception( "Gradient resource element was not 'gradient' type" );
 
-	CL_Colorf top_left( resource.get_element().get_attribute( "top_left" ) );
-	CL_Colorf top_right( resource.get_element().get_attribute( "top_right" ) );
-	CL_Colorf bottom_left( resource.get_element().get_attribute( "bottom_left" ) );
-	CL_Colorf bottom_right( resource.get_element().get_attribute( "bottom_right" ) );
+	clan::Colorf top_left( resource.get_element().get_attribute( "top_left" ) );
+	clan::Colorf top_right( resource.get_element().get_attribute( "top_right" ) );
+	clan::Colorf bottom_left( resource.get_element().get_attribute( "bottom_left" ) );
+	clan::Colorf bottom_right( resource.get_element().get_attribute( "bottom_right" ) );
 
-	theme.m_menu_gradient = CL_Gradient( top_left, top_right, bottom_left, bottom_right );
+	theme.m_menu_gradient = clan::Gradient( top_left, top_right, bottom_left, bottom_right );
 
 
 	theme.m_colors[Theme::COLOR_MAIN] = LoadColor( resources, theme_path + "color_main" );
@@ -545,17 +524,17 @@ std::string GraphicsManager::GetThemeName() {
 
 
 void GraphicsManager::GetAvailableThemes( std::list< std::string >& o_themes ) {
-	CL_ResourceManager & resources = IApplication::GetInstance()->GetResources();
-	std::vector<CL_String> sections = resources.get_resource_names( "Themes" );
-	for( std::vector<CL_String>::const_iterator it = sections.begin(); it != sections.end(); it++ ) {
+	clan::ResourceManager & resources = IApplication::GetInstance()->GetResources();
+	std::vector<std::string> sections = clan::XMLResourceManager::get_doc(resources).get_resource_names( "Themes" );
+	for( std::vector<std::string>::const_iterator it = sections.begin(); it != sections.end(); it++ ) {
 		o_themes.push_back( *it );
 	}
 }
 
 
 
-CL_Colorf GraphicsManager::HSVToRGB( const StoneRing::GraphicsManager::HSVColor& color ) {
-	CL_Colorf rgb_color;
+clan::Colorf GraphicsManager::HSVToRGB( const StoneRing::GraphicsManager::HSVColor& color ) {
+	clan::Colorf rgb_color;
 	if( color.s == 0.0f ) {                      //HSV from 0 to 1
 		rgb_color.set_red( color.v );
 		rgb_color.set_green( color.v );
@@ -604,10 +583,10 @@ CL_Colorf GraphicsManager::HSVToRGB( const StoneRing::GraphicsManager::HSVColor&
 	return rgb_color;
 }
 
-GraphicsManager::HSVColor GraphicsManager::RGBToHSV( const CL_Colorf& color ) {
+GraphicsManager::HSVColor GraphicsManager::RGBToHSV( const clan::Colorf& color ) {
 	HSVColor hsv_color;
-	float var_Min = min( color.get_red(), min( color.get_green(), color.get_blue() ) );    //Min. value of RGB
-	float var_Max = max( color.get_red(), max( color.get_green(), color.get_blue() ) );   //Max. value of RGB
+	float var_Min = std::min( color.get_red(), std::min( color.get_green(), color.get_blue() ) );    //Min. value of RGB
+	float var_Max = std::max( color.get_red(), std::max( color.get_green(), color.get_blue() ) );   //Max. value of RGB
 	float del_Max = var_Max - var_Min;             //Delta RGB value
 
 	hsv_color.v = var_Max;
@@ -637,25 +616,25 @@ float GraphicsManager::RotateHue( const float hue, const float angle_rads ) {
 	return radians + angle_rads;
 }
 
-CL_Colorf GraphicsManager::GetAnalog( const CL_Colorf& color, bool left ) {
+clan::Colorf GraphicsManager::GetAnalog( const clan::Colorf& color, bool left ) {
 	float degs = left ? 30.0 : -30.0;
 	return GetComplement( color, degs );
 }
 
-CL_Colorf GraphicsManager::GetOppositeColor( const CL_Colorf& color ) {
+clan::Colorf GraphicsManager::GetOppositeColor( const clan::Colorf& color ) {
 	return GetComplement( color, 180.0f );
 }
 
-CL_Colorf GraphicsManager::GetSplit( const CL_Colorf& color, bool left ) {
+clan::Colorf GraphicsManager::GetSplit( const clan::Colorf& color, bool left ) {
 	return GetComplement( color, left ? 150.0f : -150.0f );
 }
 
-CL_Colorf GraphicsManager::GetTriadic( const CL_Colorf& color, bool left ) {
+clan::Colorf GraphicsManager::GetTriadic( const clan::Colorf& color, bool left ) {
 	return GetComplement( color, left ? 120.0f : -120.f );
 }
 
 
-CL_Colorf GraphicsManager::GetComplement( const CL_Colorf& color, float degs ) {
+clan::Colorf GraphicsManager::GetComplement( const clan::Colorf& color, float degs ) {
 	const float deg_per_rad = 57.29577951f;
 	const float radians = degs * deg_per_rad;
 	HSVColor hsv = RGBToHSV( color );
@@ -663,7 +642,7 @@ CL_Colorf GraphicsManager::GetComplement( const CL_Colorf& color, float degs ) {
 	return HSVToRGB( hsv );
 }
 
-void GraphicsManager::GetComplementaryColors( const CL_Colorf& color, CL_Colorf& one, CL_Colorf& two ) {
+void GraphicsManager::GetComplementaryColors( const clan::Colorf& color, clan::Colorf& one, clan::Colorf& two ) {
 	// For now, use triadic
 	one = GetTriadic( color, true );
 	two = GetTriadic( color, false );

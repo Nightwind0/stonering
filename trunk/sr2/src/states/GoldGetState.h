@@ -38,9 +38,9 @@ protected:
 	virtual SoundManager::Effect get_sound_effect()const;
 	virtual std::string get_text()const;
 	virtual GraphicsManager::Overlay get_overlay()const;
-	virtual CL_Image get_icon()const;
+	virtual clan::Image get_icon()const;
 private:
-	CL_Image m_icon;
+	clan::Image m_icon;
 	int m_gold;
 	std::string m_text;
 };

@@ -46,7 +46,7 @@ public:
     virtual void HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos);
     
     virtual bool Threaded() const { return true; }
-    virtual void Draw(const CL_Rect &screenRect,CL_GraphicContext& GC);
+    virtual void Draw(const clan::Rect &screenRect,clan::Canvas& GC);
     virtual bool LastToDraw() const; // Should we continue drawing more states?
     virtual bool DisableMappableObjects() const; // Should the app move the MOs?
     virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
@@ -58,13 +58,13 @@ public:
     bool HasTasks() const { return !m_tasks.empty(); }
     void SetFadeLevel(float level);
     void PanTo(int x, int y);
-    CL_Point GetOrigin()const;
+    clan::Point GetOrigin()const;
     void Completed();
     void WaitTaskEvent();
 private:
     void verifyLevel();
     Level * grabMapStateLevel();
-	CL_Point grabMapStateCenter();
+	clan::Point grabMapStateCenter();
     SteelType gotoLevel(const std::string&,int x, int y);
     SteelType hideObject(SteelType::Handle hHandle);
     SteelType unhideObject(SteelType::Handle hHandle);
@@ -95,7 +95,7 @@ private:
         virtual ~Task(){}
         virtual void start()=0;
         virtual void update()=0;
-        virtual void draw(const CL_Rect& screenRect, CL_GraphicContext &gc){}
+        virtual void draw(const clan::Rect& screenRect, clan::Canvas &gc){}
         virtual bool finished()=0;
         virtual void cleanup(){}
     protected:   
@@ -110,20 +110,20 @@ private:
         virtual ~FadeTask(){}
         virtual void start();
         virtual void update();
-        virtual void draw(const CL_Rect& screenRect, CL_GraphicContext &gc){}
+        virtual void draw(const clan::Rect& screenRect, clan::Canvas &gc){}
         virtual bool finished();
         virtual void cleanup();
     private:
         int m_updateCount;
         bool m_fade_out;
-        uint m_start_time;
+        clan::ubyte64 m_start_time;
         uint m_duration;        
     };
     
     class MoveTask : public Task {
     public:
         MoveTask(CutSceneState& state,Level& level,MappableObject* pMo,int x, int y, int speed):Task(state),m_level(level),m_pMO(pMo),m_pNav(NULL),m_movementSpeed(speed){
-            m_target = CL_Point(x,y);
+            m_target = clan::Point(x,y);
         }
         virtual ~MoveTask(){}
         virtual void start();
@@ -134,7 +134,7 @@ private:
         MappableObject* m_pMO;
         Level& m_level;
         ScriptedNavigator* m_pNav;
-        CL_Point m_target;
+        clan::Point m_target;
         int m_movementSpeed;
     };
     
@@ -147,9 +147,9 @@ private:
         virtual void update();
         virtual bool finished();
     private:
-        CL_Point m_target;
-        CL_Point m_origin;
-        uint m_start_time;
+        clan::Point m_target;
+        clan::Point m_origin;
+        clan::ubyte64 m_start_time;
         uint m_duration;
     };
     
@@ -165,7 +165,7 @@ private:
         MappableObject * m_pObject;
         bool m_fade_in;
         uint m_duration;
-        uint m_start_time;
+        clan::ubyte64 m_start_time;
     };
     
     Level * m_pLevel;
@@ -175,12 +175,12 @@ private:
     bool m_bDone;
     bool m_bDrawMOs;
     bool m_bFrozen;
-    CL_Point m_center;
-    CL_Colorf m_color;
+    clan::Point m_center;
+    clan::Colorf m_color;
     float m_fade_level;
-    CL_Event m_wait_event;
-    CL_Thread m_steel_thread;
-    CL_Mutex m_task_mutex;
+    clan::Event m_wait_event;
+    clan::Thread m_steel_thread;
+    clan::Mutex m_task_mutex;
     std::list<MappableObject*> m_temp_mos;
     std::list<MappableObject*> m_faded_mos;
 #if SEPARATE_INTERPRETER

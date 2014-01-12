@@ -3,7 +3,6 @@
 
 #include <ClanLib/core.h>
 #include <set>
-#include <X11/X.h>
 #include "sr_defines.h"
 #include "Equipment.h"
 #include "Magic.h"
@@ -14,7 +13,9 @@
 #include "ICharacter.h"
 #include "TimedInterpolator.h"
 
-class CL_Sprite;
+namespace clan { 
+  class Sprite;
+}
 
 namespace StoneRing{
 
@@ -79,16 +80,16 @@ namespace StoneRing{
 		/***************************************************************************
 		* Sprites and images
 		***************************************************************************/
-		CL_Sprite  GetPortrait(ePortrait portrait);
-        CL_Sprite  GetMapSprite() const { return m_mapSprite; }
-        CL_Sprite  GetCurrentSprite(bool pure=true);
-        void       SetCurrentSprite(CL_Sprite sprite) { m_currentSprite = sprite; }
+		clan::Sprite  GetPortrait(ePortrait portrait);
+        clan::Sprite  GetMapSprite() const { return m_mapSprite; }
+        clan::Sprite  GetCurrentSprite(bool pure=true);
+        void       SetCurrentSprite(clan::Sprite sprite) { m_currentSprite = sprite; }
 
 		/**************************************************************************
 		* Battle stuff
 		***************************************************************************/
-        virtual CL_Pointf      GetBattlePos()const;
-        virtual void           SetBattlePos(CL_Pointf point);
+        virtual clan::Pointf      GetBattlePos()const;
+        virtual void           SetBattlePos(clan::Pointf point);
         // Shortcuts to class data
         BattleMenu *           GetBattleMenu() const;
         CharacterClass *       GetClass() const { return m_pClass; }
@@ -131,7 +132,7 @@ namespace StoneRing{
         typedef std::map<std::string,uint> StatusEffectRounds;
 
         virtual bool handle_element(eElement, Element *);
-        virtual void load_attributes(CL_DomNamedNodeMap);
+        virtual void load_attributes(clan::DomNamedNodeMap);
         virtual void load_finished();
         void set_toggle_defaults();
 
@@ -141,7 +142,7 @@ namespace StoneRing{
         std::map<Equipment::eSlot,Equipment*> m_equipment;
 		std::map<eCharacterAttribute,TimedInterpolator<double> > m_lerped_attrs;
         std::set<std::string> m_skillset;
-		CL_Sprite m_portraits;
+		clan::Sprite m_portraits;
         SpriteDefinitionMap m_sprite_definition_map;
         CharacterClass * m_pClass;
 		uint m_nLevel;
@@ -149,20 +150,20 @@ namespace StoneRing{
 		uint m_nXP;
         uint m_nSP;
 		TimedInterpolator<int> m_lerped_sp;
-        CL_Sprite m_mapSprite;
-        CL_Sprite m_currentSprite;
-		CL_Sprite m_portrait;
+        clan::Sprite m_mapSprite;
+        clan::Sprite m_currentSprite;
+		clan::Sprite m_portrait;
         StatusEffectMap m_status_effects;
         StatusEffectRounds m_status_effect_rounds;
         eType m_eType;
-        CL_Pointf m_battle_pos;
+        clan::Pointf m_battle_pos;
     };
 
     inline void Character::RollInitiative(void)
     {
         // 20% variance
         int init = static_cast<int>(normal_random(GetAttribute(CA_LCK), GetAttribute(CA_LCK) * 0.2));
-        m_nInitiative = cl_max(0,init);
+        m_nInitiative = std::max(0,init);
     }
 
     inline uint Character::GetInitiative(void)const
@@ -171,12 +172,12 @@ namespace StoneRing{
     }
 
 
-    inline CL_Pointf  Character::GetBattlePos()const
+    inline clan::Pointf  Character::GetBattlePos()const
     {
         return m_battle_pos;
     }
 
-    inline void      Character::SetBattlePos(CL_Pointf point)
+    inline void      Character::SetBattlePos(clan::Pointf point)
     {
         m_battle_pos = point;
 #if 0

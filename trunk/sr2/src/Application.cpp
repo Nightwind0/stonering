@@ -2,7 +2,7 @@
 #include <ClanLib/display.h>
 #include <ClanLib/gl.h>
 #include <ClanLib/sound.h>
-#include <ClanLib/vorbis.h>
+//#include <ClanLib/vorbis.h>
 #include <iostream>
 #include <sstream>
 #include <vector>
@@ -41,6 +41,7 @@
 #include "GameoverState.h"
 #include "GoldGetState.h"
 #include "ItemGetSingleState.h"
+#include "DebugControl.h"
 //
 //
 //
@@ -74,7 +75,7 @@ using namespace Steel;
 bool gbDebugStop;
 
 #if 0 
-class DrawThread: public CL_Runnable {
+class DrawThread: public clan::Runnable {
 public:
     DrawThread(Application& app):m_app(app){
     }
@@ -86,7 +87,7 @@ private:
 };
 #endif
 
-CL_DisplayWindow& Application::GetApplicationWindow()
+clan::DisplayWindow& Application::GetApplicationWindow()
 {
     return m_window;
 }
@@ -114,7 +115,7 @@ SteelType Application::playScene ( const SteelType &functor )
 #ifndef NDEBUG
     //std::cout << "Playing scene " << animation << std::endl;
 #endif
-    if(!functor.isFunctor()) throw CL_Exception("playScene argument wasn't a functor");
+    if(!functor.isFunctor()) throw clan::Exception("playScene argument wasn't a functor");
     CutSceneState cutSceneState;
     cutSceneState.Init(functor.getFunctor());
     RunState(&cutSceneState);
@@ -137,7 +138,7 @@ SteelType Application::pushLevel ( const std::string &level, uint startX, uint s
     pLevel->Load ( level, m_resources );
     
     bool mapstaterunning = false;
-    for(std::vector<State*>::const_iterator it = mStates.begin();
+    for(std::deque<State*>::const_iterator it = mStates.begin();
         it != mStates.end(); it++){
         if(*it == &mMapState){
             mapstaterunning = true;
@@ -164,6 +165,7 @@ SteelType Application::loadLevel ( const std::string &level, uint startX, uint s
     pLevel->Load ( level, m_resources );
     pLevel->Invoke();
     
+#if 0 
     bool mapstaterunning = false;
     for(std::vector<State*>::const_iterator it = mStates.begin();
         it != mStates.end(); it++){
@@ -178,7 +180,7 @@ SteelType Application::loadLevel ( const std::string &level, uint startX, uint s
         mMapState.Start();
         mStates.push_back(&mMapState);
     }
-    
+#endif
     
     mMapState.LoadLevel ( pLevel, static_cast<uint> ( startX ), static_cast<uint> ( startY ) );
 
@@ -255,14 +257,18 @@ SteelType Application::startBattle ( const std::string &monster, uint count, boo
                         monsterRef->GetRows(),
                         monsterRef->GetColumns(),
                         isBoss,
-                        backdrop );
+                        backdrop,
+						true
+  					);
 
     RunState(&mBattleState);
 
 
-    // TODO: Return false if you lose, true if you win.
-    return SteelType();
+	SteelType ret;
+	ret.set(mBattleState.playerWon());
+    return ret;
 }
+
 
 SteelType Application::choice ( const std::string &choiceText,
                                 const SteelType::Container &choices_ )
@@ -316,14 +322,16 @@ void Application::StartGame(bool load)
 			return;
     }else{   
         std::string startscript;
-        loadscript ( startscript, CL_String_load ( "Game/StartupScript", m_resources ) );
+		clan::XMLResourceDocument doc = clan::XMLResourceManager::get_doc(m_resources);
+		clan::XMLResourceNode node = doc.get_resource("Game/StartupScript");
+        loadscript ( startscript, String_load ( "Game/StartupScript", m_resources ), node.get_file_system() );
         mInterpreter->run ( "Startup", startscript );
     }
     RunState(&mMapState);    
 }
 
 
-void Application::RunOnMainThread ( CL_Event& event, Application::Functor* functor )
+void Application::RunOnMainThread ( clan::Event& event, Application::Functor* functor )
 {
     ThreadFunctor thread_functor(event,functor);
     mFunctorMutex.lock();
@@ -356,7 +364,7 @@ void Application::RunState ( State * pState, bool threaded )
         private:
             Application& m_app;
         };
-        CL_Event event;
+        clan::Event event;
         RunFunctor functor(*this);
         RunOnMainThread(event,&functor);
         event.wait();
@@ -385,7 +393,7 @@ SteelType Application::gaussian ( double mean, double sigma )
 
 SteelType Application::pause ( uint time )
 {
-    CL_System::sleep ( time );
+    clan::System::sleep ( time );
 
     return SteelType();
 }
@@ -542,7 +550,7 @@ SteelType Application::changeCharacterClass ( SteelType::Handle hCharacter, cons
     Character * pCharacter = GrabHandle<Character*>(hCharacter);
     CharacterClass * pNewClass = CharacterManager::GetClass(chr_class);
     if(!pNewClass){
-        throw CL_Exception("changeCharacterClass with bad class name");
+        throw clan::Exception("changeCharacterClass with bad class name");
     }
     pCharacter->ChangeClass(pNewClass);
     
@@ -721,7 +729,7 @@ SteelType Application::getReservePartyArray()
 SteelType Application::reserveCharacter( const std::string& name)
 {
 	Character * c = mpParty->RemoveCharacter(name);
-	if(c == NULL) throw CL_Exception("reserveCharacter: " + name + " not in party");
+	if(c == NULL) throw clan::Exception("reserveCharacter: " + name + " not in party");
 	
 	m_reserve_party.AddCharacter(c);
 	SteelType val;
@@ -732,7 +740,7 @@ SteelType Application::reserveCharacter( const std::string& name)
 SteelType Application::deployCharacter( const std::string& name ) 
 {
 	Character * c = m_reserve_party.RemoveCharacter(name);
-	if(c == NULL) throw CL_Exception("deployCharacter: " + name + " not in reserve party");
+	if(c == NULL) throw clan::Exception("deployCharacter: " + name + " not in reserve party");
 	
 	mpParty->AddCharacter(c);
 	SteelType val;
@@ -1009,7 +1017,7 @@ SteelType Application::getAnimation ( const std::string& name )
 
     Animation * pAnim = GetAbilityManager()->GetAnimation ( name );
 
-    if ( pAnim == NULL ) throw CL_Exception ( "Animation: " + name + " was missing." );
+    if ( pAnim == NULL ) throw clan::Exception ( "Animation: " + name + " was missing." );
 
     val.set ( pAnim );
 
@@ -1033,7 +1041,6 @@ SteelType Application::getMonsterDrops ( const SteelType::Handle hMonster )
     var.set(array);
     return var;    
 }
-
 
 
 SteelType Application::invokeArmor ( SteelType::Handle pICharacter, SteelType::Handle hArmor )
@@ -1385,7 +1392,7 @@ SteelType Application::giveItem( const SteelType::Handle hItem, int count, bool 
 
 SteelType Application::log ( const std::string& str )
 {
-    CL_Console::write_line ( str );
+    clan::Console::write_line ( str );
     return SteelType();
 }
 
@@ -1498,7 +1505,7 @@ SteelType Application::getSkill(const std::string& whichskill)
 {
 
     if(!AbilityManager::SkillExists(whichskill)){
-        throw CL_Exception("(getSkill) Skill doesn't exist: " + whichskill);
+        throw clan::Exception("(getSkill) Skill doesn't exist: " + whichskill);
     }
 
     Skill * pSkill = AbilityManager::GetSkill(whichskill);
@@ -1677,9 +1684,9 @@ SteelType Application::editMap()
     return SteelType();
 }
 
-SteelType Application::banner ( const std::string& str, int time )
+SteelType Application::banner ( const std::string& str, double time )
 {
-    Banner(str,time);
+    Banner(str,time * 1000);
     return SteelType();
 }
 
@@ -1693,6 +1700,18 @@ void Application::Banner ( const std::string& str, int time )
 SteelType Application::closeMap ()
 {
 	mMapState.BringDown();
+#if 0 
+	std::cout << "State count at closeMap: " << mStates.size() << std::endl;
+	for(std::vector<State*>::const_iterator it= mStates.begin(); it != mStates.end(); it++){
+		if((*it) == &mMapState){
+			std::cout << "Map State" << std::endl;
+		}else if((*it) == &mStartupState){
+			std::cout << "Startup State" << std::endl;
+		}else{
+			std::cout << "Other state" << std::endl;
+		}
+	}
+#endif
 	return SteelType();
 }
 
@@ -1744,13 +1763,13 @@ SteelType Application::configJoystick()
 }
 
 
-void Application::LoadMainMenu ( CL_DomDocument& doc )
+void Application::LoadMainMenu ( clan::DomDocument& doc )
 {
     IFactory * pFactory = IApplication::GetInstance()->GetElementFactory();
 
 
-    CL_DomElement menuElement = doc.get_first_child().to_element();
-    CL_DomElement menuoptionNode = menuElement.get_first_child().to_element();
+    clan::DomElement menuElement = doc.get_first_child().to_element();
+    clan::DomElement menuoptionNode = menuElement.get_first_child().to_element();
 
     while ( !menuoptionNode.is_null() )
     {
@@ -1791,7 +1810,7 @@ AbilityManager * Application::GetAbilityManager()
 }
 
 
-CL_ResourceManager& Application::GetResources()
+clan::ResourceManager& Application::GetResources()
 {
     return m_resources;
 }
@@ -1812,9 +1831,9 @@ Application::~Application()
 
 
 
-CL_Rect Application::GetDisplayRect() const
+clan::Rect Application::GetDisplayRect() const
 {
-    return CL_Rect ( 0, 0, GetScreenWidth(), GetScreenHeight() );
+    return clan::Rect ( 0, 0, GetScreenWidth(), GetScreenHeight() );
 
 }
 
@@ -1873,7 +1892,7 @@ IApplication::AxisDirection Application::get_direction_for_value ( IApplication:
 }
 
 
-void Application::onSignalKeyDown ( const CL_InputEvent &key, const CL_InputState& )
+void Application::onSignalKeyDown ( const clan::InputEvent &key )
 {
 
     // Handle raw key press
@@ -1882,38 +1901,38 @@ void Application::onSignalKeyDown ( const CL_InputEvent &key, const CL_InputStat
     // Do mappings now
     switch ( key.id )
     {
-        case CL_KEY_DOWN:
+        case clan::keycode_down:
             getInputState()->HandleAxisMove ( IApplication::AXIS_VERTICAL, AXIS_DOWN, get_value_for_axis_direction ( AXIS_DOWN ) );
             break;
-        case CL_KEY_UP:
+        case clan::keycode_up:
             getInputState()->HandleAxisMove ( IApplication::AXIS_VERTICAL, AXIS_UP, get_value_for_axis_direction ( AXIS_UP ) );
             break;
-        case CL_KEY_LEFT:
+        case clan::keycode_left:
             getInputState()->HandleAxisMove ( IApplication::AXIS_HORIZONTAL, AXIS_LEFT, get_value_for_axis_direction ( AXIS_LEFT ) );
             break;
-        case CL_KEY_RIGHT:
+        case clan::keycode_right:
             getInputState()->HandleAxisMove ( IApplication::AXIS_HORIZONTAL, AXIS_RIGHT, get_value_for_axis_direction ( AXIS_RIGHT ) );
             break;
-        case CL_KEY_SPACE:
-        case CL_KEY_T:
+        case clan::keycode_space:
+        case clan::keycode_t:
             getInputState()->HandleButtonDown ( BUTTON_CONFIRM );
             break;
-        case CL_KEY_TAB:
+        case clan::keycode_tab:
             getInputState()->HandleButtonDown ( BUTTON_ALT );
             break;
-        case CL_KEY_ESCAPE:
+        case clan::keycode_escape:
             getInputState()->HandleButtonDown ( BUTTON_CANCEL );
             break;
-        case CL_KEY_ENTER:
+        case clan::keycode_enter:
             getInputState()->HandleButtonDown ( BUTTON_START );
             break;
-        case CL_KEY_HOME:
+        case clan::keycode_home:
             getInputState()->HandleButtonDown ( BUTTON_MENU );
             break;
-        case CL_KEY_M:
+        case clan::keycode_m:
             getInputState()->HandleButtonDown ( BUTTON_R );
             break;
-        case CL_KEY_N:
+        case clan::keycode_n:
             getInputState()->HandleButtonDown ( BUTTON_L );
             break;
     }
@@ -1921,7 +1940,7 @@ void Application::onSignalKeyDown ( const CL_InputEvent &key, const CL_InputStat
 
 }
 
-void Application::onSignalKeyUp ( const CL_InputEvent &key, const CL_InputState& )
+void Application::onSignalKeyUp ( const clan::InputEvent &key )
 {
     getInputState()->HandleKeyUp ( key );
 
@@ -1929,46 +1948,46 @@ void Application::onSignalKeyUp ( const CL_InputEvent &key, const CL_InputState&
 
     switch ( key.id )
     {
-        case CL_KEY_DOWN:
+        case clan::keycode_down:
             getInputState()->HandleAxisMove ( IApplication::AXIS_VERTICAL, AXIS_NEUTRAL, 0.0 );
             break;
-        case CL_KEY_UP:
+        case clan::keycode_up:
             getInputState()->HandleAxisMove ( IApplication::AXIS_VERTICAL, AXIS_NEUTRAL, 0.0 );
             break;
-        case CL_KEY_LEFT:
-        case CL_KEY_RIGHT:
+        case clan::keycode_left:
+        case clan::keycode_right:
             getInputState()->HandleAxisMove ( IApplication::AXIS_HORIZONTAL, AXIS_NEUTRAL, 0.0 );
             break;
-        case CL_KEY_SPACE:
-        case CL_KEY_T:
+        case clan::keycode_space:
+        case clan::keycode_t:
             getInputState()->HandleButtonUp ( BUTTON_CONFIRM );
             break;
-        case CL_KEY_TAB:
+        case clan::keycode_tab:
             getInputState()->HandleButtonUp ( BUTTON_ALT );
             break;
-        case CL_KEY_ESCAPE:
+        case clan::keycode_escape:
             getInputState()->HandleButtonUp ( BUTTON_CANCEL );
             break;
-        case CL_KEY_ENTER:
+        case clan::keycode_enter:
             getInputState()->HandleButtonUp ( BUTTON_START );
             break;
-        case CL_KEY_HOME:
+        case clan::keycode_home:
             getInputState()->HandleButtonUp ( BUTTON_MENU );
             break;
-        case CL_KEY_M:
+        case clan::keycode_m:
             getInputState()->HandleButtonUp ( BUTTON_R );
             break;
-        case CL_KEY_N:
+        case clan::keycode_n:
             getInputState()->HandleButtonUp ( BUTTON_L );
             break;
-        case CL_KEY_S:
+        case clan::keycode_s:
             getInputState()->HandleButtonUp ( BUTTON_SELECT );
             break;
     }
 
 }
 
-void Application::onSignalJoystickButtonDown ( const CL_InputEvent &event, const CL_InputState& state )
+void Application::onSignalJoystickButtonDown ( const clan::InputEvent &event  )
 {
 
     if ( !mStates.size() ) return;
@@ -1986,7 +2005,7 @@ void Application::onSignalJoystickButtonDown ( const CL_InputEvent &event, const
 
 }
 
-void Application::onSignalJoystickButtonUp ( const CL_InputEvent &event, const CL_InputState& state )
+void Application::onSignalJoystickButtonUp ( const clan::InputEvent &event )
 {
     if ( !mStates.size() ) return;
 
@@ -2005,7 +2024,7 @@ void Application::onSignalJoystickButtonUp ( const CL_InputEvent &event, const C
 
 }
 
-void Application::onSignalJoystickAxisMove ( const CL_InputEvent &event, const CL_InputState& state )
+void Application::onSignalJoystickAxisMove ( const clan::InputEvent &event )
 {
 	if(!m_joystick_config.IsSetup()){
 		if(abs(event.axis_pos) > 0.5f){
@@ -2044,11 +2063,11 @@ bool Application::IsCutsceneRunning() const {
 
 static IApplication::MouseButton CLMouseToMouseButton(int id){
     switch(id){
-        case CL_MOUSE_LEFT:
+        case clan::mouse_left:
             return IApplication::MOUSE_LEFT;
-        case CL_MOUSE_RIGHT:
+        case clan::mouse_right:
             return IApplication::MOUSE_RIGHT;
-        case CL_MOUSE_MIDDLE:
+        case clan::mouse_middle:
             return IApplication::MOUSE_MIDDLE;
         default:
             return IApplication::MOUSE_UNKNOWN;
@@ -2063,25 +2082,25 @@ static uint CLKeyStatesToKeyState(bool shift, bool alt, bool ctrl){
         return result;
 }
 
-void Application::onSignalMouseDown ( const CL_InputEvent& event, const CL_InputState& state ){
+void Application::onSignalMouseDown ( const clan::InputEvent& event ){
     if(!mStates.empty()){
         getInputState()->HandleMouseDown(CLMouseToMouseButton(event.id),event.mouse_pos,CLKeyStatesToKeyState(event.shift,event.alt,event.ctrl));
     }
 }
 
-void Application::onSignalMouseUp ( const CL_InputEvent& event, const CL_InputState& state ){
+void Application::onSignalMouseUp ( const clan::InputEvent& event ){
     if(!mStates.empty()){
         getInputState()->HandleMouseUp(CLMouseToMouseButton(event.id),event.mouse_pos,CLKeyStatesToKeyState(event.shift,event.alt,event.ctrl));
     }    
 }
 
-void Application::onSignalDoubleClick ( const CL_InputEvent& event, const CL_InputState& state ){
+void Application::onSignalDoubleClick ( const clan::InputEvent& event ){
     if(!mStates.empty()){
         getInputState()->HandleDoubleClick(CLMouseToMouseButton(event.id),event.mouse_pos,CLKeyStatesToKeyState(event.shift,event.alt,event.ctrl));
     }    
 }
 
-void Application::onSignalMouseMove ( const CL_InputEvent& event, const CL_InputState& state ){
+void Application::onSignalMouseMove ( const clan::InputEvent& event ){
     if(!mStates.empty()){
         getInputState()->HandleMouseMove(event.mouse_pos,CLKeyStatesToKeyState(event.shift,event.alt,event.ctrl));
     }
@@ -2134,6 +2153,38 @@ void Application::EditMaps()
 	editMap();
 }
 #endif
+
+SteelType Application::debug(){
+	SteelType ret;
+#ifdef NDEBUG
+	ret.set(false);
+#else
+	ret.set(true);
+#endif
+	return ret;
+}
+
+
+#ifndef NDEBUG
+SteelType	Application::enableInfiniteSP(bool e){
+	DebugControl::EnableInfiniteSP(e);
+	return SteelType();
+}
+SteelType	Application::enableInfiniteBP(bool e){
+	DebugControl::EnableInfiniteBP(e);
+	return SteelType();
+}
+SteelType	Application::enableInfiniteGold(bool e){
+	DebugControl::EnableInfiniteGold(e);
+	return SteelType();
+}
+SteelType	Application::enableAllSkills(bool e){
+	DebugControl::EnableAllSkills(e);
+	return SteelType();
+}
+#endif
+		
+
 
 void Application::registerSteelFunctions()
 {
@@ -2226,6 +2277,10 @@ void Application::registerSteelFunctions()
 
     steelConst ( "$_ITEM_DEF_PARTY", RegularItem::PARTY );
     steelConst ( "$_ITEM_DEF_MONSTERS", RegularItem::MONSTERS );
+	
+	steelConst ( "$_WEAPON_ATTACK", Weapon::ATTACK );
+	steelConst ( "$_WEAPON_HIT", Weapon::HIT );
+	steelConst ( "$_WEAPON_CRITICAL", Weapon::CRITICAL );
 
     steelConst ( "$_HAND", Equipment::EHAND );
     steelConst ( "$_OFFHAND", Equipment::EOFFHAND );
@@ -2435,7 +2490,7 @@ void Application::registerSteelFunctions()
     mInterpreter->addFunction ( "omegaSlotCount", new SteelFunctorNoArgs<Application>(this,&Application::omegaSlotCount) );
     mInterpreter->addFunction ( "getOmega", new SteelFunctor1Arg<Application,uint>(this,&Application::getOmega ) );
     mInterpreter->addFunction ( "omegaSlotIsEmpty", new SteelFunctor1Arg<Application,uint>(this,&Application::omegaSlotIsEmpty) );
-    mInterpreter->addFunction ( "banner", new SteelFunctor2Arg<Application,const std::string&,int>(this,&Application::banner) );
+    mInterpreter->addFunction ( "banner", new SteelFunctor2Arg<Application,const std::string&,double>(this,&Application::banner) );
 	mInterpreter->addFunction ( "closeMap", fn_closeMap );
 	mInterpreter->addFunction ( "gameoverScreen", fn_gameoverScreen );
 	mInterpreter->addFunction ( "giveItem", new SteelFunctor3Arg<Application,SteelType::Handle,int,bool>(this,&Application::giveItem) );
@@ -2450,9 +2505,17 @@ void Application::registerSteelFunctions()
 	mInterpreter->addFunction ( "reserveCharacter", new SteelFunctor1Arg<Application,const std::string&>(this,&Application::reserveCharacter) );
 	
 	mInterpreter->addFunction ( "getReservePartyArray", new SteelFunctorNoArgs<Application>(this,&Application::getReservePartyArray) );
-    
+	    
+    mInterpreter->addFunction ( "debug", new SteelFunctorNoArgs<Application>(this,&Application::debug) );
     mInterpreter->addFunction ( "editing", new SteelFunctorNoArgs<Application>(this,&Application::editing) );
     mInterpreter->addFunction ( "editMap", new SteelFunctorNoArgs<Application>(this,&Application::editMap) );
+
+#ifndef NDEBUG
+	mInterpreter->addFunction ( "enableInfiniteBP", new SteelFunctor1Arg<Application,bool>(this,&Application::enableInfiniteBP) );
+	mInterpreter->addFunction ( "enableInfiniteSP", new SteelFunctor1Arg<Application,bool>(this,&Application::enableInfiniteSP) );	
+	mInterpreter->addFunction ( "enableInfiniteGold", new SteelFunctor1Arg<Application,bool>(this,&Application::enableInfiniteGold) );	
+	mInterpreter->addFunction ( "enableAllSkills", new SteelFunctor1Arg<Application,bool>(this,&Application::enableAllSkills) );		
+#endif	
 }
 
 void Application::queryJoystick()
@@ -2461,7 +2524,7 @@ void Application::queryJoystick()
 
     if ( m_window.get_ic().get_joystick_count() )
     {
-        CL_InputDevice& joystick = m_window.get_ic().get_joystick ( 0 );
+        clan::InputDevice& joystick = m_window.get_ic().get_joystick ( 0 );
         mStates.back()->HandleAxisMove ( AXIS_HORIZONTAL, joystick.get_axis ( 0 ) );
         mStates.back()->HandleAxisMove ( AXIS_VERTICAL, joystick.get_axis ( 1 ) );
     }
@@ -2471,22 +2534,23 @@ void Application::queryJoystick()
 
 void Application::draw()
 {
-    CL_Rect dst = GetDisplayRect();
+    clan::Rect dst = GetDisplayRect();
     
-    m_window.get_gc().push_cliprect ( dst );
+    m_window.get_gc().set_scissor(dst, m_window.get_gc().get_texture_image_y_axis());
 
     //std::vector<State*>::iterator end = mStates.end();
 
-    for ( std::vector<State*>::iterator iState = mStates.begin();
+    for ( std::deque<State*>::iterator iState = mStates.begin();
             iState != mStates.end(); iState++ )
     {
         State * pState = *iState;
-        pState->Draw ( dst, m_window.get_gc() );
+		clan::Canvas canvas(m_window);
+        pState->Draw ( dst, canvas );
         if ( pState->LastToDraw() ) break; // Don't draw any further.
 
     }
 
-    m_window.get_gc().pop_cliprect();
+    m_window.get_gc().reset_scissor();
 }
 
 void Application::run(bool process_functors)
@@ -2494,94 +2558,99 @@ void Application::run(bool process_functors)
     State * backState = mStates.back();
 	
 	if(backState->Threaded()) m_threaded_mode = true;
+	try{
+		backState->SteelInit ( mInterpreter );
+		backState->Start();
+		unsigned int then = clan::System::get_time();
+	#ifndef NDEBUG
+		m_draw_start_time = clan::System::get_time();
+	#endif
 
-    backState->SteelInit ( mInterpreter );
-    backState->Start();
-    unsigned int then = CL_System::get_time();
-#ifndef NDEBUG
-	m_draw_start_time = CL_System::get_time();
-#endif
+		while ( !mbDone &&  !backState->IsDone() )
+		{
+			queryJoystick();
+			
+			if(process_functors && !m_mainthread_functors.empty()){
+				Functor * pFunctor = m_mainthread_functors.front().m_pFunctor;
+				pFunctor->operator()();
+				m_mainthread_functors.front().m_event.set();						
+				mFunctorMutex.lock();
+				m_mainthread_functors.pop();
+				mFunctorMutex.unlock();
+			}
 
-    while ( !mbDone &&  !backState->IsDone() )
-    {
-        queryJoystick();
-        
-        if(process_functors && !m_mainthread_functors.empty()){
-            Functor * pFunctor = m_mainthread_functors.front().m_pFunctor;
-            pFunctor->operator()();
-            m_mainthread_functors.front().m_event.set();						
-            mFunctorMutex.lock();
-            m_mainthread_functors.pop();
-            mFunctorMutex.unlock();
-        }
+			unsigned int now = clan::System::get_time();
 
-        unsigned int now = CL_System::get_time();
+			if ( now - then > MS_BETWEEN_MOVES )
+			{
+				bool disableMOs = false;
+				for(int i=0;i<mStates.size();i++){
+					if(mStates[i]->DisableMappableObjects()){
+						disableMOs = true;
+						break;
+					}
+				}
+				if ( !disableMOs )
+				{
+					mMapState.MoveMappableObjects();
+					mStates.back()->MappableObjectMoveHook();
+				}
 
-        if ( now - then > MS_BETWEEN_MOVES )
-        {
-            bool disableMOs = false;
-            for(int i=0;i<mStates.size();i++){
-                if(mStates[i]->DisableMappableObjects()){
-                    disableMOs = true;
-                    break;
-                }
-            }
-            if ( !disableMOs )
-            {
-                mMapState.MoveMappableObjects();
-                mStates.back()->MappableObjectMoveHook();
-            }
-
-            then = now;
-        }
-
-
-        draw();
-
-        m_window.flip(0);
+				then = now;
+			}
 
 
-        CL_KeepAlive::process();
+			draw();
+
+			m_window.flip(0);
+
+
+			clan::KeepAlive::process();
 #if SHOW_FPS
-		m_draws_total++;
-		//long  = CL_System::get_time();
-		if(now - m_draw_start_time > 3000){
-			float fps = float(m_draws_total) / (float(now - m_draw_start_time) / 1000.0);
-			std::cout << "FPS : " << fps << std::endl;
-			m_draw_start_time = now;
-			m_draws_total = 0;
-		}
+			m_draws_total++;
+			//long  = clan::System::get_time();
+			if(now - m_draw_start_time > 3000){
+				float fps = float(m_draws_total) / (float(now - m_draw_start_time) / 1000.0);
+				std::cout << "FPS : " << fps << std::endl;
+				m_draw_start_time = now;
+				m_draws_total = 0;
+			}
 #endif
-		
-        CL_System::sleep ( 10 );
+			
+			clan::System::sleep ( 10 );
+		}
+
+
+		mStates.back()->Finish();
+
+		mStates.back()->SteelCleanup ( mInterpreter );
+		// TODO: Or is this backState->Threaded()? Is it any different?
+		if(mStates.back()->Threaded())
+			m_threaded_mode = false;
+
+		mStates.pop_back();
+	}catch ( SteelException ex ){
+		mStates.back()->Finish();
+		mStates.back()->SteelCleanup ( mInterpreter );		
+		mStates.pop_back();
+        showError ( ex.getLine(), ex.getScript(), ex.getMessage() );
+		mbDone = true;
     }
-
-
-    mStates.back()->Finish();
-
-    mStates.back()->SteelCleanup ( mInterpreter );
-	// TODO: Or is this backState->Threaded()? Is it any different?
-	if(mStates.back()->Threaded())
-		m_threaded_mode = false;
-
-    mStates.pop_back();
-
 
 }
 
-void Application::loadscript ( std::string &o_str, const std::string & filename )
+void Application::loadscript ( std::string &o_str, const std::string & filename, clan::FileSystem fs )
 {
-    std::ifstream in;
-    std::string line;
-    in.open ( filename.c_str() );
-
-    while ( in )
+	clan::IODevice file = fs.open_file(filename);
+    char buffer[1024];
+	memset(buffer,0,sizeof(buffer));
+  
+	int count = 0;
+    while ( count = file.read(buffer, sizeof(buffer)-1) )
     {
-        getline ( in, line );
-        o_str += line;
+		buffer[count] = 0;
+		o_str += buffer;
     }
-
-    in.close();
 }
 
 Level* Application::GetCurrentLevel() const
@@ -2589,12 +2658,12 @@ Level* Application::GetCurrentLevel() const
     return mMapState.GetCurrentLevel();
 }
 
-CL_Point Application::GetCurrentLevelCenter() const
+clan::Point Application::GetCurrentLevelCenter() const
 {
 	return mMapState.GetCurrentCenter();
 }
 
-CL_IODevice Application::OpenResource(const std::string& str)
+clan::IODevice Application::OpenResource(const std::string& str)
 {
 	return m_resource_dir.open_file(str);
 }
@@ -2611,13 +2680,18 @@ int Application::main ( const std::vector<std::string> args )
 	AbilityManager::initialize();
 
 
-    CL_ConsoleWindow console ( "Stone Ring Debug", 80, 100 );
+#ifndef NDEBUG
 
+    clan::ConsoleWindow console ( "Stone Ring Debug", 80, 100 );
+#endif
     int njoystick = -1;
     setupClanLib();
 	
+
+	
 	std::string data_file = "stone_ring2.sr2";
 	bool data_dir=false; 
+	bool dump_equipment = false;
 
     for ( int i = 0;i < args.size();i++ )
     {
@@ -2627,24 +2701,28 @@ int Application::main ( const std::vector<std::string> args )
         {
             njoystick = atoi ( string.substr ( 5 ).c_str() );
         }
-        else if(string.substr( 0, 2) == "-f" )
+        else if(string.substr( 0, 2 ) == "-f" )
 		{
 			data_dir = false;
 			if(args.size() > i+1)
 				data_file = args[i+1];
-		}else if(string.substr( 0, 2) == "-d")
+		}else if(string.substr( 0, 2 ) == "-d")
 		{
 			if(args.size() > i+1){
 				data_dir = true;
 				data_file = args[i+1];
 				std::cerr << data_file << " used as package" << std::endl;
 			}
-		}else if(string.substr( 0, 2) == "-m"){
+		}else if(string.substr( 0, 2 ) == "-m"){
 			SoundManager::SetMusicMaxVolume(0.0);
 			SoundManager::SetSoundVolume(0.0);
+		}else if(string.substr(0,12) == "--dump-equip"){
+			dump_equipment = true;
 		}
 			
     }
+    
+    m_resource_path = data_file;
 
 	m_button_down[IApplication::BUTTON_ALT] = false;
 	m_button_down[IApplication::BUTTON_CONFIRM] = false;
@@ -2658,7 +2736,7 @@ int Application::main ( const std::vector<std::string> args )
 	
 	mbDone = false;
     
-    //CL_Display::get_buffer()
+    //clan::Display::get_buffer()
     try
     {
 		std::ifstream joystick_in("joystick.set", std::ios::in);
@@ -2672,55 +2750,62 @@ int Application::main ( const std::vector<std::string> args )
         registerSteelFunctions();
 
 		// TODO: Get the package from the command line
-		CL_VirtualFileSystem vfs(data_file, !data_dir);
+		clan::FileSystem vfs(data_file, !data_dir);
 		
-		m_resource_dir = CL_VirtualDirectory(vfs, "./");
+		m_resource_dir = vfs;
 		
 		m_zip_provider.SetVirtualDirectory(m_resource_dir);
 
-		//mInterpreter->setFileProvider(&m_zip_provider);
+		mInterpreter->setFileProvider(&m_zip_provider);
 
-        m_resources = CL_ResourceManager ( "Media/resources.xml", m_resource_dir );
+        m_resources = clan::XMLResourceManager::create ( clan::XMLResourceDocument("Media/resources_cl30.xml", m_resource_dir) );
 
 #ifdef NDEBUG
-        std::string name = CL_String_load ( "Configuration/name", m_resources );
+        std::string name = String_load ( "Configuration/name", m_resources );
 #else
-        std::string name = CL_String_load ( "Configuration/name", m_resources ) + " (DEBUG)";
+        std::string name = String_load ( "Configuration/name", m_resources ) + " (DEBUG)";
 #endif
-        mGold = CL_String_load ( "Game/Currency", m_resources );
+        mGold = String_load ( "Game/Currency", m_resources );
 
 
-        CL_DisplayWindowDescription desc;
+        clan::DisplayWindowDescription desc;
         desc.set_title ( name );
-        desc.set_size ( CL_Size ( WINDOW_WIDTH, WINDOW_HEIGHT ), true );
+        desc.set_size ( clan::Size ( WINDOW_WIDTH, WINDOW_HEIGHT ), true );
 
 
-        m_window = CL_DisplayWindow ( desc );
+        m_window = clan::DisplayWindow ( desc );
         
 
-        std::string battleConfig = CL_String_load ( "Configuration/BattleConfig", m_resources );
+        std::string battleConfig = String_load ( "Configuration/BattleConfig", m_resources );
         mBattleConfig.Load ( battleConfig );
         mBattleState.SetConfig ( &mBattleConfig );
         
-        std::string defaultTheme = CL_String_load ("Game/DefaultTheme", m_resources );
+        std::string defaultTheme = String_load ("Game/DefaultTheme", m_resources );
         GraphicsManager::SetTheme(defaultTheme);
 		
-		m_max_party_size = m_resources.get_integer_resource("Game/ActivePartyMaximumCharacters",4);
+		
+		m_max_party_size = clan::XMLResourceManager::get_doc(m_resources).get_integer_resource("Game/ActivePartyMaximumCharacters",4);
 
         //for(int i =0; i < m_window.get_buffer_count(); i++)
-        //  m_window.get_buffer(i).to_format(CL_PixelFormat(24,0,0,0,0,false,0,pixelformat_rgba));
+        //  m_window.get_buffer(i).to_format(clan::PixelFormat(24,0,0,0,0,false,0,pixelformat_rgba));
 
-        m_window.get_gc().clear ( CL_Colorf ( 0.0f, 0.0f, 0.0f ) );
+        m_window.get_gc().clear ( clan::Colorf ( 0.0f, 0.0f, 0.0f ) );
 
 
         mAppUtils.LoadGameplayAssets ( "", m_resources );
-        std::string utilityConfig = CL_String_load ( "Configuration/UtilityScripts", m_resources );
+#ifndef NDEBUG
+		if(dump_equipment){
+			ItemManager::DumpItemCSV();
+			return 0;
+		}
+#endif
+        std::string utilityConfig = String_load ( "Configuration/UtilityScripts", m_resources );
         mUtilityScripts.Load ( utilityConfig );
 #if SR2_EDITOR        
         mMapEditorState.Init(m_window);
 #endif     
     }
-    catch ( CL_Exception error )
+    catch ( clan::Exception error )
     {
         std::cerr << "Exception Caught!!" << std::endl;
         std::cerr << error.message.c_str() << std::endl;
@@ -2735,6 +2820,11 @@ int Application::main ( const std::vector<std::string> args )
 		e.dump(std::cerr);
 		return 1;
 	}
+	catch ( AlreadyDefined ad) 
+	{
+		std::cerr << "Steel Exception: Already defined symbol: " << ad.GetName() << std::endl;
+		return 1;
+	}
     catch ( SteelException ex )
     {
         std::cerr << "Steel Exception on line " << ex.getLine()
@@ -2746,28 +2836,28 @@ int Application::main ( const std::vector<std::string> args )
     }
   
 
-    m_startTime = CL_System::get_time();
+    m_startTime = clan::System::get_time();
 
     try
     {
-        CL_InputDevice keyboard = m_window.get_ic().get_keyboard();
-        CL_InputDevice mouse = m_window.get_ic().get_mouse();
+        clan::InputDevice keyboard = m_window.get_ic().get_keyboard();
+        clan::InputDevice mouse = m_window.get_ic().get_mouse();
 
-        CL_Slot slot_quit = m_window.sig_window_close().connect ( this, &Application::onSignalQuit );
-        CL_Slot slot_key_down = keyboard.sig_key_down().connect ( this, &Application::onSignalKeyDown );
-        CL_Slot slot_key_up  = keyboard.sig_key_up().connect ( this, &Application::onSignalKeyUp );
+        clan::Slot slot_quit = m_window.sig_window_close().connect ( this, &Application::onSignalQuit );
+        clan::Slot slot_key_down = keyboard.sig_key_down().connect ( this, &Application::onSignalKeyDown );
+        clan::Slot slot_key_up  = keyboard.sig_key_up().connect ( this, &Application::onSignalKeyUp );
         
-        CL_Slot slot_mouse_up = mouse.sig_key_up().connect ( this, &Application::onSignalMouseUp  );
-        CL_Slot slot_mouse_down = mouse.sig_key_down().connect ( this, &Application::onSignalMouseDown  );
-        CL_Slot slot_dbl_click = mouse.sig_key_dblclk().connect ( this, &Application::onSignalDoubleClick  );
-        CL_Slot slot_mouse_move = mouse.sig_pointer_move().connect ( this, &Application::onSignalMouseMove  );
+        clan::Slot slot_mouse_up = mouse.sig_key_up().connect ( this, &Application::onSignalMouseUp  );
+        clan::Slot slot_mouse_down = mouse.sig_key_down().connect ( this, &Application::onSignalMouseDown  );
+        clan::Slot slot_dbl_click = mouse.sig_key_dblclk().connect ( this, &Application::onSignalDoubleClick  );
+        clan::Slot slot_mouse_move = mouse.sig_pointer_move().connect ( this, &Application::onSignalMouseMove  );
 		
 		m_window.sig_lost_focus().connect ( this, &Application::onSignalLostFocus );
 		m_window.sig_window_minimized().connect( this, &Application::onSignalLostFocus );
 
-        CL_Slot joystickDown;
-        CL_Slot joystickUp;
-        CL_Slot joystickAxis;
+        clan::Slot joystickDown;
+        clan::Slot joystickUp;
+        clan::Slot joystickAxis;
 		
 		m_joystick_train_state = JS_TRAIN_IDLE;
 
@@ -2775,26 +2865,24 @@ int Application::main ( const std::vector<std::string> args )
         {
             std::cout << "Joystick count = " << m_window.get_ic().get_joystick_count();
     #if 1
-            CL_InputDevice& joystick = m_window.get_ic().get_joystick ( njoystick );
+            clan::InputDevice& joystick = m_window.get_ic().get_joystick ( njoystick );
             joystickDown = joystick.sig_key_down().connect ( this, &Application::onSignalJoystickButtonDown );
             joystickUp = joystick.sig_key_up().connect ( this, &Application::onSignalJoystickButtonUp );
             joystickAxis = joystick.sig_axis_move().connect ( this, &Application::onSignalJoystickAxisMove );
     #endif
         }
 
-        m_window.get_gc().clear ( CL_Colorf ( 0.0f, 0.0f, 0.0f ) );
+        m_window.get_gc().clear ( clan::Colorf ( 0.0f, 0.0f, 0.0f ) );
 
 				
         showRechargeableOnionSplash();
 
-        mStartupState.Start();
-        mStates.push_back ( &mStartupState );  
+
 		
 		mbDone = false;
 		
 
-        while ( !mbDone && mStates.size() )
-            run();
+        RunState(&mStartupState);
 
 #ifndef NDEBUG
 		console.display_close_message();
@@ -2804,15 +2892,7 @@ int Application::main ( const std::vector<std::string> args )
 
         teardownClanLib();
     }
-    catch ( SteelException ex )
-    {
-        while ( mStates.size() )
-            mStates.pop_back();
-
-        showError ( ex.getLine(), ex.getScript(), ex.getMessage() );
-
-    }
-    catch ( CL_Exception error )
+    catch ( clan::Exception error )
     {
         while ( mStates.size() )
             mStates.pop_back();
@@ -2830,6 +2910,10 @@ int Application::main ( const std::vector<std::string> args )
 
 }
 
+
+std::string     Application::GetResourcePath()const{
+	return m_resource_path;
+}
 
 
 AstScript* Application::GetUtility ( Utility util ) const
@@ -2851,7 +2935,7 @@ AstScript* Application::GetUtility ( Utility util ) const
 
 uint Application::GetMinutesPlayed() const
 {
-    return (CL_System::get_time() - m_startTime) / 60000;
+    return (clan::System::get_time() - m_startTime) / 60000;
 }
 
 
@@ -2861,43 +2945,44 @@ void Application::showRechargeableOnionSplash()
 
 void Application::showIntro()
 {
+	clan::Canvas canvas(m_window);
 
-    CL_InputDevice keyboard = m_window.get_ic().get_keyboard();
-    CL_Image splash ( m_window.get_gc(), "Configuration/splash", &m_resources );
-    CL_Image background ( m_window.get_gc(), "Configuration/splashbg", &m_resources );
+    clan::InputDevice keyboard = m_window.get_ic().get_keyboard();
+    clan::Image splash = clan::Image::resource( canvas, "Configuration/splash", m_resources ).get();
+    clan::Image background  = clan::Image::resource( canvas, "Configuration/splashbg", m_resources ).get();
 
-    // CL_GraphicContext *gc = m_window.get_gc();
+    // clan::Canvas *gc = m_window.get_gc();
 
     int displayX = ( WINDOW_WIDTH - splash.get_width() ) / 2;
     int displayY = ( WINDOW_HEIGHT - splash.get_height() ) / 2;
 
 
 
-    while ( !keyboard.get_keycode ( CL_KEY_ENTER ) )
+    while ( !keyboard.get_keycode ( clan::keycode_enter ) )
     {
         if ( m_window.get_ic().get_joystick_count() )
         {
-            CL_InputDevice& joystick = m_window.get_ic().get_joystick ( 0 );
+            clan::InputDevice& joystick = m_window.get_ic().get_joystick ( 0 );
 
             if ( joystick.get_keycode ( 5 ) ) break;
         }
 
 
-        background.draw ( m_window.get_gc(), 0, 0 );
+        background.draw ( canvas, 0, 0 );
 
-        splash.draw ( m_window.get_gc(), static_cast<float> ( displayX ),
+        splash.draw ( canvas, static_cast<float> ( displayX ),
                       static_cast<float> ( displayY ) );
 
         m_window.flip();
-		CL_KeepAlive::process(1);
-		CL_System::sleep(0);
+		clan::KeepAlive::process(1);
+		clan::System::sleep(0);
     }
 #ifndef NDEBUG
 	std::cout << "Finished, now release enter..." << std::endl;
 #endif
 
     // Wait for them to release the key before moving on.
-    while ( keyboard.get_keycode ( CL_KEY_ENTER ) ) CL_KeepAlive::process();
+    while ( keyboard.get_keycode ( clan::keycode_enter ) ) clan::KeepAlive::process();
 
 
 }
@@ -2926,17 +3011,16 @@ int Application::calc_fps ( int frame_time )
 class Program
 {
 public:
-    static int main ( const std::vector<CL_String> &args )
+    static int main ( const std::vector<std::string> &args )
     {
 
     	//std::cout << "Usable space: " << malloc_usable_size() << std::endl;
     	std::cout << sizeof(Application) << std::endl;
-        CL_SetupCore setup_core;
-        CL_SetupDisplay setup_display;
-        CL_SetupGL setup_gl;
-        CL_SetupSound setup_sound;
-        CL_SetupVorbis setup_vorbis;
-        CL_SoundOutput output(44100);
+        clan::SetupCore setup_core;
+        clan::SetupDisplay setup_display;
+        clan::SetupGL setup_gl;
+        clan::SetupSound setup_sound;
+        clan::SoundOutput output(44100);
 		
 		std::vector<std::string> nargs;
 		for(int i=0;i<args.size();i++)
@@ -2948,7 +3032,7 @@ public:
     }
 };
 
-CL_ClanApplication app ( &Program::main );
+clan::Application app ( &Program::main );
 
 
 // doko

@@ -19,9 +19,9 @@ namespace StoneRing
 		
 		static void initialize();
 
-        static void LoadStatusEffectFile ( CL_DomDocument &doc );
-        static void LoadSkillFile(CL_DomDocument &doc);
-        static void LoadAnimationFile(CL_DomDocument &doc);
+        static void LoadStatusEffectFile ( clan::DomDocument &doc );
+        static void LoadSkillFile(clan::DomDocument &doc);
+        static void LoadAnimationFile(clan::DomDocument &doc);
 
         static std::map<std::string,Skill*>::const_iterator GetSkillsBegin();
         static std::map<std::string,Skill*>::const_iterator GetSkillsEnd();

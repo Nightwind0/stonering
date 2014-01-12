@@ -28,14 +28,14 @@
 
 namespace StoneRing { 
 
-class TileEditorWindow : public CL_Window
+class TileEditorWindow : public clan::Window
 {
 public:
-	TileEditorWindow(CL_GUIComponent* owner, const CL_GUITopLevelDescription &desc);   
+	TileEditorWindow(clan::GUIComponent* owner, const clan::GUITopLevelDescription &desc);   
     virtual ~TileEditorWindow();
-	class TileSelectGrid : public CL_GUIComponent {
+	class TileSelectGrid : public clan::GUIComponent {
 	public:
-		TileSelectGrid(CL_GUIComponent* parent);
+		TileSelectGrid(clan::GUIComponent* parent);
 		virtual ~TileSelectGrid();
 		void set_edit_window(TileEditorWindow* pWindow);
 		void set_tiles(const std::list<Tile*>& tiles);
@@ -46,8 +46,8 @@ public:
 		Tile* get_selected_tile() const;
 		void get_tiles(std::list<Tile*>& tiles)const;
 	private:
-		void on_render(CL_GraphicContext& gc, const CL_Rect& rect);	
-		bool on_click(const CL_InputEvent& event);
+		void on_render(clan::Canvas& gc, const clan::Rect& rect);	
+		bool on_click(const clan::InputEvent& event);
 		TileMonsterRegionDrawer m_region_drawer;
 		TileHotDrawer m_hot_drawer;
 		TileSideBlockDrawer m_block_drawer;
@@ -83,22 +83,22 @@ private:
 	
 
 	TileSelectGrid m_grid;
-	CL_PushButton* m_save;
-	CL_PushButton* m_delete_selected;
-	CL_PushButton* m_edit_condition;
-	CL_PushButton* m_edit_script;
-	CL_PushButton* m_move_up;
-	CL_PushButton* m_move_down;
-	CL_CheckBox*   m_block_north;
-	CL_CheckBox*   m_block_west;
-	CL_CheckBox*   m_block_south;
-	CL_CheckBox*   m_block_east;
-	CL_CheckBox*   m_hot;
-	CL_CheckBox*   m_water;
-	CL_CheckBox*   m_floater;
-	CL_ComboBox*   m_monster_region;
-	CL_Label*      m_zorder_label;
-	CL_Spin*       m_zorder;
+	clan::PushButton* m_save;
+	clan::PushButton* m_delete_selected;
+	clan::PushButton* m_edit_condition;
+	clan::PushButton* m_edit_script;
+	clan::PushButton* m_move_up;
+	clan::PushButton* m_move_down;
+	clan::CheckBox*   m_block_north;
+	clan::CheckBox*   m_block_west;
+	clan::CheckBox*   m_block_south;
+	clan::CheckBox*   m_block_east;
+	clan::CheckBox*   m_hot;
+	clan::CheckBox*   m_water;
+	clan::CheckBox*   m_floater;
+	clan::ComboBox*   m_monster_region;
+	clan::Label*      m_zorder_label;
+	clan::Spin*       m_zorder;
 	std::list<int> m_monster_regions;
 };
 

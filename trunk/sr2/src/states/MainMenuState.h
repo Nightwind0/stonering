@@ -20,13 +20,13 @@ namespace StoneRing
         virtual ~MainMenuState();
 
         virtual bool IsDone() const;
-        virtual void HandleKeyDown(const CL_InputEvent &key);
-        virtual void HandleKeyUp(const CL_InputEvent &key);
+        virtual void HandleKeyDown(const clan::InputEvent &key);
+        virtual void HandleKeyUp(const clan::InputEvent &key);
 	virtual void HandleButtonUp(const IApplication::Button& button);
 	virtual void HandleButtonDown(const IApplication::Button& button);
 	virtual void HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos);
 	
-        virtual void Draw(const CL_Rect &screenRect,CL_GraphicContext& GC);
+        virtual void Draw(const clan::Rect &screenRect,clan::Canvas& GC);
         virtual bool LastToDraw() const { return false; } // It'll be last anyway.... and if not, thats okay too
         virtual bool DisableMappableObjects() const; // Should the app move the MOs?
         virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
@@ -50,20 +50,20 @@ namespace StoneRing
         void SelectPrevOmega();
 	
     private:
-	virtual CL_Rectf get_rect();
-	virtual void draw_option(int option, bool selected, float x, float y, CL_GraphicContext& gc);
-	virtual int height_for_option(CL_GraphicContext& gc);
+	virtual clan::Rectf get_rect();
+	virtual void draw_option(int option, bool selected, float x, float y, clan::Canvas& gc);
+	virtual int height_for_option(clan::Canvas& gc);
 	virtual void process_choice(int selection);
 	virtual int get_option_count();
-	virtual void draw_party(CL_GraphicContext& gc);
-        virtual void draw_party_stats(CL_GraphicContext& gc);
-        virtual void draw_omegas(CL_GraphicContext& gc);
+	virtual void draw_party(clan::Canvas& gc);
+        virtual void draw_party_stats(clan::Canvas& gc);
+        virtual void draw_omegas(clan::Canvas& gc);
         virtual bool hide_option(int option)const;
 	
         void fill_choices(std::vector<MenuOption*>::const_iterator begin,
                           std::vector<MenuOption*>::const_iterator end);
         
-	CL_Pointf calc_player_position(int player)const;
+	clan::Pointf calc_player_position(int player)const;
 	
 	SteelType selectTargets(bool group);
         SteelType selectOmegaSlot();
@@ -84,13 +84,13 @@ namespace StoneRing
 	Font m_SPFont;
 	Font m_CharacterFont;
         Font m_partyStatFont;
-        CL_Rectf m_menu_rect;
-	CL_Rectf m_character_rect;
-	CL_Rectf m_party_rect;
-        CL_Rectf m_status_rect;
-        CL_Rectf m_omega_rect;
-	CL_Image m_portrait_shadow;
-	CL_Sprite m_target_sprite;
+        clan::Rectf m_menu_rect;
+	clan::Rectf m_character_rect;
+	clan::Rectf m_party_rect;
+        clan::Rectf m_status_rect;
+        clan::Rectf m_omega_rect;
+	clan::Image m_portrait_shadow;
+	clan::Sprite m_target_sprite;
         MenuOption* m_option_parent;
         std::vector<MenuOption*> m_root_choices;
 	std::vector<MenuOption*> m_choices;

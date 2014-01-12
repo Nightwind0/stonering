@@ -26,21 +26,21 @@ using namespace Steel;
 
 namespace StoneRing { 
 
-ScriptEditWindow::ScriptEditWindow(CL_GUIManager* parent,const CL_GUITopLevelDescription &desc):CL_Window(parent,desc) {
-	m_script_name = new CL_LineEdit(this);	
-	m_script_name->set_geometry(CL_Rect(12,24,200,44));
-	m_script_text = new CL_TextEdit(this);
-	m_script_text->set_geometry(CL_Rect(CL_Point(12,50),CL_Size(750,400)));
-	m_script_errors = new CL_TextEdit(this);
-	m_script_errors->set_geometry(CL_Rect(CL_Point(12,460),CL_Size(750,100)));
+ScriptEditWindow::ScriptEditWindow(clan::GUIManager* parent,const clan::GUITopLevelDescription &desc):clan::Window(parent,desc) {
+	m_script_name = new clan::LineEdit(this);	
+	m_script_name->set_geometry(clan::Rect(12,24,200,44));
+	m_script_text = new clan::TextEdit(this);
+	m_script_text->set_geometry(clan::Rect(clan::Point(12,50),clan::Size(750,400)));
+	m_script_errors = new clan::TextEdit(this);
+	m_script_errors->set_geometry(clan::Rect(clan::Point(12,460),clan::Size(750,100)));
 	m_script_errors->set_read_only(true);
 	m_script_errors->set_cursor_drawing_enabled(false);
-	m_build_button = new CL_PushButton(this);
-	m_build_button->set_geometry(CL_Rect(CL_Point(12,570),CL_Size(128,32)));
+	m_build_button = new clan::PushButton(this);
+	m_build_button->set_geometry(clan::Rect(clan::Point(12,570),clan::Size(128,32)));
 	m_build_button->set_text("Parse");
 	m_build_button->func_clicked().set(this,&ScriptEditWindow::on_parse);
-	m_save_button = new CL_PushButton(this);
-	m_save_button->set_geometry(CL_Rect(CL_Point(750-128,570),CL_Size(128,32)));
+	m_save_button = new clan::PushButton(this);
+	m_save_button->set_geometry(clan::Rect(clan::Point(750-128,570),clan::Size(128,32)));
 	m_save_button->set_text("Save");
 	m_save_button->func_clicked().set(this,&ScriptEditWindow::on_save);
 	func_close().set(this,&ScriptEditWindow::on_close);

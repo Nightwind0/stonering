@@ -26,9 +26,9 @@ namespace StoneRing
       virtual void HandleButtonUp(const IApplication::Button& button);
       virtual void HandleButtonDown(const IApplication::Button& button);
       virtual void HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos);      
-      virtual void HandleKeyDown(const CL_InputEvent &key);
-      virtual void HandleKeyUp(const CL_InputEvent &key);
-      virtual void Draw(const CL_Rect &screenRect,CL_GraphicContext& GC);
+      virtual void HandleKeyDown(const clan::InputEvent &key);
+      virtual void HandleKeyUp(const clan::InputEvent &key);
+      virtual void Draw(const clan::Rect &screenRect,clan::Canvas& GC);
       virtual bool LastToDraw() const; // Should we continue drawing more states?
       virtual bool DisableMappableObjects() const; // Should the app move the MOs?
       virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
@@ -68,7 +68,7 @@ namespace StoneRing
       Targetable m_targetable;
       bool m_bDefaultMonsters;
       bool m_bDone;
-      CL_Sprite  m_target_sprite;
+      clan::Sprite  m_target_sprite;
     };
 
     inline bool TargetingState::may_target_single() const{

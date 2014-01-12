@@ -36,7 +36,7 @@ void StoneRing::SayState::HandleButtonUp(const IApplication::Button& button)
                     SoundManager::PlayEffect(SoundManager::EFFECT_CHANGE_OPTION);
 		m_nTotalDrawn += m_nDrawnThisFrame;
 		m_nDrawnThisFrame = 0;
-		CL_System::sleep(100);
+		clan::System::sleep(100);
 	    }
         break;
 	case IApplication::BUTTON_CANCEL:
@@ -54,18 +54,18 @@ void StoneRing::SayState::HandleAxisMove(const IApplication::Axis& axis, IApplic
 {
 }
 
-void StoneRing::SayState::HandleKeyDown(const CL_InputEvent &key)
+void StoneRing::SayState::HandleKeyDown(const clan::InputEvent &key)
 {
 }
 
-void StoneRing::SayState::HandleKeyUp(const CL_InputEvent &key)
+void StoneRing::SayState::HandleKeyUp(const clan::InputEvent &key)
 {
 
 }
 
-void StoneRing::SayState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
+void StoneRing::SayState::Draw(const clan::Rect &screenRect,clan::Canvas& GC)
 {
-    CL_Rect speakerTextRect = m_speaker_rect;
+    clan::Rect speakerTextRect = m_speaker_rect;
 
     Font speakerFont = m_speakerFont;
     Font textFont = m_speechFont;
@@ -82,12 +82,12 @@ void StoneRing::SayState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
     if(m_nTotalDrawn + m_nDrawnThisFrame < m_text.size())
     {
         // Draw a little "Theres more" doodad
-        CL_Draw::fill(GC,CL_Rectf(screenRect.get_width() - 20, screenRect.get_height() - 20, screenRect.get_width() - 10, screenRect.get_height() - 10), CL_Colorf::black );
+        GC.fill_rect(clan::Rectf(screenRect.get_width() - 20, screenRect.get_height() - 20, screenRect.get_width() - 10, screenRect.get_height() - 10), clan::Colorf::black );
     }
     
     if(m_ms_per_page != -1){
-        if(CL_System::get_time() >= m_page_start_time + m_ms_per_page){
-            m_page_start_time = CL_System::get_time();
+        if(clan::System::get_time() >= m_page_start_time + m_ms_per_page){
+            m_page_start_time = clan::System::get_time();
             HandleButtonUp(IApplication::BUTTON_CONFIRM);
         }
     }
@@ -120,7 +120,7 @@ void StoneRing::SayState::Start()
     m_text_rect = GraphicsManager::GetRect(GraphicsManager::SAY,"text");
     m_rect =      GraphicsManager::GetRect(GraphicsManager::SAY,"rect");
     //SoundManager::PlayEffect(SoundManager::EFFECT_SELECT_OPTION);
-    m_page_start_time = CL_System::get_time();
+    m_page_start_time = clan::System::get_time();
 }
 
 void StoneRing::SayState::Finish()

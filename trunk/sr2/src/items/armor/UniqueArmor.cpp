@@ -59,7 +59,7 @@ ArmorType *UniqueArmor::GetArmorType() const
     return m_pArmorType;
 }
 
-void UniqueArmor::load_attributes(CL_DomNamedNodeMap attributes)
+void UniqueArmor::load_attributes(clan::DomNamedNodeMap attributes)
 {
     NamedItemElement::load_attributes(attributes);
     m_value_multiplier = get_implied_float("valueMultiplier",attributes,1);

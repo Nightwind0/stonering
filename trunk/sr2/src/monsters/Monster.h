@@ -68,9 +68,9 @@ namespace StoneRing
             m_offsety = y;
         }
 
-        void SetCurrentSprite(CL_Sprite sprite);
+        void SetCurrentSprite(clan::Sprite sprite);
 
-        CL_Sprite GetCurrentSprite(bool pure=true);
+        clan::Sprite GetCurrentSprite(bool pure=true);
 
         /**
         * ICharacter interface
@@ -114,8 +114,8 @@ namespace StoneRing
         virtual void Raise();
         virtual void Attacked(ICharacter *pAttacker, DamageCategory::eDamageCategory category, bool melee, int amount);
 
-        virtual CL_Pointf GetBattlePos() const;
-        virtual void     SetBattlePos(CL_Pointf pos);
+        virtual clan::Pointf GetBattlePos() const;
+        virtual void     SetBattlePos(clan::Pointf pos);
         
         virtual void   IterateStatusEffects(Visitor<StatusEffect*> &);        
 
@@ -153,16 +153,16 @@ namespace StoneRing
         uint m_nCellX;
         uint m_nCellY;
         uint m_nInitiative;
-        CL_Sprite m_sprite;
+        clan::Sprite m_sprite;
         bool m_bDeathAnimated;
-        CL_Pointf m_battle_pos;
+        clan::Pointf m_battle_pos;
     };
 
 
     inline void Monster::RollInitiative(void)
     {
         int init = static_cast<int>(normal_random(GetAttribute(CA_LCK), GetAttribute(CA_LCK) * 0.2));
-        m_nInitiative = cl_max(0,init);
+        m_nInitiative = std::max(0,init);
 
     }
     inline uint Monster::GetInitiative(void)const
@@ -170,12 +170,12 @@ namespace StoneRing
         return m_nInitiative;
     }
 
-    inline CL_Pointf Monster::GetBattlePos() const
+    inline clan::Pointf Monster::GetBattlePos() const
     {
         return m_battle_pos;
     }
 
-    inline void     Monster::SetBattlePos(CL_Pointf pos)
+    inline void     Monster::SetBattlePos(clan::Pointf pos)
     {
         m_battle_pos = pos;
     }

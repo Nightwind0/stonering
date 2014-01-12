@@ -35,26 +35,26 @@ UtilityScripts::~UtilityScripts()
 
 void UtilityScripts::Load(const std::string& filename)
 {
-    CL_IODevice file = IApplication::GetInstance()->OpenResource(filename);
-    CL_DomDocument document;
+    clan::IODevice file = IApplication::GetInstance()->OpenResource(filename);
+    clan::DomDocument document;
     document.load(file);
     
-    CL_DomNode child = document.get_first_child();
-    CL_DomElement childElement = child.to_element();
+    clan::DomNode child = document.get_first_child();
+    clan::DomElement childElement = child.to_element();
     
     for(;!childElement.is_null(); childElement = childElement.get_next_sibling().to_element())
     {
-	CL_DomNode grandchild = childElement.get_first_child();
+	clan::DomNode grandchild = childElement.get_first_child();
 	std::string childname = childElement.get_node_name();
 	std::string scriptname;
 	if(childElement.has_attributes())
 	{
-	    CL_DomNamedNodeMap attributes = childElement.get_attributes();
+	    clan::DomNamedNodeMap attributes = childElement.get_attributes();
 	    scriptname = attributes.get_named_item("id").to_attr().get_value();
 	}
 	
 	if(!grandchild.is_text() && !grandchild.is_cdata_section())
-	    throw CL_Exception("Child of battle configuration element wasn't text.");
+	    throw clan::Exception("Child of battle configuration element wasn't text.");
 	
 	std::string script_text;
 	if(grandchild.is_cdata_section())

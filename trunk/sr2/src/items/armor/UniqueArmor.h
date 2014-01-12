@@ -17,7 +17,7 @@ namespace StoneRing{
         virtual uint GetValue() const ;
         virtual uint GetSellValue() const ;
 		virtual std::string GetName() const { return NamedItemElement::GetName(); }
-		virtual CL_Image GetIcon() const { return NamedItemElement::GetIcon(); }
+		virtual clan::Image GetIcon() const { return NamedItemElement::GetIcon(); }
 		virtual uint GetMaxInventory() const { return NamedItemElement::GetMaxInventory(); }
 		virtual eDropRarity GetDropRarity() const { return NamedItemElement::GetDropRarity(); }
 		virtual std::string GetDescription() const { return m_description; }
@@ -33,7 +33,7 @@ namespace StoneRing{
         virtual void OnEquipScript(const ParameterList& params);
         virtual void OnUnequipScript(const ParameterList& params);
         virtual bool handle_element(eElement element, Element * pElement);
-        virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
+        virtual void load_attributes(clan::DomNamedNodeMap attributes) ;
         virtual void load_finished();
         ArmorType *m_pArmorType;
         float m_value_multiplier;

@@ -32,7 +32,7 @@ void StoneRing::CharacterManager::initialize()
 MonsterElement * CharacterManager::GetMonsterElement(const std::string &name)
 {
     MonsterMap::const_iterator it = m_pInstance->m_monsters.find(name);
-    if(it == m_pInstance->m_monsters.end()) throw CL_Exception("Monster " + name + " not found in manager");
+    if(it == m_pInstance->m_monsters.end()) throw clan::Exception("Monster " + name + " not found in manager");
     return it->second;
 }
 
@@ -43,12 +43,12 @@ Monster * CharacterManager::CreateMonster(const std::string &name)
 	return new StoneRing::Monster(pElement);
 }
 
-void CharacterManager::LoadCharacterClassFile ( CL_DomDocument &doc )
+void CharacterManager::LoadCharacterClassFile ( clan::DomDocument &doc )
 {
     IFactory * pFactory = IApplication::GetInstance()->GetElementFactory();
 
-    CL_DomElement classesNode = doc.named_item("characterClasses").to_element();
-    CL_DomElement classNode = classesNode.get_first_child().to_element();
+    clan::DomElement classesNode = doc.named_item("characterClasses").to_element();
+    clan::DomElement classNode = classesNode.get_first_child().to_element();
 
     while(!classNode.is_null())
     {
@@ -79,14 +79,14 @@ void CharacterManager::GetMonsterList( std::list< MonsterElement* >& o_list )
 }
 
 
-void CharacterManager::LoadMonsterFile ( CL_DomDocument &doc )
+void CharacterManager::LoadMonsterFile ( clan::DomDocument &doc )
 {
     IFactory * pFactory = IApplication::GetInstance()->GetElementFactory();
 
-    CL_DomElement monstersNode = doc.named_item("monsters").to_element();
+    clan::DomElement monstersNode = doc.named_item("monsters").to_element();
     assert(monstersNode.is_element());
     assert(!monstersNode.is_null());
-    CL_DomElement monsterNode = monstersNode.get_first_child().to_element();
+    clan::DomElement monsterNode = monstersNode.get_first_child().to_element();
     assert(monsterNode.is_element());
 
     while(!monsterNode.is_null())
@@ -110,14 +110,14 @@ void CharacterManager::LoadMonsterFile ( CL_DomDocument &doc )
 
 }
 
-void CharacterManager::LoadCharacters(CL_DomDocument &doc)
+void CharacterManager::LoadCharacters(clan::DomDocument &doc)
 {
     IFactory * pFactory = IApplication::GetInstance()->GetElementFactory();
 
-    CL_DomElement charactersNode = doc.named_item("characters").to_element();
+    clan::DomElement charactersNode = doc.named_item("characters").to_element();
     assert(charactersNode.is_element());
     assert(!charactersNode.is_null());
-    CL_DomElement characterNode = charactersNode.get_first_child().to_element();
+    clan::DomElement characterNode = charactersNode.get_first_child().to_element();
     assert(characterNode.is_element());
 
     while(!characterNode.is_null())

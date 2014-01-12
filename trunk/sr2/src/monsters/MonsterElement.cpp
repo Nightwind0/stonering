@@ -75,7 +75,7 @@ SpriteDefinition * MonsterElement::getSpriteDefinition(const std::string &name) 
     // Throw error if missing?
     std::map<std::string,SpriteDefinition*>::const_iterator it = mSpriteDefinitionsMap.find(name);
 
-    if(it == mSpriteDefinitionsMap.end()) throw CL_Exception("Sprite definition: " + name + " missing");
+    if(it == mSpriteDefinitionsMap.end()) throw clan::Exception("Sprite definition: " + name + " missing");
     return it->second;
 }
 #endif
@@ -117,7 +117,7 @@ bool MonsterElement::handle_element(Element::eElement element, StoneRing::Elemen
     return true;
 }
 
-void MonsterElement::load_attributes(CL_DomNamedNodeMap attr)
+void MonsterElement::load_attributes(clan::DomNamedNodeMap attr)
 {
     m_name = get_required_string("name",attr);
     m_sprite_resources = get_required_string("spriteResources",attr);

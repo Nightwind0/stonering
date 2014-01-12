@@ -9,14 +9,14 @@ namespace StoneRing{
     {
     public:
         StatusEffectModifier();
-        StatusEffectModifier(CL_DomElement *pElement);
+        StatusEffectModifier(clan::DomElement *pElement);
         virtual ~StatusEffectModifier();
         virtual eElement WhichElement() const{ return ESTATUSEFFECTMODIFIER; }
         StatusEffect * GetStatusEffect() const;
         float GetModifier() const;
 		virtual std::string GetDebugId() const { return m_pStatusEffect->GetDebugId(); }						
     private:
-        virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
+        virtual void load_attributes(clan::DomNamedNodeMap attributes) ;
         StatusEffect *m_pStatusEffect;
         float m_fModifier;
     };

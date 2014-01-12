@@ -8,8 +8,8 @@
 using Editor::MapGrid;
 using Editor::TileSelector;
 
-MapGrid::MapGrid(CL_Component *parent, CL_GraphicContext *mgGC, TileSelector *TS)
-    :   CL_Component(parent), mgGC(mgGC), TS(TS)
+MapGrid::MapGrid(clan::Component *parent, clan::Canvas *mgGC, TileSelector *TS)
+    :   clan::Component(parent), mgGC(mgGC), TS(TS)
 {
 //EditableLevel *mpLevel,
 //, mgLevel(null)
@@ -22,13 +22,13 @@ MapGrid::MapGrid(CL_Component *parent, CL_GraphicContext *mgGC, TileSelector *TS
 
     set_size(get_parent()->get_width() - 20, get_parent()->get_height() - 50);
 
-    mgScrollVert = new CL_ScrollBar(0, 0, false, get_parent());
+    mgScrollVert = new clan::ScrollBar(0, 0, false, get_parent());
     mgScrollVert->set_position(get_parent()->get_width() - 20, 40);
     mgScrollVert->set_width(20);
     mgScrollVert->set_height(get_parent()->get_height()-40);
     mgScrollVert->set_tracking(true);
 
-    mgScrollHorz = new CL_ScrollBar(0, 0, true, get_parent());
+    mgScrollHorz = new clan::ScrollBar(0, 0, true, get_parent());
     mgScrollHorz->set_position(0, get_parent()->get_height() - 20);
     mgScrollHorz->set_width(get_parent()->get_width()-20);
     mgScrollHorz->set_height(20);
@@ -70,7 +70,7 @@ void MapGrid::on_window_resize(int,int)
     mgScrollHorz->set_height(20);
 }
 
-void MapGrid::on_mouse_move(const CL_InputEvent &event)
+void MapGrid::on_mouse_move(const clan::InputEvent &event)
 {
     std::ostringstream xStr;
     std::ostringstream yStr;
@@ -98,15 +98,15 @@ void MapGrid::on_paint()
 
 
     //component background color
-    CL_Display::fill_rect(client_to_screen(CL_Rect(0, 0, get_width(), get_height())), CL_Color::lightgreen);
+    clan::Display::fill_rect(client_to_screen(clan::Rect(0, 0, get_width(), get_height())), clan::Color::lightgreen);
     //component border color
-    CL_Display::draw_rect(client_to_screen(CL_Rect(0, 0, get_width(), get_height())), CL_Color::grey);
+    clan::Display::draw_rect(client_to_screen(clan::Rect(0, 0, get_width(), get_height())), clan::Color::grey);
 
 
     if(mgLevel)  //we dont want to try drawing an empty level
     {
-        CL_Rect dst(0,0,min((unsigned int)widthInTiles,mgLevel->getWidth())*32, min((unsigned int)heightInTiles,mgLevel->getHeight())*32);
-        CL_Rect src(mgScrollX,mgScrollY, mgScrollX+dst.get_width(), mgScrollY+dst.get_height());
+        clan::Rect dst(0,0,min((unsigned int)widthInTiles,mgLevel->getWidth())*32, min((unsigned int)heightInTiles,mgLevel->getHeight())*32);
+        clan::Rect src(mgScrollX,mgScrollY, mgScrollX+dst.get_width(), mgScrollY+dst.get_height());
 
         mgLevel->draw(src, client_to_screen(dst), mgGC, false, hotflag, blocksflag);
     
@@ -117,7 +117,7 @@ void MapGrid::on_paint()
 
 }
 
-void MapGrid::on_placeTile(const CL_InputEvent &event)
+void MapGrid::on_placeTile(const clan::InputEvent &event)
 {
     if(mgLevel)  //nasty things might happen if we tried adding tiles to nonexistant levels
     {
@@ -141,7 +141,7 @@ void MapGrid::on_placeTile(const CL_InputEvent &event)
             }
 
 
-            if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ))
+            if(clan::Keyboard::get_keycode( clan::KEY_SHIFT ))
             {
                 // Zap mode, delete the topmost tile
                 std::list<StoneRing::Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
@@ -203,8 +203,8 @@ void MapGrid::set_Level(Editor::Level *pLevel)
 
 void MapGrid::save_Level(string filename)
 {
-    CL_DomDocument newdoc;
-    CL_OutputSource_File  os(filename);
+    clan::DomDocument newdoc;
+    clan::OutputSource_File  os(filename);
 
     os.open();
 
@@ -258,7 +258,7 @@ void MapGrid::toggle_blocks()
 
 }
 
-void MapGrid::on_Tool_Click(const CL_InputEvent &event)
+void MapGrid::on_Tool_Click(const clan::InputEvent &event)
 {
         
     if(cur_tool == "hot")
@@ -293,7 +293,7 @@ void MapGrid::switchTool(string toolname)
 
 }
 
-void MapGrid::on_setHot(const CL_InputEvent &event)
+void MapGrid::on_setHot(const clan::InputEvent &event)
 {
     if(mgLevel)  //nasty things might happen if we set stuff on nonexistant levels
     {
@@ -310,7 +310,7 @@ void MapGrid::on_setHot(const CL_InputEvent &event)
             cout << "Hot (" << mgX << "," << mgY << ")" << endl;
 
 
-            if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ))
+            if(clan::Keyboard::get_keycode( clan::KEY_SHIFT ))
             {
                 // Anti-Mode.  UNset the value if its set.
                 //std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
@@ -328,7 +328,7 @@ void MapGrid::on_setHot(const CL_InputEvent &event)
     }
 }
 
-void MapGrid::on_setNorth(const CL_InputEvent &event)
+void MapGrid::on_setNorth(const clan::InputEvent &event)
 {
     if(mgLevel)  //nasty things might happen if we set stuff on nonexistant levels
     {
@@ -345,7 +345,7 @@ void MapGrid::on_setNorth(const CL_InputEvent &event)
             cout << "North (" << mgX << "," << mgY << ")" << endl;
 
 
-            if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ))
+            if(clan::Keyboard::get_keycode( clan::KEY_SHIFT ))
             {
                 // Anti-Mode.  UNset the value if its set.
                 //std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
@@ -364,7 +364,7 @@ void MapGrid::on_setNorth(const CL_InputEvent &event)
     }
 }
 
-void MapGrid::on_setSouth(const CL_InputEvent &event)
+void MapGrid::on_setSouth(const clan::InputEvent &event)
 {
     if(mgLevel)  //nasty things might happen if we set stuff on nonexistant levels
     {
@@ -381,7 +381,7 @@ void MapGrid::on_setSouth(const CL_InputEvent &event)
             cout << "South (" << mgX << "," << mgY << ")" << endl;
 
 
-            if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ))
+            if(clan::Keyboard::get_keycode( clan::KEY_SHIFT ))
             {
                 // Anti-Mode.  UNset the value if its set.
                 //std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
@@ -399,7 +399,7 @@ void MapGrid::on_setSouth(const CL_InputEvent &event)
     }
 }
 
-void MapGrid::on_setEast(const CL_InputEvent &event)
+void MapGrid::on_setEast(const clan::InputEvent &event)
 {
     if(mgLevel)  //nasty things might happen if we set stuff on nonexistant levels
     {
@@ -416,7 +416,7 @@ void MapGrid::on_setEast(const CL_InputEvent &event)
             cout << "East (" << mgX << "," << mgY << ")" << endl;
 
 
-            if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ))
+            if(clan::Keyboard::get_keycode( clan::KEY_SHIFT ))
             {
                 // Anti-Mode.  UNset the value if its set.
                 //std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );
@@ -434,7 +434,7 @@ void MapGrid::on_setEast(const CL_InputEvent &event)
     }
 }
 
-void MapGrid::on_setWest(const CL_InputEvent &event)
+void MapGrid::on_setWest(const clan::InputEvent &event)
 {
     if(mgLevel)  //nasty things might happen if we set stuff on nonexistant levels
     {
@@ -451,7 +451,7 @@ void MapGrid::on_setWest(const CL_InputEvent &event)
             cout << "West (" << mgX << "," << mgY << ")" << endl;
 
 
-            if(CL_Keyboard::get_keycode( CL_KEY_SHIFT ))
+            if(clan::Keyboard::get_keycode( clan::KEY_SHIFT ))
             {
                 // Anti-Mode.  UNset the value if its set.
                 //std::list<Tile*> TileList = mgLevel->getTilesAt( mgX, mgY );

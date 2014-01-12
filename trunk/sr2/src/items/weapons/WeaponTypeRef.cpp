@@ -11,7 +11,7 @@ WeaponTypeRef::~WeaponTypeRef()
 {
 }
 
-void WeaponTypeRef::load_attributes(CL_DomNamedNodeMap attributes)
+void WeaponTypeRef::load_attributes(clan::DomNamedNodeMap attributes)
 {
     m_name = get_required_string("name",attributes);
 }

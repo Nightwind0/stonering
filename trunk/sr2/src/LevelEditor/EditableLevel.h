@@ -26,7 +26,7 @@ public:
     {
     }
     virtual ~EditableScriptElement(){}
-    virtual CL_DomElement createDomElement(CL_DomDocument&) const;
+    virtual clan::DomElement createDomElement(clan::DomDocument&) const;
 
     void setScript(const std::string &);
 
@@ -58,7 +58,7 @@ public:
     virtual ~EditableEvent(){}
 
     void setScript(ScriptElement *pScript){ mpScript = pScript; }
-    virtual CL_DomElement createDomElement(CL_DomDocument&) const;
+    virtual clan::DomElement createDomElement(clan::DomDocument&) const;
 private:
 };
 
@@ -109,11 +109,11 @@ class EditableLevel : public StoneRing::Level
 {
 public:
     EditableLevel(){}
-    EditableLevel(const std::string &name,CL_ResourceManager * pResources);
+    EditableLevel(const std::string &name,clan::ResourceManager * pResources);
     virtual ~EditableLevel();
             
 
-    virtual void drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
+    virtual void drawMappableObjects(const clan::Rect &src, const clan::Rect &dst, clan::Canvas *pGC);
 
 
     std::list<Tile*> getTilesAt(uint levelX, uint levelY) const;

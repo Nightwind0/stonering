@@ -20,12 +20,12 @@ namespace StoneRing{
 
         virtual void Invoke(eScriptMode invokeTime, const ParameterList& params);
         virtual bool EquipCondition(const ParameterList& params);
-		virtual CL_Sprite GetSprite() const; 
+		virtual clan::Sprite GetSprite() const; 
         WeaponType *GetWeaponType() const ;
         bool IsRanged() const ;
         bool IsTwoHanded() const;
 		virtual std::string GetName() const { return NamedItemElement::GetName(); }
-		virtual CL_Image GetIcon() const { return NamedItemElement::GetIcon(); }
+		virtual clan::Image GetIcon() const { return NamedItemElement::GetIcon(); }
 		virtual uint GetMaxInventory() const { return NamedItemElement::GetMaxInventory(); }
 		virtual eDropRarity GetDropRarity() const { return NamedItemElement::GetDropRarity(); }
         virtual std::string GetDescription() const { return m_description; }
@@ -37,10 +37,10 @@ namespace StoneRing{
         virtual void OnEquipScript(const ParameterList& params);
         virtual void OnUnequipScript(const ParameterList& params);
         virtual bool handle_element(eElement element, Element * pElement);
-        virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
+        virtual void load_attributes(clan::DomNamedNodeMap attributes) ;
         virtual void load_finished();
         WeaponType * m_pWeaponType;
-		CL_Sprite m_sprite;
+		clan::Sprite m_sprite;
         float m_value_multiplier;
         uint m_nValue;
         std::string m_description;

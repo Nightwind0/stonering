@@ -12,10 +12,10 @@ using namespace std;
 
 namespace Editor{
 
-class TileSelector : public CL_Component
+class TileSelector : public clan::Component
 {
 public:
-    TileSelector(CL_Component *parent, CL_ResourceManager* tsResources);
+    TileSelector(clan::Component *parent, clan::ResourceManager* tsResources);
     //, TileSet tileset
     virtual ~TileSelector();
 
@@ -23,7 +23,7 @@ public:
 
     void on_paint();
     void draw();
-    void on_select(const CL_InputEvent &event);
+    void on_select(const clan::InputEvent &event);
     void on_window_resize(int,int);
 
     int get_tsX() {return tsX;}
@@ -32,20 +32,20 @@ public:
 
 private:
 
-    CL_Rect TSrect;
-    CL_Rect* SRCrect;
-    CL_Rect* DSTrect;
+    clan::Rect TSrect;
+    clan::Rect* SRCrect;
+    clan::Rect* DSTrect;
 
-    CL_ScrollBar *scrollVert;
-    CL_ScrollBar *scrollHorz;
+    clan::ScrollBar *scrollVert;
+    clan::ScrollBar *scrollHorz;
         
 
-    CL_SlotContainer slots;
-    CL_ResourceManager* tsResources;
-    list<CL_Surface*> tilemaps;
+    clan::SlotContainer slots;
+    clan::ResourceManager* tsResources;
+    list<clan::Surface*> tilemaps;
 
-    CL_Label *cur_tileset_lable;
-    CL_Surface* cur_tileset;
+    clan::Label *cur_tileset_lable;
+    clan::Surface* cur_tileset;
 
     int tsX, tsY;
     string tsMapName;

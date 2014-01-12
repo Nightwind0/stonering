@@ -40,7 +40,7 @@ public:
     virtual void MappableObjectMoveHook();
     virtual bool DisableMappableObjects() const;
     virtual bool LastToDraw() const;
-    virtual void Draw(const CL_Rect& screenRect, CL_GraphicContext& GC);
+    virtual void Draw(const clan::Rect& screenRect, clan::Canvas& GC);
     virtual bool IsDone() const;
     virtual void HandleButtonUp(const StoneRing::IApplication::Button& button);
 
@@ -55,18 +55,18 @@ private:
 	int m_nOldLevel;
         int m_nSP;
     };
-    CL_Pointf m_offset;
-    CL_Pointf m_portraitOffset;
-    CL_Pointf m_textOffset;
+    clan::Pointf m_offset;
+    clan::Pointf m_portraitOffset;
+    clan::Pointf m_textOffset;
 
  
-    CL_Image m_portraitShadow;
-    CL_Image m_xpbar;
+    clan::Image m_portraitShadow;
+    clan::Image m_xpbar;
  
-    CL_Rectf m_barRect;
-    CL_Rectf m_charRect;
-    CL_Pointf m_barPoint;
-    CL_Gradient m_barGradient;
+    clan::Rectf m_barRect;
+    clan::Rectf m_charRect;
+    clan::Pointf m_barPoint;
+    clan::Gradient m_barGradient;
     StoneRing::Font m_characterFont;
     StoneRing::Font m_xpFont;
     StoneRing::Font m_spFont;

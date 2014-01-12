@@ -26,10 +26,10 @@ namespace StoneRing  {
 	
 class Event;
 
-class EventEditWindow : public CL_Window
+class EventEditWindow : public clan::Window
 {
 public:
-    EventEditWindow(CL_GUIManager* manager, const CL_GUITopLevelDescription &desc);
+    EventEditWindow(clan::GUIManager* manager, const clan::GUITopLevelDescription &desc);
     virtual ~EventEditWindow();
 	void SetEvent(Event* pEvent);
 	void CreateEvent();
@@ -46,15 +46,15 @@ private:
 	void sync_button_names();
 	void on_save();
 	
-	CL_PushButton * m_edit_condition; // edit or create, change text based on mode
-	CL_PushButton * m_delete_condition; // disabled if there is no current condition
-	CL_PushButton * m_edit_script;
-	CL_PushButton * m_delete_script;
-	CL_PushButton * m_save_button;
-	CL_LineEdit   * m_event_name;
-	CL_CheckBox   * m_repeatable;
-	CL_CheckBox   * m_remember;
-	CL_ComboBox   * m_trigger_type;
+	clan::PushButton * m_edit_condition; // edit or create, change text based on mode
+	clan::PushButton * m_delete_condition; // disabled if there is no current condition
+	clan::PushButton * m_edit_script;
+	clan::PushButton * m_delete_script;
+	clan::PushButton * m_save_button;
+	clan::LineEdit   * m_event_name;
+	clan::CheckBox   * m_repeatable;
+	clan::CheckBox   * m_remember;
+	clan::ComboBox   * m_trigger_type;
 	
 	Event * 		m_pEvent;
 	bool            m_bEdit;

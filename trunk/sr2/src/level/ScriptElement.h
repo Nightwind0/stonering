@@ -35,7 +35,7 @@ namespace StoneRing{
 		virtual std::string GetDebugId() const { return m_id; }				
         
     protected:
-        virtual void load_attributes(CL_DomNamedNodeMap);
+        virtual void load_attributes(clan::DomNamedNodeMap);
         virtual void handle_text(const std::string &);
         Steel::AstScript * mp_script;
         std::string m_id;
@@ -45,7 +45,7 @@ namespace StoneRing{
 		void SetScript(const std::string& script) { m_script = script; }	
 		void SetId(const std::string& id) { m_id = id; }
 		void SetIsCondition(bool is_condition) { m_bIsCondition = is_condition; }		
-        virtual CL_DomElement CreateDomElement(CL_DomDocument&)const;
+        virtual clan::DomElement CreateDomElement(clan::DomDocument&)const;
 		std::string GetScriptText() const { return m_script; }
 		std::string GetScriptId() const { return m_id; }
 		ScriptElement(const ScriptElement& copy);

@@ -38,22 +38,22 @@ namespace StoneRing
         BattleMenuOption* GetSelectedOption() const;
 
         eType GetType ( void ) const;
-        void SetRect(CL_Rectf& rect);
+        void SetRect(clan::Rectf& rect);
         void SetEnableConditionParams(const Steel::ParameterList& params, Character* pChar);
 		// Must call SetEnableConditionParams before calling this
 		bool HasEnabledOptions() const;
         void Init();
 		virtual std::string GetDebugId() const { return ""; }				
     private:
-        virtual CL_Rectf get_rect();
-        virtual void draw_option(int option, bool selected,  float x, float y, CL_GraphicContext& gc);
-        virtual int height_for_option(CL_GraphicContext& gc);
+        virtual clan::Rectf get_rect();
+        virtual void draw_option(int option, bool selected,  float x, float y, clan::Canvas& gc);
+        virtual int height_for_option(clan::Canvas& gc);
         virtual void process_choice(int selection){}
         virtual int get_option_count();
         virtual bool hide_option(int selection)const;
         
         virtual bool handle_element(eElement, Element *);
-        virtual void load_attributes(CL_DomNamedNodeMap );
+        virtual void load_attributes(clan::DomNamedNodeMap );
         virtual void load_finished();
 
         std::vector<BattleMenuOption*> m_options;
@@ -64,8 +64,8 @@ namespace StoneRing
         Font m_bpFont;
         Font m_mpFont;
         Character *m_pCharacter;
-        CL_Rectf m_rect;
-        CL_Pointf m_cost_spacing;
+        clan::Rectf m_rect;
+        clan::Pointf m_cost_spacing;
         int m_font_height;
         Steel::ParameterList m_params;
     };

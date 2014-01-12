@@ -2,7 +2,7 @@
 
 using namespace StoneRing;
 
-void WeaponEnhancer::load_attributes(CL_DomNamedNodeMap attributes)
+void WeaponEnhancer::load_attributes(clan::DomNamedNodeMap attributes)
 {
     std::string strAttr = get_required_string("attribute", attributes);
     m_eAttribute = Weapon::AttributeForString ( strAttr );

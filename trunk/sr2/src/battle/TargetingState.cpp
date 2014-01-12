@@ -61,6 +61,7 @@ void TargetingState::ChangeState(State newState)
     }
 
     m_state = newState;
+	m_pParent->TargetChanged();
 }
 
 bool TargetingState::IsDone() const
@@ -68,7 +69,7 @@ bool TargetingState::IsDone() const
     return m_bDone;
 }
 
-void TargetingState::HandleKeyDown(const CL_InputEvent &key)
+void TargetingState::HandleKeyDown(const clan::InputEvent &key)
 {
     switch (key.id)
     {
@@ -156,7 +157,7 @@ void TargetingState::HandleAxisMove(const IApplication::Axis& axis, IApplication
 }
 
 
-void TargetingState::HandleKeyUp(const CL_InputEvent &key)
+void TargetingState::HandleKeyUp(const clan::InputEvent &key)
 {
 
 }
@@ -170,6 +171,7 @@ bool TargetingState::SelectRightGroup()
 
 
     m_pParent->m_targets.m_bSelectedGroup = true;
+	m_pParent->TargetChanged();
     return true;
 }
 bool TargetingState::SelectLeftGroup()
@@ -181,6 +183,7 @@ bool TargetingState::SelectLeftGroup()
 
 
     m_pParent->m_targets.m_bSelectedGroup = true;
+	m_pParent->TargetChanged();
     return true;
 }
 bool TargetingState::SelectFromRightGroup()
@@ -189,6 +192,7 @@ bool TargetingState::SelectFromRightGroup()
     {
         m_pParent->m_targets.selected.m_pTarget = m_pParty->GetCharacter(0);
         m_pParent->m_targets.m_bSelectedGroup = false;
+		m_pParent->TargetChanged();
         return true;
     }
     else
@@ -198,6 +202,7 @@ bool TargetingState::SelectFromRightGroup()
         if(can_target(m_pParent->m_monsters->GetCharacter(i))){
             m_pParent->m_targets.selected.m_pTarget = m_pParent->m_monsters->GetCharacter(i);
             m_pParent->m_targets.m_bSelectedGroup = false;
+			m_pParent->TargetChanged();
             return true;
         }
     }
@@ -215,6 +220,7 @@ bool TargetingState::SelectFromLeftGroup()
         if(can_target(m_pParent->m_monsters->GetCharacter(i))){
             m_pParent->m_targets.selected.m_pTarget = m_pParent->m_monsters->GetCharacter(i);
             m_pParent->m_targets.m_bSelectedGroup = false;
+			m_pParent->TargetChanged();
             return true;
         }
     }
@@ -224,6 +230,7 @@ bool TargetingState::SelectFromLeftGroup()
     {
         m_pParent->m_targets.selected.m_pTarget = m_pParty->GetCharacter(0);
         m_pParent->m_targets.m_bSelectedGroup = false;
+		m_pParent->TargetChanged();
         return true;
     }
     return false;
@@ -265,6 +272,7 @@ bool TargetingState::SelectTargetOnLeft()
                             if (pMonster->GetCellX() == currentCellX && (pMonster->GetCellY() == currentCellY_up || pMonster->GetCellY() == currentCellY_down))
                             {
                                 m_pParent->m_targets.selected.m_pTarget = pMonster;
+								m_pParent->TargetChanged();
                                 return true;
                             }
                         }
@@ -326,6 +334,7 @@ bool TargetingState::SelectTargetOnRight()
                             if (pMonster->GetCellX() == currentCellX && (pMonster->GetCellY() == currentCellY_up || pMonster->GetCellY() == currentCellY_down))
                             {
                                 m_pParent->m_targets.selected.m_pTarget = pMonster;
+								m_pParent->TargetChanged();
                                 return true;
                             }
                         }
@@ -381,6 +390,7 @@ void TargetingState::SelectDownTarget()
                         if (pMonster->GetCellX() == cellX && pMonster->GetCellY() == currentCellY_down)
                         {
                             m_pParent->m_targets.selected.m_pTarget = pMonster;
+							m_pParent->TargetChanged();
                             return;
                         }
                     }
@@ -405,6 +415,7 @@ void TargetingState::SelectDownTarget()
             if(current_index == m_pParty->GetCharacterCount())
                 current_index = 0;
             m_pParent->m_targets.selected.m_pTarget = m_pParty->GetCharacter(current_index);
+			m_pParent->TargetChanged();
             return;
         }
     }
@@ -442,6 +453,7 @@ void TargetingState::SelectUpTarget()
                         if (pMonster->GetCellX() == cellX && pMonster->GetCellY() == currentCellY_up)
                         {
                             m_pParent->m_targets.selected.m_pTarget = pMonster;
+							m_pParent->TargetChanged();
                             return;
                         }
                     }
@@ -468,6 +480,7 @@ void TargetingState::SelectUpTarget()
             if(current_index == -1)
                 current_index = m_pParty->GetCharacterCount() -1 ;
             m_pParent->m_targets.selected.m_pTarget = m_pParty->GetCharacter(current_index);
+			m_pParent->TargetChanged();
             return;
         }
     }
@@ -476,10 +489,10 @@ void TargetingState::SelectUpTarget()
 }
 
 
-void TargetingState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
+void TargetingState::Draw(const clan::Rect &screenRect,clan::Canvas& GC)
 {
 
-    m_target_sprite.update();
+    m_target_sprite.update(1); // TODO: Do I need to provide actual ms here?
     
 
     uint playercount = m_pParty->GetCharacterCount();
@@ -490,9 +503,9 @@ void TargetingState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
         if ((m_pParent->m_targets.m_bSelectedGroup && m_pParent->m_targets.selected.m_pGroup == m_pParty)
                 || m_pParent->m_targets.selected.m_pTarget == pCharacter)
         {
-            CL_Rectf rect = m_pParent->get_character_rect(pCharacter);
+            clan::Rectf rect = m_pParent->get_character_rect(pCharacter);
             m_target_sprite.set_scale(-1.0,1.0);
-            m_target_sprite.draw(GC,rect.get_top_right().x + m_target_sprite.get_width(),rect.get_top_right().y + m_target_sprite.get_height());
+            m_target_sprite.draw(GC,rect.right ,rect.top);
                                 //(rect.top - (m_target_sprite.get_height()/2));
         }
     }
@@ -505,8 +518,8 @@ void TargetingState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
                 || m_pParent->m_targets.selected.m_pTarget == pMonster)
         {
         	if(!pMonster->GetToggle(ICharacter::CA_ALIVE)) continue;
-            CL_Rectf rect = m_pParent->get_character_rect(pMonster);
-            CL_Sprite sprite = pMonster->GetCurrentSprite();
+            clan::Rectf rect = m_pParent->get_character_rect(pMonster);
+            clan::Sprite sprite = pMonster->GetCurrentSprite();
             m_target_sprite.set_scale(1.0,1.0);
             m_target_sprite.draw(GC,rect.left, rect.top );
                                 // rect.top - (m_target_sprite.get_height()/2.0f) + sprite.get_height()/2.0f);

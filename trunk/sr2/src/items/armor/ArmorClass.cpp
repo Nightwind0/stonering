@@ -21,7 +21,7 @@ bool ArmorClass::operator==( const ArmorClass &lhs )
     return m_name == lhs.m_name;
 }
 
-void ArmorClass::load_attributes(CL_DomNamedNodeMap attributes)
+void ArmorClass::load_attributes(clan::DomNamedNodeMap attributes)
 {
     m_name = get_required_string("name",attributes );
     m_fValueMultiplier = get_implied_float("valueMultiplier",attributes,1);

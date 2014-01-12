@@ -37,7 +37,7 @@ public:
 	virtual void HandleButtonUp( const IApplication::Button& button );
 	virtual void HandleButtonDown( const IApplication::Button& button ) ;
 	virtual void HandleAxisMove( const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos );	
-	virtual void Draw( const CL_Rect &screenRect, CL_GraphicContext& GC );
+	virtual void Draw( const clan::Rect &screenRect, clan::Canvas& GC );
 	virtual bool LastToDraw() const; // Should we continue drawing more states?
 	virtual bool DisableMappableObjects() const; // Should the app move the MOs?
 	virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
@@ -47,9 +47,9 @@ public:
 	virtual void Finish(); // Hook to clean up or whatever after being popped	
 	
 	// Menu 
-	virtual CL_Rectf get_rect();
-    virtual void draw_option(int option, bool selected, float x, float y, CL_GraphicContext& gc);
-    virtual int height_for_option(CL_GraphicContext& gc);
+	virtual clan::Rectf get_rect();
+    virtual void draw_option(int option, bool selected, float x, float y, clan::Canvas& gc);
+    virtual int height_for_option(clan::Canvas& gc);
     virtual void process_choice(int selection);
     virtual int get_option_count();
 private:
@@ -58,13 +58,13 @@ private:
 	std::vector<uint> m_counts;
 	uint m_sound_count;
 	uint m_item_cursor;
-	CL_Timer m_sound_timer;
+	clan::Timer m_sound_timer;
 	bool m_done;
 	bool m_done_display;
-	CL_Pointf m_offset;
+	clan::Pointf m_offset;
 	uint m_start_time;
-	CL_Rect m_rect;
-	CL_Rect m_header_rect;
+	clan::Rect m_rect;
+	clan::Rect m_header_rect;
 	Font m_item_font;
 	Font m_header_font;
 };

@@ -14,10 +14,10 @@ using namespace std;
 
 namespace Editor{
 
-class MapGrid : public CL_Component
+class MapGrid : public clan::Component
 {
 public:
-    MapGrid( CL_Component *parent, CL_GraphicContext *mgGC, TileSelector *TS);
+    MapGrid( clan::Component *parent, clan::Canvas *mgGC, TileSelector *TS);
         
     virtual ~MapGrid();
 
@@ -26,16 +26,16 @@ public:
 
     void switchTool(string toolname);
 
-    void on_Tool_Click(const CL_InputEvent &event);
-    void on_setHot(const CL_InputEvent &event);
-    void on_setNorth(const CL_InputEvent &event);
-    void on_setSouth(const CL_InputEvent &event);
-    void on_setEast(const CL_InputEvent &event);
-    void on_setWest(const CL_InputEvent &event);
-    void on_placeTile(const CL_InputEvent &event);
+    void on_Tool_Click(const clan::InputEvent &event);
+    void on_setHot(const clan::InputEvent &event);
+    void on_setNorth(const clan::InputEvent &event);
+    void on_setSouth(const clan::InputEvent &event);
+    void on_setEast(const clan::InputEvent &event);
+    void on_setWest(const clan::InputEvent &event);
+    void on_placeTile(const clan::InputEvent &event);
     void on_paint();
     void on_dir_change(const string &new_dir);
-    void on_mouse_move(const CL_InputEvent &event);
+    void on_mouse_move(const clan::InputEvent &event);
     void on_window_resize(int, int);
 
     void more_rows(int r = 1);
@@ -54,20 +54,20 @@ private:
     //this should probably be an enum.
     string cur_tool;  //valid values: tile, hot, north, south, east, west
 
-    CL_Rect rect;
-    CL_SlotContainer slots;
+    clan::Rect rect;
+    clan::SlotContainer slots;
 
     Editor::Level *mgLevel;
 
-    CL_GraphicContext *mgGC;
+    clan::Canvas *mgGC;
 
-    CL_ScrollBar *mgScrollVert;
-    CL_ScrollBar *mgScrollHorz;
+    clan::ScrollBar *mgScrollVert;
+    clan::ScrollBar *mgScrollHorz;
 
     int mgX, mgY;
     TileSelector *TS;
 
-    CL_FileDialog *openLevel;
+    clan::FileDialog *openLevel;
 
     bool hotflag, blocksflag;
 

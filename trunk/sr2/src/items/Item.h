@@ -58,7 +58,7 @@ namespace StoneRing{
         virtual eDropRarity GetDropRarity() const = 0;
         virtual std::string GetDescription() const = 0;
 
-        virtual CL_Image GetIcon() const = 0;
+        virtual clan::Image GetIcon() const = 0;
 
         // These next two do not apply to special or system items.
         virtual uint GetValue() const = 0; // Price to buy, and worth when calculating drops.

@@ -22,7 +22,7 @@ StoneRing::MapState::~MapState()
 {
 }
 
-void StoneRing::MapState::SetDimensions(const CL_Rect &screenRect)
+void StoneRing::MapState::SetDimensions(const clan::Rect &screenRect)
 {
     m_screen_rect = screenRect;
 }
@@ -124,7 +124,7 @@ void StoneRing::MapState::HandleAxisMove(const IApplication::Axis& axis, IApplic
     }
 }
 
-void StoneRing::MapState::HandleKeyDown(const CL_InputEvent &key)
+void StoneRing::MapState::HandleKeyDown(const clan::InputEvent &key)
 {
     if(!m_pLevel) return;
     MappablePlayer *pPlayer = &m_player;
@@ -135,20 +135,20 @@ void StoneRing::MapState::HandleKeyDown(const CL_InputEvent &key)
     switch(key.id)
     {
 #if 0
-    case CL_KEY_ESCAPE:
+    case clan::KEY_ESCAPE:
         m_bDone = true;
         break;
 
-    case CL_KEY_DOWN:
+    case clan::KEY_DOWN:
         pPlayer->SetNextDirection(StoneRing::MappableObject::SOUTH);
         break;
-    case CL_KEY_UP:
+    case clan::KEY_UP:
         pPlayer->SetNextDirection(StoneRing::MappableObject::NORTH);
         break;
-    case CL_KEY_LEFT:
+    case clan::KEY_LEFT:
         pPlayer->SetNextDirection(StoneRing::MappableObject::WEST);
         break;
-    case CL_KEY_RIGHT:
+    case clan::KEY_RIGHT:
         pPlayer->SetNextDirection(StoneRing::MappableObject::EAST);
         break;
 #endif
@@ -158,7 +158,7 @@ void StoneRing::MapState::HandleKeyDown(const CL_InputEvent &key)
 
 }
 
-void StoneRing::MapState::HandleKeyUp(const CL_InputEvent &key)
+void StoneRing::MapState::HandleKeyUp(const clan::InputEvent &key)
 {
     if(!m_pLevel) return;
     MappablePlayer *pPlayer = &m_player;
@@ -166,23 +166,23 @@ void StoneRing::MapState::HandleKeyUp(const CL_InputEvent &key)
     switch(key.id)
     {
 	/*
-    case CL_KEY_SPACE:
+    case clan::KEY_SPACE:
         do_talk();
         break;
-    case CL_KEY_TAB:
+    case clan::KEY_TAB:
         do_talk(true); // Prod!
         break;
 	*/
-    case CL_KEY_SHIFT:
+    case clan::keycode_shift:
         pPlayer->GetNavigator().SetRunning(false);
         break;
 #ifndef NDEBUG
-    case CL_KEY_P:
+    case clan::keycode_p:
         std::cout << "Player location:" << pPlayer->GetPosition().x << ',' << pPlayer->GetPosition().y << std::endl;
         break;
-    case CL_KEY_X:
+    case clan::keycode_x:
         break;
-	case CL_KEY_F:{
+	case clan::keycode_f:{
         static bool frozen = false;
         if(frozen)
             m_pLevel->UnfreezeMappableObjects();
@@ -191,7 +191,7 @@ void StoneRing::MapState::HandleKeyUp(const CL_InputEvent &key)
         frozen = !frozen;
         break;
 				  }
-    case CL_KEY_D:
+    case clan::keycode_d:
         m_bShowDebug = !m_bShowDebug;
         if(m_bShowDebug){
             m_pLevel->AddTileVisitor(&m_block_drawer);
@@ -203,10 +203,10 @@ void StoneRing::MapState::HandleKeyUp(const CL_InputEvent &key)
             m_pLevel->RemoveTileVisitor(&m_floater_drawer);
         }
         break;
-    case CL_KEY_M:
+    case clan::keycode_m:
          m_pLevel->DumpMappableObjects();
         break;
-    case CL_KEY_S:
+    case clan::keycode_s:
         gbDebugStop = true;
         break;
 #endif
@@ -221,16 +221,16 @@ void StoneRing::MapState::Covered() {
 }
 
 
-void StoneRing::MapState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
+void StoneRing::MapState::Draw(const clan::Rect &screenRect,clan::Canvas& GC)
 {
     if(!m_pLevel) return;
     bool clearBg = false;
     uint width = min( (unsigned int)screenRect.get_width(), m_pLevel->GetWidth() * 32);
     uint height = min((unsigned int)screenRect.get_height(), m_pLevel->GetHeight() * 32);
 
-    CL_Rect src = CL_Rect(m_LevelX, m_LevelY, m_LevelX +width,
+    clan::Rect src = clan::Rect(m_LevelX, m_LevelY, m_LevelX +width,
                           m_LevelY + height);
-    CL_Rect dst = screenRect;
+    clan::Rect dst = screenRect;
     // Center
     if(screenRect.get_width() > src.get_width())
     {
@@ -288,11 +288,11 @@ StoneRing::Level* StoneRing::MapState::GetCurrentLevel() const
     return m_pLevel;
 }
 
-CL_Point StoneRing::MapState::GetCurrentCenter() const 
+clan::Point StoneRing::MapState::GetCurrentCenter() const 
 {
 	uint width = min( (unsigned int)m_screen_rect.get_width(), m_pLevel->GetWidth() * 32);
     uint height = min((unsigned int)m_screen_rect.get_height(), m_pLevel->GetHeight() * 32);
-    CL_Rect rect = CL_Rect(m_LevelX, m_LevelY,
+    clan::Rect rect = clan::Rect(m_LevelX, m_LevelY,
                                          (m_LevelX + width),
                                          (m_LevelY + height));
 	return rect.get_center();
@@ -307,7 +307,7 @@ void StoneRing::MapState::PushLevel(Level * pLevel, uint x, uint y)
 		m_levels.push_back(m_pLevel);
 		m_position_stack.push_back(m_player.GetPosition());			
 	}
-    CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
+    clan::ResourceManager& resources = IApplication::GetInstance()->GetResources();
     Character *pMapCharacter = IApplication::GetInstance()->GetParty()->GetMapCharacter();
 
     m_pLevel = pLevel;
@@ -334,7 +334,7 @@ void StoneRing::MapState::LoadLevel(Level * pLevel, uint x, uint y)
 		m_pLevel->RemoveMappableObject(&m_player);
 		m_pLevel->MarkForDeath();
 	}
-    CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
+    clan::ResourceManager& resources = IApplication::GetInstance()->GetResources();
     Character *pMapCharacter = IApplication::GetInstance()->GetParty()->GetMapCharacter();
 	if(pMapCharacter){
 		m_player.SetSprite(pMapCharacter->GetMapSprite());
@@ -350,14 +350,14 @@ void StoneRing::MapState::LoadLevel(Level * pLevel, uint x, uint y)
 }
 
 
-void StoneRing::MapState::SetPlayerSprite(CL_Sprite  player)
+void StoneRing::MapState::SetPlayerSprite(clan::Sprite  player)
 {
     m_playerSprite = player;
 }
 
 void StoneRing::MapState::Pop(bool bAll)
 {
-	CL_Point point;
+	clan::Point point;
     if(bAll)
     {
 		m_pLevel->MarkForDeath();
@@ -402,7 +402,7 @@ void StoneRing::MapState::recalculate_player_position()
     if(!m_pLevel) return;
     MappablePlayer *pPlayer = &m_player;
     assert(pPlayer);
-    CL_Rect spriteRect = pPlayer->GetSpriteRect();
+    clan::Rect spriteRect = pPlayer->GetSpriteRect();
     int X = pPlayer->GetLevelX();
     int Y = pPlayer->GetLevelY();
 
@@ -473,7 +473,7 @@ void StoneRing::MapState::MoveMappableObjects()
 {
     if(!m_pLevel) return;
     static uint ticks = 0;
-    CL_Rect rect = CL_Rect(m_LevelX/32, m_LevelY/32,
+    clan::Rect rect = clan::Rect(m_LevelX/32, m_LevelY/32,
                                          (m_LevelX + m_screen_rect.get_width()/32),
                                          (m_LevelY + m_screen_rect.get_height())/32);
     m_pLevel->MoveMappableObjects(rect);
@@ -487,7 +487,7 @@ void StoneRing::MapState::do_talk(bool prod)
 {
     MappablePlayer *pPlayer = &m_player;
     assert(pPlayer);
-    CL_Point talkPoint = pPlayer->GetPointInFront();
+    clan::Point talkPoint = pPlayer->GetPointInFront();
 
  
     m_pLevel->Talk ( talkPoint, prod );
@@ -514,7 +514,7 @@ void StoneRing::MapState::SerializeState ( std::ostream& out )
 	uint pos_size = m_position_stack.size();
 	out.write((char*)&pos_size,sizeof(uint));
 	for(int i=0;i<m_position_stack.size();i++){
-		CL_Point pt = m_position_stack[i];
+		clan::Point pt = m_position_stack[i];
 		out.write((char*)&pt.x,sizeof(pt.x));
 		out.write((char*)&pt.y,sizeof(pt.y));
 	}
@@ -541,7 +541,7 @@ void StoneRing::MapState::DeserializeState ( std::istream& in )
     uint pos_count;
 	in.read((char*)&pos_count,sizeof(uint));
 	for(int i=0;i<pos_count;i++){
-		CL_Point pt;
+		clan::Point pt;
 		in.read((char*)&pt.x,sizeof(pt.x));
 		in.read((char*)&pt.y,sizeof(pt.y));
 		m_position_stack.push_back(pt);

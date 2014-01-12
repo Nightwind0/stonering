@@ -34,7 +34,7 @@ namespace StoneRing {
 
 
 template <class T>
-class SteelRunner : public CL_Runnable
+class SteelRunner : public clan::Runnable
 {
 
 public:

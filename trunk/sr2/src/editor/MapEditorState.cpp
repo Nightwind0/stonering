@@ -41,31 +41,31 @@ MapEditorState::~MapEditorState()
 
 }
 
-void MapEditorState::Init(CL_DisplayWindow &window) 
+void MapEditorState::Init(clan::DisplayWindow &window) 
 {
     EditorState::Init(window);
-    CL_GUITopLevelDescription desc;
-    CL_Size size = get_window_size();  
+    clan::GUITopLevelDescription desc;
+    clan::Size size = get_window_size();  
     desc.set_title("Map Editor");
     desc.set_size(size,true);
 	desc.set_allow_resize(true);
-    m_pWindow = new CL_MainWindow(get_gui(), desc);
+    m_pWindow = new clan::Window(get_gui(), desc);
 
     m_pWindow->func_close().set(this,&MapEditorState::on_close);
 
 
-    CL_GUITopLevelDescription tooldesc;
+    clan::GUITopLevelDescription tooldesc;
     tooldesc.set_title("Tiles");
-    tooldesc.set_size(CL_Size(300,400),true);
-    tooldesc.set_position(CL_Rect(CL_Point(size.width-300,64),CL_Size(300,400)),true);
+    tooldesc.set_size(clan::Size(300,400),true);
+    tooldesc.set_position(clan::Rect(clan::Point(size.width-300,64),clan::Size(300,400)),true);
     tooldesc.set_tool_window(true);
-    tooldesc.set_decorations(true);
+//     //tooldesc.set_decorations(true);
     m_pTileWindow = new TileSelectorWindow(m_pWindow,tooldesc);
     m_pTileWindow->set_draggable(true);
     m_pTileWindow->SetMapEditor(this);
 	
 
-    m_pMenuBar = m_pWindow->get_menubar();//new CL_MenuBar(m_pWindow);
+    m_pMenuBar = new clan::MenuBar(m_pWindow);
 	construct_menu();	
 }
 
@@ -75,27 +75,27 @@ void MapEditorState::Start()
 
 }
 
-void MapEditorState::on_display_resize(CL_Rect& rect)
+void MapEditorState::on_display_resize(clan::Rect& rect)
 {
-	CL_Rect client = m_pWindow->get_geometry();
-	CL_Size size = client.get_size();
-    m_pWindow->set_geometry(CL_Rect(CL_Point(0,0),size));	
-    m_pMenuBar->set_geometry(CL_Rect(0,0,size.width,32));	
+	clan::Rect client = m_pWindow->get_geometry();
+	clan::Size size = client.get_size();
+    m_pWindow->set_geometry(clan::Rect(clan::Point(0,0),size));	
+    m_pMenuBar->set_geometry(clan::Rect(0,0,size.width,32));	
 }
 
 MapWindow* MapEditorState::new_map_window(const std::string& title)
 {
-	CL_GUITopLevelDescription desc;
+	clan::GUITopLevelDescription desc;
 	desc.set_title(title);
 	desc.set_allow_resize(true);
-	desc.show_border(true);
-	desc.set_size(CL_Size(600,600),true);
-	desc.set_position(CL_Rect(CL_Point(60,60),CL_Size(600,600)),true);
+	//desc.show_border(true);
+	desc.set_size(clan::Size(600,600),true);
+	desc.set_position(clan::Rect(clan::Point(60,60),clan::Size(600,600)),true);
 	desc.set_tool_window(false);
 	desc.show_sysmenu(true);
 	desc.show_maximize_button(true);
 	desc.show_minimize_button(true);
-	desc.set_decorations(true);			
+	//desc.set_decorations(true);			
 	MapWindow * window = new MapWindow(m_pWindow,desc);
 	window->set_draggable(true);
 	m_map_windows.push_back(window);
@@ -129,8 +129,8 @@ void MapEditorState::on_file_new()
 
 void MapEditorState::on_file_open()
 {
-    CL_OpenFileDialog dialog(m_pWindow);
-  //  dialog.set_geometry(CL_Rect(0,0,400,400);
+    clan::OpenFileDialog dialog(m_pWindow);
+  //  dialog.set_geometry(clan::Rect(0,0,400,400);
     dialog.set_title("Open Level");
     if(dialog.show()){
         std::string name = dialog.get_filename();
@@ -147,8 +147,9 @@ void MapEditorState::on_file_quit()
     on_close();
 }
 
-void MapEditorState::on_close(){  
+bool MapEditorState::on_close(){  
    EditorState::on_close(NULL);
+   return true;
 }
 
 void MapEditorState::construct_menu()
@@ -171,19 +172,19 @@ void MapEditorState::HandleButtonDown(const IApplication::Button& button){
 }
 void MapEditorState::HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos){
 }
-void MapEditorState::HandleMouseUp(const IApplication::MouseButton& button, const CL_Point& pos, uint key_state ){
+void MapEditorState::HandleMouseUp(const IApplication::MouseButton& button, const clan::Point& pos, uint key_state ){
 }
-void MapEditorState::HandleMouseDown(const IApplication::MouseButton& button, const CL_Point& pos, uint key_state ){
-}
-
-
-void MapEditorState::HandleDoubleClick(const IApplication::MouseButton& button, const CL_Point& pos, uint key_state ){
+void MapEditorState::HandleMouseDown(const IApplication::MouseButton& button, const clan::Point& pos, uint key_state ){
 }
 
-void MapEditorState::HandleMouseMove(const CL_Point& pos, uint key_state ){
+
+void MapEditorState::HandleDoubleClick(const IApplication::MouseButton& button, const clan::Point& pos, uint key_state ){
 }
 
-void MapEditorState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC){
+void MapEditorState::HandleMouseMove(const clan::Point& pos, uint key_state ){
+}
+
+void MapEditorState::Draw(const clan::Rect &screenRect,clan::Canvas& GC){
     EditorState::Draw(screenRect,GC);    
 }
 

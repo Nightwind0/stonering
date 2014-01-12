@@ -38,7 +38,7 @@ SpriteStub::eWhich SpriteStub::Which() const
 }
 
 
-void SpriteStub::load_attributes(CL_DomNamedNodeMap attributes)
+void SpriteStub::load_attributes(clan::DomNamedNodeMap attributes)
 {
   
     std::string which = get_required_string("which",attributes);
@@ -70,7 +70,7 @@ eBattleSprite BattleSprite::GetWhich() const
 }
 
 
-void BattleSprite::load_attributes(CL_DomNamedNodeMap attributes)
+void BattleSprite::load_attributes(clan::DomNamedNodeMap attributes)
 {
     m_eWho = who_from_string( get_required_string("who",attributes) );
 
@@ -92,7 +92,7 @@ void BattleSprite::load_attributes(CL_DomNamedNodeMap attributes)
             X_FLIP, Y_FLIP, GRAYSCALE, GREENSCALE, REDSCALE, BLUESCALE
 */
 
-void AlterSprite::load_attributes(CL_DomNamedNodeMap attributes)
+void AlterSprite::load_attributes(clan::DomNamedNodeMap attributes)
 {
     std::string alter = get_required_string("how",attributes);
     std::string who = get_required_string("who",attributes);
@@ -136,7 +136,7 @@ SpriteAnimation::~SpriteAnimation()
 {
 }
 
-void SpriteAnimation::load_attributes(CL_DomNamedNodeMap attributes)
+void SpriteAnimation::load_attributes(clan::DomNamedNodeMap attributes)
 {
     m_name = get_required_string("name",attributes);
 }
@@ -190,7 +190,7 @@ SpriteMovement::SpriteMovement()
 }
 
 
-void SpriteMovement::load_attributes(CL_DomNamedNodeMap attributes)
+void SpriteMovement::load_attributes(clan::DomNamedNodeMap attributes)
 {
     m_initial_focus.meFocusType = focusTypeFromString(get_required_string("initialFocus",attributes));
 
@@ -282,10 +282,10 @@ bool SpriteMovement::HasEndFocus() const
     return m_bEndFocus;
 }
 
-CL_DomElement
-SpriteMovement::CreateDomElement(CL_DomDocument &doc) const
+clan::DomElement
+SpriteMovement::CreateDomElement(clan::DomDocument &doc) const
 {
-    return CL_DomElement(doc, "SpriteMovement");
+    return clan::DomElement(doc, "SpriteMovement");
 }
 
 SpriteMovement::eFocus
@@ -467,7 +467,7 @@ SpriteMovement::eMovementScriptType SpriteMovementScript::GetScriptType()
     return m_eType;
 }
 
-void SpriteMovementScript::load_attributes(CL_DomNamedNodeMap attributes)
+void SpriteMovementScript::load_attributes(clan::DomNamedNodeMap attributes)
 {
     std::string type = get_required_string("type",attributes);
     
@@ -516,7 +516,7 @@ bool Phase::handle_element(eElement element, Element * pElement)
     return true;
 }
 
-void Phase::load_attributes(CL_DomNamedNodeMap  attributes)
+void Phase::load_attributes(clan::DomNamedNodeMap  attributes)
 {
 
     m_nDuration = get_required_int("duration", attributes);
@@ -566,7 +566,7 @@ Animation::Animation()
 }
 
 
-void Animation::load_attributes(CL_DomNamedNodeMap attributes)
+void Animation::load_attributes(clan::DomNamedNodeMap attributes)
 {
     m_name = get_required_string("name",attributes);
 
@@ -594,10 +594,10 @@ Animation::~Animation()
     std::for_each(m_phases.begin(),m_phases.end(),del_fun<Phase>());
 }
 
-CL_DomElement
-Animation::CreateDomElement(CL_DomDocument &doc) const
+clan::DomElement
+Animation::CreateDomElement(clan::DomDocument &doc) const
 {
-    return CL_DomElement(doc, "animation");
+    return clan::DomElement(doc, "animation");
 }
 
 std::string

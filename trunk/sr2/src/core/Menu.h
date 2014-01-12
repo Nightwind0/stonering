@@ -36,7 +36,7 @@ public:
     ~Menu();
 
     void Init();
-    void Draw(CL_GraphicContext& gc);
+    void Draw(clan::Canvas& gc);
     bool SelectUp();
     bool SelectDown();
     int Choose();
@@ -44,9 +44,9 @@ public:
     void PopMenu();
 
 protected:
-    virtual CL_Rectf get_rect()=0;
-    virtual void draw_option(int option, bool selected, float x, float y, CL_GraphicContext& gc)=0;
-    virtual int height_for_option(CL_GraphicContext& gc)=0;
+    virtual clan::Rectf get_rect()=0;
+    virtual void draw_option(int option, bool selected, float x, float y, clan::Canvas& gc)=0;
+    virtual int height_for_option(clan::Canvas& gc)=0;
     virtual void process_choice(int selection)=0;
     virtual int get_option_count()=0;
     virtual void draw_more_down_indicator(){}

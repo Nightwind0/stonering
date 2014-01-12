@@ -23,13 +23,13 @@ namespace StoneRing
         std::vector<MenuOption*>::const_iterator GetChildrenBegin()const;
         std::vector<MenuOption*>::const_iterator GetChildrenEnd()const;
         std::string GetName() const;
-        CL_Image GetIcon() const { return m_icon; }
+        clan::Image GetIcon() const { return m_icon; }
         bool Enabled(const ParameterList &params) const;
         void Select(const ParameterList& params);
 		virtual std::string GetDebugId() const { return m_name; }				
     private:
         virtual bool handle_element(eElement, Element *);
-        virtual void load_attributes(CL_DomNamedNodeMap );
+        virtual void load_attributes(clan::DomNamedNodeMap );
         virtual void load_finished();
     protected:
         std::string m_name;
@@ -37,7 +37,7 @@ namespace StoneRing
         ScriptElement *m_pConditionScript;
         ScriptElement *m_pScript;
         MenuOption* m_parent;
-        CL_Image m_icon;
+        clan::Image m_icon;
     };
 }
 

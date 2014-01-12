@@ -15,7 +15,7 @@ public:
     AppUtils();
     ~AppUtils();
 
-    void LoadGameplayAssets(const std::string &path,CL_ResourceManager& resources);
+    void LoadGameplayAssets(const std::string &path,clan::ResourceManager& resources);
 private:
     void LoadItems(const std::string &filename);
     void LoadSkills(const std::string &filename);

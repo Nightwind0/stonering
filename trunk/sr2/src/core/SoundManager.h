@@ -22,7 +22,6 @@
 
 #include <string>
 #include <ClanLib/sound.h>
-#include <ClanLib/vorbis.h>
 #include <ClanLib/core.h>
 #include <deque>
 
@@ -59,18 +58,18 @@ public:
     static void         PopMusic();
 private:
     static SoundManager * m_pInstance;
-    void set_music(CL_SoundBuffer song);
+    void set_music(clan::SoundBuffer song);
     void onTransitionTimer();
 	void onStopTimer();
 	void onStartTimer();
     SoundManager();
     virtual ~SoundManager();
-    CL_SoundBuffer m_buffer;
-    CL_SoundBuffer_Session m_session;
-    CL_Timer m_transition_timer;
+    clan::SoundBuffer m_buffer;
+    clan::SoundBuffer_Session m_session;
+    clan::Timer m_transition_timer;
     float m_music_max;
     float m_sound_vol;
-    std::deque<CL_SoundBuffer> m_song_stack;
+    std::deque<clan::SoundBuffer> m_song_stack;
 };
 
 

@@ -24,7 +24,7 @@
 using namespace StoneRing;
 
 
-StatusBox::StatusBox ( const CL_Rectf& rect, const CL_Rectf& headerRect,
+StatusBox::StatusBox ( const clan::Rectf& rect, const clan::Rectf& headerRect,
                        const StoneRing::Font& headerFont,
                        const StoneRing::Font& stat_font, 
                        const StoneRing::Font& stat_up_font, const StoneRing::Font& stat_down_font,
@@ -67,16 +67,16 @@ Equipment::eSlot StatusBox::slot_for_equipment ( Equipment* pEquipment )
     return pEquipment->GetSlot();
 }
 
-void StatusBox::Draw ( CL_GraphicContext& gc, bool draw_comparison, Character* pChar, Equipment* pOldEquipment, Equipment* pEquipment )
+void StatusBox::Draw ( clan::Canvas& gc, bool draw_comparison, Character* pChar, Equipment* pOldEquipment, Equipment* pEquipment )
 {
-    CL_FontMetrics metrics = m_stat_name_font.get_font_metrics(gc);
-    CL_Pointf offset(0,metrics.get_height());   
+    clan::FontMetrics metrics = m_stat_name_font.get_font_metrics(gc);
+    clan::Pointf offset(0,metrics.get_height());   
        
-    CL_Sizef statSize = m_stat_font.get_text_size(gc,"000000");
+    clan::Sizef statSize = m_stat_font.get_text_size(gc,"000000");
 
     Equipment * pSelectedEquipment = pEquipment;
-    CL_Pointf point = m_rect.get_top_left();
-    CL_Pointf statPoint = point;
+    clan::Pointf point = m_rect.get_top_left();
+    clan::Pointf statPoint = point;
    
     for(int i=Weapon::_FIRST_ATTR+1;i<Weapon::_LAST_ATTR;i++){
         Weapon::eAttribute attr = static_cast<Weapon::eAttribute>(i);
@@ -163,7 +163,7 @@ void StatusBox::Draw ( CL_GraphicContext& gc, bool draw_comparison, Character* p
         iter != m_stats[m_nPage].end(); iter++,point += offset)
         {
             m_stat_name_font.draw_text(gc,point,ICharacter::CAToLabel(*iter), Font::TOP_LEFT);
-            CL_Pointf statPoint = point;
+            clan::Pointf statPoint = point;
             statPoint.x = m_rect.get_top_right().x - statSize.width*3;
 			int prec = 0;
             std::ostringstream os;

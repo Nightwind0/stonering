@@ -29,7 +29,7 @@ bool MonsterGroup::handle_element(StoneRing::Element::eElement element, StoneRin
     }
 }
 
-void MonsterGroup::load_attributes(CL_DomNamedNodeMap attributes)
+void MonsterGroup::load_attributes(clan::DomNamedNodeMap attributes)
 {
      m_nWeight = get_required_int("weight",attributes);
      m_nCellCols = get_implied_int("cellColumns",attributes, 4); // TODO: get system default
@@ -43,9 +43,9 @@ void MonsterGroup::load_finished()
 
 
 #if SR2_EDITOR
-CL_DomElement MonsterGroup::CreateDomElement(CL_DomDocument &doc) const 
+clan::DomElement MonsterGroup::CreateDomElement(clan::DomDocument &doc) const 
 {
-    CL_DomElement element(doc,"monsterGroup");
+    clan::DomElement element(doc,"monsterGroup");
     element.set_attribute("weight",IntToString(m_nWeight));
     element.set_attribute("cellColumns",IntToString(m_nCellCols));
     element.set_attribute("cellRows",IntToString(m_nCellRows));

@@ -25,7 +25,7 @@ namespace StoneRing
 		virtual std::string GetDebugId() const { return m_name; }		
     private:
         virtual bool handle_element(eElement, Element * );
-        virtual void load_attributes(CL_DomNamedNodeMap);
+        virtual void load_attributes(clan::DomNamedNodeMap);
         std::string m_name;
         SpriteRef * m_pSpriteRef;
         bool m_bHasBindPoints;

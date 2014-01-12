@@ -13,7 +13,7 @@ namespace StoneRing{
 		
     private:
         virtual bool handle_element(eElement element, Element * pElement );
-        virtual void load_attributes(CL_DomNamedNodeMap  attributes) ;
+        virtual void load_attributes(clan::DomNamedNodeMap  attributes) ;
         virtual void handle_text(const std::string &text);
         std::string m_icon;
     };

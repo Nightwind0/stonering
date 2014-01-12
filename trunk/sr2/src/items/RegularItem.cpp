@@ -92,7 +92,7 @@ RegularItem::TargetableFromString ( const std::string &str )
     return targetable;
 }
 
-void RegularItem::load_attributes(CL_DomNamedNodeMap attributes)
+void RegularItem::load_attributes(clan::DomNamedNodeMap attributes)
 {
     NamedItemElement::load_attributes(attributes);
 
@@ -150,7 +150,7 @@ bool RegularItem::handle_element(eElement element, Element * pElement)
     else return false;
 }
 
-void RegularItem::LoadItem ( CL_DomElement * pElement )
+void RegularItem::LoadItem ( clan::DomElement * pElement )
 {
 
 }
@@ -168,7 +168,7 @@ Item::eDropRarity RegularItem::GetDropRarity() const
 {
     return NamedItemElement::GetDropRarity();
 }
-CL_Image RegularItem::GetIcon() const
+clan::Image RegularItem::GetIcon() const
 {
     return NamedItemElement::GetIcon();
 }

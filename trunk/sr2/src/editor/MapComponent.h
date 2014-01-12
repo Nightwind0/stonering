@@ -26,25 +26,25 @@
 
 namespace StoneRing { 
 
-class MapComponent : public CL_GUIComponent
+class MapComponent : public clan::GUIComponent
 {
 
 public:
-    MapComponent(CL_GUIComponent* parent);
+    MapComponent(clan::GUIComponent* parent);
     virtual ~MapComponent();
     void set_scale(float f){m_scale = f;}
-    void set_origin(const CL_Point& point) { m_origin = point;}
-    CL_Point get_origin() const { return m_origin; }
+    void set_origin(const clan::Point& point) { m_origin = point;}
+    clan::Point get_origin() const { return m_origin; }
     float get_scale()const{return m_scale;}
     void load_level(const std::string& name);    
     void create_level(uint width, uint height);
     void close_level();
     void writeXML(const std::string&);
-    CL_Size get_draw_size()const;
-    CL_Point screen_to_level(const CL_Point& screen, const CL_Point& screen_center)const;
-    CL_Point level_to_screen(const CL_Point& level, const CL_Point& screen_center)const;
-    bool valid_location(const CL_Point& screen, const CL_Point& screen_center)const;
-    void set_rubber_band(const CL_Rect& rect);
+    clan::Size get_draw_size()const;
+    clan::Point screen_to_level(const clan::Point& screen, const clan::Point& screen_center)const;
+    clan::Point level_to_screen(const clan::Point& level, const clan::Point& screen_center)const;
+    bool valid_location(const clan::Point& screen, const clan::Point& screen_center)const;
+    void set_rubber_band(const clan::Rect& rect);
     void cancel_rubber_band();
     shared_ptr<Level> get_level() { return m_pLevel; }
     void show_direction_blocks(bool on);
@@ -54,16 +54,16 @@ public:
 	void show_zorder(bool on);
 	void show_monster_region(bool on);
     MappableObject* get_mo_named(const std::string& name);
-    std::list<MappableObject*> get_mos_at(const CL_Point& level_pt);
+    std::list<MappableObject*> get_mos_at(const clan::Point& level_pt);
 private:
-    void on_render(CL_GraphicContext &gc, const CL_Rect &clip_rect);
-    void on_process_message(CL_GUIMessage &message);
-    void draw_grid(CL_GraphicContext&, const CL_Rect&);
-    void draw_level(CL_GraphicContext &gc, const CL_Rect &rect);
-    void draw_rubber_band(CL_GraphicContext &gc);
-    CL_Point get_center()const;
-    CL_Pointf to_float(const CL_Point&)const;
-    CL_Point m_origin;
+    void on_render(clan::Canvas &gc, const clan::Rect &clip_rect);
+    bool on_process_message(clan::GUIMessage &message);
+    void draw_grid(clan::Canvas&, const clan::Rect&);
+    void draw_level(clan::Canvas &gc, const clan::Rect &rect);
+    void draw_rubber_band(clan::Canvas &gc);
+    clan::Point get_center()const;
+    clan::Pointf to_float(const clan::Point&)const;
+    clan::Point m_origin;
     TileSideBlockDrawer m_block_drawer;
     TileHotDrawer m_hot_drawer;
     TileFloaterDrawer m_floater_drawer;
@@ -71,9 +71,9 @@ private:
 	TileMonsterRegionDrawer m_region_drawer;
     bool m_show_mos;
     float m_scale;
-    CL_Gradient m_gradient;
+    clan::Gradient m_gradient;
     bool m_show_band;
-    CL_Rect m_rubber_band;
+    clan::Rect m_rubber_band;
     shared_ptr<Level>  m_pLevel;
 };
 

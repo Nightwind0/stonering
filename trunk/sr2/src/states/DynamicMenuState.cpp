@@ -21,6 +21,7 @@
 #include "GraphicsManager.h"
 #include "SoundManager.h"
 #include "MenuBox.h"
+#include <algorithm>
 
 
 using namespace StoneRing;
@@ -41,23 +42,25 @@ bool DynamicMenuState::IsDone() const
     return m_bDone;
 }
 
-CL_Rect DynamicMenuState::calculate_rect()
+clan::Rect DynamicMenuState::calculate_rect()
 {
     int width, height;
     width=height=0;
     m_nOptionHeight = 0;
+	
+	clan::Canvas canvas(GET_MAIN_CANVAS());
     
     for(std::vector<std::string>::const_iterator it = m_choices.begin(); it != m_choices.end(); it++){
-        CL_Size size = m_option_font.get_text_size(GET_MAIN_GC(),*it);
+        clan::Size size = m_option_font.get_text_size(canvas,*it);
         height += size.height;
-        m_nOptionHeight = cl_max(m_nOptionHeight,size.height);
-        width = cl_max(width,size.width);
+        m_nOptionHeight = std::max(m_nOptionHeight,size.height);
+        width = std::max(width,size.width);
     }
     
-    CL_Rect rect;
-    CL_Rect screen  = IApplication::GetInstance()->GetDisplayRect();
-    width = cl_min(width,screen.get_width());
-    height = cl_min(height,screen.get_height());
+    clan::Rect rect;
+    clan::Rect screen  = IApplication::GetInstance()->GetDisplayRect();
+    width = std::min(width,screen.get_width());
+    height = std::min(height,screen.get_height());
 
     
     rect.top = (screen.get_height() - height) / 2;
@@ -119,7 +122,7 @@ void DynamicMenuState::Start()
     m_bDone = false;
 }
 
-void DynamicMenuState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
+void DynamicMenuState::Draw ( const clan::Rect& screenRect, clan::Canvas& GC )
 {
     MenuBox::Draw(GC,m_rect,false);   
     Menu::Draw(GC);
@@ -173,7 +176,7 @@ void DynamicMenuState::draw_more_up_indicator()
     StoneRing::Menu::draw_more_up_indicator();
 }
 
-void DynamicMenuState::draw_option ( int option, bool selected, float x, float y, CL_GraphicContext& gc )
+void DynamicMenuState::draw_option ( int option, bool selected, float x, float y, clan::Canvas& gc )
 {
     
     Font lineFont;
@@ -196,12 +199,12 @@ int DynamicMenuState::get_option_count()
     return m_choices.size();
 }
 
-CL_Rectf DynamicMenuState::get_rect()
+clan::Rectf DynamicMenuState::get_rect()
 {
     return m_optionsRect;
 }
 
-int DynamicMenuState::height_for_option ( CL_GraphicContext& gc )
+int DynamicMenuState::height_for_option ( clan::Canvas& gc )
 {
     return m_nOptionHeight;
 }

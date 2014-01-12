@@ -32,15 +32,15 @@ namespace StoneRing {
 	
 class ZipFile: public Steel::IFile {
 public:
-	ZipFile(CL_VirtualDirectory vd);
+	ZipFile(clan::FileSystem vd);
 	virtual ~ZipFile();
 	virtual bool eof()const;
 	virtual int  read(char *buffer, int bytes);
 	virtual void close();
 	virtual bool open(const char* path);
 private:
-	CL_VirtualDirectory m_vd;
-	CL_IODevice m_io;
+	clan::FileSystem m_vd;
+	clan::IODevice m_io;
 	bool m_eof;
 };
 
@@ -48,10 +48,10 @@ class ZipFileProvider : public Steel::IFileProvider{
 public:
 	ZipFileProvider();
 	virtual ~ZipFileProvider();
-	void SetVirtualDirectory(CL_VirtualDirectory vd);
+	void SetVirtualDirectory(clan::FileSystem vd);
 	Steel::IFile* create();
 private:
-	CL_VirtualDirectory m_vd;
+	clan::FileSystem m_vd;
 };
 
 

@@ -33,13 +33,13 @@ void AbilityManager::initialize() {
 
 
 
-void AbilityManager::LoadSkillFile ( CL_DomDocument &doc )
+void AbilityManager::LoadSkillFile ( clan::DomDocument &doc )
 {
     AbilityManager * instance = INSTANCE();
     IFactory * pAbilityFactory = IApplication::GetInstance()->GetElementFactory();
 
-    CL_DomElement spellsNode = doc.named_item("skillList").to_element();
-    CL_DomElement spellNode = spellsNode.get_first_child().to_element();
+    clan::DomElement spellsNode = doc.named_item("skillList").to_element();
+    clan::DomElement spellNode = spellsNode.get_first_child().to_element();
 
     while (!spellNode.is_null())
     {
@@ -50,19 +50,20 @@ void AbilityManager::LoadSkillFile ( CL_DomDocument &doc )
 			e.push_error("skill: " + pSkill->GetDebugId());
 			throw e;
 		}
+		std::cout << "Loaded skill: " << pSkill->GetName() << std::endl;
         instance->m_skills [ pSkill->GetName() ] = pSkill;
         spellNode = spellNode.get_next_sibling().to_element();
     }
 }
 
-void AbilityManager::LoadStatusEffectFile ( CL_DomDocument &doc )
+void AbilityManager::LoadStatusEffectFile ( clan::DomDocument &doc )
 {
     AbilityManager * instance = INSTANCE();
     IFactory * pAbilityFactory = IApplication::GetInstance()->GetElementFactory();
     assert ( pAbilityFactory );
 
-    CL_DomElement statusEffectsNode = doc.named_item("statusEffectList").to_element();
-    CL_DomElement statusEffectNode = statusEffectsNode.get_first_child().to_element();
+    clan::DomElement statusEffectsNode = doc.named_item("statusEffectList").to_element();
+    clan::DomElement statusEffectNode = statusEffectsNode.get_first_child().to_element();
 
     while (!statusEffectNode.is_null())
     {
@@ -81,14 +82,14 @@ void AbilityManager::LoadStatusEffectFile ( CL_DomDocument &doc )
 }
 
 
-void AbilityManager::LoadAnimationFile ( CL_DomDocument &doc )
+void AbilityManager::LoadAnimationFile ( clan::DomDocument &doc )
 {
     AbilityManager * instance = INSTANCE();
     IFactory * pAbilityFactory = IApplication::GetInstance()->GetElementFactory();
     assert ( pAbilityFactory );
 
-    CL_DomElement animationsNode = doc.named_item("animations").to_element();
-    CL_DomElement animationNode = animationsNode.get_first_child().to_element();
+    clan::DomElement animationsNode = doc.named_item("animations").to_element();
+    clan::DomElement animationNode = animationsNode.get_first_child().to_element();
 
     while (!animationNode.is_null())
     {
@@ -144,7 +145,7 @@ StatusEffect * AbilityManager::GetStatusEffect ( const std::string &ref )
     StatusEffectMap::const_iterator iter = instance->m_status_effects.find(ref);
     
     if(iter == instance->m_status_effects.end())
-        throw CL_Exception("Couldn't find a status ref called: " + ref );
+        throw clan::Exception("Couldn't find a status ref called: " + ref );
     else return iter->second;
     return NULL;
 }

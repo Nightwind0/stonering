@@ -24,7 +24,7 @@ namespace StoneRing{
         void Countdown(const ParameterList& params); // WTF is countdown?
 
         std::string GetName() const;
-		CL_Sprite GetIcon() const;
+		clan::Sprite GetIcon() const;
         eLast GetLast() const;
         uint GetRoundCount() const;
 
@@ -44,9 +44,9 @@ namespace StoneRing{
 		virtual std::string GetDebugId() const { return m_name; }				
     private:
         virtual bool handle_element(eElement element, Element * pElement );
-        virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
+        virtual void load_attributes(clan::DomNamedNodeMap attributes) ;
         std::string m_name;
-		CL_Sprite m_icon;
+		clan::Sprite m_icon;
         OnInvoke * m_pOnInvoke;
         OnRound * m_pOnRound;
         OnCountdown * m_pOnCountdown;

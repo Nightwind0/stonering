@@ -34,7 +34,7 @@ public:
     virtual bool IsDone() const;    
     virtual void HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos);    
     virtual void HandleButtonUp(const IApplication::Button& button);
-    virtual void Draw(const CL_Rect &screenRect,CL_GraphicContext& GC);
+    virtual void Draw(const clan::Rect &screenRect,clan::Canvas& GC);
     virtual bool LastToDraw() const; // Should we continue drawing more states?
     virtual bool DisableMappableObjects() const; // Should the app move the MOs?
     virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
@@ -43,12 +43,12 @@ public:
 	virtual bool AcceptInput() const;
 	void BringDown();
 private:
-    CL_Rect m_banner_rect;
-    CL_Pointf m_text_inset;    
+    clan::Rect m_banner_rect;
+    clan::Pointf m_text_inset;    
     Font m_font;
     std::string m_text;
-    int m_time;
-    int m_start_time;
+    uint64_t m_time;
+    uint64_t m_start_time;
     bool m_done;
 };
 

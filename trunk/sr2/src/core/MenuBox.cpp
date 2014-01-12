@@ -32,30 +32,44 @@ MenuBox::~MenuBox()
 
 }
 
-void MenuBox::Draw ( CL_GraphicContext& gc, const CL_Rectf& rect, bool inset_shadow, CL_Pointf shadow_point )
+void MenuBox::Draw ( clan::Canvas& gc, const clan::Rectf& rect, bool inset_shadow, clan::Pointf shadow_point )
 {
     const float line_width = 4.0f;
     const float corner = 16.0f;
     const uint shadow_width = 3;
-    CL_Sizef rrect_size = rect.get_size();
-    CL_Pointf origin = rect.get_top_left();
-    CL_RoundedRect rrect_border(rrect_size,corner);
-    rrect_border.fill(gc, origin + shadow_point, CL_Colorf(0.0f,0.0f,0.0f,0.4f));
-    rrect_border.fill(gc, origin ,CL_Colorf::white);
-    CL_Sizef fill_size = rrect_size;
-    CL_Pointf fill_origin = origin;
+    clan::Sizef rrect_size = rect.get_size();
+    clan::Pointf origin = rect.get_top_left();
+    std::vector<clan::Vec2f> borderTris;
+	std::vector<clan::Vec2f> borderShadowTris;
+	clan::Shape2D borderShape;
+	clan::Shape2D borderShadow;
+	borderShadow.add_rounded_rect(origin+shadow_point, rrect_size,corner);
+	borderShadow.get_triangles(borderShadowTris);
+	borderShape.add_rounded_rect(origin,rrect_size,corner);
+	borderShape.get_triangles(borderTris);
+	gc.fill_triangles(borderShadowTris,clan::Colorf(0.0f,0.0f,0.0f,0.4f));
+	gc.fill_triangles(borderTris,clan::Colorf::white);
+    clan::Sizef fill_size = rrect_size;
+    clan::Pointf fill_origin = origin;
     fill_size-= line_width * 2;
     fill_origin += line_width;
-    CL_RoundedRect rrect_fill(fill_size,corner);
-    rrect_fill.fill(gc, fill_origin, StoneRing::GraphicsManager::GetMenuGradient());
+	clan::Shape2D fillShape;
+	std::vector<clan::Vec2f> fillTris;
+    fillShape.add_rounded_rect(fill_origin,fill_size,corner);
+	fillShape.get_triangles(fillTris);
+	gc.fill_triangles(fillTris, StoneRing::GraphicsManager::GetMenuGradient());
+    //rrect_fill.fill(g fill_origin, StoneRing::GraphicsManager::GetMenuGradient());
     if(inset_shadow){
-        CL_Sizef shadow_size = fill_size;
-        CL_Pointf shadow_origin = fill_origin;
+        clan::Sizef shadow_size = fill_size;
+        clan::Pointf shadow_origin = fill_origin;
         for(uint i=0;i<shadow_width;i++){
             shadow_size -= 2;
             shadow_origin += 1;
-            CL_RoundedRect rrect_shadow(shadow_size,corner);
-            rrect_shadow.draw(gc,shadow_origin, CL_Colorf(0.0f,0.0f,0.0f,0.2f));
+			clan::Shape2D rrect;
+			std::vector<clan::Vec2f> tris;
+			rrect.add_rounded_rect(shadow_origin,shadow_size,corner);
+            rrect.get_triangles(fillTris);
+			gc.fill_triangles(fillTris,clan::Colorf(0.0f,0.0f,0.0f,0.2f));
         }
     }
     

@@ -39,7 +39,7 @@ public:
     virtual void HandleButtonDown(const IApplication::Button& button);
     virtual void HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos);
     
-    virtual void Draw(const CL_Rect &screenRect,CL_GraphicContext& GC);
+    virtual void Draw(const clan::Rect &screenRect,clan::Canvas& GC);
     virtual bool LastToDraw() const; // Should we continue drawing more states?
     virtual bool DisableMappableObjects() const; // Should the app move the MOs?
     virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
@@ -52,7 +52,7 @@ private:
     public:
         ItemMenu();
         virtual ~ItemMenu();
-        void SetRect(const CL_Rectf& rect);
+        void SetRect(const clan::Rectf& rect);
         void SetFont(Font font);
         void SetSelectedFont(Font font);
         void SetUnavailableFont(Font font);
@@ -60,9 +60,9 @@ private:
         void SetPriceFont(Font font);
         void EnableSelection();
         void DisableSelection();
-        virtual CL_Rectf get_rect();
-        virtual void draw_option(int option, bool selected, float x, float y, CL_GraphicContext& gc);
-        virtual int height_for_option(CL_GraphicContext& gc);
+        virtual clan::Rectf get_rect();
+        virtual void draw_option(int option, bool selected, float x, float y, clan::Canvas& gc);
+        virtual int height_for_option(clan::Canvas& gc);
         virtual void process_choice(int selection);
         virtual int get_option_count();
         void SetSellMode(bool Sell);
@@ -74,7 +74,7 @@ private:
             Item* m_pItem;
             int   m_count;
         };
-        CL_Rectf m_rect;
+        clan::Rectf m_rect;
         uint m_height_per_option;
         Font m_option_font;
         Font m_selected_font;
@@ -86,10 +86,10 @@ private:
         std::vector<ItemEntry> m_options;        
     };
     
-    void draw_description(CL_GraphicContext& gc);
-    void draw_characters(CL_GraphicContext& gc);
-    void draw_status(CL_GraphicContext& gc);
-    void draw_gold(CL_GraphicContext& gc);
+    void draw_description(clan::Canvas& gc);
+    void draw_characters(clan::Canvas& gc);
+    void draw_status(clan::Canvas& gc);
+    void draw_gold(clan::Canvas& gc);
     
     Font  m_item_font;
     Font  m_item_selected_font;
@@ -103,13 +103,13 @@ private:
     Font  m_gold_font;
     Font  m_stat_header_font;
     
-    CL_Rectf m_character_rect;
-    CL_Rectf m_items_rect;
-    CL_Rectf m_stats_rect;
-    CL_Rectf m_desc_rect;
-    CL_Rectf m_gold_rect;
-    CL_Rectf m_stat_header_rect;
-    CL_Rectf m_stat_box;
+    clan::Rectf m_character_rect;
+    clan::Rectf m_items_rect;
+    clan::Rectf m_stats_rect;
+    clan::Rectf m_desc_rect;
+    clan::Rectf m_gold_rect;
+    clan::Rectf m_stat_header_rect;
+    clan::Rectf m_stat_box;
     uint     m_current_character;
     std::vector<Item*> m_items;
     StatusBox* m_pStatusBox;

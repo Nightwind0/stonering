@@ -24,7 +24,7 @@ namespace StoneRing{
 		
     protected:
         virtual bool handle_element(eElement element, Element * pElement );
-        virtual void load_attributes(CL_DomNamedNodeMap  attributes);
+        virtual void load_attributes(clan::DomNamedNodeMap  attributes);
         std::string m_name;
         bool m_bRepeatable;
         bool m_bRemember;
@@ -33,7 +33,7 @@ namespace StoneRing{
         ScriptElement *m_pScript;
 #if SR2_EDITOR
 	public:
-        CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
+        clan::DomElement CreateDomElement(clan::DomDocument& doc)const;
 		void SetCondition(ScriptElement * pElement);
 		void SetScript(ScriptElement* pElement);
 		void SetRepeatable(bool repeatable);

@@ -114,7 +114,7 @@ void StatusState::HandleButtonUp ( const StoneRing::IApplication::Button& button
 }
 
 
-void StatusState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
+void StatusState::Draw ( const clan::Rect& screenRect, clan::Canvas& GC )
 {
     MenuBox::Draw ( GC, m_party_rect, false );
     MenuBox::Draw ( GC, m_status_rect, false );
@@ -122,17 +122,17 @@ void StatusState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
     draw_header(GC);
     draw_stats(GC, dynamic_cast<Character*>(IApplication::GetInstance()->GetParty()->GetCharacter(m_current_character)));
 }
-void StatusState::draw_party( CL_GraphicContext& gc ){
-    CL_Rectf rect = m_party_rect;
+void StatusState::draw_party( clan::Canvas& gc ){
+    clan::Rectf rect = m_party_rect;
     rect.shrink(GraphicsManager::GetMenuInset().x, GraphicsManager::GetMenuInset().y);
     //rect.translate(GraphicsManager::GetMenuInset());
-    //CL_Draw::fill(gc,rect,CL_Colorf(1.0f,1.0f,1.0f,0.5f));
+    //clan::Draw::fill(gc,rect,clan::Colorf(1.0f,1.0f,1.0f,0.5f));
 
     for(uint i =0;i<m_party->GetCharacterCount(); i++)
     {
-        CL_Sprite pSprite = dynamic_cast<Character*>(m_party->GetCharacter(i))
+        clan::Sprite pSprite = dynamic_cast<Character*>(m_party->GetCharacter(i))
                         ->GetPortrait(Character::PORTRAIT_DEFAULT);        
-        CL_Pointf point;
+        clan::Pointf point;
         point.y = rect.get_top_left().y +  (rect.get_height() - pSprite.get_height()) / 2.0f;
         float x_space =(rect.get_width() / m_party->GetCharacterCount());
         float center =  (x_space*i) + (x_space - pSprite.get_width()) / 2.0f; 
@@ -145,7 +145,7 @@ void StatusState::draw_party( CL_GraphicContext& gc ){
     } 
 }
 
-void StatusState::draw_header ( CL_GraphicContext& gc )
+void StatusState::draw_header ( clan::Canvas& gc )
 {
     int y = m_header_rect.get_center().y;
     m_header_font.draw_text(gc,m_name_x.x,y,"Stat", Font::TOP_LEFT);
@@ -155,10 +155,10 @@ void StatusState::draw_header ( CL_GraphicContext& gc )
 }
 
 
-void StatusState::draw_stats ( CL_GraphicContext& gc, Character* pChar )
+void StatusState::draw_stats ( clan::Canvas& gc, Character* pChar )
 {
     const uint height_each = (m_status_rect.get_height()-m_header_rect.get_height()) / m_stats.size();
-    CL_Pointf tl = m_status_rect.get_top_left();
+    clan::Pointf tl = m_status_rect.get_top_left();
     tl.y += m_header_rect.get_height();
     for(uint i=0;i<m_stats.size();i++){
             int base = 0;

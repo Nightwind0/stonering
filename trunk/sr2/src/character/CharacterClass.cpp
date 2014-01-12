@@ -10,7 +10,7 @@
 
 using namespace StoneRing;
 
-void CharacterClass::load_attributes(CL_DomNamedNodeMap attributes)
+void CharacterClass::load_attributes(clan::DomNamedNodeMap attributes)
 {
     m_name = get_required_string("name",attributes);
 
@@ -199,7 +199,7 @@ CharacterClass::GetGender() const
 
 
 
-void StatScript::load_attributes(CL_DomNamedNodeMap attributes)
+void StatScript::load_attributes(clan::DomNamedNodeMap attributes)
 {
     std::string stat = get_required_string("stat",attributes);
     m_eStat = ICharacter::CharAttributeFromString ( stat );

@@ -83,7 +83,7 @@ void ExperienceState::Finish()
 void ExperienceState::Start()
 {
     m_bDone = false;
-    m_start_time = CL_System::get_time();
+    m_start_time = clan::System::get_time();
     // TODO: Play "xp" sound
 }
 
@@ -102,45 +102,45 @@ bool ExperienceState::LastToDraw() const
 	return false;
 }
 
-void ExperienceState::Draw(const CL_Rect& screenRect, CL_GraphicContext& GC)
+void ExperienceState::Draw(const clan::Rect& screenRect, clan::Canvas& GC)
 {
-    const uint current_time = CL_System::get_time();
+    const uint current_time = clan::System::get_time();
     float draw_percentage = (float)(current_time - m_start_time) / (float)1000.0f;
     if(draw_percentage > 1.0f) draw_percentage = 1.0f;
     const int total_characters = m_characters.size();
     const int height_per_char = m_charRect.get_height();
-    CL_Pointf offset = m_offset;
+    clan::Pointf offset = m_offset;
     offset.x += (screenRect.get_width() - m_charRect.get_width()) / 2.0;
     offset.y += (screenRect.get_height() - (height_per_char * total_characters)) / 2.0;
     for(int i=0;i<m_characters.size();i++)
     {
-        CL_Pointf point = offset;
+        clan::Pointf point = offset;
         point.y += height_per_char * i;
-        CL_Rectf rect = m_charRect;
+        clan::Rectf rect = m_charRect;
         rect.translate(point);
         MenuBox::Draw(GC,rect,false);
         
-        CL_Pointf portraitPoint = point + m_portraitOffset;  
+        clan::Pointf portraitPoint = point + m_portraitOffset;  
         Character * pCharacter = m_characters[i].m_pCharacter;
       //  m_portraitShadow.draw(GC,portraitPoint.x + m_portraitOffset.x, portraitPoint.y + m_portraitOffset.y);
         m_xpbar.draw(GC,point.x + m_barPoint.x,point.y + m_barPoint.y);
         pCharacter->GetPortrait(Character::PORTRAIT_HAPPY).draw(GC,portraitPoint.x,portraitPoint.y);
         m_characterFont.draw_text(GC,point + m_textOffset,pCharacter->GetName(), StoneRing::Font::TOP_LEFT);
-        CL_Pointf xp_point = point + m_textOffset;
+        clan::Pointf xp_point = point + m_textOffset;
         std::ostringstream ostream;
         ostream << '+' << std::setw(6) << m_characters[i].m_nXP << " XP";
         xp_point.y += m_characterFont.get_font_metrics(GC).get_height();
         m_xpFont.draw_text(GC,xp_point,ostream.str(), StoneRing::Font::TOP_LEFT);
         ostream.str("");
         ostream << '+' << std::setw(6) << m_characters[i].m_nSP << " SP";
-        CL_Pointf sp_point = xp_point;
+        clan::Pointf sp_point = xp_point;
         sp_point.y = xp_point.y + m_xpFont.get_font_metrics(GC).get_height();
         m_spFont.draw_text(GC,sp_point,ostream.str(),StoneRing::Font::TOP_LEFT);
         int levelsGained = pCharacter->GetLevel() - m_characters[i].m_nOldLevel;
         if(levelsGained)
         {
-            CL_Pointf levelPoint = xp_point;
-            CL_Sizef xpSize = m_xpFont.get_text_size(GC,ostream.str());
+            clan::Pointf levelPoint = xp_point;
+            clan::Sizef xpSize = m_xpFont.get_text_size(GC,ostream.str());
             levelPoint.x += xpSize.width;
             std::ostringstream ostream;
             ostream << " Level Up! ";
@@ -164,12 +164,12 @@ void ExperienceState::Draw(const CL_Rect& screenRect, CL_GraphicContext& GC)
         percent = percent - (int)percent;
 
         float barWidth = m_barRect.get_width() * percent;
-        CL_Pointf barPoint = m_barRect.get_top_left();
+        clan::Pointf barPoint = m_barRect.get_top_left();
         barPoint.y += point.y;
         barPoint.x += point.x;
-        CL_Sizef barSize(barWidth,m_barRect.get_height());
-        CL_Rectf barRect(barPoint,barSize);
-        CL_Draw::gradient_fill(GC,barRect,m_barGradient);
+        clan::Sizef barSize(barWidth,m_barRect.get_height());
+        clan::Rectf barRect(barPoint,barSize);
+        GC.fill_rect(barRect,m_barGradient);
     }
     }
 

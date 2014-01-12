@@ -144,10 +144,10 @@ void ItemSelectState::HandleAxisMove(const IApplication::Axis& axis, IApplicatio
 }
 
 	
-void ItemSelectState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
+void ItemSelectState::Draw(const clan::Rect &screenRect,clan::Canvas& GC)
 {
     //m_overlay.draw(GC,0.0f,0.0f);
-    CL_Rectf bgRect = screenRect;
+    clan::Rectf bgRect = screenRect;
     //bgRect.shrink(2);
     MenuBox::Draw(GC,bgRect);
     Menu::Draw(GC);
@@ -155,7 +155,7 @@ void ItemSelectState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
     float each_width = header_width / m_type_icons.size();
     
     int i =0;
-    for(std::map<Item::eItemType,CL_Image>::iterator iter = m_type_icons.begin();
+    for(std::map<Item::eItemType,clan::Image>::iterator iter = m_type_icons.begin();
 	iter != m_type_icons.end(); iter++)
 	{
 	    float offset = (each_width - iter->second.get_width()) / 2.0f;
@@ -253,19 +253,19 @@ void ItemSelectState::Finish() // Hook to clean up or whatever after being poppe
 {
 }
 
-CL_Rectf ItemSelectState::get_rect()
+clan::Rectf ItemSelectState::get_rect()
 {
     return m_rect;
 }
 
-void ItemSelectState::draw_option(int option, bool selected, float x, float y, CL_GraphicContext& gc)
+void ItemSelectState::draw_option(int option, bool selected, float x, float y, clan::Canvas& gc)
 {
     const std::pair<Item*,int>& pair  = m_items[ m_itemType ][option];
 
     Item * pItem = pair.first;
     const int count = pair.second;
     bool available = selection_applies(pItem);
-    CL_Image icon = pItem->GetIcon();
+    clan::Image icon = pItem->GetIcon();
     //icon.set_alignment(origin_top_left);
     if(available)
 		icon.set_alpha(1.0f);
@@ -294,9 +294,9 @@ void ItemSelectState::draw_option(int option, bool selected, float x, float y, C
     
 }
 
-int ItemSelectState::height_for_option(CL_GraphicContext& gc)
+int ItemSelectState::height_for_option(clan::Canvas& gc)
 {
-     return cl_max(m_optionFont.get_font_metrics(gc).get_height(),m_currentOptionFont.get_font_metrics(gc).get_height());
+     return std::max(m_optionFont.get_font_metrics(gc).get_height(),m_currentOptionFont.get_font_metrics(gc).get_height());
 }
 
 void ItemSelectState::process_choice(int selection)

@@ -107,7 +107,7 @@ int SkillTreeState::get_option_count()
     return m_skills.size();
 }
 
-int SkillTreeState::height_for_option ( CL_GraphicContext& gc )
+int SkillTreeState::height_for_option ( clan::Canvas& gc )
 {
     return 38;
 }
@@ -122,7 +122,7 @@ void SkillTreeState::Start()
                 m_pChar->GetClass()->GetSkillTreeNodesEnd());
 }
 
-void SkillTreeState::draw_option ( int option, bool selected, float x, float y, CL_GraphicContext& gc )
+void SkillTreeState::draw_option ( int option, bool selected, float x, float y, clan::Canvas& gc )
 {
     SkillRef* pSkillRef = m_skills[option]->GetRef();
     StoneRing::Font font;
@@ -137,8 +137,8 @@ void SkillTreeState::draw_option ( int option, bool selected, float x, float y, 
     
 
     
-    CL_Rectf option_rect(x,y,x+get_rect().get_width(),y + height_for_option(gc));     
-   // CL_Draw::box(gc,option_rect,CL_Colorf(0.0f,0.0f,0.0f,0.1f));
+    clan::Rectf option_rect(x,y,x+get_rect().get_width(),y + height_for_option(gc));     
+   // clan::Draw::box(gc,option_rect,clan::Colorf(0.0f,0.0f,0.0f,0.1f));
     //gradient_rect.shrink(GraphicsManager::GetMenuInset().x,0);
     //gradient_rect.translate(GraphicsManager::GetMenuInset());
  
@@ -184,20 +184,20 @@ void SkillTreeState::draw_option ( int option, bool selected, float x, float y, 
 }
 
 
-CL_Rectf SkillTreeState::get_rect()
+clan::Rectf SkillTreeState::get_rect()
 {
-    CL_Rect menu = m_menu;
+    clan::Rect menu = m_menu;
     menu.set_width( menu.get_width() - (GraphicsManager::GetMenuInset().x * 2) );
     menu.set_height ( menu.get_height() - (GraphicsManager::GetMenuInset().y * 2) );
     menu.translate(GraphicsManager::GetMenuInset());
     return menu;
 }
 
-void SkillTreeState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
+void SkillTreeState::Draw ( const clan::Rect& screenRect, clan::Canvas& GC )
 {
     //MenuBox::Draw(GC,screenRect);
-    CL_Draw::fill(GC,screenRect,CL_Colorf::black);
-    CL_Rectf box = m_menu;
+    GC.fill_rect(screenRect,clan::Colorf::black);
+    clan::Rectf box = m_menu;
     MenuBox::Draw(GC,m_menu,false, kEmptyPoint);
     MenuBox::Draw(GC,m_path_rect,false, kEmptyPoint);
     MenuBox::Draw(GC,m_description,false, kEmptyPoint);
@@ -228,7 +228,7 @@ void SkillTreeState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
             pathDesc << " > ";
     }
     
-    CL_Rect path_rect = m_path_rect;
+    clan::Rect path_rect = m_path_rect;
     path_rect.shrink ( GraphicsManager::GetMenuInset().x, GraphicsManager::GetMenuInset().y );
     draw_text(GC, m_path_font, path_rect, pathDesc.str());  
     Menu::Draw( GC );
@@ -249,7 +249,7 @@ void SkillTreeState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
     bool can_use = (pSkillRef->GetSkill()->GetType() == Skill::WORLD ||
             pSkillRef->GetSkill()->GetType() == Skill::BOTH);    
     
-    CL_Rect desc_rect = m_description;
+    clan::Rect desc_rect = m_description;
     desc_rect.shrink ( GraphicsManager::GetMenuInset().x, GraphicsManager::GetMenuInset().y );
     draw_text(GC, m_desc_font, desc_rect, pSkill->GetDescription()); 
     
@@ -297,7 +297,7 @@ void SkillTreeState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
     }
     
     
-    CL_Rectf req_box = m_reqs;
+    clan::Rectf req_box = m_reqs;
 
     req_box.shrink(GraphicsManager::GetMenuInset().x,GraphicsManager::GetMenuInset().y);
     //req_box.translate(GraphicsManager::GetMenuInset());

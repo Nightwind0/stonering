@@ -40,8 +40,8 @@ public:
 
 
 	/* Level API */
-	virtual CL_Rect GetTileRect() const;
-	virtual void    Draw( CL_GraphicContext& GC, const CL_Point& offset ); 
+	virtual clan::Rect GetTileRect() const;
+	virtual void    Draw( clan::Canvas& GC, const clan::Point& offset ); 
 	virtual void    Move( Level& level );
 	virtual bool    IsSolid() const;
 	virtual std::string GetName() const;
@@ -55,7 +55,7 @@ public:
 	virtual bool    DoesStep() const {
 		return false;
 	}
-	virtual CL_Rect GetRect() const;
+	virtual clan::Rect GetRect() const;
 	virtual int 	GetZOrder() const { return m_pos.y * 2 + 1; }
 
 	virtual void    OnStep();
@@ -65,10 +65,10 @@ public:
 		return true;
 	}
 
-	virtual CL_Rect GetSpriteRect() const ;
+	virtual clan::Rect GetSpriteRect() const ;
 	virtual bool    IsFlying() const;
 	bool            IsAligned() const; // Is aligned on cells (not moving between them)
-	CL_Point        GetPosition() const {
+	clan::Point        GetPosition() const {
 		return m_pos / 32;    // In tiles
 	}
 
@@ -76,7 +76,7 @@ public:
 		m_alpha = f;
 	}
 
-	CL_Size         GetSize() const {
+	clan::Size         GetSize() const {
 		return m_size;
 	}
 
@@ -89,8 +89,8 @@ public:
 	}
 
 	Navigator*      PopNavigator();
-	void            SetPixelPosition( const CL_Point& pixel_pos );
-	virtual CL_Point        GetPixelPosition() const {
+	void            SetPixelPosition( const clan::Point& pixel_pos );
+	virtual clan::Point        GetPixelPosition() const {
 		return m_pos;
 	}
 	virtual Direction GetDefaultFacing() const;
@@ -106,7 +106,7 @@ public:
 	}
 
 	// In pixels
-	void            CalculateEdgePoints( const CL_Point &topleft, Direction dir, std::list<CL_Point> *pList );
+	void            CalculateEdgePoints( const clan::Point &topleft, Direction dir, std::list<clan::Point> *pList );
 	static int      ConvertDirectionToSideBlock( Direction dir );
 protected:
 	enum eFlags {
@@ -114,19 +114,19 @@ protected:
 	};
 
 	// In cells
-	static CL_Size  DimensionsFromSizeType( eSize size );
+	static clan::Size  DimensionsFromSizeType( eSize size );
 
 	virtual void    Moved_One_Cell();
-	virtual CL_Size Calc_Tile_Dimensions() const;
+	virtual clan::Size Calc_Tile_Dimensions() const;
 	virtual void    Set_Frame_For_Direction();
 	void            Set_Size( eSize size );
 
 
 	std::string     m_name;
-	CL_Sprite       m_sprite;
+	clan::Sprite       m_sprite;
 	Tilemap*        m_tilemap;
 
-	CL_Size         m_size;
+	clan::Size         m_size;
 	//Direction m_eFacingDirection;
 	Direction       m_direction;
 
@@ -134,7 +134,7 @@ protected:
 	uint            m_nStepLoop; // step frame alternator
 	ushort          m_StartX;
 	ushort          m_StartY;
-	CL_Point        m_pos;
+	clan::Point        m_pos;
 	float           m_alpha;
 
 	eMappableObjectType m_eType;
@@ -144,11 +144,11 @@ protected:
 	std::stack<Navigator*>  m_navStack;
 #ifdef SR2_EDITOR
 public:
-	virtual CL_DomElement   CreateDomElement( CL_DomDocument& doc ) const {
-		return CL_DomElement( doc, "mappableObject" );
+	virtual clan::DomElement   CreateDomElement( clan::DomDocument& doc ) const {
+		return clan::DomElement( doc, "mappableObject" );
 	}
 
-	CL_Sprite       GetSprite() const {
+	clan::Sprite       GetSprite() const {
 		return m_sprite;
 	}
 
@@ -156,11 +156,11 @@ public:
 		return m_cFlags;
 	}
 
-	CL_Point        GetStartPos() const {
-		return CL_Point( m_StartX, m_StartY );
+	clan::Point        GetStartPos() const {
+		return clan::Point( m_StartX, m_StartY );
 	}
 
-	void            SetStartPos( const CL_Point& start ) {
+	void            SetStartPos( const clan::Point& start ) {
 		m_StartX = start.x;
 		m_StartY = start.y;
 		m_pos.x = m_StartX * 32;
@@ -193,7 +193,7 @@ public:
 
 protected:
 	virtual bool            handle_element( eElement element, Element * pElement );
-	virtual void            load_attributes( CL_DomNamedNodeMap attributes );
+	virtual void            load_attributes( clan::DomNamedNodeMap attributes );
 	virtual void            load_finished();
 	virtual Direction       GetDefaultFacing() const;
 
@@ -205,7 +205,7 @@ protected:
 	Direction       m_start_facing;
 #if SR2_EDITOR
 public:
-	virtual CL_DomElement   CreateDomElement( CL_DomDocument& ) const;
+	virtual clan::DomElement   CreateDomElement( clan::DomDocument& ) const;
 	std::list<Event*>::const_iterator EventsBegin() const {
 		return m_events.begin();
 	}
@@ -218,7 +218,7 @@ public:
 		return m_pCondition;
 	}
 
-	CL_Sprite               GetSprite() const {
+	clan::Sprite               GetSprite() const {
 		return m_sprite;
 	}
 
@@ -242,7 +242,7 @@ public:
 		return NULL;
 	}
 protected:
-	virtual void            create_dom_element_hook( CL_DomElement& element ) const;	
+	virtual void            create_dom_element_hook( clan::DomElement& element ) const;	
 	
 	eSize           m_eSize;
 	std::string     m_sprite_name;	
@@ -254,8 +254,8 @@ public:
 	MappableObjectDynamic( eMappableObjectType type, eMovementType move_type, eMovementSpeed speed );
 	virtual ~MappableObjectDynamic();
 
-	virtual void    Draw( CL_GraphicContext& GC, const CL_Point& offset );
-	void            SetSprite( CL_Sprite sprite, eSize size );
+	virtual void    Draw( clan::Canvas& GC, const clan::Point& offset );
+	void            SetSprite( clan::Sprite sprite, eSize size );
 	void            SetSolid( bool solid );
 	virtual eMovementType  GetMovementType() const {
 		return m_move_type;
@@ -291,7 +291,7 @@ public:
 		return true;
 	}
 
-	CL_Point     GetPointInFront() const;
+	clan::Point     GetPointInFront() const;
 	virtual bool IsTile() const {
 		return false;
 	}
@@ -302,7 +302,7 @@ public:
 	}
 
 	// virtual void Moved_One_Cell();
-	void         SetSprite( CL_Sprite sprite ) {
+	void         SetSprite( clan::Sprite sprite ) {
 		m_sprite = sprite;
 	}
 

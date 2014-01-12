@@ -73,31 +73,16 @@ bool MainMenuState::IsDone() const
      }
  }
 
-void MainMenuState::HandleKeyDown(const CL_InputEvent &key)
+void MainMenuState::HandleKeyDown(const clan::InputEvent &key)
 {
 }
 
-void MainMenuState::HandleKeyUp(const CL_InputEvent &key)
+void MainMenuState::HandleKeyUp(const clan::InputEvent &key)
 {
-    switch(key.id)
-    {
-    case CL_KEY_ENTER:
-    case CL_KEY_SPACE:
 
-        break;
-    case CL_KEY_DOWN:
-
-        break;
-    case CL_KEY_UP:
-
-        break;
-
-    case CL_KEY_ESCAPE:
-        break;
-    }
 }
 
-void MainMenuState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
+void MainMenuState::Draw(const clan::Rect &screenRect,clan::Canvas& GC)
 {
     MenuBox::Draw(GC,screenRect);
     MenuBox::Draw(GC,m_menu_rect,false);
@@ -113,31 +98,31 @@ void MainMenuState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
 	{
 	    for(int i=0;i<player_count;i++)
 	    {
-		CL_Pointf point = calc_player_position(i);
+		clan::Pointf point = calc_player_position(i);
 		m_target_sprite.draw(GC,point.x,point.y);
 	    }
 	}
 	else
 	{
-	    CL_Pointf point = calc_player_position(m_nSelectedChar);
+	    clan::Pointf point = calc_player_position(m_nSelectedChar);
 	    m_target_sprite.draw(GC,point.x,point.y);
 	}
     }
     draw_party_stats(GC);
 }
 
-CL_Pointf MainMenuState::calc_player_position(int player)const
+clan::Pointf MainMenuState::calc_player_position(int player)const
 {
     float height = m_character_rect.get_height() / 4;
 
-    CL_Pointf portraitPoint;
+    clan::Pointf portraitPoint;
     portraitPoint.x = m_character_rect.left; // TODO Row?
     portraitPoint.y = m_character_rect.top + height * player;
     
     return portraitPoint;
 }
 
-void MainMenuState::draw_party_stats ( CL_GraphicContext& gc )
+void MainMenuState::draw_party_stats ( clan::Canvas& gc )
 {
     const uint kTextWidth = 30;
     std::ostringstream os;
@@ -163,15 +148,15 @@ void MainMenuState::draw_party_stats ( CL_GraphicContext& gc )
     draw_omegas(gc);
 }
 
-void MainMenuState::draw_omegas ( CL_GraphicContext& gc )
+void MainMenuState::draw_omegas ( clan::Canvas& gc )
 {
     Party * pParty = IApplication::GetInstance()->GetParty();
-    CL_Pointf top_left = m_omega_rect.get_top_left();
+    clan::Pointf top_left = m_omega_rect.get_top_left();
     
     const uint slots_per_row = m_omega_rect.get_width() / 40;
     for(uint i=0;i<pParty->GetCommonAttribute(ICharacter::CA_IDOL_SLOTS);i++){
         Omega * pOmega = pParty->GetOmega(i);
-        CL_Pointf point( i % slots_per_row + top_left.x, top_left.y + i /  slots_per_row );
+        clan::Pointf point( i % slots_per_row + top_left.x, top_left.y + i /  slots_per_row );
         if(pOmega){            
             pOmega->GetIcon().draw(gc,point.x,point.y);
         }
@@ -181,20 +166,20 @@ void MainMenuState::draw_omegas ( CL_GraphicContext& gc )
 
 
 
-void MainMenuState::draw_party(CL_GraphicContext& GC)
+void MainMenuState::draw_party(clan::Canvas& GC)
 {
     Party * party = IApplication::GetInstance()->GetParty();
     float height = m_character_rect.get_height() / 4;
     const float spacing = 12.0f;
     for(int i=0;i<party->GetCharacterCount();i++){
-	CL_Pointf portraitPoint = calc_player_position(i);
+	clan::Pointf portraitPoint = calc_player_position(i);
 
-	CL_Pointf shadowPoint = portraitPoint;
-	shadowPoint += CL_Pointf(-8.0f,-8.0f);
+	clan::Pointf shadowPoint = portraitPoint;
+	shadowPoint += clan::Pointf(-8.0f,-8.0f);
 	m_portrait_shadow.draw(GC,shadowPoint.x,shadowPoint.y);
 	Character * pCharacter = dynamic_cast<Character*>(party->GetCharacter(i));
 	// TODO: Which portrait should change, and depend on status effects
-	CL_Sprite portrait = pCharacter->GetPortrait(Character::PORTRAIT_DEFAULT);
+	clan::Sprite portrait = pCharacter->GetPortrait(Character::PORTRAIT_DEFAULT);
         portrait.set_alpha(1.0f);
 	portrait.draw(GC,portraitPoint.x,portraitPoint.y);
 	std::ostringstream levelstream;
@@ -280,15 +265,15 @@ void MainMenuState::Init()
 {
 }
 
-CL_Rectf MainMenuState::get_rect()
+clan::Rectf MainMenuState::get_rect()
 {
-    CL_Rectf menu_rect = m_menu_rect;
+    clan::Rectf menu_rect = m_menu_rect;
     menu_rect.shrink(GraphicsManager::GetMenuInset().x,GraphicsManager::GetMenuInset().y);
     menu_rect.translate(GraphicsManager::GetMenuInset());
     return menu_rect;
 }
 
-void MainMenuState::draw_option(int option, bool selected, float x, float y, CL_GraphicContext& gc)
+void MainMenuState::draw_option(int option, bool selected, float x, float y, clan::Canvas& gc)
 {
         Font  lineFont;
 	
@@ -304,7 +289,7 @@ void MainMenuState::draw_option(int option, bool selected, float x, float y, CL_
                          m_choices[option]->GetName(), Font::DEFAULT);
 }
 
-int MainMenuState::height_for_option(CL_GraphicContext& gc){
+int MainMenuState::height_for_option(clan::Canvas& gc){
 #if 1 
     if(!m_choices.empty()){
 		return 12 + max(m_selectionFont.get_font_metrics(gc).get_height(),max((float)m_choices[0]->GetIcon().get_height(), m_optionFont.get_font_metrics(gc).get_height()));
@@ -413,13 +398,14 @@ SteelType MainMenuState::reload()
 
 void MainMenuState::SteelInit      (SteelInterpreter *pInterpreter)
 {
+	pInterpreter->pushScope();
     pInterpreter->addFunction("selectTargets","menu",new SteelFunctor1Arg<MainMenuState,bool>(this,&MainMenuState::selectTargets));
     pInterpreter->addFunction("reload","menu", new SteelFunctorNoArgs<MainMenuState>(this,&MainMenuState::reload));
 }
 
 void MainMenuState::SteelCleanup   (SteelInterpreter *pInterpreter)
 {
-    pInterpreter->removeFunctions("menu");
+    pInterpreter->popScope();
 }
 
 void MainMenuState::SelectCharacterUp()

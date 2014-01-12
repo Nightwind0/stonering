@@ -17,7 +17,7 @@ bool WeaponType::operator==(const WeaponType &type )
     return m_name == type.m_name;
 }
 
-void WeaponType::load_attributes(CL_DomNamedNodeMap attributes)
+void WeaponType::load_attributes(clan::DomNamedNodeMap attributes)
 {
     m_name = get_required_string("name",attributes);
     m_nBasePrice = get_required_int("basePrice",attributes);
@@ -38,7 +38,7 @@ void WeaponType::load_finished()
     try {
         // TODO: Instead of this garbage, change icons into sprites everywhere...
 	m_sprite = GraphicsManager::GetSpriteWithImage(GraphicsManager::GetIcon(m_icon_ref));
-    }catch(CL_Exception err)
+    }catch(clan::Exception err)
     {
 	std::cerr << "Warning: Missing graphic for weapon type : " << m_name << std::endl;
     }
@@ -83,7 +83,7 @@ std::string WeaponType::GetIconRef() const
     return m_icon_ref;
 }
 
-CL_Sprite WeaponType::GetSprite() const
+clan::Sprite WeaponType::GetSprite() const
 {
     return m_sprite;
 }

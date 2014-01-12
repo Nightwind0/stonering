@@ -29,8 +29,9 @@
 
 #ifdef SR2_EDITOR
 
-class CL_DisplayWindow;
-
+namespace clan { 
+  class DisplayWindow;
+}
 namespace StoneRing { 
 
     class Operation;
@@ -43,15 +44,15 @@ namespace StoneRing {
         MapEditorState();
         virtual ~MapEditorState();
 	
-        virtual void Init(CL_DisplayWindow & window);
+        virtual void Init(clan::DisplayWindow & window);
         virtual void HandleButtonUp(const IApplication::Button& button);
         virtual void HandleButtonDown(const IApplication::Button& button);
         virtual void HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos);
-        virtual void HandleMouseUp(const IApplication::MouseButton& button, const CL_Point& pos, uint key_state );
-        virtual void HandleMouseDown(const IApplication::MouseButton& button, const CL_Point& pos, uint key_state );
-        virtual void HandleDoubleClick(const IApplication::MouseButton& button, const CL_Point& pos, uint key_state );
-        virtual void HandleMouseMove(const CL_Point& pos, uint key_state );     
-        virtual void Draw(const CL_Rect &screenRect,CL_GraphicContext& GC);
+        virtual void HandleMouseUp(const IApplication::MouseButton& button, const clan::Point& pos, uint key_state );
+        virtual void HandleMouseDown(const IApplication::MouseButton& button, const clan::Point& pos, uint key_state );
+        virtual void HandleDoubleClick(const IApplication::MouseButton& button, const clan::Point& pos, uint key_state );
+        virtual void HandleMouseMove(const clan::Point& pos, uint key_state );     
+        virtual void Draw(const clan::Rect &screenRect,clan::Canvas& GC);
         virtual bool LastToDraw() const; // Should we continue drawing more states?
         virtual bool DisableMappableObjects() const ; // Should the app move the MOs?
         virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
@@ -66,10 +67,10 @@ namespace StoneRing {
 			return m_copy_tiles;
 		}
 		
-        virtual void on_close();
-		virtual void on_display_resize(CL_Rect&);
+        virtual bool on_close();
+		virtual void on_display_resize(clan::Rect&);
     private:
-        virtual CL_Size get_window_size()const{ return CL_Size(1024,768); }    
+        virtual clan::Size get_window_size()const{ return clan::Size(1024,768); }    
         void construct_menu();
         
         enum Menu {
@@ -82,14 +83,14 @@ namespace StoneRing {
         void on_file_quit();	
 		MapWindow * new_map_window(const std::string& title);
         
-        CL_PopupMenu            m_file_menu;
-        CL_MainWindow *         m_pWindow;
+        clan::PopupMenu            m_file_menu;
+        clan::Window *         m_pWindow;
         TileSelectorWindow*     m_pTileWindow;
-        CL_MenuBar *            m_pMenuBar;		
+        clan::MenuBar *            m_pMenuBar;		
 		std::list<MapWindow*>   m_map_windows;
 		std::vector<std::vector<std::list<Tile*> > > m_copy_tiles;
 		bool m_bDone;
-        //CL_DisplayWindow* m_subwindow;
+        //clan::DisplayWindow* m_subwindow;
     };
 
 }

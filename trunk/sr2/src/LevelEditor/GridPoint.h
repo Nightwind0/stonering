@@ -10,10 +10,10 @@ using namespace std;
 
 
 
-class GridPoint : CL_Component
+class GridPoint : clan::Component
 {
 public:
-    GridPoint(CL_Rect setrect, CL_Component *parent);
+    GridPoint(clan::Rect setrect, clan::Component *parent);
 
     virtual ~GridPoint();
 
@@ -23,8 +23,8 @@ public:
 
 private:
 
-    CL_Rect rect;
-    CL_SlotContainer slots;
+    clan::Rect rect;
+    clan::SlotContainer slots;
 
 };
 

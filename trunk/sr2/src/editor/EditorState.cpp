@@ -34,20 +34,20 @@ EditorState::~EditorState()
 
 }
 
-void EditorState::Init(CL_DisplayWindow &window) 
+void EditorState::Init(clan::DisplayWindow &window) 
 {
     // TODO: Call the derived classes to get the name and sizes
-    CL_Size size = get_window_size();
-    m_display_window = CL_DisplayWindow("Editor",size.width,size.height,false,true);
+    clan::Size size = get_window_size();
+    m_display_window = clan::DisplayWindow("Editor",size.width,size.height,false,true);
     m_display_window.hide();
 	m_display_window.func_window_resize().set(this,&EditorState::on_display_resize);
-    m_resources = CL_ResourceManager("Editor/GUIThemeBasic/resources.xml");
-    m_theme.set_resources(m_resources);
-    m_gui_manager.set_css_document("Editor/GUIThemeBasic/theme.css");
+	m_resources = clan::XMLResourceManager::create(clan::XMLResourceDocument(IApplication::GetInstance()->GetResourcePath() + "Editor/GUIThemeBasic3.0/resources.xml"));
+    //m_theme.set_resources(m_resources);
+    //m_gui_manager.set_css_document("Editor/GUIThemeBasic/theme.css");
     
-    m_window_manager = CL_GUIWindowManagerTexture(m_display_window);
+    m_window_manager = clan::GUIWindowManagerTexture(m_display_window);
     // TODO: CSS
-    m_gui_manager.set_theme(m_theme);
+    m_gui_manager = clan::GUIManager(IApplication::GetInstance()->GetResourcePath() + "Editor/GUIThemeBasic3.0");
     //m_gui_manager.add_resources(m_resources);
     //gui_manager.set_css_document(css_document);
     m_gui_manager.set_window_manager(m_window_manager);
@@ -66,7 +66,7 @@ void EditorState::finish(){
     m_bDone = true;
 }
 
-bool EditorState::on_close(CL_Window*){
+bool EditorState::on_close(clan::Window*){
    m_bDone = true;
    return false;
 }
@@ -80,24 +80,24 @@ void EditorState::HandleButtonDown(const IApplication::Button& button){
 }
 void EditorState::HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos){
 }
-void EditorState::HandleMouseUp(const IApplication::MouseButton& button, const CL_Point& pos, uint key_state ){
+void EditorState::HandleMouseUp(const IApplication::MouseButton& button, const clan::Point& pos, uint key_state ){
 }
-void EditorState::HandleMouseDown(const IApplication::MouseButton& button, const CL_Point& pos, uint key_state ){
-}
-
-
-void EditorState::HandleDoubleClick(const IApplication::MouseButton& button, const CL_Point& pos, uint key_state ){
+void EditorState::HandleMouseDown(const IApplication::MouseButton& button, const clan::Point& pos, uint key_state ){
 }
 
-void EditorState::HandleMouseMove(const CL_Point& pos, uint key_state ){
+
+void EditorState::HandleDoubleClick(const IApplication::MouseButton& button, const clan::Point& pos, uint key_state ){
 }
 
-void EditorState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC){
+void EditorState::HandleMouseMove(const clan::Point& pos, uint key_state ){
+}
+
+void EditorState::Draw(const clan::Rect &screenRect,clan::Canvas& GC){
 #if 0 
     static int counter = 0;
     ++counter;
-    CL_GraphicContext& gc = m_subwindow->get_gc();
-    gc.clear(CL_Colorf(0.0f,0.0f,(counter%255)/255.0f, 1.0f));
+    clan::Canvas& gc = m_subwindow->get_gc();
+    gc.clear(clan::Colorf(0.0f,0.0f,(counter%255)/255.0f, 1.0f));
     m_subwindow->flip(1);
 #endif
 

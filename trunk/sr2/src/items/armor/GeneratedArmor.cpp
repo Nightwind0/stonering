@@ -24,7 +24,7 @@ std::string GeneratedArmor::GetDescription() const
     else return m_pType->GetName() + " " + m_pClass->GetDescription();
 }
 
-CL_Image GeneratedArmor::GetIcon() const
+clan::Image GeneratedArmor::GetIcon() const
 {
     return GraphicsManager::GetIcon(m_pType->GetIconRef());
 }

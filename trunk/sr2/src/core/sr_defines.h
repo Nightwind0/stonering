@@ -94,7 +94,7 @@ compose_f_gx (const OP1& o1, const OP2& o2) {
 int StringToInt(const std::string& str);
 std::string IntToString(const int &i, int width=1);
 std::string FloatToString(const float &f, int width=4,int precision=2);
-std::string CL_String_load(const std::string& id, CL_ResourceManager& resources);
+std::string String_load(const std::string& id, clan::ResourceManager& resources);
 
 
 inline double ranf()
@@ -176,21 +176,23 @@ enum eBattleSprite
 extern bool gbDebugStop;
 #endif
 
+namespace StoneRing { 
 
-int draw_text(CL_GraphicContext& gc,  StoneRing::Font &font, CL_Rectf rect, CL_StringRef string, uint string_pos=0);
+int draw_text(clan::Canvas& gc,  StoneRing::Font &font, clan::Rectf rect, const std::string& string, unsigned int string_pos=0);
 
+}
+/*
+template<class T>
+clan::Vec2<T> operator+(const clan::Vec2<T> &a, const clan::Vec2<T> &b);
+template<class T>
+clan::Vec2<T> operator*(const clan::Vec2<T> &a, const clan::Vec2<T> &b);
 
 template<class T>
-CL_Vec2<T> operator+(const CL_Vec2<T> &a, const CL_Vec2<T> &b);
-template<class T>
-CL_Vec2<T> operator*(const CL_Vec2<T> &a, const CL_Vec2<T> &b);
+clan::Vec2<T> operator*(const clan::Vec2<T> &a, const T& t);
 
 template<class T>
-CL_Vec2<T> operator*(const CL_Vec2<T> &a, const T& t);
-
-template<class T>
-CL_Vec2<T> operator*(const T& t, const CL_Vec2<T> &v);
-
+clan::Vec2<T> operator*(const T& t, const clan::Vec2<T> &v);
+*/
 
 template<class T>
 class Visitor
@@ -202,16 +204,16 @@ public:
     virtual void Visit(T)=0;    
 };
 
-const CL_Pointf kEmptyPoint(0.0f,0.0f);
+const clan::Pointf kEmptyPoint(0.0f,0.0f);
 
-CL_Colorf operator*(CL_Colorf a, CL_Colorf);
+clan::Colorf operator*(clan::Colorf a, clan::Colorf);
 
 void WriteString(std::ostream& stream, const std::string&);
 std::string ReadString(std::istream& stream);
 
 // Clanlib's rect::contains is broken
 template <class T>
-bool RectContains(const CL_Rectx<T>& rect, const CL_Vec2<T>& p){
+bool RectContains(const clan::Rectx<T>& rect, const clan::Vec2<T>& p){
      return ((p.x >= rect.left && p.x < rect.right) || (p.x < rect.left && p.x >= rect.right))
                     && ((p.y >= rect.top && p.y < rect.bottom) || (p.y < rect.top && p.y >= rect.bottom));
 }
