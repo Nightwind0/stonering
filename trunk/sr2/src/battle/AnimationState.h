@@ -147,7 +147,10 @@ namespace StoneRing
 			}
 			virtual void start(SteelInterpreter* pInterpreter){
 				m_started = true;
-				if(m_start_after && !m_start_after->started()){
+#ifndef NDEBUG
+				std::cout << "Task " << GetName() << " starting." << std::endl;
+#endif				
+				if(m_start_after && !m_start_after->started()){ 
 					// TODO: Not this... m_start_after->start(pInterpreter);
 				}
 			}
@@ -157,6 +160,9 @@ namespace StoneRing
 			// Finish will be called when the task is finished
 			virtual void finish(SteelInterpreter* pInterpreter){
 				m_expired = true;
+#ifndef NDEBUG
+				std::cout << "Task " << GetName() << " finished and marked expired" << std::endl;
+#endif
 				if(m_start_after){
 					m_state.AddTask(m_start_after);
 					m_start_after->start(pInterpreter);
@@ -516,7 +522,8 @@ namespace StoneRing
 		
 		
 		void add_task(Task* pTask);
-		
+		bool active_tasks_left() const;
+		Task* get_top_task() const;
 		
 		// In paths, 
 		// These functions return the Y component of the vector tangental to the straight line between
@@ -527,7 +534,7 @@ namespace StoneRing
 		SteelType arc_under(double p);
 		SteelType createSprite(const std::string& sprite_ref); // Returns a SpriteTicket (int)
 		SteelType getCharacterSprite(SteelType::Handle iCharacter);
-		SteelType getWeaponSprite(SteelType::Handle iCharacter, int hand);
+		SteelType addWeaponSprite(SteelType::Handle iCharacter, int hand);
 		SteelType removeSprite(int sprite);
 		SteelType getCharacterLocale(SteelType::Handle iCharacter, int corner);
 		SteelType getCharacterLocus(SteelType::Handle iCharacter, int corner);
