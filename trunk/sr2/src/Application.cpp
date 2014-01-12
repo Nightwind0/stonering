@@ -2630,9 +2630,11 @@ void Application::run(bool process_functors)
 
 		mStates.pop_back();
 	}catch ( SteelException ex ){
-		mStates.back()->Finish();
-		mStates.back()->SteelCleanup ( mInterpreter );		
-		mStates.pop_back();
+		if(!mStates.empty()){
+			mStates.back()->Finish();
+			mStates.back()->SteelCleanup ( mInterpreter );		
+			mStates.pop_back();
+		}
         showError ( ex.getLine(), ex.getScript(), ex.getMessage() );
 		mbDone = true;
     }

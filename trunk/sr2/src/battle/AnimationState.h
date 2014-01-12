@@ -511,7 +511,7 @@ namespace StoneRing
 		};
 		
 		
-	
+		void add_task(Task* pTask);
 		
 		
 		// In paths, 

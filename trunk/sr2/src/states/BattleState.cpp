@@ -460,17 +460,10 @@ void BattleState::Start() {
 	m_draw_method = &BattleState::draw_battle;
 	m_eState = TRANSITION_IN;
 
-	float r = ranf();
-#ifndef NDEBUG
-	std::cout << "Transition r was " << r << std::endl;
-#endif
-	if ( r > 0.66f )
-		m_transition = FADE_IN;
-	else if ( r > 0.33f )
-		m_transition = FLIP_ZOOM_SPIN;
-	else
-		m_transition = FLIP_ZOOM;
+	const eTransition transitions[] = {FADE_IN,FLIP_ZOOM,FLIP_ZOOM_SPIN};
 
+	int which_trans = rand() % (sizeof(transitions)/sizeof(eTransition));
+	m_transition = transitions[which_trans];
 	m_bDone = false;
 
 #if 0
@@ -842,16 +835,7 @@ int BattleState::add_sprite( clan::Sprite sprite ) {
 	sprite.set_alignment( clan::origin_center );
 	Sprite mysprite( sprite );
 
-#if 0 // Looks like I was reusing Sprites... I don't see a good reason to, however.
-	for ( int i = 0;i < m_sprites.size();i++ ) {
-		if ( !m_sprites[i].Enabled() ) {
-			m_sprites[i] = mysprite;
-			m_sprites[i].SetEnabled( true );
-			m_sprite_mutex.unlock();
-			return i;
-		}
-	}
-#endif
+
 	mysprite.SetEnabled(true);
 	m_sprites.push_back( mysprite );
 	m_sprite_mutex.unlock();
