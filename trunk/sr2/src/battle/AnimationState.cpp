@@ -359,14 +359,15 @@ bool AnimationState::IsDone() const {
 
 
 void AnimationState::WaitFinishedEvent() {
+	bool empty = false;
+	m_task_mutex.lock();
 	while( !m_tasks.empty() ) {
 		start( m_tasks.front() );
 		waitFor( m_tasks.front() );
-		m_task_mutex.lock();
 		if(!m_tasks.empty())
 			m_tasks.erase( m_tasks.begin() );
-		m_task_mutex.unlock();
 	}
+	m_task_mutex.unlock();	
 }
 
 
@@ -734,8 +735,9 @@ void AnimationState::draw( const clan::Rect &screenRect, clan::Canvas& GC ) {
 void AnimationState::draw_functor( const clan::Rect& screenRect, clan::Canvas& GC ) {
 	bool notasks = false;
 	bool emergency = false;
-	for( int i = m_tasks.size() - 1; i >= 0; i-- ) {
-		Task * pTask = m_tasks[i];
+	m_task_mutex.lock();
+	for( auto it = std::begin(m_tasks); it != std::end(m_tasks); it++ ){
+		Task * pTask = *it;
 		try{
 			pTask->update( m_pInterpreter );
 		}catch(Steel::SteelException ex){
@@ -749,18 +751,13 @@ void AnimationState::draw_functor( const clan::Rect& screenRect, clan::Canvas& G
 
 			pTask->finish( m_pInterpreter );
 			// Do something with waitFor?
-			std::cout << "Removing task: " << m_tasks[i]->GetName() << '@' << std::hex << m_tasks[i] << std::endl;
-			m_task_mutex.lock();
-			m_tasks.erase( m_tasks.begin() + i );
+			std::cout << "Finished task: " << pTask->GetName() << '@' << std::hex << pTask << std::endl;
 			notasks = m_tasks.empty();
-			m_task_mutex.unlock();
-			m_finished_task_mutex.lock();
-			m_finished_tasks.insert( pTask );
-			m_finished_task_mutex.unlock();
 			std::cout << "Tasks left = " << m_tasks.size() << std::endl;
 			//m_wait_event.set();
 		}
 	}
+	m_task_mutex.unlock();
 }
 
 
@@ -1613,15 +1610,9 @@ SteelType AnimationState::waitFor( SteelType::Handle waitOn ) {
 	if( !pTask->started() ) {
 		AddTask( pTask );
 	}
-	while( true ) {
-		m_finished_task_mutex.lock();
-		if( m_finished_tasks.find( pTask ) != m_finished_tasks.end() ) {
-			m_finished_task_mutex.unlock();
-			break;
-		}
-		m_finished_task_mutex.unlock();
+	while( !pTask->expired() ) {
 	}
-	std::cout << "Done waiting for: " << pTask->GetName() << std::endl;
+	//std::cout << "Done waiting for: " << pTask->GetName() << std::endl;
 	return val;
 }
 
@@ -1646,11 +1637,13 @@ SteelType AnimationState::start( SteelType::Handle hTask ) {
 }
 
 void AnimationState::add_task( AnimationState::Task* task ) {
-	if(m_finished_tasks.find(task) == m_finished_tasks.end()){
+	m_task_mutex.lock();
+	if(!task->expired() && !task->started()){
 		std::cout << "Adding task: " << task->GetName() << '@' << std::hex << task <<" to " << std::dec << m_tasks.size() << " existing tasks" << std::endl;
 		m_tasks.push_back(task);
 		task->start( m_pInterpreter );
 	}
+	m_task_mutex.unlock();
 }
 
 
@@ -1678,12 +1671,6 @@ void AnimationState::Finish() { // Hook to clean up or whatever after being popp
 	m_pTargetGroup = NULL;
 	m_task_mutex.lock();
 	m_tasks.clear();
-	for( std::set<Task*>::iterator it = m_finished_tasks.begin(); it != m_finished_tasks.end(); it++ ) {
-		std::cout << "Finishing up task: " << ( *it )->GetName() << std::endl;
-		( *it )->cleanup();
-		( *it )->SyncTo( NULL );
-	}
-	m_finished_tasks.clear();
 	for( std::list<SteelType::IHandle*>::const_iterator it = m_handles.begin(); it != m_handles.end(); it++ ) {
 		std::cout << std::hex << ( long )*it << std::endl;
 		delete *it;

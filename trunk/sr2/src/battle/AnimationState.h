@@ -9,6 +9,7 @@
 #include "BattleState.h"
 #include "Direction.h"
 #include <set>
+#include <mutex>
 
 namespace StoneRing
 {
@@ -128,6 +129,7 @@ namespace StoneRing
 		public:
 			Task(AnimationState& state):m_state(state),m_sync_task(NULL),m_start_after(NULL),m_sprite(BattleState::UNDEFINED_SPRITE_TICKET){
 				m_started = false;
+				m_expired = false;
 			}
 			virtual ~Task(){}
 			virtual std::string GetName() const=0;
@@ -154,13 +156,14 @@ namespace StoneRing
 			virtual bool finished()=0;
 			// Finish will be called when the task is finished
 			virtual void finish(SteelInterpreter* pInterpreter){
-				m_started = false;
+				m_expired = true;
 				if(m_start_after){
 					m_state.AddTask(m_start_after);
 					m_start_after->start(pInterpreter);
 					m_start_after = NULL;
 				}
 			}
+			bool expired() const{ return m_expired; }
 			// Cleanup will be called at the end of the animation
 			virtual void cleanup(){}
 			float percentage()const;
@@ -174,6 +177,7 @@ namespace StoneRing
 			SteelType::Functor m_functor;
 			BattleState::SpriteTicket m_sprite;
 			bool m_started;
+			bool m_expired;
 			Task* m_start_after;
 		};
 		
@@ -597,15 +601,13 @@ namespace StoneRing
 		SteelType::Functor m_functor;	
         std::list<Phase*>::const_iterator m_phase_iterator;
 		std::vector<Task*> m_tasks;
-		std::set<Task*> m_finished_tasks;
 		std::list<SteelType::IHandle*> m_handles;
 
 		SteelInterpreter * m_pInterpreter;
 		clan::Event m_wait_event;
 		//clan::Event m_finish_event;
 		clan::Thread m_steel_thread;
-		mutable clan::Mutex m_task_mutex;		
-		mutable clan::Mutex m_finished_task_mutex;
+		mutable std::recursive_mutex m_task_mutex;		
         clan::ubyte64 m_phase_start_time;
 		bool m_functor_mode;
         bool m_bDone;
