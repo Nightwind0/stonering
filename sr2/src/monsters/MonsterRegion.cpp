@@ -37,7 +37,7 @@ bool MonsterRegion::handle_element(eElement element, Element * pElement)
     return true;
 }
 
-void MonsterRegion::load_attributes(CL_DomNamedNodeMap attr)
+void MonsterRegion::load_attributes(clan::DomNamedNodeMap attr)
 {
     m_backdrop = get_required_string("backdrop", attr);
 	m_id = get_required_int("id",attr);
@@ -124,9 +124,9 @@ void MonsterRegions::load_finished()
 }
 
 #if SR2_EDITOR
-CL_DomElement MonsterRegion::CreateDomElement(CL_DomDocument& doc)const
+clan::DomElement MonsterRegion::CreateDomElement(clan::DomDocument& doc)const
 {
-    CL_DomElement element(doc,"monsterRegion");
+    clan::DomElement element(doc,"monsterRegion");
     element.set_attribute("backdrop",m_backdrop);
     element.set_attribute("encounterRate",FloatToString(m_encounter_rate));
 	element.set_attribute("id",IntToString(m_id));
@@ -137,9 +137,9 @@ CL_DomElement MonsterRegion::CreateDomElement(CL_DomDocument& doc)const
     }
     return element;
 }
-CL_DomElement MonsterRegions::CreateDomElement(CL_DomDocument &doc)const
+clan::DomElement MonsterRegions::CreateDomElement(clan::DomDocument &doc)const
 {
-    CL_DomElement element(doc,"monsterRegions");
+    clan::DomElement element(doc,"monsterRegions");
     for(std::map<char,MonsterRegion*>::const_iterator it = m_monster_regions.begin();
         it != m_monster_regions.end(); it++){
         element.append_child((it->second)->CreateDomElement(doc));

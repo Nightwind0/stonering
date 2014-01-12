@@ -60,7 +60,7 @@ public:
 private:
     /* Element stuff */
     virtual bool handle_element(eElement, Element * );
-    virtual void load_attributes(CL_DomNamedNodeMap);
+    virtual void load_attributes(clan::DomNamedNodeMap);
     virtual void handle_text(const std::string &);
     virtual void load_finished();
 

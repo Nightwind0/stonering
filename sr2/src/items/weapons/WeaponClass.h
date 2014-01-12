@@ -12,7 +12,7 @@ namespace StoneRing{
     {
     public:
         WeaponClass();
-        WeaponClass(CL_DomElement * pElement);
+        WeaponClass(clan::DomElement * pElement);
         virtual ~WeaponClass();
         virtual eElement WhichElement() const{ return EWEAPONCLASS; }
         std::string GetName() const;
@@ -45,7 +45,7 @@ namespace StoneRing{
 
     private:
         virtual bool handle_element(eElement element, Element * pElement );
-        virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
+        virtual void load_attributes(clan::DomNamedNodeMap attributes) ;
         void add_status_effect_modifier(StatusEffectModifier *pModifier ){ m_status_effect_modifiers.push_back ( pModifier ); }
         void add_status_effect_infliction(StatusEffectInfliction* pInfliction ) { m_status_effect_inflictions.push_back ( pInfliction ); }
         ScriptElement *m_pScript;

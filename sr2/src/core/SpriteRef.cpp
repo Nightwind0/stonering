@@ -9,7 +9,7 @@ bool SpriteRef::handle_element(Element::eElement element, Element * pElement)
     return false;
 }
 
-void SpriteRef::load_attributes(CL_DomNamedNodeMap attributes)
+void SpriteRef::load_attributes(clan::DomNamedNodeMap attributes)
 {
     if(has_attribute("type",attributes))
     {
@@ -21,7 +21,7 @@ void SpriteRef::load_attributes(CL_DomNamedNodeMap attributes)
         else if(type == "attack") m_eType = SPR_BATTLE_ATTACK;
         else if(type == "use") m_eType = SPR_BATTLE_USE;
         else if(type == "dead") m_eType = SPR_BATTLE_DEAD;
-        //else throw CL_Exception("Bad type on spriteRef");
+        //else throw clan::Exception("Bad type on spriteRef");
 
     }
 
@@ -77,16 +77,16 @@ SpriteRef::GetType() const
 }
 */
 
-CL_Sprite SpriteRef::CreateSprite() const
+clan::Sprite SpriteRef::CreateSprite() const
 {
     return GraphicsManager::CreateSprite( m_ref );
 }
 
 
 #if SR2_EDITOR
-CL_DomElement SpriteRef::CreateDomElement(CL_DomDocument& doc)const
+clan::DomElement SpriteRef::CreateDomElement(clan::DomDocument& doc)const
 {
-    CL_DomElement element(doc,"spriteRef");
+    clan::DomElement element(doc,"spriteRef");
     element.set_attribute("type",TypeName(m_eType));
     element.set_attribute("ref",m_ref);
     return element;

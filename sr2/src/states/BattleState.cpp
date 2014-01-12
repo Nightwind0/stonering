@@ -24,12 +24,12 @@ using namespace Steel;
 
 //
 namespace StoneRing {
-	
-	class MonsterSort: public std::binary_function<ICharacter*, ICharacter*, bool> {
+#if 0 	
+	class SpiteSort: public std::binary_function<BattleState::Sprite, BattleState::Sprite, bool> {
 	public:
-		MonsterSort(BattleState& state):m_state(state){
+		SpriteSort(BattleState& state):m_state(state){
 		}
-		virtual ~MonsterSort(){}
+		virtual ~SpriteSort(){}
 		bool operator()(ICharacter* a, ICharacter* b) const {
 			int a_value = a->GetBattlePos().y * m_state.m_monster_rect.get_width() + a->GetBattlePos().x;
 			int b_value = b->GetBattlePos().y * m_state.m_monster_rect.get_width() + b->GetBattlePos().x;
@@ -50,19 +50,19 @@ namespace StoneRing {
 		BattleState& m_state;
 	};
 	
-	
+#endif
 class StatusEffectPainter : public Visitor<StatusEffect*> {
 public:
-	StatusEffectPainter( CL_GraphicContext& gc ): m_i( 0 ), m_gc( gc ) {}
+	StatusEffectPainter( clan::Canvas& gc ): m_i( 0 ), m_gc( gc ) {m_last_render_time = clan::System::get_time();}
 	virtual ~StatusEffectPainter() {}
 
-	void SetShadow( CL_Colorf shadow ) {
+	void SetShadow( clan::Colorf shadow ) {
 		m_shadow = shadow;
 	}
-	void SetSpacing( CL_Pointf spacing ) {
+	void SetSpacing( clan::Pointf spacing ) {
 		m_spacing = spacing;
 	}
-	void SetStart( CL_Pointf point ) {
+	void SetStart( clan::Pointf point ) {
 		m_start = point;
 	}
 	void SetHeight( int height ) {
@@ -73,20 +73,22 @@ public:
 	}
 
 	virtual void Visit( StatusEffect* pEffect ) {
-		CL_Sprite sprite = pEffect->GetIcon();
-		sprite.update();
+		
+		clan::Sprite sprite = pEffect->GetIcon();
+		sprite.update(clan::System::get_time() -  m_last_render_time);
 		sprite.set_alpha( 0.5f );
+		m_last_render_time = clan::System::get_time();
 		int sprites_per_col = m_height / ( sprite.get_height() + m_spacing.y );
 		int col = m_i / sprites_per_col;
 		int row = m_i % sprites_per_col;
-		CL_Pointf origin( m_start.x + col * ( m_spacing.x + sprite.get_width() ) * m_mult,
+		clan::Pointf origin( m_start.x + col * ( m_spacing.x + sprite.get_width() ) * m_mult,
 																				m_start.y + row * ( m_spacing.y + sprite.get_height() ) );
-		CL_Sizef size( sprite.get_width(), sprite.get_height() );
-		CL_Rectf box( origin, size );
-		CL_Rectf shadowbox = box;
-		shadowbox.translate( CL_Pointf( 2, 2 ) );
+		clan::Sizef size( sprite.get_width(), sprite.get_height() );
+		clan::Rectf box( origin, size );
+		clan::Rectf shadowbox = box;
+		shadowbox.translate( clan::Pointf( 2, 2 ) );
 
-		// CL_Draw::fill(m_gc, shadowbox, m_shadow);
+		// clan::Draw::fill(m_gc, shadowbox, m_shadow);
 		sprite.draw( m_gc, origin.x, origin.y );
 		m_i++;
 	}
@@ -95,10 +97,11 @@ private:
 	int m_i;
 	int m_height;
 	int m_mult;
-	CL_Colorf m_shadow;
-	CL_Pointf m_start;
-	CL_Pointf m_spacing;
-	CL_GraphicContext & m_gc;
+	uint16_t m_last_render_time;
+	clan::Colorf m_shadow;
+	clan::Pointf m_start;
+	clan::Pointf m_spacing;
+	clan::Canvas & m_gc;
 };
 }
 #ifdef WIN32
@@ -117,9 +120,9 @@ void BattleState::SetConfig( BattleConfig* config ) {
 	m_config = config;
 }
 
-void BattleState::init( const std::vector<MonsterRef*>& monsters, int cellRows, int cellColumns, bool isBoss, const std::string & backdrop ) {
+void BattleState::init( const std::vector<MonsterRef*>& monsters, int cellRows, int cellColumns, bool isBoss, const std::string & backdrop, bool scripted ) {
 	m_monsters = new MonsterParty();
-
+	m_bScriptedBattle = scripted;
 	m_nRows = cellRows;
 	m_nColumns = cellColumns;
 
@@ -127,10 +130,11 @@ void BattleState::init( const std::vector<MonsterRef*>& monsters, int cellRows, 
 	m_nRound = 0;
 
 	m_bDoneAfterRound = false;
-
+	m_bPlayerWon = false;
 	m_bBossBattle = isBoss;
 	// uint bottomrow = m_nRows - 1;
 
+	m_last_render_time = clan::System::get_time();
 	for ( std::vector<MonsterRef*>::const_iterator it = monsters.begin();
 							it != monsters.end(); it++ ) {
 		MonsterRef *pRef = *it;
@@ -143,8 +147,7 @@ void BattleState::init( const std::vector<MonsterRef*>& monsters, int cellRows, 
 					pMonster->SetCellX( pRef->GetCellX() + x );
 					pMonster->SetCellY( pRef->GetCellY() + y );
 
-					pMonster->SetCurrentSprite( GraphicsManager::CreateMonsterSprite( pMonster->GetName(),
-																																	"idle" ) ); // fuck, dude
+					pMonster->SetCurrentSprite( GraphicsManager::CreateMonsterSprite( pMonster->GetName(),  "idle" ) ); // fuck, dude
 
 					m_monsters->AddMonster( pMonster );
 					pMonster->Invoke();
@@ -155,35 +158,52 @@ void BattleState::init( const std::vector<MonsterRef*>& monsters, int cellRows, 
 			if ( count == 0 ) break;
 		}
 
-		if ( count > 0 ) throw CL_Exception( "Couldn't fit all monsters in their rows and columns" );
+		if ( count > 0 ) throw clan::Exception( "Couldn't fit all monsters in their rows and columns" );
 	}
 	m_backdrop = GraphicsManager::GetBackdrop( backdrop );
 	
 	m_darkModes.clear();
 }
 
-void BattleState::init( const MonsterGroup &group, const std::string &backdrop ) {
+void BattleState::init( const MonsterGroup &group, const std::string &backdrop, bool scripted ) {
 	m_bBossBattle = false;
+	m_bPlayerWon = false;
 	const std::vector<MonsterRef*> & monsters = group.GetMonsters();
 
-	init( monsters, group.GetCellRows(), group.GetCellColumns(), false, backdrop );
+	init( monsters, group.GetCellRows(), group.GetCellColumns(), false, backdrop, scripted );
 }
+
+void BattleState::add_participant_sprites() {
+	m_sprite_mutex.lock();
+	m_sprites.clear();
+	for(auto it = m_initiative.begin(); it != m_initiative.end(); it++){
+		Sprite sprite((*it)->GetCurrentSprite());
+		sprite.SetPosition((*it)->GetBattlePos());
+		sprite.SetEnabled(true);
+		m_sprites.push_back(sprite);
+	}
+	m_sprite_mutex.unlock();
+}
+
 
 void BattleState::ClearDarkMode(int mode){
 	m_darkModes.erase(mode);
 }
 
 void BattleState::SetDarkMode(int mode,float r, float g, float b, float a){
-	m_darkModes[mode] = CL_Colorf(r,g,b,a);
+	m_darkModes[mode] = clan::Colorf(r,g,b,a);
+}
+
+bool BattleState::playerWon() const{
+	return m_bPlayerWon;
 }
 
 void BattleState::set_positions_to_loci() {
 	for ( std::deque<ICharacter*>::iterator iter = m_initiative.begin();
 							iter != m_initiative.end(); iter++ ) {
-		CL_Pointf pos = get_character_locus_rect( *iter ).get_center();
+		clan::Pointf pos = get_character_locus_rect( *iter ).get_center();
 		( *iter )->SetBattlePos( pos );
 	}
-	m_offsets.clear();
 	m_group_offsets.clear();
 }
 
@@ -192,6 +212,7 @@ void BattleState::run_turn(){
 	Character * pChar = dynamic_cast<Character*>( iCharacter );
 
 	set_positions_to_loci();
+	add_participant_sprites();
 	iCharacter->StatusEffectRound();
 
 	if ( pChar != NULL ) {
@@ -345,19 +366,19 @@ void BattleState::HandleAxisMove( const IApplication::Axis& axis, IApplication::
 	}
 }
 
-void BattleState::HandleKeyDown( const CL_InputEvent &key ) {
+void BattleState::HandleKeyDown( const clan::InputEvent &key ) {
 
 }
 
-void BattleState::HandleKeyUp( const CL_InputEvent &key ) {
+void BattleState::HandleKeyUp( const clan::InputEvent &key ) {
 
 }
 
-void BattleState::Draw( const CL_Rect &screenRect, CL_GraphicContext& GC ) {
+void BattleState::Draw( const clan::Rect &screenRect, clan::Canvas& GC ) {
 	assert( m_draw_method != NULL );
 
 	if ( m_eState == TRANSITION_IN ) {
-		float passed = ( float )( CL_System::get_time() - m_startup_time ) / 1000.0f;
+		float passed = ( float )( clan::System::get_time() - m_startup_time ) / 1000.0f;
 		if ( passed >= 1.0f ) {
 			m_eState = COMBAT;
 			next_turn();
@@ -368,24 +389,37 @@ void BattleState::Draw( const CL_Rect &screenRect, CL_GraphicContext& GC ) {
 								m_transition == FLIP_ZOOM_SPIN ||
 								m_transition == FADE_IN
 						) {
-				//  CL_Sizef screenSize = screenRect.get_size() * passed;
-				CL_Texture texture( GC, screenRect.get_width(), screenRect.get_height(), cl_rgba );
-				CL_FrameBuffer framebuffer( GC );
+				//  clan::Sizef screenSize = screenRect.get_size() * passed;
+				// Create a texture to draw to
+				/*
+				clan::Texture texture( GC, screenRect.get_width(), screenRect.get_height(), clan::cl_rgba );
+				clan::FrameBuffer framebuffer( GC );
+				// Bind the framebuffer to the texture
 				framebuffer.attach_color_buffer( 0, texture );
+				// Draw to this framebuffer instead of default
 				GC.set_frame_buffer( framebuffer );
 				( this->*m_draw_method )( screenRect, GC );
 				GC.reset_frame_buffer();
-
-				CL_SpriteDescription desc;
-				desc.add_frame( texture );
-				CL_Sprite sprite( GC, desc );
+				*/
+				clan::FrameBuffer fb(GC.get_gc());
+				clan::Texture2D tex(GC.get_gc(), screenRect.get_width(), screenRect.get_height());
+				fb.attach_color(0,tex);
+				clan::Canvas canvas(GC,fb);
+				draw_battle( screenRect, canvas );
+				//m_backdrop.draw(canvas, screenRect);
+				// Make a sprite with the screen contents as it's sole frame
+				clan::Sprite sprite( GC );
+				// Have to get a texture2D to put in the sprite
+				//clan::Texture2D tex ( canvas.get_gc(), canvas.get_pixeldata() );
+				sprite.add_frame ( tex );
+				
 				if ( m_transition == FLIP_ZOOM || m_transition == FLIP_ZOOM_SPIN ) {
-					CL_Rectf destRect(( screenRect.get_width() - ( screenRect.get_width() * passed ) ) / 2.0,
+					clan::Rectf destRect(( screenRect.get_width() - ( screenRect.get_width() * passed ) ) / 2.0,
 																							( screenRect.get_height() - ( screenRect.get_height() * passed ) ) / 2.0,
 																							( screenRect.get_width() *passed ), ( screenRect.get_height() * passed ) );
 					//image.set_scale(passed,passed);
 					if ( m_transition == FLIP_ZOOM_SPIN )
-						sprite.set_angle( CL_Angle::from_degrees( passed * 360.0f ) );
+						sprite.set_angle( clan::Angle::from_degrees( passed * 360.0f ) );
 					sprite.draw( GC, destRect );
 				} else if ( m_transition == FADE_IN ) {
 					sprite.set_alpha( passed );
@@ -428,12 +462,15 @@ void BattleState::Start() {
 	m_eState = TRANSITION_IN;
 
 	float r = ranf();
+#ifndef NDEBUG
+	std::cout << "Transition r was " << r << std::endl;
+#endif
 	if ( r > 0.66f )
-		m_transition = FLIP_ZOOM;
+		m_transition = FADE_IN;
 	else if ( r > 0.33f )
 		m_transition = FLIP_ZOOM_SPIN;
 	else
-		m_transition = FADE_IN;
+		m_transition = FLIP_ZOOM;
 
 	m_bDone = false;
 
@@ -471,8 +508,9 @@ void BattleState::Start() {
 
 	m_bDone = false;
 	roll_initiative();
+	add_participant_sprites();
 	set_positions_to_loci();
-	m_startup_time = CL_System::get_time();
+
 	//next_turn();
 
 	std::string music = "Music/Battle";
@@ -480,6 +518,8 @@ void BattleState::Start() {
 	// TODO: Is final boss?
 	SoundManager::PushMusic();
 	SoundManager::SetMusic( music );
+	
+	m_startup_time = clan::System::get_time();
 }
 
 void BattleState::init_or_release_players( bool bRelease ) {
@@ -509,36 +549,37 @@ void BattleState::Finish() {
 	delete m_monsters;
 
 	m_displays.clear();
-
+	m_group_offsets.clear();
+	m_sprite_mutex.lock();
 	m_sprites.clear();
-
+	m_sprite_mutex.unlock();
 	m_initiative.clear();
 
 	init_or_release_players( true );
 	SoundManager::PopMusic();
 }
 
-void BattleState::draw_darkness( eDisplayOrder mode, const CL_Rectf &screenRect, CL_GraphicContext& GC ) {
-	std::map<int,CL_Colorf>::const_iterator findIt = m_darkModes.find(mode);
+void BattleState::draw_darkness( eDisplayOrder mode, const clan::Rectf &screenRect, clan::Canvas& GC ) {
+	std::map<int,clan::Colorf>::const_iterator findIt = m_darkModes.find(mode);
 	if(findIt != m_darkModes.end()){
-		CL_Draw::fill( GC, screenRect, findIt->second );
+		GC.fill_rect( screenRect, findIt->second );
 	}
 }
 
-void BattleState::draw_transition_in( const CL_Rectf &screenRect, CL_GraphicContext& GC ) {
+void BattleState::draw_transition_in( const clan::Rectf &screenRect, clan::Canvas& GC ) {
 }
 
-void BattleState::draw_start( const CL_Rectf &screenRect, CL_GraphicContext& GC ) {
+void BattleState::draw_start( const clan::Rectf &screenRect, clan::Canvas& GC ) {
 }
 
-void BattleState::draw_status( const CL_Rectf &screenRect, CL_GraphicContext& GC ) {
+void BattleState::draw_status( const clan::Rectf &screenRect, clan::Canvas& GC ) {
 	Party * pParty = IApplication::GetInstance()->GetParty();
 
 	MenuBox::Draw( GC, m_statusRect );
 
-	CL_Rectf textRect = m_status_text_rect;
+	clan::Rectf textRect = m_status_text_rect;
 
-	//CL_Draw::box(GC,m_status_rect,CL_Colorf::red);
+	//clan::Draw::box(GC,m_status_rect,clan::Colorf::red);
 	int height_per_character = textRect.get_height() / pParty->GetCharacterCount();
 
 	for ( uint p = 0; p < pParty->GetCharacterCount(); p++ ) {
@@ -550,51 +591,45 @@ void BattleState::draw_status( const CL_Rectf &screenRect, CL_GraphicContext& GC
 		<< pChar->GetAttribute( ICharacter::CA_MAXHP );
 		
 		if(m_combat_state == BATTLE_MENU && pChar == m_initiative[m_cur_char]){
-			float percentage = float(CL_System::get_time() % 1000) / 1000.0f;
+			float percentage = float(clan::System::get_time() % 1000) / 1000.0f;
 			m_generalFont.set_alpha(percentage);
 		}
 
 		m_generalFont.draw_text( GC, textRect.left,
-																											textRect.top + ( p * height_per_character ),
-																											name.str(), Font::TOP_LEFT );
+					 				textRect.top + ( p * height_per_character ),
+									name.str(), Font::TOP_LEFT );
 		m_generalFont.set_alpha(1.0f);
 		m_hpFont.draw_text( GC, textRect.get_width() / 3 + textRect.left,
-																						textRect.top + ( p* height_per_character )
-																						, hp.str(), Font::TOP_LEFT );
+										textRect.top + ( p* height_per_character )
+											, hp.str(), Font::TOP_LEFT );
 		std::ostringstream mp;
 		mp << std::setw( 6 ) << (int)pChar->GetLerpAttribute( ICharacter::CA_MP ) << '/'
 		<< pChar->GetAttribute( ICharacter::CA_MAXMP );
 		m_mpFont.draw_text( GC, ( textRect.get_width() / 3 ) * 2 + textRect.left,
-																						textRect.top + ( p*height_per_character ), mp.str(), Font::TOP_LEFT
+										textRect.top + ( p*height_per_character ), mp.str(), Font::TOP_LEFT
 																				);
 
-		CL_Rectf bp_box = m_bp_box;
+		clan::Rectf bp_box = m_bp_box;
 		bp_box.top += textRect.top + ( p * height_per_character );
 		bp_box.bottom += textRect.top + ( p * height_per_character );
-		CL_Rectf bp_fill = bp_box;
+		clan::Rectf bp_fill = bp_box;
 		float percentage = pChar->GetLerpAttribute( ICharacter::CA_BP ) / pChar->GetAttribute( ICharacter::CA_MAXBP );
 		bp_fill.right = bp_fill.left + ( percentage * bp_fill.get_width() );
-		CL_Draw::gradient_fill( GC, bp_fill, m_bp_gradient );
-		CL_Draw::box( GC, bp_box, m_bp_border );
+		GC.fill_rect( bp_fill, m_bp_gradient );
+		GC.draw_box( bp_box, m_bp_border );
 	}
 }
 
-void BattleState::draw_battle( const CL_Rectf &screenRect, CL_GraphicContext& GC ) {
-
+void BattleState::draw_battle( const clan::Rectf &screenRect, clan::Canvas& GC ) {
+	GC.push_cliprect(screenRect);
 	m_backdrop.draw( GC, screenRect );
-
-
-	draw_darkness( DISPLAY_ORDER_PRE_PLAYERS, screenRect, GC );
-	draw_players( m_player_rect, GC );
-	draw_darkness(DISPLAY_ORDER_POST_PLAYERS, screenRect, GC );
-	draw_darkness( DISPLAY_ORDER_PREMONSTERS, screenRect, GC );
-	draw_monsters( m_monster_rect, GC );
-	draw_darkness( DISPLAY_ORDER_POSTMONSTERS, screenRect, GC );
-
+	update_character_sprites();
 	draw_status( screenRect, GC );
 
 	draw_darkness( DISPLAY_ORDER_PRE_SPRITES,screenRect, GC );
-	draw_sprites( 0, GC );
+	draw_sprites( GC );
+	draw_monsters( m_monster_rect, GC ); // draw various things around monsters
+	draw_players( m_player_rect, GC );
 	draw_status_effects( GC );
 	draw_darkness( DISPLAY_ORDER_POST_SPRITES,screenRect, GC );
 
@@ -611,10 +646,11 @@ void BattleState::draw_battle( const CL_Rectf &screenRect, CL_GraphicContext& GC
 	draw_darkness( DISPLAY_ORDER_POST_MENUS,screenRect, GC );
 
 	draw_darkness( DISPLAY_ORDER_FINAL, screenRect, GC );
-
+	m_last_render_time = clan::System::get_time();
+	GC.pop_cliprect();
 }
 
-void BattleState::draw_status_effects( CL_GraphicContext& GC ) {
+void BattleState::draw_status_effects( clan::Canvas& GC ) {
 	for ( std::deque<ICharacter*>::iterator iter = m_initiative.begin();
 							iter != m_initiative.end(); iter++ ) {
 		ICharacter * pICharacter = *iter;
@@ -624,7 +660,7 @@ void BattleState::draw_status_effects( CL_GraphicContext& GC ) {
 		painter.SetShadow( m_status_effect_shadow_color );
 		painter.SetSpacing( m_status_effect_spacing );
 		if ( pCharacter != NULL ) {
-			CL_Rectf rectf = get_character_rect( pICharacter );
+			clan::Rectf rectf = get_character_rect( pICharacter );
 
 			painter.SetStart( rectf.get_top_right() );
 			painter.SetHeight( rectf.get_height() );
@@ -635,7 +671,7 @@ void BattleState::draw_status_effects( CL_GraphicContext& GC ) {
 			if ( !pICharacter->GetToggle( ICharacter::CA_ALIVE ) ||
 								!pICharacter->GetToggle( ICharacter::CA_VISIBLE ) )
 				continue;
-			CL_Rectf rectf = get_character_rect( pICharacter );
+			clan::Rectf rectf = get_character_rect( pICharacter );
 			painter.SetHeight( rectf.get_height() );
 			painter.SetStart( rectf.get_top_left() );
 			painter.SetMultiplier( -1 );
@@ -655,7 +691,7 @@ BattleState::Display::~Display() {
 }
 
 void BattleState::Display::start() {
-	m_start_time = CL_System::get_time();
+	m_start_time = clan::System::get_time();
 	m_complete = 0.0f;
 }
 
@@ -664,11 +700,11 @@ bool BattleState::Display::expired() const {
 }
 
 void BattleState::Display::update() {
-	int elapsed = CL_System::get_time() - m_start_time;
+	int elapsed = clan::System::get_time() - m_start_time;
 
 	m_complete = ( double )elapsed / 2000.0;
 }
-void BattleState::Display::draw( CL_GraphicContext& GC ) {
+void BattleState::Display::draw( clan::Canvas& GC ) {
 	std::ostringstream stream;
 	Font font;
 	Font shadow_font;
@@ -711,7 +747,7 @@ void BattleState::Display::draw( CL_GraphicContext& GC ) {
 	font.set_alpha( 1.0f - m_complete );
 	shadow_font.set_alpha( 1.0f - m_complete );
 
-	CL_Rect rect;
+	clan::Rect rect;
 	Monster *pMonster = dynamic_cast<Monster*>( m_pTarget );
 
 	if ( pMonster ) {
@@ -726,9 +762,9 @@ void BattleState::Display::draw( CL_GraphicContext& GC ) {
 		}
 	}
 
-	CL_String value( stream.str() );
+	std::string value( stream.str() );
 
-	CL_Point pos = rect.get_top_right();
+	clan::Point pos = rect.get_top_right();
 
 	pos.y += font.get_font_metrics( GC ).get_height();
 	pos.x -= font.get_text_size( GC, value ).width;
@@ -739,27 +775,32 @@ void BattleState::Display::draw( CL_GraphicContext& GC ) {
 
 }
 
-BattleState::Sprite::Sprite( CL_Sprite sprite ): m_sprite( sprite ) {
+BattleState::Sprite::Sprite( clan::Sprite sprite ): m_sprite( sprite ), m_enabled(true),m_zorder(0) {
 }
 
 BattleState::Sprite::~Sprite() {
 }
 
-void BattleState::Sprite::SetPosition( const CL_Pointf& pos ) {
+
+bool BattleState::Sprite::operator<( const BattleState::Sprite& other ) const {
+	return m_pos.y + m_offset.y + m_zorder < other.m_pos.y + other.m_offset.y + other.m_zorder;
+}
+
+void BattleState::Sprite::SetPosition( const clan::Pointf& pos ) {
 	m_pos = pos;
 }
 
-CL_Rectf BattleState::Sprite::Rect() const { 
-	CL_Sizef size(m_sprite.get_size().width,m_sprite.get_size().height);
-	return CL_Rectf(m_pos,size);
+clan::Rectf BattleState::Sprite::Rect() const { 
+	clan::Sizef size(m_sprite.get_size().width,m_sprite.get_size().height);
+	return clan::Rectf(m_pos,size);
 }
 
-CL_Pointf BattleState::Sprite::Position()const {
+clan::Pointf BattleState::Sprite::Position()const {
 	return m_pos;
 }
-void BattleState::Sprite::Draw( CL_GraphicContext& gc, const CL_Pointf& pos ) {
-	m_sprite.set_alignment( origin_center );
-	m_sprite.draw( gc, m_pos.x + pos.x, m_pos.y + pos.y );
+void BattleState::Sprite::Draw( clan::Canvas& gc) {
+	m_sprite.set_alignment( clan::origin_center );
+	m_sprite.draw( gc, m_pos.x + m_offset.x, m_pos.y + m_offset.y );
 }
 
 int BattleState::Sprite::ZOrder() const {
@@ -778,17 +819,29 @@ void BattleState::Sprite::SetEnabled( bool enabled ) {
 	m_enabled = enabled;
 }
 
-CL_Sprite BattleState::Sprite::GetSprite() const {
+clan::Sprite BattleState::Sprite::GetSprite() const {
 	return m_sprite;
 }
 
-int BattleState::add_sprite( CL_Sprite sprite ) {
+void BattleState::Sprite::SetSprite(clan::Sprite sprite){
+	m_sprite = sprite;
+}
+
+clan::Pointf BattleState::Sprite::GetOffset() const {
+	return m_offset;
+}
+
+void BattleState::Sprite::SetOffset(const clan::Pointf& pt){
+	m_offset = pt;
+}
+
+int BattleState::add_sprite( clan::Sprite sprite ) {
 	m_sprite_mutex.lock();
 	int index = m_sprites.size();
-	sprite.set_alignment( origin_center );
+	sprite.set_alignment( clan::origin_center );
 	Sprite mysprite( sprite );
 
-
+#if 0 // Looks like I was reusing Sprites... I don't see a good reason to, however.
 	for ( int i = 0;i < m_sprites.size();i++ ) {
 		if ( !m_sprites[i].Enabled() ) {
 			m_sprites[i] = mysprite;
@@ -797,41 +850,32 @@ int BattleState::add_sprite( CL_Sprite sprite ) {
 			return i;
 		}
 	}
+#endif
+	mysprite.SetEnabled(true);
 	m_sprites.push_back( mysprite );
-	m_sprites.back().SetEnabled( true );
 	m_sprite_mutex.unlock();
 	return index;
 }
 
-void BattleState::set_sprite_pos( SpriteTicket nSprite, const CL_Pointf& pos ) {
-	if(nSprite < 0){
-		get_char_with_sprite(nSprite)->SetBattlePos(pos);
-	}else{
-		m_sprites[nSprite].SetPosition( pos );
-	}
-}
-
-CL_Sprite BattleState::get_char_sprite( BattleState::SpriteTicket sprite ) const {
-	return current_sprite( get_char_with_sprite(sprite) );
+void BattleState::set_sprite_pos( SpriteTicket nSprite, const clan::Pointf& pos ) {
+	assert(nSprite != UNDEFINED_SPRITE_TICKET);
+	assert(nSprite < m_sprites.size());
+	m_sprite_mutex.lock();
+	m_sprites[nSprite].SetPosition( pos );
+	m_sprite_mutex.unlock();
 }
 
 
-ICharacter* BattleState::get_char_with_sprite( BattleState::SpriteTicket nSprite )  const  {
-	int init = 0 - nSprite;
-	return m_initiative[init];
-}
-
-
-CL_Sprite BattleState::get_sprite( SpriteTicket nSprite ) const {
-	if(nSprite <0){
-		return get_char_sprite(nSprite);
-	}
+clan::Sprite BattleState::get_sprite( SpriteTicket nSprite )  {
+	clan::MutexSection l(&m_sprite_mutex);
+	assert(nSprite != UNDEFINED_SPRITE_TICKET);
 	assert(nSprite < m_sprites.size());
 	return m_sprites[nSprite].GetSprite();
 }
 
 void BattleState::remove_sprite( SpriteTicket nSprite ) {
-	if(nSprite <0) return; // Can't remove char sprites.... set alpha to full instead
+	// If an animation asks us to remove a sprite, we actually don't, we just disable it.
+	// at the end of the turn, it'll get removed
 	if ( nSprite <  m_sprites.size() ) {
 		m_sprite_mutex.lock();
 		m_sprites[nSprite].SetEnabled( false );
@@ -839,29 +883,28 @@ void BattleState::remove_sprite( SpriteTicket nSprite ) {
 	}
 }
 
-CL_Rectf BattleState::get_sprite_rect( BattleState::SpriteTicket nSprite ) {
-	if(nSprite <0){
-		return get_character_rect(get_char_with_sprite(nSprite));
-	}else{
-		return m_sprites[nSprite].Rect();
-	}
+clan::Rectf BattleState::get_sprite_rect( BattleState::SpriteTicket nSprite ) {
+	clan::MutexSection l(&m_sprite_mutex);
+	return m_sprites[nSprite].Rect();
 }
 
 
-void BattleState::draw_sprites( int z, CL_GraphicContext& GC ) {
+void BattleState::draw_sprites( clan::Canvas& GC ) {
 	m_sprite_mutex.lock();
-	for ( int i = 0;i < m_sprites.size();i++ ) {
-		if ( m_sprites[i].Enabled() ) {
-			m_sprites[i].GetSprite().update();
-			m_sprites[i].Draw( GC, m_offsets[i] );
+	auto sprites = m_sprites; // Copy sprites so I can maintain their order... must be a better way?
+	m_sprite_mutex.unlock(); // because I copied them 
+	std::sort(std::begin(sprites),std::end(sprites));
+	for ( int i = 0;i < sprites.size();i++ ) {
+		if ( sprites[i].Enabled() ) {
+			sprites[i].GetSprite().update(clan::System::get_time()-m_last_render_time);
+			sprites[i].Draw( GC );
 		}
 	}
-	m_sprite_mutex.unlock();
 }
 
 bool SortByBattlePos( const ICharacter* d1, const ICharacter* d2 ) {
 
-	CL_Pointf pos1, pos2;
+	clan::Pointf pos1, pos2;
 	pos1 = d1->GetBattlePos();
 	pos2 = d2->GetBattlePos();
 
@@ -871,114 +914,90 @@ bool SortByBattlePos( const ICharacter* d1, const ICharacter* d2 ) {
 }
 
 
-void BattleState::draw_monsters( const CL_Rectf &monsterRect, CL_GraphicContext& GC ) {
-	std::vector<Monster*> sortedList;
-	sortedList.reserve( m_monsters->GetCharacterCount() );
-	for ( uint i = 0;i < m_monsters->GetCharacterCount();i++ ) {
-		Monster *pMonster = dynamic_cast<Monster*>( m_monsters->GetCharacter( i ) );
-		sortedList.push_back( pMonster );
+
+void BattleState::update_character_sprites(){
+	clan::Pointf monster_group_offset;
+	clan::Pointf player_group_offset;
+	const clan::Pointf empty(0.0,0.0);
+	
+	if(m_group_offsets.count(m_monsters)){
+		monster_group_offset = m_group_offsets[m_monsters];
+	}
+	if(m_group_offsets.count(IApplication::GetInstance()->GetParty())){
+		player_group_offset = m_group_offsets[IApplication::GetInstance()->GetParty()];
 	}
 	
+	for ( uint i = 0; i < m_initiative.size(); i++ ) {
+
+		ICharacter * pChar = m_initiative[i];
+		assert(pChar);
 	
-
-	std::sort( sortedList.begin(), sortedList.end(), MonsterSort(*this) );
-
-	const CL_Pointf group_offset = m_group_offsets[m_monsters];
-
-	for ( uint i = 0; i < sortedList.size(); i++ ) {
-		Monster *pMonster = sortedList[i];
-
+		m_sprite_mutex.lock();
 		// ICharacter *iCharacter = m_monsters->GetCharacter(i);
-		if ( !pMonster->GetToggle( ICharacter::CA_VISIBLE ) )
+		if(pChar->IsMonster()){
+			m_sprites[i].SetEnabled( pChar->GetToggle ( ICharacter::CA_VISIBLE) );
+			if(monster_group_offset != empty){
+				m_sprites[i].SetOffset(monster_group_offset);
+			}
+		}else{
+			if(player_group_offset != empty){
+				m_sprites[i].SetOffset(player_group_offset);
+			}			
+		}
+		m_sprites[i].SetPosition(pChar->GetBattlePos()); // TODO: Get rid of battlepos altogether
+		m_sprites[i].SetSprite(current_sprite(m_initiative[i]));
+
+		clan::Sprite sprite = m_sprites[i].GetSprite();
+		m_sprite_mutex.unlock();		
+
+		if ( !pChar->GetToggle( ICharacter::CA_DRAW_STILL ) &&  pChar->GetToggle( ICharacter::CA_ALIVE ) )
+			sprite.update(clan::System::get_time()-m_last_render_time);
+	}
+}
+
+void BattleState::draw_monsters( const clan::Rectf &monsterRect, clan::Canvas& GC ) {
+	if(m_combat_state != TARGETING) return; // I only do extra stuff during targeting...
+	
+	for ( uint i = 0; i < m_initiative.size(); i++ ) {
+		if(!m_initiative[i]->IsMonster())
 			continue;
+		Monster *pMonster = dynamic_cast<Monster*>(m_initiative[i]);
+		assert(pMonster);
 
-		// CL_Rectf rect = get_character_rect(pMonster);
-		CL_Pointf center = pMonster->GetBattlePos();
-		center += m_offsets[get_sprite_for_char(pMonster)];
-		center += group_offset;
-		//std::cout << pMonster->GetName() << '@' << rect.top << ',' << rect.left << std::endl;
-		//rect.translate ( rect.get_width() / 2.0f,  rect.get_height() / 2.0f);
-
-		CL_Sprite  sprite = current_sprite( pMonster );
-
-		if ( !pMonster->GetToggle( ICharacter::CA_DRAW_STILL ) &&  pMonster->GetToggle( ICharacter::CA_ALIVE ) )
-			sprite.update();
+		clan::Pointf center = pMonster->GetBattlePos();
 
 		if ( m_combat_state == TARGETING ) {
 			if (( m_targets.m_bSelectedGroup && m_targets.selected.m_pGroup == m_monsters )
 							|| ( !m_targets.m_bSelectedGroup && pMonster == m_targets.selected.m_pTarget ) ) {
-				CL_FontMetrics metrics = m_charNameFont.get_font_metrics( GC );
-				CL_Sizef textSize = m_charNameFont.get_text_size( GC, pMonster->GetName() );
-				CL_Pointf textPoint = CL_Pointf( center.x - textSize.width / 2, get_character_rect( pMonster ).get_top_left().y );
+				clan::FontMetrics metrics = m_charNameFont.get_font_metrics( GC );
+				clan::Sizef textSize = m_charNameFont.get_text_size( GC, pMonster->GetName() );
+				clan::Pointf textPoint = clan::Pointf( center.x - textSize.width / 2, get_character_rect( pMonster ).get_top_left().y );
 
 				if ( textPoint.y - metrics.get_height() < 0 ) {
 					// Gonna have to draw below the monster
-					textPoint = CL_Pointf( center.x - textSize.width / 2,
-																												get_character_rect( pMonster ).get_bottom_left().y + metrics.get_height() );
+					textPoint = clan::Pointf( center.x - textSize.width / 2,
+											get_character_rect( pMonster ).get_bottom_left().y + metrics.get_height() );
 				}
 
 				m_charNameFont.draw_text( GC, textPoint, pMonster->GetName(), Font::DEFAULT );
-				sprite.draw( GC, center.x, center.y );
-			} else {
-				//sprite.set_alpha(0.7f);
-				sprite.draw( GC, center.x, center.y );
 			}
-		} else {
-			sprite.draw( GC, center.x, center.y );
 		}
 
 
 	}
 }
 
-CL_Sprite BattleState::current_sprite( ICharacter* iCharacter ) const {
-	CL_Sprite  sprite = iCharacter->GetCurrentSprite( true );
+clan::Sprite BattleState::current_sprite( ICharacter* iCharacter ) const {
+	clan::Sprite  sprite = iCharacter->GetCurrentSprite( true );
 	return sprite;
 }
 
 
-void BattleState::draw_players( const CL_Rectf &playerRect, CL_GraphicContext& GC ) {
-	Party * pParty = IApplication::GetInstance()->GetParty();
-	
-	const CL_Pointf group_offset = m_group_offsets[pParty];
+void BattleState::draw_players( const clan::Rectf &playerRect, clan::Canvas& GC ) {
 
-	uint playercount = pParty->GetCharacterCount();
-	for ( uint nPlayer = 0; nPlayer < playercount; nPlayer++ ) {
-		Character * pCharacter = dynamic_cast<Character*>( pParty->GetCharacter( nPlayer ) );
-		ICharacter * iCharacter = pParty->GetCharacter( nPlayer );
-
-		CL_Sprite sprite = current_sprite( iCharacter );
-		// CL_Rect rect = get_character_rect(iCharacter);
-		CL_Pointf center = pCharacter->GetBattlePos();
-		center += m_offsets[get_sprite_for_char(iCharacter)];
-		center += group_offset;
-		//rect.translate (  rect.get_width() / 2.0f,  rect.get_height() / 2.0f );
-
-		if ( !pCharacter->GetToggle( ICharacter::CA_DRAW_STILL ) )
-			sprite.update();
-
-		// Need to get the spacing from game config
-		if ( !pCharacter->GetToggle( ICharacter::CA_VISIBLE ) )
-			continue;
-
-		if ( m_combat_state == TARGETING ) {
-			if (( m_targets.m_bSelectedGroup && m_targets.selected.m_pGroup == m_monsters )
-							|| ( !m_targets.m_bSelectedGroup && iCharacter == m_targets.selected.m_pTarget ) ) {
-				//sprite.set_alpha(1.0f);
-				sprite.draw( GC, center.x, center.y );
-			} else {
-				//sprite.set_alpha(0.7f);
-				sprite.draw( GC, center.x, center.y );
-
-			}
-		} else {
-			sprite.draw( GC, center.x, center.y );
-		}
-
-	}
 }
 
-CL_Rectf  BattleState::get_group_rect( ICharacterGroup* group ) const {
+clan::Rectf  BattleState::get_group_rect( ICharacterGroup* group ) const {
 	MonsterParty * monsterParty = dynamic_cast<MonsterParty*>( group );
 
 	if ( monsterParty != NULL ) {
@@ -988,11 +1007,11 @@ CL_Rectf  BattleState::get_group_rect( ICharacterGroup* group ) const {
 	}
 }
 
-CL_Pointf BattleState::get_monster_locus( const Monster * pMonster )const {
-	CL_Pointf point;
+clan::Pointf BattleState::get_monster_locus( const Monster * pMonster )const {
+	clan::Pointf point;
 	const uint cellWidth = m_monster_rect.get_width() / m_nColumns;
 	const uint cellHeight = m_monster_rect.get_height() / m_nRows;
-	CL_Sprite  sprite = const_cast<Monster*>( pMonster )->GetCurrentSprite();
+	clan::Sprite  sprite = const_cast<Monster*>( pMonster )->GetCurrentSprite();
 
 
 	point.x = m_monster_rect.left + pMonster->GetCellX() * cellWidth + ( cellWidth  / 2 );
@@ -1000,8 +1019,8 @@ CL_Pointf BattleState::get_monster_locus( const Monster * pMonster )const {
 	return point;
 }
 
-CL_Pointf BattleState::get_player_locus( uint nPlayer )const {
-	CL_Pointf point;
+clan::Pointf BattleState::get_player_locus( uint nPlayer )const {
+	clan::Pointf point;
 	const uint partySize = IApplication::GetInstance()->GetParty()->GetCharacterCount();
 	double each_player = m_player_rect.get_width() / partySize;
 	// TODO: Get the spacing from config
@@ -1010,8 +1029,8 @@ CL_Pointf BattleState::get_player_locus( uint nPlayer )const {
 	return point;
 }
 
-CL_Pointf BattleState::get_character_locus( const ICharacter* pCharacter ) const {
-	CL_Point pointf;
+clan::Pointf BattleState::get_character_locus( const ICharacter* pCharacter ) const {
+	clan::Point pointf;
 	const Monster * pMonster = dynamic_cast<const Monster*>( pCharacter );
 	if ( pMonster != NULL ) {
 		return get_monster_locus( pMonster );
@@ -1027,25 +1046,25 @@ CL_Pointf BattleState::get_character_locus( const ICharacter* pCharacter ) const
 		}
 	}
 	assert( 0 );
-	return CL_Pointf( 0.0, 0.0 );
+	return clan::Pointf( 0.0, 0.0 );
 }
 
-CL_Sizef  BattleState::get_character_size( const ICharacter* pCharacter ) const {
+clan::Sizef  BattleState::get_character_size( const ICharacter* pCharacter ) const {
 	const Monster * pMonster = dynamic_cast<const Monster*>( pCharacter );
 	if ( pMonster != NULL ) {
 		return const_cast<Monster*>( pMonster )->GetCurrentSprite().get_size();
 	} else {
-		return CL_Sizef( 60, 120 );
+		return clan::Sizef( 60, 120 );
 	}
 }
 
 
-CL_Rectf BattleState::get_character_rect( const ICharacter* pCharacter )const {
-	CL_Rectf rect;
-	CL_Pointf point = pCharacter->GetBattlePos();
-	CL_Sizef size = get_character_size( pCharacter );
+clan::Rectf BattleState::get_character_rect( const ICharacter* pCharacter )const {
+	clan::Rectf rect;
+	clan::Pointf point = pCharacter->GetBattlePos();
+	clan::Sizef size = get_character_size( pCharacter );
 
-	rect.set_top_left( CL_Pointf( point.x - size.width / 2.0f, point.y - size.height / 2.0f ) );
+	rect.set_top_left( clan::Pointf( point.x - size.width / 2.0f, point.y - size.height / 2.0f ) );
 	/* rect.top = point.x - size.width / 2.0f;
 	 rect.left = point.y - size.height / 2.0f;
 	 rect.bottom = rect.top + size.height;
@@ -1056,11 +1075,11 @@ CL_Rectf BattleState::get_character_rect( const ICharacter* pCharacter )const {
 	return rect;
 }
 
-CL_Rectf BattleState::get_character_locus_rect( const ICharacter* pCharacter )const {
-	CL_Rectf rect;
-	CL_Pointf point = get_character_locus( pCharacter );
-	CL_Sizef size = get_character_size( pCharacter );
-	rect.set_top_left( CL_Pointf( point.x - size.width / 2.0f, point.y - size.height / 2.0f ) );
+clan::Rectf BattleState::get_character_locus_rect( const ICharacter* pCharacter )const {
+	clan::Rectf rect;
+	clan::Pointf point = get_character_locus( pCharacter );
+	clan::Sizef size = get_character_size( pCharacter );
+	rect.set_top_left( clan::Pointf( point.x - size.width / 2.0f, point.y - size.height / 2.0f ) );
 	rect.set_size( get_character_size( pCharacter ) );
 
 
@@ -1073,7 +1092,7 @@ CL_Rectf BattleState::get_character_locus_rect( const ICharacter* pCharacter )co
 }
 
 
-void BattleState::draw_displays( CL_GraphicContext& GC ) {
+void BattleState::draw_displays( clan::Canvas& GC ) {
 	for ( std::list<Display>::iterator iter = m_displays.begin();iter != m_displays.end();iter++ ) {
 		iter->update();
 		iter->draw( GC );
@@ -1084,9 +1103,9 @@ void BattleState::draw_displays( CL_GraphicContext& GC ) {
 }
 
 
-void BattleState::draw_menus( const CL_Rectf &screenrect, CL_GraphicContext& GC ) {
+void BattleState::draw_menus( const clan::Rectf &screenrect, clan::Canvas& GC ) {
 	BattleMenu * pMenu = m_menu_stack.top();
-	CL_Rectf menu_rect = m_popupRect;
+	clan::Rectf menu_rect = m_popupRect;
 	menu_rect.translate( GraphicsManager::GetMenuInset() );
 	menu_rect.shrink( GraphicsManager::GetMenuInset().x, GraphicsManager::GetMenuInset().y );
 
@@ -1152,7 +1171,7 @@ void BattleState::SteelInit( SteelInterpreter* pInterpreter ) {
 }
 
 void BattleState::SteelCleanup( SteelInterpreter* pInterpreter ) {
-	pInterpreter->removeFunctions( "battle" );
+	//pInterpreter->removeFunctions( "battle" );
 	pInterpreter->popScope();
 	m_config->TeardownForBattle();
 }
@@ -1233,6 +1252,16 @@ void BattleState::SelectDownTarget() {
 
 #endif
 
+BattleState::SpriteTicket BattleState::get_sprite_for_char( ICharacter * ichar )const{
+	for(int i=0;i<m_initiative.size();i++){
+		if(m_initiative[i] == ichar)
+			return i;
+	}
+	assert(0);
+	return UNDEFINED_SPRITE_TICKET;
+}
+
+
 ICharacterGroup* BattleState::group_for_character( ICharacter* pICharacter ) {
 	if ( pICharacter->IsMonster() ) return m_monsters;
 	else return IApplication::GetInstance()->GetParty();
@@ -1243,6 +1272,7 @@ bool BattleState::MonstersOnLeft() {
 }
 
 void BattleState::FinishTurn() {
+	m_combat_state = FINISHING_TURN;
 	// Clear the menu stack
 	while ( !m_menu_stack.empty() )
 		m_menu_stack.pop();
@@ -1336,12 +1366,14 @@ void BattleState::lose() {
 
 
 	ParameterList params;
-	m_config->OnBattleLost( params );
+	if(!m_bScriptedBattle)
+		m_config->OnBattleLost( params );
 }
 
 void BattleState::win() {
 	SoundManager::SetMusic( "Music/Fanfare" );
 	m_bDone = true;
+	m_bPlayerWon = true;
 	ParameterList params;
 	// All battle methods remain valid here
 	m_config->OnBattleWon( params );
@@ -1352,6 +1384,8 @@ void BattleState::win() {
 		dynamic_cast<Character*>( pParty->GetCharacter( i ) )->RemoveBattleStatusEffects();
 }
 
+void BattleState::TargetChanged(){
+}
 
 /***** BIFS *****/
 SteelType BattleState::selectTargets( bool single, bool group, bool defaultMonsters ) {
@@ -1530,32 +1564,22 @@ SteelType BattleState::isBossBattle() {
 }
 
 
-BattleState::SpriteTicket BattleState::get_sprite_for_char( ICharacter* i_char ) const {
-	int pos = -1;
-	for(int i=0;i<m_initiative.size();i++){
-		if(m_initiative[i] == i_char){
-			pos = i;
-		}
-	}
-	if(pos == -1)
-		return UNDEFINED_SPRITE_TICKET;
-	return 0 - pos; // Negative sprite tickets are character's sprites
+void BattleState::set_offset( BattleState::SpriteTicket sprite, const clan::Pointf& offset ) {
+	clan::MutexSection l(&m_sprite_mutex);
+	m_sprites[sprite].SetOffset(offset);
 }
 
-void BattleState::set_offset( BattleState::SpriteTicket sprite, const CL_Pointf& offset ) {
-	m_offsets[sprite] = offset;
-}
-
-CL_Pointf BattleState::get_offset( BattleState::SpriteTicket sprite ) {
-	return m_offsets[sprite];
+clan::Pointf BattleState::get_offset( BattleState::SpriteTicket sprite ) {
+	clan::MutexSection l(&m_sprite_mutex);
+	return m_sprites[sprite].GetOffset();
 }
 
 
-void BattleState::set_offset( ICharacterGroup* pGroup, const CL_Pointf& offset ) {
+void BattleState::set_offset( ICharacterGroup* pGroup, const clan::Pointf& offset ) {
 	m_group_offsets[pGroup] = offset;
 }
 
-CL_Pointf BattleState::get_offset( ICharacterGroup* pGroup ) {
+clan::Pointf BattleState::get_offset( ICharacterGroup* pGroup ) {
 	return m_group_offsets[pGroup];
 }
 

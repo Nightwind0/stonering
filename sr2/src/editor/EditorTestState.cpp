@@ -35,9 +35,9 @@ EditorTestState::~EditorTestState()
 
 void EditorTestState::Init() 
 {
-        m_resources = CL_ResourceManager("Media/Editor/GUIThemeBasic/resources.xml");
+        m_resources = clan::ResourceManager(IApplication::GetInstance()->GetResourcePath() + "Media/Editor/GUIThemeBasic3.0/resources.xml");
         m_theme.set_resources(m_resources);
-        m_gui_manager.set_css_document("Media/Editor/GUIThemeBasic/theme.css");
+        m_gui_manager.set_css_document(IApplication::GetInstance()->GetResourcePath() + "Media/Editor/GUIThemeBasic3.0/theme.css");
         // TODO: CSS
         m_gui_manager.set_theme(m_theme);
         //m_gui_manager.add_resources(m_resources);
@@ -49,29 +49,29 @@ void EditorTestState::Init()
 void EditorTestState::Start()
 {
 #if 0 
-        CL_DisplayWindowDescription desc_window_2;
+        clan::DisplayWindowDescription desc_window_2;
         desc_window_2.set_title("MultiWindow Example - Window 2");
         desc_window_2.set_allow_resize(true);
-        desc_window_2.set_position(CL_Rect(50 + 350, 50, CL_Size(350, 350)), false);
+        desc_window_2.set_position(clan::Rect(50 + 350, 50, clan::Size(350, 350)), false);
 
-        m_subwindow = new CL_DisplayWindow(desc_window_2);
+        m_subwindow = new clan::DisplayWindow(desc_window_2);
 #endif
-        CL_GUITopLevelDescription desc;
+        clan::GUITopLevelDescription desc;
         desc.set_title("ClanLib GUI");
-        m_pWindow = new CL_Window(&m_gui_manager, desc);
+        m_pWindow = new clan::Window(&m_gui_manager, desc);
         m_pWindow->func_close().set(this,&EditorTestState::on_close,m_pWindow);
-        m_pButton =  new CL_PushButton(m_pWindow);
-        m_pButton->set_geometry(CL_Rect(100, 100, 200, 120));
+        m_pButton =  new clan::PushButton(m_pWindow);
+        m_pButton->set_geometry(clan::Rect(100, 100, 200, 120));
         m_pButton->set_text("Okay!");
         m_pButton->func_clicked().set(this,&EditorTestState::on_button_clicked, m_pButton);
         m_bDone = false;
 }
 
-void EditorTestState::on_button_clicked(CL_PushButton* pButton){
+void EditorTestState::on_button_clicked(clan::PushButton* pButton){
     m_bDone = true;
 }
 
-bool EditorTestState::on_close(CL_Window*){
+bool EditorTestState::on_close(clan::Window*){
    m_bDone = true;
    return true;
 }
@@ -85,24 +85,24 @@ void EditorTestState::HandleButtonDown(const IApplication::Button& button){
 }
 void EditorTestState::HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos){
 }
-void EditorTestState::HandleMouseUp(const IApplication::MouseButton& button, const CL_Point& pos, uint key_state ){
+void EditorTestState::HandleMouseUp(const IApplication::MouseButton& button, const clan::Point& pos, uint key_state ){
 }
-void EditorTestState::HandleMouseDown(const IApplication::MouseButton& button, const CL_Point& pos, uint key_state ){
-}
-
-
-void EditorTestState::HandleDoubleClick(const IApplication::MouseButton& button, const CL_Point& pos, uint key_state ){
+void EditorTestState::HandleMouseDown(const IApplication::MouseButton& button, const clan::Point& pos, uint key_state ){
 }
 
-void EditorTestState::HandleMouseMove(const CL_Point& pos, uint key_state ){
+
+void EditorTestState::HandleDoubleClick(const IApplication::MouseButton& button, const clan::Point& pos, uint key_state ){
 }
 
-void EditorTestState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC){
+void EditorTestState::HandleMouseMove(const clan::Point& pos, uint key_state ){
+}
+
+void EditorTestState::Draw(const clan::Rect &screenRect,clan::Canvas& GC){
 #if 0 
     static int counter = 0;
     ++counter;
-    CL_GraphicContext& gc = m_subwindow->get_gc();
-    gc.clear(CL_Colorf(0.0f,0.0f,(counter%255)/255.0f, 1.0f));
+    clan::Canvas& gc = m_subwindow->get_gc();
+    gc.clear(clan::Colorf(0.0f,0.0f,(counter%255)/255.0f, 1.0f));
     m_subwindow->flip(1);
 #endif
 

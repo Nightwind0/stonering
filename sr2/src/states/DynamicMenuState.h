@@ -36,7 +36,7 @@ public:
     virtual void HandleButtonUp(const IApplication::Button& button);
     virtual void HandleButtonDown(const IApplication::Button& button);
     virtual void HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos);  
-    virtual void Draw(const CL_Rect &screenRect,CL_GraphicContext& GC);
+    virtual void Draw(const clan::Rect &screenRect,clan::Canvas& GC);
     virtual bool LastToDraw() const ; // Should we continue drawing more states?
     virtual bool DisableMappableObjects() const; // Should the app move the MOs?
     virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
@@ -46,25 +46,25 @@ public:
     virtual void Finish(); // Hook to clean up or whatever after being popped
     int GetSelection() const;
 protected:
-    virtual CL_Rectf get_rect();
-    virtual void draw_option(int option, bool selected, float x, float y, CL_GraphicContext& gc);
-    virtual int height_for_option(CL_GraphicContext& gc);
+    virtual clan::Rectf get_rect();
+    virtual void draw_option(int option, bool selected, float x, float y, clan::Canvas& gc);
+    virtual int height_for_option(clan::Canvas& gc);
     virtual void process_choice(int selection);
     virtual int get_option_count();
     virtual void draw_more_down_indicator();
     virtual void draw_more_up_indicator();
 private:
-    CL_Rect calculate_rect();
+    clan::Rect calculate_rect();
     std::vector<std::string> m_choices;
-    std::vector<CL_Image> m_icons;
-    CL_Rectf m_rect;
-    CL_Rectf m_optionsRect;
+    std::vector<clan::Image> m_icons;
+    clan::Rectf m_rect;
+    clan::Rectf m_optionsRect;
     StoneRing::Font m_option_font;
     StoneRing::Font m_selection_font;
-    CL_Gradient m_bgGradient;
-    CL_Colorf m_shadowColor;
-    CL_Colorf m_borderColor;
-    CL_Pointf m_margins;
+    clan::Gradient m_bgGradient;
+    clan::Colorf m_shadowColor;
+    clan::Colorf m_borderColor;
+    clan::Pointf m_margins;
     int m_nSelection;
     int m_nOptionHeight;
     bool m_bDone;

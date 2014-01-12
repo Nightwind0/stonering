@@ -42,7 +42,7 @@ IApplication * IApplication::getInstance()
 }
 
  
-CL_ResourceManager * EditorMain::getResources()const
+clan::ResourceManager * EditorMain::getResources()const
 {
     return mpResources;
 }
@@ -67,19 +67,19 @@ int EditorMain::getScreenHeight()const
 }
 
 
-CL_Rect EditorMain::getLevelRect() const
+clan::Rect EditorMain::getLevelRect() const
 {
     // Allow for scrolling
-    return CL_Rect(10, 30, 500, 590);
+    return clan::Rect(10, 30, 500, 590);
 }
 
-CL_Rect EditorMain::getDisplayRect() const
+clan::Rect EditorMain::getDisplayRect() const
 {
-    return CL_Rect(10, 30, 500, 590);
+    return clan::Rect(10, 30, 500, 590);
 }
 
 
-bool EditorMain::canMove(const CL_Rect &currently, const CL_Rect &destination, bool noHot, bool isPlayer)
+bool EditorMain::canMove(const clan::Rect &currently, const clan::Rect &destination, bool noHot, bool isPlayer)
 {
     // return mpLevel->canMove
     return true;
@@ -104,41 +104,41 @@ int EditorMain::main(int argc, char **argv)
 {
     // Create a console window for text-output if not available
     // Use printf or cout to display some text in your program
-    CL_ConsoleWindow console("Console");
+    clan::ConsoleWindow console("Console");
     console.redirect_stdio();
 
     try
     {
-        CL_SetupCore setup_core;
-        CL_SetupDisplay setup_display;
-        CL_SetupGL setup_gl;
-        CL_SetupGUI setup_gui;
+        clan::SetupCore setup_core;
+        clan::SetupDisplay setup_display;
+        clan::SetupGL setup_gl;
+        clan::SetupGUI setup_gui;
         ///////////////////Start my code//////////////
             
 
         // Create a display window
-        CL_DisplayWindow display("SR2 - Editor", getScreenWidth(), getScreenHeight(), false, true);
+        clan::DisplayWindow display("SR2 - Editor", getScreenWidth(), getScreenHeight(), false, true);
 
-        CL_Zip_Archive * gui_zip = new CL_Zip_Archive("guistylesilver.gui");
-        CL_ResourceManager gui_resources("gui.xml",gui_zip,true);
-        CL_StyleManager_Silver style(&gui_resources);
-        CL_GUIManager gui(&style);
+        clan::Zip_Archive * gui_zip = new clan::Zip_Archive("guistylesilver.gui");
+        clan::ResourceManager gui_resources("gui.xml",gui_zip,true);
+        clan::StyleManager_Silver style(&gui_resources);
+        clan::GUIManager gui(&style);
         mGui_manager = &gui;
 
 
         //mGc = display.get_gc();
-        CL_Window window(CL_Rect(0, 50, 640, 620), "Map", gui.get_client_area());
-        CL_Window tileWindow(CL_Rect(650,75,900,380),"Tile Selector",gui.get_client_area());
+        clan::Window window(clan::Rect(0, 50, 640, 620), "Map", gui.get_client_area());
+        clan::Window tileWindow(clan::Rect(650,75,900,380),"Tile Selector",gui.get_client_area());
             
         // Make sure our background is drawn under the GUI
         mSlots.connect(gui.sig_paint(),this, &EditorMain::on_paint);
 
 
-        CL_Menu menu(&gui);
-        CL_Menu windowMenu(window.get_client_area());
-        CL_Menu tileMenu(tileWindow.get_client_area());
+        clan::Menu menu(&gui);
+        clan::Menu windowMenu(window.get_client_area());
+        clan::Menu tileMenu(tileWindow.get_client_area());
 
-        CL_Slot slot_quit = display.sig_window_close().connect(this, &EditorMain::on_quit);
+        clan::Slot slot_quit = display.sig_window_close().connect(this, &EditorMain::on_quit);
         // standard menu stuff
         menu.create_item("File/New");
         menu.create_item("File/Open");
@@ -169,7 +169,7 @@ int EditorMain::main(int argc, char **argv)
 
 
         ////get the tileset info from xml
-        CL_ResourceManager* tsResources = new CL_ResourceManager ( "../../Media/resources.xml" );
+        clan::ResourceManager* tsResources = new clan::ResourceManager ( "../../Media/resources.xml" );
         mpResources = tsResources;
         mAppUtils.loadGameItemsAndSkills("../../",mpResources);
 
@@ -186,7 +186,7 @@ int EditorMain::main(int argc, char **argv)
         for(vector<string>::iterator iter = tilemapnames.begin(); iter != tilemapnames.end(); iter++)
         {
             menutileset = "TileSet/" + *iter;
-            CL_MenuNode * pMenu = tileMenu.create_item(menutileset);
+            clan::MenuNode * pMenu = tileMenu.create_item(menutileset);
                 
             mSlots.connect(pMenu->sig_clicked(), this, &EditorMain::on_tileset_change, *iter);
 
@@ -256,10 +256,10 @@ int EditorMain::main(int argc, char **argv)
 
 
 //          cout << "creating gridpoint" << endl;
-        GridPoint gp(CL_Rect(510, 410, 691, 592), &gui);
+        GridPoint gp(clan::Rect(510, 410, 691, 592), &gui);
 
         //info box (bottom of screen)
-        //  info = new CL_InputBox(CL_Rect(5, 595, 505, 604), mMap->getCurrentTool(), &gui);
+        //  info = new clan::InputBox(clan::Rect(5, 595, 505, 604), mMap->getCurrentTool(), &gui);
         //  info->enable(false);
         
         
@@ -275,7 +275,7 @@ int EditorMain::main(int argc, char **argv)
 
     }
     // Catch any errors from ClanLib
-    catch (CL_Error err)
+    catch (clan::Error err)
     {
         // Display the error message
         std::cout << err.message.c_str() << std::endl;
@@ -294,7 +294,7 @@ void EditorMain::on_quit()
 
     if(mpLevel != NULL)
     {
-        bttn = CL_MessageBox::info("Warning", "Would you like to save the current level before quiting?", "Yes", "No", "Cancel", mGui_manager);
+        bttn = clan::MessageBox::info("Warning", "Would you like to save the current level before quiting?", "Yes", "No", "Cancel", mGui_manager);
         
         if(bttn == 0)
         {
@@ -311,7 +311,7 @@ void EditorMain::on_quit()
 
 void EditorMain::on_paint()
 {
-    CL_Display::clear(CL_Color::lightgrey);
+    clan::Display::clear(clan::Color::lightgrey);
 }
 
 void EditorMain::on_tileset_change(string userdata)
@@ -323,17 +323,17 @@ void EditorMain::on_tileset_change(string userdata)
 void EditorMain::on_save()
 {
     
-//  mpDialog = new CL_FileDialog("Save","","*.xml",mGui_manager);
+//  mpDialog = new clan::FileDialog("Save","","*.xml",mGui_manager);
 
     //  string path = dialog.get_path();
-    string filename = CL_FileDialog::save(mGui_manager);
+    string filename = clan::FileDialog::save(mGui_manager);
 
 //      cout << filename << endl;
     if(filename != "")
         mMap->save_Level(filename);
     else
     {
-        CL_MessageBox::info("You didn't enter a file name. You (sadly) have to hit Enter after typing in the name.",mGui_manager);
+        clan::MessageBox::info("You didn't enter a file name. You (sadly) have to hit Enter after typing in the name.",mGui_manager);
     }
 }
 
@@ -343,7 +343,7 @@ void EditorMain::on_load()
 
     if(mpLevel != NULL)
     {
-        bttn = CL_MessageBox::info("Warning", "Would you like to save the current level before opening a new one?", "Yes", "No", "Cancel", mGui_manager);
+        bttn = clan::MessageBox::info("Warning", "Would you like to save the current level before opening a new one?", "Yes", "No", "Cancel", mGui_manager);
         
         if(bttn == 0)
         {
@@ -354,7 +354,7 @@ void EditorMain::on_load()
 
     if(bttn != 2)
     {
-        string filename = CL_FileDialog::open("", "*.xml", mGui_manager);
+        string filename = clan::FileDialog::open("", "*.xml", mGui_manager);
 
         if(filename != "")
         {
@@ -378,7 +378,7 @@ void EditorMain::on_new()
 
     if(mpLevel != NULL)
     {
-        bttn = CL_MessageBox::info("Warning", "Would you like to save the current level before creating a new one?", "Yes", "No", "Cancel", mGui_manager);
+        bttn = clan::MessageBox::info("Warning", "Would you like to save the current level before creating a new one?", "Yes", "No", "Cancel", mGui_manager);
         
         if(bttn == 0)
         {
@@ -389,12 +389,12 @@ void EditorMain::on_new()
 
     if(bttn != 2)
     {
-        CL_InputDialog new_dlg("Create New Level", "Ok", "Cancel", "", mGui_manager);
+        clan::InputDialog new_dlg("Create New Level", "Ok", "Cancel", "", mGui_manager);
 
-        CL_InputBox *lvlName = new_dlg.add_input_box("Level Name:", "", 150);
-        CL_InputBox *lvlMusic = new_dlg.add_input_box("Music:", "", 150);
-        CL_InputBox *lvlWidth = new_dlg.add_input_box("Width (in tiles):", "10", 150);
-        CL_InputBox *lvlHeight = new_dlg.add_input_box("Height (in tiles):", "10", 150);
+        clan::InputBox *lvlName = new_dlg.add_input_box("Level Name:", "", 150);
+        clan::InputBox *lvlMusic = new_dlg.add_input_box("Music:", "", 150);
+        clan::InputBox *lvlWidth = new_dlg.add_input_box("Width (in tiles):", "10", 150);
+        clan::InputBox *lvlHeight = new_dlg.add_input_box("Height (in tiles):", "10", 150);
 
         // Connecting signals, to allow only numbers
 //      mSlots.connect(lvlWidth->sig_validate_character(), this, &App::validator_numbers);

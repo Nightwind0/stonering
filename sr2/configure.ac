@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT(stonering, 0.0.0.1)
+AC_INIT(stonering, 0.0.1.1)
 AC_CONFIG_SRCDIR(src/Application.cpp)
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE
@@ -24,7 +24,7 @@ AC_CHECK_LIB(steel,main)
 
 
 #PKG_CHECK_MODULES(CLANLIB, clanCore-2.1 clanApp-2.1 clanDisplay-2.1 clanGL-2.1 clanSound-2.1 clanGUI-2.1)
-PKG_CHECK_MODULES(CLANLIB, clanCore-2.3 clanApp-2.3 clanDisplay-2.3 clanGL-2.3 clanSound-2.3 clanGUI-2.3 clanVorbis-2.3)
+PKG_CHECK_MODULES(CLANLIB, clanCore-3.0 clanApp-3.0 clanDisplay-3.0 clanGL-3.0 clanSound-3.0 clanGUI-3.0)
 #PKG_CHECK_MODULES(CLANLIB, clanCore-2.4 clanApp-2.4 clanDisplay-2.4 clanGL-2.4 clanSound-2.4 clanGUI-2.4 clanVorbis-2.4)
 
 AC_SUBST([CLANLIB_LIBS]) 

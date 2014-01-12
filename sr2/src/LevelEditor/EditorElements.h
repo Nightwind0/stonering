@@ -45,7 +45,7 @@ namespace Editor {
 class WriteableElement 
 {
 public:
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const=0;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const=0;
 protected:
 };
 
@@ -54,7 +54,7 @@ class Animation : public StoneRing::Animation, public WriteableElement
 public:
     Animation();
     virtual ~Animation();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
 private:
 };
 
@@ -63,7 +63,7 @@ class SpriteDefinition : public StoneRing::SpriteDefinition, public WriteableEle
 public:
     SpriteDefinition();
     virtual ~SpriteDefinition();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
 private:
 };
 
@@ -72,7 +72,7 @@ class SpriteAnimation : public StoneRing::SpriteAnimation, public WriteableEleme
  public:
 	SpriteAnimation();
 	virtual ~SpriteAnimation();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 
@@ -81,7 +81,7 @@ class AlterSprite : public StoneRing::AlterSprite, public WriteableElement
  public:
 	AlterSprite();
 	virtual ~AlterSprite();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 
@@ -91,7 +91,7 @@ class SpriteMovement : public StoneRing::SpriteMovement, public WriteableElement
  public:
 	SpriteMovement();
 	virtual ~SpriteMovement();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 
@@ -101,7 +101,7 @@ class ArmorClass : public StoneRing::ArmorClass, public WriteableElement
  public:
 	ArmorClass();
 	virtual ~ArmorClass();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 
@@ -110,7 +110,7 @@ class ArmorClassRef : public StoneRing::ArmorClassRef, public WriteableElement
  public:
 	ArmorClassRef();
 	virtual ~ArmorClassRef();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class ArmorEnhancer : public StoneRing::ArmorEnhancer, public WriteableElement
@@ -118,7 +118,7 @@ class ArmorEnhancer : public StoneRing::ArmorEnhancer, public WriteableElement
  public:
 	ArmorEnhancer();
 	virtual ~ArmorEnhancer();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class ArmorRef : public StoneRing::ArmorRef, public WriteableElement
@@ -126,7 +126,7 @@ class ArmorRef : public StoneRing::ArmorRef, public WriteableElement
  public:
 	ArmorRef();
 	virtual ~ArmorRef();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc) const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc) const;
  private:
 };
 class ArmorType : public StoneRing::ArmorType, public WriteableElement
@@ -134,7 +134,7 @@ class ArmorType : public StoneRing::ArmorType, public WriteableElement
  public:
 	ArmorType();
 	virtual ~ArmorType();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc) const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc) const;
  private:
 };
 class ArmorTypeExclusionList : public StoneRing::ArmorTypeExclusionList, public WriteableElement
@@ -142,7 +142,7 @@ class ArmorTypeExclusionList : public StoneRing::ArmorTypeExclusionList, public 
  public:
 	ArmorTypeExclusionList();
 	virtual ~ArmorTypeExclusionList();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class ArmorTypeRef : public StoneRing::ArmorTypeRef, public WriteableElement
@@ -150,7 +150,7 @@ class ArmorTypeRef : public StoneRing::ArmorTypeRef, public WriteableElement
  public:
 	ArmorTypeRef();
 	virtual ~ArmorTypeRef();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 
@@ -160,7 +160,7 @@ class attributeModifier : public StoneRing::attributeModifier, public WriteableE
  public:
 	attributeModifier();
 	virtual ~attributeModifier();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class BattleMenu : public StoneRing::BattleMenu, public WriteableElement
@@ -168,7 +168,7 @@ class BattleMenu : public StoneRing::BattleMenu, public WriteableElement
  public:
 	BattleMenu();
 	virtual ~BattleMenu();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class BattleMenuOption : public StoneRing::BattleMenuOption, public WriteableElement
@@ -176,7 +176,7 @@ class BattleMenuOption : public StoneRing::BattleMenuOption, public WriteableEle
  public:
 	BattleMenuOption();
 	virtual ~BattleMenuOption();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class CharacterClass : public StoneRing::CharacterClass, public WriteableElement
@@ -184,7 +184,7 @@ class CharacterClass : public StoneRing::CharacterClass, public WriteableElement
  public:
 	CharacterClass();
 	virtual ~CharacterClass();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class CharacterDefinition : public StoneRing::CharacterDefinition, public WriteableElement
@@ -192,7 +192,7 @@ class CharacterDefinition : public StoneRing::CharacterDefinition, public Writea
  public:
 	CharacterDefinition();
 	virtual ~CharacterDefinition();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class ConditionScript : public StoneRing::ScriptElement, public WriteableElement
@@ -200,7 +200,7 @@ class ConditionScript : public StoneRing::ScriptElement, public WriteableElement
  public:
 	ConditionScript();
 	virtual ~ConditionScript();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class SideBlock : public StoneRing::SideBlock, public WriteableElement
@@ -209,7 +209,7 @@ class SideBlock : public StoneRing::SideBlock, public WriteableElement
 	SideBlock();
     SideBlock(int);
 	virtual ~SideBlock();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class Event : public StoneRing::Event, public WriteableElement
@@ -217,7 +217,7 @@ class Event : public StoneRing::Event, public WriteableElement
  public:
 	Event();
 	virtual ~Event();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
     void setScript(StoneRing::ScriptElement *pScript){ mpScript = pScript; }
  private:
 };
@@ -226,7 +226,7 @@ class IconRef : public StoneRing::IconRef, public WriteableElement
  public:
 	IconRef();
 	virtual ~IconRef();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class ItemRef : public StoneRing::ItemRef, public WriteableElement
@@ -234,7 +234,7 @@ class ItemRef : public StoneRing::ItemRef, public WriteableElement
  public:
 	ItemRef();
 	virtual ~ItemRef();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class Level : public StoneRing::Level, public WriteableElement
@@ -242,8 +242,8 @@ class Level : public StoneRing::Level, public WriteableElement
  public:
 	Level();
 	virtual ~Level();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
-    virtual void drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC);
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
+    virtual void drawMappableObjects(const clan::Rect &src, const clan::Rect &dst, clan::Canvas *pGC);
     std::list<StoneRing::Tile*> getTilesAt(uint levelX, uint levelY)const;
     // Operates on ALL tiles at a location. For finer control, one must operate on the tiles individually.
     // bOn of true turns the direction block on for the specified direction,
@@ -265,7 +265,7 @@ class LevelHeader : public StoneRing::LevelHeader, public WriteableElement
  public:
 	LevelHeader();
 	virtual ~LevelHeader();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class MagicDamageCategory : public StoneRing::MagicDamageCategory, public WriteableElement
@@ -273,7 +273,7 @@ class MagicDamageCategory : public StoneRing::MagicDamageCategory, public Writea
  public:
 	MagicDamageCategory();
 	virtual ~MagicDamageCategory();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class MagicResistance  : public StoneRing::MagicResistance , public WriteableElement
@@ -281,7 +281,7 @@ class MagicResistance  : public StoneRing::MagicResistance , public WriteableEle
  public:
 	MagicResistance();
 	virtual ~MagicResistance();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class MappableObject : public StoneRing::MappableObject, public WriteableElement
@@ -289,7 +289,7 @@ class MappableObject : public StoneRing::MappableObject, public WriteableElement
  public:
 	MappableObject();
 	virtual ~MappableObject();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class MappableObjects : public StoneRing::MappableObjects, public WriteableElement
@@ -297,7 +297,7 @@ class MappableObjects : public StoneRing::MappableObjects, public WriteableEleme
  public:
 	MappableObjects();
 	virtual ~MappableObjects();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 
@@ -306,14 +306,14 @@ class Monster : public StoneRing::Monster, public WriteableElement
 public:
     Monster();
     virtual ~Monster();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
 };
 class Movement : public StoneRing::Movement, public WriteableElement
 {
  public:
 	Movement();
 	virtual ~Movement();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class NamedItemElement : public StoneRing::NamedItemElement, public WriteableElement
@@ -321,7 +321,7 @@ class NamedItemElement : public StoneRing::NamedItemElement, public WriteableEle
  public:
 	NamedItemElement();
 	virtual ~NamedItemElement();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class NamedItemRef : public StoneRing::NamedItemRef, public WriteableElement
@@ -329,7 +329,7 @@ class NamedItemRef : public StoneRing::NamedItemRef, public WriteableElement
  public:
 	NamedItemRef();
 	virtual ~NamedItemRef();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class OnEquip : public StoneRing::OnEquip, public WriteableElement
@@ -337,7 +337,7 @@ class OnEquip : public StoneRing::OnEquip, public WriteableElement
  public:
 	OnEquip();
 	virtual ~OnEquip();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class OnUnequip : public StoneRing::OnUnequip, public WriteableElement
@@ -345,7 +345,7 @@ class OnUnequip : public StoneRing::OnUnequip, public WriteableElement
  public:
 	OnUnequip();
 	virtual ~OnUnequip();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class OnRound : public StoneRing::OnRound, public WriteableElement
@@ -353,7 +353,7 @@ class OnRound : public StoneRing::OnRound, public WriteableElement
  public:
 	OnRound();
 	virtual ~OnRound();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class OnStep : public StoneRing::OnStep, public WriteableElement
@@ -361,7 +361,7 @@ class OnStep : public StoneRing::OnStep, public WriteableElement
  public:
 	OnStep();
 	virtual ~OnStep();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class OnCountdown : public StoneRing::OnCountdown, public WriteableElement
@@ -369,7 +369,7 @@ class OnCountdown : public StoneRing::OnCountdown, public WriteableElement
  public:
 	OnCountdown();
 	virtual ~OnCountdown();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class OnInvoke : public StoneRing::OnInvoke, public WriteableElement
@@ -377,7 +377,7 @@ class OnInvoke : public StoneRing::OnInvoke, public WriteableElement
  public:
 	OnInvoke();
 	virtual ~OnInvoke();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class OnRemove : public StoneRing::OnRemove, public WriteableElement
@@ -385,7 +385,7 @@ class OnRemove : public StoneRing::OnRemove, public WriteableElement
  public:
 	OnRemove();
 	virtual ~OnRemove();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class Phase : public StoneRing::Phase, public WriteableElement
@@ -393,7 +393,7 @@ class Phase : public StoneRing::Phase, public WriteableElement
  public:
 	Phase();
 	virtual ~Phase();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class RegularItem : public StoneRing::RegularItem, public WriteableElement
@@ -401,7 +401,7 @@ class RegularItem : public StoneRing::RegularItem, public WriteableElement
  public:
 	RegularItem();
 	virtual ~RegularItem();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class Rune : public StoneRing::Rune, public WriteableElement
@@ -409,7 +409,7 @@ class Rune : public StoneRing::Rune, public WriteableElement
  public:
 	Rune();
 	virtual ~Rune();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class RuneType : public StoneRing::RuneType, public WriteableElement
@@ -417,7 +417,7 @@ class RuneType : public StoneRing::RuneType, public WriteableElement
  public:
 	RuneType();
 	virtual ~RuneType();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class ScriptElement : public StoneRing::ScriptElement, public WriteableElement
@@ -425,7 +425,7 @@ class ScriptElement : public StoneRing::ScriptElement, public WriteableElement
  public:
 	ScriptElement();
 	virtual ~ScriptElement();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
     void setScript(const std::string &);
 
     // May throw SteelException. Please catch and present
@@ -439,7 +439,7 @@ class Skill : public StoneRing::Skill, public WriteableElement
  public:
 	Skill();
 	virtual ~Skill();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class SkillRef : public StoneRing::SkillRef, public WriteableElement
@@ -447,7 +447,7 @@ class SkillRef : public StoneRing::SkillRef, public WriteableElement
  public:
 	SkillRef();
 	virtual ~SkillRef();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class SpecialItem : public StoneRing::SpecialItem, public WriteableElement
@@ -455,7 +455,7 @@ class SpecialItem : public StoneRing::SpecialItem, public WriteableElement
  public:
 	SpecialItem();
 	virtual ~SpecialItem();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class Spell : public StoneRing::Spell, public WriteableElement
@@ -463,7 +463,7 @@ class Spell : public StoneRing::Spell, public WriteableElement
  public:
 	Spell();
 	virtual ~Spell();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class SpellRef : public StoneRing::SpellRef, public WriteableElement
@@ -471,7 +471,7 @@ class SpellRef : public StoneRing::SpellRef, public WriteableElement
  public:
 	SpellRef();
 	virtual ~SpellRef();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class SpriteRef : public StoneRing::SpriteRef, public WriteableElement
@@ -479,7 +479,7 @@ class SpriteRef : public StoneRing::SpriteRef, public WriteableElement
  public:
 	SpriteRef();
 	virtual ~SpriteRef();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
     void setSpriteRef( const std::string &ref);
     void setType( StoneRing::SpriteRef::eType dir);
  private:
@@ -490,7 +490,7 @@ class SpriteStub : public StoneRing::SpriteStub, public WriteableElement
 public:
     SpriteStub();
     virtual ~SpriteStub();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
 private:
 };
 
@@ -499,7 +499,7 @@ class StatScript : public StoneRing::StatScript, public WriteableElement
  public:
 	StatScript();
 	virtual ~StatScript();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class StatusEffect : public StoneRing::StatusEffect, public WriteableElement
@@ -507,7 +507,7 @@ class StatusEffect : public StoneRing::StatusEffect, public WriteableElement
  public:
 	StatusEffect();
 	virtual ~StatusEffect();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class StatusEffectModifier : public StoneRing::StatusEffectModifier, public WriteableElement
@@ -515,7 +515,7 @@ class StatusEffectModifier : public StoneRing::StatusEffectModifier, public Writ
  public:
 	StatusEffectModifier();
 	virtual ~StatusEffectModifier();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class SystemItem : public StoneRing::SystemItem, public WriteableElement
@@ -523,7 +523,7 @@ class SystemItem : public StoneRing::SystemItem, public WriteableElement
  public:
 	SystemItem();
 	virtual ~SystemItem();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class Tile : public StoneRing::Tile, public WriteableElement
@@ -531,7 +531,7 @@ class Tile : public StoneRing::Tile, public WriteableElement
  public:
 	Tile();
 	virtual ~Tile();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
     void setLevelX(int x);
     void setLevelY(int y);
     void setZOrder(int z);
@@ -555,7 +555,7 @@ class Tiles : public StoneRing::Tiles, public WriteableElement
  public:
 	Tiles();
 	virtual ~Tiles();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class Tilemap : public StoneRing::Tilemap, public WriteableElement
@@ -563,7 +563,7 @@ class Tilemap : public StoneRing::Tilemap, public WriteableElement
  public:
 	Tilemap();
 	virtual ~Tilemap();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
     void setMapName(const std::string & mapname);
     void setMapX(int x);
     void setMapY(int y);
@@ -575,7 +575,7 @@ class UniqueArmor : public StoneRing::UniqueArmor, public WriteableElement
  public:
 	UniqueArmor();
 	virtual ~UniqueArmor();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class UniqueWeapon : public StoneRing::UniqueWeapon, public WriteableElement
@@ -583,7 +583,7 @@ class UniqueWeapon : public StoneRing::UniqueWeapon, public WriteableElement
  public:
 	UniqueWeapon();
 	virtual ~UniqueWeapon();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class WeaponClass : public StoneRing::WeaponClass, public WriteableElement
@@ -591,7 +591,7 @@ class WeaponClass : public StoneRing::WeaponClass, public WriteableElement
  public:
 	WeaponClass();
 	virtual ~WeaponClass();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class WeaponClassRef : public StoneRing::WeaponClassRef, public WriteableElement
@@ -599,7 +599,7 @@ class WeaponClassRef : public StoneRing::WeaponClassRef, public WriteableElement
  public:
 	WeaponClassRef();
 	virtual ~WeaponClassRef();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class WeaponDamageCategory : public StoneRing::WeaponDamageCategory, public WriteableElement
@@ -607,7 +607,7 @@ class WeaponDamageCategory : public StoneRing::WeaponDamageCategory, public Writ
  public:
 	WeaponDamageCategory();
 	virtual ~WeaponDamageCategory();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class WeaponEnhancer : public StoneRing::WeaponEnhancer, public WriteableElement
@@ -615,7 +615,7 @@ class WeaponEnhancer : public StoneRing::WeaponEnhancer, public WriteableElement
  public:
 	WeaponEnhancer();
 	virtual ~WeaponEnhancer();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class WeaponRef : public StoneRing::WeaponRef, public WriteableElement
@@ -623,7 +623,7 @@ class WeaponRef : public StoneRing::WeaponRef, public WriteableElement
  public:
 	WeaponRef();
 	virtual ~WeaponRef();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class WeaponType : public StoneRing::WeaponType, public WriteableElement
@@ -631,7 +631,7 @@ class WeaponType : public StoneRing::WeaponType, public WriteableElement
  public:
 	WeaponType();
 	virtual ~WeaponType();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class WeaponTypeExclusionList : public StoneRing::WeaponTypeExclusionList, public WriteableElement
@@ -639,7 +639,7 @@ class WeaponTypeExclusionList : public StoneRing::WeaponTypeExclusionList, publi
  public:
 	WeaponTypeExclusionList();
 	virtual ~WeaponTypeExclusionList();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 class WeaponTypeRef : public StoneRing::WeaponTypeRef, public WriteableElement
@@ -647,7 +647,7 @@ class WeaponTypeRef : public StoneRing::WeaponTypeRef, public WriteableElement
  public:
 	WeaponTypeRef();
 	virtual ~WeaponTypeRef();
-    virtual CL_DomElement createDomElement(CL_DomDocument &doc)const;
+    virtual clan::DomElement createDomElement(clan::DomDocument &doc)const;
  private:
 };
 

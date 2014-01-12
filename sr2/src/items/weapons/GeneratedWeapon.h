@@ -19,14 +19,14 @@ namespace StoneRing{
         WeaponRef GenerateWeaponRef() const;
 
         // Item interface
-        virtual CL_Image GetIcon() const;
+        virtual clan::Image GetIcon() const;
         virtual std::string GetName() const;
         virtual uint GetMaxInventory() const ;
         virtual eDropRarity GetDropRarity() const;
         virtual uint GetValue() const ;
         virtual uint GetSellValue() const ;
         virtual eItemType GetItemType() const { return WEAPON ; }
-		virtual CL_Sprite GetSprite() const;
+		virtual clan::Sprite GetSprite() const;
         virtual void Invoke(eScriptMode invokeTime, const ParameterList& param);
         virtual bool EquipCondition(const ParameterList& param);
         virtual std::string GetDescription()const;
@@ -51,7 +51,7 @@ namespace StoneRing{
         WeaponClass *m_pClass;
         WeaponClass *m_pImbuement;
         WeaponType *m_pType;
-	CL_Image m_icon;
+	clan::Image m_icon;
     };
 };
 

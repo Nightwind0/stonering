@@ -44,8 +44,8 @@ public:
 	};		
     struct Data {
         int      m_mod_state;
-        CL_Point m_level_pt;
-        CL_Point m_level_end_pt;
+        clan::Point m_level_pt;
+        clan::Point m_level_end_pt;
     };
     virtual void SetData(const Data& data){
         m_data = data;

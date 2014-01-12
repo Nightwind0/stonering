@@ -116,7 +116,7 @@ private:
 class ScriptedNavigator : public Navigator 
 {
 public:
-    ScriptedNavigator(Level& level,MappableObject& mo,const CL_Point& dest, int speed);
+    ScriptedNavigator(Level& level,MappableObject& mo,const clan::Point& dest, int speed);
     ScriptedNavigator(Level& level,MappableObject& mo,const Direction& face_dir);
     virtual ~ScriptedNavigator();
     virtual void OnMove(Level& level);
@@ -129,22 +129,22 @@ public:
 	virtual bool InMotion()const;
     bool Complete() const { return m_complete; }
 private:
-    float heuristic_cost_estimate(const CL_Point& a, const CL_Point& b)const;
+    float heuristic_cost_estimate(const clan::Point& a, const clan::Point& b)const;
     void reconstruct_path( const std::map<int,int> & came_from, const int& current);
     std::list<int> neighbors(const int& point, const Level& level);
     bool compute_astar(const Level& level);
     void set_direction_to_next(bool f=false);
     //void compute_dijkstra(const Level& level);
-    int point_id(const CL_Point& pt)const;
-    CL_Point to_point(int point_id)const;
+    int point_id(const clan::Point& pt)const;
+    clan::Point to_point(int point_id)const;
     bool m_change_face;
-    CL_Point m_dest;
-    CL_Point m_next_step;
+    clan::Point m_dest;
+    clan::Point m_next_step;
     int m_speed;
     Direction m_dir;
     Direction m_face_dir;
     bool m_complete;
-    std::deque<CL_Point> m_path;
+    std::deque<clan::Point> m_path;
     Level& m_level;
 };
 

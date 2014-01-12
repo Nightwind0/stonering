@@ -15,9 +15,9 @@ Editor::SpriteDefinition::~SpriteDefinition()
 {
 }
 
-CL_DomElement Editor::SpriteDefinition::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::SpriteDefinition::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"spriteDefinition");
+    return clan::DomElement(doc,"spriteDefinition");
 }
 
 Editor::SpriteAnimation::SpriteAnimation()
@@ -28,9 +28,9 @@ Editor::SpriteAnimation::~SpriteAnimation()
 {
 }
 
-CL_DomElement Editor::SpriteAnimation::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::SpriteAnimation::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"spriteAnimation");
+    return clan::DomElement(doc,"spriteAnimation");
 }
  
 
@@ -42,9 +42,9 @@ Editor::AlterSprite::~AlterSprite()
 {
 }
 
-CL_DomElement Editor::AlterSprite::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::AlterSprite::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"alterSprite");
+    return clan::DomElement(doc,"alterSprite");
 }
 
 Editor::SpriteMovement::SpriteMovement()
@@ -55,9 +55,9 @@ Editor::SpriteMovement::~SpriteMovement()
 {
 }
 
-CL_DomElement Editor::SpriteMovement::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::SpriteMovement::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"spriteMovement");
+    return clan::DomElement(doc,"spriteMovement");
 }
 
 Editor::Animation::Animation()
@@ -66,9 +66,9 @@ Editor::Animation::Animation()
 Editor::Animation::~Animation()
 {
 }
-CL_DomElement Editor::Animation::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::Animation::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"animation");
+    return clan::DomElement(doc,"animation");
 }
 
 
@@ -78,9 +78,9 @@ Editor::ArmorClass::ArmorClass()
 Editor::ArmorClass::~ArmorClass()
 {
 }
-CL_DomElement Editor::ArmorClass::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::ArmorClass::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"armorClass");
+    return clan::DomElement(doc,"armorClass");
 }
 
 
@@ -90,10 +90,10 @@ Editor::ArmorClassRef::ArmorClassRef()
 Editor::ArmorClassRef::~ArmorClassRef()
 {
 }
-CL_DomElement Editor::ArmorClassRef::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::ArmorClassRef::createDomElement(clan::DomDocument &doc)const
 {
-    CL_DomElement element(doc,"armorClassRef");
-    CL_DomText text(doc, mName );
+    clan::DomElement element(doc,"armorClassRef");
+    clan::DomText text(doc, mName );
 
     text.set_node_value ( mName );
     element.append_child ( text );
@@ -107,9 +107,9 @@ Editor::ArmorEnhancer::ArmorEnhancer()
 Editor::ArmorEnhancer::~ArmorEnhancer()
 {
 }
-CL_DomElement Editor::ArmorEnhancer::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::ArmorEnhancer::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"armorEnhancer");
+    return clan::DomElement(doc,"armorEnhancer");
 }
 
 
@@ -119,9 +119,9 @@ Editor::ArmorRef::ArmorRef()
 Editor::ArmorRef::~ArmorRef()
 {
 }
-CL_DomElement Editor::ArmorRef::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::ArmorRef::createDomElement(clan::DomDocument &doc)const
 {
-    CL_DomElement element(doc,"armorRef");
+    clan::DomElement element(doc,"armorRef");
 
     
     WRITE_CHILD(element,mpType,doc);
@@ -146,9 +146,9 @@ Editor::ArmorType::ArmorType()
 Editor::ArmorType::~ArmorType()
 {
 }
-CL_DomElement Editor::ArmorType::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::ArmorType::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"armorType");
+    return clan::DomElement(doc,"armorType");
 }
 
 
@@ -158,9 +158,9 @@ Editor::ArmorTypeExclusionList::ArmorTypeExclusionList()
 Editor::ArmorTypeExclusionList::~ArmorTypeExclusionList()
 {
 }
-CL_DomElement Editor::ArmorTypeExclusionList::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::ArmorTypeExclusionList::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"armorTypeExclusionList");
+    return clan::DomElement(doc,"armorTypeExclusionList");
 }
 
 
@@ -170,10 +170,10 @@ Editor::ArmorTypeRef::ArmorTypeRef()
 Editor::ArmorTypeRef::~ArmorTypeRef()
 {
 }
-CL_DomElement Editor::ArmorTypeRef::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::ArmorTypeRef::createDomElement(clan::DomDocument &doc)const
 {
-    CL_DomElement element(doc,"armorTypeRef");
-    CL_DomText text(doc, mName );
+    clan::DomElement element(doc,"armorTypeRef");
+    clan::DomText text(doc, mName );
 
     text.set_node_value ( mName );
     element.append_child ( text );
@@ -188,9 +188,9 @@ Editor::attributeModifier::attributeModifier()
 Editor::attributeModifier::~attributeModifier()
 {
 }
-CL_DomElement Editor::attributeModifier::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::attributeModifier::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"attributeModifier");
+    return clan::DomElement(doc,"attributeModifier");
 }
 
 
@@ -200,9 +200,9 @@ Editor::BattleMenu::BattleMenu()
 Editor::BattleMenu::~BattleMenu()
 {
 }
-CL_DomElement Editor::BattleMenu::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::BattleMenu::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"battleMenu");
+    return clan::DomElement(doc,"battleMenu");
 }
 
 
@@ -212,9 +212,9 @@ Editor::BattleMenuOption::BattleMenuOption()
 Editor::BattleMenuOption::~BattleMenuOption()
 {
 }
-CL_DomElement Editor::BattleMenuOption::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::BattleMenuOption::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"battleMenuOption");
+    return clan::DomElement(doc,"battleMenuOption");
 }
 
 
@@ -224,9 +224,9 @@ Editor::CharacterClass::CharacterClass()
 Editor::CharacterClass::~CharacterClass()
 {
 }
-CL_DomElement Editor::CharacterClass::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::CharacterClass::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"characterClass");
+    return clan::DomElement(doc,"characterClass");
 }
 
 
@@ -236,9 +236,9 @@ Editor::CharacterDefinition::CharacterDefinition()
 Editor::CharacterDefinition::~CharacterDefinition()
 {
 }
-CL_DomElement Editor::CharacterDefinition::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::CharacterDefinition::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"characterDefinition");
+    return clan::DomElement(doc,"characterDefinition");
 }
 
 
@@ -249,9 +249,9 @@ Editor::ConditionScript::ConditionScript()
 Editor::ConditionScript::~ConditionScript()
 {
 }
-CL_DomElement Editor::ConditionScript::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::ConditionScript::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"conditionScript");
+    return clan::DomElement(doc,"conditionScript");
 }
 
 
@@ -267,9 +267,9 @@ Editor::SideBlock::SideBlock(int i)
 Editor::SideBlock::~SideBlock()
 {
 }
-CL_DomElement Editor::SideBlock::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::SideBlock::createDomElement(clan::DomDocument &doc)const
 {
-    CL_DomElement element(doc,"block");
+    clan::DomElement element(doc,"block");
 
     element.set_attribute("north", (meSideBlock & StoneRing::DIR_NORTH )?"true":"false");
     element.set_attribute("south", (meSideBlock & StoneRing::DIR_SOUTH)?"true":"false");
@@ -286,9 +286,9 @@ Editor::Event::Event()
 Editor::Event::~Event()
 {
 }
-CL_DomElement Editor::Event::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::Event::createDomElement(clan::DomDocument &doc)const
 {
-    CL_DomElement element(doc,"event");
+    clan::DomElement element(doc,"event");
 
     element.set_attribute("name", mName );
 
@@ -333,9 +333,9 @@ Editor::IconRef::IconRef()
 Editor::IconRef::~IconRef()
 {
 }
-CL_DomElement Editor::IconRef::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::IconRef::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"iconRef");
+    return clan::DomElement(doc,"iconRef");
 }
 
 
@@ -345,9 +345,9 @@ Editor::ItemRef::ItemRef()
 Editor::ItemRef::~ItemRef()
 {
 }
-CL_DomElement Editor::ItemRef::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::ItemRef::createDomElement(clan::DomDocument &doc)const
 {
-    CL_DomElement element(doc, std::string("itemRef"));
+    clan::DomElement element(doc, std::string("itemRef"));
 
     switch(meType)
     {
@@ -372,15 +372,15 @@ Editor::Level::Level()
 Editor::Level::~Level()
 {
 }
-CL_DomElement Editor::Level::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::Level::createDomElement(clan::DomDocument &doc)const
 {
-    CL_DomElement element(doc, "level");
+    clan::DomElement element(doc, "level");
 
     element.set_attribute("name",mName);
 
-    CL_DomElement levelHeader(doc, "levelHeader");
-    CL_DomElement tiles(doc, "tiles");
-    CL_DomElement mappableObjects(doc,"mappableObjects");
+    clan::DomElement levelHeader(doc, "levelHeader");
+    clan::DomElement tiles(doc, "tiles");
+    clan::DomElement mappableObjects(doc,"mappableObjects");
 
 
     levelHeader.set_attribute("music", mMusic );
@@ -400,7 +400,7 @@ CL_DomElement Editor::Level::createDomElement(CL_DomDocument &doc)const
                  i != mTileMap[x][y].end();
                  i++)
             {
-                CL_DomElement tileEl = dynamic_cast<Editor::Tile*>(*i)->createDomElement(doc);
+                clan::DomElement tileEl = dynamic_cast<Editor::Tile*>(*i)->createDomElement(doc);
 
                 tiles.append_child ( tileEl );
 
@@ -408,7 +408,7 @@ CL_DomElement Editor::Level::createDomElement(CL_DomDocument &doc)const
         }
     }
 
-    for(std::map<CL_Point,std::list<StoneRing::Tile*> >::const_iterator j = mFloaterMap.begin();
+    for(std::map<clan::Point,std::list<StoneRing::Tile*> >::const_iterator j = mFloaterMap.begin();
         j != mFloaterMap.end();
         j++)
     {
@@ -416,7 +416,7 @@ CL_DomElement Editor::Level::createDomElement(CL_DomDocument &doc)const
             jj != j->second.end();
             jj++)
         {
-            CL_DomElement floaterEl = dynamic_cast<Editor::Tile*>(*jj)->createDomElement(doc);
+            clan::DomElement floaterEl = dynamic_cast<Editor::Tile*>(*jj)->createDomElement(doc);
 
             tiles.append_child ( floaterEl );
 
@@ -445,7 +445,7 @@ CL_DomElement Editor::Level::createDomElement(CL_DomDocument &doc)const
     return element;
 }
 
-void Editor::Level::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC)
+void Editor::Level::drawMappableObjects(const clan::Rect &src, const clan::Rect &dst, clan::Canvas *pGC)
 {
 }
  
@@ -494,7 +494,7 @@ void Editor::Level::addTile ( StoneRing::Tile * pTile )
 
     if( pTile->isFloater())
     {
-        mFloaterMap[ CL_Point(pTile->getX(),pTile->getY()) ].push_back(pTile);
+        mFloaterMap[ clan::Point(pTile->getX(),pTile->getY()) ].push_back(pTile);
     }
     else
     {
@@ -508,9 +508,9 @@ void Editor::Level::removeTile ( StoneRing::Tile * pTile )
 {
     if(pTile->isFloater())
     {
-        if(mFloaterMap.count( CL_Point(pTile->getX(), pTile->getY() ) ))
+        if(mFloaterMap.count( clan::Point(pTile->getX(), pTile->getY() ) ))
         {
-            mFloaterMap[CL_Point(pTile->getX(),pTile->getY())].remove( pTile );
+            mFloaterMap[clan::Point(pTile->getX(),pTile->getY())].remove( pTile );
         }
     }
     else
@@ -525,7 +525,7 @@ std::list<StoneRing::Tile*> Editor::Level::getTilesAt(uint levelX, uint levelY) 
     std::list<StoneRing::Tile *> tiles = mTileMap[ levelX][levelY];
 
     
-    std::map<CL_Point,std::list<StoneRing::Tile*> >::const_iterator iter = mFloaterMap.find ( CL_Point(levelX,levelY));
+    std::map<clan::Point,std::list<StoneRing::Tile*> >::const_iterator iter = mFloaterMap.find ( clan::Point(levelX,levelY));
 
     if(iter != mFloaterMap.end())
     {
@@ -597,9 +597,9 @@ Editor::LevelHeader::LevelHeader()
 Editor::LevelHeader::~LevelHeader()
 {
 }
-CL_DomElement Editor::LevelHeader::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::LevelHeader::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"levelHeader");
+    return clan::DomElement(doc,"levelHeader");
 }
 
 
@@ -609,9 +609,9 @@ Editor::MagicDamageCategory::MagicDamageCategory()
 Editor::MagicDamageCategory::~MagicDamageCategory()
 {
 }
-CL_DomElement Editor::MagicDamageCategory::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::MagicDamageCategory::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"magicDamageCategory");
+    return clan::DomElement(doc,"magicDamageCategory");
 }
 
 
@@ -621,9 +621,9 @@ Editor::MagicResistance::MagicResistance()
 Editor::MagicResistance::~MagicResistance()
 {
 }
-CL_DomElement Editor::MagicResistance::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::MagicResistance::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"magicResistance");
+    return clan::DomElement(doc,"magicResistance");
 }
 
 
@@ -633,9 +633,9 @@ MappableObject::MappableObject()
 MappableObject::~MappableObject()
 {
 }
-CL_DomElement Editor::MappableObject::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::MappableObject::createDomElement(clan::DomDocument &doc)const
 {    
-    CL_DomElement element(doc,"mo");
+    clan::DomElement element(doc,"mo");
 
     element.set_attribute( "name", mName );
     
@@ -727,9 +727,9 @@ Editor::MappableObjects::MappableObjects()
 Editor::MappableObjects::~MappableObjects()
 {
 }
-CL_DomElement Editor::MappableObjects::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::MappableObjects::createDomElement(clan::DomDocument &doc)const
 {
-   return CL_DomElement(doc,"mappableObjects");
+   return clan::DomElement(doc,"mappableObjects");
 }
 
 Editor::Monster::Monster()
@@ -740,9 +740,9 @@ Editor::Monster::~Monster()
 {
 }
 
-CL_DomElement Editor::Monster::createDomElement(CL_DomDocument &doc) const
+clan::DomElement Editor::Monster::createDomElement(clan::DomDocument &doc) const
 {
-    CL_DomElement element(doc,"monster");
+    clan::DomElement element(doc,"monster");
 
     return element;
 }
@@ -754,9 +754,9 @@ Editor::Movement::Movement()
 Editor::Movement::~Movement()
 {
 }
-CL_DomElement Editor::Movement::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::Movement::createDomElement(clan::DomDocument &doc)const
 {
-    CL_DomElement element(doc,"movement") ;
+    clan::DomElement element(doc,"movement") ;
     
     std::string movementType;
 
@@ -804,9 +804,9 @@ Editor::NamedItemElement::NamedItemElement()
 Editor::NamedItemElement::~NamedItemElement()
 {
 }
-CL_DomElement Editor::NamedItemElement::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::NamedItemElement::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"namedItemElement");
+    return clan::DomElement(doc,"namedItemElement");
 }
 
 
@@ -816,10 +816,10 @@ Editor::NamedItemRef::NamedItemRef()
 Editor::NamedItemRef::~NamedItemRef()
 {
 }
-CL_DomElement Editor::NamedItemRef::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::NamedItemRef::createDomElement(clan::DomDocument &doc)const
 {
-    CL_DomElement element(doc,"namedItemRef");
-    CL_DomText text(doc, mName );
+    clan::DomElement element(doc,"namedItemRef");
+    clan::DomText text(doc, mName );
 
     text.set_node_value ( mName );
     element.append_child ( text );
@@ -834,9 +834,9 @@ Editor::OnEquip::OnEquip()
 Editor::OnEquip::~OnEquip()
 {
 }
-CL_DomElement Editor::OnEquip::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::OnEquip::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"onEquip");
+    return clan::DomElement(doc,"onEquip");
 }
 
 
@@ -846,9 +846,9 @@ Editor::OnUnequip::OnUnequip()
 Editor::OnUnequip::~OnUnequip()
 {
 }
-CL_DomElement Editor::OnUnequip::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::OnUnequip::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"onUnequip");
+    return clan::DomElement(doc,"onUnequip");
 }
 
 Editor::OnRound::OnRound()
@@ -857,9 +857,9 @@ Editor::OnRound::OnRound()
 Editor::OnRound::~OnRound()
 {
 }
-CL_DomElement Editor::OnRound::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::OnRound::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"onRound");
+    return clan::DomElement(doc,"onRound");
 }
 
 Editor::OnStep::OnStep()
@@ -868,9 +868,9 @@ Editor::OnStep::OnStep()
 Editor::OnStep::~OnStep()
 {
 }
-CL_DomElement Editor::OnStep::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::OnStep::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"onStep");
+    return clan::DomElement(doc,"onStep");
 }
 
 
@@ -880,9 +880,9 @@ Editor::OnCountdown::OnCountdown()
 Editor::OnCountdown::~OnCountdown()
 {
 }
-CL_DomElement Editor::OnCountdown::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::OnCountdown::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"onCountdown");
+    return clan::DomElement(doc,"onCountdown");
 }
 
 
@@ -892,9 +892,9 @@ Editor::OnInvoke::OnInvoke()
 Editor::OnInvoke::~OnInvoke()
 {
 }
-CL_DomElement Editor::OnInvoke::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::OnInvoke::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"onInvoke");
+    return clan::DomElement(doc,"onInvoke");
 }
 
 Editor::OnRemove::OnRemove()
@@ -903,9 +903,9 @@ Editor::OnRemove::OnRemove()
 Editor::OnRemove::~OnRemove()
 {
 }
-CL_DomElement Editor::OnRemove::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::OnRemove::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"onRemove");
+    return clan::DomElement(doc,"onRemove");
 }
 
 
@@ -915,9 +915,9 @@ Editor::Phase::Phase()
 Editor::Phase::~Phase()
 {
 }
-CL_DomElement Editor::Phase::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::Phase::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"Phase");
+    return clan::DomElement(doc,"Phase");
 }
 
 
@@ -927,9 +927,9 @@ Editor::RegularItem::RegularItem()
 Editor::RegularItem::~RegularItem()
 {
 }
-CL_DomElement Editor::RegularItem::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::RegularItem::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"regularItem");
+    return clan::DomElement(doc,"regularItem");
 }
 
 Editor::SpriteStub::SpriteStub()
@@ -938,9 +938,9 @@ Editor::SpriteStub::SpriteStub()
 Editor::SpriteStub::~SpriteStub()
 {
 }
-CL_DomElement Editor::SpriteStub::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::SpriteStub::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"spriteStub");
+    return clan::DomElement(doc,"spriteStub");
 }
 
 
@@ -950,9 +950,9 @@ Editor::Rune::Rune()
 Editor::Rune::~Rune()
 {
 }
-CL_DomElement Editor::Rune::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::Rune::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"rune");
+    return clan::DomElement(doc,"rune");
 }
 
 Editor::RuneType::RuneType()
@@ -961,9 +961,9 @@ Editor::RuneType::RuneType()
 Editor::RuneType::~RuneType()
 {
 }
-CL_DomElement Editor::RuneType::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::RuneType::createDomElement(clan::DomDocument &doc)const
 {
-    CL_DomElement element(doc,"runeType");
+    clan::DomElement element(doc,"runeType");
 
     switch(meRuneType)
     {
@@ -988,13 +988,13 @@ Editor::ScriptElement::ScriptElement()
 Editor::ScriptElement::~ScriptElement()
 {
 }
-CL_DomElement Editor::ScriptElement::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::ScriptElement::createDomElement(clan::DomDocument &doc)const
 {
-    CL_DomElement element(doc, isConditionScript()?"conditionScript":"script");
+    clan::DomElement element(doc, isConditionScript()?"conditionScript":"script");
 
     element.set_attribute("id",mId);
 
-    CL_DomText text ( doc, mScript );
+    clan::DomText text ( doc, mScript );
     text.set_node_value ( mScript );
 
     element.append_child ( text );
@@ -1024,9 +1024,9 @@ Editor::Skill::Skill()
 Editor::Skill::~Skill()
 {
 }
-CL_DomElement Editor::Skill::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::Skill::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"skill");
+    return clan::DomElement(doc,"skill");
 }
 
 Editor::SkillRef::SkillRef()
@@ -1035,9 +1035,9 @@ Editor::SkillRef::SkillRef()
 Editor::SkillRef::~SkillRef()
 {
 }
-CL_DomElement Editor::SkillRef::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::SkillRef::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"skillRef");
+    return clan::DomElement(doc,"skillRef");
 }
 
 Editor::SpecialItem::SpecialItem()
@@ -1046,9 +1046,9 @@ Editor::SpecialItem::SpecialItem()
 Editor::SpecialItem::~SpecialItem()
 {
 }
-CL_DomElement Editor::SpecialItem::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::SpecialItem::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"specialItem");
+    return clan::DomElement(doc,"specialItem");
 }
 
 Editor::Spell::Spell()
@@ -1057,9 +1057,9 @@ Editor::Spell::Spell()
 Editor::Spell::~Spell()
 {
 }
-CL_DomElement Editor::Spell::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::Spell::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"spell");
+    return clan::DomElement(doc,"spell");
 }
 
 Editor::SpellRef::SpellRef()
@@ -1068,15 +1068,15 @@ Editor::SpellRef::SpellRef()
 Editor::SpellRef::~SpellRef()
 {
 }
-CL_DomElement Editor::SpellRef::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::SpellRef::createDomElement(clan::DomDocument &doc)const
 {
-    CL_DomElement element(doc,"spellRef");
+    clan::DomElement element(doc,"spellRef");
 
     std::string spellType = Magic::toString(meSpellType);
 
     element.set_attribute("type", spellType );
 
-    CL_DomText text(doc, mName );
+    clan::DomText text(doc, mName );
 
     text.set_node_value ( mName );
 
@@ -1091,9 +1091,9 @@ Editor::SpriteRef::SpriteRef()
 Editor::SpriteRef::~SpriteRef()
 {
 }
-CL_DomElement Editor::SpriteRef::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::SpriteRef::createDomElement(clan::DomDocument &doc)const
 {
-    CL_DomElement  element(doc,"spriteRef");
+    clan::DomElement  element(doc,"spriteRef");
 
     std::string dir;
 
@@ -1117,7 +1117,7 @@ CL_DomElement Editor::SpriteRef::createDomElement(CL_DomDocument &doc)const
         element.set_attribute("type", dir);
     }
 
-    CL_DomText text(doc,mRef);
+    clan::DomText text(doc,mRef);
     text.set_node_value( mRef );
 
     element.append_child ( text );
@@ -1143,9 +1143,9 @@ Editor::StatScript::StatScript()
 Editor::StatScript::~StatScript()
 {
 }
-CL_DomElement Editor::StatScript::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::StatScript::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"statScript");
+    return clan::DomElement(doc,"statScript");
 }
 
 Editor::StatusEffect::StatusEffect()
@@ -1154,9 +1154,9 @@ Editor::StatusEffect::StatusEffect()
 Editor::StatusEffect::~StatusEffect()
 {
 }
-CL_DomElement Editor::StatusEffect::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::StatusEffect::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"statusEffect");
+    return clan::DomElement(doc,"statusEffect");
 }
 
 Editor::StatusEffectModifier::StatusEffectModifier()
@@ -1165,9 +1165,9 @@ Editor::StatusEffectModifier::StatusEffectModifier()
 Editor::StatusEffectModifier::~StatusEffectModifier()
 {
 }
-CL_DomElement Editor::StatusEffectModifier::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::StatusEffectModifier::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"statusEffectModifier");
+    return clan::DomElement(doc,"statusEffectModifier");
 }
 
 Editor::SystemItem::SystemItem()
@@ -1176,9 +1176,9 @@ Editor::SystemItem::SystemItem()
 Editor::SystemItem::~SystemItem()
 {
 }
-CL_DomElement Editor::SystemItem::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::SystemItem::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"systemItem");
+    return clan::DomElement(doc,"systemItem");
 }
 
 Editor::Tile::Tile()
@@ -1187,9 +1187,9 @@ Editor::Tile::Tile()
 Editor::Tile::~Tile()
 {
 }
-CL_DomElement Editor::Tile::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::Tile::createDomElement(clan::DomDocument &doc)const
 { 
-    CL_DomElement element(doc,"tile");
+    clan::DomElement element(doc,"tile");
 
     element.set_attribute("xpos", IntToString ( mX ) );
     element.set_attribute("ypos", IntToString ( mY ) );
@@ -1214,7 +1214,7 @@ CL_DomElement Editor::Tile::createDomElement(CL_DomDocument &doc)const
     if( getSideBlock() > 0)
     {
         Editor::SideBlock block( getSideBlock() );
-        CL_DomElement dirEl = block.createDomElement(doc);
+        clan::DomElement dirEl = block.createDomElement(doc);
 
         element.append_child( dirEl );
     }
@@ -1344,9 +1344,9 @@ Editor::Tiles::Tiles()
 Editor::Tiles::~Tiles()
 {
 }
-CL_DomElement Editor::Tiles::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::Tiles::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"tiles");
+    return clan::DomElement(doc,"tiles");
 }
 
 Tilemap::Tilemap()
@@ -1355,9 +1355,9 @@ Tilemap::Tilemap()
 Tilemap::~Tilemap()
 {
 }
-CL_DomElement Editor::Tilemap::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::Tilemap::createDomElement(clan::DomDocument &doc)const
 {
-    CL_DomElement element(doc,"tilemap");
+    clan::DomElement element(doc,"tilemap");
 
     element.set_attribute( "mapname" , StoneRing::GraphicsManager::getInstance()->lookUpMapWithSurface ( mpSurface ) );
     element.set_attribute("mapx", IntToString(mX));
@@ -1388,9 +1388,9 @@ Editor::UniqueArmor::UniqueArmor()
 Editor::UniqueArmor::~UniqueArmor()
 {
 }
-CL_DomElement Editor::UniqueArmor::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::UniqueArmor::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"uniqueArmor");
+    return clan::DomElement(doc,"uniqueArmor");
 }
 
 Editor::UniqueWeapon::UniqueWeapon()
@@ -1399,9 +1399,9 @@ Editor::UniqueWeapon::UniqueWeapon()
 Editor::UniqueWeapon::~UniqueWeapon()
 {
 }
-CL_DomElement Editor::UniqueWeapon::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::UniqueWeapon::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"uniqueWeapon");
+    return clan::DomElement(doc,"uniqueWeapon");
 }
 
 Editor::WeaponClass::WeaponClass()
@@ -1410,9 +1410,9 @@ Editor::WeaponClass::WeaponClass()
 Editor::WeaponClass::~WeaponClass()
 {
 }
-CL_DomElement Editor::WeaponClass::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::WeaponClass::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"weaponClass");
+    return clan::DomElement(doc,"weaponClass");
 }
 
 Editor::WeaponClassRef::WeaponClassRef()
@@ -1421,10 +1421,10 @@ Editor::WeaponClassRef::WeaponClassRef()
 Editor::WeaponClassRef::~WeaponClassRef()
 {
 }
-CL_DomElement Editor::WeaponClassRef::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::WeaponClassRef::createDomElement(clan::DomDocument &doc)const
 {
-    CL_DomElement element(doc,"weaponClassRef");
-    CL_DomText text(doc, mName );
+    clan::DomElement element(doc,"weaponClassRef");
+    clan::DomText text(doc, mName );
 
     text.set_node_value ( mName );
     element.append_child ( text );
@@ -1438,9 +1438,9 @@ Editor::WeaponDamageCategory::WeaponDamageCategory()
 Editor::WeaponDamageCategory::~WeaponDamageCategory()
 {
 }
-CL_DomElement Editor::WeaponDamageCategory::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::WeaponDamageCategory::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"weaponDamageCategory");
+    return clan::DomElement(doc,"weaponDamageCategory");
 }
 
 Editor::WeaponEnhancer::WeaponEnhancer()
@@ -1449,9 +1449,9 @@ Editor::WeaponEnhancer::WeaponEnhancer()
 Editor::WeaponEnhancer::~WeaponEnhancer()
 {
 }
-CL_DomElement Editor::WeaponEnhancer::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::WeaponEnhancer::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"weaponEnhancer");
+    return clan::DomElement(doc,"weaponEnhancer");
 }
 
 Editor::WeaponRef::WeaponRef()
@@ -1460,9 +1460,9 @@ Editor::WeaponRef::WeaponRef()
 Editor::WeaponRef::~WeaponRef()
 {
 }
-CL_DomElement Editor::WeaponRef::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::WeaponRef::createDomElement(clan::DomDocument &doc)const
 {
-    CL_DomElement element(doc,"weaponRef");
+    clan::DomElement element(doc,"weaponRef");
 
     WRITE_CHILD(element,mpType,doc);
     WRITE_CHILD(element,mpClass,doc);
@@ -1485,9 +1485,9 @@ Editor::WeaponType::WeaponType()
 Editor::WeaponType::~WeaponType()
 {
 }
-CL_DomElement Editor::WeaponType::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::WeaponType::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"weaponType");
+    return clan::DomElement(doc,"weaponType");
 }
 
 Editor::WeaponTypeExclusionList::WeaponTypeExclusionList()
@@ -1496,9 +1496,9 @@ Editor::WeaponTypeExclusionList::WeaponTypeExclusionList()
 Editor::WeaponTypeExclusionList::~WeaponTypeExclusionList()
 {
 }
-CL_DomElement Editor::WeaponTypeExclusionList::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::WeaponTypeExclusionList::createDomElement(clan::DomDocument &doc)const
 {
-    return CL_DomElement(doc,"weaponTypeExclusionList");
+    return clan::DomElement(doc,"weaponTypeExclusionList");
 }
 
 Editor::WeaponTypeRef::WeaponTypeRef()
@@ -1507,10 +1507,10 @@ Editor::WeaponTypeRef::WeaponTypeRef()
 Editor::WeaponTypeRef::~WeaponTypeRef()
 {
 }
-CL_DomElement Editor::WeaponTypeRef::createDomElement(CL_DomDocument &doc)const
+clan::DomElement Editor::WeaponTypeRef::createDomElement(clan::DomDocument &doc)const
 {
-    CL_DomElement element(doc,"weaponTypeRef");
-    CL_DomText text(doc, mName );
+    clan::DomElement element(doc,"weaponTypeRef");
+    clan::DomText text(doc, mName );
 
     text.set_node_value ( mName );
     element.append_child ( text );

@@ -44,7 +44,7 @@ namespace StoneRing
 		virtual std::string GetDebugId() const { return ""; }		
 	private:
 		static eAlter alter_from_string(const std::string &str);
-		virtual void load_attributes(CL_DomNamedNodeMap attributes);
+		virtual void load_attributes(clan::DomNamedNodeMap attributes);
 		eWho m_eWho;
 		eAlter m_eAlter;
 	};
@@ -63,7 +63,7 @@ namespace StoneRing
 		eWhich Which() const;
 		virtual std::string GetDebugId() const { return IntToString(m_eWhich); }				
 	private:
-		virtual void load_attributes(CL_DomNamedNodeMap attributes);
+		virtual void load_attributes(clan::DomNamedNodeMap attributes);
 		eWhich m_eWhich;
 		
 	};
@@ -81,7 +81,7 @@ namespace StoneRing
 		eBattleSprite GetWhich() const;
 		
 	private:
-		virtual void load_attributes(CL_DomNamedNodeMap );
+		virtual void load_attributes(clan::DomNamedNodeMap );
 		eWho m_eWho;
 		eBattleSprite m_eWhich;
 	};
@@ -162,7 +162,7 @@ namespace StoneRing
 		}
 		virtual std::string GetDebugId() const { return m_name; }				
 	private:
-		virtual void load_attributes(CL_DomNamedNodeMap attributes);
+		virtual void load_attributes(clan::DomNamedNodeMap attributes);
 		virtual bool handle_element(eElement element, Element *pElement);
 		virtual void load_finished();
 		
@@ -229,10 +229,10 @@ namespace StoneRing
 		
 		eMovementDirection GetMovementDirection() const;
 		eMovementStyle GetMovementStyle() const;
-		CL_DomElement CreateDomElement(CL_DomDocument &doc) const;
+		clan::DomElement CreateDomElement(clan::DomDocument &doc) const;
 		virtual std::string GetDebugId() const { return ""; }				
 	private:
-		virtual void load_attributes(CL_DomNamedNodeMap attributes);
+		virtual void load_attributes(clan::DomNamedNodeMap attributes);
 		virtual bool handle_element(eElement element, Element * pElement);
 		//virtual void handleText(const std::string &text);
 		
@@ -275,7 +275,7 @@ namespace StoneRing
 		
 		SpriteMovement::eMovementScriptType GetScriptType();
 	protected:
-		virtual void load_attributes(CL_DomNamedNodeMap attributes);
+		virtual void load_attributes(clan::DomNamedNodeMap attributes);
 		SpriteMovement::eMovementScriptType m_eType;	
 	};
 	
@@ -309,9 +309,9 @@ namespace StoneRing
 		virtual std::string GetDebugId() const { return ""; }				
 	private:
 		virtual bool handle_element(eElement element, Element * pElement );
-		virtual void load_attributes(CL_DomNamedNodeMap attributes);
+		virtual void load_attributes(clan::DomNamedNodeMap attributes);
 		bool m_bParallel;
-		uint m_nDuration;
+		uint64_t m_nDuration;
 		
 		ScriptElement *m_pScript;
 		std::list<PhaseComponent> m_phase_components;
@@ -328,7 +328,7 @@ namespace StoneRing
 			return EANIMATION;
 		}
 		
-		CL_DomElement CreateDomElement(CL_DomDocument &) const;
+		clan::DomElement CreateDomElement(clan::DomDocument &) const;
 		std::string GetName() const;
 		enum eType { BATTLE, WORLD };
 		eType GetType() const;
@@ -338,7 +338,7 @@ namespace StoneRing
 		virtual std::string GetDebugId() const { return m_name; }				
 	private:
 		virtual bool handle_element(eElement element, Element * pElement );
-		virtual void load_attributes(CL_DomNamedNodeMap attributes);
+		virtual void load_attributes(clan::DomNamedNodeMap attributes);
 		std::list<Phase*> m_phases;
 		eType m_eType;
 		std::string m_name;

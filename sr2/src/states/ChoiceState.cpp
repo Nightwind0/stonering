@@ -57,38 +57,22 @@ bool StoneRing::ChoiceState::IsDone() const
      }
  }
 
-void StoneRing::ChoiceState::HandleKeyDown(const CL_InputEvent &key)
+void StoneRing::ChoiceState::HandleKeyDown(const clan::InputEvent &key)
 {
 }
 
-void StoneRing::ChoiceState::HandleKeyUp(const CL_InputEvent &key)
+void StoneRing::ChoiceState::HandleKeyUp(const clan::InputEvent &key)
 {
-    switch(key.id)
-    {
-    case CL_KEY_ENTER:
-    case CL_KEY_SPACE:
-
-        break;
-    case CL_KEY_DOWN:
-
-        break;
-    case CL_KEY_UP:
-
-        break;
-
-    case CL_KEY_ESCAPE:
-        break;
-    }
 }
 
-void StoneRing::ChoiceState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
+void StoneRing::ChoiceState::Draw(const clan::Rect &screenRect,clan::Canvas& GC)
 {
     if(!m_bDraw) return;
 
     MenuBox::Draw(GC,m_question_rect);
     MenuBox::Draw(GC,m_text_rect);
     
-    CL_Rectf question_rect = m_question_rect;
+    clan::Rectf question_rect = m_question_rect;
     question_rect.shrink ( GraphicsManager::GetMenuInset().x, GraphicsManager::GetMenuInset().y );
     question_rect.translate ( GraphicsManager::GetMenuInset() );
     
@@ -113,7 +97,6 @@ void StoneRing::ChoiceState::MappableObjectMoveHook()
 
 void StoneRing::ChoiceState::Start()
 {
-    CL_GraphicContext& GC = GET_MAIN_GC();
     m_bDone = false;
     m_bDraw = true;
 
@@ -126,7 +109,7 @@ void StoneRing::ChoiceState::Start()
 
 /*
   if(!mpChoiceOverlay)
-  mpChoiceOverlay = new CL_Surface("Overlays/choice_overlay", IApplication::getInstance()->getResources() );
+  mpChoiceOverlay = new clan::Surface("Overlays/choice_overlay", IApplication::getInstance()->getResources() );
 */
 }
 
@@ -142,15 +125,15 @@ void StoneRing::ChoiceState::Init(const std::string &choiceText, const std::vect
     Menu::Init();
 }
 
-CL_Rectf StoneRing::ChoiceState::get_rect()
+clan::Rectf StoneRing::ChoiceState::get_rect()
 {
-    CL_Rectf text_rect = m_text_rect;
+    clan::Rectf text_rect = m_text_rect;
     text_rect.shrink ( GraphicsManager::GetMenuInset().x, GraphicsManager::GetMenuInset().y  );
     text_rect.translate ( GraphicsManager::GetMenuInset() );
     return text_rect;
 }
 
-void StoneRing::ChoiceState::draw_option(int option, bool selected, float x, float y, CL_GraphicContext& gc)
+void StoneRing::ChoiceState::draw_option(int option, bool selected, float x, float y, clan::Canvas& gc)
 {
         Font  lineFont;
 	
@@ -165,9 +148,9 @@ void StoneRing::ChoiceState::draw_option(int option, bool selected, float x, flo
   			);
 }
 
-int StoneRing::ChoiceState::height_for_option(CL_GraphicContext& gc)
+int StoneRing::ChoiceState::height_for_option(clan::Canvas& gc)
 {
-    return cl_max(m_optionFont.get_font_metrics(gc).get_height(),m_currentOptionFont.get_font_metrics(gc).get_height());
+    return std::max(m_optionFont.get_font_metrics(gc).get_height(),m_currentOptionFont.get_font_metrics(gc).get_height());
 }
 
 void StoneRing::ChoiceState::process_choice(int selection)

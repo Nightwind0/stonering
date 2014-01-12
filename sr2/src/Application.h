@@ -62,20 +62,20 @@ public:
 
     virtual int main(const std::vector<std::string> args);
 
-    virtual CL_ResourceManager&     GetResources();
-    virtual CL_DisplayWindow&       GetApplicationWindow();
+    virtual clan::ResourceManager&  GetResources();
+    virtual clan::DisplayWindow&       GetApplicationWindow();
     virtual void                    PopLevelStack(bool);
     virtual Party*                  GetParty() const;
     virtual AbilityManager *        GetAbilityManager();
     virtual IFactory *              GetElementFactory() {
         return &mElementFactory;
     }
-    virtual CL_Rect                 GetDisplayRect() const;
+    virtual clan::Rect                 GetDisplayRect() const;
     virtual void                    StartBattle(const MonsterGroup &group,const std::string &backdrop);
     virtual void                    RunState(State *pState, bool threaded=false);
-    virtual void                    LoadMainMenu(CL_DomDocument& doc);
+    virtual void                    LoadMainMenu(clan::DomDocument& doc);
     virtual Level *                 GetCurrentLevel() const;
-	virtual CL_Point  				 GetCurrentLevelCenter() const;
+	virtual clan::Point  				 GetCurrentLevelCenter() const;
     virtual AstScript *             LoadScript(const std::string &name, const std::string &script);
     virtual SteelType               RunScript(AstScript * pScript);
     virtual SteelType               RunScript(AstScript *pScript, const ParameterList &params);
@@ -86,11 +86,12 @@ public:
     virtual bool                    Serialize(std::ostream& stream);
     virtual bool                    Deserialize(std::istream& stream);
     virtual void                    MainMenu();
-    virtual void                    RunOnMainThread(CL_Event& event, Functor* functor);
+    virtual void                    RunOnMainThread(clan::Event& event, Functor* functor);
     virtual void                    Banner(const std::string&, int time);
-	virtual CL_IODevice     		 OpenResource(const std::string& str);	
+	virtual clan::IODevice     		 OpenResource(const std::string& str);	
 	virtual bool 					 IsCutsceneRunning() const; // Too much of a hack?
 	virtual int 			 		 DynamicMenu(const std::vector<std::string>& options);	
+	virtual std::string     		GetResourcePath()const;	
     int                             frameRate();
 #ifdef SR2_EDITOR
 	virtual void  			 EditMaps();
@@ -101,10 +102,10 @@ protected:
 private:
 
     struct ThreadFunctor {
-        ThreadFunctor(const CL_Event& event,Functor *pFunctor):m_event(event),m_pFunctor(pFunctor) {
+        ThreadFunctor(const clan::Event& event,Functor *pFunctor):m_event(event),m_pFunctor(pFunctor) {
         }
         Functor *m_pFunctor;
-        CL_Event m_event;
+        clan::Event m_event;
     };
 
 
@@ -199,6 +200,8 @@ private:
     SteelType                       getWeaponType(SteelType::Handle hWeapon);
     SteelType                       getArmorType(SteelType::Handle hArmor);
     SteelType                       getWeaponTypeDamageCategory(SteelType::Handle hWeaponType);
+	SteelType 						getWeaponAttribute(SteelType::Handle, int attr);
+	SteelType 						getArmorAttribute(SteelType::Handle, int attr);
     SteelType                       getWeaponAnimation(SteelType::Handle hWeapon);
     SteelType                       weaponHasAnimation(SteelType::Handle hWeapon);
     SteelType                       getDamageCategoryResistance(SteelType::Handle hICharacter, int damage_category);
@@ -254,7 +257,7 @@ private:
     SteelType                       statusScreen(bool party);
     SteelType                       getThemes();
     SteelType                       setTheme(const std::string&);
-    SteelType                       banner(const std::string&, int time);
+    SteelType                       banner(const std::string&, double time);
 	SteelType                       closeMap();
 	SteelType                       gameoverScreen();
 	
@@ -263,9 +266,17 @@ private:
 	SteelType 						 stopMusic();
 	SteelType 						 startMusic();
 	SteelType  						 configJoystick();
+	
+#ifndef NDEBUG
+	SteelType 						enableInfiniteSP(bool);
+	SteelType 						enableInfiniteBP(bool);
+	SteelType  						enableInfiniteGold(bool);
+#endif
+	SteelType 						enableAllSkills(bool);
 			 
 
-    SteelType                       editing();
+    SteelType                       editing(); // In editor build or not
+	SteelType						debug(); // In debug build or not
     SteelType                       editMap();
 
 
@@ -283,7 +294,7 @@ private:
 
     void draw();
     void run(bool process_functors=true);
-    void loadscript(std::string &o_str, const std::string & filename);
+    void loadscript(std::string &o_str, const std::string & filename, clan::FileSystem fs);
 
     void startKeyUpQueue();
     void stopKeyUpQueue();
@@ -291,15 +302,15 @@ private:
     /* SIGNALS */
 	void onSignalLostFocus();
     void onSignalQuit();
-    void onSignalKeyDown(const CL_InputEvent &key,const CL_InputState& state);
-    void onSignalKeyUp(const CL_InputEvent &key, const CL_InputState& state);
-    void onSignalMouseDown(const CL_InputEvent &event, const CL_InputState& state);
-    void onSignalMouseUp(const CL_InputEvent &event, const CL_InputState& state);
-    void onSignalDoubleClick(const CL_InputEvent& event, const CL_InputState& state);
-    void onSignalMouseMove(const CL_InputEvent& event, const CL_InputState& state);
-    void onSignalJoystickButtonDown(const CL_InputEvent &event, const CL_InputState& state);
-    void onSignalJoystickButtonUp(const CL_InputEvent &event, const CL_InputState& state);
-    void onSignalJoystickAxisMove(const CL_InputEvent &event, const CL_InputState& state);
+    void onSignalKeyDown(const clan::InputEvent &key);
+    void onSignalKeyUp(const clan::InputEvent &key);
+    void onSignalMouseDown(const clan::InputEvent &event);
+    void onSignalMouseUp(const clan::InputEvent &event);
+    void onSignalDoubleClick(const clan::InputEvent& event);
+    void onSignalMouseMove(const clan::InputEvent& event);
+    void onSignalJoystickButtonDown(const clan::InputEvent &event);
+    void onSignalJoystickButtonUp(const clan::InputEvent &event);
+    void onSignalJoystickAxisMove(const clan::InputEvent &event);
 
     int calc_fps(int);
 
@@ -307,13 +318,14 @@ private:
     AbilityManager mAbilityManager;
     ElementFactory mElementFactory;
     bool mbDone;
-    CL_ResourceManager m_resources;
-    CL_DisplayWindow m_window;
+    clan::ResourceManager m_resources;
+	
+    clan::DisplayWindow m_window;
 
     std::queue<ThreadFunctor> m_mainthread_functors;
 
     std::string mGold;
-    uint m_startTime;
+    uint64_t m_startTime;
 	
 	/* Joystick config */
 	enum JoystickTrainState {
@@ -330,7 +342,7 @@ private:
 	JoystickConfig m_joystick_config;
 
     /* STATES */
-    CL_Mutex mFunctorMutex;
+    clan::Mutex mFunctorMutex;
     StartupState mStartupState;
     MapState mMapState;
     SayState mSayState;
@@ -349,13 +361,14 @@ private:
 #endif
 	bool m_threaded_mode;
 	uint m_max_party_size;
+	std::string m_resource_path;
 	ReserveParty m_reserve_party;
-    std::vector<State*> mStates;
+    std::deque<State*> mStates;
     std::vector<IFactory*> mFactories;
     BattleConfig mBattleConfig;
     AppUtils mAppUtils;
     UtilityScripts mUtilityScripts;
-	CL_VirtualDirectory m_resource_dir;
+	clan::FileSystem m_resource_dir;
 	ZipFileProvider m_zip_provider;
 	std::map<IApplication::Button,bool> m_button_down;
 	

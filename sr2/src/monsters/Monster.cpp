@@ -290,25 +290,25 @@ void Monster::StatusEffectRound()
         }
 }
 
-void Monster::SetCurrentSprite(CL_Sprite sprite)
+void Monster::SetCurrentSprite(clan::Sprite sprite)
 {
-    m_sprite.clone(sprite);
-    m_sprite.set_alignment(origin_center);
+    m_sprite = sprite.clone();
+    m_sprite.set_alignment(clan::origin_center);
 }
 
-CL_Sprite Monster::GetCurrentSprite(bool pure)
+clan::Sprite Monster::GetCurrentSprite(bool pure)
 {
     if(!pure){
-        m_sprite.set_color(CL_Colorf::white);
+        m_sprite.set_color(clan::Colorf::white);
         m_sprite.set_scale(1.0,1.0);
         m_sprite.set_alpha(1.0);
     }
     // Setting the color overwrites the alpha?
     float alpha = m_sprite.get_alpha();
     if(GetToggle(ICharacter::CA_DRAW_ILL))
-        m_sprite.set_color(CL_Colorf::palegreen);
+        m_sprite.set_color(clan::Colorf::palegreen);
     if(GetToggle(ICharacter::CA_DRAW_BERSERK))
-        m_sprite.set_color(CL_Colorf::red);
+        m_sprite.set_color(clan::Colorf::red);
     if(GetToggle(ICharacter::CA_DRAW_MINI)){
         m_sprite.set_scale(0.5,0.5);
     }
@@ -323,9 +323,9 @@ CL_Sprite Monster::GetCurrentSprite(bool pure)
         m_sprite.set_alpha(0.25);
     }
     if(GetToggle(ICharacter::CA_DRAW_STONE))
-        m_sprite.set_color(CL_Colorf::gray40);
+        m_sprite.set_color(clan::Colorf::gray40);
     if(GetToggle(ICharacter::CA_DRAW_PARALYZED))
-        m_sprite.set_color(CL_Colorf::purple);
+        m_sprite.set_color(clan::Colorf::purple);
     m_sprite.set_alpha(alpha);
     return m_sprite;
 }

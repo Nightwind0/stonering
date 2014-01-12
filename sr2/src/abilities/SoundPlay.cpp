@@ -37,7 +37,7 @@ std::string SoundPlay::GetSound() const
 }
 
 
-void SoundPlay::load_attributes(CL_DomNamedNodeMap attr)
+void SoundPlay::load_attributes(clan::DomNamedNodeMap attr)
 {
     m_sound = get_required_string("sound",attr);
 }

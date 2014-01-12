@@ -30,7 +30,7 @@ class StatusBox
 {
 
 public:
-    StatusBox(const CL_Rectf& rect, const CL_Rectf& headerRect,
+    StatusBox(const clan::Rectf& rect, const clan::Rectf& headerRect,
               const Font& header_font,
               const Font& stat_font, 
               const Font& stat_up_font, const Font& stat_down_font,
@@ -40,12 +40,12 @@ public:
     
     void switchPage();
     
-    void Draw(CL_GraphicContext& gc, bool draw_comparison,  Character * pChar, Equipment* pOldEquipment, Equipment * pEquipment);
+    void Draw(clan::Canvas& gc, bool draw_comparison,  Character * pChar, Equipment* pOldEquipment, Equipment * pEquipment);
 private:
     typedef std::vector<ICharacter::eCharacterAttribute> StatList;
     Equipment::eSlot slot_for_equipment(Equipment* pEquipment);
-    CL_Rectf m_rect;
-    CL_Rectf m_header_rect;
+    clan::Rectf m_rect;
+    clan::Rectf m_header_rect;
     Font  m_stat_font;
     Font  m_stat_up_font;
     Font  m_stat_down_font;

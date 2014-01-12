@@ -24,22 +24,22 @@
 
 namespace StoneRing { 
 
-class MOView: public CL_GUIComponent
+class MOView: public clan::GUIComponent
 {
 public:
-    MOView(CL_GUIComponent* parent);
+    MOView(clan::GUIComponent* parent);
     virtual ~MOView();
-    void SetSprite(CL_Sprite sprite);
-    void SetSize(const CL_Size& size);
-    CL_Sprite GetSprite() const;
+    void SetSprite(clan::Sprite sprite);
+    void SetSize(const clan::Size& size);
+    clan::Sprite GetSprite() const;
     void Clear();
 private:
-    void on_render(CL_GraphicContext &gc, const CL_Rect &clip_rect);
-    void on_process_message(CL_GUIMessage &message);    
-    void render_background(CL_GraphicContext &gc, const CL_Rect& clip);
+    void on_render(clan::Canvas &gc, const clan::Rect &clip_rect);
+    void on_process_message(clan::GUIMessage &message);    
+    void render_background(clan::Canvas &gc, const clan::Rect& clip);
     
-    CL_Sprite m_sprite;
-    CL_Size m_sprite_size;
+    clan::Sprite m_sprite;
+    clan::Size m_sprite_size;
 };
 
 }

@@ -27,11 +27,11 @@ namespace StoneRing {
 
 class MonsterRegion;
 	
-class MonsterRegionEditWindow : public CL_Window
+class MonsterRegionEditWindow : public clan::Window
 {
 
 public:
-    MonsterRegionEditWindow(CL_GUIComponent* parent, const CL_GUITopLevelDescription& desc);
+    MonsterRegionEditWindow(clan::GUIComponent* parent, const clan::GUITopLevelDescription& desc);
     virtual ~MonsterRegionEditWindow();
 	void CreateRegion();
 	void SetRegion(MonsterRegion* pRegion);
@@ -44,18 +44,18 @@ private:
 	void on_edit_group();
 	void on_save();
 	void on_group_weight_changed();
-	void on_select_group(CL_ListViewSelection);
+	void on_select_group(clan::ListViewSelection);
 	void sync_to_region();
 	void sync_from_region();
 	bool on_close();
-	CL_ComboBox*   m_backdrops;
-	CL_ListView*   m_monster_groups;
-	CL_PushButton* m_add_group;
-	CL_PushButton* m_delete_group;
-	CL_PushButton* m_edit_group;
-	CL_Spin*       m_encounter_rate;
-	CL_PushButton* m_save;
-	CL_Spin*       m_group_weight;
+	clan::ComboBox*   m_backdrops;
+	clan::ListView*   m_monster_groups;
+	clan::PushButton* m_add_group;
+	clan::PushButton* m_delete_group;
+	clan::PushButton* m_edit_group;
+	clan::Spin*       m_encounter_rate;
+	clan::PushButton* m_save;
+	clan::Spin*       m_group_weight;
 	
 	MonsterRegion* m_region;
 };

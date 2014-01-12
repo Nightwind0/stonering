@@ -21,7 +21,7 @@ std::string WeaponClass::GetDescription() const
 }
 
 
-void WeaponClass::load_attributes(CL_DomNamedNodeMap attributes)
+void WeaponClass::load_attributes(clan::DomNamedNodeMap attributes)
 {
     m_name = get_required_string("name",attributes );
     m_fValueMultiplier = get_implied_float("valueMultiplier",attributes,1);

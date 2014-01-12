@@ -28,15 +28,15 @@ class BattleState : public State {
 public:
 	BattleState();
 	virtual ~BattleState();
-	void init( const MonsterGroup& monsters, const std::string &backdrop );
-	void init( const std::vector<MonsterRef*>& monsters, int cellRows, int cellColumns, bool isBoss, const std::string & backdrop );
+	void init( const MonsterGroup& monsters, const std::string &backdrop, bool scripted = false );
+	void init( const std::vector<MonsterRef*>& monsters, int cellRows, int cellColumns, bool isBoss, const std::string & backdrop, bool scripted = false );
 	virtual bool IsDone() const;
 	virtual void HandleButtonUp( const IApplication::Button& button );
 	virtual void HandleButtonDown( const IApplication::Button& button );
 	virtual void HandleAxisMove( const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos );
-	virtual void HandleKeyDown( const CL_InputEvent &key );
-	virtual void HandleKeyUp( const CL_InputEvent &key );
-	virtual void Draw( const CL_Rect &screenRect, CL_GraphicContext& GC );
+	virtual void HandleKeyDown( const clan::InputEvent &key );
+	virtual void HandleKeyUp( const clan::InputEvent &key );
+	virtual void Draw( const clan::Rect &screenRect, clan::Canvas& GC );
 	virtual bool LastToDraw() const; // Should we continue drawing more states?
 	virtual bool DisableMappableObjects() const; // Should the app move the MOs?
 	virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
@@ -44,10 +44,11 @@ public:
 	virtual void SteelInit( SteelInterpreter* );
 	virtual void SteelCleanup( SteelInterpreter * );
 	virtual void Finish(); // Hook to clean up or whatever after being popped
-	
+
 	void SetDarkMode(int mode, float r, float g, float b, float a);
 	void ClearDarkMode(int mode);
 	void SetConfig( BattleConfig* config );
+	bool playerWon() const;
 	typedef int SpriteTicket;
 	static const SpriteTicket UNDEFINED_SPRITE_TICKET;
 private:
@@ -57,6 +58,7 @@ private:
 	// Go back to menu, they decided not to proceed with this option
 	void CancelTargeting();
 	void FinishTargeting();
+	void TargetChanged();
 	// These return true if one is selected, false if
 	// there is nothing in that direction
 	/*
@@ -89,6 +91,7 @@ private:
 		BATTLE_MENU,
 		TARGETING,
 		DISPLAY_ACTION,
+		FINISHING_TURN,
 		NEXT_TURN
 	};
 
@@ -150,7 +153,7 @@ private:
 
 		void start();
 		void update();
-		void draw( CL_GraphicContext& GC );
+		void draw( clan::Canvas& GC );
 		bool expired() const;
 
 	private:
@@ -158,66 +161,70 @@ private:
 		ICharacter * m_pTarget;
 		eDisplayType m_eDisplayType;
 		int m_amount;
-		uint m_start_time;
+		clan::ubyte64 m_start_time;
 		float m_complete;
 	};
 
 	class Sprite {
 	public:
-		Sprite( CL_Sprite sprite );
+		Sprite( clan::Sprite sprite );
 		~Sprite();
 
 		int ZOrder() const;
-		void SetPosition( const CL_Pointf& pos );
-		CL_Pointf Position()const;
+		void SetPosition( const clan::Pointf& pos );
+		clan::Pointf Position()const;
 		void SetZOrder( int z );
-		void Draw( CL_GraphicContext& gc, const CL_Pointf& pos );
+		void Draw( clan::Canvas& gc );
 		bool Enabled() const;
 		void SetEnabled( bool enabled );
-		CL_Rectf Rect()const;
-		CL_Sprite GetSprite() const;
+		void SetOffset( const clan::Pointf& pos);
+		clan::Pointf GetOffset() const;
+		clan::Rectf Rect()const;
+		clan::Sprite GetSprite() const;
+		void SetSprite(clan::Sprite sprite);
+		bool operator<(const Sprite& other)const;
 	private:
-		CL_Sprite m_sprite;
-		CL_Pointf m_pos;
+		clan::Sprite m_sprite;
+		clan::Pointf m_pos;
+		clan::Pointf m_offset;
 		int m_zorder;
 		bool m_enabled;
 	};
 
 
-	typedef void ( BattleState::* DrawMethod )( const CL_Rectf &, CL_GraphicContext& );
+	typedef void ( BattleState::* DrawMethod )( const clan::Rectf &, clan::Canvas& );
 	//bool SortByBattlePos(const ICharacter* d1, const ICharacter* d2)const;
 
-	void draw_transition_in( const CL_Rectf &screenRect, CL_GraphicContext& GC );
-	void draw_start( const CL_Rectf &screenRect, CL_GraphicContext& GC );
-	void draw_battle( const CL_Rectf &screenRect, CL_GraphicContext& GC );
-	void draw_monsters( const CL_Rectf &monsterRect, CL_GraphicContext& GC );
-	void draw_players( const CL_Rectf &playerRect, CL_GraphicContext& GC );
-	void draw_status( const CL_Rectf &screenRect, CL_GraphicContext& GC );
-	void draw_menus( const CL_Rectf &screenrect, CL_GraphicContext& GC );
-	void draw_targets( const CL_Rectf &screenrect, CL_GraphicContext& GC );
-	void draw_displays( CL_GraphicContext& GC );
-	void draw_sprites( int z, CL_GraphicContext& GC );
-	void draw_darkness( eDisplayOrder mode,  const CL_Rectf &screenRect, CL_GraphicContext& GC );
-	void draw_status_effects( CL_GraphicContext& GC );
+	void update_character_sprites();
+	void draw_transition_in( const clan::Rectf &screenRect, clan::Canvas& GC );
+	void draw_start( const clan::Rectf &screenRect, clan::Canvas& GC );
+	void draw_battle( const clan::Rectf &screenRect, clan::Canvas& GC );
+	void draw_sprites( clan::Canvas& GC );
+	void draw_monsters ( const clan::Rectf &monsterRect, clan::Canvas& GC);
+	void draw_players ( const clan::Rectf &monsterRect, clan::Canvas& GC);
+	void draw_status( const clan::Rectf &screenRect, clan::Canvas& GC );
+	void draw_menus( const clan::Rectf &screenrect, clan::Canvas& GC );
+	void draw_targets( const clan::Rectf &screenrect, clan::Canvas& GC );
+	void draw_displays( clan::Canvas& GC );
+	void draw_darkness( eDisplayOrder mode,  const clan::Rectf &screenRect, clan::Canvas& GC );
+	void draw_status_effects( clan::Canvas& GC );
 
-	CL_Sprite current_sprite( ICharacter *pCharacter ) const;
+	clan::Sprite current_sprite( ICharacter *pCharacter ) const;
 
 	// int is a handle
 
-	SpriteTicket add_sprite( CL_Sprite sprite );
-	CL_Sprite get_char_sprite ( SpriteTicket )const;
-	ICharacter*  get_char_with_sprite ( SpriteTicket nSprite )const;
-	void set_sprite_pos( SpriteTicket nSprite, const CL_Pointf& pos );
-	CL_Sprite get_sprite( SpriteTicket nSprite ) const;
+	SpriteTicket add_sprite( clan::Sprite sprite );
+	void set_sprite_pos( SpriteTicket nSprite, const clan::Pointf& pos );
+	clan::Sprite get_sprite( SpriteTicket nSprite );
 	void remove_sprite( SpriteTicket nSprite );
-	SpriteTicket get_sprite_for_char( ICharacter* i_char ) const;	
-	CL_Rectf get_sprite_rect( SpriteTicket nSprite );
-	void set_offset(SpriteTicket sprite, const CL_Pointf& offset);
-	CL_Pointf get_offset(SpriteTicket sprite);
-	void set_offset(ICharacterGroup* pGroup,const CL_Pointf& offset);
-	CL_Pointf get_offset(ICharacterGroup* pGroup);
+	clan::Rectf get_sprite_rect( SpriteTicket nSprite );
+	void set_offset(SpriteTicket sprite, const clan::Pointf& offset);
+	clan::Pointf get_offset(SpriteTicket sprite);
+	void set_offset(ICharacterGroup* pGroup,const clan::Pointf& offset);
+	clan::Pointf get_offset(ICharacterGroup* pGroup);
 	void init_or_release_players( bool bRelease = false );
 	void set_positions_to_loci();
+	void add_participant_sprites();
 	void roll_initiative();
 	void next_turn();
 	void run_turn();
@@ -227,15 +234,16 @@ private:
 	void win();
 	void lose();
 	void death_animation( Monster* pMonster );
-	void move_character( ICharacter* character, CL_Pointf point );
+	void move_character( ICharacter* character, clan::Pointf point );
 	ICharacterGroup* group_for_character( ICharacter* );
-	CL_Rectf  get_group_rect( ICharacterGroup* group )const;
-	CL_Rectf  get_character_rect( const ICharacter* pCharacter )const;
-	CL_Rectf get_character_locus_rect( const ICharacter* pCharacter )const;
-	CL_Sizef get_character_size( const ICharacter* )const;
-	CL_Pointf get_character_locus( const ICharacter* pCharacter )const;
-	CL_Pointf get_monster_locus( const Monster* pMonster )const;
-	CL_Pointf get_player_locus( uint n )const;
+	SpriteTicket get_sprite_for_char( ICharacter * )const;
+	clan::Rectf  get_group_rect( ICharacterGroup* group )const;
+	clan::Rectf  get_character_rect( const ICharacter* pCharacter )const;
+	clan::Rectf get_character_locus_rect( const ICharacter* pCharacter )const;
+	clan::Sizef get_character_size( const ICharacter* )const;
+	clan::Pointf get_character_locus( const ICharacter* pCharacter )const;
+	clan::Pointf get_monster_locus( const Monster* pMonster )const;
+	clan::Pointf get_player_locus( uint n )const;
 	ICharacter* get_next_character( const ICharacterGroup* pGroup, const ICharacter* pCharacter )const;
 	ICharacter* get_prev_character( const ICharacterGroup* pGroup, const ICharacter* pCharacter )const;
 
@@ -266,17 +274,17 @@ private:
 	eState m_eState;
 	DrawMethod m_draw_method;
 	MonsterParty* m_monsters;
-	CL_Image m_backdrop;
-	CL_Rectf m_monster_rect;
-	CL_Rectf m_player_rect;
-	CL_Rectf m_bp_box;
-	CL_Rect m_status_text_rect;
-	CL_Pointf m_status_effect_spacing;
-	CL_Gradient m_bp_gradient;
-	std::map<int,CL_Colorf> m_darkModes;
-	CL_Colorf m_status_effect_shadow_color;
-	CL_Colorf m_bp_border;
-	uint m_startup_time;
+	clan::Image m_backdrop;
+	clan::Rectf m_monster_rect;
+	clan::Rectf m_player_rect;
+	clan::Rectf m_bp_box;
+	clan::Rect m_status_text_rect;
+	clan::Pointf m_status_effect_spacing;
+	clan::Gradient m_bp_gradient;
+	std::map<int,clan::Colorf> m_darkModes;
+	clan::Colorf m_status_effect_shadow_color;
+	clan::Colorf m_bp_border;
+	clan::ubyte64 m_startup_time;
 	Font m_mpFont;
 	Font m_bpFont;
 	Font m_hpFont;
@@ -295,19 +303,21 @@ private:
 	}m_targets;
 	bool m_bDone;
 	bool m_bDoneAfterRound;
-	CL_Rectf m_statusRect;
-	CL_Rectf m_popupRect;
+	clan::Rectf m_statusRect;
+	clan::Rectf m_popupRect;
 	uint m_nRows;
 	uint m_nColumns;
 	std::deque<ICharacter*> m_initiative;
 	uint m_nRound;
 	uint m_cur_char;
 	bool m_bBossBattle;
+	bool m_bPlayerWon;
+	bool m_bScriptedBattle;
 	std::list<Display> m_displays;
 	std::vector<Sprite> m_sprites;
-	std::map<SpriteTicket,CL_Pointf> m_offsets;
-	std::map<ICharacterGroup*,CL_Pointf> m_group_offsets;
-	CL_Mutex m_sprite_mutex;
+	std::map<ICharacterGroup*,clan::Pointf> m_group_offsets;
+	clan::Mutex m_sprite_mutex;
+	uint64_t m_last_render_time;
 	BattleConfig * m_config;
 
 	friend class BattleState::Display;

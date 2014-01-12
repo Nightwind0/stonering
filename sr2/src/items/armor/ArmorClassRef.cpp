@@ -12,7 +12,7 @@ ArmorClassRef::~ArmorClassRef()
 {
 }
 
-void ArmorClassRef::load_attributes(CL_DomNamedNodeMap attributes)
+void ArmorClassRef::load_attributes(clan::DomNamedNodeMap attributes)
 {
     m_name = get_required_string("name",attributes);
 }

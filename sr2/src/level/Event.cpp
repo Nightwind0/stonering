@@ -10,7 +10,7 @@ Event::Event():m_bRepeatable(true),m_bRemember(false),m_pCondition(NULL),m_pScri
 }
 
 
-void Event::load_attributes(CL_DomNamedNodeMap attributes)
+void Event::load_attributes(clan::DomNamedNodeMap attributes)
 {
     m_name = get_required_string("name",attributes);
 
@@ -100,9 +100,9 @@ bool Event::Invoke(const ParameterList& params)
 }
 
 #if SR2_EDITOR
-CL_DomElement Event::CreateDomElement(CL_DomDocument& doc)const
+clan::DomElement Event::CreateDomElement(clan::DomDocument& doc)const
 {
-    CL_DomElement element(doc,"event");
+    clan::DomElement element(doc,"event");
     element.set_attribute("name", m_name );
 
     std::string triggertype;

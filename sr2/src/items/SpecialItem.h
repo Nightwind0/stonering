@@ -15,7 +15,7 @@ namespace StoneRing{
         virtual std::string GetName() const { return NamedItemElement::GetName(); }
         virtual uint GetMaxInventory() const { return 999; }
         virtual std::string GetDescription() const { return m_description; }
-        virtual CL_Image GetIcon() const { return NamedItemElement::GetIcon(); }
+        virtual clan::Image GetIcon() const { return NamedItemElement::GetIcon(); }
         // We're overriding whatever was specified in the XML. Never drop a special item, ever.
         virtual eDropRarity GetDropRarity() const { return NEVER; } 
         virtual eItemType GetItemType() const { return SPECIAL ; }

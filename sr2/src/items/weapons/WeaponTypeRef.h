@@ -19,7 +19,7 @@ namespace StoneRing{
 		virtual std::string GetDebugId() const { return m_name; }				
 		
     private:
-        virtual void load_attributes(CL_DomNamedNodeMap attributes);
+        virtual void load_attributes(clan::DomNamedNodeMap attributes);
     protected:
         std::string m_name;
     };

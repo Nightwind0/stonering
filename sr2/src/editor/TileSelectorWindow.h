@@ -28,27 +28,27 @@ class TileSelector;
 class MapEditorState;
 
 
-class TileSelectorWindow : public CL_Window
+class TileSelectorWindow : public clan::Window
 {
 
 public:
-    TileSelectorWindow(CL_GUIComponent* owner, const CL_GUITopLevelDescription &desc);
+    TileSelectorWindow(clan::GUIComponent* owner, const clan::GUITopLevelDescription &desc);
     virtual ~TileSelectorWindow();
     void SetMapEditor(MapEditorState* state);
-    void SetTilemap(CL_Image image, const std::string& name);
+    void SetTilemap(clan::Image image, const std::string& name);
 private:
     void create_menu();
     void on_tilemap_clicked(int tilemap);
-    void on_tilemap_change(CL_Image sprite);
+    void on_tilemap_change(clan::Image sprite);
     void on_vert_scroll();
     void on_horiz_scroll();
     
-    CL_MenuBar*         m_pMenuBar;
-    CL_ScrollBar*       m_pVertScroll;
-    CL_ScrollBar*       m_pHorizScroll;
+    clan::MenuBar*         m_pMenuBar;
+    clan::ScrollBar*       m_pVertScroll;
+    clan::ScrollBar*       m_pHorizScroll;
     TileSelector*       m_pTileSelector;
-    std::vector<CL_String> m_tilemaps;
-    std::vector<CL_PopupMenuItem> m_tilemap_items;
+    std::vector<std::string> m_tilemaps;
+    std::vector<clan::PopupMenuItem> m_tilemap_items;
 };
 
 }

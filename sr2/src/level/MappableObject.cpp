@@ -12,9 +12,9 @@
 
 namespace StoneRing {
 	
-CL_Rect MappableObject::GetRect() const
+clan::Rect MappableObject::GetRect() const
 {
-	return CL_Rect(m_pos,CL_Size(m_size.width*32, m_size.height*32));
+	return clan::Rect(m_pos,clan::Size(m_size.width*32, m_size.height*32));
 }
 
 
@@ -23,7 +23,7 @@ bool MappableObject::IsFlying() const {
 	return m_cFlags & FLYING;
 }
 
-void MappableObject::SetPixelPosition( const CL_Point& pixel_pos ) {
+void MappableObject::SetPixelPosition( const clan::Point& pixel_pos ) {
 	m_pos = pixel_pos;
 }
 
@@ -36,7 +36,7 @@ void MappableObject::Move( Level& level ) {
 				// TODO: Should probably make the new direction erturn from OnMove
 				m_navStack.top()->OnMove( level );
 				m_direction = m_navStack.top()->GetCurrentDirection();
-				CL_Rect rect = GetTileRect();
+				clan::Rect rect = GetTileRect();
 				rect.translate( m_direction.ToScreenVector() );
 
 				if ( m_direction != Direction::NONE &&  !level.Move( this, GetTileRect(), rect ) ) {
@@ -48,7 +48,7 @@ void MappableObject::Move( Level& level ) {
 					break;
 			}
 
-			CL_Point pt = GetPixelPosition();
+			clan::Point pt = GetPixelPosition();
 
 			if ( m_direction == Direction::NORTH )
 				pt.y--;
@@ -95,27 +95,27 @@ std::string MappableObject::GetName() const {
 	return m_name;
 }
 
-CL_Size MappableObject::DimensionsFromSizeType( eSize size ) {
+clan::Size MappableObject::DimensionsFromSizeType( eSize size ) {
 	switch ( size ) {
 		case MO_SMALL:
-			return CL_Size( 1, 1 );
+			return clan::Size( 1, 1 );
 		case MO_MEDIUM:
-			return CL_Size( 2, 2 );
+			return clan::Size( 2, 2 );
 		case MO_LARGE:
-			return CL_Size( 3, 3 );
+			return clan::Size( 3, 3 );
 		case MO_TALL:
-			return CL_Size( 1, 2 );
+			return clan::Size( 1, 2 );
 		case MO_WIDE:
-			return CL_Size( 2, 1 );
+			return clan::Size( 2, 1 );
 	}
 
 	assert( 0 );
 
-	return CL_Size( 0, 0 );
+	return clan::Size( 0, 0 );
 }
 
 
-CL_Size MappableObject::Calc_Tile_Dimensions() const {
+clan::Size MappableObject::Calc_Tile_Dimensions() const {
 	int movement_x, movement_y;
 	movement_x = movement_y = 0;
 
@@ -125,16 +125,16 @@ CL_Size MappableObject::Calc_Tile_Dimensions() const {
 	if ( m_pos.y % 32 != 0 )
 		movement_y = 1;
 
-	CL_Size size = m_size;
+	clan::Size size = m_size;
 
 
-	return CL_Size( size.width + movement_x, size.height + movement_y );
+	return clan::Size( size.width + movement_x, size.height + movement_y );
 }
 
-CL_Rect MappableObject::GetSpriteRect() const {
-	CL_Rect pixelRect;
-	CL_Size mySize = m_size;
-	CL_Size myDimensions = mySize * 32;
+clan::Rect MappableObject::GetSpriteRect() const {
+	clan::Rect pixelRect;
+	clan::Size mySize = m_size;
+	clan::Size myDimensions = mySize * 32;
 
 	if ( IsSprite() ) {
 		pixelRect.top = m_pos.y + ( myDimensions.height - m_sprite.get_height() );
@@ -144,9 +144,9 @@ CL_Rect MappableObject::GetSpriteRect() const {
 
 		return pixelRect;
 	} else	if ( m_cFlags & TILEMAP ) {
-		return CL_Rect( m_pos.x*32, m_pos.y*32, m_pos.x*32 + 32, m_pos.y *32 + 32 );
+		return clan::Rect( m_pos.x*32, m_pos.y*32, m_pos.x*32 + 32, m_pos.y *32 + 32 );
 	} else {
-		return CL_Rect( m_pos.x*32, m_pos.y*32, m_pos.x * 32 + myDimensions.width, m_pos.y* 32 + myDimensions.height );
+		return clan::Rect( m_pos.x*32, m_pos.y*32, m_pos.x * 32 + myDimensions.width, m_pos.y* 32 + myDimensions.height );
 	}
 }
 
@@ -154,8 +154,8 @@ bool MappableObject::IsSprite() const {
 	return m_cFlags & SPRITE;
 }
 
-void MappableObject::Draw( CL_GraphicContext& GC, const CL_Point& offset ) {
-	CL_Rect dstRect = GetSpriteRect();
+void MappableObject::Draw( clan::Canvas& GC, const clan::Point& offset ) {
+	clan::Rect dstRect = GetSpriteRect();
 	dstRect.translate( offset );
 
 	if ( IsSprite() ) {
@@ -164,7 +164,7 @@ void MappableObject::Draw( CL_GraphicContext& GC, const CL_Point& offset ) {
 		m_sprite.draw( GC, dstRect );
 		m_sprite.set_alpha( alpha );
 	} else if ( m_cFlags & TILEMAP ) {
-		CL_Rect srcRect( m_tilemap->GetMapX() * 32, m_tilemap->GetMapY() * 32,
+		clan::Rect srcRect( m_tilemap->GetMapX() * 32, m_tilemap->GetMapY() * 32,
 						( m_tilemap->GetMapX() * 32 ), ( m_tilemap->GetMapY() * 32 ) );
 
 		//m_tilemap->GetTileMap().draw( GC, srcRect, dstRect ); // TODO: Re-enable tile based MOs
@@ -296,36 +296,36 @@ int MappableObject::ConvertDirectionToSideBlock( Direction dir ) {
 	return 0;
 }
 
-void MappableObject::CalculateEdgePoints( const CL_Point &topleft, Direction dir, std::list<CL_Point> *pList ) {
+void MappableObject::CalculateEdgePoints( const clan::Point &topleft, Direction dir, std::list<clan::Point> *pList ) {
 	uint points = 0;
-	//CL_Size dimensions = Calc_Tile_Dimensions();
+	//clan::Size dimensions = Calc_Tile_Dimensions();
 	// We don't count the movement dimensions, only their normal dimensions
-	CL_Size dimensions = m_size;
+	clan::Size dimensions = m_size;
 	pList->clear();
 
 	if ( dir == Direction::NORTH ) {
 		points = dimensions.width;
 
 		for ( uint i = 0;i < points;i++ ) {
-			pList->push_back( CL_Point( topleft.x + i, topleft.y ) );
+			pList->push_back( clan::Point( topleft.x + i, topleft.y ) );
 		}
 	} else if ( dir == Direction::SOUTH ) {
 		points = dimensions.width;
 
 		for ( uint i = 0;i < points;i++ ) {
-			pList->push_back( CL_Point( topleft.x + i, topleft.y + ( dimensions.height - 1 ) ) );
+			pList->push_back( clan::Point( topleft.x + i, topleft.y + ( dimensions.height - 1 ) ) );
 		}
 	} else if ( dir == Direction::EAST ) {
 		points = dimensions.height;
 
 		for ( uint i = 0;i < points;i++ ) {
-			pList->push_back( CL_Point( topleft.x + ( dimensions.width - 1 ), topleft.y + i ) );
+			pList->push_back( clan::Point( topleft.x + ( dimensions.width - 1 ), topleft.y + i ) );
 		}
 	} else	if ( dir == Direction::WEST ) {
 		points = dimensions.height;
 
 		for ( uint i = 0;i < points;i++ ) {
-			pList->push_back( CL_Point( topleft.x, topleft.y + i ) );
+			pList->push_back( clan::Point( topleft.x, topleft.y + i ) );
 		}
 	}
 }
@@ -358,15 +358,15 @@ bool MappableObject::IsAligned() const {
 }
 
 
-CL_Rect MappableObject::GetTileRect() const {
-	CL_Size size = Calc_Tile_Dimensions();
-	CL_Point position = GetPosition();
+clan::Rect MappableObject::GetTileRect() const {
+	clan::Size size = Calc_Tile_Dimensions();
+	clan::Point position = GetPosition();
 
 	if ( !IsAligned() ) {
 		//  position += m_pNavigator->GetCurrentDirection().ToScreenVector();
 	}
 
-	return CL_Rect( position, size );
+	return clan::Rect( position, size );
 }
 
 Navigator* MappableObject::PopNavigator() {
@@ -446,14 +446,14 @@ bool MappableObjectElement::ProvokeEvents( Event::eTriggerType trigger ) {
 
 
 
-void MappableObjectElement::load_attributes( CL_DomNamedNodeMap attributes ) {
+void MappableObjectElement::load_attributes( clan::DomNamedNodeMap attributes ) {
 	m_name = get_required_string( "name", attributes );
 	std::string motype = get_required_string( "type", attributes );
 	std::string size = get_required_string( "size", attributes );
 
 
 	if ( has_attribute( "sprite", attributes ) ) {
-		m_sprite.clone( GraphicsManager::CreateSprite( get_string( "sprite", attributes ), true ) );
+		m_sprite = GraphicsManager::CreateSprite( get_string( "sprite", attributes ), true ).clone();
 		m_cFlags |= SPRITE;
 #ifdef SR2_EDITOR
 		m_sprite_name = get_string( "sprite", attributes );
@@ -594,7 +594,7 @@ bool MappableObjectElement::handle_element( Element::eElement element, Element *
 }
 
 void MappableObjectElement::load_finished() {
-	CL_Size dimensions = Calc_Tile_Dimensions();
+	clan::Size dimensions = Calc_Tile_Dimensions();
 
 	PushNavigator( &m_navigator );
 	Prod();
@@ -629,15 +629,15 @@ void MappableObjectDynamic::SetSolid( bool solid ) {
 	m_cFlags |= SOLID;
 }
 
-void MappableObjectDynamic::SetSprite( CL_Sprite sprite, MappableObject::eSize size ) {
+void MappableObjectDynamic::SetSprite( clan::Sprite sprite, MappableObject::eSize size ) {
 	m_sprite = sprite;
 	m_size = DimensionsFromSizeType( size );
 	m_cFlags |= SPRITE;
 	Calc_Tile_Dimensions();
 }
 
-void MappableObjectDynamic::Draw( CL_GraphicContext& GC, const CL_Point& offset ) {
-	CL_Rect dstRect = GetSpriteRect();
+void MappableObjectDynamic::Draw( clan::Canvas& GC, const clan::Point& offset ) {
+	clan::Rect dstRect = GetSpriteRect();
 	dstRect.translate( offset );
 	m_sprite.draw( GC, dstRect );
 }
@@ -651,7 +651,7 @@ void MappableObjectDynamic::Set_Frame_For_Direction() {
 
 
 MappablePlayer::MappablePlayer( uint startX, uint startY ) : m_navigator( *this ) {
-	m_size = CL_Size( 1, 1 );
+	m_size = clan::Size( 1, 1 );
 	m_StartX = startX;
 	m_StartY = startY;
 	m_pos.x = startX * 32;
@@ -677,8 +677,8 @@ void MappablePlayer::StopMovement() {
 
 
 
-CL_Point MappablePlayer::GetPointInFront() const {
-	CL_Point point = GetPosition();
+clan::Point MappablePlayer::GetPointInFront() const {
+	clan::Point point = GetPosition();
 
 
 	Direction facing;
@@ -713,8 +713,8 @@ void MappablePlayer::DeserializeState( std::istream& in ) {
 }
 
 #if SR2_EDITOR
-CL_DomElement MappableObjectElement::CreateDomElement( CL_DomDocument& doc ) const {
-	CL_DomElement element( doc, "mo" );
+clan::DomElement MappableObjectElement::CreateDomElement( clan::DomDocument& doc ) const {
+	clan::DomElement element( doc, "mo" );
 	element.set_attribute( "name", m_name );
 
 	std::string motype;
@@ -814,7 +814,7 @@ CL_DomElement MappableObjectElement::CreateDomElement( CL_DomDocument& doc ) con
 	return element;
 }
 
-void MappableObjectElement::create_dom_element_hook( CL_DomElement& element ) const {
+void MappableObjectElement::create_dom_element_hook( clan::DomElement& element ) const {
 
 }
 

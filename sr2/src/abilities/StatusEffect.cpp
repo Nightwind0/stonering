@@ -7,9 +7,10 @@
 using namespace StoneRing;
 
 
-void StoneRing::StatusEffect::load_attributes(CL_DomNamedNodeMap attributes)
+void StoneRing::StatusEffect::load_attributes(clan::DomNamedNodeMap attributes)
 {
     m_name = get_required_string("name", attributes );
+	std::cout << "Loading status effect " << m_name << std::endl;
     std::string last = get_required_string("last",attributes );
 
     if(last == "battle") m_eLast = BATTLE;
@@ -120,7 +121,7 @@ uint StoneRing::StatusEffect::GetRoundCount() const
     return m_nRoundCount;
 }
 
-CL_Sprite StatusEffect::GetIcon() const
+clan::Sprite StatusEffect::GetIcon() const
 {
     return m_icon;
 }

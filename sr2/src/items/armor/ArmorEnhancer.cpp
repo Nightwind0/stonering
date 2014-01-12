@@ -6,7 +6,7 @@ ArmorEnhancer::ArmorEnhancer()
 {
 }
 
-void ArmorEnhancer::load_attributes(CL_DomNamedNodeMap attributes)
+void ArmorEnhancer::load_attributes(clan::DomNamedNodeMap attributes)
 {
    std::string strAttr = get_required_string("attribute", attributes);
 

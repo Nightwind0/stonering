@@ -4,8 +4,8 @@
 #include "GridPoint.h"
 
 
-GridPoint::GridPoint(CL_Rect setrect, CL_Component *parent)
-:   rect(setrect), CL_Component(parent)
+GridPoint::GridPoint(clan::Rect setrect, clan::Component *parent)
+:   rect(setrect), clan::Component(parent)
 {
 
 
@@ -29,9 +29,9 @@ void GridPoint::on_paint()
 {
 
     //component background color
-    CL_Display::fill_rect(CL_Rect(0, 0, get_width(), get_height()), CL_Color::lightgrey);
+    clan::Display::fill_rect(clan::Rect(0, 0, get_width(), get_height()), clan::Color::lightgrey);
     //component border color
-    CL_Display::draw_rect(CL_Rect(0, 0, get_width(), get_height()), CL_Color::grey);
+    clan::Display::draw_rect(clan::Rect(0, 0, get_width(), get_height()), clan::Color::grey);
 
 
 }

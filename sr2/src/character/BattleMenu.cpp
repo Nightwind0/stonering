@@ -86,7 +86,7 @@ void BattleMenu::load_finished()
 
 
 
-CL_Rectf BattleMenu::get_rect()
+clan::Rectf BattleMenu::get_rect()
 {
     return m_rect;
 }
@@ -97,28 +97,28 @@ BattleMenuOption* BattleMenu::GetSelectedOption() const
     else return m_options[get_current_choice()];
 }
 
-void BattleMenu::draw_option(int option, bool selected, float x, float y, CL_GraphicContext& gc)
+void BattleMenu::draw_option(int option, bool selected, float x, float y, clan::Canvas& gc)
 {
     BattleMenuOption * pOption = m_options[option];
     
     Font font;
-    CL_Image icon = pOption->GetIcon();
+    clan::Image icon = pOption->GetIcon();
 
     //icon.set_alignment(origin_bottom_left,0,0);
     
 
     if(pOption->Enabled(m_params, m_pCharacter))
     {
-	font = m_onFont;
+		font = m_onFont;
     }
     else
     {
-	font = m_offFont;
+		font = m_offFont;
     }
     
     if(selected)
     {
-	font = m_selectedFont;
+		font = m_selectedFont;
     }
     
     
@@ -126,10 +126,10 @@ void BattleMenu::draw_option(int option, bool selected, float x, float y, CL_Gra
     if(pOption->GetBPCost() != 0 ||
         pOption->GetMPCost() != 0)
         cost = true;
-    CL_Rectf text_rect(x + 12.0f + icon.get_width() ,  y ,
-                       CL_Sizef(m_rect.get_width() - 12.0f - icon.get_width() - (cost?m_cost_spacing.x:0), height_for_option(gc)));
+    clan::Rectf text_rect(x + 12.0f + icon.get_width() ,  y ,
+                       clan::Sizef(m_rect.get_width() - 12.0f - icon.get_width() - (cost?m_cost_spacing.x:0), height_for_option(gc)));
    // font.draw_text(gc,x  + 12.0f + icon.get_width() , font.get_font_metrics(gc).get_height() + y + font_height_offset,pOption->GetName());
-    draw_text(gc,font,text_rect,pOption->GetName());
+    draw_text(gc,font,text_rect,pOption->GetName(),0);
     icon.draw(gc,static_cast<int>(x ), static_cast<int>(y));
     
     if(cost)
@@ -150,21 +150,21 @@ void BattleMenu::draw_option(int option, bool selected, float x, float y, CL_Gra
         float height = height_for_option(gc);
 
         
-        CL_Rectf cost_rect(x + m_rect.get_width()- m_cost_spacing.x, y  + (height - font_height)/2.0f,
-                           CL_Sizef(m_cost_spacing.x,height));
+        clan::Rectf cost_rect(x + m_rect.get_width()- m_cost_spacing.x, y  + (height - font_height)/2.0f,
+                           clan::Sizef(m_cost_spacing.x,height));
         std::ostringstream stream;
         stream << cost  << type;
-        draw_text(gc,font,cost_rect,stream.str());
+        draw_text(gc,font,cost_rect,stream.str(),0);
     }
 }
 
-int BattleMenu::height_for_option(CL_GraphicContext& gc)
+int BattleMenu::height_for_option(clan::Canvas& gc)
 {
     if(m_font_height != -1) return m_font_height; 
     
     m_font_height = m_onFont.get_font_metrics(gc).get_height();
-    m_font_height = cl_max(m_offFont.get_font_metrics(gc).get_height(),static_cast<float>(m_font_height));
-    m_font_height = cl_max(m_selectedFont.get_font_metrics(gc).get_height(),static_cast<float>(m_font_height));
+    m_font_height = std::max(m_offFont.get_font_metrics(gc).get_height(),static_cast<float>(m_font_height));
+    m_font_height = std::max(m_selectedFont.get_font_metrics(gc).get_height(),static_cast<float>(m_font_height));
     
     return m_font_height;
 }
@@ -180,12 +180,12 @@ bool BattleMenu::hide_option ( int selection ) const
 }
 
 
-void BattleMenu::SetRect(CL_Rectf& rect)
+void BattleMenu::SetRect(clan::Rectf& rect)
 {
     m_rect = rect;
 }
 
-void BattleMenu::load_attributes(CL_DomNamedNodeMap attr)
+void BattleMenu::load_attributes(clan::DomNamedNodeMap attr)
 {
     std::string type = get_required_string("type",attr);
 

@@ -4,8 +4,8 @@
 
 using Editor::Infobar;
 
-Infobar::Infobar( CL_Component *parent)
-    :    CL_Component(parent),tool_pos(NULL)
+Infobar::Infobar( clan::Component *parent)
+    :    clan::Component(parent),tool_pos(NULL)
 {
 
 
@@ -13,13 +13,13 @@ Infobar::Infobar( CL_Component *parent)
 
     set_position(0, parent->get_height() - 50);
 
-    text1 = new CL_Label(CL_Point(5,2), "Tool:", this);
-    tool_text = new CL_Label(CL_Rect(35,2,100, 15), "Tile", this);
+    text1 = new clan::Label(clan::Point(5,2), "Tool:", this);
+    tool_text = new clan::Label(clan::Rect(35,2,100, 15), "Tile", this);
 
 
     setToolPos("0","0");
-    text2 = new CL_Label(CL_Point(110,2), "Position:", this);
-    tool_pos = new CL_Label(CL_Point(160,2), "(0000,0000)", this);
+    text2 = new clan::Label(clan::Point(110,2), "Position:", this);
+    tool_pos = new clan::Label(clan::Point(160,2), "(0000,0000)", this);
 
     slots.connect(sig_paint(), this, &Infobar::on_paint);
 
@@ -39,9 +39,9 @@ void Infobar::on_paint()
 {
 
     //component background color
-//  CL_Display::fill_rect(CL_Rect(0, 0, get_width(), get_height()), CL_Color::lightgrey);
+//  clan::Display::fill_rect(clan::Rect(0, 0, get_width(), get_height()), clan::Color::lightgrey);
     //component border color
-    CL_Display::draw_rect(client_to_screen(CL_Rect(0, 0, get_width(), get_height())), CL_Color::grey);
+    clan::Display::draw_rect(client_to_screen(clan::Rect(0, 0, get_width(), get_height())), clan::Color::grey);
 
 }
 

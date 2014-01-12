@@ -14,7 +14,7 @@ NamedItemElement::~NamedItemElement()
 {
 }
 
-void NamedItemElement::load_attributes(CL_DomNamedNodeMap attributes)
+void NamedItemElement::load_attributes(clan::DomNamedNodeMap attributes)
 {
     m_name = get_required_string("name",attributes);
     std::string dropRarity = get_required_string("dropRarity",attributes);
@@ -74,7 +74,7 @@ void NamedItemElement::SetDropRarity( Item::eDropRarity rarity )
     m_eDropRarity = rarity;
 }
 
-CL_Image NamedItemElement::GetIcon() const
+clan::Image NamedItemElement::GetIcon() const
 {
     return m_icon;
 }

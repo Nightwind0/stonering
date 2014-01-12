@@ -88,16 +88,16 @@ public:
 
 	static IApplication * GetInstance();
 	virtual ~IApplication() {}
-	virtual CL_ResourceManager&GetResources() = 0;
-	virtual CL_DisplayWindow&  GetApplicationWindow() = 0;
+	virtual clan::ResourceManager&GetResources() = 0;
+	virtual clan::DisplayWindow&  GetApplicationWindow() = 0;
 	virtual Party *         GetParty() const = 0;
 	virtual IFactory *      GetElementFactory() = 0;
 	virtual void            StartBattle( const MonsterGroup &group, const std::string &backdrop ) = 0;
 	virtual Level*          GetCurrentLevel()const = 0;
-	virtual CL_Point        GetCurrentLevelCenter()const=0; // In Pixels
+	virtual clan::Point        GetCurrentLevelCenter()const=0; // In Pixels
 	virtual void            MainMenu() = 0;
-	virtual void            LoadMainMenu( CL_DomDocument& ) = 0;
-	virtual CL_Rect         GetDisplayRect() const = 0;
+	virtual void            LoadMainMenu( clan::DomDocument& ) = 0;
+	virtual clan::Rect         GetDisplayRect() const = 0;
 	// TODO: Shouldn't this be on the Party ??
 	virtual uint            GetMinutesPlayed()const = 0;
 	virtual void            RunState( State *pState, bool threaded = false ) = 0;
@@ -107,11 +107,12 @@ public:
 	virtual SteelType       RunScript( Steel::AstScript *pScript, const ParameterList &params ) = 0;
 	virtual Steel::AstScript *     GetUtility( Utility util )const = 0;
 	virtual std::string     GetCurrencyName()const = 0;
-	virtual void            RunOnMainThread( CL_Event& event, Functor* functor ) = 0;
+	virtual std::string     GetResourcePath()const =0;
+	virtual void            RunOnMainThread( clan::Event& event, Functor* functor ) = 0;
 	virtual bool            Serialize( std::ostream& stream ) = 0;
 	virtual bool            Deserialize( std::istream& stream ) = 0;
 	virtual void            Banner( const std::string& str, int time ) = 0;
-	virtual CL_IODevice     OpenResource(const std::string& str)=0;
+	virtual clan::IODevice     OpenResource(const std::string& str)=0;
 	virtual bool 			 IsCutsceneRunning() const=0; 
 	virtual int 			 DynamicMenu(const std::vector<std::string>& options)=0;
 #ifdef SR2_EDITOR
@@ -121,8 +122,8 @@ public:
 
 }
 
-//#define  GET_MAIN_GC ()   CL_GraphicContext GC = IApplication::GetInstance()->GetApplicationWindow().get_gc()
-#define GET_MAIN_GC() IApplication::GetInstance()->GetApplicationWindow().get_gc()
+//#define  GET_MAIN_GC ()   clan::Canvas GC = IApplication::GetInstance()->GetApplicationWindow().get_gc()
+#define GET_MAIN_CANVAS() clan::Canvas(IApplication::GetInstance()->GetApplicationWindow())
 #endif
 
 

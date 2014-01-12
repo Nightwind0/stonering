@@ -52,10 +52,10 @@ public:
 	virtual std::string GetDebugId() const { return IntToString(m_eSideBlock); }				
 	
 #if SR2_EDITOR
-    CL_DomElement CreateDomElement(CL_DomDocument&)const;
+    clan::DomElement CreateDomElement(clan::DomDocument&)const;
 #endif
 protected:
-    virtual void load_attributes(CL_DomNamedNodeMap attributes);
+    virtual void load_attributes(clan::DomNamedNodeMap attributes);
 
     int m_eSideBlock;
 private:
@@ -78,26 +78,26 @@ public:
         return m_Y;
     }
 
-    inline CL_Texture GetTileMap() const {
+    inline clan::Texture2D GetTileMap() const {
         return m_image;
     }
 #if SR2_EDITOR
-    CL_DomElement CreateDomElement(CL_DomDocument&)const;
-    void SetTilemap(CL_Texture image,const CL_String& name, ushort X, ushort Y) {
+    clan::DomElement CreateDomElement(clan::DomDocument&)const;
+    void SetTilemap(clan::Texture2D image,const std::string& name, ushort X, ushort Y) {
         m_image = image;
         m_sprite_string = name;
         m_X = X;
         m_Y = Y;
     }
 private:
-    CL_String m_sprite_string;
+    std::string m_sprite_string;
 #endif
 		virtual std::string GetDebugId() const { return ""; }				
 	
 protected:
     virtual bool handle_element(eElement element, Element * pElement );
-    virtual void load_attributes(CL_DomNamedNodeMap attributes);
-    CL_Texture m_image;
+    virtual void load_attributes(clan::DomNamedNodeMap attributes);
+    clan::Texture2D m_image;
     ushort m_X;
     ushort m_Y;
 };
@@ -117,7 +117,7 @@ public:
 	};
     class Visitor { 
     public:
-        virtual void accept(CL_GraphicContext& gc, const CL_Point& top_left, Tile*) = 0;
+        virtual void accept(clan::Canvas& gc, const clan::Point& top_left, Tile*) = 0;
     };
 public:
     Tile();
@@ -143,7 +143,7 @@ public:
 		return m_monster_region;
 	}
     
-    void Visit(Visitor* pVisitor, CL_GraphicContext& gc, const CL_Point& top_left) {
+    void Visit(Visitor* pVisitor, clan::Canvas& gc, const clan::Point& top_left) {
         pVisitor->accept(gc,top_left,this);
     }
 
@@ -154,7 +154,7 @@ public:
         return m_Y;
     }
 
-    virtual CL_Rect GetRect() const;
+    virtual clan::Rect GetRect() const;
 
     inline bool IsSprite() const {
         return (cFlags & TIL_SPRITE) != 0;
@@ -164,7 +164,7 @@ public:
         return (cFlags & TIL_HOT) != 0;
     }
     
-	void Draw(CL_GraphicContext& gc, const CL_Point& dst);
+	void Draw(clan::Canvas& gc, const clan::Point& dst);
     
     virtual void Update();
 	
@@ -185,12 +185,12 @@ public:
 
 protected:
     virtual bool handle_element(eElement element, Element * pElement);
-    virtual void load_attributes(CL_DomNamedNodeMap attributes);
+    virtual void load_attributes(clan::DomNamedNodeMap attributes);
     virtual void load_finished();
-    void draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC);	
+    void draw(const clan::Rect &src, const clan::Rect &dst, clan::Canvas& GC);	
 
-    CL_Sprite m_sprite;
-    CL_Subtexture m_image;
+    clan::Sprite m_sprite;
+    clan::Subtexture m_image;
 	Tilemap* m_tilemap;
     ScriptElement *m_pCondition;
     ScriptElement *m_pScript;
@@ -204,12 +204,12 @@ protected:
 #ifdef SR2_EDITOR
     std::string m_sprite_name;
 public:
-	CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
+	clan::DomElement CreateDomElement(clan::DomDocument& doc)const;
 	Tile* clone() const;
 
     void SetTileMap(Tilemap* pTileMap) {
         m_tilemap = pTileMap;
-		m_image =  CL_Subtexture(m_tilemap->GetTileMap(), CL_Rect(CL_Point(m_tilemap->GetMapX()*32,m_tilemap->GetMapY()*32),CL_Size(32,32)));
+		m_image =  clan::Subtexture(m_tilemap->GetTileMap(), clan::Rect(clan::Point(m_tilemap->GetMapX()*32,m_tilemap->GetMapY()*32),clan::Size(32,32)));
         cFlags &= ~TIL_SPRITE;
     }
     void SetMonsterRegion(char monster_region){
@@ -272,13 +272,13 @@ public:
 	void SetLevelWidth(uint width);
 	void SetAllowsRunning(bool allowed);
 	void SetMusic(const std::string& music);
-    CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
+	clan::DomElement CreateDomElement(clan::DomDocument& doc)const;
 #endif
 	virtual std::string GetDebugId() const { return ""; }				
 	
 private:
     virtual bool handle_element(eElement element, Element * pElement);
-    virtual void load_attributes(CL_DomNamedNodeMap attributes);
+    virtual void load_attributes(clan::DomNamedNodeMap attributes);
     ScriptElement * m_pScript;
 
     uint m_nLevelWidth;
@@ -304,7 +304,7 @@ public:
     
 private:
     virtual bool handle_element(eElement element, Element * pElement);
-    virtual void load_attributes(CL_DomNamedNodeMap attributes);
+    virtual void load_attributes(clan::DomNamedNodeMap attributes);
 protected:
     std::list<Tile*> m_tiles;
 };
@@ -328,7 +328,7 @@ public:
 
 private:
     virtual bool handle_element(eElement element, Element * pElement);
-    virtual void load_attributes(CL_DomNamedNodeMap attributes);
+    virtual void load_attributes(clan::DomNamedNodeMap attributes);
 protected:
     std::list<MappableObject*> m_mappable_objects;
 };
@@ -338,25 +338,25 @@ class Level : public Element
 public:
     Level();
     virtual ~Level();
-    void Load(const std::string &name, CL_ResourceManager& resources);
+    void Load(const std::string &name, clan::ResourceManager& resources);
     void Invoke(); // run invoke script if any
     eElement WhichElement() const {
         return ELEVEL;
     }
 
-    virtual void Draw(const CL_Rect &src, const CL_Rect &dst,
-                      CL_GraphicContext& GC , bool mappable_objects = true,  bool draw_borders=false, bool draw_debug=false);
+    virtual void Draw(const clan::Rect &src, const clan::Rect &dst,
+                      clan::Canvas& GC , bool mappable_objects = true,  bool draw_borders=false, bool draw_debug=false);
     virtual void AddTileVisitor(Tile::Visitor * pVisitor);
     virtual void RemoveTileVisitor(Tile::Visitor * pVisitor);
-    void MoveMappableObjects(const CL_Rect &src);
+    void MoveMappableObjects(const clan::Rect &src);
 
     void AddMappableObject(MappableObject* pMO);
     void RemoveMappableObject(MappableObject* pMO);
 
-    bool CanMove(MappableObject* pMO, const CL_Rect& tiles_currently, const CL_Rect& tiles_destination)const;
+    bool CanMove(MappableObject* pMO, const clan::Rect& tiles_currently, const clan::Rect& tiles_destination)const;
     // Checks relevant tile and MO direction block information
     // And mark occupied and unoccupied if move is successful
-    bool Move(MappableObject* pMO, const CL_Rect &tiles_currently, const CL_Rect& tiles_destination);
+    bool Move(MappableObject* pMO, const clan::Rect &tiles_currently, const clan::Rect& tiles_destination);
 
     // Any talk events fire (assuming they meet conditions)
     // "target" describes the region which the player is talking to.
@@ -370,10 +370,10 @@ public:
     // This is intended as a way to get people that are blocking you
     // out of your way. You prod them until they head in some direction which helps you.
     // Or.. you know... you could just prod people for fun.
-    virtual void Talk(const CL_Point &target,  bool prod=false);
+    virtual void Talk(const clan::Point &target,  bool prod=false);
 
     // Propagate updates to any MO's in view. Provides as a level coordinate based rectangle
-    virtual void Update(const CL_Rect & updateRect);
+    virtual void Update(const clan::Rect & updateRect);
 
     uint GetWidth() const {
         return m_LevelWidth;
@@ -409,9 +409,9 @@ public:
     void LoadFromFile(const std::string &path, bool resource=true);
 #ifndef NDEBUG
     void DumpMappableObjects() const;
-    void DrawMOQuadtree(CL_GraphicContext gc, const CL_Point& offset) const;
-    void DrawDebugBox(CL_GraphicContext gc, const CL_Rect& rect)const;
-    void AddPathTile(const CL_Point& pt);
+    void DrawMOQuadtree(clan::Canvas gc, const clan::Point& offset) const;
+    void DrawDebugBox(clan::Canvas gc, const clan::Rect& rect)const;
+    void AddPathTile(const clan::Point& pt);
     void ClearPath();
 #endif
     typedef Quadtree::RootNode<MappableObject*,4,float> MOQuadtree;
@@ -427,43 +427,43 @@ protected:
 
     // Element virtuals
     virtual bool handle_element(eElement element, Element * pElement);
-    virtual void load_attributes(CL_DomNamedNodeMap attributes);
+    virtual void load_attributes(clan::DomNamedNodeMap attributes);
     virtual void load_finished();
 	
-	void draw_floor_tiles(CL_GraphicContext& gc, const CL_Rect& src, const CL_Rect& dst);
-	void draw_object_layer(CL_GraphicContext& gc, const CL_Rect& src, const CL_Rect& dst, bool draw_mos, bool draw_debug, bool draw_borders);
+	void draw_floor_tiles(clan::Canvas& gc, const clan::Rect& src, const clan::Rect& dst);
+	void draw_object_layer(clan::Canvas& gc, const clan::Rect& src, const clan::Rect& dst, bool draw_mos, bool draw_debug, bool draw_borders);
 
 
     // MO related operations
-    bool Contains_Mappable_Objects(const CL_Point &point) const;
-    bool Contains_Solid_Mappable_Object(const CL_Point &point) const;
-    bool Check_Direction_Block(MappableObject* pMO, Direction dir,const CL_Point &tile, const CL_Point &dest_tile)const;
+    bool Contains_Mappable_Objects(const clan::Point &point) const;
+    bool Contains_Solid_Mappable_Object(const clan::Point &point) const;
+    bool Check_Direction_Block(MappableObject* pMO, Direction dir,const clan::Point &tile, const clan::Point &dest_tile)const;
 	MOQuadtree::Vector Translate_Point(const MOQuadtree::Vector& vec);
 
-    void Move_Mappable_Object(MappableObject* pMO, Direction dir, const CL_Rect& from, const CL_Rect& to);
+    void Move_Mappable_Object(MappableObject* pMO, Direction dir, const clan::Rect& from, const clan::Rect& to);
     void Add_Mappable_Object(MappableObject* pMO);
 
     // Sort tiles on zOrder
     static bool Tile_Sort_Criterion ( const Tile * p1, const Tile * p2 );
 	
 	// returns rect in tiles, not pixels
-	CL_Rect calc_tile_bounds(const CL_Rect& src_pixels, const CL_Rect& dst_pixels) const;
+	clan::Rect calc_tile_bounds(const clan::Rect& src_pixels, const clan::Rect& dst_pixels) const;
 
     void Load_Tile ( Tile * tileElement );
     void Load_Mo ( MappableObject * moElement );
 
     // All AM's from tiles fire, as do any step events
-    virtual void Step(const CL_Point &destination);
+    virtual void Step(const clan::Point &destination);
 
     // Tile related operations
     // Call attribute modifiers on tiles at this location
     void Activate_Tiles_At ( uint x, uint y );
     int Get_Cumulative_Side_Block_At_Point
-(const CL_Point &point) const;
-    bool Get_Cumulative_Hotness_At_Point(const CL_Point &point) const;
+(const clan::Point &point) const;
+    bool Get_Cumulative_Hotness_At_Point(const clan::Point &point) const;
     void Create_MOQuadtree();
 
-    CL_DomDocument  m_document;
+    clan::DomDocument  m_document;
     ScriptElement *m_pScript;
     LevelHeader *m_pHeader;
     std::string m_music;
@@ -479,23 +479,23 @@ protected:
     std::set<Tile::Visitor*> m_tile_visitors;
 #ifndef NDEBUG
     struct InteractPoint {
-        CL_Point m_point;
+        clan::Point m_point;
         uint m_creationTime;
     };
     std::list<InteractPoint> m_interactPoints;
-    std::set<CL_Point> m_pathPoints;
+    std::set<clan::Point> m_pathPoints;
 #endif
-    //mutable CL_Mutex m_mo_mutex;
+    //mutable clan::Mutex m_mo_mutex;
 #ifdef SR2_EDITOR
 public:
     Level(uint width, uint height);
     void GrowLevelTo(uint width, uint height);
-    bool TilesAt(const CL_Point& loc)const;
+    bool TilesAt(const clan::Point& loc)const;
     void AddTile(Tile * pTile);
-	void AddTilesAt(const CL_Point& loc, const std::list<Tile*>& tiles, bool overwrite);
-    Tile* PopTileAtPos(const CL_Point& loc);
-    std::list<Tile*> GetTilesAt(const CL_Point& loc) const;
-    std::list<MappableObject*> GetMappableObjectsAt(const CL_Point& loc)const;
+	void AddTilesAt(const clan::Point& loc, const std::list<Tile*>& tiles, bool overwrite);
+    Tile* PopTileAtPos(const clan::Point& loc);
+    std::list<Tile*> GetTilesAt(const clan::Point& loc) const;
+    std::list<MappableObject*> GetMappableObjectsAt(const clan::Point& loc)const;
 	const MonsterRegions* GetMonsterRegions() const {return m_pMonsterRegions;}
 	void RemoveMonsterRegion(MonsterRegion* pRegion);
 
@@ -505,7 +505,7 @@ public:
     void SetHotAt(uint levelX, uint levelY, bool bHot);
     bool WriteXML(const std::string& filename, bool force)const;
     void resize_mo_quadtree();
-    CL_DomElement CreateDomElement(CL_DomDocument& doc) const;
+    clan::DomElement CreateDomElement(clan::DomDocument& doc) const;
 #endif	
 };
 

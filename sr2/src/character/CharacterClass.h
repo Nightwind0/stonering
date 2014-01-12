@@ -48,7 +48,7 @@ namespace StoneRing
 		virtual std::string GetDebugId() const { return m_name; }				
     private:
         virtual bool handle_element(eElement element, Element * pElement );
-        virtual void load_attributes(CL_DomNamedNodeMap attributes);
+        virtual void load_attributes(clan::DomNamedNodeMap attributes);
         virtual void load_finished();
         //void verify_menu_options(BattleMenu* pMenu);
         std::string m_name;
@@ -73,7 +73,7 @@ namespace StoneRing
 		virtual std::string GetDebugId() const { return IntToString(m_eStat); }				
 		
     private:
-        virtual void load_attributes(CL_DomNamedNodeMap attributes);
+        virtual void load_attributes(clan::DomNamedNodeMap attributes);
         virtual bool handle_element(Element::eElement, Element * pElement);
         virtual void load_finished();
         ScriptElement *m_pScript;

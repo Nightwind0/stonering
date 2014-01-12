@@ -14,7 +14,7 @@ bool ArmorType::operator==(const ArmorType &lhs )
     return m_name == lhs.m_name;
 }
 
-void ArmorType::load_attributes(CL_DomNamedNodeMap attributes)
+void ArmorType::load_attributes(clan::DomNamedNodeMap attributes)
 {
     m_name = get_required_string("name",attributes);
     m_nBasePrice = get_required_int("basePrice",attributes);

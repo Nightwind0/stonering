@@ -60,7 +60,7 @@ SoundManager::Effect ItemGetSingleState::get_sound_effect() const {
 	return SoundManager::EFFECT_REWARD;
 }
 
-CL_Image ItemGetSingleState::get_icon() const{
+clan::Image ItemGetSingleState::get_icon() const{
 	return m_pItem->GetIcon();
 }
 

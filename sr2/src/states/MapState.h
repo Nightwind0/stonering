@@ -29,9 +29,9 @@ public:
     virtual void HandleQuit() {
         m_bDone = true;
     }
-    virtual void HandleKeyDown(const CL_InputEvent &key);
-    virtual void HandleKeyUp(const CL_InputEvent &key);
-    virtual void Draw(const CL_Rect &screenRect,CL_GraphicContext& GC);
+    virtual void HandleKeyDown(const clan::InputEvent &key);
+    virtual void HandleKeyUp(const clan::InputEvent &key);
+    virtual void Draw(const clan::Rect &screenRect,clan::Canvas& GC);
     virtual bool LastToDraw() const {
         return false;    // It'll be last anyway.... and if not, thats okay too
     }
@@ -42,11 +42,11 @@ public:
     virtual void RegisterSteelFunctions(SteelInterpreter *);
     virtual void Finish(); // Hook to clean up or whatever after being popped
 	virtual void Covered();
-	CL_Point GetCurrentCenter() const;
-    void SetDimensions(const CL_Rect &screenRect);
+	clan::Point GetCurrentCenter() const;
+    void SetDimensions(const clan::Rect &screenRect);
     void PushLevel(Level *pLevel, uint startX, uint startY);
 	void LoadLevel(Level *pLevel, uint startX, uint startY);
-    void SetPlayerSprite(CL_Sprite player);
+    void SetPlayerSprite(clan::Sprite player);
     void MoveMappableObjects();
     void Pop(bool bAll);
     Level * GetCurrentLevel()const;
@@ -65,12 +65,12 @@ private:
     bool m_horizontal_idle;
     bool m_vertical_idle;
     MappablePlayer  m_player;
-    CL_Rect m_screen_rect;
+    clan::Rect m_screen_rect;
     std::deque<Level*> m_levels;
     Level * m_pLevel;
-    CL_Sprite  m_playerSprite;
+    clan::Sprite  m_playerSprite;
     bool m_bShowDebug;
-	std::deque<CL_Point> m_position_stack;
+	std::deque<clan::Point> m_position_stack;
 #ifndef NDEBUG
     void add_debug_drawers();
     void remove_debug_drawers();

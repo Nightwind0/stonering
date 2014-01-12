@@ -171,13 +171,13 @@ SaveLoadState::FilePreview SaveLoadState::load_file_header ( std::istream& in )
     FilePreview preview;
     uint gold;
     uint minutes;
-    cl_byte64 ticks;
+    long long ticks;
     in.read((char*)&gold,sizeof(preview.m_gold));
     in.read((char*)&minutes,sizeof(preview.m_minutes));
     in.read((char*)&ticks,sizeof(ticks));
     preview.m_gold = gold;
     preview.m_minutes = minutes;
-    preview.m_datetime = CL_DateTime::get_utc_time_from_ticks(ticks).to_local();
+    preview.m_datetime = clan::DateTime::get_utc_time_from_ticks(ticks).to_local();
     uint party_size;
     in.read((char*)&party_size,sizeof(uint));
     for(uint i=0;i<party_size;i++){
@@ -193,7 +193,7 @@ SaveLoadState::FilePreview SaveLoadState::load_file_header ( std::istream& in )
 
 
 
-void SaveLoadState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
+void SaveLoadState::Draw ( const clan::Rect& screenRect, clan::Canvas& GC )
 {
     Menu::Draw (GC);
 }
@@ -206,11 +206,11 @@ int SaveLoadState::get_option_count()
     return 25;
 }
 
-void SaveLoadState::draw_option ( int option, bool selected, float x, float y, CL_GraphicContext& gc )
+void SaveLoadState::draw_option ( int option, bool selected, float x, float y, clan::Canvas& gc )
 {
     // Need #, hours, date last saved, face for each person in the party
-    const CL_Rectf screen = get_rect(); 
-    CL_Rect rect(x,y,x+screen.get_width(),y+height_for_option(gc));
+    const clan::Rectf screen = get_rect(); 
+    clan::Rect rect(x,y,x+screen.get_width(),y+height_for_option(gc));
     MenuBox::Draw(gc,rect,true);
  
     std::ostringstream os;
@@ -240,9 +240,9 @@ void SaveLoadState::draw_option ( int option, bool selected, float x, float y, C
         for(std::list<FilePreview::CharInfo>::const_iterator char_iter = iter->second.m_characters.begin();
             char_iter != iter->second.m_characters.end(); char_iter++){
             Character * pChar = CharacterManager::GetCharacter (char_iter->m_name);
-            CL_Sprite portrait = pChar->GetPortrait(Character::PORTRAIT_DEFAULT);
+            clan::Sprite portrait = pChar->GetPortrait(Character::PORTRAIT_DEFAULT);
             
-            CL_Point point(m_portrait_pt.x+x+i*(portrait.get_width()+m_portrait_pt.x),y+m_portrait_pt.y);
+            clan::Point point(m_portrait_pt.x+x+i*(portrait.get_width()+m_portrait_pt.x),y+m_portrait_pt.y);
 			m_portrait_shadow.draw(gc,point.x,point.y);
             portrait.draw (gc,point.x,point.y);
             i++;
@@ -257,7 +257,7 @@ void SaveLoadState::draw_option ( int option, bool selected, float x, float y, C
     
 }
 
-CL_Rectf SaveLoadState::get_rect()
+clan::Rectf SaveLoadState::get_rect()
 {
     return IApplication::GetInstance()->GetDisplayRect();
 }
@@ -300,7 +300,7 @@ std::string SaveLoadState::filename_for_slot ( uint slot )
 }
 
 
-int SaveLoadState::height_for_option ( CL_GraphicContext& gc )
+int SaveLoadState::height_for_option ( clan::Canvas& gc )
 {
     return IApplication::GetInstance()->GetDisplayRect().get_height() / 3; // Hard-code 4 per screen per now
 }
@@ -314,8 +314,8 @@ void SaveLoadState::save ( uint slot )
     out_file.write((char*)&kVersion,sizeof(kVersion));
     Party * party = IApplication::GetInstance()->GetParty();
     int gold = party->GetGold();
-    int minutes = party->GetMinutesPlayed();
-    cl_byte64 ticks = CL_DateTime::get_current_utc_time().to_ticks();
+    uint minutes = party->GetMinutesPlayed();
+    long long ticks = clan::DateTime::get_current_utc_time().to_ticks();
     uint num_chars = party->GetCharacterCount();
     out_file.write((char*)&gold,sizeof(gold));
     out_file.write((char*)&minutes,sizeof(minutes));

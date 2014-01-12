@@ -39,7 +39,7 @@ public:
 	virtual void HandleButtonUp( const IApplication::Button& button );
 	virtual void HandleButtonDown( const IApplication::Button& button ) ;
 	virtual void HandleAxisMove( const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos );	
-	virtual void Draw( const CL_Rect &screenRect, CL_GraphicContext& GC );
+	virtual void Draw( const clan::Rect &screenRect, clan::Canvas& GC );
 	virtual bool LastToDraw() const; // Should we continue drawing more states?
 	virtual bool DisableMappableObjects() const; // Should the app move the MOs?
 	virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
@@ -52,16 +52,16 @@ protected:
 	virtual SoundManager::Effect get_sound_effect()const=0;
 	virtual std::string get_text()const=0;
 	virtual GraphicsManager::Overlay get_overlay()const=0;
-	virtual CL_Image get_icon()const=0;
+	virtual clan::Image get_icon()const=0;
 private:
 	void on_sound_timer();
-	CL_Timer m_sound_timer;
+	clan::Timer m_sound_timer;
 	bool m_done;
 	bool m_done_display;
-	CL_Pointf m_icon_offset;
-	CL_Pointf m_text_offset;
+	clan::Pointf m_icon_offset;
+	clan::Pointf m_text_offset;
 	uint m_start_time;
-	CL_Rect m_rect;
+	clan::Rectf m_rect;
 	Font m_font;
 	bool m_inverse;
 };

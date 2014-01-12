@@ -73,19 +73,19 @@ bool CutSceneState::DisableMappableObjects() const
     return false;
 }
 
-void CutSceneState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
+void CutSceneState::Draw ( const clan::Rect& screenRect, clan::Canvas& GC )
 {
     // TODO Center around the center of the middle tile instead of the top-left of it?
 
-    uint width = min( (unsigned int)screenRect.get_width(), m_pLevel->GetWidth() * 32);
-    uint height = min((unsigned int)screenRect.get_height(), m_pLevel->GetHeight() * 32);
-    CL_Rect src(m_center.x - width /2,
+    uint width = std::min( (unsigned int)screenRect.get_width(), m_pLevel->GetWidth() * 32);
+    uint height = std::min((unsigned int)screenRect.get_height(), m_pLevel->GetHeight() * 32);
+    clan::Rect src(m_center.x - width /2,
                                 m_center.y - height /2,
                                 m_center.x + width /2,
                                 m_center.y + height /2);	
 
 
-    CL_Rect dst = screenRect;
+    clan::Rect dst = screenRect;
     // Center
     if(screenRect.get_width() > src.get_width())
     {
@@ -132,10 +132,10 @@ void CutSceneState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
         }
     }
     
-    CL_Draw::box(GC,screenRect,m_color);
+    GC.draw_box(screenRect,m_color);
     
     if(m_fade_level != 0.0f){
-        CL_Draw::fill(GC,screenRect,CL_Colorf(0.0f,0.0f,0.0f,m_fade_level));
+        GC.fill_rect(screenRect,clan::Colorf(0.0f,0.0f,0.0f,m_fade_level));
     }
 
 }
@@ -166,7 +166,7 @@ Level* CutSceneState::grabMapStateLevel()
     return IApplication::GetInstance()->GetCurrentLevel();
 }
 
-CL_Point CutSceneState::grabMapStateCenter()
+clan::Point CutSceneState::grabMapStateCenter()
 {
 	return IApplication::GetInstance()->GetCurrentLevelCenter();
 }
@@ -226,6 +226,7 @@ void CutSceneState::SteelInit (
     SteelInterpreter * pInterpreter = &m_interpreter;
 #endif
     
+	pInterpreter->pushScope();
     m_pRunner = new CutSceneRunner(pInterpreter,this);
     // Add BIFs
     pInterpreter->addFunction("gotoLevel","scene",new SteelFunctor3Arg<CutSceneState,const std::string&,int,int>(this,&CutSceneState::gotoLevel));
@@ -265,10 +266,11 @@ void CutSceneState::SteelInit (
 void CutSceneState::SteelCleanup ( SteelInterpreter* pInterpreter )
 {
 #if SEPARATE_INTERPRETER
-    m_interpreter.removeFunctions("scene");
+    //m_interpreter.removeFunctions("scene");
 #else
-    pInterpreter->removeFunctions("scene");
+    //pInterpreter->removeFunctions("scene");
 #endif
+	pInterpreter->popScope();
     
     delete m_pRunner;
 }
@@ -286,8 +288,8 @@ bool CutSceneState::LastToDraw() const
 void CutSceneState::MappableObjectMoveHook()
 {
     static uint ticks = 0;
-    CL_Rect displayRect = IApplication::GetInstance()->GetDisplayRect();
-    CL_Rect rect(m_center.x - displayRect.get_width()/2,
+    clan::Rect displayRect = IApplication::GetInstance()->GetDisplayRect();
+    clan::Rect rect(m_center.x - displayRect.get_width()/2,
                            m_center.y - displayRect.get_height()/2,
                            m_center.x + displayRect.get_width()/2,
                            m_center.y + displayRect.get_height()/2);
@@ -304,10 +306,10 @@ void CutSceneState::MappableObjectMoveHook()
 
 void CutSceneState::PanTo ( int x, int y )
 {
-    m_center = CL_Point(x,y);
+    m_center = clan::Point(x,y);
 }
 
-CL_Point CutSceneState::GetOrigin() const
+clan::Point CutSceneState::GetOrigin() const
 {
     return m_center;
 }
@@ -320,7 +322,7 @@ void CutSceneState::SetFadeLevel ( float level )
 void CutSceneState::verifyLevel()
 {
     if(m_pLevel == NULL)
-        throw CL_Exception("gotoLevel must be called first.");
+        throw clan::Exception("gotoLevel must be called first.");
 }
 
 SteelType CutSceneState::addSprite ( const std::string& spriteRef, uint sprite_size, uint move_type, int x, int y, int face_dir )
@@ -344,14 +346,14 @@ SteelType CutSceneState::addSprite ( const std::string& spriteRef, uint sprite_s
         MappableObjectDynamic *m_pMO;
         Level*          m_level;
         std::string     m_spriteRef;
-        CL_Sprite       m_sprite;
+        clan::Sprite       m_sprite;
         MappableObject::eSize m_size;        
     };
-    CL_Event event;
+    clan::Event event;
     pMO->SetSolid(true);
     pMO->SetAlpha(1.0f);
     pMO->SetDefaultFacing(face_dir);
-    pMO->SetPixelPosition(CL_Point(x*32,y*32));
+    pMO->SetPixelPosition(clan::Point(x*32,y*32));
     SpriteFunctor functor(pMO,m_pLevel,spriteRef,static_cast<MappableObject::eSize>(sprite_size));
     IApplication::GetInstance()->RunOnMainThread(event,&functor);
     event.wait();
@@ -372,13 +374,13 @@ SteelType CutSceneState::addSprite ( const std::string& spriteRef, uint sprite_s
 
 SteelType CutSceneState::colorize ( double r, double g, double b )
 {
-    m_color = CL_Colorf(r,g,b,0.75f);
+    m_color = clan::Colorf(r,g,b,0.75f);
     return SteelType();
 }
 
 SteelType CutSceneState::uncolorize()
 {
-    m_color = CL_Colorf(1.0f,1.0f,1.0f,1.0f);
+    m_color = clan::Colorf(1.0f,1.0f,1.0f,1.0f);
     return SteelType();
 }
 
@@ -528,7 +530,7 @@ void CutSceneState::WaitTaskEvent()
 
 SteelType CutSceneState::pause ( double seconds )
 {
-    CL_System::sleep(seconds * 1000.0);
+    clan::System::sleep(seconds * 1000.0);
 	return SteelType();
 }
 
@@ -576,19 +578,19 @@ SteelType CutSceneState::fadeObject ( SteelType::Handle hHandle, bool in, double
 /*  Fade */
 void CutSceneState::FadeTask::start()
 {
-    m_start_time = CL_System::get_time();
+    m_start_time = clan::System::get_time();
 }
 
 void CutSceneState::FadeTask::update()
 {
-    const float p = float(CL_System::get_time() - m_start_time)/float(m_duration);
+    const float p = float(clan::System::get_time() - m_start_time)/float(m_duration);
     m_state.SetFadeLevel(m_fade_out?p:1-p);
     ++m_updateCount;
 }
 
 bool CutSceneState::FadeTask::finished()
 {
-    return (CL_System::get_time() >= (m_start_time + m_duration));
+    return (clan::System::get_time() >= (m_start_time + m_duration));
 }
 
 void CutSceneState::FadeTask::cleanup()
@@ -624,16 +626,16 @@ bool CutSceneState::MoveTask::finished()
 /* Pan */
 void CutSceneState::PanTask::start()
 {
-    m_start_time = CL_System::get_time();
+    m_start_time = clan::System::get_time();
     m_origin = m_state.GetOrigin();
 }
 
 void CutSceneState::PanTask::update()
 {
-    const float p = float(CL_System::get_time() - m_start_time)/float(m_duration);
-    CL_Vec2<float> origin = m_origin;
-    CL_Vec2<float> target(m_target.x * 32, m_target.y * 32);
-    CL_Vec2<float> current;
+    const float p = float(clan::System::get_time() - m_start_time)/float(m_duration);
+    clan::Vec2<float> origin = m_origin;
+    clan::Vec2<float> target(m_target.x * 32, m_target.y * 32);
+    clan::Vec2<float> current;
     current.x = origin.x + p*target.x;
     current.y = origin.y + p*target.y;
     m_state.PanTo(current.x,current.y);
@@ -641,17 +643,17 @@ void CutSceneState::PanTask::update()
 
 bool CutSceneState::PanTask::finished()
 {
-    return (CL_System::get_time() - m_start_time > m_duration);
+    return (clan::System::get_time() - m_start_time > m_duration);
 }
 
 void CutSceneState::FadeMOTask::start()
 {
-    m_start_time = CL_System::get_time();
+    m_start_time = clan::System::get_time();
 }
 
 void CutSceneState::FadeMOTask::update()
 {
-    const float p = float(CL_System::get_time() - m_start_time)/float(m_duration);
+    const float p = float(clan::System::get_time() - m_start_time)/float(m_duration);
     float f = m_fade_in?p:1.0f-p;
     if(f > 1.0f) f = 1.0f;
     if(f < 0.0f) f = 0.0f;
@@ -660,7 +662,7 @@ void CutSceneState::FadeMOTask::update()
 
 bool CutSceneState::FadeMOTask::finished()
 {
-    return (CL_System::get_time() - m_start_time > m_duration);
+    return (clan::System::get_time() - m_start_time > m_duration);
 }
 
 

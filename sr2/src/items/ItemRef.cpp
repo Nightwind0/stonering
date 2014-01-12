@@ -35,7 +35,7 @@ bool StoneRing::ItemRef::handle_element(eElement element, StoneRing::Element * p
     return true;
 }
 
-void StoneRing::ItemRef::load_attributes(CL_DomNamedNodeMap attributes)
+void StoneRing::ItemRef::load_attributes(clan::DomNamedNodeMap attributes)
 {
 
 }
@@ -120,7 +120,7 @@ std::string StoneRing::NamedItemRef::GetItemName()
 }
 
 
-void StoneRing::NamedItemRef::load_attributes(CL_DomNamedNodeMap attributes)
+void StoneRing::NamedItemRef::load_attributes(clan::DomNamedNodeMap attributes)
 {
     m_name = get_required_string("name",attributes);
 }

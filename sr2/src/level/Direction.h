@@ -41,16 +41,16 @@ public:
     bool operator!=(const Direction& other)const{
         return !((*this) == other);
     }
-    CL_Vec2<int> ToScreenVector()const{
+    clan::Vec2<int> ToScreenVector()const{
         if(m_value == NORTH.m_value)
-            return CL_Vec2<int>(0,-1);
+            return clan::Vec2<int>(0,-1);
         else if(m_value == SOUTH.m_value)
-            return CL_Vec2<int>(0,1);
+            return clan::Vec2<int>(0,1);
         else if(m_value == EAST.m_value)
-            return CL_Vec2<int>(1,0);
+            return clan::Vec2<int>(1,0);
         else if(m_value == WEST.m_value)
-            return CL_Vec2<int>(-1,0);
-        else return CL_Vec2<int>(0,0);
+            return clan::Vec2<int>(-1,0);
+        else return clan::Vec2<int>(0,0);
     }
     operator int() const {
         return m_value;

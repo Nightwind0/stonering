@@ -120,7 +120,7 @@ namespace StoneRing
         };
 
         virtual eElement WhichElement() const=0;
-        void Load(CL_DomElement  element);
+        void Load(clan::DomElement  element);
 #ifndef NDEBUG
         void SetElementName(const std::string &name) { m_element_name = name; }
         void SetParent(Element *pParent) { m_pParent = pParent; }
@@ -128,26 +128,26 @@ namespace StoneRing
 
     protected:
         virtual bool handle_element(eElement, Element * ){ return false;}
-        virtual void load_attributes(CL_DomNamedNodeMap ){}
+        virtual void load_attributes(clan::DomNamedNodeMap ){}
         virtual void handle_text(const std::string &){}
         virtual void load_finished(){} // You can check shit . Make sure you got everything.
 
 
-        uint get_required_uint(const std::string &attrname, CL_DomNamedNodeMap  attributes);
-        int  get_required_int(const std::string &attrname, CL_DomNamedNodeMap attributes);
-        float get_required_float(const std::string &attrname, CL_DomNamedNodeMap attributes );
-        std::string get_required_string (const std::string &attrname, CL_DomNamedNodeMap attributes );
-        bool get_required_bool (const std::string &attrname, CL_DomNamedNodeMap attributes );
-        bool has_attribute( const std::string &attrname, CL_DomNamedNodeMap attributes );
-        uint get_uint(const std::string &attrname, CL_DomNamedNodeMap  attributes);
-        int  get_int(const std::string &attrname, CL_DomNamedNodeMap attributes);
-        float get_float(const std::string &attrname, CL_DomNamedNodeMap attributes );
-        bool get_bool (const std::string &attrname, CL_DomNamedNodeMap attributes );
-        std::string get_string (const std::string &attrname, CL_DomNamedNodeMap attributes );
-        bool get_implied_bool ( const std::string &attrname, CL_DomNamedNodeMap attributes, bool defaultValue);
-        int get_implied_int( const std::string &attrname, CL_DomNamedNodeMap  attributes, int defaultValue);
-        std::string get_implied_string( const std::string &attrname, CL_DomNamedNodeMap  attributes, const std::string &defaultValue);
-        float get_implied_float(const std::string &attrname, CL_DomNamedNodeMap attributes, float defaultValue);
+        uint get_required_uint(const std::string &attrname, clan::DomNamedNodeMap  attributes);
+        int  get_required_int(const std::string &attrname, clan::DomNamedNodeMap attributes);
+        float get_required_float(const std::string &attrname, clan::DomNamedNodeMap attributes );
+        std::string get_required_string (const std::string &attrname, clan::DomNamedNodeMap attributes );
+        bool get_required_bool (const std::string &attrname, clan::DomNamedNodeMap attributes );
+        bool has_attribute( const std::string &attrname, clan::DomNamedNodeMap attributes );
+        uint get_uint(const std::string &attrname, clan::DomNamedNodeMap  attributes);
+        int  get_int(const std::string &attrname, clan::DomNamedNodeMap attributes);
+        float get_float(const std::string &attrname, clan::DomNamedNodeMap attributes );
+        bool get_bool (const std::string &attrname, clan::DomNamedNodeMap attributes );
+        std::string get_string (const std::string &attrname, clan::DomNamedNodeMap attributes );
+        bool get_implied_bool ( const std::string &attrname, clan::DomNamedNodeMap attributes, bool defaultValue);
+        int get_implied_int( const std::string &attrname, clan::DomNamedNodeMap  attributes, int defaultValue);
+        std::string get_implied_string( const std::string &attrname, clan::DomNamedNodeMap  attributes, const std::string &defaultValue);
+        float get_implied_float(const std::string &attrname, clan::DomNamedNodeMap attributes, float defaultValue);
 #ifndef NDEBUG
         std::string get_element_name() const;
 		virtual std::string GetDebugId() const =0;

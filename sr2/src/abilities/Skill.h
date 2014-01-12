@@ -39,7 +39,7 @@ namespace StoneRing
 
         std::string GetName() const;
         
-        CL_Image GetIcon() const{ return m_pIcon; }
+        clan::Image GetIcon() const{ return m_pIcon; }
         
         uint GetBPCost() const;
         uint GetMPCost() const;
@@ -54,7 +54,7 @@ namespace StoneRing
 		virtual std::string GetDebugId() const { return m_name; }		        
     private:
         virtual bool handle_element(eElement element, Element * pElement );
-        virtual void load_attributes(CL_DomNamedNodeMap attributes);
+        virtual void load_attributes(clan::DomNamedNodeMap attributes);
         static eType TypeFromString(const std::string type);
         std::string m_name;
         std::string m_description;
@@ -65,7 +65,7 @@ namespace StoneRing
 
         uint m_nBp;
         uint m_nMp;
-        CL_Image m_pIcon;
+        clan::Image m_pIcon;
 
         eType m_eType;
         bool m_bAllowsGroupTarget;
@@ -82,7 +82,7 @@ namespace StoneRing
         Skill * GetSkill() const;
 		virtual std::string GetDebugId() const { return m_ref; }				
     private:
-        virtual void load_attributes(CL_DomNamedNodeMap attributes);
+        virtual void load_attributes(clan::DomNamedNodeMap attributes);
         
         std::string m_ref;
     };
@@ -104,7 +104,7 @@ namespace StoneRing
 		virtual std::string GetDebugId() const { return m_ref->GetDebugId(); }				
     private:
         virtual bool handle_element(eElement element, Element * pElement);
-        virtual void load_attributes(CL_DomNamedNodeMap attributes);
+        virtual void load_attributes(clan::DomNamedNodeMap attributes);
         ScriptElement* m_pCondition;
 		ScriptElement* m_pVisibilityCondition;
         std::list<SkillTreeNode*> m_sub_skills;

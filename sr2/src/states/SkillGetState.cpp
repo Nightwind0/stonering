@@ -52,7 +52,7 @@ SoundManager::Effect SkillGetState::get_sound_effect() const {
 	return SoundManager::EFFECT_LEARNED_SKILL;
 }
 
-CL_Image SkillGetState::get_icon() const{
+clan::Image SkillGetState::get_icon() const{
 	assert(m_skill);
 	return m_skill->GetIcon();
 }

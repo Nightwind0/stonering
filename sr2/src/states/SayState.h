@@ -18,9 +18,9 @@ namespace StoneRing
 		virtual void HandleButtonUp(const IApplication::Button& button);
 		virtual void HandleButtonDown(const IApplication::Button& button);
 		virtual void HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos);
-        virtual void HandleKeyDown(const CL_InputEvent &key);
-        virtual void HandleKeyUp(const CL_InputEvent &key);
-        virtual void Draw(const CL_Rect &screenRect,CL_GraphicContext& GC);
+        virtual void HandleKeyDown(const clan::InputEvent &key);
+        virtual void HandleKeyUp(const clan::InputEvent &key);
+        virtual void Draw(const clan::Rect &screenRect,clan::Canvas& GC);
         virtual bool LastToDraw() const { return false; } // It'll be last anyway.... and if not, thats okay too
         virtual bool DisableMappableObjects() const; // Should the app move the MOs?
         virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
@@ -34,9 +34,9 @@ namespace StoneRing
         std::string m_text;
         StoneRing::Font m_speakerFont;
         StoneRing::Font m_speechFont;
-        CL_Rectf m_speaker_rect;
-        CL_Rectf m_text_rect;
-        CL_Rectf m_rect;
+        clan::Rectf m_speaker_rect;
+        clan::Rectf m_text_rect;
+        clan::Rectf m_rect;
         std::string::iterator m_iText;
         bool m_bDone;
         uint m_nDrawnThisFrame;

@@ -15,6 +15,7 @@
 #include "ArmorClass.h"
 #include "CharacterManager.h"
 #include "Omega.h"
+#include "DebugControl.h"
 
 using StoneRing::Party;
 using StoneRing::ICharacter;
@@ -34,6 +35,8 @@ Party::~Party()
 
 uint Party::GetGold() const
 {
+	if(DebugControl::InfiniteGold())
+		return 100000000;
     return m_nGold;
 }
 
@@ -131,7 +134,7 @@ void Party::GiveGold(int amount)
     {
         // They are taking..
         if(m_nGold + amount < 0)
-            throw CL_Exception("Attempt to take more gold than we had.");
+            throw clan::Exception("Attempt to take more gold than we had.");
     }
 
     m_nGold += amount;

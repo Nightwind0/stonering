@@ -54,7 +54,7 @@ std::string BoolToString( const bool &b)
 
 
 // For the multimap of points
-bool operator < (const CL_Point &p1, const CL_Point &p2)
+bool operator < (const clan::Point &p1, const clan::Point &p2)
 {
     uint p1value = (p1.y  *  IApplication::GetInstance()->GetDisplayRect().get_width()) + p1.x;
     uint p2value = (p2.y  * IApplication::GetInstance()->GetDisplayRect().get_width()) + p2.x;
@@ -69,7 +69,7 @@ bool Tilemap::handle_element(Element::eElement element, Element * pElement)
     return false;
 }
 
-void Tilemap::load_attributes(CL_DomNamedNodeMap attributes)
+void Tilemap::load_attributes(clan::DomNamedNodeMap attributes)
 {
     std::string name = get_required_string("mapname",attributes);
     m_image = GraphicsManager::GetTileMap(name);
@@ -111,7 +111,7 @@ SideBlock::SideBlock(int i )
 
 
 
-void SideBlock::load_attributes(CL_DomNamedNodeMap attributes)
+void SideBlock::load_attributes(clan::DomNamedNodeMap attributes)
 {
     bool north = get_required_bool("north",attributes);
     bool south = get_required_bool("south",attributes);
@@ -140,7 +140,7 @@ Tile::Tile():m_pCondition(NULL),m_pScript(NULL),m_ZOffset(0),cFlags(0),m_monster
 }
 
 
-void Tile::load_attributes(CL_DomNamedNodeMap attributes)
+void Tile::load_attributes(clan::DomNamedNodeMap attributes)
 {
     m_X = get_required_int("xpos",attributes);
     m_Y = get_required_int("ypos",attributes);
@@ -170,7 +170,7 @@ bool Tile::handle_element(Element::eElement element, Element * pElement)
         break;
     case ETILEMAP:
         m_tilemap = dynamic_cast<Tilemap*>(pElement);
-		m_image =  CL_Subtexture(m_tilemap->GetTileMap(), CL_Rect(CL_Point(m_tilemap->GetMapX()*32,m_tilemap->GetMapY()*32),CL_Size(32,32)));
+		m_image =  clan::Subtexture(m_tilemap->GetTileMap(), clan::Rect(clan::Point(m_tilemap->GetMapX()*32,m_tilemap->GetMapY()*32),clan::Size(32,32)));
         cFlags &= ~TIL_SPRITE;
         break;
     case ESPRITEREF:
@@ -244,19 +244,19 @@ bool Tile::EvaluateCondition() const
 }
 
 
-CL_Rect Tile::GetRect() const
+clan::Rect Tile::GetRect() const
 {
-    return CL_Rect(CL_Point(m_X*32,m_Y*32),CL_Size(32,32));
+    return clan::Rect(clan::Point(m_X*32,m_Y*32),clan::Size(32,32));
 }
 
 
-void Tile::Draw(CL_GraphicContext& gc, const CL_Point& dst)
+void Tile::Draw(clan::Canvas& gc, const clan::Point& dst)
 {
-	draw(CL_Rect(0,0,32,32),CL_Rect(dst + CL_Point(m_X*32,m_Y*32),CL_Size(32,32)),gc);
+	draw(clan::Rect(0,0,32,32),clan::Rect(dst + clan::Point(m_X*32,m_Y*32),clan::Size(32,32)),gc);
 }
 
 
-void Tile::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC)
+void Tile::draw(const clan::Rect &src, const clan::Rect &dst, clan::Canvas& GC)
 {
     // Get the graphic guy
     // Get our tilemap or sprite
@@ -266,18 +266,18 @@ void Tile::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC)
 
     if ( !IsSprite() )
     {
-        /*CL_Subtexture tilemap = m_tilemap->GetTileMap();
+        /*clan::Subtexture tilemap = m_tilemap->GetTileMap();
 
-        //        void draw(  const CL_Rect& src, const CL_Rect& dest, CL_GraphicContext* context = 0);
+        //        void draw(  const clan::Rect& src, const clan::Rect& dest, clan::Canvas* context = 0);
         int mapx, mapy;
         mapx = m_tilemap->GetMapX();
         mapy = m_tilemap->GetMapY();
-		CL_Rect srcRect(CL_Point(mapx*32,mapy*32),CL_Size(32,32));
+		clan::Rect srcRect(clan::Point(mapx*32,mapy*32),clan::Size(32,32));
 
 
         tilemap.draw(GC,srcRect,dst);
         */
-		CL_Image image(GC,m_image);
+		clan::Image image(m_image);
 		image.draw(GC, dst);
     }
     else
@@ -290,7 +290,7 @@ void Tile::draw(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext& GC)
 
 void Tile::Update()
 {
-    if (IsSprite()) m_sprite.update();
+    if (IsSprite()) m_sprite.update(1); // calc actual ms?
 }
 
 int Tile::GetSideBlock() const
@@ -314,9 +314,9 @@ int Tile::GetSideBlock() const
 
 #ifdef SR2_EDITOR
 
-CL_DomElement Tile::CreateDomElement(CL_DomDocument& doc)const
+clan::DomElement Tile::CreateDomElement(clan::DomDocument& doc)const
 {
-    CL_DomElement element(doc,"tile");
+    clan::DomElement element(doc,"tile");
 
     element.set_attribute("xpos", IntToString ( m_X ) );
     element.set_attribute("ypos", IntToString ( m_Y ) );
@@ -344,7 +344,7 @@ CL_DomElement Tile::CreateDomElement(CL_DomDocument& doc)const
     if( GetSideBlock() > 0)
     {
         SideBlock block( GetSideBlock() );
-        CL_DomElement dirEl = block.CreateDomElement(doc);
+        clan::DomElement dirEl = block.CreateDomElement(doc);
 
         element.append_child( dirEl );
     }
@@ -376,9 +376,9 @@ Tile* Tile::clone() const {
 }
 
 
-CL_DomElement SideBlock::CreateDomElement(CL_DomDocument& doc)const
+clan::DomElement SideBlock::CreateDomElement(clan::DomDocument& doc)const
 {
-    CL_DomElement element(doc,"block");
+    clan::DomElement element(doc,"block");
     element.set_attribute("north", (m_eSideBlock & BLK_NORTH )?"true":"false");
     element.set_attribute("south", (m_eSideBlock & BLK_SOUTH)?"true":"false");
     element.set_attribute("east",  (m_eSideBlock & BLK_EAST )?"true":"false" );
@@ -387,9 +387,9 @@ CL_DomElement SideBlock::CreateDomElement(CL_DomDocument& doc)const
     return element;
 }
 
-CL_DomElement Tilemap::CreateDomElement(CL_DomDocument& doc)const
+clan::DomElement Tilemap::CreateDomElement(clan::DomDocument& doc)const
 {
-    CL_DomElement element(doc,"tilemap");
+    clan::DomElement element(doc,"tilemap");
     element.set_attribute("mapname",m_sprite_string);
     element.set_attribute("mapx",IntToString(m_X));
     element.set_attribute("mapy",IntToString(m_Y));
@@ -416,9 +416,9 @@ void LevelHeader::SetMusic(const std::string& music)
 	m_music = music;
 }
 
-CL_DomElement LevelHeader::CreateDomElement(CL_DomDocument& doc)const
+clan::DomElement LevelHeader::CreateDomElement(clan::DomDocument& doc)const
 {
-    CL_DomElement levelHeader(doc,"levelHeader");
+    clan::DomElement levelHeader(doc,"levelHeader");
     levelHeader.set_attribute("music", m_music );
     levelHeader.set_attribute("width", IntToString(m_nLevelWidth) );
     levelHeader.set_attribute("height", IntToString(m_nLevelHeight) );

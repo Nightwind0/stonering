@@ -67,15 +67,15 @@ public:
     void SetName(const std::string& name){
         m_name = name;
     }
-    void SetSize(const CL_Size& size){
+    void SetSize(const clan::Size& size){
         m_size = size;
     }
-    void SetSprite(CL_Sprite sprite){
+    void SetSprite(clan::Sprite sprite){
         if(!sprite.is_null()){
-            m_sprite.clone(sprite);
+            m_sprite = sprite.clone();
             m_cFlags |= SPRITE;
         }else{
-            m_sprite = CL_Sprite();
+            m_sprite = clan::Sprite();
             m_cFlags &= ~SPRITE;
         }
     }
@@ -115,7 +115,7 @@ public:
 
 protected:
     // void AddEvent
-    virtual void create_dom_element_hook(CL_DomElement& element)const{
+    virtual void create_dom_element_hook(clan::DomElement& element)const{
         // TODO: Need to write out our events and conditions here
     }
 private:
@@ -180,79 +180,79 @@ private:
 };
     
 
-MOEditWindow::MOEditWindow(CL_GUIManager* owner, const CL_GUITopLevelDescription &desc)
-    :CL_Window(owner,desc)
+MOEditWindow::MOEditWindow(clan::GUIManager* owner, const clan::GUITopLevelDescription &desc)
+    :clan::Window(owner,desc)
 {
     func_close().set(this,&MOEditWindow::on_window_close);
-    set_geometry(CL_Rect(32,32,700,500));
-    m_name_field = new CL_LineEdit(this);
-    m_name_field->set_geometry(CL_Rect(100,24,380,48));
-    m_name_label = new CL_Label(this);
-    m_name_label->set_geometry(CL_Rect(12,24,90,48));
+    set_geometry(clan::Rect(32,32,700,500));
+    m_name_field = new clan::LineEdit(this);
+    m_name_field->set_geometry(clan::Rect(100,24,380,48));
+    m_name_label = new clan::Label(this);
+    m_name_label->set_geometry(clan::Rect(12,24,90,48));
     m_name_label->set_text("Name:");
-    //m_type_list = new CL_ComboBox(this);
-    m_sprite_list = new CL_ListView(this);
-    m_sprite_list->set_geometry(CL_Rect(12,50,380,300));
+    //m_type_list = new clan::ComboBox(this);
+    m_sprite_list = new clan::ListView(this);
+    m_sprite_list->set_geometry(clan::Rect(12,50,380,300));
     m_sprite_list->set_multi_select(false);
 	m_sprite_list->set_select_whole_row(true);
     m_sprite_list->func_selection_changed().set(this,&MOEditWindow::on_list_selection);
     
     m_sprite_view = new MOView(this);
-    m_sprite_view->set_geometry(CL_Rect(400,50,661,460));
+    m_sprite_view->set_geometry(clan::Rect(400,50,661,460));
     
-    m_width_spin = new CL_Spin(this);
+    m_width_spin = new clan::Spin(this);
     m_width_spin->set_ranges(1,5);
     m_width_spin->set_value(1);
     m_width_spin->set_step_size(1);
-    m_width_spin->set_geometry(CL_Rect(12,400,68,428));
+    m_width_spin->set_geometry(clan::Rect(12,400,68,428));
 
-    m_height_spin = new CL_Spin(this);
+    m_height_spin = new clan::Spin(this);
     m_height_spin->set_ranges(1,5);
     m_height_spin->set_value(1);
     m_height_spin->set_step_size(1);
-    m_height_spin->set_geometry(CL_Rect(72,400,128,428));    
+    m_height_spin->set_geometry(clan::Rect(72,400,128,428));    
     
-    m_movement = new CL_ComboBox(this);
-    m_movement->set_geometry(CL_Rect(12,310,128,334));
+    m_movement = new clan::ComboBox(this);
+    m_movement->set_geometry(clan::Rect(12,310,128,334));
     
-    m_move_speed = new CL_ComboBox(this);
-    m_move_speed->set_geometry(CL_Rect(12,340,128,364));
+    m_move_speed = new clan::ComboBox(this);
+    m_move_speed->set_geometry(clan::Rect(12,340,128,364));
     
-    m_solid = new CL_CheckBox(this);
-    m_solid->set_geometry(CL_Rect(12,370,128,394));
+    m_solid = new clan::CheckBox(this);
+    m_solid->set_geometry(clan::Rect(12,370,128,394));
     m_solid->set_text("Solid");
     m_solid->set_checked(true);
     
-    m_flying = new CL_CheckBox(this);
-    m_flying->set_geometry(CL_Rect(136,370,256,394));
+    m_flying = new clan::CheckBox(this);
+    m_flying->set_geometry(clan::Rect(136,370,256,394));
     m_flying->set_text("Flying");
     m_flying->set_checked(false);
     
-    m_event_list = new CL_ComboBox(this);
-    m_event_list->set_geometry(CL_Rect(132,310,264,334));
+    m_event_list = new clan::ComboBox(this);
+    m_event_list->set_geometry(clan::Rect(132,310,264,334));
 	
-	m_condition_button = new CL_PushButton(this);
-	m_condition_button->set_geometry(CL_Rect(132,340,264,364));
+	m_condition_button = new clan::PushButton(this);
+	m_condition_button->set_geometry(clan::Rect(132,340,264,364));
 	m_condition_button->set_text("Create Condition");
 	m_condition_button->func_clicked().set(this,&MOEditWindow::on_condition_edit);
     
-    m_open_event_button = new CL_PushButton(this);
-    m_open_event_button->set_geometry(CL_Rect(270,310,380,334));
+    m_open_event_button = new clan::PushButton(this);
+    m_open_event_button->set_geometry(clan::Rect(270,310,380,334));
     m_open_event_button->set_text("Open Event");
 	m_open_event_button->func_clicked().set(this,&MOEditWindow::on_edit_event);
     
-    m_add_event_button = new CL_PushButton(this);
-    m_add_event_button->set_geometry(CL_Rect(270,340,380,364));
+    m_add_event_button = new clan::PushButton(this);
+    m_add_event_button->set_geometry(clan::Rect(270,340,380,364));
     m_add_event_button->set_text("Add Event");
 	m_add_event_button->func_clicked().set(this,&MOEditWindow::on_add_event);
 
     
-    m_face_dir = new CL_ComboBox(this);
-    m_face_dir->set_geometry(CL_Rect(132,400,264,420));
+    m_face_dir = new clan::ComboBox(this);
+    m_face_dir->set_geometry(clan::Rect(132,400,264,420));
  
     
-    m_save_button = new CL_PushButton(this);
-    m_save_button->set_geometry(CL_Rect(270,430,380,454));
+    m_save_button = new clan::PushButton(this);
+    m_save_button->set_geometry(clan::Rect(270,430,380,454));
     m_save_button->set_text("Save");
     m_save_button->func_clicked().set(this,&MOEditWindow::on_save);
     
@@ -307,7 +307,7 @@ void MOEditWindow::SetCreate()
 
 void MOEditWindow::populate_event_list()
 {
-	CL_PopupMenu menu;
+	clan::PopupMenu menu;
 	for(std::list<Event*>::const_iterator it = m_pMo->EventsBegin();
 		it != m_pMo->EventsEnd(); it++){
 		menu.insert_item((*it)->GetName());
@@ -319,7 +319,7 @@ void MOEditWindow::populate_event_list()
 
 void MOEditWindow::populate_facing_combo()
 {
-    CL_PopupMenu menu;
+    clan::PopupMenu menu;
     const char* dirs[] = {"south","north","east","west"};
     for(int i =0;i<sizeof(dirs)/sizeof(const char*); i++){
         menu.insert_item(dirs[i]);
@@ -331,22 +331,22 @@ void MOEditWindow::populate_facing_combo()
 
 void MOEditWindow::populate_sprite_list()
 {
-    CL_ListViewHeader *lv_header = m_sprite_list->get_header();
+    clan::ListViewHeader *lv_header = m_sprite_list->get_header();
     lv_header->append(lv_header->create_column("Main", "Name")).set_width(200);
     
-    CL_ListViewItem doc = m_sprite_list->get_document_item();
+    clan::ListViewItem doc = m_sprite_list->get_document_item();
     
     m_no_sprite_item = m_sprite_list->create_item();
     m_no_sprite_item.set_column_text("Main","None");
     doc.append_child(m_no_sprite_item);
     
-    CL_ResourceManager & resources =  IApplication::GetInstance()->GetResources();
+    clan::XMLResourceDocument & resources =  clan::XMLResourceManager::get_doc(IApplication::GetInstance()->GetResources());
     const char * SubSections[] = {"Npc","Mob"};
     for(int sub = 0; sub < sizeof(SubSections) / sizeof(const char*); sub++){
         std::string section_name = "Sprites/" + std::string(SubSections[sub]) + '/';
-        std::vector<CL_String> sprites = resources.get_resource_names(section_name);
-        for(std::vector<CL_String>::const_iterator it = sprites.begin(); it != sprites.end(); it++){
-            CL_ListViewItem item = m_sprite_list->create_item();
+        std::vector<std::string> sprites = resources.get_resource_names(section_name);
+        for(std::vector<std::string>::const_iterator it = sprites.begin(); it != sprites.end(); it++){
+            clan::ListViewItem item = m_sprite_list->create_item();
             std::string name = std::string(SubSections[sub]) + '/' + std::string(*it);
             item.set_column_text("Main",name);
   //      item.set_userdata(*it);
@@ -357,10 +357,10 @@ void MOEditWindow::populate_sprite_list()
 
 void MOEditWindow::populate_movement_combo()
 {
-    CL_PopupMenu menu;
+    clan::PopupMenu menu;
     const char* movements[] = {"none","wander","paceNS","paceEW"};
     for(int i=0;i<sizeof(movements)/sizeof(const char*);i++){
-        CL_PopupMenuItem item = menu.insert_item(movements[i]);
+        clan::PopupMenuItem item = menu.insert_item(movements[i]);
     }
     m_movement->set_popup_menu(menu);
     m_movement->set_selected_item(0);
@@ -368,10 +368,10 @@ void MOEditWindow::populate_movement_combo()
 
 void MOEditWindow::populate_move_speed_combo()
 {
-    CL_PopupMenu menu;
+    clan::PopupMenu menu;
     const char* movements[] = {"slow","medium","fast"};
     for(int i=0;i<sizeof(movements)/sizeof(const char*);i++){
-        CL_PopupMenuItem item = menu.insert_item(movements[i]);
+        clan::PopupMenuItem item = menu.insert_item(movements[i]);
     }
     m_move_speed->set_popup_menu(menu);
     m_move_speed->set_selected_item(0);
@@ -380,19 +380,19 @@ void MOEditWindow::populate_move_speed_combo()
 
 
 
-void MOEditWindow::on_list_selection ( CL_ListViewSelection selection )
+void MOEditWindow::on_list_selection ( clan::ListViewSelection selection )
 {
-    CL_ListViewItem item = selection.get_first().get_item();
+    clan::ListViewItem item = selection.get_first().get_item();
     if(item == m_no_sprite_item){
         m_sprite_view->Clear();
         m_sprite_name.clear();
     }else{
         m_sprite_name = item.get_column("Main").get_text();
-        CL_Size sprite_size;
+        clan::Size sprite_size;
         try {
-            CL_Sprite sprite = GraphicsManager::CreateSprite(m_sprite_name,true);
+            clan::Sprite sprite = GraphicsManager::CreateSprite(m_sprite_name,true);
             m_sprite_view->SetSprite(sprite);
-            sprite_size = CL_Size(max(sprite.get_width() / 32,1), max(sprite.get_height() / 64,1));
+            sprite_size = clan::Size(max(sprite.get_width() / 32,1), max(sprite.get_height() / 64,1));
             m_height_spin->set_value(sprite_size.height);
             m_width_spin->set_value(sprite_size.width);
             m_sprite_view->SetSize(sprite_size);
@@ -403,8 +403,8 @@ void MOEditWindow::on_list_selection ( CL_ListViewSelection selection )
 
 void MOEditWindow::on_add_event()
 {
-	CL_GUIManager mgr = get_gui_manager();
-	CL_GUITopLevelDescription desc("Create Event",CL_Size(250,250), false);		
+	clan::GUIManager mgr = get_gui_manager();
+	clan::GUITopLevelDescription desc("Create Event",clan::Size(250,250), false);		
 	desc.set_dialog_window(true);
 	EventEditWindow window(&mgr,desc);
 	window.CreateEvent();
@@ -428,8 +428,8 @@ void MOEditWindow::on_edit_event()
 {
 	Event * pEvent = m_pMo->GetEventByName(m_event_list->get_text());
 	if(pEvent){
-		CL_GUIManager mgr = get_gui_manager();
-		CL_GUITopLevelDescription desc("Edit Event",CL_Size(250,250), false);		
+		clan::GUIManager mgr = get_gui_manager();
+		clan::GUITopLevelDescription desc("Edit Event",clan::Size(250,250), false);		
 		desc.set_dialog_window(true);
 		EventEditWindow window(&mgr,desc);
 		window.SetEvent(pEvent);
@@ -454,8 +454,8 @@ void MOEditWindow::on_edit_event()
 
 void MOEditWindow::on_condition_edit()
 {
-	CL_GUIManager mgr = get_gui_manager();
-	CL_GUITopLevelDescription desc("Condition",CL_Size(800,650),false);
+	clan::GUIManager mgr = get_gui_manager();
+	clan::GUITopLevelDescription desc("Condition",clan::Size(800,650),false);
 	desc.set_dialog_window(true);
 	ScriptEditWindow script_window(&mgr,desc);
 	script_window.SetIsCondition(true);
@@ -510,7 +510,7 @@ void MOEditWindow::SetName ( const char* pName )
     m_name_field->set_text(m_name);
 }
 
-void MOEditWindow::SetPoint ( const CL_Point& i_pt )
+void MOEditWindow::SetPoint ( const clan::Point& i_pt )
 {
     m_point = i_pt;
 }
@@ -550,7 +550,7 @@ void MOEditWindow::sync_from_mo()
     else if(face_dir == "east")
         m_face_dir->set_selected_item(3);
     
-     CL_ListViewItem item = m_sprite_list->find("Main",m_pMo->GetSpriteName());
+     clan::ListViewItem item = m_sprite_list->find("Main",m_pMo->GetSpriteName());
      if(!item.is_null())
         m_sprite_list->set_selected(item,true);
      else
@@ -565,7 +565,7 @@ void MOEditWindow::sync_from_mo()
 void MOEditWindow::sync_to_mo()
 {
     m_pMo->SetName(m_name_field->get_text());
-    m_pMo->SetSize(CL_Size(m_width_spin->get_value(),m_height_spin->get_value()));
+    m_pMo->SetSize(clan::Size(m_width_spin->get_value(),m_height_spin->get_value()));
     m_pMo->SetMovementType((MappableObject::eMovementType)m_movement->get_selected_item());
     m_pMo->SetMovementSpeed((MappableObject::eMovementSpeed)m_move_speed->get_selected_item());
     m_pMo->SetSprite(m_sprite_view->GetSprite());

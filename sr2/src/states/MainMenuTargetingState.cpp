@@ -78,7 +78,7 @@ void MainMenuTargetingState::HandleAxisMove(const IApplication::Axis& axis, IApp
     }
 }
     
-void MainMenuTargetingState::Draw(const CL_Rect &screenRect,CL_GraphicContext& GC)
+void MainMenuTargetingState::Draw(const clan::Rect &screenRect,clan::Canvas& GC)
 {
 }
 

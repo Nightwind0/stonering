@@ -25,43 +25,43 @@
 
 namespace StoneRing { 
 
-EventEditWindow::EventEditWindow(CL_GUIManager* pManager, const CL_GUITopLevelDescription& desc):CL_Window(pManager,desc) 
+EventEditWindow::EventEditWindow(clan::GUIManager* pManager, const clan::GUITopLevelDescription& desc):clan::Window(pManager,desc) 
 {
 	m_pEvent = NULL;
-	m_event_name = new CL_LineEdit(this);
-	m_event_name->set_geometry(CL_Rect(CL_Point(12,34),CL_Size(200,24)));
+	m_event_name = new clan::LineEdit(this);
+	m_event_name->set_geometry(clan::Rect(clan::Point(12,34),clan::Size(200,24)));
 	
-	m_repeatable = new CL_CheckBox(this);
-	m_repeatable->set_geometry(CL_Rect(CL_Point(12,74),CL_Size(100,24)));
+	m_repeatable = new clan::CheckBox(this);
+	m_repeatable->set_geometry(clan::Rect(clan::Point(12,74),clan::Size(100,24)));
 	m_repeatable->set_text("Repeatable");
 	
-	m_remember = new CL_CheckBox(this);
-	m_remember->set_geometry(CL_Rect(CL_Point(122,74),CL_Size(100,24)));
+	m_remember = new clan::CheckBox(this);
+	m_remember->set_geometry(clan::Rect(clan::Point(122,74),clan::Size(100,24)));
 	m_remember->set_text("Remember");
 	
-	m_trigger_type = new CL_ComboBox(this);
-	m_trigger_type->set_geometry(CL_Rect(CL_Point(12,96),CL_Size(100,24)));
+	m_trigger_type = new clan::ComboBox(this);
+	m_trigger_type->set_geometry(clan::Rect(clan::Point(12,96),clan::Size(100,24)));
 	
-	m_edit_script = new CL_PushButton(this);
-	m_edit_script->set_geometry(CL_Rect(CL_Point(12,128),CL_Size(100,24)));
+	m_edit_script = new clan::PushButton(this);
+	m_edit_script->set_geometry(clan::Rect(clan::Point(12,128),clan::Size(100,24)));
 	m_edit_script->func_clicked().set(this,&EventEditWindow::on_edit_script);
 	
-	m_delete_script = new CL_PushButton(this);
-	m_delete_script->set_geometry(CL_Rect(CL_Point(128,128),CL_Size(100,24)));
+	m_delete_script = new clan::PushButton(this);
+	m_delete_script->set_geometry(clan::Rect(clan::Point(128,128),clan::Size(100,24)));
 	m_delete_script->func_clicked().set(this,&EventEditWindow::on_delete_script);
 	m_delete_script->set_text("Delete Script");
 	
-	m_edit_condition = new CL_PushButton(this);
-	m_edit_condition->set_geometry(CL_Rect(CL_Point(12,160),CL_Size(100,24)));
+	m_edit_condition = new clan::PushButton(this);
+	m_edit_condition->set_geometry(clan::Rect(clan::Point(12,160),clan::Size(100,24)));
 	m_edit_condition->func_clicked().set(this,&EventEditWindow::on_edit_condition);
 	
-	m_delete_condition = new CL_PushButton(this);
-	m_delete_condition->set_geometry(CL_Rect(CL_Point(128,160),CL_Size(100,24)));
+	m_delete_condition = new clan::PushButton(this);
+	m_delete_condition->set_geometry(clan::Rect(clan::Point(128,160),clan::Size(100,24)));
 	m_delete_condition->func_clicked().set(this,&EventEditWindow::on_delete_condition);
 	m_delete_condition->set_text("Delete Condition");
 	
-	m_save_button = new CL_PushButton(this);
-	m_save_button->set_geometry(CL_Rect(CL_Point(12,200),CL_Size(100,24)));
+	m_save_button = new clan::PushButton(this);
+	m_save_button->set_geometry(clan::Rect(clan::Point(12,200),clan::Size(100,24)));
 	m_save_button->func_clicked().set(this,&EventEditWindow::on_save);
 	m_save_button->set_text("Save");
 	
@@ -106,10 +106,10 @@ void EventEditWindow::sync_button_names()
 
 void EventEditWindow::populate_trigger_types()
 {
-	CL_PopupMenu menu;
+	clan::PopupMenu menu;
     const char* triggers[] = {"step", "talk", "act", "collide"};
     for(int i=0;i<sizeof(triggers)/sizeof(const char*);i++){
-        CL_PopupMenuItem item = menu.insert_item(triggers[i]);
+        clan::PopupMenuItem item = menu.insert_item(triggers[i]);
     }
     m_trigger_type->set_popup_menu(menu);
     m_trigger_type->set_selected_item(1);
@@ -176,8 +176,8 @@ void EventEditWindow::on_delete_script()
 
 void EventEditWindow::on_edit_condition()
 {
-	CL_GUIManager mgr = get_gui_manager();
-	CL_GUITopLevelDescription desc("Condition",CL_Size(800,650),false);
+	clan::GUIManager mgr = get_gui_manager();
+	clan::GUITopLevelDescription desc("Condition",clan::Size(800,650),false);
 	desc.set_dialog_window(true);
 	ScriptEditWindow window(&mgr,desc);
 	window.SetIsCondition(true);
@@ -192,8 +192,8 @@ void EventEditWindow::on_edit_condition()
 
 void EventEditWindow::on_edit_script()
 {
-	CL_GUIManager mgr = get_gui_manager();
-	CL_GUITopLevelDescription desc("Event Script", CL_Size(800,650),false);
+	clan::GUIManager mgr = get_gui_manager();
+	clan::GUITopLevelDescription desc("Event Script", clan::Size(800,650),false);
 	desc.set_dialog_window(true);
 	ScriptEditWindow window(&mgr,desc);
 	if(m_pEvent->GetScript())

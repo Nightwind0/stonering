@@ -21,7 +21,7 @@ using StoneRing::Element;
 
 
 
-uint Element::get_required_uint(const std::string &attrname, CL_DomNamedNodeMap attributes)
+uint Element::get_required_uint(const std::string &attrname, clan::DomNamedNodeMap attributes)
 {
     if( has_attribute ( attrname, attributes ) )
     {
@@ -33,7 +33,7 @@ uint Element::get_required_uint(const std::string &attrname, CL_DomNamedNodeMap 
     }
 }
 
-int Element:: get_required_int(const std::string &attrname, CL_DomNamedNodeMap attributes)
+int Element:: get_required_int(const std::string &attrname, clan::DomNamedNodeMap attributes)
 {
     if( has_attribute ( attrname, attributes ) )
     {
@@ -46,7 +46,7 @@ int Element:: get_required_int(const std::string &attrname, CL_DomNamedNodeMap a
 
 }
 
-float Element::get_required_float(const std::string &attrname, CL_DomNamedNodeMap attributes )
+float Element::get_required_float(const std::string &attrname, clan::DomNamedNodeMap attributes )
 {
 
     if( has_attribute ( attrname, attributes ) )
@@ -60,7 +60,7 @@ float Element::get_required_float(const std::string &attrname, CL_DomNamedNodeMa
 
 }
 
-std::string Element::get_required_string (const std::string &attrname, CL_DomNamedNodeMap attributes )
+std::string Element::get_required_string (const std::string &attrname, clan::DomNamedNodeMap attributes )
 {
     if( has_attribute ( attrname, attributes ) )
     {
@@ -75,7 +75,7 @@ std::string Element::get_required_string (const std::string &attrname, CL_DomNam
     return "";
 }
 
-bool Element::get_required_bool (const std::string &attrname, CL_DomNamedNodeMap attributes )
+bool Element::get_required_bool (const std::string &attrname, clan::DomNamedNodeMap attributes )
 {
     if( has_attribute ( attrname, attributes ) )
     {
@@ -89,18 +89,18 @@ bool Element::get_required_bool (const std::string &attrname, CL_DomNamedNodeMap
     return false;
 }
 
-bool Element::get_bool ( const std::string &attrname, CL_DomNamedNodeMap attributes)
+bool Element::get_bool ( const std::string &attrname, clan::DomNamedNodeMap attributes)
 {
     std::string str = get_string ( attrname, attributes);
 
     if(str == "true") return true;
     else if (str == "false") return false;
-    else throw CL_Exception("Boolean value for " + attrname + " must be 'true' or 'false'.");
+    else throw clan::Exception("Boolean value for " + attrname + " must be 'true' or 'false'.");
 
     return false;
 }
 
-bool Element::get_implied_bool ( const std::string &attrname, CL_DomNamedNodeMap attributes, bool defaultValue)
+bool Element::get_implied_bool ( const std::string &attrname, clan::DomNamedNodeMap attributes, bool defaultValue)
 {
     if(has_attribute(attrname, attributes))
     {
@@ -109,7 +109,7 @@ bool Element::get_implied_bool ( const std::string &attrname, CL_DomNamedNodeMap
     else return defaultValue;
 }
 
-int Element::get_implied_int( const std::string &attrname, CL_DomNamedNodeMap attributes, int defaultValue)
+int Element::get_implied_int( const std::string &attrname, clan::DomNamedNodeMap attributes, int defaultValue)
 {
     if(has_attribute(attrname, attributes))
     {
@@ -118,7 +118,7 @@ int Element::get_implied_int( const std::string &attrname, CL_DomNamedNodeMap at
     else return defaultValue;
 }
 
-std::string Element::get_implied_string( const std::string &attrname, CL_DomNamedNodeMap attributes, const std::string &defaultValue)
+std::string Element::get_implied_string( const std::string &attrname, clan::DomNamedNodeMap attributes, const std::string &defaultValue)
 {
     if(has_attribute(attrname,attributes))
     {
@@ -128,7 +128,7 @@ std::string Element::get_implied_string( const std::string &attrname, CL_DomName
 }
 
 
-float Element::get_implied_float(const std::string &attrname, CL_DomNamedNodeMap attributes, float defaultValue)
+float Element::get_implied_float(const std::string &attrname, clan::DomNamedNodeMap attributes, float defaultValue)
 {
     if(has_attribute(attrname,attributes))
     {
@@ -136,27 +136,27 @@ float Element::get_implied_float(const std::string &attrname, CL_DomNamedNodeMap
     }
     else return defaultValue;
 }
-bool Element::has_attribute( const std::string &attrname, CL_DomNamedNodeMap attributes )
+bool Element::has_attribute( const std::string &attrname, clan::DomNamedNodeMap attributes )
 {
     return ! attributes.get_named_item(attrname).is_null();
 }
 
-uint Element::get_uint(const std::string &attrname, CL_DomNamedNodeMap attributes)
+uint Element::get_uint(const std::string &attrname, clan::DomNamedNodeMap attributes)
 {
     return atoi(attributes.get_named_item(attrname).get_node_value().c_str());
 }
 
-int Element::get_int(const std::string &attrname, CL_DomNamedNodeMap attributes)
+int Element::get_int(const std::string &attrname, clan::DomNamedNodeMap attributes)
 {
     return atoi(attributes.get_named_item(attrname).get_node_value().c_str());
 }
 
-float Element::get_float(const std::string &attrname, CL_DomNamedNodeMap attributes )
+float Element::get_float(const std::string &attrname, clan::DomNamedNodeMap attributes )
 {
     return atof(attributes.get_named_item(attrname).get_node_value().c_str());
 }
 
-std::string Element::get_string (const std::string &attrname, CL_DomNamedNodeMap attributes )
+std::string Element::get_string (const std::string &attrname, clan::DomNamedNodeMap attributes )
 {
     return attributes.get_named_item(attrname).get_node_value();
 }
@@ -167,27 +167,27 @@ std::string Element::get_element_name() const
 }
 #endif
 
-void Element::Load(CL_DomElement domElement)
+void Element::Load(clan::DomElement domElement)
 {
     IFactory* pFactory = IApplication::GetInstance()->GetElementFactory();
 
-    CL_DomNamedNodeMap attributes = domElement.get_attributes();
+    clan::DomNamedNodeMap attributes = domElement.get_attributes();
 
     load_attributes(attributes);
 
-    CL_DomNode childNode = domElement.get_first_child(); //.to_element();
-    CL_DomElement child;
+    clan::DomNode childNode = domElement.get_first_child(); //.to_element();
+    clan::DomElement child;
 
 
     if(childNode.is_text())
     {
-        CL_DomText text = childNode.to_text();
+        clan::DomText text = childNode.to_text();
         handle_text(text.get_node_value());
     }
 
     if(childNode.is_cdata_section())
     {
-        CL_DomCDATASection text = childNode.to_cdata_section();
+        clan::DomCDATASection text = childNode.to_cdata_section();
         handle_text(text.get_node_value());
     }
 
@@ -206,7 +206,11 @@ void Element::Load(CL_DomElement domElement)
 		try {
 			pElement->Load( child );
 		}catch(XMLException& e){
+#ifndef NDEBUG
 			e.push_error(element_name + ": " + pElement->GetDebugId());
+#else
+			e.push_error(element_name);
+#endif
 			throw e;
 		}
         if(!handle_element(pElement->WhichElement(), pElement ))
@@ -229,7 +233,7 @@ void Element::Load(CL_DomElement domElement)
 #if 0
     if(pDomElement->is_text())
     {
-        CL_DomCDATASection cdata = pDomElement->to_text();
+        clan::DomCDATASection cdata = pDomElement->to_text();
 #ifndef NDEBUG
         if(!cdata.is_null())
         {

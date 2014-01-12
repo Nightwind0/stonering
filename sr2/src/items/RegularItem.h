@@ -20,7 +20,7 @@ namespace StoneRing{
         virtual eItemType GetItemType() const { return REGULAR_ITEM; }
         virtual uint GetMaxInventory() const;
         virtual eDropRarity GetDropRarity() const;
-        virtual CL_Image GetIcon() const;
+        virtual clan::Image GetIcon() const;
         
         
         void Invoke(const SteelType& targetArray); // Execute all actions.
@@ -34,14 +34,14 @@ namespace StoneRing{
         bool IsReusable() const;
 		virtual uint GetValue() const ; // Price to buy, and worth when calculating drops.
         virtual uint GetSellValue() const ;
-        virtual void LoadItem ( CL_DomElement * pElement );
+        virtual void LoadItem ( clan::DomElement * pElement );
         static eUseType UseTypeFromString ( const std::string &str );
         static eTargetable TargetableFromString ( const std::string &str );
 		virtual std::string GetDescription() const { return m_description; }
         virtual bool operator == ( const ItemRef &ref );	
     private:
         virtual bool handle_element(eElement element, Element * pElement );
-        virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
+        virtual void load_attributes(clan::DomNamedNodeMap attributes) ;
         ScriptElement *m_pScript;
         eUseType m_eUseType;
         eTargetable m_eTargetable;

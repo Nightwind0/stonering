@@ -44,7 +44,7 @@ Operation* TileSelector::AddTileOperation::clone()
 
 bool TileSelector::AddTileOperation::Execute(shared_ptr<Level>  pLevel)
 {
-    CL_Point tilePos = m_data.m_level_end_pt;
+    clan::Point tilePos = m_data.m_level_end_pt;
     if(tilePos.x >= 0 && tilePos.y >= 0 && tilePos.x < pLevel->GetWidth() 
         && tilePos.y < pLevel->GetHeight()){
         Tile * pTile = new Tile;
@@ -86,7 +86,7 @@ void TileSelector::AddTileOperation::Undo(shared_ptr<Level> pLevel)
 }
  
     
-TileSelector::TileSelector(CL_GUIComponent* parent):CL_GUIComponent(parent)
+TileSelector::TileSelector(clan::GUIComponent* parent):clan::GUIComponent(parent)
 {
     func_render().set(this, &TileSelector::on_render);
     func_input_released().set(this,&TileSelector::on_click);
@@ -99,7 +99,7 @@ TileSelector::~TileSelector()
 
 }
 
-void TileSelector::SetTilemap ( CL_Image image, const std::string& name )
+void TileSelector::SetTilemap ( clan::Image image, const std::string& name )
 {
     m_name = name;
     m_image = image;    
@@ -107,39 +107,39 @@ void TileSelector::SetTilemap ( CL_Image image, const std::string& name )
 	request_repaint();
 }
 
-CL_Point TileSelector::get_offset() const 
+clan::Point TileSelector::get_offset() const 
 {
     return m_offset;
 }
 
-void TileSelector::set_offset ( const CL_Point& pt )
+void TileSelector::set_offset ( const clan::Point& pt )
 {
     m_offset = pt;
 }
 
 
-void TileSelector::on_render ( CL_GraphicContext& gc, const CL_Rect& rect )
+void TileSelector::on_render ( clan::Canvas& gc, const clan::Rect& rect )
 {
     gc.push_cliprect(component_to_window_coords(rect));
-    CL_Draw::fill(gc,rect,CL_Colorf(0.2f,0.2f,0.2f));
+    gc.fill_rect(rect,clan::Colorf(0.2f,0.2f,0.2f));
     
     if(!m_image.is_null()){
         m_image.draw(gc,m_offset.x,m_offset.y);
     }
     
     if(m_selection){
-        CL_Rectf box(CL_Pointf(m_op.GetPoint() * 32 + m_offset),CL_Sizef(32.0f,32.0f));
-        CL_Draw::box(gc,box,CL_Colorf(0.0f,1.0f,1.0f));
+        clan::Rectf box(clan::Pointf(m_op.GetPoint() * 32 + m_offset),clan::Sizef(32.0f,32.0f));
+        gc.draw_box(box,clan::Colorf(0.0f,1.0f,1.0f));
     }
    
     
     gc.pop_cliprect();
 }
 
-bool TileSelector::on_click(const CL_InputEvent& event)
+bool TileSelector::on_click(const clan::InputEvent& event)
 {
-    if(event.id == CL_MOUSE_LEFT){
-        CL_Point pt = event.mouse_pos - m_offset;
+    if(event.id == clan::mouse_left){
+        clan::Point pt = event.mouse_pos - m_offset;
         pt /= 32;
         if(!m_image.is_null() && !(pt.x < 0 || pt.y < 0 || pt.x > m_image.get_size().width / 32 ||
             pt.y > m_image.get_size().height / 32)){

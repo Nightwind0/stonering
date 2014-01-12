@@ -28,55 +28,55 @@
 
 namespace StoneRing { 
 
-MonsterRegionEditWindow::MonsterRegionEditWindow(CL_GUIComponent* component, const CL_GUITopLevelDescription& desc):CL_Window(component,desc) {
+MonsterRegionEditWindow::MonsterRegionEditWindow(clan::GUIComponent* component, const clan::GUITopLevelDescription& desc):clan::Window(component,desc) {
 
-	m_monster_groups = new CL_ListView(this);
-	m_monster_groups->set_geometry(CL_Rect(CL_Point(12,22),CL_Size(400,180)));
+	m_monster_groups = new clan::ListView(this);
+	m_monster_groups->set_geometry(clan::Rect(clan::Point(12,22),clan::Size(400,180)));
 	m_monster_groups->set_select_whole_row(true);
 	m_monster_groups->set_multi_select(false);
 	m_monster_groups->func_selection_changed().set(this,&MonsterRegionEditWindow::on_select_group);
 	
-	m_edit_group = new CL_PushButton(this);
-	m_edit_group->set_geometry(CL_Rect(CL_Point(12,218),CL_Size(100,24)));
+	m_edit_group = new clan::PushButton(this);
+	m_edit_group->set_geometry(clan::Rect(clan::Point(12,218),clan::Size(100,24)));
 	m_edit_group->set_text("Edit Group");
 	m_edit_group->func_clicked().set(this,&MonsterRegionEditWindow::on_edit_group);
 	
-	m_delete_group = new CL_PushButton(this);
-	m_delete_group->set_geometry(CL_Rect(CL_Point(100+12+12,218),CL_Size(100,24)));
+	m_delete_group = new clan::PushButton(this);
+	m_delete_group->set_geometry(clan::Rect(clan::Point(100+12+12,218),clan::Size(100,24)));
 	m_delete_group->set_text("Delete Group");
 	m_delete_group->func_clicked().set(this,&MonsterRegionEditWindow::on_delete_group);
 	
-	m_add_group = new CL_PushButton(this);
-	m_add_group->set_geometry(CL_Rect(CL_Point(200+12+12+12,218),CL_Size(100,24)));
+	m_add_group = new clan::PushButton(this);
+	m_add_group->set_geometry(clan::Rect(clan::Point(200+12+12+12,218),clan::Size(100,24)));
 	m_add_group->set_text("Add Group");
 	m_add_group->func_clicked().set(this,&MonsterRegionEditWindow::on_add_group);
 	
-	m_backdrops = new CL_ComboBox(this);
-	m_backdrops->set_geometry(CL_Rect(CL_Point(12,260),CL_Size(128,24)));
+	m_backdrops = new clan::ComboBox(this);
+	m_backdrops->set_geometry(clan::Rect(clan::Point(12,260),clan::Size(128,24)));
 	
-	m_encounter_rate = new CL_Spin(this);
-	m_encounter_rate->set_geometry(CL_Rect(CL_Point(128+12+12,260),CL_Size(128,24)));
+	m_encounter_rate = new clan::Spin(this);
+	m_encounter_rate->set_geometry(clan::Rect(clan::Point(128+12+12,260),clan::Size(128,24)));
 	m_encounter_rate->set_floating_point_mode(true);
 	m_encounter_rate->set_step_size_float(0.002);
 	m_encounter_rate->set_ranges_float(0.0,1.0);
 	m_encounter_rate->set_number_of_decimal_places(3);
 	m_encounter_rate->set_value_float(0.076);
 	
-	m_group_weight = new CL_Spin(this);
-	m_group_weight->set_geometry(CL_Rect(CL_Point(300+12+12+12+12,218),CL_Size(75,24)));
+	m_group_weight = new clan::Spin(this);
+	m_group_weight->set_geometry(clan::Rect(clan::Point(300+12+12+12+12,218),clan::Size(75,24)));
 	m_group_weight->set_ranges(1,100);
 	m_group_weight->set_value(10);
 	m_group_weight->set_enabled(false);
 	m_group_weight->func_value_changed().set(this,&MonsterRegionEditWindow::on_group_weight_changed);
 	
-	m_save = new CL_PushButton(this);
-	m_save->set_geometry(CL_Rect(CL_Point(12,320),CL_Size(128,24)));
+	m_save = new clan::PushButton(this);
+	m_save->set_geometry(clan::Rect(clan::Point(12,320),clan::Size(128,24)));
 	m_save->set_text("Save");
 	m_save->func_clicked().set(this,&MonsterRegionEditWindow::on_save);
 	
 	m_region = NULL;
 	
-	CL_ListViewHeader *lv_header = m_monster_groups->get_header();
+	clan::ListViewHeader *lv_header = m_monster_groups->get_header();
 	lv_header->append(lv_header->create_column("desc", "Monsters")).set_width(200);
 	lv_header->append(lv_header->create_column("weight","Enc. Weight")).set_width(80);
 	
@@ -114,12 +114,12 @@ void MonsterRegionEditWindow::populate_group_list()
 {
 
 	if(m_region){
-		CL_ListViewItem doc = m_monster_groups->get_document_item();
+		clan::ListViewItem doc = m_monster_groups->get_document_item();
 		doc.remove_children();
 		int id = 0;
 		for(std::list<MonsterGroup*>::const_iterator it = m_region->GetMonsterGroupsBegin();
 			it != m_region->GetMonsterGroupsEnd(); it++){
-			CL_ListViewItem item = m_monster_groups->create_item();
+			clan::ListViewItem item = m_monster_groups->create_item();
 			item.set_column_text("weight",IntToString((*it)->GetEncounterWeight()));
 			std::ostringstream os;
 			for(size_t m = 0;m<(*it)->GetMonsters().size();m++){
@@ -140,9 +140,9 @@ void MonsterRegionEditWindow::populate_group_list()
 
 void MonsterRegionEditWindow::populate_backdrop_list()
 {
-	CL_PopupMenu menu;
-	std::vector<CL_String> backdrops = IApplication::GetInstance()->GetResources().get_resource_names("Backdrops/"); 
-	for(std::vector<CL_String>::const_iterator it = backdrops.begin(); it != backdrops.end(); it++){
+	clan::PopupMenu menu;
+	std::vector<std::string> backdrops = clan::XMLResourceManager::get_doc(IApplication::GetInstance()->GetResources()).get_resource_names("Backdrops/"); 
+	for(std::vector<std::string>::const_iterator it = backdrops.begin(); it != backdrops.end(); it++){
 		menu.insert_item(*it);
 	}
 	m_backdrops->set_popup_menu(menu);
@@ -160,8 +160,8 @@ void MonsterRegionEditWindow::CreateRegion()
 
 void MonsterRegionEditWindow::on_add_group()
 {
-	CL_GUIManager mgr = get_gui_manager();
-	CL_GUITopLevelDescription desc("Monster Group",CL_Size(800,400),false);
+	clan::GUIManager mgr = get_gui_manager();
+	clan::GUITopLevelDescription desc("Monster Group",clan::Size(800,400),false);
 	desc.set_dialog_window(true);
 	MonsterGroupEditWindow window(&mgr,desc);
 	window.set_draggable(true);
@@ -175,7 +175,7 @@ void MonsterRegionEditWindow::on_add_group()
 
 void MonsterRegionEditWindow::on_group_weight_changed()
 {
-	CL_ListViewItem item = m_monster_groups->get_selected_item();
+	clan::ListViewItem item = m_monster_groups->get_selected_item();
 	MonsterGroup * group = NULL;
 	if(!item.is_null()){
 		int id = 0;
@@ -193,10 +193,10 @@ void MonsterRegionEditWindow::on_group_weight_changed()
 }
 
 
-void MonsterRegionEditWindow::on_select_group( CL_ListViewSelection selection )
+void MonsterRegionEditWindow::on_select_group( clan::ListViewSelection selection )
 {
 	MonsterGroup* group = NULL;
-	CL_ListViewItem item = m_monster_groups->get_selected_item();
+	clan::ListViewItem item = m_monster_groups->get_selected_item();
 	if(!item.is_null()){
 		int id = 0;
 		for(std::list<MonsterGroup*>::const_iterator it = m_region->GetMonsterGroupsBegin();
@@ -215,7 +215,7 @@ void MonsterRegionEditWindow::on_select_group( CL_ListViewSelection selection )
 void MonsterRegionEditWindow::on_edit_group()
 {
 	MonsterGroup* group = NULL;
-	CL_ListViewItem item = m_monster_groups->get_selected_item();
+	clan::ListViewItem item = m_monster_groups->get_selected_item();
 	if(item.is_null()) return;
 	
 	int id = 0;
@@ -226,8 +226,8 @@ void MonsterRegionEditWindow::on_edit_group()
 			break;
 		}
 	}
-	CL_GUIManager mgr = get_gui_manager();
-	CL_GUITopLevelDescription desc("Monster Group",CL_Size(800,400),false);
+	clan::GUIManager mgr = get_gui_manager();
+	clan::GUITopLevelDescription desc("Monster Group",clan::Size(800,400),false);
 	desc.set_dialog_window(true);
 	MonsterGroupEditWindow window(&mgr,desc);
 	window.set_draggable(true);

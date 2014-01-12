@@ -49,7 +49,7 @@ void UniqueWeapon::OnUnequipScript(const ParameterList& params)
 		m_pUnequipScript->ExecuteScript(params);
 }
 
-CL_Sprite UniqueWeapon::GetSprite() const 
+clan::Sprite UniqueWeapon::GetSprite() const 
 {
 	if(m_sprite.is_null()){
 		return GetWeaponType()->GetSprite();
@@ -83,7 +83,7 @@ bool UniqueWeapon::IsTwoHanded() const
     return m_pWeaponType->IsTwoHanded();
 }
 
-void UniqueWeapon::load_attributes(CL_DomNamedNodeMap attributes)
+void UniqueWeapon::load_attributes(clan::DomNamedNodeMap attributes)
 {
     NamedItemElement::load_attributes(attributes);
     m_value_multiplier = get_implied_float("valueMultiplier",attributes,1);

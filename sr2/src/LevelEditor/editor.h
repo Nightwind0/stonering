@@ -66,7 +66,7 @@ public:
 private:
 };
 
-class EditorMain : public CL_ClanApplication, public StoneRing::IApplication
+class EditorMain : public clan::ClanApplication, public StoneRing::IApplication
 {
 public:
     EditorMain();
@@ -74,7 +74,7 @@ public:
 
     // IApplication Interface
     virtual void requestRedraw(const StoneRing::State *){on_paint();}
-    virtual CL_ResourceManager * getResources()const;
+    virtual clan::ResourceManager * getResources()const;
     virtual StoneRing::Party * getParty() const;
     
     StoneRing::ICharacterGroup *getSelectedCharacterGroup() const { return NULL; }
@@ -86,11 +86,11 @@ public:
     virtual int getScreenWidth()const;
     virtual int getScreenHeight()const;
 
-    virtual CL_Rect getLevelRect() const;
-    virtual CL_Rect getDisplayRect() const;
+    virtual clan::Rect getLevelRect() const;
+    virtual clan::Rect getDisplayRect() const;
     virtual void pop(bool popAll){}
 
-    virtual bool canMove(const CL_Rect &currently, const CL_Rect &destination, bool noHot, bool isPlayer);
+    virtual bool canMove(const clan::Rect &currently, const clan::Rect &destination, bool noHot, bool isPlayer);
     virtual AstScript * loadScript(const std::string &name, const std::string &script);
     virtual SteelType runScript(AstScript * pScript);
     virtual SteelType runScript(AstScript *pScript, const ParameterList &params); 
@@ -99,9 +99,9 @@ public:
 private:
     int main(int argc, char **argv);
     
-    CL_GUIManager *mGui_manager;
-    CL_ComponentManager *mComponent_manager;
-    CL_FileDialog * mpDialog;
+    clan::GUIManager *mGui_manager;
+    clan::ComponentManager *mComponent_manager;
+    clan::FileDialog * mpDialog;
 
     void on_quit();
     void on_save();
@@ -122,17 +122,17 @@ private:
 
     EditorParty * mpParty;
     EditorElementFactory * mpLevelFactory;
-    CL_ResourceManager *mpResources;
+    clan::ResourceManager *mpResources;
 
-    CL_SlotContainer mSlots;
+    clan::SlotContainer mSlots;
 
     TileSelector* mTiles;
     MapGrid* mMap;
 
-    //CL_InputBox* info;
+    //clan::InputBox* info;
     Infobar* mInfo;
 
-    CL_GraphicContext *mGc;
+    clan::Canvas *mGc;
 
     Editor::Level *mpLevel;
     StoneRing::AppUtils mAppUtils;

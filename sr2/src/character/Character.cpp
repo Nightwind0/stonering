@@ -12,7 +12,7 @@
 #include <functional>
 #include <ClanLib/core.h>
 #include "ItemManager.h"
-
+#include "DebugControl.h"
 
 using namespace Steel;
 
@@ -247,6 +247,8 @@ void Character::LearnSkill(const std::string& skill)
 
 bool Character::HasSkill(const std::string& skill)
 {
+	if(DebugControl::AllSkills()) return true;
+	
     for(std::list<SkillTreeNode*>::const_iterator iter = m_pClass->GetSkillTreeNodesBegin();
         iter != m_pClass->GetSkillTreeNodesEnd(); iter++)
         {
@@ -305,6 +307,9 @@ void   Character::SetXP(uint amount)
 
 uint Character::GetSP() const
 {
+	if(DebugControl::InfiniteSP()){
+		return 10000;
+	}
     return m_nSP;
 }
 
@@ -434,7 +439,7 @@ bool Character::handle_element(eElement element, Element * pElement)
     return true;
 }
 
-void Character::load_attributes(CL_DomNamedNodeMap attributes)
+void Character::load_attributes(clan::DomNamedNodeMap attributes)
 {
 
     m_name = get_required_string("name",attributes);
@@ -462,8 +467,9 @@ void Character::load_attributes(CL_DomNamedNodeMap attributes)
     // Get the class pointer
     m_pClass = CharacterManager::GetClass(className);
 
-    CL_ResourceManager&  resources = IApplication::GetInstance()->GetResources();
-    m_mapSprite = CL_Sprite(GET_MAIN_GC(),spriteRef, &resources);
+    clan::ResourceManager&  resources = IApplication::GetInstance()->GetResources();
+	clan::Canvas canvas = GET_MAIN_CANVAS();
+    m_mapSprite = clan::Sprite::resource(canvas,spriteRef, resources).get();
 }
 
 void Character::load_finished()
@@ -509,6 +515,11 @@ double Character::GetAttributeWithoutEquipment ( ICharacter::eCharacterAttribute
         }
         base += IApplication::GetInstance()->GetParty()->GetCharacterAttributeAdd(attr);
     }
+    if(attr == ICharacter::CA_BP && DebugControl::InfiniteBP())
+		base = 100;
+	if(attr == ICharacter::CA_BP_COST && DebugControl::InfiniteBP())
+		base = 0;
+    
     double augment  = 0.0;
     std::map<eCharacterAttribute,double>::const_iterator aug = m_augments.find(attr);
     if(aug != m_augments.end())
@@ -534,6 +545,8 @@ double Character::GetBaseAttribute(eCharacterAttribute attr)const
     {
         base = m_pClass->GetStat(attr,GetLevel());
     }    
+    
+
 
 /*    std::map<eCharacterAttribute,double>::const_iterator aug = m_augments.find(attr);
     if(aug != m_augments.end())
@@ -592,9 +605,9 @@ bool Character::GetToggle(eCharacterAttribute attr) const
         iter != m_equipment.end(); iter++)
         {
             if(ToggleDefaultTrue(attr))
-                 base = base && iter->second->GetAttributeToggle(attr, base);
+                 base = base || iter->second->GetAttributeToggle(attr, base);
             else
-                base = base || iter->second->GetAttributeToggle(attr, base);              
+                base = base && iter->second->GetAttributeToggle(attr, base);              
         }
     if(ToggleDefaultTrue(attr)){
         base = base && IApplication::GetInstance()->GetParty()->GetCharacterAttributeToggle(attr,base);
@@ -679,7 +692,7 @@ Equipment* Character::GetEquipment(Equipment::eSlot slot)const
 	else return NULL;
 }
 
-CL_Sprite Character::GetPortrait(ePortrait portrait)
+clan::Sprite Character::GetPortrait(ePortrait portrait)
 {
     if(m_portrait.is_null())
     {
@@ -818,19 +831,19 @@ BattleMenu * Character::GetBattleMenu() const
     return m_pClass->GetBattleMenu();
 }
 
-CL_Sprite Character::GetCurrentSprite(bool pure)
+clan::Sprite Character::GetCurrentSprite(bool pure)
 {
     if(!pure){
-       // m_currentSprite.set_color(CL_Colorf::white);
+       // m_currentSprite.set_color(clan::Colorf::white);
         m_currentSprite.set_scale(1.0,1.0);
         m_currentSprite.set_alpha(1.0);
     }
     // preserve alpha, in case we set the color
     float alpha = m_currentSprite.get_alpha();
     if(GetToggle(ICharacter::CA_DRAW_ILL))
-        m_currentSprite.set_color(CL_Colorf::palegreen);
+        m_currentSprite.set_color(clan::Colorf::palegreen);
     if(GetToggle(ICharacter::CA_DRAW_BERSERK))
-        m_currentSprite.set_color(CL_Colorf::red);
+        m_currentSprite.set_color(clan::Colorf::red);
     if(GetToggle(ICharacter::CA_DRAW_MINI)){
         m_currentSprite.set_scale(0.5,0.5);
     }
@@ -845,9 +858,9 @@ CL_Sprite Character::GetCurrentSprite(bool pure)
         m_currentSprite.set_alpha(0.25);
     }
     if(GetToggle(ICharacter::CA_DRAW_STONE))
-        m_currentSprite.set_color(CL_Colorf::gray40);
+        m_currentSprite.set_color(clan::Colorf::gray40);
     if(GetToggle(ICharacter::CA_DRAW_PARALYZED))
-        m_currentSprite.set_color(CL_Colorf::purple);
+        m_currentSprite.set_color(clan::Colorf::purple);
 
     m_currentSprite.set_alpha(alpha);
     return m_currentSprite;

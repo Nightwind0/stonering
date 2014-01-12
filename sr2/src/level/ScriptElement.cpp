@@ -58,7 +58,7 @@ SteelType ScriptElement::ExecuteScript(const ParameterList &params)
     else return SteelType();
 }
 
-void ScriptElement::load_attributes(CL_DomNamedNodeMap attr)
+void ScriptElement::load_attributes(clan::DomNamedNodeMap attr)
 {
     // Nothing for now
     m_id = get_required_string("id",attr);
@@ -75,16 +75,16 @@ void ScriptElement::handle_text(const std::string &text)
 }
 
 #if SR2_EDITOR
-CL_DomElement ScriptElement::CreateDomElement(CL_DomDocument &doc)const
+clan::DomElement ScriptElement::CreateDomElement(clan::DomDocument &doc)const
 {
     std::string name = "script";
     if(IsConditionScript()){
         name = "conditionScript";
     }
-    CL_DomElement element(doc,name);
+    clan::DomElement element(doc,name);
     
     element.set_attribute("id",m_id);
-    CL_DomCDATASection text(doc,m_script);
+    clan::DomCDATASection text(doc,m_script);
     //text.set_node_value(m_script)
     element.append_child(text);
     return element;

@@ -19,8 +19,7 @@
 
 #include "SoundManager.h"
 #include "IApplication.h"
-#include <ClanLib/sound.h>
-#include <ClanLib/vorbis.h> 
+//#include <ClanLib/sound.h>
 
 using namespace StoneRing;
 
@@ -47,17 +46,17 @@ void StoneRing::SoundManager::initialize()
 
 void SoundManager::PlaySound ( const std::string& sound_name )
 {
-    CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
-    CL_SoundBuffer sound(sound_name,&resources);
+    clan::ResourceManager& resources = IApplication::GetInstance()->GetResources();
+    clan::SoundBuffer sound = clan::SoundBuffer::resource(sound_name,resources);
     sound.set_volume(m_pInstance->m_sound_vol);
     sound.play();
 }
 
 
-void SoundManager::set_music ( CL_SoundBuffer song )
+void SoundManager::set_music ( clan::SoundBuffer song )
 {
     if(!m_pInstance->m_session.is_null()){
-        CL_FadeFilter fade(1.0f);
+        clan::FadeFilter fade(1.0f);
         fade.fade_to_volume(0.0f,500);
         m_pInstance->m_session.add_filter(fade);
     }
@@ -70,8 +69,8 @@ void SoundManager::set_music ( CL_SoundBuffer song )
 void SoundManager::SetMusic ( const std::string& music )
 {
 	if(!music.empty()){
-		CL_ResourceManager& resources = IApplication::GetInstance()->GetResources();
-		m_pInstance->set_music(CL_SoundBuffer(music, &resources));
+		clan::ResourceManager& resources = IApplication::GetInstance()->GetResources();
+		m_pInstance->set_music(clan::SoundBuffer::resource(music, resources));
 	}
 }
 
@@ -93,7 +92,7 @@ void SoundManager::onTransitionTimer ( )
     if(!m_session.is_null())
         m_session.stop();
     m_session = m_buffer.prepare();
-    CL_FadeFilter fade(0.0f);
+    clan::FadeFilter fade(0.0f);
     fade.fade_to_volume(1.0f,500);
     m_session.add_filter(fade);
     m_session.set_looping(true);

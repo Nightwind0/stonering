@@ -55,7 +55,7 @@ SoundManager::Effect GoldGetState::get_sound_effect() const {
 	return SoundManager::EFFECT_GOLD;
 }
 
-CL_Image GoldGetState::get_icon() const{
+clan::Image GoldGetState::get_icon() const{
 	return m_icon;
 }
 

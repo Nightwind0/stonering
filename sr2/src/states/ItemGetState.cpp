@@ -50,7 +50,7 @@ void ItemGetState::Start() {
 	m_done = m_items.empty();
 	m_done_display = false;
 	Menu::Init();
-	m_start_time = CL_System::get_time();
+	m_start_time = clan::System::get_time();
 }
 
 void ItemGetState::SetItems( const std::vector< Item* >& items, const std::vector<uint>& counts ) {
@@ -59,12 +59,12 @@ void ItemGetState::SetItems( const std::vector< Item* >& items, const std::vecto
 }
 
 
-void ItemGetState::Draw( const CL_Rect& screenRect, CL_GraphicContext& GC ) {
+void ItemGetState::Draw( const clan::Rect& screenRect, clan::Canvas& GC ) {
 	MenuBox::Draw(GC,m_header_rect);
 	MenuBox::Draw(GC,m_rect);
 	m_header_font.draw_text(GC,12.0f, m_header_rect.get_height() / 2.0f, "Received", Font::CENTER);
-	uint time_passed = CL_System::get_time() - m_start_time;
-	m_item_cursor = min((size_t)time_passed / TIME_PER_ITEM, m_items.size());
+	uint time_passed = clan::System::get_time() - m_start_time;
+	m_item_cursor = std::min((size_t)time_passed / TIME_PER_ITEM, m_items.size());
 	Menu::Draw(GC);
 }
 
@@ -111,14 +111,14 @@ void ItemGetState::Finish() {
 }
 
 int ItemGetState::get_option_count() {
-	return min(m_item_cursor+1, (uint)m_items.size());
+	return std::min(m_item_cursor+1, (uint)m_items.size());
 }
 
-CL_Rectf ItemGetState::get_rect() {
-	return CL_Rectf(m_rect.left+m_offset.x, m_rect.top+12, m_rect.right-m_offset.x, m_rect.bottom-12);
+clan::Rectf ItemGetState::get_rect() {
+	return clan::Rectf(m_rect.left+m_offset.x, m_rect.top+12, m_rect.right-m_offset.x, m_rect.bottom-12);
 }
 
-int ItemGetState::height_for_option( CL_GraphicContext& gc ) {
+int ItemGetState::height_for_option( clan::Canvas& gc ) {
 	return m_offset.y;
 }
 
@@ -126,12 +126,12 @@ void ItemGetState::process_choice( int selection ) {
 
 }
 
-void ItemGetState::draw_option( int option, bool selected, float x, float y, CL_GraphicContext& gc ) {
+void ItemGetState::draw_option( int option, bool selected, float x, float y, clan::Canvas& gc ) {
 	float percentage = 1.0f;
 	if(option == m_item_cursor) {
-		percentage = float((CL_System::get_time() - m_start_time) % TIME_PER_ITEM) / float(TIME_PER_ITEM);
+		percentage = float((clan::System::get_time() - m_start_time) % TIME_PER_ITEM) / float(TIME_PER_ITEM);
 	}
-	CL_Image image = m_items[option]->GetIcon();
+	clan::Image image = m_items[option]->GetIcon();
 	image.set_scale(percentage,percentage);
 	image.set_alpha(percentage);
 	image.draw(gc, x, y);

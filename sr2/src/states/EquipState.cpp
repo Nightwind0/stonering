@@ -73,8 +73,8 @@ void EquipState::Init ( Character* pCharacter )
     m_stats_rect = GraphicsManager::GetRect(GraphicsManager::EQUIP, "stats");
     m_stats_header = GraphicsManager::GetRect(GraphicsManager::EQUIP,"stats_header");
     m_stat_box = GraphicsManager::GetRect(GraphicsManager::EQUIP,"stat_box");
-    CL_Pointf slotSize  = GraphicsManager::GetPoint(GraphicsManager::EQUIP, "slot_size");
-    m_slot_size = CL_Sizef(slotSize.x,slotSize.y);
+    clan::Pointf slotSize  = GraphicsManager::GetPoint(GraphicsManager::EQUIP, "slot_size");
+    m_slot_size = clan::Sizef(slotSize.x,slotSize.y);
     
     m_slot_name_font = GraphicsManager::GetFont(GraphicsManager::EQUIP,"slot_name");
     m_slot_name_selected_font = GraphicsManager::GetFont(GraphicsManager::EQUIP,"slot_name_selected");
@@ -91,7 +91,7 @@ void EquipState::Init ( Character* pCharacter )
     
     m_no_equipment_icon = GraphicsManager::GetImage(GraphicsManager::EQUIP,"no_equipment");
     
-    CL_Rectf eq_menuRect = m_equipment_rect;
+    clan::Rectf eq_menuRect = m_equipment_rect;
     eq_menuRect.shrink ( GraphicsManager::GetMenuInset().x * 2, GraphicsManager::GetMenuInset().y * 2);
     
     m_equipment_menu.SetRect( eq_menuRect );
@@ -112,13 +112,13 @@ bool EquipState::DisableMappableObjects() const
     return true;
 }
 
-void EquipState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
+void EquipState::Draw ( const clan::Rect& screenRect, clan::Canvas& GC )
 {
     MenuBox::Draw( GC, screenRect );
     MenuBox::Draw( GC, m_desc_rect, false );
-    MenuBox::Draw( GC, m_slots_rect, false, CL_Pointf(0.0,0.0) );
-    MenuBox::Draw( GC, m_equipment_rect, true, CL_Pointf(0.0,0.0) );
-    MenuBox::Draw( GC, m_stat_box, true, CL_Pointf(0.0,0.0) );
+    MenuBox::Draw( GC, m_slots_rect, false, clan::Pointf(0.0,0.0) );
+    MenuBox::Draw( GC, m_equipment_rect, true, clan::Pointf(0.0,0.0) );
+    MenuBox::Draw( GC, m_stat_box, true, clan::Pointf(0.0,0.0) );
     
     draw_slots(GC);
     m_equipment_menu.Draw(GC);
@@ -128,9 +128,9 @@ void EquipState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
 
 int EquipState::options_per_column() const
 {
-    CL_Rectf rect = m_slots_rect;
+    clan::Rectf rect = m_slots_rect;
     rect.shrink(GraphicsManager::GetMenuInset().x*2,GraphicsManager::GetMenuInset().y*2);
-   // CL_Draw::fill(gc,rect,CL_Colorf(0.5f,0.5f,0.5f,0.1f));
+   // clan::Draw::fill(gc,rect,clan::Colorf(0.5f,0.5f,0.5f,0.1f));
     
     return 1+rect.get_height() / m_slot_size.height;
 }
@@ -167,9 +167,9 @@ bool EquipState::offhand_available() const
     return true;
 }
 
-void EquipState::draw_description ( CL_GraphicContext& gc )
+void EquipState::draw_description ( clan::Canvas& gc )
 {
-    CL_Rectf rect = m_desc_rect;
+    clan::Rectf rect = m_desc_rect;
     rect.shrink(GraphicsManager::GetMenuInset().x,GraphicsManager::GetMenuInset().y);
     if(m_eState == SELECT_EQUIPMENT){
         m_equipment_menu.Choose();
@@ -182,7 +182,7 @@ void EquipState::draw_description ( CL_GraphicContext& gc )
 } 
 
 
-void EquipState::draw_stats ( CL_GraphicContext& gc )
+void EquipState::draw_stats ( clan::Canvas& gc )
 {
     if(m_eState == SELECT_EQUIPMENT){
         m_equipment_menu.Choose();
@@ -193,13 +193,13 @@ void EquipState::draw_stats ( CL_GraphicContext& gc )
         m_pStatusBox->Draw(gc,false, m_pChar,NULL,NULL);
     }
 #if 0
-    CL_Rectf rect = m_stats_rect;
+    clan::Rectf rect = m_stats_rect;
     rect.shrink(GraphicsManager::GetMenuInset().x*2,GraphicsManager::GetMenuInset().y*2);
-    CL_FontMetrics metrics = m_stat_name_font.get_font_metrics(gc);
-    CL_Pointf offset(0,metrics.get_height());
+    clan::FontMetrics metrics = m_stat_name_font.get_font_metrics(gc);
+    clan::Pointf offset(0,metrics.get_height());
     
        
-    CL_Sizef statSize = m_stat_font.get_text_size(gc,"000000");
+    clan::Sizef statSize = m_stat_font.get_text_size(gc,"000000");
 
     m_equipment_menu.Choose(); // Doesn't equip it or anything
  
@@ -207,8 +207,8 @@ void EquipState::draw_stats ( CL_GraphicContext& gc )
     if(m_pChar->HasEquipment(m_slots[m_nSlot]))
         pOldEquipment = m_pChar->GetEquipment(m_slots[m_nSlot]);
     Equipment * pSelectedEquipment = m_equipment_menu.GetSelection();
-    CL_Pointf point = rect.get_top_left();
-    CL_Pointf statPoint = point;
+    clan::Pointf point = rect.get_top_left();
+    clan::Pointf statPoint = point;
 
     
     for(int i=Weapon::_FIRST_ATTR+1;i<Weapon::_LAST_ATTR;i++){
@@ -284,7 +284,7 @@ void EquipState::draw_stats ( CL_GraphicContext& gc )
         iter != m_stats.end(); iter++,point += offset)
         {
             m_stat_name_font.draw_text(gc,point,ICharacter::CAToLabel(*iter), Font::TOP_LEFT);
-            CL_Pointf statPoint = point;
+            clan::Pointf statPoint = point;
             statPoint.x = rect.get_top_right().x - statSize.width*3;
             std::ostringstream os;
             if(ICharacter::IsInteger(*iter))
@@ -321,24 +321,24 @@ void EquipState::draw_stats ( CL_GraphicContext& gc )
 }
 
 
-void EquipState::draw_slots(CL_GraphicContext& gc)
+void EquipState::draw_slots(clan::Canvas& gc)
 {
-    CL_Rectf rect = m_slots_rect;
+    clan::Rectf rect = m_slots_rect;
     rect.shrink(GraphicsManager::GetMenuInset().x*2,GraphicsManager::GetMenuInset().y*2);
     
-   // CL_Draw::fill(gc,rect,CL_Colorf(0.5f,0.5f,0.5f,0.1f));
+   // clan::Draw::fill(gc,rect,clan::Colorf(0.5f,0.5f,0.5f,0.1f));
     
     int opt_per_col = options_per_column();
     
     for(int i=0;i<m_slots.size(); i++){
         uint column = i / opt_per_col;
-        CL_Pointf point(m_slot_size.width * column, (i % opt_per_col) *m_slot_size.height);
+        clan::Pointf point(m_slot_size.width * column, (i % opt_per_col) *m_slot_size.height);
         point += rect.get_top_left();
-        CL_Pointf middlePoint = point;
+        clan::Pointf middlePoint = point;
         middlePoint.y += m_slot_size.height / 2;
         
         // Draw icons
-        CL_Image icon;
+        clan::Image icon;
         if(m_pChar->HasEquipment(m_slots[i])){
             icon = m_pChar->GetEquipment(m_slots[i])->GetIcon();
         }else {
@@ -350,7 +350,7 @@ void EquipState::draw_slots(CL_GraphicContext& gc)
         }
         
         icon.draw(gc,point.x, point.y + (m_slot_size.height - icon.get_height()) / 2);
-        CL_Pointf namePoint = point;
+        clan::Pointf namePoint = point;
         namePoint.x += icon.get_width() + 2;
         
         Font nameFont;
@@ -542,7 +542,7 @@ EquipState::EquipmentMenu::~EquipmentMenu()
 
 }
 
-void EquipState::EquipmentMenu::SetRect ( const CL_Rectf& rect )
+void EquipState::EquipmentMenu::SetRect ( const clan::Rectf& rect )
 {
     m_rect = rect;
 }
@@ -561,12 +561,12 @@ void EquipState::EquipmentMenu::ClearOptions()
     Menu::reset_menu();
 }
 
-void EquipState::EquipmentMenu::draw_option ( int option, bool selected, float x, float y, CL_GraphicContext& gc )
+void EquipState::EquipmentMenu::draw_option ( int option, bool selected, float x, float y, clan::Canvas& gc )
 {
     Equipment * pEquipment = m_options[option];
     Font font = (selected&&m_enable_selection)?m_selected_font:m_option_font;
-    CL_FontMetrics metrics = font.get_font_metrics(gc);
-    CL_Image icon;
+    clan::FontMetrics metrics = font.get_font_metrics(gc);
+    clan::Image icon;
     if(pEquipment == NULL){
         icon = m_remove_icon;
         icon.draw(gc,x,y);
@@ -584,7 +584,7 @@ int EquipState::EquipmentMenu::get_option_count()
     return m_options.size();
 }
 
-CL_Rectf EquipState::EquipmentMenu::get_rect()
+clan::Rectf EquipState::EquipmentMenu::get_rect()
 {
     return m_rect;
 }
@@ -594,7 +594,7 @@ Equipment* EquipState::EquipmentMenu::GetSelection() const
     return m_options[m_selection];
 }
 
-int EquipState::EquipmentMenu::height_for_option ( CL_GraphicContext& gc )
+int EquipState::EquipmentMenu::height_for_option ( clan::Canvas& gc )
 {
     return m_height_per_option;
 }
@@ -614,7 +614,7 @@ void EquipState::EquipmentMenu::SetFont ( Font font )
     m_option_font = font;
 }
 
-void EquipState::EquipmentMenu::SetRemoveIcon ( const CL_Image& icon )
+void EquipState::EquipmentMenu::SetRemoveIcon ( const clan::Image& icon )
 {
     m_remove_icon = icon;
 }

@@ -6,7 +6,7 @@ WeaponClassRef::WeaponClassRef()
 {
 }
 
-void WeaponClassRef::load_attributes(CL_DomNamedNodeMap attributes)
+void WeaponClassRef::load_attributes(clan::DomNamedNodeMap attributes)
 {
     m_name = get_required_string("name",attributes);
 }

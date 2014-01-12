@@ -25,7 +25,7 @@
 
 #if SR2_EDITOR
 
-class CL_DisplayWindow;
+class clan::DisplayWindow;
 
 namespace StoneRing { 
 
@@ -38,11 +38,11 @@ namespace StoneRing {
         virtual void HandleButtonUp(const IApplication::Button& button);
         virtual void HandleButtonDown(const IApplication::Button& button);
         virtual void HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos);
-        virtual void HandleMouseUp(const IApplication::MouseButton& button, const CL_Point& pos, uint key_state );
-        virtual void HandleMouseDown(const IApplication::MouseButton& button, const CL_Point& pos, uint key_state );
-        virtual void HandleDoubleClick(const IApplication::MouseButton& button, const CL_Point& pos, uint key_state );
-        virtual void HandleMouseMove(const CL_Point& pos, uint key_state );     
-        virtual void Draw(const CL_Rect &screenRect,CL_GraphicContext& GC);
+        virtual void HandleMouseUp(const IApplication::MouseButton& button, const clan::Point& pos, uint key_state );
+        virtual void HandleMouseDown(const IApplication::MouseButton& button, const clan::Point& pos, uint key_state );
+        virtual void HandleDoubleClick(const IApplication::MouseButton& button, const clan::Point& pos, uint key_state );
+        virtual void HandleMouseMove(const clan::Point& pos, uint key_state );     
+        virtual void Draw(const clan::Rect &screenRect,clan::Canvas& GC);
         virtual bool LastToDraw() const; // Should we continue drawing more states?
         virtual bool DisableMappableObjects() const ; // Should the app move the MOs?
         virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
@@ -50,20 +50,20 @@ namespace StoneRing {
         virtual void Finish(); // Hook to clean up or whatever after being popped     
         virtual bool IsDone()const;
         
-        void on_button_clicked(CL_PushButton*);
-        bool on_close(CL_Window*);
+        void on_button_clicked(clan::PushButton*);
+        bool on_close(clan::Window*);
     private:
         bool m_bDone;
         // GUI stuff
-        CL_AcceleratorTable m_accelerator_table;
-        CL_ResourceManager m_resources;
-        CL_GUIThemeDefault m_theme;
-        CL_CSSDocument m_css_document;
-        CL_GUIWindowManagerSystem m_window_manager;
-        CL_GUIManager m_gui_manager;        
-        CL_Window* m_pWindow;
-        CL_PushButton* m_pButton;
-        //CL_DisplayWindow* m_subwindow;
+        clan::AcceleratorTable m_accelerator_table;
+        clan::ResourceManager m_resources;
+        clan::GUIThemeDefault m_theme;
+        clan::CSSDocument m_css_document;
+        clan::GUIWindowManagerSystem m_window_manager;
+        clan::GUIManager m_gui_manager;        
+        clan::Window* m_pWindow;
+        clan::PushButton* m_pButton;
+        //clan::DisplayWindow* m_subwindow;
     };
 
 }

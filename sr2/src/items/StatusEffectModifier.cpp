@@ -9,7 +9,7 @@ StatusEffectModifier::StatusEffectModifier():m_pStatusEffect(NULL)
 }
 
 
-void StatusEffectModifier::load_attributes(CL_DomNamedNodeMap attributes)
+void StatusEffectModifier::load_attributes(clan::DomNamedNodeMap attributes)
 {
     std::string statusRef = get_required_string("statusRef", attributes);
 

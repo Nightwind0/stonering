@@ -26,15 +26,15 @@ namespace StoneRing
 
         eType GetType() const;
         std::string GetRef() const;
-        CL_Sprite  CreateSprite() const;
+        clan::Sprite  CreateSprite() const;
 #if SR2_EDITOR
-        CL_DomElement CreateDomElement(CL_DomDocument&)const;
+        clan::DomElement CreateDomElement(clan::DomDocument&)const;
 #endif
         static std::string TypeName(eType);
 		virtual std::string GetDebugId() const { return m_ref; }				
     protected:
         virtual bool handle_element(eElement element, Element * pElement );
-        virtual void load_attributes(CL_DomNamedNodeMap attributes);
+        virtual void load_attributes(clan::DomNamedNodeMap attributes);
         virtual void handle_text(const std::string &text);
 
         eType m_eType;

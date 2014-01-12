@@ -1,15 +1,11 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual C++ Express 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StoneRing2", "StoneRing2.vcproj", "{FC272BF0-BB24-4D05-840F-8E65552E7271}"
-	ProjectSection(ProjectDependencies) = postProject
-		{F5425C27-97C9-4DEF-8A52-246D6A3D2923} = {F5425C27-97C9-4DEF-8A52-246D6A3D2923}
-		{E143424A-1AA3-49FF-B9DE-79A97E33C816} = {E143424A-1AA3-49FF-B9DE-79A97E33C816}
-	EndProjectSection
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C++ Express 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StoneRing2", "StoneRing2.vcxproj", "{FC272BF0-BB24-4D05-840F-8E65552E7271}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Steel", "..\steel\Steel\Steel.vcproj", "{F5425C27-97C9-4DEF-8A52-246D6A3D2923}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Steel", "..\steel\Steel\Steel.vcxproj", "{F5425C27-97C9-4DEF-8A52-246D6A3D2923}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SR2Lib", "SR2Lib\SR2Lib.vcproj", "{E143424A-1AA3-49FF-B9DE-79A97E33C816}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SR2Lib", "SR2Lib\SR2Lib.vcxproj", "{E143424A-1AA3-49FF-B9DE-79A97E33C816}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -125,7 +125,7 @@ bool Omega::handle_element ( Element::eElement element, Element* pElement )
     return false;
 }
 
-void Omega::load_attributes ( CL_DomNamedNodeMap attributes )
+void Omega::load_attributes ( clan::DomNamedNodeMap attributes )
 {
     NamedItemElement::load_attributes ( attributes );
     m_value = get_required_int("value",attributes);
@@ -145,7 +145,7 @@ uint Omega::GetMaxInventory() const
     return NamedItemElement::GetMaxInventory();
 }
 
-CL_Image Omega::GetIcon() const
+clan::Image Omega::GetIcon() const
 {
     return NamedItemElement::GetIcon();
 }

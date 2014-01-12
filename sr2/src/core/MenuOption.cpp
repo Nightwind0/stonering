@@ -60,7 +60,7 @@ void MenuOption::load_finished()
 {
 }
 
-void MenuOption::load_attributes(CL_DomNamedNodeMap attributes)
+void MenuOption::load_attributes(clan::DomNamedNodeMap attributes)
 {
     m_name = get_required_string("name",attributes);
     m_icon = GraphicsManager::GetIcon( get_implied_string("icon",attributes,"no_icon") );

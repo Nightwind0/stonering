@@ -36,16 +36,19 @@ BattleConfig::~BattleConfig()
 
 void BattleConfig::Load(const std::string& filename)
 {
-    CL_IODevice file = IApplication::GetInstance()->OpenResource(filename);
-    CL_DomDocument document;
+#ifndef NDEBUG
+	std::cout << "Loading battle config..." << std::endl;
+#endif
+    clan::IODevice file = IApplication::GetInstance()->OpenResource(filename);
+    clan::DomDocument document;
     document.load(file);
     
-    CL_DomNode child = document.get_first_child();
-    CL_DomElement childElement = child.to_element();
+    clan::DomNode child = document.get_first_child();
+    clan::DomElement childElement = child.to_element();
     
     for(;!childElement.is_null(); childElement = childElement.get_next_sibling().to_element())
     {
-	CL_DomNode grandchild = childElement.get_first_child();
+	clan::DomNode grandchild = childElement.get_first_child();
 	AstScript ** ppScript = NULL;
 	if(childElement.get_node_name() == "setup")
 	{
@@ -84,7 +87,9 @@ void BattleConfig::Load(const std::string& filename)
 	 
     }
     
-    
+#ifndef NDEBUG
+	std::cout << "Finished loading battle config." << std::endl;
+#endif
 
 }
 // Run battle script

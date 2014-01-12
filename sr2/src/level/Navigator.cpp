@@ -305,7 +305,7 @@ void StillNavigator::OnMove ( Level& level )
 
 
 
-ScriptedNavigator::ScriptedNavigator ( Level& level, MappableObject& mo, const CL_Point& dest, int speed ):Navigator(mo),m_level(level)
+ScriptedNavigator::ScriptedNavigator ( Level& level, MappableObject& mo, const clan::Point& dest, int speed ):Navigator(mo),m_level(level)
 {
     m_dest = dest;
     m_change_face = false;
@@ -363,11 +363,11 @@ uint ScriptedNavigator::GetSpeed() const
 std::list<int> ScriptedNavigator::neighbors ( const int& id, const Level& level )
 {
     std::list<int> neighbors;
-    CL_Point point = to_point(id);
-    CL_Size size = m_mo.GetSize();
+    clan::Point point = to_point(id);
+    clan::Size size = m_mo.GetSize();
 
-    CL_Rect origin(point,size);
-    CL_Point up,down,left,right;
+    clan::Rect origin(point,size);
+    clan::Point up,down,left,right;
     up = down = left = right = point;
     --up.y;
     ++down.y;
@@ -375,16 +375,16 @@ std::list<int> ScriptedNavigator::neighbors ( const int& id, const Level& level 
     ++right.x;
     
     
-    if(up.y >= 0 && level.CanMove(&m_mo,origin,CL_Rect(up,size))){
+    if(up.y >= 0 && level.CanMove(&m_mo,origin,clan::Rect(up,size))){
         neighbors.push_back(point_id(up));
     }
-    if(down.y < level.GetHeight() && level.CanMove(&m_mo,origin,CL_Rect(down,size))){
+    if(down.y < level.GetHeight() && level.CanMove(&m_mo,origin,clan::Rect(down,size))){
         neighbors.push_back(point_id(down));
     }
-    if(left.x >= 0 && level.CanMove(&m_mo,origin,CL_Rect(left,size))){
+    if(left.x >= 0 && level.CanMove(&m_mo,origin,clan::Rect(left,size))){
         neighbors.push_back(point_id(left));
     }
-    if(right.x < level.GetWidth() && level.CanMove(&m_mo,origin,CL_Rect(right,size))){
+    if(right.x < level.GetWidth() && level.CanMove(&m_mo,origin,clan::Rect(right,size))){
         neighbors.push_back(point_id(right));
     }
 #ifndef NDEBUG
@@ -394,20 +394,20 @@ std::list<int> ScriptedNavigator::neighbors ( const int& id, const Level& level 
     return neighbors;
 }
 
-int ScriptedNavigator::point_id ( const CL_Point& pt) const 
+int ScriptedNavigator::point_id ( const clan::Point& pt) const 
 {
     return pt.y * m_level.GetWidth() + pt.x;
 }
 
-CL_Point ScriptedNavigator::to_point ( int point_id ) const
+clan::Point ScriptedNavigator::to_point ( int point_id ) const
 {
     int y = point_id / m_level.GetWidth();
     int x = point_id % m_level.GetWidth();
-    return CL_Point(x,y);
+    return clan::Point(x,y);
 }
 
 
-float ScriptedNavigator::heuristic_cost_estimate ( const CL_Point& a, const CL_Point& b ) const
+float ScriptedNavigator::heuristic_cost_estimate ( const clan::Point& a, const clan::Point& b ) const
 {
     // Manhattan distance
     return  1.001 * (std::abs(a.x-b.x) + std::abs(a.y-b.y)); 
@@ -417,7 +417,7 @@ float ScriptedNavigator::heuristic_cost_estimate ( const CL_Point& a, const CL_P
 bool ScriptedNavigator::compute_astar(const Level &level)
 {
     //SoundManager::PlayEffect(SoundManager::EFFECT_CHANGE_OPTION);
-    CL_Point start = m_mo.GetPosition();
+    clan::Point start = m_mo.GetPosition();
     const int start_id = point_id(start);
     const int dest_id = point_id(m_dest);
     m_path.clear();
@@ -503,7 +503,7 @@ bool ScriptedNavigator::compute_astar(const Level &level)
 
 void ScriptedNavigator::set_direction_to_next(bool f)
 {
-    CL_Point start = m_mo.GetPosition();
+    clan::Point start = m_mo.GetPosition();
 
 #if 0 // What is this for??
     if(!f){

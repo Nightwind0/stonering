@@ -18,16 +18,16 @@ StoneRing::Skill::TypeFromString(const std::string type)
     if(type == "battle") return BATTLE;
     else if(type == "world") return WORLD;
     else if(type == "both") return BOTH;
-    else throw CL_Exception("Bad type on skill = " + type);
+    else throw clan::Exception("Bad type on skill = " + type);
 }
 
-void StoneRing::Skill::load_attributes(CL_DomNamedNodeMap attributes)
+void StoneRing::Skill::load_attributes(clan::DomNamedNodeMap attributes)
 {
     m_name = get_required_string("name",attributes);
     m_nBp = get_implied_int("bp",attributes,0);
     m_nMp = get_implied_int("mp",attributes,0);
     if(m_nBp && m_nMp)
-        throw CL_Exception("Skill " + m_name + " has both BP and MP cost (Not allowed)");
+        throw clan::Exception("Skill " + m_name + " has both BP and MP cost (Not allowed)");
     m_eType = TypeFromString(get_implied_string("type",attributes,"battle"));
     m_bAllowsGroupTarget = get_implied_bool("allowsGroupTarget",attributes,false);
     m_bDefaultToEnemyGroup = get_implied_bool("defaultToEnemyGroup", attributes,true);
@@ -45,8 +45,8 @@ void StoneRing::Skill::Invoke(ICharacter* pCharacter,const ParameterList& params
     // Take the BP and MP cost here
     double mp_mult = pCharacter->GetAttribute(ICharacter::CA_MP_COST);
 	double bp_mult = pCharacter->GetAttribute(ICharacter::CA_BP_COST);
-    assert(bp_mult * pCharacter->GetAttribute(ICharacter::CA_BP) >= m_nBp &&
-        mp_mult * pCharacter->GetAttribute(ICharacter::CA_MP) >= m_nMp  &&
+    assert(pCharacter->GetAttribute(ICharacter::CA_BP) >= bp_mult*m_nBp &&
+           pCharacter->GetAttribute(ICharacter::CA_MP) >= mp_mult*m_nMp  &&
         "Assure BP and MP before calling Invoke on a skill");
     
     bool charge = true;
@@ -138,7 +138,7 @@ uint Skill::GetBPCost() const
 Skill * SkillRef::GetSkill() const{
     if(!AbilityManager::SkillExists(m_ref))
     {
-	throw CL_Exception("Missing skill: " + m_ref);
+	throw clan::Exception("Missing skill: " + m_ref);
 	return NULL;
     }
     return AbilityManager::GetSkill(*this);
@@ -162,7 +162,7 @@ std::string SkillRef::GetRef() const
 
 
 
-void SkillRef::load_attributes(CL_DomNamedNodeMap attributes)
+void SkillRef::load_attributes(clan::DomNamedNodeMap attributes)
 {
     m_ref = get_required_string("skillName", attributes);
 }
@@ -228,7 +228,7 @@ SkillRef* SkillTreeNode::GetRef() const
     return m_ref;
 }
 
-void SkillTreeNode::load_attributes ( CL_DomNamedNodeMap attributes )
+void SkillTreeNode::load_attributes ( clan::DomNamedNodeMap attributes )
 {
     m_nSp = get_implied_int("sp",attributes,0);
     m_nMinLevel = get_implied_int("min_level",attributes,1);

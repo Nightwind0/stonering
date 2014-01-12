@@ -26,7 +26,7 @@ ICharacter::eCharacterAttribute Stat::GetAttribute() const
     return m_eAttr;
 }
 
-void Stat::load_attributes(CL_DomNamedNodeMap attr)
+void Stat::load_attributes(clan::DomNamedNodeMap attr)
 {
     m_eAttr = ICharacter::CharAttributeFromString( get_required_string("id",attr) );
     if(m_eAttr == ICharacter::CA_INVALID)

@@ -47,18 +47,18 @@ void GetState::Start() {
 	m_done = false;
 	m_done_display = false;
 	SoundManager::PlayEffect(get_sound_effect());	
-	m_start_time = CL_System::get_time();	
+	m_start_time = clan::System::get_time();	
 }
 
 void GetState::SetInverse( bool inverse ) {
 	m_inverse = inverse;
 }
 
-void GetState::Draw( const CL_Rect& screenRect, CL_GraphicContext& GC ) {
+void GetState::Draw( const clan::Rect& screenRect, clan::Canvas& GC ) {
 	MenuBox::Draw(GC,m_rect);
-	uint time_passed = CL_System::get_time() - m_start_time;
+	uint time_passed = clan::System::get_time() - m_start_time;
 	float percentage = (float)time_passed / (float)TIME_PER_ITEM;
-	CL_Image icon = get_icon();
+	clan::Image icon = get_icon();
 	icon.set_alpha(m_inverse?(1.0-percentage):percentage);
 	icon.draw(GC,m_icon_offset.x + m_rect.get_top_left().x,m_icon_offset.y + m_rect.get_top_left().y);
 	icon.set_alpha(1.0f);

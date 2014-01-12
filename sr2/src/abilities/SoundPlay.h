@@ -34,7 +34,7 @@ public:
     std::string GetSound() const;
 	virtual std::string GetDebugId() const { return  m_sound; }			
 private:
-    virtual void load_attributes(CL_DomNamedNodeMap attr);
+    virtual void load_attributes(clan::DomNamedNodeMap attr);
     
     std::string m_sound;
 };

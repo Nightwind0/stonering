@@ -49,13 +49,13 @@ void BannerState::Init ( const std::string& text, int time )
 
 void BannerState::Start()
 {
-    m_start_time = CL_System::get_time();
+    m_start_time = clan::System::get_time();
     m_done = false;
 }
 
 bool BannerState::IsDone() const
 {
-    return m_done || (m_time> 0 && CL_System::get_time() >= (m_start_time + m_time)); 
+    return m_done || (m_time> 0 && clan::System::get_time() >= (m_start_time + m_time)); 
 }
 
 bool BannerState::AcceptInput() const {
@@ -63,7 +63,7 @@ bool BannerState::AcceptInput() const {
 }
 
 
-void BannerState::Draw ( const CL_Rect& screenRect, CL_GraphicContext& GC )
+void BannerState::Draw ( const clan::Rect& screenRect, clan::Canvas& GC )
 {
     MenuBox::Draw(GC,m_banner_rect);
     m_font.draw_text(GC,m_text_inset,m_text, Font::TOP_LEFT);

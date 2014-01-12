@@ -10,10 +10,10 @@ using namespace std;
 
 namespace Editor{
 
-class Infobar : CL_Component
+class Infobar : clan::Component
 {
 public:
-    Infobar( CL_Component *parent);
+    Infobar( clan::Component *parent);
 
     virtual ~Infobar();
 
@@ -32,12 +32,12 @@ public:
 
 private:
 
-    CL_Rect rect;
-    CL_SlotContainer slots;
-    CL_Label* text1;
-    CL_Label* tool_text;
-    CL_Label* text2;
-    CL_Label* tool_pos;
+    clan::Rect rect;
+    clan::SlotContainer slots;
+    clan::Label* text1;
+    clan::Label* tool_text;
+    clan::Label* text2;
+    clan::Label* tool_pos;
 
     string pos;
 };

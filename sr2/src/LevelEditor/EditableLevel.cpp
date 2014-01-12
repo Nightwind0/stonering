@@ -28,7 +28,7 @@ Element * EditableLevelFactory::createTile() const
   {
   return new EditableMappableObject();
   }
-  MappableObject * EditableLevelFactory::createMappableObject(CL_DomElement *pElement) const
+  MappableObject * EditableLevelFactory::createMappableObject(clan::DomElement *pElement) const
   {
   return new EditableMappableObject(pElement);
   }
@@ -60,14 +60,14 @@ Element * EditableLevelFactory::createSpriteRef() const
     return new EditableSpriteRef();
 }
 
-CL_DomElement EditableScriptElement::createDomElement(CL_DomDocument &doc) const
+clan::DomElement EditableScriptElement::createDomElement(clan::DomDocument &doc) const
 {
-    CL_DomElement  element(doc, isConditionScript()?"conditionScript":"script");
+    clan::DomElement  element(doc, isConditionScript()?"conditionScript":"script");
 
 
     element.set_attribute("id",mId);
 
-    CL_DomText text ( doc, mScript );
+    clan::DomText text ( doc, mScript );
     text.set_node_value ( mScript );
 
     element.append_child ( text );
@@ -90,9 +90,9 @@ void EditableScriptElement::handleText(const std::string &script)
     mScript = script;
 }
 
-CL_DomElement EditableEvent::createDomElement(CL_DomDocument &doc) const
+clan::DomElement EditableEvent::createDomElement(clan::DomDocument &doc) const
 {
-    CL_DomElement  element(doc,"event");
+    clan::DomElement  element(doc,"event");
 
     element.set_attribute("name", mName );
 
@@ -119,13 +119,13 @@ CL_DomElement EditableEvent::createDomElement(CL_DomDocument &doc) const
 
     if(mpCondition)
     {
-        CL_DomElement e = mpCondition->createDomElement(doc);
+        clan::DomElement e = mpCondition->createDomElement(doc);
         element.append_child ( e );
     }
 
     if(mpScript)
     {
-        CL_DomElement e = mpScript->createDomElement(doc);
+        clan::DomElement e = mpScript->createDomElement(doc);
         element.append_child ( e );
     }
 
@@ -289,14 +289,14 @@ void EditableTile::setWestBlock(bool bOn)
 
 
 
-EditableLevel::EditableLevel(const std::string &name,CL_ResourceManager * pResources):Level(name,pResources)
+EditableLevel::EditableLevel(const std::string &name,clan::ResourceManager * pResources):Level(name,pResources)
 {
 }
 EditableLevel::~EditableLevel()
 {
 }
             
-void EditableLevel::drawMappableObjects(const CL_Rect &src, const CL_Rect &dst, CL_GraphicContext *pGC)
+void EditableLevel::drawMappableObjects(const clan::Rect &src, const clan::Rect &dst, clan::Canvas *pGC)
 {
 }
  
@@ -345,7 +345,7 @@ void EditableLevel::addTile ( Tile * pTile )
 
     if( pTile->isFloater())
     {
-        mFloaterMap[ CL_Point(pTile->getX(),pTile->getY()) ].push_back(pTile);
+        mFloaterMap[ clan::Point(pTile->getX(),pTile->getY()) ].push_back(pTile);
     }
     else
     {
@@ -359,9 +359,9 @@ void EditableLevel::removeTile ( Tile * pTile )
 {
     if(pTile->isFloater())
     {
-        if(mFloaterMap.count( CL_Point(pTile->getX(), pTile->getY() ) ))
+        if(mFloaterMap.count( clan::Point(pTile->getX(), pTile->getY() ) ))
         {
-            mFloaterMap[CL_Point(pTile->getX(),pTile->getY())].remove( pTile );
+            mFloaterMap[clan::Point(pTile->getX(),pTile->getY())].remove( pTile );
         }
     }
     else
@@ -376,7 +376,7 @@ std::list<Tile*> EditableLevel::getTilesAt(uint levelX, uint levelY) const
     std::list<Tile *> tiles = mTileMap[ levelX][levelY];
 
     
-    std::map<CL_Point,std::list<Tile*> >::const_iterator iter = mFloaterMap.find ( CL_Point(levelX,levelY));
+    std::map<clan::Point,std::list<Tile*> >::const_iterator iter = mFloaterMap.find ( clan::Point(levelX,levelY));
 
     if(iter != mFloaterMap.end())
     {

@@ -17,7 +17,7 @@ namespace StoneRing{
 		virtual std::string GetDebugId() const { return IntToString(m_eAttribute); }				
 
     private:
-        virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
+        virtual void load_attributes(clan::DomNamedNodeMap attributes) ;
         Weapon::eAttribute m_eAttribute;
         float m_fMultiplier;
         float m_fAdd;

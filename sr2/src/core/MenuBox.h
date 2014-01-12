@@ -32,7 +32,7 @@ public:
     MenuBox();
     virtual ~MenuBox();
     
-    static void Draw(CL_GraphicContext& gc, const  CL_Rectf& rect, bool inset_shadow=true, CL_Pointf shadow = CL_Pointf(8.0f,8.0f));
+    static void Draw(clan::Canvas& gc, const  clan::Rectf& rect, bool inset_shadow=true, clan::Pointf shadow = clan::Pointf(8.0f,8.0f));
 private:
     
 };

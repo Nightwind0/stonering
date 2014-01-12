@@ -23,7 +23,7 @@ int MonsterRef::GetCount() const
 }
 
 
-void MonsterRef::load_attributes(CL_DomNamedNodeMap attributes)
+void MonsterRef::load_attributes(clan::DomNamedNodeMap attributes)
 {
     m_name = get_required_string("name",attributes);
     m_nCount = get_implied_int("count",attributes,1);
@@ -84,9 +84,9 @@ void DynamicMonsterRef::SetRows(int rows)
 }
 
 #if SR2_EDITOR
-CL_DomElement MonsterRef::CreateDomElement(CL_DomDocument& doc) const 
+clan::DomElement MonsterRef::CreateDomElement(clan::DomDocument& doc) const 
 {
-    CL_DomElement element(doc,"monsterRef");
+    clan::DomElement element(doc,"monsterRef");
     element.set_attribute("name",m_name);
     element.set_attribute("count",IntToString(m_nCount));
     element.set_attribute("cellX",IntToString(m_nCellX));

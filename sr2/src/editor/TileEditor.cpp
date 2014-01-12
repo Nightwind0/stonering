@@ -24,7 +24,7 @@
 
 namespace StoneRing { 
 	
-TileEditorWindow::TileSelectGrid::TileSelectGrid(CL_GUIComponent* parent):CL_GUIComponent(parent),m_pWindow(NULL)
+TileEditorWindow::TileSelectGrid::TileSelectGrid(clan::GUIComponent* parent):clan::GUIComponent(parent),m_pWindow(NULL)
 {
 	func_render().set(this,&TileEditorWindow::TileSelectGrid::on_render);
     func_input_released().set(this,&TileEditorWindow::TileSelectGrid::on_click);	
@@ -42,9 +42,9 @@ void TileEditorWindow::TileSelectGrid::set_edit_window( TileEditorWindow* pWindo
 }
 
 
-bool TileEditorWindow::TileSelectGrid::on_click( const CL_InputEvent& event )
+bool TileEditorWindow::TileSelectGrid::on_click( const clan::InputEvent& event )
 {
-	CL_Point pt = event.mouse_pos / 32;
+	clan::Point pt = event.mouse_pos / 32;
 	int num = pt.y * 4 + pt.x;
 	if(num >= 0 && num < m_tiles.size()){
 		m_selected_num = num;
@@ -104,13 +104,13 @@ void TileEditorWindow::TileSelectGrid::set_tiles( const std::list< Tile* >& tile
 }
 
 
-void TileEditorWindow::TileSelectGrid::on_render( CL_GraphicContext& gc, const CL_Rect& rect )
+void TileEditorWindow::TileSelectGrid::on_render( clan::Canvas& gc, const clan::Rect& rect )
 {
-	CL_Draw::fill(gc,rect,CL_Colorf(0.0f,0.0f,0.0f));
+	gc.fill_rect(rect,clan::Colorf(0.0f,0.0f,0.0f));
 	for(int i=0;i<m_tiles.size();i++){
 		int y = i / 4;
 		int x = i - (y*4);
-		CL_Point pt(x*32,y*32);
+		clan::Point pt(x*32,y*32);
 		pt -= m_tiles[i]->GetRect().get_top_left();
 		m_tiles[i]->Draw(gc,pt);
 		m_tiles[i]->Visit(&m_block_drawer,gc,pt);
@@ -119,7 +119,7 @@ void TileEditorWindow::TileSelectGrid::on_render( CL_GraphicContext& gc, const C
 		m_tiles[i]->Visit(&m_zorder_drawer,gc,pt);
 		if(i == m_selected_num){
 			pt += m_tiles[i]->GetRect().get_top_left();
-			CL_Draw::box(gc,CL_Rect(pt,CL_Size(32,32)),CL_Colorf(0.0f,1.0f,1.0f));
+			gc.draw_box(clan::Rect(pt,clan::Size(32,32)),clan::Colorf(0.0f,1.0f,1.0f));
 		}
 	}
 }
@@ -135,88 +135,88 @@ Tile* TileEditorWindow::TileSelectGrid::get_selected_tile() const
 
 
 
-TileEditorWindow::TileEditorWindow(CL_GUIComponent* owner, const CL_GUITopLevelDescription &desc):CL_Window(owner,desc), m_grid(this) {
+TileEditorWindow::TileEditorWindow(clan::GUIComponent* owner, const clan::GUITopLevelDescription &desc):clan::Window(owner,desc), m_grid(this) {
 	func_close().set(this,&TileEditorWindow::on_close);
 	m_grid.set_edit_window(this);
-	m_grid.set_geometry(CL_Rect(CL_Point(24,24),CL_Size(144,144)));
-	m_save = new CL_PushButton(this);
-	m_save->set_geometry(CL_Rect(CL_Point(12,380),CL_Size(128,32)));
+	m_grid.set_geometry(clan::Rect(clan::Point(24,24),clan::Size(144,144)));
+	m_save = new clan::PushButton(this);
+	m_save->set_geometry(clan::Rect(clan::Point(12,380),clan::Size(128,32)));
 	m_save->func_clicked().set(this,&TileEditorWindow::on_save);
 	m_save->set_text("Done");
 	
-	m_delete_selected = new CL_PushButton(this);
-	m_delete_selected->set_geometry(CL_Rect(CL_Point(264,64+24+24),CL_Size(128,32)));
+	m_delete_selected = new clan::PushButton(this);
+	m_delete_selected->set_geometry(clan::Rect(clan::Point(264,64+24+24),clan::Size(128,32)));
 	m_delete_selected->set_text("Delete Tile");
 	m_delete_selected->func_clicked().set(this,&TileEditorWindow::on_delete_tile);
 	
-	m_edit_condition = new CL_PushButton(this);
-	m_edit_condition->set_geometry(CL_Rect(CL_Point(264,12+24-12),CL_Size(128,32)));
+	m_edit_condition = new clan::PushButton(this);
+	m_edit_condition->set_geometry(clan::Rect(clan::Point(264,12+24-12),clan::Size(128,32)));
 	m_edit_condition->set_text("Edit Condition");
 	m_edit_condition->func_clicked().set(this,&TileEditorWindow::on_edit_condition);
 	
-	m_edit_script = new CL_PushButton(this);
-	m_edit_script->set_geometry(CL_Rect(CL_Point(264,32+12+24),CL_Size(128,32)));
+	m_edit_script = new clan::PushButton(this);
+	m_edit_script->set_geometry(clan::Rect(clan::Point(264,32+12+24),clan::Size(128,32)));
 	m_edit_script->set_text("Edit Script");
 	m_edit_script->func_clicked().set(this,&TileEditorWindow::on_edit_script);
 	
-	m_block_north = new CL_CheckBox(this);
-	m_block_north->set_geometry(CL_Rect(CL_Point(224+64,64+32+24+32),CL_Size(100,24)));
+	m_block_north = new clan::CheckBox(this);
+	m_block_north->set_geometry(clan::Rect(clan::Point(224+64,64+32+24+32),clan::Size(100,24)));
 	m_block_north->set_text("North");
 	m_block_north->func_state_changed().set(this,&TileEditorWindow::on_block_north_changed);
 
-	m_block_south = new CL_CheckBox(this);
-	m_block_south->set_geometry(CL_Rect(CL_Point(224+64,64+32+24+48+32),CL_Size(100,24)));
+	m_block_south = new clan::CheckBox(this);
+	m_block_south->set_geometry(clan::Rect(clan::Point(224+64,64+32+24+48+32),clan::Size(100,24)));
 	m_block_south->set_text("South");
 	m_block_south->func_state_changed().set(this,&TileEditorWindow::on_block_south_changed);
 	
-	m_block_west = new CL_CheckBox(this);
-	m_block_west->set_geometry(CL_Rect(CL_Point(264,64+32+24+24+32),CL_Size(64,24)));
+	m_block_west = new clan::CheckBox(this);
+	m_block_west->set_geometry(clan::Rect(clan::Point(264,64+32+24+24+32),clan::Size(64,24)));
 	m_block_west->set_text("West");
 	m_block_west->func_state_changed().set(this,&TileEditorWindow::on_block_west_changed);
 	
-	m_block_east = new CL_CheckBox(this);
-	m_block_east->set_geometry(CL_Rect(CL_Point(200+64+64,64+32+24+24+32),CL_Size(64,24)));
+	m_block_east = new clan::CheckBox(this);
+	m_block_east->set_geometry(clan::Rect(clan::Point(200+64+64,64+32+24+24+32),clan::Size(64,24)));
 	m_block_east->set_text("West");
 	m_block_east->func_state_changed().set(this,&TileEditorWindow::on_block_east_changed);
 	
-	m_hot = new CL_CheckBox(this);
-	m_hot->set_geometry(CL_Rect(CL_Point(264,64+32+24+24+24+64),CL_Size(64,24)));
+	m_hot = new clan::CheckBox(this);
+	m_hot->set_geometry(clan::Rect(clan::Point(264,64+32+24+24+24+64),clan::Size(64,24)));
 	m_hot->set_text("Hot");
 	m_hot->func_state_changed().set(this,&TileEditorWindow::on_hot_changed);
 	
-	m_floater = new CL_CheckBox(this);
-	m_floater->set_geometry(CL_Rect(CL_Point(264,64+32+24+24+64+32+32),CL_Size(64,24)));
+	m_floater = new clan::CheckBox(this);
+	m_floater->set_geometry(clan::Rect(clan::Point(264,64+32+24+24+64+32+32),clan::Size(64,24)));
 	m_floater->set_text("Floater");
 	m_floater->func_state_changed().set(this,&TileEditorWindow::on_floater_changed);
 	
-	m_water = new CL_CheckBox(this);
-	m_water->set_geometry(CL_Rect(CL_Point(264,64+32+24+24+64+32+12),CL_Size(64,24)));
+	m_water = new clan::CheckBox(this);
+	m_water->set_geometry(clan::Rect(clan::Point(264,64+32+24+24+64+32+12),clan::Size(64,24)));
 	m_water->set_text("Water");
 	m_water->func_state_changed().set(this,&TileEditorWindow::on_water_changed);	
 	
-	m_move_up = new CL_PushButton(this);
-	m_move_up->set_geometry(CL_Rect(CL_Point(144+48,(144-24)/2),CL_Size(48,24)));
+	m_move_up = new clan::PushButton(this);
+	m_move_up->set_geometry(clan::Rect(clan::Point(144+48,(144-24)/2),clan::Size(48,24)));
 	m_move_up->set_text("Up");
 	m_move_up->func_clicked().set(this,&TileEditorWindow::on_move_up);
 
-	m_move_down = new CL_PushButton(this);
-	m_move_down->set_geometry(CL_Rect(CL_Point(144+48,48+(144-48)/2),CL_Size(48,24)));
+	m_move_down = new clan::PushButton(this);
+	m_move_down->set_geometry(clan::Rect(clan::Point(144+48,48+(144-48)/2),clan::Size(48,24)));
 	m_move_down->set_text("Down");
 	m_move_down->func_clicked().set(this,&TileEditorWindow::on_move_down);	
 	
 
-	m_monster_region = new CL_ComboBox(this);
-	m_monster_region->set_geometry(CL_Rect(CL_Point(264,300),CL_Size(100,24)));
+	m_monster_region = new clan::ComboBox(this);
+	m_monster_region->set_geometry(clan::Rect(clan::Point(264,300),clan::Size(100,24)));
 	m_monster_region->func_selection_changed().set(this,&TileEditorWindow::on_select_monster_region);
 
-//	CL_Spin*       m_zorder;
-	m_zorder = new CL_Spin(this);
-	m_zorder->set_geometry(CL_Rect(CL_Point(248+64,232+100),CL_Size(64,24)));
+//	clan::Spin*       m_zorder;
+	m_zorder = new clan::Spin(this);
+	m_zorder->set_geometry(clan::Rect(clan::Point(248+64,232+100),clan::Size(64,24)));
 	m_zorder->set_ranges(0,100);
 	m_zorder->func_value_changed().set(this,&TileEditorWindow::on_zorder_change);
 	
-	m_zorder_label = new CL_Label(this);
-	m_zorder_label->set_geometry(CL_Rect(CL_Point(264,232+100),CL_Size(64,24)));
+	m_zorder_label = new clan::Label(this);
+	m_zorder_label->set_geometry(clan::Rect(clan::Point(264,232+100),clan::Size(64,24)));
 	m_zorder_label->set_text("ZOffset");
 
 	
@@ -261,11 +261,11 @@ void TileEditorWindow::selection_changed()
 
 void TileEditorWindow::populate_monster_region_list()
 {
-	CL_PopupMenu menu;
+	clan::PopupMenu menu;
 	menu.insert_item("-1");
 	for(std::list<int>::const_iterator it = m_monster_regions.begin();
 		it != m_monster_regions.end(); it++){
-	    CL_PopupMenuItem item = menu.insert_item(IntToString(*it));
+	    clan::PopupMenuItem item = menu.insert_item(IntToString(*it));
 		item.set_id(*it);
 	}
 	m_monster_region->set_popup_menu(menu);	
@@ -394,8 +394,8 @@ void TileEditorWindow::on_block_south_changed()
 
 void TileEditorWindow::on_edit_condition()
 {
-	CL_GUIManager mgr = get_gui_manager();
-	CL_GUITopLevelDescription desc("Condition",CL_Size(800,650),false);
+	clan::GUIManager mgr = get_gui_manager();
+	clan::GUITopLevelDescription desc("Condition",clan::Size(800,650),false);
 	desc.set_dialog_window(true);
 	ScriptEditWindow script_window(&mgr,desc);
 	script_window.SetIsCondition(true);
@@ -412,8 +412,8 @@ void TileEditorWindow::on_edit_condition()
 
 void TileEditorWindow::on_edit_script()
 {
-	CL_GUIManager mgr = get_gui_manager();
-	CL_GUITopLevelDescription desc("Script",CL_Size(800,650),false);
+	clan::GUIManager mgr = get_gui_manager();
+	clan::GUITopLevelDescription desc("Script",clan::Size(800,650),false);
 	desc.set_dialog_window(true);
 	ScriptEditWindow script_window(&mgr,desc);
 	script_window.SetIsCondition(true);

@@ -27,10 +27,10 @@ namespace StoneRing {
 	
 	class MapEditorState;
 
-class MapWindow : public CL_Window
+class MapWindow : public clan::Window
 {
 public:
-    MapWindow(CL_GUIComponent* i_component, const CL_GUITopLevelDescription &description);
+    MapWindow(clan::GUIComponent* i_component, const clan::GUITopLevelDescription &description);
     virtual ~MapWindow();
 	
 	void Init(MapEditorState* state);
@@ -46,7 +46,7 @@ private:
 	
         enum MouseButton {
             MOUSE_LEFT=0,
-            MOUSE_RIGHT=Operation::Modifier::RIGHT
+            MOUSE_RIGHT=Operation::RIGHT
         }m_drag_button;
 	        
         enum MouseState {
@@ -99,10 +99,10 @@ private:
         void on_mo_create();
         void on_mo_place();
         void on_zoom_changed();
-        bool on_mouse_moved(const CL_InputEvent&);
-        bool on_mouse_pressed(const CL_InputEvent&);
-        bool on_mouse_released(const CL_InputEvent&);
-        bool on_mouse_double_click(const CL_InputEvent&);
+        bool on_mouse_moved(const clan::InputEvent&);
+        bool on_mouse_pressed(const clan::InputEvent&);
+        bool on_mouse_released(const clan::InputEvent&);
+        bool on_mouse_double_click(const clan::InputEvent&);
         bool on_pointer_entered();
         bool on_pointer_exit();
 		void on_resize();
@@ -123,7 +123,7 @@ private:
 		void on_view_unzoom();
         void on_view_recenter();
         
-        void on_toolbar_item(CL_ToolBarItem);
+        void on_toolbar_item(clan::ToolBarItem);
 		void on_music_clicked(int i);
 		void on_allows_running_clicked();
 		void sync_from_level();
@@ -131,48 +131,48 @@ private:
         std::string create_unique_mo_name();
         
         // mouse 
-        void start_drag(const CL_Point&, MouseButton button, int mod_state);
-        void update_drag(const CL_Point& start,const CL_Point& prev_point,const CL_Point& point,MouseButton button, int mod_state);
+        void start_drag(const clan::Point&, MouseButton button, int mod_state);
+        void update_drag(const clan::Point& start,const clan::Point& prev_point,const clan::Point& point,MouseButton button, int mod_state);
         void cancel_drag();
-        void end_drag(const CL_Point& start,const CL_Point& prev_point, const CL_Point& point,MouseButton button, int mod_state);
-        void click(const CL_Point& point,MouseButton button, int mod_state);
+        void end_drag(const clan::Point& start,const clan::Point& prev_point, const clan::Point& point,MouseButton button, int mod_state);
+        void click(const clan::Point& point,MouseButton button, int mod_state);
         
         void construct_map_context_menu();
         void construct_accels();
         void construct_menu();
 		void construct_region_menu();
 		void construct_level_data_menu();
-		void construct_level_music_menu(CL_PopupMenuItem menu_parent);
+		void construct_level_music_menu(clan::PopupMenuItem menu_parent);
         void construct_toolbar();
-        void reset_toolbar_toggles(CL_ToolBarItem exception);     
-        bool construct_object_submenu(CL_PopupMenuItem menu_item, const CL_Point & level_pt);
-        virtual CL_Size get_preferred_size()const{ return CL_Size(1024,700); }
+        void reset_toolbar_toggles(clan::ToolBarItem exception);     
+        bool construct_object_submenu(clan::PopupMenuItem menu_item, const clan::Point & level_pt);
+        virtual clan::Size get_preferred_size()const{ return clan::Size(1024,700); }
 		
 
         // GUI stuff      
 
-        CL_PopupMenu            m_file_menu;
-        CL_PopupMenu            m_edit_menu;
-        CL_PopupMenu            m_grow_submenu;
-        CL_PopupMenu            m_mo_menu; 
-        CL_MenuBar *            m_pMenuBar;
-        CL_PushButton*          m_pButton;
-        CL_Slider*              m_pZoomSlider;
-        CL_ToolBar*             m_toolbar;
-        CL_PopupMenu            m_map_context_menu;
-		CL_PopupMenu 			m_monster_region_menu;
-		CL_PopupMenu            m_level_music_menu;
-		CL_PopupMenuItem        m_level_allow_run_item;
+        clan::PopupMenu            m_file_menu;
+        clan::PopupMenu            m_edit_menu;
+        clan::PopupMenu            m_grow_submenu;
+        clan::PopupMenu            m_mo_menu; 
+        clan::MenuBar *            m_pMenuBar;
+        clan::PushButton*          m_pButton;
+        clan::Slider*              m_pZoomSlider;
+        clan::ToolBar*             m_toolbar;
+        clan::PopupMenu            m_map_context_menu;
+		clan::PopupMenu 			m_monster_region_menu;
+		clan::PopupMenu            m_level_music_menu;
+		clan::PopupMenuItem        m_level_allow_run_item;
    
         MapComponent*           m_pMap;
         int                     m_mod_state;
-        CL_Point                m_drag_start;
-        CL_Point                m_last_drag_point;
-        CL_Point                m_map_context_point;
+        clan::Point                m_drag_start;
+        clan::Point                m_last_drag_point;
+        clan::Point                m_map_context_point;
         std::map<int,Operation*> m_operations;
         std::deque<Operation*>  m_undo_stack;
-		std::vector<CL_String>  m_music;
-        CL_AcceleratorTable     m_accels;	
+		std::vector<std::string>  m_music;
+        clan::AcceleratorTable     m_accels;	
 		MapEditorState*         m_state;
 };
 

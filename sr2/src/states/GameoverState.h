@@ -37,14 +37,14 @@ public:
 		return false;
 	}
 	
-	virtual void Draw( const CL_Rect &screenRect, CL_GraphicContext& GC );
+	virtual void Draw( const clan::Rect &screenRect, clan::Canvas& GC );
 	virtual bool LastToDraw() const ; // Should we continue drawing more states?
 	virtual bool DisableMappableObjects() const; // Should the app move the MOs?
 	virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
 	virtual void Start();
 	virtual void Finish(); // Hook to clean up or whatever after being popped	
 private:
-	CL_Image m_background;
+	clan::Image m_background;
 	bool m_done;
 	uint64 m_start_time;
 };

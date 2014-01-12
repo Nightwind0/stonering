@@ -11,7 +11,7 @@ namespace StoneRing{
         NamedItemElement();
         virtual ~NamedItemElement();
 
-        CL_Image GetIcon() const;
+        clan::Image GetIcon() const;
 
         virtual std::string GetName() const;
         virtual uint GetMaxInventory() const ;
@@ -20,7 +20,7 @@ namespace StoneRing{
 
     protected:
 	virtual bool handle_element(eElement element, Element * pElement );
-        virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
+        virtual void load_attributes(clan::DomNamedNodeMap attributes) ;
         virtual void load_finished();
         void SetIconRef(const std::string &ref);
         void SetName ( const std::string &name );
@@ -29,7 +29,7 @@ namespace StoneRing{
 	
     private:
         std::string m_name;
-		CL_Image m_icon;
+		clan::Image m_icon;
         uint m_nMaxInventory;
         Item::eDropRarity m_eDropRarity;
     };

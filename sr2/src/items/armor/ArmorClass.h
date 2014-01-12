@@ -10,7 +10,7 @@ namespace StoneRing{
     {
     public:
         ArmorClass();
-        ArmorClass(CL_DomElement * pElement);
+        ArmorClass(clan::DomElement * pElement);
         ~ArmorClass();
         virtual eElement WhichElement() const{ return EARMORCLASS; }
         std::string GetName() const;
@@ -42,7 +42,7 @@ namespace StoneRing{
     private:
 
         virtual bool handle_element(eElement element, Element * pElement );
-        virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
+        virtual void load_attributes(clan::DomNamedNodeMap attributes) ;
         std::string m_name;
         std::string m_desc;
         int m_nValueAdd;

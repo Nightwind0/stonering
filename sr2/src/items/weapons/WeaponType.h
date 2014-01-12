@@ -7,7 +7,9 @@
 #include "DamageCategory.h"
 
 using Steel::SteelType;
-class CL_Sprite;
+namespace clan { 
+  class Sprite;
+}
 
 namespace StoneRing{
     
@@ -16,12 +18,12 @@ namespace StoneRing{
     {
     public:
         WeaponType();
-        WeaponType(CL_DomElement * pElement );
+        WeaponType(clan::DomElement * pElement );
         virtual ~WeaponType();
 
         virtual eElement WhichElement() const{ return EWEAPONTYPE; }
 
-		CL_Sprite GetSprite() const;
+		clan::Sprite GetSprite() const;
         std::string GetName() const;
         std::string GetIconRef() const;
 
@@ -41,11 +43,11 @@ namespace StoneRing{
     private:
 		virtual void load_finished();
         virtual bool handle_element(eElement element, Element * pElement );
-        virtual void load_attributes(CL_DomNamedNodeMap attributes) ;
+        virtual void load_attributes(clan::DomNamedNodeMap attributes) ;
         DamageCategory::eDamageCategory m_damageCategory;
         std::string m_name;
         std::string m_icon_ref;
-		CL_Sprite m_sprite;
+		clan::Sprite m_sprite;
         uint m_nBasePrice;
         uint m_nBaseAttack;
         float m_fBaseHit;

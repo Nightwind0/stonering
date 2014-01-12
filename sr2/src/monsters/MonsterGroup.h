@@ -23,7 +23,7 @@ namespace StoneRing{
 
     private:
         virtual bool handle_element(eElement, Element * );
-        virtual void load_attributes(CL_DomNamedNodeMap);
+        virtual void load_attributes(clan::DomNamedNodeMap);
         virtual void load_finished();
 
         int m_nWeight;
@@ -32,7 +32,7 @@ namespace StoneRing{
         std::vector<MonsterRef*> m_monsters;
 #if SR2_EDITOR
 	public:
-        CL_DomElement CreateDomElement(CL_DomDocument& doc)const;
+        clan::DomElement CreateDomElement(clan::DomDocument& doc)const;
 		void SetCellColumns(int cols){m_nCellCols = cols;}
 		void SetCellRows(int rows){m_nCellRows = rows;}
 		void SetWeight(int weight){m_nWeight = weight;}

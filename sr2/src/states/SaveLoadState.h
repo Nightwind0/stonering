@@ -39,7 +39,7 @@ public:
     virtual void        HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos);
     
     virtual bool        Threaded() const { return false; }
-    virtual void        Draw(const CL_Rect &screenRect,CL_GraphicContext& GC);
+    virtual void        Draw(const clan::Rect &screenRect,clan::Canvas& GC);
     virtual bool        LastToDraw() const; // Should we continue drawing more states?
     virtual bool        DisableMappableObjects() const; // Should the app move the MOs?
     virtual void        MappableObjectMoveHook(); // Do stuff right after the mappable object movement
@@ -47,9 +47,9 @@ public:
     virtual void        Finish(); // Hook to clean up or whatever after being popped
 	bool 				Cancelled() const { return m_cancelled; }
 protected:
-    virtual CL_Rectf    get_rect();
-    virtual void        draw_option(int option, bool selected, float x, float y, CL_GraphicContext& gc);
-    virtual int         height_for_option(CL_GraphicContext& gc);
+    virtual clan::Rectf    get_rect();
+    virtual void        draw_option(int option, bool selected, float x, float y, clan::Canvas& gc);
+    virtual int         height_for_option(clan::Canvas& gc);
     virtual void        process_choice(int selection);
     virtual int         get_option_count();
 private:
@@ -61,7 +61,7 @@ private:
         uint                    m_minutes;
         uint                    m_gold;        
         std::list<CharInfo>     m_characters;
-        CL_DateTime             m_datetime;
+        clan::DateTime             m_datetime;
     };    
     
     std::string         filename_for_slot(uint slot);
@@ -78,12 +78,12 @@ private:
     Font                m_datetime_font;
     Font                m_empty_font;
     Font                m_empty_selected_font;
-	CL_Image  			m_portrait_shadow;
-    CL_Pointf           m_number_pt;
-    CL_Pointf           m_datetime_pt;
-    CL_Pointf           m_empty_pt;
-    CL_Pointf           m_portrait_pt;
-    CL_Pointf           m_minutes_pt;
+	clan::Image  			m_portrait_shadow;
+    clan::Pointf           m_number_pt;
+    clan::Pointf           m_datetime_pt;
+    clan::Pointf           m_empty_pt;
+    clan::Pointf           m_portrait_pt;
+    clan::Pointf           m_minutes_pt;
     bool                m_bSave;
     bool                m_bDone;
     bool                m_cancelable;

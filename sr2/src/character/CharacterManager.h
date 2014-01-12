@@ -24,9 +24,9 @@ namespace StoneRing{
         static Monster * CreateMonster(const std::string &name);
 		
 		static void GetMonsterList(std::list<MonsterElement*>& o_list);
-        static void LoadCharacterClassFile (CL_DomDocument  &doc);
-        static void LoadCharacters(CL_DomDocument &doc);
-        static void LoadMonsterFile(CL_DomDocument &doc);
+        static void LoadCharacterClassFile (clan::DomDocument  &doc);
+        static void LoadCharacters(clan::DomDocument &doc);
+        static void LoadMonsterFile(clan::DomDocument &doc);
     private:
         typedef std::map<std::string,CharacterClass*> ClassMap;
         typedef std::map<std::string,Character*> CharacterMap;

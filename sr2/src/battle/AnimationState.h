@@ -33,9 +33,9 @@ namespace StoneRing
 		void Init(SteelType::Functor pFunctor);
 
         virtual bool IsDone() const;
-        virtual void HandleKeyDown(const CL_InputEvent &key);
-        virtual void HandleKeyUp(const CL_InputEvent &key);
-        virtual void Draw(const CL_Rect &screenRect,CL_GraphicContext& GC);
+        virtual void HandleKeyDown(const clan::InputEvent &key);
+        virtual void HandleKeyUp(const clan::InputEvent &key);
+        virtual void Draw(const clan::Rect &screenRect,clan::Canvas& GC);
         virtual bool LastToDraw() const; // Should we continue drawing more states?
         virtual bool DisableMappableObjects() const; // Should the app move the MOs?
         virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
@@ -47,23 +47,24 @@ namespace StoneRing
 		void WaitFinishedEvent();
 		void FunctorCompleted();
 		
-		CL_Rectf GetCharacterRect(ICharacter* ichar);
-		CL_Rectf GetGroupRect(ICharacterGroup* ichar);
-		CL_Rectf GetSpriteRect(BattleState::SpriteTicket sprite);
-		CL_Sprite GetSprite(BattleState::SpriteTicket sprite);
-		BattleState::SpriteTicket AddSprite(CL_Sprite sprite);
-		void SetSpritePos(BattleState::SpriteTicket sprite,const CL_Pointf& pt);
-		void SetSpriteOffset(BattleState::SpriteTicket sprite, const CL_Pointf& pt);
-		CL_Pointf GetSpriteOffset(BattleState::SpriteTicket sprite)const;
-		void SetGroupOffset(ICharacterGroup* igroup, const CL_Pointf& pt);
-		CL_Pointf GetGroupOffset(ICharacterGroup* igroup)const;
+		clan::Rectf GetCharacterRect(ICharacter* ichar)const;
+		clan::Rectf GetGroupRect(ICharacterGroup* ichar)const;
+		clan::Rectf GetSpriteRect(BattleState::SpriteTicket sprite)const;
+		clan::Sprite GetSprite(BattleState::SpriteTicket sprite);
+		BattleState::SpriteTicket AddSprite(clan::Sprite sprite);
+		void SetSpritePos(BattleState::SpriteTicket sprite,const clan::Pointf& pt);
+		void SetSpriteOffset(BattleState::SpriteTicket sprite, const clan::Pointf& pt);
+		clan::Pointf GetSpriteOffset(BattleState::SpriteTicket sprite)const;
+		void SetGroupOffset(ICharacterGroup* igroup, const clan::Pointf& pt);
+		clan::Pointf GetGroupOffset(ICharacterGroup* igroup)const;
 		BattleState::SpriteTicket GetSpriteForChar(ICharacter* iChar);
 		void Darken(int mode, float r,float g, float b, float a);
 		void ClearDark(int mode);
+	
     private:
-        CL_Pointf GetFocusOrigin(const SpriteMovement::Focus&, ICharacter* pTarget);
-		void draw(const CL_Rect& screenRect, CL_GraphicContext& GC);
-		void draw_functor(const CL_Rect& screenRect, CL_GraphicContext& GC);
+        clan::Pointf GetFocusOrigin(const SpriteMovement::Focus&, ICharacter* pTarget);
+		void draw(const clan::Rect& screenRect, clan::Canvas& GC);
+		void draw_functor(const clan::Rect& screenRect, clan::Canvas& GC);
 		void EndPhase();
         bool NextPhase();
         void StartPhase();
@@ -75,6 +76,7 @@ namespace StoneRing
 		public:			
 			enum Type {
 				CHARACTER,
+				CHARACTER_LOCUS,
 				GROUP,
 				SPRITE,
 				SCREEN
@@ -96,7 +98,7 @@ namespace StoneRing
 			Locale();
 			Locale(Type type, Corner corner);
 			virtual ~Locale();			
-			void SetOffset(const CL_Point& offset);
+			void SetOffset(const clan::Point& offset);
 			void SetIChar(ICharacter* pChar);
 			void SetGroup(ICharacterGroup* pGroup);
 			void SetSprite(BattleState::SpriteTicket sprite);
@@ -107,7 +109,7 @@ namespace StoneRing
 			ICharacter* GetChar() const;
 			ICharacterGroup* GetGroup() const;
 			BattleState::SpriteTicket GetSprite() const;
-			CL_Point GetOffset() const { return m_offset; }
+			clan::Point GetOffset() const { return m_offset; }
 		private:
 			Type m_type;
 			Corner m_corner;
@@ -116,12 +118,15 @@ namespace StoneRing
 				ICharacter* as_char;
 				ICharacterGroup* as_group;
 			}m_target;
-			CL_Point m_offset;
+			clan::Point m_offset;
 		};
+	public:
+		clan::Pointf GetPosition(const Locale& locale)const;	
+	private:
 		
 		class Task : public SteelType::IHandle {
 		public:
-			Task(AnimationState& state):m_state(state),m_sync_task(NULL),m_start_after(NULL){
+			Task(AnimationState& state):m_state(state),m_sync_task(NULL),m_start_after(NULL),m_sprite(BattleState::UNDEFINED_SPRITE_TICKET){
 				m_started = false;
 			}
 			virtual ~Task(){}
@@ -145,7 +150,7 @@ namespace StoneRing
 				}
 			}
 			virtual void update(SteelInterpreter* pInterpreter)=0;
-			virtual void draw(const CL_Rect& screenRect, CL_GraphicContext &gc){}
+			virtual void draw(const clan::Rect& screenRect, clan::Canvas &gc){}
 			virtual bool finished()=0;
 			// Finish will be called when the task is finished
 			virtual void finish(SteelInterpreter* pInterpreter){
@@ -162,8 +167,8 @@ namespace StoneRing
 			bool started()const{ return m_started;}
 		protected:   
 			virtual float _percentage()const=0;
-			CL_Pointf get_position(const Locale& locale)const;
-			CL_Pointf get_mid_point(const CL_Pointf& start, const CL_Pointf& end, float p);			
+			clan::Pointf get_position(const Locale& locale)const;
+			clan::Pointf get_mid_point(const clan::Pointf& start, const clan::Pointf& end, float p);			
 			Task* m_sync_task;			
 			AnimationState& m_state;
 			SteelType::Functor m_functor;
@@ -182,7 +187,7 @@ namespace StoneRing
 			}			
 			virtual void start(SteelInterpreter* pInterpreter){
 				Task::start(pInterpreter);
-				m_start_time = CL_System::get_time();
+				m_start_time = clan::System::get_time();
 			}
 			virtual float duration() const {
 				return m_duration;
@@ -194,10 +199,10 @@ namespace StoneRing
 			}
 		protected:
 			virtual float _percentage()const{
-				return float(CL_System::get_time()-m_start_time) / duration();
+				return float(clan::System::get_time()-m_start_time) / duration();
 			}
 
-			uint m_start_time;
+			clan::ubyte64 m_start_time;
 			float m_duration;
 		};
 		
@@ -232,6 +237,19 @@ namespace StoneRing
 			SteelType::Functor m_functor;
 			double m_duration;
 			double m_degrees;
+			double m_start_degrees;
+		};
+		
+		class Orbit: public SteelType::IHandle{
+		public:
+			virtual ~Orbit(){}
+			bool m_clockwise;
+			SteelType::Functor m_radius_functor;
+			SteelType::Functor m_speed_functor;
+			double m_duration;
+			double m_degrees;
+			double m_start_angle;
+		private:
 		};
 		
 		class Stretch: public SteelType::IHandle{
@@ -292,8 +310,8 @@ namespace StoneRing
 		private:
 			virtual float _percentage()const;
 			Path* m_path;
-			CL_Pointf m_cur_pos;
-			uint m_start_time;
+			clan::Pointf m_cur_pos;
+			clan::ubyte64 m_start_time;
 			float m_percentage_so_far;
 		};
 		
@@ -326,11 +344,10 @@ namespace StoneRing
 			virtual void cleanup();
 		private:
 			virtual float _percentage()const;
-			float m_start_degrees;
 			float m_completion_degrees;
 			float m_degrees;
 			float m_cur_degrees;
-			uint m_last_time;
+			clan::ubyte64 m_last_time;
 			Rotation m_rotation;
 		};	
 		
@@ -347,7 +364,50 @@ namespace StoneRing
 			virtual void cleanup();
 		private:
 			Rotation m_rotation;
+			float m_start_degrees;
+			float m_completion_degrees;
+			float m_degrees;	
+			clan::ubyte64 m_last_time;			
 		};
+		
+		class OrbitTask: public Task {
+		public:
+			OrbitTask(AnimationState& state):Task(state){
+			}
+			virtual ~OrbitTask(){}
+			virtual std::string GetName() const { return "OrbitTask";}
+			void init(const Orbit& rotation, const Locale& locale);
+			virtual void start(SteelInterpreter*);
+			virtual void update(SteelInterpreter*);
+			virtual bool finished();
+			virtual void cleanup();
+		private:
+			virtual float _percentage()const;
+			float m_start_degrees;
+			float m_completion_degrees;
+			float m_degrees;
+			Locale m_origin;
+			clan::ubyte64 m_last_time;
+			Orbit m_orbit;
+		};	
+
+		class TimedOrbitTask: public TimedTask {
+		public:
+			TimedOrbitTask(AnimationState& state):TimedTask(state){
+			}
+			virtual ~TimedOrbitTask(){}
+			virtual std::string GetName() const { return "TimedOrbitTask";}
+			void init(const Orbit& orb, const Locale& origin);
+			virtual void start(SteelInterpreter*);
+			virtual void update(SteelInterpreter*);
+			virtual bool finished();
+			virtual void cleanup();
+		private:
+			Orbit m_orbit;
+			Locale m_locale;
+			float m_degrees;	
+			clan::ubyte64 m_last_time;				
+		};		
 		
 		class ShakerTask: public TimedTask { 
 		public:			
@@ -466,8 +526,12 @@ namespace StoneRing
 		SteelType getWeaponSprite(SteelType::Handle iCharacter, int hand);
 		SteelType removeSprite(int sprite);
 		SteelType getCharacterLocale(SteelType::Handle iCharacter, int corner);
+		SteelType getCharacterLocus(SteelType::Handle iCharacter, int corner);
 		SteelType getGroupLocale(SteelType::Handle iCharacter, int corner);
 		SteelType getScreenLocale(int corner);
+		SteelType closestCorner(SteelType::Handle iReferenceLocale, SteelType::Handle iTarget);
+		SteelType nearCorner(SteelType::Handle iReferenceLocale, SteelType::Handle iTargetLocale, int corner);
+		SteelType farCorner(SteelType::Handle iReferenceLocale, SteelType::Handle iTargetLocale, int corner); // Returns the corner on the opposite
 		SteelType getSpriteLocale(int sprite, int corner);
 		SteelType setLocaleOffset(SteelType::Handle hLocale, int x, int y);
 		SteelType createPath(SteelType::Handle hStartLocale, SteelType::Handle hEndLocale,
@@ -483,9 +547,19 @@ namespace StoneRing
 		SteelType setPathFlags(SteelType::Handle hPath, int flags);
 		SteelType moveSprite(int sprite, SteelType::Handle hpath);
 		SteelType moveSpriteTimed(int sprite, SteelType::Handle hpath, double seconds);
-		SteelType createRotation(SteelType::Functor functor, double degrees, int axis);
+		SteelType createRotation(SteelType::Functor speed_functor, double degrees, double start_deg, int axis);
+		SteelType createOrbit(SteelType::Functor radius_functor, SteelType::Functor speed_functor, double start_degrees, double total_deg, bool clockwise);
+		SteelType orbitSprite(int sprite,SteelType::Handle hOrbit, SteelType::Handle hLocale);
+		SteelType orbitSpriteTimed(int sprite, SteelType::Handle hOrbit, SteelType::Handle hLocale, double seconds);
 		SteelType createStretch(SteelType::Functor width_functor, SteelType::Functor height_functor);
 		SteelType stretchSpriteTimed(int sprite, SteelType::Handle hStretch, double seconds);
+		
+		SteelType setSpriteRotation(int sprite, double radians);
+		SteelType flipSprite(int sprite, bool flip_x, bool flip_y);
+		SteelType scaleSprite(int sprite, double scale_x, double scale_y);
+		SteelType setSpriteLocation(int sprite, SteelType::Handle hLocale);
+		// TODO: Set sprite alpha and color
+		
 		// This causes the percentage (p) of hWithTask to be used as the p of hTask
 		// So, for example you can have a rotation coordinated with a speed based path movement
 		// where you don't know the right amount of time for the rotation. or a fade, etc.
@@ -525,14 +599,14 @@ namespace StoneRing
 		std::vector<Task*> m_tasks;
 		std::set<Task*> m_finished_tasks;
 		std::list<SteelType::IHandle*> m_handles;
-		std::set<BattleState::SpriteTicket> m_added_sprites;
+
 		SteelInterpreter * m_pInterpreter;
-		CL_Event m_wait_event;
-		//CL_Event m_finish_event;
-		CL_Thread m_steel_thread;
-		mutable CL_Mutex m_task_mutex;		
-		mutable CL_Mutex m_finished_task_mutex;
-        uint m_phase_start_time;
+		clan::Event m_wait_event;
+		//clan::Event m_finish_event;
+		clan::Thread m_steel_thread;
+		mutable clan::Mutex m_task_mutex;		
+		mutable clan::Mutex m_finished_task_mutex;
+        clan::ubyte64 m_phase_start_time;
 		bool m_functor_mode;
         bool m_bDone;
 		Equipment::eSlot m_hand;

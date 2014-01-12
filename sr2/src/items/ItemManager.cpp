@@ -24,7 +24,7 @@
 #include <algorithm>
 #include <iomanip>
 #include <functional>
-
+#include <fstream>
 
 using namespace StoneRing;
 
@@ -121,14 +121,14 @@ void ItemManager::initialize()
 
 
 
-void ItemManager::LoadItemFile ( CL_DomDocument &doc )
+void ItemManager::LoadItemFile ( clan::DomDocument &doc )
 {
     IFactory * pItemFactory = IApplication::GetInstance()->GetElementFactory();
 
-    CL_DomElement itemsNode = doc.named_item("items").to_element();
-    CL_DomElement weaponClassesNode = itemsNode.named_item("weaponClasses").to_element();
+    clan::DomElement itemsNode = doc.named_item("items").to_element();
+    clan::DomElement weaponClassesNode = itemsNode.named_item("weaponClasses").to_element();
 
-    CL_DomElement weaponClassNode = weaponClassesNode.get_first_child().to_element();
+    clan::DomElement weaponClassNode = weaponClassesNode.get_first_child().to_element();
 
     while(!weaponClassNode.is_null())
     {
@@ -151,8 +151,8 @@ void ItemManager::LoadItemFile ( CL_DomDocument &doc )
     //std::sort(m_weapon_classes.begin(),m_weapon_classes.end(),compare_weapons);
     //std::sort(m_weapon_imbuements.begin(),m_weapon_imbuements.end(),compare_weapons);
 
-    CL_DomElement weaponTypesNode = itemsNode.named_item("weaponTypes").to_element();
-    CL_DomElement weaponTypeNode = weaponTypesNode.get_first_child().to_element();
+    clan::DomElement weaponTypesNode = itemsNode.named_item("weaponTypes").to_element();
+    clan::DomElement weaponTypeNode = weaponTypesNode.get_first_child().to_element();
 
     while(!weaponTypeNode.is_null())
     {
@@ -167,9 +167,9 @@ void ItemManager::LoadItemFile ( CL_DomDocument &doc )
         weaponTypeNode = weaponTypeNode.get_next_sibling().to_element();
     }
 
-    CL_DomElement armorClassesNode = itemsNode.named_item("armorClasses").to_element();
+    clan::DomElement armorClassesNode = itemsNode.named_item("armorClasses").to_element();
 
-    CL_DomElement armorClassNode = armorClassesNode.get_first_child().to_element();
+    clan::DomElement armorClassNode = armorClassesNode.get_first_child().to_element();
 
     while(!armorClassNode.is_null())
     {
@@ -192,8 +192,8 @@ void ItemManager::LoadItemFile ( CL_DomDocument &doc )
    // std::sort(m_armor_classes.begin(),m_armor_classes.end(),compare_armor);
    // std::sort(m_armor_imbuements.begin(),m_armor_imbuements.end(),compare_armor);
     
-    CL_DomElement armorTypesNode = itemsNode.named_item("armorTypes").to_element();
-    CL_DomElement armorTypeNode = armorTypesNode.get_first_child().to_element();
+    clan::DomElement armorTypesNode = itemsNode.named_item("armorTypes").to_element();
+    clan::DomElement armorTypeNode = armorTypesNode.get_first_child().to_element();
 
     while(!armorTypeNode.is_null())
     {
@@ -208,8 +208,8 @@ void ItemManager::LoadItemFile ( CL_DomDocument &doc )
         armorTypeNode = armorTypeNode.get_next_sibling().to_element();
     }
 
-    CL_DomElement itemListNode = itemsNode.named_item("itemList").to_element();
-    CL_DomElement namedItemNode = itemListNode.get_first_child().to_element();
+    clan::DomElement itemListNode = itemsNode.named_item("itemList").to_element();
+    clan::DomElement namedItemNode = itemListNode.get_first_child().to_element();
 
 #ifndef NDEBUG
     uint namedItemCount = 0;
@@ -473,7 +473,7 @@ Item * ItemManager::GetNamedItem( const std::string &name )
         return iter->second;
     }
 
-    throw CL_Exception("Couldn't find item by name: " + name);
+    throw clan::Exception("Couldn't find item by name: " + name);
     return NULL;
 }
 
@@ -514,7 +514,7 @@ Item * ItemManager::GetItem( const ItemRef & ref )
         }
     }
 
-    throw CL_Exception("Couldn't find item based on ref.");
+    throw clan::Exception("Couldn't find item based on ref.");
     return NULL;
 }
 
@@ -561,7 +561,7 @@ void ItemManager::dumpItemList()
             std::cout << ' ' << "Critical% " << std::setw(4) << pWeapon->modifyWeaponAttribute(Weapon::CRITICAL, pType->getBaseCritical()) * 100 << std::endl;
             DamageCategory * pDamageCategory = pType->getDamageCategory();
 
-            if(pDamageCategory->getClass() != DamageCategory::WEAPON) throw CL_Exception("What? This weapon has a magic damage category.");
+            if(pDamageCategory->getClass() != DamageCategory::WEAPON) throw clan::Exception("What? This weapon has a magic damage category.");
 
             WeaponDamageCategory * pWDC = dynamic_cast<WeaponDamageCategory*>(pDamageCategory);
 
@@ -1126,3 +1126,67 @@ Item* ItemManager::DeserializeItem(std::istream& in)
     assert(0);
     return NULL;
 }
+
+#ifndef NDEBUG
+
+void ItemManager::DumpWeapon(std::ofstream& out, Weapon * pWeapon){
+	out << '\"' << pWeapon->GetName() << '\"' << ',' << pWeapon->GetWeaponAttribute(Weapon::ATTACK) 
+		<< ',' << pWeapon->GetWeaponAttribute(Weapon::HIT) 
+		<< ',' << pWeapon->GetWeaponAttribute(Weapon::CRITICAL)
+		<< ',' << pWeapon->GetValue() << '\n';
+}
+
+void ItemManager::DumpArmor(std::ofstream& out, Armor * pArmor)
+{
+	out << '\"' << pArmor->GetName() << '\"' << ',' << pArmor->GetArmorAttribute(Armor::AC) 
+		<< ',' << pArmor->GetArmorAttribute(Armor::RST) 
+		<< ',' << pArmor->GetValue() << '\n';	
+}
+
+
+
+void ItemManager::DumpItemCSV()
+{
+		std::ofstream weapons("weapons.csv");
+		std::ofstream armor("armor.csv");
+		weapons << "\"Name\", \"Attack\", \"Hit\", \"Critical\", \"Price\"\n";
+		armor << "Name, AC, Resist, Price\n";
+		
+		for(auto pType : m_pInstance->m_weapon_types){
+			for(auto pClass : m_pInstance->m_weapon_classes){
+				// Make one no imbuement
+				GeneratedWeapon * noimbue = new GeneratedWeapon();
+				noimbue->Generate(pType,pClass,NULL,NULL);
+				m_pInstance->DumpWeapon(weapons,noimbue);
+				delete noimbue;
+				for(auto pImbuement : m_pInstance->m_weapon_imbuements){
+					GeneratedWeapon * pWeapon = new GeneratedWeapon();
+					pWeapon->Generate(pType,pClass,pImbuement,NULL);
+					m_pInstance->DumpWeapon(weapons,pWeapon);
+					delete pWeapon;
+				}
+			}
+		}
+		
+		weapons.close();
+		
+		for(auto pType: m_pInstance->m_armor_types){
+			for(auto pClass : m_pInstance->m_armor_classes){
+				// One with no imbuement
+				GeneratedArmor * noimbue = new GeneratedArmor();
+				noimbue->Generate(pType,pClass,NULL,NULL);
+				m_pInstance->DumpArmor(armor,noimbue);
+				delete noimbue;
+				for(auto pImbuement : m_pInstance->m_armor_imbuements){
+					GeneratedArmor * pArmor = new GeneratedArmor();
+					pArmor->Generate(pType,pClass,pImbuement,NULL);
+					m_pInstance->DumpArmor(armor,pArmor);
+					delete pArmor;
+				}
+			}
+		}
+		
+		armor.close();
+}
+
+#endif
