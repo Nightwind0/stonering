@@ -1193,8 +1193,7 @@ SteelType AnimationState::setLocaleOffset( SteelType::Handle hLocale, int x, int
 }
 
 
-SteelType AnimationState::createPath( SteelType::Handle hStartLocale, SteelType::Handle hEndLocale,
-																																						SteelType::Functor functor, double pixels_per_ms ) {
+SteelType AnimationState::createPath( SteelType::Handle hStartLocale, SteelType::Handle hEndLocale,	SteelType::Functor functor, double pixels_per_ms ) {
 	Path * path = new Path();
 	path->m_start = *Steel::GrabHandle<Locale*>( hStartLocale );
 	path->m_end = *Steel::GrabHandle<Locale*>( hEndLocale );
@@ -1734,7 +1733,6 @@ void AnimationState::Locale::SetGroup( ICharacterGroup* pGroup ) {
 
 void AnimationState::Locale::SetIChar( ICharacter* pChar ) {
 	m_target.as_char = pChar;
-	m_type = AnimationState::Locale::CHARACTER;
 }
 
 void AnimationState::Locale::SetSprite( BattleState::SpriteTicket sprite ) {
@@ -1754,7 +1752,7 @@ void AnimationState::Locale::SetCorner( AnimationState::Locale::Corner corner ) 
 }
 
 ICharacter* AnimationState::Locale::GetChar() const {
-	assert( m_type == CHARACTER );
+	assert( m_type == CHARACTER || m_type == CHARACTER_LOCUS );
 	return m_target.as_char;
 }
 
@@ -1962,7 +1960,7 @@ void AnimationState::PathTask::update( SteelInterpreter* pInterpreter ) {
 	m_state.SetSpritePos( m_sprite, adj_pos );
 
 
-	m_percentage_so_far = m_cur_pos.distance( start ) / full_pixel_dist;
+	m_percentage_so_far = m_cur_pos.distance( start ) / (full_pixel_dist == 0.0f)?0.000001f:full_pixel_dist;
 	if( done ) m_percentage_so_far = 1.0f;
 }
 
