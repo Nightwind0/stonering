@@ -1262,11 +1262,11 @@ SteelType AnimationState::moveSpriteTimed( int sprite, SteelType::Handle hpath, 
 	return var;
 }
 
-SteelType AnimationState::createRotation( SteelType::Functor functor, double degrees, double start_deg, int axis ) {
+SteelType AnimationState::createRotation( SteelType::Functor functor, double start_degrees, double degrees, int axis ) {
 	Rotation* rotation = new Rotation();
 	rotation->m_axis = ( Rotation::Axis )axis;
 	rotation->m_degrees = degrees;
-	rotation->m_start_degrees = start_deg;
+	rotation->m_start_degrees = start_degrees;
 	rotation->m_functor = functor;
 	m_handles.push_back( rotation );
 	SteelType var;
@@ -2037,11 +2037,12 @@ void AnimationState::TimedStretchTask::cleanup() {
 
 void AnimationState::RotationTask::init( const Rotation& rot ) {
 	m_rotation = rot;
-	m_completion_degrees = m_rotation.m_degrees;
 }
 
 void AnimationState::RotationTask::start( SteelInterpreter* pInterpreter ) {
 	Task::start(pInterpreter);
+	m_original_degrees = m_state.GetSprite(m_sprite).get_angle().to_degrees();
+	m_completion_degrees = 0.0f;
 	m_degrees = m_rotation.m_start_degrees;
 	m_last_time = clan::System::get_time();
 }
@@ -2053,9 +2054,10 @@ void AnimationState::RotationTask::update( SteelInterpreter* pInterpreter ) {
 	params.push_back( p );
 	float speed = ( double )m_rotation.m_functor->Call( pInterpreter, params );
 	float delta = speed * float( clan::System::get_time() - m_last_time );
-	m_degrees += fabs( delta );
+	m_degrees +=  delta ;
+	m_completion_degrees += fabs(delta);
 	if( m_degrees > m_rotation.m_degrees )
-		delta -=  m_degrees - m_rotation.m_degrees; // lessen the delta by how much we overshot
+		m_degrees = m_rotation.m_degrees;
 	clan::Sprite sprite = m_state.GetSprite( m_sprite );
 	switch( m_rotation.m_axis ) {
 		case Rotation::PITCH:
@@ -2065,7 +2067,7 @@ void AnimationState::RotationTask::update( SteelInterpreter* pInterpreter ) {
 			//sprite.rotate_yaw( clan::Angle::from_degrees( delta ) );
 			break;
 		case Rotation::ROLL:
-			sprite.rotate( clan::Angle::from_degrees( delta ) );
+			sprite.set_angle( clan::Angle::from_degrees( m_degrees ) );
 			break;
 	}
 	m_last_time = clan::System::get_time();
@@ -2077,14 +2079,14 @@ bool AnimationState::RotationTask::finished() {
 
 
 float AnimationState::RotationTask::_percentage() const {
-	return  m_degrees / m_rotation.m_degrees;
+	return  m_completion_degrees / m_rotation.m_degrees;
 }
 
 void AnimationState::RotationTask::cleanup() {
 
 	switch( m_rotation.m_axis ) {
 		case Rotation::ROLL:
-			m_state.GetSprite( m_sprite ).set_angle( clan::Angle::from_degrees( 0.0f ) );
+			m_state.GetSprite( m_sprite ).set_angle( clan::Angle::from_degrees( m_original_degrees ) );
 			break;
 		case Rotation::YAW:
 			//m_state.GetSprite( m_sprite ).set_angle_yaw( clan::Angle::from_degrees( 0.0f ) );
@@ -2159,7 +2161,8 @@ void AnimationState::OrbitTask::init(const Orbit & orbit, const Locale& locale){
 }
 void AnimationState::OrbitTask::start(SteelInterpreter* pInterpreter){
 	Task::start(pInterpreter);
-	m_degrees = m_start_degrees;
+	m_completion_degrees = 0.0f;
+	m_degrees = m_orbit.m_start_angle;
 	m_last_time = clan::System::get_time();	
 }
 void AnimationState::OrbitTask::update(SteelInterpreter* pInterpreter){
@@ -2173,7 +2176,8 @@ void AnimationState::OrbitTask::update(SteelInterpreter* pInterpreter){
 	float radius = ( double ) m_orbit.m_radius_functor->Call(pInterpreter, params );
 	float speed = ( double )m_orbit.m_speed_functor->Call( pInterpreter, params );
 	float delta = speed * float( clan::System::get_time() - m_last_time );
-	m_degrees += fabs( delta );
+	m_degrees += delta ;
+	m_completion_degrees += fabs(delta);
 	if( m_degrees > m_orbit.m_degrees )
 		delta -=  m_degrees - m_orbit.m_degrees; // lessen the delta by how much we overshot	
 	float angle = ( clan::PI / 180.0f ) * m_degrees;
@@ -2183,10 +2187,10 @@ void AnimationState::OrbitTask::update(SteelInterpreter* pInterpreter){
 	m_last_time =  clan::System::get_time();
 }
 float AnimationState::OrbitTask::_percentage() const {
-	return m_degrees / m_orbit.m_degrees;
+	return m_completion_degrees / m_orbit.m_degrees;
 }
 bool AnimationState::OrbitTask::finished(){
-	return (m_degrees >= m_orbit.m_degrees);
+	return (m_completion_degrees >= m_orbit.m_degrees);
 }
 void AnimationState::OrbitTask::cleanup(){
 }
