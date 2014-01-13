@@ -356,7 +356,7 @@ namespace StoneRing
 			virtual float _percentage()const;
 			float m_completion_degrees;
 			float m_degrees;
-			float m_cur_degrees;
+			float m_original_degrees;
 			clan::ubyte64 m_last_time;
 			Rotation m_rotation;
 		};	
@@ -558,7 +558,7 @@ namespace StoneRing
 		SteelType setPathFlags(SteelType::Handle hPath, int flags);
 		SteelType moveSprite(int sprite, SteelType::Handle hpath);
 		SteelType moveSpriteTimed(int sprite, SteelType::Handle hpath, double seconds);
-		SteelType createRotation(SteelType::Functor speed_functor, double degrees, double start_deg, int axis);
+		SteelType createRotation(SteelType::Functor speed_functor, double start_degrees, double degrees, int axis);
 		SteelType createOrbit(SteelType::Functor radius_functor, SteelType::Functor speed_functor, double start_degrees, double total_deg, bool clockwise);
 		SteelType orbitSprite(int sprite,SteelType::Handle hOrbit, SteelType::Handle hLocale);
 		SteelType orbitSpriteTimed(int sprite, SteelType::Handle hOrbit, SteelType::Handle hLocale, double seconds);
