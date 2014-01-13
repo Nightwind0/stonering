@@ -736,6 +736,8 @@ void AnimationState::draw_functor( const clan::Rect& screenRect, clan::Canvas& G
 	m_task_mutex.lock();
 	for( auto it = std::begin(m_tasks); it != std::end(m_tasks); it++ ){
 		Task * pTask = *it;
+		if(!pTask->started() ||  pTask->expired()) 
+			continue;
 		try{
 			pTask->update( m_pInterpreter );
 		}catch(Steel::SteelException ex){
@@ -750,8 +752,6 @@ void AnimationState::draw_functor( const clan::Rect& screenRect, clan::Canvas& G
 			pTask->finish( m_pInterpreter );
 			// Do something with waitFor?
 			std::cout << "Finished task: " << pTask->GetName() << '@' << std::hex << pTask << std::endl;
-			notasks = m_tasks.empty();
-			std::cout << "Tasks left = " << m_tasks.size() << std::endl;
 			//m_wait_event.set();
 		}
 	}
