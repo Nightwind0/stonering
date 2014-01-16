@@ -7,7 +7,7 @@
 
 using namespace StoneRing;
 
-WeaponType::WeaponType():m_pAnimation(NULL)
+WeaponType::WeaponType():m_pAnimation(NULL),m_pAnimScript(nullptr)
 {
 }
 
@@ -53,11 +53,16 @@ bool WeaponType::handle_element(eElement element, Element * pElement)
 			m_icon_ref = dynamic_cast<IconRef*>(pElement)->GetIcon();
 			break;
 		case EANIMATION:
-			if(m_pAnimation) 
-				throw XMLException("WeaponType can have either animationRef or animation element, not both: " + m_name);
+			if(m_pAnimation || m_pAnimScript) 
+				throw XMLException("WeaponType can have only one of animationRef, animation element, or script: " + m_name);
 			m_pAnimation = dynamic_cast<Animation*>(pElement);
 		break;
-		
+		case EANIMATIONSCRIPT:
+			if(m_pAnimation) 
+				throw XMLException("WeaponType can have only one of animationRef, animation element, or script: " + m_name);
+			
+			m_pAnimScript = dynamic_cast<ScriptElement*>(pElement);
+			break;
 		default:
 			return false;
 		}
@@ -88,6 +93,10 @@ clan::Sprite WeaponType::GetSprite() const
     return m_sprite;
 }
 
+ScriptElement* WeaponType::GetAnimationScript() const
+{
+	return m_pAnimScript;
+}
 
 float WeaponType::GetBaseCritical() const
 {

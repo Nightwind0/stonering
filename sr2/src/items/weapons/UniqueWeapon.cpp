@@ -135,7 +135,11 @@ bool UniqueWeapon::handle_element(eElement element, Element * pElement)
 	case EANIMATION:
         if(GetAnimation()) 
             throw XMLException("Unique Weapon can have either animationRef or animation element, not both: " + GetName());
-		SetAnimation(dynamic_cast<Animation*>(pElement));		
+		SetAnimation(dynamic_cast<Animation*>(pElement));	
+		break;
+	case EANIMATIONSCRIPT:
+		SetAnimationScript(dynamic_cast<ScriptElement*>(pElement));
+		break;
     case ESCRIPT:
         m_pScript = dynamic_cast<ScriptElement*>(pElement);
         break;

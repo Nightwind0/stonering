@@ -58,7 +58,7 @@ ScriptEditWindow::~ScriptEditWindow() {
 
 ScriptElement* ScriptEditWindow::CreateScript() const
 {
-	ScriptElement * script = new ScriptElement(m_is_condition);
+	ScriptElement * script = new ScriptElement(m_is_condition,false);
 	script->SetId(m_script_name->get_text());
 	script->SetScript(m_script_text->get_text());
 	return script;

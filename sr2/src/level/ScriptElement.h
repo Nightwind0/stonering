@@ -18,33 +18,33 @@ using Steel::SteelType;
 
 namespace StoneRing{
 
-
     class ScriptElement : public Element
     {
     public:
-        ScriptElement(bool isCondition);
+        ScriptElement(bool condition, bool animation);
         virtual ~ScriptElement();
-        virtual eElement WhichElement() const { return m_bIsCondition?ECONDITIONSCRIPT:ESCRIPT; }
+        virtual eElement WhichElement() const { return m_element_type; }
 
         bool EvaluateCondition() const;
         bool EvaluateCondition(const ParameterList &params)const;
         SteelType ExecuteScript() const ;
         SteelType ExecuteScript(const ParameterList &params);
-
-        bool IsConditionScript() const { return m_bIsCondition; }
-		virtual std::string GetDebugId() const { return m_id; }				
         
     protected:
         virtual void load_attributes(clan::DomNamedNodeMap);
         virtual void handle_text(const std::string &);
         Steel::AstScript * mp_script;
         std::string m_id;
-        bool m_bIsCondition;
+	public:
+      bool IsConditionScript() const { return m_element_type == ECONDITIONSCRIPT; }
+	  virtual std::string GetDebugId() const { return m_id; }	
+	  Element::eElement m_element_type;
+	private:
 #if SR2_EDITOR
 	public:
 		void SetScript(const std::string& script) { m_script = script; }	
 		void SetId(const std::string& id) { m_id = id; }
-		void SetIsCondition(bool is_condition) { m_bIsCondition = is_condition; }		
+		void SetIsCondition(bool is_condition) { m_element_type = Element::ECONDITIONSCRIPT; }		
         virtual clan::DomElement CreateDomElement(clan::DomDocument&)const;
 		std::string GetScriptText() const { return m_script; }
 		std::string GetScriptId() const { return m_id; }

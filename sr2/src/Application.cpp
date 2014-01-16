@@ -74,6 +74,7 @@ using namespace Steel;
 
 bool gbDebugStop;
 
+
 #if 0 
 class DrawThread: public clan::Runnable {
 public:
@@ -984,6 +985,30 @@ SteelType Application::weaponHasAnimation ( SteelType::Handle hWeapon )
     val.set ( pWeapon->GetAnimation() != NULL );
 
     return val;
+}
+
+SteelType 	Application::weaponHasAnimationScript(SteelType::Handle hWeapon){
+	SteelType val;
+    Weapon* pWeapon = GrabHandle<Weapon*> ( hWeapon );
+    val.set ( pWeapon->GetAnimationScript() != NULL );
+
+    return val;	
+}
+SteelType 	Application::runWeaponAnimationScript(SteelType::Handle hWeapon, SteelType::Handle hCharacter, SteelType::Handle hTarget){
+	SteelType val;
+    Weapon* pWeapon = GrabHandle<Weapon*> ( hWeapon );
+    assert(pWeapon->GetAnimationScript());
+	ICharacter * pCharacter = GrabHandle<ICharacter*> ( hCharacter );
+	ICharacter * pTarget = GrabHandle<ICharacter*> (hTarget );
+
+	ParameterList params;
+	params.push_back(ParameterListItem("$_Weapon",pWeapon));
+	params.push_back(ParameterListItem("$_Character",pCharacter));
+	params.push_back(ParameterListItem("$_Target", pTarget));
+	
+	val = pWeapon->GetAnimationScript()->ExecuteScript(params);
+	
+    return val;		
 }
 
 
@@ -2242,9 +2267,12 @@ void Application::registerSteelFunctions()
     SteelFunctor*  fn_weaponHasAnimation = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::weaponHasAnimation );
     SteelFunctor*  fn_invokeWeapon = new SteelFunctor5Arg<Application, const SteelType::Handle, const SteelType::Handle, const SteelType::Handle, uint, uint> ( this, &Application::invokeWeapon );
     SteelFunctor*  fn_invokeArmor = new SteelFunctor2Arg<Application, const SteelType::Handle, const SteelType::Handle> ( this, &Application::invokeArmor );
-    SteelFunctor*  fn_attackCharacter = new SteelFunctor5Arg<Application, const SteelType::Handle,
-                                                              const SteelType::Handle,uint,bool,int> ( this, &Application::attackCharacter );
+    SteelFunctor*  fn_attackCharacter = new SteelFunctor5Arg<Application, const SteelType::Handle, const SteelType::Handle,uint,bool,int> ( this, &Application::attackCharacter );
 
+    SteelFunctor*  fn_runWeaponAnimationScript = new SteelFunctor3Arg<Application, const SteelType::Handle, const SteelType::Handle, const SteelType::Handle> ( this, &Application::runWeaponAnimationScript );
+    SteelFunctor*  fn_weaponHasAnimationScript = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::weaponHasAnimationScript );
+
+	
     SteelFunctor*  fn_getDamageCategoryResistance = new SteelFunctor2Arg<Application, const SteelType::Handle, int> ( this, &Application::getDamageCategoryResistance );
     SteelFunctor*  fn_getUnarmedHitSound = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getUnarmedHitSound );
     SteelFunctor*  fn_getUnarmedMissSound = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getUnarmedMissSound );
@@ -2431,6 +2459,8 @@ void Application::registerSteelFunctions()
     mInterpreter->addFunction ( "getAnimation", fn_getAnimation );
     mInterpreter->addFunction ( "showExperience", fn_showExperience );
 
+	mInterpreter->addFunction ( "runWeaponAnimationScript", fn_runWeaponAnimationScript );
+	mInterpreter->addFunction ( "weaponHasAnimationScript", fn_weaponHasAnimationScript );
     mInterpreter->addFunction ( "mainMenu", new SteelFunctorNoArgs<Application> ( this, &Application::mainMenu ) );
 
     mInterpreter->addFunction ( "getItemType", new SteelFunctor1Arg<Application, SteelType::Handle> ( this, &Application::getItemType ) );

@@ -46,14 +46,19 @@ using namespace StoneRing;
 
 Element * ElementFactory::createScriptElement()const
 {
-    return new ScriptElement(false);
+    return new ScriptElement(false,false);
 }
 
 Element * ElementFactory::createConditionScript()const
 {
-    return new ScriptElement(true);
+    return new ScriptElement(true,false);
 }
 
+
+Element * ElementFactory::createAnimationScript()const
+{
+    return new ScriptElement(false,true);
+}
 
 
 template <class T>
@@ -85,6 +90,7 @@ void ElementFactory::registerCreateMethods()
 {
     mCreateMethods["animation"] = &ElementFactory::CreateElement<Animation>;
     mCreateMethods["spriteDefinition"] = &ElementFactory::CreateElement<SpriteDefinition>;
+	mCreateMethods["animationScript"] = &ElementFactory::createAnimationScript;
     mCreateMethods["armorClass"] = &ElementFactory::CreateElement<ArmorClass>;
     mCreateMethods["armorClassRef"] = &ElementFactory::CreateElement<ArmorClassRef>;
     mCreateMethods["armorEnhancer"] = &ElementFactory::CreateElement<ArmorEnhancer>;

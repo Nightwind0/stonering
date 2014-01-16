@@ -5,6 +5,7 @@
 
 #include "Element.h"
 #include "DamageCategory.h"
+#include "ScriptElement.h"
 
 using Steel::SteelType;
 namespace clan { 
@@ -34,6 +35,7 @@ namespace StoneRing{
         bool IsRanged() const;
         bool IsTwoHanded() const;
 		Animation* GetAnimation() const;
+		ScriptElement* GetAnimationScript() const;
 
         DamageCategory::eDamageCategory GetDamageCategory () const { return m_damageCategory; }
 
@@ -55,6 +57,7 @@ namespace StoneRing{
         bool m_bRanged;
         bool m_bTwoHanded;
 		Animation* m_pAnimation;
+		ScriptElement* m_pAnimScript;
     };
 };
 
