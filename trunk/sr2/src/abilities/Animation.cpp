@@ -452,7 +452,7 @@ float SpriteMovement::circleRadius() const // in pixels
 }
 
 SpriteMovementScript::SpriteMovementScript()
-:ScriptElement(false)
+:ScriptElement(false,false)
 {
 }
 

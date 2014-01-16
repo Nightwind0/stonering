@@ -19,6 +19,7 @@ namespace StoneRing
 
         virtual Element * createConditionScript() const;
         virtual Element * createScriptElement() const;
+		virtual Element * createAnimationScript() const;
      
 	template <class T>Element* CreateElement()const;
 	virtual void registerCreateMethods();

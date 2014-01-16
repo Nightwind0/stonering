@@ -958,7 +958,7 @@ void AnimationState::SteelInit( SteelInterpreter *pInterpreter ) {
 		pInterpreter->addFunction( "arc_under", "anim", new SteelFunctor1Arg<AnimationState, double>( this, &AnimationState::arc_under ) );
 		pInterpreter->addFunction( "createSprite", "anim", new SteelFunctor1Arg<AnimationState, const std::string&>( this, &AnimationState::createSprite ) );
 		pInterpreter->addFunction( "getCharacterSprite", "anim", new SteelFunctor1Arg<AnimationState, SteelType::Handle>( this, &AnimationState::getCharacterSprite ) );
-		pInterpreter->addFunction( "addWeaponSprite", "anim", new SteelFunctor2Arg<AnimationState, SteelType::Handle, int>( this, &AnimationState::addWeaponSprite ) );
+		pInterpreter->addFunction( "addWeaponSprite", "anim", new SteelFunctor1Arg<AnimationState, SteelType::Handle>( this, &AnimationState::addWeaponSprite ) );
 		pInterpreter->addFunction( "removeSprite", "anim", new SteelFunctor1Arg<AnimationState, int>( this, &AnimationState::removeSprite ) );
 		pInterpreter->addFunction( "getCharacterLocale", "anim", new SteelFunctor2Arg<AnimationState, SteelType::Handle, int>( this, &AnimationState::getCharacterLocale ) );
 		pInterpreter->addFunction( "getGroupLocale", "anim", new SteelFunctor2Arg<AnimationState, SteelType::Handle, int>( this, &AnimationState::getGroupLocale ) );
@@ -1122,13 +1122,10 @@ SteelType AnimationState::getCharacterSprite( SteelType::Handle iCharacter ) {
 	return var;
 }
 
-SteelType AnimationState::addWeaponSprite( SteelType::Handle iCharacter, int hand ) {
+SteelType AnimationState::addWeaponSprite( SteelType::Handle hWeapon ) {
 	SteelType var;
-	Character * pCharacter = Steel::GrabHandle<Character*>(iCharacter);
-	assert(pCharacter);
-	Equipment* equipment = pCharacter->GetEquipment( static_cast<Equipment::eSlot>(hand) );
-	Weapon* pWeapon = dynamic_cast<Weapon*>( equipment );
-	if( pWeapon ) { // TODO: Cache this and don't add it twice.
+	Weapon * pWeapon = Steel::GrabHandle<Weapon*>(hWeapon);
+	if( pWeapon ) { 
 		int sprite = m_parent.add_sprite( pWeapon->GetSprite() );
 		var.set( sprite );	
 	} else {
@@ -2370,7 +2367,8 @@ void AnimationState::ColorizeTask::SetDuration( float duration ) {
 	m_duration = duration;
 }
 
-void AnimationState::ColorizeTask::start( SteelInterpreter* ) {
+void AnimationState::ColorizeTask::start( SteelInterpreter* pInterpreter ) {
+	Task::start(pInterpreter);
 }
 
 void AnimationState::ColorizeTask::update( SteelInterpreter* pInterpreter ) {
@@ -2382,9 +2380,7 @@ void AnimationState::ColorizeTask::update( SteelInterpreter* pInterpreter ) {
 	float g = ( double )m_colorizer.m_green->Call( pInterpreter, params );
 	float b = ( double )m_colorizer.m_blue->Call( pInterpreter, params );
 
-	m_state.GetSprite( m_sprite ).set_color( clan::Colorf( r, g, b,
-																																																					m_state.GetSprite( m_sprite ).get_alpha()
-																																																			) );
+	m_state.GetSprite( m_sprite ).set_color( clan::Colorf( r, g, b,	m_state.GetSprite( m_sprite ).get_alpha()) );
 }
 
 void AnimationState::ColorizeTask::cleanup() {
@@ -2401,7 +2397,8 @@ void AnimationState::DarkenTask::init( int mode, float duration, SteelType::Func
 	m_alpha = a;
 }
 
-void AnimationState::DarkenTask::start( SteelInterpreter* ) {
+void AnimationState::DarkenTask::start( SteelInterpreter* pInterpreter ) {
+	Task::start(pInterpreter);
 }
 
 void AnimationState::DarkenTask::update( SteelInterpreter* pInterpreter ) {

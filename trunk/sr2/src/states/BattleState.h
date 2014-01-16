@@ -319,12 +319,14 @@ private:
 	clan::Mutex m_sprite_mutex;
 	uint64_t m_last_render_time;
 	BattleConfig * m_config;
+#ifndef NDEBUG
+	bool m_bShowSpriteRects;
+#endif
 
 	friend class BattleState::Display;
 	friend class TargetingState;
 	friend class BattleManager;
 	friend class AnimationState;
-	friend class MonsterSort;
 };
 
 }

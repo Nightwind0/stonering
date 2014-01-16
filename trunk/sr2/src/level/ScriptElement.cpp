@@ -11,15 +11,21 @@
 using StoneRing::ScriptElement;
 using StoneRing::Element;
 
-ScriptElement::ScriptElement(bool isCondition)
-:mp_script(NULL),m_bIsCondition(isCondition)
+ScriptElement::ScriptElement(bool isCondition, bool isAnimation)
+:mp_script(NULL)
 {
+	if(isCondition)
+		m_element_type = Element::ECONDITIONSCRIPT;
+	else if(isAnimation)
+		m_element_type = Element::EANIMATIONSCRIPT;
+	else m_element_type = Element::ESCRIPT;
 }
 
 ScriptElement::~ScriptElement()
 {
     delete mp_script;
 }
+
 
 
 bool ScriptElement::EvaluateCondition() const
@@ -80,7 +86,9 @@ clan::DomElement ScriptElement::CreateDomElement(clan::DomDocument &doc)const
     std::string name = "script";
     if(IsConditionScript()){
         name = "conditionScript";
-    }
+    }else if(m_element_type == Element::EANIMATIONSCRIPT){
+		name = "animationScript";
+	}
     clan::DomElement element(doc,name);
     
     element.set_attribute("id",m_id);

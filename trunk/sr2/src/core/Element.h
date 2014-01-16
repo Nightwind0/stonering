@@ -37,6 +37,7 @@ namespace StoneRing
         {
             EALTERSPRITE,
             EANIMATION,
+			EANIMATIONSCRIPT,
             EARMORCLASS,
             EARMORCLASSREF,
             EARMORENHANCER,

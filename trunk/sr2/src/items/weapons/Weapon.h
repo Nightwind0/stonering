@@ -3,6 +3,7 @@
 
 #include "Equipment.h"
 #include "DamageCategory.h"
+#include "ScriptElement.h"
 
 namespace StoneRing{
     
@@ -51,14 +52,12 @@ namespace StoneRing{
         virtual void Invoke(eScriptMode invokeTime, const Steel::ParameterList& params)=0;
         bool ForgoAttack() const;
 		
-		virtual Animation* GetAnimation() const;
-		
+		virtual Animation* GetAnimation() const;	
+		virtual ScriptElement* GetAnimationScript() const;
 		virtual DamageCategory::eDamageCategory GetDamageCategory() const;
-		
 		
 		virtual clan::Sprite GetSprite() const=0;
         
-
         /*
         * These are based on the weapon type, and any enhancers added by the class
         * or the unique enhancements.
@@ -79,9 +78,11 @@ namespace StoneRing{
         void Add_Weapon_Enhancer (WeaponEnhancer * pEnhancer);
         void Add_Script_Mode(eScriptMode script_mode);
 		void SetAnimation(Animation* anim);
+		void SetAnimationScript(ScriptElement* pElement);
 		void SetDamageCategory(DamageCategory::eDamageCategory dmgCategory);
     private:
 		Animation* m_animation;
+		ScriptElement* m_animation_script;
 		DamageCategory::eDamageCategory m_dmgCategory;
 		bool m_bHasDmgCategory;
         uint m_eScriptMode;

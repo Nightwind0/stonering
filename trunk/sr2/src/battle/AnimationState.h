@@ -534,7 +534,7 @@ namespace StoneRing
 		SteelType arc_under(double p);
 		SteelType createSprite(const std::string& sprite_ref); // Returns a SpriteTicket (int)
 		SteelType getCharacterSprite(SteelType::Handle iCharacter);
-		SteelType addWeaponSprite(SteelType::Handle iCharacter, int hand);
+		SteelType addWeaponSprite(SteelType::Handle hWeapon);
 		SteelType removeSprite(int sprite);
 		SteelType getCharacterLocale(SteelType::Handle iCharacter, int corner);
 		SteelType getCharacterLocus(SteelType::Handle iCharacter, int corner);

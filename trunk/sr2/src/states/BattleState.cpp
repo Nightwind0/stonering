@@ -111,7 +111,9 @@ const BattleState::SpriteTicket BattleState::UNDEFINED_SPRITE_TICKET = std::nume
 #endif
 
 BattleState::BattleState(){
-
+#ifndef NDEBUG
+	m_bShowSpriteRects = false;
+#endif
 }
 BattleState::~BattleState(){
 }
@@ -370,7 +372,11 @@ void BattleState::HandleKeyDown( const clan::InputEvent &key ) {
 }
 
 void BattleState::HandleKeyUp( const clan::InputEvent &key ) {
-
+#ifndef NDEBUG
+	if(key.id == clan::keycode_m){
+		m_bShowSpriteRects = !m_bShowSpriteRects;
+	}
+#endif
 }
 
 void BattleState::Draw( const clan::Rect &screenRect, clan::Canvas& GC ) {
@@ -777,7 +783,8 @@ BattleState::Sprite::~Sprite() {
 
 
 bool BattleState::Sprite::operator<( const BattleState::Sprite& other ) const {
-	return m_pos.y + m_offset.y + m_zorder < other.m_pos.y + other.m_offset.y + other.m_zorder;
+	clan::Pointf bottom_right = Rect().get_bottom_right(); 
+	return bottom_right.y + m_offset.y + m_zorder < other.Rect().get_bottom_right().y + other.m_offset.y + other.m_zorder;
 }
 
 void BattleState::Sprite::SetPosition( const clan::Pointf& pos ) {
@@ -786,7 +793,8 @@ void BattleState::Sprite::SetPosition( const clan::Pointf& pos ) {
 
 clan::Rectf BattleState::Sprite::Rect() const { 
 	clan::Sizef size(m_sprite.get_size().width,m_sprite.get_size().height);
-	return clan::Rectf(m_pos,size);
+	return clan::Rectf(m_pos.x-size.width/2.0f,m_pos.y-size.height/2.0f,size);
+	//return clan::Rectf(m_pos,size);
 }
 
 clan::Pointf BattleState::Sprite::Position()const {
@@ -794,7 +802,9 @@ clan::Pointf BattleState::Sprite::Position()const {
 }
 void BattleState::Sprite::Draw( clan::Canvas& gc) {
 	m_sprite.set_alignment( clan::origin_center );
-	m_sprite.draw( gc, m_pos.x + m_offset.x, m_pos.y + m_offset.y );
+	clan::Rectf rect = Rect();
+	clan::Pointf point = rect.get_center();
+	m_sprite.draw( gc, point.x + m_offset.x, point.y + m_offset.y );
 }
 
 int BattleState::Sprite::ZOrder() const {
@@ -882,6 +892,12 @@ void BattleState::draw_sprites( clan::Canvas& GC ) {
 	for ( int i = 0;i < sprites.size();i++ ) {
 		if ( sprites[i].Enabled() ) {
 			sprites[i].GetSprite().update(clan::System::get_time()-m_last_render_time);
+#ifndef NDEBUG
+			if(m_bShowSpriteRects){
+				clan::Rectf rect = sprites[i].Rect();
+				GC.draw_box(rect,clan::Colorf(0.0f,1.0f,1.0f));
+			}
+#endif
 			sprites[i].Draw( GC );
 		}
 	}
@@ -1039,7 +1055,7 @@ clan::Sizef  BattleState::get_character_size( const ICharacter* pCharacter ) con
 	if ( pMonster != NULL ) {
 		return const_cast<Monster*>( pMonster )->GetCurrentSprite().get_size();
 	} else {
-		return clan::Sizef( 60, 120 );
+		return clan::Sizef( 60, 100 );
 	}
 }
 
@@ -1056,12 +1072,13 @@ clan::Rectf BattleState::get_character_rect( const ICharacter* pCharacter )const
 	clan::Pointf point = m_sprites[n].Position();
 	clan::Sizef size = get_character_size( pCharacter );
 
-	rect.set_top_left( clan::Pointf( point.x - size.width / 2.0f, point.y - size.height / 2.0f ) );
+	//rect.set_top_left( clan::Pointf( point.x - size.width / 2.0f, point.y - size.height / 2.0f ) );
+	rect = clan::Rectf(point.x - size.width / 2.0f,point.y - size.height / 2.0f, size);
 	/* rect.top = point.x - size.width / 2.0f;
 	 rect.left = point.y - size.height / 2.0f;
 	 rect.bottom = rect.top + size.height;
 	 rect.right = rect.left + size.width; */
-	rect.set_size( size );
+	//rect.set_size( size );
 
 
 	return rect;
