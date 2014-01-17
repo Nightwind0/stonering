@@ -172,14 +172,14 @@ private:
 
 		int ZOrder() const;
 		void SetPosition( const clan::Pointf& pos );
-		clan::Pointf Position()const;
+		clan::Pointf Position(bool with_offsets=false)const;
 		void SetZOrder( int z );
 		void Draw( clan::Canvas& gc );
 		bool Enabled() const;
 		void SetEnabled( bool enabled );
 		void SetOffset( const clan::Pointf& pos);
 		clan::Pointf GetOffset() const;
-		clan::Rectf Rect()const;
+		clan::Rectf Rect(bool with_offsets=false)const;
 		clan::Sprite GetSprite() const;
 		void SetSprite(clan::Sprite sprite);
 		bool operator<(const Sprite& other)const;
@@ -199,6 +199,7 @@ private:
 	void draw_transition_in( const clan::Rectf &screenRect, clan::Canvas& GC );
 	void draw_start( const clan::Rectf &screenRect, clan::Canvas& GC );
 	void draw_battle( const clan::Rectf &screenRect, clan::Canvas& GC );
+	void draw_shadows( const clan::Rectf &screenRect, clan::Canvas& GC );
 	void draw_sprites( clan::Canvas& GC );
 	void draw_monsters ( const clan::Rectf &monsterRect, clan::Canvas& GC);
 	void draw_players ( const clan::Rectf &monsterRect, clan::Canvas& GC);
