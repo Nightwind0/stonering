@@ -203,6 +203,7 @@ void BattleState::set_positions_to_loci() {
 	for ( int i=0;i<m_initiative.size();i++) {
 		clan::Pointf pos = get_character_locus_rect( m_initiative[i] ).get_center();
 		m_sprites[i].SetPosition(pos);
+		m_sprites[i].SetOffset(clan::Pointf(0,0));
 	}
 	m_group_offsets.clear();
 }
@@ -387,6 +388,7 @@ void BattleState::Draw( const clan::Rect &screenRect, clan::Canvas& GC ) {
 		if ( passed >= 1.0f ) {
 			m_eState = COMBAT;
 			next_turn();
+			pick_next_character();
 			run_turn();
 			( this->*m_draw_method )( screenRect, GC );
 		} else {
@@ -627,6 +629,7 @@ void BattleState::draw_battle( const clan::Rectf &screenRect, clan::Canvas& GC )
 	draw_status( screenRect, GC );
 
 	draw_darkness( DISPLAY_ORDER_PRE_SPRITES,screenRect, GC );
+	draw_shadows( screenRect, GC );
 	draw_sprites( GC );
 	draw_monsters( m_monster_rect, GC ); // draw various things around monsters
 	draw_players( m_player_rect, GC );
@@ -791,14 +794,22 @@ void BattleState::Sprite::SetPosition( const clan::Pointf& pos ) {
 	m_pos = pos;
 }
 
-clan::Rectf BattleState::Sprite::Rect() const { 
+clan::Rectf BattleState::Sprite::Rect(bool with_offsets) const { 
 	clan::Sizef size(m_sprite.get_size().width,m_sprite.get_size().height);
-	return clan::Rectf(m_pos.x-size.width/2.0f,m_pos.y-size.height/2.0f,size);
+	if(with_offsets)
+		return clan::Rectf(m_pos.x+m_offset.x-size.width/2.0f,m_pos.y+m_offset.x-size.height/2.0f,size);
+	else
+		return clan::Rectf(m_pos.x-size.width/2.0f,m_pos.y-size.height/2.0f,size);
+		
+		
 	//return clan::Rectf(m_pos,size);
 }
 
-clan::Pointf BattleState::Sprite::Position()const {
-	return m_pos;
+clan::Pointf BattleState::Sprite::Position(bool with_offsets)const {
+	if(with_offsets)
+		return m_pos + m_offset;
+	else
+		return m_pos;
 }
 void BattleState::Sprite::Draw( clan::Canvas& gc) {
 	m_sprite.set_alignment( clan::origin_center );
@@ -884,6 +895,34 @@ clan::Rectf BattleState::get_sprite_rect( BattleState::SpriteTicket nSprite ) {
 }
 
 
+void BattleState::draw_shadows( const clan::Rectf &screenRect, clan::Canvas& GC ){
+	for(int i = 0; i<m_initiative.size(); i++){
+		if(m_sprites[i].Enabled()){
+			ICharacter * c = m_initiative[i]; 
+			bool turn = (m_cur_char == i);
+			float alpha = c->GetCurrentSprite().get_alpha();
+			clan::Rectf rect = get_character_rect(c);
+			clan::Pointf pt = rect.get_bottom_left(); 
+			pt.x += rect.get_width() / 2.0f;
+			pt.y -= rect.get_height() / 15.0f; // TODO: Make this a resource config, and be able to override it per character
+			clan::Shape2D shape;
+			std::vector<clan::Vec2f> shadowTris;
+			shape.add_ellipse(pt.x,pt.y,rect.get_width() / 2.0f, rect.get_width() / 2.0f * 0.33f);
+			shape.get_triangles(shadowTris);
+			float blue = 0.0f;
+			if(turn){
+				blue = 2.0f * (float(clan::System::get_time() % 1000) / 1000.0f);
+				if(blue > 1.0f){
+					blue = 1.0f - (blue-1.0f);
+				}
+			}
+			GC.fill_triangles(shadowTris,clan::Colorf(0.0f,blue,blue,0.25f * alpha));
+		}
+		//add_ellipse (float center_x, float center_y, float radius_x, float radius_y, bool reverse=false)
+		//GC.fill_circle(
+	}
+}
+
 void BattleState::draw_sprites( clan::Canvas& GC ) {
 	m_sprite_mutex.lock();
 	auto sprites = m_sprites; // Copy sprites so I can maintain their order... must be a better way?
@@ -894,7 +933,7 @@ void BattleState::draw_sprites( clan::Canvas& GC ) {
 			sprites[i].GetSprite().update(clan::System::get_time()-m_last_render_time);
 #ifndef NDEBUG
 			if(m_bShowSpriteRects){
-				clan::Rectf rect = sprites[i].Rect();
+				clan::Rectf rect = sprites[i].Rect(true);
 				GC.draw_box(rect,clan::Colorf(0.0f,1.0f,1.0f));
 			}
 #endif
@@ -1051,12 +1090,16 @@ clan::Pointf BattleState::get_character_locus( const ICharacter* pCharacter ) co
 }
 
 clan::Sizef  BattleState::get_character_size( const ICharacter* pCharacter ) const {
+#if 0 
 	const Monster * pMonster = dynamic_cast<const Monster*>( pCharacter );
 	if ( pMonster != NULL ) {
 		return const_cast<Monster*>( pMonster )->GetCurrentSprite().get_size();
 	} else {
-		return clan::Sizef( 60, 100 );
+		return clan::Sizef( 60, 120 );
 	}
+#else
+	return const_cast<ICharacter*>(pCharacter)->GetCurrentSprite().get_size();
+#endif
 }
 
 
@@ -1069,7 +1112,7 @@ clan::Rectf BattleState::get_character_rect( const ICharacter* pCharacter )const
 			break;
 		}
 	}
-	clan::Pointf point = m_sprites[n].Position();
+	clan::Pointf point = m_sprites[n].Position(true);
 	clan::Sizef size = get_character_size( pCharacter );
 
 	//rect.set_top_left( clan::Pointf( point.x - size.width / 2.0f, point.y - size.height / 2.0f ) );
