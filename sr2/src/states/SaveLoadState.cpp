@@ -31,8 +31,7 @@
 
 
 namespace StoneRing {
-    
-    const int kVersion = 5;
+
 
 SaveLoadState::SaveLoadState()
 {
@@ -131,65 +130,19 @@ void SaveLoadState::clear_previews()
 }
 
 
+
+
 void SaveLoadState::load_file_previews()
 {
     clear_previews();
     for(int i=0;i<get_option_count();i++){
-        std::ifstream in_file;
-		std::string filename = filename_for_slot(i);
-        in_file.open(filename.c_str(), std::ios::in | std::ios::binary);
-        if(in_file.is_open()){
-            if(verify_file(in_file)){
-                FilePreview preview = load_file_header(in_file);
-                m_previews[i] = preview;
-            }
-            in_file.close();
+        if(AppUtils::SaveExists(i)){
+			AppUtils::SaveSummary preview = AppUtils::LoadSaveSummary(i);
+			if(preview.m_isValid)
+				m_previews[i] = preview;
         }
     }
 }
-
-bool SaveLoadState::verify_file ( std::istream& in )
-{
-    char magic[5];
-    magic[4] = '\0';
-    in.read(magic,4);
-    std::string magic_str(magic);
-    if(magic_str != "SR2S"){
-        return false;
-    }
-    
-    int version;
-    in.read((char*)&version,sizeof(version));
-    if(version != kVersion)
-        return false;
-    return true;
-}
-
-
-SaveLoadState::FilePreview SaveLoadState::load_file_header ( std::istream& in )
-{
-    FilePreview preview;
-    uint gold;
-    uint minutes;
-    long long ticks;
-    in.read((char*)&gold,sizeof(preview.m_gold));
-    in.read((char*)&minutes,sizeof(preview.m_minutes));
-    in.read((char*)&ticks,sizeof(ticks));
-    preview.m_gold = gold;
-    preview.m_minutes = minutes;
-    preview.m_datetime = clan::DateTime::get_utc_time_from_ticks(ticks).to_local();
-    uint party_size;
-    in.read((char*)&party_size,sizeof(uint));
-    for(uint i=0;i<party_size;i++){
-        FilePreview::CharInfo info;
-        info.m_name = ReadString(in);
-        in.read((char*)&info.m_level,sizeof(info.m_level));
-        preview.m_characters.push_back(info);
-    }
-    
-    return preview;
-}
-
 
 
 
@@ -222,7 +175,7 @@ void SaveLoadState::draw_option ( int option, bool selected, float x, float y, c
         m_number_font.draw_text(gc,x + m_number_pt.x,y + m_number_pt.y,os.str(), Font::TOP_LEFT);
     }
     
-    std::map<uint,FilePreview>::const_iterator iter = m_previews.find(option);
+    std::map<uint,AppUtils::SaveSummary>::const_iterator iter = m_previews.find(option);
     if(iter != m_previews.end()){
 #if 0 
         std::ostringstream strDate;
@@ -237,7 +190,7 @@ void SaveLoadState::draw_option ( int option, bool selected, float x, float y, c
         
         float alpha = selected?1.0f:0.5f;
         uint i = 0;
-        for(std::list<FilePreview::CharInfo>::const_iterator char_iter = iter->second.m_characters.begin();
+        for(std::list<AppUtils::SaveSummary::CharInfo>::const_iterator char_iter = iter->second.m_characters.begin();
             char_iter != iter->second.m_characters.end(); char_iter++){
             Character * pChar = CharacterManager::GetCharacter (char_iter->m_name);
             clan::Sprite portrait = pChar->GetPortrait(Character::PORTRAIT_DEFAULT);
@@ -273,16 +226,16 @@ void SaveLoadState::process_choice ( int selection )
             menuState.Init(options);
             IApplication::GetInstance()->RunState(&menuState);
             if(menuState.GetSelection() == 1){
-                save(selection);
+                AppUtils::SaveGame(selection);
                 m_bDone = true;
             }
         }else{
-            save(selection);
+            AppUtils::SaveGame(selection);
             m_bDone = true;
         }
     }else{
         if(m_previews.find(selection) != m_previews.end()){
-            if(load(selection))
+            if(AppUtils::LoadGame(selection))
                 m_bDone = true;
             else
                 SoundManager::PlayEffect(SoundManager::EFFECT_BAD_OPTION);
@@ -292,12 +245,6 @@ void SaveLoadState::process_choice ( int selection )
     }
 }
 
-std::string SaveLoadState::filename_for_slot ( uint slot )
-{
-    std::ostringstream os;
-    os << "SaveSlot" << slot << ".sr2s";
-    return os.str();
-}
 
 
 int SaveLoadState::height_for_option ( clan::Canvas& gc )
@@ -305,42 +252,7 @@ int SaveLoadState::height_for_option ( clan::Canvas& gc )
     return IApplication::GetInstance()->GetDisplayRect().get_height() / 3; // Hard-code 4 per screen per now
 }
 
-void SaveLoadState::save ( uint slot )
-{
-    char sig[] = "SR2S";
-	std::string filename = filename_for_slot(slot);
-    std::ofstream out_file(filename.c_str(),std::ios::out|std::ios::binary);
-    out_file.write(sig,4);
-    out_file.write((char*)&kVersion,sizeof(kVersion));
-    Party * party = IApplication::GetInstance()->GetParty();
-    int gold = party->GetGold();
-    uint minutes = party->GetMinutesPlayed();
-    long long ticks = clan::DateTime::get_current_utc_time().to_ticks();
-    uint num_chars = party->GetCharacterCount();
-    out_file.write((char*)&gold,sizeof(gold));
-    out_file.write((char*)&minutes,sizeof(minutes));
-    out_file.write((char*)&ticks,sizeof(ticks));
-    out_file.write((char*)&num_chars,sizeof(num_chars));
-    for(uint c = 0; c < num_chars; c++){
-        uint level = party->GetCharacter(c)->GetLevel();
-        WriteString(out_file,party->GetCharacter(c)->GetName());
-        out_file.write((char*)&level,sizeof(uint));
-    }
-    IApplication::GetInstance()->Serialize(out_file);
-    out_file.close();
-}
 
-bool SaveLoadState::load ( uint slot )
-{
-	std::string filename = filename_for_slot(slot);
-    std::ifstream in_file(filename.c_str(),std::ios::in|std::ios::binary);
-    if(!verify_file(in_file))
-        return false;
-    load_file_header(in_file); // load and drop on the floor. don't care now
-    bool success = IApplication::GetInstance()->Deserialize(in_file);
-    in_file.close();
-    return success;
-}
 
 
 

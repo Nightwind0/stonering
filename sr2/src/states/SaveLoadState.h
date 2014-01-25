@@ -22,6 +22,7 @@
 
 #include "State.h"
 #include "Menu.h"
+#include "AppUtils.h"
 
 namespace StoneRing {
 class SaveLoadState : public State, public Menu
@@ -53,25 +54,11 @@ protected:
     virtual void        process_choice(int selection);
     virtual int         get_option_count();
 private:
-    struct FilePreview {
-        struct CharInfo{
-            std::string m_name;
-            uint m_level;
-        };
-        uint                    m_minutes;
-        uint                    m_gold;        
-        std::list<CharInfo>     m_characters;
-        clan::DateTime             m_datetime;
-    };    
+   
     
-    std::string         filename_for_slot(uint slot);
-    void                load_file_previews();
-    bool                verify_file(std::istream& in);
-    FilePreview         load_file_header(std::istream& in);
-    void                save(uint slot);
-    bool                load(uint slot);
+	void load_file_previews();
     void                clear_previews();
-    std::map<uint,FilePreview> m_previews;
+    std::map<uint,AppUtils::SaveSummary> m_previews;
     Font                m_hours_font;
     Font                m_number_font;
     Font                m_num_selected_font;
