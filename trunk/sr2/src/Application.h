@@ -368,7 +368,6 @@ private:
     std::deque<State*> mStates;
     std::vector<IFactory*> mFactories;
     BattleConfig mBattleConfig;
-    AppUtils mAppUtils;
     UtilityScripts mUtilityScripts;
 	clan::FileSystem m_resource_dir;
 	ZipFileProvider m_zip_provider;

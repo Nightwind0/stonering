@@ -206,6 +206,7 @@ void BattleState::set_positions_to_loci() {
 		m_sprites[i].SetOffset(clan::Pointf(0,0));
 	}
 	m_group_offsets.clear();
+	m_shadow_offsets.clear();
 }
 
 void BattleState::run_turn(){
@@ -239,6 +240,18 @@ void BattleState::run_turn(){
 		pMonster->Round( params );
 	}
 
+}
+void BattleState::set_shadow_offset(ICharacter* ch, const clan::Pointf& offset){
+	m_shadow_offsets[get_sprite_for_char(ch)] = offset;
+}
+
+clan::Pointf BattleState::get_shadow_offset(ICharacter *ch){
+	auto it = m_shadow_offsets.find(get_sprite_for_char(ch));
+	if(it != m_shadow_offsets.end()){
+		return it->second;
+	}else{
+		return clan::Pointf(0.0f,0.0f);
+	}
 }
 
 void BattleState::next_turn() {
@@ -899,10 +912,16 @@ void BattleState::draw_shadows( const clan::Rectf &screenRect, clan::Canvas& GC 
 	for(int i = 0; i<m_initiative.size(); i++){
 		if(m_sprites[i].Enabled()){
 			ICharacter * c = m_initiative[i]; 
+			clan::Pointf shadow_off;
+			auto it = m_shadow_offsets.find(i);
+			if(it != m_shadow_offsets.end()){
+				shadow_off = it->second;
+			}
 			bool turn = (m_cur_char == i);
 			float alpha = c->GetCurrentSprite().get_alpha();
 			clan::Rectf rect = get_character_rect(c);
-			clan::Pointf pt = rect.get_bottom_left(); 
+			clan::Pointf pt = rect.get_bottom_left();
+			pt += shadow_off;
 			pt.x += rect.get_width() / 2.0f;
 			pt.y -= rect.get_height() / 15.0f; // TODO: Make this a resource config, and be able to override it per character
 			clan::Shape2D shape;
@@ -911,7 +930,8 @@ void BattleState::draw_shadows( const clan::Rectf &screenRect, clan::Canvas& GC 
 			shape.get_triangles(shadowTris);
 			float blue = 0.0f;
 			if(turn){
-				blue = 2.0f * (float(clan::System::get_time() % 1000) / 1000.0f);
+				blue = 2.0f * (float(clan::System::get_time() %
+				1000) / 1000.0f);
 				if(blue > 1.0f){
 					blue = 1.0f - (blue-1.0f);
 				}

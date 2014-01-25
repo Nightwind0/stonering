@@ -56,6 +56,7 @@ namespace StoneRing
 		void SetSpritePos(BattleState::SpriteTicket sprite,const clan::Pointf& pt);
 		void SetSpriteOffset(BattleState::SpriteTicket sprite, const clan::Pointf& pt);
 		clan::Pointf GetSpriteOffset(BattleState::SpriteTicket sprite)const;
+		void SetShadowOffset(ICharacter *ichar, const clan::Pointf& pt);
 		void SetGroupOffset(ICharacterGroup* igroup, const clan::Pointf& pt);
 		clan::Pointf GetGroupOffset(ICharacterGroup* igroup)const;
 		BattleState::SpriteTicket GetSpriteForChar(ICharacter* iChar);
@@ -487,6 +488,22 @@ namespace StoneRing
 			Colorizer m_colorizer;
 		};
 		
+		class FloatTaskTimed: public TimedTask  {
+		public:
+			FloatTaskTimed(AnimationState& state):TimedTask(state){
+			}
+			virtual ~FloatTaskTimed(){}
+			virtual std::string GetName() const { return "FloatTaskTimed"; }
+			void init(SteelType::Functor float_amt, ICharacter* iChar);
+			void SetDuration(float duration);
+			virtual void start(SteelInterpreter*);
+			virtual void update(SteelInterpreter*);
+			virtual void cleanup();			
+		private:
+			SteelType::Functor m_float_functor;
+			ICharacter* m_character;
+		};
+		
 		class DarkenTask : public TimedTask {
 		public:
 			DarkenTask(AnimationState& state):TimedTask(state){
@@ -569,6 +586,8 @@ namespace StoneRing
 		SteelType flipSprite(int sprite, bool flip_x, bool flip_y);
 		SteelType scaleSprite(int sprite, double scale_x, double scale_y);
 		SteelType setSpriteLocation(int sprite, SteelType::Handle hLocale);
+		SteelType floatCharacter(SteelType::Handle hCharacter,SteelType::Functor float_amt, double time);
+		
 		// TODO: Set sprite alpha and color
 		
 		// This causes the percentage (p) of hWithTask to be used as the p of hTask

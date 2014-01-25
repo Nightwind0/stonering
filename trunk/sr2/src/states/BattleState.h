@@ -223,6 +223,8 @@ private:
 	clan::Pointf get_offset(SpriteTicket sprite);
 	void set_offset(ICharacterGroup* pGroup,const clan::Pointf& offset);
 	clan::Pointf get_offset(ICharacterGroup* pGroup);
+	void set_shadow_offset(ICharacter* ch, const clan::Pointf& offet);
+	clan::Pointf get_shadow_offset(ICharacter *ch);
 	void init_or_release_players( bool bRelease = false );
 	void set_positions_to_loci();
 	void add_participant_sprites();
@@ -316,6 +318,7 @@ private:
 	bool m_bScriptedBattle;
 	std::list<Display> m_displays;
 	std::vector<Sprite> m_sprites;
+	std::map<int,clan::Pointf> m_shadow_offsets;
 	std::map<ICharacterGroup*,clan::Pointf> m_group_offsets;
 	clan::Mutex m_sprite_mutex;
 	uint64_t m_last_render_time;

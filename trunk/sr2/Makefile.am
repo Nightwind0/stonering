@@ -255,7 +255,9 @@ stonering_SOURCES =	src/Application.cpp \
 			src/states/ItemGetSingleState.cpp \
 			src/states/ItemGetSingleState.h \
 			src/core/DebugControl.cpp \
-			src/core/DebugControl.h
+			src/core/DebugControl.h \
+			src/states/LoadingState.cpp \
+			src/states/LoadingState.h
 
 
 

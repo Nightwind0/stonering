@@ -2824,7 +2824,7 @@ int Application::main ( const std::vector<std::string> args )
         m_window.get_gc().clear ( clan::Colorf ( 0.0f, 0.0f, 0.0f ) );
 
 
-        mAppUtils.LoadGameplayAssets ( "", m_resources );
+        AppUtils::LoadGameplayAssets ( "", m_resources );
 #ifndef NDEBUG
 		if(dump_equipment){
 			ItemManager::DumpItemCSV();

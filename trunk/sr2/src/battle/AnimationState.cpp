@@ -1024,7 +1024,7 @@ void AnimationState::SteelInit( SteelInterpreter *pInterpreter ) {
 		pInterpreter->addFunction( "createOrbit", "anim", new SteelFunctor5Arg<AnimationState, SteelType::Functor, SteelType::Functor,double, double, bool>(this, &AnimationState::createOrbit) );
 		pInterpreter->addFunction( "orbitSprite", "anim", new SteelFunctor3Arg<AnimationState,int,SteelType::Handle,SteelType::Handle>(this, &AnimationState::orbitSprite) );
 		pInterpreter->addFunction( "orbitSpriteTimed", "anim", new SteelFunctor4Arg<AnimationState,int,SteelType::Handle,SteelType::Handle,double>(this, &AnimationState::orbitSpriteTimed) );
-		
+		pInterpreter->addFunction( "floatCharacter", "anim", new SteelFunctor3Arg<AnimationState,SteelType::Handle, SteelType::Functor, double>(this, &AnimationState::floatCharacter ) );
 		SteelConst( pInterpreter, "$_TOP_LEFT", ( int )Locale::TOP_LEFT );
 		SteelConst( pInterpreter, "$_TOP_RIGHT", ( int )Locale::TOP_RIGHT );
 		SteelConst( pInterpreter, "$_TOP_CENTER", ( int )Locale::TOP_CENTER );
@@ -1063,6 +1063,10 @@ BattleState::SpriteTicket AnimationState::GetSpriteForChar( ICharacter* iChar ) 
 
 clan::Pointf AnimationState::GetSpriteOffset( BattleState::SpriteTicket sprite ) const {
 	return m_parent.get_offset( sprite );
+}
+
+void AnimationState::SetShadowOffset(ICharacter *ichar, const clan::Pointf& pt){
+	return m_parent.set_shadow_offset(ichar,pt);
 }
 
 void AnimationState::SetGroupOffset( ICharacterGroup* igroup, const clan::Pointf& pt ) {
@@ -1516,6 +1520,17 @@ SteelType AnimationState::shake( SteelType::Handle hlocale, SteelType::Handle hS
 	m_handles.push_back( task );
 	SteelType var;
 	var.set( task );
+	return var;
+}
+
+SteelType AnimationState::floatCharacter(SteelType::Handle hCharacter,SteelType::Functor float_amt, double time){
+	ICharacter * ch = Steel::GrabHandle<ICharacter*>(hCharacter);
+	FloatTaskTimed * task = new FloatTaskTimed(*this);
+	m_handles.push_back(task);
+	task->SetDuration(time);
+	task->init(float_amt,ch);
+	SteelType var;
+	var.set(task);
 	return var;
 }
 
@@ -2031,6 +2046,35 @@ void AnimationState::TimedStretchTask::update( SteelInterpreter* pInterpreter ) 
 void AnimationState::TimedStretchTask::cleanup() {
 	m_state.GetSprite( m_sprite ).set_scale(1.0,1.0);
 }
+
+void AnimationState::FloatTaskTimed::init( SteelType::Functor float_amt, ICharacter* iChar ) {
+	m_float_functor = float_amt;
+	m_character = iChar;
+}
+
+void AnimationState::FloatTaskTimed::SetDuration( float duration ) {
+	m_duration = duration;
+}
+
+void AnimationState::FloatTaskTimed::update( SteelInterpreter* pInterpreter ) {
+	SteelType::Container params;
+	SteelType p;
+	p.set( percentage() ); // or _percentage?
+	params.push_back( p );
+	double height = 	m_float_functor->Call(pInterpreter,params);
+	m_state.SetShadowOffset(m_character,clan::Pointf(0.0f,height));
+}
+
+void AnimationState::FloatTaskTimed::start( SteelInterpreter* pInterpreter ) {
+	StoneRing::AnimationState::TimedTask::start(pInterpreter);
+}
+
+
+void AnimationState::FloatTaskTimed::cleanup() {
+	StoneRing::AnimationState::Task::cleanup();
+}
+
+
 
 void AnimationState::RotationTask::init( const Rotation& rot ) {
 	m_rotation = rot;
