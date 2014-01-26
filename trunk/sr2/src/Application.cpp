@@ -68,7 +68,7 @@ using std::max;
 
 const unsigned int WINDOW_WIDTH = 800 ;
 const unsigned int WINDOW_HEIGHT = 600 ;
-const unsigned int MS_BETWEEN_MOVES = 30;
+const unsigned int MS_BETWEEN_MOVES = 16;
 
 
 using namespace Steel;
@@ -2670,7 +2670,7 @@ void Application::run(bool process_functors)
 				m_draws_total = 0;
 			}
 #endif
-			// Cap our FPS to 60
+			// Cap our FPS to 60 // Note, I'm not sure this is necessary because I believe window.flip() waits for sync 
 			static const uint64_t ms_per_frame = 1000 / 60;
 			const uint64_t elapsed_time = clan::System::get_time() - loop_start_time;
 			if(elapsed_time < ms_per_frame)

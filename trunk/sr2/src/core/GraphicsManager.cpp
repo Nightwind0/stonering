@@ -88,7 +88,7 @@ clan::Sprite GraphicsManager::CreateSprite( const std::string & name, bool add_c
 
 	IApplication::GetInstance()->RunOnMainThread(func);
 
-	clone.set_alignment( clan::origin_center );
+	//clone.set_alignment( clan::origin_center );
 
 	return clone;
 }
