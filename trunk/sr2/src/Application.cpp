@@ -2613,13 +2613,14 @@ void Application::run(bool process_functors)
 	try{
 		backState->SteelInit ( mInterpreter );
 		backState->Start();
-		unsigned int then = clan::System::get_time();
+		uint64_t then = clan::System::get_time();
 	#ifndef NDEBUG
 		m_draw_start_time = clan::System::get_time();
 	#endif
 
 		while ( !mbDone &&  !backState->IsDone() )
 		{
+			uint64_t loop_start_time = clan::System::get_time();
 			queryJoystick();
 			
 			mFunctorMutex.lock();
@@ -2632,7 +2633,7 @@ void Application::run(bool process_functors)
 			}
 			mFunctorMutex.unlock();
 
-			unsigned int now = clan::System::get_time();
+			uint64_t now = clan::System::get_time();
 
 			if ( now - then > MS_BETWEEN_MOVES )
 			{
@@ -2655,7 +2656,7 @@ void Application::run(bool process_functors)
 
 			draw();
 
-			m_window.flip(0);
+			m_window.flip();
 
 
 			clan::KeepAlive::process();
@@ -2669,8 +2670,11 @@ void Application::run(bool process_functors)
 				m_draws_total = 0;
 			}
 #endif
-			
-			clan::System::sleep ( 10 );
+			// Cap our FPS to 60
+			static const uint64_t ms_per_frame = 1000 / 60;
+			const uint64_t elapsed_time = clan::System::get_time() - loop_start_time;
+			if(elapsed_time < ms_per_frame)
+				clan::System::sleep ( ms_per_frame - elapsed_time );
 		}
 
 
@@ -2827,11 +2831,11 @@ int Application::main ( const std::vector<std::string> args )
         clan::DisplayWindowDescription desc;
         desc.set_title ( name );
         desc.set_size ( clan::Size ( WINDOW_WIDTH, WINDOW_HEIGHT ), true );
-
+        desc.set_flipping_buffers(2); // Try triple buffering
 
         m_window = clan::DisplayWindow ( desc );
-        
 
+		
         std::string battleConfig = String_load ( "Configuration/BattleConfig", m_resources );
         mBattleConfig.Load ( battleConfig );
         mBattleState.SetConfig ( &mBattleConfig );
@@ -3027,7 +3031,7 @@ void Application::showIntro()
                       static_cast<float> ( displayY ) );
 
         m_window.flip();
-		clan::KeepAlive::process(1);
+		clan::KeepAlive::process();
 		clan::System::sleep(0);
     }
 #ifndef NDEBUG
