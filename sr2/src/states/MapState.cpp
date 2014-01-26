@@ -16,6 +16,10 @@ StoneRing::MapState::MapState():m_LevelX(0),
     m_horizontal_idle = true;
     m_vertical_idle = true;
     m_pLevel = NULL;
+	m_lerpLevelX.SetStaticValue(0);
+	m_lerpLevelY.SetStaticValue(0);
+	m_lerpLevelX.SetTime(0.16f);
+	m_lerpLevelY.SetTime(0.16f);
 }
 
 StoneRing::MapState::~MapState()
@@ -228,8 +232,8 @@ void StoneRing::MapState::Draw(const clan::Rect &screenRect,clan::Canvas& GC)
     uint width = min( (unsigned int)screenRect.get_width(), m_pLevel->GetWidth() * 32);
     uint height = min((unsigned int)screenRect.get_height(), m_pLevel->GetHeight() * 32);
 
-    clan::Rect src = clan::Rect(m_LevelX, m_LevelY, m_LevelX +width,
-                          m_LevelY + height);
+    clan::Rect src = clan::Rect(m_lerpLevelX.GetValue(), m_lerpLevelY.GetValue(), m_lerpLevelX.GetValue() +width,
+                          m_lerpLevelY.GetValue() + height);
     clan::Rect dst = screenRect;
     // Center
     if(screenRect.get_width() > src.get_width())
@@ -292,9 +296,9 @@ clan::Point StoneRing::MapState::GetCurrentCenter() const
 {
 	uint width = min( (unsigned int)m_screen_rect.get_width(), m_pLevel->GetWidth() * 32);
     uint height = min((unsigned int)m_screen_rect.get_height(), m_pLevel->GetHeight() * 32);
-    clan::Rect rect = clan::Rect(m_LevelX, m_LevelY,
-                                         (m_LevelX + width),
-                                         (m_LevelY + height));
+    clan::Rect rect = clan::Rect(m_lerpLevelX.GetValue(), m_lerpLevelY.GetValue(),
+                                         (m_lerpLevelX.GetValue()+ width),
+                                         (m_lerpLevelY.GetValue() + height));
 	return rect.get_center();
 }
 
@@ -318,11 +322,13 @@ void StoneRing::MapState::PushLevel(Level * pLevel, uint x, uint y)
         m_player.SetSprite ( pMapCharacter->GetMapSprite() );
         m_LevelX = 0;
         m_LevelY = 0;
+		m_lerpLevelX.SetStaticValue(0);
+		m_lerpLevelY.SetStaticValue(0);
         m_player.ResetLevelX(x);
         m_player.ResetLevelY(y);		
 		m_player.Placed();
         pLevel->AddMappableObject(&m_player);
-        recalculate_player_position();        
+        recalculate_player_position(false);        
     }
     
     SoundManager::SetMusic(m_pLevel->GetMusic());
@@ -342,10 +348,12 @@ void StoneRing::MapState::LoadLevel(Level * pLevel, uint x, uint y)
 	m_pLevel = pLevel;
 	m_player.ResetLevelX(x);
 	m_player.ResetLevelY(y);
+	m_lerpLevelX.SetStaticValue(0);
+	m_lerpLevelY.SetStaticValue(0);	
 	m_player.Placed();
 	m_pLevel->AddMappableObject(&m_player);
 	m_LevelX = m_LevelY = 0;
-	recalculate_player_position();
+	recalculate_player_position(false);
     SoundManager::SetMusic(m_pLevel->GetMusic());	
 }
 
@@ -391,13 +399,13 @@ void StoneRing::MapState::Pop(bool bAll)
 	m_player.ResetLevelY(point.y);	
 	m_player.Placed();
 	m_pLevel->AddMappableObject(&m_player);
-	recalculate_player_position();
+	recalculate_player_position(false);
     SoundManager::SetMusic(m_pLevel->GetMusic());
 }
 
 
 
-void StoneRing::MapState::recalculate_player_position()
+void StoneRing::MapState::recalculate_player_position(bool lerp)
 {
     if(!m_pLevel) return;
     MappablePlayer *pPlayer = &m_player;
@@ -405,6 +413,8 @@ void StoneRing::MapState::recalculate_player_position()
     clan::Rect spriteRect = pPlayer->GetSpriteRect();
     int X = pPlayer->GetLevelX();
     int Y = pPlayer->GetLevelY();
+	const int origx = lerp?m_lerpLevelX.GetValue():m_LevelX;
+	const int origy = lerp?m_lerpLevelY.GetValue():m_LevelY;
 
     if( X  > m_LevelX + (m_screen_rect.get_width() / 2) &&
         static_cast<int>(m_pLevel->GetWidth()) * 32 > static_cast<int>(m_screen_rect.get_width()))
@@ -466,16 +476,22 @@ void StoneRing::MapState::recalculate_player_position()
         }
     }
 
-
+    if(lerp){
+		m_lerpLevelX.SetRange(origx,m_LevelX);
+		m_lerpLevelY.SetRange(origy,m_LevelY);
+	}else{
+		m_lerpLevelX.SetStaticValue(m_LevelX);
+		m_lerpLevelY.SetStaticValue(m_LevelY);		
+	}
 }
 
 void StoneRing::MapState::MoveMappableObjects()
 {
     if(!m_pLevel) return;
     static uint ticks = 0;
-    clan::Rect rect = clan::Rect(m_LevelX/32, m_LevelY/32,
-                                         (m_LevelX + m_screen_rect.get_width()/32),
-                                         (m_LevelY + m_screen_rect.get_height())/32);
+    clan::Rect rect = clan::Rect(m_lerpLevelX.GetValue()/32, m_lerpLevelY.GetValue()/32,
+                                         (m_lerpLevelX.GetValue() + m_screen_rect.get_width()/32),
+                                         (m_lerpLevelY.GetValue() + m_screen_rect.get_height())/32);
     m_pLevel->MoveMappableObjects(rect);
     
     if(ticks++ % 4 == 0)

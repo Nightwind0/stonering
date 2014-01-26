@@ -7,6 +7,7 @@
 #include "Navigator.h"
 #include "DebugTileVisitors.h"
 #include "MappableObject.h"
+#include "TimedInterpolator.h"
 #include <deque>
 
 
@@ -56,12 +57,14 @@ public:
     void DeserializeState(std::istream& in);
 
 private:
-    void recalculate_player_position();
+    void recalculate_player_position(bool lerp=true);
     void do_talk(bool prod=false);
 
     bool m_bDone;
     int m_LevelX; // Offset into level. TopLeft corner of our view into level
     int m_LevelY;
+	TimedInterpolator<float> m_lerpLevelX;
+	TimedInterpolator<float> m_lerpLevelY;
     bool m_horizontal_idle;
     bool m_vertical_idle;
     MappablePlayer  m_player;
