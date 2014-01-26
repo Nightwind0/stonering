@@ -11,12 +11,18 @@ LoadingState::~LoadingState() {
 
 
 void LoadingState::init( std::function< void() >& func ) {
+	m_fade_out = false;
 	m_loading_func = func;
-	m_sprite = GraphicsManager::CreateMonsterSprite("Green Tea Mochi", "idle");
+	m_sprite = GraphicsManager::CreateMonsterSprite("Stoked Green Tea Mochi", "idle");
 }
 
 void LoadingState::on_thread_finished() {
-	m_bDone = true;
+	m_timer.stop();
+	if(m_bDraw)
+		m_fade_out = true;
+	else
+		m_bDone = true;
+	m_fadeout_start = clan::System::get_time();
 }
 
 void LoadingState::run_function() {
@@ -30,9 +36,19 @@ bool LoadingState::IsDone() const {
 }
 
 void LoadingState::Draw( const clan::Rect &screenRect, clan::Canvas& GC ) {
-	if(m_bDraw /* check m_bDraw and animate something. Draw "Loading..." ? */){
+	
+	double alpha = 1.0f;
+	if (m_fade_out){
+		alpha = 1.0f - float(clan::System::get_time() - m_fadeout_start) / 500.0f; // fade out over 1/2 a second
+		if(alpha <= 0.0f) {
+			alpha = 0.0f;
+			m_bDone = true;
+		}
+	}
+	if(m_bDraw){
 		GC.fill_rect(screenRect,clan::Colorf(0.0f,0.0f,0.0f));
 		m_sprite.update(clan::System::get_time()-m_last_update);
+		m_sprite.set_alpha(alpha);
 		m_sprite.draw(GC,screenRect.get_center().x, screenRect.get_center().y);
 	}
 	m_last_update = clan::System::get_time();
@@ -59,7 +75,7 @@ void LoadingState::Start() {
 	m_thread = std::thread(thread_f);
 	// Start a timer
 	m_timer.func_expired().set(this,&LoadingState::OnTimer);
-	m_timer.start(1000,false);
+	m_timer.start(300,false);
 	m_last_update = clan::System::get_time();
 }
 void LoadingState::Finish() {

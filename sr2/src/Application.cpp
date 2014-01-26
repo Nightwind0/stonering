@@ -326,10 +326,7 @@ SteelType Application::say ( const std::string &speaker, const std::string &text
 
 void Application::StartGame(bool load)
 {
-	std::function<void()> load_f = std::bind ( &AppUtils::LoadGameplayAssets, "", m_resources );
-	LoadingState loader;
-	loader.init(load_f);
-	RunState(&loader);
+
 #ifndef NDEBUG
 	if(/*dump_equipment*/0){
 		ItemManager::DumpItemCSV();
@@ -2934,6 +2931,10 @@ int Application::main ( const std::vector<std::string> args )
 		mbDone = false;
 
 		
+		std::function<void()> load_f = std::bind ( &AppUtils::LoadGameplayAssets, "", m_resources );
+		LoadingState loader;
+		loader.init(load_f);
+		RunState(&loader);
         RunState(&mStartupState);
 
 #ifndef NDEBUG

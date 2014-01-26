@@ -24,9 +24,11 @@ namespace StoneRing {
 	private:
 		bool m_bDone;
 		bool m_bDraw;
+		bool m_fade_out;
 		void run_function();
 		void on_thread_finished();
 		uint64_t m_last_update;
+		uint64_t m_fadeout_start;
 		std::function<void()> m_loading_func;
 		std::thread m_thread;
 		clan::Timer m_timer;
