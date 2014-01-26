@@ -1945,10 +1945,11 @@ void AnimationState::PathTask::update( SteelInterpreter* pInterpreter ) {
 	}
 	clan::Pointf start = get_position( m_path->m_start );
 	clan::Pointf true_end = get_position( m_path->m_end );
+	
+	//(-dy, dx) and (dy, -dx).
 
 	//clan::Pointf end = (start + true_end) * m_completion;
-	clan::Pointf end = get_mid_point( start, true_end, m_path->m_completion );
-
+	clan::Pointf end = true_end;
 
 	if( m_path->m_flags & Path::NO_HORIZONTAL ) {
 		end.x = start.x;
@@ -1957,38 +1958,33 @@ void AnimationState::PathTask::update( SteelInterpreter* pInterpreter ) {
 	if( m_path->m_flags & Path::NO_VERTICAL ) {
 		end.y = start.y;
 	}
+	
+	clan::Vec2<float> vec(end.x-start.x,end.y-start.y);
+	vec.normalize();
+	vec *= speed;
+	float elapsed = float( clan::System::get_time() - m_start_time );
+	
 
 	float p = percentage();
-	float elapsed = float( clan::System::get_time() - m_start_time );
-	int pixels = int( speed * elapsed );
-	float full_pixel_dist = start.distance( end );
-	float increment_percent = 0.0f;
 	bool done = false;
-	if( full_pixel_dist )
-		increment_percent = float( pixels ) / full_pixel_dist;
 
-	if( p + increment_percent >= 1.0f ) {
-		increment_percent = 1.0f - p;
-		done = true;
-	}
+	m_cur_pos += vec * elapsed;
 
-	m_cur_pos = get_mid_point( m_cur_pos, end, increment_percent );
-
-	double dis = 1.0f;
+	double dis = 0.0f;
 	if( m_path->m_functor ) {
 		SteelType::Container params;
 		SteelType p;
 		p.set( percentage() ); // or _percentage?
 		params.push_back( p );
-		dis += ( double )m_path->m_functor->Call( pInterpreter, params );
+		dis = ( double )m_path->m_functor->Call( pInterpreter, params );
 	}
 	// TODO: Adjust Y component by function output
 	clan::Pointf adj_pos = m_cur_pos;
 	adj_pos += clan::Pointf( -( end.y - start.y ), ( end.x - start.x ) ).normalize() * float(dis);
 	m_state.SetSpritePos( m_sprite, adj_pos );
+	m_cur_pos = adj_pos;
 
-
-	m_percentage_so_far = m_cur_pos.distance( start ) / (full_pixel_dist == 0.0f)?0.000001f:full_pixel_dist;
+	m_percentage_so_far = m_cur_pos.distance( start ) / end.distance(start);
 	if( done ) m_percentage_so_far = 1.0f;
 }
 
@@ -2019,9 +2015,30 @@ void AnimationState::TimedPathTask::update( SteelInterpreter* pInterpreter ) {
 	if( m_path->m_flags & Path::NO_VERTICAL ) {
 		end.y = start.y;
 	}
-
-	clan::Pointf pos = get_mid_point( start, end, percentage() );
-	m_state.SetSpritePos( m_sprite, pos );
+	
+	float speed = start.distance(end) / duration();
+	
+	clan::Vec2<float> vec(end.x-start.x,end.y-start.y);
+	vec.normalize();
+	vec *= speed;
+	float elapsed = float( clan::System::get_time() - m_start_time );
+	
+	clan::Pointf cur_pos = m_state.GetSpriteRect(m_sprite).get_center();
+	cur_pos += vec * elapsed;
+	
+	double dis = 0.0f;
+	if( m_path->m_functor ) {
+		SteelType::Container params;
+		SteelType p;
+		p.set( percentage() ); // or _percentage?
+		params.push_back( p );
+		dis = ( double )m_path->m_functor->Call( pInterpreter, params );
+	}
+	clan::Pointf adj_pos = cur_pos;
+	adj_pos += clan::Pointf( -( end.y - start.y ), ( end.x - start.x ) ).normalize() * float(dis);
+	
+	
+	m_state.SetSpritePos( m_sprite, adj_pos );
 }
 
 void AnimationState::TimedPathTask::SetStart( const Locale& start ) {
