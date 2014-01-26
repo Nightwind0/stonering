@@ -10,6 +10,7 @@
 #include "Direction.h"
 #include <set>
 #include <mutex>
+#include <atomic>
 
 namespace StoneRing
 {
@@ -127,10 +128,14 @@ namespace StoneRing
 	private:
 		
 		class Task : public SteelType::IHandle {
+			enum TaskState {
+				IDLE,
+				RUNNING,
+				EXPIRED
+			};
+			std::atomic<TaskState> m_task_state;
 		public:
-			Task(AnimationState& state):m_state(state),m_sync_task(NULL),m_start_after(NULL),m_sprite(BattleState::UNDEFINED_SPRITE_TICKET){
-				m_started = false;
-				m_expired = false;
+			Task(AnimationState& state):m_task_state(IDLE),m_state(state),m_sync_task(NULL),m_start_after(NULL),m_sprite(BattleState::UNDEFINED_SPRITE_TICKET){
 			}
 			virtual ~Task(){}
 			virtual std::string GetName() const=0;
@@ -146,21 +151,22 @@ namespace StoneRing
 			void SetNextTask(Task* next){
 				m_start_after = next;
 			}
-			virtual void start(SteelInterpreter* pInterpreter){
-				m_started = true;
+			void start(SteelInterpreter* pInterpreter){
+				m_task_state = RUNNING;
 #ifndef NDEBUG
 				std::cout << "Task " << GetName() << " starting." << std::endl;
 #endif				
-				if(m_start_after && !m_start_after->started()){ 
+				if(m_start_after && !m_start_after->running()){ 
 					// TODO: Not this... m_start_after->start(pInterpreter);
 				}
+				_start(pInterpreter);
 			}
 			virtual void update(SteelInterpreter* pInterpreter)=0;
 			virtual void draw(const clan::Rect& screenRect, clan::Canvas &gc){}
 			virtual bool finished()=0;
 			// Finish will be called when the task is finished
-			virtual void finish(SteelInterpreter* pInterpreter){
-				m_expired = true;
+			void finish(SteelInterpreter* pInterpreter){
+				m_task_state = EXPIRED;
 #ifndef NDEBUG
 				std::cout << "Task " << GetName() << " finished and marked expired" << std::endl;
 #endif
@@ -170,12 +176,25 @@ namespace StoneRing
 					m_start_after = NULL;
 				}
 			}
-			bool expired() const{ return m_expired; }
+			std::string GetState() const {
+				switch(m_task_state){
+					case IDLE:
+						return "idle";
+					case RUNNING:
+						return "running";
+					case EXPIRED:
+						return "expired";
+				}
+				return "unknown";
+			}
+			bool expired() const{ return m_task_state == EXPIRED; }
 			// Cleanup will be called at the end of the animation
 			virtual void cleanup(){}
 			float percentage()const;
-			bool started()const{ return m_started;}
+			bool running()const{ return m_task_state == RUNNING;}
 		protected:   
+
+			virtual void _start(SteelInterpreter* pInterpreter)=0;
 			virtual float _percentage()const=0;
 			clan::Pointf get_position(const Locale& locale)const;
 			clan::Pointf get_mid_point(const clan::Pointf& start, const clan::Pointf& end, float p);			
@@ -183,8 +202,6 @@ namespace StoneRing
 			AnimationState& m_state;
 			SteelType::Functor m_functor;
 			BattleState::SpriteTicket m_sprite;
-			bool m_started;
-			bool m_expired;
 			Task* m_start_after;
 		};
 		
@@ -196,10 +213,6 @@ namespace StoneRing
 			void SetDuration(float seconds){
 				m_duration = seconds;
 			}			
-			virtual void start(SteelInterpreter* pInterpreter){
-				Task::start(pInterpreter);
-				m_start_time = clan::System::get_time();
-			}
 			virtual float duration() const {
 				return m_duration;
 			}
@@ -209,6 +222,9 @@ namespace StoneRing
 			virtual void update(){
 			}
 		protected:
+			virtual void _start(SteelInterpreter* pInterpreter){
+				m_start_time = clan::System::get_time();
+			}			
 			virtual float _percentage()const{
 				return float(clan::System::get_time()-m_start_time) / duration();
 			}
@@ -309,7 +325,6 @@ namespace StoneRing
 			virtual std::string GetName() const { return "PathTask";}
 			// Here the functor is used to determine the Y-component of the vector tangental to the path
 			void init(Path*);
-			virtual void start(SteelInterpreter* pInterpreter);
 			virtual void update(SteelInterpreter* pInterpreter);
 			virtual bool finished();	
 			virtual void SetSpeed(float pixels_per_ms);
@@ -319,6 +334,7 @@ namespace StoneRing
 			void SetStart(const Locale& start);
 			void SetEnd(const Locale& end);
 		private:
+			virtual void _start(SteelInterpreter* pInterpreter);			
 			virtual float _percentage()const;
 			Path* m_path;
 			clan::Pointf m_cur_pos;
@@ -333,12 +349,13 @@ namespace StoneRing
 			virtual ~TimedPathTask(){}
 			virtual std::string GetName() const { return "TimedPathTask";}
 			void init(Path*);
-			virtual void start(SteelInterpreter*);
+
 			virtual void update(SteelInterpreter*);
 			void SetFlags(int flags);			
 			void SetStart(const Locale& start);
 			void SetEnd(const Locale& end);			
 		private:
+			virtual void _start(SteelInterpreter*);			
 			Path* m_path;
 		};		
 		
@@ -349,11 +366,12 @@ namespace StoneRing
 			virtual ~RotationTask(){}
 			virtual std::string GetName() const { return "RotationTask";}
 			void init(const Rotation& rotation);
-			virtual void start(SteelInterpreter*);
+
 			virtual void update(SteelInterpreter*);
 			virtual bool finished();
 			virtual void cleanup();
 		private:
+			virtual void _start(SteelInterpreter*);			
 			virtual float _percentage()const;
 			float m_completion_degrees;
 			float m_degrees;
@@ -369,11 +387,12 @@ namespace StoneRing
 			virtual ~TimedRotationTask(){}
 			virtual std::string GetName() const { return "TimedRotationTask";}
 			void init(const Rotation& rot);
-			virtual void start(SteelInterpreter*);
+
 			virtual void update(SteelInterpreter*);
 			virtual bool finished();
 			virtual void cleanup();
 		private:
+			virtual void _start(SteelInterpreter*);			
 			Rotation m_rotation;
 			float m_start_degrees;
 			float m_completion_degrees;
@@ -388,11 +407,12 @@ namespace StoneRing
 			virtual ~OrbitTask(){}
 			virtual std::string GetName() const { return "OrbitTask";}
 			void init(const Orbit& rotation, const Locale& locale);
-			virtual void start(SteelInterpreter*);
+
 			virtual void update(SteelInterpreter*);
 			virtual bool finished();
 			virtual void cleanup();
 		private:
+			virtual void _start(SteelInterpreter*);			
 			virtual float _percentage()const;
 			float m_start_degrees;
 			float m_completion_degrees;
@@ -409,11 +429,12 @@ namespace StoneRing
 			virtual ~TimedOrbitTask(){}
 			virtual std::string GetName() const { return "TimedOrbitTask";}
 			void init(const Orbit& orb, const Locale& origin);
-			virtual void start(SteelInterpreter*);
+
 			virtual void update(SteelInterpreter*);
 			virtual bool finished();
 			virtual void cleanup();
 		private:
+			virtual void _start(SteelInterpreter*);			
 			Orbit m_orbit;
 			Locale m_locale;
 			float m_degrees;	
@@ -428,11 +449,11 @@ namespace StoneRing
 			virtual std::string GetName() const { return "ShakerTask"; }
 			void init(const Shaker&, const Locale&);
 			void SetDuration(float duration);
-			virtual void start(SteelInterpreter*);
+
 			virtual void update(SteelInterpreter*);
-			virtual void finish(SteelInterpreter*);
 			virtual void cleanup();
 		private:
+			virtual void _start(SteelInterpreter*);			
 			void pick_opposite_dir();
 			void pick_rand_dir();
 			bool dir_legal()const;
@@ -450,10 +471,11 @@ namespace StoneRing
 			virtual std::string GetName() const { return "StretchTask"; }
 			void init(const Stretch&);
 			void SetDuration(float duration);
-			virtual void start(SteelInterpreter*);
+
 			virtual void update(SteelInterpreter*);
 			virtual void cleanup();			
 		private:
+			virtual void _start(SteelInterpreter*);			
 			Stretch m_stretch;
 			float m_duration;
 		};
@@ -465,11 +487,12 @@ namespace StoneRing
 			virtual ~FadeTask(){}
 			virtual std::string GetName() const { return "FadeTask";}
 			void SetDuration(float duration);
-			virtual void start(SteelInterpreter*);
+
 			virtual void update(SteelInterpreter*);
 			virtual void cleanup();
 			virtual bool finished();
 		private:
+			virtual void _start(SteelInterpreter*);			
 			float m_duration;
 		};
 		
@@ -481,10 +504,11 @@ namespace StoneRing
 			virtual std::string GetName() const { return "ColorizeTask"; }
 			void init(const Colorizer&);
 			void SetDuration(float duration);
-			virtual void start(SteelInterpreter*);
+
 			virtual void update(SteelInterpreter*);
 			virtual void cleanup();
 		private:
+			virtual void _start(SteelInterpreter*);			
 			Colorizer m_colorizer;
 		};
 		
@@ -496,10 +520,11 @@ namespace StoneRing
 			virtual std::string GetName() const { return "FloatTaskTimed"; }
 			void init(SteelType::Functor float_amt, ICharacter* iChar);
 			void SetDuration(float duration);
-			virtual void start(SteelInterpreter*);
+
 			virtual void update(SteelInterpreter*);
 			virtual void cleanup();			
 		private:
+			virtual void _start(SteelInterpreter*);			
 			SteelType::Functor m_float_functor;
 			ICharacter* m_character;
 		};
@@ -512,10 +537,11 @@ namespace StoneRing
 			virtual std::string GetName() const { return "DarkenTask"; }
 			void init(int mode, float duration,SteelType::Functor r, SteelType::Functor g,
 					  SteelType::Functor b, SteelType::Functor a);
-			virtual void start(SteelInterpreter*);
+
 			virtual void update(SteelInterpreter*);	
 			virtual void cleanup();
 		private:
+			virtual void _start(SteelInterpreter*);			
 			SteelType::Functor m_red;
 			SteelType::Functor m_green;
 			SteelType::Functor m_blue;
@@ -530,11 +556,11 @@ namespace StoneRing
 			virtual ~FunctionTask(){}
 			virtual std::string GetName() const { return "FunctionTask"; }
 			void init(double duration, SteelType::Functor f);
-			virtual void start(SteelInterpreter*);
+
 			virtual void update(SteelInterpreter*);
-			virtual void finish(SteelInterpreter*);
 			virtual void cleanup();						
 		private:
+			virtual void _start(SteelInterpreter*);			
 		};
 		
 		
