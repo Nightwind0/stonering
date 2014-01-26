@@ -468,8 +468,12 @@ void Character::load_attributes(clan::DomNamedNodeMap attributes)
     m_pClass = CharacterManager::GetClass(className);
 
     clan::ResourceManager&  resources = IApplication::GetInstance()->GetResources();
-	clan::Canvas canvas = GET_MAIN_CANVAS();
-    m_mapSprite = clan::Sprite::resource(canvas,spriteRef, resources).get();
+	// TODO: This really ought to be done through the GraphicsManager. It should be the gateway to all graphics.
+	std::function<void()> func = [&] { 
+		clan::Canvas canvas = GET_MAIN_CANVAS();
+		m_mapSprite = clan::Sprite::resource(canvas,spriteRef, resources).get();
+	};
+	IApplication::GetInstance()->RunOnMainThread(func);
 }
 
 void Character::load_finished()
