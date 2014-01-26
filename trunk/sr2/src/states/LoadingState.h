@@ -26,9 +26,11 @@ namespace StoneRing {
 		bool m_bDraw;
 		void run_function();
 		void on_thread_finished();
+		uint64_t m_last_update;
 		std::function<void()> m_loading_func;
 		std::thread m_thread;
 		clan::Timer m_timer;
+		clan::Sprite m_sprite;
 	};
 }
 #endif
