@@ -44,21 +44,31 @@ clan::Pointf GraphicsManager::GetMenuInset() {
 
 clan::Sprite GraphicsManager::GetPortraits( const std::string& character ) {
 	clan::ResourceManager& resources  = IApplication::GetInstance()->GetResources();
-	clan::Canvas canvas( GET_MAIN_CANVAS() );
-	clan::Sprite  sprite = clan::Sprite::resource( canvas, "Sprites/Portraits/" +  character, resources );
+	clan::Sprite clone;
+	std::function<void()> func = [&] {
+		clan::Canvas canvas( GET_MAIN_CANVAS() );
+		clan::Sprite  sprite =	clan::Sprite::resource( canvas, "Sprites/Portraits/" +  character, resources );	
+		clone = sprite.clone();
+	};
+	
+	
+	IApplication::GetInstance()->RunOnMainThread(func);
 
-	clan::Sprite clone = sprite.clone();
-
-	sprite.set_alignment( clan::origin_center );
 	return clone;
 }
 
 clan::Image GraphicsManager::CreateImage( const std::string& name ) {
 	clan::ResourceManager& resources  = IApplication::GetInstance()->GetResources();
 
-	clan::Canvas canvas(GET_MAIN_CANVAS());
 	
-	clan::Image image = clan::Image::resource( canvas, name, resources );
+	clan::Image image;
+	
+	std::function<void()> func = [&]{
+		clan::Canvas canvas(GET_MAIN_CANVAS());
+		image = clan::Image::resource( canvas, name, resources );
+	};
+	
+	IApplication::GetInstance()->RunOnMainThread(func);
 
 	return image;
 }
@@ -67,12 +77,18 @@ clan::Image GraphicsManager::CreateImage( const std::string& name ) {
 clan::Sprite GraphicsManager::CreateSprite( const std::string & name, bool add_category ) {
 	clan::ResourceManager& resources  = IApplication::GetInstance()->GetResources();
 
-	clan::Canvas canvas(GET_MAIN_CANVAS());
-	clan::Sprite  sprite = clan::Sprite::resource( canvas, ( add_category ? "Sprites/" : "" ) +  name, resources );
+	
+	
+	clan::Sprite clone;
+	std::function<void()> func = [&] {
+		clan::Canvas canvas(GET_MAIN_CANVAS());		
+		clan::Sprite  sprite =	clan::Sprite::resource( canvas, ( add_category ? "Sprites/" : "" ) +  name, resources );
+		clone = sprite.clone();
+	};
 
-	clan::Sprite clone = sprite.clone();
+	IApplication::GetInstance()->RunOnMainThread(func);
 
-	sprite.set_alignment( clan::origin_center );
+	clone.set_alignment( clan::origin_center );
 
 	return clone;
 }
@@ -102,8 +118,12 @@ clan::Texture2D GraphicsManager::GetTileMap( const std::string & name ) {
 #ifndef NDEBUG
 		std::cout << "TileMap now loading: " << name << std::endl;
 #endif
-		clan::Canvas canvas(GET_MAIN_CANVAS());
-		surface = clan::Texture2D::resource( canvas, "Tilemaps/" + name, resources).get().to_texture_2d();
+	std::function<void()> func = [&] {
+			clan::Canvas canvas(GET_MAIN_CANVAS());
+			surface = clan::Texture2D::resource( canvas, "Tilemaps/" + name, resources).get().to_texture_2d();		
+		};	
+		IApplication::GetInstance()->RunOnMainThread(func);
+	
 
 		m_pInstance->m_tile_map[ name ] = surface;
 		return surface;
@@ -189,10 +209,14 @@ std::string GraphicsManager::NameOfDisplayFont( DisplayFont font ) {
 
 clan::Sprite  GraphicsManager::CreateMonsterSprite( const std::string &monster, const std::string &sprite_id ) {
 	clan::ResourceManager& resources = IApplication::GetInstance()->GetResources();
-	clan::Canvas canvas(GET_MAIN_CANVAS());
-	clan::Sprite  sprite = clan::Sprite::resource( canvas, "Sprites/Monsters/" + monster + '/' + sprite_id, resources );
+	clan::Sprite sprite; 	
+	std::function<void()> func = [&] {
+		clan::Canvas canvas(GET_MAIN_CANVAS());
+		sprite = clan::Sprite::resource( canvas, "Sprites/Monsters/" + monster + '/' + sprite_id, resources );
+	};
 
-
+	IApplication::GetInstance()->RunOnMainThread(func);
+	
 	sprite.set_alignment( clan::origin_center );
 
 	return sprite;
@@ -200,9 +224,14 @@ clan::Sprite  GraphicsManager::CreateMonsterSprite( const std::string &monster, 
 
 clan::Sprite GraphicsManager::CreateCharacterSprite( const std::string &player, const std::string &sprite_id ) {
 	clan::ResourceManager& resources = IApplication::GetInstance()->GetResources();
-	clan::Canvas canvas(GET_MAIN_CANVAS());
-	clan::Sprite sprite = clan::Sprite::resource( canvas, "Sprites/BattleSprites/" + player + '/' + sprite_id, resources );
 
+	clan::Sprite sprite; 	
+	std::function<void()> func = [&] {
+		clan::Canvas canvas(GET_MAIN_CANVAS());
+		sprite = clan::Sprite::resource( canvas, "Sprites/BattleSprites/" + player + '/' + sprite_id, resources );
+	};
+
+	IApplication::GetInstance()->RunOnMainThread(func);
 
 	sprite.set_alignment( clan::origin_center );
 	return sprite;
@@ -219,10 +248,14 @@ clan::Sprite  GraphicsManager::CreateEquipmentSprite( EquipmentSpriteType type, 
 			item_type = "Armor";
 			break;
 	}
-
-	clan::Canvas canvas(GET_MAIN_CANVAS());
-	clan::Sprite sprite = clan::Sprite::resource( canvas, "Sprites/Equipment/" + item_type + '/' + sprite_name, resources );
-
+	clan::Sprite sprite;
+	std::function<void()> func = [&] {
+		clan::Canvas canvas(GET_MAIN_CANVAS());
+		sprite = clan::Sprite::resource( canvas, "Sprites/Equipment/" + item_type + '/' + sprite_name, resources );
+	};
+	
+	IApplication::GetInstance()->RunOnMainThread(func);
+	
 
 	sprite.set_alignment( clan::origin_center );
 	return sprite;
@@ -231,9 +264,14 @@ clan::Sprite  GraphicsManager::CreateEquipmentSprite( EquipmentSpriteType type, 
 
 clan::Image  GraphicsManager::GetBackdrop( const std::string &name ) {
 	clan::ResourceManager& resources = IApplication::GetInstance()->GetResources();
-	clan::Canvas canvas(GET_MAIN_CANVAS());
-	clan::Image surface = clan::Image::resource( canvas, "Backdrops/" + name, resources );
-
+	clan::Image surface;
+	std::function<void()> func = [&] { 
+		clan::Canvas canvas(GET_MAIN_CANVAS());
+		surface = clan::Image::resource( canvas, "Backdrops/" + name, resources );
+	};
+	
+	IApplication::GetInstance()->RunOnMainThread(func);
+	
 	return surface;
 }
 
@@ -244,9 +282,14 @@ clan::Image GraphicsManager::GetOverlay( GraphicsManager::Overlay overlay ) {
 		return foundIt->second;
 	} else {
 		clan::ResourceManager& resources  = IApplication::GetInstance()->GetResources();
-		clan::Canvas canvas(GET_MAIN_CANVAS());
-		clan::Image surface = clan::Image::resource( canvas, std::string( "Overlays/" ) + NameOfOverlay( overlay ) + "/overlay", resources );
-
+		clan::Image surface;
+		std::function<void()> func = [&] {
+			clan::Canvas canvas(GET_MAIN_CANVAS());
+			surface = clan::Image::resource( canvas, std::string( "Overlays/" ) + NameOfOverlay( overlay ) + "/overlay", resources );
+		};
+		
+		IApplication::GetInstance()->RunOnMainThread(func);
+		
 		m_pInstance->m_overlay_map [ overlay ] = surface;
 
 		return surface;
@@ -255,7 +298,7 @@ clan::Image GraphicsManager::GetOverlay( GraphicsManager::Overlay overlay ) {
 
 
 clan::Image GraphicsManager::GetIcon( const std::string& icon ) {
-	clan::Canvas canvas(GET_MAIN_CANVAS());
+
 	std::map<std::string, clan::Image>::iterator foundIt = m_pInstance->m_icon_map.find( icon );
 
 	if( foundIt != m_pInstance->m_icon_map.end() ) {
@@ -263,11 +306,17 @@ clan::Image GraphicsManager::GetIcon( const std::string& icon ) {
 	} else {
 		clan::ResourceManager& resources  = IApplication::GetInstance()->GetResources();
 		clan::Image surface;
-		try {
-			surface =  clan::Image::resource( canvas, std::string( "Icons/" ) + icon, resources );
-		} catch( clan::Exception e ) {
-			surface = clan::Image::resource( canvas, std::string( "Icons/no_icon" ), resources );
-		}
+		std::function<void()> func = [&] {
+			clan::Canvas canvas(GET_MAIN_CANVAS());			
+			try {
+				surface =  clan::Image::resource( canvas, std::string( "Icons/" ) + icon, resources );
+			} catch( clan::Exception e ) {
+				surface = clan::Image::resource( canvas, std::string( "Icons/no_icon" ), resources );
+			}
+		};
+		
+		IApplication::GetInstance()->RunOnMainThread(func);
+		
 		m_pInstance->m_icon_map [ icon ] = surface;
 
 		return surface;
@@ -301,7 +350,6 @@ GraphicsManager::Theme::ColorRef GraphicsManager::GetColorRef( const std::string
 
 StoneRing::Font GraphicsManager::LoadFont( const std::string& name ) {
 	clan::ResourceManager& resources  = IApplication::GetInstance()->GetResources();
-	clan::Canvas canvas(GET_MAIN_CANVAS());
 	const std::string fontname =  name;
 	clan::XMLResourceNode font_resource = clan::XMLResourceManager::get_doc(resources).get_resource( fontname );
 	
@@ -309,7 +357,12 @@ StoneRing::Font GraphicsManager::LoadFont( const std::string& name ) {
 	desc.set_typeface_name(name);
 	desc.set_height(24);
 
-	clan::Font font = clan::Font::resource(canvas,desc,resources);
+	clan::Font font;
+	std::function<void()> func = [&] {
+		clan::Canvas canvas(GET_MAIN_CANVAS());
+		font = clan::Font::resource(canvas,desc,resources);
+	};
+	IApplication::GetInstance()->RunOnMainThread(func);
 	clan::Pointf shadow_offset;
 	clan::Colorf color = clan::Colorf::white;
 
@@ -405,10 +458,13 @@ clan::Pointf GraphicsManager::GetPoint( Overlay overlay, const std::string& name
 clan::Image GraphicsManager::GetImage( GraphicsManager::Overlay overlay, const std::string& i_name ) {
 	clan::ResourceManager& resources = IApplication::GetInstance()->GetResources();
 	std::string name = std::string( "Overlays/" + NameOfOverlay( overlay ) + '/' + i_name );
-
+	clan::Image image;
+	
+	std::function<void()> func = [&] {
 	clan::Canvas canvas ( GET_MAIN_CANVAS() );
-	clan::Image image = clan::Image::resource( canvas, name, resources );
-
+		image = clan::Image::resource( canvas, name, resources );
+	};
+	IApplication::GetInstance()->RunOnMainThread(func);
 	return image;
 }
 
@@ -449,9 +505,12 @@ clan::Gradient GraphicsManager::GetGradient( Overlay overlay, const std::string&
 
 clan::Sprite GraphicsManager::GetSprite( GraphicsManager::Overlay overlay, const std::string& name ) {
 	clan::ResourceManager& resources = IApplication::GetInstance()->GetResources();
-	clan::Canvas canvas(GET_MAIN_CANVAS());
-	clan::Sprite sprite = clan::Sprite::resource( canvas, "Overlays/" + NameOfOverlay( overlay ) + "/sprites/" + name, resources );
-
+	clan::Sprite sprite;
+	std::function<void()> func = [&] {
+		clan::Canvas canvas(GET_MAIN_CANVAS());
+		sprite = clan::Sprite::resource( canvas, "Overlays/" + NameOfOverlay( overlay ) + "/sprites/" + name, resources );
+	};
+	IApplication::GetInstance()->RunOnMainThread(func);
 
 	sprite.set_alignment( clan::origin_center );
 	return sprite;
@@ -460,13 +519,16 @@ clan::Sprite GraphicsManager::GetSprite( GraphicsManager::Overlay overlay, const
 clan::Sprite GraphicsManager::GetSpriteWithImage( const clan::Image image ) {
 	// TODO: Is there a better way to do this? Such as loading the spriate frame directly from the resource manager?
 
-	clan::Canvas canvas(GET_MAIN_CANVAS());
-	// Okay. Now the text should have the image on it..
+	clan::Sprite sprite;
+	std::function<void()> func = [&] {
+		clan::Canvas canvas(GET_MAIN_CANVAS());
+		// Okay. Now the text should have the image on it..
 
-	clan::Sprite sprite( canvas );
-	sprite.add_frame( image.get_texture().get_texture().to_texture_2d() );	
-	sprite.set_alignment( clan::origin_center );
-
+		sprite =  clan::Sprite( canvas );
+		sprite.add_frame( image.get_texture().get_texture().to_texture_2d() );	
+		sprite.set_alignment( clan::origin_center );
+	};
+	IApplication::GetInstance()->RunOnMainThread(func);
 	return sprite;
 }
 
