@@ -47,7 +47,7 @@ private:
     clan::Pointf m_text_inset;    
     Font m_font;
     std::string m_text;
-    uint64_t m_time;
+    int64_t m_time;
     uint64_t m_start_time;
     bool m_done;
 };
