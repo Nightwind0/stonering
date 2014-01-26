@@ -1111,9 +1111,8 @@ SteelType AnimationState::createSprite( const std::string& sprite_ref ) {
 		clan::Sprite       m_sprite;
 		AnimationState& m_state;
 	} functor( sprite_ref, *this );
-	clan::Event event;
-	IApplication::GetInstance()->RunOnMainThread( event, &functor );
-	event.wait();
+	std::function<void()> func = functor;
+	IApplication::GetInstance()->RunOnMainThread( func );
 	SteelType var;
 	var.set( functor.m_ticket );
 	return var;

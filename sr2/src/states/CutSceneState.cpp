@@ -355,11 +355,8 @@ SteelType CutSceneState::addSprite ( const std::string& spriteRef, uint sprite_s
     pMO->SetDefaultFacing(face_dir);
     pMO->SetPixelPosition(clan::Point(x*32,y*32));
     SpriteFunctor functor(pMO,m_pLevel,spriteRef,static_cast<MappableObject::eSize>(sprite_size));
-    IApplication::GetInstance()->RunOnMainThread(event,&functor);
-    event.wait();
- 
-    
-
+	std::function<void()> func = functor;
+    IApplication::GetInstance()->RunOnMainThread(func);
     
     // Anything we add in a cut scene to the actual level, we have to remove it
     // at the end of the cut scene.

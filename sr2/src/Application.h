@@ -1,6 +1,7 @@
 #ifndef SR2_APPLICATION_H
 #define SR2_APPLICATION_H
 
+#include <functional>
 #include <ClanLib/application.h>
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
@@ -86,7 +87,7 @@ public:
     virtual bool                    Serialize(std::ostream& stream);
     virtual bool                    Deserialize(std::istream& stream);
     virtual void                    MainMenu();
-    virtual void                    RunOnMainThread(clan::Event& event, Functor* functor);
+    virtual void                    RunOnMainThread(std::function<void()>& function);
     virtual void                    Banner(const std::string&, int time);
 	virtual clan::IODevice     		 OpenResource(const std::string& str);	
 	virtual bool 					 IsCutsceneRunning() const; // Too much of a hack?
@@ -102,9 +103,9 @@ protected:
 private:
 
     struct ThreadFunctor {
-        ThreadFunctor(const clan::Event& event,Functor *pFunctor):m_event(event),m_pFunctor(pFunctor) {
+        ThreadFunctor(const clan::Event& event,std::function<void()> &func):m_event(event),m_functor(func) {
         }
-        Functor *m_pFunctor;
+        std::function<void()> m_functor;
         clan::Event m_event;
     };
 

@@ -42,6 +42,7 @@
 #include "GoldGetState.h"
 #include "ItemGetSingleState.h"
 #include "DebugControl.h"
+#include "LoadingState.h"
 //
 //
 //
@@ -75,6 +76,8 @@ using namespace Steel;
 bool gbDebugStop;
 
 
+
+std::thread::id main_thread_id;
 #if 0 
 class DrawThread: public clan::Runnable {
 public:
@@ -136,8 +139,7 @@ SteelType Application::playSound ( const std::string &sound )
 SteelType Application::pushLevel ( const std::string &level, uint startX, uint startY )
 {
     Level * pLevel = new Level();
-    pLevel->Load ( level, m_resources );
-    
+
     bool mapstaterunning = false;
     for(std::deque<State*>::const_iterator it = mStates.begin();
         it != mStates.end(); it++){
@@ -153,6 +155,10 @@ SteelType Application::pushLevel ( const std::string &level, uint startX, uint s
         mStates.push_back(&mMapState);
     }
     
+    std::function<void()> load_f = std::bind ( &Level::Load, pLevel, level, m_resources );
+	LoadingState loader;
+	loader.init(load_f);
+	RunState(&loader);	
     
     mMapState.PushLevel ( pLevel, static_cast<uint> ( startX ), static_cast<uint> ( startY ) );
 	pLevel->Invoke();
@@ -163,7 +169,11 @@ SteelType Application::pushLevel ( const std::string &level, uint startX, uint s
 SteelType Application::loadLevel ( const std::string &level, uint startX, uint startY )
 {
     Level * pLevel = new Level();
-    pLevel->Load ( level, m_resources );
+	std::function<void()> load_f = std::bind ( &Level::Load, pLevel, level, m_resources );
+	LoadingState loader;
+	loader.init(load_f);
+	RunState(&loader);	
+    //pLevel->Load ( level, m_resources );
     pLevel->Invoke();
     
 #if 0 
@@ -316,6 +326,16 @@ SteelType Application::say ( const std::string &speaker, const std::string &text
 
 void Application::StartGame(bool load)
 {
+	std::function<void()> load_f = std::bind ( &AppUtils::LoadGameplayAssets, "", m_resources );
+	LoadingState loader;
+	loader.init(load_f);
+	RunState(&loader);
+#ifndef NDEBUG
+	if(/*dump_equipment*/0){
+		ItemManager::DumpItemCSV();
+		return;
+	}
+#endif	
 	mMapState.SetDimensions ( GetDisplayRect() );	
 	mpParty->Clear();
     if(load){
@@ -332,12 +352,18 @@ void Application::StartGame(bool load)
 }
 
 
-void Application::RunOnMainThread ( clan::Event& event, Application::Functor* functor )
+void Application::RunOnMainThread ( std::function<void()>& functor )
 {
-    ThreadFunctor thread_functor(event,functor);
-    mFunctorMutex.lock();
-    m_mainthread_functors.push(thread_functor);
-    mFunctorMutex.unlock();
+	if(std::this_thread::get_id() == main_thread_id){
+		functor();
+	}else{
+		clan::Event event;		
+		ThreadFunctor thread_functor(event,functor);
+		mFunctorMutex.lock();
+		m_mainthread_functors.push(thread_functor);
+		mFunctorMutex.unlock();
+		event.wait();
+	}
 }
 
 
@@ -365,10 +391,9 @@ void Application::RunState ( State * pState, bool threaded )
         private:
             Application& m_app;
         };
-        clan::Event event;
         RunFunctor functor(*this);
-        RunOnMainThread(event,&functor);
-        event.wait();
+		std::function<void()> func = functor;
+        RunOnMainThread(func);
     }else{
         run();
     }
@@ -2600,14 +2625,15 @@ void Application::run(bool process_functors)
 		{
 			queryJoystick();
 			
+			mFunctorMutex.lock();
+			
 			if(process_functors && !m_mainthread_functors.empty()){
-				Functor * pFunctor = m_mainthread_functors.front().m_pFunctor;
-				pFunctor->operator()();
+				std::function<void()> func = m_mainthread_functors.front().m_functor;
+				func();
 				m_mainthread_functors.front().m_event.set();						
-				mFunctorMutex.lock();
 				m_mainthread_functors.pop();
-				mFunctorMutex.unlock();
 			}
+			mFunctorMutex.unlock();
 
 			unsigned int now = clan::System::get_time();
 
@@ -2703,6 +2729,7 @@ clan::IODevice Application::OpenResource(const std::string& str)
 int Application::main ( const std::vector<std::string> args )
 {
 	//SteelInterpreter interpreter;
+	main_thread_id = std::this_thread::get_id();
 	mInterpreter = new SteelInterpreter();
 
     GraphicsManager::initialize();
@@ -2823,14 +2850,7 @@ int Application::main ( const std::vector<std::string> args )
 
         m_window.get_gc().clear ( clan::Colorf ( 0.0f, 0.0f, 0.0f ) );
 
-
-        AppUtils::LoadGameplayAssets ( "", m_resources );
-#ifndef NDEBUG
-		if(dump_equipment){
-			ItemManager::DumpItemCSV();
-			return 0;
-		}
-#endif
+		
         std::string utilityConfig = String_load ( "Configuration/UtilityScripts", m_resources );
         mUtilityScripts.Load ( utilityConfig );
 #if SR2_EDITOR        
@@ -2912,8 +2932,8 @@ int Application::main ( const std::vector<std::string> args )
 
 		
 		mbDone = false;
-		
 
+		
         RunState(&mStartupState);
 
 #ifndef NDEBUG

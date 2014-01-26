@@ -108,7 +108,7 @@ public:
 	virtual Steel::AstScript *     GetUtility( Utility util )const = 0;
 	virtual std::string     GetCurrencyName()const = 0;
 	virtual std::string     GetResourcePath()const =0;
-	virtual void            RunOnMainThread( clan::Event& event, Functor* functor ) = 0;
+	virtual void            RunOnMainThread( std::function<void()>& ) = 0;
 	virtual bool            Serialize( std::ostream& stream ) = 0;
 	virtual bool            Deserialize( std::istream& stream ) = 0;
 	virtual void            Banner( const std::string& str, int time ) = 0;
