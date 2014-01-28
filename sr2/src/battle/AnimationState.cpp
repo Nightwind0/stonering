@@ -2230,11 +2230,13 @@ void AnimationState::OrbitTask::init(const Orbit & orbit, const Locale& locale){
 }
 void AnimationState::OrbitTask::_start(SteelInterpreter* pInterpreter){
 	m_completion_degrees = 0.0f;
+	m_last_radius = 0.0f;
 	m_degrees = m_orbit.m_start_angle;
+	m_state.SetSpritePos(m_sprite,m_state.GetPosition(m_origin));
 	m_last_time = clan::System::get_time();	
 }
 void AnimationState::OrbitTask::update(SteelInterpreter* pInterpreter){
-	const clan::Pointf origin = m_state.GetPosition(m_origin);
+	//const clan::Pointf origin = m_state.GetPosition(m_origin);
 	SteelType::Container params;
 	SteelType p;
 	p.set( percentage() ); // or _percentage?
@@ -2246,11 +2248,35 @@ void AnimationState::OrbitTask::update(SteelInterpreter* pInterpreter){
 	float delta = speed * float( clan::System::get_time() - m_last_time );
 	m_degrees += delta ;
 	m_completion_degrees += fabs(delta);
-	if( m_degrees > m_orbit.m_degrees )
-		delta -=  m_degrees - m_orbit.m_degrees; // lessen the delta by how much we overshot	
+	if( m_completion_degrees > m_orbit.m_degrees ){
+		delta -=  m_degrees - m_orbit.m_degrees; // lessen the delta by how much we overshot
+		m_degrees = m_orbit.m_degrees;
+	}
+	
+	// First we have to calculate an origin, we derive it 
+	// This is crazy shit
 	float angle = ( clan::PI / 180.0f ) * m_degrees;
 	clan::Pointf cpoint( cos( angle ), sin( angle ) );
-	clan::Pointf current = origin +  cpoint * radius; // C + R * (cos A, sin A)		
+	//		
+	clan::Pointf current = m_state.GetSpriteRect(m_sprite).get_center();
+	clan::Pointf origin = current - cpoint * m_last_radius;
+
+	
+	// Now we have to calculate our new point from our derived origin
+	clan::Pointf new_point = origin +  cpoint * radius; // Here's our new orbit point
+	
+	// Now we create a vector from the current to the new_point
+	clan::Vec2<float> radius_change_vec(new_point.x-current.x,new_point.y-current.y);
+	
+	current += radius_change_vec; // Move by vector (note: intentionally not normalized)
+	
+	// Now to calculate the orbit motion vector
+	clan::Vec2<float> orbit_vector( -sin(angle), cos(angle) );
+	//orbit_vector.normalize();
+	
+	current += orbit_vector * delta;
+	
+	m_last_radius = radius;	
 	m_state.SetSpritePos(m_sprite,current);
 	m_last_time =  clan::System::get_time();
 }

@@ -417,6 +417,7 @@ namespace StoneRing
 			float m_start_degrees;
 			float m_completion_degrees;
 			float m_degrees;
+			float m_last_radius;
 			Locale m_origin;
 			clan::ubyte64 m_last_time;
 			Orbit m_orbit;

@@ -1235,10 +1235,11 @@ void BattleState::SteelInit( SteelInterpreter* pInterpreter ) {
 	pInterpreter->addFunction( "getAllCharacters", "battle", new SteelFunctorNoArgs<BattleState>( this, &BattleState::getAllCharacters ) );
 	pInterpreter->addFunction( "getMonsterDamageCategory", "battle", new SteelFunctor1Arg<BattleState, SteelType::Handle>( this, &BattleState::getMonsterDamageCategory ) );
 	//pInterpreter->addFunction("getSkill","battle",new SteelFunctor2Arg<BattleState,SteelType::Handle,const std::string&>(this,&BattleState::getSkill));
-	pInterpreter->addFunction( "flee", "battle", new SteelFunctorNoArgs<BattleState>( this, &BattleState::flee ) );
+	pInterpreter->addFunction( "clearDarkMode", "battle", Steel::create_functor(this,&BattleState::clearDarkMode) );
+	pInterpreter->addFunction( "flee", "battle", Steel::create_functor( this, &BattleState::flee ) );
 	pInterpreter->addFunction( "isBossBattle", "battle", new SteelFunctorNoArgs<BattleState>( this, &BattleState::isBossBattle ) );
-	pInterpreter->addFunction( "clearDarkMode", "battle", new SteelFunctor1Arg<BattleState, int>( this, &BattleState::clearDarkMode ) );
-	pInterpreter->addFunction( "darkMode", "battle", new SteelFunctor5Arg<BattleState, int, double, double, double, double>( this, &BattleState::darkMode ) );
+	//pInterpreter->addFunction( "clearDarkMode", "battle", new SteelFunctor1Arg<BattleState, int>( this, &BattleState::clearDarkMode ) );
+	pInterpreter->addFunction( "darkMode", "battle", Steel::create_functor( this, &BattleState::darkMode ) );
 	m_config->SetupForBattle();
 }
 
