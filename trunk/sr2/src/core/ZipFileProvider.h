@@ -20,13 +20,9 @@
 #ifndef ZIPFILEPROVIDER_H
 #define ZIPFILEPROVIDER_H
 
+#include "sr_defines.h"
 #include <ClanLib/core.h>
 
-#ifdef _WINDOWS_
-#include "File.h"
-#else
-#include <steel/File.h>
-#endif
 
 namespace StoneRing { 
 	

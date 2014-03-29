@@ -1,13 +1,9 @@
 #ifndef SR_MONSTER_ELEMENT_H
 #define SR_MONSTER_ELEMENT_H
 
+#include "sr_defines.h"
 #include "Element.h"
 #include "Character.h"
-#ifdef _WINDOWS_
-#include "SteelInterpreter.h"
-#else
-#include "steel/SteelInterpreter.h"
-#endif
 
 using StoneRing::ICharacter;
 

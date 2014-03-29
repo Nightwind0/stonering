@@ -1,18 +1,14 @@
 #ifndef SR_SKILL_H
 #define SR_SKILL_H
 
+#include "sr_defines.h"
 #include "Element.h"
 #include <ClanLib/core.h>
 #include "ScriptElement.h"
 #include "Character.h"
 #include "ScriptElement.h"
-#ifdef _WINDOWS_
-#include "SteelType.h"
-#include "SteelInterpreter.h"
-#else
-#include <steel/SteelType.h>
-#include <steel/SteelInterpreter.h>
-#endif
+
+
 
 namespace StoneRing
 {

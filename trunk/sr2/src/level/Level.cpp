@@ -404,9 +404,9 @@ void Level::Invoke()
 }
 
 
-bool activeSolidMappableObject(const std::multimap<clan::Point,MappableObject*>::value_type &value)
+bool activeSolidMappableObject(const std::multimap<clan::Point,MappableObject*>::value_type &val)
 {
-    MappableObject * pMO = value.second;
+    MappableObject * pMO = val.second;
 
     return pMO && pMO->IsSolid() && pMO->EvaluateCondition();
 }
@@ -748,9 +748,9 @@ bool Level::Check_Direction_Block ( MappableObject * pMo, Direction dir, const c
 {
     if(dest_tile.x <0 || dest_tile.y <0 || dest_tile.x >= m_LevelWidth || dest_tile.y >= m_LevelHeight)
         return false;
-    if(!pMo->IsFlying()
+    if((!pMo->IsFlying()
         &&
-        (Get_Cumulative_Side_Block_At_Point(tile) & MappableObject::ConvertDirectionToSideBlock(dir.opposite()))
+        (Get_Cumulative_Side_Block_At_Point(tile) & MappableObject::ConvertDirectionToSideBlock(dir.opposite())))
         ||
         (Get_Cumulative_Side_Block_At_Point(dest_tile) & MappableObject::ConvertDirectionToSideBlock(dir))
         || (pMo->RespectsHotness() && Get_Cumulative_Hotness_At_Point(dest_tile))

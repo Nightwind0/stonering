@@ -1,10 +1,10 @@
 #ifndef SR_ATTRIBUTE_MODIFIER_H
 #define SR_ATTRIBUTE_MODIFIER_H
 
+#include "sr_defines.h"
 #include "Element.h"
 #include "Character.h"
 
-class AstScript;
 
 namespace StoneRing{
 

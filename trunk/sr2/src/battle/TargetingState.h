@@ -1,13 +1,15 @@
 #ifndef SR2_TARGETING_STATE_H
 #define SR2_TARGETING_STATE_H
 
+
+#include <string>
+#include <memory>
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
+#include "sr_defines.h"
 #include "State.h"
 #include "ICharacter.h"
 #include "Party.h"
-
-class SteelInterpreter;
 
 namespace StoneRing
 {

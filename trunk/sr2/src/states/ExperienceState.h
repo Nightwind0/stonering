@@ -20,8 +20,7 @@
 #ifndef EXPERIENCESTATE_H
 #define EXPERIENCESTATE_H
 
-#include <State.h>
-
+#include "State.h"
 #include "GraphicsManager.h"
 
 namespace StoneRing{

@@ -6,8 +6,6 @@
 #include "Skill.h"
 #include <stack>
 
-class SteelInterpreter;
-
 namespace StoneRing
 {
 

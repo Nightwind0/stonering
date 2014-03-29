@@ -4,12 +4,7 @@
 #include <vector>
 #include "Element.h"
 #include "Menu.h"
-#ifdef WINVER
-#include "SteelInterpreter.h"
-#else
-#include "steel/SteelInterpreter.h"
-#endif
-
+#include "sr_defines.h"
 #include "GraphicsManager.h"
 
 namespace StoneRing

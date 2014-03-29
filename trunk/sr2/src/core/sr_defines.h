@@ -2,20 +2,25 @@
 #ifndef SR_DEFINES_H
 #define SR_DEFINES_H
 
-#ifdef WIN32
-#pragma warning (disable : 4250 )
+#include <string>
+#include <functional>
 #include <memory>
-#else
-#include <tr1/memory>
-#endif
-
 
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
-
+#if !defined(WIN32) && !defined(__APPLE__)
+#include <steel/SteelType.h>
+#include <steel/SteelInterpreter.h>
+#else
+#include "SteelType.h"
+#include "SteelInterpreter.h"
+#include "Ast.h"
+#include "File.h"
+#include "SteelException.h"
+#include "SteelFunctor.h"
+#endif
 #include <sstream>
-#include <string>
-#include <functional>
+
 #include <cmath>
 #include <stdlib.h>
 typedef unsigned int uint;
@@ -221,8 +226,8 @@ bool RectContains(const clan::Rectx<T>& rect, const clan::Vec2<T>& p){
 
 
 #ifndef WIN32
-#include <tr1/memory>
-using std::tr1::shared_ptr;
+#include <memory>
+using std::shared_ptr;
 using std::max;
 using std::min;
 #else

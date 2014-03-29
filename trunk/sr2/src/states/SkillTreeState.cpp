@@ -23,7 +23,7 @@
 #include "MenuBox.h"
 #include <sstream>
 #include <iomanip>
-#include <Graphic.h>
+#include "Graphic.h"
 #include "SkillGetState.h"
 
 using namespace StoneRing;

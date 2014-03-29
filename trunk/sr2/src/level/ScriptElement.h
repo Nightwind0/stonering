@@ -3,7 +3,7 @@
 
 #include "sr_defines.h"
 #include "Element.h"
-#ifdef _WINDOWS_
+#if defined(_WINDOWS_) || defined(__APPLE__)
 #include "SteelType.h"
 #include "SteelInterpreter.h"
 #else

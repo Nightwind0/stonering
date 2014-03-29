@@ -4,11 +4,7 @@
 
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
-#ifdef _WINDOWS_
-#include <SteelType.h>
-#else
-#include <steel/SteelType.h>
-#endif
+#include "sr_defines.h"
 #include "AbilityManager.h"
 #include "MonsterGroup.h"
 #include "ElementFactory.h"

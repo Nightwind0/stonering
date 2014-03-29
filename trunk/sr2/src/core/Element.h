@@ -2,7 +2,7 @@
 #define SR_ELEMENT_H
 
 #include "sr_defines.h"
-#ifndef WIN32
+#if !defined(WIN32) && !defined(__APPLE__)
     #include "steel/SteelType.h"
 #else
     #include "SteelType.h"
