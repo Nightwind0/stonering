@@ -203,7 +203,7 @@ bool ShopState::LastToDraw() const
 	return false;
 }
 
-void ShopState::MappableObjectMoveHook()
+void ShopState::Update()
 {
 
 }

@@ -1,5 +1,6 @@
 #include "LoadingState.h"
 #include "GraphicsManager.h"
+#include "steel/SteelException.h"
 
 using StoneRing::LoadingState;
 using StoneRing::GraphicsManager;
@@ -26,7 +27,16 @@ void LoadingState::on_thread_finished() {
 }
 
 void LoadingState::run_function() {
-	m_loading_func();
+	try { 
+		m_loading_func();
+	}catch(XMLException &ex){
+		ex.dump(std::cerr);
+	}catch(Steel::SteelException &ex){
+        std::cerr << "Steel Exception on line " << ex.getLine()
+                  << " of " << ex.getScript() << ':' << ex.getMessage() << std::endl;
+	}catch(clan::Exception &exp){
+        std::cerr << exp.message.c_str() << std::endl;	
+	}
 	on_thread_finished();
 }
 
@@ -63,7 +73,7 @@ bool LoadingState::DisableMappableObjects() const {
 	return true;
 }
 
-void LoadingState::MappableObjectMoveHook() {
+void LoadingState::Update() {
 }
 
 void LoadingState::Start() {

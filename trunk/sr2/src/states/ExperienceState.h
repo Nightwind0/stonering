@@ -37,7 +37,7 @@ public:
     void AddCharacter(Character* pCharacter, int xp_gained, int old_level, int sp);
     virtual void Finish();
     virtual void Start();
-    virtual void MappableObjectMoveHook();
+    virtual void Update();
     virtual bool DisableMappableObjects() const;
     virtual bool LastToDraw() const;
     virtual void Draw(const clan::Rect& screenRect, clan::Canvas& GC);

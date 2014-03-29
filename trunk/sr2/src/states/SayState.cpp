@@ -103,7 +103,7 @@ bool StoneRing::SayState::DisableMappableObjects() const
 }
 
 
-void StoneRing::SayState::MappableObjectMoveHook()
+void StoneRing::SayState::Update()
 {
 }
 

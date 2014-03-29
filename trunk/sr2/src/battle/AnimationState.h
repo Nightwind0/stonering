@@ -4,7 +4,6 @@
 
 #include "sr_defines.h"
 #include "State.h"
-#include "Animation.h"
 #include "SteelRunner.h"
 #include "BattleState.h"
 #include "Direction.h"
@@ -31,7 +30,6 @@ namespace StoneRing
 		
         virtual ~AnimationState();
 
-        void Init(Animation* pAnimation, ICharacterGroup* pCasterGroup, ICharacterGroup* pTargetGroup, ICharacter* pCaster, ICharacter* pTarget, Equipment::eSlot hand);
 		void Init(SteelType::Functor pFunctor);
 
         virtual bool IsDone() const;
@@ -40,12 +38,12 @@ namespace StoneRing
         virtual void Draw(const clan::Rect &screenRect,clan::Canvas& GC);
         virtual bool LastToDraw() const; // Should we continue drawing more states?
         virtual bool DisableMappableObjects() const; // Should the app move the MOs?
-        virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
+        virtual void Update(); // Do stuff right after the mappable object movement
         virtual void Start();
         virtual void SteelInit      (SteelInterpreter *);
         virtual void SteelCleanup   (SteelInterpreter *);
         virtual void Finish(); // Hook to clean up or whatever after being popped
-		virtual bool Threaded()const { return m_functor_mode; }
+		virtual bool Threaded()const { return true; }
 		void WaitFinishedEvent();
 		void FunctorCompleted();
 		
@@ -65,14 +63,9 @@ namespace StoneRing
 		void ClearDark(int mode);
 	
     private:
-        clan::Pointf GetFocusOrigin(const SpriteMovement::Focus&, ICharacter* pTarget);
 		void draw(const clan::Rect& screenRect, clan::Canvas& GC);
 		void draw_functor(const clan::Rect& screenRect, clan::Canvas& GC);
-		void EndPhase();
-        bool NextPhase();
-        void StartPhase();
-		void move_sprite(ICharacter *pActor, ICharacter* pTarget, SpriteAnimation* anim, SpriteMovement* movement, float percentage);
-        void apply_alter_sprite(AlterSprite* pSprite);
+
         //void move_character(ICharacter* character, SpriteAnimation* anim, SpriteMovement* movement, float percentage);
 		
 		class Locale: public SteelType::IHandle {
@@ -226,7 +219,7 @@ namespace StoneRing
 				m_start_time = clan::System::get_time();
 			}			
 			virtual float _percentage()const{
-				return float(clan::System::get_time()-m_start_time) / duration();
+				return float(clan::System::get_time()-m_start_time) / (duration()*1000.0f);
 			}
 
 			clan::ubyte64 m_start_time;
@@ -235,7 +228,7 @@ namespace StoneRing
 		
 		class Path: public SteelType::IHandle{
 		public:
-			Path(){m_flags = 0;}
+			Path():m_completion(1.0),m_flags(0){}
 			virtual ~Path(){}
 			enum Flags {
 				NORMAL=0,
@@ -491,10 +484,8 @@ namespace StoneRing
 
 			virtual void update(SteelInterpreter*);
 			virtual void cleanup();
-			virtual bool finished();
 		private:
 			virtual void _start(SteelInterpreter*);			
-			float m_duration;
 		};
 		
 		class ColorizeTask : public TimedTask { 
@@ -612,6 +603,7 @@ namespace StoneRing
 		SteelType setSpriteRotation(int sprite, double radians);
 		SteelType flipSprite(int sprite, bool flip_x, bool flip_y);
 		SteelType scaleSprite(int sprite, double scale_x, double scale_y);
+		SteelType setSpriteColor(int sprite, double r, double g, double b);
 		SteelType setSpriteLocation(int sprite, SteelType::Handle hLocale);
 		SteelType floatCharacter(SteelType::Handle hCharacter,SteelType::Functor float_amt, double time);
 		
@@ -644,16 +636,10 @@ namespace StoneRing
 	
 
         BattleState& m_parent;
-        ICharacterGroup* m_pCasterGroup;
-        ICharacterGroup* m_pTargetGroup;
-        ICharacter* m_pCaster;
-        ICharacter* m_pTarget;
-		SteelRunner<AnimationState>* m_pRunner;		
+ 		SteelRunner<AnimationState>* m_pRunner;		
 		
-        Animation * m_pAnim;
-		SteelType::Functor m_functor;	
-        std::list<Phase*>::const_iterator m_phase_iterator;
-		std::vector<Task*> m_tasks;
+ 		SteelType::Functor m_functor;	
+ 		std::vector<Task*> m_tasks;
 		std::list<SteelType::IHandle*> m_handles;
 
 		SteelInterpreter * m_pInterpreter;
@@ -662,12 +648,10 @@ namespace StoneRing
 		clan::Thread m_steel_thread;
 		mutable std::recursive_mutex m_task_mutex;		
         clan::ubyte64 m_phase_start_time;
-		bool m_functor_mode;
         bool m_bDone;
-		Equipment::eSlot m_hand;
 	public:
 		void AddTask(Task* task);
-    uint& get_time();
+		uint& get_time();
     };
 
 

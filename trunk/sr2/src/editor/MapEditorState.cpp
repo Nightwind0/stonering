@@ -204,7 +204,7 @@ bool MapEditorState::DisableMappableObjects() const {
     return true;
 }
 
-void MapEditorState::MappableObjectMoveHook(){
+void MapEditorState::Update(){
 }
 
 void MapEditorState::SetCopyTiles(const std::vector<std::vector<std::list<Tile*> > >& tiles){ 

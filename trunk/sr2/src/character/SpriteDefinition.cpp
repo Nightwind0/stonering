@@ -2,7 +2,6 @@
 #include "SpriteDefinition.h"
 #include "AbilityManager.h"
 #include "IApplication.h"
-#include "Animation.h"
 #include "WeaponTypeRef.h"
 #include "CharacterManager.h"
 

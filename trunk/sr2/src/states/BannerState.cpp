@@ -80,7 +80,7 @@ void BannerState::HandleButtonUp ( const StoneRing::IApplication::Button& button
     m_done = true;
 }
 
-void BannerState::MappableObjectMoveHook()
+void BannerState::Update()
 {
 
 }

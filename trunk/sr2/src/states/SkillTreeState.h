@@ -31,13 +31,8 @@ public:
     virtual ~SkillTreeState();
     void Init(Character* pCharacter, bool buy);
     virtual bool IsDone() const;
-    // Handle joystick / key events that are processed according to mappings
-    virtual void HandleButtonUp(const IApplication::Button& button);
-    virtual void HandleButtonDown(const IApplication::Button& button);
-    virtual void HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos);
     virtual bool DisableMappableObjects() const { return false; }
-    virtual void MappableObjectMoveHook() {}
-    
+    virtual void Update() {}
     virtual void Draw(const clan::Rect &screenRect,clan::Canvas& GC);
     virtual bool LastToDraw() const { return false; }; // Should we continue drawing more states?
     virtual bool DisableMappableObjects() { return true; }; // Should the app move the MOs?
@@ -45,6 +40,10 @@ public:
     virtual void Finish(); // Hook to clean up or whatever after being popped
     SkillTreeNode* GetSelectedSkillNode() const;
 protected:
+    // Handle joystick / key events that are processed according to mappings
+    virtual void HandleButtonUp(const IApplication::Button& button);
+    virtual void HandleButtonDown(const IApplication::Button& button);
+    virtual void HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos);	
     virtual clan::Rectf get_rect();
     virtual void draw_option(int option, bool selected, float x, float y, clan::Canvas& gc);
     virtual int height_for_option(clan::Canvas& gc);

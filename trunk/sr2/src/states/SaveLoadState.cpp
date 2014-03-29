@@ -118,7 +118,7 @@ bool SaveLoadState::IsDone() const
     return m_bDone;
 }
 
-void SaveLoadState::MappableObjectMoveHook()
+void SaveLoadState::Update()
 {
 
 }

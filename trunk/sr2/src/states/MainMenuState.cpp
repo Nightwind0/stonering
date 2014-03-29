@@ -243,7 +243,7 @@ bool MainMenuState::DisableMappableObjects() const
 }
 
 
-void MainMenuState::MappableObjectMoveHook()
+void MainMenuState::Update()
 {
 }
 

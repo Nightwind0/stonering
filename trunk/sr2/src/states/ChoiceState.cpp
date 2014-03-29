@@ -91,7 +91,7 @@ bool StoneRing::ChoiceState::DisableMappableObjects() const
 }
 
 
-void StoneRing::ChoiceState::MappableObjectMoveHook()
+void StoneRing::ChoiceState::Update()
 {
 }
 

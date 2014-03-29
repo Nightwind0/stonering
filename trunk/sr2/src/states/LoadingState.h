@@ -17,7 +17,7 @@ namespace StoneRing {
 		virtual bool LastToDraw() const;
 		virtual bool AcceptInput() const { return true; }
 		virtual bool DisableMappableObjects() const;
-		virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
+		virtual void Update(); // Do stuff right after the mappable object movement
 		virtual void Start();
 		virtual void Finish(); // Hook to clean up or whatever after being popped	
 		void OnTimer();

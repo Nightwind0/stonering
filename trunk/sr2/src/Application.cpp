@@ -30,7 +30,6 @@
 #endif
 #include "SoundManager.h"
 #include "BattleConfig.h"
-#include "Animation.h"
 #include "RegularItem.h"
 #include "Direction.h"
 #include "SaveLoadState.h"
@@ -991,24 +990,6 @@ SteelType Application::getWeaponTypeDamageCategory ( SteelType::Handle hWeaponTy
 
 
 
-SteelType Application::getWeaponAnimation ( SteelType::Handle hWeapon )
-{
-    SteelType val;
-    Weapon* pWeapon = GrabHandle<Weapon*> ( hWeapon );
-    val.set ( pWeapon->GetAnimation() );
-
-    return val;
-}
-
-SteelType Application::weaponHasAnimation ( SteelType::Handle hWeapon )
-{
-    SteelType val;
-    Weapon* pWeapon = GrabHandle<Weapon*> ( hWeapon );
-    val.set ( pWeapon->GetAnimation() != NULL );
-
-    return val;
-}
-
 SteelType 	Application::weaponHasAnimationScript(SteelType::Handle hWeapon){
 	SteelType val;
     Weapon* pWeapon = GrabHandle<Weapon*> ( hWeapon );
@@ -1058,18 +1039,6 @@ SteelType Application::getUnarmedMissSound ( SteelType::Handle hICharacter )
     return SteelType();
 }
 
-SteelType Application::getAnimation ( const std::string& name )
-{
-    SteelType val;
-
-    Animation * pAnim = GetAbilityManager()->GetAnimation ( name );
-
-    if ( pAnim == NULL ) throw clan::Exception ( "Animation: " + name + " was missing." );
-
-    val.set ( pAnim );
-
-    return val;
-}
 
 SteelType Application::getMonsterDrops ( const SteelType::Handle hMonster )
 {
@@ -1938,50 +1907,101 @@ IApplication::AxisDirection Application::get_direction_for_value ( IApplication:
     return AXIS_NEUTRAL;
 }
 
-
 void Application::onSignalKeyDown ( const clan::InputEvent &key )
 {
-
     // Handle raw key press
-    getInputState()->HandleKeyDown ( key );
+    State::Event keyEvent;
+    keyEvent.m_type = State::Event::KEY;
+    keyEvent.m_keyEvent = key;
+    keyEvent.m_up = false;
+    getInputState()->EnqueueEvent(keyEvent);
 
     // Do mappings now
+    State::Event axisEvent;
+    axisEvent.m_type = State::Event::AXIS;
     switch ( key.id )
     {
-        case clan::keycode_down:
-            getInputState()->HandleAxisMove ( IApplication::AXIS_VERTICAL, AXIS_DOWN, get_value_for_axis_direction ( AXIS_DOWN ) );
+		case clan::keycode_down:
+            axisEvent.m_axisEvent.m_axis = AXIS_VERTICAL;
+            axisEvent.m_axisEvent.m_dir = AXIS_DOWN;
+            axisEvent.m_axisEvent.m_pos = get_value_for_axis_direction( AXIS_DOWN );
+            getInputState()->EnqueueEvent(axisEvent);
             break;
-        case clan::keycode_up:
-            getInputState()->HandleAxisMove ( IApplication::AXIS_VERTICAL, AXIS_UP, get_value_for_axis_direction ( AXIS_UP ) );
+		case clan::keycode_up:
+            axisEvent.m_axisEvent.m_axis = AXIS_VERTICAL;
+            axisEvent.m_axisEvent.m_dir = AXIS_UP;
+            axisEvent.m_axisEvent.m_pos = get_value_for_axis_direction( AXIS_UP );
+            getInputState()->EnqueueEvent(axisEvent);
             break;
-        case clan::keycode_left:
-            getInputState()->HandleAxisMove ( IApplication::AXIS_HORIZONTAL, AXIS_LEFT, get_value_for_axis_direction ( AXIS_LEFT ) );
+		case clan::keycode_left:
+            axisEvent.m_axisEvent.m_axis = AXIS_HORIZONTAL;
+            axisEvent.m_axisEvent.m_dir = AXIS_LEFT;
+            axisEvent.m_axisEvent.m_pos = get_value_for_axis_direction( AXIS_LEFT );        
+            getInputState()->EnqueueEvent(axisEvent);
             break;
-        case clan::keycode_right:
-            getInputState()->HandleAxisMove ( IApplication::AXIS_HORIZONTAL, AXIS_RIGHT, get_value_for_axis_direction ( AXIS_RIGHT ) );
+		case clan::keycode_right:
+            axisEvent.m_axisEvent.m_axis = AXIS_HORIZONTAL;
+            axisEvent.m_axisEvent.m_dir = AXIS_RIGHT;
+            axisEvent.m_axisEvent.m_pos = get_value_for_axis_direction( AXIS_RIGHT );
+            getInputState()->EnqueueEvent(axisEvent);
             break;
-        case clan::keycode_space:
-        case clan::keycode_t:
-            getInputState()->HandleButtonDown ( BUTTON_CONFIRM );
+		case clan::keycode_space:
+		case clan::keycode_t:{
+            State::Event event;
+            event.m_up = false;
+            event.m_buttonEvent = BUTTON_CONFIRM;
+            event.m_type = State::Event::BUTTON;
+            getInputState()->EnqueueEvent(event);
             break;
-        case clan::keycode_tab:
-            getInputState()->HandleButtonDown ( BUTTON_ALT );
+        }
+		case clan::keycode_tab:{
+            State::Event event;
+            event.m_up = false;
+            event.m_buttonEvent = BUTTON_ALT;
+            event.m_type = State::Event::BUTTON;
+            getInputState()->EnqueueEvent(event);
             break;
-        case clan::keycode_escape:
-            getInputState()->HandleButtonDown ( BUTTON_CANCEL );
+        }
+		case clan::keycode_escape:{
+            State::Event event;
+            event.m_up = false;
+            event.m_buttonEvent = BUTTON_CANCEL;
+            event.m_type = State::Event::BUTTON;
+            getInputState()->EnqueueEvent(event);
             break;
-        case clan::keycode_enter:
-            getInputState()->HandleButtonDown ( BUTTON_START );
+        }
+		case clan::keycode_enter:{
+            State::Event event;
+            event.m_up = false;
+            event.m_buttonEvent = BUTTON_START;
+            event.m_type = State::Event::BUTTON;
+            getInputState()->EnqueueEvent(event);
             break;
-        case clan::keycode_home:
-            getInputState()->HandleButtonDown ( BUTTON_MENU );
+        }
+		case clan::keycode_home:{
+            State::Event event;
+            event.m_up = false;
+            event.m_buttonEvent = BUTTON_MENU;
+            event.m_type = State::Event::BUTTON;
+            getInputState()->EnqueueEvent(event);
             break;
-        case clan::keycode_m:
-            getInputState()->HandleButtonDown ( BUTTON_R );
+        }
+		case clan::keycode_m:{
+            State::Event event;
+            event.m_up = false;
+            event.m_buttonEvent = BUTTON_R;
+            event.m_type = State::Event::BUTTON;
+            getInputState()->EnqueueEvent(event);
             break;
-        case clan::keycode_n:
-            getInputState()->HandleButtonDown ( BUTTON_L );
+        }
+		case clan::keycode_n:{
+            State::Event event;
+            event.m_up = false;
+            event.m_buttonEvent = BUTTON_L;
+            event.m_type = State::Event::BUTTON;
+            getInputState()->EnqueueEvent(event);
             break;
+        }
     }
 
 
@@ -1989,118 +2009,217 @@ void Application::onSignalKeyDown ( const clan::InputEvent &key )
 
 void Application::onSignalKeyUp ( const clan::InputEvent &key )
 {
-    getInputState()->HandleKeyUp ( key );
+    // Handle raw key press
+    State::Event keyEvent;
+    keyEvent.m_type = State::Event::KEY;
+    keyEvent.m_keyEvent = key;
+    keyEvent.m_up = true;
+    getInputState()->EnqueueEvent(keyEvent);
 
     // Do mappings now
-
+    State::Event axisEvent;
+    axisEvent.m_type = State::Event::AXIS;
     switch ( key.id )
     {
-        case clan::keycode_down:
-            getInputState()->HandleAxisMove ( IApplication::AXIS_VERTICAL, AXIS_NEUTRAL, 0.0 );
+		case clan::keycode_down:
+		case clan::keycode_up:
+            axisEvent.m_axisEvent.m_axis = AXIS_VERTICAL;
+            axisEvent.m_axisEvent.m_dir = AXIS_NEUTRAL;
+            axisEvent.m_axisEvent.m_pos = 0.0;
+            getInputState()->EnqueueEvent(axisEvent);
             break;
-        case clan::keycode_up:
-            getInputState()->HandleAxisMove ( IApplication::AXIS_VERTICAL, AXIS_NEUTRAL, 0.0 );
+
+		case clan::keycode_left:
+		case clan::keycode_right:
+            axisEvent.m_axisEvent.m_axis = AXIS_HORIZONTAL;
+            axisEvent.m_axisEvent.m_dir = AXIS_NEUTRAL;
+            axisEvent.m_axisEvent.m_pos = 0.0;
+            getInputState()->EnqueueEvent(axisEvent);
+            break;        
+		case clan::keycode_space:
+		case clan::keycode_t:{
+            State::Event event;
+            event.m_up = true;
+            event.m_buttonEvent = BUTTON_CONFIRM;
+            event.m_type = State::Event::BUTTON;
+            getInputState()->EnqueueEvent(event);
             break;
-        case clan::keycode_left:
-        case clan::keycode_right:
-            getInputState()->HandleAxisMove ( IApplication::AXIS_HORIZONTAL, AXIS_NEUTRAL, 0.0 );
+        }
+		case clan::keycode_tab:{
+            State::Event event;
+            event.m_up = true;
+            event.m_buttonEvent = BUTTON_ALT;
+            event.m_type = State::Event::BUTTON;
+            getInputState()->EnqueueEvent(event);
             break;
-        case clan::keycode_space:
-        case clan::keycode_t:
-            getInputState()->HandleButtonUp ( BUTTON_CONFIRM );
+        }
+		case clan::keycode_escape:{
+            State::Event event;
+            event.m_up = true;
+            event.m_buttonEvent = BUTTON_CANCEL;
+            event.m_type = State::Event::BUTTON;
+            getInputState()->EnqueueEvent(event);
             break;
-        case clan::keycode_tab:
-            getInputState()->HandleButtonUp ( BUTTON_ALT );
+        }
+		case clan::keycode_enter:{
+            State::Event event;
+            event.m_buttonEvent = BUTTON_START;
+            event.m_type = State::Event::BUTTON;
+            event.m_up = true;
+            getInputState()->EnqueueEvent(event);
             break;
-        case clan::keycode_escape:
-            getInputState()->HandleButtonUp ( BUTTON_CANCEL );
+        }
+		case clan::keycode_home:{
+            State::Event event;
+            event.m_buttonEvent = BUTTON_MENU;
+            event.m_type = State::Event::BUTTON;
+            event.m_up = true;
+            getInputState()->EnqueueEvent(event);
             break;
-        case clan::keycode_enter:
-            getInputState()->HandleButtonUp ( BUTTON_START );
+        }
+		case clan::keycode_m:{
+            State::Event event;
+            event.m_buttonEvent = BUTTON_R;
+            event.m_type = State::Event::BUTTON;
+            event.m_up = true;
+            getInputState()->EnqueueEvent(event);
             break;
-        case clan::keycode_home:
-            getInputState()->HandleButtonUp ( BUTTON_MENU );
+        }
+		case clan::keycode_n:{
+            State::Event event;
+            event.m_buttonEvent = BUTTON_L;
+            event.m_type = State::Event::BUTTON;
+            event.m_up = true;
+            getInputState()->EnqueueEvent(event);
             break;
-        case clan::keycode_m:
-            getInputState()->HandleButtonUp ( BUTTON_R );
+        }
+    }
+ 
+}
+
+void Application::onSignalJoystickButtonDown ( const clan::InputEvent &input_event )
+{
+
+    if ( !mStates.size() ) return;
+
+    State::Event event;
+    event.m_up = false;
+    event.m_type = State::Event::BUTTON;
+    switch ( input_event.id )
+    {
+        // Do mappings now
+        case 5:
+            event.m_buttonEvent = BUTTON_CONFIRM;
             break;
-        case clan::keycode_n:
-            getInputState()->HandleButtonUp ( BUTTON_L );
+        case 0:
+            event.m_buttonEvent = BUTTON_ALT;
             break;
-        case clan::keycode_s:
-            getInputState()->HandleButtonUp ( BUTTON_SELECT );
+        case 1:
+            event.m_buttonEvent = BUTTON_CANCEL;
+            break;
+        case 2:
+           event.m_buttonEvent = BUTTON_START;
+            break;
+        case 4:
+            event.m_buttonEvent = BUTTON_SELECT;
+            break;
+        case 6:
+            event.m_buttonEvent = BUTTON_R;
+            break;
+        case 7:
+            event.m_buttonEvent = BUTTON_L;
             break;
     }
-
+    
+    getInputState()->EnqueueEvent(event);
 }
 
-void Application::onSignalJoystickButtonDown ( const clan::InputEvent &event  )
+void Application::onSignalJoystickButtonUp ( const clan::InputEvent &input_event )
 {
 
-    if ( !mStates.size() ) return;
-	
-	if(!m_joystick_config.IsSetup()){
-		// Possibly set it up now
-
-	}else{
-		IApplication::Button button = m_joystick_config.GetButtonForId(event.id);
-		if(button != IApplication::BUTTON_INVALID){
-			m_button_down[button] = true;
-			getInputState()->HandleButtonDown(button);			
-		}		
-	}
-
-}
-
-void Application::onSignalJoystickButtonUp ( const clan::InputEvent &event )
-{
-    if ( !mStates.size() ) return;
+    if ( !mStates.size() || !m_joystick_config.IsSetup() ) return;
 
 	if(!m_joystick_config.IsSetup()){
 		if(m_joystick_train_state == JS_TRAIN_BUTTON){
-			m_joystick_config.MapButton(m_joystick_train_component.m_button,event.id);
+			m_joystick_config.MapButton(m_joystick_train_component.m_button,input_event.id);
 			mBannerState.BringDown();
 		}		
 	}else{
-		IApplication::Button button = m_joystick_config.GetButtonForId(event.id);
-		if(button != IApplication::BUTTON_INVALID && m_button_down[button]){
-			m_button_down[button] = false;
-			getInputState()->HandleButtonUp(button);			
+		State::Event event;
+		event.m_up = true;
+		event.m_type = State::Event::BUTTON;
+		switch ( input_event.id )
+		{
+			// Do mappings now
+			case 5:
+				event.m_buttonEvent = BUTTON_CONFIRM;
+				break;
+			case 0:
+				event.m_buttonEvent = BUTTON_ALT;
+				break;
+			case 1:
+				event.m_buttonEvent = BUTTON_CANCEL;
+				break;
+			case 2:
+			event.m_buttonEvent = BUTTON_START;
+				break;
+			case 4:
+				event.m_buttonEvent = BUTTON_SELECT;
+				break;
+			case 6:
+				event.m_buttonEvent = BUTTON_R;
+				break;
+			case 7:
+				event.m_buttonEvent = BUTTON_L;
+				break;
 		}
+		
+		getInputState()->EnqueueEvent(event);
 	}
-
 }
 
-void Application::onSignalJoystickAxisMove ( const clan::InputEvent &event )
+void Application::onSignalJoystickAxisMove ( const clan::InputEvent &input_event )
 {
 	if(!m_joystick_config.IsSetup()){
-		if(abs(event.axis_pos) > 0.5f){
+		if(abs(input_event.axis_pos) > 0.5f){
 			if(m_joystick_train_state == JS_TRAIN_AXIS){
 				switch(m_joystick_train_component.m_dir){
 					case IApplication::AXIS_UP:
 					case IApplication::AXIS_DOWN:
-						m_joystick_config.MapAxis(IApplication::AXIS_VERTICAL, event.id);
+						m_joystick_config.MapAxis(IApplication::AXIS_VERTICAL, input_event.id);
 						break;
 					case IApplication::AXIS_LEFT:
 					case IApplication::AXIS_RIGHT:
-						m_joystick_config.MapAxis(IApplication::AXIS_HORIZONTAL,event.id);
+						m_joystick_config.MapAxis(IApplication::AXIS_HORIZONTAL,input_event.id);
 						break;
 				}
-				m_joystick_config.MapAxisValue(m_joystick_train_component.m_dir,event.axis_pos);		
+				m_joystick_config.MapAxisValue(m_joystick_train_component.m_dir,input_event.axis_pos);		
 				mBannerState.BringDown();
 			}
 		}
 	}else{
-		if ( event.id == m_joystick_config.GetAxis(AXIS_HORIZONTAL) )
+		State::Event event;
+		event.m_type = State::Event::AXIS;
+		if ( input_event.id == 0 )
 		{
-			getInputState()->HandleAxisMove ( AXIS_HORIZONTAL, get_direction_for_value ( AXIS_HORIZONTAL, event.axis_pos ), event.axis_pos );
+			event.m_axisEvent.m_axis = AXIS_HORIZONTAL;
+			event.m_axisEvent.m_dir = get_direction_for_value ( AXIS_HORIZONTAL, input_event.axis_pos );
+			event.m_axisEvent.m_pos = input_event.axis_pos;
+			getInputState()->EnqueueEvent(event);
 		}
-		else if ( event.id == m_joystick_config.GetAxis(AXIS_VERTICAL) )
+		else
 		{
-			getInputState()->HandleAxisMove ( AXIS_VERTICAL, get_direction_for_value ( AXIS_VERTICAL, event.axis_pos ), event.axis_pos );
+			event.m_axisEvent.m_axis = AXIS_VERTICAL;
+			event.m_axisEvent.m_dir = get_direction_for_value ( AXIS_VERTICAL, input_event.axis_pos );
+			event.m_axisEvent.m_pos = input_event.axis_pos;
+			getInputState()->EnqueueEvent(event);
 		}
 	}
 }
+
+
+
+
 
 bool Application::IsCutsceneRunning() const {
 	return m_threaded_mode; // TODO: SOmething better. 
@@ -2129,28 +2248,53 @@ static uint CLKeyStatesToKeyState(bool shift, bool alt, bool ctrl){
         return result;
 }
 
-void Application::onSignalMouseDown ( const clan::InputEvent& event ){
+void Application::onSignalMouseDown ( const clan::InputEvent& input_event ){
     if(!mStates.empty()){
-        getInputState()->HandleMouseDown(CLMouseToMouseButton(event.id),event.mouse_pos,CLKeyStatesToKeyState(event.shift,event.alt,event.ctrl));
+		State::Event event;
+		event.m_type = State::Event::MOUSE_DOWN;
+		event.m_button = CLMouseToMouseButton(input_event.id);
+		event.m_key_state = CLKeyStatesToKeyState(input_event.shift,input_event.alt,input_event.ctrl);
+		event.m_mouse_pos = input_event.mouse_pos;
+		
+        getInputState()->EnqueueEvent(event);
     }
 }
 
-void Application::onSignalMouseUp ( const clan::InputEvent& event ){
+void Application::onSignalMouseUp ( const clan::InputEvent& input_event ){
     if(!mStates.empty()){
-        getInputState()->HandleMouseUp(CLMouseToMouseButton(event.id),event.mouse_pos,CLKeyStatesToKeyState(event.shift,event.alt,event.ctrl));
-    }    
-}
-
-void Application::onSignalDoubleClick ( const clan::InputEvent& event ){
-    if(!mStates.empty()){
-        getInputState()->HandleDoubleClick(CLMouseToMouseButton(event.id),event.mouse_pos,CLKeyStatesToKeyState(event.shift,event.alt,event.ctrl));
-    }    
-}
-
-void Application::onSignalMouseMove ( const clan::InputEvent& event ){
-    if(!mStates.empty()){
-        getInputState()->HandleMouseMove(event.mouse_pos,CLKeyStatesToKeyState(event.shift,event.alt,event.ctrl));
+		State::Event event;
+		event.m_type = State::Event::MOUSE_UP;
+		event.m_button = CLMouseToMouseButton(input_event.id);
+		event.m_key_state = CLKeyStatesToKeyState(input_event.shift,input_event.alt,input_event.ctrl);
+		event.m_mouse_pos = input_event.mouse_pos;
+		
+        getInputState()->EnqueueEvent(event);
     }
+   
+}
+
+void Application::onSignalDoubleClick ( const clan::InputEvent& input_event ){
+    if(!mStates.empty()){
+		State::Event event;
+		event.m_type = State::Event::MOUSE_DBL;
+		event.m_button = CLMouseToMouseButton(input_event.id);
+		event.m_key_state = CLKeyStatesToKeyState(input_event.shift,input_event.alt,input_event.ctrl);
+		event.m_mouse_pos = input_event.mouse_pos;
+		
+        getInputState()->EnqueueEvent(event);
+    }
+}
+
+void Application::onSignalMouseMove ( const clan::InputEvent& input_event ){
+    if(!mStates.empty()){
+		State::Event event;
+		event.m_type = State::Event::MOUSE_MOVE;
+		event.m_button = CLMouseToMouseButton(input_event.id);
+		event.m_key_state = CLKeyStatesToKeyState(input_event.shift,input_event.alt,input_event.ctrl);
+		event.m_mouse_pos = input_event.mouse_pos;
+		
+        getInputState()->EnqueueEvent(event);
+    }	
 }
 
 
@@ -2285,8 +2429,6 @@ void Application::registerSteelFunctions()
     SteelFunctor*  fn_getArmorType = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getArmorType );
 	
     SteelFunctor*  fn_getWeaponTypeDamageCategory = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getWeaponTypeDamageCategory );
-    SteelFunctor*  fn_getWeaponAnimation = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getWeaponAnimation );
-    SteelFunctor*  fn_weaponHasAnimation = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::weaponHasAnimation );
     SteelFunctor*  fn_invokeWeapon = new SteelFunctor5Arg<Application, const SteelType::Handle, const SteelType::Handle, const SteelType::Handle, uint, uint> ( this, &Application::invokeWeapon );
     SteelFunctor*  fn_invokeArmor = new SteelFunctor2Arg<Application, const SteelType::Handle, const SteelType::Handle> ( this, &Application::invokeArmor );
     SteelFunctor*  fn_attackCharacter = new SteelFunctor5Arg<Application, const SteelType::Handle, const SteelType::Handle,uint,bool,int> ( this, &Application::attackCharacter );
@@ -2299,7 +2441,6 @@ void Application::registerSteelFunctions()
     SteelFunctor*  fn_getUnarmedHitSound = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getUnarmedHitSound );
     SteelFunctor*  fn_getUnarmedMissSound = new SteelFunctor1Arg<Application, const SteelType::Handle> ( this, &Application::getUnarmedMissSound );
 
-    SteelFunctor*  fn_getAnimation = new SteelFunctor1Arg<Application, const std::string&> ( this, &Application::getAnimation );
     SteelFunctor*  fn_log = new SteelFunctor1Arg<Application, const std::string&> ( this, &Application::log );
     SteelFunctor*  fn_showExperience = new SteelFunctor4Arg<Application, const SteelArray&, const SteelArray&, const SteelArray&, const SteelArray&> 
                                             ( this, &Application::showExperience );
@@ -2468,8 +2609,6 @@ void Application::registerSteelFunctions()
     mInterpreter->addFunction ( "getArmorType", fn_getArmorType );
 
     mInterpreter->addFunction ( "getWeaponTypeDamageCategory", fn_getWeaponTypeDamageCategory );
-    mInterpreter->addFunction ( "getWeaponAnimation", fn_getWeaponAnimation );
-    mInterpreter->addFunction ( "weaponHasAnimation", fn_weaponHasAnimation );
     mInterpreter->addFunction ( "getDamageCategoryResistance", fn_getDamageCategoryResistance );
     mInterpreter->addFunction ( "invokeArmor", fn_invokeArmor );
     mInterpreter->addFunction ( "invokeWeapon", fn_invokeWeapon );
@@ -2477,8 +2616,6 @@ void Application::registerSteelFunctions()
     //mInterpreter->addFunction ( "getMissSound", fn_getMissSound );
     mInterpreter->addFunction ( "getUnarmedHitSound", fn_getUnarmedHitSound );
     mInterpreter->addFunction ( "getUnarmedMissSound", fn_getUnarmedMissSound );
-
-    mInterpreter->addFunction ( "getAnimation", fn_getAnimation );
     mInterpreter->addFunction ( "showExperience", fn_showExperience );
 
 	mInterpreter->addFunction ( "runWeaponAnimationScript", fn_runWeaponAnimationScript );
@@ -2624,7 +2761,6 @@ void Application::run(bool process_functors)
 			queryJoystick();
 			
 			mFunctorMutex.lock();
-			
 			if(process_functors && !m_mainthread_functors.empty()){
 				std::function<void()> func = m_mainthread_functors.front().m_functor;
 				func();
@@ -2635,6 +2771,8 @@ void Application::run(bool process_functors)
 
 			uint64_t now = clan::System::get_time();
 
+            backState->ProcessEvents(); // Handle input events
+            
 			if ( now - then > MS_BETWEEN_MOVES )
 			{
 				bool disableMOs = false;
@@ -2647,9 +2785,8 @@ void Application::run(bool process_functors)
 				if ( !disableMOs )
 				{
 					mMapState.MoveMappableObjects();
-					mStates.back()->MappableObjectMoveHook();
 				}
-
+                mStates.back()->Update();
 				then = now;
 			}
 
@@ -2960,6 +3097,9 @@ int Application::main ( const std::vector<std::string> args )
     catch( AlreadyDefined ad ){
         std::cerr << "Already defined: " << ad.GetName() << std::endl;
     }
+    catch( StoneRing::XMLException ex){
+		ex.dump(std::cerr);
+	}
 
     mInterpreter->popScope();
 	

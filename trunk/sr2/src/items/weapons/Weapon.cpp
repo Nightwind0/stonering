@@ -8,7 +8,7 @@
 
 using namespace StoneRing;
 
-Weapon::Weapon():m_animation(NULL),m_animation_script(nullptr),m_bHasDmgCategory(false)
+Weapon::Weapon():m_animation_script(nullptr),m_bHasDmgCategory(false)
 {
     m_eScriptMode = 0;
 }
@@ -33,19 +33,10 @@ void Weapon::SetDamageCategory( DamageCategory::eDamageCategory dmgCategory ) {
 
 
 
-void Weapon::SetAnimation( Animation* anim ) {
-	m_animation = anim;
-}
 void Weapon::SetAnimationScript( ScriptElement* anim ){
 	m_animation_script = anim;
 }
 
-Animation* Weapon::GetAnimation() const {
-	if(m_animation) 
-		return m_animation;
-	else
-		return GetWeaponType()->GetAnimation();
-}
 
 ScriptElement* Weapon::GetAnimationScript() const { 
 	if(m_animation_script)

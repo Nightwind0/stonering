@@ -21,8 +21,7 @@ namespace StoneRing
 
         static void LoadStatusEffectFile ( clan::DomDocument &doc );
         static void LoadSkillFile(clan::DomDocument &doc);
-        static void LoadAnimationFile(clan::DomDocument &doc);
-
+  
         static std::map<std::string,Skill*>::const_iterator GetSkillsBegin();
         static std::map<std::string,Skill*>::const_iterator GetSkillsEnd();
 
@@ -36,16 +35,13 @@ namespace StoneRing
 
         static bool SkillExists ( const std::string &skill );
 
-        static Animation* GetAnimation ( const std::string &animation );
-
     private:
         typedef std::map<std::string,Skill*> SkillMap;
         typedef std::map<std::string,StatusEffect*> StatusEffectMap;
-        typedef std::map<std::string,Animation*> AnimationMap;
+
 
         SkillMap m_skills;
         StatusEffectMap m_status_effects;
-        AnimationMap m_animations;
 		static AbilityManager* m_pInstance;
     };
 

@@ -87,7 +87,7 @@ void ExperienceState::Start()
     // TODO: Play "xp" sound
 }
 
-void ExperienceState::MappableObjectMoveHook()
+void ExperienceState::Update()
 {
 
 }

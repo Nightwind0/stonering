@@ -536,7 +536,7 @@ bool TargetingState::DisableMappableObjects() const
 {
     return true;
 }
-void TargetingState::MappableObjectMoveHook()
+void TargetingState::Update()
 {
 }
 

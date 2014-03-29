@@ -45,7 +45,7 @@ namespace StoneRing {
         virtual void Draw(const clan::Rect &screenRect,clan::Canvas& GC);
         virtual bool LastToDraw() const; // Should we continue drawing more states?
         virtual bool DisableMappableObjects() const ; // Should the app move the MOs?
-        virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
+        virtual void Update(); // Do stuff right after the mappable object movement
         virtual void Start();
         virtual void Finish(); // Hook to clean up or whatever after being popped     
         virtual bool IsDone()const;

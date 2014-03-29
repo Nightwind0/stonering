@@ -138,7 +138,7 @@ bool DynamicMenuState::DisableMappableObjects() const
     return false;
 }
 
-void DynamicMenuState::MappableObjectMoveHook()
+void DynamicMenuState::Update()
 {
 }
 

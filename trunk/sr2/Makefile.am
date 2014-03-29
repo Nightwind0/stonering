@@ -11,8 +11,6 @@ stonering_SOURCES =	src/Application.cpp \
 			src/Application.h \
 			src/abilities/AbilityManager.cpp \
 			src/abilities/AbilityManager.h \
-			src/abilities/Animation.cpp \
-			src/abilities/Animation.h \
 			src/abilities/Magic.cpp \
 			src/abilities/Magic.h \
 			src/abilities/Skill.cpp \
@@ -168,6 +166,7 @@ stonering_SOURCES =	src/Application.cpp \
 			src/states/MapState.h \
 			src/states/SayState.h \
 			src/states/State.h \
+			src/states/State.cpp \
 			src/states/ExperienceState.cpp \
 			src/states/ExperienceState.h \
 			src/states/MainMenuState.cpp \

@@ -97,7 +97,7 @@ bool ItemGetState::LastToDraw() const {
 }
 
 
-void ItemGetState::MappableObjectMoveHook() {
+void ItemGetState::Update() {
 }
 
 void ItemGetState::SteelInit( SteelInterpreter* ) {

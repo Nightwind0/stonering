@@ -92,7 +92,7 @@ bool MainMenuTargetingState::DisableMappableObjects() const
 	return true;
 }
 
-void MainMenuTargetingState::MappableObjectMoveHook()
+void MainMenuTargetingState::Update()
 {
 }
 

@@ -31,15 +31,10 @@ public:
 	void init( const MonsterGroup& monsters, const std::string &backdrop, bool scripted = false );
 	void init( const std::vector<MonsterRef*>& monsters, int cellRows, int cellColumns, bool isBoss, const std::string & backdrop, bool scripted = false );
 	virtual bool IsDone() const;
-	virtual void HandleButtonUp( const IApplication::Button& button );
-	virtual void HandleButtonDown( const IApplication::Button& button );
-	virtual void HandleAxisMove( const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos );
-	virtual void HandleKeyDown( const clan::InputEvent &key );
-	virtual void HandleKeyUp( const clan::InputEvent &key );
 	virtual void Draw( const clan::Rect &screenRect, clan::Canvas& GC );
 	virtual bool LastToDraw() const; // Should we continue drawing more states?
 	virtual bool DisableMappableObjects() const; // Should the app move the MOs?
-	virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
+	virtual void Update(); // Do stuff right after the mappable object movement
 	virtual void Start();
 	virtual void SteelInit( SteelInterpreter* );
 	virtual void SteelCleanup( SteelInterpreter * );
@@ -51,6 +46,12 @@ public:
 	bool playerWon() const;
 	typedef int SpriteTicket;
 	static const SpriteTicket UNDEFINED_SPRITE_TICKET;
+protected:
+	virtual void HandleButtonUp( const IApplication::Button& button );
+	virtual void HandleButtonDown( const IApplication::Button& button );
+	virtual void HandleAxisMove( const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos );
+	virtual void HandleKeyDown( const clan::InputEvent &key );
+	virtual void HandleKeyUp( const clan::InputEvent &key );	
 private:
 
 	void StartTargeting();
@@ -257,8 +258,7 @@ private:
 	// if they back out and want to go back to the battle menu
 	SteelType cancelOption();
 	SteelType animation(SteelType::Functor functor);
-	SteelType doTargetedAnimation( SteelType::Handle pIActor,  SteelType::Handle pITarget, int hand, SteelType::Handle hAnim );
-	SteelType doCharacterAnimation( SteelType::Handle pIActor, SteelType::Handle hAnim );
+
 	SteelType createDisplay( int damage, SteelType::Handle pICharacter, int display_type );
 	// returns monster group or party as array of character handles
 	SteelType getCharacterGroup( bool monsters );

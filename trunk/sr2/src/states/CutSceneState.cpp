@@ -285,7 +285,7 @@ bool CutSceneState::LastToDraw() const
     return false;
 }
 
-void CutSceneState::MappableObjectMoveHook()
+void CutSceneState::Update()
 {
     static uint ticks = 0;
     clan::Rect displayRect = IApplication::GetInstance()->GetDisplayRect();
