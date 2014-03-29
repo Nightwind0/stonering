@@ -20,8 +20,8 @@
 #ifndef DYNAMICMENUSTATE_H
 #define DYNAMICMENUSTATE_H
 
-#include <State.h>
-#include <Menu.h>
+#include "State.h"
+#include "Menu.h"
 
 namespace StoneRing{
 

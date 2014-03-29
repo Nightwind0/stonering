@@ -170,7 +170,7 @@ namespace StoneRing
 				}
 			}
 			std::string GetState() const {
-				switch(m_task_state){
+				switch((TaskState)m_task_state){
 					case IDLE:
 						return "idle";
 					case RUNNING:

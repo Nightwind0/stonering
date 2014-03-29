@@ -2,7 +2,7 @@
 #define SR_EQUIPMENT_H
 
 #include "Item.h"
-#ifdef WIN32
+#if defined(WIN32) || defined(__APPLE__)
 #include "SteelInterpreter.h"
 #else
 #include "steel/SteelInterpreter.h"

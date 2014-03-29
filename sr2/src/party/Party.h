@@ -8,11 +8,6 @@
 #include <set>
 #include <map>
 #include <fstream>
-#ifdef _WIN32
-#include "SteelType.h"
-#else
-#include "steel/SteelType.h"
-#endif
 #include "sr_defines.h"
 #include "ICharacter.h"
 #include "ICharacterGroup.h"

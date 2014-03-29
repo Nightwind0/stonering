@@ -1,3 +1,4 @@
+#include <memory>
 #include "TargetingState.h"
 #include "BattleState.h"
 #include "IApplication.h"

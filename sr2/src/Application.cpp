@@ -1,7 +1,3 @@
-	#include <ClanLib/core.h>
-#include <ClanLib/display.h>
-#include <ClanLib/gl.h>
-#include <ClanLib/sound.h>
 //#include <ClanLib/vorbis.h>
 #include <iostream>
 #include <sstream>
@@ -9,7 +5,6 @@
 #include <string>
 #include <fstream>
 #include <cmath>
-#include <malloc.h>
 #include "Application.h"
 #include "Level.h"
 #include "Party.h"
@@ -23,11 +18,15 @@
 #include "GeneratedWeapon.h"
 #include "Armor.h"
 #include "StatusEffectModifier.h"
-#ifndef _WINDOWS_
-#include <steel/SteelType.h>
-#else
-#include <SteelType.h>
-#endif
+
+
+#include <ClanLib/core.h>
+#include <ClanLib/display.h>
+#include <ClanLib/gl.h>
+#include <ClanLib/sound.h>
+
+
+
 #include "SoundManager.h"
 #include "BattleConfig.h"
 #include "RegularItem.h"
@@ -45,8 +44,6 @@
 //
 //
 //
-
-
 
 
 
@@ -287,8 +284,10 @@ SteelType Application::choice ( const std::string &choiceText,
     std::vector<std::string> choices;
     choices.reserve ( choices_.size() );
 
-    for ( unsigned int i = 0;i < choices_.size();i++ )
-        choices.push_back ( choices_[i] );
+    for ( unsigned int i = 0;i < choices_.size();i++ ){
+        std::string choice = choices_[i];
+        choices.push_back ( choice );
+    }
 
     choiceState.Init ( choiceText, choices );
 
@@ -1463,7 +1462,8 @@ SteelType Application::menu ( const SteelArray& array )
 
     for ( SteelArray::const_iterator iter = array.begin(); iter != array.end(); iter++ )
     {
-        options.push_back ( *iter );
+        std::string opt = *iter;
+        options.push_back ( opt );
     }
 
     pState->Init ( options );
@@ -2733,8 +2733,7 @@ void Application::draw()
             iState != mStates.end(); iState++ )
     {
         State * pState = *iState;
-		clan::Canvas canvas(m_window);
-        pState->Draw ( dst, canvas );
+        pState->Draw ( dst, m_canvas );
         if ( pState->LastToDraw() ) break; // Don't draw any further.
 
     }
@@ -2971,7 +2970,7 @@ int Application::main ( const std::vector<std::string> args )
         desc.set_flipping_buffers(2); // Try triple buffering
 
         m_window = clan::DisplayWindow ( desc );
-
+        m_canvas = clan::Canvas(m_window);
 		
         std::string battleConfig = String_load ( "Configuration/BattleConfig", m_resources );
         mBattleConfig.Load ( battleConfig );

@@ -21,11 +21,6 @@
 #define UTILITY_SCRIPTS_H
 
 #include "sr_defines.h"
-#ifdef WIN32
-#include "SteelInterpreter.h"
-#else
-#include "steel/SteelInterpreter.h"
-#endif
 #include <map>
 
 namespace Steel { 

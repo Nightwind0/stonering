@@ -1,6 +1,6 @@
+#include "sr_defines.h"
 #include "LoadingState.h"
 #include "GraphicsManager.h"
-#include "steel/SteelException.h"
 
 using StoneRing::LoadingState;
 using StoneRing::GraphicsManager;

@@ -5,6 +5,7 @@
 #include <ClanLib/application.h>
 #include <ClanLib/core.h>
 #include <ClanLib/display.h>
+#include "sr_defines.h"
 #include "Party.h"
 #include "IApplication.h"
 #include "ItemManager.h"
@@ -21,11 +22,6 @@
 #include "MapEditorState.h"
 #endif
 #include "State.h"
-#ifdef _WINDOWS_
-#include <SteelInterpreter.h>
-#else
-#include <steel/SteelInterpreter.h>
-#endif
 #include "ElementFactory.h"
 #include "BattleConfig.h"
 #include "UtilityScripts.h"
@@ -321,6 +317,7 @@ private:
     clan::ResourceManager m_resources;
 	
     clan::DisplayWindow m_window;
+    clan::Canvas m_canvas;
 
     std::queue<ThreadFunctor> m_mainthread_functors;
 

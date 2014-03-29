@@ -1,11 +1,6 @@
 #ifndef __ICharacterGroup_h_
 #define __ICharacterGroup_h_
 
-#ifdef _WIN32
-#include "SteelType.h"
-#else
-#include "steel/SteelType.h"
-#endif
 
 #include "sr_defines.h"
 

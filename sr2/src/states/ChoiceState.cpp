@@ -1,3 +1,4 @@
+#include "sr_defines.h"
 #include "ChoiceState.h"
 #include "IApplication.h"
 #include "GraphicsManager.h"

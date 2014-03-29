@@ -398,6 +398,9 @@ void BattleState::Draw( const clan::Rect &screenRect, clan::Canvas& GC ) {
 
 	if ( m_eState == TRANSITION_IN ) {
 		float passed = ( float )( clan::System::get_time() - m_startup_time ) / 1000.0f;
+#ifdef __APPLE__
+        passed = 1.0f;
+#endif
 		if ( passed >= 1.0f ) {
 			m_eState = COMBAT;
 			next_turn();

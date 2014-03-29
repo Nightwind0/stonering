@@ -2,7 +2,6 @@
 #define __ICHARACTER_H_INCLUDED
 
 #include "sr_defines.h"
-#include "sr_defines.h"
 #include "Equipment.h"
 #include "Magic.h"
 #include "SpriteRef.h"
@@ -10,11 +9,7 @@
 #include "Armor.h"
 #include "DamageCategory.h"
 #include "ICharacter.h"
-#ifndef WIN32
-#include "steel/SteelType.h"
-#else
-#include "SteelType.h"
-#endif
+
 
 namespace StoneRing{
     class StatusEffect;
