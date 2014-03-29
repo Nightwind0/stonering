@@ -34,20 +34,21 @@ public:
     
     void                Init(bool bSave, bool cancelable=true);
     virtual bool        IsDone() const;
-    // Handle joystick / key events that are processed according to mappings
-    virtual void        HandleButtonUp(const IApplication::Button& button);
-    virtual void        HandleButtonDown(const IApplication::Button& button);
-    virtual void        HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos);
-    
+
     virtual bool        Threaded() const { return false; }
     virtual void        Draw(const clan::Rect &screenRect,clan::Canvas& GC);
     virtual bool        LastToDraw() const; // Should we continue drawing more states?
     virtual bool        DisableMappableObjects() const; // Should the app move the MOs?
-    virtual void        MappableObjectMoveHook(); // Do stuff right after the mappable object movement
+    virtual void        Update(); // Do stuff right after the mappable object movement
     virtual void        Start();
     virtual void        Finish(); // Hook to clean up or whatever after being popped
 	bool 				Cancelled() const { return m_cancelled; }
 protected:
+    // Handle joystick / key events that are processed according to mappings
+    virtual void        HandleButtonUp(const IApplication::Button& button);
+    virtual void        HandleButtonDown(const IApplication::Button& button);
+    virtual void        HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos);
+    	
     virtual clan::Rectf    get_rect();
     virtual void        draw_option(int option, bool selected, float x, float y, clan::Canvas& gc);
     virtual int         height_for_option(clan::Canvas& gc);

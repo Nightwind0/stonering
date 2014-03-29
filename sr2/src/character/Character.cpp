@@ -3,7 +3,6 @@
 #include "GraphicsManager.h"
 #include "CharacterManager.h"
 #include "Level.h"
-#include "Animation.h"
 #include "Character.h"
 #include "SpriteDefinition.h"
 #include "StatusEffect.h"
@@ -11,6 +10,7 @@
 #include "StatusEffectModifier.h"
 #include <functional>
 #include <ClanLib/core.h>
+#include "Party.h"
 #include "ItemManager.h"
 #include "DebugControl.h"
 

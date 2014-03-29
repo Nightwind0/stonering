@@ -7,7 +7,6 @@
 
 namespace StoneRing{
     
-	class Animation;
     
     class Weapon : public Equipment
     {
@@ -51,8 +50,7 @@ namespace StoneRing{
         
         virtual void Invoke(eScriptMode invokeTime, const Steel::ParameterList& params)=0;
         bool ForgoAttack() const;
-		
-		virtual Animation* GetAnimation() const;	
+
 		virtual ScriptElement* GetAnimationScript() const;
 		virtual DamageCategory::eDamageCategory GetDamageCategory() const;
 		
@@ -77,11 +75,9 @@ namespace StoneRing{
         void Clear_Weapon_Enhancers();
         void Add_Weapon_Enhancer (WeaponEnhancer * pEnhancer);
         void Add_Script_Mode(eScriptMode script_mode);
-		void SetAnimation(Animation* anim);
 		void SetAnimationScript(ScriptElement* pElement);
 		void SetDamageCategory(DamageCategory::eDamageCategory dmgCategory);
     private:
-		Animation* m_animation;
 		ScriptElement* m_animation_script;
 		DamageCategory::eDamageCategory m_dmgCategory;
 		bool m_bHasDmgCategory;

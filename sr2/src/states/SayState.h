@@ -15,19 +15,20 @@ namespace StoneRing
         virtual ~SayState();
 
         virtual bool IsDone() const;
-		virtual void HandleButtonUp(const IApplication::Button& button);
-		virtual void HandleButtonDown(const IApplication::Button& button);
-		virtual void HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos);
-        virtual void HandleKeyDown(const clan::InputEvent &key);
-        virtual void HandleKeyUp(const clan::InputEvent &key);
         virtual void Draw(const clan::Rect &screenRect,clan::Canvas& GC);
         virtual bool LastToDraw() const { return false; } // It'll be last anyway.... and if not, thats okay too
         virtual bool DisableMappableObjects() const; // Should the app move the MOs?
-        virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
+        virtual void Update(); // Do stuff right after the mappable object movement
         virtual void Start();
         virtual void Finish(); // Hook to clean up or whatever after being popped
         virtual void Init(const std::string &speaker, const std::string &text, int ms_per_page=-1,bool disable_mos=true);
 
+	protected:
+		virtual void HandleButtonUp(const IApplication::Button& button);
+		virtual void HandleButtonDown(const IApplication::Button& button);
+		virtual void HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos);
+        virtual void HandleKeyDown(const clan::InputEvent &key);
+        virtual void HandleKeyUp(const clan::InputEvent &key);		
     private:
 
         std::string m_speaker;

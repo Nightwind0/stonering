@@ -3,7 +3,6 @@
 #include <ClanLib/display.h>
 #include "Skill.h"
 #include "IApplication.h"
-#include "Animation.h"
 #include "Level.h"
 #include "ActionQueue.h"
 #include "NamedScript.h"

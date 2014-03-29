@@ -25,7 +25,6 @@
 #include "ArmorClassRef.h"
 #include "ArmorRef.h"
 #include "WeaponRef.h"
-#include "Animation.h"
 #include "BattleMenu.h"
 #include "BattleMenuOption.h"
 #include "MonsterElement.h"
@@ -88,7 +87,6 @@ ElementFactory::ElementFactory()
 
 void ElementFactory::registerCreateMethods()
 {
-    mCreateMethods["animation"] = &ElementFactory::CreateElement<Animation>;
     mCreateMethods["spriteDefinition"] = &ElementFactory::CreateElement<SpriteDefinition>;
 	mCreateMethods["animationScript"] = &ElementFactory::createAnimationScript;
     mCreateMethods["armorClass"] = &ElementFactory::CreateElement<ArmorClass>;
@@ -102,7 +100,6 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["attributeModifier"] = &ElementFactory::CreateElement<AttributeModifierElement>;
     mCreateMethods["battleMenu"] = &ElementFactory::CreateElement<BattleMenu>;
     mCreateMethods["battleMenuOption"] = &ElementFactory::CreateElement<BattleMenuOption>;
-    mCreateMethods["battleSprite"] = &ElementFactory::CreateElement<BattleSprite>;
     mCreateMethods["character"] = &ElementFactory::CreateElement<Character>;
     mCreateMethods["characterClass"] = &ElementFactory::CreateElement<CharacterClass>;
     mCreateMethods["conditionScript"] = &ElementFactory::createConditionScript;
@@ -132,7 +129,6 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["onUnequip"] = &ElementFactory::CreateElement<OnUnequip>;
     mCreateMethods["onStep"] = &ElementFactory::CreateElement<OnStep>;
     mCreateMethods["onSelect"] = &ElementFactory::CreateElement<OnSelect>;
-    mCreateMethods["phase"] = &ElementFactory::CreateElement<Phase>;
   //  mCreateMethods["playSound"] = &ElementFactory::createPlaySound;
 //    mCreateMethods[Element::EPREREQSKILLREF] = &ElementFactory::createPreReqSkillRef;
     mCreateMethods["regularItem"] = &ElementFactory::CreateElement<RegularItem>;
@@ -144,11 +140,7 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["skillTreeNode"] = &ElementFactory::CreateElement<SkillTreeNode>;
     mCreateMethods["soundPlay"] = &ElementFactory::CreateElement<SoundPlay>;
     mCreateMethods["specialItem"] = &ElementFactory::CreateElement<SpecialItem>;
-    mCreateMethods["spriteAnimation"] = &ElementFactory::CreateElement<SpriteAnimation>;
-    mCreateMethods["spriteMovement"] = &ElementFactory::CreateElement<SpriteMovement>;
-    mCreateMethods["spriteMovementScript"] = &ElementFactory::CreateElement<SpriteMovementScript>;
     mCreateMethods["spriteRef"] = &ElementFactory::CreateElement<SpriteRef>;
-    mCreateMethods["spriteStub"] = &ElementFactory::CreateElement<SpriteStub>;
     mCreateMethods["stat"] = &ElementFactory::CreateElement<Stat>;
     mCreateMethods["statScript"] = &ElementFactory::CreateElement<StatScript>;
     mCreateMethods["statusEffect"] = &ElementFactory::CreateElement<StatusEffect>;
@@ -168,7 +160,6 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["weaponType"] = &ElementFactory::CreateElement<WeaponType>;
     mCreateMethods["weaponTypeExclusionList"] = &ElementFactory::CreateElement<WeaponTypeExclusionList>;
     mCreateMethods["weaponTypeRef"] = &ElementFactory::CreateElement<WeaponTypeRef>;
-    mCreateMethods["alterSprite"] = &ElementFactory::CreateElement<AlterSprite>;
    // mCreateMethods["alterSprite"] = &CreateElement<AlterSprite>();
 }
 

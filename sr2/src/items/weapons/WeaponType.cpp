@@ -3,11 +3,11 @@
 #include "DamageCategory.h"
 #include "GraphicsManager.h"
 #include "ClanLib/core.h"
-#include "Animation.h"
+
 
 using namespace StoneRing;
 
-WeaponType::WeaponType():m_pAnimation(NULL),m_pAnimScript(nullptr)
+WeaponType::WeaponType():m_pAnimScript(nullptr)
 {
 }
 
@@ -26,10 +26,6 @@ void WeaponType::load_attributes(clan::DomNamedNodeMap attributes)
     m_fBaseCritical = get_implied_float("baseCritical",attributes,0.05);
     m_bRanged = get_implied_bool("ranged",attributes,false);
     m_bTwoHanded  = get_implied_bool("twoHanded",attributes,false);
-    if(has_attribute("animationRef",attributes)){
-        std::string animation = get_implied_string("animationRef",attributes,"");
-        m_pAnimation = AbilityManager::GetAnimation(animation);
-    }
     m_damageCategory = DamageCategory::DamageCategoryFromString(get_required_string("damageCategory",attributes));
 }
 
@@ -52,15 +48,7 @@ bool WeaponType::handle_element(eElement element, Element * pElement)
 		case EICONREF:
 			m_icon_ref = dynamic_cast<IconRef*>(pElement)->GetIcon();
 			break;
-		case EANIMATION:
-			if(m_pAnimation || m_pAnimScript) 
-				throw XMLException("WeaponType can have only one of animationRef, animation element, or script: " + m_name);
-			m_pAnimation = dynamic_cast<Animation*>(pElement);
-		break;
 		case EANIMATIONSCRIPT:
-			if(m_pAnimation) 
-				throw XMLException("WeaponType can have only one of animationRef, animation element, or script: " + m_name);
-			
 			m_pAnimScript = dynamic_cast<ScriptElement*>(pElement);
 			break;
 		default:
@@ -128,10 +116,6 @@ bool WeaponType::IsTwoHanded() const
     return m_bTwoHanded;
 }
 
-Animation* WeaponType::GetAnimation() const 
-{
-    return m_pAnimation;
-}
 
 
 

@@ -273,7 +273,7 @@ bool StoneRing::MapState::DrawMappableObjects() const // Should the app draw the
     return true;
 }
 
-void StoneRing::MapState::MappableObjectMoveHook() // Do stuff right after the mappable object movemen
+void StoneRing::MapState::Update() // Do stuff right after the mappable object movemen
 {
     recalculate_player_position();
 }

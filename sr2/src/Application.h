@@ -203,8 +203,6 @@ private:
     SteelType                       getWeaponTypeDamageCategory(SteelType::Handle hWeaponType);
 	SteelType 						getWeaponAttribute(SteelType::Handle, int attr);
 	SteelType 						getArmorAttribute(SteelType::Handle, int attr);
-    SteelType                       getWeaponAnimation(SteelType::Handle hWeapon);
-    SteelType                       weaponHasAnimation(SteelType::Handle hWeapon);
 	SteelType 						weaponHasAnimationScript(SteelType::Handle hWeapon);
 	SteelType 						runWeaponAnimationScript(SteelType::Handle hWeapon, SteelType::Handle hCharacter, SteelType::Handle hTarget);
     SteelType                       getDamageCategoryResistance(SteelType::Handle hICharacter, int damage_category);
@@ -234,7 +232,6 @@ private:
     SteelType                       getUnarmedHitSound(SteelType::Handle hICharacter);
     SteelType                       getUnarmedMissSound(SteelType::Handle hICharacter);
 
-    SteelType                       getAnimation(const std::string& name);
     SteelType                       showExperience(const Steel::SteelArray&  characters, const Steel::SteelArray& xp_gained,
             const Steel::SteelArray& oldLevels, const Steel::SteelArray& sp_gained);
     SteelType                       menu(const Steel::SteelArray& options);

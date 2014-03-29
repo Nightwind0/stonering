@@ -158,9 +158,12 @@ void ItemManager::LoadItemFile ( clan::DomDocument &doc )
     {
         WeaponType * pWeaponType = dynamic_cast<WeaponType*>( pItemFactory->createElement("weaponType") );
 		try {
-        pWeaponType->Load(weaponTypeNode);
-        m_pInstance->m_weapon_types.push_back ( pWeaponType );
-		}catch(XMLException& e){
+			pWeaponType->Load(weaponTypeNode);
+#ifndef NDEBUG
+			std::cout << "Loaded weapon type: " << pWeaponType->GetName() << std::endl;
+#endif
+			m_pInstance->m_weapon_types.push_back ( pWeaponType );
+		}catch(StoneRing::XMLException& e){
 			e.push_error( "weaponType: " + pWeaponType->GetDebugId() );
 			throw e;
 		}

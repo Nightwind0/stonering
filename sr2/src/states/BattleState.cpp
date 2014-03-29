@@ -464,7 +464,7 @@ bool BattleState::DisableMappableObjects() const {
 	return true;
 }
 
-void BattleState::MappableObjectMoveHook() {
+void BattleState::Update() {
 }
 
 void BattleState::StartTargeting() {
@@ -1194,8 +1194,6 @@ void BattleState::SteelInit( SteelInterpreter* pInterpreter ) {
 	static SteelFunctor3Arg<BattleState, bool, bool, bool> fn_selectTargets( this, &BattleState::selectTargets );
 	static SteelFunctorNoArgs<BattleState> fn_finishTurn( this, &BattleState::finishTurn );
 	static SteelFunctorNoArgs<BattleState> fn_cancelOption( this, &BattleState::cancelOption );
-	static SteelFunctor4Arg<BattleState, SteelType::Handle, SteelType::Handle, int, SteelType::Handle> fn_doTargetedAnimation( this, &BattleState::doTargetedAnimation );
-	static SteelFunctor2Arg<BattleState, SteelType::Handle, SteelType::Handle> fn_doCharacterAnimation( this, &BattleState::doCharacterAnimation );
 	static SteelFunctor3Arg<BattleState, int, SteelType::Handle, int> fn_createDisplay( this, &BattleState::createDisplay );
 	static SteelFunctor1Arg<BattleState, bool> fn_getCharacterGroup( this, &BattleState::getCharacterGroup );
 	static SteelFunctorNoArgs<BattleState> fn_getAllCharacters( this, &BattleState::getAllCharacters );
@@ -1228,8 +1226,6 @@ void BattleState::SteelInit( SteelInterpreter* pInterpreter ) {
 	pInterpreter->addFunction( "selectTargets", "battle", new SteelFunctor3Arg<BattleState, bool, bool, bool>( this, &BattleState::selectTargets ) );
 	pInterpreter->addFunction( "finishTurn", "battle", new SteelFunctorNoArgs<BattleState>( this, &BattleState::finishTurn ) );
 	pInterpreter->addFunction( "cancelOption", "battle", new SteelFunctorNoArgs<BattleState>( this, &BattleState::cancelOption ) );
-	pInterpreter->addFunction( "doTargetedAnimation", "battle", new SteelFunctor4Arg<BattleState, SteelType::Handle, SteelType::Handle, int, SteelType::Handle>( this, &BattleState::doTargetedAnimation ) );
-	pInterpreter->addFunction( "doCharacterAnimation", "battle", new SteelFunctor2Arg<BattleState, SteelType::Handle, SteelType::Handle>( this, &BattleState::doCharacterAnimation ) );
 	pInterpreter->addFunction( "createDisplay", "battle", new SteelFunctor3Arg<BattleState, int, SteelType::Handle, int>( this, &BattleState::createDisplay ) );
 	pInterpreter->addFunction( "getCharacterGroup", "battle", new SteelFunctor1Arg<BattleState, bool>( this, &BattleState::getCharacterGroup ) );
 	pInterpreter->addFunction( "getAllCharacters", "battle", new SteelFunctorNoArgs<BattleState>( this, &BattleState::getAllCharacters ) );
@@ -1530,42 +1526,7 @@ SteelType BattleState::animation( SteelType::Functor functor ) {
 
 
 
-SteelType BattleState::doTargetedAnimation( SteelType::Handle pICharacter, SteelType::Handle pITarget, int hand, SteelType::Handle hAnim ) {
-#if ENABLE_ANIMATIONS
-	ICharacter * character = GrabHandle<ICharacter*>( pICharacter );
-	ICharacter * target = GrabHandle<ICharacter*>( pITarget );
-	Animation * anim = GrabHandle<Animation*>( hAnim );
-	if ( anim == NULL ) {
-		throw TypeMismatch();
-	}
-	if ( !target ) throw TypeMismatch();
-	if ( !character ) throw TypeMismatch();
-	AnimationState state(*this);
-	state.Init( anim, group_for_character( character ), group_for_character( target ), character, target, (Equipment::eSlot)hand );
 
-	IApplication::GetInstance()->RunState( &state );
-#endif
-	return SteelType();
-}
-
-
-
-
-SteelType BattleState::doCharacterAnimation( SteelType::Handle pICharacter, SteelType::Handle hAnim ) {
-#if ENABLE_ANIMATIONS
-	ICharacter * character = GrabHandle<ICharacter*>( pICharacter );
-	Animation * anim = GrabHandle<Animation*>( hAnim );
-	if ( anim == NULL ) {
-		throw TypeMismatch();
-	}
-	if ( !character ) throw TypeMismatch();
-	AnimationState state(*this);
-	state.Init( anim, group_for_character( character ), NULL, character, NULL, Equipment::EHAND );
-
-	IApplication::GetInstance()->RunState( &state );
-#endif
-	return SteelType();
-}
 
 SteelType BattleState::createDisplay( int damage, SteelType::Handle hICharacter, int display_type ) {
 	//            Display(BattleState& parent,eDisplayType type,int damage,SteelType::Handle pICharacter);

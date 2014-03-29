@@ -35,8 +35,6 @@ namespace StoneRing
 // These MUST be kept alphabetized
         enum eElement
         {
-            EALTERSPRITE,
-            EANIMATION,
 			EANIMATIONSCRIPT,
             EARMORCLASS,
             EARMORCLASSREF,
@@ -49,7 +47,6 @@ namespace StoneRing
             EATTRIBUTEMODIFIER,
             EBATTLEMENU,
             EBATTLEMENUOPTION,
-            EBATTLESPRITE,
             ECHARACTER,
             ECHARACTERCLASS,
             ECONDITIONSCRIPT,
@@ -81,7 +78,6 @@ namespace StoneRing
             EONSELECT,
             EONSTEP,
             EONUNEQUIP,
-            EPHASE,
             EPREREQSKILLREF,
             EREGULARITEM,
             ERUNE,
@@ -92,12 +88,8 @@ namespace StoneRing
             ESKILLTREENODE,
             ESOUNDPLAY,
             ESPECIALITEM,
-            ESPRITEANIMATION,
             ESPRITEDEFINITION,
-            ESPRITEMOVEMENT,
-			ESPRITEMOVEMENTSCRIPT,
             ESPRITEREF,
-            ESPRITESTUB,
             ESTAT,
             ESTATSCRIPT,
             ESTATUSEFFECT,

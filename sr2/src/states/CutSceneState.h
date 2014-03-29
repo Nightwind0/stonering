@@ -39,17 +39,11 @@ public:
     virtual ~CutSceneState();
     void Init(const SteelType::Functor& pFunctor);
     virtual bool IsDone() const;
-    // Handle raw key events
-    // Handle joystick / key events that are processed according to mappings
-    virtual void HandleButtonUp(const IApplication::Button& button);
-    virtual void HandleButtonDown(const IApplication::Button& button);
-    virtual void HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos);
-    
     virtual bool Threaded() const { return true; }
     virtual void Draw(const clan::Rect &screenRect,clan::Canvas& GC);
     virtual bool LastToDraw() const; // Should we continue drawing more states?
     virtual bool DisableMappableObjects() const; // Should the app move the MOs?
-    virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
+    virtual void Update(); // Do stuff right after the mappable object movement
     virtual void Start();
     virtual void SteelInit      (SteelInterpreter *);
     virtual void SteelCleanup   (SteelInterpreter *);
@@ -61,6 +55,12 @@ public:
     clan::Point GetOrigin()const;
     void Completed();
     void WaitTaskEvent();
+protected:
+    // Handle raw key events
+    // Handle joystick / key events that are processed according to mappings
+    virtual void HandleButtonUp(const IApplication::Button& button);
+    virtual void HandleButtonDown(const IApplication::Button& button);
+    virtual void HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos);	
 private:
     void verifyLevel();
     Level * grabMapStateLevel();

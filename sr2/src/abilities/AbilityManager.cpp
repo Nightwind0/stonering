@@ -6,7 +6,6 @@
 #include "Skill.h"
 #include <map>
 #include <algorithm>
-#include "Animation.h"
 
 using namespace StoneRing;
 #define     INSTANCE() AbilityManager::m_pInstance
@@ -82,29 +81,6 @@ void AbilityManager::LoadStatusEffectFile ( clan::DomDocument &doc )
 }
 
 
-void AbilityManager::LoadAnimationFile ( clan::DomDocument &doc )
-{
-    AbilityManager * instance = INSTANCE();
-    IFactory * pAbilityFactory = IApplication::GetInstance()->GetElementFactory();
-    assert ( pAbilityFactory );
-
-    clan::DomElement animationsNode = doc.named_item("animations").to_element();
-    clan::DomElement animationNode = animationsNode.get_first_child().to_element();
-
-    while (!animationNode.is_null())
-    {
-        Animation * pAnimation = dynamic_cast<Animation*>(pAbilityFactory->createElement("animation"));
-		try {
-			pAnimation->Load(animationNode);
-		}catch(XMLException& e){
-			e.push_error("animation: " + pAnimation->GetDebugId());
-			throw e;
-		}
-		
-        instance->m_animations[ pAnimation->GetName() ] =  pAnimation ;
-        animationNode = animationNode.get_next_sibling().to_element();
-    }
-}
 
 
 std::map<std::string,Skill*>::const_iterator AbilityManager::GetSkillsBegin()
@@ -148,17 +124,6 @@ StatusEffect * AbilityManager::GetStatusEffect ( const std::string &ref )
         throw clan::Exception("Couldn't find a status ref called: " + ref );
     else return iter->second;
     return NULL;
-}
-
-Animation* AbilityManager::GetAnimation ( const std::string &animation )
-{
-	AbilityManager * instance = INSTANCE();
-
-	if(instance->m_animations.find(animation) != instance->m_animations.end())
-	{
-		return instance->m_animations.find(animation)->second;
-	}
-	return NULL;
 }
 
 

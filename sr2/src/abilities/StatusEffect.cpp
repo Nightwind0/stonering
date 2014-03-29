@@ -1,6 +1,5 @@
 #include "StatusEffect.h"
 #include "IApplication.h"
-#include "Animation.h"
 #include "AttributeModifier.h"
 #include "StatusEffectModifier.h"
 

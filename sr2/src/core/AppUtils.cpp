@@ -135,10 +135,9 @@ void AppUtils::LoadGameplayAssets(const std::string &path, clan::ResourceManager
     std::string classdefinition = String_load("Game/CharacterClassDefinitions",resources);
     std::string monsterdefinition = String_load("Game/MonsterDefinitions",resources);
     std::string characterdefinition = String_load("Game/CharacterDefinitions",resources);
-    std::string animationdefintion = String_load("Game/AnimationDefinitions",resources);
     std::string mainmenudefinition = String_load("Game/MainMenuDefinitions",resources);
 
-    LoadAnimations(path + animationdefintion);
+
     LoadStatusEffects(path + statusEffectDefinition);
     LoadItems(path + itemdefinition);
     LoadSkills(path + skilldefinition);
@@ -189,19 +188,6 @@ void AppUtils::LoadCharacterClasses(const std::string &filename)
     CharacterManager::LoadCharacterClassFile( document );
 }
 
-void AppUtils::LoadAnimations(const std::string &filename)
-{
-#ifndef NDEBUG
-    std::cout << "Loading animations..." << std::endl;
-#endif
-
-    clan::IODevice file = IApplication::GetInstance()->OpenResource(filename);
-	file.throw_if_null();
-    clan::DomDocument document;
-    document.load(file);
-
-    AbilityManager::LoadAnimationFile( document );
-}
 
 void AppUtils::LoadCharacters(const std::string &filename)
 {

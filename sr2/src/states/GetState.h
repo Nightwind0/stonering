@@ -35,19 +35,19 @@ public:
     virtual ~GetState();
 	void SetInverse(bool inverse);
 	bool IsInverse()const { return m_inverse; }
-	virtual bool IsDone() const;	
-	virtual void HandleButtonUp( const IApplication::Button& button );
-	virtual void HandleButtonDown( const IApplication::Button& button ) ;
-	virtual void HandleAxisMove( const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos );	
+	virtual bool IsDone() const;		
 	virtual void Draw( const clan::Rect &screenRect, clan::Canvas& GC );
 	virtual bool LastToDraw() const; // Should we continue drawing more states?
 	virtual bool DisableMappableObjects() const; // Should the app move the MOs?
-	virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
+	virtual void Update(); // Do stuff right after the mappable object movement
 	virtual void Start();
 	virtual void SteelInit( SteelInterpreter * );
 	virtual void SteelCleanup( SteelInterpreter * );
 	virtual void Finish(); // Hook to clean up or whatever after being popped	
 protected:
+	virtual void HandleButtonUp( const IApplication::Button& button );
+	virtual void HandleButtonDown( const IApplication::Button& button ) ;
+	virtual void HandleAxisMove( const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos );	
 	virtual void load()=0;
 	virtual SoundManager::Effect get_sound_effect()const=0;
 	virtual std::string get_text()const=0;

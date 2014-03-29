@@ -14,7 +14,6 @@ namespace clan {
 
 namespace StoneRing{
     
-    class Animation;
     class WeaponType : public Element, public SteelType::IHandle
     {
     public:
@@ -34,7 +33,6 @@ namespace StoneRing{
         uint GetBasePrice() const;
         bool IsRanged() const;
         bool IsTwoHanded() const;
-		Animation* GetAnimation() const;
 		ScriptElement* GetAnimationScript() const;
 
         DamageCategory::eDamageCategory GetDamageCategory () const { return m_damageCategory; }
@@ -56,7 +54,6 @@ namespace StoneRing{
         float m_fBaseCritical;
         bool m_bRanged;
         bool m_bTwoHanded;
-		Animation* m_pAnimation;
 		ScriptElement* m_pAnimScript;
     };
 };

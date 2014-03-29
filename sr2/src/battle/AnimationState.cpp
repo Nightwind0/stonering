@@ -1,5 +1,4 @@
 #include "AnimationState.h"
-#include "Animation.h"
 #include "IApplication.h"
 #include "BattleState.h"
 #include "WeaponType.h"
@@ -36,7 +35,7 @@ public:
 			m_callee->WaitFinishedEvent();
 		} catch( Steel::SteelException ex ) {
 			// TODO: On the main thread do an exception screen
-			std::cerr << "Exception in　animation: " << ex.getMessage() << " on line " << ex.getLine() << std::endl;
+			std::cerr << "Exception in　animation: " << ex.getScript() << ':' << ex.getMessage() << " on line " << ex.getLine() << std::endl;
 
 		}
 
@@ -47,7 +46,7 @@ public:
 
 
 AnimationState::AnimationState( BattleState& parent ):
-	m_parent( parent ), m_pCasterGroup( NULL ), m_pTargetGroup( NULL ), m_pCaster( NULL ), m_pTarget( NULL ), m_pAnim( NULL ), m_bDone( false ) {
+	m_parent( parent ),m_bDone( false ) {
 
 }
 
@@ -55,27 +54,9 @@ AnimationState::AnimationState( BattleState& parent ):
 AnimationState::~AnimationState() {
 }
 
-void AnimationState::Init( Animation* pAnimation,
-						   ICharacterGroup* casterGroup,  
-							ICharacterGroup* targetGroup,
-							ICharacter* caster,
-							ICharacter* target,
-							Equipment::eSlot hand
- 						) {
-	m_pAnim = pAnimation;
-	m_functor_mode = false;
-	m_bDone = false;
-	m_pTargetGroup = targetGroup;
-	m_pCasterGroup = casterGroup;
-	m_pCaster = caster;
-	m_pTarget = target;
-	m_hand = hand;
-	if( m_pTarget == NULL ) m_pTarget = m_pCaster;
-}
 
 void AnimationState::Init( SteelType::Functor pFunctor ) {
 	m_functor = pFunctor;
-	m_functor_mode = true;
 	m_bDone = false;
 }
 
@@ -105,252 +86,6 @@ void AnimationState::SetSpritePos( BattleState::SpriteTicket sprite, const clan:
 
 
 
-clan::Pointf AnimationState::GetFocusOrigin( const SpriteMovement::Focus& focus, ICharacter * pTarget ) {
-	clan::Pointf point( 0, 0 );
-	switch( focus.meFocusType ) {
-		case SpriteMovement::SCREEN:
-			switch( focus.meFocusX ) {
-				default:
-				case SpriteMovement::X_CENTER:
-					point.x = IApplication::GetInstance()->GetDisplayRect().get_width() / 2;
-					break;
-				case SpriteMovement::TOWARDS:
-					break;
-				case SpriteMovement::AWAY:
-					break;
-				case SpriteMovement::LEFT:
-					point.x = 0;
-					break;
-				case SpriteMovement::RIGHT:
-					point.x = IApplication::GetInstance()->GetDisplayRect().get_width() / 2;
-					break;
-			}
-			switch( focus.meFocusY ) {
-				default:
-				case SpriteMovement::Y_CENTER:
-					point.y = IApplication::GetInstance()->GetDisplayRect().get_height() / 2;
-					break;
-				case SpriteMovement::TOP:
-					point.y = 0;
-					break;
-				case SpriteMovement::BOTTOM:
-					point.y = IApplication::GetInstance()->GetDisplayRect().get_height() / 2;
-					break;
-
-			}
-			break;
-		case SpriteMovement::CASTER: {
-			clan::Rectf rect =  m_parent.get_character_rect( m_pCaster );
-			switch( focus.meFocusX ) {
-				default:
-				case SpriteMovement::X_CENTER:
-					point.x = rect.get_center().x;
-					break;
-
-				case SpriteMovement::TOWARDS:
-					point.x = rect.get_top_left().x;
-					break;
-				case SpriteMovement::AWAY:
-					break;
-				case SpriteMovement::LEFT:
-					point.x = rect.get_top_left().x;
-					break;
-				case SpriteMovement::RIGHT:
-					point.x = rect.get_top_right().x;
-					break;
-			}
-			switch( focus.meFocusY ) {
-				default:
-				case SpriteMovement::Y_CENTER:
-					point.y =  rect.get_center().y;
-					break;
-
-				case SpriteMovement::TOP:
-					point.y =  rect.get_top_left().y;
-					break;
-				case SpriteMovement::BOTTOM:
-					point.y =  rect.get_bottom_left().y;
-					break;
-			}
-			break;
-		}
-		case SpriteMovement::TARGET: {
-			clan::Rectf rect = m_parent.get_character_rect( m_pTarget );
-			switch( focus.meFocusX ) {
-				default:
-				case SpriteMovement::X_CENTER:
-					point.x = rect.get_center().x;
-					break;
-
-				case SpriteMovement::TOWARDS:
-					point.x = rect.get_center().x;
-					break;
-				case SpriteMovement::AWAY:
-					break;
-				case SpriteMovement::LEFT:
-					point.x = rect.get_top_left().x;
-					break;
-				case SpriteMovement::RIGHT:
-					point.x = rect.get_top_right().x;
-					break;
-			}
-			switch( focus.meFocusY ) {
-				default:
-				case SpriteMovement::Y_CENTER:
-					point.y =  rect.get_center().y;
-					break;
-
-				case SpriteMovement::TOP:
-					point.y =  rect.get_top_left().y;
-					break;
-				case SpriteMovement::BOTTOM:
-					point.y =  rect.get_bottom_left().y;
-					break;
-			}
-			break;
-		}
-		case SpriteMovement::CASTER_GROUP: {
-			clan::Rectf rect = m_parent.get_group_rect( m_pCasterGroup );
-			switch( focus.meFocusX ) {
-				default:
-				case SpriteMovement::X_CENTER:
-					point.x = rect.get_center().x;
-					break;
-
-				case SpriteMovement::LEFT:
-					point.x = rect.get_top_left().x;
-					break;
-				case SpriteMovement::RIGHT:
-					point.x = rect.get_top_right().x;
-					break;
-
-			}
-
-			switch( focus.meFocusY ) {
-				default:
-				case SpriteMovement::Y_CENTER:
-					point.y = rect.get_center().y;
-					break;
-
-				case SpriteMovement::TOP:
-					point.y = rect.get_top_left().y;
-					break;
-				case SpriteMovement::BOTTOM:
-					point.y = rect.get_bottom_left().y;
-					break;
-			}
-
-			break;
-		}
-		case SpriteMovement::TARGET_GROUP: {
-			clan::Rectf rect = m_parent.get_group_rect( m_pTargetGroup );
-			switch( focus.meFocusX ) {
-				default:
-				case SpriteMovement::X_CENTER:
-					point.x = rect.get_center().x;
-					break;
-
-				case SpriteMovement::LEFT:
-					point.x = rect.get_top_left().x;
-					break;
-				case SpriteMovement::RIGHT:
-					point.x = rect.get_top_right().x;
-					break;
-
-			}
-
-			switch( focus.meFocusY ) {
-				default:
-				case SpriteMovement::Y_CENTER:
-					point.y = rect.get_center().y;
-					break;
-
-				case SpriteMovement::TOP:
-					point.y = rect.get_top_left().y;
-					break;
-				case SpriteMovement::BOTTOM:
-					point.y = rect.get_bottom_left().y;
-					break;
-			}
-
-			break;
-		}
-		case SpriteMovement::CASTER_LOCUS: {
-			clan::Rectf rect =  m_parent.get_character_locus_rect( m_pCaster );
-			switch( focus.meFocusX ) {
-				default:
-				case SpriteMovement::X_CENTER:
-					point.x = rect.get_center().x;
-					break;
-
-				case SpriteMovement::LEFT:
-					point.x = rect.get_top_left().x;
-					break;
-				case SpriteMovement::RIGHT:
-					point.x = rect.get_top_right().x;
-					break;
-				case SpriteMovement::TOWARDS:
-
-					point.x = rect.get_center().x;
-					break;
-			}
-			switch( focus.meFocusY ) {
-
-
-				case SpriteMovement::TOP:
-					point.y =  rect.get_top_left().y;
-					break;
-				case SpriteMovement::BOTTOM:
-					point.y =  rect.get_bottom_left().y;
-					break;
-				default:
-				case SpriteMovement::Y_CENTER:
-					point.y =  rect.get_center().y;
-					break;
-			}
-			break;
-		}
-		case SpriteMovement::TARGET_LOCUS: {
-			clan::Rectf rect =  m_parent.get_character_locus_rect( m_pTarget );
-			switch( focus.meFocusX ) {
-
-				case SpriteMovement::X_CENTER:
-					point.x = rect.get_center().x;
-					break;
-
-				case SpriteMovement::LEFT:
-					point.x = rect.get_top_left().x;
-					break;
-				case SpriteMovement::RIGHT:
-					point.x = rect.get_top_right().x;
-					break;
-				default:
-				case SpriteMovement::TOWARDS:
-					point.x = rect.get_center().x;
-					break;
-
-			}
-			switch( focus.meFocusY ) {
-
-
-				case SpriteMovement::TOP:
-					point.y =  rect.get_top_left().y;
-					break;
-				case SpriteMovement::BOTTOM:
-					point.y =  rect.get_bottom_left().y;
-					break;
-				default:
-				case SpriteMovement::Y_CENTER:
-					point.y =  rect.get_center().y;
-					break;
-			}
-			break;
-		}
-	}
-
-	return point;
-}
-
 
 bool AnimationState::IsDone() const {
 	return m_bDone;
@@ -378,359 +113,11 @@ void AnimationState::HandleKeyUp( const clan::InputEvent &key ) {
 	}
 }
 
-void AnimationState::move_sprite( ICharacter* pActor, ICharacter* pTarget, SpriteAnimation* anim, SpriteMovement* movement, float percentage ) {
-	if( percentage > 1.0f ) percentage = 1.0f;
-	if( percentage == 0.0f ) percentage = 0.000001f;
-	clan::Pointf origin = GetFocusOrigin( movement->GetInitialFocus(), pActor );
-// std::cout << "Origin is " << origin_i.x << ',' << origin_i.y << std::endl;
-
-	clan::Pointf current = origin;
-
-	clan::Sprite sprite;
-
-	// TODO: Now take whatever it is, and display it at 'current'
-
-	if( anim->GetSpriteTicket() != BattleState::UNDEFINED_SPRITE_TICKET )
-		sprite = m_parent.get_sprite( anim->GetSpriteTicket() );
-
-
-	if( anim->HasBattleSprite() ) {
-		switch( anim->GetBattleSprite()->GetWho() ) {
-			case WHO_CASTER:
-				sprite = m_pCaster->GetCurrentSprite( false );
-				break;
-			case WHO_TARGET:
-				sprite = m_pTarget->GetCurrentSprite( false );
-				break;
-		}
-	}
-
-// 	enum eMovementScriptType { SPRITE_ROTATION, SPRITE_SCALE, SPRITE_PITCH, SPRITE_YAW, CIRCLE_RADIUS, AMPLITUDE };
-
-	float rotation = movement->Rotation();
-	float scale;
-	float scale_y;
-	sprite.get_scale( scale, scale_y );
-	float pitch = 0.0f;
-	float yaw = 0.0f;
-	float radius = movement->circleRadius();
-	float amplitude = movement->Amplitude();
-	double alpha = sprite.get_alpha();
-	float scriptRotation = 0.0f;
-
-	if( movement->hasMovementScript( SpriteMovement::SPRITE_ROTATION ) ) {
-		scriptRotation = ( double )movement->executeMovementScript( SpriteMovement::SPRITE_ROTATION, percentage );
-	}
-	if( movement->hasMovementScript( SpriteMovement::SPRITE_SCALE ) ) {
-		scale *= ( double )movement->executeMovementScript( SpriteMovement::SPRITE_SCALE, percentage );
-	}
-	if( movement->hasMovementScript( SpriteMovement::SPRITE_PITCH ) ) {
-		pitch = ( double )movement->executeMovementScript( SpriteMovement::SPRITE_PITCH, percentage );
-	}
-	if( movement->hasMovementScript( SpriteMovement::SPRITE_YAW ) ) {
-		yaw = ( double )movement->executeMovementScript( SpriteMovement::SPRITE_YAW, percentage );
-	}
-	if( movement->hasMovementScript( SpriteMovement::CIRCLE_RADIUS ) ) {
-		radius = ( double )movement->executeMovementScript( SpriteMovement::CIRCLE_RADIUS, percentage );
-	}
-	if( movement->hasMovementScript( SpriteMovement::AMPLITUDE ) ) {
-		amplitude = ( double )movement->executeMovementScript( SpriteMovement::AMPLITUDE, percentage );
-	}
-	if( movement->hasMovementScript( SpriteMovement::ALPHA ) ) {
-		alpha *= ( double )movement->executeMovementScript( SpriteMovement::ALPHA, percentage );
-	}
-
-
-	// Rotation
-	// TODO: Switch to away/toward
-
-	bool clockwise = true;
-
-	double degrees = percentage * movement->Rotation();
-
-	if( scriptRotation != 0.0f )
-		degrees = scriptRotation;
-
-	if( ( !pActor->IsMonster() && m_parent.MonstersOnLeft() ) ||
-					pActor->IsMonster() && !m_parent.MonstersOnLeft() ) {
-		degrees = 0 - degrees;
-
-		if( movement->circleDirection() == SpriteMovement::ROTATE_TOWARDS )
-			clockwise = false;
-
-	}
-
-
-	if( movement->circleDirection() == SpriteMovement::COUNTERCLOCKWISE )
-		clockwise = false;
-
-
-	clan::Angle angle = clan::Angle::from_degrees( degrees );
-	clan::Angle yaw_angle = clan::Angle::from_radians( yaw );
-	clan::Angle pitch_angle = clan::Angle::from_radians( pitch );
-	// TODO: Mechanism to affect ALL this character's sprites in case it changes
-	sprite.set_angle( angle );
-	//sprite.set_angle_yaw( yaw_angle );
-	//sprite.set_angle_pitch( pitch_angle );
-	sprite.set_alpha( alpha );
-	sprite.set_scale( scale, scale );
-
-	float completion = movement->Completion();
-	percentage *= completion;
-
-	if( movement->HasEndFocus() ) {
-		clan::Pointf dest = GetFocusOrigin( movement->GetEndFocus(), pActor );
-		//(1-p)*A + p*B
-		//current = (1.0f - percentage) * origin + percentage * dest;
-		switch( movement->GetMovementStyle() ) {
-			case SpriteMovement::STRAIGHT:
-				current = origin * ( 1.0f - percentage ) + dest * percentage;
-				break;
-			case SpriteMovement::XONLY:
-				current.x = origin.x * ( 1.0f - percentage ) + dest.x * percentage;
-				break;
-			case SpriteMovement::YONLY:
-				current.y = origin.y * ( 1.0f - percentage ) + dest.y * percentage;
-				break;
-			case SpriteMovement::CIRCLE: {
-				float angle_deg = 0.0f;
-				if( !movement->hasMovementScript( SpriteMovement::CIRCLE_ANGLE ) ) {
-					if( clockwise )
-						angle_deg = movement->circleStartAngle() + ( percentage ) * movement->circleDegrees();
-					else angle_deg = movement->circleStartAngle() - ( percentage ) * movement->circleDegrees();
-				} else {
-					angle_deg = ( double )movement->executeMovementScript( SpriteMovement::CIRCLE_ANGLE, percentage );
-				}
-				if( !movement->hasMovementScript( SpriteMovement::CIRCLE_RADIUS ) ) {
-					radius = movement->circleRadius() + percentage * movement->circleGrowth(); // spiral powers
-				}
-				float angle = ( clan::PI / 180.0f ) * angle_deg;
-				clan::Pointf cpoint( cos( angle ), sin( angle ) );
-				current = dest +  cpoint * radius; // C + R * (cos A, sin A)
-				break;
-			}
-			case SpriteMovement::SINE: {
-				clan::Pointf d, c;
-				d.x = dest.x - origin.x;
-				d.y = dest.y - origin.y;
-				float l = sqrt( ( double )d.x * d.x + d.y + d.y );
-				d.x /=  l;
-				d.y /= l;
-				float w = 2.0f * clan::PI * movement->Periods(); // make this 1/2 to arc up
-
-				current.x = percentage * dest.x + ( 1.0f - percentage ) * origin.x + amplitude * d.y * sin( w * percentage );
-				current.y = percentage * dest.y + ( 1.0f - percentage ) * origin.y - amplitude * d.x * sin( w * percentage );
-				break;
-			}
-			case SpriteMovement::ARC_OVER: {
-				clan::Pointf d, c;
-				d.x = dest.x - origin.x;
-				d.y = dest.y - origin.y;
-				float l = sqrt( ( double )d.x * d.x + d.y + d.y );
-				d.x /=  l;
-				d.y /= l;
-				float w = 2.0f * clan::PI * 0.5f; // make this 1/2 to arc up
-
-				current.x = percentage * dest.x + ( 1.0f - percentage ) * origin.x + amplitude * d.y * sin( w * percentage );
-				current.y = percentage * dest.y + ( 1.0f - percentage ) * origin.y + amplitude * d.x * sin( w * percentage );
-				break;
-			}
-			case SpriteMovement::ARC_UNDER: {
-				clan::Pointf d, c;
-				d.x = dest.x - origin.x;
-				d.y = dest.y - origin.y;
-				float l = sqrt( ( double )d.x * d.x + d.y + d.y );
-				d.x /=  l;
-				d.y /= l;
-				float w = 2.0f * clan::PI * 0.5f; // make this 1/2 to arc up
-
-				current.x = percentage * dest.x + ( 1.0f - percentage ) * origin.x + amplitude * d.y * sin( w * percentage );
-				current.y = percentage * dest.y + ( 1.0f - percentage ) * origin.y - amplitude * d.x * sin( w * percentage );
-				break;
-			}
-			default:
-				break;
-		}
-	} else {
-		// move a set distance in direction
-		clan::Pointf direction;
-		SpriteMovement::eMovementDirection dir = movement->GetMovementDirection();
-
-		if( dir == SpriteMovement::MOVE_AWAY ) {
-			if( m_parent.MonstersOnLeft() ) {
-				if( m_pCaster->IsMonster() )
-					dir = SpriteMovement::W;
-				else dir = SpriteMovement::E;
-			} else {
-				if( m_pCaster->IsMonster() )
-					dir = SpriteMovement::E;
-				else dir = SpriteMovement::W;
-			}
-		} else if( dir == SpriteMovement::MOVE_TOWARDS ) {
-			if( !m_parent.MonstersOnLeft() ) {
-				if( m_pCaster->IsMonster() )
-					dir = SpriteMovement::W;
-				else dir = SpriteMovement::E;
-			} else {
-				if( m_pCaster->IsMonster() )
-					dir = SpriteMovement::E;
-				else dir = SpriteMovement::W;
-			}
-		}
-
-		switch( dir ) {
-			case SpriteMovement::N:
-				direction.x = 0.0f;
-				direction.y = -1.0f;
-				break;
-			case SpriteMovement::S:
-				direction.x = 0.0f;
-				direction.y = 1.0f;
-				break;
-			case SpriteMovement::E:
-				direction.x = 1.0f;
-				direction.y = 0.0f;
-				break;
-			case SpriteMovement::W:
-				direction.x = -1.0f;
-				direction.y = 0.0f;
-				break;
-			case SpriteMovement::SE:
-				direction.y = 1.0f;
-				direction.x = 1.0f;
-				break;
-			case SpriteMovement::SW:
-				direction.x = - 1.0f;
-				direction.y = 1.0f;
-				break;
-			case SpriteMovement::NE:
-				direction.x = 1.0f;
-				direction.y = -1.0f;
-				break;
-			case SpriteMovement::NW:
-				direction.x = - 1.0f;
-				direction.y = - 1.0f;
-				break;
-
-		}
-
-		direction *= ( percentage * movement->Distance() );
-
-		current = origin + direction;
-
-	}
-
-	if( movement->Invert() ) {
-		float diff_x = origin.x - current.x;
-		float diff_y = origin.y - current.y;
-		current.x += diff_x * 2;
-		current.y += diff_y * 2;
-	}
-
-	if( anim->GetSpriteTicket() != BattleState::UNDEFINED_SPRITE_TICKET ) {
-		sprite = m_parent.get_sprite( anim->GetSpriteTicket() );
-		m_parent.set_sprite_pos( anim->GetSpriteTicket(), current );
-	}
-
-	if( anim->HasBattleSprite() ) {
-		// Have parent move this thing
-		clan::Pointf point;
-		point.x = current.x;
-		point.y = current.y;
-		switch( anim->GetBattleSprite()->GetWho() ) {
-			case WHO_CASTER:
-				m_parent.set_sprite_pos(m_parent.get_sprite_for_char(m_pCaster), point);
-				break;
-			case WHO_TARGET:
-				m_parent.set_sprite_pos(m_parent.get_sprite_for_char(m_pTarget), point);				
-				break;
-		}
-	}
-
-
-}
-/*
-void AnimationState::move_character(ICharacter* character, SpriteAnimation* anim, SpriteMovement* movement, float percentage)
-{
-    if(percentage > 1.0f) percentage = 1.0f;
-    clan::Point origin_i = GetFocusOrigin(movement->GetInitialFocus(), character);
-// std::cout << "Origin is " << origin_i.x << ',' << origin_i.y << std::endl;
-    clan::Pointf origin(origin_i.x,origin_i.y);
-    clan::Point dest_i;
-    clan::Pointf current = origin;
-
-    // Rotation
-    // TODO: Switch to away/toward
-    double degrees = percentage * movement->Rotation();
-    if((!character->IsMonster() && m_parent.MonstersOnLeft()) ||
-        character->IsMonster() && !m_parent.MonstersOnLeft())
-        degrees = 0 - degrees;
-
-
-    clan::Angle angle = clan::Angle::from_degrees(degrees);
-    // TODO: Mechanism to affect ALL this character's sprites in case it changes
-    clan::Sprite sprite = character->GetCurrentSprite();
-    sprite.set_angle(angle);
-
-    float completion = movement->Completion();
-    percentage *= completion;
-
-
-}
-*/
 
 void AnimationState::Draw( const clan::Rect& screenRect, clan::Canvas& GC ) {
-	if( m_functor_mode ) {
-		draw_functor( screenRect, GC );
-	} else {
-		draw( screenRect, GC );
-	}
+	draw_functor( screenRect, GC );
 }
 
-
-void AnimationState::draw( const clan::Rect &screenRect, clan::Canvas& GC ) {
-	if( !m_bDone ) {
-		uint64_t passed = clan::System::get_time() - m_phase_start_time;
-		float percentage = ( float )passed / ( float )( *m_phase_iterator )->GetDurationMs();
-		bool draw = true;
-		if( percentage >= 1.0f ) {
-			EndPhase();
-			draw = NextPhase();
-			if( draw ) {
-				StartPhase();
-				percentage = ( float )passed / ( float )( *m_phase_iterator )->GetDurationMs();
-			}
-
-		}
-
-		if( draw ) {
-			for( std::list<Phase::PhaseComponent>::const_iterator iter = ( *m_phase_iterator )->GetPhaseComponentsBegin();
-								iter != ( *m_phase_iterator )->GetPhaseComponentsEnd(); iter++ ) {
-				if( iter->m_bAnimation ) {
-					SpriteAnimation* anim = iter->m_animation;
-
-					if( !anim->ShouldSkip() && anim->HasSpriteMovement() ) {
-						SpriteMovement * movement = anim->GetSpriteMovement();
-						if( movement->ForEachTarget() && ( *m_phase_iterator )->InParallel() ) {
-							for( uint i = 0; i < m_pTargetGroup->GetCharacterCount(); i++ ) {
-								ICharacter * pTarget = m_pTargetGroup->GetCharacter( i );
-								move_sprite( pTarget, m_pCaster, anim, movement, percentage );
-							}
-
-						} else {
-							move_sprite( m_pCaster, m_pTarget, anim, movement, percentage );
-						}
-					}
-					if( !anim->ShouldSkip() && anim->HasAlterSprite() ) {
-						apply_alter_sprite( anim->GetAlterSprite() );
-					}
-
-				}
-			}
-		}
-	}
-	clan::System::sleep( 10 );
-}
 
 void AnimationState::draw_functor( const clan::Rect& screenRect, clan::Canvas& GC ) {
 	bool notasks = false;
@@ -747,7 +134,7 @@ void AnimationState::draw_functor( const clan::Rect& screenRect, clan::Canvas& G
 			std::cerr << "Quitting task " << pTask->GetName() <<  " after SteelException: " << ex.getScript() << ':' << ex.getMessage() << std::endl;
 		}catch(Steel::ParamMismatch pm){
 			emergency = true;
-			std::cerr << "Param mismatch within animation task update" << std::endl;
+			std::cerr << "Param mismatch within animation task update. Task is: " << pTask->GetName() << " of functor: " << m_functor->getIdentifier() << std::endl;
 		}
 		if( pTask->finished() || emergency ) {
 
@@ -770,33 +157,10 @@ bool AnimationState::DisableMappableObjects() const { // Should the app move the
 	return true;
 }
 
-void AnimationState::MappableObjectMoveHook() { // Do stuff right after the mappable object movement
+void AnimationState::Update() { // Do stuff right after the mappable object movement
 }
 
-bool AnimationState::NextPhase() {
 
-	m_phase_iterator++;
-	if( m_phase_iterator == m_pAnim->GetPhasesEnd() ) {
-		// Done
-		m_bDone = true;
-		return false;
-	}
-
-	return true;
-}
-
-void AnimationState::EndPhase() {
-	for( std::list<Phase::PhaseComponent>::const_iterator iter = ( *m_phase_iterator )->GetPhaseComponentsBegin();
-						iter != ( *m_phase_iterator )->GetPhaseComponentsEnd(); iter++ ) {
-		if( iter->m_bAnimation ) {
-			SpriteAnimation* animation = iter->m_animation;
-			if( animation->GetSpriteTicket() != BattleState::UNDEFINED_SPRITE_TICKET ) {
-				m_parent.remove_sprite( animation->GetSpriteTicket() );
-				animation->SetSpriteTicket( BattleState::UNDEFINED_SPRITE_TICKET );
-			}
-		}
-	}
-}
 
 bool AnimationState::active_tasks_left() const {
 	std::unique_lock<std::recursive_mutex> lock(m_task_mutex);
@@ -808,141 +172,10 @@ bool AnimationState::active_tasks_left() const {
 }
 
 
-void AnimationState::apply_alter_sprite( AlterSprite* pAlterSprite ) {
-	clan::Sprite sprite;
-	// Alter any sprites on the parent now
-	switch( pAlterSprite->GetWho() ) {
-		case WHO_CASTER:
-			sprite = m_pCaster->GetCurrentSprite( true );
-			break;
-		case WHO_TARGET:
-			sprite = m_pTarget->GetCurrentSprite( true );
-			break;
-	}
-
-	float scale;
-	float alpha;
-	sprite.get_scale( scale, scale );
-	alpha = sprite.get_alpha();
-	clan::Colorf color = sprite.get_color();
-	switch( pAlterSprite->GetAlter() ) {
-		case AlterSprite::HIDE:
-			alpha = 0.0f;
-			break;
-		case AlterSprite::SMALLER_SIZE:
-			sprite.set_scale( 1.0f / 1.5f * scale, 1.0 / 1.5f * scale );
-			break;
-		case AlterSprite::LARGER_SIZE:
-			sprite.set_scale( 1.5f * scale, 1.5f * scale );
-			break;
-		case AlterSprite::HALF_SIZE:
-			sprite.set_scale( 0.5f * scale, 0.5f * scale );
-			break;
-		case AlterSprite::DOUBLE_SIZE:
-			sprite.set_scale( 2.0f * scale, 2.0f * scale );
-			break;
-		case AlterSprite::NEGATIVE:
-			// TODO:
-			//sprite.set_color(color * clan::Colorf(0.5f,0.5f,0.5f));
-			break;
-		case AlterSprite::X_FLIP:
-			// TODO:
-		case AlterSprite::Y_FLIP:
-			// TODO:
-			break;
-		case AlterSprite::GRAYSCALE:
-			sprite.set_color( clan::Colorf( 0.7f, 0.7f, 0.7f ) );
-			break;
-		case AlterSprite::GREENSCALE:
-			sprite.set_color( clan::Colorf( 0.0f, 1.0f, 0.0f ) );
-			break;
-		case AlterSprite::REDSCALE:
-			sprite.set_color( clan::Colorf( 1.0f, 0.0f, 0.0f ) );
-			break;
-		case AlterSprite::BLUESCALE:
-			sprite.set_color( clan::Colorf( 0.0f, 0.0f, 1.0f ) );
-			break;
-		case AlterSprite::RESET:
-			sprite.set_color( clan::Colorf( 1.0f, 1.0f, 1.0f ) );
-			sprite.set_scale( 1.0f, 1.0f );
-			alpha = 1.0f;
-			break;
-	}
-
-	sprite.set_alpha( alpha );
-}
-
-void AnimationState::StartPhase() {
-	Phase * phase = *m_phase_iterator;
-	phase->Execute();
-	m_phase_start_time = clan::System::get_time();
-
-	for( std::list<Phase::PhaseComponent>::const_iterator iter = ( *m_phase_iterator )->GetPhaseComponentsBegin();
-						iter != ( *m_phase_iterator )->GetPhaseComponentsEnd(); iter++ ) {
-		if( iter->m_bAnimation ) {
-			SpriteAnimation* animation = iter->m_animation;
-			if( animation->HasAlterSprite() ) {
-				apply_alter_sprite( animation->GetAlterSprite() );
-			}
-
-			if( animation->HasBattleSprite() ) {
-				// Change battle sprite using the parent now
-				// to GetWhich
-			}
-
-			if( animation->HasSpriteStub() ) {
-				// Create sprite on parent state
-				// keep pointer to it around
-				SpriteStub* stub = animation->GetSpriteStub();
-				// Monsters don't have weapons for now. TODO: Don't assume this
-				if( !m_pCaster->IsMonster() ) {
-					Character * pCharacter = dynamic_cast<Character*>( m_pCaster );
-					Equipment::eSlot slot = Equipment::EHAND;
-					switch(stub->Which()){
-						case SpriteStub::MAIN:
-							slot = Equipment::EHAND;
-							break;
-						case SpriteStub::OFF:
-							slot = Equipment::EOFFHAND;
-							break;
-						case SpriteStub::DEFAULT:
-							slot = m_hand;
-							break;
-					}
-					Equipment* equipment = pCharacter->GetEquipment( slot );
-					Weapon* pWeapon = dynamic_cast<Weapon*>( equipment );
-					if( pWeapon ) {
-						animation->Unskip();
-						animation->SetSpriteTicket( m_parent.add_sprite( pWeapon->GetSprite() ) );
-					} else {
-						animation->Skip();
-					}
-				} else {
-					animation->Skip();
-				}
-
-			}
-
-			if( animation->HasSpriteRef() ) {
-				animation->SetSpriteTicket( m_parent.add_sprite( animation->GetSpriteRef()->CreateSprite() ) );
-			}
-		} else {
-			SoundManager::PlaySound( iter->m_soundplay->GetSound() );
-		}
-	}
-
-	return;
-}
-
 void AnimationState::Start() {
 	m_bDone = false;
-	if( m_functor_mode ) {
-		m_pRunner->setFunctor( m_functor );
-		m_steel_thread.start( m_pRunner );
-	} else {
-		m_phase_iterator = m_pAnim->GetPhasesBegin();
-		StartPhase();
-	}
+	m_pRunner->setFunctor( m_functor );
+	m_steel_thread.start( m_pRunner );
 }
 
 void AnimationState::FunctorCompleted() {
@@ -952,7 +185,6 @@ void AnimationState::FunctorCompleted() {
 
 
 void AnimationState::SteelInit( SteelInterpreter *pInterpreter ) {
-	if( m_functor_mode ) {
 		using namespace Steel;
 		m_pInterpreter = pInterpreter;
 		m_pRunner = new AnimationRunner( pInterpreter, this );
@@ -1014,6 +246,7 @@ void AnimationState::SteelInit( SteelInterpreter *pInterpreter ) {
 		pInterpreter->addFunction( "fadeSprite", "anim", new SteelFunctor3Arg<AnimationState, int, SteelType::Handle, double>( this, &AnimationState::fadeSprite ) );
 		pInterpreter->addFunction( "createColorizer", "anim", new SteelFunctor3Arg<AnimationState, SteelType::Functor, SteelType::Functor, SteelType::Functor>( this, &AnimationState::createColorizer ) );
 
+		pInterpreter->addFunction( "setSpriteColor", "anim", Steel::create_functor(this,&AnimationState::setSpriteColor) );
 		pInterpreter->addFunction( "colorizeSprite", "anim", new SteelFunctor3Arg<AnimationState, int, SteelType::Handle, double>( this, &AnimationState::colorizeSprite ) );
 		pInterpreter->addFunction( "startAfter", "anim", new SteelFunctor2Arg<AnimationState, SteelType::Handle, SteelType::Handle>( this, &AnimationState::startAfter ) );
 		pInterpreter->addFunction( "doAfter", "anim", new SteelFunctor2Arg<AnimationState, double, SteelType::Functor>( this, &AnimationState::doAfter ) );
@@ -1046,15 +279,12 @@ void AnimationState::SteelInit( SteelInterpreter *pInterpreter ) {
 		SteelConst( pInterpreter, "$_AXIS_ROLL", ( int )Rotation::ROLL );
 		SteelConst( pInterpreter, "$_AXIS_YAW", ( int )Rotation::YAW );
 		SteelConst( pInterpreter, "$_AXIS_PITCH", ( int )Rotation::PITCH );
-	}
 }
 
 void AnimationState::SteelCleanup( SteelInterpreter *pInterpreter ) {
-	if( m_functor_mode ) {
-		pInterpreter->popScope();
-		delete m_pRunner;
-		m_pRunner = nullptr;
-	}
+	pInterpreter->popScope();
+	delete m_pRunner;
+	m_pRunner = nullptr;
 }
 
 clan::Pointf AnimationState::GetGroupOffset( ICharacterGroup* igroup ) const {
@@ -1101,25 +331,15 @@ SteelType AnimationState::arc_under( double p ) {
 }
 
 SteelType AnimationState::createSprite( const std::string& sprite_ref ) {
-	class SpriteFunctor : public IApplication::Functor {
-	public:
-		SpriteFunctor( const std::string& spriteRef, AnimationState& state )
-			: m_spriteRef( spriteRef ), m_state( state ) {
-		}
-		virtual void operator()() {
-			m_sprite = GraphicsManager::CreateSprite( m_spriteRef );
-			m_sprite.set_alignment(clan::origin_center);
-			m_ticket = m_state.AddSprite( m_sprite );
-		}
-		std::string     m_spriteRef;
-		BattleState::SpriteTicket m_ticket;
-		clan::Sprite       m_sprite;
-		AnimationState& m_state;
-	} functor( sprite_ref, *this );
-	std::function<void()> func = functor;
+	BattleState::SpriteTicket ticket = BattleState::UNDEFINED_SPRITE_TICKET;
+	std::function<void()> func = [&](){
+		clan::Sprite sprite = GraphicsManager::CreateSprite( sprite_ref );
+		sprite.set_alignment(clan::origin_center);
+		ticket = AddSprite(sprite);
+	};
 	IApplication::GetInstance()->RunOnMainThread( func );
 	SteelType var;
-	var.set( functor.m_ticket );
+	var.set( ticket );
 	return var;
 }
 
@@ -1241,6 +461,11 @@ SteelType AnimationState::setPathCompletion( SteelType::Handle hPath, double com
 SteelType AnimationState::setPathFlags( SteelType::Handle hPath, int flags ) {
 	Path* path = Steel::GrabHandle<Path*>( hPath );
 	path->m_flags = flags;
+	return SteelType();
+}
+
+SteelType AnimationState::setSpriteColor(int sprite, double r, double g, double b){
+	GetSprite(sprite).set_color(clan::Colorf(float(r),float(g),float(b)));
 	return SteelType();
 }
 
@@ -1561,7 +786,7 @@ SteelType AnimationState::fadeSprite( int sprite, SteelType::Handle hFade, doubl
 	Fade * fade = Steel::GrabHandle<Fade*>( hFade );
 	FadeTask * task = new FadeTask( *this );
 	task->SetSprite( sprite );
-	task->SetDuration( seconds );
+	task->SetDuration( seconds  );
 	m_handles.push_back( task );
 	SteelType var;
 	var.set( task );
@@ -1603,7 +828,7 @@ SteelType AnimationState::startAfter( SteelType::Handle htask, SteelType::Handle
 }
 
 SteelType AnimationState::pause( double seconds ) {
-	clan::System::sleep( seconds * 1000.0 );
+	clan::System::pause( seconds * 1000.0 );
 	return SteelType();
 }
 
@@ -1707,10 +932,7 @@ SteelType AnimationState::startAll( const Steel::SteelArray& alltasks ) {
 
 void AnimationState::Finish() { // Hook to clean up or whatever after being popped
 	std::cout << "AnimationState::Finish" << std::endl;
-	m_pCaster = NULL;
-	m_pTarget = NULL;
-	m_pCasterGroup = NULL;
-	m_pTargetGroup = NULL;
+
 	m_task_mutex.lock();
 	m_tasks.clear();
 	m_task_mutex.unlock();	
@@ -1865,11 +1087,11 @@ clan::Pointf AnimationState::GetPosition( const AnimationState::Locale& locale )
 			break;
 		case Locale::MIDDLE_LEFT:
 			point = rect.get_center();
-			point.y -= rect.get_width() / 2.0f;
+			point.x -= rect.get_width() / 2.0f;
 			break;
 		case Locale::MIDDLE_RIGHT:
 			point = rect.get_center();
-			point.y += rect.get_width() / 2.0f;
+			point.x += rect.get_width() / 2.0f;
 			break;
 		case Locale::CENTER:
 			point = rect.get_center();
@@ -1897,7 +1119,6 @@ AnimationState::PathTask::~PathTask() {
 
 void AnimationState::PathTask::init( Path* path ) {
 	m_path = path;
-	m_path->m_completion = 1.0f;
 }
 
 
@@ -1993,7 +1214,7 @@ bool AnimationState::PathTask::finished() {
 }
 
 float AnimationState::PathTask::_percentage() const {
-	return m_percentage_so_far;
+	return m_percentage_so_far/ m_path->m_completion;
 }
 
 
@@ -2174,6 +1395,7 @@ void AnimationState::TimedRotationTask::init( const Rotation& rot ) {
 
 void AnimationState::TimedRotationTask::_start( SteelInterpreter* pInterpreter ) {
 	m_degrees = 0;
+	TimedTask::_start(pInterpreter);
 }
 void AnimationState::TimedRotationTask::update( SteelInterpreter* pInterpreter ) {
 	float speed = 0.1f;
@@ -2427,9 +1649,11 @@ void AnimationState::FadeTask::SetDuration( float duration ) {
 }
 
 void AnimationState::FadeTask::_start( SteelInterpreter* pInterpreter ) {
+	TimedTask::_start(pInterpreter);
 }
 
 void AnimationState::FadeTask::update( SteelInterpreter* pInterpreter ) {
+	TimedTask::update();
 	float alpha = 1.0f - percentage();
 	if( m_functor ) {
 		SteelType::Container params;
@@ -2441,9 +1665,6 @@ void AnimationState::FadeTask::update( SteelInterpreter* pInterpreter ) {
 	m_state.GetSprite( m_sprite ).set_alpha( alpha );
 }
 
-bool AnimationState::FadeTask::finished() {
-	return percentage() > 1.0f;
-}
 
 void AnimationState::FadeTask::cleanup() {
 	m_state.GetSprite( m_sprite ).set_alpha( 1.0f );

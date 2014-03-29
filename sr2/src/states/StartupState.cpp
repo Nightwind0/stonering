@@ -104,7 +104,7 @@ void StartupState::Draw ( const clan::Rect& screenRect, clan::Canvas& GC )
 }
 
 
-void StartupState::MappableObjectMoveHook()
+void StartupState::Update()
 {
 
 }

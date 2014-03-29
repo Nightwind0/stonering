@@ -494,7 +494,7 @@ bool EquipState::LastToDraw() const
     return false;
 }
 
-void EquipState::MappableObjectMoveHook()
+void EquipState::Update()
 {
 
 }

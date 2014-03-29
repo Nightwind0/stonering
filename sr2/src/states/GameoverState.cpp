@@ -64,7 +64,7 @@ bool GameoverState::LastToDraw() const
 	return true;
 }
 
-void GameoverState::MappableObjectMoveHook()
+void GameoverState::Update()
 {
 
 }

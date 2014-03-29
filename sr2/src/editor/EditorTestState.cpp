@@ -126,7 +126,7 @@ bool EditorTestState::DisableMappableObjects() const {
     return true;
 }
 
-void EditorTestState::MappableObjectMoveHook(){
+void EditorTestState::Update(){
 }
 
 

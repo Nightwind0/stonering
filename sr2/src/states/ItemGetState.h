@@ -34,13 +34,10 @@ public:
     virtual ~ItemGetState();
 	void SetItems(const std::vector<Item*>& items, const std::vector<uint>& counts);
 	virtual bool IsDone() const;	
-	virtual void HandleButtonUp( const IApplication::Button& button );
-	virtual void HandleButtonDown( const IApplication::Button& button ) ;
-	virtual void HandleAxisMove( const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos );	
 	virtual void Draw( const clan::Rect &screenRect, clan::Canvas& GC );
 	virtual bool LastToDraw() const; // Should we continue drawing more states?
 	virtual bool DisableMappableObjects() const; // Should the app move the MOs?
-	virtual void MappableObjectMoveHook(); // Do stuff right after the mappable object movement
+	virtual void Update(); // Do stuff right after the mappable object movement
 	virtual void Start();
 	virtual void SteelInit( SteelInterpreter * );
 	virtual void SteelCleanup( SteelInterpreter * );
@@ -52,6 +49,10 @@ public:
     virtual int height_for_option(clan::Canvas& gc);
     virtual void process_choice(int selection);
     virtual int get_option_count();
+protected:
+	virtual void HandleButtonUp( const IApplication::Button& button );
+	virtual void HandleButtonDown( const IApplication::Button& button ) ;
+	virtual void HandleAxisMove( const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos );		
 private:
 	void on_sound_timer();
 	std::vector<Item*> m_items;

@@ -216,7 +216,7 @@ bool StatusState::DisableMappableObjects() const
 }
 
 
-void StatusState::MappableObjectMoveHook()
+void StatusState::Update()
 {
 
 }
