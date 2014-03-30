@@ -227,7 +227,6 @@ bool RectContains(const clan::Rectx<T>& rect, const clan::Vec2<T>& p){
 
 #ifndef WIN32
 #include <memory>
-using std::shared_ptr;
 using std::max;
 using std::min;
 #else

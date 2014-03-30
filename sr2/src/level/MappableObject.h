@@ -9,7 +9,6 @@
 #include "Navigator.h"
 #include <stack>
 
-using std::shared_ptr;
 
 namespace StoneRing {
 
