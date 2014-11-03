@@ -122,12 +122,12 @@ SteelType Application::playScene ( const SteelType &functor )
     return SteelType();
 }
 
-SteelType Application::playSound ( const std::string &sound )
+SteelType Application::playSound ( const std::string &sound, bool wait, double echo )
 {
 #ifndef NDEBUG
     std::cout << "Playing sound " << sound << std::endl;
 #endif
-    SoundManager::PlaySound(sound);
+    SoundManager::PlaySound(sound, wait, echo);
 
     return SteelType();
 }
@@ -2382,7 +2382,7 @@ void Application::registerSteelFunctions()
     mInterpreter->pushScope();
     SteelFunctor* fn_say = new SteelFunctor2Arg<Application, const std::string&, const std::string&> ( this, &Application::say );
     SteelFunctor* fn_playScene = new SteelFunctor1Arg<Application, const SteelType&> ( this, &Application::playScene );
-    SteelFunctor* fn_playSound  = new SteelFunctor1Arg<Application, const std::string&> ( this, &Application::playSound );
+    SteelFunctor* fn_playSound  = new SteelFunctor3Arg<Application, const std::string&, bool, double> ( this, &Application::playSound );
     SteelFunctor* fn_loadLevel = new SteelFunctor3Arg<Application, const std::string&, uint, uint> ( this, &Application::loadLevel );
 	SteelFunctor* fn_pushLevel = new SteelFunctor3Arg<Application, const std::string&, uint, uint> ( this, &Application::pushLevel );
     	

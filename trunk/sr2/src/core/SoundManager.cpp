@@ -44,12 +44,27 @@ void StoneRing::SoundManager::initialize()
        m_pInstance = new SoundManager();
 }
 
-void SoundManager::PlaySound ( const std::string& sound_name )
+void SoundManager::PlaySound ( const std::string& sound_name, bool wait, double echo )
 {
     clan::ResourceManager& resources = IApplication::GetInstance()->GetResources();
     clan::SoundBuffer sound = clan::SoundBuffer::resource(sound_name,resources);
     sound.set_volume(m_pInstance->m_sound_vol);
-    sound.play();
+    clan::EchoFilter filter(32*1024,echo);
+    if ( echo ){
+      sound.add_filter(filter);
+    }
+    
+    clan::SoundBuffer_Session session = sound.play();
+    
+    if(wait){
+      while(session.is_playing()){
+	clan::System::sleep(10);
+      }
+    }
+    
+    if ( echo ) {
+      sound.remove_filter(filter);
+    }
 }
 
 

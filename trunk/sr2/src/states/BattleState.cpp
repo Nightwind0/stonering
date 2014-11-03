@@ -204,6 +204,7 @@ void BattleState::set_positions_to_loci() {
 		clan::Pointf pos = get_character_locus_rect( m_initiative[i] ).get_center();
 		m_sprites[i].SetPosition(pos);
 		m_sprites[i].SetOffset(clan::Pointf(0,0));
+		m_sprites[i].GetSprite().set_angle(clan::Angle::from_degrees(0));
 	}
 	m_group_offsets.clear();
 	m_shadow_offsets.clear();
