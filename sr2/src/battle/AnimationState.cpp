@@ -205,6 +205,7 @@ void AnimationState::SteelInit( SteelInterpreter *pInterpreter ) {
 		pInterpreter->addFunction( "changePathStart", "anim", new SteelFunctor2Arg<AnimationState, SteelType::Handle, SteelType::Handle>( this, &AnimationState::changePathStart ) );
 		pInterpreter->addFunction( "changePathEnd", "anim", new SteelFunctor2Arg<AnimationState, SteelType::Handle, SteelType::Handle>( this, &AnimationState::changePathEnd ) );
 		pInterpreter->addFunction( "getCharacterLocus", "anim", new SteelFunctor2Arg<AnimationState, SteelType::Handle, int>( this, &AnimationState::getCharacterLocus ) );
+		pInterpreter->addFunction( "isLeftOf", "anim", new SteelFunctor2Arg<AnimationState,int,int>(this, &AnimationState::isLeftOf ) );
 
 
 
@@ -833,6 +834,14 @@ SteelType AnimationState::pause( double seconds ) {
 }
 
 
+SteelType AnimationState::isLeftOf(int sprite, int other_sprite){
+  clan::Rectf a = m_parent.get_sprite_rect(sprite);
+  clan::Rectf b = m_parent.get_sprite_rect(other_sprite);
+  SteelType ret;
+  ret.set ( bool(a.get_center().x > b.get_center().x) );
+  return ret;
+}
+
 SteelType AnimationState::chainTasks( const Steel::SteelArray& array ) {
 	Task * lastTask = NULL;
 	for( int i = 0; i < array.size(); i++ ) {
@@ -1334,7 +1343,7 @@ void AnimationState::RotationTask::init( const Rotation& rot ) {
 void AnimationState::RotationTask::_start( SteelInterpreter* pInterpreter ) {
 	m_original_degrees = m_state.GetSprite(m_sprite).get_angle().to_degrees();
 	m_completion_degrees = 0.0f;
-	m_degrees = m_rotation.m_start_degrees;
+	m_degrees = m_rotation.m_start_degrees + m_original_degrees;
 	m_last_time = clan::System::get_time();
 }
 
@@ -1347,8 +1356,15 @@ void AnimationState::RotationTask::update( SteelInterpreter* pInterpreter ) {
 	float delta = speed * float( clan::System::get_time() - m_last_time );
 	m_degrees +=  delta ;
 	m_completion_degrees += fabs(delta);
-	if( m_degrees > m_rotation.m_degrees )
-		m_degrees = m_rotation.m_degrees;
+#if 1 // This can kinda cause an over-rotation... 
+	if( m_completion_degrees > m_rotation.m_degrees ){
+	    if(speed >= 0.0){
+	      m_degrees = m_rotation.m_degrees + m_original_degrees;
+	    }else{
+	      m_degrees = m_original_degrees - m_rotation.m_degrees;
+	    }
+	}
+#endif
 	clan::Sprite sprite = m_state.GetSprite( m_sprite );
 	switch( m_rotation.m_axis ) {
 		case Rotation::PITCH:
@@ -1374,10 +1390,10 @@ float AnimationState::RotationTask::_percentage() const {
 }
 
 void AnimationState::RotationTask::cleanup() {
-
+#if 0 
 	switch( m_rotation.m_axis ) {
 		case Rotation::ROLL:
-			m_state.GetSprite( m_sprite ).set_angle( clan::Angle::from_degrees( m_original_degrees ) );
+			//m_state.GetSprite( m_sprite ).set_angle( clan::Angle::from_degrees( m_original_degrees ) );
 			break;
 		case Rotation::YAW:
 			//m_state.GetSprite( m_sprite ).set_angle_yaw( clan::Angle::from_degrees( 0.0f ) );
@@ -1386,6 +1402,7 @@ void AnimationState::RotationTask::cleanup() {
 			//m_state.GetSprite( m_sprite ).set_angle_pitch( clan::Angle::from_degrees( 0.0f ) );
 			break;
 	}
+#endif
 }
 
 

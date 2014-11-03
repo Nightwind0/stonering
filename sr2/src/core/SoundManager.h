@@ -39,18 +39,18 @@ public:
         EFFECT_REWARD,
         EFFECT_CANCEL,
         EFFECT_GOLD,
-		EFFECT_LEARNED_SKILL,
-		EFFECT_LOST
+	EFFECT_LEARNED_SKILL,
+	EFFECT_LOST
     };
     
     static void         initialize();
     static void         PlayEffect(Effect effect);
-    static void         PlaySound(const std::string&);
+    static void         PlaySound(const std::string&, bool wait=false, double echo=0.0);
     static void         SetMusic(const std::string&);
     static void         SetMusicVolume(float vol);
     static void         SetMusicMaxVolume(float vol);
-	static void 		 StopMusic();
-	static void         StartMusic();
+    static void 	StopMusic();
+    static void         StartMusic();
     static void         SetSoundVolume(float vol);
     static float        GetSoundVolume();
     static float        GetMusicVolume();
@@ -60,8 +60,8 @@ private:
     static SoundManager * m_pInstance;
     void set_music(clan::SoundBuffer song);
     void onTransitionTimer();
-	void onStopTimer();
-	void onStartTimer();
+    void onStopTimer();
+    void onStartTimer();
     SoundManager();
     virtual ~SoundManager();
     clan::SoundBuffer m_buffer;

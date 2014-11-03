@@ -32,17 +32,17 @@ namespace StoneRing
 
 		void Init(SteelType::Functor pFunctor);
 
-        virtual bool IsDone() const;
-        virtual void HandleKeyDown(const clan::InputEvent &key);
-        virtual void HandleKeyUp(const clan::InputEvent &key);
-        virtual void Draw(const clan::Rect &screenRect,clan::Canvas& GC);
-        virtual bool LastToDraw() const; // Should we continue drawing more states?
-        virtual bool DisableMappableObjects() const; // Should the app move the MOs?
-        virtual void Update(); // Do stuff right after the mappable object movement
-        virtual void Start();
-        virtual void SteelInit      (SteelInterpreter *);
-        virtual void SteelCleanup   (SteelInterpreter *);
-        virtual void Finish(); // Hook to clean up or whatever after being popped
+		virtual bool IsDone() const;
+		virtual void HandleKeyDown(const clan::InputEvent &key);
+		virtual void HandleKeyUp(const clan::InputEvent &key);
+		virtual void Draw(const clan::Rect &screenRect,clan::Canvas& GC);
+		virtual bool LastToDraw() const; // Should we continue drawing more states?
+		virtual bool DisableMappableObjects() const; // Should the app move the MOs?
+		virtual void Update(); // Do stuff right after the mappable object movement
+		virtual void Start();
+		virtual void SteelInit      (SteelInterpreter *);
+		virtual void SteelCleanup   (SteelInterpreter *);
+		virtual void Finish(); // Hook to clean up or whatever after being popped
 		virtual bool Threaded()const { return true; }
 		void WaitFinishedEvent();
 		void FunctorCompleted();
@@ -606,6 +606,7 @@ namespace StoneRing
 		SteelType setSpriteColor(int sprite, double r, double g, double b);
 		SteelType setSpriteLocation(int sprite, SteelType::Handle hLocale);
 		SteelType floatCharacter(SteelType::Handle hCharacter,SteelType::Functor float_amt, double time);
+		SteelType isLeftOf(int spriteA, int spriteB);
 		
 		// TODO: Set sprite alpha and color
 		

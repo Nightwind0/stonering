@@ -116,7 +116,7 @@ private:
     SteelType                       log(const std::string &string);
 
     SteelType                       playScene(const SteelType& functor);
-    SteelType                       playSound(const std::string &sound);
+    SteelType                       playSound(const std::string &sound, bool wait, double echo);
     SteelType                       loadLevel(const std::string &level, uint startX, uint startY);
 	SteelType  						 pushLevel(const std::string &level, uint startX, uint startY);
     SteelType                       mainMenu();
