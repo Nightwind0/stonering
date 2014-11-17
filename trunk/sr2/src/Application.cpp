@@ -2915,7 +2915,15 @@ int Application::main ( const std::vector<std::string> args )
 		}else if(string.substr(0,12) == "--dump-equip"){
 			dump_equipment = true;
 		}
+#ifndef NDEBUG
+		else if(string.substr(0,11) == "--skill-dev"){
+		  DebugControl::EnableInfiniteBP(true);
+		  DebugControl::EnableInfiniteSP(true);
+		  DebugControl::EnableAllSkills(true);
+		}
+#endif
 			
+      
     }
     
     m_resource_path = data_file;

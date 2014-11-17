@@ -1626,7 +1626,7 @@ void AnimationState::ShakerTask::update( SteelInterpreter* pInterpreter ) {
 			break;
 		case Locale::CHARACTER:
 			m_state.SetSpriteOffset( m_state.GetSpriteForChar( m_locale.GetChar() ),
-																												m_state.GetSpriteOffset( m_state.GetSpriteForChar( m_locale.GetChar() ) ) + dir_pt );
+						 m_state.GetSpriteOffset( m_state.GetSpriteForChar( m_locale.GetChar() ) ) + dir_pt );
 			break;
 		case Locale::GROUP:
 			m_state.SetGroupOffset( m_locale.GetGroup(), m_state.GetGroupOffset( m_locale.GetGroup() ) + dir_pt );

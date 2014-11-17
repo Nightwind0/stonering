@@ -303,6 +303,15 @@ private:
 			ICharacterGroup * m_pGroup;
 		}selected;
 		bool m_bSelectedGroup;
+		bool operator==(const Targets& other){
+		  bool match = true;
+		  match = match && m_bSelectedGroup == other.m_bSelectedGroup;
+		  if(m_bSelectedGroup)
+		    match = match && selected.m_pGroup == other.selected.m_pGroup;
+		  else
+		    match = match && selected.m_pTarget == other.selected.m_pTarget;
+		  return match;
+		}
 	}m_targets;
 	bool m_bDone;
 	bool m_bDoneAfterRound;
