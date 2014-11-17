@@ -208,6 +208,7 @@ void BattleState::set_positions_to_loci() {
 	}
 	m_group_offsets.clear();
 	m_shadow_offsets.clear();
+	m_darkModes.clear();
 }
 
 void BattleState::run_turn(){
@@ -642,6 +643,7 @@ void BattleState::draw_status( const clan::Rectf &screenRect, clan::Canvas& GC )
 void BattleState::draw_battle( const clan::Rectf &screenRect, clan::Canvas& GC ) {
 	GC.push_cliprect(screenRect);
 	m_backdrop.draw( GC, screenRect );
+	draw_darkness( DISPLAY_ORDER_POSTBACKDROP, screenRect, GC);
 	update_character_sprites();
 	draw_status( screenRect, GC );
 
@@ -1215,10 +1217,12 @@ void BattleState::SteelInit( SteelInterpreter* pInterpreter ) {
 	SteelConst( pInterpreter, "$_DISP_MISS", Display::DISPLAY_MISS );
 	SteelConst( pInterpreter, "$_DISP_CRITICAL", Display::DISPLAY_CRITICAL );
 	SteelConst( pInterpreter, "$_POST_BACKDROP", DISPLAY_ORDER_POSTBACKDROP );
+	/* Unfortunately, monsters and players are all drawn at once, can't support this currently
 	SteelConst( pInterpreter, "$_PRE_MONSTERS", DISPLAY_ORDER_PREMONSTERS );
 	SteelConst( pInterpreter, "$_POST_MONSTERS", DISPLAY_ORDER_POSTMONSTERS );
 	SteelConst( pInterpreter, "$_PRE_PLAYERS", DISPLAY_ORDER_PRE_PLAYERS );
 	SteelConst( pInterpreter, "$_POST_PLAYERS", DISPLAY_ORDER_POST_PLAYERS );
+	*/
 	SteelConst( pInterpreter, "$_PRE_SPRITES", DISPLAY_ORDER_PRE_SPRITES );
 	SteelConst( pInterpreter, "$_POST_SPRITES", DISPLAY_ORDER_POST_SPRITES );
 	SteelConst( pInterpreter, "$_PRE_DISPLAYS", DISPLAY_ORDER_PRE_DISPLAYS );
@@ -1238,7 +1242,6 @@ void BattleState::SteelInit( SteelInterpreter* pInterpreter ) {
 	pInterpreter->addFunction( "clearDarkMode", "battle", Steel::create_functor(this,&BattleState::clearDarkMode) );
 	pInterpreter->addFunction( "flee", "battle", Steel::create_functor( this, &BattleState::flee ) );
 	pInterpreter->addFunction( "isBossBattle", "battle", new SteelFunctorNoArgs<BattleState>( this, &BattleState::isBossBattle ) );
-	//pInterpreter->addFunction( "clearDarkMode", "battle", new SteelFunctor1Arg<BattleState, int>( this, &BattleState::clearDarkMode ) );
 	pInterpreter->addFunction( "darkMode", "battle", Steel::create_functor( this, &BattleState::darkMode ) );
 	m_config->SetupForBattle();
 }

@@ -4,6 +4,7 @@
 #include "IApplication.h"
 #include "Monster.h"
 #include "GraphicsManager.h"
+#include "SoundManager.h"
 
 using StoneRing::TargetingState;
 using StoneRing::BattleState;
@@ -84,9 +85,11 @@ void TargetingState::HandleButtonUp(const StoneRing::IApplication::Button& butto
     switch(button)
     {
         case IApplication::BUTTON_CONFIRM:
+	  SoundManager::PlayEffect(SoundManager::EFFECT_SELECT_OPTION);
             m_bDone = true;
             break;
         case IApplication::BUTTON_CANCEL:
+	    SoundManager::PlayEffect(SoundManager::EFFECT_CANCEL);
             m_pParent->CancelTargeting();
             m_bDone = true;
             break;
@@ -99,6 +102,8 @@ void TargetingState::HandleButtonDown(const IApplication::Button& button)
 
 void TargetingState::HandleAxisMove(const IApplication::Axis& axis, IApplication::AxisDirection dir, float pos)
 {
+    auto old_targets = m_pParent->m_targets;
+
     if(axis == IApplication::AXIS_VERTICAL)
     {
         if(dir == IApplication::AXIS_UP)
@@ -155,6 +160,8 @@ void TargetingState::HandleAxisMove(const IApplication::Axis& axis, IApplication
             }
         }
     }
+    if(old_targets == m_pParent->m_targets)
+        SoundManager::PlayEffect(SoundManager::EFFECT_CHANGE_OPTION);
 }
 
 
