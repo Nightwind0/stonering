@@ -442,7 +442,6 @@ namespace StoneRing
 			virtual ~ShakerTask(){}
 			virtual std::string GetName() const { return "ShakerTask"; }
 			void init(const Shaker&, const Locale&);
-			void SetDuration(float duration);
 
 			virtual void update(SteelInterpreter*);
 			virtual void cleanup();
@@ -452,6 +451,7 @@ namespace StoneRing
 			void pick_rand_dir();
 			bool dir_legal()const;
 			Direction m_dir;
+			clan::Pointf m_starting_offset;
 			Shaker m_shaker;
 			Locale m_locale;
 			bool m_osc;
@@ -471,7 +471,6 @@ namespace StoneRing
 		private:
 			virtual void _start(SteelInterpreter*);			
 			Stretch m_stretch;
-			float m_duration;
 		};
 		
 		class FadeTask: public TimedTask {

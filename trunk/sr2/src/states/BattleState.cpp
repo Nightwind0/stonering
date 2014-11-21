@@ -814,9 +814,10 @@ void BattleState::Sprite::SetPosition( const clan::Pointf& pos ) {
 }
 
 clan::Rectf BattleState::Sprite::Rect(bool with_offsets) const { 
+	// TODO: Multiply size by scale?
 	clan::Sizef size(m_sprite.get_size().width,m_sprite.get_size().height);
 	if(with_offsets)
-		return clan::Rectf(m_pos.x+m_offset.x-size.width/2.0f,m_pos.y+m_offset.x-size.height/2.0f,size);
+		return clan::Rectf(m_pos.x+m_offset.x-size.width/2.0f,m_pos.y+m_offset.y-size.height/2.0f,size);
 	else
 		return clan::Rectf(m_pos.x-size.width/2.0f,m_pos.y-size.height/2.0f,size);
 		
@@ -832,9 +833,10 @@ clan::Pointf BattleState::Sprite::Position(bool with_offsets)const {
 }
 void BattleState::Sprite::Draw( clan::Canvas& gc) {
 	m_sprite.set_alignment( clan::origin_center );
-	clan::Rectf rect = Rect();
+	clan::Rectf rect = Rect(true);
 	clan::Pointf point = rect.get_center();
-	m_sprite.draw( gc, point.x + m_offset.x, point.y + m_offset.y );
+	// m_sprite.draw( gc, point.x, point.y );
+	m_sprite.draw( gc, m_pos.x+m_offset.x, m_pos.y + m_offset.y );
 }
 
 int BattleState::Sprite::ZOrder() const {
@@ -876,7 +878,7 @@ int BattleState::add_sprite( clan::Sprite sprite ) {
 	Sprite mysprite( sprite );
 
 
-	mysprite.SetEnabled(true);
+	mysprite.SetEnabled(false);
 	m_sprites.push_back( mysprite );
 	m_sprite_mutex.unlock();
 	return index;
@@ -885,6 +887,7 @@ int BattleState::add_sprite( clan::Sprite sprite ) {
 void BattleState::set_sprite_pos( SpriteTicket nSprite, const clan::Pointf& pos ) {
 	assert(nSprite != UNDEFINED_SPRITE_TICKET);
 	assert(nSprite < m_sprites.size());
+	m_sprites[nSprite].SetEnabled(true);
 	m_sprite_mutex.lock();
 	m_sprites[nSprite].SetPosition( pos );
 	m_sprite_mutex.unlock();
@@ -1030,7 +1033,7 @@ void BattleState::draw_monsters( const clan::Rectf &monsterRect, clan::Canvas& G
 		Monster *pMonster = dynamic_cast<Monster*>(m_initiative[i]);
 		assert(pMonster);
 
-		clan::Pointf center = m_sprites[i].Position();
+		clan::Pointf center = m_sprites[i].Position(true);
 
 		if ( m_combat_state == TARGETING ) {
 			if (( m_targets.m_bSelectedGroup && m_targets.selected.m_pGroup == m_monsters )
