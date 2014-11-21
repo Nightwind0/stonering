@@ -406,6 +406,7 @@ SteelType AnimationState::getScreenLocale( int corner ) {
 
 SteelType AnimationState::getSpriteLocale( int sprite, int corner ) {
 	Locale* locale = new Locale( Locale::SPRITE, ( Locale::Corner )corner );
+	locale->SetSprite(sprite);
 	SteelType var;
 	var.set( locale );
 	m_handles.push_back( locale );
@@ -728,6 +729,7 @@ SteelType AnimationState::stretchSpriteTimed( int sprite, SteelType::Handle hStr
 	Stretch * stretch  = Steel::GrabHandle<Stretch*>( hStretch );
 	stretch->m_duration = seconds;
 	TimedStretchTask * task = new TimedStretchTask( *this );
+	task->SetDuration(seconds);
 #ifndef NDEBUG
 	std::cout << "TimedStretchTask created: " << std::hex << task << std::endl;
 #endif
@@ -829,6 +831,9 @@ SteelType AnimationState::startAfter( SteelType::Handle htask, SteelType::Handle
 }
 
 SteelType AnimationState::pause( double seconds ) {
+#ifndef NDEBUG
+	std::cout << "Pausing for " << seconds << " seconds" << std::endl;
+#endif
 	clan::System::pause( seconds * 1000.0 );
 	return SteelType();
 }
@@ -946,7 +951,7 @@ void AnimationState::Finish() { // Hook to clean up or whatever after being popp
 	m_tasks.clear();
 	m_task_mutex.unlock();	
 	for( std::list<SteelType::IHandle*>::const_iterator it = m_handles.begin(); it != m_handles.end(); it++ ) {
-		std::cout << std::hex << ( long )*it << std::endl;
+		//std::cout << std::hex << ( long )*it << std::endl;
 		delete *it;
 	}
 	m_handles.clear();
@@ -1289,9 +1294,11 @@ void AnimationState::TimedStretchTask::init( const Stretch& stretch ) {
 
 void AnimationState::TimedStretchTask::_start( SteelInterpreter* pInterpreter ) {
 	m_start_time = clan::System::get_time();
+	TimedTask::_start(pInterpreter);
 }
 
 void AnimationState::TimedStretchTask::update( SteelInterpreter* pInterpreter ) {
+	//TimedTask::update();
 	SteelType::Container params;
 	SteelType p;
 	p.set( percentage() ); // or _percentage?
@@ -1574,14 +1581,14 @@ void AnimationState::TimedStretchTask::SetDuration( float duration ) {
 
 
 void AnimationState::ShakerTask::init( const Shaker& shaker, const Locale& locale ) {
+      
 	m_locale = locale;
 	m_shaker = shaker;
-}
-void AnimationState::ShakerTask::SetDuration( float duration ) {
-	m_duration = duration;
+	m_starting_offset = m_state.GetSpriteOffset( m_locale.GetSprite() );	
 }
 
 void AnimationState::ShakerTask::_start( SteelInterpreter* pInterpreter ) {
+	TimedTask::_start(pInterpreter);
 	pick_rand_dir();
 }
 
@@ -1608,6 +1615,7 @@ bool AnimationState::ShakerTask::dir_legal() const {
 }
 
 void AnimationState::ShakerTask::update( SteelInterpreter* pInterpreter ) {
+	//TimedTask::update(pInterpreter);
 	float motion = 0.0f;
 	if( m_shaker.m_functor ) {
 		SteelType::Container params;
@@ -1622,23 +1630,25 @@ void AnimationState::ShakerTask::update( SteelInterpreter* pInterpreter ) {
 	clan::Pointf dir_pt( dir.x, dir.y );
 	switch( m_locale.GetType() ) {
 		case Locale::SPRITE:
-			m_state.SetSpriteOffset( m_locale.GetSprite(), m_state.GetSpriteOffset( m_locale.GetSprite() ) + dir_pt );
+			m_state.SetSpriteOffset( m_locale.GetSprite(), m_starting_offset + dir_pt );
 			break;
 		case Locale::CHARACTER:
 			m_state.SetSpriteOffset( m_state.GetSpriteForChar( m_locale.GetChar() ),
-						 m_state.GetSpriteOffset( m_state.GetSpriteForChar( m_locale.GetChar() ) ) + dir_pt );
+						 m_starting_offset + dir_pt );
 			break;
 		case Locale::GROUP:
-			m_state.SetGroupOffset( m_locale.GetGroup(), m_state.GetGroupOffset( m_locale.GetGroup() ) + dir_pt );
+			m_state.SetGroupOffset( m_locale.GetGroup(), m_starting_offset + dir_pt );
 			break;
 	}
-
+/*
 	if(m_osc){
 		pick_opposite_dir();
 	}else{
 		pick_rand_dir();
 	}
 	m_osc = !m_osc;
+	*/
+        pick_rand_dir();
 }
 
 void AnimationState::ShakerTask::pick_opposite_dir() {
