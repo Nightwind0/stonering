@@ -170,6 +170,8 @@ private:
 	public:
 		Sprite( clan::Sprite sprite );
 		~Sprite();
+		
+		enum class eKageStyle { BLACK, RAINBOW, REDS, GREENS, BLUES, PURPLES, YELLOWS, CYANS, MAGENTAS };
 
 		int ZOrder() const;
 		void SetPosition( const clan::Pointf& pos );
@@ -183,11 +185,17 @@ private:
 		clan::Rectf Rect(bool with_offsets=false)const;
 		clan::Sprite GetSprite() const;
 		void SetSprite(clan::Sprite sprite);
+		void SetKageCount(int count) { m_kage_count = count; }
+		void SetKageStyle(eKageStyle style) { m_kage_style = style; }
+		void SetKageInterval(float interval) { m_kage_interval = interval; }
 		bool operator<(const Sprite& other)const;
 	private:
 		clan::Sprite m_sprite;
 		clan::Pointf m_pos;
 		clan::Pointf m_offset;
+		eKageStyle m_kage_style;
+		int m_kage_count;
+		float m_kage_interval;
 		int m_zorder;
 		bool m_enabled;
 	};

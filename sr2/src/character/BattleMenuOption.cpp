@@ -75,7 +75,9 @@ void BattleMenuOption::Select(StoneRing::BattleMenuStack& stack, const Parameter
         case SKILLREF:
             {
                 Skill * pSkill =  m_action.m_pSkillRef->GetSkill();
-                pSkill->Invoke(pCharacter,params);
+                if(pSkill->Invoke(pCharacter,params)){
+		  
+		}
                 break;
             }
         case SCRIPT:

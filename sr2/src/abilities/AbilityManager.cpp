@@ -96,11 +96,13 @@ std::map<std::string,Skill*>::const_iterator AbilityManager::GetSkillsEnd()
     return instance->m_skills.end();
 }
 
+#if SEPARATE_SKILL_REF_ELEMENT
 Skill * AbilityManager::GetSkill ( const SkillRef &ref )
 {
     AbilityManager * instance = INSTANCE();
     return instance->m_skills.find( ref.GetRef() )->second;
 }
+#endif
 
 Skill * AbilityManager::GetSkill ( const std::string &skill )
 {

@@ -38,7 +38,7 @@ uint Skill::GetMPCost() const
 }
 
 
-void StoneRing::Skill::Invoke(ICharacter* pCharacter,const ParameterList& params)
+bool StoneRing::Skill::Invoke(ICharacter* pCharacter,const ParameterList& params)
 {
     // Take the BP and MP cost here
     double mp_mult = pCharacter->GetAttribute(ICharacter::CA_MP_COST);
@@ -79,6 +79,7 @@ void StoneRing::Skill::Invoke(ICharacter* pCharacter,const ParameterList& params
     }else{
     	std::cout << "Cancelled charge";
     }
+    return charge;
 }
 
 
@@ -139,7 +140,7 @@ Skill * SkillRef::GetSkill() const{
 	throw clan::Exception("Missing skill: " + m_ref);
 	return NULL;
     }
-    return AbilityManager::GetSkill(*this);
+    return AbilityManager::GetSkill(this->m_ref);
 }
 
 
@@ -164,6 +165,8 @@ void SkillRef::load_attributes(clan::DomNamedNodeMap attributes)
 {
     m_ref = get_required_string("skillName", attributes);
 }
+
+
 
 // StoneRing:: is the namespace here (confusing kinda)
 bool StoneRing::operator==(const SkillRef& lhs, const SkillRef& rhs) 
@@ -206,7 +209,7 @@ bool SkillTreeNode::CanLearn ( Character* pCharacter )
     if(m_parent)
     {
         // They have to have the parent skill. That's how trees work, you see.
-        if(!pCharacter->HasSkill(m_parent->GetRef()->GetRef()))
+        if(!pCharacter->HasSkill(m_parent->GetRef()))
             return false;
     }
     
@@ -221,13 +224,14 @@ bool SkillTreeNode::CanLearn ( Character* pCharacter )
     
 }
 
-SkillRef* SkillTreeNode::GetRef() const
-{
-    return m_ref;
-}
+
 
 void SkillTreeNode::load_attributes ( clan::DomNamedNodeMap attributes )
 {
+    m_ref = get_required_string("skill", attributes);
+    if(!AbilityManager::SkillExists(m_ref)){
+      throw clan::Exception("Unknown skill " + m_ref);
+    }
     m_nSp = get_implied_int("sp",attributes,0);
     m_nMinLevel = get_implied_int("min_level",attributes,1);
     m_requirements = get_implied_string("reqs",attributes,"");
@@ -238,9 +242,11 @@ bool SkillTreeNode::handle_element ( Element::eElement element, Element* pElemen
 {
     switch(element)
     {
+#if SEPARATE_SKILL_REF_ELEMENT
         case ESKILLREF:
             m_ref = dynamic_cast<SkillRef*>(pElement);
             break;
+#endif
         case ESKILLTREENODE:{
             SkillTreeNode* pNode = dynamic_cast<SkillTreeNode*>(pElement);
             pNode->m_parent = this;

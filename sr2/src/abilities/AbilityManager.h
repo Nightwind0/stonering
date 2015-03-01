@@ -29,7 +29,6 @@ namespace StoneRing
         static std::list<StatusEffect*>::const_iterator GetStatusEffectsEnd();
 
         static StatusEffect * GetStatusEffect ( const std::string &ref );
-        static Skill * GetSkill ( const SkillRef &ref );
 
         static Skill * GetSkill ( const std::string &skill );
 
@@ -42,7 +41,7 @@ namespace StoneRing
 
         SkillMap m_skills;
         StatusEffectMap m_status_effects;
-		static AbilityManager* m_pInstance;
+	static AbilityManager* m_pInstance;	
     };
 
 
