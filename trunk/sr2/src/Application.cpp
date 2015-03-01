@@ -1487,7 +1487,7 @@ SteelType Application::skilltree ( SteelType::Handle hCharacter, bool buy )
     
     SteelType var;
     if(mSkillTreeState.GetSelectedSkillNode())
-        var.set( mSkillTreeState.GetSelectedSkillNode()->GetRef()->GetSkill() );
+        var.set( GetAbilityManager()->GetSkill(mSkillTreeState.GetSelectedSkillNode()->GetRef()));
     return var;
 }
 
@@ -2873,7 +2873,7 @@ int Application::main ( const std::vector<std::string> args )
     ItemManager::initialize();
     SoundManager::initialize();
     CharacterManager::initialize();
-	AbilityManager::initialize();
+    AbilityManager::initialize();
 
 
 #ifndef NDEBUG

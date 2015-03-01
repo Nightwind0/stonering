@@ -256,7 +256,7 @@ bool Character::HasSkill(const std::string& skill)
             // If this skill is a top-level skill (no pre-reqs),
             // and has no special restrictions (by, level, etc),
             // then we are considered to have it, regardless of it being in our explicit list
-            if(pNode->GetRef()->GetRef() == skill && pNode->GetParent() == NULL 
+            if(pNode->GetRef() == skill && pNode->GetParent() == NULL 
                 && pNode->CanLearn(this) && pNode->GetSPCost() == 0)
                 return true;
         }

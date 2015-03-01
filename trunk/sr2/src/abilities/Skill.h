@@ -42,7 +42,8 @@ namespace StoneRing
 
         // This is called when you actually select the option.
         // Most options will then let you select a character/party as a target
-        void Invoke(ICharacter*pCharacter, const ParameterList& params);
+	// Returns whether the skill went through (i.e. was not cancelled)
+        bool Invoke(ICharacter*pCharacter, const ParameterList& params);
         
         std::string GetDescription() const { return m_description; }
 
@@ -83,6 +84,7 @@ namespace StoneRing
         std::string m_ref;
     };
 
+
     class SkillTreeNode: public Element
     {
     public:
@@ -93,18 +95,18 @@ namespace StoneRing
         uint GetMinLevel() const;
         bool CanLearn(Character* pCharacter);
         std::string GetRequirements() const { return m_requirements; }
-        SkillRef* GetRef() const;
+        std::string GetRef() const { return m_ref; }
         SkillTreeNode* GetParent() const;
         std::list<SkillTreeNode*>::const_iterator GetSubSkillsBegin() const;
         std::list<SkillTreeNode*>::const_iterator GetSubSkillsEnd() const;
-		virtual std::string GetDebugId() const { return m_ref->GetDebugId(); }				
+		virtual std::string GetDebugId() const { return m_ref; }				
     private:
         virtual bool handle_element(eElement element, Element * pElement);
         virtual void load_attributes(clan::DomNamedNodeMap attributes);
         ScriptElement* m_pCondition;
 		ScriptElement* m_pVisibilityCondition;
         std::list<SkillTreeNode*> m_sub_skills;
-        SkillRef* m_ref;
+        std::string m_ref;
         std::string m_requirements;
         uint m_nSp;
         uint m_nMinLevel;        

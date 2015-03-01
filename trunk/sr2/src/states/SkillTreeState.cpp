@@ -124,16 +124,17 @@ void SkillTreeState::Start()
 
 void SkillTreeState::draw_option ( int option, bool selected, float x, float y, clan::Canvas& gc )
 {
-    SkillRef* pSkillRef = m_skills[option]->GetRef();
+    std::string skillname = m_skills[option]->GetRef();
+    Skill* skill = AbilityManager::GetSkill(skillname);
     StoneRing::Font font;
     StoneRing::Font costFont;
         
-    bool has_skill = m_pChar->HasSkill(pSkillRef->GetRef());
+    bool has_skill = m_pChar->HasSkill(skillname);
     bool can_afford = m_pChar->GetSP() >= m_skills[option]->GetSPCost();
     bool met_reqs = m_skills[option]->CanLearn(m_pChar) && ! has_skill;
     
-    bool can_use = (pSkillRef->GetSkill()->GetType() == Skill::WORLD ||
-            pSkillRef->GetSkill()->GetType() == Skill::BOTH);
+    bool can_use = (skill->GetType() == Skill::WORLD ||
+            skill->GetType() == Skill::BOTH);
     
 
     
@@ -167,7 +168,7 @@ void SkillTreeState::draw_option ( int option, bool selected, float x, float y, 
     if(selected)
         font = m_selection_font;
     
-    pSkillRef->GetSkill()->GetIcon().draw(gc,x+m_icon_point.x,y+m_icon_point.y);   
+    skill->GetIcon().draw(gc,x+m_icon_point.x,y+m_icon_point.y);   
 
 
     if(m_skills[option]->GetSubSkillsBegin() != m_skills[option]->GetSubSkillsEnd())
@@ -179,7 +180,7 @@ void SkillTreeState::draw_option ( int option, bool selected, float x, float y, 
 
     
     font.draw_text(gc, x + m_name_offset.x, 
-                   y +  m_name_offset.y,m_skills[option]->GetRef()->GetRef(),Font::TOP_LEFT);
+                   y +  m_name_offset.y,m_skills[option]->GetRef(),Font::TOP_LEFT);
     
 }
 
@@ -221,7 +222,7 @@ void SkillTreeState::Draw ( const clan::Rect& screenRect, clan::Canvas& GC )
     for(std::deque<SkillTreeNode*>::const_iterator iter = skillStack.begin();
         iter != skillStack.end(); iter++)
     {
-        pathDesc << (*iter)->GetRef()->GetRef();
+        pathDesc << (*iter)->GetRef();
         std::deque<SkillTreeNode*>::const_iterator next = iter;
         next++;
         if(next != skillStack.end())
@@ -240,14 +241,14 @@ void SkillTreeState::Draw ( const clan::Rect& screenRect, clan::Canvas& GC )
     
     // Now draw description
     SkillTreeNode * pNode = m_skills[ get_current_choice() ];
-    Skill * pSkill = pNode->GetRef()->GetSkill();
-    SkillRef* pSkillRef = pNode->GetRef();
-    bool has_skill = m_pChar->HasSkill(pSkillRef->GetRef());    
+    Skill * pSkill = AbilityManager::GetSkill(pNode->GetRef());
+
+    bool has_skill = m_pChar->HasSkill(pNode->GetRef());    
     bool met_reqs = pNode->CanLearn(m_pChar) && ! has_skill;
     bool can_afford = m_pChar->GetSP() >= pNode->GetSPCost();
     
-    bool can_use = (pSkillRef->GetSkill()->GetType() == Skill::WORLD ||
-            pSkillRef->GetSkill()->GetType() == Skill::BOTH);    
+    bool can_use = (pSkill->GetType() == Skill::WORLD ||
+            pSkill->GetType() == Skill::BOTH);    
     
     clan::Rect desc_rect = m_description;
     desc_rect.shrink ( GraphicsManager::GetMenuInset().x, GraphicsManager::GetMenuInset().y );
@@ -256,16 +257,16 @@ void SkillTreeState::Draw ( const clan::Rect& screenRect, clan::Canvas& GC )
     std::ostringstream cost_stream;
     cost_stream << "Uses: ";
     
-    if(pSkillRef->GetSkill()->GetBPCost()){
-        cost_stream << std::setw(5) << pSkillRef->GetSkill()->GetBPCost() << ' ' << "BP";
-        if(m_eUse != USE || m_pChar->GetAttribute(ICharacter::CA_BP) > pSkillRef->GetSkill()->GetBPCost()){
+    if(pSkill->GetBPCost()){
+        cost_stream << std::setw(5) << pSkill->GetBPCost() << ' ' << "BP";
+        if(m_eUse != USE || m_pChar->GetAttribute(ICharacter::CA_BP) > pSkill->GetBPCost()){
             m_bp_cost.draw_text(GC,m_use_cost_pt.x,m_use_cost_pt.y, cost_stream.str(),Font::TOP_LEFT);
         }else{
             m_not_enough_points_font.draw_text(GC,m_use_cost_pt.x,m_use_cost_pt.y, cost_stream.str(),Font::TOP_LEFT);
         }
-    }else if(pSkillRef->GetSkill()->GetMPCost()){
-        cost_stream << std::setw(5) << pSkillRef->GetSkill()->GetMPCost() << ' ' << "MP";
-        if(m_eUse != USE || m_pChar->GetAttribute(ICharacter::CA_MP) > pSkillRef->GetSkill()->GetMPCost()){       
+    }else if(pSkill->GetMPCost()){
+        cost_stream << std::setw(5) << pSkill->GetMPCost() << ' ' << "MP";
+        if(m_eUse != USE || m_pChar->GetAttribute(ICharacter::CA_MP) > pSkill->GetMPCost()){       
             m_mp_cost.draw_text(GC,m_use_cost_pt.x,m_use_cost_pt.y, cost_stream.str(), Font::TOP_LEFT);
         }else{
             m_not_enough_points_font.draw_text(GC,m_use_cost_pt.x,m_use_cost_pt.y, cost_stream.str(), Font::TOP_LEFT);
@@ -304,7 +305,7 @@ void SkillTreeState::Draw ( const clan::Rect& screenRect, clan::Canvas& GC )
     std::ostringstream reqs;
     if(pNode->GetParent())
     {
-        reqs << "Requires " << pNode->GetParent()->GetRef()->GetRef() << '\n';
+        reqs << "Requires " << pNode->GetParent()->GetRef() << '\n';
     }
     if(pNode->GetMinLevel())
     {
@@ -410,8 +411,8 @@ void SkillTreeState::HandleButtonDown ( const StoneRing::IApplication::Button& b
 void SkillTreeState::process_choice ( int selection )
 {
     SkillTreeNode* node = m_skills[selection];
-    SkillRef* pSkillRef = m_skills[selection]->GetRef();
-    bool has_skill = m_pChar->HasSkill(pSkillRef->GetRef());
+    Skill * skill = AbilityManager::GetSkill(node->GetRef());
+    bool has_skill = m_pChar->HasSkill(node->GetRef());
     bool can_afford = m_pChar->GetSP() >= node->GetSPCost();
     bool met_reqs = node->CanLearn(m_pChar) && ! has_skill;      
     
@@ -420,9 +421,9 @@ void SkillTreeState::process_choice ( int selection )
         if(!has_skill && can_afford && met_reqs)
         {
             m_pChar->SetSP ( m_pChar->GetSP() - node->GetSPCost() );
-            m_pChar->LearnSkill(pSkillRef->GetRef());
+            m_pChar->LearnSkill(node->GetRef());
 			SkillGetState state;
-			state.SetSkill(pSkillRef->GetSkill());
+			state.SetSkill(skill);
 			IApplication::GetInstance()->RunState(&state);
         }
         else
@@ -432,11 +433,11 @@ void SkillTreeState::process_choice ( int selection )
         }
     }else if(m_eUse == USE)
     {
-        if(has_skill && (pSkillRef->GetSkill()->GetType() == Skill::WORLD ||
-            pSkillRef->GetSkill()->GetType() == Skill::BOTH))
+        if(has_skill && (skill->GetType() == Skill::WORLD ||
+            skill->GetType() == Skill::BOTH))
         {
-            if(pSkillRef->GetSkill()->GetMPCost() <= m_pChar->GetAttribute(ICharacter::CA_MP) 
-                && pSkillRef->GetSkill()->GetBPCost() <= m_pChar->GetAttribute(ICharacter::CA_BP))
+            if(skill->GetMPCost() <= m_pChar->GetAttribute(ICharacter::CA_MP) 
+                && skill->GetBPCost() <= m_pChar->GetAttribute(ICharacter::CA_BP))
             {
                 m_pSelectedNode = node;
                 m_bDone = true;

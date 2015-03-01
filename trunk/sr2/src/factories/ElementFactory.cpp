@@ -136,7 +136,9 @@ void ElementFactory::registerCreateMethods()
     mCreateMethods["runeType"] = &ElementFactory::CreateElement<RuneType>;
     mCreateMethods["script"] = &ElementFactory::createScriptElement;
     mCreateMethods["skill"] = &ElementFactory::CreateElement<Skill>;
+
     mCreateMethods["skillRef"] = &ElementFactory::CreateElement<SkillRef>;
+
     mCreateMethods["skillTreeNode"] = &ElementFactory::CreateElement<SkillTreeNode>;
     mCreateMethods["soundPlay"] = &ElementFactory::CreateElement<SoundPlay>;
     mCreateMethods["specialItem"] = &ElementFactory::CreateElement<SpecialItem>;

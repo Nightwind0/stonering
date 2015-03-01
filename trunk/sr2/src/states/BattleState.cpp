@@ -797,7 +797,7 @@ void BattleState::Display::draw( clan::Canvas& GC ) {
 
 }
 
-BattleState::Sprite::Sprite( clan::Sprite sprite ): m_sprite( sprite ), m_enabled(true),m_zorder(0) {
+BattleState::Sprite::Sprite( clan::Sprite sprite ): m_sprite( sprite ), m_enabled(true),m_zorder(0), m_kage_style(eKageStyle::BLACK), m_kage_interval(0.0), m_kage_count(0) {
 }
 
 BattleState::Sprite::~Sprite() {
