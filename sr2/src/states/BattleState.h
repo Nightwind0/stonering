@@ -230,6 +230,8 @@ private:
 	clan::Rectf get_sprite_rect( SpriteTicket nSprite );
 	void set_offset(SpriteTicket sprite, const clan::Pointf& offset);
 	clan::Pointf get_offset(SpriteTicket sprite);
+	void set_zorder(SpriteTicket sprite, int zorder);
+	int get_zorder(SpriteTicket sprite);	
 	void set_offset(ICharacterGroup* pGroup,const clan::Pointf& offset);
 	clan::Pointf get_offset(ICharacterGroup* pGroup);
 	void set_shadow_offset(ICharacter* ch, const clan::Pointf& offet);

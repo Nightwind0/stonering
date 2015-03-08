@@ -141,7 +141,7 @@ void AnimationState::draw_functor( const clan::Rect& screenRect, clan::Canvas& G
 			pTask->finish( m_pInterpreter );
 			// Do something with waitFor?
 #ifndef NDEBUG
-			std::cout << "Finished task: " << pTask->GetName() << '@' << std::hex << pTask << std::endl;
+			//std::cout << "Finished task: " << pTask->GetName() << '@' << std::hex << pTask << std::endl;
 #endif
 			//m_wait_event.set();
 		}
@@ -263,6 +263,9 @@ void AnimationState::SteelInit( SteelInterpreter *pInterpreter ) {
 		pInterpreter->addFunction( "orbitSprite", "anim", new SteelFunctor3Arg<AnimationState,int,SteelType::Handle,SteelType::Handle>(this, &AnimationState::orbitSprite) );
 		pInterpreter->addFunction( "orbitSpriteTimed", "anim", new SteelFunctor4Arg<AnimationState,int,SteelType::Handle,SteelType::Handle,double>(this, &AnimationState::orbitSpriteTimed) );
 		pInterpreter->addFunction( "floatCharacter", "anim", new SteelFunctor3Arg<AnimationState,SteelType::Handle, SteelType::Functor, double>(this, &AnimationState::floatCharacter ) );
+		
+		pInterpreter->addFunction( "setSpriteZorder", "anim", Steel::create_functor(this,&AnimationState::setSpriteZorder) );
+		pInterpreter->addFunction( "getSpriteZorder", "anim", Steel::create_functor(this,&AnimationState::getSpriteZorder) );
 		SteelConst( pInterpreter, "$_TOP_LEFT", ( int )Locale::TOP_LEFT );
 		SteelConst( pInterpreter, "$_TOP_RIGHT", ( int )Locale::TOP_RIGHT );
 		SteelConst( pInterpreter, "$_TOP_CENTER", ( int )Locale::TOP_CENTER );
@@ -362,6 +365,17 @@ SteelType AnimationState::addWeaponSprite( SteelType::Handle hWeapon ) {
 	}
 
 	return var;
+}
+
+SteelType AnimationState::getSpriteZorder(int sprite){
+    SteelType var;
+    var.set(m_parent.get_zorder(sprite));
+    return var;
+}
+
+SteelType AnimationState::setSpriteZorder(int sprite, int zorder){
+    m_parent.set_zorder(sprite,zorder);
+    return SteelType();	
 }
 
 SteelType AnimationState::removeSprite( int sprite ) {
@@ -474,7 +488,7 @@ SteelType AnimationState::setSpriteColor(int sprite, double r, double g, double 
 SteelType AnimationState::moveSprite( int sprite, SteelType::Handle hpath ) {
 	PathTask* task = new PathTask( *this );
 #ifndef NDEBUG
-	std::cout << "PathTask created: " << std::hex << task << std::endl;
+	//std::cout << "PathTask created: " << std::hex << task << std::endl;
 #endif
 	task->SetSprite( sprite );
 	task->init( Steel::GrabHandle<Path*>( hpath ) );
@@ -790,6 +804,7 @@ SteelType AnimationState::fadeSprite( int sprite, SteelType::Handle hFade, doubl
 	FadeTask * task = new FadeTask( *this );
 	task->SetSprite( sprite );
 	task->SetDuration( seconds  );
+	task->SetFunctor( fade->m_functor );
 	m_handles.push_back( task );
 	SteelType var;
 	var.set( task );
@@ -815,6 +830,8 @@ SteelType AnimationState::colorizeSprite( int sprite, SteelType::Handle hColoriz
 	ColorizeTask * task = new ColorizeTask( *this );
 
 	task->init( *Steel::GrabHandle<Colorizer*>( hColorizer ) );
+	task->SetSprite(sprite);
+	task->SetDuration(seconds);
 	m_handles.push_back( task );
 	SteelType var;
 	var.set( task );
@@ -868,7 +885,7 @@ SteelType AnimationState::waitFor( SteelType::Handle waitOn ) {
 	val.set( waitOn );
 	Task * pTask = Steel::GrabHandle<Task*>( waitOn );
 #ifndef NDEBUG
-	std::cout << "Waiting on:" << pTask->GetName() << std::hex << pTask << std::endl;
+	//std::cout << "Waiting on:" << pTask->GetName() << std::hex << pTask << std::endl;
 #endif
 #if 0
 	std::cout << "Going to lock ftm" << std::endl;
@@ -921,7 +938,7 @@ void AnimationState::add_task( AnimationState::Task* task ) {
 	m_task_mutex.lock();
 	if(!task->expired() && !task->running()){
 #ifndef NDEBUG
-		std::cout << "Adding task: " << task->GetName() << '@' << std::hex << task <<" to " << std::dec << m_tasks.size() << " existing tasks" << std::endl;
+		//std::cout << "Adding task: " << task->GetName() << '@' << std::hex << task <<" to " << std::dec << m_tasks.size() << " existing tasks" << std::endl;
 #endif
 		task->start( m_pInterpreter );
 		m_tasks.push_back(task);
@@ -1492,6 +1509,7 @@ void AnimationState::OrbitTask::update(SteelInterpreter* pInterpreter){
 	float radius = ( double ) m_orbit.m_radius_functor->Call(pInterpreter, params );
 	float speed = ( double )m_orbit.m_speed_functor->Call( pInterpreter, params );
 	float delta = speed * float( clan::System::get_time() - m_last_time );
+	//std::cout << "R=" << radius << " p= " << percentage() << std::endl;
 	m_degrees += delta ;
 	m_completion_degrees += fabs(delta);
 	if( m_completion_degrees > m_orbit.m_degrees ){
@@ -1505,8 +1523,8 @@ void AnimationState::OrbitTask::update(SteelInterpreter* pInterpreter){
 	clan::Pointf cpoint( cos( angle ), sin( angle ) );
 	//		
 	clan::Pointf current = m_state.GetSpriteRect(m_sprite).get_center();
-	clan::Pointf origin = current - cpoint * m_last_radius;
-
+	//clan::Pointf origin = current - cpoint * m_last_radius;
+	clan::Pointf origin = m_state.GetPosition(m_origin);
 	
 	// Now we have to calculate our new point from our derived origin
 	clan::Pointf new_point = origin +  cpoint * radius; // Here's our new orbit point
@@ -1682,7 +1700,7 @@ void AnimationState::FadeTask::_start( SteelInterpreter* pInterpreter ) {
 void AnimationState::FadeTask::update( SteelInterpreter* pInterpreter ) {
 	TimedTask::update();
 	float alpha = 1.0f - percentage();
-	if( m_functor ) {
+	if(  m_functor ) {
 		SteelType::Container params;
 		SteelType p;
 		p.set( percentage() ); // or _percentage?
@@ -1705,8 +1723,6 @@ void AnimationState::ColorizeTask::SetDuration( float duration ) {
 	m_duration = duration;
 }
 
-void AnimationState::ColorizeTask::_start( SteelInterpreter* pInterpreter ) {
-}
 
 void AnimationState::ColorizeTask::update( SteelInterpreter* pInterpreter ) {
 	SteelType::Container params;

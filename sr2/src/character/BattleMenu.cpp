@@ -139,11 +139,11 @@ void BattleMenu::draw_option(int option, bool selected, float x, float y, clan::
         std::string type= "";
         if(pOption->GetBPCost()){
             font = m_bpFont;
-            cost = pOption->GetBPCost();
+            cost = pOption->GetBPCost() * m_pCharacter->GetAttribute(ICharacter::CA_BP_COST);
             type = "BP";
         }else{
             font = m_mpFont;
-            cost = pOption->GetMPCost();
+            cost = pOption->GetMPCost() * m_pCharacter->GetAttribute(ICharacter::CA_MP_COST);
             type = "MP";
         }
         float font_height = font.get_font_metrics(gc).get_height();

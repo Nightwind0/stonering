@@ -160,6 +160,7 @@ namespace StoneRing
 			// Finish will be called when the task is finished
 			void finish(SteelInterpreter* pInterpreter){
 				m_task_state = EXPIRED;
+				cleanup();
 #ifndef NDEBUG
 				std::cout << "Task " << GetName() << " finished and marked expired" << std::endl;
 #endif
@@ -498,8 +499,7 @@ namespace StoneRing
 
 			virtual void update(SteelInterpreter*);
 			virtual void cleanup();
-		private:
-			virtual void _start(SteelInterpreter*);			
+		private:		
 			Colorizer m_colorizer;
 		};
 		
@@ -567,6 +567,8 @@ namespace StoneRing
 		SteelType arc_over(double p);
 		SteelType arc_under(double p);
 		SteelType createSprite(const std::string& sprite_ref); // Returns a SpriteTicket (int)
+	        SteelType getSpriteZorder(int sprite);
+		SteelType setSpriteZorder(int sprite, int zorder);
 		SteelType getCharacterSprite(SteelType::Handle iCharacter);
 		SteelType addWeaponSprite(SteelType::Handle hWeapon);
 		SteelType removeSprite(int sprite);
