@@ -2823,6 +2823,7 @@ void Application::run(bool process_functors)
 
 		mStates.pop_back();
 	}catch ( SteelException ex ){
+		std::cerr  << ex.getScript() << ':' << ex.getLine() << ' ' << ex.getMessage() ;
 		if(!mStates.empty()){
 			mStates.back()->Finish();
 			mStates.back()->SteelCleanup ( mInterpreter );		

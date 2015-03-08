@@ -42,12 +42,12 @@ bool BattleMenuOption::Enabled(const ParameterList &params, Character * pCharact
     if(m_action_type == SKILLREF)
     {
         Skill * pSkill = m_action.m_pSkillRef->GetSkill();
-        if(pSkill->GetBPCost() > pCharacter->GetAttribute(ICharacter::CA_BP))
+        if(pSkill->GetBPCost() * pCharacter->GetAttribute(ICharacter::CA_BP_COST) > pCharacter->GetAttribute(ICharacter::CA_BP))
         {
             return false;
         }
         
-        if(pSkill->GetMPCost() > pCharacter->GetAttribute(ICharacter::CA_MP))
+        if(pSkill->GetMPCost() * pCharacter->GetAttribute(ICharacter::CA_MP_COST) > pCharacter->GetAttribute(ICharacter::CA_MP))
         {
             return false;
         }

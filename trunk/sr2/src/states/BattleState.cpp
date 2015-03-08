@@ -1617,6 +1617,15 @@ clan::Pointf BattleState::get_offset( BattleState::SpriteTicket sprite ) {
 	clan::MutexSection l(&m_sprite_mutex);
 	return m_sprites[sprite].GetOffset();
 }
+void BattleState::set_zorder( BattleState::SpriteTicket sprite, int zorder ) {
+	clan::MutexSection l(&m_sprite_mutex);
+	m_sprites[sprite].SetZOrder(zorder);
+}
+
+int BattleState::get_zorder( BattleState::SpriteTicket sprite ) {
+	clan::MutexSection l(&m_sprite_mutex);
+	return m_sprites[sprite].ZOrder();
+}
 
 
 void BattleState::set_offset( ICharacterGroup* pGroup, const clan::Pointf& offset ) {
