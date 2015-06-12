@@ -348,8 +348,7 @@ namespace StoneRing
 			void SetFlags(int flags);			
 			void SetStart(const Locale& start);
 			void SetEnd(const Locale& end);			
-		private:
-			virtual void _start(SteelInterpreter*);			
+		private:		
 			Path* m_path;
 		};		
 		
@@ -386,7 +385,7 @@ namespace StoneRing
 			virtual bool finished();
 			virtual void cleanup();
 		private:
-			virtual void _start(SteelInterpreter*);			
+			virtual void _start(SteelInterpreter*);				  
 			Rotation m_rotation;
 			float m_start_degrees;
 			float m_completion_degrees;

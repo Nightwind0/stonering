@@ -166,17 +166,8 @@ int DynamicMenuState::GetSelection() const
 }
 
 
-void DynamicMenuState::draw_more_down_indicator()
-{
-    StoneRing::Menu::draw_more_down_indicator();
-}
 
-void DynamicMenuState::draw_more_up_indicator()
-{
-    StoneRing::Menu::draw_more_up_indicator();
-}
-
-void DynamicMenuState::draw_option ( int option, bool selected, float x, float y, clan::Canvas& gc )
+void DynamicMenuState::draw_option ( int option, bool selected, const clan::Rectf& dest_rect, clan::Canvas& gc )
 {
     
     Font lineFont;
@@ -190,7 +181,7 @@ void DynamicMenuState::draw_option ( int option, bool selected, float x, float y
     }
     
     
-    lineFont.draw_text(gc,x,y + lineFont.get_font_metrics(gc).get_height(), m_choices[option]); 
+    lineFont.draw_text(gc,dest_rect.get_top_left().x, dest_rect.get_top_left().y + lineFont.get_font_metrics(gc).get_height(), m_choices[option]); 
     
 }
 

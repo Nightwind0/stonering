@@ -45,21 +45,24 @@ public:
 
 protected:
     virtual clan::Rectf get_rect()=0;
-    virtual void draw_option(int option, bool selected, float x, float y, clan::Canvas& gc)=0;
+    virtual void draw_option(int option, bool selected, const clan::Rectf& dest_rect, clan::Canvas& gc)=0;
     virtual int height_for_option(clan::Canvas& gc)=0;
     virtual void process_choice(int selection)=0;
     virtual int get_option_count()=0;
-    virtual void draw_more_down_indicator(){}
-    virtual void draw_more_up_indicator(){}
+    virtual void draw_more_down_indicator(clan::Canvas& gc){}
+    virtual void draw_more_up_indicator(clan::Canvas& gc){}
     virtual bool hide_option(int option)const { return false; }
     virtual bool roll_over(){ return true; }
     virtual uint get_columns() const { return 1; }
+    virtual bool horizontal_scroll() { return false; }
     void reset_menu();
     int get_current_choice() const { return m_stack.front(); }
     bool is_selected(int index) const { return index == m_stack.front(); }
 
 private:
     std::deque<int> m_stack;
+    float m_horiz_scroll;
+    long  m_idle_start;
 };
 
 };

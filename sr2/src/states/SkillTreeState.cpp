@@ -122,12 +122,14 @@ void SkillTreeState::Start()
                 m_pChar->GetClass()->GetSkillTreeNodesEnd());
 }
 
-void SkillTreeState::draw_option ( int option, bool selected, float x, float y, clan::Canvas& gc )
+void SkillTreeState::draw_option ( int option, bool selected, const clan::Rectf& rect, clan::Canvas& gc )
 {
     std::string skillname = m_skills[option]->GetRef();
     Skill* skill = AbilityManager::GetSkill(skillname);
     StoneRing::Font font;
     StoneRing::Font costFont;
+    const float x = rect.get_top_left().x;
+    const float y = rect.get_top_left().y;
         
     bool has_skill = m_pChar->HasSkill(skillname);
     bool can_afford = m_pChar->GetSP() >= m_skills[option]->GetSPCost();

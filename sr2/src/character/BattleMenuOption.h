@@ -33,7 +33,7 @@ namespace StoneRing
         bool Visible(Character * pCharacter);
         int  GetMPCost() const;
         int  GetBPCost() const;
-		virtual std::string GetDebugId() const { return m_name; }				
+	virtual std::string GetDebugId() const { return m_name; }				
 		
     private:
         virtual bool handle_element(eElement, Element *);

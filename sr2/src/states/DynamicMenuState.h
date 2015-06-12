@@ -47,12 +47,11 @@ protected:
     virtual void HandleButtonDown(const IApplication::Button& button);
     virtual void HandleAxisMove(const IApplication::Axis& axis, const IApplication::AxisDirection dir, float pos);  	
     virtual clan::Rectf get_rect();
-    virtual void draw_option(int option, bool selected, float x, float y, clan::Canvas& gc);
+    virtual void draw_option(int option, bool selected, const clan::Rectf& dest_rect, clan::Canvas& gc);
     virtual int height_for_option(clan::Canvas& gc);
     virtual void process_choice(int selection);
     virtual int get_option_count();
-    virtual void draw_more_down_indicator();
-    virtual void draw_more_up_indicator();
+
 private:
     clan::Rect calculate_rect();
     std::vector<std::string> m_choices;

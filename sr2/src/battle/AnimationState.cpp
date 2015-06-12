@@ -1253,8 +1253,6 @@ void AnimationState::TimedPathTask::init( Path* path ) {
 	m_path = path;
 }
 
-void AnimationState::TimedPathTask::_start( SteelInterpreter* pInterpreter ) {
-}
 
 void AnimationState::TimedPathTask::update( SteelInterpreter* pInterpreter ) {
 	assert( m_path );
@@ -1779,8 +1777,11 @@ void AnimationState::FunctionTask::init( double duration, SteelType::Functor f )
 void AnimationState::FunctionTask::_start( SteelInterpreter* pInterpreter ) {
 }
 
-void AnimationState::FunctionTask::update( SteelInterpreter* ) {
-
+void AnimationState::FunctionTask::update( SteelInterpreter* pInterpreter) {
+  if(percentage() >= 1.0 && m_functor) {
+    m_functor->Call(pInterpreter, SteelType::Container());
+    m_functor = nullptr;
+  }
 }
 
 void AnimationState::FunctionTask::cleanup() {

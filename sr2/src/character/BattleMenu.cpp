@@ -97,9 +97,12 @@ BattleMenuOption* BattleMenu::GetSelectedOption() const
     else return m_options[get_current_choice()];
 }
 
-void BattleMenu::draw_option(int option, bool selected, float x, float y, clan::Canvas& gc)
+void BattleMenu::draw_option(int option, bool selected, const clan::Rectf& rect, clan::Canvas& gc)
 {
     BattleMenuOption * pOption = m_options[option];
+    
+    const float x = rect.get_top_left().x;
+    const float y = rect.get_top_left().y;
     
     Font font;
     clan::Image icon = pOption->GetIcon();
@@ -123,11 +126,12 @@ void BattleMenu::draw_option(int option, bool selected, float x, float y, clan::
     
     
     bool cost = false;
+    const float spacing = 12.0f;
     if(pOption->GetBPCost() != 0 ||
         pOption->GetMPCost() != 0)
         cost = true;
-    clan::Rectf text_rect(x + 12.0f + icon.get_width() ,  y ,
-                       clan::Sizef(m_rect.get_width() - 12.0f - icon.get_width() - (cost?m_cost_spacing.x:0), height_for_option(gc)));
+    clan::Rectf text_rect(x + spacing + icon.get_width() ,  y ,
+                       clan::Sizef(m_rect.get_width() - spacing - icon.get_width() - (cost?m_cost_spacing.x:0), height_for_option(gc)));
    // font.draw_text(gc,x  + 12.0f + icon.get_width() , font.get_font_metrics(gc).get_height() + y + font_height_offset,pOption->GetName());
     draw_text(gc,font,text_rect,pOption->GetName(),0);
     icon.draw(gc,static_cast<int>(x ), static_cast<int>(y));

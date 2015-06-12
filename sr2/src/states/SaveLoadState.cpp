@@ -159,10 +159,13 @@ int SaveLoadState::get_option_count()
     return 25;
 }
 
-void SaveLoadState::draw_option ( int option, bool selected, float x, float y, clan::Canvas& gc )
+void SaveLoadState::draw_option ( int option, bool selected, const clan::Rectf& dest_rect, clan::Canvas& gc )
 {
     // Need #, hours, date last saved, face for each person in the party
     const clan::Rectf screen = get_rect(); 
+    const float x = dest_rect.get_top_left().x;
+    const float y = dest_rect.get_top_left().y;
+    
     clan::Rect rect(x,y,x+screen.get_width(),y+height_for_option(gc));
     MenuBox::Draw(gc,rect,true);
  
