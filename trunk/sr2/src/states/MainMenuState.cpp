@@ -273,7 +273,7 @@ clan::Rectf MainMenuState::get_rect()
     return menu_rect;
 }
 
-void MainMenuState::draw_option(int option, bool selected, float x, float y, clan::Canvas& gc)
+void MainMenuState::draw_option(int option, bool selected, const clan::Rectf& rect, clan::Canvas& gc)
 {
         Font  lineFont;
 	
@@ -282,7 +282,8 @@ void MainMenuState::draw_option(int option, bool selected, float x, float y, cla
 	if(selected){
 	    lineFont = m_selectionFont;  ;
 	}
-
+	float x = rect.get_top_left().x;
+	float y = rect.get_top_left().y;
 	
 	m_choices[option]->GetIcon().draw(gc,x,y);
         lineFont.draw_text(gc, x + m_choices[option]->GetIcon().get_width() + 10,  y + lineFont.get_font_metrics(gc).get_height(),

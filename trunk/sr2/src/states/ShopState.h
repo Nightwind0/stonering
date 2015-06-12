@@ -63,7 +63,7 @@ private:
         void EnableSelection();
         void DisableSelection();
         virtual clan::Rectf get_rect();
-        virtual void draw_option(int option, bool selected, float x, float y, clan::Canvas& gc);
+        virtual void draw_option(int option, bool selected, const clan::Rectf& rect, clan::Canvas& gc);
         virtual int height_for_option(clan::Canvas& gc);
         virtual void process_choice(int selection);
         virtual int get_option_count();

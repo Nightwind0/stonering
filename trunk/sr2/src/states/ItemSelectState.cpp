@@ -219,9 +219,12 @@ clan::Rectf ItemSelectState::get_rect() {
     return m_rect;
 }
 
-void ItemSelectState::draw_option( int option, bool selected, float x, float y, clan::Canvas& gc ) {
+void ItemSelectState::draw_option( int option, bool selected, const clan::Rectf& rect, clan::Canvas& gc ) {
     const std::pair<Item*, int>& pair  = m_items[ m_itemType ][option];
 
+    const float x = rect.get_top_left().x;
+    const float y = rect.get_top_left().y;
+    
     Item * pItem = pair.first;
     const int count = pair.second;
     bool available = selection_applies( pItem );

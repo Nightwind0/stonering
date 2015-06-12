@@ -75,22 +75,25 @@ public:
 	virtual void Visit( StatusEffect* pEffect ) {
 		
 		clan::Sprite sprite = pEffect->GetIcon();
-		sprite.update(clan::System::get_time() -  m_last_render_time);
+		//sprite.update(clan::System::get_time() -  m_last_render_time);
 		sprite.set_alpha( 0.5f );
 		m_last_render_time = clan::System::get_time();
 		int sprites_per_col = m_height / ( sprite.get_height() + m_spacing.y );
 		int col = m_i / sprites_per_col;
 		int row = m_i % sprites_per_col;
 		clan::Pointf origin( m_start.x + col * ( m_spacing.x + sprite.get_width() ) * m_mult,
-																				m_start.y + row * ( m_spacing.y + sprite.get_height() ) );
+				m_start.y + row * ( m_spacing.y + sprite.get_height() ) );
 		clan::Sizef size( sprite.get_width(), sprite.get_height() );
 		clan::Rectf box( origin, size );
 		clan::Rectf shadowbox = box;
 		shadowbox.translate( clan::Pointf( 2, 2 ) );
 
-		// clan::Draw::fill(m_gc, shadowbox, m_shadow);
+		m_gc.fill_rect(shadowbox, m_shadow);
+		//(m_gc, shadowbox, m_shadow);
 		sprite.draw( m_gc, origin.x, origin.y );
 		m_i++;
+		
+		//std::cout << '#';
 	}
 
 private:
@@ -615,7 +618,7 @@ void BattleState::draw_status( const clan::Rectf &screenRect, clan::Canvas& GC )
 			m_generalFont.set_alpha(percentage);
 		}
 
-		m_generalFont.draw_text( GC, textRect.left,
+		m_charNameFont.draw_text( GC, textRect.left,
 					 				textRect.top + ( p * height_per_character ),
 									name.str(), Font::TOP_LEFT );
 		m_generalFont.set_alpha(1.0f);
@@ -1093,7 +1096,7 @@ clan::Pointf BattleState::get_player_locus( uint nPlayer )const {
 	const uint partySize = IApplication::GetInstance()->GetParty()->GetCharacterCount();
 	double each_player = m_player_rect.get_width() / partySize;
 	// TODO: Get the spacing from config
-	point.x = m_player_rect.left + ( nPlayer ) * each_player + ( each_player / 2.0 );
+	point.x = m_player_rect.left + ( nPlayer ) * each_player; //+ ( each_player / 2.0 );
 	point.y = m_player_rect.top + ( nPlayer ) * 64;
 	return point;
 }

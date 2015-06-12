@@ -134,7 +134,7 @@ clan::Rectf StoneRing::ChoiceState::get_rect()
     return text_rect;
 }
 
-void StoneRing::ChoiceState::draw_option(int option, bool selected, float x, float y, clan::Canvas& gc)
+void StoneRing::ChoiceState::draw_option(int option, bool selected, const clan::Rectf& rect, clan::Canvas& gc)
 {
         Font  lineFont;
 	
@@ -144,7 +144,7 @@ void StoneRing::ChoiceState::draw_option(int option, bool selected, float x, flo
 	    lineFont = m_currentOptionFont;  
 	}
 
-        lineFont.draw_text(gc, x,  y + lineFont.get_font_metrics(gc).get_height(),
+        lineFont.draw_text(gc, rect.get_top_left().x,  rect.get_top_left().y + lineFont.get_font_metrics(gc).get_height(),
                          m_choices[option], Font::ABOVE
   			);
 }

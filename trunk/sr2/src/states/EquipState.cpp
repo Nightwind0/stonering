@@ -561,7 +561,7 @@ void EquipState::EquipmentMenu::ClearOptions()
     Menu::reset_menu();
 }
 
-void EquipState::EquipmentMenu::draw_option ( int option, bool selected, float x, float y, clan::Canvas& gc )
+void EquipState::EquipmentMenu::draw_option ( int option, bool selected, const clan::Rectf& rect, clan::Canvas& gc )
 {
     Equipment * pEquipment = m_options[option];
     Font font = (selected&&m_enable_selection)?m_selected_font:m_option_font;
@@ -569,12 +569,12 @@ void EquipState::EquipmentMenu::draw_option ( int option, bool selected, float x
     clan::Image icon;
     if(pEquipment == NULL){
         icon = m_remove_icon;
-        icon.draw(gc,x,y);
-        font.draw_text(gc,x + icon.get_width() + 2,y + (height_for_option(gc) - metrics.get_height())/2 ,"-- Remove --", Font::TOP_LEFT);
+        icon.draw(gc,rect.get_top_left().x,rect.get_top_left().y);
+        font.draw_text(gc,rect.get_top_left().x + icon.get_width() + 2, rect.get_top_left().y + (height_for_option(gc) - metrics.get_height())/2 ,"-- Remove --", Font::TOP_LEFT);
     }else{
         icon = pEquipment->GetIcon();
-        icon.draw(gc,x,y);
-        font.draw_text(gc,x + icon.get_width() + 2,y + (height_for_option(gc) - metrics.get_height())/2,pEquipment->GetName(), Font::TOP_LEFT);
+        icon.draw(gc,rect.get_top_left().x,rect.get_top_left().y);
+        font.draw_text(gc,rect.get_top_left().x + icon.get_width() + 2, rect.get_top_left().y + (height_for_option(gc) - metrics.get_height())/2,pEquipment->GetName(), Font::TOP_LEFT);
     }
 }
 

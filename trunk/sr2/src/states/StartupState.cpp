@@ -120,9 +120,11 @@ clan::Rectf StartupState::get_rect()
 }
 
 
-void StartupState::draw_option ( int option, bool selected, float x, float y, clan::Canvas& gc )
+void StartupState::draw_option ( int option, bool selected, const clan::Rectf& rect, clan::Canvas& gc )
 {
     std::string option_str;
+    const float x = rect.get_top_left().x;
+    const float y = rect.get_top_right().y;
     if(option == 0)
         option_str = "Continue";
     else if(option == 1)

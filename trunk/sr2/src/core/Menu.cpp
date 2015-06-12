@@ -66,7 +66,7 @@ void Menu::Draw(clan::Canvas& gc)
     
     int skip_count = 0;
     int options = 0;	
-	int option = 0;
+    int option = 0;
     for(int i = options_per_page * page;  i  < get_option_count() && option < options_per_page; i++)
     {
             if(hide_option(i))
@@ -79,9 +79,14 @@ void Menu::Draw(clan::Canvas& gc)
     for(int i = options_per_page * page; i < get_option_count() && option < options_per_page; i++)
     {
         if(!hide_option(i)){
-            draw_option(i,i==cursor,rect.get_top_left().x,rect.get_top_left().y + option * height_for_option(gc),gc);
+	  const float height = height_for_option(gc);
+	  clan::Rectf clipRect ( rect.get_top_left().x, rect.get_top_left().y + option * height, rect.get_top_right().x, rect.get_top_left().y + (option+1) *  height);
+	  
+	  gc.push_cliprect(clipRect);
+            draw_option(i,i==cursor,clipRect,gc);
 			++option;
-		}
+	  gc.pop_cliprect();		
+	}
     }
 }
 

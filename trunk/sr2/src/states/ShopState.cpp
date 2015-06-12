@@ -73,10 +73,12 @@ void ShopState::ItemMenu::DisableSelection()
     m_enable_selection = false;
 }
 
-void ShopState::ItemMenu::draw_option ( int option, bool selected, float x, float y, clan::Canvas& gc )
+void ShopState::ItemMenu::draw_option ( int option, bool selected, const clan::Rectf& rect, clan::Canvas& gc )
 {
     Item * pItem = m_options[option].m_pItem;
     Font font = m_option_font;
+    const float x = rect.get_top_left().x;
+    const float y = rect.get_top_left().y;
     if(!m_bSell && IApplication::GetInstance()->GetParty()->GetGold() < pItem->GetValue()){
         font = m_unavailable_font;
     }

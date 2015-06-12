@@ -41,6 +41,8 @@ bool BattleMenuOption::Enabled(const ParameterList &params, Character * pCharact
 {
     if(m_action_type == SKILLREF)
     {
+	if(!pCharacter->GetToggle(ICharacter::CA_CAN_SKILL)) return false;
+	
         Skill * pSkill = m_action.m_pSkillRef->GetSkill();
         if(pSkill->GetBPCost() * pCharacter->GetAttribute(ICharacter::CA_BP_COST) > pCharacter->GetAttribute(ICharacter::CA_BP))
         {
