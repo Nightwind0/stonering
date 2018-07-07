@@ -1,0 +1,187 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A741EF6320EDCFD900441BD4 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A741EF6220EDCFD900441BD4 /* main.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A741EF5F20EDCFD900441BD4 /* StoneRing */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = StoneRing; sourceTree = BUILT_PRODUCTS_DIR; };
+		A741EF6220EDCFD900441BD4 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		A741EF6520EDCFD900441BD4 /* cute_image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cute_image.jpg; sourceTree = "<group>"; };
+		A741EF6620EDCFD900441BD4 /* nice_music.ogg */ = {isa = PBXFileReference; lastKnownFileType = file; path = nice_music.ogg; sourceTree = "<group>"; };
+		A741EF6720EDCFD900441BD4 /* sansation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = sansation.ttf; sourceTree = "<group>"; };
+		A741EF6820EDCFD900441BD4 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A741EF5D20EDCFD900441BD4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A741EF5720EDCFD900441BD4 = {
+			isa = PBXGroup;
+			children = (
+				A741EF6120EDCFD900441BD4 /* StoneRing */,
+				A741EF6020EDCFD900441BD4 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A741EF6020EDCFD900441BD4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A741EF5F20EDCFD900441BD4 /* StoneRing */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A741EF6120EDCFD900441BD4 /* StoneRing */ = {
+			isa = PBXGroup;
+			children = (
+				A741EF6220EDCFD900441BD4 /* main.cpp */,
+				A741EF6420EDCFD900441BD4 /* Resources */,
+			);
+			path = StoneRing;
+			sourceTree = "<group>";
+		};
+		A741EF6420EDCFD900441BD4 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A741EF6520EDCFD900441BD4 /* cute_image.jpg */,
+				A741EF6620EDCFD900441BD4 /* nice_music.ogg */,
+				A741EF6720EDCFD900441BD4 /* sansation.ttf */,
+				A741EF6820EDCFD900441BD4 /* icon.png */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A741EF5E20EDCFD900441BD4 /* StoneRing */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A741EF6920EDCFD900441BD4 /* Build configuration list for PBXNativeTarget "StoneRing" */;
+			buildPhases = (
+				A741EF5C20EDCFD900441BD4 /* Sources */,
+				A741EF5D20EDCFD900441BD4 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StoneRing;
+			productName = StoneRing;
+			productReference = A741EF5F20EDCFD900441BD4 /* StoneRing */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A741EF5820EDCFD900441BD4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0940;
+				ORGANIZATIONNAME = "Daniel Palm";
+				TargetAttributes = {
+					A741EF5E20EDCFD900441BD4 = {
+						CreatedOnToolsVersion = 9.4.1;
+					};
+				};
+			};
+			buildConfigurationList = A741EF5B20EDCFD900441BD4 /* Build configuration list for PBXProject "StoneRing" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = A741EF5720EDCFD900441BD4;
+			productRefGroup = A741EF6020EDCFD900441BD4 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A741EF5E20EDCFD900441BD4 /* StoneRing */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A741EF5C20EDCFD900441BD4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A741EF6320EDCFD900441BD4 /* main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A741EF5920EDCFD900441BD4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Debug;
+		};
+		A741EF5A20EDCFD900441BD4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+			};
+			name = Release;
+		};
+		A741EF6A20EDCFD900441BD4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2LYA9W5PS7;
+				PRODUCT_NAME = StoneRing;
+			};
+			name = Debug;
+		};
+		A741EF6B20EDCFD900441BD4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2LYA9W5PS7;
+				PRODUCT_NAME = StoneRing;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A741EF5B20EDCFD900441BD4 /* Build configuration list for PBXProject "StoneRing" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A741EF5920EDCFD900441BD4 /* Debug */,
+				A741EF5A20EDCFD900441BD4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A741EF6920EDCFD900441BD4 /* Build configuration list for PBXNativeTarget "StoneRing" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A741EF6A20EDCFD900441BD4 /* Debug */,
+				A741EF6B20EDCFD900441BD4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A741EF5820EDCFD900441BD4 /* Project object */;
+}

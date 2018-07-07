@@ -9,6 +9,6 @@
       </FileRef>
    </Group>
    <FileRef
-      location = "group:../../../ClanLib-3.0.1/Projects/MacOSX">
+      location = "group:../../../ClanLib/Projects/MacOSX">
    </FileRef>
 </Workspace>

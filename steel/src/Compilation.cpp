@@ -29,6 +29,12 @@ void Compilation::Using(const std::string& ns){
     m_imports.insert(ns);
 }
 
+void Compilation::alloc(Type type){
+}
+
+void Compilation::Import(const std::string& filename){
+}
+
 VariableIndex Compilation::NewVariable(const std::string& id, const std::string& ns, Steel::Type type){
     identifier name;
     name.m_name = id;

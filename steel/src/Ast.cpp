@@ -615,12 +615,17 @@ void AstCaseStatement::FindIdentifiers( std::list< AstIdentifier* >& o_ids ) {
     m_pStatement->FindIdentifiers(o_ids);
 }
 
+void AstCaseStatement::CompileByteCode(Steel::Compilation& c) {
+  
+}
 
 AstCaseStatementList::AstCaseStatementList(unsigned int line, const std::string& script)
     :AstBase(line,script),m_pDefault(nullptr)
 {
 
 }
+
+
 
 AstCaseStatementList::~AstCaseStatementList()
 {

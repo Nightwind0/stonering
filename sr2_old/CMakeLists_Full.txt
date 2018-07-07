@@ -1,0 +1,298 @@
+cmake_minimum_required(VERSION 3.0) # I had problems if I only specified "VERSION 3".
+project(stoneringl CXX)
+
+
+add_definitions(-DVERSION="0.5")
+
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_FLAGS                "-Wall -fstack-protector")
+set(CMAKE_CONFIGURATION_TYPES "Release;Debug" CACHE STRING "" FORCE)
+
+
+# Options to correctly link the standard C++ lib on Mac.
+if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin") # This is the correct way to detect Mac OS X operating system -- see http://www.openguru.com/2009/04/cmake-detecting-platformoperating.html
+    set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY "libc++")
+    if(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang") # GCC ("GNU") probably would require a different option
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+    endif()
+endif()
+
+
+set(stonering_HEADERS
+ src/battle/ActionQueue.h
+ src/battle/IBattleAction.h
+ src/battle/TargetingState.h
+ src/battle/BattleConfig.h
+ src/battle/AnimationState.h
+ src/core/GraphicsManager.h
+ src/core/JoystickConfig.h
+ src/core/DebugControl.h
+ src/core/StatusBox.h
+ src/core/IApplication.h
+ src/core/SoundManager.h
+ src/core/TimedInterpolator.h
+ src/core/MenuBox.h
+ src/core/sr_defines.h
+ src/core/MenuOption.h
+ src/core/Element.h
+ src/core/AppUtils.h
+ src/core/UtilityScripts.h
+ src/core/Menu.h
+ src/core/Description.h
+ src/core/NamedScript.h
+ src/core/ZipFileProvider.h
+ src/core/Font.h
+ src/core/AttributeModifier.h
+ src/core/SpriteRef.h
+ src/core/Callback.h
+ src/core/SteelRunner.h
+ src/party/ReserveParty.h
+ src/party/Party.h
+ src/Application.h
+ src/character/ICharacter.h
+ src/character/BattleMenu.h
+ src/character/Character.h
+ src/character/BattleMenuOption.h
+ src/character/ICharacterGroup.h
+ src/character/CharacterClass.h
+ src/character/SpriteDefinition.h
+ src/character/CharacterManager.h
+ src/LevelEditor/editor.h
+ src/LevelEditor/Infobar.h
+ src/LevelEditor/TileSelector.h
+ src/LevelEditor/EditorElements.h
+ src/LevelEditor/EditorElementFactory.h
+ src/LevelEditor/MapGrid.h
+ src/LevelEditor/GridPoint.h
+ src/LevelEditor/EditableLevel.h
+ src/abilities/Skill.h
+ src/abilities/Magic.h
+ src/abilities/StatusEffect.h
+ src/abilities/SoundPlay.h
+ src/abilities/AbilityManager.h
+ src/factories/ElementFactory.h
+ src/factories/IFactory.h
+ src/states/SaveLoadState.h
+ src/states/SkillTreeState.h
+ src/states/GameoverState.h
+ src/states/ShopState.h
+ src/states/SayState.h
+ src/states/BattleState.h
+ src/states/GetState.h
+ src/states/ItemGetState.h
+ src/states/GoldGetState.h
+ src/states/MainMenuState.h
+ src/states/EquipState.h
+ src/states/LoadingState.h
+ src/states/BannerState.h
+ src/states/StartupState.h
+ src/states/ChoiceState.h
+ src/states/MainMenuTargetingState.h
+ src/states/StatusState.h
+ src/states/ItemGetSingleState.h
+ src/states/DynamicMenuState.h
+ src/states/ItemSelectState.h
+ src/states/State.h
+ src/states/ExperienceState.h
+ src/states/MapState.h
+ src/states/SkillGetState.h
+ src/states/CutSceneState.h
+ src/level/ScriptElement.h
+ src/level/Event.h
+ src/level/DebugTileVisitors.h
+ src/level/Direction.h
+ src/level/Level.h
+ src/level/MappableObject.h
+ src/level/Navigator.h
+ src/level/Graphic.h
+ src/items/RegularItem.h
+ src/items/ItemRef.h
+ src/items/Item.h
+ src/items/Equipment.h
+ src/items/weapons/WeaponTypeExclusionList.h
+ src/items/weapons/WeaponRef.h
+ src/items/weapons/WeaponType.h
+ src/items/weapons/Weapon.h
+ src/items/weapons/WeaponClassRef.h
+ src/items/weapons/WeaponTypeRef.h
+ src/items/weapons/WeaponClass.h
+ src/items/weapons/GeneratedWeapon.h
+ src/items/weapons/WeaponEnhancer.h
+ src/items/weapons/UniqueWeapon.h
+ src/items/Rune.h
+ src/items/IconRef.h
+ src/items/armor/ArmorEnhancer.h
+ src/items/armor/ArmorRef.h
+ src/items/armor/GeneratedArmor.h
+ src/items/armor/ArmorTypeRef.h
+ src/items/armor/ArmorClassRef.h
+ src/items/armor/UniqueArmor.h
+ src/items/armor/ArmorClass.h
+ src/items/armor/ArmorType.h
+ src/items/armor/ArmorTypeExclusionList.h
+ src/items/armor/Armor.h
+ src/items/ItemManager.h
+ src/items/SystemItem.h
+ src/items/StatusEffectModifier.h
+ src/items/DamageCategory.h
+ src/items/NamedItem.h
+ src/items/SpecialItem.h
+ src/items/Omega.h
+ src/items/RuneType.h
+ src/monsters/Monster.h
+ src/monsters/MonsterElement.h
+ src/monsters/Stat.h
+ src/monsters/MonsterRegion.h
+ src/monsters/MonsterRef.h
+ src/monsters/MonsterGroup.h
+)
+
+set(stonering_SOURCES
+ src/battle/TargetingState.cpp
+ src/battle/BattleConfig.cpp
+ src/battle/AnimationState.cpp
+ src/battle/ActionQueue.cpp
+ src/core/SteelRunner.cpp
+ src/core/Callback.cpp
+ src/core/SoundManager.cpp
+ src/core/JoystickConfig.cpp
+ src/core/GraphicsManager.cpp
+ src/core/Menu.cpp
+ src/core/AppUtils.cpp
+ src/core/MenuBox.cpp
+ src/core/StatusBox.cpp
+ src/core/Font.cpp
+ src/core/SpriteRef.cpp
+ src/core/MenuOption.cpp
+ src/core/Description.cpp
+ src/core/Utilities.cpp
+ src/core/TimedInterpolator.cpp
+ src/core/NamedScript.cpp
+ src/core/Element.cpp
+ src/core/AttributeModifier.cpp
+ src/core/DebugControl.cpp
+ src/core/ZipFileProvider.cpp
+ src/core/UtilityScripts.cpp
+ src/party/ReserveParty.cpp
+ src/party/Party.cpp
+ src/character/CharacterClass.cpp
+ src/character/Character.cpp
+ src/character/SpriteDefinition.cpp
+ src/character/BattleMenuOption.cpp
+ src/character/BattleMenu.cpp
+ src/character/CharacterManager.cpp
+ src/abilities/StatusEffect.cpp
+ src/abilities/Magic.cpp
+ src/abilities/SoundPlay.cpp
+ src/abilities/Skill.cpp
+ src/abilities/AbilityManager.cpp
+ src/factories/ElementFactory.cpp
+ src/states/EquipState.cpp
+ src/states/MapState.cpp
+ src/states/LoadingState.cpp
+ src/states/GetState.cpp
+ src/states/StatusState.cpp
+ src/states/SkillTreeState.cpp
+ src/states/ExperienceState.cpp
+ src/states/ShopState.cpp
+ src/states/BannerState.cpp
+ src/states/GameoverState.cpp
+ src/states/ItemGetState.cpp
+ src/states/State.cpp
+ src/states/StartupState.cpp
+ src/states/ChoiceState.cpp
+ src/states/SaveLoadState.cpp
+ src/states/MainMenuState.cpp
+ src/states/SkillGetState.cpp
+ src/states/SayState.cpp
+ src/states/CutSceneState.cpp
+ src/states/ItemSelectState.cpp
+ src/states/GoldGetState.cpp
+ src/states/ItemGetSingleState.cpp
+ src/states/BattleState.cpp
+ src/states/DynamicMenuState.cpp
+ src/states/MainMenuTargetingState.cpp
+ src/level/ScriptElement.cpp
+ src/level/DebugTileVisitors.cpp
+ src/level/Level.cpp
+ src/level/MappableObject.cpp
+ src/level/LevelElements.cpp
+ src/level/Event.cpp
+ src/level/Direction.cpp
+ src/level/Navigator.cpp
+ src/Application.cpp
+ src/items/IconRef.cpp
+ src/items/Rune.cpp
+ src/items/SpecialItem.cpp
+ src/items/SystemItem.cpp
+ src/items/ItemManager.cpp
+ src/items/DamageCategory.cpp
+ src/items/RuneType.cpp
+ src/items/Item.cpp
+ src/items/weapons/UniqueWeapon.cpp
+ src/items/weapons/WeaponTypeExclusionList.cpp
+ src/items/weapons/WeaponRef.cpp
+ src/items/weapons/WeaponEnhancer.cpp
+ src/items/weapons/WeaponType.cpp
+ src/items/weapons/Weapon.cpp
+ src/items/weapons/WeaponClassRef.cpp
+ src/items/weapons/WeaponTypeRef.cpp
+ src/items/weapons/WeaponClass.cpp
+ src/items/weapons/GeneratedWeapon.cpp
+ src/items/ItemRef.cpp
+ src/items/Omega.cpp
+ src/items/armor/ArmorRef.cpp
+ src/items/armor/ArmorTypeRef.cpp
+ src/items/armor/ArmorClass.cpp
+ src/items/armor/GeneratedArmor.cpp
+ src/items/armor/ArmorType.cpp
+ src/items/armor/ArmorTypeExclusionList.cpp
+ src/items/armor/ArmorEnhancer.cpp
+ src/items/armor/Armor.cpp
+ src/items/armor/UniqueArmor.cpp
+ src/items/armor/ArmorClassRef.cpp
+ src/items/Equipment.cpp
+ src/items/StatusEffectModifier.cpp
+ src/items/RegularItem.cpp
+ src/items/NamedItem.cpp
+ src/monsters/MonsterRef.cpp
+ src/monsters/Monster.cpp
+ src/monsters/Stat.cpp
+ src/monsters/MonsterRegion.cpp
+ src/monsters/MonsterGroup.cpp
+ src/monsters/MonsterElement.cpp
+)
+
+set(editor_SOURCES
+ src/editor/Operation.cpp
+ src/editor/MapWindow.cpp
+ src/editor/MapEditorState.cpp
+ src/editor/MonsterGroupEditWindow.cpp
+ src/editor/MapComponent.cpp
+ src/editor/EventEditWindow.cpp
+ src/editor/EditorState.cpp
+ src/editor/TileSelectorWindow.cpp
+ src/editor/EditorTestState.cpp
+ src/editor/MonsterRegionEditWindow.cpp
+ src/editor/MOEditWindow.cpp
+ src/editor/TileSelector.cpp
+ src/editor/ScriptEditWindow.cpp
+ src/editor/MOView.cpp
+ src/editor/TileEditor.cpp
+ src/LevelEditor/EditorElementFactory.cpp
+ src/LevelEditor/test.cpp
+ src/LevelEditor/EditorElements.cpp
+ src/LevelEditor/GridPoint.cpp
+ src/LevelEditor/MapGrid.cpp
+ src/LevelEditor/editor.cpp
+ src/LevelEditor/TileSelector.cpp
+ src/LevelEditor/Infobar.cpp
+ src/LevelEditor/EditableLevel.cpp
+)
+
+
+add_executable(stonering src/Application.cpp ${stonering_SOURCES})
+
+target_link_libraries(stonering libclan)
