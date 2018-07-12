@@ -52,15 +52,15 @@ set(libsteel_SOURCES
  )
 
 
-add_library(libsteel ${libsteel_HEADERS} ${libsteel_SOURCES})
-install(TARGETS libsteel DESTINATION lib)
-install(FILES ${libsteel_HEADERS} DESTINATION include)
-add_executable(steel src/steel.cpp)
+add_library(steel ${libsteel_HEADERS} ${libsteel_SOURCES})
+install(TARGETS steel DESTINATION lib)
+install(FILES ${libsteel_HEADERS} DESTINATION include/steel)
+add_executable(steeli src/steel.cpp)
 
-target_link_libraries(steel libsteel)
+target_link_libraries(steeli steel)
 
-set_property(TARGET libsteel PROPERTY CXX_STANDARD 14)
 set_property(TARGET steel PROPERTY CXX_STANDARD 14)
+set_property(TARGET steeli PROPERTY CXX_STANDARD 14)
 
 
 target_include_directories(
